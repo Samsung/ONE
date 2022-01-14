@@ -25,7 +25,7 @@ namespace circle_planner
 class ScratchpadHelperMCU : public IScratchpadHelper
 {
 public:
-  uint32_t ComputeScratchpadSizeConv2d(const luci::CircleConv2D *conv) final
+  uint32_t ComputeScratchpadSizeConv2d(const luci::CircleConv2D *) final
   {
     // for mcu scratchpad size = 0
     return 0;

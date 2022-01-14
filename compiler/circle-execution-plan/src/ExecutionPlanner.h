@@ -18,12 +18,12 @@
 #define CIRCLE_EXECUTION_PLANNER_H
 
 #include "TargetPlatform.h"
-#include <luci/IR/Module.h>
-#include <luci/Plan/CircleNodeExecutionPlan.h>
 #include "IScratchpadHelper.h"
 #include "ScratchpadHelperLinux.h"
 #include "ScratchpadHelperMCU.h"
 #include "ScratchpadHelperCMSISNN.h"
+#include <luci/IR/Module.h>
+#include <luci/Plan/CircleNodeExecutionPlan.h>
 
 namespace circle_planner
 {

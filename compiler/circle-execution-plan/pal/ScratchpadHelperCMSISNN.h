@@ -18,6 +18,7 @@
 #define CIRCLE_EXECUTION_PLAN_SCRATCHPAD_HELPER_CMSISNN_H
 
 #include "IScratchpadHelper.h"
+#include <cassert>
 
 namespace circle_planner
 {
@@ -53,7 +54,9 @@ public:
 
     if (dilation_width_factor != 1 or dilation_height_factor != 1 or
         conv_input->dtype() != loco::DataType::S8)
+    {
       return 0;
+    }
 
     const auto input_depth = static_cast<int32_t>(conv_input->dim(3).value());
 
@@ -84,7 +87,9 @@ public:
     }
 
     if (_use_dsp)
+    {
       return (2 * input_depth * filter_width * filter_height) * sizeof(int16_t);
+    }
 
     return 0;
   }

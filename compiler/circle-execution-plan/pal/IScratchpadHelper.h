@@ -17,6 +17,9 @@
 #ifndef CIRCLE_EXECUTION_PLAN_ISRCRATCHPAD_HELPER_H
 #define CIRCLE_EXECUTION_PLAN_ISRCRATCHPAD_HELPER_H
 
+#include <luci/IR/Nodes/CircleConv2D.h>
+#include <cstdint>
+
 namespace circle_planner
 {
 

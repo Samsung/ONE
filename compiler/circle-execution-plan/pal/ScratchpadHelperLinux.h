@@ -18,6 +18,7 @@
 #define CIRCLE_EXECUTION_PLAN_SCRATCHPAD_HELPER_LINUX_H
 
 #include "IScratchpadHelper.h"
+#include <loco/IR/DataTypeTraits.h>
 
 namespace circle_planner
 {
