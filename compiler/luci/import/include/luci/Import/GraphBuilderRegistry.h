@@ -18,6 +18,7 @@
 #define __LUCI_IMPORT_GRAPH_BUILDER_REGISTRY_H__
 
 #include "GraphBuilderBase.h"
+#include "NodeBuilder.h"
 
 #include <map>
 
@@ -32,6 +33,11 @@ struct GraphBuilderSource
    * @brief Returns registered GraphBuilder pointer for operator (nullptr if not present)
    */
   virtual const GraphBuilderBase *lookup(const circle::BuiltinOperator &op) const = 0;
+
+  /**
+   * @brief Returns registered NodeBuilderBase pointer for type (nullptr if not present)
+   */
+  virtual const NodeBuilderBase *lookup(const NodeBuilderType type) const = 0;
 };
 
 /**
@@ -61,6 +67,17 @@ public:
     return _builder_map.at(op).get();
   }
 
+  /**
+   * @brief Returns registered NodeBuilderBase pointer for type or nullptr if not registered
+   */
+  const NodeBuilderBase *lookup(const NodeBuilderType type) const final
+  {
+    if (_node_builders.find(type) == _node_builders.end())
+      return (_parent == nullptr) ? nullptr : _parent->lookup(type);
+
+    return _node_builders.at(type).get();
+  }
+
   static GraphBuilderRegistry &get()
   {
     static GraphBuilderRegistry me;
@@ -73,11 +90,17 @@ public:
     _builder_map[op] = std::move(builder);
   }
 
+  void add(std::unique_ptr<NodeBuilderBase> &&builder)
+  {
+    _node_builders[builder->builder_type()] = std::move(builder);
+  }
+
 private:
   const GraphBuilderSource *_parent = nullptr;
 
 private:
   std::map<const circle::BuiltinOperator, std::unique_ptr<GraphBuilderBase>> _builder_map;
+  std::map<const NodeBuilderType, std::unique_ptr<NodeBuilderBase>> _node_builders;
 };
 
 } // namespace luci
