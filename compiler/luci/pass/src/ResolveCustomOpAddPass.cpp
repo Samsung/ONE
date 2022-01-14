@@ -134,6 +134,43 @@ bool resolve_custom_op(luci::CircleCustom *addv2)
   return true;
 }
 
+void gather_idx_q16_input(loco::Graph *g)
+{
+  auto inputs = g->inputs();
+  for (auto node : loco::input_nodes(g))
+  {
+    auto input = loco::must_cast<luci::CircleInput *>(node);
+
+    auto succ = loco::succs(input);
+    if (succ.size() != 1)
+      continue;
+
+    auto gather = dynamic_cast<luci::CircleGather *>(*succ.begin());
+    if (not gather)
+      continue;
+
+    if (input != gather->indices())
+      continue;
+
+    if (input->dtype() != loco::DataType::S64)
+      continue;
+
+    // Quantize input to S16 with scale = 1
+    {
+      auto quantparam = std::make_unique<luci::CircleQuantParam>();
+
+      input->dtype(loco::DataType::S16);
+      quantparam->scale.push_back(1);
+      quantparam->zerop.push_back(0);
+
+      input->quantparam(std::move(quantparam));
+    }
+
+    auto graph_input = inputs->at(input->index());
+    graph_input->dtype(loco::DataType::S16);
+  }
+}
+
 } // namespace
 
 namespace luci
@@ -152,6 +189,8 @@ bool ResolveCustomOpAddPass::run(loco::Graph *g)
     if (resolve_custom_op(cop))
       changed = true;
   }
+
+  gather_idx_q16_input(g);
 
   return changed;
 }
