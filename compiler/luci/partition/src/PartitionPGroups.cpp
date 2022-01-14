@@ -47,6 +47,12 @@ public:
   bool visit(const luci::CircleUnpackOut *) final { return true; }
   bool visit(const luci::CircleWhileOut *) final { return true; }
   // For inputs not used
+  bool visit(const luci::CircleOutputDummy *) final
+  {
+    // TODO check CircleOutputDummy; assert is added to alarm the situation
+    assert(false);
+    return true;
+  }
   bool visit(const luci::CircleOutputExclude *) final { return true; }
   bool visit(const luci::CircleVariable *) final { return true; }
   // TODO add all virtual nodes
@@ -122,7 +128,12 @@ std::string group_from_partition(const luci::CircleNode *node,
 class IsVirtualInputNode final : public luci::CircleNodeVisitor<bool>
 {
 public:
-  // TODO check CircleOutputDummy
+  bool visit(const luci::CircleOutputDummy *) final
+  {
+    // TODO check CircleOutputDummy; assert is added to alarm the situation
+    assert(false);
+    return true;
+  }
   bool visit(const luci::CircleOutputExclude *) final { return true; }
   bool visit(const luci::CircleVariable *) final { return true; }
 

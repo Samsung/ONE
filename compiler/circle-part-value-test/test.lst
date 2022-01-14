@@ -56,3 +56,6 @@ add(Part_Tanh_FC_nobias Part_Tanh_FC_nobias_003 2)
 add(Part_Mul_Sqrt_FC_nobias_000 Part_Mul_Sqrt_FC_nobias_000_000 0)
 add(Part_Mul_Sqrt_FC_nobias_000 Part_Mul_Sqrt_FC_nobias_000_001 0)
 add(Part_Mul_Sqrt_FC_nobias_000 Part_Mul_Sqrt_FC_nobias_000_002 0)
+
+# SVDF
+add(Part_Add_SVDF_000 Part_Add_SVDF_000 0)
