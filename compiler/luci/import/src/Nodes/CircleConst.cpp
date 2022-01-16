@@ -107,8 +107,10 @@ void copy_data<loco::DataType::STRING>(const VectorWrapper<uint8_t> &raw_data,
 namespace luci
 {
 
-CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_index)
+CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
+                                          GraphBuilderContext *context) const
 {
+  assert(tensor_index >= 0);
   LOGGER(l);
 
   auto graph = context->graph();

@@ -165,7 +165,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // Register builders for nodes which not handles in builders registered above.
 #define CIRCLE_NODE(CLASS) add(std::make_unique<CLASS>())
 
-  // TODO add ops
+  CIRCLE_NODE(CircleConstNodeBuilder);
 
 #undef CIRCLE_NODE
 }

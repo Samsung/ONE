@@ -17,20 +17,21 @@
 #ifndef __LUCI_IMPORT_OP_CIRCLE_CONST_H__
 #define __LUCI_IMPORT_OP_CIRCLE_CONST_H__
 
-#include "luci/Import/GraphBuilderContext.h"
+#include "luci/Import/NodeBuilder.h"
 
 #include <luci/IR/Nodes/CircleConst.h>
-
-/*
- * @note  Circle does not have Const operator.
- *        Methods here provide helper that creates CircleConst from
- *        Tensor and Buffer in circle flatbuffer file.
- */
 
 namespace luci
 {
 
-CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_index);
+/**
+ * @brief Builder creates CircleConst node from Tensor with buffer.
+ */
+class CircleConstNodeBuilder : public TypedNodeBuilder<NodeBuilderType::BUFFER>
+{
+public:
+  CircleNode *build(TensorIndex tensor_index, GraphBuilderContext *ctx) const final;
+};
 
 } // namespace luci
 
