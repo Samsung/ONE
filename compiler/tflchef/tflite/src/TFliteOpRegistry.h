@@ -154,6 +154,7 @@ private:
     REG_TFL_OP(STRIDED_SLICE, TFliteOpStridedSlice);
     REG_TFL_OP(SUB, TFliteOpSub);
     REG_TFL_OP(SUM, TFliteOpSum);
+    REG_TFL_OP(SVDF, TFliteOpSVDF);
     REG_TFL_OP(TANH, TFliteOpTanh);
     REG_TFL_OP(TILE, TFliteOpTile);
     REG_TFL_OP(TOPK_V2, TFliteOpTopKV2);
