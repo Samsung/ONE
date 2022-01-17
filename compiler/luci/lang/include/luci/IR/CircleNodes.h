@@ -29,7 +29,6 @@
 #include "Nodes/CircleCast.h"
 #include "Nodes/CircleCeil.h"
 #include "Nodes/CircleConcatenation.h"
-#include "Nodes/CircleConst.h"
 #include "Nodes/CircleConv2D.h"
 #include "Nodes/CircleCos.h"
 #include "Nodes/CircleCustom.h"
@@ -135,18 +134,20 @@
 #include "Nodes/CircleBCQGather.h"
 #include "Nodes/CircleInstanceNorm.h"
 // Virtual nodes
+#include "Nodes/CircleConst.h"
 #include "Nodes/CircleInput.h"
 #include "Nodes/CircleOutput.h"
+// Multi-output virtual nodes
 #include "Nodes/CircleBidirectionalSequenceLSTMOut.h"
 #include "Nodes/CircleCustomOut.h"
 #include "Nodes/CircleIfOut.h"
 #include "Nodes/CircleNonMaxSuppressionV4Out.h"
 #include "Nodes/CircleNonMaxSuppressionV5Out.h"
-#include "Nodes/CircleUnpackOut.h"
-#include "Nodes/CircleUniqueOut.h"
 #include "Nodes/CircleSplitOut.h"
 #include "Nodes/CircleSplitVOut.h"
 #include "Nodes/CircleTopKV2Out.h"
+#include "Nodes/CircleUniqueOut.h"
+#include "Nodes/CircleUnpackOut.h"
 #include "Nodes/CircleWhileOut.h"
 
 #include <loco/IR/Graph.h>
