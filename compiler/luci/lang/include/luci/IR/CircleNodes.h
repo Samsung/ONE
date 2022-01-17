@@ -137,6 +137,7 @@
 #include "Nodes/CircleConst.h"
 #include "Nodes/CircleInput.h"
 #include "Nodes/CircleOutput.h"
+#include "Nodes/CircleVariable.h"
 // Multi-output virtual nodes
 #include "Nodes/CircleBidirectionalSequenceLSTMOut.h"
 #include "Nodes/CircleCustomOut.h"
