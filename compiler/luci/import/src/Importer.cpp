@@ -121,11 +121,15 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     graph_input->shape(std::move(input_shape));
   }
 
-  // Create CircleConst nodes for constant tensors.
+  // Create CircleNodes for constant tensors.
   // NOTE Origin is intentionally not provided for constants.
+  auto const_builder = source.lookup(luci::NodeBuilderType::BUFFER);
+  if (not const_builder)
+    throw oops::UserExn("Not supported", "tensor with buffer builder");
+
   for (uint32_t i = 0; i < tensors.size(); ++i)
   {
-    luci::CircleConst *const_node = luci::create_circleconst(&gb_context, i);
+    auto *const_node = const_builder->build(i, &gb_context);
     if (const_node != nullptr)
       nodefinder->enroll(i, const_node);
   }
