@@ -1,6 +1,7 @@
 #[[ circlize : Exclude from tflite-to-circle conversion(tflite2circle) ]]
 ## TensorFlowLiteRecipes
 circlize(SVDF_000)
+circlize(SVDF_001)
 
 ## CircleRecipes
 
@@ -8,6 +9,7 @@ circlize(SVDF_000)
 ## TensorFlowLiteRecipes
 optimize(UnidirectionalSequenceLSTM_001) # This recipe contains is_variable Tensor
 optimize(SVDF_000)
+optimize(SVDF_001)
 
 ## CircleRecipes
 
@@ -140,6 +142,7 @@ tcgenerate(Sum_001)
 tcgenerate(Sum_dynamic_000) # TestDataGenerator does not support unknown dimension
 tcgenerate(Sum_dynamic_001) # TestDataGenerator does not support unknown dimension
 tcgenerate(SVDF_000)
+tcgenerate(SVDF_001)
 tcgenerate(Tile_000)
 tcgenerate(Tile_U8_000)
 tcgenerate(TopKV2_000)
