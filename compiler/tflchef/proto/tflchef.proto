@@ -366,6 +366,12 @@ message SquaredDifferenceOptions {
   // None
 }
 
+message SVDFOptions {
+  optional int32 rank = 1 [default = 0];
+  optional Activation activation = 2 [default = NONE];
+  optional bool asymmetric_quantize_inputs = 3 [default = false];
+}
+
 message FillOptions {
   // None
 }
@@ -589,7 +595,7 @@ message Operation {
   optional ZerosLikeOptions zeros_like_options = 153;
   // ConcatEmbeddingsOptions 154
   // LSHProjectionOptions 155
-  // SVDFOptions 156
+  optional SVDFOptions svdf_options = 156;
   // RNNOptions 157
   optional L2NormOptions l2norm_options = 158;
   optional LocalResponseNormalizationOptions local_response_normalization_options = 159;
