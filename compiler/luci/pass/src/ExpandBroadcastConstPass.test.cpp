@@ -20,6 +20,7 @@
 #include <luci/IR/CircleNodes.h>
 
 #include <gtest/gtest.h>
+#include <limits>
 
 namespace
 {

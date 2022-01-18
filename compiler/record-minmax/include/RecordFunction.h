@@ -20,6 +20,7 @@
 #include <cmath>
 #include <numeric>
 #include <stdexcept>
+#include <limits>
 
 namespace record_minmax
 {

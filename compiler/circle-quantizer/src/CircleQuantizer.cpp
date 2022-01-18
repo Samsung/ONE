@@ -31,6 +31,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <stdlib.h>
 
 using OptionHook = std::function<int(const char **)>;
 
@@ -180,9 +181,16 @@ int entry(int argc, char **argv)
 
   if (arser.get<bool>("--verbose"))
   {
+#if defined(__MINGW32__)
+    auto const env_cstr = getenv("LUCI_LOG");
+    std::string env_str("LUCI_LOG=");
+    env_str += (env_cstr == nullptr) ? "100" : std::string(env_cstr);
+    putenv(env_str.c_str());
+#else
     // The third parameter of setenv means REPLACE.
     // If REPLACE is zero, it does not overwrite an existing value.
     setenv("LUCI_LOG", "100", 0);
+#endif
   }
 
   if (arser[qdqw])

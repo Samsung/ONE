@@ -25,6 +25,9 @@
 #include <luci/IR/CircleQuantParam.h>
 
 #include <dirent.h>
+#if defined(__MINGW32__)
+#include <sys/stat.h>
+#endif
 #include <algorithm>
 #include <cmath>
 #include <fstream>
@@ -209,8 +212,21 @@ void RecordMinMax::profileRawDataDirectory(const std::string &mode,
   while (entry = readdir(dp))
   {
     // Skip if the entry is not a regular file
+#if defined(__MINGW32__)
+    // The only fields in the dirent structure that are mandated by POSIX.1 are d_name and d_ino.
+    // https://man7.org/linux/man-pages/man3/readdir.3.html
+    struct stat sb;
+    std::string entry_path(input_data_path);
+    entry_path += "/";
+    entry_path += entry->d_name;
+    if(stat(entry_path.c_str(), &sb) < 0)
+      throw std::runtime_error(entry_path + " cannot be done by stat()\n");
+    if (!S_ISREG(sb.st_mode))
+      continue;
+#else
     if (entry->d_type != DT_REG)
       continue;
+#endif
 
     const std::string filename = entry->d_name;
     std::cout << "Recording " << num_records << "'th data" << std::endl;

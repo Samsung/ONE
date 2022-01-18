@@ -22,6 +22,7 @@
 #include <luci/IR/AttrFusedActFunc.h>
 
 #include <luci/Log.h>
+#include <limits>
 
 namespace
 {

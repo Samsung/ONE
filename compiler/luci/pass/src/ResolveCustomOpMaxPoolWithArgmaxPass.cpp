@@ -25,6 +25,7 @@
 #include <oops/InternalExn.h>
 
 #include <flatbuffers/flexbuffers.h>
+#include <limits>
 
 namespace
 {

@@ -45,6 +45,7 @@ function(ExternalSource_Download PREFIX)
     file(REMOVE_RECURSE "${TMP_DIR}")
 
     file(MAKE_DIRECTORY "${TMP_DIR}")
+    message(STATUS "${TMP_DIR}") # TODO: Remove
 
     message(STATUS "Download ${PREFIX} from ${URL}")
 
@@ -106,9 +107,12 @@ function(ExternalSource_Download PREFIX)
                     WORKING_DIRECTORY "${TMP_DIR}"
                     ERROR_VARIABLE EXTRACTION_ERROR)
 
-    if(EXTRACTION_ERROR)
-      message(FATAL_ERROR "Extract ${PREFIX} - failed")
-    endif(EXTRACTION_ERROR)
+    message(STATUS "a ${DOWNLOAD_PATH}") # TODO: Remove
+    message(STATUS "d ${EXTRACTION_ERROR}") # TODO: Remove
+
+    #if(EXTRACTION_ERROR)
+    #  message(FATAL_ERROR "Extract ${PREFIX} - failed")
+    #endif(EXTRACTION_ERROR)
 
     file(REMOVE "${DOWNLOAD_PATH}")
     message(STATUS "Extract ${PREFIX} - done")

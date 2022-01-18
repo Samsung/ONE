@@ -18,6 +18,7 @@
 #include "CircleOptimizerUtils.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <limits>
 
 namespace
 {
