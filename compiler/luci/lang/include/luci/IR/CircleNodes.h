@@ -118,6 +118,7 @@
 #include "Nodes/CircleStridedSlice.h"
 #include "Nodes/CircleSub.h"
 #include "Nodes/CircleSum.h"
+#include "Nodes/CircleSVDF.h"
 #include "Nodes/CircleTanh.h"
 #include "Nodes/CircleTile.h"
 #include "Nodes/CircleTopKV2.h"
