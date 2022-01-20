@@ -26,8 +26,8 @@ namespace
 
 luci::CircleConst *create_weights_from_gamma(luci::CircleConst *gamma)
 {
-  assert(gamma->rank() == 1);
-  auto channel_size = gamma->dim(0).value();
+  assert(gamma->rank() <= 1);
+  auto channel_size = gamma->rank() == 1 ? gamma->dim(0).value() : 1;
 
   auto name = gamma->name();
   assert(name.length() > 0);
@@ -53,8 +53,8 @@ luci::CircleConst *create_weights_from_gamma(luci::CircleConst *gamma)
 
 luci::CircleConst *create_bias_from_beta(luci::CircleConst *beta)
 {
-  assert(beta->rank() == 1);
-  auto channel_size = beta->dim(0).value();
+  assert(beta->rank() <= 1);
+  auto channel_size = beta->rank() == 1 ? beta->dim(0).value() : 1;
 
   auto name = beta->name();
   assert(name.length() > 0);

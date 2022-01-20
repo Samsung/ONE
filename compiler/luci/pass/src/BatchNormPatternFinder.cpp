@@ -44,10 +44,10 @@ bool is_batchnorm_add(const luci::CircleAdd *add, luci::CircleMul *&mul, luci::C
     return false;
   }
 
-  if (constant->rank() != 1)
+  if (constant->rank() > 1)
     return false;
 
-  auto channel_dim = constant->dim(0);
+  auto channel_dim = constant->rank() == 1 ? constant->dim(0) : 1;
   // Assumption: Layout is channel-last
   if (!(channel_dim == add->dim(add->rank() - 1)))
     return false;
@@ -90,10 +90,10 @@ bool is_batchnorm_mul(const luci::CircleMul *mul, luci::CircleNode *&pred_node,
     return false;
   }
 
-  if (constant->rank() != 1)
+  if (constant->rank() > 1)
     return false;
 
-  auto channel_dim = constant->dim(0);
+  auto channel_dim = constant->rank() == 1 ? constant->dim(0) : 1;
   // Assumption: Layout is channel-last
   if (!(channel_dim == mul->dim(mul->rank() - 1)))
     return false;

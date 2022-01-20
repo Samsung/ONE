@@ -108,6 +108,86 @@ protected:
 };
 
 /**
+ * @brief Graphlet with Add and Const as beta from BatchNorm
+ */
+class ScalarAddBetaGraphlet
+{
+public:
+  ScalarAddBetaGraphlet() = default;
+
+  void init(loco::Graph *g, const ShapeU32 shape, luci::FusedActFunc actf)
+  {
+    _add = g->nodes()->create<luci::CircleAdd>();
+    _add_beta = g->nodes()->create<luci::CircleConst>();
+
+    _add->dtype(loco::DataType::FLOAT32);
+    _add_beta->dtype(loco::DataType::FLOAT32);
+
+    _add->fusedActivationFunction(actf);
+
+    assert(shape.size() > 0);
+    auto last_it = std::prev(shape.end(), 1);
+    auto channel_size = *last_it;
+
+    _add->shape(shape);
+    _add_beta->shape({});
+    _add_beta->size<loco::DataType::FLOAT32>(channel_size);
+    for (uint32_t i = 0; i < channel_size; i++)
+      _add_beta->at<loco::DataType::FLOAT32>(i) = i;
+
+    _add->name("add");
+    _add_beta->name("add_beta");
+  }
+
+public:
+  luci::CircleAdd *add() { return _add; }
+
+protected:
+  luci::CircleAdd *_add = nullptr;
+  luci::CircleConst *_add_beta = nullptr;
+};
+
+/**
+ * @brief Graphlet with Mul and Const as gamma from BatchNorm
+ */
+class ScalarMulGammaGraphlet
+{
+public:
+  ScalarMulGammaGraphlet() = default;
+
+  void init(loco::Graph *g, const ShapeU32 shape, luci::FusedActFunc actf)
+  {
+    _mul = g->nodes()->create<luci::CircleMul>();
+    _mul_gamma = g->nodes()->create<luci::CircleConst>();
+
+    _mul->dtype(loco::DataType::FLOAT32);
+    _mul_gamma->dtype(loco::DataType::FLOAT32);
+
+    _mul->fusedActivationFunction(actf);
+
+    assert(shape.size() > 0);
+    auto last_it = std::prev(shape.end(), 1);
+    auto channel_size = *last_it;
+
+    _mul->shape(shape);
+    _mul_gamma->shape({});
+    _mul_gamma->size<loco::DataType::FLOAT32>(channel_size);
+    for (uint32_t i = 0; i < channel_size; i++)
+      _mul_gamma->at<loco::DataType::FLOAT32>(i) = i;
+
+    _mul->name("mul");
+    _mul_gamma->name("mul_gamma");
+  }
+
+public:
+  luci::CircleMul *mul(void) { return _mul; }
+
+protected:
+  luci::CircleMul *_mul = nullptr;
+  luci::CircleConst *_mul_gamma = nullptr;
+};
+
+/**
  * @brief Graph of Mul-Add pattern from BatchNorm
  */
 class MulAddGraph : public TestIOGraph, public AddBetaGraphlet, public MulGammaGraphlet
@@ -150,6 +230,51 @@ public:
   }
 };
 
+/**
+ * @brief Graph of Mul-Add pattern from BatchNorm
+ */
+class ScalarMulAddGraph : public TestIOGraph,
+                          public ScalarAddBetaGraphlet,
+                          public ScalarMulGammaGraphlet
+{
+public:
+  ScalarMulAddGraph() = default;
+
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    ScalarMulGammaGraphlet::init(g(), shape_in, luci::FusedActFunc::NONE);
+    ScalarAddBetaGraphlet::init(g(), shape_out, luci::FusedActFunc::RELU);
+
+    // connect network
+    _mul->x(input());
+    _mul->y(_mul_gamma);
+    _add->x(_mul);
+    _add->y(_add_beta);
+    output()->from(_add);
+  }
+};
+
+/**
+ * @brief Graph of Add with Const
+ */
+class ScalarAddGraph : public TestIOGraph, public ScalarAddBetaGraphlet
+{
+public:
+  ScalarAddGraph() = default;
+
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    ScalarAddBetaGraphlet::init(g(), shape_in, luci::FusedActFunc::RELU);
+
+    // connect network
+    _add->x(input());
+    _add->y(_add_beta);
+    output()->from(_add);
+  }
+};
+
 } // namespace test
 } // namespace luci
 
@@ -169,6 +294,24 @@ public:
 
 protected:
   luci::test::AddGraph _ag;
+};
+
+class BatchNormPatternFinderScalarMulAddTest : public ::testing::Test
+{
+public:
+  BatchNormPatternFinderScalarMulAddTest() = default;
+
+protected:
+  luci::test::ScalarMulAddGraph _mag;
+};
+
+class BatchNormPatternFinderScalarAddTest : public ::testing::Test
+{
+public:
+  BatchNormPatternFinderScalarAddTest() = default;
+
+protected:
+  luci::test::ScalarAddGraph _ag;
 };
 
 TEST_F(BatchNormPatternFinderMulAddTest, is_batchnorm_add)
@@ -206,6 +349,51 @@ TEST_F(BatchNormPatternFinderAddTest, is_batchnorm_add_NEG)
 TEST_F(BatchNormPatternFinderMulAddTest, is_batchnorm_mul)
 {
   _mag.init({1, 16, 16, 4}, {1, 16, 16, 4});
+
+  luci::CircleNode *pred = nullptr;
+  luci::CircleConst *gamma = nullptr;
+
+  auto res = luci::is_batchnorm_mul(_mag.mul(), pred, gamma);
+  ASSERT_TRUE(res);
+  ASSERT_NE(nullptr, pred);
+  ASSERT_NE(nullptr, gamma);
+}
+
+TEST_F(BatchNormPatternFinderScalarMulAddTest, is_batchnorm_add)
+{
+  _mag.init({1, 16, 16, 1}, {1, 16, 16, 1});
+
+  luci::CircleMul *mul = nullptr;
+  luci::CircleConst *beta = nullptr;
+
+  auto res = luci::is_batchnorm_add(_mag.add(), mul, beta);
+  ASSERT_TRUE(res);
+  ASSERT_NE(nullptr, mul);
+  ASSERT_NE(nullptr, beta);
+}
+
+TEST_F(BatchNormPatternFinderScalarMulAddTest, is_batchnorm_add2)
+{
+  _mag.init({1, 16, 16, 1}, {1, 16, 16, 1});
+
+  auto res = luci::is_batchnorm_add(_mag.add());
+  ASSERT_TRUE(res);
+}
+
+TEST_F(BatchNormPatternFinderScalarAddTest, is_batchnorm_add_NEG)
+{
+  _ag.init({1, 16, 16, 1}, {1, 16, 16, 1});
+
+  luci::CircleMul *mul = nullptr;
+  luci::CircleConst *beta = nullptr;
+
+  auto res = luci::is_batchnorm_add(_ag.add(), mul, beta);
+  ASSERT_FALSE(res);
+}
+
+TEST_F(BatchNormPatternFinderScalarMulAddTest, is_batchnorm_mul)
+{
+  _mag.init({1, 16, 16, 1}, {1, 16, 16, 1});
 
   luci::CircleNode *pred = nullptr;
   luci::CircleConst *gamma = nullptr;

@@ -443,7 +443,7 @@ bool fuse_mul_with_conv(luci::CircleMul *mul)
 
   auto relu = loco::must_cast<luci::CircleRelu *>(*mul_succ.begin());
 
-  auto channel_size = gamma->dim(0).value();
+  auto channel_size = gamma->rank() == 1 ? gamma->dim(0).value() : 1;
 
   bool fusable = true;
   auto relu_succ = loco::succs(relu);
