@@ -39,8 +39,9 @@ namespace tflite
 
 bool is_valid(const ::tflite::OperatorCode *opcode)
 {
+  // Valid Range : 0 <= deprecated_builtin_code <= 127
   const int8_t deprecated_builtin_code = opcode->deprecated_builtin_code();
-  if (!(0 <= deprecated_builtin_code && deprecated_builtin_code <= 127))
+  if (deprecated_builtin_code < 0)
     return false;
 
   const ::tflite::BuiltinOperator builtin_code = opcode->builtin_code();
