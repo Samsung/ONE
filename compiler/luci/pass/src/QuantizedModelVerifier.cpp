@@ -16,8 +16,7 @@
 #include "QuantizedModelVerifier.h"
 
 #include "VerifyQuantizedNodeGranularity.h"
-#include "VerifyQuantizedNodeU8Type.h"
-#include "VerifyQuantizedNodeS16Type.h"
+#include "VerifyQuantizedNodeType.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -27,7 +26,7 @@ namespace luci
 
 void QuantizedModelVerifier::verify(loco::Graph *g)
 {
-  if (_quantized_dtype != Type::U8 && _quantized_dtype != Type::S16)
+  if (_quantized_dtype != loco::DataType::U8 && _quantized_dtype != loco::DataType::S16)
     throw std::runtime_error("Unsupported quantized dtype");
 
   if (_granularity != Granularity::ChannelWise && _granularity != Granularity::LayerWise)
@@ -45,18 +44,8 @@ void QuantizedModelVerifier::verify(loco::Graph *g)
     };
 
     // Verify Type
-    if (_quantized_dtype == Type::U8)
-    {
-      VerifyQuantizedNodeU8Type vt;
-      if (!circle_node->accept(&vt))
-        throw std::runtime_error("Wrong data type detected in " + node_name());
-    }
-    else if (_quantized_dtype == Type::S16)
-    {
-      VerifyQuantizedNodeS16Type vt;
-      if (!circle_node->accept(&vt))
-        throw std::runtime_error("Wrong data type detected in " + node_name());
-    }
+    if (!VerifyQuantizedNodeType::create(_quantized_dtype)->verify(circle_node))
+      throw std::runtime_error("Wrong data type detected in " + node_name());
 
     // Verify Granularity
     if (!circle_node->accept(VerifyQuantizedNodeGranularity::create(_granularity).get()))
