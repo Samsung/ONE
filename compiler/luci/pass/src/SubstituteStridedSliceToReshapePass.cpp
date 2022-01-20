@@ -124,7 +124,7 @@ bool substitute_strided_slice_to_reshape(luci::CircleStridedSlice *ss_node)
   std::bitset<32> end_mask(ss_node->end_mask());
   std::bitset<32> shrink_axis_mask(ss_node->shrink_axis_mask());
 
-  uint input_rank = input_node->rank();
+  uint32_t input_rank = input_node->rank();
   for (uint32_t i = 0; i < input_rank; i++)
   {
     if (!input_node->dim(i).known())
