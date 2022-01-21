@@ -13,6 +13,7 @@ set(LUCI_INTERPRETER_BINARY "luci_interpreter${LUCI_INTERPRETER_SUFFIX}")
 set(LUCI_INTERPRETER_CORE "luci_interpreter_core${LUCI_INTERPRETER_SUFFIX}")
 set(LUCI_INTERPRETER_KERNELS "luci_interpreter_kernels${LUCI_INTERPRETER_SUFFIX}")
 set(LUCI_INTERPRETER_LOADER "luci_interpreter_loader${LUCI_INTERPRETER_SUFFIX}")
+set(LUCI_INTERPRETER_IMPORT "luci_interpreter_import${LUCI_INTERPRETER_SUFFIX}")
 
 add_subdirectory(core)
 message(STATUS "LUCI INTERPRETER CORE")
@@ -20,6 +21,8 @@ add_subdirectory(kernels)
 message(STATUS "LUCI INTERPRETER KERNELS")
 add_subdirectory(loader)
 message(STATUS "LUCI INTERPRETER LOADER")
+add_subdirectory(import)
+message(STATUS "LUCI INTERPRETER IMPORT")
 
 message(STATUS "LUCI INTERPTER INITALIZED")
 
