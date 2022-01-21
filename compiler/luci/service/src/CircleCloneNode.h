@@ -269,6 +269,7 @@ public:
   luci::CircleNode *visit(const luci::CircleTopKV2Out *) final;
   luci::CircleNode *visit(const luci::CircleUniqueOut *) final;
   luci::CircleNode *visit(const luci::CircleUnpackOut *) final;
+  luci::CircleNode *visit(const luci::CircleVariable *) final;
   luci::CircleNode *visit(const luci::CircleWhileOut *) final;
 
   // Handle in CircleNode
