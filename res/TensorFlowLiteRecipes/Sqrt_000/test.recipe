@@ -14,5 +14,4 @@ operation {
   input: "ifm"
   output: "ofm"
 }
-input: "ifm"
 output: "ofm"
