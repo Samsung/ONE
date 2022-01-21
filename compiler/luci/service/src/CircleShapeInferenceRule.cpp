@@ -2486,6 +2486,8 @@ public:
 
   loco::NodeShape visit(const luci::CircleUnpackOut *node) final { return infer_unpack_out(node); }
 
+  loco::NodeShape visit(const luci::CircleVariable *node) final { return use_own(node); }
+
   loco::NodeShape visit(const luci::CircleWhileOut *node) final { return infer_while_out(node); }
 };
 
