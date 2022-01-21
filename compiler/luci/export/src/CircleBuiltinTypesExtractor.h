@@ -453,13 +453,13 @@ public:
   {
     return circle::CreateReducerOptions(_builder, node->keep_dims()).Union();
   }
-  // flatbuffers::Offset<void> visit(luci::CircleSVDF *node)
-  // {
-  //   return circle::CreateSVDFOptions(_builder, node->rank(),
-  //                                    to_circle_actfunc(node->fusedActivationFunction()),
-  //                                    node->asymmetric_quantize_inputs())
-  //     .Union();
-  // }
+  flatbuffers::Offset<void> visit(luci::CircleSVDF *node)
+  {
+    return circle::CreateSVDFOptions(_builder, node->svdf_rank(),
+                                     to_circle_actfunc(node->fusedActivationFunction()),
+                                     node->asymmetric_quantize_inputs())
+      .Union();
+  }
   flatbuffers::Offset<void> visit(luci::CircleTanh *) { return _no_option; }
   flatbuffers::Offset<void> visit(luci::CircleTile *)
   {

@@ -118,7 +118,7 @@ CIRCLE_NODE(CircleSqueeze, BuiltinOperator_SQUEEZE, BuiltinOptions_SqueezeOption
 CIRCLE_NODE(CircleStridedSlice, BuiltinOperator_STRIDED_SLICE, BuiltinOptions_StridedSliceOptions)
 CIRCLE_NODE(CircleSub, BuiltinOperator_SUB, BuiltinOptions_SubOptions)
 CIRCLE_NODE(CircleSum, BuiltinOperator_SUM, BuiltinOptions_ReducerOptions)
-//CIRCLE_NODE(CircleSVDF, BuiltinOperator_SVDF, BuiltinOptions_SVDFOptions)
+CIRCLE_NODE(CircleSVDF, BuiltinOperator_SVDF, BuiltinOptions_SVDFOptions)
 CIRCLE_NODE(CircleTanh, BuiltinOperator_TANH, BuiltinOptions_NONE)
 CIRCLE_NODE(CircleTile, BuiltinOperator_TILE, BuiltinOptions_TileOptions)
 CIRCLE_NODE(CircleTopKV2, BuiltinOperator_TOPK_V2, BuiltinOptions_TopKV2Options)
