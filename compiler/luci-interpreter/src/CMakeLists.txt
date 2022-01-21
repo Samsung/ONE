@@ -22,7 +22,7 @@ message(STATUS "LUCI INTERPRETER KERNELS")
 add_subdirectory(loader)
 message(STATUS "LUCI INTERPRETER LOADER")
 add_subdirectory(import)
-message(STATUS "LUCI IMPORT IMPORT")
+message(STATUS "LUCI INTERPRETER IMPORT")
 
 message(STATUS "LUCI INTERPTER INITALIZED")
 
