@@ -118,6 +118,17 @@ std::string group_from_partition(const luci::CircleNode *node,
   return group;
 }
 
+class IsVirtualInputNode final : public luci::CircleNodeVisitor<bool>
+{
+public:
+  // TODO check CircleOutputDummy
+  bool visit(const luci::CircleOutputExclude *) final { return true; }
+  // TODO check CircleVariable
+
+  // default is false
+  bool visit(const luci::CircleNode *) final { return false; }
+};
+
 class IsMultiOutputNode final : public luci::CircleNodeVisitor<bool>
 {
 public:
@@ -148,11 +159,12 @@ void append(luci::CircleNode *node, luci::PGroups *pgroups, const std::string &g
 
   pgroup->pnodes.push_back(std::move(pnode));
 
+  IsVirtualInputNode queryvi;
   // Set input of PGroup
   for (uint32_t in = 0; in < node->arity(); ++in)
   {
     auto input = loco::must_cast<luci::CircleNode *>(node->arg(in));
-    if (dynamic_cast<const luci::CircleOutputExclude *>(input) != nullptr)
+    if (input->accept(&queryvi))
     {
       auto pnode = std::make_unique<luci::PNode>();
       pnode->node = input;
