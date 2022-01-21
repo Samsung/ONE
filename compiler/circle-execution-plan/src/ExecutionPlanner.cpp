@@ -25,21 +25,6 @@ namespace
 
 constexpr uint32_t node_not_assigned = std::numeric_limits<int32_t>::max();
 
-uint32_t compute_output_size(luci::Padding padding, uint32_t image_size, uint32_t filter_size,
-                             uint32_t stride, uint32_t dilation_rate = 1)
-{
-  const int32_t effective_filter_size = (filter_size - 1) * dilation_rate + 1;
-  switch (padding)
-  {
-    case luci::Padding::SAME:
-      return (image_size + stride - 1) / stride;
-    case luci::Padding::VALID:
-      return (image_size + stride - effective_filter_size) / stride;
-    default:
-      assert(false);
-  }
-}
-
 bool isExecutableNode(const luci::CircleNode *node)
 {
   switch (node->opcode())
@@ -71,48 +56,6 @@ bool isTensorProducingNode(const luci::CircleNode *node)
     default:
       return true;
   }
-}
-
-// Method finds (if necessary) size for im2col temporary tensor.
-// TODO: remove it when ScratchpadHelper will be added
-uint32_t compute_im2col_size(const luci::CircleConv2D *conv)
-{
-  auto conv_input = loco::must_cast<luci::CircleNode *>(conv->input());
-  auto filter = loco::must_cast<luci::CircleNode *>(conv->filter());
-  auto padding = (conv->padding());
-  uint32_t stride_height = conv->stride()->h();
-  uint32_t stride_width = conv->stride()->w();
-
-  uint32_t dilation_height_factor = conv->dilation()->h();
-  uint32_t dilation_width_factor = conv->dilation()->w();
-
-  uint32_t filter_height = filter->dim(1).value();
-  uint32_t filter_width = filter->dim(2).value();
-
-  const bool need_dilated_im2col = dilation_height_factor != 1 || dilation_width_factor != 1;
-  const bool need_non_dilated_im2col =
-    stride_height != 1 || stride_width != 1 || filter_height != 1 || filter_width != 1;
-  bool need_im2col =
-    conv_input->dtype() != loco::DataType::S16 && (need_dilated_im2col || need_non_dilated_im2col);
-
-  if (!need_im2col)
-  {
-    return 0;
-  }
-
-  uint32_t input_depth = conv_input->dim(3).value();
-  uint32_t input_height = conv_input->dim(1).value();
-  uint32_t input_width = conv_input->dim(2).value();
-
-  uint32_t output_height = compute_output_size(padding, input_height, filter_height, stride_height,
-                                               dilation_height_factor);
-  uint32_t output_width =
-    compute_output_size(padding, input_width, filter_width, stride_width, dilation_width_factor);
-
-  uint32_t batches = conv_input->dim(0).value();
-
-  return batches * output_height * output_width * input_depth * filter_height * filter_width *
-         size(conv_input->dtype());
 }
 
 } // namespace
@@ -366,8 +309,8 @@ void ExecutionPlanner::create_alloc_node_inform_vector(bool null_consts, bool nu
       case luci::CircleOpcode::CONV_2D:
       {
         auto conv = loco::must_cast<const luci::CircleConv2D *>(circle_node);
-        // TODO: rewrite it with ScratchpadHelper method when it will be added
-        scratchpad_size = null_scratchpad ? 0 : compute_im2col_size(conv);
+        scratchpad_size =
+          null_scratchpad ? 0 : _scratchpad_helper->ComputeScratchpadSizeConv2d(conv);
         break;
       }
       default:
