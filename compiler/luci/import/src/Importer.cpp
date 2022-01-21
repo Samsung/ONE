@@ -23,6 +23,7 @@
 #include "luci/Import/GraphBuilderRegistry.h"
 #include "luci/Import/CircleReader.h"
 #include "luci/Import/Nodes/CircleConst.h"
+#include "luci/Import/Nodes/CircleVariable.h"
 
 #include <luci/IR/Module.h>
 #include <luci/IR/CircleNodes.h>
@@ -132,6 +133,15 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     auto *const_node = const_builder->build(i, &gb_context);
     if (const_node != nullptr)
       nodefinder->enroll(i, const_node);
+  }
+
+  // Create CircleVariable nodes for variable tensors
+  // TODO Add Origin if needed, skip for now
+  for (uint32_t i = 0; i < tensors.size(); ++i)
+  {
+    luci::CircleVariable *variable_node = luci::create_circlevariable(&gb_context, i);
+    if (variable_node != nullptr)
+      nodefinder->enroll(i, variable_node);
   }
 
   // Import the operators.
