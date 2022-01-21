@@ -64,6 +64,7 @@ public:
   void visit(luci::CircleTopKV2Out *) final {}
   void visit(luci::CircleUniqueOut *) final {}
   void visit(luci::CircleUnpackOut *) final {}
+  void visit(luci::CircleVariable *) final {}
   void visit(luci::CircleWhileOut *) final {}
 
 protected:
