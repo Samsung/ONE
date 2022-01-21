@@ -51,13 +51,6 @@ void copy(const std::vector<Tensor *> &src, const std::vector<Tensor *> &dst, Ru
   copy(const_src, dst, graph);
 }
 
-// TODO: Think about how allocate memory for output in main graph
-void configureTensorsAllocations(const std::vector<Tensor *> &tensors, RuntimeGraph *run_graph)
-{
-  for (auto tensor : tensors)
-    run_graph->configureAllocations(tensor);
-}
-
 } // namespace
 
 While::While(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs,
