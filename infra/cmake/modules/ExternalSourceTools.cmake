@@ -107,7 +107,7 @@ function(ExternalSource_Download PREFIX)
                     RESULT_VARIABLE EXTRACTION_RESULT
                     ERROR_VARIABLE EXTRACTION_ERROR)
 
-    if(EXTRACTION_RESULT)
+    if(EXTRACTION_RESULT AND NOT EXTRACTION_RESULT EQUAL 0)
       message(FATAL_ERROR "Extract ${PREFIX} - failed: ${EXTRACTION_ERROR}")
     endif()
 
