@@ -131,6 +131,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(STRIDED_SLICE, CircleStridedSliceGraphBuilder);                              // 45
   CIRCLE_NODE(SUB, CircleSubGraphBuilder);                                                 // 41
   CIRCLE_NODE(SUM, CircleSumGraphBuilder);                                                 // 74
+  CIRCLE_NODE(SVDF, CircleSVDFBuilder);                                                    // 27
   CIRCLE_NODE(TANH, CircleTanhGraphBuilder);                                               // 28
   CIRCLE_NODE(TILE, CircleTileGraphBuilder);                                               // 69
   CIRCLE_NODE(TOPK_V2, CircleTopKV2GraphBuilder);                                          // 48
@@ -150,7 +151,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_LSH_PROJECTION = 15,
   // BuiltinOperator_LSTM = 16,
   // BuiltinOperator_RNN = 24,
-  // BuiltinOperator_SVDF = 27,
   // BuiltinOperator_CONCAT_EMBEDDINGS = 29,
   // BuiltinOperator_SKIP_GRAM = 30,
   // BuiltinOperator_CALL = 31,
