@@ -67,6 +67,9 @@ public:
   luci::SparsityParam *sparsityparam(void) const { return _sparsityparam; }
   void sparsityparam(luci::SparsityParam *sp) { _sparsityparam = sp; }
 
+  bool is_variable(void) const { return _is_variable; }
+  void is_variable(bool v) { _is_variable = v; }
+
 private:
   std::string _name;
 
@@ -77,6 +80,8 @@ private:
   luci::CircleConst *_content = nullptr;
   luci::CircleQuantParam *_quantparam = nullptr;
   luci::SparsityParam *_sparsityparam = nullptr;
+
+  bool _is_variable = false;
 };
 
 class CircleTensorContext
@@ -144,6 +149,8 @@ void allocateCircleTensorInfo(CircleNode *node, CircleTensorContext &ctx)
   tensor_info.content(dynamic_cast<luci::CircleConst *>(node));
   tensor_info.quantparam(node->quantparam());
   tensor_info.sparsityparam(node->sparsityparam());
+
+  tensor_info.is_variable(dynamic_cast<luci::CircleVariable *>(node) != nullptr);
 
   set_tensor_index(node, tensor_index);
 
@@ -592,9 +599,11 @@ void exportOpDefinedTensor(const CircleTensorInfo &info, FlatBufferBuilder &buil
   auto buffer_id = get_buffer_id(builder, md, info.content());
 
   auto name_offset = builder.CreateString(info.name());
-  auto tensor_offset =
-    CreateTensor(builder, shape_offset, info.dtype(), buffer_id, name_offset, quantparam,
-                 /*is_variable*/ false, sparsityparam, shape_signature_offset);
+
+  auto is_variable = info.is_variable();
+
+  auto tensor_offset = CreateTensor(builder, shape_offset, info.dtype(), buffer_id, name_offset,
+                                    quantparam, is_variable, sparsityparam, shape_signature_offset);
   gd._tensors.push_back(tensor_offset);
 }
 
