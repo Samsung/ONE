@@ -1089,6 +1089,12 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleUnpackOut *no
   return true;
 }
 
+bool summary_node(const locop::SymbolTable *, const luci::CircleVariable *, locop::NodeSummary &s)
+{
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
+}
+
 bool summary_node(const locop::SymbolTable *tbl, const luci::CircleWhileOut *node,
                   locop::NodeSummary &s)
 {
@@ -1406,6 +1412,7 @@ private:
   IMPLEMENT(luci::CircleTopKV2Out)
   IMPLEMENT(luci::CircleUniqueOut)
   IMPLEMENT(luci::CircleUnpackOut)
+  IMPLEMENT(luci::CircleVariable)
   IMPLEMENT(luci::CircleWhileOut)
 };
 
@@ -2185,6 +2192,12 @@ bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleUniqueOut *node,
 }
 
 bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleUnpackOut *node,
+                                          locop::NodeSummary &s) const
+{
+  return summary_node(tbl(), node, s);
+}
+
+bool SummaryBuilderLet<SB::VIRT>::summary(const luci::CircleVariable *node,
                                           locop::NodeSummary &s) const
 {
   return summary_node(tbl(), node, s);
