@@ -1554,6 +1554,30 @@ loco::NodeShape infer_squeeze(const luci::CircleSqueeze *node)
   return loco::NodeShape{output_shape};
 }
 
+loco::NodeShape infer_svdf(const luci::CircleSVDF *node)
+{
+  const auto ifm_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
+  const auto weight_feature_shape = luci::shape_get(node->weight_feature()).as<loco::TensorShape>();
+
+  assert(ifm_shape.rank() == 2);
+  assert(weight_feature_shape.rank() == 2);
+
+  assert(ifm_shape.dim(1) == weight_feature_shape.dim(1));
+  assert(weight_feature_shape.dim(0).known());
+
+  const auto rank = node->svdf_rank();
+  const auto num_filters = weight_feature_shape.dim(0).value();
+  assert(num_filters % rank == 0);
+  const auto num_units = num_filters / rank;
+
+  loco::TensorShape ofm_shape;
+  ofm_shape.rank(2);
+  ofm_shape.dim(0) = ifm_shape.dim(0);
+  ofm_shape.dim(1) = num_units;
+
+  return loco::NodeShape{ofm_shape};
+}
+
 loco::NodeShape infer_tile(const luci::CircleTile *node)
 {
   const loco::DataType S32 = loco::DataType::S32;
@@ -2392,6 +2416,8 @@ public:
     auto output_shape = infer_reducer(node->input(), node->reduction_indices(), node->keep_dims());
     return loco::NodeShape{output_shape};
   }
+
+  loco::NodeShape visit(const luci::CircleSVDF *node) final { return infer_svdf(node); }
 
   loco::NodeShape visit(const luci::CircleTanh *node) final { return use_x(node); }
 
