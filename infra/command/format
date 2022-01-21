@@ -74,27 +74,13 @@ function exclude_symbolic_links() {
 }
 
 function check_newline() {
-  # Manually ignore style checking
-  FILES_TO_CHECK_CR=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep -v '((\.svg)|(\.pdf)|(\.png))$'`
-  # Transform to array
-  FILES_TO_CHECK_CR=($FILES_TO_CHECK_CR)
+  # Exclude binary (refer .gitattributes file)
+  # TODO Remove svg file excluding
+  #   .svg: xml type ML for vector graphic
+  FILES_TO_CHECK_EOF=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep -v '((\.caffemodel)|(\.png)|(\.pdf)|(\.h5)|(\.pdf)|(\.tar.gz)|(\.tflite)|(\.pdf)|(\.bmp)|(\.svg))$'`
 
-  # Check all files (CMakeLists.txt, *.cl, ... not only for C++, Python)
-  if [[ ${#FILES_TO_CHECK_CR} -ne 0 ]]; then
-    CRCHECK=$(file ${FILES_TO_CHECK_CR} | grep 'with CR')
-  else
-    return
-  fi
-  FILES_TO_FIX=($(echo "$CRCHECK" | grep "with CRLF line" | cut -d':' -f1))
-  for f in ${FILES_TO_FIX[@]}; do
-    tr -d '\r' < $f > $f.fixed && cat $f.fixed > $f && rm $f.fixed
-  done
-  FILES_TO_FIX=($(echo "${CRCHECK}" | grep "with CR line" | cut -d':' -f1))
-  for f in ${FILES_TO_FIX[@]}; do
-    tr '\r' '\n' < $f > $f.fixed && cat $f.fixed > $f && rm $f.fixed
-  done
-  # Check no new line at end of file
-  for f in ${FILES_TO_CHECK_CR[@]}; do
+  for f in ${FILES_TO_CHECK_EOF[@]}; do
+    # Check no new line at end of file
     if diff /dev/null "$f" | tail -1 | grep '^\\ No newline' > /dev/null; then
       echo >> "$f"
     fi
