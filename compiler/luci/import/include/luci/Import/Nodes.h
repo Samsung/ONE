@@ -130,6 +130,7 @@
 #include "Nodes/CircleUnidirectionalSequenceLSTM.h"
 #include "Nodes/CircleUnique.h"
 #include "Nodes/CircleUnpack.h"
+#include "Nodes/CircleVariable.h"
 #include "Nodes/CircleWhere.h"
 #include "Nodes/CircleWhile.h"
 #include "Nodes/CircleZerosLike.h"
