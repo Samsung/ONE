@@ -142,7 +142,7 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
 
   // dump operands(tensors)
   os << "Operands: T(subgraph index : tensor index) TYPE (shape) (shape_signature) "
-     << "B(buffer index) OperandName" << std::endl;
+     << "B(buffer index) (variable) OperandName" << std::endl;
   for (uint32_t i = 0; i < tensors->Length(); ++i)
   {
     // TODO refactor to some better structure
@@ -161,6 +161,10 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
       os << "(" << dims_sig << ") ";
     }
     os << "B(" << tensor->buffer() << ") ";
+    if (tensor->is_variable())
+    {
+      os << "(variable) ";
+    }
     os << mio::circle::tensor_name(tensor) << std::endl;
 
     if (auto q_params = tensor->quantization())
