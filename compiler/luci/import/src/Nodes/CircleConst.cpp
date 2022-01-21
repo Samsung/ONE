@@ -118,6 +118,11 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
   const auto tensors = reader->tensors();
   const auto const_tensor = tensors[tensor_index];
   assert(const_tensor != nullptr);
+  if (const_tensor->is_variable())
+  {
+    // Create CircleVariable for variable
+    return nullptr;
+  }
 
   assert(reader->buffers()[const_tensor->buffer()] != nullptr);
   const auto buffer = wrap(reader->buffers()[const_tensor->buffer()]->data());
