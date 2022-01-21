@@ -208,6 +208,7 @@ public:
   luci::CircleNode *visit(const luci::CircleSquaredDifference *) final;
   luci::CircleNode *visit(const luci::CircleSqueeze *) final;
   luci::CircleNode *visit(const luci::CircleStridedSlice *) final;
+  luci::CircleNode *visit(const luci::CircleSVDF *) final;
   luci::CircleNode *visit(const luci::CircleSub *) final;
   luci::CircleNode *visit(const luci::CircleSum *) final;
   luci::CircleNode *visit(const luci::CircleTanh *) final;
