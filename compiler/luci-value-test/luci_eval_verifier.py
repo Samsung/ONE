@@ -47,6 +47,14 @@ for i in range(num_inputs):
         input_data = np.array(
             np.random.randint(0, 256, size=input_details["shape"]),
             input_details["dtype"])
+    elif input_details["dtype"] == np.int32:
+        input_data = np.array(
+            np.random.randint(0, 100, size=input_details["shape"]),
+            input_details["dtype"])
+    elif input_details["dtype"] == np.int64:
+        input_data = np.array(
+            np.random.randint(0, 100, size=input_details["shape"]),
+            input_details["dtype"])
     elif input_details["dtype"] == np.bool_:
         input_data = np.array(
             np.random.choice(a=[True, False], size=input_details["shape"]),
@@ -96,6 +104,10 @@ for idx in range(len(inpt_output_details)):
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
         elif output_details["dtype"] == np.int32:
+            if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
+                raise SystemExit("Execution result of " + tflite_model +
+                                 " does not match with " + circle_model)
+        elif output_details["dtype"] == np.bool_:
             if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
