@@ -1,5 +1,6 @@
 #[[ circlize : Exclude from tflite-to-circle conversion(tflite2circle) ]]
 ## TensorFlowLiteRecipes
+circlize(Part_Add_SVDF_000)
 circlize(SVDF_000)
 circlize(SVDF_001)
 
@@ -8,6 +9,7 @@ circlize(SVDF_001)
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
 optimize(UnidirectionalSequenceLSTM_001) # This recipe contains is_variable Tensor
+optimize(Part_Add_SVDF_000)
 optimize(SVDF_000)
 optimize(SVDF_001)
 
@@ -88,6 +90,7 @@ tcgenerate(OneHot_003)
 tcgenerate(Pack_000)
 tcgenerate(Pack_U8_000)
 tcgenerate(PadV2_000)
+tcgenerate(Part_Add_SVDF_000)
 tcgenerate(Quantize_000)  # runtime and luci-interpreter doesn't support Quantize op yet
 tcgenerate(Range_000)
 tcgenerate(Rank_000)
