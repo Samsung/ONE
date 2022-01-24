@@ -87,6 +87,7 @@ bool isExecutableNode(const luci::CircleNode *node)
     case luci::CircleOpcode::CIRCLESPLITOUT:
     case luci::CircleOpcode::CIRCLESPLITVOUT:
     case luci::CircleOpcode::CIRCLEUNPACKOUT:
+    case luci::CircleOpcode::CIRCLEVARIABLE:
     case luci::CircleOpcode::CIRCLEWHILEOUT:
       return false;
     default:
@@ -132,7 +133,8 @@ void GraphLoader::loadTensors()
     if (!isTensorProducingNode(node))
       continue;
 
-    // Only Input and Const nodes have shapes. Shapes of intermediate tensors will be inferred.
+    // Only Input, Const and Variable nodes have shapes. Shapes of intermediate tensors will be
+    // inferred.
     Shape shape{};
     if (const auto *input_node = dynamic_cast<const luci::CircleInput *>(node))
     {
@@ -141,6 +143,10 @@ void GraphLoader::loadTensors()
     else if (const auto *const_node = dynamic_cast<const luci::CircleConst *>(node))
     {
       shape = getNodeShape(const_node);
+    }
+    else if (const auto *variable_node = dynamic_cast<const luci::CircleVariable *>(node))
+    {
+      shape = getNodeShape(variable_node);
     }
 
     AffineQuantization quantization;
