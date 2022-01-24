@@ -161,6 +161,7 @@ public:
   void visit(const luci::CircleSquaredDifference *) final;
   void visit(const luci::CircleSqueeze *) final;
   void visit(const luci::CircleStridedSlice *) final;
+  void visit(const luci::CircleSVDF *) final;
   void visit(const luci::CircleSub *) final;
   void visit(const luci::CircleSum *) final;
   void visit(const luci::CircleTanh *) final;
