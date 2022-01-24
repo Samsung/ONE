@@ -48,6 +48,7 @@ public:
   bool visit(const luci::CircleWhileOut *) final { return true; }
   // For inputs not used
   bool visit(const luci::CircleOutputExclude *) final { return true; }
+  bool visit(const luci::CircleVariable *) final { return true; }
   // TODO add all virtual nodes
 
   // default is false
@@ -123,7 +124,7 @@ class IsVirtualInputNode final : public luci::CircleNodeVisitor<bool>
 public:
   // TODO check CircleOutputDummy
   bool visit(const luci::CircleOutputExclude *) final { return true; }
-  // TODO check CircleVariable
+  bool visit(const luci::CircleVariable *) final { return true; }
 
   // default is false
   bool visit(const luci::CircleNode *) final { return false; }
