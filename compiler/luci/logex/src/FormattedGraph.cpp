@@ -1352,6 +1352,7 @@ private:
   IMPLEMENT(luci::CircleStridedSlice)
   IMPLEMENT(luci::CircleSub)
   IMPLEMENT(luci::CircleSum)
+  IMPLEMENT(luci::CircleSVDF)
   IMPLEMENT(luci::CircleTanh)
   IMPLEMENT(luci::CircleTile)
   IMPLEMENT(luci::CircleTopKV2)
@@ -2035,6 +2036,22 @@ bool SummaryBuilderLet<SB::STUV>::summary(const luci::CircleSub *node, locop::No
 bool SummaryBuilderLet<SB::STUV>::summary(const luci::CircleSum *node, locop::NodeSummary &s) const
 {
   return use_reducer(tbl(), node, s);
+}
+
+bool SummaryBuilderLet<SB::STUV>::summary(const luci::CircleSVDF *node, locop::NodeSummary &s) const
+{
+  assert(node->fusedActivationFunction() != luci::FusedActFunc::UNDEFINED);
+
+  s.args().append("input", tbl()->lookup(node->input()));
+  s.args().append("weight_feature", tbl()->lookup(node->weight_feature()));
+  s.args().append("weight_time", tbl()->lookup(node->weight_time()));
+  s.args().append("bias", tbl()->lookup(node->bias()));
+  s.args().append("state", tbl()->lookup(node->input_activation_state()));
+  s.args().append("rank", to_str(node->svdf_rank()));
+  s.args().append("asymmetric_quantize_inputs", to_str(node->asymmetric_quantize_inputs()));
+  s.args().append("fused", to_str(node->fusedActivationFunction()));
+  s.state(locop::NodeSummary::State::Complete);
+  return true;
 }
 
 bool SummaryBuilderLet<SB::STUV>::summary(const luci::CircleTanh *node, locop::NodeSummary &s) const
