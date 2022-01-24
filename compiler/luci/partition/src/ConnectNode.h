@@ -197,6 +197,7 @@ public:
   void visit(const luci::CircleTopKV2Out *) final;
   void visit(const luci::CircleUniqueOut *) final;
   void visit(const luci::CircleUnpackOut *) final;
+  void visit(const luci::CircleVariable *) final;
   void visit(const luci::CircleWhileOut *) final;
 
 public:
