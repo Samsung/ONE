@@ -43,6 +43,12 @@ struct ArgMaxParams
   DataType output_type;
 };
 
+struct BatchMatMulParams
+{
+  bool adj_x;
+  bool adj_y;
+};
+
 struct ConcatenationParams
 {
   int axis;

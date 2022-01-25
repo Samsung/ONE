@@ -21,6 +21,7 @@
 #include <kernels/Add.h>
 #include <kernels/ArgMax.h>
 #include <kernels/AveragePool2D.h>
+#include <kernels/BatchMatMul.h>
 #include <kernels/Cast.h>
 #include <kernels/Concatenation.h>
 #include <kernels/Conv2D.h>
@@ -208,6 +209,27 @@ TEST_F(KernelBuilderTest, AveragePool2D)
   EXPECT_THAT(kernel->params().stride_height, Eq(op->stride()->h()));
   EXPECT_THAT(kernel->params().stride_width, Eq(op->stride()->w()));
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, BatchMatMul)
+{
+  auto *lhs = createInputNode();
+  auto *rhs = createInputNode();
+
+  auto *op = createNode<luci::CircleBatchMatMul>();
+  op->x(lhs);
+  op->y(rhs);
+  op->adj_x(false);
+  op->adj_y(false);
+
+  auto kernel = buildKernel<kernels::BatchMatMul>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->x(), lhs);
+  checkTensor(kernel->y(), rhs);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().adj_x, Eq(op->adj_x()));
+  EXPECT_THAT(kernel->params().adj_y, Eq(op->adj_y()));
 }
 
 TEST_F(KernelBuilderTest, Cast)
