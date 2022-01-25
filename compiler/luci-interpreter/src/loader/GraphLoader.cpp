@@ -83,9 +83,15 @@ bool isExecutableNode(const luci::CircleNode *node)
     case luci::CircleOpcode::CIRCLEOUTPUT:
     case luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE:
     // The following nodes denote outputs of multiple-output nodes.
+    case luci::CircleOpcode::CIRCLEBIDIRECTIONAL_SEQUENCE_LSTM_OUT:
+    case luci::CircleOpcode::CIRCLECUSTOMOUT:
     case luci::CircleOpcode::CIRCLEIFOUT:
+    case luci::CircleOpcode::CIRCLENONMAXSUPPRESSIONV4OUT:
+    case luci::CircleOpcode::CIRCLENONMAXSUPPRESSIONV5OUT:
     case luci::CircleOpcode::CIRCLESPLITOUT:
     case luci::CircleOpcode::CIRCLESPLITVOUT:
+    case luci::CircleOpcode::CIRCLETOPKV2OUT:
+    case luci::CircleOpcode::CIRCLEUNIQUEOUT:
     case luci::CircleOpcode::CIRCLEUNPACKOUT:
     case luci::CircleOpcode::CIRCLEVARIABLE:
     case luci::CircleOpcode::CIRCLEWHILEOUT:
@@ -103,9 +109,17 @@ bool isTensorProducingNode(const luci::CircleNode *node)
     case luci::CircleOpcode::CIRCLEOUTPUT:
     // The following nodes are multiple-output nodes. They do not produce tensors, the tensors
     // are produced by the corresponding *Out nodes instead.
+    case luci::CircleOpcode::BIDIRECTIONAL_SEQUENCE_LSTM:
+    case luci::CircleOpcode::CUSTOM:
     case luci::CircleOpcode::IF:
+    case luci::CircleOpcode::NON_MAX_SUPPRESSION_V4:
+    case luci::CircleOpcode::NON_MAX_SUPPRESSION_V5:
     case luci::CircleOpcode::SPLIT:
+    case luci::CircleOpcode::SPLIT_V:
+    case luci::CircleOpcode::TOPK_V2:
+    case luci::CircleOpcode::UNIQUE:
     case luci::CircleOpcode::UNPACK:
+    case luci::CircleOpcode::WHILE:
       return false;
     default:
       return true;
