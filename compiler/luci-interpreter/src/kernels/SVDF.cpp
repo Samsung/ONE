@@ -71,33 +71,33 @@ void SVDF::configure()
 
   // Validate Input Tensor:
   LUCI_INTERPRETER_CHECK(input()->element_type() == loco::DataType::FLOAT32 ||
-                         input()->element_type() == loco::DataType::S8)
-  LUCI_INTERPRETER_CHECK(input_shape.num_dims() == 2)
+                         input()->element_type() == loco::DataType::S8);
+  LUCI_INTERPRETER_CHECK(input_shape.num_dims() == 2);
 
   // Validate inputs and output types
   if (input()->element_type() == loco::DataType::S8)
   {
-    LUCI_INTERPRETER_CHECK(weight_feature()->element_type() == loco::DataType::S8)
+    LUCI_INTERPRETER_CHECK(weight_feature()->element_type() == loco::DataType::S8);
     LUCI_INTERPRETER_CHECK(weight_time()->element_type() == loco::DataType::S16 ||
-                           weight_time()->element_type() == loco::DataType::S8)
+                           weight_time()->element_type() == loco::DataType::S8);
     if (bias())
-      LUCI_INTERPRETER_CHECK(bias()->element_type() == loco::DataType::S32)
+      LUCI_INTERPRETER_CHECK(bias()->element_type() == loco::DataType::S32);
 
     LUCI_INTERPRETER_CHECK(input_activation_state()->element_type() == loco::DataType::S16 ||
-                           input_activation_state()->element_type() == loco::DataType::S8)
-    LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::S8)
+                           input_activation_state()->element_type() == loco::DataType::S8);
+    LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::S8);
 
     // Note: now tflite support only ReLU activation for integer SVDF
-    LUCI_INTERPRETER_CHECK(params().activation == luci::FusedActFunc::RELU)
+    LUCI_INTERPRETER_CHECK(params().activation == luci::FusedActFunc::RELU);
   }
   else if (weight_feature()->element_type() == loco::DataType::FLOAT32)
   {
-    LUCI_INTERPRETER_CHECK(weight_feature()->element_type() == loco::DataType::FLOAT32)
-    LUCI_INTERPRETER_CHECK(weight_time()->element_type() == loco::DataType::FLOAT32)
-    LUCI_INTERPRETER_CHECK(input_activation_state()->element_type() == loco::DataType::FLOAT32)
+    LUCI_INTERPRETER_CHECK(weight_feature()->element_type() == loco::DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(weight_time()->element_type() == loco::DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(input_activation_state()->element_type() == loco::DataType::FLOAT32);
     if (bias())
-      LUCI_INTERPRETER_CHECK(bias()->element_type() == loco::DataType::FLOAT32)
-    LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::FLOAT32)
+      LUCI_INTERPRETER_CHECK(bias()->element_type() == loco::DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::FLOAT32);
   }
   else if ((weight_feature()->element_type() == loco::DataType::U8 ||
             weight_feature()->element_type() == loco::DataType::S8) &&
@@ -116,28 +116,28 @@ void SVDF::configure()
   const int rank = params().svdf_rank;
   const int batch_size = input_shape.dim(0);
   const int num_filters = weight_features_shape.dim(0);
-  LUCI_INTERPRETER_CHECK(rank != 0)
-  LUCI_INTERPRETER_CHECK(num_filters % rank == 0)
+  LUCI_INTERPRETER_CHECK(rank != 0);
+  LUCI_INTERPRETER_CHECK(num_filters % rank == 0);
 
   const int num_units = num_filters / rank;
   const int memory_size = weight_time_shape.dim(1);
 
   // Validate Weight_Feature Input Tensor:
-  LUCI_INTERPRETER_CHECK(weight_features_shape.num_dims() == 2)
-  LUCI_INTERPRETER_CHECK(weight_features_shape.dim(1) == input_shape.dim(1))
+  LUCI_INTERPRETER_CHECK(weight_features_shape.num_dims() == 2);
+  LUCI_INTERPRETER_CHECK(weight_features_shape.dim(1) == input_shape.dim(1));
 
   // Validate Weight_Time Input Tensor:
-  LUCI_INTERPRETER_CHECK(weight_time_shape.num_dims() == 2)
-  LUCI_INTERPRETER_CHECK(weight_time_shape.dim(0) == num_filters)
+  LUCI_INTERPRETER_CHECK(weight_time_shape.num_dims() == 2);
+  LUCI_INTERPRETER_CHECK(weight_time_shape.dim(0) == num_filters);
 
   // Validate Bias
   if (bias())
-    LUCI_INTERPRETER_CHECK(bias()->shape().dim(0) == num_units)
+    LUCI_INTERPRETER_CHECK(bias()->shape().dim(0) == num_units);
 
   // Validate Input Activation State
-  LUCI_INTERPRETER_CHECK(input_activation_state()->shape().num_dims() == 2)
-  LUCI_INTERPRETER_CHECK(input_activation_state()->shape().dim(0) == batch_size)
-  LUCI_INTERPRETER_CHECK(input_activation_state()->shape().dim(1) == memory_size * num_filters)
+  LUCI_INTERPRETER_CHECK(input_activation_state()->shape().num_dims() == 2);
+  LUCI_INTERPRETER_CHECK(input_activation_state()->shape().dim(0) == batch_size);
+  LUCI_INTERPRETER_CHECK(input_activation_state()->shape().dim(1) == memory_size * num_filters);
 
   // Resize scratchpad_state to input_activation_state
   auto scratchpad_activation_state = getOutputTensors()[1];
