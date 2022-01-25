@@ -13,21 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "luci_interpreter/GraphBuilderRegistry.h"
-#include "Nodes/CircleReferencingConst.h"
+
+#ifndef __LUCI_INTERPRETER_IMPORT_OP_CIRCLE_REFERENCING_CONST_H__
+#define __LUCI_INTERPRETER_IMPORT_OP_CIRCLE_REFERENCING_CONST_H__
+
+#include <luci/Import/NodeBuilder.h>
+
+#include <luci/IR/Nodes/CircleConst.h>
 
 namespace luci_interpreter
 {
+using namespace luci;
 
-std::unique_ptr<luci::GraphBuilderSource> source_without_constant_copying()
+/**
+ * @brief Builder creates CircleCustom node with pointer to constants data from Tensor with buffer.
+ */
+class CircleReferencingConstNodeBuilder : public TypedNodeBuilder<NodeBuilderType::BUFFER>
 {
-  auto builder = std::make_unique<luci::GraphBuilderRegistry>();
-  {
-    // redefine NodeBuilder of BUFFER type
-    builder->add(std::make_unique<CircleReferencingConstNodeBuilder>());
-  }
-
-  return builder;
-}
+public:
+  CircleNode *build(TensorIndex tensor_index, GraphBuilderContext *ctx) const final;
+};
 
 } // namespace luci_interpreter
+
+#endif // __LUCI_INTERPRETER_IMPORT_OP_CIRCLE_REFERENCING_CONST_H__
