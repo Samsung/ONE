@@ -79,6 +79,7 @@ const void *getNodeData(const luci::CircleCustom *node, size_t *data_size)
     return nullptr;
 
   // helper struct which describes data loaded to custom_options of CircleReferencingConst node
+  // TODO move this struct to header
   struct ConstDataReference
   {
     const uint8_t *data = nullptr;
