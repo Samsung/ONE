@@ -16,8 +16,6 @@
 
 #include "CircleReferencingConst.h"
 
-#include <ostream>
-#include <string>
 #include <vector>
 
 namespace
