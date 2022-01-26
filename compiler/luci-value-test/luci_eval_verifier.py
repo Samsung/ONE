@@ -96,7 +96,7 @@ for idx in range(len(inpt_output_details)):
                                  " does not match with " + circle_model)
         elif output_details["dtype"] == np.float32:
             if np.allclose(
-                    luci_output_data, intp_output_data, rtol=1.e-5, atol=1.e-5) == False:
+                    luci_output_data, intp_output_data, rtol=1.e-4, atol=1.e-4) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
         elif output_details["dtype"] == np.int64:
