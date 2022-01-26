@@ -196,6 +196,77 @@ TEST_F(BatchMatMulTest, Invalid_Shape_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
+TEST_F(BatchMatMulTest, Invalid_Batch_NEG)
+{
+  Tensor lhs_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 1, 3}, {1, 2, 3, 4, 5, 6}, _memory_manager.get());
+  Tensor rhs_tensor = makeInputTensor<DataType::FLOAT32>({3, 3, 1}, {5, 6, 7, 8, 9, 10, 11, 12, 13},
+                                                         _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  Tensor lhs_scratch(DataType::FLOAT32, Shape({}), {}, "");
+  Tensor rhs_scratch(DataType::FLOAT32, Shape({}), {}, "");
+
+  BatchMatMulParams params;
+  params.adj_x = false;
+  params.adj_y = false;
+
+  BatchMatMul kernel(&lhs_tensor, &rhs_tensor, &output_tensor, &lhs_scratch, &rhs_scratch, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(BatchMatMulTest, Invalid_Rank_NEG)
+{
+  Tensor lhs_tensor = makeInputTensor<DataType::FLOAT32>({4}, {1, 2, 3, 4}, _memory_manager.get());
+  Tensor rhs_tensor = makeInputTensor<DataType::FLOAT32>({1, 4, 2}, {5, 6, 7, 8, 9, 10, 11, 12},
+                                                         _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  Tensor lhs_scratch(DataType::FLOAT32, Shape({}), {}, "");
+  Tensor rhs_scratch(DataType::FLOAT32, Shape({}), {}, "");
+
+  BatchMatMulParams params;
+  params.adj_x = false;
+  params.adj_y = false;
+
+  BatchMatMul kernel(&lhs_tensor, &rhs_tensor, &output_tensor, &lhs_scratch, &rhs_scratch, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(BatchMatMulTest, Invalid_Rank2_NEG)
+{
+  Tensor lhs_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 1, 4}, {1, 2, 3, 4}, _memory_manager.get());
+  Tensor rhs_tensor = makeInputTensor<DataType::FLOAT32>({1, 4, 2}, {5, 6, 7, 8, 9, 10, 11, 12},
+                                                         _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  Tensor lhs_scratch(DataType::FLOAT32, Shape({}), {}, "");
+  Tensor rhs_scratch(DataType::FLOAT32, Shape({}), {}, "");
+
+  BatchMatMulParams params;
+  params.adj_x = false;
+  params.adj_y = false;
+
+  BatchMatMul kernel(&lhs_tensor, &rhs_tensor, &output_tensor, &lhs_scratch, &rhs_scratch, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(BatchMatMulTest, TypeMisMatch_NEG)
+{
+  Tensor lhs_tensor =
+    makeInputTensor<DataType::U8>({1, 2, 3}, {1, 2, 3, 4, 5, 6}, _memory_manager.get());
+  Tensor rhs_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 3, 2}, {5, 6, 7, 8, 9, 10}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  Tensor lhs_scratch(DataType::U8, Shape({}), {}, "");
+  Tensor rhs_scratch(DataType::FLOAT32, Shape({}), {}, "");
+
+  BatchMatMulParams params;
+  params.adj_x = false;
+  params.adj_y = false;
+
+  BatchMatMul kernel(&lhs_tensor, &rhs_tensor, &output_tensor, &lhs_scratch, &rhs_scratch, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
