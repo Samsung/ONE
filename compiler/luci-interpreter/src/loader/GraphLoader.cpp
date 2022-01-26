@@ -195,21 +195,16 @@ void GraphLoader::loadTensors()
     // Only Input, Const, Custom and Variable nodes have shapes. Shapes of intermediate tensors will
     // be inferred.
     Shape shape{};
-    if (const auto *input_node = dynamic_cast<const luci::CircleInput *>(node))
+    switch (node->opcode())
     {
-      shape = getNodeShape(input_node);
-    }
-    else if (const auto *const_node = dynamic_cast<const luci::CircleConst *>(node))
-    {
-      shape = getNodeShape(const_node);
-    }
-    else if (const auto *variable_node = dynamic_cast<const luci::CircleVariable *>(node))
-    {
-      shape = getNodeShape(variable_node);
-    }
-    else if (const auto *custom_out_node = dynamic_cast<const luci::CircleCustomOut *>(node))
-    {
-      shape = getNodeShape(custom_out_node);
+      case luci::CircleOpcode::CIRCLECONST:
+      case luci::CircleOpcode::CIRCLECUSTOMOUT:
+      case luci::CircleOpcode::CIRCLEINPUT:
+      case luci::CircleOpcode::CIRCLEVARIABLE:
+        shape = getNodeShape(node);
+        break;
+      default:
+        break;
     }
 
     AffineQuantization quantization;
