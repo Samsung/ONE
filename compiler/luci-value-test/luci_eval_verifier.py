@@ -14,11 +14,24 @@ import traceback
 parser = argparse.ArgumentParser()
 parser.add_argument('--driver', type=str, required=True)
 parser.add_argument('--model', type=str, required=True)
+parser.add_argument('--rtolf32', type=str, required=False)
+parser.add_argument('--atolf32', type=str, required=False)
 args = parser.parse_args()
 
 driver = args.driver
 tflite_model = args.model + ".tflite"
 circle_model = args.model + ".circle"
+
+rtolf32 = 1e-5
+atolf32 = 1e-5
+try:
+    if args.rtolf32 != None:
+        rtolf32 = float(args.rtolf32)
+    if args.atolf32 != None:
+        atolf32 = float(args.atolf32)
+except ValueError:
+    print("rtolf32 or atolf32 is not a number")
+    quit(128)
 
 # Build TFLite interpreter.
 interpreter = tf.lite.Interpreter(tflite_model)
@@ -96,7 +109,8 @@ for idx in range(len(inpt_output_details)):
                                  " does not match with " + circle_model)
         elif output_details["dtype"] == np.float32:
             if np.allclose(
-                    luci_output_data, intp_output_data, rtol=1.e-5, atol=1.e-5) == False:
+                    luci_output_data, intp_output_data, rtol=rtolf32,
+                    atol=atolf32) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
         elif output_details["dtype"] == np.int64:
