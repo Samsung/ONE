@@ -121,9 +121,11 @@ bool isExecutableNode(const luci::CircleNode *node)
     {
       auto const custom_node = loco::must_cast<const luci::CircleCustom *>(node);
 
-      // TODO handle more Custom ops here
+      // TODO handle more non-executable Custom ops here
       if (custom_node->custom_code() == "CircleReferencingConst")
         return false;
+
+      return true;
     }
     default:
       return true;
