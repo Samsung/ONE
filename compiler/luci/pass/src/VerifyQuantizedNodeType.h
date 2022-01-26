@@ -122,18 +122,18 @@ class VerifyQuantizedNodeU8Type
   : public VerifyQuantizedNodeTypeBase<loco::DataType::U8, loco::DataType::S32>
 {
 private:
-  bool visit(const luci::CircleTanh *node);
   bool visit(const luci::CircleLogistic *node);
   bool visit(const luci::CircleSoftmax *node);
+  bool visit(const luci::CircleTanh *node);
 };
 
 class VerifyQuantizedNodeS16Type
   : public VerifyQuantizedNodeTypeBase<loco::DataType::S16, loco::DataType::S64>
 {
 private:
-  bool visit(const luci::CircleTanh *node);
   bool visit(const luci::CircleLogistic *node);
   bool visit(const luci::CircleSoftmax *node);
+  bool visit(const luci::CircleTanh *node);
 };
 
 } // namespace luci
