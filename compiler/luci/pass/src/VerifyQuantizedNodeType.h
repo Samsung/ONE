@@ -80,7 +80,6 @@ private:
   bool visit(const luci::CircleInstanceNorm *node);
   bool visit(const luci::CircleLocalResponseNormalization *node);
   bool visit(const luci::CircleLogicalOr *node);
-  virtual bool visit(const luci::CircleLogistic *node) = 0;
   bool visit(const luci::CircleMaxPool2D *node);
   bool visit(const luci::CircleMean *node);
   bool visit(const luci::CircleMirrorPad *node);
@@ -98,7 +97,6 @@ private:
   bool visit(const luci::CircleResizeNearestNeighbor *node);
   bool visit(const luci::CircleRsqrt *node);
   bool visit(const luci::CircleSlice *node);
-  virtual bool visit(const luci::CircleSoftmax *node) = 0;
   bool visit(const luci::CircleSpaceToBatchND *node);
   bool visit(const luci::CircleSpaceToDepth *node);
   bool visit(const luci::CircleSplit *node);
@@ -107,11 +105,16 @@ private:
   bool visit(const luci::CircleSplitVOut *node);
   bool visit(const luci::CircleSqrt *node);
   bool visit(const luci::CircleStridedSlice *node);
-  virtual bool visit(const luci::CircleTanh *node) = 0;
   bool visit(const luci::CircleTranspose *node);
   bool visit(const luci::CircleTransposeConv *node);
   bool visit(const luci::CircleUnpack *node);
   bool visit(const luci::CircleUnpackOut *node);
+
+  // NOTE below nodes has differnent implementation for Qtype/Btype and
+  //      implementations exist in VerifyQuantizedNodeU8Type, VerifyQuantizedNodeS16Type
+  // bool visit(const luci::CircleLogistic *node);
+  // bool visit(const luci::CircleSoftmax *node);
+  // bool visit(const luci::CircleTanh *node);
 
   // TODO: Implement more Ops
 
