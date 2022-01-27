@@ -72,6 +72,38 @@ foreach(ONE_UTILITY IN ITEMS ${ONE_UTILITY_FILES})
 
 endforeach(ONE_UTILITY)
 
+# make python directory
+set(ONE_PYTHON_FILES "constant.py")
+
+foreach(ONE_PYTHON_FILE IN ITEMS ${ONE_PYTHON_FILES})
+
+  set(ONE_PYTHON_DIR "python")
+  set(ONE_PYTHON_DIR_BIN "${CMAKE_CURRENT_BINARY_DIR}/${ONE_PYTHON_DIR}")
+  set(ONE_PYTHON_FILE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${ONE_PYTHON_DIR}/${ONE_PYTHON_FILE}")
+  set(ONE_PYTHON_FILE_BIN "${CMAKE_CURRENT_BINARY_DIR}/${ONE_PYTHON_DIR}/${ONE_PYTHON_FILE}")
+  set(ONE_PYTHON_TARGET "one_python_target")
+
+  add_custom_command(OUTPUT ${ONE_PYTHON_DIR_BIN}
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${ONE_PYTHON_DIR_BIN}"
+    COMMENT "Generate ${ONE_PYTHON_DIR_BIN}"
+  )
+
+  add_custom_command(OUTPUT ${ONE_PYTHON_FILE_BIN}
+    COMMAND ${CMAKE_COMMAND} -E copy "${ONE_PYTHON_FILE_SRC}" "${ONE_PYTHON_FILE_BIN}"
+    DEPENDS ${ONE_PYTHON_SRC}
+    COMMENT "Generate ${ONE_PYTHON_FILE_BIN}"
+  )
+
+  add_custom_target(${ONE_PYTHON_TARGET} ALL DEPENDS ${ONE_PYTHON_DIR_BIN} ${ONE_PYTHON_FILE_BIN})
+
+  install(DIRECTORY ${ONE_PYTHON_DIR}
+          FILE_PERMISSIONS OWNER_WRITE OWNER_READ
+                           GROUP_READ
+                           WORLD_READ
+          DESTINATION bin)
+
+endforeach(ONE_PYTHON_FILE)
+
 set(ONE_DOCUMENT_FILES
     how-to-use-one-commands.txt
     how-to-prepare-virtualenv.txt
