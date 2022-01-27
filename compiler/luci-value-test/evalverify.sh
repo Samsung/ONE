@@ -4,10 +4,12 @@
 #
 # HOW TO USE
 #
-# ./evalverify.sh <path/to/bin_dir> <path/to/work_dir> <path/to/venv_dir> <TEST 1> <TEST 2> ...
+# ./evalverify.sh <path/to/bin_dir> <path/to/work_dir> <path/to/venv_dir> <path/to/eval_driver> \
+#                 <TEST 1> <TEST 2> ...
 # bin_dir  : build directory of luci-value-test (ex: build/compiler/luci-value-test)
 # work_dir : artifacts directoy where test materials exist
 # venv_dir : python virtual environment home directory
+# eval_driver : luci_eval_driver path for evaluation
 
 VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VERIFY_SCRIPT_PATH="${VERIFY_SOURCE_PATH}/luci_eval_verifier.py"
