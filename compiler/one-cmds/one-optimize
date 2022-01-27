@@ -24,6 +24,7 @@ import os
 import subprocess
 import sys
 
+import python.constant as _constant
 import utils as _utils
 
 # TODO Find better way to suppress trackback on error
@@ -60,7 +61,7 @@ def _get_parser():
         '-o', '--output_path', type=str, help='full filepath of the output file')
 
     # optimization pass
-    for opt in _utils._CONSTANT.OPTIMIZATION_OPTS:
+    for opt in _constant.CONSTANT.OPTIMIZATION_OPTS:
         # opt = (option_name, help_message)
         circle2circle_group.add_argument('--' + opt[0], action='store_true', help=opt[1])
 
