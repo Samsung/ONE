@@ -60,7 +60,7 @@ protected:
     return circle_node->dtype() == dtype;
   }
 
-  // Check whether a node and all of it's inputs have dtype or not
+  // Check whether a node and all of its inputs have dtype or not
   bool group_has_type(const loco::Node *node, loco::DataType dtype)
   {
     if (!has_type(node, dtype))
