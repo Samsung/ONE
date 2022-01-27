@@ -17,8 +17,8 @@
 
 #include "kernels/SVDF.h"
 #include "kernels/Utils.h"
+#include "PALSVDF.h"
 
-#include <tensorflow/lite/kernels/internal/reference/svdf.h>
 #include <tensorflow/lite/kernels/internal/quantization_util.h>
 
 namespace luci_interpreter
@@ -146,16 +146,10 @@ void SVDF::configure()
   // Resize output tensor
   output()->resize({batch_size, num_units});
 
-  // Resize first scratchpad tensor
-  auto scratchpad = getOutputTensors()[2];
-  scratchpad->resize({batch_size, num_filters});
-
-  if (input()->element_type() == loco::DataType::S8)
-  {
-    // Resize scratchpad_2 for full_integer op
-    auto output_temp = getOutputTensors()[3];
-    output_temp->resize({batch_size, num_units});
-  }
+  luci_interpreter_pal::SetupScratchpadTensor(
+    input()->element_type(), weight_feature()->element_type(), getOutputTensors()[2],
+    getOutputTensors()[3], getOutputTensors()[4], getOutputTensors()[5], getOutputTensors()[6],
+    getOutputTensors()[7], input_shape, weight_time_shape, batch_size, num_filters, num_units);
 }
 
 void SVDF::execute() const
@@ -210,9 +204,8 @@ void SVDF::evalInteger() const
 
   int32_t input_zp = input()->zero_point();
   int32_t output_zp = output()->zero_point();
-
-  tflite::reference_ops::EvalIntegerSVDF(
-    &params_svdf, getTensorShape(input()), getTensorData<int8_t>(input()),
+  luci_interpreter_pal::IntegerSVDF(
+    params_svdf, getTensorShape(input()), getTensorData<int8_t>(input()),
     getTensorShape(weight_feature()), getTensorData<int8_t>(weight_feature()),
     getTensorShape(weight_time()), getTensorData<int16_t>(weight_time()), getTensorShape(bias()),
     getTensorData<int32_t>(bias()), scratchpad_data, getTensorShape(output()),
@@ -236,8 +229,8 @@ void SVDF::evalFloat() const
 
   auto scratchpad_1 = getOutputTensors()[2];
 
-  tflite::reference_ops::EvalFloatSVDF(
-    &params_svdf, getTensorShape(input()), getTensorData<float>(input()),
+  luci_interpreter_pal::FloatSVDF(
+    params_svdf, getTensorShape(input()), getTensorData<float>(input()),
     getTensorShape(weight_feature()), getTensorData<float>(weight_feature()),
     getTensorShape(weight_time()), getTensorData<float>(weight_time()), getTensorShape(bias()),
     getTensorData<float>(bias()), getTensorData<float>(scratchpad_1), scratchpad_data,
