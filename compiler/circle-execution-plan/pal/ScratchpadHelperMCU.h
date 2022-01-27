@@ -30,6 +30,13 @@ public:
     // for mcu scratchpad size = 0
     return 0;
   }
+
+  uint32_t
+  ComputeScratchpadSizeDepthwiseConv2d(const luci::CircleDepthwiseConv2D *depthwise_conv) final
+  {
+    // for mcu DepthwiseConv2d scratchpad tensors size = 0
+    return 0;
+  }
 };
 
 } // namespace circle_planner

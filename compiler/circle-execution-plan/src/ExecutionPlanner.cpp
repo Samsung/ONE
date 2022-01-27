@@ -304,17 +304,27 @@ void ExecutionPlanner::create_alloc_node_inform_vector(bool null_consts, bool nu
 
     // Scratchpad If needed
     uint32_t scratchpad_size = 0;
-    switch (circle_node->opcode())
+    if (!null_scratchpad)
     {
-      case luci::CircleOpcode::CONV_2D:
+      switch (circle_node->opcode())
       {
-        auto conv = loco::must_cast<const luci::CircleConv2D *>(circle_node);
-        scratchpad_size =
-          null_scratchpad ? 0 : _scratchpad_helper->ComputeScratchpadSizeConv2d(conv);
-        break;
+        case luci::CircleOpcode::CONV_2D:
+        {
+          const auto conv = loco::must_cast<const luci::CircleConv2D *>(circle_node);
+          scratchpad_size = _scratchpad_helper->ComputeScratchpadSizeConv2d(conv);
+          break;
+        }
+        case luci::CircleOpcode::DEPTHWISE_CONV_2D:
+        {
+          const auto depthwise_conv =
+            loco::must_cast<const luci::CircleDepthwiseConv2D *>(circle_node);
+          scratchpad_size =
+            _scratchpad_helper->ComputeScratchpadSizeDepthwiseConv2d(depthwise_conv);
+          break;
+        }
+        default:
+          scratchpad_size = 0;
       }
-      default:
-        scratchpad_size = 0;
     }
 
     if (scratchpad_size > 0)

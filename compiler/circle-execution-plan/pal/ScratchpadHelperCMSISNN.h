@@ -46,11 +46,13 @@ public:
 
   uint32_t ComputeScratchpadSizeConv2d(const luci::CircleConv2D *conv) final
   {
+    // Main logic of arm_convolve_wrapper_s8_get_buffer_size
+
     const auto dilation_height_factor = static_cast<int32_t>(conv->dilation()->h());
     const auto dilation_width_factor = static_cast<int32_t>(conv->dilation()->w());
 
-    auto conv_input = loco::must_cast<luci::CircleNode *>(conv->input());
-    auto filter = loco::must_cast<luci::CircleNode *>(conv->filter());
+    const auto conv_input = loco::must_cast<luci::CircleNode *>(conv->input());
+    const auto filter = loco::must_cast<luci::CircleNode *>(conv->filter());
 
     if (dilation_width_factor != 1 or dilation_height_factor != 1 or
         conv_input->dtype() != loco::DataType::S8)
@@ -92,6 +94,36 @@ public:
     }
 
     return 0;
+  }
+
+  uint32_t
+  ComputeScratchpadSizeDepthwiseConv2d(const luci::CircleDepthwiseConv2D *depthwise_conv) final
+  {
+    // Main logic of arm_depthwise_conv_wrapper_s8_get_buffer_size
+
+    const auto dilation_height_factor = static_cast<int32_t>(depthwise_conv->dilation()->h());
+    const auto dilation_width_factor = static_cast<int32_t>(depthwise_conv->dilation()->w());
+
+    const auto depthwise_conv_input = loco::must_cast<luci::CircleNode *>(depthwise_conv->input());
+    const auto filter = loco::must_cast<luci::CircleNode *>(depthwise_conv->filter());
+
+    if (dilation_width_factor != 1 or dilation_height_factor != 1 or
+        depthwise_conv_input->dtype() != loco::DataType::S8)
+    {
+      return 0;
+    }
+
+    const auto input_depth = static_cast<int32_t>(depthwise_conv_input->dim(3).value());
+    const auto output_depth = static_cast<int32_t>(depthwise_conv->dim(3).value());
+    const auto batch_size = static_cast<int32_t>(depthwise_conv_input->dim(0).value());
+
+    if (input_depth != output_depth or batch_size != 1 or !_use_dsp)
+      return 0;
+
+    const auto filter_height = static_cast<int32_t>(filter->dim(1).value());
+    const auto filter_width = static_cast<int32_t>(filter->dim(2).value());
+
+    return input_depth * filter_height * filter_width * sizeof(int16_t);
   }
 
 private:

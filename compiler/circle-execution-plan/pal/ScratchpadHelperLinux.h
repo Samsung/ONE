@@ -60,6 +60,13 @@ public:
     return batches * output_height * output_width * input_depth * filter_height * filter_width *
            size(conv_input->dtype());
   }
+
+  uint32_t
+  ComputeScratchpadSizeDepthwiseConv2d(const luci::CircleDepthwiseConv2D *depthwise_conv) final
+  {
+    // for linux DepthwiseConv2d scratchpad tensors size = 0
+    return 0;
+  }
 };
 
 } // namespace circle_planner

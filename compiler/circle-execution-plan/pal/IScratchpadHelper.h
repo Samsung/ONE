@@ -18,6 +18,7 @@
 #define CIRCLE_EXECUTION_PLAN_ISRCRATCHPAD_HELPER_H
 
 #include <luci/IR/Nodes/CircleConv2D.h>
+#include <luci/IR/Nodes/CircleDepthwiseConv2D.h>
 #include <cstdint>
 
 namespace circle_planner
@@ -27,6 +28,9 @@ class IScratchpadHelper
 {
 public:
   virtual uint32_t ComputeScratchpadSizeConv2d(const luci::CircleConv2D *conv) = 0;
+
+  virtual uint32_t
+  ComputeScratchpadSizeDepthwiseConv2d(const luci::CircleDepthwiseConv2D *depthwise_conv) = 0;
 
   virtual ~IScratchpadHelper() = default;
 };
