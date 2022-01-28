@@ -17,7 +17,10 @@
 #ifndef CIRCLE_EXECUTION_PLAN_ISRCRATCHPAD_HELPER_H
 #define CIRCLE_EXECUTION_PLAN_ISRCRATCHPAD_HELPER_H
 
+#include <luci/IR/Nodes/CircleAveragePool2D.h>
 #include <luci/IR/Nodes/CircleConv2D.h>
+#include <luci/IR/Nodes/CircleDepthwiseConv2D.h>
+#include <luci/IR/Nodes/CircleSVDF.h>
 #include <cstdint>
 
 namespace circle_planner
@@ -26,7 +29,15 @@ namespace circle_planner
 class IScratchpadHelper
 {
 public:
+  virtual uint32_t
+  ComputeScratchpadSizeAveragePool2d(const luci::CircleAveragePool2D *avg_pool) = 0;
+
   virtual uint32_t ComputeScratchpadSizeConv2d(const luci::CircleConv2D *conv) = 0;
+
+  virtual uint32_t
+  ComputeScratchpadSizeDepthwiseConv2d(const luci::CircleDepthwiseConv2D *depthwise_conv) = 0;
+
+  virtual std::vector<uint32_t> ComputeScratchpadSizeSVDF(const luci::CircleSVDF *svdf) = 0;
 
   virtual ~IScratchpadHelper() = default;
 };
