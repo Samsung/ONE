@@ -22,6 +22,7 @@ usr/bin/one-prepare-venv usr/share/one/bin/
 usr/bin/one-profile usr/share/one/bin/
 usr/bin/one-quantize usr/share/one/bin/
 usr/bin/one-version usr/share/one/bin/
+usr/bin/python/constant.py usr/share/one/bin/python/
 usr/bin/rawdata2hdf5 usr/share/one/bin/
 usr/bin/record-minmax usr/share/one/bin/
 usr/bin/tf2nnpkg usr/share/one/bin/
