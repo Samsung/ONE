@@ -5,3 +5,7 @@
 # add(RECIPE_NAME PART_NAME)
 
 add(Net_InstanceNorm_003 Net_InstanceNorm_003)
+
+# NOTE SVDF partition test is done here as value test may need custom tolerance
+# TODO move Part_Add_SVDF_000 to circle-part-value-test when ready
+add(Part_Add_SVDF_000 Part_Add_SVDF_000)
