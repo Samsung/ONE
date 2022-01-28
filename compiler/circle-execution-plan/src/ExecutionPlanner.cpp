@@ -303,33 +303,59 @@ void ExecutionPlanner::create_alloc_node_inform_vector(bool null_consts, bool nu
     }
 
     // Scratchpad If needed
-    uint32_t scratchpad_size = 0;
-    switch (circle_node->opcode())
+    std::vector<uint32_t> scratchpad_sizes;
+    if (!null_scratchpad)
     {
-      case luci::CircleOpcode::CONV_2D:
+      switch (circle_node->opcode())
       {
-        auto conv = loco::must_cast<const luci::CircleConv2D *>(circle_node);
-        scratchpad_size =
-          null_scratchpad ? 0 : _scratchpad_helper->ComputeScratchpadSizeConv2d(conv);
-        break;
+        case luci::CircleOpcode::AVERAGE_POOL_2D:
+        {
+          const auto avg_pool = loco::must_cast<const luci::CircleAveragePool2D *>(circle_node);
+          scratchpad_sizes.push_back(
+            _scratchpad_helper->ComputeScratchpadSizeAveragePool2d(avg_pool));
+          break;
+        }
+        case luci::CircleOpcode::CONV_2D:
+        {
+          const auto conv = loco::must_cast<const luci::CircleConv2D *>(circle_node);
+          scratchpad_sizes.push_back(_scratchpad_helper->ComputeScratchpadSizeConv2d(conv));
+          break;
+        }
+        case luci::CircleOpcode::DEPTHWISE_CONV_2D:
+        {
+          const auto depthwise_conv =
+            loco::must_cast<const luci::CircleDepthwiseConv2D *>(circle_node);
+          scratchpad_sizes.push_back(
+            _scratchpad_helper->ComputeScratchpadSizeDepthwiseConv2d(depthwise_conv));
+          break;
+        }
+        case luci::CircleOpcode::SVDF:
+        {
+          const auto svdf = loco::must_cast<const luci::CircleSVDF *>(circle_node);
+          scratchpad_sizes = _scratchpad_helper->ComputeScratchpadSizeSVDF(svdf);
+          break;
+        }
+        default:
+          break;
       }
-      default:
-        scratchpad_size = 0;
     }
 
-    if (scratchpad_size > 0)
+    for (const auto scratchpad_size : scratchpad_sizes)
     {
-      AllocationNodeInformation temp_alloc;
+      if (scratchpad_size > 0)
+      {
+        AllocationNodeInformation temp_alloc;
 
-      temp_alloc.size = scratchpad_size;
-      temp_alloc.first_node = i - 1;
-      temp_alloc.last_node = i + 1;
-      temp_alloc.node_num = i;
-      temp_alloc.is_temp = true;
+        temp_alloc.size = scratchpad_size;
+        temp_alloc.first_node = i - 1;
+        temp_alloc.last_node = i + 1;
+        temp_alloc.node_num = i;
+        temp_alloc.is_temp = true;
 
-      _alloc_node_inform_vector.push_back(temp_alloc);
-      _alloc_node.push_back(i);
-      _dealloc_node.push_back(i);
+        _alloc_node_inform_vector.push_back(temp_alloc);
+        _alloc_node.push_back(i);
+        _dealloc_node.push_back(i);
+      }
     }
   }
   // Sort _alloc_node_inform_vector with node_compare for the greedy by size approach.
