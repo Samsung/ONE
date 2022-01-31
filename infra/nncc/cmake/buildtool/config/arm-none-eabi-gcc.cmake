@@ -31,7 +31,7 @@ add_compile_options(
         -mcpu=${TARGET_CPU}
         -mthumb
         "$<$<CONFIG:DEBUG>:-gdwarf-3>"
-        "$<$<COMPILE_LANGUAGE:CXX>:-funwind-tables;-frtti;-fexceptions>")
+        "$<$<COMPILE_LANGUAGE:CXX>:-funwind-tables;-frtti;-fexceptions;-Os>")
 
 # Compile definescd
 add_compile_definitions(
