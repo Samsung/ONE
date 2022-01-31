@@ -32,6 +32,31 @@ public:
     return 0;
   }
 
+  std::vector<uint32_t>
+  ComputeScratchpadSizeBatchMatMul(const luci::CircleBatchMatMul *batch_mat_mul) final
+  {
+    const auto lhs = loco::must_cast<luci::CircleNode *>(batch_mat_mul->x());
+    const auto rhs = loco::must_cast<luci::CircleNode *>(batch_mat_mul->y());
+
+    std::vector<uint32_t> scratchpad_sizes;
+
+    // Scratchpad for lhs
+    uint32_t scratchpad_size = 1;
+    for (int32_t i = 0; i < lhs->rank(); ++i)
+      scratchpad_size *= lhs->dim(i).value();
+
+    scratchpad_sizes.push_back(scratchpad_size * loco::size(lhs->dtype()));
+
+    // Scratchpad for rhs
+    scratchpad_size = 1;
+    for (int32_t i = 0; i < rhs->rank(); ++i)
+      scratchpad_size *= rhs->dim(i).value();
+
+    scratchpad_sizes.push_back(scratchpad_size * loco::size(rhs->dtype()));
+
+    return scratchpad_sizes;
+  }
+
   uint32_t ComputeScratchpadSizeConv2d(const luci::CircleConv2D *conv) final
   {
     const auto conv_input = loco::must_cast<luci::CircleNode *>(conv->input());
