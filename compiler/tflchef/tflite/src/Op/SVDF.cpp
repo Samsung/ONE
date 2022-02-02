@@ -25,6 +25,7 @@ void TFliteOpSVDF::filler(const tflite::Operator *op, TFliteImport *import,
                           tflchef::ModelRecipe *model_recipe) const
 {
   const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
+  assert(inputs.size() == 5);
 
   // optional input tensor idx has minus value.
   const bool hasBias = (inputs.at(3) >= 0);
