@@ -44,6 +44,7 @@ operation {
   input: "ifm"
   input: "weight_feature"
   input: "weight_time"
+  input: ""
   input: "input_activation_state"
   output: "ofm"
 }
