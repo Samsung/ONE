@@ -176,7 +176,7 @@ TEST_F(QuantizeTest, Int16Int8)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 2, 5}));
 }
 
-TEST_F(QuantizeTest, InvalidInputTypeNeg)
+TEST_F(QuantizeTest, InvalidInputType_NEG)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
@@ -188,7 +188,7 @@ TEST_F(QuantizeTest, InvalidInputTypeNeg)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST_F(QuantizeTest, InvalidOutputTypeForFloatInputNeg)
+TEST_F(QuantizeTest, InvalidOutputTypeForFloatInput_NEG)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
@@ -200,7 +200,7 @@ TEST_F(QuantizeTest, InvalidOutputTypeForFloatInputNeg)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST_F(QuantizeTest, InvalidOutputTypeForInt16InputNeg)
+TEST_F(QuantizeTest, InvalidOutputTypeForInt16Input_NEG)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
@@ -212,7 +212,7 @@ TEST_F(QuantizeTest, InvalidOutputTypeForInt16InputNeg)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST_F(QuantizeTest, InvalidOutputTypeForInt8InputNeg)
+TEST_F(QuantizeTest, InvalidOutputTypeForInt8Input_NEG)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
@@ -224,7 +224,7 @@ TEST_F(QuantizeTest, InvalidOutputTypeForInt8InputNeg)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST_F(QuantizeTest, InvalidOutputTypeForUint8InputNeg)
+TEST_F(QuantizeTest, InvalidOutputTypeForUint8Input_NEG)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
@@ -236,7 +236,7 @@ TEST_F(QuantizeTest, InvalidOutputTypeForUint8InputNeg)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST_F(QuantizeTest, InvalidInputZeroPointNeg)
+TEST_F(QuantizeTest, InvalidInputZeroPoint_NEG)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
