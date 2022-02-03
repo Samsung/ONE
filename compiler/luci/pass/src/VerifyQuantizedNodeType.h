@@ -60,6 +60,19 @@ protected:
     return circle_node->dtype() == dtype;
   }
 
+  // Check whether a node and all of its inputs have dtype or not
+  bool group_has_type(const loco::Node *node, loco::DataType dtype)
+  {
+    if (!has_type(node, dtype))
+      return false;
+
+    for (uint32_t i = 0; i < node->arity(); ++i)
+      if (!has_type(node->arg(i), dtype))
+        return false;
+
+    return true;
+  }
+
 private:
   bool visit(const luci::CircleAdd *node);
   bool visit(const luci::CircleArgMax *node);

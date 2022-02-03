@@ -47,10 +47,7 @@ namespace luci
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleAdd *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->x(), Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->y(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
@@ -66,9 +63,7 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleArgMax *
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleAveragePool2D *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->value(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
@@ -112,20 +107,13 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleConv2D *
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleConcatenation *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  for (uint32_t i = 0; i < node->numValues(); i++)
-  {
-    RETURN_FALSE_UNLESS(has_type(node->values(i), Qtype))
-  }
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleDepthToSpace *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->input(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
@@ -141,25 +129,19 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleDepthwis
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleDiv *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->x(), Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->y(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleElu *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->features(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleFloor *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->x(), Qtype))
+  RETURN_FALSE_UNLESS(group_has_type(node, Qtype));
 
   // This checks the value of scale is an integer
   RETURN_FALSE_UNLESS(node->quantparam());
@@ -170,9 +152,7 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleFloor *n
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleFloorDiv *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->x(), Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->y(), Qtype))
+  RETURN_FALSE_UNLESS(group_has_type(node, Qtype));
 
   // This checks the value of scale is an integer
   RETURN_FALSE_UNLESS(node->quantparam());
@@ -213,37 +193,26 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleGreaterE
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleInstanceNorm *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->input(), Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->gamma(), Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->beta(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(
   const luci::CircleLocalResponseNormalization *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->input(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleLogicalOr *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, loco::DataType::BOOL))
-  RETURN_FALSE_UNLESS(has_type(node->x(), loco::DataType::BOOL))
-  RETURN_FALSE_UNLESS(has_type(node->y(), loco::DataType::BOOL))
-  return true;
+  return group_has_type(node, loco::DataType::BOOL);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleMaxPool2D *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->value(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
@@ -267,10 +236,7 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleMirrorPa
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleMul *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->x(), Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->y(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
@@ -297,12 +263,7 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleOneHot *
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CirclePack *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  for (uint32_t i = 0; i < node->values_count(); i++)
-  {
-    RETURN_FALSE_UNLESS(has_type(node->values(i), Qtype))
-  }
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
@@ -327,27 +288,19 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CirclePadV2 *n
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CirclePRelu *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->input(), Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->alpha(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CirclePow *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->x(), Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->y(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleRelu *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->features(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
@@ -387,9 +340,7 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleResizeNe
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleRsqrt *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->x(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
@@ -415,9 +366,7 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleSpaceToB
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleSpaceToDepth *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->input(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
@@ -467,9 +416,7 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleSplitVOu
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleSqrt *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, Qtype))
-  RETURN_FALSE_UNLESS(has_type(node->x(), Qtype))
-  return true;
+  return group_has_type(node, Qtype);
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
@@ -535,8 +482,7 @@ namespace luci
 
 bool VerifyQuantizedNodeU8Type::visit(const luci::CircleTanh *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, loco::DataType::U8))
-  RETURN_FALSE_UNLESS(has_type(node->x(), loco::DataType::U8))
+  RETURN_FALSE_UNLESS(group_has_type(node, loco::DataType::U8));
 
   RETURN_FALSE_UNLESS(node->quantparam());
   RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 2.0f / 256.0f);
@@ -546,8 +492,7 @@ bool VerifyQuantizedNodeU8Type::visit(const luci::CircleTanh *node)
 
 bool VerifyQuantizedNodeU8Type::visit(const luci::CircleLogistic *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, loco::DataType::U8))
-  RETURN_FALSE_UNLESS(has_type(node->x(), loco::DataType::U8))
+  RETURN_FALSE_UNLESS(group_has_type(node, loco::DataType::U8));
 
   RETURN_FALSE_UNLESS(node->quantparam());
   RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 1.0f / 256.0f);
@@ -557,8 +502,7 @@ bool VerifyQuantizedNodeU8Type::visit(const luci::CircleLogistic *node)
 
 bool VerifyQuantizedNodeU8Type::visit(const luci::CircleSoftmax *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, loco::DataType::U8))
-  RETURN_FALSE_UNLESS(has_type(node->logits(), loco::DataType::U8))
+  RETURN_FALSE_UNLESS(group_has_type(node, loco::DataType::U8));
 
   RETURN_FALSE_UNLESS(node->quantparam());
   RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 1.0f / 255.0f);
@@ -573,8 +517,7 @@ namespace luci
 
 bool VerifyQuantizedNodeS16Type::visit(const luci::CircleTanh *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, loco::DataType::S16))
-  RETURN_FALSE_UNLESS(has_type(node->x(), loco::DataType::S16))
+  RETURN_FALSE_UNLESS(group_has_type(node, loco::DataType::S16));
 
   RETURN_FALSE_UNLESS(node->quantparam());
   RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 1.0f / 32768.0f);
@@ -584,8 +527,7 @@ bool VerifyQuantizedNodeS16Type::visit(const luci::CircleTanh *node)
 
 bool VerifyQuantizedNodeS16Type::visit(const luci::CircleLogistic *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, loco::DataType::S16))
-  RETURN_FALSE_UNLESS(has_type(node->x(), loco::DataType::S16))
+  RETURN_FALSE_UNLESS(group_has_type(node, loco::DataType::S16));
 
   RETURN_FALSE_UNLESS(node->quantparam());
   RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 1.0f / 32768.0f);
@@ -595,8 +537,7 @@ bool VerifyQuantizedNodeS16Type::visit(const luci::CircleLogistic *node)
 
 bool VerifyQuantizedNodeS16Type::visit(const luci::CircleSoftmax *node)
 {
-  RETURN_FALSE_UNLESS(has_type(node, loco::DataType::S16))
-  RETURN_FALSE_UNLESS(has_type(node->logits(), loco::DataType::S16))
+  RETURN_FALSE_UNLESS(group_has_type(node, loco::DataType::S16));
 
   RETURN_FALSE_UNLESS(node->quantparam());
   RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 1.0f / 32767.0f);
