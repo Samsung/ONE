@@ -17,6 +17,7 @@
 
 #include "VerifyQuantizedNodeGranularity.h"
 #include "VerifyQuantizedNodeType.h"
+#include "VerifyQuantizedBiasScale.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -47,6 +48,10 @@ void QuantizedModelVerifier::verify(loco::Graph *g)
     // Verify Granularity
     if (!circle_node->accept(VerifyQuantizedNodeGranularity::create(_granularity).get()))
       throw std::runtime_error("Wrong granularity detected in " + node_name());
+
+    // Verify Bias
+    if (!VerifyQuantizedBiasScale::create()->verify(circle_node))
+      throw std::runtime_error("Wrong bias scale detected in " + node_name());
   }
 }
 
