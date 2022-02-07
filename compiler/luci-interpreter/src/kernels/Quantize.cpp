@@ -76,21 +76,17 @@ void Quantize::configure()
       break;
     }
     case loco::DataType::S16:
-    {
-      LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::S8 ||
-                             output()->element_type() == loco::DataType::S16);
-      if (output()->element_type() == loco::DataType::S16)
-      {
-        LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && output()->zero_point() == 0);
-      }
-      break;
-    }
+        LUCI_INTERPRETER_CHECK(input()->zero_point() == 0);
     case loco::DataType::S8:
     case loco::DataType::U8:
     {
       LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::S8 ||
                              output()->element_type() == loco::DataType::U8 ||
                              output()->element_type() == loco::DataType::S16);
+      if (output()->element_type() == loco::DataType::S16)
+      {
+        LUCI_INTERPRETER_CHECK(output()->zero_point() == 0);
+      }
       break;
     }
     default:
