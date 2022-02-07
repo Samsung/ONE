@@ -807,6 +807,8 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     return true;
   }
 
+  bool visit(luci::CircleElu *node) { return convert_unary_features<luci::CircleElu>(node); }
+
   bool visit(luci::CircleLeakyRelu *node)
   {
     return convert_unary_features<luci::CircleLeakyRelu>(node);
@@ -1243,6 +1245,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
         break;
       case luci::CircleOpcode::ADD:
       case luci::CircleOpcode::CONCATENATION:
+      case luci::CircleOpcode::ELU:
       case luci::CircleOpcode::LEAKY_RELU:
       case luci::CircleOpcode::LOGISTIC:
       case luci::CircleOpcode::MAXIMUM:
