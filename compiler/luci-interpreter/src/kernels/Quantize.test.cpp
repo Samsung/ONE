@@ -40,7 +40,7 @@ TEST_F(QuantizeTest, FloatUint8)
 {
   std::vector<float> input_data{-63.5, -63, -62.5, -62, -61.5, 62, 62.5, 63, 63.5, 64};
 
-  std::vector<float> ref_output_data{0, 1, 2, 3, 4, 251, 252, 253, 254, 255};
+  std::vector<uint8_t> ref_output_data{0, 1, 2, 3, 4, 251, 252, 253, 254, 255};
 
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>({2, 5}, input_data, _memory_manager.get());
@@ -60,7 +60,7 @@ TEST_F(QuantizeTest, FloatInt8)
 {
   std::vector<float> input_data{-63.5, -63, -62.5, -62, -61.5, 62, 62.5, 63, 63.5, 64};
 
-  std::vector<float> ref_output_data{-128, -127, -126, -125, -124, 123, 124, 125, 126, 127};
+  std::vector<int8_t> ref_output_data{-128, -127, -126, -125, -124, 123, 124, 125, 126, 127};
 
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>({2, 5}, input_data, _memory_manager.get());
@@ -80,7 +80,8 @@ TEST_F(QuantizeTest, FloatInt16)
 {
   std::vector<float> input_data{-63.5, -63, -3, -2, -1, 1, 2, 3, 63.5, 64};
 
-  std::vector<float> ref_output_data{-12700, -12600, -600, -400, -200, 200, 400, 600, 12700, 12800};
+  std::vector<int16_t> ref_output_data{-12700, -12600, -600, -400,  -200,
+                                       200,    400,    600,  12700, 12800};
 
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>({2, 5}, input_data, _memory_manager.get());
@@ -100,7 +101,7 @@ TEST_F(QuantizeTest, Int16Int16)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-  std::vector<float> ref_output_data{2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
+  std::vector<int16_t> ref_output_data{2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
 
   Tensor input_tensor = makeInputTensor<DataType::S16>(
     {1, 1, 2, 5}, /*scale*/ 1.0, /*zero_point*/ 0, input_data, _memory_manager.get());
@@ -120,7 +121,7 @@ TEST_F(QuantizeTest, Int8Int8)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-  std::vector<float> ref_output_data{1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+  std::vector<int8_t> ref_output_data{1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
 
   Tensor input_tensor = makeInputTensor<DataType::S8>(
     {1, 1, 2, 5}, /*scale*/ 0.5, /*zero_point*/ -1, input_data, _memory_manager.get());
@@ -140,7 +141,7 @@ TEST_F(QuantizeTest, Uint8Uint8)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-  std::vector<float> ref_output_data{129, 131, 133, 135, 137, 139, 141, 143, 145, 147};
+  std::vector<uint8_t> ref_output_data{129, 131, 133, 135, 137, 139, 141, 143, 145, 147};
 
   Tensor input_tensor = makeInputTensor<DataType::U8>(
     {1, 1, 2, 5}, /*scale*/ 0.5, /*zero_point*/ 127, input_data, _memory_manager.get());
@@ -160,7 +161,7 @@ TEST_F(QuantizeTest, Int16Int8)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-  std::vector<float> ref_output_data{1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+  std::vector<int8_t> ref_output_data{1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
 
   Tensor input_tensor = makeInputTensor<DataType::S16>(
     {1, 1, 2, 5}, /*scale*/ 1.0, /*zero_point*/ 0, input_data, _memory_manager.get());

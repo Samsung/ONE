@@ -66,6 +66,9 @@ Quantize::Quantize(const Tensor *input, Tensor *output) : Kernel({input}, {outpu
 void Quantize::configure()
 {
 
+  if (input()->element_type() == loco::DataType::S16)
+    LUCI_INTERPRETER_CHECK(input()->zero_point() == 0);
+
   switch (input()->element_type())
   {
     case loco::DataType::FLOAT32:
@@ -76,7 +79,6 @@ void Quantize::configure()
       break;
     }
     case loco::DataType::S16:
-      LUCI_INTERPRETER_CHECK(input()->zero_point() == 0);
     case loco::DataType::S8:
     case loco::DataType::U8:
     {
