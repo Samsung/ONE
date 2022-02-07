@@ -23,30 +23,9 @@
 
 #include "arser/arser.h"
 
+#include "Prompt.h"
+
 using namespace arser;
-
-class Prompt
-{
-public:
-  Prompt(const std::string &command)
-  {
-    std::istringstream iss(command);
-    std::vector<std::string> token(std::istream_iterator<std::string>{iss},
-                                   std::istream_iterator<std::string>());
-    _arg = std::move(token);
-    _argv.reserve(_arg.size());
-    for (const auto &t : _arg)
-    {
-      _argv.push_back(const_cast<char *>(t.data()));
-    }
-  }
-  int argc(void) const { return _argv.size(); }
-  char **argv(void) { return _argv.data(); }
-
-private:
-  std::vector<char *> _argv;
-  std::vector<std::string> _arg;
-};
 
 TEST(BasicTest, option)
 {
@@ -57,7 +36,7 @@ TEST(BasicTest, option)
     .nargs(0)
     .help("It provides additional details as to what the executable is doing");
 
-  Prompt prompt("./executable --verbose");
+  test::Prompt prompt("./executable --verbose");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -79,7 +58,7 @@ TEST(BasicTest, OptionalArgument)
     .type(arser::DataType::FLOAT)
     .help("Set a frequency as you provided.");
 
-  Prompt prompt("./radio --volume 5 --frequency 128.5");
+  test::Prompt prompt("./radio --volume 5 --frequency 128.5");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -103,7 +82,7 @@ TEST(BasicTest, NonRequiredOptionalArgument_NEG)
     .type(arser::DataType::INT32)
     .help("Set a volume as you provided.");
 
-  Prompt prompt("./radio"); // empty argument
+  test::Prompt prompt("./radio"); // empty argument
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -122,7 +101,7 @@ TEST(BasicTest, RequiredOptionalArgument_NEG)
     .required()
     .help("Set a volume as you provided.");
 
-  Prompt prompt("./radio");
+  test::Prompt prompt("./radio");
   /* act */ /* assert */
   EXPECT_THROW(arser.parse(prompt.argc(), prompt.argv()), std::runtime_error);
 }
@@ -134,7 +113,7 @@ TEST(BasicTest, OptionalMultipleArgument)
 
   arser.add_argument("--add").nargs(2).type(arser::DataType::INT32_VEC).help("Add two numbers.");
 
-  Prompt prompt("./calculator --add 3 5");
+  test::Prompt prompt("./calculator --add 3 5");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -167,8 +146,8 @@ TEST(BasicTest, MultipleOptionalArgument)
     .help("give traning data to this program.")
     .required();
 
-  Prompt prompt("./ml --input_path /I/am/in.put --output_path I/am/out.put "
-                "--training_data 2 43 234 3 334");
+  test::Prompt prompt("./ml --input_path /I/am/in.put --output_path I/am/out.put "
+                      "--training_data 2 43 234 3 334");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -195,7 +174,7 @@ TEST(BasicTest, MultipleFloatValue)
     .type(arser::DataType::FLOAT_VEC)
     .help("Add two float numbers.");
 
-  Prompt prompt("./calculator --add_float 3.2 5.4");
+  test::Prompt prompt("./calculator --add_float 3.2 5.4");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -217,7 +196,7 @@ TEST(BasicTest, MultipleStringValue)
     .type(arser::DataType::STR_VEC)
     .help("insert your three favorite color");
 
-  Prompt prompt("./color_factory --three_color red blue yellow");
+  test::Prompt prompt("./color_factory --three_color red blue yellow");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -241,7 +220,7 @@ TEST(BasicTest, ExitWithFunctionCall)
 
   arser.add_argument("--name").nargs(1).type(arser::DataType::STR).help("Name your hero");
 
-  Prompt prompt("./hero --history");
+  test::Prompt prompt("./hero --history");
   /* act */ /* assert */
   EXPECT_EXIT(arser.parse(prompt.argc(), prompt.argv()), testing::ExitedWithCode(0),
               "When I was young..");
@@ -258,7 +237,7 @@ TEST(BasicTest, ExitWithFunctionCallWithBind)
     .help("Show version and exit")
     .exit_with(std::bind(printVersion, "1.2.0"));
 
-  Prompt prompt("./arser --version");
+  test::Prompt prompt("./arser --version");
   /* act */ /* assert */
   EXPECT_EXIT(arser.parse(prompt.argc(), prompt.argv()), testing::ExitedWithCode(0),
               "arser version : 1.2.0");
@@ -275,7 +254,7 @@ TEST(BasicTest, ExitWithFunctionCallWithLamda)
 
   arser.add_argument("OS").nargs(1).type(arser::DataType::STR).help("The OS you want to boot");
 
-  Prompt prompt("./computer --shutdown");
+  test::Prompt prompt("./computer --shutdown");
   /* act */ /* assert */
   EXPECT_EXIT(arser.parse(prompt.argc(), prompt.argv()), testing::ExitedWithCode(0), "Good bye..");
 }
@@ -315,7 +294,7 @@ TEST(BasicTest, DefaultValue)
     .default_value("no name")
     .help("Enter your name");
 
-  Prompt prompt("/phone --time 1 52 34 --name arser");
+  test::Prompt prompt("/phone --time 1 52 34 --name arser");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -359,7 +338,7 @@ TEST(BasicTest, shortOption)
     .help("output path of this program.")
     .required(true);
 
-  Prompt prompt("./driver -i /I/am/in.put --output_path I/am/out.put");
+  test::Prompt prompt("./driver -i /I/am/in.put --output_path I/am/out.put");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -385,7 +364,7 @@ TEST(BasicTest, shortMultipleOption)
     .help("output path of this program.")
     .required(true);
 
-  Prompt prompt("./driver --in /I/am/in.put -o I/am/out.put");
+  test::Prompt prompt("./driver --in /I/am/in.put -o I/am/out.put");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -411,7 +390,7 @@ TEST(BasicTest, OptWithRequiredDuplicate_NEG)
     .help("output path of this program.")
     .required(true);
 
-  Prompt prompt("./driver --in /I/am/in.put -o I/am/out.put -i /I/am/duplicate");
+  test::Prompt prompt("./driver --in /I/am/in.put -o I/am/out.put -i /I/am/duplicate");
   /* act */ /* assert */
   EXPECT_THROW(arser.parse(prompt.argc(), prompt.argv()), std::runtime_error);
 }
@@ -432,7 +411,7 @@ TEST(BasicTest, OptWithNonRequiredDuplicate)
     .help("output path of this program.")
     .required(true);
 
-  Prompt prompt("./driver --in /I/am/in.put -o I/am/out.put -i /I/am/duplicate");
+  test::Prompt prompt("./driver --in /I/am/in.put -o I/am/out.put -i /I/am/duplicate");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -449,7 +428,7 @@ TEST(BasicTest, AccumulateVectorOptions)
 
   arser.add_argument("--specify").nargs(3).accumulated(true).type(arser::DataType::STR_VEC);
 
-  Prompt prompt("./driver --specify a b c --specify 1 2 3");
+  test::Prompt prompt("./driver --specify a b c --specify 1 2 3");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -473,7 +452,7 @@ TEST(BasicTest, AccumulateScalarOptions)
 
   arser.add_argument("--specify").nargs(1).accumulated(true).type(arser::DataType::FLOAT);
 
-  Prompt prompt("./driver --specify 1 --specify 2");
+  test::Prompt prompt("./driver --specify 1 --specify 2");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
@@ -491,7 +470,7 @@ TEST(BasicTest, AccumulateScalarOptions_WrongType_NEG)
 
   arser.add_argument("--specify").nargs(1).accumulated(true).type(arser::DataType::FLOAT);
 
-  Prompt prompt("./driver --specify 1 --specify 2");
+  test::Prompt prompt("./driver --specify 1 --specify 2");
   /* act */
   arser.parse(prompt.argc(), prompt.argv());
   /* assert */
