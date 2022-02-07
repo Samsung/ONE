@@ -76,7 +76,7 @@ void Quantize::configure()
       break;
     }
     case loco::DataType::S16:
-        LUCI_INTERPRETER_CHECK(input()->zero_point() == 0);
+      LUCI_INTERPRETER_CHECK(input()->zero_point() == 0);
     case loco::DataType::S8:
     case loco::DataType::U8:
     {
