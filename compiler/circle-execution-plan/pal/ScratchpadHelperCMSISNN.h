@@ -58,6 +58,12 @@ public:
     return depth * sizeof(int32_t);
   }
 
+  std::vector<uint32_t>
+  ComputeScratchpadSizeBatchMatMul(const luci::CircleBatchMatMul *batch_mat_mul) final
+  {
+    throw std::runtime_error("BatchMatMul is not currently supported for cmsisnn platform");
+  }
+
   uint32_t ComputeScratchpadSizeConv2d(const luci::CircleConv2D *conv) final
   {
     // Main logic of arm_convolve_wrapper_s8_get_buffer_size

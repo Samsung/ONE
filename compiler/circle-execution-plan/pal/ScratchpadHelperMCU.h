@@ -31,6 +31,12 @@ public:
     return 0;
   }
 
+  std::vector<uint32_t>
+  ComputeScratchpadSizeBatchMatMul(const luci::CircleBatchMatMul *batch_mat_mul) final
+  {
+    throw std::runtime_error("BatchMatMul is not currently supported for mcu platform");
+  }
+
   uint32_t ComputeScratchpadSizeConv2d(const luci::CircleConv2D *) final
   {
     // for mcu scratchpad size = 0

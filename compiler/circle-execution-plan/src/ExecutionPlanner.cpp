@@ -315,6 +315,12 @@ void ExecutionPlanner::create_alloc_node_inform_vector(bool null_consts, bool nu
             _scratchpad_helper->ComputeScratchpadSizeAveragePool2d(avg_pool));
           break;
         }
+        case luci::CircleOpcode::BATCH_MATMUL:
+        {
+          const auto batch_mat_mul = loco::must_cast<const luci::CircleBatchMatMul *>(circle_node);
+          scratchpad_sizes = _scratchpad_helper->ComputeScratchpadSizeBatchMatMul(batch_mat_mul);
+          break;
+        }
         case luci::CircleOpcode::CONV_2D:
         {
           const auto conv = loco::must_cast<const luci::CircleConv2D *>(circle_node);
