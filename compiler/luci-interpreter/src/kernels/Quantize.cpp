@@ -25,11 +25,38 @@ namespace kernels
 
 namespace
 {
-void compute_shift_multiplier(const double input_scale, const double output_scale,
-                              int32_t *multiplier, int32_t *shift)
+
+template <typename input_dtype> void call_requantize(const Tensor *input, Tensor *output)
 {
-  const double effective_output_scale = input_scale / output_scale;
-  quantizeMultiplier(effective_output_scale, multiplier, shift);
+  int32_t multiplier;
+  int32_t shift;
+
+  const double effective_output_scale = input->scale() / output->scale();
+  quantizeMultiplier(effective_output_scale, &multiplier, &shift);
+
+  const auto input_shape = getTensorShape(input);
+  const auto output_shape = getTensorShape(output);
+  const auto size = tflite::MatchingFlatSize(input_shape, output_shape);
+
+  const auto input_data = getTensorData<input_dtype>(input);
+
+  switch (output->element_type())
+  {
+    case loco::DataType::S8:
+      luci_interpreter_pal::Requantize(input_data, size, multiplier, shift, input->zero_point(),
+                                       output->zero_point(), getTensorData<int8_t>(output));
+      break;
+    case loco::DataType::U8:
+      luci_interpreter_pal::Requantize(input_data, size, multiplier, shift, input->zero_point(),
+                                       output->zero_point(), getTensorData<uint8_t>(output));
+      break;
+    case loco::DataType::S16:
+      luci_interpreter_pal::Requantize(input_data, size, multiplier, shift, input->zero_point(),
+                                       output->zero_point(), getTensorData<int16_t>(output));
+      break;
+    default:
+      throw std::runtime_error("Unsupported quantized type, yet!");
+  }
 }
 
 } // namespace
@@ -38,31 +65,36 @@ Quantize::Quantize(const Tensor *input, Tensor *output) : Kernel({input}, {outpu
 
 void Quantize::configure()
 {
-  if (input()->element_type() == loco::DataType::FLOAT32)
+
+  switch (input()->element_type())
   {
-    LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::U8 ||
-                           output()->element_type() == loco::DataType::S8 ||
-                           output()->element_type() == loco::DataType::S16);
-  }
-  else if (input()->element_type() == loco::DataType::S16)
-  {
-    LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::S8 ||
-                           output()->element_type() == loco::DataType::S16 ||
-                           output()->element_type() == loco::DataType::S32);
-    if (output()->element_type() == loco::DataType::S16)
+    case loco::DataType::FLOAT32:
     {
-      LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && output()->zero_point() == 0);
+      LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::U8 ||
+                             output()->element_type() == loco::DataType::S8 ||
+                             output()->element_type() == loco::DataType::S16);
+      break;
     }
-  }
-  else if (input()->element_type() == loco::DataType::S8 ||
-           input()->element_type() == loco::DataType::U8)
-  {
-    LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::S8 ||
-                           output()->element_type() == loco::DataType::U8);
-  }
-  else
-  {
-    throw std::runtime_error("Unsupported type.");
+    case loco::DataType::S16:
+    {
+      LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::S8 ||
+                             output()->element_type() == loco::DataType::S16);
+      if (output()->element_type() == loco::DataType::S16)
+      {
+        LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && output()->zero_point() == 0);
+      }
+      break;
+    }
+    case loco::DataType::S8:
+    case loco::DataType::U8:
+    {
+      LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::S8 ||
+                             output()->element_type() == loco::DataType::U8 ||
+                             output()->element_type() == loco::DataType::S16);
+      break;
+    }
+    default:
+      throw std::runtime_error("Unsupported type");
   }
 
   output()->resize(input()->shape());
@@ -108,117 +140,17 @@ void Quantize::execute() const
     }
     case loco::DataType::S16:
     {
-      int32_t multiplier;
-      int32_t shift;
-
-      compute_shift_multiplier(static_cast<double>(input()->scale()),
-                               static_cast<double>(output()->scale()), &multiplier, &shift);
-
-      const auto input_shape = getTensorShape(input());
-      const auto output_shape = getTensorShape(output());
-
-      const auto input_data = getTensorData<int16_t>(input());
-
-      const auto size = tflite::MatchingFlatSize(input_shape, output_shape);
-
-      switch (output()->element_type())
-      {
-        case loco::DataType::S8:
-        {
-          luci_interpreter_pal::Requantize(input_data, size, multiplier, shift,
-                                           input()->zero_point(), output()->zero_point(),
-                                           getTensorData<int8_t>(output()));
-          break;
-        }
-        case loco::DataType::S16:
-        {
-          luci_interpreter_pal::Requantize(input_data, size, multiplier, shift,
-                                           input()->zero_point(), output()->zero_point(),
-                                           getTensorData<int16_t>(output()));
-          break;
-        }
-        case loco::DataType::S32:
-        {
-          luci_interpreter_pal::Requantize(input_data, size, multiplier, shift,
-                                           input()->zero_point(), output()->zero_point(),
-                                           getTensorData<int32_t>(output()));
-          break;
-        }
-        default:
-          throw std::runtime_error("Unsupported type.");
-      }
+      call_requantize<int16_t>(input(), output());
       break;
     }
     case loco::DataType::S8:
     {
-      int32_t multiplier;
-      int32_t shift;
-
-      compute_shift_multiplier(static_cast<double>(input()->scale()),
-                               static_cast<double>(output()->scale()), &multiplier, &shift);
-
-      const auto input_data = getTensorData<int8_t>(input());
-
-      const auto input_shape = getTensorShape(input());
-      const auto output_shape = getTensorShape(output());
-
-      const auto size = tflite::MatchingFlatSize(input_shape, output_shape);
-
-      switch (output()->element_type())
-      {
-        case loco::DataType::S8:
-        {
-          luci_interpreter_pal::Requantize(input_data, size, multiplier, shift,
-                                           input()->zero_point(), output()->zero_point(),
-                                           getTensorData<int8_t>(output()));
-          break;
-        }
-        case loco::DataType::U8:
-        {
-          luci_interpreter_pal::Requantize(input_data, size, multiplier, shift,
-                                           input()->zero_point(), output()->zero_point(),
-                                           getTensorData<uint8_t>(output()));
-          break;
-        }
-        default:
-          throw std::runtime_error("Unsupported type.");
-      }
+      call_requantize<int8_t>(input(), output());
       break;
     }
     case loco::DataType::U8:
     {
-      int32_t multiplier;
-      int32_t shift;
-
-      compute_shift_multiplier(static_cast<double>(input()->scale()),
-                               static_cast<double>(output()->scale()), &multiplier, &shift);
-
-      const auto input_data = getTensorData<uint8_t>(input());
-
-      const auto input_shape = getTensorShape(input());
-      const auto output_shape = getTensorShape(output());
-
-      const auto size = tflite::MatchingFlatSize(input_shape, output_shape);
-
-      switch (output()->element_type())
-      {
-        case loco::DataType::S8:
-        {
-          luci_interpreter_pal::Requantize(input_data, size, multiplier, shift,
-                                           input()->zero_point(), output()->zero_point(),
-                                           getTensorData<int8_t>(output()));
-          break;
-        }
-        case loco::DataType::U8:
-        {
-          luci_interpreter_pal::Requantize(input_data, size, multiplier, shift,
-                                           input()->zero_point(), output()->zero_point(),
-                                           getTensorData<uint8_t>(output()));
-          break;
-        }
-        default:
-          throw std::runtime_error("Unsupported type.");
-      }
+      call_requantize<uint8_t>(input(), output());
       break;
     }
     default:
