@@ -56,6 +56,10 @@ public:
 public:
   bool run(loco::Graph *graph);
 
+public:
+  void TF_style_maxpool(bool val) { _TF_style_maxpool = val; }
+  bool TF_style_maxpool() const { return _TF_style_maxpool; }
+
 private:
   void set_input_type(loco::Graph *graph) const;
   void set_output_type(loco::Graph *graph) const;
@@ -66,6 +70,7 @@ private:
   QuantizationGranularity _granularity;
   loco::DataType _input_type;
   loco::DataType _output_type;
+  bool _TF_style_maxpool = false;
 };
 
 } // namespace luci

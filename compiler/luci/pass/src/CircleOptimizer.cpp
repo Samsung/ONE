@@ -38,7 +38,6 @@
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/FuseTransposeWithMeanPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
-#include "luci/Pass/PropagateQuantParamPass.h"
 #include "luci/Pass/RemoveFakeQuantPass.h"
 #include "luci/Pass/RemoveQuantDequantSeqPass.h"
 #include "luci/Pass/RemoveRedundantReshapePass.h"
@@ -514,21 +513,10 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     luci::QuantizeWithMinMaxPass quantizer(
       str_to_dtype(input_model_dtype), str_to_dtype(output_model_dtype),
       str_to_granularity(granularity), str_to_dtype(input_type), str_to_dtype(output_type));
+
+    quantizer.TF_style_maxpool(TF_style_maxpool);
+
     quantizer.run(g);
-
-    // Post-quantization optimizations
-    logo::Phase phase;
-
-    phase.emplace_back(std::make_unique<luci::PropagateQuantParamPass>(TF_style_maxpool));
-
-    phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
-    phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
-    phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
-
-    ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
-    logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
-    phase_runner.attach(&prog);
-    phase_runner.run(phase);
 
     // Verify the type/granularity of the quantized model
     luci::QuantizedModelVerifier verifier(str_to_dtype(output_model_dtype),

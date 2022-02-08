@@ -15,13 +15,16 @@
  */
 
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
+#include "luci/Pass/PropagateQuantParamPass.h"
 #include "QuantizationUtils.h"
+#include "ProgressReporter.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Service/Nodes/CircleConst.h>
 #include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Log.h>
+#include <logo/Phase.h>
 
 #include <oops/UserExn.h>
 
@@ -1654,22 +1657,6 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     circle_node->accept(&qa);
   }
 
-  // Quantize weights
-  for (auto node : loco::active_nodes(loco::output_nodes(g)))
-  {
-    QuantizeWeights qw(_input_model_dtype, _output_model_dtype, _granularity);
-    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    circle_node->accept(&qw);
-  }
-
-  // Quantize bias
-  for (auto node : loco::active_nodes(loco::output_nodes(g)))
-  {
-    QuantizeBias qb(_input_model_dtype, _output_model_dtype, _granularity);
-    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    circle_node->accept(&qb);
-  }
-
   // Propagate quantization parameters of concat Op
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
@@ -1685,6 +1672,14 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     propagate_concat_quantparam(concat, _output_model_dtype);
   }
 
+  // Update qparam of output of special Ops
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    QuantizeSpecialActivation qsa(_input_model_dtype, _output_model_dtype);
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    circle_node->accept(&qsa);
+  }
+
   // Quantize const inputs other than weights and bias
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
@@ -1692,12 +1687,30 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     quantize_const_inputs(circle_node, _output_model_dtype);
   }
 
-  // Update qparam of output of special Ops
+  // Forward propagation of activation qparam
+  logo::Phase phase;
+
+  phase.emplace_back(std::make_unique<luci::PropagateQuantParamPass>(_TF_style_maxpool));
+
+  ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
+  logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
+  phase_runner.attach(&prog);
+  phase_runner.run(phase);
+
+  // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeSpecialActivation qsa(_input_model_dtype, _output_model_dtype);
+    QuantizeWeights qw(_input_model_dtype, _output_model_dtype, _granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    circle_node->accept(&qsa);
+    circle_node->accept(&qw);
+  }
+
+  // Quantize bias
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    QuantizeBias qb(_input_model_dtype, _output_model_dtype, _granularity);
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    circle_node->accept(&qb);
   }
 
   // Update output dtype
