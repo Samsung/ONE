@@ -16,7 +16,6 @@
 
 #include "luci/CircleOptimizer.h"
 
-#include "luci/Pass/CopyQuantParamPass.h"
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
 #include "luci/Pass/ExpandBroadcastConstPass.h"
 #include "luci/Pass/FoldAddV2Pass.h"
@@ -25,7 +24,6 @@
 #include "luci/Pass/FoldDequantizePass.h"
 #include "luci/Pass/FoldSparseToDensePass.h"
 #include "luci/Pass/ForwardReshapeToUnaryOpPass.h"
-#include "luci/Pass/ForceQuantParamPass.h"
 #include "luci/Pass/FuseActivationFunctionPass.h"
 #include "luci/Pass/FuseAddWithFullyConnectedPass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
@@ -52,9 +50,6 @@
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMaxPoolWithArgmaxPass.h"
-#include "luci/Pass/RequantizePass.h"
-#include "luci/Pass/QuantizeWithMinMaxPass.h"
-#include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 #include "luci/Pass/SparsifyTensorPass.h"
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 #include "luci/Pass/SubstitutePackToReshapePass.h"
@@ -75,9 +70,6 @@
 
 #include "ModulePhase.h"
 #include "ProgressReporter.h"
-#include "helpers/Strings.h"
-
-#include "QuantizedModelVerifier.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <logo/Phase.h>
@@ -90,23 +82,6 @@ namespace
 {
 
 using namespace luci;
-
-template <typename T> T lexical_cast(const std::string &str)
-{
-  std::istringstream ss;
-  ss.str(str);
-  T data;
-  ss >> data;
-  return data;
-}
-
-template <typename T> std::vector<T> lexical_cast(std::vector<std::string> &sv)
-{
-  std::vector<T> result;
-  std::transform(sv.begin(), sv.end(), std::back_inserter(result),
-                 [](std::string str) -> T { return lexical_cast<T>(str); });
-  return result;
-}
 
 class OptimizeOptionsImpl final : public luci::CircleOptimizer::Options
 {
@@ -413,177 +388,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
 
   ProgressReporter prog(g, logo::PhaseStrategy::Restart);
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
-  phase_runner.attach(&prog);
-  phase_runner.run(phase);
-}
-
-void CircleOptimizer::quantize(loco::Graph *g) const
-{
-  // Fake quantization of weights
-  if (_options->query(Options::Algorithm::QuantizeDequantizeWeights))
-  {
-    static const std::vector<std::string> fakeq_supported_input_model_dtype{"float32"};
-    static const std::vector<std::string> fakeq_supported_output_model_dtype{"uint8", "int16"};
-    static const std::vector<std::string> fakeq_supported_granularity{"layer", "channel"};
-
-    auto input_model_dtype =
-      _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
-    auto output_model_dtype =
-      _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
-    auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
-
-    if (!in_array(to_lower_case(input_model_dtype), fakeq_supported_input_model_dtype))
-      throw std::runtime_error("Unsupported input type. List of supported input type: " +
-                               to_string(fakeq_supported_input_model_dtype));
-
-    if (!in_array(to_lower_case(output_model_dtype), fakeq_supported_output_model_dtype))
-      throw std::runtime_error("Unsupported output type. List of supported output type: " +
-                               to_string(fakeq_supported_output_model_dtype));
-
-    if (!in_array(to_lower_case(granularity), fakeq_supported_granularity))
-      throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
-                               to_string(fakeq_supported_granularity));
-
-    if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
-        str_to_dtype(output_model_dtype) != loco::DataType::U8)
-      throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
-
-    // Clear existing quantparams before doing fake quantization
-    for (auto node : loco::active_nodes(loco::output_nodes(g)))
-    {
-      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-      if (circle_node->quantparam() != nullptr)
-        circle_node->quantparam(nullptr);
-    }
-
-    luci::QuantizeDequantizeWeightsPass fake_quantizer(str_to_dtype(input_model_dtype),
-                                                       str_to_dtype(output_model_dtype),
-                                                       str_to_granularity(granularity));
-    fake_quantizer.run(g);
-  }
-
-  // Actual quantization of weights, bias, and activation
-  if (_options->query(Options::Algorithm::QuantizeWithMinMax))
-  {
-    static const std::vector<std::string> qwmm_supported_input_model_dtype{"float32"};
-    static const std::vector<std::string> qwmm_supported_output_model_dtype{"uint8", "int16"};
-    static const std::vector<std::string> qwmm_supported_granularity{"layer", "channel"};
-    static const std::vector<std::string> qwmm_supported_input_type{"uint8", "int16"};
-    static const std::vector<std::string> qwmm_supported_output_type{"uint8", "int16"};
-
-    auto input_model_dtype =
-      _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
-    auto output_model_dtype =
-      _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
-    auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
-    auto input_type = _options->param(Options::AlgorithmParameters::Quantize_input_type);
-    if (input_type.empty())
-      input_type = output_model_dtype;
-    auto output_type = _options->param(Options::AlgorithmParameters::Quantize_output_type);
-    if (output_type.empty())
-      output_type = output_model_dtype;
-
-    bool TF_style_maxpool =
-      _options->param(Options::AlgorithmParameters::Quantize_TF_style_maxpool) == "True";
-
-    if (!in_array(to_lower_case(input_model_dtype), qwmm_supported_input_model_dtype))
-      throw std::runtime_error("Unsupported input type. List of supported input types: " +
-                               to_string(qwmm_supported_input_model_dtype));
-
-    if (!in_array(to_lower_case(output_model_dtype), qwmm_supported_output_model_dtype))
-      throw std::runtime_error("Unsupported output type. List of supported output types: " +
-                               to_string(qwmm_supported_output_model_dtype));
-
-    if (!in_array(to_lower_case(granularity), qwmm_supported_granularity))
-      throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
-                               to_string(qwmm_supported_granularity));
-
-    if (!in_array(to_lower_case(input_type), qwmm_supported_input_type))
-      throw std::runtime_error("Unsupported input type. List of supported input types: " +
-                               to_string(qwmm_supported_input_type));
-
-    if (!in_array(to_lower_case(output_type), qwmm_supported_output_type))
-      throw std::runtime_error("Unsupported output type. List of supported output types: " +
-                               to_string(qwmm_supported_output_type));
-
-    if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
-        str_to_dtype(output_model_dtype) != loco::DataType::U8)
-      throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
-
-    luci::QuantizeWithMinMaxPass quantizer(
-      str_to_dtype(input_model_dtype), str_to_dtype(output_model_dtype),
-      str_to_granularity(granularity), str_to_dtype(input_type), str_to_dtype(output_type),
-      TF_style_maxpool);
-
-    quantizer.run(g);
-
-    // Verify the type/granularity of the quantized model
-    luci::QuantizedModelVerifier verifier(str_to_dtype(output_model_dtype),
-                                          str_to_granularity(granularity));
-    verifier.verify(g);
-  }
-
-  // Requantize
-  if (_options->query(Options::Algorithm::Requantize))
-  {
-    static const std::vector<std::string> rq_supported_input_model_dtype{"int8"};
-    static const std::vector<std::string> rq_supported_output_model_dtype{"uint8"};
-
-    auto input_model_dtype =
-      _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
-    auto output_model_dtype =
-      _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
-
-    if (!in_array(to_lower_case(input_model_dtype), rq_supported_input_model_dtype))
-      throw std::runtime_error("Unsupported input type. List of supported input types: " +
-                               to_string(rq_supported_input_model_dtype));
-
-    if (!in_array(to_lower_case(output_model_dtype), rq_supported_output_model_dtype))
-      throw std::runtime_error("Unsupported output type. List of supported output types: " +
-                               to_string(rq_supported_output_model_dtype));
-
-    luci::RequantizePass requantizer(str_to_dtype(input_model_dtype),
-                                     str_to_dtype(output_model_dtype));
-    requantizer.run(g);
-  }
-
-  // Force to write quantparam to specified tensors
-  // NOTE Only per-tensor (not per-channel) qparam can be written
-  if (_options->query(Options::Algorithm::ForceQuantParam))
-  {
-    ForceQuantParamPass::TensorVector tensors =
-      _options->params(Options::AlgorithmParameters::Quantize_tensor_names);
-    auto str_scales = _options->params(Options::AlgorithmParameters::Quantize_scales);
-    auto str_zero_points = _options->params(Options::AlgorithmParameters::Quantize_zero_points);
-
-    // Cast scales/zero_points to proper types
-    ForceQuantParamPass::ScaleVector scales = lexical_cast<float>(str_scales);
-    ForceQuantParamPass::ZPVector zero_points = lexical_cast<int64_t>(str_zero_points);
-
-    ForceQuantParamPass fq(tensors, scales, zero_points);
-    fq.run(g);
-  }
-
-  // Copy quantparam of a tensor to another tensor
-  if (_options->query(Options::Algorithm::CopyQuantParam))
-  {
-    CopyQuantParamPass::TensorVector src_tensors =
-      _options->params(Options::AlgorithmParameters::Quantize_src_tensor_names);
-    CopyQuantParamPass::TensorVector dst_tensors =
-      _options->params(Options::AlgorithmParameters::Quantize_dst_tensor_names);
-
-    CopyQuantParamPass cq(src_tensors, dst_tensors);
-    cq.run(g);
-  }
-
-  logo::Phase phase;
-
-  // Do Shape/Type inference
-  phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
-  phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
-
-  ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
-  logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
   phase_runner.attach(&prog);
   phase_runner.run(phase);
 }
