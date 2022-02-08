@@ -45,9 +45,10 @@ public:
 public:
   QuantizeWithMinMaxPass(loco::DataType input_model_dtype, loco::DataType output_model_dtype,
                          QuantizationGranularity granularity, loco::DataType input_type,
-                         loco::DataType output_type)
+                         loco::DataType output_type, bool TF_style_maxpool)
     : _input_model_dtype{input_model_dtype}, _output_model_dtype{output_model_dtype},
-      _granularity{granularity}, _input_type{input_type}, _output_type{output_type}
+      _granularity{granularity}, _input_type{input_type}, _output_type{output_type},
+      _TF_style_maxpool{TF_style_maxpool}
   {
     // DO NOTHING
   }
@@ -66,6 +67,7 @@ private:
   QuantizationGranularity _granularity;
   loco::DataType _input_type;
   loco::DataType _output_type;
+  bool _TF_style_maxpool = false;
 };
 
 } // namespace luci
