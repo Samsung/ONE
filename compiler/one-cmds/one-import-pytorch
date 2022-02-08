@@ -32,6 +32,7 @@ import json
 import zipfile
 
 import onnx_legalizer
+import python.make_cmd as _make_cmd
 import utils as _utils
 
 # TODO Find better way to suppress trackback on error
@@ -318,7 +319,7 @@ def _convert(args):
         tf2tfliteV2_output_path = os.path.join(tmpdir, tf2tfliteV2_output_name)
 
         del args.input_shapes
-        tf2tfliteV2_cmd = _utils._make_tf2tfliteV2_cmd(
+        tf2tfliteV2_cmd = _make_cmd.make_tf2tfliteV2_cmd(
             args, tf2tfliteV2_path, savedmodel_output_path, tf2tfliteV2_output_path)
 
         f.write((' '.join(tf2tfliteV2_cmd) + '\n').encode())
@@ -328,7 +329,7 @@ def _convert(args):
 
         # make a command to convert from tflite to circle
         tflite2circle_path = os.path.join(dir_path, 'tflite2circle')
-        tflite2circle_cmd = _utils._make_tflite2circle_cmd(tflite2circle_path,
+        tflite2circle_cmd = _make_cmd.make_tflite2circle_cmd(tflite2circle_path,
                                                            tf2tfliteV2_output_path,
                                                            getattr(args, 'output_path'))
 

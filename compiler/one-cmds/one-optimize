@@ -25,6 +25,7 @@ import subprocess
 import sys
 
 import python.constant as _constant
+import python.make_cmd as _make_cmd
 import utils as _utils
 
 # TODO Find better way to suppress trackback on error
@@ -100,7 +101,7 @@ def _optimize(args):
     with open(logfile_path, 'wb') as f:
         # make a command to optimize circle model
         circle2circle_path = os.path.join(dir_path, 'circle2circle')
-        circle2circle_cmd = _utils._make_circle2circle_cmd(args, circle2circle_path,
+        circle2circle_cmd = _make_cmd.make_circle2circle_cmd(args, circle2circle_path,
                                                            getattr(args, 'input_path'),
                                                            getattr(args, 'output_path'))
 

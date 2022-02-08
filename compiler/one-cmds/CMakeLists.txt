@@ -73,7 +73,8 @@ foreach(ONE_UTILITY IN ITEMS ${ONE_UTILITY_FILES})
 endforeach(ONE_UTILITY)
 
 # make python directory
-set(ONE_PYTHON_FILES "constant.py")
+set(ONE_PYTHON_FILES constant.py
+                     make_cmd.py)
 
 foreach(ONE_PYTHON_FILE IN ITEMS ${ONE_PYTHON_FILES})
 

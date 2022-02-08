@@ -25,6 +25,7 @@ import subprocess
 import sys
 import tempfile
 
+import python.make_cmd as _make_cmd
 import utils as _utils
 
 
@@ -150,7 +151,7 @@ def _convert(args):
         tf2tfliteV2_output_path = os.path.join(
             tmpdir,
             os.path.splitext(os.path.basename(args.output_path))[0]) + '.tflite'
-        tf2tfliteV2_cmd = _utils._make_tf2tfliteV2_cmd(args, tf2tfliteV2_path,
+        tf2tfliteV2_cmd = _make_cmd.make_tf2tfliteV2_cmd(args, tf2tfliteV2_path,
                                                        getattr(args, 'input_path'),
                                                        tf2tfliteV2_output_path)
 
@@ -161,7 +162,7 @@ def _convert(args):
 
         # make a command to convert from tflite to circle
         tflite2circle_path = os.path.join(dir_path, 'tflite2circle')
-        tflite2circle_cmd = _utils._make_tflite2circle_cmd(tflite2circle_path,
+        tflite2circle_cmd = _make_cmd.make_tflite2circle_cmd(tflite2circle_path,
                                                            tf2tfliteV2_output_path,
                                                            getattr(args, 'output_path'))
 
