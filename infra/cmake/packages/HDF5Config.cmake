@@ -6,8 +6,18 @@ function(_HDF5_build)
   nnas_find_package(HDF5Source QUIET)
 
   if(NOT HDF5Source_FOUND)
+    message(STATUS "HD5Config skip: HDF5Source NOT FOUND")
     return()
   endif(NOT HDF5Source_FOUND)
+
+  if(DEFINED ENV{BUILD_HOST_EXEC})
+    set(EXTERNAL_H5MAKE_LIBSETTINGS $ENV{BUILD_HOST_EXEC}/externals/HDF5/build/bin/H5make_libsettings)
+    set(EXTERNAL_H5DETECT $ENV{BUILD_HOST_EXEC}/externals/HDF5/build/bin/H5detect)
+    message(STATUS "!!! EXTERNAL_H5MAKE_LIBSETTINGS from BUILD_HOST_EXEC = ${EXTERNAL_H5MAKE_LIBSETTINGS}")
+    message(STATUS "!!! EXTERNAL_H5DETECT from BUILD_HOST_EXEC = ${EXTERNAL_H5DETECT}")
+    set(ENV{EXTERNAL_H5MAKE_LIBSETTINGS} ${EXTERNAL_H5MAKE_LIBSETTINGS})
+    set(ENV{EXTERNAL_H5DETECT} ${EXTERNAL_H5DETECT})
+  endif(DEFINED ENV{BUILD_HOST_EXEC})
 
   nnas_include(ExternalBuildTools)
   ExternalBuild_CMake(CMAKE_DIR   ${HDF5Source_DIR}
@@ -24,14 +34,18 @@ endfunction(_HDF5_build)
 
 _HDF5_build()
 
+message(STATUS "!!! find hdf5-config.cmake in ${EXT_OVERLAY_DIR}")
 find_path(HDF5_CONFIG_DIR "hdf5-config.cmake"
           PATHS ${EXT_OVERLAY_DIR}
+          NO_CMAKE_FIND_ROOT_PATH
           PATH_SUFFIXES
             cmake
             share/cmake
             share/cmake/hdf5
             cmake/hdf5
             lib/cmake/hdf5)
+
+message(STATUS "!!! find result HDF5_CONFIG_DIR = ${HDF5_CONFIG_DIR}")
 
 include(${HDF5_CONFIG_DIR}/hdf5-config.cmake)
 

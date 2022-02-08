@@ -24,7 +24,8 @@ endfunction(_Protobuf_module_import)
 function(_Protobuf_import)
   # Let's use find_package here not to export unnecessary definitions
   # NOTE Here we use "exact" match to avoid possible infinite loop
-  find_package(protobuf EXACT 3.5.2 QUIET)
+  # find_package(protobuf EXACT 3.5.2 QUIET)
+  nnas_find_package_folder(protobuf ${EXT_OVERLAY_DIR} EXACT 3.5.2 QUIET)
 
   if(NOT protobuf_FOUND)
     set(Protobuf_FOUND FALSE PARENT_SCOPE)
@@ -51,16 +52,39 @@ function(_Protobuf_build)
     return()
   endif(NOT ProtobufSource_FOUND)
 
+  # set 'EXTERNAL_JS_EMBED' environment variable
+  if(NOT DEFINED ENV{EXTERNAL_JS_EMBED})
+    if(DEFINED ENV{BUILD_HOST_EXEC})
+      set(EXTERNAL_JS_EMBED $ENV{BUILD_HOST_EXEC}/externals/PROTOBUF/build/js_embed)
+      message(STATUS "!!! EXTERNAL_JS_EMBED from BUILD_HOST_EXEC = ${EXTERNAL_JS_EMBED}")
+      set(ENV{EXTERNAL_JS_EMBED} ${EXTERNAL_JS_EMBED})
+    endif(DEFINED ENV{BUILD_HOST_EXEC})
+    message(STATUS "!!! EXTERNAL_JS_EMBED $ENV{EXTERNAL_JS_EMBED}")
+  else(NOT DEFINED ENV{EXTERNAL_JS_EMBED})
+    message(STATUS "!!! EXTERNAL_JS_EMBED $ENV{EXTERNAL_JS_EMBED}")
+  endif(NOT DEFINED ENV{EXTERNAL_JS_EMBED})
+
   nnas_include(ExternalBuildTools)
   ExternalBuild_CMake(CMAKE_DIR   ${ProtobufSource_DIR}/cmake
                       BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/PROTOBUF/build
                       INSTALL_DIR ${EXT_OVERLAY_DIR}
                       BUILD_FLAGS -fPIC
                       EXTRA_OPTS  -Dprotobuf_BUILD_TESTS=OFF -Dprotobuf_WITH_ZLIB=OFF
-                      IDENTIFIER  "3.5.2-fix1"
+                      IDENTIFIER  "3.5.2-fix2"
                       PKG_NAME    "PROTOBUF")
 
 endfunction(_Protobuf_build)
+
+set(PROTOC_PATH $<TARGET_FILE:protobuf::protoc>)
+
+if(DEFINED ENV{BUILD_HOST_EXEC})
+  set(PROTOC_PATH $ENV{BUILD_HOST_EXEC}/overlay/bin/protoc)
+  message(STATUS "!!! PROTOC_PATH from BUILD_HOST_EXEC = ${PROTOC_PATH}")
+endif(DEFINED ENV{BUILD_HOST_EXEC})
+if(DEFINED ENV{EXTERNAL_PROTOC})
+  set(PROTOC_PATH $ENV{EXTERNAL_PROTOC})
+  message(STATUS "!!! PROTOC_PATH from EXTERNAL_PROTOC = ${PROTOC_PATH}")
+endif(DEFINED ENV{EXTERNAL_PROTOC})
 
 _Protobuf_build()
 
@@ -96,7 +120,7 @@ if(Protobuf_FOUND)
 
     add_custom_command(OUTPUT ${OUTPUT_FILES}
                        COMMAND ${CMAKE_COMMAND} -E make_directory "${abs_output_dir}"
-                       COMMAND "$<TARGET_FILE:protobuf::protoc>" --cpp_out "${abs_output_dir}" -I "${abs_proto_dir}" ${PROTO_FILES}
+                       COMMAND "${PROTOC_PATH}" --cpp_out "${abs_output_dir}" -I "${abs_proto_dir}" ${PROTO_FILES}
                        DEPENDS ${PROTO_FILES})
 
     set(${PREFIX}_SOURCES ${OUTPUT_FILES} PARENT_SCOPE)

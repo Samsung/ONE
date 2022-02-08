@@ -42,10 +42,22 @@ function(ExternalBuild_CMake)
 
   message(STATUS "Build ${ARG_PKG_NAME} from ${ARG_CMAKE_DIR}")
 
+  # if we're doing the cross compilation, external project also needs it
+  if(CMAKE_TOOLCHAIN_FILE)
+    set(TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE})
+    # NOTE CMAKE_TOOLCHAIN_FILE maybe relative path -> make abs folder
+    if(NOT EXISTS ${TOOLCHAIN_FILE})
+      set(TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/${CMAKE_TOOLCHAIN_FILE})
+      if(NOT EXISTS ${TOOLCHAIN_FILE})
+        message(FATAL "Failed to find ${CMAKE_TOOLCHAIN_FILE}")
+      endif()
+    endif()
+    message(STATUS "ExternalBuild_CMake TOOLCHAIN_FILE=${TOOLCHAIN_FILE}")
+    list(APPEND ARG_EXTRA_OPTS -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE})
+  endif(CMAKE_TOOLCHAIN_FILE)
+
   file(MAKE_DIRECTORY ${ARG_BUILD_DIR})
   file(MAKE_DIRECTORY ${ARG_INSTALL_DIR})
-
-  file(WRITE "${BUILD_STAMP_PATH}" "${PKG_IDENTIFIER}")
 
   execute_process(COMMAND ${CMAKE_COMMAND}
                             -G "${CMAKE_GENERATOR}"
@@ -61,7 +73,11 @@ function(ExternalBuild_CMake)
 
   if(NOT BUILD_EXITCODE EQUAL 0)
     message(FATAL_ERROR "${ARG_PKG_NAME} Package: Build failed (check '${BUILD_LOG_PATH}' for details)")
+  else(NOT BUILD_EXITCODE EQUAL 0)
+    file(WRITE "${BUILD_STAMP_PATH}" "${PKG_IDENTIFIER}")
   endif(NOT BUILD_EXITCODE EQUAL 0)
+
+  message(STATUS "!!! ${ARG_PKG_NAME} BUILD_EXITCODE ${BUILD_EXITCODE}")
 
   set(NUM_BUILD_THREADS 1)
   if(DEFINED EXTERNALS_BUILD_THREADS)
@@ -74,11 +90,13 @@ function(ExternalBuild_CMake)
                   WORKING_DIRECTORY ${ARG_BUILD_DIR}
                   RESULT_VARIABLE INSTALL_EXITCODE)
 
+  message(STATUS "!!! ${ARG_PKG_NAME} INSTALL_EXITCODE ${INSTALL_EXITCODE}")
+
   if(NOT INSTALL_EXITCODE EQUAL 0)
     message(FATAL_ERROR "${ARG_PKG_NAME} Package: Installation failed (check '${INSTALL_LOG_PATH}' for details)")
+  else(NOT INSTALL_EXITCODE EQUAL 0)
+    file(WRITE "${INSTALL_STAMP_PATH}" "${PKG_IDENTIFIER}")
   endif(NOT INSTALL_EXITCODE EQUAL 0)
-
-  file(WRITE "${INSTALL_STAMP_PATH}" "${PKG_IDENTIFIER}")
 
   message(STATUS "${ARG_PKG_NAME} Package: Done")
 endfunction(ExternalBuild_CMake)

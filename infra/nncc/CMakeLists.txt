@@ -46,6 +46,13 @@ macro(nnas_find_package PREFIX)
                ${ARGN})
 endmacro(nnas_find_package)
 
+macro(nnas_find_package_folder PREFIX FIND_FOLDER)
+  find_package(${PREFIX}
+               CONFIG NO_DEFAULT_PATH
+               PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages ${FIND_FOLDER}
+               ${ARGN})
+endmacro(nnas_find_package_folder)
+
 # nncc_find_resource(NAME) will update the following variables
 #
 #   NAME_FOUND

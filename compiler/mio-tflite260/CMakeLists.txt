@@ -1,4 +1,9 @@
-nnas_find_package(FlatBuffers EXACT 1.12 QUIET)
+# nnas_find_package(FlatBuffers EXACT 1.12 QUIET)
+
+nnas_find_package_folder(FlatBuffers
+                         ${CMAKE_BINARY_DIR}/externals/FLATBUFFERS-1.12/build
+                         EXACT 1.12
+                         QUIET)
 
 if(NOT FlatBuffers_FOUND)
   message(STATUS "Build mio-tflite260: FAILED (missing Flatbuffers 1.12)")

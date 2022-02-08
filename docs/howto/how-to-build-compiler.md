@@ -122,3 +122,35 @@ $ NNAS_BUILD_PREFIX=build ./nnas create-package --preset 20200731_windows --pref
 - `NNAS_BUILD_PREFIX` is the path to directory where compiler-build-artifacts will be stored.
 - `--preset` is the one that specifies a version you will install. You can see `infra/packaging/preset/` directory for more details and getting latest version.
 - `--prefix` is the install directory.
+
+## Cross build for Ubuntu ARM32 (experimental)
+
+Some modules are availble for ARM32 cross build.
+
+As some tools are executed while configuration, they must be built and executed
+for host(x86-64).
+
+Cross build overall steps are like, (1) configure for host
+(2) build tools for host (3) configure for ARM32 target
+(4) and then build for ARM32 target.
+
+You should prepare ARM32 root file system for cross compilation.
+Please refer
+[how-to-cross-build-runtime-for-arm.md](how-to-cross-build-runtime-for-arm.md)
+for preparation.
+
+You can set `ROOTFS_ARM` environment variable if you have in alternative
+folder.
+
+To make build simple `infra/nncc/Makefile.arm32` file is provided as to use
+with make command.
+```
+make -f infra/nncc/Makefile.arm32 cfg
+make -f infra/nncc/Makefile.arm32 debug
+```
+First `make` will run (1), (2) and (3). Second `make` will run (4).
+
+You can also run unit tests in ARM32 Ubuntu device with cross build results.
+```
+make -f infra/nncc/Makefile.arm32 test
+```

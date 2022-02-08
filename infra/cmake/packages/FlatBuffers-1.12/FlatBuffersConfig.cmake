@@ -1,5 +1,6 @@
 function(_FlatBuffers_import)
-  find_package(Flatbuffers QUIET)
+  #find_package(Flatbuffers QUIET)
+  nnas_find_package_folder(Flatbuffers ${EXT_OVERLAY_DIR}/FLATBUFFERS-1.12 QUIET)
   set(FlatBuffers_FOUND ${Flatbuffers_FOUND} PARENT_SCOPE)
 endfunction(_FlatBuffers_import)
 
@@ -34,8 +35,30 @@ function(_FlatBuffers_build)
 
 endfunction(_FlatBuffers_build)
 
+message(STATUS "!!! FlatBuffersConfig")
+
 _FlatBuffers_build()
 _FlatBuffers_import()
+
+# for cross compilation BUILD_HOST_EXEC should be set for host flatc executable
+# flatc should exist as ${BUILD_HOST_EXEC}/overlay/FLATBUFFERS-1.12/bin/flatc.
+# and then if EXTERNAL_FLATC is set then use ${EXTERNAL_FLATC} file.
+set(FLATC_PATH "$<TARGET_FILE:flatbuffers::flatc>")
+
+if(DEFINED ENV{BUILD_HOST_EXEC})
+  set(FLATC_PATH $ENV{BUILD_HOST_EXEC}/overlay/FLATBUFFERS-1.12/bin/flatc)
+  message(STATUS "!!! FLATC_PATH 1.12 from BUILD_HOST_EXEC = ${FLATC_PATH}")
+endif(DEFINED ENV{BUILD_HOST_EXEC})
+if(DEFINED ENV{EXTERNAL_FLATC})
+  set(FLATC_PATH $ENV{EXTERNAL_FLATC})
+  message(STATUS "!!! FLATC_PATH 1.12 from EXTERNAL_FLATC = ${FLATC_PATH}")
+endif(DEFINED ENV{EXTERNAL_FLATC})
+
+if(FlatBuffers_FOUND)
+  message(STATUS "!!! FlatBuffers_FOUND")
+else()
+  message(STATUS "!!! NOT FlatBuffers_FOUND")
+endif()
 
 if(FlatBuffers_FOUND)
   if(NOT TARGET flatbuffers-1.12)
@@ -60,7 +83,7 @@ if(FlatBuffers_FOUND)
 
     add_custom_command(OUTPUT ${OUTPUT_FILES}
                        COMMAND ${CMAKE_COMMAND} -E make_directory "${abs_output_dir}"
-                       COMMAND "$<TARGET_FILE:flatbuffers::flatc>" -c --no-includes
+                       COMMAND "${FLATC_PATH}" -c --no-includes
                        --no-union-value-namespacing
                        --gen-object-api -o "${abs_output_dir}"
                        ${SCHEMA_FILES}
@@ -102,7 +125,7 @@ if(FlatBuffers_FOUND)
     # Generate headers
     add_custom_command(OUTPUT ${OUTPUT_FILES}
                        COMMAND ${CMAKE_COMMAND} -E make_directory "${abs_output_dir}"
-                       COMMAND "$<TARGET_FILE:flatbuffers::flatc>" -c --no-includes
+                       COMMAND "${FLATC_PATH}" -c --no-includes
                                --no-union-value-namespacing
                                --gen-object-api -o "${abs_output_dir}"
                                ${SCHEMA_FILES}

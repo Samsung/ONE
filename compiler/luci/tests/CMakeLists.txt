@@ -1,6 +1,14 @@
 set(CIRCLECHEF_FILE_PATH $<TARGET_FILE:circlechef-file>)
 set(TFLCHEF_FILE_PATH $<TARGET_FILE:tflchef-file>)
 set(TFLITE2CIRCLE_PATH $<TARGET_FILE:tflite2circle>)
+if(DEFINED ENV{BUILD_HOST_EXEC})
+  set(CIRCLECHEF_FILE_PATH $ENV{BUILD_HOST_EXEC}/compiler/circlechef/tools/file/circlechef-file)
+  set(TFLCHEF_FILE_PATH $ENV{BUILD_HOST_EXEC}/compiler/tflchef/tools/file/tflchef-file)
+  set(TFLITE2CIRCLE_PATH $ENV{BUILD_HOST_EXEC}/compiler/tflite2circle/tflite2circle)
+  message(STATUS "!!! CIRCLECHEF_FILE_PATH from BUILD_HOST_EXEC = ${CIRCLECHEF_FILE_PATH}")
+  message(STATUS "!!! TFLCHEF_FILE_PATH from BUILD_HOST_EXEC = ${TFLCHEF_FILE_PATH}")
+  message(STATUS "!!! TFLITE2CIRCLE_PATH from BUILD_HOST_EXEC = ${TFLITE2CIRCLE_PATH}")
+endif(DEFINED ENV{BUILD_HOST_EXEC})
 
 # TODO use local test.recipe files for small networks
 file(GLOB RECIPES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*/test.recipe")
@@ -115,6 +123,8 @@ include("test.lst")
 # Read "test.local.lst" if exists
 include("test.local.lst" OPTIONAL)
 
+# NOTE need to run test in target device;
+#      test itself is to check luci import/export is correctly working
 add_test(NAME luci_unit_readtest
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/readverify.sh"
           "${CMAKE_CURRENT_BINARY_DIR}"
