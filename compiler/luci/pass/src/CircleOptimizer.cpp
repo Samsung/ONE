@@ -512,9 +512,8 @@ void CircleOptimizer::quantize(loco::Graph *g) const
 
     luci::QuantizeWithMinMaxPass quantizer(
       str_to_dtype(input_model_dtype), str_to_dtype(output_model_dtype),
-      str_to_granularity(granularity), str_to_dtype(input_type), str_to_dtype(output_type));
-
-    quantizer.TF_style_maxpool(TF_style_maxpool);
+      str_to_granularity(granularity), str_to_dtype(input_type), str_to_dtype(output_type),
+      TF_style_maxpool);
 
     quantizer.run(g);
 
