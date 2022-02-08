@@ -6,7 +6,7 @@ set(ARM_OBJCOPY "arm-none-eabi-objcopy")
 find_program(ARM_C_COMPILER_PATH ${ARM_C_COMPILER})
 
 if(NOT ARM_C_COMPILER_PATH)
-  message(WARNING "ARM compiler is NOT FOUND, skipping luci-micro build")
+  message(STATUS "Build luci-micro: FALSE(ARM compiler is NOT FOUND)")
   return()
 endif()
 
