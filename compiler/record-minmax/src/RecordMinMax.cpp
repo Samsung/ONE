@@ -430,13 +430,13 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
       }
       else if (input_node->dtype() == DataType::S32)
       {
-        auto input_data = genRandomIntData<int32_t>(gen, num_elements, -100, 100);
+        auto input_data = genRandomIntData<int32_t>(gen, num_elements, 0, 100);
         _interpreter->writeInputTensor(input_node, input_data.data(),
                                        input_data.size() * sizeof(int32_t));
       }
       else if (input_node->dtype() == DataType::S64)
       {
-        auto input_data = genRandomIntData<int64_t>(gen, num_elements, -100, 100);
+        auto input_data = genRandomIntData<int64_t>(gen, num_elements, 0, 100);
         _interpreter->writeInputTensor(input_node, input_data.data(),
                                        input_data.size() * sizeof(int64_t));
       }
