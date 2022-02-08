@@ -970,7 +970,7 @@ TEST(ConvertNCHWToNHWC, Elu)
   EXPECT_EQ(1, elu_succs.size());
   check_post_trans(*elu_succs.begin());
 
-  // Check leakyrelu shape
+  // Check elu shape
   EXPECT_EQ(1, g.elu->dim(0).value());
   EXPECT_EQ(4, g.elu->dim(1).value());
   EXPECT_EQ(4, g.elu->dim(2).value());
