@@ -24,7 +24,8 @@ endfunction(_Protobuf_module_import)
 function(_Protobuf_import)
   # Let's use find_package here not to export unnecessary definitions
   # NOTE Here we use "exact" match to avoid possible infinite loop
-  find_package(protobuf EXACT 3.5.2 QUIET)
+  # find_package(protobuf EXACT 3.5.2 QUIET)
+  nnas_find_package_folder(protobuf ${EXT_OVERLAY_DIR} EXACT 3.5.2 QUIET)
 
   if(NOT protobuf_FOUND)
     set(Protobuf_FOUND FALSE PARENT_SCOPE)

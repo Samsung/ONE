@@ -1,5 +1,6 @@
 function(_FlatBuffers_import)
-  find_package(Flatbuffers QUIET)
+  #find_package(Flatbuffers QUIET)
+  nnas_find_package_folder(Flatbuffers ${EXT_OVERLAY_DIR}/FLATBUFFERS-1.12 QUIET)
   set(FlatBuffers_FOUND ${Flatbuffers_FOUND} PARENT_SCOPE)
 endfunction(_FlatBuffers_import)
 

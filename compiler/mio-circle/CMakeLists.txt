@@ -1,7 +1,12 @@
-nnas_find_package(FlatBuffers EXACT 1.10 QUIET)
+# nnas_find_package(FlatBuffers EXACT 1.12 QUIET)
+
+nnas_find_package_folder(FlatBuffers
+                         ${CMAKE_BINARY_DIR}/externals/FLATBUFFERS-1.12/build
+                         EXACT 1.12
+                         QUIET)
 
 if(NOT FlatBuffers_FOUND)
-  message(STATUS "mio-circle skip: FlatBuffers 1.10 NOT FOUND")
+  message(STATUS "mio-circle skip: FlatBuffers 1.12 NOT FOUND")
   return()
 endif(NOT FlatBuffers_FOUND)
 
