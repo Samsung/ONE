@@ -17,13 +17,11 @@
 #ifndef __LUCI_CIRCLE_TYPE_INFERENCE_H__
 #define __LUCI_CIRCLE_TYPE_INFERENCE_H__
 
-#include <loco/IR/Nodes.h>
-
-#include <mio/circle/schema_generated.h>
-
+#include <luci/Service/CircleTypeInferenceRule.h>
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
-#include <luci/Service/CircleTypeInferenceRule.h>
+
+#include <loco/IR/DataType.h>
 
 namespace luci
 {
