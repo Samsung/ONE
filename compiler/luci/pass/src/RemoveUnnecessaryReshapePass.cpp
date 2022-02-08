@@ -58,6 +58,25 @@ bool remove_no_effect_reshape(luci::CircleNode *node)
 namespace luci
 {
 
+/**
+ * BEFORE
+ *      [CircleNode]
+ *            |
+ *     [CircleReshape]
+ *            |
+ *      [CircleNode]
+ *
+ * AFTER
+ *      [CircleNode]
+ *            |  \
+ *            |  [CircleReshape]
+ *            |
+ *      [CircleNode]
+ *
+ * NOTE
+ *     This pass will remove Reshape when input and output has same shape
+ */
+
 bool RemoveUnnecessaryReshapePass::run(loco::Graph *g)
 {
   bool changed = false;
