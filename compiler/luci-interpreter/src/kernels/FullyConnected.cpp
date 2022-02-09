@@ -73,7 +73,16 @@ void FullyConnected::configure()
   if (bias())
     LUCI_INTERPRETER_CHECK(bias()->shape().num_elements() == weights()->shape().dim(0));
 
-  output()->resize({batch_size, num_units});
+  if (params().keep_num_dims == false)
+    output()->resize({batch_size, num_units});
+  else
+  {
+    luci_interpreter::Shape output_shape(input_shape.num_dims());
+    for (int i = 0; i < input_shape.num_dims(); ++i)
+      output_shape.dim(i) = input_shape.dim(i);
+    output_shape.dim(input_shape.num_dims() - 1) = num_units;
+    output()->resize(output_shape);
+  }
 }
 
 void FullyConnected::execute() const

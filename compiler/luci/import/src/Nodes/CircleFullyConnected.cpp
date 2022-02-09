@@ -42,6 +42,7 @@ CircleNode *CircleFullyConnectedGraphBuilder::build_node(const circle::OperatorT
   const auto *options = op.builtin_options.AsFullyConnectedOptions();
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
   node->weights_format(luci_weights_format(options->weights_format));
+  node->keep_num_dims(options->keep_num_dims);
 
   return node;
 }

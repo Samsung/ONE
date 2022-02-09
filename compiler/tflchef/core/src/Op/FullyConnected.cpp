@@ -29,6 +29,7 @@ flatbuffers::Offset<void> FullyConnectedChef::value(flatbuffers::FlatBufferBuild
 
   tflite::FullyConnectedOptionsBuilder fc_options_builder{fbb};
   fc_options_builder.add_fused_activation_function(tflite_activation);
+  fc_options_builder.add_keep_num_dims(operation.fullyconnected_options().keep_num_dims());
 
   return fc_options_builder.Finish().Union();
 }

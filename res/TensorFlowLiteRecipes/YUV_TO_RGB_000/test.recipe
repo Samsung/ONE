@@ -1,7 +1,7 @@
 operand {
   name: "input"
   type: FLOAT32
-  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+  shape { dim: 16 dim: 3 }
 }
 operand {
   name: "weight"

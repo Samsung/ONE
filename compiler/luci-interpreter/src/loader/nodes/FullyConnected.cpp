@@ -36,6 +36,7 @@ std::unique_ptr<Kernel> build_kernel_CircleFullyConnected(const luci::CircleNode
 
   FullyConnectedParams params{};
   params.activation = node->fusedActivationFunction();
+  params.keep_num_dims = node->keep_num_dims();
 
   return std::make_unique<kernels::FullyConnected>(input, weights, bias, output, params);
 }

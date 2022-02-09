@@ -37,6 +37,7 @@ build_circle_FullyConnectedOptions(flatbuffers::FlatBufferBuilder &fb, const tfl
   else if (tflite_weight_format == tflite::FullyConnectedOptionsWeightsFormat_SHUFFLED4x16INT8)
     builtin_options_builder.add_weights_format(
       circle::FullyConnectedOptionsWeightsFormat_SHUFFLED4x16INT8);
+  builtin_options_builder.add_keep_num_dims(tflite_builtin_options->keep_num_dims());
   return builtin_options_builder.Finish();
 }
 

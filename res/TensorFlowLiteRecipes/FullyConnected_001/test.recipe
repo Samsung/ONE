@@ -1,7 +1,7 @@
 operand {
   name: "in"
   type: FLOAT32
-  shape { dim: 1 dim: 1 dim: 1 dim: 4 }
+  shape { dim: 1 dim: 1 dim: 4 }
 }
 operand {
   name: "weight"
