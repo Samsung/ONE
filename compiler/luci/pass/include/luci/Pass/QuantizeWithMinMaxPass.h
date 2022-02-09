@@ -31,6 +31,17 @@ namespace luci
  */
 class QuantizeWithMinMaxPass : public logo::Pass
 {
+public:
+  struct Context
+  {
+    loco::DataType input_model_dtype;
+    loco::DataType output_model_dtype;
+    QuantizationGranularity granularity;
+    loco::DataType input_type;
+    loco::DataType output_type;
+    bool TF_style_maxpool = false;
+  };
+
   // For backward-compatibility
   // TODO Remove this constructor
 public:
@@ -39,19 +50,23 @@ public:
     : _input_model_dtype{input_model_dtype}, _output_model_dtype{output_model_dtype},
       _granularity{granularity}, _input_type{output_model_dtype}, _output_type{output_model_dtype}
   {
-    // DO NOTHING
+    _ctx = std::make_unique<Context>();
+    {
+      _ctx->input_model_dtype = input_model_dtype;
+      _ctx->output_model_dtype = output_model_dtype;
+      _ctx->granularity = granularity;
+      _ctx->input_type = output_model_dtype;
+      _ctx->output_type = output_model_dtype;
+      _ctx->TF_style_maxpool = false;
+    }
   }
 
 public:
-  QuantizeWithMinMaxPass(loco::DataType input_model_dtype, loco::DataType output_model_dtype,
-                         QuantizationGranularity granularity, loco::DataType input_type,
-                         loco::DataType output_type, bool TF_style_maxpool)
-    : _input_model_dtype{input_model_dtype}, _output_model_dtype{output_model_dtype},
-      _granularity{granularity}, _input_type{input_type}, _output_type{output_type},
-      _TF_style_maxpool{TF_style_maxpool}
+  QuantizeWithMinMaxPass(std::unique_ptr<Context> &&ctx) : _ctx{std::move(ctx)}
   {
     // DO NOTHING
   }
+
   virtual const char *name(void) const { return "luci::QuantizeWithMinMaxPass"; }
 
 public:
@@ -62,6 +77,7 @@ private:
   void set_output_type(loco::Graph *graph) const;
 
 private:
+  std::unique_ptr<Context> _ctx;
   loco::DataType _input_model_dtype;
   loco::DataType _output_model_dtype;
   QuantizationGranularity _granularity;
