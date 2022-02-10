@@ -58,8 +58,12 @@ public:
   WeightsFormat weights_format(void) const { return _weights_format; }
   void weights_format(WeightsFormat weights_format) { _weights_format = weights_format; }
 
+  bool keep_num_dims(void) const { return _keep_num_dims; }
+  void keep_num_dims(bool keep_num_dims) { _keep_num_dims = keep_num_dims; }
+
 private:
   WeightsFormat _weights_format{WeightsFormat::DEFAULT};
+  bool _keep_num_dims = false;
 };
 
 } // namespace luci
