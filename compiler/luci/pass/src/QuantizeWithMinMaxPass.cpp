@@ -1197,145 +1197,185 @@ void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot, loco::DataType qu
   quant_input(&CircleOneHot::off_value, &CircleOneHot::off_value);
 }
 
-/**
- * @brief Quantize const input tensors using min/max of const values
- */
-void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
+// Quantize constant input activation of a node
+// The input of a node is quantized if it is
+// 1. Constant (instance of CircleConst*)
+// 2. Activation (other inputs e.g., weights, bias, axis, etc should not be quantized here)
+struct QuantizeConstInputActivation final : public luci::CircleNodeMutableVisitor<void>
 {
-  auto opcode = node->opcode();
-  auto arity = node->arity();
+  QuantizeConstInputActivation(loco::DataType output_type) : _output_type(output_type) {}
 
-  loco::Node *input_node{nullptr};
-  luci::CircleConst *const_node{nullptr};
+private:
+  loco::DataType _output_type;
 
-  switch (opcode)
-  {
-    case luci::CircleOpcode::CONV_2D:
-    case luci::CircleOpcode::DEPTHWISE_CONV_2D:
-    case luci::CircleOpcode::FULLY_CONNECTED:
-    case luci::CircleOpcode::INSTANCE_NORM:
-    case luci::CircleOpcode::PRELU:
-    case luci::CircleOpcode::TRANSPOSE_CONV:
-      // Handled in QuantizeWeights and QuantizeBias
-      break;
+// Skip NODE
+#define SKIP(NODE) \
+  void visit(NODE *) {}
 
-    case luci::CircleOpcode::CONCATENATION:
-      // Handled in propagate_concat_quantparam
-      break;
-
-    case luci::CircleOpcode::LOGICAL_OR:
-      // Inputs of logical Ops are bool, thus not quantized
-      break;
-
-    case luci::CircleOpcode::ARG_MAX:
-    case luci::CircleOpcode::ARG_MIN:
-    case luci::CircleOpcode::BATCH_TO_SPACE_ND:
-    case luci::CircleOpcode::GATHER:
-    case luci::CircleOpcode::LOCAL_RESPONSE_NORMALIZATION:
-    case luci::CircleOpcode::MEAN:
-    case luci::CircleOpcode::MIRROR_PAD:
-    case luci::CircleOpcode::PAD:
-    case luci::CircleOpcode::REDUCE_ANY:
-    case luci::CircleOpcode::REDUCE_PROD:
-    case luci::CircleOpcode::REDUCE_MAX:
-    case luci::CircleOpcode::REDUCE_MIN:
-    case luci::CircleOpcode::RESHAPE:
-    case luci::CircleOpcode::RESIZE_BILINEAR:
-    case luci::CircleOpcode::RESIZE_NEAREST_NEIGHBOR:
-    case luci::CircleOpcode::REVERSE_SEQUENCE:
-    case luci::CircleOpcode::SLICE:
-    case luci::CircleOpcode::SPACE_TO_BATCH_ND:
-    case luci::CircleOpcode::SPLIT_V:
-    case luci::CircleOpcode::STRIDED_SLICE:
-    case luci::CircleOpcode::SUM:
-    case luci::CircleOpcode::TILE:
-    case luci::CircleOpcode::TOPK_V2:
-    case luci::CircleOpcode::TRANSPOSE:
-      // The second input of these Ops should not be quantized
-      // Ex: axis, paddings
-      input_node = node->arg(0);
-      const_node = dynamic_cast<luci::CircleConst *>(input_node);
-      if (const_node != nullptr && !is_quantized(const_node))
-        quant_const(const_node, output_type);
-      break;
-
-    case luci::CircleOpcode::ADD:
-    case luci::CircleOpcode::ADD_N:
-    case luci::CircleOpcode::BATCH_MATMUL:
-    case luci::CircleOpcode::DEPTH_TO_SPACE:
-    case luci::CircleOpcode::DIV:
-    case luci::CircleOpcode::ELU:
-    case luci::CircleOpcode::EQUAL:
-    case luci::CircleOpcode::EXP:
-    case luci::CircleOpcode::FLOOR:
-    case luci::CircleOpcode::FLOOR_DIV:
-    case luci::CircleOpcode::GREATER:
-    case luci::CircleOpcode::GREATER_EQUAL:
-    case luci::CircleOpcode::LESS:
-    case luci::CircleOpcode::LESS_EQUAL:
-    case luci::CircleOpcode::LOGISTIC:
-    case luci::CircleOpcode::MAXIMUM:
-    case luci::CircleOpcode::MINIMUM:
-    case luci::CircleOpcode::MUL:
-    case luci::CircleOpcode::NOT_EQUAL:
-    case luci::CircleOpcode::POW:
-    case luci::CircleOpcode::RSQRT:
-    case luci::CircleOpcode::SOFTMAX:
-    case luci::CircleOpcode::SPACE_TO_DEPTH:
-    case luci::CircleOpcode::SQRT:
-    case luci::CircleOpcode::SUB:
-    case luci::CircleOpcode::TANH:
-    case luci::CircleOpcode::UNPACK:
-      // Quantize all const inputs using their values
-      for (uint32_t i = 0; i < arity; i++)
-      {
-        input_node = node->arg(i);
-        const_node = dynamic_cast<luci::CircleConst *>(input_node);
-        if (const_node != nullptr && !is_quantized(const_node))
-          quant_const(const_node, output_type);
-      }
-      break;
-
-    case luci::CircleOpcode::SPLIT:
-      // Only the second input is quantized
-      // First input should not be quantized (e.g., split_dim)
-      input_node = node->arg(1);
-      const_node = dynamic_cast<luci::CircleConst *>(input_node);
-      if (const_node != nullptr && !is_quantized(const_node))
-        quant_const(const_node, output_type);
-      break;
-
-    case luci::CircleOpcode::PADV2:
-      // First and third constant inputs are quantized
-      // Second input should not be quantized (e.g., paddings)
-      // Quant params are propagated either from output range to the non-constant input
-      // or from input to output and constant values
-      propagate_pad_v2_quantparam(loco::must_cast<CirclePadV2 *>(node), output_type);
-      break;
-
-    case luci::CircleOpcode::PACK:
-      // Quant param is propagated from output to inputs
-      propagate_pack_quantparam(loco::must_cast<CirclePack *>(node), output_type);
-      break;
-
-    case luci::CircleOpcode::ONE_HOT:
-      // Third and forth constant inputs are quantized
-      // First and second input should not be quantized (e.g., indices, depth)
-      // Quant params are propagated from output to inputs
-      propagate_one_hot_quantparam(loco::must_cast<CircleOneHot *>(node), output_type);
-      break;
-
-    default:
-      for (uint32_t i = 0; i < arity; i++)
-      {
-        input_node = node->arg(i);
-        const_node = dynamic_cast<luci::CircleConst *>(input_node);
-        if (const_node != nullptr)
-          throw std::runtime_error("Unsupported Op for const inputs");
-      }
-      break;
+// INPUT_NAME is the only activation of NODE
+#define QUANTIZE_SINGLE_CONST_INPUT(NODE, INPUT_NAME)           \
+  void visit(NODE *node)                                        \
+  {                                                             \
+    auto input = node->INPUT_NAME();                            \
+    auto const_node = dynamic_cast<luci::CircleConst *>(input); \
+    if (const_node && !is_quantized(const_node))                \
+    {                                                           \
+      auto new_const = luci::clone(const_node);                 \
+      quant_const(new_const, _output_type);                     \
+      node->INPUT_NAME(new_const);                              \
+    }                                                           \
   }
-}
+
+// INPUT_NAME1 and INPUT_NAME2 are the only activations of NODE
+#define QUANTIZE_TWO_CONST_INPUTS(NODE, INPUT_NAME1, INPUT_NAME2) \
+  void visit(NODE *node)                                          \
+  {                                                               \
+    auto input1 = node->INPUT_NAME1();                            \
+    auto const_node1 = dynamic_cast<luci::CircleConst *>(input1); \
+    if (const_node1 && !is_quantized(const_node1))                \
+    {                                                             \
+      auto new_const1 = luci::clone(const_node1);                 \
+      quant_const(new_const1, _output_type);                      \
+      node->INPUT_NAME1(new_const1);                              \
+    }                                                             \
+    auto input2 = node->INPUT_NAME2();                            \
+    auto const_node2 = dynamic_cast<luci::CircleConst *>(input2); \
+    if (const_node2 && !is_quantized(const_node2))                \
+    {                                                             \
+      auto new_const2 = luci::clone(const_node2);                 \
+      quant_const(new_const2, _output_type);                      \
+      node->INPUT_NAME2(new_const2);                              \
+    }                                                             \
+  }
+
+  // Default behavior (NYI)
+  void visit(luci::CircleNode *node)
+  {
+    for (uint32_t i = 0; i < node->arity(); i++)
+    {
+      auto input_node = node->arg(i);
+      auto const_node = dynamic_cast<luci::CircleConst *>(input_node);
+      if (const_node != nullptr)
+        throw std::runtime_error("Unsupported Op for const inputs");
+    }
+  }
+
+  // Handled in QuantizeWeights and QuantizeBias
+  SKIP(luci::CircleConv2D)
+  SKIP(luci::CircleDepthwiseConv2D)
+  SKIP(luci::CircleFullyConnected)
+  SKIP(luci::CircleInstanceNorm)
+  SKIP(luci::CirclePRelu)
+  SKIP(luci::CircleTransposeConv)
+
+  // Handled in propagate_concat_quantparam
+  SKIP(luci::CircleConcatenation)
+
+  // Inputs of logical Ops are bool, thus not quantized
+  SKIP(luci::CircleLogicalOr)
+  SKIP(luci::CircleLogicalAnd)
+  SKIP(luci::CircleLogicalNot)
+
+  // Ops that receive a single activation as an input
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleArgMax, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleArgMin, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleBatchToSpaceND, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleDepthToSpace, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleElu, features)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleExp, x)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleFloor, x)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleGather, params)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleLocalResponseNormalization, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleLogistic, x)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleMean, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleMirrorPad, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CirclePad, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleReduceAny, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleReduceProd, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleReduceMax, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleReduceMin, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleReshape, tensor)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleResizeBilinear, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleResizeNearestNeighbor, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleReverseSequence, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleRsqrt, x)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleSlice, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleSoftmax, logits)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleSpaceToBatchND, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleSpaceToDepth, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleSplit, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleSplitV, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleSqrt, x)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleStridedSlice, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleSum, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleTanh, x)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleTile, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleTopKV2, input)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleTranspose, a)
+  QUANTIZE_SINGLE_CONST_INPUT(luci::CircleUnpack, value)
+
+  // Ops that receive two activations as inputs
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleAdd, x, y)
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleBatchMatMul, x, y)
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleDiv, x, y)
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleEqual, x, y)
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleFloorDiv, x, y)
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleGreater, x, y)
+  // QUANTIZE_TWO_CONST_INPUTS(luci::CircleGreaterEqual, x, y)
+  void visit(luci::CircleGreaterEqual *node)
+  {
+    auto input1 = node->x();
+    auto const_node1 = dynamic_cast<luci::CircleConst *>(input1);
+    if (const_node1 && !is_quantized(const_node1))
+    {
+      auto new_const1 = luci::clone(const_node1);
+      quant_const(new_const1, _output_type);
+      node->x(new_const1);
+    }
+    auto input2 = node->y();
+    auto const_node2 = dynamic_cast<luci::CircleConst *>(input2);
+    if (const_node2 && !is_quantized(const_node2))
+    {
+      auto new_const2 = luci::clone(const_node2);
+      quant_const(new_const2, _output_type);
+      node->y(new_const2);
+    }
+  }
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleLess, x, y)
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleLessEqual, x, y)
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleMaximum, x, y)
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleMinimum, x, y)
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleMul, x, y)
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleNotEqual, x, y)
+  QUANTIZE_TWO_CONST_INPUTS(luci::CirclePow, x, y)
+  QUANTIZE_TWO_CONST_INPUTS(luci::CircleSub, x, y)
+
+  void visit(luci::CircleAddN *node)
+  {
+    auto arity = node->arity();
+    for (uint32_t i = 0; i < arity; i++)
+    {
+      auto input_node = node->inputs(i);
+      auto const_node = dynamic_cast<luci::CircleConst *>(input_node);
+      if (const_node && !is_quantized(const_node))
+      {
+        auto new_const = luci::clone(const_node);
+        quant_const(new_const, _output_type);
+        node->inputs(i, new_const);
+      }
+    }
+  }
+
+  void visit(luci::CirclePadV2 *node) { propagate_pad_v2_quantparam(node, _output_type); }
+
+  void visit(luci::CirclePack *node) { propagate_pack_quantparam(node, _output_type); }
+
+  void visit(luci::CircleOneHot *node) { propagate_one_hot_quantparam(node, _output_type); }
+
+#undef SKIP
+#undef QUANTIZE_SINGLE_CONST_INPUT
+#undef QUANTIZE_TWO_CONST_INPUTS
+};
 
 } // namespace
 
@@ -1680,11 +1720,12 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     circle_node->accept(&qsa);
   }
 
-  // Quantize const inputs other than weights and bias
+  // Quantize const input activation
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
+    QuantizeConstInputActivation qcia(_output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    quantize_const_inputs(circle_node, _output_model_dtype);
+    circle_node->accept(&qcia);
   }
 
   // Forward propagation of activation qparam

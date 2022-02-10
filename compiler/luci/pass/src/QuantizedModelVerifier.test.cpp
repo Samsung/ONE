@@ -127,19 +127,6 @@ void quantize_and_verify_with_wrong_type(luci::test::TestIOGraph *g, Type quanti
   verifier.verify(g->g());
 }
 
-void quantize_and_verify_with_wrong_type(luci::test::TestIOGraph *g, Type quantized_dtype,
-                                         Granularity granularity, Type wrong_dtype,
-                                         luci::CircleNode *target)
-{
-  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, quantized_dtype, granularity);
-  pass.run(g->g());
-
-  target->dtype(wrong_dtype);
-
-  luci::QuantizedModelVerifier verifier(quantized_dtype, granularity);
-  verifier.verify(g->g());
-}
-
 // Helper function to reduce duplicate test codes
 // Assumption: g->output()->from() is the target node
 void quantize_and_verify_with_wrong_granularity(luci::test::TestIOGraph *g, Type quantized_dtype,
@@ -150,19 +137,6 @@ void quantize_and_verify_with_wrong_granularity(luci::test::TestIOGraph *g, Type
 
   auto node = loco::must_cast<luci::CircleNode *>(g->output()->from());
   insert_scale_zp(node, 1.0, 1);
-
-  luci::QuantizedModelVerifier verifier(quantized_dtype, granularity);
-  verifier.verify(g->g());
-}
-
-// Helper function to reduce duplicate test codes
-void quantize_and_verify_with_wrong_granularity(luci::test::TestIOGraph *g, Type quantized_dtype,
-                                                Granularity granularity, luci::CircleNode *target)
-{
-  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, quantized_dtype, granularity);
-  pass.run(g->g());
-
-  insert_scale_zp(target, 1.0, 1);
 
   luci::QuantizedModelVerifier verifier(quantized_dtype, granularity);
   verifier.verify(g->g());
@@ -1197,25 +1171,34 @@ private:
 
 // Quantize and verify with wrong type
 // Users can specify the test target
-#define TEST_WITH_WRONG_TYPE_TARGET(graph, type, granularity, wrong_dtype, target)    \
-  do                                                                                  \
-  {                                                                                   \
-    graph g;                                                                          \
-    g.init();                                                                         \
-    auto node = loco::must_cast<luci::CircleNode *>(target);                          \
-    EXPECT_ANY_THROW(                                                                 \
-      quantize_and_verify_with_wrong_type(&g, type, granularity, wrong_dtype, node)); \
+#define TEST_WITH_WRONG_TYPE_TARGET(graph, type, granularity, wrong_dtype, target) \
+  do                                                                               \
+  {                                                                                \
+    graph g;                                                                       \
+    g.init();                                                                      \
+    auto node = loco::must_cast<luci::CircleNode *>(target);                       \
+    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, type, granularity);           \
+    pass.run(g.g());                                                               \
+    auto after_node = loco::must_cast<luci::CircleNode *>(target);                 \
+    after_node->dtype(wrong_dtype);                                                \
+    luci::QuantizedModelVerifier verifier(type, granularity);                      \
+    EXPECT_ANY_THROW(verifier.verify(g.g()));                                      \
   } while (0)
 
 // Quantize and verify with wrong granularity
 // Users can specify the test target
-#define TEST_WITH_WRONG_GRANULARITY_TARGET(graph, type, granularity, target)                   \
-  do                                                                                           \
-  {                                                                                            \
-    graph g;                                                                                   \
-    g.init();                                                                                  \
-    auto node = loco::must_cast<luci::CircleNode *>(target);                                   \
-    EXPECT_ANY_THROW(quantize_and_verify_with_wrong_granularity(&g, type, granularity, node)); \
+#define TEST_WITH_WRONG_GRANULARITY_TARGET(graph, type, granularity, target) \
+  do                                                                         \
+  {                                                                          \
+    graph g;                                                                 \
+    g.init();                                                                \
+    auto node = loco::must_cast<luci::CircleNode *>(target);                 \
+    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, type, granularity);     \
+    pass.run(g.g());                                                         \
+    auto after_node = loco::must_cast<luci::CircleNode *>(target);           \
+    insert_scale_zp(after_node, 1.0, 1);                                     \
+    luci::QuantizedModelVerifier verifier(type, granularity);                \
+    EXPECT_ANY_THROW(verifier.verify(g.g()));                                \
   } while (0)
 
 // Test a local helper function
