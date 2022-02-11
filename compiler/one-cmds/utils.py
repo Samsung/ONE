@@ -23,7 +23,7 @@ import os
 import subprocess
 import sys
 
-import python.constant as _constant
+import onelib.constant as _constant
 
 
 def _add_default_arg(parser):

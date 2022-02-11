@@ -17,7 +17,7 @@
 import os
 import sys
 
-import python.constant as _constant
+import onelib.constant as _constant
 
 def _is_valid_attr(args, attr):
     return hasattr(args, attr) and getattr(args, attr)

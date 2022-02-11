@@ -24,8 +24,8 @@ import os
 import subprocess
 import sys
 
-import python.constant as _constant
-import python.make_cmd as _make_cmd
+import onelib.constant as _constant
+import onelib.make_cmd as _make_cmd
 import utils as _utils
 
 # TODO Find better way to suppress trackback on error
