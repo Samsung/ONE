@@ -34,12 +34,11 @@ import re
 
 
 class LegalizeOptions:
-    """Determines actions to perform be legalizer
+    """Controls transformations that legalizer apply
 
     Attributes:
         unroll_rnn (bool): default is False. If True - unrolls RNN operations
         unroll_lstm (bool): default is False. If True - unrolls LSTM operations
-
     """
 
     unroll_rnn = False
@@ -53,7 +52,7 @@ def reverse_str(s):
 def parse_tensor_name(name):
     """Splits tensor name to base part and serial number
 
-    Most of tensor names have have following format: "tensor_123".
+    Most of tensor names have following format: "tensor_123".
     This  function breaks name into two values: "tensor_" and 123.
     Tensor names like this: "321" are broken into "" and 321.
 
@@ -64,7 +63,6 @@ def parse_tensor_name(name):
 
     Returns:
         tuple of str, int: base name and serial number of tensor
-
     """
     rev = reverse_str(name)
     m = re.match('(\d*)(.*)', rev)
@@ -117,7 +115,6 @@ class ModelTransformerHelper:
 
         Returns:
             str : unique tensor name that starts with base_name
-
         """
         if base_name in self._base_name_idx:
             self._base_name_idx[base_name] += 1
@@ -139,7 +136,6 @@ class ModelTransformerHelper:
 
         Returns:
             list of str: list of output tensor names
-
         """
         if type(outputs) == int:
             outputs = [self.make_tensor_with_base_name('') for i in range(outputs)]
@@ -150,7 +146,7 @@ class ModelTransformerHelper:
         return outputs
 
     def make_split(self, input, split_sizes, axis):
-        '''Create Split operation and insert it in graph.
+        """Create Split operation and insert it in graph.
 
         Args:
             input (str): name of input tensor
@@ -159,13 +155,12 @@ class ModelTransformerHelper:
 
         Returns:
             list: list of output tensor names
-
-        '''
+        """
         return self.make_node(
             'Split', [input], len(split_sizes), axis=axis, split=split_sizes)
 
     def make_concat(self, inputs, axis):
-        '''Create Concat operation and insert it in graph.
+        """Create Concat operation and insert it in graph.
 
         Args:
             inputs (list of str): list of tensors names to concat
@@ -173,12 +168,11 @@ class ModelTransformerHelper:
 
         Returns:
             str: output tensor name
-
-        '''
+        """
         return self.make_node('Concat', inputs, 1, axis=axis)[0]
 
     def make_squeeze(self, input, axes):
-        '''Create Squeeze operation and insert it in graph.
+        """Create Squeeze operation and insert it in graph.
 
         Args:
             input (str): name of input tensor
@@ -186,12 +180,11 @@ class ModelTransformerHelper:
 
         Returns:
             str: output tensor name
-
-        '''
+        """
         return self.make_node('Squeeze', [input], 1, axes=axes)[0]
 
     def make_unsqueeze(self, input, axes):
-        '''Create Unsqueeze operation and insert it in graph.
+        """Create Unsqueeze operation and insert it in graph.
 
         Args:
             input (str): name of input tensor
@@ -199,12 +192,11 @@ class ModelTransformerHelper:
 
         Returns:
             str: output tensor name
-
-        '''
+        """
         return self.make_node('Unsqueeze', [input], 1, axes=axes)[0]
 
     def make_gemm(self, A, B, C, trans_a=False, trans_b=False):
-        '''Create Gemm operation and insert it in graph.
+        """Create Gemm operation and insert it in graph.
 
         Result tensor contains A*B + C
 
@@ -217,13 +209,12 @@ class ModelTransformerHelper:
 
         Returns:
             str: output tensor name
-
-        '''
+        """
         return self.make_node(
             'Gemm', [A, B, C], 1, transA=bool(trans_a), transB=bool(trans_b))[0]
 
     def make_add(self, a, b):
-        '''Creates Add operation and insert it in graph.
+        """Creates Add operation and insert it in graph.
 
         Args:
             a (str): name of left operand tensor
@@ -231,12 +222,11 @@ class ModelTransformerHelper:
 
         Returns:
             str: output tensor name
-
-        '''
+        """
         return self.make_node('Add', [a, b], 1)[0]
 
     def make_mul(self, a, b):
-        '''Creates Mul operation and insert it in graph.
+        """Creates Mul operation and insert it in graph.
 
         Args:
             a (str): name of left operand tensor
@@ -244,12 +234,11 @@ class ModelTransformerHelper:
 
         Returns:
             str: output tensor name
-
-        '''
+        """
         return self.make_node('Mul', [a, b], 1)[0]
 
     def make_clip(self, input, min, max):
-        '''Create Clip operation and insert it in graph.
+        """Create Clip operation and insert it in graph.
 
         Args:
             input (str): input tensor name
@@ -258,12 +247,11 @@ class ModelTransformerHelper:
 
         Returns:
             str: output tensor name
-
-        '''
+        """
         return self.make_node('Clip', [input], 1, min=min, max=max)[0]
 
     def make_act(self, input, act_name):
-        '''Create activation function operation and insert it in graph.
+        """Create activation function operation and insert it in graph.
 
         Args:
             input (str): input tensor name
@@ -271,8 +259,7 @@ class ModelTransformerHelper:
 
         Returns:
             str: output tensor name
-
-        '''
+        """
         assert (act_name in ['Relu', 'Tanh', 'Sigmoid'])
         return self.make_node(act_name, [input], 1)[0]
 
@@ -285,7 +272,6 @@ class ModelTransformerHelper:
 
         Returns:
             str: name of created constant tensor
-
         """
         tensor = onnx.numpy_helper.from_array(tensor_data)
         tensor.name = self.make_tensor_with_base_name(base_name)
@@ -347,7 +333,6 @@ def dtype_to_np(dtype):
 
     Returns:
         numpy data type: numpy dtype, like np.float32
-
     """
 
     if dtype == 1:
@@ -371,7 +356,8 @@ def generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip, activat
     """
     # one direction RNN:
     #
-    # For details see: https://github.com/onnx/onnx/blob/main/docs/Changelog.md#RNN-7
+    # For details see:
+    # https://github.com/onnx/onnx/blob/5cf5feef5ec3fd5527b2fdb6c29780e3b705059f/docs/Changelog.md#RNN-7
     #
     # H = f(X*(W^T) + h*(R^T) + B)
     #
@@ -423,7 +409,6 @@ def transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, ac
         hidden_size (int): size of hidden state
         layout (int): See attribute description:
             https://github.com/onnx/onnx/blob/5cf5feef5ec3fd5527b2fdb6c29780e3b705059f/docs/Operators.md#attributes-56
-
     """
 
     inputs = original_node.input
@@ -479,7 +464,6 @@ def transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, act
         hidden_size (int): size of hidden state
         layout (int): See attribute description:
             https://github.com/onnx/onnx/blob/5cf5feef5ec3fd5527b2fdb6c29780e3b705059f/docs/Operators.md#attributes-56
-
     """
 
     inputs = original_node.input
@@ -562,7 +546,6 @@ def legalize_RNN(transformer, tensor_infos, node):
         transformer (ModelTransformerHelper): transformation helper
         tensor_infos (dict from str to Info): dict maps tensor name to it's shape and dtype info
         node (onnx.onnx_ml_pb2.NodeProto): RNN operation to unroll
-
     """
     inputs = node.input
     outputs = node.output
@@ -644,7 +627,8 @@ def generate_one_direction_LSTM(transformer, X, W, R, B, initial_h, initial_c, P
     """
     # one direction LSTM:
     #
-    # For details see: https://github.com/onnx/onnx/blob/main/docs/Changelog.md#LSTM-7
+    # For details see:
+    # https://github.com/onnx/onnx/blob/5cf5feef5ec3fd5527b2fdb6c29780e3b705059f/docs/Changelog.md#LSTM-7
     #
     # it = f(Xt*(Wi^T) + Ht-1*(Ri^T) + Pi (.) Ct-1 + Wbi + Rbi)
     # ft = f(Xt*(Wf^T) + Ht-1*(Rf^T) + Pf (.) Ct-1 + Wbf + Rbf)
@@ -780,7 +764,6 @@ def transform_unidirectional_LSTM(transformer, original_node, x, tensor_infos,
         hidden_size (int): size of hidden state
         layout (int): See attribute description:
             https://github.com/onnx/onnx/blob/5cf5feef5ec3fd5527b2fdb6c29780e3b705059f/docs/Operators.md#attributes-37
-
     """
 
     inputs = original_node.input
@@ -950,7 +933,6 @@ def legalize_LSTM(transformer, tensor_infos, node):
         transformer (ModelTransformerHelper): transformation helper
         tensor_infos (dict from str to Info): dict maps tensor name to it's shape and dtype info
         node (onnx.onnx_ml_pb2.NodeProto): LSTM operation to unroll
-
     """
     inputs = node.input
     outputs = node.output
@@ -1028,7 +1010,6 @@ def legalize(model, options):
     Args:
         model (onnx.onnx_ml_pb2.ModelProto): target model
         options (LegalizeOptions):
-
     """
     tensor_infos = get_tensor_infos(model)
 
