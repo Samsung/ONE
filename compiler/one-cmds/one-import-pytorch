@@ -32,7 +32,7 @@ import json
 import zipfile
 
 import onnx_legalizer
-import python.make_cmd as _make_cmd
+import onelib.make_cmd as _make_cmd
 import utils as _utils
 
 # TODO Find better way to suppress trackback on error

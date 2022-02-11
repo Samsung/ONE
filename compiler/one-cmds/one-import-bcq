@@ -25,7 +25,7 @@ import subprocess
 import sys
 import tempfile
 
-import python.make_cmd as _make_cmd
+import onelib.make_cmd as _make_cmd
 import utils as _utils
 import generate_bcq_output_arrays as _bcq_info_gen
 
