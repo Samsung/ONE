@@ -196,23 +196,18 @@ template <class CIRCLENODE> loco::NodeShape broadcast_xy(const CIRCLENODE *node)
   return loco::NodeShape{output_shape};
 }
 
-template <class CIRCLENODE> loco::NodeShape use_inputs(const CIRCLENODE *node)
-{
-  auto inputs_shape = luci::shape_get(node->inputs()).template as<loco::TensorShape>();
-  return loco::NodeShape{inputs_shape};
-}
+#define DECLARE_USE_SINGLE(NAME)                                                        \
+  template <class CIRCLENODE> loco::NodeShape use_##NAME(const CIRCLENODE *node)        \
+  {                                                                                     \
+    auto inputs_shape = luci::shape_get(node->NAME()).template as<loco::TensorShape>(); \
+    return loco::NodeShape{inputs_shape};                                               \
+  }
 
-template <class CIRCLENODE> loco::NodeShape use_x(const CIRCLENODE *node)
-{
-  auto x_shape = luci::shape_get(node->x()).template as<loco::TensorShape>();
-  return loco::NodeShape{x_shape};
-}
+DECLARE_USE_SINGLE(inputs);
+DECLARE_USE_SINGLE(x);
+DECLARE_USE_SINGLE(logits);
 
-template <class CIRCLENODE> loco::NodeShape use_logits(const CIRCLENODE *node)
-{
-  auto shape = luci::shape_get(node->logits()).template as<loco::TensorShape>();
-  return loco::NodeShape{shape};
-}
+#undef DECLARE_USE_SINGLE
 
 template <class CIRCLENODE>
 loco::NodeShape use_paddings(const CIRCLENODE *node, const luci::CircleConst *paddings)
