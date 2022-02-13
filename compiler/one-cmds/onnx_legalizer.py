@@ -45,11 +45,11 @@ class LegalizeOptions:
     unroll_lstm = False
 
 
-def reverse_str(s):
+def _reverse_str(s):
     return ''.join(reversed(s))
 
 
-def parse_tensor_name(name):
+def _parse_tensor_name(name):
     """Splits tensor name to base part and serial number
 
     Most of tensor names have following format: "tensor_123".
@@ -64,15 +64,15 @@ def parse_tensor_name(name):
     Returns:
         tuple of str, int: base name and serial number of tensor
     """
-    rev = reverse_str(name)
+    rev = _reverse_str(name)
     m = re.match('(\d*)(.*)', rev)
     if m.groups()[0] != '':
-        return (reverse_str(m.groups()[1]), int(reverse_str(m.groups()[0])))
+        return (_reverse_str(m.groups()[1]), int(_reverse_str(m.groups()[0])))
     else:
-        return (reverse_str(m.groups()[1]), 0)
+        return (_reverse_str(m.groups()[1]), 0)
 
 
-class ModelTransformerHelper:
+class _ModelTransformerHelper:
     """Helper for onnx model transformation
 
     This helper is used for convenient operation replacement in onnx model
@@ -100,7 +100,7 @@ class ModelTransformerHelper:
         # gather name information for existing tensors
         for node in model.graph.node:
             for t in list(node.input) + list(node.output):
-                base_name, number = parse_tensor_name(t)
+                base_name, number = _parse_tensor_name(t)
                 if base_name in self._base_name_idx:
                     self._base_name_idx[base_name] = max(self._base_name_idx[base_name],
                                                          number)
@@ -292,19 +292,19 @@ class ModelTransformerHelper:
             self._model.graph.node.remove(node)
 
 
-class Info:
+class _TensorInfo:
     def __init__(self, dtype, shape):
         self.dtype = dtype
         self.shape = shape
 
 
-def get_tensor_infos(model):
+def _get_tensor_infos(model):
     """Infer tensor shapes and dtypes
     Args:
         model (onnx.onnx_ml_pb2.ModelProto): model to process
 
     Returns:
-        dict from str to Info: maps tensor name to shape and dtype information
+        dict from str to _TensorInfo: maps tensor name to shape and dtype information
     """
 
     inferred_shape_model = onnx.shape_inference.infer_shapes(model)
@@ -312,17 +312,17 @@ def get_tensor_infos(model):
     infos = {}
     for tensor in list(inferred_shape_model.graph.value_info) + list(
             inferred_shape_model.graph.input):
-        info = Info(tensor.type.tensor_type.elem_type, [])
+        info = _TensorInfo(tensor.type.tensor_type.elem_type, [])
         for dim in tensor.type.tensor_type.shape.dim:
             info.shape += [dim.dim_value]
         infos[tensor.name] = info
 
     for tensor in list(model.graph.initializer):
-        infos[tensor.name] = Info(tensor.data_type, tensor.dims)
+        infos[tensor.name] = _TensorInfo(tensor.data_type, tensor.dims)
     return infos
 
 
-def dtype_to_np(dtype):
+def _dtype_to_np(dtype):
     """Convert onnx dtype value to numpy dtype class
 
     For more types see:
@@ -341,11 +341,11 @@ def dtype_to_np(dtype):
         raise NotImplementedError('unsupported data type')
 
 
-def generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip, activation_name):
+def _generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip, activation_name):
     """Generate subgraph of one direction of unrolled RNN layer
 
     Args:
-        transformer (ModelTransformerHelper): helper for model generation
+        transformer (_ModelTransformerHelper): helper for model generation
         X (list of str): names of input tensors in sequence. Tensor shapes: [batch_size, input_size].
         W (str): name of weight tensor
         R (str): name of recurrence weight tensor
@@ -394,16 +394,16 @@ def generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip, activat
     return state_tensors
 
 
-def transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, activations,
+def _transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, activation,
                                  clip, direction, hidden_size, layout):
     """Generate Simple (forward or reverse) unrolled RNN
 
     Args:
-        transformer (ModelTransformerHelper): transformation helper
+        transformer (_ModelTransformerHelper): transformation helper
         original_node (onnx.onnx_ml_pb2.NodeProto): unidirectional RNN operation to unroll
         x (list of str): list of input tensors (input tensor split along "time" dimension)
-        tensor_infos (dict from str to Info): dict maps tensor name to it's shape and dtype info
-        activations (list of str): list containing name of activation function in first element
+        tensor_infos (dict from str to _TensorInfo): dict maps tensor name to it's shape and dtype info
+        activation (str): name of activation function
         clip (float or None): range which clips input of activations
         direction (str): "forward" or "reverse"
         hidden_size (int): size of hidden state
@@ -423,7 +423,7 @@ def transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, ac
             raw_bias_tensor, split_sizes=[hidden_size] * 2, axis=0)
         b = transformer.make_add(splitted_bias_tensors[0], splitted_bias_tensors[1])
     else:
-        data_type = dtype_to_np(tensor_infos[inputs[2]].dtype)
+        data_type = _dtype_to_np(tensor_infos[inputs[2]].dtype)
         b = transformer.make_constant_tensor(
             np.zeros(hidden_size, dtype=data_type), "zero_bias")
     if len(inputs) > 5 and inputs[5] != '':
@@ -431,8 +431,7 @@ def transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, ac
         initial_h = transformer.make_squeeze(inputs[5], axes=[direction_dim])
     else:
         initial_h = None
-    activation = activations[0]
-    state_tensors = generate_one_direction_RNN(transformer, x, w, r, b, initial_h, clip,
+    state_tensors = _generate_one_direction_RNN(transformer, x, w, r, b, initial_h, clip,
                                                activation)
     y_direction_dim = layout + 1
     y_h_direction_dim = layout
@@ -444,21 +443,23 @@ def transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, ac
         ]
 
     # use low-level interface to attach to existing tensors
-    Y_h = transformer.make_node(
-        'Unsqueeze', [state_tensors[-1]], [outputs[1]], axes=[y_h_direction_dim])
-    Y = transformer.make_node(
-        'Concat', state_layout_tensors, [outputs[0]], axis=seq_length_dim)
+    Y_h = outputs[1]
+    transformer.make_node(
+        'Unsqueeze', [state_tensors[-1]], [Y_h], axes=[y_h_direction_dim])
+    Y = outputs[0]
+    transformer.make_node(
+        'Concat', state_layout_tensors, [Y], axis=seq_length_dim)
 
 
-def transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, activations,
+def _transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, activations,
                                 clip, hidden_size, layout):
     """Generate Bidirectional unrolled RNN
 
     Args:
-        transformer (ModelTransformerHelper): transformation helper
+        transformer (_ModelTransformerHelper): transformation helper
         original_node (onnx.onnx_ml_pb2.NodeProto): bidirectional RNN operation to unroll
         x (list of str): list of input tensors (input tensor split along "time" dimension)
-        tensor_infos (dict from str to Info): dict maps tensor name to it's shape and dtype info
+        tensor_infos (dict from str to _TensorInfo): dict maps tensor name to it's shape and dtype info
         activations (list of str): list of len (2) containing names of forward and reverse activations
         clip (float or None): range which clips input of activations
         hidden_size (int): size of hidden state
@@ -488,7 +489,7 @@ def transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, act
                 transformer.make_add(splitted_bias_tensors[0], splitted_bias_tensors[1])
             ]
     else:
-        data_type = dtype_to_np(tensor_infos[inputs[2]].dtype)
+        data_type = _dtype_to_np(tensor_infos[inputs[2]].dtype)
         b = [
             transformer.make_constant_tensor(
                 np.zeros(hidden_size, dtype=data_type), "zero_bias")
@@ -501,10 +502,10 @@ def transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, act
         for d in range(2):
             initial_h[d] = transformer.make_squeeze(initial_h[d], axes=[direction_dim])
 
-    state_f_tensors = generate_one_direction_RNN(transformer, x, w[0], r[0], b[0],
+    state_f_tensors = _generate_one_direction_RNN(transformer, x, w[0], r[0], b[0],
                                                  initial_h[0], clip, activations[0])
     x.reverse()
-    state_b_tensors = generate_one_direction_RNN(transformer, x, w[1], r[1], b[1],
+    state_b_tensors = _generate_one_direction_RNN(transformer, x, w[1], r[1], b[1],
                                                  initial_h[1], clip, activations[1])
     state_b_tensors.reverse()
 
@@ -531,27 +532,27 @@ def transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, act
         state_b_tensors[0], axes=[y_h_direction_dim])
 
     # use low-level interface to attach to existing tensors
-    Y_h = transformer.make_node(
-        'Concat', [last_f_state_layout_tensor, last_b_state_layout_tensor], [outputs[1]],
+    Y_h = outputs[1]
+    transformer.make_node(
+        'Concat', [last_f_state_layout_tensor, last_b_state_layout_tensor], [Y_h],
         axis=y_h_direction_dim)
 
-    Y = transformer.make_node(
-        'Concat', state_layout_tensors, [outputs[0]], axis=seq_length_dim)
+    Y = outputs[0]
+    transformer.make_node(
+        'Concat', state_layout_tensors, [Y], axis=seq_length_dim)
 
 
-def legalize_RNN(transformer, tensor_infos, node):
+def _legalize_RNN(transformer, tensor_infos, node):
     """Unroll RNN operation
 
     Args:
-        transformer (ModelTransformerHelper): transformation helper
-        tensor_infos (dict from str to Info): dict maps tensor name to it's shape and dtype info
+        transformer (_ModelTransformerHelper): transformation helper
+        tensor_infos (dict from str to _TensorInfo): dict maps tensor name to it's shape and dtype info
         node (onnx.onnx_ml_pb2.NodeProto): RNN operation to unroll
     """
     inputs = node.input
-    outputs = node.output
     if len(inputs) > 4 and inputs[4] != '':
         raise NotImplementedError('Variadic length of output is not supported')
-    name = node.name
     # attributes
     activation_alpha = []
     activation_beta = []
@@ -577,6 +578,9 @@ def legalize_RNN(transformer, tensor_infos, node):
         if attr.name == 'layout':
             layout = attr.i
 
+    if len(activation_alpha) > 0 or len(activation_beta) > 0:
+        raise NotImplementedError('Unsupported parameters for LSTM activations')
+
     for act in activations:
         if act not in ['Relu', 'Tanh', 'Sigmoid']:
             raise NotImplementedError('Unsupported activation function')
@@ -595,10 +599,10 @@ def legalize_RNN(transformer, tensor_infos, node):
         x += [squeezed_frame_tensor]
 
     if direction in ['forward', 'reverse']:
-        transform_unidirectional_RNN(transformer, node, x, tensor_infos, activations,
+        _transform_unidirectional_RNN(transformer, node, x, tensor_infos, activations[0],
                                      clip, direction, hidden_size, layout)
     elif direction == 'bidirectional':
-        transform_bidirectional_RNN(transformer, node, x, tensor_infos, activations, clip,
+        _transform_bidirectional_RNN(transformer, node, x, tensor_infos, activations, clip,
                                     hidden_size, layout)
     else:
         raise RuntimeError('Unknown RNN type')
@@ -606,12 +610,12 @@ def legalize_RNN(transformer, tensor_infos, node):
     transformer.mark_for_deletion(node)
 
 
-def generate_one_direction_LSTM(transformer, X, W, R, B, initial_h, initial_c, P, clip,
+def _generate_one_direction_LSTM(transformer, X, W, R, B, initial_h, initial_c, P, clip,
                                 act, dtype, hidden_size, batch_size):
     """Generate subgraph for one direction of unrolled LSTM layer
 
     Args:
-        transformer (ModelTransformerHelper): helper for model generation
+        transformer (_ModelTransformerHelper): helper for model generation
         X (list of str): names of tensors in input sequence. Each tensor shape: [batch_size, input_size]
         W (str): name of concatenated weight tensor: [input, output, forget, cell]
         R (str): name of concatenated recurrence weights tensor: [input, output, forget, cell]
@@ -749,15 +753,15 @@ def generate_one_direction_LSTM(transformer, X, W, R, B, initial_h, initial_c, P
     return (state_h_tensors, previous_c_state_tensor)
 
 
-def transform_unidirectional_LSTM(transformer, original_node, x, tensor_infos,
+def _transform_unidirectional_LSTM(transformer, original_node, x, tensor_infos,
                                   activations, clip, direction, hidden_size, layout):
     """Generate Simple (forward or reverse) unrolled LSTM
 
     Args:
-        transformer (ModelTransformerHelper): transformation helper
+        transformer (_ModelTransformerHelper): transformation helper
         original_node (onnx.onnx_ml_pb2.NodeProto): unidirectional LSTM operation to unroll
         x (list of str): list of input tensors (input tensor split along "time" dimension)
-        tensor_infos (dict from str to Info): dict maps tensor name to it's shape and dtype info
+        tensor_infos (dict from str to _TensorInfo): dict maps tensor name to it's shape and dtype info
         activations (list of str): list of length 3 containing names of activation functions
         clip (float or None): range which clips input of activations
         direction (str): "forward" or "reverse"
@@ -791,12 +795,12 @@ def transform_unidirectional_LSTM(transformer, original_node, x, tensor_infos,
     if len(inputs) > 7 and inputs[7] != '':
         p = transformer.make_squeeze(inputs[7], axes=[0])
 
-    dtype = dtype_to_np(tensor_infos[inputs[0]].dtype)
+    dtype = _dtype_to_np(tensor_infos[inputs[0]].dtype)
     batch_size = tensor_infos[inputs[0]].shape[1 - layout]
 
     act = {'f': activations[0], 'g': activations[1], 'h': activations[2]}
 
-    state_h_tensors, state_c_tensor = generate_one_direction_LSTM(
+    state_h_tensors, state_c_tensor = _generate_one_direction_LSTM(
         transformer, x, w, r, b, initial_h, initial_c, p, clip, act, dtype, hidden_size,
         batch_size)
 
@@ -810,25 +814,28 @@ def transform_unidirectional_LSTM(transformer, original_node, x, tensor_infos,
         ]
 
     # use low-level interface to attach to existing tensors
-    Y_h = transformer.make_node(
-        'Unsqueeze', [state_h_tensors[-1]], [outputs[1]], axes=[y_h_direction_dim])
-    Y_c = transformer.make_node(
-        'Unsqueeze', [state_c_tensor], [outputs[2]], axes=[y_h_direction_dim])
+    Y_h = outputs[1]
+    transformer.make_node(
+        'Unsqueeze', [state_h_tensors[-1]], [Y_h], axes=[y_h_direction_dim])
+    Y_c = outputs[2]
+    transformer.make_node(
+        'Unsqueeze', [state_c_tensor], [Y_c], axes=[y_h_direction_dim])
     if direction == 'reverse':
         state_layout_tensors.reverse()
-    Y = transformer.make_node(
-        'Concat', state_layout_tensors, [outputs[0]], axis=seq_length_dim)
+    Y = outputs[0]
+    transformer.make_node(
+        'Concat', state_layout_tensors, [Y], axis=seq_length_dim)
 
 
-def transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos, activations,
+def _transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos, activations,
                                  clip, hidden_size, layout):
     """Generate Bidirectional unrolled LSTM
 
     Args:
-        transformer (ModelTransformerHelper): transformation helper
+        transformer (_ModelTransformerHelper): transformation helper
         original_node (onnx.onnx_ml_pb2.NodeProto): bidirectional LSTM operation to unroll
         x (list of str): list of input tensors (input tensor split along "time" dimension)
-        tensor_infos (dict from str to Info): dict maps tensor name to it's shape and dtype info
+        tensor_infos (dict from str to _TensorInfo): dict maps tensor name to it's shape and dtype info
         activations (list of str): list of length 6, containing names of forward and reverse activations
         clip (float or None): range which clips input of activations
         hidden_size (int): size of hidden state
@@ -873,7 +880,7 @@ def transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos, ac
         for d in range(2):
             p[d] = transformer.make_squeeze(p[d], axes=[0])
 
-    dtype = dtype_to_np(tensor_infos[inputs[0]].dtype)
+    dtype = _dtype_to_np(tensor_infos[inputs[0]].dtype)
     batch_size = tensor_infos[inputs[0]].shape[1 - layout]
 
     act = [{
@@ -886,11 +893,11 @@ def transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos, ac
         'h': activations[5]
     }]
 
-    state_f_h_tensors, state_f_c_tensor = generate_one_direction_LSTM(
+    state_f_h_tensors, state_f_c_tensor = _generate_one_direction_LSTM(
         transformer, x, w[0], r[0], b[0], initial_h[0], initial_c[0], p[0], clip, act[0],
         dtype, hidden_size, batch_size)
     x.reverse()
-    state_b_h_tensors, state_b_c_tensor = generate_one_direction_LSTM(
+    state_b_h_tensors, state_b_c_tensor = _generate_one_direction_LSTM(
         transformer, x, w[1], r[1], b[1], initial_h[1], initial_c[1], p[1], clip, act[1],
         dtype, hidden_size, batch_size)
     state_b_h_tensors.reverse()
@@ -913,32 +920,34 @@ def transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos, ac
         state_f_h_tensors[-1], axes=[y_c_direction_dim])
     last_b_state_layout_tensor = transformer.make_unsqueeze(
         state_b_h_tensors[0], axes=[y_c_direction_dim])
-    Y_h = transformer.make_node(
-        'Concat', [last_f_state_layout_tensor, last_b_state_layout_tensor], [outputs[1]],
+
+    Y_h = outputs[1]
+    transformer.make_node(
+        'Concat', [last_f_state_layout_tensor, last_b_state_layout_tensor], [Y_h],
         axis=y_c_direction_dim)
 
     Y_f_c = transformer.make_unsqueeze(state_f_c_tensor, axes=[y_c_direction_dim])
     Y_b_c = transformer.make_unsqueeze(state_b_c_tensor, axes=[y_c_direction_dim])
-    Y_c = transformer.make_node(
-        'Concat', [Y_f_c, Y_b_c], [outputs[2]], axis=y_c_direction_dim)
+    Y_c = outputs[2]
+    transformer.make_node(
+        'Concat', [Y_f_c, Y_b_c], [Y_c], axis=y_c_direction_dim)
 
-    Y = transformer.make_node(
-        'Concat', state_layout_tensors, [outputs[0]], axis=seq_length_dim)
+    Y = outputs[0]
+    transformer.make_node(
+        'Concat', state_layout_tensors, [Y], axis=seq_length_dim)
 
 
-def legalize_LSTM(transformer, tensor_infos, node):
+def _legalize_LSTM(transformer, tensor_infos, node):
     """Unroll LSTM operation
 
     Args:
-        transformer (ModelTransformerHelper): transformation helper
-        tensor_infos (dict from str to Info): dict maps tensor name to it's shape and dtype info
+        transformer (_ModelTransformerHelper): transformation helper
+        tensor_infos (dict from str to _TensorInfo): dict maps tensor name to it's shape and dtype info
         node (onnx.onnx_ml_pb2.NodeProto): LSTM operation to unroll
     """
     inputs = node.input
-    outputs = node.output
     if len(inputs) > 4 and inputs[4] != '':
         raise NotImplementedError('Variadic length of output is not supported')
-    name = node.name
     # attributes
     activation_alpha = []
     activation_beta = []
@@ -967,6 +976,9 @@ def legalize_LSTM(transformer, tensor_infos, node):
         if attr.name == 'layout':
             layout = attr.i
 
+    if len(activation_alpha) > 0 or len(activation_beta) > 0:
+        raise NotImplementedError('Unsupported parameters for LSTM activations')
+
     for act in activations:
         if act not in ['Relu', 'Tanh', 'Sigmoid']:
             raise NotImplementedError('Unsupported activation function')
@@ -988,10 +1000,10 @@ def legalize_LSTM(transformer, tensor_infos, node):
         x += [squeezed_frame_tensor]
 
     if direction in ['forward', 'reverse']:
-        transform_unidirectional_LSTM(transformer, node, x, tensor_infos, activations,
+        _transform_unidirectional_LSTM(transformer, node, x, tensor_infos, activations,
                                       clip, direction, hidden_size, layout)
     elif direction == 'bidirectional':
-        transform_bidirectional_LSTM(transformer, node, x, tensor_infos, activations,
+        _transform_bidirectional_LSTM(transformer, node, x, tensor_infos, activations,
                                      clip, hidden_size, layout)
     else:
         raise RuntimeError('Unknown LSTM type')
@@ -1011,9 +1023,9 @@ def legalize(model, options):
         model (onnx.onnx_ml_pb2.ModelProto): target model
         options (LegalizeOptions):
     """
-    tensor_infos = get_tensor_infos(model)
+    tensor_infos = _get_tensor_infos(model)
 
-    transformer = ModelTransformerHelper(model)
+    transformer = _ModelTransformerHelper(model)
 
     node_id = 0
     while node_id < len(model.graph.node):
@@ -1024,14 +1036,14 @@ def legalize(model, options):
                 raise NotImplementedError(
                     'Can not generate code with opcode version 13 and greater')
             transformer.set_insert_id(node_id)
-            legalize_RNN(transformer, tensor_infos, node)
+            _legalize_RNN(transformer, tensor_infos, node)
             node_id = transformer.get_insert_id()
         elif node.op_type == 'LSTM' and options.unroll_lstm:
             if model.opset_import[0].version >= 13:
                 raise NotImplementedError(
                     'Can not generate code with opcode version 13 and greater')
             transformer.set_insert_id(node_id)
-            legalize_LSTM(transformer, tensor_infos, node)
+            _legalize_LSTM(transformer, tensor_infos, node)
             node_id = transformer.get_insert_id()
         node_id += 1
 
@@ -1040,8 +1052,14 @@ def legalize(model, options):
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        print('usage: ./legalize_onnx.py <path to input model> <path to output model>')
+        print('usage: ./legalize_onnx.py <path to input model> <path to output model>\n'
+              '\n'
+              '    In stand-alone utility mode this tool provides basic funtionality\n'
+              '    If you want to have more control over applied transformations, use this legalizer as a library')
         exit(1)
+    options = LegalizeOptions()
+    options.unroll_lstm = True
+    options.unroll_rnn = True
     model = onnx.load(sys.argv[1])
-    legalize(model)
+    legalize(model, options)
     onnx.save(model, sys.argv[2])
