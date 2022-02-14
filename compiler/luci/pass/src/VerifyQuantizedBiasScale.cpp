@@ -27,6 +27,7 @@
 
 namespace
 {
+
 bool same(float a, float b)
 {
   constexpr float epsilon = 1e-10;
@@ -61,6 +62,7 @@ bool check_bias_scale(const loco::Node *input, const loco::Node *weights, const 
   }
   return true;
 }
+
 } // namespace
 
 namespace luci
