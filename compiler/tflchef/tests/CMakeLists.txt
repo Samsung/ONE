@@ -117,5 +117,5 @@ add_custom_target(tflchef_testfiles ALL DEPENDS ${TESTFILES})
 # TODO do testing with running the model with runtime/interpreter
 add_test(NAME tflchef_test
          COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/runvalidate.sh"
-                 $<TARGET_FILE:mio_tflite_validate>
+                 $<TARGET_FILE:mio_tflite260_validate>
                  ${TESTS})
