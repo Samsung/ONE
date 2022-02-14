@@ -1,11 +1,3 @@
-if(NOT TARGET nnkit-run)
-  return()
-endif(NOT TARGET nnkit-run)
-
-if(NOT TARGET nnkit_tflite_backend)
-  return()
-endif(NOT TARGET nnkit_tflite_backend)
-
 nncc_find_resource(TensorFlowLiteRecipes)
 set(TENSORFLOWLITERECIPES_DIR "${TensorFlowLiteRecipes_DIR}")
 
