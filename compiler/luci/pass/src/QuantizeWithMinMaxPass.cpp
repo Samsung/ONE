@@ -1693,20 +1693,20 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     propagate_concat_quantparam(concat, _output_model_dtype);
   }
 
-  // Update qparam of output of special Ops
-  for (auto node : loco::active_nodes(loco::output_nodes(g)))
-  {
-    QuantizeSpecialActivation qsa(_input_model_dtype, _output_model_dtype);
-    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    circle_node->accept(&qsa);
-  }
-
   // Quantize const input activation
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     QuantizeConstInputActivation qcia(_output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qcia);
+  }
+
+  // Update qparam of output of special Ops
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    QuantizeSpecialActivation qsa(_input_model_dtype, _output_model_dtype);
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    circle_node->accept(&qsa);
   }
 
   // Forward propagation of activation qparam
