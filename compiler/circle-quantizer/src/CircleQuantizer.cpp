@@ -17,7 +17,7 @@
 #include <foder/FileLoader.h>
 
 #include <luci/Importer.h>
-#include <luci/CircleOptimizer.h>
+#include <luci/CircleQuantizer.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
@@ -34,8 +34,8 @@
 
 using OptionHook = std::function<int(const char **)>;
 
-using Algorithms = luci::CircleOptimizer::Options::Algorithm;
-using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
+using Algorithms = luci::CircleQuantizer::Options::Algorithm;
+using AlgorithmParameters = luci::CircleQuantizer::Options::AlgorithmParameters;
 
 void print_exclusive_options(void)
 {
@@ -56,9 +56,9 @@ int entry(int argc, char **argv)
 {
   // Simple argument parser (based on map)
   std::map<std::string, OptionHook> argparse;
-  luci::CircleOptimizer optimizer;
+  luci::CircleQuantizer quantizer;
 
-  auto options = optimizer.options();
+  auto options = quantizer.options();
   auto settings = luci::UserSettings::settings();
 
   const std::string qdqw = "--quantize_dequantize_weights";
@@ -327,7 +327,7 @@ int entry(int argc, char **argv)
     auto graph = module->graph(idx);
 
     // quantize the graph
-    optimizer.quantize(graph);
+    quantizer.quantize(graph);
 
     if (!luci::validate(graph))
     {
