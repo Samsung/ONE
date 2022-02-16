@@ -3,6 +3,9 @@ set(CIRCLERECIPES_DIR "${CircleRecipes_DIR}")
 
 file(GLOB RECIPES RELATIVE ${CIRCLERECIPES_DIR} "${CIRCLERECIPES_DIR}/*/test.recipe")
 
+set(CIRCLECHEF_FILE_PATH $<TARGET_FILE:circlechef-file>)
+set(CIRCLECHEF_REVERSE_PATH $<TARGET_FILE:circlechef-reverse>)
+
 foreach(RECIPE IN ITEMS ${RECIPES})
   get_filename_component(RECIPE_PREFIX ${RECIPE} DIRECTORY)
 
@@ -18,8 +21,8 @@ foreach(RECIPE IN ITEMS ${RECIPES})
 
   # Generate .circle
   add_custom_command(OUTPUT ${RECIPE_OUTPUT_FILE}
-                     COMMAND circlechef-file ${RECIPE_SOURCE_FILE} ${RECIPE_OUTPUT_FILE}
-                     DEPENDS circlechef-file ${RECIPE_SOURCE_FILE}
+                     COMMAND ${CIRCLECHEF_FILE_PATH} ${RECIPE_SOURCE_FILE} ${RECIPE_OUTPUT_FILE}
+                     DEPENDS ${CIRCLECHEF_FILE_PATH} ${RECIPE_SOURCE_FILE}
                      COMMENT "Generating ${RECIPE_OUTPUT_FILE}")
 
   list(APPEND TESTS ${RECIPE_PREFIX})
@@ -44,8 +47,8 @@ foreach(RECIPE IN ITEMS ${RECIPES})
 
   # Generate .circle
   add_custom_command(OUTPUT ${RECIPE_OUTPUT_FILE}
-                     COMMAND circlechef-file ${RECIPE_SOURCE_FILE} ${RECIPE_OUTPUT_FILE}
-                     DEPENDS circlechef-file ${RECIPE_SOURCE_FILE}
+                     COMMAND ${CIRCLECHEF_FILE_PATH} ${RECIPE_SOURCE_FILE} ${RECIPE_OUTPUT_FILE}
+                     DEPENDS ${CIRCLECHEF_FILE_PATH} ${RECIPE_SOURCE_FILE}
                      COMMENT "Generating ${RECIPE_OUTPUT_FILE}")
 
   list(APPEND TESTS ${RECIPE_PREFIX})
@@ -68,16 +71,16 @@ foreach(CIRCLEFILE IN ITEMS ${GEN_CIRCLEFILES})
 
   # Generate .gen.recipe from generated .circle
   add_custom_command(OUTPUT ${RECIPE_GEN_OUTPUT_FILE}
-                     COMMAND circlechef-reverse ${RECIPE_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE}
-                     DEPENDS circlechef-reverse ${RECIPE_OUTPUT_FILE}
+                     COMMAND ${CIRCLECHEF_REVERSE_PATH} ${RECIPE_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE}
+                     DEPENDS ${CIRCLECHEF_REVERSE_PATH} ${RECIPE_OUTPUT_FILE}
                      COMMENT "Generating ${RECIPE_GEN_OUTPUT_FILE}")
 
   # now we are going to generate .gen.circle from .gen.recipe
   # to check generated .gen.recipe file is correct by using it.
   # as weight values may be different, binary comparision is not acceptable.
   add_custom_command(OUTPUT ${RECIPE_GEN_OUTPUT_FILE2}
-                     COMMAND circlechef-file ${RECIPE_GEN_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE2}
-                     DEPENDS circlechef-file ${RECIPE_GEN_OUTPUT_FILE}
+                     COMMAND ${CIRCLECHEF_FILE_PATH} ${RECIPE_GEN_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE2}
+                     DEPENDS ${CIRCLECHEF_FILE_PATH} ${RECIPE_GEN_OUTPUT_FILE}
                      COMMENT "Generating ${RECIPE_GEN_OUTPUT_FILE2}")
 
   list(APPEND TESTS ${CIRCLE_PREFIX}.gen)
@@ -96,13 +99,13 @@ foreach(CIRCLEFILE IN ITEMS ${GEN_CIRCLEFILES})
 
   # Generate .gen.recipe from generated .circle
   add_custom_command(OUTPUT ${RECIPE_GEN_OUTPUT_FILE}
-                     COMMAND circlechef-reverse ${RECIPE_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE}
-                     DEPENDS circlechef-reverse ${RECIPE_OUTPUT_FILE}
+                     COMMAND ${CIRCLECHEF_REVERSE_PATH} ${RECIPE_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE}
+                     DEPENDS ${CIRCLECHEF_REVERSE_PATH} ${RECIPE_OUTPUT_FILE}
                      COMMENT "Generating ${RECIPE_GEN_OUTPUT_FILE}")
 
   add_custom_command(OUTPUT ${RECIPE_GEN_OUTPUT_FILE2}
-                     COMMAND circlechef-file ${RECIPE_GEN_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE2}
-                     DEPENDS circlechef-file ${RECIPE_GEN_OUTPUT_FILE}
+                     COMMAND ${CIRCLECHEF_FILE_PATH} ${RECIPE_GEN_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE2}
+                     DEPENDS ${CIRCLECHEF_FILE_PATH} ${RECIPE_GEN_OUTPUT_FILE}
                      COMMENT "Generating ${RECIPE_GEN_OUTPUT_FILE2}")
 
   list(APPEND TESTS ${CIRCLE_PREFIX}.gen)
