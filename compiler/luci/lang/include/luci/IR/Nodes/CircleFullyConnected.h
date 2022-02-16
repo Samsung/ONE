@@ -63,7 +63,7 @@ public:
 
 private:
   WeightsFormat _weights_format{WeightsFormat::DEFAULT};
-  bool _keep_num_dims = false;
+  bool _keep_num_dims{false};
 };
 
 } // namespace luci
