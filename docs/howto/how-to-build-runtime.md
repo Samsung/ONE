@@ -22,7 +22,7 @@ Here is a summary of it
 ```
 $ sudo apt install \
 build-essential \
-clang-format-3.9 \
+clang-format-8 \
 cmake \
 doxygen \
 git \
