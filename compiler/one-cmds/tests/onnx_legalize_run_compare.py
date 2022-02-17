@@ -35,10 +35,9 @@ def _compare_resuts(ref_outputs, test_outputs, tolerance):
     return True
 
 if __name__ == '__main__':
-    # this manipulation is needed to add searcg path where onnx_legalizer is installed
+    # this manipulation is needed to add search path where onnx_legalizer is installed
     sys.path += os.environ['PATH'].split(':')
     import onnx_legalizer
-
 
     if len(sys.argv) < 5:
         exit('expecting 4 arguments: path to input model, path to "legalized" model,'
