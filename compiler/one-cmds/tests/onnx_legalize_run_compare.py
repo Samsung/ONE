@@ -4,16 +4,18 @@ import sys
 import os
 import numpy as np
 
+
 def _generate_inputs(model):
     inputs = {}
     for input in model.graph.input:
         # check if elem type is float32
-        assert(input.type.tensor_type.elem_type == 1)
+        assert (input.type.tensor_type.elem_type == 1)
         input_shape = []
         for dim in input.type.tensor_type.shape.dim:
             input_shape += [dim.dim_value]
         inputs[input.name] = np.random.random(input_shape).astype(np.float32)
     return inputs
+
 
 def _run_model(model, inputs):
     output_names = list(map(lambda output: output.name, model.graph.output))
@@ -21,18 +23,22 @@ def _run_model(model, inputs):
     outputs = session.run(output_names, inputs)
     return outputs
 
+
 def _compare_resuts(ref_outputs, test_outputs, tolerance):
     num_outputs = len(ref_outputs)
-    assert(len(test_outputs) == num_outputs)
+    assert (len(test_outputs) == num_outputs)
     for i in range(num_outputs):
         if ref_outputs[i].shape != test_outputs[i].shape:
             print("output {} shape mismatch".format(i))
             return False
-        peak_error = np.abs(ref_outputs[i] - test_outputs[i]).max()/np.abs(ref_outputs[i]).max()
+        peak_error = np.abs(ref_outputs[i] - test_outputs[i]).max() / np.abs(
+            ref_outputs[i]).max()
         if peak_error > tolerance:
-            print("output {} peak error to value ratio {} is too big".format(i, peak_error))
+            print("output {} peak error to value ratio {} is too big".format(
+                i, peak_error))
             return False
     return True
+
 
 if __name__ == '__main__':
     # this manipulation is needed to add search path where onnx_legalizer is installed
