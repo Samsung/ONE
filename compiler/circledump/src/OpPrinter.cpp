@@ -341,6 +341,7 @@ public:
          << ") ";
       os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
          << ") ";
+      os << "keep_num_dims(" << params->keep_num_dims() << ") ";
 
       os << std::endl;
     }
