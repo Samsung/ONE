@@ -4,6 +4,7 @@ INVALID_EXIT=0
 FILES_TO_CHECK=()
 DIRECTORIES_TO_BE_TESTED=()
 DIRECTORIES_NOT_TO_BE_TESTED=()
+DEFAULT_CLANG_FORMAT="clang-format-8"
 CLANG_FORMAT_CANDIDATES=()
 PATCH_FILE=format.patch
 CHECK_DIFF_ONLY="0"
@@ -16,7 +17,7 @@ function Usage()
   echo "If <file>s are given, it reformats the files"
   echo ""
   echo "Options:"
-  echo "      --clang-format <TOOL>     clang format bin (default: clang-format-3.9, clang-format)"
+  echo "      --clang-format <TOOL>     clang format bin (default: $DEFAULT_CLANG_FORMAT)"
   echo "      --diff-only               check diff files with master"
   echo "      --staged-only             check git staged files"
 }
@@ -103,7 +104,7 @@ function check_cpp_files() {
     return
   fi
 
-  CLANG_FORMAT_CANDIDATES+=("clang-format-8")
+  CLANG_FORMAT_CANDIDATES+=($DEFAULT_CLANG_FORMAT)
   for CLANG_FORMAT_CANDIDATE in ${CLANG_FORMAT_CANDIDATES[@]}; do
     if command_exists ${CLANG_FORMAT_CANDIDATE} ; then
       CLANG_FORMAT="${CLANG_FORMAT_CANDIDATE}"
@@ -112,9 +113,9 @@ function check_cpp_files() {
   done
 
   if [[ -z ${CLANG_FORMAT}  ]]; then
-    echo "[ERROR] clang-format-8 is unavailable"
+    echo "[ERROR] $CLANG_FORMAT is unavailable"
     echo
-    echo "        Please install clang-format-8 before running format check"
+    echo "        Please install $DEFAULT_CLANG_FORMAT before running format check"
     exit 1
   fi
 
