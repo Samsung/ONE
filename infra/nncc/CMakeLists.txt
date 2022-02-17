@@ -40,10 +40,10 @@ macro(nnas_include PREFIX)
 endmacro(nnas_include)
 
 macro(nnas_find_package PREFIX)
-  find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
-    PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
-    ${ARGN}
-  )
+  find_package(${PREFIX}
+               CONFIG NO_DEFAULT_PATH
+               PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
+               ${ARGN})
 endmacro(nnas_find_package)
 
 # nncc_find_resource(NAME) will update the following variables
