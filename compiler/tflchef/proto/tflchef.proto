@@ -182,6 +182,7 @@ message FloorModOptions {
 
 message FullyConnectedOptions {
   optional Activation activation = 1 [default = NONE];
+  optional bool keep_num_dims = 2 [ default = false ];
 }
 
 message AddOptions {
