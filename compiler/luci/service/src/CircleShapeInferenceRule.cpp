@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -716,6 +717,8 @@ loco::NodeShape infer_fully_connected(const luci::CircleFullyConnected *node)
   auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
   auto weights_shape = luci::shape_get(node->weights()).as<loco::TensorShape>();
 
+// TODO Remove following unused code
+#if 0
   // Checking shape capability for fully connected layer
   // Input: a tensor of at least rank 2 [D1, D2, ... Dn]
   // Weight: [# of units, K]
@@ -736,6 +739,38 @@ loco::NodeShape infer_fully_connected(const luci::CircleFullyConnected *node)
   out_shape.rank(2);
   out_shape.dim(0) = batch_size;
   out_shape.dim(1) = weights_shape.dim(0);
+#endif
+
+  loco::TensorShape out_shape;
+
+  // TODO Enable following assert after related fixes are applied
+  // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L194
+  // LUCI_ASSERT(input_shape.rank() == 2 || input_shape.rank() == 3,
+  //             "Input rank of FullyConnected should be 2 or 3");
+
+  // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L225
+  LUCI_ASSERT(weights_shape.rank() == 2, "Weights of FullyConnected should be 2");
+
+  // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L353-L367
+  if (node->keep_num_dims())
+  {
+    out_shape.rank(input_shape.rank());
+    for (uint32_t i = 0; i < input_shape.rank(); ++i)
+      out_shape.dim(i) = input_shape.dim(i);
+    out_shape.dim(out_shape.rank() - 1) = weights_shape.dim(0);
+  }
+  else
+  {
+    uint32_t input_size = 1;
+    for (uint32_t i = 0; i < input_shape.rank(); i++)
+    {
+      input_size = input_size * input_shape.dim(i).value();
+    }
+    const uint32_t batch_size = input_size / weights_shape.dim(1).value();
+    out_shape.rank(2);
+    out_shape.dim(0) = batch_size;
+    out_shape.dim(1) = weights_shape.dim(0);
+  }
 
   return loco::NodeShape{out_shape};
 }
