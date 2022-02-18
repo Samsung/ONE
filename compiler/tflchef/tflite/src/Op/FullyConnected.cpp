@@ -48,6 +48,7 @@ tflchef::Operation *TFliteOpFullyConnected::build(const tflite::Operator *op, TF
   auto op_options = operation->mutable_fullyconnected_options();
 
   op_options->set_activation(as_tflchef_activation(op_params->fused_activation_function()));
+  op_options->set_keep_num_dims(op_params->keep_num_dims());
 
   return operation;
 }
