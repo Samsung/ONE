@@ -1700,7 +1700,7 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
  *
  * Why quantization sequence was determined as above?
  * - Activation and weights should be quantized before bias (1->2->3). Input/Output
- *   type can be updated at the end (4->5).
+ *   dtype can be updated at the end (4->5).
  * - During activation quantization,
  *   - Backward propagation is performed earlier than forward propagation. This allows
  *     backward-propagated qpram to be overwritten during forward propagation.
