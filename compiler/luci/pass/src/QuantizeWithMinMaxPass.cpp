@@ -1691,8 +1691,8 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
  *   - Quantize using recorded min/max (QuantizeActivation)
  *   - Propagate qparam of concat backward for optimization (propagate_concat_quantparam)
  *   - Quantize const inputs + propagate qparam backward (QuantizeConstInputActivation)
- *   - Propagate qparam forward (PropagateQuantParamPass)
  *   - Quantize using pre-defined values (QuantizeSpecialActivation)
+ *   - Propagate qparam forward (PropagateQuantParamPass)
  * 2. Quantize Weights
  * 3. Quantize Bias
  * 4. Set input type
@@ -1706,8 +1706,8 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
  *     backward-propagated qpram to be overwritten during forward propagation.
  *     We made this decision as Ops for forward propagation (reshape, transpose, ..)
  *     are more common than backward propagation. TODO Check this decision is safe.
- *   - QuantizeSpecialActivation is called at last to make sure that the pre-defined
- *     qparam values are not updated anymore
+ *   - QuantizeSpecialActivation is called before forward propagation to make sure that
+ *     the pre-defined qparam values are propagated.
  */
 bool QuantizeWithMinMaxPass::run(loco::Graph *g)
 {
