@@ -1412,13 +1412,8 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
     if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
     {
       luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
-      if (const_node->dtype() != loco::DataType::FLOAT32)
-        throw std::runtime_error("Unsupported data type for constant input of concatenation Op");
 
       const auto concat_qparam = concat->quantparam();
-      if (concat_qparam == nullptr)
-        throw std::runtime_error("quantparam of concat is not found during propagation");
-
       assert(concat_qparam->scale.size() == 1);
       const auto scaling_factor = concat_qparam->scale[0];
       const auto zerop = concat_qparam->zerop[0];
@@ -1685,8 +1680,11 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     if (not concat)
       continue;
 
+    if (not concat->quantparam())
+      continue;
+
     // Propagate qparam of concat to its inputs if
-    // (1) concat is uint8-quantized
+    // (1) concat was quantized
     // (2) concat has no fused activation function
     // (3) the input is not concatenation Op
     // (4) the input is not produced to Ops other than concat
