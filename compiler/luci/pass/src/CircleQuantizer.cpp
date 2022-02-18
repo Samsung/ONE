@@ -232,10 +232,17 @@ void CircleQuantizer::quantize(loco::Graph *g) const
         str_to_dtype(output_model_dtype) != loco::DataType::U8)
       throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
 
-    luci::QuantizeWithMinMaxPass quantizer(
-      str_to_dtype(input_model_dtype), str_to_dtype(output_model_dtype),
-      str_to_granularity(granularity), str_to_dtype(input_type), str_to_dtype(output_type),
-      TF_style_maxpool);
+    auto ctx = std::make_unique<luci::QuantizeWithMinMaxPass::Context>();
+    {
+      ctx->input_model_dtype = str_to_dtype(input_model_dtype);
+      ctx->output_model_dtype = str_to_dtype(output_model_dtype);
+      ctx->granularity = str_to_granularity(granularity);
+      ctx->input_type = str_to_dtype(input_type);
+      ctx->output_type = str_to_dtype(output_type);
+      ctx->TF_style_maxpool = TF_style_maxpool;
+    }
+
+    luci::QuantizeWithMinMaxPass quantizer(std::move(ctx));
 
     quantizer.run(g);
 
