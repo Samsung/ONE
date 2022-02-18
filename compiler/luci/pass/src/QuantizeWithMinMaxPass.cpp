@@ -1665,6 +1665,17 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   LOGGER(l);
   INFO(l) << "QuantizeWithMinMaxPass Start" << std::endl;
 
+  for (auto layer_info : _ctx->layers_info)
+  {
+    auto name = layer_info.name;
+    auto dtype = layer_info.dtype == loco::DataType::S16 ? "int16" : "uint8";
+    auto granularity =
+      layer_info.granularity == QuantizationGranularity::ChannelWise ? "CWQ" : "LWQ";
+    std::cout << "name : " << name << std::endl;
+    std::cout << "dtype : " << dtype << std::endl;
+    std::cout << "granularity : " << granularity << std::endl;
+  }
+
   // Quantize activation
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {

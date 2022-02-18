@@ -61,6 +61,8 @@ template <typename T> std::vector<T> lexical_cast(std::vector<std::string> &sv)
   return result;
 }
 
+using LayerParam = luci::CircleQuantizer::Options::LayerParam;
+
 class QuantizeOptionsImpl final : public luci::CircleQuantizer::Options
 {
 public:
@@ -69,12 +71,15 @@ public:
   const std::string param(AlgorithmParameters) const final;
   void params(AlgorithmParameters, std::vector<std::string> &) final;
   std::vector<std::string> params(AlgorithmParameters) const final;
+  void layer_params(AlgorithmParameters, std::vector<std::shared_ptr<LayerParam>> &) final;
+  std::vector<std::shared_ptr<LayerParam>> layer_params(AlgorithmParameters) const final;
   bool query(Algorithm) final;
 
 private:
   std::vector<Algorithm> _algorithms;
   std::map<AlgorithmParameters, const std::string> _algorithm_params;
   std::map<AlgorithmParameters, std::vector<std::string>> _multiple_params;
+  std::map<AlgorithmParameters, std::vector<std::shared_ptr<LayerParam>>> _multiple_layer_params;
 };
 
 void QuantizeOptionsImpl::enable(Algorithm algo) { _algorithms.push_back(algo); }
@@ -112,6 +117,26 @@ std::vector<std::string> QuantizeOptionsImpl::params(AlgorithmParameters param) 
   else
   {
     return std::vector<std::string>();
+  }
+}
+
+void QuantizeOptionsImpl::layer_params(AlgorithmParameters param,
+                                       std::vector<std::shared_ptr<LayerParam>> &vec)
+{
+  _multiple_layer_params[param] = vec;
+}
+
+std::vector<std::shared_ptr<LayerParam>>
+QuantizeOptionsImpl::layer_params(AlgorithmParameters param) const
+{
+  auto param_vec = _multiple_layer_params.find(param);
+  if (param_vec != _multiple_layer_params.end())
+  {
+    return param_vec->second;
+  }
+  else
+  {
+    return std::vector<std::shared_ptr<LayerParam>>();
   }
 }
 
@@ -205,6 +230,8 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     if (output_type.empty())
       output_type = output_model_dtype;
 
+    auto layer_params = _options->layer_params(Options::AlgorithmParameters::Quantize_layer_params);
+
     bool TF_style_maxpool =
       _options->param(Options::AlgorithmParameters::Quantize_TF_style_maxpool) == "True";
 
@@ -232,6 +259,26 @@ void CircleQuantizer::quantize(loco::Graph *g) const
         str_to_dtype(output_model_dtype) != loco::DataType::U8)
       throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
 
+    // Check layer params
+    for (auto layer_param : layer_params)
+    {
+      auto name = layer_param->name;
+      // Check type
+      if (!in_array(to_lower_case(layer_param->dtype), qwmm_supported_output_model_dtype))
+      {
+        throw std::runtime_error(
+          "Unsupported output type in " + name +
+          ". List of supported output types: " + to_string(qwmm_supported_output_model_dtype));
+      }
+      // Check granularity
+      if (!in_array(to_lower_case(layer_param->granularity), qwmm_supported_granularity))
+      {
+        throw std::runtime_error(
+          "Unsupported granularity in " + name +
+          ". List of supported granularity: " + to_string(qwmm_supported_granularity));
+      }
+    }
+
     auto ctx = std::make_unique<luci::QuantizeWithMinMaxPass::Context>();
     {
       ctx->input_model_dtype = str_to_dtype(input_model_dtype);
@@ -240,6 +287,17 @@ void CircleQuantizer::quantize(loco::Graph *g) const
       ctx->input_type = str_to_dtype(input_type);
       ctx->output_type = str_to_dtype(output_type);
       ctx->TF_style_maxpool = TF_style_maxpool;
+
+      for (auto layer_param : layer_params)
+      {
+        LayerInfo info;
+        {
+          info.name = layer_param->name;
+          info.dtype = str_to_dtype(layer_param->dtype);
+          info.granularity = str_to_granularity(layer_param->granularity);
+        }
+        ctx->layers_info.emplace_back(info);
+      }
     }
 
     luci::QuantizeWithMinMaxPass quantizer(std::move(ctx));
