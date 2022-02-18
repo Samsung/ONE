@@ -1695,8 +1695,8 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
  *   - Propagate qparam forward (PropagateQuantParamPass)
  * 2. Quantize Weights
  * 3. Quantize Bias
- * 4. Set input type
- * 5. Set output type
+ * 4. Set input dtype
+ * 5. Set output dtype
  *
  * Why quantization sequence was determined as above?
  * - Activation and weights should be quantized before bias (1->2->3). Input/Output
