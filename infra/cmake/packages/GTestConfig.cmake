@@ -6,6 +6,7 @@ function(_GTest_build)
   nnas_find_package(GTestSource QUIET)
 
   if(NOT GTestSource_FOUND)
+    message(STATUS "GTest_build skip: NOT GTestSource_FOUND")
     return()
   endif(NOT GTestSource_FOUND)
 
