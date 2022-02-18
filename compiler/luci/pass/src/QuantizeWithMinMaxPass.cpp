@@ -1665,6 +1665,39 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
   }
 }
 
+/**
+ * How QuantizeWithMinMax works?
+ *
+ * We categorized tensors into four groups
+ * - Activation: Feature maps (both Const/Non-const)
+ * - Weights: Const tensors of specific Ops (Conv, FC, ...)
+ * - Bias: Const tensors of specific Ops (Conv, FC, ...)
+ * - Others: padding value, one_hot value, axis, ..
+ *
+ * Activation is quantized in different ways
+ * 1. For non-constant activation, quantize using recorded min/max
+ * 2. For constant activation, quantize using min/max of its value
+ * 3. For some Ops (ex: pad_v2), output qparam is used as input qparam (backward propagation)
+ * 4. For some Ops (ex: reshape), input qparam is used as output qparam (forward propagation)
+ * 5. For some Ops (ex: tanh), output qparam has pre-defined values
+ *
+ * Weights is quantized using min/max of its value
+ *
+ * Bias is quantized using input scale (s_i) and weights scale (s_w)
+ * - Activation and weights should be quantized earlier than bias
+ *
+ * Quantization Steps
+ * 1. Quantize Activation
+ *   - Quantize using recorded min/max (QuantizeActivation)
+ *   - Propagate qparam of concat backward for optimization (propagate_concat_quantparam)
+ *   - Quantize const inputs + propagate qparam backward (QuantizeConstInputActivation)
+ *   - Propagate qparam forward (PropagateQuantParamPass)
+ *   - Quantize using pre-defined values (QuantizeSpecialActivation)
+ * 2. Quantize Weights
+ * 3. Quantize Bias
+ * 4. Set input type
+ * 5. Set output type
+ */
 bool QuantizeWithMinMaxPass::run(loco::Graph *g)
 {
   LOGGER(l);
