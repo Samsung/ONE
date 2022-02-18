@@ -170,9 +170,9 @@ public:
   }
   flatbuffers::Offset<void> visit(luci::CircleFullyConnected *node)
   {
-    return circle::CreateFullyConnectedOptions(_builder,
-                                               to_circle_actfunc(node->fusedActivationFunction()),
-                                               to_circle_weightsformat(node->weights_format()))
+    return circle::CreateFullyConnectedOptions(
+             _builder, to_circle_actfunc(node->fusedActivationFunction()),
+             to_circle_weightsformat(node->weights_format()), node->keep_num_dims())
       .Union();
   }
   flatbuffers::Offset<void> visit(luci::CircleGather *node)
