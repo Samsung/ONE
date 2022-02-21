@@ -178,9 +178,15 @@ void CircleQuantizer::quantize(loco::Graph *g) const
         circle_node->quantparam(nullptr);
     }
 
-    luci::QuantizeDequantizeWeightsPass fake_quantizer(str_to_dtype(input_model_dtype),
-                                                       str_to_dtype(output_model_dtype),
-                                                       str_to_granularity(granularity));
+    auto ctx = std::make_unique<luci::QuantizeDequantizeWeightsPass::Context>();
+    {
+      ctx->input_model_dtype = str_to_dtype(input_model_dtype);
+      ctx->output_model_dtype = str_to_dtype(output_model_dtype);
+      ctx->granularity = str_to_granularity(granularity);
+    }
+
+    luci::QuantizeDequantizeWeightsPass fake_quantizer(std::move(ctx));
+
     fake_quantizer.run(g);
   }
 
