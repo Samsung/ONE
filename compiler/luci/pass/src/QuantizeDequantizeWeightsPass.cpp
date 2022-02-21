@@ -353,12 +353,12 @@ private:
   // 2. node was not quantized
   bool is_quantizable(loco::Node *node)
   {
-    auto weights = dynamic_cast<luci::CircleConst *>(node);
-    if (not weights)
+    auto const_node = dynamic_cast<luci::CircleConst *>(node);
+    if (not const_node)
       return false;
 
     // Skip if this is already quantized
-    if (is_quantized(weights))
+    if (is_quantized(const_node))
       return false;
 
     return true;
