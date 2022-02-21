@@ -369,21 +369,15 @@ private:
     assert(output_type == loco::DataType::U8 || output_type == loco::DataType::S16);
     LOGGER(l);
     INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
-    auto arity = node->arity();
-    for (uint32_t i = 0; i < arity; i++)
-    {
-      auto input_node = node->arg(i);
-      auto circle_node = loco::must_cast<luci::CircleNode *>(input_node);
 
-      if (not is_quantizable(input_node))
-        continue;
+    if (not is_quantizable(node))
+      return false;
 
-      if (not is_weights(circle_node))
-        continue;
+    if (not is_weights(node))
+      return false;
 
-      auto circle_const = loco::must_cast<luci::CircleConst *>(input_node);
-      fake_quantize(circle_const);
-    }
+    auto circle_const = loco::must_cast<luci::CircleConst *>(node);
+    fake_quantize(circle_const);
     return false;
   }
 };
