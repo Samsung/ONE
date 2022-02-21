@@ -743,6 +743,8 @@ loco::NodeShape infer_fully_connected(const luci::CircleFullyConnected *node)
 
   loco::TensorShape out_shape;
 
+  // NOTE Some recipes in some repositories are using rank 4 input for FullyConnected.
+  //      Until they are all fixed, disable following assert.
   // TODO Enable following assert after related fixes are applied
   // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L194
   // LUCI_ASSERT(input_shape.rank() == 2 || input_shape.rank() == 3,
