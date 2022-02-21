@@ -1660,6 +1660,50 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
   }
 }
 
+/**
+ * How QuantizeWithMinMax works?
+ *
+ * We categorized tensors into four groups
+ * - Activation: Feature maps (both Const/Non-const)
+ * - Weights: Const tensors of specific Ops (Conv, FC, ...)
+ * - Bias: Const tensors of specific Ops (Conv, FC, ...)
+ * - Others: padding value, one_hot value, axis, ..
+ *
+ * Activation is quantized in different ways
+ * 1. For non-constant activation, quantize using recorded min/max
+ * 2. For constant activation, quantize using min/max of its value
+ * 3. For some Ops (ex: pad_v2), output qparam is used as input qparam (backward propagation)
+ * 4. For some Ops (ex: reshape), input qparam is used as output qparam (forward propagation)
+ * 5. For some Ops (ex: tanh), output qparam has pre-defined values
+ *
+ * Weights is quantized using min/max of its value
+ *
+ * Bias is quantized using input scale (s_i) and weights scale (s_w)
+ * - Activation and weights should be quantized earlier than bias
+ *
+ * Quantization Steps
+ * 1. Quantize Activation
+ *   - Quantize using recorded min/max (QuantizeActivation)
+ *   - Propagate qparam of concat backward for optimization (propagate_concat_quantparam)
+ *   - Quantize const inputs + propagate qparam backward (QuantizeConstInputActivation)
+ *   - Quantize using pre-defined values (QuantizeSpecialActivation)
+ *   - Propagate qparam forward (PropagateQuantParamPass)
+ * 2. Quantize Weights
+ * 3. Quantize Bias
+ * 4. Set input dtype
+ * 5. Set output dtype
+ *
+ * Why quantization sequence was determined as above?
+ * - Activation and weights should be quantized before bias (1->2->3). Input/Output
+ *   dtype can be updated at the end (4->5).
+ * - During activation quantization,
+ *   - Backward propagation is performed earlier than forward propagation. This allows
+ *     backward-propagated qpram to be overwritten during forward propagation.
+ *     We made this decision as Ops for forward propagation (reshape, transpose, ..)
+ *     are more common than backward propagation. TODO Check this decision is safe.
+ *   - QuantizeSpecialActivation is called before forward propagation to make sure that
+ *     the pre-defined qparam values are propagated.
+ */
 bool QuantizeWithMinMaxPass::run(loco::Graph *g)
 {
   LOGGER(l);
