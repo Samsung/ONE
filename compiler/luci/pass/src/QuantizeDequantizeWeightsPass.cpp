@@ -265,9 +265,11 @@ struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<b
   QuantizationGranularity granularity;
 
 private:
-  // Fake quantize weights (Only u8 quantization is supported)
+  // Fake quantize weights (Only u8 quantization is supported for LWQ)
   void fake_quantize_lwq(luci::CircleConst *weights) const
   {
+    assert(output_type == loco::DataType::U8); // FIX_CALLER_UNLESS
+
     // Find min/max per layer
     float min = std::numeric_limits<float>::max();
     float max = std::numeric_limits<float>::lowest();
@@ -294,9 +296,12 @@ private:
   }
 
 private:
-  // Fake quantize weights (u8/s16 quantization are supported)
+  // Fake quantize weights (u8/s16 quantization are supported for CWQ)
   void fake_quantize_cwq(luci::CircleConst *weights) const
   {
+    assert(output_type == loco::DataType::U8 ||
+           output_type == loco::DataType::S16); // FIX_CALLER_UNLESS
+
     // Find min/max per channel
     std::vector<float> min;
     std::vector<float> max;
@@ -343,6 +348,23 @@ private:
     }
   }
 
+private:
+  // Check if
+  // 1. node is const
+  // 2. node was not quantized
+  bool is_quantizable(loco::Node *node)
+  {
+    auto weights = dynamic_cast<luci::CircleConst *>(node);
+    if (not weights)
+      return false;
+
+    // Skip if this is already quantized
+    if (is_quantized(weights))
+      return false;
+
+    return true;
+  }
+
   // Default behavior (Do nothing)
   bool visit(luci::CircleNode *) { return false; }
 
@@ -351,15 +373,10 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
 
-    // TODO Check if we can replace dynamic_cast with loco::must_cast
-    auto weights = dynamic_cast<luci::CircleConst *>(node->filter());
-    if (not weights)
+    if (not is_quantizable(node->filter()))
       return false;
 
-    // Skip if this is already quantized
-    if (is_quantized(weights))
-      return false;
-
+    auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
     fake_quantize(new_weights);
@@ -371,15 +388,10 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
 
-    // TODO Check if we can replace dynamic_cast with loco::must_cast
-    auto weights = dynamic_cast<luci::CircleConst *>(node->filter());
-    if (not weights)
+    if (not is_quantizable(node->filter()))
       return false;
 
-    // Skip if this is already quantized
-    if (is_quantized(weights))
-      return false;
-
+    auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
     fake_quantize(new_weights);
@@ -391,15 +403,10 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
 
-    // TODO Check if we can replace dynamic_cast with loco::must_cast
-    auto weights = dynamic_cast<luci::CircleConst *>(node->filter());
-    if (not weights)
+    if (not is_quantizable(node->filter()))
       return false;
 
-    // Skip if this is already quantized
-    if (is_quantized(weights))
-      return false;
-
+    auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
     fake_quantize(new_weights);
@@ -411,15 +418,10 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
 
-    // TODO Check if we can replace dynamic_cast with loco::must_cast
-    auto weights = dynamic_cast<luci::CircleConst *>(node->weights());
-    if (not weights)
+    if (not is_quantizable(node->weights()))
       return false;
 
-    // Skip if this is already quantized
-    if (is_quantized(weights))
-      return false;
-
+    auto weights = loco::must_cast<luci::CircleConst *>(node->weights());
     auto new_weights = luci::clone(weights);
     node->weights(new_weights);
     fake_quantize(new_weights);
