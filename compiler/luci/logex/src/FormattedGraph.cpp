@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "CircleNodeSummaryBuilder.h"
 #include "luci/FormattedGraph.h"
 
 #include <luci/IR/CircleDialect.h>
@@ -2245,6 +2246,7 @@ bool NodeSummaryBuilder::build(const loco::Node *node, locop::NodeSummary &s) co
       return true;                                       \
   } while (false)
 
+  // TODO Replace with CircleNodeSummaryBuilder and then remove these
   BUILD_GRP(ABC);
   BUILD_GRP(DEF);
   BUILD_GRP(GHIJ);
@@ -2254,6 +2256,11 @@ bool NodeSummaryBuilder::build(const loco::Node *node, locop::NodeSummary &s) co
   BUILD_GRP(WXYZ);
   BUILD_GRP(CIRC);
   BUILD_GRP(VIRT);
+
+  if (CircleNodeSummaryBuilder().build(node, _tbl, s))
+  {
+    return true;
+  }
 
   return false;
 }
