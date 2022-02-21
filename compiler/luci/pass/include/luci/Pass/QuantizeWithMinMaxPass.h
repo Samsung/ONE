@@ -40,6 +40,7 @@ public:
     loco::DataType input_type;
     loco::DataType output_type;
     bool TF_style_maxpool = false;
+    std::vector<LayerInfo> layers_info;
   };
 
   // For backward-compatibility
