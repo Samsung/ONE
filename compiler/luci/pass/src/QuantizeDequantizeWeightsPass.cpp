@@ -19,6 +19,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
+#include <luci/Service/Nodes/CircleConst.h>
 #include <luci/Log.h>
 #include <loco/IR/TensorShape.h>
 
@@ -263,88 +264,166 @@ struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<b
   loco::DataType output_type;
   QuantizationGranularity granularity;
 
-  // Quantize and dequantize input tensors of each node
-  bool visit(luci::CircleNode *node)
+private:
+  // Fake quantize weights (Only u8 quantization is supported)
+  void fake_quantize_lwq(luci::CircleConst *weights) const
   {
-    assert(output_type == loco::DataType::U8 || output_type == loco::DataType::S16);
+    // Find min/max per layer
+    float min = std::numeric_limits<float>::max();
+    float max = std::numeric_limits<float>::lowest();
+    for (uint32_t i = 0; i < weights->size<loco::DataType::FLOAT32>(); i++)
+    {
+      auto data = weights->at<loco::DataType::FLOAT32>(i);
+      min = data < min ? data : min;
+      max = data > max ? data : max;
+    }
+    float scaling_factor{0};
+    int64_t zp{0};
+    float nudged_min{0};
+    float nudged_max{0};
+
+    asymmetric_wquant_with_minmax_per_layer(weights, min, max, scaling_factor, zp, nudged_min,
+                                            nudged_max);
+    asymmetric_wdequant_with_minmax_per_layer(weights, scaling_factor, nudged_min);
+    auto quantparam = std::make_unique<CircleQuantParam>();
+    quantparam->min.push_back(nudged_min);
+    quantparam->max.push_back(nudged_max);
+    quantparam->scale.push_back(scaling_factor);
+    quantparam->zerop.push_back(zp);
+    weights->quantparam(std::move(quantparam));
+  }
+
+private:
+  // Fake quantize weights (u8/s16 quantization are supported)
+  void fake_quantize_cwq(luci::CircleConst *weights) const
+  {
+    // Find min/max per channel
+    std::vector<float> min;
+    std::vector<float> max;
+
+    cal_minmax_per_channel(weights, min, max);
+
+    std::vector<float> nudged_min(min.size());
+    std::vector<float> nudged_max(min.size());
+    std::vector<float> scaling_factor(min.size());
+    std::vector<int64_t> zp(min.size());
+
+    if (output_type == loco::DataType::U8)
+    {
+      asymmetric_wquant_per_channel(weights, min, max, scaling_factor, zp, nudged_min, nudged_max);
+      asymmetric_wdequant_per_channel(weights, scaling_factor, nudged_min);
+    }
+    else
+    {
+      sym_wquant_per_channel(weights, min, max, scaling_factor, zp, nudged_min, nudged_max);
+      sym_wdequant_per_channel(weights, scaling_factor);
+    }
+
+    auto quantparam = std::make_unique<CircleQuantParam>();
+    quantparam->min = nudged_min;
+    quantparam->max = nudged_max;
+    quantparam->scale = scaling_factor;
+    quantparam->zerop = zp;
+    weights->quantparam(std::move(quantparam));
+  }
+
+private:
+  void fake_quantize(luci::CircleConst *weights) const
+  {
+    switch (granularity)
+    {
+      case luci::QuantizationGranularity::ChannelWise:
+        fake_quantize_cwq(weights);
+        break;
+      case luci::QuantizationGranularity::LayerWise:
+        fake_quantize_lwq(weights);
+        break;
+      default:
+        throw std::invalid_argument("Unsupported granularity");
+    }
+  }
+
+  // Default behavior (Do nothing)
+  bool visit(luci::CircleNode *) { return false; }
+
+  bool visit(luci::CircleConv2D *node)
+  {
     LOGGER(l);
     INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
-    auto arity = node->arity();
-    for (uint32_t i = 0; i < arity; i++)
-    {
-      auto input_node = node->arg(i);
-      auto circle_node = loco::must_cast<luci::CircleNode *>(input_node);
 
-      // Check if this is already quantized
-      if (is_quantized(circle_node))
-        continue;
+    // TODO Check if we can replace dynamic_cast with loco::must_cast
+    auto weights = dynamic_cast<luci::CircleConst *>(node->filter());
+    if (not weights)
+      return false;
 
-      if (is_weights(circle_node))
-      {
-        auto circle_const = loco::must_cast<luci::CircleConst *>(circle_node);
+    // Skip if this is already quantized
+    if (is_quantized(weights))
+      return false;
 
-        // Find min/max per channel-wise
-        if (granularity == QuantizationGranularity::ChannelWise)
-        {
-          std::vector<float> min;
-          std::vector<float> max;
+    auto new_weights = luci::clone(weights);
+    node->filter(new_weights);
+    fake_quantize(new_weights);
+    return true;
+  }
 
-          cal_minmax_per_channel(circle_const, min, max);
+  bool visit(luci::CircleDepthwiseConv2D *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
 
-          std::vector<float> nudged_min(min.size());
-          std::vector<float> nudged_max(min.size());
-          std::vector<float> scaling_factor(min.size());
-          std::vector<int64_t> zp(min.size());
+    // TODO Check if we can replace dynamic_cast with loco::must_cast
+    auto weights = dynamic_cast<luci::CircleConst *>(node->filter());
+    if (not weights)
+      return false;
 
-          if (output_type == loco::DataType::U8)
-          {
-            asymmetric_wquant_per_channel(circle_const, min, max, scaling_factor, zp, nudged_min,
-                                          nudged_max);
-            asymmetric_wdequant_per_channel(circle_const, scaling_factor, nudged_min);
-          }
-          else
-          {
-            sym_wquant_per_channel(circle_const, min, max, scaling_factor, zp, nudged_min,
-                                   nudged_max);
-            sym_wdequant_per_channel(circle_const, scaling_factor);
-          }
+    // Skip if this is already quantized
+    if (is_quantized(weights))
+      return false;
 
-          auto quantparam = std::make_unique<CircleQuantParam>();
-          quantparam->min = nudged_min;
-          quantparam->max = nudged_max;
-          quantparam->scale = scaling_factor;
-          quantparam->zerop = zp;
-          circle_node->quantparam(std::move(quantparam));
-        }
-        // Find min/max per layer-wise
-        else
-        {
-          float min = std::numeric_limits<float>::max();
-          float max = std::numeric_limits<float>::lowest();
-          for (uint32_t i = 0; i < circle_const->size<loco::DataType::FLOAT32>(); i++)
-          {
-            auto data = circle_const->at<loco::DataType::FLOAT32>(i);
-            min = data < min ? data : min;
-            max = data > max ? data : max;
-          }
-          float scaling_factor{0};
-          int64_t zp{0};
-          float nudged_min{0};
-          float nudged_max{0};
+    auto new_weights = luci::clone(weights);
+    node->filter(new_weights);
+    fake_quantize(new_weights);
+    return true;
+  }
 
-          asymmetric_wquant_with_minmax_per_layer(circle_const, min, max, scaling_factor, zp,
-                                                  nudged_min, nudged_max);
-          asymmetric_wdequant_with_minmax_per_layer(circle_const, scaling_factor, nudged_min);
-          auto quantparam = std::make_unique<CircleQuantParam>();
-          quantparam->min.push_back(nudged_min);
-          quantparam->max.push_back(nudged_max);
-          quantparam->scale.push_back(scaling_factor);
-          quantparam->zerop.push_back(zp);
-          circle_node->quantparam(std::move(quantparam));
-        }
-      }
-    }
-    return false;
+  bool visit(luci::CircleTransposeConv *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
+
+    // TODO Check if we can replace dynamic_cast with loco::must_cast
+    auto weights = dynamic_cast<luci::CircleConst *>(node->filter());
+    if (not weights)
+      return false;
+
+    // Skip if this is already quantized
+    if (is_quantized(weights))
+      return false;
+
+    auto new_weights = luci::clone(weights);
+    node->filter(new_weights);
+    fake_quantize(new_weights);
+    return true;
+  }
+
+  bool visit(luci::CircleFullyConnected *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
+
+    // TODO Check if we can replace dynamic_cast with loco::must_cast
+    auto weights = dynamic_cast<luci::CircleConst *>(node->weights());
+    if (not weights)
+      return false;
+
+    // Skip if this is already quantized
+    if (is_quantized(weights))
+      return false;
+
+    auto new_weights = luci::clone(weights);
+    node->weights(new_weights);
+    fake_quantize(new_weights);
+    return true;
   }
 };
 
