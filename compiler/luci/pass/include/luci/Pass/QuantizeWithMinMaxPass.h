@@ -23,6 +23,8 @@
 
 #include <luci/Pass/QuantizationParameters.h>
 
+#include <vector>
+
 namespace luci
 {
 
