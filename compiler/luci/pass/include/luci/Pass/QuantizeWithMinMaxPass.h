@@ -34,11 +34,11 @@ class QuantizeWithMinMaxPass : public logo::Pass
 public:
   struct Context
   {
-    loco::DataType input_model_dtype;
-    loco::DataType output_model_dtype;
-    QuantizationGranularity granularity;
-    loco::DataType input_type;
-    loco::DataType output_type;
+    loco::DataType input_model_dtype = loco::DataType::Unknown;
+    loco::DataType output_model_dtype = loco::DataType::Unknown;
+    QuantizationGranularity granularity = QuantizationGranularity::ChannelWise;
+    loco::DataType input_type = loco::DataType::Unknown;
+    loco::DataType output_type = loco::DataType::Unknown;
     bool TF_style_maxpool = false;
   };
 
