@@ -179,6 +179,8 @@ void CircleQuantizer::quantize(loco::Graph *g) const
       _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
     auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
 
+    auto layer_params = _options->layer_params(Options::AlgorithmParameters::Quantize_layer_params);
+
     if (!in_array(to_lower_case(input_model_dtype), fakeq_supported_input_model_dtype))
       throw std::runtime_error("Unsupported input type. List of supported input type: " +
                                to_string(fakeq_supported_input_model_dtype));
@@ -195,6 +197,26 @@ void CircleQuantizer::quantize(loco::Graph *g) const
         str_to_dtype(output_model_dtype) != loco::DataType::U8)
       throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
 
+    // Check layer params
+    for (auto layer_param : layer_params)
+    {
+      auto name = layer_param->name;
+      // Check type
+      if (!in_array(to_lower_case(layer_param->dtype), fakeq_supported_output_model_dtype))
+      {
+        throw std::runtime_error(
+          "Unsupported output type in " + name +
+          ". List of supported output types: " + to_string(fakeq_supported_output_model_dtype));
+      }
+      // Check granularity
+      if (!in_array(to_lower_case(layer_param->granularity), fakeq_supported_granularity))
+      {
+        throw std::runtime_error(
+          "Unsupported granularity in " + name +
+          ". List of supported granularity: " + to_string(fakeq_supported_granularity));
+      }
+    }
+
     // Clear existing quantparams before doing fake quantization
     for (auto node : loco::active_nodes(loco::output_nodes(g)))
     {
@@ -203,9 +225,26 @@ void CircleQuantizer::quantize(loco::Graph *g) const
         circle_node->quantparam(nullptr);
     }
 
-    luci::QuantizeDequantizeWeightsPass fake_quantizer(str_to_dtype(input_model_dtype),
-                                                       str_to_dtype(output_model_dtype),
-                                                       str_to_granularity(granularity));
+    auto ctx = std::make_unique<luci::QuantizeDequantizeWeightsPass::Context>();
+    {
+      ctx->input_model_dtype = str_to_dtype(input_model_dtype);
+      ctx->output_model_dtype = str_to_dtype(output_model_dtype);
+      ctx->granularity = str_to_granularity(granularity);
+
+      for (auto layer_param : layer_params)
+      {
+        LayerInfo info;
+        {
+          info.name = layer_param->name;
+          info.dtype = str_to_dtype(layer_param->dtype);
+          info.granularity = str_to_granularity(layer_param->granularity);
+        }
+        ctx->layers_info.emplace_back(info);
+      }
+    }
+
+    luci::QuantizeDequantizeWeightsPass fake_quantizer(std::move(ctx));
+
     fake_quantizer.run(g);
   }
 
