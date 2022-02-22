@@ -678,7 +678,7 @@ struct QuantizeSpecialActivation final : public luci::CircleNodeMutableVisitor<v
  * @brief QuantizeActivation quantizes tensors for activations
  * @details Quantize using recorded min/max values
  */
-struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
+struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<void>
 {
   QuantizeActivation(loco::DataType input, loco::DataType output)
     : input_type(input), output_type(output)
@@ -689,7 +689,7 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
   loco::DataType output_type;
 
   // Quantize input tensors of each node
-  bool visit(luci::CircleNode *node)
+  void visit(luci::CircleNode *node)
   {
     LOGGER(l);
     INFO(l) << "QuantizeActivation visit node: " << node->name() << std::endl;
@@ -755,11 +755,10 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
         cast->out_data_type(cast->dtype());
       }
     }
-    return false;
   }
 };
 
-struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
+struct QuantizeBias final : public luci::CircleNodeMutableVisitor<void>
 {
   QuantizeBias(loco::DataType input, loco::DataType output, QuantizationGranularity gr)
     : input_type(input), output_type(output), granularity(gr)
@@ -771,11 +770,11 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
   QuantizationGranularity granularity;
 
   // Quantize bias node
-  bool visit(luci::CircleNode *node)
+  void visit(luci::CircleNode *node)
   {
     // Check if this is already quantized
     if (is_quantized(node))
-      return false;
+      return;
 
     auto iwo_list = get_input_weight_output_of_bias(node);
 
@@ -861,7 +860,6 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
         set_bias(output, new_bias);
       }
     }
-    return false;
   }
 };
 
@@ -869,7 +867,7 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
  * @brief QuantizeWeights quantizes tensors for weights
  * @details Find min/max values on the fly and then quantize
  */
-struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
+struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<void>
 {
   QuantizeWeights(loco::DataType input, loco::DataType output, QuantizationGranularity gr)
     : input_type(input), output_type(output), granularity(gr)
@@ -925,7 +923,7 @@ private:
     }
   }
 
-  bool visit(luci::CircleConv2D *node)
+  void visit(luci::CircleConv2D *node)
   {
     LOGGER(l);
     INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
@@ -936,12 +934,10 @@ private:
       auto new_weights = luci::clone(weights);
       node->filter(new_weights);
       quantize_weights(new_weights);
-      return true;
     }
-    return false;
   }
 
-  bool visit(luci::CircleDepthwiseConv2D *node)
+  void visit(luci::CircleDepthwiseConv2D *node)
   {
     LOGGER(l);
     INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
@@ -952,12 +948,10 @@ private:
       auto new_weights = luci::clone(weights);
       node->filter(new_weights);
       quantize_weights(new_weights);
-      return true;
     }
-    return false;
   }
 
-  bool visit(luci::CircleInstanceNorm *node)
+  void visit(luci::CircleInstanceNorm *node)
   {
     LOGGER(l);
     INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
@@ -965,7 +959,6 @@ private:
     auto gamma = loco::must_cast<luci::CircleConst *>(node->gamma());
     auto beta = loco::must_cast<luci::CircleConst *>(node->beta());
 
-    bool changed = false;
     if (!is_quantized(gamma))
     {
       assert(gamma->dtype() == loco::DataType::FLOAT32);
@@ -975,7 +968,6 @@ private:
       else if (granularity == QuantizationGranularity::ChannelWise)
         quant_const_per_channel(new_gamma, output_type);
       node->gamma(new_gamma);
-      changed = true;
     }
     if (!is_quantized(beta))
     {
@@ -986,13 +978,10 @@ private:
       else if (granularity == QuantizationGranularity::ChannelWise)
         quant_const_per_channel(new_beta, output_type);
       node->beta(new_beta);
-      changed = true;
     }
-
-    return changed;
   }
 
-  bool visit(luci::CirclePRelu *node)
+  void visit(luci::CirclePRelu *node)
   {
     LOGGER(l);
     INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
@@ -1008,13 +997,10 @@ private:
       else if (granularity == QuantizationGranularity::ChannelWise)
         quant_const_per_channel(new_alpha, output_type);
       node->alpha(new_alpha);
-      return true;
     }
-
-    return false;
   }
 
-  bool visit(luci::CircleTransposeConv *node)
+  void visit(luci::CircleTransposeConv *node)
   {
     LOGGER(l);
     INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
@@ -1025,12 +1011,10 @@ private:
       auto new_weights = luci::clone(weights);
       node->filter(new_weights);
       quantize_weights(new_weights);
-      return true;
     }
-    return false;
   }
 
-  bool visit(luci::CircleFullyConnected *node)
+  void visit(luci::CircleFullyConnected *node)
   {
     LOGGER(l);
     INFO(l) << "QuantizeWeights visit node: " << node->name() << std::endl;
@@ -1041,12 +1025,10 @@ private:
       auto new_weights = luci::clone(weights);
       node->weights(new_weights);
       quantize_weights(new_weights);
-      return true;
     }
-    return false;
   }
 
-  bool visit(luci::CircleNode *) { return false; }
+  void visit(luci::CircleNode *) { return; }
 };
 
 /** EXAMPLE
