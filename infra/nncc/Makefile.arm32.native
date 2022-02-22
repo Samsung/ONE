@@ -3,7 +3,6 @@ BUILD_TYPE?=Debug
 CURRENT_DIR=$(shell pwd)
 BUILDFOLDER=build
 ARM32_FOLDER=arm32
-#ROOTFS_ARM?=$(CURRENT_DIR)/tools/cross/rootfs/arm
 
 TYPE_FOLDER=$(shell echo $(BUILD_TYPE) | tr A-Z a-z)
 
@@ -42,7 +41,6 @@ ARM32_HOST_ITEMS+=;circle-tensordump
 _SPACE_:=
 _SPACE_+=
 ARM32_BUILD_WHITELIST=$(subst $(_SPACE_),,$(ARM32_BUILD_ITEMS))
-ARM32_HOST_WHITELIST=$(subst $(_SPACE_),,$(ARM32_HOST_ITEMS))
 
 NNCC_CFG_OPTION+= -DCMAKE_BUILD_TYPE=$(BUILD_TYPE)
 
@@ -75,22 +73,13 @@ help:
 # configures
 #
 
-int_configure_arm32_host:
-	NNCC_WORKSPACE=$(BUILD_ARM32_HOST) ./nncc configure \
-		$(NNCC_CFG_OPTION) \
-		$(NNCC_EXCLUDE_OPTION) \
-		$(NNCC_ARM32_DEBUG_HOST) $(NNCC_CFG_STRICT) -DENABLE_COVERAGE=OFF \
-		-DCMAKE_INSTALL_PREFIX="$(ARM32_INSTALL_HOST)" \
-		-DENABLE_TEST=ON -DEXTERNALS_BUILD_THREADS=4
 
 int_configure_arm32:
-	ROOTFS_DIR=$(ROOTFS_ARM) TARGET_ARCH=armv7l \
-	BUILD_HOST_EXEC=$(CURRENT_DIR)/$(BUILD_ARM32_HOST) \
+	TARGET_ARCH=armv7l \
 	NNCC_WORKSPACE=$(BUILD_ARM32_FOLDER) ./nncc configure \
 		$(NNCC_CFG_OPTION) \
 		$(NNCC_EXCLUDE_OPTION) \
 		$(NNCC_ARM32_DEBUG) $(NNCC_CFG_STRICT) -DENABLE_COVERAGE=OFF \
-		-DCMAKE_TOOLCHAIN_FILE=$(ARM32_TOOLCHAIN_FILE) \
 		-DCMAKE_INSTALL_PREFIX="$(ARM32_INSTALL_FOLDER)" \
 		-DENABLE_TEST=ON -DEXTERNALS_BUILD_THREADS=4
 
@@ -98,13 +87,9 @@ int_configure_arm32:
 #
 # builds
 #
-int_build_arm32_host:
-	BUILD_HOST_EXEC=$(BUILD_ARM32_HOST) \
-	NNCC_WORKSPACE=$(BUILD_ARM32_HOST) ./nncc build -j4
 
 int_build_arm32:
-	ROOTFS_DIR=$(ROOTFS_ARM) TARGET_ARCH=armv7l \
-	BUILD_HOST_EXEC=$(CURRENT_DIR)/$(BUILD_ARM32_HOST) \
+	TARGET_ARCH=armv7l \
 	NNCC_WORKSPACE=$(BUILD_ARM32_FOLDER) ./nncc build -j4
 
 
@@ -118,9 +103,9 @@ int_test:
 
 ################################################################################
 
-all: int_configure_arm32_host int_build_arm32_host int_configure_arm32 int_build_arm32
+all: int_configure_arm32 int_build_arm32
 
-cfg: int_configure_arm32_host int_build_arm32_host int_configure_arm32
+cfg: int_configure_arm32
 
 debug: int_build_arm32
 
