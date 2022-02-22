@@ -1,15 +1,40 @@
+# Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import onnxruntime as rt
 import onnx
 import sys
 import os
 import numpy as np
+import importlib.util
 
 
 def _generate_inputs(model):
+    """Generate random inputs for given model
+
+    Args:
+        model (onnx.onnx_ml_pb2.ModelProto): target model
+
+    Returns:
+        dict from str to numpy.ndarray: generated inputs
+    """
     inputs = {}
     for input in model.graph.input:
         # check if elem type is float32
-        assert (input.type.tensor_type.elem_type == 1)
+        # list of types could ne externded, this is a property of current testsuite
+        assert (
+            input.type.tensor_type.elem_type == onnx.TensorProto.DataType.Value("FLOAT"))
         input_shape = []
         for dim in input.type.tensor_type.shape.dim:
             input_shape += [dim.dim_value]
@@ -18,18 +43,38 @@ def _generate_inputs(model):
 
 
 def _run_model(model, inputs):
+    """Run given model
+
+    Args:
+        model (onnx.onnx_ml_pb2.ModelProto): target model
+        inputs (dict from str to numpy.ndarray): sample inputs
+
+    Returns:
+        list of numpy.ndarray: inference outputs
+    """
     output_names = list(map(lambda output: output.name, model.graph.output))
     session = rt.InferenceSession(model.SerializeToString())
     outputs = session.run(output_names, inputs)
     return outputs
 
 
-def _compare_resuts(ref_outputs, test_outputs, tolerance):
+def _compare_results(ref_outputs, test_outputs, tolerance):
+    """Generate random inputs for given model
+
+    Args:
+        ref_outputs (list of numpy.ndarray): reference values (original model results)
+        test_outputs (list of numpy.ndarray): tested values (modified model results)
+        tolerance (float): maximum acceptable relative difference
+
+    Returns:
+        bool: True if outputs considered equal, False otherwise
+    """
     num_outputs = len(ref_outputs)
     assert (len(test_outputs) == num_outputs)
     for i in range(num_outputs):
         if ref_outputs[i].shape != test_outputs[i].shape:
-            print("output {} shape mismatch".format(i))
+            print("output {} shape mismatch: ref({}) vs test({})".format(
+                i, ref_outputs[i].shape, test_outputs[i].shape))
             return False
         peak_error = np.abs(ref_outputs[i] - test_outputs[i]).max() / np.abs(
             ref_outputs[i]).max()
@@ -41,17 +86,23 @@ def _compare_resuts(ref_outputs, test_outputs, tolerance):
 
 
 if __name__ == '__main__':
-    # this manipulation is needed to add search path where onnx_legalizer is installed
-    sys.path += os.environ['PATH'].split(':')
-    import onnx_legalizer
-
-    if len(sys.argv) < 5:
-        exit('expecting 4 arguments: path to input model, path to "legalized" model,'
-             'base name for generated test inputs, output tolerance')
+    if len(sys.argv) < 6:
+        exit('expecting 5 arguments:\n'
+             '  - path to input model\n'
+             '  - path to "legalized" model\n'
+             '  - path to onnx_legalizer.py\n'
+             '  - base name for generated test inputs\n'
+             '  - output tolerance')
     input_model_path = sys.argv[1]
     output_model_path = sys.argv[2]
-    input_dump_path = sys.argv[3]
-    tolerance = float(sys.argv[4])
+    onnx_legalizer_path = sys.argv[3]
+    input_dump_path = sys.argv[4]
+    tolerance = float(sys.argv[5])
+
+    onnx_legalizer_spec = importlib.util.spec_from_file_location(
+        "onnx_legalizer", onnx_legalizer_path)
+    onnx_legalizer = importlib.util.module_from_spec(onnx_legalizer_spec)
+    onnx_legalizer_spec.loader.exec_module(onnx_legalizer)
 
     model = onnx.load(input_model_path)
 
@@ -72,5 +123,5 @@ if __name__ == '__main__':
 
     test_outputs = _run_model(model, inputs)
 
-    if not _compare_resuts(ref_outputs, test_outputs, tolerance):
+    if not _compare_results(ref_outputs, test_outputs, tolerance):
         exit('comparison failed')
