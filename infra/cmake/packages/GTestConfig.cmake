@@ -17,13 +17,11 @@ function(_GTest_build)
                       IDENTIFIER  "1.8.0-fix1"
                       PKG_NAME    "GTEST")
 
-  if(CMAKE_CROSSCOMPILING)
     message(STATUS "!!! GTestConfig set INC LIBS")
     set(GTEST_FOUND TRUE PARENT_SCOPE)
     set(GTEST_INCLUDE_DIRS ${EXT_OVERLAY_DIR}/include PARENT_SCOPE)
     set(GTEST_LIBRARIES ${EXT_OVERLAY_DIR}/lib/libgtest.a PARENT_SCOPE)
     set(GTEST_MAIN_LIBRARIES ${EXT_OVERLAY_DIR}/lib/libgtest_main.a PARENT_SCOPE)
-  endif(CMAKE_CROSSCOMPILING)
 
 endfunction(_GTest_build)
 
@@ -34,9 +32,9 @@ _GTest_build()
 # Refer to "https://cmake.org/cmake/help/v3.5/module/FindGTest.html"
 # find_package(GTest) creates options like GTEST_FOUND, not GTest_FOUND.
 message(STATUS "!!! find GTest at ${EXT_OVERLAY_DIR}")
-if(NOT CMAKE_CROSSCOMPILING)
+if(NOT BUILD_GTEST)
   find_package(GTest)
-endif(NOT CMAKE_CROSSCOMPILING)
+endif(NOT BUILD_GTEST)
 find_package(Threads)
 
 message(STATUS "!!! GTEST_FOUND = ${GTEST_FOUND}")
