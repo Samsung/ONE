@@ -189,6 +189,11 @@ tar -xf %{SOURCE3019} -C ./externals
 
 %build
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+# compiler build
+make -f infra/nncc/Makefile.arm32.native cfg
+make -f infra/nncc/Makefile.arm32.native debug
+make -f infra/nncc/Makefile.arm32.native test
+
 # runtime build
 %{build_env} ./nnfw configure %{build_options}
 %{build_env} ./nnfw build -j4

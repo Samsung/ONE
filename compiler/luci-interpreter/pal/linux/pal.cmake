@@ -70,6 +70,7 @@ macro(add_pal_to_target TGT)
     endif(BUILD_ARM32_NEON)
 
     add_library(luci_interpreter_linux_pal STATIC ${PAL_SOURCES})
+    target_compile_options(luci_interpreter_linux_pal PUBLIC "-mfpu=vfp") # to disable __ARM_NEON
     set_target_properties(luci_interpreter_linux_pal PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_include_directories(luci_interpreter_linux_pal SYSTEM PRIVATE
             "${TensorFlowRuySource_DIR}"
