@@ -605,9 +605,21 @@ struct QuantizeSpecialActivation final : public luci::CircleNodeMutableVisitor<v
   loco::DataType input_type;
   loco::DataType output_type;
 
-  void visit(luci::CircleNode *)
+  void visit(luci::CircleNode *node)
   {
-    // Do nothing by default
+    // Nodes fused with activation functions which need special quantization
+    auto fused_act_node = dynamic_cast<CircleNodeMixin<CircleNodeTrait::FusedActFunc> *>(node);
+    if (fused_act_node != nullptr &&
+        fused_act_node->fusedActivationFunction() == FusedActFunc::TANH)
+    {
+      if (output_type == loco::DataType::U8)
+        set_act_qparam(node, 2.0f / 256.0f, 128);
+      else
+      {
+        assert(output_type == loco::DataType::S16);
+        set_act_qparam(node, 1.0f / 32768.0f, 0);
+      }
+    }
   }
 
   void visit(luci::CircleLogistic *node)
@@ -710,25 +722,6 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
         {
           compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
           circle_node->dtype(loco::DataType::S16);
-        }
-
-        // Nodes fused with activation functions which need special quantization
-        auto fused_act_node =
-          dynamic_cast<CircleNodeMixin<CircleNodeTrait::FusedActFunc> *>(circle_node);
-        if (fused_act_node != nullptr &&
-            fused_act_node->fusedActivationFunction() == FusedActFunc::TANH)
-        {
-          if (output_type == loco::DataType::U8)
-          {
-            scaling_factor = 2.0f / 256.0f;
-            zp = 128;
-          }
-          else
-          {
-            assert(output_type == loco::DataType::S16);
-            scaling_factor = 1.0f / 32768.0f;
-            zp = 0;
-          }
         }
 
         // The output of these Ops should be integer, so scale should be integer
