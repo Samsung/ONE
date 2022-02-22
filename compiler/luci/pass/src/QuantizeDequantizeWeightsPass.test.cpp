@@ -25,3 +25,17 @@ TEST(QuantizeDequantizeWeightsPassTest, name)
   auto const name = pass.name();
   ASSERT_NE(nullptr, name);
 }
+
+TEST(QuantizeDequantizeWeightsPassTest, name_ctx)
+{
+  auto ctx = std::make_unique<luci::QuantizeDequantizeWeightsPass::Context>();
+  {
+    ctx->input_model_dtype = loco::DataType::FLOAT32;
+    ctx->output_model_dtype = loco::DataType::U8;
+    ctx->granularity = luci::QuantizationGranularity::LayerWise;
+  }
+
+  luci::QuantizeDequantizeWeightsPass pass(std::move(ctx));
+  auto const name = pass.name();
+  ASSERT_NE(nullptr, name);
+}
