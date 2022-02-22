@@ -91,6 +91,21 @@ if [[ ! -s "onnx_conv2d_conv2d.onnx" ]]; then
     # https://github.com/Samsung/ONE/issues/5577#issuecomment-755078444
 fi
 
+if [ ! -s "RNN.onnx" ] ||
+   [ ! -s "RNN-nobias.onnx" ] ||
+   [ ! -s "RNN-relu.onnx" ] ||
+   [ ! -s "RNN-bi.onnx" ] ||
+   [ ! -s "RNN-noinit.onnx" ] ||
+   [ ! -s "LSTM.onnx" ] ||
+   [ ! -s "LSTM-bi.onnx" ] ||
+   [ ! -s "LSTM-noinit.onnx" ] ||
+   [ ! -s "LSTM-nobias.onnx" ]; then
+    rm -rf test_onnx_recurrent_models.zip
+    wget https://github.com/Samsung/ONE/files/8067909/test_onnx_recurrent_models.zip
+    unzip test_onnx_recurrent_models.zip
+    # https://github.com/Samsung/ONE/issues/8395#issuecomment-1040072097
+fi
+
 # prepare 'inception_v3.circle' file used for quantization test
 inputfile="./inception_v3.pb"
 outputfile="./inception_v3.circle"
