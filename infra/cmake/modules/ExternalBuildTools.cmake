@@ -45,8 +45,6 @@ function(ExternalBuild_CMake)
   file(MAKE_DIRECTORY ${ARG_BUILD_DIR})
   file(MAKE_DIRECTORY ${ARG_INSTALL_DIR})
 
-  file(WRITE "${BUILD_STAMP_PATH}" "${PKG_IDENTIFIER}")
-
   execute_process(COMMAND ${CMAKE_COMMAND}
                             -G "${CMAKE_GENERATOR}"
                             -DCMAKE_INSTALL_PREFIX=${ARG_INSTALL_DIR}
@@ -62,6 +60,8 @@ function(ExternalBuild_CMake)
   if(NOT BUILD_EXITCODE EQUAL 0)
     message(FATAL_ERROR "${ARG_PKG_NAME} Package: Build failed (check '${BUILD_LOG_PATH}' for details)")
   endif(NOT BUILD_EXITCODE EQUAL 0)
+
+  file(WRITE "${BUILD_STAMP_PATH}" "${PKG_IDENTIFIER}")
 
   set(NUM_BUILD_THREADS 1)
   if(DEFINED EXTERNALS_BUILD_THREADS)
