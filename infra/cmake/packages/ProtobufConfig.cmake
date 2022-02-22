@@ -62,6 +62,8 @@ function(_Protobuf_build)
 
 endfunction(_Protobuf_build)
 
+set(PROTOC_PATH $<TARGET_FILE:protobuf::protoc>)
+
 _Protobuf_build()
 
 if(USE_PROTOBUF_LEGACY_IMPORT)
@@ -96,7 +98,7 @@ if(Protobuf_FOUND)
 
     add_custom_command(OUTPUT ${OUTPUT_FILES}
                        COMMAND ${CMAKE_COMMAND} -E make_directory "${abs_output_dir}"
-                       COMMAND "$<TARGET_FILE:protobuf::protoc>" --cpp_out "${abs_output_dir}" -I "${abs_proto_dir}" ${PROTO_FILES}
+                       COMMAND "${PROTOC_PATH}" --cpp_out "${abs_output_dir}" -I "${abs_proto_dir}" ${PROTO_FILES}
                        DEPENDS ${PROTO_FILES})
 
     set(${PREFIX}_SOURCES ${OUTPUT_FILES} PARENT_SCOPE)
