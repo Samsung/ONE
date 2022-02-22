@@ -76,8 +76,11 @@ def _compare_results(ref_outputs, test_outputs, tolerance):
             print("output {} shape mismatch: ref({}) vs test({})".format(
                 i, ref_outputs[i].shape, test_outputs[i].shape))
             return False
-        peak_error = np.abs(ref_outputs[i] - test_outputs[i]).max() / np.abs(
-            ref_outputs[i]).max()
+
+        abs_difference = np.abs(ref_outputs[i] - test_outputs[i])
+        abs_ref_maximum = np.abs(ref_outputs[i]).max()
+        peak_error = abs_difference.max() / abs_ref_maximum
+
         if peak_error > tolerance:
             print("output {} peak error to value ratio {} is too big".format(
                 i, peak_error))
