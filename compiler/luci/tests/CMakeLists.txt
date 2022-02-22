@@ -1,6 +1,13 @@
 set(CIRCLECHEF_FILE_PATH $<TARGET_FILE:circlechef-file>)
 set(TFLCHEF_FILE_PATH $<TARGET_FILE:tflchef-file>)
 set(TFLITE2CIRCLE_PATH $<TARGET_FILE:tflite2circle>)
+if(DEFINED ENV{BUILD_HOST_EXEC})
+  # TODO use better way to represent path for host executable
+  set(CIRCLECHEF_FILE_PATH $ENV{BUILD_HOST_EXEC}/compiler/circlechef/tools/file/circlechef-file)
+  set(TFLCHEF_FILE_PATH $ENV{BUILD_HOST_EXEC}/compiler/tflchef/tools/file/tflchef-file)
+  set(TFLITE2CIRCLE_PATH $ENV{BUILD_HOST_EXEC}/compiler/tflite2circle/tflite2circle)
+  message(STATUS "TFLITE2CIRCLE_PATH = ${TFLITE2CIRCLE_PATH}")
+endif(DEFINED ENV{BUILD_HOST_EXEC})
 
 # TODO use local test.recipe files for small networks
 file(GLOB RECIPES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*/test.recipe")
