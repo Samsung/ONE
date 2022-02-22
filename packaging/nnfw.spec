@@ -25,6 +25,9 @@ Source1015: OOURAFFT.tar.gz
 Source1016: TENSORFLOW_GPU.tar.gz
 Source2001: nnfw.pc.in
 Source2002: nnfw-plugin.pc.in
+Source3001: PROTOBUF.tar.gz
+Source3002: FLATBUFFERS-1.12.tar.gz
+Source3003: HDF5.tar.gz
 
 %{!?build_type:     %define build_type      Release}
 %{!?coverage_build: %define coverage_build  0}
@@ -142,9 +145,15 @@ tar -xf %{SOURCE1013} -C ./externals
 tar -xf %{SOURCE1014} -C ./externals
 tar -xf %{SOURCE1015} -C ./externals
 tar -xf %{SOURCE1016} -C ./externals
+tar -xf %{SOURCE3001} -C ./externals
+tar -xf %{SOURCE3002} -C ./externals
+tar -xf %{SOURCE3003} -C ./externals
 
 %build
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+# compiler build
+make -f infra/nncc/Makefile.arm32.native cfg
+
 # runtime build
 %{build_env} ./nnfw configure %{build_options} %{extra_option}
 %{build_env} ./nnfw build -j4
