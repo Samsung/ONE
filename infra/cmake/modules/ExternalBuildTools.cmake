@@ -42,6 +42,20 @@ function(ExternalBuild_CMake)
 
   message(STATUS "Build ${ARG_PKG_NAME} from ${ARG_CMAKE_DIR}")
 
+  # if we're doing the cross compilation, external project also needs it
+  if(CMAKE_TOOLCHAIN_FILE)
+    set(TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE})
+    # NOTE CMAKE_TOOLCHAIN_FILE maybe relative path -> make abs folder
+    if(NOT EXISTS ${TOOLCHAIN_FILE})
+      set(TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/${CMAKE_TOOLCHAIN_FILE})
+      if(NOT EXISTS ${TOOLCHAIN_FILE})
+        message(FATAL "Failed to find ${CMAKE_TOOLCHAIN_FILE}")
+      endif()
+    endif()
+    message(STATUS "ExternalBuild_CMake TOOLCHAIN_FILE=${TOOLCHAIN_FILE}")
+    list(APPEND ARG_EXTRA_OPTS -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE})
+  endif(CMAKE_TOOLCHAIN_FILE)
+
   file(MAKE_DIRECTORY ${ARG_BUILD_DIR})
   file(MAKE_DIRECTORY ${ARG_INSTALL_DIR})
 
