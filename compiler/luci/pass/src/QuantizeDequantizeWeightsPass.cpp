@@ -252,7 +252,7 @@ void asymmetric_wdequant_with_minmax_per_layer(CircleConst *node, float scaling_
  * @brief QuantizeDequantizeWeights quantizes and dequantizes tensors for weights
  * @details Find min/max values on the fly, quantize the model, and dequantize the model
  */
-struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<bool>
+struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<void>
 {
   QuantizeDequantizeWeights(loco::DataType input, loco::DataType output,
                             QuantizationGranularity granularity)
@@ -366,66 +366,62 @@ private:
   }
 
   // Default behavior (Do nothing)
-  bool visit(luci::CircleNode *) { return false; }
+  void visit(luci::CircleNode *) {}
 
-  bool visit(luci::CircleConv2D *node)
+  void visit(luci::CircleConv2D *node)
   {
     LOGGER(l);
     INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
 
     if (not is_quantizable(node->filter()))
-      return false;
+      return;
 
     auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
     fake_quantize(new_weights);
-    return true;
   }
 
-  bool visit(luci::CircleDepthwiseConv2D *node)
+  void visit(luci::CircleDepthwiseConv2D *node)
   {
     LOGGER(l);
     INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
 
     if (not is_quantizable(node->filter()))
-      return false;
+      return;
 
     auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
     fake_quantize(new_weights);
-    return true;
   }
 
-  bool visit(luci::CircleTransposeConv *node)
+  void visit(luci::CircleTransposeConv *node)
   {
     LOGGER(l);
     INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
 
     if (not is_quantizable(node->filter()))
-      return false;
+      return;
 
     auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
     fake_quantize(new_weights);
-    return true;
   }
 
-  bool visit(luci::CircleFullyConnected *node)
+  void visit(luci::CircleFullyConnected *node)
   {
     LOGGER(l);
     INFO(l) << "QuantizeDequantizeWeights visit node: " << node->name() << std::endl;
 
     if (not is_quantizable(node->weights()))
-      return false;
+      return;
 
     auto weights = loco::must_cast<luci::CircleConst *>(node->weights());
     auto new_weights = luci::clone(weights);
     node->weights(new_weights);
     fake_quantize(new_weights);
-    return true;
   }
 };
 
