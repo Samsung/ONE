@@ -37,6 +37,8 @@ endfunction(_FlatBuffers_build)
 _FlatBuffers_build()
 _FlatBuffers_import()
 
+set(FLATC_PATH "$<TARGET_FILE:flatbuffers::flatc>")
+
 if(FlatBuffers_FOUND)
   if(NOT TARGET flatbuffers-1.12)
     add_library(flatbuffers-1.12 INTERFACE)
@@ -60,7 +62,7 @@ if(FlatBuffers_FOUND)
 
     add_custom_command(OUTPUT ${OUTPUT_FILES}
                        COMMAND ${CMAKE_COMMAND} -E make_directory "${abs_output_dir}"
-                       COMMAND "$<TARGET_FILE:flatbuffers::flatc>" -c --no-includes
+                       COMMAND "${FLATC_PATH}" -c --no-includes
                        --no-union-value-namespacing
                        --gen-object-api -o "${abs_output_dir}"
                        ${SCHEMA_FILES}
@@ -102,7 +104,7 @@ if(FlatBuffers_FOUND)
     # Generate headers
     add_custom_command(OUTPUT ${OUTPUT_FILES}
                        COMMAND ${CMAKE_COMMAND} -E make_directory "${abs_output_dir}"
-                       COMMAND "$<TARGET_FILE:flatbuffers::flatc>" -c --no-includes
+                       COMMAND "${FLATC_PATH}" -c --no-includes
                                --no-union-value-namespacing
                                --gen-object-api -o "${abs_output_dir}"
                                ${SCHEMA_FILES}
