@@ -1028,7 +1028,7 @@ private:
     }
   }
 
-  void visit(luci::CircleNode *) { return; }
+  void visit(luci::CircleNode *) {}
 };
 
 /** EXAMPLE

@@ -366,7 +366,7 @@ private:
   }
 
   // Default behavior (Do nothing)
-  void visit(luci::CircleNode *) { return; }
+  void visit(luci::CircleNode *) {}
 
   void visit(luci::CircleConv2D *node)
   {
@@ -380,7 +380,6 @@ private:
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
     fake_quantize(new_weights);
-    return;
   }
 
   void visit(luci::CircleDepthwiseConv2D *node)
@@ -395,7 +394,6 @@ private:
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
     fake_quantize(new_weights);
-    return;
   }
 
   void visit(luci::CircleTransposeConv *node)
@@ -410,7 +408,6 @@ private:
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
     fake_quantize(new_weights);
-    return;
   }
 
   void visit(luci::CircleFullyConnected *node)
@@ -425,7 +422,6 @@ private:
     auto new_weights = luci::clone(weights);
     node->weights(new_weights);
     fake_quantize(new_weights);
-    return;
   }
 };
 
