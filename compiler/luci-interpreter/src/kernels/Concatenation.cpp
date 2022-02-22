@@ -18,7 +18,7 @@
 #include "kernels/Concatenation.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/concatenation.h>
 
 #include <stdexcept>
 
@@ -69,11 +69,21 @@ void Concatenation::configure()
   Shape output_shape = t0->shape();
   output_shape.dim(axis) = sum_axis;
 
-  // TODO S8 type needs more checking: quantization parameters of all input tensors and the output
-  //  tensor should be the same. Note that there is no such requirement for U8 type.
-  if (t0->element_type() == DataType::S8)
-    throw std::runtime_error("Unsupported type.");
+  // If input tensors are INT8 type then quantization parameters of all input tensors and the output
+  // should be the same
+  for (auto current_tensor : _inputs)
+  {
+    if (current_tensor->element_type() == DataType::S8)
+    {
+      LUCI_INTERPRETER_CHECK(current_tensor->quantized_dimension() ==
+                             output()->quantized_dimension());
 
+      LUCI_INTERPRETER_CHECK(current_tensor->zero_points().size() ==
+                             current_tensor->scales().size());
+      LUCI_INTERPRETER_CHECK(current_tensor->zero_points() == output()->zero_points());
+      LUCI_INTERPRETER_CHECK(current_tensor->scales() == output()->scales());
+    }
+  }
   output()->resize(output_shape);
 }
 

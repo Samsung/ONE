@@ -16,6 +16,7 @@
 
 #include "kernels/LeakyRelu.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -31,8 +32,10 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
            std::initializer_list<float> input_data, std::initializer_list<float> output_data,
            float alpha)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   constexpr DataType element_type = getElementType<T>();
-  Tensor input_tensor = makeInputTensor<element_type>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(element_type);
 
   LeakyReluParams params{};
@@ -41,6 +44,7 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   LeakyRelu kernel(&input_tensor, &output_tensor, params);
 
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
@@ -53,10 +57,11 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
                     std::initializer_list<float> input_data,
                     std::initializer_list<float> output_data, float alpha)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   const float quantized_tolerance = getTolerance(-8, 127.f / 16.f, 255);
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-8, 127.f / 16.f);
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>(input_shape, quant_param.first, quant_param.second, input_data);
+  Tensor input_tensor = makeInputTensor<DataType::U8>(
+    input_shape, quant_param.first, quant_param.second, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   LeakyReluParams params{};
@@ -65,6 +70,7 @@ void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
   LeakyRelu kernel(&input_tensor, &output_tensor, params);
 
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
@@ -99,10 +105,13 @@ TYPED_TEST(LeakReluTest, Simple)
 
 TEST(LeakReluTest, IvalidInputOutputType_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, {
-                                                                     0.0f, 1.0f, 3.0f,   // Row 1
-                                                                     1.0f, -1.0f, -2.0f, // Row 2
-                                                                   });
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 3},
+                                                           {
+                                                             0.0f, 1.0f, 3.0f,   // Row 1
+                                                             1.0f, -1.0f, -2.0f, // Row 2
+                                                           },
+                                                           memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 
   LeakyReluParams params{};

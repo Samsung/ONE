@@ -42,7 +42,7 @@ one-import-bcq \
 --input_path ${inputfile} \
 --output_path ${outputfile} \
 --input_arrays Placeholder --input_shapes "32,32:1" \
---output_arrays MatMul > ${filename}.log
+--output_arrays MatMul > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

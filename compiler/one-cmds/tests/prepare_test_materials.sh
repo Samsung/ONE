@@ -103,4 +103,14 @@ if [[ ! -s ${outputfile} ]]; then
   --output_arrays InceptionV3/Predictions/Reshape_1
 fi
 
+# prepare 'inception_v3.mat.q8.circle' file used for quantization test
+inputfile="./inception_v3.circle"
+outputfile="./inception_v3.mat.q8.circle"
+
+if [[ ! -s ${outputfile} ]]; then
+  ../bin/one-quantize \
+  --input_path ${inputfile} \
+  --output_path ${outputfile}
+fi
+
 popd > /dev/null

@@ -35,7 +35,7 @@ one-import-bcq \
 --input_path ${inputfile} \
 --output_path ${outputfile} \
 --input_arrays Placeholder \
---output_arrays MatMul >> /dev/null
+--output_arrays MatMul > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

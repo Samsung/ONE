@@ -17,6 +17,7 @@
 
 #include "kernels/Tanh.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -27,18 +28,28 @@ namespace
 
 using namespace testing;
 
-TEST(TanhTest, Float)
+class TanhTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
+TEST_F(TanhTest, Float)
 {
   Shape input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
     0, -6, 2,  4, //
     3, -2, 10, 1, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Tanh kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -48,7 +59,7 @@ TEST(TanhTest, Float)
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
 }
 
-TEST(TanhTest, Uint8)
+TEST_F(TanhTest, Uint8)
 {
   float kMin = -1;
   float kMax = 127.f / 128.f;
@@ -69,13 +80,15 @@ TEST(TanhTest, Uint8)
     0,  -6, 2, 4, //
     -4, -2, 8, 1, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::U8>({2, 6, 4, 1}, input_quant_param.first,
-                                                      input_quant_param.second, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>({2, 6, 4, 1}, input_quant_param.first, input_quant_param.second,
+                                  input_data, _memory_manager.get());
   Tensor output_tensor =
     makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
 
   Tanh kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{
@@ -97,7 +110,7 @@ TEST(TanhTest, Uint8)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
-TEST(TanhTest, InputTypeInvalid_NEG)
+TEST_F(TanhTest, InputTypeInvalid_NEG)
 {
   std::vector<int64_t> input_data{
     0,  -6, 2, 4, //
@@ -113,14 +126,16 @@ TEST(TanhTest, InputTypeInvalid_NEG)
     0,  -6, 2, 4, //
     -4, -2, 8, 1, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::S64>({2, 6, 4, 1}, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::S64>({2, 6, 4, 1}, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Tanh kernel(&input_tensor, &output_tensor);
+  _memory_manager->allocate_memory(output_tensor);
   EXPECT_ANY_THROW(kernel.execute());
 }
 
-TEST(TanhTest, InputOutputMismatch_NEG)
+TEST_F(TanhTest, InputOutputMismatch_NEG)
 {
   std::vector<float> input_data{
     0,  -6, 2, 4, //
@@ -136,7 +151,8 @@ TEST(TanhTest, InputOutputMismatch_NEG)
     0,  -6, 2, 4, //
     -4, -2, 8, 1, //
   };
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 6, 4, 1}, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 6, 4, 1}, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 
   Tanh kernel(&input_tensor, &output_tensor);

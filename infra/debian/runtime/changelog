@@ -1,0 +1,23 @@
+one (1.19.0) bionic; urgency=low
+
+  * Synch up version with ONE Compiler
+
+ --  Chunseok Lee <chunseok.lee@samsung.com>  Wed, 10 Nov 2021 14:23:00 +0900
+
+one (1.18.0) bionic; urgency=low
+
+  * Synch up version with ONE Compiler
+
+ --  Chunseok Lee <chunseok.lee@samsung.com>  Fri, 15 Oct 2021 15:23:00 +0900
+
+one (1.17.0) bionic; urgency=low
+
+  * New gpu_gl backend supports the following operations : Add, Convolution, Depthwise Convolution, Pooling, Reshape, Relu, Softmax
+
+ --  Chunseok Lee <chunseok.lee@samsung.com>  Fri, 20 Aug 2021 17:00:00 +0900
+
+one (1.16.0) bionic; urgency=low
+
+  * Initial release.
+
+ --  Chunseok Lee <chunseok.lee@samsung.com>  Mon, 05 Jul 2021 17:11:00 +0900

@@ -39,6 +39,18 @@ TEST(UserSettings, MuteWarnings)
   ASSERT_TRUE(settings->get(luci::UserSettings::Key::MuteWarnings));
 }
 
+TEST(UserSettings, MuteWarnings_NEG)
+{
+  auto settings = luci::UserSettings::settings();
+  ASSERT_NE(nullptr, settings);
+
+  settings->set(luci::UserSettings::Key::MuteWarnings, false);
+  ASSERT_FALSE(settings->get(luci::UserSettings::Key::MuteWarnings));
+
+  settings->set(luci::UserSettings::Key::MuteWarnings, true);
+  ASSERT_FALSE(settings->get(luci::UserSettings::Key::DisableValidation));
+}
+
 TEST(UserSettings, DisableValidation)
 {
   auto settings = luci::UserSettings::settings();
@@ -49,6 +61,18 @@ TEST(UserSettings, DisableValidation)
 
   settings->set(luci::UserSettings::Key::DisableValidation, true);
   ASSERT_TRUE(settings->get(luci::UserSettings::Key::DisableValidation));
+}
+
+TEST(UserSettings, DisableValidation_NEG)
+{
+  auto settings = luci::UserSettings::settings();
+  ASSERT_NE(nullptr, settings);
+
+  settings->set(luci::UserSettings::Key::DisableValidation, false);
+  ASSERT_FALSE(settings->get(luci::UserSettings::Key::DisableValidation));
+
+  settings->set(luci::UserSettings::Key::DisableValidation, true);
+  ASSERT_FALSE(settings->get(luci::UserSettings::Key::ProfilingDataGen));
 }
 
 TEST(UserSettings, ProfilingDataGen)

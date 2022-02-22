@@ -67,7 +67,7 @@ public:
  *
  * TODO Deprecated this class, and use loco::FixedArity instead
  */
-template <unsigned N, typename Base> class FixedArityNode : public Base
+template <uint32_t N, typename Base> class FixedArityNode : public Base
 {
 public:
   FixedArityNode()
@@ -82,7 +82,7 @@ public:
   virtual ~FixedArityNode() = default;
 
 public:
-  unsigned arity(void) const final { return N; }
+  uint32_t arity(void) const final { return N; }
 
   loco::Node *arg(uint32_t n) const final { return _args.at(n)->node(); }
 
@@ -96,7 +96,7 @@ public:
 
 protected:
   // This API allows inherited classes to access "_args" field.
-  loco::Use *at(unsigned n) const { return _args.at(n).get(); }
+  loco::Use *at(uint32_t n) const { return _args.at(n).get(); }
 
 private:
   std::vector<std::unique_ptr<loco::Use>> _args{};

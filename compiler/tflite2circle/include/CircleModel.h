@@ -60,16 +60,26 @@ template <typename T> class Offset
 private:
   using TFLFlatBufVec = flatbuffers::Vector<typename T::TFL>;
   using CIRFlatBufVecOffset = flatbuffers::Offset<flatbuffers::Vector<typename T::CIR>>;
+  using SignatureDefs = flatbuffers::Vector<flatbuffers::Offset<::tflite::SignatureDef>>;
 
 public:
   Offset(void) = delete;
-  Offset(FlatBufBuilder &fb, const TFLFlatBufVec *tflite_flatbuffer_vec);
+  Offset(FlatBufBuilder &fb) : _fb{fb} {};
+
+public:
+  void set_signature_defs(const SignatureDefs *offset) { _tfl_signature_def_offsets = offset; }
+
+public:
+  void build(const TFLFlatBufVec *tflite_flatbuffer_vec);
 
 public:
   CIRFlatBufVecOffset offset(void) const { return _circle_flatbuffer_vec_offset; }
 
 private:
+  FlatBufBuilder &_fb;
   CIRFlatBufVecOffset _circle_flatbuffer_vec_offset;
+  // TODO revise this when Circle supports SignatureDef
+  const SignatureDefs *_tfl_signature_def_offsets = nullptr;
 };
 
 class CircleModel
@@ -79,9 +89,10 @@ private:
 
 public:
   CircleModel(void) = delete;
-  CircleModel(FlatBufBuilder &fb, TFLModel &tfl_model);
+  CircleModel(FlatBufBuilder &fb);
 
 public:
+  void load_offsets(const tflite::Model *tfl_model);
   void model_build(void) const;
   const char *base(void) const;
   size_t size(void) const;

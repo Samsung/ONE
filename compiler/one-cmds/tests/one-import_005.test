@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# import onnx model with cfg file
+
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
@@ -31,7 +33,7 @@ outputfile="test_onnx_model.circle"
 rm -f ${outputfile}
 
 # run test
-one-build -C ${configfile} > ${filename}.log 2>&1
+one-import onnx -C ${configfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

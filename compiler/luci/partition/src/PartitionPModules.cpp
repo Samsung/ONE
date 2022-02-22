@@ -25,6 +25,12 @@
 namespace
 {
 
+// forward declare
+void clone_ifnode_subgraphs(luci::PartedModule &pm, const luci::CircleIf *if_node,
+                            const luci::CloneContext &clonectx);
+void clone_whilenode_subgraphs(luci::PartedModule &pm, const luci::CircleWhile *while_node,
+                               const luci::CloneContext &clonectx);
+
 void add_graph_input(loco::Graph *graph, luci::CircleInput *input_node)
 {
   assert(graph != nullptr);
@@ -76,9 +82,177 @@ void add_graph_output(loco::Graph *graph, luci::CircleOutput *output_node)
 }
 
 /**
+ * @brief make a clone of graph
+ */
+std::unique_ptr<loco::Graph> clone_graph(loco::Graph *graph_org, luci::CloneContext &clonectx)
+{
+  auto graph = loco::make_graph();
+  auto graph_clone = graph.get();
+
+  graph_clone->name(graph_org->name());
+
+  // clone inputs
+  for (uint32_t n = 0; n < graph_org->inputs()->size(); ++n)
+  {
+    auto input_org = luci::input_node(graph_org, n);
+    assert(input_org != nullptr);
+
+    auto *input_clone = graph_clone->nodes()->create<luci::CircleInput>();
+    luci::copy_common_attributes(input_org, input_clone);
+
+    add_graph_input(graph_clone, input_clone);
+    clonectx.emplace(input_org, input_clone);
+  }
+
+  // clone nodes
+  auto nodes = graph_org->nodes();
+  for (uint32_t n = 0; n < nodes->size(); ++n)
+  {
+    auto node = nodes->at(n);
+
+    // skip for CircleInput, CircleOutput
+    if (dynamic_cast<luci::CircleInput *>(node) != nullptr)
+      continue;
+    if (dynamic_cast<luci::CircleOutput *>(node) != nullptr)
+      continue;
+
+    auto node_org = loco::must_cast<luci::CircleNode *>(node);
+    assert(clonectx.find(node_org) == clonectx.end());
+
+    auto *node_clone = clone_node(node_org, graph_clone);
+    clonectx.emplace(node_org, node_clone);
+  }
+
+  // connect nodes
+  for (uint32_t n = 0; n < nodes->size(); ++n)
+  {
+    auto node = nodes->at(n);
+
+    // skip for CircleInput, CircleOutput
+    if (dynamic_cast<luci::CircleInput *>(node) != nullptr)
+      continue;
+    if (dynamic_cast<luci::CircleOutput *>(node) != nullptr)
+      continue;
+
+    auto node_org = loco::must_cast<luci::CircleNode *>(node);
+    clone_connect(node_org, clonectx);
+  }
+
+  // clone outputs
+  for (uint32_t n = 0; n < graph_org->outputs()->size(); ++n)
+  {
+    auto output_org = luci::output_node(graph_org, n);
+    assert(output_org != nullptr);
+
+    auto *output_clone = graph_clone->nodes()->create<luci::CircleOutput>();
+    luci::copy_common_attributes(output_org, output_clone);
+    // note: we don't add output_clone to clonectx.
+    // logically, output is not used as an input to any other nodes.
+    auto output_from = loco::must_cast<luci::CircleNode *>(output_org->from());
+    auto it = clonectx.find(output_from);
+    assert(it != clonectx.end());
+    output_clone->from(it->second);
+
+    add_graph_output(graph_clone, output_clone);
+  }
+
+  return std::move(graph);
+}
+
+void clone_recursive_subgraphs(luci::PartedModule &pm, loco::Graph *graph,
+                               const luci::CloneContext &clonectx)
+{
+  auto nodes = graph->nodes();
+  for (uint32_t n = 0; n < nodes->size(); ++n)
+  {
+    {
+      auto if_node = dynamic_cast<luci::CircleIf *>(nodes->at(n));
+      if (if_node != nullptr)
+      {
+        clone_ifnode_subgraphs(pm, if_node, clonectx);
+      }
+    }
+    {
+      auto while_node = dynamic_cast<luci::CircleWhile *>(nodes->at(n));
+      if (while_node != nullptr)
+      {
+        clone_whilenode_subgraphs(pm, while_node, clonectx);
+      }
+    }
+    // TODO handle others
+  }
+}
+
+void clone_ifnode_subgraphs(luci::PartedModule &pm, const luci::CircleIf *if_node,
+                            const luci::CloneContext &clonectx)
+{
+  assert(if_node != nullptr);
+
+  auto it = clonectx.find(if_node);
+  assert(it != clonectx.end());
+  auto if_clone = loco::must_cast<luci::CircleIf *>(it->second);
+
+  luci::CloneContext then_clonectx;
+  luci::CloneContext else_clonectx;
+
+  auto then_graph = if_node->then_graph();
+  auto else_graph = if_node->else_graph();
+
+  auto then_clone = clone_graph(then_graph, then_clonectx);
+  auto else_clone = clone_graph(else_graph, else_clonectx);
+  if_clone->then_graph(then_clone.get());
+  if_clone->else_graph(else_clone.get());
+
+  pm.module->add(std::move(then_clone));
+  int32_t then_index = pm.module->size() - 1;
+  pm.module->add(std::move(else_clone));
+  int32_t else_index = pm.module->size() - 1;
+  if_clone->then_branch(then_index);
+  if_clone->else_branch(else_index);
+
+  // do recursive copy subgraphs of CircleIf if there are any,
+  // inside then_graph or else_graph.
+  clone_recursive_subgraphs(pm, then_graph, then_clonectx);
+  clone_recursive_subgraphs(pm, else_graph, else_clonectx);
+}
+
+void clone_whilenode_subgraphs(luci::PartedModule &pm, const luci::CircleWhile *while_node,
+                               const luci::CloneContext &clonectx)
+{
+  assert(while_node != nullptr);
+
+  auto it = clonectx.find(while_node);
+  assert(it != clonectx.end());
+  auto while_clone = loco::must_cast<luci::CircleWhile *>(it->second);
+
+  luci::CloneContext cond_clonectx;
+  luci::CloneContext body_clonectx;
+
+  auto cond_graph = while_node->cond_graph();
+  auto body_graph = while_node->body_graph();
+
+  auto cond_clone = clone_graph(cond_graph, cond_clonectx);
+  auto body_clone = clone_graph(body_graph, body_clonectx);
+  while_clone->cond_graph(cond_clone.get());
+  while_clone->body_graph(body_clone.get());
+
+  pm.module->add(std::move(cond_clone));
+  int32_t cond_index = pm.module->size() - 1;
+  pm.module->add(std::move(body_clone));
+  int32_t body_index = pm.module->size() - 1;
+  while_clone->cond_branch(cond_index);
+  while_clone->body_branch(body_index);
+
+  // do recursive copy subgraphs of CircleWhile if there are any,
+  // inside cond_graph or body_graph.
+  clone_recursive_subgraphs(pm, cond_graph, cond_clonectx);
+  clone_recursive_subgraphs(pm, body_graph, body_clonectx);
+}
+
+/**
  * @brief Build loco::graph from pgroup into graph
  */
-void build_graph(loco::Graph *graph, const luci::PGroup *pgroup)
+void build_graph(luci::PartedModule &pm, loco::Graph *graph, const luci::PGroup *pgroup)
 {
   LOGGER(l);
 
@@ -153,6 +327,27 @@ void build_graph(loco::Graph *graph, const luci::PGroup *pgroup)
             << "output(" << output << ") -> " << output_clone << "(" << output_clone->name() << ")"
             << ": from " << it->second << "(" << it->second->name() << ")";
   }
+
+  // TODO relocate this if needed
+  // subgraphs for IF/WHILE/... nodes
+  for (auto &pnode : pgroup->pnodes)
+  {
+    {
+      auto if_node = dynamic_cast<const luci::CircleIf *>(pnode->node);
+      if (if_node != nullptr)
+      {
+        clone_ifnode_subgraphs(pm, if_node, clonectx);
+      }
+    }
+    {
+      auto while_node = dynamic_cast<const luci::CircleWhile *>(pnode->node);
+      if (while_node != nullptr)
+      {
+        clone_whilenode_subgraphs(pm, while_node, clonectx);
+      }
+    }
+    // TODO handle others
+  }
 }
 
 std::string make_name(const luci::PGroup *pgroup)
@@ -184,16 +379,20 @@ luci::PartedModules produce_pmodules(const luci::PGroups *pgroups)
     pm.module = std::make_unique<luci::Module>();
     pm.group = pgroup->group;
 
+    // the main graph for this module
     auto graph = loco::make_graph();
+    auto graph_ptr = graph.get();
 
     auto graph_name = make_name(pgroup.get());
     graph->name(graph_name);
 
+    // Add main graph so that other subgraphs can be added inside build_graph
+    pm.module->add(std::move(graph));
+
     INFO(l) << "--- Partition Graph build----------------------";
     INFO(l) << "--- name: " << graph_name;
-    build_graph(graph.get(), pgroup.get());
+    build_graph(pm, graph_ptr, pgroup.get());
 
-    pm.module->add(std::move(graph));
     pms.pmodules.emplace_back(std::move(pm));
   }
 

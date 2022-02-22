@@ -27,6 +27,7 @@ function(_Abseil_import)
       absl::numeric
       absl::random_random
       absl::strings
+      absl::status
       absl::synchronization
       absl::time
       absl::utility
@@ -35,5 +36,10 @@ function(_Abseil_import)
 
   set(Abseil_FOUND TRUE PARENT_SCOPE)
 endfunction(_Abseil_import)
+
+set(CMAKE_C_FLAGS_DEBUG     "${CMAKE_C_FLAGS_DEBUG} -fPIC")
+set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -fPIC")
+set(CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE} -fPIC")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fPIC")
 
 _Abseil_import()

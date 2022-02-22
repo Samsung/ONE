@@ -27,18 +27,18 @@ namespace luci_interpreter
 namespace kernels
 {
 
-void calculateActivationRange(Activation activation, float *activation_min, float *activation_max)
+template <typename T>
+void calculateActivationRange(Activation activation, T *activation_min, T *activation_max)
 {
   switch (activation)
   {
     case Activation::NONE:
-    case Activation::TANH:
-      *activation_min = std::numeric_limits<float>::lowest();
-      *activation_max = std::numeric_limits<float>::max();
+      *activation_min = std::numeric_limits<T>::lowest();
+      *activation_max = std::numeric_limits<T>::max();
       break;
     case Activation::RELU:
       *activation_min = 0;
-      *activation_max = std::numeric_limits<float>::max();
+      *activation_max = std::numeric_limits<T>::max();
       break;
     case Activation::RELU_N1_TO_1:
       *activation_min = -1;
@@ -52,6 +52,13 @@ void calculateActivationRange(Activation activation, float *activation_min, floa
       throw std::runtime_error("Unsupported activation.");
   }
 }
+
+template void calculateActivationRange(Activation activation, float *activation_min,
+                                       float *activation_max);
+template void calculateActivationRange(Activation activation, int32_t *activation_min,
+                                       int32_t *activation_max);
+template void calculateActivationRange(Activation activation, int64_t *activation_min,
+                                       int64_t *activation_max);
 
 static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t qmin, int32_t qmax,
                                                   const Tensor *output, int32_t *activation_min,
@@ -91,7 +98,7 @@ static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t
 void calculateActivationRangeQuantized(Activation activation, const Tensor *output,
                                        int32_t *activation_min, int32_t *activation_max)
 {
-  // For now, assume that signed type implies signed symmetric quantization.
+  assert(output->zero_points().size() == 1);
   int32_t qmin{};
   int32_t qmax{};
   switch (output->element_type())
@@ -101,11 +108,11 @@ void calculateActivationRangeQuantized(Activation activation, const Tensor *outp
       qmax = std::numeric_limits<uint8_t>::max();
       break;
     case DataType::S8:
-      assert(output->zero_point() == 0);
       qmin = -std::numeric_limits<int8_t>::max();
       qmax = std::numeric_limits<int8_t>::max();
       break;
     case DataType::S16:
+      // For now, assume that signed int16 type implies signed symmetric quantization.
       assert(output->zero_point() == 0);
       qmin = -std::numeric_limits<int16_t>::max();
       qmax = std::numeric_limits<int16_t>::max();
@@ -176,7 +183,11 @@ Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_
   {
     const int32_t input1_dim = i < num_input1_dims ? input1_shape.dim(num_input1_dims - i - 1) : 1;
     const int32_t input2_dim = i < num_input2_dims ? input2_shape.dim(num_input2_dims - i - 1) : 1;
-    assert(input1_dim == input2_dim || input1_dim == 1 || input2_dim == 1);
+
+    bool need_broadcast = input1_dim != input2_dim;
+    bool can_broadcast = input1_dim == 1 || input2_dim == 1;
+    LUCI_INTERPRETER_CHECK(!need_broadcast || can_broadcast);
+
     output_shape.dim(num_out_dims - i - 1) = std::max(input1_dim, input2_dim);
   }
 

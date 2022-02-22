@@ -33,7 +33,7 @@ enum class CN
   KLMN,
   OPQR,
   STUV,
-  VWXYZ,
+  WXYZ,
 };
 
 template <CN ct> class CloneNodeLet;
@@ -103,7 +103,7 @@ public:
   luci::CircleNode *visit(const luci::CircleGatherNd *) final;
   luci::CircleNode *visit(const luci::CircleGreater *) final;
   luci::CircleNode *visit(const luci::CircleGreaterEqual *) final;
-  // luci::CircleNode *visit(const luci::CircleIf *) final;
+  luci::CircleNode *visit(const luci::CircleIf *) final;
 
   luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
 
@@ -225,14 +225,14 @@ protected:
   loco::Graph *_graph = nullptr;
 };
 
-template <> class CloneNodeLet<CN::VWXYZ> final : public luci::CircleNodeVisitor<luci::CircleNode *>
+template <> class CloneNodeLet<CN::WXYZ> final : public luci::CircleNodeVisitor<luci::CircleNode *>
 {
 public:
   CloneNodeLet(loco::Graph *graph) : _graph(graph){};
 
 public:
   luci::CircleNode *visit(const luci::CircleWhere *) final;
-  // luci::CircleNode *visit(const luci::CircleWhile *) final;
+  luci::CircleNode *visit(const luci::CircleWhile *) final;
   luci::CircleNode *visit(const luci::CircleZerosLike *) final;
 
   luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
@@ -257,7 +257,7 @@ public:
 
   // Virtual
   luci::CircleNode *visit(const luci::CircleCustomOut *) final;
-  // luci::CircleNode *visit(const luci::CircleIfOut *) final;
+  luci::CircleNode *visit(const luci::CircleIfOut *) final;
   // luci::CircleNode *visit(const luci::CircleInput *) final;
   luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV4Out *) final;
   luci::CircleNode *visit(const luci::CircleNonMaxSuppressionV5Out *) final;
@@ -269,7 +269,7 @@ public:
   luci::CircleNode *visit(const luci::CircleTopKV2Out *) final;
   luci::CircleNode *visit(const luci::CircleUniqueOut *) final;
   luci::CircleNode *visit(const luci::CircleUnpackOut *) final;
-  // luci::CircleNode *visit(const luci::CircleWhileOut *) final;
+  luci::CircleNode *visit(const luci::CircleWhileOut *) final;
 
   // Handle in CircleNode
   luci::CircleNode *visit(const luci::CircleNode *) final;

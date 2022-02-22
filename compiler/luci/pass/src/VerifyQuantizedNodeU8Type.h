@@ -95,6 +95,16 @@ private:
     return true;
   }
 
+  bool visit(const luci::CirclePack *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+    for (uint32_t i = 0; i < node->values_count(); i++)
+    {
+      RETURN_FALSE_UNLESS(has_type(node->values(i), Type::U8))
+    }
+    return true;
+  }
+
   bool visit(const luci::CirclePad *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
@@ -144,7 +154,9 @@ private:
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->weights(), Type::U8))
-    RETURN_FALSE_UNLESS(has_type(node->bias(), Type::S32))
+    luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (bias != nullptr)
+      RETURN_FALSE_UNLESS(has_type(bias, Type::S32))
     return true;
   }
 
@@ -216,6 +228,17 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleOneHot *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, loco::DataType::U8));
+    RETURN_FALSE_UNLESS(has_type(node->indices(), loco::DataType::S32) ||
+                        has_type(node->indices(), loco::DataType::S64));
+    RETURN_FALSE_UNLESS(has_type(node->depth(), loco::DataType::S32));
+    RETURN_FALSE_UNLESS(has_type(node->on_value(), loco::DataType::U8));
+    RETURN_FALSE_UNLESS(has_type(node->off_value(), loco::DataType::U8));
+    return true;
+  }
+
   bool visit(const luci::CircleRelu *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
@@ -225,8 +248,15 @@ private:
 
   bool visit(const luci::CircleReshape *node)
   {
-    RETURN_FALSE_UNLESS(has_type(node, Type::U8))
-    RETURN_FALSE_UNLESS(has_type(node->tensor(), Type::U8))
+    if (node->quantparam())
+    {
+      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+      RETURN_FALSE_UNLESS(has_type(node->tensor(), Type::U8))
+    }
+    else
+    {
+      RETURN_FALSE_UNLESS(has_type(node->tensor(), node->dtype()))
+    }
     luci::CircleConst *shape = dynamic_cast<luci::CircleConst *>(node->shape());
     if (shape != nullptr)
       RETURN_FALSE_UNLESS(has_type(shape, Type::S32))
@@ -238,6 +268,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
 
+    RETURN_FALSE_UNLESS(node->quantparam());
     RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 1.0f / 256.0f);
     RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == 0);
     return true;
@@ -248,6 +279,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->logits(), Type::U8))
 
+    RETURN_FALSE_UNLESS(node->quantparam());
     RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 1.0f / 255.0f);
     RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == 0);
     return true;
@@ -286,6 +318,33 @@ private:
   bool visit(const luci::CircleSplitOut *node)
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+
+    // SplitOut has the same qparam with the input of Split
+    auto split = loco::must_cast<luci::CircleSplit *>(node->input());
+    auto input = loco::must_cast<luci::CircleNode *>(split->input());
+    RETURN_FALSE_UNLESS(node->quantparam());
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == input->quantparam()->scale[0]);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == input->quantparam()->zerop[0]);
+    return true;
+  }
+
+  bool visit(const luci::CircleSplitV *node)
+  {
+    // node's output is the input of CircleSplitVOut, thus not quantized
+    RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
+    return true;
+  }
+
+  bool visit(const luci::CircleSplitVOut *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+
+    // SplitVOut has the same qparam with the input of SplitV
+    auto splitv = loco::must_cast<luci::CircleSplitV *>(node->input());
+    auto input = loco::must_cast<luci::CircleNode *>(splitv->input());
+    RETURN_FALSE_UNLESS(node->quantparam());
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == input->quantparam()->scale[0]);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == input->quantparam()->zerop[0]);
     return true;
   }
 
@@ -293,6 +352,11 @@ private:
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
+
+    auto input = loco::must_cast<luci::CircleNode *>(node->input());
+    RETURN_FALSE_UNLESS(node->quantparam());
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == input->quantparam()->scale[0]);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == input->quantparam()->zerop[0]);
     return true;
   }
 
@@ -310,6 +374,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
 
+    RETURN_FALSE_UNLESS(node->quantparam());
     RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == 2.0f / 256.0f);
     RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == 128);
     return true;
@@ -329,6 +394,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node->x(), Type::U8))
 
     // This checks the value of scale is an integer
+    RETURN_FALSE_UNLESS(node->quantparam());
     RETURN_FALSE_UNLESS(std::roundf(node->quantparam()->scale[0]) == node->quantparam()->scale[0]);
     return true;
   }
@@ -364,6 +430,7 @@ private:
     RETURN_FALSE_UNLESS(has_type(node->y(), Type::U8))
 
     // This checks the value of scale is an integer
+    RETURN_FALSE_UNLESS(node->quantparam());
     RETURN_FALSE_UNLESS(std::roundf(node->quantparam()->scale[0]) == node->quantparam()->scale[0]);
     return true;
   }
@@ -408,6 +475,45 @@ private:
   {
     RETURN_FALSE_UNLESS(has_type(node, Type::U8))
     RETURN_FALSE_UNLESS(has_type(node->input(), Type::U8))
+    return true;
+  }
+
+  bool visit(const luci::CircleUnpack *node)
+  {
+    // node's output is the input of CircleUnpackOut, thus not quantized
+    RETURN_FALSE_UNLESS(has_type(node->value(), Type::U8))
+    return true;
+  }
+
+  bool visit(const luci::CircleUnpackOut *node)
+  {
+    RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+
+    // UnpackOut has the same qparam with the input of Unpack
+    auto Unpack = loco::must_cast<luci::CircleUnpack *>(node->input());
+    auto input = loco::must_cast<luci::CircleNode *>(Unpack->value());
+    RETURN_FALSE_UNLESS(node->quantparam() && input->quantparam());
+    RETURN_FALSE_UNLESS(node->quantparam()->scale[0] == input->quantparam()->scale[0]);
+    RETURN_FALSE_UNLESS(node->quantparam()->zerop[0] == input->quantparam()->zerop[0]);
+    return true;
+  }
+
+  bool visit(const luci::CircleCast *node)
+  {
+    auto *input = loco::must_cast<luci::CircleNode *>(node->x());
+    bool input_quantized = input->quantparam() != nullptr;
+    if (input_quantized)
+    {
+      RETURN_FALSE_UNLESS(has_type(input, node->in_data_type()))
+      RETURN_FALSE_UNLESS(has_type(input, Type::U8))
+    }
+
+    bool node_quantized = node->quantparam() != nullptr;
+    if (node_quantized)
+    {
+      RETURN_FALSE_UNLESS(has_type(node, node->out_data_type()))
+      RETURN_FALSE_UNLESS(has_type(node, Type::U8))
+    }
     return true;
   }
 

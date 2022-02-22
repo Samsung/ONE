@@ -1,0 +1,68 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "relu"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "padding"
+  type: INT32
+  shape { dim: 4 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "0"
+    arg: "1" arg: "1"
+    arg: "1" arg: "1"
+    arg: "0" arg: "0"
+  }
+}
+operand {
+  name: "constant_values"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler {
+    tag: "explicit"
+    arg: "-100.00"
+  }
+}
+operand {
+  name: "padv2"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim: 5 dim: 2 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operation {
+  type: "ReLU"
+  input: "ifm"
+  output: "relu"
+}
+operation {
+  type: "PadV2"
+  input: "relu"
+  input: "padding"
+  input: "constant_values"
+  output: "padv2"
+}
+operation {
+  type: "MaxPool2D"
+  maxpool2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+    filter_height: 3
+    filter_width: 3
+  }
+  input: "padv2"
+  output: "ofm"
+}
+
+input: "ifm"
+output: "ofm"

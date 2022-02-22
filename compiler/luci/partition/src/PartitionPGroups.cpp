@@ -35,6 +35,19 @@ class IsVirtualNode final : public luci::CircleNodeVisitor<bool>
 public:
   bool visit(const luci::CircleInput *) final { return true; }
   bool visit(const luci::CircleOutput *) final { return true; }
+  // For multiple outputs
+  bool visit(const luci::CircleCustomOut *) final { return true; }
+  bool visit(const luci::CircleIfOut *) final { return true; }
+  bool visit(const luci::CircleNonMaxSuppressionV4Out *) final { return true; }
+  bool visit(const luci::CircleNonMaxSuppressionV5Out *) final { return true; }
+  bool visit(const luci::CircleSplitOut *) final { return true; }
+  bool visit(const luci::CircleSplitVOut *) final { return true; }
+  bool visit(const luci::CircleTopKV2Out *) final { return true; }
+  bool visit(const luci::CircleUniqueOut *) final { return true; }
+  bool visit(const luci::CircleUnpackOut *) final { return true; }
+  bool visit(const luci::CircleWhileOut *) final { return true; }
+  // For inputs not used
+  bool visit(const luci::CircleOutputExclude *) final { return true; }
   // TODO add all virtual nodes
 
   // default is false
@@ -60,6 +73,139 @@ bool check_allocate_partition(const luci::CircleNode *node)
 
 } // namespace
 
+namespace
+{
+
+std::string group_from_partition(const luci::CircleNode *node,
+                                 const luci::PartitionTable &partition)
+{
+  LOGGER(l);
+
+  auto group = partition.default_group;
+
+  std::string opcodename; // opcodename or opname
+
+  switch (partition.comply)
+  {
+    case luci::PartitionTable::COMPLY::OPCODE:
+    {
+      opcodename = luci::opcode_name(node);
+      assert(!opcodename.empty());
+
+      auto it = partition.byopcodes.find(opcodename);
+      if (it != partition.byopcodes.end())
+        group = it->second;
+      break;
+    }
+    case luci::PartitionTable::COMPLY::OPNAME:
+    {
+      opcodename = node->name();
+      assert(!opcodename.empty());
+
+      auto it = partition.byopnames.find(opcodename);
+      if (it != partition.byopnames.end())
+        group = it->second;
+      break;
+    }
+
+    default:
+      throw std::runtime_error("Unsupported partition.comply");
+  }
+
+  INFO(l) << "Op: " << node->name() << ": " << opcodename << ", " << node << ", " << group
+          << std::endl;
+
+  return group;
+}
+
+class IsMultiOutputNode final : public luci::CircleNodeVisitor<bool>
+{
+public:
+  bool visit(const luci::CircleCustom *) final { return true; }
+  bool visit(const luci::CircleIf *) final { return true; }
+  bool visit(const luci::CircleNonMaxSuppressionV4 *) final { return true; }
+  bool visit(const luci::CircleNonMaxSuppressionV5 *) final { return true; }
+  bool visit(const luci::CircleSplit *) final { return true; }
+  bool visit(const luci::CircleSplitV *) final { return true; }
+  bool visit(const luci::CircleTopKV2 *) final { return true; }
+  bool visit(const luci::CircleUnique *) final { return true; }
+  bool visit(const luci::CircleUnpack *) final { return true; }
+  bool visit(const luci::CircleWhile *) final { return true; }
+  // default is false
+  bool visit(const luci::CircleNode *) final { return false; }
+};
+
+void append(luci::CircleNode *node, luci::PGroups *pgroups, const std::string &group, uint32_t idx)
+{
+  auto pgroup = std::make_unique<luci::PGroup>();
+  pgroup->group = group;
+  pgroup->id = idx + 1;
+
+  auto pnode = std::make_unique<luci::PNode>();
+  pnode->node = node;
+  pnode->group = group;
+  pnode->pgroup = pgroup.get();
+
+  pgroup->pnodes.push_back(std::move(pnode));
+
+  // Set input of PGroup
+  for (uint32_t in = 0; in < node->arity(); ++in)
+  {
+    auto input = loco::must_cast<luci::CircleNode *>(node->arg(in));
+    if (dynamic_cast<const luci::CircleOutputExclude *>(input) != nullptr)
+    {
+      auto pnode = std::make_unique<luci::PNode>();
+      pnode->node = input;
+      pnode->group = group;
+      pnode->pgroup = pgroup.get();
+
+      pgroup->pnodes.push_back(std::move(pnode));
+
+      pgroups->node2group[input] = group;
+    }
+    else
+    {
+      // this input maybe CircleInput in source graph
+      // --> not confident this is safe
+      pgroup->inputs.push_back(input);
+    }
+  }
+
+  IsMultiOutputNode query;
+  if (node->accept(&query))
+  {
+    // Include CircleXXXOut virtual nodes in this group
+    auto succs = loco::succs(node);
+    for (auto &succ_node : succs)
+    {
+      auto nodeout = loco::must_cast<luci::CircleNode *>(succ_node);
+
+      auto pnode = std::make_unique<luci::PNode>();
+      pnode->node = nodeout;
+      pnode->group = group;
+      pnode->pgroup = pgroup.get();
+
+      pgroup->pnodes.push_back(std::move(pnode));
+
+      pgroups->node2group[nodeout] = group;
+
+      pgroup->outputs.push_back(nodeout);
+    }
+  }
+  else
+  {
+    // Set output of PGroup: node itself
+    pgroup->outputs.push_back(node);
+  }
+
+  pgroups->node2group[node] = group;
+  pgroups->id2pgroup[pgroup->id] = pgroup.get();
+
+  pgroups->pgroups.push_back(std::move(pgroup));
+}
+
+} // namespace
+
 namespace luci
 {
 
@@ -67,8 +213,8 @@ std::unique_ptr<luci::PGroups> produce_pgroups(const luci::Module *source,
                                                const luci::PartitionTable &partition)
 {
   assert(source != nullptr);
-  // TODO support multiple subgraphs
-  assert(source->size() == 1);
+  // NOTE Only main graph (subgraph index 0) will be partitioned.
+  // Other subgraphs will follow the owner (IF/WHILE/...) group
 
   LOGGER(l);
 
@@ -86,44 +232,9 @@ std::unique_ptr<luci::PGroups> produce_pgroups(const luci::Module *source,
     // check if node is normal node that we are interested
     if (check_allocate_partition(node))
     {
-      auto opcodename = luci::opcode_name(node);
-      assert(!opcodename.empty());
+      auto group = group_from_partition(node, partition);
 
-      auto group = partition.default_group;
-      auto it = partition.byopcodes.find(opcodename);
-      if (it != partition.byopcodes.end())
-        group = it->second;
-
-      INFO(l) << "Op: " << node->name() << ": " << opcodename << ", " << node << ", " << group
-              << std::endl;
-
-      auto pgroup = std::make_unique<luci::PGroup>();
-      pgroup->group = group;
-      pgroup->id = idx + 1;
-
-      auto pnode = std::make_unique<luci::PNode>();
-      pnode->node = node;
-      pnode->group = group;
-      pnode->pgroup = pgroup.get();
-
-      pgroup->pnodes.push_back(std::move(pnode));
-
-      // Set input of PGroup
-      for (uint32_t in = 0; in < node->arity(); ++in)
-      {
-        auto input = loco::must_cast<luci::CircleNode *>(node->arg(in));
-        // this input maybe CircleInput in source graph
-        // --> not confident this is safe
-        pgroup->inputs.push_back(input);
-      }
-      // Set output of PGroup: node itself or multiple virtual outputs
-      // TODO support multiple virtual outputs
-      pgroup->outputs.push_back(node);
-
-      pgroups->node2group[node] = group;
-      pgroups->id2pgroup[pgroup->id] = pgroup.get();
-
-      pgroups->pgroups.push_back(std::move(pgroup));
+      append(node, pgroups.get(), group, idx);
     }
     else
     {

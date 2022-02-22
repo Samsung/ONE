@@ -15,11 +15,11 @@
  */
 
 #include "PartitionRead.h"
-#include "HelperStrings.h"
 
 #include <crew/PConfigIni.h>
 #include <crew/PConfigIniDump.h>
 #include <luci/Log.h>
+#include <pepper/csv2vec.h>
 
 #include <stdexcept>
 
@@ -30,15 +30,24 @@ using namespace partee;
 
 const char *_section_partition = "partition";
 const char *_section_OPCODE = "OPCODE";
+const char *_section_OPNAME = "OPNAME";
+
+const char *_comply_opcode = "opcode";
+const char *_comply_opname = "opname";
 
 const char *_key_backends = "backends";
 const char *_key_default = "default";
+const char *_key_comply = "comply";
 const char *_key_underscore = "_";
 
 luci::PartitionTable parse_table(const crew::Sections &sections)
 {
   luci::PartitionTable table;
 
+  // default comply as OPCODE
+  table.comply = luci::PartitionTable::COMPLY::OPCODE;
+
+  // read main '[partition]' first
   for (auto &section : sections)
   {
     if (section.name == _section_partition)
@@ -53,20 +62,60 @@ luci::PartitionTable parse_table(const crew::Sections &sections)
         throw std::invalid_argument("'default' is required");
       }
 
-      table.groups = csv_to_vector<std::string>(items.at(_key_backends));
+      table.groups = pepper::csv_to_vector<std::string>(items.at(_key_backends));
       table.default_group = items.at(_key_default);
+
+      auto comply = items.at(_key_comply);
+
+      // check valid comply types
+      if (comply == _comply_opcode)
+      {
+        table.comply = luci::PartitionTable::COMPLY::OPCODE;
+        continue;
+      }
+      if (comply == _comply_opname)
+      {
+        table.comply = luci::PartitionTable::COMPLY::OPNAME;
+        continue;
+      }
+      throw std::runtime_error("Invalid or comply is not set");
     }
-    else if (section.name == _section_OPCODE)
+  }
+
+  // read other sections
+  for (auto &section : sections)
+  {
+    if (section.name == _section_OPCODE)
     {
       auto &items = section.items;
 
       for (auto &item : items)
       {
         if (item.first == _key_underscore)
-          table.default_group = item.second;
+        {
+          if (table.comply == luci::PartitionTable::COMPLY::OPCODE)
+            table.default_group = item.second;
+        }
         else
         {
           table.byopcodes.emplace(item.first, item.second);
+        }
+      }
+    }
+    else if (section.name == _section_OPNAME)
+    {
+      auto &items = section.items;
+
+      for (auto &item : items)
+      {
+        if (item.first == _key_underscore)
+        {
+          if (table.comply == luci::PartitionTable::COMPLY::OPNAME)
+            table.default_group = item.second;
+        }
+        else
+        {
+          table.byopnames.emplace(item.first, item.second);
         }
       }
     }

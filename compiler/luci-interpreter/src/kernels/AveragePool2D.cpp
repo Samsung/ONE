@@ -18,8 +18,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/integer_ops/pooling.h>
-#include <tensorflow/lite/kernels/internal/reference/pooling.h>
+#include "PALAveragePool2d.h"
 
 #include <stdexcept>
 
@@ -29,8 +28,9 @@ namespace luci_interpreter
 namespace kernels
 {
 
-AveragePool2D::AveragePool2D(const Tensor *input, Tensor *output, const Pool2DParams &params)
-  : KernelWithParams<Pool2DParams>({input}, {output}, params)
+AveragePool2D::AveragePool2D(const Tensor *input, Tensor *output, Tensor *scratchpad,
+                             const Pool2DParams &params)
+  : KernelWithParams<Pool2DParams>({input}, {output, scratchpad}, params)
 {
 }
 
@@ -70,7 +70,16 @@ void AveragePool2D::configure()
     LUCI_INTERPRETER_CHECK(std::abs(output()->scale() - input()->scale()) <= 1.0e-6);
     LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && output()->zero_point() == 0);
   }
+  else if (input()->element_type() == DataType::S8)
+  {
+    LUCI_INTERPRETER_CHECK(std::abs(output()->scale() - input()->scale()) <= 1.0e-6);
+    LUCI_INTERPRETER_CHECK(output()->zero_point() == input()->zero_point());
+  }
   output()->resize({batches, output_height, output_width, depth});
+
+  auto scratchpad = getOutputTensors()[1];
+  luci_interpreter_pal::SetupScratchpadTensor(scratchpad, input()->element_type(),
+                                              getTensorShape(input()), getTensorShape(output()));
 }
 
 void AveragePool2D::execute() const
@@ -85,6 +94,9 @@ void AveragePool2D::execute() const
       break;
     case DataType::S16:
       evalSInt16();
+      break;
+    case DataType::S8:
+      evalSInt8();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
@@ -130,6 +142,31 @@ void AveragePool2D::evalQuantized() const
   tflite::reference_ops::AveragePool(params, getTensorShape(input()),
                                      getTensorData<uint8_t>(input()), getTensorShape(output()),
                                      getTensorData<uint8_t>(output()));
+}
+
+void AveragePool2D::evalSInt8() const
+{
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+  tflite::PoolParams params{};
+  params.padding_values.height = _padding_height;
+  params.padding_values.width = _padding_width;
+  params.stride_height = _params.stride_height;
+  params.stride_width = _params.stride_width;
+  params.filter_height = _params.filter_height;
+  params.filter_width = _params.filter_width;
+  params.quantized_activation_min = activation_min;
+  params.quantized_activation_max = activation_max;
+
+  auto scratchpad = getOutputTensors()[1];
+  int8_t *scratchpad_data = nullptr;
+  if (scratchpad->is_allocatable())
+    scratchpad_data = scratchpad->data<int8_t>();
+
+  luci_interpreter_pal::AveragePool<int8_t>(
+    params, getTensorShape(input()), getTensorData<int8_t>(input()), getTensorShape(output()),
+    getTensorData<int8_t>(output()), getTensorShape(scratchpad), scratchpad_data);
 }
 
 void AveragePool2D::evalSInt16() const

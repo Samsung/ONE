@@ -4,11 +4,11 @@
 [[ "${BASH_SOURCE[0]}" == "${0}" ]] && echo "Please don't execute ${BASH_SOURCE[0]}, source it" && return
 
 DEBUG_BUILD_ITEMS="angkor;cwrap;pepper-str;pepper-strcast;pp"
-DEBUG_BUILD_ITEMS+=";oops;pepper-assert"
+DEBUG_BUILD_ITEMS+=";oops;pepper-assert;pepper-csv2vec"
 DEBUG_BUILD_ITEMS+=";hermes;hermes-std"
 DEBUG_BUILD_ITEMS+=";loco;locop;locomotiv;logo-core;logo"
 DEBUG_BUILD_ITEMS+=";foder;crew;souschef;arser;vconone"
-DEBUG_BUILD_ITEMS+=";safemain;mio-circle;mio-tflite"
+DEBUG_BUILD_ITEMS+=";safemain;mio-circle;mio-tflite;mio-tflite260"
 DEBUG_BUILD_ITEMS+=";tflite2circle"
 DEBUG_BUILD_ITEMS+=";luci"
 DEBUG_BUILD_ITEMS+=";luci-interpreter"

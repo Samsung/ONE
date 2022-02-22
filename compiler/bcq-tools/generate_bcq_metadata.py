@@ -19,7 +19,11 @@ import numpy as np
 import tensorflow as tf
 
 import argparse
+import os
 import sys
+
+# TODO Find better way to suppress trackback on error
+sys.tracebacklimit = 0
 
 ONE_START_MAGICNUM = int(-2e9 + 27)
 ONE_END_MAGICNUM = int(2e9 - 27)
@@ -154,7 +158,7 @@ def generate_bcq_metadata_v1(flags):
     new_node.op = "Const"
     new_node.name = "one_compiler/bcqinfo_one_metadata"
     new_node.attr["dtype"].CopyFrom(
-        tf.core.framework.attr_value_pb2.AttrValue(type=tf.int32.as_datatype_enum))
+        tf.compat.v1.AttrValue(type=tf.int32.as_datatype_enum))
     new_node.attr["value"].tensor.CopyFrom(metadata_tensor)
     return new_graph_def
 
@@ -216,4 +220,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        prog_name = os.path.basename(__file__)
+        print(f"{prog_name}: {type(e).__name__}: " + str(e))
+        sys.exit(255)

@@ -31,7 +31,8 @@ class TransposeConv : public KernelWithParams<TransposeConvParams>
 {
 public:
   TransposeConv(const Tensor *output_shape, const Tensor *filter, const Tensor *input,
-                const Tensor *bias, Tensor *output, const TransposeConvParams &params);
+                const Tensor *bias, Tensor *output, Tensor *scratch_tensor,
+                const TransposeConvParams &params);
 
   ~TransposeConv();
 
@@ -51,8 +52,6 @@ private:
   void evalQuantizedS16() const;
 
 private:
-  std::unique_ptr<Tensor> _scratch_tensor;
-
   int32_t _padding_height{};
   int32_t _padding_width{};
   // The scaling factor from input to output (aka the 'real multiplier') can

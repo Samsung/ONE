@@ -16,6 +16,7 @@
 
 #include "kernels/PadV2.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -30,20 +31,23 @@ float GetTolerance(float min, float max) { return (max - min) / 255.0; }
 
 TEST(PadV2, Uint8)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   float kQuantizedTolerance = GetTolerance(-1.0, 1.0);
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
   std::vector<float> input_data{-0.8, 0.2, 0.9, 0.7, 0.1, -0.3};
   std::vector<int32_t> paddings_data{0, 0, 0, 2, 1, 3, 0, 0};
   std::vector<float> constant_values_data{0.5};
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>({1, 2, 3, 1}, quant_param.first, quant_param.second, input_data);
-  Tensor paddings_tensor = makeInputTensor<DataType::S32>({4, 2}, paddings_data);
-  Tensor constant_values =
-    makeInputTensor<DataType::U8>({1}, quant_param.first, quant_param.second, constant_values_data);
+  Tensor input_tensor = makeInputTensor<DataType::U8>(
+    {1, 2, 3, 1}, quant_param.first, quant_param.second, input_data, memory_manager.get());
+  Tensor paddings_tensor =
+    makeInputTensor<DataType::S32>({4, 2}, paddings_data, memory_manager.get());
+  Tensor constant_values = makeInputTensor<DataType::U8>(
+    {1}, quant_param.first, quant_param.second, constant_values_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   PadV2 kernel(&input_tensor, &paddings_tensor, &constant_values, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data = {
@@ -56,16 +60,21 @@ TEST(PadV2, Uint8)
 
 TEST(PadV2, Float)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   std::vector<float> input_data{1, 2, 3, 4, 5, 6};
   std::vector<int32_t> paddings_data{1, 0, 0, 2, 0, 3, 0, 0};
   std::vector<float> constant_values_data{7};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 2, 3, 1}, input_data);
-  Tensor paddings_tensor = makeInputTensor<DataType::S32>({4, 2}, paddings_data);
-  Tensor constant_values = makeInputTensor<DataType::FLOAT32>({1}, constant_values_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 2, 3, 1}, input_data, memory_manager.get());
+  Tensor paddings_tensor =
+    makeInputTensor<DataType::S32>({4, 2}, paddings_data, memory_manager.get());
+  Tensor constant_values =
+    makeInputTensor<DataType::FLOAT32>({1}, constant_values_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   PadV2 kernel(&input_tensor, &paddings_tensor, &constant_values, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<float> ref_output_data{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,

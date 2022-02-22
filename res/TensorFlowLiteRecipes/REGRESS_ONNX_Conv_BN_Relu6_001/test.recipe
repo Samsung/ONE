@@ -1,0 +1,277 @@
+operand {
+  name: "input0"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 32
+    dim: 32
+  }
+}
+operand {
+  name: "Const_95"
+  type: INT32
+  shape {
+    dim: 4
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "0"
+    arg: "0"
+    arg: "0"
+    arg: "1"
+    arg: "1"
+    arg: "1"
+    arg: "1"
+  }
+}
+operand {
+  name: "Pad"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 34
+    dim: 34
+  }
+}
+operand {
+  name: "transpose_158/perm"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "2"
+    arg: "3"
+    arg: "1"
+  }
+}
+operand {
+  name: "transpose_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 34
+    dim: 34
+    dim: 3
+  }
+}
+operand {
+  name: "convolution"
+  type: FLOAT32
+  shape {
+    dim: 16
+    dim: 3
+    dim: 3
+    dim: 3
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+}
+operand {
+  name: "convolution_41"
+  type: FLOAT32
+  shape {
+    dim: 16
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+}
+operand {
+  name: "convolution1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 16
+  }
+}
+operand {
+  name: "transpose_159/perm"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "3"
+    arg: "1"
+    arg: "2"
+  }
+}
+operand {
+  name: "transpose_2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 16
+  }
+}
+operand {
+  name: "batchnorm/mul"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.001"
+  }
+}
+operand {
+  name: "batchnorm/mul_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 16
+  }
+}
+operand {
+  name: "batchnorm/sub"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.0"
+  }
+}
+operand {
+  name: "batchnorm/add_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 16
+  }
+}
+operand {
+  name: "clip_by_value_9/Minimum/y"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "6"
+  }
+}
+operand {
+  name: "clip_by_value/Minimum"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 16
+  }
+}
+operand {
+  name: "clip_by_value_9/y"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+  }
+}
+operand {
+  name: "clip_by_value"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 16
+    dim: 16
+  }
+}
+operation {
+  type: "Pad"
+  input: "input0"
+  input: "Const_95"
+  output: "Pad"
+}
+operation {
+  type: "Transpose"
+  input: "Pad"
+  input: "transpose_158/perm"
+  output: "transpose_1"
+}
+operation {
+  type: "Conv2D"
+  input: "transpose_1"
+  input: "convolution"
+  input: "convolution_41"
+  output: "convolution1"
+  conv2d_options {
+    padding: VALID
+    stride_w: 2
+    stride_h: 2
+    activation: NONE
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Transpose"
+  input: "convolution1"
+  input: "transpose_159/perm"
+  output: "transpose_2"
+}
+operation {
+  type: "Mul"
+  input: "transpose_2"
+  input: "batchnorm/mul"
+  output: "batchnorm/mul_1"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "batchnorm/mul_1"
+  input: "batchnorm/sub"
+  output: "batchnorm/add_1"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Minimum"
+  input: "batchnorm/add_1"
+  input: "clip_by_value_9/Minimum/y"
+  output: "clip_by_value/Minimum"
+}
+operation {
+  type: "Maximum"
+  input: "clip_by_value/Minimum"
+  input: "clip_by_value_9/y"
+  output: "clip_by_value"
+}
+input: "input0"
+output: "clip_by_value"

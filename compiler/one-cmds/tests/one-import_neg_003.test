@@ -21,7 +21,15 @@ filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
+  # TODO Error message depends on TF version. Find better way.
+  # TF 2.3.0
   if grep -q "ValueError: Invalid tensors" "${filename}.log"; then
+    echo "${filename_ext} SUCCESS"
+    exit 0
+  fi
+
+  # TF 2.5.0
+  if grep -q "ConverterError: <unknown>:0: error:" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
@@ -43,7 +51,7 @@ one-import tf \
 --input_path ${inputfile} \
 --output_path ${outputfile} \
 --input_arrays input --input_shapes "1,299,299,3" \
---output_arrays InceptionV3/Predictions/Reshape_2 > ${filename}.log
+--output_arrays InceptionV3/Predictions/Reshape_2 > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

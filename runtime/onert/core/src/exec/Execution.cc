@@ -30,6 +30,7 @@ Execution::Execution(const std::shared_ptr<ExecutorMap> &executors) : _executors
   const auto &primary_subg = primary_subgraph();
   _io_desc.inputs.resize(primary_subg.getInputs().size());
   _io_desc.outputs.resize(primary_subg.getOutputs().size());
+  sem_init(&_async_io_descs_sem, 0, 1);
 }
 
 void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_shape)
@@ -69,6 +70,82 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
   }
 
   _io_desc.inputs.at(index.value()) = std::make_unique<InputDesc>(info, buffer, length, layout);
+}
+
+void Execution::createNewAsyncDesc(uint32_t count)
+{
+  IODescription *_async_io_desc = new IODescription;
+  _async_io_desc->inputs.resize(primary_subgraph().getInputs().size());
+  _async_io_desc->outputs.resize(primary_subgraph().getOutputs().size());
+
+  _async_io_descs.push_back({_async_io_desc, count});
+}
+
+void Execution::setFinish() { finished = true; }
+
+bool Execution::isEmptyQueue()
+{
+  asyncIoDescSemWait();
+  bool ret = _async_io_descs.empty();
+  if (!ret)
+  {
+    for (uint32_t idx = 0; idx < _async_io_descs.front().first->inputs.size(); idx++)
+    {
+      if (_async_io_descs.front().first->inputs.at(idx).get() == nullptr)
+      {
+        ret = true;
+        break;
+      }
+    }
+  }
+  asyncIoDescSemPost();
+  return ret;
+}
+
+void Execution::executeAsyncInput(const ir::IOIndex &index, const void *buffer, size_t length,
+                                  ir::Layout layout)
+{
+  const auto input_index = primary_subgraph().getInputs().at(index);
+  const auto info = primary_subgraph().operands().at(input_index).info();
+  IODescription *_async_io_desc = _async_io_descs.back().first;
+
+  {
+    auto input_shape_sig = _async_io_desc->dynamic_input_shapes.find(index);
+    auto size_required =
+      (input_shape_sig != _async_io_desc->dynamic_input_shapes.end())
+        ? input_shape_sig->second.num_elements() * onert::ir::sizeOfDataType(info.typeInfo().type())
+        : info.total_size();
+
+    if (length < size_required)
+    {
+      throw std::runtime_error{"Too small length"};
+    }
+  }
+  void *_buffer = (void *)malloc(length);
+  if (_buffer == NULL)
+  {
+    throw std::runtime_error{"malloc failed"};
+  }
+  memcpy(_buffer, buffer, length);
+
+  _async_io_desc->inputs.at(index.value()) =
+    std::make_unique<InputDesc>(info, _buffer, length, layout);
+}
+
+void Execution::executeAsyncOutput(const ir::IOIndex &index, void *buffer, size_t length,
+                                   ir::Layout layout)
+{
+  const auto output_index = primary_subgraph().getOutputs().at(index);
+  const auto info = primary_subgraph().operands().at(output_index).info();
+  IODescription *_async_io_desc = _async_io_descs.front().first;
+
+  if (length < info.total_size())
+  {
+    throw std::runtime_error{"Too small length"};
+  }
+
+  _async_io_desc->outputs.at(index.value()) =
+    std::make_unique<OutputDesc>(info, buffer, length, layout);
 }
 
 // TODO Remove default parameter
@@ -137,6 +214,18 @@ void Execution::execute()
   VERBOSE(Execution) << "Execution finished" << std::endl;
 }
 
+void Execution::AsyncExecute()
+{
+  VERBOSE(Execution) << "Start Async execution" << std::endl;
+  if (_async_io_descs.empty())
+  {
+    VERBOSE(Execution) << "The input is not ready" << std::endl;
+    return;
+  }
+
+  primary_executor()->execute(*_async_io_descs.front().first);
+}
+
 void Execution::startExecute()
 {
   VERBOSE(Execution) << "Create asynchronous execution thread" << std::endl;
@@ -177,6 +266,154 @@ ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
 
   return output_desc->info.shape();
 }
+
+void Execution::asyncIoDescSemWait() { sem_wait(&_async_io_descs_sem); }
+
+void Execution::asyncIoDescSemPost() { sem_post(&_async_io_descs_sem); }
+
+void Execution::runInference()
+{
+  uint32_t inference_cnt;
+  uint32_t output_sz = primary_subgraph().getOutputs().size();
+  while (true)
+  {
+    if (isEmptyQueue())
+    {
+      if (isFinished())
+      {
+        if (!next_exes.empty())
+        {
+          for (uint32_t i = 0; i < next_exes.size(); i++)
+          {
+            std::get<0>(next_exes[i])->setFinish();
+          }
+        }
+        else
+        {
+          sholudStop();
+        }
+        break;
+      }
+    }
+    else
+    {
+      for (uint32_t i = 0; i < output_sz; i++)
+      {
+        auto opidx = primary_subgraph().getOutputs().at(i);
+        auto shape = primary_subgraph().operands().at(opidx).shape();
+        auto dtype = primary_subgraph().operands().at(opidx).typeInfo().type();
+        auto rank = shape.rank();
+        uint32_t tensor_size = 1;
+        for (int32_t j = 0; j < rank; j++)
+        {
+          tensor_size *= shape.dim(j);
+        }
+        if (dtype == onert::ir::DataType::FLOAT32 || dtype == onert::ir::DataType::INT32 ||
+            dtype == onert::ir::DataType::UINT32)
+          tensor_size *= 4;
+        else if (dtype == onert::ir::DataType::INT64)
+          tensor_size *= 8;
+        void *_buffer = (void *)malloc(tensor_size);
+        if (_buffer == NULL)
+        {
+          throw std::runtime_error{"malloc failed"};
+        }
+        executeAsyncOutput(onert::ir::IOIndex(i), _buffer, tensor_size);
+      }
+      AsyncExecute();
+
+      // set inputs of next execution
+      auto _io_desc = getAsyncIoDescs()->front().first;
+      inference_cnt = getAsyncIoDescs()->front().second;
+      getAsyncIoDescs()->pop_front();
+
+      for (uint32_t i = 0; i < next_exes.size(); i++)
+      {
+        auto next_exe = std::get<0>(next_exes[i]);
+        auto o_index = std::get<1>(next_exes[i]);
+        auto i_index = std::get<2>(next_exes[i]);
+
+        next_exe->asyncIoDescSemWait();
+        auto next_io_descs = next_exe->getAsyncIoDescs();
+        bool exist = false;
+        for (auto iter = next_io_descs->begin(); iter != next_io_descs->end(); iter++)
+        {
+          if (inference_cnt == iter->second)
+          {
+            exist = true;
+          }
+        }
+
+        if (!exist)
+        {
+          next_exe->createNewAsyncDesc(inference_cnt);
+        }
+        for (auto iter = next_io_descs->begin(); iter != next_io_descs->end(); iter++)
+        {
+          if (inference_cnt == iter->second)
+          {
+            const auto input_index = next_exe->primary_subgraph().getInputs().at(i_index.value());
+            const auto info = next_exe->primary_subgraph().operands().at(input_index).info();
+
+            size_t length = _io_desc->outputs[o_index.value()]->size;
+            void *_buffer = (void *)malloc(length);
+            if (_buffer == NULL)
+            {
+              throw std::runtime_error{"malloc failed"};
+            }
+            memcpy(_buffer, _io_desc->outputs[o_index.value()]->buffer, length);
+
+            iter->first->inputs.at(i_index.value()) = std::make_unique<onert::exec::InputDesc>(
+              info, _buffer, length, onert::ir::Layout::NHWC);
+            break;
+          }
+        }
+        next_exe->asyncIoDescSemPost();
+      }
+
+      if (next_exes.empty())
+      {
+        std::vector<void *> results;
+        for (uint32_t i = 0; i < _io_desc->outputs.size(); i++)
+        {
+          size_t length = _io_desc->outputs[i]->size;
+          void *_buffer = (void *)malloc(length);
+          if (_buffer == NULL)
+          {
+            throw std::runtime_error{"malloc failed"};
+          }
+          memcpy(_buffer, _io_desc->outputs[i]->buffer, length);
+          results.push_back(_buffer);
+        }
+        _async_results.push_back(results);
+      }
+
+      for (uint32_t i = 0; i < _io_desc->inputs.size(); i++)
+      {
+        auto p = _io_desc->inputs.at(i).release();
+        if (p)
+        {
+          free((void *)p->buffer);
+          delete p;
+        }
+      }
+      for (uint32_t i = 0; i < _io_desc->outputs.size(); i++)
+      {
+        auto p = _io_desc->outputs.at(i).release();
+        if (p)
+        {
+          free(p->buffer);
+          delete p;
+        }
+      }
+      delete _io_desc;
+    }
+  }
+}
+
+bool Execution::stopWait(void) const { return stop_wait; }
+
+void Execution::sholudStop() { stop_wait = true; }
 
 } // namespace exec
 } // namespace onert

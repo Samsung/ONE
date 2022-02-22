@@ -171,8 +171,6 @@ bool PModelsRunner::run(void)
         luci_interpreter::Interpreter interpreter(module.get());
 
         // Set input
-        // TODO support multiple subgraphs
-        assert(module->size() == 1);
         const auto input_nodes = loco::input_nodes(module->graph());
         int32_t num_inputs = static_cast<int32_t>(input_nodes.size());
         for (int32_t i = 0; i < num_inputs; i++)
@@ -226,10 +224,13 @@ bool PModelsRunner::run(void)
 
 void PModelsRunner::save_outputs(const std::string &output_file)
 {
+  LOGGER(l);
+
   // load source model as we need to get both shape and node name
   // TODO check for unknown shape
   auto source_fname = _pconfig.source.model_file;
 
+  INFO(l) << "save_outputs() loading file: " << source_fname << std::endl;
   auto module = import_circle(source_fname);
 
   const auto output_nodes = loco::output_nodes(module->graph());
@@ -238,6 +239,7 @@ void PModelsRunner::save_outputs(const std::string &output_file)
     const auto *output_node = loco::must_cast<const luci::CircleOutput *>(output_nodes[i]);
 
     auto output_name = output_node->name();
+    INFO(l) << "save_outputs() save output node: " << output_name << std::endl;
     assert(_data_stage.find(output_name) != _data_stage.end());
 
     auto tensor_data = _data_stage[output_name];

@@ -50,6 +50,11 @@ public:
    * @return  Graph object
    */
   const ir::Graph &graph() final { return _graph; }
+
+  const ir::Graph &parent_graph() final
+  {
+    throw new std::runtime_error{"Interpreter does not support this function."};
+  }
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>>) override{
     // Not implemented
   };

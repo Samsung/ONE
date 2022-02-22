@@ -19,7 +19,6 @@
 # External code: Tensorflow lite
 /ONE/runtime/libs/nnapi
 /ONE/runtime/libs/profiling
-/ONE/runtime/libs/tflite/port
 
 # External code: 3rd party
 /ONE/runtime/3rdparty

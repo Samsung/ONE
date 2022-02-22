@@ -17,7 +17,7 @@
 #include "kernels/L2Normalize.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALL2Normalize.h"
 
 #include <stdexcept>
 
@@ -66,9 +66,9 @@ template <typename T> void L2Normalize::eval(int32_t zero_point) const
 {
   tflite::L2NormalizationParams op_params{};
   op_params.input_zero_point = zero_point;
-  tflite::optimized_ops::L2Normalization(op_params, getTensorShape(input()),
-                                         getTensorData<T>(input()), getTensorShape(output()),
-                                         getTensorData<T>(output()));
+  luci_interpreter_pal::L2Normalization(op_params, getTensorShape(input()),
+                                        getTensorData<T>(input()), getTensorShape(output()),
+                                        getTensorData<T>(output()));
 }
 
 } // namespace kernels

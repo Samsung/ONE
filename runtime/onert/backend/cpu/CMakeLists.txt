@@ -12,6 +12,7 @@ target_link_libraries(${LIB_ONERT_BACKEND_CPU} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_CPU} PRIVATE nnfw_coverage)
 target_link_libraries(${LIB_ONERT_BACKEND_CPU} PRIVATE ruy)
 target_link_libraries(${LIB_ONERT_BACKEND_CPU} INTERFACE ruy_instrumentation)
+target_link_libraries(${LIB_ONERT_BACKEND_CPU} PRIVATE ndarray)
 
 set_target_properties(${LIB_ONERT_BACKEND_CPU} PROPERTIES OUTPUT_NAME backend_cpu)
 

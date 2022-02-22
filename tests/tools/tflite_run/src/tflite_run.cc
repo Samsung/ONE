@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "tflite/ext/kernels/register.h"
+#include "tensorflow/lite/kernels/register.h"
 #include "tensorflow/lite/model.h"
 
 #include "args.h"
@@ -110,7 +110,7 @@ int main(const int argc, char **argv)
         throw std::runtime_error{"Cannot create model"};
       }
 
-      BuiltinOpResolver resolver;
+      tflite::ops::builtin::BuiltinOpResolver resolver;
       InterpreterBuilder builder(*model, resolver);
       TFLITE_ENSURE(builder(&interpreter))
       interpreter->SetNumThreads(nnfw::misc::EnvVar("THREAD").asInt(1));

@@ -17,6 +17,8 @@
 #include <luci/Service/CircleShapeInference.h>
 #include <luci/Service/CircleTypeInference.h>
 
+#include "CircleCloneNode.h"
+
 namespace
 {
 
@@ -84,6 +86,19 @@ loco::DataType tinf::Algorithm::visit(const luci::CircleIfOut *node)
   auto graphs = get_out_graphs(node);
   assert(graphs.then_graph_output->dtype() == graphs.else_graph_output->dtype());
   return graphs.then_graph_output->dtype();
+}
+
+} // namespace luci
+
+namespace luci
+{
+
+luci::CircleNode *CloneNode::visit(const luci::CircleIfOut *node)
+{
+  auto *cloned = _graph->nodes()->create<luci::CircleIfOut>();
+  if (cloned != nullptr)
+    cloned->index(node->index());
+  return cloned;
 }
 
 } // namespace luci

@@ -189,6 +189,12 @@ void set_minmax_to_non_const(loco::Graph *g, float min, float max)
     if (split_node != nullptr)
       continue;
 
+    // Min/Max is not recorded for SplitV
+    // See MinMaxObserver.cpp in record_minmax module
+    auto splitv_node = dynamic_cast<luci::CircleSplitV *>(node);
+    if (splitv_node != nullptr)
+      continue;
+
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     auto qparam = std::make_unique<luci::CircleQuantParam>();
     {
@@ -410,6 +416,38 @@ private:
   luci::CircleConst *_split_dim = nullptr;
 };
 
+class SplitVTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({1, 32}, {32});
+    _size_splits = create_dummy_const<Type::S32>(g(), {1});
+    _split_dim = create_dummy_const<Type::S32>(g(), {1});
+    _splitv = g()->nodes()->create<luci::CircleSplitV>();
+    {
+      _splitv->input(input());
+      _splitv->size_splits(_size_splits);
+      _splitv->split_dim(_split_dim);
+    }
+    _splitv_o1 = g()->nodes()->create<luci::CircleSplitVOut>();
+    {
+      _splitv_o1->input(_splitv);
+      _splitv_o1->index(0);
+    }
+
+    output()->from(_splitv_o1);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+private:
+  luci::CircleSplitV *_splitv = nullptr;
+  luci::CircleSplitVOut *_splitv_o1 = nullptr;
+  luci::CircleConst *_size_splits = nullptr;
+  luci::CircleConst *_split_dim = nullptr;
+};
+
 class StridedSliceTestGraph final : public SimpleTestGraph
 {
 public:
@@ -595,6 +633,39 @@ private:
   luci::CircleDepthToSpace *_dtos = nullptr;
 };
 
+class PackTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void) override
+  {
+    TestIOGraph::init({16}, {32});
+    _param = create_dummy_const<Type::FLOAT32>(g(), {16});
+    _pack = g()->nodes()->create<luci::CirclePack>(2);
+    {
+      _pack->values(0, input());
+      _pack->values(1, _param);
+      _pack->axis(0);
+    }
+    output()->from(_pack);
+
+    set_minmax_to_non_const(g(), -1, 1);
+
+    // Set min/max of the input
+    // pack's qparam will be propagted, overwritten to the input
+    auto input = loco::must_cast<luci::CircleNode *>(pack()->values(0));
+    auto qp = input->quantparam();
+    qp->min[0] = -0.5;
+    qp->max[0] = 0.5;
+  }
+
+public:
+  luci::CirclePack *pack(void) { return _pack; }
+
+private:
+  luci::CirclePack *_pack = nullptr;
+  luci::CircleConst *_param = nullptr;
+};
+
 class PadTestGraph final : public SimpleTestGraph
 {
 public:
@@ -722,6 +793,53 @@ public:
 private:
   luci::CircleConcatenation *_concat = nullptr;
   luci::CircleConst *_param = nullptr;
+};
+
+template <Type indexT> class OneHotTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void) override
+  {
+    TestIOGraph::init({32}, {32, 10});
+    {
+      // input dtype is float by default, but OneHot's input should have indexType (s32/s64)
+      input()->dtype(indexT);
+    }
+
+    _depth = g()->nodes()->template create<luci::CircleConst>();
+    {
+      _depth->dtype(loco::DataType::S32);
+    }
+
+    _on_value = g()->nodes()->template create<luci::CircleConst>();
+    {
+      _on_value->dtype(loco::DataType::FLOAT32);
+    }
+
+    _off_value = g()->nodes()->template create<luci::CircleConst>();
+    {
+      _off_value->dtype(loco::DataType::FLOAT32);
+    }
+
+    _one_hot = g()->nodes()->template create<luci::CircleOneHot>();
+    {
+      _one_hot->indices(input());
+      _one_hot->depth(_depth);
+      _one_hot->on_value(_on_value);
+      _one_hot->off_value(_off_value);
+      _one_hot->axis(-1);
+      _one_hot->dtype(loco::DataType::FLOAT32);
+    }
+    output()->from(_one_hot);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+private:
+  luci::CircleOneHot *_one_hot = nullptr;
+  luci::CircleConst *_depth = nullptr;
+  luci::CircleConst *_on_value = nullptr;
+  luci::CircleConst *_off_value = nullptr;
 };
 
 // Test graph for comparison Ops
@@ -965,6 +1083,35 @@ public:
 private:
   luci::CircleResizeNearestNeighbor *_resize_nearest_neighbor = nullptr;
   luci::CircleConst *_size = nullptr;
+};
+
+class UnpackTestGraph final : public luci::test::TestIOGraph
+{
+public:
+  void init(void)
+  {
+    TestIOGraph::init({1, 32}, {32});
+    _unpack = g()->nodes()->create<luci::CircleUnpack>();
+    {
+      _unpack->value(input());
+      _unpack->axis(0);
+      _unpack->num(1);
+    }
+    _unpack_o1 = g()->nodes()->create<luci::CircleUnpackOut>();
+    {
+      _unpack_o1->input(_unpack);
+      _unpack_o1->index(0);
+    }
+
+    output()->from(_unpack_o1);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+private:
+  luci::CircleUnpack *_unpack = nullptr;
+  luci::CircleUnpackOut *_unpack_o1 = nullptr;
+  luci::CircleConst *_unpack_dim = nullptr;
 };
 
 } // namespace
@@ -1250,6 +1397,30 @@ TEST(QuantizedModelVerifierTest, Split_wrong_granularity_NEG)
   SUCCEED();
 }
 
+TEST(QuantizedModelVerifierTest, SplitV)
+{
+  TEST_WITH_GRAPH(SplitVTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(SplitVTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(SplitVTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, SplitV_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(SplitVTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SplitVTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SplitVTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, SplitV_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(SplitVTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(SplitVTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(SplitVTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
 TEST(QuantizedModelVerifierTest, StridedSlice)
 {
   TEST_WITH_GRAPH(StridedSliceTestGraph, Type::U8, Granularity::LayerWise);
@@ -1473,6 +1644,41 @@ TEST(QuantizedModelVerifierTest, Tanh_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(TanhTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Pack)
+{
+  TEST_WITH_GRAPH(PackTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(PackTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(PackTestGraph, Type::S16, Granularity::ChannelWise);
+
+  // Test if Pack's qparam is propagated to the input
+  {
+    PackTestGraph g;
+    g.init();
+    quantize_and_verify(g.g(), Type::U8, Granularity::ChannelWise);
+    auto input = loco::must_cast<luci::CircleNode *>(g.pack()->values(0));
+    auto qp = input->quantparam();
+    EXPECT_FLOAT_EQ(2.0 / 255.0, qp->scale[0]);
+    EXPECT_FLOAT_EQ(128, qp->zerop[0]);
+  }
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Pack_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(PackTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(PackTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(PackTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Pack_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(PackTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(PackTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(PackTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1710,6 +1916,42 @@ TEST(QuantizedModelVerifierTest, NotEqual_wrong_granularity_NEG)
   SUCCEED();
 }
 
+TEST(QuantizedModelVerifierTest, OneHot)
+{
+  TEST_WITH_GRAPH(OneHotTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(OneHotTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(OneHotTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_GRAPH(OneHotTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(OneHotTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(OneHotTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, OneHot_wrong_input_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(OneHotTestGraph<Type::S32>, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(OneHotTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(OneHotTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise, Type::U8);
+
+  TEST_WITH_WRONG_TYPE(OneHotTestGraph<Type::S64>, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(OneHotTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(OneHotTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, OneHot_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(OneHotTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(OneHotTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(OneHotTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_WRONG_GRANULARITY(OneHotTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(OneHotTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(OneHotTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
 TEST(QuantizedModelVerifierTest, Div)
 {
   TEST_WITH_GRAPH(DivTestGraph, Type::U8, Granularity::LayerWise);
@@ -1913,6 +2155,30 @@ TEST(QuantizedModelVerifierTest, ResizeNearestNeighbor_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(ResizeNearestNeighborTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(ResizeNearestNeighborTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(ResizeNearestNeighborTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Unpack)
+{
+  TEST_WITH_GRAPH(UnpackTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(UnpackTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(UnpackTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Unpack_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(UnpackTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(UnpackTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(UnpackTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Unpack_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(UnpackTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(UnpackTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(UnpackTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 

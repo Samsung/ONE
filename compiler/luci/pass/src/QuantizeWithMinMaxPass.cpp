@@ -20,6 +20,7 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Service/Nodes/CircleConst.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Log.h>
 
 #include <oops/UserExn.h>
@@ -61,6 +62,52 @@ void iterate_per_channel(CircleConst *node, int32_t &channel_dim_index, IterFunc
       }
     }
   }
+}
+
+// Create a Quantize Op whose
+// dtype is out_type
+// shape is the same with node
+// qparam is computed using node's min/max
+luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType out_type)
+{
+  auto quantize = node->graph()->nodes()->create<CircleQuantize>();
+  quantize->name(node->name() + "_Quantize");
+  quantize->dtype(out_type);
+  quantize->rank(node->rank());
+  for (uint32_t i = 0; i < node->rank(); i++)
+    quantize->dim(i).set(node->dim(i).value());
+
+  quantize->shape_status(luci::ShapeStatus::VALID);
+
+  auto qparam = node->quantparam();
+  assert(qparam);                  // FIX_CALLER_UNLESS
+  assert(qparam->min.size() == 1); // FIX_CALLER_UNLESS
+  assert(qparam->max.size() == 1); // FIX_CALLER_UNLESS
+  auto min = qparam->min[0];
+  auto max = qparam->max[0];
+
+  float scaling_factor{0};
+  int64_t zp{0};
+  float nudged_min{0};
+  float nudged_max{0};
+
+  if (out_type == loco::DataType::U8)
+  {
+    compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+  }
+  else
+  {
+    assert(out_type == loco::DataType::S16);
+    compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+  }
+
+  auto quantparam = std::make_unique<CircleQuantParam>();
+  quantparam->scale.push_back(scaling_factor);
+  quantparam->zerop.push_back(zp);
+
+  quantize->quantparam(std::move(quantparam));
+
+  return quantize;
 }
 
 } // namespace
@@ -127,8 +174,13 @@ void quant_const_values(luci::CircleConst *const_node, float scaling_factor, flo
   std::vector<int32_t> quantized_values(size);
   for (uint32_t i = 0; i < size; ++i)
   {
-    auto data = const_node->at<loco::DataType::FLOAT32>(i);
-    quantized_values[i] = static_cast<int32_t>(std::round(data * scaling_factor_inv) + zerop);
+    auto data = static_cast<double>(const_node->at<loco::DataType::FLOAT32>(i));
+    double quantized_float = std::round(data * scaling_factor_inv) + zerop;
+    constexpr auto int_max = static_cast<double>(std::numeric_limits<int32_t>::max());
+    constexpr auto int_min = static_cast<double>(std::numeric_limits<int32_t>::min());
+    quantized_float = std::min(int_max, std::max(int_min, quantized_float));
+
+    quantized_values[i] = static_cast<int32_t>(quantized_float);
   }
 
   switch (quant_type)
@@ -624,6 +676,7 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
       {
         // Quantize using recorded min/max
         auto quantparam = circle_node->quantparam();
+        assert(quantparam);
         assert(quantparam->min.size() == 1); // only support layer-wise quant
         assert(quantparam->max.size() == 1); // only support layer-wise quant
         auto min = quantparam->min[0];
@@ -652,6 +705,25 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
           circle_node->dtype(loco::DataType::S16);
         }
 
+        // Nodes fused with activation functions which need special quantization
+        auto fused_act_node =
+          dynamic_cast<CircleNodeMixin<CircleNodeTrait::FusedActFunc> *>(circle_node);
+        if (fused_act_node != nullptr &&
+            fused_act_node->fusedActivationFunction() == FusedActFunc::TANH)
+        {
+          if (output_type == loco::DataType::U8)
+          {
+            scaling_factor = 2.0f / 256.0f;
+            zp = 128;
+          }
+          else
+          {
+            assert(output_type == loco::DataType::S16);
+            scaling_factor = 1.0f / 32768.0f;
+            zp = 0;
+          }
+        }
+
         // The output of these Ops should be integer, so scale should be integer
         // TODO Handle cases where the integer scale needs to be propagated
         if (circle_node->opcode() == CircleOpcode::FLOOR ||
@@ -663,10 +735,19 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
           scaling_factor = scaling_factor < 1 ? 1.0f : std::round(scaling_factor);
         }
 
-        circle_node->quantparam()->min.clear();
-        circle_node->quantparam()->max.clear();
         circle_node->quantparam()->scale.push_back(scaling_factor);
         circle_node->quantparam()->zerop.push_back(zp);
+      }
+      // Fix special attributes
+      if (circle_node->opcode() == luci::CircleOpcode::CAST)
+      {
+        auto *cast = loco::must_cast<luci::CircleCast *>(circle_node);
+        auto *cast_input = loco::must_cast<luci::CircleNode *>(cast->x());
+
+        // make sure that cast_input is already quantized
+        assert(cast_input->dtype() != loco::DataType::FLOAT32);
+        cast->in_data_type(cast_input->dtype());
+        cast->out_data_type(cast->dtype());
       }
     }
     return false;
@@ -714,8 +795,10 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
 
       if (granularity == QuantizationGranularity::ChannelWise)
       {
-        assert(input->quantparam()->scale.size() == 1); // input scale's layer-wise
-        auto input_scale = input->quantparam()->scale[0];
+        auto input_q = input->quantparam();
+        assert(input_q);
+        assert(input_q->scale.size() == 1); // input scale's layer-wise
+        auto input_scale = input_q->scale[0];
 
         assert(weight->quantparam() != nullptr); // weight scale's channel-wise
         auto weight_scale = weight->quantparam()->scale;
@@ -750,11 +833,15 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<bool>
       }
       else
       {
-        assert(input->quantparam()->scale.size() == 1); // Only support per-layer quant
-        auto input_scale = input->quantparam()->scale[0];
+        auto input_q = input->quantparam();
+        assert(input_q);
+        assert(input_q->scale.size() == 1); // Only support per-layer quant
+        auto input_scale = input_q->scale[0];
 
-        assert(weight->quantparam()->scale.size() == 1); // Only support per-layer quant
-        auto weight_scale = weight->quantparam()->scale[0];
+        auto weight_q = weight->quantparam();
+        assert(weight_q);
+        assert(weight_q->scale.size() == 1); // Only support per-layer quant
+        auto weight_scale = weight_q->scale[0];
 
         float scaling_factor{0};
         int64_t zp{0};
@@ -957,6 +1044,156 @@ private:
   bool visit(luci::CircleNode *) { return false; }
 };
 
+/** EXAMPLE
+ *
+ * BEFORE
+ *
+ *         [CircleNode]       [CircleConst]
+ *           (qparam1)           (FP32)
+ *                   \            /
+ *                    \          /
+ *                    [CirclePack]
+ *                     (qparam2)
+ *
+ *  AFTER
+ *
+ *         [CircleNode]        [CircleConst]   [CircleConst] <- Dead node
+ *           (qparam2)           (qparam2)         (FP32)
+ *                   \            /
+ *                    \          /
+ *                    [CirclePack]
+ *                     (qparam2)
+ *
+ * NOTE Quantization parameter of CirclePack (qparam2) is propagated to the inputs.
+ */
+void propagate_pack_quantparam(luci::CirclePack *pack, loco::DataType quant_type)
+{
+  assert(pack->quantparam() != nullptr);
+
+  const auto num_inputs = pack->values_count();
+
+  for (uint32_t i = 0; i < num_inputs; i++)
+  {
+    auto node = loco::must_cast<luci::CircleNode *>(pack->arg(i));
+
+    // Skip if this input is PACK Op
+    if (node->opcode() == luci::CircleOpcode::PACK)
+      continue;
+
+    // Quantize constant values
+    if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
+    {
+      luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
+      if (const_node->dtype() != loco::DataType::FLOAT32)
+        throw std::runtime_error("Unsupported data type for constant input of pack Op");
+
+      const auto pack_qparam = pack->quantparam();
+      if (pack_qparam == nullptr)
+        throw std::runtime_error("quantparam of pack is not found during propagation");
+
+      assert(pack_qparam->scale.size() == 1);
+      assert(pack_qparam->zerop.size() == 1);
+      const auto scaling_factor = pack_qparam->scale[0];
+      const auto zerop = pack_qparam->zerop[0];
+
+      auto new_const = luci::clone(const_node);
+      quant_const_values(new_const, scaling_factor, zerop, quant_type);
+      pack->values(i, new_const);
+      overwrite_quantparam(pack, new_const);
+    }
+    else
+    {
+      const auto succs = loco::succs(node);
+      if (succs.size() > 1)
+        continue;
+
+      // Non-const input must have been quantized
+      assert(node->quantparam() != nullptr);
+      overwrite_quantparam(pack, node);
+    }
+  }
+}
+
+/** EXAMPLE
+ *
+ *
+ *
+ * BEFORE
+ *
+ *      [CircleNode] [CircleConst] [CircleConst] [CircleNode]
+ *          (S32)        (S32)        (FP32)     (U8 qparam1)
+ *              \          \           /            /
+ *               \          \        /            /
+ *                \          \     /            /
+ *                 -------[CircleOneHot]-------
+ *                         (U8 qparam2)
+ *
+ *  AFTER
+ *
+ *      [CircleNode] [CircleConst] [CircleConst] [CircleNode]      [CircleConst] <- Dead node
+ *          (S32)        (S32)     (U8 qparam2)  (U8 qparam2)         (FP32)
+ *              \          \           /           /
+ *               \          \        /            /
+ *                \          \     /            /
+ *                 -------[CircleOneHot]-------
+ *                         (U8 qparam2)
+ *
+ * NOTE Quantization parameter of CircleOneHot (qparam2) is propagated to on_value/off_value.
+ */
+void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot, loco::DataType quant_type)
+{
+  assert(one_hot->quantparam() != nullptr);
+
+  // Propagate quantization parameters from output to inputs,
+  // to fit both input and counstant_value in one quant range.
+  auto quant_input = [one_hot, quant_type](void (CircleOneHot::*arg_setter)(loco::Node *),
+                                           loco::Node *(CircleOneHot::*arg_getter)() const) {
+    auto node = loco::must_cast<luci::CircleNode *>((one_hot->*arg_getter)());
+
+    // Quantize constant values
+    if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
+    {
+      luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
+      if (is_quantized(const_node))
+        return;
+
+      if (const_node->dtype() != loco::DataType::FLOAT32)
+        throw std::runtime_error("Unsupported data type for constant input of OneHot Op");
+
+      const auto qparam = one_hot->quantparam();
+      if (qparam == nullptr)
+        throw std::runtime_error("quantparam of OneHot is not found during propagation");
+
+      assert(qparam->scale.size() == 1);
+      const auto scaling_factor = qparam->scale.at(0);
+      const auto zerop = qparam->zerop.at(0);
+
+      auto new_const = luci::clone(const_node);
+      quant_const_values(new_const, scaling_factor, zerop, quant_type);
+      overwrite_quantparam(one_hot, new_const);
+      (one_hot->*arg_setter)(new_const);
+    }
+    // Subsequent OneHot Ops quant params are not propagated
+    else if (node->opcode() == luci::CircleOpcode::ONE_HOT)
+    {
+      return;
+    }
+    else
+    {
+      const auto succs = loco::succs(node);
+      if (succs.size() > 1)
+        return;
+
+      // Non-const input must have been quantized
+      assert(node->quantparam() != nullptr);
+      overwrite_quantparam(one_hot, node);
+    }
+  };
+
+  quant_input(&CircleOneHot::on_value, &CircleOneHot::on_value);
+  quant_input(&CircleOneHot::off_value, &CircleOneHot::off_value);
+}
+
 /**
  * @brief Quantize const input tensors using min/max of const values
  */
@@ -1004,6 +1241,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::REVERSE_SEQUENCE:
     case luci::CircleOpcode::SLICE:
     case luci::CircleOpcode::SPACE_TO_BATCH_ND:
+    case luci::CircleOpcode::SPLIT_V:
     case luci::CircleOpcode::STRIDED_SLICE:
     case luci::CircleOpcode::SUM:
     case luci::CircleOpcode::TILE:
@@ -1023,6 +1261,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::DIV:
     case luci::CircleOpcode::ELU:
     case luci::CircleOpcode::EQUAL:
+    case luci::CircleOpcode::EXP:
     case luci::CircleOpcode::FLOOR:
     case luci::CircleOpcode::FLOOR_DIV:
     case luci::CircleOpcode::GREATER:
@@ -1041,6 +1280,7 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::SQRT:
     case luci::CircleOpcode::SUB:
     case luci::CircleOpcode::TANH:
+    case luci::CircleOpcode::UNPACK:
       // Quantize all const inputs using their values
       for (uint32_t i = 0; i < arity; i++)
       {
@@ -1063,8 +1303,21 @@ void quantize_const_inputs(luci::CircleNode *node, loco::DataType output_type)
     case luci::CircleOpcode::PADV2:
       // First and third constant inputs are quantized
       // Second input should not be quantized (e.g., paddings)
-      // Quant params are propagated from output range to the non-constant input
+      // Quant params are propagated either from output range to the non-constant input
+      // or from input to output and constant values
       propagate_pad_v2_quantparam(loco::must_cast<CirclePadV2 *>(node), output_type);
+      break;
+
+    case luci::CircleOpcode::PACK:
+      // Quant param is propagated from output to inputs
+      propagate_pack_quantparam(loco::must_cast<CirclePack *>(node), output_type);
+      break;
+
+    case luci::CircleOpcode::ONE_HOT:
+      // Third and forth constant inputs are quantized
+      // First and second input should not be quantized (e.g., indices, depth)
+      // Quant params are propagated from output to inputs
+      propagate_one_hot_quantparam(loco::must_cast<CircleOneHot *>(node), output_type);
       break;
 
     default:
@@ -1162,6 +1415,26 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
   }
 }
 
+/**
+ * tells if pad_v2 quantization should ignore padding value
+ * In that case padding const will be quantized with input parameters, and probably clipped
+ */
+bool ignore_pad_v2_const_quantization(luci::CirclePadV2 *pad)
+{
+  // This is a workaround to quantize pad generated from MaxPoolWithArgmax operation properly
+  // TODO use metadata hints to detect this case
+  auto const_value_node = dynamic_cast<luci::CircleConst *>(pad->arg(2));
+  if (!const_value_node)
+    return false;
+  if (const_value_node->dtype() == loco::DataType::FLOAT32)
+  {
+    float const_value = const_value_node->at<loco::DataType::FLOAT32>(0);
+    if (const_value == std::numeric_limits<float>::lowest())
+      return true;
+  }
+  return false;
+}
+
 /** BEFORE
  *
  *         [CircleNode] [CircleConst] [CircleConst]
@@ -1171,16 +1444,58 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
  *                      [CirclePadV2]
  *                       (U8 qparam2)
  *
- *  AFTER
+ *  AFTER (case 1)
+ *
+ *  By default qparam is propagated from output to inputs to meet backend requirements.
+ *
  *         [CircleNode] [CircleConst] [CircleConst]   [CircleConst] <- Dead node
  *         (U8 qparam2)     (S32)      (U8 qparam2)       (FP32)
  *                   \        |         /
  *                    \       |        /
  *                      [CirclePadV2]
  *                       (U8 qparam2)
+ *
+ *  AFTER (case 2)
+ *
+ * In case padded value is the lowest float value
+ * Qparam is propagated from input to output and constant.
+ *
+ * This is a special case for optimization constructed pad, needed to guarantee that
+ * extremely large negative constant do not stretch output quantization range.
+ *
+ *         [CircleNode] [CircleConst] [CircleConst]   [CircleConst] <- Dead node
+ *         (U8 qparam1)     (S32)      (U8 qparam1)       (FP32)
+ *                   \        |         /
+ *                    \       |        /
+ *                      [CirclePadV2]
+ *                       (U8 qparam1)
  */
 void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant_type)
 {
+  if (ignore_pad_v2_const_quantization(pad_v2))
+  {
+    // propagate input quantization paramters from input to output and padding const value
+    auto pad_v2_input = loco::must_cast<luci::CircleNode *>(pad_v2->arg(0));
+    overwrite_quantparam(pad_v2_input, pad_v2);
+
+    auto const_value_node = loco::must_cast<luci::CircleConst *>(
+      pad_v2->arg(2)); // FIX ignore_pad_v2_const_quantization UNLESS
+    auto new_const = luci::clone(const_value_node);
+
+    const auto pad_v2_input_qparam = pad_v2_input->quantparam();
+    assert(pad_v2_input_qparam != nullptr);
+    assert(pad_v2_input_qparam->scale.size() == 1);
+    const auto scaling_factor = pad_v2_input_qparam->scale.at(0);
+    const auto zerop = pad_v2_input_qparam->zerop.at(0);
+
+    quant_const_values(new_const, scaling_factor, zerop, quant_type);
+    overwrite_quantparam(pad_v2_input, new_const);
+    pad_v2->constant_values(new_const);
+    return;
+  }
+
+  // Propagate quantization paramters from output to inputs,
+  // to fit both input and counstant_value in one quant range.
   auto quant_input = [pad_v2, quant_type](void (CirclePadV2::*arg_setter)(loco::Node *),
                                           uint32_t arg) {
     auto node = loco::must_cast<luci::CircleNode *>(pad_v2->arg(arg));
@@ -1229,6 +1544,101 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant
   quant_input(&CirclePadV2::constant_values, 2);
 }
 
+void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
+{
+  auto inputs = g->inputs();
+  for (auto node : loco::input_nodes(g))
+  {
+    auto input = loco::must_cast<luci::CircleInput *>(node);
+    if (input->dtype() == _input_type)
+      continue;
+
+    // Bool type is not quantizable
+    if (input->dtype() == loco::DataType::BOOL)
+      continue;
+    if (input->dtype() == loco::DataType::S32)
+      continue;
+    if (input->dtype() == loco::DataType::S64)
+      continue;
+
+    // Insert Quantize Op
+    auto quant_op = create_quantize_op(input, input->dtype());
+    loco::replace(input).with(quant_op);
+    quant_op->input(input);
+
+    // TODO Set a proper origin (Quantize should have its own Origin)
+    {
+      auto succs = loco::succs(quant_op);
+      assert(succs.size() > 0);
+      auto succ = loco::must_cast<luci::CircleNode *>(*succs.begin());
+      luci::add_origin(quant_op, luci::get_origin(succ));
+    }
+
+    // Requantize input
+    {
+      auto quantparam = input->quantparam();
+      assert(quantparam);
+      assert(quantparam->min.size() == 1); // only support layer-wise quant
+      assert(quantparam->max.size() == 1); // only support layer-wise quant
+      auto min = quantparam->min[0];
+      auto max = quantparam->max[0];
+
+      float scaling_factor{0};
+      int64_t zp{0};
+      float nudged_min{0};
+      float nudged_max{0};
+
+      if (_input_type == loco::DataType::U8)
+      {
+        compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+      }
+      else
+      {
+        assert(_input_type == loco::DataType::S16);
+        compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+      }
+      input->dtype(_input_type);
+      input->quantparam()->scale[0] = scaling_factor;
+      input->quantparam()->zerop[0] = zp;
+    }
+
+    auto graph_input = inputs->at(input->index());
+    graph_input->dtype(_input_type);
+  }
+}
+
+void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
+{
+  auto outputs = g->outputs();
+  for (auto node : loco::output_nodes(g))
+  {
+    auto output = loco::must_cast<luci::CircleOutput *>(node);
+    if (output->dtype() == _output_type)
+      continue;
+
+    // Bool type is not quantizable
+    if (output->dtype() == loco::DataType::BOOL)
+      continue;
+
+    auto from = loco::must_cast<luci::CircleNode *>(output->from());
+
+    // The last Op is not quantizable Op (ex: ArgMax)
+    if (not from->quantparam())
+      continue;
+
+    // Insert Quantize Op
+    auto quant_op = create_quantize_op(from, _output_type);
+    loco::replace(from).with(quant_op);
+    quant_op->input(from);
+
+    // TODO Set a proper origin (Quantize should have its own Origin)
+    luci::add_origin(quant_op, luci::get_origin(from));
+
+    auto graph_output = outputs->at(output->index());
+    graph_output->dtype(_output_type);
+  }
+}
+
 bool QuantizeWithMinMaxPass::run(loco::Graph *g)
 {
   LOGGER(l);
@@ -1237,7 +1647,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize activation
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeActivation qa(_input_dtype, _output_dtype);
+    QuantizeActivation qa(_input_model_dtype, _output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qa);
   }
@@ -1245,7 +1655,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeWeights qw(_input_dtype, _output_dtype, _granularity);
+    QuantizeWeights qw(_input_model_dtype, _output_model_dtype, _granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qw);
   }
@@ -1253,7 +1663,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize bias
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeBias qb(_input_dtype, _output_dtype, _granularity);
+    QuantizeBias qb(_input_model_dtype, _output_model_dtype, _granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qb);
   }
@@ -1270,20 +1680,20 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     // (2) concat has no fused activation function
     // (3) the input is not concatenation Op
     // (4) the input is not produced to Ops other than concat
-    propagate_concat_quantparam(concat, _output_dtype);
+    propagate_concat_quantparam(concat, _output_model_dtype);
   }
 
   // Quantize const inputs other than weights and bias
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    quantize_const_inputs(circle_node, _output_dtype);
+    quantize_const_inputs(circle_node, _output_model_dtype);
   }
 
   // Update qparam of output of special Ops
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeSpecialActivation qsa(_input_dtype, _output_dtype);
+    QuantizeSpecialActivation qsa(_input_model_dtype, _output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qsa);
   }
@@ -1293,11 +1703,28 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   for (auto node : loco::output_nodes(g))
   {
     auto circle_node = loco::must_cast<luci::CircleOutput *>(node);
-    if (static_cast<luci::CircleNode *>(circle_node->from())->dtype() == _output_dtype)
+    if (static_cast<luci::CircleNode *>(circle_node->from())->dtype() == _output_model_dtype)
     {
-      circle_node->dtype(_output_dtype);
+      circle_node->dtype(_output_model_dtype);
       auto graph_output = graph_outputs->at(circle_node->index());
-      graph_output->dtype(_output_dtype);
+      graph_output->dtype(_output_model_dtype);
+    }
+  }
+
+  // Set input type
+  set_input_type(g);
+
+  // Set output type
+  set_output_type(g);
+
+  // Remove min/max values
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    if (auto qparam = circle_node->quantparam())
+    {
+      qparam->min.clear();
+      qparam->max.clear();
     }
   }
 

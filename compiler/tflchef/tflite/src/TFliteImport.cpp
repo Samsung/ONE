@@ -18,37 +18,12 @@
 
 #include "Convert.h"
 
+#include <mio_tflite260/Helper.h>
+
 #include <sstream>
 
 namespace tflchef
 {
-
-const char *kEmptyTensorName = "(noname)";
-
-const char *tensor_type(const tflite::Tensor *tensor)
-{
-  return tflite::EnumNameTensorType(tensor->type());
-}
-
-const char *tensor_name(const tflite::Tensor *tensor)
-{
-  auto name = tensor->name();
-  if (name)
-    return name->c_str();
-  return kEmptyTensorName;
-}
-
-bool is_valid(const tflite::OperatorCode *opcode)
-{
-  tflite::BuiltinOperator code = opcode->builtin_code();
-  return (tflite::BuiltinOperator_MIN <= code && code <= tflite::BuiltinOperator_MAX);
-}
-
-bool is_custom(const tflite::OperatorCode *opcode)
-{
-  tflite::BuiltinOperator code = opcode->builtin_code();
-  return (code == tflite::BuiltinOperator_CUSTOM);
-}
 
 TFliteImport::TFliteImport(const tflite::Model *model)
 {
@@ -92,7 +67,7 @@ tflite::BuiltinOperator TFliteImport::builtin_code(const tflite::Operator *op) c
   assert(index < _op_codes.size());
   const tflite::OperatorCode *opcode = _op_codes.at(index);
 
-  return opcode->builtin_code();
+  return mio::tflite::builtin_code_neutral(opcode);
 }
 
 std::string TFliteImport::opcode_name(const tflite::Operator *op) const
@@ -101,14 +76,14 @@ std::string TFliteImport::opcode_name(const tflite::Operator *op) const
   assert(index < _op_codes.size());
   const tflite::OperatorCode *opcode = _op_codes.at(index);
 
-  if (!is_valid(opcode))
+  if (!mio::tflite::is_valid(opcode))
   {
     std::ostringstream oss;
     oss << "(invalid: " << index << ")";
     return oss.str();
   }
 
-  if (is_custom(opcode))
+  if (mio::tflite::is_custom(opcode))
   {
     if (!opcode->custom_code())
       return "(invalid custom)";
@@ -116,7 +91,7 @@ std::string TFliteImport::opcode_name(const tflite::Operator *op) const
     return opcode->custom_code()->c_str();
   }
 
-  tflite::BuiltinOperator code = opcode->builtin_code();
+  tflite::BuiltinOperator code = mio::tflite::builtin_code_neutral(opcode);
   return EnumNameBuiltinOperator(code);
 }
 

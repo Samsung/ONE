@@ -17,7 +17,7 @@
 #include "kernels/Elu.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALElu.h"
 
 #include <stdexcept>
 
@@ -40,8 +40,8 @@ void Elu::execute() const
   switch (input()->element_type())
   {
     case DataType::FLOAT32:
-      tflite::optimized_ops::Elu(getTensorShape(input()), getTensorData<float>(input()),
-                                 getTensorShape(output()), getTensorData<float>(output()));
+      luci_interpreter_pal::Elu(getTensorShape(input()), getTensorData<float>(input()),
+                                getTensorShape(output()), getTensorData<float>(output()));
       break;
     default:
       throw std::runtime_error("Unsupported type.");

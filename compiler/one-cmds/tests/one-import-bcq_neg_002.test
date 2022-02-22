@@ -43,7 +43,7 @@ one-import-bcq \
 --input_path ${inputfile} \
 --output_path ${outputfile} \
 --input_arrays Placeholder \
---output_arrays MatMul_null > ${filename}.log
+--output_arrays MatMul_null > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

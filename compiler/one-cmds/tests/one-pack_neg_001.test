@@ -37,7 +37,7 @@ rm -rf ${filename}.log
 # run test
 one-pack \
 -i ./inception_v2.circle \
--o nnpack > ${filename}.log
+-o nnpack > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

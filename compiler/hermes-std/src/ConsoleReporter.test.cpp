@@ -43,3 +43,168 @@ TEST(ConsoleReporterTest, notify)
 
   ASSERT_NO_THROW(r.notify(&m));
 }
+
+TEST(ConsoleReporterTest, notify_fatal)
+{
+  hermes::Message m;
+  {
+    std::stringstream ss;
+
+    ss << "This message is colored as FATAL" << std::endl;
+
+    m.text(std::make_unique<hermes::MessageText>(ss), hermes::FATAL);
+  }
+
+  hermes::ConsoleReporter r;
+
+  r.set_colored_mode(true);
+  ASSERT_NO_THROW(r.notify(&m));
+}
+
+TEST(ConsoleReporterTest, notify_error)
+{
+  hermes::Message m;
+  {
+    std::stringstream ss;
+
+    ss << "This message is colored as ERROR" << std::endl;
+
+    m.text(std::make_unique<hermes::MessageText>(ss), hermes::ERROR);
+  }
+
+  hermes::ConsoleReporter r;
+
+  r.set_colored_mode(true);
+  ASSERT_NO_THROW(r.notify(&m));
+}
+
+TEST(ConsoleReporterTest, notify_warn)
+{
+  hermes::Message m;
+  {
+    std::stringstream ss;
+
+    ss << "This message is colored as WARN" << std::endl;
+
+    m.text(std::make_unique<hermes::MessageText>(ss), hermes::WARN);
+  }
+
+  hermes::ConsoleReporter r;
+
+  r.set_colored_mode(true);
+  ASSERT_NO_THROW(r.notify(&m));
+}
+
+TEST(ConsoleReporterTest, notify_info)
+{
+  hermes::Message m;
+  {
+    std::stringstream ss;
+
+    ss << "This message is colored as INFO" << std::endl;
+
+    m.text(std::make_unique<hermes::MessageText>(ss), hermes::INFO);
+  }
+
+  hermes::ConsoleReporter r;
+
+  r.set_colored_mode(true);
+  ASSERT_NO_THROW(r.notify(&m));
+}
+
+TEST(ConsoleReporterTest, notify_verbose)
+{
+  hermes::Message m;
+  {
+    std::stringstream ss;
+
+    ss << "This message is colored as VERBOSE" << std::endl;
+
+    m.text(std::make_unique<hermes::MessageText>(ss), hermes::VERBOSE);
+  }
+
+  hermes::ConsoleReporter r;
+
+  r.set_colored_mode(true);
+  ASSERT_NO_THROW(r.notify(&m));
+}
+
+TEST(ConsoleReporterTest, notify_fatal_NEG)
+{
+  hermes::Message m;
+  {
+    std::stringstream ss;
+
+    ss << "This message is not colored as FATAL" << std::endl;
+
+    m.text(std::make_unique<hermes::MessageText>(ss), hermes::FATAL);
+  }
+
+  hermes::ConsoleReporter r;
+
+  ASSERT_NO_THROW(r.notify(&m));
+}
+
+TEST(ConsoleReporterTest, notify_error_NEG)
+{
+  hermes::Message m;
+  {
+    std::stringstream ss;
+
+    ss << "This message is not colored as ERROR" << std::endl;
+
+    m.text(std::make_unique<hermes::MessageText>(ss), hermes::ERROR);
+  }
+
+  hermes::ConsoleReporter r;
+
+  ASSERT_NO_THROW(r.notify(&m));
+}
+
+TEST(ConsoleReporterTest, notify_warn_NEG)
+{
+  hermes::Message m;
+  {
+    std::stringstream ss;
+
+    ss << "This message is not colored as WARN" << std::endl;
+
+    m.text(std::make_unique<hermes::MessageText>(ss), hermes::WARN);
+  }
+
+  hermes::ConsoleReporter r;
+
+  ASSERT_NO_THROW(r.notify(&m));
+}
+
+TEST(ConsoleReporterTest, notify_info_NEG)
+{
+  hermes::Message m;
+  {
+    std::stringstream ss;
+
+    ss << "This message is not colored as INFO" << std::endl;
+
+    m.text(std::make_unique<hermes::MessageText>(ss), hermes::INFO);
+  }
+
+  hermes::ConsoleReporter r;
+
+  ASSERT_NO_THROW(r.notify(&m));
+}
+
+TEST(ConsoleReporterTest, notify_verbose_NEG)
+{
+  hermes::Message m;
+  {
+    std::stringstream ss;
+
+    ss << "This message is not colored as VERBOSE" << std::endl;
+
+    m.text(std::make_unique<hermes::MessageText>(ss), hermes::VERBOSE);
+  }
+
+  hermes::ConsoleReporter r;
+
+  ASSERT_NO_THROW(r.notify(&m));
+}

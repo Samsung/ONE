@@ -32,7 +32,7 @@ rm -rf ${outputfile}
 
 # to create inception_v3.circle
 if [[ ! -s ${inputfile} ]]; then
-  /bin/bash one-import_001.test >> /dev/null
+  /bin/bash one-import_001.test > /dev/null 2>&1
   return_code=$?
   if [[ ${return_code} != 0 ]]; then
     trap_err_onexit
@@ -45,7 +45,7 @@ one-quantize \
 --quantized_dtype uint8 \
 --input_path ./inception_v3.circle \
 --input_data ./inception_v3_test_data.h5 \
---output_path ./inception_v3.quantized.circle >> /dev/null
+--output_path ./inception_v3.quantized.circle > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

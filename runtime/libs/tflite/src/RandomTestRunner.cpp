@@ -20,7 +20,6 @@
 #include "tflite/RandomTestRunner.h"
 #include "tflite/Diff.h"
 #include "tflite/TensorLogger.h"
-#include "tflite/ext/nnapi_delegate.h"
 
 #include <misc/tensor/IndexIterator.h>
 #include <misc/tensor/Object.h>
@@ -66,8 +65,6 @@ int RandomTestRunner::run(size_t running_count)
   std::cout << "[NNAPI TEST] Run T/F Lite Interpreter without NNAPI" << std::endl;
   _tfl_interp->Invoke();
 
-  nnfw::tflite::NNAPIDelegate d;
-
   for (size_t i = 1; i <= running_count; ++i)
   {
     resetter.run(*(_nnapi.get()));
@@ -77,21 +74,9 @@ int RandomTestRunner::run(size_t running_count)
 
     std::cout << "[NNAPI TEST #" << i << "] Run T/F Lite Interpreter with NNAPI" << std::endl;
 
-    char *env = getenv("UPSTREAM_DELEGATE");
-
-    if (env && !std::string(env).compare("1"))
+    if (_nnapi->Invoke() != kTfLiteOk)
     {
-      _nnapi->Invoke();
-    }
-    else
-    {
-      // WARNING
-      // primary_subgraph: Experimental interface. Return 1st sugbraph
-      // Invoke() will call BuildGraph() internally
-      if (d.Invoke(&_nnapi.get()->primary_subgraph()))
-      {
-        throw std::runtime_error{"Failed to BuildGraph"};
-      }
+      throw std::runtime_error{"Failed to Run T/F Lite Interpreter with NNAPI"};
     }
 
     // Compare OFM

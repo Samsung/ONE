@@ -32,7 +32,7 @@ rm -rf ${outputfile}
 
 # to create inception_v3.circle
 if [[ ! -s ${inputfile} ]]; then
-  /bin/bash one-import_001.test >> /dev/null
+  /bin/bash one-import_001.test > /dev/null 2>&1
   return_code=$?
   if [[ ${return_code} != 0 ]]; then
     trap_err_onexit
@@ -42,7 +42,7 @@ fi
 # run test
 one-optimize --O1 \
 --input_path ${inputfile} \
---output_path ${outputfile} >> /dev/null
+--output_path ${outputfile} > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

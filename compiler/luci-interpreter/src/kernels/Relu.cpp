@@ -17,7 +17,7 @@
 #include "kernels/Relu.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALRelu.h"
 
 #include <stdexcept>
 
@@ -70,7 +70,7 @@ void Relu::evalFloat() const
   auto output_data = getTensorData<float>(output());
   auto output_shape = getTensorShape(output());
 
-  tflite::optimized_ops::Relu(input_shape, input_data, output_shape, output_data);
+  luci_interpreter_pal::Relu(input_shape, input_data, output_shape, output_data);
 }
 
 void Relu::evalQuantized() const
@@ -85,8 +85,8 @@ void Relu::evalQuantized() const
     std::max(static_cast<int32_t>(std::numeric_limits<uint8_t>::min()), params.output_offset);
   params.quantized_activation_max = static_cast<int32_t>(std::numeric_limits<uint8_t>::max());
 
-  tflite::optimized_ops::ReluX(params, getTensorShape(input()), getTensorData<uint8_t>(input()),
-                               getTensorShape(output()), getTensorData<uint8_t>(output()));
+  luci_interpreter_pal::ReluX(params, getTensorShape(input()), getTensorData<uint8_t>(input()),
+                              getTensorShape(output()), getTensorData<uint8_t>(output()));
 }
 
 void Relu::evalQuantizedS16() const

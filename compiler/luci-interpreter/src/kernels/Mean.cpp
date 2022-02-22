@@ -19,7 +19,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/reduce.h>
 
 #include <stdexcept>
 
@@ -28,7 +28,7 @@ namespace luci_interpreter
 namespace kernels
 {
 
-static void resolveAxes(const int *axes_data, int num_axes, tflite::MeanParams *params)
+static void resolveAxes(const int32_t *axes_data, int num_axes, tflite::MeanParams *params)
 {
   params->axis_count = num_axes;
   for (int i = 0; i < num_axes; ++i)
@@ -42,7 +42,7 @@ static void resolveAxes(const int *axes_data, int num_axes, tflite::MeanParams *
 }
 
 // Returns the number of axes that will be reduced. Removes duplicates.
-static int getAxisReductionCount(const int *axes_data, int num_axes, int input_num_dims)
+static int getAxisReductionCount(const int32_t *axes_data, int num_axes, int input_num_dims)
 {
   int reduction_count = num_axes;
   for (int i = 0; i < num_axes; ++i)
@@ -63,7 +63,7 @@ static int getAxisReductionCount(const int *axes_data, int num_axes, int input_n
   return reduction_count;
 }
 
-static Shape getOutputShape(const Shape &input_shape, const int *axes_data, int num_axes,
+static Shape getOutputShape(const Shape &input_shape, const int32_t *axes_data, int num_axes,
                             bool keep_dims)
 {
   int input_num_dims = input_shape.num_dims();
@@ -123,8 +123,10 @@ static Shape getOutputShape(const Shape &input_shape, const int *axes_data, int 
   }
 }
 
-Mean::Mean(const Tensor *input, const Tensor *axes, Tensor *output, const ReducerParams &params)
-  : KernelWithParams<ReducerParams>({input, axes}, {output}, params)
+Mean::Mean(const Tensor *input, const Tensor *axes, Tensor *output, Tensor *temp_index,
+           Tensor *resolved_axes, Tensor *temp_sum, const ReducerParams &params)
+  : KernelWithParams<ReducerParams>({input, axes}, {output, temp_index, resolved_axes, temp_sum},
+                                    params)
 {
 }
 
@@ -149,17 +151,28 @@ void Mean::configure()
 
   tflite::MeanParams params{};
   resolveAxes(axes_data, num_axes, &params);
-  const bool need_temporaries = !(
+  _need_temporaries = !(
     _params.keep_dims && input_num_dims == 4 && params.axis_count == 2 &&
     ((params.axis[0] == 1 && params.axis[1] == 2) || (params.axis[0] == 2 && params.axis[1] == 1)));
-  if (need_temporaries)
+  if (_need_temporaries)
   {
-    _temp_index =
-      std::make_unique<Tensor>(DataType::S32, Shape(input_num_dims), AffineQuantization{}, "");
-    _resolved_axes =
-      std::make_unique<Tensor>(DataType::S32, Shape(num_axes), AffineQuantization{}, "");
-    _temp_sum = std::make_unique<Tensor>(input()->element_type(), output()->shape(),
-                                         AffineQuantization{}, "");
+    auto temp_index = getOutputTensors()[1];
+    auto resolved_axes = getOutputTensors()[2];
+    auto temp_sum = getOutputTensors()[3];
+
+    temp_index->resize(Shape(input_num_dims));
+    resolved_axes->resize(Shape(num_axes));
+    temp_sum->resize(output()->shape());
+  }
+  else
+  {
+    auto temp_index = getOutputTensors()[1];
+    auto resolved_axes = getOutputTensors()[2];
+    auto temp_sum = getOutputTensors()[3];
+
+    temp_index->set_allocatable(false);
+    resolved_axes->set_allocatable(false);
+    temp_sum->set_allocatable(false);
   }
 }
 
@@ -179,12 +192,6 @@ void Mean::execute() const
     default:
       throw std::runtime_error("Unsupported type.");
   }
-  if (!!_temp_index)
-    _temp_index->deallocate();
-  if (!!_resolved_axes)
-    _resolved_axes->deallocate();
-  if (!!_temp_sum)
-    _temp_sum->deallocate();
 }
 
 void Mean::evalFloat() const
@@ -197,6 +204,10 @@ void Mean::evalFloat() const
   tflite::MeanParams params{};
   resolveAxes(axes_data, num_axes, &params);
 
+  auto temp_index = getOutputTensors()[1];
+  auto resolved_axes = getOutputTensors()[2];
+  auto temp_sum = getOutputTensors()[3];
+
   // Defer to specialized implementation for 4D Mean across axes 1 & 2.
   if (_params.keep_dims && input_num_dims == 4 && params.axis_count == 2 &&
       ((params.axis[0] == 1 && params.axis[1] == 2) ||
@@ -207,12 +218,12 @@ void Mean::evalFloat() const
   }
   else
   {
-    tflite::reference_ops::Mean(
-      getTensorData<float>(input()), getTensorShape(input()).DimsData(),
-      input()->shape().num_dims(), getTensorData<float>(output()),
-      getTensorShape(output()).DimsData(), output()->shape().num_dims(), axes_data, num_axes,
-      _params.keep_dims, getTensorData<int>(_temp_index.get()),
-      getTensorData<int>(_resolved_axes.get()), getTensorData<float>(_temp_sum.get()));
+    tflite::reference_ops::Mean(getTensorData<float>(input()), getTensorShape(input()).DimsData(),
+                                input()->shape().num_dims(), getTensorData<float>(output()),
+                                getTensorShape(output()).DimsData(), output()->shape().num_dims(),
+                                axes_data, num_axes, _params.keep_dims,
+                                getTensorData<int>(temp_index), getTensorData<int>(resolved_axes),
+                                getTensorData<float>(temp_sum));
   }
 }
 
@@ -226,6 +237,10 @@ void Mean::evalQuantized() const
   tflite::MeanParams params{};
   resolveAxes(axes_data, num_axes, &params);
 
+  auto temp_index = getOutputTensors()[1];
+  auto resolved_axes = getOutputTensors()[2];
+  auto temp_sum = getOutputTensors()[3];
+
   // Defer to specialized implementation for 4D Mean across axes 1 & 2.
   if (_params.keep_dims && input_num_dims == 4 && params.axis_count == 2 &&
       ((params.axis[0] == 1 && params.axis[1] == 2) ||
@@ -238,12 +253,12 @@ void Mean::evalQuantized() const
   }
   else if (input()->zero_point() == output()->zero_point() && input()->scale() == output()->scale())
   {
-    tflite::reference_ops::Mean(
-      getTensorData<uint8_t>(input()), getTensorShape(input()).DimsData(),
-      input()->shape().num_dims(), getTensorData<uint8_t>(output()),
-      getTensorShape(output()).DimsData(), output()->shape().num_dims(), axes_data, num_axes,
-      _params.keep_dims, getTensorData<int>(_temp_index.get()),
-      getTensorData<int>(_resolved_axes.get()), getTensorData<int>(_temp_sum.get()));
+    tflite::reference_ops::Mean(getTensorData<uint8_t>(input()), getTensorShape(input()).DimsData(),
+                                input()->shape().num_dims(), getTensorData<uint8_t>(output()),
+                                getTensorShape(output()).DimsData(), output()->shape().num_dims(),
+                                axes_data, num_axes, _params.keep_dims,
+                                getTensorData<int>(temp_index), getTensorData<int>(resolved_axes),
+                                getTensorData<int>(temp_sum));
   }
   else
   {
@@ -252,8 +267,8 @@ void Mean::evalQuantized() const
       getTensorShape(input()).DimsData(), input()->shape().num_dims(),
       getTensorData<uint8_t>(output()), output()->zero_point(), output()->scale(),
       getTensorShape(output()).DimsData(), output()->shape().num_dims(), axes_data, num_axes,
-      _params.keep_dims, getTensorData<int>(_temp_index.get()),
-      getTensorData<int>(_resolved_axes.get()), getTensorData<int>(_temp_sum.get()),
+      _params.keep_dims, getTensorData<int>(temp_index), getTensorData<int>(resolved_axes),
+      getTensorData<int>(temp_sum),
       /*compute_sum=*/false);
   }
 }

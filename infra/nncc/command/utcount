@@ -14,7 +14,7 @@ oops pepper-assert \
 hermes hermes-std \
 loco locop locomotiv logo-core logo \
 foder souschef arser vconone crew \
-safemain mio-circle mio-tflite \
+safemain mio-circle mio-tflite mio-tflite260 \
 tflite2circle \
 luci \
 luci-interpreter \

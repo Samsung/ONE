@@ -88,6 +88,15 @@ public:
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
   void setLayout(Layout layout) { _layout = layout; }
   void setSubgraphs(const std::shared_ptr<Subgraphs> &subgs) { _subgraphs = subgs; }
+  void setPartialgraphs(const std::shared_ptr<Subgraphs> &partialgraphs)
+  {
+    _partialgraphs = partialgraphs;
+  }
+  void
+  setTensorName(std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> &tensor_names)
+  {
+    _tensor_names = tensor_names;
+  }
 
 private:
   bool checkOperandsForOperation(const Operation &operation);
@@ -128,6 +137,29 @@ public:
   const std::shared_ptr<Subgraphs> &subgraphs() const { return _subgraphs; }
   std::shared_ptr<Subgraphs> &subgraphs() { return _subgraphs; }
   Layout layout() const { return _layout; }
+  std::shared_ptr<Subgraphs> &partialgraphs() { return _partialgraphs; }
+  std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> &tensor_names()
+  {
+    return _tensor_names;
+  }
+  std::unordered_map<std::string, IOIndex>::iterator _name_to_input_begin()
+  {
+    return _name_to_input.begin();
+  }
+  std::unordered_map<std::string, IOIndex>::iterator _name_to_input_end()
+  {
+    return _name_to_input.end();
+  }
+  std::unordered_map<std::string, IOIndex>::iterator _name_to_output_begin()
+  {
+    return _name_to_output.begin();
+  }
+  std::unordered_map<std::string, IOIndex>::iterator _name_to_output_end()
+  {
+    return _name_to_output.end();
+  }
+  void input_sort() { _inputs.sort(); }
+  void output_sort() { _outputs.sort(); }
 
   // Topological sort
 public:
@@ -144,6 +176,10 @@ private:
   std::shared_ptr<Subgraphs> _subgraphs;
   // TFLite and circle's default layout is NHWC;
   Layout _layout{Layout::NHWC};
+
+  // Partial Graphs
+  std::shared_ptr<ir::Subgraphs> _partialgraphs;
+  std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> _tensor_names;
 };
 
 } // namespace ir

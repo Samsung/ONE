@@ -1,0 +1,67 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ifm3"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ifm4"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "some/node/add1;and/another"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "some/node/add2;and/another"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operation {
+  type: "Add"
+  add_options {
+    activation: NONE
+  }
+  input: "ifm1"
+  input: "ifm2"
+  output: "some/node/add1;and/another"
+}
+operation {
+  type: "Add"
+  add_options {
+    activation: NONE
+  }
+  input: "some/node/add1;and/another"
+  input: "ifm3"
+  output: "some/node/add2;and/another"
+}
+operation {
+  type: "Sub"
+  sub_options {
+    activation: NONE
+  }
+  input: "some/node/add2;and/another"
+  input: "ifm4"
+  output: "ofm"
+}
+input: "ifm1"
+input: "ifm2"
+input: "ifm3"
+input: "ifm4"
+output: "ofm"

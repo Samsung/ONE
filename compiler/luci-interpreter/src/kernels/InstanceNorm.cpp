@@ -37,7 +37,13 @@ void InstanceNorm::configure()
   LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   LUCI_INTERPRETER_CHECK(gamma()->element_type() == input()->element_type());
+  LUCI_INTERPRETER_CHECK(gamma()->shape().num_dims() == 1);
+  LUCI_INTERPRETER_CHECK(gamma()->shape().dim(0) == input()->shape().dim(3) ||
+                         gamma()->shape().dim(0) == 1);
   LUCI_INTERPRETER_CHECK(beta()->element_type() == input()->element_type());
+  LUCI_INTERPRETER_CHECK(beta()->shape().num_dims() == 1);
+  LUCI_INTERPRETER_CHECK(beta()->shape().dim(0) == input()->shape().dim(3) ||
+                         beta()->shape().dim(0) == 1);
   output()->resize(input()->shape());
 }
 
@@ -65,7 +71,11 @@ void InstanceNorm::evalFloat() const
   const int32_t channels = tflite::MatchingDim(input_shape, 3, output_shape, 3);
   const float *input_data = getTensorData<float>(input());
   const float *gamma_data = getTensorData<float>(gamma());
+  auto gamma_shape = getTensorShape(gamma());
+  bool single_gamma = gamma_shape.DimensionsCount() == 1 && gamma_shape.Dims(0) == 1;
   const float *beta_data = getTensorData<float>(beta());
+  auto beta_shape = getTensorShape(beta());
+  bool single_beta = beta_shape.DimensionsCount() == 1 && beta_shape.Dims(0) == 1;
   float *output_data = getTensorData<float>(output());
   for (int32_t batch = 0; batch < batches; batch++)
   {
@@ -86,8 +96,8 @@ void InstanceNorm::evalFloat() const
       double mean = sum / size;
       double var = square_sum / size - mean * mean;
 
-      double gamma = gamma_data[channel];
-      double beta = beta_data[channel];
+      double gamma = single_gamma ? gamma_data[0] : gamma_data[channel];
+      double beta = single_beta ? beta_data[0] : beta_data[channel];
       double a = gamma / (std::sqrt(var + params().epsilon));
       double b = -mean * a + beta;
 

@@ -562,9 +562,14 @@ uint32_t get_buffer_id(FlatBufferBuilder &builder, SerializedModelData &md, luci
   }
   else
   {
-    // When there is no CircleConst, the operation do not use buffer.
-    // So return buffer id as 0 which means empty buffer in circle schema.
-    return 0;
+    // When there is no CircleConst, there is nothing to cache.
+    // So return new buffer id.
+    auto buffer = encodeOpBuffer(builder);
+
+    auto buffer_id = static_cast<uint32_t>(md._buffers.size());
+    md._buffers.push_back(buffer);
+
+    return buffer_id;
   }
 }
 

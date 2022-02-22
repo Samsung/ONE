@@ -1,23 +1,28 @@
 Name:    nnfw
 Summary: nnfw
-Version: 1.16.0
+Version: 1.20.0
 Release: 1
 Group:   Development
-License: Apache-2.0 and MIT and BSD-2-Clause
+License: Apache-2.0 and MIT and BSD-2-Clause and MPL-2.0
 
 Source0: %{name}-%{version}.tar.gz
 Source1: %{name}.manifest
 Source1001: nnapi_test_generated.tar.gz
-Source1002: gtest.tar.gz
-Source1003: eigen.tar.gz
-Source1004: gemmlowp.tar.gz
-Source1005: ruy.tar.gz
-Source1006: cpuinfo.tar.gz
+Source1002: GTEST.tar.gz
+Source1003: TENSORFLOW-2.3.0-EIGEN.tar.gz
+Source1004: GEMMLOWP.tar.gz
+Source1005: RUY.tar.gz
+Source1006: CPUINFO.tar.gz
 Source1007: XNNPACK.tar.gz
 Source1008: FXDIV.tar.gz
 Source1009: PTHREADPOOL.tar.gz
 Source1010: PSIMD.tar.gz
 Source1011: FP16.tar.gz
+Source1012: OPENCL_HEADERS.tar.gz
+Source1013: FARMHASH.tar.gz
+Source1014: ABSEIL.tar.gz
+Source1015: OOURAFFT.tar.gz
+Source1016: TENSORFLOW_GPU.tar.gz
 Source2001: nnfw.pc.in
 Source2002: nnfw-plugin.pc.in
 
@@ -129,6 +134,11 @@ tar -xf %{SOURCE1008} -C ./externals
 tar -xf %{SOURCE1009} -C ./externals
 tar -xf %{SOURCE1010} -C ./externals
 tar -xf %{SOURCE1011} -C ./externals
+tar -xf %{SOURCE1012} -C ./externals
+tar -xf %{SOURCE1013} -C ./externals
+tar -xf %{SOURCE1014} -C ./externals
+tar -xf %{SOURCE1015} -C ./externals
+tar -xf %{SOURCE1016} -C ./externals
 
 %build
 %ifarch arm armv7l aarch64 x86_64 %ix86
@@ -198,6 +208,7 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %defattr(-,root,root,-)
 %ifarch arm armv7l aarch64 x86_64 %ix86
 %{_libdir}/*.so
+%exclude %{_includedir}/CL/*
 %endif
 
 %files devel

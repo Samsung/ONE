@@ -16,6 +16,7 @@
 
 #include "kernels/Floor.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -26,7 +27,15 @@ namespace
 
 using namespace testing;
 
-TEST(FloorTest, SimpleFloat)
+class FloorTest : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
+TEST_F(FloorTest, SimpleFloat)
 {
   std::initializer_list<int32_t> input_shape{1, 2, 4, 1};
   std::vector<float> input_data{
@@ -40,20 +49,22 @@ TEST(FloorTest, SimpleFloat)
     3, 7, 10, -1, // Row 2
   };
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Floor kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
-TEST(FloorTest, Input_Output_Type_NEG)
+TEST_F(FloorTest, Input_Output_Type_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S32);
 
   Floor kernel(&input_tensor, &output_tensor);

@@ -18,7 +18,9 @@
 #include "kernels/Sub.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/legacy_optimized_ops.h>
+#include "PALSub.h"
+
+#include <tensorflow/lite/kernels/internal/reference/process_broadcast_shapes.h>
 
 #include <stdexcept>
 
@@ -35,6 +37,7 @@ Sub::Sub(const Tensor *input1, const Tensor *input2, Tensor *output, const SubPa
 void Sub::configure()
 {
   LUCI_INTERPRETER_CHECK(!(input1()->element_type() != input2()->element_type()))
+  LUCI_INTERPRETER_CHECK(!(input1()->element_type() != output()->element_type()))
   output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
 }
 
@@ -44,6 +47,12 @@ void Sub::execute() const
   {
     case DataType::FLOAT32:
       evalFloat();
+      break;
+    case DataType::S64:
+      evalInteger<int64_t>();
+      break;
+    case DataType::S32:
+      evalInteger<int32_t>();
       break;
     case DataType::U8:
       evalQuantized();
@@ -55,13 +64,8 @@ void Sub::execute() const
 
 void Sub::evalFloat() const
 {
-  float activation_min{};
-  float activation_max{};
-  calculateActivationRange(_params.activation, &activation_min, &activation_max);
-
   tflite::ArithmeticParams params{};
-  params.float_activation_min = activation_min;
-  params.float_activation_max = activation_max;
+  fillArithmeticActivationRange<float>(params, _params.activation);
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
     getTensorShape(input1()), getTensorShape(input2()), &params);
@@ -74,9 +78,31 @@ void Sub::evalFloat() const
   }
   else
   {
-    tflite::optimized_ops::Sub(params, getTensorShape(input1()), getTensorData<float>(input1()),
-                               getTensorShape(input2()), getTensorData<float>(input2()),
-                               getTensorShape(output()), getTensorData<float>(output()));
+    luci_interpreter_pal::Sub(params, getTensorShape(input1()), getTensorData<float>(input1()),
+                              getTensorShape(input2()), getTensorData<float>(input2()),
+                              getTensorShape(output()), getTensorData<float>(output()));
+  }
+}
+
+template <typename T> void Sub::evalInteger() const
+{
+  tflite::ArithmeticParams params{};
+  fillArithmeticActivationRange<T>(params, _params.activation);
+
+  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
+    getTensorShape(input1()), getTensorShape(input2()), &params);
+
+  if (need_broadcast)
+  {
+    tflite::reference_ops::BroadcastSubSlow(
+      params, getTensorShape(input1()), getTensorData<T>(input1()), getTensorShape(input2()),
+      getTensorData<T>(input2()), getTensorShape(output()), getTensorData<T>(output()));
+  }
+  else
+  {
+    tflite::reference_ops::Sub(params, getTensorShape(input1()), getTensorData<T>(input1()),
+                               getTensorShape(input2()), getTensorData<T>(input2()),
+                               getTensorShape(output()), getTensorData<T>(output()));
   }
 }
 

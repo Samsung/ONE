@@ -36,8 +36,8 @@ protected:
 public:
   virtual ~Kernel() = default;
 
-  std::vector<const Tensor *> getInputTensors() const { return _inputs; }
-  std::vector<Tensor *> getOutputTensors() const { return _outputs; }
+  const std::vector<const Tensor *> &getInputTensors() const { return _inputs; }
+  const std::vector<Tensor *> &getOutputTensors() const { return _outputs; }
 
   // Configures the kernel.
   // This function is currently called once for each kernel during interpreter construction,

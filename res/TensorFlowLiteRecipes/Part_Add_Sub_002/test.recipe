@@ -1,0 +1,59 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "const"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "add1"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "add2"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operation {
+  type: "Add"
+  add_options {
+    activation: NONE
+  }
+  input: "ifm"
+  input: "const"
+  output: "add1"
+}
+operation {
+  type: "Add"
+  add_options {
+    activation: NONE
+  }
+  input: "add1"
+  input: "const"
+  output: "add2"
+}
+operation {
+  type: "Sub"
+  sub_options {
+    activation: NONE
+  }
+  input: "add2"
+  input: "const"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

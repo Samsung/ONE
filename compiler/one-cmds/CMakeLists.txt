@@ -8,9 +8,16 @@ set(ONE_COMMAND_FILES
     one-optimize
     one-quantize
     one-pack
+    one-profile
     one-codegen
     one-prepare-venv
+    onecc
 )
+
+# pytorch importer is an experimental feature, it is not used in default configuration
+if(ENABLE_ONE_IMPORT_PYTORCH)
+  list(APPEND ONE_COMMAND_FILES one-import-pytorch)
+endif(ENABLE_ONE_IMPORT_PYTORCH)
 
 foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
 
@@ -37,8 +44,9 @@ endforeach(ONE_COMMAND)
 
 set(ONE_UTILITY_FILES
     one-build.template.cfg
+    onecc.template.cfg
     utils.py
-    conv_mixin_1.8.0.patch
+    onnx_legalizer.py
 )
 
 foreach(ONE_UTILITY IN ITEMS ${ONE_UTILITY_FILES})

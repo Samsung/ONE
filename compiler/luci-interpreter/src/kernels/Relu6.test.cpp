@@ -17,6 +17,7 @@
 
 #include "kernels/Relu6.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -27,7 +28,15 @@ namespace
 
 using namespace testing;
 
-TEST(Relu6Test, FloatSimple)
+class Relu6Test : public ::testing::Test
+{
+protected:
+  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
+};
+
+TEST_F(Relu6Test, FloatSimple)
 {
   std::vector<float> input_data{
     0.0f, 1.0f,  3.0f,  // Row 1
@@ -39,11 +48,13 @@ TEST(Relu6Test, FloatSimple)
     6.0f, 0.0f, 0.0f, // Row 2
   };
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 3}, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Relu6 kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
@@ -51,7 +62,7 @@ TEST(Relu6Test, FloatSimple)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 3}));
 }
 
-TEST(Relu6Test, Uint8Quantized)
+TEST_F(Relu6Test, Uint8Quantized)
 {
   // Choose min / max in such a way that there are exactly 256 units to avoid rounding errors.
   const float f_min = (-128.0 / 128.0) * 10;
@@ -64,12 +75,13 @@ TEST(Relu6Test, Uint8Quantized)
   };
 
   std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(f_min, f_max);
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_param.first, quant_param.second, input_data);
+  Tensor input_tensor = makeInputTensor<DataType::U8>(
+    {1, 2, 4, 1}, quant_param.first, quant_param.second, input_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
 
   Relu6 kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
@@ -79,7 +91,7 @@ TEST(Relu6Test, Uint8Quantized)
               FloatArrayNear({0, 0, 2, 6, 0, 3, 6, 1}, tolerance));
 }
 
-TEST(Relu6Test, Uint8Requantized)
+TEST_F(Relu6Test, Uint8Requantized)
 {
   // Choose min / max in such a way that there are exactly 256 units to avoid rounding errors.
   const float in_min = (-128.0 / 128.0) * 10;
@@ -94,14 +106,15 @@ TEST(Relu6Test, Uint8Requantized)
   };
 
   std::pair<float, int32_t> quant_input = quantizationParams<uint8_t>(in_min, in_max);
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>({1, 2, 4, 1}, quant_input.first, quant_input.second, input_data);
+  Tensor input_tensor = makeInputTensor<DataType::U8>(
+    {1, 2, 4, 1}, quant_input.first, quant_input.second, input_data, _memory_manager.get());
 
   std::pair<float, int32_t> quant_output = quantizationParams<uint8_t>(out_min, out_max);
   Tensor output_tensor = makeOutputTensor(DataType::U8, quant_output.first, quant_output.second);
 
   Relu6 kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
@@ -111,22 +124,23 @@ TEST(Relu6Test, Uint8Requantized)
               FloatArrayNear({0, 0, 2, 6, 0, 3, 6, 1}, tolerance));
 }
 
-TEST(Relu6Test, Input_Output_Type_NEG)
+TEST_F(Relu6Test, Input_Output_Type_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f});
+  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8);
 
   Relu6 kernel(&input_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
-TEST(Relu6Test, Invalid_Input_Type_NEG)
+TEST_F(Relu6Test, Invalid_Input_Type_NEG)
 {
-  Tensor input_tensor = makeInputTensor<DataType::S64>({1}, {1});
+  Tensor input_tensor = makeInputTensor<DataType::S64>({1}, {1}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S64);
 
   Relu6 kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
   EXPECT_ANY_THROW(kernel.execute());
 }
 

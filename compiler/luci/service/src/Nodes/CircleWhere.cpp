@@ -19,7 +19,7 @@
 namespace luci
 {
 
-luci::CircleNode *CloneNodeLet<CN::VWXYZ>::visit(const luci::CircleWhere *)
+luci::CircleNode *CloneNodeLet<CN::WXYZ>::visit(const luci::CircleWhere *)
 {
   return _graph->nodes()->create<luci::CircleWhere>();
 }

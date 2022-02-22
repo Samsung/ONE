@@ -19,7 +19,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/legacy_optimized_ops.h>
+#include "PALConv2d.h"
 
 #include <stdexcept>
 #include <thread>
@@ -30,8 +30,8 @@ namespace kernels
 {
 
 Conv2D::Conv2D(const Tensor *input, const Tensor *filter, const Tensor *bias, Tensor *output,
-               const Conv2DParams &params)
-  : KernelWithParams<Conv2DParams>({input, filter, bias}, {output}, params)
+               Tensor *scratchpad, const Conv2DParams &params)
+  : KernelWithParams<Conv2DParams>({input, filter, bias}, {output, scratchpad}, params)
 {
 }
 
@@ -45,7 +45,7 @@ void Conv2D::configure()
   // (3) | uint8 uint8  int32 uint8  | quantized
   // (4) | int8  int8   int32 int8   | quantized per channel
   //
-  // We only support (1) and (3) for now, and additionally the following:
+  // We only support (1), (3) and (4) for now, and additionally the following:
   //     | input filter bias  output |
   // ----+---------------------------+
   // (5) | int16 int16  int64 int16  |
@@ -57,6 +57,17 @@ void Conv2D::configure()
   else if (input()->element_type() == DataType::U8 && filter()->element_type() == DataType::U8)
   {
     LUCI_INTERPRETER_CHECK(bias() == nullptr || bias()->element_type() == DataType::S32);
+  }
+  else if (input()->element_type() == DataType::S8 && filter()->element_type() == DataType::S8)
+  {
+    LUCI_INTERPRETER_CHECK(bias() == nullptr || bias()->element_type() == DataType::S32);
+    LUCI_INTERPRETER_CHECK(filter()->shape().num_dims() == 4);
+    LUCI_INTERPRETER_CHECK(filter()->scales().size() ==
+                           static_cast<size_t>(filter()->shape().dim(0)));
+    for (auto zerop : filter()->zero_points())
+    {
+      LUCI_INTERPRETER_CHECK(zerop == 0);
+    }
   }
   else if (input()->element_type() == DataType::S16 && filter()->element_type() == DataType::S16)
   {
@@ -97,29 +108,28 @@ void Conv2D::configure()
 
   output()->resize({batches, output_height, output_width, output_depth});
 
-  // Allocate tensor for Im2Col, if needed.
-  // The checks here should be aligned with the actual implementation.
-  const bool need_dilated_im2col =
-    _params.dilation_height_factor != 1 || _params.dilation_width_factor != 1;
-  const bool need_non_dilated_im2col = _params.stride_height != 1 || _params.stride_width != 1 ||
-                                       filter_height != 1 || filter_width != 1;
-  const bool need_im2col =
-    input()->element_type() != DataType::S16 && (need_dilated_im2col || need_non_dilated_im2col);
-  if (need_im2col)
+  // Allocate tensor for scratchpad, if needed.
+  tflite::ConvParams params{};
+  params.padding_values.height = _padding_height;
+  params.padding_values.width = _padding_width;
+  params.stride_height = _params.stride_height;
+  params.stride_width = _params.stride_width;
+  params.dilation_height_factor = _params.dilation_height_factor;
+  params.dilation_width_factor = _params.dilation_width_factor;
+  auto scratchpad = getOutputTensors()[1];
+  luci_interpreter_pal::SetupScratchpadTensor(scratchpad, input()->element_type(), params,
+                                              getTensorShape(input()), getTensorShape(filter()),
+                                              getTensorShape(output()));
+
+  switch (_params.activation)
   {
-    const int input_depth = input_shape.dim(3);
-    Shape im2col_shape{batches, output_height, output_width,
-                       input_depth * filter_height * filter_width};
-    try
-    {
-      _im2col =
-        std::make_unique<Tensor>(input()->element_type(), im2col_shape, AffineQuantization{}, "");
-    }
-    catch (std::bad_alloc &ba)
-    {
-      // Failed memory allocation
-      _im2col = nullptr;
-    }
+    case Activation::NONE:
+    case Activation::RELU:
+    case Activation::RELU6:
+    case Activation::RELU_N1_TO_1:
+      break;
+    default:
+      throw std::runtime_error("Unsupported fused activation");
   }
 }
 
@@ -147,14 +157,15 @@ void Conv2D::execute() const
         evalQuantizedPerChannel();
       }
       break;
+    case DataType::S8:
+      evalQuantizedS8PerChannel();
+      break;
     case DataType::S16:
       evalQuantizedS16();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
   }
-  if (!!_im2col)
-    _im2col->deallocate();
 }
 
 void Conv2D::evalFloat() const
@@ -173,32 +184,16 @@ void Conv2D::evalFloat() const
   params.float_activation_min = activation_min;
   params.float_activation_max = activation_max;
 
-  if (_im2col)
-  {
-    try
-    {
-      tflite::optimized_ops::Conv(
-        params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
-        getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
-        getTensorShape(output()), getTensorData<float>(output()), getTensorShape(_im2col.get()),
-        getTensorData<float>(_im2col.get()));
-    }
-    catch (std::bad_alloc &ba)
-    {
-      // Failed memory allocation
-      _im2col->deallocate();
+  auto scratchpad = getOutputTensors()[1];
+  float *scratchpad_data = nullptr;
+  if (scratchpad->is_allocatable())
+    scratchpad_data = scratchpad->data<float>();
 
-      tflite::reference_ops::Conv(
-        params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
-        getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
-        getTensorShape(output()), getTensorData<float>(output()), tflite::RuntimeShape(), nullptr);
-    }
-  }
-  else
-    tflite::reference_ops::Conv(
-      params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(filter()),
-      getTensorData<float>(filter()), getTensorShape(bias()), getTensorData<float>(bias()),
-      getTensorShape(output()), getTensorData<float>(output()), tflite::RuntimeShape(), nullptr);
+  luci_interpreter_pal::Conv(params, getTensorShape(input()), getTensorData<float>(input()),
+                             getTensorShape(filter()), getTensorData<float>(filter()),
+                             getTensorShape(bias()), getTensorData<float>(bias()),
+                             getTensorShape(output()), getTensorData<float>(output()),
+                             getTensorShape(scratchpad), scratchpad_data);
 }
 
 void Conv2D::evalQuantized() const
@@ -232,16 +227,12 @@ void Conv2D::evalQuantized() const
   params.quantized_activation_min = activation_min;
   params.quantized_activation_max = activation_max;
 
-  // TODO This should only be done once (although it takes only a few microseconds).
-  //  Also, the user should be able to adjust the number of threads.
-  auto gemmlowp_context = std::make_unique<gemmlowp::GemmContext>();
-  gemmlowp_context->set_max_num_threads(static_cast<int>(std::thread::hardware_concurrency()));
-
-  tflite::optimized_ops::Conv(
-    params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(filter()),
-    getTensorData<uint8_t>(filter()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
-    getTensorShape(output()), getTensorData<uint8_t>(output()), getTensorShape(_im2col.get()),
-    getTensorData<uint8_t>(_im2col.get()), gemmlowp_context.get());
+  auto scratchpad = getOutputTensors()[1];
+  luci_interpreter_pal::Conv(params, getTensorShape(input()), getTensorData<uint8_t>(input()),
+                             getTensorShape(filter()), getTensorData<uint8_t>(filter()),
+                             getTensorShape(bias()), getTensorData<int32_t>(bias()),
+                             getTensorShape(output()), getTensorData<uint8_t>(output()),
+                             getTensorShape(scratchpad), getTensorData<uint8_t>(scratchpad));
 }
 
 void Conv2D::evalQuantizedPerChannel() const
@@ -328,6 +319,52 @@ void Conv2D::evalQuantizedPerChannel() const
       }
     }
   }
+}
+
+void Conv2D::evalQuantizedS8PerChannel() const
+{
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+
+  tflite::ConvParams params{};
+  params.padding_values.height = _padding_height;
+  params.padding_values.width = _padding_width;
+  params.stride_height = _params.stride_height;
+  params.stride_width = _params.stride_width;
+  params.dilation_height_factor = _params.dilation_height_factor;
+  params.dilation_width_factor = _params.dilation_width_factor;
+  // The kernel expects filter zero points to be negated.
+  params.input_offset = -input()->zero_point(); // Note the '-'.
+  params.weights_offset = 0;                    // Unused in tflite code
+  params.output_offset = output()->zero_point();
+  params.quantized_activation_min = activation_min;
+  params.quantized_activation_max = activation_max;
+
+  const std::vector<double> effective_output_scales =
+    getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+
+  std::vector<ChannelQuantMultipliers> quant_multipliers =
+    quantizeMultipliers(effective_output_scales);
+
+  std::vector<int32_t> shifts;
+  std::transform(quant_multipliers.begin(), quant_multipliers.end(), std::back_inserter(shifts),
+                 [](ChannelQuantMultipliers cm) { return cm.shift; });
+  std::vector<int32_t> multipliers;
+  std::transform(quant_multipliers.begin(), quant_multipliers.end(),
+                 std::back_inserter(multipliers),
+                 [](ChannelQuantMultipliers cm) { return cm.multiplier; });
+
+  auto scratchpad = getOutputTensors()[1];
+  int8_t *scratchpad_data = nullptr;
+  if (scratchpad->is_allocatable())
+    scratchpad_data = scratchpad->data<int8_t>();
+
+  luci_interpreter_pal::ConvPerChannel(
+    params, multipliers.data(), shifts.data(), getTensorShape(input()),
+    getTensorData<int8_t>(input()), getTensorShape(filter()), getTensorData<int8_t>(filter()),
+    getTensorShape(bias()), getTensorData<int32_t>(bias()), getTensorShape(output()),
+    getTensorData<int8_t>(output()), getTensorShape(scratchpad), scratchpad_data);
 }
 
 void Conv2D::evalQuantizedS16() const

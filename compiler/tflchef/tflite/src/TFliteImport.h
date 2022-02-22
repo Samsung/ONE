@@ -34,11 +34,6 @@ using TFliteTensors_t = flatbuffers::Vector<flatbuffers::Offset<tflite::Tensor>>
 using TFliteBuffers_t = flatbuffers::Vector<flatbuffers::Offset<tflite::Buffer>>;
 using TFliteOperators_t = flatbuffers::Vector<flatbuffers::Offset<tflite::Operator>>;
 
-const char *tensor_type(const tflite::Tensor *tensor);
-const char *tensor_name(const tflite::Tensor *tensor);
-bool is_valid(const tflite::OperatorCode *opcode);
-bool is_custom(const tflite::OperatorCode *opcode);
-
 /**
  * @brief Loads TF lite file and provides helpers to access attributes
  */

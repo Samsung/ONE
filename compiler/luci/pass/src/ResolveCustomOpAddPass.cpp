@@ -16,11 +16,11 @@
 
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 
-#include "flatbuffers/flexbuffers.h"
-
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/AttrFusedActFunc.h>
 #include <luci/Profile/CircleNodeOrigin.h>
+
+#include <flatbuffers/flexbuffers.h>
 
 namespace
 {

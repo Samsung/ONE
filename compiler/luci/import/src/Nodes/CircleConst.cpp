@@ -30,10 +30,10 @@
 namespace
 {
 
-std::ostream &operator<<(std::ostream &os, const std::vector<int32_t> &vect)
+std::ostream &operator<<(std::ostream &os, const luci::VectorWrapper<int32_t> &vect)
 {
   uint32_t seq = 0;
-  for (auto &v : vect)
+  for (const auto &v : vect)
   {
     if (seq)
       os << ", ";
@@ -46,7 +46,8 @@ std::ostream &operator<<(std::ostream &os, const std::vector<int32_t> &vect)
 using namespace luci;
 
 template <loco::DataType DT>
-void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_elements, CircleConst *const_node)
+void copy_data(const VectorWrapper<uint8_t> &raw_data, uint32_t num_elements,
+               CircleConst *const_node)
 {
   using T = typename loco::DataTypeImpl<DT>::Type;
 
@@ -67,8 +68,8 @@ void copy_data(const std::vector<uint8_t> &raw_data, uint32_t num_elements, Circ
 }
 
 template <>
-void copy_data<loco::DataType::STRING>(const std::vector<uint8_t> &raw_data, uint32_t num_elements,
-                                       CircleConst *const_node)
+void copy_data<loco::DataType::STRING>(const VectorWrapper<uint8_t> &raw_data,
+                                       uint32_t num_elements, CircleConst *const_node)
 {
   assert(const_node->sparsityparam() == nullptr);
 
@@ -112,11 +113,13 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
 
   auto graph = context->graph();
   auto reader = context->reader();
-  const auto &tensors = reader->tensors();
-  const circle::TensorT &const_tensor = *tensors[tensor_index];
+  const auto tensors = reader->tensors();
+  const auto const_tensor = tensors[tensor_index];
+  assert(const_tensor != nullptr);
 
-  const std::vector<uint8_t> &buffer = reader->buffers()[const_tensor.buffer]->data;
-  std::vector<int32_t> const_dims = const_tensor.shape; // in NHWC
+  assert(reader->buffers()[const_tensor->buffer()] != nullptr);
+  const auto buffer = wrap(reader->buffers()[const_tensor->buffer()]->data());
+  const auto const_dims = wrap(const_tensor->shape()); // in NHWC
   if (const_dims.size() == 0 && buffer.empty())
   {
     // unknown shape tensor and scalar tensor
@@ -150,7 +153,7 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
           << const_dims << std::endl;
   if (num_elements > 0)
   {
-    switch (luci_datatype(const_tensor.type))
+    switch (luci_datatype(const_tensor->type()))
     {
       case loco::DataType::FLOAT32:
         copy_data<loco::DataType::FLOAT32>(buffer, num_elements, const_node);
@@ -186,7 +189,7 @@ CircleConst *create_circleconst(GraphBuilderContext *context, int32_t tensor_ind
 
       default:
         throw oops::UserExn("Unsupported tensor type",
-                            circle::EnumNameTensorType(const_tensor.type));
+                            circle::EnumNameTensorType(const_tensor->type()));
     }
   }
 

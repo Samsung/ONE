@@ -25,6 +25,8 @@
 
 #include <string>
 #include <memory>
+#include <thread>
+#include <vector>
 
 namespace onert
 {
@@ -100,6 +102,7 @@ public:
 
   NNFW_STATUS load_model_from_nnpackage(const char *package_file_path);
   NNFW_STATUS prepare();
+  NNFW_STATUS prepare_pipeline(const char *map_file_path);
   NNFW_STATUS run();
 
   NNFW_STATUS run_async();
@@ -123,6 +126,9 @@ public:
   NNFW_STATUS set_available_backends(const char *backends);
   NNFW_STATUS set_op_backend(const char *op, const char *backend);
 
+  // accessor
+  std::vector<std::shared_ptr<onert::exec::Execution>> *get_executions() { return &_executions; }
+
   //
   // Internal-only API
   //
@@ -135,6 +141,9 @@ public:
   //
   // Experimental API
   //
+  void make_dependency();
+  NNFW_STATUS push_pipeline_input(std::vector<void *> *inputs, std::vector<uint32_t> *lengths);
+  NNFW_STATUS pop_pipeline_output(std::vector<void *> *outputs);
 
   NNFW_STATUS register_custom_operation(const std::string &id, nnfw_custom_eval eval_func);
   NNFW_STATUS input_tensorindex(const char *tensorname, uint32_t *index);
@@ -156,6 +165,9 @@ private:
   std::unique_ptr<onert::compiler::Compiler> _compiler;
   std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
+  std::vector<std::thread> _threads;
+  std::vector<std::shared_ptr<onert::exec::Execution>> _executions;
+  std::string _package_file_path;
 
   std::unique_ptr<onert::util::TracingCtx> _tracing_ctx;
 };

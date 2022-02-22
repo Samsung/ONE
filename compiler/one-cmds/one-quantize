@@ -27,6 +27,9 @@ import tempfile
 
 import utils as _utils
 
+# TODO Find better way to suppress trackback on error
+sys.tracebacklimit = 0
+
 
 def _get_parser():
     parser = argparse.ArgumentParser(
@@ -36,16 +39,26 @@ def _get_parser():
 
     # input and output path.
     parser.add_argument(
-        '-i', '--input_path', type=str, help='full filepath of the input file')
+        '-i', '--input_path', type=str, help='full filepath of the input circle model')
     parser.add_argument(
         '-d',
         '--input_data',
         type=str,
         help=
-        'full filepath of the input data file. if not specified, run with random input data.'
+        'full filepath of the input data used for post-training quantization. if not specified, run with random input data.'
     )
     parser.add_argument(
-        '-o', '--output_path', type=str, help='full filepath of the output file')
+        '-f',
+        '--input_data_format',
+        type=str,
+        help=
+        'file format of input data. h5/hdf5 (default), list/filelist (a text file where a file path of input data is written in each line), or dir/directory (a directory where input data are saved)'
+    )
+    parser.add_argument(
+        '-o',
+        '--output_path',
+        type=str,
+        help='full filepath of the output quantized model')
 
     # argument for profiling
     parser.add_argument(
@@ -60,30 +73,96 @@ def _get_parser():
     quantization_group.add_argument(
         '--input_dtype',
         type=str,
-        help='input data type (supported: float32, default=float32)')
+        help=
+        'input model data type (supported: float32, default=float32). Deprecated (Use input_model_dtype)'
+    )
+    quantization_group.add_argument(
+        '--input_model_dtype',
+        type=str,
+        help='input model data type (supported: float32, default=float32)')
     quantization_group.add_argument(
         '--quantized_dtype',
         type=str,
-        help='output quantized data type (supported: uint8, int16, default=uint8)')
+        help='data type of output quantized model (supported: uint8, int16, default=uint8)'
+    )
     quantization_group.add_argument(
         '--granularity',
         type=str,
-        help='quantize granularity (supported: layer, channel, default=layer)')
+        help='quantization granularity (supported: layer, channel, default=layer)')
     quantization_group.add_argument(
-        '--min_percentile', type=str, help='minimum percentile (0.0~100.0, default=1.0)')
+        '--input_type',
+        type=str,
+        help=
+        'data type of inputs of quantized model (supported: uint8, int16, default=quantized_dtype). QUANTIZE Op will be inserted at the beginning of the quantized model if input_type is different from quantized_dtype.'
+    )
     quantization_group.add_argument(
-        '--max_percentile', type=str, help='maximum percentile (0.0~100.0, default=99.0)')
+        '--output_type',
+        type=str,
+        help=
+        'data type of outputs of quantized model (supported: uint8, int16, default=quantized_dtype). QUANTIZE Op will be inserted at the end of the quantized model if output_type is different from quantized_dtype.'
+    )
+    quantization_group.add_argument(
+        '--min_percentile',
+        type=str,
+        help=
+        'minimum percentile (0.0~100.0, default=1.0). Algorithm parameter for calibration. This is valid when calibration algorithm is percentile.'
+    )
+    quantization_group.add_argument(
+        '--max_percentile',
+        type=str,
+        help=
+        'maximum percentile (0.0~100.0, default=99.0). Algorithm parameter for calibration. This is valid when calibration algorithm is percentile.'
+    )
     quantization_group.add_argument(
         '--mode',
         type=str,
-        help='record mode (supported: percentile/moving_average, default=percentile)')
+        help=
+        "calibration algorithm for post-training quantization (supported: percentile/moving_average, default=percentile). 'percentile' mode uses the n-th percentiles as min/max values. 'moving_average' mode records the moving average of min/max."
+    )
+    quantization_group.add_argument(
+        '--TF-style_maxpool',
+        action='store_true',
+        help=
+        "Force MaxPool Op to have the same input/output quantparams. NOTE: This option can degrade accuracy of some models.)"
+    )
+
+    # arguments for force_quantparam option
+    force_quantparam_group = parser.add_argument_group(
+        'arguments for force_quantparam option')
+
+    force_quantparam_group.add_argument(
+        '--force_quantparam',
+        action='store_true',
+        help=
+        'overwrite quantparam (scale, zero_point) to the specified tensor in the quantized model.'
+    )
+    force_quantparam_group.add_argument(
+        '--tensor_name', type=str, action='append', help='tensor name (string)')
+    force_quantparam_group.add_argument(
+        '--scale', type=float, action='append', help='scale (float)')
+    force_quantparam_group.add_argument(
+        '--zero_point', type=int, action='append', help='zero point (int)')
+
+    # arguments for copy_quantparam option
+    copy_quantparam_group = parser.add_argument_group(
+        'arguments for copy_quantparam option')
+
+    copy_quantparam_group.add_argument(
+        '--copy_quantparam',
+        action='store_true',
+        help='copy quantparam (scale, zero_point) of a tensor to another tensor.')
+    copy_quantparam_group.add_argument(
+        '--src_tensor_name', type=str, action='append', help='tensor name (string)')
+    copy_quantparam_group.add_argument(
+        '--dst_tensor_name', type=str, action='append', help='tensor name (string)')
 
     return parser
 
 
 def _set_default_values(args):
-    if not _utils._is_valid_attr(args, 'input_dtype'):
-        setattr(args, 'input_dtype', 'float32')
+    if not _utils._is_valid_attr(args, 'input_model_dtype') and not _utils._is_valid_attr(
+            args, 'input_dtype'):
+        setattr(args, 'input_model_dtype', 'float32')
     if not _utils._is_valid_attr(args, 'quantized_dtype'):
         setattr(args, 'quantized_dtype', 'uint8')
     if not _utils._is_valid_attr(args, 'granularity'):
@@ -104,8 +183,33 @@ def _verify_arg(parser, args):
         missing.append('-i/--input_path')
     if not _utils._is_valid_attr(args, 'output_path'):
         missing.append('-o/--output_path')
+    if _utils._is_valid_attr(args, 'force_quantparam'):
+        if not _utils._is_valid_attr(args, 'tensor_name'):
+            missing.append('--tensor_name')
+        if not _utils._is_valid_attr(args, 'scale'):
+            missing.append('--scale')
+        if not _utils._is_valid_attr(args, 'zero_point'):
+            missing.append('--zero_point')
+    if _utils._is_valid_attr(args, 'copy_quantparam'):
+        if not _utils._is_valid_attr(args, 'src_tensor_name'):
+            missing.append('--src_tensor_name')
+        if not _utils._is_valid_attr(args, 'dst_tensor_name'):
+            missing.append('--dst_tensor_name')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
+    if _utils._is_valid_attr(args, 'force_quantparam'):
+        tensors = getattr(args, 'tensor_name')
+        scales = getattr(args, 'scale')
+        zerops = getattr(args, 'zero_point')
+        if len(tensors) != len(scales) or len(tensors) != len(zerops):
+            parser.error(
+                'The same number of tensor_name, scale, and zero_point should be given.')
+    if _utils._is_valid_attr(args, 'copy_quantparam'):
+        src_tensors = getattr(args, 'src_tensor_name')
+        dst_tensors = getattr(args, 'dst_tensor_name')
+        if len(src_tensors) != len(dst_tensors):
+            parser.error(
+                'The same number of src_tensor_name and dst_tensor_name should be given.')
 
 
 def _parse_arg(parser):
@@ -118,6 +222,16 @@ def _parse_arg(parser):
 
 
 def _quantize(args):
+    if _utils._is_valid_attr(args, 'force_quantparam'):
+        # write quantization parameters
+        _write_qparam(args)
+        return
+
+    if _utils._is_valid_attr(args, 'copy_quantparam'):
+        # copy quantization parameters
+        _copy_qparam(args)
+        return
+
     # get file path to log
     dir_path = os.path.dirname(os.path.realpath(__file__))
     logfile_path = os.path.realpath(args.output_path) + '.log'
@@ -129,9 +243,15 @@ def _quantize(args):
 
         ## make a command to quantize and dequantize the weights of the model
         circle_quantizer_cmd = [circle_quantizer_path]
+        # verbose
+        if _utils._is_valid_attr(args, 'verbose'):
+            circle_quantizer_cmd.append('--verbose')
         # quantize_dequantize_weights
         circle_quantizer_cmd.append('--quantize_dequantize_weights')
-        if _utils._is_valid_attr(args, 'input_dtype'):
+        # Use input_model_dtype if it exists. Use input_dtype otherwise.
+        if _utils._is_valid_attr(args, 'input_model_dtype'):
+            circle_quantizer_cmd.append(getattr(args, 'input_model_dtype'))
+        elif _utils._is_valid_attr(args, 'input_dtype'):
             circle_quantizer_cmd.append(getattr(args, 'input_dtype'))
         if _utils._is_valid_attr(args, 'quantized_dtype'):
             circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
@@ -151,19 +271,13 @@ def _quantize(args):
         f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
 
         # run circle-quantizer
-        with subprocess.Popen(
-                circle_quantizer_cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write(line)
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
 
         ## make a command to record min-max value of each tensor while running the representative dataset
         circle_record_minmax_cmd = [record_minmax_path]
+        # verbose
+        if _utils._is_valid_attr(args, 'verbose'):
+            circle_record_minmax_cmd.append('--verbose')
         # input and output path
         circle_record_minmax_cmd.append('--input_model')
         circle_record_minmax_cmd.append(tmp_output_path_1)
@@ -176,6 +290,9 @@ def _quantize(args):
         if _utils._is_valid_attr(args, 'input_data'):
             circle_record_minmax_cmd.append('--input_data')
             circle_record_minmax_cmd.append(getattr(args, 'input_data'))
+        if _utils._is_valid_attr(args, 'input_data_format'):
+            circle_record_minmax_cmd.append('--input_data_format')
+            circle_record_minmax_cmd.append(getattr(args, 'input_data_format'))
         # min and max percentile
         if _utils._is_valid_attr(args, 'min_percentile'):
             circle_record_minmax_cmd.append('--min_percentile')
@@ -194,27 +311,32 @@ def _quantize(args):
         f.write((' '.join(circle_record_minmax_cmd) + '\n').encode())
 
         # run record-minmax
-        with subprocess.Popen(
-                circle_record_minmax_cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write(line)
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(circle_record_minmax_cmd, err_prefix="record_minmax", logfile=f)
 
         ## make a second command to quantize the model using the embedded information
         circle_quantizer_cmd = [circle_quantizer_path]
+        # verbose
+        if _utils._is_valid_attr(args, 'verbose'):
+            circle_quantizer_cmd.append('--verbose')
         # quantize_dequantize_weights
         circle_quantizer_cmd.append('--quantize_with_minmax')
-        if _utils._is_valid_attr(args, 'input_dtype'):
+        # Use input_model_dtype if it exists. Use input_dtype otherwise.
+        if _utils._is_valid_attr(args, 'input_model_dtype'):
+            circle_quantizer_cmd.append(getattr(args, 'input_model_dtype'))
+        elif _utils._is_valid_attr(args, 'input_dtype'):
             circle_quantizer_cmd.append(getattr(args, 'input_dtype'))
         if _utils._is_valid_attr(args, 'quantized_dtype'):
             circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
         if _utils._is_valid_attr(args, 'granularity'):
             circle_quantizer_cmd.append(getattr(args, 'granularity'))
+        if _utils._is_valid_attr(args, 'TF-style_maxpool'):
+            circle_quantizer_cmd.append('--TF-style_maxpool')
+        if _utils._is_valid_attr(args, 'input_type'):
+            circle_quantizer_cmd.append('--input_type')
+            circle_quantizer_cmd.append(getattr(args, 'input_type'))
+        if _utils._is_valid_attr(args, 'output_type'):
+            circle_quantizer_cmd.append('--output_type')
+            circle_quantizer_cmd.append(getattr(args, 'output_type'))
         # input and output path
         circle_quantizer_cmd.append(tmp_output_path_2)
         if _utils._is_valid_attr(args, 'output_path'):
@@ -226,16 +348,78 @@ def _quantize(args):
         f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
 
         # run circle-quantizer
-        with subprocess.Popen(
-                circle_quantizer_cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write(line)
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
+
+
+def _write_qparam(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
+
+    with open(logfile_path, 'wb') as f:
+        # get driver path
+        circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
+
+        # make a command to write qparams to the tensors
+        circle_quantizer_cmd = [circle_quantizer_path]
+        # verbose
+        if _utils._is_valid_attr(args, 'verbose'):
+            circle_quantizer_cmd.append('--verbose')
+        if _utils._is_valid_attr(args, 'tensor_name'):
+            tensor_name = getattr(args, 'tensor_name')
+        if _utils._is_valid_attr(args, 'scale'):
+            scale = getattr(args, 'scale')
+        if _utils._is_valid_attr(args, 'zero_point'):
+            zero_point = getattr(args, 'zero_point')
+        for (t, s, zp) in zip(tensor_name, scale, zero_point):
+            circle_quantizer_cmd.append('--force_quantparam')
+            circle_quantizer_cmd.append(t)
+            circle_quantizer_cmd.append(str(s))
+            circle_quantizer_cmd.append(str(zp))
+        # input and output path
+        if _utils._is_valid_attr(args, 'input_path'):
+            circle_quantizer_cmd.append(getattr(args, 'input_path'))
+        if _utils._is_valid_attr(args, 'output_path'):
+            circle_quantizer_cmd.append(getattr(args, 'output_path'))
+
+        f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
+
+        # run circle-quantizer
+        _utils._run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
+
+
+def _copy_qparam(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
+
+    with open(logfile_path, 'wb') as f:
+        # get driver path
+        circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
+
+        # make a command to write qparams to the tensors
+        circle_quantizer_cmd = [circle_quantizer_path]
+        # verbose
+        if _utils._is_valid_attr(args, 'verbose'):
+            circle_quantizer_cmd.append('--verbose')
+        if _utils._is_valid_attr(args, 'src_tensor_name'):
+            src_tensor_name = getattr(args, 'src_tensor_name')
+        if _utils._is_valid_attr(args, 'dst_tensor_name'):
+            dst_tensor_name = getattr(args, 'dst_tensor_name')
+        for (src, dst) in zip(src_tensor_name, dst_tensor_name):
+            circle_quantizer_cmd.append('--copy_quantparam')
+            circle_quantizer_cmd.append(src)
+            circle_quantizer_cmd.append(dst)
+        # input and output path
+        if _utils._is_valid_attr(args, 'input_path'):
+            circle_quantizer_cmd.append(getattr(args, 'input_path'))
+        if _utils._is_valid_attr(args, 'output_path'):
+            circle_quantizer_cmd.append(getattr(args, 'output_path'))
+
+        f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
+
+        # run circle-quantizer
+        _utils._run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
 
 
 def main():
@@ -257,4 +441,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    _utils._safemain(main, __file__)

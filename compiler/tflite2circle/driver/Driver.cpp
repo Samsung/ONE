@@ -43,6 +43,12 @@ int entry(int argc, char **argv)
     .help("Show version information and exit")
     .exit_with(print_version);
 
+  arser.add_argument("-V", "--verbose")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("output additional information to stdout or stderr");
+
   arser.add_argument("tflite")
     .nargs(1)
     .type(arser::DataType::STR)
@@ -55,7 +61,7 @@ int entry(int argc, char **argv)
   }
   catch (const std::runtime_error &err)
   {
-    std::cout << err.what() << std::endl;
+    std::cerr << err.what() << std::endl;
     std::cout << arser;
     return 255;
   }
@@ -64,9 +70,9 @@ int entry(int argc, char **argv)
   std::string circle_path = arser.get<std::string>("circle");
   // read tflite file
   tflite2circle::TFLModel tfl_model(tfl_path);
-  if (!tfl_model.is_valid())
+  if (not tfl_model.verify_data())
   {
-    std::cerr << "ERROR: Failed to load tflite '" << tfl_path << "'" << std::endl;
+    std::cerr << "ERROR: Failed to verify tflite '" << tfl_path << "'" << std::endl;
     return 255;
   }
 
@@ -74,7 +80,10 @@ int entry(int argc, char **argv)
   auto flatbuffer_builder = std::make_unique<flatbuffers::FlatBufferBuilder>(1024);
 
   // convert tflite to circle
-  tflite2circle::CircleModel circle_model{flatbuffer_builder, tfl_model};
+  tflite2circle::CircleModel circle_model{flatbuffer_builder};
+
+  circle_model.load_offsets(tfl_model.get_model());
+  circle_model.model_build();
 
   std::ofstream outfile{circle_path, std::ios::binary};
 

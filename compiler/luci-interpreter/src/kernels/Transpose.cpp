@@ -18,7 +18,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/transpose.h>
 
 #include <stdexcept>
 
@@ -37,7 +37,7 @@ void Transpose::configure()
 {
   // Transpose op only supports 1D-4D input arrays.
   int dims = input()->shape().num_dims();
-  const int *perm_data = getTensorData<int32_t>(perm());
+  const int32_t *perm_data = getTensorData<int32_t>(perm());
 
   assert(input()->shape().num_dims() <= 4);
   assert(input()->element_type() == output()->element_type());
@@ -58,8 +58,8 @@ void Transpose::configure()
 void Transpose::execute() const
 {
   tflite::TransposeParams params{};
-  const int *perm_data = getTensorData<int32_t>(perm());
-  const int size = perm()->shape().dim(0);
+  const int32_t *perm_data = getTensorData<int32_t>(perm());
+  const int32_t size = perm()->shape().dim(0);
   params.perm_count = size;
   for (int i = 0; i < size; i++)
     params.perm[i] = perm_data[i];

@@ -18,6 +18,7 @@
 #define __HERMES_MESSAGE_BUFFER_H__
 
 #include "hermes/core/MessageBus.h"
+#include "hermes/core/Severity.h"
 
 #include <ostream>
 #include <sstream>
@@ -34,6 +35,7 @@ class MessageBuffer final
 {
 public:
   MessageBuffer(MessageBus *);
+  MessageBuffer(MessageBus *bus, SeverityCategory severity);
   ~MessageBuffer();
 
 public:
@@ -41,6 +43,7 @@ public:
 
 private:
   MessageBus *_bus;
+  SeverityCategory _severity = SeverityCategory::INFO;
 
   /// @brief Content buffer
   std::stringstream _ss;

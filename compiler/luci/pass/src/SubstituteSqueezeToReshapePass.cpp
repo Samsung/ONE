@@ -130,6 +130,7 @@ bool substitute_squeeze_to_reshape(luci::CircleSqueeze *squeeze)
   auto graph = squeeze->graph();
   auto reshape = graph->nodes()->create<luci::CircleReshape>();
   auto shape_const = create_shape_const(graph, reshape_shape);
+  copy_quantparam(squeeze, reshape);
   reshape->name(name + "/Reshape");
   luci::add_origin(reshape, luci::get_origin(squeeze));
   shape_const->name(name + "/Reshape/shape");

@@ -20,7 +20,9 @@
 #include "kernels/BinaryOpCommon.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALMul.h"
+
+#include <tensorflow/lite/kernels/internal/reference/process_broadcast_shapes.h>
 
 #include <stdexcept>
 
@@ -40,6 +42,8 @@ void Mul::configure()
   LUCI_INTERPRETER_CHECK(output()->element_type() == input1()->element_type());
   if (input1()->element_type() == DataType::S16)
   {
+    LUCI_INTERPRETER_CHECK(input1()->zero_points().size() == 1 &&
+                           input2()->zero_points().size() == 1)
     LUCI_INTERPRETER_CHECK(input1()->zero_point() == 0 && input2()->zero_point() == 0 &&
                            output()->zero_point() == 0);
   }
@@ -54,6 +58,12 @@ void Mul::execute() const
     case DataType::FLOAT32:
       evalFloat();
       break;
+    case DataType::S64:
+      evalInteger<int64_t>();
+      break;
+    case DataType::S32:
+      evalInteger<int32_t>();
+      break;
     case DataType::S16:
       evalQuantizedS16();
       break;
@@ -64,28 +74,45 @@ void Mul::execute() const
 
 void Mul::evalFloat() const
 {
-  float activation_min{};
-  float activation_max{};
-  calculateActivationRange(_params.activation, &activation_min, &activation_max);
-
   tflite::ArithmeticParams params{};
-  params.float_activation_min = activation_min;
-  params.float_activation_max = activation_max;
+  fillArithmeticActivationRange<float>(params, _params.activation);
 
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
     getTensorShape(input1()), getTensorShape(input2()), &params);
 
   if (need_broadcast)
   {
-    tflite::optimized_ops::BroadcastMul4DSlow(
+    luci_interpreter_pal::BroadcastMul4DSlow(
       params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
       getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
   }
   else
   {
-    tflite::optimized_ops::Mul(params, getTensorShape(input1()), getTensorData<float>(input1()),
-                               getTensorShape(input2()), getTensorData<float>(input2()),
-                               getTensorShape(output()), getTensorData<float>(output()));
+    luci_interpreter_pal::Mul(params, getTensorShape(input1()), getTensorData<float>(input1()),
+                              getTensorShape(input2()), getTensorData<float>(input2()),
+                              getTensorShape(output()), getTensorData<float>(output()));
+  }
+}
+
+template <typename T> void Mul::evalInteger() const
+{
+  tflite::ArithmeticParams params{};
+  fillArithmeticActivationRange<T>(params, _params.activation);
+
+  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
+    getTensorShape(input1()), getTensorShape(input2()), &params);
+
+  if (need_broadcast)
+  {
+    luci_interpreter_pal::BroadcastMul4DSlow(
+      params, getTensorShape(input1()), getTensorData<T>(input1()), getTensorShape(input2()),
+      getTensorData<T>(input2()), getTensorShape(output()), getTensorData<T>(output()));
+  }
+  else
+  {
+    luci_interpreter_pal::Mul(params, getTensorShape(input1()), getTensorData<T>(input1()),
+                              getTensorShape(input2()), getTensorData<T>(input2()),
+                              getTensorShape(output()), getTensorData<T>(output()));
   }
 }
 

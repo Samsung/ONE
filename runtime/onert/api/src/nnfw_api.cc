@@ -373,3 +373,22 @@ NNFW_STATUS nnfw_set_backends_per_operation(nnfw_session *session, const char *b
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->set_backends_per_operation(backend_settings);
 }
+
+NNFW_STATUS nnfw_prepare_pipeline(nnfw_session *session, const char *map_file_path)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->prepare_pipeline(map_file_path);
+}
+
+NNFW_STATUS nnfw_push_pipeline_input(nnfw_session *session, void *inputs, void *lengths)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->push_pipeline_input((std::vector<void *> *)inputs,
+                                      (std::vector<uint32_t> *)lengths);
+}
+
+NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->pop_pipeline_output((std::vector<void *> *)outputs);
+}

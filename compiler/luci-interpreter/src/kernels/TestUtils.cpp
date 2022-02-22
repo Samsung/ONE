@@ -43,6 +43,11 @@ std::vector<float> dequantizeTensorData(const Tensor &tensor)
     std::vector<uint8_t> data = extractTensorData<uint8_t>(tensor);
     return dequantize(data.data(), data.size(), tensor.scale(), tensor.zero_point());
   }
+  if (tensor.element_type() == DataType::S8)
+  {
+    std::vector<int8_t> data = extractTensorData<int8_t>(tensor);
+    return dequantize(data.data(), data.size(), tensor.scale(), tensor.zero_point());
+  }
   else if (tensor.element_type() == DataType::S16)
   {
     // S16 quantization is symmetric, so zero point should be zero.

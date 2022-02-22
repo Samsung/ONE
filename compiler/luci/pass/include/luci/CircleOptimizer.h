@@ -34,22 +34,29 @@ public:
   {
     enum Algorithm
     {
+      FuseAddWithFullyConnected,
       FuseAddWithTConv,
       FuseBatchNormWithConv,
       FuseBatchNormWithDwConv,
       FuseBatchNormWithTConv,
       FuseBCQ,
       FuseInstanceNorm,
+      FuseMeanWithMean,
+      FuseTransposeWithMean,
       ResolveCustomOpAdd,
       ResolveCustomOpBatchMatMul,
       ResolveCustomOpMatMul,
+      ResolveCustomOpMaxPoolWithArgmax,
       QuantizeDequantizeWeights,
       QuantizeWithMinMax,
       Requantize,
       FoldAddV2,
       FoldCast,
+      FoldDepthwiseConv2D,
       FoldDequantize,
       FoldSparseToDense,
+      CopyQuantParam,
+      ForceQuantParam,
       ForwardReshapeToUnaryOp,
       SparsifyTensorPass,
       FusePreActivationBatchNorm,
@@ -58,8 +65,12 @@ public:
       ShuffleWeightTo16x1Float32,
       RemoveRedundantTranspose,
       ReplaceMulAddWithDepthwiseConv,
+      ReplaceSubWithAdd,
       SubstitutePackToReshape,
+      SubstitutePadV2ToPad,
+      SubstituteSplitVToSplit,
       SubstituteSqueezeToReshape,
+      ExpandBroadcastConst,
       ConvertNCHWToNHWC,
       RemoveUnnecessarySlice,
       RemoveUnnecessaryStridedSlice,
@@ -67,6 +78,7 @@ public:
       RemoveUnnecessaryReshape,
       TransformMinMaxToRelu6Pass,
       TransformMinReluToRelu6Pass,
+      SubstituteStridedSliceToReshape,
       SubstituteTransposeToReshape,
       RemoveRedundantReshape,
       RemoveFakeQuant,
@@ -76,9 +88,20 @@ public:
     enum AlgorithmParameters
     {
       // quantize
-      Quantize_input_dtype,
-      Quantize_output_dtype,
+      Quantize_input_model_dtype,
+      Quantize_output_model_dtype,
       Quantize_granularity, // layer-wise or channel-wise
+      Quantize_tensor_names,
+      Quantize_scales,
+      Quantize_zero_points,
+
+      // copy_quantparam
+      Quantize_src_tensor_names,
+      Quantize_dst_tensor_names,
+
+      Quantize_input_type,
+      Quantize_output_type,
+      Quantize_TF_style_maxpool,
 
       // sparsify
       Sparsify_tensor_name,
@@ -98,6 +121,8 @@ public:
     virtual bool query(Algorithm) = 0;
     virtual void param(AlgorithmParameters, const std::string &) = 0;
     virtual const std::string param(AlgorithmParameters) const = 0;
+    virtual void params(AlgorithmParameters, std::vector<std::string> &) = 0;
+    virtual std::vector<std::string> params(AlgorithmParameters) const = 0;
   };
 
 public:

@@ -30,6 +30,23 @@ class SoftmaxVariation : public GenModelTest, public ::testing::WithParamInterfa
 {
 };
 
+// Test with different value type
+INSTANTIATE_TEST_CASE_P(
+  GenModelTest, SoftmaxVariation,
+  ::testing::Values(
+    // float value
+    SoftmaxParam{
+      uniformTCD<float>({{0, -6, 2, 4, 3, -2, 10, 1}},
+                        {{.23463, .12877, .28658, .35003, .22528, .13664, .45365, .18443}})},
+    // uint8 value
+    SoftmaxParam{
+      uniformTCD<uint8_t>({{10, 4, 12, 14, 13, 8, 20, 11}}, {{60, 33, 73, 90, 58, 35, 116, 47}}),
+      circle::TensorType::TensorType_UINT8, 1.0, 10},
+    // int8 value
+    SoftmaxParam{
+      uniformTCD<int8_t>({{0, -6, 2, 4, 3, -2, 10, 1}}, {{-68, -95, -55, -38, -70, -93, -12, -81}}),
+      circle::TensorType::TensorType_INT8, 1.0, 0}));
+
 TEST_P(SoftmaxVariation, Test)
 {
   auto &param = GetParam();
@@ -62,28 +79,47 @@ TEST_P(SoftmaxVariation, Test)
   SUCCEED();
 }
 
-// Test with different value type
-INSTANTIATE_TEST_CASE_P(
-  GenModelTest, SoftmaxVariation,
-  ::testing::Values(
-    // float value
-    SoftmaxParam{
-      uniformTCD<float>({{0, -6, 2, 4, 3, -2, 10, 1}},
-                        {{.23463, .12877, .28658, .35003, .22528, .13664, .45365, .18443}})},
-    // uint8 value
-    SoftmaxParam{
-      uniformTCD<uint8_t>({{10, 4, 12, 14, 13, 8, 20, 11}}, {{60, 33, 73, 90, 58, 35, 116, 47}}),
-      circle::TensorType::TensorType_UINT8, 1.0, 10},
-    // int8 value
-    SoftmaxParam{
-      uniformTCD<int8_t>({{0, -6, 2, 4, 3, -2, 10, 1}}, {{-68, -95, -55, -38, -70, -93, -12, -81}}),
-      circle::TensorType::TensorType_INT8, 1.0, 0}));
-
-TEST_F(GenModelTest, neg_OneOp_Softmax_Type)
+TEST_F(GenModelTest, neg_OneOp_Softmax_Invaild_Beta)
 {
   CircleGen cgen;
-  int input = cgen.addTensor({{1, 2, 1, 4}, circle::TensorType::TensorType_FLOAT32});
-  int out = cgen.addTensor({{1, 2, 1, 4}, circle::TensorType::TensorType_INT8}, 1.0, 0);
+  int input = cgen.addTensor({{4, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{4, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorSoftmax({{input}, {out}}, 0.1);
+  cgen.setInputsAndOutputs({input}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{-1., 0., 1., 1.}}, {{-1., -1., -1., -1.}}));
+  _context->setBackends({"gpu_cl"});
+  _context->expectFailCompile();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_Softmax)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1, 1, 1, 4}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 1, 1, 4}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorSoftmax({{lhs}, {out}}, 1.0);
+  cgen.setInputsAndOutputs({lhs}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>(
+    {{-1., 0., 1., 1.}},
+    {{0.054064586758613586, 0.14696279168128967, 0.39948627352714539, 0.39948627352714539}}));
+  _context->setBackends({"acl_cl", "cpu", "gpu_cl"});
+
+  SUCCEED();
+}
+
+TEST_P(SoftmaxVariation, neg_Type)
+{
+  auto &param = GetParam();
+
+  CircleGen cgen;
+  int input =
+    cgen.addTensor({{1, 2, 1, 4}, param.data_type}, param.input_scale, param.input_zero_point);
+  int out = cgen.addTensor({{1, 2, 1, 4}, circle::TensorType::TensorType_BOOL});
   cgen.addOperatorSoftmax({{input}, {out}}, 0.1);
   cgen.setInputsAndOutputs({input}, {out});
 

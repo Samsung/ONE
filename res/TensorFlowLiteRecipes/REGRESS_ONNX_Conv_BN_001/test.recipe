@@ -1,0 +1,421 @@
+operand {
+  name: "Const_8"
+  type: INT32
+  shape {
+    dim: 4
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "0"
+    arg: "0"
+    arg: "0"
+    arg: "1"
+    arg: "1"
+    arg: "1"
+    arg: "1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose_8/perm"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "3"
+    arg: "1"
+    arg: "2"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose_9/perm"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "2"
+    arg: "3"
+    arg: "1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "batchnorm/mul"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.00498116"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "batchnorm/sub"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.0332279"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "convolution_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 3
+    dim: 16
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "convolution_2"
+  type: FLOAT32
+  shape {
+    dim: 8
+    dim: 3
+    dim: 3
+    dim: 1
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "convolution_1_weight"
+  type: FLOAT32
+  shape {
+    dim: 1
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "convolution_2_weight"
+  type: FLOAT32
+  shape {
+    dim: 8
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose_5;PartitionedCall/transpose_5"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "1"
+    arg: "128"
+    arg: "128"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose_7"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "130"
+    arg: "130"
+    arg: "1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Pad_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 130
+    dim: 130
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose_4"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 130
+    dim: 130
+    dim: 16
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "convolution_1_out"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 128
+    dim: 128
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose_51"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 128
+    dim: 128
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "batchnorm/mul_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 128
+    dim: 128
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "batchnorm/add_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 128
+    dim: 128
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Pad_2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 130
+    dim: 130
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose_71"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 130
+    dim: 130
+    dim: 1
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "convolution_2_out"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 128
+    dim: 128
+    dim: 8
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose_8"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 8
+    dim: 128
+    dim: 128
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "Transpose"
+  input: "Pad_1"
+  input: "transpose_9/perm"
+  output: "transpose_4"
+}
+operation {
+  type: "Conv2D"
+  input: "transpose_4"
+  input: "convolution_1"
+  input: "convolution_1_weight"
+  output: "convolution_1_out"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+    activation: NONE
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Reshape"
+  input: "convolution_1_out"
+  input: "transpose_5;PartitionedCall/transpose_5"
+  output: "transpose_51"
+}
+operation {
+  type: "Mul"
+  input: "transpose_51"
+  input: "batchnorm/mul"
+  output: "batchnorm/mul_1"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "batchnorm/mul_1"
+  input: "batchnorm/sub"
+  output: "batchnorm/add_1"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Pad"
+  input: "batchnorm/add_1"
+  input: "Const_8"
+  output: "Pad_2"
+}
+operation {
+  type: "Reshape"
+  input: "Pad_2"
+  input: "transpose_7"
+  output: "transpose_71"
+}
+operation {
+  type: "Conv2D"
+  input: "transpose_71"
+  input: "convolution_2"
+  input: "convolution_2_weight"
+  output: "convolution_2_out"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+    activation: NONE
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+  }
+}
+operation {
+  type: "Transpose"
+  input: "convolution_2_out"
+  input: "transpose_8/perm"
+  output: "transpose_8"
+}
+input: "Pad_1"
+output: "transpose_8"

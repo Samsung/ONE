@@ -16,6 +16,7 @@
 
 #include "kernels/StridedSlice.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -28,6 +29,8 @@ using namespace testing;
 
 TEST(StridedSliceTest, Float)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+
   Shape input_shape{2, 3, 2};
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
   Shape begin_shape{3};
@@ -36,10 +39,13 @@ TEST(StridedSliceTest, Float)
   std::vector<int32_t> end_data{1, 3, 2};
   Shape strides_shape{3};
   std::vector<int32_t> strides_data{1, 1, 1};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
-  Tensor begin_tensor = makeInputTensor<DataType::S32>(begin_shape, begin_data);
-  Tensor end_tensor = makeInputTensor<DataType::S32>(end_shape, end_data);
-  Tensor strides_tensor = makeInputTensor<DataType::S32>(strides_shape, strides_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
+  Tensor begin_tensor =
+    makeInputTensor<DataType::S32>(begin_shape, begin_data, memory_manager.get());
+  Tensor end_tensor = makeInputTensor<DataType::S32>(end_shape, end_data, memory_manager.get());
+  Tensor strides_tensor =
+    makeInputTensor<DataType::S32>(strides_shape, strides_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   StridedSliceParams params{};
@@ -52,6 +58,7 @@ TEST(StridedSliceTest, Float)
   StridedSlice kernel(&input_tensor, &begin_tensor, &end_tensor, &strides_tensor, &output_tensor,
                       params);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<int32_t> output_shape{3, 2};
@@ -62,6 +69,8 @@ TEST(StridedSliceTest, Float)
 
 TEST(StridedSliceTest, Uint8)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+
   Shape input_shape{2, 3, 2};
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
   Shape begin_shape{3};
@@ -70,10 +79,13 @@ TEST(StridedSliceTest, Uint8)
   std::vector<int32_t> end_data{1, 3, 2};
   Shape strides_shape{3};
   std::vector<int32_t> strides_data{1, 1, 1};
-  Tensor input_tensor = makeInputTensor<DataType::U8>(input_shape, 1.0f, 0, input_data);
-  Tensor begin_tensor = makeInputTensor<DataType::S32>(begin_shape, begin_data);
-  Tensor end_tensor = makeInputTensor<DataType::S32>(end_shape, end_data);
-  Tensor strides_tensor = makeInputTensor<DataType::S32>(strides_shape, strides_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>(input_shape, 1.0f, 0, input_data, memory_manager.get());
+  Tensor begin_tensor =
+    makeInputTensor<DataType::S32>(begin_shape, begin_data, memory_manager.get());
+  Tensor end_tensor = makeInputTensor<DataType::S32>(end_shape, end_data, memory_manager.get());
+  Tensor strides_tensor =
+    makeInputTensor<DataType::S32>(strides_shape, strides_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::U8, 1.0f, 0);
 
   StridedSliceParams params{};
@@ -86,6 +98,7 @@ TEST(StridedSliceTest, Uint8)
   StridedSlice kernel(&input_tensor, &begin_tensor, &end_tensor, &strides_tensor, &output_tensor,
                       params);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<int32_t> output_shape{3, 2};

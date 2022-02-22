@@ -17,6 +17,8 @@
 #ifndef __HERMES_MESSAGE_H__
 #define __HERMES_MESSAGE_H__
 
+#include "Severity.h"
+
 #include <memory>
 #include <sstream>
 #include <string>
@@ -48,7 +50,6 @@ private:
  * @brief Message with metadata
  *
  * TODO Add "Timestamp" field
- * TODO Add "Severity" field
  * TODO Support extensible "attribute" annotation
  */
 class Message final
@@ -58,10 +59,17 @@ public:
 
 public:
   void text(std::unique_ptr<MessageText> &&text) { _text = std::move(text); }
+  void text(std::unique_ptr<MessageText> &&text, SeverityCategory severity)
+  {
+    _text = std::move(text);
+    _severity = severity;
+  }
   const MessageText *text(void) const { return _text.get(); }
+  SeverityCategory get_severity(void) const { return _severity; }
 
 private:
   std::unique_ptr<MessageText> _text;
+  SeverityCategory _severity = SeverityCategory::INFO;
 };
 
 } // namespace hermes

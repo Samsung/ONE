@@ -30,15 +30,18 @@ bool CircleFloorDivGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-  const auto &tensors = args.reader.tensors();
-  const auto &tensor_in_0 = tensors.at(inputs.at(0));
-  const auto &tensor_in_1 = tensors.at(inputs.at(1));
-  const auto &tensor_out = tensors.at(outputs[0]);
+  const auto tensors = args.reader.tensors();
+  const auto tensor_in_0 = tensors.at(inputs.at(0));
+  const auto tensor_in_1 = tensors.at(inputs.at(1));
+  const auto tensor_out = tensors.at(outputs[0]);
+  assert(tensor_in_0 != nullptr);
+  assert(tensor_in_1 != nullptr);
+  assert(tensor_out != nullptr);
 
-  if (tensor_in_0->type != tensor_in_1->type)
+  if (tensor_in_0->type() != tensor_in_1->type())
     return false;
 
-  if (tensor_out->type != tensor_in_1->type)
+  if (tensor_out->type() != tensor_in_1->type())
   {
     return false;
   }

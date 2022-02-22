@@ -21,7 +21,13 @@ filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
+  # TF2.3.0
   if grep -q "is incompatible with result type" "${filename}.log"; then
+    echo "${filename_ext} SUCCESS"
+    exit 0
+  fi
+  # TF2.6.0
+  if grep -q "is incompatible with body result type" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
@@ -43,7 +49,7 @@ one-import tf \
 --input_path ${inputfile} \
 --output_path ${outputfile} \
 --input_arrays Hole,Hole_2 --input_shapes "1,1:1,1" \
---output_arrays Output > ${filename}.log
+--output_arrays Output > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

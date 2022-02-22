@@ -29,7 +29,7 @@ trap trap_err_onexit ERR
 cp help-compile ../bin/help-compile
 
 # run test
-one-codegen -b help -- -h > ${filename}.log
+one-codegen -b help -- -h > ${filename}.log 2>&1
 
 rm -rf ../bin/help-compile
 

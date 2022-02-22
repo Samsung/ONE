@@ -1,0 +1,34 @@
+one (1.19.0) bionic; urgency=medium
+
+  * `circle-quantizer` supports input/output type option
+  * Introduce configuration file for optimization options
+
+ -- seongwoo <mhs4670go@naver.com>  Wed, 10 Nov 2021 15:53:39 +0900
+
+one (1.18.0) bionic; urgency=medium
+
+  * More optimization pass
+
+ -- seongwoo <mhs4670go@naver.com>  Fri, 15 Oct 2021 15:23:20 +0900
+
+one (1.17.0) bionic; urgency=medium
+
+  * More optimization pass
+  * Add new InstanceNorm pattern in `FuseInstanceNormPass`
+  * Add verbose option
+  * Introduce `onecc` driver to `one-cmds`
+  * Introduce `one-profile` driver to `one-cmds`
+
+ -- seongwoo <mhs4670go@naver.com>  Fri, 20 Aug 2021 17:50:20 +0900
+
+one (1.16.1) bionic; urgency=medium
+
+  * Extends the point where `one-codegen` finds backends.
+
+ -- seongwoo chae <mhs4670go@naver.com>  Wed, 26 May 2021 18:06:53 +0900
+
+one (1.16.0) bionic; urgency=low
+
+  * Initial release.
+
+ -- seongwoo chae <mhs4670go@naver.com>  Mon, 26 Apr 2021 14:34:57 +0900

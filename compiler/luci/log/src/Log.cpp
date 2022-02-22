@@ -33,11 +33,6 @@ namespace
  */
 template <typename T> T safecast(const char *, const T &);
 
-template <> bool safecast<bool>(const char *s, const bool &value)
-{
-  return (s == nullptr) ? value : (std::stoi(s) != 0);
-}
-
 template <> int safecast<int>(const char *s, const int &value)
 {
   return (s == nullptr) ? value : std::stoi(s);
@@ -68,9 +63,6 @@ LoggerConfig::LoggerConfig()
 
   _show_warn = !settings->get(luci::UserSettings::Key::MuteWarnings);
 
-  // Turn on info logging if LUCI_LOG is set as non-zero value
-  _show_info = safecast<bool>(std::getenv("LUCI_LOG"), false);
-
   // Turn on verbose logging if LUCI_LOG is set to some level
   // VERBOSE(l, 1) will be visible with LUCI_LOG=2 and VERBOSE(l, 2) with LUCI_LOG=3 and so on
   _show_verbose = safecast<int>(std::getenv("LUCI_LOG"), 0);
@@ -87,6 +79,8 @@ void LoggerConfig::configure(const hermes::Source *source, hermes::Source::Setti
 
 void LoggerConfig::configure(const Logger *, hermes::Source::Setting &setting) const
 {
+  // TODO remove deprecated codes
+#if 0
   setting.filter(hermes::SeverityCategory::FATAL).reject_all();
   setting.filter(hermes::SeverityCategory::ERROR).reject_all();
   setting.filter(hermes::SeverityCategory::WARN).reject_all();
@@ -106,6 +100,16 @@ void LoggerConfig::configure(const Logger *, hermes::Source::Setting &setting) c
   {
     setting.filter(hermes::SeverityCategory::VERBOSE).accept_upto(_show_verbose);
   }
+#endif
+  setting.reject_all();
+  setting.filter(hermes::SeverityCategory::FATAL).accept_upto(_show_verbose);
+  setting.filter(hermes::SeverityCategory::ERROR).accept_upto(_show_verbose);
+  if (_show_warn)
+  {
+    setting.filter(hermes::SeverityCategory::WARN).accept_upto(_show_verbose);
+  }
+  setting.filter(hermes::SeverityCategory::INFO).accept_upto(_show_verbose);
+  setting.filter(hermes::SeverityCategory::VERBOSE).accept_upto(_show_verbose);
 }
 
 } // namespace luci

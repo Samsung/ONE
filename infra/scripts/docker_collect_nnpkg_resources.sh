@@ -62,6 +62,7 @@ pushd $ROOT_PATH > /dev/null
 REQUIRED_UNITS=()
 # Common Libraries
 REQUIRED_UNITS+=("angkor" "cwrap" "pepper-str" "pepper-strcast" "pp")
+REQUIRED_UNITS+=("pepper-csv2vec")
 REQUIRED_UNITS+=("oops" "safemain" "foder" "crew" "arser" "vconone")
 # Hermes Logging Framework
 REQUIRED_UNITS+=("hermes" "hermes-std")
@@ -70,7 +71,7 @@ REQUIRED_UNITS+=("loco" "locop" "locomotiv" "logo-core" "logo")
 # Circle compiler library (.circle -> .circle)
 REQUIRED_UNITS+=("luci")
 # Flatbuffer I/O
-REQUIRED_UNITS+=("mio-tflite" "mio-circle")
+REQUIRED_UNITS+=("mio-tflite" "mio-tflite260" "mio-circle")
 # Tools
 REQUIRED_UNITS+=("tflite2circle" "circle2circle" "luci-interpreter")
 REQUIRED_UNITS+=("souschef" "tflchef" "circlechef" "circle-verify")

@@ -98,3 +98,8 @@ std::string NNPackages::getModelAbsolutePath(const char *package_name)
 {
   return _base_path + "/nnfw_api_gtest_models/" + package_name + "/" + package_name;
 }
+
+std::string NNPackages::getModelAbsoluteFilePath(const char *package_name)
+{
+  return _base_path + "/nnfw_api_gtest_models/" + package_name + "/" + package_name + ".tflite";
+}

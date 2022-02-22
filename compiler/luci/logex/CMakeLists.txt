@@ -1,7 +1,11 @@
 # TODO Find how to test logging-ex utility
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
-add_library(luci_logex SHARED ${SOURCES})
+if (NOT LUCI_LIBRARY_TYPE)
+    set(LUCI_LIBRARY_TYPE "SHARED")
+endif(NOT LUCI_LIBRARY_TYPE)
+
+add_library(luci_logex ${LUCI_LIBRARY_TYPE} ${SOURCES})
 target_include_directories(luci_logex PUBLIC include)
 target_link_libraries(luci_logex PUBLIC loco)
 target_link_libraries(luci_logex PUBLIC locop)

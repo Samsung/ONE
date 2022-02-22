@@ -38,13 +38,14 @@ public:
 
 private:
   void evalFloat() const;
+  template <typename T> void evalInteger() const;
   void evalQuantized() const;
 
 private:
   int32_t _x_multiplier = 0;
-  int32_t _x_shift = 0;
+  int _x_shift = 0;
   int32_t _y_multiplier = 0;
-  int32_t _y_shift = 0;
+  int _y_shift = 0;
 };
 
 } // namespace kernels

@@ -16,10 +16,12 @@
 
 #include "loader/GraphLoader.h"
 #include "loader/KernelBuilder.h"
+#include "luci_interpreter/SimpleMemoryManager.h"
 
 #include <kernels/Add.h>
 #include <kernels/ArgMax.h>
 #include <kernels/AveragePool2D.h>
+#include <kernels/Cast.h>
 #include <kernels/Concatenation.h>
 #include <kernels/Conv2D.h>
 #include <kernels/DepthToSpace.h>
@@ -52,21 +54,23 @@
 #include <kernels/Mul.h>
 #include <kernels/Neg.h>
 #include <kernels/NotEqual.h>
+#include <kernels/OneHot.h>
 #include <kernels/Pad.h>
 #include <kernels/PadV2.h>
 #include <kernels/Pow.h>
-#include <kernels/Prelu.h>
+#include <kernels/PRelu.h>
 #include <kernels/Relu.h>
 #include <kernels/Relu6.h>
 #include <kernels/Reshape.h>
 #include <kernels/ResizeBilinear.h>
 #include <kernels/ResizeNearestNeighbor.h>
-#include <kernels/Reverse.h>
+#include <kernels/ReverseV2.h>
 #include <kernels/Rsqrt.h>
 #include <kernels/Slice.h>
 #include <kernels/Softmax.h>
 #include <kernels/SpaceToDepth.h>
 #include <kernels/Split.h>
+#include <kernels/SplitV.h>
 #include <kernels/Sqrt.h>
 #include <kernels/SquaredDifference.h>
 #include <kernels/Squeeze.h>
@@ -90,6 +94,9 @@ class KernelBuilderTest : public Test
 {
 protected:
   luci::CircleInput *createInputNode() { return createNode<luci::CircleInput>(); }
+  void SetUp() override { _memory_manager = std::make_unique<SimpleMemoryManager>(); }
+
+  std::unique_ptr<IMemoryManager> _memory_manager;
 
   template <typename NodeT, typename... Args> NodeT *createNode(Args &&... args)
   {
@@ -113,15 +120,16 @@ protected:
   {
     std::unordered_map<const loco::Graph *, RuntimeGraph *> graph_to_runtime_graph;
 
-    RuntimeGraph runtime_graph(nullptr);
+    RuntimeGraph runtime_graph(nullptr, _memory_manager.get());
+    graph_to_runtime_graph[&_graph] = &runtime_graph;
     RuntimeToIR runtime_to_ir;
     GraphLoader graph_loader(&_graph, &runtime_graph, runtime_to_ir, graph_to_runtime_graph,
-                             _node_to_tensor);
+                             _node_to_tensor, _memory_manager.get());
     graph_loader.loadTensors();
 
     KernelBuilder kernel_builder(graph_to_runtime_graph, _node_to_tensor);
 
-    auto kernel = op->accept(&kernel_builder);
+    auto kernel = kernel_builder.build(op);
     return std::unique_ptr<KernelT>(dynamic_cast<KernelT *>(kernel.release()));
   }
 
@@ -200,6 +208,20 @@ TEST_F(KernelBuilderTest, AveragePool2D)
   EXPECT_THAT(kernel->params().stride_height, Eq(op->stride()->h()));
   EXPECT_THAT(kernel->params().stride_width, Eq(op->stride()->w()));
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, Cast)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleCast>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Cast>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, Concatenation)
@@ -811,6 +833,31 @@ TEST_F(KernelBuilderTest, NotEqual)
   checkTensor(kernel->output(), op);
 }
 
+TEST_F(KernelBuilderTest, OneHot)
+{
+  auto *indices = createInputNode();
+  auto *depth = createInputNode();
+  auto *on_value = createInputNode();
+  auto *off_value = createInputNode();
+  auto axis = 1;
+
+  auto *op = createNode<luci::CircleOneHot>();
+  op->indices(indices);
+  op->depth(depth);
+  op->on_value(on_value);
+  op->off_value(off_value);
+  op->axis(axis);
+
+  auto kernel = buildKernel<kernels::OneHot>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->indices(), indices);
+  checkTensor(kernel->depth(), depth);
+  checkTensor(kernel->on_value(), on_value);
+  checkTensor(kernel->off_value(), off_value);
+  EXPECT_THAT(kernel->params().axis, Eq(op->axis()));
+}
+
 TEST_F(KernelBuilderTest, Pad)
 {
   auto *input = createInputNode();
@@ -865,7 +912,7 @@ TEST_F(KernelBuilderTest, Pow)
   checkTensor(kernel->output(), op);
 }
 
-TEST_F(KernelBuilderTest, Prelu)
+TEST_F(KernelBuilderTest, PRelu)
 {
   auto *input = createInputNode();
   auto *alpha = createInputNode();
@@ -874,7 +921,7 @@ TEST_F(KernelBuilderTest, Prelu)
   op->input(input);
   op->alpha(alpha);
 
-  auto kernel = buildKernel<kernels::Prelu>(op);
+  auto kernel = buildKernel<kernels::PRelu>(op);
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
@@ -978,7 +1025,7 @@ TEST_F(KernelBuilderTest, ReverseV2)
   op->tensor(input);
   op->axis(axes);
 
-  auto kernel = buildKernel<kernels::Reverse>(op);
+  auto kernel = buildKernel<kernels::ReverseV2>(op);
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
@@ -1074,6 +1121,31 @@ TEST_F(KernelBuilderTest, Split)
   checkTensor(kernel->input(), input);
   checkTensor(kernel->output(0), output1);
   checkTensor(kernel->output(1), output2);
+}
+
+TEST_F(KernelBuilderTest, SplitV)
+{
+  auto *input = createInputNode();
+  auto *size_splits = createInputNode();
+  auto *axis = createInputNode();
+  auto *op = createNode<luci::CircleSplitV>();
+  auto *output0 = createNodeOut<luci::CircleSplitVOut>(op, 0);
+  auto *output1 = createNodeOut<luci::CircleSplitVOut>(op, 1);
+
+  op->input(input);
+  op->size_splits(size_splits);
+  op->split_dim(axis);
+
+  op->num_split(2);
+
+  auto kernel = buildKernel<kernels::SplitV>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->size_splits(), size_splits);
+  checkTensor(kernel->axis(), axis);
+  checkTensor(kernel->output(0), output0);
+  checkTensor(kernel->output(1), output1);
 }
 
 TEST_F(KernelBuilderTest, Sqrt)

@@ -18,8 +18,7 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/depthwiseconv_float.h>
-#include <tensorflow/lite/kernels/internal/reference/depthwiseconv_uint8.h>
+#include "PALDepthwiseConv2d.h"
 
 #include <stdexcept>
 
@@ -29,8 +28,9 @@ namespace kernels
 {
 
 DepthwiseConv2D::DepthwiseConv2D(const Tensor *input, const Tensor *filter, const Tensor *bias,
-                                 Tensor *output, const DepthwiseConv2DParams &params)
-  : KernelWithParams<DepthwiseConv2DParams>({input, filter, bias}, {output}, params)
+                                 Tensor *output, Tensor *scratchpad,
+                                 const DepthwiseConv2DParams &params)
+  : KernelWithParams<DepthwiseConv2DParams>({input, filter, bias}, {output, scratchpad}, params)
 {
 }
 
@@ -45,7 +45,7 @@ void DepthwiseConv2D::configure()
   // (4) | int8  int8   int32 int8   | quantized per channel
   // (5) | int16 int8   int64 int16  | quantized per channel 16x8
   //
-  // We only support (1) and (3) for now, and additionally the following:
+  // We only support (1), (3) and (4) for now, and additionally the following:
   //     | input filter bias  output |
   // ----+---------------------------+
   // (5) | int16 int16  int64 int16  |
@@ -56,6 +56,17 @@ void DepthwiseConv2D::configure()
   }
   else if (input()->element_type() == DataType::U8 && filter()->element_type() == DataType::U8)
   {
+    LUCI_INTERPRETER_CHECK(bias() == nullptr || bias()->element_type() == DataType::S32);
+  }
+  else if (input()->element_type() == DataType::S8 && filter()->element_type() == DataType::S8)
+  {
+    LUCI_INTERPRETER_CHECK(filter()->shape().num_dims() == 4);
+    LUCI_INTERPRETER_CHECK(static_cast<uint32_t>(filter()->shape().dim(3)) ==
+                           filter()->scales().size());
+    for (auto zerop : filter()->zero_points())
+    {
+      LUCI_INTERPRETER_CHECK(zerop == 0);
+    }
     LUCI_INTERPRETER_CHECK(bias() == nullptr || bias()->element_type() == DataType::S32);
   }
   else if (input()->element_type() == DataType::S16 && filter()->element_type() == DataType::S16)
@@ -97,6 +108,16 @@ void DepthwiseConv2D::configure()
                                   filter_width, output_width);
 
   output()->resize({batches, output_height, output_width, channels_out});
+
+  tflite::DepthwiseParams params{};
+
+  params.dilation_height_factor = _params.dilation_height_factor;
+  params.dilation_width_factor = _params.dilation_width_factor;
+
+  auto scratchpad = getOutputTensors()[1];
+  luci_interpreter_pal::SetupScratchpadTensor(scratchpad, params, input()->element_type(),
+                                              getTensorShape(input()), getTensorShape(filter()),
+                                              getTensorShape(output()));
 }
 
 void DepthwiseConv2D::execute() const
@@ -122,6 +143,9 @@ void DepthwiseConv2D::execute() const
                                static_cast<size_t>(filter()->shape().dim(3)));
         evalQuantizedPerChannel();
       }
+      break;
+    case DataType::S8:
+      evalQuantizedS8PerChannel();
       break;
     case DataType::S16:
       evalQuantizedS16();
@@ -281,6 +305,57 @@ void DepthwiseConv2D::evalQuantized() const
     params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(filter()),
     getTensorData<uint8_t>(filter()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
     getTensorShape(output()), getTensorData<uint8_t>(output()));
+}
+
+void DepthwiseConv2D::evalQuantizedS8PerChannel() const
+{
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+
+  tflite::DepthwiseParams params{};
+
+  params.padding_type = tflite::PaddingType::kSame;
+  params.padding_values.height = _padding_height;
+  params.padding_values.width = _padding_width;
+  params.stride_height = _params.stride_height;
+  params.stride_width = _params.stride_width;
+  params.dilation_height_factor = _params.dilation_height_factor;
+  params.dilation_width_factor = _params.dilation_width_factor;
+  params.depth_multiplier = _params.depth_multiplier;
+  // The kernel expects input and filter zero points to be negated.
+  params.input_offset = -input()->zero_point(); // Note the '-'.
+  params.weights_offset = 0;
+  params.output_offset = output()->zero_point();
+  params.output_multiplier = 1; // unused in tflite code
+  params.output_shift = 0;      // unused in tflite code
+  params.quantized_activation_min = activation_min;
+  params.quantized_activation_max = activation_max;
+
+  const std::vector<double> effective_output_scales =
+    getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+
+  std::vector<ChannelQuantMultipliers> quant_multipliers =
+    quantizeMultipliers(effective_output_scales);
+
+  std::vector<int32_t> shifts;
+  std::transform(quant_multipliers.begin(), quant_multipliers.end(), std::back_inserter(shifts),
+                 [](ChannelQuantMultipliers cm) { return cm.shift; });
+  std::vector<int32_t> multipliers;
+  std::transform(quant_multipliers.begin(), quant_multipliers.end(),
+                 std::back_inserter(multipliers),
+                 [](ChannelQuantMultipliers cm) { return cm.multiplier; });
+
+  auto scratchpad = getOutputTensors()[1];
+  int8_t *scratchpad_data = nullptr;
+  if (scratchpad->is_allocatable())
+    scratchpad_data = scratchpad->data<int8_t>();
+
+  luci_interpreter_pal::DepthwiseConvPerChannel<int8_t>(
+    params, multipliers.data(), shifts.data(), getTensorShape(input()),
+    getTensorData<int8_t>(input()), getTensorShape(filter()), getTensorData<int8_t>(filter()),
+    getTensorShape(bias()), getTensorData<int32_t>(bias()), getTensorShape(output()),
+    getTensorData<int8_t>(output()), getTensorShape(scratchpad), scratchpad_data);
 }
 
 void DepthwiseConv2D::evalQuantizedS16() const

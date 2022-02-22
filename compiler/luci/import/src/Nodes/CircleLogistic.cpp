@@ -30,8 +30,9 @@ bool CircleLogisticGraphBuilder::validate(const ValidateArgs &args) const
 
   const auto &inputs = args.op.inputs;
   const auto &outputs = args.op.outputs;
-  const auto &tensors = args.reader.tensors();
-  if (tensors.at(inputs.at(0))->type != tensors.at(outputs[0])->type)
+  const auto tensors = args.reader.tensors();
+  assert(tensors.at(inputs.at(0)) != nullptr && tensors.at(outputs[0]) != nullptr);
+  if (tensors.at(inputs.at(0))->type() != tensors.at(outputs[0])->type())
     return false;
 
   return true;

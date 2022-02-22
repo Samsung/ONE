@@ -36,7 +36,7 @@ rm -rf ${outputfile}
 cp dummy-compile ../bin/dummy-compile
 
 # run test
-one-codegen -b dummy -- -o ${outputfile} "dummy.circle"
+one-codegen -b dummy -- -o ${outputfile} "dummy.circle" > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

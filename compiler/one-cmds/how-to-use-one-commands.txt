@@ -126,7 +126,7 @@ one-import-tf
 This will convert TensorFlow model (.pb) file to our circle model. You can also
 directly call this command. one-import-tf invokes tf2tfliteV2.py script that
 will internally use TensorFlow lite converter and then invoke tflite2circle
-converter to convert tflite model to circle model. 
+converter to convert tflite model to circle model.
 
 As tf2tfliteV2.py runs TensorFlow lite converter, you need to have TensorFlow
 installed in your system. We recommand to use 2.3.0 for now.
@@ -150,11 +150,14 @@ one-optimize provides network or operator transformation shown below.
 
 Current transformation options are
 - disable_validation : This will turn off operator validations.
+- expand_broadcast_const : This will expand broadcastable constant node inputs
 - fold_add_v2 : This removes AddV2 operation which can be folded
 - fold_cast : This removes Cast operation which can be folded
 - fold_dequantize : This removes Dequantize operation which can be folded
+- fold_dwconv : This folds Depthwise Convolution operation which can be folded
 - fold_sparse_to_dense : This removes SparseToDense operation which can be folded
 - forward_reshape_to_unaryop: This will move Reshape after UnaryOp for centain condition
+- fuse_add_with_fully_connected: This fuses Add operator with the preceding FullyConnected operator if possible
 - fuse_add_with_tconv: This fuses Add operator with the preceding TConv operator if possible
 - fuse_batchnorm_with_conv : This fuses BatchNorm operator to convolution operator
 - fuse_batchnorm_with_dwconv : This fuses BatchNorm operator to depthwise convolution operator
@@ -166,6 +169,8 @@ Current transformation options are
   execution.
 - fuse_preactivation_batchnorm: This fuses batch normalization operators of pre-activations to Conv operators.
 - fuse_activation_function: This fuses Activation function to a preceding operator.
+- fuse_mean_with_mean: This fuses two consecutive ReduceMean operations into one.
+- fuse_transpose_with_mean: This fuses ReduceMean with a preceding Transpose under certain conditions.
 - make_batchnorm_gamma_positive: This makes negative gamma of batch normalization into a small positive value (1e-10).
   Note that this pass can change the execution result of the model.
   So, use it only when the impact is known to be acceptable.
@@ -185,10 +190,15 @@ Current transformation options are
   normal BatchMatMul operator
 - resolve_customop_matmul: This will convert Custom(MatMul) to normal MatMul
   operator
+- resolve_customop_max_pool_with_argmax: This will convert Custom(MaxPoolWithArgmax)
+  to net of builtin operators.
 - shuffle_weight_to_16x1float32 : This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32.
   Note that it only converts weights whose row is a multiple of 16.
 - substitute_pack_to_reshape : This will convert single input Pack to Reshape.
+- substitute_padv2_to_pad : This will convert certain condition PadV2 to Pad.
+- substitute_splitv_to_split : This will convert certain condition SplitV to Split.
 - substitute_squeeze_to_reshape : This will convert certain condition Squeeze to Reshape.
+- substitute_strided_slice_to_reshape : This will convert certain condition StridedSlice to Reshape.
 - substitute_transpose_to_reshape : This will convert certain condition Transpose to Reshape.
 - transform_min_max_to_relu6: This will transform Minimum-Maximum pattern to Relu6 operator.
 - transform_min_relu_to_relu6: This will transform Minimum(6)-Relu pattern to Relu6 operator.

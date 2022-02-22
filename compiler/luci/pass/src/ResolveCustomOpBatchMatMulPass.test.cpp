@@ -18,12 +18,11 @@
 
 #include <luci/IR/CircleNodes.h>
 
-#include "flatbuffers/flatbuffers.h"
-#include "flatbuffers/flexbuffers.h"
-
 #include <luci/test/TestIOGraph.h>
 
 #include <gtest/gtest.h>
+#include <flatbuffers/flatbuffers.h>
+#include <flatbuffers/flexbuffers.h>
 
 namespace
 {

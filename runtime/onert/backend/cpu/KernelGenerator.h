@@ -69,6 +69,7 @@ public:
   void visit(const ir::operation::LogSoftmax &) override;
   void visit(const ir::operation::LSTM &) override;
   void visit(const ir::operation::MatrixBandPart &) override;
+  void visit(const ir::operation::DetectionPostProcess &) override;
   void visit(const ir::operation::OneHot &) override;
   void visit(const ir::operation::Pack &) override;
   void visit(const ir::operation::Pad &) override;

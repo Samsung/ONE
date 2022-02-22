@@ -18,7 +18,7 @@
 #include "kernels/BatchToSpaceND.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "PALBatchToSpaceND.h"
 
 #include <stdexcept>
 
@@ -83,13 +83,13 @@ void BatchToSpaceND::execute() const
   switch (input()->element_type())
   {
     case DataType::FLOAT32:
-      tflite::optimized_ops::BatchToSpaceND(
+      luci_interpreter_pal::BatchToSpaceND(
         getTensorShape(input()), getTensorData<float>(input()), getTensorShape(block_shape()),
         getTensorData<int32_t>(block_shape()), getTensorShape(crops()),
         getTensorData<int32_t>(crops()), getTensorShape(output()), getTensorData<float>(output()));
       break;
     case DataType::U8:
-      tflite::optimized_ops::BatchToSpaceND(
+      luci_interpreter_pal::BatchToSpaceND(
         getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(block_shape()),
         getTensorData<int32_t>(block_shape()), getTensorShape(crops()),
         getTensorData<int32_t>(crops()), getTensorShape(output()),

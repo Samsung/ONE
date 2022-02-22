@@ -20,9 +20,10 @@
 #include <mio/circle/schema_generated.h>
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/IR/ExecutionPlanTable.h>
 
 #include <vector>
-
+#include <string>
 #include <unordered_map>
 #include <map>
 
@@ -63,13 +64,23 @@ public:
     _op_table.at(node_id).emplace(source_id);
   }
 
+  void add_execution_plan_table(uint32_t node_id,
+                                const std::vector<uint32_t> &execution_plan_inform)
+  {
+    _execution_plan_table[node_id] = execution_plan_inform;
+  }
+
 public:
   const std::vector<uint8_t> encoded_source_table(void);
   const std::vector<uint8_t> encoded_op_table(void);
+  const std::vector<uint8_t> encoded_execution_plan_table(void);
 
 private:
   std::map<uint32_t, std::string> _source_table;
   std::map<uint32_t, std::set<uint32_t>> _op_table;
+  // _exec_plan_table stores for node with node_id order of execution, and memory offsets:
+  // first go execution order, then memory offsets for node output tensors.
+  luci::ExecutionPlanTable _execution_plan_table;
 };
 
 } // namespace luci
@@ -122,6 +133,8 @@ struct SerializedModelData final
    */
   uint32_t registerBuiltinOpcode(circle::BuiltinOperator builtin_code, const int32_t op_version);
   uint32_t registerCustomOpcode(const std::string &custom_op);
+  uint32_t registerBuiltinOpcode(circle::BuiltinOperator builtin_code,
+                                 const std::string &custom_code, const int32_t op_version);
 };
 
 // Prerequisites for circle::Model object creation

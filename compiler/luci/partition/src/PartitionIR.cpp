@@ -67,7 +67,7 @@ std::unique_ptr<PGroups> PGroups::make_copy(void) const
   return std::move(d_pgroups);
 }
 
-std::string PGroups::group_of(luci::CircleNode *node) const
+GroupKey PGroups::group_of(luci::CircleNode *node) const
 {
   assert(node != nullptr);
 

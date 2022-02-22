@@ -19,6 +19,7 @@
 
 #include <initializer_list>
 #include <vector>
+#include <algorithm>
 
 #include "ir/Index.h"
 
@@ -44,6 +45,12 @@ public:
 public:
   void append(const OperandIndex &index) { _vec.emplace_back(index); }
   void append(const OperandIndexSequence &l) { _vec.insert(_vec.end(), l.begin(), l.end()); }
+
+  void sort()
+  {
+    std::sort(_vec.begin(), _vec.end(),
+              [](const auto &lhs, const auto &rhs) { return lhs.value() < rhs.value(); });
+  }
 
 public:
   uint32_t size() const { return static_cast<uint32_t>(_vec.size()); }

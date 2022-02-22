@@ -1,0 +1,31 @@
+operand {
+  name: "ifm1"
+  type: BOOL
+  shape { dim: 6 }
+}
+operand {
+  name: "ifm2"
+  type: BOOL
+  shape { dim: 6 }
+  filler {
+    tag: "explicit"
+    arg: "T"
+    arg: "f"
+    arg: "0"
+    arg: "1"
+    arg: "true"
+    arg: "FALSE"
+  }
+}
+operand {
+  name: "ofm"
+  type: BOOL
+  shape { dim: 6 }
+}
+operation {
+  type: "LogicalAnd"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+}
+output: "ofm"

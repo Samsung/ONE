@@ -28,6 +28,10 @@ import tempfile
 import utils as _utils
 
 
+def get_driver_cfg_section():
+    return "one-import-tf"
+
+
 def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to convert TensorFlow to circle')
@@ -153,14 +157,7 @@ def _convert(args):
         f.write((' '.join(tf2tfliteV2_cmd) + '\n').encode())
 
         # convert tf to tflite
-        with subprocess.Popen(
-                tf2tfliteV2_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write(line)
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(tf2tfliteV2_cmd, logfile=f)
 
         # make a command to convert from tflite to circle
         tflite2circle_path = os.path.join(dir_path, 'tflite2circle')
@@ -171,16 +168,7 @@ def _convert(args):
         f.write((' '.join(tflite2circle_cmd) + '\n').encode())
 
         # convert tflite to circle
-        with subprocess.Popen(
-                tflite2circle_cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write(line)
-                f.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        _utils._run(tflite2circle_cmd, err_prefix="tflite2circle", logfile=f)
 
 
 def main():
@@ -199,4 +187,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    _utils._safemain(main, __file__)

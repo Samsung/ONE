@@ -43,6 +43,7 @@ void print_exclusive_options(void)
   std::cout << "    --quantize_dequantize_weights" << std::endl;
   std::cout << "    --quantize_with_minmax" << std::endl;
   std::cout << "    --requantize" << std::endl;
+  std::cout << "    --force_quantparam" << std::endl;
 }
 
 void print_version(void)
@@ -63,6 +64,10 @@ int entry(int argc, char **argv)
   const std::string qdqw = "--quantize_dequantize_weights";
   const std::string qwmm = "--quantize_with_minmax";
   const std::string rq = "--requantize";
+  const std::string fq = "--force_quantparam";
+  const std::string cq = "--copy_quantparam";
+
+  const std::string tf_maxpool = "--TF-style_maxpool";
 
   const std::string gpd = "--generate_profile_data";
 
@@ -75,29 +80,72 @@ int entry(int argc, char **argv)
     .help("Show version information and exit")
     .exit_with(print_version);
 
+  arser.add_argument("-V", "--verbose")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("output additional information to stdout or stderr");
+
   arser.add_argument(qdqw)
     .nargs(3)
     .type(arser::DataType::STR_VEC)
     .required(false)
     .help("Quantize-dequantize weight values required action before quantization. "
-          "Three arguments required: input_dtype(float32) "
-          "output_dtype(uint8) granularity(layer, channel)");
+          "Three arguments required: input_model_dtype(float32) "
+          "output_model_dtype(uint8) granularity(layer, channel)");
 
   arser.add_argument(qwmm)
     .nargs(3)
     .type(arser::DataType::STR_VEC)
     .required(false)
     .help("Quantize with min/max values. "
-          "Three arguments required: input_dtype(float32) "
-          "output_dtype(uint8) granularity(layer, channel)");
+          "Three arguments required: input_model_dtype(float32) "
+          "output_model_dtype(uint8) granularity(layer, channel)");
+
+  arser.add_argument(tf_maxpool)
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("Force MaxPool Op to have the same input/output quantparams. NOTE: This feature can "
+          "degrade accuracy of some models");
 
   arser.add_argument(rq)
     .nargs(2)
     .type(arser::DataType::STR_VEC)
     .required(false)
     .help("Requantize a quantized model. "
-          "Two arguments required: input_dtype(int8) "
-          "output_dtype(uint8)");
+          "Two arguments required: input_model_dtype(int8) "
+          "output_model_dtype(uint8)");
+
+  arser.add_argument(fq)
+    .nargs(3)
+    .type(arser::DataType::STR_VEC)
+    .required(false)
+    .accumulated(true)
+    .help("Write quantization parameters to the specified tensor. "
+          "Three arguments required: tensor_name(string), "
+          "scale(float) zero_point(int)");
+
+  arser.add_argument(cq)
+    .nargs(2)
+    .type(arser::DataType::STR_VEC)
+    .required(false)
+    .accumulated(true)
+    .help("Copy quantization parameter from a tensor to another tensor."
+          "Two arguments required: source_tensor_name(string), "
+          "destination_tensor_name(string)");
+
+  arser.add_argument("--input_type")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .required(false)
+    .help("Input type of quantized model (uint8 or int16)");
+
+  arser.add_argument("--output_type")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .required(false)
+    .help("Output type of quantized model (uint8 or int16)");
 
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
@@ -111,21 +159,30 @@ int entry(int argc, char **argv)
   }
   catch (const std::runtime_error &err)
   {
-    std::cout << err.what() << std::endl;
+    std::cerr << err.what() << std::endl;
     std::cout << arser;
     return 255;
   }
 
   {
-    // only one of qdqw, qwmm, rq option can be used
+    // only one of qdqw, qwmm, rq, fq, cq option can be used
     int32_t opt_used = arser[qdqw] ? 1 : 0;
     opt_used += arser[qwmm] ? 1 : 0;
     opt_used += arser[rq] ? 1 : 0;
+    opt_used += arser[fq] ? 1 : 0;
+    opt_used += arser[cq] ? 1 : 0;
     if (opt_used != 1)
     {
       print_exclusive_options();
       return 255;
     }
+  }
+
+  if (arser.get<bool>("--verbose"))
+  {
+    // The third parameter of setenv means REPLACE.
+    // If REPLACE is zero, it does not overwrite an existing value.
+    setenv("LUCI_LOG", "100", 0);
   }
 
   if (arser[qdqw])
@@ -138,8 +195,8 @@ int entry(int argc, char **argv)
     }
     options->enable(Algorithms::QuantizeDequantizeWeights);
 
-    options->param(AlgorithmParameters::Quantize_input_dtype, values.at(0));
-    options->param(AlgorithmParameters::Quantize_output_dtype, values.at(1));
+    options->param(AlgorithmParameters::Quantize_input_model_dtype, values.at(0));
+    options->param(AlgorithmParameters::Quantize_output_model_dtype, values.at(1));
     options->param(AlgorithmParameters::Quantize_granularity, values.at(2));
   }
 
@@ -153,9 +210,20 @@ int entry(int argc, char **argv)
     }
     options->enable(Algorithms::QuantizeWithMinMax);
 
-    options->param(AlgorithmParameters::Quantize_input_dtype, values.at(0));
-    options->param(AlgorithmParameters::Quantize_output_dtype, values.at(1));
+    options->param(AlgorithmParameters::Quantize_input_model_dtype, values.at(0));
+    options->param(AlgorithmParameters::Quantize_output_model_dtype, values.at(1));
     options->param(AlgorithmParameters::Quantize_granularity, values.at(2));
+
+    if (arser["--input_type"])
+      options->param(AlgorithmParameters::Quantize_input_type,
+                     arser.get<std::string>("--input_type"));
+
+    if (arser["--output_type"])
+      options->param(AlgorithmParameters::Quantize_output_type,
+                     arser.get<std::string>("--output_type"));
+
+    if (arser[tf_maxpool] and arser.get<bool>(tf_maxpool))
+      options->param(AlgorithmParameters::Quantize_TF_style_maxpool, "True");
   }
 
   if (arser[rq])
@@ -168,8 +236,61 @@ int entry(int argc, char **argv)
     }
     options->enable(Algorithms::Requantize);
 
-    options->param(AlgorithmParameters::Quantize_input_dtype, values.at(0));
-    options->param(AlgorithmParameters::Quantize_output_dtype, values.at(1));
+    options->param(AlgorithmParameters::Quantize_input_model_dtype, values.at(0));
+    options->param(AlgorithmParameters::Quantize_output_model_dtype, values.at(1));
+  }
+
+  if (arser[fq])
+  {
+    auto values = arser.get<std::vector<std::vector<std::string>>>(fq);
+
+    std::vector<std::string> tensors;
+    std::vector<std::string> scales;
+    std::vector<std::string> zero_points;
+
+    for (auto const value : values)
+    {
+      if (value.size() != 3)
+      {
+        std::cerr << arser;
+        return 255;
+      }
+
+      tensors.push_back(value[0]);
+      scales.push_back(value[1]);
+      zero_points.push_back(value[2]);
+    }
+
+    options->enable(Algorithms::ForceQuantParam);
+
+    options->params(AlgorithmParameters::Quantize_tensor_names, tensors);
+    options->params(AlgorithmParameters::Quantize_scales, scales);
+    options->params(AlgorithmParameters::Quantize_zero_points, zero_points);
+  }
+
+  if (arser[cq])
+  {
+    auto values = arser.get<std::vector<std::vector<std::string>>>(cq);
+
+    std::vector<std::string> src;
+    std::vector<std::string> dst;
+
+    for (auto const value : values)
+    {
+      if (value.size() != 2)
+      {
+        std::cerr << arser;
+        return 255;
+      }
+
+      src.push_back(value[0]);
+      dst.push_back(value[1]);
+    }
+
+    options->enable(Algorithms::CopyQuantParam);
+
+    options->params(AlgorithmParameters::Quantize_src_tensor_names, src);
+    options->params(AlgorithmParameters::Quantize_dst_tensor_names, dst);
   }
 
   std::string input_path = arser.get<std::string>("input");

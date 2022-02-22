@@ -1,5 +1,6 @@
 require("arser")
-require("mio-tflite")
+require("foder")
+require("mio-tflite260")
 require("mio-circle")
 require("safemain")
 require("vconone")

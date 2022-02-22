@@ -33,12 +33,6 @@ float getNthPercentile(std::vector<float> &vector, float percentile)
   if (percentile < 0 || percentile > 100)
     throw std::runtime_error("Percentile must be ranged from 0 to 100");
 
-  if (percentile == 0.0)
-    return vector.front();
-
-  if (percentile == 100.0)
-    return vector.back();
-
   if (vector.empty())
     throw std::runtime_error("Percentile must take a non-empty vector as an argument");
 
@@ -48,6 +42,12 @@ float getNthPercentile(std::vector<float> &vector, float percentile)
   std::vector<float> copy;
   copy.assign(vector.begin(), vector.end());
   std::sort(copy.begin(), copy.end());
+
+  if (percentile == 0.0)
+    return copy.front();
+
+  if (percentile == 100.0)
+    return copy.back();
 
   int index = static_cast<int>(std::floor((copy.size() - 1) * percentile / 100.0));
 

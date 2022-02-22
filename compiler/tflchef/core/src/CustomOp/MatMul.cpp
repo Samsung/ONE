@@ -17,7 +17,7 @@
 
 #include "MatMul.h"
 
-#include "flatbuffers/flexbuffers.h"
+#include <flatbuffers/flexbuffers.h>
 
 flatbuffers::Offset<void> MatMulChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {

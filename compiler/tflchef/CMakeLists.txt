@@ -5,10 +5,10 @@ if(NOT Protobuf_FOUND)
   return()
 endif(NOT Protobuf_FOUND)
 
-if(NOT TARGET mio_tflite)
-  message(STATUS "Build tflchef: FAILED (missing mio_tflite)")
+if(NOT TARGET mio_tflite260)
+  message(STATUS "Build tflchef: FAILED (missing mio_tflite260)")
   return()
-endif(NOT TARGET mio_tflite)
+endif(NOT TARGET mio_tflite260)
 
 # Recipe Parser
 add_subdirectory(proto)

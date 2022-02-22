@@ -1,0 +1,193 @@
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
+
+# Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import argparse
+import configparser
+import os
+import subprocess
+import sys
+
+import utils as _utils
+
+# TODO Find better way to suppress trackback on error
+sys.tracebacklimit = 0
+
+subtool_list = {
+    'compile': {
+        'import': 'Convert given model to circle',
+        'optimize': 'Optimize circle model',
+        'quantize': 'Quantize circle model',
+    },
+    'package': {
+        'pack': 'Package circle and metadata into nnpackage',
+    },
+    'backend': {
+        'codegen': 'Code generation tool',
+        'profile': 'Profile backend model file',
+    },
+}
+
+
+def _call_driver(driver_name, options):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    driver_path = os.path.join(dir_path, driver_name)
+    cmd = [driver_path] + options
+    _utils._run(cmd)
+
+
+def _check_subtool_exists():
+    """verify given arguments"""
+    subtool_keys = [n for k, v in subtool_list.items() for n in v.keys()]
+    if len(sys.argv) > 1 and sys.argv[1] in subtool_keys:
+        driver_name = 'one-' + sys.argv[1]
+        options = sys.argv[2:]
+        _call_driver(driver_name, options)
+        sys.exit(0)
+
+
+def _get_parser():
+    onecc_usage = 'onecc [-h] [-v] [-C CONFIG] [COMMAND <args>]'
+    onecc_desc = 'Run ONE driver via several commands or configuration file'
+    parser = argparse.ArgumentParser(description=onecc_desc, usage=onecc_usage)
+
+    _utils._add_default_arg(parser)
+
+    # just for help message
+    compile_group = parser.add_argument_group('compile to circle model')
+    for tool, desc in subtool_list['compile'].items():
+        compile_group.add_argument(tool, action='store_true', help=desc)
+
+    package_group = parser.add_argument_group('package circle model')
+    for tool, desc in subtool_list['package'].items():
+        package_group.add_argument(tool, action='store_true', help=desc)
+
+    backend_group = parser.add_argument_group('run backend tools')
+    for tool, desc in subtool_list['backend'].items():
+        backend_group.add_argument(tool, action='store_true', help=desc)
+
+    return parser
+
+
+def _parse_arg(parser):
+    args = parser.parse_args()
+    # print version
+    if args.version:
+        _utils._print_version_and_exit(__file__)
+
+    return args
+
+
+def _verify_arg(parser, args):
+    """verify given arguments"""
+    # check if required arguments is given
+    if not _utils._is_valid_attr(args, 'config'):
+        parser.error('-C/--config argument is required')
+
+
+def _get_driver_name(driver_name):
+    return {
+        'one-optimize': 'one-optimize',
+        'one-quantize': 'one-quantize',
+        'one-pack': 'one-pack',
+        'one-codegen': 'one-codegen',
+        'one-profile': 'one-profile'
+    }[driver_name]
+
+
+def _parse_cfg(args):
+    config = configparser.ConfigParser()
+    config.optionxform = str
+    parsed = config.read(os.path.expanduser(getattr(args, 'config')))
+    if not parsed:
+        raise FileNotFoundError('Not found given configuration file')
+    return config
+
+
+def _is_available_driver(config, driver_name):
+    return config.has_option('onecc', driver_name) and config.getboolean(
+        'onecc', driver_name)
+
+
+def _verify_cfg(import_driver_list, config):
+    if not config.has_section('onecc'):
+        raise ImportError('[onecc] section is required in configuration file')
+
+    import_driver_cnt = 0
+    for d in import_driver_list:
+        if _is_available_driver(config, d):
+            import_driver_cnt += 1
+
+    if import_driver_cnt > 1:
+        raise AssertionError('Only one import-* driver can be executed')
+
+
+def main():
+    # check if there is subtool argument
+    # if true, it executes subtool with argv
+    # NOTE:
+    # Why call subtool directly without using Argparse?
+    # Because if Argparse is used, options equivalent to onecc including
+    # '--help', '-C' are processed directly onecc itself.
+    # So options cannot be delivered to subtool.
+    _check_subtool_exists()
+
+    # parse arguments
+    # since the configuration file path is required first,
+    # parsing of the configuration file proceeds after this.
+    parser = _get_parser()
+    args = _parse_arg(parser)
+
+    # verify arguments
+    _verify_arg(parser, args)
+
+    # parse configuration file
+    config = _parse_cfg(args)
+
+    # verify configuration file
+    bin_dir = os.path.dirname(os.path.realpath(__file__))
+    import_drivers_dict = _utils._detect_one_import_drivers(bin_dir)
+    transform_drivers = [
+        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile'
+    ]
+    _verify_cfg(import_drivers_dict, config)
+
+    # get sections to run
+    section_to_run = []
+    for d in list(import_drivers_dict) + transform_drivers:
+        if _is_available_driver(config, d):
+            section_to_run.append(d)
+
+    # run
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    for section in section_to_run:
+        if section in import_drivers_dict:
+            # we already has driver name in dict
+            driver_name = import_drivers_dict[section]
+        else:
+            driver_name = _get_driver_name(section)
+        options = ['--config', getattr(args, 'config'), '--section', section]
+        if _utils._is_valid_attr(args, 'verbose'):
+            options.append('--verbose')
+        _call_driver(driver_name, options)
+
+
+if __name__ == '__main__':
+    _utils._safemain(main, __file__)

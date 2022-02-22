@@ -26,13 +26,19 @@ MessageBuffer::MessageBuffer(MessageBus *bus) : _bus{bus}
   // DO NOTHING
 }
 
+MessageBuffer::MessageBuffer(MessageBus *bus, SeverityCategory severity)
+  : _bus{bus}, _severity{severity}
+{
+  // DO NOTHING
+}
+
 MessageBuffer::~MessageBuffer()
 {
   // NOTE The current implementation is unsafe as it may throw an excpetion.
   // TODO Find a better safe implementation.
   auto msg = std::make_unique<Message>();
 
-  msg->text(std::make_unique<MessageText>(_ss));
+  msg->text(std::make_unique<MessageText>(_ss), _severity);
 
   _bus->post(std::move(msg));
 }

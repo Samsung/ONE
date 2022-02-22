@@ -18,7 +18,8 @@
 
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
+#include <tensorflow/lite/kernels/internal/reference/div.h>
+#include <tensorflow/lite/kernels/internal/reference/process_broadcast_shapes.h>
 
 namespace luci_interpreter
 {
@@ -45,6 +46,12 @@ void Div::execute() const
     case DataType::FLOAT32:
       evalFloat();
       break;
+    case DataType::S64:
+      evalInteger<int64_t>();
+      break;
+    case DataType::S32:
+      evalInteger<int32_t>();
+      break;
     case DataType::U8:
       evalQuantized();
       break;
@@ -55,13 +62,9 @@ void Div::execute() const
 
 void Div::evalFloat() const
 {
-  float activation_min{};
-  float activation_max{};
-  calculateActivationRange(_params.activation, &activation_min, &activation_max);
-
   tflite::ArithmeticParams params{};
-  params.float_activation_min = activation_min;
-  params.float_activation_max = activation_max;
+  fillArithmeticActivationRange<float>(params, _params.activation);
+
   const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
     getTensorShape(input1()), getTensorShape(input2()), &params);
 
@@ -76,6 +79,28 @@ void Div::evalFloat() const
     tflite::reference_ops::Div(params, getTensorShape(input1()), getTensorData<float>(input1()),
                                getTensorShape(input2()), getTensorData<float>(input2()),
                                getTensorShape(output()), getTensorData<float>(output()));
+  }
+}
+
+template <typename T> void Div::evalInteger() const
+{
+  tflite::ArithmeticParams params{};
+  fillArithmeticActivationRange<T>(params, _params.activation);
+
+  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
+    getTensorShape(input1()), getTensorShape(input2()), &params);
+
+  if (need_broadcast)
+  {
+    tflite::reference_ops::BroadcastDivSlow(
+      params, getTensorShape(input1()), getTensorData<T>(input1()), getTensorShape(input2()),
+      getTensorData<T>(input2()), getTensorShape(output()), getTensorData<T>(output()));
+  }
+  else
+  {
+    tflite::reference_ops::Div(params, getTensorShape(input1()), getTensorData<T>(input1()),
+                               getTensorShape(input2()), getTensorData<T>(input2()),
+                               getTensorShape(output()), getTensorData<T>(output()));
   }
 }
 

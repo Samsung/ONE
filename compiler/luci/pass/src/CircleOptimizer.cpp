@@ -16,20 +16,27 @@
 
 #include "luci/CircleOptimizer.h"
 
+#include "luci/Pass/CopyQuantParamPass.h"
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
+#include "luci/Pass/ExpandBroadcastConstPass.h"
 #include "luci/Pass/FoldAddV2Pass.h"
 #include "luci/Pass/FoldCastPass.h"
+#include "luci/Pass/FoldDepthwiseConv2DPass.h"
 #include "luci/Pass/FoldDequantizePass.h"
 #include "luci/Pass/FoldSparseToDensePass.h"
 #include "luci/Pass/ForwardReshapeToUnaryOpPass.h"
+#include "luci/Pass/ForceQuantParamPass.h"
 #include "luci/Pass/FuseActivationFunctionPass.h"
+#include "luci/Pass/FuseAddWithFullyConnectedPass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
 #include "luci/Pass/FuseBatchNormWithConvPass.h"
 #include "luci/Pass/FuseBatchNormWithDwConvPass.h"
 #include "luci/Pass/FuseBatchNormWithTConvPass.h"
 #include "luci/Pass/FuseBCQPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
+#include "luci/Pass/FuseMeanWithMeanPass.h"
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
+#include "luci/Pass/FuseTransposeWithMeanPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/PropagateQuantParamPass.h"
 #include "luci/Pass/RemoveFakeQuantPass.h"
@@ -41,16 +48,21 @@
 #include "luci/Pass/RemoveUnnecessaryStridedSlicePass.h"
 #include "luci/Pass/RemoveUnnecessarySplitPass.h"
 #include "luci/Pass/ReplaceMulAddWithDepthwiseConvPass.h"
+#include "luci/Pass/ReplaceSubWithAddPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
+#include "luci/Pass/ResolveCustomOpMaxPoolWithArgmaxPass.h"
 #include "luci/Pass/RequantizePass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 #include "luci/Pass/SparsifyTensorPass.h"
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 #include "luci/Pass/SubstitutePackToReshapePass.h"
+#include "luci/Pass/SubstitutePadV2ToPadPass.h"
+#include "luci/Pass/SubstituteSplitVToSplitPass.h"
 #include "luci/Pass/SubstituteSqueezeToReshapePass.h"
+#include "luci/Pass/SubstituteStridedSliceToReshapePass.h"
 #include "luci/Pass/SubstituteTransposeToReshapePass.h"
 #include "luci/Pass/TransformMinMaxToRelu6Pass.h"
 #include "luci/Pass/TransformMinReluToRelu6Pass.h"
@@ -70,6 +82,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <logo/Phase.h>
+#include <pepper/csv2vec.h>
 
 #include <memory>
 #include <sstream>
@@ -79,17 +92,37 @@ namespace
 
 using namespace luci;
 
+template <typename T> T lexical_cast(const std::string &str)
+{
+  std::istringstream ss;
+  ss.str(str);
+  T data;
+  ss >> data;
+  return data;
+}
+
+template <typename T> std::vector<T> lexical_cast(std::vector<std::string> &sv)
+{
+  std::vector<T> result;
+  std::transform(sv.begin(), sv.end(), std::back_inserter(result),
+                 [](std::string str) -> T { return lexical_cast<T>(str); });
+  return result;
+}
+
 class OptimizeOptionsImpl final : public luci::CircleOptimizer::Options
 {
 public:
   void enable(Algorithm) final;
   void param(AlgorithmParameters, const std::string &) final;
   const std::string param(AlgorithmParameters) const final;
+  void params(AlgorithmParameters, std::vector<std::string> &) final;
+  std::vector<std::string> params(AlgorithmParameters) const final;
   bool query(Algorithm) final;
 
 private:
   std::vector<Algorithm> _algorithms;
   std::map<AlgorithmParameters, const std::string> _algorithm_params;
+  std::map<AlgorithmParameters, std::vector<std::string>> _multiple_params;
 };
 
 void OptimizeOptionsImpl::enable(Algorithm algo) { _algorithms.push_back(algo); }
@@ -112,6 +145,24 @@ const std::string OptimizeOptionsImpl::param(AlgorithmParameters param) const
   }
 }
 
+void OptimizeOptionsImpl::params(AlgorithmParameters param, std::vector<std::string> &vec)
+{
+  _multiple_params[param] = vec;
+}
+
+std::vector<std::string> OptimizeOptionsImpl::params(AlgorithmParameters param) const
+{
+  auto param_vec = _multiple_params.find(param);
+  if (param_vec != _multiple_params.end())
+  {
+    return param_vec->second;
+  }
+  else
+  {
+    return std::vector<std::string>();
+  }
+}
+
 bool OptimizeOptionsImpl::query(Algorithm algo)
 {
   std::vector<Algorithm>::iterator it = std::find(_algorithms.begin(), _algorithms.end(), algo);
@@ -119,6 +170,23 @@ bool OptimizeOptionsImpl::query(Algorithm algo)
     return false;
 
   return true;
+}
+
+void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_output)
+{
+  logo::Phase phase;
+
+  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
+  phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
+
+  phase.emplace_back(
+    std::make_unique<luci::ConvertNCHWToNHWCPass>(preserve_input, preserve_output));
+
+  ProgressReporter prog(g, logo::PhaseStrategy::Restart);
+  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+  phase_runner.attach(&prog);
+  phase_runner.run(phase);
 }
 
 } // namespace
@@ -159,6 +227,17 @@ void CircleOptimizer::optimize(loco::Graph *g) const
 {
   logo::Phase phase;
 
+  // Conversion from NCHW to NHWC is done first to avoid interference with other optimizations.
+  if (_options->query(Options::Algorithm::ConvertNCHWToNHWC))
+  {
+    bool preserve_input =
+      _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_input_shape) != "true";
+    bool preserve_output =
+      _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_output_shape) != "true";
+
+    convert_nchw_to_nhwc(g, preserve_input, preserve_output);
+  }
+
   /* TRANSFORM DECLARATION BEGIN */
   phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
 
@@ -178,6 +257,14 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::ResolveCustomOpMatMulPass>());
   }
+  if (_options->query(Options::Algorithm::FuseMeanWithMean))
+  {
+    phase.emplace_back(std::make_unique<FuseMeanWithMeanPass>());
+  }
+  if (_options->query(Options::Algorithm::ResolveCustomOpMaxPoolWithArgmax))
+  {
+    phase.emplace_back(std::make_unique<luci::ResolveCustomOpMaxPoolWithArgmaxPass>());
+  }
   if (_options->query(Options::Algorithm::FuseInstanceNorm))
   {
     phase.emplace_back(std::make_unique<FuseInstanceNormPass>());
@@ -194,6 +281,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<FuseBatchNormWithTConvPass>());
   }
+  if (_options->query(Options::Algorithm::FuseAddWithFullyConnected))
+  {
+    phase.emplace_back(std::make_unique<FuseAddWithFullyConnectedPass>());
+  }
   if (_options->query(Options::Algorithm::FuseAddWithTConv))
   {
     phase.emplace_back(std::make_unique<FuseAddWithTConvPass>());
@@ -202,6 +293,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<FuseActivationFunctionPass>());
   }
+  if (_options->query(Options::Algorithm::FuseTransposeWithMean))
+  {
+    phase.emplace_back(std::make_unique<FuseTransposeWithMeanPass>());
+  }
   if (_options->query(Options::Algorithm::FoldAddV2))
   {
     phase.emplace_back(std::make_unique<luci::FoldAddV2Pass>());
@@ -209,6 +304,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FoldCast))
   {
     phase.emplace_back(std::make_unique<luci::FoldCastPass>());
+  }
+  if (_options->query(Options::Algorithm::FoldDepthwiseConv2D))
+  {
+    phase.emplace_back(std::make_unique<luci::FoldDepthwiseConv2DPass>());
   }
   if (_options->query(Options::Algorithm::FoldDequantize))
   {
@@ -233,6 +332,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::ShuffleWeightTo16x1Float32))
   {
     phase.emplace_back(std::make_unique<luci::ShuffleWeightTo16x1Float32Pass>());
+  }
+  if (_options->query(Options::Algorithm::ExpandBroadcastConst))
+  {
+    phase.emplace_back(std::make_unique<luci::ExpandBroadcastConstPass>());
   }
   if (_options->query(Options::Algorithm::RemoveFakeQuant))
   {
@@ -270,13 +373,29 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::ReplaceMulAddWithDepthwiseConvPass>());
   }
+  if (_options->query(Options::Algorithm::ReplaceSubWithAdd))
+  {
+    phase.emplace_back(std::make_unique<luci::ReplaceSubWithAddPass>());
+  }
   if (_options->query(Options::Algorithm::SubstitutePackToReshape))
   {
     phase.emplace_back(std::make_unique<luci::SubstitutePackToReshapePass>());
   }
+  if (_options->query(Options::Algorithm::SubstitutePadV2ToPad))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstitutePadV2ToPadPass>());
+  }
+  if (_options->query(Options::Algorithm::SubstituteSplitVToSplit))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstituteSplitVToSplitPass>());
+  }
   if (_options->query(Options::Algorithm::SubstituteSqueezeToReshape))
   {
     phase.emplace_back(std::make_unique<luci::SubstituteSqueezeToReshapePass>());
+  }
+  if (_options->query(Options::Algorithm::SubstituteStridedSliceToReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstituteStridedSliceToReshapePass>());
   }
   if (_options->query(Options::Algorithm::SubstituteTransposeToReshape))
   {
@@ -289,16 +408,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::TransformMinReluToRelu6Pass))
   {
     phase.emplace_back(std::make_unique<luci::TransformMinReluToRelu6Pass>());
-  }
-  if (_options->query(Options::Algorithm::ConvertNCHWToNHWC))
-  {
-    bool preserve_input =
-      _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_input_shape) != "true";
-    bool preserve_output =
-      _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_output_shape) != "true";
-
-    phase.emplace_back(
-      std::make_unique<luci::ConvertNCHWToNHWCPass>(preserve_input, preserve_output));
   }
 
   /* TRANSFORM DECLARATION END */
@@ -314,28 +423,30 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   // Fake quantization of weights
   if (_options->query(Options::Algorithm::QuantizeDequantizeWeights))
   {
-    static const std::vector<std::string> fakeq_supported_input_dtype{"float32"};
-    static const std::vector<std::string> fakeq_supported_output_dtype{"uint8", "int16"};
+    static const std::vector<std::string> fakeq_supported_input_model_dtype{"float32"};
+    static const std::vector<std::string> fakeq_supported_output_model_dtype{"uint8", "int16"};
     static const std::vector<std::string> fakeq_supported_granularity{"layer", "channel"};
 
-    auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
-    auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
+    auto input_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
+    auto output_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
     auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
 
-    if (!in_array(to_lower_case(input_dtype), fakeq_supported_input_dtype))
+    if (!in_array(to_lower_case(input_model_dtype), fakeq_supported_input_model_dtype))
       throw std::runtime_error("Unsupported input type. List of supported input type: " +
-                               to_string(fakeq_supported_input_dtype));
+                               to_string(fakeq_supported_input_model_dtype));
 
-    if (!in_array(to_lower_case(output_dtype), fakeq_supported_output_dtype))
+    if (!in_array(to_lower_case(output_model_dtype), fakeq_supported_output_model_dtype))
       throw std::runtime_error("Unsupported output type. List of supported output type: " +
-                               to_string(fakeq_supported_output_dtype));
+                               to_string(fakeq_supported_output_model_dtype));
 
     if (!in_array(to_lower_case(granularity), fakeq_supported_granularity))
       throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
                                to_string(fakeq_supported_granularity));
 
     if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
-        str_to_dtype(output_dtype) != loco::DataType::U8)
+        str_to_dtype(output_model_dtype) != loco::DataType::U8)
       throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
 
     // Clear existing quantparams before doing fake quantization
@@ -346,46 +457,69 @@ void CircleOptimizer::quantize(loco::Graph *g) const
         circle_node->quantparam(nullptr);
     }
 
-    luci::QuantizeDequantizeWeightsPass fake_quantizer(
-      str_to_dtype(input_dtype), str_to_dtype(output_dtype), str_to_granularity(granularity));
+    luci::QuantizeDequantizeWeightsPass fake_quantizer(str_to_dtype(input_model_dtype),
+                                                       str_to_dtype(output_model_dtype),
+                                                       str_to_granularity(granularity));
     fake_quantizer.run(g);
   }
 
   // Actual quantization of weights, bias, and activation
   if (_options->query(Options::Algorithm::QuantizeWithMinMax))
   {
-    static const std::vector<std::string> qwmm_supported_input_dtype{"float32"};
-    static const std::vector<std::string> qwmm_supported_output_dtype{"uint8", "int16"};
+    static const std::vector<std::string> qwmm_supported_input_model_dtype{"float32"};
+    static const std::vector<std::string> qwmm_supported_output_model_dtype{"uint8", "int16"};
     static const std::vector<std::string> qwmm_supported_granularity{"layer", "channel"};
+    static const std::vector<std::string> qwmm_supported_input_type{"uint8", "int16"};
+    static const std::vector<std::string> qwmm_supported_output_type{"uint8", "int16"};
 
-    auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
-    auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
+    auto input_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
+    auto output_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
     auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
+    auto input_type = _options->param(Options::AlgorithmParameters::Quantize_input_type);
+    if (input_type.empty())
+      input_type = output_model_dtype;
+    auto output_type = _options->param(Options::AlgorithmParameters::Quantize_output_type);
+    if (output_type.empty())
+      output_type = output_model_dtype;
 
-    if (!in_array(to_lower_case(input_dtype), qwmm_supported_input_dtype))
+    bool TF_style_maxpool =
+      _options->param(Options::AlgorithmParameters::Quantize_TF_style_maxpool) == "True";
+
+    if (!in_array(to_lower_case(input_model_dtype), qwmm_supported_input_model_dtype))
       throw std::runtime_error("Unsupported input type. List of supported input types: " +
-                               to_string(qwmm_supported_input_dtype));
+                               to_string(qwmm_supported_input_model_dtype));
 
-    if (!in_array(to_lower_case(output_dtype), qwmm_supported_output_dtype))
+    if (!in_array(to_lower_case(output_model_dtype), qwmm_supported_output_model_dtype))
       throw std::runtime_error("Unsupported output type. List of supported output types: " +
-                               to_string(qwmm_supported_output_dtype));
+                               to_string(qwmm_supported_output_model_dtype));
 
     if (!in_array(to_lower_case(granularity), qwmm_supported_granularity))
       throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
                                to_string(qwmm_supported_granularity));
 
+    if (!in_array(to_lower_case(input_type), qwmm_supported_input_type))
+      throw std::runtime_error("Unsupported input type. List of supported input types: " +
+                               to_string(qwmm_supported_input_type));
+
+    if (!in_array(to_lower_case(output_type), qwmm_supported_output_type))
+      throw std::runtime_error("Unsupported output type. List of supported output types: " +
+                               to_string(qwmm_supported_output_type));
+
     if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
-        str_to_dtype(output_dtype) != loco::DataType::U8)
+        str_to_dtype(output_model_dtype) != loco::DataType::U8)
       throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
 
-    luci::QuantizeWithMinMaxPass quantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype),
-                                           str_to_granularity(granularity));
+    luci::QuantizeWithMinMaxPass quantizer(
+      str_to_dtype(input_model_dtype), str_to_dtype(output_model_dtype),
+      str_to_granularity(granularity), str_to_dtype(input_type), str_to_dtype(output_type));
     quantizer.run(g);
 
     // Post-quantization optimizations
     logo::Phase phase;
 
-    phase.emplace_back(std::make_unique<luci::PropagateQuantParamPass>());
+    phase.emplace_back(std::make_unique<luci::PropagateQuantParamPass>(TF_style_maxpool));
 
     phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
     phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
@@ -397,7 +531,7 @@ void CircleOptimizer::quantize(loco::Graph *g) const
     phase_runner.run(phase);
 
     // Verify the type/granularity of the quantized model
-    luci::QuantizedModelVerifier verifier(str_to_dtype(output_dtype),
+    luci::QuantizedModelVerifier verifier(str_to_dtype(output_model_dtype),
                                           str_to_granularity(granularity));
     verifier.verify(g);
   }
@@ -405,22 +539,54 @@ void CircleOptimizer::quantize(loco::Graph *g) const
   // Requantize
   if (_options->query(Options::Algorithm::Requantize))
   {
-    static const std::vector<std::string> rq_supported_input_dtype{"int8"};
-    static const std::vector<std::string> rq_supported_output_dtype{"uint8"};
+    static const std::vector<std::string> rq_supported_input_model_dtype{"int8"};
+    static const std::vector<std::string> rq_supported_output_model_dtype{"uint8"};
 
-    auto input_dtype = _options->param(Options::AlgorithmParameters::Quantize_input_dtype);
-    auto output_dtype = _options->param(Options::AlgorithmParameters::Quantize_output_dtype);
+    auto input_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
+    auto output_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
 
-    if (!in_array(to_lower_case(input_dtype), rq_supported_input_dtype))
+    if (!in_array(to_lower_case(input_model_dtype), rq_supported_input_model_dtype))
       throw std::runtime_error("Unsupported input type. List of supported input types: " +
-                               to_string(rq_supported_input_dtype));
+                               to_string(rq_supported_input_model_dtype));
 
-    if (!in_array(to_lower_case(output_dtype), rq_supported_output_dtype))
+    if (!in_array(to_lower_case(output_model_dtype), rq_supported_output_model_dtype))
       throw std::runtime_error("Unsupported output type. List of supported output types: " +
-                               to_string(rq_supported_output_dtype));
+                               to_string(rq_supported_output_model_dtype));
 
-    luci::RequantizePass requantizer(str_to_dtype(input_dtype), str_to_dtype(output_dtype));
+    luci::RequantizePass requantizer(str_to_dtype(input_model_dtype),
+                                     str_to_dtype(output_model_dtype));
     requantizer.run(g);
+  }
+
+  // Force to write quantparam to specified tensors
+  // NOTE Only per-tensor (not per-channel) qparam can be written
+  if (_options->query(Options::Algorithm::ForceQuantParam))
+  {
+    ForceQuantParamPass::TensorVector tensors =
+      _options->params(Options::AlgorithmParameters::Quantize_tensor_names);
+    auto str_scales = _options->params(Options::AlgorithmParameters::Quantize_scales);
+    auto str_zero_points = _options->params(Options::AlgorithmParameters::Quantize_zero_points);
+
+    // Cast scales/zero_points to proper types
+    ForceQuantParamPass::ScaleVector scales = lexical_cast<float>(str_scales);
+    ForceQuantParamPass::ZPVector zero_points = lexical_cast<int64_t>(str_zero_points);
+
+    ForceQuantParamPass fq(tensors, scales, zero_points);
+    fq.run(g);
+  }
+
+  // Copy quantparam of a tensor to another tensor
+  if (_options->query(Options::Algorithm::CopyQuantParam))
+  {
+    CopyQuantParamPass::TensorVector src_tensors =
+      _options->params(Options::AlgorithmParameters::Quantize_src_tensor_names);
+    CopyQuantParamPass::TensorVector dst_tensors =
+      _options->params(Options::AlgorithmParameters::Quantize_dst_tensor_names);
+
+    CopyQuantParamPass cq(src_tensors, dst_tensors);
+    cq.run(g);
   }
 
   logo::Phase phase;
@@ -447,7 +613,7 @@ void CircleOptimizer::sparsify(loco::Graph *g) const
     std::string str_block_map = _options->param(Options::AlgorithmParameters::Sparsify_block_map);
 
     // traversal order
-    std::vector<int32_t> traversal_order = csv_to_vector<int32_t>(str_tarversal_order);
+    std::vector<int32_t> traversal_order = pepper::csv_to_vector<int32_t>(str_tarversal_order);
     // format
     std::vector<DimensionType> format;
     std::istringstream is(str_format);
@@ -462,9 +628,9 @@ void CircleOptimizer::sparsify(loco::Graph *g) const
         is.ignore();
     }
     // block size
-    std::vector<int32_t> block_size = csv_to_vector<int32_t>(str_block_size);
+    std::vector<int32_t> block_size = pepper::csv_to_vector<int32_t>(str_block_size);
     // block map
-    std::vector<int32_t> block_map = csv_to_vector<int32_t>(str_block_map);
+    std::vector<int32_t> block_map = pepper::csv_to_vector<int32_t>(str_block_map);
 
     luci::SparsifyTensorPass sparsifier{tensor_name, traversal_order, format, block_size,
                                         block_map};

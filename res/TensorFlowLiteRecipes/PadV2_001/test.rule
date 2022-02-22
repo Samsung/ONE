@@ -1,0 +1,8 @@
+# To check if PadV2 is converted to Pad
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "PAD_EXIST"               $(op_count PAD) '=' 1
+RULE    "MAXPOOL2D_EXIST"         $(op_count MAX_POOL_2D) '=' 1
+RULE    "RELU_EXIST"              $(op_count RELU) '=' 1
+RULE    "NO_PADV2"                $(op_count PADV2) '=' 0

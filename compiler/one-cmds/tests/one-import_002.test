@@ -32,7 +32,7 @@ outputfile="inception_v3_cmd.circle"
 
 # run test
 one-import tf -C ${configfile} \
---output_path=inception_v3_cmd.circle > /dev/null
+--output_path=inception_v3_cmd.circle > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

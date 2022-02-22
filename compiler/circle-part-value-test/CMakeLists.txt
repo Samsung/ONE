@@ -11,11 +11,13 @@ get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
 unset(RECIPE_LIST)
 unset(PARTITION_LIST)
+unset(OUTPUT_COUNT_LIST)
 unset(TEST_DEPS)
 
-macro(add RECIPE_NAME PARTITION_NAME)
+macro(add RECIPE_NAME PARTITION_NAME OUTPUT_COUNT)
   list(APPEND RECIPE_LIST ${RECIPE_NAME})
   list(APPEND PARTITION_LIST ${PARTITION_NAME})
+  list(APPEND OUTPUT_COUNT_LIST ${OUTPUT_COUNT})
 endmacro(add)
 
 # Read "test.lst"
@@ -27,6 +29,7 @@ math(EXPR RECIPE_LENGTH_M1 "${RECIPE_LENGTH} - 1")
 foreach(IDX RANGE ${RECIPE_LENGTH_M1})
   list(GET RECIPE_LIST ${IDX} RECIPE_NAME)
   list(GET PARTITION_LIST ${IDX} PARTITION_NAME)
+  list(GET OUTPUT_COUNT_LIST ${IDX} OUTPUT_COUNT)
 
   # NOTE about the name:
   # Use '.recipe' name for source tflite and circle files
@@ -46,7 +49,7 @@ foreach(IDX RANGE ${RECIPE_LENGTH_M1})
 
   add_custom_command(OUTPUT ${TFLITE_DST_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy "${TFLITE_SRC_PATH}" "${TFLITE_DST_PATH}"
-    DEPENDS ${TFLITE_SRC_PATH}
+    DEPENDS ${TFLITE_SRC_PATH} ${PARTITIONER_OUTPUT_PATH}
     COMMENT "Copy ${RECIPE_NAME}.tflite"
   )
   list(APPEND TEST_DEPS ${TFLITE_DST_PATH})
@@ -57,7 +60,7 @@ foreach(IDX RANGE ${RECIPE_LENGTH_M1})
 
   add_custom_command(OUTPUT ${CIRCLE_DST_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy "${CIRCLE_SRC_PATH}" "${CIRCLE_DST_PATH}"
-    DEPENDS ${CIRCLE_SRC_PATH}
+    DEPENDS ${CIRCLE_SRC_PATH} ${PARTITIONER_OUTPUT_PATH}
     COMMENT "Copy ${RECIPE_NAME}.circle"
   )
   list(APPEND TEST_DEPS ${CIRCLE_DST_PATH})
@@ -69,7 +72,7 @@ foreach(IDX RANGE ${RECIPE_LENGTH_M1})
 
   add_custom_command(OUTPUT ${PART_DST_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy "${PART_SRC_PATH}" "${PART_DST_PATH}"
-    DEPENDS ${PART_SRC_PATH}
+    DEPENDS ${PART_SRC_PATH} ${PARTITIONER_OUTPUT_PATH}
     COMMENT "Copy ${PART_FILE}"
   )
   list(APPEND TEST_DEPS ${PART_DST_PATH})
@@ -84,6 +87,16 @@ foreach(IDX RANGE ${RECIPE_LENGTH_M1})
     COMMENT "Parition ${RECIPE_NAME}.circle with ${PART_FILE}"
   )
   list(APPEND TEST_DEPS ${PARTITIONER_CONN_JSON})
+
+  # Write .excnt file; expected count of output models
+  set(COUNT_FILE "${PARTITION_NAME}.excnt")
+  set(COUNT_FILE_PATH "${PARTITIONER_OUTPUT_PATH}/${COUNT_FILE}")
+  add_custom_command(OUTPUT ${COUNT_FILE_PATH}
+    COMMAND echo ${OUTPUT_COUNT} > ${COUNT_FILE_PATH}
+    DEPENDS ${PART_SRC_PATH} ${PARTITIONER_OUTPUT_PATH}
+    COMMENT "Write ${COUNT_FILE} with ${OUTPUT_COUNT}"
+  )
+  list(APPEND TEST_DEPS ${COUNT_FILE_PATH})
 endforeach(IDX)
 
 add_custom_target(circle_part_value_test_prepare ALL DEPENDS ${TEST_DEPS})
@@ -93,7 +106,7 @@ add_dependencies(circle_part_value_test_prepare common_artifacts_deps)
 add_test(NAME circle_part_value_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/part_eval_all.sh"
           "${CMAKE_CURRENT_BINARY_DIR}"
-          "${NNCC_OVERLAY_DIR}/venv_2_3_0"
+          "${NNCC_OVERLAY_DIR}/venv_2_6_0"
           "$<TARGET_FILE:circle_part_driver>"
           ${PARTITION_LIST}
 )

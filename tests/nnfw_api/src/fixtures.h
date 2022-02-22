@@ -262,4 +262,10 @@ protected:
   }
 };
 
+class ValidationTestPipelineSession : public ValidationTest
+{
+protected:
+  nnfw_session *_session = nullptr;
+};
+
 #endif // __NNFW_API_TEST_FIXTURES_H__

@@ -1,0 +1,4 @@
+# {FILES_TO_INSTALL} {DEST_DIR}
+# include
+usr/include/nnfw usr/include/
+usr/lib/pkgconfig/*.pc usr/lib/pkgconfig/

@@ -69,7 +69,7 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E remove -f ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'CIRCLE_INSPECT_PATH=\"$<TARGET_FILE:circle-inspect>\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'CIRCLE_VERIFY_PATH=\"$<TARGET_FILE:circle-verify>\"' >> ${TEST_CONFIG}
-  DEPENDS 
+  DEPENDS
     circle-inspect
     circle-verify
   COMMENT "Generate test configuration"

@@ -15,6 +15,7 @@
  */
 
 #include <tfldump/Dump.h>
+#include <mio_tflite260/Helper.h>
 
 #include "Read.h"
 #include "OpPrinter.h"
@@ -137,7 +138,7 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
     if (tensor->shape())
       dims = tflread::as_index_vector(tensor->shape());
 
-    os << "T(" << reader.subgraph_index() << ":" << i << ") " << tflread::tensor_type(tensor)
+    os << "T(" << reader.subgraph_index() << ":" << i << ") " << mio::tflite::tensor_type(tensor)
        << " ";
     os << "(" << dims << ") ";
     if (tensor->shape_signature())
@@ -146,7 +147,7 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
       os << "(" << dims_sig << ") ";
     }
     os << "B(" << tensor->buffer() << ") ";
-    os << tflread::tensor_name(tensor) << std::endl;
+    os << mio::tflite::tensor_name(tensor) << std::endl;
 
     if (auto q_params = tensor->quantization())
     {
@@ -298,7 +299,7 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
       if (input >= 0)
       {
         auto tensor = tensors->Get(input);
-        os << tflread::tensor_name(tensor);
+        os << mio::tflite::tensor_name(tensor);
       }
       os << std::endl;
     }
@@ -308,7 +309,7 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
       if (output >= 0)
       {
         auto tensor = tensors->Get(output);
-        os << tflread::tensor_name(tensor);
+        os << mio::tflite::tensor_name(tensor);
       }
       os << std::endl;
     }
@@ -321,14 +322,14 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
   for (const auto input : reader.inputs())
   {
     auto tensor = tensors->Get(input);
-    std::string name = tflread::tensor_name(tensor);
+    std::string name = mio::tflite::tensor_name(tensor);
     os << "I T(" << reader.subgraph_index() << ":" << input << ") " << name << std::endl;
   }
 
   for (const auto output : reader.outputs())
   {
     auto tensor = tensors->Get(output);
-    std::string name = tflread::tensor_name(tensor);
+    std::string name = mio::tflite::tensor_name(tensor);
     os << "O T(" << reader.subgraph_index() << ":" << output << ") " << name << std::endl;
   }
 
@@ -350,6 +351,7 @@ void dump_model(std::ostream &os, const tflite::Model *model)
   auto opcodes = reader.opcodes();
   auto buffers = reader.buffers();
   auto metadata = reader.metadata();
+  auto signaturedefs = reader.signaturedefs();
 
   // dump operator_codes
   os << "Operator Codes: [order] OpCodeName (OpCode Enum)" << std::endl;
@@ -357,11 +359,13 @@ void dump_model(std::ostream &os, const tflite::Model *model)
   for (auto opcode : opcodes)
   {
     tflite::BuiltinOperator op_code = opcode->builtin_code();
-    auto op_name = tflread::opcode_name(opcode);
+    tflite::BuiltinOperator dp_code = tflite::BuiltinOperator(opcode->deprecated_builtin_code());
+
+    auto op_name = mio::tflite::opcode_name(opcode);
     auto op_version = opcode->version();
 
     os << "[" << opcode_index << "] " << op_name << " (code: " << op_code
-       << ", version: " << op_version << ")" << std::endl;
+       << ", dep_code: " << dp_code << ", version: " << op_version << ")" << std::endl;
 
     opcode_index++;
   }
@@ -389,7 +393,40 @@ void dump_model(std::ostream &os, const tflite::Model *model)
     os << "metadata : B(index) name" << std::endl;
     for (uint32_t i = 0; i < metadata->Length(); ++i)
     {
-      os << "B(" << metadata->Get(i)->buffer() << ") " << metadata->Get(i)->name()->c_str();
+      os << "B(" << metadata->Get(i)->buffer() << ") " << metadata->Get(i)->name()->c_str()
+         << std::endl;
+    }
+    os << std::endl;
+  }
+
+  // dump signaturedef
+  if (signaturedefs != nullptr)
+  {
+    os << "SignatureDef" << std::endl;
+    for (uint32_t i = 0; i < signaturedefs->Length(); ++i)
+    {
+      auto sign_i = signaturedefs->Get(i);
+      os << "S(" << i << ") method_name(" << sign_i->method_name()->c_str() << "), key("
+         << sign_i->key()->c_str() << "), sub_graph(" << sign_i->subgraph_index() << ")"
+         << std::endl;
+
+      auto inputs_i = sign_i->inputs();
+      for (uint32_t t = 0; t < inputs_i->Length(); ++t)
+      {
+        auto inputs_i_t = inputs_i->Get(t);
+        os << "    I(" << t << ")"
+           << " T(" << sign_i->subgraph_index() << ":" << inputs_i_t->tensor_index() << ") "
+           << inputs_i_t->name()->c_str() << std::endl;
+      }
+
+      auto outputs_i = sign_i->outputs();
+      for (uint32_t t = 0; t < outputs_i->Length(); ++t)
+      {
+        auto outputs_i_t = outputs_i->Get(t);
+        os << "    O(" << t << ")"
+           << " T(" << sign_i->subgraph_index() << ":" << outputs_i_t->tensor_index() << ") "
+           << outputs_i_t->name()->c_str() << std::endl;
+      }
     }
     os << std::endl;
   }

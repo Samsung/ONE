@@ -16,10 +16,10 @@
 
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 
-#include "flatbuffers/flexbuffers.h"
-
 #include <luci/IR/CircleNodes.h>
 #include <luci/Profile/CircleNodeOrigin.h>
+
+#include <flatbuffers/flexbuffers.h>
 
 namespace
 {

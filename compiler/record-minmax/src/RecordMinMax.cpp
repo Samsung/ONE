@@ -24,6 +24,7 @@
 #include <luci/CircleFileExpContract.h>
 #include <luci/IR/CircleQuantParam.h>
 
+#include <dirent.h>
 #include <algorithm>
 #include <cmath>
 #include <fstream>
@@ -38,6 +39,17 @@ using DataType = luci_interpreter::DataType;
 namespace
 {
 
+void readDataFromFile(const std::string &filename, std::vector<char> &data, size_t data_size)
+{
+  assert(data.size() == data_size); // FIX_CALLER_UNLESS
+
+  std::ifstream fs(filename, std::ifstream::binary);
+  if (fs.fail())
+    throw std::runtime_error("Cannot open file \"" + filename + "\".\n");
+  if (fs.read(data.data(), data_size).fail())
+    throw std::runtime_error("Failed to read data from file \"" + filename + "\".\n");
+}
+
 std::vector<uint8_t> genRandomBoolData(std::mt19937 &gen, uint32_t num_elements)
 {
   std::uniform_int_distribution<> dist(0, 1);
@@ -46,6 +58,21 @@ std::vector<uint8_t> genRandomBoolData(std::mt19937 &gen, uint32_t num_elements)
   // Write random data
   for (auto &iter : input_data)
     iter = static_cast<uint8_t>(dist(gen));
+
+  return input_data;
+}
+
+template <typename T>
+std::vector<T> genRandomIntData(std::mt19937 &gen, uint32_t num_elements, T min, T max)
+{
+  std::uniform_int_distribution<T> dist(min, max);
+  std::vector<T> input_data(num_elements);
+
+  // Write random data
+  {
+    auto const generator = [&gen, &dist]() { return dist(gen); };
+    std::generate(begin(input_data), end(input_data), generator);
+  }
 
   return input_data;
 }
@@ -134,14 +161,14 @@ void RecordMinMax::initialize(const std::string &input_model_path)
                                  model_data.size()};
   if (!circle::VerifyModelBuffer(verifier))
   {
-    throw std::runtime_error("ERROR: Failed to verify circle '" + input_model_path + "'");
+    throw std::runtime_error("Failed to verify circle '" + input_model_path + "'");
   }
 
   _module = luci::Importer().importModule(circle::GetModel(model_data.data()));
 
   if (_module == nullptr)
   {
-    throw std::runtime_error("ERROR: Failed to load '" + input_model_path + "'");
+    throw std::runtime_error("Failed to load '" + input_model_path + "'");
   }
 
   // Initialize interpreter
@@ -150,6 +177,133 @@ void RecordMinMax::initialize(const std::string &input_model_path)
   _observer = std::make_unique<MinMaxObserver>();
 
   _interpreter->attachObserver(_observer.get());
+}
+
+// input_data_path is a path to the directory
+// The directory should contain binary files each of which is a raw data,
+// ready to be consumed by the input circle model without any modification
+// TODO reduce duplicate codes with profileRawData
+void RecordMinMax::profileRawDataDirectory(const std::string &mode,
+                                           const std::string &input_data_path, float min_percentile,
+                                           float max_percentile)
+{
+  struct dirent *entry = nullptr;
+  DIR *dp = nullptr;
+
+  dp = opendir(input_data_path.c_str());
+  if (not dp)
+    throw std::runtime_error("Cannot open directory. Please check \"" + input_data_path +
+                             "\" is a directory.\n");
+
+  uint32_t num_records = 0;
+  const auto input_nodes = loco::input_nodes(_module->graph());
+
+  // Get total input size
+  uint32_t total_input_size = 0;
+  for (auto input : input_nodes)
+  {
+    const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
+    total_input_size += getTensorSize(input_node);
+  }
+
+  while (entry = readdir(dp))
+  {
+    // Skip if the entry is not a regular file
+    if (entry->d_type != DT_REG)
+      continue;
+
+    const std::string filename = entry->d_name;
+    std::cout << "Recording " << num_records << "'th data" << std::endl;
+
+    // Read data from file to buffer
+    // Assumption: For a multi-input model, the binary file should have inputs concatenated in the
+    // same order with the input index.
+    std::vector<char> input_data(total_input_size);
+    readDataFromFile(input_data_path + "/" + filename, input_data, total_input_size);
+
+    // Write data from buffer to interpreter
+    uint32_t offset = 0;
+    for (auto input : input_nodes)
+    {
+      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
+      const auto input_size = getTensorSize(input_node);
+      _interpreter->writeInputTensor(input_node, input_data.data() + offset, input_size);
+
+      offset += input_size;
+    }
+
+    _interpreter->interpret();
+
+    num_records++;
+  }
+
+  closedir(dp);
+
+  if (num_records == 0)
+    throw std::runtime_error("The input data file does not contain any record.");
+
+  std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
+
+  update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
+}
+
+// input_data_path is a text file which specifies the representative data
+// The text file should contain absolute file path per line.
+// The pointed file should be a binary file containing one representative data,
+// ready to be consumed by the input circle model without any modification
+// NOTE If a model has multiple inputs, the binary file should have inputs concatenated in the same
+// order with the input index of the circle model.
+void RecordMinMax::profileRawData(const std::string &mode, const std::string &input_data_path,
+                                  float min_percentile, float max_percentile)
+{
+  std::ifstream input_file(input_data_path);
+  if (input_file.fail())
+    throw std::runtime_error("Cannot open file \"" + input_data_path + "\".\n");
+
+  std::string record;
+  uint32_t num_records = 0;
+  const auto input_nodes = loco::input_nodes(_module->graph());
+
+  // Get total input size
+  uint32_t total_input_size = 0;
+  for (auto input : input_nodes)
+  {
+    const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
+    total_input_size += getTensorSize(input_node);
+  }
+
+  while (getline(input_file, record))
+  {
+    std::cout << "Recording " << num_records << "'th data" << std::endl;
+
+    // Read data from file to buffer
+    // Assumption: For a multi-input model, the binary file should have inputs concatenated in the
+    // same order with the input index.
+    std::vector<char> input_data(total_input_size);
+    readDataFromFile(record, input_data, total_input_size);
+
+    // Write data from buffer to interpreter
+    uint32_t offset = 0;
+    for (auto input : input_nodes)
+    {
+      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
+      const auto input_size = getTensorSize(input_node);
+      _interpreter->writeInputTensor(input_node, input_data.data() + offset, input_size);
+
+      offset += input_size;
+    }
+
+    _interpreter->interpret();
+
+    num_records++;
+  }
+
+  if (num_records == 0)
+    throw std::runtime_error("The input data file does not contain any record.");
+
+  std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
+
+  update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
 }
 
 void RecordMinMax::profileData(const std::string &mode, const std::string &input_data_path,
@@ -174,8 +328,7 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
       if (num_inputs != importer.numInputs(record_idx))
         throw std::runtime_error("Wrong number of inputs.");
 
-      if (record_idx % 100 == 0)
-        std::cout << "Recording " << record_idx << "'th data" << std::endl;
+      std::cout << "Recording " << record_idx << "'th data" << std::endl;
 
       for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
       {
@@ -252,28 +405,40 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
 
       // TODO Support more input data types
       assert(input_node->dtype() == loco::DataType::FLOAT32 ||
-             input_node->dtype() == loco::DataType::BOOL);
+             input_node->dtype() == loco::DataType::BOOL ||
+             input_node->dtype() == loco::DataType::S32 ||
+             input_node->dtype() == loco::DataType::S64);
 
       if (input_node->dtype() == DataType::FLOAT32)
-      // clang-format off
       {
-      std::vector<float> input_data(num_elements);
+        std::vector<float> input_data(num_elements);
 
-      // Write random data
-      for (auto &iter : input_data)
-        iter = static_cast<float>(dist(gen));
+        // Write random data
+        for (auto &iter : input_data)
+          iter = static_cast<float>(dist(gen));
 
-      // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
-      //       We can redcue the copy by directly writing data from file to interpreter inputs
-      _interpreter->writeInputTensor(input_node, input_data.data(),
-                                     input_data.size() * sizeof(float));
+        // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
+        //       We can redcue the copy by directly writing data from file to interpreter inputs
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(float));
       }
-      // clang-format on
       else if (input_node->dtype() == DataType::BOOL)
       {
         auto input_data = genRandomBoolData(gen, num_elements);
         _interpreter->writeInputTensor(input_node, input_data.data(),
                                        input_data.size() * sizeof(uint8_t));
+      }
+      else if (input_node->dtype() == DataType::S32)
+      {
+        auto input_data = genRandomIntData<int32_t>(gen, num_elements, -100, 100);
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(int32_t));
+      }
+      else if (input_node->dtype() == DataType::S64)
+      {
+        auto input_data = genRandomIntData<int64_t>(gen, num_elements, -100, 100);
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(int64_t));
       }
     }
 
@@ -294,7 +459,7 @@ void RecordMinMax::saveModel(const std::string &output_model_path)
 
   if (!exporter.invoke(&contract))
   {
-    throw std::runtime_error("ERROR: Failed to export '" + output_model_path + "'");
+    throw std::runtime_error("Failed to export '" + output_model_path + "'");
   }
 }
 

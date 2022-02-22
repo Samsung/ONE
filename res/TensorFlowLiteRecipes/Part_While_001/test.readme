@@ -1,0 +1,5 @@
+test.readme of Part_While_001
+
+This has WHILE Op inside WHILE_BODY subgraph.
+MAXIMUM and MINIMUM Op exist to make random input to 0
+to make this model loop from 0 to 10.

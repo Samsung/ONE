@@ -34,6 +34,32 @@ class SliceVariation : public GenModelTest,
 {
 };
 
+INSTANTIATE_TEST_CASE_P(
+  GenModelTest, SliceVariation,
+  ::testing::Values(
+    SliceVariationParam{
+      {2, 2, 3, 1},
+      {0, 1, 1, 0},
+      {1, 1, 2, 1},
+      uniformTCD<float>({{1, 2, 3, 11, 12, 13, 21, 22, 23, 31, 32, 33}}, {{12, 13}})},
+    SliceVariationParam{
+      {2, 2, 3, 1},
+      {0, 1, 1, 0},
+      {1, 1, 2, 1},
+      uniformTCD<uint8_t>({{1, 2, 3, 11, 12, 13, 21, 22, 23, 31, 32, 33}}, {{12, 13}}),
+      circle::TensorType::TensorType_UINT8,
+      1,
+      0},
+    SliceVariationParam{
+      {2, 2, 3, 1},
+      {0, 1, 1, 0},
+      {1, 1, 2, 1},
+      uniformTCD<float>({{1, 2, 3, 11, 12, 13, 21, 22, 23, 31, 32, 33}}, {{12, 13}}),
+      circle::TensorType::TensorType_FLOAT32,
+      0,
+      0,
+      circle::TensorType::TensorType_INT64}));
+
 TEST_P(SliceVariation, Test)
 {
   auto &param = GetParam();
@@ -90,32 +116,6 @@ TEST_P(SliceVariation, Test)
   SUCCEED();
 }
 
-INSTANTIATE_TEST_CASE_P(
-  GenModelTest, SliceVariation,
-  ::testing::Values(
-    SliceVariationParam{
-      {2, 2, 3, 1},
-      {0, 1, 1, 0},
-      {1, 1, 2, 1},
-      uniformTCD<float>({{1, 2, 3, 11, 12, 13, 21, 22, 23, 31, 32, 33}}, {{12, 13}})},
-    SliceVariationParam{
-      {2, 2, 3, 1},
-      {0, 1, 1, 0},
-      {1, 1, 2, 1},
-      uniformTCD<uint8_t>({{1, 2, 3, 11, 12, 13, 21, 22, 23, 31, 32, 33}}, {{12, 13}}),
-      circle::TensorType::TensorType_UINT8,
-      1,
-      0},
-    SliceVariationParam{
-      {2, 2, 3, 1},
-      {0, 1, 1, 0},
-      {1, 1, 2, 1},
-      uniformTCD<float>({{1, 2, 3, 11, 12, 13, 21, 22, 23, 31, 32, 33}}, {{12, 13}}),
-      circle::TensorType::TensorType_FLOAT32,
-      0,
-      0,
-      circle::TensorType::TensorType_INT64}));
-
 TEST_F(GenModelTest, neg_OneOp_Slice_Type)
 {
   CircleGen cgen;
@@ -136,18 +136,48 @@ TEST_F(GenModelTest, neg_OneOp_Slice_Type)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_Slice_DiffType)
+TEST_P(SliceVariation, neg_DiffType)
 {
+  auto &param = GetParam();
+
   CircleGen cgen;
-  int in = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
-  std::vector<int32_t> begins_data = {0, 0, 1, 0};
-  uint32_t begins_buf = cgen.addBuffer(begins_data);
-  int begins = cgen.addTensor({{4}, circle::TensorType::TensorType_INT32, begins_buf});
-  std::vector<int64_t> sizes_data = {1, 2, 1, 1};
-  uint32_t sizes_buf = cgen.addBuffer(sizes_data);
-  int sizes = cgen.addTensor({{4}, circle::TensorType::TensorType_INT64, sizes_buf});
-  int out = cgen.addTensor({{1, 2, 1, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorSlice({{in, begins, sizes}, {out}});
+
+  int in = cgen.addTensor({param.input_shape, param.input_type}, param.scale, param.zero_point);
+  int out = cgen.addTensor({param.sizes, param.input_type}, param.scale, param.zero_point);
+  if (param.begins_type == circle::TensorType::TensorType_INT32)
+  {
+    uint32_t begins_buf = cgen.addBuffer(param.begins);
+    std::vector<int64_t> sizes_64(param.sizes.size());
+    for (int i = 0; i < param.begins.size(); i++)
+    {
+      sizes_64[i] = param.sizes[i];
+    }
+
+    int rank = param.begins.size();
+    int begins = cgen.addTensor({{rank}, param.begins_type, begins_buf});
+
+    uint32_t sizes_buf = cgen.addBuffer(sizes_64);
+    int sizes = cgen.addTensor({{rank}, circle::TensorType::TensorType_INT64, sizes_buf});
+
+    cgen.addOperatorSlice({{in, begins, sizes}, {out}});
+  }
+  else if (param.begins_type == circle::TensorType::TensorType_INT64)
+  {
+    std::vector<int64_t> begins_64(param.begins.size());
+    for (int i = 0; i < param.begins.size(); i++)
+    {
+      begins_64[i] = param.begins[i];
+    }
+
+    uint32_t begins_buf = cgen.addBuffer(begins_64);
+    int rank = param.begins.size();
+    int begins = cgen.addTensor({{rank}, param.begins_type, begins_buf});
+
+    uint32_t sizes_buf = cgen.addBuffer(param.sizes);
+    int sizes = cgen.addTensor({{rank}, circle::TensorType::TensorType_INT32, sizes_buf});
+
+    cgen.addOperatorSlice({{in, begins, sizes}, {out}});
+  }
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());

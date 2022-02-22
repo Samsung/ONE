@@ -81,7 +81,9 @@ private:
     RETURN_FALSE_UNLESS(is_lwq(node))
     RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->filter()))
-    RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
+    luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (bias != nullptr)
+      RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
     return true;
   }
 
@@ -107,7 +109,9 @@ private:
     RETURN_FALSE_UNLESS(is_lwq(node))
     RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->filter()))
-    RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
+    luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (bias != nullptr)
+      RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
     return true;
   }
 
@@ -117,6 +121,16 @@ private:
     RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->gamma()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->beta()))
+    return true;
+  }
+
+  bool visit(const luci::CirclePack *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    for (uint32_t i = 0; i < node->values_count(); i++)
+    {
+      RETURN_FALSE_UNLESS(is_lwq(node->values(i)));
+    }
     return true;
   }
 
@@ -166,7 +180,9 @@ private:
     RETURN_FALSE_UNLESS(is_lwq(node))
     RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->weights()))
-    RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
+    luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (bias != nullptr)
+      RETURN_FALSE_UNLESS(is_lwq_const(node->bias()))
     return true;
   }
 
@@ -228,6 +244,14 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleOneHot *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node->off_value()));
+    RETURN_FALSE_UNLESS(is_lwq(node->on_value()));
+    RETURN_FALSE_UNLESS(is_lwq(node));
+    return true;
+  }
+
   bool visit(const luci::CircleRelu *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node))
@@ -237,8 +261,12 @@ private:
 
   bool visit(const luci::CircleReshape *node)
   {
-    RETURN_FALSE_UNLESS(is_lwq(node))
-    RETURN_FALSE_UNLESS(is_lwq(node->tensor()));
+    auto input = loco::must_cast<const luci::CircleNode *>(node->tensor());
+    bool input_quantized = input->quantparam() != nullptr;
+    bool node_quantized = node->quantparam() != nullptr;
+    RETURN_FALSE_UNLESS(input_quantized == node_quantized);
+    RETURN_FALSE_UNLESS(not node_quantized or is_lwq(node))
+    RETURN_FALSE_UNLESS(not input_quantized or is_lwq(input));
     return true;
   }
 
@@ -285,6 +313,19 @@ private:
   }
 
   bool visit(const luci::CircleSplitOut *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node));
+    return true;
+  }
+
+  bool visit(const luci::CircleSplitV *node)
+  {
+    // node's output is the input of CircleSplitVOut, thus not quantized
+    RETURN_FALSE_UNLESS(is_lwq(node->input()));
+    return true;
+  }
+
+  bool visit(const luci::CircleSplitVOut *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node));
     return true;
@@ -402,6 +443,29 @@ private:
   {
     RETURN_FALSE_UNLESS(is_lwq(node));
     RETURN_FALSE_UNLESS(is_lwq(node->input()));
+    return true;
+  }
+
+  bool visit(const luci::CircleUnpack *node)
+  {
+    // node's output is the input of CircleUnpackOut, thus not quantized
+    RETURN_FALSE_UNLESS(is_lwq(node->value()));
+    return true;
+  }
+
+  bool visit(const luci::CircleUnpackOut *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node));
+    return true;
+  }
+
+  bool visit(const luci::CircleCast *node)
+  {
+    auto input = loco::must_cast<const luci::CircleNode *>(node->x());
+    bool input_quantized = input->quantparam() != nullptr;
+    bool node_quantized = node->quantparam() != nullptr;
+    RETURN_FALSE_UNLESS(not input_quantized or is_lwq(input));
+    RETURN_FALSE_UNLESS(not node_quantized or is_lwq(node));
     return true;
   }
 

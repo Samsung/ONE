@@ -29,6 +29,7 @@ option(BUILD_WITH_HDF5 "Build test tool with HDF5 library" ON)
 option(GENERATE_RUNTIME_NNAPI_TESTS "Generate NNAPI operation gtest" ON)
 option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
 option(INSTALL_TEST_SCRIPTS "Install test scripts" ON)
+option(BUILD_GPU_CL "Build gpu_cl backend" OFF)
 #
 # Default build configuration for contrib
 #
@@ -53,7 +54,9 @@ option(BUILD_TFLITE_ACCURACY "Build tflite accuracy tool" OFF)
 # Default external libraries source download and build configuration
 #
 option(DOWNLOAD_TENSORFLOW "Download Tensorflow source" ON)
+option(DOWNLOAD_TENSORFLOW_GPU "Download Tensorflow GPU delegate source" OFF)
 option(DOWNLOAD_ABSEIL "Download Abseil source" ON)
+option(DOWNLOAD_OPENCL_HEADERS "Download Opencl_headers source" OFF)
 option(DOWNLOAD_EIGEN "Download Eigen source" ON)
 option(DOWNLOAD_FARMHASH "Download farmhash source" ON)
 option(DOWNLOAD_GEMMLOWP "Download GEMM low precesion library source" ON)
@@ -69,6 +72,7 @@ option(DOWNLOAD_GTEST "Download Google Test source and build Google Test" ON)
 option(BUILD_BOOST "Build boost source" OFF)
 option(BUILD_TENSORFLOW_LITE "Build TensorFlow Lite from the downloaded source" ON)
 option(BUILD_TENSORFLOW_LITE_2_3_0 "Build TensorFlow Lite 2.3.0 from the downloaded source" OFF)
+option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the downloaded source" OFF)
 option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" ON)
 option(BUILD_RUY "Build ruy library from the downloaded source" ON)
 option(BUILD_CPUINFO "Build cpuinfo library from the downloaded source" ON)

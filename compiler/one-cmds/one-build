@@ -27,12 +27,26 @@ import sys
 
 import utils as _utils
 
+# TODO Find better way to suppress trackback on error
+# This suppression is applied only to `one-build`
+sys.tracebacklimit = 0
+
 
 def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to run ONE drivers in customized order')
 
     _utils._add_default_arg(parser)
+
+    opt_name_list = _utils._get_optimization_list(get_name=True)
+    opt_name_list = ['-' + s for s in opt_name_list]
+    if not opt_name_list:
+        opt_help_message = '(No available optimization options)'
+    else:
+        opt_help_message = '(Available optimization options: ' + ', '.join(
+            opt_name_list) + ')'
+    opt_help_message = 'optimization name to use ' + opt_help_message
+    parser.add_argument('-O', type=str, metavar='OPTIMIZATION', help=opt_help_message)
 
     return parser
 
@@ -51,6 +65,14 @@ def _verify_arg(parser, args):
     # check if required arguments is given
     if not _utils._is_valid_attr(args, 'config'):
         parser.error('-C/--config argument is required')
+    # check if given optimization option exists
+    opt_name_list = _utils._get_optimization_list(get_name=True)
+    opt_name_list = [_utils._remove_prefix(s, 'O') for s in opt_name_list]
+    if _utils._is_valid_attr(args, 'O'):
+        if ' ' in getattr(args, 'O'):
+            parser.error('Not allowed to have space in the optimization name')
+        if not getattr(args, 'O') in opt_name_list:
+            parser.error('Invalid optimization option')
 
 
 def _get_driver_name(driver_name):
@@ -97,6 +119,27 @@ def _verify_cfg(driver_list, config):
         raise AssertionError('Only one import-* driver can be executed')
 
 
+# verify given optimization option file
+def _verify_opt(args):
+    if _utils._is_valid_attr(args, 'O'):
+        config = configparser.ConfigParser()
+        config.optionxform = str
+        opt_name_path_dic = dict(
+            zip(_utils._get_optimization_list(get_name=True),
+                _utils._get_optimization_list()))
+        parsed = config.read(opt_name_path_dic['O' + getattr(args, 'O')])
+        # check if given optimization option file exists
+        if not parsed:
+            raise FileNotFoundError('Not found given optimization configuration file')
+        # check if given optimization option file only has `one-optimize` section
+        if len(config.sections()) == 1 and config.sections()[0] == 'one-optimize':
+            pass
+        else:
+            raise AssertionError(
+                'Optimization configuration file only allowed to have a \'one-optimize\' section'
+            )
+
+
 def main():
     # parse arguments
     # since the configuration file path is required first,
@@ -111,30 +154,36 @@ def main():
     config = _parse_cfg(args)
 
     # verify configuration file
-    drivers = [
-        'one-import-tf', 'one-import-tflite', 'one-import-bcq', 'one-import-onnx',
-        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen'
+    bin_dir = os.path.dirname(os.path.realpath(__file__))
+    import_drivers_dict = _utils._detect_one_import_drivers(bin_dir)
+    transform_drivers = [
+        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile'
     ]
-    _verify_cfg(drivers, config)
+    _verify_cfg(import_drivers_dict, config)
+
+    # verify optimization option file
+    _verify_opt(args)
 
     # get sections to run
     section_to_run = []
-    for d in drivers:
+    for d in list(import_drivers_dict) + transform_drivers:
         if _is_available_driver(config, d):
             section_to_run.append(d)
 
     # run
     dir_path = os.path.dirname(os.path.realpath(__file__))
     for section in section_to_run:
-        driver_path = os.path.join(dir_path, _get_driver_name(section))
+        if section in import_drivers_dict:
+            # we already has driver name in dict
+            driver_name = import_drivers_dict[section]
+        else:
+            driver_name = _get_driver_name(section)
+        driver_path = os.path.join(dir_path, driver_name)
         cmd = [driver_path, '--config', getattr(args, 'config'), '--section', section]
-        with subprocess.Popen(
-                cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1) as p:
-            for line in p.stdout:
-                sys.stdout.buffer.write(line)
-        if p.returncode != 0:
-            sys.exit(p.returncode)
+        if section == 'one-optimize' and _utils._is_valid_attr(args, 'O'):
+            cmd += ['-O', getattr(args, 'O')]
+        _utils._run(cmd)
 
 
 if __name__ == '__main__':
-    main()
+    _utils._safemain(main, __file__)

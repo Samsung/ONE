@@ -17,7 +17,7 @@
 
 #include "BatchMatMulV2.h"
 
-#include "flatbuffers/flexbuffers.h"
+#include <flatbuffers/flexbuffers.h>
 
 flatbuffers::Offset<void> BatchMatMulV2Chef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {

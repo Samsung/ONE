@@ -18,6 +18,7 @@
 
 #include <luci/Importer.h>
 #include <luci/CircleOptimizer.h>
+#include <luci/Service/ChangeOutputs.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
@@ -29,7 +30,10 @@
 
 #include <functional>
 #include <iostream>
+#include <sstream>
 #include <string>
+#include <vector>
+#include <cstdlib>
 
 using Algorithms = luci::CircleOptimizer::Options::Algorithm;
 using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
@@ -38,6 +42,16 @@ void print_version(void)
 {
   std::cout << "circle2circle version " << vconone::get_string() << std::endl;
   std::cout << vconone::get_copyright() << std::endl;
+}
+
+void csv_tokenize(const std::string &data, std::vector<std::string> &result)
+{
+  const char delim = ',';
+  std::string token;
+  std::stringstream ss(data);
+
+  while (std::getline(ss, token, delim))
+    result.push_back(token);
 }
 
 int entry(int argc, char **argv)
@@ -56,6 +70,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("Show version information and exit")
     .exit_with(print_version);
+
+  arser.add_argument("-V", "--verbose")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("output additional information to stdout or stderr");
 
   arser.add_argument("--O1").nargs(0).required(false).default_value(false).help(
     "Enable O1 optimize options");
@@ -78,6 +98,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fold dequantize op");
 
+  arser.add_argument("--fold_dwconv")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fold Depthwise Convolution operator with constant inputs");
+
   arser.add_argument("--fold_sparse_to_dense")
     .nargs(0)
     .required(false)
@@ -95,6 +121,12 @@ int entry(int argc, char **argv)
     .required(false)
     .default_value(false)
     .help("This will fuse Activation function to a preceding operator");
+
+  arser.add_argument("--fuse_add_with_fully_connected")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fuse Add operator to FullyConnected operator");
 
   arser.add_argument("--fuse_add_with_tconv")
     .nargs(0)
@@ -131,6 +163,19 @@ int entry(int argc, char **argv)
     .required(false)
     .default_value(false)
     .help("This will fuse operators to InstanceNorm operator");
+
+  arser.add_argument("--fuse_mean_with_mean")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fuse two Mean operations when they follow one by one."
+          "This will fold them into one operation and merge reduction indices.");
+
+  arser.add_argument("--fuse_transpose_with_mean")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fuse Mean operation with a preceding Transpose under certain conditions.");
 
   arser.add_argument("--make_batchnorm_gamma_positive")
     .nargs(0)
@@ -200,6 +245,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will replace channel-wise mul/add with DepthwiseConv2D operator");
 
+  arser.add_argument("--replace_sub_with_add")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will replace sub with add operator");
+
   arser.add_argument("--resolve_customop_add")
     .nargs(0)
     .required(false)
@@ -218,6 +269,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will convert Custom(Matmul) to Matmul operator");
 
+  arser.add_argument("--resolve_customop_max_pool_with_argmax")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert Custom(MaxPoolWithArgmax) to equivalent set of operators");
+
   arser.add_argument("--shuffle_weight_to_16x1float32")
     .nargs(0)
     .required(false)
@@ -231,17 +288,41 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will convert single input Pack to Reshape");
 
+  arser.add_argument("--substitute_padv2_to_pad")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert certain condition PadV2 to Pad");
+
+  arser.add_argument("--substitute_splitv_to_split")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert certain condition SplitV to Split operator");
+
   arser.add_argument("--substitute_squeeze_to_reshape")
     .nargs(0)
     .required(false)
     .default_value(false)
     .help("This will convert certain condition Squeeze to Reshape");
 
+  arser.add_argument("--substitute_strided_slice_to_reshape")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will convert certain condition Strided_Slice to Reshape");
+
   arser.add_argument("--substitute_transpose_to_reshape")
     .nargs(0)
     .required(false)
     .default_value(false)
     .help("This will convert single input Transpose to Reshape");
+
+  arser.add_argument("--expand_broadcast_const")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will expand broadcastable constant inputs");
 
   arser.add_argument("--convert_nchw_to_nhwc")
     .nargs(0)
@@ -292,6 +373,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will turn on profiling data generation.");
 
+  arser.add_argument("--change_outputs")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .required(false)
+    .help("Experimental: Change first subgraph output nodes to CSV names");
+
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
 
@@ -336,11 +423,17 @@ int entry(int argc, char **argv)
   }
   catch (const std::runtime_error &err)
   {
-    std::cout << err.what() << std::endl;
+    std::cerr << err.what() << std::endl;
     std::cout << arser;
     return 255;
   }
 
+  if (arser.get<bool>("--verbose"))
+  {
+    // The third parameter of setenv means REPLACE.
+    // If REPLACE is zero, it does not overwrite an existing value.
+    setenv("LUCI_LOG", "100", 0);
+  }
   if (arser.get<bool>("--O1"))
   {
     options->enable(Algorithms::FuseBCQ);
@@ -357,6 +450,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FoldCast);
   if (arser.get<bool>("--fold_dequantize"))
     options->enable(Algorithms::FoldDequantize);
+  if (arser.get<bool>("--fold_dwconv"))
+    options->enable(Algorithms::FoldDepthwiseConv2D);
   if (arser.get<bool>("--fold_sparse_to_dense"))
     options->enable(Algorithms::FoldSparseToDense);
   if (arser.get<bool>("--forward_reshape_to_unaryop"))
@@ -365,6 +460,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseActivationFunction);
   if (arser.get<bool>("--fuse_batchnorm_with_conv"))
     options->enable(Algorithms::FuseBatchNormWithConv);
+  if (arser.get<bool>("--fuse_add_with_fully_connected"))
+    options->enable(Algorithms::FuseAddWithFullyConnected);
   if (arser.get<bool>("--fuse_add_with_tconv"))
     options->enable(Algorithms::FuseAddWithTConv);
   if (arser.get<bool>("--fuse_batchnorm_with_dwconv"))
@@ -375,10 +472,14 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseBCQ);
   if (arser.get<bool>("--fuse_instnorm"))
     options->enable(Algorithms::FuseInstanceNorm);
+  if (arser.get<bool>("--fuse_mean_with_mean"))
+    options->enable(Algorithms::FuseMeanWithMean);
   if (arser.get<bool>("--make_batchnorm_gamma_positive"))
     options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--fuse_preactivation_batchnorm"))
     options->enable(Algorithms::FusePreActivationBatchNorm);
+  if (arser.get<bool>("--fuse_transpose_with_mean"))
+    options->enable(Algorithms::FuseTransposeWithMean);
   if (arser.get<bool>("--remove_fakequant"))
     options->enable(Algorithms::RemoveFakeQuant);
   if (arser.get<bool>("--remove_quantdequant"))
@@ -397,24 +498,36 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::RemoveUnnecessarySplit);
   if (arser.get<bool>("--replace_cw_mul_add_with_depthwise_conv"))
     options->enable(Algorithms::ReplaceMulAddWithDepthwiseConv);
+  if (arser.get<bool>("--replace_sub_with_add"))
+    options->enable(Algorithms::ReplaceSubWithAdd);
   if (arser.get<bool>("--resolve_customop_add"))
     options->enable(Algorithms::ResolveCustomOpAdd);
   if (arser.get<bool>("--resolve_customop_batchmatmul"))
     options->enable(Algorithms::ResolveCustomOpBatchMatMul);
   if (arser.get<bool>("--resolve_customop_matmul"))
     options->enable(Algorithms::ResolveCustomOpMatMul);
+  if (arser.get<bool>("--resolve_customop_max_pool_with_argmax"))
+    options->enable(Algorithms::ResolveCustomOpMaxPoolWithArgmax);
   if (arser.get<bool>("--shuffle_weight_to_16x1float32"))
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
   if (arser.get<bool>("--substitute_pack_to_reshape"))
     options->enable(Algorithms::SubstitutePackToReshape);
+  if (arser.get<bool>("--substitute_padv2_to_pad"))
+    options->enable(Algorithms::SubstitutePadV2ToPad);
+  if (arser.get<bool>("--substitute_splitv_to_split"))
+    options->enable(Algorithms::SubstituteSplitVToSplit);
   if (arser.get<bool>("--substitute_squeeze_to_reshape"))
     options->enable(Algorithms::SubstituteSqueezeToReshape);
+  if (arser.get<bool>("--substitute_strided_slice_to_reshape"))
+    options->enable(Algorithms::SubstituteStridedSliceToReshape);
   if (arser.get<bool>("--substitute_transpose_to_reshape"))
     options->enable(Algorithms::SubstituteTransposeToReshape);
   if (arser.get<bool>("--transform_min_max_to_relu6"))
     options->enable(Algorithms::TransformMinMaxToRelu6Pass);
   if (arser.get<bool>("--transform_min_relu_to_relu6"))
     options->enable(Algorithms::TransformMinReluToRelu6Pass);
+  if (arser.get<bool>("--expand_broadcast_const"))
+    options->enable(Algorithms::ExpandBroadcastConst);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
@@ -456,6 +569,16 @@ int entry(int argc, char **argv)
       options->param(AlgorithmParameters::NCHW_to_NHWC_output_shape, "true");
   }
 
+  // Change output nodes
+  bool change_outputs = false;
+  std::vector<std::string> new_outputs;
+  if (arser["--change_outputs"])
+  {
+    change_outputs = true;
+    auto csv_nodes = arser.get<std::string>("--change_outputs");
+    csv_tokenize(csv_nodes, new_outputs);
+  }
+
   // Load model from the file
   foder::FileLoader file_loader{input_path};
   std::vector<char> model_data;
@@ -487,6 +610,12 @@ int entry(int argc, char **argv)
   // Import from input Circle file
   luci::Importer importer;
   auto module = importer.importModule(circle_model);
+
+  if (change_outputs)
+  {
+    auto graph = module->graph(0);
+    luci::change_outputs(graph, new_outputs);
+  }
 
   // call luci optimizations for module
   optimizer.optimize(module.get());

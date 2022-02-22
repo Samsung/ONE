@@ -25,6 +25,8 @@ if(BUILD_TENSORFLOW_LITE)
   return_unless(GEMMLowpSource_FOUND)
   nnas_find_package(TensorFlowSource EXACT 1.13.1 QUIET)
   return_unless(TensorFlowSource_FOUND)
+  nnas_find_package(OouraFFTSource QUIET)
+  return_unless(OouraFFTSource_FOUND)
 
   # Optional packages
   nnas_find_package(NEON2SSESource QUIET)

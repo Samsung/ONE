@@ -6,7 +6,6 @@ batch_to_space_nd2
 cast
 concat
 conv_2d
-custom
 depthwise_conv_2d
 div
 embedding_lookup

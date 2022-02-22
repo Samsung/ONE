@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html
-# Boradly speaking, the `postinst` is called after a package is unpacked.
-
-set -e
-
-/usr/share/one/bin/one-prepare-venv

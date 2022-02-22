@@ -1,0 +1,124 @@
+version: 1
+
+graph {
+  operand {
+    name: "ifm1"
+    type: FLOAT32
+    shape { dim:1 }
+  }
+  operand {
+    name: "ifm2"
+    type: FLOAT32
+    shape { dim:1 }
+    filler {
+      tag: "explicit"
+      arg: "10"
+    }
+  }
+  operand {
+    name: "ofm"
+    type: BOOL
+    shape { dim:1 }
+  }
+  operation {
+    type: "Less"
+    input: "ifm1"
+    input: "ifm2"
+    output: "ofm"
+  }
+  input: "ifm1"
+  output: "ofm"
+  name: "WHILE_COND"
+}
+
+graph {
+  operand {
+    name: "ifm1"
+    type: FLOAT32
+    shape { dim:1 }
+  }
+  operand {
+    name: "ifm3"
+    type: FLOAT32
+    shape { dim:1 }
+    filler {
+      tag: "explicit"
+      arg: "1"
+    }
+  }
+  operand {
+    name: "ofm"
+    type: FLOAT32
+    shape { dim:1 }
+  }
+  operation {
+    type: "Add"
+    input: "ifm1"
+    input: "ifm3"
+    output: "ofm"
+    add_options {
+      activation: NONE
+    }
+  }
+  input: "ifm1"
+  output: "ofm"
+  name: "WHILE_BODY"
+}
+
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim:1 }
+}
+operand {
+  name: "zero"
+  type: FLOAT32
+  shape { dim:1 }
+  filler {
+    tag: "explicit"
+    arg: "0"
+  }
+}
+operand {
+  name: "min"
+  type: FLOAT32
+  shape { dim:1 }
+}
+operand {
+  name: "max"
+  type: FLOAT32
+  shape { dim:1 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim:1 }
+}
+operation {
+  type: "Minimum"
+  maximum_options {
+  }
+  input: "ifm1"
+  input: "zero"
+  output: "min"
+}
+operation {
+  type: "Maximum"
+  maximum_options {
+  }
+  input: "min"
+  input: "zero"
+  output: "max"
+}
+operation {
+  type: "While"
+  input: "max"
+  output: "ofm"
+  while_options {
+    body_subgraph_index: 2
+    cond_subgraph_index: 1
+  }
+}
+input: "ifm1"
+output: "ofm"
+name: "Main"

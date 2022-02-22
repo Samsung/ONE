@@ -19,6 +19,7 @@
 
 #include "core/RuntimeGraph.h"
 #include "core/EventNotifier.h"
+#include "luci_interpreter/MemoryManager.h"
 
 #include <memory>
 #include <vector>
@@ -33,9 +34,9 @@ public:
 
   EventNotifier *getEventNotifier() const { return _event_notifier; }
 
-  RuntimeGraph *addGraph()
+  RuntimeGraph *addGraph(IMemoryManager *memory_manager)
   {
-    _graphs.push_back(std::make_unique<RuntimeGraph>(this));
+    _graphs.push_back(std::make_unique<RuntimeGraph>(this, memory_manager));
     return _graphs.back().get();
   }
 

@@ -160,6 +160,11 @@ void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &
   scaling_factor = scale_factor_from_min_side > scale_factor_from_max_side
                      ? scale_factor_from_min_side
                      : scale_factor_from_max_side;
+
+  // protect scale from being very low to avoid overflow/underflow
+  if (scaling_factor < 1e-9)
+    scaling_factor = 1e-9;
+
   zp = 0;
   nudged_min = static_cast<float>(qmin_double * scaling_factor);
   nudged_max = static_cast<float>(qmax_double * scaling_factor);

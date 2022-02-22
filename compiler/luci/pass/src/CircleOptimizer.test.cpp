@@ -33,6 +33,7 @@ TEST(CircleOptimizerTest, optimize_algorithms)
   // TODO add more if needed
   options->enable(Algorithms::FoldAddV2);
   options->enable(Algorithms::FoldCast);
+  options->enable(Algorithms::FoldDepthwiseConv2D);
   options->enable(Algorithms::FoldDequantize);
   options->enable(Algorithms::FoldSparseToDense);
   options->enable(Algorithms::FusePreActivationBatchNorm);
@@ -42,8 +43,10 @@ TEST(CircleOptimizerTest, optimize_algorithms)
   options->enable(Algorithms::RemoveUnnecessarySlice);
   options->enable(Algorithms::RemoveUnnecessarySplit);
   options->enable(Algorithms::ReplaceMulAddWithDepthwiseConv);
+  options->enable(Algorithms::SubstituteStridedSliceToReshape);
   options->enable(Algorithms::SubstituteTransposeToReshape);
   options->enable(Algorithms::ConvertNCHWToNHWC);
+  options->enable(Algorithms::ExpandBroadcastConst);
 
   o.optimize(&g);
 
@@ -77,8 +80,8 @@ TEST(CircleOptimizerTest, quantize_quantdequant_simple)
   auto options = o.options();
 
   options->enable(Algorithms::QuantizeDequantizeWeights);
-  options->param(AlgorithmParameters::Quantize_input_dtype, "float32");
-  options->param(AlgorithmParameters::Quantize_output_dtype, "uint8");
+  options->param(AlgorithmParameters::Quantize_input_model_dtype, "float32");
+  options->param(AlgorithmParameters::Quantize_output_model_dtype, "uint8");
   options->param(AlgorithmParameters::Quantize_granularity, "layer");
 
   o.quantize(&g);
@@ -94,8 +97,8 @@ TEST(CircleOptimizerTest, quantize_quantdequant_input_NEG)
   auto options = o.options();
 
   options->enable(Algorithms::QuantizeDequantizeWeights);
-  options->param(AlgorithmParameters::Quantize_input_dtype, "invalid");
-  options->param(AlgorithmParameters::Quantize_output_dtype, "uint8");
+  options->param(AlgorithmParameters::Quantize_input_model_dtype, "invalid");
+  options->param(AlgorithmParameters::Quantize_output_model_dtype, "uint8");
   options->param(AlgorithmParameters::Quantize_granularity, "layer");
 
   EXPECT_THROW(o.quantize(&g), std::runtime_error);
@@ -109,8 +112,8 @@ TEST(CircleOptimizerTest, quantize_quantdequant_output_NEG)
   auto options = o.options();
 
   options->enable(Algorithms::QuantizeDequantizeWeights);
-  options->param(AlgorithmParameters::Quantize_input_dtype, "float32");
-  options->param(AlgorithmParameters::Quantize_output_dtype, "invalid");
+  options->param(AlgorithmParameters::Quantize_input_model_dtype, "float32");
+  options->param(AlgorithmParameters::Quantize_output_model_dtype, "invalid");
   options->param(AlgorithmParameters::Quantize_granularity, "layer");
 
   EXPECT_THROW(o.quantize(&g), std::runtime_error);
@@ -124,8 +127,8 @@ TEST(CircleOptimizerTest, quantize_quantdequant_gran_NEG)
   auto options = o.options();
 
   options->enable(Algorithms::QuantizeDequantizeWeights);
-  options->param(AlgorithmParameters::Quantize_input_dtype, "float32");
-  options->param(AlgorithmParameters::Quantize_output_dtype, "uint8");
+  options->param(AlgorithmParameters::Quantize_input_model_dtype, "float32");
+  options->param(AlgorithmParameters::Quantize_output_model_dtype, "uint8");
   options->param(AlgorithmParameters::Quantize_granularity, "invalid");
 
   EXPECT_THROW(o.quantize(&g), std::runtime_error);
@@ -139,8 +142,8 @@ TEST(CircleOptimizerTest, quantize_minmax_simple)
   auto options = o.options();
 
   options->enable(Algorithms::QuantizeWithMinMax);
-  options->param(AlgorithmParameters::Quantize_input_dtype, "float32");
-  options->param(AlgorithmParameters::Quantize_output_dtype, "uint8");
+  options->param(AlgorithmParameters::Quantize_input_model_dtype, "float32");
+  options->param(AlgorithmParameters::Quantize_output_model_dtype, "uint8");
   options->param(AlgorithmParameters::Quantize_granularity, "layer");
 
   o.quantize(&g);
@@ -156,8 +159,8 @@ TEST(CircleOptimizerTest, quantize_minmax_input_NEG)
   auto options = o.options();
 
   options->enable(Algorithms::QuantizeWithMinMax);
-  options->param(AlgorithmParameters::Quantize_input_dtype, "invalid");
-  options->param(AlgorithmParameters::Quantize_output_dtype, "uint8");
+  options->param(AlgorithmParameters::Quantize_input_model_dtype, "invalid");
+  options->param(AlgorithmParameters::Quantize_output_model_dtype, "uint8");
   options->param(AlgorithmParameters::Quantize_granularity, "layer");
 
   EXPECT_THROW(o.quantize(&g), std::runtime_error);
@@ -171,8 +174,8 @@ TEST(CircleOptimizerTest, quantize_minmax_output_NEG)
   auto options = o.options();
 
   options->enable(Algorithms::QuantizeWithMinMax);
-  options->param(AlgorithmParameters::Quantize_input_dtype, "float32");
-  options->param(AlgorithmParameters::Quantize_output_dtype, "invalid");
+  options->param(AlgorithmParameters::Quantize_input_model_dtype, "float32");
+  options->param(AlgorithmParameters::Quantize_output_model_dtype, "invalid");
   options->param(AlgorithmParameters::Quantize_granularity, "layer");
 
   EXPECT_THROW(o.quantize(&g), std::runtime_error);
@@ -186,8 +189,8 @@ TEST(CircleOptimizerTest, quantize_minmax_gran_NEG)
   auto options = o.options();
 
   options->enable(Algorithms::QuantizeWithMinMax);
-  options->param(AlgorithmParameters::Quantize_input_dtype, "float32");
-  options->param(AlgorithmParameters::Quantize_output_dtype, "uint8");
+  options->param(AlgorithmParameters::Quantize_input_model_dtype, "float32");
+  options->param(AlgorithmParameters::Quantize_output_model_dtype, "uint8");
   options->param(AlgorithmParameters::Quantize_granularity, "invalid");
 
   EXPECT_THROW(o.quantize(&g), std::runtime_error);
@@ -201,8 +204,8 @@ TEST(CircleOptimizerTest, quantize_requant_simple)
   auto options = o.options();
 
   options->enable(Algorithms::Requantize);
-  options->param(AlgorithmParameters::Quantize_input_dtype, "int8");
-  options->param(AlgorithmParameters::Quantize_output_dtype, "uint8");
+  options->param(AlgorithmParameters::Quantize_input_model_dtype, "int8");
+  options->param(AlgorithmParameters::Quantize_output_model_dtype, "uint8");
 
   o.quantize(&g);
 
@@ -217,8 +220,8 @@ TEST(CircleOptimizerTest, quantize_requant_input_NEG)
   auto options = o.options();
 
   options->enable(Algorithms::Requantize);
-  options->param(AlgorithmParameters::Quantize_input_dtype, "invalid");
-  options->param(AlgorithmParameters::Quantize_output_dtype, "uint8");
+  options->param(AlgorithmParameters::Quantize_input_model_dtype, "invalid");
+  options->param(AlgorithmParameters::Quantize_output_model_dtype, "uint8");
 
   EXPECT_THROW(o.quantize(&g), std::runtime_error);
 }
@@ -231,8 +234,8 @@ TEST(CircleOptimizerTest, quantize_requant_output_NEG)
   auto options = o.options();
 
   options->enable(Algorithms::Requantize);
-  options->param(AlgorithmParameters::Quantize_input_dtype, "int8");
-  options->param(AlgorithmParameters::Quantize_output_dtype, "invalid");
+  options->param(AlgorithmParameters::Quantize_input_model_dtype, "int8");
+  options->param(AlgorithmParameters::Quantize_output_model_dtype, "invalid");
 
   EXPECT_THROW(o.quantize(&g), std::runtime_error);
 }

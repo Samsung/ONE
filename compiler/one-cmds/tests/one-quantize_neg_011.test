@@ -54,7 +54,7 @@ one-quantize \
 --input_path ${inputfile} \
 --input_data ${inputdata} \
 --min_percentile 101 \
---output_path ${outputfile} > ${filename}.log
+--output_path ${outputfile} > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

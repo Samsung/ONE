@@ -1,4 +1,4 @@
-nnas_find_package(FlatBuffers QUIET)
+nnas_find_package(FlatBuffers EXACT 1.10 QUIET)
 
 if(NOT FlatBuffers_FOUND)
   return()
@@ -26,3 +26,10 @@ FlatBuffers_Target(mio_circle
 # This example shows how to use "mio-circle" library
 add_executable(mio_circle_example example.cpp)
 target_link_libraries(mio_circle_example mio_circle)
+
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+
+add_library(mio_circle_helper STATIC ${SOURCES})
+target_include_directories(mio_circle_helper PRIVATE src)
+target_include_directories(mio_circle_helper PUBLIC include)
+target_link_libraries(mio_circle_helper mio_circle)

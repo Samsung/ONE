@@ -65,15 +65,42 @@ struct PropagateQuantParam final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleReshape *node)
   {
-    auto input = node->tensor();
-    if (loco::succs(input).size() != 1)
-      return false;
-
-    auto input_node = loco::must_cast<luci::CircleNode *>(input);
-    return copy_qparam(node, input_node);
+    auto input_node = loco::must_cast<luci::CircleNode *>(node->tensor());
+    return copy_qparam(input_node, node);
   }
 
-  // TODO : Add more Ops (e.g., Transpose)
+  bool visit(luci::CircleTranspose *node)
+  {
+    auto input_node = loco::must_cast<luci::CircleNode *>(node->a());
+    return copy_qparam(input_node, node);
+  }
+
+  bool visit(luci::CircleStridedSlice *node)
+  {
+    auto input_node = loco::must_cast<luci::CircleNode *>(node->input());
+    return copy_qparam(input_node, node);
+  }
+
+  bool visit(luci::CircleSplitOut *node)
+  {
+    auto split = loco::must_cast<luci::CircleSplit *>(node->input());
+    auto input_node = loco::must_cast<luci::CircleNode *>(split->input());
+    return copy_qparam(input_node, node);
+  }
+
+  bool visit(luci::CircleSplitVOut *node)
+  {
+    auto splitv = loco::must_cast<luci::CircleSplitV *>(node->input());
+    auto input_node = loco::must_cast<luci::CircleNode *>(splitv->input());
+    return copy_qparam(input_node, node);
+  }
+
+  bool visit(luci::CircleUnpackOut *node)
+  {
+    auto unpack = loco::must_cast<luci::CircleUnpack *>(node->input());
+    auto input_node = loco::must_cast<luci::CircleNode *>(unpack->value());
+    return copy_qparam(input_node, node);
+  }
 };
 
 } // namespace
@@ -93,6 +120,15 @@ bool PropagateQuantParamPass::run(loco::Graph *g)
     PropagateQuantParam pqp;
     if (circle_node->accept(&pqp))
       changed = true;
+
+    if (_TF_style_maxpool)
+    {
+      if (auto maxpool = dynamic_cast<luci::CircleMaxPool2D *>(node))
+      {
+        auto input = loco::must_cast<luci::CircleNode *>(maxpool->value());
+        copy_qparam(input, maxpool);
+      }
+    }
   }
 
   return changed;

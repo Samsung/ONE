@@ -1,0 +1,203 @@
+version: 1
+
+graph {
+  operand {
+    name: "ifm1"
+    type: FLOAT32
+    shape { }
+  }
+  operand {
+    name: "ifm2"
+    type: FLOAT32
+    shape { }
+    filler {
+      tag: "explicit"
+      arg: "10"
+    }
+  }
+  operand {
+    name: "ofm"
+    type: BOOL
+    shape { }
+  }
+  operation {
+    type: "Less"
+    input: "ifm1"
+    input: "ifm2"
+    output: "ofm"
+  }
+  input: "ifm1"
+  output: "ofm"
+  name: "WHILE_WHILE_COND"
+}
+
+graph {
+  operand {
+    name: "ifm1"
+    type: FLOAT32
+    shape { }
+  }
+  operand {
+    name: "ifm3"
+    type: FLOAT32
+    shape { }
+    filler {
+      tag: "explicit"
+      arg: "1"
+    }
+  }
+  operand {
+    name: "ofm"
+    type: FLOAT32
+    shape { }
+  }
+  operation {
+    type: "Add"
+    input: "ifm1"
+    input: "ifm3"
+    output: "ofm"
+    add_options {
+      activation: NONE
+    }
+  }
+  input: "ifm1"
+  output: "ofm"
+  name: "WHILE_WHILE_BODY"
+}
+
+graph {
+  operand {
+    name: "ifm1"
+    type: FLOAT32
+    shape { }
+  }
+  operand {
+    name: "ifm3"
+    type: FLOAT32
+    shape { }
+    filler {
+      tag: "explicit"
+      arg: "10"
+    }
+  }
+  operand {
+    name: "ofm"
+    type: BOOL
+    shape { }
+  }
+  operation {
+    type: "Less"
+    input: "ifm1"
+    input: "ifm3"
+    output: "ofm"
+  }
+  input: "ifm1"
+  output: "ofm"
+  name: "WHILE_COND"
+}
+
+graph {
+  operand {
+    name: "ifm1"
+    type: FLOAT32
+    shape { }
+  }
+  operand {
+    name: "ifm3"
+    type: FLOAT32
+    shape { }
+    filler {
+      tag: "explicit"
+      arg: "1"
+    }
+  }
+  operand {
+    name: "add"
+    type: FLOAT32
+    shape { }
+  }
+  operand {
+    name: "ofm1"
+    type: FLOAT32
+    shape { }
+  }
+  operation {
+    type: "Add"
+    input: "ifm1"
+    input: "ifm3"
+    output: "add"
+    add_options {
+      activation: NONE
+    }
+  }
+  operation {
+    type: "While"
+    input: "add"
+    output: "ofm1"
+    while_options {
+      cond_subgraph_index: 1
+      body_subgraph_index: 2
+    }
+  }
+  input: "ifm1"
+  output: "ofm1"
+  name: "WHILE_BODY"
+}
+
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { }
+}
+operand {
+  name: "zero"
+  type: FLOAT32
+  shape { }
+  filler {
+    tag: "explicit"
+    arg: "0"
+  }
+}
+operand {
+  name: "min"
+  type: FLOAT32
+  shape { }
+}
+operand {
+  name: "max"
+  type: FLOAT32
+  shape { }
+}
+operand {
+  name: "ofm1"
+  type: FLOAT32
+  shape { }
+}
+operation {
+  type: "Minimum"
+  maximum_options {
+  }
+  input: "ifm1"
+  input: "zero"
+  output: "min"
+}
+operation {
+  type: "Maximum"
+  maximum_options {
+  }
+  input: "min"
+  input: "zero"
+  output: "max"
+}
+operation {
+  type: "While"
+  input: "max"
+  output: "ofm1"
+  while_options {
+    cond_subgraph_index: 3
+    body_subgraph_index: 4
+  }
+}
+input: "ifm1"
+output: "ofm1"
+name: "Main"

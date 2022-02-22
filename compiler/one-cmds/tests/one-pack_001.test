@@ -32,7 +32,7 @@ rm -rf ${outputfolder}
 
 # to create inception_v3.circle
 if [[ ! -s ${inputfile} ]]; then
-  /bin/bash one-import_001.test >> /dev/null
+  /bin/bash one-import_001.test > /dev/null 2>&1
   return_code=$?
   if [[ ${return_code} != 0 ]]; then
     trap_err_onexit
@@ -42,7 +42,7 @@ fi
 # run test
 one-pack \
 -i ${inputfile} \
--o ${outputfolder} >> /dev/null
+-o ${outputfolder} > /dev/null 2>&1
 
 if [[ ! -d "${outputfolder}" ]]; then
   trap_err_onexit

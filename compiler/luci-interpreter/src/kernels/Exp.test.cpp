@@ -17,6 +17,7 @@
 
 #include "kernels/Exp.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -29,13 +30,16 @@ using namespace testing;
 
 TEST(ExpTest, Float)
 {
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   Shape input_shape{1, 1, 7};
   std::vector<float> input_data{0.0f, 1.0f, -1.0f, 100.0f, -100.0f, 0.01f, -0.01f};
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(input_shape, input_data);
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   Exp kernel(&input_tensor, &output_tensor);
   kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
   std::vector<int32_t> ref_output_shape{1, 1, 7};
