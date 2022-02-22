@@ -1,7 +1,7 @@
 nnas_find_package(Protobuf QUIET)
 
 if(NOT Protobuf_FOUND)
-  message(STATUS "Build souschef: FAILED (missing Protobuf")
+  message(STATUS "Build souschef: FAILED (missing Protobuf)")
   return()
 endif(NOT Protobuf_FOUND)
 
