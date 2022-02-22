@@ -592,6 +592,19 @@ void set_act_qparam(luci::CircleNode *node, float scale, int64_t zp)
   qparam->zerop[0] = zp;
 }
 
+// For nodes with integer output, we use integer scale
+void set_int_scale(luci::CircleNode *node)
+{
+  assert(node); // FIX_CALLER_UNLESS
+
+  auto qparam = node->quantparam();
+  assert(qparam);                    // FIX_CALLER_UNLESS
+  assert(qparam->scale.size() == 1); // FIX_CALLER_UNLESS
+
+  auto fp_scale = qparam->scale[0];
+  qparam->scale[0] = fp_scale < 1 ? 1.0f : std::round(fp_scale);
+}
+
 /**
  * @brief Manually set scale/zp of output tensor of special Ops
  */
@@ -655,7 +668,10 @@ struct QuantizeSpecialActivation final : public luci::CircleNodeMutableVisitor<v
     }
   }
 
-  // TODO Move Floor, Ceil from QuantizeActivation to here
+  void visit(luci::CircleFloor *node) { set_int_scale(node); }
+  void visit(luci::CircleFloorDiv *node) { set_int_scale(node); }
+  void visit(luci::CircleFloorMod *node) { set_int_scale(node); }
+  void visit(luci::CircleCeil *node) { set_int_scale(node); }
 };
 
 /**
@@ -722,17 +738,6 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
         {
           compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
           circle_node->dtype(loco::DataType::S16);
-        }
-
-        // The output of these Ops should be integer, so scale should be integer
-        // TODO Handle cases where the integer scale needs to be propagated
-        if (circle_node->opcode() == CircleOpcode::FLOOR ||
-            circle_node->opcode() == CircleOpcode::FLOOR_DIV ||
-            circle_node->opcode() == CircleOpcode::FLOOR_MOD ||
-            circle_node->opcode() == CircleOpcode::CEIL)
-        {
-          assert(scaling_factor >= 0); // FIX_ME_UNLESS
-          scaling_factor = scaling_factor < 1 ? 1.0f : std::round(scaling_factor);
         }
 
         circle_node->quantparam()->scale.push_back(scaling_factor);
