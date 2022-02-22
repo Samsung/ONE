@@ -42,6 +42,7 @@ macro(add_pal_to_target TGT)
     # instead add sources with visitors in this library
     set(PAL_SOURCES ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/tensor_utils.cc
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/reference/portable_tensor_utils.cc
+            ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/optimized/neon_tensor_utils.cc
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
     add_library(luci_interpreter_linux_pal STATIC ${PAL_SOURCES})
     set_target_properties(luci_interpreter_linux_pal PROPERTIES POSITION_INDEPENDENT_CODE ON)
