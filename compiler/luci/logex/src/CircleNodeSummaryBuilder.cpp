@@ -15,6 +15,7 @@
  */
 
 #include "CircleNodeSummaryBuilder.h"
+#include "CircleNodeSummaryBuilders.h"
 
 #include <luci/IR/CircleDialect.h>
 
@@ -118,24 +119,28 @@ CircleNodeSummaryBuilder::create_builder(const luci::CircleNode *node)
     return std::make_unique<CLASS>(); \
   }
 
+    CIRCLE_NODE(ABS, CircleAbsSummaryBuilder)
+    CIRCLE_NODE(ADD, CircleAddSummaryBuilder)
+    CIRCLE_NODE(ADD_N, CircleAddNSummaryBuilder)
+    CIRCLE_NODE(ARG_MAX, CircleArgMaxSummaryBuilder)
+    CIRCLE_NODE(ARG_MIN, CircleArgMinSummaryBuilder)
+    CIRCLE_NODE(AVERAGE_POOL_2D, CircleAveragePool2DSummaryBuilder)
+    CIRCLE_NODE(BATCH_MATMUL, CircleBatchMatMulSummaryBuilder)
+    CIRCLE_NODE(BATCH_TO_SPACE_ND, CircleBatchToSpaceNDSummaryBuilder)
+    CIRCLE_NODE(BCQ_FULLY_CONNECTED, CircleBCQFullyConnectedSummaryBuilder)
+    CIRCLE_NODE(BCQ_GATHER, CircleBCQGatherSummaryBuilder)
+    CIRCLE_NODE(BIDIRECTIONAL_SEQUENCE_LSTM, CircleBidirectionalSequenceLSTMSummaryBuilder)
+    CIRCLE_NODE(CAST, CircleCastSummaryBuilder)
+    CIRCLE_NODE(CEIL, CircleCeilSummaryBuilder)
+    CIRCLE_NODE(CONCATENATION, CircleConcatenationSummaryBuilder)
+    CIRCLE_NODE(CIRCLECONST, CircleConstSummaryBuilder)
+    CIRCLE_NODE(CONV_2D, CircleConv2DSummaryBuilder)
+    CIRCLE_NODE(COS, CircleCosSummaryBuilder)
+    CIRCLE_NODE(CUSTOM, CircleCustomSummaryBuilder)
+
       // TODO Implement following builders
-      // CIRCLE_NODE(ABS, CircleAbsSummaryBuilder)
-      // CIRCLE_NODE(ADD, CircleAddSummaryBuilder)
-      // CIRCLE_NODE(ADD_N, CircleAddNSummaryBuilder)
-      // CIRCLE_NODE(ARG_MAX, CircleArgMaxSummaryBuilder)
-      // CIRCLE_NODE(ARG_MIN, CircleArgMinSummaryBuilder)
-      // CIRCLE_NODE(AVERAGE_POOL_2D, CircleAveragePool2DSummaryBuilder)
-      // CIRCLE_NODE(BATCH_MATMUL, CircleBatchMatMulSummaryBuilder)
-      // CIRCLE_NODE(BATCH_TO_SPACE_ND, CircleBatchToSpaceNDSummaryBuilder)
-      // CIRCLE_NODE(BCQ_FULLY_CONNECTED, CircleBCQFullyConnectedSummaryBuilder)
-      // CIRCLE_NODE(BCQ_GATHER, CircleBCQGatherSummaryBuilder)
-      // CIRCLE_NODE(BIDIRECTIONAL_SEQUENCE_LSTM, CircleBidirectionalSequenceLSTMSummaryBuilder)
-      // CIRCLE_NODE(CAST, CircleCastSummaryBuilder)
-      // CIRCLE_NODE(CEIL, CircleCeilSummaryBuilder)
-      // CIRCLE_NODE(CONCATENATION, CircleConcatenationSummaryBuilder)
       // CIRCLE_NODE(CIRCLEBIDIRECTIONAL_SEQUENCE_LSTM_OUT,
       //             CircleBidirectionalSequenceLSTMOutSummaryBuilder)
-      // CIRCLE_NODE(CIRCLECONST, CircleConstSummaryBuilder)
       // CIRCLE_NODE(CIRCLECUSTOMOUT, CircleCustomOutSummaryBuilder)
       // CIRCLE_NODE(CIRCLEIFOUT, CircleIfOutSummaryBuilder)
       // CIRCLE_NODE(CIRCLENONMAXSUPPRESSIONV4OUT, CircleNonMaxSuppressionV4OutSummaryBuilder)
@@ -147,9 +152,6 @@ CircleNodeSummaryBuilder::create_builder(const luci::CircleNode *node)
       // CIRCLE_NODE(CIRCLEUNPACKOUT, CircleUnpackOutSummaryBuilder)
       // CIRCLE_NODE(CIRCLEVARIABLE, CircleVariableSummaryBuilder)
       // CIRCLE_NODE(CIRCLEWHILEOUT, CircleWhileOutSummaryBuilder)
-      // CIRCLE_NODE(CONV_2D, CircleConv2DSummaryBuilder)
-      // CIRCLE_NODE(COS, CircleCosSummaryBuilder)
-      // CIRCLE_NODE(CUSTOM, CircleCustomSummaryBuilder)
       // CIRCLE_NODE(DEPTH_TO_SPACE, CircleDepthToSpaceSummaryBuilder)
       // CIRCLE_NODE(DEPTHWISE_CONV_2D, CircleDepthwiseConv2DSummaryBuilder)
       // CIRCLE_NODE(DEQUANTIZE, CircleDequantizeSummaryBuilder)
