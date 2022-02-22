@@ -1,5 +1,11 @@
 set(TFLCHEF_FILE_PATH $<TARGET_FILE:tflchef-file>)
 set(TFLCHEF_REVERSE_PATH $<TARGET_FILE:tflchef-reverse>)
+if(DEFINED ENV{BUILD_HOST_EXEC})
+  # TODO use better way to represent path for host executable
+  set(TFLCHEF_FILE_PATH $ENV{BUILD_HOST_EXEC}/compiler/tflchef/tools/file/tflchef-file)
+  set(TFLCHEF_REVERSE_PATH $ENV{BUILD_HOST_EXEC}/compiler/tflchef/tools/reverse/tflchef-reverse)
+  message(STATUS "TFLCHEF_FILE_PATH = ${TFLCHEF_FILE_PATH}")
+endif(DEFINED ENV{BUILD_HOST_EXEC})
 
 nncc_find_resource(TensorFlowLiteRecipes)
 set(TENSORFLOWLITERECIPES_DIR "${TensorFlowLiteRecipes_DIR}")
