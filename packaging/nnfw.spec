@@ -28,6 +28,10 @@ Source2002: nnfw-plugin.pc.in
 Source3001: PROTOBUF.tar.gz
 Source3002: FLATBUFFERS-1.12.tar.gz
 Source3003: HDF5.tar.gz
+Source3004: TENSORFLOW-2.6.0.tar.gz
+Source3005: TENSORFLOW-2.6.0-GEMMLOWP.tar.gz
+Source3006: TENSORFLOW-2.6.0-RUY.tar.gz
+Source3007: TENSORFLOW-2.6.0-EIGEN.tar.gz
 
 %{!?build_type:     %define build_type      Release}
 %{!?coverage_build: %define coverage_build  0}
@@ -130,24 +134,8 @@ NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
 cp %{SOURCE1} .
 mkdir ./externals
 tar -xf %{SOURCE1001} -C ./tests/nnapi/src/
-tar -xf %{SOURCE1002} -C ./externals
-tar -xf %{SOURCE1003} -C ./externals
-tar -xf %{SOURCE1004} -C ./externals
-tar -xf %{SOURCE1005} -C ./externals
-tar -xf %{SOURCE1006} -C ./externals
-tar -xf %{SOURCE1007} -C ./externals
-tar -xf %{SOURCE1008} -C ./externals
-tar -xf %{SOURCE1009} -C ./externals
-tar -xf %{SOURCE1010} -C ./externals
-tar -xf %{SOURCE1011} -C ./externals
-tar -xf %{SOURCE1012} -C ./externals
-tar -xf %{SOURCE1013} -C ./externals
-tar -xf %{SOURCE1014} -C ./externals
-tar -xf %{SOURCE1015} -C ./externals
-tar -xf %{SOURCE1016} -C ./externals
-tar -xf %{SOURCE3001} -C ./externals
-tar -xf %{SOURCE3002} -C ./externals
-tar -xf %{SOURCE3003} -C ./externals
+rm %{SOURCE1001}
+find . -name "*.tar.gz" -exec tar -xf {} -C ./externals \;
 
 %build
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
