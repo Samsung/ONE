@@ -130,6 +130,12 @@ std::vector<std::string> CircleNodeWithXYSummaryBuilder::get_input_names(const l
   return {"x", "y"};
 }
 
+std::vector<std::string>
+CircleNodeWithFEATURESSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"features"};
+}
+
 } // namespace luci
 
 namespace luci
@@ -399,6 +405,88 @@ void CircleCustomSummaryBuilder::build_attributes(const luci::CircleNode *node,
 {
   auto custom = loco::must_cast<const luci::CircleCustom *>(node);
   s.args().append("custom_code", custom->custom_code());
+}
+
+void CircleDepthToSpaceSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                        locop::NodeSummary &s)
+{
+  auto depth_to_space = loco::must_cast<const luci::CircleDepthToSpace *>(node);
+  s.args().append("block_size", std::to_string(depth_to_space->block_size()));
+}
+
+bool CircleDepthwiseConv2DSummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto dw_conv2d = loco::must_cast<const luci::CircleDepthwiseConv2D *>(node);
+  if (dw_conv2d->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
+    return false;
+  if (dw_conv2d->padding() == luci::Padding::UNDEFINED)
+    return false;
+
+  return true;
+}
+
+std::vector<std::string>
+CircleDepthwiseConv2DSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "filter", "bias"};
+}
+
+void CircleDepthwiseConv2DSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                           locop::NodeSummary &s)
+{
+  auto dw_conv2d = loco::must_cast<const luci::CircleDepthwiseConv2D *>(node);
+  s.args().append("stride(h,w)", to_str(dw_conv2d->stride()));
+  s.args().append("dilation(h,w)", to_str(dw_conv2d->dilation()));
+  s.args().append("padding", to_str(dw_conv2d->padding()));
+  s.args().append("depthMultiplier", std::to_string(dw_conv2d->depthMultiplier()));
+  s.args().append("fused_activation_function", to_str(dw_conv2d->fusedActivationFunction()));
+}
+
+std::vector<std::string> CircleExpandDimsSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "axis"};
+}
+
+std::vector<std::string> CircleFakeQuantSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"inputs"};
+}
+
+void CircleFakeQuantSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                     locop::NodeSummary &s)
+{
+  auto fake_quant = loco::must_cast<const luci::CircleFakeQuant *>(node);
+  s.args().append("min", std::to_string(fake_quant->min()));
+  s.args().append("max", std::to_string(fake_quant->max()));
+  s.args().append("num_bits", std::to_string(fake_quant->num_bits()));
+  s.args().append("narrow_range", to_str(fake_quant->narrow_range()));
+}
+
+std::vector<std::string> CircleFillSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"dims", "value"};
+}
+
+bool CircleFullyConnectedSummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto fc = loco::must_cast<const luci::CircleFullyConnected *>(node);
+  if (fc->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
+    return false;
+
+  return true;
+}
+
+std::vector<std::string>
+CircleFullyConnectedSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "weights", "bias"};
+}
+
+void CircleFullyConnectedSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                          locop::NodeSummary &s)
+{
+  auto fc = loco::must_cast<const luci::CircleFullyConnected *>(node);
+  s.args().append("fused_activation_function", to_str(fc->fusedActivationFunction()));
 }
 
 } // namespace luci

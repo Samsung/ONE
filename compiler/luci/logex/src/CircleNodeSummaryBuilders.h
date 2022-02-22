@@ -45,6 +45,12 @@ private:
   std::vector<std::string> get_input_names(const luci::CircleNode *);
 };
 
+class CircleNodeWithFEATURESSummaryBuilder : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+};
+
 } // namespace luci
 
 namespace luci
@@ -174,6 +180,79 @@ private:
 
 class CircleCustomOutSummaryBuilder final : public CircleNodeWithINPUTSummaryBuilder
 {
+};
+
+class CircleDepthToSpaceSummaryBuilder final : public CircleNodeWithINPUTSummaryBuilder
+{
+private:
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
+};
+
+class CircleDepthwiseConv2DSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  bool validate(const luci::CircleNode *node);
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
+};
+
+class CircleDequantizeSummaryBuilder final : public CircleNodeWithINPUTSummaryBuilder
+{
+};
+
+class CircleDivSummaryBuilder final : public CircleNodeWithXYSummaryBuilder
+{
+};
+
+class CircleEluSummaryBuilder final : public CircleNodeWithFEATURESSummaryBuilder
+{
+};
+
+class CircleEqualSummaryBuilder final : public CircleNodeWithXYSummaryBuilder
+{
+};
+
+class CircleExpSummaryBuilder final : public CircleNodeWithXSummaryBuilder
+{
+};
+
+class CircleExpandDimsSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+};
+
+class CircleFakeQuantSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
+};
+
+class CircleFillSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+};
+
+class CircleFloorSummaryBuilder final : public CircleNodeWithXSummaryBuilder
+{
+};
+
+class CircleFloorDivSummaryBuilder final : public CircleNodeWithXYSummaryBuilder
+{
+};
+
+class CircleFloorModSummaryBuilder final : public CircleNodeWithXYSummaryBuilder
+{
+};
+
+class CircleFullyConnectedSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  bool validate(const luci::CircleNode *node);
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
 };
 
 } // namespace luci
