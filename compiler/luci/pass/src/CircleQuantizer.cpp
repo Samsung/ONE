@@ -78,7 +78,7 @@ private:
   std::vector<Algorithm> _algorithms;
   std::map<AlgorithmParameters, const std::string> _algorithm_params;
   std::map<AlgorithmParameters, std::vector<std::string>> _multiple_params;
-  std::map<AlgorithmParameters, std::vector<std::shared_ptr<LayerParam>>> _multiple_layer_params;
+  std::map<AlgorithmParameters, std::vector<std::shared_ptr<LayerParam>>> _layer_params;
 };
 
 void QuantizeOptionsImpl::enable(Algorithm algo) { _algorithms.push_back(algo); }
@@ -122,14 +122,14 @@ std::vector<std::string> QuantizeOptionsImpl::params(AlgorithmParameters param) 
 void QuantizeOptionsImpl::layer_params(AlgorithmParameters param,
                                        std::vector<std::shared_ptr<LayerParam>> &vec)
 {
-  _multiple_layer_params[param] = vec;
+  _layer_params[param] = vec;
 }
 
 std::vector<std::shared_ptr<LayerParam>>
 QuantizeOptionsImpl::layer_params(AlgorithmParameters param) const
 {
-  auto param_vec = _multiple_layer_params.find(param);
-  if (param_vec != _multiple_layer_params.end())
+  auto param_vec = _layer_params.find(param);
+  if (param_vec != _layer_params.end())
   {
     return param_vec->second;
   }
