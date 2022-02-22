@@ -27,7 +27,11 @@ bool is_valid(const circle::OperatorCode *opcode)
 {
   assert(opcode != nullptr);
   circle::BuiltinOperator code = opcode->builtin_code();
-  return (circle::BuiltinOperator_MIN <= code && code <= circle::BuiltinOperator_MAX);
+  // Under FlatBuffers 2.0, circle::BuiltinOperator is enum type,
+  // but on FlatBuffers 2.0, circle::BuiltinOperator becomes enum uint8_t type.
+  // So comparison with circle::BuiltinOperator_MIN becomes true always
+  // because BuiltinOperator_MIN is 0, and it makes compiler warning.
+  return (/*circle::BuiltinOperator_MIN <= code &&*/ code <= circle::BuiltinOperator_MAX);
 }
 
 bool is_custom(const circle::OperatorCode *opcode)

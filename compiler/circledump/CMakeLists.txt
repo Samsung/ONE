@@ -12,6 +12,6 @@ target_link_libraries(circledump arser)
 target_link_libraries(circledump mio_circle)
 target_link_libraries(circledump mio_circle_helper)
 target_link_libraries(circledump safemain)
-target_link_libraries(circledump flatbuffers-1.10)
+target_link_libraries(circledump flatbuffers-2.0)
 
 install(TARGETS circledump DESTINATION bin)

@@ -1,4 +1,4 @@
-nnas_find_package(FlatBuffers EXACT 1.10 QUIET)
+nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
 
 if(NOT FlatBuffers_FOUND)
   message(STATUS "mio-circle skip: FlatBuffers 1.10 NOT FOUND")

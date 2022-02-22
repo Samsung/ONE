@@ -1,4 +1,4 @@
-nnas_find_package(FlatBuffers EXACT 1.10 REQUIRED)
+nnas_find_package(FlatBuffers EXACT 2.0 REQUIRED)
 
 if (NOT FlatBuffers_FOUND)
     return()
