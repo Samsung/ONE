@@ -632,7 +632,18 @@ struct QuantizeSpecialActivation final : public luci::CircleNodeMutableVisitor<v
     }
   }
 
-  // TODO Move Softmax, Floor, Ceil from QuantizeActivation to here
+  void visit(luci::CircleSoftmax *node)
+  {
+    if (output_type == loco::DataType::U8)
+      set_act_qparam(node, 1.0f / 255.0f, 0);
+    else
+    {
+      assert(output_type == loco::DataType::S16);
+      set_act_qparam(node, 1.0f / 32767.0f, 0);
+    }
+  }
+
+  // TODO Move Floor, Ceil from QuantizeActivation to here
 };
 
 /**
@@ -684,13 +695,6 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<bool>
         assert(quantparam->max.size() == 1); // only support layer-wise quant
         auto min = quantparam->min[0];
         auto max = quantparam->max[0];
-
-        // Special values
-        if (circle_node->opcode() == luci::CircleOpcode::SOFTMAX)
-        {
-          min = 0.0f;
-          max = 1.0f;
-        }
 
         float scaling_factor{0};
         int64_t zp{0};
