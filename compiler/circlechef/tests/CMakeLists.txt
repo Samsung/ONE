@@ -5,6 +5,12 @@ file(GLOB RECIPES RELATIVE ${CIRCLERECIPES_DIR} "${CIRCLERECIPES_DIR}/*/test.rec
 
 set(CIRCLECHEF_FILE_PATH $<TARGET_FILE:circlechef-file>)
 set(CIRCLECHEF_REVERSE_PATH $<TARGET_FILE:circlechef-reverse>)
+if(DEFINED ENV{BUILD_HOST_EXEC})
+  # TODO use better way to represent path for host executable
+  set(CIRCLECHEF_FILE_PATH $ENV{BUILD_HOST_EXEC}/compiler/circlechef/tools/file/circlechef-file)
+  set(CIRCLECHEF_REVERSE_PATH $ENV{BUILD_HOST_EXEC}/compiler/circlechef/tools/reverse/circlechef-reverse)
+  message(STATUS "CIRCLECHEF_FILE_PATH = ${CIRCLECHEF_FILE_PATH}")
+endif(DEFINED ENV{BUILD_HOST_EXEC})
 
 foreach(RECIPE IN ITEMS ${RECIPES})
   get_filename_component(RECIPE_PREFIX ${RECIPE} DIRECTORY)
