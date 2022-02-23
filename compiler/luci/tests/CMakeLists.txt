@@ -122,6 +122,8 @@ include("test.lst")
 # Read "test.local.lst" if exists
 include("test.local.lst" OPTIONAL)
 
+# NOTE $<TARGET_FILE:luci_readtester> is used as-is as test itself should
+#      run in target device for cross build also
 add_test(NAME luci_unit_readtest
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/readverify.sh"
           "${CMAKE_CURRENT_BINARY_DIR}"
