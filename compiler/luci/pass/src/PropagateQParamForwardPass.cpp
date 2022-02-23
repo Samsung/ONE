@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/PropagateQuantParamPass.h"
+#include "luci/Pass/PropagateQParamForwardPass.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -57,9 +57,9 @@ bool copy_qparam(luci::CircleNode *src, luci::CircleNode *dst)
 }
 
 //  Visitor to propagate quantization parameters
-struct PropagateQuantParam final : public luci::CircleNodeMutableVisitor<bool>
+struct PropagateQParamForward final : public luci::CircleNodeMutableVisitor<bool>
 {
-  PropagateQuantParam() = default;
+  PropagateQParamForward() = default;
 
   bool visit(luci::CircleNode *) { return false; }
 
@@ -114,16 +114,16 @@ struct PropagateQuantParam final : public luci::CircleNodeMutableVisitor<bool>
 namespace luci
 {
 
-bool PropagateQuantParamPass::run(loco::Graph *g)
+bool PropagateQParamForwardPass::run(loco::Graph *g)
 {
   bool changed = false;
   LOGGER(l);
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    INFO(l) << "PropagateQuantParamPass visit node: " << circle_node->name() << std::endl;
+    INFO(l) << "PropagateQParamForwardPass visit node: " << circle_node->name() << std::endl;
 
-    PropagateQuantParam pqp;
+    PropagateQParamForward pqp;
     if (circle_node->accept(&pqp))
       changed = true;
 
