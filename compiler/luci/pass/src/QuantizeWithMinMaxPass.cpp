@@ -16,6 +16,7 @@
 
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/PropagateQParamForwardPass.h"
+#include "luci/Pass/PropagateQParamBackwardPass.h"
 #include "QuantizationUtils.h"
 #include "ProgressReporter.h"
 
@@ -1699,6 +1700,12 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     QuantizeActivation qa(_ctx->input_model_dtype, _ctx->output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&qa);
+  }
+
+  // Backward propagation of activation qparam
+  {
+    PropagateQParamBackwardPass pqbp(_ctx->output_model_dtype);
+    pqbp.run(g);
   }
 
   // Propagate quantization parameters of concat Op
