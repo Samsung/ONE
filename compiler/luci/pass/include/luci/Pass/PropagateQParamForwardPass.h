@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_PROPAGATE_QUANT_PARAM_PASS_H__
-#define __LUCI_PROPAGATE_QUANT_PARAM_PASS_H__
+#ifndef __LUCI_PROPAGATE_QPARAM_FORWARD_PASS_H__
+#define __LUCI_PROPAGATE_QPARAM_FORWARD_PASS_H__
 
 #include <logo/Pass.h>
 
@@ -23,15 +23,15 @@ namespace luci
 {
 
 /**
- * @brief  Class to propagate quantization parameters of an operator's output to input
+ * @brief  Class to propagate quantization parameters of an operator's input to output
  */
-struct PropagateQuantParamPass final : public logo::Pass
+struct PropagateQParamForwardPass final : public logo::Pass
 {
-  PropagateQuantParamPass(bool TF_style_maxpool) : _TF_style_maxpool(TF_style_maxpool) {}
+  PropagateQParamForwardPass(bool TF_style_maxpool) : _TF_style_maxpool(TF_style_maxpool) {}
 
-  PropagateQuantParamPass() {}
+  PropagateQParamForwardPass() {}
 
-  const char *name(void) const final { return "luci::PropagateQuantParamPass"; }
+  const char *name(void) const final { return "luci::PropagateQParamForwardPass"; }
 
   bool run(loco::Graph *g) final;
 
@@ -41,4 +41,4 @@ private:
 
 } // namespace luci
 
-#endif // __LUCI_PROPAGATE_QUANT_PARAM_PASS_H__
+#endif // __LUCI_PROPAGATE_QPARAM_FORWARD_PASS_H__

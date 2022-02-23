@@ -18,7 +18,7 @@
 
 #include "luci/Pass/CopyQuantParamPass.h"
 #include "luci/Pass/ForceQuantParamPass.h"
-#include "luci/Pass/PropagateQuantParamPass.h"
+#include "luci/Pass/PropagateQParamForwardPass.h"
 #include "luci/Pass/RequantizePass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"

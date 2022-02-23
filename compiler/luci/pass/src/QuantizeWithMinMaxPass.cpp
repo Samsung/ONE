@@ -15,7 +15,7 @@
  */
 
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
-#include "luci/Pass/PropagateQuantParamPass.h"
+#include "luci/Pass/PropagateQParamForwardPass.h"
 #include "QuantizationUtils.h"
 #include "ProgressReporter.h"
 
@@ -1671,7 +1671,7 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
  *   - Propagate qparam of concat backward for optimization (propagate_concat_quantparam)
  *   - Quantize const inputs + propagate qparam backward (QuantizeConstInputActivation)
  *   - Quantize using pre-defined values (QuantizeSpecialActivation)
- *   - Propagate qparam forward (PropagateQuantParamPass)
+ *   - Propagate qparam forward (PropagateQParamForwardPass)
  * 2. Quantize Weights
  * 3. Quantize Bias
  * 4. Set input dtype
@@ -1738,7 +1738,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Forward propagation of activation qparam
   logo::Phase phase;
 
-  phase.emplace_back(std::make_unique<luci::PropagateQuantParamPass>(_ctx->TF_style_maxpool));
+  phase.emplace_back(std::make_unique<luci::PropagateQParamForwardPass>(_ctx->TF_style_maxpool));
 
   ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
   logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
