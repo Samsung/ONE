@@ -43,8 +43,10 @@ bool PropagateQParamBackwardPass::run(loco::Graph *g)
 {
   LOGGER(l);
 
-  // We use post-order traversal as qparam is propagated backward
-  for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
+  // We use reverse post-order traversal as qparam is propagated backward
+  auto nodes = loco::postorder_traversal(loco::output_nodes(g));
+  std::reverse(nodes.begin(), nodes.end());
+  for (auto node : nodes)
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     INFO(l) << "PropagateQParamBackwardPass visit node: " << circle_node->name() << std::endl;
