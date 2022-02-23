@@ -30,6 +30,13 @@ class CircleQuantizer final
 public:
   struct Options
   {
+    struct LayerParam
+    {
+      std::string name;
+      std::string dtype;
+      std::string granularity;
+    };
+
     enum Algorithm
     {
       QuantizeDequantizeWeights,
@@ -48,6 +55,7 @@ public:
       Quantize_tensor_names,
       Quantize_scales,
       Quantize_zero_points,
+      Quantize_layer_params,
 
       // copy_quantparam
       Quantize_src_tensor_names,
@@ -66,6 +74,10 @@ public:
     virtual const std::string param(AlgorithmParameters) const = 0;
     virtual void params(AlgorithmParameters, std::vector<std::string> &) = 0;
     virtual std::vector<std::string> params(AlgorithmParameters) const = 0;
+
+    // Quantization parameters for multiple layers
+    virtual void layer_params(AlgorithmParameters, std::vector<std::shared_ptr<LayerParam>> &) = 0;
+    virtual std::vector<std::shared_ptr<LayerParam>> layer_params(AlgorithmParameters) const = 0;
   };
 
 public:
