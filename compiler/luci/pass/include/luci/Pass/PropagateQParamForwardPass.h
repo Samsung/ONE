@@ -23,7 +23,7 @@ namespace luci
 {
 
 /**
- * @brief  Class to propagate quantization parameters of an operator's output to input
+ * @brief  Class to propagate quantization parameters of an operator's input to output
  */
 struct PropagateQParamForwardPass final : public logo::Pass
 {
