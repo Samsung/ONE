@@ -186,7 +186,7 @@ int entry(int argc, char **argv)
     .nargs(1)
     .type(arser::DataType::STR)
     .required(false)
-    .help("Path to the quantization configuration file (string)");
+    .help("Path to the quantization configuration file");
 
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
