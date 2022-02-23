@@ -9,6 +9,13 @@ function(_HDF5_build)
     return()
   endif(NOT HDF5Source_FOUND)
 
+  if(DEFINED ENV{BUILD_HOST_EXEC})
+    set(EXTERNAL_H5MAKE_LIBSETTINGS $ENV{BUILD_HOST_EXEC}/externals/HDF5/build/bin/H5make_libsettings)
+    set(EXTERNAL_H5DETECT $ENV{BUILD_HOST_EXEC}/externals/HDF5/build/bin/H5detect)
+    set(ENV{EXTERNAL_H5MAKE_LIBSETTINGS} ${EXTERNAL_H5MAKE_LIBSETTINGS})
+    set(ENV{EXTERNAL_H5DETECT} ${EXTERNAL_H5DETECT})
+  endif(DEFINED ENV{BUILD_HOST_EXEC})
+
   nnas_include(ExternalBuildTools)
   ExternalBuild_CMake(CMAKE_DIR   ${HDF5Source_DIR}
                       BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/HDF5/build
@@ -26,6 +33,7 @@ _HDF5_build()
 
 find_path(HDF5_CONFIG_DIR "hdf5-config.cmake"
           PATHS ${EXT_OVERLAY_DIR}
+          NO_CMAKE_FIND_ROOT_PATH
           PATH_SUFFIXES
             cmake
             share/cmake
