@@ -55,6 +55,8 @@ bool PropagateQParamBackwardPass::run(loco::Graph *g)
     circle_node->accept(&pqb);
   }
 
+  // This pass is only run once, so return false
+  // TODO Refactoring not to return meaningless value
   return false;
 }
 
