@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/PropagateQuantParamPass.h"
+#include "luci/Pass/PropagateQParamForwardPass.h"
 
 #include <luci/IR/CircleNodes.h>
 
@@ -83,18 +83,18 @@ public:
 
 } // namespace
 
-TEST(PropagateQuantParamPassTest, name)
+TEST(PropagateQParamForwardPassTest, name)
 {
-  luci::PropagateQuantParamPass pass;
+  luci::PropagateQParamForwardPass pass;
   auto const name = pass.name();
   ASSERT_NE(nullptr, name);
 }
 
-TEST(PropagateQuantParam, simple)
+TEST(PropagateQParamForward, simple)
 {
   SimpleGraph g;
 
-  luci::PropagateQuantParamPass pass;
+  luci::PropagateQParamForwardPass pass;
   while (pass.run(&g.g))
     ;
 
@@ -106,13 +106,13 @@ TEST(PropagateQuantParam, simple)
   EXPECT_EQ(20, g.reshape->quantparam()->zerop[2]);
 }
 
-TEST(PropagateQuantParam, wrong_op_NEG)
+TEST(PropagateQParamForward, wrong_op_NEG)
 {
   SimpleGraph g;
   g.output->from(g.conv);
   g.reshape->drop();
 
-  luci::PropagateQuantParamPass pass;
+  luci::PropagateQParamForwardPass pass;
   while (pass.run(&g.g))
     ;
 

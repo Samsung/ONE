@@ -32,12 +32,30 @@ namespace luci
 class QuantizeDequantizeWeightsPass : public logo::Pass
 {
 public:
-  QuantizeDequantizeWeightsPass(loco::DataType input_model_dtype, loco::DataType output_model_dtype,
-                                QuantizationGranularity granularity)
-    : _input_model_dtype{input_model_dtype}, _output_model_dtype{output_model_dtype}, _granularity{
-                                                                                        granularity}
+  struct Context
+  {
+    loco::DataType input_model_dtype = loco::DataType::Unknown;
+    loco::DataType output_model_dtype = loco::DataType::Unknown;
+    QuantizationGranularity granularity = QuantizationGranularity::ChannelWise;
+    std::vector<LayerInfo> layers_info;
+  };
+
+public:
+  QuantizeDequantizeWeightsPass(std::unique_ptr<Context> &&ctx) : _ctx{std::move(ctx)}
   {
     // DO NOTHING
+  }
+
+public:
+  QuantizeDequantizeWeightsPass(loco::DataType input_model_dtype, loco::DataType output_model_dtype,
+                                QuantizationGranularity granularity)
+  {
+    _ctx = std::make_unique<Context>();
+    {
+      _ctx->input_model_dtype = input_model_dtype;
+      _ctx->output_model_dtype = output_model_dtype;
+      _ctx->granularity = granularity;
+    }
   }
   virtual const char *name(void) const { return "luci::QuantizeDequantizeWeightsPass"; }
 
@@ -45,9 +63,7 @@ public:
   bool run(loco::Graph *graph);
 
 private:
-  loco::DataType _input_model_dtype;
-  loco::DataType _output_model_dtype;
-  QuantizationGranularity _granularity;
+  std::unique_ptr<Context> _ctx;
 };
 
 } // namespace luci

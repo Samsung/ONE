@@ -40,11 +40,18 @@ macro(nnas_include PREFIX)
 endmacro(nnas_include)
 
 macro(nnas_find_package PREFIX)
-  find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
-    PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
-    ${ARGN}
-  )
+  find_package(${PREFIX}
+               CONFIG NO_DEFAULT_PATH
+               PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
+               ${ARGN})
 endmacro(nnas_find_package)
+
+macro(nnas_find_package_folder PREFIX FIND_FOLDER)
+  find_package(${PREFIX}
+               CONFIG NO_DEFAULT_PATH
+               PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages ${FIND_FOLDER}
+               ${ARGN})
+endmacro(nnas_find_package_folder)
 
 # nncc_find_resource(NAME) will update the following variables
 #
@@ -101,6 +108,7 @@ option(DOWNLOAD_ONNX "Download ONNX source" ON)
 option(DOWNLOAD_ABSEIL "Download Abseil-cpp source" ON)
 option(DOWNLOAD_OPENCL_HEADERS "Download OpenCl Header source" ON)
 option(DOWNLOAD_PYBIND11 "Download Pybind11 source" ON)
+option(DOWNLOAD_JSONCPP "Download Jsoncpp source" ON)
 
 option(DOWNLOAD_GTEST "Download Google Test source" ON)
 option(BUILD_GTEST "Build Google Test from the downloaded source" ON)

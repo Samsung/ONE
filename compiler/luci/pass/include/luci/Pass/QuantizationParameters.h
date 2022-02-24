@@ -17,6 +17,10 @@
 #ifndef __LUCI_QUANTIZATION_PARAMETERS_H__
 #define __LUCI_QUANTIZATION_PARAMETERS_H__
 
+#include <loco.h>
+
+#include <string>
+
 namespace luci
 {
 
@@ -24,6 +28,13 @@ enum QuantizationGranularity
 {
   LayerWise = 0,
   ChannelWise = 1,
+};
+
+struct LayerInfo
+{
+  std::string name;
+  loco::DataType dtype;
+  QuantizationGranularity granularity;
 };
 
 } // namespace luci

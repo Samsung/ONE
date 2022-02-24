@@ -6,8 +6,8 @@ function(_FlatBuffers_import)
     return()
   endif(Flatbuffers_FOUND)
 
-  # NOTE Tizen uses 1.12
-  nnas_find_package(FlatBuffersSource EXACT 1.12 QUIET)
+  # NOTE Tizen uses 2.0
+  nnas_find_package(FlatBuffersSource EXACT 2.0 QUIET)
 
   if(NOT FlatBuffersSource_FOUND)
     set(FlatBuffers_FOUND FALSE PARENT_SCOPE)

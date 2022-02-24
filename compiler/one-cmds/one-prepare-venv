@@ -56,7 +56,11 @@ if [[ ! -z "$ONE_PREPVENV_PIP_OPTION" ]]; then
 fi
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow-cpu==${VER_TENSORFLOW}
+if [ -n "${EXT_TENSORFLOW_WHL}" ]; then
+  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install ${EXT_TENSORFLOW_WHL}
+else
+  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow-cpu==${VER_TENSORFLOW}
+fi
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install Pillow==6.2.2
 
 # Install PyTorch and ONNX related
@@ -73,9 +77,13 @@ ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==1.10.0+cpu -f ${TORCH_STABLE
 # TODO remove this when VER_TENSORFLOW > 2.6.0
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install keras==2.6.0
 
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX}
+
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnxruntime==${VER_ONNXRUNTIME}
+
 # Provide install of custom onnx-tf
 if [ -n "${EXT_ONNX_TF_WHL}" ]; then
-  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX} onnxruntime==${VER_ONNXRUNTIME} ${EXT_ONNX_TF_WHL}
+  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install ${EXT_ONNX_TF_WHL}
 else
-  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX} onnxruntime==${VER_ONNXRUNTIME} onnx-tf==${VER_ONNX_TF}
+  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx-tf==${VER_ONNX_TF}
 fi

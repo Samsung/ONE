@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_PROPAGATE_QUANT_PARAM_PASS_H__
-#define __LUCI_PROPAGATE_QUANT_PARAM_PASS_H__
+#ifndef __LUCI_PROPAGATE_QPARAM_BACKWARD_PASS_H__
+#define __LUCI_PROPAGATE_QPARAM_BACKWARD_PASS_H__
 
 #include <logo/Pass.h>
 
@@ -25,20 +25,18 @@ namespace luci
 /**
  * @brief  Class to propagate quantization parameters of an operator's output to input
  */
-struct PropagateQuantParamPass final : public logo::Pass
+struct PropagateQParamBackwardPass final : public logo::Pass
 {
-  PropagateQuantParamPass(bool TF_style_maxpool) : _TF_style_maxpool(TF_style_maxpool) {}
+  PropagateQParamBackwardPass(loco::DataType output) : _output_model_dtype(output) {}
 
-  PropagateQuantParamPass() {}
-
-  const char *name(void) const final { return "luci::PropagateQuantParamPass"; }
+  const char *name(void) const final { return "luci::PropagateQParamBackwardPass"; }
 
   bool run(loco::Graph *g) final;
 
 private:
-  bool _TF_style_maxpool = false;
+  loco::DataType _output_model_dtype;
 };
 
 } // namespace luci
 
-#endif // __LUCI_PROPAGATE_QUANT_PARAM_PASS_H__
+#endif // __LUCI_PROPAGATE_QPARAM_BACKWARD_PASS_H__

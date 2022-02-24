@@ -525,6 +525,13 @@ uint32_t CircleGen::addOperatorSquare(const OperatorParams &params)
                                 circle::BuiltinOptions_SquareOptions, options);
 }
 
+uint32_t CircleGen::addOperatorBatchToSpaceND(const OperatorParams &params)
+{
+  auto options = circle::CreateBatchToSpaceNDOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_BATCH_TO_SPACE_ND,
+                                circle::BuiltinOptions_BatchToSpaceNDOptions, options);
+}
+
 // NOTE Please add addOperator functions ABOVE this lie
 //
 // %  How to add a new addOperatorXXX fuction

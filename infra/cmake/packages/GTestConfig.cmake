@@ -6,6 +6,7 @@ function(_GTest_build)
   nnas_find_package(GTestSource QUIET)
 
   if(NOT GTestSource_FOUND)
+    message(STATUS "GTest_build skip: NOT GTestSource_FOUND")
     return()
   endif(NOT GTestSource_FOUND)
 
@@ -16,6 +17,11 @@ function(_GTest_build)
                       IDENTIFIER  "1.8.0-fix1"
                       PKG_NAME    "GTEST")
 
+  set(GTEST_FOUND TRUE PARENT_SCOPE)
+  set(GTEST_INCLUDE_DIRS ${EXT_OVERLAY_DIR}/include PARENT_SCOPE)
+  set(GTEST_LIBRARIES ${EXT_OVERLAY_DIR}/lib/libgtest.a PARENT_SCOPE)
+  set(GTEST_MAIN_LIBRARIES ${EXT_OVERLAY_DIR}/lib/libgtest_main.a PARENT_SCOPE)
+
 endfunction(_GTest_build)
 
 _GTest_build()
@@ -24,7 +30,10 @@ _GTest_build()
 # Note: cmake supports GTest and does not find GTestConfig.cmake or GTest-config.cmake.
 # Refer to "https://cmake.org/cmake/help/v3.5/module/FindGTest.html"
 # find_package(GTest) creates options like GTEST_FOUND, not GTest_FOUND.
-find_package(GTest)
+if(NOT GTEST_FOUND)
+  message(STATUS "GTEST_FOUND false: call find_package(GTest)")
+  find_package(GTest)
+endif(NOT GTEST_FOUND)
 find_package(Threads)
 
 if(${GTEST_FOUND} AND TARGET Threads::Threads)

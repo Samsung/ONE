@@ -18,7 +18,7 @@
 
 #include "luci/Pass/CopyQuantParamPass.h"
 #include "luci/Pass/ForceQuantParamPass.h"
-#include "luci/Pass/PropagateQuantParamPass.h"
+#include "luci/Pass/PropagateQParamForwardPass.h"
 #include "luci/Pass/RequantizePass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
@@ -43,6 +43,7 @@ namespace
 {
 
 using namespace luci;
+using LayerParam = luci::CircleQuantizer::Options::LayerParam;
 
 template <typename T> T lexical_cast(const std::string &str)
 {
@@ -69,12 +70,15 @@ public:
   const std::string param(AlgorithmParameters) const final;
   void params(AlgorithmParameters, std::vector<std::string> &) final;
   std::vector<std::string> params(AlgorithmParameters) const final;
+  void layer_params(AlgorithmParameters, std::vector<std::shared_ptr<LayerParam>> &) final;
+  std::vector<std::shared_ptr<LayerParam>> layer_params(AlgorithmParameters) const final;
   bool query(Algorithm) final;
 
 private:
   std::vector<Algorithm> _algorithms;
   std::map<AlgorithmParameters, const std::string> _algorithm_params;
   std::map<AlgorithmParameters, std::vector<std::string>> _multiple_params;
+  std::map<AlgorithmParameters, std::vector<std::shared_ptr<LayerParam>>> _layer_params;
 };
 
 void QuantizeOptionsImpl::enable(Algorithm algo) { _algorithms.push_back(algo); }
@@ -112,6 +116,26 @@ std::vector<std::string> QuantizeOptionsImpl::params(AlgorithmParameters param) 
   else
   {
     return std::vector<std::string>();
+  }
+}
+
+void QuantizeOptionsImpl::layer_params(AlgorithmParameters param,
+                                       std::vector<std::shared_ptr<LayerParam>> &vec)
+{
+  _layer_params[param] = vec;
+}
+
+std::vector<std::shared_ptr<LayerParam>>
+QuantizeOptionsImpl::layer_params(AlgorithmParameters param) const
+{
+  auto param_vec = _layer_params.find(param);
+  if (param_vec != _layer_params.end())
+  {
+    return param_vec->second;
+  }
+  else
+  {
+    return std::vector<std::shared_ptr<LayerParam>>();
   }
 }
 
@@ -153,6 +177,7 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     auto output_model_dtype =
       _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
     auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
+    auto layer_params = _options->layer_params(Options::AlgorithmParameters::Quantize_layer_params);
 
     if (!in_array(to_lower_case(input_model_dtype), fakeq_supported_input_model_dtype))
       throw std::runtime_error("Unsupported input type. List of supported input type: " +
@@ -170,6 +195,23 @@ void CircleQuantizer::quantize(loco::Graph *g) const
         str_to_dtype(output_model_dtype) != loco::DataType::U8)
       throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
 
+    // Check dtype/granularity of layer params
+    for (auto layer_param : layer_params)
+    {
+      auto name = layer_param->name;
+      if (!in_array(to_lower_case(layer_param->dtype), fakeq_supported_output_model_dtype))
+      {
+        throw std::runtime_error("Unsupported dtype in " + name + ". List of supported dtype: " +
+                                 to_string(fakeq_supported_output_model_dtype));
+      }
+      if (!in_array(to_lower_case(layer_param->granularity), fakeq_supported_granularity))
+      {
+        throw std::runtime_error(
+          "Unsupported granularity in " + name +
+          ". List of supported granularity: " + to_string(fakeq_supported_granularity));
+      }
+    }
+
     // Clear existing quantparams before doing fake quantization
     for (auto node : loco::active_nodes(loco::output_nodes(g)))
     {
@@ -178,9 +220,26 @@ void CircleQuantizer::quantize(loco::Graph *g) const
         circle_node->quantparam(nullptr);
     }
 
-    luci::QuantizeDequantizeWeightsPass fake_quantizer(str_to_dtype(input_model_dtype),
-                                                       str_to_dtype(output_model_dtype),
-                                                       str_to_granularity(granularity));
+    auto ctx = std::make_unique<luci::QuantizeDequantizeWeightsPass::Context>();
+    {
+      ctx->input_model_dtype = str_to_dtype(input_model_dtype);
+      ctx->output_model_dtype = str_to_dtype(output_model_dtype);
+      ctx->granularity = str_to_granularity(granularity);
+
+      for (auto layer_param : layer_params)
+      {
+        LayerInfo info;
+        {
+          info.name = layer_param->name;
+          info.dtype = str_to_dtype(layer_param->dtype);
+          info.granularity = str_to_granularity(layer_param->granularity);
+        }
+        ctx->layers_info.emplace_back(info);
+      }
+    }
+
+    luci::QuantizeDequantizeWeightsPass fake_quantizer(std::move(ctx));
+
     fake_quantizer.run(g);
   }
 
@@ -208,6 +267,8 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     bool TF_style_maxpool =
       _options->param(Options::AlgorithmParameters::Quantize_TF_style_maxpool) == "True";
 
+    auto layer_params = _options->layer_params(Options::AlgorithmParameters::Quantize_layer_params);
+
     if (!in_array(to_lower_case(input_model_dtype), qwmm_supported_input_model_dtype))
       throw std::runtime_error("Unsupported input type. List of supported input types: " +
                                to_string(qwmm_supported_input_model_dtype));
@@ -232,10 +293,45 @@ void CircleQuantizer::quantize(loco::Graph *g) const
         str_to_dtype(output_model_dtype) != loco::DataType::U8)
       throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
 
-    luci::QuantizeWithMinMaxPass quantizer(
-      str_to_dtype(input_model_dtype), str_to_dtype(output_model_dtype),
-      str_to_granularity(granularity), str_to_dtype(input_type), str_to_dtype(output_type),
-      TF_style_maxpool);
+    // Check dtype/granularity of layer params
+    for (auto layer_param : layer_params)
+    {
+      auto name = layer_param->name;
+      if (!in_array(to_lower_case(layer_param->dtype), qwmm_supported_output_model_dtype))
+      {
+        throw std::runtime_error("Unsupported dtype in " + name + ". List of supported dtype: " +
+                                 to_string(qwmm_supported_output_model_dtype));
+      }
+      if (!in_array(to_lower_case(layer_param->granularity), qwmm_supported_granularity))
+      {
+        throw std::runtime_error(
+          "Unsupported granularity in " + name +
+          ". List of supported granularity: " + to_string(qwmm_supported_granularity));
+      }
+    }
+
+    auto ctx = std::make_unique<luci::QuantizeWithMinMaxPass::Context>();
+    {
+      ctx->input_model_dtype = str_to_dtype(input_model_dtype);
+      ctx->output_model_dtype = str_to_dtype(output_model_dtype);
+      ctx->granularity = str_to_granularity(granularity);
+      ctx->input_type = str_to_dtype(input_type);
+      ctx->output_type = str_to_dtype(output_type);
+      ctx->TF_style_maxpool = TF_style_maxpool;
+
+      for (auto layer_param : layer_params)
+      {
+        LayerInfo info;
+        {
+          info.name = layer_param->name;
+          info.dtype = str_to_dtype(layer_param->dtype);
+          info.granularity = str_to_granularity(layer_param->granularity);
+        }
+        ctx->layers_info.emplace_back(info);
+      }
+    }
+
+    luci::QuantizeWithMinMaxPass quantizer(std::move(ctx));
 
     quantizer.run(g);
 

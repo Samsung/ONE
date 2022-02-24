@@ -47,16 +47,11 @@ public:
       ResolveCustomOpBatchMatMul,
       ResolveCustomOpMatMul,
       ResolveCustomOpMaxPoolWithArgmax,
-      QuantizeDequantizeWeights,
-      QuantizeWithMinMax,
-      Requantize,
       FoldAddV2,
       FoldCast,
       FoldDepthwiseConv2D,
       FoldDequantize,
       FoldSparseToDense,
-      CopyQuantParam,
-      ForceQuantParam,
       ForwardReshapeToUnaryOp,
       SparsifyTensorPass,
       FusePreActivationBatchNorm,
@@ -87,22 +82,6 @@ public:
 
     enum AlgorithmParameters
     {
-      // quantize
-      Quantize_input_model_dtype,
-      Quantize_output_model_dtype,
-      Quantize_granularity, // layer-wise or channel-wise
-      Quantize_tensor_names,
-      Quantize_scales,
-      Quantize_zero_points,
-
-      // copy_quantparam
-      Quantize_src_tensor_names,
-      Quantize_dst_tensor_names,
-
-      Quantize_input_type,
-      Quantize_output_type,
-      Quantize_TF_style_maxpool,
-
       // sparsify
       Sparsify_tensor_name,
       Sparsify_traversal_order,
@@ -133,8 +112,6 @@ public:
   void optimize(luci::Module *) const;
 
   void optimize(loco::Graph *) const;
-
-  void quantize(loco::Graph *) const;
 
   void sparsify(loco::Graph *) const;
 

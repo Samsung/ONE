@@ -32,6 +32,7 @@ TEST(CircleFullyConnectedTest, constructor)
   ASSERT_EQ(nullptr, fc_node.weights());
   ASSERT_EQ(nullptr, fc_node.bias());
   ASSERT_EQ(luci::FusedActFunc::UNDEFINED, fc_node.fusedActivationFunction());
+  ASSERT_EQ(false, fc_node.keep_num_dims());
 }
 
 TEST(CircleFullyConnectedTest, input_NEG)

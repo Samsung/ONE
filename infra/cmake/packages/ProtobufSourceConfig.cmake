@@ -9,7 +9,8 @@ function(_ProtobufSource_import)
 
   envoption(PROTOBUF_URL https://github.com/protocolbuffers/protobuf/archive/v3.5.2.tar.gz)
 
-  ExternalSource_Download(PROTOBUF ${PROTOBUF_URL})
+  ExternalSource_Download(PROTOBUF ${PROTOBUF_URL}
+                          PATCH ${CMAKE_CURRENT_LIST_DIR}/ProtobufSource.patch)
 
   set(ProtobufSource_DIR ${PROTOBUF_SOURCE_DIR} PARENT_SCOPE)
   set(ProtobufSource_FOUND TRUE PARENT_SCOPE)

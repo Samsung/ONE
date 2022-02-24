@@ -9,6 +9,8 @@ set(TEST_DST test/pytorch-operations)
 
 install(DIRECTORY "${NNAS_PROJECT_SOURCE_DIR}/res/PyTorchExamples/" DESTINATION "${TEST_DST}")
 
+set(PYTORCH_IMPORT_OPTIONS "--unroll_rnn --unroll_lstm")
+
 foreach(TEST_ITEM IN ITEMS ${TEST_EXAMPLES})
   set(TEST_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/${TEST_ITEM}.test")
 
@@ -25,7 +27,8 @@ foreach(TEST_ITEM IN ITEMS ${TEST_EXAMPLES})
   file(APPEND "${TEST_SCRIPT}" "outputfile=\"${TEST_ITEM}.circle\"\n")
   file(APPEND "${TEST_SCRIPT}" "input_shapes=\$(head -n 1 ${TEST_ITEM}.spec)\n")
   file(APPEND "${TEST_SCRIPT}" "input_types=\$(tail -n 1 ${TEST_ITEM}.spec)\n")
-  file(APPEND "${TEST_SCRIPT}" "one-import-pytorch --input_path=${TEST_ITEM}.pth --output_path=${TEST_ITEM}.circle --input_shapes=\${input_shapes} --input_types=\${input_types} &> /dev/null\n")
+  file(APPEND "${TEST_SCRIPT}" "one-import-pytorch --input_path=${TEST_ITEM}.pth --output_path=${TEST_ITEM}.circle\
+    ${PYTORCH_IMPORT_OPTIONS} --input_shapes=\${input_shapes} --input_types=\${input_types} &> /dev/null\n")
   file(APPEND "${TEST_SCRIPT}" "if [[ ! -s \"\${outputfile}\" ]]; then\n")
   file(APPEND "${TEST_SCRIPT}" "  trap_err_onexit\n")
   file(APPEND "${TEST_SCRIPT}" "fi\n")

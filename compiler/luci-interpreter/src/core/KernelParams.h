@@ -89,6 +89,7 @@ struct DivParams
 struct FullyConnectedParams
 {
   Activation activation;
+  bool keep_num_dims = false;
 };
 
 struct GatherParams

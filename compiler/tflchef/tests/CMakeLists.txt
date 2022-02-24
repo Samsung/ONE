@@ -1,10 +1,11 @@
-if(NOT TARGET nnkit-run)
-  return()
-endif(NOT TARGET nnkit-run)
-
-if(NOT TARGET nnkit_tflite_backend)
-  return()
-endif(NOT TARGET nnkit_tflite_backend)
+set(TFLCHEF_FILE_PATH $<TARGET_FILE:tflchef-file>)
+set(TFLCHEF_REVERSE_PATH $<TARGET_FILE:tflchef-reverse>)
+if(DEFINED ENV{BUILD_HOST_EXEC})
+  # TODO use better way to represent path for host executable
+  set(TFLCHEF_FILE_PATH $ENV{BUILD_HOST_EXEC}/compiler/tflchef/tools/file/tflchef-file)
+  set(TFLCHEF_REVERSE_PATH $ENV{BUILD_HOST_EXEC}/compiler/tflchef/tools/reverse/tflchef-reverse)
+  message(STATUS "TFLCHEF_FILE_PATH = ${TFLCHEF_FILE_PATH}")
+endif(DEFINED ENV{BUILD_HOST_EXEC})
 
 nncc_find_resource(TensorFlowLiteRecipes)
 set(TENSORFLOWLITERECIPES_DIR "${TensorFlowLiteRecipes_DIR}")
@@ -26,8 +27,8 @@ foreach(RECIPE IN ITEMS ${RECIPES})
 
   # Generate .tflite
   add_custom_command(OUTPUT ${RECIPE_OUTPUT_FILE}
-                     COMMAND tflchef-file ${RECIPE_SOURCE_FILE} ${RECIPE_OUTPUT_FILE}
-                     DEPENDS tflchef-file ${RECIPE_SOURCE_FILE}
+                     COMMAND ${TFLCHEF_FILE_PATH} ${RECIPE_SOURCE_FILE} ${RECIPE_OUTPUT_FILE}
+                     DEPENDS ${TFLCHEF_FILE_PATH} ${RECIPE_SOURCE_FILE}
                      COMMENT "Generating ${RECIPE_OUTPUT_FILE}")
 
   list(APPEND TESTS ${RECIPE_PREFIX})
@@ -52,8 +53,8 @@ foreach(RECIPE IN ITEMS ${RECIPES})
 
   # Generate .tflite
   add_custom_command(OUTPUT ${RECIPE_OUTPUT_FILE}
-                     COMMAND tflchef-file ${RECIPE_SOURCE_FILE} ${RECIPE_OUTPUT_FILE}
-                     DEPENDS tflchef-file ${RECIPE_SOURCE_FILE}
+                     COMMAND ${TFLCHEF_FILE_PATH} ${RECIPE_SOURCE_FILE} ${RECIPE_OUTPUT_FILE}
+                     DEPENDS ${TFLCHEF_FILE_PATH} ${RECIPE_SOURCE_FILE}
                      COMMENT "Generating ${RECIPE_OUTPUT_FILE}")
 
   list(APPEND TESTS ${RECIPE_PREFIX})
@@ -76,16 +77,16 @@ foreach(TFLITEFILE IN ITEMS ${GEN_TFLITEFILES})
 
   # Generate .gen.recipe from generated .tflite
   add_custom_command(OUTPUT ${RECIPE_GEN_OUTPUT_FILE}
-                     COMMAND tflchef-reverse ${RECIPE_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE}
-                     DEPENDS tflchef-reverse ${RECIPE_OUTPUT_FILE}
+                     COMMAND ${TFLCHEF_REVERSE_PATH} ${RECIPE_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE}
+                     DEPENDS ${TFLCHEF_REVERSE_PATH} ${RECIPE_OUTPUT_FILE}
                      COMMENT "Generating ${RECIPE_GEN_OUTPUT_FILE}")
 
   # now we are going to generate .gen.tflite from .gen.recipe
   # to check generated .gen.recipe file is correct by using it.
   # as weight values may be different, binary comparision is not acceptable.
   add_custom_command(OUTPUT ${RECIPE_GEN_OUTPUT_FILE2}
-                     COMMAND tflchef-file ${RECIPE_GEN_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE2}
-                     DEPENDS tflchef-file ${RECIPE_GEN_OUTPUT_FILE}
+                     COMMAND ${TFLCHEF_FILE_PATH} ${RECIPE_GEN_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE2}
+                     DEPENDS ${TFLCHEF_FILE_PATH} ${RECIPE_GEN_OUTPUT_FILE}
                      COMMENT "Generating ${RECIPE_GEN_OUTPUT_FILE2}")
 
   list(APPEND TESTS ${TFLITE_PREFIX}.gen)
@@ -104,13 +105,13 @@ foreach(TFLITEFILE IN ITEMS ${GEN_TFLITEFILES})
 
   # Generate .gen.recipe from generated .tflite
   add_custom_command(OUTPUT ${RECIPE_GEN_OUTPUT_FILE}
-                     COMMAND tflchef-reverse ${RECIPE_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE}
-                     DEPENDS tflchef-reverse ${RECIPE_OUTPUT_FILE}
+                     COMMAND ${TFLCHEF_REVERSE_PATH} ${RECIPE_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE}
+                     DEPENDS ${TFLCHEF_REVERSE_PATH} ${RECIPE_OUTPUT_FILE}
                      COMMENT "Generating ${RECIPE_GEN_OUTPUT_FILE}")
 
   add_custom_command(OUTPUT ${RECIPE_GEN_OUTPUT_FILE2}
-                     COMMAND tflchef-file ${RECIPE_GEN_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE2}
-                     DEPENDS tflchef-file ${RECIPE_GEN_OUTPUT_FILE}
+                     COMMAND ${TFLCHEF_FILE_PATH} ${RECIPE_GEN_OUTPUT_FILE} ${RECIPE_GEN_OUTPUT_FILE2}
+                     DEPENDS ${TFLCHEF_FILE_PATH} ${RECIPE_GEN_OUTPUT_FILE}
                      COMMENT "Generating ${RECIPE_GEN_OUTPUT_FILE2}")
 
   list(APPEND TESTS ${TFLITE_PREFIX}.gen)
@@ -123,7 +124,9 @@ add_custom_target(tflchef_testfiles ALL DEPENDS ${TESTFILES})
 
 # Using mio_tflite_validate for temporary as it only calls flatbuffer validate
 # TODO do testing with running the model with runtime/interpreter
+# NOTE for ARM32 cross build, $<TARGET_FILE:mio_tflite260_validate> is used as-is
+#      as test should run in ARM32 device
 add_test(NAME tflchef_test
          COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/runvalidate.sh"
-                 $<TARGET_FILE:mio_tflite_validate>
+                 $<TARGET_FILE:mio_tflite260_validate>
                  ${TESTS})

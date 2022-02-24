@@ -8,6 +8,8 @@ set(TEST_DST test/onnx-operations)
 
 install(DIRECTORY "${NNAS_PROJECT_SOURCE_DIR}/res/PyTorchExamples/" DESTINATION "${TEST_DST}")
 
+set(ONNX_IMPORT_OPTIONS "--unroll_rnn --unroll_lstm")
+
 foreach(TEST_ITEM IN ITEMS ${TEST_EXAMPLES})
   set(TEST_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/${TEST_ITEM}.test")
 
@@ -22,7 +24,8 @@ foreach(TEST_ITEM IN ITEMS ${TEST_EXAMPLES})
   file(APPEND "${TEST_SCRIPT}" "}\n")
   file(APPEND "${TEST_SCRIPT}" "trap trap_err_onexit ERR\n")
   file(APPEND "${TEST_SCRIPT}" "outputfile=\"${TEST_ITEM}.circle\"\n")
-  file(APPEND "${TEST_SCRIPT}" "one-import-onnx --input_path=${TEST_ITEM}.onnx --output_path=${TEST_ITEM}.circle &> /dev/null\n")
+  file(APPEND "${TEST_SCRIPT}" "one-import-onnx --input_path=${TEST_ITEM}.onnx --output_path=${TEST_ITEM}.circle\
+    ${ONNX_IMPORT_OPTIONS} &> /dev/null\n")
   file(APPEND "${TEST_SCRIPT}" "if [[ ! -s \"\${outputfile}\" ]]; then\n")
   file(APPEND "${TEST_SCRIPT}" "trap_err_onexit\n")
   file(APPEND "${TEST_SCRIPT}" "fi\n")

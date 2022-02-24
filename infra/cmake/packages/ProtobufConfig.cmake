@@ -51,16 +51,33 @@ function(_Protobuf_build)
     return()
   endif(NOT ProtobufSource_FOUND)
 
+  # set 'EXTERNAL_JS_EMBED' environment variable
+  if(NOT DEFINED ENV{EXTERNAL_JS_EMBED})
+    if(DEFINED ENV{BUILD_HOST_EXEC})
+      set(EXTERNAL_JS_EMBED $ENV{BUILD_HOST_EXEC}/externals/PROTOBUF/build/js_embed)
+      set(ENV{EXTERNAL_JS_EMBED} ${EXTERNAL_JS_EMBED})
+    endif(DEFINED ENV{BUILD_HOST_EXEC})
+  endif(NOT DEFINED ENV{EXTERNAL_JS_EMBED})
+
   nnas_include(ExternalBuildTools)
   ExternalBuild_CMake(CMAKE_DIR   ${ProtobufSource_DIR}/cmake
                       BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/PROTOBUF/build
                       INSTALL_DIR ${EXT_OVERLAY_DIR}
                       BUILD_FLAGS -fPIC
                       EXTRA_OPTS  -Dprotobuf_BUILD_TESTS=OFF -Dprotobuf_WITH_ZLIB=OFF
-                      IDENTIFIER  "3.5.2-fix1"
+                      IDENTIFIER  "3.5.2-fix2"
                       PKG_NAME    "PROTOBUF")
 
 endfunction(_Protobuf_build)
+
+set(PROTOC_PATH $<TARGET_FILE:protobuf::protoc>)
+
+if(DEFINED ENV{BUILD_HOST_EXEC})
+  set(PROTOC_PATH $ENV{BUILD_HOST_EXEC}/overlay/bin/protoc)
+endif(DEFINED ENV{BUILD_HOST_EXEC})
+if(DEFINED ENV{EXTERNAL_PROTOC})
+  set(PROTOC_PATH $ENV{EXTERNAL_PROTOC})
+endif(DEFINED ENV{EXTERNAL_PROTOC})
 
 _Protobuf_build()
 
@@ -96,7 +113,7 @@ if(Protobuf_FOUND)
 
     add_custom_command(OUTPUT ${OUTPUT_FILES}
                        COMMAND ${CMAKE_COMMAND} -E make_directory "${abs_output_dir}"
-                       COMMAND "$<TARGET_FILE:protobuf::protoc>" --cpp_out "${abs_output_dir}" -I "${abs_proto_dir}" ${PROTO_FILES}
+                       COMMAND "${PROTOC_PATH}" --cpp_out "${abs_output_dir}" -I "${abs_proto_dir}" ${PROTO_FILES}
                        DEPENDS ${PROTO_FILES})
 
     set(${PREFIX}_SOURCES ${OUTPUT_FILES} PARENT_SCOPE)

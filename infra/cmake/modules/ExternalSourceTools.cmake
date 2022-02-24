@@ -5,7 +5,7 @@ function(ExternalSource_Download PREFIX)
   include(CMakeParseArguments)
   nnas_include(StampTools)
 
-  cmake_parse_arguments(ARG "" "DIRNAME;URL;CHECKSUM" "" ${ARGN})
+  cmake_parse_arguments(ARG "" "DIRNAME;URL;CHECKSUM;PATCH" "" ${ARGN})
 
   # Configure URL
   if(ARG_URL)
@@ -124,6 +124,19 @@ function(ExternalSource_Download PREFIX)
     get_filename_component(contents ${contents} ABSOLUTE)
 
     file(RENAME ${contents} "${OUT_DIR}")
+    if(ARG_PATCH)
+      message(STATUS "Patch with ${ARG_PATCH}")
+      execute_process(COMMAND patch -p1 -i ${ARG_PATCH}
+                      WORKING_DIRECTORY ${OUT_DIR}
+                      RESULT_VARIABLE EXEC_RESULT
+                      ERROR_VARIABLE EXEC_ERROR)
+      if(NOT EXEC_RESULT EQUAL 0)
+        message(FATAL_ERROR "${PREFIX} failed patch ${ARG_PATCH}")
+      endif(NOT EXEC_RESULT EQUAL 0)
+
+      message(STATUS "patch ${PATCH_FILE}: ${EXEC_RESULT}, ${EXEC_ERROR}")
+    endif(ARG_PATCH)
+
     file(REMOVE_RECURSE "${TMP_DIR}")
     file(WRITE "${STAMP_PATH}" "${URL}")
     message(STATUS "Cleanup ${PREFIX} - done")

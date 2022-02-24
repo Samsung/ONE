@@ -16,7 +16,40 @@
 
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 
+#include <luci/IR/CircleNodes.h>
+
 #include <gtest/gtest.h>
+
+class SimpleConcatGraph
+{
+public:
+  SimpleConcatGraph(loco::DataType quant_type)
+  {
+    concat_node = g.nodes()->create<luci::CircleConcatenation>(2);
+    input_1 = g.nodes()->create<luci::CircleConst>();
+    input_2 = g.nodes()->create<luci::CircleConst>();
+
+    concat_node->dtype(quant_type);
+    concat_node->fusedActivationFunction(luci::FusedActFunc::NONE);
+    input_1->dtype(quant_type);
+    input_2->dtype(quant_type);
+
+    concat_node->values(0, input_1);
+    concat_node->values(1, input_2);
+  }
+
+  ~SimpleConcatGraph()
+  {
+    concat_node->values(0, nullptr);
+    concat_node->values(1, nullptr);
+  }
+
+public:
+  loco::Graph g;
+  luci::CircleConcatenation *concat_node = nullptr;
+  luci::CircleConst *input_1 = nullptr;
+  luci::CircleConst *input_2 = nullptr;
+};
 
 TEST(QuantizeWithMinMaxPassTest, name)
 {
@@ -24,4 +57,20 @@ TEST(QuantizeWithMinMaxPassTest, name)
                                     luci::QuantizationGranularity::LayerWise);
   auto const name = pass.name();
   ASSERT_NE(nullptr, name);
+}
+
+// Test concat of integer tensors
+// Integer tensors are not quantized
+TEST(QuantizeWithMinMaxPassTest, int_concat)
+{
+  SimpleConcatGraph g(loco::DataType::S32);
+
+  luci::QuantizeWithMinMaxPass qwmm(loco::DataType::FLOAT32, loco::DataType::U8,
+                                    luci::QuantizationGranularity::LayerWise);
+
+  qwmm.run(&g.g);
+
+  EXPECT_EQ(nullptr, g.concat_node->quantparam());
+  EXPECT_EQ(nullptr, g.input_1->quantparam());
+  EXPECT_EQ(nullptr, g.input_2->quantparam());
 }

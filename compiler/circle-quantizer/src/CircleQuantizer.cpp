@@ -17,7 +17,7 @@
 #include <foder/FileLoader.h>
 
 #include <luci/Importer.h>
-#include <luci/CircleOptimizer.h>
+#include <luci/CircleQuantizer.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
@@ -26,6 +26,7 @@
 #include <oops/InternalExn.h>
 #include <arser/arser.h>
 #include <vconone/vconone.h>
+#include <json.h>
 
 #include <functional>
 #include <iostream>
@@ -34,8 +35,41 @@
 
 using OptionHook = std::function<int(const char **)>;
 
-using Algorithms = luci::CircleOptimizer::Options::Algorithm;
-using AlgorithmParameters = luci::CircleOptimizer::Options::AlgorithmParameters;
+using LayerParam = luci::CircleQuantizer::Options::LayerParam;
+using Algorithms = luci::CircleQuantizer::Options::Algorithm;
+using AlgorithmParameters = luci::CircleQuantizer::Options::AlgorithmParameters;
+
+std::vector<std::shared_ptr<LayerParam>> read_layer_params(std::string &filename)
+{
+  Json::Value root;
+  std::ifstream ifs(filename);
+
+  // Failed to open cfg file
+  if (not ifs.is_open())
+    throw std::runtime_error("Cannot open config file. " + filename);
+
+  Json::CharReaderBuilder builder;
+  JSONCPP_STRING errs;
+
+  // Failed to parse
+  if (not parseFromStream(builder, ifs, &root, &errs))
+    throw std::runtime_error("Cannot parse config file (json format). " + errs);
+
+  auto layers = root["layers"];
+  std::vector<std::shared_ptr<LayerParam>> p;
+  for (auto layer : layers)
+  {
+    auto l = std::make_shared<LayerParam>();
+    {
+      l->name = layer["name"].asString();
+      l->dtype = layer["dtype"].asString();
+      l->granularity = layer["granularity"].asString();
+    }
+    p.emplace_back(l);
+  }
+
+  return p;
+}
 
 void print_exclusive_options(void)
 {
@@ -56,9 +90,9 @@ int entry(int argc, char **argv)
 {
   // Simple argument parser (based on map)
   std::map<std::string, OptionHook> argparse;
-  luci::CircleOptimizer optimizer;
+  luci::CircleQuantizer quantizer;
 
-  auto options = optimizer.options();
+  auto options = quantizer.options();
   auto settings = luci::UserSettings::settings();
 
   const std::string qdqw = "--quantize_dequantize_weights";
@@ -66,6 +100,7 @@ int entry(int argc, char **argv)
   const std::string rq = "--requantize";
   const std::string fq = "--force_quantparam";
   const std::string cq = "--copy_quantparam";
+  const std::string cfg = "--config";
 
   const std::string tf_maxpool = "--TF-style_maxpool";
 
@@ -147,6 +182,12 @@ int entry(int argc, char **argv)
     .required(false)
     .help("Output type of quantized model (uint8 or int16)");
 
+  arser.add_argument(cfg)
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .required(false)
+    .help("Path to the quantization configuration file");
+
   arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
   arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
 
@@ -198,6 +239,22 @@ int entry(int argc, char **argv)
     options->param(AlgorithmParameters::Quantize_input_model_dtype, values.at(0));
     options->param(AlgorithmParameters::Quantize_output_model_dtype, values.at(1));
     options->param(AlgorithmParameters::Quantize_granularity, values.at(2));
+
+    if (arser[cfg])
+    {
+      auto filename = arser.get<std::string>(cfg);
+      try
+      {
+        auto layer_params = read_layer_params(filename);
+
+        options->layer_params(AlgorithmParameters::Quantize_layer_params, layer_params);
+      }
+      catch (const std::runtime_error &e)
+      {
+        std::cerr << e.what() << '\n';
+        return 255;
+      }
+    }
   }
 
   if (arser[qwmm])
@@ -224,6 +281,22 @@ int entry(int argc, char **argv)
 
     if (arser[tf_maxpool] and arser.get<bool>(tf_maxpool))
       options->param(AlgorithmParameters::Quantize_TF_style_maxpool, "True");
+
+    if (arser[cfg])
+    {
+      auto filename = arser.get<std::string>(cfg);
+      try
+      {
+        auto layer_params = read_layer_params(filename);
+
+        options->layer_params(AlgorithmParameters::Quantize_layer_params, layer_params);
+      }
+      catch (const std::runtime_error &e)
+      {
+        std::cerr << e.what() << '\n';
+        return 255;
+      }
+    }
   }
 
   if (arser[rq])
@@ -327,7 +400,7 @@ int entry(int argc, char **argv)
     auto graph = module->graph(idx);
 
     // quantize the graph
-    optimizer.quantize(graph);
+    quantizer.quantize(graph);
 
     if (!luci::validate(graph))
     {

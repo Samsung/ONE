@@ -1,3 +1,14 @@
+set(CIRCLECHEF_FILE_PATH $<TARGET_FILE:circlechef-file>)
+set(TFLCHEF_FILE_PATH $<TARGET_FILE:tflchef-file>)
+set(TFLITE2CIRCLE_PATH $<TARGET_FILE:tflite2circle>)
+if(DEFINED ENV{BUILD_HOST_EXEC})
+  # TODO use better way to represent path for host executable
+  set(CIRCLECHEF_FILE_PATH $ENV{BUILD_HOST_EXEC}/compiler/circlechef/tools/file/circlechef-file)
+  set(TFLCHEF_FILE_PATH $ENV{BUILD_HOST_EXEC}/compiler/tflchef/tools/file/tflchef-file)
+  set(TFLITE2CIRCLE_PATH $ENV{BUILD_HOST_EXEC}/compiler/tflite2circle/tflite2circle)
+  message(STATUS "TFLITE2CIRCLE_PATH = ${TFLITE2CIRCLE_PATH}")
+endif(DEFINED ENV{BUILD_HOST_EXEC})
+
 # TODO use local test.recipe files for small networks
 file(GLOB RECIPES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*/test.recipe")
 
@@ -17,14 +28,14 @@ foreach(RECIPE IN ITEMS ${RECIPES})
 
   # Generate .tflite
   add_custom_command(OUTPUT "${RECIPE_OUTPUT_FILE}"
-                     COMMAND tflchef-file "${RECIPE_SOURCE_FILE}" "${RECIPE_OUTPUT_FILE}"
-                     DEPENDS tflchef-file "${RECIPE_SOURCE_FILE}"
+                     COMMAND ${TFLCHEF_FILE_PATH} "${RECIPE_SOURCE_FILE}" "${RECIPE_OUTPUT_FILE}"
+                     DEPENDS ${TFLCHEF_FILE_PATH} "${RECIPE_SOURCE_FILE}"
                      COMMENT "Generating ${RECIPE_OUTPUT_FILE}")
 
   # Generate .circle
   add_custom_command(OUTPUT "${CIRCLE_OUTPUT_FILE}"
-                     COMMAND tflite2circle "${RECIPE_OUTPUT_FILE}" "${CIRCLE_OUTPUT_FILE}"
-                     DEPENDS tflite2circle "${RECIPE_OUTPUT_FILE}"
+                     COMMAND ${TFLITE2CIRCLE_PATH} "${RECIPE_OUTPUT_FILE}" "${CIRCLE_OUTPUT_FILE}"
+                     DEPENDS ${TFLITE2CIRCLE_PATH} "${RECIPE_OUTPUT_FILE}"
                      COMMENT "Generating ${CIRCLE_OUTPUT_FILE}")
 
   list(APPEND TESTFILES "${CIRCLE_OUTPUT_FILE}")
@@ -52,14 +63,14 @@ foreach(RECIPE IN ITEMS ${RECIPES})
 
   # Generate .tflite
   add_custom_command(OUTPUT "${RECIPE_OUTPUT_FILE}"
-                     COMMAND tflchef-file "${RECIPE_SOURCE_FILE}" "${RECIPE_OUTPUT_FILE}"
-                     DEPENDS tflchef-file "${RECIPE_SOURCE_FILE}"
+                     COMMAND ${TFLCHEF_FILE_PATH} "${RECIPE_SOURCE_FILE}" "${RECIPE_OUTPUT_FILE}"
+                     DEPENDS ${TFLCHEF_FILE_PATH} "${RECIPE_SOURCE_FILE}"
                      COMMENT "Generating ${RECIPE_OUTPUT_FILE}")
 
   # Generate .circle
   add_custom_command(OUTPUT "${CIRCLE_OUTPUT_FILE}"
-                     COMMAND tflite2circle "${RECIPE_OUTPUT_FILE}" "${CIRCLE_OUTPUT_FILE}"
-                     DEPENDS tflite2circle "${RECIPE_OUTPUT_FILE}"
+                     COMMAND ${TFLITE2CIRCLE_PATH} "${RECIPE_OUTPUT_FILE}" "${CIRCLE_OUTPUT_FILE}"
+                     DEPENDS ${TFLITE2CIRCLE_PATH} "${RECIPE_OUTPUT_FILE}"
                      COMMENT "Generating ${CIRCLE_OUTPUT_FILE}")
 
   list(APPEND TESTFILES "${CIRCLE_OUTPUT_FILE}")
@@ -87,8 +98,8 @@ foreach(RECIPE IN ITEMS ${RECIPES2})
 
   # Generate .circle
   add_custom_command(OUTPUT "${CIRCLE_OUTPUT_FILE}"
-                     COMMAND circlechef-file "${RECIPE_SOURCE_FILE}" "${CIRCLE_OUTPUT_FILE}"
-                     DEPENDS circlechef-file "${RECIPE_SOURCE_FILE}"
+                     COMMAND ${CIRCLECHEF_FILE_PATH} "${RECIPE_SOURCE_FILE}" "${CIRCLE_OUTPUT_FILE}"
+                     DEPENDS ${CIRCLECHEF_FILE_PATH} "${RECIPE_SOURCE_FILE}"
                      COMMENT "Generating ${CIRCLE_OUTPUT_FILE}")
 
   list(APPEND TESTFILES "${CIRCLE_OUTPUT_FILE}")
