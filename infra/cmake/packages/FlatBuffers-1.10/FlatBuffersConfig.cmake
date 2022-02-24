@@ -37,7 +37,17 @@ endfunction(_FlatBuffers_build)
 _FlatBuffers_build()
 _FlatBuffers_import()
 
+# for cross compilation BUILD_HOST_EXEC should be set for host flatc executable
+# flatc should exist as ${BUILD_HOST_EXEC}/overlay/FLATBUFFERS-1.10/bin/flatc.
+# and then if EXTERNAL_FLATC is set then use ${EXTERNAL_FLATC} file.
 set(FLATC_PATH "$<TARGET_FILE:flatbuffers::flatc>")
+
+if(DEFINED ENV{BUILD_HOST_EXEC})
+  set(FLATC_PATH $ENV{BUILD_HOST_EXEC}/overlay/FLATBUFFERS-1.10/bin/flatc)
+endif(DEFINED ENV{BUILD_HOST_EXEC})
+if(DEFINED ENV{EXTERNAL_FLATC})
+  set(FLATC_PATH $ENV{EXTERNAL_FLATC})
+endif(DEFINED ENV{EXTERNAL_FLATC})
 
 if(FlatBuffers_FOUND)
   if(NOT TARGET flatbuffers-1.10)
