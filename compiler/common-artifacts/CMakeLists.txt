@@ -126,6 +126,12 @@ macro(tcgenerate_option NAME OPTION ARG1 ARG2 ARG3)
   set(TCGEN_OPT_${NAME} ${OPTION} ${ARG1} ${ARG2} ${ARG3})
 endmacro()
 
+set(CIRCLECHEF_FILE_PATH $<TARGET_FILE:circlechef-file>)
+set(TFLCHEF_FILE_PATH $<TARGET_FILE:tflchef-file>)
+set(TFLITE2CIRCLE_PATH $<TARGET_FILE:tflite2circle>)
+set(CIRCLE2CIRCLE_PATH $<TARGET_FILE:circle2circle>)
+set(TESTDATAGENERATOR_PATH $<TARGET_FILE:testDataGenerator>)
+
 include("options.lst")
 
 foreach(RECIPE IN ITEMS ${RECIPES})
@@ -191,8 +197,8 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   if(${MODEL_FORMAT} STREQUAL "tflite")
     # Generate .tflite
     add_custom_command(OUTPUT ${TFLITE_OUTPUT_PATH}
-      COMMAND $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH} ${TFLITE_OUTPUT_PATH}
-      DEPENDS $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH}
+      COMMAND ${TFLCHEF_FILE_PATH} ${RECIPE_BINARY_PATH} ${TFLITE_OUTPUT_PATH}
+      DEPENDS ${TFLCHEF_FILE_PATH} ${RECIPE_BINARY_PATH}
       COMMENT "Generate ${TFLITE_FILE}"
     )
     list(APPEND TEST_DEPS ${TFLITE_OUTPUT_PATH})
@@ -200,8 +206,8 @@ foreach(RECIPE IN ITEMS ${RECIPES})
     if(NOT DEFINED NO_CIRCLIZE_${RECIPE})
       # Generate .circle
       add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
-        COMMAND $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH} ${CIRCLE_OUTPUT_PATH}
-        DEPENDS $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH}
+        COMMAND ${TFLITE2CIRCLE_PATH} ${TFLITE_OUTPUT_PATH} ${CIRCLE_OUTPUT_PATH}
+        DEPENDS ${TFLITE2CIRCLE_PATH} ${TFLITE_OUTPUT_PATH}
         COMMENT "Generate ${CIRCLE_FILE}"
       )
       set(MODEL_FORMAT "circle")
@@ -210,8 +216,8 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   else()
     # Generate .circle
     add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
-      COMMAND $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH} ${CIRCLE_OUTPUT_PATH}
-      DEPENDS $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH}
+      COMMAND ${CIRCLECHEF_FILE_PATH} ${RECIPE_BINARY_PATH} ${CIRCLE_OUTPUT_PATH}
+      DEPENDS ${CIRCLECHEF_FILE_PATH} ${RECIPE_BINARY_PATH}
       COMMENT "Generate ${CIRCLE_FILE}"
     )
     list(APPEND TEST_DEPS ${CIRCLE_OUTPUT_PATH})
@@ -223,8 +229,8 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   if(NOT DEFINED NO_OPTIMIZE_${RECIPE})
     # Generate optimized .circle
     add_custom_command(OUTPUT ${OPT_CIRCLE_OUTPUT_PATH}
-      COMMAND $<TARGET_FILE:circle2circle> --O1 ${CIRCLE_OUTPUT_PATH} ${OPT_CIRCLE_OUTPUT_PATH}
-      DEPENDS $<TARGET_FILE:circle2circle>  ${CIRCLE_OUTPUT_PATH}
+      COMMAND ${CIRCLE2CIRCLE_PATH} --O1 ${CIRCLE_OUTPUT_PATH} ${OPT_CIRCLE_OUTPUT_PATH}
+      DEPENDS ${CIRCLE2CIRCLE_PATH} ${CIRCLE_OUTPUT_PATH}
       COMMENT "Generate ${OPT_CIRCLE_FILE}"
     )
     set(OPT_FORMAT ".opt")
@@ -272,12 +278,12 @@ foreach(RECIPE IN ITEMS ${RECIPES})
     set(INPUT_HDF5_FILE "${TC_DIRECTORY}/input.h5")
     set(EXPECTED_HDF5_FILE "${TC_DIRECTORY}/expected.h5")
     add_custom_command(OUTPUT ${INPUT_HDF5_FILE} ${EXPECTED_HDF5_FILE}
-      COMMAND $<TARGET_FILE:testDataGenerator>
+      COMMAND ${TESTDATAGENERATOR_PATH}
               --input_data ${INPUT_HDF5_FILE}
               --expected_data ${EXPECTED_HDF5_FILE}
               ${ADDITIONAL_OPTIONS}
               ${MODEL_FILE}
-      DEPENDS $<TARGET_FILE:testDataGenerator> ${MODEL_FILE} ${TC_DIRECTORY}
+      DEPENDS ${TESTDATAGENERATOR_PATH} ${MODEL_FILE} ${TC_DIRECTORY}
       COMMENT "Generate input.h5 and expected.h5 in ${NNPKG_FILE}/metadata/tc"
     )
     list(APPEND TEST_DEPS ${INPUT_HDF5_FILE} ${EXPECTED_HDF5_FILE})
