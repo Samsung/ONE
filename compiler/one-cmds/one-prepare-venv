@@ -55,7 +55,11 @@ if [[ ! -z "$ONE_PREPVENV_PIP_OPTION" ]]; then
 fi
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow-cpu==${VER_TENSORFLOW}
+if [ -n "${EXT_TENSORFLOW_WHL}" ]; then
+  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install ${EXT_TENSORFLOW_WHL}
+else
+  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow-cpu==${VER_TENSORFLOW}
+fi
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install Pillow==6.2.2
 
 # Install PyTorch and ONNX related
