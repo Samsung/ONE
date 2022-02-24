@@ -694,67 +694,61 @@ struct QuantizeActivation final : public luci::CircleNodeMutableVisitor<void>
   {
     LOGGER(l);
     INFO(l) << "QuantizeActivation visit node: " << node->name() << std::endl;
-    auto arity = node->arity();
-    for (uint32_t i = 0; i < arity; i++)
+
+    // Check if this is already quantized
+    if (is_quantized(node))
+      return;
+
+    // Check if this is bias (bias is quantized later)
+    auto iwo = get_input_weight_output_of_bias(node);
+    if (iwo.size() > 0)
+      return;
+
+    // Check if this is bool type (bool type is not quantized)
+    if (node->dtype() == loco::DataType::BOOL)
+      return;
+
+    // Check if this is activation
+    // We assume min/max are recorded only for activations
+    if (has_min_max(node) && !is_weights(node))
     {
-      auto input_node = node->arg(i);
-      auto circle_node = loco::must_cast<luci::CircleNode *>(input_node);
+      // Quantize using recorded min/max
+      auto quantparam = node->quantparam();
+      assert(quantparam);
+      assert(quantparam->min.size() == 1); // only support layer-wise quant
+      assert(quantparam->max.size() == 1); // only support layer-wise quant
+      auto min = quantparam->min[0];
+      auto max = quantparam->max[0];
 
-      // Check if this is already quantized
-      if (is_quantized(circle_node))
-        continue;
+      float scaling_factor{0};
+      int64_t zp{0};
+      float nudged_min{0};
+      float nudged_max{0};
 
-      // Check if this is bias (bias is quantized later)
-      auto iwo = get_input_weight_output_of_bias(circle_node);
-      if (iwo.size() > 0)
-        continue;
-
-      // Check if this is bool type (bool type is not quantized)
-      if (circle_node->dtype() == loco::DataType::BOOL)
-        continue;
-
-      // Check if this is activation
-      // We assume min/max are recorded only for activations
-      if (has_min_max(circle_node) && !is_weights(circle_node))
+      if (output_type == loco::DataType::U8)
       {
-        // Quantize using recorded min/max
-        auto quantparam = circle_node->quantparam();
-        assert(quantparam);
-        assert(quantparam->min.size() == 1); // only support layer-wise quant
-        assert(quantparam->max.size() == 1); // only support layer-wise quant
-        auto min = quantparam->min[0];
-        auto max = quantparam->max[0];
-
-        float scaling_factor{0};
-        int64_t zp{0};
-        float nudged_min{0};
-        float nudged_max{0};
-
-        if (output_type == loco::DataType::U8)
-        {
-          compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
-          circle_node->dtype(loco::DataType::U8);
-        }
-        else
-        {
-          compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
-          circle_node->dtype(loco::DataType::S16);
-        }
-
-        circle_node->quantparam()->scale.push_back(scaling_factor);
-        circle_node->quantparam()->zerop.push_back(zp);
+        compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+        node->dtype(loco::DataType::U8);
       }
-      // Fix special attributes
-      if (circle_node->opcode() == luci::CircleOpcode::CAST)
+      else
       {
-        auto *cast = loco::must_cast<luci::CircleCast *>(circle_node);
-        auto *cast_input = loco::must_cast<luci::CircleNode *>(cast->x());
-
-        // make sure that cast_input is already quantized
-        assert(cast_input->dtype() != loco::DataType::FLOAT32);
-        cast->in_data_type(cast_input->dtype());
-        cast->out_data_type(cast->dtype());
+        compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+        node->dtype(loco::DataType::S16);
       }
+
+      node->quantparam()->scale.push_back(scaling_factor);
+      node->quantparam()->zerop.push_back(zp);
+    }
+    // Fix special attributes
+    if (node->opcode() == luci::CircleOpcode::CAST)
+    {
+      auto *cast = loco::must_cast<luci::CircleCast *>(node);
+      auto *cast_input = loco::must_cast<luci::CircleNode *>(cast->x());
+
+      // make sure that cast_input is already quantized
+      assert(cast_input->dtype() != loco::DataType::FLOAT32);
+      cast->in_data_type(cast_input->dtype());
+      cast->out_data_type(cast->dtype());
     }
   }
 };
