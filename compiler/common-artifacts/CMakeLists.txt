@@ -1,3 +1,6 @@
+if(NOT CMAKE_CROSSCOMPILING)
+# TODO fix indentation
+
 #[[ Generate common python virtual enviornment ]]
 find_package(PythonInterp 3 QUIET)
 find_package(PythonLibs 3 QUIET)
@@ -59,6 +62,9 @@ add_custom_target(common_artifacts_python_deps ALL
           ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2}
           ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
 )
+
+# TODO fix indentation to here
+endif(NOT CMAKE_CROSSCOMPILING)
 
 #[[ Generate common resources ]]
 # TODO add pbtxt
