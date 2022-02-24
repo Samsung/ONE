@@ -1253,7 +1253,7 @@ private:
   SKIP(luci::CirclePRelu)
   SKIP(luci::CircleTransposeConv)
 
-  // Handled in propagate_concat_quantparam
+  // Handled in PropagateQParamBackwardPass
   SKIP(luci::CircleConcatenation)
 
   // Inputs of logical Ops are bool, thus not quantized
@@ -1344,82 +1344,6 @@ private:
 };
 
 } // namespace
-
-/** BEFORE
- *
- *         [CircleNode]             [CircleConst]
- *         (U8 qparam1)                 (FP32)
- *                   \                    /
- *                    \                  /
- *                    [CircleConcatenation]
- *                        (U8 qparam2)
- *
- *  AFTER
- *         [CircleNode]             [CircleConst]   [CircleConst] <- Dead node
- *         (U8 qparam2)             (U8 qparam2)       (FP32)
- *                   \                    /
- *                    \                  /
- *                    [CircleConcatenation]
- *                        (U8 qparam2)
- */
-void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataType quant_type)
-{
-  assert(concat->quantparam() != nullptr);
-
-  const auto num_inputs = concat->numValues();
-
-  // Quantize const inputs using their values if concat has fused act function
-  if (concat->fusedActivationFunction() != luci::FusedActFunc::NONE)
-  {
-    for (uint32_t i = 0; i < num_inputs; i++)
-    {
-      auto node = concat->arg(i);
-      auto const_node = dynamic_cast<luci::CircleConst *>(node);
-      if (const_node != nullptr)
-      {
-        auto new_const = luci::clone(const_node);
-        quant_const(new_const, quant_type);
-        concat->values(i, new_const);
-      }
-    }
-    return;
-  }
-
-  for (uint32_t i = 0; i < num_inputs; i++)
-  {
-    auto node = loco::must_cast<luci::CircleNode *>(concat->arg(i));
-
-    // Skip if this input is CONCAT Op
-    if (node->opcode() == luci::CircleOpcode::CONCATENATION)
-      continue;
-
-    // Quantize constant values
-    if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
-    {
-      luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
-
-      const auto concat_qparam = concat->quantparam();
-      assert(concat_qparam->scale.size() == 1);
-      const auto scaling_factor = concat_qparam->scale[0];
-      const auto zerop = concat_qparam->zerop[0];
-
-      auto new_const = luci::clone(const_node);
-      quant_const_values(new_const, scaling_factor, zerop, quant_type);
-      concat->values(i, new_const);
-      overwrite_quantparam(concat, new_const);
-    }
-    else
-    {
-      const auto succs = loco::succs(node);
-      if (succs.size() > 1)
-        continue;
-
-      // Non-const input must have been quantized
-      assert(node->quantparam() != nullptr);
-      overwrite_quantparam(concat, node);
-    }
-  }
-}
 
 /**
  * tells if pad_v2 quantization should ignore padding value
@@ -1669,7 +1593,7 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
  * Quantization Steps
  * 1. Quantize Activation
  *   - Quantize using recorded min/max (QuantizeActivation)
- *   - Propagate qparam of concat backward for optimization (propagate_concat_quantparam)
+ *   - Propagate qparam backward (PropagateQParamBackwardPass)
  *   - Quantize const inputs + propagate qparam backward (QuantizeConstInputActivation)
  *   - Quantize using pre-defined values (QuantizeSpecialActivation)
  *   - Propagate qparam forward (PropagateQParamForwardPass)
@@ -1706,24 +1630,6 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   {
     PropagateQParamBackwardPass pqbp(_ctx->output_model_dtype);
     pqbp.run(g);
-  }
-
-  // Propagate quantization parameters of concat Op
-  for (auto node : loco::active_nodes(loco::output_nodes(g)))
-  {
-    auto concat = dynamic_cast<luci::CircleConcatenation *>(node);
-    if (not concat)
-      continue;
-
-    if (not concat->quantparam())
-      continue;
-
-    // Propagate qparam of concat to its inputs if
-    // (1) concat was quantized
-    // (2) concat has no fused activation function
-    // (3) the input is not concatenation Op
-    // (4) the input is not produced to Ops other than concat
-    propagate_concat_quantparam(concat, _ctx->output_model_dtype);
   }
 
   // Quantize const input activation
