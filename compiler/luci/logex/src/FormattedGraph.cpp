@@ -251,45 +251,6 @@ bool use_ido(const locop::SymbolTable *tbl, const CIRCLENODE *node, locop::NodeS
   return true;
 }
 
-bool summary_node(const locop::SymbolTable *tbl, const luci::CircleGather *node,
-                  locop::NodeSummary &s)
-{
-  s.args().append("params", tbl->lookup(node->params()));
-  s.args().append("indices", tbl->lookup(node->indices()));
-  s.args().append("axis", pepper::str(node->axis()));
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CircleGatherNd *node,
-                  locop::NodeSummary &s)
-{
-  s.args().append("params", tbl->lookup(node->params()));
-  s.args().append("indices", tbl->lookup(node->indices()));
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CircleIf *node, locop::NodeSummary &s)
-{
-  s.args().append("cond", tbl->lookup(node->cond()));
-  for (uint32_t i = 0; i < node->input_count(); ++i)
-    s.args().append("input", tbl->lookup(node->input(i)));
-
-  if (node->then_graph() != nullptr)
-    s.args().append("then_graph", node->then_graph()->name());
-  else
-    s.args().append("then_branch", pepper::str(node->then_branch()));
-
-  if (node->else_graph() != nullptr)
-    s.args().append("else_graph", node->else_graph()->name());
-  else
-    s.args().append("else_branch", pepper::str(node->else_branch()));
-
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
 bool summary_node(const locop::SymbolTable *tbl, const luci::CircleL2Normalize *node,
                   locop::NodeSummary &s)
 {
@@ -930,22 +891,6 @@ template <SB sb> class SummaryBuilderLet;
 
 #define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
 
-template <> class SummaryBuilderLet<SB::GHIJ> final : public CircleNodeSummaryBuilderBase
-{
-public:
-  SummaryBuilderLet(const locop::SymbolTable *tbl) : CircleNodeSummaryBuilderBase(tbl)
-  {
-    // DO NOTHING
-  }
-
-private:
-  IMPLEMENT(luci::CircleGather)
-  IMPLEMENT(luci::CircleGatherNd)
-  IMPLEMENT(luci::CircleGreater)
-  IMPLEMENT(luci::CircleGreaterEqual)
-  IMPLEMENT(luci::CircleIf)
-};
-
 template <> class SummaryBuilderLet<SB::KLMN> final : public CircleNodeSummaryBuilderBase
 {
 public:
@@ -1143,35 +1088,6 @@ bool CircleNodeSummaryBuilderBase::build(const loco::Node *node, locop::NodeSumm
 #undef CIRCLE_NODE
 
   return false;
-}
-
-bool SummaryBuilderLet<SB::GHIJ>::summary(const luci::CircleGather *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::GHIJ>::summary(const luci::CircleGatherNd *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::GHIJ>::summary(const luci::CircleGreater *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_xy(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::GHIJ>::summary(const luci::CircleGreaterEqual *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_xy(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::GHIJ>::summary(const luci::CircleIf *node, locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
 }
 
 bool SummaryBuilderLet<SB::KLMN>::summary(const luci::CircleL2Normalize *node,
@@ -1770,7 +1686,6 @@ bool NodeSummaryBuilder::build(const loco::Node *node, locop::NodeSummary &s) co
   } while (false)
 
   // TODO Replace with CircleNodeSummaryBuilder and then remove these
-  BUILD_GRP(GHIJ);
   BUILD_GRP(KLMN);
   BUILD_GRP(OPQR);
   BUILD_GRP(STUV);
