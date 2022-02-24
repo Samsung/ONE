@@ -504,11 +504,11 @@ private:
 
   void visit(luci::CircleConcatenation *node) { propagate_concat_quantparam(node, _output_type); }
 
-  void visit(luci::CirclePadV2 *node) { propagate_pad_v2_quantparam(node, _output_type); }
+  void visit(luci::CircleOneHot *node) { propagate_one_hot_quantparam(node, _output_type); }
 
   void visit(luci::CirclePack *node) { propagate_pack_quantparam(node, _output_type); }
 
-  void visit(luci::CircleOneHot *node) { propagate_one_hot_quantparam(node, _output_type); }
+  void visit(luci::CirclePadV2 *node) { propagate_pad_v2_quantparam(node, _output_type); }
 };
 
 } // namespace
