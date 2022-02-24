@@ -109,6 +109,19 @@ std::string to_str(const luci::Filter *filter)
   return std::to_string(filter->h()) + "," + std::to_string(filter->w());
 }
 
+std::string to_str(luci::MirrorPadMode mode)
+{
+  switch (mode)
+  {
+    case luci::MirrorPadMode::REFLECT:
+      return "REFLECT";
+    case luci::MirrorPadMode::SYMMETRIC:
+      return "SYMMETRIC";
+    default:
+      return "Error";
+  }
+}
+
 } // namespace
 
 namespace luci
@@ -531,6 +544,161 @@ void CircleIfSummaryBuilder::build_attributes(const luci::CircleNode *node, loco
     s.args().append("else_graph", circle_if->else_graph()->name());
   else
     s.args().append("else_branch", std::to_string(circle_if->else_branch()));
+}
+
+bool CircleL2NormalizeSummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto l2norm = loco::must_cast<const luci::CircleL2Normalize *>(node);
+  if (l2norm->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
+    return false;
+
+  return true;
+}
+
+std::vector<std::string> CircleL2NormalizeSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"x"};
+}
+
+void CircleL2NormalizeSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                       locop::NodeSummary &s)
+{
+  auto l2norm = loco::must_cast<const luci::CircleL2Normalize *>(node);
+  s.args().append("fused_activation_function", to_str(l2norm->fusedActivationFunction()));
+}
+
+bool CircleL2Pool2DSummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto l2pool = loco::must_cast<const luci::CircleL2Pool2D *>(node);
+  if (l2pool->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
+    return false;
+  if (l2pool->padding() == luci::Padding::UNDEFINED)
+    return false;
+
+  return true;
+}
+
+std::vector<std::string> CircleL2Pool2DSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"value"};
+}
+
+void CircleL2Pool2DSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                    locop::NodeSummary &s)
+{
+  auto l2pool = loco::must_cast<const luci::CircleL2Pool2D *>(node);
+  s.args().append("filter(h,w)", to_str(l2pool->filter()));
+  s.args().append("stride(h,w)", to_str(l2pool->stride()));
+  s.args().append("padding", to_str(l2pool->padding()));
+  s.args().append("fused_activation_function", to_str(l2pool->fusedActivationFunction()));
+}
+
+void CircleLeakyReluSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                     locop::NodeSummary &s)
+{
+  auto leaky_relu = loco::must_cast<const luci::CircleLeakyRelu *>(node);
+  s.args().append("alpha", std::to_string(leaky_relu->alpha()));
+}
+
+void CircleLocalResponseNormalizationSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                                      locop::NodeSummary &s)
+{
+  auto lrn = loco::must_cast<const luci::CircleLocalResponseNormalization *>(node);
+  s.args().append("radius", std::to_string(lrn->radius()));
+  s.args().append("bias", std::to_string(lrn->bias()));
+  s.args().append("alpha", std::to_string(lrn->alpha()));
+  s.args().append("beta", std::to_string(lrn->beta()));
+}
+
+std::vector<std::string> CircleLogSoftmaxSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"logits"};
+}
+
+std::vector<std::string> CircleMatrixDiagSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"diagonal"};
+}
+
+std::vector<std::string>
+CircleMatrixSetDiagSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "diagonal"};
+}
+
+bool CircleMaxPool2DSummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto maxpool = loco::must_cast<const luci::CircleMaxPool2D *>(node);
+  if (maxpool->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
+    return false;
+  if (maxpool->padding() == luci::Padding::UNDEFINED)
+    return false;
+
+  return true;
+}
+
+std::vector<std::string> CircleMaxPool2DSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"value"};
+}
+
+void CircleMaxPool2DSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                     locop::NodeSummary &s)
+{
+  auto maxpool = loco::must_cast<const luci::CircleMaxPool2D *>(node);
+  s.args().append("filter(h,w)", to_str(maxpool->filter()));
+  s.args().append("stride(h,w)", to_str(maxpool->stride()));
+  s.args().append("padding", to_str(maxpool->padding()));
+  s.args().append("fused_activation_function", to_str(maxpool->fusedActivationFunction()));
+}
+
+bool CircleMirrorPadSummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto mirror_pad = loco::must_cast<const luci::CircleMirrorPad *>(node);
+  if (mirror_pad->mode() == luci::MirrorPadMode::UNDEFINED)
+    return false;
+
+  return true;
+}
+
+std::vector<std::string> CircleMirrorPadSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "paddings"};
+}
+
+void CircleMirrorPadSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                     locop::NodeSummary &s)
+{
+  auto mirror_pad = loco::must_cast<const luci::CircleMirrorPad *>(node);
+  s.args().append("mode", to_str(mirror_pad->mode()));
+}
+
+bool CircleMulSummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto mul = loco::must_cast<const luci::CircleMul *>(node);
+  if (mul->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
+    return false;
+
+  return true;
+}
+
+void CircleMulSummaryBuilder::build_attributes(const luci::CircleNode *node, locop::NodeSummary &s)
+{
+  auto mul = loco::must_cast<const luci::CircleMul *>(node);
+  s.args().append("fused_activation_function", to_str(mul->fusedActivationFunction()));
+}
+
+std::vector<std::string>
+CircleNonMaxSuppressionV4SummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"boxes", "scores", "max_output_size", "iou_threshold", "score_threshold"};
+}
+
+std::vector<std::string>
+CircleNonMaxSuppressionV5SummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"boxes",         "scores",          "max_output_size",
+          "iou_threshold", "score_threshold", "soft_nms_sigma"};
 }
 
 } // namespace luci

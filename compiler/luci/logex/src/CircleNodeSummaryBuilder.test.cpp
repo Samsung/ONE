@@ -175,3 +175,93 @@ TEST_F(CircleNodeSummaryBuilderTest, FullyConnected_validate_fused_NEG)
   node.fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
   EXPECT_FALSE(mock_build(&node));
 }
+
+TEST_F(CircleNodeSummaryBuilderTest, L2Normalize_validate)
+{
+  luci::CircleL2Normalize node;
+  node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  EXPECT_TRUE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, L2Normalize_validate_fused_NEG)
+{
+  luci::CircleL2Normalize node;
+  node.fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
+  EXPECT_FALSE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, L2Pool2D_validate)
+{
+  luci::CircleL2Pool2D node;
+  node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  node.padding(luci::Padding::SAME);
+  EXPECT_TRUE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, L2Pool2D_validate_fused_NEG)
+{
+  luci::CircleL2Pool2D node;
+  node.fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
+  node.padding(luci::Padding::SAME);
+  EXPECT_FALSE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, L2Pool2D_validate_padding_NEG)
+{
+  luci::CircleL2Pool2D node;
+  node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  node.padding(luci::Padding::UNDEFINED);
+  EXPECT_FALSE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, MaxPool2D_validate)
+{
+  luci::CircleMaxPool2D node;
+  node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  node.padding(luci::Padding::SAME);
+  EXPECT_TRUE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, MaxPool2D_validate_fused_NEG)
+{
+  luci::CircleMaxPool2D node;
+  node.fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
+  node.padding(luci::Padding::SAME);
+  EXPECT_FALSE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, MaxPool2D_validate_padding_NEG)
+{
+  luci::CircleMaxPool2D node;
+  node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  node.padding(luci::Padding::UNDEFINED);
+  EXPECT_FALSE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, MirrorPad_validate)
+{
+  luci::CircleMirrorPad node;
+  node.mode(luci::MirrorPadMode::REFLECT);
+  EXPECT_TRUE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, MirrorPad_validate_mirror_padding_NEG)
+{
+  luci::CircleMirrorPad node;
+  node.mode(luci::MirrorPadMode::UNDEFINED);
+  EXPECT_FALSE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, Mul_validate)
+{
+  luci::CircleMul node;
+  node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  EXPECT_TRUE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, Mul_validate_fused_NEG)
+{
+  luci::CircleMul node;
+  node.fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
+  EXPECT_FALSE(mock_build(&node));
+}
