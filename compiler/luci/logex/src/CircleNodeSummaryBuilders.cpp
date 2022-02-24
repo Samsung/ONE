@@ -489,4 +489,48 @@ void CircleFullyConnectedSummaryBuilder::build_attributes(const luci::CircleNode
   s.args().append("fused_activation_function", to_str(fc->fusedActivationFunction()));
 }
 
+std::vector<std::string> CircleGatherSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"params", "indices"};
+}
+
+void CircleGatherSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                  locop::NodeSummary &s)
+{
+  auto gather = loco::must_cast<const luci::CircleGather *>(node);
+  s.args().append("axis", std::to_string(gather->axis()));
+}
+
+std::vector<std::string> CircleGatherNdSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"params", "indices"};
+}
+
+std::vector<std::string> CircleIfSummaryBuilder::get_input_names(const luci::CircleNode *node)
+{
+  auto circle_if = loco::must_cast<const luci::CircleIf *>(node);
+
+  auto input_names = std::vector<std::string>();
+  input_names.push_back("cond");
+  for (uint32_t i = 0; i < circle_if->input_count(); ++i)
+    input_names.push_back("input");
+
+  return input_names;
+}
+
+void CircleIfSummaryBuilder::build_attributes(const luci::CircleNode *node, locop::NodeSummary &s)
+{
+  auto circle_if = loco::must_cast<const luci::CircleIf *>(node);
+
+  if (circle_if->then_graph() != nullptr)
+    s.args().append("then_graph", circle_if->then_graph()->name());
+  else
+    s.args().append("then_branch", std::to_string(circle_if->then_branch()));
+
+  if (circle_if->else_graph() != nullptr)
+    s.args().append("else_graph", circle_if->else_graph()->name());
+  else
+    s.args().append("else_branch", std::to_string(circle_if->else_branch()));
+}
+
 } // namespace luci
