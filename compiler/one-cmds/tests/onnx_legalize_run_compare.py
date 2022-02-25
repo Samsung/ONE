@@ -15,7 +15,6 @@
 import onnxruntime as rt
 import onnx
 import sys
-import os
 import numpy as np
 import importlib.util
 
@@ -32,7 +31,7 @@ def _generate_inputs(model):
     inputs = {}
     for input in model.graph.input:
         # check if elem type is float32
-        # list of types could ne externded, this is a property of current testsuite
+        # list of types could be extended, this is a property of current testsuite
         assert (
             input.type.tensor_type.elem_type == onnx.TensorProto.DataType.Value("FLOAT"))
         input_shape = []
