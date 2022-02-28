@@ -31,6 +31,8 @@ void Dequantize::configure()
                          input()->element_type() == loco::DataType::U8 ||
                          input()->element_type() == loco::DataType::S16);
 
+  LUCI_INTERPRETER_CHECK(input()->scales().size() == 1);
+
   if (input()->element_type() == loco::DataType::S16)
     LUCI_INTERPRETER_CHECK(input()->zero_point() == 0);
 
