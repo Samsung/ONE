@@ -215,6 +215,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fuse or remove subsequent Transpose operators");
 
+  arser.add_argument("--remove_redundant_quantize")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will remove subsequent redundant Quantize operators");
+
   arser.add_argument("--remove_unnecessary_reshape")
     .nargs(0)
     .required(false)
@@ -488,6 +494,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::RemoveRedundantReshape);
   if (arser.get<bool>("--remove_redundant_transpose"))
     options->enable(Algorithms::RemoveRedundantTranspose);
+  if (arser.get<bool>("--remove_redundant_quantize"))
+    options->enable(Algorithms::RemoveRedundantQuantize);
   if (arser.get<bool>("--remove_unnecessary_reshape"))
     options->enable(Algorithms::RemoveUnnecessaryReshape);
   if (arser.get<bool>("--remove_unnecessary_slice"))

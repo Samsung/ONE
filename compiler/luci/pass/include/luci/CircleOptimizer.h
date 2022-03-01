@@ -76,6 +76,7 @@ public:
       SubstituteStridedSliceToReshape,
       SubstituteTransposeToReshape,
       RemoveRedundantReshape,
+      RemoveRedundantQuantize,
       RemoveFakeQuant,
       RemoveQuantDequantSeq,
     };
