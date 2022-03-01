@@ -186,7 +186,7 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam_u8)
   // (1) normal case: qparam is propagated to input_1 and input_2
   // (2) input used by other Op: input_1 is an input of input_2. qparam is propagated only to
   // input_2
-  // (3) subsequent concat: input_1 is concat. qparam is propagated only to input_2
+  // (3) subsequent concat: input_1 is concat. qparam is propagated to subsequent concat
   // (4) const input: input_1 is const. constant values are quantized
 
   // normal case: qparam of concat_node is propagated to input_1 and input_2
@@ -210,13 +210,13 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam_u8)
   EXPECT_FLOAT_EQ(3.14, g2.input_2.quantparam()->scale[0]);
   EXPECT_EQ(77, g2.input_2.quantparam()->zerop[0]);
 
-  // input_1 is concat. qparam is propagated only to input_2
+  // input_1 is concat. qparam is propagated to subsequent concat
   SubsequentConcatGraph sg(loco::DataType::U8);
   luci::propagate_concat_quantparam(&sg.concat_node, loco::DataType::U8);
   EXPECT_FLOAT_EQ(3.14, sg.concat_node.quantparam()->scale[0]);
   EXPECT_EQ(77, sg.concat_node.quantparam()->zerop[0]);
-  EXPECT_FLOAT_EQ(1.0, sg.input_1.quantparam()->scale[0]);
-  EXPECT_EQ(1, sg.input_1.quantparam()->zerop[0]);
+  EXPECT_FLOAT_EQ(3.14, sg.input_1.quantparam()->scale[0]);
+  EXPECT_EQ(77, sg.input_1.quantparam()->zerop[0]);
   EXPECT_FLOAT_EQ(3.14, sg.input_2.quantparam()->scale[0]);
   EXPECT_EQ(77, sg.input_2.quantparam()->zerop[0]);
 
@@ -283,7 +283,7 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam_i16)
   // (1) normal case: qparam is propagated to input_1 and input_2
   // (2) input used by other Op: input_1 is an input of input_2. qparam is propagated only to
   // input_2
-  // (3) subsequent concat: input_1 is concat. qparam is propagated only to input_2
+  // (3) subsequent concat: input_1 is concat. qparam is propagated to subsequent concat
   // (4) const input: input_1 is const. constant values are quantized
 
   // normal case: qparam of concat_node is propagated to input_1 and input_2
@@ -312,7 +312,7 @@ TEST(PropagateConcatenationQparam, propagate_concat_quantparam_i16)
   luci::propagate_concat_quantparam(&sg.concat_node, loco::DataType::S16);
   EXPECT_FLOAT_EQ(3.14, sg.concat_node.quantparam()->scale[0]);
   EXPECT_EQ(0, sg.concat_node.quantparam()->zerop[0]);
-  EXPECT_FLOAT_EQ(1.0, sg.input_1.quantparam()->scale[0]);
+  EXPECT_FLOAT_EQ(3.14, sg.input_1.quantparam()->scale[0]);
   EXPECT_EQ(0, sg.input_1.quantparam()->zerop[0]);
   EXPECT_FLOAT_EQ(3.14, sg.input_2.quantparam()->scale[0]);
   EXPECT_EQ(0, sg.input_2.quantparam()->zerop[0]);

@@ -179,10 +179,6 @@ void propagate_pack_quantparam(luci::CirclePack *pack, loco::DataType quant_type
   {
     auto node = loco::must_cast<luci::CircleNode *>(pack->arg(i));
 
-    // Skip if this input is PACK Op
-    if (node->opcode() == luci::CircleOpcode::PACK)
-      continue;
-
     // Quantize constant values
     if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
     {
@@ -276,11 +272,6 @@ void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot, loco::DataType qu
       overwrite_quantparam(one_hot, new_const);
       (one_hot->*arg_setter)(new_const);
     }
-    // Subsequent OneHot Ops quant params are not propagated
-    else if (node->opcode() == luci::CircleOpcode::ONE_HOT)
-    {
-      return;
-    }
     else
     {
       const auto succs = loco::succs(node);
@@ -345,10 +336,6 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
   for (uint32_t i = 0; i < num_inputs; i++)
   {
     auto node = loco::must_cast<luci::CircleNode *>(concat->arg(i));
-
-    // Skip if this input is CONCAT Op
-    if (node->opcode() == luci::CircleOpcode::CONCATENATION)
-      continue;
 
     // Quantize constant values
     if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
@@ -465,11 +452,6 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant
       quant_const_values(new_const, scaling_factor, zerop, quant_type);
       overwrite_quantparam(pad_v2, new_const);
       (pad_v2->*arg_setter)(new_const);
-    }
-    // Subsequent PadV2 Ops quant params are not propagated
-    else if (node->opcode() == luci::CircleOpcode::PADV2)
-    {
-      return;
     }
     else
     {
