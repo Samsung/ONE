@@ -13,10 +13,20 @@ function(_Jsoncpp_import)
                       IDENTIFIER  "1.9.5"
                       PKG_NAME    "JSONCPP"
                       EXTRA_OPTS "-DBUILD_STATIC_LIBS=ON"
-                                 "-DBUILD_SHARED_LIBS=OFF")
+                                 "-DBUILD_SHARED_LIBS=OFF"
+                                 "-DJSONCPP_WITH_TESTS=OFF"
+                                 "-DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF")
 
-  find_path(Jsoncpp_INCLUDE_DIRS NAMES json.h PATHS ${EXT_OVERLAY_DIR} PATH_SUFFIXES include/json)
-  find_file(Jsoncpp_STATIC_LIB NAMES libjsoncpp.a PATHS ${EXT_OVERLAY_DIR} PATH_SUFFIXES lib)
+  find_path(Jsoncpp_INCLUDE_DIRS
+            NAMES json.h
+            PATHS ${EXT_OVERLAY_DIR}
+            NO_CMAKE_FIND_ROOT_PATH
+            PATH_SUFFIXES include/json)
+  find_file(Jsoncpp_STATIC_LIB
+            NAMES libjsoncpp.a
+            PATHS ${EXT_OVERLAY_DIR}
+            NO_CMAKE_FIND_ROOT_PATH
+            PATH_SUFFIXES lib)
 
   set(Jsoncpp_FOUND TRUE PARENT_SCOPE)
 endfunction(_Jsoncpp_import)
