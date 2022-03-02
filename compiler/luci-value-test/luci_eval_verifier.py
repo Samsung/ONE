@@ -56,27 +56,35 @@ for i in range(num_inputs):
     if input_details["dtype"] == np.float32:
         input_data = np.array(
             np.random.random_sample(input_details["shape"]), input_details["dtype"])
+        input_dtype = "float32"
     elif input_details["dtype"] == np.uint8:
         input_data = np.array(
             np.random.randint(0, 256, size=input_details["shape"]),
             input_details["dtype"])
+        input_dtype = "uint8"
     elif input_details["dtype"] == np.int32:
         input_data = np.array(
             np.random.randint(0, 100, size=input_details["shape"]),
             input_details["dtype"])
+        input_dtype = "int32"
     elif input_details["dtype"] == np.int64:
         input_data = np.array(
             np.random.randint(0, 100, size=input_details["shape"]),
             input_details["dtype"])
+        input_dtype = "int64"
     elif input_details["dtype"] == np.bool_:
         input_data = np.array(
             np.random.choice(a=[True, False], size=input_details["shape"]),
             input_details["dtype"])
+        input_dtype = "bool"
     else:
         raise SystemExit("Unsupported input dtype")
 
     interpreter.set_tensor(input_details["index"], input_data)
     input_data.tofile(circle_model + ".input" + str(i))
+    input_details["shape"].tofile(circle_model + ".input" + str(i) + ".shape", sep=',')
+    with open(circle_model + ".input" + str(i) + ".dtype", 'w') as dtype_file:
+        dtype_file.write(input_dtype)
 
 # Do inference
 interpreter.invoke()
@@ -107,26 +115,35 @@ for idx in range(len(inpt_output_details)):
             if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
+            output_dtype = "uint8"
         elif output_details["dtype"] == np.float32:
             if np.allclose(
                     luci_output_data, intp_output_data, rtol=rtolf32,
                     atol=atolf32) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
+            output_dtype = "float32"
         elif output_details["dtype"] == np.int64:
             if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
+            output_dtype = "int64"
         elif output_details["dtype"] == np.int32:
             if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
+            output_dtype = "int32"
         elif output_details["dtype"] == np.bool_:
             if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
+            output_dtype = "bool"
         else:
             raise SystemExit("Unsupported data type: ", output_details["dtype"])
+
+        # save outputN.dtype file
+        with open(circle_model + ".output" + str(idx) + ".dtype", 'w') as dtype_file:
+            dtype_file.write(output_dtype)
     except:
         print(traceback.format_exc())
         quit(255)
