@@ -688,6 +688,36 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<void>
   QuantizationGranularity granularity;
 
 private:
+  struct IWB
+  {
+    CircleNode *input = nullptr;
+    CircleNode *weights = nullptr;
+    CircleNode *bias = nullptr;
+
+    IWB() {}
+
+    IWB(CircleNode *i, CircleNode *w, CircleNode *b) : input(i), weights(w), bias(b) {}
+
+    operator bool() { return input && weights && bias; }
+  };
+
+private:
+  IWB check_iwb(loco::Node *input, loco::Node *weight, loco::Node *bias)
+  {
+    auto b = dynamic_cast<luci::CircleConst *>(bias);
+    if (not b)
+      return IWB();
+
+    if (is_quantized(b))
+      return IWB();
+
+    auto i = loco::must_cast<luci::CircleNode *>(input);
+    auto w = loco::must_cast<luci::CircleNode *>(weight);
+
+    return IWB(i, w, b);
+  }
+
+private:
   // Return a quantized bias node
   CircleConst *quantized_bias(CircleNode *input, const CircleNode *weight, CircleNode *bias)
   {
@@ -771,17 +801,11 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
 
-    auto bias = dynamic_cast<luci::CircleConst *>(node->bias());
-    if (not bias)
-      return;
-
-    if (is_quantized(bias))
-      return;
-
-    auto i = loco::must_cast<luci::CircleNode *>(node->input());
-    auto w = loco::must_cast<luci::CircleNode *>(node->filter());
-    auto new_bias = quantized_bias(i, w, bias);
-    node->bias(new_bias);
+    if (auto iwb = check_iwb(node->input(), node->filter(), node->bias()))
+    {
+      auto new_bias = quantized_bias(iwb.input, iwb.weights, iwb.bias);
+      node->bias(new_bias);
+    }
   }
 
   void visit(luci::CircleDepthwiseConv2D *node)
@@ -789,17 +813,11 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
 
-    auto bias = dynamic_cast<luci::CircleConst *>(node->bias());
-    if (not bias)
-      return;
-
-    if (is_quantized(bias))
-      return;
-
-    auto i = loco::must_cast<luci::CircleNode *>(node->input());
-    auto w = loco::must_cast<luci::CircleNode *>(node->filter());
-    auto new_bias = quantized_bias(i, w, bias);
-    node->bias(new_bias);
+    if (auto iwb = check_iwb(node->input(), node->filter(), node->bias()))
+    {
+      auto new_bias = quantized_bias(iwb.input, iwb.weights, iwb.bias);
+      node->bias(new_bias);
+    }
   }
 
   void visit(luci::CircleTransposeConv *node)
@@ -807,17 +825,11 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
 
-    auto bias = dynamic_cast<luci::CircleConst *>(node->bias());
-    if (not bias)
-      return;
-
-    if (is_quantized(bias))
-      return;
-
-    auto i = loco::must_cast<luci::CircleNode *>(node->outBackprop());
-    auto w = loco::must_cast<luci::CircleNode *>(node->filter());
-    auto new_bias = quantized_bias(i, w, bias);
-    node->bias(new_bias);
+    if (auto iwb = check_iwb(node->outBackprop(), node->filter(), node->bias()))
+    {
+      auto new_bias = quantized_bias(iwb.input, iwb.weights, iwb.bias);
+      node->bias(new_bias);
+    }
   }
 
   void visit(luci::CircleFullyConnected *node)
@@ -825,17 +837,11 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
 
-    auto bias = dynamic_cast<luci::CircleConst *>(node->bias());
-    if (not bias)
-      return;
-
-    if (is_quantized(bias))
-      return;
-
-    auto i = loco::must_cast<luci::CircleNode *>(node->input());
-    auto w = loco::must_cast<luci::CircleNode *>(node->weights());
-    auto new_bias = quantized_bias(i, w, bias);
-    node->bias(new_bias);
+    if (auto iwb = check_iwb(node->input(), node->weights(), node->bias()))
+    {
+      auto new_bias = quantized_bias(iwb.input, iwb.weights, iwb.bias);
+      node->bias(new_bias);
+    }
   }
 
   void visit(luci::CircleNode *) {}
