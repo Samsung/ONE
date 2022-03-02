@@ -437,6 +437,144 @@ class CircleNotEqualSummaryBuilder final : public CircleNodeWithXYSummaryBuilder
 {
 };
 
+class CircleOneHotSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
+};
+
+class CircleOutputSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+};
+
+class CircleOutputDummySummaryBuilder final : public CircleNodeSummaryBuilder
+{
+};
+
+class CircleOutputExcludeSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+};
+
+class CirclePackSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *node);
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
+};
+
+class CirclePadSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+};
+
+class CirclePadV2SummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+};
+
+class CirclePowSummaryBuilder final : public CircleNodeWithXYSummaryBuilder
+{
+};
+
+class CirclePReluSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+};
+
+class CircleQuantizeSummaryBuilder final : public CircleNodeWithINPUTSummaryBuilder
+{
+};
+
+class CircleRangeSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+};
+
+class CircleRankSummaryBuilder final : public CircleNodeWithINPUTSummaryBuilder
+{
+};
+
+class CircleReduceAnySummaryBuilder final
+  : public CircleNodeWithReducerSummaryBuilder<luci::CircleReduceAny>
+{
+};
+
+class CircleReduceMaxSummaryBuilder final
+  : public CircleNodeWithReducerSummaryBuilder<luci::CircleReduceMax>
+{
+};
+
+class CircleReduceMinSummaryBuilder final
+  : public CircleNodeWithReducerSummaryBuilder<luci::CircleReduceMin>
+{
+};
+
+class CircleReduceProdSummaryBuilder final
+  : public CircleNodeWithReducerSummaryBuilder<luci::CircleReduceProd>
+{
+};
+
+class CircleReluSummaryBuilder final : public CircleNodeWithFEATURESSummaryBuilder
+{
+};
+
+class CircleRelu6SummaryBuilder final : public CircleNodeWithFEATURESSummaryBuilder
+{
+};
+
+class CircleReluN1To1SummaryBuilder final : public CircleNodeWithFEATURESSummaryBuilder
+{
+};
+
+class CircleReshapeSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+  void update_status(locop::NodeSummary &s);
+};
+
+class CircleResizeBilinearSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
+};
+
+class CircleResizeNearestNeighborSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
+};
+
+class CircleReverseSequenceSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
+};
+
+class CircleReverseV2SummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+};
+
+class CircleRoundSummaryBuilder final : public CircleNodeWithXSummaryBuilder
+{
+};
+
+class CircleRsqrtSummaryBuilder final : public CircleNodeWithXSummaryBuilder
+{
+};
+
 } // namespace luci
 
 #endif // __LUCI_LOGEX_CIRCLE_NODE_SUMMARY_BUILDERS__
