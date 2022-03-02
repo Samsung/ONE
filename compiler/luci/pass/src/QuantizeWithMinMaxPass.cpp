@@ -692,30 +692,25 @@ private:
   {
     CircleNode *input = nullptr;
     CircleNode *weights = nullptr;
-    CircleNode *bias = nullptr;
+    CircleConst *bias = nullptr;
 
-    IWB() {}
+    IWB(loco::Node *i, loco::Node *w, loco::Node *b)
+    {
+      input = dynamic_cast<luci::CircleNode *>(i);
+      weights = dynamic_cast<luci::CircleNode *>(w);
+      bias = dynamic_cast<luci::CircleConst *>(b);
+    }
 
-    IWB(CircleNode *i, CircleNode *w, CircleNode *b) : input(i), weights(w), bias(b) {}
-
-    operator bool() { return input && weights && bias; }
+    // Return true if bias is quantizable
+    operator bool()
+    {
+      if (bias == nullptr || is_quantized(bias))
+        return false;
+      if (input == nullptr || weights == nullptr)
+        return false;
+      return true;
+    }
   };
-
-private:
-  IWB check_iwb(loco::Node *input, loco::Node *weight, loco::Node *bias)
-  {
-    auto b = dynamic_cast<luci::CircleConst *>(bias);
-    if (not b)
-      return IWB();
-
-    if (is_quantized(b))
-      return IWB();
-
-    auto i = loco::must_cast<luci::CircleNode *>(input);
-    auto w = loco::must_cast<luci::CircleNode *>(weight);
-
-    return IWB(i, w, b);
-  }
 
 private:
   // Return a quantized bias node
@@ -801,7 +796,7 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
 
-    if (auto iwb = check_iwb(node->input(), node->filter(), node->bias()))
+    if (auto iwb = IWB(node->input(), node->filter(), node->bias()))
     {
       auto new_bias = quantized_bias(iwb.input, iwb.weights, iwb.bias);
       node->bias(new_bias);
@@ -813,7 +808,7 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
 
-    if (auto iwb = check_iwb(node->input(), node->filter(), node->bias()))
+    if (auto iwb = IWB(node->input(), node->filter(), node->bias()))
     {
       auto new_bias = quantized_bias(iwb.input, iwb.weights, iwb.bias);
       node->bias(new_bias);
@@ -825,7 +820,7 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
 
-    if (auto iwb = check_iwb(node->outBackprop(), node->filter(), node->bias()))
+    if (auto iwb = IWB(node->outBackprop(), node->filter(), node->bias()))
     {
       auto new_bias = quantized_bias(iwb.input, iwb.weights, iwb.bias);
       node->bias(new_bias);
@@ -837,7 +832,7 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
 
-    if (auto iwb = check_iwb(node->input(), node->weights(), node->bias()))
+    if (auto iwb = IWB(node->input(), node->weights(), node->bias()))
     {
       auto new_bias = quantized_bias(iwb.input, iwb.weights, iwb.bias);
       node->bias(new_bias);
