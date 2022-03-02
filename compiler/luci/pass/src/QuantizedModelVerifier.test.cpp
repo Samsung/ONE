@@ -204,6 +204,7 @@ public:
       _instnorm->input(input());
       _instnorm->gamma(_gamma);
       _instnorm->beta(_beta);
+      _instnorm->fusedActivationFunction(luci::FusedActFunc::NONE);
     }
     output()->from(_instnorm);
 
@@ -758,6 +759,7 @@ public:
       _concat->values(0, input());
       _concat->values(1, _param);
       _concat->axis(0);
+      _concat->fusedActivationFunction(luci::FusedActFunc::NONE);
     }
     output()->from(_concat);
 
@@ -1100,6 +1102,7 @@ public:
     {
       _mul->x(input());
       _mul->y(_const);
+      _mul->fusedActivationFunction(luci::FusedActFunc::NONE);
     }
     output()->from(_mul);
 
@@ -1126,6 +1129,7 @@ public:
     {
       _add->x(input());
       _add->y(_const);
+      _add->fusedActivationFunction(luci::FusedActFunc::NONE);
     }
     output()->from(_add);
 
