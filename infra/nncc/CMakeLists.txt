@@ -88,6 +88,10 @@ message(STATUS "Use '${CMAKE_BUILD_TYPE}' configuration")
 #
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 
+# identify platform: HOST_PLATFORM, TARGET_PLATFORM and related
+# note: this should be placed before flags and options setting
+nnas_include(IdentifyPlatform)
+
 ###
 ### Configuration
 ###
