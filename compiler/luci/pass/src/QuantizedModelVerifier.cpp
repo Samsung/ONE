@@ -27,7 +27,7 @@ namespace luci
 
 void QuantizedModelVerifier::verify(loco::Graph *g)
 {
-  if (_granularity != Granularity::ChannelWise && _granularity != Granularity::LayerWise)
+  if (_ctx->granularity != Granularity::ChannelWise && _ctx->granularity != Granularity::LayerWise)
     throw std::runtime_error("Unsupported granularity");
 
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
@@ -42,11 +42,11 @@ void QuantizedModelVerifier::verify(loco::Graph *g)
     };
 
     // Verify Type
-    if (!VerifyQuantizedNodeType::create(_quantized_dtype)->verify(circle_node))
+    if (!VerifyQuantizedNodeType::create(_ctx->output_model_dtype)->verify(circle_node))
       throw std::runtime_error("Wrong data type detected in " + node_name());
 
     // Verify Granularity
-    if (!circle_node->accept(VerifyQuantizedNodeGranularity::create(_granularity).get()))
+    if (!circle_node->accept(VerifyQuantizedNodeGranularity::create(_ctx->granularity).get()))
       throw std::runtime_error("Wrong granularity detected in " + node_name());
 
     // Verify Bias scale

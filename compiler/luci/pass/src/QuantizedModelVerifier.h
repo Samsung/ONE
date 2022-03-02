@@ -21,6 +21,8 @@
 
 #include <loco.h>
 
+#include <memory>
+
 namespace luci
 {
 
@@ -31,18 +33,40 @@ namespace luci
  */
 struct QuantizedModelVerifier
 {
+public:
+  struct Context
+  {
+    loco::DataType output_model_dtype = loco::DataType::Unknown;
+    QuantizationGranularity granularity = QuantizationGranularity::ChannelWise;
+    loco::DataType input_type = loco::DataType::Unknown;
+    loco::DataType output_type = loco::DataType::Unknown;
+    bool TF_style_maxpool = false;
+    std::vector<LayerInfo> layers_info;
+  };
 
 public:
   QuantizedModelVerifier(loco::DataType quantized_dtype, QuantizationGranularity granularity)
-    : _quantized_dtype(quantized_dtype), _granularity(granularity)
   {
+    _ctx = std::make_unique<Context>();
+    {
+      _ctx->output_model_dtype = quantized_dtype;
+      _ctx->granularity = granularity;
+      _ctx->input_type = quantized_dtype;
+      _ctx->output_type = quantized_dtype;
+      _ctx->TF_style_maxpool = false;
+    }
+  }
+
+public:
+  QuantizedModelVerifier(std::unique_ptr<Context> &&ctx) : _ctx{std::move(ctx)}
+  {
+    // DO NOTHING
   }
 
   void verify(loco::Graph *g);
 
 private:
-  loco::DataType _quantized_dtype;
-  QuantizationGranularity _granularity;
+  std::unique_ptr<Context> _ctx;
 };
 
 } // namespace luci
