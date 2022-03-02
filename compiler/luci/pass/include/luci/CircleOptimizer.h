@@ -75,6 +75,7 @@ public:
       TransformMinReluToRelu6Pass,
       SubstituteStridedSliceToReshape,
       SubstituteTransposeToReshape,
+      RemoveRedundantQuantize,
       RemoveRedundantReshape,
       RemoveFakeQuant,
       RemoveQuantDequantSeq,
