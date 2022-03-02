@@ -504,21 +504,6 @@ void asym_wquant_per_layer(CircleConst *node, float min, float scaling_factor)
   }
 }
 
-void set_bias(luci::CircleNode *node, luci::CircleConst *bias)
-{
-  if (auto conv = dynamic_cast<CircleConv2D *>(node))
-    conv->bias(bias);
-  else if (auto dconv = dynamic_cast<CircleDepthwiseConv2D *>(node))
-    dconv->bias(bias);
-  else if (auto tconv = dynamic_cast<CircleTransposeConv *>(node))
-    tconv->bias(bias);
-  else if (auto fc = dynamic_cast<CircleFullyConnected *>(node))
-    fc->bias(bias);
-  else
-    throw std::runtime_error("Only convolution, depthwise convolution, transposed convolution, and "
-                             "fully-connected layer have bias");
-}
-
 void set_act_qparam(luci::CircleNode *node, float scale, int64_t zp)
 {
   assert(node);               // FIX_CALLER_UNLESS
@@ -702,98 +687,158 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<void>
   loco::DataType output_type;
   QuantizationGranularity granularity;
 
-  // Quantize bias node
-  void visit(luci::CircleNode *node)
+private:
+  // Return a quantized bias node
+  CircleConst *quantized_bias(CircleNode *input, const CircleNode *weight, CircleNode *bias)
   {
-    // Check if this is already quantized
-    if (is_quantized(node))
-      return;
+    auto const_bias = loco::must_cast<luci::CircleConst *>(bias);
+    assert(const_bias->dtype() == loco::DataType::FLOAT32);
 
-    auto iwo_list = get_input_weight_output_of_bias(node);
-
-    for (auto iwo : iwo_list)
+    // If input is const, it is quantized here, not in QuantizeActivation
+    if (auto const_input = dynamic_cast<luci::CircleConst *>(input))
     {
-      assert(iwo.size() == 3);
+      quant_const(const_input, output_type);
+    }
 
-      auto input = loco::must_cast<luci::CircleNode *>(iwo[0]);
-      auto weight = loco::must_cast<luci::CircleNode *>(iwo[1]);
-      auto output = loco::must_cast<luci::CircleNode *>(iwo[2]);
+    CircleConst *new_bias = nullptr;
 
-      auto const_bias = loco::must_cast<luci::CircleConst *>(node);
-      assert(const_bias->dtype() == loco::DataType::FLOAT32);
+    if (granularity == QuantizationGranularity::ChannelWise)
+    {
+      auto input_q = input->quantparam();
+      assert(input_q);
+      assert(input_q->scale.size() == 1); // input scale's layer-wise
+      auto input_scale = input_q->scale[0];
 
-      // If input is const, it is quantized here, not in QuantizeActivation
-      if (auto const_input = dynamic_cast<luci::CircleConst *>(input))
+      assert(weight->quantparam() != nullptr); // weight scale's channel-wise
+      auto weight_scale = weight->quantparam()->scale;
+
+      uint32_t size = const_bias->size<loco::DataType::FLOAT32>();
+      assert(size == weight_scale.size());
+      std::vector<float> scaling_factor(size);
+      std::vector<int64_t> zp(size);
+
+      if (output_type == loco::DataType::U8)
       {
-        quant_const(const_input, output_type);
+        new_bias =
+          quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
       }
-
-      CircleConst *new_bias = nullptr;
-
-      if (granularity == QuantizationGranularity::ChannelWise)
+      else if (output_type == loco::DataType::S16)
       {
-        auto input_q = input->quantparam();
-        assert(input_q);
-        assert(input_q->scale.size() == 1); // input scale's layer-wise
-        auto input_scale = input_q->scale[0];
-
-        assert(weight->quantparam() != nullptr); // weight scale's channel-wise
-        auto weight_scale = weight->quantparam()->scale;
-
-        uint32_t size = const_bias->size<loco::DataType::FLOAT32>();
-        assert(size == weight_scale.size());
-        std::vector<float> scaling_factor(size);
-        std::vector<int64_t> zp(size);
-
-        if (output_type == loco::DataType::U8)
-        {
-          new_bias =
-            quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
-        }
-        else if (output_type == loco::DataType::S16)
-        {
-          new_bias =
-            int16_quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
-        }
-        else
-        {
-          throw std::runtime_error("Unsupported quantization type.");
-        }
-
-        auto quantparam = std::make_unique<CircleQuantParam>();
-        quantparam->scale = scaling_factor;
-        quantparam->zerop = zp;
-        assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
-        new_bias->quantparam(std::move(quantparam));
-
-        set_bias(output, new_bias);
+        new_bias =
+          int16_quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
       }
       else
       {
-        auto input_q = input->quantparam();
-        assert(input_q);
-        assert(input_q->scale.size() == 1); // Only support per-layer quant
-        auto input_scale = input_q->scale[0];
-
-        auto weight_q = weight->quantparam();
-        assert(weight_q);
-        assert(weight_q->scale.size() == 1); // Only support per-layer quant
-        auto weight_scale = weight_q->scale[0];
-
-        float scaling_factor{0};
-        int64_t zp{0};
-        new_bias =
-          asym_quant_bias_per_layer(const_bias, input_scale, weight_scale, &scaling_factor, &zp);
-        auto quantparam = std::make_unique<CircleQuantParam>();
-        quantparam->scale.push_back(scaling_factor);
-        quantparam->zerop.push_back(zp);
-        assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
-        new_bias->quantparam(std::move(quantparam));
-
-        set_bias(output, new_bias);
+        throw std::runtime_error("Unsupported quantization type.");
       }
+
+      auto quantparam = std::make_unique<CircleQuantParam>();
+      quantparam->scale = scaling_factor;
+      quantparam->zerop = zp;
+      assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
+      new_bias->quantparam(std::move(quantparam));
+
+      return new_bias;
+    }
+    else
+    {
+      auto input_q = input->quantparam();
+      assert(input_q);
+      assert(input_q->scale.size() == 1); // Only support per-layer quant
+      auto input_scale = input_q->scale[0];
+
+      auto weight_q = weight->quantparam();
+      assert(weight_q);
+      assert(weight_q->scale.size() == 1); // Only support per-layer quant
+      auto weight_scale = weight_q->scale[0];
+
+      float scaling_factor{0};
+      int64_t zp{0};
+      new_bias =
+        asym_quant_bias_per_layer(const_bias, input_scale, weight_scale, &scaling_factor, &zp);
+      auto quantparam = std::make_unique<CircleQuantParam>();
+      quantparam->scale.push_back(scaling_factor);
+      quantparam->zerop.push_back(zp);
+      assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
+      new_bias->quantparam(std::move(quantparam));
+
+      return new_bias;
     }
   }
+
+  void visit(luci::CircleConv2D *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
+
+    auto bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (not bias)
+      return;
+
+    if (is_quantized(bias))
+      return;
+
+    auto i = loco::must_cast<luci::CircleNode *>(node->input());
+    auto w = loco::must_cast<luci::CircleNode *>(node->filter());
+    auto new_bias = quantized_bias(i, w, bias);
+    node->bias(new_bias);
+  }
+
+  void visit(luci::CircleDepthwiseConv2D *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
+
+    auto bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (not bias)
+      return;
+
+    if (is_quantized(bias))
+      return;
+
+    auto i = loco::must_cast<luci::CircleNode *>(node->input());
+    auto w = loco::must_cast<luci::CircleNode *>(node->filter());
+    auto new_bias = quantized_bias(i, w, bias);
+    node->bias(new_bias);
+  }
+
+  void visit(luci::CircleTransposeConv *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
+
+    auto bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (not bias)
+      return;
+
+    if (is_quantized(bias))
+      return;
+
+    auto i = loco::must_cast<luci::CircleNode *>(node->outBackprop());
+    auto w = loco::must_cast<luci::CircleNode *>(node->filter());
+    auto new_bias = quantized_bias(i, w, bias);
+    node->bias(new_bias);
+  }
+
+  void visit(luci::CircleFullyConnected *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
+
+    auto bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (not bias)
+      return;
+
+    if (is_quantized(bias))
+      return;
+
+    auto i = loco::must_cast<luci::CircleNode *>(node->input());
+    auto w = loco::must_cast<luci::CircleNode *>(node->weights());
+    auto new_bias = quantized_bias(i, w, bias);
+    node->bias(new_bias);
+  }
+
+  void visit(luci::CircleNode *) {}
 };
 
 /**
