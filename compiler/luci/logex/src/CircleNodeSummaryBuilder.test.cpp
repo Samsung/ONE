@@ -265,3 +265,31 @@ TEST_F(CircleNodeSummaryBuilderTest, Mul_validate_fused_NEG)
   node.fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
   EXPECT_FALSE(mock_build(&node));
 }
+
+TEST_F(CircleNodeSummaryBuilderTest, SVDF_validate)
+{
+  luci::CircleSVDF node;
+  node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  EXPECT_TRUE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, SVDF_validate_fused_NEG)
+{
+  luci::CircleSVDF node;
+  node.fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
+  EXPECT_FALSE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, TransposeConv_validate)
+{
+  luci::CircleTransposeConv node;
+  node.padding(luci::Padding::SAME);
+  EXPECT_TRUE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, TransposeConv_validate_padding_NEG)
+{
+  luci::CircleTransposeConv node;
+  node.padding(luci::Padding::UNDEFINED);
+  EXPECT_FALSE(mock_build(&node));
+}
