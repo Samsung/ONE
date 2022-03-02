@@ -233,118 +233,6 @@ bool use_ido(const locop::SymbolTable *tbl, const CIRCLENODE *node, locop::NodeS
   return true;
 }
 
-bool summary_node(const locop::SymbolTable *tbl, const luci::CircleOneHot *node,
-                  locop::NodeSummary &s)
-{
-  s.args().append("indices", tbl->lookup(node->indices()));
-  s.args().append("depth", tbl->lookup(node->depth()));
-  s.args().append("on_value", tbl->lookup(node->on_value()));
-  s.args().append("off_value", tbl->lookup(node->off_value()));
-  s.args().append("axis", pepper::str(node->axis()));
-
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CirclePack *node,
-                  locop::NodeSummary &s)
-{
-  for (uint32_t i = 0; i < node->values_count(); ++i)
-    s.args().append("values", tbl->lookup(node->values(i)));
-  s.args().append("values_count", pepper::str(node->values_count()));
-  s.args().append("axis", pepper::str(node->axis()));
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CirclePad *node, locop::NodeSummary &s)
-{
-  s.args().append("input", tbl->lookup(node->input()));
-  s.args().append("paddings", tbl->lookup(node->paddings()));
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CirclePadV2 *node,
-                  locop::NodeSummary &s)
-{
-  s.args().append("input", tbl->lookup(node->input()));
-  s.args().append("paddings", tbl->lookup(node->paddings()));
-  s.args().append("constant_values", tbl->lookup(node->constant_values()));
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CirclePRelu *node,
-                  locop::NodeSummary &s)
-{
-  s.args().append("input", tbl->lookup(node->input()));
-  s.args().append("alpha", tbl->lookup(node->alpha()));
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CircleRange *node,
-                  locop::NodeSummary &s)
-{
-  s.args().append("start", tbl->lookup(node->start()));
-  s.args().append("limit", tbl->lookup(node->limit()));
-  s.args().append("delta", tbl->lookup(node->delta()));
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CircleReshape *node,
-                  locop::NodeSummary &s)
-{
-  s.args().append("tensor", tbl->lookup(node->tensor()));
-  s.args().append("shape", tbl->lookup(node->shape()));
-  // TODO Show newShape info
-  s.state(locop::NodeSummary::State::PartiallyKnown);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CircleResizeBilinear *node,
-                  locop::NodeSummary &s)
-{
-  s.args().append("input", tbl->lookup(node->input()));
-  s.args().append("size", tbl->lookup(node->size()));
-  s.args().append("align_corners", node->align_corners() ? "true" : "false");
-  s.args().append("half_pixel_centers", node->half_pixel_centers() ? "true" : "false");
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CircleResizeNearestNeighbor *node,
-                  locop::NodeSummary &s)
-{
-  s.args().append("input", tbl->lookup(node->input()));
-  s.args().append("size", tbl->lookup(node->size()));
-  s.args().append("align_corners", node->align_corners() ? "true" : "false");
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CircleReverseSequence *node,
-                  locop::NodeSummary &s)
-{
-  s.args().append("input", tbl->lookup(node->input()));
-  s.args().append("seq_lengths", tbl->lookup(node->seq_lengths()));
-  s.args().append("seq_axis", std::to_string(node->seq_axis()));
-  s.args().append("batch_axis", std::to_string(node->batch_axis()));
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CircleReverseV2 *node,
-                  locop::NodeSummary &s)
-{
-  s.args().append("tensor", tbl->lookup(node->tensor()));
-  s.args().append("axis", tbl->lookup(node->axis()));
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
 bool summary_node(const locop::SymbolTable *tbl, const luci::CircleScatterNd *node,
                   locop::NodeSummary &s)
 {
@@ -741,7 +629,6 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleInstanceNorm 
 // SummaryBuilderLet type
 enum class SB
 {
-  OPQR,
   STUV,
   WXYZ,
   CIRC, // circle only
@@ -751,40 +638,6 @@ enum class SB
 template <SB sb> class SummaryBuilderLet;
 
 #define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
-
-template <> class SummaryBuilderLet<SB::OPQR> final : public CircleNodeSummaryBuilderBase
-{
-public:
-  SummaryBuilderLet(const locop::SymbolTable *tbl) : CircleNodeSummaryBuilderBase(tbl)
-  {
-    // DO NOTHING
-  }
-
-private:
-  IMPLEMENT(luci::CircleOneHot)
-  IMPLEMENT(luci::CirclePack)
-  IMPLEMENT(luci::CirclePad)
-  IMPLEMENT(luci::CirclePadV2)
-  IMPLEMENT(luci::CirclePow)
-  IMPLEMENT(luci::CirclePRelu)
-  IMPLEMENT(luci::CircleQuantize)
-  IMPLEMENT(luci::CircleRange)
-  IMPLEMENT(luci::CircleRank)
-  IMPLEMENT(luci::CircleReduceAny)
-  IMPLEMENT(luci::CircleReduceMax)
-  IMPLEMENT(luci::CircleReduceMin)
-  IMPLEMENT(luci::CircleReduceProd)
-  IMPLEMENT(luci::CircleRelu)
-  IMPLEMENT(luci::CircleRelu6)
-  IMPLEMENT(luci::CircleReluN1To1)
-  IMPLEMENT(luci::CircleReshape)
-  IMPLEMENT(luci::CircleResizeBilinear)
-  IMPLEMENT(luci::CircleResizeNearestNeighbor)
-  IMPLEMENT(luci::CircleReverseSequence)
-  IMPLEMENT(luci::CircleReverseV2)
-  IMPLEMENT(luci::CircleRound)
-  IMPLEMENT(luci::CircleRsqrt)
-};
 
 template <> class SummaryBuilderLet<SB::STUV> final : public CircleNodeSummaryBuilderBase
 {
@@ -914,139 +767,6 @@ bool CircleNodeSummaryBuilderBase::build(const loco::Node *node, locop::NodeSumm
 #undef CIRCLE_NODE
 
   return false;
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleOneHot *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CirclePack *node, locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CirclePad *node, locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CirclePadV2 *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CirclePow *node, locop::NodeSummary &s) const
-{
-  return use_xy(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CirclePRelu *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleQuantize *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_input(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleRange *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleRank *node, locop::NodeSummary &s) const
-{
-  return use_input(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleReduceAny *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_reducer(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleReduceMax *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_reducer(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleReduceMin *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_reducer(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleReduceProd *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_reducer(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleRelu *node, locop::NodeSummary &s) const
-{
-  return use_features(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleRelu6 *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_features(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleReluN1To1 *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_features(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleReshape *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleResizeBilinear *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleResizeNearestNeighbor *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleReverseSequence *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleReverseV2 *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleRound *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_x(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::OPQR>::summary(const luci::CircleRsqrt *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_x(tbl(), node, s);
 }
 
 bool SummaryBuilderLet<SB::STUV>::summary(const luci::CircleScatterNd *node,
@@ -1373,7 +1093,6 @@ bool NodeSummaryBuilder::build(const loco::Node *node, locop::NodeSummary &s) co
   } while (false)
 
   // TODO Replace with CircleNodeSummaryBuilder and then remove these
-  BUILD_GRP(OPQR);
   BUILD_GRP(STUV);
   BUILD_GRP(WXYZ);
   BUILD_GRP(CIRC);

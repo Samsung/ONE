@@ -701,4 +701,109 @@ CircleNonMaxSuppressionV5SummaryBuilder::get_input_names(const luci::CircleNode 
           "iou_threshold", "score_threshold", "soft_nms_sigma"};
 }
 
+std::vector<std::string> CircleOneHotSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"indices", "depth", "on_value", "off_value"};
+}
+
+void CircleOneHotSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                  locop::NodeSummary &s)
+{
+  auto onehot = loco::must_cast<const luci::CircleOneHot *>(node);
+  s.args().append("axis", std::to_string(onehot->axis()));
+}
+
+std::vector<std::string> CircleOutputSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"from"};
+}
+
+std::vector<std::string> CirclePackSummaryBuilder::get_input_names(const luci::CircleNode *node)
+{
+  return std::vector<std::string>(node->arity(), "values");
+}
+
+void CirclePackSummaryBuilder::build_attributes(const luci::CircleNode *node, locop::NodeSummary &s)
+{
+  auto pack = loco::must_cast<const luci::CirclePack *>(node);
+  s.args().append("values_count", std::to_string(pack->values_count()));
+  s.args().append("axis", std::to_string(pack->axis()));
+}
+
+std::vector<std::string> CirclePadSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "paddings"};
+}
+
+std::vector<std::string> CirclePadV2SummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "paddings", "constant_values"};
+}
+
+std::vector<std::string> CirclePReluSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "alpha"};
+}
+
+std::vector<std::string> CircleRangeSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"start", "limit", "delta"};
+}
+
+std::vector<std::string> CircleReshapeSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"tensor", "shape"};
+}
+
+void CircleReshapeSummaryBuilder::update_status(locop::NodeSummary &s)
+{
+  s.state(locop::NodeDesc::State::PartiallyKnown);
+}
+
+std::vector<std::string>
+CircleResizeBilinearSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "size"};
+}
+
+void CircleResizeBilinearSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                          locop::NodeSummary &s)
+{
+  auto resize_bilinear = loco::must_cast<const luci::CircleResizeBilinear *>(node);
+  s.args().append("align_corners", to_str(resize_bilinear->align_corners()));
+  s.args().append("half_pixel_centers", to_str(resize_bilinear->half_pixel_centers()));
+}
+
+std::vector<std::string>
+CircleResizeNearestNeighborSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "size"};
+}
+
+void CircleResizeNearestNeighborSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                                 locop::NodeSummary &s)
+{
+  auto resize_nn = loco::must_cast<const luci::CircleResizeNearestNeighbor *>(node);
+  s.args().append("align_corners", to_str(resize_nn->align_corners()));
+}
+
+std::vector<std::string>
+CircleReverseSequenceSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "seq_lengths"};
+}
+
+void CircleReverseSequenceSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                           locop::NodeSummary &s)
+{
+  auto reverse_seq = loco::must_cast<const luci::CircleReverseSequence *>(node);
+  s.args().append("seq_axis", std::to_string(reverse_seq->seq_axis()));
+  s.args().append("batch_axis", std::to_string(reverse_seq->batch_axis()));
+}
+
+std::vector<std::string> CircleReverseV2SummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"tensor", "axis"};
+}
+
 } // namespace luci
