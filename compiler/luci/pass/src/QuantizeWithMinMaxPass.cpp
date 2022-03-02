@@ -39,6 +39,8 @@ namespace
 using namespace luci;
 using IterFunc = std::function<void(uint32_t *, loco::TensorShape &, int32_t)>;
 
+using LayerInfoMap = std::unordered_map<std::string, LayerInfo *>;
+
 void iterate_per_channel(CircleConst *node, int32_t &channel_dim_index, IterFunc func)
 {
   loco::TensorShape dimension;
@@ -108,6 +110,11 @@ luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType 
   auto quantparam = std::make_unique<CircleQuantParam>();
   quantparam->scale.push_back(scaling_factor);
   quantparam->zerop.push_back(zp);
+  // Save original min/max (not nudged_min/max). Nudged min/max
+  // is different from the real min/max values, causing wrong
+  // qparam when quantization dtype is changed.
+  quantparam->min.push_back(min);
+  quantparam->max.push_back(max);
 
   quantize->quantparam(std::move(quantparam));
 
@@ -504,21 +511,6 @@ void asym_wquant_per_layer(CircleConst *node, float min, float scaling_factor)
   }
 }
 
-void set_bias(luci::CircleNode *node, luci::CircleConst *bias)
-{
-  if (auto conv = dynamic_cast<CircleConv2D *>(node))
-    conv->bias(bias);
-  else if (auto dconv = dynamic_cast<CircleDepthwiseConv2D *>(node))
-    dconv->bias(bias);
-  else if (auto tconv = dynamic_cast<CircleTransposeConv *>(node))
-    tconv->bias(bias);
-  else if (auto fc = dynamic_cast<CircleFullyConnected *>(node))
-    fc->bias(bias);
-  else
-    throw std::runtime_error("Only convolution, depthwise convolution, transposed convolution, and "
-                             "fully-connected layer have bias");
-}
-
 void set_act_qparam(luci::CircleNode *node, float scale, int64_t zp)
 {
   assert(node);               // FIX_CALLER_UNLESS
@@ -702,98 +694,161 @@ struct QuantizeBias final : public luci::CircleNodeMutableVisitor<void>
   loco::DataType output_type;
   QuantizationGranularity granularity;
 
-  // Quantize bias node
-  void visit(luci::CircleNode *node)
+private:
+  CircleConst *quantized_bias(CircleNode *input, const CircleNode *weight, CircleNode *bias)
   {
-    // Check if this is already quantized
-    if (is_quantized(node))
-      return;
+    assert(input->quantparam());  // FIX_CALLER_UNLESS
+    assert(weight->quantparam()); // FIX_CALLER_UNLESS
 
-    auto iwo_list = get_input_weight_output_of_bias(node);
+    auto const_bias = loco::must_cast<luci::CircleConst *>(bias);
+    assert(const_bias->dtype() == loco::DataType::FLOAT32);
 
-    for (auto iwo : iwo_list)
+    // If input is const, it is quantized here, not in QuantizeActivation
+    // TODO Move this to QuantizeConstInputActivation and make input const
+    if (auto const_input = dynamic_cast<luci::CircleConst *>(input))
     {
-      assert(iwo.size() == 3);
+      quant_const(const_input, output_type);
+    }
 
-      auto input = loco::must_cast<luci::CircleNode *>(iwo[0]);
-      auto weight = loco::must_cast<luci::CircleNode *>(iwo[1]);
-      auto output = loco::must_cast<luci::CircleNode *>(iwo[2]);
+    CircleConst *new_bias = nullptr;
 
-      auto const_bias = loco::must_cast<luci::CircleConst *>(node);
-      assert(const_bias->dtype() == loco::DataType::FLOAT32);
+    if (granularity == QuantizationGranularity::ChannelWise)
+    {
+      auto input_q = input->quantparam();
+      assert(input_q);
+      assert(input_q->scale.size() == 1); // input scale's layer-wise
+      auto input_scale = input_q->scale[0];
 
-      // If input is const, it is quantized here, not in QuantizeActivation
-      if (auto const_input = dynamic_cast<luci::CircleConst *>(input))
+      assert(weight->quantparam() != nullptr); // weight scale's channel-wise
+      auto weight_scale = weight->quantparam()->scale;
+
+      uint32_t size = const_bias->size<loco::DataType::FLOAT32>();
+      assert(size == weight_scale.size());
+      std::vector<float> scaling_factor(size);
+      std::vector<int64_t> zp(size);
+
+      if (output_type == loco::DataType::U8)
       {
-        quant_const(const_input, output_type);
+        new_bias =
+          quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
       }
-
-      CircleConst *new_bias = nullptr;
-
-      if (granularity == QuantizationGranularity::ChannelWise)
+      else if (output_type == loco::DataType::S16)
       {
-        auto input_q = input->quantparam();
-        assert(input_q);
-        assert(input_q->scale.size() == 1); // input scale's layer-wise
-        auto input_scale = input_q->scale[0];
-
-        assert(weight->quantparam() != nullptr); // weight scale's channel-wise
-        auto weight_scale = weight->quantparam()->scale;
-
-        uint32_t size = const_bias->size<loco::DataType::FLOAT32>();
-        assert(size == weight_scale.size());
-        std::vector<float> scaling_factor(size);
-        std::vector<int64_t> zp(size);
-
-        if (output_type == loco::DataType::U8)
-        {
-          new_bias =
-            quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
-        }
-        else if (output_type == loco::DataType::S16)
-        {
-          new_bias =
-            int16_quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
-        }
-        else
-        {
-          throw std::runtime_error("Unsupported quantization type.");
-        }
-
-        auto quantparam = std::make_unique<CircleQuantParam>();
-        quantparam->scale = scaling_factor;
-        quantparam->zerop = zp;
-        assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
-        new_bias->quantparam(std::move(quantparam));
-
-        set_bias(output, new_bias);
+        new_bias =
+          int16_quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
       }
       else
       {
-        auto input_q = input->quantparam();
-        assert(input_q);
-        assert(input_q->scale.size() == 1); // Only support per-layer quant
-        auto input_scale = input_q->scale[0];
-
-        auto weight_q = weight->quantparam();
-        assert(weight_q);
-        assert(weight_q->scale.size() == 1); // Only support per-layer quant
-        auto weight_scale = weight_q->scale[0];
-
-        float scaling_factor{0};
-        int64_t zp{0};
-        new_bias =
-          asym_quant_bias_per_layer(const_bias, input_scale, weight_scale, &scaling_factor, &zp);
-        auto quantparam = std::make_unique<CircleQuantParam>();
-        quantparam->scale.push_back(scaling_factor);
-        quantparam->zerop.push_back(zp);
-        assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
-        new_bias->quantparam(std::move(quantparam));
-
-        set_bias(output, new_bias);
+        throw std::runtime_error("Unsupported quantization type.");
       }
+
+      auto quantparam = std::make_unique<CircleQuantParam>();
+      quantparam->scale = scaling_factor;
+      quantparam->zerop = zp;
+      assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
+      new_bias->quantparam(std::move(quantparam));
+
+      return new_bias;
+    }
+    else
+    {
+      auto input_q = input->quantparam();
+      assert(input_q);
+      assert(input_q->scale.size() == 1); // Only support per-layer quant
+      auto input_scale = input_q->scale[0];
+
+      auto weight_q = weight->quantparam();
+      assert(weight_q);
+      assert(weight_q->scale.size() == 1); // Only support per-layer quant
+      auto weight_scale = weight_q->scale[0];
+
+      float scaling_factor{0};
+      int64_t zp{0};
+      new_bias =
+        asym_quant_bias_per_layer(const_bias, input_scale, weight_scale, &scaling_factor, &zp);
+      auto quantparam = std::make_unique<CircleQuantParam>();
+      quantparam->scale.push_back(scaling_factor);
+      quantparam->zerop.push_back(zp);
+      assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
+      new_bias->quantparam(std::move(quantparam));
+
+      return new_bias;
     }
   }
+
+  void visit(luci::CircleConv2D *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
+
+    if (not node->bias())
+      return;
+
+    auto bias = loco::must_cast<luci::CircleConst *>(node->bias());
+    if (is_quantized(bias))
+      return;
+
+    auto i = loco::must_cast<luci::CircleNode *>(node->input());
+    auto w = loco::must_cast<luci::CircleNode *>(node->filter());
+    auto new_bias = quantized_bias(i, w, bias);
+    node->bias(new_bias);
+  }
+
+  void visit(luci::CircleDepthwiseConv2D *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
+
+    if (not node->bias())
+      return;
+
+    auto bias = loco::must_cast<luci::CircleConst *>(node->bias());
+    if (is_quantized(bias))
+      return;
+
+    auto i = loco::must_cast<luci::CircleNode *>(node->input());
+    auto w = loco::must_cast<luci::CircleNode *>(node->filter());
+    auto new_bias = quantized_bias(i, w, bias);
+    node->bias(new_bias);
+  }
+
+  void visit(luci::CircleTransposeConv *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
+
+    if (not node->bias())
+      return;
+
+    auto bias = loco::must_cast<luci::CircleConst *>(node->bias());
+    if (is_quantized(bias))
+      return;
+
+    auto i = loco::must_cast<luci::CircleNode *>(node->outBackprop());
+    auto w = loco::must_cast<luci::CircleNode *>(node->filter());
+    auto new_bias = quantized_bias(i, w, bias);
+    node->bias(new_bias);
+  }
+
+  void visit(luci::CircleFullyConnected *node)
+  {
+    LOGGER(l);
+    INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
+
+    if (not node->bias())
+      return;
+
+    auto bias = loco::must_cast<luci::CircleConst *>(node->bias());
+    if (is_quantized(bias))
+      return;
+
+    auto i = loco::must_cast<luci::CircleNode *>(node->input());
+    auto w = loco::must_cast<luci::CircleNode *>(node->weights());
+    auto new_bias = quantized_bias(i, w, bias);
+    node->bias(new_bias);
+  }
+
+  void visit(luci::CircleNode *) {}
 };
 
 /**
@@ -1123,6 +1178,220 @@ private:
 #undef QUANTIZE_TWO_CONST_INPUTS
 };
 
+// Insert Quantize operator for mixed-precision quantization
+// 1. Before input feature map (only for non-const)
+// 2. After output feature map
+struct InsertQuantizeOp final : public luci::CircleNodeMutableVisitor<void>
+{
+  InsertQuantizeOp(loco::DataType default_dtype, loco::DataType op_dtype)
+    : _default_dtype(default_dtype), _op_dtype(op_dtype)
+  {
+    assert(default_dtype != op_dtype); // FIX_CALLER_UNLESS
+  }
+
+private:
+  loco::DataType _default_dtype;
+  loco::DataType _op_dtype;
+
+// INPUT_NAME is the only activation of NODE
+#define INSERT_TO_SINGLE_CONST_INPUT(NODE, INPUT_NAME)                    \
+  void visit(NODE *node)                                                  \
+  {                                                                       \
+    auto input = loco::must_cast<luci::CircleNode *>(node->INPUT_NAME()); \
+    assert(node->dtype() != input->dtype());                              \
+    if (input->opcode() == luci::CircleOpcode::CIRCLECONST)               \
+      return;                                                             \
+                                                                          \
+    auto input_quant = create_quantize_op(input, _op_dtype);              \
+    input_quant->input(input);                                            \
+    node->INPUT_NAME(input_quant);                                        \
+    luci::add_origin(input_quant, luci::get_origin(node));                \
+                                                                          \
+    auto output_quant = create_quantize_op(node, _default_dtype);         \
+    loco::replace(node).with(output_quant);                               \
+    output_quant->input(node);                                            \
+    luci::add_origin(output_quant, luci::get_origin(node));               \
+  }
+
+// INPUT_NAME1 and INPUT_NAME2 are the only activations of NODE
+#define INSERT_TO_TWO_CONST_INPUTS(NODE, INPUT_NAME1, INPUT_NAME2)          \
+  void visit(NODE *node)                                                    \
+  {                                                                         \
+    auto input1 = loco::must_cast<luci::CircleNode *>(node->INPUT_NAME1()); \
+    assert(node->dtype() != input1->dtype());                               \
+    if (input1->opcode() == luci::CircleOpcode::CIRCLECONST)                \
+      return;                                                               \
+                                                                            \
+    auto input1_quant = create_quantize_op(input1, _op_dtype);              \
+    input1_quant->input(input1);                                            \
+    node->INPUT_NAME1(input1_quant);                                        \
+    luci::add_origin(input1_quant, luci::get_origin(node));                 \
+                                                                            \
+    auto input2 = loco::must_cast<luci::CircleNode *>(node->INPUT_NAME2()); \
+    assert(node->dtype() != input2->dtype());                               \
+    if (input2->opcode() == luci::CircleOpcode::CIRCLECONST)                \
+      return;                                                               \
+                                                                            \
+    auto input2_quant = create_quantize_op(input2, _op_dtype);              \
+    input2_quant->input(input2);                                            \
+    node->INPUT_NAME2(input2_quant);                                        \
+    luci::add_origin(input2_quant, luci::get_origin(node));                 \
+                                                                            \
+    auto output_quant = create_quantize_op(node, _default_dtype);           \
+    loco::replace(node).with(output_quant);                                 \
+    output_quant->input(node);                                              \
+    luci::add_origin(output_quant, luci::get_origin(node));                 \
+  }
+
+  // Default behavior (NYI)
+  void visit(luci::CircleNode *node)
+  {
+    throw std::runtime_error("Unsupported Op for mixed-precision quantization. Layer name: " +
+                             node->name());
+  }
+
+  // Skip output layer
+  void visit(luci::CircleOutput *) {}
+
+  // Ops that receive a single activation as an input
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleArgMax, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleArgMin, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleBatchToSpaceND, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleConv2D, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleDepthToSpace, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleDepthwiseConv2D, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleElu, features)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleExp, x)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleFloor, x)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleFullyConnected, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleGather, params)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleInstanceNorm, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleLocalResponseNormalization, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleLogistic, x)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleMean, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleMirrorPad, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CirclePad, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CirclePadV2, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CirclePRelu, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleReduceAny, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleReduceProd, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleReduceMax, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleReduceMin, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleRelu, features)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleReshape, tensor)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleResizeBilinear, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleResizeNearestNeighbor, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleReverseSequence, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleRsqrt, x)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleSlice, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleSoftmax, logits)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleSpaceToBatchND, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleSpaceToDepth, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleSplit, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleSplitV, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleSqrt, x)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleStridedSlice, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleSum, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleTanh, x)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleTile, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleTopKV2, input)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleTranspose, a)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleTransposeConv, outBackprop)
+  INSERT_TO_SINGLE_CONST_INPUT(luci::CircleUnpack, value)
+
+  // Ops that receive two activations as inputs
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleAdd, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleBatchMatMul, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleDiv, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleEqual, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleFloorDiv, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleGreater, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleGreaterEqual, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleLess, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleLessEqual, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleMaximum, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleMinimum, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleMul, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleNotEqual, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CirclePow, x, y)
+  INSERT_TO_TWO_CONST_INPUTS(luci::CircleSub, x, y)
+
+  // AddN has arbitrary number of inputs
+  void visit(luci::CircleAddN *node)
+  {
+    auto arity = node->arity();
+    for (uint32_t i = 0; i < arity; i++)
+    {
+      auto input = loco::must_cast<luci::CircleNode *>(node->inputs(i));
+      assert(input->dtype() != node->dtype()); // FIX Quantization algorithm unless
+
+      if (input->opcode() == luci::CircleOpcode::CIRCLECONST)
+        continue;
+
+      auto input_quant = create_quantize_op(input, _op_dtype);
+      input_quant->input(input);
+      node->inputs(i, input_quant);
+      luci::add_origin(input_quant, luci::get_origin(node));
+    }
+
+    auto output_quant = create_quantize_op(node, _default_dtype);
+    loco::replace(node).with(output_quant);
+    output_quant->input(node);
+    luci::add_origin(output_quant, luci::get_origin(node));
+  }
+
+  // Concat has arbitrary number of inputs
+  void visit(luci::CircleConcatenation *node)
+  {
+    auto arity = node->arity();
+    for (uint32_t i = 0; i < arity; i++)
+    {
+      auto input = loco::must_cast<luci::CircleNode *>(node->values(i));
+      assert(input->dtype() != node->dtype()); // FIX Quantization algorithm unless
+
+      if (input->opcode() == luci::CircleOpcode::CIRCLECONST)
+        continue;
+
+      auto input_quant = create_quantize_op(input, _op_dtype);
+      input_quant->input(input);
+      node->values(i, input_quant);
+      luci::add_origin(input_quant, luci::get_origin(node));
+    }
+
+    auto output_quant = create_quantize_op(node, _default_dtype);
+    loco::replace(node).with(output_quant);
+    output_quant->input(node);
+    luci::add_origin(output_quant, luci::get_origin(node));
+  }
+
+  // Pack has arbitrary number of inputs
+  void visit(luci::CirclePack *node)
+  {
+    auto arity = node->arity();
+    for (uint32_t i = 0; i < arity; i++)
+    {
+      auto input = loco::must_cast<luci::CircleNode *>(node->values(i));
+      assert(input->dtype() != node->dtype()); // FIX Quantization algorithm unless
+
+      if (input->opcode() == luci::CircleOpcode::CIRCLECONST)
+        continue;
+
+      auto input_quant = create_quantize_op(input, _op_dtype);
+      input_quant->input(input);
+      node->values(i, input_quant);
+      luci::add_origin(input_quant, luci::get_origin(node));
+    }
+
+    auto output_quant = create_quantize_op(node, _default_dtype);
+    loco::replace(node).with(output_quant);
+    output_quant->input(node);
+    luci::add_origin(output_quant, luci::get_origin(node));
+  }
+
+#undef INSERT_TO_SINGLE_CONST_INPUT
+#undef INSERT_TO_TWO_CONST_INPUTS
+};
+
 } // namespace
 
 void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
@@ -1220,6 +1489,35 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
   }
 }
 
+LayerInfoMap QuantizeWithMinMaxPass::create_layer_info_map(loco::Graph *g) const
+{
+  auto info_by_name = LayerInfoMap();
+
+  for (auto &&info : _ctx->layers_info)
+  {
+    auto name = info.name;
+    bool found = false;
+    for (auto node : loco::active_nodes(loco::output_nodes(g)))
+    {
+      auto cnode = loco::must_cast<luci::CircleNode *>(node);
+      if (cnode->name() == name)
+      {
+        info_by_name[name] = &info;
+        found = true;
+        break;
+      }
+    }
+
+    if (not found)
+      throw std::runtime_error("No such layer named " + name +
+                               ". Check layer names in the quantization configuration file.");
+  }
+
+  assert(info_by_name.size() == _ctx->layers_info.size()); // FIX_ME_UNLESS
+
+  return info_by_name;
+}
+
 /**
  * How QuantizeWithMinMax works?
  *
@@ -1269,13 +1567,52 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   LOGGER(l);
   INFO(l) << "QuantizeWithMinMaxPass Start" << std::endl;
 
+  auto info_by_name = create_layer_info_map(g);
+
+  auto quantize_dtype = [&](const luci::CircleNode *node) {
+    auto iter = info_by_name.find(node->name());
+
+    // Return designated quantization dtype
+    if (iter != info_by_name.end())
+      return iter->second->dtype;
+
+    // Return default quantization dtype
+    return _ctx->output_model_dtype;
+  };
+
+  auto quantize_granularity = [&](const luci::CircleNode *node) {
+    auto iter = info_by_name.find(node->name());
+
+    // Return designated quantization granularity
+    if (iter != info_by_name.end())
+      return iter->second->granularity;
+
+    // Return default quantization granularity
+    return _ctx->granularity;
+  };
+
   // Quantize activation
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeActivation qa(_ctx->input_model_dtype, _ctx->output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    QuantizeActivation qa(_ctx->input_model_dtype, quantize_dtype(circle_node));
     circle_node->accept(&qa);
   }
+
+  // Insert Quantize Op
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    auto op_dtype = quantize_dtype(circle_node);
+    if (op_dtype != _ctx->output_model_dtype)
+    {
+      InsertQuantizeOp iqo(_ctx->output_model_dtype, op_dtype);
+      circle_node->accept(&iqo);
+    }
+  }
+
+  // Remove redundant Quantize Op
+  {}
 
   // Backward propagation of activation qparam
   {
@@ -1286,16 +1623,16 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize const input activation
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeConstInputActivation qcia(_ctx->output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    QuantizeConstInputActivation qcia(quantize_dtype(circle_node));
     circle_node->accept(&qcia);
   }
 
   // Update qparam of output of special Ops
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeSpecialActivation qsa(_ctx->input_model_dtype, _ctx->output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    QuantizeSpecialActivation qsa(_ctx->input_model_dtype, quantize_dtype(circle_node));
     circle_node->accept(&qsa);
   }
 
@@ -1312,16 +1649,18 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeWeights qw(_ctx->input_model_dtype, _ctx->output_model_dtype, _ctx->granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    QuantizeWeights qw(_ctx->input_model_dtype, quantize_dtype(circle_node),
+                       quantize_granularity(circle_node));
     circle_node->accept(&qw);
   }
 
   // Quantize bias
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeBias qb(_ctx->input_model_dtype, _ctx->output_model_dtype, _ctx->granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    QuantizeBias qb(_ctx->input_model_dtype, quantize_dtype(circle_node),
+                    quantize_granularity(circle_node));
     circle_node->accept(&qb);
   }
 

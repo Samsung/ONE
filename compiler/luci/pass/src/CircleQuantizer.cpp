@@ -335,9 +335,28 @@ void CircleQuantizer::quantize(loco::Graph *g) const
 
     quantizer.run(g);
 
+    auto verify_ctx = std::make_unique<luci::QuantizedModelVerifier::Context>();
+    {
+      verify_ctx->output_model_dtype = str_to_dtype(output_model_dtype);
+      verify_ctx->granularity = str_to_granularity(granularity);
+      verify_ctx->input_type = str_to_dtype(input_type);
+      verify_ctx->output_type = str_to_dtype(output_type);
+      verify_ctx->TF_style_maxpool = TF_style_maxpool;
+
+      for (auto layer_param : layer_params)
+      {
+        LayerInfo info;
+        {
+          info.name = layer_param->name;
+          info.dtype = str_to_dtype(layer_param->dtype);
+          info.granularity = str_to_granularity(layer_param->granularity);
+        }
+        verify_ctx->layers_info.emplace_back(info);
+      }
+    }
+
     // Verify the type/granularity of the quantized model
-    luci::QuantizedModelVerifier verifier(str_to_dtype(output_model_dtype),
-                                          str_to_granularity(granularity));
+    luci::QuantizedModelVerifier verifier(std::move(verify_ctx));
     verifier.verify(g);
   }
 
