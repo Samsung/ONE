@@ -37,12 +37,12 @@ void quant_const_values(luci::CircleConst *const_node, float scaling_factor, flo
   for (uint32_t i = 0; i < size; ++i)
   {
     auto data = static_cast<double>(const_node->at<loco::DataType::FLOAT32>(i));
-    double quantized_float = std::round(data * scaling_factor_inv) + zerop;
-    constexpr auto int_max = static_cast<double>(std::numeric_limits<int32_t>::max());
-    constexpr auto int_min = static_cast<double>(std::numeric_limits<int32_t>::min());
-    quantized_float = std::min(int_max, std::max(int_min, quantized_float));
+    double quantized_data = std::round(data * scaling_factor_inv) + zerop;
+    constexpr double int_max = static_cast<double>(std::numeric_limits<int32_t>::max());
+    constexpr double int_min = static_cast<double>(std::numeric_limits<int32_t>::min());
+    quantized_data = std::min(int_max, std::max(int_min, quantized_data));
 
-    quantized_values[i] = static_cast<int32_t>(quantized_float);
+    quantized_values[i] = static_cast<int32_t>(quantized_data);
   }
 
   switch (quant_type)
@@ -104,7 +104,7 @@ void quant_const(luci::CircleConst *node, loco::DataType quant_type)
   node->quantparam(std::move(quantparam));
 }
 
-void overwrite_quantparam(luci::CircleNode *source, luci::CircleNode *target)
+void overwrite_quantparam(const luci::CircleNode *source, luci::CircleNode *target)
 {
   auto source_qparam = source->quantparam();
   if (source_qparam == nullptr)
@@ -128,14 +128,14 @@ void overwrite_quantparam(luci::CircleNode *source, luci::CircleNode *target)
 }
 
 /**
- * tells if pad_v2 quantization should ignore padding value
+ * Tells if pad_v2 quantization should ignore padding value
  * In that case padding const will be quantized with input parameters, and probably clipped
  */
-bool ignore_pad_v2_const_quantization(luci::CirclePadV2 *pad)
+bool ignore_pad_v2_const_quantization(const luci::CirclePadV2 *pad)
 {
   // This is a workaround to quantize pad generated from MaxPoolWithArgmax operation properly
   // TODO use metadata hints to detect this case
-  auto const_value_node = dynamic_cast<luci::CircleConst *>(pad->arg(2));
+  auto const_value_node = dynamic_cast<const luci::CircleConst *>(pad->arg(2));
   if (!const_value_node)
     return false;
   if (const_value_node->dtype() == loco::DataType::FLOAT32)
