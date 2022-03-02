@@ -781,10 +781,10 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
 
-    if (not node->bias())
+    auto bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (not bias)
       return;
 
-    auto bias = loco::must_cast<luci::CircleConst *>(node->bias());
     if (is_quantized(bias))
       return;
 
@@ -799,10 +799,10 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
 
-    if (not node->bias())
+    auto bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (not bias)
       return;
 
-    auto bias = loco::must_cast<luci::CircleConst *>(node->bias());
     if (is_quantized(bias))
       return;
 
@@ -817,10 +817,10 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
 
-    if (not node->bias())
+    auto bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (not bias)
       return;
 
-    auto bias = loco::must_cast<luci::CircleConst *>(node->bias());
     if (is_quantized(bias))
       return;
 
@@ -835,10 +835,10 @@ private:
     LOGGER(l);
     INFO(l) << "QuantizeBias visit node: " << node->name() << std::endl;
 
-    if (not node->bias())
+    auto bias = dynamic_cast<luci::CircleConst *>(node->bias());
+    if (not bias)
       return;
 
-    auto bias = loco::must_cast<luci::CircleConst *>(node->bias());
     if (is_quantized(bias))
       return;
 
