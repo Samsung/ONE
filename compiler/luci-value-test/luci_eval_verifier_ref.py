@@ -9,7 +9,7 @@ import os
 # This script compares the execution result of luci-interpreter with that from ref_model path
 #
 # Basic usage:
-#   eval_verifier_cross.py --driver build/compiler/luci-eval-driver/luci_eval_driver
+#   luci_eval_verifier_ref.py --driver build/compiler/luci-eval-driver/luci_eval_driver
 #           --ref_model ref_model_path --model this_model_path
 # Assumption:
 #   these file exist with its purpose
