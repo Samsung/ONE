@@ -6,6 +6,7 @@ function(_HDF5_build)
   nnas_find_package(HDF5Source QUIET)
 
   if(NOT HDF5Source_FOUND)
+    message(STATUS "HD5Config skip: HDF5Source NOT FOUND")
     return()
   endif(NOT HDF5Source_FOUND)
 
