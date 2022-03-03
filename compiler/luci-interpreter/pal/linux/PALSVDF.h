@@ -28,8 +28,8 @@ IntegerSVDF(const TfLiteSVDFParams &params, const tflite::RuntimeShape &input_sh
             const int16_t *weight_time_data, const tflite::RuntimeShape &bias_shape,
             const int32_t *bias_data, int16_t *activation_state_data,
             const tflite::RuntimeShape &output_shape, int8_t *output_data, int32_t *scratchpad_data,
-            int32_t *output_temp_data, int32_t scale_1_a, int32_t scale_1_b, int32_t scale_2_a,
-            int32_t scale_2_b, int32_t input_zp, int32_t output_zp)
+            int32_t *output_temp_data, int32_t scale_1_a, int scale_1_b, int32_t scale_2_a,
+            int scale_2_b, int32_t input_zp, int32_t output_zp)
 {
   tflite::reference_ops::EvalIntegerSVDF(&params, input_shape, input_data, weight_feature_shape,
                                          weight_feature_data, weight_time_shape, weight_time_data,
