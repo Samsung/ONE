@@ -900,7 +900,7 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
 
 LayerInfoMap QuantizeWithMinMaxPass::create_layer_info_map(loco::Graph *g) const
 {
-  auto info_by_name = LayerInfoMap();
+  LayerInfoMap info_by_name;
 
   for (auto &&info : _ctx->layers_info)
   {
@@ -911,6 +911,12 @@ LayerInfoMap QuantizeWithMinMaxPass::create_layer_info_map(loco::Graph *g) const
       auto cnode = loco::must_cast<luci::CircleNode *>(node);
       if (cnode->name() == name)
       {
+        if (info_by_name.find(name) != info_by_name.end())
+        {
+          throw std::runtime_error("Duplicate layer name " + name +
+                                   ". Check layer names in the quantization configuration file.");
+        }
+
         info_by_name[name] = &info;
         found = true;
         break;
