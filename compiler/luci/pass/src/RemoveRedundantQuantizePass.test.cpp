@@ -108,9 +108,8 @@ public:
     }
 
     _first_quantize->input(input());
-    _second_quantize->input(_first_quantize);
 
-    output()->from(_second_quantize);
+    output()->from(_first_quantize);
     output()->dtype(loco::DataType::U8);
   }
 };

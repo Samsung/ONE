@@ -51,9 +51,6 @@ bool remove_redundant_quantize(luci::CircleQuantize *node)
 {
   auto pred_node = loco::must_cast<luci::CircleNode *>(node->input());
 
-  if (pred_node == nullptr)
-    return false;
-
   if (node->quantparam() == nullptr or pred_node->quantparam() == nullptr)
     return false;
 
@@ -93,7 +90,7 @@ namespace luci
 bool RemoveRedundantQuantizePass::run(loco::Graph *g)
 {
   bool changed = false;
-  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
   {
     if (auto quantize_node = dynamic_cast<luci::CircleQuantize *>(node))
     {
