@@ -806,4 +806,250 @@ std::vector<std::string> CircleReverseV2SummaryBuilder::get_input_names(const lu
   return {"tensor", "axis"};
 }
 
+std::vector<std::string> CircleScatterNdSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"indices", "updates", "shape"};
+}
+
+std::vector<std::string> CircleSegmentSumSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "segment_ids"};
+}
+
+std::vector<std::string> CircleSelectSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"condition", "t", "e"};
+}
+
+std::vector<std::string> CircleSelectV2SummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"condition", "t", "e"};
+}
+
+void CircleShapeSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                 locop::NodeSummary &s)
+{
+  auto shape = loco::must_cast<const luci::CircleShape *>(node);
+  s.args().append("out_type", to_str(shape->out_type()));
+}
+
+std::vector<std::string> CircleSliceSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "begin", "size"};
+}
+
+std::vector<std::string> CircleSoftmaxSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"logits"};
+}
+
+void CircleSoftmaxSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                   locop::NodeSummary &s)
+{
+  auto softmax = loco::must_cast<const luci::CircleSoftmax *>(node);
+  s.args().append("beta", to_str(softmax->beta()));
+}
+
+std::vector<std::string>
+CircleSpaceToBatchNDSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "block_shape", "paddings"};
+}
+
+void CircleSpaceToDepthSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                        locop::NodeSummary &s)
+{
+  auto space_to_depth = loco::must_cast<const luci::CircleSpaceToDepth *>(node);
+  s.args().append("block_size", to_str(space_to_depth->block_size()));
+}
+
+std::vector<std::string>
+CircleSparseToDenseSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"indices", "output_shape", "values", "default_value"};
+}
+
+void CircleSparseToDenseSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                         locop::NodeSummary &s)
+{
+  auto sparse_to_dense = loco::must_cast<const luci::CircleSparseToDense *>(node);
+  s.args().append("validate_indices", to_str(sparse_to_dense->validate_indices()));
+}
+
+std::vector<std::string> CircleSplitSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"split_dim", "input"};
+}
+
+void CircleSplitSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                 locop::NodeSummary &s)
+{
+  auto split = loco::must_cast<const luci::CircleSplit *>(node);
+  s.args().append("num_split", std::to_string(split->num_split()));
+}
+
+std::vector<std::string> CircleSplitVSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "size_splits", "split_dim"};
+}
+
+void CircleSplitVSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                  locop::NodeSummary &s)
+{
+  auto split_v = loco::must_cast<const luci::CircleSplitV *>(node);
+  s.args().append("num_split", std::to_string(split_v->num_split()));
+}
+
+void CircleSqueezeSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                   locop::NodeSummary &s)
+{
+  auto squeeze = loco::must_cast<const luci::CircleSqueeze *>(node);
+
+  std::string squeeze_dims = "(";
+  for (size_t i = 0; i < squeeze->squeeze_dims().size(); ++i)
+  {
+    if (i != 0)
+      squeeze_dims += ", ";
+    squeeze_dims += std::to_string(squeeze->squeeze_dims().at(i));
+  }
+  squeeze_dims += ")";
+
+  s.args().append("squeeze_dims", squeeze_dims);
+}
+
+std::vector<std::string> CircleStridedSliceSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "begin", "end", "strides"};
+}
+
+void CircleStridedSliceSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                        locop::NodeSummary &s)
+{
+  auto strided_slice = loco::must_cast<const luci::CircleStridedSlice *>(node);
+  s.args().append("begin_mask", std::to_string(strided_slice->begin_mask()));
+  s.args().append("end_mask", std::to_string(strided_slice->end_mask()));
+  s.args().append("ellipsis_mask", std::to_string(strided_slice->ellipsis_mask()));
+  s.args().append("new_axis_mask", std::to_string(strided_slice->new_axis_mask()));
+  s.args().append("shrink_axis_mask", std::to_string(strided_slice->shrink_axis_mask()));
+}
+
+bool CircleSVDFSummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto svdf = loco::must_cast<const luci::CircleSVDF *>(node);
+  if (svdf->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
+    return false;
+
+  return true;
+}
+
+std::vector<std::string> CircleSVDFSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "weight_feature", "weight_time", "bias", "State"};
+}
+
+void CircleSVDFSummaryBuilder::build_attributes(const luci::CircleNode *node, locop::NodeSummary &s)
+{
+  auto svdf = loco::must_cast<const luci::CircleSVDF *>(node);
+  s.args().append("rank", to_str(svdf->svdf_rank()));
+  s.args().append("asymmetric_quantize_inputs", to_str(svdf->asymmetric_quantize_inputs()));
+  s.args().append("fused_activation_function", to_str(svdf->fusedActivationFunction()));
+}
+
+std::vector<std::string> CircleTileSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "multiples"};
+}
+
+std::vector<std::string> CircleTopKV2SummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "k"};
+}
+
+std::vector<std::string> CircleTransposeSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"a", "perm"};
+}
+
+bool CircleTransposeConvSummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto transpose_conv = loco::must_cast<const luci::CircleTransposeConv *>(node);
+  if (transpose_conv->padding() == luci::Padding::UNDEFINED)
+    return false;
+
+  return true;
+}
+
+std::vector<std::string>
+CircleTransposeConvSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"inputSizes", "filter", "outBackProp", "bias"};
+}
+
+void CircleTransposeConvSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                         locop::NodeSummary &s)
+{
+  auto transpose_conv = loco::must_cast<const luci::CircleTransposeConv *>(node);
+  s.args().append("stride(h,w)", to_str(transpose_conv->stride()));
+  s.args().append("padding", to_str(transpose_conv->padding()));
+}
+
+std::vector<std::string>
+CircleUnidirectionalSequenceLSTMSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input",
+          "input_to_input_weights",
+          "input_to_forget_weights",
+          "input_to_cell_weights",
+          "input_to_output_weights",
+          "recurrent_to_input_weights",
+          "recurrent_to_forget_weights",
+          "recurrent_to_cell_weights",
+          "recurrent_to_output_weights",
+          "cell_to_input_weights",
+          "cell_to_forget_weights",
+          "cell_to_output_weights",
+          "input_gate_bias",
+          "forget_gate_bias",
+          "cell_gate_bias",
+          "output_gate_bias",
+          "projection_weights",
+          "projection_bias",
+          "activation_state",
+          "cell_state",
+          "input_layer_norm_coefficients",
+          "forget_layer_norm_coefficients",
+          "cell_layer_norm_coefficients",
+          "output_layer_norm_coefficients"};
+}
+
+void CircleUnidirectionalSequenceLSTMSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                                      locop::NodeSummary &s)
+{
+  auto lstm = loco::must_cast<const luci::CircleUnidirectionalSequenceLSTM *>(node);
+  s.args().append("cell_clip", to_str(lstm->cell_clip()));
+  s.args().append("proj_clip", to_str(lstm->proj_clip()));
+  s.args().append("time_major", to_str(lstm->time_major()));
+  s.args().append("asymmetric_quantize_inputs", to_str(lstm->asymmetric_quantize_inputs()));
+}
+
+void CircleUniqueSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                  locop::NodeSummary &s)
+{
+  auto unique = loco::must_cast<const luci::CircleUnique *>(node);
+  s.args().append("idx_out_type", to_str(unique->idx_out_type()));
+}
+
+std::vector<std::string> CircleUnpackSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"value"};
+}
+
+void CircleUnpackSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                  locop::NodeSummary &s)
+{
+  auto unpack = loco::must_cast<const luci::CircleUnpack *>(node);
+  s.args().append("num", std::to_string(unpack->num()));
+  s.args().append("axis", std::to_string(unpack->axis()));
+}
+
 } // namespace luci
