@@ -701,7 +701,7 @@ private:
       bias = dynamic_cast<luci::CircleConst *>(b);
     }
 
-    // Return true if bias is quantizable
+    // Return true if bias can be quantized with valid input an weights
     operator bool()
     {
       if (bias == nullptr || is_quantized(bias))
