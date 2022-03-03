@@ -161,6 +161,10 @@ option(NNCC_LIBRARY_NO_PIC "Disable PIC option for libraries" OFF)
 # generation of related testsuite.
 option(ENABLE_ONE_IMPORT_PYTORCH "Enable deploy of one-cmds pytoch importer and related tests" OFF)
 
+# apply compilation flags
+# NOTE this should be after all option
+include("cmake/ApplyCompileFlags.cmake")
+
 ###
 ### Target
 ###
