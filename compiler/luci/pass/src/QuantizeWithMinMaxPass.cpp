@@ -97,6 +97,201 @@ luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType 
 namespace luci
 {
 
+namespace
+{
+
+/**
+ * Insert Quantize operator for mixed-precision quantization
+ * 1. Before input feature map (only for non-const)
+ * 2. After output feature map
+ *
+ * For example, if default_dtype = U8 and op_dtype = S16,
+ * 1. Quantize Op for U8->S16 is inserted before ifm
+ * 2. Quantize Op for S16->U8 is inserted after ofm
+ *
+ * Why not insert Quantize Op for const ifm?
+ * We quantize const tensor at once to preserve precision.
+ * For example, if default dtype = U8, op_dtype = S16, and op is CONV2D,
+ * We directly quantize weights to 16 bits, not 8->16 bits.
+ */
+struct InsertQuantizeOp final : public luci::CircleNodeMutableVisitor<void>
+{
+  InsertQuantizeOp(loco::DataType default_dtype, loco::DataType op_dtype)
+    : _default_dtype(default_dtype), _op_dtype(op_dtype)
+  {
+    assert(default_dtype != op_dtype); // FIX_CALLER_UNLESS
+  }
+
+private:
+  loco::DataType _default_dtype;
+  loco::DataType _op_dtype;
+
+private:
+  luci::CircleQuantize *create_in_quantize(loco::Node *in, loco::Node *origin)
+  {
+    auto input = loco::must_cast<luci::CircleNode *>(in);
+    if (input->opcode() == luci::CircleOpcode::CIRCLECONST)
+      return nullptr;
+
+    auto input_quant = create_quantize_op(input, _op_dtype);
+    input_quant->input(input);
+    auto origin_node = loco::must_cast<luci::CircleNode *>(origin);
+    luci::add_origin(input_quant, luci::get_origin(origin_node));
+    return input_quant;
+  }
+
+  void insert_out_quantize(loco::Node *node)
+  {
+    auto output = loco::must_cast<luci::CircleNode *>(node);
+    assert(output->opcode() != luci::CircleOpcode::CIRCLECONST); // FIX_CALLER_UNLESS
+    auto output_quant = create_quantize_op(output, _default_dtype);
+
+    luci::add_origin(output_quant, luci::get_origin(output));
+    loco::replace(node).with(output_quant);
+    output_quant->input(node);
+  }
+
+// INPUT_NAME is the only activation of NODE
+#define INSERT_QUANTIZE_TO_UNARY_OP(NODE, INPUT_NAME)                    \
+  void visit(NODE *node)                                                 \
+  {                                                                      \
+    if (auto input_quant = create_in_quantize(node->INPUT_NAME(), node)) \
+      node->INPUT_NAME(input_quant);                                     \
+                                                                         \
+    insert_out_quantize(node);                                           \
+  }
+
+// INPUT_NAME1 and INPUT_NAME2 are the only activations of NODE
+#define INSERT_QUANTIZE_TO_BINARY_OP(NODE, INPUT_NAME1, INPUT_NAME2)       \
+  void visit(NODE *node)                                                   \
+  {                                                                        \
+    if (auto input1_quant = create_in_quantize(node->INPUT_NAME1(), node)) \
+      node->INPUT_NAME1(input1_quant);                                     \
+                                                                           \
+    if (auto input2_quant = create_in_quantize(node->INPUT_NAME2(), node)) \
+      node->INPUT_NAME2(input2_quant);                                     \
+                                                                           \
+    insert_out_quantize(node);                                             \
+  }
+
+  // Default behavior (NYI)
+  void visit(luci::CircleNode *node)
+  {
+    throw std::runtime_error("Unsupported Op for mixed-precision quantization. Layer name: " +
+                             node->name());
+  }
+
+  // Skip output layer
+  void visit(luci::CircleOutput *) {}
+
+  // Ops that receive a single activation as an input
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleArgMax, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleArgMin, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleBatchToSpaceND, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleConv2D, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleDepthToSpace, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleDepthwiseConv2D, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleElu, features)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleExp, x)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleFloor, x)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleFullyConnected, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleGather, params)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleInstanceNorm, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleLocalResponseNormalization, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleLogistic, x)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleMean, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleMirrorPad, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CirclePad, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CirclePadV2, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CirclePRelu, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleReduceAny, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleReduceProd, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleReduceMax, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleReduceMin, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleRelu, features)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleReshape, tensor)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleResizeBilinear, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleResizeNearestNeighbor, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleReverseSequence, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleRsqrt, x)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleSlice, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleSoftmax, logits)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleSpaceToBatchND, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleSpaceToDepth, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleSplit, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleSplitV, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleSqrt, x)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleStridedSlice, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleSum, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleTanh, x)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleTile, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleTopKV2, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleTranspose, a)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleTransposeConv, outBackprop)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleUnpack, value)
+
+  // Ops that receive two activations as inputs
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleAdd, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleBatchMatMul, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleDiv, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleEqual, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleFloorDiv, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleGreater, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleGreaterEqual, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleLess, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleLessEqual, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleMaximum, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleMinimum, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleMul, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleNotEqual, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CirclePow, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleSub, x, y)
+
+  // AddN has arbitrary number of inputs
+  void visit(luci::CircleAddN *node)
+  {
+    auto arity = node->arity();
+    for (uint32_t i = 0; i < arity; i++)
+    {
+      if (auto input_quant = create_in_quantize(node->inputs(i), node))
+        node->inputs(i, input_quant);
+    }
+
+    insert_out_quantize(node);
+  }
+
+  // Concat has arbitrary number of inputs
+  void visit(luci::CircleConcatenation *node)
+  {
+    auto arity = node->arity();
+    for (uint32_t i = 0; i < arity; i++)
+    {
+      if (auto input_quant = create_in_quantize(node->values(i), node))
+        node->values(i, input_quant);
+    }
+
+    insert_out_quantize(node);
+  }
+
+  // Pack has arbitrary number of inputs
+  void visit(luci::CirclePack *node)
+  {
+    auto arity = node->arity();
+    for (uint32_t i = 0; i < arity; i++)
+    {
+      if (auto input_quant = create_in_quantize(node->values(i), node))
+        node->values(i, input_quant);
+    }
+
+    insert_out_quantize(node);
+  }
+
+#undef INSERT_QUANTIZE_TO_UNARY_OP
+#undef INSERT_QUANTIZE_TO_BINARY_OP
+};
+
+} // namespace
+
 void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
 {
   auto inputs = g->inputs();
@@ -251,6 +446,7 @@ LayerInfoMap QuantizeWithMinMaxPass::create_layer_info_map(loco::Graph *g) const
  * Quantization Steps
  * 1. Quantize Activation
  *   - Quantize using recorded min/max (QuantizeActivation)
+ *   - Insert Quantize Ops for mixed-precision quantization (InsertQuantizeOp)
  *   - Propagate qparam backward (PropagateQParamBackwardPass)
  *   - Quantize const inputs (QuantizeConstInputActivation)
  *   - Quantize using pre-defined values (QuantizeSpecialActivation)
@@ -306,6 +502,18 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     QuantizeActivation qa(_ctx->input_model_dtype, quantize_dtype(circle_node));
     circle_node->accept(&qa);
+  }
+
+  // Insert Quantize Op
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    auto op_dtype = quantize_dtype(circle_node);
+    if (op_dtype != _ctx->output_model_dtype)
+    {
+      InsertQuantizeOp iqo(_ctx->output_model_dtype, op_dtype);
+      circle_node->accept(&iqo);
+    }
   }
 
   // Backward propagation of activation qparam
