@@ -108,6 +108,11 @@ luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType 
   auto quantparam = std::make_unique<CircleQuantParam>();
   quantparam->scale.push_back(scaling_factor);
   quantparam->zerop.push_back(zp);
+  // Save original min/max (not nudged_min/max). Nudged min/max
+  // is different from the real min/max values, causing wrong
+  // qparam when quantization dtype is changed.
+  quantparam->min.push_back(min);
+  quantparam->max.push_back(max);
 
   quantize->quantparam(std::move(quantparam));
 
