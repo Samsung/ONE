@@ -20,6 +20,7 @@
 #include <luci/Service/Nodes/CircleConst.h>
 #include <luci/Log.h>
 
+#include <algorithm>
 #include <cmath>
 
 using namespace luci;
