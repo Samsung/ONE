@@ -29,7 +29,7 @@ namespace
 template <typename input_dtype> void call_requantize(const Tensor *input, Tensor *output)
 {
   int32_t multiplier;
-  int32_t shift;
+  int shift;
 
   const double effective_output_scale = input->scale() / output->scale();
   quantizeMultiplier(effective_output_scale, &multiplier, &shift);
