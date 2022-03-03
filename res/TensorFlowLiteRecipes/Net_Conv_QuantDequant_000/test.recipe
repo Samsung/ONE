@@ -32,6 +32,7 @@ operand {
   name: "quantize"
   type: UINT8
   shape { dim: 1 dim: 16 dim: 16 dim: 8 }
+  quant { scale: 1 zero_point: 128 }
 }
 operand {
   name: "ofm"
