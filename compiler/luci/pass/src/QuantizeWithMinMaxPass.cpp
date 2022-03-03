@@ -35,6 +35,8 @@
 #include <iostream>
 #include <cmath>
 
+using LayerInfoMap = std::unordered_map<std::string, luci::LayerInfo *>;
+
 namespace
 {
 
@@ -190,6 +192,41 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
   }
 }
 
+LayerInfoMap QuantizeWithMinMaxPass::create_layer_info_map(loco::Graph *g) const
+{
+  LayerInfoMap info_by_name;
+
+  for (auto &&info : _ctx->layers_info)
+  {
+    auto name = info.name;
+    bool found = false;
+    for (auto node : loco::active_nodes(loco::output_nodes(g)))
+    {
+      auto cnode = loco::must_cast<luci::CircleNode *>(node);
+      if (cnode->name() == name)
+      {
+        if (info_by_name.find(name) != info_by_name.end())
+        {
+          throw std::runtime_error("Duplicate layer name " + name +
+                                   ". Check layer names in the quantization configuration file.");
+        }
+
+        info_by_name[name] = &info;
+        found = true;
+        break;
+      }
+    }
+
+    if (not found)
+      throw std::runtime_error("No such layer named " + name +
+                               ". Check layer names in the quantization configuration file.");
+  }
+
+  assert(info_by_name.size() == _ctx->layers_info.size()); // FIX_ME_UNLESS
+
+  return info_by_name;
+}
+
 /**
  * How QuantizeWithMinMax works?
  *
@@ -239,11 +276,35 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   LOGGER(l);
   INFO(l) << "QuantizeWithMinMaxPass Start" << std::endl;
 
+  auto info_by_name = create_layer_info_map(g);
+
+  auto quantize_dtype = [&](const luci::CircleNode *node) {
+    auto iter = info_by_name.find(node->name());
+
+    // Return designated quantization dtype
+    if (iter != info_by_name.end())
+      return iter->second->dtype;
+
+    // Return default quantization dtype
+    return _ctx->output_model_dtype;
+  };
+
+  auto quantize_granularity = [&](const luci::CircleNode *node) {
+    auto iter = info_by_name.find(node->name());
+
+    // Return designated quantization granularity
+    if (iter != info_by_name.end())
+      return iter->second->granularity;
+
+    // Return default quantization granularity
+    return _ctx->granularity;
+  };
+
   // Quantize activation
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeActivation qa(_ctx->input_model_dtype, _ctx->output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    QuantizeActivation qa(_ctx->input_model_dtype, quantize_dtype(circle_node));
     circle_node->accept(&qa);
   }
 
@@ -256,16 +317,16 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize const input activation
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeConstInputActivation qcia(_ctx->output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    QuantizeConstInputActivation qcia(quantize_dtype(circle_node));
     circle_node->accept(&qcia);
   }
 
   // Update qparam of output of special Ops
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeSpecialActivation qsa(_ctx->input_model_dtype, _ctx->output_model_dtype);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    QuantizeSpecialActivation qsa(_ctx->input_model_dtype, quantize_dtype(circle_node));
     circle_node->accept(&qsa);
   }
 
@@ -282,16 +343,18 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeWeights qw(_ctx->input_model_dtype, _ctx->output_model_dtype, _ctx->granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    QuantizeWeights qw(_ctx->input_model_dtype, quantize_dtype(circle_node),
+                       quantize_granularity(circle_node));
     circle_node->accept(&qw);
   }
 
   // Quantize bias
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeBias qb(_ctx->input_model_dtype, _ctx->output_model_dtype, _ctx->granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    QuantizeBias qb(_ctx->input_model_dtype, quantize_dtype(circle_node),
+                    quantize_granularity(circle_node));
     circle_node->accept(&qb);
   }
 
