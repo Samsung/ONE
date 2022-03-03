@@ -36,8 +36,8 @@ void quant_const(CircleConst *node, loco::DataType quant_type)
   for (uint32_t i = 0; i < node->size<loco::DataType::FLOAT32>(); i++)
   {
     auto data = node->at<loco::DataType::FLOAT32>(i);
-    min = data < min ? data : min;
-    max = data > max ? data : max;
+    min = std::min(data, min);
+    max = std::max(data, max);
   }
 
   float scaling_factor{0.0};
