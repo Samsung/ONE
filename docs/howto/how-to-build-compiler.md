@@ -191,4 +191,4 @@ make -f infra/nncc/Makefile.arm32 test
 NOTE: this assumes
 - host and target have same directoy structure
 - should copy under `build` folder to target or
-- mounting ONE folder with NFS on the target would be simple
+- mounting `ONE` folder with NFS on the target would be simple
