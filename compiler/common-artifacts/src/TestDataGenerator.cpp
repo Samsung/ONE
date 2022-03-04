@@ -46,6 +46,8 @@ H5::PredType hdf5_dtype_cast(const loco::DataType loco_dtype)
   {
     case loco::DataType::U8:
       return H5::PredType::NATIVE_UINT8;
+    case loco::DataType::S16:
+      return H5::PredType::NATIVE_INT16;
     case loco::DataType::S32:
       return H5::PredType::NATIVE_INT32;
     case loco::DataType::S64:
@@ -99,6 +101,9 @@ void fill_random_data(void *data, uint32_t size, loco::DataType dtype, uint32_t 
   {
     case loco::DataType::U8:
       generate_random_data<uint8_t>(gen, data, size);
+      break;
+    case loco::DataType::S16:
+      generate_random_data<int16_t>(gen, data, size);
       break;
     case loco::DataType::S32:
       generate_random_data<int32_t>(gen, data, size);
