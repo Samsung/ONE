@@ -181,9 +181,9 @@ void SVDF::evalInteger() const
                                                      weight_time()->scale() / output()->scale());
 
   int32_t effective_scale_1_a;
-  int32_t effective_scale_1_b;
+  int effective_scale_1_b;
   int32_t effective_scale_2_a;
-  int32_t effective_scale_2_b;
+  int effective_scale_2_b;
 
   tflite::QuantizeMultiplier(effective_scale_1, &effective_scale_1_a, &effective_scale_1_b);
   tflite::QuantizeMultiplier(effective_scale_2, &effective_scale_2_a, &effective_scale_2_b);
