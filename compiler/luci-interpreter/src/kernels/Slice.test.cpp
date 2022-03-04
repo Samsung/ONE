@@ -32,7 +32,7 @@ template <typename T> class SliceTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t, int8_t>;
-TYPED_TEST_CASE(SliceTest, DataTypes);
+TYPED_TEST_SUITE(SliceTest, DataTypes);
 
 TYPED_TEST(SliceTest, SimpleTest)
 {

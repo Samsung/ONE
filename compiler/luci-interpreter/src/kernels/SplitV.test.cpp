@@ -77,7 +77,7 @@ template <typename T> class SplitVTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t, int16_t>;
-TYPED_TEST_CASE(SplitVTest, DataTypes);
+TYPED_TEST_SUITE(SplitVTest, DataTypes);
 
 TYPED_TEST(SplitVTest, ThreeDimensional)
 {

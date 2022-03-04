@@ -32,7 +32,7 @@ template <typename T> class DepthToSpaceTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(DepthToSpaceTest, DataTypes);
+TYPED_TEST_SUITE(DepthToSpaceTest, DataTypes);
 
 TYPED_TEST(DepthToSpaceTest, SimpleCase)
 {

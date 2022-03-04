@@ -62,7 +62,7 @@ template <typename T> class OneHotTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t, int16_t>;
-TYPED_TEST_CASE(OneHotTest, DataTypes);
+TYPED_TEST_SUITE(OneHotTest, DataTypes);
 
 TYPED_TEST(OneHotTest, BasicPattern)
 {

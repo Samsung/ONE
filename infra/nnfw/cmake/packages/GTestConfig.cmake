@@ -16,7 +16,11 @@ if(${DOWNLOAD_GTEST})
 endif(${DOWNLOAD_GTEST})
 
 ### Find and use pre-installed Google Test
-find_package(GTest)
+if(NOT GTest_FOUND)
+  # Reset package config directory cache to prevent recursive find
+  unset(GTest_DIR CACHE)
+  find_package(GTest)
+endif(NOT GTest_FOUND)
 find_package(Threads)
 
 if(${GTEST_FOUND} AND TARGET Threads::Threads)

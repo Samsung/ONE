@@ -75,7 +75,7 @@ template <typename T> class UnpackTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(UnpackTest, DataTypes);
+TYPED_TEST_SUITE(UnpackTest, DataTypes);
 
 TYPED_TEST(UnpackTest, ThreeOutputs)
 {

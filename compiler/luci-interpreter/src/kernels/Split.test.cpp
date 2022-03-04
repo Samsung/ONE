@@ -73,7 +73,7 @@ template <typename T> class SplitTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(SplitTest, DataTypes);
+TYPED_TEST_SUITE(SplitTest, DataTypes);
 
 TYPED_TEST(SplitTest, FourDimensional)
 {

@@ -80,7 +80,7 @@ template <typename T> class PackTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<uint8_t, float>;
-TYPED_TEST_CASE(PackTest, DataTypes);
+TYPED_TEST_SUITE(PackTest, DataTypes);
 
 TYPED_TEST(PackTest, ThreeInputs)
 {

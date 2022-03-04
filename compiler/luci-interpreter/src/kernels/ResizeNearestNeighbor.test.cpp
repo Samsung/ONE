@@ -92,7 +92,7 @@ template <typename T> class ResizeNearestNeighborTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(ResizeNearestNeighborTest, DataTypes);
+TYPED_TEST_SUITE(ResizeNearestNeighborTest, DataTypes);
 
 TYPED_TEST(ResizeNearestNeighborTest, SimpleTest)
 {

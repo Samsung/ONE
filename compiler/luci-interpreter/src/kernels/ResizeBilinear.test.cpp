@@ -90,7 +90,7 @@ template <typename T> class ResizeBilinearTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(ResizeBilinearTest, DataTypes);
+TYPED_TEST_SUITE(ResizeBilinearTest, DataTypes);
 
 TYPED_TEST(ResizeBilinearTest, SimpleTest)
 {
