@@ -65,13 +65,10 @@ const char *tensor_name(const circle::Tensor *tensor)
 {
   assert(tensor != nullptr);
 
-  static const char *kEmptyTensorName = "(noname)";
-  const auto tensor_name = tensor->name()->c_str();
+  if (tensor->name() == nullptr || std::string(tensor->name()->c_str()).empty())
+    return "(noname)";
 
-  if (!std::string(tensor_name).empty())
-    return tensor_name;
-
-  return kEmptyTensorName;
+  return tensor->name()->c_str();
 }
 
 const circle::QuantizationParameters *tensor_quantization(const circle::Tensor *tensor)
