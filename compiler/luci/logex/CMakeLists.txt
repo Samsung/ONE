@@ -19,6 +19,10 @@ install(TARGETS luci_logex DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include
         FILES_MATCHING PATTERN "*.h")
 
+if(NOT ENABLE_TEST)
+    return()
+endif(NOT ENABLE_TEST)
+
 nnas_find_package(GTest REQUIRED)
 
 GTest_AddTest(luci_logex_test ${TESTS})
