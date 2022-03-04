@@ -176,34 +176,6 @@ bool use_ido(const locop::SymbolTable *tbl, const CIRCLENODE *node, locop::NodeS
   return true;
 }
 
-bool summary_node(const locop::SymbolTable *tbl, const luci::CircleWhere *node,
-                  locop::NodeSummary &s)
-{
-  s.args().append("condition", tbl->lookup(node->condition()));
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
-bool summary_node(const locop::SymbolTable *tbl, const luci::CircleWhile *node,
-                  locop::NodeSummary &s)
-{
-  for (uint32_t i = 0; i < node->input_count(); ++i)
-    s.args().append("input", tbl->lookup(node->input(i)));
-
-  if (node->cond_graph() != nullptr)
-    s.args().append("cond_graph", node->cond_graph()->name());
-  else
-    s.args().append("cond_branch", pepper::str(node->cond_branch()));
-
-  if (node->body_graph() != nullptr)
-    s.args().append("body_graph", node->body_graph()->name());
-  else
-    s.args().append("body_branch", pepper::str(node->body_branch()));
-
-  s.state(locop::NodeSummary::State::Complete);
-  return true;
-}
-
 bool summary_node(const locop::SymbolTable *tbl, const luci::CircleTopKV2Out *node,
                   locop::NodeSummary &s)
 {
@@ -310,7 +282,6 @@ bool summary_node(const locop::SymbolTable *tbl, const luci::CircleInstanceNorm 
 // SummaryBuilderLet type
 enum class SB
 {
-  WXYZ,
   CIRC, // circle only
   VIRT, // virtual
 };
@@ -318,20 +289,6 @@ enum class SB
 template <SB sb> class SummaryBuilderLet;
 
 #define IMPLEMENT(CLASS) bool summary(const CLASS *, locop::NodeSummary &) const final;
-
-template <> class SummaryBuilderLet<SB::WXYZ> final : public CircleNodeSummaryBuilderBase
-{
-public:
-  SummaryBuilderLet(const locop::SymbolTable *tbl) : CircleNodeSummaryBuilderBase(tbl)
-  {
-    // DO NOTHING
-  }
-
-private:
-  IMPLEMENT(luci::CircleWhere)
-  IMPLEMENT(luci::CircleWhile)
-  IMPLEMENT(luci::CircleZerosLike)
-};
 
 template <> class SummaryBuilderLet<SB::CIRC> final : public CircleNodeSummaryBuilderBase
 {
@@ -407,24 +364,6 @@ bool CircleNodeSummaryBuilderBase::build(const loco::Node *node, locop::NodeSumm
 #undef CIRCLE_NODE
 
   return false;
-}
-
-bool SummaryBuilderLet<SB::WXYZ>::summary(const luci::CircleWhere *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::WXYZ>::summary(const luci::CircleWhile *node,
-                                          locop::NodeSummary &s) const
-{
-  return summary_node(tbl(), node, s);
-}
-
-bool SummaryBuilderLet<SB::WXYZ>::summary(const luci::CircleZerosLike *node,
-                                          locop::NodeSummary &s) const
-{
-  return use_input(tbl(), node, s);
 }
 
 bool SummaryBuilderLet<SB::CIRC>::summary(const luci::CircleBCQFullyConnected *node,
@@ -555,7 +494,6 @@ bool NodeSummaryBuilder::build(const loco::Node *node, locop::NodeSummary &s) co
   } while (false)
 
   // TODO Replace with CircleNodeSummaryBuilder and then remove these
-  BUILD_GRP(WXYZ);
   BUILD_GRP(CIRC);
   BUILD_GRP(VIRT);
 
