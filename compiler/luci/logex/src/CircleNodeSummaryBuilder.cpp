@@ -232,6 +232,9 @@ CircleNodeSummaryBuilder::create_builder(const luci::CircleNode *node)
     CIRCLE_NODE(UNIDIRECTIONAL_SEQUENCE_LSTM, CircleUnidirectionalSequenceLSTMSummaryBuilder)
     CIRCLE_NODE(UNIQUE, CircleUniqueSummaryBuilder)
     CIRCLE_NODE(UNPACK, CircleUnpackSummaryBuilder)
+    CIRCLE_NODE(WHERE, CircleWhereSummaryBuilder)
+    CIRCLE_NODE(WHILE, CircleWhileSummaryBuilder)
+    CIRCLE_NODE(ZEROS_LIKE, CircleZerosLikeSummaryBuilder)
 
       // TODO Implement following builders
       // CIRCLE_NODE(CIRCLEBIDIRECTIONAL_SEQUENCE_LSTM_OUT,
@@ -252,9 +255,6 @@ CircleNodeSummaryBuilder::create_builder(const luci::CircleNode *node)
       // CIRCLE_NODE(CIRCLEOUTPUT, CircleOutputSummaryBuilder)
       // CIRCLE_NODE(CIRCLEOUTPUTDUMMY, CircleOutputDummySummaryBuilder)
       // CIRCLE_NODE(CIRCLEOUTPUTEXCLUDE, CircleOutputExcludeSummaryBuilder)
-      // CIRCLE_NODE(WHERE, CircleWhereSummaryBuilder)
-      // CIRCLE_NODE(WHILE, CircleWhileSummaryBuilder)
-      // CIRCLE_NODE(ZEROS_LIKE, CircleZerosLikeSummaryBuilder)
 
     default:
       return nullptr;

@@ -747,6 +747,23 @@ private:
   void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
 };
 
+class CircleWhereSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+};
+
+class CircleWhileSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *node);
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
+};
+
+class CircleZerosLikeSummaryBuilder final : public CircleNodeWithINPUTSummaryBuilder
+{
+};
+
 } // namespace luci
 
 #endif // __LUCI_LOGEX_CIRCLE_NODE_SUMMARY_BUILDERS__

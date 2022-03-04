@@ -1051,5 +1051,36 @@ void CircleUnpackSummaryBuilder::build_attributes(const luci::CircleNode *node,
   s.args().append("num", std::to_string(unpack->num()));
   s.args().append("axis", std::to_string(unpack->axis()));
 }
+std::vector<std::string> CircleWhereSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"condition"};
+}
+
+std::vector<std::string> CircleWhileSummaryBuilder::get_input_names(const luci::CircleNode *node)
+{
+  auto circle_while = loco::must_cast<const luci::CircleWhile *>(node);
+
+  auto input_names = std::vector<std::string>();
+  for (uint32_t i = 0; i < circle_while->input_count(); ++i)
+    input_names.push_back("input");
+
+  return input_names;
+}
+
+void CircleWhileSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                 locop::NodeSummary &s)
+{
+  auto circle_while = loco::must_cast<const luci::CircleWhile *>(node);
+
+  if (circle_while->cond_graph() != nullptr)
+    s.args().append("then_graph", circle_while->cond_graph()->name());
+  else
+    s.args().append("then_branch", std::to_string(circle_while->cond_branch()));
+
+  if (circle_while->body_graph() != nullptr)
+    s.args().append("else_graph", circle_while->body_graph()->name());
+  else
+    s.args().append("else_branch", std::to_string(circle_while->body_branch()));
+}
 
 } // namespace luci
