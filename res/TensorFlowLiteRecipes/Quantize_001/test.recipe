@@ -1,0 +1,66 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2  }
+}
+operand {
+  name: "ker"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 2 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm_c"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 1 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+  input: "ifm"
+  input: "ker"
+  input: "bias"
+  output: "ofm_c"
+}
+operand {
+  name: "ofm_q"
+  type: UINT8
+  shape { dim: 1 dim: 3 dim: 3 dim: 1 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "Quantize"
+  input: "ofm_c"
+  output: "ofm_q"
+}
+operand {
+  name: "ofm"
+  type: INT16
+  shape { dim: 1 dim: 3 dim: 3 dim: 1 }
+  quant { min: -255 max: 255 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "Quantize"
+  input: "ofm_q"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
