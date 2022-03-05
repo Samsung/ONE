@@ -91,23 +91,33 @@ if [[ ! -s "onnx_conv2d_conv2d.onnx" ]]; then
     # https://github.com/Samsung/ONE/issues/5577#issuecomment-755078444
 fi
 
-if [ ! -s "RNN.onnx" ] ||
-   [ ! -s "RNN-nobias.onnx" ] ||
-   [ ! -s "RNN-relu.onnx" ] ||
-   [ ! -s "RNN-bi.onnx" ] ||
-   [ ! -s "RNN-noinit.onnx" ] ||
-   [ ! -s "LSTM.onnx" ] ||
-   [ ! -s "LSTM-bi.onnx" ] ||
-   [ ! -s "LSTM-noinit.onnx" ] ||
-   [ ! -s "LSTM-nobias.onnx" ]; then
+function files_missing() {
+    condition="test "
+
+    for f in "${@}"; do
+        condition="${condition} ! -s ${f} -o"
+    done
+
+    # last condition is always false to properly close last "or"
+    condition="${condition} -z non_zero_string "
+    ${condition}
+}
+
+declare -a TEST_RECCURENT_MODELS=(\
+  "RNN.onnx" "RNN-nobias.onnx" "RNN-relu.onnx" "RNN-bi.onnx" "RNN-noinit.onnx"\
+  "LSTM.onnx" "LSTM-bi.onnx" "LSTM-noinit.onnx" "LSTM-nobias.onnx"
+)
+
+if files_missing "${TEST_RECCURENT_MODELS[@]}"; then
     rm -rf test_onnx_recurrent_models.zip
     wget https://github.com/Samsung/ONE/files/8067909/test_onnx_recurrent_models.zip
     unzip test_onnx_recurrent_models.zip
     # https://github.com/Samsung/ONE/issues/8395#issuecomment-1040072097
 fi
 
-if [ ! -s "rnn_variable.onnx" ] ||
-   [ ! -s "lstm_variable.onnx" ]; then
+declare -a NEG_TEST_RECCURENT_MODELS=("rnn_variable.onnx" "lstm_variable.onnx")
+
+if files_missing "${NEG_TEST_RECCURENT_MODELS[@]}"; then
     rm -rf neg_test_onnx_recurrent_models.zip
     wget https://github.com/Samsung/ONE/files/8137183/neg_test_onnx_recurrent_models.zip
     unzip neg_test_onnx_recurrent_models.zip
