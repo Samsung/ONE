@@ -546,6 +546,28 @@ void CircleIfSummaryBuilder::build_attributes(const luci::CircleNode *node, loco
     s.args().append("else_branch", std::to_string(circle_if->else_branch()));
 }
 
+bool CircleInstanceNormSummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto instnorm = loco::must_cast<const luci::CircleInstanceNorm *>(node);
+  if (instnorm->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
+    return false;
+
+  return true;
+}
+
+std::vector<std::string> CircleInstanceNormSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "gamma", "beta"};
+}
+
+void CircleInstanceNormSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                        locop::NodeSummary &s)
+{
+  auto instnorm = loco::must_cast<const luci::CircleInstanceNorm *>(node);
+  s.args().append("epsilon", std::to_string(instnorm->epsilon()));
+  s.args().append("fused_activation_function", to_str(instnorm->fusedActivationFunction()));
+}
+
 bool CircleL2NormalizeSummaryBuilder::validate(const luci::CircleNode *node)
 {
   auto l2norm = loco::must_cast<const luci::CircleL2Normalize *>(node);
@@ -711,11 +733,6 @@ void CircleOneHotSummaryBuilder::build_attributes(const luci::CircleNode *node,
 {
   auto onehot = loco::must_cast<const luci::CircleOneHot *>(node);
   s.args().append("axis", std::to_string(onehot->axis()));
-}
-
-std::vector<std::string> CircleOutputSummaryBuilder::get_input_names(const luci::CircleNode *)
-{
-  return {"from"};
 }
 
 std::vector<std::string> CirclePackSummaryBuilder::get_input_names(const luci::CircleNode *node)
@@ -1081,6 +1098,31 @@ void CircleWhileSummaryBuilder::build_attributes(const luci::CircleNode *node,
     s.args().append("else_graph", circle_while->body_graph()->name());
   else
     s.args().append("else_branch", std::to_string(circle_while->body_branch()));
+}
+
+std::vector<std::string> CircleOutputSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"from"};
+}
+
+std::vector<std::string> CircleTopKV2OutSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"topkv2"};
+}
+
+std::vector<std::string> CircleUniqueOutSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"unique"};
+}
+
+std::vector<std::string> CircleUnpackOutSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"unpack"};
+}
+
+std::vector<std::string> CircleWhileOutSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"while"};
 }
 
 } // namespace luci

@@ -176,6 +176,20 @@ TEST_F(CircleNodeSummaryBuilderTest, FullyConnected_validate_fused_NEG)
   EXPECT_FALSE(mock_build(&node));
 }
 
+TEST_F(CircleNodeSummaryBuilderTest, InstanceNorm_validate)
+{
+  luci::CircleInstanceNorm node;
+  node.fusedActivationFunction(luci::FusedActFunc::RELU);
+  EXPECT_TRUE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, InstanceNorm_validate_fused_NEG)
+{
+  luci::CircleInstanceNorm node;
+  node.fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
+  EXPECT_FALSE(mock_build(&node));
+}
+
 TEST_F(CircleNodeSummaryBuilderTest, L2Normalize_validate)
 {
   luci::CircleL2Normalize node;
