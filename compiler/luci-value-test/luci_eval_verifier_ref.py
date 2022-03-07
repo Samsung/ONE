@@ -29,6 +29,8 @@ def dtype_from_file(file_path):
         return np.float32
     if dtype_str == "uint8":
         return np.uint8
+    if dtype_str == "int16":
+        return np.int16
     if dtype_str == "int32":
         return np.int32
     if dtype_str == "int64":
@@ -126,6 +128,11 @@ for idx in range(num_outputs):
                 raise SystemExit("Execution result of " + circle_model_ref +
                                  " does not match with " + circle_model)
         elif output_dtype == np.int32:
+            if np.allclose(
+                    luci_output_data, luci_output_data_ref, rtol=0, atol=0) == False:
+                raise SystemExit("Execution result of " + circle_model_ref +
+                                 " does not match with " + circle_model)
+        elif output_dtype == np.int16:
             if np.allclose(
                     luci_output_data, luci_output_data_ref, rtol=0, atol=0) == False:
                 raise SystemExit("Execution result of " + circle_model_ref +
