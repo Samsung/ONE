@@ -17,6 +17,7 @@
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/PropagateQParamForwardPass.h"
 #include "luci/Pass/PropagateQParamBackwardPass.h"
+#include "luci/Pass/RemoveRedundantQuantizePass.h"
 #include "QuantizeActivation.h"
 #include "QuantizeWeights.h"
 #include "QuantizeBias.h"
@@ -447,6 +448,7 @@ LayerInfoMap QuantizeWithMinMaxPass::create_layer_info_map(loco::Graph *g) const
  * 1. Quantize Activation
  *   - Quantize using recorded min/max (QuantizeActivation)
  *   - Insert Quantize Ops for mixed-precision quantization (InsertQuantizeOp)
+ *   - Remove redundant Quantize Ops (RemoveRedundantQuantizePass)
  *   - Propagate qparam backward (PropagateQParamBackwardPass)
  *   - Quantize const inputs (QuantizeConstInputActivation)
  *   - Quantize using pre-defined values (QuantizeSpecialActivation)
@@ -514,6 +516,18 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
       InsertQuantizeOp iqo(_ctx->output_model_dtype, op_dtype);
       circle_node->accept(&iqo);
     }
+  }
+
+  // Remove redundant Quantize Op
+  {
+    logo::Phase phase;
+
+    phase.emplace_back(std::make_unique<luci::RemoveRedundantQuantizePass>());
+
+    ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
+    logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
+    phase_runner.attach(&prog);
+    phase_runner.run(phase);
   }
 
   // Backward propagation of activation qparam
