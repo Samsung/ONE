@@ -42,9 +42,9 @@ bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension,
 
 uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices);
 
-void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataType quant_type);
+void propagate_concat_quantparam(luci::CircleConcatenation *concat);
 
-void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant_type);
+void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2);
 
 bool is_weights(CircleNode *node);
 
