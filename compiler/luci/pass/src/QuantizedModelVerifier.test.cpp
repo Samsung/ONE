@@ -17,6 +17,7 @@
 #include "QuantizedModelVerifier.h"
 
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
+#include "luci/Pass/QuantizationParameters.h"
 
 #include <luci/test/TestIOGraph.h>
 
@@ -112,6 +113,52 @@ void quantize_and_verify(loco::Graph *g, Type quantized_dtype, Granularity granu
   verifier.verify(g);
 }
 
+void quantize_and_verify_with_layer_info(loco::Graph *g, Type quantized_dtype,
+                                         Granularity granularity)
+{
+  // A layer named "test" has dtype different from quantized_dtype
+  luci::LayerInfo info;
+  {
+    info.name = "test";
+    // dtype is different from quantized_dtype
+    info.dtype = quantized_dtype == Type::U8 ? Type::S16 : Type::U8;
+    info.granularity = Granularity::ChannelWise;
+  }
+
+  // Do quantization
+  {
+    auto ctx = std::make_unique<luci::QuantizeWithMinMaxPass::Context>();
+    {
+      ctx->input_model_dtype = Type::FLOAT32;
+      ctx->output_model_dtype = quantized_dtype;
+      ctx->granularity = granularity;
+      ctx->input_type = quantized_dtype;
+      ctx->output_type = quantized_dtype;
+      ctx->TF_style_maxpool = false;
+      ctx->layers_info.push_back(info);
+    }
+
+    luci::QuantizeWithMinMaxPass pass(std::move(ctx));
+    pass.run(g);
+  }
+
+  // Do verification
+  {
+    auto ctx = std::make_unique<luci::QuantizedModelVerifier::Context>();
+    {
+      ctx->output_model_dtype = quantized_dtype;
+      ctx->granularity = granularity;
+      ctx->input_type = quantized_dtype;
+      ctx->output_type = quantized_dtype;
+      ctx->TF_style_maxpool = false;
+      ctx->layers_info.push_back(info);
+    }
+
+    luci::QuantizedModelVerifier verifier(std::move(ctx));
+    verifier.verify(g);
+  }
+}
+
 // Helper function to reduce duplicate test codes
 // Assumption: g->output()->from() is the target node
 void quantize_and_verify_with_wrong_type(luci::test::TestIOGraph *g, Type quantized_dtype,
@@ -205,6 +252,7 @@ public:
       _instnorm->gamma(_gamma);
       _instnorm->beta(_beta);
       _instnorm->fusedActivationFunction(luci::FusedActFunc::NONE);
+      _instnorm->name("test");
     }
     output()->from(_instnorm);
 
@@ -231,6 +279,7 @@ public:
     _logistic = g()->nodes()->create<luci::CircleLogistic>();
     {
       _logistic->x(input());
+      _logistic->name("test");
     }
     output()->from(_logistic);
 
@@ -250,6 +299,7 @@ public:
     _lrn = g()->nodes()->create<luci::CircleLocalResponseNormalization>();
     {
       _lrn->input(input());
+      _lrn->name("test");
     }
     output()->from(_lrn);
 
@@ -270,6 +320,7 @@ public:
     {
       _softmax->logits(input());
       _softmax->beta(0.1);
+      _softmax->name("test");
     }
     output()->from(_softmax);
 
@@ -299,6 +350,7 @@ public:
       _stob->input(input());
       _stob->block_shape(_block_shape);
       _stob->paddings(_paddings);
+      _stob->name("test");
     }
     output()->from(_stob);
 
@@ -321,6 +373,7 @@ public:
     {
       _stod->input(input());
       _stod->block_size(2);
+      _stod->name("test");
     }
     output()->from(_stod);
 
@@ -350,6 +403,7 @@ public:
       _slice->input(input());
       _slice->begin(_begin);
       _slice->size(_size);
+      _slice->name("test");
     }
     output()->from(_slice);
 
@@ -447,6 +501,7 @@ public:
       _slice->begin(_begin);
       _slice->end(_end);
       _slice->strides(_strides);
+      _slice->name("test");
     }
     output()->from(_slice);
 
@@ -474,6 +529,7 @@ public:
     {
       _reshape->tensor(input());
       _reshape->shape(_shape);
+      _reshape->name("test");
     }
     output()->from(_reshape);
 
@@ -494,6 +550,7 @@ public:
     _tanh = g()->nodes()->create<luci::CircleTanh>();
     {
       _tanh->x(input());
+      _tanh->name("test");
     }
     output()->from(_tanh);
 
@@ -513,6 +570,7 @@ public:
     _floor = g()->nodes()->create<luci::CircleFloor>();
     {
       _floor->x(input());
+      _floor->name("test");
     }
     output()->from(_floor);
 
@@ -576,6 +634,7 @@ public:
       _btos->input(input());
       _btos->block_shape(_block_shape);
       _btos->crops(_crops);
+      _btos->name("test");
     }
     output()->from(_btos);
 
@@ -598,6 +657,7 @@ public:
     {
       _dtos->input(input());
       _dtos->block_size(2);
+      _dtos->name("test");
     }
     output()->from(_dtos);
 
@@ -620,6 +680,7 @@ public:
       _pack->values(0, input());
       _pack->values(1, _param);
       _pack->axis(0);
+      _pack->name("test");
     }
     output()->from(_pack);
 
@@ -655,6 +716,7 @@ public:
     {
       _pad->input(input());
       _pad->paddings(_paddings);
+      _pad->name("test");
     }
     output()->from(_pad);
 
@@ -682,6 +744,7 @@ public:
       _pad->input(input());
       _pad->paddings(_paddings);
       _pad->constant_values(_constant_values);
+      _pad->name("test");
     }
     output()->from(_pad);
 
@@ -710,6 +773,7 @@ public:
       _mirror_pad->input(input());
       _mirror_pad->paddings(_paddings);
       _mirror_pad->mode(luci::MirrorPadMode::REFLECT);
+      _mirror_pad->name("test");
     }
     output()->from(_mirror_pad);
 
@@ -736,6 +800,7 @@ public:
     {
       _transpose->a(input());
       _transpose->perm(_perm);
+      _transpose->name("test");
     }
     output()->from(_transpose);
 
@@ -760,6 +825,7 @@ public:
       _concat->values(1, _param);
       _concat->axis(0);
       _concat->fusedActivationFunction(luci::FusedActFunc::NONE);
+      _concat->name("test");
     }
     output()->from(_concat);
 
@@ -805,6 +871,7 @@ public:
       _one_hot->off_value(_off_value);
       _one_hot->axis(-1);
       _one_hot->dtype(loco::DataType::FLOAT32);
+      _one_hot->name("test");
     }
     output()->from(_one_hot);
 
@@ -889,6 +956,7 @@ public:
     {
       _div->x(input());
       _div->y(_const);
+      _div->name("test");
     }
     output()->from(_div);
 
@@ -916,6 +984,7 @@ public:
     {
       _floor_div->x(input());
       _floor_div->y(_const);
+      _floor_div->name("test");
     }
     output()->from(_floor_div);
 
@@ -940,6 +1009,7 @@ public:
     _rsqrt = g()->nodes()->create<luci::CircleRsqrt>();
     {
       _rsqrt->x(input());
+      _rsqrt->name("test");
     }
     output()->from(_rsqrt);
 
@@ -959,6 +1029,7 @@ public:
     _sqrt = g()->nodes()->create<luci::CircleSqrt>();
     {
       _sqrt->x(input());
+      _sqrt->name("test");
     }
     output()->from(_sqrt);
 
@@ -978,6 +1049,7 @@ public:
     _elu = g()->nodes()->create<luci::CircleElu>();
     {
       _elu->features(input());
+      _elu->name("test");
     }
     output()->from(_elu);
 
@@ -1000,6 +1072,7 @@ public:
     {
       _pow->x(input());
       _pow->y(_const);
+      _pow->name("test");
     }
     output()->from(_pow);
 
@@ -1027,6 +1100,7 @@ public:
     {
       _resize_bilinear->input(input());
       _resize_bilinear->size(_size);
+      _resize_bilinear->name("test");
     }
     output()->from(_resize_bilinear);
 
@@ -1050,6 +1124,7 @@ public:
     {
       _resize_nearest_neighbor->input(input());
       _resize_nearest_neighbor->size(_size);
+      _resize_nearest_neighbor->name("test");
     }
     output()->from(_resize_nearest_neighbor);
 
@@ -1103,6 +1178,7 @@ public:
       _mul->x(input());
       _mul->y(_const);
       _mul->fusedActivationFunction(luci::FusedActFunc::NONE);
+      _mul->name("test");
     }
     output()->from(_mul);
 
@@ -1130,6 +1206,7 @@ public:
       _add->x(input());
       _add->y(_const);
       _add->fusedActivationFunction(luci::FusedActFunc::NONE);
+      _add->name("test");
     }
     output()->from(_add);
 
@@ -1153,6 +1230,15 @@ private:
     graph g;                                                        \
     g.init();                                                       \
     EXPECT_NO_THROW(quantize_and_verify(g.g(), type, granularity)); \
+  } while (0)
+
+// Quantize and verify with layer info
+#define TEST_WITH_LAYER_INFO(graph, type, granularity)                              \
+  do                                                                                \
+  {                                                                                 \
+    graph g;                                                                        \
+    g.init();                                                                       \
+    EXPECT_NO_THROW(quantize_and_verify_with_layer_info(g.g(), type, granularity)); \
   } while (0)
 
 // Quantize and verify with wrong type
@@ -1231,6 +1317,10 @@ TEST(QuantizedModelVerifierTest, InstanceNorm)
   TEST_WITH_GRAPH(InstanceNormTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(InstanceNormTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(InstanceNormTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(InstanceNormTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(InstanceNormTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(InstanceNormTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1255,6 +1345,10 @@ TEST(QuantizedModelVerifierTest, LocalResponseNormalization)
   TEST_WITH_GRAPH(LocalResponseNormalizationTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(LocalResponseNormalizationTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(LocalResponseNormalizationTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(LocalResponseNormalizationTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(LocalResponseNormalizationTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(LocalResponseNormalizationTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1285,6 +1379,10 @@ TEST(QuantizedModelVerifierTest, Logistic)
   TEST_WITH_GRAPH(LogisticTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(LogisticTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(LogisticTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(LogisticTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(LogisticTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(LogisticTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1309,6 +1407,10 @@ TEST(QuantizedModelVerifierTest, Softmax)
   TEST_WITH_GRAPH(SoftmaxTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(SoftmaxTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(SoftmaxTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(SoftmaxTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(SoftmaxTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(SoftmaxTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1333,6 +1435,10 @@ TEST(QuantizedModelVerifierTest, SpaceToBatchND)
   TEST_WITH_GRAPH(SpaceToBatchNDTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(SpaceToBatchNDTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(SpaceToBatchNDTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(SpaceToBatchNDTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(SpaceToBatchNDTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(SpaceToBatchNDTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1357,6 +1463,10 @@ TEST(QuantizedModelVerifierTest, SpaceToDepth)
   TEST_WITH_GRAPH(SpaceToDepthTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(SpaceToDepthTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(SpaceToDepthTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(SpaceToDepthTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(SpaceToDepthTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(SpaceToDepthTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1385,6 +1495,14 @@ TEST(QuantizedModelVerifierTest, Slice)
   TEST_WITH_GRAPH(SliceTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(SliceTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(SliceTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(SliceTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(SliceTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(SliceTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(SliceTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(SliceTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(SliceTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1465,6 +1583,10 @@ TEST(QuantizedModelVerifierTest, StridedSlice)
   TEST_WITH_GRAPH(StridedSliceTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(StridedSliceTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(StridedSliceTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(StridedSliceTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(StridedSliceTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(StridedSliceTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1549,6 +1671,10 @@ TEST(QuantizedModelVerifierTest, BatchToSpaceND)
   TEST_WITH_GRAPH(BatchToSpaceNDTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(BatchToSpaceNDTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(BatchToSpaceNDTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(BatchToSpaceNDTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(BatchToSpaceNDTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(BatchToSpaceNDTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1573,6 +1699,10 @@ TEST(QuantizedModelVerifierTest, DepthToSpace)
   TEST_WITH_GRAPH(DepthToSpaceTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(DepthToSpaceTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(DepthToSpaceTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(DepthToSpaceTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(DepthToSpaceTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(DepthToSpaceTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1597,6 +1727,10 @@ TEST(QuantizedModelVerifierTest, Concatenation)
   TEST_WITH_GRAPH(ConcatenationTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(ConcatenationTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(ConcatenationTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(ConcatenationTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(ConcatenationTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(ConcatenationTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1643,6 +1777,10 @@ TEST(QuantizedModelVerifierTest, Reshape)
   TEST_WITH_GRAPH(ReshapeTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(ReshapeTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(ReshapeTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(ReshapeTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(ReshapeTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(ReshapeTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1667,6 +1805,10 @@ TEST(QuantizedModelVerifierTest, Tanh)
   TEST_WITH_GRAPH(TanhTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(TanhTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(TanhTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(TanhTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(TanhTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(TanhTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1691,6 +1833,10 @@ TEST(QuantizedModelVerifierTest, Pack)
   TEST_WITH_GRAPH(PackTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(PackTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(PackTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(PackTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(PackTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(PackTestGraph, Type::S16, Granularity::ChannelWise);
 
   // Test if Pack's qparam is propagated to the input
   {
@@ -1726,6 +1872,10 @@ TEST(QuantizedModelVerifierTest, Pad)
   TEST_WITH_GRAPH(PadTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(PadTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(PadTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(PadTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(PadTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(PadTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1750,6 +1900,10 @@ TEST(QuantizedModelVerifierTest, PadV2)
   TEST_WITH_GRAPH(PadV2TestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(PadV2TestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(PadV2TestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(PadV2TestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(PadV2TestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(PadV2TestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1774,6 +1928,10 @@ TEST(QuantizedModelVerifierTest, MirrorPad)
   TEST_WITH_GRAPH(MirrorPadTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(MirrorPadTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(MirrorPadTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(MirrorPadTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(MirrorPadTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(MirrorPadTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1798,6 +1956,10 @@ TEST(QuantizedModelVerifierTest, Transpose)
   TEST_WITH_GRAPH(TransposeTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(TransposeTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(TransposeTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(TransposeTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(TransposeTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(TransposeTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1822,6 +1984,10 @@ TEST(QuantizedModelVerifierTest, Floor)
   TEST_WITH_GRAPH(FloorTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(FloorTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(FloorTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(FloorTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(FloorTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(FloorTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1964,6 +2130,14 @@ TEST(QuantizedModelVerifierTest, OneHot)
   TEST_WITH_GRAPH(OneHotTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(OneHotTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(OneHotTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(OneHotTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(OneHotTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(OneHotTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(OneHotTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(OneHotTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(OneHotTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -1996,6 +2170,10 @@ TEST(QuantizedModelVerifierTest, Div)
   TEST_WITH_GRAPH(DivTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(DivTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(DivTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(DivTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(DivTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(DivTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -2024,6 +2202,10 @@ TEST(QuantizedModelVerifierTest, FloorDiv)
   TEST_WITH_GRAPH(FloorDivTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(FloorDivTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(FloorDivTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(FloorDivTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(FloorDivTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(FloorDivTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -2052,6 +2234,10 @@ TEST(QuantizedModelVerifierTest, Rsqrt)
   TEST_WITH_GRAPH(RsqrtTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(RsqrtTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(RsqrtTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(RsqrtTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(RsqrtTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(RsqrtTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -2076,6 +2262,10 @@ TEST(QuantizedModelVerifierTest, Sqrt)
   TEST_WITH_GRAPH(SqrtTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(SqrtTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(SqrtTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(SqrtTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(SqrtTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(SqrtTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -2100,6 +2290,10 @@ TEST(QuantizedModelVerifierTest, Elu)
   TEST_WITH_GRAPH(EluTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(EluTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(EluTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(EluTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(EluTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(EluTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -2124,6 +2318,10 @@ TEST(QuantizedModelVerifierTest, Pow)
   TEST_WITH_GRAPH(PowTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(PowTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(PowTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(PowTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(PowTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(PowTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -2152,6 +2350,10 @@ TEST(QuantizedModelVerifierTest, ResizeBilinear)
   TEST_WITH_GRAPH(ResizeBilinearTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(ResizeBilinearTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(ResizeBilinearTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(ResizeBilinearTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(ResizeBilinearTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(ResizeBilinearTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -2176,6 +2378,10 @@ TEST(QuantizedModelVerifierTest, ResizeNearestNeighbor)
   TEST_WITH_GRAPH(ResizeNearestNeighborTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(ResizeNearestNeighborTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(ResizeNearestNeighborTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(ResizeBilinearTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(ResizeBilinearTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(ResizeBilinearTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -2226,6 +2432,10 @@ TEST(QuantizedModelVerifierTest, Add)
   TEST_WITH_GRAPH(AddTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(AddTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(AddTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(AddTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(AddTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(AddTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
@@ -2254,6 +2464,10 @@ TEST(QuantizedModelVerifierTest, Mul)
   TEST_WITH_GRAPH(MulTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_GRAPH(MulTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_GRAPH(MulTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(MulTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(MulTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(MulTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 

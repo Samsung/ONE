@@ -244,6 +244,7 @@ private:
   INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleMinimum, x, y)
   INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleMul, x, y)
   INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleNotEqual, x, y)
+  INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleOneHot, on_value, off_value)
   INSERT_QUANTIZE_TO_BINARY_OP(luci::CirclePow, x, y)
   INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleSub, x, y)
 
