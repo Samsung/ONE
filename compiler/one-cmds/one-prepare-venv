@@ -35,6 +35,7 @@ fi
 
 VER_TENSORFLOW=2.6.0
 VER_ONNX=1.10.1
+VER_ONNXRUNTIME=1.10.0
 VER_ONNX_TF=1.9.0
 
 # Install tensorflow
@@ -77,6 +78,8 @@ ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==1.10.0+cpu -f ${TORCH_STABLE
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install keras==2.6.0
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX}
+
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnxruntime==${VER_ONNXRUNTIME}
 
 # Provide install of custom onnx-tf
 if [ -n "${EXT_ONNX_TF_WHL}" ]; then
