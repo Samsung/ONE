@@ -36,11 +36,13 @@ option(ENABLE_STRICT_BUILD "Treat warning as error" OFF)
 
 # This option might be turned ON for Windows native build.
 # Check our ProtobufConfig.cmake for its usage.
+# TODO move this to Windows options
 option(USE_PROTOBUF_LEGACY_IMPORT "Use legacy MODULE mode import rather than CONFIG mode" OFF)
 
 # This option might be turned ON for MCU builds of luci related components.
 # It specify which library type to use for build:
 # if set ON - luci libraries are static, otherwise - shared.
+# TODO move this to MCU options
 option(STATIC_LUCI "Build luci as a static libraries" OFF)
 
 # Disable PIC(Position-Independent Code) option for luci-interpreter related components.
@@ -50,6 +52,7 @@ option(STATIC_LUCI "Build luci as a static libraries" OFF)
 # implementation of trampoline functions and support of various address tables.
 # PIC is used for dynamic libraries, MCU builds of interpreter
 # do not benefit from it, so we prefer to disable PIC.
+# TODO move this to MCU options
 option(NNCC_LIBRARY_NO_PIC "Disable PIC option for libraries" OFF)
 
 # one-cmds PyTorch importer is an experimental feature, it is not used in default configuration.
