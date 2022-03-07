@@ -7,7 +7,7 @@ function(_GTestSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  envoption(GTEST_URL https://github.com/google/googletest/archive/release-1.8.0.tar.gz)
+  envoption(GTEST_URL https://github.com/google/googletest/archive/release-1.11.0.tar.gz)
 
   ExternalSource_Download(GTEST ${GTEST_URL})
 
