@@ -169,7 +169,7 @@ bool ignore_pad_v2_const_quantization(luci::CirclePadV2 *pad)
  *
  * NOTE Quantization parameter of CirclePack (qparam2) is propagated to the inputs.
  */
-void propagate_pack_quantparam(luci::CirclePack *pack, loco::DataType quant_type)
+void propagate_pack_quantparam(luci::CirclePack *pack)
 {
   assert(pack->quantparam() != nullptr);
 
@@ -196,7 +196,7 @@ void propagate_pack_quantparam(luci::CirclePack *pack, loco::DataType quant_type
       const auto zerop = pack_qparam->zerop[0];
 
       auto new_const = luci::clone(const_node);
-      quant_const_values(new_const, scaling_factor, zerop, quant_type);
+      quant_const_values(new_const, scaling_factor, zerop, pack->dtype());
       pack->values(i, new_const);
       overwrite_quantparam(pack, new_const);
     }
@@ -239,14 +239,14 @@ void propagate_pack_quantparam(luci::CirclePack *pack, loco::DataType quant_type
  *
  * NOTE Quantization parameter of CircleOneHot (qparam2) is propagated to on_value/off_value.
  */
-void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot, loco::DataType quant_type)
+void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot)
 {
   assert(one_hot->quantparam() != nullptr);
 
   // Propagate quantization parameters from output to inputs,
   // to fit both input and counstant_value in one quant range.
-  auto quant_input = [one_hot, quant_type](void (luci::CircleOneHot::*arg_setter)(loco::Node *),
-                                           loco::Node *(luci::CircleOneHot::*arg_getter)() const) {
+  auto quant_input = [one_hot](void (luci::CircleOneHot::*arg_setter)(loco::Node *),
+                               loco::Node *(luci::CircleOneHot::*arg_getter)() const) {
     auto node = loco::must_cast<luci::CircleNode *>((one_hot->*arg_getter)());
 
     // Quantize constant values
@@ -268,7 +268,7 @@ void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot, loco::DataType qu
       const auto zerop = qparam->zerop.at(0);
 
       auto new_const = luci::clone(const_node);
-      quant_const_values(new_const, scaling_factor, zerop, quant_type);
+      quant_const_values(new_const, scaling_factor, zerop, one_hot->dtype());
       overwrite_quantparam(one_hot, new_const);
       (one_hot->*arg_setter)(new_const);
     }
@@ -310,7 +310,7 @@ namespace luci
  *                    [CircleConcatenation]
  *                        (U8 qparam2)
  */
-void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataType quant_type)
+void propagate_concat_quantparam(luci::CircleConcatenation *concat)
 {
   assert(concat->quantparam() != nullptr);
 
@@ -326,7 +326,7 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
       if (const_node != nullptr)
       {
         auto new_const = luci::clone(const_node);
-        quant_const(new_const, quant_type);
+        quant_const(new_const, concat->dtype());
         concat->values(i, new_const);
       }
     }
@@ -348,7 +348,7 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
       const auto zerop = concat_qparam->zerop[0];
 
       auto new_const = luci::clone(const_node);
-      quant_const_values(new_const, scaling_factor, zerop, quant_type);
+      quant_const_values(new_const, scaling_factor, zerop, concat->dtype());
       concat->values(i, new_const);
       overwrite_quantparam(concat, new_const);
     }
@@ -400,7 +400,7 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat, loco::DataTy
  *                      [CirclePadV2]
  *                       (U8 qparam1)
  */
-void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant_type)
+void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2)
 {
   if (ignore_pad_v2_const_quantization(pad_v2))
   {
@@ -418,7 +418,7 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant
     const auto scaling_factor = pad_v2_input_qparam->scale.at(0);
     const auto zerop = pad_v2_input_qparam->zerop.at(0);
 
-    quant_const_values(new_const, scaling_factor, zerop, quant_type);
+    quant_const_values(new_const, scaling_factor, zerop, pad_v2->dtype());
     overwrite_quantparam(pad_v2_input, new_const);
     pad_v2->constant_values(new_const);
     return;
@@ -426,8 +426,7 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant
 
   // Propagate quantization paramters from output to inputs,
   // to fit both input and counstant_value in one quant range.
-  auto quant_input = [pad_v2, quant_type](void (CirclePadV2::*arg_setter)(loco::Node *),
-                                          uint32_t arg) {
+  auto quant_input = [pad_v2](void (CirclePadV2::*arg_setter)(loco::Node *), uint32_t arg) {
     auto node = loco::must_cast<luci::CircleNode *>(pad_v2->arg(arg));
 
     // Quantize constant values
@@ -449,7 +448,7 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2, loco::DataType quant
       const auto zerop = pad_v2_qparam->zerop.at(0);
 
       auto new_const = luci::clone(const_node);
-      quant_const_values(new_const, scaling_factor, zerop, quant_type);
+      quant_const_values(new_const, scaling_factor, zerop, pad_v2->dtype());
       overwrite_quantparam(pad_v2, new_const);
       (pad_v2->*arg_setter)(new_const);
     }
@@ -477,20 +476,15 @@ namespace
 // Visitor to propagate quantization parameters backwards
 struct PropagateQParamBackward final : public luci::CircleNodeMutableVisitor<void>
 {
-  PropagateQParamBackward(loco::DataType output) : _output_type(output) {}
-
-private:
-  loco::DataType _output_type;
-
   void visit(luci::CircleNode *) {}
 
-  void visit(luci::CircleConcatenation *node) { propagate_concat_quantparam(node, _output_type); }
+  void visit(luci::CircleConcatenation *node) { propagate_concat_quantparam(node); }
 
-  void visit(luci::CircleOneHot *node) { propagate_one_hot_quantparam(node, _output_type); }
+  void visit(luci::CircleOneHot *node) { propagate_one_hot_quantparam(node); }
 
-  void visit(luci::CirclePack *node) { propagate_pack_quantparam(node, _output_type); }
+  void visit(luci::CirclePack *node) { propagate_pack_quantparam(node); }
 
-  void visit(luci::CirclePadV2 *node) { propagate_pad_v2_quantparam(node, _output_type); }
+  void visit(luci::CirclePadV2 *node) { propagate_pad_v2_quantparam(node); }
 };
 
 } // namespace
@@ -510,7 +504,7 @@ bool PropagateQParamBackwardPass::run(loco::Graph *g)
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     INFO(l) << "PropagateQParamBackwardPass visit node: " << circle_node->name() << std::endl;
 
-    PropagateQParamBackward pqb(_output_model_dtype);
+    PropagateQParamBackward pqb;
     circle_node->accept(&pqb);
   }
 

@@ -133,7 +133,7 @@ public:
 
 TEST(PropagateQParamBackwardPassTest, name)
 {
-  luci::PropagateQParamBackwardPass pass(loco::DataType::U8);
+  luci::PropagateQParamBackwardPass pass;
   auto const name = pass.name();
   ASSERT_NE(nullptr, name);
 }
@@ -144,7 +144,7 @@ TEST(PropagateQParamBackwardPassTest, subsequent_propagation)
 
   graph.init();
 
-  luci::PropagateQParamBackwardPass pass(loco::DataType::U8);
+  luci::PropagateQParamBackwardPass pass;
 
   pass.run(&graph.g);
 

@@ -1616,7 +1616,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
 
   // Backward propagation of activation qparam
   {
-    PropagateQParamBackwardPass pqbp(_ctx->output_model_dtype);
+    PropagateQParamBackwardPass pqbp;
     pqbp.run(g);
   }
 

@@ -27,14 +27,9 @@ namespace luci
  */
 struct PropagateQParamBackwardPass final : public logo::Pass
 {
-  PropagateQParamBackwardPass(loco::DataType output) : _output_model_dtype(output) {}
-
   const char *name(void) const final { return "luci::PropagateQParamBackwardPass"; }
 
   bool run(loco::Graph *g) final;
-
-private:
-  loco::DataType _output_model_dtype;
 };
 
 } // namespace luci
