@@ -22,6 +22,8 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
+
 using namespace std;
 using namespace nnc;
 using namespace mir;
