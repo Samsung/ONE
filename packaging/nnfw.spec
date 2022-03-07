@@ -7,8 +7,9 @@ License: Apache-2.0 and MIT and BSD-2-Clause and MPL-2.0
 
 Source0: %{name}-%{version}.tar.gz
 Source1: %{name}.manifest
+# TODO Update source number
 Source1001: nnapi_test_generated.tar.gz
-Source1002: GTEST.tar.gz
+#Source1002: GTEST.tar.gz
 Source1003: TENSORFLOW-2.3.0-EIGEN.tar.gz
 Source1004: GEMMLOWP.tar.gz
 Source1005: RUY.tar.gz
@@ -127,7 +128,7 @@ NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
 cp %{SOURCE1} .
 mkdir ./externals
 tar -xf %{SOURCE1001} -C ./tests/nnapi/src/
-tar -xf %{SOURCE1002} -C ./externals
+#tar -xf %{SOURCE1002} -C ./externals
 tar -xf %{SOURCE1003} -C ./externals
 tar -xf %{SOURCE1004} -C ./externals
 tar -xf %{SOURCE1005} -C ./externals

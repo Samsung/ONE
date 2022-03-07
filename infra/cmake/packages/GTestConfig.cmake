@@ -14,7 +14,7 @@ function(_GTest_build)
   ExternalBuild_CMake(CMAKE_DIR   ${GTestSource_DIR}
                       BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/GTEST/build
                       INSTALL_DIR ${EXT_OVERLAY_DIR}
-                      IDENTIFIER  "1.8.0-fix1"
+                      IDENTIFIER  "1.11.0"
                       PKG_NAME    "GTEST")
 
   set(GTEST_FOUND TRUE PARENT_SCOPE)
@@ -30,10 +30,14 @@ _GTest_build()
 # Note: cmake supports GTest and does not find GTestConfig.cmake or GTest-config.cmake.
 # Refer to "https://cmake.org/cmake/help/v3.5/module/FindGTest.html"
 # find_package(GTest) creates options like GTEST_FOUND, not GTest_FOUND.
-if(NOT GTEST_FOUND)
+if(GTEST_FOUND)
+  message(STATUS "Found GTest: true")
+else(GTEST_FOUND)
   message(STATUS "GTEST_FOUND false: call find_package(GTest)")
+  # Reset package config directory cache to prevent recursive find
+  unset(GTest_DIR CACHE)
   find_package(GTest)
-endif(NOT GTEST_FOUND)
+endif(GTEST_FOUND)
 find_package(Threads)
 
 if(${GTEST_FOUND} AND TARGET Threads::Threads)
