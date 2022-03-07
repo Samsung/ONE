@@ -17,6 +17,7 @@
 #include "QuantizedModelVerifier.h"
 
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
+#include "luci/Pass/QuantizationParameters.h"
 
 #include <luci/test/TestIOGraph.h>
 
@@ -110,6 +111,52 @@ void quantize_and_verify(loco::Graph *g, Type quantized_dtype, Granularity granu
 
   luci::QuantizedModelVerifier verifier(quantized_dtype, granularity);
   verifier.verify(g);
+}
+
+void quantize_and_verify_with_layer_info(loco::Graph *g, Type quantized_dtype,
+                                         Granularity granularity)
+{
+  // A layer named "test" has dtype different from quantized_dtype
+  luci::LayerInfo info;
+  {
+    info.name = "test";
+    // dtype is different from quantized_dtype
+    info.dtype = quantized_dtype == Type::U8 ? Type::S16 : Type::U8;
+    info.granularity = Granularity::ChannelWise;
+  }
+
+  // Do quantization
+  {
+    auto ctx = std::make_unique<luci::QuantizeWithMinMaxPass::Context>();
+    {
+      ctx->input_model_dtype = Type::FLOAT32;
+      ctx->output_model_dtype = quantized_dtype;
+      ctx->granularity = granularity;
+      ctx->input_type = quantized_dtype;
+      ctx->output_type = quantized_dtype;
+      ctx->TF_style_maxpool = false;
+      ctx->layers_info.push_back(info);
+    }
+
+    luci::QuantizeWithMinMaxPass pass(std::move(ctx));
+    pass.run(g);
+  }
+
+  // Do verification
+  {
+    auto ctx = std::make_unique<luci::QuantizedModelVerifier::Context>();
+    {
+      ctx->output_model_dtype = quantized_dtype;
+      ctx->granularity = granularity;
+      ctx->input_type = quantized_dtype;
+      ctx->output_type = quantized_dtype;
+      ctx->TF_style_maxpool = false;
+      ctx->layers_info.push_back(info);
+    }
+
+    luci::QuantizedModelVerifier verifier(std::move(ctx));
+    verifier.verify(g);
+  }
 }
 
 // Helper function to reduce duplicate test codes
@@ -619,6 +666,7 @@ public:
       _pack->values(0, input());
       _pack->values(1, _param);
       _pack->axis(0);
+      _pack->name("test");
     }
     output()->from(_pack);
 
@@ -1149,6 +1197,15 @@ private:
     graph g;                                                        \
     g.init();                                                       \
     EXPECT_NO_THROW(quantize_and_verify(g.g(), type, granularity)); \
+  } while (0)
+
+// Quantize and verify with layer info
+#define TEST_WITH_LAYER_INFO(graph, type, granularity)                              \
+  do                                                                                \
+  {                                                                                 \
+    graph g;                                                                        \
+    g.init();                                                                       \
+    EXPECT_NO_THROW(quantize_and_verify_with_layer_info(g.g(), type, granularity)); \
   } while (0)
 
 // Quantize and verify with wrong type
@@ -2295,6 +2352,17 @@ TEST(QuantizedModelVerifierTest, Mul_wrong_granularity_NEG)
 //
 // CircleCast
 //
+
+TEST(QuantizedModelVerifierTest, LayerInfo)
+{
+  // Test if Pack's qparam is propagated to the input
+  {
+    PackTestGraph g;
+    g.init();
+    EXPECT_NO_THROW(quantize_and_verify_with_layer_info(g.g(), Type::U8, Granularity::ChannelWise));
+  }
+  SUCCEED();
+}
 
 #undef TEST_WITH_GRAPH
 #undef TEST_WITH_WRONG_TYPE
