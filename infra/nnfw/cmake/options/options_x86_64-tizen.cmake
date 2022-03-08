@@ -3,6 +3,7 @@
 #
 option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" OFF)
 option(DOWNLOAD_ARMCOMPUTE "Download ARM Compute source" OFF)
+option(DOWNLOAD_GTEST "Download Google Test source and build Google Test" OFF)
 
 option(BUILD_LOGGING "Build logging runtime" OFF)
 option(GENERATE_RUNTIME_NNAPI_TESTS "Generate NNAPI operation gtest" OFF)
