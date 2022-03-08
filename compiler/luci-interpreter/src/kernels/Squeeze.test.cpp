@@ -56,7 +56,7 @@ template <typename T> class SqueezeTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(SqueezeTest, DataTypes);
+TYPED_TEST_SUITE(SqueezeTest, DataTypes);
 
 TYPED_TEST(SqueezeTest, TotalTest)
 {

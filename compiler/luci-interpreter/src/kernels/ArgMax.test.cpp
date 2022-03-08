@@ -57,7 +57,7 @@ template <typename T> class ArgMaxTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(ArgMaxTest, DataTypes);
+TYPED_TEST_SUITE(ArgMaxTest, DataTypes);
 
 TYPED_TEST(ArgMaxTest, Simple)
 {

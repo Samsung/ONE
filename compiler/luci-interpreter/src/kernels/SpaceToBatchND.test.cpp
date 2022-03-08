@@ -90,7 +90,7 @@ template <typename T> class SpaceToBatchNDTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(SpaceToBatchNDTest, DataTypes);
+TYPED_TEST_SUITE(SpaceToBatchNDTest, DataTypes);
 
 TYPED_TEST(SpaceToBatchNDTest, Simple)
 {

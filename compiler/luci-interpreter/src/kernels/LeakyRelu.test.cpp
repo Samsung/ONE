@@ -83,7 +83,7 @@ template <typename T> class LeakReluTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(LeakReluTest, DataTypes);
+TYPED_TEST_SUITE(LeakReluTest, DataTypes);
 
 TYPED_TEST(LeakReluTest, Simple)
 {
