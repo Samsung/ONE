@@ -14,7 +14,6 @@ function(ExternalBuild_CMake)
                         ${ARGN}
   )
 
-  set(BUILD_STAMP_PATH "${ARG_BUILD_DIR}/${ARG_PKG_NAME}.stamp")
   set(BUILD_LOG_PATH "${ARG_BUILD_DIR}/${ARG_PKG_NAME}.log")
   set(INSTALL_STAMP_PATH "${ARG_INSTALL_DIR}/${ARG_PKG_NAME}.stamp")
   set(INSTALL_LOG_PATH "${ARG_INSTALL_DIR}/${ARG_PKG_NAME}.log")
@@ -23,14 +22,6 @@ function(ExternalBuild_CMake)
   if(DEFINED ARG_IDENTIFIER)
     set(PKG_IDENTIFIER "${ARG_IDENTIFIER}")
   endif(DEFINED ARG_IDENTIFIER)
-
-  # NOTE Do NOT retry build once it fails
-  if(EXISTS ${BUILD_STAMP_PATH})
-    file(READ ${BUILD_STAMP_PATH} READ_IDENTIFIER)
-    if("${READ_IDENTIFIER}" STREQUAL "${PKG_IDENTIFIER}")
-      return()
-    endif("${READ_IDENTIFIER}" STREQUAL "${PKG_IDENTIFIER}")
-  endif(EXISTS ${BUILD_STAMP_PATH})
 
   # NOTE Do NOT build pre-installed exists
   if(EXISTS ${INSTALL_STAMP_PATH})
@@ -58,8 +49,6 @@ function(ExternalBuild_CMake)
 
   file(MAKE_DIRECTORY ${ARG_BUILD_DIR})
   file(MAKE_DIRECTORY ${ARG_INSTALL_DIR})
-
-  file(WRITE "${BUILD_STAMP_PATH}" "${PKG_IDENTIFIER}")
 
   execute_process(COMMAND ${CMAKE_COMMAND}
                             -G "${CMAKE_GENERATOR}"
