@@ -20,7 +20,7 @@ if(NOT GTest_FOUND)
   # Reset package config directory cache to prevent recursive find
   unset(GTest_DIR CACHE)
   find_package(GTest)
-endif(GTest_FOUND)
+endif(NOT GTest_FOUND)
 find_package(Threads)
 
 if(${GTEST_FOUND} AND TARGET Threads::Threads)

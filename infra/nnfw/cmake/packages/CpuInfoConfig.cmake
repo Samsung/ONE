@@ -14,6 +14,8 @@ function(_CpuInfo_Build)
     return()
   endif(NOT CpuInfoSource_FOUND)
 
+  nnas_include(ExternalProjectTools)
+
   set(CPUINFO_BUILD_TOOLS OFF CACHE BOOL "Build command-line tools")
   set(CPUINFO_BUILD_BENCHMARKS OFF CACHE BOOL "Build cpuinfo unit tests")
   set(CPUINFO_BUILD_UNIT_TESTS OFF CACHE BOOL "Build cpuinfo mock tests")
