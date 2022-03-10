@@ -20,6 +20,7 @@
 #include "luci/Pass/ForceQuantParamPass.h"
 #include "luci/Pass/PropagateQParamForwardPass.h"
 #include "luci/Pass/RequantizePass.h"
+#include "luci/Pass/QuantizePreCheckerPass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 
@@ -309,6 +310,10 @@ void CircleQuantizer::quantize(loco::Graph *g) const
           ". List of supported granularity: " + to_string(qwmm_supported_granularity));
       }
     }
+
+    // Input model checker for quantization
+    luci::QuantizePreCheckerPass input_model_checker{};
+    input_model_checker.run(g);
 
     auto ctx = std::make_unique<luci::QuantizeWithMinMaxPass::Context>();
     {
