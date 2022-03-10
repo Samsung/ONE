@@ -65,6 +65,8 @@ public:
   size_t buffer_info(uint32_t buf_idx, const uint8_t **buff_data);
   circle::BuiltinOperator builtin_code(const circle::Operator *op) const;
   std::string opcode_name(const circle::Operator *op) const;
+  std::string tensor_name(const circle::Tensor *tensor) const;
+  std::string tensor_dtype(const circle::Tensor *tensor) const;
 
 public:
   bool select_subgraph(uint32_t subgraph);
