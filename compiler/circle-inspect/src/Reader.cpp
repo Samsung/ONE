@@ -89,6 +89,16 @@ std::string Reader::opcode_name(const circle::Operator *op) const
   return mio::circle::opcode_name(opcode);
 }
 
+std::string Reader::tensor_name(const circle::Tensor *tensor) const
+{
+  return mio::circle::tensor_name(tensor);
+}
+
+std::string Reader::tensor_dtype(const circle::Tensor *tensor) const
+{
+  return mio::circle::tensor_type(tensor);
+}
+
 bool Reader::select_subgraph(uint32_t sgindex)
 {
   _tensors = nullptr;

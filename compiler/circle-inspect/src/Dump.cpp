@@ -175,3 +175,28 @@ void DumpOperatorVersion::run(std::ostream &os, const circle::Model *model)
 }
 
 } // namespace circleinspect
+
+namespace circleinspect
+{
+
+void DumpTensorDType::run(std::ostream &os, const circle::Model *model)
+{
+  circleinspect::Reader reader(model);
+
+  const uint32_t subgraph_size = reader.num_subgraph();
+
+  for (uint32_t g = 0; g < subgraph_size; g++)
+  {
+    reader.select_subgraph(g);
+    auto tensors = reader.tensors();
+
+    for (uint32_t i = 0; i < tensors->Length(); ++i)
+    {
+      const auto tensor = tensors->Get(i);
+
+      os << reader.tensor_name(tensor) << " " << reader.tensor_dtype(tensor) << std::endl;
+    }
+  }
+}
+
+} // namespace circleinspect
