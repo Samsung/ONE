@@ -95,13 +95,13 @@ struct InheritanceMode
   };
 };
 
-template <uint32_t N, template <class> class InheritanceMode = InheritanceMode::Virtual>
-struct FixedArity
+template <uint32_t N> struct FixedArity
 {
-  template <typename Base> class Mixin : public InheritanceMode<Base>
+  template <typename Base, template <class> class Inheritance>
+  class MixinImpl : public Inheritance<Base>
   {
   public:
-    Mixin()
+    MixinImpl()
     {
       for (uint32_t n = 0; n < N; ++n)
       {
@@ -109,7 +109,7 @@ struct FixedArity
       }
     }
 
-    virtual ~Mixin() = default;
+    virtual ~MixinImpl() = default;
 
   public:
     uint32_t arity(void) const final { return N; }
@@ -131,6 +131,9 @@ struct FixedArity
   private:
     std::array<std::unique_ptr<Use>, N> _args{};
   };
+
+  template <typename Base> using Mixin = MixinImpl<Base, loco::InheritanceMode::Virtual>;
+  template <typename Base> using DirectMixin = MixinImpl<Base, loco::InheritanceMode::Direct>;
 };
 
 template <NodeTrait Trait> struct With
