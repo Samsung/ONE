@@ -227,7 +227,7 @@ tensor_dtype()
 
   ACTUAL=`init_error_log ; \
           ${INSPECT_PROG_PATH} --tensor_dtype ${COMPILED_FILE} | \
-          awk -v opname="$1" '{ if ($1 == opname) print $2}'`
+          awk -v tensor_name="$1" '{ if ($1 == tensor_name) print $2}'`
 
   check_success_exit_code $? 0
 
