@@ -55,6 +55,7 @@ BuildRequires:  hdf5-devel
 BuildRequires:  libaec-devel
 BuildRequires:  zlib-devel
 BuildRequires:  libjpeg-devel
+BuildRequires:  gtest-devel
 %endif
 
 %description
