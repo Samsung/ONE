@@ -25,13 +25,13 @@ Add(RECIPE_DIR DTYPE dtype GRANULARITY granularity USE_QCONFIG)
 
 ```
 # TensorFlowLiteRecipes
-res/TensorFlowLiteRecipes/Net_Conv_Add_Mul_004
+res/TensorFlowLiteRecipes/Quant_Conv_Mul_Add_000
 ├── test.recipe     # What you want to test
 └── test.rule       # Non-functional conditions to be satisfied
 └── test.qconf.json # Quantization configuration file (optional)
 
 # test.lst
 ...
-Add(Net_Conv_Add_Mul_004 DTYPE uint8 GRANULARITY channel USE_QCONFIG)
+Add(Quant_Conv_Mul_Add_000 DTYPE uint8 GRANULARITY channel USE_QCONFIG)
 ...
 ```
