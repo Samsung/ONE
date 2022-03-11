@@ -1,5 +1,5 @@
 function(_FlatBuffers_import)
-  nnas_find_package_folder(Flatbuffers ${EXT_OVERLAY_DIR}/FLATBUFFERS-2.0 QUIET)
+  find_package(Flatbuffers QUIET)
   set(FlatBuffers_FOUND ${Flatbuffers_FOUND} PARENT_SCOPE)
 endfunction(_FlatBuffers_import)
 
@@ -25,7 +25,7 @@ function(_FlatBuffers_build)
   nnas_include(ExternalBuildTools)
   ExternalBuild_CMake(CMAKE_DIR   ${FlatBuffersSource_DIR}
                       BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/FLATBUFFERS-2.0/build
-                      INSTALL_DIR ${EXT_OVERLAY_DIR}/FLATBUFFERS-2.0
+                      INSTALL_DIR ${EXT_OVERLAY_DIR}
                       BUILD_FLAGS ${ADDITIONAL_CXX_FLAGS}
                       IDENTIFIER  "2.0"
                       EXTRA_OPTS  "-DFLATBUFFERS_BUILD_TESTS:BOOL=OFF"
@@ -38,12 +38,12 @@ _FlatBuffers_build()
 _FlatBuffers_import()
 
 # for cross compilation BUILD_HOST_EXEC should be set for host flatc executable
-# flatc should exist as ${BUILD_HOST_EXEC}/overlay/FLATBUFFERS-1.12/bin/flatc.
+# flatc should exist as ${BUILD_HOST_EXEC}/overlay/FLATBUFFERS-2.0/bin/flatc.
 # and then if EXTERNAL_FLATC is set then use ${EXTERNAL_FLATC} file.
 set(FLATC_PATH "$<TARGET_FILE:flatbuffers::flatc>")
 
 if(DEFINED ENV{BUILD_HOST_EXEC})
-  set(FLATC_PATH $ENV{BUILD_HOST_EXEC}/overlay/FLATBUFFERS-2.0/bin/flatc)
+  set(FLATC_PATH $ENV{BUILD_HOST_EXEC}/overlay/bin/flatc)
 endif(DEFINED ENV{BUILD_HOST_EXEC})
 if(DEFINED ENV{EXTERNAL_FLATC})
   set(FLATC_PATH $ENV{EXTERNAL_FLATC})

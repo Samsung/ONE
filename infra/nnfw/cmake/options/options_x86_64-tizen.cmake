@@ -3,6 +3,7 @@
 #
 option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" OFF)
 option(DOWNLOAD_ARMCOMPUTE "Download ARM Compute source" OFF)
+option(DOWNLOAD_FLATBUFFERS "Download FlatBuffers source" OFF)
 option(DOWNLOAD_GTEST "Download Google Test source and build Google Test" OFF)
 
 option(BUILD_LOGGING "Build logging runtime" OFF)
