@@ -23,6 +23,7 @@
 #include "QuantizeBias.h"
 #include "QuantizationUtils.h"
 #include "ProgressReporter.h"
+#include "helpers/LayerInfoMap.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -35,8 +36,6 @@
 
 #include <iostream>
 #include <cmath>
-
-using LayerInfoMap = std::unordered_map<std::string, luci::LayerInfo *>;
 
 namespace
 {
@@ -376,41 +375,6 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
   }
 }
 
-LayerInfoMap QuantizeWithMinMaxPass::create_layer_info_map(loco::Graph *g) const
-{
-  LayerInfoMap info_by_name;
-
-  for (auto &&info : _ctx->layers_info)
-  {
-    auto name = info.name;
-    bool found = false;
-    for (auto node : loco::active_nodes(loco::output_nodes(g)))
-    {
-      auto cnode = loco::must_cast<luci::CircleNode *>(node);
-      if (cnode->name() == name)
-      {
-        if (info_by_name.find(name) != info_by_name.end())
-        {
-          throw std::runtime_error("Duplicate layer name " + name +
-                                   ". Check layer names in the quantization configuration file.");
-        }
-
-        info_by_name[name] = &info;
-        found = true;
-        break;
-      }
-    }
-
-    if (not found)
-      throw std::runtime_error("No such layer named " + name +
-                               ". Check layer names in the quantization configuration file.");
-  }
-
-  assert(info_by_name.size() == _ctx->layers_info.size()); // FIX_ME_UNLESS
-
-  return info_by_name;
-}
-
 /**
  * How QuantizeWithMinMax works?
  *
@@ -462,7 +426,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   LOGGER(l);
   INFO(l) << "QuantizeWithMinMaxPass Start" << std::endl;
 
-  auto info_by_name = create_layer_info_map(g);
+  auto info_by_name = layer_info_map(g, _ctx->layers_info);
 
   auto quantize_dtype = [&](const luci::CircleNode *node) {
     auto iter = info_by_name.find(node->name());
