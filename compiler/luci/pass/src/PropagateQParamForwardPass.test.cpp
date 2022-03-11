@@ -75,10 +75,10 @@ public:
 
 public:
   loco::Graph g;
-  luci::CircleInput *input;
-  luci::CircleConv2D *conv;
-  luci::CircleReshape *reshape;
-  luci::CircleOutput *output;
+  luci::CircleInput *input = nullptr;
+  luci::CircleConv2D *conv = nullptr;
+  luci::CircleReshape *reshape = nullptr;
+  luci::CircleOutput *output = nullptr;
 };
 
 } // namespace
