@@ -24,7 +24,6 @@
 #include <luci/Pass/QuantizationParameters.h>
 
 #include <vector>
-#include <unordered_map>
 
 namespace luci
 {
@@ -77,9 +76,6 @@ public:
 private:
   void set_input_type(loco::Graph *graph) const;
   void set_output_type(loco::Graph *graph) const;
-
-private:
-  std::unordered_map<std::string, LayerInfo *> create_layer_info_map(loco::Graph *g) const;
 
 private:
   std::unique_ptr<Context> _ctx;
