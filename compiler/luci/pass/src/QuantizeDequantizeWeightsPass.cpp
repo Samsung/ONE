@@ -16,6 +16,7 @@
 
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 #include "QuantizationUtils.h"
+#include "helpers/LayerInfoMap.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -432,12 +433,36 @@ bool QuantizeDequantizeWeightsPass::run(loco::Graph *g)
   LOGGER(l);
   INFO(l) << "QuantizeDequantizeWeightsPass Start" << std::endl;
 
+  auto info_by_name = layer_info_map(g, _ctx->layers_info);
+
+  auto quantize_dtype = [&](const luci::CircleNode *node) {
+    auto iter = info_by_name.find(node->name());
+
+    // Return designated quantization dtype
+    if (iter != info_by_name.end())
+      return iter->second->dtype;
+
+    // Return default quantization dtype
+    return _ctx->output_model_dtype;
+  };
+
+  auto quantize_granularity = [&](const luci::CircleNode *node) {
+    auto iter = info_by_name.find(node->name());
+
+    // Return designated quantization granularity
+    if (iter != info_by_name.end())
+      return iter->second->granularity;
+
+    // Return default quantization granularity
+    return _ctx->granularity;
+  };
+
   // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    QuantizeDequantizeWeights qw(_ctx->input_model_dtype, _ctx->output_model_dtype,
-                                 _ctx->granularity);
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+    QuantizeDequantizeWeights qw(_ctx->input_model_dtype, quantize_dtype(circle_node),
+                                 quantize_granularity(circle_node));
     circle_node->accept(&qw);
   }
 
