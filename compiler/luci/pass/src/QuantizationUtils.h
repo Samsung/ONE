@@ -50,6 +50,22 @@ bool is_weights(CircleNode *node);
 
 bool is_quantized(const CircleNode *node);
 
+enum ActivationQType
+{
+  MinMax,          // Quantize using recorded min/max
+  PreDefinedValue, // Quantize using pre-defined values
+  IntScale,        // Round scale to a positive integer
+};
+
+ActivationQType activation_qtype(CircleNode *node);
+
+// Create qparam for speical operators whose qparams are pre-defined
+// 'opcode' and 'dtype' are used to get the pre-defined values
+std::unique_ptr<CircleQuantParam> make_predefined_qparam(CircleOpcode opcode, loco::DataType dtype);
+
+// Round fp32 scale to a positive integer (for special Ops e.g., Floor, Ceil)
+void set_int_scale(luci::CircleNode *node);
+
 } // namespace luci
 
 #endif // __LUCI_QUANTIZATION_UTILS_H__

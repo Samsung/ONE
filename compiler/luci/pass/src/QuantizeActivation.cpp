@@ -66,31 +66,6 @@ void quant_const(CircleConst *node, loco::DataType quant_type)
   node->quantparam(std::move(quantparam));
 }
 
-void set_act_qparam(luci::CircleNode *node, float scale, int64_t zp)
-{
-  assert(node);               // FIX_CALLER_UNLESS
-  assert(node->quantparam()); // FIX_CALLER_UNLESS
-
-  auto qparam = node->quantparam();
-  assert(qparam->scale.size() == 1); // FIX_CALLER_UNLESS
-  assert(qparam->zerop.size() == 1); // FIX_CALLER_UNLESS
-  qparam->scale[0] = scale;
-  qparam->zerop[0] = zp;
-}
-
-// For nodes with integer output, we use integer scale
-void set_int_scale(luci::CircleNode *node)
-{
-  assert(node); // FIX_CALLER_UNLESS
-
-  auto qparam = node->quantparam();
-  assert(qparam);                    // FIX_CALLER_UNLESS
-  assert(qparam->scale.size() == 1); // FIX_CALLER_UNLESS
-
-  auto fp_scale = qparam->scale[0];
-  qparam->scale[0] = fp_scale < 1 ? 1.0f : std::round(fp_scale);
-}
-
 bool has_min_max(const CircleNode *node)
 {
   return node->quantparam() && !node->quantparam()->min.empty() && !node->quantparam()->max.empty();
@@ -226,56 +201,56 @@ void QuantizeSpecialActivation::visit(luci::CircleNode *node)
   auto fused_act_node = dynamic_cast<CircleNodeMixin<CircleNodeTrait::FusedActFunc> *>(node);
   if (fused_act_node != nullptr && fused_act_node->fusedActivationFunction() == FusedActFunc::TANH)
   {
-    if (output_type == loco::DataType::U8)
-      set_act_qparam(node, 2.0f / 256.0f, 128);
-    else
-    {
-      assert(output_type == loco::DataType::S16);
-      set_act_qparam(node, 1.0f / 32768.0f, 0);
-    }
+    assert(activation_qtype(node) == luci::ActivationQType::PreDefinedValue);
+    auto qparam = make_predefined_qparam(luci::CircleOpcode::TANH, output_type);
+    node->quantparam(std::move(qparam));
   }
 }
 
 void QuantizeSpecialActivation::visit(luci::CircleLogistic *node)
 {
-  if (output_type == loco::DataType::U8)
-    set_act_qparam(node, 1.0f / 256.0f, 0);
-  else
-  {
-    assert(output_type == loco::DataType::S16);
-    set_act_qparam(node, 1.0f / 32768.0f, 0);
-  }
+  assert(activation_qtype(node) == luci::ActivationQType::PreDefinedValue);
+  auto qparam = make_predefined_qparam(luci::CircleOpcode::LOGISTIC, output_type);
+  node->quantparam(std::move(qparam));
 }
 
 void QuantizeSpecialActivation::visit(luci::CircleTanh *node)
 {
-  if (output_type == loco::DataType::U8)
-    set_act_qparam(node, 2.0f / 256.0f, 128);
-  else
-  {
-    assert(output_type == loco::DataType::S16);
-    set_act_qparam(node, 1.0f / 32768.0f, 0);
-  }
+  assert(activation_qtype(node) == luci::ActivationQType::PreDefinedValue);
+  auto qparam = make_predefined_qparam(luci::CircleOpcode::TANH, output_type);
+  node->quantparam(std::move(qparam));
 }
 
 void QuantizeSpecialActivation::visit(luci::CircleSoftmax *node)
 {
-  if (output_type == loco::DataType::U8)
-    set_act_qparam(node, 1.0f / 255.0f, 0);
-  else
-  {
-    assert(output_type == loco::DataType::S16);
-    set_act_qparam(node, 1.0f / 32767.0f, 0);
-  }
+  assert(activation_qtype(node) == luci::ActivationQType::PreDefinedValue);
+  auto qparam = make_predefined_qparam(luci::CircleOpcode::SOFTMAX, output_type);
+  node->quantparam(std::move(qparam));
 }
 
-void QuantizeSpecialActivation::visit(luci::CircleFloor *node) { set_int_scale(node); }
+void QuantizeSpecialActivation::visit(luci::CircleFloor *node)
+{
+  assert(activation_qtype(node) == luci::ActivationQType::IntScale);
+  set_int_scale(node);
+}
 
-void QuantizeSpecialActivation::visit(luci::CircleFloorDiv *node) { set_int_scale(node); }
+void QuantizeSpecialActivation::visit(luci::CircleFloorDiv *node)
+{
+  assert(activation_qtype(node) == luci::ActivationQType::IntScale);
+  set_int_scale(node);
+}
 
-void QuantizeSpecialActivation::visit(luci::CircleFloorMod *node) { set_int_scale(node); }
+void QuantizeSpecialActivation::visit(luci::CircleFloorMod *node)
+{
+  assert(activation_qtype(node) == luci::ActivationQType::IntScale);
+  set_int_scale(node);
+}
 
-void QuantizeSpecialActivation::visit(luci::CircleCeil *node) { set_int_scale(node); }
+void QuantizeSpecialActivation::visit(luci::CircleCeil *node)
+{
+  assert(activation_qtype(node) == luci::ActivationQType::IntScale);
+  set_int_scale(node);
+}
 
 } // namespace luci
 

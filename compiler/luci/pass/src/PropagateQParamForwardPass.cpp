@@ -16,6 +16,8 @@
 
 #include "luci/Pass/PropagateQParamForwardPass.h"
 
+#include "QuantizationUtils.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Log.h>
@@ -106,6 +108,52 @@ struct PropagateQParamForward final : public luci::CircleNodeMutableVisitor<bool
     auto unpack = loco::must_cast<luci::CircleUnpack *>(node->input());
     auto input_node = loco::must_cast<luci::CircleNode *>(unpack->value());
     return copy_qparam(input_node, node);
+  }
+
+  // Propagate qparam to ensure speical qparams (pre-defined values, integer scale)
+  bool visit(luci::CircleQuantize *node)
+  {
+    auto input_node = loco::must_cast<luci::CircleNode *>(node->input());
+
+    // Skip if input_node is not quantized activation
+    if (input_node->dtype() != loco::DataType::U8 && input_node->dtype() != loco::DataType::S16)
+      return false;
+
+    // If input_node and node have the same dtype, Quantize op
+    // will do rescale, not requantize for mixed-precision
+    if (input_node->dtype() == node->dtype())
+      return false;
+
+    auto prev_qparam = node->quantparam();
+    assert(prev_qparam);
+    assert(prev_qparam->scale.size() == 1);
+    assert(prev_qparam->zerop.size() == 1);
+
+    const auto prev_scale = prev_qparam->scale[0];
+    const auto prev_zerop = prev_qparam->zerop[0];
+
+    auto qtype = luci::activation_qtype(input_node);
+    switch (qtype)
+    {
+      case luci::ActivationQType::PreDefinedValue:
+        node->quantparam(luci::make_predefined_qparam(input_node->opcode(), node->dtype()));
+        break;
+      case luci::ActivationQType::IntScale:
+        luci::set_int_scale(node);
+        break;
+      default:
+        break;
+    }
+
+    assert(node->quantparam());
+    assert(node->quantparam()->scale.size() == 1);
+    assert(node->quantparam()->zerop.size() == 1);
+
+    const auto scale = node->quantparam()->scale[0];
+    const auto zerop = node->quantparam()->zerop[0];
+
+    // Compare qparam with saved values to detect update
+    return scale != prev_scale or zerop != prev_zerop;
   }
 };
 

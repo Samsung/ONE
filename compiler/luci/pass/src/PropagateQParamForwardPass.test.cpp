@@ -17,6 +17,7 @@
 #include "luci/Pass/PropagateQParamForwardPass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/test/TestIOGraph.h>
 
 #include <gtest/gtest.h>
 
@@ -81,6 +82,56 @@ public:
   luci::CircleOutput *output;
 };
 
+/**
+ *  Test graph for forward propagation in Quantize Op
+ *
+ *  BEFORE
+ *
+ *         [Tanh U8] (qparam 1 - pre-defined for U8)
+ *             |
+ *       [Quantize S16] (qparam 2 - not pre-defined value)
+ *
+ *  AFTER
+ *
+ *         [Tanh U8] (qparam 1 - pre-defined for U8)
+ *             |
+ *       [Quantize S16] (qparam 3 - pre-defined for S16)
+ *
+ */
+class TanhQuantizeGraph
+{
+public:
+  TanhQuantizeGraph()
+  {
+    input = g.nodes()->create<luci::CircleInput>();
+    tanh = g.nodes()->create<luci::CircleTanh>();
+    quantize = g.nodes()->create<luci::CircleQuantize>();
+    output = g.nodes()->create<luci::CircleOutput>();
+
+    auto graph_input = g.inputs()->create();
+    input->index(graph_input->index());
+    auto graph_output = g.outputs()->create();
+    output->index(graph_output->index());
+
+    tanh->dtype(loco::DataType::U8);
+    quantize->dtype(loco::DataType::S16);
+
+    addQuantParam(tanh, {2.0f / 256.0f}, {128}); // pre-defined qparam for U8
+    addQuantParam(quantize, {1.0}, {0});         // not pre-defined values
+
+    tanh->x(input);
+    quantize->input(tanh);
+    output->from(quantize);
+  }
+
+public:
+  loco::Graph g;
+  luci::CircleInput *input = nullptr;
+  luci::CircleTanh *tanh = nullptr;
+  luci::CircleQuantize *quantize = nullptr;
+  luci::CircleOutput *output = nullptr;
+};
+
 } // namespace
 
 TEST(PropagateQParamForwardPassTest, name)
@@ -122,4 +173,15 @@ TEST(PropagateQParamForward, wrong_op_NEG)
   EXPECT_EQ(0, g.conv->quantparam()->zerop[0]);
   EXPECT_EQ(10, g.conv->quantparam()->zerop[1]);
   EXPECT_EQ(20, g.conv->quantparam()->zerop[2]);
+}
+
+TEST(PropagateQParamForward, tanh_predefined_value)
+{
+  TanhQuantizeGraph g;
+
+  luci::PropagateQParamForwardPass pass;
+  while (pass.run(&g.g))
+    ;
+
+  EXPECT_FLOAT_EQ(1.0f / 32768.0f, g.quantize->quantparam()->scale[0]);
 }
