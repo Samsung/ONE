@@ -35,7 +35,7 @@ void check_const_opcode(luci::CircleNode *node)
   if (node->opcode() != luci::CircleOpcode::CIRCLECONST and
       node->opcode() != luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
   {
-    throw std::runtime_error("Unsupported non const input " + node->name() + "in CircleQuantizer");
+    throw std::runtime_error("Unsupported non const input " + node->name());
   }
 }
 
