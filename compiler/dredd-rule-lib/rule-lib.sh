@@ -217,4 +217,21 @@ op_version()
   echo ${ACTUAL}
 }
 
+tensor_dtype()
+{
+  argc_check $# 1
+  file_path_check ${COMPILED_FILE}
+  file_path_check ${INSPECT_PROG_PATH}
+
+  set -o pipefail
+
+  ACTUAL=`init_error_log ; \
+          ${INSPECT_PROG_PATH} --tensor_dtype ${COMPILED_FILE} | \
+          awk -v tensor_name="$1" '{ if ($1 == tensor_name) print $2}'`
+
+  check_success_exit_code $? 0
+
+  echo ${ACTUAL}
+}
+
 # TODO define more qullity test function
