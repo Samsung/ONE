@@ -1,0 +1,8 @@
+## EXAMPLE
+#
+# Add(RECIPE_DIR DTYPE dtype GRANULARITY granularity USE_QCONFIG(optional))
+#
+
+## TFLITE RECIPE
+
+Add(Quant_Conv_Mul_Add_000 DTYPE uint8 GRANULARITY channel USE_QCONFIG)
