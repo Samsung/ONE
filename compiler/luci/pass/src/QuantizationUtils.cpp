@@ -313,4 +313,85 @@ uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices)
          indices[2] * dimension.dim(3).value() + indices[3];
 }
 
+ActivationQType activation_qtype(const CircleNode *node)
+{
+  auto fused_act_node = dynamic_cast<const CircleNodeMixin<CircleNodeTrait::FusedActFunc> *>(node);
+  if (fused_act_node && fused_act_node->fusedActivationFunction() == FusedActFunc::TANH)
+    return ActivationQType::PreDefinedValue;
+
+  switch (node->opcode())
+  {
+    case CircleOpcode::LOGISTIC:
+    case CircleOpcode::TANH:
+    case CircleOpcode::SOFTMAX:
+      return ActivationQType::PreDefinedValue;
+    case CircleOpcode::FLOOR:
+    case CircleOpcode::FLOOR_DIV:
+    case CircleOpcode::FLOOR_MOD:
+    case CircleOpcode::CEIL:
+      return ActivationQType::IntScale;
+    default:
+      break;
+  }
+
+  return ActivationQType::MinMax;
+}
+
+std::unique_ptr<CircleQuantParam> make_predefined_qparam(CircleOpcode opcode, loco::DataType dtype)
+{
+  auto qparam = std::make_unique<CircleQuantParam>();
+
+  auto set_qparam = [&qparam](float scale, int64_t zp) {
+    qparam->scale.emplace_back(scale);
+    qparam->zerop.emplace_back(zp);
+  };
+
+  switch (opcode)
+  {
+    case CircleOpcode::LOGISTIC:
+      if (dtype == loco::DataType::U8)
+        set_qparam(1.0f / 256.0f, 0);
+      else
+      {
+        assert(dtype == loco::DataType::S16);
+        set_qparam(1.0f / 32768.0f, 0);
+      }
+      break;
+    case CircleOpcode::TANH:
+      if (dtype == loco::DataType::U8)
+        set_qparam(2.0f / 256.0f, 128);
+      else
+      {
+        assert(dtype == loco::DataType::S16);
+        set_qparam(1.0f / 32768.0f, 0);
+      }
+      break;
+    case CircleOpcode::SOFTMAX:
+      if (dtype == loco::DataType::U8)
+        set_qparam(1.0f / 255.0f, 0);
+      else
+      {
+        assert(dtype == loco::DataType::S16);
+        set_qparam(1.0f / 32767.0f, 0);
+      }
+      break;
+    default:
+      throw std::runtime_error("Unsupported opcode with pre-defined qparam");
+  }
+  return std::move(qparam);
+}
+
+// For nodes with integer output, we use integer scale
+void set_int_scale(luci::CircleNode *node)
+{
+  assert(node); // FIX_CALLER_UNLESS
+
+  auto qparam = node->quantparam();
+  assert(qparam);                    // FIX_CALLER_UNLESS
+  assert(qparam->scale.size() == 1); // FIX_CALLER_UNLESS
+
+  auto fp_scale = qparam->scale[0];
+  qparam->scale[0] = fp_scale < 1 ? 1.0f : std::round(fp_scale);
+}
+
 } // namespace luci
