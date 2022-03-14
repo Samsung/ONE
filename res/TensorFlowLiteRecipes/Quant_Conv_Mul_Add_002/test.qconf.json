@@ -1,0 +1,16 @@
+{
+    "default_quantization_dtype" : "uint8",
+    "default_granularity" : "channel",
+    "layers" : [
+        {
+            "name" : "ofm_conv",
+            "dtype" : "int16",
+            "granularity" : "channel"
+        },
+        {
+            "name" : "ofm_mul",
+            "dtype" : "int16",
+            "granularity" : "channel"
+        }
+    ]
+}
