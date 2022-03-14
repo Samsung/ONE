@@ -132,8 +132,14 @@ template <uint32_t N> struct FixedArity
     std::array<std::unique_ptr<Use>, N> _args{};
   };
 
-  template <typename Base> using Mixin = MixinImpl<Base, loco::InheritanceMode::Virtual>;
-  template <typename Base> using DirectMixin = MixinImpl<Base, loco::InheritanceMode::Direct>;
+  template <typename Base = void>
+  class Mixin : public MixinImpl<Base, loco::InheritanceMode::Virtual>
+  {
+  };
+  template <typename Base = void>
+  class DirectMixin : public MixinImpl<Base, loco::InheritanceMode::Direct>
+  {
+  };
 };
 
 template <NodeTrait Trait> struct With
