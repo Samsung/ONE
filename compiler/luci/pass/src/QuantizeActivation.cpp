@@ -28,44 +28,6 @@ using namespace luci;
 namespace
 {
 
-void quant_const(CircleConst *node, loco::DataType quant_type)
-{
-  assert(node->dtype() == loco::DataType::FLOAT32);
-
-  float min = std::numeric_limits<float>::max();
-  float max = std::numeric_limits<float>::lowest();
-  for (uint32_t i = 0; i < node->size<loco::DataType::FLOAT32>(); i++)
-  {
-    auto data = node->at<loco::DataType::FLOAT32>(i);
-    min = std::min(data, min);
-    max = std::max(data, max);
-  }
-
-  float scaling_factor{0.0};
-  int64_t zp{0};
-  float nudged_min{0.0};
-  float nudged_max{0.0};
-
-  switch (quant_type)
-  {
-    case loco::DataType::U8:
-      asymmetric_wquant_with_minmax_per_layer(node, min, max, scaling_factor, zp, nudged_min,
-                                              nudged_max);
-      break;
-    case loco::DataType::S16:
-      symmetric_wquant_with_minmax_per_layer(node, min, max, scaling_factor, zp, nudged_min,
-                                             nudged_max);
-      break;
-    default:
-      throw std::runtime_error("Unsupported data type");
-  }
-
-  auto quantparam = std::make_unique<CircleQuantParam>();
-  quantparam->scale.push_back(scaling_factor);
-  quantparam->zerop.push_back(zp);
-  node->quantparam(std::move(quantparam));
-}
-
 bool has_min_max(const CircleNode *node)
 {
   return node->quantparam() && !node->quantparam()->min.empty() && !node->quantparam()->max.empty();

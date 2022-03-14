@@ -79,6 +79,9 @@ std::unique_ptr<CircleQuantParam> make_predefined_qparam(CircleOpcode opcode, lo
 // Update node's scale to a positive integer (for special Ops e.g., Floor, Ceil)
 void set_int_scale(luci::CircleNode *node);
 
+// Quantize const tensor using its min/max values
+void quant_const(luci::CircleConst *node, loco::DataType quant_type);
+
 } // namespace luci
 
 #endif // __LUCI_QUANTIZATION_UTILS_H__
