@@ -33,43 +33,6 @@ bool is_quantized(const CircleNode *node)
           node->dtype() == loco::DataType::S64);  // bias (int16 quant)
 }
 
-// Check if node is weights of conv2d, depthwise_conv2d, or fully_connected layer
-bool is_weights(CircleNode *node)
-{
-  auto circle_const = dynamic_cast<CircleConst *>(node);
-  if (circle_const == nullptr)
-    return false;
-
-  auto succs = loco::succs(node);
-
-  // Node is weights if it is the weights of all of its successors
-  for (auto out : succs)
-  {
-    bool is_weights = false;
-
-    auto conv = dynamic_cast<CircleConv2D *>(out);
-    if (conv != nullptr && conv->filter() == circle_const)
-      is_weights = true;
-
-    auto dw_conv = dynamic_cast<CircleDepthwiseConv2D *>(out);
-    if (dw_conv != nullptr && dw_conv->filter() == circle_const)
-      is_weights = true;
-
-    auto t_conv = dynamic_cast<CircleTransposeConv *>(out);
-    if (t_conv != nullptr && t_conv->filter() == circle_const && circle_const->rank() == 4)
-      is_weights = true;
-
-    auto fc = dynamic_cast<CircleFullyConnected *>(out);
-    if (fc != nullptr && fc->weights() == circle_const)
-      is_weights = true;
-
-    if (!is_weights)
-      return false;
-  }
-
-  return true;
-}
-
 uint8_t fp32_to_uint8_cast(float f)
 {
   assert(std::numeric_limits<uint8_t>::min() <= f);

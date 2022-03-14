@@ -71,56 +71,6 @@ bool has_min_max(const CircleNode *node)
   return node->quantparam() && !node->quantparam()->min.empty() && !node->quantparam()->max.empty();
 }
 
-// Check if the node is the bias of Conv2D, DepthwiseConv2D, FullyConnected, or TransposeConv layer
-// Returns a list of <input, weights, output> vectors for the above operators.
-// Note that it returns a 'list' because bias can be used by multiple operators.
-std::vector<std::vector<loco::Node *>> get_input_weight_output_of_bias(CircleNode *node)
-{
-  std::vector<std::vector<loco::Node *>> result;
-  auto circle_const = dynamic_cast<CircleConst *>(node);
-  if (circle_const == nullptr)
-    return result;
-
-  auto succs = loco::succs(node);
-
-  for (auto out : succs)
-  {
-    auto conv = dynamic_cast<CircleConv2D *>(out);
-    if (conv != nullptr && conv->bias() == circle_const)
-    {
-      assert(conv->input() != nullptr);
-      assert(conv->filter() != nullptr);
-      result.push_back({conv->input(), conv->filter(), conv});
-      continue;
-    }
-    auto dw_conv = dynamic_cast<CircleDepthwiseConv2D *>(out);
-    if (dw_conv != nullptr && dw_conv->bias() == circle_const)
-    {
-      assert(dw_conv->input() != nullptr);
-      assert(dw_conv->filter() != nullptr);
-      result.push_back({dw_conv->input(), dw_conv->filter(), dw_conv});
-      continue;
-    }
-    auto fc = dynamic_cast<CircleFullyConnected *>(out);
-    if (fc != nullptr && fc->bias() == circle_const)
-    {
-      assert(fc->input() != nullptr);
-      assert(fc->weights() != nullptr);
-      result.push_back({fc->input(), fc->weights(), fc});
-      continue;
-    }
-    auto tconv = dynamic_cast<CircleTransposeConv *>(out);
-    if (tconv != nullptr && tconv->bias() == circle_const)
-    {
-      assert(tconv->outBackprop() != nullptr);
-      assert(tconv->filter() != nullptr);
-      result.push_back({tconv->outBackprop(), tconv->filter(), tconv});
-      continue;
-    }
-  }
-  return result;
-}
-
 } // namespace
 
 // QuantizeActivation
@@ -136,18 +86,19 @@ void QuantizeActivation::visit(luci::CircleNode *node)
   if (is_quantized(node))
     return;
 
-  // Check if this is bias (bias is quantized later)
-  auto iwo = get_input_weight_output_of_bias(node);
-  if (iwo.size() > 0)
-    return;
-
   // Check if this is bool type (bool type is not quantized)
   if (node->dtype() == loco::DataType::BOOL)
     return;
 
+  // Check if this is const (const activation is handled by QuantizeConstInputActivation)
+  // NOTE QuantizePreChecker guarantees weights/bias are const.
+  // Update this code when we accept non-const weights/bias.
+  if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
+    return;
+
   // Check if this is activation
   // We assume min/max are recorded only for activations
-  if (has_min_max(node) && !is_weights(node))
+  if (has_min_max(node))
   {
     // Quantize using recorded min/max
     auto quantparam = node->quantparam();

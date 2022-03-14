@@ -57,10 +57,6 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat);
 // Backward propagation of pad_v2 qparam
 void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2);
 
-// Return true if the node is weights of Conv, DConv, TConv, FC
-// TODO Check if this function can be removed
-bool is_weights(CircleNode *node);
-
 // Return true if the node is quantized
 bool is_quantized(const CircleNode *node);
 
