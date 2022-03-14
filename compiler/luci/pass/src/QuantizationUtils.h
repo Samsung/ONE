@@ -23,31 +23,45 @@
 namespace luci
 {
 
+// Compute scale/zp using given min/max for symmetric quantization (int16)
 void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
                           float &nudged_min, float &nudged_max);
 
+// Compute scale/zp using given min/max for asymmetric quantization (uint8)
 void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
                            float &nudged_min, float &nudged_max);
 
+// Asymmetric per-layer quantization of weights (const tensor) using given min/max values
+// NOTE: in-place update of node data
 void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max,
                                              float &scaling_factor, int64_t &zp, float &nudged_min,
                                              float &nudged_max);
 
+// Symmetric per-layer quantization of weights (const tensor) using given min/max values
+// NOTE: in-place update of node data
 void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max,
                                             float &scaling_factor, int64_t &zp, float &nudged_min,
                                             float &nudged_max);
 
+// Helper function to get channel dimension
+// TODO Embed this function into iterate_per_channel
 bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension,
                            int32_t &channel_dim_index);
 
+// Calculate offset of the given indices in dimension
 uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices);
 
+// Backward propagation of concatenation qparam
 void propagate_concat_quantparam(luci::CircleConcatenation *concat);
 
+// Backward propagation of pad_v2 qparam
 void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2);
 
+// Return true if the node is weights of Conv, DConv, TConv, FC
+// TODO Check if this function can be removed
 bool is_weights(CircleNode *node);
 
+// Return true if the node is quantized
 bool is_quantized(const CircleNode *node);
 
 } // namespace luci
