@@ -315,9 +315,9 @@ uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices)
          indices[2] * dimension.dim(3).value() + indices[3];
 }
 
-ActivationQType activation_qtype(CircleNode *node)
+ActivationQType activation_qtype(const CircleNode *node)
 {
-  auto fused_act_node = dynamic_cast<CircleNodeMixin<CircleNodeTrait::FusedActFunc> *>(node);
+  auto fused_act_node = dynamic_cast<const CircleNodeMixin<CircleNodeTrait::FusedActFunc> *>(node);
   if (fused_act_node && fused_act_node->fusedActivationFunction() == FusedActFunc::TANH)
     return ActivationQType::PreDefinedValue;
 

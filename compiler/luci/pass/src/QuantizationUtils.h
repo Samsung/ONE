@@ -57,7 +57,7 @@ enum ActivationQType
   IntScale,        // Round scale to a positive integer
 };
 
-ActivationQType activation_qtype(CircleNode *node);
+ActivationQType activation_qtype(const CircleNode *node);
 
 // Create qparam with pre-defined values for speical operators
 std::unique_ptr<CircleQuantParam> make_predefined_qparam(CircleOpcode opcode, loco::DataType dtype);
