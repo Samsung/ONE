@@ -394,4 +394,42 @@ void set_int_scale(luci::CircleNode *node)
   qparam->scale[0] = fp_scale < 1 ? 1.0f : std::round(fp_scale);
 }
 
+void quant_const(luci::CircleConst *node, loco::DataType quant_type)
+{
+  assert(node->dtype() == loco::DataType::FLOAT32);
+
+  float min = std::numeric_limits<float>::max();
+  float max = std::numeric_limits<float>::lowest();
+  for (uint32_t i = 0; i < node->size<loco::DataType::FLOAT32>(); i++)
+  {
+    auto data = node->at<loco::DataType::FLOAT32>(i);
+    min = data < min ? data : min;
+    max = data > max ? data : max;
+  }
+
+  float scaling_factor{0.0};
+  int64_t zp{0};
+  float nudged_min{0.0};
+  float nudged_max{0.0};
+
+  switch (quant_type)
+  {
+    case loco::DataType::U8:
+      asymmetric_wquant_with_minmax_per_layer(node, min, max, scaling_factor, zp, nudged_min,
+                                              nudged_max);
+      break;
+    case loco::DataType::S16:
+      symmetric_wquant_with_minmax_per_layer(node, min, max, scaling_factor, zp, nudged_min,
+                                             nudged_max);
+      break;
+    default:
+      throw std::runtime_error("Unsupported data type");
+  }
+
+  auto quantparam = std::make_unique<luci::CircleQuantParam>();
+  quantparam->scale.push_back(scaling_factor);
+  quantparam->zerop.push_back(zp);
+  node->quantparam(std::move(quantparam));
+}
+
 } // namespace luci
