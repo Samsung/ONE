@@ -77,7 +77,6 @@ uint8_t fp32_to_uint8_cast(float f)
   return static_cast<uint8_t>(f);
 }
 
-// Per-layer quantization of weights (const tensor) using given min/max values
 void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max,
                                              float &scaling_factor, int64_t &zp, float &nudged_min,
                                              float &nudged_max)
@@ -107,7 +106,6 @@ void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float
   }
 }
 
-// Per-layer quantization of weights (const tensor) using given min/max values
 void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max,
                                             float &scaling_factor, int64_t &zp, float &nudged_min,
                                             float &nudged_max)
