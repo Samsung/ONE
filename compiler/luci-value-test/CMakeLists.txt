@@ -18,31 +18,29 @@ include("test.local.lst" OPTIONAL)
 add_custom_target(luci_eval_testfiles ALL DEPENDS ${TESTFILES})
 
 if(NOT CMAKE_CROSSCOMPILING)
-# fix indentation
 
-get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
+  get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
-add_test(NAME luci_value_test
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify.sh"
-          "${CMAKE_CURRENT_BINARY_DIR}"
-          "${ARTIFACTS_BIN_PATH}"
-          "${NNCC_OVERLAY_DIR}/venv_2_6_0"
-          "$<TARGET_FILE:luci_eval_driver>"
-          ${LUCI_VALUE_TESTS}
-)
-
-if(DEFINED LUCI_VALUE_TESTS_TOL)
-  add_test(NAME luci_value_tol_test
-    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverifytol.sh"
+  add_test(NAME luci_value_test
+    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify.sh"
             "${CMAKE_CURRENT_BINARY_DIR}"
             "${ARTIFACTS_BIN_PATH}"
             "${NNCC_OVERLAY_DIR}/venv_2_6_0"
             "$<TARGET_FILE:luci_eval_driver>"
-            ${LUCI_VALUE_TESTS_TOL}
+            ${LUCI_VALUE_TESTS}
   )
-endif()
 
-# fix indentation to here
+  if(DEFINED LUCI_VALUE_TESTS_TOL)
+    add_test(NAME luci_value_tol_test
+      COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverifytol.sh"
+              "${CMAKE_CURRENT_BINARY_DIR}"
+              "${ARTIFACTS_BIN_PATH}"
+              "${NNCC_OVERLAY_DIR}/venv_2_6_0"
+              "$<TARGET_FILE:luci_eval_driver>"
+              ${LUCI_VALUE_TESTS_TOL}
+    )
+  endif()
+
 else(NOT CMAKE_CROSSCOMPILING)
   # NOTE target test is carried out using reference input/output data from host
   #      test results. this is because it would be difficult to prepare
