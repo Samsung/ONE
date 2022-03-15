@@ -94,7 +94,7 @@ Net_InstanceNorm_003/
 
 Command example
 ```
-./circle_partitioner Net_InstanceNorm_003.part Net_InstanceNorm_003.circle Net_InstanceNorm_003
+./circle-partitioner Net_InstanceNorm_003.part Net_InstanceNorm_003.circle Net_InstanceNorm_003
 ```
 
 Result of _circle-partitioner_
