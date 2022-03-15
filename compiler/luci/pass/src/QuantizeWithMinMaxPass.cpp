@@ -57,7 +57,17 @@ luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType 
   quantize->shape_status(luci::ShapeStatus::VALID);
 
   auto qparam = node->quantparam();
-  assert(qparam);                  // FIX_CALLER_UNLESS
+  assert(qparam); // FIX_CALLER_UNLESS
+
+  auto qtype = luci::activation_qtype(node);
+  if (qtype == ActivationQType::PreDefinedValue)
+  {
+    quantize->quantparam(luci::make_predefined_qparam(node->opcode(), out_type));
+    return quantize;
+  }
+
+  assert(qtype == ActivationQType::MinMax or qtype == ActivationQType::IntScale);
+
   assert(qparam->min.size() == 1); // FIX_CALLER_UNLESS
   assert(qparam->max.size() == 1); // FIX_CALLER_UNLESS
   auto min = qparam->min[0];
@@ -88,6 +98,9 @@ luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType 
   quantparam->max.push_back(max);
 
   quantize->quantparam(std::move(quantparam));
+
+  if (qtype == ActivationQType::IntScale)
+    set_int_scale(quantize);
 
   return quantize;
 }
