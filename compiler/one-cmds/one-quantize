@@ -125,6 +125,12 @@ def _get_parser():
         help=
         "Force MaxPool Op to have the same input/output quantparams. NOTE: This option can degrade accuracy of some models.)"
     )
+    quantization_group.add_argument(
+        '--quant_config',
+        type=str,
+        help=
+        "Path to the quantization configuration file.)"
+    )
 
     # arguments for force_quantparam option
     force_quantparam_group = parser.add_argument_group(
@@ -337,6 +343,11 @@ def _quantize(args):
         if _utils._is_valid_attr(args, 'output_type'):
             circle_quantizer_cmd.append('--output_type')
             circle_quantizer_cmd.append(getattr(args, 'output_type'))
+        if _utils._is_valid_attr(args, 'quant_config'):
+            # NOTE --config conflicts with --config option in onecc, so
+            # we use quant_config for one-quantize
+            circle_quantizer_cmd.append('--config')
+            circle_quantizer_cmd.append(getattr(args, 'quant_config'))
         # input and output path
         circle_quantizer_cmd.append(tmp_output_path_2)
         if _utils._is_valid_attr(args, 'output_path'):

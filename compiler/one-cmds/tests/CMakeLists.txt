@@ -3,6 +3,7 @@
 # Gather test scripts
 file(GLOB TESTITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.test")
 file(GLOB CONFIGITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.cfg")
+file(GLOB QCONFIGITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.qconf.json")
 
 # Create a script to run the tests at installation folder
 set(DRIVER_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/runtestall.sh")
@@ -38,6 +39,11 @@ foreach(CONFIGITEM IN ITEMS ${CONFIGITEMS})
   get_filename_component(ITEM_PREFIX ${CONFIGITEM} NAME_WE)
   install(FILES ${CONFIGITEM} DESTINATION test)
 endforeach(CONFIGITEM)
+
+foreach(QCONFIGITEM IN ITEMS ${QCONFIGITEMS})
+  get_filename_component(ITEM_PREFIX ${QCONFIGITEM} NAME_WE)
+  install(FILES ${QCONFIGITEM} DESTINATION test)
+endforeach(QCONFIGITEM)
 
 file(APPEND "${DRIVER_SCRIPT}" "popd > /dev/null\n\n")
 
