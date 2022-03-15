@@ -31,6 +31,7 @@ bool is_valid(const circle::OperatorCode *opcode)
   // but on FlatBuffers 2.0, circle::BuiltinOperator becomes enum uint8_t type.
   // So comparison with circle::BuiltinOperator_MIN becomes true always
   // because BuiltinOperator_MIN is 0, and it makes compiler warning.
+  // TODO: revisit this for schema v3b
   return (/*circle::BuiltinOperator_MIN <= code &&*/ code <= circle::BuiltinOperator_MAX);
 }
 
