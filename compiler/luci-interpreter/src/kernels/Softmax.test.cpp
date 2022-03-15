@@ -93,7 +93,7 @@ template <typename T> class SoftmaxTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t, int8_t>;
-TYPED_TEST_CASE(SoftmaxTest, DataTypes);
+TYPED_TEST_SUITE(SoftmaxTest, DataTypes);
 
 TYPED_TEST(SoftmaxTest, Simple)
 {

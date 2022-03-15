@@ -81,7 +81,7 @@ template <typename T> class L2NormalizeTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(L2NormalizeTest, DataTypes);
+TYPED_TEST_SUITE(L2NormalizeTest, DataTypes);
 
 TYPED_TEST(L2NormalizeTest, Simple)
 {

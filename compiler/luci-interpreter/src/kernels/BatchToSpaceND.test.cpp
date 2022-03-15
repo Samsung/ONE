@@ -58,7 +58,7 @@ template <typename T> class BatchToSpaceNDTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(BatchToSpaceNDTest, DataTypes);
+TYPED_TEST_SUITE(BatchToSpaceNDTest, DataTypes);
 
 TYPED_TEST(BatchToSpaceNDTest, Simple)
 {

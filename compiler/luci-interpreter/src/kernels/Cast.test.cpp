@@ -79,7 +79,7 @@ template <typename T> class CastTest : public ::testing::Test
 
 using IntDataTypes =
   ::testing::Types<uint8_t, uint16_t, uint32_t, uint64_t, int8_t, int16_t, int32_t, int64_t>;
-TYPED_TEST_CASE(CastTest, IntDataTypes);
+TYPED_TEST_SUITE(CastTest, IntDataTypes);
 
 TYPED_TEST(CastTest, FloatToInt)
 {

@@ -133,7 +133,7 @@ template <typename T> class FullyConnectedTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t, int8_t>;
-TYPED_TEST_CASE(FullyConnectedTest, DataTypes);
+TYPED_TEST_SUITE(FullyConnectedTest, DataTypes);
 
 TYPED_TEST(FullyConnectedTest, Simple)
 {

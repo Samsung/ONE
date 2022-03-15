@@ -76,7 +76,7 @@ template <typename T> class LogisticTest : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(LogisticTest, DataTypes);
+TYPED_TEST_SUITE(LogisticTest, DataTypes);
 
 TYPED_TEST(LogisticTest, Simple)
 {

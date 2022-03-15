@@ -33,7 +33,7 @@ template <typename T> class ReverseV2Test : public ::testing::Test
 };
 
 using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_CASE(ReverseV2Test, DataTypes);
+TYPED_TEST_SUITE(ReverseV2Test, DataTypes);
 
 TYPED_TEST(ReverseV2Test, MultiDimensions)
 {
