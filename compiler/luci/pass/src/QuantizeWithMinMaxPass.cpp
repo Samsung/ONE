@@ -198,6 +198,7 @@ private:
   void visit(luci::CircleOutput *) {}
 
   // Ops that receive a single activation as an input
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleAveragePool2D, value)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleBatchToSpaceND, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleConv2D, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleDepthToSpace, input)
@@ -210,6 +211,7 @@ private:
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleInstanceNorm, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleLocalResponseNormalization, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleLogistic, x)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleMaxPool2D, value)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleMean, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleMirrorPad, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CirclePad, input)
