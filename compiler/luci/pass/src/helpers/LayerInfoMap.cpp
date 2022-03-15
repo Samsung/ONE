@@ -34,6 +34,9 @@ LayerInfoMap layer_info_map(loco::Graph *g, std::vector<LayerInfo> &layers_info)
     for (auto node : loco::active_nodes(loco::output_nodes(g)))
     {
       auto cnode = loco::must_cast<luci::CircleNode *>(node);
+      if (cnode->opcode() == luci::CircleOpcode::CIRCLEOUTPUT)
+        continue;
+
       if (cnode->name() == name)
       {
         if (info_by_name.find(name) != info_by_name.end())
