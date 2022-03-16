@@ -1,5 +1,7 @@
 unset(QUANTIZATION_VALUE_TEST)
 unset(QUANTIZATION_VALUE_TEST_WITH_PARAM)
+unset(QUANTIZATION_CONFIG_VALUE_TEST)
+unset(QUANTIZATION_CONFIG_VALUE_TEST_WITH_PARAM)
 
 nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
 if(NOT FlatBuffers_FOUND)
@@ -11,6 +13,11 @@ macro(addTest NAME GRANULARITY DTYPE)
   list(APPEND QUANTIZATION_VALUE_TEST ${NAME})
   list(APPEND QUANTIZATION_VALUE_TEST_WITH_PARAM ${NAME} ${GRANULARITY} ${DTYPE})
 endmacro(addTest)
+
+macro(addQConfTest NAME GRANULARITY DTYPE)
+  list(APPEND QUANTIZATION_CONFIG_VALUE_TEST ${NAME})
+  list(APPEND QUANTIZATION_CONFIG_VALUE_TEST_WITH_PARAM ${NAME} ${GRANULARITY} ${DTYPE})
+endmacro(addQConfTest)
 
 # Read "test.lst"
 include("test.lst")
@@ -89,5 +96,22 @@ add_test(
           ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
 )
 
+add_test(
+  NAME pota_fake_wquant_test_with_config
+  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_fake_wquant_with_config.sh"
+          "${TEST_CONFIG}"
+          "${ARTIFACTS_BIN_PATH}"
+          ${QUANTIZATION_CONFIG_VALUE_TEST_WITH_PARAM}
+)
+
+add_test(
+  NAME pota_quantization_test_with_config
+  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_quantization_with_config.sh"
+          "${TEST_CONFIG}"
+          "${ARTIFACTS_BIN_PATH}"
+          ${QUANTIZATION_CONFIG_VALUE_TEST_WITH_PARAM}
+)
+
 set_tests_properties(pota_record_minmax_test PROPERTIES DEPENDS pota_fake_wquant_test)
 set_tests_properties(pota_quantization_test PROPERTIES DEPENDS pota_record_minmax_test)
+set_tests_properties(pota_quantization_test_with_config PROPERTIES DEPENDS pota_fake_wquant_test_with_config)
