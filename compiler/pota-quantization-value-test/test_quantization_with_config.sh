@@ -4,7 +4,7 @@
 #
 # HOW TO USE
 #
-# ./test_quantization.sh <path/to/test.config> <path/to/work_dir> <TEST 1> <TEST 2> ...
+# ./test_quantization_with_config.sh <path/to/test.config> <path/to/work_dir> <TEST 1> <TEST 2> ...
 # test.config : set ${RECORD_MINMAX_PATH} and ${CIRCLE_QUANTIZER_PATH}
 # work_dir : build directory of quantization-value-test (ex: build/compiler/quantization-value-test)
 
