@@ -6,12 +6,12 @@ function(_TensorFlowLite_import)
     return()
   endif(NOT TensorFlowSource_FOUND)
 
-  nnas_find_package(FlatBuffersSource EXACT 1.10 QUIET)
+  nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
 
-  if(NOT FlatBuffersSource_FOUND)
+  if(NOT FlatBuffers_FOUND)
     set(TensorFlowLite_FOUND FALSE PARENT_SCOPE)
     return()
-  endif(NOT FlatBuffersSource_FOUND)
+  endif(NOT FlatBuffers_FOUND)
 
   nnas_find_package(Farmhash QUIET)
 

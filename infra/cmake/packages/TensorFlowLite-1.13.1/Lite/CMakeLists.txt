@@ -1,7 +1,9 @@
 # NOTE The followings SHOULD be defined before using this CMakeLists.txt
+# NOTE TensorFlow 1.13.1 uses flatbuffers-1.10
+#      but we use flatbuffers-2.0 to match with all other modules flatbuffers version.
 #
 #  'TensorFlowSource_DIR' variable
-#  'FlatBuffersSource_DIR' variable
+#  'flatbuffers-2.0' target
 #  'eigen' target
 #  'gemmlowp' target
 #  'neon2sse' target
@@ -37,10 +39,9 @@ CHECK_CXX_COMPILER_FLAG(-Wno-extern-c-compat COMPILER_SUPPORT_EXTERN_C_COMPAT_WA
 add_library(tensorflowlite-1.13.1 ${SRCS})
 set_target_properties(tensorflowlite-1.13.1 PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(tensorflowlite-1.13.1 PUBLIC ${TensorFlowSource_DIR})
-target_include_directories(tensorflowlite-1.13.1 PUBLIC ${FlatBuffersSource_DIR}/include)
 target_compile_options(tensorflowlite-1.13.1 PUBLIC -Wno-ignored-attributes)
 if(COMPILER_SUPPORT_EXTERN_C_COMPAT_WARNING)
   target_compile_options(tensorflowlite-1.13.1 PUBLIC -Wno-extern-c-compat)
 endif(COMPILER_SUPPORT_EXTERN_C_COMPAT_WARNING)
 target_compile_definitions(tensorflowlite-1.13.1 PUBLIC "GEMMLOWP_ALLOW_SLOW_SCALAR_FALLBACK")
-target_link_libraries(tensorflowlite-1.13.1 eigen gemmlowp neon2sse farmhash abseil dl)
+target_link_libraries(tensorflowlite-1.13.1 flatbuffers-2.0 eigen gemmlowp neon2sse farmhash abseil dl)
