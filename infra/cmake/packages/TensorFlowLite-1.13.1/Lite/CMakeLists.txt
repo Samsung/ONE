@@ -1,4 +1,6 @@
 # NOTE The followings SHOULD be defined before using this CMakeLists.txt
+# NOTE TensorFlow 1.13.1 uses flatbuffers-1.10
+#      but we use flatbuffers-2.0 to match with all other modules flatbuffers version.
 #
 #  'TensorFlowSource_DIR' variable
 #  'flatbuffers-2.0' target
