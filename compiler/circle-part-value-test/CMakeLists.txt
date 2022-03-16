@@ -82,8 +82,8 @@ foreach(IDX RANGE ${RECIPE_LENGTH_M1})
 
   # Run partitioner
   add_custom_command(OUTPUT ${PARTITIONER_CONN_JSON}
-    COMMAND circle_partitioner "${PART_FILE}" "${PARTITION_NAME}.circle" "${PARTITIONER_OUTPUT_PATH}"
-    DEPENDS circle_partitioner ${PART_DST_PATH} ${CIRCLE_DST_PATH}
+    COMMAND circle-partitioner "${PART_FILE}" "${PARTITION_NAME}.circle" "${PARTITIONER_OUTPUT_PATH}"
+    DEPENDS circle-partitioner ${PART_DST_PATH} ${CIRCLE_DST_PATH}
     COMMENT "Parition ${RECIPE_NAME}.circle with ${PART_FILE}"
   )
   list(APPEND TEST_DEPS ${PARTITIONER_CONN_JSON})
