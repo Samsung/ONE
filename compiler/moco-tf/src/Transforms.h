@@ -21,6 +21,7 @@
 #include "Transforms/TypeInferencePass.h"
 
 #include <logo/Passes.h>
+#include <logo/PassesEx.h>
 #include <moco/Pass/Passes.h>
 
 #endif // __MOCO_TF_TRANSFORMS_H__

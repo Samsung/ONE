@@ -26,6 +26,7 @@ target_link_libraries(moco_tf_frontend PRIVATE locomotiv)
 target_link_libraries(moco_tf_frontend PRIVATE plier_tf)
 target_link_libraries(moco_tf_frontend PRIVATE locoex_customop)
 target_link_libraries(moco_tf_frontend PRIVATE logo)
+target_link_libraries(moco_tf_frontend PRIVATE logo_ex)
 target_link_libraries(moco_tf_frontend PRIVATE oops)
 install(TARGETS moco_tf_frontend DESTINATION lib)
 
