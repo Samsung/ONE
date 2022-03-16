@@ -129,7 +129,7 @@ def _get_parser():
         '--quant_config',
         type=str,
         help=
-        "Path to the quantization configuration file.)"
+        "Path to the quantization configuration file."
     )
 
     # arguments for force_quantparam option
