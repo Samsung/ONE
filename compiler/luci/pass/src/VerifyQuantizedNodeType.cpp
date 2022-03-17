@@ -107,6 +107,10 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleConv2D *
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleConcatenation *node)
 {
+  // Allow concatenation of indices
+  if (group_has_type(node, loco::DataType::S32) or group_has_type(node, loco::DataType::S64))
+    return true;
+
   return group_has_type(node, Qtype);
 }
 

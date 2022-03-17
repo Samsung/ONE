@@ -466,6 +466,10 @@ bool PropagateQParamBackwardPass::run(loco::Graph *g)
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     INFO(l) << "PropagateQParamBackwardPass visit node: " << circle_node->name() << std::endl;
 
+    // We can't propagate non-existent qparam
+    if (circle_node->quantparam() == nullptr)
+      continue;
+
     PropagateQParamBackward pqb;
     circle_node->accept(&pqb);
   }
