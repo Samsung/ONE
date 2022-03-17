@@ -10,7 +10,6 @@ target_include_directories(logo PRIVATE src)
 target_include_directories(logo PUBLIC include)
 target_link_libraries(logo PUBLIC loco)
 target_link_libraries(logo PUBLIC logo_core)
-target_link_libraries(logo PRIVATE locomotiv)
 
 if(NOT ENABLE_TEST)
   return()
