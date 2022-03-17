@@ -19,7 +19,6 @@
 
 // Please keep this in alphabetical order
 
-#include <logo/ConstantFoldingPass.h>
 #include <logo/RemoveDeadNodePass.h>
 #include <logo/RemoveForwardNodePass.h>
 #include <logo/ReorderDecodePass.h>
