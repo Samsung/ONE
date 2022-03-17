@@ -1,0 +1,9 @@
+{
+    "layers" : [
+        {
+            "name" : "ofm",
+            "dtype" : "uint8",
+            "granularity" : "layer"
+        }
+    ]
+}

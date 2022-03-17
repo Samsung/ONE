@@ -1,0 +1,9 @@
+{
+    "layers" : [
+        {
+            "name" : "out",
+            "dtype" : "int16",
+            "granularity" : "channel"
+        }
+    ]
+}
