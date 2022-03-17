@@ -119,7 +119,7 @@ option(BUILD_GTEST "Build Google Test from the downloaded source" ON)
 option(DOWNLOAD_HDF5 "Download HDF5 source" ON)
 option(BUILD_HDF5 "Build HDF5 from the downloaded source" ON)
 
-nnas_find_package(GTest QUIET)
+#nnas_find_package(GTest QUIET)
 
 option(ENABLE_TEST "Build Tests using Google Test" ${GTest_FOUND})
 
