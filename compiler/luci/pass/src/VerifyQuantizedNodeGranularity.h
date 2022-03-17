@@ -70,6 +70,10 @@ private:
 
   bool visit(const luci::CircleConcatenation *node)
   {
+    // Skip granularity check for concatenation of indices
+    if (node->dtype() == loco::DataType::S32 or node->dtype() == loco::DataType::S64)
+      return true;
+
     RETURN_FALSE_UNLESS(is_lwq(node))
     for (uint32_t i = 0; i < node->numValues(); i++)
     {
