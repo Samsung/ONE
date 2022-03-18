@@ -1,0 +1,11 @@
+# To check mixed-precision quantization for multiple output node.
+# Split: int16, Add: u8
+# Quantize Ops are inserted before Split and after all Split output nodes.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "INPUT_INT16"             $(tensor_dtype ifm) '=' UINT8
+RULE    "SPLIT_OUT_1_INT16"       $(tensor_dtype ofm1) '=' INT16
+RULE    "SPLIT_OUT_2_INT16"       $(tensor_dtype ofm2) '=' INT16
+RULE    "ADD_UINT8"               $(tensor_dtype ofm) '=' UINT8
+RULE    "QUANTIZE_OP"             $(op_count QUANTIZE) '=' 3
