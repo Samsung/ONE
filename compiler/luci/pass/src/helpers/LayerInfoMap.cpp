@@ -24,94 +24,76 @@ namespace luci
 {
 namespace
 {
+
 bool is_multiple_output_node(const luci::CircleNode *node)
 {
   switch (node->opcode())
   {
-    // The following nodes are multiple-output nodes. They do not produce tensors, the tensors
-    // are produced by the corresponding *Out nodes instead.
-    case luci::CircleOpcode::CUSTOM:
-    case luci::CircleOpcode::IF:
-    case luci::CircleOpcode::NON_MAX_SUPPRESSION_V4:
-    case luci::CircleOpcode::NON_MAX_SUPPRESSION_V5:
+    // The following nodes have multiple outputs. Output tensors are not produced by themselves but
+    // by the corresponding *Out nodes.
     case luci::CircleOpcode::SPLIT:
     case luci::CircleOpcode::SPLIT_V:
     case luci::CircleOpcode::TOPK_V2:
     case luci::CircleOpcode::UNIQUE:
     case luci::CircleOpcode::UNPACK:
-    case luci::CircleOpcode::WHILE:
       return true;
-    // TODO: support this op
+    // TODO: Support ops
     case luci::CircleOpcode::BIDIRECTIONAL_SEQUENCE_LSTM:
+    case luci::CircleOpcode::CUSTOM:
+    case luci::CircleOpcode::IF:
+    case luci::CircleOpcode::NON_MAX_SUPPRESSION_V4:
+    case luci::CircleOpcode::NON_MAX_SUPPRESSION_V5:
+    case luci::CircleOpcode::WHILE:
       throw std::runtime_error("Unsupported op now");
     default:
       return false;
   }
 }
 
-luci::CircleNode *get_multi_output_node(luci::CircleNode *node)
+luci::CircleNode *get_multi_output_node(const luci::CircleNode *node)
 {
   switch (node->opcode())
   {
     // The following nodes denote outputs of multiple-output nodes.
-    case luci::CircleOpcode::CIRCLECUSTOMOUT:
-    {
-      const auto custom_out = loco::must_cast<CircleCustomOut *>(node);
-      return loco::must_cast<luci::CircleNode *>(custom_out->input());
-    }
-    case luci::CircleOpcode::CIRCLEIFOUT:
-    {
-      const auto if_out = loco::must_cast<CircleIfOut *>(node);
-      return loco::must_cast<luci::CircleNode *>(if_out->input());
-    }
-    case luci::CircleOpcode::CIRCLENONMAXSUPPRESSIONV4OUT:
-    {
-      const auto non_max_sus_v4_out = loco::must_cast<CircleNonMaxSuppressionV4Out *>(node);
-      return loco::must_cast<luci::CircleNode *>(non_max_sus_v4_out->input());
-    }
-    case luci::CircleOpcode::CIRCLENONMAXSUPPRESSIONV5OUT:
-    {
-      const auto non_max_sus_v5_out = loco::must_cast<CircleNonMaxSuppressionV5Out *>(node);
-      return loco::must_cast<luci::CircleNode *>(non_max_sus_v5_out->input());
-    }
     case luci::CircleOpcode::CIRCLESPLITOUT:
     {
-      const auto split_out = loco::must_cast<CircleSplitOut *>(node);
+      const auto split_out = loco::must_cast<const CircleSplitOut *>(node);
       return loco::must_cast<luci::CircleNode *>(split_out->input());
     }
     case luci::CircleOpcode::CIRCLESPLITVOUT:
     {
-      const auto splitv_out = loco::must_cast<CircleSplitVOut *>(node);
+      const auto splitv_out = loco::must_cast<const CircleSplitVOut *>(node);
       return loco::must_cast<luci::CircleNode *>(splitv_out->input());
     }
     case luci::CircleOpcode::CIRCLETOPKV2OUT:
     {
-      const auto top_kv2_out = loco::must_cast<CircleTopKV2Out *>(node);
+      const auto top_kv2_out = loco::must_cast<const CircleTopKV2Out *>(node);
       return loco::must_cast<luci::CircleNode *>(top_kv2_out->input());
     }
     case luci::CircleOpcode::CIRCLEUNIQUEOUT:
     {
-      const auto unique_out = loco::must_cast<CircleUniqueOut *>(node);
+      const auto unique_out = loco::must_cast<const CircleUniqueOut *>(node);
       return loco::must_cast<luci::CircleNode *>(unique_out->input());
     }
     case luci::CircleOpcode::CIRCLEUNPACKOUT:
     {
-      const auto unpack_out = loco::must_cast<CircleUnpackOut *>(node);
+      const auto unpack_out = loco::must_cast<const CircleUnpackOut *>(node);
       return loco::must_cast<luci::CircleNode *>(unpack_out->input());
     }
-    case luci::CircleOpcode::CIRCLEWHILEOUT:
-    {
-      const auto while_out = loco::must_cast<CircleWhileOut *>(node);
-      return loco::must_cast<luci::CircleNode *>(while_out->input());
-    }
+    // TODO: Support these ops
     case luci::CircleOpcode::CIRCLEBIDIRECTIONAL_SEQUENCE_LSTM_OUT:
+    case luci::CircleOpcode::CIRCLECUSTOMOUT:
+    case luci::CircleOpcode::CIRCLEIFOUT:
+    case luci::CircleOpcode::CIRCLENONMAXSUPPRESSIONV4OUT:
+    case luci::CircleOpcode::CIRCLENONMAXSUPPRESSIONV5OUT:
+    case luci::CircleOpcode::CIRCLEWHILEOUT:
       throw std::runtime_error("Unsupported op now");
     default:
       return nullptr;
   }
 }
 
-bool check_layer_info_equal(LayerInfo &left, LayerInfo &right)
+bool same_setting(const LayerInfo &left, const LayerInfo &right)
 {
   return left.dtype == right.dtype and left.granularity == right.granularity;
 }
@@ -131,7 +113,7 @@ void add_multi_output_node(LayerInfoMap &info_by_name, LayerInfo &layer_info,
       name = succs_circle_node->name();
 
       const auto it = info_by_name.find(name);
-      if (it != info_by_name.end() and not check_layer_info_equal(layer_info, *(it->second)))
+      if (it != info_by_name.end() and not same_setting(layer_info, *(it->second)))
         throw std::runtime_error("Outputs of multiple-output nodes should have equal dtype and "
                                  "granularity. Check the quantization configuration file");
     }

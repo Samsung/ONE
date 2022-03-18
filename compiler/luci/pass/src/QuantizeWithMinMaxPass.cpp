@@ -174,19 +174,19 @@ private:
     insert_out_quantize(node);                                           \
   }
 
-  // INPUT_NAME is the only activation of NODE
-#define INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(NODE, INPUT_NAME)            \
-  void visit(NODE *node)                                                      \
-  {                                                                           \
-    if (auto input_quant = create_in_quantize(node->INPUT_NAME(), node))      \
-      node->INPUT_NAME(input_quant);                                          \
-                                                                              \
-    auto spilt_out_nodes = loco::succs(node);                                 \
-    for (auto split_out : spilt_out_nodes)                                    \
-    {                                                                         \
-      auto split_out_circle = loco::must_cast<luci::CircleNode *>(split_out); \
-      insert_out_quantize(split_out_circle);                                  \
-    }                                                                         \
+// INPUT_NAME is the only activation of NODE
+#define INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(NODE, INPUT_NAME, OUT_NAME) \
+  void visit(NODE *node)                                                     \
+  {                                                                          \
+    if (auto input_quant = create_in_quantize(node->INPUT_NAME(), node))     \
+      node->INPUT_NAME(input_quant);                                         \
+                                                                             \
+    auto out_nodes = loco::succs(node);                                      \
+    for (auto out_node : out_nodes)                                          \
+    {                                                                        \
+      auto out_circle = loco::must_cast<OUT_NAME *>(out_node);               \
+      insert_out_quantize(out_circle);                                       \
+    }                                                                        \
   }
 
 // INPUT_NAME1 and INPUT_NAME2 are the only activations of NODE
@@ -202,25 +202,6 @@ private:
     insert_out_quantize(node);                                             \
   }
 
-// INPUTS_NAME is the name for activations of NODE
-#define INSERT_QUANTIZE_MULTI_OUTPUT_NODES_WITH_INPUTS(NODE, INPUTS_NAME, INPUTS_COUNT) \
-  void visit(NODE *node)                                                                \
-  {                                                                                     \
-    const auto input_count = node->INPUTS_COUNT();                                      \
-    for (uint32_t i = 0; i < input_count; i++)                                          \
-    {                                                                                   \
-      if (auto input_quant = create_in_quantize(node->INPUTS_NAME(i), node))            \
-        node->INPUTS_NAME(i, input_quant);                                              \
-    }                                                                                   \
-                                                                                        \
-    auto spilt_out_nodes = loco::succs(node);                                           \
-    for (auto split_out : spilt_out_nodes)                                              \
-    {                                                                                   \
-      auto split_out_circle = loco::must_cast<luci::CircleNode *>(split_out);           \
-      insert_out_quantize(split_out_circle);                                            \
-    }                                                                                   \
-  }
-
   // Default behavior (NYI)
   void visit(luci::CircleNode *node)
   {
@@ -230,16 +211,11 @@ private:
 
   // Skip output layer
   void visit(luci::CircleOutput *) {}
-  void visit(luci::CircleCustomOut *) {}
-  void visit(luci::CircleNonMaxSuppressionV4Out *) {}
-  void visit(luci::CircleNonMaxSuppressionV5Out *) {}
   void visit(luci::CircleSplitVOut *) {}
   void visit(luci::CircleSplitOut *) {}
-  void visit(luci::CircleIfOut *) {}
   void visit(luci::CircleTopKV2Out *) {}
   void visit(luci::CircleUniqueOut *) {}
   void visit(luci::CircleUnpackOut *) {}
-  void visit(luci::CircleWhileOut *) {}
 
   // Ops that receive a single activation as an input
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleAveragePool2D, value)
@@ -295,69 +271,11 @@ private:
   INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleSub, x, y)
 
   // Multiple-output ops that receive one activation as inputs
-  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleSplit, input)
-  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleSplitV, input)
-  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleTopKV2, input)
-  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleUnique, input)
-  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleUnpack, value)
-
-  // Multiple-output ops that receive multiple activations as inputs
-  INSERT_QUANTIZE_MULTI_OUTPUT_NODES_WITH_INPUTS(luci::CircleIf, input, input_count)
-  INSERT_QUANTIZE_MULTI_OUTPUT_NODES_WITH_INPUTS(luci::CircleWhile, input, input_count)
-  INSERT_QUANTIZE_MULTI_OUTPUT_NODES_WITH_INPUTS(luci::CircleCustom, inputs, numInputs)
-
-  void visit(luci::CircleNonMaxSuppressionV4 *node)
-  {
-    if (auto input_quant = create_in_quantize(node->boxes(), node))
-      node->boxes(input_quant);
-
-    if (auto input_quant = create_in_quantize(node->scores(), node))
-      node->scores(input_quant);
-
-    if (auto input_quant = create_in_quantize(node->max_output_size(), node))
-      node->max_output_size(input_quant);
-
-    if (auto input_quant = create_in_quantize(node->iou_threshold(), node))
-      node->iou_threshold(input_quant);
-
-    if (auto input_quant = create_in_quantize(node->score_threshold(), node))
-      node->score_threshold(input_quant);
-
-    auto spilt_out_nodes = loco::succs(node);
-    for (auto split_out : spilt_out_nodes)
-    {
-      auto split_out_circle = loco::must_cast<luci::CircleNode *>(split_out);
-      insert_out_quantize(split_out_circle);
-    }
-  }
-
-  void visit(luci::CircleNonMaxSuppressionV5 *node)
-  {
-    if (auto input_quant = create_in_quantize(node->boxes(), node))
-      node->boxes(input_quant);
-
-    if (auto input_quant = create_in_quantize(node->scores(), node))
-      node->scores(input_quant);
-
-    if (auto input_quant = create_in_quantize(node->max_output_size(), node))
-      node->max_output_size(input_quant);
-
-    if (auto input_quant = create_in_quantize(node->iou_threshold(), node))
-      node->iou_threshold(input_quant);
-
-    if (auto input_quant = create_in_quantize(node->score_threshold(), node))
-      node->score_threshold(input_quant);
-
-    if (auto input_quant = create_in_quantize(node->soft_nms_sigma(), node))
-      node->soft_nms_sigma(input_quant);
-
-    auto spilt_out_nodes = loco::succs(node);
-    for (auto split_out : spilt_out_nodes)
-    {
-      auto split_out_circle = loco::must_cast<luci::CircleNode *>(split_out);
-      insert_out_quantize(split_out_circle);
-    }
-  }
+  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleSplit, input, luci::CircleSplitOut)
+  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleSplitV, input, luci::CircleSplitVOut)
+  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleTopKV2, input, luci::CircleTopKV2Out)
+  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleUnique, input, luci::CircleUniqueOut)
+  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleUnpack, value, luci::CircleUnpackOut)
 
   // AddN has arbitrary number of inputs
   void visit(luci::CircleAddN *node)
