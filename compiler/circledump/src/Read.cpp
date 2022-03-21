@@ -30,6 +30,7 @@ Reader::Reader(const circle::Model *model)
   _subgraphs = model->subgraphs();
   _buffers = model->buffers();
   _metadata = model->metadata();
+  _signature_defs = model->signature_defs();
 
   auto opcodes = model->operator_codes();
   for (const ::circle::OperatorCode *opcode : *opcodes)

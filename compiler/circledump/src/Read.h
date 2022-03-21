@@ -52,6 +52,7 @@ private:
   using CircleTensors_t = flatbuffers::Vector<flatbuffers::Offset<circle::Tensor>>;
   using CircleOperators_t = flatbuffers::Vector<flatbuffers::Offset<circle::Operator>>;
   using CircleMetadata_t = flatbuffers::Vector<flatbuffers::Offset<circle::Metadata>>;
+  using CircleSignatureDef_t = flatbuffers::Vector<flatbuffers::Offset<circle::SignatureDef>>;
 
 public:
   Reader(const circle::Model *model);
@@ -69,6 +70,7 @@ public:
   const std::vector<int32_t> &outputs() const { return _outputs; }
   const circle::DataFormat &data_format() const { return _data_format; }
   const CircleMetadata_t *metadata() const { return _metadata; }
+  const CircleSignatureDef_t *signature_defs() const { return _signature_defs; }
 
   uint32_t num_subgraph() const { return _subgraphs->Length(); }
 
@@ -89,6 +91,7 @@ private:
   const CircleTensors_t *_tensors{nullptr};
   const CircleOperators_t *_operators{nullptr};
   const CircleMetadata_t *_metadata{nullptr};
+  const CircleSignatureDef_t *_signature_defs{nullptr};
 
   uint32_t _subgraph_index = 0;
   std::string _subgraph_name;
