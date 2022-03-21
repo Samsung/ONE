@@ -30,6 +30,8 @@ namespace tflite2circle
  */
 circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop);
 
+int8_t get_circle_builtin_code(int8_t tfl_bop_i8);
+
 /**
  * @brief Returns circle TensorType according to tflite.
  *
