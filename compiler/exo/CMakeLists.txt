@@ -15,7 +15,7 @@ endif(NOT TensorFlowSource_FOUND)
 message(STATUS "Build exo: TRUE")
 
 set(TFLITE_SCHEMA_DIR "${TensorFlowSource_DIR}/tensorflow/lite/schema")
-set(CIRCLE_SCHEMA_DIR "${NNAS_PROJECT_SOURCE_DIR}/nnpackage/schema")
+set(CIRCLE_SCHEMA_DIR "${NNAS_PROJECT_SOURCE_DIR}/res/CircleSchema/0.3")
 
 FlatBuffers_Target(exo_tflite_fbs
   OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
