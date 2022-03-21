@@ -28,11 +28,10 @@ luci::CircleConst *create_weights_from_gamma(luci::CircleConst *gamma)
 {
   assert(gamma->rank() == 1 or gamma->rank() == 4);
 
-  uint32_t channel_size = 0;
-  if (gamma->rank() == 1)
-    channel_size = gamma->dim(0).value();
-  else if (gamma->rank() == 4)
-    channel_size = gamma->dim(3).value();
+  uint32_t channel_idx = gamma->rank() - 1;
+  uint32_t channel_size = gamma->dim(channel_idx).value();
+  for (uint32_t i = 0; i < channel_idx; i++)
+    assert(gamma->dim(i).value() == 1); // FIX is_batchnorm_mul UNLESS
 
   auto name = gamma->name();
   assert(name.length() > 0);
@@ -60,11 +59,10 @@ luci::CircleConst *create_bias_from_beta(luci::CircleConst *beta)
 {
   assert(beta->rank() == 1 or beta->rank() == 4);
 
-  uint32_t channel_size = 0;
-  if (beta->rank() == 1)
-    channel_size = beta->dim(0).value();
-  else if (beta->rank() == 4)
-    channel_size = beta->dim(3).value();
+  uint32_t channel_idx = beta->rank() - 1;
+  uint32_t channel_size = beta->dim(channel_idx).value();
+  for (uint32_t i = 0; i < channel_idx; i++)
+    assert(beta->dim(i).value() == 1); // FIX is_batchnorm_add UNLESS
 
   auto name = beta->name();
   assert(name.length() > 0);
