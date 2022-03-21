@@ -772,6 +772,22 @@ public:
   }
 };
 
+class InstanceNormPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_InstanceNormOptions())
+    {
+      os << "    ";
+      os << "epsilon(" << params->epsilon() << ") ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
+      os << std::endl;
+    }
+  }
+};
+
 OpPrinterRegistry::OpPrinterRegistry()
 {
   _op_map[circle::BuiltinOperator_ADD] = make_unique<AddPrinter>();
@@ -854,6 +870,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // Circle only
   _op_map[circle::BuiltinOperator_BCQ_FULLY_CONNECTED] = make_unique<BCQFullyConnectedPrinter>();
   _op_map[circle::BuiltinOperator_BCQ_GATHER] = make_unique<BCQGatherPrinter>();
+  _op_map[circle::BuiltinOperator_INSTANCE_NORM] = make_unique<InstanceNormPrinter>();
 }
 
 } // namespace circledump
