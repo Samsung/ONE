@@ -34,6 +34,22 @@ circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop)
   }
 }
 
+int8_t get_circle_builtin_code(int8_t tfl_bop_i8)
+{
+  tflite::BuiltinOperator tfl_bop = static_cast<tflite::BuiltinOperator>(tfl_bop_i8);
+
+  switch (tfl_bop)
+  {
+#define TFL_OPERATOR(OP)             \
+  case tflite::BuiltinOperator_##OP: \
+    return static_cast<int8_t>(circle::BuiltinOperator_##OP);
+#include "TFLOperator.lst"
+#undef TFL_OPERATOR
+    default:
+      throw std::runtime_error("tflite2circle: wrong op");
+  }
+}
+
 circle::TensorType get_circle_tensortype(tflite::TensorType tfl_tt)
 {
   switch (tfl_tt)

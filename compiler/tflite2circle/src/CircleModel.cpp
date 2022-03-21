@@ -342,8 +342,9 @@ template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_fla
   {
     auto custom_code = _fb->CreateString(it->custom_code());
     circle::OperatorCodeBuilder operator_code_builder{*_fb};
-    // TODO support circle deprecated_builtin_code
-    auto bt_code = mio::tflite::builtin_code_neutral(it);
+    auto de_code = it->deprecated_builtin_code();
+    auto bt_code = it->builtin_code();
+    operator_code_builder.add_deprecated_builtin_code(get_circle_builtin_code(de_code));
     operator_code_builder.add_builtin_code(get_circle_builtin_code(bt_code));
     operator_code_builder.add_custom_code(custom_code);
     operator_code_builder.add_version(it->version());
