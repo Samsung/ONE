@@ -1,0 +1,131 @@
+operand {
+  name: "param_gather"
+  type: INT64
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "2" }
+}
+operand {
+  name: "indices_gather"
+  type: INT64
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "1" arg: "2" }
+}
+operand {
+  name: "ofm_gather"
+  type: INT64
+  shape { dim: 1 }
+}
+operand {
+  name: "shape_sparse"
+  type: INT64
+  shape { dim: 1 dim: 1 }
+  filler {
+      tag: "explicit"
+      arg: "3" arg: "5"
+  }
+}
+operand {
+  name: "values_sparse"
+  type: INT64
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "1" arg: "2" }
+}
+operand {
+  name: "defalut_value_sparse"
+  type: INT64
+  shape {  }
+  filler { tag: "explicit" arg: "1" arg: "2" }
+}
+operand {
+  name: "ofm_sparse"
+  type: INT64
+  shape { dim: 3 }
+}
+operand {
+  name: "add_v2_2"
+  type: INT64
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "2" }
+}
+operand {
+  name: "ofm_add_v2"
+  type: INT64
+  shape { dim: 3 }
+}
+operand {
+  name: "ofm_cast"
+  type: INT32
+  shape { dim: 3 }
+}
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 5 }
+}
+operand {
+  name: "perm"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "0" arg: "2" arg: "1" }
+}
+operand {
+  name: "ofm_trans"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim: 2 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 10 }
+}
+operation {
+  type: "Gather"
+  gather_options {
+    axis: 0
+  }
+  input: "param_gather"
+  input: "indices_gather"
+  output: "ofm_gather"
+}
+operation {
+  type: "SparseToDense"
+  sparse_to_dense_options {
+    validate_indices: false
+  }
+  input: "shape_sparse"
+  input: "values_sparse"
+  input: "ofm_gather"
+  input: "defalut_value_sparse"
+  output: "ofm_sparse"
+}
+operation {
+  type: "AddV2"
+  input: "ofm_sparse"
+  input: "add_v2_2"
+  output: "ofm_add_v2"
+}
+operation {
+  type: "Cast"
+  cast_options {
+    in_data_type: INT64
+    out_data_type: INT32
+  }
+  input: "ofm_add_v2"
+  output: "ofm_cast"
+}
+operation {
+  type: "Transpose"
+  transpose_options {
+  }
+  input: "ifm"
+  input: "perm"
+  output: "ofm_trans"
+}
+operation {
+  type: "Reshape"
+  input: "ofm_trans"
+  input: "ofm_cast"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
