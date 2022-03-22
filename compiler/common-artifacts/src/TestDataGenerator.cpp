@@ -18,7 +18,6 @@
 #include <foder/FileLoader.h>
 #include <luci/Importer.h>
 #include <luci_interpreter/Interpreter.h>
-#include <mio/circle/schema_generated.h>
 
 #include <H5Cpp.h>
 
