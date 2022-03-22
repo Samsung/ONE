@@ -16,6 +16,9 @@
 
 #include "luci/Import/CircleReader.h"
 
+#include <mio_circle/Helper.h>
+
+#include <algorithm>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -342,7 +345,7 @@ circle::BuiltinOperator CircleReader::builtin_code(const circle::Operator *op) c
   const auto opcode = op_codes[index];
   assert(opcode != nullptr);
 
-  return opcode->builtin_code();
+  return mio::circle::builtin_code_neutral(opcode);
 }
 
 std::string CircleReader::opcode_name(const circle::Operator *op) const
@@ -354,14 +357,7 @@ std::string CircleReader::opcode_name(const circle::Operator *op) const
   assert(index < op_codes.size());
   const auto opcode = op_codes[index];
 
-  if (!is_valid(opcode))
-  {
-    std::ostringstream oss;
-    oss << "(invalid: " << index << ")";
-    return oss.str();
-  }
-
-  return ::luci::opcode_name(opcode);
+  return mio::circle::opcode_name(opcode);
 }
 
 bool CircleReader::parse(const circle::Model *model)
