@@ -68,6 +68,7 @@ struct BasicCircleModel
   {
     uint32_t id = model->operator_codes.size();
     model->operator_codes.push_back(std::make_unique<circle::OperatorCodeT>());
+    model->operator_codes[id]->deprecated_builtin_code = opcode;
     model->operator_codes[id]->builtin_code = opcode;
     model->operator_codes[id]->version = 1;
     return id;
