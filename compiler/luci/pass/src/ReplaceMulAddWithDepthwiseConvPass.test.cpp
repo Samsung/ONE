@@ -185,3 +185,18 @@ TEST(ReplaceMulAddWithDepthwiseConv, wrong_op_NEG)
 
   EXPECT_EQ(false, changed);
 }
+
+TEST(ReplaceMulAddWithDepthwiseConv, rank3_NEG)
+{
+  SimpleGraph g;
+
+  g.input->shape({4, 4, 16});
+  g.mul->shape({4, 4, 16});
+  g.add->shape({4, 4, 16});
+  g.output->shape({4, 4, 16});
+
+  luci::ReplaceMulAddWithDepthwiseConvPass pass;
+  auto changed = pass.run(&g.g);
+
+  EXPECT_EQ(false, changed);
+}
