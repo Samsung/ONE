@@ -26,49 +26,6 @@
 namespace luci
 {
 
-bool is_valid(const circle::OperatorCode *opcode)
-{
-  assert(opcode != nullptr);
-  circle::BuiltinOperator code = opcode->builtin_code();
-  // Under FlatBuffers 1.10, circle::BuiltinOperator is enum type,
-  // but on FlatBuffers 2.0, circle::BuiltinOperator becomes enum uint8_t type.
-  // So comparison with circle::BuiltinOperator_MIN becomes true always
-  // because BuiltinOperator_MIN is 0, and it makes compiler warning.
-  // TODO: revisit this for schema v3b
-  return (/*circle::BuiltinOperator_MIN <= code &&*/ code <= circle::BuiltinOperator_MAX);
-}
-
-bool is_custom(const circle::OperatorCode *opcode)
-{
-  assert(opcode != nullptr);
-  circle::BuiltinOperator code = opcode->builtin_code();
-  return (code == circle::BuiltinOperator_CUSTOM);
-}
-
-std::string opcode_name(const circle::OperatorCode *opcode)
-{
-  assert(opcode != nullptr);
-
-  if (!is_valid(opcode))
-  {
-    std::ostringstream oss;
-    oss << "(invalid)";
-    return oss.str();
-  }
-
-  if (is_custom(opcode))
-  {
-    auto custom_code = opcode->custom_code()->str();
-    if (custom_code.empty())
-      return "(invalid custom)";
-
-    return custom_code;
-  }
-
-  circle::BuiltinOperator code = opcode->builtin_code();
-  return circle::EnumNameBuiltinOperator(code);
-}
-
 const char *tensor_name(const circle::Tensor *tensor)
 {
   assert(tensor != nullptr);
