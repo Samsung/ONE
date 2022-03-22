@@ -78,7 +78,6 @@ target_link_libraries(testDataGenerator PRIVATE arser)
 target_link_libraries(testDataGenerator PRIVATE foder)
 target_link_libraries(testDataGenerator PRIVATE luci_import)
 target_link_libraries(testDataGenerator PRIVATE luci_interpreter)
-target_link_libraries(testDataGenerator PRIVATE mio_circle)
 target_link_libraries(testDataGenerator PRIVATE safemain)
 
 unset(TEST_DEPS)
