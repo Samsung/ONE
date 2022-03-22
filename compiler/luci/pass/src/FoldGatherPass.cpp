@@ -28,27 +28,39 @@ namespace
  * 1. params: const and dtype = S32 or S64
  * 2. indices: const and dtype = S32 or S64
  *
+ * BEFORE
+ *
+ *    [CircleConst]              [CircleConst]
+ *         |                          |
+ *         +---------[Gather]---------+
+ *
+ * AFTER
+ *
+ *                [CircleConst]
+ *
  **/
 template <loco::DataType InputT, loco::DataType IndexT>
 bool fold_gather(luci::CircleGather *gather_node)
 {
-  const auto params = dynamic_cast<luci::CircleConst *>(gather_node->params());
-  const auto indices = dynamic_cast<luci::CircleConst *>(gather_node->indices());
+  const auto params = loco::must_cast<luci::CircleConst *>(gather_node->params());
+  const auto indices = loco::must_cast<luci::CircleConst *>(gather_node->indices());
 
-  const auto axis = gather_node->axis();
-  assert(axis >= 0);
+  const auto rank = params->rank();
+  auto axis = gather_node->axis();
   if (axis < 0)
-    return false;
+  {
+    axis += static_cast<int32_t>(rank);
+  }
+
+  if (axis < 0 or axis >= static_cast<int32_t>(rank))
+    throw std::runtime_error("Unsupported axis value");
 
   const auto name = gather_node->name();
   assert(name.length() > 0);
 
   auto constant = gather_node->graph()->nodes()->create<luci::CircleConst>();
   constant->dtype(InputT);
-  constant->name(name + "_G");
-
-  const auto rank = params->rank();
-  assert(axis < rank);
+  constant->name(name + "_folded");
 
   constant->rank(rank + indices->rank() - 1);
 
@@ -57,10 +69,9 @@ bool fold_gather(luci::CircleGather *gather_node)
   std::vector<uint32_t> shape;
   for (uint32_t i = 0; i < rank; ++i)
   {
-    if (i != axis)
+    if (i != static_cast<uint32_t>(axis))
     {
       const auto dim = params->dim(i).value();
-      assert(dim >= 0 && dim <= std::numeric_limits<uint32_t>::max());
       shape.push_back(dim);
     }
     else
@@ -68,7 +79,6 @@ bool fold_gather(luci::CircleGather *gather_node)
       for (uint32_t j = 0; j < indices->rank(); ++j)
       {
         const auto dim = indices->dim(j).value();
-        assert(dim >= 0 && dim <= std::numeric_limits<uint32_t>::max());
         shape.push_back(dim);
       }
     }
@@ -84,7 +94,7 @@ bool fold_gather(luci::CircleGather *gather_node)
   constant->size<InputT>(size);
 
   uint32_t outer_size = 1;
-  for (uint32_t i = 0; i < axis; ++i)
+  for (uint32_t i = 0; i < static_cast<uint32_t>(axis); ++i)
   {
     outer_size *= params->dim(i).value();
   }

@@ -204,3 +204,11 @@ TEST_F(S64FoldGatherSimpleTest, illegal_input_NEG)
   luci::FoldGatherPass pass;
   EXPECT_ANY_THROW(pass.run(graph()));
 }
+
+TEST_F(S64FoldGatherSimpleTest, illegal_axis_NEG)
+{
+  _gather->axis(1);
+
+  luci::FoldGatherPass pass;
+  EXPECT_ANY_THROW(pass.run(graph()));
+}
