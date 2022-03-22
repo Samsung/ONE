@@ -5,10 +5,10 @@ if(NOT Protobuf_FOUND)
   return()
 endif(NOT Protobuf_FOUND)
 
-if(NOT TARGET mio_circle)
-  message(STATUS "circlechef: SKIP (missing mio-circle)")
+if(NOT TARGET mio_circle04)
+  message(STATUS "circlechef: SKIP (missing mio-circle04)")
   return()
-endif(NOT TARGET mio_circle)
+endif(NOT TARGET mio_circle04)
 
 # Recipe Parser
 add_subdirectory(proto)

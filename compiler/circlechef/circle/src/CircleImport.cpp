@@ -67,7 +67,7 @@ circle::BuiltinOperator CircleImport::builtin_code(const circle::Operator *op) c
   assert(index < _op_codes.size());
   const circle::OperatorCode *opcode = _op_codes.at(index);
 
-  return opcode->builtin_code();
+  return mio::circle::builtin_code_neutral(opcode);
 }
 
 std::string CircleImport::opcode_name(const circle::Operator *op) const

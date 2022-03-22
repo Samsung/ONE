@@ -520,6 +520,10 @@ GeneratedModel cook(const ::circlechef::ModelRecipe &model_recipe)
   for (auto const &opcode : builtin_code_map)
   {
     circle::OperatorCodeBuilder code_builder{*flatbuffer_builder};
+    int8_t dep_code = 127; // BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES
+    if (opcode.first < circle::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+      dep_code = static_cast<int8_t>(opcode.first);
+    code_builder.add_deprecated_builtin_code(dep_code);
     code_builder.add_builtin_code(opcode.first);
     code_builder.add_version(opcode.second);
     auto code = code_builder.Finish();
