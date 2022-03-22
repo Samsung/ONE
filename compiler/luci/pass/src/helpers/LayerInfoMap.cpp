@@ -50,8 +50,11 @@ bool is_multiple_output_node(const luci::CircleNode *node)
   }
 }
 
-luci::CircleNode *get_multi_output_node(const luci::CircleNode *node)
+const luci::CircleNode *get_multi_output_node(const luci::CircleNode *node)
 {
+  if (is_multiple_output_node(node))
+    return node;
+
   switch (node->opcode())
   {
     // The following nodes denote outputs of multiple-output nodes.
@@ -99,10 +102,12 @@ bool same_setting(const LayerInfo &left, const LayerInfo &right)
 }
 
 void add_multi_output_node(LayerInfoMap &info_by_name, LayerInfo &layer_info,
-                           luci::CircleNode *node)
+                           const luci::CircleNode *node)
 {
+  assert(is_multiple_output_node(node)); // FIX_CALLER_UNLESS
+
   const auto succs_nodes = loco::succs(node);
-  auto name = node->name();
+  const auto name = node->name();
 
   if (info_by_name.find(name) != info_by_name.end())
   {
@@ -110,9 +115,8 @@ void add_multi_output_node(LayerInfoMap &info_by_name, LayerInfo &layer_info,
     for (const auto succs_node : succs_nodes)
     {
       const auto succs_circle_node = loco::must_cast<luci::CircleNode *>(succs_node);
-      name = succs_circle_node->name();
 
-      const auto it = info_by_name.find(name);
+      const auto it = info_by_name.find(succs_circle_node->name());
       if (it != info_by_name.end() and not same_setting(layer_info, *(it->second)))
         throw std::runtime_error("Outputs of multiple-output nodes should have equal dtype and "
                                  "granularity. Check the quantization configuration file");
@@ -125,9 +129,8 @@ void add_multi_output_node(LayerInfoMap &info_by_name, LayerInfo &layer_info,
   for (const auto succs_node : succs_nodes)
   {
     const auto succs_circle_node = loco::must_cast<luci::CircleNode *>(succs_node);
-    name = succs_circle_node->name();
 
-    info_by_name[name] = &layer_info;
+    info_by_name[succs_circle_node->name()] = &layer_info;
   }
 }
 
@@ -150,13 +153,7 @@ LayerInfoMap layer_info_map(loco::Graph *g, std::vector<LayerInfo> &layers_info)
       if (cnode->name() == name)
       {
         // Check and add multiple-output node and its outputs to info_by_name
-        if (is_multiple_output_node(cnode))
-        {
-          add_multi_output_node(info_by_name, info, cnode);
-          found = true;
-          continue;
-        }
-        if (auto multi_output = get_multi_output_node(cnode))
+        if (const auto multi_output = get_multi_output_node(cnode))
         {
           add_multi_output_node(info_by_name, info, multi_output);
           found = true;
