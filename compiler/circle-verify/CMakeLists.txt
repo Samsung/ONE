@@ -1,4 +1,5 @@
 if(NOT TARGET mio_circle04)
+  message(STATUS "Skip circle-verify: mio_circle04 not found")
   return()
 endif(NOT TARGET mio_circle04)
 
