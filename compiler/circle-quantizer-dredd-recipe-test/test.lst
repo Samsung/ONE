@@ -8,3 +8,5 @@
 Add(Quant_Conv_Mul_Add_000 DTYPE uint8 GRANULARITY channel USE_QCONFIG)
 Add(Quant_Conv_Mul_Add_001 DTYPE uint8 GRANULARITY channel USE_QCONFIG)
 Add(Quant_Conv_Mul_Add_002 DTYPE uint8 GRANULARITY channel USE_QCONFIG)
+Add(Quant_Split_Add_000 DTYPE uint8 GRANULARITY channel USE_QCONFIG)
+Add(Quant_Split_Add_001 DTYPE uint8 GRANULARITY channel USE_QCONFIG)
