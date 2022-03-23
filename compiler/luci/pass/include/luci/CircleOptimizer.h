@@ -51,6 +51,7 @@ public:
       FoldCast,
       FoldDepthwiseConv2D,
       FoldDequantize,
+      FoldGather,
       FoldSparseToDense,
       ForwardReshapeToUnaryOp,
       SparsifyTensorPass,
