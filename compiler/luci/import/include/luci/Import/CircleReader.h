@@ -35,9 +35,6 @@
 namespace luci
 {
 
-bool is_valid(const circle::OperatorCode *opcode);
-bool is_custom(const circle::OperatorCode *opcode);
-std::string opcode_name(const circle::OperatorCode *opcode);
 const char *tensor_name(const circle::Tensor *tensor);
 const circle::QuantizationParameters *tensor_quantization(const circle::Tensor *tensor);
 
