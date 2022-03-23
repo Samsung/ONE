@@ -79,14 +79,19 @@ encodeOperatorCodes(FlatBufferBuilder &builder, std::unordered_map<luci::OpCode,
   for (auto it : opcodes)
   {
     uint32_t idx = it.second;
+    int8_t dep_code = 127; // BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES
+    if (it.first.opcode < BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+      dep_code = static_cast<int8_t>(it.first.opcode);
     if (it.first.opcode != BuiltinOperator_CUSTOM)
     {
-      operator_codes_vec[idx] = CreateOperatorCode(builder, it.first.opcode, 0, it.first.version);
+      operator_codes_vec[idx] =
+        CreateOperatorCode(builder, dep_code, 0, it.first.version, it.first.opcode);
     }
     else
     {
       operator_codes_vec[idx] =
-        CreateOperatorCode(builder, it.first.opcode, builder.CreateString(it.first.custom_code));
+        CreateOperatorCode(builder, dep_code, builder.CreateString(it.first.custom_code),
+                           it.first.version, it.first.opcode);
     }
   }
 
