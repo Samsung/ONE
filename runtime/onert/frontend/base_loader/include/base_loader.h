@@ -110,6 +110,16 @@ protected:
   void loadStridesAndPaddings(Param &param, const OptionsType *options);
   // Load Pool2D param
   template <typename Param> void loadPool2DOptions(Param &param, const Pool2DOptions *options);
+  // Get BuiltinOperator
+  BuiltinOperator getBuiltinOperator(const Operator *op)
+  {
+    auto const builtin_opcode = _model->operator_codes()->Get(op->opcode_index());
+    auto builtin_op = builtin_opcode->builtin_code();
+    if (builtin_op < BuiltinOperator::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+      builtin_op = static_cast<BuiltinOperator>(builtin_opcode->deprecated_builtin_code());
+
+    return builtin_op;
+  }
 
 private:
   virtual std::unique_ptr<ir::Graph> loadSubgraph(const SubGraph *subg) = 0;
@@ -545,7 +555,7 @@ void BaseLoader<LoaderDomain>::loadOperationIO(const Operator *op, ir::OperandIn
   {
     // Optional tensors are not supported yet except for FULLY_CONNECTED and BCQ_FULLY_CONNECTED
     auto check_optional_input = [&]() {
-      auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
+      auto builtin_code = getBuiltinOperator(op);
       if (isOptionalInputTensor(idx) && !allowOptionalInputTensor(builtin_code))
         throw std::runtime_error(
           std::string("loader doesn't support optional input tensor yet for ")
@@ -972,18 +982,17 @@ void BaseLoader<LoaderDomain>::loadBatchMatMul(const Operator *op, ir::Graph &su
 {
   ir::operation::BatchMatMul::Param param;
 
-  const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
+  const auto builtin_op = getBuiltinOperator(op);
 
   switch (builtin_op)
   {
     case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
-      // Different option name makes build fail
-      // Circle: adjoint_lhs, adjoint_rhs
-      // TFLite: adj_x, adj_y
-      // TODO Fix this issue
-      param.adj_x = op->builtin_options_as_BatchMatMulOptions()->adjoint_lhs();
-      param.adj_y = op->builtin_options_as_BatchMatMulOptions()->adjoint_rhs();
-      break;
+      // Handled on each loader: different option name
+      //  Circle: adjoint_lhs, adjoint_rhs
+      //  TFLite: adj_x, adj_y
+      throw std::runtime_error(
+        std::string("Cannot handle here: ").append(EnumNameBuiltinOperator(builtin_op)) + " as " +
+        EnumNameBuiltinOperator(BuiltinOperator::BuiltinOperator_BATCH_MATMUL));
     case BuiltinOperator::BuiltinOperator_CUSTOM:
       if (op->custom_options() == nullptr)
       {
@@ -1188,7 +1197,7 @@ template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadComparison(const Operator *op, ir::Graph &subg)
 {
   ir::operation::Comparison::Param param;
-  const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
+  const auto builtin_op = getBuiltinOperator(op);
 
   switch (builtin_op)
   {
@@ -1367,7 +1376,7 @@ void BaseLoader<LoaderDomain>::loadUnidirectionalSequenceLSTM(const Operator *op
   // loader doesn't support optional output tensor yet
   if (op->outputs()->size() != 1)
   {
-    auto builtin_code = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
+    auto builtin_code = getBuiltinOperator(op);
     throw std::runtime_error(std::string("loader doesn't support optional output tensor yet for ")
                                .append(EnumNameBuiltinOperator(builtin_code)));
   }
@@ -1385,7 +1394,7 @@ void BaseLoader<LoaderDomain>::loadUnidirectionalSequenceLSTM(const Operator *op
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg)
 {
-  const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
+  auto const builtin_op = getBuiltinOperator(op);
 
   switch (builtin_op)
   {
