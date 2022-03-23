@@ -104,6 +104,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("This will fold Depthwise Convolution operator with constant inputs");
 
+  arser.add_argument("--fold_gather")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("This will fold Gather operator");
+
   arser.add_argument("--fold_sparse_to_dense")
     .nargs(0)
     .required(false)
@@ -458,6 +464,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FoldDequantize);
   if (arser.get<bool>("--fold_dwconv"))
     options->enable(Algorithms::FoldDepthwiseConv2D);
+  if (arser.get<bool>("--fold_gather"))
+    options->enable(Algorithms::FoldGather);
   if (arser.get<bool>("--fold_sparse_to_dense"))
     options->enable(Algorithms::FoldSparseToDense);
   if (arser.get<bool>("--forward_reshape_to_unaryop"))
