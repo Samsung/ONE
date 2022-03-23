@@ -977,6 +977,10 @@ void BaseLoader<LoaderDomain>::loadBatchMatMul(const Operator *op, ir::Graph &su
   switch (builtin_op)
   {
     case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
+      // Different option name makes build fail
+      // Circle: adjoint_lhs, adjoint_rhs
+      // TFLite: adj_x, adj_y
+      // TODO Fix this issue
       param.adj_x = op->builtin_options_as_BatchMatMulOptions()->adjoint_lhs();
       param.adj_y = op->builtin_options_as_BatchMatMulOptions()->adjoint_rhs();
       break;
