@@ -72,6 +72,12 @@ struct LoaderDomain
 class CircleLoader final : public base_loader::BaseLoader<LoaderDomain>
 {
 protected:
+  // Different option name
+  //  Circle: adjoint_lhs, adjoint_rhs
+  //  TFLite: adj_x, adj_y
+  void loadBatchMatMul(const Operator *op, ir::Graph &subg);
+
+  // Only circle operations
   void loadInstanceNorm(const Operator *op, ir::Graph &subg);
   void loadBCQFullyConnected(const Operator *op, ir::Graph &subg);
   void loadBCQGather(const Operator *op, ir::Graph &subg);
@@ -129,10 +135,13 @@ private:
 
   void loadOperation(const circle::Operator *op, ir::Graph &subg)
   {
-    const auto builtin_op = _model->operator_codes()->Get(op->opcode_index())->builtin_code();
+    auto const builtin_op = getBuiltinOperator(op);
 
     switch (builtin_op)
     {
+      case circle::BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
+        loadBatchMatMul(op, subg);
+        return;
       case circle::BuiltinOperator::BuiltinOperator_INSTANCE_NORM:
         loadInstanceNorm(op, subg);
         return;
@@ -148,6 +157,23 @@ private:
     }
   }
 };
+
+void CircleLoader::loadBatchMatMul(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::BatchMatMul::Param param;
+  const auto *options = op->builtin_options_as_BatchMatMulOptions();
+
+  param.adj_x = options->adjoint_lhs();
+  param.adj_y = options->adjoint_rhs();
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::BatchMatMul(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
 
 void CircleLoader::loadInstanceNorm(const Operator *op, ir::Graph &subg)
 {

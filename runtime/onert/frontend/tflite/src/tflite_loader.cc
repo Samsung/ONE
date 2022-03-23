@@ -64,6 +64,12 @@ struct LoaderDomain
 
 class TFLiteLoader final : public base_loader::BaseLoader<LoaderDomain>
 {
+protected:
+  // Different option name
+  //  Circle: adjoint_lhs, adjoint_rhs
+  //  TFLite: adj_x, adj_y
+  void loadBatchMatMul(const Operator *op, ir::Graph &subg);
+
 public:
   using BaseLoader::BaseLoader;
 
@@ -112,7 +118,39 @@ private:
 
     return subg;
   }
+
+  void loadOperation(const onert_tflite::Operator *op, ir::Graph &subg)
+  {
+    auto const builtin_op = getBuiltinOperator(op);
+
+    switch (builtin_op)
+    {
+      case onert_tflite::BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
+        loadBatchMatMul(op, subg);
+        return;
+      default:
+        BaseLoader::loadOperation(op, subg);
+        return;
+    }
+  }
 };
+
+void TFLiteLoader::loadBatchMatMul(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::BatchMatMul::Param param;
+  const auto *options = op->builtin_options_as_BatchMatMulOptions();
+
+  param.adj_x = options->adj_x();
+  param.adj_y = options->adj_y();
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::BatchMatMul(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
 
 } // namespace
 
