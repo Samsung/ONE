@@ -22,6 +22,154 @@
 
 namespace luci
 {
+namespace
+{
+
+bool is_multiple_output_node(const luci::CircleNode *node)
+{
+  switch (node->opcode())
+  {
+    // The following nodes have multiple outputs. Output tensors are not produced by themselves but
+    // by the corresponding *Out nodes.
+    case luci::CircleOpcode::SPLIT:
+    case luci::CircleOpcode::SPLIT_V:
+    case luci::CircleOpcode::TOPK_V2:
+    case luci::CircleOpcode::UNIQUE:
+    case luci::CircleOpcode::UNPACK:
+      return true;
+    // TODO: Support ops
+    case luci::CircleOpcode::BIDIRECTIONAL_SEQUENCE_LSTM:
+    case luci::CircleOpcode::CUSTOM:
+    case luci::CircleOpcode::IF:
+    case luci::CircleOpcode::NON_MAX_SUPPRESSION_V4:
+    case luci::CircleOpcode::NON_MAX_SUPPRESSION_V5:
+    case luci::CircleOpcode::WHILE:
+      throw std::runtime_error("Unsupported op now");
+    default:
+      return false;
+  }
+}
+
+const luci::CircleNode *get_multi_output_node(const luci::CircleNode *node)
+{
+  if (is_multiple_output_node(node))
+    return node;
+
+  switch (node->opcode())
+  {
+    // The following nodes denote outputs of multiple-output nodes.
+    case luci::CircleOpcode::CIRCLESPLITOUT:
+    {
+      const auto split_out = loco::must_cast<const CircleSplitOut *>(node);
+      return loco::must_cast<luci::CircleNode *>(split_out->input());
+    }
+    case luci::CircleOpcode::CIRCLESPLITVOUT:
+    {
+      const auto splitv_out = loco::must_cast<const CircleSplitVOut *>(node);
+      return loco::must_cast<luci::CircleNode *>(splitv_out->input());
+    }
+    case luci::CircleOpcode::CIRCLETOPKV2OUT:
+    {
+      const auto top_kv2_out = loco::must_cast<const CircleTopKV2Out *>(node);
+      return loco::must_cast<luci::CircleNode *>(top_kv2_out->input());
+    }
+    case luci::CircleOpcode::CIRCLEUNIQUEOUT:
+    {
+      const auto unique_out = loco::must_cast<const CircleUniqueOut *>(node);
+      return loco::must_cast<luci::CircleNode *>(unique_out->input());
+    }
+    case luci::CircleOpcode::CIRCLEUNPACKOUT:
+    {
+      const auto unpack_out = loco::must_cast<const CircleUnpackOut *>(node);
+      return loco::must_cast<luci::CircleNode *>(unpack_out->input());
+    }
+    // TODO: Support these ops
+    case luci::CircleOpcode::CIRCLEBIDIRECTIONAL_SEQUENCE_LSTM_OUT:
+    case luci::CircleOpcode::CIRCLECUSTOMOUT:
+    case luci::CircleOpcode::CIRCLEIFOUT:
+    case luci::CircleOpcode::CIRCLENONMAXSUPPRESSIONV4OUT:
+    case luci::CircleOpcode::CIRCLENONMAXSUPPRESSIONV5OUT:
+    case luci::CircleOpcode::CIRCLEWHILEOUT:
+      throw std::runtime_error("Unsupported op now");
+    default:
+      return nullptr;
+  }
+}
+
+bool same_setting(const LayerInfo &left, const LayerInfo &right)
+{
+  return left.dtype == right.dtype and left.granularity == right.granularity;
+}
+
+void add_multi_output_node(LayerInfoMap &info_by_name, LayerInfo &layer_info,
+                           const luci::CircleNode *node, std::vector<LayerInfo> &layers_info)
+{
+  assert(is_multiple_output_node(node)); // FIX_CALLER_UNLESS
+
+  const auto succs_nodes = loco::succs(node);
+  const auto name = node->name();
+
+  if (info_by_name.find(name) != info_by_name.end())
+  {
+    // Check that all outputs have equal dtype and granularity
+    for (const auto succs_node : succs_nodes)
+    {
+      const auto succs_circle_node = loco::must_cast<luci::CircleNode *>(succs_node);
+
+      const auto it = info_by_name.find(succs_circle_node->name());
+      if (it != info_by_name.end() and not same_setting(layer_info, (it->second)))
+        throw std::runtime_error("Outputs of multiple-output nodes should have equal dtype and "
+                                 "granularity. Check the quantization configuration file");
+    }
+    return;
+  }
+
+  // Add multiple output node to info_by_name
+  if (layer_info.name == name)
+  {
+    info_by_name[name] = layer_info;
+  }
+  else
+  {
+    auto it = std::find_if(layers_info.begin(), layers_info.end(),
+                           [&name](const auto &info) { return name == info.name; });
+
+    if (it == layers_info.end())
+    {
+      info_by_name[name] = {name, layer_info.dtype, layer_info.granularity};
+    }
+    else
+    {
+      info_by_name[name] = *it;
+    }
+  }
+
+  // Add outputs node to info_by_name
+  for (const auto succs_node : succs_nodes)
+  {
+    const auto succs_circle_node = loco::must_cast<luci::CircleNode *>(succs_node);
+    const auto succs_circle_node_name = succs_circle_node->name();
+    if (name != succs_circle_node_name)
+    {
+      auto it = std::find_if(layers_info.begin(), layers_info.end(),
+                             [&succs_circle_node_name](const auto &info) {
+                               return succs_circle_node_name == info.name;
+                             });
+
+      if (it == layers_info.end())
+      {
+        info_by_name[succs_circle_node_name] = {succs_circle_node_name, layer_info.dtype,
+                                                layer_info.granularity};
+      }
+      else
+      {
+        info_by_name[succs_circle_node_name] = *it;
+      }
+    }
+  }
+}
+
+} // namespace
 
 LayerInfoMap layer_info_map(loco::Graph *g, std::vector<LayerInfo> &layers_info)
 {
@@ -39,6 +187,14 @@ LayerInfoMap layer_info_map(loco::Graph *g, std::vector<LayerInfo> &layers_info)
 
       if (cnode->name() == name)
       {
+        // Check and add multiple-output node and its outputs to info_by_name
+        if (const auto multi_output = get_multi_output_node(cnode))
+        {
+          add_multi_output_node(info_by_name, info, multi_output, layers_info);
+          found = true;
+          continue;
+        }
+
         if (info_by_name.find(name) != info_by_name.end())
         {
           throw std::runtime_error("Duplicate layer name " + name +
@@ -55,8 +211,6 @@ LayerInfoMap layer_info_map(loco::Graph *g, std::vector<LayerInfo> &layers_info)
       throw std::runtime_error("No such layer named " + name +
                                ". Check layer names in the quantization configuration file.");
   }
-
-  assert(info_by_name.size() == layers_info.size()); // FIX_ME_UNLESS
 
   return info_by_name;
 }
