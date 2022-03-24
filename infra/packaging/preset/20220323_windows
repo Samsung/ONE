@@ -15,7 +15,7 @@ function preset_configure()
   # loco IR and related utilities
   REQUIRED_UNITS+=("loco" "locop" "locomotiv" "logo-core" "logo")
   # Flatbuffer I/O
-  REQUIRED_UNITS+=("mio-tflite" "mio-tflite260" "mio-circle" "mio-circle04")
+  REQUIRED_UNITS+=("mio-tflite" "mio-tflite260" "mio-circle04")
   # Circle compiler library (.circle -> .circle)
   REQUIRED_UNITS+=("luci")
   # Tools
