@@ -45,7 +45,7 @@ LayerInfoMap layer_info_map(loco::Graph *g, std::vector<LayerInfo> &layers_info)
                                    ". Check layer names in the quantization configuration file.");
         }
 
-        info_by_name[name] = &info;
+        info_by_name[name] = info;
         found = true;
         continue;
       }

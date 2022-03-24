@@ -60,9 +60,9 @@ TEST(LayerInfoMapTest, simple_test)
   v.emplace_back(info);
   auto map = luci::layer_info_map(g.g(), v);
 
-  EXPECT_EQ("test", map["test"]->name);
-  EXPECT_EQ(loco::DataType::U8, map["test"]->dtype);
-  EXPECT_EQ(luci::QuantizationGranularity::ChannelWise, map["test"]->granularity);
+  EXPECT_EQ("test", map["test"].name);
+  EXPECT_EQ(loco::DataType::U8, map["test"].dtype);
+  EXPECT_EQ(luci::QuantizationGranularity::ChannelWise, map["test"].granularity);
 }
 
 TEST(LayerInfoMapTest, duplicate_name_NEG)

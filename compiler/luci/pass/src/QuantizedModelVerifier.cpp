@@ -38,7 +38,7 @@ void QuantizedModelVerifier::verify(loco::Graph *g)
 
     // Return designated quantization dtype
     if (iter != info_by_name.end())
-      return iter->second->dtype;
+      return iter->second.dtype;
 
     // Return default quantization dtype
     return _ctx->output_model_dtype;
@@ -49,7 +49,7 @@ void QuantizedModelVerifier::verify(loco::Graph *g)
 
     // Return designated quantization granularity
     if (iter != info_by_name.end())
-      return iter->second->granularity;
+      return iter->second.granularity;
 
     // Return default quantization granularity
     return _ctx->granularity;
