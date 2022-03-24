@@ -378,7 +378,7 @@ struct MetadataBuilder;
 struct Model;
 struct ModelBuilder;
 
-enum TensorType
+enum TensorType : int8_t
 {
   TensorType_FLOAT32 = 0,
   TensorType_FLOAT16 = 1,
@@ -420,7 +420,7 @@ inline const char *EnumNameTensorType(TensorType e)
   return EnumNamesTensorType()[index];
 }
 
-enum QuantizationDetails
+enum QuantizationDetails : uint8_t
 {
   QuantizationDetails_NONE = 0,
   QuantizationDetails_CustomQuantization = 1,
@@ -465,7 +465,7 @@ bool VerifyQuantizationDetailsVector(flatbuffers::Verifier &verifier,
                                      const flatbuffers::Vector<flatbuffers::Offset<void>> *values,
                                      const flatbuffers::Vector<uint8_t> *types);
 
-enum DimensionType
+enum DimensionType : int8_t
 {
   DimensionType_DENSE = 0,
   DimensionType_SPARSE_CSR = 1,
@@ -493,7 +493,7 @@ inline const char *EnumNameDimensionType(DimensionType e)
   return EnumNamesDimensionType()[index];
 }
 
-enum SparseIndexVector
+enum SparseIndexVector : uint8_t
 {
   SparseIndexVector_NONE = 0,
   SparseIndexVector_Int32Vector = 1,
@@ -552,7 +552,7 @@ bool VerifySparseIndexVectorVector(flatbuffers::Verifier &verifier,
                                    const flatbuffers::Vector<flatbuffers::Offset<void>> *values,
                                    const flatbuffers::Vector<uint8_t> *types);
 
-enum BuiltinOperator
+enum BuiltinOperator : uint8_t
 {
   BuiltinOperator_ADD = 0,
   BuiltinOperator_AVERAGE_POOL_2D = 1,
@@ -1092,7 +1092,7 @@ inline const char *EnumNameBuiltinOperator(BuiltinOperator e)
   return EnumNamesBuiltinOperator()[index];
 }
 
-enum BuiltinOptions
+enum BuiltinOptions : uint8_t
 {
   BuiltinOptions_NONE = 0,
   BuiltinOptions_Conv2DOptions = 1,
@@ -2112,7 +2112,7 @@ bool VerifyBuiltinOptionsVector(flatbuffers::Verifier &verifier,
                                 const flatbuffers::Vector<flatbuffers::Offset<void>> *values,
                                 const flatbuffers::Vector<uint8_t> *types);
 
-enum Padding
+enum Padding : int8_t
 {
   Padding_SAME = 0,
   Padding_VALID = 1,
@@ -2140,7 +2140,7 @@ inline const char *EnumNamePadding(Padding e)
   return EnumNamesPadding()[index];
 }
 
-enum ActivationFunctionType
+enum ActivationFunctionType : int8_t
 {
   ActivationFunctionType_NONE = 0,
   ActivationFunctionType_RELU = 1,
@@ -2175,7 +2175,7 @@ inline const char *EnumNameActivationFunctionType(ActivationFunctionType e)
   return EnumNamesActivationFunctionType()[index];
 }
 
-enum LSHProjectionType
+enum LSHProjectionType : int8_t
 {
   LSHProjectionType_UNKNOWN = 0,
   LSHProjectionType_SPARSE = 1,
@@ -2205,7 +2205,7 @@ inline const char *EnumNameLSHProjectionType(LSHProjectionType e)
   return EnumNamesLSHProjectionType()[index];
 }
 
-enum FullyConnectedOptionsWeightsFormat
+enum FullyConnectedOptionsWeightsFormat : int8_t
 {
   FullyConnectedOptionsWeightsFormat_DEFAULT = 0,
   FullyConnectedOptionsWeightsFormat_SHUFFLED4x16INT8 = 1,
@@ -2237,7 +2237,7 @@ inline const char *EnumNameFullyConnectedOptionsWeightsFormat(FullyConnectedOpti
   }
 }
 
-enum LSTMKernelType
+enum LSTMKernelType : int8_t
 {
   LSTMKernelType_FULL = 0,
   LSTMKernelType_BASIC = 1,
@@ -2265,7 +2265,7 @@ inline const char *EnumNameLSTMKernelType(LSTMKernelType e)
   return EnumNamesLSTMKernelType()[index];
 }
 
-enum CombinerType
+enum CombinerType : int8_t
 {
   CombinerType_SUM = 0,
   CombinerType_MEAN = 1,
@@ -2294,7 +2294,7 @@ inline const char *EnumNameCombinerType(CombinerType e)
   return EnumNamesCombinerType()[index];
 }
 
-enum MirrorPadMode
+enum MirrorPadMode : int8_t
 {
   MirrorPadMode_REFLECT = 0,
   MirrorPadMode_SYMMETRIC = 1,
@@ -2322,7 +2322,7 @@ inline const char *EnumNameMirrorPadMode(MirrorPadMode e)
   return EnumNamesMirrorPadMode()[index];
 }
 
-enum CustomOptionsFormat
+enum CustomOptionsFormat : int8_t
 {
   CustomOptionsFormat_FLEXBUFFERS = 0,
   CustomOptionsFormat_MIN = CustomOptionsFormat_FLEXBUFFERS,
@@ -2349,7 +2349,7 @@ inline const char *EnumNameCustomOptionsFormat(CustomOptionsFormat e)
   return EnumNamesCustomOptionsFormat()[index];
 }
 
-enum DataFormat
+enum DataFormat : int8_t
 {
   DataFormat_CHANNELS_LAST = 0,
   DataFormat_CHANNELS_FIRST = 1,
@@ -2408,7 +2408,6 @@ struct CustomQuantizationBuilder
   {
     start_ = fbb_.StartTable();
   }
-  CustomQuantizationBuilder &operator=(const CustomQuantizationBuilder &);
   flatbuffers::Offset<CustomQuantization> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -2539,7 +2538,6 @@ struct QuantizationParametersBuilder
   {
     start_ = fbb_.StartTable();
   }
-  QuantizationParametersBuilder &operator=(const QuantizationParametersBuilder &);
   flatbuffers::Offset<QuantizationParameters> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -2613,7 +2611,6 @@ struct Int32VectorBuilder
   {
     start_ = fbb_.StartTable();
   }
-  Int32VectorBuilder &operator=(const Int32VectorBuilder &);
   flatbuffers::Offset<Int32Vector> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -2670,7 +2667,6 @@ struct Uint16VectorBuilder
   {
     start_ = fbb_.StartTable();
   }
-  Uint16VectorBuilder &operator=(const Uint16VectorBuilder &);
   flatbuffers::Offset<Uint16Vector> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -2731,7 +2727,6 @@ struct Uint8VectorBuilder
   {
     start_ = fbb_.StartTable();
   }
-  Uint8VectorBuilder &operator=(const Uint8VectorBuilder &);
   flatbuffers::Offset<Uint8Vector> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -2912,7 +2907,6 @@ struct DimensionMetadataBuilder
   {
     start_ = fbb_.StartTable();
   }
-  DimensionMetadataBuilder &operator=(const DimensionMetadataBuilder &);
   flatbuffers::Offset<DimensionMetadata> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -2994,7 +2988,6 @@ struct SparsityParametersBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SparsityParametersBuilder &operator=(const SparsityParametersBuilder &);
   flatbuffers::Offset<SparsityParameters> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -3121,7 +3114,6 @@ struct TensorBuilder
   {
     start_ = fbb_.StartTable();
   }
-  TensorBuilder &operator=(const TensorBuilder &);
   flatbuffers::Offset<Tensor> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -3235,7 +3227,6 @@ struct Conv2DOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  Conv2DOptionsBuilder &operator=(const Conv2DOptionsBuilder &);
   flatbuffers::Offset<Conv2DOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -3330,7 +3321,6 @@ struct Pool2DOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  Pool2DOptionsBuilder &operator=(const Pool2DOptionsBuilder &);
   flatbuffers::Offset<Pool2DOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -3431,7 +3421,6 @@ struct DepthwiseConv2DOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  DepthwiseConv2DOptionsBuilder &operator=(const DepthwiseConv2DOptionsBuilder &);
   flatbuffers::Offset<DepthwiseConv2DOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -3509,7 +3498,6 @@ struct ConcatEmbeddingsOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ConcatEmbeddingsOptionsBuilder &operator=(const ConcatEmbeddingsOptionsBuilder &);
   flatbuffers::Offset<ConcatEmbeddingsOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -3574,7 +3562,6 @@ struct LSHProjectionOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  LSHProjectionOptionsBuilder &operator=(const LSHProjectionOptionsBuilder &);
   flatbuffers::Offset<LSHProjectionOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -3639,7 +3626,6 @@ struct SVDFOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SVDFOptionsBuilder &operator=(const SVDFOptionsBuilder &);
   flatbuffers::Offset<SVDFOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -3704,7 +3690,6 @@ struct RNNOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  RNNOptionsBuilder &operator=(const RNNOptionsBuilder &);
   flatbuffers::Offset<RNNOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -3775,7 +3760,6 @@ struct SequenceRNNOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SequenceRNNOptionsBuilder &operator=(const SequenceRNNOptionsBuilder &);
   flatbuffers::Offset<SequenceRNNOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -3855,7 +3839,6 @@ struct BidirectionalSequenceRNNOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  BidirectionalSequenceRNNOptionsBuilder &operator=(const BidirectionalSequenceRNNOptionsBuilder &);
   flatbuffers::Offset<BidirectionalSequenceRNNOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -3941,7 +3924,6 @@ struct FullyConnectedOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  FullyConnectedOptionsBuilder &operator=(const FullyConnectedOptionsBuilder &);
   flatbuffers::Offset<FullyConnectedOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -3990,7 +3972,6 @@ struct SoftmaxOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SoftmaxOptionsBuilder &operator=(const SoftmaxOptionsBuilder &);
   flatbuffers::Offset<SoftmaxOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4043,7 +4024,6 @@ struct ConcatenationOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ConcatenationOptionsBuilder &operator=(const ConcatenationOptionsBuilder &);
   flatbuffers::Offset<ConcatenationOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4095,7 +4075,6 @@ struct AddOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  AddOptionsBuilder &operator=(const AddOptionsBuilder &);
   flatbuffers::Offset<AddOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4146,7 +4125,6 @@ struct MulOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  MulOptionsBuilder &operator=(const MulOptionsBuilder &);
   flatbuffers::Offset<MulOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4197,7 +4175,6 @@ struct L2NormOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  L2NormOptionsBuilder &operator=(const L2NormOptionsBuilder &);
   flatbuffers::Offset<L2NormOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4263,8 +4240,6 @@ struct LocalResponseNormalizationOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  LocalResponseNormalizationOptionsBuilder &
-  operator=(const LocalResponseNormalizationOptionsBuilder &);
   flatbuffers::Offset<LocalResponseNormalizationOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4353,7 +4328,6 @@ struct LSTMOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  LSTMOptionsBuilder &operator=(const LSTMOptionsBuilder &);
   flatbuffers::Offset<LSTMOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4445,8 +4419,6 @@ struct UnidirectionalSequenceLSTMOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  UnidirectionalSequenceLSTMOptionsBuilder &
-  operator=(const UnidirectionalSequenceLSTMOptionsBuilder &);
   flatbuffers::Offset<UnidirectionalSequenceLSTMOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4546,8 +4518,6 @@ struct BidirectionalSequenceLSTMOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  BidirectionalSequenceLSTMOptionsBuilder &
-  operator=(const BidirectionalSequenceLSTMOptionsBuilder &);
   flatbuffers::Offset<BidirectionalSequenceLSTMOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4608,7 +4578,6 @@ struct ResizeBilinearOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ResizeBilinearOptionsBuilder &operator=(const ResizeBilinearOptionsBuilder &);
   flatbuffers::Offset<ResizeBilinearOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4656,7 +4625,6 @@ struct ResizeNearestNeighborOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ResizeNearestNeighborOptionsBuilder &operator=(const ResizeNearestNeighborOptionsBuilder &);
   flatbuffers::Offset<ResizeNearestNeighborOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4701,7 +4669,6 @@ struct CallOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  CallOptionsBuilder &operator=(const CallOptionsBuilder &);
   flatbuffers::Offset<CallOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4736,7 +4703,6 @@ struct PadOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  PadOptionsBuilder &operator=(const PadOptionsBuilder &);
   flatbuffers::Offset<PadOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4769,7 +4735,6 @@ struct PadV2OptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  PadV2OptionsBuilder &operator=(const PadV2OptionsBuilder &);
   flatbuffers::Offset<PadV2Options> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4815,7 +4780,6 @@ struct ReshapeOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ReshapeOptionsBuilder &operator=(const ReshapeOptionsBuilder &);
   flatbuffers::Offset<ReshapeOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4859,7 +4823,6 @@ struct SpaceToBatchNDOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SpaceToBatchNDOptionsBuilder &operator=(const SpaceToBatchNDOptionsBuilder &);
   flatbuffers::Offset<SpaceToBatchNDOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4893,7 +4856,6 @@ struct BatchToSpaceNDOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  BatchToSpaceNDOptionsBuilder &operator=(const BatchToSpaceNDOptionsBuilder &);
   flatbuffers::Offset<BatchToSpaceNDOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4951,7 +4913,6 @@ struct SkipGramOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SkipGramOptionsBuilder &operator=(const SkipGramOptionsBuilder &);
   flatbuffers::Offset<SkipGramOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -4999,7 +4960,6 @@ struct SpaceToDepthOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SpaceToDepthOptionsBuilder &operator=(const SpaceToDepthOptionsBuilder &);
   flatbuffers::Offset<SpaceToDepthOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5044,7 +5004,6 @@ struct DepthToSpaceOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  DepthToSpaceOptionsBuilder &operator=(const DepthToSpaceOptionsBuilder &);
   flatbuffers::Offset<DepthToSpaceOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5094,7 +5053,6 @@ struct SubOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SubOptionsBuilder &operator=(const SubOptionsBuilder &);
   flatbuffers::Offset<SubOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5145,7 +5103,6 @@ struct DivOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  DivOptionsBuilder &operator=(const DivOptionsBuilder &);
   flatbuffers::Offset<DivOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5181,7 +5138,6 @@ struct TopKV2OptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  TopKV2OptionsBuilder &operator=(const TopKV2OptionsBuilder &);
   flatbuffers::Offset<TopKV2Options> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5228,7 +5184,6 @@ struct EmbeddingLookupSparseOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  EmbeddingLookupSparseOptionsBuilder &operator=(const EmbeddingLookupSparseOptionsBuilder &);
   flatbuffers::Offset<EmbeddingLookupSparseOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5271,7 +5226,6 @@ struct GatherOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  GatherOptionsBuilder &operator=(const GatherOptionsBuilder &);
   flatbuffers::Offset<GatherOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5306,7 +5260,6 @@ struct TransposeOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  TransposeOptionsBuilder &operator=(const TransposeOptionsBuilder &);
   flatbuffers::Offset<TransposeOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5340,7 +5293,6 @@ struct ExpOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ExpOptionsBuilder &operator=(const ExpOptionsBuilder &);
   flatbuffers::Offset<ExpOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5373,7 +5325,6 @@ struct CosOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  CosOptionsBuilder &operator=(const CosOptionsBuilder &);
   flatbuffers::Offset<CosOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5416,7 +5367,6 @@ struct ReducerOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ReducerOptionsBuilder &operator=(const ReducerOptionsBuilder &);
   flatbuffers::Offset<ReducerOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5464,7 +5414,6 @@ struct SqueezeOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SqueezeOptionsBuilder &operator=(const SqueezeOptionsBuilder &);
   flatbuffers::Offset<SqueezeOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5518,7 +5467,6 @@ struct SplitOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SplitOptionsBuilder &operator=(const SplitOptionsBuilder &);
   flatbuffers::Offset<SplitOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5563,7 +5511,6 @@ struct SplitVOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SplitVOptionsBuilder &operator=(const SplitVOptionsBuilder &);
   flatbuffers::Offset<SplitVOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5635,7 +5582,6 @@ struct StridedSliceOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  StridedSliceOptionsBuilder &operator=(const StridedSliceOptionsBuilder &);
   flatbuffers::Offset<StridedSliceOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5676,7 +5622,6 @@ struct LogSoftmaxOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  LogSoftmaxOptionsBuilder &operator=(const LogSoftmaxOptionsBuilder &);
   flatbuffers::Offset<LogSoftmaxOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5732,7 +5677,6 @@ struct CastOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  CastOptionsBuilder &operator=(const CastOptionsBuilder &);
   flatbuffers::Offset<CastOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5770,7 +5714,6 @@ struct DequantizeOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  DequantizeOptionsBuilder &operator=(const DequantizeOptionsBuilder &);
   flatbuffers::Offset<DequantizeOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5804,7 +5747,6 @@ struct MaximumMinimumOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  MaximumMinimumOptionsBuilder &operator=(const MaximumMinimumOptionsBuilder &);
   flatbuffers::Offset<MaximumMinimumOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5838,7 +5780,6 @@ struct TileOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  TileOptionsBuilder &operator=(const TileOptionsBuilder &);
   flatbuffers::Offset<TileOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5884,7 +5825,6 @@ struct ArgMaxOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ArgMaxOptionsBuilder &operator=(const ArgMaxOptionsBuilder &);
   flatbuffers::Offset<ArgMaxOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5933,7 +5873,6 @@ struct ArgMinOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ArgMinOptionsBuilder &operator=(const ArgMinOptionsBuilder &);
   flatbuffers::Offset<ArgMinOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -5969,7 +5908,6 @@ struct GreaterOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  GreaterOptionsBuilder &operator=(const GreaterOptionsBuilder &);
   flatbuffers::Offset<GreaterOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6003,7 +5941,6 @@ struct GreaterEqualOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  GreaterEqualOptionsBuilder &operator=(const GreaterEqualOptionsBuilder &);
   flatbuffers::Offset<GreaterEqualOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6037,7 +5974,6 @@ struct LessOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  LessOptionsBuilder &operator=(const LessOptionsBuilder &);
   flatbuffers::Offset<LessOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6070,7 +6006,6 @@ struct LessEqualOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  LessEqualOptionsBuilder &operator=(const LessEqualOptionsBuilder &);
   flatbuffers::Offset<LessEqualOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6104,7 +6039,6 @@ struct NegOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  NegOptionsBuilder &operator=(const NegOptionsBuilder &);
   flatbuffers::Offset<NegOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6137,7 +6071,6 @@ struct SelectOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SelectOptionsBuilder &operator=(const SelectOptionsBuilder &);
   flatbuffers::Offset<SelectOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6170,7 +6103,6 @@ struct SliceOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SliceOptionsBuilder &operator=(const SliceOptionsBuilder &);
   flatbuffers::Offset<SliceOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6229,7 +6161,6 @@ struct TransposeConvOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  TransposeConvOptionsBuilder &operator=(const TransposeConvOptionsBuilder &);
   flatbuffers::Offset<TransposeConvOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6268,7 +6199,6 @@ struct ExpandDimsOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ExpandDimsOptionsBuilder &operator=(const ExpandDimsOptionsBuilder &);
   flatbuffers::Offset<ExpandDimsOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6313,7 +6243,6 @@ struct SparseToDenseOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SparseToDenseOptionsBuilder &operator=(const SparseToDenseOptionsBuilder &);
   flatbuffers::Offset<SparseToDenseOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6348,7 +6277,6 @@ struct EqualOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  EqualOptionsBuilder &operator=(const EqualOptionsBuilder &);
   flatbuffers::Offset<EqualOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6381,7 +6309,6 @@ struct NotEqualOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  NotEqualOptionsBuilder &operator=(const NotEqualOptionsBuilder &);
   flatbuffers::Offset<NotEqualOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6428,7 +6355,6 @@ struct ShapeOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ShapeOptionsBuilder &operator=(const ShapeOptionsBuilder &);
   flatbuffers::Offset<ShapeOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6464,7 +6390,6 @@ struct RankOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  RankOptionsBuilder &operator=(const RankOptionsBuilder &);
   flatbuffers::Offset<RankOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6497,7 +6422,6 @@ struct PowOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  PowOptionsBuilder &operator=(const PowOptionsBuilder &);
   flatbuffers::Offset<PowOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6554,7 +6478,6 @@ struct FakeQuantOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  FakeQuantOptionsBuilder &operator=(const FakeQuantOptionsBuilder &);
   flatbuffers::Offset<FakeQuantOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6606,7 +6529,6 @@ struct PackOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  PackOptionsBuilder &operator=(const PackOptionsBuilder &);
   flatbuffers::Offset<PackOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6642,7 +6564,6 @@ struct LogicalOrOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  LogicalOrOptionsBuilder &operator=(const LogicalOrOptionsBuilder &);
   flatbuffers::Offset<LogicalOrOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6683,7 +6604,6 @@ struct OneHotOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  OneHotOptionsBuilder &operator=(const OneHotOptionsBuilder &);
   flatbuffers::Offset<OneHotOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6718,7 +6638,6 @@ struct AbsOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  AbsOptionsBuilder &operator=(const AbsOptionsBuilder &);
   flatbuffers::Offset<AbsOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6751,7 +6670,6 @@ struct HardSwishOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  HardSwishOptionsBuilder &operator=(const HardSwishOptionsBuilder &);
   flatbuffers::Offset<HardSwishOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6785,7 +6703,6 @@ struct LogicalAndOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  LogicalAndOptionsBuilder &operator=(const LogicalAndOptionsBuilder &);
   flatbuffers::Offset<LogicalAndOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6819,7 +6736,6 @@ struct LogicalNotOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  LogicalNotOptionsBuilder &operator=(const LogicalNotOptionsBuilder &);
   flatbuffers::Offset<LogicalNotOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6863,7 +6779,6 @@ struct UnpackOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  UnpackOptionsBuilder &operator=(const UnpackOptionsBuilder &);
   flatbuffers::Offset<UnpackOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6899,7 +6814,6 @@ struct FloorDivOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  FloorDivOptionsBuilder &operator=(const FloorDivOptionsBuilder &);
   flatbuffers::Offset<FloorDivOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6933,7 +6847,6 @@ struct SquareOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SquareOptionsBuilder &operator=(const SquareOptionsBuilder &);
   flatbuffers::Offset<SquareOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -6966,7 +6879,6 @@ struct ZerosLikeOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ZerosLikeOptionsBuilder &operator=(const ZerosLikeOptionsBuilder &);
   flatbuffers::Offset<ZerosLikeOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7000,7 +6912,6 @@ struct FillOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  FillOptionsBuilder &operator=(const FillOptionsBuilder &);
   flatbuffers::Offset<FillOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7033,7 +6944,6 @@ struct FloorModOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  FloorModOptionsBuilder &operator=(const FloorModOptionsBuilder &);
   flatbuffers::Offset<FloorModOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7067,7 +6977,6 @@ struct RangeOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  RangeOptionsBuilder &operator=(const RangeOptionsBuilder &);
   flatbuffers::Offset<RangeOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7107,7 +7016,6 @@ struct LeakyReluOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  LeakyReluOptionsBuilder &operator=(const LeakyReluOptionsBuilder &);
   flatbuffers::Offset<LeakyReluOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7142,7 +7050,6 @@ struct SquaredDifferenceOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SquaredDifferenceOptionsBuilder &operator=(const SquaredDifferenceOptionsBuilder &);
   flatbuffers::Offset<SquaredDifferenceOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7189,7 +7096,6 @@ struct MirrorPadOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  MirrorPadOptionsBuilder &operator=(const MirrorPadOptionsBuilder &);
   flatbuffers::Offset<MirrorPadOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7238,7 +7144,6 @@ struct UniqueOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  UniqueOptionsBuilder &operator=(const UniqueOptionsBuilder &);
   flatbuffers::Offset<UniqueOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7274,7 +7179,6 @@ struct ReverseV2OptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ReverseV2OptionsBuilder &operator=(const ReverseV2OptionsBuilder &);
   flatbuffers::Offset<ReverseV2Options> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7308,7 +7212,6 @@ struct AddNOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  AddNOptionsBuilder &operator=(const AddNOptionsBuilder &);
   flatbuffers::Offset<AddNOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7341,7 +7244,6 @@ struct GatherNdOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  GatherNdOptionsBuilder &operator=(const GatherNdOptionsBuilder &);
   flatbuffers::Offset<GatherNdOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7375,7 +7277,6 @@ struct WhereOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  WhereOptionsBuilder &operator=(const WhereOptionsBuilder &);
   flatbuffers::Offset<WhereOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7424,7 +7325,6 @@ struct ReverseSequenceOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ReverseSequenceOptionsBuilder &operator=(const ReverseSequenceOptionsBuilder &);
   flatbuffers::Offset<ReverseSequenceOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7461,7 +7361,6 @@ struct MatrixDiagOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  MatrixDiagOptionsBuilder &operator=(const MatrixDiagOptionsBuilder &);
   flatbuffers::Offset<MatrixDiagOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7495,7 +7394,6 @@ struct QuantizeOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  QuantizeOptionsBuilder &operator=(const QuantizeOptionsBuilder &);
   flatbuffers::Offset<QuantizeOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7529,7 +7427,6 @@ struct MatrixSetDiagOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  MatrixSetDiagOptionsBuilder &operator=(const MatrixSetDiagOptionsBuilder &);
   flatbuffers::Offset<MatrixSetDiagOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7579,7 +7476,6 @@ struct IfOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  IfOptionsBuilder &operator=(const IfOptionsBuilder &);
   flatbuffers::Offset<IfOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7632,7 +7528,6 @@ struct WhileOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  WhileOptionsBuilder &operator=(const WhileOptionsBuilder &);
   flatbuffers::Offset<WhileOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7669,7 +7564,6 @@ struct NonMaxSuppressionV4OptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  NonMaxSuppressionV4OptionsBuilder &operator=(const NonMaxSuppressionV4OptionsBuilder &);
   flatbuffers::Offset<NonMaxSuppressionV4Options> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7703,7 +7597,6 @@ struct NonMaxSuppressionV5OptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  NonMaxSuppressionV5OptionsBuilder &operator=(const NonMaxSuppressionV5OptionsBuilder &);
   flatbuffers::Offset<NonMaxSuppressionV5Options> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7737,7 +7630,6 @@ struct ScatterNdOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ScatterNdOptionsBuilder &operator=(const ScatterNdOptionsBuilder &);
   flatbuffers::Offset<ScatterNdOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7771,7 +7663,6 @@ struct SelectV2OptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SelectV2OptionsBuilder &operator=(const SelectV2OptionsBuilder &);
   flatbuffers::Offset<SelectV2Options> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7805,7 +7696,6 @@ struct DensifyOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  DensifyOptionsBuilder &operator=(const DensifyOptionsBuilder &);
   flatbuffers::Offset<DensifyOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7839,7 +7729,6 @@ struct SegmentSumOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SegmentSumOptionsBuilder &operator=(const SegmentSumOptionsBuilder &);
   flatbuffers::Offset<SegmentSumOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7891,7 +7780,6 @@ struct BatchMatMulOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  BatchMatMulOptionsBuilder &operator=(const BatchMatMulOptionsBuilder &);
   flatbuffers::Offset<BatchMatMulOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -7941,7 +7829,6 @@ struct BCQGatherOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  BCQGatherOptionsBuilder &operator=(const BCQGatherOptionsBuilder &);
   flatbuffers::Offset<BCQGatherOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -8000,7 +7887,6 @@ struct BCQFullyConnectedOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  BCQFullyConnectedOptionsBuilder &operator=(const BCQFullyConnectedOptionsBuilder &);
   flatbuffers::Offset<BCQFullyConnectedOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -8058,7 +7944,6 @@ struct InstanceNormOptionsBuilder
   {
     start_ = fbb_.StartTable();
   }
-  InstanceNormOptionsBuilder &operator=(const InstanceNormOptionsBuilder &);
   flatbuffers::Offset<InstanceNormOptions> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -8124,7 +8009,6 @@ struct OperatorCodeBuilder
   {
     start_ = fbb_.StartTable();
   }
-  OperatorCodeBuilder &operator=(const OperatorCodeBuilder &);
   flatbuffers::Offset<OperatorCode> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -9566,7 +9450,6 @@ struct OperatorBuilder
   {
     start_ = fbb_.StartTable();
   }
-  OperatorBuilder &operator=(const OperatorBuilder &);
   flatbuffers::Offset<Operator> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -9705,7 +9588,6 @@ struct SubGraphBuilder
   {
     start_ = fbb_.StartTable();
   }
-  SubGraphBuilder &operator=(const SubGraphBuilder &);
   flatbuffers::Offset<SubGraph> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -9781,7 +9663,6 @@ struct BufferBuilder
   {
     start_ = fbb_.StartTable();
   }
-  BufferBuilder &operator=(const BufferBuilder &);
   flatbuffers::Offset<Buffer> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -9845,7 +9726,6 @@ struct MetadataBuilder
   {
     start_ = fbb_.StartTable();
   }
-  MetadataBuilder &operator=(const MetadataBuilder &);
   flatbuffers::Offset<Metadata> Finish()
   {
     const auto end = fbb_.EndTable(start_);
@@ -9967,7 +9847,6 @@ struct ModelBuilder
   {
     start_ = fbb_.StartTable();
   }
-  ModelBuilder &operator=(const ModelBuilder &);
   flatbuffers::Offset<Model> Finish()
   {
     const auto end = fbb_.EndTable(start_);
