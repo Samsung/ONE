@@ -71,7 +71,7 @@ REQUIRED_UNITS+=("loco" "locop" "locomotiv" "logo-core" "logo")
 # Circle compiler library (.circle -> .circle)
 REQUIRED_UNITS+=("luci")
 # Flatbuffer I/O
-REQUIRED_UNITS+=("mio-tflite" "mio-tflite260" "mio-circle" "mio-circle04")
+REQUIRED_UNITS+=("mio-tflite" "mio-tflite260" "mio-circle04")
 # Tools
 REQUIRED_UNITS+=("tflite2circle" "circle2circle" "luci-interpreter")
 REQUIRED_UNITS+=("souschef" "tflchef" "circlechef" "circle-verify")
