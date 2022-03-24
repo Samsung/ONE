@@ -24,7 +24,7 @@
 namespace luci
 {
 
-using LayerInfoMap = std::unordered_map<std::string, luci::LayerInfo *>;
+using LayerInfoMap = std::unordered_map<std::string, luci::LayerInfo>;
 
 LayerInfoMap layer_info_map(loco::Graph *g, std::vector<LayerInfo> &layers_info);
 
