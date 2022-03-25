@@ -125,47 +125,15 @@ void add_multi_output_node(LayerInfoMap &info_by_name, LayerInfo &layer_info,
   }
 
   // Add multiple output node to info_by_name
-  if (layer_info.name == name)
-  {
-    info_by_name[name] = layer_info;
-  }
-  else
-  {
-    auto it = std::find_if(layers_info.begin(), layers_info.end(),
-                           [&name](const auto &info) { return name == info.name; });
-
-    if (it == layers_info.end())
-    {
-      info_by_name[name] = {name, layer_info.dtype, layer_info.granularity};
-    }
-    else
-    {
-      info_by_name[name] = *it;
-    }
-  }
+  info_by_name[name] = {name, layer_info.dtype, layer_info.granularity};
 
   // Add outputs node to info_by_name
   for (const auto succs_node : succs_nodes)
   {
     const auto succs_circle_node = loco::must_cast<luci::CircleNode *>(succs_node);
     const auto succs_circle_node_name = succs_circle_node->name();
-    if (name != succs_circle_node_name)
-    {
-      auto it = std::find_if(layers_info.begin(), layers_info.end(),
-                             [&succs_circle_node_name](const auto &info) {
-                               return succs_circle_node_name == info.name;
-                             });
-
-      if (it == layers_info.end())
-      {
-        info_by_name[succs_circle_node_name] = {succs_circle_node_name, layer_info.dtype,
-                                                layer_info.granularity};
-      }
-      else
-      {
-        info_by_name[succs_circle_node_name] = *it;
-      }
-    }
+    info_by_name[succs_circle_node_name] = {succs_circle_node_name, layer_info.dtype,
+                                            layer_info.granularity};
   }
 }
 
@@ -211,6 +179,9 @@ LayerInfoMap layer_info_map(loco::Graph *g, std::vector<LayerInfo> &layers_info)
       throw std::runtime_error("No such layer named " + name +
                                ". Check layer names in the quantization configuration file.");
   }
+
+  // TODO Check all names in layers_info exist in the info_by_name
+  // TODO Check names in info_by_name but not in layers_info are from virtual outputs
 
   return info_by_name;
 }
