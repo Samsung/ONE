@@ -17,12 +17,12 @@
 #include "RecordMinMax.h"
 #include "RecordFunction.h"
 #include "MinMaxObserver.h"
-#include "HDF5Importer.h"
 
 #include <luci/Importer.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
 #include <luci/IR/CircleQuantParam.h>
+#include <h5_importer/HDF5Importer.h>
 
 #include <dirent.h>
 #include <algorithm>
@@ -33,8 +33,8 @@
 #include <iostream>
 #include <random>
 
-using Shape = luci_interpreter::Shape;
-using DataType = luci_interpreter::DataType;
+using Shape = std::vector<loco::Dimension>;
+using DataType = loco::DataType;
 
 namespace
 {
@@ -98,12 +98,12 @@ void verifyTypeShape(const luci::CircleInput *input_node, const DataType &dtype,
   if (dtype != input_node->dtype())
     throw std::runtime_error("Wrong input type.");
 
-  if (shape.num_dims() != input_node->rank())
+  if (shape.size() != input_node->rank())
     throw std::runtime_error("Input rank mismatch.");
 
-  for (uint32_t i = 0; i < shape.num_dims(); i++)
+  for (uint32_t i = 0; i < shape.size(); i++)
   {
-    if (shape.dim(i) != input_node->dim(i).value())
+    if (not(shape.at(i) == input_node->dim(i)))
       throw std::runtime_error("Input shape mismatch.");
   }
 }
@@ -311,12 +311,12 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
 {
   try
   {
-    HDF5Importer importer(input_data_path);
-    importer.importGroup();
+    h5_importer::HDF5Importer importer(input_data_path);
+    importer.importGroup("value");
 
     bool is_raw_data = importer.isRawData();
 
-    const auto num_records = importer.numRecords();
+    const auto num_records = importer.numData();
     if (num_records == 0)
       throw std::runtime_error("The input data file does not contain any record.");
 
@@ -339,7 +339,7 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
         if (!is_raw_data)
         {
           DataType dtype;
-          Shape shape(input_node->rank());
+          Shape shape;
           importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data());
 
           // Check the type and the shape of the input data is valid
