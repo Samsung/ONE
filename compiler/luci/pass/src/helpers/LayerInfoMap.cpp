@@ -102,7 +102,7 @@ bool same_setting(const LayerInfo &left, const LayerInfo &right)
 }
 
 void add_multi_output_node(LayerInfoMap &info_by_name, LayerInfo &layer_info,
-                           const luci::CircleNode *node, std::vector<LayerInfo> &layers_info)
+                           const luci::CircleNode *node)
 {
   assert(is_multiple_output_node(node)); // FIX_CALLER_UNLESS
 
@@ -158,7 +158,7 @@ LayerInfoMap layer_info_map(loco::Graph *g, std::vector<LayerInfo> &layers_info)
         // Check and add multiple-output node and its outputs to info_by_name
         if (const auto multi_output = get_multi_output_node(cnode))
         {
-          add_multi_output_node(info_by_name, info, multi_output, layers_info);
+          add_multi_output_node(info_by_name, info, multi_output);
           found = true;
           continue;
         }
