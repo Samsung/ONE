@@ -19,6 +19,7 @@
 #include <H5Cpp.h>
 
 #include <string>
+#include <vector>
 #include <cassert>
 #include <stdexcept>
 
@@ -108,7 +109,9 @@ void readTensorData(H5::DataSet &tensor, int64_t *buffer)
 
 } // namespace
 
-namespace dio_hdf5
+namespace dio
+{
+namespace hdf5
 {
 
 HDF5Importer::HDF5Importer(const std::string &path)
@@ -164,4 +167,5 @@ void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, DataType *d
   }
 }
 
-} // namespace dio_hdf5
+} // namespace hdf5
+} // namespace dio

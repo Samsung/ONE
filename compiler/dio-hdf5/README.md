@@ -1,6 +1,6 @@
 # dio-hdf5
 
-_dio-hdf5_ is a library to help loading hdf5 files.
+_dio-hdf5_ is a library to help loading hdf5 files (_dio_ indicates data I/O).
 
 The hdf5 file should have the following structure.
 

@@ -23,7 +23,9 @@
 
 #include <stdexcept>
 
-namespace dio_hdf5
+namespace dio
+{
+namespace hdf5
 {
 
 // HDF5Importer reads an input data saved in the hdf5 file in the given path
@@ -73,6 +75,7 @@ private:
   H5::Group _group;
 };
 
-} // namespace dio_hdf5
+} // namespace hdf5
+} // namespace dio
 
 #endif // __DIO_HDF5_H__

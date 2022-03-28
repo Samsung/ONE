@@ -11,9 +11,9 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(dio_hdf5 SHARED ${SOURCES})
 target_include_directories(dio_hdf5 PUBLIC include)
-target_include_directories(dio_hdf5 PRIVATE ${HDF5_INCLUDE_DIRS})
-target_link_libraries(dio_hdf5 ${HDF5_CXX_LIBRARIES})
-target_link_libraries(dio_hdf5 loco)
+target_include_directories(dio_hdf5 PUBLIC ${HDF5_INCLUDE_DIRS})
+target_link_libraries(dio_hdf5 PUBLIC ${HDF5_CXX_LIBRARIES})
+target_link_libraries(dio_hdf5 PUBLIC loco)
 
 install(TARGETS dio_hdf5 DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include
@@ -25,5 +25,6 @@ endif(NOT ENABLE_TEST)
 
 nnas_find_package(GTest REQUIRED)
 
-GTest_AddTest(dio_hdf5_test ${TESTS} "src/HDF5Importer.cpp")
+GTest_AddTest(dio_hdf5_test ${TESTS})
+target_include_directories(dio_hdf5_test PRIVATE include)
 target_link_libraries(dio_hdf5_test dio_hdf5)

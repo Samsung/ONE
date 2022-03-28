@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 
-using HDF5Importer = dio_hdf5::HDF5Importer;
+using HDF5Importer = dio::hdf5::HDF5Importer;
 using Shape = std::vector<loco::Dimension>;
 using DataType = loco::DataType;
 
