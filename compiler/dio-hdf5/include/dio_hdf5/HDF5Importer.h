@@ -21,7 +21,8 @@
 
 #include <loco.h>
 
-#include <stdexcept>
+#include <string>
+#include <vector>
 
 namespace dio
 {
@@ -44,7 +45,7 @@ public:
 
 public:
   /**
-   * @brief importGroup has to be called before readTensor is called
+   * @note importGroup has to be called before readTensor is called
    *        Otherwise, readTensor will throw an exception
    */
   void importGroup(const std::string &group) { _group = _file.openGroup(group); }
