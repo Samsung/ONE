@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __H5_IMPORTER_H__
-#define __H5_IMPORTER_H__
+#ifndef __DIO_HDF5_H__
+#define __DIO_HDF5_H__
 
 #include <H5Cpp.h>
 
@@ -23,7 +23,7 @@
 
 #include <stdexcept>
 
-namespace h5_importer
+namespace dio_hdf5
 {
 
 // HDF5Importer reads an input data saved in the hdf5 file in the given path
@@ -32,7 +32,7 @@ namespace h5_importer
 //  > Group <group_name>
 //    > Group <data_idx>
 //      > Dataset <input_idx>
-// data_idx : index of the data (dataset file can contain multiple datas)
+// data_idx : index of the data (dataset file can contain multiple data)
 // input_idx : index of the input (DNN model can have multiple inputs)
 // Ex: the j'th input of the i'th data of group 'value' can be accessed by "/value/i/j"
 class HDF5Importer final
@@ -73,6 +73,6 @@ private:
   H5::Group _group;
 };
 
-} // namespace h5_importer
+} // namespace dio_hdf5
 
-#endif // __H5_IMPORTER_H__
+#endif // __DIO_HDF5_H__

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "h5_importer/HDF5Importer.h"
+#include "dio_hdf5/HDF5Importer.h"
 
 #include <H5Cpp.h>
 
@@ -108,7 +108,7 @@ void readTensorData(H5::DataSet &tensor, int64_t *buffer)
 
 } // namespace
 
-namespace h5_importer
+namespace dio_hdf5
 {
 
 HDF5Importer::HDF5Importer(const std::string &path)
@@ -164,4 +164,4 @@ void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, DataType *d
   }
 }
 
-} // namespace h5_importer
+} // namespace dio_hdf5

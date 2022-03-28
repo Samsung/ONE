@@ -1,6 +1,6 @@
-# h5-importer
+# dio-hdf5
 
-_h5_importer_ is a library to help loading hdf5 files used by ONE quantizer.
+_dio-hdf5_ is a library to help loading hdf5 files.
 
 The hdf5 file should have the following structure.
 
@@ -14,7 +14,7 @@ Group "/"
 ## Example
 
 ```cpp
-h5_importer::HDF5Importer h5{input_path};
+dio_hdf5::HDF5Importer h5{input_path};
 
 h5.importGroup("value");
 
