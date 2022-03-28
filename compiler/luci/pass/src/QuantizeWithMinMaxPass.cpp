@@ -174,6 +174,21 @@ private:
     insert_out_quantize(node);                                           \
   }
 
+// INPUT_NAME is the only activation of NODE
+#define INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(NODE, INPUT_NAME, OUT_NAME) \
+  void visit(NODE *node)                                                     \
+  {                                                                          \
+    if (auto input_quant = create_in_quantize(node->INPUT_NAME(), node))     \
+      node->INPUT_NAME(input_quant);                                         \
+                                                                             \
+    auto out_nodes = loco::succs(node);                                      \
+    for (auto out_node : out_nodes)                                          \
+    {                                                                        \
+      auto out_circle = loco::must_cast<OUT_NAME *>(out_node);               \
+      insert_out_quantize(out_circle);                                       \
+    }                                                                        \
+  }
+
 // INPUT_NAME1 and INPUT_NAME2 are the only activations of NODE
 #define INSERT_QUANTIZE_TO_BINARY_OP(NODE, INPUT_NAME1, INPUT_NAME2)       \
   void visit(NODE *node)                                                   \
@@ -196,6 +211,11 @@ private:
 
   // Skip output layer
   void visit(luci::CircleOutput *) {}
+  void visit(luci::CircleSplitVOut *) {}
+  void visit(luci::CircleSplitOut *) {}
+  void visit(luci::CircleTopKV2Out *) {}
+  void visit(luci::CircleUniqueOut *) {}
+  void visit(luci::CircleUnpackOut *) {}
 
   // Ops that receive a single activation as an input
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleAveragePool2D, value)
@@ -250,6 +270,13 @@ private:
   INSERT_QUANTIZE_TO_BINARY_OP(luci::CirclePow, x, y)
   INSERT_QUANTIZE_TO_BINARY_OP(luci::CircleSub, x, y)
 
+  // Multiple-output ops that receive one activation as inputs
+  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleSplit, input, luci::CircleSplitOut)
+  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleSplitV, input, luci::CircleSplitVOut)
+  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleTopKV2, input, luci::CircleTopKV2Out)
+  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleUnique, input, luci::CircleUniqueOut)
+  INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP(luci::CircleUnpack, value, luci::CircleUnpackOut)
+
   // AddN has arbitrary number of inputs
   void visit(luci::CircleAddN *node)
   {
@@ -291,6 +318,7 @@ private:
 
 #undef INSERT_QUANTIZE_TO_UNARY_OP
 #undef INSERT_QUANTIZE_TO_BINARY_OP
+#undef INSERT_QUANTIZE_TO_UNARY_MULTI_OUTPUT_OP
 };
 
 } // namespace
