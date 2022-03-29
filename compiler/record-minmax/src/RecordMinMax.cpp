@@ -45,8 +45,6 @@ uint32_t numElements(const luci::CircleNode *node)
   for (uint32_t i = 0; i < node->rank(); i++)
     num_elements *= node->dim(i).value();
 
-  assert(num_elements > 0); // FIX_CALLER_UNLESS
-
   return num_elements;
 }
 
@@ -55,16 +53,11 @@ uint32_t numElements(const luci::CircleNode *node)
 // 2. Number of elements is 0
 void checkInputDimension(const luci::CircleInput *input)
 {
-  uint32_t num_elements = 1;
   for (uint32_t i = 0; i < input->rank(); i++)
-  {
     if (!input->dim(i).known())
       throw std::runtime_error(input->name() + " has unknown dimension");
 
-    num_elements *= input->dim(i).value();
-  }
-
-  if (num_elements == 0)
+  if (numElements(input) == 0)
     throw std::runtime_error(input->name() + " is a zero-sized input");
 }
 
