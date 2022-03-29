@@ -12,10 +12,15 @@ _circle-eval-diff_ compares inference results of two circle models.
 Run circle-eval-diff with the following arguments.
 
 --first_input_model: first model to compare (.circle).
+
 --second_input_model: second model to compare (.circle).
+
 --first_input_data: input data for the first model (.h5, directory). Random data will be used if this argument is not given.
+
 --second_input_data: input data for the second model (.h5, directory). Random data will be used if this argument is not given.
+
 --input_data_format: input data format (h5 (default), directory).
+
 --metric: metric to compare inference results (MAE (default), etc).
 
 ```
