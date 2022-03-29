@@ -39,6 +39,35 @@ using DataType = luci_interpreter::DataType;
 namespace
 {
 
+uint32_t numElements(const luci::CircleNode *node)
+{
+  uint32_t num_elements = 1;
+  for (uint32_t i = 0; i < node->rank(); i++)
+    num_elements *= node->dim(i).value();
+
+  assert(num_elements > 0); // FIX_CALLER_UNLESS
+
+  return num_elements;
+}
+
+// Throw exception if input has one of the following conditions.
+// 1. Have unknown dimension
+// 2. Number of elements is 0
+void checkInputDimension(const luci::CircleInput *input)
+{
+  uint32_t num_elements = 1;
+  for (uint32_t i = 0; i < input->rank(); i++)
+  {
+    if (!input->dim(i).known())
+      throw std::runtime_error(input->name() + " has unknown dimension");
+
+    num_elements *= input->dim(i).value();
+  }
+
+  if (num_elements == 0)
+    throw std::runtime_error(input->name() + " is a zero-sized input");
+}
+
 void readDataFromFile(const std::string &filename, std::vector<char> &data, size_t data_size)
 {
   assert(data.size() == data_size); // FIX_CALLER_UNLESS
@@ -391,17 +420,9 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
     {
       const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
       assert(input_node->index() == input_idx);
-      uint32_t num_elements = 1;
-      for (uint32_t i = 0; i < input_node->rank(); i++)
-      {
-        if (!input_node->dim(i).known())
-          throw std::runtime_error("Input dimension must be known");
+      checkInputDimension(input_node);
 
-        num_elements *= input_node->dim(i).value();
-      }
-
-      if (num_elements == 0)
-        throw std::runtime_error("Only support non-zero sized inputs");
+      const auto num_elements = numElements(input_node);
 
       // TODO Support more input data types
       assert(input_node->dtype() == loco::DataType::FLOAT32 ||
