@@ -225,6 +225,7 @@ void RecordMinMax::profileRawDataDirectory(const std::string &mode,
   for (auto input : input_nodes)
   {
     const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
+    checkInputDimension(input_node);
     total_input_size += getTensorSize(input_node);
   }
 
@@ -291,6 +292,7 @@ void RecordMinMax::profileRawData(const std::string &mode, const std::string &in
   for (auto input : input_nodes)
   {
     const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
+    checkInputDimension(input_node);
     total_input_size += getTensorSize(input_node);
   }
 
@@ -356,6 +358,7 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
       {
         const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
         assert(input_node->index() == input_idx);
+        checkInputDimension(input_node);
         std::vector<char> input_data(getTensorSize(input_node));
 
         if (!is_raw_data)
