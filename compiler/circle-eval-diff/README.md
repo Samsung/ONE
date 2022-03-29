@@ -2,6 +2,11 @@
 
 _circle-eval-diff_ compares inference results of two circle models.
 
+## Use cases
+
+1. _circle-eval-diff_ can be used to evaluate reconstruction errors of quantized models.
+2. _circle-eval-diff_ can be used to verify optimization (or any kind of value-preserving conversion) is safe.
+
 ## Usage
 
 Run circle-eval-diff with the following arguments.
