@@ -19,8 +19,6 @@
 #include <arser/arser.h>
 #include <vconone/vconone.h>
 
-#include <luci/UserSettings.h>
-
 using namespace circle_eval_diff;
 
 namespace
@@ -129,8 +127,6 @@ int entry(const int argc, char **argv)
     // If REPLACE is zero, it does not overwrite an existing value.
     setenv("LUCI_LOG", "100", 0);
   }
-
-  auto settings = luci::UserSettings::settings();
 
   auto first_model_path = arser.get<std::string>("--first_model");
   auto second_model_path = arser.get<std::string>("--second_model");
