@@ -10,6 +10,7 @@ target_include_directories(circle-eval-diff PRIVATE include)
 target_link_libraries(circle-eval-diff arser)
 target_link_libraries(circle-eval-diff safemain)
 target_link_libraries(circle-eval-diff loco)
+target_link_libraries(circle-eval-diff luci_lang)
 target_link_libraries(circle-eval-diff vconone)
 
 if(NOT ENABLE_TEST)
@@ -19,6 +20,7 @@ endif(NOT ENABLE_TEST)
 # circle-eval-diff is executable, so we do not link it to the test.
 # Instead, we use TEST_SOURCES to specify sources uesd for tests.
 set(TEST_SOURCES
+    "src/MetricPrinter.cpp"
     "src/Tensor.cpp")
 
 nnas_find_package(GTest REQUIRED)
