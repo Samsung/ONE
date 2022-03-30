@@ -1,3 +1,10 @@
+#
+# Platform specific configuration
+# note: this should be placed before default setting for option setting priority
+#       (platform specific setting have higher priority)
+#
+include("cmake/options/options_${TARGET_PLATFORM}.cmake")
+
 ###
 ### Configuration
 ###
