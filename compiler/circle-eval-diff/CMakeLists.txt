@@ -11,6 +11,8 @@ target_link_libraries(circle-eval-diff arser)
 target_link_libraries(circle-eval-diff safemain)
 target_link_libraries(circle-eval-diff loco)
 target_link_libraries(circle-eval-diff luci_lang)
+target_link_libraries(circle-eval-diff luci_interpreter)
+target_link_libraries(circle-eval-diff dio_hdf5)
 target_link_libraries(circle-eval-diff vconone)
 
 if(NOT ENABLE_TEST)
