@@ -16,6 +16,8 @@ if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
+# circle-eval-diff is executable, so we do not link it to the test.
+# Instead, we use TEST_SOURCES to specify sources uesd for tests.
 set(TEST_SOURCES
     "src/Tensor.cpp")
 
