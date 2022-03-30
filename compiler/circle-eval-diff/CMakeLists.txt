@@ -3,8 +3,6 @@ set(DRIVER "driver/Driver.cpp")
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
-set(TEST_SOURCES
-    "src/Tensor.cpp")
 
 add_executable(circle-eval-diff ${DRIVER} ${SOURCES})
 target_include_directories(circle-eval-diff PRIVATE include)
@@ -17,6 +15,9 @@ target_link_libraries(circle-eval-diff vconone)
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
+
+set(TEST_SOURCES
+    "src/Tensor.cpp")
 
 nnas_find_package(GTest REQUIRED)
 GTest_AddTest(circle_eval_diff_test ${TESTS} ${TEST_SOURCES})
