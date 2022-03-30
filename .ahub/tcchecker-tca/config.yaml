@@ -137,7 +137,6 @@ test:
       - /compiler/record-minmax
       - /compiler/safemain
       - /compiler/souschef
-      - /compiler/tf2tfliteV2
       - /compiler/tflchef
       - /compiler/tflite2circle
       - /compiler/vconone
