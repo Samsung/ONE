@@ -18,9 +18,9 @@
 #include "ModuleEvalDiff.h"
 #include "MetricPrinter.h"
 
+#include <foder/FileLoader.h>
 #include <luci/Importer.h>
 
-#include <fstream>
 #include <stdexcept>
 
 namespace
@@ -29,13 +29,8 @@ namespace
 std::unique_ptr<luci::Module> import(const std::string &model_path)
 {
   // Load model from the file
-  std::ifstream fs(model_path, std::ifstream::binary);
-  if (fs.fail())
-  {
-    throw std::runtime_error("Cannot open model file \"" + model_path + "\".\n");
-  }
-  std::vector<char> model_data((std::istreambuf_iterator<char>(fs)),
-                               std::istreambuf_iterator<char>());
+  foder::FileLoader loader{model_path};
+  std::vector<char> model_data = loader.load();
 
   // Verify flatbuffers
   flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(model_data.data()),

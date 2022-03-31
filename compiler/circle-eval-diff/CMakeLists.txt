@@ -9,6 +9,7 @@ target_include_directories(circle-eval-diff PRIVATE include)
 
 target_link_libraries(circle-eval-diff arser)
 target_link_libraries(circle-eval-diff safemain)
+target_link_libraries(circle-eval-diff foder)
 target_link_libraries(circle-eval-diff loco)
 target_link_libraries(circle-eval-diff luci_import)
 target_link_libraries(circle-eval-diff luci_lang)
