@@ -11,8 +11,14 @@ include("${CMAKE_CURRENT_LIST_DIR}/config_linux.cmake")
 set(FLAGS_COMMON ${FLAGS_COMMON}
     "-mcpu=cortex-a7"
     "-mfloat-abi=hard"
-# TODO enable neon
-#   "-mfpu=neon-vfpv4"
     "-ftree-vectorize"
     "-mfp16-format=ieee"
     )
+
+if(BUILD_ARM32_NEON)
+  set(FLAGS_COMMON ${FLAGS_COMMON}
+      "-mfpu=neon-vfpv4"
+      )
+else(BUILD_ARM32_NEON)
+  message(STATUS "ARMv7l: NEON is disabled")
+endif(BUILD_ARM32_NEON)
