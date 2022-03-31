@@ -20,6 +20,7 @@
 #include <luci/IR/Module.h>
 #include <luci_interpreter/Interpreter.h>
 
+#include <string>
 #include <memory>
 
 namespace circle_eval_diff
@@ -30,13 +31,13 @@ class ModuleEvalDiff;
 
 enum class Metric
 {
-  Invalid, // For debugging
+  Undefined, // For debugging
   MAE,
 };
 
 enum class InputFormat
 {
-  Invalid, // For debugging
+  Undefined, // For debugging
   H5,
   // TODO Implement Random, Directory
 };
@@ -48,8 +49,8 @@ public:
   {
     std::string first_model_path;
     std::string second_model_path;
-    Metric metric = Metric::Invalid;
-    InputFormat input_format = InputFormat::Invalid;
+    Metric metric = Metric::Undefined;
+    InputFormat input_format = InputFormat::Undefined;
   };
 
 public:
