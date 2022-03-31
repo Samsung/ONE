@@ -206,7 +206,8 @@ TEST_F(L2Pool2DTest, FloatPaddingSameStride)
   kernel.execute();
 
   std::vector<float> ref_output_data{3.5, 6.0, 6.5, 5.70088, 2.54951, 7.2111, 8.63134, 7.0};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
+  // NOTE with NEON+ruy, error is #1=-1.14441e-05, #6=-1.81198e-05
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data, 1.0e-4f));
   // TODO make a Shape checking of output_tensor.
 }
 
