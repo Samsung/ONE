@@ -1,0 +1,14 @@
+{
+    "layers" : [
+        {
+            "name" : "ofm1",
+            "dtype" : "int16",
+            "granularity" : "channel"
+        },
+        {
+            "name" : "ofm2",
+            "dtype" : "int16",
+            "granularity" : "channel"
+        }
+    ]
+}

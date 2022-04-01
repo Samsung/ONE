@@ -56,7 +56,7 @@ addQConfTest(PRelu_001 layer uint8)
 addQConfTest(PRelu_001 channel int16)
 addQConfTest(ReLU_000 layer uint8)
 addQConfTest(ReLU_000 channel int16)
-#addQConfTest(Split_000 channel uint8)  Revisit when mixed-precision for multi-output Ops is supported.
-#addQConfTest(Split_000 channel int16)  Revisit when mixed-precision for multi-output Ops is supported.
+addQConfTest(Split_000 channel uint8)
+addQConfTest(Split_000 channel int16)
 addQConfTest(TransposeConv_001 channel int16)
 addQConfTest(TransposeConv_001 layer uint8)

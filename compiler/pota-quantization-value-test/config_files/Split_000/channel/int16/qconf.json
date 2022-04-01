@@ -1,0 +1,14 @@
+{
+    "layers" : [
+        {
+            "name" : "ofm1",
+            "dtype" : "uint8",
+            "granularity" : "channel"
+        },
+        {
+            "name" : "ofm2",
+            "dtype" : "uint8",
+            "granularity" : "channel"
+        }
+    ]
+}
