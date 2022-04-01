@@ -28,6 +28,8 @@ Source2001: nnfw.pc.in
 Source2002: nnfw-plugin.pc.in
 
 %{!?build_type:     %define build_type      Release}
+#%{!?trix_support:   %define trix_support    0}
+%{!?trix_support:   %define trix_support    1}
 %{!?coverage_build: %define coverage_build  0}
 %{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
@@ -56,6 +58,10 @@ BuildRequires:  libaec-devel
 BuildRequires:  zlib-devel
 BuildRequires:  libjpeg-devel
 BuildRequires:  gtest-devel
+%endif
+
+%if %{trix_support} == 1
+BuildRequires:  npu-engine-devel
 %endif
 
 %description
