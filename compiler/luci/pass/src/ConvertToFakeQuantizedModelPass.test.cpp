@@ -16,7 +16,7 @@
 
 #include <logo/Phase.h>
 
-#include "luci/Pass/FakeQuantizationPass.h"
+#include "luci/Pass/ConvertToFakeQuantizedModelPass.h"
 #include <luci/IR/CircleNodes.h>
 
 #include <gtest/gtest.h>
@@ -227,12 +227,12 @@ public:
 
 } // namespace
 
-TEST(FakeQuantization, U8Conv2D)
+TEST(ConvertToFakeQuantizedModelTest, U8Conv2D)
 {
   U8ConvGraph g;
   g.init();
 
-  luci::FakeQuantizationPass fq;
+  luci::ConvertToFakeQuantizedModelPass fq;
   fq.run(&g.g);
 
   // Check ifm
@@ -250,12 +250,12 @@ TEST(FakeQuantization, U8Conv2D)
   SUCCEED();
 }
 
-TEST(FakeQuantization, F32Conv2D_NEG)
+TEST(ConvertToFakeQuantizedModelTest, F32Conv2D_NEG)
 {
   FP32ConvGraph g;
   g.init();
 
-  luci::FakeQuantizationPass fq;
+  luci::ConvertToFakeQuantizedModelPass fq;
   fq.run(&g.g);
 
   uint32_t dequant_count = 0;
