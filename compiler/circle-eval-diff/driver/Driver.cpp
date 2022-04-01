@@ -30,7 +30,7 @@ std::string to_lower_case(std::string s)
   return s;
 }
 
-Metric str_to_metric(const std::string &str)
+Metric to_metric(const std::string &str)
 {
   if (to_lower_case(str).compare("mae") == 0)
     return Metric::MAE;
@@ -38,7 +38,7 @@ Metric str_to_metric(const std::string &str)
   throw std::runtime_error("Unsupported metric.");
 }
 
-InputFormat str_to_input_format(const std::string &str)
+InputFormat to_input_format(const std::string &str)
 {
   if (to_lower_case(str).compare("h5") == 0)
     return InputFormat::H5;
@@ -95,11 +95,14 @@ int entry(const int argc, char **argv)
     .nargs(1)
     .type(arser::DataType::STR)
     .required(false)
+    .default_value("MAE")
     .help("Metric for comparison (default: MAE)");
 
   arser.add_argument("--input_data_format")
     .nargs(1)
     .type(arser::DataType::STR)
+    .required(false)
+    .default_value("h5")
     .help("Input data format. h5/hdf5 (default) or directory");
 
   try
@@ -119,8 +122,8 @@ int entry(const int argc, char **argv)
   // Default values
   std::string first_input_data_path;
   std::string second_input_data_path;
-  std::string metric("MAE");
-  std::string input_data_format("h5");
+  std::string metric;
+  std::string input_data_format;
 
   if (arser["--first_input_data"])
     first_input_data_path = arser.get<std::string>("--first_input_data");
@@ -128,23 +131,19 @@ int entry(const int argc, char **argv)
   if (arser["--second_input_data"])
     second_input_data_path = arser.get<std::string>("--second_input_data");
 
-  if ((not first_input_data_path.empty() and second_input_data_path.empty()) or
-      (first_input_data_path.empty() and not second_input_data_path.empty()))
+  if (arser["--first_input_data"] != arser["--second_input_data"])
     throw std::runtime_error("Input data path should be given for both first_model and "
                              "second_model, or neither must be given.");
 
-  if (arser["--metric"])
-    metric = arser.get<std::string>("--metric");
-
-  if (arser["--input_data_format"])
-    input_data_format = arser.get<std::string>("--input_data_format");
+  metric = arser.get<std::string>("--metric");
+  input_data_format = arser.get<std::string>("--input_data_format");
 
   auto ctx = std::make_unique<CircleEvalDiff::Context>();
   {
     ctx->first_model_path = first_model_path;
     ctx->second_model_path = second_model_path;
-    ctx->metric = str_to_metric(metric);
-    ctx->input_format = str_to_input_format(input_data_format);
+    ctx->metric = to_metric(metric);
+    ctx->input_format = to_input_format(input_data_format);
   }
 
   CircleEvalDiff ced(std::move(ctx));
