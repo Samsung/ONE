@@ -69,7 +69,27 @@ std::shared_ptr<Tensor> createEmptyTensor(const luci::CircleNode *node)
     tensor->rank(node->rank());
     for (uint32_t i = 0; i < node->rank(); i++)
       tensor->dim(i) = node->dim(i);
-    tensor->size<loco::DataType::FLOAT32>(numElements(node));
+
+    switch (node->dtype())
+    {
+      case loco::DataType::FLOAT32:
+        tensor->size<loco::DataType::FLOAT32>(numElements(node));
+        break;
+      case loco::DataType::U8:
+        tensor->size<loco::DataType::U8>(numElements(node));
+        break;
+      case loco::DataType::S16:
+        tensor->size<loco::DataType::S16>(numElements(node));
+        break;
+      case loco::DataType::S32:
+        tensor->size<loco::DataType::S32>(numElements(node));
+        break;
+      case loco::DataType::S64:
+        tensor->size<loco::DataType::S64>(numElements(node));
+        break;
+      default:
+        throw std::runtime_error("Unsupported input tensor dtype for " + node->name());
+    }
   }
 
   return tensor;
