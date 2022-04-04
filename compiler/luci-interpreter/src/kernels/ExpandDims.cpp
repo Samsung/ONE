@@ -22,11 +22,6 @@ namespace luci_interpreter
 namespace kernels
 {
 
-namespace
-{
-
-} // namespace
-
 ExpandDims::ExpandDims(const Tensor *input, const Tensor *axis, Tensor *output)
   : Kernel({input, axis}, {output})
 {
@@ -34,9 +29,6 @@ ExpandDims::ExpandDims(const Tensor *input, const Tensor *axis, Tensor *output)
 
 void ExpandDims::configure()
 {
-  LUCI_INTERPRETER_CHECK(axis()->element_type() == loco::DataType::S32 or
-                         axis()->element_type() == loco::DataType::S64);
-
   int32_t axis_value;
 
   switch (axis()->element_type())
