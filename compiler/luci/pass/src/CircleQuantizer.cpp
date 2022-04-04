@@ -20,6 +20,8 @@
 #include "luci/Pass/ForceQuantParamPass.h"
 #include "luci/Pass/PropagateQParamForwardPass.h"
 #include "luci/Pass/RequantizePass.h"
+#include "luci/Pass/ConvertToFakeQuantizedModelPass.h"
+#include "luci/Pass/FoldDequantizePass.h"
 #include "luci/Pass/QuantizePreCheckerPass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
@@ -417,6 +419,28 @@ void CircleQuantizer::quantize(loco::Graph *g) const
 
     CopyQuantParamPass cq(src_tensors, dst_tensors);
     cq.run(g);
+  }
+
+  // Convert quantized model to fake-quantized model
+  if (_options->query(Options::Algorithm::ConvertToFakeQuantizedModel))
+  {
+    luci::ConvertToFakeQuantizedModelPass fake_quantizer;
+    fake_quantizer.run(g);
+
+    logo::Phase phase;
+
+    // Default passes
+    phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
+    phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+    phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
+
+    // Fold Dequantize Ops generated during fake quantization
+    phase.emplace_back(std::make_unique<luci::FoldDequantizePass>());
+
+    ProgressReporter prog(g, logo::PhaseStrategy::Restart);
+    logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+    phase_runner.attach(&prog);
+    phase_runner.run(phase);
   }
 
   logo::Phase phase;
