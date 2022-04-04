@@ -100,6 +100,7 @@ int entry(int argc, char **argv)
   const std::string rq = "--requantize";
   const std::string fq = "--force_quantparam";
   const std::string cq = "--copy_quantparam";
+  const std::string fake_quant = "--fake_quantize";
   const std::string cfg = "--config";
 
   const std::string tf_maxpool = "--TF-style_maxpool";
@@ -143,6 +144,12 @@ int entry(int argc, char **argv)
     .default_value(false)
     .help("Force MaxPool Op to have the same input/output quantparams. NOTE: This feature can "
           "degrade accuracy of some models");
+
+  arser.add_argument(fake_quant)
+    .nargs(0)
+    .required(false)
+    .help("Convert a quantized model to a fake-quantized model. NOTE: This feature will "
+          "generate an fp32 model.");
 
   arser.add_argument(rq)
     .nargs(2)
@@ -206,12 +213,13 @@ int entry(int argc, char **argv)
   }
 
   {
-    // only one of qdqw, qwmm, rq, fq, cq option can be used
+    // only one of qdqw, qwmm, rq, fq, cq, fake_quant option can be used
     int32_t opt_used = arser[qdqw] ? 1 : 0;
     opt_used += arser[qwmm] ? 1 : 0;
     opt_used += arser[rq] ? 1 : 0;
     opt_used += arser[fq] ? 1 : 0;
     opt_used += arser[cq] ? 1 : 0;
+    opt_used += arser[fake_quant] ? 1 : 0;
     if (opt_used != 1)
     {
       print_exclusive_options();
@@ -365,6 +373,9 @@ int entry(int argc, char **argv)
     options->params(AlgorithmParameters::Quantize_src_tensor_names, src);
     options->params(AlgorithmParameters::Quantize_dst_tensor_names, dst);
   }
+
+  if (arser[fake_quant])
+    options->enable(Algorithms::ConvertToFakeQuantizedModel);
 
   std::string input_path = arser.get<std::string>("input");
   std::string output_path = arser.get<std::string>("output");
