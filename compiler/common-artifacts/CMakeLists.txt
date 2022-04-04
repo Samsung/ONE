@@ -24,14 +24,12 @@ add_custom_command(
 set(REQUIREMENTS_FILE "requirements.txt")
 set(REQUIREMENTS_OVERLAY_PATH_TF_2_6_0 "${VIRTUALENV_OVERLAY_TF_2_6_0}/${REQUIREMENTS_FILE}")
 
-# TODO remove version number of '--upgrade pip==20.2.1 setuptools==49.3.0'
-# NOTE adding version is for temporary hotfix of setuptools 50.x.y version
 add_custom_command(
   OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.6.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/python -m pip --default-timeout=1000 install --upgrade pip==20.2.1 setuptools==49.3.0
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
   COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0} --upgrade
   DEPENDS ${VIRTUALENV_OVERLAY_TF_2_6_0}
 )
