@@ -44,6 +44,7 @@ public:
       Requantize,
       CopyQuantParam,
       ForceQuantParam,
+      ConvertToFakeQuantizedModel,
     };
 
     enum AlgorithmParameters
