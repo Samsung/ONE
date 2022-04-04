@@ -83,6 +83,7 @@ It can have the values (case-sensitive) in following table.
 |--------|------------------------|
 | tflite | tensorflow lite schema |
 | circle | nnpackage schema       |
+| tvn    | trix-engine binary     |
 
 ### Example
 
@@ -91,11 +92,11 @@ Here is an example of `MANIFEST`.
 ```
 {
     "major-version" : "1",
-    "minor-version" : "1",
+    "minor-version" : "2",
     "patch-version" : "0",
     "configs"     : [ "model.cfg" ],
-    "models"      : [ "mymodel.model", "yourmodel.model" ],
-    "model-types" : [ "tflite", "circle" ]
+    "models"      : [ "mymodel.model", "yourmodel.model", "binmodel.tvn" ],
+    "model-types" : [ "tflite", "circle", "tvn" ]
 }
 ```
 
