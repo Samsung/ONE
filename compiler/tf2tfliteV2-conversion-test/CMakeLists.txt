@@ -72,7 +72,7 @@ list(APPEND TEST_DEPS "${TEST_RUNNER}")
 
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
-set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_1_13_2")
+set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_2_6_0")
 
 ###
 ### Generate test.config
