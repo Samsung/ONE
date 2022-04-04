@@ -1,14 +1,14 @@
 #[[ Generate common python virtual enviornment ]]
-find_package(PythonInterp 3 QUIET)
-find_package(PythonLibs 3 QUIET)
+find_package(PythonInterp 3.8 QUIET)
+find_package(PythonLibs 3.8 QUIET)
 
 if(NOT ${PYTHONINTERP_FOUND})
   message(STATUS "Build common-artifacts: FALSE (Python3 is missing)")
   return()
 endif()
 
-if(${PYTHON_VERSION_MINOR} LESS 3)
-  message(STATUS "Build common-artifacts: FALSE (You need to install Python version higher than 3.3)")
+if(${PYTHON_VERSION_MINOR} LESS 8)
+  message(STATUS "Build common-artifacts: FALSE (You need to install Python version higher than 3.8)")
   return()
 endif()
 
@@ -29,8 +29,8 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.6.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/python -m pip --default-timeout=1000 install --upgrade pip setuptools
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0} --upgrade
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/python3.8 -m pip --default-timeout=1000 install --upgrade pip setuptools
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/python3.8 -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0} --upgrade
   DEPENDS ${VIRTUALENV_OVERLAY_TF_2_6_0}
 )
 
