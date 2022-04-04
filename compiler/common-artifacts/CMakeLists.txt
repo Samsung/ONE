@@ -12,16 +12,8 @@ if(${PYTHON_VERSION_MINOR} LESS 3)
   return()
 endif()
 
-# Create python virtual environment with tensorflow 1.13.2
-set(VIRTUALENV_OVERLAY_TF_1_13_2 "${NNCC_OVERLAY_DIR}/venv_1_13_2")
-
 # Create python virtual environment with tensorflow 2.6.0
 set(VIRTUALENV_OVERLAY_TF_2_6_0 "${NNCC_OVERLAY_DIR}/venv_2_6_0")
-
-add_custom_command(
-  OUTPUT ${VIRTUALENV_OVERLAY_TF_1_13_2}
-  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_1_13_2}
-)
 
 add_custom_command(
   OUTPUT ${VIRTUALENV_OVERLAY_TF_2_6_0}
@@ -30,19 +22,10 @@ add_custom_command(
 
 # Create requirements.txt and install required pip packages
 set(REQUIREMENTS_FILE "requirements.txt")
-set(REQUIREMENTS_OVERLAY_PATH_TF_1_13_2 "${VIRTUALENV_OVERLAY_TF_1_13_2}/${REQUIREMENTS_FILE}")
 set(REQUIREMENTS_OVERLAY_PATH_TF_2_6_0 "${VIRTUALENV_OVERLAY_TF_2_6_0}/${REQUIREMENTS_FILE}")
 
 # TODO remove version number of '--upgrade pip==20.2.1 setuptools==49.3.0'
 # NOTE adding version is for temporary hotfix of setuptools 50.x.y version
-add_custom_command(
-  OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2}
-  COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==1.13.2" > ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2}
-  COMMAND ${VIRTUALENV_OVERLAY_TF_1_13_2}/bin/python -m pip --default-timeout=1000 install --upgrade pip==20.2.1 setuptools==49.3.0
-  COMMAND ${VIRTUALENV_OVERLAY_TF_1_13_2}/bin/python -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2} --upgrade
-  DEPENDS ${VIRTUALENV_OVERLAY_TF_1_13_2}
-)
-
 add_custom_command(
   OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
@@ -54,9 +37,7 @@ add_custom_command(
 )
 
 add_custom_target(common_artifacts_python_deps ALL
-  DEPENDS ${VIRTUALENV_OVERLAY_TF_1_13_2}
-          ${VIRTUALENV_OVERLAY_TF_2_6_0}
-          ${REQUIREMENTS_OVERLAY_PATH_TF_1_13_2}
+  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_6_0}
           ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
 )
 
