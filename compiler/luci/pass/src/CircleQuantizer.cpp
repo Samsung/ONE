@@ -252,8 +252,8 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     static const std::vector<std::string> qwmm_supported_input_model_dtype{"float32"};
     static const std::vector<std::string> qwmm_supported_output_model_dtype{"uint8", "int16"};
     static const std::vector<std::string> qwmm_supported_granularity{"layer", "channel"};
-    static const std::vector<std::string> qwmm_supported_input_type{"uint8", "int16"};
-    static const std::vector<std::string> qwmm_supported_output_type{"uint8", "int16"};
+    static const std::vector<std::string> qwmm_supported_input_type{"uint8", "int16", "float32"};
+    static const std::vector<std::string> qwmm_supported_output_type{"uint8", "int16", "float32"};
 
     auto input_model_dtype =
       _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
