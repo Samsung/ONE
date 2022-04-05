@@ -17,10 +17,11 @@
 #ifndef __ONERT_BACKEND_ACL_NEON_BACKEND_CONTEXT_H__
 #define __ONERT_BACKEND_ACL_NEON_BACKEND_CONTEXT_H__
 
-#include <backend/BackendContext.h>
-#include "TensorBuilder.h"
+#include <AclBackendContext.h>
+
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
+#include "TensorBuilder.h"
 
 namespace onert
 {
@@ -31,34 +32,8 @@ namespace acl_neon
 
 class Optimizer;
 
-class BackendContext : public onert::backend::BackendContext
-{
-public:
-  BackendContext(const Backend *backend, ContextData &&data,
-                 std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
-                 std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
-                 std::shared_ptr<ConstantInitializer> constant_initializer = nullptr,
-                 std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
-    : onert::backend::BackendContext(backend, std::move(data), tensor_registry),
-      tensor_builder{tensor_builder}, constant_initializer{constant_initializer}, kernel_gen{
-                                                                                    kernel_gen}
-  {
-  }
-
-  ITensorRegistry *genTensors() override;
-  FunctionMap genKernels() override;
-
-private:
-  void initConsts();
-  void planTensors();
-
-public:
-  // TODO Make it private
-  std::shared_ptr<TensorBuilder> tensor_builder;
-  std::shared_ptr<ConstantInitializer> constant_initializer;
-  std::shared_ptr<KernelGenerator> kernel_gen;
-  std::shared_ptr<Optimizer> optimizer;
-};
+using BackendContext =
+  acl_common::AclBackendContext<TensorBuilder, ConstantInitializer, KernelGenerator, Optimizer>;
 
 } // namespace acl_neon
 } // namespace backend
