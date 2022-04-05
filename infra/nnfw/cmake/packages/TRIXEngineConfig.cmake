@@ -36,6 +36,7 @@ function(_TRIXEngine_import)
   endif(NOT TRIXEngine_FOUND)
 
   set(TRIXEngine_FOUND ${TRIXEngine_FOUND} PARENT_SCOPE)
+  set(TRIXEngine_INCLUDE_DIRS ${TRIXEngine_INCLUDE_DIR} PARENT_SCOPE)
 endfunction(_TRIXEngine_import)
 
 _TRIXEngine_import()
