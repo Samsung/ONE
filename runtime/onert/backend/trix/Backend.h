@@ -41,7 +41,6 @@ public:
 
   std::unique_ptr<onert::backend::BackendContext> newContext(ContextData &&data) const override
   {
-    auto custom_kernel_builder = data.custom_kernel_builder;
     auto &graph = *data.graph;
     auto context = std::make_unique<BackendContext>(this, std::move(data));
     auto tr = std::make_shared<basic::TensorRegistry>();
