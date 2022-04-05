@@ -13,7 +13,7 @@ unset(TEST_NAMES)
 
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
-set(options USE_QCONFIG)
+set(options USE_QCONFIG FAKE_QUANT)
 set(oneValueArgs DTYPE GRANULARITY)
 set(multiValueArgs "")
 
@@ -45,6 +45,25 @@ macro(Add RECIPE)
   list(APPEND TEST_DEPS ${QUANT_CIRCLE_PATH})
   list(APPEND TEST_NAMES ${RECIPE})
 endmacro(Add)
+
+# Macro to generate fullly fake-quantized models
+macro(AddFakeQuant RECIPE)
+  set(CIRCLE_PATH "${ARTIFACTS_BIN_PATH}/${RECIPE}.circle")
+  # NOTE We use .q.circle because it is convention for output file (see testall.sh for more details)
+  set(FULL_FAKE_QUANT_CIRCLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${RECIPE}.q.circle")
+
+  # Generate fully fake-quantized .circle
+  add_custom_command(OUTPUT ${FULL_FAKE_QUANT_CIRCLE_PATH}
+    COMMAND $<TARGET_FILE:circle-quantizer> --fake_quantize ${CIRCLE_PATH} ${FULL_FAKE_QUANT_CIRCLE_PATH}
+    DEPENDS 
+      circle-quantizer
+      ${CIRCLE_PATH}
+    COMMENT "Generate ${RECIPE}.q.circle"
+  )
+
+  list(APPEND TEST_DEPS ${FULL_FAKE_QUANT_CIRCLE_PATH})
+  list(APPEND TEST_NAMES ${RECIPE})
+endmacro(AddFakeQuant)
 
 # Read "test.lst"
 include("test.lst")

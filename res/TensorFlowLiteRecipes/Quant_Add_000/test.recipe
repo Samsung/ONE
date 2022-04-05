@@ -1,0 +1,36 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 1 dim: 4 dim: 4 dim: 4 }
+  quant { scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "add_const"
+  type: UINT8
+  shape { dim: 1 dim: 1 dim: 1 dim: 4 }
+  quant { scale: 1.0 zero_point: 0 }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "1"
+    arg: "2"
+    arg: "3"
+  }
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 1 dim: 4 dim: 4 dim: 4 }
+  quant { scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "Add"
+  input: "ifm"
+  input: "add_const"
+  output: "ofm"
+  add_options {
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "ofm"
