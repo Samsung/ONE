@@ -45,41 +45,11 @@ KernelGenerator::KernelGenerator(const ir::Graph &graph,
 std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
 {
   auto ret = std::make_unique<exec::FunctionSequence>();
+  ret->enableDynamicShapeInferer(false);
 
-  assert(_tensor_builder->dynamicTensorManager());
-  assert(_tensor_reg);
-
-  auto dyn_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_ctx, _tensor_reg);
-
-  // Prepare to handle dynamic tensors later
-  auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
-  {
-    dyn_ctx->op_ind = ind;
-    dyn_ctx->operations = &_operations_ctx;
-    dyn_ctx->dynamic_shape_inferer = std::move(dyn_shape_inferer);
-
-    ret->dynamic_tensor_ctx(dyn_ctx);
-  }
-
-  auto &op = _graph.operations().at(ind);
+  const auto &op = _graph.operations().at(ind);
   op.accept(*this);
-  assert(_return_fn); // _return_fn must have been generated
-  ret->append(std::move(_return_fn));
-
-  for (auto ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
-  {
-    auto portable_tensor = _tensor_reg->getPortableTensor(ind);
-    if (portable_tensor)
-    {
-      assert(portable_tensor->layout() == ir::Layout::NHWC);
-    }
-
-    auto tensor = _tensor_reg->getNativeTensor(ind);
-    if (tensor)
-    {
-      tensor->increase_ref();
-    }
-  }
+  ret->append(releaseFunction());
   return ret;
 }
 
