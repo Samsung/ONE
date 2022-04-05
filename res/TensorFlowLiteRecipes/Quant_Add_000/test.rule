@@ -1,0 +1,10 @@
+# To check fake quantization.
+# All Ops are float32. Quantize/Dequantize Ops are inserted at the beginning/end of the model.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "IFM_FP32"              $(tensor_dtype ifm) '=' FLOAT32
+RULE    "ADD_CONST_FP32"        $(tensor_dtype add_const_DQ) '=' FLOAT32
+RULE    "ADD_FP32"              $(tensor_dtype ofm) '=' FLOAT32
+RULE    "QUANTIZE_OP"           $(op_count QUANTIZE) '=' 2
+RULE    "DEQUANTIZE_OP"         $(op_count DEQUANTIZE) '=' 2
