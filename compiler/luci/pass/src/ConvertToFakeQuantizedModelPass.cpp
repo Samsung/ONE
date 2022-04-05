@@ -185,6 +185,7 @@ struct FakeQuantize final : public luci::CircleNodeMutableVisitor<void>
   // For non-const activation, insert Quantize-Dequantize Ops
   // and dequantize the node
   void visit(luci::CircleConv2D *node) { fq_activation(node); }
+  void visit(luci::CircleAdd *node) { fq_activation(node); }
 };
 
 #undef RETURN_UNLESS
