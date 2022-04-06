@@ -63,7 +63,8 @@ for example in args.examples:
     onnx_model = onnx.load(output_folder + example + ".onnx")
     onnx.checker.check_model(onnx_model)
 
-    tf_prep = onnx_tf.backend.prepare(onnx_model)
+    tf_prep = onnx_tf.backend.prepare(onnx_model, logging_level='DEBUG', auto_cast=True)
+    # tf_prep.run(module._dummy_)
     tf_prep.export_graph(path=output_folder + example + ".TF")
     print("Generate '" + example + " TF' - Done")
 
@@ -71,6 +72,7 @@ for example in args.examples:
     converter = tf.lite.TFLiteConverter.from_saved_model(output_folder + example + ".TF")
     converter.allow_custom_ops = True
     converter.experimental_new_converter = True
+    converter.experimental_enable_resource_variables = True
     converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS]
 
     tflite_model = converter.convert()
