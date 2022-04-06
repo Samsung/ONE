@@ -12,9 +12,16 @@ function(_HDF5_build)
 
   if(DEFINED ENV{BUILD_HOST_EXEC})
     set(EXTERNAL_H5MAKE_LIBSETTINGS $ENV{BUILD_HOST_EXEC}/externals/HDF5/build/bin/H5make_libsettings)
-    set(EXTERNAL_H5DETECT $ENV{BUILD_HOST_EXEC}/externals/HDF5/build/bin/H5detect)
     set(ENV{EXTERNAL_H5MAKE_LIBSETTINGS} ${EXTERNAL_H5MAKE_LIBSETTINGS})
-    set(ENV{EXTERNAL_H5DETECT} ${EXTERNAL_H5DETECT})
+
+    # NOTE https://github.com/Samsung/ONE/issues/8762
+    # TODO generalize to select 'linux-armv7l'
+    set(H5TINIT_C_FROM_NATIVE ${CMAKE_CURRENT_LIST_DIR}/H5Tinit.c.linux-armv7l)
+    set(H5TINIT_C_COPY ${CMAKE_BINARY_DIR}/externals/HDF5/build/H5Tinit.c)
+    message(STATUS "Copy H5Tinit.c generated from target native build")
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E copy "${H5TINIT_C_FROM_NATIVE}" "${H5TINIT_C_COPY}"
+    )
   endif(DEFINED ENV{BUILD_HOST_EXEC})
 
   nnas_include(ExternalBuildTools)
