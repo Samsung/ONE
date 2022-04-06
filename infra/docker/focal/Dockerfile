@@ -35,8 +35,8 @@ RUN apt-get update && apt-get -qqy install libprotobuf-dev protobuf-compiler
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get -qqy install doxygen graphviz wget zip unzip clang-format-8 python3 python3-pip python3-venv hdf5-tools pylint curl
-RUN pip3 install --upgrade pip
-RUN pip3 install yapf==0.22.0 numpy
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install yapf==0.22.0 numpy
 
 # Install google test (source)
 RUN apt-get update && apt-get -qqy install libgtest-dev
