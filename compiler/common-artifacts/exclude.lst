@@ -38,11 +38,8 @@ tcgenerate(Cos_000)
 tcgenerate(DepthwiseConv2D_001) # runtime doesn't support dilation
 tcgenerate(DepthwiseConv2D_003) # runtime doesn't support dilation
 tcgenerate(DepthwiseConv2D_U8_001)  # luci-interpreter doesn't support channel-wise quantization yet
-tcgenerate(ExpandDims_000)
-tcgenerate(ExpandDims_001)
-tcgenerate(ExpandDims_002)
-tcgenerate(ExpandDims_003)
-tcgenerate(ExpandDims_004)
+tcgenerate(ExpandDims_001) # luci-interpreter doesn't support undefined shape
+tcgenerate(ExpandDims_002) # luci-interpreter doesn't support undefined shape
 tcgenerate(FakeQuant_000) # runtime and luci-interpreter doesn't support yet
 tcgenerate(Fill_000)
 tcgenerate(Fill_001)
