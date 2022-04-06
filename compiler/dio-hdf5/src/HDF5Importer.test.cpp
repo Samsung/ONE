@@ -39,7 +39,8 @@ void createFile()
   if (auto f = fopen(file_name.c_str(), "r"))
   {
     fclose(f);
-    remove(file_name.c_str());
+    if (remove(file_name.c_str()) != 0)
+      throw std::runtime_error("Error deleting file.");
   }
 
   const auto rank = 3;
