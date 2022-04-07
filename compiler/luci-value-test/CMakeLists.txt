@@ -25,7 +25,7 @@ if(NOT CMAKE_CROSSCOMPILING)
     COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify.sh"
             "${CMAKE_CURRENT_BINARY_DIR}"
             "${ARTIFACTS_BIN_PATH}"
-            "${NNCC_OVERLAY_DIR}/venv_2_6_0"
+            "${NNCC_OVERLAY_DIR}/venv_2_8_0"
             "$<TARGET_FILE:luci_eval_driver>"
             ${LUCI_VALUE_TESTS}
   )
@@ -35,7 +35,7 @@ if(NOT CMAKE_CROSSCOMPILING)
       COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverifytol.sh"
               "${CMAKE_CURRENT_BINARY_DIR}"
               "${ARTIFACTS_BIN_PATH}"
-              "${NNCC_OVERLAY_DIR}/venv_2_6_0"
+              "${NNCC_OVERLAY_DIR}/venv_2_8_0"
               "$<TARGET_FILE:luci_eval_driver>"
               ${LUCI_VALUE_TESTS_TOL}
     )
