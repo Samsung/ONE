@@ -32,7 +32,7 @@ get_target_property(SCHEMA_BIN_PATH mio_circle04 BINARY_DIR)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/gen_h5_explicit_inputs.py"
                "${CMAKE_CURRENT_BINARY_DIR}/gen_h5_explicit_inputs.py" COPYONLY)
 
-set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_2_6_0")
+set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_2_8_0")
 
 ###
 ### Generate test.config
