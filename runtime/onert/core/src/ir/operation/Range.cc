@@ -15,9 +15,6 @@
  */
 
 #include "ir/operation/Range.h"
-
-#include <cassert>
-
 #include "ir/OperationVisitor.h"
 
 namespace onert

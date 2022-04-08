@@ -15,9 +15,6 @@
  */
 
 #include "ir/operation/Comparison.h"
-
-#include <cassert>
-
 #include "ir/OperationVisitor.h"
 
 namespace onert
