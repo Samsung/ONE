@@ -15,9 +15,6 @@
  */
 
 #include "ir/operation/DepthToSpace.h"
-
-#include <cassert>
-
 #include "ir/OperationVisitor.h"
 
 namespace onert

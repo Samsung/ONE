@@ -15,9 +15,6 @@
  */
 
 #include "ir/operation/TopKV2.h"
-
-#include <cassert>
-
 #include "ir/OperationVisitor.h"
 
 namespace onert

@@ -15,9 +15,6 @@
  */
 
 #include "ir/operation/DepthwiseConv2D.h"
-
-#include <cassert>
-
 #include "ir/OperationVisitor.h"
 
 namespace onert

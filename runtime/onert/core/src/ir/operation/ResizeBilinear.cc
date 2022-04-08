@@ -15,9 +15,6 @@
  */
 
 #include "ir/operation/ResizeBilinear.h"
-
-#include <cassert>
-
 #include "ir/OperationVisitor.h"
 
 namespace onert

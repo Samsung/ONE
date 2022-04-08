@@ -15,11 +15,9 @@
  */
 
 #include "ir/operation/ElementwiseUnary.h"
-
-#include <cassert>
-#include <unordered_map>
-
 #include "ir/OperationVisitor.h"
+
+#include <unordered_map>
 
 namespace onert
 {

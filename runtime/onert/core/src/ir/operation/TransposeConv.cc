@@ -15,9 +15,6 @@
  */
 
 #include "ir/operation/TransposeConv.h"
-
-#include <cassert>
-
 #include "ir/OperationVisitor.h"
 
 namespace onert

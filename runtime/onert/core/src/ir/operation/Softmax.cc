@@ -15,9 +15,6 @@
  */
 
 #include "ir/operation/Softmax.h"
-
-#include <cassert>
-
 #include "ir/OperationVisitor.h"
 
 namespace onert
