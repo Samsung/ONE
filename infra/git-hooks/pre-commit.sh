@@ -19,6 +19,7 @@
 # This sample shows how to prevent push of commits where the log message starts
 # with "WIP" (work in progress).
 
+
 remote="$1"
 url="$2"
 
