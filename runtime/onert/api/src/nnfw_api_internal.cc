@@ -23,6 +23,7 @@
 #include "exec/Execution.h"
 #include "circle_loader.h"
 #include "tflite_loader.h"
+#include "trix_loader.h"
 #include "json/json.h"
 #include "ir/OpCode.h"
 #include "util/TracingCtx.h"
@@ -306,6 +307,10 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     else if (model_type == "circle")
     {
       _subgraphs = onert::circle_loader::loadModel(model_file_path);
+    }
+    else if (model_type == "tvn")
+    {
+      _subgraphs = onert::trix_loader::loadModel(model_file_path);
     }
     else
     {
