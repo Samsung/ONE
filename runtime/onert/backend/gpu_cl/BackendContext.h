@@ -20,6 +20,8 @@
 #include <backend/BackendContext.h>
 #include <util/ConfigSource.h>
 
+#include <cl_common/BackendContext.h>
+
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
@@ -32,31 +34,28 @@ namespace backend
 namespace gpu_cl
 {
 
-class BackendContext : public onert::backend::BackendContext
+class BackendContext
+  : public onert::backend::cl_common::BackendContext<TensorBuilder, ConstantInitializer,
+                                                     KernelGenerator>
 {
 public:
   BackendContext(const Backend *backend, ContextData &&data,
-                 std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
+                 std::shared_ptr<TensorRegistry> tensor_registry = nullptr,
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<ConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
-    : onert::backend::BackendContext(backend, std::move(data), tensor_registry),
-      tensor_builder{tensor_builder}, constant_initializer{constant_initializer}, kernel_gen{
-                                                                                    kernel_gen}
+    : onert::backend::cl_common::BackendContext<TensorBuilder, ConstantInitializer,
+                                                KernelGenerator>(
+        backend, std::move(data), tensor_registry, tensor_builder, constant_initializer, kernel_gen)
   {
+    // DO NOTHING
   }
 
   ITensorRegistry *genTensors() override;
-  FunctionMap genKernels() override;
 
-private:
-  void initConsts();
-  void planTensors();
-
-public:
-  std::shared_ptr<TensorBuilder> tensor_builder;
-  std::shared_ptr<ConstantInitializer> constant_initializer;
-  std::shared_ptr<KernelGenerator> kernel_gen;
+protected:
+  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
+                          ir::Layout backend_layout) override;
 };
 
 } // namespace gpu_cl

@@ -44,6 +44,7 @@ target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} INTERFACE Open_CL_Headers)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE fp16)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE TensorFlowGpu)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE onert_core)
+target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${LIB_ONERT_BACKEND_CL_COMMON})
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_coverage)
 
