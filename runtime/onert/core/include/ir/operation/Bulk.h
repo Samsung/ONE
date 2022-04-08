@@ -32,7 +32,6 @@ class Bulk : public Operation
   struct Param
   {
     std::string binary_path;
-    std::string info_path;
   };
 
 public:
