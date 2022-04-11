@@ -14,27 +14,29 @@
  * limitations under the License.
  */
 
-#ifndef __TRIX_TRIX_LOADER_H__
-#define __TRIX_TRIX_LOADER_H__
-
-#include "trix_loader_base.h"
+#include "trix_loader.h"
 
 namespace onert
 {
 namespace trix_loader
 {
-class TrixLoader final : public TrixLoaderBase
+
+namespace
 {
-public:
-  explicit TrixLoader(std::unique_ptr<ir::Subgraphs> &subgs) : TrixLoaderBase(subgs) {}
+// Add internal
+} // namespace
 
-protected:
-  void loadModel() override;
-  bool verifyModel() const override;
-};
+void TrixLoader::loadModel() {}
 
-std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename);
+bool TrixLoader::verifyModel() const { return true; }
+
+std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename)
+{
+  auto subgraphs = std::make_unique<ir::Subgraphs>();
+  TrixLoader loader(subgraphs);
+  loader.loadFromFile(filename);
+  return subgraphs;
+}
+
 } // namespace trix_loader
 } // namespace onert
-
-#endif // __TRIX_TRIX_LOADER_H__

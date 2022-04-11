@@ -44,14 +44,7 @@ private:
 };
 } // namespace
 
-void TrixLoader::load_()
-{
-  Verifier verifier(reinterpret_cast<const std::uint8_t *>(_base), _sz);
-  if (verifier.verify() == false)
-    throw std::runtime_error("Model verification failed during model loading");
-}
-
-void TrixLoader::loadFromFile(const std::string &file_path)
+void TrixLoaderBase::loadFromFile(const std::string &file_path)
 {
   (void)_subgraphs; // make android toolchain happy from unused member warning
   _fd = open(file_path.c_str(), O_RDONLY);
@@ -75,19 +68,12 @@ void TrixLoader::loadFromFile(const std::string &file_path)
     throw std::runtime_error("mmap failed - " + std::string(strerror(errno)));
   }
 
-  load_();
+  verifyModel();
+  loadModel();
   munmap(_base, _sz);
 
   close(_fd);
   throw std::runtime_error("Not implemented yet");
-}
-
-std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename)
-{
-  auto subgraphs = std::make_unique<ir::Subgraphs>();
-  TrixLoader loader(subgraphs);
-  loader.loadFromFile(filename);
-  return subgraphs;
 }
 
 } // namespace trix_loader
