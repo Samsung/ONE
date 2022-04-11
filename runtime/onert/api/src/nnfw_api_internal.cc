@@ -226,6 +226,10 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     {
       _subgraphs = onert::circle_loader::loadModel(filename.c_str());
     }
+    else if (model_type == ".tvn")
+    {
+      _subgraphs = onert::trix_loader::loadModel(filename.c_str());
+    }
     else
     {
       std::cerr << "Unsupported model type" << std::endl;
