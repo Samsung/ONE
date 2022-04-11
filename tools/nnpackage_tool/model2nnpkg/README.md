@@ -1,6 +1,6 @@
 # model2nnpkg
 
-`model2nnpkg` is a tool to convert model (either `tflite` or `circle`) to `nnpackage`.
+`model2nnpkg` is a tool to convert model (e.g. `tflite`, `circle` or `tvn`) to `nnpackage`.
 
 It takes `modelfile` as input and generates `nnpackage`.
 
@@ -8,7 +8,7 @@ It takes `modelfile` as input and generates `nnpackage`.
 
 ```
 Usage: model2nnpkg.sh [options] modelfile
-Convert modelfile (either tflite or circle) to nnpackage.
+Convert modelfile to nnpackage.
 
 Options:
     -h   show this help
