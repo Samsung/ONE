@@ -20,6 +20,7 @@
 #include "TensorBuilder.h"
 #include "backend/basic/TensorRegistry.h"
 #include "Tensor.h"
+#include "DevContext.h"
 
 #include <backend/basic/KernelGeneratorBase.h>
 #include <ir/Operands.h>
@@ -36,9 +37,13 @@ class KernelGenerator : public basic::KernelGeneratorBase
 {
 public:
   KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
-                  const std::shared_ptr<basic::TensorRegistry> &tensor_reg);
+                  const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
+                  const std::shared_ptr<DevContext> &dev_context);
 
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex op_ind) override;
+
+private:
+  void KernelGenerator::visit(const ir::operation::Bulk &node) override;
 
 private:
   const ir::Operands &_ctx;
@@ -46,6 +51,7 @@ private:
   ir::Layout _current_layout;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<basic::TensorRegistry> _tensor_reg;
+  const std::shared_ptr<DevContext> _dev_context;
 };
 
 } // namespace trix

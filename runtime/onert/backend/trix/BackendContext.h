@@ -20,6 +20,7 @@
 #include <backend/BackendContext.h>
 #include "TensorBuilder.h"
 #include "KernelGenerator.h"
+#include "DevContext.h"
 
 namespace onert
 {
@@ -43,10 +44,15 @@ public:
   ITensorRegistry *genTensors() override;
   FunctionMap genKernels() override;
 
+  std::shared_ptr<DevContext> dev_context() { return _dev_context; }
+
 public:
   // TODO Make it private
   std::shared_ptr<TensorBuilder> tensor_builder;
   std::shared_ptr<KernelGenerator> kernel_gen;
+
+private:
+  std::shared_ptr<DevContext> _dev_context;
 };
 
 } // namespace trix

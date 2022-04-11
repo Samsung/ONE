@@ -16,6 +16,8 @@
 
 #include "KernelGenerator.h"
 
+#include "ops/BulkLayer.h"
+
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
 #include <memory>
@@ -34,10 +36,11 @@ namespace trix
 
 KernelGenerator::KernelGenerator(const ir::Graph &graph,
                                  const std::shared_ptr<TensorBuilder> &tensor_builder,
-                                 const std::shared_ptr<basic::TensorRegistry> &tensor_reg)
+                                 const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
+                                 const std::shared_ptr<DevContext> &dev_context)
   : basic::KernelGeneratorBase{graph},
     _ctx(graph.operands()), _operations_ctx{graph.operations()}, _current_layout{graph.layout()},
-    _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}
+    _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _dev_context{dev_context}
 {
   // DO NOTHING
 }
@@ -51,6 +54,29 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   op.accept(*this);
   ret->append(releaseFunction());
   return ret;
+}
+
+void KernelGenerator::visit(const ir::operation::Bulk &node)
+{
+  using ir::operation::Bulk;
+
+  std::vector<IPortableTensor *> output_tensors;
+  for (auto *ofm_idx : node.getOutputs())
+    output_tensors.emplace_back(_tensor_reg->getPortableTensor(ofm_index));
+
+  std::vector<const IPortableTensor *> input_tensors;
+  for (auto *ifm_idx : node.getInputs())
+    input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx));
+
+  // parameters
+  const auto binary_path = node.param().binary_path;
+  const auto info_path = node.param().info_path;
+
+  auto fn = std::make_unique<ops::BulkLayer>();
+
+  fn->configure(input_tensors, output_tensors, binary_path, _dev_context);
+
+  _return_fn = std::move(fn);
 }
 
 } // namespace trix
