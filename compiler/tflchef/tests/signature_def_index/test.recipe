@@ -50,8 +50,7 @@ signature_def {
     name: "ofm1"
     tensor_index: 1
   }
-  method_name: "serving_default"
-  key: "serv"
+  signature_key: "serving_default"
   subgraph_index: 0
 }
 input: "ifm"

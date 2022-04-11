@@ -722,15 +722,13 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
 
     auto inputs = flatbuffer_builder->CreateVector(tensormap_inputs);
     auto outputs = flatbuffer_builder->CreateVector(tensormap_outputs);
-    auto method_name = flatbuffer_builder->CreateString(rec_signature_def.method_name());
-    auto key = flatbuffer_builder->CreateString(rec_signature_def.key());
-    // TODO add validation for method_name and key
+    auto signature_key = flatbuffer_builder->CreateString(rec_signature_def.signature_key());
+    // TODO add validation for signature_key
 
     ::tflite::SignatureDefBuilder signature_def_builder{*flatbuffer_builder};
     signature_def_builder.add_inputs(inputs);
     signature_def_builder.add_outputs(outputs);
-    signature_def_builder.add_method_name(method_name);
-    signature_def_builder.add_key(key);
+    signature_def_builder.add_signature_key(signature_key);
     signature_def_builder.add_subgraph_index(rec_signature_def.subgraph_index());
 
     signdef_vec.emplace_back(signature_def_builder.Finish());

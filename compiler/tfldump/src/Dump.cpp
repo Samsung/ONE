@@ -15,7 +15,7 @@
  */
 
 #include <tfldump/Dump.h>
-#include <mio_tflite260/Helper.h>
+#include <mio_tflite280/Helper.h>
 
 #include "Read.h"
 #include "OpPrinter.h"
@@ -410,9 +410,8 @@ void dump_model(std::ostream &os, const tflite::Model *model)
     for (uint32_t i = 0; i < signaturedefs->Length(); ++i)
     {
       auto sign_i = signaturedefs->Get(i);
-      os << "S(" << i << ") method_name(" << sign_i->method_name()->c_str() << "), key("
-         << sign_i->key()->c_str() << "), sub_graph(" << sign_i->subgraph_index() << ")"
-         << std::endl;
+      os << "S(" << i << ") signature_key(" << sign_i->signature_key()->c_str() << "), sub_graph("
+         << sign_i->subgraph_index() << ")" << std::endl;
 
       auto inputs_i = sign_i->inputs();
       for (uint32_t t = 0; t < inputs_i->Length(); ++t)
