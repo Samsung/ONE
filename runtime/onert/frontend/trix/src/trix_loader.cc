@@ -29,6 +29,7 @@ namespace
 
 void TrixLoader::loadFromFile(const std::string & /* file_path */)
 {
+  (void)_subgraphs; // make android toolchain happy from unused member warning
   throw std::runtime_error("Not implemented yet");
 }
 
