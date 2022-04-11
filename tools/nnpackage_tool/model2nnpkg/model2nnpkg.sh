@@ -10,7 +10,7 @@ config_src=""
 
 usage() {
   echo "Usage: $progname [options] modelfile"
-  echo "Convert modelfile (either tflite or circle) to nnpackage."
+  echo "Convert modelfile (tflite, circle or tvn) to nnpackage."
   echo ""
   echo "Options:"
   echo "    -h   show this help"
@@ -78,7 +78,7 @@ fi
 cat > "$outdir"/"$name"/metadata/MANIFEST <<-EOF
 {
   "major-version" : "1",
-  "minor-version" : "1",
+  "minor-version" : "2",
   "patch-version" : "0",
   "configs"     : [ "$config" ],
   "models"      : [ "$modelfile" ],
