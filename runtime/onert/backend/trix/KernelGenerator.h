@@ -43,6 +43,9 @@ public:
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex op_ind) override;
 
 private:
+  void visit(const ir::operation::Bulk &node) override;
+
+private:
   const ir::Operands &_ctx;
   const ir::Operations &_operations_ctx;
   ir::Layout _current_layout;

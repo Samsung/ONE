@@ -55,6 +55,54 @@ public:
 
   npudev_h getDev() { return _dev_handle; }
 
+  template <typename T> void setDataInfo(tensors_data_info *info, std::vector<T *> &tensors)
+  {
+    info->num_info = static_cast<uint32_t>(tensors.size());
+
+    for (uint32_t idx = 0; idx < info->num_info; ++idx)
+    {
+      info->info[idx].layout = convertDataLayout(tensors[idx]->layout());
+      info->info[idx].type = convertDataType(tensors[idx]->data_type());
+    }
+  }
+
+  template <typename T> void setBuffer(generic_buffers *buf, std::vector<T *> &tensors)
+  {
+    buf->num_buffers = static_cast<uint32_t>(tensors.size());
+
+    for (uint32_t idx = 0; idx < buf->num_buffers; ++idx)
+    {
+      buf->bufs[idx].addr = tensors[idx]->buffer();
+      buf->bufs[idx].size = static_cast<uint64_t>(tensors[idx]->total_size());
+      buf->bufs[idx].type = BUFFER_MAPPED;
+    }
+  }
+
+private:
+  data_layout convertDataLayout(const ir::Layout layout)
+  {
+    switch (layout)
+    {
+      case ir::Layout::NCHW:
+        return DATA_LAYOUT_NCHW;
+      case ir::Layout::NHWC:
+        return DATA_LAYOUT_NHWC;
+      default:
+        throw std::runtime_error("Unknown Layout");
+    }
+  }
+
+  data_type convertDataType(const ir::DataType type)
+  {
+    switch (type)
+    {
+      case ir::DataType::QUANT_UINT8_ASYMM:
+        return DATA_TYPE_QASYMM8;
+      default:
+        throw std::runtime_error("Unsupported data type");
+    }
+  }
+
 private:
   // NPU device handle
   // TODO Support multicore npu device
