@@ -13,6 +13,7 @@ target_include_directories(angkor PUBLIC include)
 target_link_libraries(angkor PRIVATE nncc_common)
 target_link_libraries(angkor PUBLIC nncc_coverage)
 
+
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
