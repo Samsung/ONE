@@ -15,7 +15,7 @@ In the Ubuntu, you can easily install it with the following command.
 $ sudo apt-get install cmake libboost-all-dev
 ```
 
-If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in the https://github.com/Samsung/ONE/blob/master/infra/docker/Dockerfile.1804 file.
+If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in https://github.com/Samsung/ONE/blob/master/infra/docker/bionic/Dockerfile.
 
 Here is a summary of it
 
