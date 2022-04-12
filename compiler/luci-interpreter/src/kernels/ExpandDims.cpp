@@ -65,6 +65,7 @@ void ExpandDims::configure()
     }
     else
     {
+      LUCI_INTERPRETER_CHECK(i >= 1);
       output_shape.dim(i) = input_shape.dim(i - 1);
     }
   }
