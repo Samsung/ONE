@@ -350,6 +350,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   ExecutionBuilder builder;
 
+  // NOTE builtin backend must be processed lastly.
   // Adjust the order of backends for the upcoming iteration
   auto ordered_contexts = orderBackendContext(backend_contexts);
 
@@ -466,6 +467,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
   ExecutionBuilder builder;
 
+  // NOTE builtin backend must be processed lastly.
   // Adjust the order of backends for the upcoming iteration
   auto ordered_contexts = orderBackendContext(backend_contexts);
 
