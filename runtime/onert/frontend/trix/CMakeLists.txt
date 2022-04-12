@@ -3,10 +3,15 @@ if (NOT BUILD_TRIX_LOADER)
 endif ()
 
 set(SOURCES src/trix_loader_base.cc)
-# TODO: if (not trix_engine) then
-list(APPEND SOURCES src/trix_loader_dummy.cc)
-# TODO: else
-# list(APPEND SOURCES src/trix_loader.cc)
+
+nnfw_find_package(TRIXEngine EXACT 2.5.0 QUIET)
+if(TRIXEngine_FOUND)
+  message(WARNING "TRIXEngine found")
+  list(APPEND SOURCES src/trix_loader.cc)
+else()
+  message(WARNING "TRIXEngine NOT found, trix loader is dummy.")
+  list(APPEND SOURCES src/trix_loader_dummy.cc)
+endif(TRIXEngine_FOUND)
 
 add_library(trix_loader STATIC ${SOURCES})
 set_target_properties(trix_loader PROPERTIES POSITION_INDEPENDENT_CODE ON)
