@@ -10,6 +10,7 @@ file(GLOB_RECURSE SOURCES "*.cc")
 add_library(${LIB_ONERT_BACKEND_TRIX} SHARED ${SOURCES})
 
 target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE onert_core)
+target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE npu_engine)
 target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE nnfw_coverage)
 
