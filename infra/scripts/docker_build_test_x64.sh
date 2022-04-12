@@ -31,8 +31,9 @@ pushd $ROOT_PATH > /dev/null
 
 export DOCKER_ENV_VARS
 export DOCKER_VOLUMES
+export BUILD_OPTIONS
 # Disable nnpackage_run build: mismatch between buildtool for CI and installed hdf5
-CMD="export OPTIONS='-DBUILD_NNPACKAGE_RUN=OFF' && \
+CMD="export OPTIONS='-DBUILD_NNPACKAGE_RUN=OFF $BUILD_OPTIONS' && \
      export BUILD_TYPE=Release && \
      cp -nv Makefile.template Makefile && \
      make all install build_test_suite"
