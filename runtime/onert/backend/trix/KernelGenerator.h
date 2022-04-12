@@ -43,7 +43,7 @@ public:
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex op_ind) override;
 
 private:
-  void KernelGenerator::visit(const ir::operation::Bulk &node) override;
+  void visit(const ir::operation::Bulk &node) override;
 
 private:
   const ir::Operands &_ctx;

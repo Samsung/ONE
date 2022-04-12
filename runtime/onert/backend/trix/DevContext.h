@@ -31,7 +31,7 @@ class DevContext
 public:
   DevContext()
   {
-    auto device_count = getNPUdeviceByType(NPUCOND_TRIV2_CONN_SOCIP);
+    auto device_count = getnumNPUdeviceByType(NPUCOND_TRIV2_CONN_SOCIP);
     if (device_count <= 0)
     {
       throw std::runtime_error("Unable to find TRIV2 NPU device");
@@ -40,7 +40,7 @@ public:
     // Use NPU 0 device
     if (getNPUdeviceByType(&_dev_handle, NPUCOND_TRIV2_CONN_SOCIP, 0) < 0)
     {
-      throw std : runtime_error("Failed to get TRIV2 NPU device handle");
+      throw std::runtime_error("Failed to get TRIV2 NPU device handle");
     }
   }
 
@@ -55,31 +55,33 @@ public:
 
   npudev_h getDev() { return _dev_handle; }
 
-  void setDataInfo(const tensors_data_info *info, std::vector<IPortableTensor *> &tensors)
+  template <typename T>
+  void setDataInfo(tensors_data_info *info, std::vector<T *> &tensors)
   {
-    info->num_info = tensors.size();
+    info->num_info = static_cast<uint32_t>(tensors.size());
 
-    for (int idx = 0; idx < info->num_info; ++idx)
+    for (uint32_t idx = 0; idx < info->num_info; ++idx)
     {
       info->info[idx].layout = convertDataLayout(tensors[idx]->layout());
       info->info[idx].type = convertDataType(tensors[idx]->data_type());
     }
   }
 
-  void setBuffer(const generic_buffers *buf, std::vector<IPortableTensor *> &tensors)
+  template <typename T>
+  void setBuffer(generic_buffers *buf, std::vector<T *> &tensors)
   {
-    buf->num_buffers = tensors.size();
+    buf->num_buffers = static_cast<uint32_t>(tensors.size());
 
-    for (int idx = 0; idx < buf->num_buffers; ++idx)
+    for (uint32_t idx = 0; idx < buf->num_buffers; ++idx)
     {
       buf->bufs[idx].addr = tensors[idx]->buffer();
-      buf->bufs[idx].size = tensors[idx]->total_size();
+      buf->bufs[idx].size = static_cast<uint64_t>(tensors[idx]->total_size());
       buf->bufs[idx].type = BUFFER_MAPPED;
     }
   }
 
 private:
-  data_layout convertDataLayout(ir::Layout layout)
+  data_layout convertDataLayout(const ir::Layout layout)
   {
     switch (layout)
     {
@@ -92,7 +94,7 @@ private:
     }
   }
 
-  data_type convertDataType(ir::DataType type)
+  data_type convertDataType(const ir::DataType type)
   {
     switch (type)
     {

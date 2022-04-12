@@ -19,7 +19,6 @@
 
 #include <backend/IPortableTensor.h>
 #include "../DevContext.h"
-#include "OperationUtils.h"
 
 #include <exec/IFunction.h>
 
@@ -39,8 +38,8 @@ public:
   ~BulkLayer();
 
 public:
-  void configure(const std::vecotr<IPortableTensor *> &inputs,
-                 std::vector<IPortableTensor *> &output, string binary_path,
+  void configure(const std::vector<const IPortableTensor *> &inputs,
+                 std::vector<IPortableTensor *> &outputs, std::string binary_path,
                  const std::shared_ptr<DevContext> &dev_context);
 
   void run() override;
@@ -48,12 +47,12 @@ public:
   void prepare() override;
 
 private:
-  const std::vector<IPortableTensor *> _inputs;
+  std::vector<const IPortableTensor *> _inputs;
   std::vector<IPortableTensor *> _outputs;
 
-  const uint32_t _model_id;
-  const npubin_meta *_meta;
-  const std::shared_ptr<DevContext> _dev_context;
+  uint32_t _model_id;
+  npubin_meta *_meta;
+  std::shared_ptr<DevContext> _dev_context;
 };
 
 } // namespace ops
