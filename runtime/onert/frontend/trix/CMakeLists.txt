@@ -20,3 +20,8 @@ target_include_directories(trix_loader PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includ
 
 target_link_libraries(trix_loader PRIVATE onert_core)
 target_link_libraries(trix_loader PRIVATE nnfw_common nnfw_coverage)
+
+if(TRIXEngine_FOUND)
+  target_include_directories(trix_loader PUBLIC ${TRIXEngine_INCLUDE_DIR})
+  target_link_libraries(trix_loader PRIVATE npu_engine) # Rename npu_engine to trix_engine
+endif(TRIXEngine_FOUND)

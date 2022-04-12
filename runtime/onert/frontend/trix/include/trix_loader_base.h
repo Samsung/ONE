@@ -33,44 +33,29 @@ public:
    * @param graph reference on subgraphs
    */
   explicit TrixLoaderBase(std::unique_ptr<ir::Subgraphs> &subgs)
-    : _base(nullptr), _fd(-1), _subgraphs(subgs)
+    : _subgraphs(subgs)
   {
   }
 
   /**
    * @brief Load a model from file
-   *
    * @param file_path
    */
   void loadFromFile(const std::string &file_path);
 
+  // loadFromBuffer() may be added here.
+
 protected:
   /*
    * @brief Load model actually
-   *
-   * Used for both loadFromFile and loadFromBuffer
+   * @return true on successful loading, false otherwise
    */
-  virtual void loadModel() {}
+  virtual bool loadModel() { return true; }
 
-  /*
-   * @brief Verify model
-   *
-   * @return true if model is valid, false otherwise
-   *
-   */
-  virtual bool verifyModel() const { return true; }
-
-private:
-  // Base address for mapped region for loading (if needed)
-  uint8_t *_base;
-  // size of model in memory in bytes
-  size_t _sz;
-  // loaded file description
-  // -1 means model is in-memory, nonnegative means model is constructed from file
-  int _fd;
-  // path to model (e.g. tvn)
+protected:
+  /** path to model (e.g. tvn) */
   std::string _model_path;
-  // Reference on loadable subgraphs
+  /** Reference on loadable subgraphs */
   std::unique_ptr<ir::Subgraphs> &_subgraphs;
 };
 

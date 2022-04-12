@@ -21,14 +21,7 @@ namespace onert
 namespace trix_loader
 {
 
-namespace
-{
-// Add internal
-} // namespace
-
-void TrixLoader::loadModel() {}
-
-bool TrixLoader::verifyModel() const { return true; }
+bool TrixLoader::loadModel() { return true; }
 
 std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename)
 {

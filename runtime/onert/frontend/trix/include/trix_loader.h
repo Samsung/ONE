@@ -29,8 +29,7 @@ public:
   explicit TrixLoader(std::unique_ptr<ir::Subgraphs> &subgs) : TrixLoaderBase(subgs) {}
 
 protected:
-  void loadModel() override;
-  bool verifyModel() const override;
+  bool loadModel() override;
 };
 
 std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename);

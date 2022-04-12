@@ -16,19 +16,30 @@
 
 #include "trix_loader.h"
 
+#include <libnpuhost.h>
+#include <npubinfmt.h>
+#include <typedef.h>
+
 namespace onert
 {
 namespace trix_loader
 {
 
-namespace
+bool TrixLoader::loadModel()
 {
-// Add internal
-} // namespace
+  auto meta = getNPUmodel_metadata(_model_path.c_str(), false);
+  if (meta == nullptr)
+  {
+    std::cerr << "ERROR: Failed to get TRIV2 model metadata" << std::endl;
+    return false;
+  }
 
-void TrixLoader::loadModel() {}
-
-bool TrixLoader::verifyModel() const { return true; }
+  if (NPUBIN_VERSION(meta->magiccode) != 3)
+  {
+    return false;
+  }
+  return true;
+}
 
 std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename)
 {

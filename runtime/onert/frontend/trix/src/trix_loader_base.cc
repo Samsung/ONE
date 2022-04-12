@@ -24,56 +24,12 @@ namespace onert
 {
 namespace trix_loader
 {
-
-namespace
-{
-class Verifier
-{
-public:
-  Verifier(const std::uint8_t *buf, size_t buf_len) : _buf(buf), _buf_len(buf_len) {}
-  bool verify() const
-  {
-    (void)_buf;
-    (void)_buf_len;
-    return true;
-  }
-
-private:
-  const uint8_t *_buf;
-  size_t _buf_len;
-};
-} // namespace
-
 void TrixLoaderBase::loadFromFile(const std::string &file_path)
 {
   (void)_subgraphs; // make android toolchain happy from unused member warning
-  _fd = open(file_path.c_str(), O_RDONLY);
-  if (_fd < 0)
-  {
-    throw std::runtime_error("Failed to open file " + file_path);
-  }
-
-  struct stat file_stat;
-  if (fstat(_fd, &file_stat) != 0)
-  {
-    throw std::runtime_error("Fstat failed or file " + file_path + " is not a regular file");
-  }
-  _sz = file_stat.st_size;
-
-  // Map model file into memory region
-  _base = static_cast<uint8_t *>(mmap(NULL, _sz, PROT_READ, MAP_PRIVATE, _fd, 0));
-  if (_base == MAP_FAILED)
-  {
-    close(_fd);
-    throw std::runtime_error("mmap failed - " + std::string(strerror(errno)));
-  }
-
-  verifyModel();
-  loadModel();
-  munmap(_base, _sz);
-
-  close(_fd);
-  throw std::runtime_error("Not implemented yet");
+  _model_path = file_path;
+  if (not loadModel())
+    throw std::runtime_error("Failed to loading " + file_path);
 }
 
 } // namespace trix_loader
