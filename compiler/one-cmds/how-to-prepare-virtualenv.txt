@@ -36,18 +36,9 @@ There will be venv folder as of result.
 How to run for Windows
 ----------------------
 
-1. First, please prepare Python 3.5-3.7
-2. Open the Command Prompt as an administrator
-3. cd(change directory) to the directory where one-compiler is installed
-4. run below command
-```
-$ ONE\install\bin> python -m venv venv
-$ ONE\install\bin> cd venv/Scripts
-$ ONE\install\bin\venv/Scripts> pip.exe install -U pip
-$ ONE\install\bin\venv/Scripts> pip.exe install -U tensorflow-cpu==2.3.0
-```
-
-After running the above command, go back to MinGW and run one-compiler.
+Support for Windows is not maintained for now.
+If you have any needs for running in Windows, please fire an issue.
+Or you can use Docker for Windows.
 
 
 Trouble shooting
