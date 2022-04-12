@@ -102,13 +102,15 @@ test:
     testCaseFolder:
       - /compiler/angkor
       - /compiler/arser
-      - /compiler/circle2circle
+      - /compiler/circle-partitioner
       - /compiler/circle-quantizer
       - /compiler/circle-tensordump
+      - /compiler/circle2circle
       - /compiler/circlechef
       - /compiler/circledump
       - /compiler/crew
       - /compiler/cwrap
+      - /compiler/dio-hdf5
       - /compiler/foder
       - /compiler/hermes
       - /compiler/hermes-std
@@ -122,13 +124,16 @@ test:
       - /compiler/luci-eval-driver
       - /compiler/luci-pass-value-test
       - /compiler/luci-value-test
-      - /compiler/mio-circle
+      - /compiler/mio-circle04
       - /compiler/mio-tflite
+      - /compiler/mio-tflite260
       - /compiler/oops
       - /compiler/pepper-assert
+      - /compiler/pepper-csv2vec
       - /compiler/pepper-str
       - /compiler/pepper-strcast
       - /compiler/pp
+      - /compiler/rawdata2hdf5
       - /compiler/record-minmax
       - /compiler/safemain
       - /compiler/souschef
