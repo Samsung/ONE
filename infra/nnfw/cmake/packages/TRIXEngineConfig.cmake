@@ -28,11 +28,11 @@ function(_TRIXEngine_import)
   else(NOT TRIXEngine_FOUND)
 
     # Add target
-    if(NOT TARGET npu_engine)
-      add_library(npu_engine INTERFACE)
-      target_link_libraries(npu_engine INTERFACE ${TRIXEngine_LIB})
-      target_include_directories(npu_engine INTERFACE ${TRIXEngine_INCLUDE_DIR})
-    endif(NOT TARGET npu_engine)
+    if(NOT TARGET trix_engine)
+      add_library(trix_engine INTERFACE)
+      target_link_libraries(trix_engine INTERFACE ${TRIXEngine_LIB})
+      target_include_directories(trix_engine INTERFACE ${TRIXEngine_INCLUDE_DIR})
+    endif(NOT TARGET trix_engine)
   endif(NOT TRIXEngine_FOUND)
 
   set(TRIXEngine_FOUND ${TRIXEngine_FOUND} PARENT_SCOPE)
