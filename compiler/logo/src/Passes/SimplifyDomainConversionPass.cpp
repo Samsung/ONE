@@ -112,6 +112,22 @@ void set_input_null(loco::Node *node)
 namespace logo
 {
 
+#define CHECK_GET_PERM(DOMAIN, encode_node, decode_node)                       \
+  auto encoder = encode_node->encoder();                                       \
+  assert(encoder != nullptr);                                                  \
+                                                                               \
+  auto decoder = decode_node->decoder();                                       \
+  assert(decoder != nullptr);                                                  \
+                                                                               \
+  /* NOTE Work only for permuting codec */                                     \
+  auto perm_decoder = dynamic_cast<const PermutingDecoder<DOMAIN> *>(decoder); \
+  auto perm_encoder = dynamic_cast<const PermutingEncoder<DOMAIN> *>(encoder); \
+                                                                               \
+  if (perm_encoder == nullptr || perm_decoder == nullptr)                      \
+  {                                                                            \
+    return;                                                                    \
+  }
+
 bool SimplifyDomainConversionPass::run(loco::Graph *g)
 {
   // TODO Introduce and Use "Pattern Match"
@@ -129,20 +145,7 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
       }
       assert(decode_node->input() != nullptr);
 
-      auto encoder = encode_node->encoder();
-      assert(encoder != nullptr);
-
-      auto decoder = decode_node->decoder();
-      assert(decoder != nullptr);
-
-      // NOTE Work only for permuting codec
-      auto perm_decoder = dynamic_cast<const PermutingDecoder<Domain::Feature> *>(decoder);
-      auto perm_encoder = dynamic_cast<const PermutingEncoder<Domain::Feature> *>(encoder);
-
-      if (perm_encoder == nullptr || perm_decoder == nullptr)
-      {
-        return;
-      }
+      CHECK_GET_PERM(Domain::Feature, encode_node, decode_node);
 
       if (equal(perm_encoder->perm(), perm_decoder->perm()))
       {
@@ -162,20 +165,7 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
       }
       assert(encode_node->input() != nullptr);
 
-      auto encoder = encode_node->encoder();
-      assert(encoder != nullptr);
-
-      auto decoder = decode_node->decoder();
-      assert(decoder != nullptr);
-
-      // NOTE Work only for permuting codec
-      auto perm_decoder = dynamic_cast<const PermutingDecoder<Domain::Feature> *>(decoder);
-      auto perm_encoder = dynamic_cast<const PermutingEncoder<Domain::Feature> *>(encoder);
-
-      if (perm_encoder == nullptr || perm_decoder == nullptr)
-      {
-        return;
-      }
+      CHECK_GET_PERM(Domain::Feature, encode_node, decode_node);
 
       if (equal(perm_encoder->perm(), perm_decoder->perm()))
       {
@@ -195,20 +185,7 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
       }
       assert(encode_node->input() != nullptr);
 
-      auto encoder = encode_node->encoder();
-      assert(encoder != nullptr);
-
-      auto decoder = decode_node->decoder();
-      assert(decoder != nullptr);
-
-      // NOTE Work only for permuting codec
-      auto perm_decoder = dynamic_cast<const PermutingDecoder<Domain::Filter> *>(decoder);
-      auto perm_encoder = dynamic_cast<const PermutingEncoder<Domain::Filter> *>(encoder);
-
-      if (perm_encoder == nullptr || perm_decoder == nullptr)
-      {
-        return;
-      }
+      CHECK_GET_PERM(Domain::Filter, encode_node, decode_node);
 
       if (equal(perm_encoder->perm(), perm_decoder->perm()))
       {
@@ -257,20 +234,7 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
       }
       assert(encode_node->input() != nullptr);
 
-      auto encoder = encode_node->encoder();
-      assert(encoder != nullptr);
-
-      auto decoder = decode_node->decoder();
-      assert(decoder != nullptr);
-
-      // NOTE Work only for permuting codec
-      auto perm_decoder = dynamic_cast<const PermutingDecoder<Domain::DepthwiseFilter> *>(decoder);
-      auto perm_encoder = dynamic_cast<const PermutingEncoder<Domain::DepthwiseFilter> *>(encoder);
-
-      if (perm_encoder == nullptr || perm_decoder == nullptr)
-      {
-        return;
-      }
+      CHECK_GET_PERM(Domain::DepthwiseFilter, encode_node, decode_node);
 
       if (equal(perm_encoder->perm(), perm_decoder->perm()))
       {
@@ -309,20 +273,7 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
       }
       assert(decode_node->input() != nullptr);
 
-      auto encoder = encode_node->encoder();
-      assert(encoder != nullptr);
-
-      auto decoder = decode_node->decoder();
-      assert(decoder != nullptr);
-
-      // NOTE Work only for permuting codec
-      auto perm_decoder = dynamic_cast<const PermutingDecoder<Domain::Matrix> *>(decoder);
-      auto perm_encoder = dynamic_cast<const PermutingEncoder<Domain::Matrix> *>(encoder);
-
-      if (perm_encoder == nullptr || perm_decoder == nullptr)
-      {
-        return;
-      }
+      CHECK_GET_PERM(Domain::Matrix, encode_node, decode_node);
 
       if (equal(perm_encoder->perm(), perm_decoder->perm()))
       {
@@ -342,20 +293,7 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
       }
       assert(encode_node->input() != nullptr);
 
-      auto encoder = encode_node->encoder();
-      assert(encoder != nullptr);
-
-      auto decoder = decode_node->decoder();
-      assert(decoder != nullptr);
-
-      // NOTE Work only for permuting codec
-      auto perm_decoder = dynamic_cast<const PermutingDecoder<Domain::Matrix> *>(decoder);
-      auto perm_encoder = dynamic_cast<const PermutingEncoder<Domain::Matrix> *>(encoder);
-
-      if (perm_encoder == nullptr || perm_decoder == nullptr)
-      {
-        return;
-      }
+      CHECK_GET_PERM(Domain::Matrix, encode_node, decode_node);
 
       if (equal(perm_encoder->perm(), perm_decoder->perm()))
       {
