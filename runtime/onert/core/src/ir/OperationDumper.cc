@@ -29,19 +29,21 @@ using namespace operation;
 
 namespace
 {
+
+// Dump all input and output.
+// Use this function when there is no special input or(and) output.
+void dumpOpGeneric(const Operation &node, const std::string &adding_input = "")
+{
+  VERBOSE(LIR) << "* " << node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs() << ") " << adding_input << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs() << ")" << std::endl;
+}
+
 void dumpUnaryInputOp(const Operation &node, const std::string &adding_input = "")
 {
   VERBOSE(LIR) << "* " << node.name() << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(0) << ") " << adding_input
                << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void dumpBinaryInputOp(const Operation &node, const std::string &adding_input = "")
-{
-  VERBOSE(LIR) << "* " << node.name() << std::endl;
-  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(0) << ", " << node.getInputs().at(1)
-               << ") " << adding_input << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
@@ -52,18 +54,6 @@ void dumpConvOp(const Operation &node, const std::string &padding_type)
                << node.getInputs().at(Conv2D::Input::KERNEL) << ") Bias("
                << node.getInputs().at(Conv2D::Input::BIAS) << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
-}
-
-void dumpPackingOp(const Operation &node)
-{
-  VERBOSE(LIR) << "* " << node.name() << std::endl;
-  std::string inputs;
-  for (auto i : node.getInputs())
-  {
-    inputs += std::to_string(i.value()) + ",";
-  }
-  VERBOSE(LIR) << "  - Inputs : Inputs(" << inputs << ")" << std::endl;
-  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 } // namespace
 
@@ -86,7 +76,7 @@ void OperationDumper::visit(const BatchToSpaceND &node)
   std::string block_size =
     "BlockSize(" + std::to_string(node.getInputs().at(BatchToSpaceND::Input::BLOCK_SIZE).value()) +
     ")";
-  dumpUnaryInputOp(node, block_size);
+  dumpOpGeneric(node, block_size);
 }
 
 void OperationDumper::visit(const BCQFullyConnected &node)
@@ -103,13 +93,13 @@ void OperationDumper::visit(const BCQFullyConnected &node)
   VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const BinaryArithmetic &node) { dumpBinaryInputOp(node); }
+void OperationDumper::visit(const BinaryArithmetic &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const operation::BroadcastTo &node) { dumpBinaryInputOp(node); }
+void OperationDumper::visit(const operation::BroadcastTo &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const Comparison &node) { dumpBinaryInputOp(node); }
+void OperationDumper::visit(const Comparison &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const Concat &node) { dumpPackingOp(node); }
+void OperationDumper::visit(const Concat &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const Conv2D &node)
 {
@@ -118,11 +108,11 @@ void OperationDumper::visit(const Conv2D &node)
   dumpConvOp(node, padding_type);
 }
 
-void OperationDumper::visit(const ConvertFp16ToFp32 &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const ConvertFp16ToFp32 &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const ConvertFp32ToFp16 &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const ConvertFp32ToFp16 &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const DepthToSpace &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const DepthToSpace &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const DepthwiseConv2D &node)
 {
@@ -143,12 +133,12 @@ void OperationDumper::visit(const ElementwiseActivation &node)
   {
     params = " alpha value(" + std::to_string(node.param().alpha) + ")";
   }
-  dumpUnaryInputOp(node, params);
+  dumpOpGeneric(node, params);
 }
 
-void OperationDumper::visit(const ElementwiseBinary &node) { dumpBinaryInputOp(node); }
+void OperationDumper::visit(const ElementwiseBinary &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const ElementwiseUnary &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const ElementwiseUnary &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const EmbeddingLookup &node)
 {
@@ -208,9 +198,9 @@ void OperationDumper::visit(const InstanceNorm &node)
   dumpUnaryInputOp(node, inputs);
 }
 
-void OperationDumper::visit(const L2Normalization &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const L2Normalization &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const LocalResponseNormalization &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const LocalResponseNormalization &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const LSTM &node)
 {
@@ -258,7 +248,7 @@ void OperationDumper::visit(const LSTM &node)
                << node.getOutputs().at(LSTM::Output::OUTPUT) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Pack &node) { dumpPackingOp(node); }
+void OperationDumper::visit(const Pack &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const Pad &node)
 {
@@ -297,16 +287,16 @@ void OperationDumper::visit(const Pool2D &node)
   VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Pow &node) { dumpBinaryInputOp(node); }
+void OperationDumper::visit(const Pow &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const PReLU &node)
 {
   std::string alpha =
     "Alpha(" + std::to_string(node.getInputs().at(PReLU::Input::ALPHA).value()) + ")";
-  dumpUnaryInputOp(node, alpha);
+  dumpOpGeneric(node, alpha);
 }
 
-void OperationDumper::visit(const Rank &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const Rank &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const Reduce &node) { dumpUnaryInputOp(node); }
 
@@ -320,37 +310,9 @@ void OperationDumper::visit(const Reshape &node)
   dumpUnaryInputOp(node, shape);
 }
 
-void OperationDumper::visit(const ResizeBilinear &node)
-{
-  if (node.getInputs().size() == 1)
-  {
-    dumpUnaryInputOp(node);
-  }
-  else if (node.getInputs().size() == 2)
-  {
-    dumpBinaryInputOp(node);
-  }
-  else
-  {
-    VERBOSE(LIR) << "* " << node.name() << " is set wrong" << std::endl;
-  }
-}
+void OperationDumper::visit(const ResizeBilinear &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const ResizeNearestNeighbor &node)
-{
-  if (node.getInputs().size() == 1)
-  {
-    dumpUnaryInputOp(node);
-  }
-  else if (node.getInputs().size() == 2)
-  {
-    dumpBinaryInputOp(node);
-  }
-  else
-  {
-    VERBOSE(LIR) << "* " << node.name() << " is set wrong" << std::endl;
-  }
-}
+void OperationDumper::visit(const ResizeNearestNeighbor &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const Reverse &node)
 {
@@ -391,9 +353,9 @@ void OperationDumper::visit(const Select &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const ir::operation::Shape &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const ir::operation::Shape &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const Softmax &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const Softmax &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const SpaceToBatchND &node)
 {
@@ -404,11 +366,11 @@ void OperationDumper::visit(const SpaceToBatchND &node)
   dumpUnaryInputOp(node, inputs);
 }
 
-void OperationDumper::visit(const SpaceToDepth &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const SpaceToDepth &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const Split &node) { dumpBinaryInputOp(node); }
+void OperationDumper::visit(const Split &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const SquaredDifference &node) { dumpBinaryInputOp(node); }
+void OperationDumper::visit(const SquaredDifference &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const StatelessRandomUniform &node)
 {
@@ -419,7 +381,7 @@ void OperationDumper::visit(const StatelessRandomUniform &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Squeeze &node) { dumpUnaryInputOp(node); }
+void OperationDumper::visit(const Squeeze &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const Slice &node) { dumpUnaryInputOp(node); }
 
@@ -454,22 +416,14 @@ void OperationDumper::visit(const TransposeConv &node)
   VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
-void OperationDumper::visit(const Transpose &node) { dumpBinaryInputOp(node); }
+void OperationDumper::visit(const Transpose &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const Unpack &node)
 {
   VERBOSE(LIR) << "* " << node.name() << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(Unpack::Input::INPUT) << ")"
                << std::endl;
-  std::string outputs;
-  const auto &output_indices = node.getOutputs();
-  for (auto it = std::begin(output_indices); it != std::end(output_indices); ++it)
-  {
-    outputs += std::to_string(it->value());
-    if (std::next(it) != std::end(output_indices))
-      outputs += ", ";
-  }
-  VERBOSE(LIR) << "  - Outputs : Outputs(" << outputs << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Outputs(" << node.getOutputs() << ")" << std::endl;
 }
 
 void OperationDumper::visit(const OneHot &node)
@@ -483,51 +437,21 @@ void OperationDumper::visit(const OneHot &node)
 void OperationDumper::visit(const If &node)
 {
   VERBOSE(LIR) << "* " << node.name() << std::endl;
-  std::string inputs;
-  const auto &input_indices = node.getInputs();
-  for (auto it = std::begin(input_indices); it != std::end(input_indices); ++it)
-  {
-    inputs += std::to_string(it->value());
-    if (std::next(it) != std::end(input_indices))
-      inputs += ", ";
-  }
   VERBOSE(LIR) << "  - Inputs : "
                << "Then subgraph (" << node.param().then_subg_index << ") Else subgraph ("
-               << node.param().else_subg_index << ") Inputs(" << inputs << ")" << std::endl;
-  std::string outputs;
-  const auto &output_indices = node.getOutputs();
-  for (auto it = std::begin(output_indices); it != std::end(output_indices); ++it)
-  {
-    outputs += std::to_string(it->value());
-    if (std::next(it) != std::end(output_indices))
-      outputs += ", ";
-  }
-  VERBOSE(LIR) << "  - Output : Outputs(" << outputs << ")" << std::endl;
+               << node.param().else_subg_index << ") Inputs(" << node.getInputs() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Outputs(" << node.getOutputs() << ")" << std::endl;
 }
 
 void OperationDumper::visit(const While &node)
 {
   VERBOSE(LIR) << "* " << node.name() << std::endl;
-  std::string inputs;
-  const auto &input_indices = node.getInputs();
-  for (auto it = std::begin(input_indices); it != std::end(input_indices); ++it)
-  {
-    inputs += std::to_string(it->value());
-    if (std::next(it) != std::end(input_indices))
-      inputs += ", ";
-  }
   VERBOSE(LIR) << "  - Inputs : "
                << "Cond subgraph (" << node.param().cond_subg_index << ") Body subgraph ("
-               << node.param().body_subg_index << ") Inputs(" << inputs << ")" << std::endl;
-  std::string outputs;
-  const auto &output_indices = node.getOutputs();
-  for (auto it = std::begin(output_indices); it != std::end(output_indices); ++it)
-  {
-    outputs += std::to_string(it->value());
-    if (std::next(it) != std::end(output_indices))
-      outputs += ", ";
-  }
-  VERBOSE(LIR) << "  - Output : Outputs(" << outputs << ")" << std::endl;
+               << node.param().body_subg_index << ") Inputs(" << node.getInputs() << ")"
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Outputs(" << node.getOutputs() << ")" << std::endl;
 }
 
 } // namespace ir
