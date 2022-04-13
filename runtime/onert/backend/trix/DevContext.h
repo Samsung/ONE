@@ -55,8 +55,7 @@ public:
 
   npudev_h getDev() { return _dev_handle; }
 
-  template <typename T>
-  void setDataInfo(tensors_data_info *info, std::vector<T *> &tensors)
+  template <typename T> void setDataInfo(tensors_data_info *info, std::vector<T *> &tensors)
   {
     info->num_info = static_cast<uint32_t>(tensors.size());
 
@@ -67,8 +66,7 @@ public:
     }
   }
 
-  template <typename T>
-  void setBuffer(generic_buffers *buf, std::vector<T *> &tensors)
+  template <typename T> void setBuffer(generic_buffers *buf, std::vector<T *> &tensors)
   {
     buf->num_buffers = static_cast<uint32_t>(tensors.size());
 

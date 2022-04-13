@@ -37,7 +37,7 @@ public:
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
     : onert::backend::BackendContext(backend, std::move(data), tensor_registry),
-      tensor_builder{tensor_builder}, kernel_gen{kernel_gen}
+      tensor_builder{tensor_builder}, kernel_gen{kernel_gen}, _dev_context(new DevContext)
   {
   }
 

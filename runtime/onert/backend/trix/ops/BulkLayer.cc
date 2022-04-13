@@ -65,7 +65,8 @@ void BulkLayer::run()
   int req_id;
   if (createNPU_request(_dev_context->getDev(), _model_id, &req_id))
   {
-    throw std::runtime_error("Unable to create NPU request with model id (" + std::to_string(_model_id) + ")");
+    throw std::runtime_error("Unable to create NPU request with model id (" +
+                             std::to_string(_model_id) + ")");
   }
 
   if (_meta->input_seg_num != _inputs.size())
@@ -91,17 +92,20 @@ void BulkLayer::run()
   if (setNPU_requestData(_dev_context->getDev(), req_id, &input_buf, &in_info, &output_buf,
                          &out_info))
   {
-    throw std::runtime_error("Unable to create NPU request for model id (" + std::to_string(_model_id) + ")");
+    throw std::runtime_error("Unable to create NPU request for model id (" +
+                             std::to_string(_model_id) + ")");
   }
 
   if (submitNPU_request(_dev_context->getDev(), req_id))
   {
-    throw std::runtime_error("Unable to submit NPU request with req id (" + std::to_string(req_id) + ")");
+    throw std::runtime_error("Unable to submit NPU request with req id (" + std::to_string(req_id) +
+                             ")");
   }
 
   if (removeNPU_request(_dev_context->getDev(), req_id))
   {
-    throw std::runtime_error("Unable to remove NPU request with req id (" + std::to_string(req_id) + ")");
+    throw std::runtime_error("Unable to remove NPU request with req id (" + std::to_string(req_id) +
+                             ")");
   }
 }
 
