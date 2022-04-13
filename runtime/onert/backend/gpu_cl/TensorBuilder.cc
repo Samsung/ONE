@@ -20,7 +20,6 @@
 #include "TensorBuilder.h"
 
 #include "TensorManager.h"
-#include "ParentInfo.h"
 
 #include "tensorflow/lite/delegates/gpu/cl/tensor_type.h"
 #include "tensorflow/lite/delegates/gpu/cl/tensor_type_util.h"
@@ -43,6 +42,8 @@ namespace backend
 {
 namespace gpu_cl
 {
+
+using UsesType = cl_common::UsesType;
 
 TensorBuilder::TensorBuilder(const ir::Operands &operands, TensorManager *tensor_mgr,
                              tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
@@ -86,55 +87,7 @@ void TensorBuilder::prepare(void) { buildTensors(); }
 
 void TensorBuilder::allocate(void)
 {
-  // Update lifetime sequence to apply subtensor optimization
-
-  std::unordered_map<ir::OperandIndex, ir::OperandIndex> root_map;
-  std::function<ir::OperandIndex &(ir::OperandIndex)> find_root =
-    [&](ir::OperandIndex ind) -> ir::OperandIndex & {
-    ir::OperandIndex &ret = root_map[ind];
-
-    // We know the root parent value already
-    if (ret.valid())
-      return ret;
-
-    auto itr = _parent_map.find(ind);
-    if (itr == _parent_map.end())
-    {
-      // If there is no parent, let's store the value of itself
-      return ret = ind;
-    }
-    else
-    {
-      return ret = find_root(itr->second.parent);
-    }
-  };
-
-  ir::OperandIndexMap<bool> first_use_check;
-  ir::OperandIndexMap<bool> last_use_check;
-  std::map<size_t, std::pair<UsesType, ir::OperandIndex>> lifetime_map;
-  for (size_t i = 0; i < _lifetime_seq.size(); i++)
-  {
-    auto &entry = _lifetime_seq[i];
-    if (entry.first != UsesType::FIRST)
-      continue;
-    auto root_ind = find_root(entry.second);
-    if (first_use_check[root_ind])
-      continue;
-    first_use_check[root_ind] = true;
-    lifetime_map[i] = {UsesType::FIRST, root_ind};
-  }
-
-  for (int i = _lifetime_seq.size() - 1; i >= 0; i--)
-  {
-    auto &entry = _lifetime_seq[i];
-    if (entry.first != UsesType::LAST)
-      continue;
-    auto root_ind = find_root(entry.second);
-    if (last_use_check[root_ind])
-      continue;
-    last_use_check[root_ind] = true;
-    lifetime_map[i] = {UsesType::LAST, root_ind};
-  }
+  auto lifetime_map = cl_common::createLifetimeMap(_lifetime_seq, _parent_map);
 
   for (auto &entry : lifetime_map)
   {

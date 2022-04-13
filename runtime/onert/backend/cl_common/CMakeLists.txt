@@ -1,5 +1,7 @@
-add_library(${LIB_ONERT_BACKEND_CL_COMMON} INTERFACE)
+file(GLOB_RECURSE SOURCES "src/*.cc")
 
-target_include_directories(${LIB_ONERT_BACKEND_CL_COMMON} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(${LIB_ONERT_BACKEND_CL_COMMON} INTERFACE onert_core)
-target_link_libraries(${LIB_ONERT_BACKEND_CL_COMMON} INTERFACE nnfw_lib_misc)
+add_library(${LIB_ONERT_BACKEND_CL_COMMON} STATIC ${SOURCES})
+
+target_include_directories(${LIB_ONERT_BACKEND_CL_COMMON} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set_target_properties(${LIB_ONERT_BACKEND_CL_COMMON} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+target_link_libraries(${LIB_ONERT_BACKEND_CL_COMMON} PUBLIC onert_core)

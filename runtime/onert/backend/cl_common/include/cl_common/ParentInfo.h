@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_ACL_COMMON_PARENT_INFO_H__
-#define __ONERT_BACKEND_ACL_COMMON_PARENT_INFO_H__
+#ifndef __ONERT_BACKEND_CL_COMMON_PARENT_INFO_H__
+#define __ONERT_BACKEND_CL_COMMON_PARENT_INFO_H__
 
 #include <ir/Index.h>
 #include <ir/Coordinates.h>
@@ -24,7 +24,7 @@ namespace onert
 {
 namespace backend
 {
-namespace acl_common
+namespace cl_common
 {
 
 /**
@@ -37,8 +37,8 @@ struct ParentInfo
   ir::Coordinates coordinates;
 };
 
-} // namespace acl_common
+} // namespace cl_common
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_ACL_COMMON_PARENT_INFO_H__
+#endif // __ONERT_BACKEND_CL_COMMON_PARENT_INFO_H__
