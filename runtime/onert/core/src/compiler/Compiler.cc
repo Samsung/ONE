@@ -64,6 +64,28 @@ std::string getOpBackends(std::unordered_map<ir::OpCode, std::string> &opcode_to
   return opbackends;
 }
 
+void verboseOptions(compiler::CompilerOptions &options)
+{
+  VERBOSE(Compiler) << std::boolalpha << "==== Compiler Options ====" << std::endl;
+  VERBOSE(Compiler) << "backend_list             : "
+                    << nnfw::misc::join(options.backend_list.begin(), options.backend_list.end(),
+                                        "/")
+                    << std::endl;
+  VERBOSE(Compiler) << "trace_filepath           : " << options.trace_filepath << std::endl;
+  VERBOSE(Compiler) << "graph_dump_level         : " << options.graph_dump_level << std::endl;
+  VERBOSE(Compiler) << "executor                 : " << options.executor << std::endl;
+  VERBOSE(Compiler) << "manual backend_for_all   : "
+                    << options.manual_scheduler_options.backend_for_all << std::endl;
+  VERBOSE(Compiler) << "manual_scheduler_options : "
+                    << getOpBackends(options.manual_scheduler_options.opcode_to_backend)
+                    << std::endl;
+  VERBOSE(Compiler) << "he_scheduler             : " << options.he_scheduler << std::endl;
+  VERBOSE(Compiler) << "he_profiling_mode        : " << options.he_profiling_mode << std::endl;
+  VERBOSE(Compiler) << "disable_compile          : " << options.disable_compile << std::endl;
+  VERBOSE(Compiler) << "fp16_enable              : " << options.fp16_enable << std::endl
+                    << std::noboolalpha;
+}
+
 } // namespace
 
 namespace onert
@@ -344,26 +366,7 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
   }
 
-  {
-    VERBOSE(Compiler) << std::boolalpha << "==== Compiler Options ====" << std::endl;
-    VERBOSE(Compiler) << "backend_list             : "
-                      << nnfw::misc::join(_options.backend_list.begin(),
-                                          _options.backend_list.end(), "/")
-                      << std::endl;
-    VERBOSE(Compiler) << "trace_filepath           : " << _options.trace_filepath << std::endl;
-    VERBOSE(Compiler) << "graph_dump_level         : " << _options.graph_dump_level << std::endl;
-    VERBOSE(Compiler) << "executor                 : " << _options.executor << std::endl;
-    VERBOSE(Compiler) << "manual backend_for_all   : "
-                      << _options.manual_scheduler_options.backend_for_all << std::endl;
-    VERBOSE(Compiler) << "manual_scheduler_options : "
-                      << getOpBackends(_options.manual_scheduler_options.opcode_to_backend)
-                      << std::endl;
-    VERBOSE(Compiler) << "he_scheduler             : " << _options.he_scheduler << std::endl;
-    VERBOSE(Compiler) << "he_profiling_mode        : " << _options.he_profiling_mode << std::endl;
-    VERBOSE(Compiler) << "disable_compile          : " << _options.disable_compile << std::endl;
-    VERBOSE(Compiler) << "fp16_enable              : " << _options.fp16_enable << std::endl
-                      << std::noboolalpha;
-  }
+  verboseOptions(_options);
 
   _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
     // Mandatory passes
@@ -544,26 +547,7 @@ std::vector<std::shared_ptr<exec::ExecutorMap>> Compiler::compile(const char *pa
     _options.tracing_ctx = nullptr;
   }
 
-  {
-    VERBOSE(Compiler) << std::boolalpha << "==== Compiler Options ====" << std::endl;
-    VERBOSE(Compiler) << "backend_list             : "
-                      << nnfw::misc::join(_options.backend_list.begin(),
-                                          _options.backend_list.end(), "/")
-                      << std::endl;
-    VERBOSE(Compiler) << "trace_filepath           : " << _options.trace_filepath << std::endl;
-    VERBOSE(Compiler) << "graph_dump_level         : " << _options.graph_dump_level << std::endl;
-    VERBOSE(Compiler) << "executor                 : " << _options.executor << std::endl;
-    VERBOSE(Compiler) << "manual backend_for_all   : "
-                      << _options.manual_scheduler_options.backend_for_all << std::endl;
-    VERBOSE(Compiler) << "manual_scheduler_options : "
-                      << getOpBackends(_options.manual_scheduler_options.opcode_to_backend)
-                      << std::endl;
-    VERBOSE(Compiler) << "he_scheduler             : " << _options.he_scheduler << std::endl;
-    VERBOSE(Compiler) << "he_profiling_mode        : " << _options.he_profiling_mode << std::endl;
-    VERBOSE(Compiler) << "disable_compile          : " << _options.disable_compile << std::endl;
-    VERBOSE(Compiler) << "fp16_enable              : " << _options.fp16_enable << std::endl
-                      << std::noboolalpha;
-  }
+  verboseOptions(_options);
 
   _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
     // Mandatory passes
