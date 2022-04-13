@@ -39,6 +39,14 @@ void dumpOpGeneric(const Operation &node, const std::string &adding_input = "")
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs() << ")" << std::endl;
 }
 
+void dumpUnaryInputOp(const Operation &node, const std::string &adding_input = "")
+{
+  VERBOSE(LIR) << "* " << node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(0) << ") " << adding_input
+               << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
 void dumpConvOp(const Operation &node, const std::string &padding_type)
 {
   VERBOSE(LIR) << "* " << node.name() << "(" << padding_type << ")" << std::endl;
@@ -145,7 +153,7 @@ void OperationDumper::visit(const ExpandDims &node)
 {
   std::string axis =
     "AXIS(" + std::to_string(node.getInputs().at(ExpandDims::Input::AXIS).value()) + ")";
-  dumpOpGeneric(node, axis);
+  dumpUnaryInputOp(node, axis);
 }
 
 void OperationDumper::visit(const Fill &node)
@@ -161,14 +169,14 @@ void OperationDumper::visit(const FullyConnected &node)
   std::string inputs =
     "Weight(" + std::to_string(node.getInputs().at(FullyConnected::Input::WEIGHT).value()) +
     ") Bias(" + std::to_string(node.getInputs().at(FullyConnected::Input::BIAS).value()) + ")";
-  dumpOpGeneric(node, inputs);
+  dumpUnaryInputOp(node, inputs);
 }
 
 void OperationDumper::visit(const Gather &node)
 {
   std::string indices =
     "Indices(" + std::to_string(node.getInputs().at(Gather::Input::INDICES).value()) + ")";
-  dumpOpGeneric(node, indices);
+  dumpUnaryInputOp(node, indices);
 }
 
 void OperationDumper::visit(const HashtableLookup &node)
@@ -187,7 +195,7 @@ void OperationDumper::visit(const InstanceNorm &node)
   std::string inputs =
     "Gamma(" + std::to_string(node.getInputs().at(InstanceNorm::Input::GAMMA).value()) + ") Beta(" +
     std::to_string(node.getInputs().at(InstanceNorm::Input::BETA).value()) + ")";
-  dumpOpGeneric(node, inputs);
+  dumpUnaryInputOp(node, inputs);
 }
 
 void OperationDumper::visit(const L2Normalization &node) { dumpOpGeneric(node); }
@@ -245,7 +253,7 @@ void OperationDumper::visit(const Pack &node) { dumpOpGeneric(node); }
 void OperationDumper::visit(const Pad &node)
 {
   std::string pad = "Pad(" + std::to_string(node.getInputs().at(Pad::Input::PAD).value()) + ")";
-  dumpOpGeneric(node, pad);
+  dumpUnaryInputOp(node, pad);
 }
 
 void OperationDumper::visit(const Permute &node)
@@ -290,7 +298,7 @@ void OperationDumper::visit(const PReLU &node)
 
 void OperationDumper::visit(const Rank &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const Reduce &node) { dumpOpGeneric(node); }
+void OperationDumper::visit(const Reduce &node) { dumpUnaryInputOp(node); }
 
 void OperationDumper::visit(const Reshape &node)
 {
@@ -299,7 +307,7 @@ void OperationDumper::visit(const Reshape &node)
     node.getInputs().size() == 2
       ? "Shape(" + std::to_string(node.getInputs().at(Reshape::Input::SHAPE).value()) + ")"
       : "Shape(not provided)";
-  dumpOpGeneric(node, shape);
+  dumpUnaryInputOp(node, shape);
 }
 
 void OperationDumper::visit(const ResizeBilinear &node) { dumpOpGeneric(node); }
@@ -310,7 +318,7 @@ void OperationDumper::visit(const Reverse &node)
 {
   std::string axis =
     "Axis(" + std::to_string(node.getInputs().at(Reverse::Input::AXIS).value()) + ")";
-  dumpOpGeneric(node, axis);
+  dumpUnaryInputOp(node, axis);
 }
 
 void OperationDumper::visit(const RNN &node)
@@ -355,7 +363,7 @@ void OperationDumper::visit(const SpaceToBatchND &node)
     "BlockSize(" + std::to_string(node.getInputs().at(SpaceToBatchND::Input::BLOCK_SIZE).value()) +
     ") Paddings(" + std::to_string(node.getInputs().at(SpaceToBatchND::Input::PADDINGS).value()) +
     ")";
-  dumpOpGeneric(node, inputs);
+  dumpUnaryInputOp(node, inputs);
 }
 
 void OperationDumper::visit(const SpaceToDepth &node) { dumpOpGeneric(node); }
@@ -375,15 +383,15 @@ void OperationDumper::visit(const StatelessRandomUniform &node)
 
 void OperationDumper::visit(const Squeeze &node) { dumpOpGeneric(node); }
 
-void OperationDumper::visit(const Slice &node) { dumpOpGeneric(node); }
+void OperationDumper::visit(const Slice &node) { dumpUnaryInputOp(node); }
 
-void OperationDumper::visit(const StridedSlice &node) { dumpOpGeneric(node); }
+void OperationDumper::visit(const StridedSlice &node) { dumpUnaryInputOp(node); }
 
 void OperationDumper::visit(const Tile &node)
 {
   std::string multiples =
     "Multiples(" + std::to_string(node.getInputs().at(Tile::Input::MULTIPLES).value()) + ")";
-  dumpOpGeneric(node, multiples);
+  dumpUnaryInputOp(node, multiples);
 }
 
 void OperationDumper::visit(const TopKV2 &node)
