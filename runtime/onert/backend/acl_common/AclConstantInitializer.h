@@ -153,6 +153,23 @@ void permuteInit(const onert::ir::Operand &model_obj, onert::backend::ITensor &o
   Init<T>(model_obj, obj, copy, frontend_layout);
 }
 
+// Pre-defined initializer - fill reverse order
+template <typename T> void initReverseOrder(const ir::Operand &model_obj, backend::ITensor &obj)
+{
+  assert(model_obj.data());
+  const auto &shape = model_obj.shape();
+  const auto base = reinterpret_cast<const T *>(model_obj.data()->base());
+  assert(model_obj.shape().rank() == 1);
+  obj.access([&](ITensor &tensor) {
+    for (size_t i = 0; i < shape.num_elements(); ++i)
+    {
+      const T value = base[shape.num_elements() - i - 1];
+      T *into = reinterpret_cast<T *>(tensor.buffer() + tensor.calcOffset({static_cast<T>(i)}));
+      *into = value;
+    }
+  });
+}
+
 class AclConstantInitializer : public ir::OperationVisitor
 {
 public:
