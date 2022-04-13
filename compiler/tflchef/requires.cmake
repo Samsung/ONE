@@ -1,7 +1,7 @@
 require("arser")
 require("nnkit")
 require("cwrap")
-require("mio-tflite260")
+require("mio-tflite280")
 require("safemain")
 require("hermes")
 require("hermes-std")

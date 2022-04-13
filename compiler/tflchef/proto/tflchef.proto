@@ -665,8 +665,8 @@ message TensorMap {
 message SignatureDef {
   repeated TensorMap inputs = 4;
   repeated TensorMap outputs = 5;
-  optional string method_name = 6;
-  optional string key = 10;
+  optional string signature_key = 6;
+  // optional string key = 10; obsolete in TF2.8.0
   optional uint32 subgraph_index = 12;
 }
 
