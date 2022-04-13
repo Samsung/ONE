@@ -194,7 +194,7 @@ void CalculateActivationRangeQuantized(ir::Activation activation, const IPortabl
   }
   else
   {
-    std::cout << "Unsupported fused activation function." << std::endl;
+    throw std::runtime_error{"Unsupported fused activation function."};
   }
 }
 

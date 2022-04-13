@@ -18,17 +18,17 @@
 #define __ONERT_BACKEND_RUY_OPS_OPERATION_UTILS_H__
 
 #include <backend/IPortableTensor.h>
+#include <ir/DataType.h>
+#include <ir/Padding.h>
+#include <util/CalculateActivationRange.h>
 
 #include <ruy/Shape.h>
 #include <ruy/Types.h>
-#include <iostream>
-#include <ir/DataType.h>
-#include <ir/InternalType.h>
-#include <ir/Padding.h>
 
 #include <limits>
 
 using OperandType = onert::ir::DataType;
+using namespace onert::util;
 
 namespace onert
 {
@@ -76,40 +76,6 @@ inline nnfw::ruy::FusedActivationFunctionType convertActivationType(const ir::Ac
       return nnfw::ruy::FusedActivationFunctionType::kSigmoid;
     default:
       throw std::runtime_error{"RUY backend: Cannot convert activation type"};
-  }
-}
-
-template <typename T>
-void CalculateActivationRange(ir::Activation activation, T *activation_min, T *activation_max)
-{
-  if (activation == ir::Activation::RELU)
-  {
-    *activation_min = 0;
-    *activation_max = std::numeric_limits<T>::max();
-  }
-  else if (activation == ir::Activation::RELU6)
-  {
-    *activation_min = 0;
-    *activation_max = 6;
-  }
-  else if (activation == ir::Activation::RELU1)
-  {
-    *activation_min = -1;
-    *activation_max = 1;
-  }
-  else if (activation == ir::Activation::SIGMOID)
-  {
-    *activation_min = 0;
-    *activation_max = 1;
-  }
-  else if (activation == ir::Activation::NONE)
-  {
-    *activation_min = std::numeric_limits<T>::lowest();
-    *activation_max = std::numeric_limits<T>::max();
-  }
-  else
-  {
-    std::cout << "Unsupported fused activation function." << std::endl;
   }
 }
 

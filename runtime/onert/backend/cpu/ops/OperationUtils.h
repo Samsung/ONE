@@ -18,19 +18,19 @@
 #define __NNFW_SUPPORT_NNAPI_OPERATION_UTILS_H__
 
 #include <backend/IPortableTensor.h>
+#include <ir/DataType.h>
+#include <ir/Operand.h>
+#include <ir/Padding.h>
+#include <util/CalculateActivationRange.h>
 
 #include <cker/Shape.h>
 #include <cker/Types.h>
-#include <iostream>
-#include <ir/DataType.h>
-#include <ir/InternalType.h>
-#include <ir/Operand.h>
-#include <ir/Padding.h>
 
 #include <limits>
 #include <vector>
 
 using OperandType = onert::ir::DataType;
+using namespace onert::util;
 
 namespace onert
 {
@@ -165,40 +165,6 @@ void GetQuantizedConvolutionMultipliersAndShifts(
   float input_scale, float output_scale, const float *filter_scales, size_t filter_scales_size,
   int num_channels, std::vector<int32_t> &per_channel_output_multiplier,
   std::vector<int> &per_channel_output_shift);
-
-template <typename T>
-void CalculateActivationRange(ir::Activation activation, T *activation_min, T *activation_max)
-{
-  if (activation == ir::Activation::RELU)
-  {
-    *activation_min = 0;
-    *activation_max = std::numeric_limits<T>::max();
-  }
-  else if (activation == ir::Activation::RELU6)
-  {
-    *activation_min = 0;
-    *activation_max = 6;
-  }
-  else if (activation == ir::Activation::RELU1)
-  {
-    *activation_min = -1;
-    *activation_max = 1;
-  }
-  else if (activation == ir::Activation::SIGMOID)
-  {
-    *activation_min = 0;
-    *activation_max = 1;
-  }
-  else if (activation == ir::Activation::NONE)
-  {
-    *activation_min = std::numeric_limits<T>::lowest();
-    *activation_max = std::numeric_limits<T>::max();
-  }
-  else
-  {
-    std::cout << "Unsupported fused activation function." << std::endl;
-  }
-}
 
 void CalculateActivationRangeQuantized(ir::Activation activation, const IPortableTensor *output,
                                        int32_t *act_min, int32_t *act_max);

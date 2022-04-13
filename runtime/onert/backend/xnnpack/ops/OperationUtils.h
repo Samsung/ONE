@@ -17,10 +17,10 @@
 #ifndef __ONERT_BACKEND_XNNPACK_OPS_OPERATION_UTILS_H__
 #define __ONERT_BACKEND_XNNPACK_OPS_OPERATION_UTILS_H__
 
-// duplicated from cpu/ops/OperationUtils.h
+#include <ir/DataType.h>
 #include <ir/InternalType.h>
 #include <ir/Padding.h>
-#include <ir/DataType.h>
+#include <util/CalculateActivationRange.h>
 
 namespace onert
 {
@@ -32,40 +32,7 @@ namespace ops
 {
 
 using OperandType = ir::DataType;
-
-template <typename T>
-void CalculateActivationRange(ir::Activation activation, T *activation_min, T *activation_max)
-{
-  if (activation == ir::Activation::RELU)
-  {
-    *activation_min = 0;
-    *activation_max = std::numeric_limits<T>::max();
-  }
-  else if (activation == ir::Activation::RELU6)
-  {
-    *activation_min = 0;
-    *activation_max = 6;
-  }
-  else if (activation == ir::Activation::RELU1)
-  {
-    *activation_min = -1;
-    *activation_max = 1;
-  }
-  else if (activation == ir::Activation::SIGMOID)
-  {
-    *activation_min = 0;
-    *activation_max = 1;
-  }
-  else if (activation == ir::Activation::NONE)
-  {
-    *activation_min = std::numeric_limits<T>::lowest();
-    *activation_max = std::numeric_limits<T>::max();
-  }
-  else
-  {
-    throw std::runtime_error{"Unsupported fused activation function"};
-  }
-}
+using namespace onert::util; // CalculateActivationRange
 
 } // namespace ops
 } // namespace xnnpack
