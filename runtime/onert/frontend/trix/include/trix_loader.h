@@ -23,15 +23,6 @@ namespace onert
 {
 namespace trix_loader
 {
-class TrixLoader final : public TrixLoaderBase
-{
-public:
-  explicit TrixLoader(std::unique_ptr<ir::Subgraphs> &subgs) : TrixLoaderBase(subgs) {}
-
-protected:
-  bool loadModel() override;
-};
-
 std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename);
 } // namespace trix_loader
 } // namespace onert

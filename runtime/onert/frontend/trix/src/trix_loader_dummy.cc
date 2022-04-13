@@ -20,16 +20,10 @@ namespace onert
 {
 namespace trix_loader
 {
-
-bool TrixLoader::loadModel() { return true; }
-
-std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename)
+std::unique_ptr<ir::Subgraphs> loadModel(const std::string &)
 {
   auto subgraphs = std::make_unique<ir::Subgraphs>();
-  TrixLoader loader(subgraphs);
-  loader.loadFromFile(filename);
   return subgraphs;
 }
-
 } // namespace trix_loader
 } // namespace onert

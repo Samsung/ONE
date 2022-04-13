@@ -32,10 +32,7 @@ public:
    *
    * @param graph reference on subgraphs
    */
-  explicit TrixLoaderBase(std::unique_ptr<ir::Subgraphs> &subgs)
-    : _subgraphs(subgs)
-  {
-  }
+  explicit TrixLoaderBase(std::unique_ptr<ir::Subgraphs> &subgs) : _subgraphs(subgs) {}
 
   /**
    * @brief Load a model from file
