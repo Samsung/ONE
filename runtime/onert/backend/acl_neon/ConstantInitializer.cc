@@ -37,21 +37,7 @@ void ConstantInitializer::visit(const ir::operation::SpaceToBatchND &node)
 
   if (block_size_obj.isConstant())
   {
-    _init_map[block_size_index] = [](const ir::Operand &model_obj, backend::ITensor &obj) {
-      assert(model_obj.data());
-      const auto &shape = model_obj.shape();
-      const auto base = reinterpret_cast<const int32_t *>(model_obj.data()->base());
-      assert(model_obj.shape().rank() == 1);
-      obj.access([&](ITensor &tensor) {
-        for (size_t i = 0; i < shape.num_elements(); ++i)
-        {
-          const int32_t value = base[shape.num_elements() - i - 1];
-          int32_t *into = reinterpret_cast<int32_t *>(tensor.buffer() +
-                                                      tensor.calcOffset({static_cast<int32_t>(i)}));
-          *into = value;
-        }
-      });
-    };
+    _init_map[block_size_index] = acl_common::initReverseOrder<int32_t>;
   }
 
   const auto &paddings_index = node.getInputs().at(ir::operation::SpaceToBatchND::PADDINGS);
