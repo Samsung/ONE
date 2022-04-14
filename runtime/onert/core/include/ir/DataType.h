@@ -38,6 +38,7 @@ enum class DataType
   QUANT_INT8_ASYMM = 9,
   QUANT_INT16_ASYMM = 10,
   QUANT_INT8_SYMM_PER_CHANNEL = 11,
+  QUANT_INT16_SYMM = 12,
 };
 
 size_t sizeOfDataType(DataType data_type);

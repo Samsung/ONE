@@ -106,6 +106,8 @@ inline size_t sizeOfNnfwType(NNFW_TYPE type)
     case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
     case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
       return 1;
+    case NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED:
+      return 2;
     case NNFW_TYPE_TENSOR_FLOAT32:
     case NNFW_TYPE_TENSOR_INT32:
       return 4;
@@ -236,6 +238,8 @@ int main(const int argc, char **argv)
         case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
           randomData<int8_t>(randgen, inputs[i]);
           break;
+        case NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED:
+          randomData<int16_t>(randgen, inputs[i]);
         case NNFW_TYPE_TENSOR_FLOAT32:
           randomData<float>(randgen, inputs[i]);
           break;

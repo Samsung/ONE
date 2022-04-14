@@ -175,6 +175,8 @@ NNFW_TYPE datatype_to_nnfw_dtype(onert::ir::DataType dt)
       return NNFW_TYPE_TENSOR_INT64;
     case DataType::QUANT_INT8_ASYMM:
       return NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED;
+    case DataType::QUANT_INT16_SYMM:
+      return NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED;
     case DataType::UINT32:
     case DataType::QUANT_INT8_SYMM:
     default:
