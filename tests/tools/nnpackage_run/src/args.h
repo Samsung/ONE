@@ -52,6 +52,8 @@ public:
   const std::string &getLoadFilename(void) const { return _load_filename; }
   WhenToUseH5Shape getWhenToUseH5Shape(void) const { return _when_to_use_h5_shape; }
 #endif
+  const std::string &getDumpRawFilename(void) const { return _dump_raw_filename; }
+  const std::string &getLoadRawFilename(void) const { return _load_raw_filename; }
   const int getNumRuns(void) const { return _num_runs; }
   const int getWarmupRuns(void) const { return _warmup_runs; }
   const int getRunDelay(void) const { return _run_delay; }
@@ -80,6 +82,8 @@ private:
   std::string _load_filename;
   WhenToUseH5Shape _when_to_use_h5_shape = WhenToUseH5Shape::NOT_PROVIDED;
 #endif
+  std::string _dump_raw_filename;
+  std::string _load_raw_filename;
   TensorShapeMap _shape_prepare;
   TensorShapeMap _shape_run;
   int _num_runs;

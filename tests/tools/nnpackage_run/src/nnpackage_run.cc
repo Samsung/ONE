@@ -24,6 +24,7 @@
 #include "nnfw_util.h"
 #include "nnfw_internal.h"
 #include "randomgen.h"
+#include "rawformatter.h"
 #ifdef RUY_PROFILER
 #include "ruy/profiler/profiler.h"
 #endif
@@ -194,10 +195,15 @@ int main(const int argc, char **argv)
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
     if (!args.getLoadFilename().empty())
       H5Formatter(session).loadInputs(args.getLoadFilename(), inputs);
+    else if (!args.getLoadRawFilename().empty())
+      RawFormatter(session).loadInputs(args.getLoadRawFilename(), inputs);
     else
       RandomGenerator(session).generate(inputs);
 #else
-    RandomGenerator(session).generate(inputs);
+    if (!args.getLoadRawFilename().empty())
+      RawFormatter(session).loadInputs(args.getLoadRawFilename(), inputs);
+    else
+      RandomGenerator(session).generate(inputs);
 #endif
 
     // prepare output
@@ -267,6 +273,8 @@ int main(const int argc, char **argv)
     if (!args.getDumpFilename().empty())
       H5Formatter(session).dumpOutputs(args.getDumpFilename(), outputs);
 #endif
+    if (!args.getDumpRawFilename().empty())
+      RawFormatter(session).dumpOutputs(args.getDumpRawFilename(), outputs);
 
     NNPR_ENSURE_STATUS(nnfw_close_session(session));
 
