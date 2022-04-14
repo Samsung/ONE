@@ -540,10 +540,6 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_CAST] =
     getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::CAST);
 
-  // ANEURALNETWORKS_CAST_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_CAST_EX
-  _map[ANEURALNETWORKS_CAST_EX] = _map[ANEURALNETWORKS_CAST];
-
   _map[ANEURALNETWORKS_CONV_2D] = [](const OperationFactory::Param &init_param,
                                      Operands &operands) {
     using operation::Conv2D;
@@ -672,10 +668,6 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_REDUCE_SUM] =
     getReduceGenerator(onert::ir::operation::Reduce::ReduceType::SUM);
 
-  // ANEURALNETWORKS_REDUCE_SUM_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_REDUCE_SUM_EX
-  _map[ANEURALNETWORKS_REDUCE_SUM_EX] = _map[ANEURALNETWORKS_REDUCE_SUM];
-
   _map[ANEURALNETWORKS_SUB] =
     getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::SUB);
 
@@ -791,10 +783,6 @@ OperationFactory::OperationFactory()
 
   _map[ANEURALNETWORKS_EXP] = getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::EXP);
 
-  // ANEURALNETWORKS_EXP_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_EXP_EX
-  _map[ANEURALNETWORKS_EXP_EX] = _map[ANEURALNETWORKS_EXP];
-
   // Each input should be interpreted as follows:
   //  0 -> Input Tensor Index
   //  1 -> Axis Tensor Index
@@ -812,52 +800,6 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_EQUAL] =
     getComparisonGenerator(operation::Comparison::ComparisonType::Equal);
 
-  // ANEURALNETWORKS_GREATER_EQUAL_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_GREATER_EQUAL_EX
-  _map[ANEURALNETWORKS_GREATER_EQUAL_EX] = [](const OperationFactory::Param &init_param,
-                                              Operands &operands) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::Comparison::Param param;
-    param.comparison_type = operation::Comparison::ComparisonType::GreaterEqual;
-
-    // Output operand type must be boolean
-    replaceDataType(operands, outputs.at(0), DataType::BOOL8);
-
-    return new operation::Comparison{inputs, outputs, param};
-  };
-
-  // ANEURALNETWORKS_LESS_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_LESS_EX
-  _map[ANEURALNETWORKS_LESS_EX] = [](const OperationFactory::Param &init_param,
-                                     Operands &operands) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::Comparison::Param param;
-    param.comparison_type = operation::Comparison::ComparisonType::Less;
-
-    // Output operand type must be boolean
-    replaceDataType(operands, outputs.at(0), DataType::BOOL8);
-
-    return new operation::Comparison{inputs, outputs, param};
-  };
-
   _map[ANEURALNETWORKS_REDUCE_ALL] =
     getReduceGenerator(onert::ir::operation::Reduce::ReduceType::ALL);
 
@@ -867,60 +809,8 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_REDUCE_MAX] =
     getReduceGenerator(onert::ir::operation::Reduce::ReduceType::MAX);
 
-  // ANEURALNETWORKS_REDUCE_MAX_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_REDUCE_MAX_EX
-  _map[ANEURALNETWORKS_REDUCE_MAX_EX] = _map[ANEURALNETWORKS_REDUCE_MAX];
-
-  // ANEURALNETWORKS_NOT_EQUAL_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_NOT_EQUAL_EX
-  _map[ANEURALNETWORKS_NOT_EQUAL_EX] = [](const OperationFactory::Param &init_param,
-                                          Operands &operands) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input1 Tensor Index
-    //  1 -> input2 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::Comparison::Param param;
-    param.comparison_type = operation::Comparison::ComparisonType::NotEqual;
-
-    // Output operand type must be boolean
-    replaceDataType(operands, outputs.at(0), DataType::BOOL8);
-
-    return new operation::Comparison{inputs, outputs, param};
-  };
-
   _map[ANEURALNETWORKS_LOGICAL_AND] =
     getElementwiseBinaryGenerator(operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND);
-
-  // ANEURALNETWORKS_LOGICAL_AND_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_LOGICAL_AND_EX
-  _map[ANEURALNETWORKS_LOGICAL_AND_EX] = [](const OperationFactory::Param &init_param,
-                                            Operands &operands) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    // This operation's operands must be boolean type.
-    replaceDataType(operands, inputs.at(0), DataType::BOOL8);
-    replaceDataType(operands, inputs.at(1), DataType::BOOL8);
-    replaceDataType(operands, outputs.at(0), DataType::BOOL8);
-
-    operation::ElementwiseBinary::Param param;
-    param.op_type = operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND;
-
-    return new operation::ElementwiseBinary{inputs, outputs, param};
-  };
 
   _map[ANEURALNETWORKS_RSQRT] =
     getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::RSQRT);
@@ -940,24 +830,7 @@ OperationFactory::OperationFactory()
     return new operation::Select{inputs, outputs};
   };
 
-  _map[ANEURALNETWORKS_SELECT_V2_EX] = [](const OperationFactory::Param &init_param, Operands &) {
-    assert(init_param.input_count == 3 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> Condition Tensor Index
-    //  1 -> Input X(true) Tensor Index
-    //  2 -> Input Y(false) Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
-
-    return new operation::Select{inputs, outputs};
-  };
-
-  // ANEURALNETWORKS_RSQRT_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_RSQRT_EX
-  _map[ANEURALNETWORKS_RSQRT_EX] = _map[ANEURALNETWORKS_RSQRT];
+  _map[ANEURALNETWORKS_SELECT_V2_EX] = _map[ANEURALNETWORKS_SELECT];
 
   _map[ANEURALNETWORKS_RELU] =
     getElementwiseActivationGenerator(onert::ir::operation::ElementwiseActivation::Type::RELU,
@@ -1162,10 +1035,6 @@ OperationFactory::OperationFactory()
     return new operation::PReLU{inputs, outputs};
   };
 
-  // ANEURALNETWORKS_PRELU_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_PRELU_EX
-  _map[ANEURALNETWORKS_PRELU_EX] = _map[ANEURALNETWORKS_PRELU];
-
   _map[ANEURALNETWORKS_TRANSPOSE_CONV_EX] = [](const OperationFactory::Param &init_param,
                                                Operands &operands) {
     assert(init_param.input_count == 6 && init_param.output_count == 1);
@@ -1199,63 +1068,11 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_SQRT] =
     getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::SQRT);
 
-  // ANEURALNETWORKS_SQRT_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_SQRT_EX
-  _map[ANEURALNETWORKS_SQRT_EX] = _map[ANEURALNETWORKS_SQRT];
-
   _map[ANEURALNETWORKS_LOGICAL_OR] =
     getElementwiseBinaryGenerator(operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR);
 
-  // ANEURALNETWORKS_LOGICAL_OR_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_LOGICAL_OR_EX
-  _map[ANEURALNETWORKS_LOGICAL_OR_EX] = [](const OperationFactory::Param &init_param,
-                                           Operands &operands) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    // This operation's operands must be boolean type.
-    replaceDataType(operands, inputs.at(0), DataType::BOOL8);
-    replaceDataType(operands, inputs.at(1), DataType::BOOL8);
-    replaceDataType(operands, outputs.at(0), DataType::BOOL8);
-
-    operation::ElementwiseBinary::Param param;
-    param.op_type = operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR;
-
-    return new operation::ElementwiseBinary{inputs, outputs, param};
-  };
-
   _map[ANEURALNETWORKS_LOGICAL_NOT] =
     getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::LOGICAL_NOT);
-
-  // ANEURALNETWORKS_LOGICAL_NOT_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_LOGICAL_NOT_EX
-  _map[ANEURALNETWORKS_LOGICAL_NOT_EX] = [](const OperationFactory::Param &init_param,
-                                            Operands &operands) {
-    assert(init_param.input_count == 1 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0]};
-
-    // This operation's operands must be boolean type.
-    replaceDataType(operands, inputs.at(0), DataType::BOOL8);
-    replaceDataType(operands, outputs.at(0), DataType::BOOL8);
-
-    operation::ElementwiseUnary::Param param;
-    param.op_type = operation::ElementwiseUnary::Type::LOGICAL_NOT;
-
-    return new operation::ElementwiseUnary{inputs, outputs, param};
-  };
 
   _map[ANEURALNETWORKS_LSTM] = [](const OperationFactory::Param &init_param, Operands &operands) {
     assert(init_param.input_count == 23 && init_param.output_count == 4);
@@ -1383,29 +1200,6 @@ OperationFactory::OperationFactory()
     return new operation::LSTM{inputs, outputs, param};
   };
 
-  // ANEURALNETWORKS_EQUAL_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_EQUAL_EX
-  _map[ANEURALNETWORKS_EQUAL_EX] = [](const OperationFactory::Param &init_param,
-                                      Operands &operands) {
-    assert(init_param.input_count == 2 && init_param.output_count == 1);
-
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    // Each input should be interpreted as follows:
-    //
-    //  0 -> input0 Tensor Index
-    //  1 -> input1 Tensor Index
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
-
-    operation::Comparison::Param param;
-    param.comparison_type = operation::Comparison::ComparisonType::Equal;
-
-    // Output operand type must be boolean
-    replaceDataType(operands, outputs.at(0), DataType::BOOL8);
-
-    return new operation::Comparison{inputs, outputs, param};
-  };
-
   _map[ANEURALNETWORKS_SQUARED_DIFFERENCE_EX] = [](const OperationFactory::Param &init_param,
                                                    Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
@@ -1443,10 +1237,6 @@ OperationFactory::OperationFactory()
     return new operation::TopKV2{inputs, outputs, param};
   };
 
-  // ANEURALNETWORKS_CAST_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_CAST_EX
-  _map[ANEURALNETWORKS_TOPK_V2_EX] = _map[ANEURALNETWORKS_TOPK_V2];
-
   _map[ANEURALNETWORKS_GATHER] = [](const OperationFactory::Param &init_param, Operands &operands) {
     assert(init_param.input_count == 3 && init_param.output_count == 1);
 
@@ -1465,21 +1255,9 @@ OperationFactory::OperationFactory()
     return new operation::Gather{inputs, outputs, param};
   };
 
-  // ANEURALNETWORKS_GATHER_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_GATHER_EX
-  _map[ANEURALNETWORKS_GATHER_EX] = _map[ANEURALNETWORKS_GATHER];
-
   _map[ANEURALNETWORKS_NEG] = getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::NEG);
 
-  // ANEURALNETWORKS_NEG_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_NEG_EX
-  _map[ANEURALNETWORKS_NEG_EX] = _map[ANEURALNETWORKS_NEG];
-
   _map[ANEURALNETWORKS_ABS] = getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::ABS);
-
-  // ANEURALNETWORKS_ABS_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_ABS_EX
-  _map[ANEURALNETWORKS_ABS_EX] = _map[ANEURALNETWORKS_ABS];
 
   _map[ANEURALNETWORKS_ARGMAX] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
@@ -1499,10 +1277,6 @@ OperationFactory::OperationFactory()
 
     return new operation::ArgMinMax{inputs, outputs, param};
   };
-
-  // ANEURALNETWORKS_ARGMAX_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_ARGMAX_EX
-  _map[ANEURALNETWORKS_ARGMAX_EX] = _map[ANEURALNETWORKS_ARGMAX];
 
   _map[ANEURALNETWORKS_ARGMIN] = [](const OperationFactory::Param &init_param, Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
@@ -1603,10 +1377,6 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_REDUCE_MIN] =
     getReduceGenerator(onert::ir::operation::Reduce::ReduceType::MIN);
 
-  // ANEURALNETWORKS_REDUCE_MIN_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_REDUCE_MIN_EX
-  _map[ANEURALNETWORKS_REDUCE_MIN_EX] = _map[ANEURALNETWORKS_REDUCE_MIN];
-
   _map[ANEURALNETWORKS_SPLIT] = [](const OperationFactory::Param &init_param, Operands &operands) {
     assert(init_param.input_count == 3);
     assert(init_param.output_count >= 1); // At least one output tensor and axis
@@ -1640,10 +1410,6 @@ OperationFactory::OperationFactory()
     param.num_splits = operands.at(OperandIndex{init_param.inputs[3]}).asScalar<std::int32_t>();
     return new operation::SplitV{inputs, outputs, param};
   };
-
-  // ANEURALNETWORKS_SPLIT_EX is deprecated
-  // TODO Remove ANEURALNETWORKS_SPLIT_EX
-  _map[ANEURALNETWORKS_SPLIT_EX] = _map[ANEURALNETWORKS_SPLIT];
 
   _map[ANEURALNETWORKS_UNPACK_EX] = [](const OperationFactory::Param &init_param,
                                        Operands &operands) {
