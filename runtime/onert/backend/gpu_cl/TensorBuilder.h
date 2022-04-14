@@ -18,7 +18,9 @@
 #define __ONERT_BACKEND_GPU_CL_TENSOR_BUILDER_H__
 
 #include "TensorManager.h"
-#include "ParentInfo.h"
+
+#include <cl_common/LifetimeMap.h>
+#include <cl_common/ParentInfo.h>
 
 #include <ir/Operands.h>
 #include <ir/OperandIndexSequence.h>
@@ -29,13 +31,6 @@ namespace backend
 {
 namespace gpu_cl
 {
-
-enum class UsesType
-{
-  FIRST,
-  LAST
-};
-
 class TensorBuilder
 {
 public:
@@ -70,7 +65,7 @@ public:
     _uses_count_map[index] = num_uses;
   }
 
-  void parent_map(std::unordered_map<ir::OperandIndex, ParentInfo> &&parent_map)
+  void parent_map(std::unordered_map<ir::OperandIndex, cl_common::ParentInfo> &&parent_map)
   {
     _parent_map = std::move(parent_map);
   }
@@ -101,10 +96,10 @@ private:
   std::shared_ptr<tflite::gpu::cl::Environment> _environment;
 
   // for linear executor
-  std::vector<std::pair<UsesType, ir::OperandIndex>> _lifetime_seq;
+  cl_common::LifetimeSeq _lifetime_seq;
 
   // Extra info for concat elimination
-  ir::OperandIndexMap<ParentInfo> _parent_map;
+  ir::OperandIndexMap<cl_common::ParentInfo> _parent_map;
 };
 
 } // namespace gpu_cl

@@ -17,9 +17,10 @@
 #ifndef __ONERT_BACKEND_ACL_COMMON_ACL_SUB_TENSOR_ANALYZER_H__
 #define __ONERT_BACKEND_ACL_COMMON_ACL_SUB_TENSOR_ANALYZER_H__
 
+#include <cl_common/ParentInfo.h>
+
 #include <ir/OperationVisitor.h>
 #include <ir/Graph.h>
-#include "ParentInfo.h"
 
 namespace onert
 {
@@ -94,21 +95,21 @@ public:
       }
       coordinate_info.set(axis, axis_point);
 
-      _parent_map.emplace(
-        input_index, acl_common::ParentInfo{output_index, _current_op_layout, coordinate_info});
+      _parent_map.emplace(input_index,
+                          cl_common::ParentInfo{output_index, _current_op_layout, coordinate_info});
 
       axis_point += input_shape.dim(axis);
     }
   }
 
-  std::unordered_map<ir::OperandIndex, ParentInfo> &&releaseParentMap()
+  std::unordered_map<ir::OperandIndex, cl_common::ParentInfo> &&releaseParentMap()
   {
     return std::move(_parent_map);
   }
 
 private:
   const ir::Graph &_graph;
-  std::unordered_map<ir::OperandIndex, ParentInfo> _parent_map;
+  std::unordered_map<ir::OperandIndex, cl_common::ParentInfo> _parent_map;
   ir::Layout _current_op_layout{ir::Layout::UNKNOWN};
   bool usePadding{false};
 };

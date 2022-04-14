@@ -16,12 +16,12 @@
 
 #include "Optimizer.h"
 
-#include "ParentInfo.h"
+#include <AclSubTensorAnalyzer.h>
 
-#include <cassert>
 #include <compiler/LoweredGraph.h>
 #include <util/logging.h>
-#include "AclSubTensorAnalyzer.h"
+
+#include <cassert>
 
 namespace onert
 {

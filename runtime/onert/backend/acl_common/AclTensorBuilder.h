@@ -17,17 +17,20 @@
 #ifndef __ONERT_BACKEND_ACL_COMMON_TEMPL_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_ACL_COMMON_TEMPL_TENSOR_BUILDER_H__
 
-#include <memory>
-#include <queue>
-
-#include <arm_compute/core/Types.h>
-#include "ir/OperandIndexMap.h"
-#include <ir/Operands.h>
 #include "AclTensorManager.h"
 #include "AclTensorRegistry.h"
-#include <memory>
-#include "ParentInfo.h"
+
+#include <cl_common/LifetimeMap.h>
+#include <cl_common/ParentInfo.h>
+
+#include <ir/OperandIndexMap.h>
+#include <ir/Operands.h>
 #include <util/Utils.h>
+
+#include <arm_compute/core/Types.h>
+
+#include <memory>
+#include <queue>
 
 namespace onert
 {
@@ -36,16 +39,12 @@ namespace backend
 namespace acl_common
 {
 
-enum class UsesType
-{
-  FIRST,
-  LAST
-};
-
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor> class AclTensorBuilder
 {
 public:
   using T_AclTensorManager = AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>;
+  // TODO Remove this alias and direct usage of this type
+  using UsesType = cl_common::UsesType;
 
   AclTensorBuilder(const ir::Operands &operands, T_AclTensorManager *tensor_mgr);
 
@@ -76,7 +75,7 @@ public:
     _uses_count_map[index] = num_uses;
   }
 
-  void parent_map(std::unordered_map<ir::OperandIndex, ParentInfo> &&parent_map)
+  void parent_map(std::unordered_map<ir::OperandIndex, cl_common::ParentInfo> &&parent_map)
   {
     _parent_map = std::move(parent_map);
   }
@@ -104,10 +103,10 @@ private:
   std::unique_ptr<T_AclTensorManager> _tensor_mgr;
 
   // for linear executor
-  std::vector<std::pair<UsesType, ir::OperandIndex>> _lifetime_seq;
+  cl_common::LifetimeSeq _lifetime_seq;
 
   // Extra info for concat elimination
-  ir::OperandIndexMap<ParentInfo> _parent_map;
+  ir::OperandIndexMap<cl_common::ParentInfo> _parent_map;
 };
 
 } // namespace acl_common
@@ -217,55 +216,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::prepare(void)
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::allocate(void)
 {
-  // Update lifetime sequence to apply subtensor optimization
-
-  std::unordered_map<ir::OperandIndex, ir::OperandIndex> root_map;
-  std::function<ir::OperandIndex &(ir::OperandIndex)> find_root =
-    [&](ir::OperandIndex ind) -> ir::OperandIndex & {
-    ir::OperandIndex &ret = root_map[ind];
-
-    // We know the root parent value already
-    if (ret.valid())
-      return ret;
-
-    auto itr = _parent_map.find(ind);
-    if (itr == _parent_map.end())
-    {
-      // If there is no parent, let's store the value of itself
-      return ret = ind;
-    }
-    else
-    {
-      return ret = find_root(itr->second.parent);
-    }
-  };
-
-  ir::OperandIndexMap<bool> first_use_check;
-  ir::OperandIndexMap<bool> last_use_check;
-  std::map<size_t, std::pair<UsesType, ir::OperandIndex>> lifetime_map;
-  for (size_t i = 0; i < _lifetime_seq.size(); i++)
-  {
-    auto &entry = _lifetime_seq[i];
-    if (entry.first != UsesType::FIRST)
-      continue;
-    auto root_ind = find_root(entry.second);
-    if (first_use_check[root_ind])
-      continue;
-    first_use_check[root_ind] = true;
-    lifetime_map[i] = {UsesType::FIRST, root_ind};
-  }
-
-  for (int i = _lifetime_seq.size() - 1; i >= 0; i--)
-  {
-    auto &entry = _lifetime_seq[i];
-    if (entry.first != UsesType::LAST)
-      continue;
-    auto root_ind = find_root(entry.second);
-    if (last_use_check[root_ind])
-      continue;
-    last_use_check[root_ind] = true;
-    lifetime_map[i] = {UsesType::LAST, root_ind};
-  }
+  auto lifetime_map = cl_common::createLifetimeMap(_lifetime_seq, _parent_map);
 
   for (auto &entry : lifetime_map)
   {
