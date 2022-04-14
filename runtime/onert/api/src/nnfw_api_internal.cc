@@ -155,6 +155,43 @@ void setConfigKeyValues(const CfgKeyValues &keyValues)
   onert::util::config_source_ext(std::move(configsrc));
 }
 
+NNFW_TYPE datatype_to_nnfw_dtype(onert::ir::DataType dt)
+{
+  using onert::ir::DataType;
+  switch (dt)
+  {
+    case DataType::FLOAT32:
+      return NNFW_TYPE_TENSOR_FLOAT32;
+    case DataType::INT32:
+      return NNFW_TYPE_TENSOR_INT32;
+    case DataType::QUANT_UINT8_ASYMM:
+      return NNFW_TYPE_TENSOR_QUANT8_ASYMM;
+    case DataType::BOOL8:
+      return NNFW_TYPE_TENSOR_BOOL;
+    case DataType::UINT8:
+      return NNFW_TYPE_TENSOR_UINT8;
+    case DataType::INT64:
+      return NNFW_TYPE_TENSOR_INT64;
+    case DataType::QUANT_INT8_ASYMM:
+      return NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED;
+    case DataType::UINT32:
+    case DataType::QUANT_INT8_SYMM:
+    default:
+      throw std::runtime_error("Error: Model has type that runtime API does not support.");
+  }
+}
+
+void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
+                    const onert::ir::DataType &dtype)
+{
+  ti->rank = shape.rank();
+  for (int j = 0; j < ti->rank; ++j)
+  {
+    ti->dims[j] = shape.dim(j);
+  }
+  ti->dtype = datatype_to_nnfw_dtype(dtype);
+}
+
 } // namespace
 
 nnfw_session::nnfw_session()
@@ -657,32 +694,6 @@ NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
   return NNFW_STATUS_NO_ERROR;
 }
 
-static NNFW_TYPE datatype_to_nnfw_dtype(onert::ir::DataType dt)
-{
-  using onert::ir::DataType;
-  switch (dt)
-  {
-    case DataType::FLOAT32:
-      return NNFW_TYPE_TENSOR_FLOAT32;
-    case DataType::INT32:
-      return NNFW_TYPE_TENSOR_INT32;
-    case DataType::QUANT_UINT8_ASYMM:
-      return NNFW_TYPE_TENSOR_QUANT8_ASYMM;
-    case DataType::BOOL8:
-      return NNFW_TYPE_TENSOR_BOOL;
-    case DataType::UINT8:
-      return NNFW_TYPE_TENSOR_UINT8;
-    case DataType::INT64:
-      return NNFW_TYPE_TENSOR_INT64;
-    case DataType::QUANT_INT8_ASYMM:
-      return NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED;
-    case DataType::UINT32:
-    case DataType::QUANT_INT8_SYMM:
-    default:
-      throw std::runtime_error("Error: Model has type that runtime API does not support.");
-  }
-}
-
 NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
 {
   // sanity check
@@ -769,22 +780,11 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     auto shape = primary_subgraph()->operands().at(opidx).shape();
     if (isStatePreparedOrFinishedRun())
     {
-      if (_execution)
-      {
-        shape = _execution->getInputShape(onert::ir::IOIndex{index});
-      }
-      else
-      {
-        shape = _executions.at(0)->getInputShape(onert::ir::IOIndex{index});
-      }
+      shape = _execution ? _execution->getInputShape(onert::ir::IOIndex{index})
+                         : _executions.at(0)->getInputShape(onert::ir::IOIndex{index});
     }
-
-    ti->rank = shape.rank();
-    for (int j = 0; j < ti->rank; ++j)
-    {
-      ti->dims[j] = shape.dim(j);
-    }
-    ti->dtype = datatype_to_nnfw_dtype(primary_subgraph()->operands().at(opidx).typeInfo().type());
+    auto dtype = primary_subgraph()->operands().at(opidx).typeInfo().type();
+    fillTensorInfo(ti, shape, dtype);
   }
   catch (const std::exception &e)
   {
@@ -820,21 +820,12 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     // If it is called after `nnfw_run` then get the shape from Execution, not from the graph
     if (isStateFinishedRun())
     {
-      if (_execution)
-      {
-        shape = _execution->getOutputShape(onert::ir::IOIndex{index});
-      }
-      else
-      {
-        shape = _executions.at(_executions.size() - 1)->getOutputShape(onert::ir::IOIndex{index});
-      }
+      shape = _execution
+                ? _execution->getOutputShape(onert::ir::IOIndex{index})
+                : _executions.at(_executions.size() - 1)->getOutputShape(onert::ir::IOIndex{index});
     }
-    ti->rank = shape.rank();
-    for (int j = 0; j < ti->rank; ++j)
-    {
-      ti->dims[j] = shape.dim(j);
-    }
-    ti->dtype = datatype_to_nnfw_dtype(primary_subgraph()->operands().at(opidx).typeInfo().type());
+    auto dtype = primary_subgraph()->operands().at(opidx).typeInfo().type();
+    fillTensorInfo(ti, shape, dtype);
   }
   catch (const std::exception &e)
   {
