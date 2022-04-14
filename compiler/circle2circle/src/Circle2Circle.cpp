@@ -294,6 +294,12 @@ int entry(int argc, char **argv)
     .help("This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32. Note that "
           "it only converts weights whose row is a multiple of 16");
 
+  arser.add_argument("--replace_non_const_fc_with_batch_matmul")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("Replace Fully Connected with Batch Mat Mul when its weight is non-constant");
+
   arser.add_argument("--substitute_pack_to_reshape")
     .nargs(0)
     .required(false)
@@ -526,6 +532,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpMaxPoolWithArgmax);
   if (arser.get<bool>("--shuffle_weight_to_16x1float32"))
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
+  if (arser.get<bool>("--replace_non_const_fc_with_batch_matmul"))
+    options->enable(Algorithms::ReplaceNonConstFCWithBatchMatMul);
   if (arser.get<bool>("--substitute_pack_to_reshape"))
     options->enable(Algorithms::SubstitutePackToReshape);
   if (arser.get<bool>("--substitute_padv2_to_pad"))
