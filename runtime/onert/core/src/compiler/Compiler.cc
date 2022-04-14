@@ -86,6 +86,30 @@ void verboseOptions(compiler::CompilerOptions &options)
                     << std::noboolalpha;
 }
 
+void setBackendMap(compiler::ManualSchedulerOptions &ms_options, const ir::Subgraphs &subgs,
+                   const std::string &str)
+{
+  // TODO Support multiple subgraphs for manual scheduling
+  auto key_val_list = nnfw::misc::split(str, ';');
+  for (const auto &key_val_str : key_val_list)
+  {
+    if (key_val_str.empty())
+    {
+      continue;
+    }
+
+    auto key_val = nnfw::misc::split(key_val_str, '=');
+    const auto &key_str = key_val.at(0);
+    const auto &val = key_val.at(1);
+    auto key = static_cast<uint32_t>(std::stoi(key_str));
+
+    subgs.at(ir::SubgraphIndex{0})
+      ->operations()
+      .at(ir::OperationIndex{key}); // Check if exist, or this wil throw
+    ms_options.index_to_backend.emplace(ir::OperationIndex{key}, val);
+  }
+}
+
 } // namespace
 
 namespace onert
@@ -126,26 +150,8 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 #undef OP
 
     // Index to Backend
-    // TODO Support multiple subgraphs for manual scheduling
     auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
-    auto key_val_list = nnfw::misc::split(map_str, ';');
-    for (const auto &key_val_str : key_val_list)
-    {
-      if (key_val_str.empty())
-      {
-        continue;
-      }
-
-      auto key_val = nnfw::misc::split(key_val_str, '=');
-      const auto &key_str = key_val.at(0);
-      const auto &val = key_val.at(1);
-      auto key = static_cast<uint32_t>(std::stoi(key_str));
-
-      subgs.at(ir::SubgraphIndex{0})
-        ->operations()
-        .at(ir::OperationIndex{key}); // Check if exist, or this wil throw
-      ms_options.index_to_backend.emplace(ir::OperationIndex{key}, val);
-    }
+    setBackendMap(ms_options, subgs, map_str);
   }
   return options;
 }
@@ -165,22 +171,10 @@ void Compiler::enableToFp16() { _options.fp16_enable = true; }
 
 void Compiler::set_backend_from_str(const char *backend_settings)
 {
+  assert(_subgraphs != nullptr);
   // Backend for all
   auto &ms_options = _options.manual_scheduler_options;
-  auto key_val_list = nnfw::misc::split(backend_settings, ';');
-  for (const auto &key_val_str : key_val_list)
-  {
-    if (key_val_str.empty())
-    {
-      continue;
-    }
-
-    auto key_val = nnfw::misc::split(key_val_str, '=');
-    const auto &key_str = key_val.at(0);
-    const auto &val = key_val.at(1);
-    auto key = static_cast<uint32_t>(std::stoi(key_str));
-    ms_options.index_to_backend.emplace(ir::OperationIndex{key}, val);
-  }
+  setBackendMap(ms_options, *_subgraphs, std::string{backend_settings});
 }
 
 void Compiler::checkProfilerConditions()
