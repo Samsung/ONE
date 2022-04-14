@@ -44,10 +44,10 @@ public:
 
 protected:
   /*
-   * @brief Load model actually
-   * @return true on successful loading, false otherwise
+   * @brief Load actually
+   * @throw runtime_error when tvn path is wrong or tvn is invalid
    */
-  virtual bool loadModel() { return true; }
+  virtual void loadModel() {}
 
 protected:
   /** path to model (e.g. tvn) */

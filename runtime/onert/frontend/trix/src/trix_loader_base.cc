@@ -28,8 +28,7 @@ void TrixLoaderBase::loadFromFile(const std::string &file_path)
 {
   (void)_subgraphs; // make android toolchain happy from unused member warning
   _model_path = file_path;
-  if (not loadModel())
-    throw std::runtime_error("Failed to loading " + file_path);
+  loadModel();
 }
 
 } // namespace trix_loader

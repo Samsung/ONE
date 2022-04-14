@@ -16,6 +16,9 @@
 
 #include "trix_loader.h"
 
+#include "ir/Graph.h"
+#include "ir/operation/Bulk.h"
+
 #include <libnpuhost.h>
 #include <npubinfmt.h>
 #include <typedef.h>
@@ -31,27 +34,23 @@ namespace trix_loader
 class TrixMetaReader
 {
 public:
-  TrixMetaReader(const char *path) : _model_path(path) {}
+  TrixMetaReader() = default;
   ~TrixMetaReader() { free(_meta); }
 
-  /**
-   * @throw runtime_error when path is wrong or metadata is not valid
-   */
-  void open();
+  void init(const char *path);
   data_layout input_seg_layout(uint32_t n) const { return _meta->input_seg_layout[n]; }
   data_layout output_seg_layout(uint32_t n) const { return _meta->output_seg_layout[n]; }
   uint32_t input_seg_num() const { return _meta->input_seg_num; }
   uint32_t output_seg_num() const { return _meta->output_seg_num; }
 
 private:
-  const char *_model_path;
   npubin_meta *_meta = nullptr;
 };
 
-void TrixMetaReader::open()
+void TrixMetaReader::init(const char *path)
 {
-  assert(_model_path);
-  auto _meta = getNPUmodel_metadata(_model_path, false);
+  assert(path);
+  _meta = getNPUmodel_metadata(path, false);
   if (_meta == nullptr)
   {
     throw std::runtime_error("Failed to get TRIV2 model metadata");
@@ -68,26 +67,112 @@ public:
   explicit TrixLoader(std::unique_ptr<ir::Subgraphs> &subgs) : TrixLoaderBase(subgs) {}
 
 protected:
-  bool loadModel() override;
+  void loadModel() override;
+
+private:
+  void loadSubgraphs();
+  std::unique_ptr<ir::Graph> loadSubgraph();
+  void loadOperands(ir::Graph &subg);
+  void loadBulk(ir::Graph &subg);
+  void loadOperationIO(ir::OperandIndexSequence &inputs, ir::OperandIndexSequence &outputs);
+  ir::OperandIndex inputIdxToOperandIdx(uint32_t i) const;
+  ir::OperandIndex outputIdxToOperandIdx(uint32_t i) const;
+
+private:
+  TrixMetaReader _meta;
 };
 
-bool TrixLoader::loadModel()
+ir::OperandIndex TrixLoader::inputIdxToOperandIdx(uint32_t i) const { return ir::OperandIndex(i); }
+ir::OperandIndex TrixLoader::outputIdxToOperandIdx(uint32_t i) const
 {
-  // No need to consider multiple subgraphs
-  auto subg = std::make_unique<ir::Graph>();
+  return ir::OperandIndex(_meta.input_seg_num() + i);
+}
 
-  TrixMetaReader meta_reader(_model_path.c_str());
-  meta_reader.open();
-  auto in_num = meta_reader.input_seg_num();
-  auto out_num = meta_reader.output_seg_num();
-  auto total_num = in_num + out_num;
-
-  std::vector<ir::OperandIndex> _tensor_to_operand;
-  _tensor_to_operand.resize(total_num);
-  for (uint32_t i = 0; i < total_num; ++i)
+void TrixLoader::loadOperationIO(ir::OperandIndexSequence &inputs,
+                                 ir::OperandIndexSequence &outputs)
+{
+  for (uint32_t i = 0; i < _meta.input_seg_num(); ++i)
   {
+    inputs.append(inputIdxToOperandIdx(i));
   }
-  return true;
+
+  for (uint32_t i = 0; i < _meta.output_seg_num(); ++i)
+  {
+    outputs.append(outputIdxToOperandIdx(i));
+  }
+}
+
+void TrixLoader::loadBulk(ir::Graph &subg)
+{
+  ir::operation::Bulk::Param param;
+  param.binary_path = _model_path;
+
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(inputs, outputs);
+
+  std::unique_ptr<ir::operation::Bulk> bulk(new ir::operation::Bulk(inputs, outputs, param));
+  subg.addOperation(std::move(bulk));
+}
+
+void TrixLoader::loadOperands(ir::Graph &subg)
+{
+  (void)subg;
+  auto in_num = _meta.input_seg_num();
+  for (uint32_t i = 0; i < in_num; ++i)
+  {
+    // TODO: create operand
+    // const auto operand_index = subg.addOperand(shape, type_info);
+    // ...
+  }
+  auto out_num = _meta.output_seg_num();
+  for (uint32_t i = 0; i < out_num; ++i)
+  {
+    // TODO: create operand
+    // const auto operand_index = subg.addOperand(shape, type_info);
+    // ...
+  }
+}
+
+std::unique_ptr<ir::Graph> TrixLoader::loadSubgraph()
+{
+  auto subg = std::make_unique<ir::Graph>();
+  _meta.init(_model_path.c_str());
+
+  // Load tensors
+  loadOperands(*subg);
+
+  // Set inputs
+  for (uint32_t i = 0; i < _meta.input_seg_num(); ++i)
+  {
+    subg->addInput(inputIdxToOperandIdx(i), "tvn_input" + std::to_string(i));
+  }
+  // Set outputs
+  for (uint32_t i = 0; i < _meta.output_seg_num(); ++i)
+  {
+    subg->addOutput(outputIdxToOperandIdx(i), "tvn_out" + std::to_string(i));
+  }
+  // Create operations
+  loadBulk(*subg);
+
+  // TODO: NHWC only supported at this moment.
+  subg->setLayout(ir::Layout::NHWC);
+  subg->verify();
+  return subg;
+}
+
+void TrixLoader::loadSubgraphs()
+{
+  // one subgraph only
+  auto subg = loadSubgraph();
+  _subgraphs->push(ir::SubgraphIndex(0), std::move(subg));
+}
+
+void TrixLoader::loadModel()
+{
+  _meta.init(_model_path.c_str());
+  loadSubgraphs();
 }
 
 std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename)
