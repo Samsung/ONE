@@ -3,8 +3,8 @@ model = Model()
 i1 = Input("op1", "TENSOR_FLOAT32", "{2, 2}")
 i2 = Input("op2", "TENSOR_FLOAT32", "{1, 2}")
 
-i3 = Output("op3", "TENSOR_QUANT8_ASYMM", "{2, 2}, 1.f, 0")
-model = model.Operation("EQUAL_EX", i1, i2).To(i3)
+i3 = Output("op3", "TENSOR_BOOL8", "{2, 2}")
+model = model.Operation("EQUAL", i1, i2).To(i3)
 
 # Example 1. Input in operand 0,
 input0 = {i1: # input 0
