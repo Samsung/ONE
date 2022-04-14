@@ -82,6 +82,27 @@ uint32_t getUint32Scalar(Operands &operands, const OperandIndex index)
   return static_cast<uint32_t>(int32_value);
 }
 
+Activation getActivation(Operands &operands, const OperandIndex index)
+{
+  switch (operands.at(index).asScalar<int32_t>())
+  {
+    case 0:
+      return Activation::NONE;
+    case 1:
+      return Activation::RELU;
+    case 2:
+      return Activation::RELU1;
+    case 3:
+      return Activation::RELU6;
+    case 4:
+      return Activation::TANH;
+    case 6:
+      return Activation::SIGMOID;
+    default:
+      throw std::runtime_error("Unsupported activation type");
+  }
+}
+
 OperationFactory::Generator
 getElementwiseActivationGenerator(const onert::ir::operation::ElementwiseActivation::Type op_type,
                                   float alpha = 0.f, float beta = 0.f)
@@ -1280,31 +1301,7 @@ OperationFactory::OperationFactory()
     }
 
     operation::LSTM::Param param;
-    const auto activation_index = OperandIndex{init_param.inputs[20]};
-    switch (operands.at(activation_index).asScalar<int32_t>())
-    {
-      case 0:
-        param.activation = Activation::NONE;
-        break;
-      case 1:
-        param.activation = Activation::RELU;
-        break;
-      case 2:
-        param.activation = Activation::RELU1;
-        break;
-      case 3:
-        param.activation = Activation::RELU6;
-        break;
-      case 4:
-        param.activation = Activation::TANH;
-        break;
-      case 6:
-        param.activation = Activation::SIGMOID;
-        break;
-      default:
-        throw std::runtime_error("Unsupported activation type");
-        break;
-    }
+    param.activation = getActivation(operands, OperandIndex{init_param.inputs[20]});
     param.cell_threshold = operands.at(OperandIndex{init_param.inputs[21]}).asScalar<float>();
     param.projection_threshold = operands.at(OperandIndex{init_param.inputs[22]}).asScalar<float>();
     // This is initialization to prevent warning or error by static code analyzer. LSTM operation
@@ -1378,31 +1375,7 @@ OperationFactory::OperationFactory()
                                  output_index};
 
     operation::LSTM::Param param;
-    const auto activation_index = OperandIndex{init_param.inputs[20]};
-    switch (operands.at(activation_index).asScalar<int32_t>())
-    {
-      case 0:
-        param.activation = Activation::NONE;
-        break;
-      case 1:
-        param.activation = Activation::RELU;
-        break;
-      case 2:
-        param.activation = Activation::RELU1;
-        break;
-      case 3:
-        param.activation = Activation::RELU6;
-        break;
-      case 4:
-        param.activation = Activation::TANH;
-        break;
-      case 6:
-        param.activation = Activation::SIGMOID;
-        break;
-      default:
-        throw std::runtime_error("Unsupported activation type");
-        break;
-    }
+    param.activation = getActivation(operands, OperandIndex{init_param.inputs[20]});
     param.cell_threshold = operands.at(OperandIndex{init_param.inputs[21]}).asScalar<float>();
     param.projection_threshold = operands.at(OperandIndex{init_param.inputs[22]}).asScalar<float>();
     param.time_major = operands.at(OperandIndex{init_param.inputs[23]}).asScalar<bool>();
