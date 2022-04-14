@@ -17,12 +17,14 @@
 #ifndef __ONERT_COMPILER_EXECUTOR_FACTORY_H__
 #define __ONERT_COMPILER_EXECUTOR_FACTORY_H__
 
-#include <unordered_map>
+#include "TensorRegistries.h"
 
 #include "backend/ITensor.h"
-#include "exec/IExecutor.h"
 #include "compiler/LoweredGraph.h"
-#include "TensorRegistries.h"
+#include "exec/IExecutor.h"
+
+#include <deque>
+#include <unordered_map>
 
 namespace onert
 {
@@ -45,6 +47,12 @@ private:
 private:
   static void prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
                                     const backend::BackendContexts &backend_contexts);
+  static void prepareBuiltinBackend(const TensorRegistries &tensor_regs,
+                                    const std::shared_ptr<exec::ExecutorMap> &executor_map,
+                                    const backend::BackendContexts &backend_contexts);
+  static std::deque<std::pair<const backend::Backend *, backend::BackendContext *>>
+  orderBackendContext(const backend::BackendContexts &backend_contexts);
+
   static exec::IExecutor *
   createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                        const compiler::CompilerOptions &options,

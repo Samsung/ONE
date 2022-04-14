@@ -16,26 +16,25 @@
 
 #include "ExecutorFactory.h"
 
-#include <deque>
-#include <functional>
-#include "ir/OperationCloner.h"
-#include "exec/ExecutionObservers.h"
-#include "exec/LinearExecutor.h"
-#include "exec/DataflowExecutor.h"
-#include "exec/ParallelExecutor.h"
-#include "compiler/BackendManager.h"
-#include "compiler/ExecutionBuilder.h"
-#include "exec/ExecTime.h"
-#include "compiler/Linear.h"
-#include "compiler/BackendManager.h"
-#include "backend/IPortableTensor.h"
 #include "backend/builtin/Config.h"
 #include "backend/builtin/KernelGenerator.h"
-#include "backend/builtin/UserTensor.h"
 #include "backend/builtin/TensorBuilder.h"
-#include "util/TracingCtx.h"
+#include "backend/builtin/UserTensor.h"
+#include "backend/IPortableTensor.h"
+#include "compiler/BackendManager.h"
+#include "compiler/BackendManager.h"
+#include "compiler/ExecutionBuilder.h"
+#include "compiler/Linear.h"
 #include "dumper/text/GraphDumper.h"
+#include "exec/DataflowExecutor.h"
+#include "exec/ExecTime.h"
+#include "exec/ExecutionObservers.h"
+#include "exec/LinearExecutor.h"
+#include "exec/ParallelExecutor.h"
+#include "ir/OperationCloner.h"
+#include "util/TracingCtx.h"
 
+#include <functional>
 #include <memory>
 
 namespace onert
@@ -282,6 +281,42 @@ void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_grap
     });
 }
 
+void ExecutorFactory::prepareBuiltinBackend(const TensorRegistries &tensor_regs,
+                                            const std::shared_ptr<exec::ExecutorMap> &executor_map,
+                                            const backend::BackendContexts &backend_contexts)
+{
+  for (auto &pair : backend_contexts)
+  {
+    auto builtin_context = dynamic_cast<backend::builtin::BackendContext *>(pair.second.get());
+    if (builtin_context != nullptr)
+    {
+      auto builtin_kernel_gen = builtin_context->kernel_gen;
+      builtin_kernel_gen->setTensorRegistries(tensor_regs);
+      builtin_kernel_gen->setExecutorMap(executor_map);
+    }
+  }
+}
+
+std::deque<std::pair<const backend::Backend *, backend::BackendContext *>>
+ExecutorFactory::orderBackendContext(const backend::BackendContexts &backend_contexts)
+{
+  std::deque<std::pair<const backend::Backend *, backend::BackendContext *>> ordered_contexts;
+
+  for (auto &pair : backend_contexts)
+  {
+    // NOTE builtin backend must be processed lastly.
+    // This is because of Permute layer's specialty which is the only operation that could have
+    // different ITensor objects for the input and the output. And it requires all other backends'
+    // tensors are ready to use.
+    if (pair.first->config()->id() == "builtin")
+      ordered_contexts.emplace_back(pair.first, pair.second.get());
+    else
+      ordered_contexts.emplace_front(pair.first, pair.second.get());
+  }
+
+  return ordered_contexts;
+}
+
 exec::IExecutor *
 ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                                       const compiler::CompilerOptions &options,
@@ -311,32 +346,12 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
   // Give some runtime objects to builtin KernelGenerator
-  for (auto &pair : backend_contexts)
-  {
-    auto builtin_context = dynamic_cast<backend::builtin::BackendContext *>(pair.second.get());
-    if (builtin_context != nullptr)
-    {
-      auto builtin_kernel_gen = builtin_context->kernel_gen;
-      builtin_kernel_gen->setTensorRegistries(tensor_regs);
-      builtin_kernel_gen->setExecutorMap(executor_map);
-    }
-  }
+  prepareBuiltinBackend(tensor_regs, executor_map, backend_contexts);
 
   ExecutionBuilder builder;
 
   // Adjust the order of backends for the upcoming iteration
-  std::deque<std::pair<const backend::Backend *, backend::BackendContext *>> ordered_contexts;
-  for (auto &pair : backend_contexts)
-  {
-    // NOTE builtin backend must be processed lastly.
-    // This is because of Permute layer's specialty which is the only operation that could have
-    // different ITensor objects for the input and the output. And it requires all other backends'
-    // tensors are ready to use.
-    if (pair.first->config()->id() == "builtin")
-      ordered_contexts.emplace_back(pair.first, pair.second.get());
-    else
-      ordered_contexts.emplace_front(pair.first, pair.second.get());
-  }
+  auto ordered_contexts = orderBackendContext(backend_contexts);
 
   // Simulate the execution for deallocation of tensors
   std::unordered_map<ir::OperationIndex, DeallocList> dealloc_list_map;
@@ -447,32 +462,12 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
   // Give some runtime objects to builtin KernelGenerator
-  for (auto &pair : backend_contexts)
-  {
-    auto builtin_context = dynamic_cast<backend::builtin::BackendContext *>(pair.second.get());
-    if (builtin_context != nullptr)
-    {
-      auto builtin_kernel_gen = builtin_context->kernel_gen;
-      builtin_kernel_gen->setTensorRegistries(tensor_regs);
-      builtin_kernel_gen->setExecutorMap(executor_map);
-    }
-  }
+  prepareBuiltinBackend(tensor_regs, executor_map, backend_contexts);
 
   ExecutionBuilder builder;
 
   // Adjust the order of backends for the upcoming iteration
-  std::deque<std::pair<const backend::Backend *, backend::BackendContext *>> ordered_contexts;
-  for (auto &pair : backend_contexts)
-  {
-    // NOTE builtin backend must be processed lastly.
-    // This is because of Permute layer's specialty which is the only operation that could have
-    // different ITensor objects for the input and the output. And it requires all other backends'
-    // tensors are ready to use.
-    if (pair.first->config()->id() == "builtin")
-      ordered_contexts.emplace_back(pair.first, pair.second.get());
-    else
-      ordered_contexts.emplace_front(pair.first, pair.second.get());
-  }
+  auto ordered_contexts = orderBackendContext(backend_contexts);
 
   // Generate kernels
   for (auto &pair : ordered_contexts)
