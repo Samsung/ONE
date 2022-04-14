@@ -40,8 +40,22 @@ public:
   void init(const char *path);
   data_layout input_seg_layout(uint32_t n) const { return _meta->input_seg_layout[n]; }
   data_layout output_seg_layout(uint32_t n) const { return _meta->output_seg_layout[n]; }
+  data_type input_seg_quant_type(uint32_t n) const { return _meta->input_seg_quant_type[n]; }
+  data_type output_seg_quant_type(uint32_t n) const { return _meta->output_seg_quant_type[n]; }
+  float input_seg_quant_scale(uint32_t n) const { return _meta->input_seg_quant_s[n]; }
+  float output_seg_quant_scale(uint32_t n) const { return _meta->output_seg_quant_s[n]; }
+  int32_t input_seg_quant_zp(uint32_t n) { return _meta->input_seg_quant_z[n]; }
+  int32_t output_seg_quant_zp(uint32_t n) { return _meta->output_seg_quant_z[n]; }
   uint32_t input_seg_num() const { return _meta->input_seg_num; }
   uint32_t output_seg_num() const { return _meta->output_seg_num; }
+  uint32_t input_seg_dims(uint32_t n, uint32_t axis) const
+  {
+    return _meta->input_seg_dims[n][axis];
+  }
+  uint32_t output_seg_dims(uint32_t n, uint32_t axis) const
+  {
+    return _meta->output_seg_dims[n][axis];
+  }
 
 private:
   npubin_meta *_meta = nullptr;
@@ -73,14 +87,28 @@ private:
   void loadSubgraphs();
   std::unique_ptr<ir::Graph> loadSubgraph();
   void loadOperands(ir::Graph &subg);
+  ir::OperandIndex loadOperandFromInput(uint32_t i, ir::Graph &subg);
+  ir::OperandIndex loadOperandFromOutput(uint32_t i, ir::Graph &subg);
   void loadBulk(ir::Graph &subg);
   void loadOperationIO(ir::OperandIndexSequence &inputs, ir::OperandIndexSequence &outputs);
   ir::OperandIndex inputIdxToOperandIdx(uint32_t i) const;
   ir::OperandIndex outputIdxToOperandIdx(uint32_t i) const;
+  ir::DataType toDataType(const data_type type) const;
 
 private:
   TrixMetaReader _meta;
 };
+
+ir::DataType TrixLoader::toDataType(const data_type type) const
+{
+  switch (type)
+  {
+    case DATA_TYPE_QASYMM8:
+      return ir::DataType::QUANT_UINT8_ASYMM;
+    default:
+      throw std::runtime_error("Unsupported data type from trix model");
+  }
+}
 
 ir::OperandIndex TrixLoader::inputIdxToOperandIdx(uint32_t i) const { return ir::OperandIndex(i); }
 ir::OperandIndex TrixLoader::outputIdxToOperandIdx(uint32_t i) const
@@ -116,22 +144,50 @@ void TrixLoader::loadBulk(ir::Graph &subg)
   subg.addOperation(std::move(bulk));
 }
 
+ir::OperandIndex TrixLoader::loadOperandFromInput(uint32_t idx, ir::Graph &subg)
+{
+  // Shape
+  ir::Shape shape;
+  for (uint32_t d = 0; d < MAX_RANK; ++d)
+    shape.append(_meta.input_seg_dims(idx, d));
+
+  // TypeInfo
+  ir::TypeInfo type_info(toDataType(_meta.input_seg_quant_type(idx)),
+                         _meta.input_seg_quant_scale(idx), _meta.input_seg_quant_zp(idx));
+
+  // Create operand
+  const auto operand_index = subg.addOperand(shape, type_info);
+  return operand_index;
+}
+
+ir::OperandIndex TrixLoader::loadOperandFromOutput(uint32_t idx, ir::Graph &subg)
+{
+  // Shape
+  ir::Shape shape;
+  for (uint32_t d = 0; d < MAX_RANK; ++d)
+    shape.append(_meta.output_seg_dims(idx, d));
+
+  // TypeInfo
+  ir::TypeInfo type_info(toDataType(_meta.output_seg_quant_type(idx)),
+                         _meta.output_seg_quant_scale(idx), _meta.output_seg_quant_zp(idx));
+
+  // Create operand
+  const auto operand_index = subg.addOperand(shape, type_info);
+  return operand_index;
+}
+
 void TrixLoader::loadOperands(ir::Graph &subg)
 {
   (void)subg;
   auto in_num = _meta.input_seg_num();
   for (uint32_t i = 0; i < in_num; ++i)
   {
-    // TODO: create operand
-    // const auto operand_index = subg.addOperand(shape, type_info);
-    // ...
+    loadOperandFromInput(i, subg);
   }
   auto out_num = _meta.output_seg_num();
   for (uint32_t i = 0; i < out_num; ++i)
   {
-    // TODO: create operand
-    // const auto operand_index = subg.addOperand(shape, type_info);
-    // ...
+    loadOperandFromOutput(i, subg);
   }
 }
 
