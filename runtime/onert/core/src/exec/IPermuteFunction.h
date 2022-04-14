@@ -145,6 +145,9 @@ protected:
       case ir::DataType::INT64:
         permute<int64_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
         break;
+      case ir::DataType::QUANT_INT16_SYMM:
+        permute<int16_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+        break;
       default:
         throw std::runtime_error("IPermuteFunction: Not supported data type");
         break;
@@ -338,6 +341,8 @@ protected:
       case ir::DataType::QUANT_INT8_ASYMM:
       case ir::DataType::QUANT_INT8_SYMM:
         return typeid(int8_t);
+      case ir::DataType::QUANT_INT16_SYMM:
+        return typeid(int16_t);
       default:
         throw std::runtime_error("IPermuteFunction: Not supported data type");
     }

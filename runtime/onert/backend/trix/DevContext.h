@@ -98,6 +98,8 @@ private:
     {
       case ir::DataType::QUANT_UINT8_ASYMM:
         return DATA_TYPE_QASYMM8;
+      case ir::DataType::QUANT_INT16_SYMM:
+        return DATA_TYPE_QSYMM16;
       default:
         throw std::runtime_error("Unsupported data type");
     }
