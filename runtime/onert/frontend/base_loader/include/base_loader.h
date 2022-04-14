@@ -96,6 +96,7 @@ protected:
   ir::Activation convertActivation(ActivationFunctionType type);
   ir::DataType tensorTypeToDataType(TensorType type);
   ir::OperandIndex tensorIdxToOperandIdx(int32_t tensorIdx);
+  flexbuffers::Map getCustomOpAttrMap(const Operator *op);
 
   // Create operands form tflite::Tensor
   ir::OperandIndex loadOperand(const Tensor *tensor, ir::Graph &subg);
@@ -299,6 +300,15 @@ template <typename LoaderDomain>
 ir::OperandIndex BaseLoader<LoaderDomain>::BaseLoader::tensorIdxToOperandIdx(int32_t tensorIdx)
 {
   return isOptionalInputTensor(tensorIdx) ? ir::OperandIndex() : _tensor_to_operand[tensorIdx];
+}
+
+template <typename LoaderDomain>
+flexbuffers::Map BaseLoader<LoaderDomain>::BaseLoader::getCustomOpAttrMap(const Operator *op)
+{
+  size_t custom_op_data_size = op->custom_options()->size();
+  auto custom_op_data = op->custom_options()->Data();
+  auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
+  return data_root.AsMap();
 }
 
 /* Copy is copied from tensorflow lite */
@@ -758,10 +768,7 @@ void BaseLoader<LoaderDomain>::loadAddV2(const Operator *op, ir::Graph &subg)
   }
   else
   {
-    size_t custom_op_data_size = op->custom_options()->size();
-    auto custom_op_data = op->custom_options()->Data();
-    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
-    auto attr_map = data_root.AsMap();
+    const auto attr_map = getCustomOpAttrMap(op);
     const auto fused_activation_func = static_cast<typename LoaderDomain::ActivationFunctionType>(
       attr_map["fused_activation_function"].AsInt8());
     param.activation = convertActivation(fused_activation_func);
@@ -886,10 +893,7 @@ void BaseLoader<LoaderDomain>::loadReduceAll(const Operator *op, ir::Graph &subg
   }
   else
   {
-    size_t custom_op_data_size = op->custom_options()->size();
-    auto custom_op_data = op->custom_options()->Data();
-    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
-    auto attr_map = data_root.AsMap();
+    const auto attr_map = getCustomOpAttrMap(op);
     param.keep_dims = attr_map["keep_dims"].AsBool();
   }
 
@@ -941,8 +945,7 @@ void BaseLoader<LoaderDomain>::loadGather(const Operator *op, ir::Graph &subg)
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadDetectionPostProcess(const Operator *op, ir::Graph &subg)
 {
-  const flexbuffers::Map &m =
-    flexbuffers::GetRoot(op->custom_options()->data(), op->custom_options()->size()).AsMap();
+  const auto &m = getCustomOpAttrMap(op);
 
   ir::operation::DetectionPostProcess::Param param;
 
@@ -1001,10 +1004,7 @@ void BaseLoader<LoaderDomain>::loadBatchMatMul(const Operator *op, ir::Graph &su
       }
       else
       {
-        size_t custom_op_data_size = op->custom_options()->size();
-        auto custom_op_data = op->custom_options()->Data();
-        auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
-        auto attr_map = data_root.AsMap();
+        const auto attr_map = getCustomOpAttrMap(op);
         param.adj_x = attr_map["adj_x"].AsBool();
         param.adj_y = attr_map["adj_y"].AsBool();
       }
@@ -1237,10 +1237,7 @@ void BaseLoader<LoaderDomain>::loadEinsum(const Operator *op, ir::Graph &subg)
   }
   else
   {
-    size_t custom_op_data_size = op->custom_options()->size();
-    auto custom_op_data = op->custom_options()->Data();
-    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
-    auto attr_map = data_root.AsMap();
+    const auto attr_map = getCustomOpAttrMap(op);
     param.equation = attr_map["equation"].ToString();
   }
 
@@ -1260,10 +1257,7 @@ void BaseLoader<LoaderDomain>::loadFusedBatchNorm(const Operator *op, ir::Graph 
   }
   else
   {
-    size_t custom_op_data_size = op->custom_options()->size();
-    auto custom_op_data = op->custom_options()->Data();
-    auto data_root = flexbuffers::GetRoot(custom_op_data, custom_op_data_size);
-    auto attr_map = data_root.AsMap();
+    const auto attr_map = getCustomOpAttrMap(op);
     param.is_training = attr_map["is_training"].AsBool();
     param.epsilon = attr_map["epsilon"].AsFloat();
     param.data_format = attr_map["data_format"].ToString();
