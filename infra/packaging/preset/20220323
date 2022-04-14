@@ -39,6 +39,7 @@ function preset_configure()
 
   # TODO Use "nncc configure" and "nncc build"
   cmake \
+    -DENABLE_TEST=OFF \
     -DCMAKE_INSTALL_PREFIX="${NNCC_INSTALL_PREFIX}" \
     -DCMAKE_BUILD_TYPE=release \
     -DBUILD_WHITELIST=$(join_by ";" "${REQUIRED_UNITS[@]}") \
