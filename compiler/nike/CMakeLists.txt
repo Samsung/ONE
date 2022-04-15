@@ -5,11 +5,11 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 add_library(nike STATIC ${SOURCES})
 target_include_directories(nike PUBLIC include)
 
-nnas_find_package(GTest QUIET)
-
-if(NOT GTest_FOUND)
+if(NOT ENABLE_TEST)
   return()
-endif(NOT GTest_FOUND)
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest QUIET)
 
 GTest_AddTest(nike_test ${TESTS})
 target_link_libraries(nike_test nike)
