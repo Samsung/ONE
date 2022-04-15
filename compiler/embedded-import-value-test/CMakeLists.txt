@@ -1,3 +1,7 @@
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
 set(SRCS_TEST_DRIVER src/TestDriver.cpp)
 
 # create driver
