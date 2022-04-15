@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNPACKAGE_RUN_H5FORMATTER_H__
-#define __NNPACKAGE_RUN_H5FORMATTER_H__
+#ifndef __NNPACKAGE_RUN_RAWFORMATTER_H__
+#define __NNPACKAGE_RUN_RAWFORMATTER_H__
 
 #include "allocation.h"
 #include "formatter.h"
@@ -28,14 +28,13 @@ struct nnfw_session;
 
 namespace nnpkg_run
 {
-class H5Formatter : public Formatter
+class RawFormatter : public Formatter
 {
 public:
-  H5Formatter(nnfw_session *sess) : Formatter(sess) {}
-  std::vector<TensorShape> readTensorShapes(const std::string &filename) override;
+  RawFormatter(nnfw_session *sess) : Formatter(sess) {}
   void loadInputs(const std::string &filename, std::vector<Allocation> &inputs) override;
   void dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs) override;
 };
 } // namespace nnpkg_run
 
-#endif // __NNPACKAGE_RUN_H5FORMATTER_H__
+#endif // __NNPACKAGE_RUN_RAWFORMATTER_H__

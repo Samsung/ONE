@@ -201,6 +201,8 @@ void Args::Initialize(void)
     ("dump,d", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _dump_filename = v; }), "Output filename")
     ("load,l", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _load_filename = v; }), "Input filename")
 #endif
+    ("dump:raw", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _dump_raw_filename = v; }), "Raw Output filename")
+    ("load:raw", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _load_raw_filename = v; }), "Raw Input filename")
     ("output_sizes", po::value<std::string>()->notifier(process_output_sizes),
         "The output buffer size in JSON 1D array\n"
         "If not given, the model's output sizes are used\n"
