@@ -10,6 +10,9 @@ fi
 # The default preset
 PRESET="20220323"
 
+# Test is enabled by default
+DISABLE_TEST=false
+
 EXTRA_OPTIONS=()
 while [ "$#" -ne 0 ]; do
   CUR="$1"
@@ -22,6 +25,10 @@ while [ "$#" -ne 0 ]; do
     '--preset')
       PRESET="$2"
       shift 2
+      ;;
+    '--notest')
+      DISABLE_TEST=true
+      shift
       ;;
     '--')
       shift
@@ -42,6 +49,10 @@ done
 if [[ -z "${NNAS_INSTALL_PREFIX}" ]]; then
   echo "ERROR: --prefix is not specified"
   exit 255
+fi
+
+if [[ "${DISABLE_TEST}" == "true" ]]; then
+  EXTRA_OPTIONS+=("-DENABLE_TEST=OFF")
 fi
 
 PRESET_PATH="${SCRIPT_PATH}/preset/${PRESET}"
