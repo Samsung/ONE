@@ -8,11 +8,11 @@ target_include_directories(morph PUBLIC include)
 target_link_libraries(morph PRIVATE nncc_common)
 target_link_libraries(morph PUBLIC angkor)
 
-nnas_find_package(GTest QUIET)
-
-if(NOT GTest_FOUND)
+if(NOT ENABLE_TEST)
   return()
-endif(NOT GTest_FOUND)
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest QUIET)
 
 add_executable(morph_test ${TESTS})
 target_link_libraries(morph_test morph)
