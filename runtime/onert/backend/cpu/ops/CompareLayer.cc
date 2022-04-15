@@ -120,6 +120,37 @@ void compareScalar(const IPortableTensor *lhs, const IPortableTensor *rhs, IPort
      getExtendedTensorShape(output), getBuffer<bool>(output));
 }
 
+void compareBool(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
+                 OpType op_type)
+{
+  bool requires_broadcast = !HaveSameShapes(lhs, rhs);
+
+  using CompareFunction =
+    void (*)(const Shape &input1_shape, const uint8_t *input1_data, const Shape &input2_shape,
+             const uint8_t *input2_data, const Shape &output_shape, bool *output_data);
+
+  static const CompareFunction broadcast_fns[] = {
+    Broadcast4DSlowEqual,
+    Broadcast4DSlowNotEqual,
+  };
+  static const CompareFunction non_broadcast_fns[] = {
+    EqualNoScaling,
+    NotEqualNoScaling,
+  };
+
+  static_assert(sizeof(broadcast_fns) == sizeof(non_broadcast_fns),
+                "Sizes of broadcast_fns and non_broadcast_fns must match!");
+
+  auto index = static_cast<int>(op_type);
+  if (index < 0 || index >= static_cast<int>(sizeof(broadcast_fns) / sizeof(broadcast_fns[0])))
+    throw std::runtime_error{"Invalid OpType for Boolean CompareLayer"};
+
+  CompareFunction fn = (requires_broadcast ? broadcast_fns[index] : non_broadcast_fns[index]);
+
+  fn(getExtendedTensorShape(lhs), getBuffer<uint8_t>(lhs), getExtendedTensorShape(rhs),
+     getBuffer<uint8_t>(rhs), getExtendedTensorShape(output), getBuffer<bool>(output));
+}
+
 } // namespace
 
 CompareLayer::CompareLayer()
@@ -154,7 +185,7 @@ void CompareLayer::run()
   }
   else if (_lhs->data_type() == OperandType::BOOL8)
   {
-    compareScalar<uint8_t>(_lhs, _rhs, _output, _op_type);
+    compareBool(_lhs, _rhs, _output, _op_type);
   }
   else if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
