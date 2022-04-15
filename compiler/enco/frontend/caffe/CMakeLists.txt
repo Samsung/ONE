@@ -17,11 +17,11 @@ target_link_libraries(enco_caffe_frontend enco_intf_cmdline)
 target_link_libraries(enco_caffe_frontend morph)
 target_link_libraries(enco_caffe_frontend caffeproto)
 
-nnas_find_package(GTest QUIET)
-
-if(NOT GTest_FOUND)
+if(NOT ENABLE_TEST)
   return()
-endif(NOT GTest_FOUND)
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest QUIET)
 
 nnas_find_package(Caffe QUIET)
 

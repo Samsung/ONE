@@ -21,11 +21,11 @@ target_link_libraries(enco_tflite_frontend enco_tflite_schema)
 target_link_libraries(enco_tflite_frontend morph)
 target_link_libraries(enco_tflite_frontend cwrap)
 
-nnas_find_package(GTest QUIET)
-
-if(NOT GTest_FOUND)
+if(NOT ENABLE_TEST)
   return()
-endif(NOT GTest_FOUND)
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest QUIET)
 
 add_executable(enco_tflite_frontend_test ${TESTS})
 target_include_directories(enco_tflite_frontend_test PRIVATE src)
