@@ -123,6 +123,8 @@ ir::DataType TrixLoader::toDataType(const data_type type) const
   {
     case DATA_TYPE_QASYMM8:
       return ir::DataType::QUANT_UINT8_ASYMM;
+    case DATA_TYPE_QSYMM16:
+      return ir::DataType::QUANT_INT16_SYMM;
     default:
       throw std::runtime_error("Unsupported data type from trix model");
   }
