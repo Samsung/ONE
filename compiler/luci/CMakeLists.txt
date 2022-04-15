@@ -23,4 +23,8 @@ add_subdirectory(import)
 add_subdirectory(export)
 add_subdirectory(tester)
 
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
 add_subdirectory(tests)
