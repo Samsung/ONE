@@ -61,6 +61,9 @@ void RandomGenerator::generate(std::vector<Allocation> &inputs)
       case NNFW_TYPE_TENSOR_INT64:
         randomData<int64_t>(randgen, inputs[i].data(), num_elems(&ti));
         break;
+      case NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED:
+        randomData<int16_t>(randgen, inputs[i].data(), num_elems(&ti));
+        break;
       default:
         std::cerr << "Not supported input type" << std::endl;
         std::exit(-1);
