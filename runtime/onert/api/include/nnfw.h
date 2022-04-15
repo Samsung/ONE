@@ -92,6 +92,15 @@ typedef enum
    */
   NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED = 6,
 
+  /**
+   * A tensor of 16 bit signed integers that represent real numbers.
+   *
+   * real_value = (integer_value - zeroPoint) * scale.
+   *
+   * Forced to have zeroPoint equal to 0.
+   */
+  NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED = 7,
+
 } NNFW_TYPE;
 
 /**
