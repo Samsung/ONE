@@ -8,11 +8,11 @@ target_include_directories(mir2loco PUBLIC include)
 target_link_libraries(mir2loco PUBLIC mir)
 target_link_libraries(mir2loco PUBLIC loco)
 
-nnas_find_package(GTest QUIET)
-
-if(NOT GTest_FOUND)
+if(NOT ENABLE_TEST)
   return()
-endif(NOT GTest_FOUND)
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest QUIET)
 
 GTest_AddTest(mir2loco_test ${TESTS})
 target_link_libraries(mir2loco_test mir2loco)
