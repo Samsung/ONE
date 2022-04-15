@@ -128,6 +128,10 @@ list(APPEND TEST_DEPS "${TEST_CONFIG}")
 # This "tf2circle_conversion_test_deps" target enforces CMake to generate all the dependencies during "build" phase
 add_custom_target(tf2circle_conversion_test_deps ALL DEPENDS ${TEST_DEPS})
 
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
 # Run tests
 add_test(
   NAME tf2circle_conversion_test
