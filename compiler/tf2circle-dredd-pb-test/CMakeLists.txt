@@ -132,6 +132,10 @@ list(APPEND DEPS "${TARGET_RULE_LIB}")
 # Generate dependencies
 add_custom_target(tf2circle_dredd_pb_deps ALL DEPENDS ${DEPS})
 
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
 add_test(
   NAME tf2circle_dredd_pb_test
   COMMAND
