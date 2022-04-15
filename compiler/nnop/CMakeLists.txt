@@ -2,11 +2,11 @@ add_library(nnop INTERFACE)
 target_include_directories(nnop INTERFACE include)
 target_link_libraries(nnop INTERFACE angkor)
 
-nnas_find_package(GTest QUIET)
-
-if(NOT GTest_FOUND)
+if(NOT ENABLE_TEST)
   return()
-endif(NOT GTest_FOUND)
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest QUIET)
 
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
 
