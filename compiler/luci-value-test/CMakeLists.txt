@@ -1,3 +1,7 @@
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
 unset(LUCI_VALUE_TESTS)
 unset(LUCI_VALUE_TESTS_TOL)
 
