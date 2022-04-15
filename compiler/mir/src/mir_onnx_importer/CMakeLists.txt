@@ -112,6 +112,10 @@ target_include_directories(mir_onnx_importer PUBLIC ../../include/mir_onnx_impor
 target_include_directories(mir_onnx_importer PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(mir_onnx_importer PUBLIC mir mir_onnx_proto PRIVATE mir_interpreter nncc_common)
 
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
 nnas_find_package(GTest REQUIRED)
 
 file(GLOB_RECURSE TEST_SOURCES "*.test.cpp")
