@@ -1,3 +1,7 @@
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
 unset(TEST_DEPS)
 unset(LUCI_PASS_VALUE_TESTS)
 
