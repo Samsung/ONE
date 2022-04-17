@@ -20,4 +20,9 @@ add_subdirectory(core)
 add_subdirectory(tflite)
 # Tools
 add_subdirectory(tools)
+
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
 add_subdirectory(tests)
