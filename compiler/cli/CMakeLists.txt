@@ -10,5 +10,5 @@ endif(NOT ENABLE_TEST)
 
 nnas_find_package(GTest QUIET)
 
-GTest_AddTEst(cli_test ${TESTS})
+GTest_AddTest(cli_test ${TESTS})
 target_link_libraries(cli_test cli)
