@@ -100,6 +100,10 @@ list(APPEND DEPS "${TEST_RUNNER_SCRIPT}")
 ### Generate dependencies
 add_custom_target(tf2circle_model_test_deps ALL DEPENDS ${DEPS})
 
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
 # NOTE This target is not built by default
 add_test(
   NAME tf2circle_model_test
