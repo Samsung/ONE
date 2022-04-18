@@ -122,15 +122,15 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
     {
       using namespace loco;
 
-      auto encoder = encode_node->encoder();
-      assert(encoder != nullptr);
-
       auto decode_node = dynamic_cast<loco::FeatureDecode *>(encode_node->input());
       if (decode_node == nullptr)
       {
         return;
       }
       assert(decode_node->input() != nullptr);
+
+      auto encoder = encode_node->encoder();
+      assert(encoder != nullptr);
 
       auto decoder = decode_node->decoder();
       assert(decoder != nullptr);
@@ -302,15 +302,15 @@ bool SimplifyDomainConversionPass::run(loco::Graph *g)
     {
       using namespace loco;
 
-      auto encoder = encode_node->encoder();
-      assert(encoder != nullptr);
-
       auto decode_node = dynamic_cast<loco::MatrixDecode *>(encode_node->input());
       if (decode_node == nullptr)
       {
         return;
       }
       assert(decode_node->input() != nullptr);
+
+      auto encoder = encode_node->encoder();
+      assert(encoder != nullptr);
 
       auto decoder = decode_node->decoder();
       assert(decoder != nullptr);
