@@ -1,6 +1,6 @@
-if(NOT TARGET mio_tflite)
+if(NOT TARGET mio_tflite280)
   return()
-endif(NOT TARGET mio_tflite)
+endif(NOT TARGET mio_tflite280)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
