@@ -1,6 +1,6 @@
 set(LIB_ONERT_BACKEND_TRIX onert_backend_trix)
 
-nnfw_find_package(TRIXEngine EXACT 2.5.0 QUIET)
+nnfw_find_package(TRIXEngine QUIET 2.5.0)
 if(NOT TRIXEngine_FOUND)
   return()
 endif(NOT TRIXEngine_FOUND)
