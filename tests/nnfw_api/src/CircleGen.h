@@ -184,6 +184,7 @@ public:
   uint32_t addOperatorMul(const OperatorParams &params, circle::ActivationFunctionType actfn);
   uint32_t addOperatorMean(const OperatorParams &params, bool keep_dims);
   uint32_t addOperatorNeg(const OperatorParams &params);
+  uint32_t addOperatorNotEqual(const OperatorParams &params);
   uint32_t addOperatorOneHot(const OperatorParams &params, int32_t axis);
   uint32_t addOperatorPad(const OperatorParams &params);
   uint32_t addOperatorPadV2(const OperatorParams &params);
