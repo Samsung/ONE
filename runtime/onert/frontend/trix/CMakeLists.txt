@@ -2,7 +2,7 @@ if (NOT BUILD_TRIX_LOADER)
   return()
 endif ()
 
-nnfw_find_package(TRIXEngine EXACT 2.5.0 QUIET)
+nnfw_find_package(TRIXEngine QUIET 2.5.0)
 if(TRIXEngine_FOUND)
   list(APPEND SOURCES src/trix_loader.cc)
 else()
