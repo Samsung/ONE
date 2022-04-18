@@ -303,7 +303,7 @@ private:
   std::string _long_name;
   std::string _short_name;
   std::vector<std::string> _names;
-  std::string _type;
+  std::string _type = "string";
   std::string _help_message;
   std::function<void(void)> _func;
   uint32_t _nargs{1};
