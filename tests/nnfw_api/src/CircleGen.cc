@@ -319,6 +319,13 @@ uint32_t CircleGen::addOperatorNeg(const OperatorParams &params)
                                 circle::BuiltinOptions_NegOptions, options);
 }
 
+uint32_t CircleGen::addOperatorNotEqual(const OperatorParams &params)
+{
+  auto options = circle::CreateEqualOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_NOT_EQUAL,
+                                circle::BuiltinOptions_NotEqualOptions, options);
+}
+
 uint32_t CircleGen::addOperatorOneHot(const OperatorParams &params, int32_t axis)
 {
   auto options = circle::CreateOneHotOptions(_fbb, axis).Union();
