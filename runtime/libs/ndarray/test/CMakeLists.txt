@@ -6,6 +6,9 @@ add_executable(ndarray_test ndarray_test.cpp)
 
 target_link_libraries(ndarray_test PRIVATE ndarray)
 
+# Requires linking nnfw_coverage: check header coverage
+target_link_libraries(ndarray_test PRIVATE nnfw_coverage)
+
 nnfw_find_package(GTest)
 if(NOT GTest_FOUND)
     message(STATUS "GTest not avaialble. Skipping NDArray test build")
