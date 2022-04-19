@@ -20,12 +20,6 @@ endif(NOT ENABLE_TEST)
 add_executable(misc_index_enumerator_test src/IndexEnumerator.test.cpp)
 target_link_libraries(misc_index_enumerator_test PRIVATE nnfw_lib_misc)
 
-nnfw_find_package(GTest)
-if(NOT GTest_FOUND)
-    message(STATUS "GTest not avaialble. Skipping lib/misc test build")
-    return()
-endif(NOT GTest_FOUND)
-
 target_link_libraries(misc_index_enumerator_test PUBLIC gtest gtest_main ${LIB_PTHREAD})
 
 add_test(misc_index_enumerator_test misc_index_enumerator_test)
