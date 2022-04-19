@@ -737,6 +737,29 @@ template <typename T> T Arser::get(const std::string &arg_name)
   return get_impl(arg_name, static_cast<T *>(nullptr));
 }
 
+class Helper
+{
+public:
+  static void add_version(Arser &arser, const std::function<void(void)> &func)
+  {
+    arser.add_argument("--version")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("Show version information and exit")
+      .exit_with(func);
+  }
+
+  static void add_verbose(Arser &arser)
+  {
+    arser.add_argument("-V", "--verbose")
+      .nargs(0)
+      .required(false)
+      .default_value(false)
+      .help("output additional information to stdout or stderr");
+  }
+};
+
 } // namespace arser
 
 #endif // __ARSER_H__
