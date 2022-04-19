@@ -276,6 +276,13 @@ uint32_t CircleGen::addOperatorGreater(const OperatorParams &params)
                                 circle::BuiltinOptions_GreaterOptions, options);
 }
 
+uint32_t CircleGen::addOperatorGreaterEqual(const OperatorParams &params)
+{
+  auto options = circle::CreateGreaterOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_GREATER_EQUAL,
+                                circle::BuiltinOptions_GreaterEqualOptions, options);
+}
+
 uint32_t CircleGen::addOperatorL2Normalization(const OperatorParams &params)
 {
   auto options = circle::CreateL2NormOptions(_fbb).Union();
@@ -288,6 +295,13 @@ uint32_t CircleGen::addOperatorLess(const OperatorParams &params)
   auto options = circle::CreateLessOptions(_fbb).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_LESS,
                                 circle::BuiltinOptions_LessOptions, options);
+}
+
+uint32_t CircleGen::addOperatorLessEqual(const OperatorParams &params)
+{
+  auto options = circle::CreateLessOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_LESS_EQUAL,
+                                circle::BuiltinOptions_LessEqualOptions, options);
 }
 
 uint32_t CircleGen::addOperatorLeakyRelu(const OperatorParams &params, float alpha)

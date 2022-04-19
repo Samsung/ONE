@@ -175,12 +175,14 @@ public:
                                      circle::FullyConnectedOptionsWeightsFormat weights_format =
                                        circle::FullyConnectedOptionsWeightsFormat_DEFAULT);
   uint32_t addOperatorGreater(const OperatorParams &params);
+  uint32_t addOperatorGreaterEqual(const OperatorParams &params);
   uint32_t addOperatorIf(const OperatorParams &params, uint32_t then_subg, uint32_t else_subg);
   uint32_t addOperatorInstanceNorm(const OperatorParams &params, float epsilon,
                                    circle::ActivationFunctionType actfn);
   uint32_t addOperatorL2Normalization(const OperatorParams &params);
   uint32_t addOperatorLeakyRelu(const OperatorParams &params, float alpha);
   uint32_t addOperatorLess(const OperatorParams &params);
+  uint32_t addOperatorLessEqual(const OperatorParams &params);
   uint32_t addOperatorLogSoftmax(const OperatorParams &params);
   uint32_t addOperatorMul(const OperatorParams &params, circle::ActivationFunctionType actfn);
   uint32_t addOperatorMean(const OperatorParams &params, bool keep_dims);
