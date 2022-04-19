@@ -46,3 +46,14 @@ TEST(MiscIndexEnumeratorTest, iterate_full_range)
 
   ASSERT_TRUE(std::all_of(count.begin(), count.end(), [](uint32_t n) { return n == 1; }));
 }
+
+TEST(MiscIndexEnumeratorTest, neg_zero_rank_shape)
+{
+  // Test abnormal case of empty shape
+  // It is expected not to throw any exception, do nothing
+  const Shape shape{};
+  IndexEnumerator e{shape};
+  ASSERT_NO_THROW(e.valid());
+  ASSERT_NO_THROW(e.advance());
+  SUCCEED();
+}
