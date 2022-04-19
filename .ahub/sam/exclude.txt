@@ -5,6 +5,23 @@
 # Eigen
 /ONE/compiler/nnc/backends/soft_backend/code_snippets/eigen.def
 
+# Frontend test tools that are needed for release package build
+/ONE/compiler/circlechef
+/ONE/compiler/tflchef
+/ONE/compiler/souschef
+/ONE/compiler/circle-verify
+/ONE/compiler/luci/tester
+
+# Exclude IR headers which have lots of similar patterns
+# TODO remove this when refactoring is possible
+/ONE/compiler/luci/lang/include/luci/IR/Nodes
+/ONE/compiler/luci/import/include/luci/Import/Nodes
+/ONE/compiler/loco/include/loco/IR
+
+# Exclude interpreter kernels which have similar patterns
+/ONE/compiler/luci-interpreter/src/kernels
+/ONE/compiler/locomotiv/src/Node
+
 # Test codes
 /ONE/tests
 
