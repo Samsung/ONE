@@ -48,17 +48,17 @@ struct UnrepresentableWarningIssuerPass final : public logo::Pass
   bool run(loco::Graph *g) final;
 
 protected:
-
   // For testing
-  bool is_unrepr(luci::CircleConst* pConst,
-                 loco::DataType input_t,loco::DataType output_t,QuantizationGranularity qgran);
+  bool is_unrepr(luci::CircleConst *pConst, loco::DataType input_t, loco::DataType output_t,
+                 QuantizationGranularity qgran);
 
 private:
   void warn_if_unrepr(CircleConst *, loco::Graph *);
 
   LayerInfoMap info_by_name;
 
-  loco::DataType quantize_dtype(const luci::CircleNode *node) {
+  loco::DataType quantize_dtype(const luci::CircleNode *node)
+  {
     auto iter = info_by_name.find(node->name());
 
     // Return designated quantization dtype
@@ -69,7 +69,8 @@ private:
     return _ctx->output_model_dtype;
   };
 
-  QuantizationGranularity quantize_granularity(const luci::CircleNode *node) {
+  QuantizationGranularity quantize_granularity(const luci::CircleNode *node)
+  {
     auto iter = info_by_name.find(node->name());
 
     // Return designated quantization granularity
@@ -79,7 +80,6 @@ private:
     // Return default quantization granularity
     return _ctx->granularity;
   };
-
 };
 
 } // namespace luci
