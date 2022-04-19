@@ -17,7 +17,8 @@
 #ifndef __ONERT_UTIL_EVENT_COLLECTOR_H__
 #define __ONERT_UTIL_EVENT_COLLECTOR_H__
 
-#include "util/EventRecorder.h"
+#include "EventRecorder.h"
+
 #include "util/TracingCtx.h"
 
 #include <vector>

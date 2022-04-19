@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-#include "util/EventWriter.h"
+#include "EventWriter.h"
 
-#include <sstream>
-#include <vector>
-#include <unordered_map>
 #include <cassert>
-#include <utility>
 #include <map>
 #include <set>
+#include <sstream>
 #include <stdint.h>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 // md table type
 namespace

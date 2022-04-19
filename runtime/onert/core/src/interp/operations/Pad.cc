@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include <cker/operation/Pad.h>
-
 #include "OperationUtil.h"
+#include "../Registration.h"
 
-#include "interp/Registration.h"
 #include "ir/operation/Pad.h"
+
+#include <cker/operation/Pad.h>
 
 namespace onert
 {

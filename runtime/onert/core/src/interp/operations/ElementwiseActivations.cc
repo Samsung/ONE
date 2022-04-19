@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-#include <cmath>
-
 #include "OperationUtil.h"
-
-#include "interp/Registration.h"
+#include "../Registration.h"
 
 #include "ir/operation/ElementwiseActivation.h"
 
-#include <misc/polymorphic_downcast.h>
 #include <cker/operation/Logistic.h>
 #include <cker/operation/Tanh.h>
+#include <misc/polymorphic_downcast.h>
+
+#include <cmath>
 
 namespace onert
 {

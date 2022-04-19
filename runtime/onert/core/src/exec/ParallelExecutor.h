@@ -17,18 +17,19 @@
 #ifndef __ONERT_EXEC_PARALLEL_EXECUTOR_H__
 #define __ONERT_EXEC_PARALLEL_EXECUTOR_H__
 
-#include <list>
-#include <queue>
-#include <unordered_map>
+#include "DataflowExecutor.h"
+#include "Job.h"
+#include "ParallelScheduler.h"
 
 #include "exec/FunctionSequence.h"
-#include "Job.h"
-#include "ir/OperandIndexSequence.h"
 #include "ir/Index.h"
-#include <memory>
-#include "exec/DataflowExecutor.h"
-#include "ParallelScheduler.h"
+#include "ir/OperandIndexSequence.h"
 #include "util/TracingCtx.h"
+
+#include <list>
+#include <memory>
+#include <queue>
+#include <unordered_map>
 
 namespace onert
 {

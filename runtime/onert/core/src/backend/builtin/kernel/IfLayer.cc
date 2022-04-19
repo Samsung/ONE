@@ -15,10 +15,10 @@
  */
 
 #include "IfLayer.h"
-
-#include <backend/ITensor.h>
-#include "exec/ExecutorBase.h"
 #include "PermuteLayer.h"
+#include "../../../exec/ExecutorBase.h"
+
+#include "backend/ITensor.h"
 
 namespace onert
 {

@@ -22,11 +22,12 @@
 #ifndef __ONERT_EXEC_EXECUTOR_H_
 #define __ONERT_EXEC_EXECUTOR_H_
 
-#include "ir/Index.h"
 #include "ExecutorBase.h"
-#include "compiler/Linear.h"
-#include "exec/FunctionSequence.h"
+#include "../compiler/Linear.h"
+
 #include "compiler/CodeMap.h"
+#include "exec/FunctionSequence.h"
+#include "ir/Index.h"
 #include "util/TracingCtx.h"
 
 namespace onert

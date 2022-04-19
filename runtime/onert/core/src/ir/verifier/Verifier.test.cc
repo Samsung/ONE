@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include "Verifier.h"
+#include "../MockNode.h"
 
 #include "ir/Operation.h"
-#include "ir/Graph.h"
-#include "ir/verifier/Verifier.h"
-#include <memory>
 #include "ir/Operand.h"
-#include "MockNode.h"
+#include "ir/Graph.h"
+
+#include <gtest/gtest.h>
+
+#include <memory>
 
 using IndexSet = onert::ir::OperandIndexSequence;
 using Mock = onert_test::ir::SimpleMock;

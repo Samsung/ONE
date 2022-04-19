@@ -17,18 +17,19 @@
 
 #include "PermutationInsertionPass.h"
 
-#include <cassert>
-#include <utility>
-#include <unordered_map>
+#include "../../backend/builtin/Config.h"
 
-#include "backend/builtin/Config.h"
-#include "ir/Operand.h"
+#include "backend/IConfig.h"
 #include "compiler/OperationLowerInfo.h"
 #include "ir/Graph.h"
-#include "backend/IConfig.h"
-#include "util/logging.h"
-#include <memory>
+#include "ir/Operand.h"
 #include "ir/operation/Permute.h"
+#include "util/logging.h"
+
+#include <cassert>
+#include <memory>
+#include <unordered_map>
+#include <utility>
 
 namespace onert
 {

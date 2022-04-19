@@ -15,14 +15,14 @@
  */
 
 #include "KernelGenerator.h"
-
-#include <backend/BackendContext.h>
-#include <util/Utils.h>
 #include "kernel/IfLayer.h"
-#include "kernel/WhileLayer.h"
 #include "kernel/PermuteLayer.h"
-#include "exec/ExecutorBase.h"
+#include "kernel/WhileLayer.h"
+#include "../../exec/ExecutorBase.h"
+
+#include "backend/BackendContext.h"
 #include "exec/FunctionSequence.h"
+#include "util/Utils.h"
 
 namespace onert
 {

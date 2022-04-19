@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-
 #include "ir/Graph.h"
 #include "ir/operation/BinaryArithmetic.h"
-#include "ir/verifier/Verifier.h"
+#include "ir/operation/Concat.h"
+#include "ir/operation/Conv2D.h"
+
+#include <gtest/gtest.h>
 
 TEST(Graph, neg_inputs_and_outputs)
 {
@@ -145,4 +146,73 @@ TEST(Graph, neg_InvalidAddOperation_BadInputIndex)
   graph.addOutput(res);
 
   ASSERT_FALSE(addAddOperation(graph, {lhs, OperandIndex{99}}, {res}).valid());
+}
+
+TEST(Graph, operation_setIO_conv)
+{
+  onert::ir::Graph graph;
+
+  onert::ir::Shape shape{3};
+  onert::ir::TypeInfo type{onert::ir::DataType::INT32};
+
+  // Add Conv
+  using Graph = onert::ir::operation::Conv2D;
+
+  auto input_operand = graph.addOperand(shape, type);
+  auto kernel_operand = graph.addOperand(shape, type);
+  auto bias_operand = graph.addOperand(shape, type);
+  OperandIndexSequence inputs{input_operand, kernel_operand, bias_operand};
+
+  Graph::Param conv_params;
+  conv_params.padding.type = onert::ir::PaddingType::SAME;
+  conv_params.stride.horizontal = 1;
+  conv_params.stride.vertical = 1;
+  conv_params.activation = onert::ir::Activation::NONE;
+
+  auto output_operand = graph.addOperand(shape, type).value();
+  OperandIndexSequence outputs{output_operand};
+
+  auto conv = std::make_unique<Graph>(inputs, outputs, conv_params);
+
+  ASSERT_NE(conv, nullptr);
+  ASSERT_EQ(conv->getInputs().at(IOIndex{0}).value(), inputs.at(0).value());
+  conv->setInputs({8, 9, 10});
+  ASSERT_NE(conv->getInputs().at(IOIndex{0}).value(), inputs.at(0).value());
+  ASSERT_EQ(conv->getInputs().at(IOIndex{0}).value(), 8);
+}
+
+TEST(ir_Operation_setIO, neg_operation_setIO_concat)
+{
+  onert::ir::Graph graph;
+
+  onert::ir::Shape shape{3};
+
+  onert::ir::TypeInfo type{onert::ir::DataType::INT32};
+
+  using Graph = onert::ir::operation::Concat;
+
+  // Add Concat
+  OperandIndexSequence inputs;
+  for (int i = 0; i < 6; ++i)
+  {
+    inputs.append(graph.addOperand(shape, type));
+  }
+
+  Graph::Param concat_params{0};
+
+  auto output_operand = graph.addOperand(shape, type).value();
+  OperandIndexSequence outputs{output_operand};
+
+  auto concat = std::make_unique<Graph>(inputs, outputs, concat_params);
+
+  ASSERT_NE(concat, nullptr);
+  ASSERT_EQ(concat->getInputs().size(), 6);
+  ASSERT_EQ(concat->getInputs().at(IOIndex{0}).value(), inputs.at(0).value());
+
+  concat->setInputs({80, 6, 9, 11});
+  ASSERT_EQ(concat->getInputs().size(), 4);
+  ASSERT_NE(concat->getInputs().at(IOIndex{0}).value(), inputs.at(0).value());
+  ASSERT_EQ(concat->getInputs().at(IOIndex{0}).value(), 80);
+  ASSERT_EQ(concat->getInputs().at(IOIndex{2}).value(), 9);
+  ASSERT_THROW(concat->getInputs().at(IOIndex{5}), std::out_of_range);
 }

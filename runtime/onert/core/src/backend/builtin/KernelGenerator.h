@@ -17,13 +17,14 @@
 #ifndef __ONERT_BACKEND_BUILTIN_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_BUILTIN_KERNEL_GENERATOR_H__
 
-#include "exec/IExecutor.h"
 #include "ExternalContext.h"
-#include "ir/Graph.h"
 #include "TensorBuilder.h"
-#include "compiler/TensorRegistries.h"
-#include "backend/basic/KernelGeneratorBase.h"
 #include "TensorRegistry.h"
+#include "../../compiler/TensorRegistries.h"
+
+#include "exec/IExecutor.h"
+#include "ir/Graph.h"
+#include "backend/basic/KernelGeneratorBase.h"
 
 namespace onert
 {

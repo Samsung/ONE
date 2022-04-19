@@ -7,7 +7,7 @@ nnfw_find_package(Ruy REQUIRED)
 add_library(onert_core SHARED ${SOURCES})
 set_target_properties(onert_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(onert_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_include_directories(onert_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+#target_include_directories(onert_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(onert_core PUBLIC nnfw_lib_misc half)
 target_link_libraries(onert_core PRIVATE nnfw_lib_cker)
 target_link_libraries(onert_core PRIVATE nnfw_common)
@@ -49,6 +49,9 @@ add_executable(${TEST_ONERT_CORE} ${TESTS})
 
 target_link_libraries(${TEST_ONERT_CORE} onert_core)
 target_link_libraries(${TEST_ONERT_CORE} gtest gtest_main dl ${LIB_PTHREAD})
+
+# Requires linking nnfw_coverage: check header coverage
+target_link_libraries(${TEST_ONERT_CORE} nnfw_coverage)
 
 add_test(${TEST_ONERT_CORE} ${TEST_ONERT_CORE})
 install(TARGETS ${TEST_ONERT_CORE} DESTINATION unittest_standalone)

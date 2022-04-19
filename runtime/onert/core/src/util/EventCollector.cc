@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#include "util/EventCollector.h"
+#include "EventCollector.h"
 
 // C++ standard libraries
 #include <chrono>
 
 // POSIX standard libraries
-#include <sys/time.h>
 #include <sys/resource.h>
+#include <sys/time.h>
 
 namespace
 {

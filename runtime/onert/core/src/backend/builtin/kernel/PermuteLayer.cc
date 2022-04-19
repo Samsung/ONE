@@ -15,10 +15,9 @@
  */
 
 #include "PermuteLayer.h"
+#include "../../../exec/ShapeConverter.h"
 
-#include "exec/ShapeConverter.h"
-
-#include "ruy/context.h" // from @ruy
+#include <ruy/context.h> // from @ruy
 
 namespace onert
 {

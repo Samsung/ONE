@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
+#include "PermuteLayer.h"
 #include "WhileLayer.h"
+#include "../../../exec/ExecutorBase.h"
+
+#include "backend/ITensor.h"
+
+#include <misc/polymorphic_downcast.h>
 
 #include <algorithm>
-#include <backend/ITensor.h>
-#include "exec/ExecutorBase.h"
-#include <misc/polymorphic_downcast.h>
-#include "PermuteLayer.h"
 
 namespace onert
 {

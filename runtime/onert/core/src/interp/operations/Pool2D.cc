@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-#include <cker/operation/AveragePool.h>
-#include <cker/operation/MaxPool.h>
-
 #include "OperationUtil.h"
+#include "../Registration.h"
 
-#include "interp/Registration.h"
 #include "ir/operation/Pool2D.h"
 #include "util/Utils.h"
 #include "util/ShapeInference.h"
-#include "misc/polymorphic_downcast.h"
+
+#include <cker/operation/AveragePool.h>
+#include <cker/operation/MaxPool.h>
+#include <misc/polymorphic_downcast.h>
 
 namespace onert
 {

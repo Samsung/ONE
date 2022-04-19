@@ -17,30 +17,31 @@
 #include "compiler/Compiler.h"
 
 #include "ExecutorFactory.h"
+#include "HEScheduler.h"
+#include "IScheduler.h"
+#include "Linear.h"
+#include "ManualScheduler.h"
 #include "ShapeValidator.h"
+#include "pass/ConstantOutputPass.h"
+#include "pass/OddOutputPass.h"
+#include "pass/PassRunner.h"
+#include "pass/UnusedOperandEliminationPass.h"
+#include "../backend/builtin/Config.h"
+#include "../dumper/dot/DotDumper.h"
+#include "../exec/ExecTime.h"
+#include "../interp/InterpExecutor.h"
+#include "../ir/OperationCloner.h"
+#include "../ir/OperationDumper.h"
+#include "../ir/verifier/Verifier.h"
 
-#include <backend/builtin/Config.h>
 #include "compiler/BackendManager.h"
-#include "compiler/IScheduler.h"
-#include "compiler/ManualScheduler.h"
-#include "compiler/HEScheduler.h"
-#include "compiler/StaticShapeInferer.h"
 #include "compiler/OperationLowerInfo.h"
-#include "compiler/pass/ConstantOutputPass.h"
-#include "compiler/pass/OddOutputPass.h"
-#include "compiler/pass/PassRunner.h"
-#include "compiler/pass/UnusedOperandEliminationPass.h"
-#include "exec/ExecTime.h"
-#include "ir/verifier/Verifier.h"
-#include "dumper/dot/DotDumper.h"
-#include "compiler/Linear.h"
-#include "interp/InterpExecutor.h"
+#include "compiler/StaticShapeInferer.h"
 #include "util/ConfigSource.h"
 #include "util/logging.h"
-#include "ir/OperationDumper.h"
-#include "ir/OperationCloner.h"
-#include "misc/string_helpers.h"
-#include "json/json.h"
+
+#include <json/json.h>
+#include <misc/string_helpers.h>
 
 namespace
 {

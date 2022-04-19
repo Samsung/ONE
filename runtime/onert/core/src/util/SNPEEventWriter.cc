@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-#include "util/EventWriter.h"
+#include "EventWriter.h"
 
-#include <unordered_map>
 #include <json/json.h>
+
 #include <cassert>
+#include <unordered_map>
 #include <utility>
 
 /**

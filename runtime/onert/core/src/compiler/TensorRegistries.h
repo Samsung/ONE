@@ -17,13 +17,15 @@
 #ifndef __ONERT_COMPILER_TENSOR_REGISTRIES_H__
 #define __ONERT_COMPILER_TENSOR_REGISTRIES_H__
 
-#include <unordered_set>
-#include <memory>
+#include "../backend/builtin/Config.h"
+#include "../backend/builtin/TensorBuilder.h"
+#include "../backend/builtin/TensorRegistry.h"
+
 #include "backend/BackendContext.h"
 #include "backend/Backend.h"
-#include "backend/builtin/Config.h"
-#include "backend/builtin/TensorBuilder.h"
-#include "backend/builtin/TensorRegistry.h"
+
+#include <unordered_set>
+#include <memory>
 
 namespace onert
 {

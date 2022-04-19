@@ -15,23 +15,20 @@
  */
 
 #include "ExecutorFactory.h"
+#include "../backend/builtin/BackendContext.h"
+#include "../backend/builtin/Config.h"
+#include "../compiler/Linear.h"
+#include "../dumper/text/GraphDumper.h"
+#include "../exec/DataflowExecutor.h"
+#include "../exec/ExecTime.h"
+#include "../exec/ExecutionObservers.h"
+#include "../exec/LinearExecutor.h"
+#include "../exec/ParallelExecutor.h"
+#include "../ir/OperationCloner.h"
 
-#include "backend/builtin/Config.h"
-#include "backend/builtin/KernelGenerator.h"
-#include "backend/builtin/TensorBuilder.h"
-#include "backend/builtin/UserTensor.h"
 #include "backend/IPortableTensor.h"
 #include "compiler/BackendManager.h"
-#include "compiler/BackendManager.h"
 #include "compiler/ExecutionBuilder.h"
-#include "compiler/Linear.h"
-#include "dumper/text/GraphDumper.h"
-#include "exec/DataflowExecutor.h"
-#include "exec/ExecTime.h"
-#include "exec/ExecutionObservers.h"
-#include "exec/LinearExecutor.h"
-#include "exec/ParallelExecutor.h"
-#include "ir/OperationCloner.h"
 #include "util/TracingCtx.h"
 
 #include <functional>

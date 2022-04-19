@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include "exec/ExecTime.h"
+#include "ExecTime.h"
 
-#include <fstream>
-#include <cassert>
-#include <limits>
 #include <algorithm>
+#include <cassert>
+#include <fstream>
+#include <limits>
 
 namespace onert
 {

@@ -15,11 +15,13 @@
  */
 
 #include "ExecutorBase.h"
-#include "ShapeConverter.h"
 
-#include "backend/builtin/UserTensor.h"
+#include "ShapeConverter.h"
+#include "../backend/builtin/UserTensor.h"
+
 #include "util/logging.h"
-#include "misc/polymorphic_downcast.h"
+
+#include <misc/polymorphic_downcast.h>
 
 namespace onert
 {
