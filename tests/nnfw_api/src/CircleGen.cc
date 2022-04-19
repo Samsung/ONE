@@ -290,6 +290,13 @@ uint32_t CircleGen::addOperatorLess(const OperatorParams &params)
                                 circle::BuiltinOptions_LessOptions, options);
 }
 
+uint32_t CircleGen::addOperatorLessEqual(const OperatorParams &params)
+{
+  auto options = circle::CreateLessOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_LESS_EQUAL,
+                                circle::BuiltinOptions_LessEqualOptions, options);
+}
+
 uint32_t CircleGen::addOperatorLeakyRelu(const OperatorParams &params, float alpha)
 {
   auto options = circle::CreateLeakyReluOptions(_fbb, alpha).Union();
