@@ -53,7 +53,7 @@ protected:
                  QuantizationGranularity qgran);
 
 private:
-  void warn_if_unrepr(CircleConst *, loco::Graph *);
+  void warn_if_unrepr(CircleConst *);
 
   LayerInfoMap info_by_name;
 

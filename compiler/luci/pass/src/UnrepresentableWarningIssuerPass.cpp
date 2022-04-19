@@ -25,7 +25,7 @@
 namespace luci
 {
 
-void UnrepresentableWarningIssuerPass::warn_if_unrepr(CircleConst *pConst, loco::Graph *g)
+void UnrepresentableWarningIssuerPass::warn_if_unrepr(CircleConst *pConst)
 {
   LOGGER(l);
 
@@ -39,8 +39,6 @@ void UnrepresentableWarningIssuerPass::warn_if_unrepr(CircleConst *pConst, loco:
   {
     WARN(l) << "Weight " << pConst->name()
             << " is poorly representable given quantization parameters: " << std::endl;
-
-    ;
   }
 }
 
@@ -55,7 +53,7 @@ bool luci::UnrepresentableWarningIssuerPass::run(loco::Graph *g)
     if (not circle_const)
       continue;
     INFO(l) << "UnrepresentableWarningIssuerPass visit node: " << circle_const->name() << std::endl;
-    warn_if_unrepr(circle_const, g);
+    warn_if_unrepr(circle_const);
   }
 
   // One time run
