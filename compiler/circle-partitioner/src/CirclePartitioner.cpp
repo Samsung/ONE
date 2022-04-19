@@ -53,37 +53,16 @@ void print_version(void)
 
 void build_arser(arser::Arser &arser)
 {
-  arser.add_argument("--version")
-    .nargs(0)
-    .required(false)
-    .default_value(false)
-    .help("Show version information and exit")
-    .exit_with(print_version);
+  arser::Helper::add_version(arser, print_version);
 
-  arser.add_argument(opt_bks)
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(false)
-    .help("Backends in CSV to use for partitioning");
+  arser.add_argument(opt_bks).help("Backends in CSV to use for partitioning");
 
-  arser.add_argument(opt_def)
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(false)
-    .help("Default backend to assign");
+  arser.add_argument(opt_def).help("Default backend to assign");
 
-  arser.add_argument(opt_part)
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .help("Partition file which provides backend to assign");
-  arser.add_argument(opt_input)
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .help("Input circle model filename");
-  arser.add_argument(opt_work)
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .help("Work folder of partition, input files exist and output files are produced");
+  arser.add_argument(opt_part).help("Partition file which provides backend to assign");
+  arser.add_argument(opt_input).help("Input circle model filename");
+  arser.add_argument(opt_work).help(
+    "Work folder of partition, input files exist and output files are produced");
 }
 
 std::unique_ptr<luci::Module> load_model(const std::string &input_path)
