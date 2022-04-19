@@ -592,39 +592,28 @@ public:
     }
 
     const size_t message_width = 60;
+    auto print_help_args = [&](const std::list<Argument> &args, const std::string &title) {
+      if (!args.empty())
+      {
+        stream << title << std::endl;
+        for (const auto &arg : args)
+        {
+          stream.width(length_of_longest_arg);
+          stream << std::left << arser::internal::make_comma_concatenated(arg._names) << "\t";
+          for (size_t i = 0; i < arg._help_message.length(); i += message_width)
+          {
+            if (i)
+              stream << std::string(length_of_longest_arg, ' ') << "\t";
+            stream << arg._help_message.substr(i, message_width) << std::endl;
+          }
+        }
+        std::cout << std::endl;
+      }
+    };
     // positional argument
-    if (!parser._positional_arg_vec.empty())
-    {
-      stream << "[Positional argument]" << std::endl;
-      for (const auto &arg : parser._positional_arg_vec)
-      {
-        stream.width(length_of_longest_arg);
-        stream << std::left << arser::internal::make_comma_concatenated(arg._names) << "\t";
-        for (size_t i = 0; i < arg._help_message.length(); i += message_width)
-        {
-          if (i)
-            stream << std::string(length_of_longest_arg, ' ') << "\t";
-          stream << arg._help_message.substr(i, message_width) << std::endl;
-        }
-      }
-      std::cout << std::endl;
-    }
+    print_help_args(parser._positional_arg_vec, "[Positional argument]");
     // optional argument
-    if (!parser._optional_arg_vec.empty())
-    {
-      stream << "[Optional argument]" << std::endl;
-      for (const auto &arg : parser._optional_arg_vec)
-      {
-        stream.width(length_of_longest_arg);
-        stream << std::left << arser::internal::make_comma_concatenated(arg._names) << "\t";
-        for (size_t i = 0; i < arg._help_message.length(); i += message_width)
-        {
-          if (i)
-            stream << std::string(length_of_longest_arg, ' ') << "\t";
-          stream << arg._help_message.substr(i, message_width) << std::endl;
-        }
-      }
-    }
+    print_help_args(parser._optional_arg_vec, "[Optional argument]");
 
     return stream;
   }
