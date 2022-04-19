@@ -89,6 +89,34 @@ TEST_F(GenModelTest, OneOp_Cast_BoolToInt32)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_Cast_Uint8ToFloat32)
+{
+  CircleGen cgen = genSimpleCastModel(circle::TensorType_UINT8, circle::TensorType_FLOAT32);
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  // clang-format off
+  _context->addTestCase(
+    TestCaseData{}.addInput<uint8_t>({0, 100, 200, 255})
+                  .addOutput<float>({0., 100., 200., 255.}));
+  // clang-format on
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_Cast_Int64ToFloat32)
+{
+  CircleGen cgen = genSimpleCastModel(circle::TensorType_INT64, circle::TensorType_FLOAT32);
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(TestCaseData{}
+                          .addInput<int64_t>({-12345, 3, 100, 2147483648})
+                          .addOutput<float>({-12345., 3., 100., 2147483648.}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, OneOp_Cast_AfterEqual)
 {
   CircleGen cgen;
