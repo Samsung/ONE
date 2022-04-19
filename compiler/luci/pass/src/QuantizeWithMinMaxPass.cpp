@@ -636,6 +636,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     if (auto qparam = circle_node->quantparam())
     {
+      warn_accuracy_with_range(circle_node);
       qparam->min.clear();
       qparam->max.clear();
     }
