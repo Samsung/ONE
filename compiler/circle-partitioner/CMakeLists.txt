@@ -1,7 +1,6 @@
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(circle-partitioner "${SOURCES}")
-target_link_libraries(circle-partitioner foder)
 target_link_libraries(circle-partitioner crew)
 target_link_libraries(circle-partitioner safemain)
 target_link_libraries(circle-partitioner luci_lang)
@@ -20,7 +19,6 @@ install(TARGETS circle-partitioner DESTINATION bin)
 
 # TODO remove circle_partitioner
 add_executable(circle_partitioner "${SOURCES}")
-target_link_libraries(circle_partitioner foder)
 target_link_libraries(circle_partitioner crew)
 target_link_libraries(circle_partitioner safemain)
 target_link_libraries(circle_partitioner luci_lang)
