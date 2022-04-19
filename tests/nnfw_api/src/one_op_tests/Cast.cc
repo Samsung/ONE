@@ -110,8 +110,8 @@ TEST_F(GenModelTest, OneOp_Cast_Int64ToFloat32)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(TestCaseData{}
-                          .addInput<int64_t>({-12345, 0, 100, 2147483648})
-                          .addOutput<float>({-12345., 3., 100., 2147483647.}));
+                          .addInput<int64_t>({-12345, 3, 100, 2147483648})
+                          .addOutput<float>({-12345., 3., 100., 2147483648.}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();
