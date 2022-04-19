@@ -10,7 +10,6 @@ add_executable(circle-quantizer "${SOURCES}")
 target_include_directories(circle-quantizer PRIVATE ${Jsoncpp_INCLUDE_DIRS})
 
 target_link_libraries(circle-quantizer ${Jsoncpp_STATIC_LIB})
-target_link_libraries(circle-quantizer foder)
 target_link_libraries(circle-quantizer safemain)
 target_link_libraries(circle-quantizer oops)
 target_link_libraries(circle-quantizer loco)
