@@ -72,7 +72,7 @@ opencl_files=($(find ./runtime/onert/backend/gpu_cl/open_cl/ \( -name "*.cc" -o 
 # Exclude *.test.cpp files from coverage report
 # Exclude flatbuffer generated files from coverage report
 "${LCOV_PATH}" -r "${EXTRACTED_COVERAGE_INFO_PATH}" -o "${EXCLUDED_COVERAGE_INFO_PATH}" \
-  '*.test.cpp' '*_schema_generated.h' "${opencl_files[@]}"
+  '*.test.cpp' '*/test/*' '*_schema_generated.h' "${opencl_files[@]}"
 
 # Final coverage data
 cp -v ${EXCLUDED_COVERAGE_INFO_PATH} ${COVERAGE_INFO_PATH}
