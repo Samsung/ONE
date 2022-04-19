@@ -540,16 +540,20 @@ public:
     /*
     ** print usage
     */
+    auto print_usage_arg = [&](const arser::Argument &arg) {
+      stream << " ";
+      std::string arg_name = arser::internal::remove_dash(arg._long_name);
+      std::for_each(arg_name.begin(), arg_name.end(),
+                    [&stream](const char &c) { stream << static_cast<char>(::toupper(c)); });
+    };
     stream << "Usage: ./" << parser._program_name << " ";
     // required optional argument
     for (const auto &arg : parser._optional_arg_vec)
     {
       if (!arg._is_required)
         continue;
-      stream << arg._short_name << " ";
-      std::string arg_name = arser::internal::remove_dash(arg._long_name);
-      std::for_each(arg_name.begin(), arg_name.end(),
-                    [&stream](const char &c) { stream << static_cast<char>(::toupper(c)); });
+      stream << arg._short_name;
+      print_usage_arg(arg);
       stream << " ";
     }
     // rest of the optional argument
@@ -560,10 +564,7 @@ public:
       stream << "[" << arg._short_name;
       if (arg._nargs)
       {
-        stream << " ";
-        std::string arg_name = arser::internal::remove_dash(arg._long_name);
-        std::for_each(arg_name.begin(), arg_name.end(),
-                      [&stream](const char &c) { stream << static_cast<char>(::toupper(c)); });
+        print_usage_arg(arg);
       }
       stream << "]"
              << " ";
