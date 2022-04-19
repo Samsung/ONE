@@ -17,7 +17,7 @@
 #ifndef __ONERT_EXEC_FEATURE_NHWC_VIEW_H__
 #define __ONERT_EXEC_FEATURE_NHWC_VIEW_H__
 
-#include "../Reader.h"
+#include "Reader.h"
 
 #include <cassert>
 #include <cstddef>
