@@ -25,6 +25,7 @@
 #include "luci/Pass/QuantizePreCheckerPass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
+#include "luci/Pass/UnrepresentableWarningIssuerPass.h"
 
 #include "luci/Pass/CircleShapeInferencePass.h"
 #include "luci/Pass/CircleTypeInferencePass.h"
@@ -164,6 +165,80 @@ CircleQuantizer::Options *CircleQuantizer::options(void)
   }
 
   return _options.get();
+}
+
+void CircleQuantizer::check(loco::Graph *g) const
+{
+  static const std::vector<std::string> qwmm_supported_input_model_dtype{"float32", "uint8",
+                                                                         "int16", "int8"};
+  static const std::vector<std::string> qwmm_supported_output_model_dtype{"uint8", "int16"};
+  static const std::vector<std::string> qwmm_supported_granularity{"layer", "channel"};
+
+  auto input_model_dtype =
+    _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
+  auto output_model_dtype =
+    _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
+  auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
+
+  auto layer_params = _options->layer_params(Options::AlgorithmParameters::Quantize_layer_params);
+
+  if (!in_array(to_lower_case(input_model_dtype), qwmm_supported_input_model_dtype))
+    throw std::runtime_error("Unsupported input type. List of supported input types: " +
+                             to_string(qwmm_supported_input_model_dtype));
+
+  if (!in_array(to_lower_case(output_model_dtype), qwmm_supported_output_model_dtype))
+    throw std::runtime_error("Unsupported output type. List of supported output types: " +
+                             to_string(qwmm_supported_output_model_dtype));
+
+  if (!in_array(to_lower_case(granularity), qwmm_supported_granularity))
+    throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
+                             to_string(qwmm_supported_granularity));
+
+  if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
+      str_to_dtype(output_model_dtype) != loco::DataType::U8)
+    throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
+
+  // Check dtype/granularity of layer params
+  for (auto layer_param : layer_params)
+  {
+    auto name = layer_param->name;
+    if (!in_array(to_lower_case(layer_param->dtype), qwmm_supported_output_model_dtype))
+    {
+      throw std::runtime_error("Unsupported dtype in " + name + ". List of supported dtype: " +
+                               to_string(qwmm_supported_output_model_dtype));
+    }
+    if (!in_array(to_lower_case(layer_param->granularity), qwmm_supported_granularity))
+    {
+      throw std::runtime_error(
+        "Unsupported granularity in " + name +
+        ". List of supported granularity: " + to_string(qwmm_supported_granularity));
+    }
+  }
+
+  // Input model checker for quantization
+  luci::QuantizePreCheckerPass input_model_checker{};
+  input_model_checker.run(g);
+
+  auto ctx = std::make_unique<luci::UnrepresentableWarningIssuerPass::Context>();
+  {
+    ctx->input_model_dtype = str_to_dtype(input_model_dtype);
+    ctx->output_model_dtype = str_to_dtype(output_model_dtype);
+    ctx->granularity = str_to_granularity(granularity);
+
+    for (auto layer_param : layer_params)
+    {
+      LayerInfo info;
+      {
+        info.name = layer_param->name;
+        info.dtype = str_to_dtype(layer_param->dtype);
+        info.granularity = str_to_granularity(layer_param->granularity);
+      }
+      ctx->layers_info.emplace_back(info);
+    }
+  }
+
+  luci::UnrepresentableWarningIssuerPass issuer(std::move(ctx));
+  issuer.run(g);
 }
 
 void CircleQuantizer::quantize(loco::Graph *g) const

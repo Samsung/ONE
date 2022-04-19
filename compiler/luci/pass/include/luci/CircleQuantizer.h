@@ -88,6 +88,9 @@ public:
 public:
   void quantize(loco::Graph *) const;
 
+public:
+  void check(loco::Graph *) const;
+
 private:
   std::unique_ptr<Options> _options;
 };

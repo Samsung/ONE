@@ -189,6 +189,13 @@ int entry(int argc, char **argv)
     .required(false)
     .help("Output type of quantized model (uint8 or int16)");
 
+  arser.add_argument("--warn_weights")
+    .nargs(0)
+    .required(false)
+    .default_value(true)
+    .help(
+      "Issue warnings if the quantized model would be inaccurate due to unrepresentable weights");
+
   arser.add_argument(cfg)
     .nargs(1)
     .type(arser::DataType::STR)
@@ -410,8 +417,14 @@ int entry(int argc, char **argv)
   {
     auto graph = module->graph(idx);
 
-    // quantize the graph
-    quantizer.quantize(graph);
+    if (arser["--warn_weights"])
+    {
+      quantizer.check(graph);
+    }
+    else
+    { // quantize the graph
+      quantizer.quantize(graph);
+    }
 
     if (!luci::validate(graph))
     {
