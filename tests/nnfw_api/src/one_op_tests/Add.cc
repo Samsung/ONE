@@ -283,7 +283,7 @@ TEST_F(GenModelTest, neg_OneOp_Add_VarToVarSize0_InvalidShape)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, net_OneOp_Add_VarToVarInt16)
+TEST_F(GenModelTest, neg_OneOp_Add_VarToVarInt16)
 {
   CircleGen cgen;
   int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT16}, 1., 2);
