@@ -36,24 +36,11 @@ int entry(int argc, char **argv)
 {
   arser::Arser arser{"tflite2circle is a Tensorflow lite to circle model converter"};
 
-  arser.add_argument("--version")
-    .nargs(0)
-    .required(false)
-    .default_value(false)
-    .help("Show version information and exit")
-    .exit_with(print_version);
+  arser::Helper::add_version(arser, print_version);
+  arser::Helper::add_verbose(arser);
 
-  arser.add_argument("-V", "--verbose")
-    .nargs(0)
-    .required(false)
-    .default_value(false)
-    .help("output additional information to stdout or stderr");
-
-  arser.add_argument("tflite")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .help("Source tflite file path to convert");
-  arser.add_argument("circle").nargs(1).type(arser::DataType::STR).help("Target circle file path");
+  arser.add_argument("tflite").help("Source tflite file path to convert");
+  arser.add_argument("circle").help("Target circle file path");
 
   try
   {
