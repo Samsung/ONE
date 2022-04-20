@@ -142,23 +142,15 @@ void fill_random_range(void *data, uint32_t size, loco::DataType dtype, int32_t 
 int entry(int argc, char **argv)
 {
   arser::Arser arser;
-  arser.add_argument("circle").type(arser::DataType::STR).help("Circle file you want to test");
-  arser.add_argument("--input_data")
-    .required(true)
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .help("Path to generate input data h5 file");
+  arser.add_argument("circle").help("Circle file you want to test");
+  arser.add_argument("--input_data").required(true).help("Path to generate input data h5 file");
   arser.add_argument("--expected_data")
     .required(true)
-    .nargs(1)
-    .type(arser::DataType::STR)
     .help("Path to generate expected data h5 file");
   arser.add_argument("--fixed_seed")
-    .required(false)
     .nargs(0)
     .help("Put a fixed seed into the random number generator");
   arser.add_argument("--input_range")
-    .required(false)
     .nargs(3)
     .type(arser::DataType::STR_VEC)
     .help("Set random number range [min max] for the input as 'name min max'");
