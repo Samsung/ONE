@@ -7,8 +7,6 @@
 
 # Frontend test tools that are needed for release package build
 /ONE/compiler/circlechef
-/ONE/compiler/tflchef
-/ONE/compiler/souschef
 /ONE/compiler/circle-verify
 /ONE/compiler/luci/tester
 
