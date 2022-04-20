@@ -23,7 +23,7 @@
 int entry(int argc, char **argv)
 {
   arser::Arser arser;
-  arser.add_argument("circle").type(arser::DataType::STR).help("Circle file path to dump");
+  arser.add_argument("circle").help("Circle file path to dump");
 
   try
   {
