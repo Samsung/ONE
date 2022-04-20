@@ -25,7 +25,7 @@
 int entry(int argc, char **argv)
 {
   arser::Arser arser;
-  arser.add_argument("tflite").type(arser::DataType::STR).help("TFLite file path to verify");
+  arser.add_argument("tflite").help("TFLite file path to verify");
 
   try
   {
