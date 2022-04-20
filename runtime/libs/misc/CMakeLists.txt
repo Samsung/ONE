@@ -8,4 +8,6 @@ target_link_libraries(nnfw_lib_misc PRIVATE nnfw_common)
 target_link_libraries(nnfw_lib_misc PRIVATE nnfw_coverage)
 
 add_executable(nnfw_tensor_index_iterator "examples/tensor_index_iterator.cpp")
-target_link_libraries(nnfw_tensor_index_iterator nnfw_lib_misc)
+target_link_libraries(nnfw_tensor_index_iterator PRIVATE nnfw_lib_misc)
+
+add_subdirectory(test)
