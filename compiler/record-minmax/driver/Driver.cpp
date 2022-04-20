@@ -34,62 +34,33 @@ int entry(const int argc, char **argv)
   arser::Arser arser(
     "Embedding min/max values of activations to the circle model for post-training quantization");
 
-  arser.add_argument("--version")
-    .nargs(0)
-    .required(false)
-    .default_value(false)
-    .help("Show version information and exit")
-    .exit_with(print_version);
+  arser::Helper::add_version(arser, print_version);
+  arser::Helper::add_verbose(arser);
 
-  arser.add_argument("-V", "--verbose")
-    .nargs(0)
-    .required(false)
-    .default_value(false)
-    .help("output additional information to stdout or stderr");
-
-  arser.add_argument("--input_model")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(true)
-    .help("Input model filepath");
+  arser.add_argument("--input_model").required(true).help("Input model filepath");
 
   arser.add_argument("--input_data")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(false)
     .help("Input data filepath. If not given, record-minmax will run with randomly generated data. "
           "Note that the random dataset does not represent inference workload, leading to poor "
           "model accuracy.");
 
-  arser.add_argument("--output_model")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(true)
-    .help("Output model filepath");
+  arser.add_argument("--output_model").required(true).help("Output model filepath");
 
   arser.add_argument("--min_percentile")
-    .nargs(1)
     .type(arser::DataType::FLOAT)
     .help("Record n'th percentile of min");
 
   arser.add_argument("--max_percentile")
-    .nargs(1)
     .type(arser::DataType::FLOAT)
     .help("Record n'th percentile of max");
 
-  arser.add_argument("--mode")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .help("Record mode. percentile (default) or moving_average");
+  arser.add_argument("--mode").help("Record mode. percentile (default) or moving_average");
 
   arser.add_argument("--input_data_format")
-    .nargs(1)
-    .type(arser::DataType::STR)
     .help("Input data format. h5/hdf5 (default) or list/filelist");
 
   arser.add_argument("--generate_profile_data")
     .nargs(0)
-    .required(false)
     .default_value(false)
     .help("This will turn on profiling data generation.");
 
