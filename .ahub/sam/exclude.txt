@@ -24,7 +24,6 @@
 
 # Test codes
 /ONE/tests
-/ONE/runtime/libs/misc/test
 
 # Flatbuffers generated
 /ONE/runtime/onert/frontend/circle_schema/include/circle_schema_generated.h

@@ -17,6 +17,7 @@ test:
       - /runtime/onert/test/ir
       - /runtime/onert/test/util
       - /tests/nnfw_api/src
+      - /runtime/libs/misc/test
 
     testFile:
       - extension: cpp
