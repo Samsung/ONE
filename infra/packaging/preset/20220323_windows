@@ -6,6 +6,7 @@ function preset_configure()
   # Common Libraries
   REQUIRED_UNITS+=("angkor" "cwrap" "pepper-str" "pepper-strcast" "pp")
   REQUIRED_UNITS+=("oops" "pepper-assert" "pepper-csv2vec" "foder" "crew")
+  REQUIRED_UNITS+=("souschef")
   REQUIRED_UNITS+=("safemain")
   REQUIRED_UNITS+=("arser")
   REQUIRED_UNITS+=("vconone")
@@ -20,16 +21,17 @@ function preset_configure()
   # Circle compiler library (.circle -> .circle)
   REQUIRED_UNITS+=("luci")
   # Tools
-  REQUIRED_UNITS+=("tflite2circle" "circle2circle")
+  REQUIRED_UNITS+=("tflite2circle" "circle2circle" "tflchef")
+  REQUIRED_UNITS+=("circle-tensordump" "circledump")
   REQUIRED_UNITS+=("tf2tfliteV2" "luci-interpreter")
+  REQUIRED_UNITS+=("luci-eval-driver")
   REQUIRED_UNITS+=("record-minmax" "circle-quantizer" "rawdata2hdf5")
   REQUIRED_UNITS+=("circle-partitioner")
   REQUIRED_UNITS+=("one-cmds")
   REQUIRED_UNITS+=("bcq-tools")
 
   # Dependent modules needed for build
-  REQUIRED_UNITS+=("souschef")
-  REQUIRED_UNITS+=("tflchef" "circlechef")
+  REQUIRED_UNITS+=("circlechef")
   REQUIRED_UNITS+=("circle-verify")
 
   NPROC=$(cat /proc/cpuinfo | grep -c processor)
