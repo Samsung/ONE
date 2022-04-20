@@ -159,26 +159,16 @@ int entry(int argc, char **argv)
 
   arser::Arser arser("circle-opselector provides selecting operations in circle model");
 
-  arser.add_argument("--version")
-    .nargs(0)
-    .default_value(false)
-    .help("Show version information and exit")
-    .exit_with(print_version);
+  arser::Helper::add_version(arser, print_version);
 
   // TODO Add new options!
 
-  arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
-  arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
+  arser.add_argument("input").help("Input circle model");
+  arser.add_argument("output").help("Output circle model");
 
   // select option
-  arser.add_argument("--by_id")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .help("Input operation id to select nodes.");
-  arser.add_argument("--by_name")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .help("Input operation name to select nodes.");
+  arser.add_argument("--by_id").help("Input operation id to select nodes.");
+  arser.add_argument("--by_name").help("Input operation name to select nodes.");
 
   try
   {
