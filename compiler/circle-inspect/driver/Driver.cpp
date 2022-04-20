@@ -36,7 +36,7 @@ int entry(int argc, char **argv)
     .help("Dump Conv2D series weight operators in circle file");
   arser.add_argument("--op_version").nargs(0).help("Dump versions of the operators in circle file");
   arser.add_argument("--tensor_dtype").nargs(0).help("Dump dtype of tensors");
-  arser.add_argument("circle").type(arser::DataType::STR).help("Circle file to inspect");
+  arser.add_argument("circle").help("Circle file to inspect");
 
   try
   {
