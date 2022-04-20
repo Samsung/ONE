@@ -326,6 +326,7 @@ public:
 
 private:
   bool condition_common_1_5(uint32_t ifm_channel_depth);
+  bool condition_common_3_4();
 
 private:
   template <enum PatternVersion> bool match();
@@ -397,6 +398,50 @@ bool InstanceNormPattern::condition_common_1_5(uint32_t ifm_channel_depth)
   const_as_beta = dynamic_cast<luci::CircleConst *>(sub->x());
   CHECK_OR_FALSE(const_as_beta);
   CHECK_OR_FALSE(is_1D_with_dummy_dim(const_as_beta, ifm_channel_depth));
+
+  return true;
+}
+
+bool InstanceNormPattern::condition_common_3_4()
+{
+  // check left sub
+  ifm = sub->x();
+  CHECK_OR_FALSE(ifm);
+
+  luci::CircleNode *ifm_node = loco::must_cast<luci::CircleNode *>(ifm);
+  CHECK_OR_FALSE(ifm_node->rank() == 4);
+  CHECK_OR_FALSE(ifm_node->dim(3).known());
+
+  mean_of_ifm = dynamic_cast<luci::CircleMean *>(sub->y());
+  CHECK_OR_FALSE(mean_of_ifm);
+  CHECK_OR_FALSE(ifm == mean_of_ifm->input());
+
+  // continue search from add_as_variance
+  CHECK_OR_FALSE(luci::fill(&sqrt, &const_as_epsilon).with_commutative_args_of(add_as_variance));
+  CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
+  // TODO Support regarding broadcast
+  CHECK_OR_FALSE(const_as_epsilon->size<loco::DataType::FLOAT32>() == 1);
+
+  mean_as_variance = dynamic_cast<luci::CircleMean *>(sqrt->x());
+  CHECK_OR_FALSE(mean_as_variance);
+
+  square = dynamic_cast<luci::CircleSquare *>(mean_as_variance->input());
+  CHECK_OR_FALSE(square);
+
+  sub_2 = dynamic_cast<luci::CircleSub *>(square->x());
+  CHECK_OR_FALSE(sub_2);
+  CHECK_OR_FALSE(ifm == sub_2->x());
+
+  mean_of_ifm_2 = dynamic_cast<luci::CircleMean *>(sub_2->y());
+  CHECK_OR_FALSE(mean_of_ifm_2);
+  CHECK_OR_FALSE(ifm == mean_of_ifm_2->input());
+
+  loco::Node *ifm_should_be = nullptr;
+  luci::CircleMean *mean_of_ifm_2_should_be = nullptr;
+  CHECK_OR_FALSE(
+    luci::fill(&ifm_should_be, &mean_of_ifm_2_should_be).with_commutative_args_of(sub_2));
+  CHECK_OR_FALSE(ifm == ifm_should_be);
+  CHECK_OR_FALSE(mean_of_ifm_2 == mean_of_ifm_2_should_be);
 
   return true;
 }
@@ -498,44 +543,7 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   CHECK_OR_FALSE(luci::fill(&div, &const_as_gamma).with_commutative_args_of(mul_gamma));
   CHECK_OR_FALSE(luci::fill(&sub, &add_as_variance).with_commutative_args_of(div));
 
-  // check left sub
-  ifm = sub->x();
-  CHECK_OR_FALSE(ifm);
-
-  luci::CircleNode *ifm_node = loco::must_cast<luci::CircleNode *>(ifm);
-  CHECK_OR_FALSE(ifm_node->rank() == 4);
-  CHECK_OR_FALSE(ifm_node->dim(3).known());
-
-  mean_of_ifm = dynamic_cast<luci::CircleMean *>(sub->y());
-  CHECK_OR_FALSE(mean_of_ifm);
-  CHECK_OR_FALSE(ifm == mean_of_ifm->input());
-
-  // continue search from add_as_variance
-  CHECK_OR_FALSE(luci::fill(&sqrt, &const_as_epsilon).with_commutative_args_of(add_as_variance));
-  CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
-  // TODO Support regarding broadcast
-  CHECK_OR_FALSE(const_as_epsilon->size<loco::DataType::FLOAT32>() == 1);
-
-  mean_as_variance = dynamic_cast<luci::CircleMean *>(sqrt->x());
-  CHECK_OR_FALSE(mean_as_variance);
-
-  square = dynamic_cast<luci::CircleSquare *>(mean_as_variance->input());
-  CHECK_OR_FALSE(square);
-
-  sub_2 = dynamic_cast<luci::CircleSub *>(square->x());
-  CHECK_OR_FALSE(sub_2);
-  CHECK_OR_FALSE(ifm == sub_2->x());
-
-  mean_of_ifm_2 = dynamic_cast<luci::CircleMean *>(sub_2->y());
-  CHECK_OR_FALSE(mean_of_ifm_2);
-  CHECK_OR_FALSE(ifm == mean_of_ifm_2->input());
-
-  loco::Node *ifm_should_be = nullptr;
-  luci::CircleMean *mean_of_ifm_2_should_be = nullptr;
-  CHECK_OR_FALSE(
-    luci::fill(&ifm_should_be, &mean_of_ifm_2_should_be).with_commutative_args_of(sub_2));
-  CHECK_OR_FALSE(ifm == ifm_should_be);
-  CHECK_OR_FALSE(mean_of_ifm_2 == mean_of_ifm_2_should_be);
+  CHECK_OR_FALSE(condition_common_3_4());
 
   _matched = true;
   return true;
@@ -556,44 +564,7 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   CHECK_OR_FALSE(div);
   CHECK_OR_FALSE(luci::fill(&sub, &add_as_variance).with_commutative_args_of(div));
 
-  // check left sub
-  ifm = sub->x();
-  CHECK_OR_FALSE(ifm);
-
-  luci::CircleNode *ifm_node = loco::must_cast<luci::CircleNode *>(ifm);
-  CHECK_OR_FALSE(ifm_node->rank() == 4);
-  CHECK_OR_FALSE(ifm_node->dim(3).known());
-
-  mean_of_ifm = dynamic_cast<luci::CircleMean *>(sub->y());
-  CHECK_OR_FALSE(mean_of_ifm);
-  CHECK_OR_FALSE(ifm == mean_of_ifm->input());
-
-  // continue search from add_as_variance
-  CHECK_OR_FALSE(luci::fill(&sqrt, &const_as_epsilon).with_commutative_args_of(add_as_variance));
-  CHECK_OR_FALSE(const_as_epsilon->dtype() == loco::DataType::FLOAT32);
-  // TODO Support regarding broadcast
-  CHECK_OR_FALSE(const_as_epsilon->size<loco::DataType::FLOAT32>() == 1);
-
-  mean_as_variance = dynamic_cast<luci::CircleMean *>(sqrt->x());
-  CHECK_OR_FALSE(mean_as_variance);
-
-  square = dynamic_cast<luci::CircleSquare *>(mean_as_variance->input());
-  CHECK_OR_FALSE(square);
-
-  sub_2 = dynamic_cast<luci::CircleSub *>(square->x());
-  CHECK_OR_FALSE(sub_2);
-  CHECK_OR_FALSE(ifm == sub_2->x());
-
-  mean_of_ifm_2 = dynamic_cast<luci::CircleMean *>(sub_2->y());
-  CHECK_OR_FALSE(mean_of_ifm_2);
-  CHECK_OR_FALSE(ifm == mean_of_ifm_2->input());
-
-  loco::Node *ifm_should_be = nullptr;
-  luci::CircleMean *mean_of_ifm_2_should_be = nullptr;
-  CHECK_OR_FALSE(
-    luci::fill(&ifm_should_be, &mean_of_ifm_2_should_be).with_commutative_args_of(sub_2));
-  CHECK_OR_FALSE(ifm == ifm_should_be);
-  CHECK_OR_FALSE(mean_of_ifm_2 == mean_of_ifm_2_should_be);
+  CHECK_OR_FALSE(condition_common_3_4());
 
   assert(const_as_gamma == nullptr);
   assert(const_as_beta == nullptr);
