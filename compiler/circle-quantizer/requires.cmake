@@ -1,4 +1,3 @@
-require("foder")
 require("loco")
 require("locop")
 require("safemain")
