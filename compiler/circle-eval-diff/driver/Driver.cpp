@@ -58,50 +58,23 @@ int entry(const int argc, char **argv)
 {
   arser::Arser arser("Compare inference results of two circle models");
 
-  arser.add_argument("--version")
-    .nargs(0)
-    .required(false)
-    .default_value(false)
-    .help("Show version information and exit")
-    .exit_with(print_version);
+  arser::Helper::add_version(arser, print_version);
 
-  arser.add_argument("--first_model")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(true)
-    .help("First input model filepath");
+  arser.add_argument("--first_model").required(true).help("First input model filepath");
 
-  arser.add_argument("--second_model")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(true)
-    .help("Second input model filepath");
+  arser.add_argument("--second_model").required(true).help("Second input model filepath");
 
   arser.add_argument("--first_input_data")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(false)
     .help("Input data filepath for the first model. If not given, circle-eval-diff will run with "
           "randomly generated data");
 
   arser.add_argument("--second_input_data")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(false)
     .help("Input data filepath for the second model. If not given, circle-eval-diff will run with "
           "randomly generated data");
 
-  arser.add_argument("--metric")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(false)
-    .default_value("MAE")
-    .help("Metric for comparison (default: MAE)");
+  arser.add_argument("--metric").default_value("MAE").help("Metric for comparison (default: MAE)");
 
   arser.add_argument("--input_data_format")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(false)
     .default_value("h5")
     .help("Input data format. h5/hdf5 (default) or directory");
 
