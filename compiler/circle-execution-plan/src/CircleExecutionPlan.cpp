@@ -33,14 +33,9 @@ int entry(int argc, char **argv)
 {
   arser::Arser arser("circle_execution_plan provides model with execution plan meta information");
 
-  arser.add_argument("input").nargs(1).type(arser::DataType::STR).help("Input circle model");
-  arser.add_argument("output").nargs(1).type(arser::DataType::STR).help("Output circle model");
-  arser.add_argument("--platform")
-    .nargs(1)
-    .type(arser::DataType::STR)
-    .required(false)
-    .default_value("linux")
-    .help("Platform name: linux mcu cmsisnn");
+  arser.add_argument("input").help("Input circle model");
+  arser.add_argument("output").help("Output circle model");
+  arser.add_argument("--platform").default_value("linux").help("Platform name: linux mcu cmsisnn");
   arser.add_argument("--use_dsp")
     .nargs(1)
     .type(arser::DataType::BOOL)
