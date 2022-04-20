@@ -28,10 +28,8 @@
 int entry(int argc, char **argv)
 {
   arser::Arser arser;
-  arser.add_argument("recipe")
-    .type(arser::DataType::STR)
-    .help("Source recipe file path to convert");
-  arser.add_argument("tflite").type(arser::DataType::STR).help("Target tflite file path");
+  arser.add_argument("recipe").help("Source recipe file path to convert");
+  arser.add_argument("tflite").help("Target tflite file path");
 
   try
   {
