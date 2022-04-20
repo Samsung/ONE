@@ -258,10 +258,10 @@ loco::NodeShape infer_add_n(const luci::CircleAddN *node)
   return loco::NodeShape{shape};
 }
 
-loco::NodeShape infer_arg_max(const luci::CircleArgMax *node)
+template <class CIRCLENODE> loco::NodeShape infer_arg_maxmin(const CIRCLENODE *node)
 {
-  auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
-  auto dimension_shape = luci::shape_get(node->dimension()).as<loco::TensorShape>();
+  auto input_shape = luci::shape_get(node->input()).template as<loco::TensorShape>();
+  auto dimension_shape = luci::shape_get(node->dimension()).template as<loco::TensorShape>();
 
   int64_t select_axis = 0;
   {
@@ -271,52 +271,13 @@ loco::NodeShape infer_arg_max(const luci::CircleArgMax *node)
     // Support S32 for now.
     auto const_shape_node = loco::must_cast<luci::CircleConst *>(node->dimension());
     LUCI_ASSERT(const_shape_node->dtype() == loco::DataType::S32,
-                "Only support int32 CircleConst for CircleArgMax");
+                "Only support int32 CircleConst for CircleArgMax/CircleArgMin");
 
     if (const_shape_node->rank() > 1)
       INTERNAL_EXN_V("Only support rank 0/1 CircleConst",
                      oops::to_uint32(const_shape_node->rank()));
 
-    select_axis = const_shape_node->scalar<loco::DataType::S32>();
-  }
-  assert(select_axis < input_shape.rank());
-  assert(select_axis >= 0); // TODO support minus of this breaks
-
-  // NOTE select_axis is removed
-  loco::TensorShape shape_output;
-  uint32_t rank = input_shape.rank();
-  uint32_t shrink = static_cast<uint32_t>(select_axis);
-  assert(rank > 0);
-  shape_output.rank(rank - 1);
-  for (uint32_t r = 0, d = 0; r < rank; ++r)
-  {
-    if (r == shrink)
-      continue;
-    shape_output.dim(d++) = input_shape.dim(r);
-  }
-  return loco::NodeShape{shape_output};
-}
-
-loco::NodeShape infer_arg_min(const luci::CircleArgMin *node)
-{
-  auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
-  auto dimension_shape = luci::shape_get(node->dimension()).as<loco::TensorShape>();
-
-  int64_t select_axis = 0;
-  {
-    LUCI_ASSERT(node->dimension(), "2nd input dimension() should not be nullptr");
-
-    // Only support node's shape() is CircleConst with S32/S64
-    // Support S32 for now.
-    auto const_shape_node = loco::must_cast<luci::CircleConst *>(node->dimension());
-    LUCI_ASSERT(const_shape_node->dtype() == loco::DataType::S32,
-                "Only support int32 CircleConst for CircleArgMin");
-
-    if (const_shape_node->rank() > 1)
-      INTERNAL_EXN_V("Only support rank 0/1 CircleConst",
-                     oops::to_uint32(const_shape_node->rank()));
-
-    select_axis = const_shape_node->scalar<loco::DataType::S32>();
+    select_axis = const_shape_node->template scalar<loco::DataType::S32>();
   }
   assert(select_axis < input_shape.rank());
   assert(select_axis >= 0); // TODO support minus of this breaks
@@ -2080,9 +2041,9 @@ public:
 
   loco::NodeShape visit(const luci::CircleAddN *node) final { return infer_add_n(node); }
 
-  loco::NodeShape visit(const luci::CircleArgMax *node) final { return infer_arg_max(node); }
+  loco::NodeShape visit(const luci::CircleArgMax *node) final { return infer_arg_maxmin(node); }
 
-  loco::NodeShape visit(const luci::CircleArgMin *node) final { return infer_arg_min(node); }
+  loco::NodeShape visit(const luci::CircleArgMin *node) final { return infer_arg_maxmin(node); }
 
   loco::NodeShape visit(const luci::CircleAveragePool2D *node) final
   {
