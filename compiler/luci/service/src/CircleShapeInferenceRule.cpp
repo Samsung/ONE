@@ -1180,17 +1180,17 @@ loco::NodeShape infer_reshape(const luci::CircleReshape *node)
   return loco::NodeShape{output_shape};
 }
 
-loco::NodeShape infer_resize_bilinear(const luci::CircleResizeBilinear *node)
+template <class CIRCLENODE> loco::NodeShape infer_resize_type(const CIRCLENODE *node)
 {
-  auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
+  auto input_shape = luci::shape_get(node->input()).template as<loco::TensorShape>();
 
   if (input_shape.rank() != 4)
-    INTERNAL_EXN("Expected ResizeBilinear input to have rank 4");
+    INTERNAL_EXN("Expected input to have rank 4");
 
   auto *const_node = loco::must_cast<luci::CircleConst *>(node->size());
 
   if (const_node->dtype() != loco::DataType::S32)
-    INTERNAL_EXN("Only S32 datatype is supported for ResizeBilinear size");
+    INTERNAL_EXN("Only S32 datatype is supported for size");
 
   if (const_node->rank() != 1)
     INTERNAL_EXN("Expected size tensor of rank 1");
@@ -1201,36 +1201,8 @@ loco::NodeShape infer_resize_bilinear(const luci::CircleResizeBilinear *node)
   loco::TensorShape output_shape;
   output_shape.rank(4);
   output_shape.dim(0) = input_shape.dim(0);
-  output_shape.dim(1) = const_node->at<loco::DataType::S32>(0);
-  output_shape.dim(2) = const_node->at<loco::DataType::S32>(1);
-  output_shape.dim(3) = input_shape.dim(3);
-
-  return loco::NodeShape{output_shape};
-}
-
-loco::NodeShape infer_resize_nearest_neighbor(const luci::CircleResizeNearestNeighbor *node)
-{
-  auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
-
-  if (input_shape.rank() != 4)
-    INTERNAL_EXN("Expected ResizeNearesNeighbor input to have rank 4");
-
-  auto *const_node = loco::must_cast<luci::CircleConst *>(node->size());
-
-  if (const_node->dtype() != loco::DataType::S32)
-    INTERNAL_EXN("Only S32 datatype is supported for ResizeNearesNeighbor size");
-
-  if (const_node->rank() != 1)
-    INTERNAL_EXN("Expected size tensor of rank 1");
-
-  if (const_node->dim(0).value() != 2)
-    INTERNAL_EXN("Expected size tensor with shape [2]");
-
-  loco::TensorShape output_shape;
-  output_shape.rank(4);
-  output_shape.dim(0) = input_shape.dim(0);
-  output_shape.dim(1) = const_node->at<loco::DataType::S32>(0);
-  output_shape.dim(2) = const_node->at<loco::DataType::S32>(1);
+  output_shape.dim(1) = const_node->template at<loco::DataType::S32>(0);
+  output_shape.dim(2) = const_node->template at<loco::DataType::S32>(1);
   output_shape.dim(3) = input_shape.dim(3);
 
   return loco::NodeShape{output_shape};
@@ -2348,12 +2320,12 @@ public:
 
   loco::NodeShape visit(const luci::CircleResizeBilinear *node) final
   {
-    return infer_resize_bilinear(node);
+    return infer_resize_type(node);
   }
 
   loco::NodeShape visit(const luci::CircleResizeNearestNeighbor *node) final
   {
-    return infer_resize_nearest_neighbor(node);
+    return infer_resize_type(node);
   }
 
   loco::NodeShape visit(const luci::CircleReverseSequence *node) final
