@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-#include <foder/FileLoader.h>
-
-#include <luci/Importer.h>
+#include <luci/ImporterEx.h>
 #include <luci/CircleOptimizer.h>
 #include <luci/Service/ChangeOutputs.h>
 #include <luci/Service/Validate.h>
@@ -595,37 +593,11 @@ int entry(int argc, char **argv)
     csv_tokenize(csv_nodes, new_outputs);
   }
 
-  // Load model from the file
-  foder::FileLoader file_loader{input_path};
-  std::vector<char> model_data;
-
-  try
-  {
-    model_data = file_loader.load();
-  }
-  catch (const std::runtime_error &err)
-  {
-    std::cerr << err.what() << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  flatbuffers::Verifier verifier{reinterpret_cast<uint8_t *>(model_data.data()), model_data.size()};
-  if (!circle::VerifyModelBuffer(verifier))
-  {
-    std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  const circle::Model *circle_model = circle::GetModel(model_data.data());
-  if (circle_model == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load circle '" << input_path << "'" << std::endl;
-    return EXIT_FAILURE;
-  }
-
   // Import from input Circle file
-  luci::Importer importer;
-  auto module = importer.importModule(circle_model);
+  luci::ImporterEx importerex;
+  auto module = importerex.importVerifyModule(input_path);
+  if (module.get() == nullptr)
+    return EXIT_FAILURE;
 
   if (change_outputs)
   {
