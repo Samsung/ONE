@@ -4,20 +4,13 @@ test:
     testCaseLanguage: CPP
     testFW: GTEST
     testCaseFolder:
-      - /compute/test/cker
+      - /compute/test
+      - /runtime/libs/misc/test
+      - /runtime/libs/ndarray/test
       - /runtime/onert/core/src/backend/basic
       - /runtime/onert/frontend/nnapi
-      - /runtime/onert/test/core/compiler
-      - /runtime/onert/test/core/exec
-      - /runtime/onert/test/core/interp
-      - /runtime/onert/test/graph
-      - /runtime/onert/test/graph/operand
-      - /runtime/onert/test/graph/operation
-      - /runtime/onert/test/graph/verifier
-      - /runtime/onert/test/ir
-      - /runtime/onert/test/util
-      - /tests/nnfw_api/src
-      - /runtime/libs/misc/test
+      - /runtime/onert/test
+      - /tests/nnfw_api
 
     testFile:
       - extension: cpp
@@ -29,6 +22,7 @@ test:
         - functionName:
             starts:
               - TEST
+              - TYPED_TEST
         - excludes :
           - Verifier.dag_checker
           - graph_operand_LayoutSet.layout_set_operators
