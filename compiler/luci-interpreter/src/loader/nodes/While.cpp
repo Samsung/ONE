@@ -24,9 +24,7 @@ namespace luci_interpreter
 std::unique_ptr<Kernel> build_kernel_CircleWhile(const luci::CircleNode *circle_node,
                                                  KernelBuilderHelper &helper)
 {
-  const auto *node = dynamic_cast<const luci::CircleWhile *>(circle_node);
-  if (node == nullptr)
-    throw std::runtime_error("wrong builder for operation");
+  const auto *node = loco::must_cast<const luci::CircleWhile *>(circle_node);
 
   auto output_nodes = collectOutputNodes<luci::CircleWhileOut>(node);
   assert(node->arity() == node->input_count());
