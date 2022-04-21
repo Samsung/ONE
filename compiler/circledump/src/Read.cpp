@@ -41,7 +41,10 @@ Reader::Reader(const circle::Model *model)
 
 size_t Reader::buffer_info(uint32_t buf_idx, const uint8_t **buff_data)
 {
-  *buff_data = nullptr;
+  if (buff_data != nullptr)
+  {
+    *buff_data = nullptr;
+  }
 
   if (buf_idx == 0)
     return 0;
@@ -52,7 +55,10 @@ size_t Reader::buffer_info(uint32_t buf_idx, const uint8_t **buff_data)
     {
       if (size_t size = array->size())
       {
-        *buff_data = reinterpret_cast<const uint8_t *>(array->data());
+        if (buff_data != nullptr)
+        {
+          *buff_data = reinterpret_cast<const uint8_t *>(array->data());
+        }
         return size;
       }
     }
