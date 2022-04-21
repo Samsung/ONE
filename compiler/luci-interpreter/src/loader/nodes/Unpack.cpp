@@ -24,9 +24,7 @@ namespace luci_interpreter
 std::unique_ptr<Kernel> build_kernel_CircleUnpack(const luci::CircleNode *circle_node,
                                                   KernelBuilderHelper &helper)
 {
-  const auto *node = dynamic_cast<const luci::CircleUnpack *>(circle_node);
-  if (node == nullptr)
-    throw std::runtime_error("wrong builder for operation");
+  const auto *node = loco::must_cast<const luci::CircleUnpack *>(circle_node);
   auto output_nodes = collectOutputNodes<luci::CircleUnpackOut>(node);
   assert(node->arity() == 1);
   assert(output_nodes.size() == static_cast<size_t>(node->num()));
