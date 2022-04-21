@@ -16,6 +16,7 @@
 
 #include "SegmentSum.h"
 
+#include "Convert.h"
 #include "FillerHelper.h"
 
 namespace tflchef
@@ -24,8 +25,10 @@ namespace tflchef
 void TFliteOpSegmentSum::filler(const tflite::Operator *op, TFliteImport *import,
                                 tflchef::ModelRecipe *model_recipe) const
 {
-  // Filler for indices and shape
-  fill_tensor_to_import(1, import);
+  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
+
+  // Filler for segment_ids
+  fill_tensor_to_import(inputs[1], import);
 }
 
 tflchef::Operation *TFliteOpSegmentSum::build(const tflite::Operator *op, TFliteImport *import,
