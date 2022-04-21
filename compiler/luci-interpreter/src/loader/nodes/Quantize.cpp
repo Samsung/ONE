@@ -27,6 +27,7 @@ std::unique_ptr<Kernel> build_kernel_CircleQuantize(const luci::CircleNode *circ
   const auto *node = dynamic_cast<const luci::CircleQuantize *>(circle_node);
   if (node == nullptr)
     throw std::runtime_error("wrong builder for operation");
+  assert(node->arity() == 1);
 
   const Tensor *input = helper.getInputTensor(node->input());
   Tensor *output = helper.getOutputTensor(node);
