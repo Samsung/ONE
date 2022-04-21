@@ -24,9 +24,7 @@ namespace luci_interpreter
 std::unique_ptr<Kernel> build_kernel_CirclePad(const luci::CircleNode *circle_node,
                                                KernelBuilderHelper &helper)
 {
-  const auto *node = dynamic_cast<const luci::CirclePad *>(circle_node);
-  if (node == nullptr)
-    throw std::runtime_error("wrong builder for operation");
+  const auto *node = loco::must_cast<const luci::CirclePad *>(circle_node);
   assert(node->arity() == 2);
 
   const Tensor *input = helper.getInputTensor(node->input());
