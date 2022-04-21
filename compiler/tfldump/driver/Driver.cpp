@@ -15,7 +15,7 @@
  */
 
 #include <arser/arser.h>
-#include <tflread/Model.h>
+#include <foder/FileLoader.h>
 #include <tfldump/Dump.h>
 
 #include <iostream>
@@ -38,14 +38,9 @@ int entry(int argc, char **argv)
 
   std::string tflite_path = arser.get<std::string>("tflite");
   // Load TF lite model from a tflite file
-  std::unique_ptr<tflread::Model> model = tflread::load_tflite(tflite_path);
-  if (model == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load tflite '" << tflite_path << "'" << std::endl;
-    return 255;
-  }
-
-  const tflite::Model *tflmodel = model->model();
+  foder::FileLoader fileLoader{tflite_path};
+  std::vector<char> modelData = fileLoader.load();
+  const tflite::Model *tflmodel = tflite::GetModel(modelData.data());
   if (tflmodel == nullptr)
   {
     std::cerr << "ERROR: Failed to load tflite '" << tflite_path << "'" << std::endl;
