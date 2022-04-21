@@ -15,7 +15,7 @@
  */
 
 #include <arser/arser.h>
-#include <circleread/Model.h>
+#include <foder/FileLoader.h>
 #include <circledump/Dump.h>
 
 #include <iostream>
@@ -38,14 +38,10 @@ int entry(int argc, char **argv)
 
   std::string circle_path = arser.get<std::string>("circle");
   // Load Circle model from a circle file
-  std::unique_ptr<circleread::Model> model = circleread::load_circle(circle_path);
-  if (model == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load circle '" << circle_path << "'" << std::endl;
-    return 255;
-  }
-
-  const circle::Model *circlemodel = model->model();
+  foder::FileLoader fileLoader{circle_path};
+  std::vector<char> modelData = fileLoader.load();
+  const circle::Model *circlemodel = circle::GetModel(modelData.data());
+  // const circle::Model *circlemodel = model->model();
   if (circlemodel == nullptr)
   {
     std::cerr << "ERROR: Failed to load circle '" << circle_path << "'" << std::endl;
