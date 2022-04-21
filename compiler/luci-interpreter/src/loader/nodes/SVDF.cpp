@@ -27,6 +27,7 @@ std::unique_ptr<Kernel> build_kernel_CircleSVDF(const luci::CircleNode *circle_n
   const auto *node = dynamic_cast<const luci::CircleSVDF *>(circle_node);
   if (node == nullptr)
     throw std::runtime_error("wrong builder for operation");
+  assert(node->arity() == 5);
 
   const Tensor *input = helper.getInputTensor(node->input());
   const Tensor *feature = helper.getInputTensor(node->weight_feature());
