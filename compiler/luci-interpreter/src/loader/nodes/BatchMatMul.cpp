@@ -25,9 +25,7 @@ namespace luci_interpreter
 std::unique_ptr<Kernel> build_kernel_CircleBatchMatMul(const luci::CircleNode *circle_node,
                                                        KernelBuilderHelper &helper)
 {
-  const auto *node = dynamic_cast<const luci::CircleBatchMatMul *>(circle_node);
-  if (node == nullptr)
-    throw std::runtime_error("wrong builder for operation");
+  const auto *node = loco::must_cast<const luci::CircleBatchMatMul *>(circle_node);
   assert(node->arity() == 2);
 
   const Tensor *lhs = helper.getInputTensor(node->x());

@@ -24,9 +24,7 @@ namespace luci_interpreter
 std::unique_ptr<Kernel> build_kernel_CircleConcatenation(const luci::CircleNode *circle_node,
                                                          KernelBuilderHelper &helper)
 {
-  const auto *node = dynamic_cast<const luci::CircleConcatenation *>(circle_node);
-  if (node == nullptr)
-    throw std::runtime_error("wrong builder for operation");
+  const auto *node = loco::must_cast<const luci::CircleConcatenation *>(circle_node);
   std::vector<const Tensor *> inputs(node->numValues());
   for (uint32_t i = 0; i < node->numValues(); ++i)
   {
