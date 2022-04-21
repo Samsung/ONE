@@ -15,6 +15,7 @@
 /ONE/compiler/luci/lang/include/luci/IR/Nodes
 /ONE/compiler/luci/import/include/luci/Import/Nodes
 /ONE/compiler/loco/include/loco/IR
+/ONE/compiler/tflchef/tflite/src/Op/include
 
 # Exclude interpreter kernels which have similar patterns
 /ONE/compiler/luci-interpreter/src/kernels
