@@ -24,9 +24,7 @@ namespace luci_interpreter
 std::unique_ptr<Kernel> build_kernel_CircleSplit(const luci::CircleNode *circle_node,
                                                  KernelBuilderHelper &helper)
 {
-  const auto *node = dynamic_cast<const luci::CircleSplit *>(circle_node);
-  if (node == nullptr)
-    throw std::runtime_error("wrong builder for operation");
+  const auto *node = loco::must_cast<const luci::CircleSplit *>(circle_node);
   auto output_nodes = collectOutputNodes<luci::CircleSplitOut>(node);
   assert(node->arity() == 2);
   assert(output_nodes.size() == static_cast<size_t>(node->num_split()));
