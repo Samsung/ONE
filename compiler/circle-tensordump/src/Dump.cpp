@@ -15,7 +15,8 @@
  */
 
 #include "Dump.h"
-#include "Reader.h"
+
+#include <mio_circle/Reader.h>
 
 #include <H5Cpp.h>
 
@@ -102,7 +103,7 @@ namespace circletensordump
 
 void DumpTensors::run(std::ostream &os, const circle::Model *model, const std::string &)
 {
-  circletensordump::Reader reader(model);
+  mio::circle::Reader reader(model);
   uint32_t num_subgraph = reader.num_subgraph();
   auto buffers = reader.buffers();
 
@@ -296,7 +297,7 @@ void DumpTensorsToHdf5::run(std::ostream &os, const circle::Model *model,
                             const std::string &output_path)
 {
   // loads a circle model
-  circletensordump::Reader reader(model);
+  mio::circle::Reader reader(model);
   uint32_t num_subgraph = reader.num_subgraph();
 
   // create a hdf5 file
