@@ -15,7 +15,8 @@
  */
 
 #include "OpPrinter.h"
-#include "Read.h"
+
+#include <mio_circle/Helper.h>
 
 #include <memory>
 
@@ -233,7 +234,7 @@ public:
   {
     if (auto *reshape_params = op->builtin_options_as_ReshapeOptions())
     {
-      auto new_shape = circleread::as_index_vector(reshape_params->new_shape());
+      auto new_shape = mio::circle::as_index_vector(reshape_params->new_shape());
       os << "    ";
       os << "NewShape(" << new_shape << ")";
       os << std::endl;

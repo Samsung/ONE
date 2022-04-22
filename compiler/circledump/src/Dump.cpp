@@ -16,8 +16,8 @@
 
 #include <circledump/Dump.h>
 #include <mio_circle/Helper.h>
+#include <mio_circle/Reader.h>
 
-#include "Read.h"
 #include "OpPrinter.h"
 #include "MetadataPrinter.h"
 
@@ -122,7 +122,7 @@ std::ostream &operator<<(std::ostream &os, const flatbuffers::Vector<T> *fbvect)
   return os;
 }
 
-void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
+void dump_sub_graph(std::ostream &os, mio::circle::Reader &reader)
 {
   auto tensors = reader.tensors();
   auto operators = reader.operators();
@@ -150,14 +150,14 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
     std::vector<int32_t> dims = {-1};
 
     if (tensor->shape())
-      dims = circleread::as_index_vector(tensor->shape());
+      dims = mio::circle::as_index_vector(tensor->shape());
 
     os << "T(" << reader.subgraph_index() << ":" << i << ") " << mio::circle::tensor_type(tensor)
        << " ";
     os << "(" << dims << ") ";
     if (tensor->shape_signature())
     {
-      std::vector<int32_t> dims_sig = circleread::as_index_vector(tensor->shape_signature());
+      std::vector<int32_t> dims_sig = mio::circle::as_index_vector(tensor->shape_signature());
       os << "(" << dims_sig << ") ";
     }
     os << "B(" << tensor->buffer() << ") ";
@@ -299,8 +299,8 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
     const auto op = operators->Get(i);
     circle::BuiltinOperator builtincode = reader.builtin_code(op);
 
-    const std::vector<int32_t> &inputs = circleread::as_index_vector(op->inputs());
-    const std::vector<int32_t> &outputs = circleread::as_index_vector(op->outputs());
+    const std::vector<int32_t> &inputs = mio::circle::as_index_vector(op->inputs());
+    const std::vector<int32_t> &outputs = mio::circle::as_index_vector(op->outputs());
     auto op_name = reader.opcode_name(op);
 
     os << "O(" << reader.subgraph_index() << ":" << i << ") " << op_name << " ";
@@ -356,7 +356,7 @@ void dump_sub_graph(std::ostream &os, circleread::Reader &reader)
 
 void dump_model(std::ostream &os, const circle::Model *model)
 {
-  circleread::Reader reader(model);
+  mio::circle::Reader reader(model);
 
   uint32_t num_subgraph = reader.num_subgraph();
 
