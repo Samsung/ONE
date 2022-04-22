@@ -16,6 +16,7 @@
 
 #include "PadV2.h"
 
+#include "Convert.h"
 #include "FillerHelper.h"
 
 namespace tflchef
@@ -24,9 +25,11 @@ namespace tflchef
 void TFliteOpPadV2::filler(const tflite::Operator *op, TFliteImport *import,
                            tflchef::ModelRecipe *model_recipe) const
 {
+  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
+
   // Filler for paddings and constant_values
-  fill_tensor_to_import(1, import);
-  fill_tensor_to_import(2, import);
+  fill_tensor_to_import(inputs[1], import);
+  fill_tensor_to_import(inputs[2], import);
 }
 
 tflchef::Operation *TFliteOpPadV2::build(const tflite::Operator *op, TFliteImport *import,

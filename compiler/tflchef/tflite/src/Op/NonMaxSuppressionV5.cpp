@@ -41,7 +41,7 @@ void TFliteOpNonMaxSuppressionV5::filler(const tflite::Operator *op, TFliteImpor
 
   for (int32_t index = 2; index < 6; ++index)
   {
-    fill_tensor_to_import(index, import);
+    fill_tensor_to_import(inputs[index], import);
   }
 }
 

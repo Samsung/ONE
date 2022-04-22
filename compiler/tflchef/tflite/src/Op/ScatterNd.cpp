@@ -25,9 +25,11 @@ namespace tflchef
 void TFliteOpScatterNd::filler(const tflite::Operator *op, TFliteImport *import,
                                tflchef::ModelRecipe *model_recipe) const
 {
+  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
+
   // Filler for indices and shape
-  fill_tensor_to_import(0, import);
-  fill_tensor_to_import(2, import);
+  fill_tensor_to_import(inputs[0], import);
+  fill_tensor_to_import(inputs[2], import);
 }
 
 tflchef::Operation *TFliteOpScatterNd::build(const tflite::Operator *, TFliteImport *,
