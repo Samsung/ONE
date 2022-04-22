@@ -33,6 +33,7 @@ enum class Metric
 {
   Undefined, // For debugging
   MAE,
+  MAPE,
 };
 
 enum class InputFormat

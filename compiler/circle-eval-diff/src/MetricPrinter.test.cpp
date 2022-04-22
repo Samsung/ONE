@@ -233,4 +233,52 @@ TEST(CircleEvalMetricPrinterTest, MAE_init_with_null_NEG)
   EXPECT_ANY_THROW(mae.init(nullptr, nullptr));
 }
 
+TEST(CircleEvalMetricPrinterTest, MAPE_simple)
+{
+  luci::Module first;
+  AddOneGraph first_g;
+  first_g.init();
+
+  first.add(std::move(first_g.graph()));
+
+  luci::Module second;
+  AddTwoGraph second_g;
+  second_g.init();
+
+  second.add(std::move(second_g.graph()));
+
+  MAPEPrinter mape;
+
+  mape.init(&first, &second);
+
+  // This test does not actually evaluate the modules, but create
+  // fake results.
+  std::vector<std::shared_ptr<Tensor>> first_result;
+  {
+    auto output = output_tensor_with_value(&first, 2.0);
+    first_result.emplace_back(output);
+  }
+
+  std::vector<std::shared_ptr<Tensor>> second_result;
+  {
+    auto output = output_tensor_with_value(&second, 1.0);
+    second_result.emplace_back(output);
+  }
+
+  mape.accumulate(first_result, second_result);
+
+  std::stringstream ss;
+  mape.dump(ss);
+  std::string result = ss.str();
+
+  EXPECT_NE(std::string::npos, result.find("MAPE for output_0 is 50%"));
+}
+
+TEST(CircleEvalMetricPrinterTest, MAPE_init_with_null_NEG)
+{
+  MAPEPrinter mape;
+
+  EXPECT_ANY_THROW(mape.init(nullptr, nullptr));
+}
+
 } // namespace circle_eval_diff
