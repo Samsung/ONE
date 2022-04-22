@@ -30,13 +30,10 @@ void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocatio
   NNPR_ENSURE_STATUS(nnfw_input_size(session_, &num_inputs));
 
   // TODO: Support multiple inputs
-  // Option 1. Get comman-separated input file list like --load:raw in.0,in.1,in.2
-  // Option 2. Get prefix --load:raw out
-  //           Internally access out.0, out.1, out.2, ... out.{N} where N is determined by api.
-  if (num_inputs != 1)
-  {
-    throw std::runtime_error("Only 1 input is supported for raw input");
-  }
+  // Option 1: Get comman-separated input file list like --load:raw a,b,c
+  // Option 2: Get prefix --load:raw in
+  //           Internally access in.0, in.1, in.2, ... in.{N-1} where N is determined by nnfw info
+  //           query api.
   try
   {
     for (uint32_t i = 0; i < num_inputs; ++i)
@@ -48,11 +45,12 @@ void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocatio
       auto bufsz = bufsize_for(&ti);
       inputs[i].alloc(bufsz);
 
-      std::ifstream file(filename, std::ios::ate | std::ios::binary);
+      std::ifstream file(filename + "." + std::to_string(i), std::ios::ate | std::ios::binary);
       auto filesz = file.tellg();
       if (bufsz != filesz)
       {
-        throw std::runtime_error("Input Size does not match: " + std::to_string(bufsz) +
+        throw std::runtime_error("Input " + std::to_string(i) +
+                                 " size does not match: " + std::to_string(bufsz) +
                                  " expected, but " + std::to_string(filesz) + " provided.");
       }
       file.seekg(0, std::ios::beg);
