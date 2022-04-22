@@ -28,4 +28,12 @@ void fill_tensor_to_import(int32_t idx, TFliteImport *import);
 
 } // namespace tflchef
 
+// helpers of common codes for filling inputs
+namespace tflchef
+{
+
+void fill_two_inputs(const tflite::Operator *op, TFliteImport *import);
+
+} // namespace tflchef
+
 #endif // __FILLER_HELPER_H__
