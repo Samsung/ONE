@@ -27,11 +27,7 @@ void TFliteOpAdd::filler(const tflite::Operator *op, TFliteImport *import,
 {
   // Add may have constant input
 
-  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
-  assert(inputs.size() == 2);
-
-  fill_tensor_to_import(inputs[0], import);
-  fill_tensor_to_import(inputs[1], import);
+  fill_two_inputs(op, import);
 }
 
 tflchef::Operation *TFliteOpAdd::build(const tflite::Operator *op, TFliteImport *import,
