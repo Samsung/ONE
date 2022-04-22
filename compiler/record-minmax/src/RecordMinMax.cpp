@@ -186,7 +186,13 @@ void RecordMinMax::initialize(const std::string &input_model_path)
     throw std::runtime_error("Failed to verify circle '" + input_model_path + "'");
   }
 
-  _module = luci::Importer().importModule(circle::GetModel(model_data.data()));
+  const circle::Model *circle_model = circle::GetModel(model_data.data());
+  if (circle_model == nullptr)
+  {
+    throw std::runtime_error("Failed to load '" + input_model_path + "'");
+  }
+
+  _module = luci::Importer().importModule(circle_model);
 
   if (_module == nullptr)
   {
