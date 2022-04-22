@@ -35,6 +35,9 @@ Metric to_metric(const std::string &str)
   if (to_lower_case(str).compare("mae") == 0)
     return Metric::MAE;
 
+  if (to_lower_case(str).compare("mape") == 0)
+    return Metric::MAPE;
+
   throw std::runtime_error("Unsupported metric.");
 }
 

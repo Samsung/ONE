@@ -69,6 +69,9 @@ void CircleEvalDiff::init()
     case Metric::MAE:
       metric = std::make_unique<MAEPrinter>();
       break;
+    case Metric::MAPE:
+      metric = std::make_unique<MAPEPrinter>();
+      break;
     default:
       throw std::runtime_error("Unsupported metric.");
   }

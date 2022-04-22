@@ -180,6 +180,111 @@ void MAEPrinter::dump(std::ostream &os) const
   }
 }
 
+// TODO Remove duplicate codes with MAEPrinter
+void MAPEPrinter::init(const luci::Module *first, const luci::Module *second)
+{
+  THROW_UNLESS(first != nullptr, "Invalid module.");
+  THROW_UNLESS(second != nullptr, "Invalid module.");
+
+  const auto first_output = loco::output_nodes(first->graph());
+  const auto second_output = loco::output_nodes(second->graph());
+
+  assert(first_output.size() == second_output.size()); // FIX_CALLER_UNLESS
+
+  for (uint32_t i = 0; i < first_output.size(); i++)
+  {
+    const auto first_node = loco::must_cast<luci::CircleNode *>(first_output[i]);
+    const auto second_node = loco::must_cast<luci::CircleNode *>(second_output[i]);
+    assert(same_shape(first_node, second_node)); // FIX_CALLER_UNLESS
+
+    // Create tensors to store intermediate results
+    _intermediate.emplace_back();
+    _intermediate.at(i).dtype(loco::DataType::FLOAT32);
+    // NOTE Use both first_node and second_node to avoid release build break
+    _intermediate.at(i).rank(first_node->rank());
+    uint32_t num_elems = 1;
+    for (uint32_t j = 0; j < second_node->rank(); j++)
+    {
+      _intermediate.at(i).dim(j) = second_node->dim(j);
+      num_elems *= second_node->dim(j).value();
+    }
+    _intermediate.at(i).size<loco::DataType::FLOAT32>(num_elems);
+
+    // Check the buffer is initilized with zero
+    for (uint32_t j = 0; j < num_elems; j++)
+      assert(_intermediate.at(i).at<loco::DataType::FLOAT32>(j) == 0.0);
+
+    // Save output names for logging
+    _output_names.emplace_back(first_node->name());
+  }
+}
+
+// Accumulate |(a - b) / a|
+void MAPEPrinter::accum_mean_absolute_error(uint32_t output_idx, const std::shared_ptr<Tensor> &a,
+                                            const std::shared_ptr<Tensor> &b)
+{
+  assert(a->dtype() == loco::DataType::FLOAT32 and
+         b->dtype() == loco::DataType::FLOAT32); // FIX_CALLER_UNLESS
+  assert(same_shape(a.get(), b.get()));          // FIX_CALLER_UNLESS
+  assert(output_idx < _intermediate.size());     // FIX_CALLER_UNLESS
+
+  for (uint32_t i = 0; i < a->size<loco::DataType::FLOAT32>(); i++)
+  {
+    const auto a_val = a->at<loco::DataType::FLOAT32>(i);
+    const auto b_val = b->at<loco::DataType::FLOAT32>(i);
+    _intermediate.at(output_idx).at<loco::DataType::FLOAT32>(i) +=
+      std::abs((a_val - b_val) / a_val);
+  }
+}
+
+// Assumption
+// first: the result of fp32 model
+// second: the result of fake-quantized model
+void MAPEPrinter::accumulate(const std::vector<std::shared_ptr<Tensor>> &first,
+                             const std::vector<std::shared_ptr<Tensor>> &second)
+{
+  assert(first.size() == second.size());        // FIX_CALLER_UNLESS
+  assert(first.size() == _intermediate.size()); // FIX_CALLER_UNLESS
+
+  for (uint32_t output_idx = 0; output_idx < _intermediate.size(); output_idx++)
+  {
+    const auto first_output = first[output_idx];
+    const auto second_output = second[output_idx];
+
+    // Cast data to fp32 and then compute absolute error
+    const auto fp32_first_output = fp32(first_output);
+    const auto fp32_second_output = fp32(second_output);
+
+    accum_mean_absolute_error(output_idx, fp32_first_output, fp32_second_output);
+  }
+
+  _num_data++;
+}
+
+void MAPEPrinter::dump(std::ostream &os) const
+{
+  os << "Mean Absolute Percentage Error (MAPE)" << std::endl;
+
+  for (uint32_t output_idx = 0; output_idx < _intermediate.size(); output_idx++)
+  {
+    const auto name = _output_names.at(output_idx);
+    const auto &inter = _intermediate.at(output_idx);
+    assert(inter.dtype() == loco::DataType::FLOAT32); // FIX_ME_UNLESS
+    const auto elem_count = inter.size<loco::DataType::FLOAT32>();
+
+    // Compute MAPE
+    float mape = 0.0;
+    for (uint32_t elem_idx = 0; elem_idx < elem_count; elem_idx++)
+      mape += inter.at<loco::DataType::FLOAT32>(elem_idx);
+
+    mape = mape / elem_count;
+    mape = mape / _num_data;
+    mape *= 100.0;
+
+    os << "MAPE for " << name << " is " << mape << "%" << std::endl;
+  }
+}
+
 } // namespace circle_eval_diff
 
 #undef THROW_UNLESS
