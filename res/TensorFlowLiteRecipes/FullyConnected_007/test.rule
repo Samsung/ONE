@@ -1,0 +1,7 @@
+# To check if FullyConnected with non-const weight is replaced by MatMul
+# with replace_non_const_fc_with_batch_matmul pass
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "BATCH_MATMUL_EXIST"      $(op_count BATCH_MATMUL) '=' 1
+RULE    "NO_FULLY_CONNECTED"      $(op_count FULLY_CONNECTED) '=' 0
