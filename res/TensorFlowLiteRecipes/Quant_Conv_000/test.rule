@@ -1,0 +1,10 @@
+# To check float32 input.
+# Input is float32, Conv is uint8. Quantize Op is inserted at the beginning.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "INPUT_FLOAT32"           $(tensor_dtype ifm) '=' FLOAT32
+RULE    "CONV_UINT8"              $(tensor_dtype ofm) '=' UINT8
+RULE    "WEIGHTS_UINT8"           $(tensor_dtype filter) '=' UINT8
+RULE    "BIAS_INT32"              $(tensor_dtype bias) '=' INT32
+RULE    "QUANTIZE_OP"             $(op_count QUANTIZE) '=' 1
