@@ -186,6 +186,26 @@ struct FakeQuantize final : public luci::CircleNodeMutableVisitor<void>
   // and dequantize the node
   void visit(luci::CircleConv2D *node) { fq_activation(node); }
   void visit(luci::CircleAdd *node) { fq_activation(node); }
+  void visit(luci::CircleAveragePool2D *node) { fq_activation(node); }
+  void visit(luci::CircleBatchMatMul *node) { fq_activation(node); }
+  // TODO Move Conv2D here
+  void visit(luci::CircleDepthwiseConv2D *node) { fq_activation(node); }
+  void visit(luci::CircleFullyConnected *node) { fq_activation(node); }
+  void visit(luci::CircleInstanceNorm *node) { fq_activation(node); }
+  void visit(luci::CircleLogistic *node) { fq_activation(node); }
+  void visit(luci::CircleMaxPool2D *node) { fq_activation(node); }
+  void visit(luci::CircleMul *node) { fq_activation(node); }
+  void visit(luci::CircleNeg *node) { fq_activation(node); }
+  void visit(luci::CirclePad *node) { fq_activation(node); }
+  void visit(luci::CirclePRelu *node) { fq_activation(node); }
+  void visit(luci::CircleMean *node) { fq_activation(node); }
+  void visit(luci::CircleRelu *node) { fq_activation(node); }
+  void visit(luci::CircleRelu6 *node) { fq_activation(node); }
+  void visit(luci::CircleResizeBilinear *node) { fq_activation(node); }
+  void visit(luci::CircleResizeNearestNeighbor *node) { fq_activation(node); }
+  void visit(luci::CircleSoftmax *node) { fq_activation(node); }
+  void visit(luci::CircleTanh *node) { fq_activation(node); }
+  void visit(luci::CircleTransposeConv *node) { fq_activation(node); }
 };
 
 #undef RETURN_UNLESS
