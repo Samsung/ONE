@@ -158,9 +158,11 @@ int entry(int argc, char **argv)
           "Two arguments required: source_tensor_name(string), "
           "destination_tensor_name(string)");
 
-  arser.add_argument("--input_type").help("Input type of quantized model (uint8 or int16)");
+  arser.add_argument("--input_type")
+    .help("Input type of quantized model (uint8, int16, or float32)");
 
-  arser.add_argument("--output_type").help("Output type of quantized model (uint8 or int16)");
+  arser.add_argument("--output_type")
+    .help("Output type of quantized model (uint8, int16, or float32)");
 
   arser.add_argument(cfg).help("Path to the quantization configuration file");
 
