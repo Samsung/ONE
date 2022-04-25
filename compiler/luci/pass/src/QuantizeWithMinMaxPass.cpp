@@ -105,6 +105,23 @@ luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType 
   return quantize;
 }
 
+// Create Dequantize Op whose shape is the same with node
+luci::CircleDequantize *create_dequantize(luci::CircleNode *node)
+{
+  auto dequantize = node->graph()->nodes()->create<luci::CircleDequantize>();
+  dequantize->name(node->name() + "_Dequantize");
+  dequantize->dtype(loco::DataType::FLOAT32);
+  dequantize->rank(node->rank());
+  for (uint32_t i = 0; i < node->rank(); i++)
+    dequantize->dim(i).set(node->dim(i).value());
+
+  dequantize->shape_status(luci::ShapeStatus::VALID);
+
+  luci::add_origin(dequantize, luci::get_origin(node));
+
+  return dequantize;
+}
+
 } // namespace
 
 namespace luci
@@ -353,7 +370,9 @@ void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
       luci::add_origin(quant_op, luci::get_origin(succ));
     }
 
-    // Requantize input
+    // Update qparam of input
+    // This step is skipped if input_type is float32
+    if (_ctx->input_type != loco::DataType::FLOAT32)
     {
       auto quantparam = input->quantparam();
       assert(quantparam);
@@ -376,10 +395,12 @@ void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
         assert(_ctx->input_type == loco::DataType::S16);
         compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
       }
-      input->dtype(_ctx->input_type);
       input->quantparam()->scale[0] = scaling_factor;
       input->quantparam()->zerop[0] = zp;
     }
+
+    // Update dtype of input
+    input->dtype(_ctx->input_type);
 
     auto graph_input = inputs->at(input->index());
     graph_input->dtype(_ctx->input_type);
@@ -405,13 +426,28 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
     if (not from->quantparam())
       continue;
 
-    // Insert Quantize Op
+    // Insert Dequantize Op for float32 output_type
+    if (_ctx->output_type == loco::DataType::FLOAT32)
+    {
+      auto dequant_op = create_dequantize(from);
+      loco::replace(from).with(dequant_op);
+      dequant_op->input(from);
+    }
+    else
+    {
+      // clang-format off
+    // Insert Quantize Op for non-float32 output_type
     auto quant_op = create_quantize_op(from, _ctx->output_type);
     loco::replace(from).with(quant_op);
     quant_op->input(from);
 
     // TODO Set a proper origin (Quantize should have its own Origin)
     luci::add_origin(quant_op, luci::get_origin(from));
+      // clang-format on
+    }
+
+    // Update dtype of output
+    output->dtype(_ctx->output_type);
 
     auto graph_output = outputs->at(output->index());
     graph_output->dtype(_ctx->output_type);
