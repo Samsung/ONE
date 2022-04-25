@@ -42,7 +42,7 @@ one-quantize \
 --input_dtype float32 \
 --quantized_dtype int16 \
 --granularity channel \
---input_type float32 \
+--input_type float64 \
 --input_path ${inputfile} \
 --output_path ${outputfile} > ${filename}.log 2>&1
 
