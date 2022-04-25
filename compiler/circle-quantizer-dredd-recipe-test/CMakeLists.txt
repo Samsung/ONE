@@ -18,7 +18,7 @@ unset(TEST_NAMES)
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
 set(options USE_QCONFIG)
-set(oneValueArgs DTYPE GRANULARITY)
+set(oneValueArgs DTYPE GRANULARITY INPUT_DTYPE OUTPUT_DTYPE)
 set(multiValueArgs "")
 
 macro(Add RECIPE)
@@ -27,6 +27,16 @@ macro(Add RECIPE)
   set(QCONFIG_OPT "")
   if(ARG_USE_QCONFIG)
     set(QCONFIG_OPT "--config" "${ARTIFACTS_BIN_PATH}/${RECIPE}.qconf.json")
+  endif()
+
+  set(INPUT_DTYPE_OPT "")
+  if(ARG_INPUT_DTYPE)
+    set(INPUT_DTYPE_OPT "--input_type" "${ARG_INPUT_DTYPE}")
+  endif()
+
+  set(OUTPUT_DTYPE_OPT "")
+  if(ARG_OUTPUT_DTYPE)
+    set(OUTPUT_DTYPE_OPT "--output_type" "${ARG_OUTPUT_DTYPE}")
   endif()
 
   set(CIRCLE_PATH "${ARTIFACTS_BIN_PATH}/${RECIPE}.circle")
@@ -38,7 +48,10 @@ macro(Add RECIPE)
   add_custom_command(OUTPUT ${QUANT_CIRCLE_PATH}
     COMMAND $<TARGET_FILE:circle-quantizer> --quantize_dequantize_weights float32 ${ARG_DTYPE} ${ARG_GRANULARITY} ${QCONFIG_OPT} ${CIRCLE_PATH} ${FAKE_QUANT_CIRCLE_PATH}
     COMMAND $<TARGET_FILE:record-minmax> --input_model ${FAKE_QUANT_CIRCLE_PATH} --output_model ${RECORDED_CIRCLE_PATH}
-    COMMAND $<TARGET_FILE:circle-quantizer> --quantize_with_minmax float32 ${ARG_DTYPE} ${ARG_GRANULARITY} ${QCONFIG_OPT} ${RECORDED_CIRCLE_PATH} ${QUANT_CIRCLE_PATH}
+    COMMAND $<TARGET_FILE:circle-quantizer>
+      --quantize_with_minmax float32 ${ARG_DTYPE} ${ARG_GRANULARITY}
+      ${QCONFIG_OPT} ${RECORDED_CIRCLE_PATH} ${QUANT_CIRCLE_PATH}
+      ${INPUT_DTYPE_OPT} ${OUTPUT_DTYPE_OPT}
     DEPENDS 
       circle-quantizer
       record-minmax
