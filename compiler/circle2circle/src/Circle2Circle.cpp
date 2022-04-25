@@ -250,7 +250,7 @@ int entry(int argc, char **argv)
   arser.add_argument("--replace_non_const_fc_with_batch_matmul")
     .nargs(0)
     .default_value(false)
-    .help("Replace Fully Connected with Batch Mat Mul when its weight is non-constant");
+    .help("Replace Fully Connected with BatchMatMul when its weight is non-constant");
 
   arser.add_argument("--substitute_pack_to_reshape")
     .nargs(0)
