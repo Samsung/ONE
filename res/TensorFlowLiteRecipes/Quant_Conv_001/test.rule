@@ -1,0 +1,11 @@
+# To check float32 output.
+# Output is float32, Conv is uint8. Dequantize Op is inserted at the end.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+# Update tensor name (ofm_Dequantize) if 'create_dequantize' function is changed.
+RULE    "OUTPUT_FLOAT32"          $(tensor_dtype ofm_Dequantize) '=' FLOAT32
+RULE    "CONV_UINT8"              $(tensor_dtype ofm) '=' UINT8
+RULE    "WEIGHTS_UINT8"           $(tensor_dtype filter) '=' UINT8
+RULE    "BIAS_INT32"              $(tensor_dtype bias) '=' INT32
+RULE    "DEQUANTIZE_OP"           $(op_count DEQUANTIZE) '=' 1
