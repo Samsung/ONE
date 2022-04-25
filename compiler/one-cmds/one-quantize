@@ -93,13 +93,13 @@ def _get_parser():
         '--input_type',
         type=str,
         help=
-        'data type of inputs of quantized model (supported: uint8, int16, default=quantized_dtype). QUANTIZE Op will be inserted at the beginning of the quantized model if input_type is different from quantized_dtype.'
+        'data type of inputs of quantized model (supported: uint8, int16, float32, default=quantized_dtype). QUANTIZE Op will be inserted at the beginning of the quantized model if input_type is different from quantized_dtype.'
     )
     quantization_group.add_argument(
         '--output_type',
         type=str,
         help=
-        'data type of outputs of quantized model (supported: uint8, int16, default=quantized_dtype). QUANTIZE Op will be inserted at the end of the quantized model if output_type is different from quantized_dtype.'
+        'data type of outputs of quantized model (supported: uint8, int16, float32, default=quantized_dtype). QUANTIZE Op will be inserted at the end of the quantized model if output_type is different from quantized_dtype.'
     )
     quantization_group.add_argument(
         '--min_percentile',
