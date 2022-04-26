@@ -32,8 +32,8 @@ class ModuleEvalDiff;
 enum class Metric
 {
   Undefined, // For debugging
-  MAE,
-  MAPE,
+  MAE,       // Mean Absolute Error
+  MAPE,      // Mean Percentage Absolute Error
 };
 
 enum class InputFormat
