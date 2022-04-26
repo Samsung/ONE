@@ -55,8 +55,8 @@ echo "GeneratedTests.squeeze_relaxed" >> $SKIPLIST_PREFIX.union
 
 # Run the test
 export OP_BACKEND_Conv2D="cpu"
-export OP_BACKEND_MaxPool2D="acl_cl"
-export OP_BACKEND_AvgPool2D="acl_neon"
+export OP_BACKEND_Pool2D="acl_cl"
+export OP_BACKEND_FullyConnected="acl_neon"
 export ACL_LAYOUT="NCHW"
 export RUY_THREADS=4
 NNAPIGTest "acl_cl;acl_neon;cpu" "Product/out/unittest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}.union" "report/mixed"
