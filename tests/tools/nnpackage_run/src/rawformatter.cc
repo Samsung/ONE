@@ -29,11 +29,13 @@ void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocatio
   uint32_t num_inputs;
   NNPR_ENSURE_STATUS(nnfw_input_size(session_, &num_inputs));
 
-  // TODO: Support multiple inputs
+  // Support multiple inputs
   // Option 1: Get comman-separated input file list like --load:raw a,b,c
   // Option 2: Get prefix --load:raw in
   //           Internally access in.0, in.1, in.2, ... in.{N-1} where N is determined by nnfw info
   //           query api.
+  //
+  // Currently Option 2 is implemented.
   try
   {
     for (uint32_t i = 0; i < num_inputs; ++i)
@@ -72,12 +74,6 @@ void RawFormatter::dumpOutputs(const std::string &filename, std::vector<Allocati
 {
   uint32_t num_outputs;
   NNPR_ENSURE_STATUS(nnfw_output_size(session_, &num_outputs));
-  // TODO: Support multiple outputs
-  // Available options are same.
-  if (num_outputs != 1)
-  {
-    throw std::runtime_error("Only 1 output is supported for raw input");
-  }
   try
   {
     for (uint32_t i = 0; i < num_outputs; i++)
