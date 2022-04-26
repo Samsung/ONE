@@ -19,7 +19,7 @@ one (1.20.0) bionic; urgency=medium
   * Drop support for TensorFlow 1.x
   * Fix for several bugs, performance enhancements, and typos
 
- -- seongwoo <mhs4670go@naver.com> Tue, 26 Apr 2022 12:00:00 +0900
+ -- seongwoo <mhs4670go@naver.com>  Tue, 26 Apr 2022 12:00:00 +0900
 
 one (1.19.0) bionic; urgency=medium
 
