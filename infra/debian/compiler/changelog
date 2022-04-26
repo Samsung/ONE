@@ -1,3 +1,26 @@
+one (1.20.0) bionic; urgency=medium
+
+  * luci-interpreter supports multiple kernels with PAL layer including Cortext-M
+  * luci-interpreter supports integer tensor for partly kernels
+  * luci import support constant without coping to reduce memory for luci-interpreter
+  * Reduce duplicate codes to package released modules
+  * Limited support for ONNX LSTM/RNN unrolling while importing
+  * Limited support for ARM32 cross build
+  * Support new operator: SVDF
+  * New virtual CircleVariable to support tensor with variable
+  * Support quantization of BatchMatMul Op
+  * Support mixed(UINT8 + INT16) quantization
+  * Support backward propagation of quantization parameters
+  * Upgrade default python to version 3.8
+  * Support TensorFlow 2.8.0, ONNX-TF 1.10.0, ONNX 1.11.0
+  * Upgrade circle schema to follow tflite schema v3b
+  * Refactor to mio-tflite280, mio-circle04 with version and helpers methods
+  * Use one flatbuffers 2.0 version
+  * Drop support for TensorFlow 1.x
+  * Fix for several bugs, performance enhancements, and typos
+
+ -- seongwoo <mhs4670go@naver.com> Tue, 26 Apr 2022 12:00:00 +0900
+
 one (1.19.0) bionic; urgency=medium
 
   * `circle-quantizer` supports input/output type option
