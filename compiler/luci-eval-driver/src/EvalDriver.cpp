@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <luci/Importer.h>
+#include <luci/ImporterEx.h>
 #include <luci_interpreter/Interpreter.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
@@ -45,18 +45,6 @@ void writeDataToFile(const std::string &filename, const char *data, size_t data_
   {
     throw std::runtime_error("Failed to write data to file \"" + filename + "\".\n");
   }
-}
-
-std::unique_ptr<luci::Module> importModel(const std::string &filename)
-{
-  std::ifstream fs(filename, std::ifstream::binary);
-  if (fs.fail())
-  {
-    throw std::runtime_error("Cannot open model file \"" + filename + "\".\n");
-  }
-  std::vector<char> model_data((std::istreambuf_iterator<char>(fs)),
-                               std::istreambuf_iterator<char>());
-  return luci::Importer().importModule(circle::GetModel(model_data.data()));
 }
 
 template <typename NodeT> size_t getTensorSize(const NodeT *node)
@@ -91,7 +79,8 @@ int entry(int argc, char **argv)
   const char *output_file = argv[4];
 
   // Load model from the file
-  std::unique_ptr<luci::Module> module = importModel(filename);
+  luci::ImporterEx importer;
+  std::unique_ptr<luci::Module> module = importer.importVerifyModule(filename);
   if (module == nullptr)
   {
     std::cerr << "ERROR: Failed to load '" << filename << "'" << std::endl;
