@@ -78,6 +78,10 @@ void set_int_scale(luci::CircleNode *node);
 // Quantize const tensor using its min/max values
 void quant_const(luci::CircleConst *node, loco::DataType quant_type);
 
+// Check that a node is quantized without significant loss of precision;
+// Emits warnings to log with WARN
+void warn_accuracy_with_range(luci::CircleNode *n);
+
 } // namespace luci
 
 #endif // __LUCI_QUANTIZATION_UTILS_H__

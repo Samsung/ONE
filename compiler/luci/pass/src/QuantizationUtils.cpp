@@ -395,4 +395,74 @@ void quant_const(luci::CircleConst *node, loco::DataType quant_type)
   node->quantparam(std::move(quantparam));
 }
 
+namespace
+{
+
+// TODO move this to a more global helper file
+int nbits(loco::DataType dt) noexcept
+{
+  switch (dt)
+  {
+    case loco::DataType::S8:
+    case loco::DataType::U8:
+      return 8;
+    case loco::DataType::S16:
+    case loco::DataType::U16:
+    case loco::DataType::FLOAT16:
+      return 16;
+    case loco::DataType::S32:
+    case loco::DataType::U32:
+    case loco::DataType::FLOAT32:
+      return 32;
+    case loco::DataType::S64:
+      return 64;
+    default:
+      return 64; // a safe large default
+  }
+}
+
+// TODO Check if the metric is valid
+// Returns true if [min,max] is poorly representable
+bool range_check(float min, float max, loco::DataType dtype)
+{
+  float thresh = 1.5f;
+  return log2f(max) - log2f(min) > nbits(dtype) * thresh;
+}
+
+bool warn_scale_zp(float scale, int64_t zp, luci::CircleNode *n)
+{
+  float min, max;
+  // estimate min/max
+  switch (n->dtype())
+  {
+    case loco::DataType::U8:
+      min = scale * (0 - zp);
+      max = scale * (255 - zp);
+      break;
+    case loco::DataType::S16:
+      min = scale * (-32767);
+      max = scale * (32767);
+      break;
+    default:
+      return false;
+  }
+  return range_check(min, max, n->dtype());
+}
+
+} // namespace
+
+void warn_accuracy_with_range(luci::CircleNode *n)
+{
+  LOGGER(l);
+  auto qp = n->quantparam();
+  auto k = qp->zerop.size();
+  for (uint32_t i = 0; i < k; i++)
+  {
+    if (warn_scale_zp(qp->scale[i], qp->zerop[i], n))
+      WARN(l) << "Quantization of " << i << "-th channel of " << n->name()
+              << "'s quantization may cause accuracy issues" << std::endl;
+    ;
+  }
+}
+
 } // namespace luci
