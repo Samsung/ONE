@@ -15,7 +15,9 @@
  */
 
 #include "Dump.h"
-#include "Reader.h"
+
+#include <mio_circle/Helper.h>
+#include <mio_circle/Reader.h>
 
 #include <ostream>
 
@@ -24,7 +26,7 @@ namespace circleinspect
 
 void DumpOperators::run(std::ostream &os, const circle::Model *model)
 {
-  circleinspect::Reader reader(model);
+  mio::circle::Reader reader(model);
 
   const uint32_t subgraph_size = reader.num_subgraph();
 
@@ -50,7 +52,7 @@ void DumpOperators::run(std::ostream &os, const circle::Model *model)
 namespace
 {
 
-const circle::Operator *operator_match_output(circleinspect::Reader &reader, const int32_t tensor)
+const circle::Operator *operator_match_output(mio::circle::Reader &reader, const int32_t tensor)
 {
   auto ops = reader.operators();
 
@@ -58,7 +60,7 @@ const circle::Operator *operator_match_output(circleinspect::Reader &reader, con
   {
     const auto op = ops->Get(i);
 
-    const std::vector<int32_t> &outputs = circleinspect::as_index_vector(op->outputs());
+    const std::vector<int32_t> &outputs = mio::circle::as_index_vector(op->outputs());
 
     for (auto output : outputs)
     {
@@ -69,7 +71,7 @@ const circle::Operator *operator_match_output(circleinspect::Reader &reader, con
   return nullptr;
 }
 
-size_t tensor_buffer_size(circleinspect::Reader &reader, const int32_t tensor_id)
+size_t tensor_buffer_size(mio::circle::Reader &reader, const int32_t tensor_id)
 {
   auto tensors = reader.tensors();
 
@@ -93,7 +95,7 @@ namespace circleinspect
 
 void DumpConv2DWeight::run(std::ostream &os, const circle::Model *model)
 {
-  circleinspect::Reader reader(model);
+  mio::circle::Reader reader(model);
 
   const uint32_t subgraph_size = reader.num_subgraph();
 
@@ -110,7 +112,7 @@ void DumpConv2DWeight::run(std::ostream &os, const circle::Model *model)
 
       if (bc == circle::BuiltinOperator_CONV_2D || bc == circle::BuiltinOperator_DEPTHWISE_CONV_2D)
       {
-        const std::vector<int32_t> &inputs = circleinspect::as_index_vector(op->inputs());
+        const std::vector<int32_t> &inputs = mio::circle::as_index_vector(op->inputs());
         if (inputs.size() < 2)
         {
           throw std::runtime_error("Operator has invalid input");
@@ -147,7 +149,7 @@ void DumpOperatorVersion::run(std::ostream &os, const circle::Model *model)
 {
   std::map<std::string, int32_t> op_version_map;
 
-  circleinspect::Reader reader(model);
+  mio::circle::Reader reader(model);
 
   // This assert is subject to be changed later
   assert(reader.num_subgraph() == 1);
@@ -181,7 +183,7 @@ namespace circleinspect
 
 void DumpTensorDType::run(std::ostream &os, const circle::Model *model)
 {
-  circleinspect::Reader reader(model);
+  mio::circle::Reader reader(model);
 
   const uint32_t subgraph_size = reader.num_subgraph();
 
