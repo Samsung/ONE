@@ -39,6 +39,12 @@ bool is_foldable_const(luci::CircleConst *node)
     return true;
   if (node->dtype() == loco::DataType::U8)
     return true;
+  if (node->dtype() == loco::DataType::S16)
+    return true;
+  if (node->dtype() == loco::DataType::S32)
+    return true;
+  if (node->dtype() == loco::DataType::S64)
+    return true;
 
   return false;
 }
@@ -74,31 +80,41 @@ luci::CircleConst *dequantized_const_node(luci::CircleConst *const_node)
   for (uint32_t i = q_dim + 1; i < const_node->rank(); ++i)
     right_count *= const_node->dim(i).value();
 
-  if (const_node->dtype() == loco::DataType::S8)
+  for (uint32_t i = 0; i < new_const_node->size<loco::DataType::FLOAT32>(); ++i)
   {
-    for (uint32_t i = 0; i < const_node->size<loco::DataType::S8>(); ++i)
-    {
-      uint32_t qd = (i % right_count) / (right_count / q_dim_value);
-      if (qd >= const_node->quantparam()->zerop.size())
-        qd = 0;
+    uint32_t qd = (i % right_count) / (right_count / q_dim_value);
+    if (qd >= const_node->quantparam()->zerop.size())
+      qd = 0;
 
-      new_const_node->at<loco::DataType::FLOAT32>(i) =
-        (float)(const_node->at<loco::DataType::S8>(i) - const_node->quantparam()->zerop.at(qd)) *
-        const_node->quantparam()->scale.at(qd);
-    }
-  }
-  else
-  {
-    for (uint32_t i = 0; i < const_node->size<loco::DataType::U8>(); ++i)
+    switch (const_node->dtype())
     {
-      uint32_t qd = (i % right_count) / (right_count / q_dim_value);
-      if (qd >= const_node->quantparam()->zerop.size())
-        qd = 0;
-
-      new_const_node->at<loco::DataType::FLOAT32>(i) =
-        (float)((int)const_node->at<loco::DataType::U8>(i) -
-                const_node->quantparam()->zerop.at(qd)) *
-        const_node->quantparam()->scale.at(qd);
+      case loco::DataType::S8:
+        new_const_node->at<loco::DataType::FLOAT32>(i) =
+          (float)(const_node->at<loco::DataType::S8>(i) - const_node->quantparam()->zerop.at(qd)) *
+          const_node->quantparam()->scale.at(qd);
+        break;
+      case loco::DataType::S16:
+        new_const_node->at<loco::DataType::FLOAT32>(i) =
+          (float)(const_node->at<loco::DataType::S16>(i) - const_node->quantparam()->zerop.at(qd)) *
+          const_node->quantparam()->scale.at(qd);
+        break;
+      case loco::DataType::S32:
+        new_const_node->at<loco::DataType::FLOAT32>(i) =
+          (float)(const_node->at<loco::DataType::S32>(i) - const_node->quantparam()->zerop.at(qd)) *
+          const_node->quantparam()->scale.at(qd);
+        break;
+      case loco::DataType::S64:
+        new_const_node->at<loco::DataType::FLOAT32>(i) =
+          (float)(const_node->at<loco::DataType::S64>(i) - const_node->quantparam()->zerop.at(qd)) *
+          const_node->quantparam()->scale.at(qd);
+        break;
+      case loco::DataType::U8:
+        new_const_node->at<loco::DataType::FLOAT32>(i) =
+          (float)(const_node->at<loco::DataType::U8>(i) - const_node->quantparam()->zerop.at(qd)) *
+          const_node->quantparam()->scale.at(qd);
+        break;
+      default:
+        throw std::runtime_error("Not supported dtype for FoldDequantizePass");
     }
   }
 
@@ -160,7 +176,7 @@ bool FoldDequantizePass::run(loco::Graph *g)
 {
   bool changed = false;
 
-  for (auto node : loco::all_nodes(g))
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     if (auto circle_dequant = dynamic_cast<luci::CircleDequantize *>(node))
     {
