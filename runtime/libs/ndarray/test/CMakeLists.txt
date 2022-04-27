@@ -2,7 +2,7 @@ if(NOT TARGET ndarray)
     return()
 endif()
 
-add_executable(ndarray_test ndarray_test.cpp)
+add_executable(ndarray_test ndarray_test.test.cpp)
 
 target_link_libraries(ndarray_test PRIVATE ndarray)
 
