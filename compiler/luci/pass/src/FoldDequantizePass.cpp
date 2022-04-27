@@ -90,27 +90,32 @@ luci::CircleConst *dequantized_const_node(luci::CircleConst *const_node)
     {
       case loco::DataType::S8:
         new_const_node->at<loco::DataType::FLOAT32>(i) =
-          (float)(const_node->at<loco::DataType::S8>(i) - const_node->quantparam()->zerop.at(qd)) *
+          static_cast<float>(const_node->at<loco::DataType::S8>(i) -
+                             const_node->quantparam()->zerop.at(qd)) *
           const_node->quantparam()->scale.at(qd);
         break;
       case loco::DataType::S16:
         new_const_node->at<loco::DataType::FLOAT32>(i) =
-          (float)(const_node->at<loco::DataType::S16>(i) - const_node->quantparam()->zerop.at(qd)) *
+          static_cast<float>(const_node->at<loco::DataType::S16>(i) -
+                             const_node->quantparam()->zerop.at(qd)) *
           const_node->quantparam()->scale.at(qd);
         break;
       case loco::DataType::S32:
         new_const_node->at<loco::DataType::FLOAT32>(i) =
-          (float)(const_node->at<loco::DataType::S32>(i) - const_node->quantparam()->zerop.at(qd)) *
+          static_cast<float>(const_node->at<loco::DataType::S32>(i) -
+                             const_node->quantparam()->zerop.at(qd)) *
           const_node->quantparam()->scale.at(qd);
         break;
       case loco::DataType::S64:
         new_const_node->at<loco::DataType::FLOAT32>(i) =
-          (float)(const_node->at<loco::DataType::S64>(i) - const_node->quantparam()->zerop.at(qd)) *
+          static_cast<float>(const_node->at<loco::DataType::S64>(i) -
+                             const_node->quantparam()->zerop.at(qd)) *
           const_node->quantparam()->scale.at(qd);
         break;
       case loco::DataType::U8:
         new_const_node->at<loco::DataType::FLOAT32>(i) =
-          (float)(const_node->at<loco::DataType::U8>(i) - const_node->quantparam()->zerop.at(qd)) *
+          static_cast<float>(const_node->at<loco::DataType::U8>(i) -
+                             const_node->quantparam()->zerop.at(qd)) *
           const_node->quantparam()->scale.at(qd);
         break;
       default:
