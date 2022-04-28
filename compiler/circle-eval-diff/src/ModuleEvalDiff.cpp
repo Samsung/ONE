@@ -105,7 +105,7 @@ void H5InputEvalDiff::evalDiff(const std::string &first_input_data_path,
 {
   const auto interp = std::make_unique<luci_interpreter::Interpreter>(_first_module.get());
 
-  _metric->init(_first_module.get(), _second_module.get());
+  initMetrics(_first_module.get(), _second_module.get());
 
   try
   {
@@ -198,7 +198,7 @@ void H5InputEvalDiff::evalDiff(const std::string &first_input_data_path,
                                 second_num_outputs, second_output_nodes);
 
       // Accumulate diffs
-      _metric->accumulate(first_output, second_output);
+      accumulateMetrics(first_output, second_output);
     }
 
     std::cout << "Evaluation finished. Number of data: " << first_num_data << std::endl;
@@ -210,7 +210,7 @@ void H5InputEvalDiff::evalDiff(const std::string &first_input_data_path,
   }
 
   // Print metric
-  std::cout << _metric.get() << std::endl;
+  dumpMetrics();
 }
 
 } // namespace circle_eval_diff

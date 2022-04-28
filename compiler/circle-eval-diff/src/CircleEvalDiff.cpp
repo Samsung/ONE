@@ -62,20 +62,6 @@ CircleEvalDiff::~CircleEvalDiff() = default;
 
 void CircleEvalDiff::init()
 {
-  // Set metric
-  std::unique_ptr<MetricPrinter> metric;
-  switch (_ctx->metric)
-  {
-    case Metric::MAE:
-      metric = std::make_unique<MAEPrinter>();
-      break;
-    case Metric::MAPE:
-      metric = std::make_unique<MAPEPrinter>();
-      break;
-    default:
-      throw std::runtime_error("Unsupported metric.");
-  }
-
   auto first_module = import(_ctx->first_model_path);
   auto second_module = import(_ctx->second_model_path);
 
@@ -83,11 +69,28 @@ void CircleEvalDiff::init()
   switch (_ctx->input_format)
   {
     case InputFormat::H5:
-      _runner = std::make_unique<H5InputEvalDiff>(std::move(first_module), std::move(second_module),
-                                                  std::move(metric));
+      _runner =
+        std::make_unique<H5InputEvalDiff>(std::move(first_module), std::move(second_module));
       break;
     default:
       throw std::runtime_error("Unsupported input format.");
+  }
+
+  // Set metric
+  std::unique_ptr<MetricPrinter> metric;
+  for (auto metric : _ctx->metric)
+  {
+    switch (metric)
+    {
+      case Metric::MAE:
+        _runner->registerMetric(std::make_unique<MAEPrinter>());
+        break;
+      case Metric::MAPE:
+        _runner->registerMetric(std::make_unique<MAPEPrinter>());
+        break;
+      default:
+        throw std::runtime_error("Unsupported metric.");
+    }
   }
 }
 
