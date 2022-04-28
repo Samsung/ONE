@@ -16,23 +16,20 @@
 
 #include "misc/tensor/IndexIterator.h"
 
+#include <gtest/gtest.h>
+
+#include <algorithm>
 #include <array>
 
-#include <iostream>
-#include <algorithm>
+using namespace nnfw::misc::tensor;
 
-#include <cassert>
-
-void test_iterate(void)
+TEST(MiscIndexIteratorTest, iterate)
 {
-  const nnfw::misc::tensor::Shape shape{3, 4, 7};
+  const Shape shape{3, 4, 7};
 
   std::array<int, 3 * 4 * 7> array;
 
   array.fill(0);
-
-  using nnfw::misc::tensor::Index;
-  using nnfw::misc::tensor::iterate;
 
   iterate(shape) << [&](const Index &index) {
     assert(index.rank() == shape.rank());
@@ -50,25 +47,15 @@ void test_iterate(void)
     array[offset] += 1;
   };
 
-  assert(std::all_of(array.begin(), array.end(), [](int num) { return num == 1; }));
+  ASSERT_TRUE(std::all_of(array.begin(), array.end(), [](int num) { return num == 1; }));
 }
 
-int main(int argc, char **argv)
+TEST(MiscIndexIteratorTest, neg_zero_rank_shape)
 {
-  test_iterate();
+  // Test abnormal case of empty shape
+  // It is expected not to throw any exception, do nothing
+  const Shape shape{};
 
-  nnfw::misc::tensor::Shape shape{3, 4, 3, 4};
-
-  std::cout << "Iterate over tensor{3, 4, 3, 4}" << std::endl;
-
-  nnfw::misc::tensor::iterate(shape) << [](const nnfw::misc::tensor::Index &index) {
-    std::cout << "rank: " << index.rank() << std::endl;
-
-    for (uint32_t d = 0; d < index.rank(); ++d)
-    {
-      std::cout << "  offset(" << d << ") = " << index.at(d) << std::endl;
-    }
-  };
-
-  return 0;
+  ASSERT_NO_THROW(iterate(shape) << ([](const Index &index) {}));
+  SUCCEED();
 }
