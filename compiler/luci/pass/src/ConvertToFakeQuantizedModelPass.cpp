@@ -206,6 +206,22 @@ struct FakeQuantize final : public luci::CircleNodeMutableVisitor<void>
   void visit(luci::CircleSoftmax *node) { fq_activation(node); }
   void visit(luci::CircleTanh *node) { fq_activation(node); }
   void visit(luci::CircleTransposeConv *node) { fq_activation(node); }
+
+  // For Ops that do not change the value of input, do nothing
+  // (dtype will be automatically updated by type inference)
+  void visit(luci::CircleConcatenation *) {}
+  void visit(luci::CircleSlice *) {}
+  void visit(luci::CircleReshape *) {}
+
+  // Virtual node
+  void visit(luci::CircleOutputExclude *) {}
+
+  void visit(luci::CircleQuantize *node)
+  {
+    RETURN_UNLESS(is_quant_act(node));
+
+    insert_dequantize(node);
+  }
 };
 
 #undef RETURN_UNLESS
