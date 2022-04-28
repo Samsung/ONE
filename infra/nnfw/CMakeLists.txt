@@ -55,6 +55,12 @@ macro(nnas_find_package PREFIX)
   )
 endmacro(nnas_find_package)
 
+# C++14 feature requires 5 or later
+# Using std::unordered_map shows build fail under 6.2
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.2)
+  message(FATAL "Runtime build requires GNU Compiler version 6.2 or later.")
+endif()
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
