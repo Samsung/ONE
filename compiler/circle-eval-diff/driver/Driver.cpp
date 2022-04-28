@@ -30,17 +30,6 @@ std::string to_lower_case(std::string s)
   return s;
 }
 
-Metric to_metric(const std::string &str)
-{
-  if (to_lower_case(str).compare("mae") == 0)
-    return Metric::MAE;
-
-  if (to_lower_case(str).compare("mape") == 0)
-    return Metric::MAPE;
-
-  throw std::runtime_error("Unsupported metric.");
-}
-
 InputFormat to_input_format(const std::string &str)
 {
   if (to_lower_case(str).compare("h5") == 0)
@@ -75,7 +64,12 @@ int entry(const int argc, char **argv)
     .help("Input data filepath for the second model. If not given, circle-eval-diff will run with "
           "randomly generated data");
 
-  arser.add_argument("--metric").default_value("MAE").help("Metric for comparison (default: MAE)");
+  arser.add_argument("--print_mae").nargs(0).default_value(false).help("Print Mean Absolute Error");
+
+  arser.add_argument("--print_mape")
+    .nargs(0)
+    .default_value(false)
+    .help("Print Mean Absolute PercentageError");
 
   arser.add_argument("--input_data_format")
     .default_value("h5")
@@ -111,14 +105,24 @@ int entry(const int argc, char **argv)
     throw std::runtime_error("Input data path should be given for both first_model and "
                              "second_model, or neither must be given.");
 
-  metric = arser.get<std::string>("--metric");
+  // Set Metrics
+  std::vector<Metric> metrics;
+  if (arser["--print_mae"] and arser.get<bool>("--print_mae"))
+  {
+    metrics.emplace_back(Metric::MAE);
+  }
+  if (arser["--print_mape"] and arser.get<bool>("--print_mape"))
+  {
+    metrics.emplace_back(Metric::MAPE);
+  }
+
   input_data_format = arser.get<std::string>("--input_data_format");
 
   auto ctx = std::make_unique<CircleEvalDiff::Context>();
   {
     ctx->first_model_path = first_model_path;
     ctx->second_model_path = second_model_path;
-    ctx->metric = to_metric(metric);
+    ctx->metric = metrics;
     ctx->input_format = to_input_format(input_data_format);
   }
 

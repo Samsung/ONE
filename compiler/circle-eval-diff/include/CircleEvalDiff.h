@@ -50,7 +50,7 @@ public:
   {
     std::string first_model_path;
     std::string second_model_path;
-    Metric metric = Metric::Undefined;
+    std::vector<Metric> metric;
     InputFormat input_format = InputFormat::Undefined;
   };
 
