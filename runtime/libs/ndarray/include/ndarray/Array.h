@@ -22,36 +22,20 @@
 #include "ContiguousSpan.h"
 #include "Shape.h"
 
-#if __cplusplus < 201402L
-#include "detail/cxx14.h" //integer_sequence and make_index_dequence definitions
-#else
-#include <utility>
-#endif
-
 #include <algorithm>
-#include <cassert>
-#include <type_traits>
 #include <array>
-#include <tuple>
+#include <cassert>
 #include <cstddef>
+#include <tuple>
+#include <type_traits>
+#include <utility>
 
 namespace ndarray
 {
 
-// there is no index_sequence before c++14
-#if __cplusplus < 201402L
-
-template <size_t... Nums> using index_sequence = cxx14::index_sequence<Nums...>;
-
-template <size_t Num> using make_index_sequence = cxx14::make_index_sequence<Num>;
-
-#else
-
 template <size_t... Nums> using index_sequence = std::index_sequence<Nums...>;
 
 template <size_t _Num> using make_index_sequence = std::make_index_sequence<_Num>;
-
-#endif //__cplusplus < 201402L
 
 struct Strides
 {
