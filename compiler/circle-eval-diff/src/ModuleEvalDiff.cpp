@@ -103,7 +103,8 @@ namespace circle_eval_diff
 void H5InputEvalDiff::evalDiff(const std::string &first_input_data_path,
                                const std::string &second_input_data_path) const
 {
-  const auto interp = std::make_unique<luci_interpreter::Interpreter>(_first_module.get());
+  const auto first_interp = std::make_unique<luci_interpreter::Interpreter>(_first_module.get());
+  const auto second_interp = std::make_unique<luci_interpreter::Interpreter>(_second_module.get());
 
   _metric->init(_first_module.get(), _second_module.get());
 
@@ -145,7 +146,7 @@ void H5InputEvalDiff::evalDiff(const std::string &first_input_data_path,
                                  "th data.");
 
       // Do inference and return output
-      auto eval = [&](HDF5Importer &h5, uint32_t num_inputs,
+      auto eval = [&](luci_interpreter::Interpreter *interp, HDF5Importer &h5, uint32_t num_inputs,
                       const std::vector<loco::Node *> &input_nodes, uint32_t num_outputs,
                       const std::vector<loco::Node *> &output_nodes) {
         // Write input data
@@ -192,10 +193,10 @@ void H5InputEvalDiff::evalDiff(const std::string &first_input_data_path,
         return outputs;
       };
 
-      auto first_output =
-        eval(first_h5, first_num_inputs, first_input_nodes, first_num_outputs, first_output_nodes);
-      auto second_output = eval(second_h5, second_num_inputs, second_input_nodes,
-                                second_num_outputs, second_output_nodes);
+      auto first_output = eval(first_interp.get(), first_h5, first_num_inputs, first_input_nodes,
+                               first_num_outputs, first_output_nodes);
+      auto second_output = eval(second_interp.get(), second_h5, second_num_inputs,
+                                second_input_nodes, second_num_outputs, second_output_nodes);
 
       // Accumulate diffs
       _metric->accumulate(first_output, second_output);
