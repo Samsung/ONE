@@ -5,17 +5,15 @@ test:
     testFW: GTEST
     testCaseFolder:
       - /compute/test
-      - /runtime/libs/misc/test
-      - /runtime/libs/ndarray/test
-      - /runtime/onert/core/src/backend/basic
-      - /runtime/onert/frontend/nnapi
-      - /runtime/onert/test
+      - /runtime/libs/misc
+      - /runtime/libs/ndarray
+      - /runtime/onert
       - /tests/nnfw_api
 
     testFile:
-      - extension: cpp
+      - extension: test.cpp
         any: true
-      - extension: cc
+      - extension: test.cc
         any: true
     testCase:
       - condition:
