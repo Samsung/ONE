@@ -21,8 +21,6 @@
 
 import argparse
 import os
-import subprocess
-import sys
 import tempfile
 
 import onelib.make_cmd as _make_cmd

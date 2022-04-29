@@ -25,9 +25,7 @@ import glob
 import itertools
 import ntpath
 import os
-import subprocess
 import sys
-import tempfile
 import shutil
 
 import utils as _utils

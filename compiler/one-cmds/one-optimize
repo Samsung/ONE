@@ -21,7 +21,6 @@
 
 import argparse
 import os
-import subprocess
 import sys
 
 import onelib.constant as _constant
