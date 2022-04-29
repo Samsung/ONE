@@ -174,34 +174,26 @@ $ vi j2/etc/systemd/system/ip.service
 and set as like:
 ```
 [Service]
-Type=simple
 Restart=always
 RestartSec=1
 User=root
-ExecStart=/bin/sh /bin/ip.sh
+ExecStart=/bin/sh -c "ifconfig eth0 192.168.x.y netmask 255.255.255.0 up"
 
 [Install]
 WantedBy=multi-user.target
 ```
+Replace 192.168.x.y to your actual ip address.
 
-(5-3) Add a new file
-```
-$ vi j2/bin/ip.sh
-```
-and set with IP address for your RPi4:
-```
-ifconfig eth0 192.168.x.y netmask 255.255.255.0 up
-```
-where you should update `192.168.x.y` part to your actual IP address.
 
-(5-4) Add a symbolic link
+(5-3) Add a symbolic link
 ```
+$ sudo mkdir -p j2/etc/systemd/system/multi-user.target.wants/
 $ pushd j2/etc/systemd/system/multi-user.target.wants/
 $ sudo ln -s ../../system/ip.service .
 $ popd
 ```
 
-(5-5) Now that every thing is ready, unmount and unplug your memory card and plug into
+(5-4) Now that every thing is ready, unmount and unplug your memory card and plug into
 RPi4, turn on the power.
 ```
 $ sync
