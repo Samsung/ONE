@@ -171,7 +171,7 @@ Consider partitioning with backends of OneRT
 
 Let's try with this command:
 ```
-circle_partitioner \
+circle-partitioner \
    --partition Net_InstanceNorm_003.part \
    --backends cpu,acl_cl \
    --default cpu \
