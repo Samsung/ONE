@@ -91,6 +91,13 @@ if [[ ! -s "onnx_conv2d_conv2d.onnx" ]]; then
     # https://github.com/Samsung/ONE/issues/5577#issuecomment-755078444
 fi
 
+if [[ ! -s "Net_InstanceNorm_003.part" ]]; then
+    rm -rf Net_InstanceNorm_003.zip
+    wget https://github.com/Samsung/ONE/files/8608844/Net_InstanceNorm_003.zip
+    unzip Net_InstanceNorm_003.zip
+    # https://github.com/Samsung/ONE/issues/8570#issuecomment-1115804257
+fi
+
 function files_missing() {
     condition="test "
 
