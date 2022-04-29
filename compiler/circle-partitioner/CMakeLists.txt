@@ -16,21 +16,3 @@ target_link_libraries(circle-partitioner vconone)
 target_link_libraries(circle-partitioner nncc_common)
 
 install(TARGETS circle-partitioner DESTINATION bin)
-
-# TODO remove circle_partitioner
-add_executable(circle_partitioner "${SOURCES}")
-target_link_libraries(circle_partitioner crew)
-target_link_libraries(circle_partitioner safemain)
-target_link_libraries(circle_partitioner luci_lang)
-target_link_libraries(circle_partitioner luci_log)
-target_link_libraries(circle_partitioner luci_import)
-target_link_libraries(circle_partitioner luci_service)
-target_link_libraries(circle_partitioner luci_pass)
-target_link_libraries(circle_partitioner luci_export)
-target_link_libraries(circle_partitioner luci_partition)
-target_link_libraries(circle_partitioner arser)
-target_link_libraries(circle_partitioner pepper_csv2vec)
-target_link_libraries(circle_partitioner vconone)
-target_link_libraries(circle_partitioner nncc_common)
-
-install(TARGETS circle_partitioner DESTINATION bin)
