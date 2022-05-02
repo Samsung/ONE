@@ -39,9 +39,9 @@ namespace
 
 const char *opt_bks = "--backends";
 const char *opt_def = "--default";
-const char *opt_part = "partition";
-const char *opt_input = "input";
-const char *opt_work = "work";
+const char *opt_part_file = "--part_file";
+const char *opt_input_file = "--input_file";
+const char *opt_work_path = "--work_path";
 
 void print_version(void)
 {
@@ -57,10 +57,12 @@ void build_arser(arser::Arser &arser)
 
   arser.add_argument(opt_def).help("Default backend to assign");
 
-  arser.add_argument(opt_part).help("Partition file which provides backend to assign");
-  arser.add_argument(opt_input).help("Input circle model filename");
-  arser.add_argument(opt_work).help(
-    "Work folder of partition, input files exist and output files are produced");
+  arser.add_argument(opt_part_file)
+    .required(true)
+    .help("Partition file which provides backend to assign");
+  arser.add_argument(opt_input_file).required(true).help("Input circle model filename");
+  arser.add_argument(opt_work_path)
+    .help("Work folder of partition, input files exist and output files are produced");
 }
 
 std::unique_ptr<luci::Module> load_model(const std::string &input_path)
@@ -91,9 +93,14 @@ int entry(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  std::string partition_file = arser.get<std::string>(opt_part);
-  std::string input_file = arser.get<std::string>(opt_input);
-  std::string work_folder = arser.get<std::string>(opt_work);
+  std::string partition_file = arser.get<std::string>(opt_part_file);
+  std::string input_file = arser.get<std::string>(opt_input_file);
+  std::string work_folder = ".";
+
+  if (arser[opt_work_path])
+  {
+    work_folder = arser.get<std::string>(opt_work_path);
+  }
 
   std::string partition_path = work_folder + "/" + partition_file;
   std::string input_path = work_folder + "/" + input_file;
