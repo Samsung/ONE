@@ -1,7 +1,3 @@
-# NOTE temporary disable testing to revise circle-partitioner arguments
-# TODO re-enable test
-return()
-
 #
 # this project validates partitioned models produced by circle-partitioner
 # with circle-part-driver and two scripts; part_eval_all.sh and part_eval_one.py
@@ -86,7 +82,8 @@ foreach(IDX RANGE ${RECIPE_LENGTH_M1})
 
   # Run partitioner
   add_custom_command(OUTPUT ${PARTITIONER_CONN_JSON}
-    COMMAND circle-partitioner "${PART_FILE}" "${PARTITION_NAME}.circle" "${PARTITIONER_OUTPUT_PATH}"
+    COMMAND circle-partitioner "--part_file" "${PART_FILE}" "--input_file"
+            "${PARTITION_NAME}.circle" "--work_path" "${PARTITIONER_OUTPUT_PATH}"
     DEPENDS circle-partitioner ${PART_DST_PATH} ${CIRCLE_DST_PATH}
     COMMENT "Parition ${RECIPE_NAME}.circle with ${PART_FILE}"
   )
