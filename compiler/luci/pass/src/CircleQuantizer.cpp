@@ -22,6 +22,7 @@
 #include "luci/Pass/RequantizePass.h"
 #include "luci/Pass/ConvertToFakeQuantizedModelPass.h"
 #include "luci/Pass/FoldDequantizePass.h"
+#include "luci/Pass/RemoveRedundantDequantizePass.h"
 #include "luci/Pass/QuantizePreCheckerPass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
@@ -434,6 +435,8 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
     phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
+    // Remove redundant Dequantize Ops generated during fake quantization
+    phase.emplace_back(std::make_unique<luci::RemoveRedundantDequantizePass>());
     // Fold Dequantize Ops generated during fake quantization
     phase.emplace_back(std::make_unique<luci::FoldDequantizePass>());
 
