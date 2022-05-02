@@ -1,5 +1,7 @@
 import tensorflow as tf
 
+tf.compat.v1.disable_eager_execution()
+
 i = tf.compat.v1.constant(0, name="Hole")
 
 c = lambda i: tf.compat.v1.less(i, 10)

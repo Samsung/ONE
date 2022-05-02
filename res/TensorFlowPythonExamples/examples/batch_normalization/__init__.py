@@ -1,5 +1,7 @@
 import tensorflow as tf
 
+tf.compat.v1.disable_eager_execution()
+
 mean = tf.compat.v1.constant([1., 2., 3.])
 variance = tf.compat.v1.constant([4., 5., 6.])
 offset = tf.compat.v1.constant([7., 8., 9.])

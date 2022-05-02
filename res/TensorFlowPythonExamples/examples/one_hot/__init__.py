@@ -1,5 +1,7 @@
 import tensorflow as tf
 
+tf.compat.v1.disable_eager_execution()
+
 indice_ = tf.compat.v1.placeholder(tf.int32, shape=(1, 2, 3, 4), name='Hole')
 depth_ = tf.compat.v1.placeholder(tf.int32, shape=(), name='Hole')
 on_value_ = tf.compat.v1.placeholder(tf.int32, shape=(), name='Hole')

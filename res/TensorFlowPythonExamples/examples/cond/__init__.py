@@ -1,5 +1,7 @@
 import tensorflow as tf
 
+tf.compat.v1.disable_eager_execution()
+
 x_ = tf.compat.v1.placeholder(dtype=tf.float32, shape=[], name="HoleX")
 y_ = tf.compat.v1.placeholder(dtype=tf.float32, shape=[], name="HoleY")
 z_ = tf.compat.v1.placeholder(dtype=tf.float32, shape=[], name="HoleZ")

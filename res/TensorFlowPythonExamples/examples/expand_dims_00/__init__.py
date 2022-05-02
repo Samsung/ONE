@@ -1,5 +1,7 @@
 import tensorflow as tf
 
+tf.compat.v1.disable_eager_execution()
+
 # example 1 where input has all known dims and axis is const
 
 in_ = tf.compat.v1.placeholder(dtype=tf.int32, shape=(2, 3), name="Hole")
