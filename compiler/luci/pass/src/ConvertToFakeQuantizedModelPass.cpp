@@ -212,6 +212,8 @@ struct FakeQuantize final : public luci::CircleNodeMutableVisitor<void>
   void visit(luci::CircleConcatenation *) {}
   void visit(luci::CircleSlice *) {}
   void visit(luci::CircleReshape *) {}
+  void visit(luci::CircleSplit *) {}
+  void visit(luci::CircleSplitOut *) {}
 
   // Virtual node
   void visit(luci::CircleOutputExclude *) {}
@@ -222,6 +224,9 @@ struct FakeQuantize final : public luci::CircleNodeMutableVisitor<void>
 
     insert_dequantize(node);
   }
+
+  // Dequantize Op does nothing in fp32 model
+  void visit(luci::CircleDequantize *) {}
 };
 
 #undef RETURN_UNLESS
