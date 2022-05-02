@@ -107,6 +107,34 @@ private:
   uint32_t _num_data = 0;
 };
 
+// Mean Peak Error to Interval Ratio (PEIR)
+// PEIR = max(|a - b|) / (max(a) - min(a))
+// PEIR >= 0 (lower is better)
+//
+// When testing the accuracy of quantized model,
+// the first model should be the original fp32 model, and
+// the second model should be the fake-quantized fp32 model
+class MPEIRPrinter final : public MetricPrinter
+{
+public:
+  void init(const luci::Module *first, const luci::Module *second);
+
+  void accumulate(const std::vector<std::shared_ptr<Tensor>> &first,
+                  const std::vector<std::shared_ptr<Tensor>> &second);
+
+  void dump(std::ostream &os) const;
+
+private:
+  void accum_peir(uint32_t index, const std::shared_ptr<Tensor> &a,
+                  const std::shared_ptr<Tensor> &b);
+
+private:
+  // Store accumulated sum of PEIR for each output
+  std::vector<float> _intermediate;
+  std::vector<std::string> _output_names;
+  uint32_t _num_data = 0;
+};
+
 } // namespace circle_eval_diff
 
 #endif // __CIRCLE_EVAL_DIFF_METRIC_PRINTER_H__

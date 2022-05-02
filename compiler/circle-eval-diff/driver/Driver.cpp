@@ -71,6 +71,11 @@ int entry(const int argc, char **argv)
     .default_value(false)
     .help("Print Mean Absolute PercentageError");
 
+  arser.add_argument("--print_mpeir")
+    .nargs(0)
+    .default_value(false)
+    .help("Print Mean Peak Error to Interval Ratio");
+
   arser.add_argument("--input_data_format")
     .default_value("h5")
     .help("Input data format. h5/hdf5 (default) or directory");
@@ -114,6 +119,10 @@ int entry(const int argc, char **argv)
   if (arser["--print_mape"] and arser.get<bool>("--print_mape"))
   {
     metrics.emplace_back(Metric::MAPE);
+  }
+  if (arser["--print_mpeir"] and arser.get<bool>("--print_mpeir"))
+  {
+    metrics.emplace_back(Metric::MPEIR);
   }
 
   input_data_format = arser.get<std::string>("--input_data_format");

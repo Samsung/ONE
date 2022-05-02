@@ -180,6 +180,23 @@ std::shared_ptr<Tensor> output_tensor_with_value(const luci::Module *module, flo
   return tensor;
 }
 
+std::shared_ptr<Tensor> output_tensor_with_value(const luci::Module *module,
+                                                 std::vector<float> &value)
+{
+  auto outputs = loco::output_nodes(module->graph());
+  assert(outputs.size() == 1);
+  auto output = *outputs.begin();
+  auto output_cnode = loco::must_cast<luci::CircleNode *>(output);
+  auto tensor = create_empty_tensor(output_cnode);
+  auto tensor_size = tensor->size<loco::DataType::FLOAT32>();
+  assert(tensor_size == value.size());
+  for (uint32_t i = 0; i < tensor_size; i++)
+  {
+    tensor->at<loco::DataType::FLOAT32>(i) = value[i];
+  }
+  return tensor;
+}
+
 } // namespace
 
 namespace circle_eval_diff
@@ -279,6 +296,59 @@ TEST(CircleEvalMetricPrinterTest, MAPE_init_with_null_NEG)
   MAPEPrinter mape;
 
   EXPECT_ANY_THROW(mape.init(nullptr, nullptr));
+}
+
+TEST(CircleEvalMetricPrinterTest, MPEIR_simple)
+{
+  luci::Module first;
+  AddOneGraph first_g;
+  first_g.init();
+
+  first.add(std::move(first_g.graph()));
+
+  luci::Module second;
+  AddTwoGraph second_g;
+  second_g.init();
+
+  second.add(std::move(second_g.graph()));
+
+  MPEIRPrinter mpeir;
+
+  mpeir.init(&first, &second);
+
+  // This test does not actually evaluate the modules, but create
+  // fake results.
+  std::vector<std::shared_ptr<Tensor>> first_result;
+  {
+    std::vector<float> val;
+    val.resize(16);
+    for (uint32_t i = 0; i < 16; i++)
+      val[i] = i;
+
+    auto output = output_tensor_with_value(&first, val);
+    first_result.emplace_back(output);
+  }
+
+  std::vector<std::shared_ptr<Tensor>> second_result;
+  {
+    auto output = output_tensor_with_value(&second, 0.0);
+    second_result.emplace_back(output);
+  }
+
+  mpeir.accumulate(first_result, second_result);
+
+  std::stringstream ss;
+  mpeir.dump(ss);
+  std::string result = ss.str();
+
+  EXPECT_NE(std::string::npos, result.find("MPEIR for output_0 is 1"));
+}
+
+TEST(CircleEvalMetricPrinterTest, MPEIR_init_with_null_NEG)
+{
+  MPEIRPrinter mpeir;
+
+  EXPECT_ANY_THROW(mpeir.init(nullptr, nullptr));
 }
 
 } // namespace circle_eval_diff
