@@ -1,7 +1,3 @@
-# NOTE temporary disable testing to revise circle-partitioner arguments
-# TODO re-enable test
-return()
-
 # NOTE Test below are for circle-partitioner is partitioning itself.
 #      Once this test passes, add partition to 'circle-part-value-test' for
 #      full test.
@@ -61,7 +57,8 @@ foreach(IDX RANGE ${RECIPE_LENGTH_M1})
   # Run partitioner
   set(PART_CONN_JSON "${PART_OUT_PATH}/${PART_NAME}.conn.json")
   add_custom_command(OUTPUT ${PART_CONN_JSON}
-    COMMAND circle-partitioner "${PART_FILE}" "${PART_NAME}.circle" "${PART_OUT_PATH}"
+    COMMAND circle-partitioner "--part_file" "${PART_FILE}" "--input_file"
+            "${PART_NAME}.circle" "--work_path" "${PART_OUT_PATH}"
     DEPENDS circle-partitioner ${CIRCLE_DST_PATH} ${PART_DST_PATH}
     COMMENT "Parition ${RECIPE_NAME}.circle with ${PART_FILE}"
   )
