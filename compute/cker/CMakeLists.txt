@@ -17,3 +17,20 @@ target_include_directories(nnfw_lib_cker INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/i
 # Workaround to avoid warning
 # TODO Resolve warning
 target_compile_options(nnfw_lib_cker INTERFACE -Wno-attributes)
+
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+set(TEST_CKER test_cker)
+
+file(GLOB_RECURSE TESTS "src/*.test.cc")
+
+add_executable(${TEST_CKER} ${TESTS})
+
+target_link_libraries(${TEST_CKER} nnfw_lib_cker)
+target_link_libraries(${TEST_CKER} nnfw_coverage)
+target_link_libraries(${TEST_CKER} gtest gtest_main ${LIB_PTHREAD})
+
+add_test(${TEST_CKER} ${TEST_CKER})
+install(TARGETS ${TEST_CKER} DESTINATION unittest_standalone)
