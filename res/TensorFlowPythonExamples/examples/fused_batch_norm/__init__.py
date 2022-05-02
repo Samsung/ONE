@@ -1,5 +1,7 @@
 import tensorflow as tf
 
+tf.compat.v1.disable_eager_execution()
+
 scale = tf.compat.v1.constant([1., 2., 3.])
 offset = tf.compat.v1.constant([4., 5., 6.])
 mean = tf.constant([1., 2., 3.])

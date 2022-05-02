@@ -1,6 +1,8 @@
 import tensorflow as tf
 import numpy as np
 
+tf.compat.v1.disable_eager_execution()
+
 in_ = tf.compat.v1.placeholder(tf.float32, shape=(1, 32, 32, 4), name="Hole")
 
 filters = np.array(

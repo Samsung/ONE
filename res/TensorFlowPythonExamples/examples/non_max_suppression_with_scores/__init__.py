@@ -1,5 +1,7 @@
 import tensorflow as tf
 
+tf.compat.v1.disable_eager_execution()
+
 max_output_size = tf.compat.v1.constant(4)
 
 in_boxes_ = tf.compat.v1.placeholder(dtype=tf.float32, shape=(8, 4), name="Hole")

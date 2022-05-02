@@ -1,6 +1,8 @@
 import tensorflow as tf
 import numpy as np
 
+tf.compat.v1.disable_eager_execution()
+
 input_ = tf.compat.v1.placeholder(shape=[1, 1, 1, 1], dtype=tf.float32)
 paddings_ = tf.compat.v1.constant(
     np.array([[1, 1], [2, 2], [3, 3], [4, 4]], dtype=np.int32))

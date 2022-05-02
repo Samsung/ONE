@@ -1,5 +1,7 @@
 import tensorflow as tf
 
+tf.compat.v1.disable_eager_execution()
+
 max_output_size = tf.compat.v1.constant(6)
 iou_threshold = tf.compat.v1.constant(0.5)
 score_threshold = tf.compat.v1.constant(0.6)

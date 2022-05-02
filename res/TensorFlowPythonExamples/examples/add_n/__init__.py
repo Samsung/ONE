@@ -1,5 +1,7 @@
 import tensorflow as tf
 
+tf.compat.v1.disable_eager_execution()
+
 in1_ = tf.compat.v1.placeholder(dtype=tf.float32, shape=(4, 4), name="Hole")
 in2_ = tf.compat.v1.placeholder(dtype=tf.float32, shape=(4, 4), name="Hole")
 in3_ = tf.compat.v1.placeholder(dtype=tf.float32, shape=(4, 4), name="Hole")

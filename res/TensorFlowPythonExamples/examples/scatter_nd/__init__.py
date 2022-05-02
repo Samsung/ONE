@@ -2,6 +2,8 @@
 
 import tensorflow as tf
 
+tf.compat.v1.disable_eager_execution()
+
 indices = tf.compat.v1.constant([[0], [2]])
 updates = tf.compat.v1.constant([[[5, 5, 5, 5], [6, 6, 6, 6], [7, 7, 7, 7], [8, 8, 8, 8]],
                                  [[5, 5, 5, 5], [6, 6, 6, 6], [7, 7, 7, 7], [8, 8, 8,

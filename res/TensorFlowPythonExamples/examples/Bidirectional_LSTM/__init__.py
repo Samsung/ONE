@@ -1,5 +1,7 @@
 import tensorflow as tf
 
+tf.compat.v1.disable_eager_execution()
+
 in_ = tf.compat.v1.placeholder(dtype=tf.float32, shape=[28, 28, 3], name="Hole")
 
 op_uni_ = tf.compat.v1.keras.layers.LSTM(1, time_major=False, return_sequences=True)
