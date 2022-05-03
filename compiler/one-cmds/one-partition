@@ -1,0 +1,130 @@
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
+
+# Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import argparse
+import configparser
+import os
+import sys
+
+import utils as _utils
+
+
+# TODO Find better way to suppress trackback on error
+sys.tracebacklimit = 0
+
+
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='command line tool to partition circle model by multiple backends')
+
+    _utils._add_default_arg(parser)
+
+    parser.add_argument(
+        '--backends', type=str, help='backends in CSV to use for partitioning')
+    parser.add_argument(
+        '--default', type=str, help='default backend to assign')
+
+    parser.add_argument('--part_file', type=str,help=
+        'partition file which provides backend to assign')
+    parser.add_argument('--input_file', type=str, help='input circle model filename')
+    parser.add_argument('--work_path', type=str, help=
+        'work path of partition, input files exist and output files are produced')
+
+    return parser
+
+
+def _parse_arg(parser):
+    args = parser.parse_args()
+    # print version
+    if args.version:
+        _utils._print_version_and_exit(__file__)
+
+    return args
+
+
+def _verify_arg(parser, args):
+    """verify given arguments"""
+    # check if required arguments is given
+    missing = []
+    if not _utils._is_valid_attr(args, 'part_file'):
+        missing.append('part_file')
+    if not _utils._is_valid_attr(args, 'input_file'):
+        missing.append('input_file')
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
+    return
+
+
+def _partition(args):
+    # get file path to log
+    bin_path = os.path.dirname(os.path.realpath(__file__))
+    cur_path = os.getcwd()
+    partition_path = os.path.join(cur_path, args.part_file)
+    logfile_path = partition_path + '.log'
+
+    with open(logfile_path, 'wb', buffering=0) as f:
+        # make a command to package circle model and metadata into nnpackage
+        circle_partitioner_path = os.path.join(bin_path, 'circle-partitioner')
+
+        cmd = [os.path.expanduser(circle_partitioner_path)]
+
+        if _utils._is_valid_attr(args, 'backends'):
+            cmd.append('--backends')
+            cmd.append(getattr(args, 'backends'))
+        if _utils._is_valid_attr(args, 'default'):
+            cmd.append('--default')
+            cmd.append(getattr(args, 'default'))
+        if _utils._is_valid_attr(args, 'work_path'):
+            cmd.append('--work_path')
+            cmd.append(getattr(args.work_path))
+
+        cmd.append('--part_file')
+        cmd.append(args.part_file)
+        cmd.append('--input_file')
+        cmd.append(args.input_file)
+
+        f.write((' '.join(cmd) + '\n').encode())
+
+        # run circle-partitoner
+        _utils._run(cmd, err_prefix='circle-partitioner', logfile=f)
+
+
+def main():
+    # parse arguments
+    parser = _get_parser()
+    args = _parse_arg(parser)
+
+    # parse configuration file
+    _utils._parse_cfg(args, 'one-partition')
+
+    if _utils._is_valid_attr(args, 'config'):
+        config_path = getattr(args, 'config')
+        _utils._parse_cfg_and_overwrite(config_path, 'one-partition', args)
+
+    # verify arguments
+    _verify_arg(parser, args)
+
+    # do partition
+    _partition(args)
+
+
+if __name__ == '__main__':
+    _utils._safemain(main, __file__)
