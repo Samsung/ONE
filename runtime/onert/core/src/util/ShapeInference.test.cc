@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-
-#include "ir/Layout.h"
 #include "util/ShapeInference.h"
+
+#include <gtest/gtest.h>
 
 using namespace onert::ir;
 

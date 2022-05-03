@@ -17,14 +17,13 @@
 #ifndef __ONERT_UTIL_OBJECT_MANAGER_H__
 #define __ONERT_UTIL_OBJECT_MANAGER_H__
 
-#include <unordered_map>
-#include <memory>
-#include <list>
-#include <functional>
-
-#include <memory>
-
 #include "util/logging.h"
+
+#include <cassert>
+#include <functional>
+#include <list>
+#include <memory>
+#include <unordered_map>
 
 namespace onert
 {

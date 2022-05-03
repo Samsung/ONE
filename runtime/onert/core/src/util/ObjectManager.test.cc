@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-
-#include "util/ObjectManager.h"
 #include "util/Index.h"
+#include "util/ObjectManager.h"
+
+#include <gtest/gtest.h>
 
 using namespace onert;
 

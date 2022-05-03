@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-
 #include "util/Index.h"
+
+#include <gtest/gtest.h>
 
 using Index = ::onert::util::Index<uint32_t, struct TestTag>;
 
