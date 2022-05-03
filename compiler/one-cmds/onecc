@@ -124,6 +124,7 @@ def _get_driver_name(driver_name):
     return {
         'one-optimize': 'one-optimize',
         'one-quantize': 'one-quantize',
+        'one-partition': 'one-partition',
         'one-pack': 'one-pack',
         'one-codegen': 'one-codegen',
         'one-profile': 'one-profile'
@@ -204,7 +205,7 @@ def main():
     bin_dir = os.path.dirname(os.path.realpath(__file__))
     import_drivers_dict = _utils._detect_one_import_drivers(bin_dir)
     transform_drivers = [
-        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile'
+        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile', 'one-partition'
     ]
     _verify_cfg(import_drivers_dict, config)
 
