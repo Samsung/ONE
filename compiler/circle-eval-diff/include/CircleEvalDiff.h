@@ -34,6 +34,7 @@ enum class Metric
   Undefined, // For debugging
   MAE,       // Mean Absolute Error
   MAPE,      // Mean Percentage Absolute Error
+  MPEIR,     // Mean Peak Error to Interval Ratio
 };
 
 enum class InputFormat

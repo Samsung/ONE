@@ -44,6 +44,8 @@ template <typename T> bool same_shape(const T a, const T b)
   return true;
 }
 
+template <typename T> bool same_dtype(const T a, const T b) { return a->dtype() == b->dtype(); }
+
 template <loco::DataType DT> std::shared_ptr<Tensor> to_fp32(const std::shared_ptr<Tensor> &tensor)
 {
   assert(tensor->dtype() == DT); // FIX_CALLER_UNLESS
@@ -282,6 +284,118 @@ void MAPEPrinter::dump(std::ostream &os) const
     mape *= 100.0;
 
     os << "MAPE for " << name << " is " << mape << "%" << std::endl;
+  }
+}
+
+// TODO Remove duplicate codes with MAEPrinter
+void MPEIRPrinter::init(const luci::Module *first, const luci::Module *second)
+{
+  THROW_UNLESS(first != nullptr, "Invalid module.");
+  THROW_UNLESS(second != nullptr, "Invalid module.");
+
+  const auto first_output = loco::output_nodes(first->graph());
+  const auto second_output = loco::output_nodes(second->graph());
+
+  assert(first_output.size() == second_output.size()); // FIX_CALLER_UNLESS
+
+  for (uint32_t i = 0; i < first_output.size(); i++)
+  {
+    const auto first_node = loco::must_cast<luci::CircleOutput *>(first_output[i]);
+    const auto second_node = loco::must_cast<luci::CircleOutput *>(second_output[i]);
+
+    if (not same_shape(first_node, second_node))
+      throw std::runtime_error("Output shape mismatch (" + first_node->name() + ", " +
+                               second_node->name() + ")");
+
+    if (not same_dtype(first_node, second_node))
+      throw std::runtime_error("Output dtype mismatch (" + first_node->name() + ", " +
+                               second_node->name() + ")");
+
+    // Create places to store intermediate results
+    _intermediate.emplace_back(0.0);
+
+    // Save output names for logging
+    _output_names.emplace_back(first_node->name());
+  }
+}
+
+// Accumulate PEIR (Peak Error to Interval Ratio)
+// PEIR = max(|a - b|) / (max(a) - min(a))
+// PEIR >= 0 (lower is better)
+void MPEIRPrinter::accum_peir(uint32_t output_idx, const std::shared_ptr<Tensor> &a,
+                              const std::shared_ptr<Tensor> &b)
+{
+  assert(a->dtype() == loco::DataType::FLOAT32 and
+         b->dtype() == loco::DataType::FLOAT32); // FIX_CALLER_UNLESS
+  assert(same_shape(a.get(), b.get()));          // FIX_CALLER_UNLESS
+  assert(output_idx < _intermediate.size());     // FIX_CALLER_UNLESS
+
+  float min = std::numeric_limits<float>::max();
+  float max = std::numeric_limits<float>::lowest();
+
+  for (uint32_t i = 0; i < a->size<loco::DataType::FLOAT32>(); i++)
+  {
+    const auto a_val = a->at<loco::DataType::FLOAT32>(i);
+    min = std::min(a_val, min);
+    max = std::max(a_val, max);
+  }
+
+  float interval = max - min;
+
+  // Corner case: All values are the same. We set interval = 1 in this case
+  if (interval == 0)
+    interval = 1.0;
+
+  float peak_error = std::numeric_limits<float>::lowest();
+
+  for (uint32_t i = 0; i < a->size<loco::DataType::FLOAT32>(); i++)
+  {
+    const auto a_val = a->at<loco::DataType::FLOAT32>(i);
+    const auto b_val = b->at<loco::DataType::FLOAT32>(i);
+    const auto error = std::abs(a_val - b_val);
+    peak_error = std::max(error, peak_error);
+  }
+
+  _intermediate.at(output_idx) += peak_error / interval;
+}
+
+// Assumption (when testing the accuracy of quantized model)
+// first: the result of fp32 model
+// second: the result of fake-quantized model
+void MPEIRPrinter::accumulate(const std::vector<std::shared_ptr<Tensor>> &first,
+                              const std::vector<std::shared_ptr<Tensor>> &second)
+{
+  assert(first.size() == second.size());        // FIX_CALLER_UNLESS
+  assert(first.size() == _intermediate.size()); // FIX_CALLER_UNLESS
+
+  for (uint32_t output_idx = 0; output_idx < _intermediate.size(); output_idx++)
+  {
+    const auto first_output = first[output_idx];
+    const auto second_output = second[output_idx];
+
+    // Cast data to fp32 for ease of computation
+    const auto fp32_first_output = fp32(first_output);
+    const auto fp32_second_output = fp32(second_output);
+
+    accum_peir(output_idx, fp32_first_output, fp32_second_output);
+  }
+
+  _num_data++;
+}
+
+void MPEIRPrinter::dump(std::ostream &os) const
+{
+  os << "Mean Peak Error to Interval Ratio (MPEIR)" << std::endl;
+
+  for (uint32_t output_idx = 0; output_idx < _intermediate.size(); output_idx++)
+  {
+    const auto name = _output_names.at(output_idx);
+    const auto sum_of_peir = _intermediate.at(output_idx);
+
+    // Compute MPEIR
+    float mpeir = sum_of_peir / _num_data;
+
+    os << "MPEIR for " << name << " is " << mpeir << std::endl;
   }
 }
 

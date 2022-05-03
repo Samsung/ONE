@@ -88,6 +88,9 @@ void CircleEvalDiff::init()
       case Metric::MAPE:
         _runner->registerMetric(std::make_unique<MAPEPrinter>());
         break;
+      case Metric::MPEIR:
+        _runner->registerMetric(std::make_unique<MPEIRPrinter>());
+        break;
       default:
         throw std::runtime_error("Unsupported metric.");
     }
