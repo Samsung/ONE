@@ -44,6 +44,8 @@ template <typename T> bool same_shape(const T a, const T b)
   return true;
 }
 
+template <typename T> bool same_dtype(const T a, const T b) { return a->dtype() == b->dtype(); }
+
 template <loco::DataType DT> std::shared_ptr<Tensor> to_fp32(const std::shared_ptr<Tensor> &tensor)
 {
   assert(tensor->dtype() == DT); // FIX_CALLER_UNLESS
@@ -300,7 +302,14 @@ void MPEIRPrinter::init(const luci::Module *first, const luci::Module *second)
   {
     const auto first_node = loco::must_cast<luci::CircleOutput *>(first_output[i]);
     const auto second_node = loco::must_cast<luci::CircleOutput *>(second_output[i]);
-    assert(same_shape(first_node, second_node)); // FIX_CALLER_UNLESS
+
+    if (not same_shape(first_node, second_node))
+      throw std::runtime_error("Output shape mismatch (" + first_node->name() + ", " +
+                               second_node->name() + ")");
+
+    if (not same_dtype(first_node, second_node))
+      throw std::runtime_error("Output dtype mismatch (" + first_node->name() + ", " +
+                               second_node->name() + ")");
 
     // Create places to store intermediate results
     _intermediate.emplace_back(0.0);
@@ -364,7 +373,7 @@ void MPEIRPrinter::accumulate(const std::vector<std::shared_ptr<Tensor>> &first,
     const auto first_output = first[output_idx];
     const auto second_output = second[output_idx];
 
-    // Cast data to fp32 and then compute absolute error
+    // Cast data to fp32 for ease of computation
     const auto fp32_first_output = fp32(first_output);
     const auto fp32_second_output = fp32(second_output);
 
