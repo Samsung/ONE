@@ -8,6 +8,7 @@ set(ONE_COMMAND_FILES
     one-optimize
     one-quantize
     one-pack
+    one-partition
     one-profile
     one-codegen
     one-prepare-venv
