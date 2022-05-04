@@ -23,14 +23,16 @@
 #ifndef __ONERT_COMPILER_H_E_SCHEDULER_H_
 #define __ONERT_COMPILER_H_E_SCHEDULER_H_
 
-#include "compiler/IScheduler.h"
-#include "compiler/BackendManager.h"
-#include "compiler/Compiler.h"
-#include "ir/Graph.h"
-#include "exec/ExecTime.h"
-#include "backend/Backend.h"
-#include <memory>
-#include "ir/OperationIndexMap.h"
+#include "IScheduler.h"
+#include "../backend/builtin/Config.h"
+#include "../exec/ExecTime.h"
+
+#include <backend/Backend.h>
+#include <compiler/BackendManager.h>
+#include <compiler/Compiler.h>
+#include <ir/Graph.h>
+#include <ir/OperationIndexMap.h>
+
 #include <map>
 #include <memory>
 

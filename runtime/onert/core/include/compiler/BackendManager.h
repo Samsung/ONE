@@ -17,12 +17,11 @@
 #ifndef __ONERT_COMPILER_BACKEND_MANAGER_H__
 #define __ONERT_COMPILER_BACKEND_MANAGER_H__
 
-#include <memory>
-#include <map>
-
-#include "ir/Operands.h"
 #include "backend/Backend.h"
-#include "backend/builtin/Backend.h"
+#include "ir/Operands.h"
+
+#include <map>
+#include <memory>
 
 namespace onert
 {
@@ -41,7 +40,7 @@ public:
 public:
   backend::Backend *get(const std::string &key);
   const backend::Backend *get(const std::string &key) const;
-  const backend::builtin::Backend *getBuiltin() const;
+  const backend::Backend *getBuiltin() const;
   const std::vector<const backend::Backend *> getAll() const
   {
     std::vector<const backend::Backend *> v;
@@ -65,7 +64,7 @@ private:
 private:
   std::map<std::string, std::unique_ptr<void, dlhandle_destroy_t>> _handle_map;
   std::map<std::string, std::unique_ptr<backend::Backend, backend_destroy_t>> _gen_map;
-  backend::builtin::Backend *_builtin{nullptr};
+  backend::Backend *_builtin{nullptr};
   /**
    * @brief load builtin backend
    *

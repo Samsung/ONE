@@ -152,7 +152,7 @@ const backend::Backend *BackendManager::get(const std::string &key) const
   return nullptr;
 }
 
-const backend::builtin::Backend *BackendManager::getBuiltin() const { return _builtin; }
+const backend::Backend *BackendManager::getBuiltin() const { return _builtin; }
 
 } // namespace compiler
 } // namespace onert
