@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
+#include "InterpExecutor.h"
+
+#include "exec/Execution.h"
+#include "ir/Graph.h"
+#include "ir/operation/BinaryArithmetic.h"
+
 #include <gtest/gtest.h>
 
 #include <memory>
-
-#include "ir/Graph.h"
-#include "interp/InterpExecutor.h"
-#include "exec/Execution.h"
-#include "ir/operation/BinaryArithmetic.h"
 
 namespace
 {
