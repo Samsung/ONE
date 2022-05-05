@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#include "../MockTensor.h"
+#include "Reader.h"
 
-#include "exec/feature/nchw/View.h"
+#include "../MockTensor.h"
 
 #include <gtest/gtest.h>
 
 using namespace onert::exec::feature;
 
-template <typename T> class View_nchw : public testing::Test
+template <typename T> class Reader_nchw : public testing::Test
 {
 public:
   void setData(std::initializer_list<T> list) { _data = std::make_shared<std::vector<T>>(list); }
@@ -39,20 +39,20 @@ public:
                                       width * elem_size);
   }
 
-  void createView()
+  void createReader()
   {
-    _view =
-      std::make_shared<nchw::View<T>>(_shape, _stride, _data->data(), _data->size() * sizeof(T));
+    _reader =
+      std::make_shared<nchw::Reader<T>>(_shape, _stride, _data->data(), _data->size() * sizeof(T));
   }
 
   void createUsingMockTensor()
   {
     onert::ir::Shape shape = {_shape.N, _shape.H, _shape.W, _shape.C};
     _tensor = std::make_shared<MockTensor<T>>(shape, _data->data(), onert::ir::Layout::NCHW);
-    _view = std::make_shared<nchw::View<T>>(_tensor.get());
+    _reader = std::make_shared<nchw::Reader<T>>(_tensor.get());
   }
 
-  std::shared_ptr<nchw::View<T>> _view = nullptr;
+  std::shared_ptr<Reader<T>> _reader = nullptr;
 
 private:
   std::shared_ptr<std::vector<T>> _data = nullptr;
@@ -61,25 +61,25 @@ private:
   std::shared_ptr<MockTensor<T>> _tensor = nullptr;
 };
 
-using ViewTypes = ::testing::Types<float, int32_t, uint8_t, int8_t, int16_t>;
-TYPED_TEST_SUITE(View_nchw, ViewTypes);
+using ReaderTypes = ::testing::Types<float, int32_t, uint8_t, int8_t, int16_t>;
+TYPED_TEST_SUITE(Reader_nchw, ReaderTypes);
 
-TYPED_TEST(View_nchw, basic_view)
+TYPED_TEST(Reader_nchw, basic_reader)
 {
   this->setData({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11});
   this->setShape(1, 2, 3, 2);
   this->setStride(12, 6, 2, 1);
-  this->createView();
+  this->createReader();
 
   // Data: NCHW
   // Shape: NCHW
-  ASSERT_EQ(this->_view->at(0, 1, 1, 0), 8);
-  ASSERT_EQ(this->_view->at(1, 1, 0), 8);
+  ASSERT_EQ(this->_reader->at(0, 1, 1, 0), 8);
+  ASSERT_EQ(this->_reader->at(1, 1, 0), 8);
 
   // Data: NCHW
   // Shape: NCHW
   this->createUsingMockTensor();
 
-  ASSERT_EQ(this->_view->at(0, 1, 1, 0), 6);
-  ASSERT_EQ(this->_view->at(1, 1, 0), 6);
+  ASSERT_EQ(this->_reader->at(0, 1, 1, 0), 6);
+  ASSERT_EQ(this->_reader->at(1, 1, 0), 6);
 }

@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-#include <thread>
-
-#include "ir/Graph.h"
-#include "compiler/Compiler.h"
 #include "exec/Execution.h"
+
+#include "compiler/Compiler.h"
+#include "ir/Graph.h"
 #include "ir/operation/BinaryArithmetic.h"
 #include "util/TracingCtx.h"
+
+#include <gtest/gtest.h>
+#include <thread>
 
 namespace
 {

@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-#include "exec/ExecTime.h"
+#include "ExecTime.h"
+
 #include "backend/IConfig.h"
 #include "backend/Backend.h"
+
 #include <gtest/gtest.h>
+
 #include <string>
 
 namespace
