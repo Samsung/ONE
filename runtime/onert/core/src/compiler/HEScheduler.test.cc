@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-#include <compiler/HEScheduler.h>
-#include <exec/ExecTime.h>
+#include "HEScheduler.h"
+#include "../exec/ExecTime.h"
 
-#include <ir/Shape.h>
-#include <ir/InternalType.h>
-#include <ir/TypeInfo.h>
 #include <ir/DataType.h>
-
+#include <ir/InternalType.h>
+#include <ir/Shape.h>
+#include <ir/TypeInfo.h>
 #include <ir/operation/BinaryArithmetic.h>
 #include <ir/operation/FullyConnected.h>
 

@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include "UnusedOperandEliminationPass.h"
+
 #include "ir/Graph.h"
-#include "compiler/pass/UnusedOperandEliminationPass.h"
+
+#include <gtest/gtest.h>
 
 using namespace onert::ir;
 using namespace onert::compiler::pass;
