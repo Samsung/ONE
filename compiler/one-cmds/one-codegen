@@ -90,6 +90,8 @@ def _get_parser(backends_list):
             backends_name) + ')'
     backend_help_message = 'backend name to use ' + backends_name_message
     parser.add_argument('-b', '--backend', type=str, help=backend_help_message)
+    parser.add_argument('--save-allocations', action='store_true',
+        help='save memory allocations trace for supported backends')
 
     return parser
 
@@ -126,6 +128,9 @@ def _parse_arg(parser):
     # print version
     if len(args) and codegen_args.version:
         _utils._print_version_and_exit(__file__)
+
+    if codegen_args.save_allocations:
+        backend_args.append('--save-allocations')
 
     return codegen_args, backend_args, unknown_args
 
