@@ -62,7 +62,7 @@ luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType 
   auto qtype = luci::activation_qtype(node);
   if (qtype == ActivationQType::PreDefinedValue)
   {
-    quantize->quantparam(luci::make_predefined_qparam(node->opcode(), out_type));
+    quantize->quantparam(luci::make_predefined_qparam(node, out_type));
     return quantize;
   }
 
