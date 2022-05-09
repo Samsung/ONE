@@ -282,6 +282,12 @@ ActivationQType activation_qtype(const CircleNode *node)
   if (fused_act_node && fused_act_node->fusedActivationFunction() == FusedActFunc::TANH)
     return ActivationQType::PreDefinedValue;
 
+  if (auto quantize = dynamic_cast<const CircleQuantize *>(node))
+  {
+    auto input = loco::must_cast<CircleNode *>(quantize->input());
+    return activation_qtype(input);
+  }
+
   switch (node->opcode())
   {
     case CircleOpcode::LOGISTIC:
@@ -342,6 +348,18 @@ std::unique_ptr<CircleQuantParam> make_predefined_qparam(CircleOpcode opcode, lo
       throw std::runtime_error("Unsupported opcode with pre-defined qparam");
   }
   return std::move(qparam);
+}
+
+std::unique_ptr<CircleQuantParam> make_predefined_qparam(CircleNode *node, loco::DataType dtype)
+{
+  if (auto quantize = dynamic_cast<CircleQuantize *>(node))
+  {
+    auto prev = quantize->input();
+    auto prev_cnode = loco::must_cast<CircleNode *>(prev);
+    return make_predefined_qparam(prev_cnode, dtype);
+  }
+
+  return make_predefined_qparam(node->opcode(), dtype);
 }
 
 // For nodes with integer output, we use integer scale

@@ -71,6 +71,7 @@ ActivationQType activation_qtype(const CircleNode *node);
 
 // Create qparam with pre-defined values for speical operators
 std::unique_ptr<CircleQuantParam> make_predefined_qparam(CircleOpcode opcode, loco::DataType dtype);
+std::unique_ptr<CircleQuantParam> make_predefined_qparam(CircleNode *node, loco::DataType dtype);
 
 // Update node's scale to a positive integer (for special Ops e.g., Floor, Ceil)
 void set_int_scale(luci::CircleNode *node);
