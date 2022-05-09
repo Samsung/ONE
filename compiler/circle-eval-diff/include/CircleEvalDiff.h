@@ -20,8 +20,12 @@
 #include <luci/IR/Module.h>
 #include <luci_interpreter/Interpreter.h>
 
+#include "InputDataLoader.h"
+#include "MetricPrinter.h"
+
 #include <string>
 #include <memory>
+#include <vector>
 
 namespace circle_eval_diff
 {
@@ -37,13 +41,6 @@ enum class Metric
   MPEIR,     // Mean Peak Error to Interval Ratio
 };
 
-enum class InputFormat
-{
-  Undefined, // For debugging
-  H5,
-  // TODO Implement Random, Directory
-};
-
 class CircleEvalDiff final
 {
 public:
@@ -52,7 +49,6 @@ public:
     std::string first_model_path;
     std::string second_model_path;
     std::vector<Metric> metric;
-    InputFormat input_format = InputFormat::Undefined;
   };
 
 public:
@@ -63,12 +59,17 @@ public:
   void init();
 
   // Evaluate two circle models for the given input data and compare the results
-  void evalDiff(const std::string &first_input_data_path,
-                const std::string &second_input_data_path) const;
+  void evalDiff(const InputDataLoader *first, const InputDataLoader *second) const;
+
+public:
+  const std::vector<loco::Node *> first_module_inputs(void) const;
+  const std::vector<loco::Node *> second_module_inputs(void) const;
 
 private:
   std::unique_ptr<Context> _ctx;
-  std::unique_ptr<ModuleEvalDiff> _runner;
+  std::unique_ptr<luci::Module> _first_module;
+  std::unique_ptr<luci::Module> _second_module;
+  std::vector<std::unique_ptr<MetricPrinter>> _metrics;
 };
 
 } // namespace circle_eval_diff

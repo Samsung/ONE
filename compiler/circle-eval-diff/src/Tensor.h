@@ -18,6 +18,7 @@
 #define __CIRCLE_EVAL_DIFF_TENSOR_H__
 
 #include <loco.h>
+#include <luci/IR/CircleNodeDecl.h>
 
 #include <vector>
 
@@ -75,6 +76,8 @@ public:
 private:
   std::vector<uint8_t> _data;
 };
+
+std::shared_ptr<Tensor> createEmptyTensor(const luci::CircleNode *node);
 
 } // namespace circle_eval_diff
 

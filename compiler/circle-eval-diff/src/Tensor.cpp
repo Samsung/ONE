@@ -16,7 +16,23 @@
 
 #include "Tensor.h"
 
+#include <luci/IR/CircleNodeDecl.h>
+
 #include <cassert>
+
+namespace
+{
+
+// Return number of elements of the node.
+uint32_t numElements(const luci::CircleNode *node)
+{
+  uint32_t num_elem = 1;
+  for (uint32_t i = 0; i < node->rank(); ++i)
+    num_elem *= node->dim(i).value();
+  return num_elem;
+}
+
+} // namespace
 
 namespace circle_eval_diff
 {
@@ -68,5 +84,41 @@ INSTANTIATE(loco::DataType::U8);
 INSTANTIATE(loco::DataType::FLOAT32);
 
 #undef INSTANTIATE
+
+// Return Tensor which has the same dtype and shape with node.
+// Buffer does not have any data yet.
+std::shared_ptr<Tensor> createEmptyTensor(const luci::CircleNode *node)
+{
+  auto tensor = std::make_shared<Tensor>();
+  {
+    tensor->dtype(node->dtype());
+    tensor->rank(node->rank());
+    for (uint32_t i = 0; i < node->rank(); i++)
+      tensor->dim(i) = node->dim(i);
+
+    switch (node->dtype())
+    {
+      case loco::DataType::FLOAT32:
+        tensor->size<loco::DataType::FLOAT32>(numElements(node));
+        break;
+      case loco::DataType::U8:
+        tensor->size<loco::DataType::U8>(numElements(node));
+        break;
+      case loco::DataType::S16:
+        tensor->size<loco::DataType::S16>(numElements(node));
+        break;
+      case loco::DataType::S32:
+        tensor->size<loco::DataType::S32>(numElements(node));
+        break;
+      case loco::DataType::S64:
+        tensor->size<loco::DataType::S64>(numElements(node));
+        break;
+      default:
+        throw std::runtime_error("Unsupported input tensor dtype for " + node->name());
+    }
+  }
+
+  return tensor;
+}
 
 } // namespace circle_eval_diff
