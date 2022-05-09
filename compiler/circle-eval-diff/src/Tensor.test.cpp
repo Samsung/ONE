@@ -18,6 +18,8 @@
 
 #include <gtest/gtest.h>
 
+#include <luci/IR/CircleNodes.h>
+
 using Tensor = circle_eval_diff::Tensor;
 
 namespace
@@ -98,4 +100,30 @@ TEST(CircleEvalDiffTensorTest, out_of_buffer_range_NEG)
   test_out_of_buffer_range<loco::DataType::FLOAT32>();
 
   SUCCEED();
+}
+
+TEST(CircleEvalDiffTensorTest, createEmptyTensorTest)
+{
+  luci::CircleInput input;
+  input.dtype(loco::DataType::FLOAT32);
+  input.rank(4);
+  input.dim(0).set(1);
+  input.dim(1).set(3);
+  input.dim(2).set(3);
+  input.dim(3).set(2);
+
+  loco::DataType right_data_type{loco::DataType::FLOAT32};
+  std::vector<loco::Dimension> right_shape;
+  right_shape.emplace_back(1);
+  right_shape.emplace_back(3);
+  right_shape.emplace_back(3);
+  right_shape.emplace_back(2);
+
+  auto tensor = circle_eval_diff::createEmptyTensor(&input);
+  EXPECT_EQ(loco::DataType::FLOAT32, tensor->dtype());
+  EXPECT_EQ(4, tensor->rank());
+  EXPECT_EQ(1, tensor->dim(0));
+  EXPECT_EQ(3, tensor->dim(1));
+  EXPECT_EQ(3, tensor->dim(2));
+  EXPECT_EQ(2, tensor->dim(3));
 }
