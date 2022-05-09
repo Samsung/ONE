@@ -38,7 +38,8 @@ public:
 
   // Implement this in the child class
   virtual void evalDiff(const std::string &first_input_data_path,
-                        const std::string &second_input_data_path) const = 0;
+                        const std::string &second_input_data_path,
+                        const std::string &output_prefix) const = 0;
 
   void registerMetric(std::unique_ptr<MetricPrinter> &&metric)
   {
@@ -82,8 +83,8 @@ public:
   {
   }
 
-  void evalDiff(const std::string &first_input_data_path,
-                const std::string &second_input_data_path) const;
+  void evalDiff(const std::string &first_input_data_path, const std::string &second_input_data_path,
+                const std::string &output_prefix) const;
 };
 
 // TODO Implement ModuleEvalDiff for random input and directory input
