@@ -64,6 +64,11 @@ int entry(const int argc, char **argv)
     .help("Input data filepath for the second model. If not given, circle-eval-diff will run with "
           "randomly generated data");
 
+  arser.add_argument("--dump_output_with_prefix")
+    .help("Dump output to files. <prefix> should be given as an argument. "
+          "Outputs are saved in <prefix>.<data_index>.first.output<output_index> and "
+          "<prefix>.<data_index>.second.output<output_index>.");
+
   arser.add_argument("--print_mae").nargs(0).default_value(false).help("Print Mean Absolute Error");
 
   arser.add_argument("--print_mape")
@@ -99,6 +104,7 @@ int entry(const int argc, char **argv)
   std::string second_input_data_path;
   std::string metric;
   std::string input_data_format;
+  std::string output_prefix;
 
   if (arser["--first_input_data"])
     first_input_data_path = arser.get<std::string>("--first_input_data");
@@ -109,6 +115,9 @@ int entry(const int argc, char **argv)
   if (arser["--first_input_data"] != arser["--second_input_data"])
     throw std::runtime_error("Input data path should be given for both first_model and "
                              "second_model, or neither must be given.");
+
+  if (arser["--dump_output_with_prefix"])
+    output_prefix = arser.get<std::string>("--dump_output_with_prefix");
 
   // Set Metrics
   std::vector<Metric> metrics;
@@ -133,6 +142,7 @@ int entry(const int argc, char **argv)
     ctx->second_model_path = second_model_path;
     ctx->metric = metrics;
     ctx->input_format = to_input_format(input_data_format);
+    ctx->output_prefix = output_prefix;
   }
 
   CircleEvalDiff ced(std::move(ctx));

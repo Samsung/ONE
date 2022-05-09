@@ -24,6 +24,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <cassert>
+#include <fstream>
 
 using Tensor = circle_eval_diff::Tensor;
 using DataType = loco::DataType;
@@ -32,6 +33,17 @@ using HDF5Importer = dio::hdf5::HDF5Importer;
 
 namespace
 {
+
+void writeDataToFile(const std::string &filename, const char *data, size_t data_size)
+{
+  std::ofstream fs(filename, std::ofstream::binary);
+  if (fs.fail())
+    throw std::runtime_error("Cannot open file \"" + filename + "\".\n");
+  if (fs.write(data, data_size).fail())
+  {
+    throw std::runtime_error("Failed to write data to file \"" + filename + "\".\n");
+  }
+}
 
 // Check the type and the shape of CircleInput
 void verifyTypeShape(const luci::CircleInput *input_node, const DataType &dtype, const Shape &shape)
@@ -101,7 +113,8 @@ namespace circle_eval_diff
 {
 
 void H5InputEvalDiff::evalDiff(const std::string &first_input_data_path,
-                               const std::string &second_input_data_path) const
+                               const std::string &second_input_data_path,
+                               const std::string &output_prefix) const
 {
   const auto first_interp = std::make_unique<luci_interpreter::Interpreter>(_first_module.get());
   const auto second_interp = std::make_unique<luci_interpreter::Interpreter>(_second_module.get());
@@ -200,6 +213,22 @@ void H5InputEvalDiff::evalDiff(const std::string &first_input_data_path,
 
       // Accumulate diffs
       accumulateMetrics(first_output, second_output);
+
+      // Save outputs
+      for (uint32_t i = 0; i < first_output.size(); i++)
+      {
+        auto out = first_output[i];
+        writeDataToFile(output_prefix + "." + std::to_string(data_idx) + ".first.output" +
+                          std::to_string(i),
+                        (char *)(out->buffer()), out->byte_size());
+      }
+      for (uint32_t i = 0; i < second_output.size(); i++)
+      {
+        auto out = second_output[i];
+        writeDataToFile(output_prefix + "." + std::to_string(data_idx) + ".second.output" +
+                          std::to_string(i),
+                        (char *)(out->buffer()), out->byte_size());
+      }
     }
 
     std::cout << "Evaluation finished. Number of data: " << first_num_data << std::endl;

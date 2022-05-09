@@ -100,7 +100,7 @@ void CircleEvalDiff::init()
 void CircleEvalDiff::evalDiff(const std::string &first_input_data_path,
                               const std::string &second_input_data_path) const
 {
-  _runner->evalDiff(first_input_data_path, second_input_data_path);
+  _runner->evalDiff(first_input_data_path, second_input_data_path, _ctx->output_prefix);
 }
 
 } // namespace circle_eval_diff

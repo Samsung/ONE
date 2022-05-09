@@ -53,6 +53,7 @@ public:
     std::string second_model_path;
     std::vector<Metric> metric;
     InputFormat input_format = InputFormat::Undefined;
+    std::string output_prefix;
   };
 
 public:
