@@ -246,6 +246,7 @@ private:
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleFullyConnected, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleGather, params)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleInstanceNorm, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleLeakyRelu, features)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleLocalResponseNormalization, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleLogistic, x)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleMaxPool2D, value)
