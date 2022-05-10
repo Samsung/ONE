@@ -6,6 +6,7 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_executable(circle-eval-diff ${DRIVER} ${SOURCES})
 target_include_directories(circle-eval-diff PRIVATE include)
+target_include_directories(circle-eval-diff PRIVATE src)
 
 target_link_libraries(circle-eval-diff arser)
 target_link_libraries(circle-eval-diff safemain)
@@ -25,10 +26,15 @@ endif(NOT ENABLE_TEST)
 # Instead, we use TEST_SOURCES to specify sources uesd for tests.
 set(TEST_SOURCES
     "src/MetricPrinter.cpp"
-    "src/Tensor.cpp")
+    "src/Tensor.cpp"
+    "src/InputDataLoader.cpp")
 
 nnas_find_package(GTest REQUIRED)
 GTest_AddTest(circle_eval_diff_test ${TESTS} ${TEST_SOURCES})
+target_include_directories(circle_eval_diff_test PRIVATE include)
 target_include_directories(circle_eval_diff_test PRIVATE src)
 target_link_libraries(circle_eval_diff_test luci_testhelper)
 target_link_libraries(circle_eval_diff_test nncc_coverage)
+target_link_libraries(circle_eval_diff_test dio_hdf5)
+target_link_libraries(circle_eval_diff_test loco)
+target_link_libraries(circle_eval_diff_test luci_lang)
