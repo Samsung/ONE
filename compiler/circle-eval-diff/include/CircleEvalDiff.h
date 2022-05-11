@@ -48,6 +48,8 @@ public:
   {
     std::string first_model_path;
     std::string second_model_path;
+    std::string first_input_data_path;
+    std::string second_input_data_path;
     std::vector<Metric> metric;
     InputFormat input_format = InputFormat::Undefined;
     std::string output_prefix;
@@ -61,11 +63,7 @@ public:
   void init();
 
   // Evaluate two circle models for the given input data and compare the results
-  void evalDiff(const InputDataLoader *first, const InputDataLoader *second) const;
-
-public:
-  const std::vector<loco::Node *> first_module_inputs(void) const;
-  const std::vector<loco::Node *> second_module_inputs(void) const;
+  void evalDiff(void) const;
 
 private:
   std::unique_ptr<Context> _ctx;

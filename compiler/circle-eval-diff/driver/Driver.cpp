@@ -15,7 +15,6 @@
  */
 
 #include "CircleEvalDiff.h"
-#include "InputDataLoader.h"
 
 #include <arser/arser.h>
 #include <vconone/vconone.h>
@@ -141,6 +140,8 @@ int entry(const int argc, char **argv)
   {
     ctx->first_model_path = first_model_path;
     ctx->second_model_path = second_model_path;
+    ctx->first_input_data_path = first_input_data_path;
+    ctx->second_input_data_path = second_input_data_path;
     ctx->metric = metrics;
     ctx->input_format = to_input_format(input_data_format);
     ctx->output_prefix = output_prefix;
@@ -150,12 +151,7 @@ int entry(const int argc, char **argv)
 
   ced.init();
 
-  auto first_input_loader = circle_eval_diff::makeDataLoader(
-    first_input_data_path, to_input_format(input_data_format), ced.first_module_inputs());
-  auto second_input_loader = circle_eval_diff::makeDataLoader(
-    second_input_data_path, to_input_format(input_data_format), ced.second_module_inputs());
-
-  ced.evalDiff(first_input_loader.get(), second_input_loader.get());
+  ced.evalDiff();
 
   return EXIT_SUCCESS;
 }

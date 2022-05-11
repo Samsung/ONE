@@ -15,6 +15,7 @@
  */
 
 #include "CircleEvalDiff.h"
+#include "InputDataLoader.h"
 #include "MetricPrinter.h"
 #include "Tensor.h"
 
@@ -147,14 +148,19 @@ void CircleEvalDiff::init()
   }
 }
 
-void CircleEvalDiff::evalDiff(const InputDataLoader *first, const InputDataLoader *second) const
+void CircleEvalDiff::evalDiff(void) const
 {
-  for (uint32_t data_idx = 0; data_idx < first->size(); data_idx++)
+  auto first_input_loader = circle_eval_diff::makeDataLoader(
+    _ctx->first_input_data_path, _ctx->input_format, ::inputs_of(_first_module.get()));
+  auto second_input_loader = circle_eval_diff::makeDataLoader(
+    _ctx->second_input_data_path, _ctx->input_format, ::inputs_of(_second_module.get()));
+
+  for (uint32_t data_idx = 0; data_idx < first_input_loader->size(); data_idx++)
   {
     std::cout << "Evaluating " << data_idx << "'th data" << std::endl;
 
-    auto first_data = first->get(data_idx);
-    auto second_data = second->get(data_idx);
+    auto first_data = first_input_loader->get(data_idx);
+    auto second_data = second_input_loader->get(data_idx);
 
     auto first_output = interpret(_first_module.get(), first_data);
     auto second_output = interpret(_second_module.get(), second_data);
@@ -187,16 +193,6 @@ void CircleEvalDiff::evalDiff(const InputDataLoader *first, const InputDataLoade
   {
     std::cout << metric.get() << std::endl;
   }
-}
-
-const std::vector<loco::Node *> CircleEvalDiff::first_module_inputs(void) const
-{
-  return loco::input_nodes(_first_module->graph());
-}
-
-const std::vector<loco::Node *> CircleEvalDiff::second_module_inputs(void) const
-{
-  return loco::input_nodes(_second_module->graph());
 }
 
 } // namespace circle_eval_diff
