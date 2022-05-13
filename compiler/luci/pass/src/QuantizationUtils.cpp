@@ -276,36 +276,69 @@ uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices)
          indices[2] * dimension.dim(3).value() + indices[3];
 }
 
+// Activation (ofm) qtype is determined in different ways.
+// 1. Pre-defined values: Some Ops have pre-defined qparams (ex: LOGISTIC, TANH)
+// 2. Integer scale: Output of some Ops should be integers (ex: FLOOR, CEIL)
+// 3. Activation qtype of input: Some Ops propagate qparam from input to output (see
+// PropagateQParamForwardPass.cpp).
 ActivationQType activation_qtype(const CircleNode *node)
 {
   auto fused_act_node = dynamic_cast<const CircleNodeMixin<CircleNodeTrait::FusedActFunc> *>(node);
   if (fused_act_node && fused_act_node->fusedActivationFunction() == FusedActFunc::TANH)
-    return ActivationQType::PreDefinedValue;
+    return ActivationQType::PreDefinedTanh;
 
-  if (auto quantize = dynamic_cast<const CircleQuantize *>(node))
-  {
-    auto input = loco::must_cast<CircleNode *>(quantize->input());
-    return activation_qtype(input);
+#define RETURN_INPUT_ACTIVATION_QTYPE(CLASS, INPUT)         \
+  {                                                         \
+    auto n = loco::must_cast<const CLASS *>(node);          \
+    auto input = loco::must_cast<CircleNode *>(n->INPUT()); \
+    return activation_qtype(input);                         \
   }
 
   switch (node->opcode())
   {
     case CircleOpcode::LOGISTIC:
+      return ActivationQType::PreDefinedLogistic;
     case CircleOpcode::TANH:
+      return ActivationQType::PreDefinedTanh;
     case CircleOpcode::SOFTMAX:
-      return ActivationQType::PreDefinedValue;
+      return ActivationQType::PreDefinedSoftmax;
     case CircleOpcode::FLOOR:
     case CircleOpcode::FLOOR_DIV:
     case CircleOpcode::FLOOR_MOD:
     case CircleOpcode::CEIL:
       return ActivationQType::IntScale;
+    case CircleOpcode::GATHER:
+      RETURN_INPUT_ACTIVATION_QTYPE(CircleGather, params);
+    case CircleOpcode::RESHAPE:
+      RETURN_INPUT_ACTIVATION_QTYPE(CircleReshape, tensor);
+    case CircleOpcode::TRANSPOSE:
+      RETURN_INPUT_ACTIVATION_QTYPE(CircleTranspose, a);
+    case CircleOpcode::STRIDED_SLICE:
+      RETURN_INPUT_ACTIVATION_QTYPE(CircleStridedSlice, input);
+    case CircleOpcode::SPLIT:
+      RETURN_INPUT_ACTIVATION_QTYPE(CircleSplit, input);
+    case CircleOpcode::CIRCLESPLITOUT:
+      RETURN_INPUT_ACTIVATION_QTYPE(CircleSplitOut, input);
+    case CircleOpcode::SPLIT_V:
+      RETURN_INPUT_ACTIVATION_QTYPE(CircleSplitV, input);
+    case CircleOpcode::CIRCLESPLITVOUT:
+      RETURN_INPUT_ACTIVATION_QTYPE(CircleSplitVOut, input);
+    case CircleOpcode::UNPACK:
+      RETURN_INPUT_ACTIVATION_QTYPE(CircleUnpack, value);
+    case CircleOpcode::CIRCLEUNPACKOUT:
+      RETURN_INPUT_ACTIVATION_QTYPE(CircleUnpackOut, input);
+    case CircleOpcode::QUANTIZE:
+      RETURN_INPUT_ACTIVATION_QTYPE(CircleQuantize, input);
     default:
       break;
   }
 
+#undef RETURN_INPUT_ACTIVATION_QTYPE
+
   return ActivationQType::MinMax;
 }
 
+#if 0
 std::unique_ptr<CircleQuantParam> make_predefined_qparam(CircleOpcode opcode, loco::DataType dtype)
 {
   auto qparam = std::make_unique<CircleQuantParam>();
@@ -360,6 +393,53 @@ std::unique_ptr<CircleQuantParam> make_predefined_qparam(CircleNode *node, loco:
   }
 
   return make_predefined_qparam(node->opcode(), dtype);
+}
+#endif
+
+std::unique_ptr<CircleQuantParam> make_predefined_qparam(ActivationQType qtype,
+                                                         loco::DataType dtype)
+{
+  auto qparam = std::make_unique<CircleQuantParam>();
+
+  auto set_qparam = [&qparam](float scale, int64_t zp) {
+    qparam->scale.emplace_back(scale);
+    qparam->zerop.emplace_back(zp);
+  };
+
+  switch (qtype)
+  {
+    case ActivationQType::PreDefinedLogistic:
+      if (dtype == loco::DataType::U8)
+        set_qparam(1.0f / 256.0f, 0);
+      else
+      {
+        assert(dtype == loco::DataType::S16);
+        set_qparam(1.0f / 32768.0f, 0);
+      }
+      break;
+    case ActivationQType::PreDefinedTanh:
+      if (dtype == loco::DataType::U8)
+        set_qparam(2.0f / 256.0f, 128);
+      else
+      {
+        assert(dtype == loco::DataType::S16);
+        set_qparam(1.0f / 32768.0f, 0);
+      }
+      break;
+    case ActivationQType::PreDefinedSoftmax:
+      if (dtype == loco::DataType::U8)
+        set_qparam(1.0f / 255.0f, 0);
+      else
+      {
+        assert(dtype == loco::DataType::S16);
+        set_qparam(1.0f / 32767.0f, 0);
+      }
+      break;
+    default:
+      throw std::runtime_error("Unsupported qtype for pre-defined qparam");
+  }
+
+  return std::move(qparam);
 }
 
 // For nodes with integer output, we use integer scale

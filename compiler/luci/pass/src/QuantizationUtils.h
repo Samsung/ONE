@@ -62,16 +62,18 @@ bool is_quantized(const CircleNode *node);
 
 enum ActivationQType
 {
-  MinMax,          // Quantize using recorded min/max
-  PreDefinedValue, // Quantize using pre-defined values
-  IntScale,        // Round scale to a positive integer
+  MinMax,             // Quantize using recorded min/max
+  PreDefinedLogistic, // Quantize using pre-defined values
+  PreDefinedTanh,     // Quantize using pre-defined values
+  PreDefinedSoftmax,  // Quantize using pre-defined values
+  IntScale,           // Round scale to a positive integer
 };
 
 ActivationQType activation_qtype(const CircleNode *node);
 
 // Create qparam with pre-defined values for speical operators
-std::unique_ptr<CircleQuantParam> make_predefined_qparam(CircleOpcode opcode, loco::DataType dtype);
-std::unique_ptr<CircleQuantParam> make_predefined_qparam(CircleNode *node, loco::DataType dtype);
+std::unique_ptr<CircleQuantParam> make_predefined_qparam(ActivationQType qtype,
+                                                         loco::DataType dtype);
 
 // Update node's scale to a positive integer (for special Ops e.g., Floor, Ceil)
 void set_int_scale(luci::CircleNode *node);
