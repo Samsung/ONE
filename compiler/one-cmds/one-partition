@@ -94,7 +94,7 @@ def _partition(args):
             cmd.append(getattr(args, 'default'))
         if _utils._is_valid_attr(args, 'work_path'):
             cmd.append('--work_path')
-            cmd.append(getattr(args.work_path))
+            cmd.append(getattr(args, 'work_path'))
 
         cmd.append('--part_file')
         cmd.append(args.part_file)
