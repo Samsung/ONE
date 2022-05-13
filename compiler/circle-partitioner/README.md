@@ -4,10 +4,10 @@ _circle-partitioner_ provides model partitioning of circle model to two or more 
 
 ## How circle-partitioner work
 
-_circle-partitioner_ requires 3 positional arguments
-- first: `partition` file
-- second: `input` circle model file
-- third: `work` folder
+_circle-partitioner_ requires 3 arguments for inputs files
+- `--part_file`: `partition` file, use extension `.part`
+- `--input_file`: `input` circle model file
+- `--work_path`: `work` path where input files reside. this is optional and CWD if omitted
 
 And options to override `partition` file as a helper to try out without editing `partition` file.
 - `--backends`: override `backends` of `[partition]` section
@@ -20,7 +20,7 @@ are read from `work` folder.
 Outputs are (1) one or more partitioned circle models and (2) connection file that gives how
 the partitioned models should be connected to act like the source `input` model.
 
-Why does input files be placed in `work` folder too?
+Why does input files be placed in `work` path too?
 - this is still work in progress condition
 - use cases are still ambigious
 - original `input` model file can be used by the backend, so `.conn` file links it as `source`
@@ -94,7 +94,8 @@ Net_InstanceNorm_003/
 
 Command example
 ```
-./circle-partitioner Net_InstanceNorm_003.part Net_InstanceNorm_003.circle Net_InstanceNorm_003
+./circle-partitioner --part_file Net_InstanceNorm_003.part \
+--input_file Net_InstanceNorm_003.circle --work_path= Net_InstanceNorm_003
 ```
 
 Result of _circle-partitioner_
@@ -172,10 +173,10 @@ Consider partitioning with backends of OneRT
 Let's try with this command:
 ```
 circle-partitioner \
-   --partition Net_InstanceNorm_003.part \
-   --backends cpu,acl_cl \
-   --default cpu \
-   Net_InstanceNorm_003.circle Net_InstanceNorm_003
+   --backends cpu,acl_cl --default cpu \
+   --part_file Net_InstanceNorm_003.part \
+   --input_file Net_InstanceNorm_003.circle \
+   --work_path Net_InstanceNorm_003
 ```
 
 where `Net_InstanceNorm_003.part` is like this for initial design
