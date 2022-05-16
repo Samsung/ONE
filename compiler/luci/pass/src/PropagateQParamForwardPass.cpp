@@ -138,13 +138,18 @@ struct PropagateQParamForward final : public luci::CircleNodeMutableVisitor<bool
     auto qtype = luci::activation_qtype(input_node);
     switch (qtype)
     {
-      case luci::ActivationQType::PreDefinedValue:
-        node->quantparam(luci::make_predefined_qparam(input_node->opcode(), node->dtype()));
+      case luci::ActivationQType::PreDefinedLogistic:
+      case luci::ActivationQType::PreDefinedTanh:
+      case luci::ActivationQType::PreDefinedSoftmax:
+        node->quantparam(luci::make_predefined_qparam(qtype, node->dtype()));
         break;
       case luci::ActivationQType::IntScale:
         luci::set_int_scale(node);
         break;
       default:
+        // This assert ensures this switch-satement handles all ActivationQTypes
+        // TODO Find a better design to remove coupling with ActivationQType
+        assert(qtype == luci::ActivationQType::MinMax);
         break;
     }
 
