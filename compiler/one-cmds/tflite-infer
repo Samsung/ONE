@@ -1,0 +1,283 @@
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
+
+# Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import argparse
+import h5py as h5
+import numpy as np
+from pkg_resources import split_sections
+import tensorflow as tf
+import sys
+
+from pathlib import Path
+
+import utils as _utils
+
+
+def _get_parser():
+    desc = '''
+    Command line tool for inferring tflite model.
+
+    Input data for given model can be randomly generated, or given by options.
+    IN/OUT data format and spec are described in man page.
+'''
+    usage_string = '''
+    tflite-infer [-l/--loadable] [--input-spec=<any|positive|non-zero|npy:{filename}|h5:{filename}>]
+    [--dump-input-npy] [--dump-input-h5] [--dump-output-npy] [--dump-output-h5]
+'''
+    parser = argparse.ArgumentParser(description= desc, usage = usage_string, formatter_class = argparse.RawTextHelpFormatter)
+
+    input_model_msg = 'tflite model path to infer'
+    parser.add_argument('-l', '--loadable', type=str, required=True, help=input_model_msg)
+
+    input_spec_msg = '''option for input tensor data (generate or import)
+[Example]
+    To run model.tflite with some random input data with condition,
+    $ tflite-infer -l model.tflite --input-spec {any | positive | non-zero} [OPTIONS]
+    
+    To run model.tflite with .npy files, (which is saved as {filename}/{filename}.input.{data_num}.{tensor_idx}.npy)
+    $ tflite-infer -l model.tflite --input-spec {npy:<filename> | h5:<filename>}
+'''
+    parser.add_argument('--input-spec', type=str, required=True, help=input_spec_msg)
+
+    dump_input_npy_msg = 'dump input buffer as file name format of {FILE_NAME}/{FILE_NAME}.input.{INPUT_IDX}.npy'
+    parser.add_argument('--dump-input-npy', help=dump_input_npy_msg)
+
+    dump_input_h5_msg = 'dump input buffer as file name format of {FILE_NAME}.h5'
+    parser.add_argument('--dump-input-h5', help=dump_input_h5_msg)
+
+    dump_output_npy_msg = 'dump output as file name format of {FILE_NAME}/{FILE_NAME}.output.{OUTPUT_IDX}.npy'
+    parser.add_argument('--dump-output-npy', help=dump_output_npy_msg)
+
+    dump_output_h5_msg = 'dump output as file name format of {FILE_NAME}.output.h5'
+    parser.add_argument('--dump-output-h5', help=dump_output_h5_msg)
+
+    return parser
+
+
+def _verify_args(parser, args):
+    """verify given arguments"""
+    # check if required arguments is given
+    missing = []
+    required = {'loadable': '-l/--loadable', 'input_spec': '--input-spec'}
+    for req_key in required.keys():
+        if not _utils._is_valid_attr(args, req_key):
+            missing.append(required[req_key])
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
+        return
+
+    # --input-spec option has its restriction. 
+    # It should be one of
+    #   [1] any / non-zero / positive
+    #   [2] npy:{FILE_NAME} / h5:{FILENAME}
+    # [1] for random input data with such condition
+    # [2] to load input data from specific file
+    if _utils._is_valid_attr(args, 'input_spec'):
+        tokens = getattr(args, 'input_spec').split(':')
+        random_conds =['any', 'non-zero', 'positive']
+        valid_filetypes = ['npy', 'h5']
+        # CASE [1]
+        if len(tokens) == 1 and tokens[0] in random_conds:
+            return
+        # CASE [2]
+        elif len(tokens) == 2 and tokens[0] in valid_filetypes:
+            return
+        else:
+            parser.error('  ERROR! input-spec option is invalid')
+
+
+def _parse_args(parser):
+    args, _ = parser.parse_known_args(sys.argv)
+    return args
+
+
+def _get_arg_list(args):
+    # List of Parsed Arguments
+    ret = []
+
+    # Required Arguments
+    modelPath = getattr(args, 'loadable')
+    specTokens = getattr(args, 'input_spec').split(':')
+    (cond, loadInputFile) = (specTokens[0], None) if len(specTokens) == 1\
+                            else specTokens[0:2]
+
+    ret.extend([modelPath, cond, loadInputFile])
+
+    # Optional Arguments
+    dumpInputNPY = getattr(args, 'dump_input_npy')
+    dumpInputH5 = getattr(args, 'dump_input_h5')
+    dumpOutputNPY = getattr(args, 'dump_output_npy')
+    dumpOutputH5 = getattr(args, 'dump_output_h5')
+    ret.extend([dumpInputNPY, dumpInputH5, dumpOutputNPY, dumpOutputH5])
+
+    return ret
+
+
+def get_random_data(shape, dtype, cond='any'):
+    cond_list = ['any', 'non-zero', 'positive']
+    if cond not in cond_list:
+        raise Exception(f'  ERROR! Input spec should be one of {cond_list}')
+
+    if dtype == np.float32:
+        # TODO: apply cond to float32 tensor
+        data = np.random.random(shape).astype(dtype)
+    elif dtype == np.int8:
+        if cond == 'any':
+            data = np.random.randint(0, 256, size=shape).astype(dtype)
+        elif cond == 'non-zero':
+            data = np.random.randint(1, 256, size=shape).astype(dtype)
+        elif cond == 'positive':
+            data = np.random.randint(1, 127, size=shape).astype(dtype)
+    elif dtype == np.bool:
+        data = np.random.choice(a=[True, False], size=shape).astype(dtype)
+    else:
+        raise SystemExit("  ERROR! Unsupported input dtype")
+
+    return data
+
+
+def get_data_from_file(filename, tensor_idx, filetype='npy'):
+    # TODO: support h5
+    filetypes = ['npy', 'h5']
+    if filetype not in filetypes:
+        raise SystemExit(f'  ERROR! {filetype} is not supported for data loading')
+
+    path = Path(filename)
+    if not path.exists():
+        raise SystemExit(f'  ERROR! {filename} is not found.')
+    if filetype == 'npy':
+        filepath = path / f'{path.name}.input.{tensor_idx}.{filetype}'
+
+        if not filepath.is_file():
+            raise SystemExit(f"{str(filepath)} doesn't exist")
+
+        data = np.load(str(filepath))
+    elif filetype == 'h5':
+        filepath = Path(str(path) + ".h5")
+
+        if not filepath.is_file():
+            raise SystemExit(f"{str(filepath)} doesn't exist")
+
+        h5File = h5.File(str(filepath))
+        data = h5File[f'input/{str(tensor_idx)}'][()]
+    else:
+        # Q) this condition is already checked at the start of this function
+        #    Is this necessary? or the filetype checker can be abandoned?
+        raise SystemExit(f'  ERROR! {filetype} is not supported for data loading')
+
+    return data
+
+
+# TODO: support multiple runs with multiple data
+def save_input_as_npy(filename, input_data):
+    Path(filename).mkdir(parents=True, exist_ok=True)
+    prefix = filename + '/' + Path(filename).name
+    for idx, data in enumerate(input_data):
+        full_filename = f'{prefix}.input.{str(idx)}.npy'
+        np.save(full_filename, data)
+
+
+def save_output_as_npy(filename, input_data):
+    Path(filename).mkdir(parents=True, exist_ok=True)
+    prefix = filename + '/' + Path(filename).name
+    for idx, data in enumerate(input_data):
+        full_filename = f'{prefix}.output.{str(idx)}.npy'
+        np.save(full_filename, data)
+
+
+def save_input_as_h5(filename, input_data):
+    filename = f'{filename}.h5'
+    f = h5.File(filename, 'w')
+    for idx, data in enumerate(input_data):
+        f.create_dataset(f'input/{str(idx)}', data=data)
+    f.close()
+
+
+def save_output_as_h5(filename, output_data):
+    filename = f'{filename}.h5'
+    f = h5.File(filename, 'w')
+    for idx, data in enumerate(output_data):
+        f.create_dataset(f'output/{str(idx)}', data=data)
+    f.close()
+
+
+def exec_model():
+    parser = _get_parser()
+    args = _parse_args(parser)
+    _verify_args(parser, args)
+    modelPath, inputCond, inputFileName, dumpInputNPY, dumpInputH5,\
+        dumpOutputNPY, dumpOutputH5 = _get_arg_list(args)
+
+    cond_list = ['any', 'non-zero', 'positive']
+    filetype_list = ['npy', 'h5']
+
+    interpreter = tf.lite.Interpreter(modelPath)
+    interpreter.allocate_tensors()
+
+    input_details = interpreter.get_input_details()
+    input_data = []
+    for idx, input in enumerate(input_details):
+        input_type = input['dtype']
+        input_shape = input['shape']
+
+        if inputCond in cond_list:
+            data = get_random_data(input_shape, input_type, inputCond)
+        elif inputCond in filetype_list:
+            data = get_data_from_file(inputFileName, idx, inputCond)
+        else:
+            raise SystemExit("  Error! Invalid input-spec")
+
+        input_idx = input['index']
+        input_data.append(data)
+
+        # Q. Is this safe approach? Won't input_idx be mixed?
+        interpreter.set_tensor(input_idx, input_data[idx])
+
+    # Run the model
+    interpreter.invoke()
+
+    tensor_details = interpreter.get_tensor_details()
+    output_details = interpreter.get_output_details()
+    output_data = []
+    for idx, output in enumerate(output_details):
+        output_tensor_idx = output['index']
+
+        # `one-optimize` supports to change the input/output tensors. It could make impossible
+        # to compare the inference result between the source model and the compiled result.
+        # TODO: support output tensor selection
+
+        data = interpreter.get_tensor(output_tensor_idx)
+        output_data.append(data)
+
+    # Save I/O data to file
+    if dumpInputNPY:
+        save_input_as_npy(dumpInputNPY, input_data)
+    if dumpInputH5:
+        save_input_as_h5(dumpInputH5, input_data)
+    if dumpOutputNPY:
+        save_output_as_npy(dumpOutputH5, output_data)
+    if dumpOutputH5:
+        save_output_as_h5(dumpOutputH5, output_data)
+
+
+if __name__ == "__main__":
+    # TODO: Add any log about the generated file
+    exec_model()
