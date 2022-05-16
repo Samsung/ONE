@@ -41,10 +41,28 @@ namespace
 {
 
 using namespace luci;
+
+bool use_predefined_values(ActivationQType qtype)
+{
+  switch (qtype)
+  {
+    case ActivationQType::PreDefinedLogistic:
+    case ActivationQType::PreDefinedTanh:
+    case ActivationQType::PreDefinedSoftmax:
+      return true;
+    default:
+      // This ensures this switch-statement handles all ActivationQTypes
+      assert(qtype == ActivationQType::IntScale or qtype == ActivationQType::MinMax);
+      break;
+  }
+
+  return false;
+}
+
 // Create a Quantize Op whose
 // dtype is out_type
 // shape is the same with node
-// qparam is computed using node's min/max
+// qparam is computed according to node's qtype
 luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType out_type)
 {
   auto quantize = node->graph()->nodes()->create<CircleQuantize>();
@@ -60,9 +78,9 @@ luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType 
   assert(qparam); // FIX_CALLER_UNLESS
 
   auto qtype = luci::activation_qtype(node);
-  if (qtype == ActivationQType::PreDefinedValue)
+  if (use_predefined_values(qtype))
   {
-    quantize->quantparam(luci::make_predefined_qparam(node, out_type));
+    quantize->quantparam(luci::make_predefined_qparam(qtype, out_type));
     return quantize;
   }
 
