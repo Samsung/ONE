@@ -257,6 +257,7 @@ TEST(BasicTest, ExitWithFunctionCallWithLamda)
   test::Prompt prompt("./computer --shutdown");
   /* act */ /* assert */
   EXPECT_EXIT(arser.parse(prompt.argc(), prompt.argv()), testing::ExitedWithCode(0), "Good bye..");
+  SUCCEED();
 }
 
 TEST(BasicTest, DefaultValue)
