@@ -62,6 +62,7 @@ class CONSTANT:
         ('remove_unnecessary_slice', 'remove unnecessary slice ops'),
         ('remove_unnecessary_strided_slice', 'remove unnecessary strided slice ops'),
         ('remove_unnecessary_split', 'remove unnecessary split ops'),
+        ('replace_non_const_fc_with_batch_matmul', 'replace FullyConnected op with non-const weights to BatchMatMul op'),
         ('resolve_customop_add', 'convert Custom(Add) op to Add op'),
         ('resolve_customop_batchmatmul',
          'convert Custom(BatchMatmul) op to BatchMatmul op'),
