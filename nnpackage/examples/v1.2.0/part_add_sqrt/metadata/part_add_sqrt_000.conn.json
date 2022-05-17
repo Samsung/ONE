@@ -1,0 +1,24 @@
+{
+  "source" : {
+    "file" : "part_add_sqrt_000.circle",
+    "inputs" : [ "ifm1", "ifm2" ],
+    "outputs" : [ "ofm1", "ofm2" ]
+  },
+  "parts" : [
+    {
+      "file" : "part_add_sqrt_000.00001_cpu.circle",
+      "inputs" : [ "ifm1", "ifm2" ],
+      "outputs" : [ "add" ]
+    },
+    {
+      "file" : "part_add_sqrt_000.00002_acl_cl.circle",
+      "inputs" : [ "add" ],
+      "outputs" : [ "ofm1" ]
+    },
+    {
+      "file" : "part_add_sqrt_000.00003_acl_cl.circle",
+      "inputs" : [ "add" ],
+      "outputs" : [ "ofm2" ]
+    }
+  ]
+}
