@@ -1,6 +1,6 @@
 {
   "major-version" : "1",
-  "minor-version" : "2",
+  "minor-version" : "3",
   "patch-version" : "0",
   "models"      : [ "part_add_sqrt_000.00001_cpu.circle", "part_add_sqrt_000.00002_acl_cl.circle", "part_add_sqrt_000.00003_acl_cl.circle" ],
   "connection"  : "part_add_sqrt_000.conn.json",
