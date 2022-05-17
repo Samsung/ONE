@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-
 #include "ir/OperandIndexSequence.h"
+
+#include <gtest/gtest.h>
 
 using onert::ir::OperandIndex;
 using onert::ir::OperandIndexSequence;

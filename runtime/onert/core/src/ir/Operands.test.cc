@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-
 #include "ir/Operands.h"
+
+#include <gtest/gtest.h>
 
 TEST(ir_Operands, neg_set_test)
 {
