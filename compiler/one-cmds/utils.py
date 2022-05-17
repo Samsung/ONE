@@ -154,7 +154,7 @@ def _run(cmd, err_prefix=None, logfile=None):
         logfile: file stream to which both of stdout and stderr lines will be written
     """
     with subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1) as p:
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as p:
         import select
         inputs = set([p.stdout, p.stderr])
         while inputs:
