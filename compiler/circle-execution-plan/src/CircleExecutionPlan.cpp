@@ -42,6 +42,13 @@ int entry(int argc, char **argv)
     .required(false)
     .default_value(false)
     .help("Plan with or without dsp (now can be used only with cmsisnn)");
+  arser.add_argument("--generate_json")
+    .nargs(1)
+    .required(false)
+    .default_value("")
+    .help("Path for output JSON file to save memory allocation info. "
+          "Note: path end of file should have 'tracealloc.json' (example path: "
+          "'../exec_plan_info.tracealloc.json')");
 
   try
   {
@@ -58,6 +65,7 @@ int entry(int argc, char **argv)
   const std::string output_path = arser.get<std::string>("output");
   const std::string platform_name = arser.get<std::string>("--platform");
   const bool use_dsp = arser.get<bool>("--use_dsp");
+  const std::string json_path = arser.get<std::string>("--generate_json");
 
   if (platform_name != "cmsisnn" && use_dsp)
   {
@@ -82,6 +90,13 @@ int entry(int argc, char **argv)
   {
     std::cerr << "ERROR: Invalid platform name '" << platform_name << "'" << std::endl;
     return EXIT_FAILURE;
+  }
+
+  bool is_generate_json = false;
+
+  if (!json_path.empty())
+  {
+    is_generate_json = true;
   }
 
   foder::FileLoader file_loader{input_path};
@@ -118,6 +133,9 @@ int entry(int argc, char **argv)
   // Do main job
   circle_planner::ExecutionPlanner execution_planner(module->graph(), {platform_type, use_dsp});
   execution_planner.make_execution_plan();
+
+  if (is_generate_json)
+    execution_planner.create_json_allocation_file(json_path);
 
   // Export to output Circle file
   luci::CircleExporter exporter;

@@ -18,6 +18,11 @@
 #include <loco/IR/Algorithm.h>
 #include <luci/UserSettings.h>
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <regex>
+#include <iostream>
+
 namespace circle_planner
 {
 namespace
@@ -58,6 +63,29 @@ bool isTensorProducingNode(const luci::CircleNode *node)
   }
 }
 
+// Create allocation node part for current circle node for json allocation info file
+void create_allocation_node(boost::property_tree::ptree &allocations_node,
+                            AllocationNodeInformation &alloca_node_inform, uint32_t alive_till_max,
+                            luci::CircleNode *circle_node)
+{
+  boost::property_tree::ptree allocation_node;
+  if (alloca_node_inform.size == 0)
+    return;
+
+  allocation_node.put("offset", alloca_node_inform.offset);
+  allocation_node.put("size", alloca_node_inform.size);
+  allocation_node.put("alive_from", alloca_node_inform.first_node);
+
+  if (alloca_node_inform.last_node == node_not_assigned)
+    allocation_node.put("alive_till", alive_till_max + 1);
+  else
+    allocation_node.put("alive_till", alloca_node_inform.last_node);
+
+  allocation_node.put("origin", circle_node->name());
+
+  allocations_node.push_back(std::make_pair("", allocation_node));
+}
+
 } // namespace
 
 void ExecutionPlanner::make_execution_plan()
@@ -72,6 +100,69 @@ void ExecutionPlanner::make_execution_plan()
   }
   auto settings = luci::UserSettings::settings();
   settings->set(luci::UserSettings::Key::ExecutionPlanGen, true);
+}
+
+void ExecutionPlanner::create_json_allocation_file(const std::string &json_path)
+{
+  boost::property_tree::ptree main_tree;
+  boost::property_tree::ptree segments_node;
+  boost::property_tree::ptree allocations_node;
+
+  uint32_t alive_till_max = 0;
+
+  // Find max dealloc value to assign to nodes with node_not_assigned value
+  for (const auto elem : _dealloc_node)
+  {
+    if (alive_till_max < elem and elem != node_not_assigned)
+      alive_till_max = elem;
+  }
+
+  for (uint32_t i = 0; i < _ordered_nodes.size(); ++i)
+  {
+    auto current_node_it = std::find_if(
+      _alloc_node_inform_vector.begin(), _alloc_node_inform_vector.end(),
+      [i](const AllocationNodeInformation &x) { return x.node_num == i and (not x.is_temp); });
+
+    auto circle_node = loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]);
+
+    create_allocation_node(allocations_node, *current_node_it, alive_till_max, circle_node);
+
+    // Create and add temporary tensors for current nodes
+    if (_offsets[i].size() > 1)
+    {
+      for (auto &alloc_node_inform : _alloc_node_inform_vector)
+      {
+        if (alloc_node_inform.node_num == i and alloc_node_inform.is_temp)
+        {
+          create_allocation_node(allocations_node, alloc_node_inform, alive_till_max, circle_node);
+        }
+      }
+    }
+  }
+
+  // Create segment part
+  boost::property_tree::ptree segment_node;
+  segment_node.put("name", "Segment1");
+  segment_node.add_child("allocations", allocations_node);
+  segments_node.push_back(std::make_pair("", segment_node));
+
+  main_tree.put("schema_version", 1);
+  main_tree.add_child("segments", segments_node);
+
+  std::ostringstream oss;
+  boost::property_tree::json_parser::write_json(oss, main_tree);
+
+  // Change value from string to int
+  std::regex reg("\\\"([0-9]+\\.{0,1}[0-9]*)\\\"");
+  std::string result = std::regex_replace(oss.str(), reg, "$1");
+
+  // Write to json file
+  std::ofstream out;
+  out.open(json_path);
+  if (out.is_open())
+  {
+    out << result;
+  }
 }
 
 void ExecutionPlanner::get_default_execution_order_plan()

@@ -104,6 +104,8 @@ public:
     _is_null_scratchpads = is_null_scratchpads;
   };
 
+  void create_json_allocation_file(const std::string &json_path);
+
 private:
   // Method gets default execution order plan and saves it in _ordered_nodes vector.
   // There can be different variants of execution order and this method provides main one.
