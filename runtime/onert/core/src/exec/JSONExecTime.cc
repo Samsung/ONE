@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "exec/JSONExecTime.h"
-#include "backend/IConfig.h"
+#include "JSONExecTime.h"
+
 #include <fstream>
 
 namespace onert

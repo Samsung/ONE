@@ -15,7 +15,6 @@
  */
 
 #include "PermutationEliminationPass.h"
-#include "backend/builtin/Config.h"
 
 #include "util/logging.h"
 

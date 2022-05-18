@@ -16,24 +16,23 @@
 
 #include "compiler/LoweredGraph.h"
 
-#include <assert.h>
-#include <algorithm>
-#include <sstream>
-#include "util/logging.h"
-#include "compiler/pass/ConstantInsertionPass.h"
-#include "compiler/pass/ConstantLoweringPass.h"
-#include "compiler/pass/PassRunner.h"
-#include "compiler/pass/PermutationOperationPass.h"
-#include "compiler/pass/PermutationInsertionPass.h"
-#include "compiler/pass/PermutationEliminationPass.h"
-#include "dumper/text/GraphDumper.h"
-#include "ir/verifier/Verifier.h"
+#include "HEScheduler.h"
+#include "ManualScheduler.h"
+#include "pass/ConstantInsertionPass.h"
+#include "pass/ConstantLoweringPass.h"
+#include "pass/PassRunner.h"
+#include "pass/PermutationEliminationPass.h"
+#include "pass/PermutationInsertionPass.h"
+#include "pass/PermutationOperationPass.h"
+#include "../dumper/text/GraphDumper.h"
+#include "../ir/verifier/Verifier.h"
+
 #include "backend/Backend.h"
-#include "backend/IConfig.h"
 #include "compiler/BackendResolver.h"
-#include "compiler/ManualScheduler.h"
-#include "compiler/HEScheduler.h"
-#include "util/TracingCtx.h"
+#include "util/logging.h"
+
+#include <cassert>
+#include <sstream>
 
 namespace onert
 {

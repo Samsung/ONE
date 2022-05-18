@@ -16,10 +16,6 @@
 
 #include "IfLayer.h"
 
-#include <backend/ITensor.h>
-#include "exec/ExecutorBase.h"
-#include "PermuteLayer.h"
-
 namespace onert
 {
 namespace backend

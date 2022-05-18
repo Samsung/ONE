@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#include <cker/operation/BinaryArithmeticOps.h>
-
 #include "OperationUtil.h"
+#include "../Registration.h"
 
-#include "interp/Registration.h"
 #include "ir/operation/BinaryArithmetic.h"
-#include "misc/polymorphic_downcast.h"
-#include "cker/Types.h"
+
+#include <cker/operation/BinaryArithmeticOps.h>
+#include <cker/Types.h>
+#include <misc/polymorphic_downcast.h>
 
 namespace onert
 {

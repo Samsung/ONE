@@ -17,18 +17,17 @@
 #ifndef __ONERT_EXEC_DATAFLOW_EXECUTOR_H__
 #define __ONERT_EXEC_DATAFLOW_EXECUTOR_H__
 
+#include "ExecutorBase.h"
+#include "Job.h"
+
+#include "compiler/CodeMap.h"
+#include "ir/OperandIndexSequence.h"
+#include "util/TracingCtx.h"
+
 #include <list>
 #include <map>
-#include <unordered_map>
-
-#include "exec/FunctionSequence.h"
-#include "Job.h"
-#include "ir/OperandIndexSequence.h"
-#include "ir/Index.h"
 #include <memory>
-#include "exec/ExecutorBase.h"
-#include "compiler/CodeMap.h"
-#include "util/TracingCtx.h"
+#include <unordered_map>
 
 namespace onert
 {

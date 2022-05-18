@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-#include "exec/ExecutionObservers.h"
+#include "ExecutionObservers.h"
+
+#include "../util/EventWriter.h"
+
+#include "util/logging.h"
+
+#include <misc/polymorphic_downcast.h>
 
 #include <string>
 #include <sstream>
-
-#include "util/logging.h"
-#include "exec/IExecutor.h"
-#include "misc/polymorphic_downcast.h"
-#include "ir/Operation.h"
-#include "util/EventWriter.h"
 
 namespace
 {

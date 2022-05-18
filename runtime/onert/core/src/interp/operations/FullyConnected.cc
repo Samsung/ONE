@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include <cker/operation/FullyConnected.h>
-
 #include "OperationUtil.h"
+#include "../Registration.h"
 
-#include "interp/Registration.h"
 #include "ir/operation/FullyConnected.h"
-#include "misc/polymorphic_downcast.h"
+
+#include <cker/operation/FullyConnected.h>
+#include <misc/polymorphic_downcast.h>
 
 namespace onert
 {

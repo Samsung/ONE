@@ -16,12 +16,10 @@
 
 #include "KernelGenerator.h"
 
-#include <backend/BackendContext.h>
-#include <util/Utils.h>
 #include "kernel/IfLayer.h"
-#include "kernel/WhileLayer.h"
 #include "kernel/PermuteLayer.h"
-#include "exec/ExecutorBase.h"
+#include "kernel/WhileLayer.h"
+
 #include "exec/FunctionSequence.h"
 
 namespace onert

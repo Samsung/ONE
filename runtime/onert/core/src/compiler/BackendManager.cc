@@ -16,16 +16,11 @@
 
 #include "compiler/BackendManager.h"
 
-#include <memory>
-#include <dlfcn.h>
+#include "../backend/builtin/Backend.h"
+#include "../backend/builtin/Config.h"
 
-#include "backend/Backend.h"
-#include "backend/builtin/Backend.h"
-#include "backend/builtin/Config.h"
-#include "backend/IConfig.h"
-#include "util/logging.h"
-#include "util/ConfigSource.h"
-#include "misc/string_helpers.h"
+#include <dlfcn.h>
+#include <memory>
 
 static const char *SHARED_LIB_EXT =
 #if defined(__APPLE__) && defined(__MACH__)

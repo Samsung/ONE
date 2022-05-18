@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "interp/Registration.h"
+#include "../Registration.h"
 
 namespace onert
 {

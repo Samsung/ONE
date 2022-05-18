@@ -17,10 +17,11 @@
 #ifndef __ONERT_EXEC_EXECUTION_OBSERVEE_H__
 #define __ONERT_EXEC_EXECUTION_OBSERVEE_H__
 
-#include <list>
+#include "ExecutionObservers.h"
 
-#include "exec/ExecutionObservers.h"
 #include "ir/Index.h"
+
+#include <list>
 
 namespace onert
 {

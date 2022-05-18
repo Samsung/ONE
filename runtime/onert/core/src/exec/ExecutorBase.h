@@ -17,22 +17,17 @@
 #ifndef __ONERT_EXEC_EXECUTOR_BASE_H__
 #define __ONERT_EXEC_EXECUTOR_BASE_H__
 
-#include "IPermuteFunction.h"
+#include "ExecutionObservee.h"
+#include "../backend/builtin/IOTensor.h"
+#include "../compiler/TensorRegistries.h"
+
+#include "compiler/LoweredGraph.h"
 #include "exec/IExecutor.h"
-#include "exec/ExecTime.h"
-#include "exec/ExecutionObservee.h"
-#include "exec/IFunction.h"
 #include "exec/IODescription.h"
 #include "ir/Graph.h"
-#include "ir/Index.h"
-#include "compiler/GraphLowerInfo.h"
 #include "ir/OperationIndexMap.h"
-#include "compiler/LoweredGraph.h"
-#include "compiler/TensorRegistries.h"
-#include "backend/builtin/IOTensor.h"
 #include "util/TracingCtx.h"
 
-#include <cstdint>
 #include <memory>
 #include <mutex>
 #include <vector>

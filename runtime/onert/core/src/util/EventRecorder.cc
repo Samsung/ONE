@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "util/EventRecorder.h"
+#include "EventRecorder.h"
 
 void EventRecorder::emit(std::unique_ptr<DurationEvent> &&evt)
 {

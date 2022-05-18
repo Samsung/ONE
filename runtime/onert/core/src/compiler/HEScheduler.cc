@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-#include "ir/Operand.h"
-#include "compiler/HEScheduler.h"
-#include "ir/Graph.h"
-#include "util/ConfigSource.h"
+#include "HEScheduler.h"
+
 #include "compiler/BackendResolver.h"
+#include "ir/Graph.h"
 #include "util/logging.h"
-#include "util/Utils.h"
-#include "exec/FunctionSequence.h"
+
 #include <cassert>
 #include <cmath>
-#include <chrono>
 
 namespace
 {
