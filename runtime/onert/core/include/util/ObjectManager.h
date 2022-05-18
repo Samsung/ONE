@@ -207,7 +207,7 @@ public:
       l.push_back(e.first);
     }
 
-    for (auto index : l)
+    for (auto &index : l)
     {
       fn(index, *_objects[index]);
     }
