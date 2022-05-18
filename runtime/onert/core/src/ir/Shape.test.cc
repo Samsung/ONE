@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <ir/Shape.h>
+#include "ir/Shape.h"
 
 #include <gtest/gtest.h>
 

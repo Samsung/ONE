@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-
 #include "ir/Graph.h"
 #include "ir/operation/BinaryArithmetic.h"
-#include "ir/verifier/Verifier.h"
+
+#include <gtest/gtest.h>
 
 TEST(Graph, neg_inputs_and_outputs)
 {

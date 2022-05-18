@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include "LayoutSet.h"
 
-#include "ir/LayoutSet.h"
+#include <gtest/gtest.h>
 
 using onert::ir::Layout;
 using onert::ir::LayoutSet;

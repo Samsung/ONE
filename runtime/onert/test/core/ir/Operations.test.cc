@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include "ir/Operations.h"
 
 #include "MockNode.h"
-#include "ir/Operations.h"
+
+#include <gtest/gtest.h>
 
 using onert::ir::Operation;
 using onert::ir::OperationIndex;
