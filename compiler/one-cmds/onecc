@@ -24,6 +24,7 @@ import configparser
 import os
 import subprocess
 import sys
+import warnings
 
 import utils as _utils
 
@@ -141,13 +142,19 @@ def _parse_cfg(args):
 
 
 def _is_available_driver(config, driver_name):
-    return config.has_option('onecc', driver_name) and config.getboolean(
-        'onecc', driver_name)
+    # if there's no `onecc` section, it will find `one-build` section because of backward compatibility
+    return (config.has_option('onecc', driver_name) and config.getboolean(
+        'onecc', driver_name)) or (config.has_option('one-build', driver_name) and config.getboolean(
+        'one-build', driver_name))
 
 
 def _verify_cfg(import_driver_list, config):
     if not config.has_section('onecc'):
-        raise ImportError('[onecc] section is required in configuration file')
+        if config.has_section('one-build'):
+            warnings.warn("[one-build] section will be deprecated. Please use [onecc] section.")
+        else:
+            raise ImportError('[onecc] section is required in configuration file')
+
 
     import_driver_cnt = 0
     for d in import_driver_list:
