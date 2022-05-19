@@ -121,7 +121,9 @@ Array<const CornerBox> decodeBoxes(const Array<float> &raw_boxes, const Array<fl
       assert(box.y2 > box.y1);
     }
 
-    return array_cast<const CornerBox>(std::move(decoded_boxes_a), decoded_boxes_a.shape());
+    auto decoded_boxes_a_shape = decoded_boxes_a.shape();
+
+    return array_cast<const CornerBox>(std::move(decoded_boxes_a), decoded_boxes_a_shape);
   }
 }
 
