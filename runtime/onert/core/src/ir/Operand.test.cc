@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
+#include "ir/Graph.h"
+
+#include "MockNode.h"
+#include "verifier/Verifier.h"
+
 #include <gtest/gtest.h>
 
-#include "ir/Graph.h"
-#include "ir/verifier/Verifier.h"
 #include <memory>
-#include "MockNode.h"
-
 #include <typeindex>
 
 namespace
