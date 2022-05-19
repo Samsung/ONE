@@ -649,6 +649,18 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   // Set output type
   set_output_type(g);
 
+  // Remove redundant Quantize Op
+  {
+    logo::Phase phase;
+
+    phase.emplace_back(std::make_unique<luci::RemoveRedundantQuantizePass>());
+
+    ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
+    logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
+    phase_runner.attach(&prog);
+    phase_runner.run(phase);
+  }
+
   // Remove min/max values
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
