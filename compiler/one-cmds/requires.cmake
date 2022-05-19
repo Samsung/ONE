@@ -1,6 +1,7 @@
 require("tf2tfliteV2")
 require("tflite2circle")
 require("circle2circle")
+require("circle-eval-diff")
 require("circle-quantizer")
 require("record-minmax")
 require("vconone")
