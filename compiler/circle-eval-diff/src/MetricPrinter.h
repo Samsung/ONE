@@ -135,6 +135,61 @@ private:
   uint32_t _num_data = 0;
 };
 
+// Ratio of matched indices between top-k results of two models (a, b).
+//
+// top-k match = intersection(top_k_idx(a), top_k_idx(b)) / k
+// mean top-k match = sum(top-k match) / num_data
+//
+// For example,
+// num_data = 2
+// first model output = [1, 2, 3], [2, 3, 1]
+// second model output = [2, 4, 6], [3, 2, 1]
+//
+// if k = 1,
+// first model top-1 index = ([2], [1])
+// second model top-1 index = ([2], [0])
+// mean top-1 accuracy = (1 + 0) / 2 = 0.5
+//
+// if k = 2,
+// first model output = [1, 2, 3], [2, 3, 1]
+// second model output = [2, 4, 6], [3, 2, 1]
+// first model top-2 index = ([2, 1], [1, 0])
+// second model top-2 index = ([2, 1], [0, 1])
+// mean top-2 accuracy = (2 + 2) / 4 = 1
+//
+// NOTE Order of elements is ignored when comparing two top-k sets.
+// NOTE If two elements have the same value and only one can be included in top-k,
+// the one with an earlier index will be included.
+class TopKMatchPrinter : public MetricPrinter
+{
+public:
+  TopKMatchPrinter(uint32_t k) : _k(k) {}
+
+public:
+  void init(const luci::Module *first, const luci::Module *second);
+
+  void accumulate(const std::vector<std::shared_ptr<Tensor>> &first,
+                  const std::vector<std::shared_ptr<Tensor>> &second);
+
+  void dump(std::ostream &os) const;
+
+private:
+  void accum_topk_accuracy(uint32_t index, const std::shared_ptr<Tensor> &a,
+                           const std::shared_ptr<Tensor> &b);
+
+  // Return true if the output is in the skip list (_skip_output)
+  bool in_skip_list(uint32_t output_index) const;
+
+private:
+  const uint32_t _k = 0;
+  // Store accumulated accuracy
+  std::vector<float> _intermediate;
+  std::vector<std::string> _output_names;
+  uint32_t _num_data = 0;
+  // Save index of output whose num_elements is less than k
+  std::vector<uint32_t> _skip_output;
+};
+
 } // namespace circle_eval_diff
 
 #endif // __CIRCLE_EVAL_DIFF_METRIC_PRINTER_H__
