@@ -17,17 +17,16 @@
 #ifndef __ONERT_EXEC_OBSREVERS_H__
 #define __ONERT_EXEC_OBSREVERS_H__
 
-#include "exec/IFunction.h"
+#include "ExecTime.h"
+#include "../util/EventCollector.h"
+#include "../util/EventRecorder.h"
+#include "../util/EventWriter.h"
+
+#include "exec/IExecutor.h"
 #include "ir/Index.h"
 #include "ir/Operation.h"
-#include "ExecTime.h"
 #include "util/ITimer.h"
-#include "exec/IExecutor.h"
-#include "util/EventCollector.h"
-#include "util/EventRecorder.h"
-#include "util/EventWriter.h"
 #include "util/TracingCtx.h"
-#include "util/EventWriter.h"
 
 namespace onert
 {

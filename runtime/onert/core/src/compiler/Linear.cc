@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-#include <algorithm>
-#include <sstream>
-
 #include "Linear.h"
 
-#include "backend/IConfig.h"
-#include "backend/Backend.h"
+#include "../dumper/text/GraphDumper.h"
+
 #include "util/logging.h"
-#include "dumper/text/GraphDumper.h"
+
+#include <sstream>
 
 namespace onert
 {

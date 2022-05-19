@@ -17,19 +17,9 @@
 #include "ir/Graph.h"
 
 #include "OperationValidator.h"
-
-#include <algorithm>
-
-#include <bitset>
-#include <sstream>
-
-#include "util/logging.h"
-#include "util/Set.h"
 #include "verifier/Verifier.h"
-#include "ir/OperandIndexMap.h"
-#include "ir/OperationIndexMap.h"
-#include "dumper/text/GraphDumper.h"
-#include "backend/IConfig.h"
+
+#include "util/Set.h"
 
 namespace onert
 {

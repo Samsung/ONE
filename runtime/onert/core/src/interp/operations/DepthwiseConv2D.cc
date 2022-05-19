@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
+#include "OperationUtil.h"
+#include "../Registration.h"
+
+#include "ir/operation/DepthwiseConv2D.h"
+#include "util/ShapeInference.h"
+#include "util/Utils.h"
+
 #include <cker/operation/DepthwiseConv.h>
 #include <misc/polymorphic_downcast.h>
-
-#include "OperationUtil.h"
-
-#include "interp/Registration.h"
-#include "ir/operation/DepthwiseConv2D.h"
-#include "util/Utils.h"
-#include "util/ShapeInference.h"
 
 namespace onert
 {

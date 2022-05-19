@@ -17,10 +17,10 @@
 #ifndef __ONERT_BACKEND_BUILTIN_KERNEL_PERMUTELAYER_H__
 #define __ONERT_BACKEND_BUILTIN_KERNEL_PERMUTELAYER_H__
 
-#include "exec/IPermuteFunction.h"
-#include "exec/IExecutor.h"
 #include "../ExternalContext.h"
-#include "ruy/thread_pool.h" // from @ruy
+#include "../../../exec/IPermuteFunction.h"
+
+#include <ruy/thread_pool.h> // from @ruy
 
 namespace onert
 {

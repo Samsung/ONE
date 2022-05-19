@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include "util/EventWriter.h"
+#include "EventWriter.h"
 
-#include <sstream>
-#include <vector>
 #include <cassert>
+#include <sstream>
 #include <utility>
+#include <vector>
 
 // json type for ChromeTracingWriter
 namespace

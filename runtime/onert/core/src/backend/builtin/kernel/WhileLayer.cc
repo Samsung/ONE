@@ -16,11 +16,12 @@
 
 #include "WhileLayer.h"
 
-#include <algorithm>
-#include <backend/ITensor.h>
-#include "exec/ExecutorBase.h"
-#include <misc/polymorphic_downcast.h>
 #include "PermuteLayer.h"
+#include "../../../exec/ExecutorBase.h"
+
+#include <misc/polymorphic_downcast.h>
+
+#include <algorithm>
 
 namespace onert
 {

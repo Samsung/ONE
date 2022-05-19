@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "util/EventWriter.h"
+#include "EventWriter.h"
 
 #include <cassert>
 

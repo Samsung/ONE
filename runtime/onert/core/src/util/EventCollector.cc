@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "util/EventCollector.h"
+#include "EventCollector.h"
 
 // C++ standard libraries
 #include <chrono>

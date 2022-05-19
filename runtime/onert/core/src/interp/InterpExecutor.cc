@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-#include "interp/InterpExecutor.h"
-#include "interp/ExecEnv.h"
-#include "interp/Interpreter.h"
+#include "InterpExecutor.h"
+
+#include "ExecEnv.h"
+#include "Interpreter.h"
 
 #include "util/logging.h"
 

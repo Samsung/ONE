@@ -6,8 +6,13 @@ nnfw_find_package(Ruy REQUIRED)
 
 add_library(onert_core SHARED ${SOURCES})
 set_target_properties(onert_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+# NOTE
+# We publish public headers into developer package.
+# To avoid mistake using private header in public header, do not define
+# private target_include_directories scope for src/ directory.
 target_include_directories(onert_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_include_directories(onert_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
 target_link_libraries(onert_core PUBLIC nnfw_lib_misc half)
 target_link_libraries(onert_core PRIVATE nnfw_lib_cker)
 target_link_libraries(onert_core PRIVATE nnfw_common)
