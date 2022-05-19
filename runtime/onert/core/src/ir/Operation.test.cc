@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-
 #include "ir/Graph.h"
 #include "ir/Index.h"
 #include "ir/OperandIndexSequence.h"
-#include "ir/operation/Conv2D.h"
 #include "ir/operation/Concat.h"
+#include "ir/operation/Conv2D.h"
+
+#include <gtest/gtest.h>
 
 #include <memory>
-
 #include <stdexcept>
 
 using Index = onert::ir::IOIndex;
