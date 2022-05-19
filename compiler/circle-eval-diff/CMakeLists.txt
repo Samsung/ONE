@@ -18,6 +18,8 @@ target_link_libraries(circle-eval-diff luci_interpreter)
 target_link_libraries(circle-eval-diff dio_hdf5)
 target_link_libraries(circle-eval-diff vconone)
 
+install(TARGETS circle-eval-diff DESTINATION bin)
+
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
