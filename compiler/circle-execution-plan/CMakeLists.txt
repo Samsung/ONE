@@ -1,3 +1,9 @@
+nnas_find_package(Jsoncpp)
+if(NOT Jsoncpp_FOUND)
+    message(STATUS "Build jsoncpp: FAILED (missing jsoncpp)")
+    return()
+endif(NOT Jsoncpp_FOUND)
+
 set(SOURCES
         pal/IScratchpadHelper.h
         pal/ScratchpadHelperLinux.h
@@ -10,6 +16,9 @@ set(SOURCES
         )
 
 add_executable(circle_execution_plan "${SOURCES}")
+target_include_directories(circle_execution_plan PRIVATE ${Jsoncpp_INCLUDE_DIRS})
+
+target_link_libraries(circle_execution_plan ${Jsoncpp_STATIC_LIB})
 target_link_libraries(circle_execution_plan foder)
 target_link_libraries(circle_execution_plan safemain)
 target_link_libraries(circle_execution_plan luci_env)
