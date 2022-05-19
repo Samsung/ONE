@@ -130,6 +130,12 @@ def _get_parser():
         help=
         "Path to the quantization configuration file."
     )
+    quantization_group.add_argument(
+        '--test_data',
+        type=str,
+        help=
+        "Path to the test data. Evaluation result will be printed if this option is specified."
+    )
 
     # arguments for force_quantparam option
     force_quantparam_group = parser.add_argument_group(
@@ -242,9 +248,12 @@ def _quantize(args):
     logfile_path = os.path.realpath(args.output_path) + '.log'
 
     with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
+        if _utils._is_valid_attr(args, 'save_intermediate'):
+            tmpdir = os.path.dirname(logfile_path)
         # get driver path
         circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
         record_minmax_path = os.path.join(dir_path, 'record-minmax')
+        circle_eval_diff_path = os.path.join(dir_path, 'circle-eval-diff')
 
         ## make a command to quantize and dequantize the weights of the model
         circle_quantizer_cmd = [circle_quantizer_path]
@@ -262,12 +271,17 @@ def _quantize(args):
             circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
         if _utils._is_valid_attr(args, 'granularity'):
             circle_quantizer_cmd.append(getattr(args, 'granularity'))
+        if _utils._is_valid_attr(args, 'quant_config'):
+            # NOTE --config conflicts with --config option in onecc, so
+            # we use quant_config for one-quantize
+            circle_quantizer_cmd.append('--config')
+            circle_quantizer_cmd.append(getattr(args, 'quant_config'))
         # input and output path
         if _utils._is_valid_attr(args, 'input_path'):
             circle_quantizer_cmd.append(getattr(args, 'input_path'))
         tmp_output_path_1 = os.path.join(
             tmpdir,
-            os.path.splitext(os.path.basename(args.input_path))[0]) + '1.circle'
+            os.path.splitext(os.path.basename(args.input_path))[0]) + '.fake_quant_weights.circle'
         circle_quantizer_cmd.append(tmp_output_path_1)
         # profiling
         if _utils._is_valid_attr(args, 'generate_profile_data'):
@@ -288,7 +302,7 @@ def _quantize(args):
         circle_record_minmax_cmd.append(tmp_output_path_1)
         tmp_output_path_2 = os.path.join(
             tmpdir,
-            os.path.splitext(os.path.basename(args.input_path))[0]) + '2.circle'
+            os.path.splitext(os.path.basename(args.input_path))[0]) + '.minmax_recorded.circle'
         circle_record_minmax_cmd.append('--output_model')
         circle_record_minmax_cmd.append(tmp_output_path_2)
         # input data
@@ -360,6 +374,43 @@ def _quantize(args):
         # run circle-quantizer
         _utils._run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
 
+        # evaluate
+        if _utils._is_valid_attr(args, 'test_data'):
+            tmp_fake_quant_model = os.path.join(
+                tmpdir,
+                os.path.splitext(os.path.basename(args.input_path))[0]) + '.fake_quant.circle'
+
+            # do fake quantization
+            fake_quantize_cmd = [circle_quantizer_path]
+            if _utils._is_valid_attr(args, 'verbose'):
+                fake_quantize_cmd.append('--verbose')
+            fake_quantize_cmd.append('--fake_quantize')
+            fake_quantize_cmd.append(getattr(args, 'output_path'))
+            fake_quantize_cmd.append(tmp_fake_quant_model)
+
+            f.write((' '.join(fake_quantize_cmd) + '\n').encode())
+            _utils._run(fake_quantize_cmd, err_prefix="circle_quantizer", logfile=f)
+
+            # compare fake-quant model and fp32 model
+            circle_eval_diff_cmd = [circle_eval_diff_path]
+            circle_eval_diff_cmd.append('--first_model')
+            circle_eval_diff_cmd.append(getattr(args, 'input_path'))
+            circle_eval_diff_cmd.append('--second_model')
+            circle_eval_diff_cmd.append(tmp_fake_quant_model)
+            circle_eval_diff_cmd.append('--first_input_data')
+            circle_eval_diff_cmd.append(getattr(args, 'test_data'))
+            circle_eval_diff_cmd.append('--second_input_data')
+            circle_eval_diff_cmd.append(getattr(args, 'test_data'))
+            if _utils._is_valid_attr(args, 'input_data_format'):
+                circle_eval_diff_cmd.append('--input_data_format')
+                circle_eval_diff_cmd.append(getattr(args, 'input_data_format'))
+            circle_eval_diff_cmd.append('--print_mae')
+            circle_eval_diff_cmd.append('--print_mpeir')
+            circle_eval_diff_cmd.append('--print_top1_match')
+            circle_eval_diff_cmd.append('--print_top5_match')
+
+            f.write((' '.join(circle_eval_diff_cmd) + '\n').encode())
+            _utils._run(circle_eval_diff_cmd, err_prefix="circle_eval_diff", logfile=f)
 
 def _write_qparam(args):
     # get file path to log

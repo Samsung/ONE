@@ -30,6 +30,16 @@ using Tensor = circle_eval_diff::Tensor;
 namespace
 {
 
+uint32_t num_elems(const luci::CircleNode *node)
+{
+  uint32_t res = 1;
+
+  for (uint32_t i = 0; i < node->rank(); i++)
+    res *= node->dim(i).value();
+
+  return res;
+}
+
 template <typename T> bool same_shape(const T a, const T b)
 {
   if (a->rank() != b->rank())
@@ -409,6 +419,162 @@ void MPEIRPrinter::dump(std::ostream &os) const
     float mpeir = sum_of_peir / _num_data;
 
     os << "MPEIR for " << name << " is " << mpeir << std::endl;
+  }
+}
+
+// TODO Remove duplicate codes with MAEPrinter
+void TopKMatchPrinter::init(const luci::Module *first, const luci::Module *second)
+{
+  THROW_UNLESS(first != nullptr, "Invalid module.");
+  THROW_UNLESS(second != nullptr, "Invalid module.");
+
+  const auto first_output = loco::output_nodes(first->graph());
+  const auto second_output = loco::output_nodes(second->graph());
+
+  assert(first_output.size() == second_output.size()); // FIX_CALLER_UNLESS
+
+  for (uint32_t i = 0; i < first_output.size(); i++)
+  {
+    const auto first_node = loco::must_cast<luci::CircleOutput *>(first_output[i]);
+    const auto second_node = loco::must_cast<luci::CircleOutput *>(second_output[i]);
+
+    if (not same_shape(first_node, second_node))
+      throw std::runtime_error("Output shape mismatch (" + first_node->name() + ", " +
+                               second_node->name() + ")");
+
+    if (not same_dtype(first_node, second_node))
+      throw std::runtime_error("Output dtype mismatch (" + first_node->name() + ", " +
+                               second_node->name() + ")");
+
+    // Create places to store intermediate results
+    _intermediate.emplace_back(0.0);
+
+    // Save output names for logging
+    _output_names.emplace_back(first_node->name());
+
+    // If num_elems of an output is less than k,
+    // the output index is added to the skip list
+    if (num_elems(first_node) < _k)
+    {
+      std::cout << "Top-" << _k << "metric for " << first_node->name()
+                << " is ignored, because it has elements less than " << _k << std::endl;
+      _skip_output.emplace_back(i);
+    }
+  }
+}
+
+void TopKMatchPrinter::accum_topk_accuracy(uint32_t output_idx, const std::shared_ptr<Tensor> &a,
+                                           const std::shared_ptr<Tensor> &b)
+{
+  assert(a->dtype() == loco::DataType::FLOAT32 and
+         b->dtype() == loco::DataType::FLOAT32); // FIX_CALLER_UNLESS
+  assert(same_shape(a.get(), b.get()));          // FIX_CALLER_UNLESS
+  assert(output_idx < _intermediate.size());     // FIX_CALLER_UNLESS
+
+  // Reference: Method 2 (Use temporary array) in
+  // https://www.geeksforgeeks.org/k-largestor-smallest-elements-in-an-array/
+  auto topk_index = [this](const std::shared_ptr<Tensor> &tensor) {
+    std::vector<float> topk;
+    std::vector<uint32_t> topk_index;
+    topk.resize(_k);
+    topk_index.resize(_k);
+
+    assert(_k <= tensor->size<loco::DataType::FLOAT32>()); // FIX_CALLER_UNLESS
+
+    // Initialize
+    for (uint32_t i = 0; i < _k; i++)
+    {
+      topk[i] = tensor->at<loco::DataType::FLOAT32>(i);
+      topk_index[i] = i;
+    }
+
+    for (uint32_t i = _k; i < tensor->size<loco::DataType::FLOAT32>(); i++)
+    {
+      auto val = tensor->at<loco::DataType::FLOAT32>(i);
+      auto min = std::min_element(topk.begin(), topk.end());
+      if (val > *min)
+      {
+        auto min_index = std::distance(topk.begin(), min);
+        topk[min_index] = val;
+        topk_index[min_index] = i;
+      }
+    }
+
+    return topk_index;
+  };
+
+  auto first_topk_index = topk_index(a);
+  auto second_topk_index = topk_index(b);
+
+  uint32_t matched = 0;
+  for (uint32_t i = 0; i < _k; i++)
+  {
+    for (uint32_t j = 0; j < _k; j++)
+    {
+      if (first_topk_index[i] == second_topk_index[j])
+      {
+        matched++;
+        break;
+      }
+    }
+  }
+
+  float matched_ratio = static_cast<float>(matched) / _k;
+
+  _intermediate.at(output_idx) += matched_ratio;
+}
+
+bool TopKMatchPrinter::in_skip_list(uint32_t output_index) const
+{
+  for (auto skip : _skip_output)
+  {
+    if (output_index == skip)
+      return true;
+  }
+
+  return false;
+}
+
+void TopKMatchPrinter::accumulate(const std::vector<std::shared_ptr<Tensor>> &first,
+                                  const std::vector<std::shared_ptr<Tensor>> &second)
+{
+  assert(first.size() == second.size());        // FIX_CALLER_UNLESS
+  assert(first.size() == _intermediate.size()); // FIX_CALLER_UNLESS
+
+  for (uint32_t output_idx = 0; output_idx < _intermediate.size(); output_idx++)
+  {
+    if (in_skip_list(output_idx))
+      continue;
+
+    const auto first_output = first[output_idx];
+    const auto second_output = second[output_idx];
+
+    // Cast data to fp32 for ease of computation
+    const auto fp32_first_output = fp32(first_output);
+    const auto fp32_second_output = fp32(second_output);
+
+    accum_topk_accuracy(output_idx, fp32_first_output, fp32_second_output);
+  }
+
+  _num_data++;
+}
+
+void TopKMatchPrinter::dump(std::ostream &os) const
+{
+  os << "Ratio of Matched Indices between Top-" << _k << " results of the models" << std::endl;
+
+  for (uint32_t output_idx = 0; output_idx < _intermediate.size(); output_idx++)
+  {
+    if (in_skip_list(output_idx))
+      continue;
+
+    const auto name = _output_names.at(output_idx);
+    const auto sum_of_topk_accuracy = _intermediate.at(output_idx);
+
+    // Compute TopKMatch
+    float mean_topk = sum_of_topk_accuracy / _num_data;
+
+    os << "Mean Top-" << _k << " match ratio for " << name << " is " << mean_topk << std::endl;
   }
 }
 

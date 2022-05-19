@@ -81,6 +81,16 @@ int entry(const int argc, char **argv)
     .default_value(false)
     .help("Print Mean Peak Error to Interval Ratio");
 
+  arser.add_argument("--print_top1_match")
+    .nargs(0)
+    .default_value(false)
+    .help("Print Mean Top-1 Match Ratio");
+
+  arser.add_argument("--print_top5_match")
+    .nargs(0)
+    .default_value(false)
+    .help("Print Mean Top-5 Match Ratio");
+
   arser.add_argument("--input_data_format")
     .default_value("h5")
     .help("Input data format. h5/hdf5 (default) or directory");
@@ -132,6 +142,14 @@ int entry(const int argc, char **argv)
   if (arser["--print_mpeir"] and arser.get<bool>("--print_mpeir"))
   {
     metrics.emplace_back(Metric::MPEIR);
+  }
+  if (arser["--print_top1_match"] and arser.get<bool>("--print_top1_match"))
+  {
+    metrics.emplace_back(Metric::MTOP1);
+  }
+  if (arser["--print_top5_match"] and arser.get<bool>("--print_top5_match"))
+  {
+    metrics.emplace_back(Metric::MTOP5);
   }
 
   input_data_format = arser.get<std::string>("--input_data_format");

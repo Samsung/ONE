@@ -39,6 +39,8 @@ enum class Metric
   MAE,       // Mean Absolute Error
   MAPE,      // Mean Percentage Absolute Error
   MPEIR,     // Mean Peak Error to Interval Ratio
+  MTOP1,     // Mean Top-1 Match Ratio
+  MTOP5,     // Mean Top-5 Match Ratio
 };
 
 class CircleEvalDiff final
