@@ -103,7 +103,7 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
   // 1. Scan DEF of outputs. If the DEF, allocate it
   // 2. Scan DEF of inputs. If variable tensor, allocate it
   // 3. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0
-  for (const auto &p_ind : order)
+  for (const auto &op_ind : order)
   {
     const auto &op = graph.operations().at(op_ind);
     auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
