@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# one-import-tf -> one-optimize with the configuration file that includes `one-build` section
+# one-import-tf -> one-optimize with the configuration file that includes `onecc` section
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
