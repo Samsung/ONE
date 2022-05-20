@@ -46,8 +46,10 @@ public:
   {
     const auto &graph = *data.graph;
     const auto &operands = data.graph->operands();
+    const auto is_linear_executor = data.is_linear_executor;
+
     auto context = std::make_unique<acl_cl::BackendContext>(this, std::move(data));
-    auto tm = createTensorManager(data.is_linear_executor);
+    auto tm = createTensorManager(is_linear_executor);
     auto tr = std::make_shared<acl_common::AclTensorRegistry<TensorManager>>(tm);
     auto tb = std::make_shared<TensorBuilder>(operands, tm);
     context->tensor_registry = tr;
