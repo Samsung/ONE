@@ -396,7 +396,7 @@ def _quantize(args):
             circle_eval_diff_path = os.path.join(dir_path, 'circle-eval-diff')
             quant_model = ""
             if _utils._is_valid_attr(args, 'output_path'):
-              quant_model =getattr(args, 'output_path')
+                quant_model = getattr(args, 'output_path')
             tmp_fake_quant_model = os.path.join(
                 tmpdir,
                 os.path.splitext(os.path.basename(args.input_path))[0]) + '.fake_quant.circle'
