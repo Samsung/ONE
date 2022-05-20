@@ -141,6 +141,16 @@ void CircleEvalDiff::init()
         _metrics.emplace_back(std::make_unique<MPEIRPrinter>());
         break;
       }
+      case Metric::MTOP1:
+      {
+        _metrics.emplace_back(std::make_unique<TopKMatchPrinter>(1));
+        break;
+      }
+      case Metric::MTOP5:
+      {
+        _metrics.emplace_back(std::make_unique<TopKMatchPrinter>(5));
+        break;
+      }
       default:
         throw std::runtime_error("Unsupported metric.");
     }
