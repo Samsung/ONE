@@ -46,7 +46,7 @@ RUN echo 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubunt
 RUN apt-get update && apt-get -qqy install gbs
 RUN wget http://download.tizen.org/sdk/tizenstudio/official/binary/sdb_4.2.19_ubuntu-64.zip -O sdb.zip
 RUN unzip -d tmp sdb.zip && rm sdb.zip
-RUN cp tmp/data/tools/sdb /usr/bin/. && rm -rf tmp
+RUN cp tmp/data/tools/sdb /usr/bin/. && rm -rf tmp/*
 
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
