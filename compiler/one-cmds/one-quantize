@@ -161,6 +161,18 @@ def _get_parser():
         help=
         "Print MPEIR (Mean Peak Error to Interval Ratio) of inference results between quantized model and fp32 model."
     )
+    quantization_group.add_argument(
+        '--print_top1_match',
+        action='store_true',
+        help=
+        "Print Top-1 match ratio of inference results between quantized model and fp32 model."
+    )
+    quantization_group.add_argument(
+        '--print_top5_match',
+        action='store_true',
+        help=
+        "Print Top-5 match ratio of inference results between quantized model and fp32 model."
+    )
 
     # arguments for force_quantparam option
     force_quantparam_group = parser.add_argument_group(
@@ -417,6 +429,8 @@ def _quantize(args):
                 .add_noarg_option_if_valid_arg('--print_mae', 'print_mae') \
                 .add_noarg_option_if_valid_arg('--print_mape', 'print_mape') \
                 .add_noarg_option_if_valid_arg('--print_mpeir', 'print_mpeir') \
+                .add_noarg_option_if_valid_arg('--print_top1_match', 'print_top1_match') \
+                .add_noarg_option_if_valid_arg('--print_top5_match', 'print_top5_match') \
                 .run()
 
 def _write_qparam(args):
