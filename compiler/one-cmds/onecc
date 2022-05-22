@@ -148,9 +148,14 @@ def _is_available_driver(config, driver_name):
         'one-build', driver_name))
 
 
+def _simple_warning(message, category, filename, lineno, file=None, line=None):
+    return f'{category.__name__}: {message}\n'
+
+
 def _verify_cfg(import_driver_list, config):
     if not config.has_section('onecc'):
         if config.has_section('one-build'):
+            warnings.formatwarning = _simple_warning
             warnings.warn("[one-build] section will be deprecated. Please use [onecc] section.")
         else:
             raise ImportError('[onecc] section is required in configuration file')
