@@ -5,6 +5,7 @@ set(ONE_COMMAND_FILES
     one-import-tf
     one-import-tflite
     one-import-onnx
+    one-init
     one-optimize
     one-quantize
     one-pack
@@ -41,7 +42,6 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
                       GROUP_READ GROUP_EXECUTE
                       WORLD_READ WORLD_EXECUTE
           DESTINATION bin)
-          
 endforeach(ONE_COMMAND)
 
 set(ONE_UTILITY_FILES

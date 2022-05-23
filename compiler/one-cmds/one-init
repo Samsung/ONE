@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
+
+# Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import argparse
+import os
+import shutil
+
+import utils as _utils
+
+
+# NOTE: Do not use '_add_default_arg'. '-C' and '-S' options are unnecessary.
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='command line tool to create a new config file')
+
+    # version
+    parser.add_argument(
+        '-v',
+        '--version',
+        action='store_true',
+        help='show program\'s version number and exit')
+
+    # config filename to be created
+    parser.add_argument(
+        'cfg_path', type=str, help='the config path to be created')
+
+    # template path
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    template_path = os.path.join(dir_path, 'onecc.template.cfg')
+    parser.add_argument(
+        '-t',
+        '--template_path',
+        type=str, default=template_path,
+        help='full filepath of the template file')
+
+    return parser
+
+
+def _parse_arg(parser):
+    args = parser.parse_args()
+    # print version
+    if args.version:
+        _utils._print_version_and_exit(__file__)
+
+    return args
+
+
+def _create(args):
+    # if cfg_path doesn't have '.cfg', append it
+    cfg_path = args.cfg_path
+    if cfg_path.endswith('.cfg') is False:
+        cfg_path = ''.join([cfg_path, '.cfg'])
+    if os.path.exists(cfg_path) is True:
+        raise FileExistsError(cfg_path + ' file already exists')
+
+    template_path = args.template_path
+    if os.path.exists(template_path) is False:
+        raise FileExistsError('Template file ' + template_path + ' not found')
+
+    try:
+        shutil.copyfile(template_path, cfg_path)
+    except (shutil.Error, OSError):
+        raise shutil.Error('Unable to copyfile: %s -> %s' % template_path, cfg_path)
+
+
+def main():
+    parser = _get_parser()
+    args = _parse_arg(parser)
+    _create(args)
+
+
+if __name__ == '__main__':
+    _utils._safemain(main, __file__)

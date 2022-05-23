@@ -1,10 +1,10 @@
 .\" Manpage for onecc.
 .\" Contact nnfw@samsung.com to correct errors or typos.
-.TH ONECC "1" "August 2021" "onecc version 1.17.0" "User Commands"
+.TH ONECC "1" "May 2022" "onecc version 1.21.0" "User Commands"
 .SH NAME
 onecc \- run ONE driver via several commands or configuration file
 .SH SYNOPSIS
-\fBonecc\fR [\-h] [\-v] [\-C CONFIG] [COMMAND <args>]
+\fBonecc\fR [\-h] [\-v] [\-I CONFIG] [\-C CONFIG] [COMMAND <args>]
 .SH DESCRIPTION
 \fBonecc\fR is a command line tool to execute ONE driver via several commands or configuration file.
 .SS "Configuration file:"
@@ -22,8 +22,15 @@ show program's version number and exit
 \fB\-V\fR, \fB\-\-verbose\fR
 output additional information to stdout or stderr
 .TP
+\fB\-I\fR CONFIG, \fB\-\-init\fR CONFIG
+create a configuation file
+.TP
 \fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
 run with configuation file
+.SS create a configuration file
+.TP
+\fBinit\fR
+Create a configuation file. See one\-init(1) for details.
 .SS compile to circle model
 .TP
 \fBimport\fR
@@ -146,13 +153,16 @@ backend=dummy
 .br
 command=sample.out
 .TP
-\fBonecc -C\fR \fIconfiguration file\fR
+\fBonecc -C\fR \fIconfiguration_file\fR
 Run ONE driver according to configuration section parameter
 .PP
 \fBonecc\fR section decides whether to use each driver or not.
 If the value is False, even if the corresponding section exists, the driver won't be executed.
+.TP
+\fBonecc -I\fR \fInew_configuration_name\fR
+Create a cfg configuration like the above.
 .SH COPYRIGHT
-Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Copyright \(co 2020\-2022 Samsung Electronics Co., Ltd. All Rights Reserved
 Licensed under the Apache License, Version 2.0
 https://github.com/Samsung/ONE
 .SH "SEE ALSO"
@@ -167,4 +177,3 @@ programs are properly installed at your site, the command
 .B info onecc
 .PP
 should give you access to the complete manual.
-
