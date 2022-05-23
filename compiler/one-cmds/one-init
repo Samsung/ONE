@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
+
+# Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import argparse
+import os
+import sys
+
+import utils as _utils
+
+# TODO Find better way to suppress trackback on error
+sys.tracebacklimit = 0
+
+
+# NOTE: Do not use '_add_default_arg'. '-C' and '-S' options are unnecessary.
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='command line tool to create a new config file')
+
+    # version
+    parser.add_argument(
+        '-v',
+        '--version',
+        action='store_true',
+        help='show program\'s version number and exit')
+
+    # verbose
+    parser.add_argument(
+        '-V',
+        '--verbose',
+        action='store_true',
+        help='output additional information to stdout or stderr')
+
+    # config filename to be created
+    parser.add_argument(
+        'cfgpath', type=str, help='the config file to be created')
+
+    return parser
+
+
+def _parse_arg(parser):
+    args = parser.parse_args()
+    # print version
+    if args.version:
+        _utils._print_version_and_exit(__file__)
+
+    return args
+
+
+def _verify_arg(args):
+    """verify given arguments"""
+    if not _utils._is_valid_attr(args, 'cfgpath'):
+        raise ValueError('cfgpath should be passed')
+    if len(args.cfgpath) == 0:
+        raise ValueError('cfgpath should be filled with some value')
+
+def _create(args):
+    # if cfgpath doesn't have '.cfg', append it
+    cfgpath = args.cfgpath
+    if cfgpath.endswith('.cfg') is False:
+        cfgpath = ''.join([cfgpath, '.cfg'])
+    if os.path.exists(cfgpath) is True:
+        raise FileExistsError('cfg file already exists')
+
+    # Let's copy the template file to dst
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    template_path = os.path.join(dir_path, 'onecc.template.cfg')
+    if os.path.exists(template_path) is False:
+        raise FileExistsError('the template file doesn\'t exist')
+    with open(template_path,'r') as src_f, open(cfgpath,'w') as dst_f:
+        for line in src_f:
+            dst_f.write(line)
+
+
+def main():
+    parser = _get_parser()
+    args = _parse_arg(parser)
+    _verify_arg(args)
+    _create(args)
+
+
+if __name__ == '__main__':
+    _utils._safemain(main, __file__)
