@@ -67,6 +67,12 @@ def _get_parser():
         action='store_true',
         help='generate profiling data')
 
+    # save intermediate file(s)
+    parser.add_argument(
+        '--save_intermediate',
+        action='store_true',
+        help='Save intermediate files to output folder')
+
     ## arguments for quantization
     quantization_group = parser.add_argument_group('arguments for quantization')
 
@@ -285,6 +291,8 @@ def _quantize(args):
     logfile_path = os.path.realpath(args.output_path) + '.log'
 
     with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
+        if _utils._is_valid_attr(args, 'save_intermediate'):
+            tmpdir = os.path.dirname(logfile_path)
         # get driver path
         circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
         record_minmax_path = os.path.join(dir_path, 'record-minmax')
@@ -308,10 +316,10 @@ def _quantize(args):
         # input and output path
         if _utils._is_valid_attr(args, 'input_path'):
             circle_quantizer_cmd.append(getattr(args, 'input_path'))
-        tmp_output_path_1 = os.path.join(
+        tmp_weights_fake_quant_path = os.path.join(
             tmpdir,
-            os.path.splitext(os.path.basename(args.input_path))[0]) + '1.circle'
-        circle_quantizer_cmd.append(tmp_output_path_1)
+            os.path.splitext(os.path.basename(args.input_path))[0]) + '.weights_fake_quant.circle'
+        circle_quantizer_cmd.append(tmp_weights_fake_quant_path)
         # profiling
         if _utils._is_valid_attr(args, 'generate_profile_data'):
             circle_quantizer_cmd.append('--generate_profile_data')
@@ -328,12 +336,12 @@ def _quantize(args):
             circle_record_minmax_cmd.append('--verbose')
         # input and output path
         circle_record_minmax_cmd.append('--input_model')
-        circle_record_minmax_cmd.append(tmp_output_path_1)
-        tmp_output_path_2 = os.path.join(
+        circle_record_minmax_cmd.append(tmp_weights_fake_quant_path)
+        tmp_minmax_recorded_path = os.path.join(
             tmpdir,
-            os.path.splitext(os.path.basename(args.input_path))[0]) + '2.circle'
+            os.path.splitext(os.path.basename(args.input_path))[0]) + '.minmax_recorded.circle'
         circle_record_minmax_cmd.append('--output_model')
-        circle_record_minmax_cmd.append(tmp_output_path_2)
+        circle_record_minmax_cmd.append(tmp_minmax_recorded_path)
         # input data
         if _utils._is_valid_attr(args, 'input_data'):
             circle_record_minmax_cmd.append('--input_data')
@@ -391,7 +399,7 @@ def _quantize(args):
             circle_quantizer_cmd.append('--config')
             circle_quantizer_cmd.append(getattr(args, 'quant_config'))
         # input and output path
-        circle_quantizer_cmd.append(tmp_output_path_2)
+        circle_quantizer_cmd.append(tmp_minmax_recorded_path)
         if _utils._is_valid_attr(args, 'output_path'):
             circle_quantizer_cmd.append(getattr(args, 'output_path'))
         # profiling
