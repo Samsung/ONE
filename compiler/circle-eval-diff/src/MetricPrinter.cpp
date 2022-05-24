@@ -110,14 +110,6 @@ void MAEPrinter::init(const luci::Module *first, const luci::Module *second)
     const auto first_node = loco::must_cast<luci::CircleNode *>(first_output[i]);
     const auto second_node = loco::must_cast<luci::CircleNode *>(second_output[i]);
 
-    if (not same_shape(first_node, second_node))
-      throw std::runtime_error("Output shape mismatch (" + first_node->name() + ", " +
-                               second_node->name() + ")");
-
-    if (not same_dtype(first_node, second_node))
-      throw std::runtime_error("Output dtype mismatch (" + first_node->name() + ", " +
-                               second_node->name() + ")");
-
     // Create tensors to store intermediate results
     _intermediate.emplace_back();
     _intermediate.at(i).dtype(loco::DataType::FLOAT32);
@@ -214,13 +206,6 @@ void MAPEPrinter::init(const luci::Module *first, const luci::Module *second)
   {
     const auto first_node = loco::must_cast<luci::CircleNode *>(first_output[i]);
     const auto second_node = loco::must_cast<luci::CircleNode *>(second_output[i]);
-    if (not same_shape(first_node, second_node))
-      throw std::runtime_error("Output shape mismatch (" + first_node->name() + ", " +
-                               second_node->name() + ")");
-
-    if (not same_dtype(first_node, second_node))
-      throw std::runtime_error("Output dtype mismatch (" + first_node->name() + ", " +
-                               second_node->name() + ")");
 
     // Create tensors to store intermediate results
     _intermediate.emplace_back();
@@ -326,14 +311,6 @@ void MPEIRPrinter::init(const luci::Module *first, const luci::Module *second)
     const auto first_node = loco::must_cast<luci::CircleOutput *>(first_output[i]);
     const auto second_node = loco::must_cast<luci::CircleOutput *>(second_output[i]);
 
-    if (not same_shape(first_node, second_node))
-      throw std::runtime_error("Output shape mismatch (" + first_node->name() + ", " +
-                               second_node->name() + ")");
-
-    if (not same_dtype(first_node, second_node))
-      throw std::runtime_error("Output dtype mismatch (" + first_node->name() + ", " +
-                               second_node->name() + ")");
-
     // Create places to store intermediate results
     _intermediate.emplace_back(0.0);
 
@@ -437,14 +414,6 @@ void TopKMatchPrinter::init(const luci::Module *first, const luci::Module *secon
   {
     const auto first_node = loco::must_cast<luci::CircleOutput *>(first_output[i]);
     const auto second_node = loco::must_cast<luci::CircleOutput *>(second_output[i]);
-
-    if (not same_shape(first_node, second_node))
-      throw std::runtime_error("Output shape mismatch (" + first_node->name() + ", " +
-                               second_node->name() + ")");
-
-    if (not same_dtype(first_node, second_node))
-      throw std::runtime_error("Output dtype mismatch (" + first_node->name() + ", " +
-                               second_node->name() + ")");
 
     // Create places to store intermediate results
     _intermediate.emplace_back(0.0);

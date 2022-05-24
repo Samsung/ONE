@@ -27,6 +27,25 @@
 namespace
 {
 
+bool same_shape(const luci::CircleNode *a, const luci::CircleNode *b)
+{
+  if (a->rank() != b->rank())
+    return false;
+
+  for (uint32_t i = 0; i < a->rank(); i++)
+  {
+    if (not(a->dim(i) == b->dim(i)))
+      return false;
+  }
+
+  return true;
+}
+
+bool same_dtype(const luci::CircleNode *a, const luci::CircleNode *b)
+{
+  return a->dtype() == b->dtype();
+}
+
 std::unique_ptr<luci::Module> import(const std::string &model_path)
 {
   // Load model from the file
@@ -67,6 +86,29 @@ void writeDataToFile(const std::string &filename, const char *data, size_t data_
   if (fs.write(data, data_size).fail())
   {
     throw std::runtime_error("Failed to write data to file \"" + filename + "\".\n");
+  }
+}
+
+void checkOutputs(const luci::Module *first, const luci::Module *second)
+{
+  const auto first_output = outputs_of(first);
+  const auto second_output = outputs_of(second);
+
+  if (first_output.size() != second_output.size())
+    throw std::runtime_error("Models have different output counts");
+
+  for (uint32_t i = 0; i < first_output.size(); i++)
+  {
+    const auto first_node = loco::must_cast<luci::CircleNode *>(first_output[i]);
+    const auto second_node = loco::must_cast<luci::CircleNode *>(second_output[i]);
+
+    if (not same_shape(first_node, second_node))
+      throw std::runtime_error("Output shape mismatch (" + first_node->name() + ", " +
+                               second_node->name() + ")");
+
+    if (not same_dtype(first_node, second_node))
+      throw std::runtime_error("Output dtype mismatch (" + first_node->name() + ", " +
+                               second_node->name() + ")");
   }
 }
 
@@ -119,6 +161,10 @@ void CircleEvalDiff::init()
 {
   _first_module = import(_ctx->first_model_path);
   _second_module = import(_ctx->second_model_path);
+
+  // Check modules have the same output signature (dtype/shape)
+  // Exception will be thrown if they have different signature
+  checkOutputs(_first_module.get(), _second_module.get());
 
   // Set metric
   std::unique_ptr<MetricPrinter> metric;
