@@ -27,7 +27,7 @@
 namespace
 {
 
-template <typename T> bool same_shape(const T a, const T b)
+bool same_shape(const luci::CircleNode *a, const luci::CircleNode *b)
 {
   if (a->rank() != b->rank())
     return false;
@@ -41,7 +41,10 @@ template <typename T> bool same_shape(const T a, const T b)
   return true;
 }
 
-template <typename T> bool same_dtype(const T a, const T b) { return a->dtype() == b->dtype(); }
+bool same_dtype(const luci::CircleNode *a, const luci::CircleNode *b)
+{
+  return a->dtype() == b->dtype();
+}
 
 std::unique_ptr<luci::Module> import(const std::string &model_path)
 {
