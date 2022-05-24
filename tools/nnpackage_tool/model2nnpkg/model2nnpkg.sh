@@ -7,6 +7,8 @@ outdir="."
 name=""
 config=""
 config_src=""
+models_str=""
+types_str=""
 
 usage() {
   echo "Usage: $progname [options] modelfile"
@@ -43,29 +45,42 @@ done
 
 shift $((OPTIND-1))
 
-if [ $# -ne 1 ]; then
-  >&2 echo "error: wrong argument (no argument or too many arguments)."
+if [ $# -eq 0 ]; then
+  >&2 echo "error: wrong argument (no model argument)."
   >&2 echo "For help, type $progname -h"
   exit 1
 fi
 
-modelfile=$(basename "$1")
+for modelpath in "$@"
+do
+  modelfile=$(basename "$modelpath")
 
-if [[ "$modelfile" != *.* ]]; then
-  >&2 echo "error: modelfile does not have extension."
-  >&2 echo "Please provide extension so that $progname can identify what type of model you use."
-  exit 1
-fi
+  if [[ "$modelfile" != *.* ]]; then
+    >&2 echo "error: modelfile does not have extension."
+    >&2 echo "Please provide extension so that $progname can identify what type of model you use."
+    exit 1
+  fi
 
-if [ ! -e $1 ]; then
-  >&2 echo "error: "$1" does not exist."
-  exit 1
-fi
+  if [ ! -e $modelpath ]; then
+    >&2 echo "error: "$modelpath" does not exist."
+    exit 1
+  fi
+
+  extension=${modelfile##*.}
+
+  if [[ "$models_str" == "" ]]; then
+    models_str="\"$modelfile\""
+    types_str="\"$extension\""
+  else
+    models_str="$models_str, \"$modelfile\""
+    types_str="$types_str, \"$extension\""
+  fi
+done
 
 if [ -z "$name" ]; then
-  name=${modelfile%.*}
+  first_modelfile=$(basename "$1")
+  name=${first_modelfile%.*}
 fi
-extension=${modelfile##*.}
 
 echo "$progname: Generating nnpackage "$name" in "$outdir""
 mkdir -p "$outdir"/"$name"/metadata
@@ -81,8 +96,12 @@ cat > "$outdir"/"$name"/metadata/MANIFEST <<-EOF
   "minor-version" : "2",
   "patch-version" : "0",
   "configs"     : [ "$config" ],
-  "models"      : [ "$modelfile" ],
-  "model-types" : [ "$extension" ]
+  "models"      : [ $models_str ],
+  "model-types" : [ $types_str ]
 }
 EOF
-cp "$1" "$outdir"/"$name"
+
+for modelpath in "$@"
+do
+  cp "$modelpath" "$outdir"/"$name"
+done
