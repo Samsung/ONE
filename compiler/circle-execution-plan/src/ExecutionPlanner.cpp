@@ -19,7 +19,6 @@
 #include <luci/UserSettings.h>
 
 #include <json.h>
-#include <iostream>
 #include <fstream>
 
 namespace circle_planner
@@ -116,27 +115,12 @@ void ExecutionPlanner::create_json_allocation_file(const std::string &json_path)
       alive_till_max = elem;
   }
 
-  for (uint32_t i = 0; i < _ordered_nodes.size(); ++i)
+  for (auto &alloc_node_inform : _alloc_node_inform_vector)
   {
-    auto current_node_it = std::find_if(
-      _alloc_node_inform_vector.begin(), _alloc_node_inform_vector.end(),
-      [i](const AllocationNodeInformation &x) { return x.node_num == i and (not x.is_temp); });
+    const auto node_num = alloc_node_inform.node_num;
+    const auto circle_node = loco::must_cast<luci::CircleNode *>(_ordered_nodes[node_num]);
 
-    auto circle_node = loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]);
-
-    create_allocation_node(allocations_node, *current_node_it, alive_till_max, circle_node);
-
-    // Create and add temporary tensors for current nodes
-    if (_offsets[i].size() > 1)
-    {
-      for (auto &alloc_node_inform : _alloc_node_inform_vector)
-      {
-        if (alloc_node_inform.node_num == i and alloc_node_inform.is_temp)
-        {
-          create_allocation_node(allocations_node, alloc_node_inform, alive_till_max, circle_node);
-        }
-      }
-    }
+    create_allocation_node(allocations_node, alloc_node_inform, alive_till_max, circle_node);
   }
 
   // Create segment part

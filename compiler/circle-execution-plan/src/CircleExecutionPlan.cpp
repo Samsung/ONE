@@ -42,7 +42,7 @@ int entry(int argc, char **argv)
     .required(false)
     .default_value(false)
     .help("Plan with or without dsp (now can be used only with cmsisnn)");
-  arser.add_argument("--generate_json")
+  arser.add_argument("--save_allocations")
     .nargs(1)
     .required(false)
     .default_value("")
@@ -65,7 +65,7 @@ int entry(int argc, char **argv)
   const std::string output_path = arser.get<std::string>("output");
   const std::string platform_name = arser.get<std::string>("--platform");
   const bool use_dsp = arser.get<bool>("--use_dsp");
-  const std::string json_path = arser.get<std::string>("--generate_json");
+  const std::string json_path = arser.get<std::string>("--save_allocations");
 
   if (platform_name != "cmsisnn" && use_dsp)
   {
@@ -92,11 +92,11 @@ int entry(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  bool is_generate_json = false;
+  bool is_save_allocations = false;
 
   if (!json_path.empty())
   {
-    is_generate_json = true;
+    is_save_allocations = true;
   }
 
   foder::FileLoader file_loader{input_path};
@@ -134,7 +134,7 @@ int entry(int argc, char **argv)
   circle_planner::ExecutionPlanner execution_planner(module->graph(), {platform_type, use_dsp});
   execution_planner.make_execution_plan();
 
-  if (is_generate_json)
+  if (is_save_allocations)
     execution_planner.create_json_allocation_file(json_path);
 
   // Export to output Circle file
