@@ -44,6 +44,33 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
           
 endforeach(ONE_COMMAND)
 
+set(INFER_FILES
+    tflite-infer
+)
+
+foreach(INFER_ITEM IN ITEMS ${INFER_FILES})
+
+  set(INFER_FILE ${INFER_ITEM})
+  set(INFER_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${INFER_FILE}")
+  set(INFER_BIN "${CMAKE_CURRENT_BINARY_DIR}/${INFER_FILE}")
+  set(INFER_TARGET "${ONE_COMMAND}_target")
+
+  add_custom_command(OUTPUT ${INFER_BIN}
+    COMMAND ${CMAKE_COMMAND} -E copy "${INFER_SRC}" "${INFER_BIN}"
+    DEPENDS ${INFER_SRC}
+    COMMENT "Generate ${INFER_BIN}"
+  )
+
+  add_custom_target(${INFER_TARGET} ALL DEPENDS ${INFER_BIN})
+
+  install(FILES ${INFER_ITEM}
+          PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+                      GROUP_READ GROUP_EXECUTE
+                      WORLD_READ WORLD_EXECUTE
+          DESTINATION bin)
+          
+endforeach(INFER_ITEM)
+
 set(ONE_UTILITY_FILES
     one-build.template.cfg
     onecc.template.cfg
