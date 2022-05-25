@@ -21,12 +21,9 @@
 
 import argparse
 import os
-import sys
+import shutil
 
 import utils as _utils
-
-# TODO Find better way to suppress trackback on error
-sys.tracebacklimit = 0
 
 
 # NOTE: Do not use '_add_default_arg'. '-C' and '-S' options are unnecessary.
@@ -50,7 +47,16 @@ def _get_parser():
 
     # config filename to be created
     parser.add_argument(
-        'cfgpath', type=str, help='the config file to be created')
+        'cfg_path', type=str, help='the config path to be created')
+
+    # template path
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    template_path = os.path.join(dir_path, 'onecc.template.cfg')
+    parser.add_argument(
+        '-t',
+        '--template_path',
+        type=str, default=template_path,
+        help='full filepath of the template file')
 
     return parser
 
@@ -64,35 +70,27 @@ def _parse_arg(parser):
     return args
 
 
-def _verify_arg(args):
-    """verify given arguments"""
-    if not _utils._is_valid_attr(args, 'cfgpath'):
-        raise ValueError('cfgpath should be passed')
-    if len(args.cfgpath) == 0:
-        raise ValueError('cfgpath should be filled with some value')
-
 def _create(args):
-    # if cfgpath doesn't have '.cfg', append it
-    cfgpath = args.cfgpath
-    if cfgpath.endswith('.cfg') is False:
-        cfgpath = ''.join([cfgpath, '.cfg'])
-    if os.path.exists(cfgpath) is True:
-        raise FileExistsError('cfg file already exists')
+    # if cfg_path doesn't have '.cfg', append it
+    cfg_path = args.cfg_path
+    if cfg_path.endswith('.cfg') is False:
+        cfg_path = ''.join([cfg_path, '.cfg'])
+    if os.path.exists(cfg_path) is True:
+        raise FileExistsError(cfg_path + ' file already exists')
 
-    # Let's copy the template file to dst
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    template_path = os.path.join(dir_path, 'onecc.template.cfg')
+    template_path = args.template_path
     if os.path.exists(template_path) is False:
-        raise FileExistsError('the template file doesn\'t exist')
-    with open(template_path,'r') as src_f, open(cfgpath,'w') as dst_f:
-        for line in src_f:
-            dst_f.write(line)
+        raise FileExistsError('Template file ' + template_path + ' not found')
+
+    try:
+        shutil.copyfile(template_path, cfg_path)
+    except (shutil.Error, OSError):
+        raise shutil.Error('Unable to copyfile: %s -> %s' % template_path, cfg_path) 
 
 
 def main():
     parser = _get_parser()
     args = _parse_arg(parser)
-    _verify_arg(args)
     _create(args)
 
 

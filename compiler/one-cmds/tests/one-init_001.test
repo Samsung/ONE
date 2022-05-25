@@ -25,13 +25,13 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-cfgname="test.cfg"
-template="$(dirname $(realpath $0))/../onecc.template.cfg"
+cfgname="one-init_001.new.cfg"
+template="one-init_001.cfg"
 
 rm -rf ${cfgname}
 
 # run test
-one-init ${cfgname} > /dev/null 2>&1
+one-init ${cfgname} # > /dev/null 2>&1
 
 if [[ ! -f "${cfgname}" ]]; then
   trap_err_onexit

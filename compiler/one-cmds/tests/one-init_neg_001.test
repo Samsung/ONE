@@ -21,14 +21,14 @@ filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  echo "${filename_ext} FAILED"
-  exit 255
+  echo "${filename_ext} SUCCESS"
+  exit 0
 }
 
 trap trap_err_onexit ERR
 
-cfgname="test.cfg"
-template="$(dirname $(realpath $0))/../onecc.template.cfg"
+cfgname="one-init_neg_001.new.cfg"
+template="one-init_neg_001.cfg"
 
 rm -rf ${cfgname}
 echo "test" > ${cfgname}
@@ -39,3 +39,8 @@ ret=$(echo $?)
 if [[ $ret -ne 0 ]]; then
   trap_err_onexit
 fi
+
+rm -rf ${cfgname}
+
+echo "${filename_ext} FAILED"
+exit 255
