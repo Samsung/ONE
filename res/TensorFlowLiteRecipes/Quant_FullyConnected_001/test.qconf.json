@@ -1,0 +1,11 @@
+{
+    "default_quantization_dtype" : "int16",
+    "default_granularity" : "channel",
+    "layers" : [
+        {
+            "name" : "out",
+            "dtype" : "uint8",
+            "granularity" : "channel"
+        }
+    ]
+}

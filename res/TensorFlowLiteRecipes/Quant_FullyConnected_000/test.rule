@@ -1,0 +1,13 @@
+# To check mixed quantization.
+# Default dtype: U8, Target Op dtype: S16
+# Quantize Ops are inserted at the beginning/end of the model.
+
+RULE    "VERIFY_FILE_FORMAT"    $(verify_file_format) '=' 1
+
+RULE    "IN_U8"                 $(tensor_dtype in) '=' UINT8
+RULE    "IN_QUANTIZE_S16"       $(tensor_dtype in_Quantize) '=' INT16
+RULE    "WEIGHT_S16"            $(tensor_dtype weight) '=' INT16
+RULE    "BIAS_S64"              $(tensor_dtype bias) '=' INT64
+RULE    "TARGET_S16"            $(tensor_dtype out) '=' INT16
+RULE    "OUTPUT_S16"            $(tensor_dtype out_Quantize) '=' UINT8
+RULE    "QUANTIZE_OP"           $(op_count QUANTIZE) '=' 2
