@@ -28,6 +28,17 @@
 namespace
 {
 
+bool is_output(const loco::Node *node)
+{
+  auto cnode = loco::must_cast<const luci::CircleNode *>(node);
+  auto opcode = cnode->opcode();
+  if (opcode == luci::CircleOpcode::CIRCLEOUTPUT ||
+      opcode == luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
+    return true;
+
+  return false;
+}
+
 bool is_same_shape(const luci::CircleNode *node, const std::vector<loco::Dimension> &shape)
 {
   if (not node)
@@ -1195,6 +1206,8 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
   // pre-Transpose --- [intermediate Ops] --- post-Transpose
   //                |
   //                +--[intermediate Ops] --- post-Transpose
+  //
+  // NOTE Intermediate Ops SHOULD NOT contain pre-Transpose/Reshape
   for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
   {
     if (has_data_format(node))
@@ -1202,6 +1215,52 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
 
     if (is_pre_transpose(node) || is_pre_reshape(node))
     {
+      std::set<loco::Node *> intermediate;
+
+      // Variable to check intermediate Ops contain pre-Transpose/Reshape
+      bool has_pre = false;
+
+      // Variable to check the pattern is closed with post-Transpose/Reshape
+      bool is_closed = true;
+
+      // For recursive call of lambda
+      std::function<void(loco::Node *)> collect_intermediate;
+      collect_intermediate = [&](loco::Node *n) {
+        for (auto succ : loco::succs(n))
+        {
+          // Exit condition
+          if (is_post_transpose(succ) || is_post_reshape(succ))
+            continue;
+
+          if (is_pre_transpose(succ) || is_pre_reshape(succ))
+          {
+            has_pre = true;
+            break;
+          }
+
+          if (is_output(succ))
+          {
+            is_closed = false;
+            break;
+          }
+
+          intermediate.emplace(succ);
+
+          collect_intermediate(succ);
+        }
+      };
+
+      collect_intermediate(node);
+
+      if (has_pre or not is_closed)
+        continue;
+
+      for (auto inter : intermediate)
+      {
+        if (not has_data_format(inter))
+          set_data_format(inter, DataFormat::NHWC);
+      }
+#if 0
       // For recursive call of lambda
       std::function<void(loco::Node *)> set_data_format_to_succs;
       set_data_format_to_succs = [&](loco::Node *n) {
@@ -1221,6 +1280,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       };
 
       set_data_format_to_succs(node);
+#endif
     }
   }
 
