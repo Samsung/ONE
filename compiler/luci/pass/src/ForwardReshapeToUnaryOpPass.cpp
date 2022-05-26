@@ -22,7 +22,7 @@
 #include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Service/CircleShapeInference.h>
 #include <luci/Service/Nodes/CircleConst.h>
-#include "luci/Service/CircleNodeClone.h"
+#include <luci/Service/CircleNodeClone.h>
 
 namespace
 {
