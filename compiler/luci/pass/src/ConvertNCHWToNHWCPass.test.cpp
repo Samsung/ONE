@@ -202,6 +202,173 @@ public:
   luci::CircleConst *post_shape = nullptr;
 };
 
+/**
+ *  Graph with pre-Reshape but no post-Transpose/Reshape.
+ *
+ *  BEFORE
+ *             [Input]
+ *                |
+ *          [Pre-Reshape]
+ *                |
+ *              [Relu]
+ *                |
+ *             [Output]
+ *
+ *  AFTER
+ *             [Input]
+ *                |
+ *          [Pre-Reshape]
+ *                |
+ *          [Pre-Transpose]
+ *                |
+ *              [Relu]
+ *                |
+ *          [Post-Transpose]
+ *                |
+ *             [Output]
+ */
+class NoPostReshapeGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    relu = g.nodes()->create<luci::CircleRelu>();
+    pre_reshape = g.nodes()->create<luci::CircleReshape>();
+    pre_shape = g.nodes()->create<luci::CircleConst>();
+
+    pre_shape->dtype(loco::DataType::S32);
+
+    uint32_t channel_size = 16;
+    auto in = loco::must_cast<luci::CircleNode *>(input);
+    in->shape({1, channel_size, 4, 4});
+    pre_shape->shape({4});
+
+    pre_shape->size<loco::DataType::S32>(4);
+    pre_shape->at<loco::DataType::S32>(0) = 1;
+    pre_shape->at<loco::DataType::S32>(1) = 4;
+    pre_shape->at<loco::DataType::S32>(2) = 4;
+    pre_shape->at<loco::DataType::S32>(3) = channel_size;
+
+    pre_reshape->tensor(input);
+    pre_reshape->shape(pre_shape);
+    relu->features(pre_reshape);
+
+    relu->name("Relu");
+    pre_reshape->name("pre-reshape");
+
+    return relu;
+  }
+
+public:
+  luci::CircleRelu *relu = nullptr;
+  luci::CircleReshape *pre_reshape = nullptr;
+  luci::CircleConst *pre_shape = nullptr;
+};
+
+/**
+ *  Graph with two pre-Reshapes
+ *
+ *  BEFORE
+ *             [Input]
+ *                |
+ *          [Pre-Reshape]
+ *                |
+ *              [Relu]
+ *                |
+ *          [Pre-Reshape]
+ *                |
+ *          [Post-Reshape]
+ *                |
+ *             [Output]
+ *
+ *  AFTER
+ *             [Input]
+ *                |
+ *          [Pre-Reshape]
+ *                |
+ *          [Pre-Transpose]
+ *                |
+ *              [Relu]
+ *                |
+ *          [Post-Transpose]
+ *                |
+ *          [Pre-Reshape]
+ *                |
+ *          [Post-Reshape]
+ *                |
+ *             [Output]
+ */
+class ReluNotClosedGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    relu = g.nodes()->create<luci::CircleRelu>();
+    pre_reshape = g.nodes()->create<luci::CircleReshape>();
+    pre_reshape_2 = g.nodes()->create<luci::CircleReshape>();
+    post_reshape = g.nodes()->create<luci::CircleReshape>();
+    pre_shape = g.nodes()->create<luci::CircleConst>();
+    pre_shape_2 = g.nodes()->create<luci::CircleConst>();
+    post_shape = g.nodes()->create<luci::CircleConst>();
+
+    pre_shape->dtype(loco::DataType::S32);
+    pre_shape_2->dtype(loco::DataType::S32);
+    post_shape->dtype(loco::DataType::S32);
+
+    uint32_t channel_size = 16;
+    auto in = loco::must_cast<luci::CircleNode *>(input);
+    in->shape({1, channel_size, 4, 4});
+    pre_shape->shape({4});
+    pre_shape_2->shape({4});
+    post_shape->shape({4});
+
+    pre_shape->size<loco::DataType::S32>(4);
+    pre_shape->at<loco::DataType::S32>(0) = 1;
+    pre_shape->at<loco::DataType::S32>(1) = 4;
+    pre_shape->at<loco::DataType::S32>(2) = 4;
+    pre_shape->at<loco::DataType::S32>(3) = channel_size;
+
+    pre_shape_2->size<loco::DataType::S32>(4);
+    pre_shape_2->at<loco::DataType::S32>(0) = 1;
+    pre_shape_2->at<loco::DataType::S32>(1) = 4;
+    pre_shape_2->at<loco::DataType::S32>(2) = channel_size;
+    pre_shape_2->at<loco::DataType::S32>(3) = 4;
+
+    post_shape->size<loco::DataType::S32>(4);
+    post_shape->at<loco::DataType::S32>(0) = 1;
+    post_shape->at<loco::DataType::S32>(1) = 4;
+    post_shape->at<loco::DataType::S32>(2) = 4;
+    post_shape->at<loco::DataType::S32>(3) = channel_size;
+
+    pre_reshape->tensor(input);
+    pre_reshape->shape(pre_shape);
+
+    relu->features(pre_reshape);
+
+    pre_reshape_2->tensor(relu);
+    pre_reshape_2->shape(pre_shape_2);
+
+    post_reshape->tensor(pre_reshape_2);
+    post_reshape->shape(post_shape);
+
+    relu->name("Relu");
+    pre_reshape->name("pre-reshape");
+    pre_reshape->name("pre-reshape-2");
+    post_reshape->name("post-reshape");
+
+    return post_reshape;
+  }
+
+public:
+  luci::CircleRelu *relu = nullptr;
+  luci::CircleReshape *pre_reshape = nullptr;
+  luci::CircleReshape *pre_reshape_2 = nullptr;
+  luci::CircleReshape *post_reshape = nullptr;
+  luci::CircleConst *pre_shape = nullptr;
+  luci::CircleConst *pre_shape_2 = nullptr;
+  luci::CircleConst *post_shape = nullptr;
+};
+
 class AddScalarGraph final : public SimpleGraph
 {
 protected:
@@ -1601,4 +1768,32 @@ TEST(ConvertNCHWToNHWC, SubScalar)
   EXPECT_EQ(1, new_beta->rank());
 
   check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, Not_Closed_Case1_NEG)
+{
+  NoPostReshapeGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.relu->features());
+
+  auto relu_succs = loco::succs(g.relu);
+  EXPECT_EQ(1, relu_succs.size());
+  check_post_trans(*relu_succs.begin());
+}
+
+TEST(ConvertNCHWToNHWC, Not_Closed_Case2_NEG)
+{
+  ReluNotClosedGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.relu->features());
+
+  auto relu_succs = loco::succs(g.relu);
+  EXPECT_EQ(1, relu_succs.size());
+  check_post_trans(*relu_succs.begin());
 }
