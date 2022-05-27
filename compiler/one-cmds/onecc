@@ -32,6 +32,9 @@ import utils as _utils
 sys.tracebacklimit = 0
 
 subtool_list = {
+    'init': {
+        'init': 'Create a new config file',
+    },
     'compile': {
         'import': 'Convert given model to circle',
         'optimize': 'Optimize circle model',
@@ -65,7 +68,7 @@ def _check_subtool_exists():
 
 
 def _get_parser():
-    onecc_usage = 'onecc [-h] [-v] [-C CONFIG] [-O OPTIMIZATION] [COMMAND <args>]'
+    onecc_usage = 'onecc [-h] [-v] [-I CONFIG] [-C CONFIG] [-O OPTIMIZATION] [COMMAND <args>]'
     onecc_desc = 'Run ONE driver via several commands or configuration file'
     parser = argparse.ArgumentParser(description=onecc_desc, usage=onecc_usage)
 
@@ -81,7 +84,13 @@ def _get_parser():
     opt_help_message = 'optimization name to use ' + opt_help_message
     parser.add_argument('-O', type=str, metavar='OPTIMIZATION', help=opt_help_message)
 
+    parser.add_argument('-I', type=str, metavar='CONFIG', help='create a configuation file')
+
     # just for help message
+    init_group = parser.add_argument_group('create a new config file')
+    for tool, desc in subtool_list['init'].items():
+        init_group.add_argument(tool, action='store_true', help=desc)
+
     compile_group = parser.add_argument_group('compile to circle model')
     for tool, desc in subtool_list['compile'].items():
         compile_group.add_argument(tool, action='store_true', help=desc)
@@ -206,6 +215,14 @@ def main():
     # parsing of the configuration file proceeds after this.
     parser = _get_parser()
     args = _parse_arg(parser)
+
+    # TODO: keep running after 'init' command if possible
+    # if tool is 'init' command, run it first and exit
+    if _utils._is_valid_attr(args, 'I'):
+        driver_name = 'one-init'
+        options = sys.argv[2:]
+        _call_driver(driver_name, options)
+        sys.exit(0)
 
     # verify arguments
     _verify_arg(parser, args)

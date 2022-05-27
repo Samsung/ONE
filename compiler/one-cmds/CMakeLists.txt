@@ -119,6 +119,12 @@ foreach(ONE_DOCUMENT IN ITEMS ${ONE_DOCUMENT_FILES})
 
 endforeach(ONE_DOCUMENT)
 
+# default optimization cfg
+set(ONE_OPTIMIZATION_DEFAULT_FILE
+  ODEFAULT.cfg
+)
+install(FILES ${ONE_OPTIMIZATION_DEFAULT_FILE} DESTINATION optimization)
+
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
