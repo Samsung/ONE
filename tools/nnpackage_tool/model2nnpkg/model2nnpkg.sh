@@ -11,7 +11,7 @@ models_str=""
 types_str=""
 
 usage() {
-  echo "Usage: $progname [options] modelfile"
+  echo "Usage: $progname [options] modelfile..."
   echo "Convert modelfile (tflite, circle or tvn) to nnpackage."
   echo ""
   echo "Options:"
@@ -66,15 +66,9 @@ do
     exit 1
   fi
 
-  extension=${modelfile##*.}
-
-  if [[ "$models_str" == "" ]]; then
-    models_str="\"$modelfile\""
-    types_str="\"$extension\""
-  else
-    models_str="$models_str, \"$modelfile\""
-    types_str="$types_str, \"$extension\""
-  fi
+  models_str="$models_str$delim\"$modelfile\""
+  types_str="$types_str$delim\"${modelfile##*.}\""
+  delim=", "
 done
 
 if [ -z "$name" ]; then
