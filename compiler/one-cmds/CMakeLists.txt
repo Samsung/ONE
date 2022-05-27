@@ -40,7 +40,7 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
                       GROUP_READ GROUP_EXECUTE
                       WORLD_READ WORLD_EXECUTE
           DESTINATION bin)
-          
+
 endforeach(ONE_COMMAND)
 
 set(ONE_UTILITY_FILES
@@ -123,5 +123,6 @@ if(NOT ENABLE_TEST)
 endif(NOT ENABLE_TEST)
 
 add_subdirectory(dummy-driver)
+add_subdirectory(optimization)
 add_subdirectory(tests)
 add_subdirectory(validate-onnx2circle)
