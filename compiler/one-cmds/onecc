@@ -84,7 +84,7 @@ def _get_parser():
     opt_help_message = 'optimization name to use ' + opt_help_message
     parser.add_argument('-O', type=str, metavar='OPTIMIZATION', help=opt_help_message)
 
-    parser.add_argument('-I', type=str, metavar='CONFIG', help='create a configuation file')
+    parser.add_argument('-I', '--init', type=str, metavar='CONFIG', help='create a configuation file')
 
     # just for help message
     init_group = parser.add_argument_group('create a new config file')
@@ -218,7 +218,7 @@ def main():
 
     # TODO: keep running after 'init' command if possible
     # if tool is 'init' command, run it first and exit
-    if _utils._is_valid_attr(args, 'I'):
+    if _utils._is_valid_attr(args, 'init'):
         driver_name = 'one-init'
         options = sys.argv[2:]
         _call_driver(driver_name, options)
