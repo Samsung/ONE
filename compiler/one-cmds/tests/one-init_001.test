@@ -31,7 +31,7 @@ template="one-init_001.cfg"
 rm -rf ${cfgname}
 
 # run test
-one-init ${cfgname} > /dev/null 2>&1
+one-init -t ${template} ${cfgname} > /dev/null 2>&1
 
 if [[ ! -f "${cfgname}" ]]; then
   trap_err_onexit
