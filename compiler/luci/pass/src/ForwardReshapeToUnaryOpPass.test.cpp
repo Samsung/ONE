@@ -65,6 +65,42 @@ protected:
   luci::CircleConst *_reshape_shape = nullptr;
 };
 
+// TODO Reduce duplicate code with ReshapeNegGraphlet
+class ReshapeLogisticGraphlet
+{
+public:
+  ReshapeLogisticGraphlet() = default;
+
+public:
+  void init(loco::Graph *g, const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    std::vector<uint32_t> shape_out_v = shape_out;
+
+    _reshape_shape = g->nodes()->create<luci::CircleConst>();
+    _reshape = g->nodes()->create<luci::CircleReshape>();
+    _logistic = g->nodes()->create<luci::CircleLogistic>();
+
+    _reshape_shape->dtype(loco::DataType::S32);
+    _reshape_shape->rank(1);
+    _reshape_shape->dim(0).set(shape_out_v.size());
+    _reshape_shape->shape_status(luci::ShapeStatus::VALID);
+    // values
+    const auto size = shape_out_v.size();
+    _reshape_shape->size<loco::DataType::S32>(size);
+    for (uint32_t i = 0; i < size; i++)
+      _reshape_shape->at<loco::DataType::S32>(i) = shape_out_v[i];
+
+    _reshape_shape->name("reshape_shape");
+    _reshape->name("reshape");
+    _logistic->name("logistic");
+  }
+
+protected:
+  luci::CircleReshape *_reshape = nullptr;
+  luci::CircleLogistic *_logistic = nullptr;
+  luci::CircleConst *_reshape_shape = nullptr;
+};
+
 class ForwardReshapeToNegGraph : public TestIOGraph, public ReshapeNegGraphlet
 {
 public:
@@ -85,6 +121,26 @@ public:
   }
 };
 
+class ForwardReshapeToLogisticGraph : public TestIOGraph, public ReshapeLogisticGraphlet
+{
+public:
+  ForwardReshapeToLogisticGraph() = default;
+
+public:
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    ReshapeLogisticGraphlet::init(g(), shape_in, shape_out);
+
+    // connect network
+    _reshape->tensor(input());
+    _reshape->shape(_reshape_shape);
+    _logistic->x(_reshape);
+
+    output()->from(_logistic);
+  }
+};
+
 class ForwardReshapeToNegGraphTest : public ::testing::Test
 {
 public:
@@ -98,6 +154,22 @@ public:
 
 protected:
   ForwardReshapeToNegGraph _graph;
+  luci::ForwardReshapeToUnaryOpPass _pass;
+};
+
+class ForwardReshapeToLogisticGraphTest : public ::testing::Test
+{
+public:
+  ForwardReshapeToLogisticGraphTest() = default;
+
+  void run_pass(void)
+  {
+    while (_pass.run(_graph.g()))
+      ;
+  }
+
+protected:
+  ForwardReshapeToLogisticGraph _graph;
   luci::ForwardReshapeToUnaryOpPass _pass;
 };
 
@@ -122,4 +194,18 @@ TEST_F(ForwardReshapeToNegGraphTest, simple_forward)
   ASSERT_EQ(nullptr, neg);
   neg = dynamic_cast<luci::CircleNeg *>(reshape->tensor());
   ASSERT_NE(nullptr, neg);
+}
+
+TEST_F(ForwardReshapeToLogisticGraphTest, forward)
+{
+  _graph.init({2, 2, 2}, {2, 4});
+
+  run_pass();
+
+  auto reshape = dynamic_cast<luci::CircleReshape *>(_graph.output()->from());
+  auto log = dynamic_cast<luci::CircleLogistic *>(_graph.output()->from());
+  ASSERT_NE(nullptr, reshape);
+  ASSERT_EQ(nullptr, log);
+  log = dynamic_cast<luci::CircleLogistic *>(reshape->tensor());
+  ASSERT_NE(nullptr, log);
 }
