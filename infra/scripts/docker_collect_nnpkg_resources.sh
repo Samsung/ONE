@@ -28,13 +28,13 @@ else
 fi
 
 # prepare tensorflow
-if [ -d $TENSORFLOW_PREFIX ]; then
+if [ -n "$TENSORFLOW_PREFIX" ]; then
   DOCKER_OPTS+=" -v $TENSORFLOW_PREFIX:/opt/tensorflow"
   CONFIG_OPTIONS+=" -DTENSORFLOW_PREFIX=/opt/tensorflow"
 fi
 
 # prepare onnx
-if [ -d $ONNXRUNTIME_PREFIX ]; then
+if [ -n "$ONNXRUNTIME_PREFIX" ]; then
   DOCKER_OPTS+=" -v $ONNXRUNTIME_PREFIX:/opt/onnxruntime"
   CONFIG_OPTIONS+=" -DONNXRUNTIME_PREFIX=/opt/onnxruntime"
 fi
