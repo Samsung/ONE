@@ -38,13 +38,6 @@ def _get_parser():
         action='store_true',
         help='show program\'s version number and exit')
 
-    # verbose
-    parser.add_argument(
-        '-V',
-        '--verbose',
-        action='store_true',
-        help='output additional information to stdout or stderr')
-
     # config filename to be created
     parser.add_argument(
         'cfg_path', type=str, help='the config path to be created')
@@ -85,7 +78,7 @@ def _create(args):
     try:
         shutil.copyfile(template_path, cfg_path)
     except (shutil.Error, OSError):
-        raise shutil.Error('Unable to copyfile: %s -> %s' % template_path, cfg_path) 
+        raise shutil.Error('Unable to copyfile: %s -> %s' % template_path, cfg_path)
 
 
 def main():
