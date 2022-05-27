@@ -92,10 +92,6 @@ def _search_backend_driver(driver):
     """
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
-    # CASE 0: check drvier name validation
-    if not driver:
-        return None
-
     # CASE 1: one/bin/{driver} is found
     driver_path = dir_path + '/' + driver
     if os.path.isfile(driver_path) and os.access(driver_path, os.X_OK):
@@ -103,7 +99,6 @@ def _search_backend_driver(driver):
 
     # CASE 2: one/backends/**/bin/{driver} is found
     for driver_path in glob.glob(dir_path + '/../backends/**/bin/' + driver, recursive=True):
-        print(driver_path)
         if os.path.isfile(driver_path) and os.access(driver_path, os.X_OK):
             return driver_path
 
@@ -137,10 +132,13 @@ def _get_parser(backends_list):
 
 def _verify_arg(parser, args):
     """verify given arguments"""
-    # check if required arguments is given
+    # `-d/--driver` and `-b/--backend` are mutually exclusive arguments.
+    if _utils._is_valid_attr(args, 'driver') and _utils._is_valid_attr(args, 'backend'):
+        parser.error('-d and -b options are mutually exclusive. Please use only one of them.')
+
     missing = []
-    if not _utils._is_valid_attr(args, 'backend') and not _utils._is_valid_attr(args, 'driver'):
-        missing.append('-d/--driver or -b/--backend')
+    if not _utils._is_valid_attr(args, 'driver') and not _utils._is_valid_attr(args, 'backend'):
+        missing.append('{-d/--driver | -b/--backend}')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
 
@@ -174,7 +172,7 @@ def _get_executable(args, backends_list):
     if driver:
         executable = _search_backend_driver(driver)
         if executable:
-                return executable
+            return executable
         missing.append(driver)
 
     if getattr(args, 'backend'):
