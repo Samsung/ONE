@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# neither -b and -d option drivers are not found
+# both -b and -d option drivers are given as argument
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -23,7 +23,7 @@ driver_name="neg2"
 
 trap_err_onexit()
 {
-  if grep -q "FileNotFoundError: ${driver_name} or ${backend_name}-infer not found" "${filename}.log"; then
+  if grep -q "\-d and -b options are mutually exclusive. Please use only one of them" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
