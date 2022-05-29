@@ -60,7 +60,12 @@ std::unique_ptr<luci::Module> import(const std::string &model_path)
     throw std::runtime_error("Failed to verify circle '" + model_path + "'");
   }
 
-  auto module = luci::Importer().importModule(circle::GetModel(model_data.data()));
+  auto circle_model = circle::GetModel(model_data.data());
+
+  if (not circle_model)
+    throw std::runtime_error("Failed to load '" + model_path + "'");
+
+  auto module = luci::Importer().importModule(circle_model);
 
   if (not module)
     throw std::runtime_error("Failed to load '" + model_path + "'");
