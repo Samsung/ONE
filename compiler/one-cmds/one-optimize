@@ -82,6 +82,14 @@ def _verify_arg(parser, args):
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
 
+    # default has pre-defined optimization options
+    default = _get_parser().parse_args()
+
+    # check if unrecognized arguments are given
+    diff = set(dir(args)) - set(dir(default))
+    if len(diff):
+      parser.error('the following arguments are unrecognized: ' + ' '.join(diff))
+
 
 def _parse_arg(parser):
     args = parser.parse_args()
