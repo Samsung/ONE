@@ -57,6 +57,9 @@ std::vector<std::shared_ptr<LayerParam>> read_layer_params(std::string &filename
   std::vector<std::shared_ptr<LayerParam>> p;
   for (auto layer : layers)
   {
+    if (layer.isMember("name"))
+    {
+      // clang-format off
     auto l = std::make_shared<LayerParam>();
     {
       l->name = layer["name"].asString();
@@ -64,6 +67,23 @@ std::vector<std::shared_ptr<LayerParam>> read_layer_params(std::string &filename
       l->granularity = layer["granularity"].asString();
     }
     p.emplace_back(l);
+      // clang-format on
+    }
+
+    // Multiple names with the same dtype & granularity
+    if (layer.isMember("names"))
+    {
+      for (auto name : layer["names"])
+      {
+        auto l = std::make_shared<LayerParam>();
+        {
+          l->name = name.asString();
+          l->dtype = layer["dtype"].asString();
+          l->granularity = layer["granularity"].asString();
+        }
+        p.emplace_back(l);
+      }
+    }
   }
 
   return p;
