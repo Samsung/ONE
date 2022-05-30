@@ -42,6 +42,7 @@ def _get_backends_list():
     ├── doc
     ├── include
     ├── lib
+    ├── optimization
     └── test
 
     The list where `one-infer` finds its backends
@@ -81,6 +82,7 @@ def _search_backend_driver(driver):
     ├── doc
     ├── include
     ├── lib
+    ├── optimization
     └── test
 
     The list where `one-infer` finds its backend driver
@@ -134,7 +136,7 @@ def _verify_arg(parser, args):
     """verify given arguments"""
     # `-d/--driver` and `-b/--backend` are mutually exclusive arguments.
     if _utils._is_valid_attr(args, 'driver') and _utils._is_valid_attr(args, 'backend'):
-        parser.error('-d and -b options are mutually exclusive. Please use only one of them.')
+        parser.error('-d and -b options are mutually exclusive. Please use only one of them')
 
     missing = []
     if not _utils._is_valid_attr(args, 'driver') and not _utils._is_valid_attr(args, 'backend'):
@@ -165,26 +167,20 @@ def _parse_arg(parser):
 
 
 def _get_executable(args, backends_list):
-    executable = None
-    missing = []
-
-    driver = getattr(args, 'driver')
+    driver = _utils._is_valid_attr(args, 'driver')
     if driver:
         executable = _search_backend_driver(driver)
         if executable:
             return executable
-        missing.append(driver)
+        else:
+            raise FileNotFoundError(driver + ' not found')
 
-    if getattr(args, 'backend'):
+    if _utils._is_valid_attr(args, 'backend'):
         backend_base = getattr(args, 'backend') + '-infer'
         for cand in backends_list:
             if ntpath.basename(cand) == backend_base:
-                executable = cand
-                return executable
-        missing.append(backend_base)
-
-    if not executable:
-        raise FileNotFoundError(' or '.join(missing) + ' not found')
+                return cand
+        raise FileNotFoundError(backend_base + ' not found')
 
 
 def main():
