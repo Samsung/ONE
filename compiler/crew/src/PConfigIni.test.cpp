@@ -85,3 +85,20 @@ TEST(ConfigIniTest, write_ini_file_error_NEG)
   crew::Sections sections;
   EXPECT_THROW(crew::write_ini("/abc/def/cannot_access", sections), std::runtime_error);
 }
+
+TEST(ConfigIniTest, read_file_escape_semicolon)
+{
+  auto sections = crew::read_ini("test_read_semicolon.ini");
+  ASSERT_EQ(1UL, sections.size());
+
+  auto its = sections.begin();
+  ASSERT_NE(sections.end(), its);
+  EXPECT_TRUE("hello" == its->name);
+  ASSERT_EQ(1UL, its->items.size());
+
+  auto it = its->items.begin();
+  ASSERT_NE(its->items.end(), it);
+
+  EXPECT_TRUE("keya;keyb;keyc;keyd" == it->first);
+  EXPECT_TRUE("world" == it->second);
+}

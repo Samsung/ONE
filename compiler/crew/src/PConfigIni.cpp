@@ -30,6 +30,31 @@
 namespace crew
 {
 
+namespace
+{
+
+std::string filter_escape(const std::string &source)
+{
+  std::string key = source;
+
+  // if key is surrounded with quotation
+  // TODO for quotation
+
+  // if key has '\\' + ';', remove '\\'
+  auto pos = key.find("\\;");
+  while (pos != std::string::npos)
+  {
+    auto k1 = key.substr(0, pos);
+    auto k2 = key.substr(pos + 1);
+    key = k1 + k2;
+    pos = key.find("\\;");
+  }
+
+  return key;
+}
+
+} // namespace
+
 Sections read_ini(const char *data, size_t length)
 {
   assert(data != nullptr);
@@ -84,6 +109,7 @@ Sections read_ini(const char *data, size_t length)
       {
         auto key = string_line.substr(0, pos);
         auto val = string_line.substr(pos + 1);
+        key = filter_escape(key);
         section.items.emplace(key, val);
       }
     }
