@@ -16,17 +16,74 @@
 
 #include "Dump.h"
 
+#include <mio_circle/Helper.h>
+#include <mio_circle/Reader.h>
+
 #include <ostream>
+
+namespace
+{
+
+void dump_ops(std::ostream &os, mio::circle::Reader &reader, const cirops::DumpOption &option)
+{
+  auto ops = reader.operators();
+  for (uint32_t i = 0; i < ops->Length(); ++i)
+  {
+    const auto op = ops->Get(i);
+
+    if (option.codes)
+    {
+      const auto op_name = reader.opcode_name(op);
+      if (option.all_graphs)
+      {
+        // NOTE all_graphs is false for now
+        // TODO check using '$' as split key
+        os << i << "$" << op_name << std::endl;
+      }
+      else
+      {
+        os << op_name << std::endl;
+      }
+    }
+    else if (option.names)
+    {
+      const auto tensors = reader.tensors();
+      const auto output_tensors = reader.outputs(op);
+      for (const auto output : output_tensors)
+      {
+        const auto tensor = tensors->Get(output);
+        const std::string name = mio::circle::tensor_name(tensor);
+        if (option.all_graphs)
+        {
+          os << i << "$" << name << std::endl;
+        }
+        else
+        {
+          os << name << std::endl;
+        }
+      }
+    }
+  }
+}
+
+} // namespace
 
 namespace cirops
 {
 
 void DumpOperators::run(std::ostream &os, const circle::Model *model, const DumpOption &option)
 {
-  // TODO implement
-  (void)os;
-  (void)model;
-  (void)option;
+  mio::circle::Reader reader(model);
+
+  const uint32_t subgraph_size = reader.num_subgraph();
+  for (uint32_t g = 0; g < subgraph_size; g++)
+  {
+    reader.select_subgraph(g);
+    dump_ops(os, reader, option);
+
+    if (!option.all_graphs)
+      break;
+  }
 }
 
 } // namespace cirops
