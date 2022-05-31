@@ -98,6 +98,11 @@ std::string Reader::opcode_name(const ::circle::Operator *op) const
   return mio::circle::opcode_name(opcode);
 }
 
+std::vector<int32_t> Reader::outputs(const ::circle::Operator *op) const
+{
+  return as_index_vector(op->outputs());
+}
+
 std::string Reader::tensor_name(const ::circle::Tensor *tensor) const
 {
   return mio::circle::tensor_name(tensor);
