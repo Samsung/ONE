@@ -26,9 +26,35 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace crew
 {
+
+namespace
+{
+
+std::string filter_escape(const std::string &source)
+{
+  std::string key = source;
+
+  // if key is surrounded with quotation
+  // TODO for quotation
+
+  // if key has '\\' + ';', remove '\\'
+  auto pos = key.find("\\;");
+  while (pos != std::string::npos)
+  {
+    auto k1 = key.substr(0, pos);
+    auto k2 = key.substr(pos + 1);
+    key = k1 + k2;
+    pos = key.find("\\;");
+  }
+
+  return key;
+}
+
+} // namespace
 
 Sections read_ini(const char *data, size_t length)
 {
@@ -84,6 +110,7 @@ Sections read_ini(const char *data, size_t length)
       {
         auto key = string_line.substr(0, pos);
         auto val = string_line.substr(pos + 1);
+        key = filter_escape(key);
         section.items.emplace(key, val);
       }
     }
@@ -107,11 +134,77 @@ Sections read_ini(const std::string &path)
   return read_ini(ini_data.data(), ini_data.size());
 }
 
+namespace
+{
+
+std::string replace(const std::string &source, const char token, const std::string &replace)
+{
+  std::string key = source;
+  auto pos = key.find(token);
+  std::vector<std::string> subkeys;
+  while (pos != std::string::npos)
+  {
+    auto sub = key.substr(0, pos);
+    subkeys.push_back(sub);
+    key = key.substr(pos + 1);
+    pos = key.find(token);
+  }
+  if (!key.empty())
+  {
+    subkeys.push_back(key);
+  }
+  std::string key_new;
+  for (auto &sub : subkeys)
+  {
+    if (!key_new.empty())
+      key_new = key_new + replace;
+    key_new = key_new + sub;
+  }
+  return key_new;
+}
+
+Sections insert_escape(const Sections &inputs)
+{
+  Sections sections;
+
+  // for all section in sections;
+  // if key has ';' then replace with '\;'
+  for (auto &input : inputs)
+  {
+    Section section;
+    section.name = input.name;
+
+    for (auto &item : input.items)
+    {
+      auto key = item.first;
+      auto value = item.second;
+
+      auto pos = key.find(';');
+      if (pos != std::string::npos)
+      {
+        auto key_new = replace(key, ';', "\\;");
+        section.items[key_new] = value;
+      }
+      else
+      {
+        section.items[key] = value;
+      }
+    }
+    sections.push_back(section);
+  }
+
+  return sections;
+}
+
+} // namespace
+
 void write_ini(std::ostream &os, const Sections &sections)
 {
   std::stringstream ss;
 
-  ss << sections;
+  auto processed = insert_escape(sections);
+
+  ss << processed;
 
   std::string strss = ss.str();
 

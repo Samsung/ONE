@@ -12,9 +12,12 @@ if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
+configure_file("src/test_read_semicolon.ini" "test_read_semicolon.ini" COPYONLY)
+
 nnas_find_package(GTest REQUIRED)
 
 GTest_AddTest(crew_test ${TESTS})
 target_include_directories(crew_test PRIVATE src)
 target_link_libraries(crew_test nncc_common)
 target_link_libraries(crew_test crew)
+target_link_libraries(crew_test foder)
