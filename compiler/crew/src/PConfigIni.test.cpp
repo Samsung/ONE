@@ -22,7 +22,7 @@
 #include <sstream>
 #include <stdexcept>
 
-TEST(ConfigIniTest, read_ini_non_exist_file)
+TEST(ConfigIniTest, read_ini_non_exist_file_NEG)
 {
   EXPECT_THROW(crew::read_ini("/hello/world/not_a_file"), std::runtime_error);
 }
