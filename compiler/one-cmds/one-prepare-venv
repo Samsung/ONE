@@ -84,3 +84,7 @@ if [ -n "${EXT_ONNX_TF_WHL}" ]; then
 else
   ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx-tf==${VER_ONNX_TF}
 fi
+
+# NOTE refer https://github.com/protocolbuffers/protobuf/issues/10051
+# TODO remove this when issue is resolved
+${VENV_PYTHON} -m pip install --upgrade protobuf==3.20.1
