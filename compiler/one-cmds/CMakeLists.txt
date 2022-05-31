@@ -10,6 +10,7 @@ set(ONE_COMMAND_FILES
     one-pack
     one-partition
     one-profile
+    one-infer
     one-codegen
     one-prepare-venv
     onecc
