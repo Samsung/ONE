@@ -26,6 +26,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace crew
 {
@@ -133,11 +134,53 @@ Sections read_ini(const std::string &path)
   return read_ini(ini_data.data(), ini_data.size());
 }
 
+namespace
+{
+
+void replace(std::string &source, const std::string &token, const std::string &replace)
+{
+  size_t pos = 0;
+  while ((pos = source.find(token, pos)) != std::string::npos)
+  {
+    source.replace(pos, token.length(), replace);
+    pos += replace.length(); // Handles the case where 'replace' is a substring of 'token'
+  }
+}
+
+Sections insert_escape(const Sections &inputs)
+{
+  Sections sections;
+
+  // for all section in sections;
+  // if key has ';' then replace with '\;'
+  for (auto &input : inputs)
+  {
+    Section section;
+    section.name = input.name;
+
+    for (auto &item : input.items)
+    {
+      auto key = item.first;
+      auto value = item.second;
+
+      replace(key, ";", "\\;");
+      section.items[key] = value;
+    }
+    sections.push_back(section);
+  }
+
+  return sections;
+}
+
+} // namespace
+
 void write_ini(std::ostream &os, const Sections &sections)
 {
   std::stringstream ss;
 
-  ss << sections;
+  auto processed = insert_escape(sections);
+
+  ss << processed;
 
   std::string strss = ss.str();
 

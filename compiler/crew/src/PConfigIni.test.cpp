@@ -17,6 +17,8 @@
 #include "crew/PConfigIni.h"
 #include "crew/PConfigIniDump.h"
 
+#include <foder/FileLoader.h>
+
 #include <gtest/gtest.h>
 
 #include <sstream>
@@ -101,4 +103,44 @@ TEST(ConfigIniTest, read_file_escape_semicolon)
 
   EXPECT_TRUE("keya;keyb;keyc;keyd" == it->first);
   EXPECT_TRUE("world" == it->second);
+}
+
+TEST(ConfigIniTest, write_file_escape_semicolon)
+{
+  std::string path("test_write_semicolon.ini");
+
+  // save key with ';'
+  {
+    crew::Sections sections;
+    crew::Section hello;
+    hello.name = "hello";
+    hello.items["keya;keyb;keyc;keyd"] = "world";
+    sections.push_back(hello);
+    crew::write_ini(path, sections);
+  }
+
+  // load the file and check if there is '\\'
+  std::string strbuffer;
+  {
+    foder::FileLoader file_loader{path};
+    auto ini_data = file_loader.load();
+
+    auto buffer = std::vector<char>();
+    auto length = ini_data.size();
+    buffer.reserve(length + 1);
+
+    char *pbuffer = buffer.data();
+    memcpy(pbuffer, ini_data.data(), length);
+    *(pbuffer + length) = 0;
+
+    strbuffer = pbuffer;
+  }
+  int32_t count = 0;
+  size_t pos = 0;
+  while ((pos = strbuffer.find("\\;", pos)) != std::string::npos)
+  {
+    count++;
+    pos++;
+  }
+  EXPECT_TRUE(count == 3);
 }
