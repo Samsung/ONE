@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# NOTE this file is sourced from, for the purpose of
+# - configure_compiler_coverage.sh: to get test coverage for release criteria
+
 # Don't run this script
 [[ "${BASH_SOURCE[0]}" == "${0}" ]] && echo "Please don't execute ${BASH_SOURCE[0]}, source it" && return
 
