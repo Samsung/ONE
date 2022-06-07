@@ -31,6 +31,6 @@ for TEST_BIN in `find ${NNCC_WORKSPACE}/compiler -type f -executable -name *_tes
 
   # Execute on test directory to find related file
   pushd $TEST_DIR > /dev/null
-  LUGI_LOG=999 $TEST_NAME --gtest_output="xml:$UNITTEST_REPORT_DIR/$TEST_NAME.xml"
+  LUGI_LOG=999 ./$TEST_NAME --gtest_output="xml:$UNITTEST_REPORT_DIR/$TEST_NAME.xml"
   popd > /dev/null
 done
