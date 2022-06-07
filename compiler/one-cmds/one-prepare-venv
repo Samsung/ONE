@@ -62,7 +62,8 @@ else
   ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow-cpu==${VER_TENSORFLOW}
 fi
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install Pillow
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_probability
+# TODO remove version fix, https://github.com/Samsung/ONE/issues/9240
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_probability==0.16.0
 
 # Install PyTorch and ONNX related
 # NOTE set ONE_PREPVENV_TORCH_STABLE to override 'torch_stable.html' URL.
