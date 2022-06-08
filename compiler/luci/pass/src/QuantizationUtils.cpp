@@ -380,7 +380,7 @@ std::unique_ptr<CircleQuantParam> make_predefined_qparam(ActivationQType qtype,
     default:
       throw std::runtime_error("Unsupported opcode with pre-defined qparam");
   }
-  return std::move(qparam);
+  return qparam;
 }
 
 // For nodes with integer output, we use integer scale

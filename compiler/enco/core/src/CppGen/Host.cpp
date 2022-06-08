@@ -299,7 +299,7 @@ std::unique_ptr<pp::MultiLineText> HostBlockCompiler::compile(const coco::Block 
     res->append(ins->accept(prn));
   }
 
-  return std::move(res);
+  return res;
 }
 
 } // namespace enco

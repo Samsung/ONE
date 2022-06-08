@@ -656,7 +656,7 @@ public:
           app->ofm(ofm);
           app->ker(ker);
 
-          return std::move(app);
+          return app;
         }
         else
         {
@@ -676,7 +676,7 @@ public:
           app->ofm(ofm);
           app->ker(ker);
 
-          return std::move(app);
+          return app;
         }
       }
     }
@@ -704,7 +704,7 @@ public:
         app->right(right);
         app->out(out);
 
-        return std::move(app);
+        return app;
       }
     }
     else if (auto op = eval->op()->asMul())
@@ -731,7 +731,7 @@ public:
         app->right(right);
         app->out(out);
 
-        return std::move(app);
+        return app;
       }
     }
     else if (auto op = eval->op()->asPadF())
@@ -754,7 +754,7 @@ public:
         app->ifm(ifm);
         app->ofm(ofm);
 
-        return std::move(app);
+        return app;
       }
     }
     else if (auto maxpool = eval->op()->asMaxPool2D())
@@ -779,7 +779,7 @@ public:
         app->ifm(ifm);
         app->ofm(ofm);
 
-        return std::move(app);
+        return app;
       }
     }
     else if (auto avgpool = eval->op()->asAvgPool2D())
@@ -808,7 +808,7 @@ public:
           app->ifm(ifm);
           app->ofm(ofm);
 
-          return std::move(app);
+          return app;
         }
       }
     }
@@ -831,7 +831,7 @@ public:
         app->ifm(ifm);
         app->ofm(ofm);
 
-        return std::move(app);
+        return app;
       }
     }
     else if (auto relu6 = eval->op()->asReLU6())
@@ -853,7 +853,7 @@ public:
         app->ifm(ifm);
         app->ofm(ofm);
 
-        return std::move(app);
+        return app;
       }
     }
     else if (auto op = eval->op()->asConcatF())
@@ -880,7 +880,7 @@ public:
         app->right(right);
         app->out(out);
 
-        return std::move(app);
+        return app;
       }
     }
     else if (auto op = eval->op()->asSub())
@@ -907,7 +907,7 @@ public:
         app->right(right);
         app->out(out);
 
-        return std::move(app);
+        return app;
       }
     }
     else if (auto op = eval->op()->asDiv())
@@ -934,7 +934,7 @@ public:
         app->right(right);
         app->out(out);
 
-        return std::move(app);
+        return app;
       }
     }
 
@@ -967,7 +967,7 @@ std::unique_ptr<ANNOpAppender> make_appender(coco::Instr *ins)
     app->left(depth_concat->fst()->asFeature());
     app->right(depth_concat->snd()->asFeature());
 
-    return std::move(app);
+    return app;
   }
 
   // Build ANN IR from ANNConv2D instruction
@@ -986,7 +986,7 @@ std::unique_ptr<ANNOpAppender> make_appender(coco::Instr *ins)
     app->ker(conv2d->ker()->asKernel());
     app->bias(coco::safe_cast<coco::FeatureObject>(conv2d->bias()));
 
-    return std::move(app);
+    return app;
   }
 
   return nullptr;

@@ -33,13 +33,18 @@ set(REQUIREMENTS_FILE "requirements.txt")
 set(REQUIREMENTS_OVERLAY_PATH_TF_2_6_0 "${VIRTUALENV_OVERLAY_TF_2_6_0}/${REQUIREMENTS_FILE}")
 set(REQUIREMENTS_OVERLAY_PATH_TF_2_8_0 "${VIRTUALENV_OVERLAY_TF_2_8_0}/${REQUIREMENTS_FILE}")
 
+set(PYTHON_OVERLAY python3)
+if(PYTHON_EXECUTABLE MATCHES python3.8)
+  set(PYTHON_OVERLAY python3.8)
+endif()
+
 add_custom_command(
   OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.6.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/python3.8 -m pip --default-timeout=1000 install --upgrade pip setuptools
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/python3.8 -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0} --upgrade
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000 install --upgrade pip setuptools
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0} --upgrade
   DEPENDS ${VIRTUALENV_OVERLAY_TF_2_6_0}
 )
 
@@ -48,8 +53,8 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
   COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.8.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
   COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_8_0}/bin/python3.8 -m pip --default-timeout=1000 install --upgrade pip setuptools
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_8_0}/bin/python3.8 -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0} --upgrade
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_8_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000 install --upgrade pip setuptools
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_8_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0} --upgrade
   DEPENDS ${VIRTUALENV_OVERLAY_TF_2_8_0}
 )
 
