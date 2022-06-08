@@ -334,45 +334,22 @@ def _quantize(args):
         # run circle-quantizer
         _utils._run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
 
-        ## make a command to record min-max value of each tensor while running the representative dataset
-        circle_record_minmax_cmd = [record_minmax_path]
-        # verbose
-        if _utils._is_valid_attr(args, 'verbose'):
-            circle_record_minmax_cmd.append('--verbose')
-        # input and output path
-        circle_record_minmax_cmd.append('--input_model')
-        circle_record_minmax_cmd.append(tmp_weights_fake_quant_path)
         tmp_minmax_recorded_path = os.path.join(
             tmpdir,
             os.path.splitext(os.path.basename(args.input_path))[0]) + '.minmax_recorded.circle'
-        circle_record_minmax_cmd.append('--output_model')
-        circle_record_minmax_cmd.append(tmp_minmax_recorded_path)
-        # input data
-        if _utils._is_valid_attr(args, 'input_data'):
-            circle_record_minmax_cmd.append('--input_data')
-            circle_record_minmax_cmd.append(getattr(args, 'input_data'))
-        if _utils._is_valid_attr(args, 'input_data_format'):
-            circle_record_minmax_cmd.append('--input_data_format')
-            circle_record_minmax_cmd.append(getattr(args, 'input_data_format'))
-        # min and max percentile
-        if _utils._is_valid_attr(args, 'min_percentile'):
-            circle_record_minmax_cmd.append('--min_percentile')
-            circle_record_minmax_cmd.append(getattr(args, 'min_percentile'))
-        if _utils._is_valid_attr(args, 'max_percentile'):
-            circle_record_minmax_cmd.append('--max_percentile')
-            circle_record_minmax_cmd.append(getattr(args, 'max_percentile'))
-        # mode
-        if _utils._is_valid_attr(args, 'mode'):
-            circle_record_minmax_cmd.append('--mode')
-            circle_record_minmax_cmd.append(getattr(args, 'mode'))
-        # profiling
-        if _utils._is_valid_attr(args, 'generate_profile_data'):
-            circle_record_minmax_cmd.append('--generate_profile_data')
 
-        f.write((' '.join(circle_record_minmax_cmd) + '\n').encode())
-
-        # run record-minmax
-        _utils._run(circle_record_minmax_cmd, err_prefix="record_minmax", logfile=f)
+        ## make a command to record min-max value of each tensor while running the representative dataset
+        record_minmax_cmd = Command(record_minmax_path, args, f)
+        record_minmax_cmd.add_noarg_option_if_valid_arg('--verbose', 'verbose') \
+            .add_option_with_values('--input_model', [tmp_weights_fake_quant_path]) \
+            .add_option_with_values('--output_model', [tmp_minmax_recorded_path]) \
+            .add_option_with_valid_args('--input_data', ['input_data']) \
+            .add_option_with_valid_args('--input_data_format', ['input_data_format']) \
+            .add_option_with_valid_args('--min_percentile', ['min_percentile']) \
+            .add_option_with_valid_args('--max_percentile', ['max_percentile']) \
+            .add_option_with_valid_args('--mode', ['mode']) \
+            .add_noarg_option_if_valid_arg('--generate_profile_data', 'generate_profile_data') \
+            .run()
 
         ## make a second command to quantize the model using the embedded information
         circle_quantizer_cmd = [circle_quantizer_path]
