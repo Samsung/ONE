@@ -38,6 +38,12 @@ using IOIndex = ::onert::util::Index<uint32_t, IOIndexTag>;
 struct SubgraphIndexTag;
 using SubgraphIndex = ::onert::util::Index<uint32_t, SubgraphIndexTag>;
 
+struct ModelIndexTag;
+using ModelIndex = ::onert::util::Index<uint32_t, ModelIndexTag>;
+
+struct ModelOperandIndexTag;
+using ModelOperandIndex = ::onert::util::Index<uint32_t, ModelOperandIndexTag>;
+
 template <typename IndexType>
 std::ostream &_index_print_impl(std::ostream &o, const std::string &prefix, IndexType index)
 {
@@ -64,7 +70,12 @@ inline std::ostream &operator<<(std::ostream &o, const IOIndex &i)
 
 inline std::ostream &operator<<(std::ostream &o, const SubgraphIndex &i)
 {
-  return _index_print_impl(o, "SUBGRAPH", i); // $ubgraph
+  return _index_print_impl(o, "SUBGRAPH", i);
+}
+
+inline std::ostream &operator<<(std::ostream &o, const ModelIndex &i)
+{
+  return _index_print_impl(o, "MODEL", i);
 }
 
 } // namespace ir
