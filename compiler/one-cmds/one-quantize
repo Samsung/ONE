@@ -313,6 +313,11 @@ def _quantize(args):
             circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
         if _utils._is_valid_attr(args, 'granularity'):
             circle_quantizer_cmd.append(getattr(args, 'granularity'))
+        if _utils._is_valid_attr(args, 'quant_config'):
+            # NOTE --config conflicts with --config option in onecc, so
+            # we use quant_config for one-quantize
+            circle_quantizer_cmd.append('--config')
+            circle_quantizer_cmd.append(getattr(args, 'quant_config'))
         # input and output path
         if _utils._is_valid_attr(args, 'input_path'):
             circle_quantizer_cmd.append(getattr(args, 'input_path'))
