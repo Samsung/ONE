@@ -1,0 +1,16 @@
+{
+    "default_quantization_dtype" : "uint8",
+    "default_granularity" : "channel",
+    "layers" : [
+        {
+            "names" : ["InceptionV3/InceptionV3/Conv2d_2b_3x3/Relu;InceptionV3/InceptionV3/Conv2d_2b_3x3/BatchNorm/FusedBatchNorm;InceptionV3/InceptionV3/Mixed_6a/Branch_1/Conv2d_0a_1x1/Conv2D;InceptionV3/InceptionV3/Conv2d_2b_3x3/Conv2D",
+            "InceptionV3/InceptionV3/MaxPool_5a_3x3/MaxPool",
+            "InceptionV3/InceptionV3/Mixed_5b/concat",
+            "InceptionV3/InceptionV3/Mixed_5b/Branch_3/AvgPool_0a_3x3/AvgPool",
+            "InceptionV3/InceptionV3/Mixed_7c/concat",
+            "InceptionV3/Predictions/Reshape_1"],
+            "dtype" : "int16",
+            "granularity" : "channel"
+        }
+    ]
+}
