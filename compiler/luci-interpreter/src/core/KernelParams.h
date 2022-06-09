@@ -170,6 +170,11 @@ struct ResizeNearestNeighborParams
   bool half_pixel_centers;
 };
 
+struct ShapeParams
+{
+  loco::DataType out_type;
+};
+
 struct SubParams
 {
   Activation activation;
