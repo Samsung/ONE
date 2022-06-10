@@ -1,10 +1,12 @@
-.TH ONE-INFER "1" "June 2022" "one-profile version 1.21.0" "User Commands"
+.TH ONE-INFER "1" "June 2022" "one-infer version 1.21.0" "User Commands"
 .SH NAME
 \fBone-infer\fR \- infer model file
 .SH DESCRIPTION
-usage: one\-infer [\-h] [\-v] [\-V] [\-C CONFIG] [\-b BACKEND] [\-d DRIVER] [\-\-] [COMMANDS FOR BACKEND]
+usage: one\-infer [\-h] [\-v] [\-V] [\-C CONFIG] [\-b BACKEND | \-d DRIVER] [\-\-] [COMMANDS FOR BACKEND]
 .PP
 \fBone\-infer\fR is a command line tool to infer model.
+.PP
+[\-b BACKEND] and [\-d DRIVER] are mutually exclusive options.
 .SH OPTIONS
 .TP
 \fB\-h\fR, \fB\-\-help\fR
@@ -20,7 +22,7 @@ output additional information to stdout or stderr
 run with configuation file
 .TP
 \fB\-b\fR BACKEND, \fB\-\-backend\fR BACKEND
-backend name to use
+backend name to find \fIBACKEND\fR\-infer driver
 .TP
 \fB\-d\fR DRIVER, \fB\-\-driver\fR DRIVER
 backend inference driver name to execute
