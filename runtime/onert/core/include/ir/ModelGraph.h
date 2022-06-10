@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_MODEL_H__
-#define __ONERT_IR_MODEL_H__
+#ifndef __ONERT_IR_MODEL_GRAPH_H__
+#define __ONERT_IR_MODEL_GRAPH_H__
 
-#include "ir/ModelOperandIndexSequence.h"
+#include <memory>
+
+#include "ir/Index.h"
+#include "ir/Models.h"
 #include "ir/Subgraphs.h"
 
 namespace onert
@@ -25,16 +28,26 @@ namespace onert
 namespace ir
 {
 
-struct Model
+class ModelGraph
 {
-  Model(Subgraphs *s) : _subgraphs(s) { }
+public:
+  ModelGraph() = default;
+  ModelGraph(const ModelGraph &obj) = default;
+  ModelGraph(ModelGraph &&) = default;
+  ModelGraph &operator=(const ModelGraph &) = default;
+  ModelGraph &operator=(ModelGraph &&) = default;
+  ~ModelGraph() = default;
 
-  std::shared_ptr<Subgraphs> _subgraphs;
-  ModelOperandIndexSequence _inputs;
-  ModelOperandIndexSequence _outputs;
+  const Models &models() const { return _models; }
+  Models &models() { return _models; }
+  std::shared_ptr<Subgraphs> &entry() { return _models.at(onert::ir::ModelIndex{0})._subgraphs; }
+
+private:
+  Models _models;
+  // TODO: Add connection between models
 };
 
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_MODEL_H__
+#endif // __ONERT_IR_MODEL_GRAPH_H__
