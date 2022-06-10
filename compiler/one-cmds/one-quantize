@@ -219,6 +219,7 @@ def _set_default_values(args):
             args, 'input_dtype'):
         setattr(args, 'input_model_dtype', 'float32')
     if not _utils._is_valid_attr(args, 'quantized_dtype'):
+        setattr(args, 'quantized_dtype', 'uint8')
         if _utils._is_valid_attr(args, 'quant_config'):
             # Get quantized_dtype from qconfig file
             try:
@@ -226,13 +227,10 @@ def _set_default_values(args):
                     qconf = json.load(f)
                     if 'default_quantization_dtype' in qconf:
                         setattr(args, 'quantized_dtype', qconf['default_quantization_dtype'])
-                    else:
-                        setattr(args, 'quantized_dtype', 'uint8')
             except json.decoder.JSONDecodeError:
                 print('Failed to decode ' + getattr(args, 'quant_config') + '. Please check it is a json file.')
-        else:
-            setattr(args, 'quantized_dtype', 'uint8')
     if not _utils._is_valid_attr(args, 'granularity'):
+        setattr(args, 'granularity', 'layer')
         if _utils._is_valid_attr(args, 'quant_config'):
             # Get granularity from qconfig file
             try:
@@ -240,12 +238,8 @@ def _set_default_values(args):
                     qconf = json.load(f)
                     if 'default_granularity' in qconf:
                         setattr(args, 'granularity', qconf['default_granularity'])
-                    else:
-                        setattr(args, 'granularity', 'layer')
             except json.decoder.JSONDecodeError:
                 print('Failed to decode ' + getattr(args, 'quant_config') + '. Please check it is a json file.')
-        else:
-            setattr(args, 'granularity', 'layer')
     if not _utils._is_valid_attr(args, 'mode'):
         setattr(args, 'mode', 'percentile')
     if not _utils._is_valid_attr(args, 'min_percentile'):
