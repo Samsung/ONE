@@ -357,6 +357,11 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
   }
 
+  // FIXME This is a workaround for bulk operations, should remove it
+  {
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
+  }
+
   verboseOptions(_options);
 
   _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
@@ -531,6 +536,11 @@ std::vector<std::shared_ptr<exec::ExecutorMap>> Compiler::compile(const char *pa
   {
     _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
     _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
+  }
+
+  // FIXME This is a workaround for bulk operations, should remove it
+  {
+    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
   }
 
   // It doesn't support tracing in case of partial graph
