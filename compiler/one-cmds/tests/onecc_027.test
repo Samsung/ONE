@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+# Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# onecc -I
+# usage without any options: `onecc init`
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -27,11 +27,11 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-cfgname="onecc_027.new.cfg"
+cfgname="init.cfg"
+rm -rf ${cfgname}
 
 # run test
-onecc -I ${cfgname} > /dev/null 2>&1
-
+onecc init > /dev/null 2>&1
 if [[ ! -f "${cfgname}" ]]; then
   trap_err_onexit
 fi

@@ -1,8 +1,8 @@
-.TH ONE-INIT "1" "May 2022" "one-init version 1.21.0" "User Commands"
+.TH ONE-INIT "1" "June 2022" "one-init version 1.21.0" "User Commands"
 .SH NAME
 one-init \- init/create ONE config file
 .SH DESCRIPTION
-usage: one\-init [\-h] [\-v] [\-t TEMPLATE_PATH] CFG_PATH
+usage: one\-init [\-h] [\-v] [MODEL_PATH]
 .PP
 \fBone\-init\fR is a command line tool to init/create ONE config file.
 .SH OPTIONS
@@ -13,11 +13,9 @@ show this help message and exit
 \fB\-v\fR, \fB\-\-version\fR
 show program's version number and exit
 .TP
-\fB\-t\fR TEMPLATE_PATH, \fB\-\-template_path\fR TEMPLATE_PATH
-the template configuation file (onecc.template.cfg as default)
-.TP
-\fB CFG_PATH (as mandatory)
-the cfg file name to init/create
+\fB MODEL_PATH
+the model file for the base to init/create config file.
+if not, init.cfg is created
 .SH COPYRIGHT
 Copyright \(co 2020\-2022 Samsung Electronics Co., Ltd. All Rights Reserved
 Licensed under the Apache License, Version 2.0

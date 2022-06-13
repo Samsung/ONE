@@ -21,20 +21,19 @@ filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
+  rm -rf ${cfgname}
   echo "${filename_ext} SUCCESS"
   exit 0
 }
 
 trap trap_err_onexit ERR
 
-cfgname="one-init_neg_001.new.cfg"
-template="one-init_neg_001.cfg"
-
+cfgname="init.cfg"
 rm -rf ${cfgname}
 echo "test" > ${cfgname}
 
 # run test
-one-init ${cfgname} > /dev/null 2>&1
+one-init > /dev/null 2>&1
 ret=$(echo $?)
 if [[ $ret -ne 0 ]]; then
   trap_err_onexit

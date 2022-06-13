@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# usage without any options: `one-init`
+# usage option: `onecc init ${model_path}`
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -27,15 +27,14 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-cfgname="init.cfg"
+modelname="onnxmodel.onnx"
+cfgname="onnxmodel.cfg"
 rm -rf ${cfgname}
 
 # run test
-one-init > /dev/null 2>&1
+onecc init ${modelname} > /dev/null 2>&1
 if [[ ! -f "${cfgname}" ]]; then
   trap_err_onexit
 fi
-
-rm -rf ${cfgname}
 
 echo "${filename_ext} SUCCESS"

@@ -14,28 +14,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# usage without any options: `one-init`
+# negative usage with wrong model type(xyz: model type that is not supported)
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  echo "${filename_ext} FAILED"
-  exit 255
+  rm -rf ${cfgname}
+  echo "${filename_ext} SUCCESS"
+  exit 0
 }
 
 trap trap_err_onexit ERR
 
-cfgname="init.cfg"
+modelname="xyzmodel.xyz"
+cfgname="xyzmodel.cfg"
 rm -rf ${cfgname}
 
 # run test
-one-init > /dev/null 2>&1
-if [[ ! -f "${cfgname}" ]]; then
+one-init ${modelname} > /dev/null 2>&1
+ret=$(echo $?)
+if [[ $ret -ne 0 ]]; then
   trap_err_onexit
 fi
 
 rm -rf ${cfgname}
 
-echo "${filename_ext} SUCCESS"
+echo "${filename_ext} FAILED"
+exit 255

@@ -68,7 +68,7 @@ def _check_subtool_exists():
 
 
 def _get_parser():
-    onecc_usage = 'onecc [-h] [-v] [-I CONFIG] [-C CONFIG] [-O OPTIMIZATION] [COMMAND <args>]'
+    onecc_usage = 'onecc [-h] [-v] [-C CONFIG] [-O OPTIMIZATION] [COMMAND <args>]'
     onecc_desc = 'Run ONE driver via several commands or configuration file'
     parser = argparse.ArgumentParser(description=onecc_desc, usage=onecc_usage)
 
@@ -83,8 +83,6 @@ def _get_parser():
             opt_name_list) + ')'
     opt_help_message = 'optimization name to use ' + opt_help_message
     parser.add_argument('-O', type=str, metavar='OPTIMIZATION', help=opt_help_message)
-
-    parser.add_argument('-I', '--init', type=str, metavar='CONFIG', help='create a configuation file')
 
     # just for help message
     init_group = parser.add_argument_group('create a new config file')
@@ -216,7 +214,6 @@ def main():
     parser = _get_parser()
     args = _parse_arg(parser)
 
-    # TODO: keep running after 'init' command if possible
     # if tool is 'init' command, run it first and exit
     if _utils._is_valid_attr(args, 'init'):
         driver_name = 'one-init'

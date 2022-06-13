@@ -20,10 +20,116 @@
 # limitations under the License.
 
 import argparse
+import copy
 import os
+import sys
 import shutil
-
 import utils as _utils
+
+
+# NOTE: Why creates own ConfigParser instead of the existing ConfigParser in python?
+# one-init's role is to guide how to use config parser.
+# The existing ConfigParser in python doesn't keep comments while parsing the config file.
+# To keep comments for guiding how to use config file, let's use own ConfigParser.
+class TemplateConfigParser:
+    def __init__(self):
+        # key as the default section
+        self.default_key = '[DEFAULT]'
+
+        # NOTE: keys of sections always have '[' and ']'
+        # key: string, value: list
+        self.sections = {self.default_key: [], }
+
+        # TODO: support ':' delimiter
+        self.delimiter = '='
+        self.comment_prefixes=('#', ';')
+
+    # read and parse
+    def read(self, cfg_path):
+        lines = ''
+        with open(cfg_path, 'r') as f:
+            lines = f.readlines()
+
+        cur_section = self.sections[self.default_key]
+        for line in lines:
+            # To ease, remove trailing new line
+            line = line.rstrip('\n')
+            if line.lstrip().startswith('['):
+                self.sections[line] = []
+                cur_section = self.sections[line]
+            else:
+                # Handle the case where strip() is needed
+                # key's head empty character can be an indention. Keep as it is
+                # But value's tail empty character is not necessary. Remove it
+                # And whitespaces btw key/value are unnecessary
+                # src ' key   =   value '
+                # dst ' key=value'
+                if self.delimiter in line:
+                    words = line.split(self.delimiter, maxsplit=1)
+                    # words[0]: ' key   '   -> ' key'
+                    # words[1]: '   value ' -> 'value'
+                    words[0] = words[0].rstrip()
+                    words[1] = words[1].strip()
+                    line = words[0] + self.delimiter + words[1]
+                cur_section.append(line)
+
+    def write(self, cfg_path):
+        # key: string, value: string
+        sections = {}
+
+        # convert first,
+        for section in self.sections.keys():
+            content = '\n'.join(self.sections[section])
+            sections[section] = content
+
+        with open(cfg_path, 'w') as f:
+            for k in sections.keys():
+                if k != self.default_key:
+                    f.write(k)
+                    f.write('\n')
+                f.write(sections[k])
+                f.write('\n')
+
+    # NOTE: section always start with '[' and end with ']'
+    def set(self, section, key, value):
+        # TODO: Handle exceptions for none of section and key
+        lines = self.sections[section]
+        for index, line in enumerate(lines):
+            # case: comments
+            if line.lstrip().startswith(self.comment_prefixes):
+                continue
+            # case: not strict config
+            if not self.delimiter in line:
+                continue
+
+            words = line.split(self.delimiter, maxsplit=1)
+            if key.strip() == words[0].strip():
+                lines[index] = words[0] + self.delimiter + value
+                return
+
+
+def _get_supported_map():
+    return {
+        'pb': 'tf',
+        'tflite': 'tflite',
+        'bcq': 'bcq',
+        'onnx': 'onnx',
+    }
+
+
+def _supported_model_ext(ext):
+    return ext in _get_supported_map()
+
+
+def _supported_model_type(model_type):
+    return model_type in _get_supported_map()
+
+
+# Return model type by file extension
+def _get_model_type(ext):
+    if not _supported_model_ext(ext):
+        raise NameError('Model extension (' + ext + ') doesn\'t support')
+    return _get_supported_map()[ext]
 
 
 # NOTE: Do not use '_add_default_arg'. '-C' and '-S' options are unnecessary.
@@ -38,24 +144,25 @@ def _get_parser():
         action='store_true',
         help='show program\'s version number and exit')
 
-    # config filename to be created
+    # model path
     parser.add_argument(
-        'cfg_path', type=str, help='the config path to be created')
-
-    # template path
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    template_path = os.path.join(dir_path, 'onecc.template.cfg')
-    parser.add_argument(
-        '-t',
-        '--template_path',
-        type=str, default=template_path,
-        help='full filepath of the template file')
+        '--model_path',
+        required=False,
+        type=str, default='',
+        help='the model path to be used for creating config file')
 
     return parser
 
 
 def _parse_arg(parser):
-    args = parser.parse_args()
+    # NOTE: Trick for parsing args
+    # To handle both `one-init` and `one-init ${model}`,
+    # `one-init ${model}` -> `one-init --model_path ${model}`
+    argv = copy.deepcopy(sys.argv[1:])
+    if len(argv) > 0 and not argv[0].startswith('--'):
+        argv.insert(0, '--model_path')
+    args = parser.parse_args(argv)
+
     # print version
     if args.version:
         _utils._print_version_and_exit(__file__)
@@ -63,28 +170,92 @@ def _parse_arg(parser):
     return args
 
 
-def _create(args):
-    # if cfg_path doesn't have '.cfg', append it
-    cfg_path = args.cfg_path
-    if cfg_path.endswith('.cfg') is False:
-        cfg_path = ''.join([cfg_path, '.cfg'])
+def _create_init_cfg(args):
+    template_path = args.template_path
+    dir_path = os.getcwd()
+    cfg_path = os.path.join(dir_path, 'init.cfg')
+
     if os.path.exists(cfg_path) is True:
         raise FileExistsError(cfg_path + ' file already exists')
 
-    template_path = args.template_path
-    if os.path.exists(template_path) is False:
-        raise FileExistsError('Template file ' + template_path + ' not found')
-
+    # create init.cfg file by coping
     try:
         shutil.copyfile(template_path, cfg_path)
     except (shutil.Error, OSError):
         raise shutil.Error('Unable to copyfile: %s -> %s' % template_path, cfg_path)
 
 
+def _create_type_cfg(args):
+    template_path = args.template_path
+    model_path = args.model_path
+
+    dir_path = os.getcwd()
+    model_name, ext = os.path.splitext(os.path.basename(model_path))
+    ext = ext[1:] # .ext -> ext
+    model_type = _get_model_type(ext)
+
+    cfg_name = model_name + '.cfg'
+    cfg_path = os.path.join(dir_path, cfg_name)
+
+    if os.path.exists(cfg_path) is True:
+        raise FileExistsError(cfg_path + ' file already exists')
+
+    # create cfg file by coping
+    try:
+        shutil.copyfile(template_path, cfg_path)
+    except (shutil.Error, OSError):
+        raise shutil.Error('Unable to copyfile: %s -> %s' % template_path, cfg_path)
+
+    # modify cfg file according to each model type
+    dir_path = os.path.dirname(model_path)
+    import_type = f'one-import-{model_type}' # f string format >= py3.6
+
+    # assume that the template file is validated
+    cfg_parser = TemplateConfigParser()
+    cfg_parser.read(cfg_path)
+
+    section = '[onecc]'
+    cfg_parser.set(section, import_type, 'True')
+    cfg_parser.set(section, 'one-optimize', 'True')
+    cfg_parser.set(section, 'one-quantize', 'True')
+
+    section = f'[{import_type}]'
+    input_path = os.path.join(dir_path, model_name + '.' + ext)
+    output_path = os.path.join(dir_path, model_name + '.circle')
+    cfg_parser.set(section, 'input_path', input_path)
+    cfg_parser.set(section, 'output_path', output_path)
+
+    section = '[one-optimize]'
+    input_path = os.path.join(dir_path, model_name + '.circle')
+    output_path = os.path.join(dir_path, model_name + '.opt.circle')
+    cfg_parser.set(section, 'input_path', input_path)
+    cfg_parser.set(section, 'output_path', output_path)
+
+    section = '[one-quantize]'
+    input_path = os.path.join(dir_path, model_name + '.opt.circle')
+    output_path = os.path.join(dir_path, model_name + '.q8.circle')
+    cfg_parser.set(section, 'input_path', input_path)
+    cfg_parser.set(section, 'output_path', output_path)
+
+    cfg_parser.write(cfg_path)
+
+
 def main():
     parser = _get_parser()
     args = _parse_arg(parser)
-    _create(args)
+
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    template_path = os.path.join(dir_path, 'onecc.template.cfg')
+    if os.path.exists(template_path) is False:
+        raise FileExistsError('Template file ' + template_path + ' not found')
+    setattr(args, 'template_path', template_path)
+
+    # `onecc init`: creates init.cfg by coping ${template_file}
+    if args.model_path == "":
+        _create_init_cfg(args)
+    # `onecc init ${model_name}.${ext}: creates ${model_name}.cfg by fixing ${template_file}
+    else:
+        _create_type_cfg(args)
 
 
 if __name__ == '__main__':
