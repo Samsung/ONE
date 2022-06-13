@@ -23,7 +23,6 @@ Source1012: OPENCL_HEADERS.tar.gz
 Source1013: FARMHASH.tar.gz
 Source1014: ABSEIL.tar.gz
 Source1015: OOURAFFT.tar.gz
-Source1016: TENSORFLOW_GPU.tar.gz
 Source2001: nnfw.pc.in
 Source2002: nnfw-plugin.pc.in
 
@@ -186,7 +185,6 @@ tar -xf %{SOURCE1012} -C ./externals
 tar -xf %{SOURCE1013} -C ./externals
 tar -xf %{SOURCE1014} -C ./externals
 tar -xf %{SOURCE1015} -C ./externals
-tar -xf %{SOURCE1016} -C ./externals
 
 %build
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86

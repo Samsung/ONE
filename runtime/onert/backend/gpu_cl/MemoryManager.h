@@ -17,17 +17,22 @@
 #ifndef __ONERT_BACKEND_GPU_CL_MEMORY_MANAGER_H__
 #define __ONERT_BACKEND_GPU_CL_MEMORY_MANAGER_H__
 
-#include "ex/InferenceContextEx.h"
 #include "operand/CLTensor.h"
 
 #include "ir/OperandIndexMap.h"
 #include "ir/OperandInfo.h"
 #include "util/logging.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wsign-compare"
+#include "tensorflow/lite/delegates/gpu/spi.h"
 #include "tensorflow/lite/delegates/gpu/cl/cl_context.h"
+#include "tensorflow/lite/delegates/gpu/cl/inference_context.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor_type_util.h"
 #include "tensorflow/lite/delegates/gpu/common/status.h"
-#include "tensorflow/lite/delegates/gpu/cl/storage_type_util.h"
-#include "tensorflow/lite/delegates/gpu/cl/tensor_type.h"
+#include "tensorflow/lite/delegates/gpu/common/task/storage_type_util.h"
+#pragma GCC diagnostic pop
 
 #include <cassert>
 
@@ -41,24 +46,32 @@ namespace gpu_cl
 class MemoryManager
 {
 public:
-  MemoryManager(tflite::gpu::cl::CLContext *context) : _context{context} {}
+  MemoryManager(tflite::gpu::cl::CLContext *context,
+                tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
+                const std::shared_ptr<tflite::gpu::cl::Environment> &environment)
+    : _context{context}, _create_info{create_info}, _environment{environment}
+  {
+  }
 
   ~MemoryManager() = default;
 
   void allocate(void)
   {
+    std::unique_ptr<tflite::gpu::TensorObjectConverterBuilder> converter_builder =
+      NewConverterBuilder(_environment.get());
     for (const auto &tensor_entry : _tensors)
     {
       auto tensor = tensor_entry.second;
       auto type = tensor->get_type();
 
-      // if (type == TensorType::TENSOR_TYPE_DELETE) {
-      //   continue;
-      // }
+      if (type == TensorType::TENSOR_TYPE_DELETE)
+      {
+        continue;
+      }
 
-      const auto &t = tensor_reserver_.Get(tensor_entry.first.value());
-      const auto &shape = t->shape;
-      const auto &descriptor = t->descriptor;
+      const auto &shape = tensor->get_info()._shape;
+      const auto &descriptor = tensor->get_info()._desc;
+
       if (!CreateTensor(*_context, shape, descriptor, tensor->handle()).ok())
       {
         std::runtime_error("Failed to CreateTensor");
@@ -66,10 +79,10 @@ public:
       switch (type)
       {
         case TensorType::TENSOR_TYPE_INPUT:
-          tensor->writeConvertInit();
+          tensor->writeConvertInit(converter_builder.get(), _environment);
           break;
         case TensorType::TENSOR_TYPE_OUTPUT:
-          tensor->readConvertInit();
+          tensor->readConvertInit(converter_builder.get(), _environment);
           break;
         default:
           break;
@@ -89,65 +102,60 @@ public:
   { /* DO NOTHING */
   }
 
-  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                   tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
-                   std::shared_ptr<tflite::gpu::cl::Environment> environment,
-                   tflite::gpu::cl::DeviceInfo &device_info, TensorType type)
+  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info, TensorType type)
   {
-    tflite::gpu::ValueId max_id = 0;
-    auto data_type = DeduceDataTypeFromPrecision(create_info.precision);
-    const auto shape = info.shape();
+    auto data_type = DeduceDataTypeFromPrecision(_create_info.precision);
 
-    auto tensor = std::make_shared<operand::CLTensor>(shape.rank(), shape, environment, type);
-    _tensors[ind] = tensor;
-    tflite::gpu::BHWC t_shape;
-    switch (shape.rank())
-    {
-      case 1:
-        // B layout
-        t_shape = tflite::gpu::BHWC(shape.dim(0), 1, 1, 1);
-        break;
-      case 2:
-        // BC layout
-        t_shape = tflite::gpu::BHWC(shape.dim(0), 1, 1, shape.dim(1));
-        break;
-      case 3:
-        // BWC layout
-        t_shape = tflite::gpu::BHWC(shape.dim(0), 1, shape.dim(1), shape.dim(2));
-        break;
-      case 4:
-        // BHWC layout
-        t_shape = tflite::gpu::BHWC(shape.dim(0), shape.dim(1), shape.dim(2), shape.dim(3));
-        break;
-      default:
-        break;
-    }
+    tflite::gpu::BHWC BHWC_shape = ToBHWC(info.shape());
 
-    tflite::gpu::cl::TensorStorageType storage_type = create_info.storage_type;
+    tflite::gpu::TensorStorageType storage_type = _create_info.storage_type;
     tflite::gpu::Layout layout =
-      t_shape.b == 1 ? tflite::gpu::Layout::HWC : tflite::gpu::Layout::BHWC;
+      BHWC_shape.b == 1 ? tflite::gpu::Layout::HWC : tflite::gpu::Layout::BHWC;
 
-    tflite::gpu::ValueId id = ind.value();
-    storage_type =
-      tflite::gpu::cl::SelectBestStorageType(device_info, t_shape, storage_type, data_type, layout);
-    auto dummy = std::make_shared<InferenceContextEx::DummyTensor>();
-    dummy->shape = t_shape;
-    dummy->descriptor = tflite::gpu::cl::TensorDescriptor{data_type, storage_type, layout};
-    tensor_reserver_.Add(id, dummy);
+    if (!SelectBestStorageType(_environment->device().GetInfo(), BHWC_shape, storage_type,
+                               data_type, layout, &storage_type)
+           .ok())
+    {
+      throw std::runtime_error("Failed to SelectBestStorageType");
+    }
+    auto tensor = std::make_shared<operand::CLTensor>(
+      info.shape().rank(), type, BHWC_shape,
+      tflite::gpu::TensorDescriptor{data_type, storage_type, layout});
+    _tensors[ind] = tensor;
+  }
 
-    max_id = std::max(max_id, id);
+  ir::OperandIndex addTensor(const ir::Shape &shape)
+  {
+    auto data_type = DeduceDataTypeFromPrecision(_create_info.precision);
 
-    tensor_reserver_.SetNext(max_id + 1);
+    tflite::gpu::BHWC BHWC_shape = ToBHWC(shape);
+
+    tflite::gpu::TensorStorageType storage_type = _create_info.storage_type;
+    tflite::gpu::Layout layout =
+      BHWC_shape.b == 1 ? tflite::gpu::Layout::HWC : tflite::gpu::Layout::BHWC;
+
+    if (!SelectBestStorageType(_environment->device().GetInfo(), BHWC_shape, storage_type,
+                               data_type, layout, &storage_type)
+           .ok())
+    {
+      throw std::runtime_error("Failed to SelectBestStorageType");
+    }
+    auto ind = ir::OperandIndex(_new_id--);
+    auto tensor = std::make_shared<operand::CLTensor>(
+      shape.rank(), TensorType::TENSOR_TYPE_VALID, BHWC_shape,
+      tflite::gpu::TensorDescriptor{data_type, storage_type, layout});
+    _tensors[ind] = tensor;
+    return ind;
   }
 
   ir::OperandIndexMap<std::shared_ptr<operand::CLTensor>> &tensors(void) { return _tensors; }
 
-  InferenceContextEx::TensorReserverEx &tensorReservers(void) { return tensor_reserver_; }
-
 private:
   ir::OperandIndexMap<std::shared_ptr<operand::CLTensor>> _tensors;
-  InferenceContextEx::TensorReserverEx tensor_reserver_;
   tflite::gpu::cl::CLContext *_context;
+  tflite::gpu::cl::InferenceContext::CreateInferenceInfo _create_info;
+  std::shared_ptr<tflite::gpu::cl::Environment> _environment;
+  uint32_t _new_id = UINT32_MAX;
 };
 
 } // namespace gpu_cl

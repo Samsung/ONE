@@ -22,11 +22,16 @@
 #include "ClFunction.h"
 #include "TensorManager.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wsign-compare"
 #include "tensorflow/lite/delegates/gpu/common/shape.h"
-#include "tensorflow/lite/delegates/gpu/cl/tensor.h"
-#include "tensorflow/lite/delegates/gpu/cl/selectors/convolution_selector.h"
-#include "tensorflow/lite/delegates/gpu/cl/selectors/dw_convolution_selector.h"
-#include "tensorflow/lite/delegates/gpu/cl/selectors/simple_selectors.h"
+#include "tensorflow/lite/delegates/gpu/common/tensor.h"
+#include "tensorflow/lite/delegates/gpu/common/tasks/elementwise.h"
+#include "tensorflow/lite/delegates/gpu/common/selectors/convolution_selector.h"
+#include "tensorflow/lite/delegates/gpu/common/selectors/dw_convolution_selector.h"
+#include "tensorflow/lite/delegates/gpu/common/selectors/simple_selectors.h"
+#pragma GCC diagnostic pop
 
 #include "ir/Operations.h"
 #include "ir/Operations.Include.h"
@@ -38,9 +43,6 @@
 #include "util/logging.h"
 #include "util/Utils.h"
 
-using namespace tflite::gpu;
-using namespace tflite::gpu::cl;
-
 namespace onert
 {
 namespace backend
@@ -48,39 +50,170 @@ namespace backend
 namespace gpu_cl
 {
 
-HW ToHW(int32_t h, int32_t w) { return HW(h > 0 ? h : 1, w > 0 ? w : 1); }
-
-template <typename AttrT>
-void UpdatePadding(const ir::PaddingType type, const BHWC &input_shape, AttrT *attr)
+void KernelGenerator::addClNode(const std::vector<ir::OperandIndex> &inputs,
+                                const std::vector<ir::OperandIndex> &outputs,
+                                std::unique_ptr<tflite::gpu::GPUOperation> gpu_op)
 {
-  if (type == ir::PaddingType::SAME)
+  tflite::gpu::cl::CLNode cl_node;
+  cl_node.cl_operation.Init(std::move(gpu_op));
+  cl_node.inputs.resize(inputs.size());
+  for (size_t i = 0; i < inputs.size(); ++i)
   {
-    attr->padding = CalculateSamePadding(input_shape, *attr);
+    cl_node.inputs[i] = inputs[i].value();
+  }
+  cl_node.outputs.resize(outputs.size());
+  for (size_t i = 0; i < outputs.size(); ++i)
+  {
+    cl_node.outputs[i] = outputs[i].value();
+  }
+  _nodes.push_back(std::move(cl_node));
+  _operation_indexes.push_back(_operation_index);
+  return;
+}
+
+void KernelGenerator::get_operation(FunctionMap &Functions)
+{
+  size_t size = _nodes.size();
+  size_t i = 0;
+  for (auto &it : Functions)
+  {
+    auto index = it.first;
+    auto node_index = _operation_indexes[i];
+    while (index == node_index)
+    {
+      auto &fn_seq = it.second;
+      auto &node = _nodes[i++];
+      for (size_t j = 0; j < node.inputs.size(); ++j)
+      {
+        uint32_t idx = node.inputs[j];
+        node.cl_operation.GetGpuOperation().SetSrc(
+          _tensor_reg->getClTensor(ir::OperandIndex{idx})->handle(), j);
+      }
+      for (size_t j = 0; j < node.outputs.size(); ++j)
+      {
+        uint32_t idx = node.outputs[j];
+        node.cl_operation.GetGpuOperation().SetDst(
+          _tensor_reg->getClTensor(ir::OperandIndex{idx})->handle(), j);
+      }
+      fn_seq->iterate([&](exec::IFunction &ifunc) {
+        static_cast<ClFunction &>(ifunc).add_operation(&node.cl_operation);
+      });
+      if (i == size)
+      {
+        break;
+      }
+      node_index = _operation_indexes[i];
+    }
+    if (i == size)
+    {
+      break;
+    }
+  }
+}
+
+absl::Status KernelGenerator::readConstTensor(const ir::OperandIndex &index,
+                                              tflite::gpu::TensorOrScalar *param)
+{
+  const auto shape = _ctx.at(index).shape();
+  if (shape.rank() == 0 && shape.num_elements() == 1)
+  {
+    tflite::gpu::Tensor<tflite::gpu::Scalar, tflite::gpu::DataType::FLOAT32> tensor;
+    tensor.shape.v = 1;
+    tensor.data.resize(1);
+    std::memcpy(&tensor.data[0], _ctx.at(index).data()->base(), _ctx.at(index).operandSize());
+    *param = tensor.data[0];
   }
   else
   {
-    attr->padding.prepended = HW(0, 0);
-    attr->padding.appended = HW(0, 0);
+    if (CheckIfLinearConvertible(&shape))
+    {
+      tflite::gpu::Tensor<tflite::gpu::Linear, tflite::gpu::DataType::FLOAT32> tensor;
+      tensor.shape.v = shape.dim(shape.rank() - 1);
+      tensor.data.resize(shape.num_elements());
+      std::memcpy(&tensor.data[0], _ctx.at(index).data()->base(), _ctx.at(index).operandSize());
+      *param = std::move(tensor);
+    }
+    else
+    {
+      tflite::gpu::Tensor<tflite::gpu::HWC, tflite::gpu::DataType::FLOAT32> tensor;
+      if (shape.rank() == 3)
+      {
+        tensor.shape.h = shape.dim(0);
+        tensor.shape.w = shape.dim(1);
+        tensor.shape.c = shape.dim(2);
+      }
+      else if (shape.rank() == 4)
+      {
+        if (shape.dim(0) != 1)
+        {
+          return absl::UnimplementedError("Batch size is not equal to 1.");
+        }
+        tensor.shape.h = shape.dim(1);
+        tensor.shape.w = shape.dim(2);
+        tensor.shape.c = shape.dim(3);
+      }
+      else
+      {
+        return absl::InvalidArgumentError(
+          "Expected a 3D tensor of shape HxWxC or a 4D tensor of shape 1xHxWxC.");
+      }
+      tensor.data.resize(shape.num_elements());
+      std::memcpy(&tensor.data[0], _ctx.at(index).data()->base(), _ctx.at(index).operandSize());
+      *param = std::move(tensor);
+    }
   }
+  return absl::OkStatus();
 }
 
-PoolingType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
+absl::Status KernelGenerator::readConstTensor(
+  const ir::OperandIndex &index,
+  absl::variant<tflite::gpu::Tensor<tflite::gpu::Linear, tflite::gpu::DataType::FLOAT32>,
+                tflite::gpu::Tensor<tflite::gpu::HWC, tflite::gpu::DataType::FLOAT32>> *alpha)
 {
-  switch (type_ir)
+  const auto shape = _ctx.at(index).shape();
+  if (CheckIfLinearConvertible(&shape))
   {
-    case ir::operation::Pool2D::PoolType::AVG:
-      return PoolingType::AVERAGE;
-    case ir::operation::Pool2D::PoolType::MAX:
-      return PoolingType::MAX;
-    default:
-      throw std::runtime_error("gpu_Cl KernelGenerator : Not supported operation yet");
+    tflite::gpu::Tensor<tflite::gpu::Linear, tflite::gpu::DataType::FLOAT32> tensor;
+    tensor.shape.v = shape.dim(shape.rank() - 1);
+    tensor.data.resize(shape.num_elements());
+    std::memcpy(&tensor.data[0], _ctx.at(index).data()->base(), _ctx.at(index).operandSize());
+    *alpha = std::move(tensor);
   }
+  else
+  {
+    tflite::gpu::Tensor<tflite::gpu::HWC, tflite::gpu::DataType::FLOAT32> tensor;
+    if (shape.rank() == 3)
+    {
+      tensor.shape.h = shape.dim(0);
+      tensor.shape.w = shape.dim(1);
+      tensor.shape.c = shape.dim(2);
+    }
+    else if (shape.rank() == 4)
+    {
+      if (shape.dim(0) != 1)
+      {
+        return absl::UnimplementedError("Batch size is not equal to 1.");
+      }
+      tensor.shape.h = shape.dim(1);
+      tensor.shape.w = shape.dim(2);
+      tensor.shape.c = shape.dim(3);
+    }
+    else
+    {
+      return absl::InvalidArgumentError(
+        "Expected a 3D tensor of shape HxWxC or a 4D tensor of shape 1xHxWxC.");
+    }
+    tensor.data.resize(shape.num_elements());
+    std::memcpy(&tensor.data[0], _ctx.at(index).data()->base(), _ctx.at(index).operandSize());
+    *alpha = std::move(tensor);
+  }
+  return absl::OkStatus();
 }
 
-KernelGenerator::KernelGenerator(const ir::Graph &graph,
-                                 const std::shared_ptr<TensorBuilder> &tensor_builder,
-                                 const std::shared_ptr<TensorRegistry> &tensor_reg,
-                                 const std::shared_ptr<CreationContext> &creation_context)
+KernelGenerator::KernelGenerator(
+  const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
+  const std::shared_ptr<TensorRegistry> &tensor_reg,
+  const std::shared_ptr<tflite::gpu::cl::CreationContext> &creation_context)
   : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()),
     _operations_ctx(graph.operations()), _current_layout{graph.layout()},
     _tensor_builder(tensor_builder), _tensor_reg(tensor_reg), _creation_context(creation_context)
@@ -89,13 +222,13 @@ KernelGenerator::KernelGenerator(const ir::Graph &graph,
 
 std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
 {
-  auto ret = std::make_unique<exec::FunctionSequence>();
-  ret->enableDynamicShapeInferer(false);
-
+  auto fn_seq = std::make_unique<exec::FunctionSequence>();
+  fn_seq->enableDynamicShapeInferer(false);
+  _operation_index = ind;
   const auto &op = _graph.operations().at(ind);
   op.accept(*this);
-  ret->append(releaseFunction());
-  return ret;
+  fn_seq->append(releaseFunction());
+  return fn_seq;
 }
 
 void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
@@ -104,63 +237,66 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
   const auto lhs_index{node.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::BinaryArithmetic::Input::RHS)};
 
-  // const auto activation = node.param().activation;
+  tflite::gpu::OperationDef op_def;
+  op_def.precision = tflite::gpu::CalculationsPrecision::F32;
 
-  OperationDef op_def;
-  op_def.precision = CalculationsPrecision::F32;
+  const bool lhs_const = _ctx.at(lhs_index).isConstant();
+  const bool rhs_const = _ctx.at(rhs_index).isConstant();
 
-  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(lhs_index)->descriptor);
-  auto lhs_shape = _tensor_reg->getClTensorReserver(lhs_index)->shape;
-
-  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(rhs_index)->descriptor);
-  auto rhs_shape = _tensor_reg->getClTensorReserver(rhs_index)->shape;
-
-  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(ofm_index)->descriptor);
-  auto out_shape = _tensor_reg->getClTensorReserver(ofm_index)->shape;
-
-  auto fn = std::make_unique<ClFunction>();
-
-  std::unique_ptr<GPUOperation> gpu_op;
-  switch (node.param().arithmetic_type)
+  if (lhs_const && rhs_const)
   {
-    case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
-    {
-      std::vector<int> channels(2);
-      channels[0] = lhs_shape.c;
-      channels[1] = rhs_shape.c;
-      SelectAdd(op_def, channels, out_shape.c, &gpu_op);
-
-      auto ofm_tensor = _tensor_reg->getClTensor(ofm_index);
-      auto lhs_tensor = _tensor_reg->getClTensor(lhs_index);
-      auto rhs_tensor = _tensor_reg->getClTensor(rhs_index);
-      gpu_op->SetSrc(lhs_tensor->handle(), ir::operation::BinaryArithmetic::Input::LHS);
-      gpu_op->SetSrc(rhs_tensor->handle(), ir::operation::BinaryArithmetic::Input::RHS);
-      gpu_op->SetDst(ofm_tensor->handle(), 0);
-
-      fn->configure(_creation_context);
-      fn->add_operation(std::move(gpu_op));
-      break;
-    }
-    case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
-    {
-      // NYI
-      break;
-    }
-    case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
-    {
-      // NYI
-      break;
-    }
-    case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
-    {
-      // NYI
-      break;
-    }
-    default:
-      assert(false && "The BinaryArithmetic operation supports only binary arithmetic operations");
-      break;
+    throw std::runtime_error("No runtime input tensors for " + node.name());
   }
 
+  auto fn = std::make_unique<ClFunction>(_creation_context);
+  std::unique_ptr<tflite::gpu::GPUOperation> gpu_op;
+
+  tflite::gpu::OperationType op_type = convertArithmeticType(node.param().arithmetic_type);
+
+  if (!lhs_const && !rhs_const)
+  {
+    auto lhs_shape = _tensor_reg->getClTensor(lhs_index)->get_info()._shape;
+    auto rhs_shape = _tensor_reg->getClTensor(rhs_index)->get_info()._shape;
+
+    bool swap =
+      (op_type == tflite::gpu::OperationType::MUL) &&
+      (lhs_shape.h <= rhs_shape.h && lhs_shape.w <= rhs_shape.w && lhs_shape.c <= rhs_shape.c);
+
+    auto first_index = swap ? rhs_index : lhs_index;
+    auto second_index = swap ? lhs_index : rhs_index;
+
+    op_def.src_tensors.push_back(_tensor_reg->getClTensor(first_index)->get_info()._desc);
+    op_def.src_tensors.push_back(_tensor_reg->getClTensor(second_index)->get_info()._desc);
+    op_def.dst_tensors.push_back(_tensor_reg->getClTensor(ofm_index)->get_info()._desc);
+
+    auto second_shape = _tensor_reg->getClTensor(second_index)->get_info()._shape;
+
+    tflite::gpu::GPUOperation operation = CreateElementwiseTwoInput(op_def, op_type, second_shape);
+    gpu_op = std::make_unique<tflite::gpu::GPUOperation>(std::move(operation));
+
+    addClNode({first_index, second_index}, {ofm_index}, std::move(gpu_op));
+  }
+  else
+  {
+    auto non_const_index = rhs_const ? lhs_index : rhs_index;
+    auto const_index = rhs_const ? rhs_index : lhs_index;
+
+    op_def.dst_tensors.push_back(_tensor_reg->getClTensor(ofm_index)->get_info()._desc);
+    op_def.src_tensors.push_back(_tensor_reg->getClTensor(non_const_index)->get_info()._desc);
+
+    tflite::gpu::ElementwiseAttributes attr;
+
+    if (!readConstTensor(const_index, &attr.param).ok())
+    {
+      throw std::runtime_error("BinaryArithmetic unsupported constant tensor");
+    }
+
+    tflite::gpu::GPUOperation operation =
+      CreateElementwise(_creation_context->GetGpuInfo(), op_def, op_type, attr);
+    gpu_op = absl::make_unique<tflite::gpu::GPUOperation>(std::move(operation));
+
+    addClNode({non_const_index}, {ofm_index}, std::move(gpu_op));
+  }
   _return_fn = std::move(fn);
 }
 
@@ -174,30 +310,30 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
 
   const auto param = node.param();
 
-  OperationDef op_def;
-  op_def.precision = CalculationsPrecision::F32;
+  tflite::gpu::OperationDef op_def;
+  op_def.precision = tflite::gpu::CalculationsPrecision::F32;
 
-  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(input)->descriptor);
+  op_def.src_tensors.push_back(_tensor_reg->getClTensor(input)->get_info()._desc);
 
-  auto input_shape = _tensor_reg->getClTensorReserver(input)->shape;
-  auto kernel_shape = _tensor_reg->getClTensorReserver(kernel)->shape;
-  auto output_shape = _tensor_reg->getClTensorReserver(output)->shape;
-  auto bias_shape = _tensor_reg->getClTensorReserver(bias)->shape;
+  auto input_shape = _tensor_reg->getClTensor(input)->get_info()._shape;
+  auto kernel_shape = _tensor_reg->getClTensor(kernel)->get_info()._shape;
+  auto output_shape = _tensor_reg->getClTensor(output)->get_info()._shape;
+  auto bias_shape = _tensor_reg->getClTensor(bias)->get_info()._shape;
 
-  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output)->descriptor);
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensor(output)->get_info()._desc);
 
-  ModelHints hints;
-  std::unique_ptr<GPUOperation> gpu_op; // = InitSingleOpSubgraph(inputs, outputs, gpu_subgraph);
+  tflite::gpu::ModelHints hints;
+  std::unique_ptr<tflite::gpu::GPUOperation>
+    gpu_op; // = InitSingleOpSubgraph(inputs, outputs, gpu_subgraph);
 
-  auto input_tensor = _tensor_reg->getClTensor(input);
   auto kernel_tensor = _tensor_reg->getClTensor(kernel);
   auto bias_tensor = _tensor_reg->getClTensor(bias);
-  auto output_tensor = _tensor_reg->getClTensor(output);
 
-  Convolution2DAttributes attr;
+  tflite::gpu::Convolution2DAttributes attr;
   attr.strides = ToHW(param.stride.vertical, param.stride.horizontal);
-  attr.dilations = HW(std::max(static_cast<u_int32_t>(1), param.dilation.height_factor),
-                      std::max(static_cast<u_int32_t>(1), param.dilation.width_factor));
+  attr.dilations =
+    tflite::gpu::HW(std::max(static_cast<u_int32_t>(1), param.dilation.height_factor),
+                    std::max(static_cast<u_int32_t>(1), param.dilation.width_factor));
 
   bool is_weight = (_ctx.at(kernel).isConstant() ? true : false);
 
@@ -220,12 +356,14 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
 
   UpdatePadding(param.padding.type, input_shape, &attr);
 
-  gpu_op = SelectConvolution(attr, output_shape, _creation_context->GetDeviceInfo(), op_def, hints);
-  gpu_op->SetSrc(input_tensor->handle(), ir::operation::Conv2D::INPUT);
+  gpu_op = SelectConvolution(attr, output_shape, _creation_context->GetGpuInfo(), op_def, hints);
 
-  auto fn = std::make_unique<ClFunction>();
+  tflite::gpu::cl::CLNode cl_node;
+  cl_node.inputs.resize(1);
+  cl_node.inputs[0] = input.value();
+  cl_node.outputs.resize(1);
 
-  fn->configure(_creation_context);
+  auto fn = std::make_unique<ClFunction>(_creation_context);
 
   const auto activation = node.param().activation;
 
@@ -233,47 +371,43 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   {
     case ir::Activation::NONE:
     {
-      gpu_op->SetDst(output_tensor->handle(), 0);
-      fn->add_operation(std::move(gpu_op));
+      addClNode({input}, {output}, std::move(gpu_op));
       break;
     }
+    case ir::Activation::RELU:
     case ir::Activation::RELU6:
     {
-      std::unique_ptr<GPUOperation> gpu_op_1;
-      OperationDef op_def_1;
-      std::shared_ptr<cl::Tensor> new_tensor = std::make_shared<cl::Tensor>();
+      std::unique_ptr<tflite::gpu::GPUOperation> gpu_op_1;
+      tflite::gpu::OperationDef op_def_1;
+      const auto shape = _ctx.at(output).shape();
+      auto new_ind = _tensor_reg->addNewClTensor(shape);
 
-      _new_tensors[output] = new_tensor;
-      if (!CreateTensor(*_creation_context->context, output_shape,
-                        _tensor_reg->getClTensorReserver(output)->descriptor, new_tensor.get())
-             .ok())
+      addClNode({input}, {new_ind}, std::move(gpu_op));
+
+      op_def_1.precision = tflite::gpu::CalculationsPrecision::F32;
+      op_def_1.src_tensors.push_back(_tensor_reg->getClTensor(output)->get_info()._desc);
+      op_def_1.dst_tensors.push_back(_tensor_reg->getClTensor(output)->get_info()._desc);
+
+      tflite::gpu::ReLUAttributes attr_1;
+      if (activation == ir::Activation::RELU6)
       {
-        throw std::runtime_error("Error CreateTensor.");
+        attr_1.clip = 6;
       }
-
-      gpu_op->SetDst(new_tensor.get(), 0);
-      fn->add_operation(std::move(gpu_op));
-      op_def_1.precision = CalculationsPrecision::F32;
-      op_def_1.src_tensors.push_back(_tensor_reg->getClTensorReserver(output)->descriptor);
-      op_def_1.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output)->descriptor);
-
-      //   - ReLU6: clip = 6, alpha = 0
-      ReLUAttributes attr_1;
-      attr_1.clip = 6;
+      else
+      {
+        attr_1.clip = 0;
+      }
       attr_1.alpha = 0;
       gpu_op_1 = SelectReLU(attr_1, op_def_1);
 
-      gpu_op_1->SetSrc(new_tensor.get(), 0);
-      gpu_op_1->SetDst(output_tensor->handle(), 0);
-      fn->add_operation(std::move(gpu_op_1));
+      addClNode({new_ind}, {output}, std::move(gpu_op_1));
       break;
     }
     default:
     {
-      throw std::runtime_error("gpu_cl KernelGenerator : Not supported operation yet");
+      throw std::runtime_error("gpu_cl KernelGenerator : Not supported Conv2D activiation");
     }
   }
-
   _return_fn = std::move(fn);
 }
 
@@ -292,28 +426,23 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
 
   const auto multiplier = node.param().multiplier;
 
-  auto ofm_tensor = _tensor_reg->getClTensor(ofm_index);
-  auto ifm_tensor = _tensor_reg->getClTensor(ifm_index);
-  auto ker_tensor = _tensor_reg->getClTensor(ker_index);
-  auto bias_tensor = _tensor_reg->getClTensor(bias_index);
-
   bool is_weight = (_ctx.at(ker_index).isConstant() ? true : false);
-  OperationDef op_def;
-  op_def.precision = CalculationsPrecision::F32;
+  tflite::gpu::OperationDef op_def;
+  op_def.precision = tflite::gpu::CalculationsPrecision::F32;
 
-  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(ifm_index)->descriptor);
-  auto input_shape = _tensor_reg->getClTensorReserver(ifm_index)->shape;
+  op_def.src_tensors.push_back(_tensor_reg->getClTensor(ifm_index)->get_info()._desc);
+  auto input_shape = _tensor_reg->getClTensor(ifm_index)->get_info()._shape;
 
-  auto ker_shape = _tensor_reg->getClTensorReserver(ker_index)->shape;
+  auto ker_shape = _tensor_reg->getClTensor(ker_index)->get_info()._shape;
 
-  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(ofm_index)->descriptor);
-  auto out_shape = _tensor_reg->getClTensorReserver(ofm_index)->shape;
-  auto bias_shape = _tensor_reg->getClTensorReserver(bias_index)->shape;
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensor(ofm_index)->get_info()._desc);
+  auto out_shape = _tensor_reg->getClTensor(ofm_index)->get_info()._shape;
+  auto bias_shape = _tensor_reg->getClTensor(bias_index)->get_info()._shape;
 
-  DepthwiseConvolution2DAttributes attr;
+  tflite::gpu::DepthwiseConvolution2DAttributes attr;
   attr.strides = ToHW(stride.vertical, stride.horizontal);
-  attr.dilations = HW(std::max(static_cast<u_int32_t>(1), dilation.height_factor),
-                      std::max(static_cast<u_int32_t>(1), dilation.width_factor));
+  attr.dilations = tflite::gpu::HW(std::max(static_cast<u_int32_t>(1), dilation.height_factor),
+                                   std::max(static_cast<u_int32_t>(1), dilation.width_factor));
 
   if (is_weight)
   {
@@ -323,12 +452,14 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
     attr.weights.shape.w = ker_shape.w;
     attr.weights.shape.i = ker_shape.c;
     attr.weights.data.resize(ker_shape.DimensionsProduct());
-    memcpy(attr.weights.data.data(), _ctx.at(ker_index).data()->base(), ker_tensor->total_size());
+    memcpy(attr.weights.data.data(), _ctx.at(ker_index).data()->base(),
+           _ctx.at(ker_index).operandSize());
   }
   attr.bias.id = bias_index.value();
   attr.bias.shape.v = bias_shape.b != 1 ? bias_shape.b : bias_shape.c;
   attr.bias.data.resize(bias_shape.DimensionsProduct());
-  memcpy(attr.bias.data.data(), _ctx.at(bias_index).data()->base(), bias_tensor->total_size());
+  memcpy(attr.bias.data.data(), _ctx.at(bias_index).data()->base(),
+         _ctx.at(bias_index).operandSize());
   UpdatePadding(padding.type, input_shape, &attr);
 
   if (multiplier != 1)
@@ -338,7 +469,7 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
     const int filter_width = ker_shape.w;
     const int output_depth = out_shape.c;
 
-    tflite::gpu::Tensor<OHWI, DataType::FLOAT32> weights;
+    tflite::gpu::Tensor<tflite::gpu::OHWI, tflite::gpu::DataType::FLOAT32> weights;
     weights.id = attr.weights.id;
     weights.shape = tflite::gpu::OHWI(output_depth, filter_height, filter_width, input_depth);
     weights.data.resize(weights.shape.DimensionsProduct());
@@ -356,12 +487,12 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
     attr.weights = std::move(weights);
   }
 
-  auto fn = std::make_unique<ClFunction>();
-  std::unique_ptr<GPUOperation> gpu_op;
+  auto fn = std::make_unique<ClFunction>(_creation_context);
+  std::unique_ptr<tflite::gpu::GPUOperation> gpu_op;
 
   if (is_weight)
   {
-    gpu_op = SelectDWConvolution(attr, _creation_context->GetDeviceInfo(), op_def);
+    gpu_op = SelectDWConvolution(attr, _creation_context->GetGpuInfo(), op_def);
   }
   else
   {
@@ -370,12 +501,8 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
       throw std::runtime_error(
         "No support of depthwise runtime weights with channel multiplier != 1");
     }
-    gpu_op = SelectDWConvolutionDynamicWeights(attr, _creation_context->GetDeviceInfo(), op_def);
+    gpu_op = SelectDWConvolutionDynamicWeights(attr, _creation_context->GetGpuInfo(), op_def);
   }
-
-  gpu_op->SetSrc(ifm_tensor->handle(), ir::operation::DepthwiseConv2D::Input::INPUT);
-
-  fn->configure(_creation_context);
 
   const auto activation = node.param().activation;
 
@@ -383,44 +510,42 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   {
     case ir::Activation::NONE:
     {
-      gpu_op->SetDst(ofm_tensor->handle(), 0);
-      fn->add_operation(std::move(gpu_op));
+      addClNode({ifm_index}, {ofm_index}, std::move(gpu_op));
       break;
     }
+    case ir::Activation::RELU:
     case ir::Activation::RELU6:
     {
-      std::unique_ptr<GPUOperation> gpu_op_1;
-      OperationDef op_def_1;
-      std::shared_ptr<cl::Tensor> new_tensor = std::make_shared<cl::Tensor>();
+      std::unique_ptr<tflite::gpu::GPUOperation> gpu_op_1;
+      tflite::gpu::OperationDef op_def_1;
+      const auto shape = _ctx.at(ofm_index).shape();
+      auto new_ind = _tensor_reg->addNewClTensor(shape);
 
-      _new_tensors[ofm_index] = new_tensor;
-      if (!CreateTensor(*_creation_context->context, out_shape,
-                        _tensor_reg->getClTensorReserver(ofm_index)->descriptor, new_tensor.get())
-             .ok())
+      addClNode({ifm_index}, {new_ind}, std::move(gpu_op));
+
+      op_def_1.precision = tflite::gpu::CalculationsPrecision::F32;
+
+      op_def_1.src_tensors.push_back(_tensor_reg->getClTensor(ofm_index)->get_info()._desc);
+      op_def_1.dst_tensors.push_back(_tensor_reg->getClTensor(ofm_index)->get_info()._desc);
+
+      tflite::gpu::ReLUAttributes attr_1;
+      if (activation == ir::Activation::RELU6)
       {
-        throw std::runtime_error("Error CreateTensor.");
+        attr_1.clip = 6;
       }
-
-      gpu_op->SetDst(new_tensor.get(), 0);
-      fn->add_operation(std::move(gpu_op));
-      op_def_1.precision = CalculationsPrecision::F32;
-      op_def_1.src_tensors.push_back(_tensor_reg->getClTensorReserver(ofm_index)->descriptor);
-      op_def_1.dst_tensors.push_back(_tensor_reg->getClTensorReserver(ofm_index)->descriptor);
-
-      //   - ReLU6: clip = 6, alpha = 0
-      ReLUAttributes attr_1;
-      attr_1.clip = 6;
+      else
+      {
+        attr_1.clip = 0;
+      }
       attr_1.alpha = 0;
       gpu_op_1 = SelectReLU(attr_1, op_def_1);
 
-      gpu_op_1->SetSrc(new_tensor.get(), 0);
-      gpu_op_1->SetDst(ofm_tensor->handle(), 0);
-      fn->add_operation(std::move(gpu_op_1));
+      addClNode({new_ind}, {ofm_index}, std::move(gpu_op_1));
       break;
     }
     default:
     {
-      throw std::runtime_error("gpu_cl KernelGenerator : Not supported operation yet");
+      throw std::runtime_error("gpu_cl KernelGenerator : Not supported DepthwiseConv2D acvivation");
     }
   }
 
@@ -429,26 +554,23 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
 
 void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
 {
-  std::unique_ptr<GPUOperation> gpu_op;
-  auto fn = std::make_unique<ClFunction>();
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT)};
 
+  tflite::gpu::OperationDef op_def;
+  op_def.precision = tflite::gpu::CalculationsPrecision::F32;
+
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensor(output_index)->get_info()._desc);
+  op_def.src_tensors.push_back(_tensor_reg->getClTensor(input_index)->get_info()._desc);
+
+  std::unique_ptr<tflite::gpu::GPUOperation> gpu_op;
+  auto fn = std::make_unique<ClFunction>(_creation_context);
   switch (node.param().op_type)
   {
     case ir::operation::ElementwiseActivation::Type::LEAKY_RELU:
     case ir::operation::ElementwiseActivation::Type::RELU:
     {
-      const auto output_index{node.getOutputs().at(0)};
-      const auto input_index{
-        node.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT)};
-
-      OperationDef op_def;
-      op_def.precision = CalculationsPrecision::F32;
-      auto output_tensor = _tensor_reg->getClTensor(output_index);
-      auto input_tensor = _tensor_reg->getClTensor(input_index);
-      op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output_index)->descriptor);
-      op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(input_index)->descriptor);
-
-      ReLUAttributes attr;
+      tflite::gpu::ReLUAttributes attr;
       if (ir::operation::ElementwiseActivation::Type::LEAKY_RELU == node.param().op_type)
       {
         attr.alpha = node.param().alpha;
@@ -460,17 +582,33 @@ void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
         attr.clip = node.param().alpha;
       }
       gpu_op = SelectReLU(attr, op_def);
-      gpu_op->SetSrc(input_tensor->handle(), ir::operation::ElementwiseActivation::Input::INPUT);
-      gpu_op->SetDst(output_tensor->handle(), 0);
-      fn->configure(_creation_context);
-      fn->add_operation(std::move(gpu_op));
-
-      _return_fn = std::move(fn);
+      break;
+    }
+    case ir::operation::ElementwiseActivation::Type::LOGISTIC:
+    {
+      if (_ctx.at(input_index).typeInfo().type() != ir::DataType::FLOAT32)
+      {
+        throw std::runtime_error{"Unsupported data type of LOGISTIC"};
+      }
+      tflite::gpu::GPUOperation operation =
+        CreateElementwiseOneInput(_creation_context->GetGpuInfo(), op_def,
+                                  convertElementwiseActivationType(node.param().op_type));
+      gpu_op = std::make_unique<tflite::gpu::GPUOperation>(std::move(operation));
+      break;
+    }
+    case ir::operation::ElementwiseActivation::Type::TANH:
+    {
+      tflite::gpu::GPUOperation operation = CreateElementwiseOneInput(
+        _creation_context->GetGpuInfo(), op_def, tflite::gpu::OperationType::TANH);
+      gpu_op = std::make_unique<tflite::gpu::GPUOperation>(std::move(operation));
       break;
     }
     default:
-      throw std::runtime_error("gpu_cl KernelGenerator : Not supported operation yet");
+      throw std::runtime_error(
+        "gpu_cl KernelGenerator : Not supported operation on ElementwiseActivation");
   }
+  addClNode({input_index}, {output_index}, std::move(gpu_op));
+  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::operation::Pool2D &node)
@@ -478,24 +616,24 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Pool2D::Input::INPUT)};
 
-  OperationDef op_def;
-  op_def.precision = CalculationsPrecision::F32;
+  tflite::gpu::OperationDef op_def;
+  op_def.precision = tflite::gpu::CalculationsPrecision::F32;
 
-  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(input_index)->descriptor);
-  auto input_shape = _tensor_reg->getClTensorReserver(input_index)->shape;
+  op_def.src_tensors.push_back(_tensor_reg->getClTensor(input_index)->get_info()._desc);
+  auto input_shape = _tensor_reg->getClTensor(input_index)->get_info()._shape;
 
-  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output_index)->descriptor);
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensor(output_index)->get_info()._desc);
 
   const auto kh = node.param().kh;
   const auto kw = node.param().kw;
   const auto stride = node.param().stride;
   const auto op_type = convertPoolType(node.param().op_type);
 
-  Pooling2DAttributes attributes;
+  tflite::gpu::Pooling2DAttributes attributes;
   attributes.type = op_type;
-  attributes.kernel = HW(kh > 0 ? kh : 1, kw > 0 ? kw : 1);
-  attributes.strides =
-    HW(stride.vertical > 0 ? stride.vertical : 1, stride.horizontal > 0 ? stride.horizontal : 1);
+  attributes.kernel = tflite::gpu::HW(kh > 0 ? kh : 1, kw > 0 ? kw : 1);
+  attributes.strides = tflite::gpu::HW(stride.vertical > 0 ? stride.vertical : 1,
+                                       stride.horizontal > 0 ? stride.horizontal : 1);
 
   if (node.param().padding.type == ir::PaddingType::SAME)
   {
@@ -503,23 +641,15 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
   }
   else
   {
-    attributes.padding.prepended = HW(0, 0);
-    attributes.padding.appended = HW(0, 0);
+    attributes.padding.prepended = tflite::gpu::HW(0, 0);
+    attributes.padding.appended = tflite::gpu::HW(0, 0);
   }
 
-  auto fn = std::make_unique<ClFunction>();
-  std::unique_ptr<GPUOperation> gpu_op;
+  auto fn = std::make_unique<ClFunction>(_creation_context);
+  std::unique_ptr<tflite::gpu::GPUOperation> gpu_op;
   gpu_op = SelectPooling(attributes, op_def);
 
-  auto input_tensor = _tensor_reg->getClTensor(input_index);
-  auto output_tensor = _tensor_reg->getClTensor(output_index);
-
-  gpu_op->SetSrc(input_tensor->handle(), ir::operation::Pool2D::Input::INPUT);
-  gpu_op->SetDst(output_tensor->handle(), 0);
-
-  fn->configure(_creation_context);
-  fn->add_operation(std::move(gpu_op));
-
+  addClNode({input_index}, {output_index}, std::move(gpu_op));
   _return_fn = std::move(fn);
 }
 
@@ -528,31 +658,24 @@ void KernelGenerator::visit(const ir::operation::Reshape &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Reshape::Input::INPUT)};
 
-  OperationDef op_def;
-  op_def.precision = CalculationsPrecision::F32;
+  tflite::gpu::OperationDef op_def;
+  op_def.precision = tflite::gpu::CalculationsPrecision::F32;
 
-  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(input_index)->descriptor);
-  auto input_shape = _tensor_reg->getClTensorReserver(input_index)->shape;
+  op_def.src_tensors.push_back(_tensor_reg->getClTensor(input_index)->get_info()._desc);
+  auto input_shape = _tensor_reg->getClTensor(input_index)->get_info()._shape;
 
-  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output_index)->descriptor);
-  auto output_shape = _tensor_reg->getClTensorReserver(output_index)->shape;
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensor(output_index)->get_info()._desc);
+  auto output_shape = _tensor_reg->getClTensor(output_index)->get_info()._shape;
 
-  ReshapeAttributes attr;
+  tflite::gpu::ReshapeAttributes attr;
   attr.new_shape = output_shape;
 
-  auto fn = std::make_unique<ClFunction>();
-  std::unique_ptr<GPUOperation> gpu_op;
+  auto fn = std::make_unique<ClFunction>(_creation_context);
+  std::unique_ptr<tflite::gpu::GPUOperation> gpu_op;
   const int src_channels = input_shape.c;
   SelectReshape(src_channels, attr.new_shape.c, op_def, &gpu_op);
 
-  auto input_tensor = _tensor_reg->getClTensor(input_index);
-  auto output_tensor = _tensor_reg->getClTensor(output_index);
-  gpu_op->SetSrc(input_tensor->handle(), ir::operation::Reshape::Input::INPUT);
-  gpu_op->SetDst(output_tensor->handle(), 0);
-
-  fn->configure(_creation_context);
-  fn->add_operation(std::move(gpu_op));
-
+  addClNode({input_index}, {output_index}, std::move(gpu_op));
   _return_fn = std::move(fn);
 }
 
@@ -568,27 +691,20 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
     throw std::runtime_error("Softmax.beta != 1 is not supported in gpu_cl");
   }
 
-  OperationDef op_def;
-  op_def.precision = CalculationsPrecision::F32;
+  tflite::gpu::OperationDef op_def;
+  op_def.precision = tflite::gpu::CalculationsPrecision::F32;
 
-  op_def.dst_tensors.push_back(_tensor_reg->getClTensorReserver(output_index)->descriptor);
+  op_def.dst_tensors.push_back(_tensor_reg->getClTensor(output_index)->get_info()._desc);
 
-  op_def.src_tensors.push_back(_tensor_reg->getClTensorReserver(input_index)->descriptor);
-  auto input_shape = _tensor_reg->getClTensorReserver(input_index)->shape;
+  op_def.src_tensors.push_back(_tensor_reg->getClTensor(input_index)->get_info()._desc);
+  auto input_shape = _tensor_reg->getClTensor(input_index)->get_info()._shape;
 
-  auto fn = std::make_unique<ClFunction>();
+  auto fn = std::make_unique<ClFunction>(_creation_context);
 
-  std::unique_ptr<GPUOperation> gpu_op;
+  std::unique_ptr<tflite::gpu::GPUOperation> gpu_op;
   SelectSoftmax(input_shape, op_def, &gpu_op);
-  auto output_tensor = _tensor_reg->getClTensor(output_index);
-  auto input_tensor = _tensor_reg->getClTensor(input_index);
 
-  gpu_op->SetSrc(input_tensor->handle(), ir::operation::Softmax::Input::INPUT);
-  gpu_op->SetDst(output_tensor->handle(), 0);
-
-  fn->configure(_creation_context);
-  fn->add_operation(std::move(gpu_op));
-
+  addClNode({input_index}, {output_index}, std::move(gpu_op));
   _return_fn = std::move(fn);
 }
 

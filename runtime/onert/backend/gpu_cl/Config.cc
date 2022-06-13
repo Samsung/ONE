@@ -18,8 +18,12 @@
 
 #include <dlfcn.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wsign-compare"
 #include "tensorflow/lite/delegates/gpu/common/status.h"
 #include "tensorflow/lite/delegates/gpu/cl/opencl_wrapper.h"
+#pragma GCC diagnostic pop
 
 using namespace tflite::gpu::cl;
 

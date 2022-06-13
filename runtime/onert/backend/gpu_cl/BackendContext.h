@@ -25,7 +25,12 @@
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wsign-compare"
 #include "tensorflow/lite/delegates/gpu/cl/inference_context.h"
+#pragma GCC diagnostic pop
 
 namespace onert
 {
@@ -52,6 +57,7 @@ public:
   }
 
   ITensorRegistry *genTensors() override;
+  FunctionMap genKernels() override;
 
 protected:
   void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,

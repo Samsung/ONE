@@ -27,8 +27,13 @@
 #include "TensorManager.h"
 #include "TensorBuilder.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wsign-compare"
 #include "tensorflow/lite/delegates/gpu/cl/environment.h"
+#include "tensorflow/lite/delegates/gpu/common/precision.h"
 #include "tensorflow/lite/delegates/gpu/common/status.h"
+#pragma GCC diagnostic pop
 
 namespace onert
 {
@@ -55,15 +60,16 @@ public:
     {
       return nullptr;
     }
-    auto tm = createTensorManager(&environment->context());
-
-    auto tr = std::make_shared<TensorRegistry>(tm);
 
     tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info;
-    create_info.precision = tflite::gpu::cl::CalculationsPrecision::F32;
+    create_info.precision = tflite::gpu::CalculationsPrecision::F32;
     create_info.storage_type =
       tflite::gpu::cl::GetStorageTypeWithMinimalMemoryConsumption(environment->device().GetInfo());
-    create_info.hints.Add(tflite::gpu::cl::ModelHints::kFastestInference);
+    create_info.hints.Add(tflite::gpu::ModelHints::kFastestInference);
+
+    auto tm = createTensorManager(&environment->context(), create_info, environment);
+
+    auto tr = std::make_shared<TensorRegistry>(tm);
 
     auto cc = std::make_shared<tflite::gpu::cl::CreationContext>();
     cc->device = environment->GetDevicePtr();
@@ -71,7 +77,7 @@ public:
     cc->queue = environment->queue();
     cc->cache = environment->program_cache();
 
-    auto tb = std::make_shared<TensorBuilder>(operands, tm, create_info, environment);
+    auto tb = std::make_shared<TensorBuilder>(operands, tm);
     context->tensor_registry = tr;
     context->tensor_builder = tb;
 
