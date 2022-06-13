@@ -56,7 +56,6 @@ option(BUILD_TFLITE_ACCURACY "Build tflite accuracy tool" OFF)
 # Default external libraries source download and build configuration
 #
 option(DOWNLOAD_TENSORFLOW "Download Tensorflow source" ON)
-option(DOWNLOAD_TENSORFLOW_GPU "Download Tensorflow GPU delegate source" OFF)
 option(DOWNLOAD_ABSEIL "Download Abseil source" ON)
 option(DOWNLOAD_OPENCL_HEADERS "Download Opencl_headers source" OFF)
 option(DOWNLOAD_EIGEN "Download Eigen source" ON)
