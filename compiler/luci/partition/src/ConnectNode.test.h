@@ -17,7 +17,7 @@
 #ifndef __CONNECT_NODE_TEST_H__
 #define __CONNECT_NODE_TEST_H__
 
-#include "ConnectNode.h"
+#include "luci/ConnectNode.h"
 
 #include <luci/Service/CircleNodeClone.h>
 #include <luci/test/TestIOGraph.h>
