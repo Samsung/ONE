@@ -184,7 +184,6 @@ int main(const int argc, char **argv)
 
   NNFW_ASSERT_FAIL(nnfw_load_model_from_modelfile(onert_session, tflite_file.c_str()),
                    "[ ERROR ] Failure during model load");
-
   uint32_t num_inputs;
   uint32_t num_outputs;
   NNFW_ASSERT_FAIL(nnfw_input_size(onert_session, &num_inputs),
@@ -193,10 +192,8 @@ int main(const int argc, char **argv)
                    "[ ERROR ] Failure during get model outputs");
 
   std::cout << "[Execution] Model is deserialized!" << std::endl;
-
   // Compile
   nnfw_prepare(onert_session);
-
   std::cout << "[Execution] Model compiled!" << std::endl;
 
   // Prepare input/output data
@@ -262,7 +259,6 @@ int main(const int argc, char **argv)
     NNFW_ASSERT_FAIL(nnfw_set_input(onert_session, i, ti_input.dtype, inputs[i].data(), input_size),
                      "[ ERROR ] Failure to set input tensor buffer");
   }
-
   std::cout << "[Execution] Input data is defined!" << std::endl;
 
   for (uint32_t i = 0; i < num_outputs; i++)

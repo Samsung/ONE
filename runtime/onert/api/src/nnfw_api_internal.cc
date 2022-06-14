@@ -1086,11 +1086,10 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 
 const onert::ir::Graph *nnfw_session::primary_subgraph()
 {
-  auto subgraphs = _model_graph->entry();
-  if (subgraphs)
+  if (_state == State::MODEL_LOADED)
   {
     assert(_execution == nullptr && _executions.empty());
-    return subgraphs->primary().get();
+    return _model_graph->entry()->primary().get();
   }
   else
   {
