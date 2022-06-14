@@ -32,8 +32,12 @@ std::string to_lower_case(std::string s)
 
 InputFormat to_input_format(const std::string &str)
 {
-  if (to_lower_case(str).compare("h5") == 0)
+  auto small_str = to_lower_case(str);
+  if (small_str.compare("h5") == 0)
     return InputFormat::H5;
+
+  if (small_str.compare("directory") == 0 || small_str.compare("dir") == 0)
+    return InputFormat::DIR;
 
   throw std::runtime_error("Unsupported input format.");
 }
