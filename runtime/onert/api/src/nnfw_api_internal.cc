@@ -410,7 +410,7 @@ NNFW_STATUS nnfw_session::prepare()
     _tracing_ctx = std::make_unique<onert::util::TracingCtx>(subgraphs.get());
     auto compiler =
       std::make_unique<onert::compiler::Compiler>(subgraphs, _tracing_ctx.get(), *_coptions);
-    subgraphs.reset();
+    _model_graph.reset();
     std::shared_ptr<onert::exec::ExecutorMap> executors = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(executors);
   }

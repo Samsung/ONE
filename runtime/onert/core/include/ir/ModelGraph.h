@@ -40,7 +40,7 @@ public:
 
   const Models &models() const { return _models; }
   Models &models() { return _models; }
-  std::shared_ptr<Subgraphs> &entry() { return _models.at(onert::ir::ModelIndex{0})._subgraphs; }
+  std::shared_ptr<Subgraphs> entry() { return _models.at(onert::ir::ModelIndex{0})._subgraphs; }
 
 private:
   Models _models;
