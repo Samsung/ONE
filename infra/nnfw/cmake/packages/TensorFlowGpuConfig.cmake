@@ -1,4 +1,11 @@
 # TensorFlowGpuConfig.cmake
+macro(return_unless VAR)
+if(NOT ${VAR})
+  message("TensorFlowGpu: ${VAR} NOT TRUE")
+  set(TensorFlowGpu_FOUND FALSE PARENT_SCOPE)
+  return()
+endif(NOT ${VAR})
+endmacro(return_unless)
 
 function(_Build_TfliteGpuDelagate_)
   nnas_find_package(TensorFlowSource EXACT 2.8.0 QUIET)
@@ -15,8 +22,6 @@ function(_Build_TfliteGpuDelagate_)
 
   nnas_find_package(Farmhash REQUIRED)
   return_unless(Farmhash_FOUND)
-
-  nnas_find_package(FlatBuffers REQUIRED)
 
   nnas_find_package(Fp16Source REQUIRED)
   return_unless(Fp16Source_FOUND)

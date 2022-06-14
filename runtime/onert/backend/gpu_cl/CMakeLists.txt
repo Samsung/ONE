@@ -39,6 +39,10 @@ if(NOT Egl_HeadersSource_FOUND)
   return()
 endif(NOT Egl_HeadersSource_FOUND)
 
+if (NOT ${TARGET_OS} MATCHES "tizen")
+  nnas_find_package(FlatBuffers REQUIRED)
+endif ()
+
 nnfw_find_package(TensorFlowGpu QUIET)
 if(NOT TensorFlowGpu_FOUND)
   message(FATAL_ERROR 'TensorFlowGpu lib not found')
@@ -54,6 +58,10 @@ target_include_directories(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${TensorFlowSourc
 target_include_directories(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${VulkanSource_DIR}/include)
 target_include_directories(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${Opengl_HeadersSource_DIR}/api)
 target_include_directories(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${Egl_HeadersSource_DIR}/api)
+
+if (${TARGET_OS} MATCHES "tizen")
+    target_compile_options(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE "-Wno-error=deprecated-copy")
+endif ()
 
 target_compile_options(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE "-DCL_TARGET_OPENCL_VERSION=220" "-DEGL_NO_X11")
 
@@ -71,7 +79,11 @@ target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE onert_core)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${LIB_ONERT_BACKEND_CL_COMMON})
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_coverage)
-target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE flatbuffers::flatbuffers)
+if (${TARGET_OS} MATCHES "tizen")
+  target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE flatbuffers)
+else()
+  target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE flatbuffers::flatbuffers)
+endif ()
 
 set_target_properties(${LIB_ONERT_BACKEND_GPU_CL} PROPERTIES OUTPUT_NAME backend_gpu_cl)
 
