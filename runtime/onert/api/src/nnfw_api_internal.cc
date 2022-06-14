@@ -26,6 +26,7 @@
 #include "trix_loader.h"
 #include "json/json.h"
 #include "ir/OpCode.h"
+#include "ir/ModelGraph.h"
 #include "util/TracingCtx.h"
 
 #include <fstream>
@@ -198,7 +199,7 @@ void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _subgraphs{nullptr}, _coptions{nullptr}, _execution{nullptr},
+  : _model_graph{nullptr}, _coptions{nullptr}, _execution{nullptr},
     _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}, _tracing_ctx{nullptr}
 {
   // DO NOTHING
@@ -219,14 +220,23 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
 
   try
   {
-    _subgraphs = onert::circle_loader::loadModel(buffer, size);
+    auto subgraphs = onert::circle_loader::loadModel(buffer, size);
+    auto model = std::make_unique<onert::ir::Model>(subgraphs.get());
+    // It loads a single circle model from buffer.
+    // nnfw_session will have only one Model in ModelGraph.
+    // nnfw_session now can have more than one models.
+    //
+    // Q. Where the loaded graph should be put? 0th model? or Append the model?
+    // A. It will put the loaded model in 0th model because it's used only for test.
+    _model_graph = std::make_shared<onert::ir::ModelGraph>();
+    _model_graph->models().push(std::move(model), onert::ir::ModelIndex{0});
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
+  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_model_graph->entry());
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -251,32 +261,40 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
 
   std::string model_type = filename.substr(filename.size() - 7, 7);
 
+  std::shared_ptr<onert::ir::Subgraphs> subgraphs;
   try
   {
     if (model_type == ".tflite")
     {
-      _subgraphs = onert::tflite_loader::loadModel(filename.c_str());
+      subgraphs = onert::tflite_loader::loadModel(filename.c_str());
     }
     else if (model_type == ".circle")
     {
-      _subgraphs = onert::circle_loader::loadModel(filename.c_str());
+      subgraphs = onert::circle_loader::loadModel(filename.c_str());
     }
     else if (model_type == ".tvn")
     {
-      _subgraphs = onert::trix_loader::loadModel(filename.c_str());
+      subgraphs = onert::trix_loader::loadModel(filename.c_str());
     }
     else
     {
       std::cerr << "Unsupported model type" << std::endl;
       return NNFW_STATUS_ERROR;
     }
+    // @20220610-gyu: add subgraphs in model_graph
+    //
+    // Q. Where the loaded graph should be put? 0th model? or Append the model?
+    // A. It will put the loaded model in 0th model because it's used only for test.
+    auto model = std::make_unique<onert::ir::Model>(subgraphs.get());
+    _model_graph = std::make_shared<onert::ir::ModelGraph>();
+    _model_graph->models().push(std::move(model), onert::ir::ModelIndex{0});
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
+  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_model_graph->entry());
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -307,6 +325,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
   }
   closedir(dir);
 
+  std::shared_ptr<onert::ir::Subgraphs> subgraphs;
   try
   {
     std::string package_path(package_dir);
@@ -337,29 +356,32 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     auto model_type = model_types[0].asString(); // first model's type
     if (model_type == "tflite")
     {
-      _subgraphs = onert::tflite_loader::loadModel(model_file_path);
+      subgraphs = onert::tflite_loader::loadModel(model_file_path);
     }
     else if (model_type == "circle")
     {
-      _subgraphs = onert::circle_loader::loadModel(model_file_path);
+      subgraphs = onert::circle_loader::loadModel(model_file_path);
     }
     else if (model_type == "tvn")
     {
-      _subgraphs = onert::trix_loader::loadModel(model_file_path);
+      subgraphs = onert::trix_loader::loadModel(model_file_path);
     }
     else
     {
       std::cerr << "Unsupported model type in MANIFEST" << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    _subgraphs->primary()->bindKernelBuilder(_kernel_registry->getBuilder());
+    subgraphs->primary()->bindKernelBuilder(_kernel_registry->getBuilder());
+    auto model = std::make_unique<onert::ir::Model>(subgraphs.get());
+    _model_graph = std::make_shared<onert::ir::ModelGraph>();
+    _model_graph->models().push(std::move(model), onert::ir::ModelIndex{0});
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
+  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_model_graph->entry());
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -384,10 +406,11 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
+    auto subgraphs = _model_graph->entry();
+    _tracing_ctx = std::make_unique<onert::util::TracingCtx>(subgraphs.get());
     auto compiler =
-      std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
-    _subgraphs.reset();
+      std::make_unique<onert::compiler::Compiler>(subgraphs, _tracing_ctx.get(), *_coptions);
+    subgraphs.reset();
     std::shared_ptr<onert::exec::ExecutorMap> executors = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(executors);
   }
@@ -421,10 +444,11 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
 
   try
   {
-    _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
+    auto subgraphs = _model_graph->entry();
+    _tracing_ctx = std::make_unique<onert::util::TracingCtx>(subgraphs.get());
     auto compiler =
-      std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
-    _subgraphs.reset();
+      std::make_unique<onert::compiler::Compiler>(subgraphs, _tracing_ctx.get(), *_coptions);
+    _model_graph.reset();
     std::vector<std::shared_ptr<onert::exec::ExecutorMap>> executor_maps =
       compiler->compile(_package_file_path.c_str(), map_file_path);
 
@@ -734,7 +758,8 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
   {
     // In this case, if we apply input shape in primary_subgraph, it will propagate after
     // compilation and excution
-    auto primary_subgraph = _subgraphs->primary();
+    auto subgraphs = _model_graph->entry();
+    auto primary_subgraph = subgraphs->primary();
     auto ind = primary_subgraph->getInputs().at(index);
     auto &input = primary_subgraph->operands().at(ind);
 
@@ -1061,10 +1086,11 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 
 const onert::ir::Graph *nnfw_session::primary_subgraph()
 {
-  if (_subgraphs)
+  auto subgraphs = _model_graph->entry();
+  if (subgraphs)
   {
     assert(_execution == nullptr && _executions.empty());
-    return _subgraphs->primary().get();
+    return subgraphs->primary().get();
   }
   else
   {
@@ -1132,7 +1158,7 @@ bool nnfw_session::isStateInitialized()
 {
   if (_state == State::INITIALIZED)
   {
-    assert(_subgraphs == nullptr);
+    assert(_model_graph == nullptr);
     assert(_coptions == nullptr);
     assert(_execution == nullptr && _executions.empty());
     return true;
@@ -1147,7 +1173,7 @@ bool nnfw_session::isStateModelLoaded()
 {
   if (_state == State::MODEL_LOADED)
   {
-    assert(_subgraphs != nullptr);
+    assert(_model_graph != nullptr);
     assert(_coptions != nullptr);
     assert(_execution == nullptr && _executions.empty());
     return true;
@@ -1162,7 +1188,7 @@ bool nnfw_session::isStatePrepared()
 {
   if (_state == State::PREPARED)
   {
-    assert(_subgraphs == nullptr);
+    assert(_model_graph == nullptr);
     assert(_coptions != nullptr);
     assert(_execution != nullptr || !_executions.empty());
     return true;
@@ -1177,7 +1203,7 @@ bool nnfw_session::isStateRunning()
 {
   if (_state == State::RUNNING)
   {
-    assert(_subgraphs == nullptr);
+    assert(_model_graph == nullptr);
     assert(_coptions != nullptr);
     assert(_execution != nullptr || !_executions.empty());
     return true;
@@ -1189,7 +1215,7 @@ bool nnfw_session::isStateFinishedRun()
 {
   if (_state == State::FINISHED_RUN)
   {
-    assert(_subgraphs == nullptr);
+    assert(_model_graph == nullptr);
     assert(_coptions != nullptr);
     assert(_execution != nullptr || !_executions.empty());
     return true;
@@ -1225,7 +1251,8 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
 
   // Backend for all
   auto &ms_options = _coptions->manual_scheduler_options;
-  ms_options.setBackendMap(*_subgraphs, std::string{backend_settings});
+  auto subgraphs = _model_graph->entry();
+  ms_options.setBackendMap(*subgraphs, std::string{backend_settings});
 
   return NNFW_STATUS_NO_ERROR;
 }
