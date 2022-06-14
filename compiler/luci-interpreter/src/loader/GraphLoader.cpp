@@ -239,6 +239,12 @@ void GraphLoader::loadTensors()
         tensor->writeData(const_data, data_size);
       }
     }
+    else if (const auto variable_node = dynamic_cast<const luci::CircleVariable *>(node))
+    {
+      // Only allocate memory for Variable Node, and if it will be needed kernel will fill it with
+      // necessary values
+      _memory_manager->allocate_memory(*tensor);
+    }
     else if (const auto *custom_out_node = dynamic_cast<const luci::CircleCustomOut *>(node))
     {
       const auto *custom_node =

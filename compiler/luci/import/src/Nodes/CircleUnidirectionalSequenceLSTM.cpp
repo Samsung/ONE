@@ -34,12 +34,12 @@ CircleNode *CircleUnidirectionalSequenceLSTMGraphBuilder::build_node(
   auto *node = graph->nodes()->create<CircleUnidirectionalSequenceLSTM>();
   node->input(inputs.at(0));
   node->input_to_input_weights(inputs.at(1)); // Optional
-  node->input_to_cell_weights(inputs.at(2));
-  node->input_to_forget_weights(inputs.at(3));
+  node->input_to_forget_weights(inputs.at(2));
+  node->input_to_cell_weights(inputs.at(3));
   node->input_to_output_weights(inputs.at(4));
   node->recurrent_to_input_weights(inputs.at(5)); // Optional
-  node->recurrent_to_cell_weights(inputs.at(6));
-  node->recurrent_to_forget_weights(inputs.at(7));
+  node->recurrent_to_forget_weights(inputs.at(6));
+  node->recurrent_to_cell_weights(inputs.at(7));
   node->recurrent_to_output_weights(inputs.at(8));
   node->cell_to_input_weights(inputs.at(9));   // Optional
   node->cell_to_forget_weights(inputs.at(10)); // Optional

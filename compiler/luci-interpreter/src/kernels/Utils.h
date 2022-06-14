@@ -212,6 +212,11 @@ template <typename T> T *getTensorData(Tensor *tensor)
   return tensor != nullptr ? tensor->data<T>() : nullptr;
 }
 
+inline float getTensorScale(const Tensor *tensor)
+{
+  return tensor == nullptr ? 1.0f : tensor->scale();
+}
+
 // A list of tensors in a format that can be used by kernels like split and
 // concatenation.
 template <typename T, bool is_const> class VectorOfTensors

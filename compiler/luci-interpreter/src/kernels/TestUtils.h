@@ -70,6 +70,27 @@ Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
 }
 
 /**
+ * @brief Create layer-wise quantized tensor
+ * @tparam DT base integer data type, for example DataType::U8, DataType::S8
+ * @param shape desired tensor shape
+ * @param scale scale of quantized number
+ * @param zero_point zero point of quantized number, should be 0 for signed datatypes
+ * @param quantized data int8_t point
+ * @param memory_manager memory manager for allocating memory to tensor
+ * @return created tensor
+ */
+template <DataType DT>
+Tensor makeInputTensor(const Shape &shape, float scale, int32_t zero_point,
+                       const std::vector<int8_t> &data, IMemoryManager *memory_manager)
+{
+  using NativeT = typename DataTypeImpl<DT>::Type;
+  Tensor tensor(DT, shape, {{scale}, {zero_point}}, "");
+  memory_manager->allocate_memory(tensor);
+  tensor.writeData(data.data(), data.size() * sizeof(NativeT));
+  return tensor;
+}
+
+/**
  * @brief Create channel-wise quantized tensor
  * @tparam DT base integer data type, for example DataType::U8, DataType::S16, DataType::S64
  * @param shape desired tensor shape

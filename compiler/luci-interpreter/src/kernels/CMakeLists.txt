@@ -2,6 +2,8 @@ set(SOURCES
         BinaryOpCommon.h
         Utils.h
         Utils.cpp
+        EvalLSTMHelper.h
+        EvalLSTMHelper.cpp
         "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/TestMemoryManager.h"
         ${LUCI_INTERPRETER_SOURCE_DIR}/TestMemoryManager.cpp
         "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/SimpleMemoryManager.h"
