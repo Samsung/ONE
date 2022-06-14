@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "ConnectNode.h"
+#include "luci/ConnectNode.h"
 
 #include <oops/UserExn.h>
 
