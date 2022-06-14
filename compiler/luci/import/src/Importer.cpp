@@ -42,7 +42,7 @@ namespace
 {
 
 void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &reader,
-                   loco::Graph *graph)
+                   loco::Graph *graph, bool replaceUnknownDimensionAs1 = false)
 {
   LOGGER(l);
 
@@ -81,7 +81,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     const auto tensor = tensors[input];
     assert(tensor != nullptr);
 
-    luci::copy_tensor_attributes(tensor, input_node);
+    luci::copy_tensor_attributes(tensor, input_node, replaceUnknownDimensionAs1);
     if (tensor->shape() == nullptr)
       input_node->shape_status(luci::ShapeStatus::NOSHAPE);
     else
@@ -114,10 +114,15 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     input_shape->rank(input_dims.size());
     for (uint32_t r = 0; r < input_dims.size(); ++r)
     {
-      // if (tensor_shape_signature.size() > 0 && tensor_shape_signature.at(r) == -1)
-      //   input_shape->dim(r).unset();
-      // else
-      input_shape->dim(r).set(input_dims[r]);
+      if (tensor_shape_signature.size() > 0 && tensor_shape_signature.at(r) == -1)
+      {
+        if (replaceUnknownDimensionAs1)
+          input_shape->dim(r).set(1);
+        else
+          input_shape->dim(r).unset();
+      }
+      else
+        input_shape->dim(r).set(input_dims[r]);
     }
     graph_input->shape(std::move(input_shape));
   }
@@ -200,7 +205,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
       assert(output_dummy != nullptr);
       output_node->from(output_dummy);
 
-      luci::copy_tensor_attributes(tensor, output_dummy);
+      luci::copy_tensor_attributes(tensor, output_dummy, replaceUnknownDimensionAs1);
       if (tensor->shape() == nullptr)
         output_dummy->shape_status(luci::ShapeStatus::NOSHAPE);
       else
@@ -215,7 +220,7 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     assert(tname.length() > 0);
     graph_output->name(tname);
 
-    luci::copy_tensor_attributes(tensor, output_node);
+    luci::copy_tensor_attributes(tensor, output_node, replaceUnknownDimensionAs1);
 
     // Set GraphInputOutputIndex for graph
     output_node->index(graph_output->index());
@@ -231,10 +236,15 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     output_shape->rank(output_dims.size());
     for (uint32_t r = 0; r < output_dims.size(); ++r)
     {
-      // if (tensor_shape_signature.size() > 0 && tensor_shape_signature.at(r) == -1)
-      //  output_shape->dim(r).unset();
-      // else
-      output_shape->dim(r).set(output_dims[r]);
+      if (tensor_shape_signature.size() > 0 && tensor_shape_signature.at(r) == -1)
+      {
+        if (replaceUnknownDimensionAs1)
+          output_shape->dim(r).set(1);
+        else
+          output_shape->dim(r).unset();
+      }
+      else
+        output_shape->dim(r).set(output_dims[r]);
     }
     graph_output->shape(std::move(output_shape));
 
@@ -264,7 +274,8 @@ Importer::Importer()
   // DO NOTHING
 }
 
-std::unique_ptr<loco::Graph> Importer::import(const circle::Model *model) const
+std::unique_ptr<loco::Graph> Importer::import(const circle::Model *model,
+                                              bool replaceUnknownDimensionAs1) const
 {
   auto graph = loco::make_graph();
 
@@ -288,7 +299,7 @@ std::unique_ptr<loco::Graph> Importer::import(const circle::Model *model) const
     return nullptr;
 
   // Convert circle::Model to loco::Graph
-  convert_graph(*source_ptr, reader, graph.get());
+  convert_graph(*source_ptr, reader, graph.get(), replaceUnknownDimensionAs1);
 
   LOGGER(l);
   VERBOSE(l, 3) << "--- graph dump begin -------------------------------------------";
@@ -301,7 +312,8 @@ std::unique_ptr<loco::Graph> Importer::import(const circle::Model *model) const
   return graph;
 }
 
-std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
+std::unique_ptr<Module> Importer::importModule(const circle::Model *model,
+                                               bool replaceUnknownDimensionAs1) const
 {
   auto module = make_module();
 
@@ -327,7 +339,7 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     graph->name(reader.name());
 
     // Convert circle::Model to loco::Graph
-    convert_graph(*source_ptr, reader, graph.get());
+    convert_graph(*source_ptr, reader, graph.get(), replaceUnknownDimensionAs1);
 
     LOGGER(l);
     VERBOSE(l, 3) << "--- graph dump begin -------------------------------------------";

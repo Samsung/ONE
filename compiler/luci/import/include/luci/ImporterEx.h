@@ -31,7 +31,8 @@ public:
   ImporterEx() = default;
 
 public:
-  std::unique_ptr<Module> importVerifyModule(const std::string &input_path) const;
+  std::unique_ptr<Module> importVerifyModule(const std::string &input_path,
+                                             bool replaceUnknownDimensionAs1 = false) const;
 };
 
 } // namespace luci

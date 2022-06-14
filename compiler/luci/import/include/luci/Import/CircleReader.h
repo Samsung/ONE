@@ -48,7 +48,8 @@ std::unique_ptr<CircleQuantParam>
 luci_quantparam(const circle::QuantizationParameters *quantization);
 
 /// @brief Copy common tensor attributes such as name, type, etc. to node.
-void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node);
+void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node,
+                            bool replaceUnknownDimensionAs1 = false);
 
 std::string fb_string2std_string(const flatbuffers::String *fb_str);
 

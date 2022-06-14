@@ -25,7 +25,8 @@
 namespace luci
 {
 
-std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_path) const
+std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_path,
+                                                       bool replaceUnknownDimensionAs1) const
 {
   foder::FileLoader file_loader{input_path};
   std::vector<char> model_data;
@@ -55,7 +56,7 @@ std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_
   }
 
   Importer importer;
-  return importer.importModule(circle_model);
+  return importer.importModule(circle_model, replaceUnknownDimensionAs1);
 }
 
 } // namespace luci
