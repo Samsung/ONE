@@ -65,6 +65,10 @@ public:
   {
     for (const auto gpu_operation : _gpu_operations)
     {
+      if (!gpu_operation->GetGpuOperation().AssembleCode(_creation_context->GetGpuInfo()).ok())
+      {
+        throw std::runtime_error("Failed to AssembleCode.");
+      }
       if (!gpu_operation->Compile(*_creation_context).ok())
       {
         throw std::runtime_error("Failed to Compile.");

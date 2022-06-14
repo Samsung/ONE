@@ -61,7 +61,7 @@ public:
       return nullptr;
     }
 
-    tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info;
+    tflite::gpu::CreateGpuModelInfo create_info;
     create_info.precision = tflite::gpu::CalculationsPrecision::F32;
     create_info.storage_type =
       tflite::gpu::cl::GetStorageTypeWithMinimalMemoryConsumption(environment->device().GetInfo());

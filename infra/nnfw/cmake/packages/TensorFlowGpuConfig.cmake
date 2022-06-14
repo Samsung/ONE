@@ -1,13 +1,13 @@
 # TensorFlowGpuConfig.cmake
 
 function(_Build_TfliteGpuDelagate_)
-  nnas_find_package(TensorFlowSource EXACT 2.7.0 QUIET)
+  nnas_find_package(TensorFlowSource EXACT 2.8.0 QUIET)
   return_unless(TensorFlowSource_FOUND)
 
-  nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.7.0 QUIET)
+  nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.8.0 QUIET)
   return_unless(TensorFlowGEMMLowpSource_FOUND)
 
-  nnas_find_package(TensorFlowEigenSource EXACT 2.7.0 QUIET)
+  nnas_find_package(TensorFlowEigenSource EXACT 2.8.0 QUIET)
   return_unless(TensorFlowEigenSource_FOUND)
 
   nnas_find_package(AbseilSource REQUIRED)

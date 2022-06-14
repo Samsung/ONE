@@ -75,7 +75,7 @@ private:
 
 inline TensorManager *
 createTensorManager(tflite::gpu::cl::CLContext *context,
-                    tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
+                    tflite::gpu::CreateGpuModelInfo create_info,
                     const std::shared_ptr<tflite::gpu::cl::Environment> &environment)
 {
   VERBOSE(createTensorManager) << "GPU-CL TensorManager" << std::endl;

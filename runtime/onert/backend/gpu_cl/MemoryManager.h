@@ -46,8 +46,7 @@ namespace gpu_cl
 class MemoryManager
 {
 public:
-  MemoryManager(tflite::gpu::cl::CLContext *context,
-                tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
+  MemoryManager(tflite::gpu::cl::CLContext *context, tflite::gpu::CreateGpuModelInfo create_info,
                 const std::shared_ptr<tflite::gpu::cl::Environment> &environment)
     : _context{context}, _create_info{create_info}, _environment{environment}
   {
@@ -153,7 +152,7 @@ public:
 private:
   ir::OperandIndexMap<std::shared_ptr<operand::CLTensor>> _tensors;
   tflite::gpu::cl::CLContext *_context;
-  tflite::gpu::cl::InferenceContext::CreateInferenceInfo _create_info;
+  tflite::gpu::CreateGpuModelInfo _create_info;
   std::shared_ptr<tflite::gpu::cl::Environment> _environment;
   uint32_t _new_id = UINT32_MAX;
 };
