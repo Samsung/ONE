@@ -42,6 +42,7 @@ namespace ir
 {
 class Graph;
 class Subgraphs;
+class ModelGraph;
 } // namespace ir
 namespace compiler
 {
@@ -166,7 +167,7 @@ private:
 
 private:
   State _state{State::INITIALIZED};
-  std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
+  std::shared_ptr<onert::ir::ModelGraph> _model_graph;
   std::unique_ptr<onert::compiler::CompilerOptions> _coptions;
   std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
