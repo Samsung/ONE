@@ -221,7 +221,7 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
   try
   {
     auto subgraphs = onert::circle_loader::loadModel(buffer, size);
-    auto model = std::make_unique<onert::ir::Model>(subgraphs.get());
+    auto model = std::make_unique<onert::ir::Model>(std::move(subgraphs));
     // It loads a single circle model from buffer.
     // nnfw_session will have only one Model in ModelGraph.
     // nnfw_session now can have more than one models.
@@ -285,7 +285,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     //
     // Q. Where the loaded graph should be put? 0th model? or Append the model?
     // A. It will put the loaded model in 0th model because it's used only for test.
-    auto model = std::make_unique<onert::ir::Model>(subgraphs.get());
+    auto model = std::make_unique<onert::ir::Model>(subgraphs);
     _model_graph = std::make_shared<onert::ir::ModelGraph>();
     _model_graph->models().push(std::move(model), onert::ir::ModelIndex{0});
   }
@@ -372,7 +372,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       return NNFW_STATUS_ERROR;
     }
     subgraphs->primary()->bindKernelBuilder(_kernel_registry->getBuilder());
-    auto model = std::make_unique<onert::ir::Model>(subgraphs.get());
+    auto model = std::make_unique<onert::ir::Model>(subgraphs);
     _model_graph = std::make_shared<onert::ir::ModelGraph>();
     _model_graph->models().push(std::move(model), onert::ir::ModelIndex{0});
   }

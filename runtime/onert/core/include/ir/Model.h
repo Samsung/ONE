@@ -27,7 +27,7 @@ namespace ir
 
 struct Model
 {
-  Model(Subgraphs *s) : _subgraphs(s) {}
+  Model(const std::shared_ptr<Subgraphs> &subgs) : _subgraphs(subgs) {}
 
   std::shared_ptr<Subgraphs> _subgraphs;
   ModelOperandIndexSequence _inputs;
