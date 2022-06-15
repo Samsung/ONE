@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,27 +14,39 @@
  * limitations under the License.
  */
 
-#include "Server.h"
+#ifndef __ONE_SERVICE_NPUD_CORE_SERVER_H__
+#define __ONE_SERVICE_NPUD_CORE_SERVER_H__
 
-#include <iostream>
+#include <glib.h>
+#include <memory>
+#include <atomic>
 
-using namespace npud;
-
-int main(int argc, const char *argv[])
+namespace npud
 {
-  auto &server = core::Server::instance();
+namespace core
+{
 
-  std::cout << "Starting npud" << std::endl;
-  try
+class Server
+{
+public:
+  void run(void);
+  void stop(void);
+
+  static Server &instance(void)
   {
-    server.run();
-  }
-  catch (const std::runtime_error &err)
-  {
-    std::cerr << err.what() << std::endl;
-    return 1;
+    static Server server;
+    return server;
   }
 
-  server.stop();
-  return 0;
-}
+private:
+  Server() noexcept;
+
+  static std::atomic_bool _isRunning;
+
+  std::unique_ptr<GMainLoop, void (*)(GMainLoop *)> _mainloop;
+};
+
+} // namespace core
+} // namespace npud
+
+#endif // __ONE_SERVICE_NPUD_CORE_SERVER_H__
