@@ -86,7 +86,7 @@ public:
 
 private:
   const std::vector<loco::Node *> _input_nodes;
-  std::vector<Data> _data_set;
+  std::vector<std::string> _data_paths;
 };
 
 std::unique_ptr<InputDataLoader> makeDataLoader(const std::string &file_path,

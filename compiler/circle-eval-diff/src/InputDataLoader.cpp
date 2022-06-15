@@ -146,7 +146,6 @@ DirectoryLoader::DirectoryLoader(const std::string &dir_path,
   }
 
   struct dirent *entry = nullptr;
-  std::vector<size_t> input_bytes = getEachByteSizeOf(input_nodes);
   const auto input_total_bytes = getTotalByteSizeOf(input_nodes);
   while (entry = readdir(dir))
   {
@@ -154,44 +153,48 @@ DirectoryLoader::DirectoryLoader(const std::string &dir_path,
     if (entry->d_type != DT_REG)
       continue;
 
-    // Read raw data
-    std::vector<char> input_data(input_total_bytes);
-    const std::string raw_data_path = dir_path + "/" + entry->d_name;
-    std::ifstream fs(raw_data_path, std::ifstream::binary);
-    if (fs.fail())
-    {
-      throw std::runtime_error("Cannot open file \"" + raw_data_path + "\".");
-    }
-    if (fs.read(input_data.data(), input_total_bytes).fail())
-    {
-      throw std::runtime_error("Failed to read raw data from file \"" + raw_data_path + "\".");
-    }
-
-    // Make Tensor from raw data
-    auto input_data_cur = input_data.data();
-
-    _data_set.emplace_back();
-    auto tensors = _data_set.back();
-    tensors.resize(input_nodes.size());
-    for (uint32_t index = 0; index < input_nodes.size(); index++)
-    {
-      const auto input_node = loco::must_cast<const luci::CircleInput *>(input_nodes.at(index));
-      auto &tensor = tensors.at(index);
-      tensor = *createEmptyTensor(input_node).get();
-      auto buffer = tensor.buffer();
-      std::memcpy(buffer, input_data_cur, input_bytes.at(index));
-      input_data_cur += input_bytes.at(index);
-    }
+    _data_paths.push_back(dir_path + "/" + entry->d_name);
   }
 
   closedir(dir);
 }
 
-uint32_t DirectoryLoader::size(void) const { return _data_set.size(); }
+uint32_t DirectoryLoader::size(void) const { return _data_paths.size(); }
 
 InputDataLoader::Data DirectoryLoader::get(uint32_t data_idx) const
 {
-  return _data_set.at(data_idx);
+  // Read raw data
+  const auto input_total_bytes = getTotalByteSizeOf(_input_nodes);
+  std::vector<char> input_data(input_total_bytes);
+  const auto raw_data_path = _data_paths.at(data_idx);
+  std::ifstream fs(raw_data_path, std::ifstream::binary);
+
+  if (fs.fail())
+  {
+    throw std::runtime_error("Cannot open file \"" + raw_data_path + "\".");
+  }
+  if (fs.read(input_data.data(), input_total_bytes).fail())
+  {
+    throw std::runtime_error("Failed to read raw data from file \"" + raw_data_path + "\".");
+  }
+
+  // Make Tensor from raw data
+  auto input_data_cur = input_data.data();
+
+  Data data;
+  data.resize(_input_nodes.size());
+  std::vector<size_t> input_bytes = getEachByteSizeOf(_input_nodes);
+  for (uint32_t index = 0; index < _input_nodes.size(); index++)
+  {
+    const auto input_node = loco::must_cast<const luci::CircleInput *>(_input_nodes.at(index));
+    auto &tensor = data.at(index);
+    tensor = *createEmptyTensor(input_node).get();
+    auto buffer = tensor.buffer();
+    std::memcpy(buffer, input_data_cur, input_bytes.at(index));
+    input_data_cur += input_bytes.at(index);
+  }
+
+  return data;
 }
 
 std::unique_ptr<InputDataLoader> makeDataLoader(const std::string &file_path,
