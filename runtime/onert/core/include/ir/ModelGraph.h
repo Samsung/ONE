@@ -32,9 +32,9 @@ class ModelGraph
 {
 public:
   ModelGraph() = default;
-  ModelGraph(const ModelGraph &obj) = default;
-  ModelGraph(ModelGraph &&) = default;
-  ModelGraph &operator=(const ModelGraph &) = default;
+  ModelGraph(const ModelGraph &obj) = delete;
+  ModelGraph(ModelGraph &&) = delete;
+  ModelGraph &operator=(const ModelGraph &) = delete;
   ModelGraph &operator=(ModelGraph &&) = default;
   ~ModelGraph() = default;
 
