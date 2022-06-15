@@ -25,6 +25,7 @@
 #include "ir/Graph.h"
 #include "exec/IExecutor.h"
 #include "util/TracingCtx.h"
+#include "ir/ModelGraph.h"
 
 namespace onert
 {
@@ -95,8 +96,9 @@ public:
    * @param[in] coptions Compiler Options
    */
   Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx *tracing_ctx,
-           CompilerOptions &copt);
-
+           CompilerOptions &opt);
+  // TODO: Tracing_Ctx for modelgraph
+  Compiler(const std::shared_ptr<ir::ModelGraph> &modelgraph);
 public:
   /**
    * @brief   Do compilation with the options
@@ -134,6 +136,9 @@ private:
 
 private:
   std::shared_ptr<ir::Subgraphs> _subgraphs;
+
+  /* _modelgraph will be the main member by replacing _subgraphs */
+  std::shared_ptr<ir::ModelGraph> _model_graph;
   // NOTE These executors does not have duplicated subgraph. This mean they do not allow support
   // subgraphs being called recursively because data of non-constant tensor of parent executor will
   // be updated by child executor. If you want to support subgraphs being called recursively, you

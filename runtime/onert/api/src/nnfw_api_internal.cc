@@ -434,8 +434,7 @@ NNFW_STATUS nnfw_session::prepare()
     // But I will write _model_graph = nullptr for the sake of readability.
     //
     _model_graph.reset();
-    std::shared_ptr<onert::exec::ExecutorMap> executors = compiler->compile();
-    _execution = std::make_unique<onert::exec::Execution>(executors);
+    _execution = std::make_unique<onert::exec::Execution>(compiler->compile());
   }
   catch (const std::exception &e)
   {
