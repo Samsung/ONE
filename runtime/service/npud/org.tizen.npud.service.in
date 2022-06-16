@@ -10,4 +10,4 @@ Capabilities=cap_dac_override=i
 SecureBits=keep-caps
 Restart=always
 RestartSec=3
-ExecStart=@BINDIR@/npumgr_server
+ExecStart=@BINDIR@/npud

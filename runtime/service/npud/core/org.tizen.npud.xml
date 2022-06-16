@@ -19,10 +19,5 @@
       <arg name="priority" type="i" direction="in" />
       <arg name="ctx" type="t" direction="out" />
     </method>
-    <method name="configure">
-      <arg name="seconds" type="u" direction="in" />
-    </method>
-    <property name="Activated" type="b" access="read" />
-    <signal name="Beep" />
   </interface>
 </node>
