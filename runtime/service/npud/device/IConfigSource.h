@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,38 +14,33 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_SERVER_H__
-#define __ONE_SERVICE_NPUD_CORE_SERVER_H__
+#ifndef __ONE_SERVICE_NPUD_UTIL_I_CONFIG_SOURCE_H__
+#define __ONE_SERVICE_NPUD_UTIL_I_CONFIG_SOURCE_H__
 
-#include "Signal.h"
-
-#include <glib.h>
-#include <memory>
-#include <atomic>
+#include <string>
 
 namespace npud
 {
-namespace core
+namespace util
 {
 
-class Server
+struct IConfigSource
 {
-public:
-  void run(void);
-  void stop(void);
+  /**
+   * @brief Destroy the IConfigSource object
+   */
+  virtual ~IConfigSource() = default;
 
-  static Server &get(void);
-
-private:
-  Server() noexcept;
-
-  static std::atomic_bool _isRunning;
-
-  std::unique_ptr<GMainLoop, void (*)(GMainLoop *)> _mainloop;
-  std::unique_ptr<Signal> _signal;
+  /**
+   * @brief get the value for the matching key
+   *
+   * @param key string key to search
+   * @return string value associated with the key
+   */
+  virtual std::string get(const std::string &key) const = 0;
 };
 
-} // namespace core
+} // namespace util
 } // namespace npud
 
-#endif // __ONE_SERVICE_NPUD_CORE_SERVER_H__
+#endif // __ONE_SERVICE_NPUD_UTIL_I_CONFIG_SOURCE_H__
