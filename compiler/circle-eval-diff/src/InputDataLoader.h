@@ -41,6 +41,7 @@ enum class InputFormat
 {
   Undefined, // For debugging
   H5,
+  DIR, // directory
   // TODO Implement Random, Directory
 };
 
@@ -71,6 +72,21 @@ public:
 private:
   const std::vector<loco::Node *> _input_nodes;
   std::unique_ptr<dio::hdf5::HDF5Importer> _hdf5;
+};
+
+// This class loads the directory that has raw data binary files.
+class DirectoryLoader final : public InputDataLoader
+{
+public:
+  DirectoryLoader(const std::string &dir_path, const std::vector<loco::Node *> &input_nodes);
+
+public:
+  uint32_t size(void) const final;
+  Data get(uint32_t data_idx) const final;
+
+private:
+  const std::vector<loco::Node *> _input_nodes;
+  std::vector<std::string> _data_paths;
 };
 
 std::unique_ptr<InputDataLoader> makeDataLoader(const std::string &file_path,
