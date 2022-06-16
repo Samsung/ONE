@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,26 +14,24 @@
  * limitations under the License.
  */
 
-#include "Server.h"
+#ifndef __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
+#define __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
 
-#include <iostream>
-
-using namespace npud;
-
-int main(int argc, const char *argv[])
+namespace npud
 {
-  auto &server = core::Server::instance();
+namespace core
+{
 
-  std::cout << "Starting npud" << std::endl;
-  try
-  {
-    server.run();
-  }
-  catch (const std::runtime_error &err)
-  {
-    std::cerr << err.what() << std::endl;
-    return 1;
-  }
+class Signal
+{
+public:
+  Signal() noexcept;
 
-  return 0;
-}
+  void init(void);
+  static void handleSignal(int signum);
+};
+
+} // namespace core
+} // namespace npud
+
+#endif // __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
