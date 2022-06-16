@@ -32,6 +32,7 @@ int main(int argc, const char *argv[])
   catch (const std::runtime_error &err)
   {
     VERBOSE(main) << err.what() << "\n";
+    return 1;
   }
 
   return 0;
