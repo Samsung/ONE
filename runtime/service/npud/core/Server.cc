@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-#include "Core.h"
+#include "Server.h"
 
 #include <iostream>
 
-EventLoop Core::_loop;
-
-void Core::run(void)
+namespace npud
 {
-  std::cout << "Starting Core" << std::endl;
+namespace core
+{
+
+EventLoop Server::_loop;
+
+void Server::run(void)
+{
+  std::cout << "Starting Server" << std::endl;
 
   if (_loop.is_running())
   {
@@ -33,9 +38,9 @@ void Core::run(void)
   _loop.run();
 }
 
-void Core::stop(void)
+void Server::stop(void)
 {
-  std::cout << "Stop Core" << std::endl;
+  std::cout << "Stop Server" << std::endl;
 
   if (!_loop.is_running())
   {
@@ -45,3 +50,5 @@ void Core::stop(void)
 
   _loop.stop();
 }
+} // namespace core
+} // namespace npud

@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-#include "Core.h"
+#include "Server.h"
 
 #include <iostream>
+
+using namespace npud;
 
 int main(int argc, const char *argv[])
 {
 
   std::cout << "Start npud" << std::endl;
 
-  Core::run();
+  core::Server::run();
 
   return 0;
 }

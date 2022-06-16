@@ -20,6 +20,10 @@
 #include <glib.h>
 #include <atomic>
 
+namespace npud
+{
+namespace core
+{
 class EventLoop
 {
 public:
@@ -34,5 +38,7 @@ private:
   GMainLoop *_mainloop;
   std::atomic<bool> _running;
 };
+} // namespace core
+} // namespace npud
 
 #endif // __ONE_SERVICE_NPUD_CORE_EVENT_LOOP_H__

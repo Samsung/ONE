@@ -19,6 +19,10 @@
 #include <iostream>
 #include <cassert>
 
+namespace npud
+{
+namespace core
+{
 EventLoop::EventLoop() : _mainloop(NULL), _running(false)
 {
   std::cout << "EventLoop: constructor" << std::endl;
@@ -51,3 +55,5 @@ void EventLoop::stop(void)
 }
 
 bool EventLoop::is_running(void) { return _running.load(); }
+} // namespace core
+} // namespace npud

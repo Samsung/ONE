@@ -19,22 +19,28 @@
 
 #include "EventLoop.h"
 
-class Core
+namespace npud
+{
+namespace core
+{
+class Server
 {
 public:
   static void run(void);
   static void stop(void);
 
 private:
-  Core();
+  Server();
 
-  static Core &instance(void)
+  static Server &instance(void)
   {
-    static Core core;
-    return core;
+    static Server server;
+    return server;
   }
 
   static EventLoop _loop;
 };
+} // namespace core
+} // namespace npud
 
 #endif // __ONE_SERVICE_NPUD_CORE_CORE_H__
