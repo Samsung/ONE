@@ -38,7 +38,7 @@ Source2002: nnfw-plugin.pc.in
 
 BuildRequires:  cmake
 # Require flatbuffers-devel for onert frontend (model loading)
-BuildRequires:  flatbuffers-devel
+BuildRequires:  pkgconfig(flatbuffers)
 
 %ifarch %{arm} aarch64
 # Require python for acl-ex library build pre-process
@@ -50,17 +50,17 @@ Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 %if %{test_build} == 1
-BuildRequires:  boost-devel
-BuildRequires:  tensorflow-lite-devel
+BuildRequires:  pkgconfig(boost)
+BuildRequires:  pkgconfig(tensorflow-lite)
 BuildRequires:  hdf5-devel
 BuildRequires:  libaec-devel
-BuildRequires:  zlib-devel
-BuildRequires:  libjpeg-devel
+BuildRequires:  pkgconfig(zlib)
+BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  gtest-devel
 %endif
 
 %if %{trix_support} == 1
-BuildRequires:  npu-engine-devel
+BuildRequires:  pkgconfig(npu-engine)
 %endif
 
 %description
