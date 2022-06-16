@@ -14,33 +14,31 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_EVENT_LOOP_H__
-#define __ONE_SERVICE_NPUD_CORE_EVENT_LOOP_H__
+#ifndef __ONE_SERVICE_NPUD_UTIL_GENERAL_CONFIG_SOURCE_H__
+#define __ONE_SERVICE_NPUD_UTIL_GENERAL_CONFIG_SOURCE_H__
 
-#include <glib.h>
-#include <atomic>
+#include <unordered_map>
+
+#include "IConfigSource.h"
 
 namespace npud
 {
-namespace core
+namespace util
 {
 
-class EventLoop
+class GeneralConfigSource : public IConfigSource
 {
 public:
-  EventLoop();
-  ~EventLoop();
+  GeneralConfigSource() = default;
 
-  void run(void);
-  void stop(void);
-  bool is_running(void);
+  std::string get(const std::string &key) const override;
+  void set(const std::string &key, const std::string &val);
 
 private:
-  GMainLoop *_mainloop;
-  std::atomic<bool> _running;
+  std::unordered_map<std::string, std::string> _map;
 };
 
-} // namespace core
+} // namespace util
 } // namespace npud
 
-#endif // __ONE_SERVICE_NPUD_CORE_EVENT_LOOP_H__
+#endif // __ONE_SERVICE_NPUD_UTIL_GENERAL_CONFIG_SOURCE_H__

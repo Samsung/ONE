@@ -32,6 +32,7 @@ option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON
 option(INSTALL_TEST_SCRIPTS "Install test scripts" ON)
 option(BUILD_GPU_CL "Build gpu_cl backend" OFF)
 option(BUILD_NPUD "Build NPU daemon" ON)
+option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" ON)
 #
 # Default build configuration for contrib
 #

@@ -14,33 +14,9 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_EVENT_LOOP_H__
-#define __ONE_SERVICE_NPUD_CORE_EVENT_LOOP_H__
+#ifndef CONFIG
+#error  Define CONFIG before including this file
+#endif
 
-#include <glib.h>
-#include <atomic>
-
-namespace npud
-{
-namespace core
-{
-
-class EventLoop
-{
-public:
-  EventLoop();
-  ~EventLoop();
-
-  void run(void);
-  void stop(void);
-  bool is_running(void);
-
-private:
-  GMainLoop *_mainloop;
-  std::atomic<bool> _running;
-};
-
-} // namespace core
-} // namespace npud
-
-#endif // __ONE_SERVICE_NPUD_CORE_EVENT_LOOP_H__
+//     Name                    | Type         | Default
+CONFIG(NPUD_LOG_ENABLE         , bool         , "0")

@@ -16,7 +16,7 @@
 
 #include "Server.h"
 
-#include <iostream>
+#include <util/Logging.h>
 
 namespace npud
 {
@@ -27,11 +27,11 @@ EventLoop Server::_loop;
 
 void Server::run(void)
 {
-  std::cout << "Starting Server" << std::endl;
+  VERBOSE(Server) << "Starting Server\n";
 
   if (_loop.is_running())
   {
-    std::cerr << "event loop is running" << std::endl;
+    VERBOSE(Server) << "Event loop is running\n";
     return;
   }
 
@@ -40,15 +40,16 @@ void Server::run(void)
 
 void Server::stop(void)
 {
-  std::cout << "Stop Server" << std::endl;
+  VERBOSE(Server) << "Stop Server\n";
 
   if (!_loop.is_running())
   {
-    std::cerr << "event loop is not running" << std::endl;
+    VERBOSE(Server) << "Event loop is not running\n";
     return;
   }
 
   _loop.stop();
 }
+
 } // namespace core
 } // namespace npud

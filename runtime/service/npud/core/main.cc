@@ -16,14 +16,14 @@
 
 #include "Server.h"
 
-#include <iostream>
+#include <util/Logging.h>
 
 using namespace npud;
 
 int main(int argc, const char *argv[])
 {
 
-  std::cout << "Start npud" << std::endl;
+  VERBOSE(main) << "Start npud\n";
 
   core::Server::run();
 

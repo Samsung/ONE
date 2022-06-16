@@ -16,25 +16,26 @@
 
 #include "EventLoop.h"
 
-#include <iostream>
+#include <util/Logging.h>
+
 #include <cassert>
 
 namespace npud
 {
 namespace core
 {
+
 EventLoop::EventLoop() : _mainloop(NULL), _running(false)
 {
-  std::cout << "EventLoop: constructor" << std::endl;
   _mainloop = g_main_loop_new(NULL, FALSE);
   assert(_mainloop);
 }
 
-EventLoop::~EventLoop() { std::cout << "EventLoop: destructor" << std::endl; }
+EventLoop::~EventLoop() { }
 
 void EventLoop::run(void)
 {
-  std::cout << "EventLoop: run" << std::endl;
+  VERBOSE(EventLoop) << "Run\n";
 
   _running.store(true);
   g_main_loop_run(_mainloop);
@@ -42,7 +43,7 @@ void EventLoop::run(void)
 
 void EventLoop::stop(void)
 {
-  std::cout << "EventLoop: stop" << std::endl;
+  VERBOSE(EventLoop) << "Stop\n";
 
   if (!_running.load())
   {
@@ -55,5 +56,6 @@ void EventLoop::stop(void)
 }
 
 bool EventLoop::is_running(void) { return _running.load(); }
+
 } // namespace core
 } // namespace npud

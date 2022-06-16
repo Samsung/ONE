@@ -23,6 +23,7 @@ namespace npud
 {
 namespace core
 {
+
 class Server
 {
 public:
@@ -40,6 +41,7 @@ private:
 
   static EventLoop _loop;
 };
+
 } // namespace core
 } // namespace npud
 
