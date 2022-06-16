@@ -237,6 +237,13 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     return NNFW_STATUS_ERROR;
   }
   _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_model_graph->entry());
+
+  // @20220617-sanggyu:
+  // Q. Why create TracingCtx here?
+  // 1. It is only necessary when TRACE_FILEPATH is set. Let's create lazily and only if necessary.
+  // 2. `TracingCtx` is for tracing. It seems natural to be created in compile phase.
+  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_model_graph->entry().get());
+
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -410,6 +417,22 @@ NNFW_STATUS nnfw_session::prepare()
     _tracing_ctx = std::make_unique<onert::util::TracingCtx>(subgraphs.get());
     auto compiler =
       std::make_unique<onert::compiler::Compiler>(subgraphs, _tracing_ctx.get(), *_coptions);
+    // @20220617-sanggyu:
+    //
+    // _subgraphs.reset();
+    //
+    // 1. nnfw_session releases the ownership of _subgraphs.
+    // 2. Without reset(), _subgraphs (shared_ptr) won't be released till nnfw_session is reclaimed.
+    // 3. nnfw_session::_subgraphs is not changed once it is created during loading.
+    //
+    // Q. Why `_compiler` is released just before compile(), not just after compile()?
+    // `_subgraphs` is not required for _compile() probably it is already in Compiler (shared
+    // ownership). Then, why don't release() after constructing _compiler?
+
+    // Now, what to do after subgraph to modelgraph?
+    // _subgraphs is replaced by _model_graph, thus _model_graph.reset() should be correct.
+    // But I will write _model_graph = nullptr for the sake of readability.
+    //
     _model_graph.reset();
     std::shared_ptr<onert::exec::ExecutorMap> executors = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(executors);
