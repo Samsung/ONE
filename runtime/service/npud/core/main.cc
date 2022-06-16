@@ -22,10 +22,17 @@ using namespace npud;
 
 int main(int argc, const char *argv[])
 {
+  auto &server = core::Server::get();
 
   VERBOSE(main) << "Start npud\n";
-
-  core::Server::run();
+  try
+  {
+    server.run();
+  }
+  catch (const std::runtime_error &err)
+  {
+    VERBOSE(main) << err.what() << "\n";
+  }
 
   return 0;
 }

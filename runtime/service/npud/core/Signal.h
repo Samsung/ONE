@@ -14,33 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_EVENT_LOOP_H__
-#define __ONE_SERVICE_NPUD_CORE_EVENT_LOOP_H__
-
-#include <glib.h>
-#include <atomic>
+#ifndef __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
+#define __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
 
 namespace npud
 {
 namespace core
 {
 
-class EventLoop
+class Signal
 {
 public:
-  EventLoop();
-  ~EventLoop();
+  Signal() noexcept;
 
-  void run(void);
-  void stop(void);
-  bool is_running(void);
-
-private:
-  GMainLoop *_mainloop;
-  std::atomic<bool> _running;
+  void init(void);
+  void handleSignal(int signum);
 };
 
 } // namespace core
 } // namespace npud
 
-#endif // __ONE_SERVICE_NPUD_CORE_EVENT_LOOP_H__
+#endif // __ONE_SERVICE_NPUD_CORE_SIGNAL_H__

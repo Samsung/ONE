@@ -17,7 +17,9 @@
 #ifndef __ONE_SERVICE_NPUD_CORE_CORE_H__
 #define __ONE_SERVICE_NPUD_CORE_CORE_H__
 
-#include "EventLoop.h"
+#include <glib.h>
+#include <memory>
+#include <atomic>
 
 namespace npud
 {
@@ -27,19 +29,17 @@ namespace core
 class Server
 {
 public:
-  static void run(void);
-  static void stop(void);
+  void run(void);
+  void stop(void);
+
+  static Server &get(void);
 
 private:
-  Server();
+  Server() noexcept;
 
-  static Server &instance(void)
-  {
-    static Server server;
-    return server;
-  }
+  static std::atomic_bool _isRunning;
 
-  static EventLoop _loop;
+  std::unique_ptr<GMainLoop, void (*)(GMainLoop *)> _mainloop;
 };
 
 } // namespace core

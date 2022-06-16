@@ -18,37 +18,52 @@
 
 #include <util/Logging.h>
 
+#include <thread>
+#include <csignal>
+
 namespace npud
 {
 namespace core
 {
 
-EventLoop Server::_loop;
+std::atomic_bool Server::_isRunning(false);
+
+Server &Server::get(void)
+{
+  static Server server;
+  return server;
+}
+
+Server::Server() noexcept : _mainloop(g_main_loop_new(NULL, FALSE), g_main_loop_unref) {}
 
 void Server::run(void)
 {
   VERBOSE(Server) << "Starting Server\n";
 
-  if (_loop.is_running())
+  if (_isRunning.exchange(true))
   {
-    VERBOSE(Server) << "Event loop is running\n";
-    return;
+    throw std::runtime_error("Mainloop is already running");
   }
 
-  _loop.run();
+  g_main_loop_run(_mainloop.get());
 }
 
 void Server::stop(void)
 {
   VERBOSE(Server) << "Stop Server\n";
 
-  if (!_loop.is_running())
+  if (!_isRunning.load())
   {
-    VERBOSE(Server) << "Event loop is not running\n";
-    return;
+    throw std::runtime_error("Mainloop is not running");
   }
 
-  _loop.stop();
+  while (!g_main_loop_is_running(_mainloop.get()))
+  {
+    std::this_thread::yield();
+  }
+
+  g_main_loop_quit(_mainloop.get());
+  _isRunning = false;
 }
 
 } // namespace core

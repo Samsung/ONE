@@ -70,19 +70,19 @@ inline std::string decorated_name(const char *input)
 } // namespace util
 } // namespace npud
 
-#define VERBOSE(name)                        \
+#define VERBOSE(name)                       \
   if (::npud::util::logging::ctx.enabled()) \
   std::cout << ::npud::util::logging::decorated_name(#name)
 
-#define VERBOSE_F()                          \
+#define VERBOSE_F()                         \
   if (::npud::util::logging::ctx.enabled()) \
   std::cout << ::npud::util::logging::decorated_name(__func__)
 
-#define WHEN_LOG_ENABLED(METHOD)             \
+#define WHEN_LOG_ENABLED(METHOD)            \
   if (::npud::util::logging::ctx.enabled()) \
-    do                                       \
-    {                                        \
-      METHOD;                                \
+    do                                      \
+    {                                       \
+      METHOD;                               \
   } while (0)
 
 #endif // __ONE_SERVICE_NPUD_UTIL_LOGGING_H__
