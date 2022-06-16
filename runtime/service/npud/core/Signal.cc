@@ -17,9 +17,9 @@
 #include "Signal.h"
 
 #include "Server.h"
+#include <util/Logging.h>
 
 #include <csignal>
-#include <iostream>
 
 namespace npud
 {
@@ -48,7 +48,7 @@ void Signal::init(void)
 
 void Signal::handleSignal(int signum)
 {
-  std::cout << "Signal received: " << strsignal(signum) << "(" << signum << ")" << std::endl;
+  VERBOSE(signal) << "Signal received: " << strsignal(signum) << "(" << signum << ")\n";
   Server::instance().stop();
 }
 
