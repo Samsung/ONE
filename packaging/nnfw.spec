@@ -29,6 +29,7 @@ Source2002: nnfw-plugin.pc.in
 
 %{!?build_type:     %define build_type      Release}
 %{!?trix_support:   %define trix_support    1}
+%{!?npud_build:     %define npud_build      1}
 %{!?coverage_build: %define coverage_build  0}
 %{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
@@ -61,6 +62,10 @@ BuildRequires:  gtest-devel
 
 %if %{trix_support} == 1
 BuildRequires:  npu-engine-devel
+%endif
+
+%if %{npud_build} == 1
+BuildRequires:  glib2-devel
 %endif
 
 %description
