@@ -28,7 +28,7 @@ public:
   Signal() noexcept;
 
   void init(void);
-  void handleSignal(int signum);
+  static void handleSignal(int signum);
 };
 
 } // namespace core

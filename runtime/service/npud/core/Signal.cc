@@ -26,10 +26,7 @@ namespace npud
 namespace core
 {
 
-Signal::Signal(void) noexcept
-{
-  init();
-}
+Signal::Signal(void) noexcept { init(); }
 
 void Signal::init(void)
 {
