@@ -50,8 +50,17 @@ struct PartialGraphOptions
   std::unordered_map<ir::OperationIndex, ir::SubgraphIndex> index_to_graph;
 };
 
-struct CompilerOptions
+class CompilerOptions
 {
+public:
+  CompilerOptions(const ir::Subgraphs &subgs) { fetchCompilerOptionsFromGlobalConfig(subgs); }
+
+private:
+  // Set default values for CompilerOptions
+  // All these default values should not be fetched from Env, when we stop supporting Android NNAPI.
+  void fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs);
+
+public:
   // GENERAL OPTIONS
   std::vector<std::string> backend_list;
 
@@ -69,8 +78,6 @@ struct CompilerOptions
   util::TracingCtx *tracing_ctx; //< Profiling information
 };
 
-CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs);
-
 /**
  * @brief Class to compile graph model
  */
@@ -81,8 +88,10 @@ public:
    * @brief     Construct a new Compiler object
    * @param[in] subgs All subgraphs of a model
    * @param[in] tracing_ctx Profiling information
+   * @param[in] coptions Compiler Options
    */
-  Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx *tracing_ctx);
+  Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx *tracing_ctx,
+           CompilerOptions &copt);
 
 public:
   /**
@@ -133,7 +142,7 @@ private:
   // have to add allocate non-constant tensor memory of executors in execution time when each
   // subgraph is called.
   State _state;
-  CompilerOptions _options;
+  CompilerOptions &_options;
 };
 
 } // namespace compiler
