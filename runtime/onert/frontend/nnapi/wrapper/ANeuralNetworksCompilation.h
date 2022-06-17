@@ -49,6 +49,7 @@ private:
   // and let's make it work with one model for now.
   std::unique_ptr<onert::util::TracingCtx> _tracing_ctx;
 
+  std::unique_ptr<onert::compiler::CompilerOptions> _coptions;
   std::shared_ptr<onert::compiler::Compiler> _compiler;
   std::shared_ptr<onert::exec::ExecutorMap> _executors;
 };

@@ -198,7 +198,7 @@ void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _subgraphs{nullptr}, _compiler{nullptr}, _execution{nullptr},
+  : _subgraphs{nullptr}, _coptions{nullptr}, _compiler{nullptr}, _execution{nullptr},
     _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}, _tracing_ctx{nullptr}
 {
   // DO NOTHING
@@ -226,10 +226,10 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-
   _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
-
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
+  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
+  _compiler =
+    std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -280,10 +280,10 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-
   _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
-
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
+  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
+  _compiler =
+    std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
 
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -367,11 +367,10 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-
   _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
-
-  _compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get());
-
+  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
+  _compiler =
+    std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -430,6 +429,9 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
 
   try
   {
+    _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
+    _compiler =
+      std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
     _subgraphs.reset();
     std::vector<std::shared_ptr<onert::exec::ExecutorMap>> executor_maps =
       _compiler->compile(_package_file_path.c_str(), map_file_path);
@@ -971,7 +973,7 @@ NNFW_STATUS nnfw_session::set_available_backends(const char *backends)
     if (null_terminating(backends, MAX_BACKEND_NAME_LENGTH) == false)
       return NNFW_STATUS_ERROR;
 
-    auto &options = _compiler->options();
+    auto &options = *_coptions;
 
     using namespace onert::util;
 
@@ -1005,7 +1007,7 @@ NNFW_STATUS nnfw_session::set_op_backend(const char *op, const char *backend)
       return NNFW_STATUS_ERROR;
     }
 
-    auto &opcode_to_backend = _compiler->options().manual_scheduler_options.opcode_to_backend;
+    auto &opcode_to_backend = _coptions->manual_scheduler_options.opcode_to_backend;
     opcode_to_backend.emplace(onert::ir::toOpCode(key), backend);
   }
   catch (const std::exception &e)
@@ -1024,7 +1026,7 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   if (!key || !value)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
-  auto &options = _compiler->options();
+  auto &options = *_coptions;
 
   using namespace onert::util;
 
@@ -1094,7 +1096,7 @@ NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_
   if (!key || !value)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
-  auto &options = _compiler->options();
+  auto &options = *_coptions;
 
   auto check_boundary = [](size_t dest_size, std::string &src) {
     if (dest_size < src.length() + 1 /* for '\0' */)
