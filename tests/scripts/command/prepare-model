@@ -24,8 +24,8 @@ function Usage()
     echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [OPTIONS]"
     echo ""
     echo "Options:"
-    echo "      --ignoremd5                         Ignore MD5 check when download model files"
-    echo "      --model=(all|nnpackage|tflite)      Download test model (deprecated option: always all)"
+    echo "          --ignoremd5     Ignore MD5 check when download model files"
+    echo "      -h, --help          Display this help message and exit"
 }
 
 for i in "$@"
@@ -38,9 +38,6 @@ do
         --ignoremd5)
             MD5_CHECK="off"
             ;;
-        --model=*)
-            # deprecated
-            ;;
         *)
             echo "Unknown option: $i"
             exit 1
@@ -49,9 +46,10 @@ do
     shift
 done
 
-# Default download server url
+# Check MODELFILE_SERVER
 if [[ -z "$MODELFILE_SERVER" ]]; then
-    export MODELFILE_SERVER="http://npu.mooo.com/archive/tflite_test_model/"
+    echo "Fail to download models: Please set MODELFILE_SERVER to download model"
+    exit 1
 fi
 echo "Download from $MODELFILE_SERVER"
 
