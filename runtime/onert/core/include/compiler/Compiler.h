@@ -78,6 +78,9 @@ public:
   util::TracingCtx *tracing_ctx; //< Profiling information
 };
 
+// TODO: Make this as ManualSchedulerOptions member function
+void setBackendMap(compiler::ManualSchedulerOptions &ms_options, const ir::Subgraphs &subgs,
+                   const std::string &str);
 /**
  * @brief Class to compile graph model
  */
@@ -118,12 +121,6 @@ public:
    * @brief   Allow to compute float32 using float16 data type
    */
   void enableToFp16();
-
-  /**
-   * @brief   Set backends from string-encoded mappings from operation index to backend type (cpu,
-   * acl_cl)
-   */
-  void set_backend_from_str(const char *backend_settings);
 
   /**
    * @brief   Build the partial graphs to compile with original graph

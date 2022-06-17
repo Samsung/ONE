@@ -82,7 +82,13 @@ void verboseOptions(compiler::CompilerOptions &options)
   VERBOSE(Compiler) << "fp16_enable              : " << options.fp16_enable << std::endl
                     << std::noboolalpha;
 }
+} // namespace
 
+namespace onert
+{
+
+namespace compiler
+{
 void setBackendMap(compiler::ManualSchedulerOptions &ms_options, const ir::Subgraphs &subgs,
                    const std::string &str)
 {
@@ -106,14 +112,6 @@ void setBackendMap(compiler::ManualSchedulerOptions &ms_options, const ir::Subgr
     ms_options.index_to_backend.emplace(ir::OperationIndex{key}, val);
   }
 }
-
-} // namespace
-
-namespace onert
-{
-
-namespace compiler
-{
 
 void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 {
@@ -158,14 +156,6 @@ Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx
 }
 
 void Compiler::enableToFp16() { _options.fp16_enable = true; }
-
-void Compiler::set_backend_from_str(const char *backend_settings)
-{
-  assert(_subgraphs != nullptr);
-  // Backend for all
-  auto &ms_options = _options.manual_scheduler_options;
-  setBackendMap(ms_options, *_subgraphs, std::string{backend_settings});
-}
 
 void Compiler::checkProfilerConditions()
 {
