@@ -7,7 +7,8 @@ function(_ProtobufSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  envoption(PROTOBUF_URL https://github.com/protocolbuffers/protobuf/archive/v3.5.2.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(PROTOBUF_URL ${EXTERNAL_DOWNLOAD_SERVER}/protocolbuffers/protobuf/archive/v3.5.2.tar.gz)
 
   ExternalSource_Download(PROTOBUF ${PROTOBUF_URL}
                           PATCH ${CMAKE_CURRENT_LIST_DIR}/ProtobufSource.patch)

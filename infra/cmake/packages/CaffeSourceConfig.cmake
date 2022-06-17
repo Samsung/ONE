@@ -7,7 +7,8 @@ function(_CaffeSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  envoption(CAFFE_URL https://github.com/BVLC/caffe/archive/1.0.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(CAFFE_URL ${EXTERNAL_DOWNLOAD_SERVER}/BVLC/caffe/archive/1.0.tar.gz)
 
   ExternalSource_Download(CAFFE ${CAFFE_URL})
 

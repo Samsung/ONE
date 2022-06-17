@@ -7,7 +7,8 @@ function(_ONNXSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  envoption(ONNX_1_6_0_URL https://github.com/onnx/onnx/archive/v1.6.0.zip)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(ONNX_1_6_0_URL ${EXTERNAL_DOWNLOAD_SERVER}/onnx/onnx/archive/v1.6.0.zip)
 
   ExternalSource_Download(ONNX DIRNAME ONNX-1.6.0
                                CHECKSUM MD5=cbdc547a527f1b59c7f066c8d258b966

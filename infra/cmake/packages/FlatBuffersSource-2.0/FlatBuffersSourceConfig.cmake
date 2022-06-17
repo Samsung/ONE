@@ -7,7 +7,8 @@ function(_FlatBuffersSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  envoption(FLATBUFFERS_2_0_URL https://github.com/google/flatbuffers/archive/v2.0.0.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(FLATBUFFERS_2_0_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/flatbuffers/archive/v2.0.0.tar.gz)
   ExternalSource_Download(FLATBUFFERS
     DIRNAME FLATBUFFERS-2.0
     CHECKSUM MD5=a27992324c3cbf86dd888268a23d17bd

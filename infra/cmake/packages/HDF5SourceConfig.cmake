@@ -7,7 +7,8 @@ function(_HDF5Source_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  envoption(HDF5_URL https://github.com/HDFGroup/hdf5/archive/hdf5-1_8_16.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(HDF5_URL ${EXTERNAL_DOWNLOAD_SERVER}/HDFGroup/hdf5/archive/hdf5-1_8_16.tar.gz)
 
   ExternalSource_Download(HDF5 ${HDF5_URL}
                           PATCH ${CMAKE_CURRENT_LIST_DIR}/HDF5Source.patch)

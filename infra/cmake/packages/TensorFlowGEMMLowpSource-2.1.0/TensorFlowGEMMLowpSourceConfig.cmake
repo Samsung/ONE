@@ -9,7 +9,8 @@ function(_TensorFlowGEMMLowpSource_import)
 
   # Exact version used by TensorFlow v2.1.0.
   # See tensorflow/tensorflow/workspace.bzl.
-  envoption(TENSORFLOW_2_1_0_GEMMLOWP_URL https://github.com/google/gemmlowp/archive/12fed0cd7cfcd9e169bf1925bc3a7a58725fdcc3.zip)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(TENSORFLOW_2_1_0_GEMMLOWP_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/gemmlowp/archive/12fed0cd7cfcd9e169bf1925bc3a7a58725fdcc3.zip)
 
   ExternalSource_Download(GEMMLOWP DIRNAME TENSORFLOW-2.1.0-GEMMLOWP ${TENSORFLOW_2_1_0_GEMMLOWP_URL})
 

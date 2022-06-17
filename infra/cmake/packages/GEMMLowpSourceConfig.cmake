@@ -9,7 +9,8 @@ function(_GEMMLowpSource_import)
 
   # NOTE TensorFlow 1.12 uses the following URL
   #      TensorFlow 1.13.1 uses the following URL
-  envoption(GEMMLOWP_URL https://github.com/google/gemmlowp/archive/38ebac7b059e84692f53e5938f97a9943c120d98.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(GEMMLOWP_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/gemmlowp/archive/38ebac7b059e84692f53e5938f97a9943c120d98.tar.gz)
 
   ExternalSource_Download(GEMMLOWP ${GEMMLOWP_URL})
 

@@ -9,7 +9,8 @@ function(_TensorFlowRuySource_import)
 
   # Exact version used by TensorFlow v2.3.0.
   # See tensorflow/third_party/ruy/workspace.bzl
-  envoption(TENSORFLOW_2_3_0_RUY_URL https://github.com/google/ruy/archive/34ea9f4993955fa1ff4eb58e504421806b7f2e8f.zip)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(TENSORFLOW_2_3_0_RUY_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/ruy/archive/34ea9f4993955fa1ff4eb58e504421806b7f2e8f.zip)
 
   ExternalSource_Download(RUY DIRNAME TENSORFLOW-2.3.0-RUY ${TENSORFLOW_2_3_0_RUY_URL})
 
