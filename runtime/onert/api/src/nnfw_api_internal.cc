@@ -1069,12 +1069,12 @@ const onert::ir::Graph *nnfw_session::primary_subgraph()
 {
   if (_subgraphs)
   {
-    assert(!_execution && _executions.empty());
+    assert(_execution == nullptr && _executions.empty());
     return _subgraphs->primary().get();
   }
   else
   {
-    assert(_execution || !_executions.empty());
+    assert(_execution != nullptr || !_executions.empty());
     // TODO Remove const_cast
     // We assumed the graph will not change after compilation, but shape could change
     if (!_executions.empty())
@@ -1138,9 +1138,9 @@ bool nnfw_session::isStateInitialized()
 {
   if (_state == State::INITIALIZED)
   {
-    assert(!_subgraphs);
-    assert(!_compiler);
-    assert(!_execution && _executions.empty());
+    assert(_subgraphs == nullptr);
+    assert(_compiler == nullptr);
+    assert(_execution == nullptr && _executions.empty());
     return true;
   }
   else
@@ -1153,9 +1153,9 @@ bool nnfw_session::isStateModelLoaded()
 {
   if (_state == State::MODEL_LOADED)
   {
-    assert(_subgraphs);
-    assert(_compiler);
-    assert(!_execution && _executions.empty());
+    assert(_subgraphs != nullptr);
+    assert(_compiler != nullptr);
+    assert(_execution == nullptr && _executions.empty());
     return true;
   }
   else
@@ -1168,9 +1168,9 @@ bool nnfw_session::isStatePrepared()
 {
   if (_state == State::PREPARED)
   {
-    assert(!_subgraphs);
-    assert(_compiler);
-    assert(_execution || !_executions.empty());
+    assert(_subgraphs == nullptr);
+    assert(_compiler != nullptr);
+    assert(_execution != nullptr || !_executions.empty());
     return true;
   }
   else
@@ -1183,9 +1183,9 @@ bool nnfw_session::isStateRunning()
 {
   if (_state == State::RUNNING)
   {
-    assert(!_subgraphs);
-    assert(_compiler);
-    assert(_execution || !_executions.empty());
+    assert(_subgraphs == nullptr);
+    assert(_compiler != nullptr);
+    assert(_execution != nullptr || !_executions.empty());
     return true;
   }
   return false;
@@ -1195,9 +1195,9 @@ bool nnfw_session::isStateFinishedRun()
 {
   if (_state == State::FINISHED_RUN)
   {
-    assert(!_subgraphs);
-    assert(_compiler);
-    assert(_execution || !_executions.empty());
+    assert(_subgraphs == nullptr);
+    assert(_compiler != nullptr);
+    assert(_execution != nullptr || !_executions.empty());
     return true;
   }
   else
