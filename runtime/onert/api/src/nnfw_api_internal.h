@@ -168,7 +168,6 @@ private:
   State _state{State::INITIALIZED};
   std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
   std::unique_ptr<onert::compiler::CompilerOptions> _coptions;
-  std::unique_ptr<onert::compiler::Compiler> _compiler;
   std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
   std::vector<std::thread> _threads;

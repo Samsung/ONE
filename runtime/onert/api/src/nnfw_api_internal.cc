@@ -197,7 +197,7 @@ void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _subgraphs{nullptr}, _coptions{nullptr}, _compiler{nullptr}, _execution{nullptr},
+  : _subgraphs{nullptr}, _coptions{nullptr}, _execution{nullptr},
     _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}, _tracing_ctx{nullptr}
 {
   // DO NOTHING
@@ -384,10 +384,10 @@ NNFW_STATUS nnfw_session::prepare()
   try
   {
     _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
-    _compiler =
+    auto compiler =
       std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
     _subgraphs.reset();
-    std::shared_ptr<onert::exec::ExecutorMap> executors = _compiler->compile();
+    std::shared_ptr<onert::exec::ExecutorMap> executors = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(executors);
   }
   catch (const std::exception &e)
@@ -421,11 +421,11 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
   try
   {
     _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
-    _compiler =
+    auto compiler =
       std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
     _subgraphs.reset();
     std::vector<std::shared_ptr<onert::exec::ExecutorMap>> executor_maps =
-      _compiler->compile(_package_file_path.c_str(), map_file_path);
+      compiler->compile(_package_file_path.c_str(), map_file_path);
 
     for (auto it = executor_maps.begin(); it != executor_maps.end(); ++it)
     {
@@ -1132,7 +1132,7 @@ bool nnfw_session::isStateInitialized()
   if (_state == State::INITIALIZED)
   {
     assert(_subgraphs == nullptr);
-    assert(_compiler == nullptr);
+    assert(_coptions == nullptr);
     assert(_execution == nullptr && _executions.empty());
     return true;
   }
@@ -1147,7 +1147,7 @@ bool nnfw_session::isStateModelLoaded()
   if (_state == State::MODEL_LOADED)
   {
     assert(_subgraphs != nullptr);
-    assert(_compiler == nullptr);
+    assert(_coptions != nullptr);
     assert(_execution == nullptr && _executions.empty());
     return true;
   }
@@ -1162,7 +1162,7 @@ bool nnfw_session::isStatePrepared()
   if (_state == State::PREPARED)
   {
     assert(_subgraphs == nullptr);
-    assert(_compiler != nullptr);
+    assert(_coptions != nullptr);
     assert(_execution != nullptr || !_executions.empty());
     return true;
   }
@@ -1177,7 +1177,7 @@ bool nnfw_session::isStateRunning()
   if (_state == State::RUNNING)
   {
     assert(_subgraphs == nullptr);
-    assert(_compiler != nullptr);
+    assert(_coptions != nullptr);
     assert(_execution != nullptr || !_executions.empty());
     return true;
   }
@@ -1189,7 +1189,7 @@ bool nnfw_session::isStateFinishedRun()
   if (_state == State::FINISHED_RUN)
   {
     assert(_subgraphs == nullptr);
-    assert(_compiler != nullptr);
+    assert(_coptions != nullptr);
     assert(_execution != nullptr || !_executions.empty());
     return true;
   }
