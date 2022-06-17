@@ -226,12 +226,7 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-
-  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
   _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
-  _compiler =
-    std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
-
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -281,10 +276,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
   _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
-  _compiler =
-    std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -367,10 +359,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
   _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
-  _compiler =
-    std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -395,6 +384,9 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
+    _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
+    _compiler =
+      std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
     _subgraphs.reset();
     std::shared_ptr<onert::exec::ExecutorMap> executors = _compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(executors);
@@ -1156,7 +1148,7 @@ bool nnfw_session::isStateModelLoaded()
   if (_state == State::MODEL_LOADED)
   {
     assert(_subgraphs != nullptr);
-    assert(_compiler != nullptr);
+    assert(_compiler == nullptr);
     assert(_execution == nullptr && _executions.empty());
     return true;
   }
