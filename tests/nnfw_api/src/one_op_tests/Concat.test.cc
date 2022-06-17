@@ -59,7 +59,7 @@ class ConcatVariation : public GenModelTest,
 
 // Input shape: {2, 3} / {2, 3}
 // Output shape: {4, 3}
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
   GenModelTest, ConcatVariation,
   ::testing::Values(
     // Float

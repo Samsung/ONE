@@ -259,7 +259,7 @@ using DepthwiseConv2DQuantTestU8 = DepthwiseConv2DQuantTest<uint8_t>;
 
 // Test with different InputDepth and DepthMultiplier. The values are intended to test optimized CPU
 // kernels.
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
   GenModelTest, DepthwiseConv2DQuantTestU8,
   ::testing::Values(
     // Stride == 1
@@ -342,7 +342,7 @@ using DepthwiseConv2DQuantTestI8 = DepthwiseConv2DQuantTest<int8_t>;
 
 // Test with different InputDepth and DepthMultiplier. The values are intended to test optimized CPU
 // kernels.
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
   GenModelTest, DepthwiseConv2DQuantTestI8,
   ::testing::Values(
     // Stride == 1

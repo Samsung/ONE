@@ -63,8 +63,8 @@ TEST_P(ReduceMaxBadIndex, neg_Test)
   SUCCEED();
 }
 
-INSTANTIATE_TEST_CASE_P(GenModelTest, ReduceMaxBadIndex,
-                        ::testing::Values(std::vector<int32_t>{0, 1, 2, 4},
-                                          std::vector<int32_t>{0, -5, 2, 3},
-                                          std::vector<int32_t>{-88, 1, 2, 3},
-                                          std::vector<int32_t>{0, 1, 88, 3}));
+INSTANTIATE_TEST_SUITE_P(GenModelTest, ReduceMaxBadIndex,
+                         ::testing::Values(std::vector<int32_t>{0, 1, 2, 4},
+                                           std::vector<int32_t>{0, -5, 2, 3},
+                                           std::vector<int32_t>{-88, 1, 2, 3},
+                                           std::vector<int32_t>{0, 1, 88, 3}));

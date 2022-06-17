@@ -126,7 +126,7 @@ TEST_P(IfWrongSubgraphIndex, neg_Test)
   SUCCEED();
 }
 
-INSTANTIATE_TEST_CASE_P(GenModelTest, IfWrongSubgraphIndex,
-                        ::testing::Values(std::make_pair(99, 2), std::make_pair(-1, 2),
-                                          std::make_pair(1, 99), std::make_pair(1, -99),
-                                          std::make_pair(-99, 99)));
+INSTANTIATE_TEST_SUITE_P(GenModelTest, IfWrongSubgraphIndex,
+                         ::testing::Values(std::make_pair(99, 2), std::make_pair(-1, 2),
+                                           std::make_pair(1, 99), std::make_pair(1, -99),
+                                           std::make_pair(-99, 99)));

@@ -56,7 +56,7 @@ const int64_t test_int64 = 1052;
 const float test_float = 5.2;
 
 // Test with different value type
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
   GenModelTest, FillVariation,
   ::testing::Values(
     // float value

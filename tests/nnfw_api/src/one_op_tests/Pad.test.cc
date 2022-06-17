@@ -32,7 +32,7 @@ class PadVariation : public GenModelTest, public ::testing::WithParamInterface<P
 };
 
 // Test with different value type
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
   GenModelTest, PadVariation,
   ::testing::Values(
     // float value
