@@ -108,12 +108,7 @@ struct IExecutor
   virtual const std::vector<backend::builtin::IOTensor *> &getOutputTensors() const = 0;
 };
 
-using ExecutorMapI = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>>;
-struct ExecutorMap
-{
-  ExecutorMapI _map;
-  std::unique_ptr<const util::TracingCtx> _tracing_ctx;
-};
+using ExecutorMap = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>>;
 
 } // namespace exec
 } // namespace onert

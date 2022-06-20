@@ -80,6 +80,12 @@ public:
   PartialGraphOptions partial_graph_options;
 };
 
+struct CompilationResult
+{
+  std::shared_ptr<exec::ExecutorMap> _executors;
+  std::unique_ptr<const util::TracingCtx> _tracing_ctx;
+};
+
 /**
  * @brief Class to compile graph model
  */
@@ -97,17 +103,17 @@ public:
   /**
    * @brief   Do compilation with the options
    *
-   * @return std::shared_ptr<exec::ExecutorMap> Executors as a result of compilation
+   * @return std::shared_ptr<CompilationResult> Executors as a result of compilation
    */
-  std::shared_ptr<exec::ExecutorMap> compile(void);
+  std::shared_ptr<CompilationResult> compile(void);
 
   /**
    * @brief   Do compilation with the options
    *
-   * @return std::vector<std::shared_ptr<exec::ExecutorMap>> Executors as a result of compilation
+   * @return std::vector<std::shared_ptr<CompilationResult>> Executors as a result of compilation
    * for pipeline
    */
-  std::vector<std::shared_ptr<exec::ExecutorMap>> compile(const char *package_file_path,
+  std::vector<std::shared_ptr<CompilationResult>> compile(const char *package_file_path,
                                                           const char *map_file_path);
 
   State state(void) const { return _state; }

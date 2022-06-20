@@ -57,8 +57,8 @@ void WhileLayer::run()
   // // Run cond subg
   // If there is no loop copy "_input_tensors" -> "_dst_tensors", else copy "cond subg inputs" ->
   // "_dst_tensors"
-  auto cond_exec = _executor_map->_map.at(_cond_subg_index).get();
-  auto body_exec = _executor_map->_map.at(_body_subg_index).get();
+  auto cond_exec = _executor_map->at(_cond_subg_index).get();
+  auto body_exec = _executor_map->at(_body_subg_index).get();
 
   // Need a temp tensor to hold the cond subgraph output
   assert(cond_exec->getOutputTensors().size() == 1);

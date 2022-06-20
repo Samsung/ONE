@@ -389,8 +389,8 @@ NNFW_STATUS nnfw_session::prepare()
   {
     auto compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, *_coptions);
     _subgraphs.reset();
-    std::shared_ptr<onert::exec::ExecutorMap> executors = compiler->compile();
-    _execution = std::make_unique<onert::exec::Execution>(executors);
+    _artifact = compiler->compile();
+    _execution = std::make_unique<onert::exec::Execution>(_artifact->_executors);
   }
   catch (const std::exception &e)
   {
@@ -424,12 +424,11 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
   {
     auto compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, *_coptions);
     _subgraphs.reset();
-    std::vector<std::shared_ptr<onert::exec::ExecutorMap>> executor_maps =
-      compiler->compile(_package_file_path.c_str(), map_file_path);
+    auto artifact_vector = compiler->compile(_package_file_path.c_str(), map_file_path);
 
-    for (auto it = executor_maps.begin(); it != executor_maps.end(); ++it)
+    for (auto it = artifact_vector.begin(); it != artifact_vector.end(); ++it)
     {
-      _executions.push_back(std::make_shared<onert::exec::Execution>(*it));
+      _executions.push_back(std::make_shared<onert::exec::Execution>(it->get()->_executors));
     }
     make_dependency();
     _threads.resize(_executions.size());

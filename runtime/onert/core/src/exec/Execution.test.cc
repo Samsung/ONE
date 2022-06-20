@@ -81,21 +81,20 @@ public:
     subgs->push(onert::ir::SubgraphIndex{0}, graph);
     coptions = std::make_unique<onert::compiler::CompilerOptions>(*subgs);
     onert::compiler::Compiler compiler{subgs, *coptions};
-    executors = compiler.compile();
+    artifact = compiler.compile();
   }
 
 public:
   std::shared_ptr<Graph> graph;
-  std::shared_ptr<onert::exec::ExecutorMap> executors;
-  std::unique_ptr<onert::util::TracingCtx> tracing_ctx;
   std::unique_ptr<onert::compiler::CompilerOptions> coptions;
+  std::shared_ptr<onert::compiler::CompilationResult> artifact;
 };
 
 TEST(ExecInstance, simple)
 {
   auto mockup = CompiledMockUpModel();
   auto graph = mockup.graph;
-  auto executors = mockup.executors;
+  auto executors = mockup.artifact->_executors;
 
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
@@ -123,7 +122,7 @@ TEST(ExecInstance, twoCompile)
 {
   auto mockup = CompiledMockUpModel();
   auto graph = mockup.graph;
-  auto executors1 = mockup.executors;
+  auto executors1 = mockup.artifact->_executors;
   onert::exec::Execution execution1{executors1};
 
   auto input1 = IOIndex{0};
@@ -142,9 +141,10 @@ TEST(ExecInstance, twoCompile)
   // Make new executor: compile again
   auto subgs = std::make_shared<onert::ir::Subgraphs>();
   subgs->push(onert::ir::SubgraphIndex{0}, graph);
+
   auto coptions = std::make_unique<onert::compiler::CompilerOptions>(*subgs);
   onert::compiler::Compiler compiler{subgs, *coptions};
-  std::shared_ptr<onert::exec::ExecutorMap> executors2 = compiler.compile();
+  auto executors2 = compiler.compile()->_executors;
   onert::exec::Execution execution2{executors2};
 
   const float exe2_input1_buffer[4] = {2, 1, -2, 0};
@@ -170,7 +170,7 @@ TEST(ExecInstance, twoCompile)
 TEST(ExecInstance, twoExecution)
 {
   auto mockup = CompiledMockUpModel();
-  auto executors = mockup.executors;
+  auto executors = mockup.artifact->_executors;
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
   auto output1 = IOIndex{0};
@@ -241,7 +241,7 @@ private:
 TEST(ExecInstance, twoThreads)
 {
   auto mockup = CompiledMockUpModel();
-  auto executors = mockup.executors;
+  auto executors = mockup.artifact->_executors;
 
   const float exe1_input1_buffer[4] = {1, 0, -1, -2};
   const float exe1_input2_buffer[4] = {1, -3, 2, -4};
@@ -275,7 +275,7 @@ TEST(ExecInstance, async)
 {
   auto mockup = CompiledMockUpModel();
   auto graph = mockup.graph;
-  auto executors = mockup.executors;
+  auto executors = mockup.artifact->_executors;
 
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
