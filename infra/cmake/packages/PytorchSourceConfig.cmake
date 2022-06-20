@@ -7,7 +7,8 @@ function(_PytorchSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  envoption(PYTORCH_URL https://github.com/pytorch/pytorch/archive/v0.4.1.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(PYTORCH_URL ${EXTERNAL_DOWNLOAD_SERVER}/pytorch/pytorch/archive/v0.4.1.tar.gz)
 
   ExternalSource_Download(PYTORCH ${PYTORCH_URL})
 

@@ -7,7 +7,8 @@ function(_JsoncppSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  envoption(JSONCPP_URL https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.5.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(JSONCPP_URL ${EXTERNAL_DOWNLOAD_SERVER}/open-source-parsers/jsoncpp/archive/refs/tags/1.9.5.tar.gz)
 
   ExternalSource_Download(JSONCPP ${JSONCPP_URL})
 

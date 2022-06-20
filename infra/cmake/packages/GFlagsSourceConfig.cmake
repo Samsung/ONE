@@ -7,7 +7,8 @@ function(_GFlagsSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  envoption(GFLAGS_URL https://github.com/gflags/gflags/archive/v2.2.1.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(GFLAGS_URL ${EXTERNAL_DOWNLOAD_SERVER}/gflags/gflags/archive/v2.2.1.tar.gz)
 
   ExternalSource_Download(GFLAGS ${GFLAGS_URL})
 

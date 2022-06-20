@@ -11,7 +11,8 @@ function(_NEON2SSESource_import)
   # NOTE TensorFlow 2.1 downloads NEON2SSE from the following URL
   # NOTE TensorFlow 2.2 downloads NEON2SSE from the following URL
   # NOTE TensorFlow 2.3 downloads NEON2SSE from the following URL
-  envoption(NEON2SSE_URL https://github.com/intel/ARM_NEON_2_x86_SSE/archive/1200fe90bb174a6224a525ee60148671a786a71f.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(NEON2SSE_URL ${EXTERNAL_DOWNLOAD_SERVER}/intel/ARM_NEON_2_x86_SSE/archive/1200fe90bb174a6224a525ee60148671a786a71f.tar.gz)
 
   ExternalSource_Download(NEON2SSE ${NEON2SSE_URL})
 

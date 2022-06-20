@@ -13,7 +13,7 @@ function(_TensorFlowGpuSource_Import)
       set(PATCH_DONE "TRUE")
     endif()
   endif()
-  
+
   if(${PATCH_DONE} STREQUAL "TRUE")
     message(STATUS "Skip downloading TensorFlowGpuSource")
     set(TENSORFLOWGPU_SOURCE_DIR "${NNAS_EXTERNALS_DIR}/TENSORFLOW_GPU" PARENT_SCOPE)
@@ -28,7 +28,8 @@ function(_TensorFlowGpuSource_Import)
   # Download TFLite Source Code
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
-  envoption(TENSORFLOW_2_4_1_URL https://github.com/tensorflow/tensorflow/archive/v2.4.1.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(TENSORFLOW_2_4_1_URL ${EXTERNAL_DOWNLOAD_SERVER}/tensorflow/tensorflow/archive/v2.4.1.tar.gz)
   ExternalSource_Download(TFLITE_GPU_DELEGATE DIRNAME TENSORFLOW-2.4.1 ${TENSORFLOW_2_4_1_URL})
 
   # Patch for non used codes on onert backend/gpu_cl

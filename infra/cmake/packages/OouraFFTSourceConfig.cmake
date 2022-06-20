@@ -8,7 +8,8 @@ function(_OouraFFTSource_import)
   nnas_include(OptionTools)
 
   # NOTE TensorFlow 2.3 downloads OOURAFFT from the following URL
-  envoption(OOURAFFT_URL https://github.com/petewarden/OouraFFT/archive/v1.0.tar.gz)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(OOURAFFT_URL ${EXTERNAL_DOWNLOAD_SERVER}/petewarden/OouraFFT/archive/v1.0.tar.gz)
 
   ExternalSource_Download(OOURAFFT ${OOURAFFT_URL})
 

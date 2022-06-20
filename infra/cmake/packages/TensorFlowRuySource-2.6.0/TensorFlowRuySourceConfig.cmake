@@ -9,7 +9,8 @@ function(_TensorFlowRuySource_import)
 
   # Exact version used by TensorFlow v2.6.0.
   # See tensorflow/third_party/ruy/workspace.bzl
-  envoption(TENSORFLOW_2_6_0_RUY_URL https://github.com/google/ruy/archive/e6c1b8dc8a8b00ee74e7268aac8b18d7260ab1ce.zip)
+  envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+  envoption(TENSORFLOW_2_6_0_RUY_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/ruy/archive/e6c1b8dc8a8b00ee74e7268aac8b18d7260ab1ce.zip)
 
   ExternalSource_Download(RUY DIRNAME TENSORFLOW-2.6.0-RUY ${TENSORFLOW_2_6_0_RUY_URL})
 
