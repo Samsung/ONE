@@ -26,6 +26,7 @@
 #include "IODescription.h"
 #include "ir/Index.h"
 #include "ir/OperationIndexMap.h"
+#include "util/TracingCtx.h"
 
 #include <cstdint>
 #include <memory>
@@ -107,7 +108,12 @@ struct IExecutor
   virtual const std::vector<backend::builtin::IOTensor *> &getOutputTensors() const = 0;
 };
 
-using ExecutorMap = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>>;
+using ExecutorMapI = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>>;
+struct ExecutorMap
+{
+  ExecutorMapI _map;
+  std::unique_ptr<const util::TracingCtx> _tracing_ctx;
+};
 
 } // namespace exec
 } // namespace onert

@@ -41,14 +41,6 @@ public:
 
 private:
   std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
-  // TODO Refine the ownership of TracingCtx
-  // In case of nnfw API, nnfw_session has ownership of TracingCtx.
-  // In case of nnapi, there is no concept of session and primary model might have the ownership
-  // of TracingCtx.
-  // Since we don't support multiple models yet with nnapi in ONE, let's implement this later
-  // and let's make it work with one model for now.
-  std::unique_ptr<onert::util::TracingCtx> _tracing_ctx;
-
   std::unique_ptr<onert::compiler::CompilerOptions> _coptions;
   std::shared_ptr<onert::compiler::Compiler> _compiler;
   std::shared_ptr<onert::exec::ExecutorMap> _executors;

@@ -35,7 +35,8 @@ namespace compiler
 class LoweredGraph
 {
 public:
-  LoweredGraph(const ir::Graph &graph, const compiler::CompilerOptions &options);
+  LoweredGraph(const ir::Graph &graph, util::TracingCtx *tracing_ctx,
+               const compiler::CompilerOptions &options);
   LoweredGraph(const ir::Graph &parent_graph, const ir::Graph &graph,
                const compiler::CompilerOptions &options);
 
@@ -60,7 +61,8 @@ public:
 private:
   void makeLowerInfo(const compiler::BackendResolver &backend_resolver);
   void dumpLowerInfo();
-  void lowerGraph(const ir::Graph &graph, const compiler::CompilerOptions &options);
+  void lowerGraph(const ir::Graph &graph, util::TracingCtx *tracing_ctx,
+                  const compiler::CompilerOptions &options);
 
 private:
   ir::Graph _graph;

@@ -148,11 +148,10 @@ void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &
   }
 }
 
-Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx *tracing_ctx,
-                   CompilerOptions &copt)
+Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, CompilerOptions &copt)
   : _subgraphs{subgs}, _state{State::CREATED}, _options(copt)
 {
-  _options.tracing_ctx = tracing_ctx;
+  // DO NOTHING
 }
 
 void Compiler::enableToFp16() { _options.fp16_enable = true; }
@@ -369,7 +368,7 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
   if (_options.disable_compile)
   {
     _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-      executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
+      executors->_map.emplace(index, std::make_unique<interp::InterpExecutor>(subg));
       subg.setSubgraphs(_subgraphs);
     });
     _state = State::COMPILED;
@@ -379,6 +378,9 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
   // Mode check
   if (_options.he_profiling_mode)
     checkProfilerConditions();
+
+  // Tracing context
+  auto tracing_ctx = std::make_unique<util::TracingCtx>(_subgraphs.get());
 
   /***************************************************
    * Backend independent analysis & optimization phase
@@ -392,7 +394,8 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
 
     // Lower: Assign backend
-    lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, _options);
+    lowered_subgs[index] =
+      std::make_unique<compiler::LoweredGraph>(subg, tracing_ctx.get(), _options);
 
     subg.setSubgraphs(nullptr);
   });
@@ -440,6 +443,7 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
    *************************************************************/
 
   executors = std::make_shared<exec::ExecutorMap>();
+
   for (auto &pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
@@ -450,11 +454,13 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
                                std::to_string(subg_index.value()));
     lowered_subg->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
-    auto executor = std::unique_ptr<exec::IExecutor>{
-      ExecutorFactory::get().create(std::move(lowered_subg), _options, executors)};
+    auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
+      std::move(lowered_subg), tracing_ctx.get(), _options, executors)};
     executor->setIndexedRanks(indexed_ranks);
-    executors->insert(std::make_pair(subg_index, std::move(executor)));
+    executors->_map.insert(std::make_pair(subg_index, std::move(executor)));
   }
+
+  executors->_tracing_ctx = std::move(tracing_ctx);
 
   /********************************
    * Code generation phase finished
@@ -527,11 +533,6 @@ std::vector<std::shared_ptr<exec::ExecutorMap>> Compiler::compile(const char *pa
     _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
   }
 
-  // It doesn't support tracing in case of partial graph
-  {
-    _options.tracing_ctx = nullptr;
-  }
-
   verboseOptions(_options);
 
   _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
@@ -560,7 +561,7 @@ std::vector<std::shared_ptr<exec::ExecutorMap>> Compiler::compile(const char *pa
   if (_options.disable_compile)
   {
     _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-      executor_map->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
+      executor_map->_map.emplace(index, std::make_unique<interp::InterpExecutor>(subg));
       executors.push_back(executor_map);
     });
     _state = State::COMPILED;
@@ -653,10 +654,13 @@ std::vector<std::shared_ptr<exec::ExecutorMap>> Compiler::compile(const char *pa
                                std::to_string(partialgraph_index.value()));
     lowered_partialgraph->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
-    auto executor = std::unique_ptr<exec::IExecutor>{
-      ExecutorFactory::get().create(std::move(lowered_partialgraph), _options, executor_map)};
+
+    // It doesn't support tracing in case of partial graph
+
+    auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
+      std::move(lowered_partialgraph), nullptr, _options, executor_map)};
     executor->setIndexedRanks(indexed_ranks);
-    executor_map->insert(std::make_pair(ir::SubgraphIndex{0}, std::move(executor)));
+    executor_map->_map.insert(std::make_pair(ir::SubgraphIndex{0}, std::move(executor)));
     executors.push_back(executor_map);
   }
 

@@ -79,7 +79,7 @@ protected:
     _graph->setSubgraphs(subgs);
 
     _executors = std::make_shared<ExecutorMap>();
-    _executors->insert(
+    _executors->_map.insert(
       std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
   }
 
@@ -144,7 +144,7 @@ protected:
     _graph->setSubgraphs(subgs);
 
     _executors = std::make_shared<ExecutorMap>();
-    _executors->insert(
+    _executors->_map.insert(
       std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
   }
 
@@ -197,7 +197,7 @@ protected:
     _graph->setSubgraphs(subgs);
 
     _executors = std::make_shared<ExecutorMap>();
-    _executors->insert(
+    _executors->_map.insert(
       std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
   }
 
@@ -223,7 +223,7 @@ TEST_F(InterpExecutorTest, create_simple)
 {
   CreateSimpleModel();
   ASSERT_NE(_executors, nullptr);
-  ASSERT_NE(_executors->at(onert::ir::SubgraphIndex{0}), nullptr);
+  ASSERT_NE(_executors->_map.at(onert::ir::SubgraphIndex{0}), nullptr);
 }
 
 TEST_F(InterpExecutorTest, neg_setInput)

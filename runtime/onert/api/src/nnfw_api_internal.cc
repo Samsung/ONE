@@ -199,7 +199,7 @@ void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
 
 nnfw_session::nnfw_session()
   : _subgraphs{nullptr}, _coptions{nullptr}, _execution{nullptr},
-    _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}, _tracing_ctx{nullptr}
+    _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}
 {
   // DO NOTHING
 }
@@ -226,6 +226,7 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
+
   _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -276,6 +277,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
+
   _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -359,6 +361,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
+
   _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
@@ -384,9 +387,7 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
-    auto compiler =
-      std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
+    auto compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, *_coptions);
     _subgraphs.reset();
     std::shared_ptr<onert::exec::ExecutorMap> executors = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(executors);
@@ -421,9 +422,7 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
 
   try
   {
-    _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
-    auto compiler =
-      std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
+    auto compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, *_coptions);
     _subgraphs.reset();
     std::vector<std::shared_ptr<onert::exec::ExecutorMap>> executor_maps =
       compiler->compile(_package_file_path.c_str(), map_file_path);

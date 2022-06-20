@@ -26,7 +26,7 @@ namespace exec
 Execution::Execution(const std::shared_ptr<ExecutorMap> &executors) : _executors{executors}
 {
   assert(executors != nullptr);
-  assert(executors->at(ir::SubgraphIndex{0}) != nullptr);
+  assert(executors->_map.at(ir::SubgraphIndex{0}) != nullptr);
   const auto &primary_subg = primary_subgraph();
   _io_desc.inputs.resize(primary_subg.getInputs().size());
   _io_desc.outputs.resize(primary_subg.getOutputs().size());

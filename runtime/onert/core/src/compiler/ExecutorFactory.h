@@ -38,6 +38,7 @@ public:
 
 public:
   exec::IExecutor *create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                          const util::TracingCtx *tracing_ctx,
                           const compiler::CompilerOptions &options,
                           const std::shared_ptr<exec::ExecutorMap> &executor_map);
 
@@ -55,18 +56,21 @@ private:
 
   static exec::IExecutor *
   createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                       const util::TracingCtx *tracing_ctx,
                        const compiler::CompilerOptions &options,
                        const std::shared_ptr<exec::ExecutorMap> &executor_map);
   static exec::IExecutor *
   createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                         const util::TracingCtx *tracing_ctx,
                          const compiler::CompilerOptions &options,
                          const std::shared_ptr<exec::ExecutorMap> &executor_map, bool parallel);
 
 private:
-  std::unordered_map<std::string, std::function<exec::IExecutor *(
-                                    std::unique_ptr<compiler::LoweredGraph>,
-                                    const compiler::CompilerOptions &options,
-                                    const std::shared_ptr<exec::ExecutorMap> &executor_map)>>
+  std::unordered_map<std::string,
+                     std::function<exec::IExecutor *(
+                       std::unique_ptr<compiler::LoweredGraph>, const util::TracingCtx *tracing_ctx,
+                       const compiler::CompilerOptions &options,
+                       const std::shared_ptr<exec::ExecutorMap> &executor_map)>>
     _map;
 };
 

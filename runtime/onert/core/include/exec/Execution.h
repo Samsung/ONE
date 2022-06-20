@@ -245,9 +245,12 @@ public:
 private:
   const std::unique_ptr<IExecutor> &primary_executor() const
   {
-    return _executors->at(ir::SubgraphIndex{0});
+    return _executors->_map.at(ir::SubgraphIndex{0});
   };
-  std::unique_ptr<IExecutor> &primary_executor() { return _executors->at(ir::SubgraphIndex{0}); };
+  std::unique_ptr<IExecutor> &primary_executor()
+  {
+    return _executors->_map.at(ir::SubgraphIndex{0});
+  };
 
 private:
   const std::shared_ptr<ExecutorMap> _executors;
