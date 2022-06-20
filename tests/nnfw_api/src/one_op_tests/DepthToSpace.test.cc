@@ -32,7 +32,7 @@ class DepthToSpaceVariation : public GenModelTest,
 // Input shape: {1, 1, 2, 4}
 // Block size: 2
 // Output shape: {1, 2, 4, 1}
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
   GenModelTest, DepthToSpaceVariation,
   ::testing::Values(
     // Float

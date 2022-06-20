@@ -43,7 +43,7 @@ class AveragePool2DVariation : public GenModelTest,
 };
 
 // Test with different input type and value
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
   GenModelTest, AveragePool2DVariation,
   ::testing::Values(
     // float data

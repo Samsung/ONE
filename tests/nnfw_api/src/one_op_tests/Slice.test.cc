@@ -34,7 +34,7 @@ class SliceVariation : public GenModelTest,
 {
 };
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
   GenModelTest, SliceVariation,
   ::testing::Values(
     SliceVariationParam{

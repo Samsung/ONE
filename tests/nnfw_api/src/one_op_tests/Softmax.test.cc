@@ -31,7 +31,7 @@ class SoftmaxVariation : public GenModelTest, public ::testing::WithParamInterfa
 };
 
 // Test with different value type
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
   GenModelTest, SoftmaxVariation,
   ::testing::Values(
     // float value

@@ -37,7 +37,7 @@ class ArgMinMaxVariation : public GenModelTest,
 // Output shape: {1, 2, 1}
 // Output type: Int32
 // Test with different input type and value
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
   GenModelTest, ArgMinMaxVariation,
   ::testing::Values(
     // ArgMax, float input

@@ -361,8 +361,8 @@ class HESchedulerTestWithExecutorParam : public HESchedulerTest,
 
 // SchedulerTestWithExecutorParam tests are parameterized with executor name and runs three times -
 // one time for each executor
-INSTANTIATE_TEST_CASE_P(AllExecutors, HESchedulerTestWithExecutorParam,
-                        testing::Values(LINEAR, DATAFLOW, PARALLEL));
+INSTANTIATE_TEST_SUITE_P(AllExecutors, HESchedulerTestWithExecutorParam,
+                         testing::Values(LINEAR, DATAFLOW, PARALLEL));
 
 // Test scheduler behavior for straight graph with known execution time of all nodes and permutes.
 TEST_P(HESchedulerTestWithExecutorParam, straight_graph_known_exec_time)

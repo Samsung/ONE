@@ -51,7 +51,7 @@ TEST_P(ResizeBilinearVariation, Test)
   SUCCEED();
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
   GenModelTest, ResizeBilinearVariation,
   ::testing::Values(
     // float value

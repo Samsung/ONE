@@ -213,10 +213,10 @@ TEST_P(WhileWrongSubgraphIndex, neg_Test)
   SUCCEED();
 }
 
-INSTANTIATE_TEST_CASE_P(GenModelTest, WhileWrongSubgraphIndex,
-                        ::testing::Values(std::make_pair(99, 2), std::make_pair(-1, 2),
-                                          std::make_pair(1, 99), std::make_pair(1, -99),
-                                          std::make_pair(-99, 99)));
+INSTANTIATE_TEST_SUITE_P(GenModelTest, WhileWrongSubgraphIndex,
+                         ::testing::Values(std::make_pair(99, 2), std::make_pair(-1, 2),
+                                           std::make_pair(1, 99), std::make_pair(1, -99),
+                                           std::make_pair(-99, 99)));
 
 // In this test, output of WHILE and body subgraph have different data types
 TEST_F(GenModelTest, neg_while_wrong_dtype)
