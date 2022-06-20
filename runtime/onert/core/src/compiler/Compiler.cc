@@ -394,8 +394,10 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
     dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
 
     // Lower: Assign backend
-    lowered_subgs[index] =
-      std::make_unique<compiler::LoweredGraph>(subg, tracing_ctx.get(), _options);
+    lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, _options);
+
+    // Set tracing_ctx for copied graph
+    tracing_ctx->setSubgraphIndex(&(lowered_subgs[index]->graph()), index.value());
 
     subg.setSubgraphs(nullptr);
   });
@@ -589,6 +591,9 @@ std::vector<std::shared_ptr<exec::ExecutorMap>> Compiler::compile(const char *pa
       // // Lower: Assign backend
       lowered_partialgraphs[pindex] =
         std::make_unique<compiler::LoweredGraph>(subg, partialgraph, _options);
+
+      // It doesn't support tracing in case of partial graph
+
       partialgraph.setSubgraphs(nullptr);
     });
   });

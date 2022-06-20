@@ -39,11 +39,9 @@ namespace onert
 namespace compiler
 {
 
-LoweredGraph::LoweredGraph(const ir::Graph &graph, util::TracingCtx *tracing_ctx,
-                           const CompilerOptions &options)
-  : _graph{graph}
+LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &options) : _graph{graph}
 {
-  lowerGraph(graph, tracing_ctx, options);
+  lowerGraph(options);
 }
 
 // TODO Design better class and constructor to represent parent_graph
@@ -51,19 +49,11 @@ LoweredGraph::LoweredGraph(const ir::Graph &parent_graph, const ir::Graph &graph
                            const CompilerOptions &options)
   : _graph{graph}, _parent_graph{parent_graph}
 {
-  lowerGraph(graph, (util::TracingCtx *)nullptr, options);
+  lowerGraph(options);
 }
 
-void LoweredGraph::lowerGraph(const ir::Graph &graph, util::TracingCtx *tracing_ctx,
-                              const CompilerOptions &options)
+void LoweredGraph::lowerGraph(const CompilerOptions &options)
 {
-  // set tracing_ctx for copied graph
-  if (tracing_ctx)
-  {
-    auto subgraph_index = tracing_ctx->getSubgraphIndex(&graph);
-    tracing_ctx->setSubgraphIndex(&_graph, subgraph_index.value());
-  }
-
   // Build backend contexts
   auto &backend_manager = BackendManager::get();
   // Create contexts for other backends

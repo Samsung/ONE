@@ -89,7 +89,6 @@ public:
   /**
    * @brief     Construct a new Compiler object
    * @param[in] subgs All subgraphs of a model
-   * @param[in] tracing_ctx Profiling information
    * @param[in] coptions Compiler Options
    */
   Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, CompilerOptions &copt);
