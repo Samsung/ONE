@@ -79,7 +79,7 @@ public:
     // Compile
     auto subgs = std::make_shared<onert::ir::Subgraphs>();
     subgs->push(onert::ir::SubgraphIndex{0}, graph);
-    coptions = std::make_unique<onert::compiler::CompilerOptions>(*subgs);
+    coptions = std::make_unique<onert::compiler::CompilerOptions>();
     onert::compiler::Compiler compiler{subgs, *coptions};
     artifact = compiler.compile();
   }
@@ -142,7 +142,7 @@ TEST(ExecInstance, twoCompile)
   auto subgs = std::make_shared<onert::ir::Subgraphs>();
   subgs->push(onert::ir::SubgraphIndex{0}, graph);
 
-  auto coptions = std::make_unique<onert::compiler::CompilerOptions>(*subgs);
+  auto coptions = std::make_unique<onert::compiler::CompilerOptions>();
   onert::compiler::Compiler compiler{subgs, *coptions};
   auto executors2 = compiler.compile()->_executors;
   onert::exec::Execution execution2{executors2};

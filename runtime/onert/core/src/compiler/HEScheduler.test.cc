@@ -391,7 +391,7 @@ TEST_P(HESchedulerTestWithExecutorParam, straight_graph_known_exec_time)
     et.storeOperationsExecTime();
 
     // Test scheduler
-    onert::compiler::CompilerOptions coptions(subgs);
+    onert::compiler::CompilerOptions coptions;
     auto scheduler = compiler::HEScheduler(_mock_backends, coptions);
     const auto br = scheduler.schedule(*graph);
     ASSERT_EQ(br->getBackend(add_op_idx)->config()->id(), "cpu");
@@ -406,7 +406,7 @@ TEST_P(HESchedulerTestWithExecutorParam, straight_graph_known_exec_time)
     setPermutationsExecutionTime(_mock_backends, OPERAND_SIZE, 1e5);
 
     // Test scheduler
-    onert::compiler::CompilerOptions coptions(subgs);
+    onert::compiler::CompilerOptions coptions;
     auto scheduler = compiler::HEScheduler(_mock_backends, coptions);
     const auto br = scheduler.schedule(*graph);
     ASSERT_EQ(br->getBackend(add_op_idx)->config()->id(), "cpu");
@@ -448,7 +448,7 @@ TEST_P(HESchedulerTestWithExecutorParam, branched_graph_known_exec_time)
     et.storeOperationsExecTime();
 
     // Test scheduler
-    onert::compiler::CompilerOptions coptions(subgs);
+    onert::compiler::CompilerOptions coptions;
     auto scheduler = compiler::HEScheduler(_mock_backends, coptions);
     const auto br = scheduler.schedule(*graph);
 
@@ -482,7 +482,7 @@ TEST_P(HESchedulerTestWithExecutorParam, branched_graph_known_exec_time)
     et.storeOperationsExecTime();
 
     // Test scheduler
-    onert::compiler::CompilerOptions coptions(subgs);
+    onert::compiler::CompilerOptions coptions;
     auto scheduler = compiler::HEScheduler(_mock_backends, coptions);
     const auto br = scheduler.schedule(*graph);
     ASSERT_EQ(br->getBackend(add_op_idx)->config()->id(), "npu");
@@ -527,7 +527,7 @@ TEST_F(HESchedulerTest, branched_graph_profiling_mode)
     et.storeOperationsExecTime();
 
     // Test scheduler
-    onert::compiler::CompilerOptions coptions(subgs);
+    onert::compiler::CompilerOptions coptions;
     auto scheduler = compiler::HEScheduler(_mock_backends, coptions);
     const auto br = scheduler.schedule(*graph);
     ASSERT_EQ(br->getBackend(mul1_op_idx)->config()->id(), "npu");
@@ -549,7 +549,7 @@ TEST_F(HESchedulerTest, branched_graph_profiling_mode)
     et.storeOperationsExecTime();
 
     // Test scheduler
-    onert::compiler::CompilerOptions coptions(subgs);
+    onert::compiler::CompilerOptions coptions;
     auto scheduler = compiler::HEScheduler(_mock_backends, coptions);
     const auto br = scheduler.schedule(*graph);
     ASSERT_NE(br->getBackend(add_op_idx)->config()->id(),

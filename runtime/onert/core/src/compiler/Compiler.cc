@@ -90,7 +90,7 @@ namespace onert
 
 namespace compiler
 {
-void ManualSchedulerOptions::setBackendMap(const ir::Subgraphs &subgs, const std::string &str)
+void ManualSchedulerOptions::setBackendMap(const std::string &str)
 {
   // TODO Support multiple subgraphs for manual scheduling
   auto key_val_list = nnfw::misc::split(str, ';');
@@ -106,14 +106,12 @@ void ManualSchedulerOptions::setBackendMap(const ir::Subgraphs &subgs, const std
     const auto &val = key_val.at(1);
     auto key = static_cast<uint32_t>(std::stoi(key_str));
 
-    subgs.at(ir::SubgraphIndex{0})
-      ->operations()
-      .at(ir::OperationIndex{key}); // Check if exist, or this wil throw
+    // Check validation on compiler
     this->index_to_backend.emplace(ir::OperationIndex{key}, val);
   }
 }
 
-void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
+void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(void)
 {
   backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
   trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
@@ -144,14 +142,22 @@ void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &
 
     // Index to Backend
     auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
-    ms_options.setBackendMap(subgs, map_str);
+    ms_options.setBackendMap(map_str);
   }
 }
 
 Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, CompilerOptions &copt)
   : _subgraphs{subgs}, _state{State::CREATED}, _options(copt)
 {
-  // DO NOTHING
+  // Validate backend mapping
+  for (auto backend_pair : copt.manual_scheduler_options.index_to_backend)
+  {
+    auto key = backend_pair.first;
+
+    subgs->at(ir::SubgraphIndex{0})
+      ->operations()
+      .at(ir::OperationIndex{key}); // Check if exist, or this wil throw
+  }
 }
 
 void Compiler::enableToFp16() { _options.fp16_enable = true; }
