@@ -82,6 +82,7 @@ void verboseOptions(compiler::CompilerOptions &options)
   VERBOSE(Compiler) << "fp16_enable              : " << options.fp16_enable << std::endl
                     << std::noboolalpha;
 }
+
 } // namespace
 
 namespace onert
@@ -89,8 +90,7 @@ namespace onert
 
 namespace compiler
 {
-void setBackendMap(compiler::ManualSchedulerOptions &ms_options, const ir::Subgraphs &subgs,
-                   const std::string &str)
+void ManualSchedulerOptions::setBackendMap(const ir::Subgraphs &subgs, const std::string &str)
 {
   // TODO Support multiple subgraphs for manual scheduling
   auto key_val_list = nnfw::misc::split(str, ';');
@@ -109,7 +109,7 @@ void setBackendMap(compiler::ManualSchedulerOptions &ms_options, const ir::Subgr
     subgs.at(ir::SubgraphIndex{0})
       ->operations()
       .at(ir::OperationIndex{key}); // Check if exist, or this wil throw
-    ms_options.index_to_backend.emplace(ir::OperationIndex{key}, val);
+    this->index_to_backend.emplace(ir::OperationIndex{key}, val);
   }
 }
 
@@ -144,7 +144,7 @@ void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &
 
     // Index to Backend
     auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
-    setBackendMap(ms_options, subgs, map_str);
+    ms_options.setBackendMap(subgs, map_str);
   }
 }
 

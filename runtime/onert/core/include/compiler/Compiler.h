@@ -40,6 +40,10 @@ enum class State
 
 struct ManualSchedulerOptions
 {
+public:
+  void setBackendMap(const ir::Subgraphs &subgs, const std::string &str);
+
+public:
   std::string backend_for_all;
   std::unordered_map<ir::OpCode, std::string> opcode_to_backend;
   std::unordered_map<ir::OperationIndex, std::string> index_to_backend;
@@ -78,9 +82,6 @@ public:
   util::TracingCtx *tracing_ctx; //< Profiling information
 };
 
-// TODO: Make this as ManualSchedulerOptions member function
-void setBackendMap(compiler::ManualSchedulerOptions &ms_options, const ir::Subgraphs &subgs,
-                   const std::string &str);
 /**
  * @brief Class to compile graph model
  */

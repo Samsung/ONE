@@ -1225,7 +1225,7 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
 
   // Backend for all
   auto &ms_options = _coptions->manual_scheduler_options;
-  onert::compiler::setBackendMap(ms_options, *_subgraphs, std::string{backend_settings});
+  ms_options.setBackendMap(*_subgraphs, std::string{backend_settings});
 
   return NNFW_STATUS_NO_ERROR;
 }
