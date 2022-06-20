@@ -40,6 +40,10 @@ enum class State
 
 struct ManualSchedulerOptions
 {
+public:
+  void setBackendMap(const ir::Subgraphs &subgs, const std::string &str);
+
+public:
   std::string backend_for_all;
   std::unordered_map<ir::OpCode, std::string> opcode_to_backend;
   std::unordered_map<ir::OperationIndex, std::string> index_to_backend;
@@ -118,12 +122,6 @@ public:
    * @brief   Allow to compute float32 using float16 data type
    */
   void enableToFp16();
-
-  /**
-   * @brief   Set backends from string-encoded mappings from operation index to backend type (cpu,
-   * acl_cl)
-   */
-  void set_backend_from_str(const char *backend_settings);
 
   /**
    * @brief   Build the partial graphs to compile with original graph

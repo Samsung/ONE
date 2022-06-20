@@ -83,8 +83,14 @@ void verboseOptions(compiler::CompilerOptions &options)
                     << std::noboolalpha;
 }
 
-void setBackendMap(compiler::ManualSchedulerOptions &ms_options, const ir::Subgraphs &subgs,
-                   const std::string &str)
+} // namespace
+
+namespace onert
+{
+
+namespace compiler
+{
+void ManualSchedulerOptions::setBackendMap(const ir::Subgraphs &subgs, const std::string &str)
 {
   // TODO Support multiple subgraphs for manual scheduling
   auto key_val_list = nnfw::misc::split(str, ';');
@@ -103,17 +109,9 @@ void setBackendMap(compiler::ManualSchedulerOptions &ms_options, const ir::Subgr
     subgs.at(ir::SubgraphIndex{0})
       ->operations()
       .at(ir::OperationIndex{key}); // Check if exist, or this wil throw
-    ms_options.index_to_backend.emplace(ir::OperationIndex{key}, val);
+    this->index_to_backend.emplace(ir::OperationIndex{key}, val);
   }
 }
-
-} // namespace
-
-namespace onert
-{
-
-namespace compiler
-{
 
 void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 {
@@ -146,7 +144,7 @@ void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &
 
     // Index to Backend
     auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
-    setBackendMap(ms_options, subgs, map_str);
+    ms_options.setBackendMap(subgs, map_str);
   }
 }
 
@@ -158,14 +156,6 @@ Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx
 }
 
 void Compiler::enableToFp16() { _options.fp16_enable = true; }
-
-void Compiler::set_backend_from_str(const char *backend_settings)
-{
-  assert(_subgraphs != nullptr);
-  // Backend for all
-  auto &ms_options = _options.manual_scheduler_options;
-  setBackendMap(ms_options, *_subgraphs, std::string{backend_settings});
-}
 
 void Compiler::checkProfilerConditions()
 {

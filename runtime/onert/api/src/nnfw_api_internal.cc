@@ -1218,9 +1218,14 @@ NNFW_STATUS nnfw_session::output_tensorindex(const char *tensorname, uint32_t *i
 NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_settings)
 {
   if (backend_settings == NULL)
-  {
     return NNFW_STATUS_ERROR;
-  }
-  _compiler->set_backend_from_str(backend_settings);
+
+  if (!isStateModelLoaded())
+    return NNFW_STATUS_INVALID_STATE;
+
+  // Backend for all
+  auto &ms_options = _coptions->manual_scheduler_options;
+  ms_options.setBackendMap(*_subgraphs, std::string{backend_settings});
+
   return NNFW_STATUS_NO_ERROR;
 }

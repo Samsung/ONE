@@ -149,6 +149,10 @@ public:
   NNFW_STATUS register_custom_operation(const std::string &id, nnfw_custom_eval eval_func);
   NNFW_STATUS input_tensorindex(const char *tensorname, uint32_t *index);
   NNFW_STATUS output_tensorindex(const char *tensorname, uint32_t *index);
+  /**
+   * @brief   Set backends with string-encoded mapping from operation index to backend type
+   *          (cpu, acl_cl)
+   */
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
 private:
