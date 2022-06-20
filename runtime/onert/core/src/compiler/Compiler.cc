@@ -115,21 +115,19 @@ namespace onert
 namespace compiler
 {
 
-CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
+void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
 {
-  CompilerOptions options;
-  options.backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
-  options.trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
-  options.graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
-  options.executor = util::getConfigString(util::config::EXECUTOR);
-  options.he_scheduler = util::getConfigBool(util::config::USE_SCHEDULER);
-  options.he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
-  options.disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
-  options.fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
-
+  backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
+  trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
+  graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
+  executor = util::getConfigString(util::config::EXECUTOR);
+  he_scheduler = util::getConfigBool(util::config::USE_SCHEDULER);
+  he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
+  disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
+  fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
   {
     // Backend for all
-    auto &ms_options = options.manual_scheduler_options;
+    auto &ms_options = manual_scheduler_options;
 
     // Default value for op_backend_all is first element in the backend list
     ms_options.backend_for_all = util::getConfigString(util::config::OP_BACKEND_ALLOPS);
@@ -150,17 +148,12 @@ CompilerOptions fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
     auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
     setBackendMap(ms_options, subgs, map_str);
   }
-  return options;
 }
 
-Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx *tracing_ctx)
-  : _subgraphs{subgs}, _state{State::CREATED}
+Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx *tracing_ctx,
+                   CompilerOptions &copt)
+  : _subgraphs{subgs}, _state{State::CREATED}, _options(copt)
 {
-  // Set default values for CompilerOptions
-  // All these default values should not be fetched from Env, when we stop supporting Android NN
-  // API.
-  _options = fetchCompilerOptionsFromGlobalConfig(*subgs);
-
   _options.tracing_ctx = tracing_ctx;
 }
 

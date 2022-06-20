@@ -18,11 +18,15 @@
 
 #include "util/logging.h"
 
+using namespace onert;
+
 // TODO Support multiple subgraphs
 ANeuralNetworksCompilation::ANeuralNetworksCompilation(const ANeuralNetworksModel *model) noexcept
-  : _subgraphs{model->getSubGraphs()}, _tracing_ctx{std::make_unique<onert::util::TracingCtx>(
+  : _subgraphs{model->getSubGraphs()}, _tracing_ctx{std::make_unique<util::TracingCtx>(
                                          _subgraphs.get())},
-    _compiler{new onert::compiler::Compiler{_subgraphs, _tracing_ctx.get()}}
+    _coptions{std::make_unique<compiler::CompilerOptions>(*_subgraphs)},
+    _compiler{std::make_shared<compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions)}
+
 {
   if (model->allowedToFp16())
   {
