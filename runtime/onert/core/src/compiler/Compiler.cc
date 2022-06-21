@@ -370,6 +370,7 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
   {
     _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
+      subg.setSubgraphs(_subgraphs);
     });
     _state = State::COMPILED;
     return executors;
