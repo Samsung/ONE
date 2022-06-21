@@ -155,9 +155,11 @@ Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx
   _options.tracing_ctx = tracing_ctx;
 }
 
-Compiler::Compiler(const std::shared_ptr<onert::ir::ModelGraph> &modelgraph)
-  : _subgraphs{modelgraph->entry()}, _model_graph(modelgraph)
+Compiler::Compiler(const std::shared_ptr<onert::ir::ModelGraph> &modelgraph, util::TracingCtx *tracing_ctx,
+                   CompilerOptions &copt)
+  : _subgraphs{modelgraph->entry()}, _model_graph(modelgraph), _state{State::CREATED}, _options(copt)
 {
+  _options.tracing_ctx = tracing_ctx;
 }
 
 void Compiler::enableToFp16() { _options.fp16_enable = true; }

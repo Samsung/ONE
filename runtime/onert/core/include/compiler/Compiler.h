@@ -97,8 +97,8 @@ public:
    */
   Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx *tracing_ctx,
            CompilerOptions &opt);
-  // TODO: Tracing_Ctx for modelgraph
-  Compiler(const std::shared_ptr<ir::ModelGraph> &modelgraph);
+  Compiler(const std::shared_ptr<ir::ModelGraph> &modelgraph, util::TracingCtx *tracing_ctx,
+           CompilerOptions &opt);
 public:
   /**
    * @brief   Do compilation with the options
