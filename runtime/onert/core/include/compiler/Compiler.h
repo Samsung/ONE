@@ -41,7 +41,7 @@ enum class State
 struct ManualSchedulerOptions
 {
 public:
-  void setBackendMap(const ir::Subgraphs &subgs, const std::string &str);
+  void setBackendMap(const ir::Model &subgs, const std::string &str);
 
 public:
   std::string backend_for_all;
@@ -57,12 +57,12 @@ struct PartialGraphOptions
 class CompilerOptions
 {
 public:
-  CompilerOptions(const ir::Subgraphs &subgs) { fetchCompilerOptionsFromGlobalConfig(subgs); }
+  CompilerOptions(const ir::Model &subgs) { fetchCompilerOptionsFromGlobalConfig(subgs); }
 
 private:
   // Set default values for CompilerOptions
   // All these default values should not be fetched from Env, when we stop supporting Android NNAPI.
-  void fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs);
+  void fetchCompilerOptionsFromGlobalConfig(const ir::Model &subgs);
 
 public:
   // GENERAL OPTIONS
@@ -102,7 +102,7 @@ public:
    * @param[in] subgs All subgraphs of a model
    * @param[in] coptions Compiler Options
    */
-  Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, CompilerOptions &copt);
+  Compiler(const std::shared_ptr<ir::Model> &subgs, CompilerOptions &copt);
 
 public:
   /**
@@ -137,10 +137,10 @@ public:
 
 private:
   void checkProfilerConditions();
-  std::shared_ptr<ir::Graph> &primary_subgraph() { return _subgraphs->at(ir::SubgraphIndex{0}); }
+  std::shared_ptr<ir::Graph> &primary_subgraph() { return _model->at(ir::SubgraphIndex{0}); }
 
 private:
-  std::shared_ptr<ir::Subgraphs> _subgraphs;
+  std::shared_ptr<ir::Model> _model;
   // NOTE These executors does not have duplicated subgraph. This mean they do not allow support
   // subgraphs being called recursively because data of non-constant tensor of parent executor will
   // be updated by child executor. If you want to support subgraphs being called recursively, you

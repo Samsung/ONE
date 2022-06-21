@@ -273,9 +273,9 @@ void ANeuralNetworksModel::fillOptionalOperand(void)
   });
 }
 
-std::shared_ptr<onert::ir::Subgraphs> ANeuralNetworksModel::getSubGraphs() const
+std::shared_ptr<onert::ir::Model> ANeuralNetworksModel::getSubGraphs() const
 {
-  auto all_subgs = std::make_shared<onert::ir::Subgraphs>();
+  auto all_subgs = std::make_shared<onert::ir::Model>();
 
   all_subgs->push(onert::ir::SubgraphIndex{0}, _graph);
   // TODO Find all child subgraphs and copy them to all_subgs

@@ -22,9 +22,9 @@ namespace onert
 {
 namespace trix_loader
 {
-std::unique_ptr<ir::Subgraphs> loadModel(const std::string &)
+std::unique_ptr<ir::Model> loadModel(const std::string &)
 {
-  auto subgraphs = std::make_unique<ir::Subgraphs>();
+  auto subgraphs = std::make_unique<ir::Model>();
   return subgraphs;
 }
 } // namespace trix_loader

@@ -74,7 +74,7 @@ protected:
 
     _graph->verify();
 
-    auto subgs = std::make_shared<onert::ir::Subgraphs>();
+    auto subgs = std::make_shared<onert::ir::Model>();
     subgs->push(onert::ir::SubgraphIndex{0}, _graph);
     _graph->setSubgraphs(subgs);
 
@@ -139,7 +139,7 @@ protected:
 
     _graph->verify();
 
-    auto subgs = std::make_shared<onert::ir::Subgraphs>();
+    auto subgs = std::make_shared<onert::ir::Model>();
     subgs->push(onert::ir::SubgraphIndex{0}, _graph);
     _graph->setSubgraphs(subgs);
 
@@ -192,7 +192,7 @@ protected:
 
     _graph->verify();
 
-    auto subgs = std::make_shared<onert::ir::Subgraphs>();
+    auto subgs = std::make_shared<onert::ir::Model>();
     subgs->push(onert::ir::SubgraphIndex{0}, _graph);
     _graph->setSubgraphs(subgs);
 

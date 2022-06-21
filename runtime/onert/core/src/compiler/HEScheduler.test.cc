@@ -370,7 +370,7 @@ TEST_P(HESchedulerTestWithExecutorParam, straight_graph_known_exec_time)
   setExecutor(GetParam());
 
   // Prepare graph
-  ir::Subgraphs subgs;
+  ir::Model subgs;
   auto graph(createStraightGraph());
   subgs.push(ir::SubgraphIndex{0}, graph);
   OperationIndex add_op_idx(0), sub_op_idx(1), mul_op_idx(2);
@@ -422,7 +422,7 @@ TEST_P(HESchedulerTestWithExecutorParam, branched_graph_known_exec_time)
   setExecutor(GetParam());
 
   // Prepare graph
-  ir::Subgraphs subgs;
+  ir::Model subgs;
   auto graph(createBranchedGraph());
   subgs.push(ir::SubgraphIndex{0}, graph);
   OperationIndex add_op_idx(0), mul1_op_idx(1), mul2_op_idx(2), fc1_op_idx(3), fc2_op_idx(4),
@@ -504,7 +504,7 @@ TEST_F(HESchedulerTest, branched_graph_profiling_mode)
   setExecutor(DATAFLOW);
 
   // Prepare graph
-  ir::Subgraphs subgs;
+  ir::Model subgs;
   auto graph(createBranchedGraph());
   subgs.push(ir::SubgraphIndex{0}, graph);
   OperationIndex add_op_idx(0), mul1_op_idx(1), mul2_op_idx(2), fc1_op_idx(3), fc2_op_idx(4),

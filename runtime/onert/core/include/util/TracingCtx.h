@@ -50,7 +50,7 @@ public:
    * @brief Create and store unique session id managed by this class
    *        Note that this constructor can be called by multiple sessions running in parallely.
    */
-  TracingCtx(const onert::ir::Subgraphs *subgraphs)
+  TracingCtx(const onert::ir::Model *subgraphs)
   {
     assert(subgraphs);
 

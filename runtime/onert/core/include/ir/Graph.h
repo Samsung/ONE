@@ -87,8 +87,8 @@ public:
   void verify(void);
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
   void setLayout(Layout layout) { _layout = layout; }
-  void setSubgraphs(const std::shared_ptr<Subgraphs> &subgs) { _subgraphs = subgs; }
-  void setPartialgraphs(const std::shared_ptr<Subgraphs> &partialgraphs)
+  void setSubgraphs(const std::shared_ptr<Model> &subgs) { _subgraphs = subgs; }
+  void setPartialgraphs(const std::shared_ptr<Model> &partialgraphs)
   {
     _partialgraphs = partialgraphs;
   }
@@ -134,10 +134,10 @@ public:
   Operands &operands() { return _operands; } // TODO Remove this non-const accessor
   const Operations &operations() const { return _operations; }
   Operations &operations() { return _operations; }
-  const std::shared_ptr<Subgraphs> &subgraphs() const { return _subgraphs; }
-  std::shared_ptr<Subgraphs> &subgraphs() { return _subgraphs; }
+  const std::shared_ptr<Model> &subgraphs() const { return _subgraphs; }
+  std::shared_ptr<Model> &subgraphs() { return _subgraphs; }
   Layout layout() const { return _layout; }
-  std::shared_ptr<Subgraphs> &partialgraphs() { return _partialgraphs; }
+  std::shared_ptr<Model> &partialgraphs() { return _partialgraphs; }
   std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> &tensor_names()
   {
     return _tensor_names;
@@ -173,12 +173,12 @@ private:
   std::unordered_map<std::string, IOIndex> _name_to_input;
   std::unordered_map<std::string, IOIndex> _name_to_output;
   // Child subgraphs
-  std::shared_ptr<Subgraphs> _subgraphs;
+  std::shared_ptr<Model> _subgraphs;
   // TFLite and circle's default layout is NHWC;
   Layout _layout{Layout::NHWC};
 
   // Partial Graphs
-  std::shared_ptr<ir::Subgraphs> _partialgraphs;
+  std::shared_ptr<ir::Model> _partialgraphs;
   std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> _tensor_names;
 };
 

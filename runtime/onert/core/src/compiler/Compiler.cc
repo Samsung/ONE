@@ -90,7 +90,7 @@ namespace onert
 
 namespace compiler
 {
-void ManualSchedulerOptions::setBackendMap(const ir::Subgraphs &subgs, const std::string &str)
+void ManualSchedulerOptions::setBackendMap(const ir::Model &subgs, const std::string &str)
 {
   // TODO Support multiple subgraphs for manual scheduling
   auto key_val_list = nnfw::misc::split(str, ';');
@@ -113,7 +113,7 @@ void ManualSchedulerOptions::setBackendMap(const ir::Subgraphs &subgs, const std
   }
 }
 
-void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &subgs)
+void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Model &subgs)
 {
   backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
   trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
@@ -148,8 +148,8 @@ void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &
   }
 }
 
-Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, CompilerOptions &copt)
-  : _subgraphs{subgs}, _state{State::CREATED}, _options(copt)
+Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt)
+  : _model{model}, _state{State::CREATED}, _options(copt)
 {
   // DO NOTHING
 }
@@ -167,17 +167,17 @@ void Compiler::checkProfilerConditions()
 
 bool Compiler::buildPartialGraph(uint32_t num_graphs)
 {
-  if (_subgraphs->count() > 1)
+  if (_model->count() > 1)
     return false;
 
-  auto partialgraphs = std::make_shared<ir::Subgraphs>();
+  auto partialgraphs = std::make_shared<ir::Model>();
 
   for (uint32_t idx = 0; idx < num_graphs; idx++)
   {
     auto partialgraph = std::make_unique<ir::Graph>();
     partialgraphs->push(ir::SubgraphIndex{idx}, std::move(partialgraph));
   }
-  _subgraphs->primary()->setPartialgraphs(partialgraphs);
+  _model->primary()->setPartialgraphs(partialgraphs);
 
   auto partial_graph = primary_subgraph()->partialgraphs();
 
@@ -346,7 +346,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
   verboseOptions(_options);
 
-  _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+  _model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
     // Mandatory passes
     pass::PassRunner{}
       .append(std::make_unique<pass::ConstantOutputPass>(subg))
@@ -367,9 +367,9 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   {
     auto executors = std::make_shared<exec::ExecutorMap>();
 
-    _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+    _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
-      subg.setSubgraphs(_subgraphs);
+      subg.setSubgraphs(_model);
     });
     _state = State::COMPILED;
     return std::make_shared<CompilerArtifact>(executors, nullptr);
@@ -380,7 +380,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     checkProfilerConditions();
 
   // Tracing context
-  auto tracing_ctx = std::make_unique<util::TracingCtx>(_subgraphs.get());
+  auto tracing_ctx = std::make_unique<util::TracingCtx>(_model.get());
 
   /***************************************************
    * Backend independent analysis & optimization phase
@@ -389,7 +389,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
-  _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+  _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
     onert::dumper::dot::DotDumper dot_dumper(subg, dump_level);
     dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
 
@@ -402,7 +402,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     subg.setSubgraphs(nullptr);
   });
 
-  _subgraphs.reset();
+  _model.reset();
 
   for (auto &pair : lowered_subgs)
   {
@@ -531,7 +531,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
 
   verboseOptions(_options);
 
-  _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+  _model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
     // Mandatory passes
     auto part = subg.partialgraphs();
     part->iterate([&](const ir::SubgraphIndex &, ir::Graph &partialgraph) {
@@ -559,7 +559,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
     std::vector<std::shared_ptr<CompilerArtifact>> results;
     auto executors = std::make_shared<exec::ExecutorMap>();
 
-    _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+    _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
     });
     results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));
@@ -579,7 +579,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>
     lowered_partialgraphs;
-  _subgraphs->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+  _model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
     auto part = subg.partialgraphs();
     part->iterate([&](const ir::SubgraphIndex &pindex, ir::Graph &partialgraph) {
       onert::dumper::dot::DotDumper dot_dumper_part(partialgraph, dump_level);
@@ -664,7 +664,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
     results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));
   }
 
-  _subgraphs.reset();
+  _model.reset();
   /********************************
    * Code generation phase finished
    ********************************/

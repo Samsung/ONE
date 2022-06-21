@@ -67,7 +67,7 @@ public:
    *
    * @param graph reference on subgraphs
    */
-  explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs)
+  explicit BaseLoader(std::unique_ptr<ir::Model> &subgs)
     : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _subgraphs(subgs), _model{nullptr},
       _tensor_names(std::make_shared<std::unordered_map<ir::OperandIndex, std::string>>())
   {
@@ -190,7 +190,7 @@ protected:
   // loaded file description
   int _fd;
   // Reference on loadable subgraphs
-  std::unique_ptr<ir::Subgraphs> &_subgraphs;
+  std::unique_ptr<ir::Model> &_subgraphs;
   const Model *_model;
   // Maps Tensor indices to onert Operands.
   std::vector<ir::OperandIndex> _tensor_to_operand;
@@ -1681,7 +1681,7 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
   // const auto *metadata_buffer = _model->metadata_buffer();
   // Load subgraphs and map operations on subgraph
   const auto domain_subgraphs = _model->subgraphs();
-  auto subgraphs = std::make_unique<ir::Subgraphs>();
+  auto subgraphs = std::make_unique<ir::Model>();
   for (uint32_t subgraph_index = 0; subgraph_index < domain_subgraphs->size(); ++subgraph_index)
   {
     auto subg = loadSubgraph((*_model->subgraphs())[subgraph_index]);

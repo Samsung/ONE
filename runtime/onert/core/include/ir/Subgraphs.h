@@ -30,15 +30,15 @@ namespace ir
 
 class Graph;
 
-class Subgraphs
+class Model
 {
 public:
-  Subgraphs() = default;
-  Subgraphs(const Subgraphs &obj) = default;
-  Subgraphs(Subgraphs &&) = default;
-  Subgraphs &operator=(const Subgraphs &) = default;
-  Subgraphs &operator=(Subgraphs &&) = default;
-  ~Subgraphs() = default;
+  Model() = default;
+  Model(const Model &obj) = default;
+  Model(Model &&) = default;
+  Model &operator=(const Model &) = default;
+  Model &operator=(Model &&) = default;
+  ~Model() = default;
 
   /**
    * @brief Put subgraph in the container with a new Index for that
