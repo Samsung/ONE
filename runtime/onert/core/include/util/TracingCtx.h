@@ -19,7 +19,7 @@
 
 #include "ir/Graph.h"
 #include "ir/Index.h"
-#include "ir/Subgraphs.h"
+#include "ir/Model.h"
 
 #include <unordered_map>
 #include <mutex>

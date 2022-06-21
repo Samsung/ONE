@@ -21,7 +21,7 @@
 
 #include "compiler/Compiler.h"
 #include "ir/Graph.h"
-#include "ir/Subgraphs.h"
+#include "ir/Model.h"
 #include "exec/IExecutor.h"
 #include "util/TracingCtx.h"
 

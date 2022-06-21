@@ -20,9 +20,9 @@
 #include <functional>
 #include <unordered_map>
 
+#include "ir/Model.h"
 #include "ir/Operands.h"
 #include "ir/Operations.h"
-#include "ir/Subgraphs.h"
 
 namespace onert
 {

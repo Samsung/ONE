@@ -22,7 +22,7 @@
 #include <NeuralNetworksEx.h>
 
 #include "ir/Graph.h"
-#include "ir/Subgraphs.h"
+#include "ir/Model.h"
 
 struct ANeuralNetworksModel
 {
