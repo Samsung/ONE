@@ -324,7 +324,7 @@ bool Compiler::buildPartialGraph(uint32_t num_graphs)
   return true;
 }
 
-std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
+std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 {
   // Set control flow backend for control flow operators
   {
@@ -361,24 +361,27 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
   /***************************************************
    * Prepare compilation phase
    ***************************************************/
-  auto executors = std::make_shared<exec::ExecutorMap>();
-
   // Compilable check
   // TODO: Support hybrid execution -
   //       execution between interpreter and compiled executor (including control flow)
   if (_options.disable_compile)
   {
+    auto executors = std::make_shared<exec::ExecutorMap>();
+
     _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
       subg.setSubgraphs(_subgraphs);
     });
     _state = State::COMPILED;
-    return executors;
+    return std::make_shared<CompilerArtifact>(executors, nullptr);
   }
 
   // Mode check
   if (_options.he_profiling_mode)
     checkProfilerConditions();
+
+  // Tracing context
+  auto tracing_ctx = std::make_unique<util::TracingCtx>(_subgraphs.get());
 
   /***************************************************
    * Backend independent analysis & optimization phase
@@ -393,6 +396,10 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
 
     // Lower: Assign backend
     lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, _options);
+
+    // Set tracing_ctx for copied graph
+    // TODO Remove tracing_ctx update in LowerGraph constructor
+    tracing_ctx->setSubgraphIndex(&(lowered_subgs[index]->graph()), index.value());
 
     subg.setSubgraphs(nullptr);
   });
@@ -439,7 +446,7 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
 
-  executors = std::make_shared<exec::ExecutorMap>();
+  auto executors = std::make_shared<exec::ExecutorMap>();
   for (auto &pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
@@ -460,15 +467,12 @@ std::shared_ptr<exec::ExecutorMap> Compiler::compile(void)
    * Code generation phase finished
    ********************************/
   _state = State::COMPILED;
-  return executors;
+  return std::make_shared<CompilerArtifact>(executors, nullptr);
 }
 
-std::vector<std::shared_ptr<exec::ExecutorMap>> Compiler::compile(const char *package_file_path,
-                                                                  const char *map_file_path)
+std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *package_file_path,
+                                                                 const char *map_file_path)
 {
-  std::vector<std::shared_ptr<exec::ExecutorMap>> executors;
-  auto executor_map = std::make_shared<exec::ExecutorMap>();
-
   std::string package_path(package_file_path);
   std::string partition_map_file;
 
@@ -559,12 +563,15 @@ std::vector<std::shared_ptr<exec::ExecutorMap>> Compiler::compile(const char *pa
   //       execution between interpreter and compiled executor (including control flow)
   if (_options.disable_compile)
   {
+    std::vector<std::shared_ptr<CompilerArtifact>> results;
+    auto executors = std::make_shared<exec::ExecutorMap>();
+
     _subgraphs->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-      executor_map->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
-      executors.push_back(executor_map);
+      executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
     });
+    results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));
     _state = State::COMPILED;
-    return executors;
+    return results;
   }
 
   // Mode check
@@ -643,9 +650,11 @@ std::vector<std::shared_ptr<exec::ExecutorMap>> Compiler::compile(const char *pa
     ordered.insert(make_pair(pair.first.value(), std::move(lowered_partialgraph)));
   }
 
+  std::vector<std::shared_ptr<CompilerArtifact>> results;
   for (auto &pair : ordered)
   {
-    executor_map = std::make_shared<exec::ExecutorMap>();
+    auto executors = std::make_shared<exec::ExecutorMap>();
+
     const auto &partialgraph_index = ir::SubgraphIndex(pair.first);
     auto &lowered_partialgraph = pair.second;
     auto indexed_ranks = lowered_partialgraph->indexed_ranks();
@@ -654,10 +663,12 @@ std::vector<std::shared_ptr<exec::ExecutorMap>> Compiler::compile(const char *pa
     lowered_partialgraph->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
     auto executor = std::unique_ptr<exec::IExecutor>{
-      ExecutorFactory::get().create(std::move(lowered_partialgraph), _options, executor_map)};
+      ExecutorFactory::get().create(std::move(lowered_partialgraph), _options, executors)};
     executor->setIndexedRanks(indexed_ranks);
-    executor_map->insert(std::make_pair(ir::SubgraphIndex{0}, std::move(executor)));
-    executors.push_back(executor_map);
+    executors->insert(std::make_pair(ir::SubgraphIndex{0}, std::move(executor)));
+
+    // It doesn't support tracing in case of partial graph
+    results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));
   }
 
   _subgraphs.reset();
@@ -666,7 +677,7 @@ std::vector<std::shared_ptr<exec::ExecutorMap>> Compiler::compile(const char *pa
    ********************************/
   _state = State::COMPILED;
 
-  return executors;
+  return results;
 }
 
 } // namespace compiler

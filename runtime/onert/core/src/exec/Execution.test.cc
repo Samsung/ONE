@@ -82,7 +82,7 @@ public:
     tracing_ctx = std::make_unique<onert::util::TracingCtx>(subgs.get());
     coptions = std::make_unique<onert::compiler::CompilerOptions>(*subgs);
     onert::compiler::Compiler compiler{subgs, tracing_ctx.get(), *coptions};
-    executors = compiler.compile();
+    executors = compiler.compile()->_executors;
   }
 
 public:
@@ -146,7 +146,7 @@ TEST(ExecInstance, twoCompile)
   auto tracing_ctx = std::make_unique<onert::util::TracingCtx>(subgs.get());
   auto coptions = std::make_unique<onert::compiler::CompilerOptions>(*subgs);
   onert::compiler::Compiler compiler{subgs, tracing_ctx.get(), *coptions};
-  std::shared_ptr<onert::exec::ExecutorMap> executors2 = compiler.compile();
+  std::shared_ptr<onert::exec::ExecutorMap> executors2 = compiler.compile()->_executors;
   onert::exec::Execution execution2{executors2};
 
   const float exe2_input1_buffer[4] = {2, 1, -2, 0};

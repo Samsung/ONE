@@ -36,7 +36,7 @@ public:
   onert::compiler::State state(void) noexcept { return _compiler->state(); }
   void publish(std::shared_ptr<onert::exec::ExecutorMap> &executors) noexcept
   {
-    executors = _executors;
+    executors = _artifact ? _artifact->_executors : nullptr;
   }
 
 private:
@@ -51,7 +51,7 @@ private:
 
   std::unique_ptr<onert::compiler::CompilerOptions> _coptions;
   std::shared_ptr<onert::compiler::Compiler> _compiler;
-  std::shared_ptr<onert::exec::ExecutorMap> _executors;
+  std::shared_ptr<onert::compiler::CompilerArtifact> _artifact;
 };
 
 #endif

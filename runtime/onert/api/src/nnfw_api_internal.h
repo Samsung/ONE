@@ -45,7 +45,7 @@ class Subgraphs;
 } // namespace ir
 namespace compiler
 {
-class Compiler;
+struct CompilerArtifact;
 class CompilerOptions;
 } // namespace compiler
 } // namespace onert
@@ -168,12 +168,14 @@ private:
   State _state{State::INITIALIZED};
   std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
   std::unique_ptr<onert::compiler::CompilerOptions> _coptions;
+  std::shared_ptr<onert::compiler::CompilerArtifact> _compiler_artifact;
   std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
   std::vector<std::thread> _threads;
   std::vector<std::shared_ptr<onert::exec::Execution>> _executions;
   std::string _package_file_path;
 
+  // TODO Remove _tracing_ctx
   std::unique_ptr<onert::util::TracingCtx> _tracing_ctx;
 };
 

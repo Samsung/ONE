@@ -79,7 +79,19 @@ public:
   bool fp16_enable;       //< Whether fp16 mode ON/OFF
   PartialGraphOptions partial_graph_options;
 
+  // TODO Remove tracing_ctx
   util::TracingCtx *tracing_ctx; //< Profiling information
+};
+
+struct CompilerArtifact
+{
+  CompilerArtifact(void) = delete;
+  CompilerArtifact(std::shared_ptr<exec::ExecutorMap> executors,
+                   std::unique_ptr<const util::TracingCtx> tracing_ctx)
+    : _executors{executors}, _tracing_ctx{std::move(tracing_ctx)} {};
+
+  std::shared_ptr<exec::ExecutorMap> _executors;
+  std::unique_ptr<const util::TracingCtx> _tracing_ctx;
 };
 
 /**
@@ -101,18 +113,18 @@ public:
   /**
    * @brief   Do compilation with the options
    *
-   * @return std::shared_ptr<exec::ExecutorMap> Executors as a result of compilation
+   * @return std::shared_ptr<CompilerArtifact> Executors as a result of compilation
    */
-  std::shared_ptr<exec::ExecutorMap> compile(void);
+  std::shared_ptr<CompilerArtifact> compile(void);
 
   /**
    * @brief   Do compilation with the options
    *
-   * @return std::vector<std::shared_ptr<exec::ExecutorMap>> Executors as a result of compilation
+   * @return std::vector<std::shared_ptr<CompilerArtifact>> Executors as a result of compilation
    * for pipeline
    */
-  std::vector<std::shared_ptr<exec::ExecutorMap>> compile(const char *package_file_path,
-                                                          const char *map_file_path);
+  std::vector<std::shared_ptr<CompilerArtifact>> compile(const char *package_file_path,
+                                                         const char *map_file_path);
 
   State state(void) const { return _state; }
 
