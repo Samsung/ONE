@@ -102,7 +102,7 @@ public:
    * @param[in] model model to compile
    * @param[in] coptions Compiler Options
    */
-  Compiler(const std::shared_ptr<ir::Model> &subgs, CompilerOptions &copt);
+  Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt);
 
 public:
   /**

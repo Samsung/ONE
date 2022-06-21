@@ -77,10 +77,10 @@ public:
     graph->verify();
 
     // Compile
-    auto subgs = std::make_shared<onert::ir::Model>();
-    subgs->push(onert::ir::SubgraphIndex{0}, graph);
-    coptions = std::make_unique<onert::compiler::CompilerOptions>(*subgs);
-    onert::compiler::Compiler compiler{subgs, *coptions};
+    auto model = std::make_shared<onert::ir::Model>();
+    model->push(onert::ir::SubgraphIndex{0}, graph);
+    coptions = std::make_unique<onert::compiler::CompilerOptions>(*model);
+    onert::compiler::Compiler compiler{model, *coptions};
     artifact = compiler.compile();
   }
 
@@ -139,10 +139,10 @@ TEST(ExecInstance, twoCompile)
   execution1.setOutput(output, reinterpret_cast<void *>(exe1_output_buffer), 16);
 
   // Make new executor: compile again
-  auto subgs = std::make_shared<onert::ir::Model>();
-  subgs->push(onert::ir::SubgraphIndex{0}, graph);
-  auto coptions = std::make_unique<onert::compiler::CompilerOptions>(*subgs);
-  onert::compiler::Compiler compiler{subgs, *coptions};
+  auto model = std::make_shared<onert::ir::Model>();
+  model->push(onert::ir::SubgraphIndex{0}, graph);
+  auto coptions = std::make_unique<onert::compiler::CompilerOptions>(*model);
+  onert::compiler::Compiler compiler{model, *coptions};
   std::shared_ptr<onert::compiler::CompilerArtifact> artifact = compiler.compile();
   onert::exec::Execution execution2{artifact->_executors};
 
