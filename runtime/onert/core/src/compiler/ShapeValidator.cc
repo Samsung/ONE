@@ -55,7 +55,7 @@ void ShapeValidator::operator()()
 {
   // There is no reason for each subgraph to have subgraphs since compiler has subgraphs when
   // creating Compiler
-  assert(_graph.subgraphs() == nullptr);
+  assert(_graph.model() == nullptr);
 
   _current_layout = _graph.layout();
 

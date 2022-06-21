@@ -40,7 +40,7 @@ public:
   }
 
 private:
-  std::shared_ptr<onert::ir::Model> _subgraphs;
+  std::shared_ptr<onert::ir::Model> _model;
   std::unique_ptr<onert::compiler::CompilerOptions> _coptions;
   std::shared_ptr<onert::compiler::Compiler> _compiler;
   std::shared_ptr<onert::compiler::CompilerArtifact> _artifact;

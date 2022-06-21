@@ -134,8 +134,8 @@ public:
   Operands &operands() { return _operands; } // TODO Remove this non-const accessor
   const Operations &operations() const { return _operations; }
   Operations &operations() { return _operations; }
-  const std::shared_ptr<Model> &subgraphs() const { return _model; }
-  std::shared_ptr<Model> &subgraphs() { return _model; }
+  const std::shared_ptr<Model> &model() const { return _model; }
+  std::shared_ptr<Model> &model() { return _model; }
   Layout layout() const { return _layout; }
   std::shared_ptr<Model> &partialgraphs() { return _partialgraphs; }
   std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> &tensor_names()
