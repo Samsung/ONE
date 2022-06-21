@@ -10,3 +10,6 @@ option(DOWNLOAD_NEON2SSE "Download NEON2SSE library source" OFF)
 option(DOWNLOAD_BOOST "Download boost source" ON)
 option(BUILD_BOOST "Build boost source" ON)
 option(BUILD_LOGGING "Build logging runtime" OFF)
+# Do not support npud
+option(BUILD_NPUD "Build NPU daemon" OFF)
+option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
