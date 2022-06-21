@@ -81,9 +81,9 @@ public:
   /**
    * @brief Construct a new Loader object
    *
-   * @param graph reference on subgraphs
+   * @param model reference on model
    */
-  explicit TrixLoader(std::unique_ptr<ir::Model> &subgs) : _subgraphs(subgs) {}
+  explicit TrixLoader(std::unique_ptr<ir::Model> &model) : _subgraphs(model) {}
 
   /**
    * @brief Load a model from file

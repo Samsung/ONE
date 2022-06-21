@@ -90,7 +90,7 @@ namespace onert
 
 namespace compiler
 {
-void ManualSchedulerOptions::setBackendMap(const ir::Model &subgs, const std::string &str)
+void ManualSchedulerOptions::setBackendMap(const ir::Model &model, const std::string &str)
 {
   // TODO Support multiple subgraphs for manual scheduling
   auto key_val_list = nnfw::misc::split(str, ';');
@@ -106,14 +106,14 @@ void ManualSchedulerOptions::setBackendMap(const ir::Model &subgs, const std::st
     const auto &val = key_val.at(1);
     auto key = static_cast<uint32_t>(std::stoi(key_str));
 
-    subgs.at(ir::SubgraphIndex{0})
+    model.at(ir::SubgraphIndex{0})
       ->operations()
       .at(ir::OperationIndex{key}); // Check if exist, or this wil throw
     this->index_to_backend.emplace(ir::OperationIndex{key}, val);
   }
 }
 
-void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Model &subgs)
+void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Model &model)
 {
   backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
   trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
@@ -144,7 +144,7 @@ void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Model &subg
 
     // Index to Backend
     auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
-    ms_options.setBackendMap(subgs, map_str);
+    ms_options.setBackendMap(model, map_str);
   }
 }
 
@@ -177,7 +177,7 @@ bool Compiler::buildPartialGraph(uint32_t num_graphs)
     auto partialgraph = std::make_unique<ir::Graph>();
     partialgraphs->push(ir::SubgraphIndex{idx}, std::move(partialgraph));
   }
-  _model->primary()->setPartialgraphs(partialgraphs);
+  _model->primary()->setPartialModel(partialgraphs);
 
   auto partial_graph = primary_subgraph()->partialgraphs();
 
@@ -369,7 +369,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
     _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
-      subg.setSubgraphs(_model);
+      subg.setModel(_model);
     });
     _state = State::COMPILED;
     return std::make_shared<CompilerArtifact>(executors, nullptr);
@@ -399,7 +399,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     // Set tracing_ctx for copied graph
     tracing_ctx->setSubgraphIndex(&(lowered_subgs[index]->graph()), index.value());
 
-    subg.setSubgraphs(nullptr);
+    subg.setModel(nullptr);
   });
 
   _model.reset();
@@ -588,7 +588,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
       // // Lower: Assign backend
       lowered_partialgraphs[pindex] =
         std::make_unique<compiler::LoweredGraph>(subg, partialgraph, _options);
-      partialgraph.setSubgraphs(nullptr);
+      partialgraph.setModel(nullptr);
     });
   });
 

@@ -41,7 +41,7 @@ enum class State
 struct ManualSchedulerOptions
 {
 public:
-  void setBackendMap(const ir::Model &subgs, const std::string &str);
+  void setBackendMap(const ir::Model &model, const std::string &str);
 
 public:
   std::string backend_for_all;
@@ -57,12 +57,12 @@ struct PartialGraphOptions
 class CompilerOptions
 {
 public:
-  CompilerOptions(const ir::Model &subgs) { fetchCompilerOptionsFromGlobalConfig(subgs); }
+  CompilerOptions(const ir::Model &model) { fetchCompilerOptionsFromGlobalConfig(model); }
 
 private:
   // Set default values for CompilerOptions
   // All these default values should not be fetched from Env, when we stop supporting Android NNAPI.
-  void fetchCompilerOptionsFromGlobalConfig(const ir::Model &subgs);
+  void fetchCompilerOptionsFromGlobalConfig(const ir::Model &model);
 
 public:
   // GENERAL OPTIONS
@@ -99,7 +99,7 @@ class Compiler
 public:
   /**
    * @brief     Construct a new Compiler object
-   * @param[in] subgs All subgraphs of a model
+   * @param[in] model model to compile
    * @param[in] coptions Compiler Options
    */
   Compiler(const std::shared_ptr<ir::Model> &subgs, CompilerOptions &copt);

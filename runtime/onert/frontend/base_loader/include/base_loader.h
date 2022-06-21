@@ -67,8 +67,8 @@ public:
    *
    * @param graph reference on subgraphs
    */
-  explicit BaseLoader(std::unique_ptr<ir::Model> &subgs)
-    : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _subgraphs(subgs), _model{nullptr},
+  explicit BaseLoader(std::unique_ptr<ir::Model> &model)
+    : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _subgraphs(model), _model{nullptr},
       _tensor_names(std::make_shared<std::unordered_map<ir::OperandIndex, std::string>>())
   {
     _use_mmaped_data = util::getConfigBool(util::config::USE_MMAPED_DATA);

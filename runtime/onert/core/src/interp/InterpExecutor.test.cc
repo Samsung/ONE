@@ -76,7 +76,7 @@ protected:
 
     auto subgs = std::make_shared<onert::ir::Model>();
     subgs->push(onert::ir::SubgraphIndex{0}, _graph);
-    _graph->setSubgraphs(subgs);
+    _graph->setModel(subgs);
 
     _executors = std::make_shared<ExecutorMap>();
     _executors->insert(
@@ -141,7 +141,7 @@ protected:
 
     auto subgs = std::make_shared<onert::ir::Model>();
     subgs->push(onert::ir::SubgraphIndex{0}, _graph);
-    _graph->setSubgraphs(subgs);
+    _graph->setModel(subgs);
 
     _executors = std::make_shared<ExecutorMap>();
     _executors->insert(
@@ -194,7 +194,7 @@ protected:
 
     auto subgs = std::make_shared<onert::ir::Model>();
     subgs->push(onert::ir::SubgraphIndex{0}, _graph);
-    _graph->setSubgraphs(subgs);
+    _graph->setModel(subgs);
 
     _executors = std::make_shared<ExecutorMap>();
     _executors->insert(
