@@ -52,6 +52,11 @@ void csv_tokenize(const std::string &data, std::vector<std::string> &result)
     result.push_back(token);
 }
 
+void add_switch(arser::Arser &arser, const char *opt, const char *desc)
+{
+  arser.add_argument(opt).nargs(0).default_value(false).help(desc);
+}
+
 int entry(int argc, char **argv)
 {
   // Simple argument parser (based on map)
@@ -68,265 +73,96 @@ int entry(int argc, char **argv)
   arser.add_argument("--O1").nargs(0).required(false).default_value(false).help(
     "Enable O1 optimize options");
 
-  arser.add_argument("--fold_add_v2")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fold AddV2 operators with constant inputs");
-
-  arser.add_argument("--fold_cast")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fold Cast operators with constant input");
-
-  arser.add_argument("--fold_dequantize")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fold dequantize op");
-
-  arser.add_argument("--fold_dwconv")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fold Depthwise Convolution operator with constant inputs");
-
-  arser.add_argument("--fold_gather")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fold Gather operator");
-
-  arser.add_argument("--fold_sparse_to_dense")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fold SparseToDense operator");
-
-  arser.add_argument("--forward_reshape_to_unaryop")
-    .nargs(0)
-    .default_value(false)
-    .help("This will move Reshape after UnaryOp for centain condition");
-
-  arser.add_argument("--fuse_activation_function")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse Activation function to a preceding operator");
-
-  arser.add_argument("--fuse_add_with_fully_connected")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse Add operator to FullyConnected operator");
-
-  arser.add_argument("--fuse_add_with_tconv")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse Add operator to Transposed Convolution operator");
-
-  arser.add_argument("--fuse_batchnorm_with_conv")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse BatchNorm operators to Convolution operator");
-
-  arser.add_argument("--fuse_batchnorm_with_dwconv")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse BatchNorm operators to Depthwise Convolution operator");
-
-  arser.add_argument("--fuse_batchnorm_with_tconv")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse BatchNorm operators to Transposed Convolution operator");
-
-  arser.add_argument("--fuse_bcq")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse operators and apply Binary Coded Quantization");
-
-  arser.add_argument("--fuse_instnorm")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse operators to InstanceNorm operator");
-
-  arser.add_argument("--fuse_mean_with_mean")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse two Mean operations when they follow one by one."
-          "This will fold them into one operation and merge reduction indices.");
-
-  arser.add_argument("--fuse_transpose_with_mean")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse Mean operation with a preceding Transpose under certain conditions.");
-
-  arser.add_argument("--make_batchnorm_gamma_positive")
-    .nargs(0)
-    .default_value(false)
-    .help("This will make negative gamma of BatchNorm into a small positive value (1e-10). Note "
-          "that this pass can change the execution result of the model. So, use it only when the "
-          "impact is known to be acceptable.");
-
-  arser.add_argument("--fuse_preactivation_batchnorm")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse BatchNorm operators of pre-activations to Convolution operator");
-
-  arser.add_argument("--remove_fakequant")
-    .nargs(0)
-    .default_value(false)
-    .help("This will remove FakeQuant operators");
-
-  arser.add_argument("--remove_quantdequant")
-    .nargs(0)
-    .default_value(false)
-    .help("This will remove Quantize-Dequantize sequence");
-
-  arser.add_argument("--remove_redundant_quantize")
-    .nargs(0)
-    .default_value(false)
-    .help("This will remove redundant Quantize operators");
-
-  arser.add_argument("--remove_redundant_reshape")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse or remove subsequent Reshape operators");
-
-  arser.add_argument("--remove_redundant_transpose")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fuse or remove subsequent Transpose operators");
-
-  arser.add_argument("--remove_unnecessary_reshape")
-    .nargs(0)
-    .default_value(false)
-    .help("This will remove unnecessary reshape operators");
-
-  arser.add_argument("--remove_unnecessary_slice")
-    .nargs(0)
-    .default_value(false)
-    .help("This will remove unnecessary slice operators");
-
-  arser.add_argument("--remove_unnecessary_strided_slice")
-    .nargs(0)
-    .default_value(false)
-    .help("This will remove unnecessary strided slice operators");
-
-  arser.add_argument("--remove_unnecessary_split")
-    .nargs(0)
-    .default_value(false)
-    .help("This will remove unnecessary split operators");
-
-  arser.add_argument("--replace_cw_mul_add_with_depthwise_conv")
-    .nargs(0)
-    .default_value(false)
-    .help("This will replace channel-wise mul/add with DepthwiseConv2D operator");
-
-  arser.add_argument("--replace_sub_with_add")
-    .nargs(0)
-    .default_value(false)
-    .help("This will replace sub with add operator");
-
-  arser.add_argument("--resolve_customop_add")
-    .nargs(0)
-    .default_value(false)
-    .help("This will convert Custom(Add) to Add operator");
-
-  arser.add_argument("--resolve_customop_batchmatmul")
-    .nargs(0)
-    .default_value(false)
-    .help("This will convert Custom(BatchMatmul) to BatchMatmul operator");
-
-  arser.add_argument("--resolve_customop_matmul")
-    .nargs(0)
-    .default_value(false)
-    .help("This will convert Custom(Matmul) to Matmul operator");
-
-  arser.add_argument("--resolve_customop_max_pool_with_argmax")
-    .nargs(0)
-    .default_value(false)
-    .help("This will convert Custom(MaxPoolWithArgmax) to equivalent set of operators");
-
-  arser.add_argument("--shuffle_weight_to_16x1float32")
-    .nargs(0)
-    .default_value(false)
-    .help("This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32. Note that "
-          "it only converts weights whose row is a multiple of 16");
-
-  arser.add_argument("--replace_non_const_fc_with_batch_matmul")
-    .nargs(0)
-    .default_value(false)
-    .help("Replace FullyConnected with BatchMatMul when its weight is non-constant");
-
-  arser.add_argument("--substitute_pack_to_reshape")
-    .nargs(0)
-    .default_value(false)
-    .help("This will convert single input Pack to Reshape");
-
-  arser.add_argument("--substitute_padv2_to_pad")
-    .nargs(0)
-    .default_value(false)
-    .help("This will convert certain condition PadV2 to Pad");
-
-  arser.add_argument("--substitute_splitv_to_split")
-    .nargs(0)
-    .default_value(false)
-    .help("This will convert certain condition SplitV to Split operator");
-
-  arser.add_argument("--substitute_squeeze_to_reshape")
-    .nargs(0)
-    .default_value(false)
-    .help("This will convert certain condition Squeeze to Reshape");
-
-  arser.add_argument("--substitute_strided_slice_to_reshape")
-    .nargs(0)
-    .default_value(false)
-    .help("This will convert certain condition Strided_Slice to Reshape");
-
-  arser.add_argument("--substitute_transpose_to_reshape")
-    .nargs(0)
-    .default_value(false)
-    .help("This will convert single input Transpose to Reshape");
-
-  arser.add_argument("--expand_broadcast_const")
-    .nargs(0)
-    .default_value(false)
-    .help("This will expand broadcastable constant inputs");
-
-  arser.add_argument("--convert_nchw_to_nhwc")
-    .nargs(0)
-    .default_value(false)
-    .help("Experimental: This will convert NCHW operators to NHWC under the assumption that "
-          "input model is NCHW.");
-
-  arser.add_argument("--nchw_to_nhwc_input_shape")
-    .nargs(0)
-    .default_value(false)
-    .help("Convert the input shape of the model (argument for --convert_nchw_to_nhwc).");
-
-  arser.add_argument("--nchw_to_nhwc_output_shape")
-    .nargs(0)
-    .default_value(false)
-    .help("Convert the output shape of the model (argument for --convert_nchw_to_nhwc).");
-
-  arser.add_argument("--transform_min_max_to_relu6")
-    .nargs(0)
-    .default_value(false)
-    .help("Transform Minimum(6)-Maximum(0) pattern to Relu6 operator");
-
-  arser.add_argument("--transform_min_relu_to_relu6")
-    .nargs(0)
-    .default_value(false)
-    .help("Transform Minimum(6)-Relu pattern to Relu6 operator");
-
-  arser.add_argument("--mute_warnings")
-    .nargs(0)
-    .default_value(false)
-    .help("This will turn off warning messages");
-
-  arser.add_argument("--disable_validation")
-    .nargs(0)
-    .default_value(false)
-    .help("This will turn off operator validations. May help input model investigation.");
-
-  arser.add_argument("--generate_profile_data")
-    .nargs(0)
-    .default_value(false)
-    .help("This will turn on profiling data generation.");
+  add_switch(arser, "--fold_add_v2", "This will fold AddV2 operators with constant inputs");
+  add_switch(arser, "--fold_cast", "This will fold Cast operators with constant input");
+  add_switch(arser, "--fold_dequantize", "This will fold dequantize op");
+  add_switch(arser, "--fold_dwconv",
+             "This will fold Depthwise Convolution operator with constant inputs");
+  add_switch(arser, "--fold_gather", "This will fold Gather operator");
+  add_switch(arser, "--fold_sparse_to_dense", "This will fold SparseToDense operator");
+  add_switch(arser, "--forward_reshape_to_unaryop",
+             "This will move Reshape after UnaryOp for centain condition");
+  add_switch(arser, "--fuse_activation_function",
+             "This will fuse Activation function to a preceding operator");
+  add_switch(arser, "--fuse_add_with_fully_connected",
+             "This will fuse Add operator to FullyConnected operator");
+  add_switch(arser, "--fuse_add_with_tconv",
+             "This will fuse Add operator to Transposed Convolution operator");
+  add_switch(arser, "--fuse_batchnorm_with_conv",
+             "This will fuse BatchNorm operators to Convolution operator");
+  add_switch(arser, "--fuse_batchnorm_with_dwconv",
+             "This will fuse BatchNorm operators to Depthwise Convolution operator");
+  add_switch(arser, "--fuse_batchnorm_with_tconv",
+             "This will fuse BatchNorm operators to Transposed Convolution operator");
+  add_switch(arser, "--fuse_bcq", "This will fuse operators and apply Binary Coded Quantization");
+  add_switch(arser, "--fuse_instnorm", "This will fuse operators to InstanceNorm operator");
+  add_switch(arser, "--fuse_mean_with_mean",
+             "This will fuse two Mean operations when they follow one by one. This will fold them "
+             "into one operation and merge reduction indices.");
+  add_switch(arser, "--fuse_transpose_with_mean",
+             "This will fuse Mean operation with a preceding Transpose under certain conditions.");
+  add_switch(arser, "--make_batchnorm_gamma_positive",
+             "This will make negative gamma of BatchNorm into a small positive value (1e-10). "
+             "Note that this pass can change the execution result of the model. So, use it only "
+             "when the impact is known to be acceptable.");
+  add_switch(arser, "--fuse_preactivation_batchnorm",
+             "This will fuse BatchNorm operators of pre-activations to Convolution operator");
+  add_switch(arser, "--remove_fakequant", "This will remove FakeQuant operators");
+  add_switch(arser, "--remove_quantdequant", "This will remove Quantize-Dequantize sequence");
+  add_switch(arser, "--remove_redundant_quantize", "This will remove redundant Quantize operators");
+  add_switch(arser, "--remove_redundant_reshape",
+             "This will fuse or remove subsequent Reshape operators");
+  add_switch(arser, "--remove_redundant_transpose",
+             "This will fuse or remove subsequent Transpose operators");
+  add_switch(arser, "--remove_unnecessary_reshape",
+             "This will remove unnecessary reshape operators");
+  add_switch(arser, "--remove_unnecessary_slice", "This will remove unnecessary slice operators");
+  add_switch(arser, "--remove_unnecessary_strided_slice",
+             "This will remove unnecessary strided slice operators");
+  add_switch(arser, "--remove_unnecessary_split", "This will remove unnecessary split operators");
+  add_switch(arser, "--replace_cw_mul_add_with_depthwise_conv",
+             "This will replace channel-wise mul/add with DepthwiseConv2D operator");
+  add_switch(arser, "--replace_sub_with_add", "This will replace sub with add operator");
+  add_switch(arser, "--resolve_customop_add", "This will convert Custom(Add) to Add operator");
+  add_switch(arser, "--resolve_customop_batchmatmul",
+             "This will convert Custom(BatchMatmul) to BatchMatmul operator");
+  add_switch(arser, "--resolve_customop_matmul",
+             "This will convert Custom(Matmul) to Matmul operator");
+  add_switch(arser, "--resolve_customop_max_pool_with_argmax",
+             "This will convert Custom(MaxPoolWithArgmax) to equivalent set of operators");
+  add_switch(arser, "--shuffle_weight_to_16x1float32",
+             "This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32. Note that "
+             "it only converts weights whose row is a multiple of 16");
+  add_switch(arser, "--replace_non_const_fc_with_batch_matmul",
+             "Replace FullyConnected with BatchMatMul when its weight is non-constant");
+  add_switch(arser, "--substitute_pack_to_reshape",
+             "This will convert single input Pack to Reshape");
+  add_switch(arser, "--substitute_padv2_to_pad",
+                    "This will convert certain condition PadV2 to Pad");
+  add_switch(arser, "--substitute_splitv_to_split",
+             "This will convert certain condition SplitV to Split operator");
+  add_switch(arser, "--substitute_squeeze_to_reshape",
+             "This will convert certain condition Squeeze to Reshape");
+  add_switch(arser, "--substitute_strided_slice_to_reshape",
+             "This will convert certain condition Strided_Slice to Reshape");
+  add_switch(arser, "--substitute_transpose_to_reshape",
+             "This will convert single input Transpose to Reshape");
+  add_switch(arser, "--expand_broadcast_const", "This will expand broadcastable constant inputs");
+  add_switch(arser, "--convert_nchw_to_nhwc",
+             "Experimental: This will convert NCHW operators to NHWC under the assumption that "
+             "input model is NCHW.");
+  add_switch(arser, "--nchw_to_nhwc_input_shape",
+             "Convert the input shape of the model (argument for --convert_nchw_to_nhwc).");
+  add_switch(arser, "--nchw_to_nhwc_output_shape",
+             "Convert the output shape of the model (argument for --convert_nchw_to_nhwc).");
+  add_switch(arser, "--transform_min_max_to_relu6",
+             "Transform Minimum(6)-Maximum(0) pattern to Relu6 operator");
+  add_switch(arser, "--transform_min_relu_to_relu6",
+             "Transform Minimum(6)-Relu pattern to Relu6 operator");
+  add_switch(arser, "--mute_warnings", "This will turn off warning messages");
+  add_switch(arser, "--disable_validation",
+             "This will turn off operator validations. May help input model investigation.");
+  add_switch(arser, "--generate_profile_data", "This will turn on profiling data generation.");
 
   arser.add_argument("--change_outputs")
     .help("Experimental: Change first subgraph output nodes to CSV names");
