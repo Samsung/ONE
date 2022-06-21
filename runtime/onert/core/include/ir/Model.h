@@ -125,7 +125,7 @@ public:
   /**
    * @brief Return the primary subgraph
    *
-   * @return std::shared_ptr<Graph> Primary sugraph
+   * @return std::shared_ptr<Graph> Primary subgraph
    */
   std::shared_ptr<Graph> primary() const { return _subgraphs.at(SubgraphIndex{0}); }
 
