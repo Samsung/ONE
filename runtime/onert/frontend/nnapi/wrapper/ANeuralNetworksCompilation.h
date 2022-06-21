@@ -36,13 +36,7 @@ public:
   onert::compiler::State state(void) noexcept { return _compiler->state(); }
   void publish(std::shared_ptr<onert::exec::ExecutorMap> &executors) noexcept
   {
-    if (_artifact == nullptr)
-    {
-      executors = nullptr;
-      return;
-    }
-
-    executors = _artifact->_executors;
+    executors = _artifact ? _artifact->_executors : nullptr;
   }
 
 private:

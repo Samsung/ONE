@@ -113,14 +113,14 @@ public:
   /**
    * @brief   Do compilation with the options
    *
-   * @return std::shared_ptr<CompilationResult> Executors as a result of compilation
+   * @return std::shared_ptr<CompilerArtifact> Executors as a result of compilation
    */
   std::shared_ptr<CompilerArtifact> compile(void);
 
   /**
    * @brief   Do compilation with the options
    *
-   * @return std::vector<std::shared_ptr<CompilationResult>> Executors as a result of compilation
+   * @return std::vector<std::shared_ptr<CompilerArtifact>> Executors as a result of compilation
    * for pipeline
    */
   std::vector<std::shared_ptr<CompilerArtifact>> compile(const char *package_file_path,
