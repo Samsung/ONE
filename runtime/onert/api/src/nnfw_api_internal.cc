@@ -385,8 +385,7 @@ NNFW_STATUS nnfw_session::prepare()
   try
   {
     _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
-    auto compiler =
-      std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
+    auto compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, *_coptions);
     _subgraphs.reset();
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
@@ -422,8 +421,7 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
   try
   {
     _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
-    auto compiler =
-      std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
+    auto compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, *_coptions);
     _subgraphs.reset();
     auto artifacts = compiler->compile(_package_file_path.c_str(), map_file_path);
 
