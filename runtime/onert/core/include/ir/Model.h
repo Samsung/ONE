@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_SUBGRAPHS_H__
-#define __ONERT_IR_SUBGRAPHS_H__
+#ifndef __ONERT_IR_MODEL_H__
+#define __ONERT_IR_MODEL_H__
 
 #include <memory>
 #include <unordered_map>
@@ -136,4 +136,4 @@ private:
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_SUBGRAPHS_H__
+#endif // __ONERT_IR_MODEL_H__
