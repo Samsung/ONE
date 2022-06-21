@@ -198,7 +198,7 @@ void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _subgraphs{nullptr}, _coptions{nullptr}, _execution{nullptr},
+  : _subgraphs{nullptr}, _coptions{nullptr}, _compiler_artifact{nullptr}, _execution{nullptr},
     _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}, _tracing_ctx{nullptr}
 {
   // DO NOTHING
@@ -388,8 +388,8 @@ NNFW_STATUS nnfw_session::prepare()
     auto compiler =
       std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
     _subgraphs.reset();
-    std::shared_ptr<onert::exec::ExecutorMap> executors = compiler->compile();
-    _execution = std::make_unique<onert::exec::Execution>(executors);
+    _compiler_artifact = compiler->compile();
+    _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
   }
   catch (const std::exception &e)
   {
@@ -425,12 +425,11 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
     auto compiler =
       std::make_unique<onert::compiler::Compiler>(_subgraphs, _tracing_ctx.get(), *_coptions);
     _subgraphs.reset();
-    std::vector<std::shared_ptr<onert::exec::ExecutorMap>> executor_maps =
-      compiler->compile(_package_file_path.c_str(), map_file_path);
+    auto artifacts = compiler->compile(_package_file_path.c_str(), map_file_path);
 
-    for (auto it = executor_maps.begin(); it != executor_maps.end(); ++it)
+    for (auto it = artifacts.begin(); it != artifacts.end(); ++it)
     {
-      _executions.push_back(std::make_shared<onert::exec::Execution>(*it));
+      _executions.push_back(std::make_shared<onert::exec::Execution>(it->get()->_executors));
     }
     make_dependency();
     _threads.resize(_executions.size());
