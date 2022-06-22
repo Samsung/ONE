@@ -35,27 +35,38 @@ protected:
   std::unique_ptr<IMemoryManager> _memory_manager;
 };
 
-TEST_F(ShapeTest, OutTypeInt)
+template <typename T> void runShapeKernel(loco::DataType dataType, IMemoryManager *memory_manager)
 {
   Shape input_shape{1, 3, 1, 3, 5};
 
   Tensor input_tensor = Tensor(loco::DataType::FLOAT32, input_shape, {}, "");
-  Tensor output_tensor = makeOutputTensor(loco::DataType::S32);
+  Tensor output_tensor = makeOutputTensor(dataType);
 
   ShapeParams params{};
-  params.out_type = loco::DataType::S32;
+  params.out_type = dataType;
 
   ShapeKernel kernel(&input_tensor, &output_tensor, params);
 
   kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
-  std::vector<int32_t> ref_output_data{1, 3, 1, 3, 5};
+  std::vector<T> ref_output_data{1, 3, 1, 3, 5};
+  EXPECT_THAT(extractTensorData<T>(output_tensor), ref_output_data);
 
   std::vector<int32_t> ref_output_shape{5};
-  EXPECT_THAT(extractTensorData<int32_t>(output_tensor), ref_output_data);
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+}
+
+TEST_F(ShapeTest, OutTypeInt)
+{
+
+  // Run for int32_t output
+  runShapeKernel<int32_t>(loco::DataType::S32, _memory_manager.get());
+  // Run for int64_t output
+  runShapeKernel<int64_t>(loco::DataType::S64, _memory_manager.get());
+
+  SUCCEED();
 }
 
 TEST_F(ShapeTest, Invalid_Output_Type_NEG)
