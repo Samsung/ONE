@@ -43,14 +43,36 @@ void SplitV::configure()
   auto sizes_data = getTensorData<int32_t>(size_splits());
 
   assert(size_splits()->shape().num_dims() == 1);
+
+  int32_t sum = 0;
+  const auto num_dims_size_spits = size_splits()->shape().dim(0);
+  int32_t count_neg_dim = 0;
+
+  for (int32_t i = 0; i < num_dims_size_spits - 1; ++i)
+  {
+    if (sizes_data[i] != -1)
+    {
+      sum += sizes_data[i];
+    }
+    else
+    {
+      count_neg_dim++;
+    }
+  }
+  assert(count_neg_dim < 2);
   assert(size_splits()->shape().num_elements() == num_split);
-  assert(std::accumulate(sizes_data, sizes_data + num_split, 0) ==
-         input()->shape().dim(_axis_value));
 
   auto output_shape = input()->shape();
   for (int32_t i = 0; i < num_split; ++i)
   {
-    output_shape.dim(_axis_value) = sizes_data[i];
+    if (sizes_data[i] == -1)
+    {
+      output_shape.dim(_axis_value) = input()->shape().dim(_axis_value) - sum;
+    }
+    else
+    {
+      output_shape.dim(_axis_value) = sizes_data[i];
+    }
     _outputs[i]->resize(output_shape);
   }
 }
