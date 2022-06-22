@@ -352,7 +352,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       std::cerr << "Unsupported model type in MANIFEST" << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    _model->primary()->bindKernelBuilder(_kernel_registry->getBuilder());
+    _model->primary_subgraph()->bindKernelBuilder(_kernel_registry->getBuilder());
   }
   catch (const std::exception &e)
   {
@@ -729,7 +729,7 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
   {
     // In this case, if we apply input shape in primary_subgraph, it will propagate after
     // compilation and excution
-    auto primary_subgraph = _model->primary();
+    auto primary_subgraph = _model->primary_subgraph();
     auto ind = primary_subgraph->getInputs().at(index);
     auto &input = primary_subgraph->operands().at(ind);
 
@@ -1059,7 +1059,7 @@ const onert::ir::Graph *nnfw_session::primary_subgraph()
   if (_model)
   {
     assert(_execution == nullptr && _executions.empty());
-    return _model->primary().get();
+    return _model->primary_subgraph().get();
   }
   else
   {

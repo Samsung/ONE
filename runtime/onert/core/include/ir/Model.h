@@ -120,14 +120,14 @@ public:
    *
    * @return count of Subgraphs
    */
-  size_t count() const { return _subgraphs.size(); }
+  size_t subgraphs_count() const { return _subgraphs.size(); }
 
   /**
    * @brief Return the primary subgraph
    *
    * @return std::shared_ptr<Graph> Primary subgraph
    */
-  std::shared_ptr<Graph> primary() const { return _subgraphs.at(SubgraphIndex{0}); }
+  std::shared_ptr<Graph> primary_subgraph() const { return _subgraphs.at(SubgraphIndex{0}); }
 
 private:
   std::unordered_map<SubgraphIndex, std::shared_ptr<Graph>> _subgraphs;

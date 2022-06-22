@@ -172,12 +172,12 @@ private:
   OperandIndexSequence _outputs;
   std::unordered_map<std::string, IOIndex> _name_to_input;
   std::unordered_map<std::string, IOIndex> _name_to_output;
-  // Child subgraphs
+  // model for child subgraphs
   std::shared_ptr<Model> _model;
   // TFLite and circle's default layout is NHWC;
   Layout _layout{Layout::NHWC};
 
-  // Partial Graphs
+  // model for partial graphs
   std::shared_ptr<ir::Model> _partialgraphs;
   std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> _tensor_names;
 };

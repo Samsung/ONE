@@ -273,16 +273,16 @@ void ANeuralNetworksModel::fillOptionalOperand(void)
   });
 }
 
-std::shared_ptr<onert::ir::Model> ANeuralNetworksModel::getSubGraphs() const
+std::shared_ptr<onert::ir::Model> ANeuralNetworksModel::getModel() const
 {
-  auto all_subgs = std::make_shared<onert::ir::Model>();
+  auto model = std::make_shared<onert::ir::Model>();
 
-  all_subgs->push(onert::ir::SubgraphIndex{0}, _graph);
+  model->push(onert::ir::SubgraphIndex{0}, _graph);
   // TODO Find all child subgraphs and copy them to all_subgs
   // Must find the same subgraph by using to compare pointer of subgraphs and set subgraph's index
   // to operands of control flow operations
   // Must clean all child subgraphs's pointer to prevent memory leak in case of that graph has
   // subgraph itself recursively
 
-  return all_subgs;
+  return model;
 }

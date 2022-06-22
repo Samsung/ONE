@@ -167,7 +167,7 @@ void Compiler::checkProfilerConditions()
 
 bool Compiler::buildPartialGraph(uint32_t num_graphs)
 {
-  if (_model->count() > 1)
+  if (_model->subgraphs_count() > 1)
     return false;
 
   auto partialgraphs = std::make_shared<ir::Model>();
@@ -177,7 +177,7 @@ bool Compiler::buildPartialGraph(uint32_t num_graphs)
     auto partialgraph = std::make_unique<ir::Graph>();
     partialgraphs->push(ir::SubgraphIndex{idx}, std::move(partialgraph));
   }
-  _model->primary()->setPartialModel(partialgraphs);
+  _model->primary_subgraph()->setPartialModel(partialgraphs);
 
   auto partial_graph = primary_subgraph()->partialgraphs();
 
@@ -238,7 +238,7 @@ bool Compiler::buildPartialGraph(uint32_t num_graphs)
       assert(new_operation_index == operation_index);
     });
 
-  for (uint32_t idx = 0; idx < partial_graph->count(); idx++)
+  for (uint32_t idx = 0; idx < partial_graph->subgraphs_count(); idx++)
   {
     auto partition = partial_graph->at(ir::SubgraphIndex{idx});
 

@@ -50,15 +50,15 @@ public:
    * @brief Create and store unique session id managed by this class
    *        Note that this constructor can be called by multiple sessions running in parallely.
    */
-  TracingCtx(const onert::ir::Model *subgraphs)
+  TracingCtx(const onert::ir::Model *model)
   {
-    assert(subgraphs);
+    assert(model);
 
     decideSessionID();
 
-    auto count = subgraphs->count();
+    auto count = model->subgraphs_count();
     for (size_t i = 0; i < count; i++)
-      _subgraph_indices.emplace(subgraphs->at(onert::ir::SubgraphIndex(i)).get(), i);
+      _subgraph_indices.emplace(model->at(onert::ir::SubgraphIndex(i)).get(), i);
   }
 
   uint32_t getSessionId() const { return _session_id; }
