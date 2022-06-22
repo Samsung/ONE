@@ -38,15 +38,23 @@ void Check(std::vector<std::initializer_list<int32_t>> input_shapes,
   std::vector<Tensor> tmp_inputs;
   for (int i = 0; i < input_datas.size(); i++)
   {
-    if (std::is_same<T, float>::value)
+    if (std::is_same<T, float>::value || std::is_same<T, int32_t>::value ||
+        std::is_same<T, int64_t>::value)
     {
       tmp_inputs.push_back(Tensor(element_type, input_shapes[i], {}, ""));
       memory_manager->allocate_memory(tmp_inputs[i]);
       tmp_inputs[i].writeData(input_datas[i].data(), input_datas[i].size() * sizeof(T));
     }
-    else
+    else if (std::is_same<T, uint8_t>::value || std::is_same<T, int8_t>::value)
     {
       tmp_inputs.push_back(Tensor(element_type, input_shapes[i], {{1.0f / 255}, {128}}, ""));
+      memory_manager->allocate_memory(tmp_inputs[i]);
+      tmp_inputs[i].writeData(input_datas[i].data(), input_datas[i].size() * sizeof(T));
+    }
+    else
+    {
+      assert((std::is_same<T, int16_t>::value) && "unexpected dtype is tested");
+      tmp_inputs.push_back(Tensor(element_type, input_shapes[i], {{1.0f}, {0}}, ""));
       memory_manager->allocate_memory(tmp_inputs[i]);
       tmp_inputs[i].writeData(input_datas[i].data(), input_datas[i].size() * sizeof(T));
     }
@@ -57,9 +65,13 @@ void Check(std::vector<std::initializer_list<int32_t>> input_shapes,
   }
 
   Tensor output_tensor = makeOutputTensor(element_type);
-  if (!std::is_same<T, float>::value)
+  if (std::is_same<T, uint8_t>::value || std::is_same<T, int8_t>::value)
   {
     output_tensor = makeOutputTensor(element_type, 1.0f / 255, 128);
+  }
+  else if (std::is_same<T, int16_t>::value)
+  {
+    output_tensor = makeOutputTensor(element_type, 1.0f, 0);
   }
 
   PackParams params{};
@@ -79,7 +91,7 @@ template <typename T> class PackTest : public ::testing::Test
 {
 };
 
-using DataTypes = ::testing::Types<uint8_t, float>;
+using DataTypes = ::testing::Types<uint8_t, int8_t, int16_t, int32_t, int64_t, float>;
 TYPED_TEST_SUITE(PackTest, DataTypes);
 
 TYPED_TEST(PackTest, ThreeInputs)
