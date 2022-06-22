@@ -148,11 +148,10 @@ void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Subgraphs &
   }
 }
 
-Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx *tracing_ctx,
-                   CompilerOptions &copt)
+Compiler::Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, CompilerOptions &copt)
   : _subgraphs{subgs}, _state{State::CREATED}, _options(copt)
 {
-  _options.tracing_ctx = tracing_ctx;
+  // DO NOTHING
 }
 
 void Compiler::enableToFp16() { _options.fp16_enable = true; }
@@ -398,7 +397,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, _options);
 
     // Set tracing_ctx for copied graph
-    // TODO Remove tracing_ctx update in LowerGraph constructor
     tracing_ctx->setSubgraphIndex(&(lowered_subgs[index]->graph()), index.value());
 
     subg.setSubgraphs(nullptr);
@@ -457,8 +455,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
                                std::to_string(subg_index.value()));
     lowered_subg->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
-    auto executor = std::unique_ptr<exec::IExecutor>{
-      ExecutorFactory::get().create(std::move(lowered_subg), _options, executors)};
+    auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
+      std::move(lowered_subg), tracing_ctx.get(), _options, executors)};
     executor->setIndexedRanks(indexed_ranks);
     executors->insert(std::make_pair(subg_index, std::move(executor)));
   }
@@ -467,7 +465,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
    * Code generation phase finished
    ********************************/
   _state = State::COMPILED;
-  return std::make_shared<CompilerArtifact>(executors, nullptr);
+  return std::make_shared<CompilerArtifact>(executors, std::move(tracing_ctx));
 }
 
 std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *package_file_path,
@@ -529,11 +527,6 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   // FIXME This is a workaround for bulk operations, should remove it
   {
     _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
-  }
-
-  // It doesn't support tracing in case of partial graph
-  {
-    _options.tracing_ctx = nullptr;
   }
 
   verboseOptions(_options);
@@ -663,7 +656,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
     lowered_partialgraph->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
     auto executor = std::unique_ptr<exec::IExecutor>{
-      ExecutorFactory::get().create(std::move(lowered_partialgraph), _options, executors)};
+      ExecutorFactory::get().create(std::move(lowered_partialgraph), nullptr, _options, executors)};
     executor->setIndexedRanks(indexed_ranks);
     executors->insert(std::make_pair(ir::SubgraphIndex{0}, std::move(executor)));
 

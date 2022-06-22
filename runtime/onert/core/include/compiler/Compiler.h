@@ -78,9 +78,6 @@ public:
   bool disable_compile;   //< Run with Interpreter if true, try compilation otherwise
   bool fp16_enable;       //< Whether fp16 mode ON/OFF
   PartialGraphOptions partial_graph_options;
-
-  // TODO Remove tracing_ctx
-  util::TracingCtx *tracing_ctx; //< Profiling information
 };
 
 struct CompilerArtifact
@@ -103,11 +100,9 @@ public:
   /**
    * @brief     Construct a new Compiler object
    * @param[in] subgs All subgraphs of a model
-   * @param[in] tracing_ctx Profiling information
    * @param[in] coptions Compiler Options
    */
-  Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, util::TracingCtx *tracing_ctx,
-           CompilerOptions &copt);
+  Compiler(const std::shared_ptr<ir::Subgraphs> &subgs, CompilerOptions &copt);
 
 public:
   /**
