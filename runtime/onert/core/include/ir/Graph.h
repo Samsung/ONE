@@ -20,9 +20,9 @@
 #include <functional>
 #include <unordered_map>
 
+#include "ir/Model.h"
 #include "ir/Operands.h"
 #include "ir/Operations.h"
-#include "ir/Subgraphs.h"
 
 namespace onert
 {
@@ -87,10 +87,10 @@ public:
   void verify(void);
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
   void setLayout(Layout layout) { _layout = layout; }
-  void setSubgraphs(const std::shared_ptr<Subgraphs> &subgs) { _subgraphs = subgs; }
-  void setPartialgraphs(const std::shared_ptr<Subgraphs> &partialgraphs)
+  void setModel(const std::shared_ptr<Model> &model) { _model = model; }
+  void setPartialModel(const std::shared_ptr<Model> &partial_model)
   {
-    _partialgraphs = partialgraphs;
+    _partialgraphs = partial_model;
   }
   void
   setTensorName(std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> &tensor_names)
@@ -134,10 +134,10 @@ public:
   Operands &operands() { return _operands; } // TODO Remove this non-const accessor
   const Operations &operations() const { return _operations; }
   Operations &operations() { return _operations; }
-  const std::shared_ptr<Subgraphs> &subgraphs() const { return _subgraphs; }
-  std::shared_ptr<Subgraphs> &subgraphs() { return _subgraphs; }
+  const std::shared_ptr<Model> &model() const { return _model; }
+  std::shared_ptr<Model> &model() { return _model; }
   Layout layout() const { return _layout; }
-  std::shared_ptr<Subgraphs> &partialgraphs() { return _partialgraphs; }
+  std::shared_ptr<Model> &partialgraphs() { return _partialgraphs; }
   std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> &tensor_names()
   {
     return _tensor_names;
@@ -172,13 +172,13 @@ private:
   OperandIndexSequence _outputs;
   std::unordered_map<std::string, IOIndex> _name_to_input;
   std::unordered_map<std::string, IOIndex> _name_to_output;
-  // Child subgraphs
-  std::shared_ptr<Subgraphs> _subgraphs;
+  // model for child subgraphs
+  std::shared_ptr<Model> _model;
   // TFLite and circle's default layout is NHWC;
   Layout _layout{Layout::NHWC};
 
-  // Partial Graphs
-  std::shared_ptr<ir::Subgraphs> _partialgraphs;
+  // model for partial graphs
+  std::shared_ptr<ir::Model> _partialgraphs;
   std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> _tensor_names;
 };
 

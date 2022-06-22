@@ -27,7 +27,7 @@ namespace trix_loader
 /**
  * @throw runtime_error when tvn path is wrong or tvn is invalid
  */
-std::unique_ptr<ir::Subgraphs> loadModel(const std::string &filename);
+std::unique_ptr<ir::Model> loadModel(const std::string &filename);
 } // namespace trix_loader
 } // namespace onert
 

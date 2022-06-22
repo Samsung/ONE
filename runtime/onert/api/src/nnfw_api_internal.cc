@@ -198,7 +198,7 @@ void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _subgraphs{nullptr}, _coptions{nullptr}, _compiler_artifact{nullptr}, _execution{nullptr},
+  : _model{nullptr}, _coptions{nullptr}, _compiler_artifact{nullptr}, _execution{nullptr},
     _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}
 {
   // DO NOTHING
@@ -219,14 +219,14 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
 
   try
   {
-    _subgraphs = onert::circle_loader::loadModel(buffer, size);
+    _model = onert::circle_loader::loadModel(buffer, size);
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
+  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_model);
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -255,15 +255,15 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
   {
     if (model_type == ".tflite")
     {
-      _subgraphs = onert::tflite_loader::loadModel(filename.c_str());
+      _model = onert::tflite_loader::loadModel(filename.c_str());
     }
     else if (model_type == ".circle")
     {
-      _subgraphs = onert::circle_loader::loadModel(filename.c_str());
+      _model = onert::circle_loader::loadModel(filename.c_str());
     }
     else if (model_type == ".tvn")
     {
-      _subgraphs = onert::trix_loader::loadModel(filename.c_str());
+      _model = onert::trix_loader::loadModel(filename.c_str());
     }
     else
     {
@@ -276,7 +276,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
+  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_model);
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -337,29 +337,29 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     auto model_type = model_types[0].asString(); // first model's type
     if (model_type == "tflite")
     {
-      _subgraphs = onert::tflite_loader::loadModel(model_file_path);
+      _model = onert::tflite_loader::loadModel(model_file_path);
     }
     else if (model_type == "circle")
     {
-      _subgraphs = onert::circle_loader::loadModel(model_file_path);
+      _model = onert::circle_loader::loadModel(model_file_path);
     }
     else if (model_type == "tvn")
     {
-      _subgraphs = onert::trix_loader::loadModel(model_file_path);
+      _model = onert::trix_loader::loadModel(model_file_path);
     }
     else
     {
       std::cerr << "Unsupported model type in MANIFEST" << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    _subgraphs->primary()->bindKernelBuilder(_kernel_registry->getBuilder());
+    _model->primary_subgraph()->bindKernelBuilder(_kernel_registry->getBuilder());
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_subgraphs);
+  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_model);
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -384,8 +384,8 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    auto compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, *_coptions);
-    _subgraphs.reset();
+    auto compiler = std::make_unique<onert::compiler::Compiler>(_model, *_coptions);
+    _model.reset();
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
   }
@@ -419,8 +419,8 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
 
   try
   {
-    auto compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, *_coptions);
-    _subgraphs.reset();
+    auto compiler = std::make_unique<onert::compiler::Compiler>(_model, *_coptions);
+    _model.reset();
     auto artifacts = compiler->compile(_package_file_path.c_str(), map_file_path);
 
     for (auto it = artifacts.begin(); it != artifacts.end(); ++it)
@@ -729,7 +729,7 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
   {
     // In this case, if we apply input shape in primary_subgraph, it will propagate after
     // compilation and excution
-    auto primary_subgraph = _subgraphs->primary();
+    auto primary_subgraph = _model->primary_subgraph();
     auto ind = primary_subgraph->getInputs().at(index);
     auto &input = primary_subgraph->operands().at(ind);
 
@@ -1056,10 +1056,10 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 
 const onert::ir::Graph *nnfw_session::primary_subgraph()
 {
-  if (_subgraphs)
+  if (_model)
   {
     assert(_execution == nullptr && _executions.empty());
-    return _subgraphs->primary().get();
+    return _model->primary_subgraph().get();
   }
   else
   {
@@ -1127,7 +1127,7 @@ bool nnfw_session::isStateInitialized()
 {
   if (_state == State::INITIALIZED)
   {
-    assert(_subgraphs == nullptr);
+    assert(_model == nullptr);
     assert(_coptions == nullptr);
     assert(_execution == nullptr && _executions.empty());
     return true;
@@ -1142,7 +1142,7 @@ bool nnfw_session::isStateModelLoaded()
 {
   if (_state == State::MODEL_LOADED)
   {
-    assert(_subgraphs != nullptr);
+    assert(_model != nullptr);
     assert(_coptions != nullptr);
     assert(_execution == nullptr && _executions.empty());
     return true;
@@ -1157,7 +1157,7 @@ bool nnfw_session::isStatePrepared()
 {
   if (_state == State::PREPARED)
   {
-    assert(_subgraphs == nullptr);
+    assert(_model == nullptr);
     assert(_coptions != nullptr);
     assert(_execution != nullptr || !_executions.empty());
     return true;
@@ -1172,7 +1172,7 @@ bool nnfw_session::isStateRunning()
 {
   if (_state == State::RUNNING)
   {
-    assert(_subgraphs == nullptr);
+    assert(_model == nullptr);
     assert(_coptions != nullptr);
     assert(_execution != nullptr || !_executions.empty());
     return true;
@@ -1184,7 +1184,7 @@ bool nnfw_session::isStateFinishedRun()
 {
   if (_state == State::FINISHED_RUN)
   {
-    assert(_subgraphs == nullptr);
+    assert(_model == nullptr);
     assert(_coptions != nullptr);
     assert(_execution != nullptr || !_executions.empty());
     return true;
@@ -1220,7 +1220,7 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
 
   // Backend for all
   auto &ms_options = _coptions->manual_scheduler_options;
-  ms_options.setBackendMap(*_subgraphs, std::string{backend_settings});
+  ms_options.setBackendMap(*_model, std::string{backend_settings});
 
   return NNFW_STATUS_NO_ERROR;
 }

@@ -65,10 +65,10 @@ public:
   /**
    * @brief Construct a new Loader object
    *
-   * @param graph reference on subgraphs
+   * @param model reference to model
    */
-  explicit BaseLoader(std::unique_ptr<ir::Subgraphs> &subgs)
-    : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _subgraphs(subgs), _model{nullptr},
+  explicit BaseLoader(std::unique_ptr<ir::Model> &model)
+    : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _model(model), _domain_model{nullptr},
       _tensor_names(std::make_shared<std::unordered_map<ir::OperandIndex, std::string>>())
   {
     _use_mmaped_data = util::getConfigBool(util::config::USE_MMAPED_DATA);
@@ -114,7 +114,7 @@ protected:
   // Get BuiltinOperator
   BuiltinOperator getBuiltinOperator(const Operator *op)
   {
-    auto const builtin_opcode = _model->operator_codes()->Get(op->opcode_index());
+    auto const builtin_opcode = _domain_model->operator_codes()->Get(op->opcode_index());
     auto builtin_op = builtin_opcode->builtin_code();
     if (builtin_op < BuiltinOperator::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
       builtin_op = static_cast<BuiltinOperator>(builtin_opcode->deprecated_builtin_code());
@@ -176,7 +176,7 @@ private:
 
   void verifySubgraphIndex(int subg_index)
   {
-    const auto num_subgraphs = _model->subgraphs()->size();
+    const auto num_subgraphs = _domain_model->subgraphs()->size();
     if (subg_index < 0 || subg_index >= static_cast<int32_t>(num_subgraphs))
       throw std::runtime_error{std::string{"Invalid subgraph index - "} +
                                std::to_string(subg_index)};
@@ -189,9 +189,9 @@ protected:
   int32_t _pagesize;
   // loaded file description
   int _fd;
-  // Reference on loadable subgraphs
-  std::unique_ptr<ir::Subgraphs> &_subgraphs;
-  const Model *_model;
+  // Reference to ir::model (to be loaded from _domain_model)
+  std::unique_ptr<ir::Model> &_model;
+  const Model *_domain_model;
   // Maps Tensor indices to onert Operands.
   std::vector<ir::OperandIndex> _tensor_to_operand;
   std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> _tensor_names;
@@ -360,7 +360,7 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
   const auto operand_index = subg.addOperand(shape, type_info);
 
   // Constant tensors are indicated by non-empty data.
-  const auto *data = _model->buffers()->Get(tensor->buffer())->data();
+  const auto *data = _domain_model->buffers()->Get(tensor->buffer())->data();
   if (data != nullptr)
   {
     using std::ptrdiff_t;
@@ -1039,7 +1039,7 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
   assert(op->custom_options_format() == CustomOptionsFormat::CustomOptionsFormat_FLEXBUFFERS &&
          "Unsupported custom operation options format");
 
-  auto *op_code = _model->operator_codes()->Get(op->opcode_index());
+  auto *op_code = _domain_model->operator_codes()->Get(op->opcode_index());
   auto custom_op_name = op_code->custom_code()->str();
 
   enum class BuiltinOP
@@ -1672,7 +1672,7 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
 template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
 {
   LoaderDomain::VerifyModelBuffer(*_verifier.get());
-  _model = LoaderDomain::GetModel(_base);
+  _domain_model = LoaderDomain::GetModel(_base);
   // Version unused
   // const auto version = _model->version();
   // Description unused
@@ -1680,14 +1680,14 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
   // Metabuffer unsued
   // const auto *metadata_buffer = _model->metadata_buffer();
   // Load subgraphs and map operations on subgraph
-  const auto domain_subgraphs = _model->subgraphs();
-  auto subgraphs = std::make_unique<ir::Subgraphs>();
-  for (uint32_t subgraph_index = 0; subgraph_index < domain_subgraphs->size(); ++subgraph_index)
+  const auto subgraphs = _domain_model->subgraphs();
+  auto model = std::make_unique<ir::Model>();
+  for (uint32_t subgraph_index = 0; subgraph_index < subgraphs->size(); ++subgraph_index)
   {
-    auto subg = loadSubgraph((*_model->subgraphs())[subgraph_index]);
-    subgraphs->push(ir::SubgraphIndex{subgraph_index}, std::move(subg));
+    auto subg = loadSubgraph((*_domain_model->subgraphs())[subgraph_index]);
+    model->push(ir::SubgraphIndex{subgraph_index}, std::move(subg));
   }
-  _subgraphs = std::move(subgraphs);
+  _model = std::move(model);
 }
 
 } // namespace base_loader

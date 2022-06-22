@@ -21,7 +21,7 @@
 
 #include "compiler/Compiler.h"
 #include "ir/Graph.h"
-#include "ir/Subgraphs.h"
+#include "ir/Model.h"
 #include "exec/IExecutor.h"
 #include "util/TracingCtx.h"
 
@@ -40,7 +40,7 @@ public:
   }
 
 private:
-  std::shared_ptr<onert::ir::Subgraphs> _subgraphs;
+  std::shared_ptr<onert::ir::Model> _model;
   std::unique_ptr<onert::compiler::CompilerOptions> _coptions;
   std::shared_ptr<onert::compiler::Compiler> _compiler;
   std::shared_ptr<onert::compiler::CompilerArtifact> _artifact;

@@ -22,7 +22,7 @@
 #include <NeuralNetworksEx.h>
 
 #include "ir/Graph.h"
-#include "ir/Subgraphs.h"
+#include "ir/Model.h"
 
 struct ANeuralNetworksModel
 {
@@ -59,7 +59,7 @@ public:
   size_t operandSize(uint32_t index) noexcept;
   bool isUsageSet(uint32_t index) noexcept;
   bool isOperationOutput(uint32_t index) noexcept;
-  std::shared_ptr<onert::ir::Subgraphs> getSubGraphs() const;
+  std::shared_ptr<onert::ir::Model> getModel() const;
 
 private:
   void setOptionalOperand(const onert::ir::OperandIndex idx);

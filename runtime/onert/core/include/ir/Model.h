@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_SUBGRAPHS_H__
-#define __ONERT_IR_SUBGRAPHS_H__
+#ifndef __ONERT_IR_MODEL_H__
+#define __ONERT_IR_MODEL_H__
 
 #include <memory>
 #include <unordered_map>
@@ -30,15 +30,15 @@ namespace ir
 
 class Graph;
 
-class Subgraphs
+class Model
 {
 public:
-  Subgraphs() = default;
-  Subgraphs(const Subgraphs &obj) = default;
-  Subgraphs(Subgraphs &&) = default;
-  Subgraphs &operator=(const Subgraphs &) = default;
-  Subgraphs &operator=(Subgraphs &&) = default;
-  ~Subgraphs() = default;
+  Model() = default;
+  Model(const Model &obj) = default;
+  Model(Model &&) = default;
+  Model &operator=(const Model &) = default;
+  Model &operator=(Model &&) = default;
+  ~Model() = default;
 
   /**
    * @brief Put subgraph in the container with a new Index for that
@@ -120,14 +120,14 @@ public:
    *
    * @return count of Subgraphs
    */
-  size_t count() const { return _subgraphs.size(); }
+  size_t subgraphs_count() const { return _subgraphs.size(); }
 
   /**
    * @brief Return the primary subgraph
    *
-   * @return std::shared_ptr<Graph> Primary sugraph
+   * @return std::shared_ptr<Graph> Primary subgraph
    */
-  std::shared_ptr<Graph> primary() const { return _subgraphs.at(SubgraphIndex{0}); }
+  std::shared_ptr<Graph> primary_subgraph() const { return _subgraphs.at(SubgraphIndex{0}); }
 
 private:
   std::unordered_map<SubgraphIndex, std::shared_ptr<Graph>> _subgraphs;
@@ -136,4 +136,4 @@ private:
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_SUBGRAPHS_H__
+#endif // __ONERT_IR_MODEL_H__
