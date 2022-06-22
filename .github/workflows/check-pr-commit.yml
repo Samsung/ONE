@@ -5,6 +5,11 @@ on:
     branches:
       - master
       - release/*
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
 
 defaults:
   run:
@@ -14,6 +19,8 @@ jobs:
   check-commit-message:
     name: Check commit message
     runs-on: ubuntu-20.04
+    # Skip on draft, check on draft -> ready
+    if: github.event.pull_request.draft == false
 
     steps:
       - name: Checkout
