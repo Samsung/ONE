@@ -74,7 +74,12 @@ public:
   }
 
 private:
-  const ir::Graph &_graph;
+  /**
+   * @brief Copy of target graph for lowering
+   * @note  It uses copy of graph, not reference.
+   *        Original graph may be deallocated by frontend.
+   */
+  const ir::Graph _graph;
   ir::OperandIndexMap<std::shared_ptr<ITensor>> _tensor_map;
 };
 
