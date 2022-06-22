@@ -76,9 +76,8 @@ void Pack::configure()
     }
   }
 
-  if (t0->element_type() == DataType::S32 || t0->element_type() == DataType::U8 ||
-      t0->element_type() == DataType::S8 || t0->element_type() == DataType::S16 ||
-      t0->element_type() == DataType::S64)
+  if (t0->element_type() == DataType::U8 || t0->element_type() == DataType::S8 ||
+      t0->element_type() == DataType::S16)
   {
     LUCI_INTERPRETER_CHECK(output()->zero_point() == t0->zero_point());
     LUCI_INTERPRETER_CHECK(output()->scale() == t0->scale());
