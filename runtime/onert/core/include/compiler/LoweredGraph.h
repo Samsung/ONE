@@ -63,6 +63,11 @@ private:
   void lowerGraph(const compiler::CompilerOptions &options);
 
 private:
+  /**
+   *  @brief  Copy of target graph for lowering
+   *  @note   It uses copy of graph, not reference.
+   *          It allows the original graph can be compiled multiple times.
+   */
   ir::Graph _graph;
   ir::Graph _parent_graph;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
