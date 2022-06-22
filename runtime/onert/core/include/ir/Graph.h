@@ -87,7 +87,6 @@ public:
   void verify(void);
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
   void setLayout(Layout layout) { _layout = layout; }
-  void setModel(const std::shared_ptr<Model> &model) { _model = model; }
   void setPartialModel(const std::shared_ptr<Model> &partial_model)
   {
     _partialgraphs = partial_model;
@@ -134,8 +133,6 @@ public:
   Operands &operands() { return _operands; } // TODO Remove this non-const accessor
   const Operations &operations() const { return _operations; }
   Operations &operations() { return _operations; }
-  const std::shared_ptr<Model> &model() const { return _model; }
-  std::shared_ptr<Model> &model() { return _model; }
   Layout layout() const { return _layout; }
   std::shared_ptr<Model> &partialgraphs() { return _partialgraphs; }
   std::shared_ptr<std::unordered_map<ir::OperandIndex, std::string>> &tensor_names()
@@ -172,8 +169,6 @@ private:
   OperandIndexSequence _outputs;
   std::unordered_map<std::string, IOIndex> _name_to_input;
   std::unordered_map<std::string, IOIndex> _name_to_output;
-  // model for child subgraphs
-  std::shared_ptr<Model> _model;
   // TFLite and circle's default layout is NHWC;
   Layout _layout{Layout::NHWC};
 
