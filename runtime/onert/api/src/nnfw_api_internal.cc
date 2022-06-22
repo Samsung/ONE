@@ -199,7 +199,7 @@ void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
 
 nnfw_session::nnfw_session()
   : _subgraphs{nullptr}, _coptions{nullptr}, _compiler_artifact{nullptr}, _execution{nullptr},
-    _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}, _tracing_ctx{nullptr}
+    _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}
 {
   // DO NOTHING
 }
@@ -384,7 +384,6 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
     auto compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, *_coptions);
     _subgraphs.reset();
     _compiler_artifact = compiler->compile();
@@ -420,7 +419,6 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
 
   try
   {
-    _tracing_ctx = std::make_unique<onert::util::TracingCtx>(_subgraphs.get());
     auto compiler = std::make_unique<onert::compiler::Compiler>(_subgraphs, *_coptions);
     _subgraphs.reset();
     auto artifacts = compiler->compile(_package_file_path.c_str(), map_file_path);
