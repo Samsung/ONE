@@ -22,11 +22,9 @@ using namespace onert;
 
 // TODO Support multiple subgraphs
 ANeuralNetworksCompilation::ANeuralNetworksCompilation(const ANeuralNetworksModel *model) noexcept
-  : _subgraphs{model->getSubGraphs()}, _tracing_ctx{std::make_unique<util::TracingCtx>(
-                                         _subgraphs.get())},
-    _coptions{std::make_unique<compiler::CompilerOptions>(*_subgraphs)},
+  : _subgraphs{model->getSubGraphs()}, _coptions{std::make_unique<compiler::CompilerOptions>(
+                                         *_subgraphs)},
     _compiler{std::make_shared<compiler::Compiler>(_subgraphs, *_coptions)}
-
 {
   if (model->allowedToFp16())
   {
