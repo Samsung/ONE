@@ -64,7 +64,7 @@ inline std::ostream &operator<<(std::ostream &o, const IOIndex &i)
 
 inline std::ostream &operator<<(std::ostream &o, const SubgraphIndex &i)
 {
-  return _index_print_impl(o, "SUBGRAPH", i); // $ubgraph
+  return _index_print_impl(o, "SUBGRAPH", i);
 }
 
 } // namespace ir
