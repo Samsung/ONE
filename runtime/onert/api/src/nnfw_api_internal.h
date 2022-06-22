@@ -174,9 +174,6 @@ private:
   std::vector<std::thread> _threads;
   std::vector<std::shared_ptr<onert::exec::Execution>> _executions;
   std::string _package_file_path;
-
-  // TODO Remove _tracing_ctx
-  std::unique_ptr<onert::util::TracingCtx> _tracing_ctx;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__
