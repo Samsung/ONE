@@ -379,13 +379,13 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   if (_options.he_profiling_mode)
     checkProfilerConditions();
 
-  // Tracing context
-  auto tracing_ctx = std::make_unique<util::TracingCtx>(_model.get());
-
   /***************************************************
    * Backend independent analysis & optimization phase
    ***************************************************/
   auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options.graph_dump_level);
+
+  // Tracing context
+  auto tracing_ctx = std::make_unique<util::TracingCtx>();
 
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
