@@ -65,7 +65,7 @@ private:
 private:
   /**
    *  @brief  Copy of target graph for lowering
-   *  @note   It use copy of graph, not reference.
+   *  @note   It uses copy of graph, not reference.
    *          It allows the original graph can be compiled multiple times.
    */
   ir::Graph _graph;
