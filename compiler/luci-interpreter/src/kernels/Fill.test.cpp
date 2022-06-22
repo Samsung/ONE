@@ -35,40 +35,84 @@ protected:
   std::unique_ptr<IMemoryManager> _memory_manager;
 };
 
-TEST_F(FillTest, FillInt32)
+template <typename T, DataType DT> void runFillIntKernel(IMemoryManager *memory_manager)
 {
   Shape dims_shape{2};
 
   std::vector<int32_t> dims_data = {2, 3};
-  std::vector<int32_t> value_data = {-11};
+  std::vector<T> value_data = {5};
 
-  Tensor dims = makeInputTensor<loco::DataType::S32>(dims_shape, dims_data, _memory_manager.get());
-  Tensor value =
-    makeInputTensor<loco::DataType::S32>(/*scalar*/ {}, value_data, _memory_manager.get());
+  Tensor dims = makeInputTensor<loco::DataType::S32>(dims_shape, dims_data, memory_manager);
+  Tensor value = makeInputTensor<DT>(/*scalar*/ {}, value_data, memory_manager);
 
-  Tensor output_tensor = makeOutputTensor(loco::DataType::S32);
+  Tensor output_tensor = makeOutputTensor(DT);
 
   Fill kernel(&dims, &value, &output_tensor);
 
   kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
+  memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
-  std::vector<int32_t> ref_output_data{-11, -11, -11, -11, -11, -11};
+  std::vector<T> ref_output_data{5, 5, 5, 5, 5, 5};
+  EXPECT_THAT(extractTensorData<T>(output_tensor), ref_output_data);
 
   std::vector<int32_t> ref_output_shape{2, 3};
-  EXPECT_THAT(extractTensorData<int32_t>(output_tensor), ref_output_data);
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+}
+
+template <DataType DT> void runFillQuantIntKernel(IMemoryManager *memory_manager)
+{
+  Shape dims_shape{2};
+
+  std::vector<int32_t> dims_data = {2, 3};
+  std::vector<float> value_data = {5};
+
+  int32_t zero_point = 0;
+
+  if (DT == loco::DataType::S8)
+    zero_point = 1;
+
+  Tensor dims = makeInputTensor<loco::DataType::S32>(dims_shape, dims_data, memory_manager);
+  Tensor value = makeInputTensor<DT>(/*scalar*/ {}, /*scale*/ 0.25, /*zero_point*/ zero_point,
+                                     value_data, memory_manager);
+
+  Tensor output_tensor = makeOutputTensor(DT, /*scale*/ 0.25, /*zero_point*/ zero_point);
+
+  Fill kernel(&dims, &value, &output_tensor);
+
+  kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  std::vector<float> ref_output_data{5, 5, 5, 5, 5, 5};
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
+
+  std::vector<int32_t> ref_output_shape{2, 3};
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+}
+
+TEST_F(FillTest, FillInt)
+{
+  // Run for int32_t input
+  runFillIntKernel<int32_t, loco::DataType::S32>(_memory_manager.get());
+  // Run for int64_t input
+  runFillIntKernel<int64_t, loco::DataType::S64>(_memory_manager.get());
+  // Run for int8_t input
+  runFillQuantIntKernel<loco::DataType::S8>(_memory_manager.get());
+  // Run for int16_t input
+  runFillQuantIntKernel<loco::DataType::S16>(_memory_manager.get());
+
+  SUCCEED();
 }
 
 TEST_F(FillTest, FillFloat)
 {
   Shape dims_shape{3};
 
-  std::vector<int32_t> dims_data = {2, 2, 2};
+  std::vector<int64_t> dims_data = {2, 2, 2};
   std::vector<float> value_data = {5};
 
-  Tensor dims = makeInputTensor<loco::DataType::S32>(dims_shape, dims_data, _memory_manager.get());
+  Tensor dims = makeInputTensor<loco::DataType::S64>(dims_shape, dims_data, _memory_manager.get());
   Tensor value =
     makeInputTensor<loco::DataType::FLOAT32>(/*scalar*/ {}, value_data, _memory_manager.get());
 
