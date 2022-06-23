@@ -43,7 +43,7 @@ subtool_list = {
     'backend': {
         'codegen': 'Code generation tool',
         'profile': 'Profile backend model file',
-        'infer': 'Infer Backend model file'
+        'infer': 'Infer backend model file'
     },
 }
 
