@@ -96,10 +96,18 @@ namespace circle_eval_diff
 HDF5Loader::HDF5Loader(const std::string &file_path, const std::vector<loco::Node *> &input_nodes)
   : _input_nodes{input_nodes}
 {
-  using HDF5Importer = dio::hdf5::HDF5Importer;
+  try
+  {
+    using HDF5Importer = dio::hdf5::HDF5Importer;
 
-  _hdf5 = std::make_unique<HDF5Importer>(file_path);
-  _hdf5->importGroup("value");
+    _hdf5 = std::make_unique<HDF5Importer>(file_path);
+    _hdf5->importGroup("value");
+  }
+  catch (const H5::Exception &e)
+  {
+    H5::Exception::printErrorStack();
+    throw std::runtime_error("HDF5 error occurred.");
+  }
 }
 
 uint32_t HDF5Loader::size(void) const { return _hdf5->numData(); }
@@ -117,18 +125,26 @@ InputDataLoader::Data HDF5Loader::get(uint32_t data_idx) const
     data.at(input_idx) = *createEmptyTensor(input_node).get();
 
     auto input_buffer = data.at(input_idx).buffer();
-    if (_hdf5->isRawData())
+    try
     {
-      _hdf5->readTensor(data_idx, input_idx, input_buffer);
-    }
-    else
-    {
-      DataType dtype;
-      Shape shape;
-      _hdf5->readTensor(data_idx, input_idx, &dtype, &shape, input_buffer);
+      if (_hdf5->isRawData())
+      {
+        _hdf5->readTensor(data_idx, input_idx, input_buffer);
+      }
+      else
+      {
+        DataType dtype;
+        Shape shape;
+        _hdf5->readTensor(data_idx, input_idx, &dtype, &shape, input_buffer);
 
-      // Check the type and the shape of the input data is valid
-      verifyTypeShape(input_node, dtype, shape);
+        // Check the type and the shape of the input data is valid
+        verifyTypeShape(input_node, dtype, shape);
+      }
+    }
+    catch (const H5::Exception &e)
+    {
+      H5::Exception::printErrorStack();
+      throw std::runtime_error("HDF5 error occurred.");
     }
   }
 
@@ -201,18 +217,26 @@ std::unique_ptr<InputDataLoader> makeDataLoader(const std::string &file_path,
                                                 const InputFormat &format,
                                                 const std::vector<loco::Node *> &input_nodes)
 {
-  switch (format)
+  try
   {
-    case InputFormat::H5:
+    switch (format)
     {
-      return std::make_unique<HDF5Loader>(file_path, input_nodes);
+      case InputFormat::H5:
+      {
+        return std::make_unique<HDF5Loader>(file_path, input_nodes);
+      }
+      case InputFormat::DIR:
+      {
+        return std::make_unique<DirectoryLoader>(file_path, input_nodes);
+      }
+      default:
+        throw std::runtime_error{"Unsupported input format."};
     }
-    case InputFormat::DIR:
-    {
-      return std::make_unique<DirectoryLoader>(file_path, input_nodes);
-    }
-    default:
-      throw std::runtime_error{"Unsupported input format."};
+  }
+  catch (const H5::Exception &e)
+  {
+    H5::Exception::printErrorStack();
+    throw std::runtime_error("HDF5 error occurred.");
   }
 }
 
