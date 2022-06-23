@@ -52,6 +52,11 @@ void csv_tokenize(const std::string &data, std::vector<std::string> &result)
     result.push_back(token);
 }
 
+void add_switch(arser::Arser &arser, const char *opt, const char *desc)
+{
+  arser.add_argument(opt).nargs(0).default_value(false).help(desc);
+}
+
 int entry(int argc, char **argv)
 {
   // Simple argument parser (based on map)
@@ -68,10 +73,7 @@ int entry(int argc, char **argv)
   arser.add_argument("--O1").nargs(0).required(false).default_value(false).help(
     "Enable O1 optimize options");
 
-  arser.add_argument("--fold_add_v2")
-    .nargs(0)
-    .default_value(false)
-    .help("This will fold AddV2 operators with constant inputs");
+  add_switch(arser, "--fold_add_v2", "This will fold AddV2 operators with constant inputs");
 
   arser.add_argument("--fold_cast")
     .nargs(0)
