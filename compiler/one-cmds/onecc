@@ -43,6 +43,7 @@ subtool_list = {
     'backend': {
         'codegen': 'Code generation tool',
         'profile': 'Profile backend model file',
+        'infer': 'Infer Backend model file'
     },
 }
 
@@ -128,7 +129,8 @@ def _get_driver_name(driver_name):
         'one-partition': 'one-partition',
         'one-pack': 'one-pack',
         'one-codegen': 'one-codegen',
-        'one-profile': 'one-profile'
+        'one-profile': 'one-profile',
+        'one-infer': 'one-infer'
     }[driver_name]
 
 
@@ -217,7 +219,7 @@ def main():
     bin_dir = os.path.dirname(os.path.realpath(__file__))
     import_drivers_dict = _utils._detect_one_import_drivers(bin_dir)
     transform_drivers = [
-        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile', 'one-partition'
+        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile', 'one-partition', 'one-infer'
     ]
     _verify_cfg(import_drivers_dict, config)
 
