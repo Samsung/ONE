@@ -109,7 +109,7 @@ def _search_backend_driver(driver):
 
 
 def _get_parser(backends_list):
-    infer_usage = 'one-infer [-h] [-v] [-C CONFIG] [-d DRIVER] [-b BACKEND] [--] [COMMANDS FOR BACKEND DRIVER]'
+    infer_usage = 'one-infer [-h] [-v] [-C CONFIG] [-d DRIVER] [-b BACKEND] [--post-process POST_PROCESS] [--] [COMMANDS FOR BACKEND DRIVER]'
     parser = argparse.ArgumentParser(
         description='command line tool to infer model', usage=infer_usage)
 
@@ -128,6 +128,9 @@ def _get_parser(backends_list):
             backends_name) + ')'
     backend_help_message = 'backend name to use ' + backends_name_message
     parser.add_argument('-b', '--backend', type=str, help=backend_help_message)
+
+    post_process_help_message = 'post processing script to convert I/O data to standard format'
+    parser.add_argument('--post-process', type=str, help=post_process_help_message)
 
     return parser
 
@@ -156,7 +159,7 @@ def _parse_arg(parser):
     # split by '--'
     args = [list(y) for x, y in itertools.groupby(argv, lambda z: z == '--') if not x]
 
-    # one-infer [-h] [-v] [-C CONFIG] [-d DRIVER] [-b BACKEND] -- [COMMANDS FOR BACKEND DRIVER]
+    # one-infer [-h] [-v] [-C CONFIG] [-d DRIVER] [-b BACKEND] [--post-process POST_PROCESS] -- [COMMANDS FOR BACKEND DRIVER]
     if len(args):
         infer_args = args[0]
         infer_args = parser.parse_args(infer_args)
@@ -207,6 +210,14 @@ def main():
 
     # run backend driver
     _utils._run(infer_cmd, err_prefix=ntpath.basename(driver_path))
+
+    # run post process script if it's given
+    if _utils._is_valid_attr(args, 'post_process'):
+        # NOTE: the given python script will be executed by venv of ONE
+        python_path = sys.executable
+        post_process_command = [python_path] + getattr(args,
+                                                       'post_process').strip().split(' ')
+        _utils._run(post_process_command, err_prefix='one-infer')
 
 
 if __name__ == '__main__':

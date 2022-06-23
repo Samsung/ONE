@@ -3,6 +3,7 @@
 # Gather test scripts
 file(GLOB TESTITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.test")
 file(GLOB CONFIGITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.cfg")
+file(GLOB CONFIGITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.py")
 file(GLOB QCONFIGITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.qconf.json")
 
 # Create a script to run the tests at installation folder
