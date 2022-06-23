@@ -369,7 +369,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
     _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
-      subg.setModel(_model);
     });
     _state = State::COMPILED;
     return std::make_shared<CompilerArtifact>(executors, nullptr);
@@ -398,8 +397,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
     // Set tracing_ctx for copied graph
     tracing_ctx->setSubgraphIndex(&(lowered_subgs[index]->graph()), index.value());
-
-    subg.setModel(nullptr);
   });
 
   _model.reset();
@@ -588,7 +585,6 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
       // // Lower: Assign backend
       lowered_partialgraphs[pindex] =
         std::make_unique<compiler::LoweredGraph>(subg, partialgraph, _options);
-      partialgraph.setModel(nullptr);
     });
   });
 
