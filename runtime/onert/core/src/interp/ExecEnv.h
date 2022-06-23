@@ -128,6 +128,7 @@ public:
 
     tensor->setBuffer(std::make_shared<InternalBuffer>(tensor->total_size()));
     assignTensor(index, tensor);
+
     _buffers.insert(index);
   }
 
