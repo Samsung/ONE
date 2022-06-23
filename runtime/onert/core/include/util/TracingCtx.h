@@ -37,29 +37,9 @@ class TracingCtx
 public:
   /**
    * @brief Create and store unique session id managed by this class
-   *        Note that this constructor can be called by multiple sessions running in parallely.
-   *        Use this constructor only when there is only one subgraph in a model.
+   * @note  This constructor can be called by multiple session running in parallely.
    */
-  TracingCtx(const ir::Graph *primary_subgraph)
-  {
-    decideSessionID();
-    _subgraph_indices.emplace(primary_subgraph, 0);
-  }
-
-  /**
-   * @brief Create and store unique session id managed by this class
-   *        Note that this constructor can be called by multiple sessions running in parallely.
-   */
-  TracingCtx(const onert::ir::Model *model)
-  {
-    assert(model);
-
-    decideSessionID();
-
-    auto count = model->subgraphs_count();
-    for (size_t i = 0; i < count; i++)
-      _subgraph_indices.emplace(model->at(onert::ir::SubgraphIndex(i)).get(), i);
-  }
+  TracingCtx(void) { decideSessionID(); }
 
   uint32_t getSessionId() const { return _session_id; }
 
