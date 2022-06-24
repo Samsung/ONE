@@ -257,7 +257,7 @@ std::unique_ptr<luci::PGroups> produce_pgroups(const luci::Module *source,
     }
   }
 
-  return std::move(pgroups);
+  return pgroups;
 }
 
 } // namespace luci

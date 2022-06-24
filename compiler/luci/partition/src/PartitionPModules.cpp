@@ -156,7 +156,7 @@ std::unique_ptr<loco::Graph> clone_graph(loco::Graph *graph_org, luci::CloneCont
     add_graph_output(graph_clone, output_clone);
   }
 
-  return std::move(graph);
+  return graph;
 }
 
 void clone_recursive_subgraphs(luci::PartedModule &pm, loco::Graph *graph,
