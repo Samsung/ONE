@@ -79,7 +79,7 @@ public:
     // Compile
     auto model = std::make_shared<onert::ir::Model>();
     model->push(onert::ir::SubgraphIndex{0}, graph);
-    coptions = std::make_unique<onert::compiler::CompilerOptions>(*model);
+    coptions = onert::compiler::CompilerOptions::fromGlobalConfig(*model);
     onert::compiler::Compiler compiler{model, *coptions};
     artifact = compiler.compile();
   }
@@ -141,7 +141,7 @@ TEST(ExecInstance, twoCompile)
   // Make new executor: compile again
   auto model = std::make_shared<onert::ir::Model>();
   model->push(onert::ir::SubgraphIndex{0}, graph);
-  auto coptions = std::make_unique<onert::compiler::CompilerOptions>(*model);
+  auto coptions = onert::compiler::CompilerOptions::fromGlobalConfig(*model);
   onert::compiler::Compiler compiler{model, *coptions};
   std::shared_ptr<onert::compiler::CompilerArtifact> artifact = compiler.compile();
   onert::exec::Execution execution2{artifact->_executors};

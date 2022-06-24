@@ -226,7 +226,7 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_model);
+  _coptions = onert::compiler::CompilerOptions::fromGlobalConfig(*_model);
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -276,7 +276,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_model);
+  _coptions = onert::compiler::CompilerOptions::fromGlobalConfig(*_model);
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -359,7 +359,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = std::make_unique<onert::compiler::CompilerOptions>(*_model);
+  _coptions = onert::compiler::CompilerOptions::fromGlobalConfig(*_model);
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }

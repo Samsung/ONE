@@ -113,19 +113,20 @@ void ManualSchedulerOptions::setBackendMap(const ir::Model &model, const std::st
   }
 }
 
-void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Model &model)
+std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig(const ir::Model &model)
 {
-  backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
-  trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
-  graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
-  executor = util::getConfigString(util::config::EXECUTOR);
-  he_scheduler = util::getConfigBool(util::config::USE_SCHEDULER);
-  he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
-  disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
-  fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
+  auto o = std::make_unique<CompilerOptions>();
+  o->backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
+  o->trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
+  o->graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
+  o->executor = util::getConfigString(util::config::EXECUTOR);
+  o->he_scheduler = util::getConfigBool(util::config::USE_SCHEDULER);
+  o->he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
+  o->disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
+  o->fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
   {
     // Backend for all
-    auto &ms_options = manual_scheduler_options;
+    auto &ms_options = o->manual_scheduler_options;
 
     // Default value for op_backend_all is first element in the backend list
     ms_options.backend_for_all = util::getConfigString(util::config::OP_BACKEND_ALLOPS);
@@ -146,6 +147,7 @@ void CompilerOptions::fetchCompilerOptionsFromGlobalConfig(const ir::Model &mode
     auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
     ms_options.setBackendMap(model, map_str);
   }
+  return o;
 }
 
 Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt)
