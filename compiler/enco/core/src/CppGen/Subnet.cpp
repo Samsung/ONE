@@ -373,7 +373,7 @@ std::unique_ptr<SubnetStruct> SubnetStructBuilder::build(const ANNBinder *binder
   // Finalize compilation
   res->ctor()->append("ANeuralNetworksCompilation_finish(", cname, ");");
 
-  return std::move(res);
+  return res;
 }
 
 std::unique_ptr<pp::MultiLineText> SubnetBlockCompiler::compile(const ANNBinder *binder) const
@@ -415,7 +415,7 @@ std::unique_ptr<pp::MultiLineText> SubnetBlockCompiler::compile(const ANNBinder 
 
   res->append("ANeuralNetworksExecution_free(execution);");
 
-  return std::move(res);
+  return res;
 }
 
 } // namespace enco
