@@ -38,27 +38,28 @@ public:
   };
 
 public:
-  DotDumper(const ir::Graph &graph, Level level)
-    : _lowered_graph{nullptr}, _graph(graph), _level{level}
-  {
-  }
-  DotDumper(const compiler::LoweredGraph *lowered_graph, Level level)
-    : _lowered_graph{lowered_graph}, _graph(_lowered_graph->graph()), _level{level}
-  {
-  }
+  DotDumper(Level level) : _level{level} {}
 
 public:
   /**
-   * @brief Dump to dot file as tag name if "GRAPH_DOT_DUMP" is set
+   * @brief Dump graph information to dot file as tag name if "GRAPH_DOT_DUMP" is set
    *
+   * @param[in] graph  The graph that would be used to get operations and operands
    * @param[in] tag    The name of dot file that would be created
    * @return N/A
    */
-  void dump(const std::string &tag);
+  void dump(const ir::Graph &graph, const std::string &tag);
+
+  /**
+   * @brief Dump lowered graph information to dot file as tag name if "GRAPH_DOT_DUMP" is set
+   *
+   * @param[in] graph  The graph that would be used to get operations and operands
+   * @param[in] tag    The name of dot file that would be created
+   * @return N/A
+   */
+  void dump(const compiler::LoweredGraph &lowered_graph, const std::string &tag);
 
 private:
-  const compiler::LoweredGraph *_lowered_graph;
-  const ir::Graph &_graph;
   Level _level;
 };
 
