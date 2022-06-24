@@ -190,7 +190,7 @@ std::unique_ptr<loco::Graph> Importer::import(const ModelSignature &signature,
 
   convert_graph(*source_ptr, signature, tf_graph_def, graph.get());
 
-  return std::move(graph);
+  return graph;
 }
 
 } // namespace moco
