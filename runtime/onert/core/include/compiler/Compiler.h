@@ -57,12 +57,9 @@ struct PartialGraphOptions
 class CompilerOptions
 {
 public:
-  CompilerOptions(const ir::Model &model) { fetchCompilerOptionsFromGlobalConfig(model); }
-
-private:
   // Set default values for CompilerOptions
   // All these default values should not be fetched from Env, when we stop supporting Android NNAPI.
-  void fetchCompilerOptionsFromGlobalConfig(const ir::Model &model);
+  static std::unique_ptr<CompilerOptions> fromGlobalConfig(const ir::Model &model);
 
 public:
   // GENERAL OPTIONS
