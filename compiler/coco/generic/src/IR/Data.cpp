@@ -209,8 +209,7 @@ std::unique_ptr<Data> Data::create(void)
   data->_blob = std::move(blob);
   data->_fp32 = std::move(fp32);
 
-  // GCC 4.9 tries to copy data (while GCC 6.X doesn't)
-  return std::move(data);
+  return data;
 }
 
 } // namespace coco

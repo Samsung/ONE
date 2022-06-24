@@ -144,7 +144,7 @@ std::unique_ptr<Module> Module::create(void)
   m->_input = make_unique<coco::InputList>();
   m->_output = make_unique<coco::OutputList>();
 
-  return std::move(m);
+  return m;
 }
 
 } // namespace coco
