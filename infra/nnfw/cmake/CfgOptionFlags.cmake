@@ -75,6 +75,7 @@ option(BUILD_TENSORFLOW_LITE "Build TensorFlow Lite from the downloaded source" 
 option(BUILD_TENSORFLOW_LITE_2_3_0 "Build TensorFlow Lite 2.3.0 from the downloaded source" OFF)
 option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the downloaded source" OFF)
 option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" ON)
+option(DEBUG_ARMCOMPUTE "Build ARM Compute as release type" OFF)
 option(BUILD_RUY "Build ruy library from the downloaded source" ON)
 option(BUILD_CPUINFO "Build cpuinfo library from the downloaded source" ON)
 option(PROFILE_RUY "Enable ruy library profiling" OFF)

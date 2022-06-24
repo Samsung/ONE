@@ -90,11 +90,11 @@ function(_ARMCompute_Build ARMComputeInstall_DIR)
     return()
   endif(NOT SCONS_PATH)
 
-  if(CMAKE_BUILD_TYPE)
-    string(TOLOWER "${CMAKE_BUILD_TYPE}" SCON_BUILD_TYPE)
-  else(CMAKE_BUILD_TYPE)
+  if(DEBUG_ARMCOMPUTE)
+    set(SCON_BUILD_TYPE "debug")
+  else(DEBUG_ARMCOMPUTE)
     set(SCON_BUILD_TYPE "release")
-  endif(CMAKE_BUILD_TYPE)
+  endif(DEBUG_ARMCOMPUTE)
 
   #### Architecture-specific configurations
 
