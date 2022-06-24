@@ -25,6 +25,7 @@
 #include "tflite_loader.h"
 #include "trix_loader.h"
 #include "json/json.h"
+#include "ir/NNPkg.h"
 #include "ir/OpCode.h"
 #include "util/TracingCtx.h"
 
@@ -212,7 +213,7 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _model{nullptr}, _coptions{}, _compiler_artifact{nullptr}, _execution{nullptr},
+  : _nnpkg{nullptr}, _coptions{}, _compiler_artifact{nullptr}, _execution{nullptr},
     _kernel_registry{nullptr}
 {
   // DO NOTHING
@@ -263,7 +264,8 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
 
   try
   {
-    _model = onert::circle_loader::loadModel(buffer, size);
+    auto model = onert::circle_loader::loadModel(buffer, size);
+    _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
     _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     _state = State::MODEL_LOADED;
   }
@@ -297,9 +299,10 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
   std::string model_type = filename.substr(dotidx + 1); // + 1 to exclude dot
   try
   {
-    _model = loadModel(filename, model_type);
-    if (_model == nullptr)
+    auto model = loadModel(filename, model_type);
+    if (model == nullptr)
       return NNFW_STATUS_ERROR;
+    _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
     _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     _state = State::MODEL_LOADED;
   }
@@ -362,14 +365,18 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
         setConfigKeyValues(keyValues);
       }
     }
-
-    auto model_file_path = package_path + std::string("/") + models[0].asString(); // first model
-    auto model_type = model_types[0].asString(); // first model's type
-    _model = loadModel(model_file_path, model_type);
-    if (_model == nullptr)
-      return NNFW_STATUS_ERROR;
-    _model->primary_subgraph()->bindKernelBuilder(_kernel_registry->getBuilder());
-    _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
+    _nnpkg = std::make_shared<onert::ir::NNPkg>();
+    for (uint32_t i = 0; i < models.size(); ++i)
+    {
+      auto model_file_path = package_path + std::string("/") + models[i].asString();
+      auto model_type = model_types[i].asString();
+      auto model = loadModel(model_file_path, model_type);
+      if (model == nullptr)
+        return NNFW_STATUS_ERROR;
+      model->primary_subgraph()->bindKernelBuilder(_kernel_registry->getBuilder());
+      _nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
+      _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
+    }
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -400,8 +407,16 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    auto compiler = std::make_unique<onert::compiler::Compiler>(_model, *_coptions[0]);
-    _model.reset();
+    // TODO: Compile all models in case of multiple models
+    if (_nnpkg->model_count() > 1)
+    {
+      std::cerr << "Error during model prepare : multiple models are not supported yet."
+                << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+    auto model = _nnpkg->primary_model();
+    auto compiler = std::make_unique<onert::compiler::Compiler>(model, *_coptions[0]);
+    _nnpkg.reset();
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
   }
@@ -435,8 +450,9 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
 
   try
   {
-    auto compiler = std::make_unique<onert::compiler::Compiler>(_model, *_coptions[0]);
-    _model.reset();
+    auto model = _nnpkg->primary_model();
+    auto compiler = std::make_unique<onert::compiler::Compiler>(model, *_coptions[0]);
+    _nnpkg.reset();
     auto artifacts = compiler->compile(_package_file_path.c_str(), map_file_path);
 
     for (auto it = artifacts.begin(); it != artifacts.end(); ++it)
@@ -745,7 +761,8 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
   {
     // In this case, if we apply input shape in primary_subgraph, it will propagate after
     // compilation and excution
-    auto primary_subgraph = _model->primary_subgraph();
+    auto model = _nnpkg->primary_model();
+    auto primary_subgraph = model->primary_subgraph();
     auto ind = primary_subgraph->getInputs().at(index);
     auto &input = primary_subgraph->operands().at(ind);
 
@@ -1072,10 +1089,10 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 
 const onert::ir::Graph *nnfw_session::primary_subgraph()
 {
-  if (_model)
+  if (_nnpkg != nullptr)
   {
     assert(_execution == nullptr && _executions.empty());
-    return _model->primary_subgraph().get();
+    return _nnpkg->primary_model()->primary_subgraph().get();
   }
   else
   {
@@ -1143,7 +1160,7 @@ bool nnfw_session::isStateInitialized()
 {
   if (_state == State::INITIALIZED)
   {
-    assert(_model == nullptr);
+    assert(_nnpkg == nullptr);
     assert(_coptions.empty());
     assert(_execution == nullptr && _executions.empty());
     return true;
@@ -1158,7 +1175,7 @@ bool nnfw_session::isStateModelLoaded()
 {
   if (_state == State::MODEL_LOADED)
   {
-    assert(_model != nullptr);
+    assert(_nnpkg != nullptr);
     assert(!_coptions.empty());
     assert(_execution == nullptr && _executions.empty());
     return true;
@@ -1173,7 +1190,7 @@ bool nnfw_session::isStatePrepared()
 {
   if (_state == State::PREPARED)
   {
-    assert(_model == nullptr);
+    assert(_nnpkg == nullptr);
     assert(!_coptions.empty());
     assert(_execution != nullptr || !_executions.empty());
     return true;
@@ -1188,7 +1205,7 @@ bool nnfw_session::isStateRunning()
 {
   if (_state == State::RUNNING)
   {
-    assert(_model == nullptr);
+    assert(_nnpkg == nullptr);
     assert(!_coptions.empty());
     assert(_execution != nullptr || !_executions.empty());
     return true;
@@ -1200,7 +1217,7 @@ bool nnfw_session::isStateFinishedRun()
 {
   if (_state == State::FINISHED_RUN)
   {
-    assert(_model == nullptr);
+    assert(_nnpkg == nullptr);
     assert(!_coptions.empty());
     assert(_execution != nullptr || !_executions.empty());
     return true;
