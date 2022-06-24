@@ -255,7 +255,7 @@ std::unique_ptr<luci::PGroups> merge_pgroups(const luci::PGroups *s_pgroups)
     }
   } while (changed);
 
-  return std::move(d_pgroups);
+  return d_pgroups;
 }
 
 } // namespace luci
