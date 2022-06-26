@@ -220,14 +220,14 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
   try
   {
     _model = onert::circle_loader::loadModel(buffer, size);
+    _coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
+    _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-  _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
 
@@ -270,14 +270,14 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
       std::cerr << "Unsupported model type" << std::endl;
       return NNFW_STATUS_ERROR;
     }
+    _coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
+    _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-  _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
 
@@ -353,14 +353,14 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       return NNFW_STATUS_ERROR;
     }
     _model->primary_subgraph()->bindKernelBuilder(_kernel_registry->getBuilder());
+    _coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
+    _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-  _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
 
