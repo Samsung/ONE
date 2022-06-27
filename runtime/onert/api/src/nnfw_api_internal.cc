@@ -210,15 +210,10 @@ NNFW_STATUS nnfw_session::create(nnfw_session **session)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
   // Create session
-  try
+  *session = new (std::nothrow) nnfw_session();
+  if (*session == nullptr)
   {
-    *session = new nnfw_session();
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error during session creation : " << e.what() << std::endl;
-    *session = nullptr;
-
+    std::cerr << "Error during session creation" << std::endl;
     return NNFW_STATUS_OUT_OF_MEMORY;
   }
 
@@ -231,6 +226,7 @@ NNFW_STATUS nnfw_session::create(nnfw_session **session)
   catch (const std::exception &e)
   {
     std::cerr << "Error during session initialization : " << e.what() << std::endl;
+    delete *session;
     *session = nullptr;
 
     return NNFW_STATUS_ERROR;
