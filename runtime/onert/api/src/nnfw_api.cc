@@ -58,15 +58,7 @@ STATIC_ASSERT_ENUM_CHECK(NNFW_INFO_ID_VERSION, 0);
  * @param session the session to be created
  * @return NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_create_session(nnfw_session **session)
-{
-  NNFW_RETURN_ERROR_IF_NULL(session);
-
-  *session = new (std::nothrow) nnfw_session();
-  if (*session == nullptr)
-    return NNFW_STATUS_OUT_OF_MEMORY;
-  return NNFW_STATUS_NO_ERROR;
-}
+NNFW_STATUS nnfw_create_session(nnfw_session **session) { return nnfw_session::create(session); }
 
 /*
  * Close a session instance
