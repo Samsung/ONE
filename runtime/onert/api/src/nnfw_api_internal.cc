@@ -243,13 +243,14 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
   }
 
   std::string filename{model_file_path};
-  if (filename.size() < 8) // .tflite or .circle
+  // TODO: Use std::filesystem::path when we can use c++17.
+  auto dotidx = filename.find_last_of('.');
+  if (dotidx == std::string::npos)
   {
-    std::cerr << "Invalid model file path." << std::endl;
+    std::cerr << "Invalid model file path. Please use file with extension." << std::endl;
     return NNFW_STATUS_ERROR;
   }
-
-  std::string model_type = filename.substr(filename.size() - 7, 7);
+  std::string model_type = filename.substr(dotidx);
 
   try
   {
