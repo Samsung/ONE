@@ -41,7 +41,7 @@ enum class State
 struct ManualSchedulerOptions
 {
 public:
-  void setBackendMap(const ir::Model &model, const std::string &str);
+  void setBackendMap(const std::string &str);
 
 public:
   std::string backend_for_all;
@@ -59,7 +59,7 @@ class CompilerOptions
 public:
   // Set default values for CompilerOptions
   // All these default values should not be fetched from Env, when we stop supporting Android NNAPI.
-  static std::unique_ptr<CompilerOptions> fromGlobalConfig(const ir::Model &model);
+  static std::unique_ptr<CompilerOptions> fromGlobalConfig();
 
 public:
   // GENERAL OPTIONS

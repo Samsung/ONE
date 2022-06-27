@@ -226,7 +226,7 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = onert::compiler::CompilerOptions::fromGlobalConfig(*_model);
+  _coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -276,7 +276,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = onert::compiler::CompilerOptions::fromGlobalConfig(*_model);
+  _coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -359,7 +359,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  _coptions = onert::compiler::CompilerOptions::fromGlobalConfig(*_model);
+  _coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
   _state = State::MODEL_LOADED;
   return NNFW_STATUS_NO_ERROR;
 }
@@ -1220,7 +1220,7 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
 
   // Backend for all
   auto &ms_options = _coptions->manual_scheduler_options;
-  ms_options.setBackendMap(*_model, std::string{backend_settings});
+  ms_options.setBackendMap(std::string{backend_settings});
 
   return NNFW_STATUS_NO_ERROR;
 }

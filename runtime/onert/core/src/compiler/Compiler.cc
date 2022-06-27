@@ -90,7 +90,7 @@ namespace onert
 
 namespace compiler
 {
-void ManualSchedulerOptions::setBackendMap(const ir::Model &model, const std::string &str)
+void ManualSchedulerOptions::setBackendMap(const std::string &str)
 {
   // TODO Support multiple subgraphs for manual scheduling
   auto key_val_list = nnfw::misc::split(str, ';');
@@ -105,15 +105,11 @@ void ManualSchedulerOptions::setBackendMap(const ir::Model &model, const std::st
     const auto &key_str = key_val.at(0);
     const auto &val = key_val.at(1);
     auto key = static_cast<uint32_t>(std::stoi(key_str));
-
-    model.at(ir::SubgraphIndex{0})
-      ->operations()
-      .at(ir::OperationIndex{key}); // Check if exist, or this wil throw
     this->index_to_backend.emplace(ir::OperationIndex{key}, val);
   }
 }
 
-std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig(const ir::Model &model)
+std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
 {
   auto o = std::make_unique<CompilerOptions>();
   o->backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
@@ -145,7 +141,7 @@ std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig(const ir::Mod
 
     // Index to Backend
     auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
-    ms_options.setBackendMap(model, map_str);
+    ms_options.setBackendMap(map_str);
   }
   return o;
 }
