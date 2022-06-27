@@ -380,6 +380,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
    * Backend independent analysis & optimization phase
    ***************************************************/
   auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options.graph_dump_level);
+  onert::dumper::dot::DotDumper dot_dumper(dump_level);
 
   // Tracing context
   auto tracing_ctx = std::make_unique<util::TracingCtx>();
@@ -387,8 +388,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
   _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-    onert::dumper::dot::DotDumper dot_dumper(subg, dump_level);
-    dot_dumper.dump(nnfw::misc::str("before_lower_subg-", index.value()));
+    dot_dumper.dump(subg, nnfw::misc::str("before_lower_subg-", index.value()));
 
     // Lower: Assign backend
     lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, _options);
@@ -403,8 +403,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   {
     const auto &subg_index = pair.first;
     auto &lowered_subg = pair.second;
-    onert::dumper::dot::DotDumper dot_dumper_lowered(lowered_subg.get(), dump_level);
-    dot_dumper_lowered.dump("after_lower_subg-" + std::to_string(subg_index.value()));
+    dot_dumper.dump(*lowered_subg, "after_lower_subg-" + std::to_string(subg_index.value()));
   }
 
   // Shape inference.
@@ -570,6 +569,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
    * Backend independent analysis & optimization phase
    ***************************************************/
   auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options.graph_dump_level);
+  onert::dumper::dot::DotDumper dot_dumper_part(dump_level);
 
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>
@@ -577,8 +577,8 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   _model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
     auto part = subg.partialgraphs();
     part->iterate([&](const ir::SubgraphIndex &pindex, ir::Graph &partialgraph) {
-      onert::dumper::dot::DotDumper dot_dumper_part(partialgraph, dump_level);
-      dot_dumper_part.dump(nnfw::misc::str("before_lower_subg_partialgraph-", pindex.value()));
+      dot_dumper_part.dump(partialgraph,
+                           nnfw::misc::str("before_lower_subg_partialgraph-", pindex.value()));
 
       // // Lower: Assign backend
       lowered_partialgraphs[pindex] =
@@ -591,9 +591,8 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
 
     const auto &partialgraph_index = pair.first;
     auto &lowered_partialgraph = pair.second;
-    onert::dumper::dot::DotDumper dot_dumper_lowered_part(lowered_partialgraph.get(), dump_level);
-    dot_dumper_lowered_part.dump("after_lower_subg_partialgraph-" +
-                                 std::to_string(partialgraph_index.value()));
+    dot_dumper_part.dump(*lowered_partialgraph, "after_lower_subg_partialgraph-" +
+                                                  std::to_string(partialgraph_index.value()));
   }
 
   // Partial Graph shape inference
