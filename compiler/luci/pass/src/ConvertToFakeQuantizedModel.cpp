@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/ConvertToFakeQuantizedModelPass.h"
+#include "luci/Pass/ConvertToFakeQuantizedModel.h"
 #include "luci/Pass/QuantizationParameters.h"
 
 #include "QuantizationUtils.h"
@@ -237,20 +237,17 @@ struct FakeQuantize final : public luci::CircleNodeMutableVisitor<void>
 namespace luci
 {
 
-bool ConvertToFakeQuantizedModelPass::run(loco::Graph *g)
+void ConvertToFakeQuantizedModel::run(loco::Graph *g)
 {
   LOGGER(l);
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    INFO(l) << "ConvertToFakeQuantizedModelPass visit node: " << circle_node->name() << std::endl;
+    INFO(l) << "ConvertToFakeQuantizedModel visit node: " << circle_node->name() << std::endl;
 
     FakeQuantize fq;
     circle_node->accept(&fq);
   }
-
-  // One time run
-  return false;
 }
 
 } // namespace luci

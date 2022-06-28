@@ -16,7 +16,7 @@
 
 #include <logo/Phase.h>
 
-#include "luci/Pass/ConvertToFakeQuantizedModelPass.h"
+#include "luci/Pass/ConvertToFakeQuantizedModel.h"
 #include <luci/IR/CircleNodes.h>
 
 #include <gtest/gtest.h>
@@ -232,7 +232,7 @@ TEST(ConvertToFakeQuantizedModelTest, U8Conv2D)
   U8ConvGraph g;
   g.init();
 
-  luci::ConvertToFakeQuantizedModelPass fq;
+  luci::ConvertToFakeQuantizedModel fq;
   fq.run(&g.g);
 
   // Check ifm
@@ -255,7 +255,7 @@ TEST(ConvertToFakeQuantizedModelTest, F32Conv2D_NEG)
   FP32ConvGraph g;
   g.init();
 
-  luci::ConvertToFakeQuantizedModelPass fq;
+  luci::ConvertToFakeQuantizedModel fq;
   fq.run(&g.g);
 
   uint32_t dequant_count = 0;

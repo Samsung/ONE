@@ -20,7 +20,7 @@
 #include "luci/Pass/ForceQuantParamPass.h"
 #include "luci/Pass/PropagateQParamForwardPass.h"
 #include "luci/Pass/RequantizePass.h"
-#include "luci/Pass/ConvertToFakeQuantizedModelPass.h"
+#include "luci/Pass/ConvertToFakeQuantizedModel.h"
 #include "luci/Pass/FoldDequantizePass.h"
 #include "luci/Pass/RemoveRedundantDequantizePass.h"
 #include "luci/Pass/QuantizePreCheckerPass.h"
@@ -425,7 +425,7 @@ void CircleQuantizer::quantize(loco::Graph *g) const
   // Convert quantized model to fake-quantized model
   if (_options->query(Options::Algorithm::ConvertToFakeQuantizedModel))
   {
-    luci::ConvertToFakeQuantizedModelPass fake_quantizer;
+    luci::ConvertToFakeQuantizedModel fake_quantizer;
     fake_quantizer.run(g);
 
     logo::Phase phase;

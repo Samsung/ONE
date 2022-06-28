@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_CONVERT_TO_FAKE_QUANTIZED_MODEL_PASS_H__
-#define __LUCI_CONVERT_TO_FAKE_QUANTIZED_MODEL_PASS_H__
+#ifndef __LUCI_CONVERT_TO_FAKE_QUANTIZED_MODEL_H__
+#define __LUCI_CONVERT_TO_FAKE_QUANTIZED_MODEL_H__
 
-#include <logo/Pass.h>
+#include <loco.h>
 
 namespace luci
 {
@@ -25,15 +25,11 @@ namespace luci
 /**
  * @brief  Class to convert a quantized model to a fake-quantized fp32 model.
  */
-struct ConvertToFakeQuantizedModelPass final : public logo::Pass
+struct ConvertToFakeQuantizedModel final
 {
-  ConvertToFakeQuantizedModelPass() {}
-
-  const char *name(void) const final { return "luci::ConvertToFakeQuantizedModelPass"; }
-
-  bool run(loco::Graph *g) final;
+  void run(loco::Graph *g);
 };
 
 } // namespace luci
 
-#endif // __LUCI_CONVERT_TO_FAKE_QUANTIZED_MODEL_PASS_H__
+#endif // __LUCI_CONVERT_TO_FAKE_QUANTIZED_MODEL_H__
