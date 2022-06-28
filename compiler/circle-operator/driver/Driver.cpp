@@ -59,11 +59,6 @@ int entry(int argc, char **argv)
   cirops::DumpOption option;
   option.names = arser["--name"];
   option.codes = arser["--code"];
-  if (option.names && option.codes)
-  {
-    std::cerr << "ERROR: Cannot use --name and --code at the same time" << std::endl;
-    return 255;
-  }
 
   std::ofstream oFstream;
   std::ostream *oStream = &std::cout;

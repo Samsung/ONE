@@ -158,7 +158,7 @@ TEST_F(cirlce_operator_test, invalid_option_NEG)
   ASSERT_NE(std::string::npos, pos);
 }
 
-TEST_F(cirlce_operator_test, invalid_both_NEG)
+TEST_F(cirlce_operator_test, check_code_name)
 {
   if (!initialize())
   {
@@ -174,8 +174,10 @@ TEST_F(cirlce_operator_test, invalid_both_NEG)
     return;
   }
 
-  const auto pos = _result.find("ERROR");
+  const auto pos = _result.find("ofm");
   ASSERT_NE(std::string::npos, pos);
+  const auto pos2 = _result.find("ADD");
+  ASSERT_NE(std::string::npos, pos2);
 }
 
 TEST_F(cirlce_operator_test, nonexist_file_NEG)
