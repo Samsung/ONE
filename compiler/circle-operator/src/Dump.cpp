@@ -30,22 +30,21 @@ void dump_ops(std::ostream &os, mio::circle::Reader &reader, const cirops::DumpO
   for (uint32_t i = 0; i < ops->Length(); ++i)
   {
     const auto op = ops->Get(i);
+    const auto op_name = reader.opcode_name(op);
+
+    if (option.all_graphs)
+    {
+      // NOTE all_graphs is false for now
+      // TODO check using '$' as split key
+      os << i << "$";
+    }
 
     if (option.codes)
     {
       const auto op_name = reader.opcode_name(op);
-      if (option.all_graphs)
-      {
-        // NOTE all_graphs is false for now
-        // TODO check using '$' as split key
-        os << i << "$" << op_name << std::endl;
-      }
-      else
-      {
-        os << op_name << std::endl;
-      }
+      os << op_name;
     }
-    else if (option.names)
+    if (option.names)
     {
       // TODO multiple outputs?
       const auto tensors = reader.tensors();
@@ -53,15 +52,13 @@ void dump_ops(std::ostream &os, mio::circle::Reader &reader, const cirops::DumpO
       const auto output = output_tensors.at(0);
       const auto tensor = tensors->Get(output);
       const std::string name = mio::circle::tensor_name(tensor);
-      if (option.all_graphs)
+      if (option.codes)
       {
-        os << i << "$" << name << std::endl;
+        os << ",";
       }
-      else
-      {
-        os << name << std::endl;
-      }
+      os << name;
     }
+    os << std::endl;
   }
 }
 
