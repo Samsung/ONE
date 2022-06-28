@@ -195,6 +195,20 @@ void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
   ti->dtype = datatype_to_nnfw_dtype(dtype);
 }
 
+std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
+                                            const std::string model_type)
+{
+  if (model_type == "tflite")
+    return onert::tflite_loader::loadModel(filename.c_str());
+  if (model_type == "circle")
+    return onert::circle_loader::loadModel(filename.c_str());
+  if (model_type == "tvn")
+    return onert::trix_loader::loadModel(filename.c_str());
+
+  std::cerr << "Unsupported model type" << std::endl;
+  return std::unique_ptr<onert::ir::Model>(nullptr);
+}
+
 } // namespace
 
 nnfw_session::nnfw_session()
@@ -280,27 +294,12 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     std::cerr << "Invalid model file path. Please use file with extension." << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  std::string model_type = filename.substr(dotidx);
-
+  std::string model_type = filename.substr(dotidx + 1); // + 1 to exclude dot
   try
   {
-    if (model_type == ".tflite")
-    {
-      _model = onert::tflite_loader::loadModel(filename.c_str());
-    }
-    else if (model_type == ".circle")
-    {
-      _model = onert::circle_loader::loadModel(filename.c_str());
-    }
-    else if (model_type == ".tvn")
-    {
-      _model = onert::trix_loader::loadModel(filename.c_str());
-    }
-    else
-    {
-      std::cerr << "Unsupported model type" << std::endl;
+    _model = loadModel(filename, model_type);
+    if (_model == nullptr)
       return NNFW_STATUS_ERROR;
-    }
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -365,23 +364,9 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
 
     auto model_file_path = package_path + std::string("/") + models[0].asString(); // first model
     auto model_type = model_types[0].asString(); // first model's type
-    if (model_type == "tflite")
-    {
-      _model = onert::tflite_loader::loadModel(model_file_path);
-    }
-    else if (model_type == "circle")
-    {
-      _model = onert::circle_loader::loadModel(model_file_path);
-    }
-    else if (model_type == "tvn")
-    {
-      _model = onert::trix_loader::loadModel(model_file_path);
-    }
-    else
-    {
-      std::cerr << "Unsupported model type in MANIFEST" << std::endl;
+    _model = loadModel(model_file_path, model_type);
+    if (_model == nullptr)
       return NNFW_STATUS_ERROR;
-    }
     _model->primary_subgraph()->bindKernelBuilder(_kernel_registry->getBuilder());
     _state = State::MODEL_LOADED;
   }
