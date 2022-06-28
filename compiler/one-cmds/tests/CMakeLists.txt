@@ -4,6 +4,7 @@
 file(GLOB TESTITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.test")
 file(GLOB CONFIGITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.cfg")
 file(GLOB QCONFIGITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.qconf.json")
+file(GLOB WORKFLOWITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.workflow.json")
 
 # Create a script to run the tests at installation folder
 set(DRIVER_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/runtestall.sh")
@@ -44,6 +45,11 @@ foreach(QCONFIGITEM IN ITEMS ${QCONFIGITEMS})
   get_filename_component(ITEM_PREFIX ${QCONFIGITEM} NAME_WE)
   install(FILES ${QCONFIGITEM} DESTINATION test)
 endforeach(QCONFIGITEM)
+
+foreach(WORKFLOWITEM IN ITEMS ${WORKFLOWITEMS})
+  get_filename_component(ITEM_PREFIX ${WORKFLOWITEM} NAME_WE)
+  install(FILES ${WORKFLOWITEM} DESTINATION test)
+endforeach(WORKFLOWITEM)
 
 file(APPEND "${DRIVER_SCRIPT}" "popd > /dev/null\n\n")
 

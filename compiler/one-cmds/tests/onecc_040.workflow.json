@@ -1,0 +1,10 @@
+{
+    "workflows": [
+        "MY_WORKFLOW"
+    ],
+    "MY_WORKFLOW": {
+        "cfg-reference": {
+            "path": "onecc_040.cfg"
+        }
+    }
+}

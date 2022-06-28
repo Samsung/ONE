@@ -1,0 +1,22 @@
+{
+    "workflows": [
+        "wf"
+    ],
+    "wf": {
+        "steps": [
+            "import"
+        ],
+        "import": {
+            "one-cmd": "one-import-tf",
+            "commands": {
+                "input_path": "inception_v3.pb",
+                "output_path": "inception_v3.alt.circle",
+                "input_arrays": "input",
+                "input_shapes": "1,299,299,3",
+                "output_arrays": "InceptionV3/Predictions/Reshape_1",
+                "converter_version": "v1",
+                "save_intermediate": "True"
+            }
+        }
+    }
+}

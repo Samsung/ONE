@@ -1,0 +1,29 @@
+{
+    "workflows": [
+        "codegen_wf"
+    ],
+    "codegen_wf": {
+        "steps": [
+            "import_tf",
+            "codegen"
+        ],
+        "import_tf": {
+            "one-cmd": "one-import-tf",
+            "commands": {
+                "input_path": "inception_v3.pb",
+                "output_path": "inception_v3.circle",
+                "input_arrays": "input",
+                "input_shapes": "1,299,299,3",
+                "output_arrays": "InceptionV3/Predictions/Reshape_1",
+                "converter_version": "v2"
+            }
+        },
+        "codegen": {
+            "one-cmd": "one-codegen",
+            "commands": {
+                "backend": "dummy",
+                "command": "-o sample.tvn inception_v3.circle"
+            }
+        }
+    }
+}
