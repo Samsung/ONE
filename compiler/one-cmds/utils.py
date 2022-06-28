@@ -61,41 +61,42 @@ def is_accumulated_arg(arg, driver):
 def _is_valid_attr(args, attr):
     return hasattr(args, attr) and getattr(args, attr)
 
+
 class Command:
-  def __init__(self, driver, args, log_file):
-    self.cmd = [driver]
-    self.driver = driver
-    self.args = args
-    self.log_file = log_file
+    def __init__(self, driver, args, log_file):
+        self.cmd = [driver]
+        self.driver = driver
+        self.args = args
+        self.log_file = log_file
 
-  # Add option if attrs are valid
-  # Option values are collected from self.args
-  def add_option_with_valid_args(self, option, attrs):
-    for attr in attrs:
-      if not _is_valid_attr(self.args, attr):
+    # Add option if attrs are valid
+    # Option values are collected from self.args
+    def add_option_with_valid_args(self, option, attrs):
+        for attr in attrs:
+            if not _is_valid_attr(self.args, attr):
+                return self
+        self.cmd.append(option)
+        for attr in attrs:
+            self.cmd.append(getattr(self.args, attr))
         return self
-    self.cmd.append(option)
-    for attr in attrs:
-      self.cmd.append(getattr(self.args, attr))
-    return self
 
-  # Add option and values without any condition
-  def add_option_with_values(self, option, values):
-    self.cmd.append(option)
-    for value in values:
-      self.cmd.append(value)
-    return self
+    # Add option and values without any condition
+    def add_option_with_values(self, option, values):
+        self.cmd.append(option)
+        for value in values:
+            self.cmd.append(value)
+        return self
 
-  # Add option with no argument (ex: --verbose) if attr is valid
-  def add_noarg_option_if_valid_arg(self, option, attr):
-    if _is_valid_attr(self.args, attr):
-      self.cmd.append(option)
-    return self
+    # Add option with no argument (ex: --verbose) if attr is valid
+    def add_noarg_option_if_valid_arg(self, option, attr):
+        if _is_valid_attr(self.args, attr):
+            self.cmd.append(option)
+        return self
 
-  # Run cmd and save logs
-  def run(self):
-    self.log_file.write((' '.join(self.cmd) + '\n').encode())
-    _run(self.cmd, err_prefix=self.driver, logfile=self.log_file)
+    # Run cmd and save logs
+    def run(self):
+        self.log_file.write((' '.join(self.cmd) + '\n').encode())
+        _run(self.cmd, err_prefix=self.driver, logfile=self.log_file)
 
 
 def _parse_cfg_and_overwrite(config_path, section, args):
@@ -189,8 +190,7 @@ def _run(cmd, err_prefix=None, logfile=None):
         err_prefix: prefix to be put before every stderr lines
         logfile: file stream to which both of stdout and stderr lines will be written
     """
-    with subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as p:
+    with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as p:
         import select
         inputs = set([p.stdout, p.stderr])
         while inputs:

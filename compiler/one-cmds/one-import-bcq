@@ -159,9 +159,9 @@ def _convert(args):
             tmpdir,
             os.path.splitext(
                 os.path.basename(generate_bcq_metadata_output_path))[0]) + '.tflite'
-        tf2tfliteV2_cmd = _make_cmd.make_tf2tfliteV2_cmd(args, tf2tfliteV2_path,
-                                                       generate_bcq_metadata_output_path,
-                                                       tf2tfliteV2_output_path)
+        tf2tfliteV2_cmd = _make_cmd.make_tf2tfliteV2_cmd(
+            args, tf2tfliteV2_path, generate_bcq_metadata_output_path,
+            tf2tfliteV2_output_path)
         try:
             output_arrays_idx = tf2tfliteV2_cmd.index('--output_arrays')
             tf2tfliteV2_cmd[output_arrays_idx + 1] = ','.join(bcq_output_arrays)
@@ -176,8 +176,8 @@ def _convert(args):
         # make a command to convert from tflite to circle
         tflite2circle_path = os.path.join(dir_path, 'tflite2circle')
         tflite2circle_cmd = _make_cmd.make_tflite2circle_cmd(tflite2circle_path,
-                                                           tf2tfliteV2_output_path,
-                                                           getattr(args, 'output_path'))
+                                                             tf2tfliteV2_output_path,
+                                                             getattr(args, 'output_path'))
 
         f.write((' '.join(tflite2circle_cmd) + '\n').encode())
 

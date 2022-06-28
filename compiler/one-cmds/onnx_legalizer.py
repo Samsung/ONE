@@ -341,7 +341,8 @@ def _dtype_to_np(dtype):
         raise NotImplementedError('unsupported data type')
 
 
-def _generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip, activation_name):
+def _generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip,
+                                activation_name):
     """Generate subgraph of one direction of unrolled RNN layer
 
     Args:
@@ -395,7 +396,7 @@ def _generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip, activa
 
 
 def _transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, activation,
-                                 clip, direction, hidden_size, layout):
+                                  clip, direction, hidden_size, layout):
     """Generate Simple (forward or reverse) unrolled RNN
 
     Args:
@@ -432,7 +433,7 @@ def _transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, a
     else:
         initial_h = None
     state_tensors = _generate_one_direction_RNN(transformer, x, w, r, b, initial_h, clip,
-                                               activation)
+                                                activation)
     y_direction_dim = layout + 1
     y_h_direction_dim = layout
     state_layout_tensors = []
@@ -447,12 +448,11 @@ def _transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, a
     transformer.make_node(
         'Unsqueeze', [state_tensors[-1]], [Y_h], axes=[y_h_direction_dim])
     Y = outputs[0]
-    transformer.make_node(
-        'Concat', state_layout_tensors, [Y], axis=seq_length_dim)
+    transformer.make_node('Concat', state_layout_tensors, [Y], axis=seq_length_dim)
 
 
 def _transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, activations,
-                                clip, hidden_size, layout):
+                                 clip, hidden_size, layout):
     """Generate Bidirectional unrolled RNN
 
     Args:
@@ -503,10 +503,10 @@ def _transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, ac
             initial_h[d] = transformer.make_squeeze(initial_h[d], axes=[direction_dim])
 
     state_f_tensors = _generate_one_direction_RNN(transformer, x, w[0], r[0], b[0],
-                                                 initial_h[0], clip, activations[0])
+                                                  initial_h[0], clip, activations[0])
     x.reverse()
     state_b_tensors = _generate_one_direction_RNN(transformer, x, w[1], r[1], b[1],
-                                                 initial_h[1], clip, activations[1])
+                                                  initial_h[1], clip, activations[1])
     state_b_tensors.reverse()
 
     y_direction_dim = layout + 1
@@ -538,8 +538,7 @@ def _transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, ac
         axis=y_h_direction_dim)
 
     Y = outputs[0]
-    transformer.make_node(
-        'Concat', state_layout_tensors, [Y], axis=seq_length_dim)
+    transformer.make_node('Concat', state_layout_tensors, [Y], axis=seq_length_dim)
 
 
 def _legalize_RNN(transformer, tensor_infos, node):
@@ -600,10 +599,10 @@ def _legalize_RNN(transformer, tensor_infos, node):
 
     if direction in ['forward', 'reverse']:
         _transform_unidirectional_RNN(transformer, node, x, tensor_infos, activations[0],
-                                     clip, direction, hidden_size, layout)
+                                      clip, direction, hidden_size, layout)
     elif direction == 'bidirectional':
-        _transform_bidirectional_RNN(transformer, node, x, tensor_infos, activations, clip,
-                                    hidden_size, layout)
+        _transform_bidirectional_RNN(transformer, node, x, tensor_infos, activations,
+                                     clip, hidden_size, layout)
     else:
         raise RuntimeError('Unknown RNN type')
 
@@ -611,7 +610,7 @@ def _legalize_RNN(transformer, tensor_infos, node):
 
 
 def _generate_one_direction_LSTM(transformer, X, W, R, B, initial_h, initial_c, P, clip,
-                                act, dtype, hidden_size, batch_size):
+                                 act, dtype, hidden_size, batch_size):
     """Generate subgraph for one direction of unrolled LSTM layer
 
     Args:
@@ -754,7 +753,7 @@ def _generate_one_direction_LSTM(transformer, X, W, R, B, initial_h, initial_c, 
 
 
 def _transform_unidirectional_LSTM(transformer, original_node, x, tensor_infos,
-                                  activations, clip, direction, hidden_size, layout):
+                                   activations, clip, direction, hidden_size, layout):
     """Generate Simple (forward or reverse) unrolled LSTM
 
     Args:
@@ -818,17 +817,15 @@ def _transform_unidirectional_LSTM(transformer, original_node, x, tensor_infos,
     transformer.make_node(
         'Unsqueeze', [state_h_tensors[-1]], [Y_h], axes=[y_h_direction_dim])
     Y_c = outputs[2]
-    transformer.make_node(
-        'Unsqueeze', [state_c_tensor], [Y_c], axes=[y_h_direction_dim])
+    transformer.make_node('Unsqueeze', [state_c_tensor], [Y_c], axes=[y_h_direction_dim])
     if direction == 'reverse':
         state_layout_tensors.reverse()
     Y = outputs[0]
-    transformer.make_node(
-        'Concat', state_layout_tensors, [Y], axis=seq_length_dim)
+    transformer.make_node('Concat', state_layout_tensors, [Y], axis=seq_length_dim)
 
 
-def _transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos, activations,
-                                 clip, hidden_size, layout):
+def _transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos,
+                                  activations, clip, hidden_size, layout):
     """Generate Bidirectional unrolled LSTM
 
     Args:
@@ -929,12 +926,10 @@ def _transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos, a
     Y_f_c = transformer.make_unsqueeze(state_f_c_tensor, axes=[y_c_direction_dim])
     Y_b_c = transformer.make_unsqueeze(state_b_c_tensor, axes=[y_c_direction_dim])
     Y_c = outputs[2]
-    transformer.make_node(
-        'Concat', [Y_f_c, Y_b_c], [Y_c], axis=y_c_direction_dim)
+    transformer.make_node('Concat', [Y_f_c, Y_b_c], [Y_c], axis=y_c_direction_dim)
 
     Y = outputs[0]
-    transformer.make_node(
-        'Concat', state_layout_tensors, [Y], axis=seq_length_dim)
+    transformer.make_node('Concat', state_layout_tensors, [Y], axis=seq_length_dim)
 
 
 def _legalize_LSTM(transformer, tensor_infos, node):
@@ -1001,10 +996,10 @@ def _legalize_LSTM(transformer, tensor_infos, node):
 
     if direction in ['forward', 'reverse']:
         _transform_unidirectional_LSTM(transformer, node, x, tensor_infos, activations,
-                                      clip, direction, hidden_size, layout)
+                                       clip, direction, hidden_size, layout)
     elif direction == 'bidirectional':
         _transform_bidirectional_LSTM(transformer, node, x, tensor_infos, activations,
-                                     clip, hidden_size, layout)
+                                      clip, hidden_size, layout)
     else:
         raise RuntimeError('Unknown LSTM type')
 
@@ -1052,10 +1047,12 @@ def legalize(model, options):
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        print('usage: ./legalize_onnx.py <path to input model> <path to output model>\n'
-              '\n'
-              '    In stand-alone utility mode this tool provides basic funtionality\n'
-              '    If you want to have more control over applied transformations, use this legalizer as a library')
+        print(
+            'usage: ./legalize_onnx.py <path to input model> <path to output model>\n'
+            '\n'
+            '    In stand-alone utility mode this tool provides basic funtionality\n'
+            '    If you want to have more control over applied transformations, use this legalizer as a library'
+        )
         exit(1)
     options = LegalizeOptions()
     options.unroll_lstm = True

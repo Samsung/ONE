@@ -58,15 +58,14 @@ def _get_backends_list():
     # bin folder
     files = [f for f in glob.glob(dir_path + '/*-infer')]
     # backends folder
-    files += [
-        f for f in glob.glob(dir_path + '/../backends/**/*-infer', recursive=True)
-    ]
+    files += [f for f in glob.glob(dir_path + '/../backends/**/*-infer', recursive=True)]
     # TODO find backends in `$PATH`
 
     backends_list = []
     for cand in files:
         base = ntpath.basename(cand)
-        if (not base in backend_set) and os.path.isfile(cand) and os.access(cand, os.X_OK):
+        if (not base in backend_set) and os.path.isfile(cand) and os.access(
+                cand, os.X_OK):
             backend_set.add(base)
             backends_list.append(cand)
 
@@ -100,7 +99,8 @@ def _search_backend_driver(driver):
         return driver_path
 
     # CASE 2: one/backends/**/bin/{driver} is found
-    for driver_path in glob.glob(dir_path + '/../backends/**/bin/' + driver, recursive=True):
+    for driver_path in glob.glob(
+            dir_path + '/../backends/**/bin/' + driver, recursive=True):
         if os.path.isfile(driver_path) and os.access(driver_path, os.X_OK):
             return driver_path
 
@@ -136,10 +136,12 @@ def _verify_arg(parser, args):
     """verify given arguments"""
     # `-d/--driver` and `-b/--backend` are mutually exclusive arguments.
     if _utils._is_valid_attr(args, 'driver') and _utils._is_valid_attr(args, 'backend'):
-        parser.error('-d and -b options are mutually exclusive. Please use only one of them')
+        parser.error(
+            '-d and -b options are mutually exclusive. Please use only one of them')
 
     missing = []
-    if not _utils._is_valid_attr(args, 'driver') and not _utils._is_valid_attr(args, 'backend'):
+    if not _utils._is_valid_attr(args, 'driver') and not _utils._is_valid_attr(
+            args, 'backend'):
         missing.append('{-d/--driver | -b/--backend}')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
@@ -153,7 +155,7 @@ def _parse_arg(parser):
     del argv[0]
     # split by '--'
     args = [list(y) for x, y in itertools.groupby(argv, lambda z: z == '--') if not x]
-    
+
     # one-infer [-h] [-v] [-C CONFIG] [-d DRIVER] [-b BACKEND] -- [COMMANDS FOR BACKEND DRIVER]
     if len(args):
         infer_args = args[0]

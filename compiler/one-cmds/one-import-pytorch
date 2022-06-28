@@ -80,7 +80,8 @@ def _get_parser():
     tf2tflite_group.add_argument('--converter_version', default='v2')
 
     parser.add_argument('--unroll_rnn', action='store_true', help='Unroll RNN operators')
-    parser.add_argument('--unroll_lstm', action='store_true', help='Unroll LSTM operators')
+    parser.add_argument(
+        '--unroll_lstm', action='store_true', help='Unroll LSTM operators')
 
     # save intermediate file(s)
     parser.add_argument(
@@ -338,8 +339,8 @@ def _convert(args):
         # make a command to convert from tflite to circle
         tflite2circle_path = os.path.join(dir_path, 'tflite2circle')
         tflite2circle_cmd = _make_cmd.make_tflite2circle_cmd(tflite2circle_path,
-                                                           tf2tfliteV2_output_path,
-                                                           getattr(args, 'output_path'))
+                                                             tf2tfliteV2_output_path,
+                                                             getattr(args, 'output_path'))
 
         f.write((' '.join(tflite2circle_cmd) + '\n').encode())
 
