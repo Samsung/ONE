@@ -158,26 +158,6 @@ TEST_F(cirlce_operator_test, invalid_option_NEG)
   ASSERT_NE(std::string::npos, pos);
 }
 
-TEST_F(cirlce_operator_test, invalid_both_NEG)
-{
-  if (!initialize())
-  {
-    FAIL();
-    return;
-  }
-
-  std::string model = _artifacts_path + "/Add_000.circle";
-  std::string command = _circle_operator_path + " --code --name " + model;
-  if (!run(command))
-  {
-    FAIL();
-    return;
-  }
-
-  const auto pos = _result.find("ERROR");
-  ASSERT_NE(std::string::npos, pos);
-}
-
 TEST_F(cirlce_operator_test, nonexist_file_NEG)
 {
   if (!initialize())
