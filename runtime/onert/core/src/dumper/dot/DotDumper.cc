@@ -61,7 +61,6 @@ std::unordered_map<ir::OperandIndex, std::unique_ptr<Operand>>
 generate_dot_operands(const ir::Graph &graph, const DotDumper::Level level)
 {
   std::unordered_map<ir::OperandIndex, std::unique_ptr<Operand>> dot_operands;
-  util::Set<ir::OperandIndex> shown_operand_set;
 
   const auto &operands = graph.operands();
   operands.iterate([&](const ir::OperandIndex &index, const ir::Operand &object) {
@@ -71,10 +70,6 @@ generate_dot_operands(const ir::Graph &graph, const DotDumper::Level level)
         : !object.isConstant() || (graph.getInputs() + graph.getOutputs()).contains(index);
     if (showing_cond)
     {
-      // This set is not used anywhere.
-      // TODO: Remove this set
-      shown_operand_set.add(index);
-
       auto type = [&]() {
         using onert::dumper::dot::Operand;
         if (graph.getInputs().contains(index))
