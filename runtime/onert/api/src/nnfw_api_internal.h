@@ -98,9 +98,18 @@ private:
   };
 
 public:
-  nnfw_session();
-  ~nnfw_session();
+  /**
+   * @brief Factory method. It creates and initialize nnfw_session
+   *
+   * @note  Use factory instead of constructor to get status
+   */
+  static NNFW_STATUS create(nnfw_session **session);
 
+private:
+  nnfw_session();
+
+public:
+  ~nnfw_session();
   NNFW_STATUS load_model_from_nnpackage(const char *package_file_path);
   NNFW_STATUS prepare();
   NNFW_STATUS prepare_pipeline(const char *map_file_path);

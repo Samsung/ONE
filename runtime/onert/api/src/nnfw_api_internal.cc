@@ -199,9 +199,40 @@ void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
 
 nnfw_session::nnfw_session()
   : _model{nullptr}, _coptions{nullptr}, _compiler_artifact{nullptr}, _execution{nullptr},
-    _kernel_registry{std::make_shared<onert::api::CustomKernelRegistry>()}
+    _kernel_registry{nullptr}
 {
   // DO NOTHING
+}
+
+NNFW_STATUS nnfw_session::create(nnfw_session **session)
+{
+  if (session == nullptr)
+    return NNFW_STATUS_UNEXPECTED_NULL;
+
+  // Create session
+  *session = new (std::nothrow) nnfw_session();
+  if (*session == nullptr)
+  {
+    std::cerr << "Error during session creation" << std::endl;
+    return NNFW_STATUS_OUT_OF_MEMORY;
+  }
+
+  // Initialize fields
+  try
+  {
+    (*session)->_kernel_registry = std::make_shared<onert::api::CustomKernelRegistry>();
+    (*session)->_coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during session initialization : " << e.what() << std::endl;
+    delete *session;
+    *session = nullptr;
+
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
 }
 
 nnfw_session::~nnfw_session() = default;
@@ -220,7 +251,6 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
   try
   {
     _model = onert::circle_loader::loadModel(buffer, size);
-    _coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -271,7 +301,6 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
       std::cerr << "Unsupported model type" << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    _coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -354,7 +383,6 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       return NNFW_STATUS_ERROR;
     }
     _model->primary_subgraph()->bindKernelBuilder(_kernel_registry->getBuilder());
-    _coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -1129,7 +1157,7 @@ bool nnfw_session::isStateInitialized()
   if (_state == State::INITIALIZED)
   {
     assert(_model == nullptr);
-    assert(_coptions == nullptr);
+    assert(_coptions != nullptr);
     assert(_execution == nullptr && _executions.empty());
     return true;
   }
