@@ -39,8 +39,13 @@ class ShapeValidator : public ir::OperationVisitor
 public:
   ShapeValidator(void) = delete;
   ShapeValidator(const ir::Graph &graph);
+  ShapeValidator(const ShapeValidator &) = delete;
+  ShapeValidator(ShapeValidator &&) = delete;
+  ~ShapeValidator() = default;
 
 public:
+  ShapeValidator &operator=(const ShapeValidator &) = delete;
+  ShapeValidator &operator=(ShapeValidator &&) = delete;
   void operator()();
 
 public:
@@ -90,10 +95,7 @@ private:
   void checkUnaryOp(const ir::Operation &node);
 
 private:
-  // TODO Remove _ctx field
   const ir::Graph &_graph;
-  const ir::Operands &_ctx;
-  ir::Layout _current_layout;
 };
 
 } // namespace compiler
