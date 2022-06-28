@@ -158,6 +158,28 @@ TEST_F(cirlce_operator_test, invalid_option_NEG)
   ASSERT_NE(std::string::npos, pos);
 }
 
+TEST_F(cirlce_operator_test, check_code_name)
+{
+  if (!initialize())
+  {
+    FAIL();
+    return;
+  }
+
+  std::string model = _artifacts_path + "/Add_000.circle";
+  std::string command = _circle_operator_path + " --code --name " + model;
+  if (!run(command))
+  {
+    FAIL();
+    return;
+  }
+
+  const auto pos = _result.find("ofm");
+  ASSERT_NE(std::string::npos, pos);
+  const auto pos2 = _result.find("ADD");
+  ASSERT_NE(std::string::npos, pos2);
+}
+
 TEST_F(cirlce_operator_test, nonexist_file_NEG)
 {
   if (!initialize())
