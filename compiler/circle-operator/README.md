@@ -27,7 +27,7 @@ Operators codes with `--code`
 
 Example
 ```
-$ circle-operator --name model.circle
+$ circle-operator --code model.circle
 ```
 
 Result
