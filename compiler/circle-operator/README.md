@@ -37,6 +37,21 @@ CONV_2D
 PAD
 ```
 
+Operators with both `--code` and `--name`
+- show operator both codes and name separated with `,` one line at a time in execution order
+
+Example
+```
+$ circle-operator --code --name model.circle
+```
+
+Result
+```
+PAD,conv1_pad/Pad
+CONV_2D,conv1_conv/BiasAdd
+PAD,pool1_pad/Pad
+```
+
 ## Save to file
 
 Use `--output_path` to save results to a file.
