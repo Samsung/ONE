@@ -82,8 +82,8 @@ def _convert(args):
         # make a command to convert from tflite to circle
         tflite2circle_path = os.path.join(dir_path, 'tflite2circle')
         tflite2circle_cmd = _make_cmd.make_tflite2circle_cmd(tflite2circle_path,
-                                                           getattr(args, 'input_path'),
-                                                           getattr(args, 'output_path'))
+                                                             getattr(args, 'input_path'),
+                                                             getattr(args, 'output_path'))
 
         f.write((' '.join(tflite2circle_cmd) + '\n').encode())
 

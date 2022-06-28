@@ -146,8 +146,8 @@ def _parse_cfg(args):
 def _is_available_driver(config, driver_name):
     # if there's no `onecc` section, it will find `one-build` section because of backward compatibility
     return (config.has_option('onecc', driver_name) and config.getboolean(
-        'onecc', driver_name)) or (config.has_option('one-build', driver_name) and config.getboolean(
-        'one-build', driver_name))
+        'onecc', driver_name)) or (config.has_option('one-build', driver_name)
+                                   and config.getboolean('one-build', driver_name))
 
 
 def _simple_warning(message, category, filename, lineno, file=None, line=None):
@@ -158,10 +158,10 @@ def _verify_cfg(import_driver_list, config):
     if not config.has_section('onecc'):
         if config.has_section('one-build'):
             warnings.formatwarning = _simple_warning
-            warnings.warn("[one-build] section will be deprecated. Please use [onecc] section.")
+            warnings.warn(
+                "[one-build] section will be deprecated. Please use [onecc] section.")
         else:
             raise ImportError('[onecc] section is required in configuration file')
-
 
     import_driver_cnt = 0
     for d in import_driver_list:
@@ -219,11 +219,12 @@ def main():
     bin_dir = os.path.dirname(os.path.realpath(__file__))
     import_drivers_dict = _utils._detect_one_import_drivers(bin_dir)
     transform_drivers = [
-        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile', 'one-partition', 'one-infer'
+        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile',
+        'one-partition', 'one-infer'
     ]
     _verify_cfg(import_drivers_dict, config)
 
-     # verify optimization option file
+    # verify optimization option file
     _verify_opt(args)
 
     # get sections to run

@@ -26,7 +26,6 @@ import sys
 
 import utils as _utils
 
-
 # TODO Find better way to suppress trackback on error
 sys.tracebacklimit = 0
 
@@ -39,14 +38,15 @@ def _get_parser():
 
     parser.add_argument(
         '--backends', type=str, help='backends in CSV to use for partitioning')
-    parser.add_argument(
-        '--default', type=str, help='default backend to assign')
+    parser.add_argument('--default', type=str, help='default backend to assign')
 
-    parser.add_argument('--part_file', type=str,help=
-        'partition file which provides backend to assign')
+    parser.add_argument(
+        '--part_file', type=str, help='partition file which provides backend to assign')
     parser.add_argument('--input_file', type=str, help='input circle model filename')
-    parser.add_argument('--work_path', type=str, help=
-        'work path of partition, input files exist and output files are produced')
+    parser.add_argument(
+        '--work_path',
+        type=str,
+        help='work path of partition, input files exist and output files are produced')
 
     return parser
 
