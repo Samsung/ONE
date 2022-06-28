@@ -73,6 +73,8 @@ TORCH_STABLE_URL="https://download.pytorch.org/whl/torch_stable.html"
 if [[ ! -z "$ONE_PREPVENV_TORCH_STABLE" ]]; then
   TORCH_STABLE_URL="${ONE_PREPVENV_TORCH_STABLE}"
 fi
+# TODO remove torch message
+echo "Torch from '${ONE_PREPVENV_TORCH_STABLE}' -> '${TORCH_STABLE_URL}'"
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==1.11.0+cpu -f ${TORCH_STABLE_URL}
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX}
