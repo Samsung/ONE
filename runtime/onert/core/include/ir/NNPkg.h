@@ -169,4 +169,5 @@ private:
 
 } // namespace ir
 } // namespace onert
+
 #endif // __ONERT_IR_NNPKG_H__
