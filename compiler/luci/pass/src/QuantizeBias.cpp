@@ -201,6 +201,12 @@ CircleConst *QuantizeBias::quantized_bias(CircleNode *input, const CircleNode *w
     std::vector<float> scaling_factor(size);
     std::vector<int64_t> zp(size);
 
+    if (const_bias->rank() == 0)
+    {
+      // TODO Support quantization of scalar bias
+      throw std::runtime_error("Quantization of scalar bias is not yet supported (" +
+                               const_bias->name() + ")");
+    }
     if (size != const_bias->dim(const_bias->rank() - 1).value())
     {
       throw std::runtime_error(const_bias->name() +
