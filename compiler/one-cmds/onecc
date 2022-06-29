@@ -24,8 +24,8 @@ import configparser
 import os
 import subprocess
 import sys
-import warnings
 
+from onelib.CfgRunner import CfgRunner
 import utils as _utils
 
 # TODO Find better way to suppress trackback on error
@@ -122,77 +122,6 @@ def _verify_arg(parser, args):
             parser.error('Invalid optimization option')
 
 
-def _get_driver_name(driver_name):
-    return {
-        'one-optimize': 'one-optimize',
-        'one-quantize': 'one-quantize',
-        'one-partition': 'one-partition',
-        'one-pack': 'one-pack',
-        'one-codegen': 'one-codegen',
-        'one-profile': 'one-profile',
-        'one-infer': 'one-infer'
-    }[driver_name]
-
-
-def _parse_cfg(args):
-    config = configparser.ConfigParser()
-    config.optionxform = str
-    parsed = config.read(os.path.expanduser(getattr(args, 'config')))
-    if not parsed:
-        raise FileNotFoundError('Not found given configuration file')
-    return config
-
-
-def _is_available_driver(config, driver_name):
-    # if there's no `onecc` section, it will find `one-build` section because of backward compatibility
-    return (config.has_option('onecc', driver_name) and config.getboolean(
-        'onecc', driver_name)) or (config.has_option('one-build', driver_name)
-                                   and config.getboolean('one-build', driver_name))
-
-
-def _simple_warning(message, category, filename, lineno, file=None, line=None):
-    return f'{category.__name__}: {message}\n'
-
-
-def _verify_cfg(import_driver_list, config):
-    if not config.has_section('onecc'):
-        if config.has_section('one-build'):
-            warnings.formatwarning = _simple_warning
-            warnings.warn(
-                "[one-build] section will be deprecated. Please use [onecc] section.")
-        else:
-            raise ImportError('[onecc] section is required in configuration file')
-
-    import_driver_cnt = 0
-    for d in import_driver_list:
-        if _is_available_driver(config, d):
-            import_driver_cnt += 1
-
-    if import_driver_cnt > 1:
-        raise AssertionError('Only one import-* driver can be executed')
-
-
-# verify given optimization option file
-def _verify_opt(args):
-    if _utils._is_valid_attr(args, 'O'):
-        config = configparser.ConfigParser()
-        config.optionxform = str
-        opt_name_path_dic = dict(
-            zip(_utils._get_optimization_list(get_name=True),
-                _utils._get_optimization_list()))
-        parsed = config.read(opt_name_path_dic['O' + getattr(args, 'O')])
-        # check if given optimization option file exists
-        if not parsed:
-            raise FileNotFoundError('Not found given optimization configuration file')
-        # check if given optimization option file only has `one-optimize` section
-        if len(config.sections()) == 1 and config.sections()[0] == 'one-optimize':
-            pass
-        else:
-            raise AssertionError(
-                'Optimization configuration file only allowed to have a \'one-optimize\' section'
-            )
-
-
 def main():
     # check if there is subtool argument
     # if true, it executes subtool with argv
@@ -212,41 +141,13 @@ def main():
     # verify arguments
     _verify_arg(parser, args)
 
-    # parse configuration file
-    config = _parse_cfg(args)
-
-    # verify configuration file
     bin_dir = os.path.dirname(os.path.realpath(__file__))
-    import_drivers_dict = _utils._detect_one_import_drivers(bin_dir)
-    transform_drivers = [
-        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile',
-        'one-partition', 'one-infer'
-    ]
-    _verify_cfg(import_drivers_dict, config)
-
-    # verify optimization option file
-    _verify_opt(args)
-
-    # get sections to run
-    section_to_run = []
-    for d in list(import_drivers_dict) + transform_drivers:
-        if _is_available_driver(config, d):
-            section_to_run.append(d)
-
-    # run
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    for section in section_to_run:
-        if section in import_drivers_dict:
-            # we already has driver name in dict
-            driver_name = import_drivers_dict[section]
-        else:
-            driver_name = _get_driver_name(section)
-        options = ['--config', getattr(args, 'config'), '--section', section]
-        if section == 'one-optimize' and _utils._is_valid_attr(args, 'O'):
-            options += ['-O', getattr(args, 'O')]
-        if _utils._is_valid_attr(args, 'verbose'):
-            options.append('--verbose')
-        _call_driver(driver_name, options)
+    if _utils._is_valid_attr(args, 'config'):
+        runner = CfgRunner(args.config)
+        runner.detect_import_drivers(bin_dir)
+        if _utils._is_valid_attr(args, 'O'):
+            runner.add_opt(getattr(args, 'O'))
+        runner.run(bin_dir)
 
 
 if __name__ == '__main__':
