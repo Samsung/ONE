@@ -34,73 +34,72 @@ namespace onert
 namespace compiler
 {
 
-ShapeValidator::ShapeValidator(const ir::Graph &graph)
-  : _graph{graph}, _ctx{graph.operands()}, _current_layout{ir::Layout::UNKNOWN}
-{
-}
+ShapeValidator::ShapeValidator(const ir::Graph &graph) : _graph{graph} {}
 
 void ShapeValidator::checkUnaryOp(const ir::Operation &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};
 
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   // Check if I/O shapes match
-  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(operands.at(output_index).shape() == operands.at(input_index).shape());
 }
 
 void ShapeValidator::operator()()
 {
-  _current_layout = _graph.layout();
-
   _graph.operations().iterate(
     [&](const ir::OperationIndex &, const ir::Operation &node) { node.accept(*this); });
 }
 
 void ShapeValidator::visit(const ir::operation::BatchMatMul &node)
 {
+  const auto &operands = _graph.operands();
   const auto lhs_index(node.getInputs().at(ir::operation::BatchMatMul::Input::LHS));
   const auto rhs_index(node.getInputs().at(ir::operation::BatchMatMul::Input::RHS));
   const auto out_index{node.getOutputs().at(0)};
 
-  if (_ctx.at(out_index).info().isDynamic())
+  if (operands.at(out_index).info().isDynamic())
     return;
 
-  OP_REQUIRES(_ctx.at(lhs_index).shape().rank() <= 4);
-  OP_REQUIRES(_ctx.at(rhs_index).shape().rank() <= 4);
-  OP_REQUIRES(_ctx.at(lhs_index).shape().rank() >= 2);
-  OP_REQUIRES(_ctx.at(rhs_index).shape().rank() >= 2);
+  OP_REQUIRES(operands.at(lhs_index).shape().rank() <= 4);
+  OP_REQUIRES(operands.at(rhs_index).shape().rank() <= 4);
+  OP_REQUIRES(operands.at(lhs_index).shape().rank() >= 2);
+  OP_REQUIRES(operands.at(rhs_index).shape().rank() >= 2);
 }
 
 void ShapeValidator::visit(const ir::operation::BatchToSpaceND &node)
 {
+  const auto &operands = _graph.operands();
   const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
+  if (operands.at(ofm_index).info().isDynamic())
     return;
 
   const auto ifm_index{node.getInputs().at(ir::operation::BatchToSpaceND::Input::INPUT)};
   const auto block_size_index{
     node.getInputs().at(ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)};
 
-  const auto frontend_layout = _current_layout;
-  const auto input_shape = _ctx.at(ifm_index).shape().asFeature(frontend_layout);
-  const auto output_shape = _ctx.at(ofm_index).shape().asFeature(frontend_layout);
+  const auto frontend_layout = _graph.layout();
+  const auto input_shape = operands.at(ifm_index).shape().asFeature(frontend_layout);
+  const auto output_shape = operands.at(ofm_index).shape().asFeature(frontend_layout);
 
   // All requirement as per NNAPI specification.
-  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
-  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == 4);
-  OP_REQUIRES(_ctx.at(block_size_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(ofm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(block_size_index).shape().rank() == 1);
 
-  OP_REQUIRES(_ctx.at(block_size_index).shape().dim(0) == 2);
+  OP_REQUIRES(operands.at(block_size_index).shape().dim(0) == 2);
 
   if (node.getInputs().size() != 2)
   {
     const auto crops_index{node.getInputs().at(ir::operation::BatchToSpaceND::Input::CROPS_DATA)};
-    OP_REQUIRES(_ctx.at(crops_index).shape().rank() == 2);
-    OP_REQUIRES(_ctx.at(crops_index).shape().dim(0) == (_ctx.at(ifm_index).shape().rank() - 2));
-    OP_REQUIRES(_ctx.at(crops_index).shape().dim(1) == 2);
+    OP_REQUIRES(operands.at(crops_index).shape().rank() == 2);
+    OP_REQUIRES(operands.at(crops_index).shape().dim(0) ==
+                (operands.at(ifm_index).shape().rank() - 2));
+    OP_REQUIRES(operands.at(crops_index).shape().dim(1) == 2);
   }
 
   OP_REQUIRES(input_shape.C == output_shape.C);
@@ -108,8 +107,9 @@ void ShapeValidator::visit(const ir::operation::BatchToSpaceND &node)
 
 void ShapeValidator::visit(const ir::operation::BCQFullyConnected &node)
 {
+  const auto &operands = _graph.operands();
   const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
+  if (operands.at(ofm_index).info().isDynamic())
     return;
 
   const auto ifm_index{node.getInputs().at(ir::operation::BCQFullyConnected::Input::INPUT)};
@@ -121,16 +121,16 @@ void ShapeValidator::visit(const ir::operation::BCQFullyConnected &node)
     node.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
   // const auto bias_index{node.getInputs().at(ir::operation::BCQFullyConnected::Input::BIAS)};
 
-  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 2);
-  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == 2);
-  OP_REQUIRES(_ctx.at(weight_scales_index).shape().rank() == 1);
-  OP_REQUIRES(_ctx.at(weight_binary_index).shape().rank() == 2);
-  OP_REQUIRES(_ctx.at(weight_cluster_index).shape().rank() == 2);
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() == 2);
+  OP_REQUIRES(operands.at(ofm_index).shape().rank() == 2);
+  OP_REQUIRES(operands.at(weight_scales_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(weight_binary_index).shape().rank() == 2);
+  OP_REQUIRES(operands.at(weight_cluster_index).shape().rank() == 2);
 
-  OP_REQUIRES(_ctx.at(ifm_index).shape().dim(1) == _ctx.at(ofm_index).shape().dim(1));
+  OP_REQUIRES(operands.at(ifm_index).shape().dim(1) == operands.at(ofm_index).shape().dim(1));
 
-  OP_REQUIRES(_ctx.at(weight_cluster_index).shape().dim(0) > 0);
-  OP_REQUIRES(_ctx.at(weight_cluster_index).shape().dim(1) == 2);
+  OP_REQUIRES(operands.at(weight_cluster_index).shape().dim(0) > 0);
+  OP_REQUIRES(operands.at(weight_cluster_index).shape().dim(1) == 2);
 
   // more shape validation will be done inside kernel.
 
@@ -139,8 +139,9 @@ void ShapeValidator::visit(const ir::operation::BCQFullyConnected &node)
 
 void ShapeValidator::visit(const ir::operation::BCQGather &node)
 {
+  const auto &operands = _graph.operands();
   const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
+  if (operands.at(ofm_index).info().isDynamic())
     return;
 
   const auto indices_index{node.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
@@ -149,13 +150,14 @@ void ShapeValidator::visit(const ir::operation::BCQGather &node)
   const auto input_clusters_index{
     node.getInputs().at(ir::operation::BCQGather::Input::INPUT_CLUSTERS)};
 
-  OP_REQUIRES(_ctx.at(indices_index).shape().rank() <= 2); // TODO : support rank up to 4 or more
-  OP_REQUIRES(_ctx.at(input_binary_index).shape().rank() == 2);
-  OP_REQUIRES(_ctx.at(input_scales_index).shape().rank() == 1);
-  OP_REQUIRES(_ctx.at(input_clusters_index).shape().rank() == 2);
+  OP_REQUIRES(operands.at(indices_index).shape().rank() <=
+              2); // TODO : support rank up to 4 or more
+  OP_REQUIRES(operands.at(input_binary_index).shape().rank() == 2);
+  OP_REQUIRES(operands.at(input_scales_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(input_clusters_index).shape().rank() == 2);
 
-  OP_REQUIRES(_ctx.at(input_clusters_index).shape().dim(0) > 0);
-  OP_REQUIRES(_ctx.at(input_clusters_index).shape().dim(1) == 2);
+  OP_REQUIRES(operands.at(input_clusters_index).shape().dim(0) > 0);
+  OP_REQUIRES(operands.at(input_clusters_index).shape().dim(1) == 2);
 
   // more shape validation will be done inside kernel.
 }
@@ -167,62 +169,67 @@ void ShapeValidator::visit(const ir::operation::Comparison &)
 
 void ShapeValidator::visit(const ir::operation::Softmax &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto input_index{node.getInputs().at(0)};
 
-  OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
+  OP_REQUIRES(operands.at(output_index).shape().rank() == operands.at(input_index).shape().rank());
 }
 
 void ShapeValidator::visit(const ir::operation::InstanceNorm &node)
 {
+  const auto &operands = _graph.operands();
   const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
+  if (operands.at(ofm_index).info().isDynamic())
     return;
 
   const auto ifm_index{node.getInputs().at(ir::operation::InstanceNorm::Input::INPUT)};
   const auto gamma_index{node.getInputs().at(ir::operation::InstanceNorm::Input::GAMMA)};
   const auto beta_index{node.getInputs().at(ir::operation::InstanceNorm::Input::BETA)};
 
-  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
-  OP_REQUIRES(_ctx.at(ifm_index).shape() == _ctx.at(ofm_index).shape());
-  OP_REQUIRES(_ctx.at(gamma_index).shape().rank() == 1);
-  OP_REQUIRES(_ctx.at(beta_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(ifm_index).shape() == operands.at(ofm_index).shape());
+  OP_REQUIRES(operands.at(gamma_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(beta_index).shape().rank() == 1);
 }
 
 void ShapeValidator::visit(const ir::operation::Pool2D &node)
 {
+  const auto &operands = _graph.operands();
   const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
+  if (operands.at(ofm_index).info().isDynamic())
     return;
 
   const auto ifm_index{node.getInputs().at(ir::operation::Pool2D::Input::INPUT)};
 
-  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
 }
 
 void ShapeValidator::visit(const ir::operation::Permute &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto input_index{node.getInputs().at(0)};
 
-  OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
+  OP_REQUIRES(operands.at(output_index).shape().rank() == operands.at(input_index).shape().rank());
 }
 
 void ShapeValidator::visit(const ir::operation::Reduce &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::Reduce::Input::INPUT)};
-  const auto input_shape = _ctx.at(input_index).shape();
-  const auto output_shape = _ctx.at(output_index).shape();
+  const auto input_shape = operands.at(input_index).shape();
+  const auto output_shape = operands.at(output_index).shape();
 
   OP_REQUIRES(input_shape.rank() <= 4);
   OP_REQUIRES(output_shape.rank() <= input_shape.rank());
@@ -262,18 +269,20 @@ void ShapeValidator::visit(const ir::operation::Reduce &node)
 
 void ShapeValidator::visit(const ir::operation::Transpose &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::Transpose::Input::INPUT)};
   const auto perm_index{node.getInputs().at(ir::operation::Transpose::Input::PERMUTATION)};
 
-  const auto &output_shape = _ctx.at(output_index).shape();
-  const auto &input_shape = _ctx.at(input_index).shape();
+  const auto &output_shape = operands.at(output_index).shape();
+  const auto &input_shape = operands.at(input_index).shape();
 
-  OP_REQUIRES(_ctx.at(perm_index).shape().num_elements() == 0 ||
-              input_shape.rank() == static_cast<int>(_ctx.at(perm_index).shape().num_elements()));
+  OP_REQUIRES(operands.at(perm_index).shape().num_elements() == 0 ||
+              input_shape.rank() ==
+                static_cast<int>(operands.at(perm_index).shape().num_elements()));
   OP_REQUIRES(input_shape.rank() == output_shape.rank());
 }
 
@@ -281,8 +290,9 @@ void ShapeValidator::visit(const ir::operation::RNN &node)
 {
   // NOTE This validation is for static rnn(non-dynamic shape), but not for dynamic rnn
   // TODO Support dynamic rnn
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(ir::operation::RNN::Output::OUTPUT)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto hidden_state_out_index{
@@ -295,35 +305,36 @@ void ShapeValidator::visit(const ir::operation::RNN &node)
   const auto bias_index{node.getInputs().at(ir::operation::RNN::Input::BIAS)};
   const auto hidden_state_in_index{node.getInputs().at(ir::operation::RNN::Input::HIDDEN_STATE_IN)};
 
-  const auto batch_size = _ctx.at(output_index).shape().dim(0);
-  const auto num_units = _ctx.at(output_index).shape().dim(1);
+  const auto batch_size = operands.at(output_index).shape().dim(0);
+  const auto num_units = operands.at(output_index).shape().dim(1);
 
-  OP_REQUIRES(_ctx.at(output_index).shape().rank() == 2 &&
-              _ctx.at(hidden_state_out_index).shape().rank() == 2 &&
-              _ctx.at(input_index).shape().rank() == 2 &&
-              _ctx.at(weights_index).shape().rank() == 2 &&
-              _ctx.at(recurrent_weights_index).shape().rank() == 2 &&
-              _ctx.at(hidden_state_in_index).shape().rank() == 2);
-  OP_REQUIRES(_ctx.at(bias_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(output_index).shape().rank() == 2 &&
+              operands.at(hidden_state_out_index).shape().rank() == 2 &&
+              operands.at(input_index).shape().rank() == 2 &&
+              operands.at(weights_index).shape().rank() == 2 &&
+              operands.at(recurrent_weights_index).shape().rank() == 2 &&
+              operands.at(hidden_state_in_index).shape().rank() == 2);
+  OP_REQUIRES(operands.at(bias_index).shape().rank() == 1);
 
-  OP_REQUIRES(batch_size == _ctx.at(input_index).shape().dim(0) &&
-              batch_size == _ctx.at(hidden_state_in_index).shape().dim(0) &&
-              batch_size == _ctx.at(hidden_state_out_index).shape().dim(0));
-  OP_REQUIRES(_ctx.at(input_index).shape().dim(1) == _ctx.at(weights_index).shape().dim(1));
+  OP_REQUIRES(batch_size == operands.at(input_index).shape().dim(0) &&
+              batch_size == operands.at(hidden_state_in_index).shape().dim(0) &&
+              batch_size == operands.at(hidden_state_out_index).shape().dim(0));
+  OP_REQUIRES(operands.at(input_index).shape().dim(1) == operands.at(weights_index).shape().dim(1));
 
-  OP_REQUIRES(num_units == _ctx.at(weights_index).shape().dim(0) &&
-              num_units == _ctx.at(recurrent_weights_index).shape().dim(0) &&
-              num_units == _ctx.at(bias_index).shape().dim(0));
-  OP_REQUIRES(num_units == _ctx.at(output_index).shape().dim(1) &&
-              num_units == _ctx.at(recurrent_weights_index).shape().dim(1) &&
-              num_units == _ctx.at(hidden_state_in_index).shape().dim(1) &&
-              num_units == _ctx.at(hidden_state_out_index).shape().dim(1));
+  OP_REQUIRES(num_units == operands.at(weights_index).shape().dim(0) &&
+              num_units == operands.at(recurrent_weights_index).shape().dim(0) &&
+              num_units == operands.at(bias_index).shape().dim(0));
+  OP_REQUIRES(num_units == operands.at(output_index).shape().dim(1) &&
+              num_units == operands.at(recurrent_weights_index).shape().dim(1) &&
+              num_units == operands.at(hidden_state_in_index).shape().dim(1) &&
+              num_units == operands.at(hidden_state_out_index).shape().dim(1));
 }
 
 void ShapeValidator::visit(const ir::operation::SpaceToBatchND &node)
 {
+  const auto &operands = _graph.operands();
   const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
+  if (operands.at(ofm_index).info().isDynamic())
     return;
 
   const auto ifm_index{node.getInputs().at(ir::operation::SpaceToBatchND::Input::INPUT)};
@@ -331,39 +342,40 @@ void ShapeValidator::visit(const ir::operation::SpaceToBatchND &node)
     node.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
   const auto paddings_index{node.getInputs().at(ir::operation::SpaceToBatchND::Input::PADDINGS)};
 
-  const auto frontend_layout = _current_layout;
-  const auto input_shape = _ctx.at(ifm_index).shape().asFeature(frontend_layout);
-  const auto output_shape = _ctx.at(ofm_index).shape().asFeature(frontend_layout);
+  const auto frontend_layout = _graph.layout();
+  const auto input_shape = operands.at(ifm_index).shape().asFeature(frontend_layout);
+  const auto output_shape = operands.at(ofm_index).shape().asFeature(frontend_layout);
 
   // All requirement as per NNAPI specification.
-  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
-  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == 4);
-  OP_REQUIRES(_ctx.at(block_size_index).shape().rank() == 1);
-  OP_REQUIRES(_ctx.at(paddings_index).shape().rank() == 2);
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(ofm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(block_size_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(paddings_index).shape().rank() == 2);
 
-  OP_REQUIRES(_ctx.at(block_size_index).shape().dim(0) == 2);
-  OP_REQUIRES(_ctx.at(paddings_index).shape().dim(0) == 2);
-  OP_REQUIRES(_ctx.at(paddings_index).shape().dim(1) == 2);
+  OP_REQUIRES(operands.at(block_size_index).shape().dim(0) == 2);
+  OP_REQUIRES(operands.at(paddings_index).shape().dim(0) == 2);
+  OP_REQUIRES(operands.at(paddings_index).shape().dim(1) == 2);
 
   OP_REQUIRES(input_shape.C == output_shape.C);
 }
 
 void ShapeValidator::visit(const ir::operation::SpaceToDepth &node)
 {
+  const auto &operands = _graph.operands();
   const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
+  if (operands.at(ofm_index).info().isDynamic())
     return;
 
   const auto ifm_index{node.getInputs().at(ir::operation::SpaceToDepth::Input::INPUT)};
 
-  const auto frontend_layout = _current_layout;
-  const auto input_shape = _ctx.at(ifm_index).shape().asFeature(frontend_layout);
-  const auto output_shape = _ctx.at(ofm_index).shape().asFeature(frontend_layout);
+  const auto frontend_layout = _graph.layout();
+  const auto input_shape = operands.at(ifm_index).shape().asFeature(frontend_layout);
+  const auto output_shape = operands.at(ofm_index).shape().asFeature(frontend_layout);
   const auto block_size = node.param().block_size;
 
   // All assertions as per NNAPI specification.
-  OP_REQUIRES(_ctx.at(ifm_index).shape().rank() == 4);
-  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(ofm_index).shape().rank() == 4);
   OP_REQUIRES((input_shape.H % block_size == 0) && (input_shape.W % block_size == 0));
   OP_REQUIRES(input_shape.N == output_shape.N);
   OP_REQUIRES(input_shape.C * block_size * block_size == output_shape.C);
@@ -378,29 +390,31 @@ void ShapeValidator::visit(const ir::operation::ElementwiseBinary &)
 
 void ShapeValidator::visit(const ir::operation::ElementwiseUnary &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ElementwiseUnary::Input::INPUT)};
 
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
-  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(operands.at(output_index).shape() == operands.at(input_index).shape());
 }
 
 void ShapeValidator::visit(const ir::operation::EmbeddingLookup &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
   const auto lookups_index{node.getInputs().at(ir::operation::EmbeddingLookup::Input::LOOKUPS)};
   const auto values_index{node.getInputs().at(ir::operation::EmbeddingLookup::Input::VALUES)};
 
-  const auto &output_obj = _ctx.at(output_index);
-  const auto &lookups_obj = _ctx.at(lookups_index);
-  const auto &values_obj = _ctx.at(values_index);
+  const auto &output_obj = operands.at(output_index);
+  const auto &lookups_obj = operands.at(lookups_index);
+  const auto &values_obj = operands.at(values_index);
 
   // Verify operand here, not at SimpleEmbeddingLookup::configure() to avoid acl's modifying
   // TensorShape sometimes(Issue: https://github.sec.samsung.net/STAR/nnfw/issues/729)
   {
-    if (_ctx.at(output_index).info().isDynamic())
+    if (operands.at(output_index).info().isDynamic())
       return;
 
     const auto &output_shape = output_obj.shape();
@@ -423,26 +437,28 @@ void ShapeValidator::visit(const ir::operation::EmbeddingLookup &node)
 
 void ShapeValidator::visit(const ir::operation::ExpandDims &node)
 {
+  const auto &operands = _graph.operands();
   const auto axis_index{node.getInputs().at(ir::operation::ExpandDims::Input::AXIS)};
 
-  if (_ctx.at(axis_index).info().isDynamic())
+  if (operands.at(axis_index).info().isDynamic())
     return;
-  OP_REQUIRES(_ctx.at(axis_index).shape().rank() <= 1);
+  OP_REQUIRES(operands.at(axis_index).shape().rank() <= 1);
 }
 
 void ShapeValidator::visit(const ir::operation::HashtableLookup &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(ir::operation::HashtableLookup::Output::OUTPUT)};
   const auto lookups_index{node.getInputs().at(ir::operation::HashtableLookup::Input::LOOKUPS)};
   const auto keys_index{node.getInputs().at(ir::operation::HashtableLookup::Input::KEYS)};
   const auto values_index{node.getInputs().at(ir::operation::HashtableLookup::Input::VALUES)};
 
-  const auto &output_obj = _ctx.at(output_index);
-  const auto &lookups_obj = _ctx.at(lookups_index);
-  const auto &keys_obj = _ctx.at(keys_index);
-  const auto &values_obj = _ctx.at(values_index);
+  const auto &output_obj = operands.at(output_index);
+  const auto &lookups_obj = operands.at(lookups_index);
+  const auto &keys_obj = operands.at(keys_index);
+  const auto &values_obj = operands.at(values_index);
 
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto &output_shape = output_obj.shape();
@@ -460,28 +476,30 @@ void ShapeValidator::visit(const ir::operation::HashtableLookup &node)
 void ShapeValidator::visit(const ir::operation::TransposeConv &node)
 {
   // shape check
+  const auto &operands = _graph.operands();
   const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
+
+  if (operands.at(ofm_index).info().isDynamic())
     return;
 
   const auto ifm_index{node.getInputs().at(ir::operation::TransposeConv::Input::INPUT)};
   const auto ker_index{node.getInputs().at(ir::operation::TransposeConv::Input::KERNEL)};
 
   // Only 4D tensors are supported
-  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == 4);
-  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == _ctx.at(ifm_index).shape().rank());
-  OP_REQUIRES(_ctx.at(ofm_index).shape().rank() == _ctx.at(ker_index).shape().rank());
+  OP_REQUIRES(operands.at(ofm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(ofm_index).shape().rank() == operands.at(ifm_index).shape().rank());
+  OP_REQUIRES(operands.at(ofm_index).shape().rank() == operands.at(ker_index).shape().rank());
 
-  const auto frontend_layout = _current_layout;
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(frontend_layout);
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(frontend_layout);
+  const auto frontend_layout = _graph.layout();
+  const auto ofm_shape = operands.at(ofm_index).shape().asFeature(frontend_layout);
+  const auto ifm_shape = operands.at(ifm_index).shape().asFeature(frontend_layout);
   // The kernel has only IHWO layout on frontend
   // So ker_shape is treated here below
   // I -> N
   // H -> H
   // W -> W
   // O -> C
-  const auto ker_shape = _ctx.at(ker_index).shape().asFeature(ir::Layout::NHWC);
+  const auto ker_shape = operands.at(ker_index).shape().asFeature(ir::Layout::NHWC);
 
   OP_REQUIRES(ifm_shape.N == ofm_shape.N);
   OP_REQUIRES(ifm_shape.C == ker_shape.C);
@@ -490,16 +508,17 @@ void ShapeValidator::visit(const ir::operation::TransposeConv &node)
 
 void ShapeValidator::visit(const ir::operation::Gather &node)
 {
+  const auto &operands = _graph.operands();
   const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
+  if (operands.at(ofm_index).info().isDynamic())
     return;
 
   const auto ifm_index{node.getInputs().at(ir::operation::Gather::Input::INPUT)};
   const auto indices_index{node.getInputs().at(ir::operation::Gather::Input::INDICES)};
 
-  const auto ifm_shape = _ctx.at(ifm_index).shape();
-  const auto indices_shape = _ctx.at(indices_index).shape();
-  const auto ofm_shape = _ctx.at(ofm_index).shape();
+  const auto ifm_shape = operands.at(ifm_index).shape();
+  const auto indices_shape = operands.at(indices_index).shape();
+  const auto ofm_shape = operands.at(ofm_index).shape();
 
   OP_REQUIRES(ifm_shape.rank() <= 4);
   OP_REQUIRES(indices_shape.rank() <= 3);
@@ -508,21 +527,22 @@ void ShapeValidator::visit(const ir::operation::Gather &node)
 
 void ShapeValidator::visit(const ir::operation::DepthToSpace &node)
 {
+  const auto &operands = _graph.operands();
   int32_t block_size = node.param().block_size;
 
   // shape check
   const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::DepthToSpace::Input::INPUT)};
 
-  const auto frontend_layout = _current_layout;
-  const auto output_shape = _ctx.at(output_index).shape().asFeature(frontend_layout);
-  const auto input_shape = _ctx.at(input_index).shape().asFeature(frontend_layout);
+  const auto frontend_layout = _graph.layout();
+  const auto output_shape = operands.at(output_index).shape().asFeature(frontend_layout);
+  const auto input_shape = operands.at(input_index).shape().asFeature(frontend_layout);
 
-  OP_REQUIRES(_ctx.at(input_index).shape().rank() == 4);
-  OP_REQUIRES(_ctx.at(output_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(input_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(output_index).shape().rank() == 4);
 
   {
     OP_REQUIRES(output_shape.N == input_shape.N);
@@ -535,22 +555,23 @@ void ShapeValidator::visit(const ir::operation::DepthToSpace &node)
 
 void ShapeValidator::visit(const ir::operation::Pack &node)
 {
+  const auto &operands = _graph.operands();
   const auto axis{node.param().axis};
   const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   // shape check
-  const auto &output_shape = _ctx.at(output_index).shape();
+  const auto &output_shape = operands.at(output_index).shape();
   const auto output_rank = static_cast<int32_t>(output_shape.rank());
 
   const auto input1_index{node.getInputs().at(0)};
-  const auto input_shape = _ctx.at(input1_index).shape();
+  const auto input_shape = operands.at(input1_index).shape();
 
   OP_REQUIRES(axis >= -output_rank && axis < output_rank);
   for (const auto &index : node.getInputs())
   {
-    OP_REQUIRES(input_shape == _ctx.at(index).shape());
+    OP_REQUIRES(input_shape == operands.at(index).shape());
   }
 }
 
@@ -558,8 +579,9 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
 {
   // NOTE This validation is for static rnn(non-dynamic shape), but not for dynamic rnn
   // TODO Support dynamic rnn
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(ir::operation::LSTM::Output::OUTPUT)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto scratch_buffer_index{
@@ -607,91 +629,96 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
     node.getInputs().at(ir::operation::LSTM::Input::OUTPUT_STATE_IN)};
   const auto cell_state_in_index{node.getInputs().at(ir::operation::LSTM::Input::CELL_STATE_IN)};
 
-  OP_REQUIRES(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
-  for (int i = 0; i < _ctx.at(input_index).shape().rank() - 1; ++i)
+  OP_REQUIRES(operands.at(input_index).shape().rank() == operands.at(output_index).shape().rank());
+  for (int i = 0; i < operands.at(input_index).shape().rank() - 1; ++i)
   {
-    OP_REQUIRES(_ctx.at(input_index).shape().dim(i) == _ctx.at(output_index).shape().dim(i));
+    OP_REQUIRES(operands.at(input_index).shape().dim(i) ==
+                operands.at(output_index).shape().dim(i));
   }
-  OP_REQUIRES(
-    (_ctx.at(output_index).shape().rank() == 2 || _ctx.at(output_index).shape().rank() == 3) &&
-    (_ctx.at(input_index).shape().rank() == 2 || _ctx.at(input_index).shape().rank() == 3) &&
-    (!_ctx.exist(input_to_input_weights_index) ||
-     _ctx.at(input_to_input_weights_index).shape().rank() == 2) &&
-    _ctx.at(input_to_forget_weights_index).shape().rank() == 2 &&
-    _ctx.at(input_to_cell_weights_index).shape().rank() == 2 &&
-    _ctx.at(input_to_output_weights_index).shape().rank() == 2 &&
-    (!_ctx.exist(recurrent_to_input_weights_index) ||
-     _ctx.at(recurrent_to_input_weights_index).shape().rank() == 2) &&
-    _ctx.at(recurrent_to_forget_weights_index).shape().rank() == 2 &&
-    _ctx.at(recurrent_to_cell_weights_index).shape().rank() == 2 &&
-    _ctx.at(recurrent_to_output_weights_index).shape().rank() == 2 &&
-    (!_ctx.exist(projection_weights_index) ||
-     _ctx.at(projection_weights_index).shape().rank() == 2) &&
-    _ctx.at(output_state_in_index).shape().rank() == 2 &&
-    _ctx.at(cell_state_in_index).shape().rank() == 2);
+  OP_REQUIRES((operands.at(output_index).shape().rank() == 2 ||
+               operands.at(output_index).shape().rank() == 3) &&
+              (operands.at(input_index).shape().rank() == 2 ||
+               operands.at(input_index).shape().rank() == 3) &&
+              (!operands.exist(input_to_input_weights_index) ||
+               operands.at(input_to_input_weights_index).shape().rank() == 2) &&
+              operands.at(input_to_forget_weights_index).shape().rank() == 2 &&
+              operands.at(input_to_cell_weights_index).shape().rank() == 2 &&
+              operands.at(input_to_output_weights_index).shape().rank() == 2 &&
+              (!operands.exist(recurrent_to_input_weights_index) ||
+               operands.at(recurrent_to_input_weights_index).shape().rank() == 2) &&
+              operands.at(recurrent_to_forget_weights_index).shape().rank() == 2 &&
+              operands.at(recurrent_to_cell_weights_index).shape().rank() == 2 &&
+              operands.at(recurrent_to_output_weights_index).shape().rank() == 2 &&
+              (!operands.exist(projection_weights_index) ||
+               operands.at(projection_weights_index).shape().rank() == 2) &&
+              operands.at(output_state_in_index).shape().rank() == 2 &&
+              operands.at(cell_state_in_index).shape().rank() == 2);
 
-  OP_REQUIRES(
-    (!_ctx.exist(cell_to_input_weights_index) ||
-     _ctx.at(cell_to_input_weights_index).shape().rank() == 1) &&
-    (!_ctx.exist(cell_to_forget_weights_index) ||
-     _ctx.at(cell_to_forget_weights_index).shape().rank() == 1) &&
-    (!_ctx.exist(cell_to_output_weights_index) ||
-     _ctx.at(cell_to_output_weights_index).shape().rank() == 1) &&
-    (!_ctx.exist(input_gate_bias_index) || _ctx.at(input_gate_bias_index).shape().rank() == 1) &&
-    _ctx.at(forget_gate_bias_index).shape().rank() == 1 &&
-    _ctx.at(cell_bias_index).shape().rank() == 1 &&
-    _ctx.at(output_gate_bias_index).shape().rank() == 1 &&
-    (!_ctx.exist(projection_bias_index) || _ctx.at(projection_bias_index).shape().rank() == 1));
+  OP_REQUIRES((!operands.exist(cell_to_input_weights_index) ||
+               operands.at(cell_to_input_weights_index).shape().rank() == 1) &&
+              (!operands.exist(cell_to_forget_weights_index) ||
+               operands.at(cell_to_forget_weights_index).shape().rank() == 1) &&
+              (!operands.exist(cell_to_output_weights_index) ||
+               operands.at(cell_to_output_weights_index).shape().rank() == 1) &&
+              (!operands.exist(input_gate_bias_index) ||
+               operands.at(input_gate_bias_index).shape().rank() == 1) &&
+              operands.at(forget_gate_bias_index).shape().rank() == 1 &&
+              operands.at(cell_bias_index).shape().rank() == 1 &&
+              operands.at(output_gate_bias_index).shape().rank() == 1 &&
+              (!operands.exist(projection_bias_index) ||
+               operands.at(projection_bias_index).shape().rank() == 1));
 
   // CIFG assertion
-  OP_REQUIRES(
-    ((!_ctx.exist(input_to_input_weights_index) ||
-      (_ctx.at(input_to_input_weights_index).shape().dim(0) == 0 &&
-       _ctx.at(input_to_input_weights_index).shape().dim(1) == 0)) &&
-     (!_ctx.exist(recurrent_to_input_weights_index) ||
-      (_ctx.at(recurrent_to_input_weights_index).shape().dim(0) == 0 &&
-       _ctx.at(recurrent_to_input_weights_index).shape().dim(1) == 0)) &&
-     (!_ctx.exist(input_gate_bias_index) || _ctx.at(input_gate_bias_index).shape().dim(0) == 0) &&
-     (!_ctx.exist(cell_to_input_weights_index) ||
-      _ctx.at(cell_to_input_weights_index).shape().dim(0) == 0)) ||
-    ((_ctx.exist(input_to_input_weights_index) &&
-      (_ctx.at(input_to_input_weights_index).shape().dim(0) != 0 &&
-       _ctx.at(input_to_input_weights_index).shape().dim(1) != 0)) &&
-     (_ctx.exist(recurrent_to_input_weights_index) &&
-      (_ctx.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
-       _ctx.at(recurrent_to_input_weights_index).shape().dim(1) != 0)) &&
-     (_ctx.exist(input_gate_bias_index) && _ctx.at(input_gate_bias_index).shape().dim(0) != 0)));
+  OP_REQUIRES(((!operands.exist(input_to_input_weights_index) ||
+                (operands.at(input_to_input_weights_index).shape().dim(0) == 0 &&
+                 operands.at(input_to_input_weights_index).shape().dim(1) == 0)) &&
+               (!operands.exist(recurrent_to_input_weights_index) ||
+                (operands.at(recurrent_to_input_weights_index).shape().dim(0) == 0 &&
+                 operands.at(recurrent_to_input_weights_index).shape().dim(1) == 0)) &&
+               (!operands.exist(input_gate_bias_index) ||
+                operands.at(input_gate_bias_index).shape().dim(0) == 0) &&
+               (!operands.exist(cell_to_input_weights_index) ||
+                operands.at(cell_to_input_weights_index).shape().dim(0) == 0)) ||
+              ((operands.exist(input_to_input_weights_index) &&
+                (operands.at(input_to_input_weights_index).shape().dim(0) != 0 &&
+                 operands.at(input_to_input_weights_index).shape().dim(1) != 0)) &&
+               (operands.exist(recurrent_to_input_weights_index) &&
+                (operands.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
+                 operands.at(recurrent_to_input_weights_index).shape().dim(1) != 0)) &&
+               (operands.exist(input_gate_bias_index) &&
+                operands.at(input_gate_bias_index).shape().dim(0) != 0)));
 
   // Peephole assertion
-  OP_REQUIRES(((!_ctx.exist(cell_to_forget_weights_index) ||
-                _ctx.at(cell_to_forget_weights_index).shape().dim(0) == 0) &&
-               (!_ctx.exist(cell_to_output_weights_index) ||
-                _ctx.at(cell_to_output_weights_index).shape().dim(0) == 0)) ||
-              ((_ctx.exist(cell_to_forget_weights_index) &&
-                _ctx.at(cell_to_forget_weights_index).shape().dim(0) != 0) &&
-               (_ctx.exist(cell_to_output_weights_index) &&
-                _ctx.at(cell_to_output_weights_index).shape().dim(0) != 0)));
+  OP_REQUIRES(((!operands.exist(cell_to_forget_weights_index) ||
+                operands.at(cell_to_forget_weights_index).shape().dim(0) == 0) &&
+               (!operands.exist(cell_to_output_weights_index) ||
+                operands.at(cell_to_output_weights_index).shape().dim(0) == 0)) ||
+              ((operands.exist(cell_to_forget_weights_index) &&
+                operands.at(cell_to_forget_weights_index).shape().dim(0) != 0) &&
+               (operands.exist(cell_to_output_weights_index) &&
+                operands.at(cell_to_output_weights_index).shape().dim(0) != 0)));
 
-  bool has_input_to_input_weights = _ctx.exist(input_to_input_weights_index) &&
-                                    (_ctx.at(input_to_input_weights_index).shape().dim(0) != 0 &&
-                                     _ctx.at(input_to_input_weights_index).shape().dim(1) != 0);
+  bool has_input_to_input_weights =
+    operands.exist(input_to_input_weights_index) &&
+    (operands.at(input_to_input_weights_index).shape().dim(0) != 0 &&
+     operands.at(input_to_input_weights_index).shape().dim(1) != 0);
   bool has_recurrent_to_input_weights =
-    _ctx.exist(recurrent_to_input_weights_index) &&
-    (_ctx.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
-     _ctx.at(recurrent_to_input_weights_index).shape().dim(1) != 0);
+    operands.exist(recurrent_to_input_weights_index) &&
+    (operands.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
+     operands.at(recurrent_to_input_weights_index).shape().dim(1) != 0);
   bool has_input_gate_bias =
-    _ctx.exist(input_gate_bias_index) && _ctx.at(input_gate_bias_index).shape().dim(0) != 0;
-  bool has_cell_to_input_weights = _ctx.exist(cell_to_input_weights_index) &&
-                                   _ctx.at(cell_to_input_weights_index).shape().dim(0) != 0;
-  bool has_cell_to_forget_weights = _ctx.exist(cell_to_forget_weights_index) &&
-                                    _ctx.at(cell_to_forget_weights_index).shape().dim(0) != 0;
-  bool has_cell_to_output_weights = _ctx.exist(cell_to_output_weights_index) &&
-                                    _ctx.at(cell_to_output_weights_index).shape().dim(0) != 0;
-  bool has_projection_weights = _ctx.exist(projection_weights_index) &&
-                                (_ctx.at(projection_weights_index).shape().dim(0) != 0 &&
-                                 _ctx.at(projection_weights_index).shape().dim(1) != 0);
+    operands.exist(input_gate_bias_index) && operands.at(input_gate_bias_index).shape().dim(0) != 0;
+  bool has_cell_to_input_weights = operands.exist(cell_to_input_weights_index) &&
+                                   operands.at(cell_to_input_weights_index).shape().dim(0) != 0;
+  bool has_cell_to_forget_weights = operands.exist(cell_to_forget_weights_index) &&
+                                    operands.at(cell_to_forget_weights_index).shape().dim(0) != 0;
+  bool has_cell_to_output_weights = operands.exist(cell_to_output_weights_index) &&
+                                    operands.at(cell_to_output_weights_index).shape().dim(0) != 0;
+  bool has_projection_weights = operands.exist(projection_weights_index) &&
+                                (operands.at(projection_weights_index).shape().dim(0) != 0 &&
+                                 operands.at(projection_weights_index).shape().dim(1) != 0);
   bool has_projection_bias =
-    _ctx.exist(projection_bias_index) && _ctx.at(projection_bias_index).shape().dim(0) != 0;
+    operands.exist(projection_bias_index) && operands.at(projection_bias_index).shape().dim(0) != 0;
 
   // NOTE The cell_to_input_weights do not exist in non-peephole although regular LSTM(non-CIFG).
   // true: no CIFG
@@ -706,46 +733,48 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
   // NOTE The projection weights may have data but the projection bias may not.
   bool has_projection_param = has_projection_weights;
 
-  const auto batch_size = (_ctx.at(input_index).shape().rank() == 3 && node.param().time_major)
-                            ? _ctx.at(input_index).shape().dim(1)
-                            : _ctx.at(input_index).shape().dim(0);
-  OP_REQUIRES(batch_size == _ctx.at(output_state_in_index).shape().dim(0) &&
-              batch_size == _ctx.at(cell_state_in_index).shape().dim(0));
+  const auto batch_size = (operands.at(input_index).shape().rank() == 3 && node.param().time_major)
+                            ? operands.at(input_index).shape().dim(1)
+                            : operands.at(input_index).shape().dim(0);
+  OP_REQUIRES(batch_size == operands.at(output_state_in_index).shape().dim(0) &&
+              batch_size == operands.at(cell_state_in_index).shape().dim(0));
 
-  const auto input_size = _ctx.at(input_index).shape().dim(_ctx.at(input_index).shape().rank() - 1);
-  OP_REQUIRES(input_size == _ctx.at(input_to_forget_weights_index).shape().dim(1) &&
-              input_size == _ctx.at(input_to_cell_weights_index).shape().dim(1) &&
-              input_size == _ctx.at(input_to_output_weights_index).shape().dim(1));
+  const auto input_size =
+    operands.at(input_index).shape().dim(operands.at(input_index).shape().rank() - 1);
+  OP_REQUIRES(input_size == operands.at(input_to_forget_weights_index).shape().dim(1) &&
+              input_size == operands.at(input_to_cell_weights_index).shape().dim(1) &&
+              input_size == operands.at(input_to_output_weights_index).shape().dim(1));
 
-  const auto num_units = _ctx.at(input_to_output_weights_index).shape().dim(0);
-  OP_REQUIRES(num_units == _ctx.at(input_to_cell_weights_index).shape().dim(0) &&
-              num_units == _ctx.at(input_to_output_weights_index).shape().dim(0) &&
-              num_units == _ctx.at(recurrent_to_forget_weights_index).shape().dim(0) &&
-              num_units == _ctx.at(recurrent_to_cell_weights_index).shape().dim(0) &&
-              num_units == _ctx.at(recurrent_to_output_weights_index).shape().dim(0) &&
-              num_units == _ctx.at(forget_gate_bias_index).shape().dim(0) &&
-              num_units == _ctx.at(cell_bias_index).shape().dim(0) &&
-              num_units == _ctx.at(output_gate_bias_index).shape().dim(0) &&
-              num_units == _ctx.at(cell_state_in_index).shape().dim(1));
+  const auto num_units = operands.at(input_to_output_weights_index).shape().dim(0);
+  OP_REQUIRES(num_units == operands.at(input_to_cell_weights_index).shape().dim(0) &&
+              num_units == operands.at(input_to_output_weights_index).shape().dim(0) &&
+              num_units == operands.at(recurrent_to_forget_weights_index).shape().dim(0) &&
+              num_units == operands.at(recurrent_to_cell_weights_index).shape().dim(0) &&
+              num_units == operands.at(recurrent_to_output_weights_index).shape().dim(0) &&
+              num_units == operands.at(forget_gate_bias_index).shape().dim(0) &&
+              num_units == operands.at(cell_bias_index).shape().dim(0) &&
+              num_units == operands.at(output_gate_bias_index).shape().dim(0) &&
+              num_units == operands.at(cell_state_in_index).shape().dim(1));
 
   const auto output_size =
-    _ctx.at(output_index).shape().dim(_ctx.at(output_index).shape().rank() - 1);
-  OP_REQUIRES(output_size == _ctx.at(recurrent_to_forget_weights_index).shape().dim(1) &&
-              output_size == _ctx.at(recurrent_to_cell_weights_index).shape().dim(1) &&
-              output_size == _ctx.at(recurrent_to_output_weights_index).shape().dim(1) &&
-              output_size == _ctx.at(output_state_in_index).shape().dim(1));
+    operands.at(output_index).shape().dim(operands.at(output_index).shape().rank() - 1);
+  OP_REQUIRES(output_size == operands.at(recurrent_to_forget_weights_index).shape().dim(1) &&
+              output_size == operands.at(recurrent_to_cell_weights_index).shape().dim(1) &&
+              output_size == operands.at(recurrent_to_output_weights_index).shape().dim(1) &&
+              output_size == operands.at(output_state_in_index).shape().dim(1));
 
   if (has_cifg_param)
   {
-    OP_REQUIRES(input_size == _ctx.at(input_to_input_weights_index).shape().dim(1));
-    OP_REQUIRES(num_units == _ctx.at(input_to_input_weights_index).shape().dim(0) &&
-                num_units == _ctx.at(recurrent_to_input_weights_index).shape().dim(0) &&
-                ((_ctx.exist(cell_to_input_weights_index) &&
-                  num_units == _ctx.at(cell_to_input_weights_index).shape().dim(0)) ||
-                 (!_ctx.exist(cell_to_input_weights_index) ||
-                  _ctx.at(cell_to_input_weights_index).shape().dim(0) == 0) /* non-peephole */) &&
-                num_units == _ctx.at(input_gate_bias_index).shape().dim(0));
-    OP_REQUIRES(output_size == _ctx.at(recurrent_to_input_weights_index).shape().dim(1));
+    OP_REQUIRES(input_size == operands.at(input_to_input_weights_index).shape().dim(1));
+    OP_REQUIRES(
+      num_units == operands.at(input_to_input_weights_index).shape().dim(0) &&
+      num_units == operands.at(recurrent_to_input_weights_index).shape().dim(0) &&
+      ((operands.exist(cell_to_input_weights_index) &&
+        num_units == operands.at(cell_to_input_weights_index).shape().dim(0)) ||
+       (!operands.exist(cell_to_input_weights_index) ||
+        operands.at(cell_to_input_weights_index).shape().dim(0) == 0) /* non-peephole */) &&
+      num_units == operands.at(input_gate_bias_index).shape().dim(0));
+    OP_REQUIRES(output_size == operands.at(recurrent_to_input_weights_index).shape().dim(1));
     OP_REQUIRES(has_input_to_input_weights && has_recurrent_to_input_weights &&
                 has_input_gate_bias);
     if (has_cell_to_input_weights)
@@ -753,64 +782,65 @@ void ShapeValidator::visit(const ir::operation::LSTM &node)
       // NOTE The cell_to_input_weights exist only in case of non-CIFG and peephole.
       OP_REQUIRES(has_peephole_param);
     }
-    if (_ctx.exist(scratch_buffer_index))
-      OP_REQUIRES(_ctx.at(scratch_buffer_index).shape().dim(1) == num_units * 4);
+    if (operands.exist(scratch_buffer_index))
+      OP_REQUIRES(operands.at(scratch_buffer_index).shape().dim(1) == num_units * 4);
   }
   else
   {
-    if (_ctx.exist(scratch_buffer_index))
-      OP_REQUIRES(_ctx.at(scratch_buffer_index).shape().dim(1) == num_units * 3);
+    if (operands.exist(scratch_buffer_index))
+      OP_REQUIRES(operands.at(scratch_buffer_index).shape().dim(1) == num_units * 3);
   }
 
   if (has_peephole_param)
   {
-    OP_REQUIRES(num_units == _ctx.at(cell_to_forget_weights_index).shape().dim(0) &&
-                num_units == _ctx.at(cell_to_output_weights_index).shape().dim(0) &&
-                (num_units == _ctx.at(cell_to_input_weights_index).shape().dim(0) ||
-                 _ctx.at(cell_to_input_weights_index).shape().dim(0) == 0 /* CIFG */));
+    OP_REQUIRES(num_units == operands.at(cell_to_forget_weights_index).shape().dim(0) &&
+                num_units == operands.at(cell_to_output_weights_index).shape().dim(0) &&
+                (num_units == operands.at(cell_to_input_weights_index).shape().dim(0) ||
+                 operands.at(cell_to_input_weights_index).shape().dim(0) == 0 /* CIFG */));
   }
 
   if (has_projection_param)
   {
-    OP_REQUIRES(num_units == _ctx.at(projection_weights_index).shape().dim(1));
-    OP_REQUIRES(output_size == _ctx.at(projection_weights_index).shape().dim(0));
+    OP_REQUIRES(num_units == operands.at(projection_weights_index).shape().dim(1));
+    OP_REQUIRES(output_size == operands.at(projection_weights_index).shape().dim(0));
     if (has_projection_bias)
     {
-      OP_REQUIRES(output_size == _ctx.at(projection_bias_index).shape().dim(0));
+      OP_REQUIRES(output_size == operands.at(projection_bias_index).shape().dim(0));
     }
   }
 
-  if (_ctx.exist(scratch_buffer_index))
+  if (operands.exist(scratch_buffer_index))
   {
-    OP_REQUIRES(_ctx.at(scratch_buffer_index).shape().rank() == 2);
-    OP_REQUIRES(batch_size == _ctx.at(scratch_buffer_index).shape().dim(0));
+    OP_REQUIRES(operands.at(scratch_buffer_index).shape().rank() == 2);
+    OP_REQUIRES(batch_size == operands.at(scratch_buffer_index).shape().dim(0));
   }
 
-  if (_ctx.exist(output_state_out_index))
+  if (operands.exist(output_state_out_index))
   {
-    OP_REQUIRES(_ctx.at(output_state_out_index).shape().rank() == 2);
-    OP_REQUIRES(batch_size == _ctx.at(output_state_out_index).shape().dim(0));
-    OP_REQUIRES(output_size == _ctx.at(output_state_out_index).shape().dim(1));
+    OP_REQUIRES(operands.at(output_state_out_index).shape().rank() == 2);
+    OP_REQUIRES(batch_size == operands.at(output_state_out_index).shape().dim(0));
+    OP_REQUIRES(output_size == operands.at(output_state_out_index).shape().dim(1));
   }
 
-  if (_ctx.exist(cell_state_out_index))
+  if (operands.exist(cell_state_out_index))
   {
-    OP_REQUIRES(_ctx.at(cell_state_out_index).shape().rank() == 2);
-    OP_REQUIRES(batch_size == _ctx.at(cell_state_out_index).shape().dim(0));
-    OP_REQUIRES(num_units == _ctx.at(cell_state_out_index).shape().dim(1));
+    OP_REQUIRES(operands.at(cell_state_out_index).shape().rank() == 2);
+    OP_REQUIRES(batch_size == operands.at(cell_state_out_index).shape().dim(0));
+    OP_REQUIRES(num_units == operands.at(cell_state_out_index).shape().dim(1));
   }
 }
 
 void ShapeValidator::visit(const ir::operation::L2Normalization &node)
 {
+  const auto &operands = _graph.operands();
   const auto ofm_index{node.getOutputs().at(0)};
-  if (_ctx.at(ofm_index).info().isDynamic())
+  if (operands.at(ofm_index).info().isDynamic())
     return;
 
   const auto ifm_index{node.getInputs().at(ir::operation::L2Normalization::Input::INPUT)};
 
-  auto ifm_shape = _ctx.at(ifm_index).shape();
-  auto ofm_shape = _ctx.at(ofm_index).shape();
+  auto ifm_shape = operands.at(ifm_index).shape();
+  auto ofm_shape = operands.at(ofm_index).shape();
 
   OP_REQUIRES(ifm_shape.rank() == ofm_shape.rank());
 
@@ -822,14 +852,15 @@ void ShapeValidator::visit(const ir::operation::L2Normalization &node)
 
 void ShapeValidator::visit(const ir::operation::Unpack &node)
 {
+  const auto &operands = _graph.operands();
   const auto axis{node.param().axis};
   const auto output_index{node.getInputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::Unpack::Input::INPUT)};
 
-  const auto &input_shape = _ctx.at(input_index).shape();
+  const auto &input_shape = operands.at(input_index).shape();
   const auto input_rank = static_cast<int32_t>(input_shape.rank());
 
   OP_REQUIRES(axis >= -input_rank && axis < input_rank);
@@ -837,22 +868,23 @@ void ShapeValidator::visit(const ir::operation::Unpack &node)
 
 void ShapeValidator::visit(const ir::operation::Pad &node)
 {
+  const auto &operands = _graph.operands();
   const auto pad_index{node.getInputs().at(ir::operation::Pad::Input::PAD)};
-  OP_REQUIRES(_ctx.at(pad_index).typeInfo().type() == ir::DataType::INT32);
+  OP_REQUIRES(operands.at(pad_index).typeInfo().type() == ir::DataType::INT32);
 
   const auto output_index{node.getInputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::Pad::Input::INPUT)};
 
-  const auto &pad_shape = _ctx.at(pad_index).shape();
-  const auto input_rank = static_cast<int32_t>(_ctx.at(input_index).shape().rank());
+  const auto &pad_shape = operands.at(pad_index).shape();
+  const auto input_rank = static_cast<int32_t>(operands.at(input_index).shape().rank());
 
   OP_REQUIRES(pad_shape.rank() == 2);
   OP_REQUIRES(pad_shape.dim(0) == input_rank);
   OP_REQUIRES(pad_shape.dim(1) == 2);
-  OP_REQUIRES(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
+  OP_REQUIRES(operands.at(input_index).shape().rank() == operands.at(output_index).shape().rank());
 }
 
 void ShapeValidator::visit(const ir::operation::Select &)
@@ -862,65 +894,70 @@ void ShapeValidator::visit(const ir::operation::Select &)
 
 void ShapeValidator::visit(const ir::operation::StridedSlice &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::StridedSlice::Input::INPUT)};
 
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
-  OP_REQUIRES(_ctx.at(input_index).shape().rank() <= 4);
+  OP_REQUIRES(operands.at(input_index).shape().rank() <= 4);
 }
 
 void ShapeValidator::visit(const ir::operation::Split &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto input_index{node.getInputs().at(ir::operation::Split::Input::INPUT)};
   const auto axis_index{node.getInputs().at(ir::operation::Split::Input::AXIS)};
 
   const auto num_splits = node.param().num_splits;
-  const auto input_rank = _ctx.at(input_index).shape().rank();
-  auto axis = *reinterpret_cast<const int32_t *>(_ctx.at(axis_index).data()->base());
+  const auto input_rank = operands.at(input_index).shape().rank();
+  auto axis = *reinterpret_cast<const int32_t *>(operands.at(axis_index).data()->base());
   axis = axis < 0 ? axis + input_rank : axis;
 
   OP_REQUIRES(axis >= 0 && axis < input_rank);
-  OP_REQUIRES(_ctx.at(input_index).shape().dim(axis) % num_splits == 0);
+  OP_REQUIRES(operands.at(input_index).shape().dim(axis) % num_splits == 0);
 }
 
 void ShapeValidator::visit(const ir::operation::Shape &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto input_index{node.getInputs().at(0)};
   UNUSED_RELEASE(input_index);
-  OP_REQUIRES(_ctx.at(output_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(output_index).shape().rank() == 1);
 }
 
 void ShapeValidator::visit(const ir::operation::ResizeBilinear &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::ResizeBilinear::Input::INPUT)};
 
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
   {
     return;
   }
-  OP_REQUIRES(_ctx.at(input_index).shape().rank() == 4);
-  OP_REQUIRES(_ctx.at(output_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(input_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(output_index).shape().rank() == 4);
 }
 
 void ShapeValidator::visit(const ir::operation::Reverse &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Reverse::Input::INPUT)};
 
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
-  OP_REQUIRES(_ctx.at(output_index).shape() == _ctx.at(input_index).shape());
+  OP_REQUIRES(operands.at(output_index).shape() == operands.at(input_index).shape());
 }
 
 void ShapeValidator::visit(const ir::operation::If &)
@@ -936,17 +973,18 @@ void ShapeValidator::visit(const ir::operation::While &)
 
 void ShapeValidator::visit(const ir::operation::SquaredDifference &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
   const auto lhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::LHS)};
   const auto rhs_index{node.getInputs().at(ir::operation::SquaredDifference::Input::RHS)};
 
   // Check for dimension constraints
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
-  auto output_shape = _ctx.at(output_index).shape();
-  auto lhs_shape = _ctx.at(lhs_index).shape();
-  auto rhs_shape = _ctx.at(rhs_index).shape();
+  auto output_shape = operands.at(output_index).shape();
+  auto lhs_shape = operands.at(lhs_index).shape();
+  auto rhs_shape = operands.at(rhs_index).shape();
   // Check for output rank
   OP_REQUIRES(output_shape.rank() == std::max(lhs_shape.rank(), rhs_shape.rank()));
   auto min_rank = std::min(lhs_shape.rank(), rhs_shape.rank());
@@ -978,36 +1016,40 @@ void ShapeValidator::visit(const ir::operation::SquaredDifference &node)
 }
 void ShapeValidator::visit(const ir::operation::Tile &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto input_index{node.getInputs().at(0)};
   const auto multiple_index{node.getInputs().at(1)};
 
-  OP_REQUIRES(_ctx.at(multiple_index).shape().rank() == 1);
-  OP_REQUIRES(_ctx.at(multiple_index).shape().dim(0) == _ctx.at(input_index).shape().rank());
-  OP_REQUIRES(_ctx.at(input_index).shape().rank() == _ctx.at(output_index).shape().rank());
+  OP_REQUIRES(operands.at(multiple_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(multiple_index).shape().dim(0) ==
+              operands.at(input_index).shape().rank());
+  OP_REQUIRES(operands.at(input_index).shape().rank() == operands.at(output_index).shape().rank());
 }
 
 void ShapeValidator::visit(const ir::operation::Range &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
   const auto start_index{node.getInputs().at(ir::operation::Range::Input::START)};
   const auto limit_index{node.getInputs().at(ir::operation::Range::Input::LIMIT)};
   const auto delta_index{node.getInputs().at(ir::operation::Range::Input::DELTA)};
 
   // Check for dimension constraints
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
-  OP_REQUIRES(_ctx.at(start_index).shape().rank() == 0);
-  OP_REQUIRES(_ctx.at(limit_index).shape().rank() == 0);
-  OP_REQUIRES(_ctx.at(delta_index).shape().rank() == 0);
+  OP_REQUIRES(operands.at(start_index).shape().rank() == 0);
+  OP_REQUIRES(operands.at(limit_index).shape().rank() == 0);
+  OP_REQUIRES(operands.at(delta_index).shape().rank() == 0);
 }
 
 void ShapeValidator::visit(const ir::operation::MatrixBandPart &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::MatrixBandPart::Input::INPUT)};
   const auto num_lower_index{
@@ -1016,23 +1058,24 @@ void ShapeValidator::visit(const ir::operation::MatrixBandPart &node)
     node.getInputs().at(ir::operation::MatrixBandPart::Input::NUM_UPPER_DIAG)};
 
   // Check for dimension constraints
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
-  OP_REQUIRES(_ctx.at(input_index).shape().rank() >= 2);     // input must be more than 2 dim matrix
-  OP_REQUIRES(_ctx.at(num_upper_index).shape().rank() == 0); // num_lower must be scalar
-  OP_REQUIRES(_ctx.at(num_lower_index).shape().rank() == 0); // num_upper must be scalar
+  OP_REQUIRES(operands.at(input_index).shape().rank() >= 2); // input must be more than 2 dim matrix
+  OP_REQUIRES(operands.at(num_upper_index).shape().rank() == 0); // num_lower must be scalar
+  OP_REQUIRES(operands.at(num_lower_index).shape().rank() == 0); // num_upper must be scalar
 }
 
 void ShapeValidator::visit(const ir::operation::LogSoftmax &node)
 {
+  const auto &operands = _graph.operands();
   const auto output_index{node.getOutputs().at(0)};
-  if (_ctx.at(output_index).info().isDynamic())
+  if (operands.at(output_index).info().isDynamic())
     return;
 
   const auto input_index{node.getInputs().at(0)};
 
-  OP_REQUIRES(_ctx.at(output_index).shape().rank() == _ctx.at(input_index).shape().rank());
+  OP_REQUIRES(operands.at(output_index).shape().rank() == operands.at(input_index).shape().rank());
 }
 
 } // namespace compiler
