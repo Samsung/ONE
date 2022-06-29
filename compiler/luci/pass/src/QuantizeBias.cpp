@@ -201,6 +201,12 @@ CircleConst *QuantizeBias::quantized_bias(CircleNode *input, const CircleNode *w
     std::vector<float> scaling_factor(size);
     std::vector<int64_t> zp(size);
 
+    if (size != const_bias->dim(const_bias->rank() - 1).value())
+    {
+      throw std::runtime_error(const_bias->name() +
+                               " (bias) should have the shape of [1, 1, .. 1, channel]");
+    }
+
     if (output_type == loco::DataType::U8)
     {
       new_bias = quant_bias_per_channel(const_bias, input_scale, weight_scale, scaling_factor, zp);
@@ -218,6 +224,7 @@ CircleConst *QuantizeBias::quantized_bias(CircleNode *input, const CircleNode *w
     auto quantparam = std::make_unique<CircleQuantParam>();
     quantparam->scale = scaling_factor;
     quantparam->zerop = zp;
+    quantparam->quantized_dimension = const_bias->rank() - 1;
     assert(new_bias->quantparam() == nullptr); // bias should not be quantized before
     new_bias->quantparam(std::move(quantparam));
 
