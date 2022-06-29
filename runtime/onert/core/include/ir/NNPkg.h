@@ -27,6 +27,40 @@ namespace onert
 namespace ir
 {
 
+using OperandDesc = std::tuple<ModelIndex, SubgraphIndex, OperandIndex>;
+
+struct ModelEdge
+{
+  OperandDesc from;
+  OperandDesc to;
+};
+
+struct ModelEdgeEqual
+{
+  bool operator()(const onert::ir::ModelEdge &lhs, const onert::ir::ModelEdge &rhs) const
+  {
+    return lhs.from == rhs.from && lhs.to == rhs.to;
+  }
+};
+
+struct ModelEdgeHash
+{
+  size_t operator()(const ::onert::ir::ModelEdge &edge) const noexcept
+  {
+    unsigned long long h1 = (std::get<0>(edge.from).value() << 24) |
+                            (std::get<1>(edge.from).value() << 16) | std::get<2>(edge.from).value();
+    unsigned long long h2 = (std::get<0>(edge.to).value() << 24) |
+                            (std::get<1>(edge.to).value() << 16) | std::get<2>(edge.to).value();
+    return h1 + h2;
+  }
+};
+
+inline std::ostream &operator<<(std::ostream &o, const OperandDesc &od)
+{
+  o << std::get<0>(od).value() << ":" << std::get<1>(od).value() << ":" << std::get<2>(od).value();
+  return o;
+}
+
 class NNPkg
 {
 public:
@@ -70,12 +104,69 @@ public:
    */
   std::shared_ptr<Model> &model(const ModelIndex &index) { return _models.at(index); }
 
+  /**
+   * @brief Get pkg_input at index
+   *
+   * @param[in] index Index of pkg_input to be returned
+   * @return OperandDesc at index
+   */
+  OperandDesc input(uint32_t index) const { return _pkg_inputs[index]; }
+  /**
+   * @brief Get pkg_input at index
+   *
+   * @param[in] index Index of pkg_input to be returned
+   * @return OperandDesc at index
+   */
+  OperandDesc &input(uint32_t index) { return _pkg_inputs[index]; }
+  /**
+   * @brief Add input at the end
+   *
+   * @param[in] input Input OperandDesc to be pushed
+   */
+  void addInput(const OperandDesc &input) { _pkg_inputs.push_back(input); }
+
+  /**
+   * @brief Get pkg_output at index
+   *
+   * @param[in] index Index of pkg_output to be returned
+   * @return OperandDesc at index
+   */
+  OperandDesc output(uint32_t index) const { return _pkg_outputs[index]; }
+  /**
+   * @brief Get pkg_output at index
+   *
+   * @param[in] index Index of pkg_output to be returned
+   * @return OperandDesc at index
+   */
+  OperandDesc &output(uint32_t index) { return _pkg_outputs[index]; }
+  /**
+   * @brief Add output at the end
+   *
+   * @param[in] output Output OperandDesc to be pushed
+   */
+  void addOutput(const OperandDesc &output) { _pkg_outputs.push_back(output); }
+
+  /**
+   * @brief Add edge between models at the end
+   *
+   * @param[in] from from OperandDesc
+   * @param[in] to   to OperandDesc
+   */
+  void addEdge(const OperandDesc &from, const OperandDesc &to)
+  {
+    std::cout << from << " -> " << to << std::endl;
+    _model_edges.insert(ModelEdge{from, to});
+  }
+
+  // TODO: Add iterate() or getter for edges
+
 private:
   std::unordered_map<ModelIndex, std::shared_ptr<Model>> _models;
-  // TODO: Add connection between models
+  std::vector<OperandDesc> _pkg_inputs;
+  std::vector<OperandDesc> _pkg_outputs;
+  std::unordered_set<ModelEdge, ModelEdgeHash, ModelEdgeEqual> _model_edges;
 };
 
 } // namespace ir
 } // namespace onert
-
 #endif // __ONERT_IR_NNPKG_H__
