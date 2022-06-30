@@ -23,12 +23,6 @@ endif()
 
 set(CMAKE_SYSROOT ${ROOTFS_DIR})
 set(CMAKE_FIND_ROOT_PATH ${ROOTFS_DIR})
-set(CMAKE_SHARED_LINKER_FLAGS
-    "${CMAKE_SHARED_LINKER_FLAGS} --sysroot=${ROOTFS_DIR}"
-    CACHE INTERNAL "" FORCE)
-set(CMAKE_EXE_LINKER_FLAGS
-    "${CMAKE_EXE_LINKER_FLAGS} --sysroot=${ROOTFS_DIR}"
-    CACHE INTERNAL "" FORCE)
 
 # search for programs in the build host directories
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
@@ -45,10 +39,6 @@ add_compile_options(-mthumb)
 add_compile_options(-mfpu=neon-vfpv4)
 add_compile_options(-mfloat-abi=softfp)
 add_compile_options(--sysroot=${ROOTFS_DIR})
-
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} --sysroot=${ROOTFS_DIR}")
-
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --sysroot=${ROOTFS_DIR}")
 
 include_directories(SYSTEM ${ROOTFS_DIR}/usr/lib/gcc/${TIZEN_TOOLCHAIN}/include/c++/)
 include_directories(SYSTEM ${ROOTFS_DIR}/usr/lib/gcc/${TIZEN_TOOLCHAIN}/include/c++/armv7l-tizen-linux-gnueabi)
