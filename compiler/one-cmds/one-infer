@@ -109,7 +109,7 @@ def _search_backend_driver(driver):
 
 
 def _get_parser(backends_list):
-    infer_usage = 'one-infer [-h] [-v] [-C CONFIG] [-d DRIVER] [-b BACKEND] [--post-process POST_PROCESS] [--] [COMMANDS FOR BACKEND DRIVER]'
+    infer_usage = 'one-infer [-h] [-v] [-C CONFIG] [-d DRIVER | -b BACKEND] [--post-process POST_PROCESS] [--] [COMMANDS FOR BACKEND DRIVER]'
     parser = argparse.ArgumentParser(
         description='command line tool to infer model', usage=infer_usage)
 
