@@ -2,9 +2,9 @@ if(NOT BUILD_NPUD)
   return()
 endif(NOT BUILD_NPUD)
 
-file(GLOB_RECURSE SOURCES "*.cc")
+nnfw_find_package(GLib2.0 REQUIRED)
 
-nnfw_find_package(glib-2.0 REQUIRED)
+file(GLOB_RECURSE SOURCES "*.cc")
 
 add_executable(npud ${SOURCES})
 set_target_properties(npud PROPERTIES LINKER_LANGUAGE CXX)
