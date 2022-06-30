@@ -154,11 +154,9 @@ function check_python_files() {
   fi
 
   # Check python files
-  FILES_TO_CHECK_PYTHON=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '\.py$'`
+  FILES_TO_CHECK_PYTHON=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '\.py$'`)
   # Exceptional case: one-cmds don't have '.py' extension: ignore non-python source (cmake, etc) and ignore shell script: one-prepare-venv
-  FILES_TO_CHECK_PYTHON=`echo "$FILES_TO_CHECK_PYTHON" | egrep -v '^compiler/one-cmds/.*\..*$' | egrep -v '^compiler/one-cmds/one-prepare-venv$'`
-  # Transform to array
-  FILES_TO_CHECK_PYTHON=($FILES_TO_CHECK_PYTHON)
+  FILES_TO_CHECK_PYTHON+=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '^compiler/one-cmds/[^(\./)]*$' | egrep -v '^compiler/one-cmds/one-prepare-venv$'`)
 
   for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
     skip=${s#'.'/}/
