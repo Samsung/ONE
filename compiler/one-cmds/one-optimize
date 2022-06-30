@@ -88,7 +88,7 @@ def _verify_arg(parser, args):
     # check if unrecognized arguments are given
     diff = set(dir(args)) - set(dir(default))
     if len(diff):
-      parser.error('the following arguments are unrecognized: ' + ' '.join(diff))
+        parser.error('the following arguments are unrecognized: ' + ' '.join(diff))
 
 
 def _parse_arg(parser):
@@ -109,8 +109,8 @@ def _optimize(args):
         # make a command to optimize circle model
         circle2circle_path = os.path.join(dir_path, 'circle2circle')
         circle2circle_cmd = _make_cmd.make_circle2circle_cmd(args, circle2circle_path,
-                                                           getattr(args, 'input_path'),
-                                                           getattr(args, 'output_path'))
+                                                             getattr(args, 'input_path'),
+                                                             getattr(args, 'output_path'))
 
         # verbose
         if _utils._is_valid_attr(args, 'verbose'):

@@ -133,11 +133,7 @@ def _get_parser():
         "Force MaxPool Op to have the same input/output quantparams. NOTE: This option can degrade accuracy of some models.)"
     )
     quantization_group.add_argument(
-        '--quant_config',
-        type=str,
-        help=
-        "Path to the quantization configuration file."
-    )
+        '--quant_config', type=str, help="Path to the quantization configuration file.")
     quantization_group.add_argument(
         '--evaluate_result',
         action='store_true',
@@ -145,11 +141,7 @@ def _get_parser():
         "Evaluate accuracy of quantized model. Run inference for both fp32 model and the quantized model, and compare the inference results."
     )
     quantization_group.add_argument(
-        '--test_data',
-        type=str,
-        help=
-        "Path to the test data used for evaluation."
-    )
+        '--test_data', type=str, help="Path to the test data used for evaluation.")
     quantization_group.add_argument(
         '--print_mae',
         action='store_true',
@@ -226,9 +218,11 @@ def _set_default_values(args):
                 with open(getattr(args, 'quant_config')) as f:
                     qconf = json.load(f)
                     if 'default_quantization_dtype' in qconf:
-                        setattr(args, 'quantized_dtype', qconf['default_quantization_dtype'])
+                        setattr(args, 'quantized_dtype',
+                                qconf['default_quantization_dtype'])
             except json.decoder.JSONDecodeError:
-                print('Failed to decode ' + getattr(args, 'quant_config') + '. Please check it is a json file.')
+                print('Failed to decode ' + getattr(args, 'quant_config') +
+                      '. Please check it is a json file.')
     if not _utils._is_valid_attr(args, 'granularity'):
         setattr(args, 'granularity', 'layer')
         if _utils._is_valid_attr(args, 'quant_config'):
@@ -239,7 +233,8 @@ def _set_default_values(args):
                     if 'default_granularity' in qconf:
                         setattr(args, 'granularity', qconf['default_granularity'])
             except json.decoder.JSONDecodeError:
-                print('Failed to decode ' + getattr(args, 'quant_config') + '. Please check it is a json file.')
+                print('Failed to decode ' + getattr(args, 'quant_config') +
+                      '. Please check it is a json file.')
     if not _utils._is_valid_attr(args, 'mode'):
         setattr(args, 'mode', 'percentile')
     if not _utils._is_valid_attr(args, 'min_percentile'):
@@ -342,7 +337,8 @@ def _quantize(args):
             circle_quantizer_cmd.append(getattr(args, 'input_path'))
         tmp_weights_fake_quant_path = os.path.join(
             tmpdir,
-            os.path.splitext(os.path.basename(args.input_path))[0]) + '.weights_fake_quant.circle'
+            os.path.splitext(os.path.basename(
+                args.input_path))[0]) + '.weights_fake_quant.circle'
         circle_quantizer_cmd.append(tmp_weights_fake_quant_path)
         # profiling
         if _utils._is_valid_attr(args, 'generate_profile_data'):
@@ -355,7 +351,8 @@ def _quantize(args):
 
         tmp_minmax_recorded_path = os.path.join(
             tmpdir,
-            os.path.splitext(os.path.basename(args.input_path))[0]) + '.minmax_recorded.circle'
+            os.path.splitext(os.path.basename(
+                args.input_path))[0]) + '.minmax_recorded.circle'
 
         ## make a command to record min-max value of each tensor while running the representative dataset
         record_minmax_cmd = Command(record_minmax_path, args, f)
@@ -420,7 +417,8 @@ def _quantize(args):
                 quant_model = getattr(args, 'output_path')
             tmp_fake_quant_model = os.path.join(
                 tmpdir,
-                os.path.splitext(os.path.basename(args.input_path))[0]) + '.fake_quant.circle'
+                os.path.splitext(os.path.basename(
+                    args.input_path))[0]) + '.fake_quant.circle'
 
             # do fake quantization
             fake_quantize_cmd = Command(circle_quantizer_path, args, f)
@@ -441,6 +439,7 @@ def _quantize(args):
                 .add_noarg_option_if_valid_arg('--print_top1_match', 'print_top1_match') \
                 .add_noarg_option_if_valid_arg('--print_top5_match', 'print_top5_match') \
                 .run()
+
 
 def _write_qparam(args):
     # get file path to log
