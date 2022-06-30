@@ -32,6 +32,35 @@ namespace eval_lstm
 {
 namespace
 {
+void PortableMeanStddevNormalization(const float *input_vector, float *output_vector, int v_size,
+                                     int n_batch)
+{
+  for (int batch = 0; batch < n_batch; ++batch)
+  {
+    float sum = 0.0f;
+    for (int i = 0; i < v_size; ++i)
+    {
+      sum += input_vector[i];
+    }
+    const float mean = sum / v_size;
+    float sum_diff_sq = 0.0f;
+    for (int i = 0; i < v_size; ++i)
+    {
+      const float diff = input_vector[i] - mean;
+      sum_diff_sq += diff * diff;
+    }
+    const float variance = sum_diff_sq / v_size;
+    constexpr float kNormalizationConstant = 1e-8f;
+    const float stddev_inv = 1.0f / std::sqrt(variance + kNormalizationConstant);
+    for (int i = 0; i < v_size; ++i)
+    {
+      output_vector[i] = (input_vector[i] - mean) * stddev_inv;
+    }
+    input_vector += v_size;
+    output_vector += v_size;
+  }
+}
+
 inline void CalculateLstmGateFloat(const float *input, const float *input_to_gate_weights,
                                    const float *aux_input, const float *aux_input_to_gate_weights,
                                    const float *output_state,
@@ -82,7 +111,8 @@ inline void CalculateLstmGateFloat(const float *input, const float *input_to_gat
   // Do layer normalization (if layer norm LSTM)
   if (use_layer_norm)
   {
-    tflite::tensor_utils::MeanStddevNormalization(gate, gate, n_cell, n_batch);
+    // tflite::tensor_utils::MeanStddevNormalization(gate, gate, n_cell, n_batch);
+    PortableMeanStddevNormalization(gate, gate, n_cell, n_batch);
     tflite::tensor_utils::VectorBatchVectorCwiseProduct(layer_norm_coefficients, n_cell, gate,
                                                         n_batch, gate);
     tflite::tensor_utils::VectorBatchVectorAdd(gate_bias, n_cell, n_batch, gate);
@@ -264,7 +294,8 @@ void CalculateLstmGateHybrid(
   // Do layer normalization (if layer norm LSTM)
   if (use_layer_norm)
   {
-    tflite::tensor_utils::MeanStddevNormalization(gate, gate, n_cell, n_batch);
+    // tflite::tensor_utils::MeanStddevNormalization(gate, gate, n_cell, n_batch);
+    PortableMeanStddevNormalization(gate, gate, n_cell, n_batch);
     tflite::tensor_utils::VectorBatchVectorCwiseProduct(layer_norm_coefficients, n_cell, gate,
                                                         n_batch, gate);
     tflite::tensor_utils::VectorBatchVectorAdd(gate_bias, n_cell, n_batch, gate);
