@@ -212,7 +212,7 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _model{nullptr}, _coptions{nullptr}, _compiler_artifact{nullptr}, _execution{nullptr},
+  : _model{nullptr}, _coptions{}, _compiler_artifact{nullptr}, _execution{nullptr},
     _kernel_registry{nullptr}
 {
   // DO NOTHING
@@ -235,7 +235,6 @@ NNFW_STATUS nnfw_session::create(nnfw_session **session)
   try
   {
     (*session)->_kernel_registry = std::make_shared<onert::api::CustomKernelRegistry>();
-    (*session)->_coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
   }
   catch (const std::exception &e)
   {
@@ -265,6 +264,7 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
   try
   {
     _model = onert::circle_loader::loadModel(buffer, size);
+    _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -300,6 +300,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     _model = loadModel(filename, model_type);
     if (_model == nullptr)
       return NNFW_STATUS_ERROR;
+    _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -368,6 +369,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     if (_model == nullptr)
       return NNFW_STATUS_ERROR;
     _model->primary_subgraph()->bindKernelBuilder(_kernel_registry->getBuilder());
+    _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -398,7 +400,7 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    auto compiler = std::make_unique<onert::compiler::Compiler>(_model, *_coptions);
+    auto compiler = std::make_unique<onert::compiler::Compiler>(_model, *_coptions[0]);
     _model.reset();
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
@@ -433,7 +435,7 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
 
   try
   {
-    auto compiler = std::make_unique<onert::compiler::Compiler>(_model, *_coptions);
+    auto compiler = std::make_unique<onert::compiler::Compiler>(_model, *_coptions[0]);
     _model.reset();
     auto artifacts = compiler->compile(_package_file_path.c_str(), map_file_path);
 
@@ -974,7 +976,7 @@ NNFW_STATUS nnfw_session::set_available_backends(const char *backends)
     if (null_terminating(backends, MAX_BACKEND_NAME_LENGTH) == false)
       return NNFW_STATUS_ERROR;
 
-    auto &options = *_coptions;
+    auto &options = *_coptions[0];
 
     using namespace onert::util;
 
@@ -1008,7 +1010,7 @@ NNFW_STATUS nnfw_session::set_op_backend(const char *op, const char *backend)
       return NNFW_STATUS_ERROR;
     }
 
-    auto &opcode_to_backend = _coptions->manual_scheduler_options.opcode_to_backend;
+    auto &opcode_to_backend = _coptions[0]->manual_scheduler_options.opcode_to_backend;
     opcode_to_backend.emplace(onert::ir::toOpCode(key), backend);
   }
   catch (const std::exception &e)
@@ -1027,7 +1029,7 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   if (!key || !value)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
-  auto &options = *_coptions;
+  auto &options = *_coptions[0];
 
   using namespace onert::util;
 
@@ -1097,7 +1099,7 @@ NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_
   if (!key || !value)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
-  auto &options = *_coptions;
+  auto &options = *_coptions[0];
 
   auto check_boundary = [](size_t dest_size, std::string &src) {
     if (dest_size < src.length() + 1 /* for '\0' */)
@@ -1142,7 +1144,7 @@ bool nnfw_session::isStateInitialized()
   if (_state == State::INITIALIZED)
   {
     assert(_model == nullptr);
-    assert(_coptions != nullptr);
+    assert(_coptions.empty());
     assert(_execution == nullptr && _executions.empty());
     return true;
   }
@@ -1157,7 +1159,7 @@ bool nnfw_session::isStateModelLoaded()
   if (_state == State::MODEL_LOADED)
   {
     assert(_model != nullptr);
-    assert(_coptions != nullptr);
+    assert(!_coptions.empty());
     assert(_execution == nullptr && _executions.empty());
     return true;
   }
@@ -1172,7 +1174,7 @@ bool nnfw_session::isStatePrepared()
   if (_state == State::PREPARED)
   {
     assert(_model == nullptr);
-    assert(_coptions != nullptr);
+    assert(!_coptions.empty());
     assert(_execution != nullptr || !_executions.empty());
     return true;
   }
@@ -1187,7 +1189,7 @@ bool nnfw_session::isStateRunning()
   if (_state == State::RUNNING)
   {
     assert(_model == nullptr);
-    assert(_coptions != nullptr);
+    assert(!_coptions.empty());
     assert(_execution != nullptr || !_executions.empty());
     return true;
   }
@@ -1199,7 +1201,7 @@ bool nnfw_session::isStateFinishedRun()
   if (_state == State::FINISHED_RUN)
   {
     assert(_model == nullptr);
-    assert(_coptions != nullptr);
+    assert(!_coptions.empty());
     assert(_execution != nullptr || !_executions.empty());
     return true;
   }
@@ -1233,7 +1235,7 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
     return NNFW_STATUS_INVALID_STATE;
 
   // Backend for all
-  auto &ms_options = _coptions->manual_scheduler_options;
+  auto &ms_options = _coptions[0]->manual_scheduler_options;
   ms_options.setBackendMap(std::string{backend_settings});
 
   return NNFW_STATUS_NO_ERROR;
