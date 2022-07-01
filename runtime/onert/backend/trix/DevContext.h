@@ -34,13 +34,13 @@ public:
     auto device_count = getnumNPUdeviceByType(NPUCOND_TRIV2_CONN_SOCIP);
     if (device_count <= 0)
     {
-      throw std::runtime_error("Unable to find TRIV2 NPU device");
+      throw std::runtime_error("Unable to find TRIX NPU device");
     }
 
     // Use NPU 0 device
     if (getNPUdeviceByType(&_dev_handle, NPUCOND_TRIV2_CONN_SOCIP, 0) < 0)
     {
-      throw std::runtime_error("Failed to get TRIV2 NPU device handle");
+      throw std::runtime_error("Failed to get TRIX NPU device handle");
     }
   }
 

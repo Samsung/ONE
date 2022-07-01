@@ -67,11 +67,11 @@ void TrixMetaReader::init(const char *path)
   _meta = getNPUmodel_metadata(path, false);
   if (_meta == nullptr)
   {
-    throw std::runtime_error("Failed to get TRIV2 model metadata");
+    throw std::runtime_error("Failed to get TRIX model metadata");
   }
   if (NPUBIN_VERSION(_meta->magiccode) != 3)
   {
-    throw std::runtime_error("TRIV2 model metadata version mismatched.");
+    throw std::runtime_error("TRIX model metadata version mismatched.");
   }
 }
 
