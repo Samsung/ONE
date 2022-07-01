@@ -26,6 +26,7 @@ import subprocess
 import sys
 
 from onelib.CfgRunner import CfgRunner
+from onelib.WorkflowRunner import WorkflowRunner
 import utils as _utils
 
 # TODO Find better way to suppress trackback on error
@@ -66,7 +67,7 @@ def _check_subtool_exists():
 
 
 def _get_parser():
-    onecc_usage = 'onecc [-h] [-v] [-C CONFIG] [-O OPTIMIZATION] [COMMAND <args>]'
+    onecc_usage = 'onecc [-h] [-v] [-C CONFIG] [-W WORKFLOW] [-O OPTIMIZATION] [COMMAND <args>]'
     onecc_desc = 'Run ONE driver via several commands or configuration file'
     parser = argparse.ArgumentParser(description=onecc_desc, usage=onecc_usage)
 
@@ -81,6 +82,9 @@ def _get_parser():
             opt_name_list) + ')'
     opt_help_message = 'optimization name to use ' + opt_help_message
     parser.add_argument('-O', type=str, metavar='OPTIMIZATION', help=opt_help_message)
+
+    parser.add_argument(
+        '-W', '--workflow', type=str, metavar='WORKFLOW', help='run with workflow file')
 
     # just for help message
     compile_group = parser.add_argument_group('compile to circle model')
@@ -110,8 +114,9 @@ def _parse_arg(parser):
 def _verify_arg(parser, args):
     """verify given arguments"""
     # check if required arguments is given
-    if not _utils._is_valid_attr(args, 'config'):
-        parser.error('-C/--config argument is required')
+    if not _utils._is_valid_attr(args, 'config') and not _utils._is_valid_attr(
+            args, 'workflow'):
+        parser.error('-C/--config or -W/--workflow argument is required')
     # check if given optimization option exists
     opt_name_list = _utils._get_optimization_list(get_name=True)
     opt_name_list = [_utils._remove_prefix(s, 'O') for s in opt_name_list]
@@ -147,6 +152,9 @@ def main():
         runner.detect_import_drivers(bin_dir)
         if _utils._is_valid_attr(args, 'O'):
             runner.add_opt(getattr(args, 'O'))
+        runner.run(bin_dir)
+    elif _utils._is_valid_attr(args, 'workflow'):
+        runner = WorkflowRunner(args.workflow)
         runner.run(bin_dir)
 
 

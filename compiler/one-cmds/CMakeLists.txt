@@ -76,7 +76,11 @@ endforeach(ONE_UTILITY)
 
 # make python directory
 set(ONE_PYTHON_FILES constant.py
-                     make_cmd.py)
+                     make_cmd.py
+                     CfgRunner.py
+                     OptionBuilder.py
+                     TopologicalSortHelper.py
+                     WorkflowRunner.py)
 
 foreach(ONE_PYTHON_FILE IN ITEMS ${ONE_PYTHON_FILES})
 
