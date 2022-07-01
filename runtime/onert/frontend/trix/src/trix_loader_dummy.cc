@@ -24,8 +24,8 @@ namespace trix_loader
 {
 std::unique_ptr<ir::Model> loadModel(const std::string &)
 {
-  auto subgraphs = std::make_unique<ir::Model>();
-  return subgraphs;
+  auto model = std::make_unique<ir::Model>();
+  return model;
 }
 } // namespace trix_loader
 } // namespace onert

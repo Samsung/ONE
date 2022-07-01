@@ -83,7 +83,7 @@ public:
    *
    * @param model reference on model
    */
-  explicit TrixLoader(std::unique_ptr<ir::Model> &model) : _subgraphs(model) {}
+  explicit TrixLoader(std::unique_ptr<ir::Model> &model) : _model(model) {}
 
   /**
    * @brief Load a model from file
@@ -97,7 +97,6 @@ private:
    * @throw runtime_error when tvn path is wrong or tvn is invalid
    */
   void loadModel();
-  void loadSubgraphs();
   std::unique_ptr<ir::Graph> loadSubgraph();
   void loadOperands(ir::Graph &subg);
   ir::OperandIndex loadOperandFromInput(uint32_t i, ir::Graph &subg);
@@ -113,7 +112,7 @@ protected:
   /** path to model (e.g. tvn) */
   std::string _model_path;
   /** Reference on loadable subgraphs */
-  std::unique_ptr<ir::Model> &_subgraphs;
+  std::unique_ptr<ir::Model> &_model;
   TrixMetaReader _meta;
 };
 
@@ -237,14 +236,12 @@ std::unique_ptr<ir::Graph> TrixLoader::loadSubgraph()
   return subg;
 }
 
-void TrixLoader::loadSubgraphs()
+void TrixLoader::loadModel()
 {
   // one subgraph only
   auto subg = loadSubgraph();
-  _subgraphs->push(ir::SubgraphIndex(0), std::move(subg));
+  _model->push(ir::SubgraphIndex(0), std::move(subg));
 }
-
-void TrixLoader::loadModel() { loadSubgraphs(); }
 
 void TrixLoader::loadFromFile(const std::string &file_path)
 {
@@ -257,10 +254,10 @@ void TrixLoader::loadFromFile(const std::string &file_path)
 
 std::unique_ptr<ir::Model> loadModel(const std::string &filename)
 {
-  auto subgraphs = std::make_unique<ir::Model>();
-  TrixLoader loader(subgraphs);
+  auto model = std::make_unique<ir::Model>();
+  TrixLoader loader(model);
   loader.loadFromFile(filename);
-  return subgraphs;
+  return model;
 }
 } // namespace trix_loader
 } // namespace onert
