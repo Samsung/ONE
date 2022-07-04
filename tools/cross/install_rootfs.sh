@@ -22,12 +22,15 @@ __SkipUnmount=0
 __IsProxySet=0
 __Apt=""
 # base development support
+# install cmake to find cmake package configuration for target file system
 __UbuntuPackages="build-essential"
+__UbuntuPackages+=" cmake"
 
 # other development supports
 __UbuntuPackages+=" ocl-icd-opencl-dev"
 __UbuntuPackages+=" libhdf5-dev"
 __UbuntuPackages+=" libboost-all-dev"
+__UbuntuPackages+=" libglib2.0-dev"
 
 # symlinks fixer
 __UbuntuPackages+=" symlinks"
