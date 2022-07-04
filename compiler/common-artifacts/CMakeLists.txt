@@ -38,11 +38,14 @@ if(PYTHON_EXECUTABLE MATCHES python3.8)
   set(PYTHON_OVERLAY python3.8)
 endif()
 
+# NOTE refer https://github.com/protocolbuffers/protobuf/issues/10051
+# TODO remove protobuf==3.20.1 when issue is resolved
 add_custom_command(
   OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.6.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
+  COMMAND ${CMAKE_COMMAND} -E echo "protobuf==3.20.1" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
   COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000 install --upgrade pip setuptools
   COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0} --upgrade
   DEPENDS ${VIRTUALENV_OVERLAY_TF_2_6_0}
@@ -53,6 +56,7 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
   COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.8.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
   COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
+  COMMAND ${CMAKE_COMMAND} -E echo "protobuf==3.20.1" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
   COMMAND ${VIRTUALENV_OVERLAY_TF_2_8_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000 install --upgrade pip setuptools
   COMMAND ${VIRTUALENV_OVERLAY_TF_2_8_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000 install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0} --upgrade
   DEPENDS ${VIRTUALENV_OVERLAY_TF_2_8_0}
