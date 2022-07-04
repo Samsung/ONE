@@ -20,6 +20,7 @@
 #include <cstring>
 #include <cstdint>
 #include <functional>
+#include <stdexcept>
 
 #include "ir/DataType.h"
 #include "ir/Layout.h"
