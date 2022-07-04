@@ -111,7 +111,7 @@ public:
    * @param[in] index Index of pkg_input to be returned
    * @return OperandDesc at index
    */
-  OperandDesc input(uint32_t index) const { return _pkg_inputs[index]; }
+  const OperandDesc &input(uint32_t index) const { return _pkg_inputs[index]; }
   /**
    * @brief Get pkg_input at index
    *
@@ -132,7 +132,7 @@ public:
    * @param[in] index Index of pkg_output to be returned
    * @return OperandDesc at index
    */
-  OperandDesc output(uint32_t index) const { return _pkg_outputs[index]; }
+  const OperandDesc &output(uint32_t index) const { return _pkg_outputs[index]; }
   /**
    * @brief Get pkg_output at index
    *
