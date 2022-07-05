@@ -339,6 +339,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     return NNFW_STATUS_ERROR;
   }
   closedir(dir);
+
   try
   {
     std::string package_path(package_dir);
