@@ -18,6 +18,7 @@
 #define __ONERT_IR_LAYOUT_H__
 
 #include <functional>
+#include <stdexcept>
 #include <string>
 
 namespace onert
