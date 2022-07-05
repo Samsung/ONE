@@ -377,6 +377,35 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       _nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
       _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     }
+
+    auto toOperandDesc = [](std::string str) {
+      auto indices = nnfw::misc::split(str, ':');
+      if (indices.size() != 3)
+      {
+        std::cerr << "OperandDesc should be 3-tuple." << std::endl;
+        return onert::ir::OperandDesc{};
+      }
+      auto model_idx = static_cast<uint32_t>(std::stoi(indices.at(0)));
+      auto subgraph_idx = static_cast<uint32_t>(std::stoi(indices.at(1)));
+      auto operand_idx = static_cast<uint32_t>(std::stoi(indices.at(2)));
+      return onert::ir::OperandDesc{model_idx, subgraph_idx, operand_idx};
+    };
+    // read pkg-inputs and pkg-outputs
+    const Json::Value &pkg_inputs = root["pkg-inputs"];
+    for (uint32_t i = 0; i < pkg_inputs.size(); ++i)
+      _nnpkg->addInput(toOperandDesc(pkg_inputs[i].asString()));
+    const Json::Value &pkg_outputs = root["pkg-outputs"];
+    for (uint32_t i = 0; i < pkg_outputs.size(); ++i)
+      _nnpkg->addOutput(toOperandDesc(pkg_outputs[i].asString()));
+    // read model-connect
+    const Json::Value &fromtos = root["model-connect"];
+    for (uint32_t i = 0; i < fromtos.size(); ++i)
+    {
+      const Json::Value &tos = fromtos[i]["to"];
+      for (uint32_t j = 0; j < tos.size(); ++j)
+        _nnpkg->addEdge(toOperandDesc(fromtos[i]["from"].asString()),
+                        toOperandDesc(tos[j].asString()));
+    }
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
