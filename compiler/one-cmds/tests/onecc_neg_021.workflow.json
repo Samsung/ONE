@@ -1,0 +1,44 @@
+{
+    "workflows": [
+        "CYCLE_WF1",
+        "CYCLE_WF2"
+    ],
+    "CYCLE_WF1": {
+        "run-after": [
+            "CYCLE_WF2"
+        ],
+        "steps": [
+            "IMPORT_TF"
+        ],
+        "IMPORT_TF": {
+            "one-cmd": "one-import-tf",
+            "commands": {
+                "input_path": "inception_v3.pb",
+                "output_path": "inception_v3.circle",
+                "input_arrays": "input",
+                "input_shapes": "1,299,299,3",
+                "output_arrays": "InceptionV3/Predictions/Reshape_1",
+                "converter_version": "v2"
+            }
+        }
+    },
+    "CYCLE_WF2": {
+        "run-after": [
+            "CYCLE_WF1"
+        ],
+        "steps": [
+            "IMPORT_TF"
+        ],
+        "IMPORT_TF": {
+            "one-cmd": "one-import-tf",
+            "commands": {
+                "input_path": "inception_v3.pb",
+                "output_path": "inception_v3.circle",
+                "input_arrays": "input",
+                "input_shapes": "1,299,299,3",
+                "output_arrays": "InceptionV3/Predictions/Reshape_1",
+                "converter_version": "v2"
+            }
+        }
+    }
+}
