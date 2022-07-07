@@ -1,5 +1,12 @@
 # NNPackage example
 
+## Package version 1.3.0
+
+### two_tflites
+
+- Model file: two TensorFlow Lite models
+- It has two tflite models with pkg-input, pkg-output and model-connect fields.
+
 ## Package version 1.1.0
 
 ### one_op_in_tflite
