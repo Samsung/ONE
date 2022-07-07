@@ -14,7 +14,7 @@ file(GLOB_RECURSE ACL_EX_SRCS "${ACL_EX_BASE}/*.cpp")
 # generate embeded cl_kernel
 execute_process (
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-    COMMAND bash -c "python resolve_includes.py"
+    COMMAND bash -c "python3 resolve_includes.py"
 )
 
 add_library(arm_compute_ex SHARED ${ACL_EX_SRCS})

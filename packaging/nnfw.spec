@@ -42,7 +42,7 @@ BuildRequires:  pkgconfig(flatbuffers)
 
 %ifarch %{arm} aarch64
 # Require python for acl-ex library build pre-process
-BuildRequires:  python
+BuildRequires:  python3
 BuildRequires:  libarmcl-devel >= v21.02
 %endif
 
