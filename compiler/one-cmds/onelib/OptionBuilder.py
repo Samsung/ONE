@@ -40,9 +40,9 @@ class OptionBuilder:
 
     def _build_import(self, commands):
         options = []
-        optional = ['save_intermediate']
+        arg_0 = ['save_intermediate']
         for k, v in commands.items():
-            if k in optional and v == "True":
+            if k in arg_0 and v == "True":
                 options.extend(['--' + k])
                 continue
             options.extend(['--' + k, v])
@@ -50,13 +50,13 @@ class OptionBuilder:
 
     def _build_optimize(self, commands):
         options = []
-        required = ['input_path', 'output_path']
-        optional = ['generate_profile_data', 'change_outputs']
+        arg_0 = ['generate_profile_data']
+        arg_1 = ['input_path', 'output_path', 'change_outputs']
         for k, v in commands.items():
-            if k in required:
+            if k in arg_1:
                 options.extend(['--' + k, v])
                 continue
-            if k in optional and v == 'True':
+            if k in arg_0 and v == 'True':
                 options.extend(['--' + k])
                 continue
             for opt in CONSTANT.OPTIMIZATION_OPTS:
@@ -67,13 +67,13 @@ class OptionBuilder:
 
     def _build_quantize(self, commands):
         options = []
-        optional = [
+        arg_0 = [
             'generate_profile_data', 'save_intermediate', 'TF-style_maxpool',
             'evaluate_result', 'print_mae', 'print_mape', 'print_mpeir',
             'print_top1_match', 'print_top5_match', 'force_quantparam', 'copy_quantparam'
         ]
         for k, v in commands.items():
-            if k in optional and v == "True":
+            if k in arg_0 and v == "True":
                 options.extend(['--' + k])
                 continue
             options.extend(['--' + k, v])
