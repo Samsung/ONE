@@ -42,6 +42,37 @@ class WorkflowRunner:
 
         self._verify_workflow(self.json_contents)
 
+        workflows = self.json_contents[self.WORKFLOWS_K]
+        self.adj = dict.fromkeys(workflows, [])
+        # decide the order according to the dependencies of each workflow.
+        helper = TopologicalSortHelper(workflows)
+        for workflow_k in workflows:
+            workflow = self.json_contents[workflow_k]
+            if self.DEPENDENCIES_K in workflow:
+                for previous_workflow in workflow[self.DEPENDENCIES_K]:
+                    helper.add_edge(previous_workflow, workflow_k)
+                    self.adj[previous_workflow].append(workflow_k)
+        self.workflow_sequence = helper.sort()
+
+        self._check_cycle()
+
+    def _check_cycle(self):
+        pos = dict()
+        index = 0
+        workflow_num = len(self.workflow_sequence)
+        # number the order
+        for seq_idx in range(workflow_num):
+            pos[self.workflow_sequence[seq_idx]] = index
+            index += 1
+
+        for seq_idx in range(workflow_num):
+            first_wf = self.workflow_sequence[seq_idx]
+            for adj_wf in self.adj[first_wf]:
+                first_pos = 0 if first_wf not in pos else pos[first_wf]
+                second_pos = 0 if adj_wf not in pos else pos[adj_wf]
+                if (first_pos > second_pos):
+                    raise RuntimeError("Workflows should not have a cycle")
+
     def _verify_workflow(self, json_contents):
         # workflow file should have WORKFLOWS_K
         if not self.WORKFLOWS_K in json_contents:
@@ -66,7 +97,7 @@ class WorkflowRunner:
                 raise ValueError("\"" + self.WORKFLOW_STEPS_K + "\" and \"" +
                                  self.CFG_REFERENCE_K + "\" are exclusive key")
 
-        # each step should have ONE_CMD_TOOK_K and COMMANDS_K
+        # each step should have ONE_CMD_TOOL_K and COMMANDS_K
         for workflow_k in workflows:
             workflow = json_contents[workflow_k]
             if self.WORKFLOW_STEPS_K in workflow:
@@ -79,19 +110,8 @@ class WorkflowRunner:
                                          self.COMMANDS_K + "\"")
 
     def run(self, working_dir, verbose=False):
-        workflows = self.json_contents[self.WORKFLOWS_K]
-
-        # decide the order according to the dependencies of each workflow.
-        helper = TopologicalSortHelper(workflows)
-        for workflow_k in workflows:
-            workflow = self.json_contents[workflow_k]
-            if self.DEPENDENCIES_K in workflow:
-                for previous_workflow in workflow[self.DEPENDENCIES_K]:
-                    helper.add_edge(previous_workflow, workflow_k)
-        workflow_sequence = helper.sort()
-
         # run workflows in sequence
-        for workflow_k in workflow_sequence:
+        for workflow_k in self.workflow_sequence:
             workflow = self.json_contents[workflow_k]
             if self.WORKFLOW_STEPS_K in workflow:
                 steps = workflow[self.WORKFLOW_STEPS_K]
