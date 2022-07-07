@@ -1,5 +1,5 @@
 #
-# Tensorflow Lite GPU delegate library 2.7.0
+# Tensorflow Lite GPU delegate library 2.8.0
 #
 
 set(LIB_TENSORFLOW_GPU_DELEGATE "TensorFlowGpu")
