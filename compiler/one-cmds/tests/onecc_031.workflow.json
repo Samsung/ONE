@@ -1,0 +1,33 @@
+{
+    "workflows": [
+        "wf"
+    ],
+    "wf": {
+        "steps": [
+            "import",
+            "optimize",
+            "codegen"
+        ],
+        "import": {
+            "one-cmd": "one-import-tflite",
+            "commands": {
+                "input_path": "inception_v3.tflite",
+                "output_path": "inception_v3.circle"
+            }
+        },
+        "optimize": {
+            "one-cmd": "one-optimize",
+            "commands": {
+                "input_path": "inception_v3.circle",
+                "output_path": "inception_v3.opt.circle"
+            }
+        },
+        "codegen": {
+            "one-cmd": "one-codegen",
+            "commands": {
+                "backend": "dummy",
+                "command": "-o sample.tvn inception_v3.opt.circle"
+            }
+        }
+    }
+}

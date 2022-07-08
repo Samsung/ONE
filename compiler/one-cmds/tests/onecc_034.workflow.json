@@ -1,0 +1,35 @@
+{
+    "workflows": [
+        "wf"
+    ],
+    "wf": {
+        "steps": [
+            "import",
+            "optimize",
+            "codegen"
+        ],
+        "import": {
+            "one-cmd": "one-import-onnx",
+            "commands": {
+                "input_path": "onnx_conv2d_conv2d.onnx",
+                "output_path": "onnx_conv2d_conv2d.circle"
+            }
+        },
+        "optimize": {
+            "one-cmd": "one-optimize",
+            "commands": {
+                "input_path": "onnx_conv2d_conv2d.circle",
+                "output_path": "onnx_conv2d_conv2d.opt.circle",
+                "remove_redundant_transpose": "True",
+                "convert_nchw_to_nhwc": "True"
+            }
+        },
+        "codegen": {
+            "one-cmd": "one-codegen",
+            "commands": {
+                "backend": "dummy",
+                "command": "-o onnx_conv2d_conv2d.bin onnx_conv2d_conv2d.opt.circle"
+            }
+        }
+    }
+}
