@@ -29,6 +29,9 @@ usr/bin/one-version usr/share/one/bin/
 usr/bin/onelib/constant.py usr/share/one/bin/onelib/
 usr/bin/onelib/make_cmd.py usr/share/one/bin/onelib/
 usr/bin/onelib/CfgRunner.py usr/share/one/bin/onelib/
+usr/bin/onelib/OptionBuilder.py usr/share/one/bin/onelib/
+usr/bin/onelib/TopologicalSortHelper.py usr/share/one/bin/onelib/
+usr/bin/onelib/WorkflowRunner.py usr/share/one/bin/onelib/
 usr/bin/onnx_legalizer.py usr/share/one/bin/
 usr/bin/rawdata2hdf5 usr/share/one/bin/
 usr/bin/record-minmax usr/share/one/bin/
