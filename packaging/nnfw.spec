@@ -28,6 +28,7 @@ Source2001: nnfw.pc.in
 Source2002: nnfw-plugin.pc.in
 
 %{!?build_type:     %define build_type      Release}
+%{!?npud_build:     %define npud_build      1}
 %{!?trix_support:   %define trix_support    1}
 %{!?coverage_build: %define coverage_build  0}
 %{!?test_build:     %define test_build      0}
@@ -57,6 +58,10 @@ BuildRequires:  libaec-devel
 BuildRequires:  pkgconfig(zlib)
 BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  gtest-devel
+%endif
+
+%if %{npud_build} == 1
+BuildRequires:  pkgconfig(glib-2.0)
 %endif
 
 %if %{trix_support} == 1
@@ -92,6 +97,14 @@ Summary: NNFW Test
 
 %description test
 NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
+%endif
+
+%if %{npud_build} == 1
+%package npud
+Summary: NPU daemon
+
+%description npud
+NPU daemon for optimal management of NPU hardware
 %endif
 
 %ifarch armv7l
@@ -208,6 +221,10 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %endif # coverage_build
 %endif # test_build
 
+%if %{npud_build} == 1
+install -m 755 build/out/bin/npud %{buildroot}%{_bindir}
+%endif
+
 %endif
 
 %post -p /sbin/ldconfig
@@ -255,6 +272,15 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %{test_install_home}/*
 %endif # arm armv7l armv7hl aarch64
 %endif # test_build
+
+%if %{npud_build} == 1
+%files npud
+%manifest %{name}.manifest
+%defattr(-,root,root,-)
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+%{_bindir}/npud
+%endif # arm armv7l armv7hl aarch64 x86_64 %ix86
+%endif # npud_build
 
 %changelog
 * Thu Mar 15 2018 Chunseok Lee <chunseok.lee@samsung.com>
