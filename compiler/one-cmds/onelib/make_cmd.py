@@ -65,6 +65,10 @@ def make_tf2tfliteV2_cmd(args, driver_path, input_path, output_path):
         cmd.append('--output_arrays')
         cmd.append(getattr(args, 'output_arrays'))
 
+    # experimental options
+    if _is_valid_attr(args, 'disable_batchmatmul_unfold'):
+        cmd.append('--disable_batchmatmul_unfold')
+
     return cmd
 
 
