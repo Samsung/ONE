@@ -1,0 +1,63 @@
+{
+    "workflows": [
+        "WITHOUT_OPT",
+        "WITH_OPT",
+        "INFER"
+    ],
+    "INFER": {
+        "run-after": [
+            "WITHOUT_OPT",
+            "WITH_OPT"
+        ],
+        "steps": [
+            "INFER1",
+            "INFER2"
+        ],
+        "INFER1": {
+            "one-cmd": "one-infer",
+            "commands" : {
+                "driver": "dummy-inferV2",
+                "command": "inception_v3_without_opt.circle"
+            }
+        },
+        "INFER2": {
+            "one-cmd": "one-infer",
+            "commands": {
+                "driver": "dummy-inferV2",
+                "command": "inception_v3.opt.circle"
+            }
+        }
+    },
+    "WITHOUT_OPT": {
+        "cfg-reference": {
+            "path": "onecc_041.cfg"
+        }
+    },
+    "WITH_OPT": {
+        "run-after": [
+            "WITHOUT_OPT"
+        ],
+        "steps": [
+            "IMPORT_TF",
+            "OPTIMIZE"
+        ],
+        "IMPORT_TF": {
+            "one-cmd": "one-import-tf",
+            "commands": {
+                "input_path": "inception_v3.pb",
+                "output_path": "inception_v3.circle",
+                "input_arrays": "input",
+                "input_shapes": "1,299,299,3",
+                "output_arrays": "InceptionV3/Predictions/Reshape_1",
+                "converter_version": "v2"
+            }
+        },
+        "OPTIMIZE": {
+            "one-cmd": "one-optimize",
+            "commands": {
+                "input_path": "inception_v3.circle",
+                "output_path": "inception_v3.opt.circle"
+            }
+        }
+    }
+}

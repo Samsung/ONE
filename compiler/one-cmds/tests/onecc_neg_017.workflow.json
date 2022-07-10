@@ -1,0 +1,18 @@
+{
+    "workflows": [
+        "SIMPLE_WORKFLOW"
+    ],
+    "SIMPLE_WORKFLOW": {
+        "QUANTIZE": {
+            "one-cmd": "one-quantize",
+            "commands": {
+                "input_path": "inception_v3.circle",
+                "output_path": "inception_v3.onecc_026.q.circle",
+                "input_data": "inception_v3_test_data.h5",
+                "evaluate_result": "True",
+                "test_data": "inception_v3_test_data.h5",
+                "print_mpeir": "True"
+            }
+        }
+    }
+}
