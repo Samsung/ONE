@@ -261,10 +261,10 @@ TEST_F(GenModelTest, neg_while_wrong_dtype)
   }
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  auto tc = uniformTCD<float>({{0}}, {{100}});
-  tc.expectFailRun();
-  _context->addTestCase(tc);
   _context->setBackends({"cpu"});
+  // It is correct to call `_context->expectFailModelLoad();`, but OperationValidator does not deal
+  // with subgraphs. So it is verified by `_context->expectFailCompile(); as a workaround`
+  _context->expectFailCompile();
 
   SUCCEED();
 }

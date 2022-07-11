@@ -28,6 +28,36 @@ namespace onert
 {
 namespace compiler
 {
+/**
+ * @brief Class that observe and update operands.
+ */
+class OperandObserver
+{
+public:
+  /**
+   * @brief Constructor of OperandObserver
+   *
+   * @param operands Operands to be updated
+   */
+  OperandObserver(const std::vector<ir::Operand *> &operands) : _operands{operands} {}
+  /**
+   * @brief Destructor of OperandObserver
+   */
+  virtual ~OperandObserver() = default;
+
+public:
+  /**
+   * @brief Update Shape and some OperandInfo of operands
+   *
+   * @param operands Operands to be updated
+   * @param unpredictable Whether runtime can predict shapes of operands in compilation time
+   */
+  void updateShapes(const std::vector<ir::OperandInfo> &changed_operands_info,
+                    bool unpredictable = false);
+
+private:
+  std::vector<ir::Operand *> _operands;
+};
 
 /**
  * @brief Class to infer shape before running kernels. It does the following:
@@ -38,32 +68,42 @@ namespace compiler
 class StaticShapeInferer : public ir::OperationVisitor
 {
 public:
-  StaticShapeInferer(
-    const ir::SubgraphIndex &subg_idx,
-    const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>
-      &lowered_subgs)
-    : _lowered_subgs(lowered_subgs), _operands(lowered_subgs.at(subg_idx)->graph().operands()),
-      _operations(lowered_subgs.at(subg_idx)->graph().operations()),
-      _return_has_dynamic_tensor(false)
-  { /* empty */
+  StaticShapeInferer(compiler::LoweredGraph *lowered_subg)
+    : _lowered_subg{lowered_subg}, _subg_input_observers{}, _controlflow_output_observer{nullptr},
+      _child_inferers{}
+  {
   }
   virtual ~StaticShapeInferer() = default;
 
 public:
+  void appendSubgInputObserver(const ir::SubgraphIndex &subg_idx,
+                               std::unique_ptr<OperandObserver> &&subg_input_observer) noexcept
+  {
+    _subg_input_observers[subg_idx] = std::move(subg_input_observer);
+  }
+
+  void setControlflowOutputObserver(std::unique_ptr<OperandObserver> &&output_observer) noexcept
+  {
+    _controlflow_output_observer = std::move(output_observer);
+  }
+
+  void appendChildInferer(const ir::SubgraphIndex &subg_idx, compiler::StaticShapeInferer *inferer)
+  {
+    _child_inferers[subg_idx] = inferer;
+  }
+
   /**
-   * @brief Infer shape of operands beloning to ops and set the output shape.
+   * @brief Infer shape of operands belonging to ops and set the output shape.
    *        If output shape cannot be known without running op, mark it so that it can be allocated
    *        when running kernel.
-   * @param op Operation
-   * @return @c true if op's input or output has any dynamic tensor; @c false otherwise.
    */
-  bool infer(const ir::Operation &op);
+  void infer(void);
 
   void dump();
 
 private:
-  void inferSubgraph(ir::SubgraphIndex subg_ind);
   bool checkDynamicInput(const ir::Operation &op);
+  bool checkDynamicOutput(const ir::Operation &op);
   void setDynamicOutput(const ir::Operation &op);
 
 private:
@@ -128,12 +168,11 @@ private:
   void handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx);
 
 private:
-  const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>
-    &_lowered_subgs;
-  // _operands and _operations can be changed by controlflow operation
-  ir::Operands &_operands;     // operands of current subgraph
-  ir::Operations &_operations; // operations of current subgraph
-  bool _return_has_dynamic_tensor;
+  compiler::LoweredGraph *_lowered_subg;
+  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<OperandObserver>>
+    _subg_input_observers;                                       // child subg input
+  std::unique_ptr<OperandObserver> _controlflow_output_observer; // parent controlflow op output
+  std::unordered_map<ir::SubgraphIndex, compiler::StaticShapeInferer *> _child_inferers;
 };
 
 } // namespace compiler

@@ -19,62 +19,90 @@
 #include "util/logging.h"
 
 #include <sstream>
+#include <stdexcept>
 
 namespace onert
 {
 namespace compiler
 {
-
-void StaticShapeInferer::inferSubgraph(ir::SubgraphIndex subg_ind)
+void OperandObserver::updateShapes(const std::vector<ir::OperandInfo> &changed_operands_info,
+                                   bool unpredictable)
 {
-  StaticShapeInferer inferer(subg_ind, _lowered_subgs);
-  auto &lgraph = _lowered_subgs.at(subg_ind);
-  for (auto op_ind : lgraph->graph().topolSortOperations())
+  assert(changed_operands_info.size() == _operands.size());
+  for (size_t i = 0; i < changed_operands_info.size(); ++i)
   {
-    auto &op = lgraph->graph().operations().at(op_ind);
-    bool has_dynamic_tensor = inferer.infer(op);
-    lgraph->setHasDynamicTensor(op_ind, has_dynamic_tensor);
-  }
-}
-
-bool StaticShapeInferer::infer(const ir::Operation &op)
-{
-  bool has_dynamic_tensor = false;
-
-  auto opcode = op.opcode();
-
-  _return_has_dynamic_tensor = false; // this is used as a return value inside operation's visit()
-
-  // IF: need shape inference for then, else
-  // While: need shape inference for condition, body
-  if (opcode == ir::OpCode::If || opcode == ir::OpCode::While)
-  {
-    op.accept(*this);
-  }
-  else
-  {
-    _return_has_dynamic_tensor = checkDynamicInput(op);
-
-    if (_return_has_dynamic_tensor)
+    const auto &changed_operand_info = changed_operands_info.at(i);
+    auto &operand = _operands.at(i);
+    // assert(changed_operand_info.typeInfo() == operand->typeInfo());
+    // assert(changed_operand_info.typeInfo() == operand->typeInfo());
+    // This error check may by replaced by an assertion if this function is called after the
+    // validation of models are completed.
+    if (changed_operand_info.typeInfo() != operand->typeInfo())
     {
-      setDynamicOutput(op);
+      throw std::runtime_error("OperandObserver: The types of operands are mismatched");
+    }
+    if (!operand->info().isConstant() && (changed_operand_info.isDynamic() || unpredictable))
+    {
+      operand->info().setDynamic();
     }
     else
     {
-      op.accept(*this);
+      const auto &new_shape = changed_operands_info.at(i).shape();
+      operand->info().shape(new_shape);
     }
   }
+}
 
-  has_dynamic_tensor = has_dynamic_tensor || _return_has_dynamic_tensor;
+void StaticShapeInferer::infer()
+{
+  for (const auto &op_idx : _lowered_subg->graph().topolSortOperations())
+  {
+    const auto &op = _lowered_subg->graph().operations().at(op_idx);
+    bool has_dynamic_tensor = false;
+    const auto opcode = op.opcode();
+    // IF: requires shape inference for then, else
+    // While: requires shape inference for condition, body
+    if (opcode == ir::OpCode::If || opcode == ir::OpCode::While)
+    {
+      op.accept(*this);
+    }
+    else
+    {
+      has_dynamic_tensor = checkDynamicInput(op);
+      if (has_dynamic_tensor)
+      {
+        setDynamicOutput(op);
+      }
+      else
+      {
+        op.accept(*this);
+      }
+    }
+    has_dynamic_tensor = has_dynamic_tensor || checkDynamicOutput(op);
+    _lowered_subg->setHasDynamicTensor(op_idx, has_dynamic_tensor);
+  }
 
-  return has_dynamic_tensor;
+  if (_controlflow_output_observer != nullptr)
+  {
+    // re-sizing output shapes of the controflow operation branching to this subgraph
+    std::vector<ir::OperandInfo> outputs_info;
+    const auto &graph = _lowered_subg->graph();
+    const auto &outputs = graph.getOutputs();
+    for (size_t i = 0; i < outputs.size(); ++i)
+    {
+      const auto &operand_info = graph.operands().at(outputs.at(i)).info();
+      outputs_info.emplace_back(operand_info);
+    }
+    _controlflow_output_observer->updateShapes(outputs_info);
+  }
 }
 
 bool StaticShapeInferer::checkDynamicInput(const ir::Operation &op)
 {
+  const auto &operands = _lowered_subg->graph().operands();
   for (auto input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
   {
-    if (_operands.at(input_idx).info().isDynamic())
+    if (operands.at(input_idx).info().isDynamic())
     {
       return true;
     }
@@ -83,11 +111,25 @@ bool StaticShapeInferer::checkDynamicInput(const ir::Operation &op)
   return false;
 }
 
-void StaticShapeInferer::setDynamicOutput(const ir::Operation &op)
+bool StaticShapeInferer::checkDynamicOutput(const ir::Operation &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
   for (auto output_idx : op.getOutputs() | ir::Remove::UNDEFINED)
   {
-    _operands.at(output_idx).info().setDynamic();
+    if (operands.at(output_idx).info().isDynamic())
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+void StaticShapeInferer::setDynamicOutput(const ir::Operation &op)
+{
+  auto &operands = _lowered_subg->graph().operands();
+  for (auto output_idx : op.getOutputs() | ir::Remove::UNDEFINED)
+  {
+    operands.at(output_idx).info().setDynamic();
   }
 }
 
@@ -95,11 +137,12 @@ void StaticShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
                                                   const ir::OperandIndex lhs_idx,
                                                   const ir::OperandIndex rhs_idx)
 {
-  const auto &lhs = _operands.at(lhs_idx);
-  const auto &rhs = _operands.at(rhs_idx);
+  auto &operands = _lowered_subg->graph().operands();
+  const auto &lhs = operands.at(lhs_idx);
+  const auto &rhs = operands.at(rhs_idx);
 
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   // re-sizing output shape
   ir::Shape new_shape = shape_inference::inferEltwiseShape(lhs.info().shape(), rhs.info().shape());
@@ -109,11 +152,12 @@ void StaticShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
 void StaticShapeInferer::handleSimpleUnaryOp(const ir::Operation &op,
                                              const ir::OperandIndex input_idx)
 {
-  const auto &input = _operands.at(input_idx);
+  auto &operands = _lowered_subg->graph().operands();
+  const auto &input = operands.at(input_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   // re-sizing output shape
   ir::Shape new_shape = input.info().shape();
@@ -136,36 +180,31 @@ void StaticShapeInferer::dump()
     return sstream.str();
   };
 
-  for (const auto &pair : _lowered_subgs)
-  {
-    const auto index = pair.first;
-    const auto &lowered_subg = pair.second;
-    VERBOSE(StaticShapeInferer) << index << std::endl;
-    lowered_subg->graph().operands().iterate(
-      [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-        VERBOSE(StaticShapeInferer)
-          << "  " << ind << ", " << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
-          << get_shape_str(operand.info().shape()) << std::endl;
-      });
-  }
+  _lowered_subg->graph().operands().iterate(
+    [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+      VERBOSE(StaticShapeInferer) << "  " << ind << ", "
+                                  << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
+                                  << get_shape_str(operand.info().shape()) << std::endl;
+    });
 }
 
 void StaticShapeInferer::visit(const ir::operation::ArgMinMax &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::ArgMinMax::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   const auto axis_idx{op.getInputs().at(ir::operation::ArgMinMax::Input::AXIS)};
-  const auto &axis = _operands.at(axis_idx);
+  const auto &axis = operands.at(axis_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   if (!axis.isConstant())
   {
     output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -181,27 +220,31 @@ void StaticShapeInferer::visit(const ir::operation::ArgMinMax &op)
 
 void StaticShapeInferer::visit(const ir::operation::BatchMatMul &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto lhs_index = op.getInputs().at(ir::operation::BatchMatMul::Input::LHS);
   const auto rhs_index = op.getInputs().at(ir::operation::BatchMatMul::Input::RHS);
   const auto output_index = op.getOutputs().at(0);
-  const auto &lhs = _operands.at(lhs_index);
-  const auto &rhs = _operands.at(rhs_index);
-  auto &output = _operands.at(output_index);
+  const auto &lhs = operands.at(lhs_index);
+  const auto &rhs = operands.at(rhs_index);
+  auto &output = operands.at(output_index);
   auto new_shape = shape_inference::inferBatchMatMulShape(lhs.shape(), rhs.shape(), op.param());
   output.info().shape(new_shape);
 }
 
 void StaticShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::BCQFullyConnected::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   const auto cluster_idx{
     op.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
-  const auto &cluster = _operands.at(cluster_idx);
+  const auto &cluster = operands.at(cluster_idx);
 
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   auto cluster_buf = reinterpret_cast<const int32_t *>(cluster.data()->base());
   assert(cluster_buf);
@@ -214,17 +257,19 @@ void StaticShapeInferer::visit(const ir::operation::BCQFullyConnected &op)
 
 void StaticShapeInferer::visit(const ir::operation::BCQGather &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto indices_idx{op.getInputs().at(ir::operation::BCQGather::Input::INDICES)};
-  const auto &indices = _operands.at(indices_idx);
+  const auto &indices = operands.at(indices_idx);
 
   const auto input_binary_idx{op.getInputs().at(ir::operation::BCQGather::Input::INPUT_BINARY)};
-  const auto &input_binary = _operands.at(input_binary_idx);
+  const auto &input_binary = operands.at(input_binary_idx);
 
   const auto cluster_idx{op.getInputs().at(ir::operation::BCQGather::Input::INPUT_CLUSTERS)};
-  const auto &cluster = _operands.at(cluster_idx);
+  const auto &cluster = operands.at(cluster_idx);
 
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   auto cluster_buf = reinterpret_cast<const int32_t *>(cluster.data()->base());
   assert(cluster_buf);
@@ -247,16 +292,16 @@ void StaticShapeInferer::visit(const ir::operation::BinaryArithmetic &op)
 void StaticShapeInferer::visit(const ir::operation::BroadcastTo &op)
 {
   // get mutable output operand
+  auto &operands = _lowered_subg->graph().operands();
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   const auto shape_idx{op.getInputs().at(ir::operation::BroadcastTo::Input::SHAPE)};
-  const auto &shape = _operands.at(shape_idx);
+  const auto &shape = operands.at(shape_idx);
 
   if (!shape.isConstant())
   {
     output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -276,16 +321,18 @@ void StaticShapeInferer::visit(const ir::operation::Comparison &op)
 
 void StaticShapeInferer::visit(const ir::operation::Concat &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_count = op.getInputs().size();
 
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   shape_inference::Shapes input_shapes;
   for (uint32_t i = 0; i < input_count; i++)
   {
     const auto input_idx{op.getInputs().at(i)};
-    const auto &input = _operands.at(input_idx);
+    const auto &input = operands.at(input_idx);
     input_shapes.emplace_back(input.shape());
   }
 
@@ -297,12 +344,14 @@ void StaticShapeInferer::visit(const ir::operation::Concat &op)
 
 void StaticShapeInferer::visit(const ir::operation::Conv2D &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::Conv2D::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
   const auto ker_idx{op.getInputs().at(ir::operation::Conv2D::Input::KERNEL)};
-  const auto &ker = _operands.at(ker_idx);
+  const auto &ker = operands.at(ker_idx);
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   // re-sizing output shape
   ir::Shape new_shape =
@@ -328,17 +377,18 @@ void StaticShapeInferer::visit(const ir::operation::ElementwiseUnary &op)
 
 void StaticShapeInferer::visit(const ir::operation::ExpandDims &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::ExpandDims::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
   const auto axis_idx{op.getInputs().at(ir::operation::ExpandDims::Input::AXIS)};
-  const auto &axis = _operands.at(axis_idx);
+  const auto &axis = operands.at(axis_idx);
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   if (!axis.isConstant())
   {
     output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -360,15 +410,16 @@ void StaticShapeInferer::visit(const ir::operation::ExpandDims &op)
 
 void StaticShapeInferer::visit(const ir::operation::Fill &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto shape_idx{op.getInputs().at(ir::operation::Fill::Input::SHAPE)};
-  const auto &shape = _operands.at(shape_idx);
+  const auto &shape = operands.at(shape_idx);
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   if (!shape.isConstant())
   {
     output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -390,15 +441,17 @@ void StaticShapeInferer::visit(const ir::operation::Fill &op)
 
 void StaticShapeInferer::visit(const ir::operation::FullyConnected &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::FullyConnected::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   const auto ker_idx{op.getInputs().at(ir::operation::FullyConnected::Input::WEIGHT)};
-  const auto &ker = _operands.at(ker_idx);
+  const auto &ker = operands.at(ker_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
   // re-sizing output shape
   ir::Shape new_shape =
     shape_inference::inferFullyConnectedShape(input.info().shape(), ker.info().shape());
@@ -412,15 +465,17 @@ void StaticShapeInferer::visit(const ir::operation::FusedBatchNorm &op)
 
 void StaticShapeInferer::visit(const ir::operation::Gather &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::Gather::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   const auto indices_idx{op.getInputs().at(ir::operation::Gather::Input::INDICES)};
-  const auto &indices = _operands.at(indices_idx);
+  const auto &indices = operands.at(indices_idx);
   const auto rank = input.info().shape().rank();
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
 
@@ -434,70 +489,21 @@ void StaticShapeInferer::visit(const ir::operation::Gather &op)
 
 void StaticShapeInferer::visit(const ir::operation::If &op)
 {
-  auto &then_graph = _lowered_subgs.at(op.param().then_subg_index)->graph();
-  auto &else_graph = _lowered_subgs.at(op.param().else_subg_index)->graph();
+  // re-sizing input shapes of then/else subgraph
   const std::vector<ir::OperandIndex> inputs{op.getInputs().begin() + 1, op.getInputs().end()};
-  const auto &outputs = op.getOutputs();
 
-  // re-sizing input shapes of then subgraph
-  const auto &then_inputs = then_graph.getInputs();
-  assert(inputs.size() == then_inputs.size());
+  std::vector<ir::OperandInfo> inputs_info;
+  const auto &graph = _lowered_subg->graph();
   for (size_t i = 0; i < inputs.size(); ++i)
   {
-    auto &then_input = then_graph.operands().at(then_inputs.at(i));
-    if (_operands.at(inputs.at(i)).info().isDynamic())
-    {
-      then_input.info().setDynamic();
-    }
-    else
-    {
-      auto new_shape = _operands.at(inputs.at(i)).info().shape();
-      then_input.info().shape(new_shape);
-    }
+    const auto &operand_info = graph.operands().at(inputs.at(i)).info();
+    inputs_info.emplace_back(operand_info);
   }
+  _subg_input_observers.at(op.param().then_subg_index)->updateShapes(inputs_info);
+  _child_inferers.at(op.param().then_subg_index)->infer();
 
-  // re-sizing input shapes of else subgraph
-  const auto &else_inputs = else_graph.getInputs();
-  assert(inputs.size() == else_inputs.size());
-  for (size_t i = 0; i < inputs.size(); ++i)
-  {
-    auto &else_input = else_graph.operands().at(else_inputs.at(i));
-    if (_operands.at(inputs.at(i)).info().isDynamic())
-    {
-      else_input.info().setDynamic();
-    }
-    else
-    {
-      const auto &new_shape = _operands.at(inputs.at(i)).info().shape();
-      else_input.info().shape(new_shape);
-    }
-  }
-
-  inferSubgraph(op.param().then_subg_index);
-  inferSubgraph(op.param().else_subg_index);
-
-  // re-sizing output shapes
-  // TODO use then_graph / else_graph instead
-  const auto &then_outputs = _lowered_subgs.at(op.param().then_subg_index)->graph().getOutputs();
-  const auto &else_outputs = _lowered_subgs.at(op.param().else_subg_index)->graph().getOutputs();
-  assert(outputs.size() == then_outputs.size());
-  assert(outputs.size() == else_outputs.size());
-  for (size_t i = 0; i < outputs.size(); ++i)
-  {
-    const auto &then_output = then_graph.operands().at(then_outputs.at(i));
-    const auto &else_output = else_graph.operands().at(else_outputs.at(i));
-    auto &output = _operands.at(outputs.at(i));
-    if (!then_output.info().isDynamic() && !else_output.info().isDynamic() &&
-        then_output.shape() == else_output.shape())
-    {
-      output.info().shape(then_output.shape());
-    }
-    else
-    {
-      output.info().setDynamic();
-      _return_has_dynamic_tensor = true;
-    }
-  }
+  _subg_input_observers.at(op.param().else_subg_index)->updateShapes(inputs_info);
+  _child_inferers.at(op.param().else_subg_index)->infer();
 }
 
 void StaticShapeInferer::visit(const ir::operation::L2Normalization &op)
@@ -507,8 +513,10 @@ void StaticShapeInferer::visit(const ir::operation::L2Normalization &op)
 
 void StaticShapeInferer::visit(const ir::operation::LSTM &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto output_index{op.getOutputs().at(ir::operation::LSTM::Output::OUTPUT)};
-  auto &output = _operands.at(output_index);
+  auto &output = operands.at(output_index);
 
   const auto output_state_out_index{
     op.getOutputs().at(ir::operation::LSTM::Output::OUTPUT_STATE_OUT)};
@@ -518,24 +526,24 @@ void StaticShapeInferer::visit(const ir::operation::LSTM &op)
   const auto scratch_buffer_index{op.getOutputs().at(ir::operation::LSTM::Output::SCRATCH_BUFFER)};
 
   if (output.info().isDynamic() ||
-      (_operands.exist(output_state_out_index) &&
-       _operands.at(output_state_out_index).info().isDynamic()) ||
-      (_operands.exist(cell_state_out_index) &&
-       _operands.at(cell_state_out_index).info().isDynamic()) ||
-      (_operands.exist(scratch_buffer_index) &&
-       _operands.at(scratch_buffer_index).info().isDynamic()))
+      (operands.exist(output_state_out_index) &&
+       operands.at(output_state_out_index).info().isDynamic()) ||
+      (operands.exist(cell_state_out_index) &&
+       operands.at(cell_state_out_index).info().isDynamic()) ||
+      (operands.exist(scratch_buffer_index) &&
+       operands.at(scratch_buffer_index).info().isDynamic()))
     return;
 
   const auto input_index{op.getInputs().at(ir::operation::LSTM::Input::INPUT)};
-  const auto &input = _operands.at(input_index);
+  const auto &input = operands.at(input_index);
 
   const auto input_to_output_weights_index{
     op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS)};
-  const auto &input_to_output_weights = _operands.at(input_to_output_weights_index);
+  const auto &input_to_output_weights = operands.at(input_to_output_weights_index);
 
   const auto recurrent_to_output_weights_index{
     op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_OUTPUT_WEIGHTS)};
-  const auto &recurrent_to_output_weights = _operands.at(recurrent_to_output_weights_index);
+  const auto &recurrent_to_output_weights = operands.at(recurrent_to_output_weights_index);
 
   // re-sizing outputs
   const int n_batch = (input.shape().rank() == 3 && op.param().time_major) ? input.shape().dim(1)
@@ -555,21 +563,21 @@ void StaticShapeInferer::visit(const ir::operation::LSTM &op)
     output.info().shape(ir::Shape{n_batch, n_output});
   }
 
-  if (_operands.exist(output_state_out_index))
+  if (operands.exist(output_state_out_index))
   {
-    auto &output_state_out = _operands.at(output_state_out_index);
+    auto &output_state_out = operands.at(output_state_out_index);
     output_state_out.info().shape(ir::Shape{n_batch, n_output});
   }
 
-  if (_operands.exist(cell_state_out_index))
+  if (operands.exist(cell_state_out_index))
   {
-    auto &cell_state_out = _operands.at(cell_state_out_index);
+    auto &cell_state_out = operands.at(cell_state_out_index);
     cell_state_out.info().shape(ir::Shape{n_batch, n_cell});
   }
 
-  if (_operands.exist(scratch_buffer_index))
+  if (operands.exist(scratch_buffer_index))
   {
-    auto &scratch_buffer = _operands.at(scratch_buffer_index);
+    auto &scratch_buffer = operands.at(scratch_buffer_index);
 
     const auto input_to_input_weights_index{
       op.getInputs().at(ir::operation::LSTM::Input::INPUT_TO_INPUT_WEIGHTS)};
@@ -577,11 +585,11 @@ void StaticShapeInferer::visit(const ir::operation::LSTM &op)
       op.getInputs().at(ir::operation::LSTM::Input::RECURRENT_TO_INPUT_WEIGHTS)};
 
     bool has_input_to_input_weights =
-      _operands.at(input_to_input_weights_index).shape().dim(0) != 0 &&
-      _operands.at(input_to_input_weights_index).shape().dim(1) != 0;
+      operands.at(input_to_input_weights_index).shape().dim(0) != 0 &&
+      operands.at(input_to_input_weights_index).shape().dim(1) != 0;
     bool has_recurrent_to_input_weights =
-      _operands.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
-      _operands.at(recurrent_to_input_weights_index).shape().dim(1) != 0;
+      operands.at(recurrent_to_input_weights_index).shape().dim(0) != 0 &&
+      operands.at(recurrent_to_input_weights_index).shape().dim(1) != 0;
 
     // NOTE The cell_to_input_weights do not exist in non-peephole although regular LSTM(non-CIFG).
     // true: no CIFG
@@ -605,20 +613,21 @@ void StaticShapeInferer::visit(const ir::operation::MatrixBandPart &op)
 
 void StaticShapeInferer::visit(const ir::operation::OneHot &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto indice_idx{op.getInputs().at(ir::operation::OneHot::Input::INDICES)};
-  const auto &indice = _operands.at(indice_idx);
+  const auto &indice = operands.at(indice_idx);
   const auto depth_idx{op.getInputs().at(ir::operation::OneHot::Input::DEPTH)};
-  const auto &depth = _operands.at(depth_idx);
+  const auto &depth = operands.at(depth_idx);
 
   const auto axis = op.param().axis;
 
   auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   if (!depth.isConstant())
   {
     output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -631,12 +640,14 @@ void StaticShapeInferer::visit(const ir::operation::OneHot &op)
 
 void StaticShapeInferer::visit(const ir::operation::Pack &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(0)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   const auto rank = input.shape().rank() + 1;
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
@@ -651,21 +662,22 @@ void StaticShapeInferer::visit(const ir::operation::Pack &op)
 
 void StaticShapeInferer::visit(const ir::operation::Pad &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::Pad::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   const auto pad_idx{op.getInputs().at(ir::operation::Pad::Input::PAD)};
-  const auto &pad = _operands.at(pad_idx);
+  const auto &pad = operands.at(pad_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   // if pad is not constant, output also becomes dynamic
   if (!pad.isConstant())
   {
     output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -678,10 +690,12 @@ void StaticShapeInferer::visit(const ir::operation::Pad &op)
 
 void StaticShapeInferer::visit(const ir::operation::Permute &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(0)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   // re-sizing output shape
   // Permute is a special operation that layouts of input/output may be different on backend
@@ -700,16 +714,18 @@ void StaticShapeInferer::visit(const ir::operation::Pow &op)
 
 void StaticShapeInferer::visit(const ir::operation::Range &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto start_idx{op.getInputs().at(ir::operation::Range::Input::START)};
   const auto limit_idx{op.getInputs().at(ir::operation::Range::Input::LIMIT)};
   const auto delta_idx{op.getInputs().at(ir::operation::Range::Input::DELTA)};
-  const auto &start_op = _operands.at(start_idx);
-  const auto &limit_op = _operands.at(limit_idx);
-  const auto &delta_op = _operands.at(delta_idx);
+  const auto &start_op = operands.at(start_idx);
+  const auto &limit_op = operands.at(limit_idx);
+  const auto &delta_op = operands.at(delta_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   ir::Shape new_shape;
   if (start_op.isConstant() && limit_op.isConstant() && delta_op.isConstant())
@@ -731,21 +747,22 @@ void StaticShapeInferer::visit(const ir::operation::Range &op)
   else
   {
     output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
   }
 }
 
 void StaticShapeInferer::visit(const ir::operation::Reduce &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::Reduce::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   const auto axes_idx{op.getInputs().at(ir::operation::Reduce::Input::AXES)};
-  const auto &axes = _operands.at(axes_idx);
+  const auto &axes = operands.at(axes_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   std::vector<int32_t> axes_vec;
   for (size_t i = 0; i < axes.shape().num_elements(); ++i)
@@ -777,19 +794,21 @@ void StaticShapeInferer::visit(const ir::operation::Reduce &op)
 
 void StaticShapeInferer::visit(const ir::operation::Reshape &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::Reshape::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   // New shape is given by second input tensor
   if (op.getInputs().size() == 2)
   {
     // Let's check the second input
     const auto shape_idx{op.getInputs().at(ir::operation::Reshape::Input::SHAPE)};
-    const auto &shape = _operands.at(shape_idx);
+    const auto &shape = operands.at(shape_idx);
 
     if (shape.isConstant())
     {
@@ -810,7 +829,6 @@ void StaticShapeInferer::visit(const ir::operation::Reshape &op)
     {
       // if shape is NOT Const, set output shape to be dynamic_
       output.info().setDynamic();
-      _return_has_dynamic_tensor = true;
     }
   }
   // New shape is given by option
@@ -835,21 +853,22 @@ void StaticShapeInferer::visit(const ir::operation::Reshape &op)
 
 void StaticShapeInferer::visit(const ir::operation::ResizeBilinear &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::ResizeBilinear::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   int32_t height_out, width_out;
   if (op.getInputs().size() == 2)
   {
-    auto &size = _operands.at(op.getInputs().at(ir::operation::ResizeBilinear::Input::SIZE));
+    auto &size = operands.at(op.getInputs().at(ir::operation::ResizeBilinear::Input::SIZE));
     if (!size.isConstant())
     {
       output.info().setDynamic();
-      _return_has_dynamic_tensor = true;
       return;
     }
     const auto size_v = size.asVector<std::int32_t>();
@@ -881,17 +900,19 @@ void StaticShapeInferer::visit(const ir::operation::Reverse &op)
 
 void StaticShapeInferer::visit(const ir::operation::Select &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_cond_idx{op.getInputs().at(ir::operation::Select::Input::CONDITION)};
-  const auto &input_cond = _operands.at(input_cond_idx);
+  const auto &input_cond = operands.at(input_cond_idx);
 
   const auto input_true_idx{op.getInputs().at(ir::operation::Select::Input::INPUT_TRUE)};
-  const auto &input_true = _operands.at(input_true_idx);
+  const auto &input_true = operands.at(input_true_idx);
 
   const auto input_false_idx{op.getInputs().at(ir::operation::Select::Input::INPUT_FALSE)};
-  const auto &input_false = _operands.at(input_false_idx);
+  const auto &input_false = operands.at(input_false_idx);
 
   auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   // Select output shpae
   ir::Shape new_shape = shape_inference::inferSelectShape(
@@ -901,12 +922,14 @@ void StaticShapeInferer::visit(const ir::operation::Select &op)
 
 void StaticShapeInferer::visit(const ir::operation::Shape &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(0)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   // re-sizing output shape
   ir::Shape output_shape;
@@ -917,20 +940,21 @@ void StaticShapeInferer::visit(const ir::operation::Shape &op)
 
 void StaticShapeInferer::visit(const ir::operation::Slice &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_index{op.getInputs().at(ir::operation::Slice::Input::INPUT)};
-  const auto &input = _operands.at(input_index);
+  const auto &input = operands.at(input_index);
   const auto begins_index{op.getInputs().at(ir::operation::Slice::Input::BEGINS)};
-  const auto &begins = _operands.at(begins_index);
+  const auto &begins = operands.at(begins_index);
   const auto sizes_index{op.getInputs().at(ir::operation::Slice::Input::SIZES)};
-  const auto &sizes = _operands.at(sizes_index);
+  const auto &sizes = operands.at(sizes_index);
   const auto output_index = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_index);
+  ir::Operand &output = operands.at(output_index);
 
   // Whether input is constant or not does not affect whether output is dynamic or not
   if (!(begins.isConstant() && sizes.isConstant()))
   {
     output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -959,21 +983,22 @@ void StaticShapeInferer::visit(const ir::operation::Softmax &op)
 
 void StaticShapeInferer::visit(const ir::operation::SpaceToBatchND &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto output_index = op.getOutputs().at(0);
   const auto input_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::INPUT)};
   const auto block_shape_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
   const auto padding_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::PADDINGS)};
 
-  ir::Operand &output = _operands.at(output_index);
-  const auto &input = _operands.at(input_idx);
-  const auto &block_shape = _operands.at(block_shape_idx);
-  const auto &padding = _operands.at(padding_idx);
+  ir::Operand &output = operands.at(output_index);
+  const auto &input = operands.at(input_idx);
+  const auto &block_shape = operands.at(block_shape_idx);
+  const auto &padding = operands.at(padding_idx);
 
   // Whether input is constant or not does not affect whether output is dynamic or not
   if (!(block_shape.isConstant() && padding.isConstant()))
   {
     output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -992,21 +1017,22 @@ void StaticShapeInferer::visit(const ir::operation::SpaceToBatchND &op)
 
 void StaticShapeInferer::visit(const ir::operation::Split &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::Split::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   const auto axis_idx{op.getInputs().at(ir::operation::Split::Input::AXIS)};
-  const auto &axis = _operands.at(axis_idx);
+  const auto &axis = operands.at(axis_idx);
 
   auto outputs = op.getOutputs();
   if (!axis.isConstant())
   {
     for (auto output_idx : outputs)
     {
-      ir::Operand &output = _operands.at(output_idx);
+      ir::Operand &output = operands.at(output_idx);
       output.info().setDynamic();
     }
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1022,7 +1048,7 @@ void StaticShapeInferer::visit(const ir::operation::Split &op)
     shape_inference::inferSplitShape(input.info().shape(), axis_value, num_splits);
   for (auto output_idx : outputs)
   {
-    ir::Operand &output = _operands.at(output_idx);
+    ir::Operand &output = operands.at(output_idx);
     output.info().shape(new_shape);
   }
 }
@@ -1035,11 +1061,13 @@ void StaticShapeInferer::visit(const ir::operation::SquaredDifference &op)
 
 void StaticShapeInferer::visit(const ir::operation::Squeeze &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::Squeeze::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   // Squeeze output shpae
   ir::Shape new_shape = shape_inference::inferSqueezeShape(input.info().shape(), op.param());
@@ -1048,21 +1076,22 @@ void StaticShapeInferer::visit(const ir::operation::Squeeze &op)
 
 void StaticShapeInferer::visit(const ir::operation::StridedSlice &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_index{op.getInputs().at(ir::operation::StridedSlice::Input::INPUT)};
-  const auto &input = _operands.at(input_index);
+  const auto &input = operands.at(input_index);
   const auto starts_index{op.getInputs().at(ir::operation::StridedSlice::Input::STARTS)};
-  const auto &starts = _operands.at(starts_index);
+  const auto &starts = operands.at(starts_index);
   const auto ends_index{op.getInputs().at(ir::operation::StridedSlice::Input::ENDS)};
-  const auto &ends = _operands.at(ends_index);
+  const auto &ends = operands.at(ends_index);
   const auto strides_index{op.getInputs().at(ir::operation::StridedSlice::Input::STRIDES)};
-  const auto &strides = _operands.at(strides_index);
+  const auto &strides = operands.at(strides_index);
   const auto output_index = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_index);
+  ir::Operand &output = operands.at(output_index);
 
   if (!(starts.isConstant() && ends.isConstant() && strides.isConstant()))
   {
     output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1085,19 +1114,20 @@ void StaticShapeInferer::visit(const ir::operation::StridedSlice &op)
 
 void StaticShapeInferer::visit(const ir::operation::Tile &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::Tile::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   const auto multiplier_idx{op.getInputs().at(ir::operation::Tile::Input::MULTIPLES)};
-  const auto &multiplier = _operands.at(multiplier_idx);
+  const auto &multiplier = operands.at(multiplier_idx);
 
   const auto output_idx = op.getOutputs().at(0);
-  ir::Operand &output = _operands.at(output_idx);
+  ir::Operand &output = operands.at(output_idx);
 
   if (!multiplier.isConstant())
   {
     output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1112,11 +1142,13 @@ void StaticShapeInferer::visit(const ir::operation::Tile &op)
 
 void StaticShapeInferer::visit(const ir::operation::Transpose &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(ir::operation::Transpose::Input::INPUT)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
 
   const auto perm_idx{op.getInputs().at(ir::operation::Transpose::Input::PERMUTATION)};
-  const auto &perm = _operands.at(perm_idx);
+  const auto &perm = operands.at(perm_idx);
 
   // perm.shape() != ir::Shape{0} means that perm is (n-1...0)
   // TODO This condition changes to perm.num_elements() == 0
@@ -1124,11 +1156,10 @@ void StaticShapeInferer::visit(const ir::operation::Transpose &op)
 
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
-  auto &output = _operands.at(output_idx);
+  auto &output = operands.at(output_idx);
   if (!perm.isConstant() && !is_regular_transpose)
   {
     output.info().setDynamic();
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1157,8 +1188,10 @@ void StaticShapeInferer::visit(const ir::operation::Transpose &op)
 
 void StaticShapeInferer::visit(const ir::operation::Unpack &op)
 {
+  auto &operands = _lowered_subg->graph().operands();
+
   const auto input_idx{op.getInputs().at(0)};
-  const auto &input = _operands.at(input_idx);
+  const auto &input = operands.at(input_idx);
   const auto num = op.param().num;
   const auto rank = input.shape().rank();
   const auto axis = ((op.param().axis < 0) ? rank + op.param().axis : op.param().axis);
@@ -1169,10 +1202,9 @@ void StaticShapeInferer::visit(const ir::operation::Unpack &op)
     for (int out_tensor_idx = 0; out_tensor_idx < num; out_tensor_idx++)
     {
       const auto output_idx = op.getOutputs().at(out_tensor_idx);
-      ir::Operand &output = _operands.at(output_idx);
+      ir::Operand &output = operands.at(output_idx);
       output.info().setDynamic();
     }
-    _return_has_dynamic_tensor = true;
     return;
   }
 
@@ -1182,69 +1214,43 @@ void StaticShapeInferer::visit(const ir::operation::Unpack &op)
   for (int out_tensor_idx = 0; out_tensor_idx < num; out_tensor_idx++)
   {
     const auto output_idx = op.getOutputs().at(out_tensor_idx);
-    ir::Operand &output = _operands.at(output_idx);
+    ir::Operand &output = operands.at(output_idx);
     output.info().shape(new_shape);
   }
 }
 
 void StaticShapeInferer::visit(const ir::operation::While &op)
 {
-  auto &cond_graph = _lowered_subgs.at(op.param().cond_subg_index)->graph();
-  auto &body_graph = _lowered_subgs.at(op.param().body_subg_index)->graph();
+  auto body_input_observer = _subg_input_observers.at(op.param().body_subg_index).get();
+  auto cond_input_observer = _subg_input_observers.at(op.param().cond_subg_index).get();
+  // re-sizing input shapes of body subgraph
   const auto inputs = op.getInputs();
-  const auto &outputs = op.getOutputs();
-
-  // re-sizing input shapes of then subgraph
-  const auto &cond_inputs = cond_graph.getInputs();
-  assert(inputs.size() == cond_inputs.size());
+  std::vector<ir::OperandInfo> inputs_info;
+  const auto &graph = _lowered_subg->graph();
   for (size_t i = 0; i < inputs.size(); ++i)
   {
-    const auto &input = _operands.at(inputs.at(i));
-    auto &cond_input = cond_graph.operands().at(cond_inputs.at(i));
-    if (input.info().isDynamic())
-    {
-      cond_input.info().setDynamic();
-    }
-    else
-    {
-      auto new_shape = input.info().shape();
-      cond_input.info().shape(new_shape);
-    }
+    const auto &operand_info = graph.operands().at(inputs.at(i)).info();
+    inputs_info.emplace_back(operand_info);
   }
 
-  // re-sizing input shapes of body subgraph
-  const auto &body_inputs = body_graph.getInputs();
-  assert(cond_inputs.size() == body_inputs.size());
-  for (size_t i = 0; i < cond_inputs.size(); ++i)
-  {
-    const auto &cond_input = cond_graph.operands().at(cond_inputs.at(i));
-    auto &body_input = body_graph.operands().at(body_inputs.at(i));
-    if (cond_input.info().isDynamic())
-    {
-      body_input.info().setDynamic();
-    }
-    else
-    {
-      const auto &new_shape = cond_input.info().shape();
-      body_input.info().shape(new_shape);
-    }
-  }
-
-  // re-sizing operands of body subgraph
-  inferSubgraph(op.param().body_subg_index);
+  body_input_observer->updateShapes(inputs_info);
+  _child_inferers.at(op.param().body_subg_index)->infer();
 
   // Check whether while operation's shapes are predictable
-  // If any of shape of body outputs and cond inputs are different, non-constant operands would be
-  // set to dynamic
+  // This while op's outputs are also updated in the above function
+  // "_child_inferers.at(op.param().body_subg_index)->update()". That means that body's outputs and
+  // thils op's outputs must have the same shape. So we can predict whether body subgraphs will
+  // change at every step by comparing the shapes of inputs/outputs. If any of shape of body outputs
+  // and inputs are different Non-constant operands will be set to dynamic.
   bool check_unpredictable_dynamic = false;
-  const auto &body_outputs = body_graph.getOutputs();
-  assert(body_outputs.size() == cond_inputs.size());
-  for (size_t i = 0; i < body_outputs.size(); ++i)
+  const auto &updated_outputs = op.getOutputs();
+  assert(inputs_info.size() == updated_outputs.size());
+  for (size_t i = 0; i < updated_outputs.size(); ++i)
   {
-    const auto &body_output = body_graph.operands().at(body_outputs.at(i));
-    auto &cond_input = cond_graph.operands().at(cond_inputs.at(i));
-    if ((cond_input.info().isDynamic() != body_output.info().isDynamic()) ||
-        (cond_input.shape() != body_output.shape()))
+    const auto &input_info = inputs_info.at(i);
+    const auto &output_info = graph.operands().at(updated_outputs.at(i)).info();
+    if (input_info.isDynamic() != output_info.isDynamic() ||
+        input_info.shape() != output_info.shape())
     {
       check_unpredictable_dynamic = true;
       break;
@@ -1253,53 +1259,11 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
 
   if (check_unpredictable_dynamic)
   {
-    // Set inputs of body subgraph
-    for (const auto &input_index : body_inputs)
-    {
-      auto &input = body_graph.operands().at(input_index);
-      if (!input.isConstant())
-      {
-        input.info().setDynamic();
-      }
-    }
-
-    // Set inputs of cond subgraph
-    for (const auto &input_index : cond_inputs)
-    {
-      auto &input = cond_graph.operands().at(input_index);
-      if (!input.isConstant())
-      {
-        input.info().setDynamic();
-      }
-    }
-
-    // Set non-constant operands of body subgraph to dynamic
-    inferSubgraph(op.param().body_subg_index);
+    body_input_observer->updateShapes(inputs_info, check_unpredictable_dynamic);
+    _child_inferers.at(op.param().body_subg_index)->infer();
   }
-
-  // re-sizing operands of cond subgraph
-  // If check_unpredictable_dynamic is true, non-constant operands of cond subgraph would be set to
-  // dynamic
-  inferSubgraph(op.param().cond_subg_index);
-
-  // re-sizing outputs of while operation
-  // If check_unpredictable_dynamic is true, outputs of while operation would be set to dynamic
-  assert(cond_inputs.size() == outputs.size());
-  for (size_t i = 0; i < cond_inputs.size(); ++i)
-  {
-    const auto &cond_input = cond_graph.operands().at(cond_inputs.at(i));
-    auto &output = _operands.at(outputs.at(i));
-    if (cond_input.info().isDynamic())
-    {
-      output.info().setDynamic();
-      _return_has_dynamic_tensor = true;
-    }
-    else
-    {
-      const auto new_shape = cond_input.info().shape();
-      output.info().shape(new_shape);
-    }
-  }
+  cond_input_observer->updateShapes(inputs_info, check_unpredictable_dynamic);
+  _child_inferers.at(op.param().cond_subg_index)->infer();
 }
 
 void StaticShapeInferer::visit(const ir::operation::DetectionPostProcess &op)
@@ -1307,22 +1271,23 @@ void StaticShapeInferer::visit(const ir::operation::DetectionPostProcess &op)
   // TODO: NMS supports very limited input/output size.
   ir::operation::DetectionPostProcess::Param param = op.param();
 
+  auto &operands = _lowered_subg->graph().operands();
   const int num_detected_boxes = param.max_detections * param.max_classes_per_detection;
 
   const auto output_idx1 = op.getOutputs().at(0);
-  auto &output1 = _operands.at(output_idx1);
+  auto &output1 = operands.at(output_idx1);
   output1.info().shape({1, num_detected_boxes, 4});
 
   const auto output_idx2 = op.getOutputs().at(1);
-  auto &output2 = _operands.at(output_idx2);
+  auto &output2 = operands.at(output_idx2);
   output2.info().shape({1, num_detected_boxes});
 
   const auto output_idx3 = op.getOutputs().at(2);
-  auto &output3 = _operands.at(output_idx3);
+  auto &output3 = operands.at(output_idx3);
   output3.info().shape({1, num_detected_boxes});
 
   const auto output_idx4 = op.getOutputs().at(3);
-  auto &output4 = _operands.at(output_idx4);
+  auto &output4 = operands.at(output_idx4);
   output4.info().shape({1});
 }
 

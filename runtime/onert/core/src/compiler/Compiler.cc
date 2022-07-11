@@ -33,6 +33,7 @@
 #include "util/ConfigSource.h"
 #include "util/logging.h"
 
+#include <misc/polymorphic_downcast.h>
 #include <misc/string_helpers.h>
 #include <json/json.h>
 
@@ -81,6 +82,96 @@ void verboseOptions(compiler::CompilerOptions &options)
   VERBOSE(Compiler) << "disable_compile          : " << options.disable_compile << std::endl;
   VERBOSE(Compiler) << "fp16_enable              : " << options.fp16_enable << std::endl
                     << std::noboolalpha;
+}
+
+std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::StaticShapeInferer>>
+createStaticShapeInferers(
+  const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>
+    &lowered_subgs)
+{
+  // Allocate StaticShapeInferer per each subgraph
+  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::StaticShapeInferer>> inferers;
+  for (auto &pair : lowered_subgs)
+  {
+    const auto &subg_index = pair.first;
+    auto &lowered_subg = pair.second;
+    inferers[subg_index] = std::make_unique<compiler::StaticShapeInferer>(lowered_subg.get());
+  }
+
+  // Append observers in all StaticShapeInferers
+  for (auto &pair : lowered_subgs)
+  {
+    const auto &subg_index = pair.first;
+    auto &lowered_subg = pair.second;
+
+    // TODO: Change this iteration for all to controlflow iteration
+    lowered_subg->graph().operations().iterate([&](const ir::OperationIndex &,
+                                                   const ir::Operation &op) {
+      // A Function to append child inferers. These make it possible for a StaticShapeInferer to
+      // call StaticShapeInferes of child subgraphs recursively
+      auto appendChildInferer = [&](const ir::SubgraphIndex &child_subg_idx) {
+        auto *child_inferer = inferers.at(child_subg_idx).get();
+        inferers.at(subg_index)->appendChildInferer(child_subg_idx, child_inferer);
+      };
+
+      // A Function to appaend subg input observers. This makes it possible for a StaticShapeInferer
+      // to update inputs of child subgraphs
+      auto appendSubgraphInputObserver = [&](const ir::SubgraphIndex &child_subg_idx) {
+        std::vector<ir::Operand *> child_subg_inputs;
+        auto &child_subg = lowered_subgs.at(child_subg_idx)->graph();
+        for (const auto &input_idx : child_subg.getInputs())
+        {
+          auto operand_ptr = child_subg.operands().getRawPtr(input_idx);
+          child_subg_inputs.emplace_back(operand_ptr);
+        }
+        inferers.at(subg_index)
+          ->appendSubgInputObserver(child_subg_idx,
+                                    std::make_unique<compiler::OperandObserver>(child_subg_inputs));
+      };
+
+      // A Function to set controlflow output observers. This makes it possible for a
+      // StaticShapeInferer to update outputs of parent controlflow opeerations
+      auto setControlFlowOutputObserver = [&](const ir::SubgraphIndex &child_subg_idx) {
+        std::vector<ir::Operand *> cf_outputs;
+        auto &subg = lowered_subg->graph();
+        for (const auto &output_idx : op.getOutputs())
+        {
+          auto operand_ptr = subg.operands().getRawPtr(output_idx);
+          cf_outputs.emplace_back(operand_ptr);
+        }
+        inferers.at(child_subg_idx)
+          ->setControlflowOutputObserver(std::make_unique<compiler::OperandObserver>(cf_outputs));
+      };
+
+      // Append Observers in a StaticShapeInferer
+      if (op.opcode() == ir::OpCode::If)
+      {
+        const auto &if_op = nnfw::misc::polymorphic_downcast<const ir::operation::If &>(op);
+
+        appendChildInferer(if_op.param().then_subg_index);
+        appendChildInferer(if_op.param().else_subg_index);
+
+        appendSubgraphInputObserver(if_op.param().then_subg_index);
+        appendSubgraphInputObserver(if_op.param().else_subg_index);
+
+        setControlFlowOutputObserver(if_op.param().then_subg_index);
+      }
+      else if (op.opcode() == ir::OpCode::While)
+      {
+        const auto &while_op = nnfw::misc::polymorphic_downcast<const ir::operation::While &>(op);
+
+        appendChildInferer(while_op.param().cond_subg_index);
+        appendChildInferer(while_op.param().body_subg_index);
+
+        appendSubgraphInputObserver(while_op.param().cond_subg_index);
+        appendSubgraphInputObserver(while_op.param().body_subg_index);
+
+        setControlFlowOutputObserver(while_op.param().body_subg_index);
+      }
+    });
+  }
+
+  return inferers;
 }
 
 } // namespace
@@ -408,17 +499,18 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
   // Shape inference.
   {
+    // Run the StaticShapeInfer of primary subg. All child StaticShapeInferers are called
+    // recursively
+    std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers =
+      createStaticShapeInferers(lowered_subgs);
     const auto primary_subg_idx = ir::SubgraphIndex{0};
-    StaticShapeInferer inferer(primary_subg_idx, lowered_subgs);
-    auto &lowered_subg = lowered_subgs.at(primary_subg_idx);
-    auto ordered_ops = lowered_subg->graph().topolSortOperations();
-    for (auto op_ind : ordered_ops)
+    inferers.at(primary_subg_idx)->infer();
+
+    for (const auto &pair : inferers)
     {
-      const auto &op = lowered_subg->graph().operations().at(op_ind);
-      bool has_dynamic_tensor = inferer.infer(op);
-      lowered_subg->setHasDynamicTensor(op_ind, has_dynamic_tensor);
+      const auto inferer = pair.second.get();
+      inferer->dump();
     }
-    inferer.dump();
   }
 
   // Shape validation
@@ -596,19 +688,15 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   }
 
   // Partial Graph shape inference
+  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers =
+    createStaticShapeInferers(lowered_partialgraphs);
+  // NOTE If partialgraph has subgraphs StaticShapeInferer may be called multiple times
   for (auto &pair : lowered_partialgraphs)
   {
     const auto &partialgraph_index = pair.first;
-    auto &lowered_partialgraph = pair.second;
-    StaticShapeInferer partial_inferer(partialgraph_index, lowered_partialgraphs);
-    auto ordered_ops = lowered_partialgraph->graph().topolSortOperations();
-    for (auto op_ind : ordered_ops)
-    {
-      const auto &op = lowered_partialgraph->graph().operations().at(op_ind);
-      bool has_dynamic_tensor = partial_inferer.infer(op);
-      lowered_partialgraph->setHasDynamicTensor(op_ind, has_dynamic_tensor);
-    }
-    partial_inferer.dump();
+    const auto partial_inferer = inferers.at(partialgraph_index).get();
+    partial_inferer->infer();
+    partial_inferer->dump();
   }
 
   // Shape validation
