@@ -110,6 +110,12 @@ def _get_parser():
         type=str,
         help="Names of the output arrays, comma-separated.")
 
+    # experimental options
+    parser.add_argument(
+        "--experimental_disable_batchmatmul_unfold",
+        action="store_true",
+        help="Experimental disable BatchMatMul unfold")
+
     # Set default value
     parser.set_defaults(model_format="graph_def")
     return parser
@@ -227,6 +233,9 @@ def _v2_convert(flags):
     if flags.model_format == "keras_model":
         keras_model = tf.keras.models.load_model(flags.input_path)
         converter = tf.lite.TFLiteConverter.from_keras_model(keras_model)
+
+    if flags.experimental_disable_batchmatmul_unfold:
+        converter._experimental_disable_batchmatmul_unfold = True
 
     converter.allow_custom_ops = True
     converter.experimental_new_converter = True
