@@ -902,12 +902,12 @@ void nnfw_session::make_dependency()
 {
   for (uint32_t out_exe = 0; out_exe < _executions.size(); out_exe++)
   {
-    auto out_graph = _executions[out_exe]->primary_subgraph();
+    auto &out_graph = _executions[out_exe]->primary_subgraph();
     for (uint32_t in_exe = 0; in_exe < _executions.size(); in_exe++)
     {
       if (out_exe == in_exe)
         continue;
-      auto in_graph = _executions[in_exe]->primary_subgraph();
+      auto &in_graph = _executions[in_exe]->primary_subgraph();
       for (auto out = out_graph._name_to_output_begin(); out != out_graph._name_to_output_end();
            out++)
       {
