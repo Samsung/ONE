@@ -321,7 +321,7 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
   std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
   const compiler::CompilerOptions &options, const std::shared_ptr<exec::ExecutorMap> &executor_map)
 {
-  auto graph = lowered_graph->graph();
+  auto &graph = lowered_graph->graph();
 
   backend::BackendContexts backend_contexts =
     createBackendContexts(*lowered_graph, options.executor == "Linear");
