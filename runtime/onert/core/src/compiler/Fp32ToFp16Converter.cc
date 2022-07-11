@@ -180,7 +180,7 @@ void Fp32ToFp16Converter::appendOpSequences()
 {
   _lowered_graph.op_seqs().iterate(
     [&](const ir::OpSequenceIndex &op_seq_ind, ir::OpSequence &op_seq) {
-      const auto lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
+      const auto &lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
       assert(lower_info != nullptr);
 
       // For now, the only acl_cl supports fully fp16 type
@@ -375,7 +375,7 @@ void Fp32ToFp16Converter::convertOperands()
 {
   _lowered_graph.op_seqs().iterate(
     [&](const ir::OpSequenceIndex &op_seq_ind, ir::OpSequence &op_seq) {
-      const auto lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
+      const auto &lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
       assert(lower_info != nullptr);
       // For now, the only acl_cl supports fully fp16
       if (lower_info->backend()->config()->id() != kAclClBackendConfigId)
@@ -515,7 +515,7 @@ ir::OperandIndex Fp32ToFp16Converter::newCopiedOperand(const ir::OperandIndex &o
 void Fp32ToFp16Converter::setNewOperandLowerInfo(const ir::OpSequenceIndex &op_seq_ind,
                                                  const ir::OperandIndex &new_op_ind)
 {
-  const auto lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
+  const auto &lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
   assert(lower_info != nullptr);
   auto new_lower_info = std::make_unique<compiler::OperandLowerInfo>();
   auto permute_factor = compiler::PermuteFactor(lower_info->backend(), lower_info->layout());
@@ -527,7 +527,7 @@ void Fp32ToFp16Converter::setNewOperandLowerInfo(const ir::OpSequenceIndex &op_s
 void Fp32ToFp16Converter::setNewOperationLowerInfo(const ir::OpSequenceIndex &op_seq_ind,
                                                    const ir::OpSequenceIndex &new_op_seq_ind)
 {
-  const auto lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
+  const auto &lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
   assert(lower_info != nullptr);
 
   auto new_lower_info =
@@ -635,7 +635,7 @@ ir::OpSequenceIndex Fp32ToFp16Converter::newOpSequence(const ir::OpSequenceIndex
                                                        const ir::OperationIndex &node_index)
 {
   auto &node = _lowered_graph.graph().operations().at(node_index);
-  const auto lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
+  const auto &lower_info = _lowered_graph.getLowerInfo(op_seq_ind);
   assert(lower_info != nullptr);
   auto layout = lower_info->layout();
 
