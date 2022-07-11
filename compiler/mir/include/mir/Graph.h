@@ -103,6 +103,10 @@ private:
 
 /**
  * @brief Returns nodes of the graph sorted topologically.
+ * @note  Sorting order priority
+ * 1) Graph input node (input index order)
+ * 2) Constant node (unordered - cannot predict order)
+ * 3) Ready node (unordered - cannot predict order)
  */
 std::vector<Operation *> getSortedNodes(Graph *graph);
 
