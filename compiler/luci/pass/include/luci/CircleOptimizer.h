@@ -47,6 +47,7 @@ public:
       ResolveCustomOpBatchMatMul,
       ResolveCustomOpMatMul,
       ResolveCustomOpMaxPoolWithArgmax,
+      ResolveCustomOpSplitV,
       FoldAddV2,
       FoldCast,
       FoldDepthwiseConv2D,
