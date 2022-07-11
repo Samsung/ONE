@@ -112,7 +112,7 @@ def _get_parser():
 
     # experimental options
     parser.add_argument(
-        "--disable_batchmatmul_unfold",
+        "--experimental_disable_batchmatmul_unfold",
         action="store_true",
         help="Experimental disable BatchMatMul unfold")
 
@@ -234,7 +234,7 @@ def _v2_convert(flags):
         keras_model = tf.keras.models.load_model(flags.input_path)
         converter = tf.lite.TFLiteConverter.from_keras_model(keras_model)
 
-    if flags.disable_batchmatmul_unfold:
+    if flags.experimental_disable_batchmatmul_unfold:
         converter._experimental_disable_batchmatmul_unfold = True
 
     converter.allow_custom_ops = True

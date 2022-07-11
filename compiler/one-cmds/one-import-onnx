@@ -88,7 +88,7 @@ def _get_parser():
 
     # experimental options
     parser.add_argument(
-        '--disable_batchmatmul_unfold',
+        '--experimental_disable_batchmatmul_unfold',
         action='store_true',
         help='Experimental disable BatchMatMul unfold')
 
