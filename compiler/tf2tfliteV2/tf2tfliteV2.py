@@ -114,7 +114,7 @@ def _get_parser():
     parser.add_argument(
         "--disable_batchmatmul_unfold",
         action="store_true",
-        help="Experimental disable BatMatMul unfold")
+        help="Experimental disable BatchMatMul unfold")
 
     # Set default value
     parser.set_defaults(model_format="graph_def")
