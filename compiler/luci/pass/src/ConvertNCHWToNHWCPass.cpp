@@ -612,32 +612,12 @@ bool is_NCHW_with_const(const luci::CircleAdd *node, luci::CircleNode *&pred_nod
   if (pred_node->rank() != 4)
     return false;
 
-  const auto const_rank = beta->rank();
-  // Support Rank 4 or scalar (rank 0 or 1)
-  if (const_rank != 4 && const_rank != 0 && const_rank != 1)
+  if (not broadcastable(beta, node))
     return false;
 
-  const auto input_cdim = pred_node->dim(1);
-  const auto output_cdim = node->dim(1);
+  expand_to_rank_4(beta);
 
-  if (const_rank == 4)
-  {
-    bool supported_shape = false;
-
-    // Check beta is (1, C, 1, 1)
-    if (is_same_shape(beta, {1, node->dim(1), 1, 1}))
-      supported_shape = true;
-
-    // Check beta is (N, C, H, W)
-    if (is_same_shape(beta, {node->dim(0), node->dim(1), node->dim(2), node->dim(3)}))
-      supported_shape = true;
-
-    return supported_shape;
-  }
-  if (input_cdim == output_cdim)
-    return true;
-  else
-    return false;
+  return true;
 }
 
 // We assume SUB with const input is NCHW if,
@@ -785,17 +765,14 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
     if (is_NCHW_with_const(node, pred_node, beta))
     {
+      assert(beta->rank() == 4); // FIX is_NCHW_with_const unless
+      auto nhwc_const = create_NHWC_from_NCHW(beta);
+      if (nhwc_const == nullptr)
+        return false;
+      node->y(nhwc_const);
+
       auto pre_trans = create_pre_transpose(node);
       pre_trans->a(pred_node);
-
-      if (beta->rank() == 4)
-      {
-        auto nhwc_const = create_NHWC_from_NCHW(beta);
-        if (nhwc_const == nullptr)
-          return false;
-        node->y(nhwc_const);
-      }
-
       node->x(pre_trans);
     }
     else if (beta == nullptr)

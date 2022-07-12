@@ -1096,8 +1096,11 @@ TEST(ConvertNCHWToNHWC, AddScalar)
 
   auto new_beta = dynamic_cast<luci::CircleConst *>(g.add->y());
   EXPECT_NE(nullptr, new_beta);
-  EXPECT_EQ(1, new_beta->rank());
+  EXPECT_EQ(4, new_beta->rank());
   EXPECT_EQ(1, new_beta->dim(0).value());
+  EXPECT_EQ(1, new_beta->dim(1).value());
+  EXPECT_EQ(1, new_beta->dim(2).value());
+  EXPECT_EQ(1, new_beta->dim(3).value());
 
   check_pre_trans(g.output->from());
 }
