@@ -1,0 +1,14 @@
+#/bin/bash
+
+cat << EOF
+{
+    "workflow": ["one-import", "one-optimize", "one-quantize", "one-codegen"],
+    "one-optmize": {
+        "--substitute_add_to_sub": "True",
+        "--remove_fakequant": "True"
+    },
+    "one-codegen": {
+        "command": "-o model.dummy --quota 1GB --save-temps ./model.q.circle"
+    }
+}
+EOF
