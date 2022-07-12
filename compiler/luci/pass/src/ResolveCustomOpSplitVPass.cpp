@@ -57,23 +57,25 @@ luci::CircleConst *s64_to_s32(luci::CircleConst *node)
  *              \
  *               \   [size_splits]  [split_dim]
  *                \       |             /
- *               [SplitV(CircleCustom)]
+ *               [CircleCustom(SplitV))]
  *                        |
  *                 [CircleCustomOut]
  *                        |
+ *                   [CircleNode]
  *
  *  AFTER
  *
- *        [CircleNode]
- *              \
- *               \   [size_splits]  [split_dim]
- *                \       |         /
- *                 \      |       /
- *                  \     |      /
- *                     [SplitV]
- *                        |
- *                    [SplitVOut]
- *                        |
+ *                [CircleNode]
+ *                  |   \
+ *                  |     \   [size_splits]  [split_dim]
+ *                  |      \       |         /
+ *                  |       \      |       /
+ *                  |        \     |      /
+ *    [CircleCustom(SplitV)]  [CircleSplitV]
+ *                  |              |
+ *      [CircleCustomOut]    [CircleSplitVOut]
+ *                                 |
+ *                            [CircleNode]
  */
 bool resolve_splitv(luci::CircleCustom *node)
 {
