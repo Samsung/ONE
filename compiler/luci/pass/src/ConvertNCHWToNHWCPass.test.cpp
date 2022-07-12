@@ -1432,8 +1432,11 @@ TEST(ConvertNCHWToNHWC, MulScalar)
 
   auto new_multiplier = dynamic_cast<luci::CircleConst *>(g.mul->y());
   EXPECT_NE(nullptr, new_multiplier);
-  EXPECT_EQ(1, new_multiplier->rank());
+  EXPECT_EQ(4, new_multiplier->rank());
   EXPECT_EQ(1, new_multiplier->dim(0).value());
+  EXPECT_EQ(1, new_multiplier->dim(1).value());
+  EXPECT_EQ(1, new_multiplier->dim(2).value());
+  EXPECT_EQ(1, new_multiplier->dim(3).value());
 
   check_pre_trans(g.output->from());
 }

@@ -28,6 +28,58 @@
 namespace
 {
 
+// Return true if from can be broadcasted to to
+// to's shape is [N, C, H, W]
+bool broadcastable(const luci::CircleConst *from, const luci::CircleNode *to)
+{
+  assert(to->rank() == 4); // FIX_CALLER_UNLESS
+
+  const auto from_rank = from->rank();
+  if (from_rank > 4)
+    return false;
+
+  // Scalar is always broadcastable
+  if (from_rank == 0)
+    return true;
+
+  for (uint32_t i = 1; i <= from_rank; i++)
+  {
+    auto to_index = 4 - i;
+    auto from_index = from_rank - i;
+
+    if (from->dim(from_index).value() != to->dim(to_index).value() and
+        from->dim(from_index).value() != 1)
+      return false;
+  }
+
+  return true;
+}
+
+// Expand node to rank 4
+// node should have rank less than or equal to 4
+void expand_to_rank_4(luci::CircleConst *node)
+{
+  auto original_rank = node->rank();
+
+  assert(original_rank <= 4); // FIX_CALLER_UNLESS
+
+  if (original_rank == 4)
+    return;
+
+  std::vector<uint32_t> original_shape;
+  for (uint32_t i = 0; i < original_rank; i++)
+  {
+    original_shape.emplace_back(node->dim(i).value());
+  }
+
+  node->rank(4);
+  for (uint32_t i = 0; i < (4 - original_rank); i++)
+    node->dim(i) = 1;
+
+  for (uint32_t i = 0; i < original_rank; i++)
+    node->dim(i + (4 - original_rank)) = original_shape.at(i);
+}
+
 bool is_output(const loco::Node *node)
 {
   auto cnode = loco::must_cast<const luci::CircleNode *>(node);
@@ -495,7 +547,7 @@ bool is_NCHW_with_s_const(const T *node, luci::CircleNode *&pred_node,
 //
 // Find MUL with an NCHW pattern described below
 //   - Input (non-constant) shape : [N, C, H, W]
-//   - Input (constant) shape : [1, C, 1, 1], [N, C, H, W] or a scalar (1)
+//   - Input (constant) shape : broadcastable to [N, C, H, W]
 //   - Output shape : [N, C, H, W]
 bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_node,
                         luci::CircleConst *&multiplier)
@@ -522,32 +574,12 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
   if (pred_node->rank() != 4)
     return false;
 
-  const auto const_rank = multiplier->rank();
-  // Support Rank 4 or scalar (rank 0 or 1)
-  if (const_rank != 4 && const_rank != 0 && const_rank != 1)
+  if (not broadcastable(multiplier, node))
     return false;
 
-  const auto input_cdim = pred_node->dim(1);
-  const auto output_cdim = node->dim(1);
+  expand_to_rank_4(multiplier);
 
-  if (const_rank == 4)
-  {
-    bool supported_shape = false;
-
-    // Check multiplier is (1, C, 1, 1)
-    if (is_same_shape(multiplier, {1, node->dim(1), 1, 1}))
-      supported_shape = true;
-
-    // Check multiplier is (N, C, H, W)
-    if (is_same_shape(multiplier, {node->dim(0), node->dim(1), node->dim(2), node->dim(3)}))
-      supported_shape = true;
-
-    return supported_shape;
-  }
-  if (input_cdim == output_cdim)
-    return true;
-  else
-    return false;
+  return true;
 }
 
 // We assume ADD with const input is NCHW if,
@@ -965,15 +997,15 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
     if (is_NCHW_with_const(node, pred_node, multiplier))
     {
+      assert(multiplier->rank() == 4); // FIX is_NCHW_with_const unless
+      auto nhwc_const = create_NHWC_from_NCHW(multiplier);
+      if (nhwc_const == nullptr)
+        return false;
+      node->y(nhwc_const);
+
       auto pre_trans = create_pre_transpose(node);
       pre_trans->a(pred_node);
       node->x(pre_trans);
-
-      if (multiplier->rank() == 4)
-      {
-        auto nhwc_const = create_NHWC_from_NCHW(multiplier);
-        node->y(nhwc_const);
-      }
     }
     else if (multiplier == nullptr)
     {
