@@ -11,6 +11,7 @@ set(ONE_COMMAND_FILES
     one-partition
     one-profile
     one-infer
+    one-init
     one-codegen
     one-prepare-venv
     onecc
@@ -41,7 +42,7 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
                       GROUP_READ GROUP_EXECUTE
                       WORLD_READ WORLD_EXECUTE
           DESTINATION bin)
-          
+
 endforeach(ONE_COMMAND)
 
 set(ONE_UTILITY_FILES

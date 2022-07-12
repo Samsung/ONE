@@ -1,0 +1,5 @@
+# FORMAT
+# model_file_path options_to_one-init(use "NONE" if there is no specific option)
+
+./models/resnet50_v2.tflite NONE
+./models/inception_v3.onnx --input_img_layout NCHW --output_img_layout NCHW
