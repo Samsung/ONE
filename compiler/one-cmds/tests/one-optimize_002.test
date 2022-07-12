@@ -40,7 +40,7 @@ if [[ ! -s ${inputfile} ]]; then
 fi
 
 # run test
-one-optimize --O1 \
+one-optimize --resolve_customop_add \
 --change_outputs InceptionV3/Logits/SpatialSqueeze1 \
 --input_path ${inputfile} \
 --output_path ${outputfile} > /dev/null 2>&1
