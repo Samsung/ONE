@@ -28,6 +28,8 @@ namespace ir
 
 Graph::Graph() = default;
 
+Graph::Graph(const Graph &) = default;
+
 Graph::~Graph(void) = default;
 
 OperandIndex Graph::addOperand(const Shape &shape, const TypeInfo &type)

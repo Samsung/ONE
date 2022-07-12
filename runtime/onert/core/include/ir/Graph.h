@@ -50,7 +50,9 @@ private:
   };
 
 public:
-  Graph(void);
+  explicit Graph(void);
+  explicit Graph(const Graph &);
+
   ~Graph(void);
 
   // Graph Building
@@ -139,19 +141,19 @@ public:
   {
     return _tensor_names;
   }
-  std::unordered_map<std::string, IOIndex>::iterator _name_to_input_begin()
+  std::unordered_map<std::string, IOIndex>::const_iterator _name_to_input_begin() const
   {
     return _name_to_input.begin();
   }
-  std::unordered_map<std::string, IOIndex>::iterator _name_to_input_end()
+  std::unordered_map<std::string, IOIndex>::const_iterator _name_to_input_end() const
   {
     return _name_to_input.end();
   }
-  std::unordered_map<std::string, IOIndex>::iterator _name_to_output_begin()
+  std::unordered_map<std::string, IOIndex>::const_iterator _name_to_output_begin() const
   {
     return _name_to_output.begin();
   }
-  std::unordered_map<std::string, IOIndex>::iterator _name_to_output_end()
+  std::unordered_map<std::string, IOIndex>::const_iterator _name_to_output_end() const
   {
     return _name_to_output.end();
   }
