@@ -718,6 +718,24 @@ template <class T> bool convert_unary_x(T *node)
   return true;
 }
 
+template <class T> bool convert_unary_logits(T *node)
+{
+  const auto pred_node = loco::must_cast<luci::CircleNode *>(node->logits());
+  auto pre_trans = create_pre_transpose(node);
+  pre_trans->a(pred_node);
+  node->logits(pre_trans);
+
+  // Do shape inference for this node again.
+  node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  auto post_trans = create_post_transpose(node);
+  loco::replace(node).with(post_trans);
+
+  post_trans->a(node);
+
+  return true;
+}
+
 class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 {
   // Default
@@ -1098,6 +1116,8 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleRsqrt *node) { return convert_unary_x<luci::CircleRsqrt>(node); }
 
+  bool visit(luci::CircleSoftmax *node) { return convert_unary_logits<luci::CircleSoftmax>(node); }
+
   bool visit(luci::CircleSquaredDifference *node)
   {
     // TODO support CircleConst input
@@ -1350,6 +1370,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::RELU:
       case luci::CircleOpcode::RELU6:
       case luci::CircleOpcode::RSQRT:
+      case luci::CircleOpcode::SOFTMAX:
       case luci::CircleOpcode::SQUARED_DIFFERENCE:
       case luci::CircleOpcode::SUB:
         if (!has_data_format(node))

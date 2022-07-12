@@ -857,6 +857,22 @@ public:
   luci::CircleRsqrt *rsqrt = nullptr;
 };
 
+class SoftmaxGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    softmax = g.nodes()->create<luci::CircleSoftmax>();
+    softmax->logits(input);
+    softmax->name("softmax");
+
+    return softmax;
+  }
+
+public:
+  luci::CircleSoftmax *softmax = nullptr;
+};
+
 class SquaredDifferenceGraph final : public SimpleGraph
 {
 protected:
@@ -1679,6 +1695,26 @@ TEST(ConvertNCHWToNHWC, Rsqrt)
   EXPECT_EQ(4, g.rsqrt->dim(1).value());
   EXPECT_EQ(4, g.rsqrt->dim(2).value());
   EXPECT_EQ(16, g.rsqrt->dim(3).value());
+}
+
+TEST(ConvertNCHWToNHWC, Softmax)
+{
+  SoftmaxGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.softmax->logits());
+
+  auto softmax_succs = loco::succs(g.softmax);
+  EXPECT_EQ(1, softmax_succs.size());
+  check_post_trans(*softmax_succs.begin());
+
+  // Check softmax shape
+  EXPECT_EQ(1, g.softmax->dim(0).value());
+  EXPECT_EQ(4, g.softmax->dim(1).value());
+  EXPECT_EQ(4, g.softmax->dim(2).value());
+  EXPECT_EQ(16, g.softmax->dim(3).value());
 }
 
 TEST(ConvertNCHWToNHWC, SquaredDifference)
