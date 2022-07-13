@@ -91,6 +91,13 @@ if [[ ! -s "onnx_conv2d_conv2d.onnx" ]]; then
     # https://github.com/Samsung/ONE/issues/5577#issuecomment-755078444
 fi
 
+if [[ ! -s "reshape_matmul.onnx" ]]; then
+    rm -rf reshape_matmul.zip
+    wget https://github.com/Samsung/ONE/files/9082878/reshape_matmul.zip
+    unzip reshape_matmul.zip
+    # https://github.com/Samsung/ONE/issues/9405#issuecomment-1180198137
+fi
+
 if [[ ! -s "Net_InstanceNorm_003.part" ]]; then
     rm -rf Net_InstanceNorm_003.zip
     wget https://github.com/Samsung/ONE/files/8608844/Net_InstanceNorm_003.zip
