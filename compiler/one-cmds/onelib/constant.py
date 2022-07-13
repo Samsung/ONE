@@ -19,7 +19,6 @@ class CONSTANT:
     __slots__ = ()  # This prevents access via __dict__.
     OPTIMIZATION_OPTS = (
         # (OPTION_NAME, HELP_MESSAGE)
-        ('O1', 'enable O1 optimization pass'),
         ('convert_nchw_to_nhwc',
          'Experimental: This will convert NCHW operators to NHWC under the assumption that input model is NCHW.'
          ),
