@@ -137,6 +137,13 @@ void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_out
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
+  // Resolve custom Ops
+  phase.emplace_back(std::make_unique<luci::ResolveCustomOpAddPass>());
+  phase.emplace_back(std::make_unique<luci::ResolveCustomOpBatchMatMulPass>());
+  phase.emplace_back(std::make_unique<luci::ResolveCustomOpMatMulPass>());
+  phase.emplace_back(std::make_unique<luci::ResolveCustomOpMaxPoolWithArgmaxPass>());
+  phase.emplace_back(std::make_unique<luci::ResolveCustomOpSplitVPass>());
+
   phase.emplace_back(
     std::make_unique<luci::ConvertNCHWToNHWCPass>(preserve_input, preserve_output));
 
