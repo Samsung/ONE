@@ -16,12 +16,16 @@
 
 #include <logo/Phase.h>
 
+#include <luci/test/TestIOGraph.h>
+
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
 #include "luci/Pass/CircleShapeInferencePass.h"
 
 #include <luci/IR/CircleNodes.h>
 
 #include <gtest/gtest.h>
+
+using namespace luci::test;
 
 namespace
 {
@@ -873,6 +877,95 @@ public:
   luci::CircleSoftmax *softmax = nullptr;
 };
 
+class SplitVGraphlet
+{
+public:
+  SplitVGraphlet() = default;
+
+public:
+  void init(loco::Graph *g)
+  {
+    // CircleCustom(SplitV)
+    _splitv = g->nodes()->create<luci::CircleSplitV>();
+    _splitv->shape({1, 2, 2, 192});
+    _splitv->dtype(loco::DataType::FLOAT32);
+    _splitv->name("splitv");
+
+    // CircleConst
+    auto size_splits = g->nodes()->create<luci::CircleConst>();
+    size_splits->dtype(loco::DataType::S32);
+    size_splits->shape({3});
+    size_splits->size<loco::DataType::S32>(3);
+    size_splits->at<loco::DataType::S32>(0) = 32;
+    size_splits->at<loco::DataType::S32>(1) = 32;
+    size_splits->at<loco::DataType::S32>(2) = 128;
+
+    // CircleConst
+    auto split_dim = g->nodes()->create<luci::CircleConst>();
+    split_dim->dtype(loco::DataType::S32);
+    split_dim->rank(0);
+    split_dim->size<loco::DataType::S32>(1);
+    split_dim->scalar<loco::DataType::S32>() = 3;
+
+    _splitv->size_splits(size_splits);
+    _splitv->split_dim(split_dim);
+    _splitv->num_split(3);
+
+    // CircleSplitVOut
+    _splitv_out1 = g->nodes()->create<luci::CircleSplitVOut>();
+    _splitv_out1->shape({1, 2, 2, 32});
+    _splitv_out1->dtype(loco::DataType::FLOAT32);
+    _splitv_out1->index(0);
+    _splitv_out1->input(_splitv);
+    _splitv_out1->name("splitv_out1");
+
+    // CircleSplitVOut
+    _splitv_out2 = g->nodes()->create<luci::CircleSplitVOut>();
+    _splitv_out2->shape({1, 2, 2, 32});
+    _splitv_out2->dtype(loco::DataType::FLOAT32);
+    _splitv_out2->index(1);
+    _splitv_out2->input(_splitv);
+    _splitv_out2->name("splitv_out2");
+
+    // CircleSplitVOut
+    _splitv_out3 = g->nodes()->create<luci::CircleSplitVOut>();
+    _splitv_out3->shape({1, 2, 2, 128});
+    _splitv_out3->dtype(loco::DataType::FLOAT32);
+    _splitv_out3->index(2);
+    _splitv_out3->input(_splitv);
+    _splitv_out3->name("splitv_out3");
+  }
+
+public:
+  luci::CircleSplitV *splitv() { return _splitv; }
+
+protected:
+  luci::CircleSplitV *_splitv = nullptr;
+  luci::CircleSplitVOut *_splitv_out1 = nullptr;
+  luci::CircleSplitVOut *_splitv_out2 = nullptr;
+  luci::CircleSplitVOut *_splitv_out3 = nullptr;
+};
+
+class SplitVGraph : public TestIGraphlet, public TestOsGraphlet<3>, public SplitVGraphlet
+{
+public:
+  SplitVGraph() = default;
+
+  void init(void)
+  {
+    TestIGraphlet::init(g(), {1, 2, 2, 192});
+    TestOsGraphlet<3>::init(g(), {{1, 2, 2, 32}, {1, 2, 2, 32}, {1, 2, 2, 128}});
+    SplitVGraphlet::init(g());
+
+    // connect graph
+    _splitv->input(input());
+
+    output(0)->from(_splitv_out1);
+    output(1)->from(_splitv_out2);
+    output(2)->from(_splitv_out3);
+  }
+};
+
 class SquaredDifferenceGraph final : public SimpleGraph
 {
 protected:
@@ -1718,6 +1811,36 @@ TEST(ConvertNCHWToNHWC, Softmax)
   EXPECT_EQ(4, g.softmax->dim(1).value());
   EXPECT_EQ(4, g.softmax->dim(2).value());
   EXPECT_EQ(16, g.softmax->dim(3).value());
+}
+
+TEST(ConvertNCHWToNHWC, SplitV)
+{
+  SplitVGraph g;
+  g.init();
+
+  run_phase(g.g(), true, true);
+
+  check_pre_trans(g.splitv()->input());
+
+  auto splitv_succs = loco::succs(g.splitv());
+  for (auto svo : loco::succs(g.splitv()))
+  {
+    for (auto succ : loco::succs(svo))
+    {
+      check_post_trans(succ);
+    }
+  }
+
+  // Check splitv() shape
+  EXPECT_EQ(1, g.splitv()->dim(0).value());
+  EXPECT_EQ(2, g.splitv()->dim(1).value());
+  EXPECT_EQ(192, g.splitv()->dim(2).value());
+  EXPECT_EQ(2, g.splitv()->dim(3).value());
+
+  // Check axis
+  auto axis = dynamic_cast<luci::CircleConst *>(g.splitv()->split_dim());
+  EXPECT_EQ(1, axis->size<loco::DataType::S32>());
+  EXPECT_EQ(2, axis->at<loco::DataType::S32>(0));
 }
 
 TEST(ConvertNCHWToNHWC, SquaredDifference)

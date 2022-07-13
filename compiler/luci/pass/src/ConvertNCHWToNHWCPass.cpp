@@ -1095,6 +1095,43 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleSoftmax *node) { return convert_unary_logits<luci::CircleSoftmax>(node); }
 
+  bool visit(luci::CircleSplitV *node)
+  {
+    // Change split dimension
+    auto axis = dynamic_cast<luci::CircleConst *>(node->split_dim());
+    if (not axis)
+      return false;
+
+    if (axis->dtype() != loco::DataType::S32)
+      return false;
+
+    if (axis->size<loco::DataType::S32>() != 1)
+      return false;
+
+    axis->at<loco::DataType::S32>(0) = nchw_axis_to_nhwc(axis->at<loco::DataType::S32>(0));
+
+    // Insert pre-transpose
+    const auto pred_node = loco::must_cast<luci::CircleNode *>(node->input());
+    auto pre_trans = create_pre_transpose(node);
+    pre_trans->a(pred_node);
+    node->input(pre_trans);
+
+    // Do shape inference for this node again.
+    node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+    // Insert post-transposes
+    for (auto succ : loco::succs(node))
+    {
+      auto svo = loco::must_cast<luci::CircleSplitVOut *>(succ);
+
+      auto post_trans = create_post_transpose(svo);
+      loco::replace(svo).with(post_trans);
+      post_trans->a(svo);
+    }
+
+    return true;
+  }
+
   bool visit(luci::CircleSquaredDifference *node)
   {
     // TODO support CircleConst input
@@ -1348,6 +1385,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::RELU6:
       case luci::CircleOpcode::RSQRT:
       case luci::CircleOpcode::SOFTMAX:
+      case luci::CircleOpcode::SPLIT_V:
       case luci::CircleOpcode::SQUARED_DIFFERENCE:
       case luci::CircleOpcode::SUB:
         if (!has_data_format(node))
