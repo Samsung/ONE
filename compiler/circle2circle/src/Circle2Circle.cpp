@@ -70,9 +70,6 @@ int entry(int argc, char **argv)
   arser::Helper::add_version(arser, print_version);
   arser::Helper::add_verbose(arser);
 
-  arser.add_argument("--O1").nargs(0).required(false).default_value(false).help(
-    "Enable O1 optimize options");
-
   add_switch(arser, "--fold_add_v2", "This will fold AddV2 operators with constant inputs");
   add_switch(arser, "--fold_cast", "This will fold Cast operators with constant input");
   add_switch(arser, "--fold_dequantize", "This will fold dequantize op");
@@ -206,16 +203,6 @@ int entry(int argc, char **argv)
     // The third parameter of setenv means REPLACE.
     // If REPLACE is zero, it does not overwrite an existing value.
     setenv("LUCI_LOG", "100", 0);
-  }
-  if (arser.get<bool>("--O1"))
-  {
-    options->enable(Algorithms::FuseBCQ);
-    options->enable(Algorithms::FuseInstanceNorm);
-    options->enable(Algorithms::ResolveCustomOpAdd);
-    options->enable(Algorithms::ResolveCustomOpBatchMatMul);
-    options->enable(Algorithms::ResolveCustomOpMatMul);
-    options->enable(Algorithms::RemoveRedundantTranspose);
-    options->enable(Algorithms::SubstitutePackToReshape);
   }
   if (arser.get<bool>("--fold_add_v2"))
     options->enable(Algorithms::FoldAddV2);
