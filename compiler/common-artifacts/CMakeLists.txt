@@ -2,6 +2,12 @@
 find_package(PythonInterp 3.8 QUIET)
 find_package(PythonLibs 3.8 QUIET)
 
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.12")
+  find_package(Python3 COMPONENTS Interpreter Development QUIET)
+  set(PYTHON_EXECUTABLE Python3_EXECUTABLE)
+  set(PYTHON_VERSION_MINOR Python3_VERSION_MINOR)
+endif()
+
 if(NOT ${PYTHONINTERP_FOUND})
   message(STATUS "Build common-artifacts: FALSE (Python3 is missing)")
   return()
