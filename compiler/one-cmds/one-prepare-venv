@@ -41,6 +41,7 @@ VER_ONNX_TF=1.10.0
 # Install tensorflow
 
 PIP_TRUSTED_HOST="--trusted-host pypi.org "
+PIP_TRUSTED_HOST+="--trusted-host pypi.python.org "
 PIP_TRUSTED_HOST+="--trusted-host files.pythonhost.org "
 PIP_TRUSTED_HOST+="--trusted-host download.pytorch.org "
 
@@ -90,4 +91,4 @@ fi
 
 # NOTE refer https://github.com/protocolbuffers/protobuf/issues/10051
 # TODO remove this when issue is resolved
-${VENV_PYTHON} -m pip install --upgrade protobuf==3.20.1
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade protobuf==3.20.1
