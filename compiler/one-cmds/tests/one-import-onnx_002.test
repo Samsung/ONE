@@ -42,7 +42,7 @@ if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
 fi
 
-circle-inspect --operators reshape_matmul.circle > ${outputfile}.log 2>&1
+circle-operator --code reshape_matmul.circle > ${outputfile}.log 2>&1
 
 if ! grep -q "FULLY_CONNECTED" "${outputfile}.log"; then
   trap_err_onexit
@@ -61,7 +61,7 @@ if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
 fi
 
-circle-inspect --operators reshape_matmul.circle > ${outputfile}.log 2>&1
+circle-operator --code reshape_matmul.circle > ${outputfile}.log 2>&1
 
 if ! grep -q "BATCH_MATMUL" "${outputfile}.log"; then
   trap_err_onexit
