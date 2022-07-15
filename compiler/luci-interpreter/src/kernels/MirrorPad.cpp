@@ -19,6 +19,8 @@
 
 #include "kernels/Utils.h"
 
+#include <limits>
+
 namespace luci_interpreter
 {
 namespace kernels
