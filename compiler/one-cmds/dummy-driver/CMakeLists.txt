@@ -2,7 +2,7 @@
 set(DUMMY_DRIVER_SRC src/dummy-compile.cpp)
 set(HELP_DRIVER_SRC src/help-compile.cpp)
 set(DUMMY_INFER_SRC src/dummy-infer.cpp)
-set(DUMMY_INFER_V2_SRC src/dummy-inferV2)
+set(DUMMY_INFER_V2_SRC src/dummy-inferV2.cpp)
 set(HELP_INFER_SRC src/help-infer.cpp)
 set(DUMMY_PROFILE_SRC src/dummy-profile.cpp)
 set(HELP_PROFILE_SRC src/help-profile.cpp)
