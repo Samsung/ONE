@@ -12,14 +12,6 @@ if(${PYTHON_VERSION_MINOR} LESS 8)
   return()
 endif()
 
-# Create python virtual environment with tensorflow 2.6.0
-set(VIRTUALENV_OVERLAY_TF_2_6_0 "${NNCC_OVERLAY_DIR}/venv_2_6_0")
-
-add_custom_command(
-  OUTPUT ${VIRTUALENV_OVERLAY_TF_2_6_0}
-  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_2_6_0}
-)
-
 # Create python virtual environment with tensorflow 2.8.0
 set(VIRTUALENV_OVERLAY_TF_2_8_0 "${NNCC_OVERLAY_DIR}/venv_2_8_0")
 
@@ -30,7 +22,6 @@ add_custom_command(
 
 # Create requirements.txt and install required pip packages
 set(REQUIREMENTS_FILE "requirements.txt")
-set(REQUIREMENTS_OVERLAY_PATH_TF_2_6_0 "${VIRTUALENV_OVERLAY_TF_2_6_0}/${REQUIREMENTS_FILE}")
 set(REQUIREMENTS_OVERLAY_PATH_TF_2_8_0 "${VIRTUALENV_OVERLAY_TF_2_8_0}/${REQUIREMENTS_FILE}")
 
 set(PYTHON_OVERLAY python3)
@@ -43,21 +34,6 @@ set(PIP_OPTION_TRUSTED_HOST )
 if(DEFINED ENV{ONE_PIP_OPTION_TRUST_HOST})
   set(PIP_OPTION_TRUSTED_HOST --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org)
 endif()
-
-# NOTE refer https://github.com/protocolbuffers/protobuf/issues/10051
-# TODO remove protobuf==3.20.1 when issue is resolved
-add_custom_command(
-  OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
-  COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
-  COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.6.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
-  COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
-  COMMAND ${CMAKE_COMMAND} -E echo "protobuf==3.20.1" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-          ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_6_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-          ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0} --upgrade
-  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_6_0}
-)
 
 # NOTE refer https://github.com/protocolbuffers/protobuf/issues/10051
 # TODO remove protobuf==3.20.1 when issue is resolved
@@ -75,9 +51,7 @@ add_custom_command(
 )
 
 add_custom_target(common_artifacts_python_deps ALL
-  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_6_0}
-          ${VIRTUALENV_OVERLAY_TF_2_8_0}
-          ${REQUIREMENTS_OVERLAY_PATH_TF_2_6_0}
+  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_8_0}
           ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
 )
 
