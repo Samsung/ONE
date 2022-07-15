@@ -23,6 +23,7 @@
 #include <luci/Log.h>
 
 #include <cmath>
+#include <limits>
 
 namespace
 {

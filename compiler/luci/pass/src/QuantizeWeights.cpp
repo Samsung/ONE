@@ -23,6 +23,7 @@
 #include <cmath>
 #include <vector>
 #include <functional>
+#include <limits>
 
 using namespace luci;
 
