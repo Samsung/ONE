@@ -1,4 +1,7 @@
-cmake_minimum_required(VERSION 3.1)
+# The libboost 1.74 uses IN_LIST operator, which requires the policy CMP0057, in a CMake file.
+# This policy requires ``cmake_minimum_required(VERSION 3.3)``.
+# Run "cmake --help-policy CMP0057" for policy details.
+cmake_minimum_required(VERSION 3.3)
 
 project(nncc)
 
