@@ -18,6 +18,7 @@
 
 #include <luci/IR/CircleOpcode.h>
 
+#include <limits>
 #include <math.h>
 
 using DataType = luci_interpreter::DataType;

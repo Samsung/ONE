@@ -18,7 +18,7 @@
 #include <cassert>
 #include <algorithm>
 #include <cmath>
-#include <numeric>
+#include <limits>
 #include <stdexcept>
 
 namespace record_minmax
