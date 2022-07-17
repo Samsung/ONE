@@ -20,6 +20,8 @@
 
 #include <tensorflow/lite/kernels/internal/reference/pad.h>
 
+#include <limits>
+
 namespace luci_interpreter
 {
 namespace kernels
