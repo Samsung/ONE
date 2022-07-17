@@ -18,6 +18,7 @@
 
 #include <luci/IR/CircleNode.h>
 
+#include <limits>
 #include <iostream>
 #include <cassert>
 
