@@ -17,6 +17,7 @@
 #ifndef __KUMA_DETAILS_LIVE_INTERVAL_SET_H__
 #define __KUMA_DETAILS_LIVE_INTERVAL_SET_H__
 
+#include <cstdint>
 #include <map>
 
 namespace kuma
