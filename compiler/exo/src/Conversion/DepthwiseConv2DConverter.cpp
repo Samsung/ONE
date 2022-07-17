@@ -25,6 +25,8 @@
 #include <loco/Service/TypeInference.h>
 #include <loco/Service/ShapeInference.h>
 
+#include <limits>
+
 namespace exo
 {
 
