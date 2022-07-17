@@ -17,6 +17,7 @@
 #include "moco/IR/TFNode.h"
 #include "moco/IR/TFDialect.h"
 
+#include <limits>
 #include <memory>
 #include <cassert>
 
