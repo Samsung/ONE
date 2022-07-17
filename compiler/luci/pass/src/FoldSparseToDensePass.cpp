@@ -19,6 +19,8 @@
 
 #include <luci/IR/CircleNodes.h>
 
+#include <limits>
+
 namespace
 {
 
