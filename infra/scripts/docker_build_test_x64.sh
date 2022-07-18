@@ -33,7 +33,8 @@ export DOCKER_ENV_VARS
 export DOCKER_VOLUMES
 export BUILD_OPTIONS
 
-CMD="export BUILD_TYPE=Release && \
+CMD="export OPTIONS='$BUILD_OPTIONS' && \
+     export BUILD_TYPE=Release && \
      cp -nv Makefile.template Makefile && \
      make all install build_test_suite"
 ./nnfw docker-run bash -c "$CMD"
