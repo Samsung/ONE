@@ -76,7 +76,7 @@ void MinMaxObserver::postTensorWrite(const luci::CircleNode *node,
         // Reshape changes only shape of input tensor, efficiently is it a no-op.
         return;
       default:
-        throw std::runtime_error("Tensor's data type is not float");
+        throw std::runtime_error("Tensor's data type is not float. " + node->name());
     }
   }
 
