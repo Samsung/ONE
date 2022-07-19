@@ -1,0 +1,46 @@
+#
+# Failed case from https://github.com/Samsung/ONE/issues/9439
+#
+operand {
+  name: "Placeholder"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 32 }
+  is_variable: false
+}
+operand {
+  name: "strided_slice/stack_2"
+  type: INT32
+  shape { dim: 4 }
+  filler { tag: "explicit" arg: "1" arg: "-1" arg: "1" arg: "1" }
+  is_variable: false
+}
+operand {
+  name: "strided_slice/stack"
+  type: INT32
+  shape { dim: 4 }
+  filler { tag: "explicit" arg: "0" arg: "0" arg: "0" arg: "0" }
+  is_variable: false
+}
+operand {
+  name: "strided_slice"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 32 }
+  is_variable: false
+}
+operation {
+  type: "StridedSlice"
+  input: "Placeholder"
+  input: "strided_slice/stack"
+  input: "strided_slice/stack"
+  input: "strided_slice/stack_2"
+  output: "strided_slice"
+  strided_slice_options {
+    begin_mask: 15
+    end_mask: 15
+    ellipsis_mask: 0
+    new_axis_mask: 0
+    shrink_axis_mask: 0
+  }
+}
+input: "Placeholder"
+output: "strided_slice"
