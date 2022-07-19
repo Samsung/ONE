@@ -44,9 +44,16 @@ std::vector<Operation *> getSortedNodes(Graph *graph)
   std::deque<Operation *> ready_nodes;
   std::unordered_map<Operation *, std::size_t> num_visited_input_edges;
 
+  // Use input vector first to maintain correct input order
+  for (Operation *op : graph->getInputs())
+  {
+    ready_nodes.push_back(op);
+  }
+
   for (Operation *op : graph->getNodes())
   {
-    if (op->getNumInputs() == 0)
+    // Skip already pushed input node
+    if ((op->getNumInputs() == 0) && (op->getType() != Operation::Type::input))
     {
       ready_nodes.push_back(op);
     }
