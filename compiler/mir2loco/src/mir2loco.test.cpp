@@ -383,28 +383,49 @@ TEST_F(TestTransformer_mir2loco, Conv2D_Test)
   auto loco_graph = transformer.transform(&mir_graph);
 
   loco::Pull *pull_node = dynamic_cast<loco::Pull *>(loco_graph->nodes()->at(0));
-  loco::ConstGen *const_node = dynamic_cast<loco::ConstGen *>(loco_graph->nodes()->at(1));
-  loco::FeatureEncode *encode_node =
-    dynamic_cast<loco::FeatureEncode *>(loco_graph->nodes()->at(2));
-  loco::FilterEncode *filter_node = dynamic_cast<loco::FilterEncode *>(loco_graph->nodes()->at(3));
-  loco::Conv2D *conv_node = dynamic_cast<loco::Conv2D *>(loco_graph->nodes()->at(4));
-  loco::FeatureDecode *decode_node =
-    dynamic_cast<loco::FeatureDecode *>(loco_graph->nodes()->at(5));
-  loco::Push *push_node = dynamic_cast<loco::Push *>(loco_graph->nodes()->at(6));
-
   ASSERT_NE(pull_node, nullptr);
+
+  // ConstGen: Only one ConstGen node
+  // We can convince that this node is input of FilterEncode because this is only ConstGen node
+  loco::ConstGen *const_node = dynamic_cast<loco::ConstGen *>(loco_graph->nodes()->at(1));
   ASSERT_NE(const_node, nullptr);
-  ASSERT_NE(filter_node, nullptr);
+
+  // FeatureEncode
+  auto pull_uses = loco::succs(pull_node);
+  ASSERT_EQ(pull_uses.size(), 1);
+  loco::FeatureEncode *encode_node = dynamic_cast<loco::FeatureEncode *>(*pull_uses.begin());
   ASSERT_NE(encode_node, nullptr);
-  ASSERT_NE(conv_node, nullptr);
-  ASSERT_NE(decode_node, nullptr);
-  ASSERT_NE(push_node, nullptr);
   ASSERT_EQ(encode_node->input(), pull_node);
-  ASSERT_EQ(filter_node->input(), const_node);
+
+  // Conv2D
+  auto encode_uses = loco::succs(encode_node);
+  ASSERT_EQ(encode_uses.size(), 1);
+  loco::Conv2D *conv_node = dynamic_cast<loco::Conv2D *>(*encode_uses.begin());
+  ASSERT_NE(conv_node, nullptr);
   ASSERT_EQ(conv_node->ifm(), encode_node);
+
+  // FilterEncode
+  auto const_uses = loco::succs(const_node);
+  ASSERT_EQ(const_uses.size(), 1);
+  loco::FilterEncode *filter_node = dynamic_cast<loco::FilterEncode *>(*const_uses.begin());
+  ASSERT_NE(filter_node, nullptr);
+  ASSERT_EQ(filter_node->input(), const_node);
   ASSERT_EQ(conv_node->ker(), filter_node);
+
+  // FeatureDecode
+  auto conv_uses = loco::succs(conv_node);
+  ASSERT_EQ(conv_uses.size(), 1);
+  loco::FeatureDecode *decode_node = dynamic_cast<loco::FeatureDecode *>(*conv_uses.begin());
+  ASSERT_NE(decode_node, nullptr);
   ASSERT_EQ(decode_node->input(), conv_node);
+
+  // Push
+  auto decode_uses = loco::succs(decode_node);
+  ASSERT_EQ(decode_uses.size(), 1);
+  loco::Push *push_node = dynamic_cast<loco::Push *>(*decode_uses.begin());
+  ASSERT_NE(push_node, nullptr);
   ASSERT_EQ(push_node->from(), decode_node);
+
   // Check params
   ASSERT_EQ(conv_node->pad()->top(), 5);
   ASSERT_EQ(conv_node->pad()->left(), 9);
