@@ -1326,27 +1326,6 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
         if (not has_data_format(inter))
           set_data_format(inter, DataFormat::NHWC);
       }
-#if 0
-      // For recursive call of lambda
-      std::function<void(loco::Node *)> set_data_format_to_succs;
-      set_data_format_to_succs = [&](loco::Node *n) {
-        for (auto succ : loco::succs(n))
-        {
-          // Exit condition
-          if (is_post_transpose(succ) || is_post_reshape(succ))
-            continue;
-
-          if (not has_data_format(succ))
-          {
-            set_data_format(succ, DataFormat::NHWC);
-          }
-
-          set_data_format_to_succs(succ);
-        }
-      };
-
-      set_data_format_to_succs(node);
-#endif
     }
   }
 
