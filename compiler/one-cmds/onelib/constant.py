@@ -64,6 +64,7 @@ class CONSTANT:
         ('remove_unnecessary_split', 'remove unnecessary split ops'),
         ('replace_non_const_fc_with_batch_matmul',
          'replace FullyConnected op with non-const weights to BatchMatMul op'),
+        ('replace_sub_with_add', 'replace Sub op with Add op'),
         ('resolve_customop_add', 'convert Custom(Add) op to Add op'),
         ('resolve_customop_batchmatmul',
          'convert Custom(BatchMatmul) op to BatchMatmul op'),
