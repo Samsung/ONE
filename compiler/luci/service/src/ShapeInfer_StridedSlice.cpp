@@ -227,43 +227,6 @@ inline int32_t StopForAxis(const StridedSliceParams &params, const loco::TensorS
   return stop;
 }
 
-/* TODO remove
-StridedSliceParams BuildStridedSliceParams(const luci::CircleStridedSlice *node)
-{
-  StridedSliceParams op_params;
-
-  if (kMaxDim < node->rank())
-  {
-    INTERNAL_EXN_V("Cannot support StridedSlice rank > ", kMaxDim);
-  }
-
-  auto begin_node = loco::must_cast<luci::CircleConst *>(node->begin());
-  auto end_node = loco::must_cast<luci::CircleConst *>(node->end());
-  auto strides_node = loco::must_cast<luci::CircleConst *>(node->strides());
-
-  uint32_t dims_count = begin_node->size<S32>();
-
-  op_params.start_indices_count = dims_count;
-  op_params.stop_indices_count = dims_count;
-  op_params.strides_count = dims_count;
-
-  for (uint32_t i = 0; i < dims_count; ++i)
-  {
-    op_params.start_indices[i] = begin_node->at<S32>(i);
-    op_params.stop_indices[i] = end_node->at<S32>(i);
-    op_params.strides[i] = strides_node->at<S32>(i);
-  }
-
-  op_params.begin_mask = node->begin_mask();
-  op_params.ellipsis_mask = 0;
-  op_params.end_mask = node->end_mask();
-  op_params.new_axis_mask = 0;
-  op_params.shrink_axis_mask = node->shrink_axis_mask();
-
-  return op_params;
-}
-*/
-
 StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
 {
   StridedSliceParams op_params;
@@ -419,43 +382,6 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
   assert(begin_node->size<S32>() <= input_shape.rank());
   assert(end_node->size<S32>() <= input_shape.rank());
   assert(strides_node->size<S32>() <= input_shape.rank());
-
-  /* TODO REMOVE
-  for (uint32_t i = 0; i < strides_node->size<S32>(); i++)
-  {
-    LUCI_ASSERT(strides_node->at<S32>(i) != 0, "Stride value has to be non-zero");
-  }
-
-  uint32_t shape_size = 0;
-  std::array<int32_t, 16> output_shape_data;
-
-  for (uint32_t idx = 0; idx < num_input_axes; ++idx)
-  {
-    int32_t begin = StartForAxis(op_params, input_shape, idx);
-    int32_t end = StopForAxis(op_params, input_shape, idx, begin);
-    if (end < 0)
-      end = input_shape.dim(idx).value() + end + 1;
-
-    // This is valid for both positive and negative strides
-    int32_t stride = strides_node->at<S32>(idx);
-    int32_t dim_shape = std::ceil(static_cast<float>(end - begin) / stride);
-    assert(dim_shape > 0);
-
-    // When shrinking an axis, the end position does not matter (and can be
-    // incorrect when negative indexing is used, see Issue #19260). Always use
-    // begin + 1 to generate a length 1 slice, since begin has
-    // already been adjusted for negative indices by StartForAxis.
-    const bool shrink_axis = node->shrink_axis_mask() & (1 << idx);
-    if (shrink_axis)
-    {
-      assert(dim_shape == 1);
-    }
-    else
-    {
-      output_shape_data[shape_size++] = dim_shape;
-    }
-  }
-  */
 
   StridedSliceContext op_context(node);
   auto op_params = BuildStridedSliceParams(&op_context);
