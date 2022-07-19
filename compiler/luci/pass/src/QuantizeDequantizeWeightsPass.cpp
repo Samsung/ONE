@@ -353,15 +353,15 @@ private:
 private:
   // Check if
   // 1. node is const
-  // 2. node was not quantized
+  // 2. node's dtype is float32
   bool is_quantizable(loco::Node *node)
   {
     auto const_node = dynamic_cast<luci::CircleConst *>(node);
     if (not const_node)
       return false;
 
-    // Skip if this is already quantized
-    if (is_quantized(const_node))
+    // Skip if this is not float32
+    if (const_node->dtype() != loco::DataType::FLOAT32)
       return false;
 
     return true;
