@@ -48,18 +48,18 @@ using int16 = int16_t;
 
 struct StridedSliceParams
 {
-  int8 start_indices_count;
+  int8 start_indices_count = 0;
   int16 start_indices[kMaxDim];
-  int8 stop_indices_count;
+  int8 stop_indices_count = 0;
   int16 stop_indices[kMaxDim];
-  int8 strides_count;
+  int8 strides_count = 0;
   int16 strides[kMaxDim];
 
-  int16 begin_mask;
-  int16 ellipsis_mask;
-  int16 end_mask;
-  int16 new_axis_mask;
-  int16 shrink_axis_mask;
+  int16 begin_mask = 0;
+  int16 ellipsis_mask = 0;
+  int16 end_mask = 0;
+  int16 new_axis_mask = 0;
+  int16 shrink_axis_mask = 0;
 };
 
 struct StridedSliceContext
