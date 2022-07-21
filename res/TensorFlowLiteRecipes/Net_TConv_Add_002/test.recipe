@@ -12,9 +12,6 @@ operand {
     arg: "0.0"
     arg: "0.1"
   }
-  quant {
-    quantized_dimension: 0
-  }
 }
 operand {
   name: "Addition"
@@ -24,9 +21,6 @@ operand {
     dim: 4
     dim: 4
     dim: 1
-  }
-  quant {
-    quantized_dimension: 0
   }
 }
 operand {
@@ -39,9 +33,6 @@ operand {
     tag: "explicit"
     arg: "-2.04724"
   }
-  quant {
-    quantized_dimension: 0
-  }
 }
 operand {
   name: "Hole"
@@ -52,11 +43,6 @@ operand {
     dim: 2
     dim: 2
   }
-  quant {
-    min: 0
-    max: 255
-    quantized_dimension: 0
-  }
 }
 operand {
   name: "conv2d_transpose"
@@ -66,9 +52,6 @@ operand {
     dim: 4
     dim: 4
     dim: 1
-  }
-  quant {
-    quantized_dimension: 0
   }
 }
 operand {
@@ -83,9 +66,6 @@ operand {
     arg: "4"
     arg: "4"
     arg: "1"
-  }
-  quant {
-    quantized_dimension: 0
   }
 }
 operation {

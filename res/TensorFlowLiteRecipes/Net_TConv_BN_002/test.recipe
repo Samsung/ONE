@@ -8,10 +8,6 @@ operand {
     dim: 1
     dim: 2
   }
-  quant {
-    quantized_dimension: 0
-  }
-  is_variable: false
 }
 operand {
   name: "conv2d_transpose/input_sizes"
@@ -26,10 +22,6 @@ operand {
     arg: "1"
     arg: "2"
   }
-  quant {
-    quantized_dimension: 0
-  }
-  is_variable: false
 }
 operand {
   name: "FusedBatchNormV3"
@@ -42,10 +34,6 @@ operand {
     arg: "-2.04724"
     arg: "-7.80109"
   }
-  quant {
-    quantized_dimension: 0
-  }
-  is_variable: false
 }
 operand {
   name: "FusedBatchNormV3;conv2d_transpose;conv2d_transpose/input_sizes"
@@ -61,10 +49,6 @@ operand {
     arg: "0.0"
     arg: "0.1"
   }
-  quant {
-    quantized_dimension: 0
-  }
-  is_variable: false
 }
 operand {
   name: "FusedBatchNormV3;conv2d_transpose;conv2d_transpose/input_sizes2"
@@ -75,10 +59,6 @@ operand {
     dim: 1
     dim: 2
   }
-  quant {
-    quantized_dimension: 0
-  }
-  is_variable: false
 }
 operand {
   name: "FusedBatchNormV3_mul_0"
@@ -88,9 +68,6 @@ operand {
     dim: 5
     dim: 1
     dim: 2
-  }
-  quant {
-    quantized_dimension: 0
   }
 }
 operand {
@@ -104,9 +81,6 @@ operand {
     arg: "2.00834"
     arg: "1.00344"
   }
-  quant {
-    quantized_dimension: 0
-  }
 }
 operand {
   name: "Relu6"
@@ -117,10 +91,6 @@ operand {
     dim: 1
     dim: 2
   }
-  quant {
-    quantized_dimension: 0
-  }
-  is_variable: false
 }
 operation {
   type: "TransposeConv"
