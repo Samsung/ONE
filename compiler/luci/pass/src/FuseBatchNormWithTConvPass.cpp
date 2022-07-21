@@ -29,7 +29,7 @@ namespace
  *  NOTE TF's BatchNormalization is converted to Mul and Add.
  *
  *  BEFORE
- *                     |   [CircleOutputExclude]
+ *                     |   [CircleConst]/[CircleOutputExclude]
  *                     |   / [CircleConst]
  *                     |  / /
  *     [CircleTransposeConv]  [CircleConst]
@@ -40,7 +40,7 @@ namespace
  *                     |
  *
  *  AFTER
- *                     |                                          [CircleOutputExclude]
+ *                     |                                         [CircleConst]/[CircleOutputExclude]
  *                     +-------------------------------------+   / [CircleConst]
  *                     |                                     |  / /
  *                     |                     [CircleTransposeConv]  [CircleConst]
@@ -69,9 +69,10 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
     return false;
 
   // check scale and shift constant attributes
-  if (scale->rank() != 1)
+  // TODO maybe rank check is not needed
+  if (scale->rank() != 1 && scale->rank() != 4)
     return false;
-  if (shift->rank() != 1)
+  if (shift->rank() != 1 && shift->rank() != 4)
     return false;
   // check mul, add attributes
   if (mul->dtype() != loco::DataType::FLOAT32)
@@ -82,9 +83,8 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
       add->fusedActivationFunction() != luci::FusedActFunc::RELU6)
     return false;
 
-  // tconv bias should be not set
-  if (not dynamic_cast<luci::CircleOutputExclude *>(tconv->bias()))
-    return false;
+  // tconv bias is optional
+  auto bias = dynamic_cast<luci::CircleConst *>(tconv->bias());
 
   // get weight of tconv
   auto filter = dynamic_cast<luci::CircleConst *>(tconv->filter());
@@ -96,10 +96,36 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
     return false;
 
   auto filter_out_chn = filter->dim(0).value();
-  if (filter_out_chn != scale->dim(0).value())
+  // allow scale/shift and bias shape of [N], [1,1,1,N]; BN works for "channel-wise"
+  auto srank = scale->rank() - 1;
+  if (filter_out_chn != scale->dim(srank).value())
     return false;
-  if (filter_out_chn != shift->dim(0).value())
+  for (uint32_t d = 0; d < srank; ++d)
+  {
+    if (1 != scale->dim(d).value())
+      return false;
+  }
+  srank = shift->rank() - 1;
+  if (filter_out_chn != shift->dim(srank).value())
     return false;
+  for (uint32_t d = 0; d < srank; ++d)
+  {
+    if (1 != shift->dim(d).value())
+      return false;
+  }
+  if (bias)
+  {
+    if (bias->dtype() != loco::DataType::FLOAT32)
+      return false;
+    srank = bias->rank() - 1;
+    if (filter_out_chn != bias->dim(srank).value())
+      return false;
+    for (uint32_t d = 0; d < srank; ++d)
+    {
+      if (1 != bias->dim(d).value())
+        return false;
+    }
+  }
 
   auto name = add->name();
   assert(name.length() > 0);
@@ -151,6 +177,11 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
   for (uint32_t c = 0; c < filter_out_chn; ++c)
   {
     fused_bias->at<loco::DataType::FLOAT32>(c) = shift->at<loco::DataType::FLOAT32>(c);
+    if (bias != nullptr)
+    {
+      fused_bias->at<loco::DataType::FLOAT32>(c) +=
+        bias->at<loco::DataType::FLOAT32>(c) * scale->at<loco::DataType::FLOAT32>(c);
+    }
   }
   fused_bias->name(name + "/TransposeConv/bias");
 
@@ -166,6 +197,10 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
   luci::add_origin(fused_tconv,
                    luci::composite_origin(
                      {luci::get_origin(add), luci::get_origin(mul), luci::get_origin(tconv)}));
+  if (bias != nullptr)
+  {
+    luci::add_origin(fused_tconv, luci::get_origin(bias));
+  }
 
   if (add->fusedActivationFunction() == luci::FusedActFunc::RELU6)
   {
