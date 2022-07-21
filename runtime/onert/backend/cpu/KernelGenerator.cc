@@ -244,17 +244,13 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   assert(_tensor_builder->dynamicTensorManager());
   assert(_tensor_reg);
 
-  auto dyn_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_ctx, _tensor_reg);
-
   // Prepare to handle dynamic tensors later
   auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
   {
-    dyn_ctx->op_ind = ind;
-    dyn_ctx->operations = &_operations_ctx;
-    dyn_ctx->dynamic_shape_inferer = std::move(dyn_shape_inferer);
-
-    ret->dynamic_tensor_ctx(dyn_ctx);
+    dyn_ctx->op = &_operations_ctx.at(ind);
+    dyn_ctx->dynamic_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_ctx, _tensor_reg);
   }
+  ret->dynamic_tensor_ctx(dyn_ctx);
 
   auto &op = _graph.operations().at(ind);
   op.accept(*this);

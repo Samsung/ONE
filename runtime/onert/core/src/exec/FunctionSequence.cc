@@ -34,9 +34,7 @@ void FunctionSequence::run()
     // Thus, those two bakends cannot reach here.
 
     // Do dynamic shape inference
-    auto op_ind = _dynamic_tensor_ctx->op_ind;
-    auto &op = _dynamic_tensor_ctx->operations->at(op_ind);
-    op.accept(*_dynamic_tensor_ctx->dynamic_shape_inferer);
+    _dynamic_tensor_ctx->op->accept(*_dynamic_tensor_ctx->dynamic_shape_inferer);
 
     for (const auto &function : _functions)
     {
