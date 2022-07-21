@@ -136,6 +136,11 @@ void StridedSlice::execute() const
                                           getTensorData<uint8_t>(input()), getTensorShape(output()),
                                           getTensorData<uint8_t>(output()));
       break;
+    case DataType::S32:
+      tflite::reference_ops::StridedSlice(op_params, getTensorShape(input()),
+                                          getTensorData<int32_t>(input()), getTensorShape(output()),
+                                          getTensorData<int32_t>(output()));
+      break;
     default:
       throw std::runtime_error("Unsupported type.");
   }
