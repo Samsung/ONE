@@ -26,7 +26,7 @@ import sys
 import onelib.constant as _constant
 
 
-def _add_default_arg(parser):
+def _add_default_arg(parser, include_config_file=True):
     # version
     parser.add_argument(
         '-v',
@@ -41,10 +41,11 @@ def _add_default_arg(parser):
         action='store_true',
         help='output additional information to stdout or stderr')
 
-    # configuration file
-    parser.add_argument('-C', '--config', type=str, help='run with configuation file')
-    # section name that you want to run in configuration file
-    parser.add_argument('-S', '--section', type=str, help=argparse.SUPPRESS)
+    if include_config_file:
+        # configuration file
+        parser.add_argument('-C', '--config', type=str, help='run with configuation file')
+        # section name that you want to run in configuration file
+        parser.add_argument('-S', '--section', type=str, help=argparse.SUPPRESS)
 
 
 def is_accumulated_arg(arg, driver):

@@ -71,14 +71,51 @@ def _get_backends_list():
 
     return backends_list
 
-
+# TODO Add support for TF graphdef and bcq
 def _get_parser(backends_list):
+    init_usage = ('one-init [-h] [-v] [-V] '
+                  '[-i INPUT_PATH] '
+                  '[-o OUTPUT_PATH] '
+                  '[-m MODEL_TYPE] '
+                  '[-b BACKEND] '
+                  # args for onnx model
+                  '[--input_img_layout LAYOUT] '
+                  '[--output_img_layout LAYOUT] '
+                  # args for backend driver
+                  '[--] [COMMANDS FOR BACKEND DRIVER]')
 
-    init_usage = 'NYI'
     parser = argparse.ArgumentParser(
-        description='Command line tool to generate initial cfg file.', usage=init_usage)
+        description='Command line tool to generate initial cfg file. '
+        'Currently tflite and onnx models are supported.',
+        usage=init_usage)
 
-    # TODO Add args into parser
+    _utils._add_default_arg(parser, include_config_file=False)
+
+    parser.add_argument(
+        '-i', '--input_path', type=str, help='full filepath of the input model file')
+    parser.add_argument(
+        '-o', '--output_path', type=str, help='full filepath of the output cfg file')
+    parser.add_argument(
+        '-m',
+        '--model_type',
+        type=str,
+        help=('type of input model: "onnx", "tflite". '
+              'If the file extension passed to --input_path is '
+              '".tflite" or ".onnx", this arg can be omitted.'))
+
+    onnx_group = parser.add_argument_group('arguments when model type is onnx')
+    onnx_group.add_argument(
+        '--input_img_layout',
+        type=str,
+        help=
+        'input data layout when input data format is image. Allowed list is "NHWC", "NCHW".'
+    )
+    onnx_group.add_argument(
+        '--output_img_layout',
+        type=str,
+        help=
+        'output data layout when output date format is image. Allowed list is "NHWC", "NCHW".'
+    )
 
     # get backend list in the directory
     backends_name = [ntpath.basename(f) for f in backends_list]
