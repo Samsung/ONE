@@ -197,6 +197,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleReduceMax *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node));
+    RETURN_FALSE_UNLESS(is_lwq(node->input()));
+    return true;
+  }
+
   bool visit(const luci::CircleRelu *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node));

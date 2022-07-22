@@ -1088,6 +1088,31 @@ private:
   luci::CircleConst *_const = nullptr;
 };
 
+class ReduceMaxTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void) override
+  {
+    TestIOGraph::init({4, 3, 2}, {2});
+
+    _axis = create_const<Type::S32, int32_t>(g(), {4}, {1, 0, -3, -3});
+    _reduce_max = g()->nodes()->create<luci::CircleReduceMax>();
+    {
+      _reduce_max->input(input());
+      _reduce_max->reduction_indices(_axis);
+      _reduce_max->name("test");
+      _reduce_max->keep_dims(false);
+    }
+    output()->from(_reduce_max);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+private:
+  luci::CircleReduceMax *_reduce_max = nullptr;
+  luci::CircleConst *_axis = nullptr;
+};
+
 class ResizeBilinearTestGraph final : public SimpleTestGraph
 {
 public:
@@ -2342,6 +2367,34 @@ TEST(QuantizedModelVerifierTest, Pow_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY_TARGET(PowTestGraph, Type::U8, Granularity::LayerWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(PowTestGraph, Type::U8, Granularity::ChannelWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(PowTestGraph, Type::S16, Granularity::ChannelWise, g.y());
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, ReduceMax)
+{
+  TEST_WITH_GRAPH(ReduceMaxTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(ReduceMaxTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(ReduceMaxTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(ReduceMaxTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(ReduceMaxTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(ReduceMaxTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, ReduceMax_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(ReduceMaxTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ReduceMaxTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(ReduceMaxTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, ReduceMax_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(ReduceMaxTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(ReduceMaxTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(ReduceMaxTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 
