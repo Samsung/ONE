@@ -83,6 +83,13 @@ template <> struct DataTypeImpl<DataType::U64>
   using Type = uint64_t;
 };
 
+template <> struct DataTypeImpl<DataType::FLOAT16>
+{
+  // float16 type with 16bit value, encoded with help of FP16 library
+  // https://github.com/Maratyszcza/FP16/
+  using Type = uint16_t;
+};
+
 template <> struct DataTypeImpl<DataType::FLOAT32>
 {
   // Use C++ float type for IEEE 32-bit floating-point numbers
@@ -132,6 +139,8 @@ inline uint32_t size(DataType data_type)
       return sizeof(DataTypeImpl<DataType::S64>::Type);
     case DataType::U64:
       return sizeof(DataTypeImpl<DataType::U64>::Type);
+    case DataType::FLOAT16:
+      return sizeof(DataTypeImpl<DataType::FLOAT16>::Type);
     case DataType::FLOAT32:
       return sizeof(DataTypeImpl<DataType::FLOAT32>::Type);
     case DataType::FLOAT64:
