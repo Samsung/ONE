@@ -344,8 +344,13 @@ template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_fla
     circle::OperatorCodeBuilder operator_code_builder{*_fb};
     auto de_code = it->deprecated_builtin_code();
     auto bt_code = it->builtin_code();
-    operator_code_builder.add_deprecated_builtin_code(get_circle_builtin_code(de_code));
-    operator_code_builder.add_builtin_code(get_circle_builtin_code(bt_code));
+    auto cir_de_code = get_circle_builtin_code(de_code);
+    auto cir_bt_code = get_circle_builtin_code(bt_code);
+    // correct bt_code where bt_code == 0 for old tflite format
+    if (cir_bt_code == 0)
+      cir_bt_code = static_cast<circle::BuiltinOperator>(cir_de_code);
+    operator_code_builder.add_deprecated_builtin_code(cir_de_code);
+    operator_code_builder.add_builtin_code(cir_bt_code);
     operator_code_builder.add_custom_code(custom_code);
     operator_code_builder.add_version(it->version());
     auto code = operator_code_builder.Finish();
