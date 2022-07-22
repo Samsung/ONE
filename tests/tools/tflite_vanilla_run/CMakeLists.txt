@@ -7,7 +7,7 @@ if(NOT BUILD_TENSORFLOW_LITE_2_3_0)
 endif()
 
 nnfw_find_package(TensorFlowLite EXACT 2.3.0 REQUIRED)
-nnfw_find_package(Boost REQUIRED)
+nnfw_find_package(Boost REQUIRED program_options)
 
 list(APPEND TFLITE_RUN_SRCS "src/tflite_vanilla_run.cc")
 list(APPEND TFLITE_RUN_SRCS "src/args.cc")
