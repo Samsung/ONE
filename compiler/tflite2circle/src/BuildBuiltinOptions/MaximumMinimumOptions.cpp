@@ -25,8 +25,6 @@ namespace tflite2circle
 flatbuffers::Offset<circle::MaximumMinimumOptions>
 build_circle_MaximumMinimumOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op)
 {
-  auto tflite_builtin_options = op->builtin_options_as_MaximumMinimumOptions();
-  assert(tflite_builtin_options);
   circle::MaximumMinimumOptionsBuilder builtin_options_builder{fb};
   return builtin_options_builder.Finish();
 }
