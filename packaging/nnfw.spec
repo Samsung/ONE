@@ -33,7 +33,10 @@ Source2002: nnfw-plugin.pc.in
 %{!?coverage_build: %define coverage_build  0}
 %{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
+
 %if %{coverage_build} == 1
+# Coverage test requires debug build runtime
+%define build_type Debug
 %define test_build 1
 %endif
 
@@ -96,7 +99,10 @@ Minimal test binary for VD manual test
 Summary: NNFW Test
 
 %description test
-NNFW test rpm. It does not depends on nnfw rpm since it contains nnfw runtime.
+NNFW test rpm.
+If you want to use test package, you should install runtime package which is build with test build option
+If you want to get coverage info, you should install runtime package which is build with coverage build option
+# TODO Use release runtime pacakge for test
 %endif
 
 %if %{npud_build} == 1
@@ -125,22 +131,31 @@ NPU daemon for optimal management of NPU hardware
 
 %define install_dir %{_prefix}
 %define install_path %{buildroot}%{install_dir}
-%define build_env NNFW_WORKSPACE=build
-%define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DENABLE_TEST=off -DBUILD_MINIMAL_SAMPLE=on
+%define nnfw_workspace build
+%define build_env NNFW_WORKSPACE=%{nnfw_workspace}
 
-# Set option for test build (and coverage test build)
+# Path to install test bin and scripts (test script assumes path Product/out)
+# TODO Share path with release package
 %define test_install_home /opt/usr/nnfw-test
 %define test_install_dir %{test_install_home}/Product/out
 %define test_install_path %{buildroot}%{test_install_dir}
-%define coverage_option %{nil}
+
+# Set option for test build (and coverage test build)
+%define option_test -DENABLE_TEST=OFF
+%define option_coverage %{nil}
 %define test_suite_list infra/scripts tests/scripts
-%define test_build_type %{build_type}
+
+%if %{test_build} == 1
+# ENVVAR_ONERT_CONFIG: Use environment variable for runtime core configuration and debug
+%define option_test -DEANBLE_TEST=ON -DENVVAR_ONERT_CONFIG=ON
+%endif # test_build
+
 %if %{coverage_build} == 1
-%define coverage_option -DENABLE_COVERAGE=ON
-%define test_build_type Debug
-%endif
-%define test_build_env NNFW_INSTALL_PREFIX=%{test_install_path} NNFW_WORKSPACE=build_for_test
-%define test_build_options %{coverage_option} -DCMAKE_BUILD_TYPE=%{test_build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DENVVAR_ONERT_CONFIG=ON
+%define option_coverage -DENABLE_COVERAGE=ON
+%endif # coverage_build
+
+%define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DBUILD_MINIMAL_SAMPLE=ON \\\
+        %{option_test} %{option_coverage} %{extra_option}
 
 %prep
 %setup -q
@@ -166,17 +181,13 @@ tar -xf %{SOURCE1016} -C ./externals
 %build
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
 # runtime build
-%{build_env} ./nnfw configure %{build_options} %{extra_option}
+%{build_env} ./nnfw configure %{build_options}
 %{build_env} ./nnfw build -j4
 # install in workspace
 # TODO Set install path
 %{build_env} ./nnfw install
 
 %if %{test_build} == 1
-# test runtime
-# TODO remove duplicated build process
-%{test_build_env} ./nnfw configure %{test_build_options} %{extra_option}
-%{test_build_env} ./nnfw build -j4
 %if %{coverage_build} == 1
 pwd > tests/scripts/build_path.txt
 %endif # coverage_build
@@ -208,15 +219,29 @@ install -m 0644 ./nnfw.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw.pc
 install -m 0644 ./nnfw-plugin.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw-plugin.pc
 
 %if %{test_build} == 1
-%{test_build_env} ./nnfw install
+mkdir -p %{test_install_path}/bin
+mkdir -p %{test_install_path}/unittest
+mkdir -p %{test_install_path}/unittest_standalone
+mkdir -p %{test_install_path}/test
+
+install -m 755 build/out/bin/nnapi_test %{test_install_path}/bin
+install -m 755 build/out/bin/nnpackage_run %{test_install_path}/bin
+install -m 755 build/out/bin/tflite_comparator %{test_install_path}/bin
+install -m 755 build/out/bin/tflite_run %{test_install_path}/bin
+install -m 755 build/out/unittest/* %{test_install_path}/unittest
+install -m 755 build/out/unittest_standalone/*_test %{test_install_path}/unittest_standalone
+install -m 755 build/out/unittest_standalone/test_* %{test_install_path}/unittest_standalone
+cp -r build/out/test/* %{test_install_path}/test
+cp -r build/out/unittest_standalone/nnfw_api_gtest_models %{test_install_path}/unittest_standalone
+
 # Share test script with ubuntu (ignore error if there is no list for target)
-cp tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{buildroot}%{test_install_dir}/unittest/.
-cp %{buildroot}%{test_install_dir}/unittest/nnapi_gtest.skip.%{target_arch}-linux.cpu %{buildroot}%{test_install_dir}/unittest/nnapi_gtest.skip
+cp tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{test_install_path}/unittest/.
+cp %{test_install_path}/unittest/nnapi_gtest.skip.%{target_arch}-linux.cpu %{test_install_path}/unittest/nnapi_gtest.skip
 tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
 
 %if %{coverage_build} == 1
 mkdir -p %{buildroot}%{test_install_home}/gcov
-find . -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. \;
+find %{nnfw_workspace} -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. \;
 install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/test/build_path.txt
 %endif # coverage_build
 %endif # test_build
