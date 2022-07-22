@@ -167,6 +167,7 @@ private:
 class CircleConstSummaryBuilder final : public CircleNodeSummaryBuilder
 {
 private:
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
   void update_status(locop::NodeSummary &s);
 };
 

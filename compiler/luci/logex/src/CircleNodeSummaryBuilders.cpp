@@ -374,6 +374,22 @@ void CircleConcatenationSummaryBuilder::build_attributes(const luci::CircleNode 
   s.args().append("fused_activation_function", to_str(concat->fusedActivationFunction()));
 }
 
+void CircleConstSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                 locop::NodeSummary &s)
+{
+  auto circonst = loco::must_cast<const luci::CircleConst *>(node);
+  s.args().append("dtype", to_str(circonst->dtype()));
+  s.args().append("rank", std::to_string(circonst->rank()));
+  std::string shape;
+  for (uint32_t r = 0; r < circonst->rank(); ++r)
+  {
+    if (!shape.empty())
+      shape += " ";
+    shape += std::to_string(circonst->dim(r).value());
+  }
+  s.args().append("shape", "[" + shape + "]");
+}
+
 void CircleConstSummaryBuilder::update_status(locop::NodeSummary &s)
 {
   s.state(locop::NodeDesc::State::PartiallyKnown);
