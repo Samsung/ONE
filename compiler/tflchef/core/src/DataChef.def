@@ -21,3 +21,6 @@ DATA_CHEF(FLOAT32, gaussian, GaussianFloat32DataChefFactory)
 DATA_CHEF(INT32, gaussian, GaussianInt32DataChefFactory)
 DATA_CHEF(INT16, gaussian, GaussianInt16DataChefFactory)
 DATA_CHEF(UINT8, gaussian, GaussianUint8DataChefFactory)
+
+// FLOAT16 support for only gaussian for now
+DATA_CHEF(FLOAT16, gaussian, GaussianFloat16DataChefFactory)

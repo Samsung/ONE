@@ -33,6 +33,7 @@
 #include "BuildBuiltinOptions/CosOptions.h"
 #include "BuildBuiltinOptions/DepthToSpaceOptions.h"
 #include "BuildBuiltinOptions/DepthwiseConv2DOptions.h"
+#include "BuildBuiltinOptions/DequantizeOptions.h"
 #include "BuildBuiltinOptions/DivOptions.h"
 #include "BuildBuiltinOptions/EqualOptions.h"
 #include "BuildBuiltinOptions/ExpandDimsOptions.h"

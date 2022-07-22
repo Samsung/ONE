@@ -62,6 +62,8 @@ tflite::TensorType as_tflite_tensortype(const tflchef::TensorType &value)
   {
     case tflchef::FLOAT32:
       return tflite::TensorType_FLOAT32;
+    case tflchef::FLOAT16:
+      return tflite::TensorType_FLOAT16;
     case tflchef::INT32:
       return tflite::TensorType_INT32;
     case tflchef::UINT8:

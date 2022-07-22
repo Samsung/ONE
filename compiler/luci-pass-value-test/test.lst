@@ -33,6 +33,9 @@ addeval(Net_InstanceNorm_003 fuse_instnorm)
 addeval(Net_StridedSlice_StridedSlice_000 remove_unnecessary_strided_slice)
 addeval(FullyConnected_007 replace_non_const_fc_with_batch_matmul)
 
+# test for limited support for FLOAT16
+addeval(Net_Dequantize_Add_000 fold_dequantize)
+
 # test SignatureDef, with any optimization
 #addeval(SignatureDef_MultiOut_000 fuse_instnorm)
 #addeval(SignatureDef_MultiOut_001 fuse_instnorm)

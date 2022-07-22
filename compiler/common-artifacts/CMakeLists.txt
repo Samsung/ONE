@@ -241,7 +241,11 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   if(NOT DEFINED NO_OPTIMIZE_${RECIPE})
     # Generate optimized .circle
     add_custom_command(OUTPUT ${OPT_CIRCLE_OUTPUT_PATH}
-      COMMAND $<TARGET_FILE:circle2circle> --resolve_customop_add ${CIRCLE_OUTPUT_PATH} ${OPT_CIRCLE_OUTPUT_PATH}
+      # NOTE --resolve_customop_add is just to added for old -O1, no particular meaning
+      #      --fold_dequantize is added to fold FLOAT16 + DEQUANTIZE for Net_Dequantize_Add model
+      #      FLOAT16 is NOT supported but only Const(float16) + Dequantize sequence accepted.
+      COMMAND $<TARGET_FILE:circle2circle> --resolve_customop_add --fold_dequantize
+              ${CIRCLE_OUTPUT_PATH} ${OPT_CIRCLE_OUTPUT_PATH}
       DEPENDS $<TARGET_FILE:circle2circle>  ${CIRCLE_OUTPUT_PATH}
       COMMENT "Generate ${OPT_CIRCLE_FILE}"
     )

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "MaximumMinimumOptions.h"
+#include "DequantizeOptions.h"
 #include "DataLookup.h"
 
 #include <cassert>
@@ -22,10 +22,10 @@
 namespace tflite2circle
 {
 
-flatbuffers::Offset<circle::MaximumMinimumOptions>
-build_circle_MaximumMinimumOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op)
+flatbuffers::Offset<circle::DequantizeOptions>
+build_circle_DequantizeOptions(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op)
 {
-  circle::MaximumMinimumOptionsBuilder builtin_options_builder{fb};
+  circle::DequantizeOptionsBuilder builtin_options_builder{fb};
   return builtin_options_builder.Finish();
 }
 

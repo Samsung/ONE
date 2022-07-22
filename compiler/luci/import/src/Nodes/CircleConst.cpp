@@ -166,6 +166,10 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
         copy_data<loco::DataType::FLOAT32>(buffer, num_elements, const_node);
         break;
 
+      case loco::DataType::FLOAT16:
+        copy_data<loco::DataType::FLOAT16>(buffer, num_elements, const_node);
+        break;
+
       case loco::DataType::U8:
         copy_data<loco::DataType::U8>(buffer, num_elements, const_node);
         break;
