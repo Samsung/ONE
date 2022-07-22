@@ -72,13 +72,62 @@ def _get_backends_list():
     return backends_list
 
 
+# TODO Add support for TF graphdef and bcq
 def _get_parser(backends_list):
+    init_usage = (
+        'one-init [-h] [-v] [-V] '
+        '[-i INPUT_PATH] '
+        '[-o OUTPUT_PATH] '
+        '[-m MODEL_TYPE] '
+        '[-b BACKEND] '
+        # args for onnx model
+        '[--convert_nchw_to_nhwc] '
+        '[--nchw_to_nhwc_input_shape] '
+        '[--nchw_to_nhwc_output_shape] '
+        # args for backend driver
+        '[--] [COMMANDS FOR BACKEND DRIVER]')
+    """
+    NOTE
+    layout options for onnx model could be difficult to users.
+    In one-init, we could consider easier args for the the above three:
+    For example, we could have another option, e.g., --input_img_layout LAYOUT
+      - When LAYOUT is NHWC, apply 'nchw_to_nhwc_input_shape=True' into cfg
+      - When LAYOUT is NCHW, apply 'nchw_to_nhwc_input_shape=False' into cfg
+    """
 
-    init_usage = 'NYI'
     parser = argparse.ArgumentParser(
-        description='Command line tool to generate initial cfg file.', usage=init_usage)
+        description='Command line tool to generate initial cfg file. '
+        'Currently tflite and onnx models are supported',
+        usage=init_usage)
 
-    # TODO Add args into parser
+    _utils._add_default_arg_no_CS(parser)
+
+    parser.add_argument(
+        '-i', '--input_path', type=str, help='full filepath of the input model file')
+    parser.add_argument(
+        '-o', '--output_path', type=str, help='full filepath of the output cfg file')
+    parser.add_argument(
+        '-m',
+        '--model_type',
+        type=str,
+        help=('type of input model: "onnx", "tflite". '
+              'If the file extension passed to --input_path is '
+              '".tflite" or ".onnx", this arg can be omitted.'))
+
+    onnx_group = parser.add_argument_group('arguments when model type is onnx')
+    onnx_group.add_argument(
+        '--convert_nchw_to_nhwc',
+        action='store_true',
+        help=
+        'Convert NCHW operators to NHWC under the assumption that input model is NCHW.')
+    onnx_group.add_argument(
+        '--nchw_to_nhwc_input_shape',
+        action='store_true',
+        help='Convert the input shape of the model (argument for convert_nchw_to_nhwc)')
+    onnx_group.add_argument(
+        '--nchw_to_nhwc_output_shape',
+        action='store_true',
+        help='Convert the output shape of the model (argument for convert_nchw_to_nhwc)')
 
     # get backend list in the directory
     backends_name = [ntpath.basename(f) for f in backends_list]

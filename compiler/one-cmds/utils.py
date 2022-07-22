@@ -47,6 +47,25 @@ def _add_default_arg(parser):
     parser.add_argument('-S', '--section', type=str, help=argparse.SUPPRESS)
 
 
+def _add_default_arg_no_CS(parser):
+    """
+    This adds -v -V args only (no -C nor -S)
+    """
+    # version
+    parser.add_argument(
+        '-v',
+        '--version',
+        action='store_true',
+        help='show program\'s version number and exit')
+
+    # verbose
+    parser.add_argument(
+        '-V',
+        '--verbose',
+        action='store_true',
+        help='output additional information to stdout or stderr')
+
+
 def is_accumulated_arg(arg, driver):
     if driver == "one-quantize":
         accumulables = [
