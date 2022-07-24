@@ -104,6 +104,7 @@ private:
   bool visit(const luci::CirclePadV2 *node);
   bool visit(const luci::CirclePRelu *node);
   bool visit(const luci::CirclePow *node);
+  bool visit(const luci::CircleReduceMax *node);
   bool visit(const luci::CircleRelu *node);
   bool visit(const luci::CircleReshape *node);
   bool visit(const luci::CircleResizeBilinear *node);
