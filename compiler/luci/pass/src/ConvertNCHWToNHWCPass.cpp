@@ -1121,7 +1121,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       return true;
     }
 
-    // node->keep_dims() == false
+    // The below codes handle the cases where node->keep_dims() == false
     // 1D output never needs a transpose
     if (node->rank() <= 1)
       return true;
