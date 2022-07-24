@@ -143,8 +143,29 @@ def _get_parser(backends_list):
 
 
 def _verify_arg(parser, args):
-    # NYI
-    pass
+    # check if required arguments is given
+    missing = []
+    if not _utils._is_valid_attr(args, 'input_path'):
+        missing.append('-i/--input_path')
+    if not _utils._is_valid_attr(args, 'output_path'):
+        missing.append('-o/--output_path')
+    if not _utils._is_valid_attr(args, 'backend'):
+        missing.append('-b/--backend')
+
+    if _utils._is_valid_attr(args, 'model_type'):
+        # TODO Support model types other than onnx and tflite (e.g., TF)
+        if getattr(args, 'model_type') not in ['onnx', 'tflite']:
+            parser.error('Allowed value for --model_type: "onnx" or "tflite"')
+
+    if _utils._is_valid_attr(args, 'nchw_to_nhwc_input_shape'):
+        if not _utils._is_valid_attr(args, 'convert_nchw_to_nhwc'):
+            missing.append('--convert_nchw_to_nhwc')
+    if _utils._is_valid_attr(args, 'nchw_to_nhwc_output_shape'):
+        if not _utils._is_valid_attr(args, 'convert_nchw_to_nhwc'):
+            missing.append('--convert_nchw_to_nhwc')
+
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
 
 
 def _parse_arg(parser):
