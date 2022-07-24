@@ -1087,6 +1087,82 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     return true;
   }
 
+  // TODO Reduce duplicate code with CircleMean
+  bool visit(luci::CircleReduceMax *node)
+  {
+    auto input = loco::must_cast<luci::CircleNode *>(node->input());
+    if (input->rank() != 4)
+      return false;
+
+    auto rindices = dynamic_cast<luci::CircleConst *>(node->reduction_indices());
+    if (not rindices)
+      return false;
+
+    auto nhwc_rindices = create_NHWC_rindices(rindices);
+    if (not nhwc_rindices)
+      return false;
+
+    auto pre_trans = create_pre_transpose(node);
+    pre_trans->a(input);
+    node->input(pre_trans);
+
+    // Do shape inference for this node again.
+    node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+    node->reduction_indices(nhwc_rindices);
+
+    if (node->keep_dims())
+    {
+      auto post_trans = create_post_transpose(node);
+      loco::replace(node).with(post_trans);
+
+      post_trans->a(node);
+
+      return true;
+    }
+
+    // node->keep_dims() == false
+    // 1D output never needs a transpose
+    if (node->rank() <= 1)
+      return true;
+
+    std::vector<bool> reduced_dims_nhwc(4, false);
+    uint32_t num_reduced_indices = nhwc_rindices->size<loco::DataType::S32>();
+
+    for (uint32_t ri = 0; ri < num_reduced_indices; ++ri)
+    {
+      reduced_dims_nhwc[nhwc_rindices->at<loco::DataType::S32>(ri)] = true;
+    }
+
+    // if channel dimension has been reduced, we don't need a transpose
+    if (reduced_dims_nhwc[3])
+      return true;
+
+    // likewise, if both space dimensions are reduced, no transpose is needed
+    if (reduced_dims_nhwc[1] && reduced_dims_nhwc[2])
+      return true;
+
+    std::vector<int32_t> post_trans_ind;
+    // case 1: only N is reduced
+    if (num_reduced_indices == 1 && reduced_dims_nhwc[0])
+      post_trans_ind = {2, 0, 1};
+
+    // case 2: only H or W is reduced
+    if (num_reduced_indices == 1 && (reduced_dims_nhwc[1] || reduced_dims_nhwc[2]))
+      post_trans_ind = {0, 2, 1};
+
+    // case 3: N and either H or W are reduced
+    if (num_reduced_indices == 2)
+      post_trans_ind = {1, 0};
+
+    auto post_trans = create_Nd_transpose(node, post_trans_ind);
+    loco::replace(node).with(post_trans);
+
+    post_trans->a(node);
+
+    return true;
+  }
+
   bool visit(luci::CircleRelu *node) { return convert_unary_features<luci::CircleRelu>(node); }
 
   bool visit(luci::CircleRelu6 *node) { return convert_unary_features<luci::CircleRelu6>(node); }
@@ -1360,6 +1436,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::NEG:
       case luci::CircleOpcode::PAD:
       case luci::CircleOpcode::PADV2:
+      case luci::CircleOpcode::REDUCE_MAX:
       case luci::CircleOpcode::RELU:
       case luci::CircleOpcode::RELU6:
       case luci::CircleOpcode::RSQRT:
@@ -1403,7 +1480,8 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       if (circle_node->rank() != 4)
       {
         // TODO replace the check above with the input rank check, and remove the condition below
-        if (not dynamic_cast<luci::CircleMean *>(node))
+        if (not dynamic_cast<luci::CircleMean *>(node) and
+            not dynamic_cast<luci::CircleReduceMax *>(node))
           continue;
       }
 
