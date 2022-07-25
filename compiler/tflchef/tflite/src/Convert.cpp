@@ -35,8 +35,9 @@ tflchef::TensorType as_tflchef_type(const tflite::TensorType type)
       return tflchef::BOOL;
     case tflite::TensorType_INT16:
       return tflchef::INT16;
+    case tflite::TensorType_FLOAT16:
+      return tflchef::FLOAT16;
     // TODO handle other types
-    // TensorType_FLOAT16
     // TensorType_STRING
     // TensorType_COMPLEX64
     default:
