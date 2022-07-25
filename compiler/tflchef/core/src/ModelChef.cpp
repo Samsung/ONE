@@ -92,6 +92,7 @@ DataChefRegistry &data_chef_registry(const tflchef::TensorType &type)
   static DataChefRegistry string;
   static DataChefRegistry boolean;
   static DataChefRegistry s16;
+  static DataChefRegistry fp16;
 
   switch (type)
   {
@@ -101,6 +102,8 @@ DataChefRegistry &data_chef_registry(const tflchef::TensorType &type)
       return s64;
     case tflchef::FLOAT32:
       return fp32;
+    case tflchef::FLOAT16:
+      return fp16;
     case tflchef::UINT8:
       return u8;
     case tflchef::STRING:

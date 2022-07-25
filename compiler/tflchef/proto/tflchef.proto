@@ -15,6 +15,7 @@ package tflchef;
 // This enum value corresponds to TensorType in TensorFlow Lite schema
 enum TensorType {
   FLOAT32 = 0;
+  FLOAT16 = 1;
   INT32 = 2;
   UINT8 = 3;
   INT64 = 4;
