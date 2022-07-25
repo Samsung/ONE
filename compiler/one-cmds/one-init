@@ -196,6 +196,7 @@ def _get_executable(args, backends_list):
         raise FileNotFoundError(backend_base + ' not found')
 
 
+# TODO Support workflow format (https://github.com/Samsung/ONE/pull/9354)
 def _generate():
     # generate cfg file
     config = CommentableConfigParser()
