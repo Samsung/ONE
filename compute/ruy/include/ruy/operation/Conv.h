@@ -169,7 +169,7 @@ private:
     ruy_support::MakeRuyMatrix(rhs_params, gemm_input_data, &ruy_rhs, true);
     ruy_support::MakeRuyMatrix(dst_params, output_data, &ruy_dst);
 
-    ::ruy::BasicSpec<float, float> ruy_mul_params;
+    ::ruy::MulParams<float, float> ruy_mul_params;
     ruy_support::MakeRuyMulParams(gemm_params, &ruy_mul_params);
 
     ::ruy::Mul(ruy_lhs, ruy_rhs, ruy_mul_params, ruy_context, &ruy_dst);

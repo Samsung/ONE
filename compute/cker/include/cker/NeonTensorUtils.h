@@ -632,7 +632,7 @@ inline void NeonCpuBackendGemm(const int8_t *input, const int32_t *bias,
   ruy_support::MakeRuyMatrix(rhs_params, input, &ruy_rhs, true);
   ruy_support::MakeRuyMatrix(dst_params, scratch, &ruy_dst);
 
-  ruy::BasicSpec<int32_t, int32_t> ruy_mul_params;
+  ruy::MulParams<int32_t, int32_t> ruy_mul_params;
   ruy_support::MakeRuyMulParams(gemm_params, &ruy_mul_params);
 
   ruy::Mul(ruy_lhs, ruy_rhs, ruy_mul_params, ruy_context, &ruy_dst);

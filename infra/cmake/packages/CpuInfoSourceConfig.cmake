@@ -9,7 +9,7 @@ function(_CpuInfoSource_import)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   # CPUINFO commit including patch from tflite v2.3
-  envoption(CPUINFO_URL ${EXTERNAL_DOWNLOAD_SERVER}/pytorch/cpuinfo/archive/63b254577ed77a8004a9be6ac707f3dccc4e1fd9.tar.gz)
+  envoption(CPUINFO_URL ${EXTERNAL_DOWNLOAD_SERVER}/pytorch/cpuinfo/archive/5916273f79a21551890fd3d56fc5375a78d1598d.tar.gz)
   ExternalSource_Download(CPUINFO
     DIRNAME CPUINFO
     URL ${CPUINFO_URL})
