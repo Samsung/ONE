@@ -33,6 +33,25 @@ import utils as _utils
 sys.tracebacklimit = 0
 
 
+class CommentableConfigParser(configparser.ConfigParser):
+    """
+    ConfigParser where comment can be stored
+    In Python ConfigParser, comment in ini file ( starting with ';') is considered a key of which
+    value is None.
+    Ref: https://stackoverflow.com/questions/6620637/writing-comments-to-files-with-configparser
+    """
+
+    def __init__(self):
+        # allow_no_value=True to add comment
+        # ref: https://stackoverflow.com/a/19432072
+        configparser.ConfigParser.__init__(self, allow_no_value=True)
+        self.optionxform = str
+
+    def add_comment(self, section, comment):
+        comment_sign = ';'
+        self[section][f'{comment_sign} {comment}'] = None
+
+
 def _get_backends_list():
     """
     [one hierarchy]
@@ -196,6 +215,52 @@ def _get_executable(args, backends_list):
             if ntpath.basename(cand) == backend_base:
                 return cand
         raise FileNotFoundError(backend_base + ' not found')
+
+
+# TODO Support workflow format (https://github.com/Samsung/ONE/pull/9354)
+def _generate():
+    # generate cfg file
+    config = CommentableConfigParser()
+
+    def _add_onecc_sections():
+        pass  # NYI
+
+    def _add_from_backend_cfg():
+        '''
+        This copies key & value in sections of backend cfg into one cfg.
+        Call this after setting default values for circle since there might be values overrided
+        by backend.
+        '''
+        pass  # NYI
+
+    def _gen_import():
+        pass  # NYI
+
+    def _gen_optimize():
+        pass  # NYI
+
+    def _gen_quantize():
+        pass  # NYI
+
+    def _gen_codegen():
+        pass  # NYI
+
+    #
+    # NYI: one-profile, one-partition, one-pack, one-infer
+    #
+
+    _add_onecc_sections()
+
+    _gen_import()
+    _gen_optimize()
+    _gen_quantize()
+    _gen_codegen()
+    _gen_profile()
+
+    _add_from_backend_cfg()
+
+    with open(args.output_path, 'w') as f:
+        config.write(f)
 
 
 def main():
