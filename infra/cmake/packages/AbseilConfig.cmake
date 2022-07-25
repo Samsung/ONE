@@ -12,9 +12,15 @@ function(_Abseil_import)
 
     # NOTE Turn off abseil testing
     set(BUILD_TESTING OFF)
+    # Set -fPIC property because Abseil-cpp can be used for shared library
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    # Abseil-cpp 20211102.0 show warning without below setting
+    set(ABSL_PROPAGATE_CXX_STD ON)
+
     add_extdirectory("${AbseilSource_DIR}" ABSEIL)
 
     add_library(abseil INTERFACE)
+
     target_link_libraries(abseil INTERFACE
       # From "Available Abseil CMake Public Targets" in CMake/README.md
       absl::algorithm
@@ -27,7 +33,6 @@ function(_Abseil_import)
       absl::numeric
       absl::random_random
       absl::strings
-      absl::status
       absl::synchronization
       absl::time
       absl::utility
@@ -36,10 +41,5 @@ function(_Abseil_import)
 
   set(Abseil_FOUND TRUE PARENT_SCOPE)
 endfunction(_Abseil_import)
-
-set(CMAKE_C_FLAGS_DEBUG     "${CMAKE_C_FLAGS_DEBUG} -fPIC")
-set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -fPIC")
-set(CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE} -fPIC")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fPIC")
 
 _Abseil_import()
