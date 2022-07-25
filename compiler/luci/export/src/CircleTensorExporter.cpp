@@ -434,6 +434,12 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, l
       break;
   }
 
+  // NOTE loco::DataType::FLOAT16 is added but we do not export this type
+  //      as backends currently don't support this type.
+  //      currently this is supported only for "Tensor(Float16) - Dequantize"
+  //      sequence so that after 'fold_dequantize' option this Tensor is
+  //      converted to FLOAT32.
+
   INTERNAL_EXN_V("Unsupported datatype", oops::to_uint32(c->dtype()));
 }
 
