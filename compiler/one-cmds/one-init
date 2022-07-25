@@ -33,6 +33,36 @@ import utils as _utils
 sys.tracebacklimit = 0
 
 
+class InputOutputPath:
+    '''
+    Class that remembers input circle file and output circle file of section k,
+    When entering the next section k+1, output of section k will be used as input of section k+1.
+    '''
+
+    def __init__(self, initial_input_path: str):
+        self._first_step = True
+        self._input_path = initial_input_path
+        self._output_path = ''
+
+    def enter_new_section(self, section_output_path: str):
+        '''
+        Call this when starting a section
+        '''
+        if self._first_step == True:
+            self._output_path = section_output_path
+        else:
+            self._input_path = self._output_path
+            self._output_path = section_output_path
+
+        self._first_step = False
+
+    def input_path(self):
+        return self._input_path
+
+    def output_path(self):
+        return self._output_path
+
+
 class CommentableConfigParser(configparser.ConfigParser):
     """
     ConfigParser where comment can be stored
@@ -218,9 +248,11 @@ def _get_executable(args, backends_list):
 
 
 # TODO Support workflow format (https://github.com/Samsung/ONE/pull/9354)
-def _generate():
+def _generate(inout_path: InputOutputPath):
     # generate cfg file
     config = CommentableConfigParser()
+
+    basename = os.path.basename(args.input_path).split('.')[0]
 
     def _add_onecc_sections():
         pass  # NYI
@@ -234,12 +266,25 @@ def _generate():
         pass  # NYI
 
     def _gen_import():
+        inout_path.enter_new_section(f'./{basename}.circle')
+        config[section]['input_path'] = inout_path.input_path()
+        config[section]['output_path'] = inout_path.output_path()
+
         pass  # NYI
 
     def _gen_optimize():
+        inout_path.enter_new_section(f'./{basename}.opt.circle')
+        config[section]['input_path'] = inout_path.input_path()
+        config[section]['output_path'] = inout_path.output_path()
+
         pass  # NYI
 
     def _gen_quantize():
+        # TODO Support "*.q16.circle" name
+        inout_path.enter_new_section(f'./{basename}.q8.circle')
+        config[section]['input_path'] = inout_path.input_path()
+        config[section]['output_path'] = inout_path.output_path()
+
         pass  # NYI
 
     def _gen_codegen():
@@ -283,7 +328,9 @@ def main():
     # run backend driver
     _utils._run(init_cmd, err_prefix=ntpath.basename(driver_path))
 
-    #TODO generate cfg file
+    # generate cfg file
+    inout_path = InputOutputPath(args.input_path)
+    _generate(inout_path)
 
     raise NotImplementedError("NYI")
 
