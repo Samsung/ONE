@@ -106,6 +106,59 @@ class U8FoldDequantizeTest : public FoldDequantizeTest<loco::DataType::U8>
 {
 };
 
+class F16FoldDequantizeTest : public luci::ConstantFoldingTestGraph, public ::testing::Test
+{
+public:
+  F16FoldDequantizeTest() : ConstantFoldingTestGraph({2, 2}, loco::DataType::FLOAT16) {}
+
+  virtual void SetUp() { init(); }
+
+  loco::Node *createFoldedPattern() override
+  {
+    const auto DT = loco::DataType::FLOAT16;
+    _dequantize = _g.nodes()->create<luci::CircleDequantize>();
+    _f16const = _g.nodes()->create<luci::CircleConst>();
+
+    _dequantize->dtype(loco::DataType::FLOAT32);
+    _f16const->dtype(DT);
+
+    _f16const->shape({2, 2});
+
+    _f16const->size<loco::DataType::FLOAT16>(4);
+    _f16const->at<DT>(0) = 49408; // -2.5f
+    _f16const->at<DT>(1) = 47104; // -0.5f
+    _f16const->at<DT>(2) = 0;     //  0.0f
+    _f16const->at<DT>(3) = 15872; //  1.5f
+    // NOTE how to get uint16_t value of float16 ?
+    // Use compiler/souschef/src/Gaussian.cpp GaussianFloat16DataChef::generate()
+    //   uint16_t value = fp16_ieee_from_fp32_value(-2.5);
+    //   printf("-2.5 = %u\r\n", value);
+
+    _dequantize->input(_f16const);
+
+    _dequantize->name("dequantize");
+    _f16const->name("input");
+
+    _output->from(_dequantize);
+
+    return _dequantize;
+  }
+
+  void createNotFoldablePattern() { _dequantize->input(_input); }
+
+protected:
+  luci::CircleConst *getFoldedPattern() override
+  {
+    return dynamic_cast<luci::CircleConst *>(_output->from());
+  }
+
+  void init() override { createFoldedPattern(); }
+
+protected:
+  luci::CircleDequantize *_dequantize = nullptr;
+  luci::CircleConst *_f16const = nullptr;
+};
+
 } // namespace
 
 TEST(FoldDequantizePassTest, name)
@@ -315,4 +368,36 @@ TEST_F(U8FoldDequantizeTest, fold_dequant_scalar)
   EXPECT_EQ(loco::DataType::FLOAT32, folded_const->dtype());
   EXPECT_EQ(0, folded_const->rank());
   EXPECT_EQ(1.0, folded_const->at<loco::DataType::FLOAT32>(0));
+}
+
+TEST_F(F16FoldDequantizeTest, fold_dequant_basic)
+{
+  luci::FoldDequantizePass pass;
+  while (pass.run(graph()))
+    ;
+
+  auto folded_const = getFoldedPattern();
+  EXPECT_NE(nullptr, folded_const);
+
+  // Chec type, shape, values of folded const
+  EXPECT_EQ(loco::DataType::FLOAT32, folded_const->dtype());
+  EXPECT_EQ(2, folded_const->rank());
+  EXPECT_EQ(2, folded_const->dim(0).value());
+  EXPECT_EQ(2, folded_const->dim(1).value());
+  EXPECT_EQ(-2.5, folded_const->at<loco::DataType::FLOAT32>(0));
+  EXPECT_EQ(-0.5, folded_const->at<loco::DataType::FLOAT32>(1));
+  EXPECT_EQ(0.0, folded_const->at<loco::DataType::FLOAT32>(2));
+  EXPECT_EQ(1.5, folded_const->at<loco::DataType::FLOAT32>(3));
+}
+
+TEST_F(F16FoldDequantizeTest, fold_dequant_basic_NEG)
+{
+  createNotFoldablePattern();
+
+  luci::FoldDequantizePass pass;
+  while (pass.run(graph()))
+    ;
+
+  auto folded_const = getFoldedPattern();
+  EXPECT_EQ(nullptr, folded_const);
 }
