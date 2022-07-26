@@ -74,7 +74,9 @@ luci::CircleConst *dequantized_const_node(luci::CircleConst *const_node)
   new_const_node->name(name + "_DQ");
 
   const int32_t q_dim = const_node->quantparam()->quantized_dimension;
-  const int32_t q_dim_value = const_node->dim(q_dim).value();
+  // For scalar, q_dim_value is 1
+  // For non-scalar, q_dim_value is the size of quantized dimension
+  const int32_t q_dim_value = const_node->rank() == 0 ? 1 : const_node->dim(q_dim).value();
 
   int32_t right_count = q_dim_value;
   for (uint32_t i = q_dim + 1; i < const_node->rank(); ++i)

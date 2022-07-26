@@ -66,6 +66,19 @@ public:
     return _dequantize;
   }
 
+  void createScalarPattern()
+  {
+    _input->rank(0);
+    _input->size<DT>(1);
+    _input->at<DT>(0) = 1;
+
+    auto qparam = std::make_unique<luci::CircleQuantParam>();
+    qparam->quantized_dimension = 0;
+    qparam->scale.push_back(1.0);
+    qparam->zerop.push_back(0);
+    _input->quantparam(std::move(qparam));
+  }
+
   void createNotFoldablePattern() { _input->quantparam(nullptr); }
 
 protected:
@@ -285,4 +298,21 @@ TEST_F(S64FoldDequantizeTest, fold_dequant_basic_NEG)
 
   auto folded_const = getFoldedPattern();
   EXPECT_EQ(nullptr, folded_const);
+}
+
+TEST_F(U8FoldDequantizeTest, fold_dequant_scalar)
+{
+  createScalarPattern();
+
+  luci::FoldDequantizePass pass;
+  while (pass.run(graph()))
+    ;
+
+  auto folded_const = getFoldedPattern();
+  EXPECT_NE(nullptr, folded_const);
+
+  // Check type, shape, values of folded const
+  EXPECT_EQ(loco::DataType::FLOAT32, folded_const->dtype());
+  EXPECT_EQ(0, folded_const->rank());
+  EXPECT_EQ(1.0, folded_const->at<loco::DataType::FLOAT32>(0));
 }
