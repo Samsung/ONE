@@ -147,7 +147,7 @@ NPU daemon for optimal management of NPU hardware
 
 %if %{test_build} == 1
 # ENVVAR_ONERT_CONFIG: Use environment variable for runtime core configuration and debug
-%define option_test -DEANBLE_TEST=ON -DENVVAR_ONERT_CONFIG=ON
+%define option_test -DENABLE_TEST=ON -DENVVAR_ONERT_CONFIG=ON
 %endif # test_build
 
 %if %{coverage_build} == 1
