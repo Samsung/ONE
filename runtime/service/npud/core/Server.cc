@@ -26,7 +26,10 @@ namespace core
 
 std::atomic_bool Server::_isRunning(false);
 
-Server::Server() noexcept : _mainloop(g_main_loop_new(NULL, FALSE), g_main_loop_unref) {}
+Server::Server() noexcept
+  : _mainloop(g_main_loop_new(NULL, FALSE), g_main_loop_unref), _signal(std::make_unique<Signal>())
+{
+}
 
 void Server::run(void)
 {
