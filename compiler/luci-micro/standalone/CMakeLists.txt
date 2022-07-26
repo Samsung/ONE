@@ -18,4 +18,4 @@ add_subdirectory(${ONE_COMPILER_SRC_DIR}/locomotiv ${CMAKE_CURRENT_BINARY_DIR}/l
 add_subdirectory(${ONE_COMPILER_SRC_DIR}/luci/lang ${CMAKE_CURRENT_BINARY_DIR}/luci/lang)
 add_subdirectory(${ONE_COMPILER_SRC_DIR}/luci/plan ${CMAKE_CURRENT_BINARY_DIR}/luci/plan)
 
-add_subdirectory(${ONE_COMPILER_SRC_DIR}/luci-interpreter ${CMAKE_CURRENT_BINARY_DIR}/luci-interpreter)
+add_subdirectory(${ONE_COMPILER_SRC_DIR}/luci-micro/luci-interpreter ${CMAKE_CURRENT_BINARY_DIR}/luci-interpreter)
