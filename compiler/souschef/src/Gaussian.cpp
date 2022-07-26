@@ -141,7 +141,7 @@ static std::vector<uint8_t> generate_gaussian(int32_t count, float mean, float s
   std::vector<uint8_t> res;
 
   constexpr float max_cap = std::numeric_limits<T>::max();
-  constexpr float min_cap = std::numeric_limits<T>::min();
+  constexpr float min_cap = std::numeric_limits<T>::lowest();
   for (uint32_t n = 0; n < count; ++n)
   {
     float raw_value = dist(rand);
