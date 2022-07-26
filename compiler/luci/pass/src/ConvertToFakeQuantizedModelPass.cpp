@@ -189,10 +189,12 @@ struct FakeQuantize final : public luci::CircleNodeMutableVisitor<void>
   void visit(luci::CircleBatchMatMul *node) { fq_activation(node); }
   void visit(luci::CircleConv2D *node) { fq_activation(node); }
   void visit(luci::CircleDepthwiseConv2D *node) { fq_activation(node); }
+  void visit(luci::CircleDiv *node) { fq_activation(node); }
   void visit(luci::CircleFullyConnected *node) { fq_activation(node); }
   void visit(luci::CircleInstanceNorm *node) { fq_activation(node); }
   void visit(luci::CircleLeakyRelu *node) { fq_activation(node); }
   void visit(luci::CircleLogistic *node) { fq_activation(node); }
+  void visit(luci::CircleLogSoftmax *node) { fq_activation(node); }
   void visit(luci::CircleMaxPool2D *node) { fq_activation(node); }
   void visit(luci::CircleMul *node) { fq_activation(node); }
   void visit(luci::CircleNeg *node) { fq_activation(node); }
@@ -204,18 +206,28 @@ struct FakeQuantize final : public luci::CircleNodeMutableVisitor<void>
   void visit(luci::CircleRelu6 *node) { fq_activation(node); }
   void visit(luci::CircleResizeBilinear *node) { fq_activation(node); }
   void visit(luci::CircleResizeNearestNeighbor *node) { fq_activation(node); }
+  void visit(luci::CircleRsqrt *node) { fq_activation(node); }
   void visit(luci::CircleSoftmax *node) { fq_activation(node); }
+  void visit(luci::CircleSqrt *node) { fq_activation(node); }
   void visit(luci::CircleTanh *node) { fq_activation(node); }
   void visit(luci::CircleTransposeConv *node) { fq_activation(node); }
 
   // For Ops that do not change the value of input, do nothing
   // (dtype will be automatically updated by type inference)
+  void visit(luci::CircleCast *) {}
   void visit(luci::CircleConcatenation *) {}
+  void visit(luci::CircleGather *) {}
   void visit(luci::CircleSlice *) {}
+  void visit(luci::CircleStridedSlice *) {}
   void visit(luci::CircleReshape *) {}
   void visit(luci::CircleSplit *) {}
   void visit(luci::CircleSplitOut *) {}
+  void visit(luci::CircleSplitV *) {}
+  void visit(luci::CircleSplitVOut *) {}
   void visit(luci::CircleTranspose *) {}
+
+  // For Ops that return index, fake quantization is unnecessary
+  void visit(luci::CircleArgMax *) {}
 
   // Virtual node
   void visit(luci::CircleOutputExclude *) {}
