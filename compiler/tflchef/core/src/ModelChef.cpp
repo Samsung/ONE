@@ -27,6 +27,7 @@
 
 #include <souschef/Dataset.h>
 #include <souschef/Dims.h>
+#include <souschef/Data/FP16.h>
 
 #include "Log.h"
 
@@ -210,6 +211,41 @@ struct CookParams
   std::string noname;
 };
 
+std::vector<flatbuffers::Offset<tflite::DimensionMetadata>>
+make_dim_metadata_vec(flatbuffers::FlatBufferBuilder *flatbuffer_builder, int32_t dims_count,
+                      const std::vector<int> &traversal_order_vec,
+                      const std::vector<sparsity::TfLiteDimensionType> &format_vec,
+                      const std::vector<std::vector<int32_t>> &dim_metadata_src)
+{
+  // Build sparsity parameter.
+  std::vector<flatbuffers::Offset<tflite::DimensionMetadata>> dim_metadata_vec(dims_count);
+  for (int32_t i = 0; i < dims_count; i++)
+  {
+    const int32_t metadata_idx = 2 * i;
+    if (format_vec[traversal_order_vec[i]] == sparsity::kTfLiteDimSparseCSR)
+    {
+      auto array_segments =
+        tflite::CreateInt32Vector(*flatbuffer_builder,
+                                  flatbuffer_builder->CreateVector(dim_metadata_src[metadata_idx]))
+          .Union();
+      auto array_indices =
+        tflite::CreateInt32Vector(
+          *flatbuffer_builder, flatbuffer_builder->CreateVector(dim_metadata_src[metadata_idx + 1]))
+          .Union();
+      dim_metadata_vec[i] =
+        tflite::CreateDimensionMetadata(*flatbuffer_builder, tflite::DimensionType_SPARSE_CSR, 0,
+                                        tflite::SparseIndexVector_Int32Vector, array_segments,
+                                        tflite::SparseIndexVector_Int32Vector, array_indices);
+    }
+    else
+    {
+      dim_metadata_vec[i] = tflite::CreateDimensionMetadata(
+        *flatbuffer_builder, tflite::DimensionType_DENSE, dim_metadata_src[metadata_idx][0]);
+    }
+  }
+  return dim_metadata_vec;
+}
+
 template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, CookParams &cp)
 {
   LOGGER(l);
@@ -274,6 +310,8 @@ template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, 
 
     assert(operand.has_type());
 
+    flatbuffers::Offset<tflite::SparsityParameters> sparsity_index;
+
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape;
     std::vector<int32_t> dims;
     if (operand.has_shape())
@@ -301,16 +339,125 @@ template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, 
       // Create Data
       int32_t count = (element_count(dims) > 0) ? element_count(dims) : filler.arg_size();
       auto data_vec = chef->generate(count);
-      auto data = flatbuffer_builder->CreateVector(data_vec);
 
-      // Create Buffer
-      tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
-      buffer_builder.add_data(data);
-      auto buffer = buffer_builder.Finish();
+      if (operand.has_make_sparse() && operand.make_sparse())
+      {
+        assert(not operand.has_sparsity());
+        assert(operand.has_shape());
 
-      // Update Buffer Index & Vector
-      buffer_index = buffer_vec.size();
-      buffer_vec.emplace_back(buffer);
+        const int32_t dims_count = dims.size();
+        std::vector<int> traversal_order_vec;
+        std::vector<sparsity::TfLiteDimensionType> format_vec;
+        for (int32_t o = 0; o < dims_count; ++o)
+          traversal_order_vec.push_back(o);
+        for (int32_t o = 0; o < dims_count - 1; ++o)
+          format_vec.push_back(sparsity::kTfLiteDimDense);
+        format_vec.push_back(sparsity::kTfLiteDimSparseCSR);
+
+        if (operand.type() == tflchef::FLOAT32)
+        {
+          ::sparsity::FormatConverter<float> converter(dims, traversal_order_vec, format_vec);
+          converter.DenseToSparse(reinterpret_cast<const float *>(data_vec.data()));
+          const auto &sparse_data = converter.GetData();
+
+          std::vector<uint8_t> sparse_uint8;
+          for (int c = 0; c < sparse_data.size(); ++c)
+          {
+            const float value = sparse_data.at(c);
+            const uint8_t *arr = reinterpret_cast<const uint8_t *>(&value);
+            for (uint32_t b = 0; b < sizeof(float); ++b)
+            {
+              sparse_uint8.emplace_back(arr[b]);
+            }
+          }
+          auto data = flatbuffer_builder->CreateVector(sparse_uint8);
+
+          // Create Buffer
+          tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+          buffer_builder.add_data(data);
+          auto buffer = buffer_builder.Finish();
+
+          // Update Buffer Index & Vector
+          buffer_index = buffer_vec.size();
+          buffer_vec.emplace_back(buffer);
+
+          // save SparsityParameters
+          auto traversal_order = flatbuffer_builder->CreateVector(traversal_order_vec);
+
+          // Create block map
+          std::vector<int> block_map_vec{};
+          auto block_map = flatbuffer_builder->CreateVector(block_map_vec);
+
+          // Create dimension metadata
+          const auto &dim_metadata_src = converter.GetDimMetadata();
+          auto dim_metadata_vec =
+            make_dim_metadata_vec(flatbuffer_builder.get(), dims_count, traversal_order_vec,
+                                  format_vec, dim_metadata_src);
+          auto dim_metadata = flatbuffer_builder->CreateVector(dim_metadata_vec);
+          sparsity_index = tflite::CreateSparsityParameters(*flatbuffer_builder, traversal_order,
+                                                            block_map, dim_metadata);
+        }
+        else if (operand.type() == tflchef::FLOAT16)
+        {
+          ::sparsity::FormatConverter<uint16_t> converter(dims, traversal_order_vec, format_vec);
+          converter.DenseToSparse(reinterpret_cast<const uint16_t *>(data_vec.data()));
+          const auto &sparse_data = converter.GetData();
+
+          std::vector<uint8_t> sparse_uint8;
+          for (int c = 0; c < sparse_data.size(); ++c)
+          {
+            const uint16_t value = sparse_data.at(c);
+            const uint8_t *arr = reinterpret_cast<const uint8_t *>(&value);
+            for (uint32_t b = 0; b < sizeof(uint16_t); ++b)
+            {
+              sparse_uint8.emplace_back(arr[b]);
+            }
+          }
+          auto data = flatbuffer_builder->CreateVector(sparse_uint8);
+
+          // Create Buffer
+          tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+          buffer_builder.add_data(data);
+          auto buffer = buffer_builder.Finish();
+
+          // Update Buffer Index & Vector
+          buffer_index = buffer_vec.size();
+          buffer_vec.emplace_back(buffer);
+
+          // save SparsityParameters
+          auto traversal_order = flatbuffer_builder->CreateVector(traversal_order_vec);
+
+          // Create block map
+          std::vector<int> block_map_vec{};
+          auto block_map = flatbuffer_builder->CreateVector(block_map_vec);
+
+          // Create dimension metadata
+          const auto &dim_metadata_src = converter.GetDimMetadata();
+          auto dim_metadata_vec =
+            make_dim_metadata_vec(flatbuffer_builder.get(), dims_count, traversal_order_vec,
+                                  format_vec, dim_metadata_src);
+          auto dim_metadata = flatbuffer_builder->CreateVector(dim_metadata_vec);
+          sparsity_index = tflite::CreateSparsityParameters(*flatbuffer_builder, traversal_order,
+                                                            block_map, dim_metadata);
+        }
+        else
+        {
+          throw std::runtime_error{"NYI: unsupported operand type"};
+        }
+      }
+      else
+      {
+        auto data = flatbuffer_builder->CreateVector(data_vec);
+
+        // Create Buffer
+        tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+        buffer_builder.add_data(data);
+        auto buffer = buffer_builder.Finish();
+
+        // Update Buffer Index & Vector
+        buffer_index = buffer_vec.size();
+        buffer_vec.emplace_back(buffer);
+      }
     }
     else
     {
@@ -386,8 +533,6 @@ template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, 
       // Update QuantizationParameters Index
       quant_index = quant_builder.Finish();
     }
-
-    flatbuffers::Offset<tflite::SparsityParameters> sparsity_index;
 
     if (operand.has_sparsity())
     {

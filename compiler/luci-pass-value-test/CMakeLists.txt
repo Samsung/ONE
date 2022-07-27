@@ -17,6 +17,13 @@ macro(addeval RECIPE PASS_OPTION)
   set(PASS_CIRCLE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${PASS_CIRCLE_FILE}")
 
   set(DASH_PASS_OPTION "--${PASS_OPTION}")
+  foreach(MORE_OPTIONS ${ARGN})
+    list(APPEND DASH_PASS_OPTION "--${MORE_OPTIONS}")
+  endforeach()
+  # NOTE if there are two options, 'DASH_PASS_OPTION' will be like '--option_a;--option_b'
+  #      add_custom_command() will translate ';' to two arguments as '--optiona_a --optionb'
+  #      do not use set(DASH_PASS_OPTION "${DASH_PASS_OPTION} --${ARG}"))
+  #      as this will become like '"--optiona_a --optionb"' which is one string argument
 
   # Generate optimized .circle
   add_custom_command(OUTPUT ${PASS_CIRCLE_OUTPUT_PATH}

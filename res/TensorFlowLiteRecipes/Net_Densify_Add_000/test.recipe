@@ -1,0 +1,44 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "sparse"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "0" arg: "0" arg: "0"
+    arg: "0" arg: "2" arg: "0" arg: "0"
+    arg: "0" arg: "0" arg: "3" arg: "0"
+    arg: "0" arg: "0" arg: "0" arg: "4"
+  }
+  make_sparse: true
+}
+operand {
+  name: "dense"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operation {
+  type: "Densify"
+  input: "sparse"
+  output: "dense"
+}
+operation {
+  type: "Add"
+  input: "ifm"
+  input: "dense"
+  output: "ofm"
+  add_options {
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "ofm"

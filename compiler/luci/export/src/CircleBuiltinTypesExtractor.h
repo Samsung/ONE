@@ -118,6 +118,10 @@ public:
     return circle::CreateCosOptions(_builder).Union();
   }
   flatbuffers::Offset<void> visit(luci::CircleCustom *) { return _no_option; }
+  flatbuffers::Offset<void> visit(luci::CircleDensify *)
+  {
+    return circle::CreateDensifyOptions(_builder).Union();
+  }
   flatbuffers::Offset<void> visit(luci::CircleDepthToSpace *node)
   {
     return circle::CreateDepthToSpaceOptions(_builder, node->block_size()).Union();

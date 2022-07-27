@@ -33,7 +33,7 @@ void dump_buffer(std::ostream &os, const uint8_t *buffer, size_t size, size_t am
   std::ios_base::fmtflags saveflags(os.flags());
 
   bool second = false;
-  bool ellipsis = amount > 0 && size > 4;
+  bool ellipsis = amount > 0 && size > 8;
   size_t count = ellipsis ? std::min(size, amount) : size;
 
   for (size_t i = 0; i < count; i++)
@@ -103,8 +103,8 @@ std::ostream &operator<<(std::ostream &os, const flatbuffers::Vector<T> *fbvect)
   if (fbvect == nullptr)
     return os;
 
-  bool ellipsis = (fbvect->size() > 4);
-  auto limit_size = ellipsis ? 4 : fbvect->size();
+  bool ellipsis = (fbvect->size() > 8);
+  auto limit_size = ellipsis ? 8 : fbvect->size();
 
   if (ellipsis)
   {

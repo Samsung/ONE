@@ -20,6 +20,7 @@
 #include "luci/Pass/ExpandBroadcastConstPass.h"
 #include "luci/Pass/FoldAddV2Pass.h"
 #include "luci/Pass/FoldCastPass.h"
+#include "luci/Pass/FoldDensifyPass.h"
 #include "luci/Pass/FoldDepthwiseConv2DPass.h"
 #include "luci/Pass/FoldDequantizePass.h"
 #include "luci/Pass/FoldGatherPass.h"
@@ -272,6 +273,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FoldCast))
   {
     phase.emplace_back(std::make_unique<luci::FoldCastPass>());
+  }
+  if (_options->query(Options::Algorithm::FoldDensify))
+  {
+    phase.emplace_back(std::make_unique<luci::FoldDensifyPass>());
   }
   if (_options->query(Options::Algorithm::FoldDepthwiseConv2D))
   {

@@ -15,6 +15,7 @@
  */
 
 #include "souschef/Data/Explicit.h"
+#include "souschef/Data/FP16.h"
 
 #include <string>
 #include <vector>
@@ -72,6 +73,25 @@ void ExplicitDataChef<std::string>::write_value(std::vector<uint8_t> &res, int32
   {
     res.emplace_back(arr[b]);
   }
+}
+
+std::vector<uint8_t> ExplicitFloat16DataChef::generate(int32_t count) const
+{
+  std::vector<uint8_t> res;
+
+  for (uint32_t n = 0; n < count; ++n)
+  {
+    float const fvalue = (n < _values.size()) ? _values.at(n) : 0.0;
+    uint16_t const value = fp16::fp16_ieee_from_fp32_value(fvalue);
+    auto const arr = reinterpret_cast<const uint8_t *>(&value);
+
+    for (uint32_t b = 0; b < sizeof(uint16_t); ++b)
+    {
+      res.emplace_back(arr[b]);
+    }
+  }
+
+  return res;
 }
 
 } // namespace souschef

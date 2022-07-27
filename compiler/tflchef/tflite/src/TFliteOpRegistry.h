@@ -69,6 +69,7 @@ private:
     REG_TFL_OP(CONCATENATION, TFliteOpConcatenation);
     REG_TFL_OP(CONV_2D, TFliteOpConv2D);
     REG_TFL_OP(COS, TFliteOpCos);
+    REG_TFL_OP(DENSIFY, TFliteOpDensify);
     REG_TFL_OP(DEPTH_TO_SPACE, TFliteOpDepthToSpace);
     REG_TFL_OP(DEPTHWISE_CONV_2D, TFliteOpDepthwiseConv2D);
     REG_TFL_OP(DEQUANTIZE, TFliteOpDequantize);
