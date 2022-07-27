@@ -10,7 +10,7 @@ Source1: %{name}.manifest
 # TODO Update source number
 Source1001: nnapi_test_generated.tar.gz
 #Source1002: GTEST.tar.gz
-Source1003: TENSORFLOW-2.3.0-EIGEN.tar.gz
+Source1003: TENSORFLOW-2.8.0-EIGEN.tar.gz
 Source1004: GEMMLOWP.tar.gz
 Source1005: RUY.tar.gz
 Source1006: CPUINFO.tar.gz
