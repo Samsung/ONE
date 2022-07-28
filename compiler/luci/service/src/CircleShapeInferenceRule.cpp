@@ -280,6 +280,8 @@ template <class CIRCLENODE> loco::NodeShape infer_arg_maxmin(const CIRCLENODE *n
     select_axis = const_shape_node->template scalar<loco::DataType::S32>();
   }
 
+  assert(select_axis < input_shape.rank());
+
   if (select_axis < 0)
     select_axis += input_shape.rank();
 
