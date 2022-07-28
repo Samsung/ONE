@@ -1,0 +1,30 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 2 }
+}
+operand {
+  name: "ofm"
+  type: INT64
+  shape { dim: 1 dim: 4 }
+}
+operand {
+  name: "argmax/dim"
+  type: INT32
+  shape { }
+  filler {
+    tag: "explicit"
+    arg: "-1"
+  }
+}
+operation {
+  type: "ArgMax"
+  argmax_options {
+    output_type: INT64
+  }
+  input: "ifm"
+  input: "argmax/dim"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
