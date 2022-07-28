@@ -813,6 +813,51 @@ public:
   luci::CircleConst *const_value = nullptr;
 };
 
+class ReduceMaxGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    rm = g.nodes()->create<luci::CircleReduceMax>();
+    rindices = g.nodes()->create<luci::CircleConst>();
+
+    rm->dtype(loco::DataType::FLOAT32);
+    rindices->dtype(loco::DataType::S32);
+
+    rm->shape(_shape);
+    rindices->shape({static_cast<uint32_t>(_axes.size())});
+
+    rindices->size<loco::DataType::S32>(_axes.size());
+    for (uint32_t i = 0; i < _axes.size(); ++i)
+    {
+      rindices->at<loco::DataType::S32>(i) = _axes[i];
+    }
+
+    rm->input(input);
+    rm->reduction_indices(rindices);
+    rm->keep_dims(_keep_dims);
+
+    rm->name("reduce_max");
+    rindices->name("rindices");
+
+    return rm;
+  }
+
+public:
+  void keep_dims(bool val) { _keep_dims = val; }
+  void axes(std::vector<int32_t> val) { _axes = val; }
+  void shape(std::initializer_list<uint32_t> val) { _shape = val; }
+
+public:
+  luci::CircleReduceMax *rm = nullptr;
+  luci::CircleConst *rindices = nullptr;
+
+private:
+  bool _keep_dims = true;
+  std::vector<int32_t> _axes = {2, 3};
+  std::initializer_list<uint32_t> _shape = {1, 16, 1, 1};
+};
+
 class ReluGraph final : public SimpleGraph
 {
 protected:
@@ -1730,6 +1775,85 @@ TEST(ConvertNCHWToNHWC, Preserve_Input_Output)
     EXPECT_EQ(16, g.output->dim(1).value());
     EXPECT_EQ(4, g.output->dim(2).value());
     EXPECT_EQ(4, g.output->dim(3).value());
+  }
+}
+
+TEST(ConvertNCHWToNHWC, ReduceMax)
+{
+  ReduceMaxGraph g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  check_pre_trans(g.rm->input());
+
+  auto rm_succs = loco::succs(g.rm);
+  EXPECT_EQ(1, rm_succs.size());
+  check_post_trans(*rm_succs.begin());
+
+  auto new_rindices = dynamic_cast<luci::CircleConst *>(g.rm->reduction_indices());
+  EXPECT_NE(nullptr, new_rindices);
+  EXPECT_EQ(1, new_rindices->rank());
+  EXPECT_EQ(2, new_rindices->dim(0).value());
+  EXPECT_EQ(2, new_rindices->size<loco::DataType::S32>());
+  EXPECT_EQ(1, new_rindices->at<loco::DataType::S32>(0));
+  EXPECT_EQ(2, new_rindices->at<loco::DataType::S32>(1));
+}
+
+TEST(ConvertNCHWToNHWC, ReduceMax_keep_dims_false)
+{
+  struct TC
+  {
+    std::vector<int32_t> nchw_ind;
+    std::vector<int32_t> nhwc_ind;
+    std::initializer_list<uint32_t> shape;
+    bool needs_transpose = false;
+  };
+
+  uint32_t n = 1;
+  uint32_t c = 16;
+  uint32_t h = 4;
+  uint32_t w = 4;
+
+  std::vector<TC> test_cases{{{0}, {0}, {c, h, w}, true},       {{1}, {3}, {n, h, w}, false},
+                             {{2}, {1}, {n, c, w}, true},       {{3}, {2}, {n, c, h}, true},
+                             {{0, 1}, {0, 3}, {h, w}, false},   {{0, 2}, {0, 1}, {c, w}, true},
+                             {{0, 3}, {0, 2}, {c, h}, true},    {{1, 2}, {3, 1}, {n, w}, false},
+                             {{1, 3}, {3, 2}, {n, h}, false},   {{2, 3}, {1, 2}, {n, c}, false},
+                             {{0, 1, 2}, {0, 3, 1}, {w}, false}};
+
+  for (auto &tc : test_cases)
+  {
+    ReduceMaxGraph g;
+    g.keep_dims(false);
+    g.axes(tc.nchw_ind);
+    g.shape(tc.shape);
+    g.init();
+
+    run_phase(&g.g, true, true);
+
+    check_pre_trans(g.rm->input());
+
+    auto rm_succs = loco::succs(g.rm);
+    EXPECT_EQ(1, rm_succs.size());
+    if (tc.needs_transpose)
+    {
+      EXPECT_NE(nullptr, dynamic_cast<luci::CircleTranspose *>(*rm_succs.begin()));
+    }
+    else
+    {
+      EXPECT_NE(nullptr, dynamic_cast<luci::CircleOutput *>(*rm_succs.begin()));
+    }
+
+    auto new_rindices = dynamic_cast<luci::CircleConst *>(g.rm->reduction_indices());
+    EXPECT_NE(nullptr, new_rindices);
+    EXPECT_EQ(1, new_rindices->rank());
+    EXPECT_EQ(tc.nhwc_ind.size(), new_rindices->dim(0).value());
+    EXPECT_EQ(tc.nhwc_ind.size(), new_rindices->size<loco::DataType::S32>());
+    for (uint32_t i = 0; i < tc.nhwc_ind.size(); ++i)
+    {
+      EXPECT_EQ(tc.nhwc_ind[i], new_rindices->at<loco::DataType::S32>(i));
+    }
   }
 }
 
