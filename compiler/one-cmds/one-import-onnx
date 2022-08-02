@@ -135,6 +135,10 @@ def _apply_verbosity(verbosity):
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
+# The index of input/output is added in front of the name. For example,
+# Original input names: 'a', 'c', 'b'
+# Renamed: '0001_a', '0002_c', '0003_b'
+# This will preserve I/O order after import.
 def _remap_io_names(onnx_model):
     # gather existing name of I/O and generate new name of I/O in sort order
     input_nodes = []
