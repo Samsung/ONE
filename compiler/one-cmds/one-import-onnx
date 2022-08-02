@@ -79,6 +79,12 @@ def _get_parser():
     parser.add_argument('--unroll_rnn', action='store_true', help='Unroll RNN operators')
     parser.add_argument(
         '--unroll_lstm', action='store_true', help='Unroll LSTM operators')
+    parser.add_argument(
+        '--fix_io_order',
+        action='store_true',
+        help=
+        'Ensure generated circle model preserves the I/O order of the original onnx model.'
+    )
 
     # save intermediate file(s)
     parser.add_argument(
@@ -129,6 +135,60 @@ def _apply_verbosity(verbosity):
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
+# The index of input/output is added in front of the name. For example,
+# Original input names: 'a', 'c', 'b'
+# Renamed: '0001_a', '0002_c', '0003_b'
+# This will preserve I/O order after import.
+def _remap_io_names(onnx_model):
+    # gather existing name of I/O and generate new name of I/O in sort order
+    input_nodes = []
+    output_nodes = []
+    remap_inputs = []
+    remap_outputs = []
+    for idx in range(0, len(onnx_model.graph.input)):
+        name = onnx_model.graph.input[idx].name
+        input_nodes.append(name)
+        remap_inputs.append(format(idx + 1, '04d') + '_' + name)
+    for idx in range(0, len(onnx_model.graph.output)):
+        name = onnx_model.graph.output[idx].name
+        output_nodes.append(name)
+        remap_outputs.append(format(idx + 1, '04d') + '_' + name)
+    # change names for graph input
+    for i in range(len(onnx_model.graph.input)):
+        if onnx_model.graph.input[i].name in input_nodes:
+            to_rename = onnx_model.graph.input[i].name
+            idx = input_nodes.index(to_rename)
+            onnx_model.graph.input[i].name = remap_inputs[idx]
+    # change names of all nodes in the graph
+    for i in range(len(onnx_model.graph.node)):
+        # check node.input is to change to remap_inputs or remap_outputs
+        for j in range(len(onnx_model.graph.node[i].input)):
+            if onnx_model.graph.node[i].input[j] in input_nodes:
+                to_rename = onnx_model.graph.node[i].input[j]
+                idx = input_nodes.index(to_rename)
+                onnx_model.graph.node[i].input[j] = remap_inputs[idx]
+            if onnx_model.graph.node[i].input[j] in output_nodes:
+                to_rename = onnx_model.graph.node[i].input[j]
+                idx = output_nodes.index(to_rename)
+                onnx_model.graph.node[i].input[j] = remap_outputs[idx]
+        # check node.output is to change to remap_inputs or remap_outputs
+        for j in range(len(onnx_model.graph.node[i].output)):
+            if onnx_model.graph.node[i].output[j] in output_nodes:
+                to_rename = onnx_model.graph.node[i].output[j]
+                idx = output_nodes.index(to_rename)
+                onnx_model.graph.node[i].output[j] = remap_outputs[idx]
+            if onnx_model.graph.node[i].output[j] in input_nodes:
+                to_rename = onnx_model.graph.node[i].output[j]
+                idx = input_nodes.index(to_rename)
+                onnx_model.graph.node[i].output[j] = remap_inputs[idx]
+    # change names for graph output
+    for i in range(len(onnx_model.graph.output)):
+        if onnx_model.graph.output[i].name in output_nodes:
+            to_rename = onnx_model.graph.output[i].name
+            idx = output_nodes.index(to_rename)
+            onnx_model.graph.output[i].name = remap_outputs[idx]
+
+
 def _convert(args):
     _apply_verbosity(args.verbose)
 
@@ -147,6 +207,13 @@ def _convert(args):
             options.unroll_rnn = _utils._is_valid_attr(args, 'unroll_rnn')
             options.unroll_lstm = _utils._is_valid_attr(args, 'unroll_lstm')
             onnx_legalizer.legalize(onnx_model, options)
+        if _utils._is_valid_attr(args, 'fix_io_order'):
+            _remap_io_names(onnx_model)
+            if _utils._is_valid_attr(args, 'save_intermediate'):
+                basename = os.path.basename(getattr(args, 'input_path'))
+                fixed_path = os.path.join(tmpdir,
+                                          os.path.splitext(basename)[0] + '~.onnx')
+                onnx.save(onnx_model, fixed_path)
         tf_savedmodel = onnx_tf.backend.prepare(onnx_model)
 
         savedmodel_name = os.path.splitext(os.path.basename(
