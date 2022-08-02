@@ -79,7 +79,7 @@ def _get_parser():
     parser.add_argument('--unroll_rnn', action='store_true', help='Unroll RNN operators')
     parser.add_argument(
         '--unroll_lstm', action='store_true', help='Unroll LSTM operators')
-    parser.add_argument('--fix_io_order', action='store_true', help='Fix I/O signature')
+    parser.add_argument('--fix_io_order', action='store_true', help='Ensure generated circle model preserves the I/O order of the original onnx model.')
 
     # save intermediate file(s)
     parser.add_argument(
