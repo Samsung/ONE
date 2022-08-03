@@ -145,10 +145,15 @@ def _remap_io_names(onnx_model):
     output_nodes = []
     remap_inputs = []
     remap_outputs = []
+    initializers = []
+    # some models may have initializers as inputs. ignore them.
+    for initializer in onnx_model.graph.initializer:
+        initializers.append(initializer.name)
     for idx in range(0, len(onnx_model.graph.input)):
         name = onnx_model.graph.input[idx].name
-        input_nodes.append(name)
-        remap_inputs.append(format(idx + 1, '04d') + '_' + name)
+        if not name in initializers:
+            input_nodes.append(name)
+            remap_inputs.append(format(idx + 1, '04d') + '_' + name)
     for idx in range(0, len(onnx_model.graph.output)):
         name = onnx_model.graph.output[idx].name
         output_nodes.append(name)
