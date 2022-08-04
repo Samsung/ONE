@@ -17,7 +17,7 @@
 #include "Server.h"
 
 #include <thread>
-#include <iostream>
+#include <util/Logging.h>
 
 namespace npud
 {
@@ -33,7 +33,7 @@ Server::Server() noexcept
 
 void Server::run(void)
 {
-  std::cout << "Starting Server" << std::endl;
+  VERBOSE(Server) << "Starting Server\n";
 
   if (_isRunning.exchange(true))
   {
@@ -45,7 +45,7 @@ void Server::run(void)
 
 void Server::stop(void)
 {
-  std::cout << "Stop Server" << std::endl;
+  VERBOSE(Server) << "Stop Server\n";
 
   if (!_isRunning.load())
   {

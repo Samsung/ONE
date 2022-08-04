@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,27 +14,28 @@
  * limitations under the License.
  */
 
-#include "Server.h"
+#ifndef __ONE_SERVICE_NPUD_UTIL_ENV_CONFIG_SOURCE_H__
+#define __ONE_SERVICE_NPUD_UTIL_ENV_CONFIG_SOURCE_H__
 
-#include <util/Logging.h>
+#include <unordered_map>
 
-using namespace npud;
+#include "GeneralConfigSource.h"
 
-int main(int argc, const char *argv[])
+namespace npud
 {
-  auto &server = core::Server::instance();
+namespace util
+{
 
-  VERBOSE(main) << "Starting npud\n";
-  try
-  {
-    server.run();
-  }
-  catch (const std::runtime_error &err)
-  {
-    std::cerr << err.what() << std::endl;
-    return 1;
-  }
+class EnvConfigSource final : public GeneralConfigSource
+{
+public:
+  std::string get(const std::string &key) const override;
 
-  VERBOSE(main) << "Finished npud\n";
-  return 0;
-}
+private:
+  std::unordered_map<std::string, std::string> _default_attributes;
+};
+
+} // namespace util
+} // namespace npud
+
+#endif // __ONE_SERVICE_NPUD_UTIL_ENV_CONFIG_SOURCE_H__

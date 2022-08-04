@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-#include "Server.h"
+#include "EnvConfigSource.h"
 
-#include <util/Logging.h>
+#include <cstdlib>
 
-using namespace npud;
-
-int main(int argc, const char *argv[])
+namespace npud
 {
-  auto &server = core::Server::instance();
+namespace util
+{
 
-  VERBOSE(main) << "Starting npud\n";
-  try
+std::string EnvConfigSource::get(const std::string &key) const
+{
+  const char *value = std::getenv(key.c_str());
+  if (value != nullptr)
   {
-    server.run();
+    return value;
   }
-  catch (const std::runtime_error &err)
+  else
   {
-    std::cerr << err.what() << std::endl;
-    return 1;
+    return GeneralConfigSource::get(key);
   }
-
-  VERBOSE(main) << "Finished npud\n";
-  return 0;
 }
+
+} // namespace util
+} // namespace npud

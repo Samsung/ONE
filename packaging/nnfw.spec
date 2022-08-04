@@ -33,6 +33,7 @@ Source2002: nnfw-plugin.pc.in
 %{!?coverage_build: %define coverage_build  0}
 %{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
+%{!?config_support: %define config_support  1}
 
 %if %{coverage_build} == 1
 # Coverage test requires debug build runtime
@@ -150,12 +151,21 @@ NPU daemon for optimal management of NPU hardware
 %define option_test -DENABLE_TEST=ON -DENVVAR_ONERT_CONFIG=ON
 %endif # test_build
 
+# Set option for configuration
+%define option_config %{nil}
+%if %{config_support} == 1
+%if %{npud_build} == 1
+# ENVVAR_NPUD_CONFIG: Use environment variable for npud configuration and debug
+%define option_config -DENVVAR_NPUD_CONFIG=ON
+%endif # npud_build
+%endif # config_support
+
 %if %{coverage_build} == 1
 %define option_coverage -DENABLE_COVERAGE=ON
 %endif # coverage_build
 
 %define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DBUILD_MINIMAL_SAMPLE=ON \\\
-        %{option_test} %{option_coverage} %{extra_option}
+        %{option_test} %{option_coverage} %{option_config} %{extra_option}
 
 %prep
 %setup -q
