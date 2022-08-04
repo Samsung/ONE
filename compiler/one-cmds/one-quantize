@@ -203,6 +203,14 @@ def _get_parser():
     copy_quantparam_group.add_argument(
         '--dst_tensor_name', type=str, action='append', help='tensor name (string)')
 
+    # arguments for fake_quant option
+    fake_quant_group = parser.add_argument_group('arguments for fake_quantize option')
+
+    fake_quant_group.add_argument(
+        '--fake_quantize',
+        action='store_true',
+        help='convert quantized model to fake-quantized fp32 model.')
+
     return parser
 
 
@@ -298,6 +306,11 @@ def _quantize(args):
     if _utils._is_valid_attr(args, 'copy_quantparam'):
         # copy quantization parameters
         _copy_qparam(args)
+        return
+
+    if _utils._is_valid_attr(args, 'fake_quantize'):
+        # fake-quantize model
+        _fake_quantize(args)
         return
 
     # get file path to log
@@ -510,6 +523,27 @@ def _copy_qparam(args):
 
         # run circle-quantizer
         _utils._run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
+
+
+def _fake_quantize(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
+
+    with open(logfile_path, 'wb') as f:
+        # get driver path
+        circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
+        q_model = ""
+        if _utils._is_valid_attr(args, 'input_path'):
+            q_model = getattr(args, 'input_path')
+        if _utils._is_valid_attr(args, 'output_path'):
+            fq_model = getattr(args, 'output_path')
+
+        # do fake quantization
+        fake_quantize_cmd = Command(circle_quantizer_path, args, f)
+        fake_quantize_cmd.add_noarg_option_if_valid_arg('--verbose', 'verbose') \
+            .add_option_with_values('--fake_quantize', [q_model, fq_model]) \
+            .run()
 
 
 def main():
