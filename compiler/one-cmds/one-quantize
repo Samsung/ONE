@@ -533,11 +533,8 @@ def _fake_quantize(args):
     with open(logfile_path, 'wb') as f:
         # get driver path
         circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
-        q_model = ""
-        if _utils._is_valid_attr(args, 'input_path'):
-            q_model = getattr(args, 'input_path')
-        if _utils._is_valid_attr(args, 'output_path'):
-            fq_model = getattr(args, 'output_path')
+        q_model = getattr(args, 'input_path')
+        fq_model = getattr(args, 'output_path')
 
         # do fake quantization
         fake_quantize_cmd = Command(circle_quantizer_path, args, f)
