@@ -26,11 +26,7 @@
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wsign-compare"
 #include "tensorflow/lite/delegates/gpu/cl/inference_context.h"
-#pragma GCC diagnostic pop
 
 namespace onert
 {

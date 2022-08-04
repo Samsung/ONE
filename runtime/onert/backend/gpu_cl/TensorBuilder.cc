@@ -21,13 +21,9 @@
 
 #include "TensorManager.h"
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wsign-compare"
 #include "tensorflow/lite/delegates/gpu/cl/tensor_type_util.h"
 #include "tensorflow/lite/delegates/gpu/cl/cl_device.h"
 #include "tensorflow/lite/delegates/gpu/cl/inference_context.h"
-#pragma GCC diagnostic pop
 
 #include "ir/OperandIndexMap.h"
 #include "ir/OperandIndexSequence.h"

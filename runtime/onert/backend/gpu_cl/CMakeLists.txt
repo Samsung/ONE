@@ -65,10 +65,6 @@ endif ()
 
 target_compile_options(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE "-DCL_TARGET_OPENCL_VERSION=220" "-DEGL_NO_X11")
 
-add_library(tflite_ignore_warnings INTERFACE)
-target_compile_options(tflite_ignore_warnings INTERFACE -Wno-unused-parameter -Wno-sign-compare)
-target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} INTERFACE tflite_ignore_warnings)
-
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE abseil)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE dl)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE farmhash)
@@ -91,5 +87,9 @@ if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
   add_custom_command(TARGET ${LIB_ONERT_BACKEND_GPU_CL} POST_BUILD
                      COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:${LIB_ONERT_BACKEND_GPU_CL}>)
 endif()
+
+add_library(tflite_ignore_warnings INTERFACE)
+target_compile_options(tflite_ignore_warnings INTERFACE -Wno-unused-parameter -Wno-sign-compare)
+target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE tflite_ignore_warnings)
 
 install(TARGETS ${LIB_ONERT_BACKEND_GPU_CL} DESTINATION lib)

@@ -22,16 +22,12 @@
 #include "ClFunction.h"
 #include "TensorManager.h"
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wsign-compare"
 #include "tensorflow/lite/delegates/gpu/common/shape.h"
 #include "tensorflow/lite/delegates/gpu/common/tensor.h"
 #include "tensorflow/lite/delegates/gpu/common/tasks/elementwise.h"
 #include "tensorflow/lite/delegates/gpu/common/selectors/convolution_selector.h"
 #include "tensorflow/lite/delegates/gpu/common/selectors/dw_convolution_selector.h"
 #include "tensorflow/lite/delegates/gpu/common/selectors/simple_selectors.h"
-#pragma GCC diagnostic pop
 
 #include "ir/Operations.h"
 #include "ir/Operations.Include.h"

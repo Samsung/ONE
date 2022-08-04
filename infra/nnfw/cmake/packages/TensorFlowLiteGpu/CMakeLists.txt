@@ -60,10 +60,6 @@ target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "${Egl_Headers
 
 target_link_libraries(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE abseil farmhash fp16 flatbuffers)
 
-add_library(tflitegpu_ignore_warnings INTERFACE)
-target_compile_options(tflitegpu_ignore_warnings INTERFACE -Wno-unused-parameter -Wno-sign-compare)
-target_link_libraries(${LIB_TENSORFLOW_GPU_DELEGATE} INTERFACE tflitegpu_ignore_warnings)
-
 # GL codes are not used on gpu_cl
 target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "-DCL_DELEGATE_NO_GL")
 target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "-DTFLITE_GPU_BINARY_RELEASE" "-DEGL_NO_X11")

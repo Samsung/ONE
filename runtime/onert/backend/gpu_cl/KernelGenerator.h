@@ -22,11 +22,7 @@
 #include "TensorBuilder.h"
 #include "TensorManager.h"
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wsign-compare"
 #include "tensorflow/lite/delegates/gpu/api.h"
-#pragma GCC diagnostic pop
 
 #include <backend/CustomKernelBuilder.h>
 #include <backend/basic/KernelGeneratorBase.h>
