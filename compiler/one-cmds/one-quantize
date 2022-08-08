@@ -172,6 +172,12 @@ def _get_parser():
         help=
         "Print Top-5 match ratio of inference results between quantized model and fp32 model."
     )
+    quantization_group.add_argument(
+        '--print_mse',
+        action='store_true',
+        help=
+        "Print MSE (Mean Squared Error) of inference results between quantized model and fp32 model."
+    )
 
     # arguments for force_quantparam option
     force_quantparam_group = parser.add_argument_group(
@@ -451,6 +457,7 @@ def _quantize(args):
                 .add_noarg_option_if_valid_arg('--print_mpeir', 'print_mpeir') \
                 .add_noarg_option_if_valid_arg('--print_top1_match', 'print_top1_match') \
                 .add_noarg_option_if_valid_arg('--print_top5_match', 'print_top5_match') \
+                .add_noarg_option_if_valid_arg('--print_mse', 'print_mse') \
                 .run()
 
 
