@@ -202,6 +202,11 @@ void CircleEvalDiff::init()
         _metrics.emplace_back(std::make_unique<TopKMatchPrinter>(5));
         break;
       }
+      case Metric::MSE:
+      {
+        _metrics.emplace_back(std::make_unique<MSEPrinter>());
+        break;
+      }
       default:
         throw std::runtime_error("Unsupported metric.");
     }

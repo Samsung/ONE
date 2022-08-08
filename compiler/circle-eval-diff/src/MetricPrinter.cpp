@@ -560,6 +560,103 @@ void TopKMatchPrinter::dump(std::ostream &os) const
   }
 }
 
+void MSEPrinter::init(const luci::Module *first, const luci::Module *second)
+{
+  THROW_UNLESS(first != nullptr, "Invalid module.");
+  THROW_UNLESS(second != nullptr, "Invalid module.");
+
+  const auto first_output = loco::output_nodes(first->graph());
+  const auto second_output = loco::output_nodes(second->graph());
+
+  assert(first_output.size() == second_output.size()); // FIX_CALLER_UNLESS
+
+  for (uint32_t i = 0; i < first_output.size(); i++)
+  {
+    const auto first_node = loco::must_cast<luci::CircleNode *>(first_output[i]);
+    const auto second_node = loco::must_cast<luci::CircleNode *>(second_output[i]);
+
+    // Create tensors to store intermediate results
+    _intermediate.emplace_back();
+    _intermediate.at(i).dtype(loco::DataType::FLOAT32);
+    // NOTE Use both first_node and second_node to avoid release build break
+    _intermediate.at(i).rank(first_node->rank());
+    uint32_t num_elems = 1;
+    for (uint32_t j = 0; j < second_node->rank(); j++)
+    {
+      _intermediate.at(i).dim(j) = second_node->dim(j);
+      num_elems *= second_node->dim(j).value();
+    }
+    _intermediate.at(i).size<loco::DataType::FLOAT32>(num_elems);
+
+    // Check the buffer is initilized with zero
+    for (uint32_t j = 0; j < num_elems; j++)
+      assert(_intermediate.at(i).at<loco::DataType::FLOAT32>(j) == 0.0);
+
+    // Save output names for logging
+    _output_names.emplace_back(first_node->name());
+  }
+}
+
+void MSEPrinter::accum_squared_error(uint32_t output_idx, const std::shared_ptr<Tensor> &a,
+                                     const std::shared_ptr<Tensor> &b)
+{
+  assert(a->dtype() == loco::DataType::FLOAT32 and
+         b->dtype() == loco::DataType::FLOAT32); // FIX_CALLER_UNLESS
+  assert(same_shape(a.get(), b.get()));          // FIX_CALLER_UNLESS
+  assert(output_idx < _intermediate.size());     // FIX_CALLER_UNLESS
+
+  for (uint32_t i = 0; i < a->size<loco::DataType::FLOAT32>(); i++)
+  {
+    _intermediate.at(output_idx).at<loco::DataType::FLOAT32>(i) +=
+      (a->at<loco::DataType::FLOAT32>(i) - b->at<loco::DataType::FLOAT32>(i)) *
+      (a->at<loco::DataType::FLOAT32>(i) - b->at<loco::DataType::FLOAT32>(i));
+  }
+}
+
+void MSEPrinter::accumulate(const std::vector<std::shared_ptr<Tensor>> &first,
+                            const std::vector<std::shared_ptr<Tensor>> &second)
+{
+  assert(first.size() == second.size());        // FIX_CALLER_UNLESS
+  assert(first.size() == _intermediate.size()); // FIX_CALLER_UNLESS
+
+  for (uint32_t output_idx = 0; output_idx < _intermediate.size(); output_idx++)
+  {
+    const auto first_output = first[output_idx];
+    const auto second_output = second[output_idx];
+
+    // Cast data to fp32 and then compute absolute error
+    const auto fp32_first_output = fp32(first_output);
+    const auto fp32_second_output = fp32(second_output);
+
+    accum_squared_error(output_idx, fp32_first_output, fp32_second_output);
+  }
+
+  _num_data++;
+}
+
+void MSEPrinter::dump(std::ostream &os) const
+{
+  os << "Mean Squared Error (MSE)" << std::endl;
+
+  for (uint32_t output_idx = 0; output_idx < _intermediate.size(); output_idx++)
+  {
+    const auto name = _output_names.at(output_idx);
+    const auto &inter = _intermediate.at(output_idx);
+    assert(inter.dtype() == loco::DataType::FLOAT32); // FIX_ME_UNLESS
+    const auto elem_count = inter.size<loco::DataType::FLOAT32>();
+
+    // Compute MSE
+    float mse = 0.0;
+    for (uint32_t elem_idx = 0; elem_idx < elem_count; elem_idx++)
+      mse += inter.at<loco::DataType::FLOAT32>(elem_idx);
+
+    mse = mse / elem_count;
+    mse = mse / _num_data;
+
+    os << "MSE for " << name << " is " << mse << std::endl;
+  }
+}
+
 } // namespace circle_eval_diff
 
 #undef THROW_UNLESS

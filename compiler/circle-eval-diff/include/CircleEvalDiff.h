@@ -41,6 +41,7 @@ enum class Metric
   MPEIR,     // Mean Peak Error to Interval Ratio
   MTOP1,     // Mean Top-1 Match Ratio
   MTOP5,     // Mean Top-5 Match Ratio
+  MSE,       // Mean Squared Error
 };
 
 class CircleEvalDiff final

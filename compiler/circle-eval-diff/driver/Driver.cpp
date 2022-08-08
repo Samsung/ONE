@@ -95,6 +95,8 @@ int entry(const int argc, char **argv)
     .default_value(false)
     .help("Print Mean Top-5 Match Ratio");
 
+  arser.add_argument("--print_mse").nargs(0).default_value(false).help("Print Mean Squared Error");
+
   arser.add_argument("--input_data_format")
     .default_value("h5")
     .help("Input data format. h5/hdf5 (default) or directory");
@@ -154,6 +156,10 @@ int entry(const int argc, char **argv)
   if (arser["--print_top5_match"] and arser.get<bool>("--print_top5_match"))
   {
     metrics.emplace_back(Metric::MTOP5);
+  }
+  if (arser["--print_mse"] and arser.get<bool>("--print_mse"))
+  {
+    metrics.emplace_back(Metric::MSE);
   }
 
   input_data_format = arser.get<std::string>("--input_data_format");
