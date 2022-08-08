@@ -32,6 +32,7 @@
 #include "Nodes/CircleConv2D.h"
 #include "Nodes/CircleCos.h"
 #include "Nodes/CircleCustom.h"
+#include "Nodes/CircleDensify.h"
 #include "Nodes/CircleDepthToSpace.h"
 #include "Nodes/CircleDepthwiseConv2D.h"
 #include "Nodes/CircleDequantize.h"
