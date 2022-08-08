@@ -854,6 +854,11 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleLogistic *node) { return convert_unary_x<luci::CircleLogistic>(node); }
 
+  bool visit(luci::CircleLogSoftmax *node)
+  {
+    return convert_unary_logits<luci::CircleLogSoftmax>(node);
+  }
+
   bool visit(luci::CircleMaximum *node)
   {
     luci::CircleNode *pred_node = nullptr;
@@ -1429,6 +1434,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::ELU:
       case luci::CircleOpcode::LEAKY_RELU:
       case luci::CircleOpcode::LOGISTIC:
+      case luci::CircleOpcode::LOG_SOFTMAX:
       case luci::CircleOpcode::MAXIMUM:
       case luci::CircleOpcode::MEAN:
       case luci::CircleOpcode::MINIMUM:
