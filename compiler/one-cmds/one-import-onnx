@@ -85,6 +85,12 @@ def _get_parser():
         help=
         'Ensure generated circle model preserves the I/O order of the original onnx model.'
     )
+    parser.add_argument(
+        '--keep_io_order',
+        action='store_true',
+        help=
+        'Ensure generated circle model preserves the I/O order of the original onnx model.'
+    )
 
     # save intermediate file(s)
     parser.add_argument(
@@ -212,7 +218,8 @@ def _convert(args):
             options.unroll_rnn = _utils._is_valid_attr(args, 'unroll_rnn')
             options.unroll_lstm = _utils._is_valid_attr(args, 'unroll_lstm')
             onnx_legalizer.legalize(onnx_model, options)
-        if _utils._is_valid_attr(args, 'fix_io_order'):
+        if _utils._is_valid_attr(args, 'fix_io_order') or _utils._is_valid_attr(
+                args, 'keep_io_order'):
             _remap_io_names(onnx_model)
             if _utils._is_valid_attr(args, 'save_intermediate'):
                 basename = os.path.basename(getattr(args, 'input_path'))
