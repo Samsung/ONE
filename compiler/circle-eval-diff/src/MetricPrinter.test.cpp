@@ -497,4 +497,52 @@ TEST(CircleEvalMetricPrinterTest, TopK_init_with_null_NEG)
   EXPECT_ANY_THROW(topk.init(nullptr, nullptr));
 }
 
+TEST(CircleEvalMetricPrinterTest, MSE_simple)
+{
+  luci::Module first;
+  AddOneGraph first_g;
+  first_g.init();
+
+  first.add(std::move(first_g.graph()));
+
+  luci::Module second;
+  AddTwoGraph second_g;
+  second_g.init();
+
+  second.add(std::move(second_g.graph()));
+
+  MSEPrinter mse;
+
+  mse.init(&first, &second);
+
+  // This test does not actually evaluate the modules, but create
+  // fake results.
+  std::vector<std::shared_ptr<Tensor>> first_result;
+  {
+    auto output = output_tensor_with_value(&first, 1.0);
+    first_result.emplace_back(output);
+  }
+
+  std::vector<std::shared_ptr<Tensor>> second_result;
+  {
+    auto output = output_tensor_with_value(&second, 2.0);
+    second_result.emplace_back(output);
+  }
+
+  mse.accumulate(first_result, second_result);
+
+  std::stringstream ss;
+  mse.dump(ss);
+  std::string result = ss.str();
+
+  EXPECT_NE(std::string::npos, result.find("MSE for output_0 is 1"));
+}
+
+TEST(CircleEvalMetricPrinterTest, MSE_init_with_null_NEG)
+{
+  MSEPrinter mse;
+
+  EXPECT_ANY_THROW(mse.init(nullptr, nullptr));
+}
+
 } // namespace circle_eval_diff
