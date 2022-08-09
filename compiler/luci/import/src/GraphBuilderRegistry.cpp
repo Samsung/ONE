@@ -44,6 +44,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(CONCATENATION, CircleConcatenationGraphBuilder);                             // 2
   CIRCLE_NODE(CONV_2D, CircleConv2DGraphBuilder);                                          // 3
   CIRCLE_NODE(COS, CircleCosGraphBuilder);                                                 // 108
+  CIRCLE_NODE(DENSIFY, CircleDensifyGraphBuilder);                                         // 124
   CIRCLE_NODE(DEPTH_TO_SPACE, CircleDepthToSpaceGraphBuilder);                             // 5
   CIRCLE_NODE(DEPTHWISE_CONV_2D, CircleDepthwiseConv2DGraphBuilder);                       // 4
   CIRCLE_NODE(DEQUANTIZE, CircleDequantizeGraphBuilder);                                   // 6
@@ -160,7 +161,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_DELEGATE = 51,
   // BuiltinOperator_ARG_MAX = 56,
   // BuiltinOperator_HARD_SWISH = 117,
-  // BuiltinOperator_DENSIFY = 124,
 
   // Register builders for nodes which not handles in builders registered above.
 #define CIRCLE_NODE(CLASS) add(std::make_unique<CLASS>())
