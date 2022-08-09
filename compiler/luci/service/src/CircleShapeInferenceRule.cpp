@@ -204,6 +204,7 @@ template <class CIRCLENODE> loco::NodeShape broadcast_xy(const CIRCLENODE *node)
     return loco::NodeShape{inputs_shape};                                               \
   }
 
+DECLARE_USE_SINGLE(input);
 DECLARE_USE_SINGLE(inputs);
 DECLARE_USE_SINGLE(x);
 DECLARE_USE_SINGLE(logits);
@@ -2054,6 +2055,8 @@ public:
   loco::NodeShape visit(const luci::CircleCos *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleCustom *node) final { return use_own(node); }
+
+  loco::NodeShape visit(const luci::CircleDensify *node) final { return use_input(node); }
 
   loco::NodeShape visit(const luci::CircleDepthToSpace *node) final
   {
