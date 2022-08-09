@@ -27,6 +27,7 @@
 
 #include <souschef/Dataset.h>
 #include <souschef/Dims.h>
+#include <souschef/Data/FP16.h>
 
 #include "Log.h"
 
@@ -398,7 +399,46 @@ template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, 
         }
         else if (operand.type() == tflchef::FLOAT16)
         {
-          // TODO implement
+          ::sparsity::FormatConverter<uint16_t> converter(dims, traversal_order_vec, format_vec);
+          converter.DenseToSparse(reinterpret_cast<const uint16_t *>(data_vec.data()));
+          const auto &sparse_data = converter.GetData();
+
+          std::vector<uint8_t> sparse_uint8;
+          for (int c = 0; c < sparse_data.size(); ++c)
+          {
+            const uint16_t value = sparse_data.at(c);
+            const uint8_t *arr = reinterpret_cast<const uint8_t *>(&value);
+            for (uint32_t b = 0; b < sizeof(uint16_t); ++b)
+            {
+              sparse_uint8.emplace_back(arr[b]);
+            }
+          }
+          auto data = flatbuffer_builder->CreateVector(sparse_uint8);
+
+          // Create Buffer
+          tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+          buffer_builder.add_data(data);
+          auto buffer = buffer_builder.Finish();
+
+          // Update Buffer Index & Vector
+          buffer_index = buffer_vec.size();
+          buffer_vec.emplace_back(buffer);
+
+          // save SparsityParameters
+          auto traversal_order = flatbuffer_builder->CreateVector(traversal_order_vec);
+
+          // Create block map
+          std::vector<int> block_map_vec{};
+          auto block_map = flatbuffer_builder->CreateVector(block_map_vec);
+
+          // Create dimension metadata
+          const auto &dim_metadata_src = converter.GetDimMetadata();
+          auto dim_metadata_vec =
+            make_dim_metadata_vec(flatbuffer_builder.get(), dims_count, traversal_order_vec,
+                                  format_vec, dim_metadata_src);
+          auto dim_metadata = flatbuffer_builder->CreateVector(dim_metadata_vec);
+          sparsity_index = tflite::CreateSparsityParameters(*flatbuffer_builder, traversal_order,
+                                                            block_map, dim_metadata);
         }
         else
         {
