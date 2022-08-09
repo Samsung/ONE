@@ -96,6 +96,41 @@ template <typename T> struct ExplicitDataChefFactory : public DataChefFactory
   }
 };
 
+class ExplicitFloat16DataChef final : public DataChef
+{
+public:
+  ExplicitFloat16DataChef()
+  {
+    // DO NOTHING
+  }
+
+public:
+  std::vector<uint8_t> generate(int32_t count) const override;
+
+public:
+  void insert(const float &value) { _values.emplace_back(value); }
+
+private:
+  // NOTE store values in float but will convert to uint16_t in generate()
+  std::vector<float> _values;
+};
+
+struct ExplicitFloat16DataChefFactory : public DataChefFactory
+{
+  std::unique_ptr<DataChef> create(const Arguments &args) const
+  {
+    std::unique_ptr<ExplicitFloat16DataChef> res{new ExplicitFloat16DataChef};
+
+    for (uint32_t n = 0; n < args.count(); ++n)
+    {
+      auto const value = to_number<float>(args.value(n));
+      res->insert(value);
+    }
+
+    return std::move(res);
+  }
+};
+
 } // namespace souschef
 
 #endif // __SOUSCHEF_DATA_EXPLICIT_H__
