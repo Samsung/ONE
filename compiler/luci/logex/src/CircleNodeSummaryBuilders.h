@@ -190,6 +190,10 @@ private:
   void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
 };
 
+class CircleDensifySummaryBuilder final : public CircleNodeWithINPUTSummaryBuilder
+{
+};
+
 class CircleDepthToSpaceSummaryBuilder final : public CircleNodeWithINPUTSummaryBuilder
 {
 private:
