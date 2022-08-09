@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2020 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,5 +34,53 @@ tflite::SparseIndexVector as_tflite_sparse_idx_vec_type(const tflchef::SparseInd
 flatbuffers::Offset<void>
 as_tflite_sparse_index_vec(flatbuffers::FlatBufferBuilder &fb,
                            const ::tflchef::TensorSparsity_IndexVec &value);
+
+// codes under namespace sparsity referenced from
+// https://github.com/tensorflow/tensorflow/blob/3f878cff5b698b82eea85db2b60d65a2e320850e/
+//       tensorflow/lite/kernels/internal/utils/sparsity_format_converter.h
+//       tensorflow/lite/kernels/internal/utils/sparsity_format_converter.cc
+
+namespace sparsity
+{
+
+// Storage format of each dimension in a sparse tensor.
+typedef enum TfLiteDimensionType
+{
+  kTfLiteDimDense = 0,
+  kTfLiteDimSparseCSR,
+} TfLiteDimensionType;
+
+template <typename T> class FormatConverter
+{
+public:
+  FormatConverter(const std::vector<int32_t> &shape, const std::vector<int32_t> &traversal_order,
+                  const std::vector<TfLiteDimensionType> &format,
+                  const std::vector<int32_t> &block_size = {},
+                  const std::vector<int32_t> &block_map = {});
+
+  bool DenseToSparse(const T *src_data);
+
+  const std::vector<T> &GetData() { return data_; }
+  const std::vector<std::vector<int32_t>> &GetDimMetadata() { return dim_metadata_; }
+
+private:
+  bool IsZero(const T val);
+
+private:
+  std::vector<int32_t> dense_shape_;
+  std::vector<int32_t> blocked_shape_;
+  size_t dense_size_;
+  std::vector<int32_t> traversal_order_;
+  std::vector<TfLiteDimensionType> format_;
+  std::vector<int32_t> block_size_;
+  std::vector<int32_t> block_map_;
+  std::vector<std::vector<int32_t>> dim_metadata_;
+  std::vector<T> data_;
+};
+
+extern template class FormatConverter<float>;
+extern template class FormatConverter<uint16_t>; // float16
+
+} // namespace sparsity
 
 #endif // __CONVERT_H__
