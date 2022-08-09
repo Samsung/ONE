@@ -89,6 +89,12 @@ message Operand {
   optional TensorSparsity sparsity = 6;
   optional bool is_variable = 7 [default = false];
   optional ShapeSignature shape_signature = 8;
+  // 'make_sparse' is to tell tflchef to make a sparse tensor
+  // as filling 'TensorSparsity' by hand can be difficult
+  // for now, last dimension will be SPARSE_CSR
+  // ex) shape [2, 3, 4] will have
+  //     TraversalOrder [0, 1, 2] with [DENSE, DENSE, SPARSE_CSR]
+  optional bool make_sparse = 9 [default = false];
 }
 
 // This enum value corresponds to Padding in TensorFlow Lite schema
