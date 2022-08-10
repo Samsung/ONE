@@ -72,6 +72,7 @@ public:
   CloneNodeLet(loco::Graph *graph) : _graph(graph){};
 
 public:
+  luci::CircleNode *visit(const luci::CircleDensify *) final;
   luci::CircleNode *visit(const luci::CircleDepthToSpace *) final;
   luci::CircleNode *visit(const luci::CircleDepthwiseConv2D *) final;
   luci::CircleNode *visit(const luci::CircleDequantize *) final;
