@@ -72,6 +72,8 @@ int entry(int argc, char **argv)
 
   add_switch(arser, "--fold_add_v2", "This will fold AddV2 operators with constant inputs");
   add_switch(arser, "--fold_cast", "This will fold Cast operators with constant input");
+  add_switch(arser, "--fold_densify",
+             "This will fold Densify operators with sparse constant input");
   add_switch(arser, "--fold_dequantize", "This will fold dequantize op");
   add_switch(arser, "--fold_dwconv",
              "This will fold Depthwise Convolution operator with constant inputs");
@@ -208,6 +210,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FoldAddV2);
   if (arser.get<bool>("--fold_cast"))
     options->enable(Algorithms::FoldCast);
+  if (arser.get<bool>("--fold_densify"))
+    options->enable(Algorithms::FoldDensify);
   if (arser.get<bool>("--fold_dequantize"))
     options->enable(Algorithms::FoldDequantize);
   if (arser.get<bool>("--fold_dwconv"))
