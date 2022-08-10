@@ -50,6 +50,7 @@ public:
       ResolveCustomOpSplitV,
       FoldAddV2,
       FoldCast,
+      FoldDensify,
       FoldDepthwiseConv2D,
       FoldDequantize,
       FoldGather,
