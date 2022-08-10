@@ -1,0 +1,54 @@
+operand {
+  name: "in"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "sparse16"
+  type: FLOAT16
+  shape { dim: 4 dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "2" arg: "0" arg: "0" arg: "0"
+    arg: "0" arg: "0" arg: "0" arg: "0"
+    arg: "0" arg: "0" arg: "0" arg: "0"
+    arg: "0" arg: "0" arg: "0" arg: "3"
+  }
+  make_sparse: true
+}
+operand {
+  name: "dense16"
+  type: FLOAT16
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "dense32"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operand {
+  name: "out"
+  type: FLOAT32
+  shape { dim: 4 dim: 4 }
+}
+operation {
+  type: "Densify"
+  input: "sparse16"
+  output: "dense16"
+}
+operation {
+  type: "Dequantize"
+  input: "dense16"
+  output: "dense32"
+}
+operation {
+  type: "Add"
+  input: "in"
+  input: "dense32"
+  output: "out"
+  add_options {
+    activation: NONE
+  }
+}
+input: "in"
+output: "out"
