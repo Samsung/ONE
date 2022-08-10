@@ -77,6 +77,7 @@ public:
   void visit(const luci::CircleConv2D *) final;
   void visit(const luci::CircleCos *) final;
   void visit(const luci::CircleCustom *) final;
+  void visit(const luci::CircleDensify *) final;
   void visit(const luci::CircleDepthToSpace *) final;
   void visit(const luci::CircleDepthwiseConv2D *) final;
   void visit(const luci::CircleDequantize *) final;
