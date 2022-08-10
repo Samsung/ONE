@@ -245,7 +245,8 @@ foreach(RECIPE IN ITEMS ${RECIPES})
       #      --fold_dequantize is added to fold Tensor(FLOAT16) + DEQUANTIZE (Net_Dequantize_Add)
       #      model. FLOAT16 in general is NOT supported but only Tensor(FLOAT16) + DEQUANTIZE
       #      sequence accepted as folded to Tensor(FLOAT32).
-      COMMAND $<TARGET_FILE:circle2circle> --resolve_customop_add --fold_dequantize
+      # TODO revise giving options from the list file
+      COMMAND $<TARGET_FILE:circle2circle> --resolve_customop_add --fold_dequantize --fold_densify
               ${CIRCLE_OUTPUT_PATH} ${OPT_CIRCLE_OUTPUT_PATH}
       DEPENDS $<TARGET_FILE:circle2circle>  ${CIRCLE_OUTPUT_PATH}
       COMMENT "Generate ${OPT_CIRCLE_FILE}"
