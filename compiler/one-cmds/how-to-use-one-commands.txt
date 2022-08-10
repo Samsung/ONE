@@ -153,6 +153,7 @@ Current transformation options are
 - expand_broadcast_const : This will expand broadcastable constant node inputs
 - fold_add_v2 : This removes AddV2 operation which can be folded
 - fold_cast : This removes Cast operation which can be folded
+- fold_densify: This removes Densify operator which can be folded
 - fold_dequantize : This removes Dequantize operation which can be folded
 - fold_dwconv : This folds Depthwise Convolution operation which can be folded
 - fold_gather : This removes Gather operation which can be folded
