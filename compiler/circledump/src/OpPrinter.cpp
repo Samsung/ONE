@@ -803,6 +803,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for CEIL
   _op_map[circle::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
   _op_map[circle::BuiltinOperator_CONV_2D] = make_unique<Conv2DPrinter>();
+  // There is no Option for DENSIFY
   _op_map[circle::BuiltinOperator_DEPTH_TO_SPACE] = make_unique<DepthToSpacePrinter>();
   _op_map[circle::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique<DepthwiseConv2DPrinter>();
   // There is no Option for DEQUANTIZE
