@@ -30,6 +30,9 @@ namespace nnpkg_run
 {
 
 using TensorShapeMap = std::unordered_map<uint32_t, TensorShape>;
+// TODO Change ParallelBatchMap type to std::unordered_map<uint32_t, uint32_t> which has map<index,
+// dimension>
+using ParallelBatchMap = std::unordered_map<uint32_t, std::vector<bool>>;
 
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
 enum class WhenToUseH5Shape
@@ -67,6 +70,7 @@ public:
   /// @brief Return true if "--shape_run" or "--shape_prepare" is provided
   bool shapeParamProvided();
   const int getVerboseLevel(void) const { return _verbose_level; }
+  const ParallelBatchMap &getParallelInputs(void) const { return _parallel_inputs; }
 
 private:
   void Initialize();
@@ -95,6 +99,7 @@ private:
   bool _write_report;
   bool _print_version = false;
   int _verbose_level;
+  ParallelBatchMap _parallel_inputs;
 };
 
 } // end of namespace nnpkg_run

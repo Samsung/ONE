@@ -19,6 +19,7 @@
 #include <functional>
 #include <iostream>
 #include <json/json.h>
+#include <stdexcept>
 
 namespace
 {
@@ -55,14 +56,16 @@ std::unordered_map<uint32_t, Json::Value> argArrayToMap(const Json::Value &jsonv
   return ret;
 }
 
-// param shape_str is a form of, e.g., "[1, [2, 3], 3, []]" or "h5"
-void handleShapeJsonParam(nnpkg_run::TensorShapeMap &shape_map, const std::string &shape_str)
+// param vector_map_str is a form of, e.g., "[1, [2, 3], 3, []]" or "h5"
+template <typename T>
+void handleVectorMapJsonParam(std::unordered_map<uint32_t, std::vector<T>> &vector_map,
+                              const std::string &vector_map_str)
 {
   Json::Value root;
   Json::Reader reader;
-  if (!reader.parse(shape_str, root, false))
+  if (!reader.parse(vector_map_str, root, false))
   {
-    std::cerr << "Invalid JSON format for output_sizes \"" << shape_str << "\"\n";
+    std::cerr << "Invalid JSON format \"" << vector_map_str << "\"\n";
     exit(1);
   }
 
@@ -70,26 +73,30 @@ void handleShapeJsonParam(nnpkg_run::TensorShapeMap &shape_map, const std::strin
   for (auto &pair : arg_map)
   {
     uint32_t key = pair.first;
-    Json::Value &shape_json = pair.second;
-    if (!shape_json.isArray())
+    Json::Value &vec_json = pair.second;
+    if (!vec_json.isArray())
     {
-      std::cerr << "All the values must be list: " << shape_str << "\n";
-      exit(1);
+      throw std::runtime_error("All the values must be list: " + vector_map_str + "\n");
     }
 
-    std::vector<int> shape;
-    for (auto &dim_json : shape_json)
+    std::vector<T> vec;
+    for (auto &dim_json : vec_json)
     {
-      if (!dim_json.isUInt())
+      if (dim_json.isUInt())
       {
-        std::cerr << "All the dims should be dim >= 0: " << shape_str << "\n";
-        exit(1);
+        vec.emplace_back(dim_json.asUInt64());
       }
-
-      shape.emplace_back(dim_json.asUInt64());
+      else if (dim_json.isBool())
+      {
+        vec.emplace_back(dim_json.asBool());
+      }
+      else
+      {
+        throw std::runtime_error("The type of " + dim_json.asString() + "in the list \"" +
+                                 vector_map_str + "\" is not supported");
+      }
     }
-
-    shape_map[key] = shape;
+    vector_map[key] = vec;
   }
 }
 
@@ -161,7 +168,7 @@ void Args::Initialize(void)
 #endif
     try
     {
-      handleShapeJsonParam(_shape_prepare, shape_str);
+      handleVectorMapJsonParam(_shape_prepare, shape_str);
     }
     catch (const std::exception &e)
     {
@@ -180,11 +187,34 @@ void Args::Initialize(void)
 #endif
     try
     {
-      handleShapeJsonParam(_shape_run, shape_str);
+      handleVectorMapJsonParam(_shape_run, shape_str);
     }
     catch (const std::exception &e)
     {
       std::cerr << "error with '--shape_run' option: " << shape_str << std::endl;
+      exit(1);
+    }
+  };
+
+  auto process_parallel_inputs = [&](const std::string &parallel_inputs_str) {
+    try
+    {
+      handleVectorMapJsonParam(_parallel_inputs, parallel_inputs_str);
+
+      // if (batches.size() != 0)
+      // {
+      // throw std::runtime_error("Duplicated batches for parallel execution");
+      // }
+      //
+      // if (!reader.parse(parallel_inputs_str, root, false))
+      // {
+      // throw std::runtime_error("Invalid JSON format for parallel_inputs");
+      // }
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << "error with '--parallel_inputs' option: " << parallel_inputs_str << std::endl;
+      std::cerr << e.what() << std::endl;
       exit(1);
     }
   };
@@ -231,6 +261,14 @@ void Args::Initialize(void)
 #endif
          "For detailed description, please consutl the description of nnfw_set_input_tensorinfo()\n"
          )
+    ("parallel_inputs",po::value<std::string>()->default_value("[]")->notifier(process_parallel_inputs),
+     "'--parallel_inputs': Index list of inputs which has batches to be executed in parallel.\n"
+     "                     This option also means to execute a model in parallel.\n"
+     "                     Currently, only the 'trix' backend supports this option. So, please use this option with the env 'BACKENDs=trix'\n"
+     "                     Inputs to be used must have the same batch sizes and ranks.\n"
+     "Allowed value:.\n"
+         "'[0, [true, false, false, false], 2, [true]]': set 0th tensor and 2nd tensor as parallel inputs.\n")
+
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
          "Verbose level\n"
          "0: prints the only result. Messages btw run don't print\n"
@@ -297,6 +335,124 @@ void Args::Parse(const int argc, char **argv)
     if (_mem_poll && _warmup_runs == 0)
     {
       _warmup_runs = 1;
+    }
+  }
+
+  if (vm.count("parallel_inputs"))
+  {
+    // Verify _parallel_inputs with _shape_run
+    if (_parallel_inputs.size() != 0 && _shape_prepare.size() == 0 && _shape_run.size() == 0)
+    {
+      std::cerr
+        << "Use '--parallel_inputs' option with the option '--shape_prepare' or '--shape_run'"
+        << std::endl;
+      exit(-1);
+    }
+
+    std::unordered_map<uint32_t, uint32_t> parallel_batch_dim_map;
+    for (const auto &pair : _parallel_inputs)
+    {
+      const auto input_index = pair.first;
+      const auto &is_batch_vec = pair.second;
+
+      auto batch_count = 0;
+      auto batch_dim = 0;
+      for (uint32_t dim = 0; dim < is_batch_vec.size(); ++dim)
+      {
+        if (is_batch_vec[dim])
+        {
+          batch_count++;
+          batch_dim = dim;
+        }
+      }
+
+      // Check if input has multiple batches
+      if (batch_count > 1)
+      {
+        std::cerr << "Invalid number of batches, '--parallel_inputs' input index '" << input_index
+                  << "' has mulitple batches." << std::endl;
+        exit(-1);
+      }
+
+      // Set batch dimension
+      if (batch_count == 1)
+      {
+        parallel_batch_dim_map[input_index] = batch_dim;
+      }
+    }
+
+    if (parallel_batch_dim_map.size() > 0)
+    {
+      const auto check_parallel_inputs_with_resizing_shape_option =
+        [&](const nnpkg_run::TensorShapeMap &shape_map) {
+          const auto it = parallel_batch_dim_map.begin();
+          const auto index = it->first;
+          if (shape_map.find(index) == shape_map.end())
+          {
+            std::cerr << "Unmatched input index, '--parallel_inputs' input index '" << index
+                      << "' does not exists in an option resetting shape." << std::endl;
+            exit(-1);
+          }
+
+          const auto &shape_with_parallel_batch = shape_map.at(index);
+          const auto batch_size = shape_with_parallel_batch[parallel_batch_dim_map[index]];
+          for (const auto pair : _parallel_inputs)
+          {
+            const auto input_index = pair.first;
+            const auto &is_batch_vec = pair.second;
+
+            // Check if input index exists in parallel_inputs but not in shape_map
+            if (shape_map.find(input_index) == shape_map.end())
+            {
+              std::cerr << "Unmatched input index, '--parallel_inputs' input index '" << input_index
+                        << "' does not exists in an option resetting shape." << std::endl;
+              exit(-1);
+            }
+
+            if (parallel_batch_dim_map.find(input_index) != parallel_batch_dim_map.end())
+            {
+              // Check if the ranks in _parallel_inputs are not the same as ranks of shape_map
+              if (shape_map.at(input_index).size() != is_batch_vec.size())
+              {
+                std::cerr << "Unmatched ranks, '--parallel_inputs' input index " << input_index
+                          << "'s rank is not the same as rank in an option resetting shape."
+                          << std::endl;
+                std::cerr << "                 '--parallel_inputs' index '" << input_index
+                          << "' rank : " << is_batch_vec.size() << std::endl;
+                std::cerr << "                 '--shape_prepare'   index '" << input_index
+                          << "' rank : " << shape_map.at(input_index).size() << std::endl;
+                exit(-1);
+              }
+
+              // Check if the batch size is less than 2
+              const auto batch_dim = parallel_batch_dim_map[input_index];
+              if (shape_map.at(input_index).at(batch_dim) < 2)
+              {
+                std::cerr << "Invalid batch size for using '--parallel_inputs' option : input '"
+                          << input_index << "'s batch size is " << batch_size << std::endl;
+                exit(-1);
+              }
+
+              // Check if all batches are equal
+              if (batch_size != shape_map.at(input_index).at(batch_dim))
+              {
+                std::cerr << "Unmatched batch sizes for using '--parallel_inputs' option'"
+                          << std::endl;
+                exit(-1);
+              }
+            }
+          }
+        };
+
+      if (_shape_prepare.size() != 0)
+      {
+        check_parallel_inputs_with_resizing_shape_option(_shape_prepare);
+      }
+
+      if (_shape_run.size() != 0)
+      {
+        check_parallel_inputs_with_resizing_shape_option(_shape_run);
+      }
     }
   }
 }
