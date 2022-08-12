@@ -15,13 +15,15 @@
  */
 
 #include "util/ConfigSource.h"
-#include "util/GeneralConfigSource.h"
-#include "util/EnvConfigSource.h"
+#include "util/logging.h"
+
+#include <misc/EnvConfigSource.h>
+#include <misc/IConfigSource.h>
+#include <misc/GeneralConfigSource.h>
 
 #include <array>
 #include <algorithm>
 #include <cassert>
-
 #include <memory>
 
 namespace onert
@@ -29,11 +31,26 @@ namespace onert
 namespace util
 {
 
+using namespace nnfw::misc;
+
 static std::unique_ptr<IConfigSource> _source;
 static std::unique_ptr<IConfigSource> _source_ext;
 
 void config_source(std::unique_ptr<IConfigSource> &&source) { _source = std::move(source); }
 void config_source_ext(std::unique_ptr<IConfigSource> &&source) { _source_ext = std::move(source); }
+
+void setConfigKeyValues(const CfgKeyValues &keyValues)
+{
+  auto configsrc = std::make_unique<nnfw::misc::GeneralConfigSource>();
+
+  for (auto it = keyValues.begin(); it != keyValues.end(); ++it)
+  {
+    VERBOSE(NNPKG_CONFIGS) << "(" << it->first << ") = (" << it->second << ")" << std::endl;
+    configsrc->set(it->first, it->second);
+  }
+
+  onert::util::config_source_ext(std::move(configsrc));
+}
 
 static IConfigSource *config_source()
 {

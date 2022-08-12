@@ -17,18 +17,14 @@
 #ifndef __ONE_SERVICE_NPUD_UTIL_CONFIG_SOURCE_H__
 #define __ONE_SERVICE_NPUD_UTIL_CONFIG_SOURCE_H__
 
-#include <memory>
-
-#include "IConfigSource.h"
+#include <string>
 
 namespace npud
 {
 namespace util
 {
 
-void config_source(std::unique_ptr<IConfigSource> &&source);
-void config_source_ext(std::unique_ptr<IConfigSource> &&source);
-
+// TODO Move to different place: it is string utility
 bool toBool(const std::string &val);
 int toInt(const std::string &val);
 

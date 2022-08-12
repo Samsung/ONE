@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include "util/EnvConfigSource.h"
+#include "misc/EnvConfigSource.h"
 
 #include <cstdlib>
 
-namespace onert
+namespace nnfw
 {
-namespace util
+namespace misc
 {
 
 std::string EnvConfigSource::get(const std::string &key) const
@@ -36,5 +36,5 @@ std::string EnvConfigSource::get(const std::string &key) const
   }
 }
 
-} // namespace util
-} // namespace onert
+} // namespace misc
+} // namespace nnfw

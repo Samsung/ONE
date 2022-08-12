@@ -13,8 +13,8 @@ set_target_properties(onert_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 # private target_include_directories scope for src/ directory.
 target_include_directories(onert_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-target_link_libraries(onert_core PUBLIC nnfw_lib_misc half)
-target_link_libraries(onert_core PRIVATE nnfw_lib_cker)
+target_link_libraries(onert_core PUBLIC half)
+target_link_libraries(onert_core PRIVATE nnfw_lib_cker nnfw_lib_misc)
 target_link_libraries(onert_core PRIVATE nnfw_common)
 target_link_libraries(onert_core PRIVATE nnfw_coverage)
 target_link_libraries(onert_core PRIVATE dl ${LIB_PTHREAD})

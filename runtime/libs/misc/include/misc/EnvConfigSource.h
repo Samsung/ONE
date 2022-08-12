@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,28 @@
  * limitations under the License.
  */
 
-#include "EnvConfigSource.h"
+#ifndef __NNFW_MISC_ENV_CONFIG_SOURCE_H__
+#define __NNFW_MISC_ENV_CONFIG_SOURCE_H__
 
-#include <cstdlib>
+#include <unordered_map>
 
-namespace npud
+#include "misc/GeneralConfigSource.h"
+
+namespace nnfw
 {
-namespace util
+namespace misc
 {
 
-std::string EnvConfigSource::get(const std::string &key) const
+class EnvConfigSource final : public GeneralConfigSource
 {
-  const char *value = std::getenv(key.c_str());
-  if (value != nullptr)
-  {
-    return value;
-  }
-  else
-  {
-    return GeneralConfigSource::get(key);
-  }
-}
+public:
+  std::string get(const std::string &key) const override;
 
-} // namespace util
-} // namespace npud
+private:
+  std::unordered_map<std::string, std::string> _default_attributes;
+};
+
+} // namespace misc
+} // namespace nnfw
+
+#endif // __NNFW_MISC_ENV_CONFIG_SOURCE_H__
