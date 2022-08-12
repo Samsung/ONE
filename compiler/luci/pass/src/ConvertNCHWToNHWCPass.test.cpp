@@ -1999,6 +1999,7 @@ TEST(ConvertNCHWToNHWC, SplitV)
 
   // Check axis
   auto axis = dynamic_cast<luci::CircleConst *>(g.splitv()->split_dim());
+  EXPECT_NE(nullptr, axis);
   EXPECT_EQ(1, axis->size<loco::DataType::S32>());
   EXPECT_EQ(2, axis->at<loco::DataType::S32>(0));
 }
