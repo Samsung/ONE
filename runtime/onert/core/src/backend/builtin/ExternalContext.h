@@ -24,6 +24,8 @@
 #include <ruy/ctx.h>
 #include <ruy/tune.h>
 
+#include <memory>
+
 namespace onert
 {
 namespace backend

@@ -111,9 +111,7 @@ std::string trim(const std::string &value)
   return value.substr(begin, range);
 }
 
-using CfgKeyValues = std::unordered_map<std::string, std::string>;
-
-bool loadConfigure(const std::string cfgfile, CfgKeyValues &keyValues)
+bool loadConfigure(const std::string cfgfile, onert::util::CfgKeyValues &keyValues)
 {
   std::ifstream ifs(cfgfile);
   if (ifs.is_open())
@@ -142,19 +140,6 @@ bool loadConfigure(const std::string cfgfile, CfgKeyValues &keyValues)
     return true;
   }
   return false;
-}
-
-void setConfigKeyValues(const CfgKeyValues &keyValues)
-{
-  auto configsrc = std::make_unique<onert::util::GeneralConfigSource>();
-
-  for (auto it = keyValues.begin(); it != keyValues.end(); ++it)
-  {
-    VERBOSE(NNPKG_CONFIGS) << "(" << it->first << ") = (" << it->second << ")" << std::endl;
-    configsrc->set(it->first, it->second);
-  }
-
-  onert::util::config_source_ext(std::move(configsrc));
 }
 
 NNFW_TYPE datatype_to_nnfw_dtype(onert::ir::DataType dt)
@@ -359,10 +344,10 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     {
       auto filepath = package_path + std::string("/metadata/") + configs[0].asString();
 
-      CfgKeyValues keyValues;
+      onert::util::CfgKeyValues keyValues;
       if (loadConfigure(filepath, keyValues))
       {
-        setConfigKeyValues(keyValues);
+        onert::util::setConfigKeyValues(keyValues);
       }
     }
     _nnpkg = std::make_shared<onert::ir::NNPkg>();
