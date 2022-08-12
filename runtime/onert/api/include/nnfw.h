@@ -193,7 +193,7 @@ typedef struct nnfw_tensorinfo
  * And inference is performed after {@link nnfw_run} is invoked.
  *
  * <p>{@link nnfw_close_session} should be called once
- * if session is no longer need
+ * if session is no longer needed
  *
  * @param[out]  session The session to be created
  * @return      NNFW_STATUS_NO_ERROR if successful
@@ -213,7 +213,7 @@ NNFW_STATUS nnfw_close_session(nnfw_session *session);
 /**
  * @brief     Load model from nnpackage file or directory
  *
- * The length of \p package_file_path must not execeed 1024 bytes including zero at the end.
+ * The length of \p package_file_path must not exceed 1024 bytes including zero at the end.
  *
  * @param[in] session           nnfw_session loading the given nnpackage file/dir
  * @param[in] package_file_path Path to the nnpackage file or unzipped directory to be loaded
