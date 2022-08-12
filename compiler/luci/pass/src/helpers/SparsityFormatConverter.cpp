@@ -297,15 +297,15 @@ void freeTfLiteSparsity(sparsity::TfLiteSparsity &tflsp)
 {
   assert(tflsp.traversal_order);
   assert(tflsp.block_map);
-  delete tflsp.traversal_order;
-  delete tflsp.block_map;
+  delete[] tflsp.traversal_order;
+  delete[] tflsp.block_map;
 
   for (int i = 0; i < tflsp.dim_metadata_size; ++i)
   {
     assert(tflsp.dim_metadata[i].array_segments);
     assert(tflsp.dim_metadata[i].array_indices);
-    delete tflsp.dim_metadata[i].array_segments;
-    delete tflsp.dim_metadata[i].array_indices;
+    delete[] tflsp.dim_metadata[i].array_segments;
+    delete[] tflsp.dim_metadata[i].array_indices;
   }
 }
 
