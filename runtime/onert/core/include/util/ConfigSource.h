@@ -17,17 +17,17 @@
 #ifndef __ONERT_UTIL_CONFIG_SOURCE_H__
 #define __ONERT_UTIL_CONFIG_SOURCE_H__
 
-#include <memory>
-
-#include "IConfigSource.h"
+#include <string>
+#include <unordered_map>
 
 namespace onert
 {
 namespace util
 {
 
-void config_source(std::unique_ptr<IConfigSource> &&source);
-void config_source_ext(std::unique_ptr<IConfigSource> &&source);
+using CfgKeyValues = std::unordered_map<std::string, std::string>;
+
+void setConfigKeyValues(const CfgKeyValues &keyValues);
 
 bool toBool(const std::string &val);
 int toInt(const std::string &val);

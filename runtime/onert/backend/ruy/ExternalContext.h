@@ -20,6 +20,8 @@
 #include <util/ConfigSource.h>
 #include <ruy/context.h>
 
+#include <memory>
+
 namespace onert
 {
 namespace backend
