@@ -6,7 +6,7 @@ file(GLOB_RECURSE SOURCES "*.cc")
 
 add_library(${LIB_ONERT_BACKEND_CPU} SHARED ${SOURCES})
 
-target_link_libraries(${LIB_ONERT_BACKEND_CPU} PRIVATE nnfw_lib_cker)
+target_link_libraries(${LIB_ONERT_BACKEND_CPU} PRIVATE nnfw_lib_cker nnfw_lib_misc)
 target_link_libraries(${LIB_ONERT_BACKEND_CPU} PRIVATE onert_core)
 target_link_libraries(${LIB_ONERT_BACKEND_CPU} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_CPU} PRIVATE nnfw_coverage)
