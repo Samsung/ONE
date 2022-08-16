@@ -27,7 +27,6 @@
 
 #include <souschef/Dataset.h>
 #include <souschef/Dims.h>
-#include <souschef/Data/FP16.h>
 
 #include "Log.h"
 

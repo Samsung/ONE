@@ -15,7 +15,6 @@
  */
 
 #include "souschef/Data/Gaussian.h"
-#include "souschef/Data/FP16.h"
 #include "souschef/LexicalCast.h"
 
 #include <random>
@@ -23,6 +22,8 @@
 
 #include <cassert>
 #include <stdexcept>
+
+#include <fp16.h>
 
 namespace souschef
 {
@@ -86,7 +87,7 @@ std::vector<uint8_t> GaussianFloat16DataChef::generate(int32_t count) const
   {
     float raw_value = dist(rand);
     const float capped_value = std::max(min_cap, std::min(max_cap, raw_value));
-    const uint16_t value = fp16::fp16_ieee_from_fp32_value(capped_value);
+    const uint16_t value = fp16_ieee_from_fp32_value(capped_value);
     auto const arr = reinterpret_cast<const uint8_t *>(&value);
 
     for (uint32_t b = 0; b < sizeof(uint16_t); ++b)

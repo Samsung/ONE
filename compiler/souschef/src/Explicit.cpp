@@ -15,10 +15,11 @@
  */
 
 #include "souschef/Data/Explicit.h"
-#include "souschef/Data/FP16.h"
 
 #include <string>
 #include <vector>
+
+#include <fp16.h>
 
 namespace souschef
 {
@@ -82,7 +83,7 @@ std::vector<uint8_t> ExplicitFloat16DataChef::generate(int32_t count) const
   for (uint32_t n = 0; n < count; ++n)
   {
     float const fvalue = (n < _values.size()) ? _values.at(n) : 0.0;
-    uint16_t const value = fp16::fp16_ieee_from_fp32_value(fvalue);
+    uint16_t const value = fp16_ieee_from_fp32_value(fvalue);
     auto const arr = reinterpret_cast<const uint8_t *>(&value);
 
     for (uint32_t b = 0; b < sizeof(uint16_t); ++b)

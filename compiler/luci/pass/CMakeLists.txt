@@ -1,8 +1,15 @@
 nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
+nnas_find_package(Fp16Source QUIET)
+
 if(NOT FlatBuffers_FOUND)
   message(STATUS "FlatBuffers NOT FOUND")
   return()
 endif(NOT FlatBuffers_FOUND)
+
+if(NOT Fp16Source_FOUND)
+  message(STATUS "Fp16Source NOT FOUND")
+  return()
+endif(NOT Fp16Source_FOUND)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
@@ -14,6 +21,7 @@ endif(NOT LUCI_LIBRARY_TYPE)
 
 add_library(luci_pass ${LUCI_LIBRARY_TYPE} ${SOURCES})
 target_include_directories(luci_pass PRIVATE src)
+target_include_directories(luci_pass PRIVATE ${Fp16Source_DIR}/include)
 target_include_directories(luci_pass PUBLIC include)
 target_link_libraries(luci_pass PUBLIC loco)
 target_link_libraries(luci_pass PUBLIC logo_core)
