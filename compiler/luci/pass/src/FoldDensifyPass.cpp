@@ -24,8 +24,6 @@
 #include <cassert>
 #include <vector>
 
-#include "helpers/FP16.h"
-
 namespace
 {
 
