@@ -15,9 +15,10 @@
  */
 
 #include "ConfigSource.h"
-#include "EnvConfigSource.h"
-#include "GeneralConfigSource.h"
-#include "IConfigSource.h"
+
+#include <misc/EnvConfigSource.h>
+#include <misc/GeneralConfigSource.h>
+#include <misc/IConfigSource.h>
 
 #include <algorithm>
 #include <array>
@@ -28,6 +29,8 @@ namespace npud
 {
 namespace util
 {
+
+using namespace nnfw::misc;
 
 static std::unique_ptr<IConfigSource> _source;
 

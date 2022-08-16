@@ -15,10 +15,11 @@
  */
 
 #include "util/ConfigSource.h"
-#include "util/EnvConfigSource.h"
-#include "util/GeneralConfigSource.h"
-#include "util/IConfigSource.h"
 #include "util/logging.h"
+
+#include <misc/EnvConfigSource.h>
+#include <misc/GeneralConfigSource.h>
+#include <misc/IConfigSource.h>
 
 #include <algorithm>
 #include <array>
@@ -29,6 +30,8 @@ namespace onert
 {
 namespace util
 {
+
+using namespace nnfw::misc;
 
 static std::unique_ptr<IConfigSource> _source;
 static std::unique_ptr<IConfigSource> _source_ext;

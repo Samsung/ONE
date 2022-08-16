@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_UTIL_GENERAL_CONFIG_SOURCE_H__
-#define __ONE_SERVICE_NPUD_UTIL_GENERAL_CONFIG_SOURCE_H__
-
-#include <unordered_map>
+#ifndef __NNFW_MISC_GENERAL_CONFIG_SOURCE_H__
+#define __NNFW_MISC_GENERAL_CONFIG_SOURCE_H__
 
 #include "IConfigSource.h"
 
-namespace npud
+#include <unordered_map>
+
+namespace nnfw
 {
-namespace util
+namespace misc
 {
 
 class GeneralConfigSource : public IConfigSource
@@ -38,7 +38,7 @@ private:
   std::unordered_map<std::string, std::string> _map;
 };
 
-} // namespace util
-} // namespace npud
+} // namespace misc
+} // namespace nnfw
 
-#endif // __ONE_SERVICE_NPUD_UTIL_GENERAL_CONFIG_SOURCE_H__
+#endif // __NNFW_MISC_GENERAL_CONFIG_SOURCE_H__

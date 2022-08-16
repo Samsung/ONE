@@ -14,33 +14,27 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_UTIL_I_CONFIG_SOURCE_H__
-#define __ONERT_UTIL_I_CONFIG_SOURCE_H__
+#include "misc/GeneralConfigSource.h"
 
-#include <string>
-
-namespace onert
+namespace nnfw
 {
-namespace util
+namespace misc
 {
 
-struct IConfigSource
+std::string GeneralConfigSource::get(const std::string &key) const
 {
-  /**
-   * @brief Destroy the IConfigSource object
-   */
-  virtual ~IConfigSource() = default;
+  auto itr = _map.find(key);
+  if (itr == _map.end())
+  {
+    return "";
+  }
+  else
+  {
+    return itr->second;
+  }
+}
 
-  /**
-   * @brief get the value for the matching key
-   *
-   * @param key string key to search
-   * @return string value associated with the key
-   */
-  virtual std::string get(const std::string &key) const = 0;
-};
+void GeneralConfigSource::set(const std::string &key, const std::string &val) { _map[key] = val; }
 
-} // namespace util
-} // namespace onert
-
-#endif // __ONERT_UTIL_I_CONFIG_SOURCE_H__
+} // namespace misc
+} // namespace nnfw

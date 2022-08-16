@@ -20,7 +20,6 @@
 #include "nnfw.h"
 #include "nnfw_experimental.h"
 
-#include <util/GeneralConfigSource.h>
 #include <util/TracingCtx.h>
 
 #include <string>

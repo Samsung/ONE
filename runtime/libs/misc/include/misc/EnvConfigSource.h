@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_UTIL_I_CONFIG_SOURCE_H__
-#define __ONE_SERVICE_NPUD_UTIL_I_CONFIG_SOURCE_H__
+#ifndef __NNFW_MISC_ENV_CONFIG_SOURCE_H__
+#define __NNFW_MISC_ENV_CONFIG_SOURCE_H__
 
-#include <string>
+#include "GeneralConfigSource.h"
 
-namespace npud
+#include <unordered_map>
+
+namespace nnfw
 {
-namespace util
+namespace misc
 {
 
-struct IConfigSource
+class EnvConfigSource final : public GeneralConfigSource
 {
-  /**
-   * @brief Destroy the IConfigSource object
-   */
-  virtual ~IConfigSource() = default;
+public:
+  std::string get(const std::string &key) const override;
 
-  /**
-   * @brief get the value for the matching key
-   *
-   * @param key string key to search
-   * @return string value associated with the key
-   */
-  virtual std::string get(const std::string &key) const = 0;
+private:
+  std::unordered_map<std::string, std::string> _default_attributes;
 };
 
-} // namespace util
-} // namespace npud
+} // namespace misc
+} // namespace nnfw
 
-#endif // __ONE_SERVICE_NPUD_UTIL_I_CONFIG_SOURCE_H__
+#endif // __NNFW_MISC_ENV_CONFIG_SOURCE_H__
