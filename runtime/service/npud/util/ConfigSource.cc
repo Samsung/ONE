@@ -15,11 +15,12 @@
  */
 
 #include "ConfigSource.h"
-#include "GeneralConfigSource.h"
 #include "EnvConfigSource.h"
+#include "GeneralConfigSource.h"
+#include "IConfigSource.h"
 
-#include <array>
 #include <algorithm>
+#include <array>
 #include <cassert>
 #include <memory>
 
@@ -29,10 +30,8 @@ namespace util
 {
 
 static std::unique_ptr<IConfigSource> _source;
-static std::unique_ptr<IConfigSource> _source_ext;
 
 void config_source(std::unique_ptr<IConfigSource> &&source) { _source = std::move(source); }
-void config_source_ext(std::unique_ptr<IConfigSource> &&source) { _source_ext = std::move(source); }
 
 static IConfigSource *config_source()
 {
@@ -66,14 +65,6 @@ static std::string getConfigOrDefault(const std::string &key)
 
   // Treat empty string and absence of the value to be the same
   auto ret = config_source()->get(key);
-  if (ret.empty())
-  {
-    // if env is not set, search from external
-    if (_source_ext.get())
-    {
-      ret = _source_ext.get()->get(key);
-    }
-  }
   // if not found search from defaults
   if (ret.empty())
   {
