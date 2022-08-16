@@ -16,10 +16,10 @@
 
 #include "luci/Pass/FoldDequantizePass.h"
 
-#include "helpers/FP16.h"
-
 #include <luci/IR/CircleNodes.h>
 #include <luci/Profile/CircleNodeOrigin.h>
+
+#include <fp16.h>
 
 namespace
 {
@@ -78,7 +78,7 @@ luci::CircleConst *dequantized_const_node(luci::CircleConst *const_node)
     for (uint32_t i = 0; i < new_const_node->size<loco::DataType::FLOAT32>(); ++i)
     {
       auto raw = const_node->at<loco::DataType::FLOAT16>(i);
-      new_const_node->at<loco::DataType::FLOAT32>(i) = fp16::fp16_ieee_to_fp32_value(raw);
+      new_const_node->at<loco::DataType::FLOAT32>(i) = fp16_ieee_to_fp32_value(raw);
     }
     return new_const_node;
   }
