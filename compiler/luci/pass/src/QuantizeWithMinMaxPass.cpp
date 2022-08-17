@@ -457,15 +457,13 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
     }
     else
     {
-      // clang-format off
-    // Insert Quantize Op for non-float32 output_type
-    auto quant_op = create_quantize_op(from, _ctx->output_type);
-    loco::replace(from).with(quant_op);
-    quant_op->input(from);
+      // Insert Quantize Op for non-float32 output_type
+      auto quant_op = create_quantize_op(from, _ctx->output_type);
+      loco::replace(from).with(quant_op);
+      quant_op->input(from);
 
-    // TODO Set a proper origin (Quantize should have its own Origin)
-    luci::add_origin(quant_op, luci::get_origin(from));
-      // clang-format on
+      // TODO Set a proper origin (Quantize should have its own Origin)
+      luci::add_origin(quant_op, luci::get_origin(from));
     }
 
     // Update dtype of output
