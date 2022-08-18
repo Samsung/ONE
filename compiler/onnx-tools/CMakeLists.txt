@@ -18,4 +18,10 @@ foreach(ONNX_TOOL IN ITEMS ${ONNX_TOOL_FILES})
 
   add_custom_target(${ONNX_TOOL_TARGET} ALL DEPENDS ${ONNX_TOOL_BIN})
 
+  install(FILES ${ONNX_TOOL_BIN}
+          PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+                      GROUP_READ GROUP_EXECUTE
+                      WORLD_READ WORLD_EXECUTE
+          DESTINATION bin)
+
 endforeach(ONNX_TOOL)
