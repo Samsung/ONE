@@ -130,7 +130,8 @@ bool OptimizeOptionsImpl::query(Algorithm algo)
   return true;
 }
 
-void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_output)
+// TODO Make a struct for args
+void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_output, bool fuse_fc)
 {
   logo::Phase phase;
 
@@ -144,6 +145,10 @@ void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_out
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpMatMulPass>());
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpMaxPoolWithArgmaxPass>());
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpSplitVPass>());
+
+  // Fuse fc
+  if (fuse_fc)
+    phase.emplace_back(std::make_unique<luci::FuseAddWithFullyConnectedPass>());
 
   phase.emplace_back(
     std::make_unique<luci::ConvertNCHWToNHWCPass>(preserve_input, preserve_output));
@@ -200,7 +205,9 @@ void CircleOptimizer::optimize(loco::Graph *g) const
     bool preserve_output =
       _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_output_shape) != "true";
 
-    convert_nchw_to_nhwc(g, preserve_input, preserve_output);
+    bool fuse_fc = _options->query(Options::Algorithm::FuseAddWithFullyConnected);
+
+    convert_nchw_to_nhwc(g, preserve_input, preserve_output, fuse_fc);
   }
 
   /* TRANSFORM DECLARATION BEGIN */
