@@ -99,6 +99,12 @@ bool fuse_add_with_fc(luci::CircleFullyConnected *fc)
       fused_bias->at<loco::DataType::FLOAT32>(i) += const_bias->at<loco::DataType::FLOAT32>(i);
   }
 
+  // At this point, it is guarateed that fused_bias's shape is [1, 1, ..., N] or [N]
+  // where N is weights->dim(0).
+  // The shape is normalized to [N] to become the bias of FC
+  fused_bias->rank(1);
+  fused_bias->dim(0) = weights->dim(0);
+
   fc->bias(fused_bias);
   fc->fusedActivationFunction(add->fusedActivationFunction());
 
