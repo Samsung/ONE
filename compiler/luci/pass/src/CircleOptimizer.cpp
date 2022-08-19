@@ -146,7 +146,11 @@ void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_out
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpMaxPoolWithArgmaxPass>());
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpSplitVPass>());
 
-  // Fuse fc
+  // Fuse FullyConnected with Add
+  // Why we perform FuseAddWithFullyConnectedPass before ConvertNCHWToNHWCPass?
+  // FullyConnected Op's layout is not changed in ConvertNCHWToNHWCPass, while
+  // Add Op's layer is changed from NCHW to NHWC.
+  // This disables fusion of Add and FullyConnected after ConvertNCHWToNHWC.
   if (fuse_fc)
     phase.emplace_back(std::make_unique<luci::FuseAddWithFullyConnectedPass>());
 
