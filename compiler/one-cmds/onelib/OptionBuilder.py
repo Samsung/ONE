@@ -60,7 +60,7 @@ class OptionBuilder:
                 options.extend(['--' + k])
                 continue
             for opt in CONSTANT.OPTIMIZATION_OPTS:
-                if k == opt and v == "True":
+                if k == opt[0] and v == "True":
                     options.extend(['--' + k])
                     break
         return options
