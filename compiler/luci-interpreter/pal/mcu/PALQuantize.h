@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_PAL_QUANTIZE_H
 #define LUCI_INTERPRETER_PAL_QUANTIZE_H
 
-#include "tensorflow/lite/kernels/internal/reference/reference_ops.h"
+#include "PALreference_ops.h"
 
 namespace luci_interpreter_pal
 {
