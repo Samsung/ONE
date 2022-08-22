@@ -63,7 +63,7 @@ void ConvolutionLayer::convFloat32()
          getBuffer<float>(_output));
 }
 
-void ConvolutionLayer::convQuant8()
+void ConvolutionLayer::convQ8u()
 {
   int32_t output_activation_min = 0;
   int32_t output_activation_max = 0;
@@ -99,7 +99,7 @@ void ConvolutionLayer::convQuant8()
          getBuffer<uint8_t>(_output));
 }
 
-void ConvolutionLayer::convQuant8PerChannel()
+void ConvolutionLayer::convQ8i()
 {
   int32_t output_activation_min = 0;
   int32_t output_activation_max = 0;
@@ -189,11 +189,11 @@ void ConvolutionLayer::run()
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
-    convQuant8();
+    convQ8u();
   }
   else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
   {
-    convQuant8PerChannel();
+    convQ8i();
   }
   else
   {
@@ -210,8 +210,8 @@ void ConvolutionLayer::prepare()
   if (_input->data_type() == OperandType::FLOAT32 && _kernel->is_constant())
   {
     bool is_transposed = false;
-    kernel.prepare(getShape(_kernel), getBuffer<float>(_kernel), getPaddingType(_paddingType),
-                   is_transposed, _dilationWidthFactor, _dilationHeightFactor);
+    kernel.prepareF32(getShape(_kernel), getBuffer<float>(_kernel), getPaddingType(_paddingType),
+                      is_transposed, _dilationWidthFactor, _dilationHeightFactor);
 
     // Decrease reference of _kernel(weights) only when _kernel is constant
     if (is_transposed)
@@ -225,8 +225,8 @@ void ConvolutionLayer::prepare()
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM && _kernel->is_constant() &&
            !_input->is_dynamic() && !_output->is_dynamic())
   {
-    kernel.prepareQuant(getShape(_input), getShape(_kernel), getShape(_output), _strideWidth,
-                        _strideHeight, _dilationWidthFactor, _dilationHeightFactor);
+    kernel.prepareQ8u(getShape(_input), getShape(_kernel), getShape(_output), _strideWidth,
+                      _strideHeight, _dilationWidthFactor, _dilationHeightFactor);
   }
   else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
   {
