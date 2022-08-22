@@ -27,6 +27,7 @@ import ntpath
 import os
 import sys
 
+import configparser
 import utils as _utils
 
 # TODO Find better way to suppress trackback on error
