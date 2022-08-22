@@ -63,7 +63,7 @@ void ConvolutionLayer::convFloat32()
          getBuffer<float>(_output));
 }
 
-void ConvolutionLayer::convQ8u()
+void ConvolutionLayer::convQ8uPerTensor()
 {
   int32_t output_activation_min = 0;
   int32_t output_activation_max = 0;
@@ -97,6 +97,32 @@ void ConvolutionLayer::convQ8u()
   kernel(op_params, getShape(_input), getBuffer<uint8_t>(_input), getShape(_kernel),
          getBuffer<uint8_t>(_kernel), getShape(_bias), getBuffer<int32_t>(_bias), getShape(_output),
          getBuffer<uint8_t>(_output));
+}
+
+void ConvolutionLayer::convQ8uPerChannel()
+{
+  nnfw::cker::ConvParams op_params;
+  op_params.padding_values.width = _paddingLeft;
+  op_params.padding_values.height = _paddingTop;
+  op_params.stride_width = _strideWidth;
+  op_params.stride_height = _strideHeight;
+  op_params.dilation_width_factor = _dilationWidthFactor;
+  op_params.dilation_height_factor = _dilationHeightFactor;
+  op_params.input_offset = -_input->data_zero_point();
+  op_params.output_offset = _output->data_zero_point();
+  int32_t output_activation_min = 0;
+  int32_t output_activation_max = 0;
+  CalculateActivationRangeQuantized(_activation, _output, &output_activation_min,
+                                    &output_activation_max);
+  op_params.quantized_activation_min = output_activation_min;
+  op_params.quantized_activation_max = output_activation_max;
+  // NOTE: The following fields of ConvParams are not used:
+  // padding_type, weight_offset, output_{multiplier,shift}, float_activation_{min,max}
+
+  nnfw::cker::Conv &kernel = *_conv_kernel;
+  kernel(op_params, getShape(_input), getBuffer<uint8_t>(_input), getShape(_kernel),
+         getBuffer<uint8_t>(_kernel), _kernel->data_zero_points().data(), getShape(_bias),
+         getBuffer<int32_t>(_bias), getShape(_output), getBuffer<uint8_t>(_output));
 }
 
 void ConvolutionLayer::convQ8i()
@@ -189,7 +215,11 @@ void ConvolutionLayer::run()
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
-    convQ8u();
+    const bool per_channel_quantized = _kernel->data_scales().size() > 1;
+    if (per_channel_quantized)
+      convQ8uPerChannel();
+    else
+      convQ8uPerTensor();
   }
   else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
   {
@@ -225,8 +255,20 @@ void ConvolutionLayer::prepare()
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM && _kernel->is_constant() &&
            !_input->is_dynamic() && !_output->is_dynamic())
   {
-    kernel.prepareQ8u(getShape(_input), getShape(_kernel), getShape(_output), _strideWidth,
-                      _strideHeight, _dilationWidthFactor, _dilationHeightFactor);
+    const bool per_channel_quantized = _kernel->data_scales().size() > 1;
+    if (per_channel_quantized)
+    {
+      GetQuantizedConvolutionMultipliersAndShifts(
+        _input->data_scale(), _output->data_scale(), _kernel->data_scales().data(),
+        _kernel->data_scales().size(), getShape(_kernel).Dims(0),
+        kernel.per_channel_output_multiplier(), kernel.per_channel_output_shift());
+    }
+    else
+    {
+      kernel.prepareQ8uPerTensor(getShape(_input), getShape(_kernel), getShape(_output),
+                                 _strideWidth, _strideHeight, _dilationWidthFactor,
+                                 _dilationHeightFactor);
+    }
   }
   else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
   {
