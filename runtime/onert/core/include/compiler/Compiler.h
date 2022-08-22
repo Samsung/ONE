@@ -22,7 +22,7 @@
 #ifndef __ONERT_COMPILER_COMPILE_H_
 #define __ONERT_COMPILER_COMPILE_H_
 
-#include "ir/Graph.h"
+#include "ir/NNPkg.h"
 #include "exec/IExecutor.h"
 #include "util/TracingCtx.h"
 
@@ -99,7 +99,15 @@ public:
    * @param[in] model model to compile
    * @param[in] coptions Compiler Options
    */
-  Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt);
+  Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copts);
+
+  /**
+   * @brief     Construct a new Compiler object
+   * @param[in] model model to compile
+   * @param[in] coptions Compiler Options
+   */
+  Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
+           std::vector<std::unique_ptr<CompilerOptions>> &copts);
 
 public:
   /**
@@ -120,7 +128,7 @@ public:
 
   State state(void) const { return _state; }
 
-  CompilerOptions &options() { return _options; }
+  CompilerOptions &options() { return *_voptions[0]; }
 
   /**
    * @brief   Allow to compute float32 using float16 data type
@@ -137,6 +145,9 @@ private:
   std::shared_ptr<ir::Graph> &primary_subgraph() { return _model->at(ir::SubgraphIndex{0}); }
 
 private:
+  // TODO Remove duplication:
+  // - coptions & voptions
+  std::shared_ptr<ir::NNPkg> _nnpkg;
   std::shared_ptr<ir::Model> _model;
   // NOTE These executors does not have duplicated subgraph. This mean they do not allow support
   // subgraphs being called recursively because data of non-constant tensor of parent executor will
@@ -145,6 +156,7 @@ private:
   // subgraph is called.
   State _state;
   CompilerOptions &_options;
+  std::vector<CompilerOptions *> _voptions;
 };
 
 } // namespace compiler

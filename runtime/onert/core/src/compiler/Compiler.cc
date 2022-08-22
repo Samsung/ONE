@@ -237,13 +237,25 @@ std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
   return o;
 }
 
-Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt)
-  : _model{model}, _state{State::CREATED}, _options(copt)
+Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copts)
+  : _nnpkg{std::make_shared<ir::NNPkg>(model)}, _model{model}, _state{State::CREATED},
+    _options{copts}, _voptions{&copts}
 {
   // DO NOTHING
 }
 
-void Compiler::enableToFp16() { _options.fp16_enable = true; }
+Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
+                   std::vector<std::unique_ptr<CompilerOptions>> &copts)
+  : _nnpkg{nnpkg}, _model{nnpkg->primary_model()}, _state{State::CREATED}, _options{*copts[0]},
+    _voptions{}
+{
+  for (uint32_t i = 0; i < copts.size(); i++)
+  {
+    _voptions.push_back(copts[i].get());
+  }
+}
+
+void Compiler::enableToFp16() { _voptions[0]->fp16_enable = true; }
 
 void Compiler::checkProfilerConditions()
 {

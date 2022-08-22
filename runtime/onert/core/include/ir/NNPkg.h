@@ -19,6 +19,7 @@
 
 #include <memory>
 #include <unordered_set>
+#include <vector>
 
 #include "ir/Index.h"
 #include "ir/Model.h"
