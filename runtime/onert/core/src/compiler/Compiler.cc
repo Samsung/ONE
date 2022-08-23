@@ -259,6 +259,9 @@ void Compiler::enableToFp16() { _voptions[0]->fp16_enable = true; }
 
 void Compiler::checkProfilerConditions()
 {
+  if (_nnpkg->model_count() != 1)
+    throw std::runtime_error("NYI: Profiling mode for multiple model is not supported yet");
+
   if (!_options.he_scheduler)
     throw std::runtime_error("Heterogeneous scheduler must be enabled during profiling.");
 
@@ -427,36 +430,36 @@ bool Compiler::buildPartialGraph(uint32_t num_graphs)
 std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 {
   // Set control flow backend for control flow operators
+  for (auto options : _voptions)
   {
     auto &builtin_id = backend::builtin::Config::ID;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = builtin_id;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = builtin_id;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = builtin_id;
+    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = builtin_id;
+    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = builtin_id;
+    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = builtin_id;
+
+    // FIXME This is a workaround for bcq operations, should remove it
+    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
+    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
+
+    // FIXME This is a workaround for bulk operations, should remove it
+    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
+
+    verboseOptions(*options);
   }
 
-  // FIXME This is a workaround for bcq operations, should remove it
+  for (uint32_t i = 0; i < _nnpkg->model_count(); i++)
   {
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
+    _nnpkg->model(ir::ModelIndex{i})->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+      // Mandatory passes
+      pass::PassRunner{}
+        .append(std::make_unique<pass::ConstantOutputPass>(subg))
+        .append(std::make_unique<pass::OddOutputPass>(subg))
+        .run();
+
+      // Optimizations
+      pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
+    });
   }
-
-  // FIXME This is a workaround for bulk operations, should remove it
-  {
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
-  }
-
-  verboseOptions(_options);
-
-  _model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
-    // Mandatory passes
-    pass::PassRunner{}
-      .append(std::make_unique<pass::ConstantOutputPass>(subg))
-      .append(std::make_unique<pass::OddOutputPass>(subg))
-      .run();
-
-    // Optimizations
-    pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
-  });
 
   /***************************************************
    * Prepare compilation phase
@@ -464,8 +467,11 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   // Compilable check
   // TODO: Support hybrid execution -
   //       execution between interpreter and compiled executor (including control flow)
-  if (_options.disable_compile)
+  if (_voptions[0]->disable_compile)
   {
+    if (_nnpkg->model_count() != 1)
+      throw std::runtime_error{"NYI: Disable compilation for multi model is not supported yet"};
+
     auto executors = std::make_shared<exec::ExecutorMap>();
 
     _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
@@ -482,6 +488,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   /***************************************************
    * Backend independent analysis & optimization phase
    ***************************************************/
+  // TODO Handle dump level for each model
   auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options.graph_dump_level);
   onert::dumper::dot::DotDumper dot_dumper(dump_level);
 
@@ -490,15 +497,37 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
-  _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-    dot_dumper.dump(subg, nnfw::misc::str("before_lower_subg-", index.value()));
 
-    // Lower: Assign backend
-    lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, _options);
+  if (_nnpkg->model_count() == 1)
+  {
+    _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+      dot_dumper.dump(subg, nnfw::misc::str("before_lower_subg-", index.value()));
 
-    // Set tracing_ctx for copied graph
-    tracing_ctx->setSubgraphIndex(&(lowered_subgs[index]->graph()), index.value());
-  });
+      // Lower: Assign backend
+      lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, _options);
+
+      // Set tracing_ctx for copied graph
+      tracing_ctx->setSubgraphIndex(&(lowered_subgs[index]->graph()), index.value());
+    });
+  }
+  else
+  {
+    // TODO Support tracing_ctx for multiple model
+    tracing_ctx = nullptr;
+
+    for (uint32_t i = 0; i < _nnpkg->model_count(); i++)
+    {
+      auto model = _nnpkg->model(ir::ModelIndex{i});
+      if (model->subgraphs_count() != 1)
+        throw std::runtime_error{"NYI: Lowering subgraphs for multiple model is not supported yet"};
+
+      auto subg = model->primary_subgraph();
+      dot_dumper.dump(*subg, nnfw::misc::str("before_lower_model-", i));
+
+      lowered_subgs[ir::SubgraphIndex{i}] = std::make_unique<compiler::LoweredGraph>(
+        *_nnpkg->model(ir::ModelIndex{i})->primary_subgraph(), *_voptions[i]);
+    }
+  }
 
   _model.reset();
 
