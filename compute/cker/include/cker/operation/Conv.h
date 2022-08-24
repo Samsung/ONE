@@ -71,9 +71,9 @@ public:
     }
   }
 
-  void prepareQ8u(const Shape &input_shape, const Shape &kernel_shape, const Shape &output_shape,
-                  uint32_t stride_width, uint32_t stride_height, uint32_t dilation_width_factor,
-                  uint32_t dilation_height_factor)
+  void prepareQ8uPerTensor(const Shape &input_shape, const Shape &kernel_shape,
+                           const Shape &output_shape, uint32_t stride_width, uint32_t stride_height,
+                           uint32_t dilation_width_factor, uint32_t dilation_height_factor)
   {
     if (!_prepared)
     {
@@ -136,6 +136,16 @@ public:
       optimized::Conv(params, input_shape, input_data, filter_shape, filter_data, bias_shape,
                       bias_data, output_shape, output_data, _im2col_shape, im2col_data);
     }
+  }
+
+  void operator()(const ConvParams &params, const Shape &input_shape, const uint8_t *input_data,
+                  const Shape &filter_shape, const uint8_t *filter_data,
+                  const int32_t *filter_zero_point, const Shape &bias_shape,
+                  const int32_t *bias_data, const Shape &output_shape, uint8_t *output_data)
+  {
+    reference::Conv(params, _per_channel_output_multiplier.data(), _per_channel_output_shift.data(),
+                    input_shape, input_data, filter_shape, filter_data, filter_zero_point,
+                    bias_shape, bias_data, output_shape, output_data);
   }
 
   void operator()(const ConvParams &params, const Shape &input_shape, const int8_t *input_data,

@@ -50,7 +50,8 @@ public:
 public:
   void convFloat32();
 
-  void convQ8u();
+  void convQ8uPerTensor();
+  void convQ8uPerChannel();
 
   void convQ8i();
 
