@@ -23,7 +23,7 @@
 #include "../../compiler/TensorRegistries.h"
 
 #include "backend/basic/KernelGeneratorBase.h"
-#include "exec/IExecutor.h"
+#include "exec/ExecutorMap.h"
 #include "ir/Graph.h"
 
 namespace onert

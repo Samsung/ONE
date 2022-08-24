@@ -21,10 +21,11 @@
 #ifndef __ONERT_EXEC_I_EXECUTOR_H__
 #define __ONERT_EXEC_I_EXECUTOR_H__
 
-#include "ir/Graph.h"
 #include "IFunction.h"
 #include "IODescription.h"
+#include "ir/Graph.h"
 #include "ir/Index.h"
+#include "ir/NNPkg.h"
 #include "ir/OperationIndexMap.h"
 
 #include <cstdint>
@@ -106,8 +107,6 @@ struct IExecutor
    */
   virtual const std::vector<backend::builtin::IOTensor *> &getOutputTensors() const = 0;
 };
-
-using ExecutorMap = std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>>;
 
 } // namespace exec
 } // namespace onert

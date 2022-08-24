@@ -23,7 +23,7 @@
 #define __ONERT_COMPILER_COMPILE_H_
 
 #include "ir/NNPkg.h"
-#include "exec/IExecutor.h"
+#include "exec/ExecutorMap.h"
 #include "util/TracingCtx.h"
 
 namespace onert

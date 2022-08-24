@@ -571,7 +571,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
 
-  auto executors = std::make_shared<exec::ExecutorMap>();
+  auto executors = std::make_shared<exec::ExecutorMap>(*_nnpkg);
   for (auto &pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
@@ -585,7 +585,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
       std::move(lowered_subg), tracing_ctx.get(), _options, executors)};
     executor->setIndexedRanks(indexed_ranks);
-    executors->insert(std::make_pair(subg_index, std::move(executor)));
+    executors->emplace(subg_index, std::move(executor));
   }
 
   /********************************
@@ -780,7 +780,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
     auto executor = std::unique_ptr<exec::IExecutor>{
       ExecutorFactory::get().create(std::move(lowered_partialgraph), nullptr, _options, executors)};
     executor->setIndexedRanks(indexed_ranks);
-    executors->insert(std::make_pair(ir::SubgraphIndex{0}, std::move(executor)));
+    executors->emplace(ir::SubgraphIndex{0}, std::move(executor));
 
     // It doesn't support tracing in case of partial graph
     results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));

@@ -18,7 +18,7 @@
 #define __ONERT_BACKEND_BUILTIN_KERNEL_WHILE_LAYER_H__
 
 #include <backend/IPortableTensor.h>
-#include <exec/IExecutor.h>
+#include <exec/ExecutorMap.h>
 #include <exec/IFunction.h>
 #include <ir/OperandIndexSequence.h>
 #include <ir/Graph.h>

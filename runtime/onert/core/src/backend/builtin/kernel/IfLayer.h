@@ -18,7 +18,7 @@
 #define __ONERT_BACKEND_BUILTIN_KERNEL_IF_LAYER_H__
 
 #include <backend/IPortableTensor.h>
-#include <exec/IExecutor.h>
+#include <exec/ExecutorMap.h>
 #include "../ExternalContext.h"
 
 namespace onert

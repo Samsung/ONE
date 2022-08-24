@@ -22,7 +22,7 @@
 #define __ONERT_EXEC_EXECUTION_H__
 
 #include "ir/Layout.h"
-#include "exec/IExecutor.h"
+#include "exec/ExecutorMap.h"
 #include "IODescription.h"
 
 #include <thread>

@@ -120,6 +120,9 @@ public:
    * @return IODesc at index
    */
   IODesc &input(uint32_t index) { return _pkg_inputs[index]; }
+
+  const std::vector<IODesc> &inputs() { return _pkg_inputs; }
+
   /**
    * @brief Add input at the end
    *
@@ -141,6 +144,9 @@ public:
    * @return IODesc at index
    */
   IODesc &output(uint32_t index) { return _pkg_outputs[index]; }
+
+  const std::vector<IODesc> &outputs() { return _pkg_outputs; }
+
   /**
    * @brief Add output at the end
    *
