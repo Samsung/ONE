@@ -524,8 +524,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       auto subg = model->primary_subgraph();
       dot_dumper.dump(*subg, nnfw::misc::str("before_lower_model-", i));
 
-      lowered_subgs[ir::SubgraphIndex{i}] = std::make_unique<compiler::LoweredGraph>(
-        *_nnpkg->model(ir::ModelIndex{i})->primary_subgraph(), *_voptions[i]);
+      lowered_subgs[ir::SubgraphIndex{i}] =
+        std::make_unique<compiler::LoweredGraph>(*model->primary_subgraph(), *_voptions[i]);
     }
   }
 
@@ -544,13 +544,27 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     // recursively
     std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers =
       createStaticShapeInferers(lowered_subgs);
-    const auto primary_subg_idx = ir::SubgraphIndex{0};
-    inferers.at(primary_subg_idx)->infer();
 
-    for (const auto &pair : inferers)
+    if (_nnpkg->model_count() == 1)
     {
-      const auto inferer = pair.second.get();
-      inferer->dump();
+      const auto primary_subg_idx = ir::SubgraphIndex{0};
+      inferers.at(primary_subg_idx)->infer();
+
+      for (const auto &pair : inferers)
+      {
+        const auto inferer = pair.second.get();
+        inferer->dump();
+      }
+    }
+    else
+    {
+      // Assume multi model has only one subgraph on each model
+      for (const auto &pair : inferers)
+      {
+        const auto inferer = pair.second.get();
+        inferer->infer();
+        inferer->dump();
+      }
     }
   }
 

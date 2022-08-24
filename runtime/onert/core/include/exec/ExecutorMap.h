@@ -35,9 +35,10 @@ public:
     {
       _multi_model = true;
 
-      // Copy IODesc vector
+      // Copy I/O vector, edge set
       _pkg_inputs = nnpkg.inputs();
       _pkg_outputs = nnpkg.outputs();
+      _model_edges = nnpkg.edges();
     }
   }
 
@@ -60,6 +61,9 @@ public:
   void execute(const IODescription &desc);
 
 private:
+  void executeEntries(const IODescription &desc);
+
+private:
   // TODO Use Executor index
   //      Changing index will effect if/while compile and kernel implementation
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _map;
@@ -67,6 +71,7 @@ private:
   bool _multi_model = false;
   std::vector<ir::IODesc> _pkg_inputs;
   std::vector<ir::IODesc> _pkg_outputs;
+  std::unordered_set<ir::ModelEdge, ir::ModelEdgeHash, ir::ModelEdgeEqual> _model_edges;
 };
 
 } // namespace exec

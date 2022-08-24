@@ -166,6 +166,11 @@ public:
     _model_edges.insert(ModelEdge{from, to});
   }
 
+  const std::unordered_set<ModelEdge, ModelEdgeHash, ModelEdgeEqual> &edges()
+  {
+    return _model_edges;
+  }
+
   // TODO: Add iterate() or getter for edges
 
 private:

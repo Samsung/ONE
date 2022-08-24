@@ -203,7 +203,7 @@ void Execution::execute()
 {
   VERBOSE(Execution) << "Start execution" << std::endl;
 
-  primary_executor()->execute(_io_desc);
+  _executors->execute(_io_desc);
   finished = true;
 
   VERBOSE(Execution) << "Execution finished" << std::endl;
