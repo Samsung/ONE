@@ -226,14 +226,6 @@ def _generate():
     def _add_onecc_sections():
         pass  # NYI
 
-    def _add_from_backend_cfg():
-        '''
-        This copies key & value in sections of backend cfg into one cfg.
-        Call this after setting default values for circle since there might be values overrided
-        by backend.
-        '''
-        pass  # NYI
-
     def _gen_import():
         pass  # NYI
 
@@ -256,9 +248,6 @@ def _generate():
     _gen_optimize()
     _gen_quantize()
     _gen_codegen()
-    _gen_profile()
-
-    _add_from_backend_cfg()
 
     with open(args.output_path, 'w') as f:
         config.write(f)
@@ -278,8 +267,6 @@ def main():
     # make a command to run given backend driver
     driver_path = _get_executable(args, backends_list)
     init_cmd = [driver_path] + backend_args
-    if _utils._is_valid_attr(args, 'command'):
-        init_cmd += getattr(args, 'command').split()
 
     # run backend driver
     _utils._run(init_cmd, err_prefix=ntpath.basename(driver_path))
