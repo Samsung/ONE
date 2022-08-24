@@ -12,6 +12,7 @@ outdir="."
 nnpkg_run=${nnpkg_run:-"nnpackage_run"}
 difftool=${difftool:-"h5diff"}
 delete_dumped_on_failure=0
+verbose_diff=0
 
 usage() {
   echo "Usage: $0 $progname [options] nnpackage_test"
@@ -27,6 +28,7 @@ usage() {
   echo "    -o   set output directory (default=$outdir)"
   echo "    -d   delete dumped file on failure."
   echo "         (dumped file are always deleted on success) (default=$delete_dumped_on_failure)"
+  echo "    -v   verbose result diff (default=$verbose_diff)"
   echo ""
   echo "Environment variables:"
   echo "   nnpackage_run    path to nnpackage_run (default=nnpackage_run)"
@@ -49,6 +51,7 @@ case "${OPTION}" in
     d) delete_dumped_on_failure=1;;
     i) indir=$OPTARG;;
     o) outdir=$OPTARG;;
+    v) verbose_diff=1;;
     ?) exit 1;;
 esac
 done
@@ -110,8 +113,8 @@ echo -n "[Compare] $nnpkg "
 test_fail()
 {
   echo -e "\tFail"
-  [ $delete_dumped_on_failure ] && rm "$dumped"
-  cat "$dumped.log"
+  [ $delete_dumped_on_failure -eq 1 ] && rm "$dumped"
+  [ $verbose_diff -eq 1 ] && cat "$dumped.log"
   rm "$dumped.log"
   exit 3
 }
@@ -119,7 +122,7 @@ test_fail()
 test_pass()
 {
   echo -e "\tPass"
-  cat "$dumped.log"
+  [ $verbose_diff -eq 1 ] && cat "$dumped.log"
   rm "$dumped" "$dumped.log"
 }
 
