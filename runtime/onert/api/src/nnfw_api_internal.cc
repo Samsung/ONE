@@ -367,7 +367,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       auto indices = nnfw::misc::split(str, ':');
       if (indices.size() != 3)
       {
-        std::cerr << "OperandDesc should be 3-tuple." << std::endl;
+        std::cerr << "IODesc should be 3-tuple." << std::endl;
         return onert::ir::IODesc{};
       }
       auto model_idx = static_cast<uint32_t>(std::stoi(indices.at(0)));
