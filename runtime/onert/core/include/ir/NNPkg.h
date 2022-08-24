@@ -28,12 +28,12 @@ namespace onert
 namespace ir
 {
 
-using OperandDesc = std::tuple<ModelIndex, SubgraphIndex, OperandIndex>;
+using IODesc = std::tuple<ModelIndex, SubgraphIndex, IOIndex>;
 
 struct ModelEdge
 {
-  OperandDesc from;
-  OperandDesc to;
+  IODesc from;
+  IODesc to;
 };
 
 struct ModelEdgeEqual
@@ -56,7 +56,7 @@ struct ModelEdgeHash
   }
 };
 
-inline std::ostream &operator<<(std::ostream &o, const OperandDesc &od)
+inline std::ostream &operator<<(std::ostream &o, const IODesc &od)
 {
   o << std::get<0>(od).value() << ":" << std::get<1>(od).value() << ":" << std::get<2>(od).value();
   return o;
@@ -109,51 +109,51 @@ public:
    * @brief Get pkg_input at index
    *
    * @param[in] index Index of pkg_input to be returned
-   * @return OperandDesc at index
+   * @return IODesc at index
    */
-  const OperandDesc &input(uint32_t index) const { return _pkg_inputs[index]; }
+  const IODesc &input(uint32_t index) const { return _pkg_inputs[index]; }
   /**
    * @brief Get pkg_input at index
    *
    * @param[in] index Index of pkg_input to be returned
-   * @return OperandDesc at index
+   * @return IODesc at index
    */
-  OperandDesc &input(uint32_t index) { return _pkg_inputs[index]; }
+  IODesc &input(uint32_t index) { return _pkg_inputs[index]; }
   /**
    * @brief Add input at the end
    *
-   * @param[in] input Input OperandDesc to be pushed
+   * @param[in] input Input IODesc to be pushed
    */
-  void addInput(const OperandDesc &input) { _pkg_inputs.push_back(input); }
+  void addInput(const IODesc &input) { _pkg_inputs.push_back(input); }
 
   /**
    * @brief Get pkg_output at index
    *
    * @param[in] index Index of pkg_output to be returned
-   * @return OperandDesc at index
+   * @return IODesc at index
    */
-  const OperandDesc &output(uint32_t index) const { return _pkg_outputs[index]; }
+  const IODesc &output(uint32_t index) const { return _pkg_outputs[index]; }
   /**
    * @brief Get pkg_output at index
    *
    * @param[in] index Index of pkg_output to be returned
-   * @return OperandDesc at index
+   * @return IODesc at index
    */
-  OperandDesc &output(uint32_t index) { return _pkg_outputs[index]; }
+  IODesc &output(uint32_t index) { return _pkg_outputs[index]; }
   /**
    * @brief Add output at the end
    *
-   * @param[in] output Output OperandDesc to be pushed
+   * @param[in] output Output IODesc to be pushed
    */
-  void addOutput(const OperandDesc &output) { _pkg_outputs.push_back(output); }
+  void addOutput(const IODesc &output) { _pkg_outputs.push_back(output); }
 
   /**
    * @brief Add edge between models at the end
    *
-   * @param[in] from from OperandDesc
-   * @param[in] to   to OperandDesc
+   * @param[in] from from IODesc
+   * @param[in] to   to IODesc
    */
-  void addEdge(const OperandDesc &from, const OperandDesc &to)
+  void addEdge(const IODesc &from, const IODesc &to)
   {
     std::cout << from << " -> " << to << std::endl;
     _model_edges.insert(ModelEdge{from, to});
@@ -163,8 +163,8 @@ public:
 
 private:
   std::unordered_map<ModelIndex, std::shared_ptr<Model>> _models;
-  std::vector<OperandDesc> _pkg_inputs;
-  std::vector<OperandDesc> _pkg_outputs;
+  std::vector<IODesc> _pkg_inputs;
+  std::vector<IODesc> _pkg_outputs;
   std::unordered_set<ModelEdge, ModelEdgeHash, ModelEdgeEqual> _model_edges;
 };
 
