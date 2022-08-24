@@ -57,9 +57,9 @@ class Conv
 public:
   Conv() : _modified_filter_data(), _im2col_shape(4), _need_im2col(false), _prepared(false) {}
 
-  void prepare(const Shape &filter_shape, const float *filter_data, PaddingType padding_type,
-               bool &is_replaced_weights, uint32_t dilationWidthFactor,
-               uint32_t dilationHeightFactor)
+  void prepareF32(const Shape &filter_shape, const float *filter_data, PaddingType padding_type,
+                  bool &is_replaced_weights, uint32_t dilationWidthFactor,
+                  uint32_t dilationHeightFactor)
   {
     if (!_prepared)
     {
@@ -71,9 +71,9 @@ public:
     }
   }
 
-  void prepareQuant(const Shape &input_shape, const Shape &kernel_shape, const Shape &output_shape,
-                    uint32_t stride_width, uint32_t stride_height, uint32_t dilation_width_factor,
-                    uint32_t dilation_height_factor)
+  void prepareQ8u(const Shape &input_shape, const Shape &kernel_shape, const Shape &output_shape,
+                  uint32_t stride_width, uint32_t stride_height, uint32_t dilation_width_factor,
+                  uint32_t dilation_height_factor)
   {
     if (!_prepared)
     {

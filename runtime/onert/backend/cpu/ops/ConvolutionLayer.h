@@ -50,9 +50,9 @@ public:
 public:
   void convFloat32();
 
-  void convQuant8();
+  void convQ8u();
 
-  void convQuant8PerChannel();
+  void convQ8i();
 
   void configure(const IPortableTensor *input, const IPortableTensor *kernel,
                  const IPortableTensor *bias, ir::PaddingType _paddingType,
