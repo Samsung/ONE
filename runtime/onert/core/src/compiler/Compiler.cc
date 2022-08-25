@@ -238,16 +238,14 @@ std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
 }
 
 Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copts)
-  : _nnpkg{std::make_shared<ir::NNPkg>(model)}, _model{model}, _state{State::CREATED},
-    _options{copts}, _voptions{&copts}
+  : _nnpkg{std::make_shared<ir::NNPkg>(model)}, _state{State::CREATED}, _voptions{&copts}
 {
   // DO NOTHING
 }
 
 Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
                    std::vector<std::unique_ptr<CompilerOptions>> &copts)
-  : _nnpkg{nnpkg}, _model{nnpkg->primary_model()}, _state{State::CREATED}, _options{*copts[0]},
-    _voptions{}
+  : _nnpkg{nnpkg}, _state{State::CREATED}, _voptions{}
 {
   for (uint32_t i = 0; i < copts.size(); i++)
   {
@@ -262,16 +260,20 @@ void Compiler::checkProfilerConditions()
   if (_nnpkg->model_count() != 1)
     throw std::runtime_error("NYI: Profiling mode for multiple model is not supported yet");
 
-  if (!_options.he_scheduler)
+  if (!_voptions[0]->he_scheduler)
     throw std::runtime_error("Heterogeneous scheduler must be enabled during profiling.");
 
-  if (_options.executor != "Dataflow")
+  if (_voptions[0]->executor != "Dataflow")
     throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
 }
 
 bool Compiler::buildPartialGraph(uint32_t num_graphs)
 {
-  if (_model->subgraphs_count() > 1)
+  // Use 1st model and options only on partial graph (pipeline) compile
+  auto model = _nnpkg->primary_model();
+  auto &options = *_voptions[0];
+
+  if (model->subgraphs_count() > 1)
     return false;
 
   auto partialgraphs = std::make_shared<ir::Model>();
@@ -281,7 +283,7 @@ bool Compiler::buildPartialGraph(uint32_t num_graphs)
     auto partialgraph = std::make_unique<ir::Graph>();
     partialgraphs->push(ir::SubgraphIndex{idx}, std::move(partialgraph));
   }
-  _model->primary_subgraph()->setPartialModel(partialgraphs);
+  model->primary_subgraph()->setPartialModel(partialgraphs);
 
   auto partial_graph = primary_subgraph()->partialgraphs();
 
@@ -291,8 +293,8 @@ bool Compiler::buildPartialGraph(uint32_t num_graphs)
 
       for (auto use_operation : use_operations)
       {
-        auto graph_index = _options.partial_graph_options.index_to_graph.find(use_operation);
-        if (graph_index == _options.partial_graph_options.index_to_graph.end())
+        auto graph_index = options.partial_graph_options.index_to_graph.find(use_operation);
+        if (graph_index == options.partial_graph_options.index_to_graph.end())
         {
           throw std::runtime_error("Invalid Partition Map");
         }
@@ -313,8 +315,8 @@ bool Compiler::buildPartialGraph(uint32_t num_graphs)
 
   primary_subgraph()->operations().iterate(
     [&](const ir::OperationIndex &operation_index, const ir::Operation &operation) {
-      auto graph_index = _options.partial_graph_options.index_to_graph.find(operation_index);
-      if (graph_index == _options.partial_graph_options.index_to_graph.end())
+      auto graph_index = options.partial_graph_options.index_to_graph.find(operation_index);
+      if (graph_index == options.partial_graph_options.index_to_graph.end())
       {
         throw std::runtime_error("Invalid Partition Map");
       }
@@ -365,10 +367,10 @@ bool Compiler::buildPartialGraph(uint32_t num_graphs)
         auto use_operations = primary_subgraph()->operands().at(operand_index).getUses();
         auto iter = use_operations.begin();
         ir::SubgraphIndex graph_index =
-          _options.partial_graph_options.index_to_graph.find(*iter++)->second;
+          options.partial_graph_options.index_to_graph.find(*iter++)->second;
         while (iter != use_operations.end())
         {
-          if (graph_index != _options.partial_graph_options.index_to_graph.find(*iter)->second &&
+          if (graph_index != options.partial_graph_options.index_to_graph.find(*iter)->second &&
               !partition->getOutputs().contains(operand_index))
           {
             partition->addOutput(operand_index,
@@ -474,7 +476,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
     auto executors = std::make_shared<exec::Executors>();
 
-    _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+    _nnpkg->primary_model()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
     });
     _state = State::COMPILED;
@@ -482,14 +484,15 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   }
 
   // Mode check
-  if (_options.he_profiling_mode)
+  // TODO handle option for each model
+  if (_voptions[0]->he_profiling_mode)
     checkProfilerConditions();
 
   /***************************************************
    * Backend independent analysis & optimization phase
    ***************************************************/
   // TODO Handle dump level for each model
-  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options.graph_dump_level);
+  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_voptions[0]->graph_dump_level);
   onert::dumper::dot::DotDumper dot_dumper(dump_level);
 
   // Tracing context
@@ -500,11 +503,11 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
   if (_nnpkg->model_count() == 1)
   {
-    _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+    _nnpkg->primary_model()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       dot_dumper.dump(subg, nnfw::misc::str("before_lower_subg-", index.value()));
 
       // Lower: Assign backend
-      lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, _options);
+      lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, *_voptions[0]);
 
       // Set tracing_ctx for copied graph
       tracing_ctx->setSubgraphIndex(&(lowered_subgs[index]->graph()), index.value());
@@ -528,8 +531,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
         std::make_unique<compiler::LoweredGraph>(*model->primary_subgraph(), *_voptions[i]);
     }
   }
-
-  _model.reset();
 
   for (auto &pair : lowered_subgs)
   {
@@ -586,9 +587,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
    *************************************************************/
 
   auto executors = std::make_shared<exec::Executors>(*_nnpkg);
-  // TODO Move this reset to lowering (after lowered_subgs map fill)
-  //      It cannot be moved because it is used on Executors creation
-  _nnpkg.reset();
   for (auto &pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
@@ -599,11 +597,19 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
                                std::to_string(subg_index.value()));
     lowered_subg->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
+
+    auto &options = *_voptions[0];
+    if (_nnpkg->model_count() != 1)
+      options = *_voptions[subg_index.value()];
     auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
-      std::move(lowered_subg), tracing_ctx.get(), _options, executors)};
+      std::move(lowered_subg), tracing_ctx.get(), options, executors)};
     executor->setIndexedRanks(indexed_ranks);
     executors->emplace(subg_index, std::move(executor));
   }
+
+  // TODO Move this reset to lowering (after lowered_subgs map fill)
+  //      It cannot be moved because it is used on Executors creation and for loop
+  _nnpkg.reset();
 
   /********************************
    * Code generation phase finished
@@ -617,6 +623,10 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
 {
   std::string package_path(package_file_path);
   std::string partition_map_file;
+
+  // Use 1st model and options only on partial graph (pipeline) compile
+  auto model = _nnpkg->primary_model();
+  auto &options = *_voptions[0];
 
   if (map_file_path)
   {
@@ -640,7 +650,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
     num_graphs = np.asUInt();
     for (uint32_t i = 0; i < (uint32_t)map.size(); ++i)
     {
-      _options.partial_graph_options.index_to_graph[ir::OperationIndex{i}] =
+      options.partial_graph_options.index_to_graph[ir::OperationIndex{i}] =
         ir::SubgraphIndex{map[i].asUInt()};
     }
   }
@@ -657,25 +667,25 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   // Set control flow backend for control flow operators
   {
     auto &builtin_id = backend::builtin::Config::ID;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = builtin_id;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = builtin_id;
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = builtin_id;
+    options.manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = builtin_id;
+    options.manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = builtin_id;
+    options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = builtin_id;
   }
 
   // FIXME This is a workaround for bcq operations, should remove it
   {
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
+    options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
+    options.manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
   }
 
   // FIXME This is a workaround for bulk operations, should remove it
   {
-    _options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
+    options.manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
   }
 
-  verboseOptions(_options);
+  verboseOptions(options);
 
-  _model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+  model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
     // Mandatory passes
     auto part = subg.partialgraphs();
     part->iterate([&](const ir::SubgraphIndex &, ir::Graph &partialgraph) {
@@ -698,12 +708,12 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   // Compilable check
   // TODO: Support hybrid execution -
   //       execution between interpreter and compiled executor (including control flow)
-  if (_options.disable_compile)
+  if (options.disable_compile)
   {
     std::vector<std::shared_ptr<CompilerArtifact>> results;
     auto executors = std::make_shared<exec::Executors>();
 
-    _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+    model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
     });
     results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));
@@ -712,19 +722,19 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   }
 
   // Mode check
-  if (_options.he_profiling_mode)
+  if (options.he_profiling_mode)
     checkProfilerConditions();
 
   /***************************************************
    * Backend independent analysis & optimization phase
    ***************************************************/
-  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options.graph_dump_level);
+  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(options.graph_dump_level);
   onert::dumper::dot::DotDumper dot_dumper_part(dump_level);
 
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>
     lowered_partialgraphs;
-  _model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+  model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
     auto part = subg.partialgraphs();
     part->iterate([&](const ir::SubgraphIndex &pindex, ir::Graph &partialgraph) {
       dot_dumper_part.dump(partialgraph,
@@ -732,7 +742,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
 
       // // Lower: Assign backend
       lowered_partialgraphs[pindex] =
-        std::make_unique<compiler::LoweredGraph>(subg, partialgraph, _options);
+        std::make_unique<compiler::LoweredGraph>(subg, partialgraph, options);
     });
   });
 
@@ -795,7 +805,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
     lowered_partialgraph->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
     auto executor = std::unique_ptr<exec::IExecutor>{
-      ExecutorFactory::get().create(std::move(lowered_partialgraph), nullptr, _options, executors)};
+      ExecutorFactory::get().create(std::move(lowered_partialgraph), nullptr, options, executors)};
     executor->setIndexedRanks(indexed_ranks);
     executors->emplace(ir::SubgraphIndex{0}, std::move(executor));
 
@@ -803,7 +813,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
     results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));
   }
 
-  _model.reset();
+  _nnpkg.reset();
   /********************************
    * Code generation phase finished
    ********************************/

@@ -128,8 +128,6 @@ public:
 
   State state(void) const { return _state; }
 
-  CompilerOptions &options() { return *_voptions[0]; }
-
   /**
    * @brief   Allow to compute float32 using float16 data type
    */
@@ -142,20 +140,19 @@ public:
 
 private:
   void checkProfilerConditions();
-  std::shared_ptr<ir::Graph> &primary_subgraph() { return _model->at(ir::SubgraphIndex{0}); }
+  std::shared_ptr<ir::Graph> &primary_subgraph()
+  {
+    return _nnpkg->primary_model()->at(ir::SubgraphIndex{0});
+  }
 
 private:
-  // TODO Remove duplication:
-  // - coptions & voptions
   std::shared_ptr<ir::NNPkg> _nnpkg;
-  std::shared_ptr<ir::Model> _model;
   // NOTE These executors does not have duplicated subgraph. This mean they do not allow support
   // subgraphs being called recursively because data of non-constant tensor of parent executor will
   // be updated by child executor. If you want to support subgraphs being called recursively, you
   // have to add allocate non-constant tensor memory of executors in execution time when each
   // subgraph is called.
   State _state;
-  CompilerOptions &_options;
   std::vector<CompilerOptions *> _voptions;
 };
 
