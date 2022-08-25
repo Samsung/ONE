@@ -138,13 +138,25 @@ public:
     }
   }
 
+  void operator()(const ConvParams &params, const Shape &input_shape, const uint8_t *input_data,
+                  const Shape &filter_shape, const uint8_t *filter_data,
+                  const int32_t *filter_zero_point, const Shape &bias_shape,
+                  const int32_t *bias_data, const Shape &output_shape, uint8_t *output_data)
+  {
+    reference::Conv<uint8_t, true>(params, _per_channel_output_multiplier.data(),
+                                   _per_channel_output_shift.data(), input_shape, input_data,
+                                   filter_shape, filter_data, filter_zero_point, bias_shape,
+                                   bias_data, output_shape, output_data);
+  }
+
   void operator()(const ConvParams &params, const Shape &input_shape, const int8_t *input_data,
                   const Shape &filter_shape, const int8_t *filter_data, const Shape &bias_shape,
                   const int32_t *bias_data, const Shape &output_shape, int8_t *output_data)
   {
-    reference::Conv(params, _per_channel_output_multiplier.data(), _per_channel_output_shift.data(),
-                    input_shape, input_data, filter_shape, filter_data, bias_shape, bias_data,
-                    output_shape, output_data);
+    reference::Conv<int8_t, false>(params, _per_channel_output_multiplier.data(),
+                                   _per_channel_output_shift.data(), input_shape, input_data,
+                                   filter_shape, filter_data, nullptr /* filter_zero_point */,
+                                   bias_shape, bias_data, output_shape, output_data);
   }
   std::vector<int32_t> &per_channel_output_multiplier() { return _per_channel_output_multiplier; }
   std::vector<int> &per_channel_output_shift() { return _per_channel_output_shift; }
