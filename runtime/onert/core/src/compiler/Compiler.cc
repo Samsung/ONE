@@ -586,6 +586,9 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
    *************************************************************/
 
   auto executors = std::make_shared<exec::ExecutorMap>(*_nnpkg);
+  // TODO Move this reset to lowering (after lowered_subgs map fill)
+  //      It cannot be moved because it is used on ExecutorMap creation
+  _nnpkg.reset();
   for (auto &pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;

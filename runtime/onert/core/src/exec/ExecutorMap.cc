@@ -71,7 +71,10 @@ const ir::OperandInfo ExecutorMap::outputInfo(const ir::IOIndex &index)
 void ExecutorMap::execute(const IODescription &desc)
 {
   if (_multi_model)
+  {
     executeEntries(desc);
+    return;
+  }
 
   _map.at(ir::SubgraphIndex{0})->execute(desc);
 }
@@ -88,20 +91,21 @@ void ExecutorMap::executeEntries(const IODescription &desc)
 
   // Assume edge is 0:0:0 -> 1:0:0
   auto &edge = *_model_edges.begin();
-  assert(std::get<0>(edge.from) == ir::ModelIndex{0});
-  assert(std::get<1>(edge.from) == ir::SubgraphIndex{0});
-  assert(std::get<2>(edge.from) == ir::IOIndex{0});
-  assert(std::get<0>(edge.to) == ir::ModelIndex{1});
-  assert(std::get<1>(edge.to) == ir::SubgraphIndex{0});
-  assert(std::get<2>(edge.to) == ir::IOIndex{0});
+  if ((std::get<0>(edge.from) != ir::ModelIndex{0}) ||
+      (std::get<1>(edge.from) != ir::SubgraphIndex{0}) ||
+      (std::get<2>(edge.from) != ir::IOIndex{0}))
+    throw std::runtime_error{"NYI: Multi model execution for this edge(from) is not supported yet"};
+
+  if ((std::get<0>(edge.to) != ir::ModelIndex{1}) ||
+      (std::get<1>(edge.to) != ir::SubgraphIndex{0}) || (std::get<2>(edge.to) != ir::IOIndex{0}))
+    throw std::runtime_error{"NYI: Multi model execution for this edge(to) is not supported yet"};
 
   // Prepare buffer
   // Assume buffer layout is NHWC
-  auto layout = ir::Layout::NHWC;
+  const auto layout = ir::Layout::NHWC;
   const auto buf_index = _map.at(ir::SubgraphIndex{0})->graph().getOutputs().at(ir::IOIndex{0});
   const auto buf_info = _map.at(ir::SubgraphIndex{0})->graph().operands().at(buf_index).info();
-  const auto buf_size =
-    _map.at(ir::SubgraphIndex{0})->graph().operands().at(buf_index).operandSize();
+  const auto buf_size = buf_info.total_size();
   auto connect_buf = std::make_unique<uint8_t[]>(buf_size);
   auto buf_ptr = connect_buf.get();
 
@@ -110,12 +114,15 @@ void ExecutorMap::executeEntries(const IODescription &desc)
     auto &executor1 = _map.at(ir::SubgraphIndex{0});
     auto &graph1 = executor1->graph();
     if (graph1.getInputs().size() != 1 || graph1.getOutputs().size() != 1)
-      throw std::runtime_error{"NYI: Multi model execution for 1st model is not supported yet"};
+      throw std::runtime_error{
+        "NYI: Multi model execution for this 1st model is not supported yet"};
 
     const auto input_desc = _pkg_inputs[0];
-    assert(std::get<0>(input_desc) == ir::ModelIndex{0});
-    assert(std::get<1>(input_desc) == ir::SubgraphIndex{0});
-    assert(std::get<2>(input_desc) == ir::IOIndex{0});
+    if ((std::get<0>(input_desc) != ir::ModelIndex{0}) ||
+        (std::get<1>(input_desc) != ir::SubgraphIndex{0}) ||
+        (std::get<2>(input_desc) != ir::IOIndex{0}))
+      throw std::runtime_error{
+        "NYI: Multi model execution for this 1st model is not supported yet"};
 
     IODescription desc1;
     desc1.inputs.resize(1);
@@ -130,12 +137,15 @@ void ExecutorMap::executeEntries(const IODescription &desc)
     auto &executor2 = _map.at(ir::SubgraphIndex{1});
     auto &graph2 = executor2->graph();
     if (graph2.getInputs().size() != 1 || graph2.getOutputs().size() != 1)
-      throw std::runtime_error{"NYI: Multi model execution for 2nd model is not supported yet"};
+      throw std::runtime_error{
+        "NYI: Multi model execution for this 2nd model is not supported yet"};
 
     const auto output_desc = _pkg_outputs[0];
-    assert(std::get<0>(output_desc) == ir::ModelIndex{1});
-    assert(std::get<1>(output_desc) == ir::SubgraphIndex{0});
-    assert(std::get<2>(output_desc) == ir::IOIndex{0});
+    if ((std::get<0>(output_desc) != ir::ModelIndex{1}) ||
+        (std::get<1>(output_desc) != ir::SubgraphIndex{0}) ||
+        (std::get<2>(output_desc) != ir::IOIndex{0}))
+      throw std::runtime_error{
+        "NYI: Multi model execution for this 2nd model is not supported yet"};
 
     IODescription desc2;
     desc2.inputs.resize(1);

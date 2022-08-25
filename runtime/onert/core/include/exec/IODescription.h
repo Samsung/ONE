@@ -37,7 +37,6 @@ struct InputDesc
   const ir::Layout layout;
 
   InputDesc(void) = delete;
-  InputDesc(const InputDesc &) = default;
   InputDesc(const ir::OperandInfo &info, const void *buffer, const size_t size, ir::Layout layout)
     : info(info), buffer(buffer), size(size), layout(layout)
   {
