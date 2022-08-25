@@ -23,7 +23,7 @@ namespace onert
 namespace exec
 {
 
-Execution::Execution(const std::shared_ptr<ExecutorMap> &executors) : _executors{executors}
+Execution::Execution(const std::shared_ptr<Executors> &executors) : _executors{executors}
 {
   assert(executors != nullptr);
   assert(executors->at(ir::SubgraphIndex{0}) != nullptr);

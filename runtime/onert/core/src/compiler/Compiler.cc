@@ -472,7 +472,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     if (_nnpkg->model_count() != 1)
       throw std::runtime_error{"NYI: Disable compilation for multi model is not supported yet"};
 
-    auto executors = std::make_shared<exec::ExecutorMap>();
+    auto executors = std::make_shared<exec::Executors>();
 
     _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
@@ -585,9 +585,9 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
 
-  auto executors = std::make_shared<exec::ExecutorMap>(*_nnpkg);
+  auto executors = std::make_shared<exec::Executors>(*_nnpkg);
   // TODO Move this reset to lowering (after lowered_subgs map fill)
-  //      It cannot be moved because it is used on ExecutorMap creation
+  //      It cannot be moved because it is used on Executors creation
   _nnpkg.reset();
   for (auto &pair : lowered_subgs)
   {
@@ -701,7 +701,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   if (_options.disable_compile)
   {
     std::vector<std::shared_ptr<CompilerArtifact>> results;
-    auto executors = std::make_shared<exec::ExecutorMap>();
+    auto executors = std::make_shared<exec::Executors>();
 
     _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
@@ -785,7 +785,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   std::vector<std::shared_ptr<CompilerArtifact>> results;
   for (auto &pair : ordered)
   {
-    auto executors = std::make_shared<exec::ExecutorMap>();
+    auto executors = std::make_shared<exec::Executors>();
 
     const auto &partialgraph_index = ir::SubgraphIndex(pair.first);
     auto &lowered_partialgraph = pair.second;

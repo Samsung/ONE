@@ -15,26 +15,26 @@
  * limitations under the License.
  */
 
-#include "exec/ExecutorMap.h"
+#include "exec/Executors.h"
 
 namespace onert
 {
 namespace exec
 {
 
-uint32_t ExecutorMap::inputSize() const
+uint32_t Executors::inputSize() const
 {
   return _multi_model ? _pkg_inputs.size()
                       : _map.at(ir::SubgraphIndex{0})->graph().getInputs().size();
 }
 
-uint32_t ExecutorMap::outputSize() const
+uint32_t Executors::outputSize() const
 {
   return _multi_model ? _pkg_outputs.size()
                       : _map.at(ir::SubgraphIndex{0})->graph().getOutputs().size();
 }
 
-const ir::OperandInfo ExecutorMap::inputInfo(const ir::IOIndex &index)
+const ir::OperandInfo Executors::inputInfo(const ir::IOIndex &index)
 {
   if (_multi_model)
   {
@@ -51,7 +51,7 @@ const ir::OperandInfo ExecutorMap::inputInfo(const ir::IOIndex &index)
   return _map.at(ir::SubgraphIndex{0})->graph().operands().at(input_index).info();
 }
 
-const ir::OperandInfo ExecutorMap::outputInfo(const ir::IOIndex &index)
+const ir::OperandInfo Executors::outputInfo(const ir::IOIndex &index)
 {
   if (_multi_model)
   {
@@ -68,7 +68,7 @@ const ir::OperandInfo ExecutorMap::outputInfo(const ir::IOIndex &index)
   return _map.at(ir::SubgraphIndex{0})->graph().operands().at(output_index).info();
 }
 
-void ExecutorMap::execute(const IODescription &desc)
+void Executors::execute(const IODescription &desc)
 {
   if (_multi_model)
   {
@@ -79,7 +79,7 @@ void ExecutorMap::execute(const IODescription &desc)
   _map.at(ir::SubgraphIndex{0})->execute(desc);
 }
 
-void ExecutorMap::executeEntries(const IODescription &desc)
+void Executors::executeEntries(const IODescription &desc)
 {
   // Assume 2 executors only
   // Assume that each model may have only one subgraph

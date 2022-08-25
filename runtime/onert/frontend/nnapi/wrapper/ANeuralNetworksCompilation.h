@@ -34,7 +34,7 @@ public:
   bool finish() noexcept;
 
   onert::compiler::State state(void) noexcept { return _compiler->state(); }
-  void publish(std::shared_ptr<onert::exec::ExecutorMap> &executors) noexcept
+  void publish(std::shared_ptr<onert::exec::Executors> &executors) noexcept
   {
     executors = _artifact ? _artifact->_executors : nullptr;
   }

@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_EXECUTOR_MAP_H__
-#define __ONERT_EXEC_EXECUTOR_MAP_H__
+#ifndef __ONERT_EXEC_EXECUTORS_H__
+#define __ONERT_EXEC_EXECUTORS_H__
 
 #include "IExecutor.h"
 
@@ -25,11 +25,11 @@ namespace onert
 namespace exec
 {
 
-class ExecutorMap
+class Executors
 {
 public:
-  ExecutorMap(void) = default;
-  ExecutorMap(ir::NNPkg &nnpkg)
+  Executors(void) = default;
+  Executors(ir::NNPkg &nnpkg)
   {
     if (nnpkg.model_count() > 1)
     {
@@ -77,4 +77,4 @@ private:
 } // namespace exec
 } // namespace onert
 
-#endif // __ONERT_EXEC_EXECUTOR_MAP_H__
+#endif // __ONERT_EXEC_EXECUTORS_H__

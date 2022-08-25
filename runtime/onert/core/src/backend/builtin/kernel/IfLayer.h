@@ -18,7 +18,7 @@
 #define __ONERT_BACKEND_BUILTIN_KERNEL_IF_LAYER_H__
 
 #include <backend/IPortableTensor.h>
-#include <exec/ExecutorMap.h>
+#include <exec/Executors.h>
 #include "../ExternalContext.h"
 
 namespace onert
@@ -37,8 +37,7 @@ public:
           const std::vector<backend::IPortableTensor *> input_tensors,
           const std::vector<backend::IPortableTensor *> output_tensors,
           const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
-          exec::ExecutorMap *executor_map,
-          const std::shared_ptr<ExternalContext> &external_context);
+          exec::Executors *executors, const std::shared_ptr<ExternalContext> &external_context);
 
 public:
   void run() override;
@@ -49,7 +48,7 @@ private:
   const std::vector<backend::IPortableTensor *> _output_tensors;
   const ir::SubgraphIndex _then_subg_index;
   const ir::SubgraphIndex _else_subg_index;
-  exec::ExecutorMap *_executor_map;
+  exec::Executors *_executors;
   const std::shared_ptr<ExternalContext> _external_context;
 };
 

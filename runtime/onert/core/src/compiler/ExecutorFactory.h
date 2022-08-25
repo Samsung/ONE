@@ -40,7 +40,7 @@ public:
   exec::IExecutor *create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                           const util::TracingCtx *tracing_ctx,
                           const compiler::CompilerOptions &options,
-                          const std::shared_ptr<exec::ExecutorMap> &executor_map);
+                          const std::shared_ptr<exec::Executors> &executors);
 
 private:
   ExecutorFactory();
@@ -49,28 +49,26 @@ private:
   static void prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
                                     const backend::BackendContexts &backend_contexts);
   static void prepareBuiltinBackend(const TensorRegistries &tensor_regs,
-                                    const std::shared_ptr<exec::ExecutorMap> &executor_map,
+                                    const std::shared_ptr<exec::Executors> &executors,
                                     const backend::BackendContexts &backend_contexts);
   static std::deque<std::pair<const backend::Backend *, backend::BackendContext *>>
   orderBackendContext(const backend::BackendContexts &backend_contexts);
 
-  static exec::IExecutor *
-  createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                       const util::TracingCtx *tracing_ctx,
-                       const compiler::CompilerOptions &options,
-                       const std::shared_ptr<exec::ExecutorMap> &executor_map);
+  static exec::IExecutor *createLinearExecutor(
+    std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
+    const compiler::CompilerOptions &options, const std::shared_ptr<exec::Executors> &executors);
   static exec::IExecutor *
   createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                          const util::TracingCtx *tracing_ctx,
                          const compiler::CompilerOptions &options,
-                         const std::shared_ptr<exec::ExecutorMap> &executor_map, bool parallel);
+                         const std::shared_ptr<exec::Executors> &executors, bool parallel);
 
 private:
-  std::unordered_map<std::string,
-                     std::function<exec::IExecutor *(
-                       std::unique_ptr<compiler::LoweredGraph>, const util::TracingCtx *tracing_ctx,
-                       const compiler::CompilerOptions &options,
-                       const std::shared_ptr<exec::ExecutorMap> &executor_map)>>
+  std::unordered_map<
+    std::string,
+    std::function<exec::IExecutor *(
+      std::unique_ptr<compiler::LoweredGraph>, const util::TracingCtx *tracing_ctx,
+      const compiler::CompilerOptions &options, const std::shared_ptr<exec::Executors> &executors)>>
     _map;
 };
 
