@@ -22,7 +22,7 @@
 #define __ONERT_EXEC_EXECUTION_H__
 
 #include "ir/Layout.h"
-#include "exec/IExecutor.h"
+#include "exec/Executors.h"
 #include "IODescription.h"
 
 #include <thread>
@@ -46,7 +46,7 @@ public:
    * @brief     Construct a new Execution object
    * @param[in] executor  Model executor
    */
-  Execution(const std::shared_ptr<ExecutorMap> &executors);
+  Execution(const std::shared_ptr<Executors> &executors);
 
 public:
   /**
@@ -250,7 +250,7 @@ private:
   std::unique_ptr<IExecutor> &primary_executor() { return _executors->at(ir::SubgraphIndex{0}); };
 
 private:
-  const std::shared_ptr<ExecutorMap> _executors;
+  const std::shared_ptr<Executors> _executors;
   IODescription _io_desc;
   std::deque<std::pair<IODescription *, uint32_t>> _async_io_descs;
   sem_t _async_io_descs_sem;

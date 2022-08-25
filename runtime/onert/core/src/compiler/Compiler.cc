@@ -454,7 +454,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   //       execution between interpreter and compiled executor (including control flow)
   if (_options.disable_compile)
   {
-    auto executors = std::make_shared<exec::ExecutorMap>();
+    auto executors = std::make_shared<exec::Executors>();
 
     _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
@@ -530,7 +530,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
 
-  auto executors = std::make_shared<exec::ExecutorMap>();
+  auto executors = std::make_shared<exec::Executors>();
   for (auto &pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
@@ -544,7 +544,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
       std::move(lowered_subg), tracing_ctx.get(), _options, executors)};
     executor->setIndexedRanks(indexed_ranks);
-    executors->insert(std::make_pair(subg_index, std::move(executor)));
+    executors->emplace(subg_index, std::move(executor));
   }
 
   /********************************
@@ -643,7 +643,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   if (_options.disable_compile)
   {
     std::vector<std::shared_ptr<CompilerArtifact>> results;
-    auto executors = std::make_shared<exec::ExecutorMap>();
+    auto executors = std::make_shared<exec::Executors>();
 
     _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
@@ -727,7 +727,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   std::vector<std::shared_ptr<CompilerArtifact>> results;
   for (auto &pair : ordered)
   {
-    auto executors = std::make_shared<exec::ExecutorMap>();
+    auto executors = std::make_shared<exec::Executors>();
 
     const auto &partialgraph_index = ir::SubgraphIndex(pair.first);
     auto &lowered_partialgraph = pair.second;
@@ -739,7 +739,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
     auto executor = std::unique_ptr<exec::IExecutor>{
       ExecutorFactory::get().create(std::move(lowered_partialgraph), nullptr, _options, executors)};
     executor->setIndexedRanks(indexed_ranks);
-    executors->insert(std::make_pair(ir::SubgraphIndex{0}, std::move(executor)));
+    executors->emplace(ir::SubgraphIndex{0}, std::move(executor));
 
     // It doesn't support tracing in case of partial graph
     results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));

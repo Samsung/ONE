@@ -18,7 +18,7 @@
 #define __ONERT_BACKEND_BUILTIN_KERNEL_WHILE_LAYER_H__
 
 #include <backend/IPortableTensor.h>
-#include <exec/IExecutor.h>
+#include <exec/Executors.h>
 #include <exec/IFunction.h>
 #include <ir/OperandIndexSequence.h>
 #include <ir/Graph.h>
@@ -41,7 +41,7 @@ public:
   WhileLayer(const std::vector<backend::IPortableTensor *> input_tensors,
              const std::vector<backend::IPortableTensor *> output_tensors,
              const ir::SubgraphIndex &cond_subg_index, const ir::SubgraphIndex &body_subg_index,
-             exec::ExecutorMap *executor_map, basic::DynamicMemoryManager *dyn_memory_manager,
+             exec::Executors *executors, basic::DynamicMemoryManager *dyn_memory_manager,
              const std::shared_ptr<ExternalContext> &external_context);
 
 public:
@@ -52,7 +52,7 @@ private:
   const ir::SubgraphIndex _body_subg_index;
   const std::vector<backend::IPortableTensor *> _input_tensors;
   const std::vector<backend::IPortableTensor *> _output_tensors;
-  exec::ExecutorMap *_executor_map;
+  exec::Executors *_executors;
   basic::DynamicMemoryManager *_dyn_memory_manager; // For generating temp tensors
   const std::shared_ptr<ExternalContext> _external_context;
 };

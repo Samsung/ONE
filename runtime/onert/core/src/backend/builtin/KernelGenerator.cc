@@ -33,12 +33,12 @@ KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *d
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
   : basic::KernelGeneratorBase{graph}, _dyn_tensor_manager{dyn_tensor_manager},
-    _tensor_reg{tensor_reg}, _tensor_registries{}, _executor_map{nullptr}, _external_context{
-                                                                             external_context}
+    _tensor_reg{tensor_reg}, _tensor_registries{}, _executors{nullptr}, _external_context{
+                                                                          external_context}
 {
   UNUSED_RELEASE(_graph);
   UNUSED_RELEASE(_tensor_registries);
-  UNUSED_RELEASE(_executor_map);
+  UNUSED_RELEASE(_executors);
 }
 
 std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
@@ -84,12 +84,12 @@ void KernelGenerator::visit(const ir::operation::If &node)
     output_tensors.emplace_back(output_tensor);
   }
 
-  // IfLayer just set ExecutorMap instead of then and else executor to avoid complexity of
+  // IfLayer just set Executors instead of then and else executor to avoid complexity of
   // creating executor recusively
   const auto cond_tensor = input_tensors.front();
   input_tensors.erase(input_tensors.begin());
   auto fn = std::make_unique<::onert::backend::builtin::kernel::IfLayer>(
-    cond_tensor, input_tensors, output_tensors, then_subg_index, else_subg_index, _executor_map,
+    cond_tensor, input_tensors, output_tensors, then_subg_index, else_subg_index, _executors,
     _external_context);
 
   _return_fn = std::move(fn);
@@ -130,10 +130,10 @@ void KernelGenerator::visit(const ir::operation::While &node)
     output_tensors.emplace_back(output_tensor);
   }
 
-  // WhileLayer just set ExecutorMap instead of cond and body executor to avoid complexity of
+  // WhileLayer just set Executors instead of cond and body executor to avoid complexity of
   // creating executor recusively
   auto fn = std::make_unique<::onert::backend::builtin::kernel::WhileLayer>(
-    input_tensors, output_tensors, cond_subg_index, body_subg_index, _executor_map,
+    input_tensors, output_tensors, cond_subg_index, body_subg_index, _executors,
     _dyn_tensor_manager->dynamic_mem_mgr().get(), _external_context);
 
   _return_fn = std::move(fn);

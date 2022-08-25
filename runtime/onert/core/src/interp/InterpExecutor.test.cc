@@ -30,7 +30,7 @@ namespace
 using namespace onert::ir;
 using InterpExecutor = onert::interp::InterpExecutor;
 using Execution = onert::exec::Execution;
-using ExecutorMap = onert::exec::ExecutorMap;
+using Executors = onert::exec::Executors;
 
 class InterpExecutorTest : public ::testing::Test
 {
@@ -77,9 +77,8 @@ protected:
     auto model = std::make_shared<onert::ir::Model>();
     model->push(onert::ir::SubgraphIndex{0}, _graph);
 
-    _executors = std::make_shared<ExecutorMap>();
-    _executors->insert(
-      std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
+    _executors = std::make_shared<Executors>();
+    _executors->emplace(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph));
   }
 
   void CreateTwoStepModel()
@@ -141,9 +140,8 @@ protected:
     auto model = std::make_shared<onert::ir::Model>();
     model->push(onert::ir::SubgraphIndex{0}, _graph);
 
-    _executors = std::make_shared<ExecutorMap>();
-    _executors->insert(
-      std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
+    _executors = std::make_shared<Executors>();
+    _executors->emplace(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph));
   }
 
   void CreateUnspecifiedDimensionsModel()
@@ -193,9 +191,8 @@ protected:
     auto model = std::make_shared<onert::ir::Model>();
     model->push(onert::ir::SubgraphIndex{0}, _graph);
 
-    _executors = std::make_shared<ExecutorMap>();
-    _executors->insert(
-      std::make_pair(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph)));
+    _executors = std::make_shared<Executors>();
+    _executors->emplace(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph));
   }
 
   void createExecution() { _execution = std::make_unique<Execution>(_executors); }
@@ -203,7 +200,7 @@ protected:
   virtual void TearDown() { _executors = nullptr; }
 
   std::shared_ptr<Graph> _graph{nullptr};
-  std::shared_ptr<ExecutorMap> _executors{nullptr};
+  std::shared_ptr<Executors> _executors{nullptr};
   std::unique_ptr<Execution> _execution{nullptr};
   const int32_t _activation_value{0};
 };
