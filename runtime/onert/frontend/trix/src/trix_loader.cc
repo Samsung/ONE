@@ -111,6 +111,9 @@ private:
 protected:
   /** path to model (e.g. tvn) */
   std::string _model_path;
+  /** original IO shapes */
+  std::vector<ir::Shape> _origin_input_shapes;
+  std::vector<ir::Shape> _origin_output_shapes;
   /** Reference on loadable subgraphs */
   std::unique_ptr<ir::Model> &_model;
   TrixMetaReader _meta;
@@ -153,6 +156,8 @@ void TrixLoader::loadBulk(ir::Graph &subg)
 {
   ir::operation::Bulk::Param param;
   param.binary_path = _model_path;
+  param.origin_input_shapes = _origin_input_shapes;
+  param.origin_output_shapes = _origin_output_shapes;
 
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
@@ -174,6 +179,7 @@ ir::OperandIndex TrixLoader::loadOperandFromInput(uint32_t idx, ir::Graph &subg)
   ir::TypeInfo type_info(toDataType(_meta.input_seg_quant_type(idx)),
                          _meta.input_seg_quant_scale(idx), _meta.input_seg_quant_zp(idx));
 
+  _origin_input_shapes.push_back(shape);
   // Create operand
   const auto operand_index = subg.addOperand(shape, type_info);
   return operand_index;
@@ -190,6 +196,7 @@ ir::OperandIndex TrixLoader::loadOperandFromOutput(uint32_t idx, ir::Graph &subg
   ir::TypeInfo type_info(toDataType(_meta.output_seg_quant_type(idx)),
                          _meta.output_seg_quant_scale(idx), _meta.output_seg_quant_zp(idx));
 
+  _origin_output_shapes.push_back(shape);
   // Create operand
   const auto operand_index = subg.addOperand(shape, type_info);
   return operand_index;
