@@ -45,7 +45,7 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-while getopts "hdi:o:" OPTION; do
+while getopts "hdi:o:v" OPTION; do
 case "${OPTION}" in
     h) usage;;
     d) delete_dumped_on_failure=1;;
