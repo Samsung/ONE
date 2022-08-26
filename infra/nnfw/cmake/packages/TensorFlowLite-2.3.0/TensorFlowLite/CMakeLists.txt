@@ -90,6 +90,12 @@ if(NOT ANDROID AND ${BUILD_WITH_NNAPI})
   target_link_libraries(tensorflow-lite-2.3.0 rt)
 endif()
 
+# Define TF_LITE_DISABLE_X86_NEON for debug build
+# If we upgrade NEON2SSE version, we can remove below line
+if(NEON2SSESource_FOUND)
+  target_compile_definitions(tensorflow-lite-2.3.0 PRIVATE $<$<CONFIG:Debug>:TF_LITE_DISABLE_X86_NEON>)
+endif(NEON2SSESource_FOUND)
+
 if(ANDROID)
   target_link_libraries(tensorflow-lite-2.3.0 log)
   target_include_directories(tensorflow-lite-2.3.0 PUBLIC "${NDK_DIR}/..")
