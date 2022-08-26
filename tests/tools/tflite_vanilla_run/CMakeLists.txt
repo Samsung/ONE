@@ -4,6 +4,7 @@ endif()
 
 if(NOT BUILD_TENSORFLOW_LITE_2_3_0)
   set(BUILD_TENSORFLOW_LITE_2_3_0 ON)
+  set(BUILD_TENSORFLOWRUY ON)
 endif()
 
 nnfw_find_package(TensorFlowLite EXACT 2.3.0 REQUIRED)

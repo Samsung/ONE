@@ -26,8 +26,8 @@ if(BUILD_TENSORFLOW_LITE_2_3_0)
   return_unless(TensorFlowGEMMLowpSource_FOUND)
   nnas_find_package(OouraFFTSource QUIET)
   return_unless(OouraFFTSource_FOUND)
-  nnfw_find_package(Ruy QUIET)
-  return_unless(Ruy_FOUND)
+  nnfw_find_package(TensorFlowRuy QUIET)
+  return_unless(TensorFlowRuy_FOUND)
 
   # TensorFlow Lite requires FP16 library's header only
   nnas_find_package(Fp16Source QUIET)
