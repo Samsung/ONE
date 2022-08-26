@@ -29,7 +29,7 @@ namespace ir
 int32_t const Shape::UNSPECIFIED_DIM = -1;
 
 // NNFW_MAX_RANK is 6
-int32_t const Shape::MAX_RANK = 6;
+int32_t const Shape::ONERT_MAX_RANK = 6;
 
 FeatureShape Shape::asFeature(Layout layout) const
 {
@@ -89,7 +89,7 @@ uint64_t Shape::num_elements() const
 
 Shape permuteShape(const Shape &shape, Layout from, Layout to)
 {
-  assert(shape.rank() <= Shape::MAX_RANK);
+  assert(shape.rank() <= Shape::ONERT_MAX_RANK);
   Shape ret{shape};
   if (from == to)
     return ret;

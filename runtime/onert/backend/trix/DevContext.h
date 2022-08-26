@@ -17,7 +17,12 @@
 #ifndef __ONERT_BACKEND_TRIX_DEV_CONTEXT_H__
 #define __ONERT_BACKEND_TRIX_DEV_CONTEXT_H__
 
+#include <ir/Layout.h>
+#include <ir/DataType.h>
+
 #include <libnpuhost.h>
+#include <stdexcept>
+#include <vector>
 
 namespace onert
 {
@@ -29,20 +34,7 @@ namespace trix
 class DevContext
 {
 public:
-  DevContext()
-  {
-    auto device_count = getnumNPUdeviceByType(NPUCOND_TRIV2_CONN_SOCIP);
-    if (device_count <= 0)
-    {
-      throw std::runtime_error("Unable to find TRIX NPU device");
-    }
-
-    // Use NPU 0 device
-    if (getNPUdeviceByType(&_dev_handle, NPUCOND_TRIV2_CONN_SOCIP, 0) < 0)
-    {
-      throw std::runtime_error("Failed to get TRIX NPU device handle");
-    }
-  }
+  DevContext(int32_t batch_num);
 
   ~DevContext()
   {
@@ -53,7 +45,7 @@ public:
     }
   }
 
-  npudev_h getDev() { return _dev_handle; }
+  npudev_h getDev() const { return _dev_handle; }
 
   template <typename T> void setDataInfo(tensors_data_info *info, std::vector<T *> &tensors)
   {
@@ -107,7 +99,6 @@ private:
 
 private:
   // NPU device handle
-  // TODO Support multicore npu device
   npudev_h _dev_handle;
 };
 

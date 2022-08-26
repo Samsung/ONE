@@ -84,7 +84,7 @@ public:
 
     this->tensor_builder->prepare();
 
-    return this->tensor_registry.get();
+    return this->_tensor_registry.get();
   }
 
 protected:

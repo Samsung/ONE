@@ -45,15 +45,17 @@ public:
    * @param graph Graph object
    * @param tensor_builders Tensor builders that are currently used
    */
-  ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
+  ExecutorBase(std::shared_ptr<const compiler::LoweredGraph> lowered_graph,
                backend::BackendContexts &&backend_contexts,
                const compiler::TensorRegistries &tensor_regs, const util::TracingCtx *tracing_ctx);
 
   virtual ~ExecutorBase() = default;
 
-  const ir::Graph &graph() final { return _graph; }
+  const ir::Graph &graph() final { return _lowered_graph->graph(); }
 
-  const ir::Graph &parent_graph() final { return _parent_graph; }
+  const ir::Graph &parent_graph() final { return _lowered_graph->parent_graph(); }
+
+  const std::shared_ptr<const compiler::LoweredGraph> lowered_graph() { return _lowered_graph; }
 
   void execute(const IODescription &desc) final;
 
@@ -84,10 +86,8 @@ protected:
 protected:
   ExecutionObservee _subject;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
-  std::unique_ptr<compiler::LoweredGraph> _lowered_graph;
+  std::shared_ptr<const compiler::LoweredGraph> _lowered_graph;
   backend::BackendContexts _backend_contexts;
-  const ir::Graph &_graph;
-  const ir::Graph &_parent_graph;
   std::vector<backend::builtin::IOTensor *> _input_tensors;
   std::vector<backend::builtin::IOTensor *> _output_tensors;
   std::mutex _mutex;

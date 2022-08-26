@@ -95,6 +95,8 @@ TEST(ExecInstance, simple)
   auto mockup = CompiledMockUpModel();
   auto graph = mockup.graph;
   auto executors = mockup.artifact->_executors;
+  const auto tracing_ctx = mockup.artifact->_tracing_ctx.get();
+  const auto coptions = mockup.coptions.get();
 
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
@@ -105,7 +107,7 @@ TEST(ExecInstance, simple)
   float output_buffer[4] = {};
   const float output_expected[4] = {5, -2, 0, -1};
 
-  onert::exec::Execution execution{executors};
+  onert::exec::Execution execution{executors, coptions, tracing_ctx};
 
   execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
   execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
@@ -123,7 +125,9 @@ TEST(ExecInstance, twoCompile)
   auto mockup = CompiledMockUpModel();
   auto graph = mockup.graph;
   auto executors1 = mockup.artifact->_executors;
-  onert::exec::Execution execution1{executors1};
+  const auto tracing_ctx = mockup.artifact->_tracing_ctx.get();
+  const auto coptions = mockup.coptions.get();
+  onert::exec::Execution execution1{executors1, coptions, tracing_ctx};
 
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
@@ -141,10 +145,9 @@ TEST(ExecInstance, twoCompile)
   // Make new executor: compile again
   auto model = std::make_shared<onert::ir::Model>();
   model->push(onert::ir::SubgraphIndex{0}, graph);
-  auto coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
   onert::compiler::Compiler compiler{model, *coptions};
   std::shared_ptr<onert::compiler::CompilerArtifact> artifact = compiler.compile();
-  onert::exec::Execution execution2{artifact->_executors};
+  onert::exec::Execution execution2{artifact->_executors, coptions, artifact->_tracing_ctx.get()};
 
   const float exe2_input1_buffer[4] = {2, 1, -2, 0};
   const float exe2_input2_buffer[4] = {-3, 3, 1, 2};
@@ -170,6 +173,8 @@ TEST(ExecInstance, twoExecution)
 {
   auto mockup = CompiledMockUpModel();
   auto executors = mockup.artifact->_executors;
+  const auto coptions = mockup.coptions.get();
+  const auto tracing_ctx = mockup.artifact->_tracing_ctx.get();
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
   auto output1 = IOIndex{0};
@@ -180,7 +185,7 @@ TEST(ExecInstance, twoExecution)
   const float exe1_output_expected[4] = {5, -2, 0, -1};
   const float exe2_output_expected[4] = {2, 5, -2, 7};
 
-  onert::exec::Execution execution1{executors};
+  onert::exec::Execution execution1{executors, coptions, tracing_ctx};
   execution1.setInput(input1, reinterpret_cast<const void *>(exe1_input1_buffer), 16);
   execution1.setInput(input2, reinterpret_cast<const void *>(exe1_input2_buffer), 16);
   execution1.setOutput(output1, reinterpret_cast<void *>(exe1_output_buffer), 16);
@@ -190,7 +195,7 @@ TEST(ExecInstance, twoExecution)
   float exe2_output_buffer[4] = {};
 
   // Make new execution
-  onert::exec::Execution execution2{executors};
+  onert::exec::Execution execution2{executors, coptions, tracing_ctx};
   execution2.setInput(input1, reinterpret_cast<const void *>(exe2_input1_buffer), 16);
   execution2.setInput(input2, reinterpret_cast<const void *>(exe2_input2_buffer), 16);
   execution2.setOutput(output1, reinterpret_cast<void *>(exe2_output_buffer), 16);
@@ -209,7 +214,9 @@ class Inference
 {
 public:
   Inference(const float (&input1)[4], const float (&input2)[4], float (&output)[4],
-            std::shared_ptr<onert::exec::Executors> &executors)
+            std::shared_ptr<onert::exec::Executors> &executors,
+            const onert::compiler::CompilerOptions *coptions,
+            const onert::util::TracingCtx *tracing_ctx)
     : _input1{input1}, _input2{input2}, _output{output}, _executors{executors}
   {
     // DO NOTHING
@@ -221,7 +228,7 @@ public:
     auto input2 = IOIndex{1};
     auto output1 = IOIndex{0};
 
-    onert::exec::Execution execution{_executors};
+    onert::exec::Execution execution{_executors, _coptions, _tracing_ctx};
     execution.setInput(input1, reinterpret_cast<const void *>(_input1), 16);
     execution.setInput(input2, reinterpret_cast<const void *>(_input2), 16);
     execution.setOutput(output1, reinterpret_cast<void *>(_output), 16);
@@ -234,6 +241,8 @@ private:
   const float (&_input2)[4];
   float (&_output)[4];
   std::shared_ptr<onert::exec::Executors> &_executors;
+  const onert::compiler::CompilerOptions *_coptions;
+  const onert::util::TracingCtx *_tracing_ctx;
 };
 
 // Support multi-thread execution
@@ -241,20 +250,24 @@ TEST(ExecInstance, twoThreads)
 {
   auto mockup = CompiledMockUpModel();
   auto executors = mockup.artifact->_executors;
+  const auto coptions = mockup.coptions.get();
+  const auto tracing_ctx = mockup.artifact->_tracing_ctx.get();
 
   const float exe1_input1_buffer[4] = {1, 0, -1, -2};
   const float exe1_input2_buffer[4] = {1, -3, 2, -4};
   float exe1_output_buffer[4] = {};
   const float exe1_output_expected[4] = {5, -2, 0, -1};
 
-  Inference execution1{exe1_input1_buffer, exe1_input2_buffer, exe1_output_buffer, executors};
+  Inference execution1{exe1_input1_buffer, exe1_input2_buffer, exe1_output_buffer,
+                       executors,          coptions,           tracing_ctx};
 
   const float exe2_input1_buffer[4] = {2, 1, -2, 0};
   const float exe2_input2_buffer[4] = {-3, 3, 1, 2};
   float exe2_output_buffer[4] = {};
   const float exe2_output_expected[4] = {2, 5, -2, 7};
 
-  Inference execution2{exe2_input1_buffer, exe2_input2_buffer, exe2_output_buffer, executors};
+  Inference execution2{exe2_input1_buffer, exe2_input2_buffer, exe2_output_buffer,
+                       executors,          coptions,           tracing_ctx};
 
   std::thread t1{&Inference::inference, &execution1};
   std::thread t2{&Inference::inference, &execution2};
@@ -275,6 +288,8 @@ TEST(ExecInstance, async)
   auto mockup = CompiledMockUpModel();
   auto graph = mockup.graph;
   auto executors = mockup.artifact->_executors;
+  const auto tracing_ctx = mockup.artifact->_tracing_ctx.get();
+  const auto coptions = mockup.coptions.get();
 
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
@@ -285,7 +300,7 @@ TEST(ExecInstance, async)
   float output_buffer[4] = {};
   const float output_expected[4] = {5, -2, 0, -1};
 
-  onert::exec::Execution execution{executors};
+  onert::exec::Execution execution{executors, coptions, tracing_ctx};
 
   execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
   execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);

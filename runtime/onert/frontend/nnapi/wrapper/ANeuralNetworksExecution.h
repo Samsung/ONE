@@ -26,8 +26,10 @@
 struct ANeuralNetworksExecution
 {
 public:
-  ANeuralNetworksExecution(const std::shared_ptr<onert::exec::Executors> &executors)
-    : _execution{std::make_shared<onert::exec::Execution>(executors)}
+  ANeuralNetworksExecution(const std::shared_ptr<onert::compiler::CompilerArtifact> &artifact,
+                           const onert::compiler::CompilerOptions *coptions)
+    : _execution{std::make_shared<onert::exec::Execution>(artifact->_executors, coptions,
+                                                          artifact->_tracing_ctx.get())}
   {
     // DO NOTHING
   }

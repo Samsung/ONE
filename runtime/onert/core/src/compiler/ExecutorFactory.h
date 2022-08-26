@@ -42,11 +42,16 @@ public:
                           const compiler::CompilerOptions &options,
                           const std::shared_ptr<exec::Executors> &executors);
 
+  exec::IExecutor *create(std::shared_ptr<const compiler::LoweredGraph> lowered_graph,
+                          const util::TracingCtx *tracing_ctx,
+                          const compiler::CompilerOptions &options,
+                          const std::shared_ptr<exec::Executors> &executors, int32_t batch_num);
+
 private:
   ExecutorFactory();
 
 private:
-  static void prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
+  static void prepareMigrantTensors(const compiler::LoweredGraph &lowered_graph,
                                     const backend::BackendContexts &backend_contexts);
   static void prepareBuiltinBackend(const TensorRegistries &tensor_regs,
                                     const std::shared_ptr<exec::Executors> &executors,
@@ -54,21 +59,22 @@ private:
   static std::deque<std::pair<const backend::Backend *, backend::BackendContext *>>
   orderBackendContext(const backend::BackendContexts &backend_contexts);
 
-  static exec::IExecutor *createLinearExecutor(
-    std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
-    const compiler::CompilerOptions &options, const std::shared_ptr<exec::Executors> &executors);
   static exec::IExecutor *
-  createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                         const util::TracingCtx *tracing_ctx,
-                         const compiler::CompilerOptions &options,
-                         const std::shared_ptr<exec::Executors> &executors, bool parallel);
+  createLinearExecutor(std::shared_ptr<const compiler::LoweredGraph> lowered_graph,
+                       const util::TracingCtx *tracing_ctx,
+                       const compiler::CompilerOptions &options,
+                       const std::shared_ptr<exec::Executors> &executors, int32_t batch_num);
+  static exec::IExecutor *createDataflowExecutor(
+    std::shared_ptr<const compiler::LoweredGraph> lowered_graph,
+    const util::TracingCtx *tracing_ctx, const compiler::CompilerOptions &options,
+    const std::shared_ptr<exec::Executors> &executors, int32_t batch_num, bool parallel);
 
 private:
-  std::unordered_map<
-    std::string,
-    std::function<exec::IExecutor *(
-      std::unique_ptr<compiler::LoweredGraph>, const util::TracingCtx *tracing_ctx,
-      const compiler::CompilerOptions &options, const std::shared_ptr<exec::Executors> &executors)>>
+  std::unordered_map<std::string,
+                     std::function<exec::IExecutor *(
+                       std::unique_ptr<compiler::LoweredGraph>, const util::TracingCtx *tracing_ctx,
+                       const compiler::CompilerOptions &options,
+                       const std::shared_ptr<exec::Executors> &executors, int32_t batch_num)>>
     _map;
 };
 

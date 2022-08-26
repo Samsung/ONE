@@ -219,7 +219,7 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
 
   tensor_builder->allocate();
 
-  return ctx.tensor_registry.get();
+  return ctx.get_tensor_registry().get();
 }
 
 inline void initConsts(BackendContext &ctx)
@@ -228,7 +228,7 @@ inline void initConsts(BackendContext &ctx)
     if (ctx.external_operands().contains(ind) || !operand.isConstant())
       return;
 
-    auto tensor = ctx.tensor_registry->getNativeITensor(ind);
+    auto tensor = ctx.get_tensor_registry()->getNativeITensor(ind);
     assert(tensor != nullptr);
 
     VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;

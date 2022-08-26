@@ -80,7 +80,7 @@ void RawFormatter::dumpOutputs(const std::string &filename, std::vector<Allocati
     {
       nnfw_tensorinfo ti;
       NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session_, i, &ti));
-      auto bufsz = bufsize_for(&ti);
+      auto bufsz = bufsize_for(&ti) * 10;
 
       std::ofstream file(filename + "." + std::to_string(i), std::ios::out | std::ios::binary);
       file.write(reinterpret_cast<const char *>(outputs[i].data()), bufsz);

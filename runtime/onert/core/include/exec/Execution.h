@@ -21,9 +21,11 @@
 #ifndef __ONERT_EXEC_EXECUTION_H__
 #define __ONERT_EXEC_EXECUTION_H__
 
+#include "compiler/Compiler.h"
 #include "ir/Layout.h"
 #include "exec/Executors.h"
 #include "IODescription.h"
+#include "SimpleThreadPool.h"
 
 #include <thread>
 #include <deque>
@@ -46,7 +48,8 @@ public:
    * @brief     Construct a new Execution object
    * @param[in] executor  Model executor
    */
-  Execution(const std::shared_ptr<Executors> &executors);
+  Execution(const std::shared_ptr<Executors> &executors, const compiler::CompilerOptions *coptions,
+            const util::TracingCtx *tracing_ctx);
 
 public:
   /**
@@ -261,6 +264,13 @@ private:
   std::unique_ptr<std::thread> _exec_thread;
   bool finished{false};
   bool stop_wait{false};
+
+  std::unique_ptr<SimpleThreadPool> _batch_thread_pool;
+  std::vector<IODescription> _batch_io_descs;
+  std::vector<std::shared_ptr<Executors>> _batch_executors;
+
+  const compiler::CompilerOptions *_coptions;
+  const util::TracingCtx *_tracing_ctx;
 };
 
 } // namespace exec

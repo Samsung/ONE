@@ -25,12 +25,11 @@ namespace onert
 namespace exec
 {
 
-ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
+ExecutorBase::ExecutorBase(std::shared_ptr<const compiler::LoweredGraph> lowered_graph,
                            backend::BackendContexts &&backend_contexts,
                            const compiler::TensorRegistries &tensor_regs,
                            const util::TracingCtx *tracing_ctx)
-  : _lowered_graph{std::move(lowered_graph)}, _backend_contexts{std::move(backend_contexts)},
-    _graph{_lowered_graph->graph()}, _parent_graph{_lowered_graph->parent_graph()}, _mutex(),
+  : _lowered_graph{lowered_graph}, _backend_contexts{std::move(backend_contexts)}, _mutex(),
     _tracing_ctx(tracing_ctx)
 {
   auto build_tensor_list = [&](const auto &ind_seq, auto &tensors) {
@@ -43,8 +42,8 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
       tensors.push_back(io_tensor);
     }
   };
-  build_tensor_list(_graph.getInputs(), _input_tensors);
-  build_tensor_list(_graph.getOutputs(), _output_tensors);
+  build_tensor_list(graph().getInputs(), _input_tensors);
+  build_tensor_list(graph().getOutputs(), _output_tensors);
 }
 
 void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs,
@@ -56,7 +55,7 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
   // Deadlock occurs when an Executor is called recursively.
   std::lock_guard<std::mutex> lock(_mutex);
 
-  assert(inputs.size() == _graph.getInputs().size());
+  assert(inputs.size() == graph().getInputs().size());
   assert(inputs.size() == _input_tensors.size());
   for (uint32_t n = 0; n < inputs.size(); ++n)
   {
@@ -83,7 +82,7 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
     input_tensor->setTensor(input);
   }
 
-  assert(outputs.size() == _graph.getOutputs().size());
+  assert(outputs.size() == graph().getOutputs().size());
   assert(outputs.size() == _output_tensors.size());
   for (uint32_t n = 0; n < outputs.size(); ++n)
   {
@@ -139,7 +138,7 @@ void ExecutorBase::execute(const IODescription &desc)
   executeImpl();
 
   // Update output(s) desc
-  for (uint32_t n = 0; n < _graph.getOutputs().size(); ++n)
+  for (uint32_t n = 0; n < graph().getOutputs().size(); ++n)
   {
     ir::IOIndex output_index{n};
     // Optional output

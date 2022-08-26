@@ -59,13 +59,13 @@ void ParallelExecutor::notify(uint32_t finished_job_id)
   _cv_jobs.notify_all();
 }
 
-ParallelExecutor::ParallelExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+ParallelExecutor::ParallelExecutor(std::shared_ptr<const compiler::LoweredGraph> lowered_graph,
                                    backend::BackendContexts &&backend_contexts,
                                    const compiler::TensorRegistries &tensor_regs,
                                    compiler::CodeMap &&code_map,
                                    const util::TracingCtx *tracing_ctx)
-  : DataflowExecutor{std::move(lowered_graph), std::move(backend_contexts), tensor_regs,
-                     std::move(code_map), tracing_ctx}
+  : DataflowExecutor{lowered_graph, std::move(backend_contexts), tensor_regs, std::move(code_map),
+                     tracing_ctx}
 {
   VERBOSE(ParallelExecutor) << "Constructing Parallel Executor" << std::endl;
 }
@@ -100,7 +100,7 @@ void ParallelExecutor::executeImpl()
 
   VERBOSE(ParallelExecutor) << "INITIAL JOBS : " << _ready_jobs.size() << std::endl;
 
-  auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_graph);
+  auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&graph());
 
   _subject.notifySubgraphBegin(profiling_subg_index);
 

@@ -38,6 +38,9 @@ public:
   LoweredGraph(const ir::Graph &graph, const compiler::CompilerOptions &options);
   LoweredGraph(const ir::Graph &parent_graph, const ir::Graph &graph,
                const compiler::CompilerOptions &options);
+  LoweredGraph(const LoweredGraph &) = default;
+  LoweredGraph &operator=(const LoweredGraph &) = delete;
+  ~LoweredGraph() = default;
 
   ir::Graph &graph() { return _graph; }
   const ir::Graph &graph() const { return _graph; }

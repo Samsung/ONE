@@ -63,7 +63,7 @@ public:
     // TODO Support Consecutive controflow operation's intermediate tensor
     auto tr = std::make_shared<TensorRegistry>();
     auto tb = std::make_shared<TensorBuilder>(tr);
-    context->tensor_registry = tr;
+    context->set_tensor_registry(tr);
     context->tensor_builder = tb;
     context->kernel_gen = std::make_shared<KernelGenerator>(
       *context->graph(), tb->dynamicTensorManager(), tr, context->external_context());

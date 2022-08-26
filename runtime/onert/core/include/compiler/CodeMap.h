@@ -31,8 +31,8 @@ namespace compiler
 struct CodeAndInfo
 {
   ir::OperationIndex op_ind;
-  const ir::Operation *op;
-  const OperationLowerInfo *lower_info;
+  const ir::Operation *op;              // owned by graph of LoweredGraph
+  const OperationLowerInfo *lower_info; // owend by LoweredGraph
   std::unique_ptr<exec::FunctionSequence> fn_seq;
 
   CodeAndInfo(const ir::OperationIndex op_ind, const ir::Operation *op,

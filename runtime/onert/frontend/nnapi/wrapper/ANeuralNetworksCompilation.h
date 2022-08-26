@@ -34,10 +34,12 @@ public:
   bool finish() noexcept;
 
   onert::compiler::State state(void) noexcept { return _compiler->state(); }
-  void publish(std::shared_ptr<onert::exec::Executors> &executors) noexcept
+  void publish(std::shared_ptr<onert::compiler::CompilerArtifact> &artifact) noexcept
   {
-    executors = _artifact ? _artifact->_executors : nullptr;
+    artifact = _artifact;
   }
+
+  const onert::compiler::CompilerOptions *options() const noexcept { return _coptions.get(); }
 
 private:
   std::shared_ptr<onert::ir::Model> _model;

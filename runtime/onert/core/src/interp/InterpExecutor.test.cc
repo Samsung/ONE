@@ -195,7 +195,11 @@ protected:
     _executors->emplace(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph));
   }
 
-  void createExecution() { _execution = std::make_unique<Execution>(_executors); }
+  void createExecution()
+  {
+    auto coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
+    _execution = std::make_unique<Execution>(_executors, coptions.get(), nullptr);
+  }
 
   virtual void TearDown() { _executors = nullptr; }
 

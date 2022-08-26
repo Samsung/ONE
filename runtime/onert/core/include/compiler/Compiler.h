@@ -74,6 +74,7 @@ public:
   bool he_profiling_mode; //< Whether HEScheduler profiling mode ON/OFF
   bool disable_compile;   //< Run with Interpreter if true, try compilation otherwise
   bool fp16_enable;       //< Whether fp16 mode ON/OFF
+  bool is_batch_parallel; //< Whether batch parallel mode ON/OFF
   PartialGraphOptions partial_graph_options;
 };
 

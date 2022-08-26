@@ -37,6 +37,7 @@ using FunctionMap =
 
 struct ContextData
 {
+  static constexpr int32_t no_batch_parallel = -1;
   /* A partial graph that only includes used operand/operations of the original graph */
   std::unique_ptr<ir::Graph> graph;
   /* A linear order of operations. This is neccessary for when a graph is not fully connected */
@@ -49,6 +50,9 @@ struct ContextData
   std::shared_ptr<custom::IKernelBuilder> custom_kernel_builder;
   /* Is linear executor or not */
   bool is_linear_executor;
+  /* Batch number in batch parallel processing. The value is -1 if the used model is not going to be
+   * executed in parallel */
+  int32_t batch_parallel_num;
 };
 
 class BackendContext
@@ -56,7 +60,7 @@ class BackendContext
 public:
   BackendContext(const Backend *backend, ContextData &&data,
                  std::shared_ptr<ITensorRegistry> tensor_registry = nullptr)
-    : _backend{backend}, _data{std::move(data)}, tensor_registry{tensor_registry}
+    : _backend{backend}, _data{std::move(data)}, _tensor_registry{tensor_registry}
   {
   }
 
@@ -71,12 +75,14 @@ public:
   virtual ITensorRegistry *genTensors() = 0;
   virtual FunctionMap genKernels() = 0;
 
+  void set_tensor_registry(std::shared_ptr<ITensorRegistry> tr) { _tensor_registry = tr; }
+
+  std::shared_ptr<ITensorRegistry> get_tensor_registry() { return _tensor_registry; }
+
 protected:
   const Backend *_backend{nullptr};
   ContextData _data;
-
-public:
-  std::shared_ptr<ITensorRegistry> tensor_registry;
+  std::shared_ptr<ITensorRegistry> _tensor_registry;
 };
 
 using BackendContexts = std::unordered_map<const Backend *, std::unique_ptr<BackendContext>>;

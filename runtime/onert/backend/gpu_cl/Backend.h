@@ -72,7 +72,7 @@ public:
     cc->cache = environment->program_cache();
 
     auto tb = std::make_shared<TensorBuilder>(operands, tm, create_info, environment);
-    context->tensor_registry = tr;
+    context->set_tensor_registry(tr);
     context->tensor_builder = tb;
 
     context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb, tr, cc);

@@ -16,20 +16,26 @@
 
 #include "exec/Execution.h"
 
+#include "../compiler/ExecutorFactory.h"
 #include "util/logging.h"
+#include "ExecutorBase.h"
 
 namespace onert
 {
 namespace exec
 {
 
-Execution::Execution(const std::shared_ptr<Executors> &executors) : _executors{executors}
+Execution::Execution(const std::shared_ptr<Executors> &executors,
+                     const compiler::CompilerOptions *coptions, const util::TracingCtx *tracing_ctx)
+  : _executors{executors}, _batch_thread_pool{nullptr}, _coptions{coptions}, _tracing_ctx{
+                                                                               tracing_ctx}
 {
   assert(executors != nullptr);
   assert(executors->at(ir::SubgraphIndex{0}) != nullptr);
   _io_desc.inputs.resize(_executors->inputSize());
   _io_desc.outputs.resize(_executors->outputSize());
   sem_init(&_async_io_descs_sem, 0, 1);
+  _batch_thread_pool = nullptr;
 }
 
 void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_shape)
@@ -203,7 +209,121 @@ void Execution::execute()
 {
   VERBOSE(Execution) << "Start execution" << std::endl;
 
-  _executors->execute(_io_desc);
+  // TODO Support other models to be batch parallelized as well after if it is supported that the
+  // intention to perform batch parallel processing can be clearly delivered from the user.
+  const auto io_input0_index = ir::IOIndex{0};
+  const auto io_output0_index = ir::IOIndex{0};
+  const auto &graph = primary_executor()->graph();
+
+  const auto &model_input0 = graph.operands().at(graph.getInputs().at(0));
+  const auto &model_input0_shape = model_input0.shape();
+  auto input_shape_sig = _io_desc.dynamic_input_shapes.find(io_input0_index);
+  const auto &user_input0_shape = input_shape_sig != _io_desc.dynamic_input_shapes.end()
+                                    ? input_shape_sig->second
+                                    : model_input0_shape;
+  const auto &model_output0 = graph.operands().at(graph.getOutputs().at(0));
+
+  if (model_input0_shape.rank() == 4 && user_input0_shape.rank() == 4 &&
+      model_input0_shape.dim(0) == 1 && user_input0_shape.dim(0) != 1)
+  {
+    const auto batch_size = user_input0_shape.dim(0);
+    // TODO Change assertions to exception handling
+    for (size_t i = 1; i < model_input0_shape.dims().size(); ++i)
+    {
+      assert(model_input0_shape.dim(i) == user_input0_shape.dim(i));
+    }
+
+    if (_batch_thread_pool == nullptr)
+    {
+      _batch_io_descs.clear();
+      _batch_executors.clear();
+
+      _batch_thread_pool = std::make_unique<SimpleThreadPool>(4);
+
+      const auto input0_data_type = model_input0.typeInfo().type();
+      const auto input0_size =
+        model_input0.shape().num_elements() * sizeOfDataType(input0_data_type);
+
+      const auto output0_data_type = model_output0.typeInfo().type();
+      const auto output0_size =
+        model_output0.shape().num_elements() * sizeOfDataType(output0_data_type);
+
+      // Append executors
+      for (int32_t batch_num = 0; batch_num < batch_size; ++batch_num)
+      {
+        // TODO Support other subgraphs
+        auto subg_index = ir::SubgraphIndex{0};
+
+        // Create IODescriptions for each batch
+        {
+          IODescription io_desc;
+          io_desc.inputs.resize(_io_desc.inputs.size());
+          io_desc.outputs.resize(_io_desc.outputs.size());
+          // TODO Support models with multiple inputs/outputs to be batch parallelized
+          // Suppored only 1st input/output now
+
+          const auto input0_buffer =
+            reinterpret_cast<const uint8_t *>(_io_desc.inputs.at(0)->buffer) +
+            (input0_size * batch_num);
+          auto output0_buffer = reinterpret_cast<uint8_t *>(_io_desc.outputs.at(0)->buffer) +
+                                (output0_size * batch_num);
+
+          io_desc.inputs.at(io_input0_index.value()) = std::make_unique<InputDesc>(
+            _io_desc.inputs.at(0)->info, input0_buffer, input0_size, _io_desc.inputs.at(0)->layout);
+          io_desc.outputs.at(io_output0_index.value()) =
+            std::make_unique<OutputDesc>(_io_desc.outputs.at(0)->info, output0_buffer, output0_size,
+                                         _io_desc.outputs.at(0)->layout);
+          _batch_io_descs.emplace_back(io_desc);
+        }
+
+        // Create executors for each batch
+        {
+          auto lowered_graph =
+            dynamic_cast<ExecutorBase *>(primary_executor().get())->lowered_graph();
+          auto executors = std::make_shared<Executors>();
+          // TODO Remove const_cast and move this to fromGlobalConfig()
+          const_cast<compiler::CompilerOptions *>(_coptions)->is_batch_parallel = true;
+
+          auto executor = std::unique_ptr<exec::IExecutor>{compiler::ExecutorFactory::get().create(
+            std::move(lowered_graph), _tracing_ctx, *_coptions, executors, batch_num)};
+          executors->emplace(subg_index, std::move(executor));
+          _batch_executors.emplace_back(executors);
+        }
+      }
+    }
+
+    std::vector<std::future<int>> batch_futures;
+    // Execute batch executors on threadpool
+    for (int32_t batch_num = 0; batch_num < batch_size; ++batch_num)
+    {
+      assert(batch_size == _batch_executors.size());
+      assert(batch_size == _batch_io_descs.size());
+      // TODO Support other subgraphs
+      auto subg_index = ir::SubgraphIndex{0};
+      auto &executor = _batch_executors.at(batch_num)->at(subg_index);
+      auto &io_desc = _batch_io_descs.at(batch_num);
+
+      // Enqueue jobs
+      auto future = _batch_thread_pool->EnqueueJob(
+        [](IExecutor *executor, IODescription &io_desc, int32_t batch) -> int32_t {
+          executor->execute(io_desc);
+          return batch;
+        },
+        executor.get(), io_desc, batch_num);
+      batch_futures.emplace_back(std::move(future));
+    }
+
+    for (auto &future : batch_futures)
+    {
+      future.get();
+      // auto result = future.get();
+      // printf("Compileted executor's batch number : %d \n", result);
+    }
+  }
+  else
+  {
+    _executors->execute(_io_desc);
+  }
   finished = true;
 
   VERBOSE(Execution) << "Execution finished" << std::endl;
@@ -218,6 +338,7 @@ void Execution::AsyncExecute()
     return;
   }
 
+  // TODO Support batch parallel execution
   primary_executor()->execute(*_async_io_descs.front().first);
 }
 

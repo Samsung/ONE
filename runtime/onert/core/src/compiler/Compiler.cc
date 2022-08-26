@@ -211,6 +211,8 @@ std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
   o->he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
   o->disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
   o->fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
+  // TODO Get from global config
+  o->is_batch_parallel = false;
   {
     // Backend for all
     auto &ms_options = o->manual_scheduler_options;

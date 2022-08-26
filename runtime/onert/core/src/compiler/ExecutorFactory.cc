@@ -86,7 +86,7 @@ private:
   DeallocList _dealloc_list;
 };
 
-void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
+void initializeSubgraphIOTensors(const compiler::LoweredGraph &lowered_graph,
                                  const backend::BackendContexts &backend_contexts,
                                  const ir::OperandIndexSequence &indices)
 {
@@ -99,7 +99,7 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
     if (backend->config()->id() == backend::builtin::Config::ID)
     {
       builtin_tensor_reg =
-        std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(context->tensor_registry);
+        std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(context->get_tensor_registry());
     }
   }
   assert(builtin_tensor_reg);
@@ -117,7 +117,8 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
   }
 }
 
-backend::BackendContexts createBackendContexts(compiler::LoweredGraph &lgraph, bool linear_executor)
+backend::BackendContexts createBackendContexts(const compiler::LoweredGraph &lgraph,
+                                               bool linear_executor, int32_t batch_num)
 {
   backend::BackendContexts contexts;
   auto &backend_manager = compiler::BackendManager::get();
@@ -131,30 +132,33 @@ backend::BackendContexts createBackendContexts(compiler::LoweredGraph &lgraph, b
     auto graph = std::make_unique<ir::Graph>();
     graph->setLayout(lgraph.graph().layout());
     data.graph = std::move(graph);
+    data.batch_parallel_num = batch_num;
   }
 
   auto &whole_graph = lgraph.graph();
   // Separate operands into partial graphs
-  whole_graph.operands().iterate([&](const ir::OperandIndex &operand_ind, ir::Operand &operand) {
-    auto &operand_li = lgraph.lower_info().operand;
-    const auto &def_factors = operand_li.at(operand_ind).def_factors();
-    if (def_factors.size() == 0) // Ignore unused tensor
-      return;
-    const auto &def_factor = def_factors.getOnlyElement();
-    const auto backend = def_factor.backend();
-    auto &partial_graph = *context_data_map[backend].graph;
-    auto &operand_layouts = context_data_map[backend].operand_layouts;
-    assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-    operand_layouts[operand_ind] = def_factor.layout();
+  whole_graph.operands().iterate(
+    [&](const ir::OperandIndex &operand_ind, const ir::Operand &operand) {
+      auto &operand_li = lgraph.lower_info().operand;
+      const auto &def_factors = operand_li.at(operand_ind).def_factors();
+      if (def_factors.size() == 0) // Ignore unused tensor
+        return;
+      const auto &def_factor = def_factors.getOnlyElement();
+      const auto backend = def_factor.backend();
+      auto &partial_graph = *context_data_map[backend].graph;
+      auto &operand_layouts = context_data_map[backend].operand_layouts;
+      assert(operand_layouts.find(operand_ind) == operand_layouts.end());
+      operand_layouts[operand_ind] = def_factor.layout();
 
-    // Copy the operand and insert it to the partial graph
-    auto new_operand = std::make_unique<ir::Operand>(operand);
-    new_operand->clearDefUse();
-    operand.releaseData(); // Deref data of LoweredGraph
-    auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
-    UNUSED_RELEASE(new_operand_ind);
-    assert(new_operand_ind == operand_ind);
-  });
+      // Copy the operand and insert it to the partial graph
+      auto new_operand = std::make_unique<ir::Operand>(operand);
+      new_operand->clearDefUse();
+      // TODO Release Data
+      // operand.releaseData(); // Deref data of LoweredGraph
+      auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
+      UNUSED_RELEASE(new_operand_ind);
+      assert(new_operand_ind == operand_ind);
+    });
   // Separate operations into partial graphs
   whole_graph.operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::Operation &operation) {
@@ -240,10 +244,12 @@ ExecutorFactory &ExecutorFactory::get()
 ExecutorFactory::ExecutorFactory()
 {
   _map["Linear"] = createLinearExecutor;
-  _map["Dataflow"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
-                               std::placeholders::_3, std::placeholders::_4, false);
-  _map["Parallel"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
-                               std::placeholders::_3, std::placeholders::_4, true);
+  _map["Dataflow"] =
+    std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
+              std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, false);
+  _map["Parallel"] =
+    std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
+              std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, true);
 }
 
 exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
@@ -251,10 +257,35 @@ exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph>
                                          const compiler::CompilerOptions &options,
                                          const std::shared_ptr<exec::Executors> &executors)
 {
-  return _map.at(options.executor)(std::move(lowered_graph), tracing_ctx, options, executors);
+  // Now there is no case where an executor does not shared LoweredGraph's ownership and is going to
+  // be executed in batch parallel.
+  return _map.at(options.executor)(std::move(lowered_graph), tracing_ctx, options, executors,
+                                   backend::ContextData::no_batch_parallel);
 }
 
-void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
+exec::IExecutor *
+ExecutorFactory::create(std::shared_ptr<const compiler::LoweredGraph> lowered_graph,
+                        const util::TracingCtx *tracing_ctx,
+                        const compiler::CompilerOptions &options,
+                        const std::shared_ptr<exec::Executors> &executors, int32_t batch_num)
+{
+  if (options.executor == "Linear")
+  {
+    return createLinearExecutor(lowered_graph, tracing_ctx, options, executors, batch_num);
+  }
+  else if (options.executor == "Dataflow")
+  {
+    return createDataflowExecutor(lowered_graph, tracing_ctx, options, executors, batch_num, false);
+  }
+  else if (options.executor == "Dataflow")
+  {
+    return createDataflowExecutor(lowered_graph, tracing_ctx, options, executors, batch_num, true);
+  }
+
+  throw std::runtime_error(options.executor + "is not supported executor");
+}
+
+void ExecutorFactory::prepareMigrantTensors(const compiler::LoweredGraph &lowered_graph,
                                             const backend::BackendContexts &backend_contexts)
 {
   TensorRegistries tensor_regs{backend_contexts, true};
@@ -269,13 +300,13 @@ void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_grap
         // If an Operation's input/output tensor does not have an own tensor object,
         // it must be using migrant tensors, so find the tensor from other tensor registries and
         // register it to the current tensor registry if it is portable
-        if (!backend_ctx->tensor_registry->getITensor(ind))
+        if (!backend_ctx->get_tensor_registry()->getITensor(ind))
         {
           auto tensor = tensor_regs.getITensor(ind);
           assert(tensor); // The tensor must have been registered
           auto ptensor = dynamic_cast<backend::IPortableTensor *>(tensor);
           if (ptensor)
-            backend_ctx->tensor_registry->setMigrantTensor(ind, ptensor);
+            backend_ctx->get_tensor_registry()->setMigrantTensor(ind, ptensor);
         }
       }
     });
@@ -285,6 +316,7 @@ void ExecutorFactory::prepareBuiltinBackend(const TensorRegistries &tensor_regs,
                                             const std::shared_ptr<exec::Executors> &executors,
                                             const backend::BackendContexts &backend_contexts)
 {
+  // The param backend_contexts is const, But it is updated
   for (auto &pair : backend_contexts)
   {
     auto builtin_context = dynamic_cast<backend::builtin::BackendContext *>(pair.second.get());
@@ -318,13 +350,16 @@ ExecutorFactory::orderBackendContext(const backend::BackendContexts &backend_con
 }
 
 exec::IExecutor *ExecutorFactory::createLinearExecutor(
-  std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
-  const compiler::CompilerOptions &options, const std::shared_ptr<exec::Executors> &executors)
+  std::shared_ptr<const compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
+  const compiler::CompilerOptions &options, const std::shared_ptr<exec::Executors> &executors,
+  int32_t batch_num)
 {
   auto &graph = lowered_graph->graph();
 
+  assert((!options.is_batch_parallel && batch_num == -1) ||
+         (options.is_batch_parallel && batch_num != -1));
   backend::BackendContexts backend_contexts =
-    createBackendContexts(*lowered_graph, options.executor == "Linear");
+    createBackendContexts(*lowered_graph, options.executor == "Linear", batch_num);
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -413,8 +448,8 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
     {
       auto &op_ind = pair.first;
       auto &fn_seq = pair.second;
-      auto &op = lowered_graph->graph().operations().at(op_ind);
-      auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
+      const auto &op = lowered_graph->graph().operations().at(op_ind);
+      const auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
       if (options.he_profiling_mode)
         fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
       if (!dealloc_list_map[op_ind].empty())
@@ -425,12 +460,9 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
 
   auto code_map = builder.releaseCodeMap();
 
-  auto exec = new exec::LinearExecutor{std::move(lowered_graph),
-                                       std::move(backend_contexts),
-                                       tensor_regs,
-                                       std::move(code_map),
-                                       order,
-                                       tracing_ctx};
+  auto exec = new exec::LinearExecutor{lowered_graph, std::move(backend_contexts),
+                                       tensor_regs,   std::move(code_map),
+                                       order,         tracing_ctx};
 
   if (!options.trace_filepath.empty())
   {
@@ -443,12 +475,14 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
 }
 
 exec::IExecutor *ExecutorFactory::createDataflowExecutor(
-  std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
+  std::shared_ptr<const compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
   const compiler::CompilerOptions &options, const std::shared_ptr<exec::Executors> &executors,
-  bool parallel)
+  int32_t batch_num, bool parallel)
 {
+  assert(options.is_batch_parallel && batch_num == -1);
+  assert(!options.is_batch_parallel && batch_num != -1);
   backend::BackendContexts backend_contexts =
-    createBackendContexts(*lowered_graph, options.executor == "Linear");
+    createBackendContexts(*lowered_graph, options.executor == "Linear", batch_num);
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -459,6 +493,8 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
   for (auto &pair : backend_contexts)
   {
+    // Why is this called?
+    //
     pair.second->genTensors();
   }
 
@@ -480,8 +516,8 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     {
       auto &op_ind = pair.first;
       auto &fn_seq = pair.second;
-      auto &op = lowered_graph->graph().operations().at(op_ind);
-      auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
+      const auto &op = lowered_graph->graph().operations().at(op_ind);
+      const auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
       if (options.he_profiling_mode)
         fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
       builder.append(op_ind, {op_ind, &op, lower_info, std::move(fn_seq)});
@@ -493,14 +529,13 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   exec::ExecutorBase *exec = nullptr;
   if (parallel)
   {
-    exec = new exec::ParallelExecutor{std::move(lowered_graph), std::move(backend_contexts),
-                                      tensor_regs, std::move(code_map), tracing_ctx};
+    exec = new exec::ParallelExecutor{lowered_graph, std::move(backend_contexts), tensor_regs,
+                                      std::move(code_map), tracing_ctx};
   }
   else
   {
-    auto dataflow_exec =
-      new exec::DataflowExecutor{std::move(lowered_graph), std::move(backend_contexts), tensor_regs,
-                                 std::move(code_map), tracing_ctx};
+    auto dataflow_exec = new exec::DataflowExecutor{lowered_graph, std::move(backend_contexts),
+                                                    tensor_regs, std::move(code_map), tracing_ctx};
     if (options.he_profiling_mode)
     {
       std::vector<const backend::Backend *> backends;

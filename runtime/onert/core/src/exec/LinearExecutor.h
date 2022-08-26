@@ -46,7 +46,7 @@ public:
    * @param tensor_builders Tensor builders that are currently used
    * @param code_map @c ir::Operation and its code map
    */
-  LinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+  LinearExecutor(std::shared_ptr<const compiler::LoweredGraph> lowered_graph,
                  backend::BackendContexts &&backend_contexts,
                  const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
                  const std::vector<ir::OperationIndex> &order, const util::TracingCtx *tracing_ctx)

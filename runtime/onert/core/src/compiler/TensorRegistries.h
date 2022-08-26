@@ -40,7 +40,7 @@ public:
   {
     for (const auto &e : backend_contexts)
     {
-      auto tensor_reg = e.second->tensor_registry;
+      auto tensor_reg = e.second->get_tensor_registry();
       if (e.first->config()->id() == backend::builtin::Config::ID)
       {
         _builtin_tensor_reg =

@@ -430,7 +430,8 @@ NNFW_STATUS nnfw_session::prepare()
     auto compiler = std::make_unique<onert::compiler::Compiler>(_nnpkg, _coptions);
     _nnpkg.reset();
     _compiler_artifact = compiler->compile();
-    _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
+    _execution = std::make_unique<onert::exec::Execution>(
+      _compiler_artifact->_executors, _coptions[0].get(), _compiler_artifact->_tracing_ctx.get());
   }
   catch (const std::exception &e)
   {
@@ -469,7 +470,8 @@ NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
 
     for (auto it = artifacts.begin(); it != artifacts.end(); ++it)
     {
-      _executions.push_back(std::make_shared<onert::exec::Execution>(it->get()->_executors));
+      _executions.push_back(std::make_shared<onert::exec::Execution>(
+        it->get()->_executors, _coptions[0].get(), it->get()->_tracing_ctx.get()));
     }
     make_dependency();
     _threads.resize(_executions.size());

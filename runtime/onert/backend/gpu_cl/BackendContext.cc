@@ -83,7 +83,7 @@ ITensorRegistry *BackendContext::genTensors()
     });
   }
   tensor_builder->prepare();
-  return tensor_registry.get();
+  return _tensor_registry.get();
 }
 
 } // namespace gpu_cl

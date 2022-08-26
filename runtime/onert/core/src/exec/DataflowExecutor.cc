@@ -37,7 +37,7 @@ int64_t DataflowExecutor::calculateRank(const std::vector<ir::OperationIndex> &o
     auto it = _indexed_ranks->find(operation_idx);
     if (it == _indexed_ranks->end())
     {
-      assert(_graph.operations().at(operation_idx).opcode() == ir::OpCode::Permute &&
+      assert(graph().operations().at(operation_idx).opcode() == ir::OpCode::Permute &&
              operations.size() == 1);
       // run Permute ASAP for next operations to be ready for other backends
       return std::numeric_limits<int64_t>::max();
@@ -76,12 +76,12 @@ bool DataflowExecutor::noWaitingJobs()
                      [](const std::unique_ptr<Job> &job) { return job == nullptr; });
 }
 
-DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+DataflowExecutor::DataflowExecutor(std::shared_ptr<const compiler::LoweredGraph> lowered_graph,
                                    backend::BackendContexts &&backend_contexts,
                                    const compiler::TensorRegistries &tensor_regs,
                                    compiler::CodeMap &&code_map,
                                    const util::TracingCtx *tracing_ctx)
-  : ExecutorBase{std::move(lowered_graph), std::move(backend_contexts), tensor_regs, tracing_ctx},
+  : ExecutorBase{lowered_graph, std::move(backend_contexts), tensor_regs, tracing_ctx},
     _code_map{std::move(code_map)}
 {
   VERBOSE(DataflowExecutor) << "Constructing Dataflow Executor" << std::endl;
@@ -141,7 +141,7 @@ void DataflowExecutor::executeImpl()
   }
   assert(!_ready_jobs.empty()); // Cannot begin if there is no initial jobs
 
-  auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_graph);
+  auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&graph());
 
   _subject.notifySubgraphBegin(profiling_subg_index);
 
