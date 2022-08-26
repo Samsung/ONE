@@ -25,22 +25,18 @@ namespace onert
 namespace exec
 {
 
+struct ModelEdges
+{
+  std::vector<ir::IODesc> pkg_inputs;
+  std::vector<ir::IODesc> pkg_outputs;
+  std::unordered_set<ir::ModelEdge, ir::ModelEdgeHash, ir::ModelEdgeEqual> edges;
+};
+
 class Executors
 {
 public:
   Executors(void) = default;
-  Executors(ir::NNPkg &nnpkg)
-  {
-    if (nnpkg.model_count() > 1)
-    {
-      _multi_model = true;
-
-      // Copy I/O vector, edge set
-      _pkg_inputs = nnpkg.inputs();
-      _pkg_outputs = nnpkg.outputs();
-      _model_edges = nnpkg.edges();
-    }
-  }
+  Executors(std::unique_ptr<ModelEdges> model_edges) { _model_edges = std::move(model_edges); }
 
 public:
   void emplace(ir::SubgraphIndex idx, std::unique_ptr<IExecutor> exec)
@@ -67,11 +63,7 @@ private:
   // TODO Use Executor index
   //      Changing index will effect if/while compile and kernel implementation
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _map;
-  // TODO Find better way instead of using bool field
-  bool _multi_model = false;
-  std::vector<ir::IODesc> _pkg_inputs;
-  std::vector<ir::IODesc> _pkg_outputs;
-  std::unordered_set<ir::ModelEdge, ir::ModelEdgeHash, ir::ModelEdgeEqual> _model_edges;
+  std::unique_ptr<ModelEdges> _model_edges;
 };
 
 } // namespace exec

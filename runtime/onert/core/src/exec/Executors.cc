@@ -24,23 +24,23 @@ namespace exec
 
 uint32_t Executors::inputSize() const
 {
-  return _multi_model ? _pkg_inputs.size()
+  return _model_edges ? _model_edges->pkg_inputs.size()
                       : _map.at(ir::SubgraphIndex{0})->graph().getInputs().size();
 }
 
 uint32_t Executors::outputSize() const
 {
-  return _multi_model ? _pkg_outputs.size()
+  return _model_edges ? _model_edges->pkg_outputs.size()
                       : _map.at(ir::SubgraphIndex{0})->graph().getOutputs().size();
 }
 
 const ir::OperandInfo Executors::inputInfo(const ir::IOIndex &index)
 {
-  if (_multi_model)
+  if (_model_edges)
   {
     // Assume that each model may have only one subgraph
     // TODO handle general case
-    const auto desc = _pkg_inputs[index.value()];
+    const auto desc = _model_edges->pkg_inputs[index.value()];
     const auto model_idx = std::get<0>(desc);
     const auto executor_idx = ir::SubgraphIndex{model_idx.value()};
     const auto input_index = _map.at(executor_idx)->graph().getInputs().at(std::get<2>(desc));
@@ -53,11 +53,11 @@ const ir::OperandInfo Executors::inputInfo(const ir::IOIndex &index)
 
 const ir::OperandInfo Executors::outputInfo(const ir::IOIndex &index)
 {
-  if (_multi_model)
+  if (_model_edges)
   {
     // Assume that each model may have only one subgraph
     // TODO handle general case
-    auto desc = _pkg_outputs[index.value()];
+    auto desc = _model_edges->pkg_outputs[index.value()];
     auto model_idx = std::get<0>(desc);
     auto executor_idx = ir::SubgraphIndex{model_idx.value()};
     auto output_index = _map.at(executor_idx)->graph().getOutputs().at(std::get<2>(desc));
@@ -70,7 +70,7 @@ const ir::OperandInfo Executors::outputInfo(const ir::IOIndex &index)
 
 void Executors::execute(const IODescription &desc)
 {
-  if (_multi_model)
+  if (_model_edges)
   {
     executeEntries(desc);
     return;
@@ -85,12 +85,12 @@ void Executors::executeEntries(const IODescription &desc)
   // Assume that each model may have only one subgraph
   // Assume that each model may have only one input/output
   // TODO Support general case
-  if (_map.size() != 2 || _pkg_inputs.size() != 1 || _pkg_outputs.size() != 1 ||
-      _model_edges.size() != 1)
+  if (_map.size() != 2 || _model_edges->pkg_inputs.size() != 1 ||
+      _model_edges->pkg_outputs.size() != 1 || _model_edges->edges.size() != 1)
     throw std::runtime_error{"NYI: Multi model execution for this package is not supported yet"};
 
   // Assume edge is 0:0:0 -> 1:0:0
-  auto &edge = *_model_edges.begin();
+  auto &edge = *_model_edges->edges.begin();
   if ((std::get<0>(edge.from) != ir::ModelIndex{0}) ||
       (std::get<1>(edge.from) != ir::SubgraphIndex{0}) ||
       (std::get<2>(edge.from) != ir::IOIndex{0}))
@@ -117,7 +117,7 @@ void Executors::executeEntries(const IODescription &desc)
       throw std::runtime_error{
         "NYI: Multi model execution for this 1st model is not supported yet"};
 
-    const auto input_desc = _pkg_inputs[0];
+    const auto input_desc = _model_edges->pkg_inputs[0];
     if ((std::get<0>(input_desc) != ir::ModelIndex{0}) ||
         (std::get<1>(input_desc) != ir::SubgraphIndex{0}) ||
         (std::get<2>(input_desc) != ir::IOIndex{0}))
@@ -140,7 +140,7 @@ void Executors::executeEntries(const IODescription &desc)
       throw std::runtime_error{
         "NYI: Multi model execution for this 2nd model is not supported yet"};
 
-    const auto output_desc = _pkg_outputs[0];
+    const auto output_desc = _model_edges->pkg_outputs[0];
     if ((std::get<0>(output_desc) != ir::ModelIndex{1}) ||
         (std::get<1>(output_desc) != ir::SubgraphIndex{0}) ||
         (std::get<2>(output_desc) != ir::IOIndex{0}))

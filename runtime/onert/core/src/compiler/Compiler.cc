@@ -498,6 +498,9 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   // Tracing context
   auto tracing_ctx = std::make_unique<util::TracingCtx>();
 
+  // Model edge context
+  std::unique_ptr<exec::ModelEdges> model_edges = nullptr;
+
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
 
@@ -518,6 +521,14 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     // TODO Support tracing_ctx for multiple model
     tracing_ctx = nullptr;
 
+    // Fill model edge context
+    model_edges = std::make_unique<exec::ModelEdges>();
+    {
+      model_edges->pkg_inputs = _nnpkg->inputs();
+      model_edges->pkg_outputs = _nnpkg->outputs();
+      model_edges->edges = _nnpkg->edges();
+    }
+
     for (uint32_t i = 0; i < _nnpkg->model_count(); i++)
     {
       auto model = _nnpkg->model(ir::ModelIndex{i});
@@ -531,6 +542,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
         std::make_unique<compiler::LoweredGraph>(*model->primary_subgraph(), *_voptions[i]);
     }
   }
+
+  _nnpkg.reset();
 
   for (auto &pair : lowered_subgs)
   {
@@ -546,7 +559,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers =
       createStaticShapeInferers(lowered_subgs);
 
-    if (_nnpkg->model_count() == 1)
+    if (model_edges != nullptr)
     {
       const auto primary_subg_idx = ir::SubgraphIndex{0};
       inferers.at(primary_subg_idx)->infer();
@@ -586,7 +599,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
 
-  auto executors = std::make_shared<exec::Executors>(*_nnpkg);
+  auto executors = std::make_shared<exec::Executors>(std::move(model_edges));
   for (auto &pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
@@ -599,17 +612,13 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
 
     auto &options = *_voptions[0];
-    if (_nnpkg->model_count() != 1)
+    if (model_edges != nullptr)
       options = *_voptions[subg_index.value()];
     auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
       std::move(lowered_subg), tracing_ctx.get(), options, executors)};
     executor->setIndexedRanks(indexed_ranks);
     executors->emplace(subg_index, std::move(executor));
   }
-
-  // TODO Move this reset to lowering (after lowered_subgs map fill)
-  //      It cannot be moved because it is used on Executors creation and for loop
-  _nnpkg.reset();
 
   /********************************
    * Code generation phase finished
