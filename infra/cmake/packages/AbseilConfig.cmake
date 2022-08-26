@@ -23,6 +23,7 @@ function(_Abseil_import)
 
     target_link_libraries(abseil INTERFACE
       # From "Available Abseil CMake Public Targets" in CMake/README.md
+      # Add absl::status (It is not listed in CMake/README.md)
       absl::algorithm
       absl::base
       absl::debugging
@@ -36,6 +37,7 @@ function(_Abseil_import)
       absl::synchronization
       absl::time
       absl::utility
+      absl::status
     )
   endif(NOT TARGET abseil)
 
