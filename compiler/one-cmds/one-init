@@ -365,7 +365,6 @@ def main():
     # verify arguments
     _verify_arg(parser, args)
 
-    #TODO generate cfg file
     model_type = _get_model_type(parser, args)
     inout_path = InputOutputPath(args.input_path)
     _generate(args, model_type, inout_path)
