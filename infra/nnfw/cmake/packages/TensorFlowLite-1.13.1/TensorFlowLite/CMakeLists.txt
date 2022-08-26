@@ -52,13 +52,11 @@ target_compile_definitions(tensorflow-lite PUBLIC "GEMMLOWP_ALLOW_SLOW_SCALAR_FA
 set_property(TARGET tensorflow-lite PROPERTY POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(tensorflow-lite eigen-tf-1.13.1 flatbuffers::flatbuffers ${LIB_PTHREAD} dl)
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_BUILD_TYPE_LC STREQUAL "debug")
-  if(NEON2SSESource_FOUND AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
-    message(WARNING "GNU Compiler version under 9 is not supporting NEON2SSE debug build. "
-                    "Compiler will use O3 (release) build option as a workaround.")
-    target_compile_options(tensorflow-lite PRIVATE -O3 -DNDEBUG)
-  endif()
-endif()
+# Define TF_LITE_DISABLE_X86_NEON for debug build
+# If we upgrade NEON2SSE version, we can remove below line
+if(NEON2SSESource_FOUND)
+  target_compile_definitions(tensorflow-lite PRIVATE $<$<CONFIG:Debug>:TF_LITE_DISABLE_X86_NEON>)
+endif(NEON2SSESource_FOUND)
 
 if(ANDROID)
   target_link_libraries(tensorflow-lite log)
