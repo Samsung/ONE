@@ -50,11 +50,7 @@ public:
 
 public:
   DataType type() const { return _type; }
-  float scale() const
-  {
-    assert(_quant.scales.size() == 1);
-    return _quant.scales[0];
-  }
+  float scale() const { return _quant.scales[0]; }
   const std::vector<float> &scales() const { return _quant.scales; }
   int32_t zero_point() const
   {
