@@ -22,7 +22,7 @@
 #include "compiler/Compiler.h"
 #include "ir/Graph.h"
 #include "ir/Model.h"
-#include "exec/IExecutor.h"
+#include "exec/Executors.h"
 #include "util/TracingCtx.h"
 
 struct ANeuralNetworksCompilation
@@ -34,7 +34,7 @@ public:
   bool finish() noexcept;
 
   onert::compiler::State state(void) noexcept { return _compiler->state(); }
-  void publish(std::shared_ptr<onert::exec::ExecutorMap> &executors) noexcept
+  void publish(std::shared_ptr<onert::exec::Executors> &executors) noexcept
   {
     executors = _artifact ? _artifact->_executors : nullptr;
   }

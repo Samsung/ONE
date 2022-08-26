@@ -23,7 +23,7 @@
 #include "../../compiler/TensorRegistries.h"
 
 #include "backend/basic/KernelGeneratorBase.h"
-#include "exec/IExecutor.h"
+#include "exec/Executors.h"
 #include "ir/Graph.h"
 
 namespace onert
@@ -44,10 +44,10 @@ public:
   {
     _tensor_registries = tensor_registries;
   }
-  void setExecutorMap(const std::shared_ptr<exec::ExecutorMap> &executor_map)
+  void setExecutors(const std::shared_ptr<exec::Executors> &executors)
   {
     // FIXME Using shared_ptr's raw pointer!
-    _executor_map = executor_map.get();
+    _executors = executors.get();
   }
 
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
@@ -65,7 +65,7 @@ private:
   DynamicTensorManager *_dyn_tensor_manager;
   std::shared_ptr<TensorRegistry> _tensor_reg;
   compiler::TensorRegistries _tensor_registries;
-  exec::ExecutorMap *_executor_map;
+  exec::Executors *_executors;
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
