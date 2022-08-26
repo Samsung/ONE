@@ -85,7 +85,7 @@ target_include_directories(tensorflow-lite-2.3.0 SYSTEM PUBLIC ${TFLITE_INCLUDES
 target_include_directories(tensorflow-lite-2.3.0 PRIVATE ${CpuInfoSource_DIR})
 target_compile_definitions(tensorflow-lite-2.3.0 PUBLIC "GEMMLOWP_ALLOW_SLOW_SCALAR_FALLBACK -DTFLITE_WITH_RUY -DTFLITE_WITH_RUY_GEMV -DRUY_HAVE_CPUINFO")
 set_property(TARGET tensorflow-lite-2.3.0 PROPERTY POSITION_INDEPENDENT_CODE ON)
-target_link_libraries(tensorflow-lite-2.3.0 eigen flatbuffers::flatbuffers ruy abseil farmhash ${LIB_PTHREAD} dl)
+target_link_libraries(tensorflow-lite-2.3.0 eigen flatbuffers::flatbuffers tensorflow-ruy abseil farmhash ${LIB_PTHREAD} dl)
 if(NOT ANDROID AND ${BUILD_WITH_NNAPI})
   target_link_libraries(tensorflow-lite-2.3.0 rt)
 endif()

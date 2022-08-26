@@ -1,4 +1,4 @@
-set(RUY_BASE ${RuySource_DIR}/ruy)
+set(RUY_BASE ${TensorFlowRuySource_DIR}/ruy)
 
 #
 # Ruy library
@@ -14,7 +14,6 @@ list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/example_advanced.cc")
 list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/tune_tool.cc")
 list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/pmu.cc")
 list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/create_trmul_params.cc")
-list(REMOVE_ITEM RUY_SRCS "${RUY_BASE}/prepare_packed_matrices.cc")
 
 list(APPEND RUY_INSTRUMENTATION_SRCS "${RUY_BASE}/profiler/instrumentation.cc")
 
@@ -23,7 +22,7 @@ if(PROFILE_RUY)
   list(APPEND RUY_PROFILER_SRCS "${RUY_BASE}/profiler/treeview.cc")
 endif(PROFILE_RUY)
 
-list(APPEND RUY_INCLUDES "${RuySource_DIR}")
+list(APPEND RUY_INCLUDES "${TensorFlowRuySource_DIR}")
 
 add_library(ruy STATIC ${RUY_SRCS})
 target_include_directories(ruy SYSTEM PUBLIC ${RUY_INCLUDES})
