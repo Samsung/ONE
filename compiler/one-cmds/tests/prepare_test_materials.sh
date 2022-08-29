@@ -105,6 +105,13 @@ if [[ ! -s "Net_InstanceNorm_003.part" ]]; then
     # https://github.com/Samsung/ONE/issues/8570#issuecomment-1115804257
 fi
 
+if [[ ! -s "Conv2D_000.circle" ]]; then
+    rm -rf Conv2D_000.zip
+    wget https://github.com/Samsung/ONE/files/9466423/Conv2D_000.zip
+    unzip Conv2D_000.zip
+    # https://github.com/Samsung/ONE/issues/9653#issuecomment-1233668729
+fi
+
 function files_missing() {
     condition="test "
 

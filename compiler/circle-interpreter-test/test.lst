@@ -1,0 +1,7 @@
+#
+# Format:
+#   addeval(MODEL)
+# MODEL: tflite model file name in build/compiler/common-artifacts folder.
+#
+
+addeval(Conv2D_000)
