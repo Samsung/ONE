@@ -18,11 +18,25 @@
 #define __ONERT_EXEC_EXECUTORS_H__
 
 #include "IExecutor.h"
+#include "ir/NNPkg.h"
 
 namespace onert
 {
 namespace exec
 {
+
+/**
+ * @brief Struct to gather model I/O information in multimodel NN package
+ *        Model I/O will have role one of below
+ *        - Package input/output
+ *        - Edge's start/finish point between model
+ */
+struct ModelEdges
+{
+  std::vector<ir::IODesc> pkg_inputs;
+  std::vector<ir::IODesc> pkg_outputs;
+  std::unordered_set<ir::ModelEdge, ir::ModelEdgeHash, ir::ModelEdgeEqual> edges;
+};
 
 /**
  * @brief Class to gather executors
@@ -31,6 +45,7 @@ class Executors
 {
 public:
   Executors(void) = default;
+  Executors(std::unique_ptr<ModelEdges> model_edges) { _model_edges = std::move(model_edges); }
   Executors(const Executors &) = delete;
   Executors(Executors &&) = default;
 
@@ -56,6 +71,7 @@ private:
   // TODO Use Executor index
   //      Changing index will effect if/while compile and kernel implementation
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _executors;
+  std::unique_ptr<ModelEdges> _model_edges;
 };
 
 } // namespace exec

@@ -421,14 +421,13 @@ NNFW_STATUS nnfw_session::prepare()
   try
   {
     // TODO: Compile all models in case of multiple models
-    if (_nnpkg->model_count() > 1)
+    if (_nnpkg->model_count() > 2)
     {
-      std::cerr << "Error during model prepare : multiple models are not supported yet."
+      std::cerr << "Error during model prepare : more than 3 multiple models are not supported yet."
                 << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    auto model = _nnpkg->primary_model();
-    auto compiler = std::make_unique<onert::compiler::Compiler>(model, *_coptions[0]);
+    auto compiler = std::make_unique<onert::compiler::Compiler>(_nnpkg, _coptions);
     _nnpkg.reset();
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);

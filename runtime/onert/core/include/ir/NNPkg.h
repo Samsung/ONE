@@ -121,6 +121,11 @@ public:
    */
   IODesc &input(uint32_t index) { return _pkg_inputs[index]; }
   /**
+   * @brief   Get pkg_input vector
+   * @return  IODesc vector reference
+   */
+  const std::vector<IODesc> &inputs() { return _pkg_inputs; }
+  /**
    * @brief Add input at the end
    *
    * @param[in] input Input IODesc to be pushed
@@ -142,6 +147,11 @@ public:
    */
   IODesc &output(uint32_t index) { return _pkg_outputs[index]; }
   /**
+   * @brief   Get pkg_output vector
+   * @return  IODesc vector reference
+   */
+  const std::vector<IODesc> &outputs() { return _pkg_outputs; }
+  /**
    * @brief Add output at the end
    *
    * @param[in] output Output IODesc to be pushed
@@ -158,6 +168,14 @@ public:
   {
     std::cout << from << " -> " << to << std::endl;
     _model_edges.insert(ModelEdge{from, to});
+  }
+  /**
+   * @brief   Get edge set
+   * @return  Edge set reference
+   */
+  const std::unordered_set<ModelEdge, ModelEdgeHash, ModelEdgeEqual> &edges()
+  {
+    return _model_edges;
   }
 
   // TODO: Add iterate() or getter for edges
