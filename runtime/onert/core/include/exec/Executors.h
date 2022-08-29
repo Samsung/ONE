@@ -68,6 +68,9 @@ public:
   void execute(const IODescription &desc);
 
 private:
+  void executeEntries(const IODescription &desc);
+
+private:
   // TODO Use Executor index
   //      Changing index will effect if/while compile and kernel implementation
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _executors;
