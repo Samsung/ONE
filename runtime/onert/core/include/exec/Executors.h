@@ -25,18 +25,11 @@ namespace onert
 namespace exec
 {
 
-struct ModelEdges
-{
-  std::vector<ir::IODesc> pkg_inputs;
-  std::vector<ir::IODesc> pkg_outputs;
-  std::unordered_set<ir::ModelEdge, ir::ModelEdgeHash, ir::ModelEdgeEqual> edges;
-};
-
 class Executors
 {
 public:
   Executors(void) = default;
-  Executors(std::unique_ptr<ModelEdges> model_edges) { _model_edges = std::move(model_edges); }
+  Executors(std::unique_ptr<ir::ModelEdges> model_edges) { _model_edges = std::move(model_edges); }
 
 public:
   void emplace(ir::SubgraphIndex idx, std::unique_ptr<IExecutor> exec)
@@ -63,7 +56,7 @@ private:
   // TODO Use Executor index
   //      Changing index will effect if/while compile and kernel implementation
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _map;
-  std::unique_ptr<ModelEdges> _model_edges;
+  std::unique_ptr<ir::ModelEdges> _model_edges;
 };
 
 } // namespace exec

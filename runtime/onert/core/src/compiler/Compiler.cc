@@ -499,7 +499,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   auto tracing_ctx = std::make_unique<util::TracingCtx>();
 
   // Model edge context
-  std::unique_ptr<exec::ModelEdges> model_edges = nullptr;
+  std::unique_ptr<ir::ModelEdges> model_edges = nullptr;
 
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
@@ -521,13 +521,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     // TODO Support tracing_ctx for multiple model
     tracing_ctx = nullptr;
 
-    // Fill model edge context
-    model_edges = std::make_unique<exec::ModelEdges>();
-    {
-      model_edges->pkg_inputs = _nnpkg->inputs();
-      model_edges->pkg_outputs = _nnpkg->outputs();
-      model_edges->edges = _nnpkg->edges();
-    }
+    // Copy model edge context
+    model_edges = std::make_unique<ir::ModelEdges>(_nnpkg->model_edges());
 
     for (uint32_t i = 0; i < _nnpkg->model_count(); i++)
     {
