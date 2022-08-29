@@ -16,6 +16,7 @@
 
 #include "tensorflow/lite/model.h"
 #include "tensorflow/lite/kernels/register.h"
+#include "tensorflow/lite/delegates/nnapi/nnapi_delegate.h"
 
 #include "args.h"
 #include "tensor_view.h"
@@ -128,7 +129,11 @@ int main(const int argc, char **argv)
   try
   {
     phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
-      interpreter->UseNNAPI(use_nnapi);
+      if (use_nnapi)
+      {
+        // TFLite NNAPI is not worked yet
+        interpreter->ModifyGraphWithDelegate(tflite::NnApiDelegate());
+      }
       interpreter->AllocateTensors();
     });
   }
