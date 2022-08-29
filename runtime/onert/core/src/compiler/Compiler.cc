@@ -554,7 +554,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers =
       createStaticShapeInferers(lowered_subgs);
 
-    if (model_edges != nullptr)
+    if (model_edges == nullptr)
     {
       const auto primary_subg_idx = ir::SubgraphIndex{0};
       inferers.at(primary_subg_idx)->infer();
