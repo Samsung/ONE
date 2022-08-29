@@ -459,22 +459,23 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   }
 
   // NYI: allow one model compilation
-  if (_nnpkg->model_count() != 1)
-    throw std::runtime_error{"NYI: Multiple models compilation for pipeline is not supported yet."};
+  auto const model_count = _nnpkg->model_count();
+  if (model_count != _voptions.size())
+    throw std::runtime_error{"Model count and option vector size mismatch"};
 
-  auto model = _nnpkg->primary_model();
-  auto &options = *_voptions[0];
+  for (uint32_t i = 0; i < model_count; i++)
+  {
+    _nnpkg->model(ir::ModelIndex{i})->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+      // Mandatory passes
+      pass::PassRunner{}
+        .append(std::make_unique<pass::ConstantOutputPass>(subg))
+        .append(std::make_unique<pass::OddOutputPass>(subg))
+        .run();
 
-  model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
-    // Mandatory passes
-    pass::PassRunner{}
-      .append(std::make_unique<pass::ConstantOutputPass>(subg))
-      .append(std::make_unique<pass::OddOutputPass>(subg))
-      .run();
-
-    // Optimizations
-    pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
-  });
+      // Optimizations
+      pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
+    });
+  }
 
   /***************************************************
    * Prepare compilation phase
@@ -482,11 +483,14 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   // Compilable check
   // TODO: Support hybrid execution -
   //       execution between interpreter and compiled executor (including control flow)
-  if (options.disable_compile)
+  if (_voptions[0]->disable_compile)
   {
+    if (model_count > 1)
+      throw std::runtime_error{"NYI: Disable compilation for multi model is not supported yet"};
+
     auto executors = std::make_shared<exec::Executors>();
 
-    model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+    _nnpkg->primary_model()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
     });
     _state = State::COMPILED;
@@ -494,29 +498,64 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   }
 
   // Mode check
-  if (options.he_profiling_mode)
+  // TODO handle option for each model
+  if (_voptions[0]->he_profiling_mode)
     checkProfilerConditions();
 
   /***************************************************
    * Backend independent analysis & optimization phase
    ***************************************************/
-  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(options.graph_dump_level);
+  // TODO Handle dump level for each model
+  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_voptions[0]->graph_dump_level);
   onert::dumper::dot::DotDumper dot_dumper(dump_level);
 
   // Tracing context
   auto tracing_ctx = std::make_unique<util::TracingCtx>();
 
+  // Model edge context
+  std::unique_ptr<exec::ModelEdges> model_edges = nullptr;
+
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
-  model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-    dot_dumper.dump(subg, nnfw::misc::str("before_lower_subg-", index.value()));
 
-    // Lower: Assign backend
-    lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, options);
+  if (model_count == 1)
+  {
+    _nnpkg->primary_model()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+      dot_dumper.dump(subg, nnfw::misc::str("before_lower_subg-", index.value()));
+      // Lower: Assign backend
+      lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, *_voptions[0]);
+      // Set tracing_ctx for copied graph
+      tracing_ctx->setSubgraphIndex(&(lowered_subgs[index]->graph()), index.value());
+    });
+  }
+  else
+  {
+    // TODO Support tracing_ctx for multiple model
+    tracing_ctx = nullptr;
 
-    // Set tracing_ctx for copied graph
-    tracing_ctx->setSubgraphIndex(&(lowered_subgs[index]->graph()), index.value());
-  });
+    // Fill model edge context
+    model_edges = std::make_unique<exec::ModelEdges>();
+    {
+      model_edges->pkg_inputs = _nnpkg->inputs();
+      model_edges->pkg_outputs = _nnpkg->outputs();
+      model_edges->edges = _nnpkg->edges();
+    }
+
+    for (uint32_t i = 0; i < model_count; i++)
+    {
+      auto model = _nnpkg->model(ir::ModelIndex{i});
+      if (model->subgraphs_count() != 1)
+        throw std::runtime_error{"NYI: Lowering subgraphs for multiple model is not supported yet"};
+      auto subg = model->primary_subgraph();
+      dot_dumper.dump(*subg, nnfw::misc::str("before_lower_model-", i));
+
+      // For multimodel, model index is used for lowered graph index in lowered graph map
+      // and index type is SubgraphIndex
+      // TODO Find better way to represent lowered graph index for multimodel's subgraph
+      lowered_subgs[ir::SubgraphIndex{i}] =
+        std::make_unique<compiler::LoweredGraph>(*model->primary_subgraph(), *_voptions[i]);
+    }
+  }
 
   _nnpkg.reset();
 
@@ -533,13 +572,27 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     // recursively
     std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers =
       createStaticShapeInferers(lowered_subgs);
-    const auto primary_subg_idx = ir::SubgraphIndex{0};
-    inferers.at(primary_subg_idx)->infer();
 
-    for (const auto &pair : inferers)
+    if (model_count == 1)
     {
-      const auto inferer = pair.second.get();
-      inferer->dump();
+      const auto primary_subg_idx = ir::SubgraphIndex{0};
+      inferers.at(primary_subg_idx)->infer();
+
+      for (const auto &pair : inferers)
+      {
+        const auto inferer = pair.second.get();
+        inferer->dump();
+      }
+    }
+    else
+    {
+      // Assume multi model has only one subgraph on each model
+      for (const auto &pair : inferers)
+      {
+        const auto inferer = pair.second.get();
+        inferer->infer();
+        inferer->dump();
+      }
     }
   }
 
@@ -559,8 +612,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
-
-  auto executors = std::make_shared<exec::Executors>();
+  auto executors = std::make_shared<exec::Executors>(std::move(model_edges));
   for (auto &pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
@@ -571,6 +623,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
                                std::to_string(subg_index.value()));
     lowered_subg->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
+
+    auto &options = (model_count > 1) ? *_voptions[subg_index.value()] : *_voptions[0];
     auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
       std::move(lowered_subg), tracing_ctx.get(), options, executors)};
     executor->setIndexedRanks(indexed_ranks);

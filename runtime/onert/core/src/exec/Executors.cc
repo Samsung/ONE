@@ -23,28 +23,43 @@ namespace exec
 
 uint32_t Executors::inputSize() const
 {
+  if (_model_edges)
+    throw std::runtime_error{"NYI: Multi model execution is not supported yet"};
+
   return _executors.at(ir::SubgraphIndex{0})->graph().getInputs().size();
 }
 
 uint32_t Executors::outputSize() const
 {
+  if (_model_edges)
+    throw std::runtime_error{"NYI: Multi model execution is not supported yet"};
+
   return _executors.at(ir::SubgraphIndex{0})->graph().getOutputs().size();
 }
 
 const ir::OperandInfo Executors::inputInfo(const ir::IOIndex &index)
 {
+  if (_model_edges)
+    throw std::runtime_error{"NYI: Multi model execution is not supported yet"};
+
   const auto input_index = _executors.at(ir::SubgraphIndex{0})->graph().getInputs().at(index);
   return _executors.at(ir::SubgraphIndex{0})->graph().operands().at(input_index).info();
 }
 
 const ir::OperandInfo Executors::outputInfo(const ir::IOIndex &index)
 {
+  if (_model_edges)
+    throw std::runtime_error{"NYI: Multi model execution is not supported yet"};
+
   auto output_index = _executors.at(ir::SubgraphIndex{0})->graph().getOutputs().at(index);
   return _executors.at(ir::SubgraphIndex{0})->graph().operands().at(output_index).info();
 }
 
 void Executors::execute(const IODescription &desc)
 {
+  if (_model_edges)
+    throw std::runtime_error{"NYI: Multi model execution is not supported yet"};
+
   _executors.at(ir::SubgraphIndex{0})->execute(desc);
 }
 
