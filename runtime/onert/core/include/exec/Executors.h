@@ -42,6 +42,16 @@ public:
 
   std::unique_ptr<IExecutor> &at(ir::SubgraphIndex idx) { return _executors.at(idx); }
 
+  uint32_t inputSize() const;
+
+  uint32_t outputSize() const;
+
+  const ir::OperandInfo inputInfo(const ir::IOIndex &index);
+
+  const ir::OperandInfo outputInfo(const ir::IOIndex &index);
+
+  void execute(const IODescription &desc);
+
 private:
   // TODO Use Executor index
   //      Changing index will effect if/while compile and kernel implementation

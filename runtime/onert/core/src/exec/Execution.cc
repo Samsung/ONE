@@ -27,9 +27,8 @@ Execution::Execution(const std::shared_ptr<Executors> &executors) : _executors{e
 {
   assert(executors != nullptr);
   assert(executors->at(ir::SubgraphIndex{0}) != nullptr);
-  const auto &primary_subg = primary_subgraph();
-  _io_desc.inputs.resize(primary_subg.getInputs().size());
-  _io_desc.outputs.resize(primary_subg.getOutputs().size());
+  _io_desc.inputs.resize(_executors->inputSize());
+  _io_desc.outputs.resize(_executors->outputSize());
   sem_init(&_async_io_descs_sem, 0, 1);
 }
 
@@ -48,8 +47,7 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
 void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t length,
                          ir::Layout layout)
 {
-  const auto input_index = primary_subgraph().getInputs().at(index);
-  const auto info = primary_subgraph().operands().at(input_index).info();
+  const auto info = _executors->inputInfo(index);
 
   // TODO handle when (!buffer && length != 0) : setting the input as an optional tensor
 
@@ -105,8 +103,7 @@ bool Execution::isEmptyQueue()
 void Execution::executeAsyncInput(const ir::IOIndex &index, const void *buffer, size_t length,
                                   ir::Layout layout)
 {
-  const auto input_index = primary_subgraph().getInputs().at(index);
-  const auto info = primary_subgraph().operands().at(input_index).info();
+  const auto info = _executors->inputInfo(index);
   IODescription *_async_io_desc = _async_io_descs.back().first;
 
   {
@@ -135,8 +132,7 @@ void Execution::executeAsyncInput(const ir::IOIndex &index, const void *buffer, 
 void Execution::executeAsyncOutput(const ir::IOIndex &index, void *buffer, size_t length,
                                    ir::Layout layout)
 {
-  const auto output_index = primary_subgraph().getOutputs().at(index);
-  const auto info = primary_subgraph().operands().at(output_index).info();
+  const auto info = _executors->outputInfo(index);
   IODescription *_async_io_desc = _async_io_descs.front().first;
 
   if (length < info.total_size())
@@ -165,8 +161,7 @@ void Execution::setInput(const ir::IOIndex &index, const ir::TypeInfo &type, con
 // TODO Remove default parameter
 void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length, ir::Layout layout)
 {
-  const auto output_index = primary_subgraph().getOutputs().at(index);
-  const auto info = primary_subgraph().operands().at(output_index).info();
+  const auto info = _executors->outputInfo(index);
 
   if (length < info.total_size())
   {
@@ -208,7 +203,7 @@ void Execution::execute()
 {
   VERBOSE(Execution) << "Start execution" << std::endl;
 
-  primary_executor()->execute(_io_desc);
+  _executors->execute(_io_desc);
   finished = true;
 
   VERBOSE(Execution) << "Execution finished" << std::endl;
@@ -248,8 +243,7 @@ ir::Shape Execution::getInputShape(ir::IOIndex ind) const
   auto itr = _io_desc.dynamic_input_shapes.find(ind);
   if (itr == _io_desc.dynamic_input_shapes.end())
   {
-    auto operand_idx = primary_subgraph().getInputs().at(ind);
-    return primary_subgraph().operands().at(operand_idx).shape();
+    return _executors->inputInfo(ind).shape();
   }
   else
   {
