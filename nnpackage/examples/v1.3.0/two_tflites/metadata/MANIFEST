@@ -1,0 +1,11 @@
+{
+  "major-version" : "1",
+  "minor-version" : "3",
+  "patch-version" : "0",
+  "configs"       : [  ],
+  "models"        : [ "mv1.0.tflite", "mv1.1.tflite" ],
+  "model-types"   : [ "tflite", "tflite" ],
+  "pkg-inputs"    : [ "0:0:0" ],
+  "pkg-outputs"   : [ "1:0:0" ],
+  "model-connect" : [ { "from" : "0:0:0", "to" : [ "1:0:0" ] } ]
+}
