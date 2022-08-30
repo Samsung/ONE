@@ -49,7 +49,7 @@ void DepthwiseConvolutionLayer::convFloat32()
     getBuffer<float>(_output), _external_context->ruy_context());
 }
 
-void DepthwiseConvolutionLayer::convQuant8()
+void DepthwiseConvolutionLayer::convQ8uPerTensor()
 {
   int32_t output_activation_min = 0;
   int32_t output_activation_max = 0;
@@ -84,11 +84,11 @@ void DepthwiseConvolutionLayer::convQuant8()
     getBuffer<uint8_t>(_output), _external_context->ruy_context());
 }
 
-void DepthwiseConvolutionLayer::convQuant8PerChannel()
+void DepthwiseConvolutionLayer::convQ8i()
 {
   if (!_prepared)
   {
-    prepareQuant8PerChannel();
+    prepareQ8i();
     _prepared = true;
   }
 
@@ -119,7 +119,7 @@ void DepthwiseConvolutionLayer::convQuant8PerChannel()
     _external_context->ruy_context());
 }
 
-void DepthwiseConvolutionLayer::prepareQuant8PerChannel()
+void DepthwiseConvolutionLayer::prepareQ8i()
 {
   GetQuantizedConvolutionMultipliersAndShifts(
     _input->data_scale(), _output->data_scale(), _kernel->data_scales().data(),
@@ -155,7 +155,7 @@ void DepthwiseConvolutionLayer::configure(
   {
     if (_kernel->is_constant() && !_input->is_dynamic() && !_output->is_dynamic())
     {
-      prepareQuant8PerChannel();
+      prepareQ8i();
       _prepared = true;
     }
   }
@@ -169,11 +169,11 @@ void DepthwiseConvolutionLayer::run()
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
-    convQuant8();
+    convQ8uPerTensor();
   }
   else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
   {
-    convQuant8PerChannel();
+    convQ8i();
   }
   else
   {

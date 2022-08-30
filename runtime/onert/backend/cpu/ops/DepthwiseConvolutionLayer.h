@@ -40,9 +40,9 @@ public:
 public:
   void convFloat32();
 
-  void convQuant8();
+  void convQ8uPerTensor();
 
-  void convQuant8PerChannel();
+  void convQ8i();
 
   void configure(const IPortableTensor *input, const IPortableTensor *kernel,
                  const IPortableTensor *bias, const uint32_t paddingLeft,
@@ -55,7 +55,7 @@ public:
   void run() override;
 
 private:
-  void prepareQuant8PerChannel();
+  void prepareQ8i();
 
 private:
   const IPortableTensor *_input{nullptr};
