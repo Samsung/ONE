@@ -96,7 +96,7 @@ if __name__ == '__main__':
                     np.random.randint(-127, 127, this_shape).astype(np.int8))
             elif this_dtype == tf.float32:
                 input_values.append(
-                    np.random.random_sample(this_shape).astype(np.float32))
+                    (10 * np.random.random_sample(this_shape) - 5).astype(np.float32))
             elif this_dtype == tf.bool:
                 # generate random integer from [0, 2)
                 input_values.append(
@@ -142,7 +142,7 @@ if __name__ == '__main__':
                     np.random.randint(-127, 127, this_shape).astype(np.int8))
             elif this_dtype == np.float32:
                 input_values.append(
-                    np.random.random_sample(this_shape).astype(np.float32))
+                    (10 * np.random.random_sample(this_shape) - 5).astype(np.float32))
             elif this_dtype == np.bool_:
                 # generate random integer from [0, 2)
                 input_values.append(
