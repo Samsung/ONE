@@ -17,8 +17,6 @@
 #include <arser/arser.h>
 #include <luci/ImporterEx.h>
 #include <luci_interpreter/Interpreter.h>
-#include <luci/CircleExporter.h>
-#include <luci/CircleFileExpContract.h>
 #include <vconone/vconone.h>
 
 #include <cstdlib>
@@ -95,7 +93,7 @@ int entry(int argc, char **argv)
   {
     std::cout << err.what() << std::endl;
     std::cout << arser;
-    return 255;
+    return EXIT_FAILURE;
   }
 
   const auto filename = arser.get<std::string>("model_path");
