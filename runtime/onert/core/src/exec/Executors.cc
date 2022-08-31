@@ -86,10 +86,11 @@ void Executors::executeEntries(const IODescription &desc)
   // Assume all edges are 0:0:x -> 1:0:x
   for (auto edge : _model_edges->edges)
   {
-    if ((std::get<0>(edge.from) != ir::ModelIndex{0}) ||
-        (std::get<0>(edge.to) != ir::ModelIndex{1}) ||
-        (std::get<1>(edge.from) != std::get<1>(edge.to)) ||
-        (std::get<2>(edge.from) != std::get<2>(edge.to)))
+    if ((std::get<ir::ModelIndex>(edge.from) != ir::ModelIndex{0}) ||
+        (std::get<ir::ModelIndex>(edge.to) != ir::ModelIndex{1}) ||
+        (std::get<ir::SubgraphIndex>(edge.from) != ir::SubgraphIndex{0}) ||
+        (std::get<ir::SubgraphIndex>(edge.to) != ir::SubgraphIndex{0}) ||
+        (std::get<ir::IOIndex>(edge.from) != std::get<ir::IOIndex>(edge.to)))
       throw std::runtime_error{"NYI: Multi model execution for this edge is not supported yet"};
   }
 
@@ -97,8 +98,9 @@ void Executors::executeEntries(const IODescription &desc)
   for (uint32_t i = 0; i < _model_edges->pkg_inputs.size(); i++)
   {
     auto input = _model_edges->pkg_inputs[i];
-    if ((std::get<0>(input) != ir::ModelIndex{0}) || (std::get<1>(input) != ir::SubgraphIndex{0}) ||
-        (std::get<2>(input) != ir::IOIndex{i}))
+    if ((std::get<ir::ModelIndex>(input) != ir::ModelIndex{0}) ||
+        (std::get<ir::SubgraphIndex>(input) != ir::SubgraphIndex{0}) ||
+        (std::get<ir::IOIndex>(input) != ir::IOIndex{i}))
     {
       throw std::runtime_error{"NYI: Support package input to 1st model with same order"};
     }
@@ -108,8 +110,9 @@ void Executors::executeEntries(const IODescription &desc)
   for (uint32_t i = 0; i < _model_edges->pkg_outputs.size(); i++)
   {
     auto output = _model_edges->pkg_outputs[i];
-    if ((std::get<0>(output) != ir::ModelIndex{1}) ||
-        (std::get<1>(output) != ir::SubgraphIndex{0}) || (std::get<2>(output) != ir::IOIndex{i}))
+    if ((std::get<ir::ModelIndex>(output) != ir::ModelIndex{1}) ||
+        (std::get<ir::SubgraphIndex>(output) != ir::SubgraphIndex{0}) ||
+        (std::get<ir::IOIndex>(output) != ir::IOIndex{i}))
     {
       throw std::runtime_error{"NYI: Support package output from 2nd model with same order"};
     }
