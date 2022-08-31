@@ -41,6 +41,7 @@ public:
   void convFloat32();
 
   void convQ8uPerTensor();
+  void convQ8uPerChannel();
 
   void convQ8i();
 
@@ -56,6 +57,7 @@ public:
 
 private:
   void prepareQ8i();
+  void prepareQ8uPerChannel();
 
 private:
   const IPortableTensor *_input{nullptr};

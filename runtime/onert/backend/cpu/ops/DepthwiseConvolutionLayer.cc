@@ -84,6 +84,11 @@ void DepthwiseConvolutionLayer::convQ8uPerTensor()
     getBuffer<uint8_t>(_output), _external_context->ruy_context());
 }
 
+void DepthwiseConvolutionLayer::convQ8uPerChannel()
+{
+  std::cerr << "DepthwiseConvolution Q8uPerChannel not supported yet." << std::endl;
+}
+
 void DepthwiseConvolutionLayer::convQ8i()
 {
   if (!_prepared)
@@ -127,6 +132,14 @@ void DepthwiseConvolutionLayer::prepareQ8i()
     _per_channel_output_shift);
 }
 
+void DepthwiseConvolutionLayer::prepareQ8uPerChannel()
+{
+  GetQuantizedConvolutionMultipliersAndShifts(
+    _input->data_scale(), _output->data_scale(), _kernel->data_scales().data(),
+    _kernel->data_scales().size(), getShape(_kernel).Dims(0), _per_channel_output_multiplier,
+    _per_channel_output_shift);
+}
+
 void DepthwiseConvolutionLayer::configure(
   const IPortableTensor *input, const IPortableTensor *kernel, const IPortableTensor *bias,
   const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop,
@@ -159,6 +172,16 @@ void DepthwiseConvolutionLayer::configure(
       _prepared = true;
     }
   }
+  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM && _kernel->is_constant() &&
+           !_input->is_dynamic() && !_output->is_dynamic())
+  {
+    const bool per_channel_quantized = _kernel->data_scales().size() > 1;
+    if (per_channel_quantized)
+    {
+      prepareQ8uPerChannel();
+      _prepared = true;
+    }
+  }
 }
 
 void DepthwiseConvolutionLayer::run()
@@ -169,7 +192,11 @@ void DepthwiseConvolutionLayer::run()
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
-    convQ8uPerTensor();
+    const bool per_channel_quantized = _kernel->data_scales().size() > 1;
+    if (per_channel_quantized)
+      convQ8uPerChannel();
+    else
+      convQ8uPerTensor();
   }
   else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
   {
