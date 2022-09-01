@@ -2,6 +2,8 @@
 
 `circle-interpreter-test` executes `circle-interpreter` and validates its results with tflite model's output. 
 
+NOTE: `one-infer` tests includes `circle-interpreter`'s argument validity verifying test.
+
 The test proceeds as follows:
 
 Step 0: Use tflite and circle file in 'common-artifacts' folder as the source model.
