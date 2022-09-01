@@ -117,7 +117,7 @@ void ConvolutionLayer::convQ8uPerChannel()
   op_params.quantized_activation_min = output_activation_min;
   op_params.quantized_activation_max = output_activation_max;
   // NOTE: The following fields of ConvParams are not used:
-  // padding_type, weight_offset, output_{multiplier,shift}, float_activation_{min,max}
+  // padding_type, weights_offset, output_{multiplier,shift}, float_activation_{min,max}
 
   nnfw::cker::Conv &kernel = *_conv_kernel;
   kernel(op_params, getShape(_input), getBuffer<uint8_t>(_input), getShape(_kernel),
