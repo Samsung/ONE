@@ -158,6 +158,51 @@ TEST_F(GenModelTest, OneOp_DepthwiseConv2D_Dilation_N_Stride)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_DepthwiseConv2D_U8_PerChannel)
+{
+  CircleGen cgen;
+  // weight
+  // clang-format off
+  std::vector<uint8_t> weight_data{2, 1, 2,
+                                   6, 2, 3,
+                                   2, 3, 4,
+                                   4, 4, 5};
+  // clang-format on
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  std::vector<float> weight_scales = {.5, 1, 2};
+  std::vector<int64_t> weight_zeropoints = {2, 0, 1};
+  int weight = cgen.addTensor({{1, 2, 2, 3}, circle::TensorType::TensorType_UINT8, weight_buf},
+                              weight_scales, weight_zeropoints);
+  // bias
+  std::vector<int32_t> bias_data{4, -8, -4};
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+  int bias = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_INT32, bias_buf}, 1., 0);
+
+  // in and out
+  int in = cgen.addTensor({{1, 2, 2, 3}, circle::TensorType::TensorType_UINT8}, 2., 1);
+  int out = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_UINT8}, 4., 2);
+
+  cgen.addOperatorDepthwiseConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1, 1,
+                                  circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  // clang-format off
+  _context->addTestCase(uniformTCD<uint8_t>({{5, 5, 5,  // NHWC
+                                              3, 3, 3,
+                                              7, 7, 7,
+                                              9, 9, 9}
+                                            },
+                                            {{9,
+                                              27,
+                                              56}
+                                            }));
+  // clang-format on
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, neg_OneOp_DepthwiseConv2D_Stride)
 {
   CircleGen cgen;
