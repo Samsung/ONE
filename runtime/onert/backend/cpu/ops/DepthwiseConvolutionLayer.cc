@@ -86,7 +86,30 @@ void DepthwiseConvolutionLayer::convQ8uPerTensor()
 
 void DepthwiseConvolutionLayer::convQ8uPerChannel()
 {
-  std::cerr << "DepthwiseConvolution Q8uPerChannel not supported yet." << std::endl;
+  nnfw::cker::DepthwiseConvParams op_params;
+  op_params.padding_values.width = _paddingLeft;
+  op_params.padding_values.height = _paddingTop;
+  op_params.stride_width = _strideWidth;
+  op_params.stride_height = _strideHeight;
+  op_params.dilation_width_factor = _dilationWidth;
+  op_params.dilation_height_factor = _dilationHeight;
+  op_params.depth_multiplier = _multiplier;
+  op_params.input_offset = -_input->data_zero_point();
+  op_params.output_offset = _output->data_zero_point();
+  int32_t output_activation_min = 0;
+  int32_t output_activation_max = 0;
+  CalculateActivationRangeQuantized(_activation, _output, &output_activation_min,
+                                    &output_activation_max);
+  op_params.quantized_activation_min = output_activation_min;
+  op_params.quantized_activation_max = output_activation_max;
+  // NOTE: The following fields of ConvParams are not used:
+  // padding_type, weights_offset, output_{multiplier,shift}, float_activation_{min,max}
+
+  nnfw::cker::reference_integer_ops::DepthwiseConvPerChannel(
+    op_params, _per_channel_output_multiplier.data(), _per_channel_output_shift.data(),
+    getShape(_input), getBuffer<uint8_t>(_input), getShape(_kernel), getBuffer<uint8_t>(_kernel),
+    _kernel->data_zero_points().data(), getShape(_bias), getBuffer<int32_t>(_bias),
+    getShape(_output), getBuffer<uint8_t>(_output));
 }
 
 void DepthwiseConvolutionLayer::convQ8i()
@@ -136,7 +159,7 @@ void DepthwiseConvolutionLayer::prepareQ8uPerChannel()
 {
   GetQuantizedConvolutionMultipliersAndShifts(
     _input->data_scale(), _output->data_scale(), _kernel->data_scales().data(),
-    _kernel->data_scales().size(), getShape(_kernel).Dims(0), _per_channel_output_multiplier,
+    _kernel->data_scales().size(), getShape(_kernel).Dims(3), _per_channel_output_multiplier,
     _per_channel_output_shift);
 }
 
