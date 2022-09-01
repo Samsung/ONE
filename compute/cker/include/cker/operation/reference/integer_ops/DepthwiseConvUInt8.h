@@ -30,10 +30,11 @@ namespace reference_integer_ops
 {
 inline void DepthwiseConvPerChannel(const DepthwiseConvParams &params,
                                     const int32_t *output_multiplier, const int32_t *output_shift,
-                                    const Shape &input_shape, const int8_t *input_data,
-                                    const Shape &filter_shape, const int8_t *filter_data,
-                                    const Shape &bias_shape, const int32_t *bias_data,
-                                    const Shape &output_shape, int8_t *output_data)
+                                    const Shape &input_shape, const uint8_t *input_data,
+                                    const Shape &filter_shape, const uint8_t *filter_data,
+                                    const int32_t *filter_zeropoint, const Shape &bias_shape,
+                                    const int32_t *bias_data, const Shape &output_shape,
+                                    uint8_t *output_data)
 {
   // Get parameters.
   // TODO(b/141565753): Re-introduce ScopedProfilingLabel on Micro.
@@ -94,10 +95,15 @@ inline void DepthwiseConvPerChannel(const DepthwiseConvParams &params,
                   (in_x >= 0) && (in_x < input_width) && (in_y >= 0) && (in_y < input_height);
                 if (is_point_inside_image)
                 {
-                  int32_t input_val =
+                  uint8_t input_val =
                     input_data[Offset(input_shape, batch, in_y, in_x, in_channel)];
-                  int32_t filter_val =
+                  uint8_t filter_val =
                     filter_data[Offset(filter_shape, 0, filter_y, filter_x, output_channel)];
+
+                  // { for per-channel
+                  // NOTE: The following comment is copied from tflite int8 implementation
+                  //       It may not be 100% true for uint8 per-channel.
+                  //
                   // Accumulate with 32 bits accumulator.
                   // In the nudging process during model quantization, we force
                   // real value of 0.0 be represented by a quantized value. This
@@ -114,7 +120,9 @@ inline void DepthwiseConvPerChannel(const DepthwiseConvParams &params,
                   // we have seen so far.
                   // TODO(jianlijianli): Add a check to make sure the
                   // accumulator depth is smaller than 2^16.
-                  acc += filter_val * (input_val + input_offset);
+                  const int32_t filter_offset = -filter_zeropoint[output_channel];
+                  acc += (filter_val + filter_offset) * (input_val + input_offset);
+                  // } for per-channel
                 }
               }
             }
@@ -127,8 +135,9 @@ inline void DepthwiseConvPerChannel(const DepthwiseConvParams &params,
             acc += output_offset;
             acc = std::max(acc, output_activation_min);
             acc = std::min(acc, output_activation_max);
+            // For q8u per-channel, int8_t -> uint8_t
             output_data[Offset(output_shape, batch, out_y, out_x, output_channel)] =
-              static_cast<int8_t>(acc);
+              static_cast<uint8_t>(acc);
           }
         }
       }
