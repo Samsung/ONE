@@ -153,14 +153,14 @@ TEST_F(GenModelTest, OneOp_Conv2D_U8_PerChannel)
 
   // in and out
   int in = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_UINT8}, 2., 1);
-  int out = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_UINT8}, 4., -2);
+  int out = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_UINT8}, 4., 2);
 
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<uint8_t>({{5, 3, 7}}, {{1, 7, 20}}));
+  _context->addTestCase(uniformTCD<uint8_t>({{5, 3, 7}}, {{5, 11, 24}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
