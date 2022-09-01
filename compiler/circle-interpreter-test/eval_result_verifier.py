@@ -77,8 +77,7 @@ for idx in range(len(inpt_output_details)):
     intp_output_data = interpreter.get_tensor(output_tensor)
     # Load circle output
     output_shape = intp_output_data.shape
-    output_data = np.fromfile(data_prefix + ".output" + str(idx),
-                              output_details["dtype"])
+    output_data = np.fromfile(data_prefix + ".output" + str(idx), output_details["dtype"])
     luci_output_data = np.reshape(output_data, output_shape)
     try:
         int_type = [np.uint8, np.int64, np.int32, np.int16]
