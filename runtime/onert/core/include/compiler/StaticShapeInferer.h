@@ -153,6 +153,7 @@ private:
   void visit(const ir::operation::Unpack &op) override;
   void visit(const ir::operation::While &op) override;
   void visit(const ir::operation::DetectionPostProcess &op) override;
+  void visit(const ir::operation::Bulk &op) override;
 
 private:
   /**
