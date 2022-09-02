@@ -28,7 +28,7 @@ $ sudo apt-get install gcc-arm-none-eabi
 ``` bash
 $ cd <path to ONE>
 $ mkdir build
-# cd build
+$ cd build
 $ cmake ../infra/nncc
 $ make -j$(nproc) luci_interpreter_micro_arm
 ```
@@ -40,7 +40,18 @@ $ cd <path to ONE>
 $ ./nncc configure
 $ ./nncc build -j$(nproc) luci_interpreter_micro_arm
 ```
+**Dockerfile**
 
+``` bash
+$ cd <path to luci-micro>
+$ docker build -t luci-micro-env .
+$ docker run -v <absolute path to ONE>:/root/src/one -i luci-micro-env
+$ cd one
+$ mkdir build
+$ cd build
+$ cmake ../infra/nncc
+$ make -j$(nproc) luci_interpreter_micro_arm
+```
 ### Known issues
 
 Interpreter uses TensorFlow headers that produces warnings.
