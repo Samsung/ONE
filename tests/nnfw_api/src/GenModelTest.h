@@ -398,7 +398,9 @@ protected:
           // Check output tensor values
           auto &ref_output = ref_outputs[i];
           auto &output = _so.outputs[i];
-          ASSERT_EQ(output.size(), ref_output.size());
+          auto expected_tensor_size = ref_output.size();
+          auto actual_tensor_size = output.size();
+          ASSERT_EQ(expected_tensor_size, actual_tensor_size) << "Output #" << i;
 
           switch (ti.dtype)
           {
@@ -419,9 +421,10 @@ protected:
               // TODO better way for handling FP error?
               for (uint32_t e = 0; e < ref_output.size() / sizeof(float); e++)
               {
-                float refval = reinterpret_cast<const float *>(ref_output.data())[e];
-                float val = reinterpret_cast<const float *>(output.data())[e];
-                EXPECT_NEAR(refval, val, 0.001) << "Output #" << i << ", Element Index : " << e;
+                float expected = reinterpret_cast<const float *>(ref_output.data())[e];
+                float actual = reinterpret_cast<const float *>(output.data())[e];
+                EXPECT_NEAR(expected, actual, 0.001)
+                  << "Output #" << i << ", Element Index : " << e;
               }
               break;
             case NNFW_TYPE_TENSOR_INT64:
@@ -445,9 +448,9 @@ private:
   {
     for (uint32_t e = 0; e < ref_buf.size() / sizeof(T); e++)
     {
-      T ref = reinterpret_cast<const T *>(ref_buf.data())[e];
-      T act = reinterpret_cast<const T *>(act_buf.data())[e];
-      EXPECT_EQ(ref, act) << "Output #" << index << ", Element Index : " << e;
+      T expected = reinterpret_cast<const T *>(ref_buf.data())[e];
+      T actual = reinterpret_cast<const T *>(act_buf.data())[e];
+      EXPECT_EQ(expected, actual) << "Output #" << index << ", Element Index : " << e;
     }
   }
 
@@ -457,10 +460,10 @@ private:
     for (uint32_t e = 0; e < ref_buf.size() / sizeof(uint8_t); e++)
     {
       uint8_t ref_raw = reinterpret_cast<const uint8_t *>(ref_buf.data())[e];
-      bool ref = (ref_raw != 0 ? true : false);
+      bool expected = (ref_raw != 0 ? true : false);
       uint8_t act_raw = reinterpret_cast<const uint8_t *>(act_buf.data())[e];
-      bool act = (act_raw != 0 ? true : false);
-      EXPECT_EQ(ref, act) << "Output #" << index << ", Element Index : " << e;
+      bool actual = (act_raw != 0 ? true : false);
+      EXPECT_EQ(expected, actual) << "Output #" << index << ", Element Index : " << e;
     }
   }
 
