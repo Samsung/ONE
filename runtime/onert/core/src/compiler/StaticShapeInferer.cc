@@ -1290,6 +1290,33 @@ void StaticShapeInferer::visit(const ir::operation::DetectionPostProcess &op)
   auto &output4 = operands.at(output_idx4);
   output4.info().shape({1});
 }
+void StaticShapeInferer::visit(const ir::operation::Bulk &op)
+{
+  auto &operands = _lowered_subg->graph().operands();
+
+  // TODO: support multiple inputs/outputs
+  const auto input_idx{op.getInputs().at(0)};
+  const auto &input = operands.at(input_idx);
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = operands.at(output_idx);
+
+  auto cur_input_shape = input.info().shape();
+  auto origin_input_shape = op.param().origin_input_shapes[0];
+  auto cur_output_shape = output.info().shape();
+  auto origin_output_shape = op.param().origin_output_shapes[0];
+
+  // TODO: more check for valid batch request
+  assert(cur_input_shape.dim(0) >= origin_output_shape.dim(0));
+  assert(cur_input_shape.dim(0) % origin_output_shape.dim(0) == 0);
+  size_t batch_multiplier = cur_input_shape.dim(0) / origin_output_shape.dim(0);
+
+  ir::Shape new_shape;
+  new_shape.append(origin_output_shape.dim(0) * batch_multiplier);
+  for (int32_t d = 1; d < origin_output_shape.rank(); ++d)
+    new_shape.append(origin_output_shape.dim(d));
+
+  output.info().shape(new_shape);
+}
 
 } // namespace compiler
 
