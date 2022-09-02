@@ -20,32 +20,36 @@
 
 namespace luci_interpreter
 {
-
-ModuleLoader::ModuleLoader(const luci::Module *module, RuntimeModule *runtime_module,
-                           RuntimeToIR &runtime_to_ir,
-                           std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor,
+ModuleLoader::ModuleLoader(const char *model_data_raw, RuntimeModule *runtime_module,
                            IMemoryManager *memory_manager)
-  : _module(module), _runtime_module(runtime_module), _runtime_to_ir(runtime_to_ir),
-    _node_to_tensor(node_to_tensor), _memory_manager(memory_manager)
+  : _model_data_raw(model_data_raw), _runtime_module(runtime_module),
+    _memory_manager(memory_manager),
+    _index_to_tensor(std::make_unique<std::unordered_map<int32_t, Tensor *>>())
 {
 }
 
 void ModuleLoader::load()
 {
-  // Runtime graphs have to be created in advance, because they will be needed during the loading
-  // process for control flow nodes.
-  for (size_t i = 0; i < _module->size(); ++i)
+  const circle::Model *model = circle::GetModel(_model_data_raw);
+
+  luci::CircleReader *reader = _runtime_module->getCircleMicroReader();
+  if (!reader->parse(model))
+    throw std::runtime_error("Error during parse");
+
+  for (size_t i = 0; i < reader->num_subgraph(); ++i)
   {
-    _graph_to_runtime_graph.emplace(_module->graph(i), _runtime_module->addGraph(_memory_manager));
+    _runtime_graphs.emplace_back(_runtime_module->addGraph(_memory_manager));
   }
-  for (size_t i = 0; i < _module->size(); ++i)
+
+  for (size_t i = 0; i < reader->num_subgraph(); ++i)
   {
-    const loco::Graph *graph = _module->graph(i);
-    RuntimeGraph *runtime_graph = _graph_to_runtime_graph.at(graph);
-    GraphLoader loader(graph, runtime_graph, _runtime_to_ir, _graph_to_runtime_graph,
-                       _node_to_tensor, _memory_manager);
+    if (!reader->select_subgraph(i))
+      throw std::runtime_error("Error during select subgraph");
+    RuntimeGraph *runtime_graph = _runtime_graphs.at(i);
+    GraphLoader loader(reader, runtime_graph, _memory_manager, _index_to_tensor.get());
+
+    loader.initInputTensors();
     loader.loadTensors();
-    loader.initInputOutputTensors();
     loader.loadOperators();
   }
 }

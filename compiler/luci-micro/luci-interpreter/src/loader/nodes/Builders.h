@@ -17,16 +17,20 @@
 #ifndef LUCI_INTERPRETER_LOADER_NODES_BUILDERS_H
 #define LUCI_INTERPRETER_LOADER_NODES_BUILDERS_H
 
-#include "loader/KernelBuilderHelper.h"
+#include "loader/KernelBuilder.h"
+#include "luci_interpreter/core/CircleMicroReader.h"
+#include "core/RuntimeGraph.h"
 
 #include "luci/IR/CircleNodes.h"
 
 namespace luci_interpreter
 {
 
-#define REGISTER_KERNEL(name)                                                            \
-  std::unique_ptr<Kernel> build_kernel_Circle##name(const luci::CircleNode *circle_node, \
-                                                    KernelBuilderHelper &helper);
+#define REGISTER_KERNEL(builtin_operator, name)                                  \
+  std::unique_ptr<Kernel> build_kernel_Circle##name(                             \
+    std::vector<std::pair<const Tensor *, int32_t>> &inputs,                     \
+    std::vector<std::pair<Tensor *, int32_t>> &outputs, const uint32_t op_index, \
+    KernelBuilder &builder);
 
 #include "KernelsToBuild.lst"
 

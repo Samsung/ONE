@@ -22,47 +22,35 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleBatchMatMul(const luci::CircleNode *circle_node,
-                                                       KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleBatchMatMul(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                               std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                               const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleBatchMatMul *>(circle_node);
-  assert(node->arity() == 2);
+  assert(inputs.size() == 2);
 
-  const Tensor *lhs = helper.getInputTensor(node->x());
-  const Tensor *rhs = helper.getInputTensor(node->y());
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *lhs = inputs.at(0).first;
+  const Tensor *rhs = inputs.at(1).first;
+  Tensor *output = outputs.at(0).first;
 
   auto lhs_scratchpad =
     std::make_unique<Tensor>(lhs->element_type(), Shape({}), AffineQuantization{}, "");
-  lhs_scratchpad->set_observable(false);
   lhs_scratchpad->set_data_buffer(nullptr);
   auto rhs_scratchpad =
     std::make_unique<Tensor>(rhs->element_type(), Shape({}), AffineQuantization{}, "");
-  rhs_scratchpad->set_observable(false);
   rhs_scratchpad->set_data_buffer(nullptr);
-  // If node has execution plan then read memory offsets for scratchpad temporary tensor
-  // from the beginning of shared memory buffer.
-  // Used in Static Memory Manager.
   // TODO move tensors offset initialization to one place
-  if (luci::has_execution_plan(node))
-  {
-    const auto execution_plan = luci::get_execution_plan(node);
-    // Check whether the offset for the current BatchMatMul temporary was found.
-    if (execution_plan.offsets().size() > 1)
-    {
-      assert(execution_plan.offsets().size() == 3);
+  // TODO handle with StaticManager
+  Tensor *lhs_tmp = builder.get_runtime_graph()->addTensor(std::move(lhs_scratchpad));
+  Tensor *rhs_tmp = builder.get_runtime_graph()->addTensor(std::move(rhs_scratchpad));
 
-      // If this is true, then we keep this offset in scratchpad.
-      lhs_scratchpad->set_offset(execution_plan.offsets().at(1));
-      rhs_scratchpad->set_offset(execution_plan.offsets().at(2));
-    }
-  }
-  Tensor *lhs_tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(lhs_scratchpad));
-  Tensor *rhs_tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(rhs_scratchpad));
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsBatchMatMulOptions();
 
   BatchMatMulParams params;
-  params.adj_x = node->adj_x();
-  params.adj_y = node->adj_y();
+  params.adj_x = options->adjoint_lhs;
+  params.adj_y = options->adjoint_rhs;
 
   return std::make_unique<kernels::BatchMatMul>(lhs, rhs, output, lhs_tmp, rhs_tmp, params);
 }

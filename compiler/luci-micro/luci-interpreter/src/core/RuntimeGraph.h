@@ -41,6 +41,9 @@ public:
 
   Tensor *addTensor(std::unique_ptr<Tensor> &&tensor);
 
+  void addInputTensor(Tensor *input_tensor);
+  void addOutputTensor(Tensor *output_tensor);
+
   void setInputTensors(const std::vector<Tensor *> &input_tensors);
   void setOutputTensors(const std::vector<Tensor *> &output_tensors);
 

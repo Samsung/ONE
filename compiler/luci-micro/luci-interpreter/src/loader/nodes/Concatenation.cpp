@@ -21,22 +21,28 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleConcatenation(const luci::CircleNode *circle_node,
-                                                         KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleConcatenation(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                                 std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                                 const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleConcatenation *>(circle_node);
-  std::vector<const Tensor *> inputs(node->numValues());
-  for (uint32_t i = 0; i < node->numValues(); ++i)
+  std::vector<const Tensor *> input_tensors(inputs.size());
+  for (uint32_t i = 0; i < inputs.size(); ++i)
   {
-    inputs[i] = helper.getInputTensor(node->values(i));
+    input_tensors[i] = inputs.at(i).first;
   }
-  Tensor *output = helper.getOutputTensor(node);
+  Tensor *output = outputs.at(0).first;
+  ;
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsConcatenationOptions();
 
   ConcatenationParams params{};
-  params.axis = node->axis();
-  params.activation = node->fusedActivationFunction();
+  params.axis = options->axis;
+  params.activation = luci::luci_actfunc(options->fused_activation_function);
 
-  return std::make_unique<kernels::Concatenation>(std::move(inputs), output, params);
+  return std::make_unique<kernels::Concatenation>(std::move(input_tensors), output, params);
 }
 
 } // namespace luci_interpreter

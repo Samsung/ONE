@@ -21,17 +21,21 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleSpaceToDepth(const luci::CircleNode *circle_node,
-                                                        KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleSpaceToDepth(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                                std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                                const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleSpaceToDepth *>(circle_node);
-  assert(node->arity() == 1);
-  const Tensor *input = helper.getInputTensor(node->input());
+  assert(inputs.size() == 1);
+  const Tensor *input = inputs.at(0).first;
+  Tensor *output = outputs.at(0).first;
 
-  Tensor *output = helper.getOutputTensor(node);
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsSpaceToDepthOptions();
 
   SpaceToDepthParams params{};
-  params.block_size = node->block_size();
+  params.block_size = options->block_size;
 
   return std::make_unique<kernels::SpaceToDepth>(input, output, params);
 }

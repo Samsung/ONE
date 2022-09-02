@@ -21,17 +21,21 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleSqueeze(const luci::CircleNode *circle_node,
-                                                   KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleSqueeze(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                           std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                           const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleSqueeze *>(circle_node);
-  assert(node->arity() == 1);
+  assert(inputs.size() == 1);
+  const Tensor *input = inputs.at(0).first;
+  Tensor *output = outputs.at(0).first;
 
-  const Tensor *input = helper.getInputTensor(node->input());
-  Tensor *output = helper.getOutputTensor(node);
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsSqueezeOptions();
 
   SqueezeParams params{};
-  params.squeeze_dims = node->squeeze_dims();
+  params.squeeze_dims = options->squeeze_dims;
 
   return std::make_unique<kernels::Squeeze>(input, output, params);
 }

@@ -18,8 +18,8 @@
 #define LUCI_INTERPRETER_CORE_RUNTIMEMODULE_H
 
 #include "core/RuntimeGraph.h"
-#include "core/EventNotifier.h"
 #include "luci_interpreter/MemoryManager.h"
+#include "luci_interpreter/core/CircleMicroReader.h"
 
 #include <memory>
 #include <vector>
@@ -30,9 +30,7 @@ namespace luci_interpreter
 class RuntimeModule
 {
 public:
-  explicit RuntimeModule(EventNotifier *event_notifier) : _event_notifier(event_notifier) {}
-
-  EventNotifier *getEventNotifier() const { return _event_notifier; }
+  RuntimeModule() : _circle_micro_reader(std::make_unique<luci::CircleReader>()) {}
 
   RuntimeGraph *addGraph(IMemoryManager *memory_manager)
   {
@@ -48,11 +46,13 @@ public:
 
   void execute() const { getMainGraph()->execute(); }
 
+  luci::CircleReader *getCircleMicroReader() { return _circle_micro_reader.get(); }
+
 private:
   RuntimeGraph *getMainGraph() const { return _graphs[0].get(); }
 
-  EventNotifier *const _event_notifier;
   std::vector<std::unique_ptr<RuntimeGraph>> _graphs;
+  std::unique_ptr<luci::CircleReader> _circle_micro_reader;
 };
 
 } // namespace luci_interpreter

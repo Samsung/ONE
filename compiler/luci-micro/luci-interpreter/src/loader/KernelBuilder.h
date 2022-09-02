@@ -17,11 +17,10 @@
 #ifndef LUCI_INTERPRETER_LOADER_KERNELBUILDER_H
 #define LUCI_INTERPRETER_LOADER_KERNELBUILDER_H
 
-#include "loader/KernelBuilderHelper.h"
-
 #include "core/Kernel.h"
 #include "core/RuntimeGraph.h"
 
+#include "luci_interpreter/core/CircleMicroReader.h"
 #include <luci/IR/CircleNodeVisitor.h>
 
 #include <memory>
@@ -32,19 +31,25 @@ namespace luci_interpreter
 
 class KernelBuilderRegistry;
 
-class KernelBuilder : public KernelBuilderHelper
+class KernelBuilder
 {
 public:
-  KernelBuilder(
-    const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
-    const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor);
+  KernelBuilder(RuntimeGraph *runtime_graph, luci::CircleReader *circle_reader);
 
   ~KernelBuilder();
 
-  std::unique_ptr<Kernel> build(const luci::CircleNode *node);
+  std::unique_ptr<Kernel> build(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                                std::vector<std::pair<Tensor *, int32_t>> &output,
+                                uint32_t op_index);
+
+  luci::CircleReader *get_circle_reader() { return _circle_reader; }
+
+  RuntimeGraph *get_runtime_graph() { return _runtime_graph; }
 
 private:
   std::unique_ptr<KernelBuilderRegistry> _builder_registry;
+  RuntimeGraph *_runtime_graph;
+  luci::CircleReader *_circle_reader;
 };
 
 } // namespace luci_interpreter

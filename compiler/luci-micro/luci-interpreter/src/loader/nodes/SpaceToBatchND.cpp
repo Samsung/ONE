@@ -21,17 +21,17 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleSpaceToBatchND(const luci::CircleNode *circle_node,
-                                                          KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleSpaceToBatchND(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                                  std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                                  const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleSpaceToBatchND *>(circle_node);
-  assert(node->arity() == 3);
+  assert(inputs.size() == 3);
 
-  const Tensor *input = helper.getInputTensor(node->input());
-  const Tensor *block_shape = helper.getInputTensor(node->block_shape());
-  const Tensor *paddings = helper.getInputTensor(node->paddings());
-
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *block_shape = inputs.at(1).first;
+  const Tensor *paddings = inputs.at(2).first;
+  Tensor *output = outputs.at(0).first;
 
   return std::make_unique<kernels::SpaceToBatchND>(input, block_shape, paddings, output);
 }

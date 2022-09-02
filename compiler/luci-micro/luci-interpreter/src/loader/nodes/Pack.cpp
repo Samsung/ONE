@@ -21,24 +21,27 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CirclePack(const luci::CircleNode *circle_node,
-                                                KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CirclePack(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                        std::vector<std::pair<Tensor *, int32_t>> &outputs, const uint32_t op_index,
+                        KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CirclePack *>(circle_node);
-  assert(node->arity() == node->values_count());
-
-  std::vector<const Tensor *> inputs(node->values_count());
-  for (uint32_t i = 0; i < node->values_count(); ++i)
+  std::vector<const Tensor *> input_tensors(inputs.size());
+  for (uint32_t i = 0; i < inputs.size(); ++i)
   {
-    inputs[i] = helper.getInputTensor(node->values(i));
+    input_tensors[i] = inputs.at(i).first;
   }
-  Tensor *output = helper.getOutputTensor(node);
+  Tensor *output = outputs.at(0).first;
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsPackOptions();
 
   PackParams params{};
-  params.axis = node->axis();
-  params.values_count = node->values_count();
+  params.axis = options->axis;
+  params.values_count = options->values_count;
 
-  return std::make_unique<kernels::Pack>(std::move(inputs), output, params);
+  return std::make_unique<kernels::Pack>(std::move(input_tensors), output, params);
 }
 
 } // namespace luci_interpreter

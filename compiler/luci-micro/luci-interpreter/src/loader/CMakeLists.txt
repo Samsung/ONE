@@ -1,17 +1,14 @@
 set(SOURCES
     GraphLoader.h
     GraphLoader.cpp
-    KernelBuilderHelper.h
-    KernelBuilderHelper.cpp
     KernelBuilder.h
     KernelBuilder.cpp
     ModuleLoader.h
     ModuleLoader.cpp
-    RuntimeToIR.h
     nodes/Builders.h)
 
 # include kernel specific builders
-macro(REGISTER_KERNEL NODE)
+macro(REGISTER_KERNEL OPERATOR, NODE)
   list(APPEND SOURCES "nodes/${NODE}.cpp")
 endmacro(REGISTER_KERNEL)
 include(${KERNEL_REGISTER_FILE})

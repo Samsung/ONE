@@ -23,321 +23,181 @@
 
 namespace luci_interpreter
 {
-namespace
-{
 
-template <typename NodeT> Shape getNodeShape(const NodeT *node)
-{
-  Shape shape(node->rank());
-  for (uint32_t i = 0; i < node->rank(); ++i)
-  {
-    shape.dim(i) = node->dim(i).value();
-  }
-  return shape;
-}
-
-template <DataType DT> const void *getNodeDataImpl(const luci::CircleConst *node, size_t *data_size)
-{
-  const size_t element_size = getDataTypeSize(DT);
-  const int32_t num_elements = node->size<DT>();
-
-  *data_size = num_elements * element_size;
-  if (*data_size > 0)
-  {
-    // FIXME There is no good way to get the pointer to the data currently.
-    return &node->at<DT>(0);
-  }
-  return nullptr;
-}
-
-const void *getNodeData(const luci::CircleConst *node, size_t *data_size)
-{
-  switch (node->dtype())
-  {
-    case DataType::U8:
-      return getNodeDataImpl<DataType::U8>(node, data_size);
-    case DataType::FLOAT32:
-      return getNodeDataImpl<DataType::FLOAT32>(node, data_size);
-    case DataType::S8:
-      return getNodeDataImpl<DataType::S8>(node, data_size);
-    case DataType::S16:
-      return getNodeDataImpl<DataType::S16>(node, data_size);
-    case DataType::S32:
-      return getNodeDataImpl<DataType::S32>(node, data_size);
-    case DataType::S64:
-      return getNodeDataImpl<DataType::S64>(node, data_size);
-    case DataType::BOOL:
-      return getNodeDataImpl<DataType::BOOL>(node, data_size);
-    default:
-      throw std::runtime_error("Unsupported type.");
-  }
-}
-
-const void *getNodeData(const luci::CircleCustom *node, size_t *data_size)
-{
-  if (node->custom_code() != "CircleReferencingConst")
-    return nullptr;
-
-  // helper struct which describes data loaded to custom_options of CircleReferencingConst node
-  // TODO move this struct to header
-  struct ConstDataReference
-  {
-    const uint8_t *data = nullptr;
-    uint32_t size = 0;
-  };
-
-  const auto &custom_options = node->custom_options();
-  const auto &const_data_ref = *reinterpret_cast<const ConstDataReference *>(custom_options.data());
-
-  *data_size = const_data_ref.size;
-  return const_data_ref.data;
-}
-
-bool isExecutableNode(const luci::CircleNode *node)
-{
-  switch (node->opcode())
-  {
-    // These nodes denote inputs / outputs of a graph.
-    case luci::CircleOpcode::CIRCLECONST:
-    case luci::CircleOpcode::CIRCLEINPUT:
-    case luci::CircleOpcode::CIRCLEOUTPUT:
-    case luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE:
-    // The following nodes denote outputs of multiple-output nodes.
-    case luci::CircleOpcode::CIRCLEBIDIRECTIONAL_SEQUENCE_LSTM_OUT:
-    case luci::CircleOpcode::CIRCLECUSTOMOUT:
-    case luci::CircleOpcode::CIRCLEIFOUT:
-    case luci::CircleOpcode::CIRCLENONMAXSUPPRESSIONV4OUT:
-    case luci::CircleOpcode::CIRCLENONMAXSUPPRESSIONV5OUT:
-    case luci::CircleOpcode::CIRCLESPLITOUT:
-    case luci::CircleOpcode::CIRCLESPLITVOUT:
-    case luci::CircleOpcode::CIRCLETOPKV2OUT:
-    case luci::CircleOpcode::CIRCLEUNIQUEOUT:
-    case luci::CircleOpcode::CIRCLEUNPACKOUT:
-    case luci::CircleOpcode::CIRCLEVARIABLE:
-    case luci::CircleOpcode::CIRCLEWHILEOUT:
-      return false;
-    // Custom nodes may be executable and non-executable
-    case luci::CircleOpcode::CUSTOM:
-    {
-      auto const custom_node = loco::must_cast<const luci::CircleCustom *>(node);
-
-      // TODO handle more non-executable Custom ops here
-      if (custom_node->custom_code() == "CircleReferencingConst")
-        return false;
-
-      return true;
-    }
-    default:
-      return true;
-  }
-}
-
-bool isTensorProducingNode(const luci::CircleNode *node)
-{
-  switch (node->opcode())
-  {
-    // Output nodes do not produce tensors.
-    case luci::CircleOpcode::CIRCLEOUTPUT:
-    // The following nodes are multiple-output nodes. They do not produce tensors, the tensors
-    // are produced by the corresponding *Out nodes instead.
-    case luci::CircleOpcode::BIDIRECTIONAL_SEQUENCE_LSTM:
-    case luci::CircleOpcode::CUSTOM:
-    case luci::CircleOpcode::IF:
-    case luci::CircleOpcode::NON_MAX_SUPPRESSION_V4:
-    case luci::CircleOpcode::NON_MAX_SUPPRESSION_V5:
-    case luci::CircleOpcode::SPLIT:
-    case luci::CircleOpcode::SPLIT_V:
-    case luci::CircleOpcode::TOPK_V2:
-    case luci::CircleOpcode::UNIQUE:
-    case luci::CircleOpcode::UNPACK:
-    case luci::CircleOpcode::WHILE:
-      return false;
-    default:
-      return true;
-  }
-}
-
-bool isSupportedCustomNode(const luci::CircleNode *node)
-{
-  const auto custom_node = loco::must_cast<const luci::CircleCustom *>(node);
-
-  // TODO handle more Custom ops here
-  if (custom_node->custom_code() == "CircleReferencingConst")
-    return true;
-
-  return false;
-}
-
-} // namespace
-
-GraphLoader::GraphLoader(
-  const loco::Graph *graph, RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir,
-  const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
-  std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor, IMemoryManager *memory_manager)
-  : _graph(graph), _runtime_graph(runtime_graph), _runtime_to_ir(runtime_to_ir),
-    _graph_to_runtime_graph(graph_to_runtime_graph), _node_to_tensor(node_to_tensor),
-    _memory_manager(memory_manager)
+GraphLoader::GraphLoader(luci::CircleReader *reader, RuntimeGraph *runtime_graph,
+                         IMemoryManager *memory_manager,
+                         std::unordered_map<int32_t, Tensor *> *index_to_tensor)
+  : _reader(reader), _runtime_graph(runtime_graph), _memory_manager(memory_manager),
+    _index_to_tensor(index_to_tensor)
 {
 }
 
+// TODO: handle with static manager
 void GraphLoader::loadTensors()
 {
-  for (uint32_t i = 0; i < _graph->nodes()->size(); ++i)
+  for (uint32_t i = 0; i < _reader->tensors().size(); ++i)
   {
-    const auto *node = loco::must_cast<const luci::CircleNode *>(_graph->nodes()->at(i));
+    const auto const_tensor = _reader->tensors().at(i);
 
-    if (node->opcode() == luci::CircleOpcode::CUSTOM && !isSupportedCustomNode(node))
-      throw std::runtime_error("Unsupported Custom operator. " + node->name());
-
-    if (!isTensorProducingNode(node))
+    // TODO: handle with variable tensors
+    if (const_tensor->is_variable())
       continue;
 
-    // Only Input, Const, Custom and Variable nodes have shapes. Shapes of intermediate tensors will
-    // be inferred.
-    Shape shape{};
-    switch (node->opcode())
+    auto const buffer = luci::wrap(_reader->buffers()[const_tensor->buffer()]->data());
+    auto const const_dims = luci::wrap(const_tensor->shape()); // in NHWC
+    if (const_dims.empty() && buffer.empty())
     {
-      case luci::CircleOpcode::CIRCLECONST:
-      case luci::CircleOpcode::CIRCLECUSTOMOUT:
-      case luci::CircleOpcode::CIRCLEINPUT:
-      case luci::CircleOpcode::CIRCLEVARIABLE:
-        shape = getNodeShape(node);
-        break;
-      default:
-        break;
+      // unknown shape tensor and scalar tensor
+      continue;
     }
+
+    uint32_t size = 1;
+    for (int const_dim : const_dims)
+    {
+      size *= const_dim;
+    }
+
+    if (buffer.empty() && size > 0)
+    {
+      // normal empty tensor
+      continue;
+    }
+
+    Shape shape(static_cast<int>(const_dims.size()));
+    for (int j = 0; j < const_dims.size(); ++j)
+    {
+      shape.dim(j) = const_dims.at(j);
+    }
+
+    //  Create dtype
+    const auto dtype = luci::luci_datatype(const_tensor->type());
 
     AffineQuantization quantization;
-    if (node->quantparam() != nullptr)
+    if (dtype == loco::DataType::U8 or dtype == loco::DataType::S8 or dtype == loco::DataType::S16)
     {
-      const luci::CircleQuantParam *params = node->quantparam();
-      assert(params->scale.size() == params->zerop.size());
-      quantization.scale.assign(params->scale.cbegin(), params->scale.cend());
-      quantization.zero_point.assign(params->zerop.cbegin(), params->zerop.cend());
-      quantization.quantized_dimension = params->quantized_dimension;
+      const auto quant_params = const_tensor->quantization();
+      assert(quant_params->zero_point()->size() == quant_params->scale()->size());
+      quantization.scale.assign(quant_params->scale()->cbegin(), quant_params->scale()->cend());
+      quantization.zero_point.assign(quant_params->zero_point()->cbegin(),
+                                     quant_params->zero_point()->cend());
+      quantization.quantized_dimension = quant_params->quantized_dimension();
     }
 
-    auto tensor = std::make_unique<Tensor>(node->dtype(), std::move(shape), std::move(quantization),
-                                           node->name());
+    // Get pointer to data from buffer
+    auto data_ptr = const_cast<unsigned char *>(buffer.data());
 
-    // If node has execution plan then read memory offsets for nodes
-    // from the beginning of shared memory buffer. Used in Static Memory Manager.
-    if (luci::has_execution_plan(node))
-    {
-      auto execution_plan = luci::get_execution_plan(node);
-      assert(!execution_plan.offsets().empty());
-      tensor->set_offset(execution_plan.offsets().front());
-    }
+    size *= getDataTypeSize(dtype);
 
-    if (const auto *const_node = dynamic_cast<const luci::CircleConst *>(node))
-    {
-      size_t data_size{};
-      const void *const_data = getNodeData(const_node, &data_size);
-      if (const_data != nullptr)
-      {
-        _memory_manager->allocate_memory(*tensor);
-        tensor->writeData(const_data, data_size);
-      }
-    }
-    else if (const auto *custom_out_node = dynamic_cast<const luci::CircleCustomOut *>(node))
-    {
-      const auto *custom_node =
-        loco::must_cast<const luci::CircleCustom *>(custom_out_node->input());
+    auto tensor = std::make_unique<Tensor>(dtype, std::move(shape), std::move(quantization),
+                                           const_tensor->name()->str());
+    // Save pointer to const data
+    tensor->writeDataWithoutCopy(static_cast<void *>(data_ptr));
 
-      if (custom_node->custom_code() == "CircleReferencingConst")
-      {
-        size_t data_size{};
-        const void *const_data = getNodeData(custom_node, &data_size);
-        if (const_data != nullptr)
-        {
-          _memory_manager->allocate_memory(*tensor);
-          tensor->writeData(const_data, data_size);
-        }
-      }
-    }
-
-    _node_to_tensor.emplace(node, tensor.get());
-    _runtime_to_ir.tensor_to_node.emplace(tensor.get(), node);
-
+    _index_to_tensor->emplace(i, tensor.get());
     _runtime_graph->addTensor(std::move(tensor));
   }
 }
 
-void GraphLoader::initInputOutputTensors() const
+void GraphLoader::initInputTensors() const
 {
-  auto input_nodes = loco::input_nodes(_graph);
-  std::vector<Tensor *> input_tensors(input_nodes.size());
-  for (size_t i = 0; i < input_nodes.size(); ++i)
+  for (const auto input_ind : _reader->inputs())
   {
-    input_tensors[i] = _node_to_tensor.at(input_nodes[i]);
-    _memory_manager->allocate_memory(*input_tensors[i]);
-  }
-  _runtime_graph->setInputTensors(input_tensors);
+    const auto tensor = _reader->tensors()[input_ind];
+    const auto dtype = luci::luci_datatype(tensor->type());
+    const auto tensor_shape = luci::wrap(tensor->shape());
 
-  auto output_nodes = loco::output_nodes(const_cast<loco::Graph *>(_graph));
-  std::vector<Tensor *> output_tensors(output_nodes.size());
-  for (size_t i = 0; i < output_nodes.size(); ++i)
-  {
-    const auto *node = loco::must_cast<const luci::CircleOutput *>(output_nodes[i]);
-    output_tensors[i] = _node_to_tensor.at(node->from());
+    Shape shape(static_cast<int>(tensor_shape.size()));
+    for (int i = 0; i < tensor_shape.size(); ++i)
+    {
+      shape.dim(i) = tensor_shape.at(i);
+    }
+
+    AffineQuantization quantization;
+    if (dtype == loco::DataType::U8 or dtype == loco::DataType::S8 or dtype == loco::DataType::S16)
+    {
+      const auto quant_params = tensor->quantization();
+      assert(quant_params->zero_point()->size() == quant_params->scale()->size());
+      quantization.scale.assign(quant_params->scale()->cbegin(), quant_params->scale()->cend());
+      quantization.zero_point.assign(quant_params->zero_point()->cbegin(),
+                                     quant_params->zero_point()->cend());
+      quantization.quantized_dimension = quant_params->quantized_dimension();
+    }
+    auto tensor_interpreter = std::make_unique<Tensor>(
+      dtype, std::move(shape), std::move(quantization), tensor->name()->str());
+    _memory_manager->allocate_memory(*tensor_interpreter);
+
+    _runtime_graph->addInputTensor(tensor_interpreter.get());
+    _index_to_tensor->emplace(input_ind, tensor_interpreter.get());
+    _runtime_graph->addTensor(std::move(tensor_interpreter));
   }
-  _runtime_graph->setOutputTensors(output_tensors);
 }
 
 void GraphLoader::loadOperators()
 {
-  KernelBuilder kernel_builder(_graph_to_runtime_graph, _node_to_tensor);
+  KernelBuilder kernel_builder(_runtime_graph, _reader);
 
-  // Create kernels for executable nodes. This has to be done in execution order.
-  auto graph = const_cast<loco::Graph *>(_graph);
-
-  auto const graph_nodes = loco::all_nodes(graph);
-
-  // Checking for execution plan in node annotations.
-  bool has_execution_annotation = true;
-  auto const checking_exec_plan = [&has_execution_annotation](auto const node) {
-    const auto *circle_node = loco::must_cast<const luci::CircleNode *>(node);
-    if (!luci::has_execution_plan(circle_node))
-      has_execution_annotation = false;
-  };
-  std::for_each(begin(graph_nodes), end(graph_nodes), checking_exec_plan);
-
-  if (has_execution_annotation)
+  for (uint32_t i = 0; i < _reader->operators().size(); ++i)
   {
-    // Build ordered_nodes vector that stores the order of execution of graph nodes.
-    std::vector<const luci::CircleNode *> ordered_nodes(graph_nodes.size());
+    const auto op = _reader->operators().at(i);
+    assert(op != nullptr);
 
-    auto const filler = [&ordered_nodes](auto const node) {
-      const auto *circle_node = loco::must_cast<const luci::CircleNode *>(node);
-      auto const position = luci::get_execution_plan(circle_node).order_in_plan();
-      ordered_nodes.at(position) = circle_node;
-    };
-    std::for_each(begin(graph_nodes), end(graph_nodes), filler);
+    std::vector<std::pair<const Tensor *, int32_t>> input_tensors;
+    std::vector<std::pair<Tensor *, int32_t>> output_tensors;
 
-    for (auto node : ordered_nodes)
+    for (int32_t j = 0; j < op->inputs()->size(); ++j)
     {
-      if (isExecutableNode(node))
+      const auto input_index = op->inputs()->operator[](j);
+      if (_index_to_tensor->find(input_index) != _index_to_tensor->end())
       {
-        std::unique_ptr<Kernel> kernel = kernel_builder.build(node);
-        _runtime_to_ir.kernel_to_node.emplace(kernel.get(), node);
-        _runtime_graph->addKernel(std::move(kernel));
+        auto input_tensor = const_cast<const Tensor *>(_index_to_tensor->at(input_index));
+        input_tensors.emplace_back(input_tensor, input_index);
+      }
+      else
+      {
+        input_tensors.emplace_back(nullptr, input_index);
       }
     }
-  }
-  else
-  {
-    // If it is impossible to build the execution order plan,
-    // then we use the default postorder_traversal approach.
-    for (const loco::Node *loco_node : loco::postorder_traversal(loco::output_nodes(graph)))
+
+    for (int32_t j = 0; j < op->outputs()->size(); ++j)
     {
-      const auto *node = loco::must_cast<const luci::CircleNode *>(loco_node);
-      if (isExecutableNode(node))
+      const auto output_index = op->outputs()->operator[](j);
+
+      const auto tensor = _reader->tensors()[output_index];
+      const auto dtype = luci::luci_datatype(tensor->type());
+      const auto tensor_shape = luci::wrap(tensor->shape());
+
+      Shape shape(static_cast<int>(tensor_shape.size()));
+      for (int k = 0; k < tensor_shape.size(); ++k)
       {
-        std::unique_ptr<Kernel> kernel = kernel_builder.build(node);
-        _runtime_to_ir.kernel_to_node.emplace(kernel.get(), node);
-        _runtime_graph->addKernel(std::move(kernel));
+        shape.dim(k) = tensor_shape.at(k);
       }
+
+      AffineQuantization quantization;
+      if (dtype == loco::DataType::U8 or dtype == loco::DataType::S8 or
+          dtype == loco::DataType::S16)
+      {
+        const auto quant_params = tensor->quantization();
+        assert(quant_params->zero_point()->size() == quant_params->scale()->size());
+        quantization.scale.assign(quant_params->scale()->cbegin(), quant_params->scale()->cend());
+        quantization.zero_point.assign(quant_params->zero_point()->cbegin(),
+                                       quant_params->zero_point()->cend());
+        quantization.quantized_dimension = quant_params->quantized_dimension();
+      }
+      auto tensor_interpreter = std::make_unique<Tensor>(
+        dtype, std::move(shape), std::move(quantization), tensor->name()->str());
+
+      _index_to_tensor->emplace(output_index, tensor_interpreter.get());
+      output_tensors.emplace_back(tensor_interpreter.get(), output_index);
+
+      if (std::find(_reader->outputs().begin(), _reader->outputs().end(), output_index) !=
+          _reader->outputs().end())
+        _runtime_graph->addOutputTensor(tensor_interpreter.get());
+
+      _runtime_graph->addTensor(std::move(tensor_interpreter));
     }
+
+    std::unique_ptr<Kernel> kernel = kernel_builder.build(input_tensors, output_tensors, i);
+    _runtime_graph->addKernel(std::move(kernel));
   }
 }
 

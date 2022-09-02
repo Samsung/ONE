@@ -21,19 +21,24 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleResizeBilinear(const luci::CircleNode *circle_node,
-                                                          KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleResizeBilinear(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                                  std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                                  const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleResizeBilinear *>(circle_node);
-  assert(node->arity() == 2);
+  assert(inputs.size() == 2);
 
-  const Tensor *input = helper.getInputTensor(node->input());
-  const Tensor *size = helper.getInputTensor(node->size());
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *size = inputs.at(1).first;
+  Tensor *output = outputs.at(0).first;
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsResizeBilinearOptions();
 
   ResizeBilinearParams params{};
-  params.align_corners = node->align_corners();
-  params.half_pixel_centers = node->half_pixel_centers();
+  params.align_corners = options->align_corners;
+  params.half_pixel_centers = options->half_pixel_centers;
 
   return std::make_unique<kernels::ResizeBilinear>(input, size, output, params);
 }

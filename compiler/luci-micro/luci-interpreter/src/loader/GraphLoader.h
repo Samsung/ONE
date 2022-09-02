@@ -18,8 +18,8 @@
 #define LUCI_INTERPRETER_LOADER_GRAPHLOADER_H
 
 #include "core/RuntimeGraph.h"
-#include "loader/RuntimeToIR.h"
 #include "luci_interpreter/MemoryManager.h"
+#include "luci_interpreter/core/CircleMicroReader.h"
 
 #include <loco/IR/Graph.h>
 
@@ -31,23 +31,19 @@ namespace luci_interpreter
 class GraphLoader
 {
 public:
-  GraphLoader(const loco::Graph *graph, RuntimeGraph *runtime_graph, RuntimeToIR &runtime_to_ir,
-              const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
-              std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor,
-              IMemoryManager *memory_manager);
+  GraphLoader(luci::CircleReader *reader, RuntimeGraph *runtime_graph,
+              IMemoryManager *memory_manager,
+              std::unordered_map<int32_t, Tensor *> *index_to_tensor);
 
   void loadTensors();
-  void initInputOutputTensors() const;
+  void initInputTensors() const;
   void loadOperators();
 
 private:
-  const loco::Graph *_graph;
   RuntimeGraph *_runtime_graph;
-  RuntimeToIR &_runtime_to_ir;
   IMemoryManager *_memory_manager;
-
-  const std::unordered_map<const loco::Graph *, RuntimeGraph *> &_graph_to_runtime_graph;
-  std::unordered_map<const loco::Node *, Tensor *> &_node_to_tensor;
+  luci::CircleReader *_reader;
+  std::unordered_map<int32_t, Tensor *> *_index_to_tensor;
 };
 
 } // namespace luci_interpreter

@@ -21,22 +21,30 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleUnpack(const luci::CircleNode *circle_node,
-                                                  KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleUnpack(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                          std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                          const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleUnpack *>(circle_node);
-  auto output_nodes = collectOutputNodes<luci::CircleUnpackOut>(node);
-  assert(node->arity() == 1);
-  assert(output_nodes.size() == static_cast<size_t>(node->num()));
+  assert(inputs.size() == 1);
 
-  const Tensor *input = helper.getInputTensor(node->value());
-  std::vector<Tensor *> outputs = helper.getOutputTensors(output_nodes);
+  const Tensor *input = inputs.at(0).first;
+  std::vector<Tensor *> output_tensors(outputs.size());
+
+  for (uint32_t i = 0; i < outputs.size(); ++i)
+  {
+    output_tensors[i] = outputs.at(i).first;
+  }
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsUnpackOptions();
 
   UnpackParams params{};
-  params.axis = node->axis();
+  params.axis = options->axis;
 
   // NOTE 'num' attribute is ignored.
-  return std::make_unique<kernels::Unpack>(input, std::move(outputs), params);
+  return std::make_unique<kernels::Unpack>(input, std::move(output_tensors), params);
 }
 
 } // namespace luci_interpreter

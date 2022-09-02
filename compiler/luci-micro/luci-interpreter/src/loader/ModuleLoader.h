@@ -18,8 +18,8 @@
 #define LUCI_INTERPRETER_LOADER_MODULELOADER_H
 
 #include "core/RuntimeModule.h"
-#include "loader/RuntimeToIR.h"
 #include "luci_interpreter/MemoryManager.h"
+#include "luci_interpreter/core/CircleMicroReader.h"
 
 #include <luci/IR/Module.h>
 
@@ -31,20 +31,17 @@ namespace luci_interpreter
 class ModuleLoader
 {
 public:
-  ModuleLoader(const luci::Module *module, RuntimeModule *runtime_module,
-               RuntimeToIR &runtime_to_ir,
-               std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor,
+  ModuleLoader(const char *model_data_raw, RuntimeModule *runtime_module,
                IMemoryManager *memory_manager);
 
   void load();
 
 private:
   IMemoryManager *_memory_manager;
-  const luci::Module *_module;
+  const char *_model_data_raw;
   RuntimeModule *_runtime_module;
-  RuntimeToIR &_runtime_to_ir;
-  std::unordered_map<const loco::Node *, Tensor *> &_node_to_tensor;
-  std::unordered_map<const loco::Graph *, RuntimeGraph *> _graph_to_runtime_graph;
+  std::vector<RuntimeGraph *> _runtime_graphs;
+  std::unique_ptr<std::unordered_map<int32_t, Tensor *>> _index_to_tensor;
 };
 
 } // namespace luci_interpreter

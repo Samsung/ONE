@@ -7,7 +7,7 @@ set(SOURCES
         "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/SimpleMemoryManager.h"
         ${LUCI_INTERPRETER_SOURCE_DIR}/SimpleMemoryManager.cpp)
 
-macro(REGISTER_KERNEL NODE)
+macro(REGISTER_KERNEL OPERATOR, NODE)
   list(APPEND SOURCES "${NODE}.h")
   list(APPEND SOURCES "${NODE}.cpp")
 endmacro(REGISTER_KERNEL)
@@ -31,7 +31,7 @@ endif(NOT ENABLE_TEST)
 
 nnas_find_package(GTest REQUIRED)
 
-macro(REGISTER_KERNEL NODE)
+macro(REGISTER_KERNEL OPERATOR, NODE)
   list(APPEND TEST_SOURCES "${NODE}.test.cpp")
 endmacro(REGISTER_KERNEL)
 
