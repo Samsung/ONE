@@ -86,7 +86,7 @@ void single_job(npudev_h dev, int req_id, input_buffers *input_buf, tensors_data
 void BulkLayer::run()
 {
   // TODO: Remove too many assumption
-  // We assume user wants batch execurion if user's input size is larger than model's input size
+  // We assume user wants batch execution if user's input size is multiples of model's input size
   int user_input_batch = (_inputs[0]->get_info().shape()).dim(0);
   int model_input_batch = _meta->input_seg_dims[0][0];
   int batch_size = user_input_batch / model_input_batch;
