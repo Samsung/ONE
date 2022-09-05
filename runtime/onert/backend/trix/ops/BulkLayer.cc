@@ -57,13 +57,12 @@ void BulkLayer::configure(const std::vector<const IPortableTensor *> &inputs,
   model_file.filepath = binary_path.c_str();
   model_file.size = _meta->size;
 
-  if (registerNPUmodel(dev_context->getDev(0), &model_file, &_model_id[0]) < 0)
+  for (int i = 0; i < _dev_context->getDevSize(); i++)
   {
-    throw std::runtime_error("Failed to register npu model");
-  }
-  if (registerNPUmodel(dev_context->getDev(1), &model_file, &_model_id[1]) < 0)
-  {
-    throw std::runtime_error("Failed to register npu model");
+    if (registerNPUmodel(dev_context->getDev(i), &model_file, &_model_id[i]) < 0)
+    {
+      throw std::runtime_error("Failed to register npu model");
+    }
   }
 }
 
