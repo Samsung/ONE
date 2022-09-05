@@ -121,8 +121,7 @@ private:
   }
 
 private:
-  // NPU device handle
-  // TODO Support multicore npu device
+  // NPU device handles
   std::vector<npudev_h> _dev_handles;
 };
 
