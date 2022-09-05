@@ -32,6 +32,8 @@ public:
   struct Param
   {
     std::string binary_path;
+    std::vector<ir::Shape> origin_input_shapes;
+    std::vector<ir::Shape> origin_output_shapes;
   };
 
 public:
