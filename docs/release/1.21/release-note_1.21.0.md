@@ -24,7 +24,7 @@
 
 ## ONE Runtime
 
-### Basic Multimodel nnpakage
+### Basic Multimodel nnpackage
 - Runtime supports to run nnpackage with two models
 
 ### Channel Wise Quantization on Conv2D and Depthwise Conv2D
