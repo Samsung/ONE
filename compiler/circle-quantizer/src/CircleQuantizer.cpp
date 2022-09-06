@@ -104,8 +104,6 @@ void print_version(void)
 
 int entry(int argc, char **argv)
 {
-  // Simple argument parser (based on map)
-  std::map<std::string, OptionHook> argparse;
   luci::CircleQuantizer quantizer;
 
   auto options = quantizer.options();
