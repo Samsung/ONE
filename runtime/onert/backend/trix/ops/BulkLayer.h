@@ -50,7 +50,7 @@ private:
   std::vector<const IPortableTensor *> _inputs;
   std::vector<IPortableTensor *> _outputs;
 
-  uint32_t _model_id;
+  std::vector<uint32_t> _model_id;
   npubin_meta *_meta;
   std::shared_ptr<DevContext> _dev_context;
 };
