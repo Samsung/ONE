@@ -117,30 +117,40 @@ void BulkLayer::run()
   _dev_context->setDataInfo<const IPortableTensor>(&in_info, _inputs);
   _dev_context->setDataInfo<IPortableTensor>(&out_info, _outputs);
 
-  input_buffers input_buf[2];
-  output_buffers output_buf[2];
+  std::vector<input_buffers> input_buf;
+  std::vector<output_buffers> output_buf;
+  input_buf.resize(_dev_context->getDevSize());
+  output_buf.resize(_dev_context->getDevSize());
 
+  std::vector<std::future<void>> f(_dev_context->getDevSize());
+
+  const int num_cores = _dev_context->getDevSize();
   if (is_batch_execution)
   {
     // TODO: Support for general number of cores(>2)
     // Here we assume that 2 trix cores
-    for (int i = 0; i < (batch_size); i = i + 2)
+    for (int i = 0; i < (batch_size); i = i + num_cores)
     {
-      _dev_context->setBuffer<const IPortableTensor>(&input_buf[0], _inputs, batch_size, i);
-      _dev_context->setBuffer<IPortableTensor>(&output_buf[0], _outputs, batch_size, i);
-
-      _dev_context->setBuffer<const IPortableTensor>(&input_buf[1], _inputs, batch_size, i + 1);
-      _dev_context->setBuffer<IPortableTensor>(&output_buf[1], _outputs, batch_size, i + 1);
-
-      auto f0 = std::async(std::launch::async, &single_job, _dev_context->getDev(0), req_id[0],
-                           &input_buf[0], &in_info, &output_buf[0], &out_info);
-      if (i + 1 < batch_size) // ignore last job if batch_size is odd number
+      for (int core = 0; core < num_cores; core++)
       {
-        auto f1 = std::async(std::launch::async, &single_job, _dev_context->getDev(1), req_id[1],
-                             &input_buf[1], &in_info, &output_buf[1], &out_info);
-        f1.wait();
+        _dev_context->setBuffer<const IPortableTensor>(&input_buf[core], _inputs, batch_size,
+                                                       i + core);
+        _dev_context->setBuffer<IPortableTensor>(&output_buf[core], _outputs, batch_size, i + core);
       }
-      f0.wait();
+      for (int core = 0; core < num_cores; core++)
+      {
+
+        if (i + core < batch_size)
+        {
+          f[core] =
+            std::async(std::launch::async, &single_job, _dev_context->getDev(core), req_id[core],
+                       &input_buf[core], &in_info, &output_buf[core], &out_info);
+        }
+      }
+      for (int core = 0; core < num_cores; core++)
+      {
+        f[core].wait();
+      }
     }
   }
   else
