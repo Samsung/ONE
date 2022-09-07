@@ -22,6 +22,7 @@
 #include <tensorflow/lite/kernels/internal/reference/transpose_conv.h>
 
 #include <stdexcept>
+#include <limits> // std::numeric_limits
 
 namespace luci_interpreter
 {

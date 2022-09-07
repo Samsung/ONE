@@ -17,6 +17,7 @@
 #include "kernels/Tanh.h"
 
 #include "kernels/Utils.h"
+#include <limits> // std::numeric_limits
 
 #include <tensorflow/lite/kernels/internal/reference/tanh.h>
 
