@@ -22,6 +22,7 @@
 
 #include <cassert>
 #include <stdexcept>
+#include <limits> // std::numeric_limits
 
 #include <fp16.h>
 
