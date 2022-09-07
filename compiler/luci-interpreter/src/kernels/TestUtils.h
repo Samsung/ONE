@@ -22,6 +22,7 @@
 #include "luci_interpreter/MemoryManager.h"
 
 #include <type_traits>
+#include <limits> // std::numeric_limits
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
