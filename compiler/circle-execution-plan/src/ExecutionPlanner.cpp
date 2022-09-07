@@ -21,6 +21,8 @@
 #include <json.h>
 #include <fstream>
 
+#include <limits> // std::numeric_limits
+
 namespace circle_planner
 {
 namespace
