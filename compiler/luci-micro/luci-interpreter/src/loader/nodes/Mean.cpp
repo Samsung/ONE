@@ -21,40 +21,40 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleMean(const luci::CircleNode *circle_node,
-                                                KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleMean(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                        std::vector<std::pair<Tensor *, int32_t>> &outputs, const uint32_t op_index,
+                        KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleMean *>(circle_node);
-  assert(node->arity() == 2);
+  assert(inputs.size() == 2);
 
-  const Tensor *input = helper.getInputTensor(node->input());
-  const Tensor *axes = helper.getInputTensor(node->reduction_indices());
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *axis = inputs.at(1).first;
+  Tensor *output = outputs.at(0).first;
 
   auto temp_index_unique =
     std::make_unique<Tensor>(DataType::S32, Shape({}), AffineQuantization{}, "");
-  temp_index_unique->set_observable(false);
   temp_index_unique->set_data_buffer(nullptr);
-  Tensor *temp_index =
-    helper.getRuntimeGraph(node->graph())->addTensor(std::move(temp_index_unique));
+  Tensor *temp_index = builder.get_runtime_graph()->addTensor(std::move(temp_index_unique));
 
   auto resolved_axes_unique =
     std::make_unique<Tensor>(DataType::S32, Shape({}), AffineQuantization{}, "");
-  resolved_axes_unique->set_observable(false);
   resolved_axes_unique->set_data_buffer(nullptr);
-  Tensor *resolved_axes =
-    helper.getRuntimeGraph(node->graph())->addTensor(std::move(resolved_axes_unique));
+  Tensor *resolved_axes = builder.get_runtime_graph()->addTensor(std::move(resolved_axes_unique));
 
   auto temp_sum_unique =
     std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
-  temp_sum_unique->set_observable(false);
   temp_sum_unique->set_data_buffer(nullptr);
-  Tensor *temp_sum = helper.getRuntimeGraph(node->graph())->addTensor(std::move(temp_sum_unique));
+  Tensor *temp_sum = builder.get_runtime_graph()->addTensor(std::move(temp_sum_unique));
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsReducerOptions();
 
   ReducerParams params{};
-  params.keep_dims = node->keep_dims();
+  params.keep_dims = options->keep_dims;
 
-  return std::make_unique<kernels::Mean>(input, axes, output, temp_index, resolved_axes, temp_sum,
+  return std::make_unique<kernels::Mean>(input, axis, output, temp_index, resolved_axes, temp_sum,
                                          params);
 }
 

@@ -21,27 +21,13 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleIf(const luci::CircleNode *circle_node,
-                                              KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleIf(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                      std::vector<std::pair<Tensor *, int32_t>> &outputs, const uint32_t op_index,
+                      KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleIf *>(circle_node);
-  auto output_nodes = collectOutputNodes<luci::CircleIfOut>(node);
-  assert(node->arity() == 1 + node->input_count());
-  assert(output_nodes.size() == static_cast<size_t>(node->output_count()));
-
-  const Tensor *cond = helper.getInputTensor(node->cond());
-  std::vector<const Tensor *> inputs(node->input_count());
-  for (uint32_t i = 0; i < node->input_count(); ++i)
-  {
-    inputs[i] = helper.getInputTensor(node->input(i));
-  }
-  std::vector<Tensor *> outputs = helper.getOutputTensors(output_nodes);
-
-  RuntimeGraph *then_graph = helper.getRuntimeGraph(node->then_graph());
-  RuntimeGraph *else_graph = helper.getRuntimeGraph(node->else_graph());
-
-  return std::make_unique<kernels::If>(cond, std::move(inputs), std::move(outputs), then_graph,
-                                       else_graph);
+  // TODO: support IF operation
+  throw std::runtime_error("Not supported now");
 }
 
 } // namespace luci_interpreter

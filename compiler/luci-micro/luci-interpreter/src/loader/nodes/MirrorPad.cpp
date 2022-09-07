@@ -21,18 +21,23 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleMirrorPad(const luci::CircleNode *circle_node,
-                                                     KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleMirrorPad(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                             std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                             const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleMirrorPad *>(circle_node);
-  assert(node->arity() == 2);
+  assert(inputs.size() == 2);
 
-  const Tensor *input = helper.getInputTensor(node->input());
-  const Tensor *paddings = helper.getInputTensor(node->paddings());
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *paddings = inputs.at(1).first;
+  Tensor *output = outputs.at(0).first;
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsMirrorPadOptions();
 
   MirrorPadParams params{};
-  params.mode = node->mode();
+  params.mode = luci::luci_mirrorpad_mode(options->mode);
 
   return std::make_unique<kernels::MirrorPad>(input, paddings, output, params);
 }

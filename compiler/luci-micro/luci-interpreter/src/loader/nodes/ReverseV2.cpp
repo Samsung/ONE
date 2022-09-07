@@ -21,17 +21,18 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleReverseV2(const luci::CircleNode *circle_node,
-                                                     KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleReverseV2(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                             std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                             const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleReverseV2 *>(circle_node);
-  assert(node->arity() == 2);
+  assert(inputs.size() == 2);
 
-  const Tensor *input = helper.getInputTensor(node->tensor());
-  const Tensor *axes = helper.getInputTensor(node->axis());
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *axis = inputs.at(1).first;
+  Tensor *output = outputs.at(0).first;
 
-  return std::make_unique<kernels::ReverseV2>(input, axes, output);
+  return std::make_unique<kernels::ReverseV2>(input, axis, output);
 }
 
 } // namespace luci_interpreter

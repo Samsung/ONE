@@ -21,21 +21,13 @@
 
 namespace luci_interpreter
 {
-
-#define CIRCLE_NODE(OPCODE, CLASS) CLASS,
-#define CIRCLE_VNODE(OPCODE, CLASS) CLASS,
-
-// This enum is auxiliary.
-// It is duplicate of luci::CircleOpcode but initialized with CLASS instead of OPCODE,
-// because list of target operators is in format of CLASS names
 enum class BuilderId
 {
-#include <luci/IR/CircleNodes.lst>
+#define REGISTER_KERNEL(builtin_operator, name) Circle##name,
+#include "KernelsToBuild.lst"
   Size // casts to count of values in BuilderId enum
 };
-
-#undef CIRCLE_VNODE
-#undef CIRCLE_NODE
+#undef REGISTER_KERNEL
 
 /**
  * @brief Registry of kernel builders
@@ -46,40 +38,38 @@ enum class BuilderId
 class KernelBuilderRegistry
 {
 public:
-  using KernelBuilderFunc = std::unique_ptr<Kernel>(const luci::CircleNode *,
-                                                    KernelBuilderHelper &);
+  using KernelBuilderFunc = std::unique_ptr<Kernel>(
+    std::vector<std::pair<const Tensor *, int32_t>> &, std::vector<std::pair<Tensor *, int32_t>> &,
+    const uint32_t, KernelBuilder &);
 
-  KernelBuilderRegistry() : _operator_builders(size_t(BuilderId::Size), nullptr)
+  KernelBuilderRegistry()
   {
-#define REGISTER_KERNEL(name) \
-  register_kernel_builder(BuilderId::Circle##name, build_kernel_Circle##name);
+#define REGISTER_KERNEL(builtin_operator, name)                                        \
+  register_kernel_builder(circle::BuiltinOperator::BuiltinOperator_##builtin_operator, \
+                          build_kernel_Circle##name);
 
 #include "KernelsToBuild.lst"
 
 #undef REGISTER_KERNEL
   }
 
-  KernelBuilderFunc *get_kernel_builder_func(luci::CircleOpcode opcode) const
+  KernelBuilderFunc *get_kernel_builder_func(circle::BuiltinOperator opcode) const
   {
+    auto tmp = size_t(opcode);
     return _operator_builders.at(size_t(opcode));
   }
 
 private:
-  std::vector<KernelBuilderFunc *> _operator_builders;
+  std::map<int32_t, KernelBuilderFunc *> _operator_builders;
 
-  void register_kernel_builder(BuilderId id, KernelBuilderFunc *func)
+  void register_kernel_builder(circle::BuiltinOperator id, KernelBuilderFunc *func)
   {
-    // Using BuilderId is a duplicate of luci::CirclreOpcode,
-    // size_t(id) is equal to size_t(corresponding operation opcode).
-    assert(size_t(id) < _operator_builders.size());
     _operator_builders[size_t(id)] = func;
   }
 };
 
-KernelBuilder::KernelBuilder(
-  const std::unordered_map<const loco::Graph *, RuntimeGraph *> &graph_to_runtime_graph,
-  const std::unordered_map<const loco::Node *, Tensor *> &node_to_tensor)
-  : KernelBuilderHelper(graph_to_runtime_graph, node_to_tensor)
+KernelBuilder::KernelBuilder(RuntimeGraph *runtime_graph, luci::CircleReader *circle_reader)
+  : _runtime_graph(runtime_graph), _circle_reader(circle_reader)
 {
   _builder_registry = std::make_unique<KernelBuilderRegistry>();
 }
@@ -90,14 +80,18 @@ KernelBuilder::~KernelBuilder()
   // This destructor deletes _builder_registry
 }
 
-std::unique_ptr<Kernel> KernelBuilder::build(const luci::CircleNode *node)
+std::unique_ptr<Kernel>
+KernelBuilder::build(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                     std::vector<std::pair<Tensor *, int32_t>> &outputs, const uint32_t op_index)
 {
-  auto specific_builder = _builder_registry->get_kernel_builder_func(node->opcode());
+  const auto op = _circle_reader->operators()[op_index];
+  const auto opcode = _circle_reader->builtin_code(op);
+  auto specific_builder = _builder_registry->get_kernel_builder_func(opcode);
   if (specific_builder != nullptr)
-    return specific_builder(node, *this);
+    return specific_builder(inputs, outputs, op_index, *this);
 
   std::string msg = "Unsupported operator: ";
-  msg += std::to_string(static_cast<uint32_t>(node->opcode())) + " " + std::string(node->name());
+  msg += std::to_string(static_cast<uint32_t>(opcode));
   throw std::invalid_argument(msg.c_str());
 }
 

@@ -21,15 +21,15 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleFill(const luci::CircleNode *circle_node,
-                                                KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleFill(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                        std::vector<std::pair<Tensor *, int32_t>> &outputs, const uint32_t op_index,
+                        KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleFill *>(circle_node);
-  assert(node->arity() == 2);
-
-  const auto dims = helper.getInputTensor(node->dims());
-  const auto value = helper.getInputTensor(node->value());
-  auto output = helper.getOutputTensor(node);
+  assert(inputs.size() == 2);
+  const Tensor *dims = inputs.at(0).first;
+  const Tensor *value = inputs.at(1).first;
+  Tensor *output = outputs.at(0).first;
 
   return std::make_unique<kernels::Fill>(dims, value, output);
 }

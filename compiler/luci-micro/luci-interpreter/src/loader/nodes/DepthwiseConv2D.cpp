@@ -22,44 +22,38 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleDepthwiseConv2D(const luci::CircleNode *circle_node,
-                                                           KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleDepthwiseConv2D(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                                   std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                                   const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleDepthwiseConv2D *>(circle_node);
-  assert(node->arity() == 3);
+  assert(inputs.size() == 3);
 
-  const Tensor *input = helper.getInputTensor(node->input());
-  const Tensor *filter = helper.getInputTensor(node->filter());
-  const Tensor *bias = helper.getInputTensor(node->bias());
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *filter = inputs.at(1).first;
+  const Tensor *bias = inputs.at(2).first;
+  Tensor *output = outputs.at(0).first;
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsDepthwiseConv2DOptions();
 
   DepthwiseConv2DParams params{};
-  params.padding = node->padding();
-  params.depth_multiplier = node->depthMultiplier();
-  params.stride_height = node->stride()->h();
-  params.stride_width = node->stride()->w();
-  params.dilation_height_factor = node->dilation()->h();
-  params.dilation_width_factor = node->dilation()->w();
-  params.activation = node->fusedActivationFunction();
+  params.padding = luci::luci_padding(options->padding);
+  params.depth_multiplier = options->depth_multiplier;
+  params.stride_height = options->stride_h;
+  params.stride_width = options->stride_w;
+  params.dilation_height_factor = options->dilation_h_factor;
+  params.dilation_width_factor = options->dilation_w_factor;
+  params.activation = luci::luci_actfunc(options->fused_activation_function);
 
   // It is unknown what data will be stored in scratchpad tensor,
   // using UINT8 as a most general option
   auto scratchpad = std::make_unique<Tensor>(DataType::U8, Shape({}), AffineQuantization{}, "");
-  scratchpad->set_observable(false);
   scratchpad->set_data_buffer(nullptr);
-  // If node has execution plan then read memory offsets for scratchpad temporary tensor
-  // from the beginning of shared memory buffer.
-  // Used in Static Memory Manager.
   // TODO move tensors offset initialization to one place
-  if (luci::has_execution_plan(node))
-  {
-    const auto execution_plan = luci::get_execution_plan(node);
-    // Check whether the offset for the current CircleConv2D temporary was found.
-    if (execution_plan.offsets().size() > 1)
-      // If this is true, then we keep this offset in scratchpad.
-      scratchpad->set_offset(execution_plan.offsets().at(1));
-  }
-  Tensor *tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratchpad));
+  // TODO handle with StaticManager
+  Tensor *tmp = builder.get_runtime_graph()->addTensor(std::move(scratchpad));
 
   return std::make_unique<kernels::DepthwiseConv2D>(input, filter, bias, output, tmp, params);
 }

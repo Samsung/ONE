@@ -21,22 +21,27 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleMaxPool2D(const luci::CircleNode *circle_node,
-                                                     KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleMaxPool2D(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                             std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                             const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleMaxPool2D *>(circle_node);
-  assert(node->arity() == 1);
+  assert(inputs.size() == 1);
 
-  const Tensor *input = helper.getInputTensor(node->value());
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *input = inputs.at(0).first;
+  Tensor *output = outputs.at(0).first;
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsPool2DOptions();
 
   Pool2DParams params{};
-  params.padding = node->padding();
-  params.filter_height = node->filter()->h();
-  params.filter_width = node->filter()->w();
-  params.stride_height = node->stride()->h();
-  params.stride_width = node->stride()->w();
-  params.activation = node->fusedActivationFunction();
+  params.padding = luci::luci_padding(options->padding);
+  params.filter_height = options->filter_height;
+  params.filter_width = options->filter_width;
+  params.stride_height = options->stride_h;
+  params.stride_width = options->stride_w;
+  params.activation = luci::luci_actfunc(options->fused_activation_function);
 
   return std::make_unique<kernels::MaxPool2D>(input, output, params);
 }

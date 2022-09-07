@@ -22,18 +22,22 @@ namespace luci_interpreter
 {
 
 std::unique_ptr<Kernel>
-build_kernel_CircleResizeNearestNeighbor(const luci::CircleNode *circle_node,
-                                         KernelBuilderHelper &helper)
+build_kernel_CircleResizeNearestNeighbor(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                                         std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                                         const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleResizeNearestNeighbor *>(circle_node);
-  assert(node->arity() == 2);
+  assert(inputs.size() == 2);
 
-  const Tensor *input = helper.getInputTensor(node->input());
-  const Tensor *size = helper.getInputTensor(node->size());
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *size = inputs.at(1).first;
+  Tensor *output = outputs.at(0).first;
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsResizeNearestNeighborOptions();
 
   ResizeNearestNeighborParams params{};
-  params.align_corners = node->align_corners();
+  params.align_corners = options->align_corners;
   // TODO update half_pixel_centers after CircleResizeNearestNeighbor updated
   // Current CircleResizeNearestNeighbor don't have half_pixel_centers.
   // default value on current is false.

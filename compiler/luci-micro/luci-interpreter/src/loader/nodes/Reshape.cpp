@@ -21,15 +21,16 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleReshape(const luci::CircleNode *circle_node,
-                                                   KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleReshape(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                           std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                           const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleReshape *>(circle_node);
-  assert(node->arity() == 2);
+  assert(inputs.size() == 2);
 
-  const Tensor *input = helper.getInputTensor(node->tensor());
-  const Tensor *shape = helper.getInputTensor(node->shape());
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *shape = inputs.at(1).first;
+  Tensor *output = outputs.at(0).first;
 
   // NOTE 'newShape' attribute is ignored.
   return std::make_unique<kernels::Reshape>(input, shape, output);

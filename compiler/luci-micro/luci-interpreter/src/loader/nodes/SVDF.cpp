@@ -21,31 +21,30 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleSVDF(const luci::CircleNode *circle_node,
-                                                KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleSVDF(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                        std::vector<std::pair<Tensor *, int32_t>> &outputs, const uint32_t op_index,
+                        KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleSVDF *>(circle_node);
-  assert(node->arity() == 5);
+  assert(inputs.size() == 5);
 
-  const Tensor *input = helper.getInputTensor(node->input());
-  const Tensor *feature = helper.getInputTensor(node->weight_feature());
-  const Tensor *time = helper.getInputTensor(node->weight_time());
-  const Tensor *bias = helper.getOptionalInputTensor(node->bias());
-  const Tensor *input_activation_state = helper.getInputTensor(node->input_activation_state());
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *feature = inputs.at(1).first;
+  const Tensor *time = inputs.at(2).first;
+  const Tensor *bias = inputs.at(3).first;
+  const Tensor *input_activation_state = inputs.at(4).first;
+  Tensor *output = outputs.at(0).first;
 
   auto scratchpad_tensor = std::make_unique<Tensor>(input_activation_state->element_type(),
                                                     Shape({}), AffineQuantization{}, "");
-  scratchpad_tensor->set_observable(false);
   scratchpad_tensor->set_data_buffer(nullptr);
-  Tensor *tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratchpad_tensor));
+  Tensor *tmp = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 
   DataType data_type = input->element_type() == DataType::S8 ? DataType::S32 : DataType::FLOAT32;
 
   scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), AffineQuantization{}, "");
-  scratchpad_tensor->set_observable(false);
   scratchpad_tensor->set_data_buffer(nullptr);
-  Tensor *tmp_1 = helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratchpad_tensor));
+  Tensor *tmp_1 = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 
   if (data_type == DataType::FLOAT32 &&
       (feature->element_type() == DataType::S8 || feature->element_type() == DataType::U8))
@@ -54,36 +53,35 @@ std::unique_ptr<Kernel> build_kernel_CircleSVDF(const luci::CircleNode *circle_n
   }
 
   scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), AffineQuantization{}, "");
-  scratchpad_tensor->set_observable(false);
   scratchpad_tensor->set_data_buffer(nullptr);
-  Tensor *tmp_2 = helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratchpad_tensor));
+  Tensor *tmp_2 = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 
   data_type = DataType::FLOAT32;
 
   scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), AffineQuantization{}, "");
-  scratchpad_tensor->set_observable(false);
   scratchpad_tensor->set_data_buffer(nullptr);
-  Tensor *tmp_3 = helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratchpad_tensor));
+  Tensor *tmp_3 = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 
   scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), AffineQuantization{}, "");
-  scratchpad_tensor->set_observable(false);
   scratchpad_tensor->set_data_buffer(nullptr);
-  Tensor *tmp_4 = helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratchpad_tensor));
+  Tensor *tmp_4 = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 
   scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), AffineQuantization{}, "");
-  scratchpad_tensor->set_observable(false);
   scratchpad_tensor->set_data_buffer(nullptr);
-  Tensor *tmp_5 = helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratchpad_tensor));
+  Tensor *tmp_5 = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 
   scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), AffineQuantization{}, "");
-  scratchpad_tensor->set_observable(false);
   scratchpad_tensor->set_data_buffer(nullptr);
-  Tensor *tmp_6 = helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratchpad_tensor));
+  Tensor *tmp_6 = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsSVDFOptions();
 
   SVDFParams params{};
-  params.activation = node->fusedActivationFunction();
-  params.svdf_rank = node->svdf_rank();
-  params.asymmetric_quantize_inputs = node->asymmetric_quantize_inputs();
+  params.activation = luci::luci_actfunc(options->fused_activation_function);
+  params.svdf_rank = options->rank;
+  params.asymmetric_quantize_inputs = options->asymmetric_quantize_inputs;
 
   return std::make_unique<kernels::SVDF>(input, feature, time, bias, input_activation_state, output,
                                          tmp, tmp_1, tmp_2, tmp_3, tmp_4, tmp_5, tmp_6, params);

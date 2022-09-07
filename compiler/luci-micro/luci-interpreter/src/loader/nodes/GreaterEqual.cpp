@@ -21,15 +21,15 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleGreaterEqual(const luci::CircleNode *circle_node,
-                                                        KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleGreaterEqual(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                                std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                                const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleGreaterEqual *>(circle_node);
-  assert(node->arity() == 2);
-
-  const Tensor *x = helper.getInputTensor(node->x());
-  const Tensor *y = helper.getInputTensor(node->y());
-  Tensor *output = helper.getOutputTensor(node);
+  assert(inputs.size() == 2);
+  const Tensor *x = inputs.at(0).first;
+  const Tensor *y = inputs.at(1).first;
+  Tensor *output = outputs.at(0).first;
 
   return std::make_unique<kernels::GreaterEqual>(x, y, output);
 }

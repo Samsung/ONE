@@ -21,21 +21,26 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleInstanceNorm(const luci::CircleNode *circle_node,
-                                                        KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleInstanceNorm(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                                std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                                const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleInstanceNorm *>(circle_node);
-  assert(node->arity() == 3);
+  assert(inputs.size() == 3);
 
-  const Tensor *input = helper.getInputTensor(node->input());
-  const Tensor *gamma = helper.getInputTensor(node->gamma());
-  const Tensor *beta = helper.getInputTensor(node->beta());
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *gamma = inputs.at(1).first;
+  const Tensor *beta = inputs.at(2).first;
 
-  Tensor *output = helper.getOutputTensor(node);
+  Tensor *output = outputs.at(0).first;
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsInstanceNormOptions();
 
   InstanceNormParams params{};
-  params.epsilon = node->epsilon();
-  params.activation = node->fusedActivationFunction();
+  params.epsilon = options->epsilon;
+  params.activation = luci::luci_actfunc(options->fused_activation_function);
 
   return std::make_unique<kernels::InstanceNorm>(input, gamma, beta, output, params);
 }

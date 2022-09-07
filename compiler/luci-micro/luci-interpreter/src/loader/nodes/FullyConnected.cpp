@@ -21,20 +21,25 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleFullyConnected(const luci::CircleNode *circle_node,
-                                                          KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleFullyConnected(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                                  std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                                  const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleFullyConnected *>(circle_node);
-  assert(node->arity() == 3);
+  assert(inputs.size() == 3);
 
-  const Tensor *input = helper.getInputTensor(node->input());
-  const Tensor *weights = helper.getInputTensor(node->weights());
-  const Tensor *bias = helper.getOptionalInputTensor(node->bias());
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *weights = inputs.at(1).first;
+  const Tensor *bias = inputs.at(2).first;
+  Tensor *output = outputs.at(0).first;
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsFullyConnectedOptions();
 
   FullyConnectedParams params{};
-  params.activation = node->fusedActivationFunction();
-  params.keep_num_dims = node->keep_num_dims();
+  params.activation = luci::luci_actfunc(options->fused_activation_function);
+  params.keep_num_dims = options->keep_num_dims;
 
   return std::make_unique<kernels::FullyConnected>(input, weights, bias, output, params);
 }

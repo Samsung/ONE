@@ -21,17 +21,23 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleArgMax(const luci::CircleNode *circle_node,
-                                                  KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleArgMax(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                          std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                          const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleArgMax *>(circle_node);
-  assert(node->arity() == 2);
-  const Tensor *input = helper.getInputTensor(node->input());
-  const Tensor *axis = helper.getInputTensor(node->dimension());
-  Tensor *output = helper.getOutputTensor(node);
+  assert(inputs.size() == 2);
+
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *axis = inputs.at(1).first;
+  Tensor *output = outputs.at(0).first;
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsArgMaxOptions();
 
   ArgMaxParams params{};
-  params.output_type = node->output_type();
+  params.output_type = static_cast<DataType>(options->output_type);
 
   return std::make_unique<kernels::ArgMax>(input, axis, output, params);
 }

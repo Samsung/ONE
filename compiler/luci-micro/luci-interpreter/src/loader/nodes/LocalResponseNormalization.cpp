@@ -21,20 +21,24 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel>
-build_kernel_CircleLocalResponseNormalization(const luci::CircleNode *circle_node,
-                                              KernelBuilderHelper &helper)
+std::unique_ptr<Kernel> build_kernel_CircleLocalResponseNormalization(
+  std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+  std::vector<std::pair<Tensor *, int32_t>> &outputs, const uint32_t op_index,
+  KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleLocalResponseNormalization *>(circle_node);
-  assert(node->arity() == 1);
-  const Tensor *input = helper.getInputTensor(node->input());
-  Tensor *output = helper.getOutputTensor(node);
+  assert(inputs.size() == 1);
+  const Tensor *input = inputs.at(0).first;
+  Tensor *output = outputs.at(0).first;
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsLocalResponseNormalizationOptions();
 
   LocalResponseNormalizationParams params{};
-  params.radius = node->radius();
-  params.bias = node->bias();
-  params.alpha = node->alpha();
-  params.beta = node->beta();
+  params.radius = options->radius;
+  params.bias = options->bias;
+  params.alpha = options->alpha;
+  params.beta = options->beta;
 
   return std::make_unique<kernels::LocalResponseNormalization>(input, output, params);
 }

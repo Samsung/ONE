@@ -21,18 +21,22 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleGather(const luci::CircleNode *circle_node,
-                                                  KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleGather(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                          std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                          const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleGather *>(circle_node);
-  assert(node->arity() == 2);
+  assert(inputs.size() == 2);
+  const Tensor *params = inputs.at(0).first;
+  const Tensor *indices = inputs.at(1).first;
+  Tensor *output = outputs.at(0).first;
 
-  const Tensor *params = helper.getInputTensor(node->params());
-  const Tensor *indices = helper.getInputTensor(node->indices());
-  Tensor *output = helper.getOutputTensor(node);
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsGatherOptions();
 
   GatherParams gparams{};
-  gparams.axis = node->axis();
+  gparams.axis = options->axis;
   // TODO support batch_dims
   gparams.batch_dims = 0;
 

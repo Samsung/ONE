@@ -21,25 +21,29 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleStridedSlice(const luci::CircleNode *circle_node,
-                                                        KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleStridedSlice(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                                std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                                const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleStridedSlice *>(circle_node);
-  assert(node->arity() == 4);
+  assert(inputs.size() == 4);
 
-  const Tensor *input = helper.getInputTensor(node->input());
-  const Tensor *begin = helper.getInputTensor(node->begin());
-  const Tensor *end = helper.getInputTensor(node->end());
-  const Tensor *strides = helper.getInputTensor(node->strides());
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *begin = inputs.at(1).first;
+  const Tensor *end = inputs.at(2).first;
+  const Tensor *strides = inputs.at(3).first;
+  Tensor *output = outputs.at(0).first;
 
-  Tensor *output = helper.getOutputTensor(node);
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsStridedSliceOptions();
 
   StridedSliceParams params{};
-  params.begin_mask = node->begin_mask();
-  params.ellipsis_mask = node->ellipsis_mask();
-  params.end_mask = node->end_mask();
-  params.new_axis_mask = node->new_axis_mask();
-  params.shrink_axis_mask = node->shrink_axis_mask();
+  params.begin_mask = options->begin_mask;
+  params.ellipsis_mask = options->ellipsis_mask;
+  params.end_mask = options->end_mask;
+  params.new_axis_mask = options->new_axis_mask;
+  params.shrink_axis_mask = options->shrink_axis_mask;
 
   return std::make_unique<kernels::StridedSlice>(input, begin, end, strides, output, params);
 }

@@ -21,21 +21,25 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleSplitV(const luci::CircleNode *circle_node,
-                                                  KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleSplitV(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                          std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                          const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleSplitV *>(circle_node);
-  auto output_nodes = collectOutputNodes<luci::CircleSplitVOut>(node);
-  assert(node->arity() == 3);
-  assert(output_nodes.size() == static_cast<size_t>(node->num_split()));
+  assert(inputs.size() == 3);
 
-  const Tensor *input = helper.getInputTensor(node->input());
-  const Tensor *sizes_data = helper.getInputTensor(node->size_splits());
-  const Tensor *axis = helper.getInputTensor(node->split_dim());
-  std::vector<Tensor *> outputs = helper.getOutputTensors(output_nodes);
+  const Tensor *input = inputs.at(0).first;
+  const Tensor *sizes_data = inputs.at(1).first;
+  const Tensor *axis = inputs.at(2).first;
+  std::vector<Tensor *> output_tensors(outputs.size());
+
+  for (uint32_t i = 0; i < outputs.size(); ++i)
+  {
+    output_tensors[i] = outputs.at(i).first;
+  }
 
   // NOTE 'num_splits' attribute is ignored.
-  return std::make_unique<kernels::SplitV>(input, sizes_data, axis, std::move(outputs));
+  return std::make_unique<kernels::SplitV>(input, sizes_data, axis, std::move(output_tensors));
 }
 
 } // namespace luci_interpreter

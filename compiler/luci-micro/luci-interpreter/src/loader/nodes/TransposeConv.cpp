@@ -21,32 +21,35 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel> build_kernel_CircleTransposeConv(const luci::CircleNode *circle_node,
-                                                         KernelBuilderHelper &helper)
+std::unique_ptr<Kernel>
+build_kernel_CircleTransposeConv(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
+                                 std::vector<std::pair<Tensor *, int32_t>> &outputs,
+                                 const uint32_t op_index, KernelBuilder &builder)
 {
-  const auto *node = loco::must_cast<const luci::CircleTransposeConv *>(circle_node);
-  assert(node->arity() == 4);
+  assert(inputs.size() == 4);
 
-  const Tensor *input_sizes = helper.getInputTensor(node->inputSizes());
-  const Tensor *filter = helper.getInputTensor(node->filter());
-  const Tensor *out_backprop = helper.getInputTensor(node->outBackprop());
-  const Tensor *bias = helper.getOptionalInputTensor(node->bias());
-
-  Tensor *output = helper.getOutputTensor(node);
+  const Tensor *input_sizes = inputs.at(0).first;
+  const Tensor *filter = inputs.at(1).first;
+  const Tensor *out_backprop = inputs.at(2).first;
+  const Tensor *bias = inputs.at(3).first;
+  Tensor *output = outputs.at(0).first;
 
   DataType scratch_data_type =
-    helper.getInputTensor(node)->element_type() == DataType::S16 ? DataType::S64 : DataType::S32;
+    input_sizes->element_type() == DataType::S16 ? DataType::S64 : DataType::S32;
 
   auto scratch_tensor =
     std::make_unique<Tensor>(scratch_data_type, Shape({}), AffineQuantization{}, "");
-  scratch_tensor->set_observable(false);
   scratch_tensor->set_data_buffer(nullptr);
-  Tensor *tmp = helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratch_tensor));
+  Tensor *tmp = builder.get_runtime_graph()->addTensor(std::move(scratch_tensor));
+
+  circle::OperatorT oper_t;
+  builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
+  const auto *options = oper_t.builtin_options.AsTransposeConvOptions();
 
   TransposeConvParams params{};
-  params.padding = node->padding();
-  params.stride_height = node->stride()->h();
-  params.stride_width = node->stride()->w();
+  params.padding = luci::luci_padding(options->padding);
+  params.stride_height = options->stride_h;
+  params.stride_width = options->stride_w;
 
   return std::make_unique<kernels::TransposeConv>(input_sizes, filter, out_backprop, bias, output,
                                                   tmp, params);
