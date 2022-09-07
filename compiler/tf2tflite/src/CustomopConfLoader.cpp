@@ -27,6 +27,8 @@
 
 #include <fcntl.h>
 
+#include <limits> // std::numeric_limits
+
 namespace
 {
 bool load_text(const cwrap::Fildes &fildes, tf2tflite::CustomOpInfoDef &def)
