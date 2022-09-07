@@ -19,6 +19,8 @@
 
 #include <luci/IR/CircleNodes.h>
 
+#include <limits> // std::numeric_limits
+
 #include <gtest/gtest.h>
 
 namespace

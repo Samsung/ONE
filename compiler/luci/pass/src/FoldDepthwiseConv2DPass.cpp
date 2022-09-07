@@ -23,6 +23,8 @@
 
 #include <luci/Log.h>
 
+#include <limits> // std::numeric_limits
+
 namespace
 {
 

@@ -23,6 +23,7 @@
 
 #include <loco.h>
 #include <oops/InternalExn.h>
+#include <limits> // std::numeric_limits
 
 #include <flatbuffers/flexbuffers.h>
 
