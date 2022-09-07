@@ -20,6 +20,8 @@
 #include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Service/Nodes/CircleConst.h>
 
+#include <limits> // std::numeric_limits
+
 namespace
 {
 
