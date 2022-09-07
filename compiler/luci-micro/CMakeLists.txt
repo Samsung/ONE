@@ -15,6 +15,9 @@ set(CMAKE_ARM_OPTIONS
   -DLUCI_STATIC=ON
   -DBUILD_CMSIS_NN_FUNCTIONS=ON
   -DTARGET_CPU=cortex-m7
+  -DTARGET_ARCH=armv7em
+  "-DEXT_OVERLAY_DIR=${CMAKE_CURRENT_BINARY_DIR}/../../overlay"
+  "-DFlatbuffers_DIR=${CMAKE_CURRENT_BINARY_DIR}/../../overlay/lib/cmake/flatbuffers"
   "-DCMAKE_TOOLCHAIN_FILE=${NNAS_PROJECT_SOURCE_DIR}/infra/nncc/cmake/buildtool/config/arm-none-eabi-gcc.cmake"
   "-DLUCI_INTERPRETER_PAL_DIR=${CMAKE_CURRENT_SOURCE_DIR}/../luci-interpreter/pal/mcu"
   "-DNNAS_PROJECT_SOURCE_DIR=${NNAS_PROJECT_SOURCE_DIR}"
