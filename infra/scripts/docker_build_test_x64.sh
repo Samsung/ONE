@@ -35,8 +35,7 @@ export BUILD_OPTIONS
 
 CMD="export OPTIONS='$BUILD_OPTIONS' && \
      export BUILD_TYPE=Release && \
-     cp -nv Makefile.template Makefile && \
-     make all install build_test_suite"
+     make -f Makefile.template create-testsuite"
 ./nnfw docker-run bash -c "$CMD"
 
 # Model download server setting

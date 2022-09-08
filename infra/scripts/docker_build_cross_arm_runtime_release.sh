@@ -41,11 +41,9 @@ set -e
 
 pushd $ROOT_PATH > /dev/null
 
-# TODO use command instead of makefile
 export DOCKER_ENV_VARS
 export DOCKER_VOLUMES
-CMD="cp -nv Makefile.template Makefile && \
-     make all install build_test_suite"
+CMD="make -f Makefile.template create-testsuite"
 ./nnfw docker-run bash -c "$CMD"
 
 popd > /dev/null
