@@ -30,7 +30,7 @@ namespace luci_interpreter
 class RuntimeModule
 {
 public:
-  RuntimeModule() : _circle_micro_reader(std::make_unique<luci::CircleReader>()) {}
+  RuntimeModule() : _circle_micro_reader(std::make_unique<CircleReader>()) {}
 
   RuntimeGraph *addGraph(IMemoryManager *memory_manager)
   {
@@ -46,13 +46,13 @@ public:
 
   void execute() const { getMainGraph()->execute(); }
 
-  luci::CircleReader *getCircleMicroReader() { return _circle_micro_reader.get(); }
+  CircleReader *getCircleMicroReader() { return _circle_micro_reader.get(); }
 
 private:
   RuntimeGraph *getMainGraph() const { return _graphs[0].get(); }
 
   std::vector<std::unique_ptr<RuntimeGraph>> _graphs;
-  std::unique_ptr<luci::CircleReader> _circle_micro_reader;
+  std::unique_ptr<CircleReader> _circle_micro_reader;
 };
 
 } // namespace luci_interpreter

@@ -32,7 +32,7 @@ void ModuleLoader::load()
 {
   const circle::Model *model = circle::GetModel(_model_data_raw);
 
-  luci::CircleReader *reader = _runtime_module->getCircleMicroReader();
+  CircleReader *reader = _runtime_module->getCircleMicroReader();
   if (!reader->parse(model))
     throw std::runtime_error("Error during parse");
 

@@ -37,7 +37,7 @@ build_kernel_CircleMul(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
   const auto *options = oper_t.builtin_options.AsMulOptions();
 
   MulParams params{};
-  params.activation = luci::luci_actfunc(options->fused_activation_function);
+  params.activation = luci_actfunc(options->fused_activation_function);
 
   return std::make_unique<kernels::Mul>(input1, input2, output, params);
 }

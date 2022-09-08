@@ -27,16 +27,16 @@ Dequantize::Dequantize(const Tensor *input, Tensor *output) : Kernel({input}, {o
 
 void Dequantize::configure()
 {
-  LUCI_INTERPRETER_CHECK(input()->element_type() == loco::DataType::S8 ||
-                         input()->element_type() == loco::DataType::U8 ||
-                         input()->element_type() == loco::DataType::S16);
+  LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::S8 ||
+                         input()->element_type() == DataType::U8 ||
+                         input()->element_type() == DataType::S16);
 
   LUCI_INTERPRETER_CHECK(input()->scales().size() == 1);
 
-  if (input()->element_type() == loco::DataType::S16)
+  if (input()->element_type() == DataType::S16)
     LUCI_INTERPRETER_CHECK(input()->zero_point() == 0);
 
-  LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::FLOAT32);
+  LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32);
 
   output()->resize(input()->shape());
 }
@@ -49,21 +49,21 @@ void Dequantize::execute() const
 
   switch (input()->element_type())
   {
-    case loco::DataType::U8:
+    case DataType::U8:
     {
       luci_interpreter_pal::Dequantize(op_params, getTensorShape(input()),
                                        getTensorData<uint8_t>(input()), getTensorShape(output()),
                                        getTensorData<float>(output()));
       break;
     }
-    case loco::DataType::S8:
+    case DataType::S8:
     {
       luci_interpreter_pal::Dequantize(op_params, getTensorShape(input()),
                                        getTensorData<int8_t>(input()), getTensorShape(output()),
                                        getTensorData<float>(output()));
       break;
     }
-    case loco::DataType::S16:
+    case DataType::S16:
     {
       luci_interpreter_pal::Dequantize(op_params, getTensorShape(input()),
                                        getTensorData<int16_t>(input()), getTensorShape(output()),

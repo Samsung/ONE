@@ -21,8 +21,6 @@
 #include "luci_interpreter/MemoryManager.h"
 #include "luci_interpreter/core/CircleMicroReader.h"
 
-#include <loco/IR/Graph.h>
-
 #include <unordered_map>
 
 namespace luci_interpreter
@@ -31,8 +29,7 @@ namespace luci_interpreter
 class GraphLoader
 {
 public:
-  GraphLoader(luci::CircleReader *reader, RuntimeGraph *runtime_graph,
-              IMemoryManager *memory_manager,
+  GraphLoader(CircleReader *reader, RuntimeGraph *runtime_graph, IMemoryManager *memory_manager,
               std::unordered_map<int32_t, Tensor *> *index_to_tensor);
 
   void loadTensors();
@@ -42,7 +39,7 @@ public:
 private:
   RuntimeGraph *_runtime_graph;
   IMemoryManager *_memory_manager;
-  luci::CircleReader *_reader;
+  CircleReader *_reader;
   std::unordered_map<int32_t, Tensor *> *_index_to_tensor;
 };
 

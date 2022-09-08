@@ -37,7 +37,7 @@ build_kernel_CircleAdd(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
   const auto *options = oper_t.builtin_options.AsAddOptions();
 
   AddParams params{};
-  params.activation = luci::luci_actfunc(options->fused_activation_function);
+  params.activation = luci_actfunc(options->fused_activation_function);
 
   return std::make_unique<kernels::Add>(input1, input2, output, params);
 }

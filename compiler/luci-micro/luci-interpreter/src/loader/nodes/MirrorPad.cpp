@@ -37,7 +37,7 @@ build_kernel_CircleMirrorPad(std::vector<std::pair<const Tensor *, int32_t>> &in
   const auto *options = oper_t.builtin_options.AsMirrorPadOptions();
 
   MirrorPadParams params{};
-  params.mode = luci::luci_mirrorpad_mode(options->mode);
+  params.mode = luci_mirrorpad_mode(options->mode);
 
   return std::make_unique<kernels::MirrorPad>(input, paddings, output, params);
 }

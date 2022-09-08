@@ -42,15 +42,15 @@ template <typename input_dtype> void call_requantize(const Tensor *input, Tensor
 
   switch (output->element_type())
   {
-    case loco::DataType::S8:
+    case DataType::S8:
       luci_interpreter_pal::Requantize(input_data, size, multiplier, shift, input->zero_point(),
                                        output->zero_point(), getTensorData<int8_t>(output));
       break;
-    case loco::DataType::U8:
+    case DataType::U8:
       luci_interpreter_pal::Requantize(input_data, size, multiplier, shift, input->zero_point(),
                                        output->zero_point(), getTensorData<uint8_t>(output));
       break;
-    case loco::DataType::S16:
+    case DataType::S16:
       luci_interpreter_pal::Requantize(input_data, size, multiplier, shift, input->zero_point(),
                                        output->zero_point(), getTensorData<int16_t>(output));
       break;
@@ -66,26 +66,26 @@ Quantize::Quantize(const Tensor *input, Tensor *output) : Kernel({input}, {outpu
 void Quantize::configure()
 {
 
-  if (input()->element_type() == loco::DataType::S16)
+  if (input()->element_type() == DataType::S16)
     LUCI_INTERPRETER_CHECK(input()->zero_point() == 0);
 
   switch (input()->element_type())
   {
-    case loco::DataType::FLOAT32:
+    case DataType::FLOAT32:
     {
-      LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::U8 ||
-                             output()->element_type() == loco::DataType::S8 ||
-                             output()->element_type() == loco::DataType::S16);
+      LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::U8 ||
+                             output()->element_type() == DataType::S8 ||
+                             output()->element_type() == DataType::S16);
       break;
     }
-    case loco::DataType::S16:
-    case loco::DataType::S8:
-    case loco::DataType::U8:
+    case DataType::S16:
+    case DataType::S8:
+    case DataType::U8:
     {
-      LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::S8 ||
-                             output()->element_type() == loco::DataType::U8 ||
-                             output()->element_type() == loco::DataType::S16);
-      if (output()->element_type() == loco::DataType::S16)
+      LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::S8 ||
+                             output()->element_type() == DataType::U8 ||
+                             output()->element_type() == DataType::S16);
+      if (output()->element_type() == DataType::S16)
       {
         LUCI_INTERPRETER_CHECK(output()->zero_point() == 0);
       }
@@ -102,7 +102,7 @@ void Quantize::execute() const
 {
   switch (input()->element_type())
   {
-    case loco::DataType::FLOAT32:
+    case DataType::FLOAT32:
     {
       tflite::QuantizationParams op_params;
       op_params.zero_point = output()->zero_point();
@@ -111,20 +111,20 @@ void Quantize::execute() const
 
       switch (output()->element_type())
       {
-        case loco::DataType::S8:
+        case DataType::S8:
         {
           luci_interpreter_pal::Quantize(op_params, getTensorShape(input()), input_data,
                                          getTensorShape(output()), getTensorData<int8_t>(output()));
           break;
         }
-        case loco::DataType::U8:
+        case DataType::U8:
         {
           luci_interpreter_pal::Quantize(op_params, getTensorShape(input()), input_data,
                                          getTensorShape(output()),
                                          getTensorData<uint8_t>(output()));
           break;
         }
-        case loco::DataType::S16:
+        case DataType::S16:
         {
           luci_interpreter_pal::Quantize(op_params, getTensorShape(input()), input_data,
                                          getTensorShape(output()),
@@ -136,17 +136,17 @@ void Quantize::execute() const
       }
       break;
     }
-    case loco::DataType::S16:
+    case DataType::S16:
     {
       call_requantize<int16_t>(input(), output());
       break;
     }
-    case loco::DataType::S8:
+    case DataType::S8:
     {
       call_requantize<int8_t>(input(), output());
       break;
     }
-    case loco::DataType::U8:
+    case DataType::U8:
     {
       call_requantize<uint8_t>(input(), output());
       break;

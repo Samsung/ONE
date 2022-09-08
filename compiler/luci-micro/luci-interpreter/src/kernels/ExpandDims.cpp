@@ -33,10 +33,10 @@ void ExpandDims::configure()
 
   switch (axis()->element_type())
   {
-    case loco::DataType::S32:
+    case DataType::S32:
       axis_value = *getTensorData<int32_t>(axis());
       break;
-    case loco::DataType::S64:
+    case DataType::S64:
       axis_value = static_cast<int32_t>(*getTensorData<int64_t>(axis()));
       break;
     default:

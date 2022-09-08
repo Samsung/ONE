@@ -17,7 +17,6 @@
 #include "Builders.h"
 
 #include "kernels/BatchMatMul.h"
-#include <luci/Plan/CircleNodeExecutionPlan.h>
 
 namespace luci_interpreter
 {

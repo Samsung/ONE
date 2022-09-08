@@ -21,8 +21,6 @@
 #include "luci_interpreter/MemoryManager.h"
 #include "luci_interpreter/core/CircleMicroReader.h"
 
-#include <luci/IR/Module.h>
-
 #include <unordered_map>
 
 namespace luci_interpreter

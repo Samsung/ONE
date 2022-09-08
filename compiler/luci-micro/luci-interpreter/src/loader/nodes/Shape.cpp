@@ -35,7 +35,7 @@ build_kernel_CircleShape(std::vector<std::pair<const Tensor *, int32_t>> &inputs
   const auto *options = oper_t.builtin_options.AsShapeOptions();
 
   ShapeParams shape_params{};
-  shape_params.out_type = luci::luci_datatype(options->out_type);
+  shape_params.out_type = luci_datatype(options->out_type);
 
   return std::make_unique<kernels::ShapeKernel>(input, output, shape_params);
 }

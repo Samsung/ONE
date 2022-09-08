@@ -21,8 +21,6 @@
 #include "luci_interpreter/core/CircleMicroReader.h"
 #include "core/RuntimeGraph.h"
 
-#include "luci/IR/CircleNodes.h"
-
 namespace luci_interpreter
 {
 

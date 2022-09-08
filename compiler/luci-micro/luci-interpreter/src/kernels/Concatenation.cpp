@@ -40,7 +40,7 @@ void Concatenation::configure()
   const Tensor *t0 = _inputs[0];
 
   // TODO: Support concat with fused activation function
-  LUCI_INTERPRETER_CHECK(params().activation == luci::FusedActFunc::NONE);
+  LUCI_INTERPRETER_CHECK(params().activation == FusedActFunc::NONE);
 
   int axis = _params.axis;
   if (axis < 0)

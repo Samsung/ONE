@@ -40,7 +40,7 @@ build_kernel_CircleConcatenation(std::vector<std::pair<const Tensor *, int32_t>>
 
   ConcatenationParams params{};
   params.axis = options->axis;
-  params.activation = luci::luci_actfunc(options->fused_activation_function);
+  params.activation = luci_actfunc(options->fused_activation_function);
 
   return std::make_unique<kernels::Concatenation>(std::move(input_tensors), output, params);
 }

@@ -38,7 +38,7 @@ build_kernel_CircleFullyConnected(std::vector<std::pair<const Tensor *, int32_t>
   const auto *options = oper_t.builtin_options.AsFullyConnectedOptions();
 
   FullyConnectedParams params{};
-  params.activation = luci::luci_actfunc(options->fused_activation_function);
+  params.activation = luci_actfunc(options->fused_activation_function);
   params.keep_num_dims = options->keep_num_dims;
 
   return std::make_unique<kernels::FullyConnected>(input, weights, bias, output, params);

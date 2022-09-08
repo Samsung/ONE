@@ -36,7 +36,7 @@ build_kernel_CircleL2Normalize(std::vector<std::pair<const Tensor *, int32_t>> &
   const auto *options = oper_t.builtin_options.AsL2NormOptions();
 
   L2NormParams params{};
-  params.activation = luci::luci_actfunc(options->fused_activation_function);
+  params.activation = luci_actfunc(options->fused_activation_function);
 
   return std::make_unique<kernels::L2Normalize>(input, output, params);
 }

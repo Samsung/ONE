@@ -61,13 +61,12 @@ void Fill::configure()
   LUCI_INTERPRETER_CHECK(value_shape.num_dims() == 0)
 
   // Check zero point and scale for S16 and S8
-  if (value()->element_type() == loco::DataType::S16 or
-      value()->element_type() == loco::DataType::S8)
+  if (value()->element_type() == DataType::S16 or value()->element_type() == DataType::S8)
   {
     LUCI_INTERPRETER_CHECK(value()->scale() == output()->scale());
     LUCI_INTERPRETER_CHECK(value()->zero_point() == output()->zero_point());
 
-    if (value()->element_type() == loco::DataType::S16)
+    if (value()->element_type() == DataType::S16)
       LUCI_INTERPRETER_CHECK(value()->zero_point() == 0);
   }
   // Resize output

@@ -116,13 +116,13 @@ void OneHot::execute() const
 
   switch (output()->element_type())
   {
-    case loco::DataType::FLOAT32:
+    case DataType::FLOAT32:
       OneHotComputeImpl<float>(indices(), on_value(), off_value(), depth_value, axis, output());
       break;
-    case loco::DataType::U8:
+    case DataType::U8:
       OneHotComputeImpl<uint8_t>(indices(), on_value(), off_value(), depth_value, axis, output());
       break;
-    case loco::DataType::S16:
+    case DataType::S16:
       OneHotComputeImpl<int16_t>(indices(), on_value(), off_value(), depth_value, axis, output());
       break;
     default:

@@ -17,10 +17,8 @@
 #ifndef LUCI_INTERPRETER_CORE_KERNELPARAMS_H
 #define LUCI_INTERPRETER_CORE_KERNELPARAMS_H
 
-#include <luci/IR/AttrPadding.h>
-#include <luci/IR/AttrFusedActFunc.h>
-#include <luci/IR/AttrMirrorPadMode.h>
-#include <luci_interpreter/core/DataType.h>
+#include "luci_interpreter/core/DataType.h"
+#include "luci_interpreter/core/ParamsType.h"
 
 #include <cstdint>
 #include <vector>
@@ -28,10 +26,7 @@
 namespace luci_interpreter
 {
 
-// Inject commonly used types into `luci_interpreter` namespace for convenience.
-using Activation = luci::FusedActFunc;
-using Padding = luci::Padding;
-using MirrorPadMode = luci::MirrorPadMode;
+using Activation = FusedActFunc;
 
 struct AddParams
 {
@@ -172,7 +167,7 @@ struct ResizeNearestNeighborParams
 
 struct ShapeParams
 {
-  loco::DataType out_type;
+  DataType out_type;
 };
 
 struct SubParams
