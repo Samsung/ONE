@@ -18,13 +18,10 @@
 
 #include "loader/KernelBuilder.h"
 
-#include <luci/Plan/CircleNodeExecutionPlan.h>
-#include <loco/IR/Algorithm.h>
-
 namespace luci_interpreter
 {
 
-GraphLoader::GraphLoader(luci::CircleReader *reader, RuntimeGraph *runtime_graph,
+GraphLoader::GraphLoader(CircleReader *reader, RuntimeGraph *runtime_graph,
                          IMemoryManager *memory_manager,
                          std::unordered_map<int32_t, Tensor *> *index_to_tensor)
   : _reader(reader), _runtime_graph(runtime_graph), _memory_manager(memory_manager),
@@ -43,8 +40,8 @@ void GraphLoader::loadTensors()
     if (const_tensor->is_variable())
       continue;
 
-    auto const buffer = luci::wrap(_reader->buffers()[const_tensor->buffer()]->data());
-    auto const const_dims = luci::wrap(const_tensor->shape()); // in NHWC
+    auto const buffer = wrap(_reader->buffers()[const_tensor->buffer()]->data());
+    auto const const_dims = wrap(const_tensor->shape()); // in NHWC
     if (const_dims.empty() && buffer.empty())
     {
       // unknown shape tensor and scalar tensor
@@ -70,10 +67,10 @@ void GraphLoader::loadTensors()
     }
 
     //  Create dtype
-    const auto dtype = luci::luci_datatype(const_tensor->type());
+    const auto dtype = luci_datatype(const_tensor->type());
 
     AffineQuantization quantization;
-    if (dtype == loco::DataType::U8 or dtype == loco::DataType::S8 or dtype == loco::DataType::S16)
+    if (dtype == DataType::U8 or dtype == DataType::S8 or dtype == DataType::S16)
     {
       const auto quant_params = const_tensor->quantization();
       assert(quant_params->zero_point()->size() == quant_params->scale()->size());
@@ -103,8 +100,8 @@ void GraphLoader::initInputTensors() const
   for (const auto input_ind : _reader->inputs())
   {
     const auto tensor = _reader->tensors()[input_ind];
-    const auto dtype = luci::luci_datatype(tensor->type());
-    const auto tensor_shape = luci::wrap(tensor->shape());
+    const auto dtype = luci_datatype(tensor->type());
+    const auto tensor_shape = wrap(tensor->shape());
 
     Shape shape(static_cast<int>(tensor_shape.size()));
     for (int i = 0; i < tensor_shape.size(); ++i)
@@ -113,7 +110,7 @@ void GraphLoader::initInputTensors() const
     }
 
     AffineQuantization quantization;
-    if (dtype == loco::DataType::U8 or dtype == loco::DataType::S8 or dtype == loco::DataType::S16)
+    if (dtype == DataType::U8 or dtype == DataType::S8 or dtype == DataType::S16)
     {
       const auto quant_params = tensor->quantization();
       assert(quant_params->zero_point()->size() == quant_params->scale()->size());
@@ -163,8 +160,8 @@ void GraphLoader::loadOperators()
       const auto output_index = op->outputs()->operator[](j);
 
       const auto tensor = _reader->tensors()[output_index];
-      const auto dtype = luci::luci_datatype(tensor->type());
-      const auto tensor_shape = luci::wrap(tensor->shape());
+      const auto dtype = luci_datatype(tensor->type());
+      const auto tensor_shape = wrap(tensor->shape());
 
       Shape shape(static_cast<int>(tensor_shape.size()));
       for (int k = 0; k < tensor_shape.size(); ++k)
@@ -173,8 +170,7 @@ void GraphLoader::loadOperators()
       }
 
       AffineQuantization quantization;
-      if (dtype == loco::DataType::U8 or dtype == loco::DataType::S8 or
-          dtype == loco::DataType::S16)
+      if (dtype == DataType::U8 or dtype == DataType::S8 or dtype == DataType::S16)
       {
         const auto quant_params = tensor->quantization();
         assert(quant_params->zero_point()->size() == quant_params->scale()->size());

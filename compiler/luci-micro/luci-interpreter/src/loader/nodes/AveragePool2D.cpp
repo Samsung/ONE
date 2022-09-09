@@ -17,7 +17,6 @@
 #include "Builders.h"
 
 #include "kernels/AveragePool2D.h"
-#include <luci/Plan/CircleNodeExecutionPlan.h>
 
 namespace luci_interpreter
 {
@@ -37,12 +36,12 @@ build_kernel_CircleAveragePool2D(std::vector<std::pair<const Tensor *, int32_t>>
   const auto *options = oper_t.builtin_options.AsPool2DOptions();
 
   Pool2DParams params{};
-  params.padding = luci::luci_padding(options->padding);
+  params.padding = luci_padding(options->padding);
   params.filter_height = options->filter_height;
   params.filter_width = options->filter_width;
   params.stride_height = options->stride_h;
   params.stride_width = options->stride_w;
-  params.activation = luci::luci_actfunc(options->fused_activation_function);
+  params.activation = luci_actfunc(options->fused_activation_function);
 
   // It is unknown what data will be stored in scratchpad tensor,
   // using UINT8 as a most general option

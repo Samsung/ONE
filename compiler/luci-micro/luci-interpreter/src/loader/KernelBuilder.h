@@ -21,7 +21,6 @@
 #include "core/RuntimeGraph.h"
 
 #include "luci_interpreter/core/CircleMicroReader.h"
-#include <luci/IR/CircleNodeVisitor.h>
 
 #include <memory>
 #include <unordered_map>
@@ -34,7 +33,7 @@ class KernelBuilderRegistry;
 class KernelBuilder
 {
 public:
-  KernelBuilder(RuntimeGraph *runtime_graph, luci::CircleReader *circle_reader);
+  KernelBuilder(RuntimeGraph *runtime_graph, CircleReader *circle_reader);
 
   ~KernelBuilder();
 
@@ -42,14 +41,14 @@ public:
                                 std::vector<std::pair<Tensor *, int32_t>> &output,
                                 uint32_t op_index);
 
-  luci::CircleReader *get_circle_reader() { return _circle_reader; }
+  CircleReader *get_circle_reader() { return _circle_reader; }
 
   RuntimeGraph *get_runtime_graph() { return _runtime_graph; }
 
 private:
   std::unique_ptr<KernelBuilderRegistry> _builder_registry;
   RuntimeGraph *_runtime_graph;
-  luci::CircleReader *_circle_reader;
+  CircleReader *_circle_reader;
 };
 
 } // namespace luci_interpreter

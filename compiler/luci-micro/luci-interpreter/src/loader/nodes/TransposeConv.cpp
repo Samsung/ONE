@@ -47,7 +47,7 @@ build_kernel_CircleTransposeConv(std::vector<std::pair<const Tensor *, int32_t>>
   const auto *options = oper_t.builtin_options.AsTransposeConvOptions();
 
   TransposeConvParams params{};
-  params.padding = luci::luci_padding(options->padding);
+  params.padding = luci_padding(options->padding);
   params.stride_height = options->stride_h;
   params.stride_width = options->stride_w;
 

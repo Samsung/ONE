@@ -17,7 +17,6 @@
 #include "Builders.h"
 
 #include "kernels/DepthwiseConv2D.h"
-#include <luci/Plan/CircleNodeExecutionPlan.h>
 
 namespace luci_interpreter
 {
@@ -39,13 +38,13 @@ build_kernel_CircleDepthwiseConv2D(std::vector<std::pair<const Tensor *, int32_t
   const auto *options = oper_t.builtin_options.AsDepthwiseConv2DOptions();
 
   DepthwiseConv2DParams params{};
-  params.padding = luci::luci_padding(options->padding);
+  params.padding = luci_padding(options->padding);
   params.depth_multiplier = options->depth_multiplier;
   params.stride_height = options->stride_h;
   params.stride_width = options->stride_w;
   params.dilation_height_factor = options->dilation_h_factor;
   params.dilation_width_factor = options->dilation_w_factor;
-  params.activation = luci::luci_actfunc(options->fused_activation_function);
+  params.activation = luci_actfunc(options->fused_activation_function);
 
   // It is unknown what data will be stored in scratchpad tensor,
   // using UINT8 as a most general option

@@ -14,41 +14,28 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_IMPORT_GRAPHREADER_H__
-#define __LUCI_IMPORT_GRAPHREADER_H__
+#ifndef __LUCI_MICRO_INTERPRETER_MICRO_READER_H__
+#define __LUCI_MICRO_INTERPRETER_MICRO_READER_H__
+
+#include "ParamsType.h"
+#include "DataType.h"
 
 #include <mio/circle/schema_generated.h>
-
-#include <luci/IR/AttrFusedActFunc.h>
-#include <luci/IR/AttrPadding.h>
-#include <luci/IR/CircleNode.h>
-#include <luci/IR/CircleQuantParam.h>
-#include <luci/IR/SparsityParam.h>
-
-#include <loco.h>
 
 #include <map>
 #include <memory>
 #include <string>
 #include <vector>
 
-namespace luci
+namespace luci_interpreter
 {
 
 const char *tensor_name(const circle::Tensor *tensor);
-const circle::QuantizationParameters *tensor_quantization(const circle::Tensor *tensor);
 
-loco::DataType luci_datatype(circle::TensorType type);
-FusedActFunc luci_actfunc(const circle::ActivationFunctionType type);
-Padding luci_padding(const circle::Padding padding);
-MirrorPadMode luci_mirrorpad_mode(const circle::MirrorPadMode mode);
-luci::CircleFullyConnected::WeightsFormat
-luci_weights_format(const circle::FullyConnectedOptionsWeightsFormat weights_format);
-std::unique_ptr<CircleQuantParam>
-luci_quantparam(const circle::QuantizationParameters *quantization);
-
-/// @brief Copy common tensor attributes such as name, type, etc. to node.
-void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node);
+DataType luci_datatype(circle::TensorType type);
+FusedActFunc luci_actfunc(circle::ActivationFunctionType type);
+Padding luci_padding(circle::Padding padding);
+MirrorPadMode luci_mirrorpad_mode(circle::MirrorPadMode mode);
 
 std::string fb_string2std_string(const flatbuffers::String *fb_str);
 
@@ -123,6 +110,6 @@ private:
   const circle::SubGraph *_current_subgraph{nullptr};
 };
 
-} // namespace luci
+} // namespace luci_interpreter
 
-#endif // __LUCI_IMPORT_GRAPHREADER_H__
+#endif // __LUCI_MICRO_INTERPRETER_MICRO_READER_H__

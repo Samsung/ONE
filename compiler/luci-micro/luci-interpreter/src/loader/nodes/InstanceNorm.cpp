@@ -40,7 +40,7 @@ build_kernel_CircleInstanceNorm(std::vector<std::pair<const Tensor *, int32_t>> 
 
   InstanceNormParams params{};
   params.epsilon = options->epsilon;
-  params.activation = luci::luci_actfunc(options->fused_activation_function);
+  params.activation = luci_actfunc(options->fused_activation_function);
 
   return std::make_unique<kernels::InstanceNorm>(input, gamma, beta, output, params);
 }

@@ -79,7 +79,7 @@ build_kernel_CircleSVDF(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
   const auto *options = oper_t.builtin_options.AsSVDFOptions();
 
   SVDFParams params{};
-  params.activation = luci::luci_actfunc(options->fused_activation_function);
+  params.activation = luci_actfunc(options->fused_activation_function);
   params.svdf_rank = options->rank;
   params.asymmetric_quantize_inputs = options->asymmetric_quantize_inputs;
 

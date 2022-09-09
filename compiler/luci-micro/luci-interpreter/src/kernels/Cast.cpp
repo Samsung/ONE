@@ -38,34 +38,34 @@ template <typename InT> void cast_from_pointer_to_tensor(const InT *in_data, Ten
 
   switch (out_type)
   {
-    case loco::DataType::U8:
+    case DataType::U8:
       cast_data(in_data, getTensorData<uint8_t>(out_tensor), elements_count);
       break;
-    case loco::DataType::U16:
+    case DataType::U16:
       cast_data(in_data, getTensorData<uint16_t>(out_tensor), elements_count);
       break;
-    case loco::DataType::U32:
+    case DataType::U32:
       cast_data(in_data, getTensorData<uint32_t>(out_tensor), elements_count);
       break;
-    case loco::DataType::U64:
+    case DataType::U64:
       cast_data(in_data, getTensorData<uint64_t>(out_tensor), elements_count);
       break;
-    case loco::DataType::S8:
+    case DataType::S8:
       cast_data(in_data, getTensorData<int8_t>(out_tensor), elements_count);
       break;
-    case loco::DataType::S16:
+    case DataType::S16:
       cast_data(in_data, getTensorData<int16_t>(out_tensor), elements_count);
       break;
-    case loco::DataType::S32:
+    case DataType::S32:
       cast_data(in_data, getTensorData<int32_t>(out_tensor), elements_count);
       break;
-    case loco::DataType::S64:
+    case DataType::S64:
       cast_data(in_data, getTensorData<int64_t>(out_tensor), elements_count);
       break;
-    case loco::DataType::FLOAT32:
+    case DataType::FLOAT32:
       cast_data(in_data, getTensorData<float>(out_tensor), elements_count);
       break;
-    case loco::DataType::BOOL:
+    case DataType::BOOL:
       cast_data(in_data, getTensorData<bool>(out_tensor), elements_count);
       break;
     default:
@@ -79,34 +79,34 @@ void cast_from_tensor_to_tensor(const Tensor *in_tensor, Tensor *out_tensor)
 
   switch (in_type)
   {
-    case loco::DataType::U8:
+    case DataType::U8:
       cast_from_pointer_to_tensor(getTensorData<uint8_t>(in_tensor), out_tensor);
       break;
-    case loco::DataType::U16:
+    case DataType::U16:
       cast_from_pointer_to_tensor(getTensorData<uint16_t>(in_tensor), out_tensor);
       break;
-    case loco::DataType::U32:
+    case DataType::U32:
       cast_from_pointer_to_tensor(getTensorData<uint32_t>(in_tensor), out_tensor);
       break;
-    case loco::DataType::U64:
+    case DataType::U64:
       cast_from_pointer_to_tensor(getTensorData<uint64_t>(in_tensor), out_tensor);
       break;
-    case loco::DataType::S8:
+    case DataType::S8:
       cast_from_pointer_to_tensor(getTensorData<int8_t>(in_tensor), out_tensor);
       break;
-    case loco::DataType::S16:
+    case DataType::S16:
       cast_from_pointer_to_tensor(getTensorData<int16_t>(in_tensor), out_tensor);
       break;
-    case loco::DataType::S32:
+    case DataType::S32:
       cast_from_pointer_to_tensor(getTensorData<int32_t>(in_tensor), out_tensor);
       break;
-    case loco::DataType::S64:
+    case DataType::S64:
       cast_from_pointer_to_tensor(getTensorData<int64_t>(in_tensor), out_tensor);
       break;
-    case loco::DataType::FLOAT32:
+    case DataType::FLOAT32:
       cast_from_pointer_to_tensor(getTensorData<float>(in_tensor), out_tensor);
       break;
-    case loco::DataType::BOOL:
+    case DataType::BOOL:
       cast_from_pointer_to_tensor(getTensorData<bool>(in_tensor), out_tensor);
       break;
     default:
@@ -125,8 +125,8 @@ Cast::Cast(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
 
 void Cast::configure()
 {
-  LUCI_INTERPRETER_CHECK(input()->element_type() != loco::DataType::Unknown);
-  LUCI_INTERPRETER_CHECK(output()->element_type() != loco::DataType::Unknown);
+  LUCI_INTERPRETER_CHECK(input()->element_type() != DataType::Unknown);
+  LUCI_INTERPRETER_CHECK(output()->element_type() != DataType::Unknown);
 
   const Shape &shape = input()->shape();
   output()->resize(shape);

@@ -17,7 +17,6 @@
 #include "Builders.h"
 
 #include "kernels/Conv2D.h"
-#include <luci/Plan/CircleNodeExecutionPlan.h>
 
 namespace luci_interpreter
 {
@@ -47,12 +46,12 @@ build_kernel_CircleConv2D(std::vector<std::pair<const Tensor *, int32_t>> &input
   const auto *options = oper_t.builtin_options.AsConv2DOptions();
 
   Conv2DParams params{};
-  params.padding = luci::luci_padding(options->padding);
+  params.padding = luci_padding(options->padding);
   params.stride_height = options->stride_h;
   params.stride_width = options->stride_w;
   params.dilation_height_factor = options->dilation_h_factor;
   params.dilation_width_factor = options->dilation_w_factor;
-  params.activation = luci::luci_actfunc(options->fused_activation_function);
+  params.activation = luci_actfunc(options->fused_activation_function);
 
   return std::make_unique<kernels::Conv2D>(input, filter, bias, output, tmp, params);
 }

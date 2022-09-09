@@ -32,17 +32,17 @@ TfLiteFusedActivation get_tflite_activation(Activation activation)
 {
   switch (activation)
   {
-    case luci::FusedActFunc::RELU:
+    case FusedActFunc::RELU:
       return kTfLiteActRelu;
-    case luci::FusedActFunc::RELU6:
+    case FusedActFunc::RELU6:
       return kTfLiteActRelu6;
-    case luci::FusedActFunc::RELU_N1_TO_1:
+    case FusedActFunc::RELU_N1_TO_1:
       return kTfLiteActReluN1To1;
-    case luci::FusedActFunc::TANH:
+    case FusedActFunc::TANH:
       return kTfLiteActTanh;
-    case luci::FusedActFunc::SIGN_BIT:
+    case FusedActFunc::SIGN_BIT:
       return kTfLiteActSignBit;
-    case luci::FusedActFunc::NONE:
+    case FusedActFunc::NONE:
       return kTfLiteActNone;
     default:
       throw std::runtime_error("Unsupported activation type");
@@ -70,38 +70,38 @@ void SVDF::configure()
   const Shape &weight_time_shape = weight_time()->shape();
 
   // Validate Input Tensor:
-  LUCI_INTERPRETER_CHECK(input()->element_type() == loco::DataType::FLOAT32 ||
-                         input()->element_type() == loco::DataType::S8);
+  LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::FLOAT32 ||
+                         input()->element_type() == DataType::S8);
   LUCI_INTERPRETER_CHECK(input_shape.num_dims() == 2);
 
   // Validate inputs and output types
-  if (input()->element_type() == loco::DataType::S8)
+  if (input()->element_type() == DataType::S8)
   {
-    LUCI_INTERPRETER_CHECK(weight_feature()->element_type() == loco::DataType::S8);
-    LUCI_INTERPRETER_CHECK(weight_time()->element_type() == loco::DataType::S16 ||
-                           weight_time()->element_type() == loco::DataType::S8);
+    LUCI_INTERPRETER_CHECK(weight_feature()->element_type() == DataType::S8);
+    LUCI_INTERPRETER_CHECK(weight_time()->element_type() == DataType::S16 ||
+                           weight_time()->element_type() == DataType::S8);
     if (bias())
-      LUCI_INTERPRETER_CHECK(bias()->element_type() == loco::DataType::S32);
+      LUCI_INTERPRETER_CHECK(bias()->element_type() == DataType::S32);
 
-    LUCI_INTERPRETER_CHECK(input_activation_state()->element_type() == loco::DataType::S16 ||
-                           input_activation_state()->element_type() == loco::DataType::S8);
-    LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::S8);
+    LUCI_INTERPRETER_CHECK(input_activation_state()->element_type() == DataType::S16 ||
+                           input_activation_state()->element_type() == DataType::S8);
+    LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::S8);
 
     // Note: now tflite support only ReLU activation for integer SVDF
-    LUCI_INTERPRETER_CHECK(params().activation == luci::FusedActFunc::RELU);
+    LUCI_INTERPRETER_CHECK(params().activation == FusedActFunc::RELU);
   }
-  else if (weight_feature()->element_type() == loco::DataType::FLOAT32)
+  else if (weight_feature()->element_type() == DataType::FLOAT32)
   {
-    LUCI_INTERPRETER_CHECK(weight_feature()->element_type() == loco::DataType::FLOAT32);
-    LUCI_INTERPRETER_CHECK(weight_time()->element_type() == loco::DataType::FLOAT32);
-    LUCI_INTERPRETER_CHECK(input_activation_state()->element_type() == loco::DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(weight_feature()->element_type() == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(weight_time()->element_type() == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(input_activation_state()->element_type() == DataType::FLOAT32);
     if (bias())
-      LUCI_INTERPRETER_CHECK(bias()->element_type() == loco::DataType::FLOAT32);
-    LUCI_INTERPRETER_CHECK(output()->element_type() == loco::DataType::FLOAT32);
+      LUCI_INTERPRETER_CHECK(bias()->element_type() == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32);
   }
-  else if ((weight_feature()->element_type() == loco::DataType::U8 ||
-            weight_feature()->element_type() == loco::DataType::S8) &&
-           input()->element_type() == loco::DataType::FLOAT32)
+  else if ((weight_feature()->element_type() == DataType::U8 ||
+            weight_feature()->element_type() == DataType::S8) &&
+           input()->element_type() == DataType::FLOAT32)
   {
     // TODO:: support hybrid SVDF op
     throw std::runtime_error("Hybrid type is not currently supported");
@@ -156,12 +156,12 @@ void SVDF::execute() const
 {
   switch (weight_feature()->element_type())
   {
-    case loco::DataType::FLOAT32:
+    case DataType::FLOAT32:
       evalFloat();
       break;
-    case loco::DataType::S8:
+    case DataType::S8:
     {
-      if (input()->element_type() == loco::DataType::S8)
+      if (input()->element_type() == DataType::S8)
         evalInteger();
       else
         // TODO:: support hybrid SVDF op

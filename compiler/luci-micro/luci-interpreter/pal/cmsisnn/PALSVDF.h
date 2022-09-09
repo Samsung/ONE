@@ -161,9 +161,9 @@ static inline void SetupScratchpadTensor(
   const luci_interpreter::Shape input_shape, const luci_interpreter::Shape weight_time_shape,
   const int32_t batch_size, const int32_t num_filters, const int32_t num_units)
 {
-  if (input_data_type == loco::DataType::FLOAT32 &&
-      (weight_feature_data_type == loco::DataType::S8 ||
-       weight_feature_data_type == loco::DataType::U8))
+  if (input_data_type == luci_interpreter::DataType::FLOAT32 &&
+      (weight_feature_data_type == luci_interpreter::DataType::S8 ||
+       weight_feature_data_type == luci_interpreter::DataType::U8))
   {
     (void)input_shape;
     (void)weight_time_shape;
@@ -178,7 +178,7 @@ static inline void SetupScratchpadTensor(
   // Resize scratchpad_1 tensor
   scratchpad_1->resize({batch_size, num_filters});
 
-  if (input_data_type == loco::DataType::S8)
+  if (input_data_type == luci_interpreter::DataType::S8)
   {
     // Resize scratchpad_2 for full_integer op
     scratchpad_2->resize({batch_size, num_units});
