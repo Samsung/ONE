@@ -143,6 +143,7 @@ void SVDF::configure()
   auto scratchpad_activation_state = getOutputTensors()[1];
   scratchpad_activation_state->resize({batch_size, memory_size * num_filters});
 
+  // TODO: enable it only if kernel with dynamic shapes
   // Resize output tensor
   output()->resize({batch_size, num_units});
 

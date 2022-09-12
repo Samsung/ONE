@@ -42,6 +42,7 @@ void Relu::configure()
     double multiplier = input()->scale() / output()->scale();
     quantizeMultiplier(multiplier, &_output_multiplier, &_output_shift);
   }
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
 }
 

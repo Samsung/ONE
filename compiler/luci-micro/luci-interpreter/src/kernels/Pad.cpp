@@ -56,7 +56,7 @@ void Pad::configure()
     assert(padding_before >= 0 && padding_after >= 0);
     output_shape.dim(i) = input_shape.dim(i) + padding_before + padding_after;
   }
-
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(output_shape);
 }
 

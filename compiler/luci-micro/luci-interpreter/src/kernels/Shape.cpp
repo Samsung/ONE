@@ -35,7 +35,7 @@ void ShapeKernel::configure()
 
   Shape output_shape(1);
   output_shape.dim(0) = input_shape.num_dims();
-
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(output_shape);
 }
 

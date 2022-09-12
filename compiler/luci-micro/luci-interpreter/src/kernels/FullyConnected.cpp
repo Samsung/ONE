@@ -73,6 +73,7 @@ void FullyConnected::configure()
   if (bias())
     LUCI_INTERPRETER_CHECK(bias()->shape().num_elements() == weights()->shape().dim(0));
 
+  // TODO: enable it only if kernel with dynamic shapes
   if (params().keep_num_dims == false)
   {
     output()->resize({batch_size, num_units});

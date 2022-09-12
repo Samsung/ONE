@@ -129,6 +129,7 @@ void Cast::configure()
   LUCI_INTERPRETER_CHECK(output()->element_type() != DataType::Unknown);
 
   const Shape &shape = input()->shape();
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(shape);
 }
 

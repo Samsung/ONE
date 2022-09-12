@@ -37,6 +37,7 @@ void FloorDiv::configure()
   LUCI_INTERPRETER_CHECK(x()->element_type() == output()->element_type());
   LUCI_INTERPRETER_CHECK(y()->element_type() == output()->element_type());
 
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(calculateShapeForBroadcast(x()->shape(), y()->shape()));
 }
 

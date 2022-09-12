@@ -52,6 +52,7 @@ void DepthToSpace::configure()
   output_shape.dim(2) = output_width;
   output_shape.dim(3) = output_channels;
 
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(output_shape);
 }
 

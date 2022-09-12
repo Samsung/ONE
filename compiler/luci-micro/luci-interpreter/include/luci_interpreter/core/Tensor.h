@@ -89,7 +89,7 @@ struct AffineQuantization
 class Tensor
 {
 public:
-  Tensor(DataType element_type, Shape shape, AffineQuantization quantization, std::string name);
+  Tensor(DataType element_type, Shape shape, AffineQuantization *quantization);
 
   DataType element_type() const { return _element_type; }
 
@@ -97,21 +97,21 @@ public:
 
   float scale() const
   {
-    assert(_quantization.scale.size() == 1);
-    return _quantization.scale[0];
+    assert(_quantization->scale.size() == 1);
+    return _quantization->scale[0];
   }
 
   int32_t zero_point() const
   {
-    assert(_quantization.zero_point.size() == 1);
-    return _quantization.zero_point[0];
+    assert(_quantization->zero_point.size() == 1);
+    return _quantization->zero_point[0];
   }
 
-  const std::vector<float> &scales() const { return _quantization.scale; }
+  const std::vector<float> &scales() const { return _quantization->scale; }
 
-  const std::vector<int32_t> &zero_points() const { return _quantization.zero_point; }
+  const std::vector<int32_t> &zero_points() const { return _quantization->zero_point; }
 
-  int32_t quantized_dimension() const { return _quantization.quantized_dimension; }
+  int32_t quantized_dimension() const { return _quantization->quantized_dimension; }
 
   template <typename T> const T *data() const
   {
@@ -126,8 +126,6 @@ public:
                   std::is_same<uint8_t, unsigned char>::value);
     return reinterpret_cast<T *>(_data);
   }
-
-  const std::string &name() const { return _name; }
 
   void readData(void *data_ptr, size_t data_size) const;
 
@@ -160,24 +158,17 @@ public:
 
   bool is_data_allocated() const { return _data_allocated; }
 
-  int32_t get_offset() const { return _offset; }
-
-  void set_offset(int32_t offset) { _offset = offset; }
-
 private:
   DataType _element_type;
   Shape _shape;
-  AffineQuantization _quantization;
+  AffineQuantization *_quantization;
   uint8_t *_data;
-  std::string _name;
   bool _data_allocated = false;
   // Memory manager is called for tensor only if it is "allocatable".
   // Kernel configuration could disable allocation of some tensors if they are not needed for
   // particular operation.
   bool _is_allocatable = true;
-  // Used by static memory manager.
-  // Stores the offset from the beginning of the allocated memory buffer.
-  int32_t _offset = -1;
+  // TODO: add Static Manager support
 };
 
 } // namespace luci_interpreter

@@ -41,7 +41,7 @@ void Split::configure()
   const int32_t input_size = input()->shape().dim(_axis_value);
   assert(input_size % _outputs.size() == 0);
   const int32_t slice_size = input_size / _outputs.size();
-
+  // TODO: enable it only if kernel with dynamic shapes
   Shape output_shape = input()->shape();
   output_shape.dim(_axis_value) = slice_size;
   for (Tensor *output : _outputs)

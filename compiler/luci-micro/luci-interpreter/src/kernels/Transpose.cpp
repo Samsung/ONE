@@ -51,6 +51,7 @@ void Transpose::configure()
     assert(perm_data[i] < dims && perm_data[i] >= 0);
     output_shape.dim(i) = input()->shape().dim(perm_data[i]);
   }
+  // TODO: enable it only if kernel with dynamic shapes
 
   output()->resize(output_shape);
 }

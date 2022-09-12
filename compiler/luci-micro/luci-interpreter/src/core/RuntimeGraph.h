@@ -31,15 +31,12 @@ class RuntimeModule;
 
 class RuntimeGraph
 {
-private:
-  class TensorAllocPlan;
-  friend class TensorAllocPlan;
-
 public:
   explicit RuntimeGraph(RuntimeModule *owning_module, IMemoryManager *memory_manager);
   ~RuntimeGraph();
 
   Tensor *addTensor(std::unique_ptr<Tensor> &&tensor);
+  AffineQuantization *addAffineQuantization(std::unique_ptr<AffineQuantization> &&quantization);
 
   void addInputTensor(Tensor *input_tensor);
   void addOutputTensor(Tensor *output_tensor);
@@ -54,19 +51,32 @@ public:
 
   void addKernel(std::unique_ptr<Kernel> &&kernel);
 
-  void execute() const;
+  void execute();
+  void configure();
+
+  void invalidate() { _is_valid = false; }
+  bool isValid() const { return _is_valid; }
+
+private:
+  void buildAllocDeallocPlan();
+  void allocate(size_t kernel_index) const;
+  void deallocate(size_t kernel_index) const;
 
 private:
   IMemoryManager *_memory_manager;
   RuntimeModule *_owning_module;
   std::vector<std::unique_ptr<Tensor>> _tensors;
+  std::vector<std::unique_ptr<AffineQuantization>> _affine_quantizations;
   std::vector<Tensor *> _input_tensors;
   std::vector<Tensor *> _output_tensors;
+
+  bool _is_valid = false;
 
   // Kernels in execution order.
   std::vector<std::unique_ptr<Kernel>> _kernels;
   // Tensors that are not used anymore after given op
-  std::unique_ptr<TensorAllocPlan> _tensor_alloc_plan;
+  std::vector<std::vector<Tensor *>> _alloc_plan;
+  std::vector<std::vector<Tensor *>> _dealloc_plan;
 };
 
 } // namespace luci_interpreter

@@ -75,6 +75,8 @@ void BatchToSpaceND::configure()
   output_shape.dim(0) = output_batch_size;
   output_shape.dim(input()->shape().num_dims() - 1) =
     input()->shape().dim(input()->shape().num_dims() - 1);
+
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(output_shape);
 }
 

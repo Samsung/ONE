@@ -34,6 +34,7 @@ void Tanh::configure()
   {
     populateLookupTable();
   }
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
 }
 

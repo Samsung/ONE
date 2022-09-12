@@ -89,7 +89,7 @@ void Pack::configure()
       LUCI_INTERPRETER_CHECK(_inputs[i]->scale() == t0->scale());
     }
   }
-
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(output_shape);
 }
 

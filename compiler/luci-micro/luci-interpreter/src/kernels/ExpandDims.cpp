@@ -70,6 +70,7 @@ void ExpandDims::configure()
     }
   }
 
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(output_shape);
 }
 

@@ -35,7 +35,7 @@ build_kernel_CircleConv2D(std::vector<std::pair<const Tensor *, int32_t>> &input
 
   // It is unknown what data will be stored in scratchpad tensor,
   // using UINT8 as a most general option
-  auto scratchpad = std::make_unique<Tensor>(DataType::U8, Shape({}), AffineQuantization{}, "");
+  auto scratchpad = std::make_unique<Tensor>(DataType::U8, Shape({}), nullptr);
   scratchpad->set_data_buffer(nullptr);
   // TODO move tensors offset initialization to one place
   // TODO handle with StaticManager

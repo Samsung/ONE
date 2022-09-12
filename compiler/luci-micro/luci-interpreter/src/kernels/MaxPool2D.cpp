@@ -54,6 +54,7 @@ void MaxPool2D::configure()
   _padding_width =
     computePadding(_params.stride_width, 1, input_width, _params.filter_width, output_width);
 
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize({batches, output_height, output_width, depth});
   if (input()->element_type() == DataType::U8)
   {

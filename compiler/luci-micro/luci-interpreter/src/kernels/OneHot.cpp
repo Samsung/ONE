@@ -104,7 +104,7 @@ void OneHot::configure()
     for (int32_t d = axis + 1; d < output_shape.num_dims(); ++d)
       output_shape.dim(d) = input_shape.dim(d - 1);
   }
-
+  // TODO: enable it only if kernel with dynamic shapes
   // reshape output
   output()->resize(output_shape);
 }

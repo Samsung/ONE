@@ -62,6 +62,7 @@ void SplitV::configure()
   assert(count_neg_dim < 2);
   assert(size_splits()->shape().num_elements() == num_split);
 
+  // TODO: enable it only if kernel with dynamic shapes
   auto output_shape = input()->shape();
   for (int32_t i = 0; i < num_split; ++i)
   {
