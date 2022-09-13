@@ -54,6 +54,7 @@ void ArgMax::configure()
 
   assert(output()->element_type() == _params.output_type);
 
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(output_shape);
 }
 

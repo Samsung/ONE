@@ -57,6 +57,7 @@ void TransposeConv::configure()
   const auto *shape_data = getTensorData<int32_t>(output_shape());
   for (int i = 0; i < num_dims; i++)
     out_shape.dim(i) = shape_data[i];
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(out_shape);
 
   const int32_t filter_height = filter()->shape().dim(1);

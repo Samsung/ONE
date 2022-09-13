@@ -35,6 +35,7 @@ void Logistic::configure()
     LUCI_INTERPRETER_CHECK(output()->scale() == 1. / 256);
     populateLookupTable();
   }
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
 }
 

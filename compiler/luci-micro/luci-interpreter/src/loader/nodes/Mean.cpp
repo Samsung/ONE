@@ -32,18 +32,15 @@ build_kernel_CircleMean(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
   const Tensor *axis = inputs.at(1).first;
   Tensor *output = outputs.at(0).first;
 
-  auto temp_index_unique =
-    std::make_unique<Tensor>(DataType::S32, Shape({}), AffineQuantization{}, "");
+  auto temp_index_unique = std::make_unique<Tensor>(DataType::S32, Shape({}), nullptr);
   temp_index_unique->set_data_buffer(nullptr);
   Tensor *temp_index = builder.get_runtime_graph()->addTensor(std::move(temp_index_unique));
 
-  auto resolved_axes_unique =
-    std::make_unique<Tensor>(DataType::S32, Shape({}), AffineQuantization{}, "");
+  auto resolved_axes_unique = std::make_unique<Tensor>(DataType::S32, Shape({}), nullptr);
   resolved_axes_unique->set_data_buffer(nullptr);
   Tensor *resolved_axes = builder.get_runtime_graph()->addTensor(std::move(resolved_axes_unique));
 
-  auto temp_sum_unique =
-    std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
+  auto temp_sum_unique = std::make_unique<Tensor>(input->element_type(), Shape({}), nullptr);
   temp_sum_unique->set_data_buffer(nullptr);
   Tensor *temp_sum = builder.get_runtime_graph()->addTensor(std::move(temp_sum_unique));
 

@@ -69,15 +69,19 @@ void GraphLoader::loadTensors()
     //  Create dtype
     const auto dtype = luci_datatype(const_tensor->type());
 
-    AffineQuantization quantization;
+    AffineQuantization *quantization = nullptr;
     if (dtype == DataType::U8 or dtype == DataType::S8 or dtype == DataType::S16)
     {
+      auto unique_ptr_quantization = std::make_unique<AffineQuantization>();
       const auto quant_params = const_tensor->quantization();
       assert(quant_params->zero_point()->size() == quant_params->scale()->size());
-      quantization.scale.assign(quant_params->scale()->cbegin(), quant_params->scale()->cend());
-      quantization.zero_point.assign(quant_params->zero_point()->cbegin(),
-                                     quant_params->zero_point()->cend());
-      quantization.quantized_dimension = quant_params->quantized_dimension();
+      unique_ptr_quantization->scale.assign(quant_params->scale()->cbegin(),
+                                            quant_params->scale()->cend());
+      unique_ptr_quantization->zero_point.assign(quant_params->zero_point()->cbegin(),
+                                                 quant_params->zero_point()->cend());
+      unique_ptr_quantization->quantized_dimension = quant_params->quantized_dimension();
+
+      quantization = _runtime_graph->addAffineQuantization(std::move(unique_ptr_quantization));
     }
 
     // Get pointer to data from buffer
@@ -85,8 +89,7 @@ void GraphLoader::loadTensors()
 
     size *= getDataTypeSize(dtype);
 
-    auto tensor = std::make_unique<Tensor>(dtype, std::move(shape), std::move(quantization),
-                                           const_tensor->name()->str());
+    auto tensor = std::make_unique<Tensor>(dtype, std::move(shape), quantization);
     // Save pointer to const data
     tensor->writeDataWithoutCopy(static_cast<void *>(data_ptr));
 
@@ -109,18 +112,22 @@ void GraphLoader::initInputTensors() const
       shape.dim(i) = tensor_shape.at(i);
     }
 
-    AffineQuantization quantization;
+    AffineQuantization *quantization = nullptr;
     if (dtype == DataType::U8 or dtype == DataType::S8 or dtype == DataType::S16)
     {
+      auto unique_ptr_quantization = std::make_unique<AffineQuantization>();
       const auto quant_params = tensor->quantization();
       assert(quant_params->zero_point()->size() == quant_params->scale()->size());
-      quantization.scale.assign(quant_params->scale()->cbegin(), quant_params->scale()->cend());
-      quantization.zero_point.assign(quant_params->zero_point()->cbegin(),
-                                     quant_params->zero_point()->cend());
-      quantization.quantized_dimension = quant_params->quantized_dimension();
+      unique_ptr_quantization->scale.assign(quant_params->scale()->cbegin(),
+                                            quant_params->scale()->cend());
+      unique_ptr_quantization->zero_point.assign(quant_params->zero_point()->cbegin(),
+                                                 quant_params->zero_point()->cend());
+      unique_ptr_quantization->quantized_dimension = quant_params->quantized_dimension();
+
+      quantization = _runtime_graph->addAffineQuantization(std::move(unique_ptr_quantization));
     }
-    auto tensor_interpreter = std::make_unique<Tensor>(
-      dtype, std::move(shape), std::move(quantization), tensor->name()->str());
+
+    auto tensor_interpreter = std::make_unique<Tensor>(dtype, std::move(shape), quantization);
     _memory_manager->allocate_memory(*tensor_interpreter);
 
     _runtime_graph->addInputTensor(tensor_interpreter.get());
@@ -169,18 +176,22 @@ void GraphLoader::loadOperators()
         shape.dim(k) = tensor_shape.at(k);
       }
 
-      AffineQuantization quantization;
+      AffineQuantization *quantization = nullptr;
       if (dtype == DataType::U8 or dtype == DataType::S8 or dtype == DataType::S16)
       {
+        auto unique_ptr_quantization = std::make_unique<AffineQuantization>();
         const auto quant_params = tensor->quantization();
         assert(quant_params->zero_point()->size() == quant_params->scale()->size());
-        quantization.scale.assign(quant_params->scale()->cbegin(), quant_params->scale()->cend());
-        quantization.zero_point.assign(quant_params->zero_point()->cbegin(),
-                                       quant_params->zero_point()->cend());
-        quantization.quantized_dimension = quant_params->quantized_dimension();
+        unique_ptr_quantization->scale.assign(quant_params->scale()->cbegin(),
+                                              quant_params->scale()->cend());
+        unique_ptr_quantization->zero_point.assign(quant_params->zero_point()->cbegin(),
+                                                   quant_params->zero_point()->cend());
+        unique_ptr_quantization->quantized_dimension = quant_params->quantized_dimension();
+
+        quantization = _runtime_graph->addAffineQuantization(std::move(unique_ptr_quantization));
       }
-      auto tensor_interpreter = std::make_unique<Tensor>(
-        dtype, std::move(shape), std::move(quantization), tensor->name()->str());
+
+      auto tensor_interpreter = std::make_unique<Tensor>(dtype, std::move(shape), quantization);
 
       _index_to_tensor->emplace(output_index, tensor_interpreter.get());
       output_tensors.emplace_back(tensor_interpreter.get(), output_index);
@@ -195,6 +206,7 @@ void GraphLoader::loadOperators()
     std::unique_ptr<Kernel> kernel = kernel_builder.build(input_tensors, output_tensors, i);
     _runtime_graph->addKernel(std::move(kernel));
   }
+  _runtime_graph->configure();
 }
 
 } // namespace luci_interpreter

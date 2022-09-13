@@ -35,14 +35,14 @@ build_kernel_CircleSVDF(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
   const Tensor *input_activation_state = inputs.at(4).first;
   Tensor *output = outputs.at(0).first;
 
-  auto scratchpad_tensor = std::make_unique<Tensor>(input_activation_state->element_type(),
-                                                    Shape({}), AffineQuantization{}, "");
+  auto scratchpad_tensor =
+    std::make_unique<Tensor>(input_activation_state->element_type(), Shape({}), nullptr);
   scratchpad_tensor->set_data_buffer(nullptr);
   Tensor *tmp = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 
   DataType data_type = input->element_type() == DataType::S8 ? DataType::S32 : DataType::FLOAT32;
 
-  scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), AffineQuantization{}, "");
+  scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), nullptr);
   scratchpad_tensor->set_data_buffer(nullptr);
   Tensor *tmp_1 = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 
@@ -52,25 +52,25 @@ build_kernel_CircleSVDF(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
     data_type = feature->element_type();
   }
 
-  scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), AffineQuantization{}, "");
+  scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), nullptr);
   scratchpad_tensor->set_data_buffer(nullptr);
   Tensor *tmp_2 = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 
   data_type = DataType::FLOAT32;
 
-  scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), AffineQuantization{}, "");
+  scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), nullptr);
   scratchpad_tensor->set_data_buffer(nullptr);
   Tensor *tmp_3 = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 
-  scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), AffineQuantization{}, "");
+  scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), nullptr);
   scratchpad_tensor->set_data_buffer(nullptr);
   Tensor *tmp_4 = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 
-  scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), AffineQuantization{}, "");
+  scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), nullptr);
   scratchpad_tensor->set_data_buffer(nullptr);
   Tensor *tmp_5 = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 
-  scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), AffineQuantization{}, "");
+  scratchpad_tensor = std::make_unique<Tensor>(data_type, Shape({}), nullptr);
   scratchpad_tensor->set_data_buffer(nullptr);
   Tensor *tmp_6 = builder.get_runtime_graph()->addTensor(std::move(scratchpad_tensor));
 

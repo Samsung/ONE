@@ -94,7 +94,7 @@ void Quantize::configure()
     default:
       throw std::runtime_error("Unsupported type");
   }
-
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
 }
 

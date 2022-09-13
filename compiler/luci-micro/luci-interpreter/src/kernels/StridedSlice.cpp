@@ -97,6 +97,7 @@ void StridedSlice::configure()
       output_shape_vector.push_back(dim_shape);
     }
   }
+  // TODO: enable it only if kernel with dynamic shapes
   Shape output_shape = Shape(output_shape_vector.size());
   for (size_t i = 0; i < output_shape_vector.size(); i++)
   {

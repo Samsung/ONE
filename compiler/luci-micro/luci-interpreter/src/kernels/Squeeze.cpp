@@ -61,6 +61,7 @@ void Squeeze::configure()
       should_squeeze[current] = true;
     }
   }
+  // TODO: enable it only if kernel with dynamic shapes
   Shape output_shape(input_num_dims - num_squeezed_dims);
   for (int in_idx = 0, out_idx = 0; in_idx < input_num_dims; ++in_idx)
   {

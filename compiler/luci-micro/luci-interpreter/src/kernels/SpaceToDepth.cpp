@@ -50,7 +50,7 @@ void SpaceToDepth::configure()
   output_shape.dim(1) = output_height;
   output_shape.dim(2) = output_width;
   output_shape.dim(3) = input()->shape().dim(3) * block_size * block_size;
-
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(output_shape);
 }
 

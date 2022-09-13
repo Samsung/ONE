@@ -38,6 +38,7 @@ void Dequantize::configure()
 
   LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32);
 
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
 }
 

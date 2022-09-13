@@ -145,7 +145,7 @@ void Mean::configure()
   const auto *axes_data = getTensorData<int32_t>(axes());
   int num_axes = axes()->shape().num_elements();
   assert(num_axes <= 4);
-
+  // TODO: enable it only if kernel with dynamic shapes
   Shape output_shape = getOutputShape(input_shape, axes_data, num_axes, _params.keep_dims);
   output()->resize(output_shape);
 

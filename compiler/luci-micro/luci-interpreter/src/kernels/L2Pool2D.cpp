@@ -56,6 +56,7 @@ void L2Pool2D::configure()
     computePadding(params().stride_height, 1, height, params().filter_height, out_height);
 
   LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::FLOAT32);
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize({batches, out_height, out_width, channels_out});
 }
 

@@ -86,6 +86,7 @@ void PRelu::configure()
     double identity_multiplier = input()->scale() / output()->scale();
     quantizeMultiplier(identity_multiplier, &_output_multiplier_identity, &_output_shift_identity);
   }
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(calculateShapeForBroadcast(input()->shape(), alpha()->shape()));
 }
 

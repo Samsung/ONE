@@ -47,7 +47,7 @@ void Mul::configure()
     LUCI_INTERPRETER_CHECK(input1()->zero_point() == 0 && input2()->zero_point() == 0 &&
                            output()->zero_point() == 0);
   }
-
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
 }
 

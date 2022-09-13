@@ -35,6 +35,7 @@ static Shape extractShapeFromTensor(const Tensor *tensor)
   {
     shape.dim(i) = shape_data[i];
   }
+  // TODO: enable it only if kernel with dynamic shapes
   return shape;
 }
 

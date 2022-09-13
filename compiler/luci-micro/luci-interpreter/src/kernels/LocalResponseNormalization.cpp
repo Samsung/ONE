@@ -39,6 +39,7 @@ void LocalResponseNormalization::configure()
   LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
   LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32);
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
 }
 

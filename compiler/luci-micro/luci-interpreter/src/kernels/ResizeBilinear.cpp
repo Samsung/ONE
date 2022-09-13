@@ -45,6 +45,7 @@ void ResizeBilinear::configure()
   output_shape.dim(1) = getTensorData<int32_t>(size())[0];
   output_shape.dim(2) = getTensorData<int32_t>(size())[1];
   output_shape.dim(3) = input()->shape().dim(3);
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(output_shape);
 }
 

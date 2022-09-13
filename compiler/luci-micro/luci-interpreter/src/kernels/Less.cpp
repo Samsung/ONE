@@ -39,6 +39,7 @@ void Less::configure()
     quantizeMultiplierSmallerThanOneExp(x()->scale(), &_x_multiplier, &_x_shift);
     quantizeMultiplierSmallerThanOneExp(y()->scale(), &_y_multiplier, &_y_shift);
   }
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(calculateShapeForBroadcast(x()->shape(), y()->shape()));
 }
 

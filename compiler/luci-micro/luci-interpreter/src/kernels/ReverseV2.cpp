@@ -54,6 +54,7 @@ void ReverseV2::configure()
   }
   assert(input()->element_type() == output()->element_type());
 
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
 }
 

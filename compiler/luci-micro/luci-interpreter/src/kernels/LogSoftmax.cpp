@@ -43,6 +43,7 @@ void LogSoftmax::configure()
     params.beta = 1.0;
     luci_interpreter_pal::PopulateSoftmaxLookupTable(&params, input()->scale(), params.beta);
   }
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
 }
 

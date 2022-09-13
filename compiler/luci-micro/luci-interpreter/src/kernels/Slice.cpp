@@ -79,7 +79,7 @@ void Slice::configure()
   assert(begin()->shape().num_dims() == 1);
   assert(size()->shape().num_dims() == 1);
   assert(input()->shape().num_dims() <= max_dim);
-
+  // TODO: enable it only if kernel with dynamic shapes
   if (begin()->element_type() == DataType::S32)
   {
     output()->resize(calculateOutputShape<int32_t>(input(), begin(), size()));

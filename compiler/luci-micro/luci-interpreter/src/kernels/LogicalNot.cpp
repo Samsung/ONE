@@ -30,6 +30,7 @@ LogicalNot::LogicalNot(const Tensor *input, Tensor *output) : Kernel({input}, {o
 void LogicalNot::configure()
 {
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
 }
 

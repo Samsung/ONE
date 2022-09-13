@@ -41,7 +41,7 @@ template <typename T> void Fill::configureShape()
 
     output_shape.dim(i) = data;
   }
-
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(output_shape);
 }
 

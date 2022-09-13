@@ -35,6 +35,7 @@ void Minimum::configure()
 {
   LUCI_INTERPRETER_CHECK(input1()->element_type() == input2()->element_type())
   LUCI_INTERPRETER_CHECK(input1()->element_type() == output()->element_type())
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
 }
 

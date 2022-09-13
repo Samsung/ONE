@@ -50,6 +50,7 @@ void Unpack::configure()
       output_shape.dim(out_index++) = input_shape.dim(in_index);
   }
 
+  // TODO: enable it only if kernel with dynamic shapes
   for (Tensor *output : _outputs)
   {
     assert(output->element_type() == input()->element_type());

@@ -21,19 +21,12 @@ namespace luci_interpreter
 
 void StaticMemoryManager::allocate_memory(luci_interpreter::Tensor &tensor)
 {
-  if (!tensor.is_allocatable())
-  {
-    return;
-  }
-  int32_t offset = tensor.get_offset();
-  assert(offset >= 0);
-  auto tensor_ptr = _buffer_ptr + offset;
-  tensor.set_data_buffer(tensor_ptr);
+  throw std::runtime_error("Not supported now\n");
 }
 
 void StaticMemoryManager::release_memory(luci_interpreter::Tensor &tensor)
 {
-  tensor.set_data_buffer(nullptr);
+  throw std::runtime_error("Not supported now");
 }
 
 } // namespace luci_interpreter

@@ -34,6 +34,7 @@ void Square::configure()
   {
     throw std::runtime_error("Input/output tensor data type mismatch.");
   }
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
 }
 

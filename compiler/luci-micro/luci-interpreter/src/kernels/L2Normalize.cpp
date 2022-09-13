@@ -44,6 +44,7 @@ void L2Normalize::configure()
     LUCI_INTERPRETER_CHECK(output()->zero_point() == 128);
   }
   LUCI_INTERPRETER_CHECK(params().activation == Activation::NONE);
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
 }
 

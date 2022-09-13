@@ -91,6 +91,7 @@ void Gather::configure()
   {
     output_shape.dim(output_index++) = params_shape.dim(i);
   }
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(output_shape);
 }
 

@@ -37,8 +37,7 @@ build_kernel_CircleTransposeConv(std::vector<std::pair<const Tensor *, int32_t>>
   DataType scratch_data_type =
     input_sizes->element_type() == DataType::S16 ? DataType::S64 : DataType::S32;
 
-  auto scratch_tensor =
-    std::make_unique<Tensor>(scratch_data_type, Shape({}), AffineQuantization{}, "");
+  auto scratch_tensor = std::make_unique<Tensor>(scratch_data_type, Shape({}), nullptr);
   scratch_tensor->set_data_buffer(nullptr);
   Tensor *tmp = builder.get_runtime_graph()->addTensor(std::move(scratch_tensor));
 

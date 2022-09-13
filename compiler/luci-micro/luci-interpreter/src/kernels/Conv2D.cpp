@@ -106,6 +106,7 @@ void Conv2D::configure()
   _padding_width = computePadding(_params.stride_width, _params.dilation_width_factor, input_width,
                                   filter_width, output_width);
 
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize({batches, output_height, output_width, output_depth});
 
   // Allocate tensor for scratchpad, if needed.

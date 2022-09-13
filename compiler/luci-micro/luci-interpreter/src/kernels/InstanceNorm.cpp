@@ -44,6 +44,7 @@ void InstanceNorm::configure()
   LUCI_INTERPRETER_CHECK(beta()->shape().num_dims() == 1);
   LUCI_INTERPRETER_CHECK(beta()->shape().dim(0) == input()->shape().dim(3) ||
                          beta()->shape().dim(0) == 1);
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
 }
 

@@ -75,6 +75,7 @@ void AveragePool2D::configure()
     LUCI_INTERPRETER_CHECK(std::abs(output()->scale() - input()->scale()) <= 1.0e-6);
     LUCI_INTERPRETER_CHECK(output()->zero_point() == input()->zero_point());
   }
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize({batches, output_height, output_width, depth});
 
   auto scratchpad = getOutputTensors()[1];

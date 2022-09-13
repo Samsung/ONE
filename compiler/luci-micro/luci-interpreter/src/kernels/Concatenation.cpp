@@ -84,6 +84,7 @@ void Concatenation::configure()
       LUCI_INTERPRETER_CHECK(current_tensor->scales() == output()->scales());
     }
   }
+  // TODO: enable it only if kernel with dynamic shapes
   output()->resize(output_shape);
 }
 

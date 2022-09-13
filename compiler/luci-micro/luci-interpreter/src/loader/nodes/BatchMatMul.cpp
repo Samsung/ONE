@@ -32,11 +32,9 @@ build_kernel_CircleBatchMatMul(std::vector<std::pair<const Tensor *, int32_t>> &
   const Tensor *rhs = inputs.at(1).first;
   Tensor *output = outputs.at(0).first;
 
-  auto lhs_scratchpad =
-    std::make_unique<Tensor>(lhs->element_type(), Shape({}), AffineQuantization{}, "");
+  auto lhs_scratchpad = std::make_unique<Tensor>(lhs->element_type(), Shape({}), nullptr);
   lhs_scratchpad->set_data_buffer(nullptr);
-  auto rhs_scratchpad =
-    std::make_unique<Tensor>(rhs->element_type(), Shape({}), AffineQuantization{}, "");
+  auto rhs_scratchpad = std::make_unique<Tensor>(rhs->element_type(), Shape({}), nullptr);
   rhs_scratchpad->set_data_buffer(nullptr);
   // TODO move tensors offset initialization to one place
   // TODO handle with StaticManager
