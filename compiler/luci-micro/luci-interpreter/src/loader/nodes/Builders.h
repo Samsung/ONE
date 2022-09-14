@@ -24,11 +24,10 @@
 namespace luci_interpreter
 {
 
-#define REGISTER_KERNEL(builtin_operator, name)                                  \
-  std::unique_ptr<Kernel> build_kernel_Circle##name(                             \
-    std::vector<std::pair<const Tensor *, int32_t>> &inputs,                     \
-    std::vector<std::pair<Tensor *, int32_t>> &outputs, const uint32_t op_index, \
-    KernelBuilder &builder);
+#define REGISTER_KERNEL(builtin_operator, name)                            \
+  std::unique_ptr<Kernel> build_kernel_Circle##name(                       \
+    std::vector<const Tensor *> &&inputs, std::vector<Tensor *> &&outputs, \
+    const uint32_t op_index, KernelBuilder &builder);
 
 #include "KernelsToBuild.lst"
 

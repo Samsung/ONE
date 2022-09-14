@@ -24,7 +24,7 @@ ModuleLoader::ModuleLoader(const char *model_data_raw, RuntimeModule *runtime_mo
                            IMemoryManager *memory_manager)
   : _model_data_raw(model_data_raw), _runtime_module(runtime_module),
     _memory_manager(memory_manager),
-    _index_to_tensor(std::make_unique<std::unordered_map<int32_t, Tensor *>>())
+    _index_to_tensor(std::make_unique<std::map<int32_t, Tensor *>>())
 {
 }
 
@@ -32,25 +32,31 @@ void ModuleLoader::load()
 {
   const circle::Model *model = circle::GetModel(_model_data_raw);
 
-  CircleReader *reader = _runtime_module->getCircleMicroReader();
-  if (!reader->parse(model))
+  CircleReader reader;
+  if (!reader.parse(model))
     throw std::runtime_error("Error during parse");
 
-  for (size_t i = 0; i < reader->num_subgraph(); ++i)
+  for (size_t i = 0; i < reader.num_subgraph(); ++i)
   {
     _runtime_graphs.emplace_back(_runtime_module->addGraph(_memory_manager));
   }
 
-  for (size_t i = 0; i < reader->num_subgraph(); ++i)
+  for (size_t i = 0; i < reader.num_subgraph(); ++i)
   {
-    if (!reader->select_subgraph(i))
+    if (!reader.select_subgraph(i))
       throw std::runtime_error("Error during select subgraph");
     RuntimeGraph *runtime_graph = _runtime_graphs.at(i);
-    GraphLoader loader(reader, runtime_graph, _memory_manager, _index_to_tensor.get());
+    GraphLoader loader(&reader, runtime_graph, _memory_manager, _index_to_tensor.get());
 
     loader.initInputTensors();
     loader.loadTensors();
     loader.loadOperators();
+  }
+
+  for (size_t i = 0; i < reader.num_subgraph(); ++i)
+  {
+    RuntimeGraph *runtime_graph = _runtime_graphs.at(i);
+    runtime_graph->configure();
   }
 }
 

@@ -152,6 +152,8 @@ public:
     _data = buffer;
   }
 
+  uint8_t *get_data_buffer() const { return _data; }
+
   bool is_allocatable() const { return _is_allocatable; }
 
   void set_allocatable(bool value) { _is_allocatable = value; }

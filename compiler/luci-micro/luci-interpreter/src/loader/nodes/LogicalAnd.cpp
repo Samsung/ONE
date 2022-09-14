@@ -21,16 +21,16 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel>
-build_kernel_CircleLogicalAnd(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
-                              std::vector<std::pair<Tensor *, int32_t>> &outputs,
-                              const uint32_t op_index, KernelBuilder &builder)
+std::unique_ptr<Kernel> build_kernel_CircleLogicalAnd(std::vector<const Tensor *> &&inputs,
+                                                      std::vector<Tensor *> &&outputs,
+                                                      const uint32_t op_index,
+                                                      KernelBuilder &builder)
 {
   assert(inputs.size() == 2);
 
-  const Tensor *input1 = inputs.at(0).first;
-  const Tensor *input2 = inputs.at(1).first;
-  Tensor *output = outputs.at(0).first;
+  const Tensor *input1 = inputs.at(0);
+  const Tensor *input2 = inputs.at(1);
+  Tensor *output = outputs.at(0);
 
   return std::make_unique<kernels::LogicalAnd>(input1, input2, output);
 }

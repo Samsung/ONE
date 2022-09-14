@@ -20,13 +20,52 @@
 
 namespace luci_interpreter
 {
+namespace
+{
+
+// TODO: add more operations
+bool isCouldBeEmplaceOperation(circle::BuiltinOperator op)
+{
+  switch (op)
+  {
+    case circle::BuiltinOperator_LOGISTIC:
+    case circle::BuiltinOperator_RESHAPE:
+    case circle::BuiltinOperator_EXPAND_DIMS:
+      return true;
+    default:
+      return false;
+  }
+}
+
+} // namespace
 
 GraphLoader::GraphLoader(CircleReader *reader, RuntimeGraph *runtime_graph,
                          IMemoryManager *memory_manager,
-                         std::unordered_map<int32_t, Tensor *> *index_to_tensor)
+                         std::map<int32_t, Tensor *> *index_to_tensor)
   : _reader(reader), _runtime_graph(runtime_graph), _memory_manager(memory_manager),
     _index_to_tensor(index_to_tensor)
 {
+}
+
+bool GraphLoader::isCouldBeEmplaceTensor(const int32_t tensor_index)
+{
+  uint32_t usage_count = 0;
+  for (uint32_t i = 0; i < _reader->operators().size(); ++i)
+  {
+    const auto op = _reader->operators().at(i);
+    assert(op != nullptr);
+
+    for (int32_t j = 0; j < op->inputs()->size(); ++j)
+    {
+      const auto input_index = op->inputs()->operator[](j);
+      if (input_index == tensor_index)
+        usage_count++;
+
+      if (usage_count > 1)
+        return false;
+    }
+  }
+  return true;
 }
 
 // TODO: handle with static manager
@@ -87,8 +126,6 @@ void GraphLoader::loadTensors()
     // Get pointer to data from buffer
     auto data_ptr = const_cast<unsigned char *>(buffer.data());
 
-    size *= getDataTypeSize(dtype);
-
     auto tensor = std::make_unique<Tensor>(dtype, std::move(shape), quantization);
     // Save pointer to const data
     tensor->writeDataWithoutCopy(static_cast<void *>(data_ptr));
@@ -145,20 +182,29 @@ void GraphLoader::loadOperators()
     const auto op = _reader->operators().at(i);
     assert(op != nullptr);
 
-    std::vector<std::pair<const Tensor *, int32_t>> input_tensors;
-    std::vector<std::pair<Tensor *, int32_t>> output_tensors;
+    std::vector<const Tensor *> input_tensors(op->inputs()->size());
+    std::vector<Tensor *> output_tensors(op->outputs()->size());
 
+    bool is_emplace = false;
     for (int32_t j = 0; j < op->inputs()->size(); ++j)
     {
       const auto input_index = op->inputs()->operator[](j);
       if (_index_to_tensor->find(input_index) != _index_to_tensor->end())
       {
         auto input_tensor = const_cast<const Tensor *>(_index_to_tensor->at(input_index));
-        input_tensors.emplace_back(input_tensor, input_index);
+        input_tensors.at(j) = input_tensor;
+        if (isCouldBeEmplaceOperation(_reader->builtin_code(op)) and op->outputs()->size() == 1 and
+            isCouldBeEmplaceTensor(input_index))
+        {
+          const auto &graph_input_tensors = _runtime_graph->getInputTensors();
+          if (std::find(graph_input_tensors.begin(), graph_input_tensors.end(), input_tensor) ==
+              graph_input_tensors.end())
+            is_emplace = true;
+        }
       }
       else
       {
-        input_tensors.emplace_back(nullptr, input_index);
+        input_tensors.at(j) = nullptr;
       }
     }
 
@@ -194,7 +240,7 @@ void GraphLoader::loadOperators()
       auto tensor_interpreter = std::make_unique<Tensor>(dtype, std::move(shape), quantization);
 
       _index_to_tensor->emplace(output_index, tensor_interpreter.get());
-      output_tensors.emplace_back(tensor_interpreter.get(), output_index);
+      output_tensors.at(j) = tensor_interpreter.get();
 
       if (std::find(_reader->outputs().begin(), _reader->outputs().end(), output_index) !=
           _reader->outputs().end())
@@ -203,10 +249,13 @@ void GraphLoader::loadOperators()
       _runtime_graph->addTensor(std::move(tensor_interpreter));
     }
 
-    std::unique_ptr<Kernel> kernel = kernel_builder.build(input_tensors, output_tensors, i);
+    const auto opcode = _reader->builtin_code(op);
+    std::unique_ptr<Kernel> kernel =
+      kernel_builder.build(std::move(input_tensors), std::move(output_tensors), opcode, i);
+    kernel->setEmplaceValue(is_emplace);
+
     _runtime_graph->addKernel(std::move(kernel));
   }
-  _runtime_graph->configure();
 }
 
 } // namespace luci_interpreter

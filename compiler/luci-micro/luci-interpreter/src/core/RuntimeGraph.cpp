@@ -19,7 +19,7 @@
 #include "core/RuntimeModule.h"
 
 #include <algorithm>
-#include <unordered_map>
+#include <map>
 
 namespace luci_interpreter
 {
@@ -37,12 +37,20 @@ void RuntimeGraph::buildAllocDeallocPlan()
     {
       auto nc_tensor = const_cast<Tensor *>(tensor);
       if (lifetimes.count(nc_tensor) > 0)
-        lifetimes.at(nc_tensor).second = index;
+      {
+        if (kernel->getEmplaceValue())
+          lifetimes.at(nc_tensor).second = -1;
+        else
+          lifetimes.at(nc_tensor).second = index;
+      }
     }
     for (Tensor *tensor : kernel->getOutputTensors())
     {
       assert(lifetimes.count(tensor) == 0);
-      lifetimes[tensor] = Lifetime(index, index);
+      if (kernel->getEmplaceValue())
+        lifetimes[tensor] = Lifetime(-1, index);
+      else
+        lifetimes[tensor] = Lifetime(index, index);
     }
   }
   for (const Tensor *tensor : getOutputTensors())
@@ -55,8 +63,10 @@ void RuntimeGraph::buildAllocDeallocPlan()
   _dealloc_plan.assign(num_kernels + 1, std::vector<Tensor *>());
   for (const auto &item : lifetimes)
   {
-    _alloc_plan[item.second.first].push_back(item.first);
-    _dealloc_plan[item.second.second].push_back(item.first);
+    if (item.second.first != -1)
+      _alloc_plan[item.second.first].push_back(item.first);
+    if (item.second.second != -1)
+      _dealloc_plan[item.second.second].push_back(item.first);
   }
   _is_valid = true;
 }

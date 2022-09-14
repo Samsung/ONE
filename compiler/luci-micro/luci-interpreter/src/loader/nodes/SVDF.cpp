@@ -21,19 +21,18 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel>
-build_kernel_CircleSVDF(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
-                        std::vector<std::pair<Tensor *, int32_t>> &outputs, const uint32_t op_index,
-                        KernelBuilder &builder)
+std::unique_ptr<Kernel> build_kernel_CircleSVDF(std::vector<const Tensor *> &&inputs,
+                                                std::vector<Tensor *> &&outputs,
+                                                const uint32_t op_index, KernelBuilder &builder)
 {
   assert(inputs.size() == 5);
 
-  const Tensor *input = inputs.at(0).first;
-  const Tensor *feature = inputs.at(1).first;
-  const Tensor *time = inputs.at(2).first;
-  const Tensor *bias = inputs.at(3).first;
-  const Tensor *input_activation_state = inputs.at(4).first;
-  Tensor *output = outputs.at(0).first;
+  const Tensor *input = inputs.at(0);
+  const Tensor *feature = inputs.at(1);
+  const Tensor *time = inputs.at(2);
+  const Tensor *bias = inputs.at(3);
+  const Tensor *input_activation_state = inputs.at(4);
+  Tensor *output = outputs.at(0);
 
   auto scratchpad_tensor =
     std::make_unique<Tensor>(input_activation_state->element_type(), Shape({}), nullptr);

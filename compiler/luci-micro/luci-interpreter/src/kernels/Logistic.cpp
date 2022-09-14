@@ -56,8 +56,16 @@ void Logistic::execute() const
 
 void Logistic::evalFloat() const
 {
+  if (_is_emplace)
+    output()->set_data_buffer(input()->get_data_buffer());
+
   tflite::reference_ops::Logistic(getTensorShape(input()), getTensorData<float>(input()),
                                   getTensorShape(output()), getTensorData<float>(output()));
+  if (_is_emplace)
+  {
+    auto input_tensor = const_cast<Tensor *>(input());
+    input_tensor->set_data_buffer(nullptr);
+  }
 }
 
 void Logistic::evalQuantized() const

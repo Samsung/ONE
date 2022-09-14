@@ -21,18 +21,17 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel>
-build_kernel_CircleOneHot(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
-                          std::vector<std::pair<Tensor *, int32_t>> &outputs,
-                          const uint32_t op_index, KernelBuilder &builder)
+std::unique_ptr<Kernel> build_kernel_CircleOneHot(std::vector<const Tensor *> &&inputs,
+                                                  std::vector<Tensor *> &&outputs,
+                                                  const uint32_t op_index, KernelBuilder &builder)
 {
   assert(inputs.size() == 4);
 
-  const Tensor *indices = inputs.at(0).first;
-  const Tensor *depth = inputs.at(1).first;
-  const Tensor *on_value = inputs.at(2).first;
-  const Tensor *off_value = inputs.at(3).first;
-  Tensor *output = outputs.at(0).first;
+  const Tensor *indices = inputs.at(0);
+  const Tensor *depth = inputs.at(1);
+  const Tensor *on_value = inputs.at(2);
+  const Tensor *off_value = inputs.at(3);
+  Tensor *output = outputs.at(0);
 
   circle::OperatorT oper_t;
   builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);

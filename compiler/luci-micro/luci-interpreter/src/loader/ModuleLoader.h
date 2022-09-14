@@ -21,8 +21,6 @@
 #include "luci_interpreter/MemoryManager.h"
 #include "luci_interpreter/core/CircleMicroReader.h"
 
-#include <unordered_map>
-
 namespace luci_interpreter
 {
 
@@ -39,7 +37,7 @@ private:
   const char *_model_data_raw;
   RuntimeModule *_runtime_module;
   std::vector<RuntimeGraph *> _runtime_graphs;
-  std::unique_ptr<std::unordered_map<int32_t, Tensor *>> _index_to_tensor;
+  std::unique_ptr<std::map<int32_t, Tensor *>> _index_to_tensor;
 };
 
 } // namespace luci_interpreter

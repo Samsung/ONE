@@ -21,17 +21,16 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel>
-build_kernel_CirclePack(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
-                        std::vector<std::pair<Tensor *, int32_t>> &outputs, const uint32_t op_index,
-                        KernelBuilder &builder)
+std::unique_ptr<Kernel> build_kernel_CirclePack(std::vector<const Tensor *> &&inputs,
+                                                std::vector<Tensor *> &&outputs,
+                                                const uint32_t op_index, KernelBuilder &builder)
 {
   std::vector<const Tensor *> input_tensors(inputs.size());
   for (uint32_t i = 0; i < inputs.size(); ++i)
   {
-    input_tensors[i] = inputs.at(i).first;
+    input_tensors[i] = inputs.at(i);
   }
-  Tensor *output = outputs.at(0).first;
+  Tensor *output = outputs.at(0);
 
   circle::OperatorT oper_t;
   builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
