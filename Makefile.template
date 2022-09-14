@@ -5,7 +5,6 @@ CROSS_BUILD?=0
 HOST_OS?=linux
 TARGET_OS?=linux
 COVERAGE_BUILD?=0
-BENCHMARK_ACL_BUILD?=0
 OPTIONS?=
 
 # make TARGET and TYPE to lowercase
@@ -22,9 +21,8 @@ else ifneq (,$(findstring aarch64,$(TARGET_ARCH_BASE)))
 	TARGET_ARCH_LC=aarch64
 endif
 ifneq (,$(findstring android,$(TARGET_OS)))
-	# Anndroid only allow aarch64 target-arch
+	# Android only allow aarch64 target-arch
 	TARGET_ARCH_LC=aarch64
-	TARGET_OS=android
 endif
 # Set CROSS_BUILD=1 when ROOTFS_DIR is given, and TARGET_ARCH is different to HOST_ARCH.
 ifneq ($(ROOTFS_DIR),)
@@ -38,19 +36,14 @@ ifeq ($(CROSS_BUILD),1)
 	OPTIONS+= -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_FILE)
 endif
 
-ifeq ($(COVERAGE_BUILD),1)
+ifneq ($(filter create-covsuite,$(MAKECMDGOALS)),)
 	OPTIONS+= -DENABLE_COVERAGE=ON
 else
-	OPTIONS+= -DENABLE_COVERAGE=OFF
-endif
-
-ifeq ($(BENCHMARK_ACL_BUILD),1)
-	OPTIONS+= -DBUILD_BENCHMARK_ACL=1
-endif
-
-ifneq ($(EXT_HDF5_DIR),)
-  $(info Hello $(EXT_HDF5_DIR))
-	OPTIONS+= -DEXT_HDF5_DIR=$(EXT_HDF5_DIR)
+	ifeq ($(COVERAGE_BUILD),1)
+		OPTIONS+= -DENABLE_COVERAGE=ON
+	else
+		OPTIONS+= -DENABLE_COVERAGE=OFF
+	endif
 endif
 
 ifneq ($(EXTERNAL_VOLUME),)
@@ -90,14 +83,21 @@ WORKSPACE=$(WORKHOME)/$(WORKFOLDER)
 BUILD_FOLDER=$(WORKSPACE)/obj
 INSTALL_PATH?=$(WORKSPACE)/out
 OVERLAY_FOLDER?=$(WORKSPACE)/overlay
-BUILD_ALIAS=$(WORKHOME)/obj
 INSTALL_ALIAS=$(WORKHOME)/out
 
 TIMESTAMP_CONFIGURE=$(WORKSPACE)/CONFIGURE
 TIMESTAMP_BUILD=$(WORKSPACE)/BUILD
 TIMESTAMP_INSTALL=$(WORKSPACE)/INSTALL
 
-all: build
+###
+### Common environment variable
+###
+export NNFW_WORKSPACE=$(WORKSPACE)
+
+###
+### Default target
+###
+all: install
 
 ###
 ### Command (public)
@@ -106,78 +106,76 @@ configure: configure_internal
 
 build: build_internal
 
-install: $(TIMESTAMP_INSTALL)
+install: install_all_internal
 
-create_package: runtime_tar_internal
+create-package: runtime_tar_internal
 
-create_acl_tar: acl_tar_internal
+create-aclpack: acl_tar_internal
+
+create-testsuite: test_suite_internal
+
+create-covsuite: coverage_suite_internal
 
 clean:
 	rm -rf $(WORKSPACE)
 
 distclean:
-	rm -rf $(WORKSPACE)
-	rm -rf externals/*.stamp
+	rm -rf Product
+	rm -rf externals
 	rm -rf tests/nnapi/src/generated/
+
+# create_package, create_acl_tar: to be removed
+create_package: runtime_tar_internal
+create_acl_tar: acl_tar_internal
 
 ###
 ### Command (internal)
 ###
-configure_internal:
-# TODO Remove setting EXT_ACL_FOLDER
-#      Construct overlay folder directly outside (with headers?)
-ifneq ($(EXT_ACL_FOLDER),)
-	mkdir -p $(OVERLAY_FOLDER)/lib
-	cp $(EXT_ACL_FOLDER)/* $(OVERLAY_FOLDER)/lib
-# Make stamp file
-	printf "21.02" > $(OVERLAY_FOLDER)/ARMCOMPUTE.stamp
-endif
+$(WORKSPACE):
+	mkdir -p $@
 
+configure_internal: $(WORKSPACE) 
 ifneq ($(DEBIAN_BUILD),)
 	test -d externals || mkdir -p externals
 	find packaging/ -type f -name "*.tar.gz" | xargs -i tar xf {} -C externals
 endif
-
-	NNFW_WORKSPACE="$(WORKSPACE)" NNFW_INSTALL_PREFIX=$(INSTALL_PATH) ./nnfw configure \
+	NNFW_INSTALL_PREFIX=$(INSTALL_PATH) ./nnfw configure \
 		-DCMAKE_BUILD_TYPE=$(BUILD_TYPE_LC) \
 		-DNNFW_OVERLAY_DIR=$(OVERLAY_FOLDER) \
 		-DEXTERNALS_BUILD_THREADS=$(NPROCS) \
 		$(OPTIONS)
-	touch $(TIMESTAMP_CONFIGURE)
 
-build_internal: $(BUILD_FOLDER)
-	NNFW_WORKSPACE="$(WORKSPACE)" ./nnfw build -j $(NPROCS)
-	rm -rf $(BUILD_ALIAS)
-	ln -s $(BUILD_FOLDER) $(BUILD_ALIAS)
-	touch $(TIMESTAMP_BUILD)
+build_internal: configure_internal
+	./nnfw build -j $(NPROCS)
 
-install_internal:
-	NNFW_WORKSPACE="$(WORKSPACE)" ./nnfw install
+install_internal: build_internal
+	./nnfw install
 	rm -rf $(INSTALL_ALIAS)
 	ln -s $(INSTALL_PATH) $(INSTALL_ALIAS)
-	touch $(TIMESTAMP_INSTALL)
 
-runtime_tar_internal: $(TIMESTAMP_BUILD) install_internal
+runtime_tar_internal: build_internal install_internal
 	tar -zcf $(WORKSPACE)/onert-package.tar.gz -C $(INSTALL_PATH) lib
 	tar -zcf $(WORKSPACE)/onert-devel-package.tar.gz -C $(INSTALL_PATH) include/nnfw
 	tar -zcf $(WORKSPACE)/onert-plugin-devel-package.tar.gz -C $(INSTALL_PATH) include/onert
 	tar -zcf $(WORKSPACE)/onert-test-package.tar.gz -C $(INSTALL_PATH) $(shell ls $(INSTALL_PATH) -I lib -I include)
 
-acl_tar_internal: $(BUILD_FOLDER)
+acl_tar_internal: configure_internal
 	tar -zcf $(WORKSPACE)/onert-acl.tar.gz -C ${OVERLAY_FOLDER} lib/libarm_compute.so lib/libarm_compute_core.so lib/libarm_compute_graph.so
 
-install_internal_acl:
+install_acl_internal:
 # Workaround to install acl for test (ignore error when there is no file to copy)
-	cp $(OVERLAY_FOLDER)/lib/libarm_compute*.so $(INSTALL_ALIAS)/lib || true
+	cp $(OVERLAY_FOLDER)/lib/libarm_compute*.so $(INSTALL_ALIAS)/lib || true	
 
-build_test_suite: install_internal install_internal_acl
+install_all_internal: install_internal install_acl_internal
+
+test_suite_internal: install_all_internal
 	@echo "packaging test suite"
 	@rm -rf $(INSTALL_PATH)/test-suite.tar.gz
 # TODO Divide runtime package, external library package, and test suite
 	@tar -zcf test-suite.tar.gz tests/scripts infra Product/out --dereference
 	@mv test-suite.tar.gz $(INSTALL_PATH)/.
 
-build_coverage_suite: install_internal install_internal_acl
+coverage_suite_internal: install_all_internal
 	@echo "packaging test-coverage suite"
 	@rm -rf $(INSTALL_PATH)/coverage-suite.tar.gz
 	@find Product -name "*.gcno" > include_lists.txt
@@ -185,17 +183,3 @@ build_coverage_suite: install_internal install_internal_acl
 	@tar -zcf coverage-suite.tar.gz tests/scripts infra Product/out --dereference -T include_lists.txt
 	@rm -rf include_lists.txt tests/scripts/build_path_depth.txt
 	@mv coverage-suite.tar.gz $(INSTALL_PATH)/.
-
-###
-### Timestamps
-###
-$(WORKSPACE):
-	mkdir -p $@
-
-$(BUILD_FOLDER): $(WORKSPACE) configure_internal
-
-$(TIMESTAMP_CONFIGURE): configure_internal
-
-$(TIMESTAMP_BUILD): $(TIMESTAMP_CONFIGURE) build_internal
-
-$(TIMESTAMP_INSTALL): $(TIMESTAMP_BUILD) install_internal install_internal_acl

@@ -40,17 +40,14 @@ fi
 
 DOCKER_ENV_VARS+=" -e TARGET_ARCH=armv7l"
 DOCKER_ENV_VARS+=" -e CROSS_BUILD=1"
-DOCKER_ENV_VARS+=" -e COVERAGE_BUILD=1"
 
 set -e
 
 pushd $ROOT_PATH > /dev/null
 
-# TODO use command instead of makefile
 export DOCKER_ENV_VARS
 export DOCKER_VOLUMES
-CMD="cp -nv Makefile.template Makefile && \
-     make all install build_coverage_suite"
+CMD="make -f Makefile.template create-covsuite"
 ./nnfw docker-run bash -c "$CMD"
 
 mkdir -p ${ARCHIVE_PATH}
