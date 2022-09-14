@@ -162,7 +162,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
     auto &offset = parent_info.coordinates;
     auto frontend_layout = parent_info.frontend_layout;
 
-    assert(obj.shape().rank() <= ir::Shape::MAX_RANK);
+    assert(obj.shape().rank() <= ir::Shape::ONERT_MAX_RANK);
     auto shape = obj.shape();
     if (_operands.at(parent_index).shape().rank() >= 4 && frontend_layout == ir::Layout::NHWC &&
         backend_layout == ir::Layout::NCHW)
