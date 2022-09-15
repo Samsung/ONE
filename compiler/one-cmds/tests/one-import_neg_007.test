@@ -35,7 +35,8 @@ trap trap_err_onexit ERR
 inputfile="./inception_v3.pb"
 outputfile="./inception_v3.circle"
 
-rm -rf ${outputfile}
+# do not remove output file
+# rm -rf ${outputfile}
 rm -rf ${filename}.log
 
 # run test
