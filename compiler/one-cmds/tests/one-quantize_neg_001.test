@@ -41,15 +41,6 @@ rm -rf ${outputfile}.log
 
 # test begin
 
-# to create inception_v3.circle
-if [[ ! -s ${inputfile} ]]; then
-  /bin/bash one-import_001.test >> /dev/null
-  return_code=$?
-  if [[ ${return_code} != 0 ]]; then
-    trap_err_onexit
-  fi
-fi
-
 one-quantize \
 --input_dtype float64 \
 --quantized_dtype uint8 \
