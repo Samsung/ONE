@@ -36,7 +36,7 @@ inputfile="./inception_v2.circle"
 inputdata="./inception_v3_test_data.h5"
 outputfile="./inception_v3.quantized.circle"
 
-rm -rf ${outputfile}.log
+rm -f ${filename}.log
 
 # run test
 one-quantize \

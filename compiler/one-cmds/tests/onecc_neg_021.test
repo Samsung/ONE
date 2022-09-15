@@ -34,6 +34,8 @@ trap trap_err_onexit ERR
 
 workflowfile="onecc_neg_021.workflow.json"
 
+rm -f ${filename}.log
+
 # run test
 onecc -W ${workflowfile} > ${filename}.log 2>&1
 

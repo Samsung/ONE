@@ -35,7 +35,7 @@ trap trap_err_onexit ERR
 inputfile="./bcq.pb"
 outputfile="./bcq.circle"
 
-rm -rf ${outputfile}.log
+rm -f ${filename}.log
 
 # run test
 one-import-bcq \

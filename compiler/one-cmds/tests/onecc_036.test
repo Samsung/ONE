@@ -33,6 +33,7 @@ intermfile="test_onnx_model.tflite"
 
 rm -rf ${outputfile}
 rm -rf ${intermfile}
+rm -f ${filename}.log
 
 # run test
 onecc -W ${workflowfile} > ${filename}.log 2>&1
