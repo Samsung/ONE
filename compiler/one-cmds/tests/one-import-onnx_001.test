@@ -29,12 +29,12 @@ inputfile="./test_onnx_model.onnx"
 outputfile="./test_onnx_model.circle"
 
 rm -rf ${outputfile}
-rm -rf ${outputfile}.log
+rm -rf ${filename}.log
 
 # run test
 one-import-onnx \
 --input_path ${inputfile} \
---output_path ${outputfile} > ${outputfile}.log 2>&1
+--output_path ${outputfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

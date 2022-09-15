@@ -25,6 +25,8 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
+rm -f ${filename}.log
+
 # copy help-compile to bin folder
 cp help-compile ../bin/help-compile
 

@@ -32,6 +32,8 @@ trap trap_err_onexit ERR
 
 outputfile="./output_testdata.h5"
 
+rm -rf ${filename}.log
+
 # run test
 rawdata2hdf5 \
 --output_path ${outputfile} > ${filename}.log 2>&1

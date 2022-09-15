@@ -32,6 +32,8 @@ trap trap_err_onexit ERR
 
 outputfile="./non_existing_dir/output_testdata.h5"
 
+rm -rf ${filename}.log
+
 # run test
 rawdata2hdf5 \
 --data_list datalist.txt \

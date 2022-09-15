@@ -32,6 +32,7 @@ workflowfile="onecc_030.workflow.json"
 outputfile="sample.tvn"
 
 rm -rf ${outputfile}
+rm -rf ${filename}.log
 
 # copy dummy-compile to bin folder
 cp dummy-compile ../bin/dummy-compile

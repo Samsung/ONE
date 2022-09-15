@@ -30,21 +30,12 @@ outputfile="./inception_v3.random.quantized.circle"
 
 rm -rf ${outputfile}
 
-# to create inception_v3.circle
-if [[ ! -s ${inputfile} ]]; then
-  /bin/bash one-import_001.test > /dev/null 2>&1
-  return_code=$?
-  if [[ ${return_code} != 0 ]]; then
-    trap_err_onexit
-  fi
-fi
-
 # run test without input data
 one-quantize \
 --input_dtype float32 \
 --quantized_dtype uint8 \
---input_path ./inception_v3.circle \
---output_path ./inception_v3.random.quantized.circle > /dev/null 2>&1
+--input_path ${inputfile} \
+--output_path ${outputfile} > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

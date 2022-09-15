@@ -36,7 +36,7 @@ inputfile="./inception_v3.circle"
 inputdata="./datalist.txt"
 outputfile="./inception_v3.quantized.circle"
 
-rm -rf ${outputfile}.log
+rm -rf ${filename}.log
 
 # run test
 one-quantize \

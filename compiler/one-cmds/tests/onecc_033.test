@@ -31,6 +31,7 @@ workflowfile="onecc_033.workflow.json"
 outputfile="inception_v3_pkg"
 
 rm -rf ${outputfile}
+rm -rf ${filename}.log
 
 # run test
 onecc -W ${workflowfile} > ${filename}.log 2>&1

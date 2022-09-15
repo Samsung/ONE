@@ -32,6 +32,8 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
+rm -rf ${filename}.log
+
 # run test
 onecc wronginput > ${filename}.log 2>&1
 

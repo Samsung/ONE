@@ -31,6 +31,7 @@ inputfile="test_onnx_model.onnx"
 outputfile="test_onnx_model.circle"
 
 rm -f ${outputfile}
+rm -f ${filename}.log
 
 # run test
 one-import onnx -i ${inputfile} -o ${outputfile} > ${filename}.log 2>&1
