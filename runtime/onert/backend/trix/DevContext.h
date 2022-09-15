@@ -136,6 +136,12 @@ private:
    *
    */
   std::unordered_map<uint32_t, std::shared_ptr<npubin_meta>> _meta_map;
+
+  /**
+   * @brief Exception pointer captured whthin threads
+   *
+   */
+  std::exception_ptr _eptr;
 };
 
 } // namespace trix
