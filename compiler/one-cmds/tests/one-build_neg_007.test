@@ -62,6 +62,8 @@ touch ../optimization/OONE_BUILD_NEG_007.cfg
 
 configfile=".."
 
+rm -f ${filename}.log
+
 # run test
 one-build -C ${configfile} -OONE_BUILD_NEG_007 > ${filename}.log 2>&1
 

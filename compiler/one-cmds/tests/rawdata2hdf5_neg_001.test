@@ -34,6 +34,7 @@ inputfile="./wronglist.txt"
 outputfile="./output_testdata.h5"
 
 rm -rf ${inputfile}
+rm -f ${filename}.log
 
 touch ${inputfile}
 echo "non-existing-file.data" >> ${inputfile}

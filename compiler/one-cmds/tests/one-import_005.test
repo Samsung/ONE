@@ -31,6 +31,7 @@ configfile="one-import_005.cfg"
 outputfile="test_onnx_model.circle"
 
 rm -f ${outputfile}
+rm -f ${filename}.log
 
 # run test
 one-import onnx -C ${configfile} > ${filename}.log 2>&1

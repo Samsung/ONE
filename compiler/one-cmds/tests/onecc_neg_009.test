@@ -62,6 +62,8 @@ touch ../optimization/OONECC_NEG_009.cfg
 
 configfile=".."
 
+rm -f ${filename}.log
+
 # run test
 onecc -C ${configfile} -OONECC_NEG_009 > ${filename}.log 2>&1
 

@@ -31,6 +31,7 @@ trap trap_err_onexit ERR
 outputfile="sample.tvn"
 
 rm -rf ${outputfile}
+rm -f ${filename}.log
 
 # copy dummy-compile to bin folder
 cp dummy-compile ../bin/dummy-compile

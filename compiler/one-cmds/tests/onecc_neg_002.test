@@ -34,6 +34,8 @@ trap trap_err_onexit ERR
 
 configfile="onecc_neg_002.cfg"
 
+rm -f ${filename}.log
+
 # run test
 onecc -C ${configfile} > ${filename}.log 2>&1
 

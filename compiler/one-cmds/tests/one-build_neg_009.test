@@ -34,6 +34,8 @@ trap trap_err_onexit ERR
 
 configfile=".."
 
+rm -f ${filename}.log
+
 # run test
 one-build -C ${configfile} "-O SPACE OPTION" > ${filename}.log 2>&1
 
