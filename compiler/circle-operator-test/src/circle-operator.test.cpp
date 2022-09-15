@@ -20,7 +20,7 @@
 #include <fstream>
 #include <vector>
 
-class cirlce_operator_test : public ::testing::Test
+class circle_operator_test : public ::testing::Test
 {
 protected:
   bool initialize(void);
@@ -35,7 +35,7 @@ protected:
   std::string _result;
 };
 
-bool cirlce_operator_test::initialize(void)
+bool circle_operator_test::initialize(void)
 {
   char *path = std::getenv("ARTIFACTS_PATH");
   if (path == nullptr)
@@ -56,7 +56,7 @@ bool cirlce_operator_test::initialize(void)
   return true;
 }
 
-bool cirlce_operator_test::run(const std::string &command)
+bool circle_operator_test::run(const std::string &command)
 {
   std::vector<char> buffer(260);
   std::string result = "";
@@ -86,7 +86,7 @@ bool cirlce_operator_test::run(const std::string &command)
   return true;
 }
 
-bool cirlce_operator_test::load(const std::string &file)
+bool circle_operator_test::load(const std::string &file)
 {
   std::ifstream tmp(file.c_str());
   if (tmp.fail())
@@ -98,7 +98,7 @@ bool cirlce_operator_test::load(const std::string &file)
   return true;
 }
 
-TEST_F(cirlce_operator_test, valid_names)
+TEST_F(circle_operator_test, valid_names)
 {
   if (!initialize())
   {
@@ -118,7 +118,7 @@ TEST_F(cirlce_operator_test, valid_names)
   ASSERT_NE(std::string::npos, pos);
 }
 
-TEST_F(cirlce_operator_test, valid_codes)
+TEST_F(circle_operator_test, valid_codes)
 {
   if (!initialize())
   {
@@ -138,7 +138,7 @@ TEST_F(cirlce_operator_test, valid_codes)
   ASSERT_NE(std::string::npos, pos);
 }
 
-TEST_F(cirlce_operator_test, invalid_option_NEG)
+TEST_F(circle_operator_test, invalid_option_NEG)
 {
   if (!initialize())
   {
@@ -158,7 +158,7 @@ TEST_F(cirlce_operator_test, invalid_option_NEG)
   ASSERT_NE(std::string::npos, pos);
 }
 
-TEST_F(cirlce_operator_test, check_code_name)
+TEST_F(circle_operator_test, check_code_name)
 {
   if (!initialize())
   {
@@ -180,7 +180,7 @@ TEST_F(cirlce_operator_test, check_code_name)
   ASSERT_NE(std::string::npos, pos2);
 }
 
-TEST_F(cirlce_operator_test, nonexist_file_NEG)
+TEST_F(circle_operator_test, nonexist_file_NEG)
 {
   if (!initialize())
   {
@@ -200,7 +200,7 @@ TEST_F(cirlce_operator_test, nonexist_file_NEG)
   ASSERT_NE(std::string::npos, pos);
 }
 
-TEST_F(cirlce_operator_test, invalid_file_NEG)
+TEST_F(circle_operator_test, invalid_file_NEG)
 {
   if (!initialize())
   {
@@ -220,7 +220,7 @@ TEST_F(cirlce_operator_test, invalid_file_NEG)
   ASSERT_NE(std::string::npos, pos);
 }
 
-TEST_F(cirlce_operator_test, output_file)
+TEST_F(circle_operator_test, output_file)
 {
   if (!initialize())
   {
