@@ -78,7 +78,8 @@ protected:
     model->push(onert::ir::SubgraphIndex{0}, _graph);
 
     _executors = std::make_shared<Executors>();
-    _executors->emplace(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph));
+    _executors->emplace(std::make_unique<InterpExecutor>(*_graph), onert::ir::ModelIndex{0},
+                        onert::ir::SubgraphIndex{0});
   }
 
   void CreateTwoStepModel()
@@ -141,7 +142,8 @@ protected:
     model->push(onert::ir::SubgraphIndex{0}, _graph);
 
     _executors = std::make_shared<Executors>();
-    _executors->emplace(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph));
+    _executors->emplace(std::make_unique<InterpExecutor>(*_graph), onert::ir::ModelIndex{0},
+                        onert::ir::SubgraphIndex{0});
   }
 
   void CreateUnspecifiedDimensionsModel()
@@ -192,7 +194,8 @@ protected:
     model->push(onert::ir::SubgraphIndex{0}, _graph);
 
     _executors = std::make_shared<Executors>();
-    _executors->emplace(onert::ir::SubgraphIndex{0}, std::make_unique<InterpExecutor>(*_graph));
+    _executors->emplace(std::make_unique<InterpExecutor>(*_graph), onert::ir::ModelIndex{0},
+                        onert::ir::SubgraphIndex{0});
   }
 
   void createExecution() { _execution = std::make_unique<Execution>(_executors); }
@@ -217,7 +220,7 @@ TEST_F(InterpExecutorTest, create_simple)
 {
   CreateSimpleModel();
   ASSERT_NE(_executors, nullptr);
-  ASSERT_NE(_executors->at(onert::ir::SubgraphIndex{0}), nullptr);
+  ASSERT_NE(_executors->at(onert::ir::ExecutorIndex{0}), nullptr);
 }
 
 TEST_F(InterpExecutorTest, neg_setInput)

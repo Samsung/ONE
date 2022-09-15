@@ -36,13 +36,12 @@ public:
   Executors(const Executors &) = delete;
   Executors(Executors &&) = default;
 
-  // TODO Use Executor index
-  void emplace(ir::SubgraphIndex idx, std::unique_ptr<IExecutor> exec)
-  {
-    _executors.emplace(idx, std::move(exec));
-  }
+  ir::ExecutorIndex emplace(std::unique_ptr<IExecutor> exec, const ir::ModelIndex &model_index,
+                            const ir::SubgraphIndex &subg_index);
 
-  std::unique_ptr<IExecutor> &at(ir::SubgraphIndex idx) { return _executors.at(idx); }
+  IExecutor *at(const ir::ExecutorIndex &idx) { return _executors.at(idx).get(); }
+
+  IExecutor *at(const ir::ModelIndex &idx_m, const ir::SubgraphIndex &idx_subg);
 
   uint32_t inputSize() const;
 
@@ -57,12 +56,24 @@ public:
 private:
   void executeEntries(const IODescription &desc);
 
+  ir::ExecutorIndex generateIndex()
+  {
+    // No need to check if there is an entry with _next_index since
+    // _next_index is always ("the highest index in the object map" + 1)
+    if (ir::ExecutorIndex{_next_index}.valid())
+      return ir::ExecutorIndex{_next_index++};
+    else
+      return ir::ExecutorIndex{};
+  }
+
 private:
   // TODO Use Executor index
   //      Changing index will effect if/while compile and kernel implementation
-  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _executors;
+  std::unordered_map<ir::ExecutorIndex, std::unique_ptr<IExecutor>> _executors;
   // NOTE _model_edges may use different struct type for executor implementation
   std::unique_ptr<ir::ModelEdges> _model_edges;
+  std::unordered_map<ir::ExecutorIndex, std::pair<ir::ModelIndex, ir::SubgraphIndex>> _index_map;
+  uint32_t _next_index = 0;
 };
 
 } // namespace exec

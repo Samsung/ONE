@@ -491,7 +491,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     auto executors = std::make_shared<exec::Executors>();
 
     _nnpkg->primary_model()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-      executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
+      executors->emplace(std::make_unique<interp::InterpExecutor>(subg), ir::ModelIndex{0}, index);
     });
     _state = State::COMPILED;
     return std::make_shared<CompilerArtifact>(executors, nullptr);
@@ -512,82 +512,74 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   // Tracing context
   auto tracing_ctx = std::make_unique<util::TracingCtx>();
 
-  // Model edge context
-  std::unique_ptr<ir::ModelEdges> model_edges = nullptr;
-
   // Lower: Assign backend
-  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
+  using LoweredGraphMap =
+    std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>;
+  std::unordered_map<ir::ModelIndex, LoweredGraphMap> lowered_subgs;
 
-  if (model_count == 1)
-  {
-    _nnpkg->primary_model()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-      dot_dumper.dump(subg, nnfw::misc::str("before_lower_subg-", index.value()));
-      // Lower: Assign backend
-      lowered_subgs[index] = std::make_unique<compiler::LoweredGraph>(subg, *_voptions[0]);
-      // Set tracing_ctx for copied graph
-      tracing_ctx->setSubgraphIndex(&(lowered_subgs[index]->graph()), index.value());
-    });
-  }
-  else
   {
     // TODO Support tracing_ctx for multiple model
-    tracing_ctx = nullptr;
-
-    // Copy model edge context
-    model_edges = std::make_unique<ir::ModelEdges>(_nnpkg->model_edges());
+    if (model_count != 1)
+      tracing_ctx = nullptr;
 
     for (uint32_t i = 0; i < model_count; i++)
     {
-      auto model = _nnpkg->model(ir::ModelIndex{i});
-      if (model->subgraphs_count() != 1)
-        throw std::runtime_error{"NYI: Lowering subgraphs for multiple model is not supported yet"};
-      auto subg = model->primary_subgraph();
-      dot_dumper.dump(*subg, nnfw::misc::str("before_lower_model-", i));
+      auto const index_m = ir::ModelIndex{i};
+      auto &model_lsubgs = lowered_subgs[index_m];
 
-      // For multimodel, model index is used for lowered graph index in lowered graph map
-      // and index type is SubgraphIndex
-      // TODO Find better way to represent lowered graph index for multimodel's subgraph
-      lowered_subgs[ir::SubgraphIndex{i}] =
-        std::make_unique<compiler::LoweredGraph>(*model->primary_subgraph(), *_voptions[i]);
+      // if (model->subgraphs_count() != 1)
+      // throw std::runtime_error{"NYI: Lowering subgraphs for multiple model is not supported
+      // yet"};
+
+      auto model = _nnpkg->model(index_m);
+
+      model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+        dot_dumper.dump(subg, nnfw::misc::str("before_lower_model-", i, "-subg-", index.value()));
+        // Lower: Assign backend
+        model_lsubgs[index] = std::make_unique<compiler::LoweredGraph>(subg, *_voptions[0]);
+        // Set tracing_ctx for copied graph
+        if (tracing_ctx != nullptr)
+          tracing_ctx->setSubgraphIndex(&(model_lsubgs[index]->graph()), index.value());
+      });
     }
   }
 
+  // Copy model edge context before reset
+  // Model edge context
+  auto model_edges =
+    (model_count == 1) ? nullptr : std::make_unique<ir::ModelEdges>(_nnpkg->model_edges());
   _nnpkg.reset();
 
-  for (auto &pair : lowered_subgs)
+  for (auto &pair_map : lowered_subgs)
   {
-    const auto &subg_index = pair.first;
-    auto &lowered_subg = pair.second;
-    dot_dumper.dump(*lowered_subg, "after_lower_subg-" + std::to_string(subg_index.value()));
+    const auto &index_m = pair_map.first;
+    auto &model_lsubg = pair_map.second;
+
+    for (auto &pair : model_lsubg)
+    {
+      const auto &subg_index = pair.first;
+      auto &lowered_subg = pair.second;
+      dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_model-", index_m.value(),
+                                                     "-subg-", subg_index.value()));
+    }
   }
 
   // Shape inference.
+  for (auto &pair : lowered_subgs)
   {
+    auto &model_lsubgs = pair.second;
     // Run the StaticShapeInfer of primary subg. All child StaticShapeInferers are called
     // recursively
     std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers =
-      createStaticShapeInferers(lowered_subgs);
+      createStaticShapeInferers(model_lsubgs);
 
-    if (model_count == 1)
-    {
-      const auto primary_subg_idx = ir::SubgraphIndex{0};
-      inferers.at(primary_subg_idx)->infer();
+    const auto primary_subg_idx = ir::SubgraphIndex{0};
+    inferers.at(primary_subg_idx)->infer();
 
-      for (const auto &pair : inferers)
-      {
-        const auto inferer = pair.second.get();
-        inferer->dump();
-      }
-    }
-    else
+    for (const auto &pair_inferer : inferers)
     {
-      // Assume multi model has only one subgraph on each model
-      for (const auto &pair : inferers)
-      {
-        const auto inferer = pair.second.get();
-        inferer->infer();
-        inferer->dump();
-      }
+      const auto inferer = pair_inferer.second.get();
+      inferer->dump();
     }
   }
 
@@ -600,8 +592,13 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   //        static/dynamic shape inferer will make valid output shape
   for (auto &pair : lowered_subgs)
   {
-    auto &lowered_subg = pair.second;
-    compiler::ShapeValidator{lowered_subg->graph()}();
+    auto &model_lsubgs = pair.second;
+
+    for (auto &pair_in : model_lsubgs)
+    {
+      auto &lowered_subg = pair_in.second;
+      compiler::ShapeValidator{lowered_subg->graph()}();
+    }
   }
 
   /*************************************************************
@@ -610,20 +607,29 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   auto executors = std::make_shared<exec::Executors>(std::move(model_edges));
   for (auto &pair : lowered_subgs)
   {
-    const auto &subg_index = pair.first;
-    auto &lowered_subg = pair.second;
-    auto indexed_ranks = lowered_subg->indexed_ranks();
+    const auto &index_m = pair.first;
+    auto &model_lsubgs = pair.second;
+    uint32_t executor_index = 0;
 
-    ir::OperationDumper dumper("Executor generation of Subgraph " +
-                               std::to_string(subg_index.value()));
-    lowered_subg->graph().operations().iterate(
-      [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
+    for (auto &pair_in : model_lsubgs)
+    {
+      const auto &subg_index = pair_in.first;
+      auto &lowered_subg = pair_in.second;
+      auto indexed_ranks = lowered_subg->indexed_ranks();
 
-    auto &options = (model_count > 1) ? *_voptions[subg_index.value()] : *_voptions[0];
-    auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
-      std::move(lowered_subg), tracing_ctx.get(), options, executors)};
-    executor->setIndexedRanks(indexed_ranks);
-    executors->emplace(subg_index, std::move(executor));
+      ir::OperationDumper dumper("Executor generation of Subgraph " +
+                                 std::to_string(subg_index.value()));
+      lowered_subg->graph().operations().iterate(
+        [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
+
+      auto &options = *_voptions[index_m.value()];
+      auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
+        std::move(lowered_subg), tracing_ctx.get(), options, executors, index_m)};
+      executor->setIndexedRanks(indexed_ranks);
+      executors->emplace(std::move(executor), index_m, subg_index);
+
+      executor_index++;
+    }
   }
 
   /********************************
@@ -733,7 +739,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
     auto executors = std::make_shared<exec::Executors>();
 
     model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-      executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
+      executors->emplace(std::make_unique<interp::InterpExecutor>(subg), ir::ModelIndex{0}, index);
     });
     results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));
     _state = State::COMPILED;
@@ -823,10 +829,10 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
                                std::to_string(partialgraph_index.value()));
     lowered_partialgraph->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
-    auto executor = std::unique_ptr<exec::IExecutor>{
-      ExecutorFactory::get().create(std::move(lowered_partialgraph), nullptr, options, executors)};
+    auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
+      std::move(lowered_partialgraph), nullptr, options, executors, ir::ModelIndex{0})};
     executor->setIndexedRanks(indexed_ranks);
-    executors->emplace(ir::SubgraphIndex{0}, std::move(executor));
+    executors->emplace(std::move(executor), ir::ModelIndex{0}, ir::SubgraphIndex{0});
 
     // It doesn't support tracing in case of partial graph
     results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));

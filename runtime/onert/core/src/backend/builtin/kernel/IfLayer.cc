@@ -29,11 +29,11 @@ IfLayer::IfLayer(backend::IPortableTensor *cond_tensor,
                  const std::vector<backend::IPortableTensor *> input_tensors,
                  const std::vector<backend::IPortableTensor *> output_tensors,
                  const ir::SubgraphIndex &then_subg_index, const ir::SubgraphIndex &else_subg_index,
-                 exec::Executors *executors,
+                 exec::Executors *executors, const ir::ModelIndex &model_index,
                  const std::shared_ptr<ExternalContext> &external_context)
   : _cond_tensor{cond_tensor}, _input_tensors{input_tensors}, _output_tensors{output_tensors},
     _then_subg_index{then_subg_index}, _else_subg_index{else_subg_index}, _executors{executors},
-    _external_context{external_context}
+    _model_index{model_index}, _external_context{external_context}
 {
   // At this point, executors may not have executors of then subg and else subg
 }
@@ -61,12 +61,12 @@ void IfLayer::run()
   if (cond_result)
   {
     VERBOSE(If) << "Call to $" << _then_subg_index << " (then)" << std::endl;
-    subg_exec = _executors->at(_then_subg_index).get();
+    subg_exec = _executors->at(_model_index, _then_subg_index);
   }
   else
   {
     VERBOSE(If) << "Call to $" << _else_subg_index << " (else)" << std::endl;
-    subg_exec = _executors->at(_else_subg_index).get();
+    subg_exec = _executors->at(_model_index, _else_subg_index);
   }
 
   subg_exec->execute(_input_tensors, _output_tensors);

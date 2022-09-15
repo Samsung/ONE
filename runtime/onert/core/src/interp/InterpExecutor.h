@@ -49,9 +49,9 @@ public:
    * @brief   Return graph object
    * @return  Graph object
    */
-  const ir::Graph &graph() final { return _graph; }
+  const ir::Graph &graph() const final { return _graph; }
 
-  const ir::Graph &parent_graph() final
+  const ir::Graph &parent_graph() const final
   {
     throw new std::runtime_error{"Interpreter does not support this function."};
   }

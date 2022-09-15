@@ -36,11 +36,13 @@ WhileLayer::WhileLayer(const std::vector<backend::IPortableTensor *> input_tenso
                        const std::vector<backend::IPortableTensor *> output_tensors,
                        const ir::SubgraphIndex &cond_subg_index,
                        const ir::SubgraphIndex &body_subg_index, exec::Executors *executors,
+                       const ir::ModelIndex &model_index,
                        basic::DynamicMemoryManager *dyn_memory_manager,
                        const std::shared_ptr<ExternalContext> &external_context)
   : _cond_subg_index{cond_subg_index}, _body_subg_index{body_subg_index},
     _input_tensors{input_tensors}, _output_tensors{output_tensors}, _executors{executors},
-    _dyn_memory_manager{dyn_memory_manager}, _external_context{external_context}
+    _model_index{model_index}, _dyn_memory_manager{dyn_memory_manager}, _external_context{
+                                                                          external_context}
 {
   // At this point, executors may not have executors of cond subg and body subg
 }
@@ -57,8 +59,8 @@ void WhileLayer::run()
   // // Run cond subg
   // If there is no loop copy "_input_tensors" -> "_dst_tensors", else copy "cond subg inputs" ->
   // "_dst_tensors"
-  auto cond_exec = _executors->at(_cond_subg_index).get();
-  auto body_exec = _executors->at(_body_subg_index).get();
+  auto cond_exec = _executors->at(_model_index, _cond_subg_index);
+  auto body_exec = _executors->at(_model_index, _body_subg_index);
 
   // Need a temp tensor to hold the cond subgraph output
   assert(cond_exec->getOutputTensors().size() == 1);
