@@ -18,6 +18,8 @@
 
 #include "Convert.h"
 
+#include <stdexcept>
+
 namespace onert
 {
 namespace backend
@@ -140,60 +142,64 @@ void DevContext::requestRun(ModelID model_id, input_buffers *input_bufs, tensors
       throw std::runtime_error("Supported only one output now");
     }
 
+    if (input_bufs->bufs[0].size % batch_size != 0)
+    {
+      throw std::runtime_error("Invalid batch size. batch size :" + std::to_string(batch_size) +
+                               ", input buffer size : " + std::to_string(input_bufs->bufs[0].size));
+    }
+
+    if (output_bufs->bufs[0].size % batch_size != 0)
+    {
+      throw std::runtime_error(
+        "Invalid batch size. batch size :" + std::to_string(batch_size) +
+        ", output tensor size : " + std::to_string(output_bufs->bufs[0].size));
+    }
+
     // inputs/outputs for each batch
     std::vector<input_buffers> in_buffers_vec(batch_size);
     std::vector<output_buffers> out_buffers_vec(batch_size);
-
-    std::vector<tensors_data_info> in_infos(batch_size);
-    std::vector<tensors_data_info> out_infos(batch_size);
 
     // Run on thread pool
     std::vector<std::future<int32_t>> batch_futures;
     for (uint32_t batch_num = 0; batch_num < batch_size; ++batch_num)
     {
-      // Set buffers of inputs/outputs for each batch
-      // TODO Support multiple inputs/outputs
-      auto in_batch_buffers = &in_buffers_vec.at(batch_num);
-      in_batch_buffers->num_buffers = input_bufs->num_buffers;
-      if (input_bufs->bufs[0].size % batch_size != 0)
-      {
-        throw std::runtime_error(
-          "Invalid batch size. batch size :" + std::to_string(batch_size) +
-          ", input buffer size : " + std::to_string(input_bufs->bufs[0].size));
-      }
-      assert(input_bufs->bufs[0].size % batch_size == 0);
-      const uint64_t in_batch_offset = input_bufs->bufs[0].size / batch_size;
-      setBufferByBatch(input_bufs->bufs[0], batch_num, in_batch_offset, &in_batch_buffers->bufs[0]);
-
-      auto out_batch_buffers = &out_buffers_vec.at(batch_num);
-      out_batch_buffers->num_buffers = output_bufs->num_buffers;
-      if (output_bufs->bufs[0].size % batch_size != 0)
-      {
-        throw std::runtime_error(
-          "Invalid batch size. batch size :" + std::to_string(batch_size) +
-          ", output tensor size : " + std::to_string(output_bufs->bufs[0].size));
-      }
-      const uint64_t out_batch_offset = output_bufs->bufs[0].size / batch_size;
-      setBufferByBatch(output_bufs->bufs[0], batch_num, out_batch_offset,
-                       &out_batch_buffers->bufs[0]);
-
-      // Set data info of inputs/outputs for each batch
-      // TODO Support multiple inputs/outputs
-      in_infos.at(batch_num) = *in_info;
-      out_infos.at(batch_num) = *out_info;
-
       // Enqueue jobs
       // The in_info and out_info are always the same even if they are divided by batch, so they are
       // used as they are.
       auto future = _batch_thread_pool->enqueueJob(
-        [this](uint32_t dev_num, ModelID model_id, input_buffers *input_bufs,
-               tensors_data_info *in_info, output_buffers *output_bufs, tensors_data_info *out_info,
-               uint32_t batch_num) -> int32_t {
-          // dev_num is the same as the thread number in _batch_thread_pool
-          this->runOneBatch(dev_num, model_id, input_bufs, in_info, output_bufs, out_info);
+        [batch_size, in_info, out_info,
+         this](uint32_t dev_num, ModelID model_id, const input_buffers *input_bufs,
+               const output_buffers *output_bufs, uint32_t batch_num) -> int32_t {
+          // Set buffers of inputs/outputs for each batch
+          // TODO Support multiple inputs/outputs
+          input_buffers in_batch_buffers;
+          in_batch_buffers.num_buffers = input_bufs->num_buffers;
+          const uint64_t in_batch_offset = input_bufs->bufs[0].size / batch_size;
+          setBufferByBatch(input_bufs->bufs[0], batch_num, in_batch_offset,
+                           &in_batch_buffers.bufs[0]);
+
+          output_buffers out_batch_buffers;
+          out_batch_buffers.num_buffers = output_bufs->num_buffers;
+          const uint64_t out_batch_offset = output_bufs->bufs[0].size / batch_size;
+          setBufferByBatch(output_bufs->bufs[0], batch_num, out_batch_offset,
+                           &out_batch_buffers.bufs[0]);
+
+          try
+          {
+            // dev_num is the same as the thread number in _batch_thread_pool
+            this->runOneBatch(dev_num, model_id, &in_batch_buffers, in_info, &out_batch_buffers,
+                              out_info);
+          }
+          catch (...)
+          {
+            _eptr = std::current_exception();
+          }
+
           return batch_num;
         },
-        model_id, in_batch_buffers, &in_infos[batch_num], out_batch_buffers, &out_infos[batch_num],
+        model_id, input_bufs, output_bufs,
+        // model_id, in_batch_buffers, &in_infos[batch_num], out_batch_buffers,
+        // &out_infos[batch_num],
         batch_num);
       batch_futures.emplace_back(std::move(future));
     }
@@ -201,6 +207,13 @@ void DevContext::requestRun(ModelID model_id, input_buffers *input_bufs, tensors
     for (auto &future : batch_futures)
     {
       future.get();
+    }
+
+    if (_eptr)
+    {
+      std::exception_ptr eptr(nullptr);
+      _eptr.swap(eptr);
+      std::rethrow_exception(eptr);
     }
   }
   else
@@ -228,30 +241,57 @@ void DevContext::runOneBatch(uint32_t dev_num, ModelID model_id, input_buffers *
 
   const auto &dev_handle = _dev_handles.at(dev_num);
   int req_id;
-  if (createNPU_request(dev_handle, model_id_at_device, &req_id))
+
+  if (auto error_code = createNPU_request(dev_handle, model_id_at_device, &req_id))
   {
     throw std::runtime_error("Unable to create NPU request with model id (" +
-                             std::to_string(model_id_at_device) + ")");
+                             std::to_string(model_id_at_device) + ")" +
+                             " error code : " + std::to_string(error_code));
   }
 
-  if (setNPU_requestData(dev_handle, req_id, input_bufs, in_info, output_bufs, out_info))
+  if (auto error_code =
+        setNPU_requestData(dev_handle, req_id, input_bufs, in_info, output_bufs, out_info))
   {
     removeNPU_request(dev_handle, req_id);
     throw std::runtime_error("Unable to create NPU request for model id (" +
-                             std::to_string(model_id_at_device) + ")");
+                             std::to_string(model_id_at_device) + ")" +
+                             " error code : " + std::to_string(error_code));
   }
 
-  if (submitNPU_request(dev_handle, req_id))
+  // NOTE submitNPU_request is not thread-safe(?). It is rarely hanging(unresponsive).
+  //      Ultimately, to solve this problem, we have to either use other thread-safe API or
+  //      change submitNPU_request to be thread-safe, but both works take time.
+  //      As a workaround, let's allow hanging thread.
+  // TODO Change submitNPU_request to be thread-safe or replaced with other thread-safe API
+  std::packaged_task<int(npudev_h, int)> task(submitNPU_request);
+  auto f = task.get_future();
+  std::thread thread_submit_request(std::move(task), dev_handle, req_id);
+  auto status = f.wait_until(std::chrono::system_clock::now() + std::chrono::seconds(60));
+  if (status == std::future_status::timeout)
+  {
+    // There is no way to terminate hanging submitNPU_request from the outside.
+    // If a hanging thread is detached, it will remain as a hanging thread. Even so, it's better
+    // than having the main thread hanging.
+    thread_submit_request.detach();
+
+    // TODO Enable removeNPU_request after resolving hanging.
+    // removeNPU_request(dev_handle, req_id);
+    throw std::runtime_error("The npu API \"submitNPU_request\" timeout");
+  }
+
+  auto error_code = f.get();
+  thread_submit_request.join();
+  if (error_code != 0)
   {
     removeNPU_request(dev_handle, req_id);
     throw std::runtime_error("Unable to submit NPU request with req id (" + std::to_string(req_id) +
-                             ")");
+                             ")" + " error code : " + std::to_string(error_code));
   }
 
-  if (removeNPU_request(dev_handle, req_id))
+  if (auto error_code = removeNPU_request(dev_handle, req_id))
   {
     throw std::runtime_error("Unable to remove NPU request with req id (" + std::to_string(req_id) +
-                             ")");
+                             ")" + " error code : " + std::to_string(error_code));
   }
 }
 
