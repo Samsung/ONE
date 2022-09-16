@@ -2,39 +2,16 @@ if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
-unset(CIRCLE_INTERPRETER_TESTS)
+get_target_property(ARTIFACTS_PATH testDataGenerator BINARY_DIR)
+get_target_property(CIRCLE_INTERPRETER_PATH circle-interpreter BINARY_DIR)
+set(CIRCLE_INTERPRETER_PATH "${CIRCLE_INTERPRETER_PATH}/circle-interpreter")
 
-get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
+nnas_find_package(GTest REQUIRED)
 
+file(GLOB_RECURSE TESTS "src/*.test.cpp")
+GTest_AddTest(circle-interpreter-test ${TESTS})
 
-unset(TEST_ARGS_LIST)
-# Macro for command line circle-interpreter validation test
-# Example of usage
-#   testcmd(POS_000 POS sample.circle sample.input sample.output)
-#   testcmd(NEG_000 NEG not-existing.circle invalid-option)
-macro(testcmd TEST_NAME TEST_TYPE)
-  list(APPEND TEST_ARGS_LIST ${TEST_NAME})
-  list(APPEND TEST_ARGS_LIST ${TEST_TYPE})
-
-  set(EXTRA_ARGS ${ARGN})
-  unset(CMD_STR)
-
-  set(WORK_DIR ${ARTIFACTS_BIN_PATH})
-
-  foreach(ARGUMENT ${EXTRA_ARGS})
-    set(CMD_STR "${CMD_STR} ${ARGUMENT}")
-  endforeach()
-  
-  list(APPEND TEST_ARGS_LIST ${CMD_STR})
-endmacro(testcmd)
-
-# Read "test.lst"
-include("test.lst")
-# Read "test.local.lst" if exists
-include("test.local.lst" OPTIONAL)
-
-add_test(NAME circle_interpreter_test
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/run_command.sh"
-          "$<TARGET_FILE:circle-interpreter>"
-          ${TEST_ARGS_LIST}
-)
+set_tests_properties(circle-interpreter-test
+                     PROPERTIES
+                     ENVIRONMENT "ARTIFACTS_PATH=${ARTIFACTS_PATH};CIRCLE_INTERPRETER_PATH=${CIRCLE_INTERPRETER_PATH}"
+                     )
