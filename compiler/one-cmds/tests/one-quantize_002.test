@@ -34,8 +34,8 @@ rm -rf ${outputfile}
 one-quantize \
 --input_dtype float32 \
 --quantized_dtype uint8 \
---input_path ./inception_v3.circle \
---output_path ./inception_v3.random.quantized.circle > /dev/null 2>&1
+--input_path ${inputfile} \
+--output_path ${outputfile} > /dev/null 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
