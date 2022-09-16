@@ -50,10 +50,10 @@ function TFLiteModelVerification()
 
   export BACKENDS=$1
   if [[ "$2" == "" ]]; then
-    $INSTALL_PATH/test/onert-test verify-tflite --api=loader \
+    $INSTALL_PATH/test/onert-test verify-tflite \
       --reportdir=$ROOT_PATH/$3
   else
-    $INSTALL_PATH/test/onert-test verify-tflite --api=loader \
+    $INSTALL_PATH/test/onert-test verify-tflite \
       --list=$2 \
       --reportdir=$ROOT_PATH/$3
   fi
@@ -126,30 +126,6 @@ function NNPackageTest()
   if [ ${EXITCODE} -ne 0 ]; then
     exit ${EXITCODE}
   fi
-
-  popd > /dev/null
-}
-
-# $1: (required) backend
-# $2: (required) test list file relative path from nnfw root directory
-#                pass empty string if there is no skiplist
-# $3: (required) relative path to report from nnfw root directory
-function NNAPIFrontendTest()
-{
-  [[ $# -ne 3 ]] && echo "NNAPIFrontendTest: Invalid function argument setting" && exit 1
-
-  pushd ${ROOT_PATH} > /dev/null
-
-  export BACKENDS=$1
-  if [[ "$2" == "" ]]; then
-    $INSTALL_PATH/test/onert-test verify-tflite --api=nnapi \
-      --reportdir=$ROOT_PATH/$3
-  else
-    $INSTALL_PATH/test/onert-test verify-tflite --api=nnapi \
-      --list=$2 \
-      --reportdir=$ROOT_PATH/$3
-  fi
-  unset BACKENDS
 
   popd > /dev/null
 }
