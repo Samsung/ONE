@@ -13,20 +13,20 @@
             "one-cmd": "one-import-tflite",
             "commands": {
                 "input_path": "inception_v3.tflite",
-                "output_path": "inception_v3.circle"
+                "output_path": "inception_v3.onecc_033.circle"
             }
         },
         "optimize": {
             "one-cmd": "one-optimize",
             "commands": {
-                "input_path": "inception_v3.circle",
+                "input_path": "inception_v3.onecc_033.circle",
                 "output_path": "inception_v3.opt.circle"
             }
         },
         "quantize": {
             "one-cmd": "one-quantize",
             "commands": {
-                "input_path": "inception_v3.circle",
+                "input_path": "inception_v3.onecc_033.circle",
                 "output_path": "inception_v3.quantized.circle",
                 "input_data": "inception_v3_test_data.h5"
             }
