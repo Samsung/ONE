@@ -33,10 +33,9 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 inputfile="./inception_v3.pb"
-outputfile="./inception_v3.circle"
+outputfile="./inception_v3.imp_neg_007.circle"
 
-# do not remove output file
-# rm -rf ${outputfile}
+rm -rf ${outputfile}
 rm -rf ${filename}.log
 
 # run test
