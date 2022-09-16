@@ -10,6 +10,9 @@ if(NOT ARM_C_COMPILER_PATH)
   return()
 endif()
 
+# TODO: add cmake option to choose pal from command line
+set(LUCI_INTERPRETER_PAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/pal/mcu")
+
 set(CMAKE_ARM_OPTIONS
   -DLUCI_INTERPRETER_STATIC=ON
   -DLUCI_STATIC=ON
@@ -19,7 +22,7 @@ set(CMAKE_ARM_OPTIONS
   "-DEXT_OVERLAY_DIR=${CMAKE_CURRENT_BINARY_DIR}/../../overlay"
   "-DFlatbuffers_DIR=${CMAKE_CURRENT_BINARY_DIR}/../../overlay/lib/cmake/flatbuffers"
   "-DCMAKE_TOOLCHAIN_FILE=${NNAS_PROJECT_SOURCE_DIR}/infra/nncc/cmake/buildtool/config/arm-none-eabi-gcc.cmake"
-  "-DLUCI_INTERPRETER_PAL_DIR=${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/pal/mcu"
+  "-DLUCI_INTERPRETER_PAL_DIR=${LUCI_INTERPRETER_PAL_DIR}"
   "-DNNAS_PROJECT_SOURCE_DIR=${NNAS_PROJECT_SOURCE_DIR}"
   "-DNNAS_EXTERNALS_DIR=${NNAS_EXTERNALS_DIR}"
   -DC_COMPILER=${ARM_C_COMPILER}
@@ -32,6 +35,11 @@ set(CMAKE_ARM_OPTIONS
   "-DNNAS_ROOT=${NNAS_PROJECT_SOURCE_DIR}"
   -DENABLE_STRICT_BUILD=OFF
 )
+
+if (GENERATE_KERNELS_LIST_FROM)
+  set(GENERATED_KERNELS_LIST_PATH "${LUCI_INTERPRETER_PAL_DIR}/GeneratedKernelsToBuild.lst")
+  list(APPEND CMAKE_ARM_OPTIONS "-DLUCI_INTERPRETER_KERNELS_BUILD_LIST=${GENERATED_KERNELS_LIST_PATH}")
+endif()
 
 set(MICRO_ARM_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/standalone_arm")
 file(MAKE_DIRECTORY "${MICRO_ARM_BUILD_DIR}")
@@ -47,6 +55,30 @@ add_custom_command(
 )
 
 add_custom_target(luci_interpreter_micro_arm_cmake DEPENDS "${MICRO_ARM_BUILD_DEPENDENCY}")
+
+# Generate KernelsToBuild list from circle model
+if (GENERATE_KERNELS_LIST_FROM)
+  if(NOT TARGET mio_circle04)
+    return()
+  endif(NOT TARGET mio_circle04)
+
+  add_executable(generator_kernels_list_exec helpers/GenerateKernelsListHelper.cpp)
+  target_link_libraries(generator_kernels_list_exec arser)
+  target_link_libraries(generator_kernels_list_exec foder)
+  target_link_libraries(generator_kernels_list_exec mio_circle04)
+  target_link_libraries(generator_kernels_list_exec mio_circle04_helper)
+
+  add_custom_target(
+          generate_kernels_list ALL
+          COMMAND generator_kernels_list_exec ${GENERATE_KERNELS_LIST_FROM} ${GENERATED_KERNELS_LIST_PATH}
+          COMMENT "Generating KernelsToBuild list"
+  )
+  add_dependencies(luci_interpreter_micro_arm_cmake generate_kernels_list)
+
+endif()
+
+# To remove GENERATE_KERNELS_LIST_FROM variable from cmake cache
+set(GENERATE_KERNELS_LIST_FROM "" CACHE STRING "" FORCE)
 
 set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/compiler/luci-micro/luci-interpreter/src/libluci_interpreter.a")
 
