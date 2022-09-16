@@ -15,13 +15,12 @@
  */
 
 #include <iostream>
-#include <arser/arser.h>
-#include <foder/FileLoader.h>
+#include <fstream>
 #include <mio/circle/schema_generated.h>
 #include <mio_circle/Reader.h>
 #include <set>
 
-std::string get_register_kernel_str(circle::BuiltinOperator builtin_operator)
+std::string get_register_kernel_str(const circle::BuiltinOperator builtin_operator)
 {
   switch (builtin_operator)
   {
@@ -150,6 +149,35 @@ std::string get_register_kernel_str(circle::BuiltinOperator builtin_operator)
   }
 }
 
+std::vector<char> loadFile(const std::string &path)
+{
+  std::ifstream file(path, std::ios::binary | std::ios::in);
+  if (!file.good())
+  {
+    std::string errmsg = "Failed to open file: " + path;
+    throw std::runtime_error(errmsg.c_str());
+  }
+
+  file.unsetf(std::ios::skipws);
+
+  file.seekg(0, std::ios::end);
+  auto fileSize = file.tellg();
+  file.seekg(0, std::ios::beg);
+
+  // reserve capacity
+  std::vector<char> data(fileSize);
+
+  // read the data
+  file.read(data.data(), fileSize);
+  if (file.fail())
+  {
+    std::string errmsg = "Failed to read file: " + path;
+    throw std::runtime_error(errmsg.c_str());
+  }
+
+  return data;
+}
+
 // Parse model and write to std::ofstream &os models operations
 void run(std::ofstream &os, const circle::Model *model)
 {
@@ -168,10 +196,10 @@ void run(std::ofstream &os, const circle::Model *model)
       const auto op = ops->Get(i);
       auto op_builtin_operator = reader.builtin_code(op);
 
-      if (operations_set.find(op_builtin_operator) == operations_set.end())
+      auto result = operations_set.insert(op_builtin_operator);
+      if (result.second)
       {
         os << get_register_kernel_str(op_builtin_operator) << std::endl;
-        operations_set.insert(op_builtin_operator);
       }
     }
   }
@@ -179,29 +207,22 @@ void run(std::ofstream &os, const circle::Model *model)
 
 int main(int argc, char **argv)
 {
-  arser::Arser arser{"Generate KernelBuilder list"};
-  arser.add_argument("circle").help("Circle file to inspect");
-  arser.add_argument("path").help("Path for generated file");
-
-  try
+  if (argc != 3)
   {
-    arser.parse(argc, argv);
-  }
-  catch (const std::runtime_error &err)
-  {
-    std::cout << err.what() << std::endl;
-    std::cout << arser;
-    return 255;
+    throw std::runtime_error(
+      "Should be 2 arguments: circle model path, and path for generated model\n");
   }
 
-  std::string model_file = arser.get<std::string>("circle");
-  std::string generated_file_path = arser.get<std::string>("path");
+  std::string model_file(argv[1]);
+  std::string generated_file_path(argv[2]);
 
-  // Load Circle model from a circle file
-  foder::FileLoader fileLoader{model_file};
-  std::vector<char> modelData = fileLoader.load();
-  const circle::Model *circleModel = circle::GetModel(modelData.data());
-  if (circleModel == nullptr)
+  std::cout << "model: " << model_file << std::endl;
+  std::cout << "file: " << generated_file_path << std::endl;
+
+  std::vector<char> model_data = loadFile(model_file);
+  const circle::Model *circle_model = circle::GetModel(model_data.data());
+
+  if (circle_model == nullptr)
   {
     std::cerr << "ERROR: Failed to load circle '" << model_file << "'" << std::endl;
     return 255;
@@ -212,7 +233,7 @@ int main(int argc, char **argv)
   out.open(generated_file_path);
 
   if (out.is_open())
-    run(out, circleModel);
+    run(out, circle_model);
   else
     std::cout << "SMTH GOES WRONG WHILE OPEN FILE" << std::endl;
   return 0;

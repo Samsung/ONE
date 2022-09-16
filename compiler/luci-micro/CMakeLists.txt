@@ -63,8 +63,7 @@ if (GENERATE_KERNELS_LIST_FROM)
   endif(NOT TARGET mio_circle04)
 
   add_executable(generator_kernels_list_exec helpers/GenerateKernelsListHelper.cpp)
-  target_link_libraries(generator_kernels_list_exec arser)
-  target_link_libraries(generator_kernels_list_exec foder)
+  # TODO: remove mio_circle04 dependency
   target_link_libraries(generator_kernels_list_exec mio_circle04)
   target_link_libraries(generator_kernels_list_exec mio_circle04_helper)
 
@@ -78,7 +77,7 @@ if (GENERATE_KERNELS_LIST_FROM)
 endif()
 
 # To remove GENERATE_KERNELS_LIST_FROM variable from cmake cache
-set(GENERATE_KERNELS_LIST_FROM "" CACHE STRING "" FORCE)
+unset(GENERATE_KERNELS_LIST_FROM CACHE)
 
 set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/compiler/luci-micro/luci-interpreter/src/libluci_interpreter.a")
 
