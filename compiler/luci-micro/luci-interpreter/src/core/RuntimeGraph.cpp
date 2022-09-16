@@ -28,7 +28,7 @@ void RuntimeGraph::buildAllocDeallocPlan()
 {
   invalidate();
   using Lifetime = std::pair<size_t, size_t>;
-  std::unordered_map<Tensor *, Lifetime> lifetimes;
+  std::map<Tensor *, Lifetime> lifetimes;
   const size_t num_kernels = _kernels.size();
   for (size_t index = 0; index < num_kernels; ++index)
   {
@@ -38,7 +38,7 @@ void RuntimeGraph::buildAllocDeallocPlan()
       auto nc_tensor = const_cast<Tensor *>(tensor);
       if (lifetimes.count(nc_tensor) > 0)
       {
-        if (kernel->getEmplaceValue())
+        if (kernel->getInplaceValue())
           lifetimes.at(nc_tensor).second = -1;
         else
           lifetimes.at(nc_tensor).second = index;
@@ -47,7 +47,7 @@ void RuntimeGraph::buildAllocDeallocPlan()
     for (Tensor *tensor : kernel->getOutputTensors())
     {
       assert(lifetimes.count(tensor) == 0);
-      if (kernel->getEmplaceValue())
+      if (kernel->getInplaceValue())
         lifetimes[tensor] = Lifetime(-1, index);
       else
         lifetimes[tensor] = Lifetime(index, index);

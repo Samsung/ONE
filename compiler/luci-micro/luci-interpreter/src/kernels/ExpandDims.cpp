@@ -76,10 +76,10 @@ void ExpandDims::configure()
 
 void ExpandDims::execute() const
 {
-  if (_is_emplace)
+  if (_is_inplace)
   {
     auto input_tensor = const_cast<Tensor *>(input());
-    output()->set_data_buffer(input_tensor->get_data_buffer());
+    output()->set_data_buffer(input_tensor->data<uint8_t>());
     input_tensor->set_data_buffer(nullptr);
     return;
   }

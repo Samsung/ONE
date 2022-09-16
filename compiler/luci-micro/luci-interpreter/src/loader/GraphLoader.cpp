@@ -185,7 +185,7 @@ void GraphLoader::loadOperators()
     std::vector<const Tensor *> input_tensors(op->inputs()->size());
     std::vector<Tensor *> output_tensors(op->outputs()->size());
 
-    bool is_emplace = false;
+    bool is_inplace = false;
     for (int32_t j = 0; j < op->inputs()->size(); ++j)
     {
       const auto input_index = op->inputs()->operator[](j);
@@ -199,7 +199,7 @@ void GraphLoader::loadOperators()
           const auto &graph_input_tensors = _runtime_graph->getInputTensors();
           if (std::find(graph_input_tensors.begin(), graph_input_tensors.end(), input_tensor) ==
               graph_input_tensors.end())
-            is_emplace = true;
+            is_inplace = true;
         }
       }
       else
@@ -252,7 +252,7 @@ void GraphLoader::loadOperators()
     const auto opcode = _reader->builtin_code(op);
     std::unique_ptr<Kernel> kernel =
       kernel_builder.build(std::move(input_tensors), std::move(output_tensors), opcode, i);
-    kernel->setEmplaceValue(is_emplace);
+    kernel->setInplaceValue(is_inplace);
 
     _runtime_graph->addKernel(std::move(kernel));
   }

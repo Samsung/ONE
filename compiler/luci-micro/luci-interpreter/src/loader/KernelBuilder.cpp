@@ -86,7 +86,7 @@ std::unique_ptr<Kernel> KernelBuilder::build(std::vector<const Tensor *> &&input
 {
   auto specific_builder = _builder_registry->get_kernel_builder_func(opcode);
   if (specific_builder != nullptr)
-    return specific_builder(inputs, outputs, op_index, *this);
+    return specific_builder(std::move(inputs), std::move(outputs), op_index, *this);
 
   std::string msg = "Unsupported operator: ";
   msg += std::to_string(static_cast<uint32_t>(opcode));
