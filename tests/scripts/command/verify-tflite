@@ -18,7 +18,6 @@ COMMAND_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="$(dirname $(dirname $COMMAND_DIR))"
 
 MD5_CHECK="on"
-TFLITE_LOADER="loader"
 REPORT_DIR="report"
 TEST_LIST_FILE=
 
@@ -28,7 +27,6 @@ function Usage()
     echo ""
     echo "Options:"
     echo "      --ignoremd5             Ignore MD5 check when download model files"
-    echo "      --api=(nnapi|loader)    TFLite model file loading API (default=$TFLITE_LOADER)"
     echo "      --reportdir=PATH        Path to write report (default=$REPORT_DIR)"
     echo "      --list=FILE             List file to test. Test all if list option is not passed"
 }
@@ -42,9 +40,6 @@ do
             ;;
         --ignoremd5)
             MD5_CHECK="off"
-            ;;
-        --api=*)
-            TFLITE_LOADER=${i#*=}
             ;;
         --reportdir=*)
             REPORT_DIR=${i#*=}
@@ -70,19 +65,8 @@ fi
 
 TEST_RESULT=0
 TAP_NAME=verification_test.tap
-TEST_NAME="Verification"
-TEST_DRIVER=
-
-if [[ $TFLITE_LOADER == "nnapi" ]]; then
-    TEST_NAME="NNAPI Verification"
-    TEST_DRIVER=nnapi_test
-elif [[ $TFLITE_LOADER == "loader" ]]; then
-    TEST_NAME="Loader Verification"
-    TEST_DRIVER=tflite_comparator
-else
-    Usage
-    exit 1
-fi
+TEST_NAME="Loader Verification"
+TEST_DRIVER=tflite_comparator
 
 $INSTALL_DIR/test/models/run_test.sh --driverbin=$TEST_DRIVER \
     --download=off --run=on \

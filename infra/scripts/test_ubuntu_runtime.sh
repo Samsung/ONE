@@ -10,7 +10,6 @@ TEST_PLATFORM="$TEST_ARCH-$TEST_OS"
 TFLITE_LOADER="1"
 LINEAR_ONLY="0"
 RUN_INTERP="0"
-NNAPI_FRONTEND="0"
 
 function Usage()
 {
@@ -36,16 +35,6 @@ do
       ;;
     --backend=*)
       BACKEND=$(echo ${1#*=} | tr '[:upper:]' '[:lower:]')
-      shift
-      ;;
-    --tflite-loader)
-      TFLITE_LOADER="1"
-      NNAPI_FRONTEND="1" # For CI test
-      echo "[INFO] \"--tflite-loader\" argument is deprecated"
-      shift
-      ;;
-    --nnapi-frontend)
-      NNAPI_FRONTEND="1"
       shift
       ;;
     --linear-only)
@@ -107,9 +96,3 @@ do
     unset EXECUTOR
   fi
 done
-
-# TODO Support more backends
-NNAPI_FRONTEND_TESTLIST="Product/out/test/list/nnapi_test.${TEST_ARCH}.list"
-if [[ $NNAPI_FRONTEND = "1" ]]; then
-  NNAPIFrontendTest "${BACKEND}" "${NNAPI_FRONTEND_TESTLIST}" "${REPORT_BASE}/nnapi/${EXECUTOR}"
-fi

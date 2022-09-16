@@ -31,9 +31,11 @@ namespace operation
 class TopKV2 : public Operation
 {
 public:
+  // Runtime API uses input
   enum Input
   {
-    INPUT
+    INPUT = 0,
+    TOP_K,
   };
 
   enum Output
@@ -42,6 +44,7 @@ public:
     OUTPUT_INDICES,
   };
 
+  // NNAPI uses param
   struct Param
   {
     std::int32_t k;

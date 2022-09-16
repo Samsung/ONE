@@ -1246,7 +1246,21 @@ void KernelGenerator::visit(const ir::operation::TopKV2 &node)
   assert(_ctx.at(inputData_index).shape().rank() == 1 ||
          _ctx.at(inputData_index).shape().rank() == 2);
 
-  const auto k = node.param().k;
+  int32_t k = node.param().k;
+  if (node.getInputs().size() == 2)
+  {
+    const auto k_index{node.getOutputs().at(ir::operation::TopKV2::Input::TOP_K)};
+    if (!_ctx.at(k_index).isConstant())
+    {
+      throw std::runtime_error("Non-constant TopKV2 k_index NYI for acl_cl backend");
+    }
+
+    auto topk_base = _ctx.at(k_index).data()->base();
+    assert(_ctx.at(k_index).shape().num_elements() == 1);
+    assert(_ctx.at(k_index).typeInfo().type() == ir::DataType::INT32);
+
+    k = *(reinterpret_cast<const int32_t *>(topk_base));
+  }
 
   auto values_tensor = _tensor_reg->getAclTensor(outputValues_index);
   auto indices_tensor = _tensor_reg->getAclTensor(outputIndices_index);

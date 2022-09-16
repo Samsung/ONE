@@ -1663,6 +1663,18 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_DEPTH_TO_SPACE:
       loadDepthToSpace(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_EMBEDDING_LOOKUP:
+      loadOperationTo<ir::operation::EmbeddingLookup>(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_HASHTABLE_LOOKUP:
+      loadOperationTo<ir::operation::HashtableLookup>(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_L2_POOL_2D:
+      loadPool2D(op, subg, ir::operation::Pool2D::PoolType::L2);
+      return;
+    case BuiltinOperator::BuiltinOperator_TOPK_V2:
+      loadOperationTo<ir::operation::TopKV2>(op, subg, ir::operation::TopKV2::Param{});
+      return;
     default:
       throw std::runtime_error(
         std::string("Unsupported operation: ").append(EnumNameBuiltinOperator(builtin_op)));
