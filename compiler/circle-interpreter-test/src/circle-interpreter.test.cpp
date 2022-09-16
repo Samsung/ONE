@@ -49,7 +49,7 @@ bool circle_interpreter_test::initialize(void)
   path = std::getenv("CIRCLE_INTERPRETER_PATH");
   if (path == nullptr)
   {
-    std::cerr << "ARTIFACTS_BIN_PATH not found" << std::endl;
+    std::cerr << "CIRCLE_INTERPRETER_PATH  not found" << std::endl;
     return false;
   }
   _circle_interpreter_path = path;
@@ -232,32 +232,5 @@ TEST_F(circle_interpreter_test, invalid_input_prefix_NEG)
   }
 
   const auto pos = _result.find("Cannot open file");
-  ASSERT_NE(std::string::npos, pos);
-}
-
-// Case of given input data has less number of values than model's input
-TEST_F(circle_interpreter_test, input_data_mismatch_NEG)
-{
-  if (!initialize())
-  {
-    FAIL();
-    return;
-  }
-
-  // Conv2D_000.circle input: 1x3x3x2
-  std::string model = _artifacts_path + "/Conv2D_000.circle";
-  // Concatenation_000.circle input0: 1x4x4x1 input1: 1x4x4x2
-  std::string input_prefix = _artifacts_path + "/Concatenation_000.circle.input";
-  std::string output_prefix = "/tmp/Conv2D_000.circle.output";
-  std::remove(output_prefix.c_str());
-  std::string command =
-    _circle_interpreter_path + " " + model + " " + input_prefix + " " + output_prefix;
-  if (!run(command))
-  {
-    FAIL();
-    return;
-  }
-
-  const auto pos = _result.find("Failed to read data from file");
   ASSERT_NE(std::string::npos, pos);
 }
