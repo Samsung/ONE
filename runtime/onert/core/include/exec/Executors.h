@@ -19,11 +19,15 @@
 
 #include "IExecutor.h"
 #include "ir/NNPkg.h"
+#include "util/Index.h"
 
 namespace onert
 {
 namespace exec
 {
+
+struct ExecutorIndexTag;
+using ExecutorIndex = ::onert::util::Index<uint32_t, ExecutorIndexTag>;
 
 /**
  * @brief Class to gather executors
@@ -36,13 +40,11 @@ public:
   Executors(const Executors &) = delete;
   Executors(Executors &&) = default;
 
-  // TODO Use Executor index
-  void emplace(ir::SubgraphIndex idx, std::unique_ptr<IExecutor> exec)
-  {
-    _executors.emplace(idx, std::move(exec));
-  }
+  void emplace(const ir::SubgraphIndex &idx, std::unique_ptr<IExecutor> exec);
 
-  IExecutor *at(ir::SubgraphIndex idx) const { return _executors.at(idx).get(); }
+  IExecutor *at(const ExecutorIndex &idx) const { return _executors.at(idx).get(); }
+
+  IExecutor *at(const ir::SubgraphIndex &idx) const;
 
   uint32_t inputSize() const;
 
@@ -57,12 +59,27 @@ public:
 private:
   void executeEntries(const IODescription &desc);
 
+  /**
+   * @brief   Generate a executor index with `_next_index`
+   * @return  Generated executor index
+   * @note    This is copy from util/ObjectManager.h
+   */
+  ExecutorIndex generateIndex()
+  {
+    if (ExecutorIndex{_next_index}.valid())
+      return ExecutorIndex{_next_index++};
+    else
+      return ExecutorIndex{};
+  }
+
 private:
-  // TODO Use Executor index
-  //      Changing index will effect if/while compile and kernel implementation
-  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _executors;
+  // NOTE _executors[0] is primary executor
+  std::unordered_map<ExecutorIndex, std::unique_ptr<IExecutor>> _executors;
   // NOTE _model_edges may use different struct type for executor implementation
   std::unique_ptr<ir::ModelEdges> _model_edges;
+  // TODO Use ModelIndex and SubgraphIndex pair
+  std::unordered_map<ExecutorIndex, ir::SubgraphIndex> _index_map;
+  uint32_t _next_index = 0;
 };
 
 } // namespace exec
