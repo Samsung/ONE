@@ -530,6 +530,27 @@ public:
   luci::CircleConst *limit = nullptr;
 };
 
+class MaximumNonConstGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    max = g.nodes()->create<luci::CircleMaximum>();
+    max->dtype(loco::DataType::FLOAT32);
+    max->shape({1, 16, 4, 4});
+
+    max->x(input);
+    max->y(input);
+
+    max->name("max");
+
+    return max;
+  }
+
+public:
+  luci::CircleMaximum *max = nullptr;
+};
+
 class MeanGraph final : public SimpleGraph
 {
 protected:
@@ -1395,6 +1416,21 @@ TEST(ConvertNCHWToNHWC, Maximum)
   check_post_trans(*max_succs.begin());
 
   check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, MaximumNonConst)
+{
+  MaximumNonConstGraph g;
+  g.init();
+
+  run_phase(&g.g, true, true);
+
+  check_pre_trans(g.max->x());
+  check_pre_trans(g.max->y());
+
+  auto max_succs = loco::succs(g.max);
+  EXPECT_EQ(1, max_succs.size());
+  check_post_trans(*max_succs.begin());
 }
 
 TEST(ConvertNCHWToNHWC, Mean)
