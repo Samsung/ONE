@@ -21,6 +21,8 @@
 #include <fstream>
 #include <vector>
 
+#define READSIZE 4096
+
 class circle_interpreter_test : public ::testing::Test
 {
 protected:
@@ -59,7 +61,7 @@ bool circle_interpreter_test::initialize(void)
 
 bool circle_interpreter_test::run(const std::string &command)
 {
-  std::vector<char> buffer(260);
+  std::vector<char> buffer(READSIZE);
   std::string result = "";
   std::string cmd_err = command + " 2>&1";
   FILE *pipe = popen(cmd_err.c_str(), "r");
@@ -97,24 +99,27 @@ bool circle_interpreter_test::compare(const std::string &file1, const std::strin
     return false;
   }
 
-  char *buffer1 = new char[1024]();
-  char *buffer2 = new char[1024]();
+  typedef unsigned char BYTE;
+  std::vector<BYTE> vBuffer1(READSIZE);
+  std::vector<BYTE> vBuffer2(READSIZE);
 
   do
   {
-    f1.read(buffer1, 1024);
-    f2.read(buffer2, 1024);
+    f1.read((char *)&vBuffer1[0], READSIZE);
+    std::streamsize f1_bytes = f1.gcount();
+    f2.read((char *)&vBuffer2[0], READSIZE);
+    std::streamsize f2_bytes = f2.gcount();
 
-    if (std::memcmp(buffer1, buffer2, 1024) != 0)
+    if (f1_bytes != f2_bytes)
     {
-      delete[] buffer1;
-      delete[] buffer2;
+      return false;
+    }
+
+    if (!std::equal(vBuffer1.begin(), vBuffer1.end(), vBuffer2.begin()))
+    {
       return false;
     }
   } while (f1.good() || f2.good());
-
-  delete[] buffer1;
-  delete[] buffer2;
   return true;
 }
 
@@ -220,7 +225,7 @@ TEST_F(circle_interpreter_test, invalid_input_prefix_NEG)
   }
 
   std::string model = _artifacts_path + "/Conv2D_000.circle";
-  std::string input_prefix = _artifacts_path + "/non_exist_filee.foo";
+  std::string input_prefix = _artifacts_path + "/non_exist_file.foo";
   std::string output_prefix = "/tmp/Conv2D_000.circle.output";
   std::remove(output_prefix.c_str());
   std::string command =
