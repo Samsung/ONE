@@ -41,8 +41,8 @@ RUN apt-get update && apt-get -qqy install libprotobuf-dev protobuf-compiler
 # Additonal tools
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
-    apt-get -qqy install doxygen graphviz wget zip unzip clang-format-8 python3 python3-pip python3-venv hdf5-tools pylint curl
-RUN apt-get update && apt-get -qqy install python3.8 python3.8-venv
+    apt-get -qqy install doxygen graphviz wget zip unzip clang-format-8 python3 python3-pip python3-venv python3-dev hdf5-tools pylint curl
+RUN apt-get update && apt-get -qqy install python3.8 python3.8-venv python3.8-dev
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install yapf==0.22.0 numpy
 RUN python3.8 -m pip install --upgrade pip
