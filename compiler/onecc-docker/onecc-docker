@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+''''exec "python3" "$0" "$@" #'''
+
+# Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import sys
+import subprocess
+import json
+import os
+import requests
+
+
+def _is_image(version) : 
+    cmd = ['docker', 'images', f'onecc:{version}']
+    p = subprocess.Popen(cmd,  stdout=subprocess.PIPE, stderr=subprocess.STDOUT) 
+    out, err = p.communicate()
+    dic = {}
+
+    decoded_out = [i.split() for i in out.decode().split("\n") if len(i)]
+
+    if len(decoded_out) <2 :
+        return False
+
+    dic[decoded_out[0][0]] = decoded_out[1][0]
+    dic[decoded_out[0][1]] = decoded_out[1][1]
+
+    tag_name = cmd[2].split(':')
+
+    if dic['REPOSITORY'] == tag_name[0] and dic['TAG'] == tag_name[1]  :
+        return True 
+    else :
+        return False
+
+
+
+def main():
+    work_dir = os.getcwd()
+    response = requests.get("https://api.github.com/repos/Samsung/ONE/tags")
+    if  response.status_code != 200 :
+        print("Error was occured while downloading ONE release tags")
+        print("status_code: ", response.status_code)
+        print("Error_reason: " + response.reason)
+        exit(1)
+    
+    versions_str = response.content
+    versions_json = json.loads(versions_str)
+    recent_version = versions_json[0]["name"]
+
+    image_name = f"onecc:{recent_version}"
+    build_arg = f"VERSION={recent_version}"
+    if not _is_image(recent_version):
+        build_cmd = ["docker", "build", "-t", image_name, "--build-arg", build_arg, work_dir]
+        subprocess.call(build_cmd)
+
+    contianer_name = f"onecc_{recent_version.replace('.','_')}"
+    user_cmd = ''.join(sys.argv[1:])
+    run_cmd = ["docker", "run", "--rm", "--name", contianer_name, "-v", "${HOME}:${HOME}", "-e", "HOME=${HOME}", "-w", work_dir, image_name, user_cmd]
+    cmd = ' '.join(run_cmd)
+    subprocess.run(cmd,shell=True)
+
+if __name__ == "__main__":
+	main()
