@@ -34,7 +34,7 @@ ExecutorIndex Executors::emplace(std::unique_ptr<IExecutor> exec, const ir::Mode
   return index;
 }
 
-IExecutor *Executors::at(const ir::ModelIndex &idx_m, const ir::SubgraphIndex &idx_subg)
+IExecutor *Executors::at(const ir::ModelIndex &idx_m, const ir::SubgraphIndex &idx_subg) const
 {
   // Find index
   // TODO Find better way for fast search
@@ -50,13 +50,13 @@ IExecutor *Executors::at(const ir::ModelIndex &idx_m, const ir::SubgraphIndex &i
 uint32_t Executors::inputSize() const
 {
   return _model_edges ? _model_edges->pkg_inputs.size()
-                      : _executors.at(ExecutorIndex{0})->graph().getInputs().size();
+                      : primary_executor()->graph().getInputs().size();
 }
 
 uint32_t Executors::outputSize() const
 {
   return _model_edges ? _model_edges->pkg_outputs.size()
-                      : _executors.at(ExecutorIndex{0})->graph().getOutputs().size();
+                      : primary_executor()->graph().getOutputs().size();
 }
 
 const ir::OperandInfo Executors::inputInfo(const ir::IOIndex &index)
@@ -72,8 +72,8 @@ const ir::OperandInfo Executors::inputInfo(const ir::IOIndex &index)
     return _executors.at(executor_idx)->graph().operands().at(input_index).info();
   }
 
-  const auto input_index = _executors.at(ExecutorIndex{0})->graph().getInputs().at(index);
-  return _executors.at(ExecutorIndex{0})->graph().operands().at(input_index).info();
+  const auto input_index = primary_executor()->graph().getInputs().at(index);
+  return primary_executor()->graph().operands().at(input_index).info();
 }
 
 const ir::OperandInfo Executors::outputInfo(const ir::IOIndex &index)
@@ -89,8 +89,8 @@ const ir::OperandInfo Executors::outputInfo(const ir::IOIndex &index)
     return _executors.at(executor_idx)->graph().operands().at(output_index).info();
   }
 
-  auto output_index = _executors.at(ExecutorIndex{0})->graph().getOutputs().at(index);
-  return _executors.at(ExecutorIndex{0})->graph().operands().at(output_index).info();
+  auto output_index = primary_executor()->graph().getOutputs().at(index);
+  return primary_executor()->graph().operands().at(output_index).info();
 }
 
 void Executors::execute(const IODescription &desc)
@@ -98,7 +98,7 @@ void Executors::execute(const IODescription &desc)
   if (_model_edges)
     return executeEntries(desc);
 
-  _executors.at(ExecutorIndex{0})->execute(desc);
+  primary_executor()->execute(desc);
 }
 
 void Executors::executeEntries(const IODescription &desc)

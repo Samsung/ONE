@@ -43,9 +43,11 @@ public:
   ExecutorIndex emplace(std::unique_ptr<IExecutor> exec, const ir::ModelIndex &model_index,
                         const ir::SubgraphIndex &subg_index);
 
-  IExecutor *at(const ExecutorIndex &idx) { return _executors.at(idx).get(); }
+  IExecutor *at(const ExecutorIndex &idx) const { return _executors.at(idx).get(); }
 
-  IExecutor *at(const ir::ModelIndex &idx_m, const ir::SubgraphIndex &idx_subg);
+  IExecutor *at(const ir::ModelIndex &idx_m, const ir::SubgraphIndex &idx_subg) const;
+
+  IExecutor *primary_executor() const { return at(ExecutorIndex{0}); }
 
   uint32_t inputSize() const;
 
