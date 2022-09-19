@@ -1418,6 +1418,17 @@ TEST(ConvertNCHWToNHWC, Maximum)
   check_pre_trans(g.output->from());
 }
 
+TEST(ConvertNCHWToNHWC, Maximum_non_scalar_NEG)
+{
+  MaximumGraph g;
+  g.init();
+
+  g.limit->shape({3});
+
+  luci::ConvertNCHWToNHWCPass pass(true, true);
+  EXPECT_FALSE(pass.run(&g.g));
+}
+
 TEST(ConvertNCHWToNHWC, MaximumNonConst)
 {
   MaximumNonConstGraph g;
@@ -1587,6 +1598,17 @@ TEST(ConvertNCHWToNHWC, Minimum)
   check_post_trans(*min_succs.begin());
 
   check_pre_trans(g.output->from());
+}
+
+TEST(ConvertNCHWToNHWC, Minimum_non_scalar_NEG)
+{
+  MinimumGraph g;
+  g.init();
+
+  g.limit->shape({3});
+
+  luci::ConvertNCHWToNHWCPass pass(true, true);
+  EXPECT_FALSE(pass.run(&g.g));
 }
 
 TEST(ConvertNCHWToNHWC, Mul)

@@ -521,10 +521,13 @@ bool is_scalar_const(const loco::Node *node)
   // shape of scalar
   // 1. rank = 0
   // 2. rank = 1, dimension = 1
-  if (const_rank != 0 and (const_rank == 1 && const_node->dim(0).value() == 1))
-    return false;
+  if (const_rank == 0)
+    return true;
 
-  return true;
+  if (const_rank == 1 && const_node->dim(0).value() == 1)
+    return true;
+
+  return false;
 }
 
 // NOTE Following conditions can be extended later
