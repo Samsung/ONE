@@ -1,0 +1,13 @@
+[Unit]
+Description=Launch npu daemon
+
+[Service]
+Type=dbus
+BusName=org.tizen.npud
+User=owner
+Group=users
+Capabilities=cap_dac_override=i
+SecureBits=keep-caps
+Restart=always
+RestartSec=3
+ExecStart=@BINDIR@/npumgr_server

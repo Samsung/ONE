@@ -1,0 +1,28 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+  "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node name="/">
+  <interface name="org.tizen.npud.core">
+    <!--
+      device_get_available_list:
+      @pdev:
+      @mem_fd_devices"
+      @error: 
+    -->
+    <method name="device_get_available_list">
+	    <arg name="pdev" type="a(uuss)" direction="out"  />
+	    <arg name="mem_fd_devices" type="au" direction="out"/>
+	    <annotation name="org.gtk.GDBus.C.UnixFD" value="true"/>
+	    <arg name="error" type="i" direction="out"  />
+    </method>
+    <method name="context_create">
+      <arg name="device_id" type="i" direction="in" />
+      <arg name="priority" type="i" direction="in" />
+      <arg name="ctx" type="t" direction="out" />
+    </method>
+    <method name="configure">
+      <arg name="seconds" type="u" direction="in" />
+    </method>
+    <property name="Activated" type="b" access="read" />
+    <signal name="Beep" />
+  </interface>
+</node>

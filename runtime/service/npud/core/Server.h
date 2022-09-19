@@ -18,8 +18,10 @@
 #define __ONE_SERVICE_NPUD_CORE_SERVER_H__
 
 #include "Signal.h"
+#include "dbus-core.h"
 
 #include <glib.h>
+#include <gio/gio.h>
 #include <memory>
 #include <atomic>
 
@@ -42,6 +44,24 @@ public:
     return server;
   }
 
+  static void on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer user_data);
+  static void on_name_acquired(GDBusConnection *conn, const gchar *name, gpointer user_data);
+  static void on_name_lost(GDBusConnection *conn, const gchar *name, gpointer user_data);
+
+  static gboolean on_handle_device_get_available_list(NpudCore *core,
+    GDBusMethodInvocation *invocation,
+    guint seconds,
+    gpointer user_data);
+  static gboolean emit_alarm_cb(gpointer core);
+  static gboolean on_handle_configure(NpudCore *core,
+    GDBusMethodInvocation *invocation,
+    guint seconds,
+    gpointer user_data);
+  static gboolean on_handle_context_create(NpudCore *object,
+    GDBusMethodInvocation *invocation,
+    gint arg_device_id,
+    gint arg_priority);
+
 private:
   Server() noexcept;
 
@@ -49,6 +69,7 @@ private:
 
   std::unique_ptr<GMainLoop, void (*)(GMainLoop *)> _mainloop;
   std::unique_ptr<Signal> _signal;
+  guint _gdbus_id;
 };
 
 } // namespace core
