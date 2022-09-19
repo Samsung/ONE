@@ -19,11 +19,15 @@
 
 #include "IExecutor.h"
 #include "ir/NNPkg.h"
+#include "util/Index.h"
 
 namespace onert
 {
 namespace exec
 {
+
+struct ExecutorIndexTag;
+using ExecutorIndex = ::onert::util::Index<uint32_t, ExecutorIndexTag>;
 
 /**
  * @brief Class to gather executors
@@ -36,10 +40,10 @@ public:
   Executors(const Executors &) = delete;
   Executors(Executors &&) = default;
 
-  ir::ExecutorIndex emplace(std::unique_ptr<IExecutor> exec, const ir::ModelIndex &model_index,
-                            const ir::SubgraphIndex &subg_index);
+  ExecutorIndex emplace(std::unique_ptr<IExecutor> exec, const ir::ModelIndex &model_index,
+                        const ir::SubgraphIndex &subg_index);
 
-  IExecutor *at(const ir::ExecutorIndex &idx) { return _executors.at(idx).get(); }
+  IExecutor *at(const ExecutorIndex &idx) { return _executors.at(idx).get(); }
 
   IExecutor *at(const ir::ModelIndex &idx_m, const ir::SubgraphIndex &idx_subg);
 
@@ -56,23 +60,21 @@ public:
 private:
   void executeEntries(const IODescription &desc);
 
-  ir::ExecutorIndex generateIndex()
+  ExecutorIndex generateIndex()
   {
     // No need to check if there is an entry with _next_index since
     // _next_index is always ("the highest index in the object map" + 1)
-    if (ir::ExecutorIndex{_next_index}.valid())
-      return ir::ExecutorIndex{_next_index++};
+    if (ExecutorIndex{_next_index}.valid())
+      return ExecutorIndex{_next_index++};
     else
-      return ir::ExecutorIndex{};
+      return ExecutorIndex{};
   }
 
 private:
-  // TODO Use Executor index
-  //      Changing index will effect if/while compile and kernel implementation
-  std::unordered_map<ir::ExecutorIndex, std::unique_ptr<IExecutor>> _executors;
+  std::unordered_map<ExecutorIndex, std::unique_ptr<IExecutor>> _executors;
   // NOTE _model_edges may use different struct type for executor implementation
   std::unique_ptr<ir::ModelEdges> _model_edges;
-  std::unordered_map<ir::ExecutorIndex, std::pair<ir::ModelIndex, ir::SubgraphIndex>> _index_map;
+  std::unordered_map<ExecutorIndex, std::pair<ir::ModelIndex, ir::SubgraphIndex>> _index_map;
   uint32_t _next_index = 0;
 };
 

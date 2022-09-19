@@ -220,7 +220,7 @@ TEST_F(InterpExecutorTest, create_simple)
 {
   CreateSimpleModel();
   ASSERT_NE(_executors, nullptr);
-  ASSERT_NE(_executors->at(onert::ir::ExecutorIndex{0}), nullptr);
+  ASSERT_NE(_executors->at(onert::exec::ExecutorIndex{0}), nullptr);
 }
 
 TEST_F(InterpExecutorTest, neg_setInput)

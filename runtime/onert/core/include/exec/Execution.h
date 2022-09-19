@@ -243,8 +243,8 @@ public:
   void sholudStop();
 
 private:
-  const IExecutor *primary_executor() const { return _executors->at(ir::ExecutorIndex{0}); };
-  IExecutor *primary_executor() { return _executors->at(ir::ExecutorIndex{0}); };
+  const IExecutor *primary_executor() const { return _executors->at(ExecutorIndex{0}); };
+  IExecutor *primary_executor() { return _executors->at(ExecutorIndex{0}); };
 
 private:
   const std::shared_ptr<Executors> _executors;
