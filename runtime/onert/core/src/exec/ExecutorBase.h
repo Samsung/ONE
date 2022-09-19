@@ -51,9 +51,9 @@ public:
 
   virtual ~ExecutorBase() = default;
 
-  const ir::Graph &graph() final { return _graph; }
+  const ir::Graph &graph() const final { return _graph; }
 
-  const ir::Graph &parent_graph() final { return _parent_graph; }
+  const ir::Graph &parent_graph() const final { return _parent_graph; }
 
   void execute(const IODescription &desc) final;
 

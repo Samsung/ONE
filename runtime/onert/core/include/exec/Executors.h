@@ -42,7 +42,7 @@ public:
     _executors.emplace(idx, std::move(exec));
   }
 
-  std::unique_ptr<IExecutor> &at(ir::SubgraphIndex idx) { return _executors.at(idx); }
+  IExecutor *at(ir::SubgraphIndex idx) const { return _executors.at(idx).get(); }
 
   uint32_t inputSize() const;
 

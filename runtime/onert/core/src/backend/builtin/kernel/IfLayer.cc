@@ -61,12 +61,12 @@ void IfLayer::run()
   if (cond_result)
   {
     VERBOSE(If) << "Call to $" << _then_subg_index << " (then)" << std::endl;
-    subg_exec = _executors->at(_then_subg_index).get();
+    subg_exec = _executors->at(_then_subg_index);
   }
   else
   {
     VERBOSE(If) << "Call to $" << _else_subg_index << " (else)" << std::endl;
-    subg_exec = _executors->at(_else_subg_index).get();
+    subg_exec = _executors->at(_else_subg_index);
   }
 
   subg_exec->execute(_input_tensors, _output_tensors);
