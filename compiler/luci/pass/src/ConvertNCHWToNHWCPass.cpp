@@ -503,6 +503,14 @@ bool is_NCHW(const luci::CirclePadV2 *node)
   return true;
 }
 
+bool is_const(const loco::Node *node)
+{
+  if (not dynamic_cast<const luci::CircleConst *>(node))
+    return false;
+
+  return true;
+}
+
 // NOTE Following conditions can be extended later
 // NOTE Used for Maximum, Miminum as ReLU/ReLU6
 //
@@ -869,6 +877,16 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       auto pre_trans = create_pre_transpose(node);
       pre_trans->a(pred_node);
       node->x(pre_trans);
+    }
+    else if ((not is_const(node->x())) and (not is_const(node->y())))
+    {
+      auto pre_trans_x = create_pre_transpose(node);
+      pre_trans_x->a(node->x());
+      node->x(pre_trans_x);
+
+      auto pre_trans_y = create_pre_transpose(node);
+      pre_trans_y->a(node->y());
+      node->y(pre_trans_y);
     }
     else
     {
