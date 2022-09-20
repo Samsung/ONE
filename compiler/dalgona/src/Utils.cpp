@@ -15,6 +15,7 @@
  */
 
 #include "Utils.h"
+#include "StringUtils.h"
 
 #include <luci_interpreter/core/Tensor.h>
 #include <luci/IR/CircleOpcode.h>
@@ -100,6 +101,31 @@ py::dict quantparam(const Tensor *tensor)
 
 namespace dalgona
 {
+
+std::vector<py::dict> inputsPyArray(const luci::CircleNode *node,
+                                    luci_interpreter::Interpreter *interpreter)
+{
+  assert(node != nullptr);        // FIX_CALLER_UNLESS
+  assert(interpreter != nullptr); // FIX_CALLER_UNLESS
+
+  std::vector<py::dict> inputs;
+  for (uint32_t i = 0; i < node->arity(); ++i)
+  {
+    const auto input_tensor = interpreter->getTensor(node->arg(i));
+    auto circle_node = static_cast<luci::CircleNode *>(node->arg(i));
+
+    // skip invalid inputs (e.g., non-existing bias in TCONV)
+    if (circle_node->opcode() == luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
+      continue;
+
+    auto py_input =
+      py::dict("name"_a = circle_node->name(), "data"_a = numpyArray(input_tensor),
+               "quantparam"_a = quantparam(input_tensor),
+               "is_const"_a = circle_node->opcode() == luci::CircleOpcode::CIRCLECONST);
+    inputs.push_back(py_input);
+  }
+  return inputs;
+}
 
 // Note: Only returns 1 output
 py::dict outputPyArray(const luci::CircleNode *node, luci_interpreter::Interpreter *interpreter)
