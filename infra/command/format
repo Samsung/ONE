@@ -158,7 +158,7 @@ function check_python_files() {
   # Exceptional case: one-cmds don't have '.py' extension: ignore non-python source (cmake, etc) and ignore shell script: one-prepare-venv
   FILES_TO_CHECK_PYTHON+=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '^compiler/one-cmds/[^(\./)]*$' | egrep -v '^compiler/one-cmds/one-prepare-venv$'`)
   # Exceptional case: onecc-docker don't have '.py' extension.
-  FILES_TO_CHECK_PYTHON+=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '^compiler/onecc-docker/onecc-docker'`)
+  FILES_TO_CHECK_PYTHON+=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '^compiler/onecc-docker/onecc-docker$'`)
 
   for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
     skip=${s#'.'/}/
