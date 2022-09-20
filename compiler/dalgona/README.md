@@ -17,7 +17,7 @@ NOTE Inference is performed by `luci-interpreter`.
 - Visualization of activation data with Python libraries
 
 ## Prerequisite
-- Python (python-dev, python3-dev packages)
+- Python 3.8 (python3.8, python3.8-dev packages)
 - Circle model (target to analyze)
 - Input data of the model (hdf5 format. See _rawdata2hdf5_ or _gen_h5_explicit_inputs.py_ for more details.)
 - Analysis code (Python code)
