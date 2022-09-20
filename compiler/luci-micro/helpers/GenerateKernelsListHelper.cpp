@@ -216,9 +216,6 @@ int main(int argc, char **argv)
   std::string model_file(argv[1]);
   std::string generated_file_path(argv[2]);
 
-  std::cout << "model: " << model_file << std::endl;
-  std::cout << "file: " << generated_file_path << std::endl;
-
   std::vector<char> model_data = loadFile(model_file);
   const circle::Model *circle_model = circle::GetModel(model_data.data());
 
