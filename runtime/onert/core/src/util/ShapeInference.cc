@@ -608,12 +608,12 @@ ir::Shape inferReshapeShape(const int32_t *shape_buf, const int32_t shape_num_el
                             const size_t total_num_elements)
 {
   ir::Shape ret(shape_num_elements);
-  int32_t flatten_dim = ir::Shape::UNSPECIFIED_DIM;
+  int32_t flatten_dim = ir::Shape::kUnspecifiedDim;
   for (int32_t i = 0; i < shape_num_elements; ++i)
   {
     if (shape_buf[i] < 0)
     {
-      if (flatten_dim != ir::Shape::UNSPECIFIED_DIM)
+      if (flatten_dim != ir::Shape::kUnspecifiedDim)
         throw std::runtime_error("Reshape: 2nd param has special dim(for flatten) more than twice");
       flatten_dim = i;
       ret.dim(i) = 1;
@@ -623,7 +623,7 @@ ir::Shape inferReshapeShape(const int32_t *shape_buf, const int32_t shape_num_el
       ret.dim(i) = shape_buf[i];
     }
   }
-  if (flatten_dim != ir::Shape::UNSPECIFIED_DIM)
+  if (flatten_dim != ir::Shape::kUnspecifiedDim)
     ret.dim(flatten_dim) = total_num_elements / ret.num_elements();
 
   // Check reshapable

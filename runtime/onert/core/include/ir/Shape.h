@@ -70,8 +70,8 @@ struct FeatureShape
 struct Shape
 {
 public:
-  static int32_t const UNSPECIFIED_DIM;
-  static int32_t const MAX_RANK;
+  static int32_t const kUnspecifiedDim;
+  static int32_t const kMaxRank;
 
   Shape() = default;
 
@@ -126,7 +126,7 @@ public:
    */
   bool hasUnspecifiedDims() const
   {
-    return (std::find(_dimensions.begin(), _dimensions.end(), UNSPECIFIED_DIM) !=
+    return (std::find(_dimensions.begin(), _dimensions.end(), kUnspecifiedDim) !=
             _dimensions.end());
   }
 

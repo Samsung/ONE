@@ -48,7 +48,7 @@ TEST(ShapeTest, neg_basic_test)
     onert::ir::Shape shape(2);
 
     shape.dim(0) = 1;
-    shape.dim(1) = onert::ir::Shape::UNSPECIFIED_DIM;
+    shape.dim(1) = onert::ir::Shape::kUnspecifiedDim;
 
     ASSERT_EQ(shape.rank(), 2);
     ASSERT_EQ(onert::ir::rankMaybeUnspecified(shape), false);
