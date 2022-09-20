@@ -229,6 +229,36 @@ void DynamicShapeInferer::visit(const ir::operation::BroadcastTo &op)
   assert(output->buffer() != nullptr);
 }
 
+void DynamicShapeInferer::visit(const ir::operation::Bulk &op)
+{
+  // TODO: support multiple inputs/outputs
+  auto output_idx = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_idx);
+  auto input_idx = op.getInputs().at(0);
+  auto input = _tensor_registry->getITensor(input_idx);
+
+  if ((!input->is_dynamic()) && (!output->is_dynamic()))
+    return;
+
+  auto cur_input_shape = input->getShape();
+  auto origin_input_shape = _operands.at(input_idx).info().shape();
+  auto origin_output_shape = _operands.at(output_idx).info().shape();
+
+  // TODO: more check for valid batch request
+  assert(cur_input_shape.dim(0) >= origin_input_shape.dim(0));
+  assert(cur_input_shape.dim(0) % origin_input_shape.dim(0) == 0);
+  size_t batch_multiplier = cur_input_shape.dim(0) / origin_input_shape.dim(0);
+
+  ir::Shape new_shape;
+  new_shape.append(origin_output_shape.dim(0) * batch_multiplier);
+  for (int32_t d = 1; d < origin_output_shape.rank(); ++d)
+    new_shape.append(origin_output_shape.dim(d));
+
+  // set output shape and output buffer
+  output->applyShape(new_shape);
+  assert(output->buffer() != nullptr);
+}
+
 void DynamicShapeInferer::visit(const ir::operation::Comparison &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::Comparison::Input::INPUT0),

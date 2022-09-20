@@ -1302,13 +1302,12 @@ void StaticShapeInferer::visit(const ir::operation::Bulk &op)
 
   auto cur_input_shape = input.info().shape();
   auto origin_input_shape = op.param().origin_input_shapes[0];
-  auto cur_output_shape = output.info().shape();
   auto origin_output_shape = op.param().origin_output_shapes[0];
 
   // TODO: more check for valid batch request
-  assert(cur_input_shape.dim(0) >= origin_output_shape.dim(0));
-  assert(cur_input_shape.dim(0) % origin_output_shape.dim(0) == 0);
-  size_t batch_multiplier = cur_input_shape.dim(0) / origin_output_shape.dim(0);
+  assert(cur_input_shape.dim(0) >= origin_input_shape.dim(0));
+  assert(cur_input_shape.dim(0) % origin_input_shape.dim(0) == 0);
+  size_t batch_multiplier = cur_input_shape.dim(0) / origin_input_shape.dim(0);
 
   ir::Shape new_shape;
   new_shape.append(origin_output_shape.dim(0) * batch_multiplier);
