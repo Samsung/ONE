@@ -31,6 +31,8 @@ namespace
 
 uint32_t numElements(const luci::CircleNode *node)
 {
+  assert(node != nullptr); // FIX_CALLER_UNLESS
+
   uint32_t num_elements = 1;
   for (uint32_t i = 0; i < node->rank(); i++)
     num_elements *= node->dim(i).value();
@@ -41,6 +43,8 @@ uint32_t numElements(const luci::CircleNode *node)
 // Return tensor's size in bytes
 template <typename NodeT> size_t getByteSize(const NodeT *node)
 {
+  assert(node != nullptr); // FIX_CALLER_UNLESS
+
   uint32_t dtype_size = loco::size(node->dtype());
   return dtype_size * numElements(node);
 }
@@ -50,6 +54,8 @@ template <typename NodeT> size_t getByteSize(const NodeT *node)
 // 2. Number of elements is 0
 void checkInputDimension(const luci::CircleInput *input)
 {
+  assert(input != nullptr); // FIX_CALLER_UNLESS
+
   for (uint32_t i = 0; i < input->rank(); i++)
     if (!input->dim(i).known())
       throw std::runtime_error(input->name() + " has unknown dimension");
@@ -62,6 +68,8 @@ void checkInputDimension(const luci::CircleInput *input)
 // Throw an exception if type or shape does not match
 void verifyTypeShape(const luci::CircleInput *input_node, const DataType &dtype, const Shape &shape)
 {
+  assert(input_node != nullptr); // FIX_CALLER_UNLESS
+
   // Type check
   if (dtype != input_node->dtype())
     throw std::runtime_error("Wrong input type.");
@@ -143,7 +151,12 @@ void Dalgona::runAnalysisWithH5Input(const std::string &input_data_path,
         checkInputDimension(input_node);
         std::vector<char> input_data(getByteSize(input_node));
 
-        if (!is_raw_data)
+        if (is_raw_data)
+        {
+          // Skip type/shape check for raw data
+          importer.readTensor(record_idx, input_idx, input_data.data());
+        }
+        else
         {
           DataType dtype;
           Shape shape;
@@ -151,11 +164,6 @@ void Dalgona::runAnalysisWithH5Input(const std::string &input_data_path,
 
           // Check the type and the shape of the input data is valid
           verifyTypeShape(input_node, dtype, shape);
-        }
-        else
-        {
-          // Skip type/shape check for raw data
-          importer.readTensor(record_idx, input_idx, input_data.data());
         }
 
         _interpreter->writeInputTensor(input_node, input_data.data(), input_data.size());
