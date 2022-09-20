@@ -20,6 +20,8 @@
 #include <luci/IR/Module.h>
 #include <luci_interpreter/Interpreter.h>
 
+#include "PythonHooks.h"
+
 #include <memory>
 
 namespace dalgona
@@ -45,6 +47,7 @@ public:
 private:
   std::unique_ptr<luci::Module> _module{nullptr};
   std::unique_ptr<luci_interpreter::Interpreter> _interpreter{nullptr};
+  std::unique_ptr<PythonHooks> _hooks{nullptr};
 };
 
 } // namespace dalgona

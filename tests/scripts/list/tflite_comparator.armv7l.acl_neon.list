@@ -7,9 +7,11 @@ concat
 conv_2d
 depthwise_conv_2d
 div
+embedding_lookup
 floor
 fullyconnected
 gather
+hashtable_lookup
 l2_normalization
 logistic
 max

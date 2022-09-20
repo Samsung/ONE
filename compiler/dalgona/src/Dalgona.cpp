@@ -15,16 +15,21 @@
  */
 
 #include "Dalgona.h"
+#include "PythonHooks.h"
 
 #include <luci/Importer.h>
 #include <foder/FileLoader.h>
 #include <dio_hdf5/HDF5Importer.h>
+
+#include <pybind11/embed.h>
 
 #include <iostream>
 #include <random>
 
 using Shape = std::vector<loco::Dimension>;
 using DataType = loco::DataType;
+
+namespace py = pybind11;
 
 namespace
 {
@@ -114,14 +119,17 @@ void Dalgona::initialize(const std::string &input_model_path)
   // Initialize interpreter
   _interpreter = std::make_unique<luci_interpreter::Interpreter>(_module.get());
 
-  // TODO Attach Python hooks to interpreter
+  _hooks = std::make_unique<PythonHooks>(_interpreter.get());
+
+  _interpreter->attachObserver(_hooks.get());
 }
 
 void Dalgona::runAnalysisWithH5Input(const std::string &input_data_path,
                                      const std::string &analysis_path,
                                      const std::string &analysis_args)
 {
-  // TODO Import analysis code
+  py::object scope = py::module::import("__main__").attr("__dict__");
+  _hooks->importAnalysis(analysis_path, scope, analysis_args);
 
   try
   {
@@ -169,13 +177,13 @@ void Dalgona::runAnalysisWithH5Input(const std::string &input_data_path,
         _interpreter->writeInputTensor(input_node, input_data.data(), input_data.size());
       }
 
-      // TODO Call startNetworkExecution hook
+      _hooks->startNetworkExecution(_module->graph());
       _interpreter->interpret();
-      // TODO Call endNetworkExecution hook
+      _hooks->endNetworkExecution(_module->graph());
     }
 
     std::cout << "Finished executing " << num_records << "'th data" << std::endl;
-    // TODO Call endAnalysis hook
+    _hooks->endAnalysis();
   }
   catch (const H5::Exception &e)
   {
@@ -187,7 +195,8 @@ void Dalgona::runAnalysisWithH5Input(const std::string &input_data_path,
 void Dalgona::runAnalysisWithRandomInput(const std::string &analysis_path,
                                          const std::string &analysis_args)
 {
-  // TODO Import analysis code
+  py::object scope = py::module::import("__main__").attr("__dict__");
+  _hooks->importAnalysis(analysis_path, scope, analysis_args);
 
   const auto input_nodes = loco::input_nodes(_module->graph());
   const auto num_inputs = input_nodes.size();
@@ -211,12 +220,12 @@ void Dalgona::runAnalysisWithRandomInput(const std::string &analysis_path,
     _interpreter->writeInputTensor(input_node, input_data.data(), input_data.size());
   }
 
-  // TODO Call startNetworkExecution hook
+  _hooks->startNetworkExecution(_module->graph());
   _interpreter->interpret();
-  // TODO Call endNetworkExecution hook
+  _hooks->endNetworkExecution(_module->graph());
 
   std::cout << "Finished executing a random input" << std::endl;
-  // TODO Call endAnalysis hook
+  _hooks->endAnalysis();
 }
 
 } // namespace dalgona
