@@ -15,12 +15,26 @@
  */
 
 #include "PythonHooks.h"
+#include "PostOperatorHook.h"
+#include "PreOperatorHook.h"
 #include "Utils.h"
 
 #include <loco/IR/Graph.h>
 
 namespace dalgona
 {
+
+void PythonHooks::preOperatorExecute(const luci::CircleNode *node)
+{
+  PreOperatorHook hook(_analysis, _interpreter);
+  node->accept(&hook);
+}
+
+void PythonHooks::postOperatorExecute(const luci::CircleNode *node)
+{
+  PostOperatorHook hook(_analysis, _interpreter);
+  node->accept(&hook);
+}
 
 void PythonHooks::importAnalysis(const std::string &analysis_path, py::object &globals,
                                  const std::string &analysis_args)

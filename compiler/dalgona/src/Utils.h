@@ -40,6 +40,9 @@ template <typename... Args> void pySafeCall(py::object func, Args... args)
 
 py::dict outputPyArray(const luci::CircleNode *node, luci_interpreter::Interpreter *interpreter);
 
+// Return a vector of Tensors(py::dict) which correspond to node's inputs
+std::vector<py::dict> inputsPyArray(const luci::CircleNode *node,
+                                    luci_interpreter::Interpreter *interpreter);
 } // namespace dalgona
 
 #endif // __DALGONA_UTILS_H__

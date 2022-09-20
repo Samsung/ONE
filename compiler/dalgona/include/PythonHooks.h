@@ -50,7 +50,11 @@ public:
   // Called after a network is executed
   void endNetworkExecution(loco::Graph *graph);
 
-  // TODO Add opeartor hooks
+  // Called before an operator is executed
+  void preOperatorExecute(const luci::CircleNode *node) override;
+
+  // Called after an operator is executed
+  void postOperatorExecute(const luci::CircleNode *node) override;
 
 private:
   luci_interpreter::Interpreter *_interpreter = nullptr;
