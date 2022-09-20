@@ -511,43 +511,22 @@ bool is_const(const loco::Node *node)
   return true;
 }
 
-// NOTE Following conditions can be extended later
-// NOTE Used for Maximum, Miminum as ReLU/ReLU6
-//
-// Find T with an NCHW pattern described below
-//   - Input (non-constant) shape : [N, C, H, W]
-//   - Input (constant) shape : [1] or []
-//   - Output shape : [N, C, H, W]
-template <class T>
-bool is_NCHW_with_s_const(const T *node, luci::CircleNode *&pred_node,
-                          luci::CircleConst *&comp_const)
+bool is_scalar_const(const loco::Node *node)
 {
-  auto x = dynamic_cast<luci::CircleConst *>(node->x());
-  auto y = dynamic_cast<luci::CircleConst *>(node->y());
-
-  if (x != nullptr && y == nullptr)
-  {
-    pred_node = loco::must_cast<luci::CircleNode *>(node->y());
-    comp_const = x;
-  }
-  else if (x == nullptr && y != nullptr)
-  {
-    pred_node = loco::must_cast<luci::CircleNode *>(node->x());
-    comp_const = y;
-  }
-  else
-  {
-    // Ignore if T does not have a comp_const input.
-    return false;
-  }
-
-  if (pred_node->rank() != 4)
+  auto const_node = dynamic_cast<const luci::CircleConst *>(node);
+  if (not const_node)
     return false;
 
-  // Check if scalar
-  const auto const_rank = comp_const->rank();
-  if (const_rank == 0 || (const_rank == 1 && comp_const->dim(0).value() == 1))
+  const auto const_rank = const_node->rank();
+  // shape of scalar
+  // 1. rank = 0
+  // 2. rank = 1, dimension = 1
+  if (const_rank == 0)
     return true;
+
+  if (const_rank == 1 && const_node->dim(0).value() == 1)
+    return true;
+
   return false;
 }
 
@@ -869,14 +848,17 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleMaximum *node)
   {
-    luci::CircleNode *pred_node = nullptr;
-    luci::CircleConst *comp_constant = nullptr;
-
-    if (is_NCHW_with_s_const<luci::CircleMaximum>(node, pred_node, comp_constant))
+    if ((not is_const(node->x())) and is_scalar_const(node->y()))
     {
       auto pre_trans = create_pre_transpose(node);
-      pre_trans->a(pred_node);
+      pre_trans->a(node->x());
       node->x(pre_trans);
+    }
+    else if (is_scalar_const(node->x()) and (not is_const(node->y())))
+    {
+      auto pre_trans = create_pre_transpose(node);
+      pre_trans->a(node->y());
+      node->y(pre_trans);
     }
     else if ((not is_const(node->x())) and (not is_const(node->y())))
     {
@@ -981,14 +963,17 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleMinimum *node)
   {
-    luci::CircleNode *pred_node = nullptr;
-    luci::CircleConst *comp_constant = nullptr;
-
-    if (is_NCHW_with_s_const<luci::CircleMinimum>(node, pred_node, comp_constant))
+    if ((not is_const(node->x())) and is_scalar_const(node->y()))
     {
       auto pre_trans = create_pre_transpose(node);
-      pre_trans->a(pred_node);
+      pre_trans->a(node->x());
       node->x(pre_trans);
+    }
+    else if (is_scalar_const(node->x()) and (not is_const(node->y())))
+    {
+      auto pre_trans = create_pre_transpose(node);
+      pre_trans->a(node->y());
+      node->y(pre_trans);
     }
     else
     {
