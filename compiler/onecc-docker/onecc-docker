@@ -23,15 +23,22 @@ import argparse
 
 
 def _run(cmd, is_shell=False):
-    result = subprocess.run(
-        cmd, shell=is_shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout
-    return result
+    result = subprocess.Popen(
+        cmd, shell=is_shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    stdout, stderr = result.communicate()
+
+    if stderr:
+        print(stderr.decode('utf-8'))
+        exit(1)
+    else:
+        return stdout
 
 
 def _image_exists(name):
     cmd = ['docker', 'images', '-q', name]
     lines = _run(cmd).splitlines()
-    return bool(lines)
+    return lines
 
 
 def main():
@@ -54,20 +61,21 @@ def main():
         build_cmd = [
             "docker", "build", "-t", image_name, "--build-arg", build_arg, script_path
         ]
+        print('build Docker image ...')
         _run(build_cmd)
+        print('Dockerfile successfully built.')
 
     contianer_name = f"onecc_{recent_version.replace('.','_')}"
     user_cmd = ''.join(sys.argv[1:])
 
     run_cmd = [
-        "docker", "run", "--rm", "-u", "$(id -u):$(id -g)"
-        "--name", contianer_name, "-v", "${HOME}:${HOME}", "-e", "HOME=${HOME}", "-w",
-        "${PWD}", image_name, user_cmd
+        "docker", "run", "--rm", "-u", "$(id -u):$(id -g)", "--name", contianer_name,
+        "-v", "${HOME}:${HOME}", "-e", "HOME=${HOME}", "-w", "${PWD}", image_name,
+        user_cmd
     ]
 
     cmd = ' '.join(run_cmd)
     output = _run(cmd, is_shell=True)
-
     print(output.decode('utf-8'), end='')
 
 
