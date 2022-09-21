@@ -45,6 +45,8 @@ pylint \
 python3 \
 python3-pip \
 python3-venv \
+python3.8 \
+python3.8-dev \
 scons \
 software-properties-common \
 unzip \
