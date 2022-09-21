@@ -30,7 +30,7 @@ trap trap_err_onexit ERR
 cp help-infer ../bin/help-infer
 
 # run test
-one-infer -b help -- -h > ${filename}.log
+one-infer -d help-infer -- -h > ${filename}.log
 
 rm -rf ../bin/help-infer
 

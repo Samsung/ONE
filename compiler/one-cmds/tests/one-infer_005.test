@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# one-infer with configuration input
+# one-infer with post process script
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -28,7 +28,6 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-configfile="one-infer_005.cfg"
 inputfile="sample.tvn"
 
 if [[ ! -s "${inputfile}" ]]; then
@@ -39,13 +38,16 @@ fi
 cp dummy-infer ../bin/dummy-infer
 
 # run test
-one-infer -C ${configfile} > ${filename}.log
+one-infer -d dummy-infer --post-process "./one-infer-test-post-process.py TOKEN" -- ${inputfile} > ${filename}.log 2>&1
+return_code=$?
 
 rm -rf ../bin/dummy-infer
 
 if grep -q "dummy-infer dummy output!!!" "${filename}.log"; then
-  echo "${filename_ext} SUCCESS"
-  exit 0
+  if [ "$return_code" -eq "0" ]; then
+    echo "${filename_ext} SUCCESS"
+    exit 0
+  fi
 fi
 
 trap_err_onexit

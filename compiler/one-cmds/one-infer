@@ -33,45 +33,6 @@ import utils as _utils
 sys.tracebacklimit = 0
 
 
-def _get_backends_list():
-    """
-    [one hierarchy]
-    one
-    ├── backends
-    ├── bin
-    ├── doc
-    ├── include
-    ├── lib
-    ├── optimization
-    └── test
-
-    The list where `one-infer` finds its backends
-    - `bin` folder where `one-infer` exists
-    - `backends` folder
-
-    NOTE If there are backends of the same name in different places,
-     the closer to the top in the list, the higher the priority.
-    """
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    backend_set = set()
-
-    # bin folder
-    files = [f for f in glob.glob(dir_path + '/*-infer')]
-    # backends folder
-    files += [f for f in glob.glob(dir_path + '/../backends/**/*-infer', recursive=True)]
-    # TODO find backends in `$PATH`
-
-    backends_list = []
-    for cand in files:
-        base = ntpath.basename(cand)
-        if (not base in backend_set) and os.path.isfile(cand) and os.access(
-                cand, os.X_OK):
-            backend_set.add(base)
-            backends_list.append(cand)
-
-    return backends_list
-
-
 def _search_backend_driver(driver):
     """
     [one hierarchy]
@@ -108,28 +69,25 @@ def _search_backend_driver(driver):
     return None
 
 
-def _get_parser(backends_list):
-    infer_usage = 'one-infer [-h] [-v] [-C CONFIG] [-d DRIVER | -b BACKEND] [--post-process POST_PROCESS] [--] [COMMANDS FOR BACKEND DRIVER]'
+def _get_parser():
+    infer_usage = 'one-infer [-h] [-v] [-C CONFIG] [-d DRIVER] [--post-process POST_PROCESS] [--] [COMMANDS FOR BACKEND DRIVER]'
+    infer_detail = """
+one-infer provides post-processing after invoking backend inference driver
+use python script and its arguments to '--post-process' argument as below
+one-infer -d dummy-infer --post-process "script.py arg1 arg2" -- [arguments for dummy-infer]
+"""
     parser = argparse.ArgumentParser(
-        description='command line tool to infer model', usage=infer_usage)
+        description='command line tool to infer model',
+        usage=infer_usage,
+        epilog=infer_detail,
+        formatter_class=argparse.RawTextHelpFormatter)
 
     _utils._add_default_arg(parser)
 
-    # TODO: add tflite/onnx-infer driver to helper message when it is implemented
     driver_help_message = 'backend inference driver name to execute'
     parser.add_argument('-d', '--driver', type=str, help=driver_help_message)
 
-    # get backend list in the directory
-    backends_name = [ntpath.basename(f) for f in backends_list]
-    if not backends_name:
-        backends_name_message = '(There is no available backend drivers)'
-    else:
-        backends_name_message = '(available backend drivers: ' + ', '.join(
-            backends_name) + ')'
-    backend_help_message = 'backend name to use ' + backends_name_message
-    parser.add_argument('-b', '--backend', type=str, help=backend_help_message)
-
-    post_process_help_message = 'post processing script to convert I/O data to standard format'
+    post_process_help_message = 'post processing python script and arguments which can be used to convert I/O data to standard format'
     parser.add_argument('--post-process', type=str, help=post_process_help_message)
 
     return parser
@@ -137,15 +95,9 @@ def _get_parser(backends_list):
 
 def _verify_arg(parser, args):
     """verify given arguments"""
-    # `-d/--driver` and `-b/--backend` are mutually exclusive arguments.
-    if _utils._is_valid_attr(args, 'driver') and _utils._is_valid_attr(args, 'backend'):
-        parser.error(
-            '-d and -b options are mutually exclusive. Please use only one of them')
-
     missing = []
-    if not _utils._is_valid_attr(args, 'driver') and not _utils._is_valid_attr(
-            args, 'backend'):
-        missing.append('{-d/--driver | -b/--backend}')
+    if not _utils._is_valid_attr(args, 'driver'):
+        missing.append('-d/--driver')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
 
@@ -159,7 +111,7 @@ def _parse_arg(parser):
     # split by '--'
     args = [list(y) for x, y in itertools.groupby(argv, lambda z: z == '--') if not x]
 
-    # one-infer [-h] [-v] [-C CONFIG] [-d DRIVER] [-b BACKEND] [--post-process POST_PROCESS] -- [COMMANDS FOR BACKEND DRIVER]
+    # one-infer [-h] [-v] [-C CONFIG] [-d DRIVER] [--post-process POST_PROCESS] -- [COMMANDS FOR BACKEND DRIVER]
     if len(args):
         infer_args = args[0]
         infer_args = parser.parse_args(infer_args)
@@ -171,29 +123,19 @@ def _parse_arg(parser):
     return infer_args, backend_args
 
 
-def _get_executable(args, backends_list):
+def _get_executable(args):
     driver = _utils._is_valid_attr(args, 'driver')
-    if driver:
-        executable = _search_backend_driver(driver)
-        if executable:
-            return executable
-        else:
-            raise FileNotFoundError(driver + ' not found')
 
-    if _utils._is_valid_attr(args, 'backend'):
-        backend_base = getattr(args, 'backend') + '-infer'
-        for cand in backends_list:
-            if ntpath.basename(cand) == backend_base:
-                return cand
-        raise FileNotFoundError(backend_base + ' not found')
+    executable = _search_backend_driver(driver)
+    if executable:
+        return executable
+    else:
+        raise FileNotFoundError(driver + ' not found')
 
 
 def main():
-    # get backend list
-    backends_list = _get_backends_list()
-
     # parse arguments
-    parser = _get_parser(backends_list)
+    parser = _get_parser()
     args, backend_args = _parse_arg(parser)
 
     # parse configuration file
@@ -203,7 +145,7 @@ def main():
     _verify_arg(parser, args)
 
     # make a command to run given backend driver
-    driver_path = _get_executable(args, backends_list)
+    driver_path = _get_executable(args)
     infer_cmd = [driver_path] + backend_args
     if _utils._is_valid_attr(args, 'command'):
         infer_cmd += getattr(args, 'command').split()
