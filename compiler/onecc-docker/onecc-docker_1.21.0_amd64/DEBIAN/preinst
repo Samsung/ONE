@@ -1,0 +1,15 @@
+#!/bin/bash
+# file name preinst
+# Pre-install script for tera. This removes old versions o tera.
+
+echo "Looking for old versions of Tera ..."
+
+if [ -f "/usr/bin/onecc-docker" ];then
+    sudo rm -f /usr/bin/onecc-docker
+    echo "Removed old onecc-docker from /usr/bin ..."
+fi
+
+if [ -d "/usr/share/onecc-docker" ];then
+    sudo rm -rf /usr/share/onecc-docker
+    echo "Removed onecc-docker from /usr/share ..."
+fi

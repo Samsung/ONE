@@ -1,0 +1,11 @@
+Package: onecc-docker
+Version: 1.21.0
+Source: one
+Section: devel
+Priority: extra
+Maintainer: Neural Network Acceleration Solution Developers <nnfw@samsung.com>
+Build-Depends: docker python3
+Homepage: https://github.com/Samsung/ONE
+Architecture: amd64
+Description: This is a onecc-docker debian package.
+ for packaging
