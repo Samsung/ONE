@@ -43,6 +43,7 @@ private:
   uint8_t getTableValue(uint8_t idx) const { return _table[idx]; };
 
 private:
+  // TODO: remove _table from LOGISTIC
   uint8_t _table[256]{};
 };
 

@@ -76,6 +76,14 @@ void ExpandDims::configure()
 
 void ExpandDims::execute() const
 {
+  if (_is_inplace)
+  {
+    auto input_tensor = const_cast<Tensor *>(input());
+    output()->set_data_buffer(input_tensor->data<uint8_t>());
+    input_tensor->set_data_buffer(nullptr);
+    return;
+  }
+
   // Just copy input to output
   const auto *input_data = input()->data<void>();
   auto *output_data = output()->data<void>();

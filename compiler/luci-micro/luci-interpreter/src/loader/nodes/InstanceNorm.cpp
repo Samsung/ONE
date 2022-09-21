@@ -21,18 +21,18 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel>
-build_kernel_CircleInstanceNorm(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
-                                std::vector<std::pair<Tensor *, int32_t>> &outputs,
-                                const uint32_t op_index, KernelBuilder &builder)
+std::unique_ptr<Kernel> build_kernel_CircleInstanceNorm(std::vector<const Tensor *> &&inputs,
+                                                        std::vector<Tensor *> &&outputs,
+                                                        const uint32_t op_index,
+                                                        KernelBuilder &builder)
 {
   assert(inputs.size() == 3);
 
-  const Tensor *input = inputs.at(0).first;
-  const Tensor *gamma = inputs.at(1).first;
-  const Tensor *beta = inputs.at(2).first;
+  const Tensor *input = inputs.at(0);
+  const Tensor *gamma = inputs.at(1);
+  const Tensor *beta = inputs.at(2);
 
-  Tensor *output = outputs.at(0).first;
+  Tensor *output = outputs.at(0);
 
   circle::OperatorT oper_t;
   builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);

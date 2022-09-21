@@ -21,18 +21,18 @@
 namespace luci_interpreter
 {
 
-std::unique_ptr<Kernel>
-build_kernel_CircleTransposeConv(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
-                                 std::vector<std::pair<Tensor *, int32_t>> &outputs,
-                                 const uint32_t op_index, KernelBuilder &builder)
+std::unique_ptr<Kernel> build_kernel_CircleTransposeConv(std::vector<const Tensor *> &&inputs,
+                                                         std::vector<Tensor *> &&outputs,
+                                                         const uint32_t op_index,
+                                                         KernelBuilder &builder)
 {
   assert(inputs.size() == 4);
 
-  const Tensor *input_sizes = inputs.at(0).first;
-  const Tensor *filter = inputs.at(1).first;
-  const Tensor *out_backprop = inputs.at(2).first;
-  const Tensor *bias = inputs.at(3).first;
-  Tensor *output = outputs.at(0).first;
+  const Tensor *input_sizes = inputs.at(0);
+  const Tensor *filter = inputs.at(1);
+  const Tensor *out_backprop = inputs.at(2);
+  const Tensor *bias = inputs.at(3);
+  Tensor *output = outputs.at(0);
 
   DataType scratch_data_type =
     input_sizes->element_type() == DataType::S16 ? DataType::S64 : DataType::S32;

@@ -38,9 +38,9 @@ enum class BuilderId
 class KernelBuilderRegistry
 {
 public:
-  using KernelBuilderFunc = std::unique_ptr<Kernel>(
-    std::vector<std::pair<const Tensor *, int32_t>> &, std::vector<std::pair<Tensor *, int32_t>> &,
-    const uint32_t, KernelBuilder &);
+  using KernelBuilderFunc = std::unique_ptr<Kernel>(std::vector<const Tensor *> &&,
+                                                    std::vector<Tensor *> &&, const uint32_t,
+                                                    KernelBuilder &);
 
   KernelBuilderRegistry()
   {
@@ -55,7 +55,6 @@ public:
 
   KernelBuilderFunc *get_kernel_builder_func(circle::BuiltinOperator opcode) const
   {
-    auto tmp = size_t(opcode);
     return _operator_builders.at(size_t(opcode));
   }
 
@@ -80,15 +79,14 @@ KernelBuilder::~KernelBuilder()
   // This destructor deletes _builder_registry
 }
 
-std::unique_ptr<Kernel>
-KernelBuilder::build(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
-                     std::vector<std::pair<Tensor *, int32_t>> &outputs, const uint32_t op_index)
+std::unique_ptr<Kernel> KernelBuilder::build(std::vector<const Tensor *> &&inputs,
+                                             std::vector<Tensor *> &&outputs,
+                                             const circle::BuiltinOperator opcode,
+                                             const int32_t op_index)
 {
-  const auto op = _circle_reader->operators()[op_index];
-  const auto opcode = _circle_reader->builtin_code(op);
   auto specific_builder = _builder_registry->get_kernel_builder_func(opcode);
   if (specific_builder != nullptr)
-    return specific_builder(inputs, outputs, op_index, *this);
+    return specific_builder(std::move(inputs), std::move(outputs), op_index, *this);
 
   std::string msg = "Unsupported operator: ";
   msg += std::to_string(static_cast<uint32_t>(opcode));

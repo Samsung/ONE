@@ -21,7 +21,7 @@
 #include "luci_interpreter/MemoryManager.h"
 #include "luci_interpreter/core/CircleMicroReader.h"
 
-#include <unordered_map>
+#include <map>
 
 namespace luci_interpreter
 {
@@ -30,17 +30,19 @@ class GraphLoader
 {
 public:
   GraphLoader(CircleReader *reader, RuntimeGraph *runtime_graph, IMemoryManager *memory_manager,
-              std::unordered_map<int32_t, Tensor *> *index_to_tensor);
+              std::map<int32_t, Tensor *> *index_to_tensor);
 
   void loadTensors();
   void initInputTensors() const;
   void loadOperators();
 
 private:
+  bool isCouldBeEmplaceTensor(const int32_t tensor_index);
+
   RuntimeGraph *_runtime_graph;
   IMemoryManager *_memory_manager;
   CircleReader *_reader;
-  std::unordered_map<int32_t, Tensor *> *_index_to_tensor;
+  std::map<int32_t, Tensor *> *_index_to_tensor;
 };
 
 } // namespace luci_interpreter

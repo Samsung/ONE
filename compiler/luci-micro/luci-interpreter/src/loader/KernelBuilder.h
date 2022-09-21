@@ -37,9 +37,9 @@ public:
 
   ~KernelBuilder();
 
-  std::unique_ptr<Kernel> build(std::vector<std::pair<const Tensor *, int32_t>> &inputs,
-                                std::vector<std::pair<Tensor *, int32_t>> &output,
-                                uint32_t op_index);
+  std::unique_ptr<Kernel> build(std::vector<const Tensor *> &&inputs,
+                                std::vector<Tensor *> &&output,
+                                const circle::BuiltinOperator opcode, const int32_t op_index);
 
   CircleReader *get_circle_reader() { return _circle_reader; }
 

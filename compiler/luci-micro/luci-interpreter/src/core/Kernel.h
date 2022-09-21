@@ -29,7 +29,7 @@ class Kernel
 {
 protected:
   Kernel(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs)
-    : _inputs(std::move(inputs)), _outputs(std::move(outputs))
+    : _inputs(std::move(inputs)), _outputs(std::move(outputs)), _is_inplace(false)
   {
   }
 
@@ -47,10 +47,17 @@ public:
   // Executes the kernel.
   virtual void execute() const = 0;
 
+  // Change _is_emplace value.
+  void setInplaceValue(bool is_inplace) { _is_inplace = is_inplace; }
+  // Return _is_emplace value.
+  bool getInplaceValue() const { return _is_inplace; }
+
 protected:
   // NOTE Prefer not to use these in derived classes.
   const std::vector<const Tensor *> _inputs;
   const std::vector<Tensor *> _outputs;
+
+  bool _is_inplace;
 };
 
 // Base class for kernels with parameters.

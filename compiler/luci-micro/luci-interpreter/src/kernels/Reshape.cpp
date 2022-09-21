@@ -79,6 +79,14 @@ void Reshape::configure()
 
 void Reshape::execute() const
 {
+  if (_is_inplace)
+  {
+    auto input_tensor = const_cast<Tensor *>(input());
+    output()->set_data_buffer(const_cast<uint8_t *>(input_tensor->data<const uint8_t>()));
+    input_tensor->set_data_buffer(nullptr);
+    return;
+  }
+
   const auto *input_data = input()->data<void>();
   auto *output_data = output()->data<void>();
 
