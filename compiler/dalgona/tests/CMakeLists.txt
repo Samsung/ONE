@@ -6,7 +6,7 @@ unset(DALGONA_SINGLE_OP_TEST)
 
 nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
 if(NOT FlatBuffers_FOUND)
-  message(STATUS "Build dalgona: FAILED (missing FlatBuffers)")
+  message(STATUS "Test dalgona: FAILED (missing FlatBuffers)")
   return()
 endif(NOT FlatBuffers_FOUND)
 
