@@ -42,8 +42,7 @@ set(TEST_SOURCES BuddyMemoryManager.test.cpp)
 target_include_directories(${LUCI_INTERPRETER_BINARY} PUBLIC "${LUCI_INTERPRETER_INCLUDE_DIR}")
 target_include_directories(${LUCI_INTERPRETER_BINARY} PRIVATE "${LUCI_INTERPRETER_SOURCE_DIR}")
 target_link_libraries(${LUCI_INTERPRETER_BINARY}
-    PUBLIC luci_lang mio_circle04 mio_circle04_helper ${LUCI_INTERPRETER_LOADER} ${LUCI_INTERPRETER_CORE}
-    PRIVATE nncc_common)
+    PUBLIC ${LUCI_INTERPRETER_LOADER} ${LUCI_INTERPRETER_CORE})
 
 install(TARGETS ${LUCI_INTERPRETER_BINARY} DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include

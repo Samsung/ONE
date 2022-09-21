@@ -10,6 +10,32 @@ if(NOT ARM_C_COMPILER_PATH)
   return()
 endif()
 
+nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
+
+if(NOT FlatBuffers_FOUND)
+  message(STATUS "Build luci-micro: FALSE(FlatBuffers 2.0 NOT FOUND)")
+  return()
+endif(NOT FlatBuffers_FOUND)
+
+message(STATUS "Build luci-micro: TRUE")
+
+set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/res/CircleSchema/0.4/circle_schema.fbs")
+
+# NOTE Copy circle_schema.fbs as schema.fbs to generate "schema_generated.fbs" instead of "circle_schema_generated.fbs"
+add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
+        COMMAND ${CMAKE_COMMAND} -E copy "${SCHEMA_FILE}" schema.fbs
+        WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+        DEPENDS "${SCHEMA_FILE}"
+        )
+
+FlatBuffers_Target(circle_schema
+        OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen/circle-generated/circle"
+        INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
+        SCHEMA_DIR "${CMAKE_CURRENT_BINARY_DIR}"
+        SCHEMA_FILES "schema.fbs"
+        )
+
+
 # TODO: add cmake option to choose pal from command line
 set(LUCI_INTERPRETER_PAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/pal/mcu")
 
@@ -34,6 +60,7 @@ set(CMAKE_ARM_OPTIONS
   -DBUILD_GTEST=OFF
   "-DNNAS_ROOT=${NNAS_PROJECT_SOURCE_DIR}"
   -DENABLE_STRICT_BUILD=OFF
+  "-DGENERATED_INCLUDE_DIR=${CMAKE_CURRENT_BINARY_DIR}/gen"
 )
 
 if (GENERATE_KERNELS_LIST_FROM)
@@ -58,21 +85,19 @@ add_custom_target(luci_interpreter_micro_arm_cmake DEPENDS "${MICRO_ARM_BUILD_DE
 
 # Generate KernelsToBuild list from circle model
 if (GENERATE_KERNELS_LIST_FROM)
-  if(NOT TARGET mio_circle04)
-    return()
-  endif(NOT TARGET mio_circle04)
-
   add_executable(generator_kernels_list_exec helpers/GenerateKernelsListHelper.cpp)
   # TODO: remove mio_circle04 dependency
-  target_link_libraries(generator_kernels_list_exec mio_circle04)
-  target_link_libraries(generator_kernels_list_exec mio_circle04_helper)
+  target_link_libraries(generator_kernels_list_exec circle_reader)
+  target_link_libraries(generator_kernels_list_exec circle_schema)
+
+  target_include_directories(generator_kernels_list_exec PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/include")
 
   add_custom_target(
           generate_kernels_list ALL
           COMMAND generator_kernels_list_exec ${GENERATE_KERNELS_LIST_FROM} ${GENERATED_KERNELS_LIST_PATH}
           COMMENT "Generating KernelsToBuild list"
   )
-  add_dependencies(luci_interpreter_micro_arm_cmake generate_kernels_list)
+  add_dependencies(generate_kernels_list circle_schema)
 
 endif()
 
@@ -85,7 +110,7 @@ add_custom_command(
   OUTPUT "${MICRO_ARM_BINARY}"
   COMMAND "${CMAKE_MAKE_PROGRAM}" luci_interpreter_micro -j ${CPU_COUNT}
   WORKING_DIRECTORY "${MICRO_ARM_BUILD_DIR}"
-  DEPENDS luci_interpreter_micro_arm_cmake
+  DEPENDS luci_interpreter_micro_arm_cmake circle_schema
   VERBATIM
 )
 
