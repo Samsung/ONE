@@ -33,7 +33,9 @@ void readDataFromFile(const std::string &filename, char *data, size_t data_size)
   if (fs.fail())
     throw std::runtime_error("Cannot open file \"" + filename + "\".\n");
   if (fs.read(data, data_size).fail())
-    throw std::runtime_error("Failed to read data from file \"" + filename + "\".\n");
+    throw std::runtime_error("Input tensor size mismatches with \"" + filename + "\".\n");
+  if (fs.peek() != EOF)
+    throw std::runtime_error("Input tensor size mismatches with \"" + filename + "\".\n");
 }
 
 void writeDataToFile(const std::string &filename, const char *data, size_t data_size)
