@@ -38,13 +38,6 @@ public:
 private:
   void evalFloat() const;
   void evalQuantized() const;
-  void populateLookupTable();
-  void setTableValue(uint8_t value, uint8_t idx) { _table[idx] = value; };
-  uint8_t getTableValue(uint8_t idx) const { return _table[idx]; };
-
-private:
-  // TODO: remove _table from LOGISTIC
-  uint8_t _table[256]{};
 };
 
 } // namespace kernels
