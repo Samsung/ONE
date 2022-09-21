@@ -605,16 +605,16 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
   auto executors = std::make_shared<exec::Executors>(std::move(model_edges));
-  for (auto &pair : lowered_subgs)
+  // Executor generation requires ordering
+  for (uint32_t i = 0; i < lowered_subgs.size(); i++)
   {
-    const auto &index_m = pair.first;
-    auto &model_lsubgs = pair.second;
-    uint32_t executor_index = 0;
+    auto const index_m = ir::ModelIndex{i};
+    auto &model_lsubgs = lowered_subgs.at(index_m);
 
-    for (auto &pair_in : model_lsubgs)
+    for (uint32_t j = 0; j < model_lsubgs.size(); j++)
     {
-      const auto &subg_index = pair_in.first;
-      auto &lowered_subg = pair_in.second;
+      auto const subg_index = ir::SubgraphIndex{j};
+      auto &lowered_subg = model_lsubgs.at(subg_index);
       auto indexed_ranks = lowered_subg->indexed_ranks();
 
       ir::OperationDumper dumper("Executor generation of Subgraph " +
@@ -627,8 +627,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
         std::move(lowered_subg), tracing_ctx.get(), options, executors, index_m)};
       executor->setIndexedRanks(indexed_ranks);
       executors->emplace(std::move(executor), index_m, subg_index);
-
-      executor_index++;
     }
   }
 
