@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
+#include "Dalgona.h"
+
 #include <arser/arser.h>
+#include <pybind11/embed.h>
+
+namespace py = pybind11;
+
+using namespace dalgona;
 
 int entry(const int argc, char **argv)
 {
@@ -59,7 +66,25 @@ int entry(const int argc, char **argv)
   if (arser["--analysis_args"])
     analysis_args = arser.get<std::string>("--analysis_args");
 
-  // TODO Run analysis
+  // Initialize python interpreter
+  py::scoped_interpreter guard{};
+
+  Dalgona dalgona;
+
+  // Initialize interpreter and operator hooks
+  dalgona.initialize(input_model_path);
+
+  // Run analysis
+  if (arser["--input_data"])
+  {
+    const auto input_data_path = arser.get<std::string>("--input_data");
+    dalgona.runAnalysisWithH5Input(input_data_path, analysis_path, analysis_args);
+  }
+  else
+  {
+    std::cout << "--input_data was not specified. Run with a random input." << std::endl;
+    dalgona.runAnalysisWithRandomInput(analysis_path, analysis_args);
+  }
 
   return EXIT_SUCCESS;
 }
