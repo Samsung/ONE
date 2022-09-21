@@ -20,7 +20,7 @@
 #include "ParamsType.h"
 #include "DataType.h"
 
-#include <mio/circle/schema_generated.h>
+#include <circle-generated/circle/schema_generated.h>
 
 #include <map>
 #include <memory>

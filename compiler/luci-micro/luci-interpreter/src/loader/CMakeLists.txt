@@ -21,8 +21,8 @@ target_include_directories(${LUCI_INTERPRETER_LOADER} PUBLIC "${LUCI_INTERPRETER
 target_include_directories(${LUCI_INTERPRETER_LOADER} PUBLIC "${LUCI_INTERPRETER_SOURCE_DIR}")
 
 target_link_libraries(${LUCI_INTERPRETER_LOADER}
-        PUBLIC luci_lang ${LUCI_INTERPRETER_CORE}
-        PRIVATE ${LUCI_INTERPRETER_KERNELS} nncc_common luci_plan)
+        PUBLIC ${LUCI_INTERPRETER_CORE}
+        PRIVATE ${LUCI_INTERPRETER_KERNELS})
 
 if(NOT ENABLE_TEST)
   return()

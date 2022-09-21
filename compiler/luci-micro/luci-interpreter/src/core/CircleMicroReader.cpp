@@ -15,8 +15,7 @@
  */
 
 #include "luci_interpreter/core/CircleMicroReader.h"
-
-#include <mio_circle/Helper.h>
+#include "luci_interpreter/core/CircleMicroReaderHelper.h"
 
 #include <algorithm>
 #include <memory>
@@ -130,19 +129,7 @@ circle::BuiltinOperator CircleReader::builtin_code(const circle::Operator *op) c
   const auto opcode = op_codes[index];
   assert(opcode != nullptr);
 
-  return mio::circle::builtin_code_neutral(opcode);
-}
-
-std::string CircleReader::opcode_name(const circle::Operator *op) const
-{
-  assert(op != nullptr);
-
-  const auto op_codes = opcodes();
-  uint32_t index = op->opcode_index();
-  assert(index < op_codes.size());
-  const auto opcode = op_codes[index];
-
-  return mio::circle::opcode_name(opcode);
+  return circle::builtin_code_neutral(opcode);
 }
 
 bool CircleReader::parse(const circle::Model *model)

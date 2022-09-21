@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+#include "luci_interpreter/core/CircleMicroReader.h"
+
+#include <circle-generated/circle/schema_generated.h>
+
 #include <iostream>
 #include <fstream>
-#include <mio/circle/schema_generated.h>
-#include <mio_circle/Reader.h>
 #include <set>
 
 std::string get_register_kernel_str(const circle::BuiltinOperator builtin_operator)
@@ -181,7 +183,8 @@ std::vector<char> loadFile(const std::string &path)
 // Parse model and write to std::ofstream &os models operations
 void run(std::ofstream &os, const circle::Model *model)
 {
-  mio::circle::Reader reader(model);
+  luci_interpreter::CircleReader reader;
+  reader.parse(model);
   const uint32_t subgraph_size = reader.num_subgraph();
 
   // Set to avoid duplication in generated list
@@ -191,9 +194,9 @@ void run(std::ofstream &os, const circle::Model *model)
   {
     reader.select_subgraph(g);
     auto ops = reader.operators();
-    for (uint32_t i = 0; i < ops->Length(); ++i)
+    for (uint32_t i = 0; i < ops.size(); ++i)
     {
-      const auto op = ops->Get(i);
+      const auto op = ops.at(i);
       auto op_builtin_operator = reader.builtin_code(op);
 
       auto result = operations_set.insert(op_builtin_operator);
