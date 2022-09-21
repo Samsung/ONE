@@ -26,10 +26,10 @@ namespace onert
 namespace ir
 {
 
-int32_t const Shape::UNSPECIFIED_DIM = -1;
+int32_t const Shape::kUnspecifiedDim = -1;
 
 // NNFW_MAX_RANK is 6
-int32_t const Shape::MAX_RANK = 6;
+int32_t const Shape::kMaxRank = 6;
 
 FeatureShape Shape::asFeature(Layout layout) const
 {
@@ -80,7 +80,7 @@ uint64_t Shape::num_elements() const
 {
   // if dimension is 0, it means unspecified and cannot calculate the total number of elements
   if (std::any_of(_dimensions.begin(), _dimensions.end(),
-                  [](const int32_t &v) { return v == UNSPECIFIED_DIM; }))
+                  [](const int32_t &v) { return v == kUnspecifiedDim; }))
     throw std::runtime_error("num_elements() cannot calculate when any dimension is unspecified");
 
   return std::accumulate(_dimensions.cbegin(), _dimensions.cend(), UINT64_C(1),
@@ -89,7 +89,7 @@ uint64_t Shape::num_elements() const
 
 Shape permuteShape(const Shape &shape, Layout from, Layout to)
 {
-  assert(shape.rank() <= Shape::MAX_RANK);
+  assert(shape.rank() <= Shape::kMaxRank);
   Shape ret{shape};
   if (from == to)
     return ret;
