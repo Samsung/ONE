@@ -89,8 +89,8 @@ normal build and cross build as follows.
 ```
 $ export ROOTFS_DIR=xxx
 ...
-$ make all install                        # do normal build
-$ TARGET_ARCH=aarch64 make all install    # do cross build
+$ make                         # do normal build
+$ TARGET_ARCH=aarch64 make     # do cross build
 ```
 
 ### Run test

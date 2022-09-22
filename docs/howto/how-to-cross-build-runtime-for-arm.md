@@ -106,11 +106,11 @@ Give `TARGET_ARCH` variable to set the target architecture.
 If you used `ROOTFS_DIR` to prepare in alternative folder, you should also give this to makefile.
 
 ```
-$ CROSS_BUILD=1 TARGET_ARCH=armv7l make all install
+$ CROSS_BUILD=1 TARGET_ARCH=armv7l make
 
 # If ROOTFS_DIR is in alternative folder
 $ ROOTFS_DIR=/path/to/your/rootfs/arm \
-CROSS_BUILD=1 TARGET_ARCH=armv7l make all install
+CROSS_BUILD=1 TARGET_ARCH=armv7l make
 ```
 
 You can also omit the `CROSS_BUILD=1` option if you explicitly pass `ROOTFS_DIR`. In that case, if
@@ -121,8 +121,8 @@ normal build and cross build as follows.
 ```
 $ export ROOTFS_DIR=xxx
 ...
-$ make all install    # do normal build
-$ TARGET_ARCH=armv7l make all install    # do cross build
+$ make                       # do normal build
+$ TARGET_ARCH=armv7l make    # do cross build
 ```
 
 ### Run test
