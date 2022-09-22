@@ -120,9 +120,27 @@ void ExecutorBase::execute(const IODescription &desc)
     {
       tensor->set_dynamic();
       tensor->setShape(input_shape->second);
+      /*
+       * Changes tensor shape and allocate memory since its shape was changed
+       * perhaps by nnfw_set_input_tensorinfo()
+       *
+       * Cases are:
+       * 1) static operand -> nnfw_set_input_tensorinfo() -> execute() -> execute()
+       *                                                 (a)          (b)
+       *
+       * at (a), operand is static, tensor is static - memory dealloc is not needed
+       *   (DynamicTensorManager cannot dealloc memory allocated by StaticTensorManager)
+       * at (b), operand is static, tensor is dynamic - memory dealloc is needed
+       *
+       * 2) dynamic operand -> nnfw_set_input_tensorinfo() -> execute() -> execute()
+       *                                                  (a)          (b)
+       *
+       * at (a), operand is dynamic, tensor is dynamic - memory dealloc is not needed
+       *                                       since it has not been allocated yet
+       * at (b), operand is dynamic, tensor is dynamic - memory dealloc is needed
+       */
+      tensor->applyShape(input_shape->second);
     }
-
-    handleDynamicInputTensor(ir::IOIndex{i}, desc);
   }
 
   assert(_output_tensors.size() == desc.outputs.size());
@@ -153,35 +171,6 @@ void ExecutorBase::execute(const IODescription &desc)
     const auto output_tensor_shape = _output_tensors[n]->getShape();
     output.info.shape(
       convertShape(output_tensor_shape, _output_tensors[n]->layout(), output.layout));
-  }
-}
-
-/**
- * @brief Changes tensor shape and allocate memory
- *        if input shape was changed by nnfw_set_input_tensorinfo()
- *
- * @note  Cases are:
- *        1) static operand -> nnfw_set_input_tensorinfo() -> execute() -> execute()
- *                                                        (a)          (b)
- *
- *           at (a), operand is static, tensor is static - memory dealloc is not needed
- *                   (DynamicTensorManager cannot dealloc memory allocated by StaticTensorManager)
- *           at (b), operand is static, tensor is dynamic - memory dealloc is needed
- *
- *        2) dynamic operand -> nnfw_set_input_tensorinfo() -> execute() -> execute()
- *                                                         (a)          (b)
- *
- *           at (a), operand is dynamic, tensor is dynamic - memory dealloc is not needed
- *                                                           since it has not been allocated yet
- *           at (b), operand is dynamic, tensor is dynamic - memory dealloc is needed
- */
-void ExecutorBase::handleDynamicInputTensor(ir::IOIndex io_ind, const IODescription &desc)
-{
-  auto shape_sig_found = desc.dynamic_input_shapes.find(io_ind);
-  if (shape_sig_found != desc.dynamic_input_shapes.end())
-  {
-    auto changed_input_shape = shape_sig_found->second;
-    _input_tensors[io_ind.value()]->applyShape(changed_input_shape);
   }
 }
 
