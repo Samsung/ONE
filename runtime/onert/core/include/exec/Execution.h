@@ -53,9 +53,9 @@ public:
    * @brief   Returns primary graph object
    * @return  Graph object
    */
-  const ir::Graph &primary_subgraph() const { return primary_executor()->graph(); }
+  const ir::Graph &primary_subgraph() const { return entryExecutor()->graph(); }
 
-  const ir::Graph &primary_parentgraph() const { return primary_executor()->parent_graph(); }
+  const ir::Graph &primary_parentgraph() const { return entryExecutor()->parent_graph(); }
   /**
    * @brief     Change input shape
    * @param[in] index   Input index
@@ -243,8 +243,8 @@ public:
   void sholudStop();
 
 private:
-  const IExecutor *primary_executor() const { return _executors->at(ir::SubgraphIndex{0}); };
-  IExecutor *primary_executor() { return _executors->at(ir::SubgraphIndex{0}); };
+  const IExecutor *entryExecutor() const { return _executors->entryExecutor(); };
+  IExecutor *entryExecutor() { return _executors->entryExecutor(); };
 
 private:
   const std::shared_ptr<Executors> _executors;

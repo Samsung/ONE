@@ -44,6 +44,8 @@ public:
 
   IExecutor *at(ir::SubgraphIndex idx) const { return _executors.at(idx).get(); }
 
+  IExecutor *entryExecutor() const { return at(ir::SubgraphIndex{0}); }
+
   uint32_t inputSize() const;
 
   uint32_t outputSize() const;
@@ -55,7 +57,7 @@ public:
   void execute(const IODescription &desc);
 
 private:
-  void executeEntries(const IODescription &desc);
+  void executeModels(const IODescription &desc);
 
 private:
   // TODO Use Executor index

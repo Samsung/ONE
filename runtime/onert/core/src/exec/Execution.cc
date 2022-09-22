@@ -26,7 +26,7 @@ namespace exec
 Execution::Execution(const std::shared_ptr<Executors> &executors) : _executors{executors}
 {
   assert(executors != nullptr);
-  assert(executors->at(ir::SubgraphIndex{0}) != nullptr);
+  assert(executors->entryExecutor() != nullptr);
   _io_desc.inputs.resize(_executors->inputSize());
   _io_desc.outputs.resize(_executors->outputSize());
   sem_init(&_async_io_descs_sem, 0, 1);
@@ -218,7 +218,7 @@ void Execution::AsyncExecute()
     return;
   }
 
-  primary_executor()->execute(*_async_io_descs.front().first);
+  entryExecutor()->execute(*_async_io_descs.front().first);
 }
 
 void Execution::startExecute()
