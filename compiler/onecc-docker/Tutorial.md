@@ -1,62 +1,6 @@
-# onecc-docker
+# Tutorial
 
-_onecc-docker_ supports `one-cmds`, which is currently only supported by ubuntu 18.04, in more OS.
-
-
-
-## Description
-
-For now, `one-cmds` tools only support Ubuntu 18.04 and 20.04(not officially).
-So, It is difficult for people in different environments to use our tools without using ubuntu18:04.
-
-To overcome this limitation, we provide _onecc-docker_ that runs using a docker so that users can use `one-cmds` more widely.
-
-Currently, `onecc-docker` is only supported in Linux environments.
-
-
-
-## Requirements
-
-- Any Linux distribution
-
-- Docker
-
-    - Requires root privileges.
-            - `onecc-docker` requires the current `user ID` to be included in the `docker group` because it requires the docker-related commands to be executed without `sudo` privileges.
-                  - See "[Post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/)"
-        
-        ```
-        sudo usermod -aG docker ${USER}
-        ```
-
-- Python 3.8
-
-
-
-## Steps
-
-### Summary 
-
-`onecc-docker` creates a docker image with the latest release version of `ONE`, runs `onecc` inside the docker container after the container is driven to deliver the desired result to the user.
-
-1. To check the latest version of ONE
-    - We use GitHub API to get the latest release version of ONE. Create a docker file using the imported version.
-
-
-2. Check Docker Image Presence and Build Image
-
-    - To prevent repetitive image generation, we verify that there is an `onecc` image of the latest `one` release version.
-
-    - If not, build the docker image using the docker file.
-
-
-3. Run Docker Container
-    - When the above steps are successfully completed, we drive the docker container with the command the user wants. `onecc` runs on the user's current path and returns the result to the command line.
-
-
-
-
-## Examples
+This document provides a tutorial for running _onecc-docker_.
 
 ### Preparations
 
