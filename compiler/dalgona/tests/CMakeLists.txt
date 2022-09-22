@@ -28,6 +28,7 @@ get_target_property(SCHEMA_BIN_PATH mio_circle04 BINARY_DIR)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/GenH5RandomInputs.py" "${CMAKE_CURRENT_BINARY_DIR}/GenH5RandomInputs.py" COPYONLY)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/SingleOperatorTest.py" "${CMAKE_CURRENT_BINARY_DIR}/SingleOperatorTest.py" COPYONLY)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/RandomDataGenerator.py" "${CMAKE_CURRENT_BINARY_DIR}/RandomDataGenerator.py" COPYONLY)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/TestUtil.py" "${CMAKE_CURRENT_BINARY_DIR}/TestUtil.py" COPYONLY)
 
 ###
 ### Generate test.config

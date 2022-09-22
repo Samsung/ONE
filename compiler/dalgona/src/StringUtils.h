@@ -18,6 +18,7 @@
 #define __DALGONA_STRING_UTILS_H__
 
 #include <luci/IR/CircleOpcode.h>
+#include <luci/IR/AttrFusedActFunc.h>
 
 #include <string>
 
@@ -25,6 +26,8 @@ namespace dalgona
 {
 
 const std::string toString(luci::CircleOpcode opcode);
+
+const std::string toString(luci::FusedActFunc fused_act);
 
 } // namespace dalgona
 

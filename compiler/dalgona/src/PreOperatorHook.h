@@ -36,6 +36,19 @@ namespace dalgona
 // Invoke a user-written Python hook before an operator is executed
 class PreOperatorHook final : public luci::CircleNodeVisitor<void>
 {
+
+// This macro creates two variables used for pre-operator hooks.
+// 1. hook: Python function to be invoked (type: py::object)
+// 2. inputs: input data (type: std::vector of numpy array)
+#define PRE_OPERATOR_HOOK_PROLOGUE(OP_NAME)                 \
+  if (!py::hasattr(_analysis, #OP_NAME "Pre"))              \
+  {                                                         \
+    visit(loco::must_cast<const luci::CircleNode *>(node)); \
+    return;                                                 \
+  }                                                         \
+  py::object hook = _analysis.attr(#OP_NAME "Pre");         \
+  auto inputs = inputsPyArray(node, _interpreter);
+
 private:
   py::object _analysis;
   luci_interpreter::Interpreter *_interpreter{nullptr};
@@ -66,6 +79,31 @@ public:
                node->name(),             // name
                toString(node->opcode()), // opcode
                input_list                // list of inputs
+    );
+  }
+
+  void visit(const luci::CircleConv2D *node)
+  {
+    PRE_OPERATOR_HOOK_PROLOGUE(Conv2D)
+
+    auto padding = node->padding();
+    auto stride = node->stride();
+    auto dilation = node->dilation();
+
+    auto py_stride = py::dict("w"_a = stride->w(), "h"_a = stride->h());
+    auto py_dilation = py::dict("w"_a = dilation->w(), "h"_a = dilation->h());
+
+    auto fused_act = node->fusedActivationFunction();
+
+    pySafeCall(hook,
+               node->name(),                                      // name
+               inputs[0],                                         // input
+               inputs[1],                                         // filter
+               inputs[2],                                         // bias
+               padding == luci::Padding::SAME ? "SAME" : "VALID", // padding
+               py_stride,                                         // stride
+               py_dilation,                                       // dilation
+               toString(fused_act)                                // fused activation
     );
   }
 };
