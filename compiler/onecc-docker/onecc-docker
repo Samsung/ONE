@@ -17,7 +17,6 @@
 import sys
 import subprocess
 import json
-import os
 import requests
 import argparse
 
@@ -29,7 +28,7 @@ def _run(cmd, is_shell=False):
     stdout, stderr = result.communicate()
 
     if stderr:
-        print(stderr.decode('utf-8'))
+        print(stderr.decode('utf-8'), end='')
         exit(1)
     else:
         return stdout
@@ -42,14 +41,27 @@ def _image_exists(name):
 
 
 def main():
-    script_path = os.path.dirname(os.path.realpath(__file__))
+    Dockerfile_path = "/usr/share/one/docker/"
+
+    onecc_docker_usage = 'onecc-docker [-h] [-t TOKEN] [COMMAND <args>]'
+    onecc_docker_desc = 'Run onecc via docker'
+    parser = argparse.ArgumentParser(
+        usage=onecc_docker_usage, description=onecc_docker_desc)
+    parser.add_argument(
+        "-t", "--token", help="use GitHub authorization token to get onecc version")
+    args, onecc_arguments = parser.parse_known_args()
+    authorization_token = args.token
 
     TAG_URL = "https://api.github.com/repos/Samsung/ONE/releases/latest"
     try:
-        response = requests.get(TAG_URL)
+        if authorization_token:
+            headers = {"Authorization": "Bearer {}".format(authorization_token)}
+            response = requests.get(TAG_URL, headers=headers)
+        else:
+            response = requests.get(TAG_URL)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
-        raise SystemExit(e)
+        raise SystemExit('Error occured while getting onecc latest tag')
 
     versions_str = response.content
     versions_json = json.loads(versions_str)
@@ -60,21 +72,20 @@ def main():
 
     if not _image_exists(image_name):
         build_cmd = [
-            "docker", "build", "-t", image_name, "--build-arg", build_arg, script_path
+            "docker", "build", "-t", image_name, "--build-arg", build_arg, Dockerfile_path
         ]
         print('build Docker image ...')
         _run(build_cmd)
         print('Dockerfile successfully built.')
 
     contianer_name = f"onecc_{recent_version.replace('.','_')}"
-    user_cmd = ''.join(sys.argv[1:])
+    user_cmd = ''.join(onecc_arguments)
 
     run_cmd = [
         "docker", "run", "--rm", "-u", "$(id -u):$(id -g)", "--name", contianer_name,
         "-v", "${HOME}:${HOME}", "-e", "HOME=${HOME}", "-w", "${PWD}", image_name,
         user_cmd
     ]
-
     cmd = ' '.join(run_cmd)
     output = _run(cmd, is_shell=True)
     print(output.decode('utf-8'), end='')
