@@ -17,9 +17,9 @@
 
 import h5py as h5
 import numpy as np
-from circle.Model import Model
 import argparse
 
+from circle.Model import Model
 from RandomDataGenerator import RandomDataGenerator
 
 #
