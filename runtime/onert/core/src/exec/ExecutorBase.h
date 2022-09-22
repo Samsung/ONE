@@ -92,9 +92,6 @@ protected:
   std::vector<backend::builtin::IOTensor *> _output_tensors;
   std::mutex _mutex;
   const util::TracingCtx *_tracing_ctx;
-
-private:
-  void handleDynamicInputTensor(ir::IOIndex input_index, const IODescription &desc);
 };
 
 } // namespace exec
