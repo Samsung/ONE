@@ -27,6 +27,7 @@ get_target_property(SCHEMA_BIN_PATH mio_circle04 BINARY_DIR)
 # Place test scripts in one place
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/GenH5RandomInputs.py" "${CMAKE_CURRENT_BINARY_DIR}/GenH5RandomInputs.py" COPYONLY)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/SingleOperatorTest.py" "${CMAKE_CURRENT_BINARY_DIR}/SingleOperatorTest.py" COPYONLY)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/RandomDataGenerator.py" "${CMAKE_CURRENT_BINARY_DIR}/RandomDataGenerator.py" COPYONLY)
 
 ###
 ### Generate test.config
@@ -50,7 +51,7 @@ add_custom_command(
   OUTPUT ${CIRCLE_SCHEMA_PYTHON_DIR}
   COMMAND ${CMAKE_COMMAND} -E remove_directory "${CIRCLE_SCHEMA_PYTHON_DIR}"
   COMMAND "$<TARGET_FILE:flatbuffers::flatc>" --python
-    -o "${CMAKE_CURRENT_BINARY_DIR}" "${SCHEMA_BIN_PATH}/schema.fbs"
+          -o "${CMAKE_CURRENT_BINARY_DIR}" "${SCHEMA_BIN_PATH}/schema.fbs"
   DEPENDS flatbuffers::flatc
   COMMENT "Generate python interface for circle schema"
 )
