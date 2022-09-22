@@ -16,35 +16,23 @@
 
 #include "exec/Executors.h"
 
+#include <utility>
+
 namespace onert
 {
 namespace exec
 {
 
-ExecutorIndex Executors::emplace(std::unique_ptr<IExecutor> exec, const ir::ModelIndex &model_index,
-                                 const ir::SubgraphIndex &subg_index)
+void Executors::emplace(std::unique_ptr<IExecutor> exec, const ir::ModelIndex &model_index,
+                        const ir::SubgraphIndex &subg_index)
 {
-  const auto index = generateIndex();
-  if (!index.valid())
-    return index;
-
-  _executors.emplace(index, std::move(exec));
-  _index_map.emplace(index, std::make_pair(model_index, subg_index));
-
-  return index;
+  _executors.emplace(std::make_pair(model_index, subg_index), std::move(exec));
 }
 
-IExecutor *Executors::at(const ir::ModelIndex &idx_m, const ir::SubgraphIndex &idx_subg) const
+IExecutor *Executors::at(const ir::ModelIndex &model_index,
+                         const ir::SubgraphIndex &subg_index) const
 {
-  // Find index
-  // TODO Find better way for fast search
-  for (auto pair : _index_map)
-  {
-    if (idx_m == pair.second.first && idx_subg == pair.second.second)
-      return at(pair.first);
-  }
-
-  return nullptr;
+  return _executors.at(std::make_pair(model_index, subg_index)).get();
 }
 
 uint32_t Executors::inputSize() const
@@ -65,11 +53,12 @@ const ir::OperandInfo Executors::inputInfo(const ir::IOIndex &index)
   {
     // Assume that each model may have only one subgraph
     // TODO handle general case
-    const auto desc = _model_edges->pkg_inputs[index.value()];
-    const auto model_idx = std::get<0>(desc);
-    const auto executor_idx = ExecutorIndex{model_idx.value()};
-    const auto input_index = _executors.at(executor_idx)->graph().getInputs().at(std::get<2>(desc));
-    return _executors.at(executor_idx)->graph().operands().at(input_index).info();
+    auto const desc = _model_edges->pkg_inputs[index.value()];
+    auto const model_index = std::get<0>(desc);
+    auto const subg_index = std::get<1>(desc);
+    auto const executor = at(model_index, subg_index);
+    auto const input_index = executor->graph().getInputs().at(std::get<2>(desc));
+    return executor->graph().operands().at(input_index).info();
   }
 
   const auto input_index = primary_executor()->graph().getInputs().at(index);
@@ -82,11 +71,12 @@ const ir::OperandInfo Executors::outputInfo(const ir::IOIndex &index)
   {
     // Assume that each model may have only one subgraph
     // TODO handle general case
-    auto desc = _model_edges->pkg_outputs[index.value()];
-    auto model_idx = std::get<0>(desc);
-    auto executor_idx = ExecutorIndex{model_idx.value()};
-    auto output_index = _executors.at(executor_idx)->graph().getOutputs().at(std::get<2>(desc));
-    return _executors.at(executor_idx)->graph().operands().at(output_index).info();
+    auto const desc = _model_edges->pkg_outputs[index.value()];
+    auto const model_index = std::get<0>(desc);
+    auto const subg_index = std::get<1>(desc);
+    auto const executor = at(model_index, subg_index);
+    auto const output_index = executor->graph().getOutputs().at(std::get<2>(desc));
+    return executor->graph().operands().at(output_index).info();
   }
 
   auto output_index = primary_executor()->graph().getOutputs().at(index);
@@ -144,9 +134,9 @@ void Executors::executeEntries(const IODescription &desc)
     }
   }
 
-  const auto &executor1 = _executors.at(ExecutorIndex{0});
+  const auto &executor1 = at(ir::ModelIndex{0}, ir::SubgraphIndex{0});
   const auto &graph1 = executor1->graph();
-  const auto &executor2 = _executors.at(ExecutorIndex{1});
+  const auto &executor2 = at(ir::ModelIndex{1}, ir::SubgraphIndex{0});
   const auto &graph2 = executor2->graph();
 
   if ((graph1.getInputs().size() != _model_edges->pkg_inputs.size()) ||
@@ -165,8 +155,8 @@ void Executors::executeEntries(const IODescription &desc)
 
   for (uint32_t i = 0; i < graph1.getOutputs().size(); i++)
   {
-    const auto buf_index = _executors.at(ExecutorIndex{0})->graph().getOutputs().at(ir::IOIndex{i});
-    buf_infos[i] = &_executors.at(ExecutorIndex{0})->graph().operands().at(buf_index).info();
+    const auto buf_index = executor1->graph().getOutputs().at(ir::IOIndex{i});
+    buf_infos[i] = &executor1->graph().operands().at(buf_index).info();
     const auto buf_size = buf_infos[i]->total_size();
     bufs[i] = std::make_unique<uint8_t[]>(buf_size);
   }

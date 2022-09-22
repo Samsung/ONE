@@ -21,13 +21,25 @@
 #include "ir/NNPkg.h"
 #include "util/Index.h"
 
+namespace std
+{
+
+template <> struct hash<std::pair<::onert::ir::ModelIndex, ::onert::ir::SubgraphIndex>>
+{
+  size_t
+  operator()(const std::pair<::onert::ir::ModelIndex, ::onert::ir::SubgraphIndex> &pair) const
+    noexcept
+  {
+    return hash<uint64_t>()((uint64_t(pair.first.value()) << 32) | uint64_t(pair.second.value()));
+  }
+};
+
+} // namespace std
+
 namespace onert
 {
 namespace exec
 {
-
-struct ExecutorIndexTag;
-using ExecutorIndex = ::onert::util::Index<uint32_t, ExecutorIndexTag>;
 
 /**
  * @brief Class to gather executors
@@ -40,14 +52,12 @@ public:
   Executors(const Executors &) = delete;
   Executors(Executors &&) = default;
 
-  ExecutorIndex emplace(std::unique_ptr<IExecutor> exec, const ir::ModelIndex &model_index,
-                        const ir::SubgraphIndex &subg_index);
+  void emplace(std::unique_ptr<IExecutor> exec, const ir::ModelIndex &model_index,
+               const ir::SubgraphIndex &subg_index);
 
-  IExecutor *at(const ExecutorIndex &idx) const { return _executors.at(idx).get(); }
+  IExecutor *at(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index) const;
 
-  IExecutor *at(const ir::ModelIndex &idx_m, const ir::SubgraphIndex &idx_subg) const;
-
-  IExecutor *primary_executor() const { return at(ExecutorIndex{0}); }
+  IExecutor *primary_executor() const { return at(ir::ModelIndex{0}, ir::SubgraphIndex{0}); }
 
   uint32_t inputSize() const;
 
@@ -62,22 +72,11 @@ public:
 private:
   void executeEntries(const IODescription &desc);
 
-  ExecutorIndex generateIndex()
-  {
-    // No need to check if there is an entry with _next_index since
-    // _next_index is always ("the highest index in the object map" + 1)
-    if (ExecutorIndex{_next_index}.valid())
-      return ExecutorIndex{_next_index++};
-    else
-      return ExecutorIndex{};
-  }
-
 private:
-  std::unordered_map<ExecutorIndex, std::unique_ptr<IExecutor>> _executors;
+  std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<IExecutor>>
+    _executors;
   // NOTE _model_edges may use different struct type for executor implementation
   std::unique_ptr<ir::ModelEdges> _model_edges;
-  std::unordered_map<ExecutorIndex, std::pair<ir::ModelIndex, ir::SubgraphIndex>> _index_map;
-  uint32_t _next_index = 0;
 };
 
 } // namespace exec

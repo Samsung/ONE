@@ -26,7 +26,7 @@ namespace exec
 Execution::Execution(const std::shared_ptr<Executors> &executors) : _executors{executors}
 {
   assert(executors != nullptr);
-  assert(executors->at(ExecutorIndex{0}) != nullptr);
+  assert(executors->primary_executor() != nullptr);
   _io_desc.inputs.resize(_executors->inputSize());
   _io_desc.outputs.resize(_executors->outputSize());
   sem_init(&_async_io_descs_sem, 0, 1);
