@@ -14,14 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Check driver and backend option is mutually exclusive
+# Check the case when driver does not exist
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  if grep -q "\-d and -b options are mutually exclusive" "${filename}.log"; then
+  if grep -q "dummy-infer not found" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
