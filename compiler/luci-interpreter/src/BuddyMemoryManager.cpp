@@ -53,7 +53,10 @@ void BuddyMemoryManager::allocate_memory(luci_interpreter::Tensor &tensor)
   while (l < 32 && !_free_blocks[l])
     l++;
 
-  assert(l < 32);
+  if (l >= 32)
+  {
+    throw std::runtime_error{"Memory limit exceeded"};
+  }
 
   Block *tmp;
   tmp = _free_blocks[l];
