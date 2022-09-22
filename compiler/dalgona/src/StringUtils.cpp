@@ -42,4 +42,27 @@ const std::string toString(luci::CircleOpcode opcode)
   return std::string(node_name).substr(6);
 }
 
+const std::string toString(luci::FusedActFunc fused_act)
+{
+  switch (fused_act)
+  {
+    case (luci::FusedActFunc::UNDEFINED):
+      return std::string("undefined");
+    case (luci::FusedActFunc::NONE):
+      return std::string("none");
+    case (luci::FusedActFunc::RELU):
+      return std::string("relu");
+    case (luci::FusedActFunc::RELU_N1_TO_1):
+      return std::string("relu_n1_to_1");
+    case (luci::FusedActFunc::RELU6):
+      return std::string("relu6");
+    case (luci::FusedActFunc::TANH):
+      return std::string("tanh");
+    case (luci::FusedActFunc::SIGN_BIT):
+      return std::string("sign_bit");
+    default:
+      throw std::runtime_error("Unsupported activation function");
+  }
+}
+
 } // namespace dalgona

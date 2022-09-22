@@ -17,6 +17,7 @@
 #include "StringUtils.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/IR/AttrFusedActFunc.h>
 
 #include <gtest/gtest.h>
 
@@ -27,4 +28,15 @@ TEST(DalgonaUtilTest, toString_basic)
   luci::CircleConv2D node;
 
   EXPECT_EQ("Conv2D", toString(node.opcode()));
+}
+
+TEST(DalgonaUtilTest, toString_fused_act_func)
+{
+  EXPECT_EQ("undefined", toString(luci::FusedActFunc::UNDEFINED));
+  EXPECT_EQ("none", toString(luci::FusedActFunc::NONE));
+  EXPECT_EQ("relu", toString(luci::FusedActFunc::RELU));
+  EXPECT_EQ("relu6", toString(luci::FusedActFunc::RELU6));
+  EXPECT_EQ("relu_n1_to_1", toString(luci::FusedActFunc::RELU_N1_TO_1));
+  EXPECT_EQ("tanh", toString(luci::FusedActFunc::TANH));
+  EXPECT_EQ("sign_bit", toString(luci::FusedActFunc::SIGN_BIT));
 }
