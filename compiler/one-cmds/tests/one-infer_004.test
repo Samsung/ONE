@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# print one-infer's help message
+# one-infer with configuration input
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -22,15 +22,28 @@ filename="${filename_ext%.*}"
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
+  rm -rf ../bin/dummy-infer
   exit 255
 }
 
 trap trap_err_onexit ERR
 
-# run test
-one-infer -h > ${filename}.log
+configfile="one-infer_004.cfg"
+inputfile="sample.tvn"
 
-if grep -q "command line tool to infer model" "${filename}.log"; then
+if [[ ! -s "${inputfile}" ]]; then
+  touch ${inputfile}
+fi
+
+# copy dummy-infer to bin folder
+cp dummy-infer ../bin/dummy-infer
+
+# run test
+one-infer -C ${configfile} > ${filename}.log
+
+rm -rf ../bin/dummy-infer
+
+if grep -q "dummy-infer dummy output!!!" "${filename}.log"; then
   echo "${filename_ext} SUCCESS"
   exit 0
 fi
