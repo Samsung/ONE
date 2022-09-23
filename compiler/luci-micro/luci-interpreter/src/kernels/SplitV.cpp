@@ -103,7 +103,7 @@ void SplitV::execute() const
       TF_LITE_SPLIT(int16_t);
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 #undef TF_LITE_SPLIT
 }

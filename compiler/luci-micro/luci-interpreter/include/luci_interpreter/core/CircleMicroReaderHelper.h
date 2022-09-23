@@ -33,7 +33,7 @@ template <typename T> std::vector<T> as_index_vector(const flatbuffers::Vector<T
 {
   if (flat_array == nullptr)
   {
-    throw std::runtime_error("flat array is nullptr");
+    assert(false && "flat array is nullptr");
   }
 
   std::vector<T> ret(flat_array->Length());

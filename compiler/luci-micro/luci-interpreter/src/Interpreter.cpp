@@ -19,8 +19,6 @@
 
 #include "loader/ModuleLoader.h"
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 

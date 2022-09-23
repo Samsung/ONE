@@ -21,8 +21,6 @@
 
 #include <tensorflow/lite/kernels/internal/reference/transpose_conv.h>
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 
@@ -115,7 +113,7 @@ void TransposeConv::execute() const
       evalQuantizedS16();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

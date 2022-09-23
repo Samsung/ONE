@@ -19,7 +19,6 @@
 #include "kernels/Utils.h"
 #include "PALGather.h"
 
-#include <stdexcept>
 #include <cassert>
 
 namespace luci_interpreter
@@ -42,7 +41,7 @@ void Gather::configure()
   }
   else
   {
-    throw std::runtime_error("Unsupported type.");
+    assert(false && "Unsupported type.");
   }
 
   LUCI_INTERPRETER_CHECK(indices()->element_type() == DataType::S32 ||
@@ -103,7 +102,7 @@ void Gather::execute() const
       evalFloat();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

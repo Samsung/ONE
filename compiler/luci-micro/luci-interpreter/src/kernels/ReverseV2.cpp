@@ -37,20 +37,20 @@ void ReverseV2::configure()
       input()->element_type() != DataType::U8 && input()->element_type() != DataType::S16 &&
       input()->element_type() != DataType::S64)
   {
-    throw std::runtime_error("Unsupported input type.");
+    assert(false && "Unsupported input type.");
   }
   if (axes()->element_type() != DataType::S32)
   {
-    throw std::runtime_error("Unsupported axes type.");
+    assert(false && "Unsupported axes type.");
   }
   if (axes()->shape().num_elements() > 1)
   {
-    throw std::runtime_error("Current implementation does not support more than 1 axis.");
+    assert(false && "Current implementation does not support more than 1 axis.");
   }
   int axis_value = getTensorData<int32_t>(axes())[0];
   if (axis_value < 0 || axis_value >= input()->shape().num_dims())
   {
-    throw std::runtime_error("Invalid axes value");
+    assert(false && "Invalid axes value");
   }
   assert(input()->element_type() == output()->element_type());
 
@@ -74,7 +74,7 @@ void ReverseV2::execute() const
         getTensorShape(output()), getTensorData<uint8_t>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported output type");
+      assert(false && "Unsupported output type");
   }
 }
 

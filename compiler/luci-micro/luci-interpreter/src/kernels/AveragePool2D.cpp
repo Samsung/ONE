@@ -20,8 +20,6 @@
 
 #include "PALAveragePool2d.h"
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 
@@ -38,11 +36,11 @@ void AveragePool2D::configure()
 {
   if (input()->element_type() != output()->element_type())
   {
-    throw std::runtime_error("Input Tensor and Output Tensor Type must be same");
+    assert(false && "Input Tensor and Output Tensor Type must be same");
   }
   if (input()->shape().num_dims() != 4)
   {
-    throw std::runtime_error("Input Tensor Shape must be 4-D");
+    assert(false && "Input Tensor Shape must be 4-D");
   }
   const Shape &input_shape = input()->shape();
 
@@ -100,7 +98,7 @@ void AveragePool2D::execute() const
       evalSInt8();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

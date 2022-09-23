@@ -147,7 +147,7 @@ std::string get_register_kernel_str(const circle::BuiltinOperator builtin_operat
     case circle::BuiltinOperator_TRANSPOSE_CONV:
       return "REGISTER_KERNEL(TRANSPOSE_CONV, TransposeConv)";
     default:
-      throw std::runtime_error("Not supported kernel");
+      assert(false && "Not supported kernel");
   }
 }
 
@@ -156,8 +156,7 @@ std::vector<char> loadFile(const std::string &path)
   std::ifstream file(path, std::ios::binary | std::ios::in);
   if (!file.good())
   {
-    std::string errmsg = "Failed to open file: " + path;
-    throw std::runtime_error(errmsg.c_str());
+    assert(false && "Failed to open file");
   }
 
   file.unsetf(std::ios::skipws);
@@ -173,8 +172,7 @@ std::vector<char> loadFile(const std::string &path)
   file.read(data.data(), fileSize);
   if (file.fail())
   {
-    std::string errmsg = "Failed to read file: " + path;
-    throw std::runtime_error(errmsg.c_str());
+    assert(false && "Failed to read file");
   }
 
   return data;
@@ -212,8 +210,7 @@ int main(int argc, char **argv)
 {
   if (argc != 3)
   {
-    throw std::runtime_error(
-      "Should be 2 arguments: circle model path, and path for generated model\n");
+    assert(false && "Should be 2 arguments: circle model path, and path for generated model\n");
   }
 
   std::string model_file(argv[1]);

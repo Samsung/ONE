@@ -127,7 +127,7 @@ void OneHot::execute() const
       break;
     default:
       // TODO Support other data types
-      throw std::runtime_error("Not supported, yet!");
+      assert(false && "Not supported, yet!");
       break;
   }
 }

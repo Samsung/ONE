@@ -38,7 +38,7 @@ void MirrorPad::configure()
   const int num_dims = input_shape.num_dims();
 
   if (num_dims > 4)
-    throw std::runtime_error("Unsupported number of dimensions.");
+    assert(false && "Unsupported number of dimensions.");
 
   assert(output()->element_type() == input()->element_type());
   assert(paddings()->element_type() == DataType::S32);
@@ -82,7 +82,7 @@ void MirrorPad::execute() const
       break;
     }
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

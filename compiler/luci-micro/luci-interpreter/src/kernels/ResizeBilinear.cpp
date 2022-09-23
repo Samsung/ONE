@@ -38,7 +38,7 @@ void ResizeBilinear::configure()
   LUCI_INTERPRETER_CHECK(size()->shape().num_dims() == 1);
   LUCI_INTERPRETER_CHECK(size()->element_type() == DataType::S32);
   if (params().half_pixel_centers && params().align_corners)
-    throw std::runtime_error("If half_pixel_centers is True, align_corners must be False.");
+    assert(false && "If half_pixel_centers is True, align_corners must be False.");
   LUCI_INTERPRETER_CHECK(size()->shape().dim(0) == 2);
   Shape output_shape(4);
   output_shape.dim(0) = input()->shape().dim(0);
@@ -67,7 +67,7 @@ void ResizeBilinear::execute() const
         getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<uint8_t>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

@@ -20,8 +20,6 @@
 
 #include <tensorflow/lite/kernels/internal/reference/transpose.h>
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 
@@ -77,7 +75,7 @@ void Transpose::execute() const
                                        getTensorData<uint8_t>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

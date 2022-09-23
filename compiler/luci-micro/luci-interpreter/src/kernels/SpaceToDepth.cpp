@@ -71,7 +71,7 @@ void SpaceToDepth::execute() const
                                          getTensorData<uint8_t>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

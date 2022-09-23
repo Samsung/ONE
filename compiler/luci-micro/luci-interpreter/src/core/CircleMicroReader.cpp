@@ -191,7 +191,7 @@ template <typename T> typename VectorWrapper<T>::value_type VectorWrapper<T>::at
   if (i >= size())
   {
     // TODO find better error message
-    throw std::range_error("Access to prohibited vector element");
+    assert(false && "Access to prohibited vector element");
   }
 
   return _vector->Get(i);

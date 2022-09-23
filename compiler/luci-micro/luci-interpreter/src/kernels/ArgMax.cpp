@@ -79,7 +79,7 @@ void ArgMax::execute() const
             TF_LITE_ARG_MAX(uint8_t, int32_t, int32_t);
             break;
           default:
-            throw std::runtime_error("Unsupported input type.");
+            assert(false && "Unsupported input type.");
         }
         break;
       case DataType::S64:
@@ -92,11 +92,11 @@ void ArgMax::execute() const
             TF_LITE_ARG_MAX(uint8_t, int32_t, int64_t);
             break;
           default:
-            throw std::runtime_error("Unsupported input type.");
+            assert(false && "Unsupported input type.");
         }
         break;
       default:
-        throw std::runtime_error("Unsupported output type.");
+        assert(false && "Unsupported output type.");
     }
   }
   else
@@ -113,7 +113,7 @@ void ArgMax::execute() const
             TF_LITE_ARG_MAX(uint8_t, int64_t, int32_t);
             break;
           default:
-            throw std::runtime_error("Unsupported input type.");
+            assert(false && "Unsupported input type.");
         }
         break;
       case DataType::S64:
@@ -126,11 +126,11 @@ void ArgMax::execute() const
             TF_LITE_ARG_MAX(uint8_t, int64_t, int64_t);
             break;
           default:
-            throw std::runtime_error("Unsupported input type.");
+            assert(false && "Unsupported input type.");
         }
         break;
       default:
-        throw std::runtime_error("Unsupported output type.");
+        assert(false && "Unsupported output type.");
     }
   }
 #undef TF_LITE_ARG_MAX

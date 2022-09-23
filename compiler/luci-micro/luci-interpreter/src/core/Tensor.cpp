@@ -17,7 +17,6 @@
 #include "luci_interpreter/core/Tensor.h"
 
 #include <cstring>
-#include <stdexcept>
 
 namespace luci_interpreter
 {
@@ -34,7 +33,7 @@ void Tensor::readData(void *data_ptr, size_t data_size) const
   const int32_t num_elements = shape().num_elements();
   if (data_size != num_elements * element_size)
   {
-    throw std::invalid_argument("Invalid data size.");
+    assert(false && "Invalid data size.");
   }
   assert(data_ptr != nullptr);
   std::memcpy(data_ptr, data<void>(), data_size);
@@ -46,7 +45,7 @@ void Tensor::writeData(const void *data_ptr, size_t data_size)
   const int32_t num_elements = shape().num_elements();
   if (data_size != num_elements * element_size)
   {
-    throw std::invalid_argument("Invalid data size.");
+    assert(false && "Invalid data size.");
   }
   assert(data_ptr != nullptr);
   std::memcpy(data<void>(), data_ptr, data_size);

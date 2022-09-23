@@ -19,8 +19,6 @@
 
 #include <tensorflow/lite/kernels/internal/reference/comparisons.h>
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 
@@ -60,7 +58,7 @@ void Less::execute() const
       evalQuantized();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

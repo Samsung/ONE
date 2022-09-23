@@ -20,8 +20,6 @@
 
 #include <tensorflow/lite/kernels/internal/reference/concatenation.h>
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 namespace kernels
@@ -108,7 +106,7 @@ void Concatenation::execute() const
       evalGeneric<int64_t>();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

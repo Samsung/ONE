@@ -26,7 +26,7 @@ std::unique_ptr<Kernel> build_kernel_CircleIf(std::vector<const Tensor *> &&inpu
                                               const uint32_t op_index, KernelBuilder &builder)
 {
   // TODO: support IF operation
-  throw std::runtime_error("Not supported now");
+  assert(false && "Not supported now");
 }
 
 } // namespace luci_interpreter

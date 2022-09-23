@@ -16,4 +16,6 @@ else()
     set(LUCI_INTERPRETER_SUFFIX ${CUSTOM_LUCI_INTERPRETER_SUFFIX})
 endif()
 
+add_compile_options(-fno-exceptions)
+add_compile_options(-Os)
 add_subdirectory(src)

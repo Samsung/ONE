@@ -172,7 +172,7 @@ static inline void SetupScratchpadTensor(
     (void)scratchpad_5;
     (void)scratchpad_6;
 
-    throw std::runtime_error("Hybrid type is not supported for cmsisnn");
+    assert(false && "Hybrid type is not supported for cmsisnn");
   }
 
   // Resize scratchpad_1 tensor

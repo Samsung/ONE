@@ -34,7 +34,7 @@ void ModuleLoader::load()
 
   CircleReader reader;
   if (!reader.parse(model))
-    throw std::runtime_error("Error during parse");
+    assert(false && "Error during parse");
 
   for (size_t i = 0; i < reader.num_subgraph(); ++i)
   {
@@ -44,7 +44,7 @@ void ModuleLoader::load()
   for (size_t i = 0; i < reader.num_subgraph(); ++i)
   {
     if (!reader.select_subgraph(i))
-      throw std::runtime_error("Error during select subgraph");
+      assert(false && "Error during select subgraph");
     RuntimeGraph *runtime_graph = _runtime_graphs.at(i);
     GraphLoader loader(&reader, runtime_graph, _memory_manager, _index_to_tensor.get());
 

@@ -57,7 +57,7 @@ void Div::execute() const
       evalQuantized();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

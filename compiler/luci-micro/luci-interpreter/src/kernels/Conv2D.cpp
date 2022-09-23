@@ -21,9 +21,6 @@
 
 #include "PALConv2d.h"
 
-#include <stdexcept>
-#include <thread>
-
 namespace luci_interpreter
 {
 namespace kernels
@@ -75,7 +72,7 @@ void Conv2D::configure()
   }
   else
   {
-    throw std::runtime_error("Unsupported type.");
+    assert(false && "Unsupported type.");
   }
   LUCI_INTERPRETER_CHECK(output()->element_type() == input()->element_type());
 
@@ -130,7 +127,7 @@ void Conv2D::configure()
     case Activation::RELU_N1_TO_1:
       break;
     default:
-      throw std::runtime_error("Unsupported fused activation");
+      assert(false && "Unsupported fused activation");
   }
 }
 
@@ -144,7 +141,7 @@ void Conv2D::execute() const
         evalFloat();
         break;
       }
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
     case DataType::U8:
       if (filter()->scales().size() == 1)
       {
@@ -165,7 +162,7 @@ void Conv2D::execute() const
       evalQuantizedS16();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

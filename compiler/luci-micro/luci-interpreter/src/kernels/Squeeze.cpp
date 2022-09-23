@@ -19,8 +19,6 @@
 
 #include "kernels/Utils.h"
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 namespace kernels

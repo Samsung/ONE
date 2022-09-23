@@ -69,7 +69,7 @@ template <typename InT> void cast_from_pointer_to_tensor(const InT *in_data, Ten
       cast_data(in_data, getTensorData<bool>(out_tensor), elements_count);
       break;
     default:
-      throw std::runtime_error("Unsupported output type.");
+      assert(false && "Unsupported output type.");
   }
 }
 
@@ -110,7 +110,7 @@ void cast_from_tensor_to_tensor(const Tensor *in_tensor, Tensor *out_tensor)
       cast_from_pointer_to_tensor(getTensorData<bool>(in_tensor), out_tensor);
       break;
     default:
-      throw std::runtime_error("Unsupported input type.");
+      assert(false && "Unsupported input type.");
   }
 }
 

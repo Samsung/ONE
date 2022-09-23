@@ -21,8 +21,6 @@
 
 #include <tensorflow/lite/kernels/internal/reference/strided_slice.h>
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 
@@ -47,11 +45,11 @@ void StridedSlice::configure()
   assert(input()->shape().num_dims() <= 4);
   if (params().ellipsis_mask != 0)
   {
-    throw std::runtime_error("ellipsis_mask is not implemented yet.");
+    assert(false && "ellipsis_mask is not implemented yet.");
   }
   if (params().new_axis_mask != 0)
   {
-    throw std::runtime_error("new_axis_mask is not implemented yet.");
+    assert(false && "new_axis_mask is not implemented yet.");
   }
   if (input()->element_type() == DataType::U8)
   {
@@ -143,7 +141,7 @@ void StridedSlice::execute() const
                                           getTensorData<int32_t>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

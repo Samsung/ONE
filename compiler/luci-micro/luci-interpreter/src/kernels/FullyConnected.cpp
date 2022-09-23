@@ -20,8 +20,6 @@
 
 #include "PALFullyConnected.h"
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 
@@ -56,7 +54,7 @@ void FullyConnected::configure()
   }
   else
   {
-    throw std::runtime_error("Unsupported type.");
+    assert(false && "Unsupported type.");
   }
 
   const Shape &input_shape = input()->shape();
@@ -102,7 +100,7 @@ void FullyConnected::execute() const
       evalFloat();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 
