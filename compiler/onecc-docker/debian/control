@@ -2,7 +2,7 @@ Source: onecc-docker
 Section: devel
 Priority: extra
 Maintainer: Neural Network Acceleration Solution Developers <nnfw@samsung.com>
-Build-Depends: debhelper-compat (= 13)
+Build-Depends: debhelper (>=9)
 Standards-Version: 4.5.1
 Homepage: https://github.com/Samsung/ONE
 
