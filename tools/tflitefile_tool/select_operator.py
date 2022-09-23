@@ -1332,6 +1332,7 @@ def main(args):
             if tensor.Buffer() != 0:
                 used_buffers.append(tensor.Buffer())
 
+    used_buffers = list(set(used_buffers))
     used_buffers.sort()
 
     # Assign new index for operator
