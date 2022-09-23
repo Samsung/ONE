@@ -531,16 +531,19 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
   for (uint32_t i = 0; i < model_count; i++)
   {
-    auto const index_m = ir::ModelIndex{i};
-    auto model = _nnpkg->model(index_m);
+    auto const model_index = ir::ModelIndex{i};
+    auto model = _nnpkg->model(model_index);
 
-    model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-      dot_dumper.dump(subg, nnfw::misc::str("before_lower_model-", i, "-subg-", index.value()));
+    model->iterate([&](const ir::SubgraphIndex &subg_index, ir::Graph &subg) {
+      dot_dumper.dump(subg,
+                      nnfw::misc::str("before_lower_model-", i, "-subg-", subg_index.value()));
       // Lower: Assign backend
-      lowered_subgs[index_m][index] = std::make_unique<compiler::LoweredGraph>(subg, *_voptions[i]);
+      lowered_subgs[model_index][subg_index] =
+        std::make_unique<compiler::LoweredGraph>(subg, *_voptions[i]);
       // Set tracing_ctx for copied graph
       if (tracing_ctx != nullptr)
-        tracing_ctx->setSubgraphIndex(&(lowered_subgs[index_m][index]->graph()), index.value());
+        tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),
+                                      subg_index.value());
     });
   }
 
@@ -548,14 +551,14 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
   for (auto &pair : lowered_subgs)
   {
-    const auto &index_m = pair.first;
+    const auto &model_index = pair.first;
     auto &model_lsubg = pair.second;
 
     for (auto &pair_inner : model_lsubg)
     {
       const auto &subg_index = pair_inner.first;
       auto &lowered_subg = pair_inner.second;
-      dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_model-", index_m.value(),
+      dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_model-", model_index.value(),
                                                      "-subg-", subg_index.value()));
     }
   }
