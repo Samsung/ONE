@@ -23,6 +23,8 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
+add_compile_options(-fvisibility=hidden)
+
 add_executable(dalgona ${DRIVER} ${SOURCES})
 target_include_directories(dalgona PRIVATE include)
 target_include_directories(dalgona PRIVATE ${PYTHON_INCLUDE_DIRS})
