@@ -1,0 +1,13 @@
+Source: onecc-docker
+Section: devel
+Priority: extra
+Maintainer: Neural Network Acceleration Solution Developers <nnfw@samsung.com>
+Build-Depends: debhelper (>=9)
+Standards-Version: 4.5.1
+Homepage: https://github.com/Samsung/ONE
+
+Package: onecc-docker
+Architecture: amd64
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}, python3.8
+Description: On-device Neural Engine docker package
