@@ -70,7 +70,7 @@ public:
     auto inputs = inputsPyArray(node, _interpreter);
 
     py::list input_list;
-    for (int i = 0; i < inputs.size(); i++)
+    for (uint32_t i = 0; i < inputs.size(); i++)
     {
       input_list.append(inputs[i]);
     }
