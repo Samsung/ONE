@@ -532,12 +532,12 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   for (uint32_t i = 0; i < model_count; i++)
   {
     auto const index_m = ir::ModelIndex{i};
-    auto model = _nnpkg->model(ir::ModelIndex{i});
+    auto model = _nnpkg->model(index_m);
 
     model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       dot_dumper.dump(subg, nnfw::misc::str("before_lower_model-", i, "-subg-", index.value()));
       // Lower: Assign backend
-      lowered_subgs[index_m][index] = std::make_unique<compiler::LoweredGraph>(subg, *_voptions[0]);
+      lowered_subgs[index_m][index] = std::make_unique<compiler::LoweredGraph>(subg, *_voptions[i]);
       // Set tracing_ctx for copied graph
       if (tracing_ctx != nullptr)
         tracing_ctx->setSubgraphIndex(&(lowered_subgs[index_m][index]->graph()), index.value());
@@ -621,7 +621,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       lowered_subg->graph().operations().iterate(
         [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
 
-      auto &options = (model_count > 1) ? *_voptions[subg_index.value()] : *_voptions[0];
+      auto &options = *_voptions[model_index.value()];
       auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
         std::move(lowered_subg), tracing_ctx.get(), options, executors)};
       executor->setIndexedRanks(indexed_ranks);
