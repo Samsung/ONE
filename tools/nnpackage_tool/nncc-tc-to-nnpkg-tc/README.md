@@ -1,8 +1,8 @@
 # nncc-tc-to-nnpkg-tc
 
-`model2nnpkg` is a tool to convert model (either `tflite` or `circle`) to `nnpackage`.
+`nncc-tc-to-nnpkg-tc` is a tool to convert nncc testcase to nnpackage testcase.
 
-It takes `modelfile` as input and generates `nnpackage`.
+It takes `nncc-tc` as input and generates `nnpkg-tc`.
 
 ## Usage
 
