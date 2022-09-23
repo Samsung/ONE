@@ -38,6 +38,7 @@ target_link_libraries(dalgona PRIVATE foder)
 target_link_libraries(dalgona PRIVATE luci_import)
 target_link_libraries(dalgona PRIVATE luci_interpreter)
 target_link_libraries(dalgona PRIVATE dio_hdf5)
+target_link_libraries(dalgona PRIVATE nncc_common)
 
 if(NOT ENABLE_TEST)
   return()

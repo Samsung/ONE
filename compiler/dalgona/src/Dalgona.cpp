@@ -147,12 +147,12 @@ void Dalgona::runAnalysisWithH5Input(const std::string &input_data_path,
 
     for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
     {
-      if (num_inputs != importer.numInputs(record_idx))
+      if (num_inputs != static_cast<uint32_t>(importer.numInputs(record_idx)))
         throw std::runtime_error("Wrong number of inputs.");
 
       std::cout << "Running " << record_idx << "'th data" << std::endl;
 
-      for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+      for (uint32_t input_idx = 0; input_idx < num_inputs; input_idx++)
       {
         const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
         assert(input_node->index() == input_idx);
@@ -206,7 +206,7 @@ void Dalgona::runAnalysisWithRandomInput(const std::string &analysis_path,
   // TODO Support more bounded random data , e.g., sync with record-minmax
   std::uniform_int_distribution<> dist(0, 255);
 
-  for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+  for (uint32_t input_idx = 0; input_idx < num_inputs; input_idx++)
   {
     const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
     assert(input_node->index() == input_idx);
