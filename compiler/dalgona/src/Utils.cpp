@@ -102,6 +102,8 @@ py::dict quantparam(const Tensor *tensor)
 namespace dalgona
 {
 
+py::object none() { return py::none(); }
+
 std::vector<py::dict> inputsPyArray(const luci::CircleNode *node,
                                     luci_interpreter::Interpreter *interpreter)
 {
