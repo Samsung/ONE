@@ -1,0 +1,2 @@
+/onecc-docker /usr/share/one/bin/
+/docker/Dockerfile /usr/share/one/docker/

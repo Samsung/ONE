@@ -1,11 +1,13 @@
-Package: onecc-docker
-Version: 1.21.0
-Source: one
+Source: onecc-docker
 Section: devel
 Priority: extra
 Maintainer: Neural Network Acceleration Solution Developers <nnfw@samsung.com>
-Build-Depends: docker python3
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.5.1
 Homepage: https://github.com/Samsung/ONE
+
+Package: onecc-docker
 Architecture: amd64
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}, docker, python3
 Description: This is a onecc-docker debian package.
- for packaging
