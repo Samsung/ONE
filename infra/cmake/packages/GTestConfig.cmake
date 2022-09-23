@@ -30,14 +30,12 @@ _GTest_build()
 # Note: cmake supports GTest and does not find GTestConfig.cmake or GTest-config.cmake.
 # Refer to "https://cmake.org/cmake/help/v3.5/module/FindGTest.html"
 # find_package(GTest) creates options like GTEST_FOUND, not GTest_FOUND.
-if(GTEST_FOUND)
-  message(STATUS "Found GTest: true")
-else(GTEST_FOUND)
+if(NOT GTEST_FOUND)
   message(STATUS "GTEST_FOUND false: call find_package(GTest)")
   # Reset package config directory cache to prevent recursive find
   unset(GTest_DIR CACHE)
   find_package(GTest)
-endif(GTEST_FOUND)
+endif(NOT GTEST_FOUND)
 find_package(Threads)
 
 if(${GTEST_FOUND} AND TARGET Threads::Threads)
