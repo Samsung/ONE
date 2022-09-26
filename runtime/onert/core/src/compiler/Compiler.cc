@@ -491,7 +491,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     auto executors = std::make_shared<exec::Executors>();
 
     _nnpkg->primary_model()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-      executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
+      executors->emplace(ir::ModelIndex{0}, index, std::make_unique<interp::InterpExecutor>(subg));
     });
     _state = State::COMPILED;
     return std::make_shared<CompilerArtifact>(executors, nullptr);
@@ -628,13 +628,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
         std::move(lowered_subg), tracing_ctx.get(), options, executors)};
       executor->setIndexedRanks(indexed_ranks);
-
-      // executors can handle multiple model by passing model index as subgraph index
-      // So executors cannot handle multiple model with controlflow
-      // TODO Pass model index and subg index to executors
-      (model_count == 1)
-        ? executors->emplace(subg_index, std::move(executor))
-        : executors->emplace(ir::SubgraphIndex{model_index.value()}, std::move(executor));
+      executors->emplace(model_index, subg_index, std::move(executor));
     }
   }
 
@@ -745,7 +739,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
     auto executors = std::make_shared<exec::Executors>();
 
     model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-      executors->emplace(index, std::make_unique<interp::InterpExecutor>(subg));
+      executors->emplace(ir::ModelIndex{0}, index, std::make_unique<interp::InterpExecutor>(subg));
     });
     results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));
     _state = State::COMPILED;
@@ -838,7 +832,7 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
     auto executor = std::unique_ptr<exec::IExecutor>{
       ExecutorFactory::get().create(std::move(lowered_partialgraph), nullptr, options, executors)};
     executor->setIndexedRanks(indexed_ranks);
-    executors->emplace(ir::SubgraphIndex{0}, std::move(executor));
+    executors->emplace(ir::ModelIndex{0}, ir::SubgraphIndex{0}, std::move(executor));
 
     // It doesn't support tracing in case of partial graph
     results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));
