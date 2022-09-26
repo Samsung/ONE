@@ -34,6 +34,8 @@ public:
   void run(void);
   void stop(void);
 
+  bool isRunning() { return _isRunning.load(); }
+
   static Server &instance(void)
   {
     static Server server;
