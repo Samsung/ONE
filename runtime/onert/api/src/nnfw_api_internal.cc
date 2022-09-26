@@ -351,7 +351,14 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       }
     }
     _nnpkg = std::make_shared<onert::ir::NNPkg>();
-    for (uint32_t i = 0; i < models.size(); ++i)
+    auto num_models = models.size();
+    if (num_models >= static_cast<uint16_t>(num_models))
+    {
+      std::cerr << "Invalid model size - " << std::to_string(num_models) << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    for (uint16_t i = 0; i < num_models; ++i)
     {
       auto model_file_path = package_path + std::string("/") + models[i].asString();
       auto model_type = model_types[i].asString();
