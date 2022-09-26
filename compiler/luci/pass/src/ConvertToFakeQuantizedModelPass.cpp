@@ -31,7 +31,10 @@ namespace
 luci::CircleQuantize *create_quantize(luci::CircleNode *node)
 {
   auto quantize = node->graph()->nodes()->create<luci::CircleQuantize>();
-  quantize->name(node->name() + "_Quantize");
+  // DESIGN NOTE: Why use '_FQ_Quantize' instead of '_Quantize'?
+  // '_Quantize' is used in mixed-precision quantization
+  // We add '_FQ' to distinguish Op from mixed-precision quantization
+  quantize->name(node->name() + "_FQ_Quantize");
   quantize->dtype(node->dtype());
   quantize->rank(node->rank());
   for (uint32_t i = 0; i < node->rank(); i++)
@@ -50,7 +53,10 @@ luci::CircleQuantize *create_quantize(luci::CircleNode *node)
 luci::CircleDequantize *create_dequantize(luci::CircleNode *node)
 {
   auto dequantize = node->graph()->nodes()->create<luci::CircleDequantize>();
-  dequantize->name(node->name() + "_Dequantize");
+  // DESIGN NOTE: Why use '_FQ_Dequantize' instead of '_Dequantize'?
+  // '_Dequantize' is used in mixed-precision quantization
+  // We add '_FQ' to distinguish Op from mixed-precision quantization
+  dequantize->name(node->name() + "_FQ_Dequantize");
   dequantize->dtype(loco::DataType::FLOAT32);
   dequantize->rank(node->rank());
   for (uint32_t i = 0; i < node->rank(); i++)
