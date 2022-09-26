@@ -609,10 +609,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     auto const &model_index = pair.first;
     auto &model_lsubgs = pair.second;
 
-    if (model_count != 1 && model_lsubgs.size() != 1)
-      throw std::runtime_error{
-        "NYI: Executor generation of multiple model including controlflow is not supported yet"};
-
     for (auto &pair_inner : model_lsubgs)
     {
       auto const subg_index = pair_inner.first;
@@ -626,7 +622,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
       auto &options = *_voptions[model_index.value()];
       auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
-        std::move(lowered_subg), tracing_ctx.get(), options, executors)};
+        std::move(lowered_subg), tracing_ctx.get(), options, executors, model_index)};
       executor->setIndexedRanks(indexed_ranks);
       executors->emplace(model_index, subg_index, std::move(executor));
     }
@@ -829,8 +825,8 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
                                std::to_string(partialgraph_index.value()));
     lowered_partialgraph->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
-    auto executor = std::unique_ptr<exec::IExecutor>{
-      ExecutorFactory::get().create(std::move(lowered_partialgraph), nullptr, options, executors)};
+    auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
+      std::move(lowered_partialgraph), nullptr, options, executors, ir::ModelIndex{0})};
     executor->setIndexedRanks(indexed_ranks);
     executors->emplace(ir::ModelIndex{0}, ir::SubgraphIndex{0}, std::move(executor));
 

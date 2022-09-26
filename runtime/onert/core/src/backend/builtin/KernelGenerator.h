@@ -50,6 +50,8 @@ public:
     _executors = executors.get();
   }
 
+  void setModelIndex(const ir::ModelIndex &index) { _model_index = index; }
+
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
 
 private:
@@ -66,6 +68,7 @@ private:
   std::shared_ptr<TensorRegistry> _tensor_reg;
   compiler::TensorRegistries _tensor_registries;
   exec::Executors *_executors;
+  ir::ModelIndex _model_index;
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
