@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# run a workflow where one-import-tf generates intermediate files
+# Run onecc-dodcker with workflow file
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
