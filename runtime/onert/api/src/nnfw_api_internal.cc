@@ -352,7 +352,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     }
     _nnpkg = std::make_shared<onert::ir::NNPkg>();
     auto num_models = models.size();
-    if (num_models >= static_cast<uint16_t>(num_models))
+    if (num_models == 0 || (num_models - 1) > onert::ir::ModelIndex::max())
     {
       std::cerr << "Invalid model size - " << std::to_string(num_models) << std::endl;
       return NNFW_STATUS_ERROR;
