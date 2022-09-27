@@ -33,8 +33,8 @@ KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *d
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
   : basic::KernelGeneratorBase{graph}, _dyn_tensor_manager{dyn_tensor_manager},
-    _tensor_reg{tensor_reg}, _tensor_registries{}, _executors{nullptr}, _external_context{
-                                                                          external_context}
+    _tensor_reg{tensor_reg}, _tensor_registries{}, _executors{nullptr}, _model_index{},
+    _external_context{external_context}
 {
   UNUSED_RELEASE(_graph);
   UNUSED_RELEASE(_tensor_registries);
@@ -90,7 +90,7 @@ void KernelGenerator::visit(const ir::operation::If &node)
   input_tensors.erase(input_tensors.begin());
   auto fn = std::make_unique<::onert::backend::builtin::kernel::IfLayer>(
     cond_tensor, input_tensors, output_tensors, then_subg_index, else_subg_index, _executors,
-    _external_context);
+    _model_index, _external_context);
 
   _return_fn = std::move(fn);
 }
@@ -133,7 +133,7 @@ void KernelGenerator::visit(const ir::operation::While &node)
   // WhileLayer just set Executors instead of cond and body executor to avoid complexity of
   // creating executor recusively
   auto fn = std::make_unique<::onert::backend::builtin::kernel::WhileLayer>(
-    input_tensors, output_tensors, cond_subg_index, body_subg_index, _executors,
+    input_tensors, output_tensors, cond_subg_index, body_subg_index, _executors, _model_index,
     _dyn_tensor_manager->dynamic_mem_mgr().get(), _external_context);
 
   _return_fn = std::move(fn);

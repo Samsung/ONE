@@ -70,7 +70,7 @@ public:
     auto inputs = inputsPyArray(node, _interpreter);
 
     py::list input_list;
-    for (int i = 0; i < inputs.size(); i++)
+    for (uint32_t i = 0; i < inputs.size(); i++)
     {
       input_list.append(inputs[i]);
     }
@@ -104,6 +104,97 @@ public:
                py_stride,                                         // stride
                py_dilation,                                       // dilation
                toString(fused_act)                                // fused activation
+    );
+  }
+
+  void visit(const luci::CircleDepthwiseConv2D *node)
+  {
+    PRE_OPERATOR_HOOK_PROLOGUE(DepthwiseConv2D)
+
+    auto padding = node->padding();
+    auto stride = node->stride();
+    auto dilation = node->dilation();
+    auto depthMultiplier = node->depthMultiplier();
+
+    auto py_stride = py::dict("w"_a = stride->w(), "h"_a = stride->h());
+    auto py_dilation = py::dict("w"_a = dilation->w(), "h"_a = dilation->h());
+
+    auto fused_act = node->fusedActivationFunction();
+
+    pySafeCall(hook,
+               node->name(),                                      // name
+               inputs[0],                                         // input
+               inputs[1],                                         // filter
+               inputs[2],                                         // bias
+               padding == luci::Padding::SAME ? "SAME" : "VALID", // padding
+               py_stride,                                         // stride
+               depthMultiplier,                                   // depthMultiplier
+               py_dilation,                                       // dilation
+               toString(fused_act)                                // fused activation
+    );
+  }
+
+  void visit(const luci::CircleAdd *node)
+  {
+    PRE_OPERATOR_HOOK_PROLOGUE(Add)
+
+    auto fused_act = node->fusedActivationFunction();
+
+    pySafeCall(hook,
+               node->name(),       // name
+               inputs[0],          // x
+               inputs[1],          // y
+               toString(fused_act) // fused activation
+    );
+  }
+
+  void visit(const luci::CircleFullyConnected *node)
+  {
+    PRE_OPERATOR_HOOK_PROLOGUE(FullyConnected)
+
+    auto fused_act = node->fusedActivationFunction();
+
+    pySafeCall(hook,
+               node->name(),       // name
+               inputs[0],          // input
+               inputs[1],          // weights
+               inputs[2],          // bias
+               toString(fused_act) // fused activation
+    );
+  }
+
+  void visit(const luci::CircleTransposeConv *node)
+  {
+    PRE_OPERATOR_HOOK_PROLOGUE(TransposeConv)
+
+    auto padding = node->padding();
+    auto stride = node->stride();
+
+    auto py_stride = py::dict("w"_a = stride->w(), "h"_a = stride->h());
+
+    pySafeCall(hook,
+               node->name(),                                      // name
+               inputs[2],                                         // input
+               inputs[1],                                         // filter
+               inputs[0],                                         // output shape
+               inputs.size() == 4 ? inputs[3] : none(),           // bias
+               padding == luci::Padding::SAME ? "SAME" : "VALID", // padding
+               py_stride                                          // stride
+    );
+  }
+
+  void visit(const luci::CircleInstanceNorm *node)
+  {
+    PRE_OPERATOR_HOOK_PROLOGUE(InstanceNorm)
+
+    auto epsilon = node->epsilon();
+
+    pySafeCall(hook,
+               node->name(), // name
+               inputs[0],    // input
+               inputs[1],    // gamma
+               inputs[2],    // beta
+               epsilon       // epsilon
     );
   }
 };

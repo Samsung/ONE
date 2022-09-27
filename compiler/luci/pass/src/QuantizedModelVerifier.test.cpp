@@ -18,7 +18,9 @@
 
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizationParameters.h"
+#include "luci/Pass/CircleTypeInferencePass.h"
 
+#include <logo/Phase.h>
 #include <luci/test/TestIOGraph.h>
 
 #include <gtest/gtest.h>
@@ -104,10 +106,36 @@ void insert_scale_zp(luci::CircleNode *node, float scale, int64_t zp)
   qparam->zerop.push_back(zp);
 }
 
+void run_phase(loco::Graph *g, Type quantized_dtype, Granularity granularity)
+{
+  logo::Phase phase;
+
+  // Default passes.
+  phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
+
+  phase.emplace_back(
+    std::make_unique<luci::QuantizeWithMinMaxPass>(Type::FLOAT32, quantized_dtype, granularity));
+
+  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+  phase_runner.run(phase);
+}
+
+void run_phase(loco::Graph *g, std::unique_ptr<luci::QuantizeWithMinMaxPass::Context> &&ctx)
+{
+  logo::Phase phase;
+
+  // Default passes.
+  phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
+
+  phase.emplace_back(std::make_unique<luci::QuantizeWithMinMaxPass>(std::move(ctx)));
+
+  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+  phase_runner.run(phase);
+}
+
 void quantize_and_verify(loco::Graph *g, Type quantized_dtype, Granularity granularity)
 {
-  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, quantized_dtype, granularity);
-  pass.run(g);
+  run_phase(g, quantized_dtype, granularity);
 
   luci::QuantizedModelVerifier verifier(quantized_dtype, granularity);
   verifier.verify(g);
@@ -138,8 +166,7 @@ void quantize_and_verify_with_layer_info(loco::Graph *g, Type quantized_dtype,
       ctx->layers_info.push_back(info);
     }
 
-    luci::QuantizeWithMinMaxPass pass(std::move(ctx));
-    pass.run(g);
+    run_phase(g, std::move(ctx));
   }
 
   // Do verification
@@ -164,8 +191,7 @@ void quantize_and_verify_with_layer_info(loco::Graph *g, Type quantized_dtype,
 void quantize_and_verify_with_wrong_type(luci::test::TestIOGraph *g, Type quantized_dtype,
                                          Granularity granularity, Type wrong_dtype)
 {
-  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, quantized_dtype, granularity);
-  pass.run(g->g());
+  run_phase(g->g(), quantized_dtype, granularity);
 
   auto node = loco::must_cast<luci::CircleNode *>(g->output()->from());
   node->dtype(wrong_dtype);
@@ -179,8 +205,7 @@ void quantize_and_verify_with_wrong_type(luci::test::TestIOGraph *g, Type quanti
 void quantize_and_verify_with_wrong_granularity(luci::test::TestIOGraph *g, Type quantized_dtype,
                                                 Granularity granularity)
 {
-  luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, quantized_dtype, granularity);
-  pass.run(g->g());
+  run_phase(g->g(), quantized_dtype, granularity);
 
   auto node = loco::must_cast<luci::CircleNode *>(g->output()->from());
   insert_scale_zp(node, 1.0, 1);
@@ -603,6 +628,9 @@ public:
     output()->from(_argmax);
 
     set_minmax_to_non_const(g(), -1, 1);
+
+    // Sync output dtype with graph's output dtype
+    g()->outputs()->at(0)->dtype(output()->dtype());
   }
 
 public:
@@ -904,6 +932,9 @@ public:
     output()->from(_op);
 
     set_minmax_to_non_const(g(), -1, 1);
+
+    // Sync output dtype with graph's output dtype
+    g()->outputs()->at(0)->dtype(output()->dtype());
   }
 
   loco::Node *x(void) const { return _op->x(); }
@@ -934,6 +965,9 @@ public:
     output()->from(_op);
 
     set_minmax_to_non_const(g(), -1, 1);
+
+    // Sync output dtype with graph's output dtype
+    g()->outputs()->at(0)->dtype(output()->dtype());
   }
 
   loco::Node *x(void) const { return _op->x(); }
@@ -1292,8 +1326,7 @@ private:
     graph g;                                                                       \
     g.init();                                                                      \
     auto node = loco::must_cast<luci::CircleNode *>(target);                       \
-    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, type, granularity);           \
-    pass.run(g.g());                                                               \
+    run_phase(g.g(), type, granularity);                                           \
     auto after_node = loco::must_cast<luci::CircleNode *>(target);                 \
     after_node->dtype(wrong_dtype);                                                \
     luci::QuantizedModelVerifier verifier(type, granularity);                      \
@@ -1308,8 +1341,7 @@ private:
     graph g;                                                                 \
     g.init();                                                                \
     auto node = loco::must_cast<luci::CircleNode *>(target);                 \
-    luci::QuantizeWithMinMaxPass pass(Type::FLOAT32, type, granularity);     \
-    pass.run(g.g());                                                         \
+    run_phase(g.g(), type, granularity);                                     \
     auto after_node = loco::must_cast<luci::CircleNode *>(target);           \
     insert_scale_zp(after_node, 1.0, 1);                                     \
     luci::QuantizedModelVerifier verifier(type, granularity);                \

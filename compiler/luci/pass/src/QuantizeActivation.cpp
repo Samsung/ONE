@@ -44,12 +44,8 @@ void QuantizeActivation::visit(luci::CircleNode *node)
   LOGGER(l);
   INFO(l) << "QuantizeActivation visit node: " << node->name() << std::endl;
 
-  // Check if this is already quantized
-  if (is_quantized(node))
-    return;
-
-  // Check if this is bool type (bool type is not quantized)
-  if (node->dtype() == loco::DataType::BOOL)
+  // Check if node is fp32
+  if (not is_fp32(node))
     return;
 
   // Check if this is const (const activation is handled by QuantizeConstInputActivation)
@@ -185,7 +181,7 @@ void QuantizeConstInputActivation::visit(luci::CircleNode *node)
   {                                                             \
     auto input = node->INPUT_NAME();                            \
     auto const_node = dynamic_cast<luci::CircleConst *>(input); \
-    if (const_node && !is_quantized(const_node))                \
+    if (const_node && is_fp32(const_node))                      \
     {                                                           \
       auto new_const = luci::clone(const_node);                 \
       quant_const(new_const, _output_type);                     \
@@ -199,7 +195,7 @@ void QuantizeConstInputActivation::visit(luci::CircleNode *node)
   {                                                               \
     auto input1 = node->INPUT_NAME1();                            \
     auto const_node1 = dynamic_cast<luci::CircleConst *>(input1); \
-    if (const_node1 && !is_quantized(const_node1))                \
+    if (const_node1 && is_fp32(const_node1))                      \
     {                                                             \
       auto new_const1 = luci::clone(const_node1);                 \
       quant_const(new_const1, _output_type);                      \
@@ -207,7 +203,7 @@ void QuantizeConstInputActivation::visit(luci::CircleNode *node)
     }                                                             \
     auto input2 = node->INPUT_NAME2();                            \
     auto const_node2 = dynamic_cast<luci::CircleConst *>(input2); \
-    if (const_node2 && !is_quantized(const_node2))                \
+    if (const_node2 && is_fp32(const_node2))                      \
     {                                                             \
       auto new_const2 = luci::clone(const_node2);                 \
       quant_const(new_const2, _output_type);                      \
@@ -278,7 +274,7 @@ void QuantizeConstInputActivation::visit(luci::CircleAddN *node)
   {
     auto input_node = node->inputs(i);
     auto const_node = dynamic_cast<luci::CircleConst *>(input_node);
-    if (const_node && !is_quantized(const_node))
+    if (const_node && is_fp32(const_node))
     {
       auto new_const = luci::clone(const_node);
       quant_const(new_const, _output_type);

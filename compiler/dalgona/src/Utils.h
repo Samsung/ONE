@@ -43,6 +43,9 @@ py::dict outputPyArray(const luci::CircleNode *node, luci_interpreter::Interpret
 // Return a vector of Tensors(py::dict) which correspond to node's inputs
 std::vector<py::dict> inputsPyArray(const luci::CircleNode *node,
                                     luci_interpreter::Interpreter *interpreter);
+
+py::object none();
+
 } // namespace dalgona
 
 #endif // __DALGONA_UTILS_H__

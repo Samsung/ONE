@@ -138,6 +138,13 @@ public:
    */
   T value() const { return _index; }
 
+  /**
+   * @brief Return max index value
+   *
+   * @return Maximum valid index value
+   */
+  static T max() { return UNDEFINED - 1; }
+
 private:
   T _index;
 };

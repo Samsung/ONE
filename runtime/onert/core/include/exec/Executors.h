@@ -20,6 +20,21 @@
 #include "IExecutor.h"
 #include "ir/NNPkg.h"
 
+namespace std
+{
+
+template <> struct hash<std::pair<::onert::ir::ModelIndex, ::onert::ir::SubgraphIndex>>
+{
+  size_t
+  operator()(const std::pair<::onert::ir::ModelIndex, ::onert::ir::SubgraphIndex> &pair) const
+    noexcept
+  {
+    return (hash<uint32_t>()(pair.first.value()) << 16) ^ hash<uint32_t>()(pair.second.value());
+  }
+};
+
+} // namespace std
+
 namespace onert
 {
 namespace exec
@@ -37,14 +52,12 @@ public:
   Executors(Executors &&) = default;
 
   // TODO Use Executor index
-  void emplace(ir::SubgraphIndex idx, std::unique_ptr<IExecutor> exec)
-  {
-    _executors.emplace(idx, std::move(exec));
-  }
+  void emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
+               std::unique_ptr<IExecutor> exec);
 
-  IExecutor *at(ir::SubgraphIndex idx) const { return _executors.at(idx).get(); }
+  IExecutor *at(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index) const;
 
-  IExecutor *entryExecutor() const { return at(ir::SubgraphIndex{0}); }
+  IExecutor *entryExecutor() const { return at(ir::ModelIndex{0}, ir::SubgraphIndex{0}); }
 
   uint32_t inputSize() const;
 
@@ -60,9 +73,8 @@ private:
   void executeModels(const IODescription &desc);
 
 private:
-  // TODO Use Executor index
-  //      Changing index will effect if/while compile and kernel implementation
-  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _executors;
+  std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<IExecutor>>
+    _executors;
   // NOTE _model_edges may use different struct type for executor implementation
   std::unique_ptr<ir::ModelEdges> _model_edges;
 };
