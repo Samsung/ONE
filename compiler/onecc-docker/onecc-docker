@@ -54,7 +54,11 @@ def main():
     parser = argparse.ArgumentParser(
         usage=onecc_docker_usage, description=onecc_docker_desc)
     parser.add_argument(
-        "-t", "--token", help="Use GitHub authorization token to get onecc version")
+        "-t",
+        "--token",
+        help=
+        "Token for authentication to GitHub. This is a workaround for Rate limit exceeded error"
+    )
 
     onecc_docker_args = []
     onecc_args = []
@@ -63,17 +67,18 @@ def main():
     del argv[0]
     # split by '--'
     args = [list(y) for x, y in itertools.groupby(argv, lambda z: z == '--')]
-    if len(args) == 2:
-        if (args[0] == ['--']):
-            onecc_args = args[1]
-        else:
-            onecc_docker_args = args[0]
+    # onecc-docker has two interfaces
+    # 1. onecc-docker [-h] [-t TOKEN] [COMMANDS FOR ONECC]
+    if len(args) < 2:
+        onecc_docker_args = args[0] if len(args) == 1 else ['-h']
+        onecc_docker_args, onecc_args = parser.parse_known_args(onecc_docker_args)
+    # 2. onecc-docker [-h] [-t TOKEN] -- [COMMANDS FOR ONECC]
     else:
-        onecc_docker_args = ['-h'] if len(args) == 0 else args[0]
-        onecc_args = onecc_args if len(args) < 3 else args[2]
-    onecc_docker_args = parser.parse_args(onecc_docker_args)
-    authorization_token = onecc_docker_args.token
+        onecc_docker_args = onecc_docker_args if len(args) == 2 else args[0]
+        onecc_args = args[1] if len(args) == 2 else args[2]
+        onecc_docker_args = parser.parse_args(onecc_docker_args)
 
+    authorization_token = onecc_docker_args.token
     LATEST_URL = "https://api.github.com/repos/Samsung/ONE/releases/latest"
     try:
         headers = {}
@@ -100,7 +105,7 @@ def main():
         print('Dockerfile successfully built.')
 
     contianer_name = f"onecc_{recent_version.replace('.','_')}"
-    user_cmd = ''.join(onecc_args)
+    user_cmd = ' '.join(onecc_args)
 
     run_cmd = [
         "docker", "run", "--rm", "-u", "$(id -u):$(id -g)", "--name", contianer_name,
