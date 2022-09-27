@@ -20,6 +20,8 @@ import json
 import requests
 import os
 import argparse
+import copy
+import itertools
 
 
 def _run(cmd, is_shell=False):
@@ -45,32 +47,39 @@ def _image_exists(name):
 
 def main():
     # TODO Update Dockerfile path
-    dockerfile_path = "."
+    dockerfile_path = "./docker"
 
-    onecc_docker_usage = 'onecc-docker [-h] [-a] [-t TOKEN] [COMMAND <args>]'
+    onecc_docker_usage = 'onecc-docker [-h] [-t TOKEN] [--] [COMMANDS FOR ONECC]'
     onecc_docker_desc = 'Run onecc via docker'
-    parser_help = argparse.ArgumentParser(add_help=False)
-    parser_help.add_argument("-h", "--help", action='store_true')
     parser = argparse.ArgumentParser(
         usage=onecc_docker_usage, description=onecc_docker_desc)
     parser.add_argument(
         "-t", "--token", help="Use GitHub authorization token to get onecc version")
-    parser.add_argument("-a", action='store_true', help="Check onecc's help message")
 
-    help_flag, rest_args = parser_help.parse_known_args()
-    if help_flag.help & len(rest_args) > 0:
-        args, onecc_arguments = parser.parse_known_args(rest_args)
+    onecc_docker_args = []
+    onecc_args = []
+    argv = copy.deepcopy(sys.argv)
+    # delete file name
+    del argv[0]
+    # split by '--'
+    args = [list(y) for x, y in itertools.groupby(argv, lambda z: z == '--')]
+    if len(args) == 2:
+        if (args[0] == ['--']):
+            onecc_args = args[1]
+        else:
+            onecc_docker_args = args[0]
     else:
-        args, onecc_arguments = parser.parse_known_args()
-    authorization_token = args.token
+        onecc_docker_args = ['-h'] if len(args) == 0 else args[0]
+        onecc_args = onecc_args if len(args) < 3 else args[2]
+    onecc_docker_args = parser.parse_args(onecc_docker_args)
+    authorization_token = onecc_docker_args.token
 
     LATEST_URL = "https://api.github.com/repos/Samsung/ONE/releases/latest"
     try:
+        headers = {}
         if authorization_token:
             headers = {"Authorization": "Bearer {}".format(authorization_token)}
-            response = requests.get(LATEST_URL, headers=headers)
-        else:
-            response = requests.get(LATEST_URL)
+        response = requests.get(LATEST_URL, headers=headers)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         raise SystemExit('onecc-docker: error: {}'.format(e))
@@ -91,11 +100,7 @@ def main():
         print('Dockerfile successfully built.')
 
     contianer_name = f"onecc_{recent_version.replace('.','_')}"
-    user_cmd = ''.join(onecc_arguments)
-    if args.a:
-        user_cmd = '-h'
-    elif help_flag.help:
-        user_cmd += ' -h'
+    user_cmd = ''.join(onecc_args)
 
     run_cmd = [
         "docker", "run", "--rm", "-u", "$(id -u):$(id -g)", "--name", contianer_name,
