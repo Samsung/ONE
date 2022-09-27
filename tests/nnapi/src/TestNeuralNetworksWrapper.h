@@ -27,9 +27,7 @@
 //#include "NeuralNetworksWrapperExtensions.h"
 
 #include <math.h>
-// Fix for onert: use boost::optional instead of std::optional
-// TODO in onert: introduce and use internal optional library
-#include <boost/optional.hpp>
+#include <optional>
 #include <string>
 #include <vector>
 
