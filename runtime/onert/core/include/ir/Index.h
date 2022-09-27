@@ -39,7 +39,7 @@ struct SubgraphIndexTag;
 using SubgraphIndex = ::onert::util::Index<uint32_t, SubgraphIndexTag>;
 
 struct ModelIndexTag;
-using ModelIndex = ::onert::util::Index<uint32_t, ModelIndexTag>;
+using ModelIndex = ::onert::util::Index<uint16_t, ModelIndexTag>;
 
 template <typename IndexType>
 std::ostream &_index_print_impl(std::ostream &o, const std::string &prefix, IndexType index)

@@ -463,7 +463,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   if (model_count != _voptions.size())
     throw std::runtime_error{"Model count and option vector size mismatch"};
 
-  for (uint32_t i = 0; i < model_count; i++)
+  for (uint16_t i = 0; i < model_count; i++)
   {
     _nnpkg->model(ir::ModelIndex{i})->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
       // Mandatory passes
@@ -529,7 +529,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     model_edges = std::make_unique<ir::ModelEdges>(_nnpkg->model_edges());
   }
 
-  for (uint32_t i = 0; i < model_count; i++)
+  for (uint16_t i = 0; i < model_count; i++)
   {
     auto const model_index = ir::ModelIndex{i};
     auto model = _nnpkg->model(model_index);

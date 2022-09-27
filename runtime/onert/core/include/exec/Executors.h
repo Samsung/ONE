@@ -29,7 +29,7 @@ template <> struct hash<std::pair<::onert::ir::ModelIndex, ::onert::ir::Subgraph
   operator()(const std::pair<::onert::ir::ModelIndex, ::onert::ir::SubgraphIndex> &pair) const
     noexcept
   {
-    return hash<uint64_t>()((uint64_t(pair.first.value()) << 32) | uint64_t(pair.second.value()));
+    return (hash<uint32_t>()(pair.first.value()) << 16) ^ hash<uint32_t>()(pair.second.value());
   }
 };
 
