@@ -27,9 +27,7 @@
 #include "NeuralNetworksExShim.h"
 
 #include <math.h>
-// Fix for onert: use boost::optional instead of std::optional
-// TODO in onert: introduce and use internal optional library
-#include <boost/optional.hpp>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -104,10 +102,7 @@ struct SymmPerChannelQuantParams {
 struct OperandType {
     ANeuralNetworksOperandType operandType;
     std::vector<uint32_t> dimensions;
-    // Fix for onert:
-    //  Use boost::optional instead of std::optional
-    //  Default value: std::nullopt -> boost::none
-    boost::optional<SymmPerChannelQuantParams> channelQuant;
+    std::optional<SymmPerChannelQuantParams> channelQuant;
 
     OperandType(const OperandType& other)
         : operandType(other.operandType),
@@ -127,7 +122,7 @@ struct OperandType {
     }
 
     OperandType(Type type, std::vector<uint32_t> d, float scale = 0.0f, int32_t zeroPoint = 0)
-        : dimensions(std::move(d)), channelQuant(boost::none) {
+        : dimensions(std::move(d)), channelQuant(std::nullopt) {
         operandType = {
                 .type = static_cast<int32_t>(type),
                 .dimensionCount = static_cast<uint32_t>(dimensions.size()),
