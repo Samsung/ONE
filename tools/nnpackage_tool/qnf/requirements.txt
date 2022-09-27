@@ -1,0 +1,3 @@
+numpy>=1.18.5
+circle-schema>=0.4.0.dev0
+h5py>=2.10.0
