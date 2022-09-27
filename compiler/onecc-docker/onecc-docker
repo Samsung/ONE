@@ -47,14 +47,21 @@ def main():
     # TODO Update Dockerfile path
     dockerfile_path = "."
 
-    onecc_docker_usage = 'onecc-docker [-h] [-t TOKEN] [COMMAND <args>]'
+    onecc_docker_usage = 'onecc-docker [-h] [-a] [-t TOKEN] [COMMAND <args>]'
     onecc_docker_desc = 'Run onecc via docker'
+    parser_help = argparse.ArgumentParser(add_help=False)
+    parser_help.add_argument("-h", "--help", action='store_true')
     parser = argparse.ArgumentParser(
         usage=onecc_docker_usage, description=onecc_docker_desc)
     parser.add_argument(
         "-t", "--token", help="Use GitHub authorization token to get onecc version")
+    parser.add_argument("-a", action='store_true', help="Check onecc's help message")
 
-    args, onecc_arguments = parser.parse_known_args()
+    help_flag, rest_args = parser_help.parse_known_args()
+    if help_flag.help & len(rest_args) > 0:
+        args, onecc_arguments = parser.parse_known_args(rest_args)
+    else:
+        args, onecc_arguments = parser.parse_known_args()
     authorization_token = args.token
 
     LATEST_URL = "https://api.github.com/repos/Samsung/ONE/releases/latest"
@@ -85,6 +92,10 @@ def main():
 
     contianer_name = f"onecc_{recent_version.replace('.','_')}"
     user_cmd = ''.join(onecc_arguments)
+    if args.a:
+        user_cmd = '-h'
+    elif help_flag.help:
+        user_cmd += ' -h'
 
     run_cmd = [
         "docker", "run", "--rm", "-u", "$(id -u):$(id -g)", "--name", contianer_name,
