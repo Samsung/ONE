@@ -240,18 +240,22 @@ ExecutorFactory &ExecutorFactory::get()
 ExecutorFactory::ExecutorFactory()
 {
   _map["Linear"] = createLinearExecutor;
-  _map["Dataflow"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
-                               std::placeholders::_3, std::placeholders::_4, false);
-  _map["Parallel"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
-                               std::placeholders::_3, std::placeholders::_4, true);
+  _map["Dataflow"] =
+    std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
+              std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, false);
+  _map["Parallel"] =
+    std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
+              std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, true);
 }
 
 exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                                          const util::TracingCtx *tracing_ctx,
                                          const compiler::CompilerOptions &options,
-                                         const std::shared_ptr<exec::Executors> &executors)
+                                         const std::shared_ptr<exec::Executors> &executors,
+                                         const ir::ModelIndex &index)
 {
-  return _map.at(options.executor)(std::move(lowered_graph), tracing_ctx, options, executors);
+  return _map.at(options.executor)(std::move(lowered_graph), tracing_ctx, options, executors,
+                                   index);
 }
 
 void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
@@ -283,7 +287,8 @@ void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_grap
 
 void ExecutorFactory::prepareBuiltinBackend(const TensorRegistries &tensor_regs,
                                             const std::shared_ptr<exec::Executors> &executors,
-                                            const backend::BackendContexts &backend_contexts)
+                                            const backend::BackendContexts &backend_contexts,
+                                            const ir::ModelIndex &index)
 {
   for (auto &pair : backend_contexts)
   {
@@ -293,6 +298,7 @@ void ExecutorFactory::prepareBuiltinBackend(const TensorRegistries &tensor_regs,
       auto builtin_kernel_gen = builtin_context->kernel_gen;
       builtin_kernel_gen->setTensorRegistries(tensor_regs);
       builtin_kernel_gen->setExecutors(executors);
+      builtin_kernel_gen->setModelIndex(index);
     }
   }
 }
@@ -319,7 +325,8 @@ ExecutorFactory::orderBackendContext(const backend::BackendContexts &backend_con
 
 exec::IExecutor *ExecutorFactory::createLinearExecutor(
   std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
-  const compiler::CompilerOptions &options, const std::shared_ptr<exec::Executors> &executors)
+  const compiler::CompilerOptions &options, const std::shared_ptr<exec::Executors> &executors,
+  const ir::ModelIndex &index)
 {
   auto &graph = lowered_graph->graph();
 
@@ -345,7 +352,7 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
   // Give some runtime objects to builtin KernelGenerator
-  prepareBuiltinBackend(tensor_regs, executors, backend_contexts);
+  prepareBuiltinBackend(tensor_regs, executors, backend_contexts, index);
 
   ExecutionBuilder builder;
 
@@ -445,7 +452,7 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
 exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
   const compiler::CompilerOptions &options, const std::shared_ptr<exec::Executors> &executors,
-  bool parallel)
+  const ir::ModelIndex &index, bool parallel)
 {
   backend::BackendContexts backend_contexts =
     createBackendContexts(*lowered_graph, options.executor == "Linear");
@@ -465,7 +472,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
   // Give some runtime objects to builtin KernelGenerator
-  prepareBuiltinBackend(tensor_regs, executors, backend_contexts);
+  prepareBuiltinBackend(tensor_regs, executors, backend_contexts, index);
 
   ExecutionBuilder builder;
 

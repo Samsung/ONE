@@ -55,10 +55,6 @@ public:
   void emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
                std::unique_ptr<IExecutor> exec);
 
-  // Temporary method for builtin backend migration
-  // TODO Remove this method
-  IExecutor *at(ir::SubgraphIndex idx) const { return at(ir::ModelIndex{0}, idx); }
-
   IExecutor *at(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index) const;
 
   IExecutor *entryExecutor() const { return at(ir::ModelIndex{0}, ir::SubgraphIndex{0}); }
