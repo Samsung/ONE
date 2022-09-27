@@ -34,6 +34,8 @@ bool is_quantized(const CircleNode *node)
           node->dtype() == loco::DataType::S64);  // bias (int16 quant)
 }
 
+bool is_fp32(const CircleNode *node) { return node->dtype() == loco::DataType::FLOAT32; }
+
 uint8_t fp32_to_uint8_cast(float f)
 {
   assert(std::numeric_limits<uint8_t>::min() <= f);
