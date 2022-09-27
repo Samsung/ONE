@@ -181,6 +181,10 @@ private:
     if (input->opcode() == luci::CircleOpcode::CIRCLECONST)
       return nullptr;
 
+    // input is not quantizable (ex: index)
+    if (input->quantparam() == nullptr)
+      return nullptr;
+
     auto input_quant = create_quantize_op(input, _op_dtype);
     input_quant->input(input);
     auto origin_node = loco::must_cast<luci::CircleNode *>(origin);
@@ -192,6 +196,11 @@ private:
   {
     auto output = loco::must_cast<luci::CircleNode *>(node);
     assert(output->opcode() != luci::CircleOpcode::CIRCLECONST); // FIX_CALLER_UNLESS
+
+    // output is not quantizable (ex: index)
+    if (output->quantparam() == nullptr)
+      return;
+
     auto output_quant = create_quantize_op(output, _default_dtype);
 
     luci::add_origin(output_quant, luci::get_origin(output));

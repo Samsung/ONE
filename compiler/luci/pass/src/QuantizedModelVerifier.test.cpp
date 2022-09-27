@@ -263,6 +263,24 @@ public:
   virtual void init(void) = 0;
 };
 
+class TypedTestGraph : public luci::test::TestIOGraph
+{
+protected:
+  void init(Type T, const luci::test::ShapeU32 shape_in, const luci::test::ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+
+    input()->dtype(T);
+    output()->dtype(T);
+
+    g()->inputs()->at(0)->dtype(T);
+    g()->outputs()->at(0)->dtype(T);
+  }
+
+public:
+  virtual void init(void) = 0;
+};
+
 class InstanceNormTestGraph final : public SimpleTestGraph
 {
 public:
@@ -1270,6 +1288,33 @@ public:
     output()->from(_add);
 
     set_minmax_to_non_const(g(), -1, 1);
+  }
+
+  loco::Node *x() { return _add->x(); }
+  loco::Node *y() { return _add->y(); }
+
+private:
+  luci::CircleAdd *_add = nullptr;
+  luci::CircleConst *_const = nullptr;
+};
+
+template <Type T> class IntAddTestGraph final : public TypedTestGraph
+{
+public:
+  void init(void) override
+  {
+    TypedTestGraph::init(T, {32}, {32});
+
+    _const = create_dummy_const<T>(g(), {32});
+    _add = g()->nodes()->create<luci::CircleAdd>();
+    {
+      _add->x(input());
+      _add->y(_const);
+      _add->fusedActivationFunction(luci::FusedActFunc::NONE);
+      _add->name("test");
+      _add->dtype(T);
+    }
+    output()->from(_add);
   }
 
   loco::Node *x() { return _add->x(); }
@@ -2541,6 +2586,29 @@ TEST(QuantizedModelVerifierTest, Add_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY_TARGET(AddTestGraph, Type::U8, Granularity::LayerWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(AddTestGraph, Type::U8, Granularity::ChannelWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(AddTestGraph, Type::S16, Granularity::ChannelWise, g.y());
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Add_inttype)
+{
+  // Tests for S32
+  TEST_WITH_GRAPH(IntAddTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(IntAddTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(IntAddTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(IntAddTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(IntAddTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(IntAddTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  // Tests for S64
+  TEST_WITH_GRAPH(IntAddTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(IntAddTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(IntAddTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(IntAddTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(IntAddTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(IntAddTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+
   SUCCEED();
 }
 
