@@ -28,7 +28,7 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 configfile="onecc-docker_001.cfg"
-outputfile="inception_v3.opt.circle"
+outputfile="mobilenet_v1_0.5_224.circle"
 
 # run test
 onecc-docker -C ${configfile} > ${filename}.log 2>&1

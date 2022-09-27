@@ -19,10 +19,10 @@
 SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 pushd $SCRIPT_PATH > /dev/null
 
-if [[ ! -s "inception_v3.pb" ]]; then
+if [[ ! -s "mobilenet_v1_0.5_224.tflite" ]]; then
     rm -rf inception_v3_2018_04_27.tgz
-    wget https://storage.googleapis.com/download.tensorflow.org/models/tflite/model_zoo/upload_20180427/inception_v3_2018_04_27.tgz
-    tar zxvf inception_v3_2018_04_27.tgz
+    wget wget https://storage.googleapis.com/download.tensorflow.org/models/mobilenet_v1_2018_02_22/mobilenet_v1_0.5_224.tgz
+    tar zxvf mobilenet_v1_0.5_224.tgz
 fi
 
 popd > /dev/null
