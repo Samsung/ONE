@@ -133,6 +133,10 @@ private:
 
   bool visit(const luci::CircleAdd *node)
   {
+    // Skip granularity check for indices
+    if (node->dtype() == loco::DataType::S32 or node->dtype() == loco::DataType::S64)
+      return true;
+
     RETURN_FALSE_UNLESS(is_lwq(node));
     RETURN_FALSE_UNLESS(is_lwq(node->x()));
     RETURN_FALSE_UNLESS(is_lwq(node->y()));
