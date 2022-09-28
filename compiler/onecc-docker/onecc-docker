@@ -51,7 +51,7 @@ def main():
         response = requests.get(LATEST_URL)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
-        SystemExit('onecc-docker: error: {}'.format(e))
+        raise SystemExit('onecc-docker: error: {}'.format(e))
 
     versions_str = response.content
     versions_json = json.loads(versions_str)
@@ -69,7 +69,7 @@ def main():
         print('Dockerfile successfully built.')
 
     contianer_name = f"onecc_{recent_version.replace('.','_')}"
-    user_cmd = ''.join(sys.argv[1:])
+    user_cmd = ' '.join(sys.argv[1:])
 
     run_cmd = [
         "docker", "run", "--rm", "-u", "$(id -u):$(id -g)", "--name", contianer_name,
