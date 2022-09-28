@@ -254,7 +254,7 @@ ir::Shape Execution::getInputShape(ir::IOIndex ind) const
 ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
 {
   if (!isFinished())
-    throw std::runtime_error("Cannot get output shape before execution is finished");
+    return _executors->outputInfo(ind).shape();
 
   const auto &output_desc = _io_desc.outputs.at(ind.value());
 

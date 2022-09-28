@@ -71,6 +71,8 @@ public:
 
 private:
   void executeModels(const IODescription &desc);
+  void checkSupportedMultimodel() const;
+  uint16_t getModels() const;
 
 private:
   std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<IExecutor>>

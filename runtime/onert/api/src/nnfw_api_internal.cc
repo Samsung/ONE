@@ -427,13 +427,6 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    // TODO: Compile all models in case of multiple models
-    if (_nnpkg->model_count() > 2)
-    {
-      std::cerr << "Error during model prepare : more than 3 multiple models are not supported yet."
-                << std::endl;
-      return NNFW_STATUS_ERROR;
-    }
     auto compiler = std::make_unique<onert::compiler::Compiler>(_nnpkg, _coptions);
     _nnpkg.reset();
     _compiler_artifact = compiler->compile();
@@ -814,29 +807,51 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
   if (isStateInitialized())
     return NNFW_STATUS_INVALID_STATE;
 
+  if (ti == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::input_tensorinfo, tensorinfo is null pointer."
+              << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
   try
   {
-    if (ti == nullptr)
-    {
-      std::cerr << "Error during nnfw_session::input_tensorinfo, tensorinfo is null pointer."
-                << std::endl;
-      return NNFW_STATUS_UNEXPECTED_NULL;
-    }
-    if (index >= primary_subgraph()->getInputs().size())
+    auto const input_size =
+      (isStateModelLoaded()
+         ? _nnpkg->inputSize()
+         : (_executions.empty() ? _compiler_artifact->_executors->inputSize()
+                                : _executions[0]->primary_parentgraph().getInputs().size()));
+
+    if (index >= input_size)
     {
       std::cerr << "Error during nnfw_session::input_tensorinfo, index is out of range."
                 << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    auto opidx = primary_subgraph()->getInputs().at(index);
-    auto shape = primary_subgraph()->operands().at(opidx).shape();
-    if (isStatePreparedOrFinishedRun())
+
+    if (isStateModelLoaded())
     {
-      shape = _execution ? _execution->getInputShape(onert::ir::IOIndex{index})
-                         : _executions.at(0)->getInputShape(onert::ir::IOIndex{index});
+      auto info = _nnpkg->inputInfo(index);
+      fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
-    auto dtype = primary_subgraph()->operands().at(opidx).typeInfo().type();
-    fillTensorInfo(ti, shape, dtype);
+    else
+    {
+      auto io_index = onert::ir::IOIndex{index};
+      if (_executions.empty())
+      {
+        auto shape = _execution->getInputShape(io_index);
+        auto dtype = _compiler_artifact->_executors->inputInfo(io_index).typeInfo().type();
+        fillTensorInfo(ti, shape, dtype);
+      }
+      else
+      {
+        auto shape = _executions[0]->getInputShape(io_index);
+        auto op_index = _executions[0]->primary_parentgraph().getInputs().at(io_index);
+        auto dtype =
+          _executions[0]->primary_parentgraph().operands().at(op_index).typeInfo().type();
+        fillTensorInfo(ti, shape, dtype);
+      }
+    }
   }
   catch (const std::exception &e)
   {
@@ -858,26 +873,44 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
-  if (index >= primary_subgraph()->getOutputs().size())
-  {
-    std::cerr << "Error during nnfw_session::output_tensorinfo, index is out of range."
-              << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
   try
   {
-    auto opidx = primary_subgraph()->getOutputs().at(index);
-    auto shape = primary_subgraph()->operands().at(opidx).shape();
-    // If it is called after `nnfw_run` then get the shape from Execution, not from the graph
-    if (isStateFinishedRun())
+    auto const output_size =
+      (isStateModelLoaded()
+         ? _nnpkg->outputSize()
+         : (_executions.empty() ? _compiler_artifact->_executors->outputSize()
+                                : _executions[0]->primary_parentgraph().getOutputs().size()));
+
+    if (index >= output_size)
     {
-      shape = _execution
-                ? _execution->getOutputShape(onert::ir::IOIndex{index})
-                : _executions.at(_executions.size() - 1)->getOutputShape(onert::ir::IOIndex{index});
+      std::cerr << "Error during nnfw_session::output_tensorinfo, index is out of range."
+                << std::endl;
+      return NNFW_STATUS_ERROR;
     }
-    auto dtype = primary_subgraph()->operands().at(opidx).typeInfo().type();
-    fillTensorInfo(ti, shape, dtype);
+
+    if (isStateModelLoaded())
+    {
+      auto info = _nnpkg->outputInfo(index);
+      fillTensorInfo(ti, info.shape(), info.typeInfo().type());
+    }
+    else
+    {
+      auto io_index = onert::ir::IOIndex{index};
+      if (_executions.empty())
+      {
+        auto shape = _execution->getOutputShape(io_index);
+        auto dtype = _compiler_artifact->_executors->outputInfo(io_index).typeInfo().type();
+        fillTensorInfo(ti, shape, dtype);
+      }
+      else
+      {
+        auto shape = _executions[0]->getOutputShape(io_index);
+        auto op_index = _executions[0]->primary_parentgraph().getOutputs().at(io_index);
+        auto dtype =
+          _executions[0]->primary_parentgraph().operands().at(op_index).typeInfo().type();
+        fillTensorInfo(ti, shape, dtype);
+      }
+    }
   }
   catch (const std::exception &e)
   {

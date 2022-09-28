@@ -23,6 +23,7 @@
 
 #include "ir/Index.h"
 #include "ir/Model.h"
+#include "ir/Graph.h"
 
 namespace onert
 {
@@ -89,7 +90,7 @@ public:
   ~NNPkg() = default;
 
   NNPkg(std::shared_ptr<Model> model) { _models[ModelIndex{0}] = model; }
-  std::shared_ptr<Model> primary_model() { return _models.at(onert::ir::ModelIndex{0}); }
+  std::shared_ptr<Model> primary_model() const { return _models.at(onert::ir::ModelIndex{0}); }
 
   /**
    * @brief Put model at index
@@ -179,6 +180,54 @@ public:
    * @return  Edge set reference
    */
   const ModelEdges &model_edges() { return _edges; }
+
+  /**
+   * @brief   Get model input size
+   */
+  size_t inputSize() const
+  {
+    return _models.size() == 1 ? primary_model()->primary_subgraph()->getInputs().size()
+                               : _edges.pkg_inputs.size();
+  }
+
+  /**
+   * @brief   Get model output size
+   */
+  size_t outputSize() const
+  {
+    return _models.size() == 1 ? primary_model()->primary_subgraph()->getOutputs().size()
+                               : _edges.pkg_outputs.size();
+  }
+
+  const OperandInfo &inputInfo(uint32_t index) const
+  {
+    if (_models.size() == 1)
+    {
+      auto const graph = primary_model()->primary_subgraph();
+      auto const op_index = graph->getInputs().at(index);
+      return graph->operands().at(op_index).info();
+    }
+
+    auto const &desc = input(index);
+    auto const graph = model(std::get<ModelIndex>(desc))->primary_subgraph();
+    auto const op_index = graph->getInputs().at(std::get<IOIndex>(desc).value());
+    return graph->operands().at(op_index).info();
+  }
+
+  const OperandInfo &outputInfo(uint32_t index) const
+  {
+    if (_models.size() == 1)
+    {
+      auto const graph = primary_model()->primary_subgraph();
+      auto const op_index = graph->getOutputs().at(index);
+      return graph->operands().at(op_index).info();
+    }
+
+    auto const &desc = output(index);
+    auto const graph = model(std::get<ModelIndex>(desc))->primary_subgraph();
+    auto const op_index = graph->getOutputs().at(std::get<IOIndex>(desc).value());
+    return graph->operands().at(op_index).info();
+  }
 
   // TODO: Add iterate() or getter for edges
 
