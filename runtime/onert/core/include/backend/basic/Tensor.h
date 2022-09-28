@@ -118,27 +118,6 @@ public:
     }
   }
 
-  /**
-   * @brief Reset reference count to zero and release data
-   */
-  virtual void reset_ref()
-  {
-    assert(_buffer != nullptr || _allocator != nullptr);
-    assert(_num_references > 0);
-    _num_references = 0;
-
-    // Only constant tensor has allocator pointer
-    if (_buffer != nullptr)
-      _buffer = nullptr;
-    else
-    {
-      _allocator->release();
-      _allocator = nullptr;
-    }
-  }
-
-  virtual int32_t num_references() { return _num_references; }
-
   void setShape(const ir::Shape &new_shape) override;
   ir::Shape getShape() const override;
 
@@ -224,21 +203,6 @@ public:
       _buffer = nullptr;
     }
   }
-
-  /**
-   * @brief Reset reference count to zero and release data
-   */
-  void reset_ref() override
-  {
-    assert(_data != nullptr);
-    assert(_num_references > 0);
-    _num_references = 0;
-
-    _data.reset();
-    _buffer = nullptr;
-  }
-
-  int32_t num_references() override { return _num_references; }
 
 private:
   std::shared_ptr<const ir::Data> _data;
