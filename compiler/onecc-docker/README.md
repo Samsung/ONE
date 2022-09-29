@@ -22,6 +22,7 @@ This tool aims at the following objectives.
            - _onecc-docker_ requires the current `user ID` to be included in the `Docker group` because it requires the Docker-related commands to be executed without `sudo` privileges.
              - See "[Post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/)"
 - Python 3.8
+  - requests
 
 ## Note
 
