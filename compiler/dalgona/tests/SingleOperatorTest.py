@@ -27,6 +27,7 @@ from circle import AddOptions
 from circle import FullyConnectedOptions
 from circle import TransposeConvOptions
 from circle import InstanceNormOptions
+from circle import SplitOptions
 
 
 class SingleOperatorTest(object):
@@ -185,3 +186,24 @@ class SingleOperatorTest(object):
 
     def InstanceNormPost(self, name, input, gamma, beta, epsilon, output):
         self.testInstanceNorm(epsilon)
+
+    def testSplit(self, num_split):
+        # Check opcode
+        opcode = self._model.OperatorCodes(self._op.OpcodeIndex())
+        checkOpcode(opcode.BuiltinCode(), BuiltinOperator.BuiltinOperator.SPLIT)
+
+        # Check option
+        checkBuiltinOptionType(self._op.BuiltinOptionsType(),
+                               BuiltinOptions.BuiltinOptions.SplitOptions)
+
+        self._opt = self._op.BuiltinOptions()
+        opt = SplitOptions.SplitOptions()
+        opt.Init(self._opt.Bytes, self._opt.Pos)
+        assertTrue(opt.NumSplits() == num_split, "num_split mismatches")
+
+    def SplitPre(self, name, split_dim, input, num_split):
+        self.testSplit(num_split)
+
+    def SplitPost(self, name, split_dim, input, num_split, outputs):
+        self.testSplit(num_split)
+        assertTrue(num_split == len(outputs), "num_split mismatches with outputs")

@@ -129,6 +129,31 @@ std::vector<py::dict> inputsPyArray(const luci::CircleNode *node,
   return inputs;
 }
 
+std::vector<py::dict> outputsPyArray(const luci::CircleNode *node,
+                                     luci_interpreter::Interpreter *interpreter)
+{
+  std::vector<py::dict> outputs;
+  for (auto succ : loco::succs(node))
+  {
+    const auto output_tensor = interpreter->getTensor(succ);
+    auto circle_node = static_cast<luci::CircleNode *>(succ);
+
+    auto opcode_str = toString(circle_node->opcode());
+    // Check if node is a multi-output node
+    // Assumption: Multi-output virtual nodes have 'Out' prefix
+    // TODO Fix this if the assumption changes
+    THROW_UNLESS(opcode_str.substr(opcode_str.length() - 3) == "Out",
+                 "Invalid output detected in " + node->name());
+
+    auto py_output =
+      py::dict("name"_a = circle_node->name(), "data"_a = numpyArray(output_tensor),
+               "quantparam"_a = quantparam(output_tensor),
+               "is_const"_a = circle_node->opcode() == luci::CircleOpcode::CIRCLECONST);
+    outputs.push_back(py_output);
+  }
+  return outputs;
+}
+
 // Note: Only returns 1 output
 py::dict outputPyArray(const luci::CircleNode *node, luci_interpreter::Interpreter *interpreter)
 {

@@ -197,6 +197,20 @@ public:
                epsilon       // epsilon
     );
   }
+
+  void visit(const luci::CircleSplit *node)
+  {
+    PRE_OPERATOR_HOOK_PROLOGUE(Split)
+
+    auto num_split = node->num_split();
+
+    pySafeCall(hook,
+               node->name(), // name
+               inputs[0],    // split_dim
+               inputs[1],    // input
+               num_split     // num_split
+    );
+  }
 };
 
 } // namespace dalgona

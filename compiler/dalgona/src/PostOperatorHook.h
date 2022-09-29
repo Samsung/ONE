@@ -51,6 +51,17 @@ class PostOperatorHook final : public luci::CircleNodeVisitor<void>
   auto inputs = inputsPyArray(node, _interpreter);          \
   auto output = outputPyArray(node, _interpreter);
 
+// Multi-output version of POST_OPERATOR_HOOK_PROLOGUE
+#define POST_OPERATOR_HOOK_PROLOGUE_MULTI_OUTS(OP_NAME)     \
+  if (!py::hasattr(_analysis, #OP_NAME "Post"))             \
+  {                                                         \
+    visit(loco::must_cast<const luci::CircleNode *>(node)); \
+    return;                                                 \
+  }                                                         \
+  py::object hook = _analysis.attr(#OP_NAME "Post");        \
+  auto inputs = inputsPyArray(node, _interpreter);          \
+  auto outputs = outputsPyArray(node, _interpreter);
+
 private:
   py::object _analysis;
   luci_interpreter::Interpreter *_interpreter{nullptr};
@@ -207,6 +218,29 @@ public:
                output        // output
     );
   }
+
+  void visit(const luci::CircleSplit *node)
+  {
+    POST_OPERATOR_HOOK_PROLOGUE_MULTI_OUTS(Split)
+
+    py::list output_list;
+    for (uint32_t i = 0; i < outputs.size(); i++)
+    {
+      output_list.append(outputs[i]);
+    }
+
+    auto num_split = node->num_split();
+
+    pySafeCall(hook,
+               node->name(), // name
+               inputs[0],    // split_dim
+               inputs[1],    // input
+               num_split,    // num_split
+               output_list   // list of outputs
+    );
+  }
+
+#undef POST_OPERATOR_HOOK_PROLOGUE_MULTI_OUTS
 };
 
 } // namespace dalgona
