@@ -6,6 +6,7 @@ usr/bin/circle-interpreter usr/share/one/bin/
 usr/bin/circle-operator usr/share/one/bin/
 usr/bin/circle-partitioner usr/share/one/bin/
 usr/bin/circle-quantizer usr/share/one/bin/
+usr/bin/dalgona usr/share/one/bin/
 usr/bin/generate_bcq_metadata.py usr/share/one/bin/
 usr/bin/generate_bcq_output_arrays.py usr/share/one/bin/
 usr/bin/model2nnpkg.sh usr/share/one/bin/

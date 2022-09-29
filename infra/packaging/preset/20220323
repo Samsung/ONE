@@ -35,6 +35,7 @@ function preset_configure()
   REQUIRED_UNITS+=("circle-partitioner" "circle-operator")
   REQUIRED_UNITS+=("one-cmds")
   REQUIRED_UNITS+=("bcq-tools")
+  REQUIRED_UNITS+=("dalgona")
 
   # Dependent modules needed for build
   REQUIRED_UNITS+=("circlechef")
