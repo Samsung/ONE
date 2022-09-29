@@ -336,6 +336,7 @@ def _get_model_type(parser, args):
         # ext would be, e.g., '.tflite' or '.onnx'.
         # Note: when args.input_path does not have an extension, e.g., '/home/foo'
         # ext after os.path.splitext() is '' and ''[1:] is still ''.
+        # TODO support tensorflow model
         ext = ext[1:]
         if ext in ["tflite", "onnx"]:
             return ext
