@@ -44,6 +44,11 @@ py::dict outputPyArray(const luci::CircleNode *node, luci_interpreter::Interpret
 std::vector<py::dict> inputsPyArray(const luci::CircleNode *node,
                                     luci_interpreter::Interpreter *interpreter);
 
+// Return a vector of Tensors(py::dict) which correspond to the outputs of multi-out node (ex:
+// SPLIT)
+std::vector<py::dict> outputsPyArray(const luci::CircleNode *node,
+                                     luci_interpreter::Interpreter *interpreter);
+
 py::object none();
 
 } // namespace dalgona
