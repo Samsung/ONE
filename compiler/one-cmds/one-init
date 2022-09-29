@@ -34,6 +34,38 @@ import utils as _utils
 sys.tracebacklimit = 0
 
 
+class InputOutputPath:
+    '''
+    Class that remembers input circle file and output circle file of section k,
+
+    After calling enter_new_section(),
+    output path in section k will be used as input path of section k+1
+    '''
+
+    def __init__(self, initial_input_path: str):
+        self._first_step = True
+        self._input_path = initial_input_path
+        self._output_path = ''
+
+    def enter_new_section(self, section_output_path: str):
+        '''
+        Call this when starting a section
+        '''
+        if self._first_step == True:
+            self._output_path = section_output_path
+        else:
+            self._input_path = self._output_path
+            self._output_path = section_output_path
+
+        self._first_step = False
+
+    def input_path(self):
+        return self._input_path
+
+    def output_path(self):
+        return self._output_path
+
+
 class CommentableConfigParser(configparser.ConfigParser):
     """
     ConfigParser where comment can be stored
@@ -219,24 +251,65 @@ def _get_executable(args, backends_list):
 
 
 # TODO Support workflow format (https://github.com/Samsung/ONE/pull/9354)
-def _generate():
+def _generate(args, model_type: str, inout_path: InputOutputPath):
     # generate cfg file
     config = CommentableConfigParser()
+    model_dir = os.path.dirname(args.input_path)
+    model_name = os.path.basename(args.input_path).split('.')[0]
+
+    def _assert_section(section: str):
+        if not config.has_section(section):
+            raise RuntimeError(f'Cannot find section: {section}')
 
     def _add_onecc_sections():
-        pass  # NYI
+        '''
+        This adds all sections
+        '''
+        config.add_section('onecc')
+        sections = [
+            f'one-import-{model_type}', 'one-optimize', 'one-quantize', 'one-codegen'
+        ]
+
+        for section in sections:
+            config['onecc'][section] = 'True'
+            # add empty section as a preperation of next procedure
+            config.add_section(section)
 
     def _gen_import():
-        pass  # NYI
+        section = f'one-import-{model_type}'
+        _assert_section(section)
+
+        output_path = os.path.join(model_dir, f'{model_name}.circle')
+        inout_path.enter_new_section(section_output_path=output_path)
+        config[section]['input_path'] = inout_path.input_path()
+        config[section]['output_path'] = inout_path.output_path()
 
     def _gen_optimize():
-        pass  # NYI
+        section = 'one-optimize'
+        _assert_section(section)
+
+        output_path = os.path.join(model_dir, f'{model_name}.opt.circle')
+        inout_path.enter_new_section(section_output_path=output_path)
+        config[section]['input_path'] = inout_path.input_path()
+        config[section]['output_path'] = inout_path.output_path()
+
+        # TODO Add optimization optinos
 
     def _gen_quantize():
-        pass  # NYI
+        section = 'one-quantize'
+        _assert_section(section)
+
+        output_path = os.path.join(model_dir, f'{model_name}.q.circle')
+        inout_path.enter_new_section(section_output_path=output_path)
+        config[section]['input_path'] = inout_path.input_path()
+        config[section]['output_path'] = inout_path.output_path()
 
     def _gen_codegen():
-        pass  # NYI
+        section = 'one-codegen'
+        _assert_section(section)
+
+        # [backend]-init must provide default value for 'command'
+        config[section]['backend'] = args.backend
 
     #
     # NYI: one-profile, one-partition, one-pack, one-infer
@@ -253,6 +326,26 @@ def _generate():
         config.write(f)
 
 
+def _get_model_type(parser, args):
+    if _utils._is_valid_attr(args, 'model_type'):
+        return args.model_type
+
+    if _utils._is_valid_attr(args, 'input_path'):
+        _, ext = os.path.splitext(args.input_path)
+
+        # ext would be, e.g., '.tflite' or '.onnx'.
+        # Note: when args.input_path does not have an extension, e.g., '/home/foo'
+        # ext after os.path.splitext() is '' and ''[1:] is still ''.
+        # TODO support tensorflow model
+        ext = ext[1:]
+        if ext in ["tflite", "onnx"]:
+            return ext
+        else:
+            parser.error(f'following file extensions are supported: ".onnx" ".tflite"')
+
+    parser.error(f'the following argument is required: --input_path')
+
+
 def main():
     # get backend list
     backends_list = _get_backends_list()
@@ -264,14 +357,16 @@ def main():
     # verify arguments
     _verify_arg(parser, args)
 
+    model_type = _get_model_type(parser, args)
+    inout_path = InputOutputPath(args.input_path)
+    _generate(args, model_type, inout_path)
+
     # make a command to run given backend driver
     driver_path = _get_executable(args, backends_list)
     init_cmd = [driver_path] + backend_args
 
     # run backend driver
     _utils._run(init_cmd, err_prefix=ntpath.basename(driver_path))
-
-    #TODO generate cfg file
 
     raise NotImplementedError("NYI")
 
