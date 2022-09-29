@@ -43,8 +43,8 @@ def _image_exists(name):
 
 
 def main():
-    # TODO Update Dockerfile path
-    dockerfile_path = "."
+    script_path = os.path.dirname(os.path.realpath(__file__))
+    dockerfile_path = os.path.join(script_path, 'docker')
 
     LATEST_URL = "https://api.github.com/repos/Samsung/ONE/releases/latest"
     try:
