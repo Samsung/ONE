@@ -33,7 +33,6 @@ void Logistic::configure()
   if (input()->element_type() == DataType::U8)
   {
     LUCI_INTERPRETER_CHECK(output()->scale() == 1. / 256);
-    populateLookupTable();
   }
   // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
@@ -70,32 +69,17 @@ void Logistic::evalFloat() const
 
 void Logistic::evalQuantized() const
 {
-  const int size = tflite::MatchingFlatSize(getTensorShape(input()), getTensorShape(output()));
-  uint8_t *output_data = getTensorData<uint8_t>(output());
-  const uint8_t *input_data = getTensorData<uint8_t>(input());
-  for (int i = 0; i < size; ++i)
-  {
-    output_data[i] = getTableValue(input_data[i]);
-  }
-}
+  if (_is_inplace)
+    output()->set_data_buffer(const_cast<uint8_t *>(input()->data<uint8_t>()));
 
-void Logistic::populateLookupTable()
-{
-  const auto input_scale = static_cast<double>(input()->scale());
-  const auto input_zero_point = static_cast<int32_t>(input()->zero_point());
-  const auto output_scale = static_cast<double>(output()->scale());
-  const auto output_zero_point = static_cast<int32_t>(output()->zero_point());
-  const float inverse_scale = 1 / output_scale;
-  int32_t maxval = std::numeric_limits<uint8_t>::max();
-  int32_t minval = std::numeric_limits<uint8_t>::min();
-  for (int32_t val = minval; val <= maxval; ++val)
+  tflite::reference_ops::Logistic(getTensorShape(input()), getTensorData<int8_t>(input()),
+                                  input()->scale(), input()->zero_point(), getTensorShape(output()),
+                                  getTensorData<int8_t>(output()), output()->scale(),
+                                  output()->zero_point());
+  if (_is_inplace)
   {
-    const float dequantized = input_scale * (val - input_zero_point);
-    const float transformed = 1.0f / (1.0f + std::exp(-dequantized));
-    const float rescaled = std::round(transformed * inverse_scale);
-    const int32_t quantized = static_cast<int32_t>(rescaled + output_zero_point);
-    setTableValue(static_cast<uint8_t>(std::max(std::min(maxval, quantized), minval)),
-                  static_cast<uint8_t>(val));
+    auto input_tensor = const_cast<Tensor *>(input());
+    input_tensor->set_data_buffer(nullptr);
   }
 }
 
