@@ -49,13 +49,16 @@ endif(NOT ENABLE_TEST)
 
 list(FILTER SOURCES EXCLUDE REGEX ".*main.cc$")
 
-add_executable(npud_test ${TESTS} ${SOURCES})
+add_executable(npud_test ${TESTS} ${SOURCES} ${DBUS_SOURCE_FILE})
 set_target_properties(npud_test PROPERTIES LINKER_LANGUAGE CXX)
+target_compile_options(npud_test PUBLIC ${GIO_CFLAGS})
 target_include_directories(npud_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(npud_test PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(npud_test PUBLIC ${GLIB2.0_INCLUDE_DIRS})
 target_link_libraries(npud_test PRIVATE nnfw_lib_misc)
 target_link_libraries(npud_test PRIVATE ${GLIB2.0_LIBRARIES})
 target_link_libraries(npud_test PRIVATE ${LIB_PTHREAD})
+target_link_libraries(npud_test PRIVATE ${GIO_LDFLAGS})
 target_link_libraries(npud_test PRIVATE gtest_main dl)
 
 install(TARGETS npud_test DESTINATION unittest_standalone)

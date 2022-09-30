@@ -42,8 +42,6 @@ void Server::run(void)
     throw std::runtime_error("Mainloop is already running.");
   }
 
-  _dbus->init();
-
   g_main_loop_run(_mainloop.get());
 }
 
@@ -60,8 +58,6 @@ void Server::stop(void)
   {
     std::this_thread::yield();
   }
-
-  _dbus->deinit();
 
   g_main_loop_quit(_mainloop.get());
   _isRunning = false;

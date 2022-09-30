@@ -44,6 +44,9 @@ protected:
     while (server.isRunning() != true)
     {
     }
+    while (server.isServiceReady() != true)
+    {
+    }
   }
 
   void TearDown() override

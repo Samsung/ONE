@@ -9,8 +9,6 @@
       @error: 
     -->
     <method name="device_get_available_list">
-	    <arg name="pdev" type="a(uuss)" direction="out"  />
-	    <arg name="mem_fd_devices" type="au" direction="out"/>
 	    <annotation name="org.gtk.GDBus.C.UnixFD" value="true"/>
 	    <arg name="error" type="i" direction="out"  />
     </method>

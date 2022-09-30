@@ -24,7 +24,9 @@ namespace npud
 namespace core
 {
 
-void DBus::init()
+std::atomic_bool DBus::_isReady(false);
+
+DBus::DBus() noexcept
 {
   VERBOSE(DBus) << "Starting dbus service" << std::endl;
 
@@ -34,7 +36,7 @@ void DBus::init()
                              (GBusNameLostCallback)on_name_lost, NULL, NULL);
 }
 
-void DBus::deinit()
+DBus::~DBus() noexcept
 {
   VERBOSE(DBus) << "Stop dbus service" << std::endl;
 
@@ -57,6 +59,8 @@ void DBus::on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer us
   {
     VERBOSE(DBus) << "[ERROR] export skeleton" << std::endl;
   }
+
+  _isReady.exchange(true);
 }
 
 void DBus::on_name_acquired(GDBusConnection *conn, const gchar *name, gpointer user_data)
@@ -69,17 +73,27 @@ void DBus::on_name_lost(GDBusConnection *conn, const gchar *name, gpointer user_
   VERBOSE(DBus) << "on name lost" << std::endl;
 }
 
-gboolean DBus::on_handle_device_get_available_list(NpudCore *core,
-                                                   GDBusMethodInvocation *invocation, guint seconds,
-                                                   gpointer user_data)
+gboolean DBus::on_handle_device_get_available_list(NpudCore *object,
+                                                   GDBusMethodInvocation *invocation,
+                                                   GUnixFDList *fd_list)
 {
   VERBOSE(DBus) << "on_handle_device_get_available_list" << std::endl;
+
+  GUnixFDList *out_fd_list = NULL;
+  // TODO Implement details
+  npud_core_complete_device_get_available_list(object, invocation, out_fd_list, 0);
+  return TRUE;
 }
 
 gboolean DBus::on_handle_context_create(NpudCore *object, GDBusMethodInvocation *invocation,
                                         gint arg_device_id, gint arg_priority)
 {
-  VERBOSE(DBus) << "on_handle_context_create" << std::endl;
+  VERBOSE(DBus) << "on_handle_context_create with " << arg_device_id << ", " << arg_priority
+                << std::endl;
+  // TODO Implement details
+  guint64 out_ctx = 100;
+  npud_core_complete_context_create(object, invocation, out_ctx);
+  return TRUE;
 }
 
 } // namespace core

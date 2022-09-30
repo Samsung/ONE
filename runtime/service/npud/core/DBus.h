@@ -21,6 +21,7 @@
 
 #include <gio/gio.h>
 #include <memory>
+#include <atomic>
 
 namespace npud
 {
@@ -30,21 +31,24 @@ namespace core
 class DBus
 {
 public:
-  void init();
-  void deinit();
+  DBus() noexcept;
+  ~DBus() noexcept;
+
+  bool isReady() { return _isReady.load(); }
 
   static void on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer user_data);
   static void on_name_acquired(GDBusConnection *conn, const gchar *name, gpointer user_data);
   static void on_name_lost(GDBusConnection *conn, const gchar *name, gpointer user_data);
 
-  static gboolean on_handle_device_get_available_list(NpudCore *core,
+  static gboolean on_handle_device_get_available_list(NpudCore *object,
                                                       GDBusMethodInvocation *invocation,
-                                                      guint seconds, gpointer user_data);
+                                                      GUnixFDList *fd_list);
   static gboolean on_handle_context_create(NpudCore *object, GDBusMethodInvocation *invocation,
                                            gint arg_device_id, gint arg_priority);
 
 private:
   guint _gdbus_id;
+  static std::atomic_bool _isReady;
 };
 
 } // namespace core

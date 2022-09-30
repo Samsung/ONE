@@ -37,6 +37,7 @@ public:
   void stop(void);
 
   bool isRunning() { return _isRunning.load(); }
+  bool isServiceReady() { return _dbus->isReady(); }
 
   static Server &instance(void)
   {
