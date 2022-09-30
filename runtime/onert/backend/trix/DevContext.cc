@@ -25,6 +25,8 @@ namespace backend
 namespace trix
 {
 
+// All things related to npu device handle are gathered this Class, but when implementing npu
+// deamon, others except the context roles should be seperated.
 DevContext::DevContext() : _dev_handles{}, _model_ids{}, _meta_map{}
 {
   auto dev_count = getnumNPUdeviceByType(NPUCOND_TRIV2_CONN_SOCIP);
@@ -47,6 +49,9 @@ DevContext::DevContext() : _dev_handles{}, _model_ids{}, _meta_map{}
   // NOTE Do not change the number of threads as long as jobs in thread call
   //      the synchronous APIs such as submitNPU_request()
   _batch_thread_pool = std::make_unique<BatchThreadPool>(_dev_handles.size());
+  // We need to careful not to create multiple `BatchThreadPool`. In case of multiple models, there
+  // may be a problem having multiple `BatchThreadPool` in current implementation. But if this
+  // creating thread pool is moved to npu deamon, I think this problem will be solved smoothly.
 }
 
 DevContext::~DevContext()
