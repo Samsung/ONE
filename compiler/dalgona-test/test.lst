@@ -1,0 +1,5 @@
+singleOpTest(Conv2D_000)
+singleOpTest(Conv2D_001)
+singleOpTest(Conv2D_002)
+singleOpTest(Conv2D_003)
+singleOpTest(Split_000)
