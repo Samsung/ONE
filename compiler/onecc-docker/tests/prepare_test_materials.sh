@@ -19,10 +19,11 @@
 SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 pushd $SCRIPT_PATH > /dev/null
 
-if [[ ! -s "mobilenet_v1_0.5_224.tflite" ]]; then
-    rm -rf inception_v3_2018_04_27.tgz
-    wget wget https://storage.googleapis.com/download.tensorflow.org/models/mobilenet_v1_2018_02_22/mobilenet_v1_0.5_224.tgz
-    tar zxvf mobilenet_v1_0.5_224.tgz
+if [[ ! -s "bcq.pb" ]]; then
+    rm -rf bcq.pb.zip
+    wget https://github.com/Samsung/ONE/files/5153842/bcq.pb.zip
+    unzip bcq.pb.zip
+    # https://github.com/Samsung/ONE/issues/4155#issuecomment-689324597
 fi
 
 popd > /dev/null

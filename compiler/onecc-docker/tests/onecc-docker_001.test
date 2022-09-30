@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+# Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Run onecc-docker with cfg file
+# one-import-tf -> one-optimize
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -28,7 +28,7 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 configfile="onecc-docker_001.cfg"
-outputfile="mobilenet_v1_0.5_224.circle"
+outputfile="bcq.circle"
 
 # run test
 onecc-docker -C ${configfile} > ${filename}.log 2>&1
