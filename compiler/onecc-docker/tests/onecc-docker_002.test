@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# one-import-bcq -> circle
+# Check if docker image is created
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -27,13 +27,11 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-configfile="onecc-docker_001.cfg"
-outputfile="bcq.circle"
-
 # run test
-onecc-docker -C ${configfile} > ${filename}.log 2>&1
+onecc-docker -v
+RESULT=$(docker images -q onecc 2>&1)
 
-if [[ ! -s "${outputfile}" ]]; then
+if [[ -z "$RESULT" ]]; then
   trap_err_onexit
 fi
 
