@@ -166,6 +166,9 @@ public:
 
 private:
   const onert::ir::Graph *primary_subgraph();
+  uint32_t getInputSize();
+  uint32_t getOutputSize();
+
   bool isStateInitialized();
   bool isStateModelLoaded();
   bool isStatePrepared();
