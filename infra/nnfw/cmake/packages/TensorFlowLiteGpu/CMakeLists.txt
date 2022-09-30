@@ -64,5 +64,10 @@ target_link_libraries(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE abseil farmhash fp1
 target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "-DCL_DELEGATE_NO_GL")
 target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "-DTFLITE_GPU_BINARY_RELEASE" "-DEGL_NO_X11")
 
+# deprecated-copy warning on header (gcc 9.4.0)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 9.4)
+  target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "-Wno-deprecated-copy")
+endif()
+
 # Applying PIC first, currently used on gpu_cl only
 set_target_properties(${LIB_TENSORFLOW_GPU_DELEGATE} PROPERTIES POSITION_INDEPENDENT_CODE ON)
