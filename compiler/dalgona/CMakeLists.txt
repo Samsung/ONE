@@ -55,5 +55,3 @@ nnas_find_package(GTest REQUIRED)
 GTest_AddTest(dalgona_unit_test ${TESTS} ${TEST_SOURCES})
 target_include_directories(dalgona_unit_test PRIVATE src)
 target_link_libraries(dalgona_unit_test luci_lang)
-
-add_subdirectory(tests)
