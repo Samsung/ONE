@@ -194,10 +194,7 @@ void DevContext::requestRun(ModelID model_id, input_buffers *input_bufs, tensors
 
           return batch_num;
         },
-        model_id, input_bufs, output_bufs,
-        // model_id, in_batch_buffers, &in_infos[batch_num], out_batch_buffers,
-        // &out_infos[batch_num],
-        batch_num);
+        model_id, input_bufs, output_bufs, batch_num);
       batch_futures.emplace_back(std::move(future));
     }
 
