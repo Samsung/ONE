@@ -40,6 +40,8 @@ target_link_libraries(dalgona PRIVATE luci_interpreter)
 target_link_libraries(dalgona PRIVATE dio_hdf5)
 target_link_libraries(dalgona PRIVATE nncc_common)
 
+install(TARGETS dalgona DESTINATION bin)
+
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
