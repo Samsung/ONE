@@ -3,3 +3,6 @@
 %:
 	dh $@
 
+override_dh_fixperms:
+	dh_fixperms
+	chmod +x debian/onecc-docker/usr/share/one/bin/onecc-docker
