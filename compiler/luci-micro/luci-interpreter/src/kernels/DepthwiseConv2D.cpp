@@ -20,8 +20,6 @@
 
 #include "PALDepthwiseConv2d.h"
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 namespace kernels
@@ -75,7 +73,7 @@ void DepthwiseConv2D::configure()
   }
   else
   {
-    throw std::runtime_error("Unsupported type.");
+    assert(false && "Unsupported type.");
   }
   LUCI_INTERPRETER_CHECK(output()->element_type() == input()->element_type());
 
@@ -131,7 +129,7 @@ void DepthwiseConv2D::execute() const
         evalFloat();
         break;
       }
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
     case DataType::U8:
       if (filter()->scales().size() == 1)
       {
@@ -152,7 +150,7 @@ void DepthwiseConv2D::execute() const
       evalQuantizedS16();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

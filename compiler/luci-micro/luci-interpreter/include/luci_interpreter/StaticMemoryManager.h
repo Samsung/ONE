@@ -19,6 +19,8 @@
 
 #include "luci_interpreter/MemoryManager.h"
 
+#include <cassert>
+
 namespace luci_interpreter
 {
 
@@ -30,7 +32,7 @@ public:
 
   explicit StaticMemoryManager(uint8_t *buffer_ptr) : _buffer_ptr(buffer_ptr)
   { /* Do nothing */
-    throw std::runtime_error("Not supported now\n");
+    assert(false && "Not supported now\n");
   }
 
   void allocate_memory(luci_interpreter::Tensor &tensor) final;

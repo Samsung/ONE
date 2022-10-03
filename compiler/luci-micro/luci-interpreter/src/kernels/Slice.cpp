@@ -44,7 +44,7 @@ Shape calculateOutputShape(const Tensor *input, const Tensor *begin, const Tenso
     {
       if (size_value != -1)
       {
-        throw std::runtime_error("Invalid size.");
+        assert(false && "Invalid size.");
       }
       size_value = input->shape().dim(idx) - getTensorData<T>(begin)[idx];
     }
@@ -52,7 +52,7 @@ Shape calculateOutputShape(const Tensor *input, const Tensor *begin, const Tenso
     {
       if (input->shape().dim(idx) < getTensorData<T>(begin)[idx] + size_value)
       {
-        throw std::runtime_error("Invalid begin and size.");
+        assert(false && "Invalid begin and size.");
       }
     }
     output_shape.dim(idx) = static_cast<int>(size_value);
@@ -90,7 +90,7 @@ void Slice::configure()
   }
   else
   {
-    throw std::runtime_error("Unsupported type.");
+    assert(false && "Unsupported type.");
   }
 }
 
@@ -110,7 +110,7 @@ void Slice::execute() const
   }
   else
   {
-    throw std::runtime_error("Unsupported begin type.");
+    assert(false && "Unsupported begin type.");
   }
   for (int i = input()->shape().num_dims(); i < max_dim; ++i)
   {
@@ -145,7 +145,7 @@ void Slice::execute() const
                                   getTensorData<int8_t>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported input type.");
+      assert(false && "Unsupported input type.");
   }
 }
 

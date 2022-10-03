@@ -17,7 +17,6 @@
 #include "kernels/Rsqrt.h"
 #include "kernels/Utils.h"
 
-#include <stdexcept>
 #include <cmath>
 
 namespace luci_interpreter
@@ -32,7 +31,7 @@ void Rsqrt::configure()
 {
   if (input()->element_type() != output()->element_type())
   {
-    throw std::runtime_error("Input/output tensor data type mismatch.");
+    assert(false && "Input/output tensor data type mismatch.");
   }
   // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
@@ -47,7 +46,7 @@ void Rsqrt::execute() const
       break;
 
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

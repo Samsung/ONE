@@ -20,8 +20,6 @@
 
 #include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 
@@ -77,7 +75,7 @@ void Unpack::execute() const
     case DataType::U8:
       return executeImpl<uint8_t>();
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

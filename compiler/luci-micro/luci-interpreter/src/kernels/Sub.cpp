@@ -22,8 +22,6 @@
 
 #include <tensorflow/lite/kernels/internal/reference/process_broadcast_shapes.h>
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 namespace kernels
@@ -59,7 +57,7 @@ void Sub::execute() const
       evalQuantized();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

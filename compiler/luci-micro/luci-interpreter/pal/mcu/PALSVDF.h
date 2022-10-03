@@ -240,7 +240,7 @@ static inline void SetupScratchpadTensor(
     (void)scratchpad_5;
     (void)scratchpad_6;
 
-    throw std::runtime_error("Hybrid type is not currently supported for mcu platform");
+    assert(false && "Hybrid type is not currently supported for mcu platform");
   }
 
   // Resize scratchpad_1 tensor

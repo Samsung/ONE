@@ -21,12 +21,12 @@ namespace luci_interpreter
 
 void StaticMemoryManager::allocate_memory(luci_interpreter::Tensor &tensor)
 {
-  throw std::runtime_error("Not supported now\n");
+  assert(false && "Not supported now\n");
 }
 
 void StaticMemoryManager::release_memory(luci_interpreter::Tensor &tensor)
 {
-  throw std::runtime_error("Not supported now");
+  assert(false && "Not supported now");
 }
 
 } // namespace luci_interpreter

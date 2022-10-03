@@ -21,8 +21,6 @@
 
 #include <tensorflow/lite/kernels/internal/reference/reduce.h>
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 namespace kernels
@@ -190,7 +188,7 @@ void Mean::execute() const
       evalQuantizedS16();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 
@@ -338,7 +336,7 @@ void Mean::evalQuantizedS16() const
   }
   else
   {
-    throw std::runtime_error("Unsupported configuration.");
+    assert(false && "Unsupported configuration.");
   }
 }
 

@@ -19,8 +19,6 @@
 
 #include "PALRelu6.h"
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 
@@ -53,7 +51,7 @@ void Relu6::execute() const
       evalQuantized();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

@@ -19,7 +19,6 @@
 
 #include <vector>
 #include <cstdint>
-#include <stdexcept>
 #include <utility>
 
 namespace luci_interpreter

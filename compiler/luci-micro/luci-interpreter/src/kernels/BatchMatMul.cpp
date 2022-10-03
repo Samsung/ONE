@@ -22,8 +22,6 @@
 
 #include <tensorflow/lite/kernels/internal/reference/transpose.h>
 
-#include <stdexcept>
-
 namespace
 {
 
@@ -58,7 +56,7 @@ void BatchMatMul::configure()
 
   // TODO Support non-float types
   if (lhs->element_type() != DataType::FLOAT32 || rhs->element_type() != DataType::FLOAT32)
-    throw std::runtime_error("Unsupported type.");
+    assert(false && "Unsupported type.");
 
   LUCI_INTERPRETER_CHECK(lhs->element_type() == rhs->element_type());
 
@@ -144,7 +142,7 @@ void TransposeRowsColumns(const Tensor *tensor_in, Tensor *tensor_out)
                                        transposed_shape, getTensorData<float>(tensor_out));
       break;
     default:
-      throw std::runtime_error("Only suppport fp32 BatchMatMul for now.");
+      assert(false && "Only suppport fp32 BatchMatMul for now.");
   }
 }
 
@@ -180,7 +178,7 @@ void BatchMatMul::execute() const
                                         getTensorData<float>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

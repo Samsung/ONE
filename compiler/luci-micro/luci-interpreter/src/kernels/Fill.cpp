@@ -37,7 +37,7 @@ template <typename T> void Fill::configureShape()
   {
     T data = dims_data[i];
     if (data < 0)
-      throw std::runtime_error("Fill dimensions must be >= 0");
+      assert(false && "Fill dimensions must be >= 0");
 
     output_shape.dim(i) = data;
   }
@@ -79,7 +79,7 @@ void Fill::configure()
       configureShape<int64_t>();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 
@@ -108,7 +108,7 @@ void Fill::execute() const
                                   getTensorShape(output()), getTensorData<float>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

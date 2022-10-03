@@ -72,7 +72,7 @@ static inline void SetupScratchpadTensor(
     (void)scratchpad_5;
     (void)scratchpad_6;
 
-    throw std::runtime_error("Hybrid type is not currently supported for linux platform");
+    assert(false && "Hybrid type is not currently supported for linux platform");
   }
 
   // Resize scratchpad_1 tensor

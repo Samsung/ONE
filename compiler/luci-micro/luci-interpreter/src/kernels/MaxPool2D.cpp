@@ -21,8 +21,6 @@
 #include <tensorflow/lite/kernels/internal/reference/integer_ops/pooling.h>
 #include <tensorflow/lite/kernels/internal/reference/pooling.h>
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 
@@ -82,7 +80,7 @@ void MaxPool2D::execute() const
       evalSInt16();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

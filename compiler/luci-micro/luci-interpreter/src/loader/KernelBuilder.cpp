@@ -17,12 +17,11 @@
 #include "loader/KernelBuilder.h"
 #include "loader/nodes/Builders.h"
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 enum class BuilderId
 {
+// TODO: Check it
 #define REGISTER_KERNEL(builtin_operator, name) Circle##name,
 #include "KernelsToBuild.lst"
   Size // casts to count of values in BuilderId enum
@@ -88,9 +87,7 @@ std::unique_ptr<Kernel> KernelBuilder::build(std::vector<const Tensor *> &&input
   if (specific_builder != nullptr)
     return specific_builder(std::move(inputs), std::move(outputs), op_index, *this);
 
-  std::string msg = "Unsupported operator: ";
-  msg += std::to_string(static_cast<uint32_t>(opcode));
-  throw std::invalid_argument(msg.c_str());
+  assert(false && "Unsupported operator");
 }
 
 } // namespace luci_interpreter

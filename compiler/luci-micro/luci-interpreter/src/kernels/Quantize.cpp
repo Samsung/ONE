@@ -55,7 +55,7 @@ template <typename input_dtype> void call_requantize(const Tensor *input, Tensor
                                        output->zero_point(), getTensorData<int16_t>(output));
       break;
     default:
-      throw std::runtime_error("Unsupported quantized type, yet!");
+      assert(false && "Unsupported quantized type, yet!");
   }
 }
 
@@ -92,7 +92,7 @@ void Quantize::configure()
       break;
     }
     default:
-      throw std::runtime_error("Unsupported type");
+      assert(false && "Unsupported type");
   }
   // TODO: enable it only if kernel with dynamic shapes
   output()->resize(input()->shape());
@@ -132,7 +132,7 @@ void Quantize::execute() const
           break;
         }
         default:
-          throw std::runtime_error("Unsupported type.");
+          assert(false && "Unsupported type.");
       }
       break;
     }
@@ -152,7 +152,7 @@ void Quantize::execute() const
       break;
     }
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

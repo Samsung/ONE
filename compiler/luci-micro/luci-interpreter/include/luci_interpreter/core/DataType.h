@@ -21,7 +21,6 @@
 #include <cstddef>
 #include <string>
 #include <cassert>
-#include <stdexcept>
 
 namespace luci_interpreter
 {
@@ -178,7 +177,7 @@ inline uint32_t size(DataType data_type)
       return sizeof(DataTypeImpl<DataType::BOOL>::Type);
     case DataType::STRING:
       // STRING is variable length. Cannot decide size by type
-      throw std::runtime_error("Invalid size call with STRING type");
+      assert(false && "Invalid size call with STRING type");
     default:
       // TODO Support remaining data types.
       assert(false);

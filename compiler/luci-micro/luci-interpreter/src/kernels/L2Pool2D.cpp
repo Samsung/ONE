@@ -21,8 +21,6 @@
 
 #include "PALL2Pool2D.h"
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 
@@ -81,7 +79,7 @@ void L2Pool2D::execute() const
                                    getTensorData<float>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

@@ -19,8 +19,6 @@
 
 #include "PALElu.h"
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 
@@ -45,7 +43,7 @@ void Elu::execute() const
                                 getTensorShape(output()), getTensorData<float>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

@@ -20,8 +20,6 @@
 
 #include "PALSpaceToBatchND.h"
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 namespace kernels
@@ -96,7 +94,7 @@ void SpaceToBatchND::execute() const
         getTensorData<uint8_t>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

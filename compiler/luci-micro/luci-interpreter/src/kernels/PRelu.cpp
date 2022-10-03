@@ -22,8 +22,6 @@
 #include <tensorflow/lite/kernels/internal/reference/binary_function.h>
 #include <tensorflow/lite/kernels/internal/reference/prelu.h>
 
-#include <stdexcept>
-
 namespace luci_interpreter
 {
 
@@ -104,7 +102,7 @@ void PRelu::execute() const
       evalQuantizedS16();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 }
 

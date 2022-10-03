@@ -20,7 +20,6 @@
 #include <cassert>
 #include <cmath>
 #include <limits>
-#include <stdexcept>
 
 namespace luci_interpreter
 {
@@ -49,7 +48,7 @@ void calculateActivationRange(Activation activation, T *activation_min, T *activ
       *activation_max = 6;
       break;
     default:
-      throw std::runtime_error("Unsupported activation.");
+      assert(false && "Unsupported activation.");
   }
 }
 
@@ -91,7 +90,7 @@ static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t
       *activation_max = std::min(qmax, quantize(6.0f));
       break;
     default:
-      throw std::runtime_error("Unsupported activation.");
+      assert(false && "Unsupported activation.");
   }
 }
 
@@ -118,7 +117,7 @@ void calculateActivationRangeQuantized(Activation activation, const Tensor *outp
       qmax = std::numeric_limits<int16_t>::max();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      assert(false && "Unsupported type.");
   }
 
   calculateActivationRangeQuantizedImpl(activation, qmin, qmax, output, activation_min,
