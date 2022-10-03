@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci_interpreter/core/CircleMicroReader.h"
+#include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <circle-generated/circle/schema_generated.h>
 

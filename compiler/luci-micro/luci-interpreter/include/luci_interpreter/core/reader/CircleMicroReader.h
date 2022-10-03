@@ -17,8 +17,8 @@
 #ifndef __LUCI_MICRO_INTERPRETER_MICRO_READER_H__
 #define __LUCI_MICRO_INTERPRETER_MICRO_READER_H__
 
-#include "ParamsType.h"
-#include "DataType.h"
+#include "luci_interpreter/core/ParamsType.h"
+#include "luci_interpreter/core/DataType.h"
 
 #include <circle-generated/circle/schema_generated.h>
 

@@ -18,7 +18,7 @@
 #define LUCI_INTERPRETER_LOADER_NODES_BUILDERS_H
 
 #include "loader/KernelBuilder.h"
-#include "luci_interpreter/core/CircleMicroReader.h"
+#include "luci_interpreter/core/reader/CircleMicroReader.h"
 #include "core/RuntimeGraph.h"
 
 namespace luci_interpreter
