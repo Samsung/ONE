@@ -1135,9 +1135,11 @@ uint32_t nnfw_session::getInputSize()
   if (isStateModelLoaded())
     return _nnpkg->inputSize();
 
+  // Session is prepared (general inference)
   if (_executions.empty())
     return _compiler_artifact->_executors->inputSize();
 
+  // Session is prepared (pipeline inference)
   return _executions[0]->primary_parentgraph().getInputs().size();
 }
 
@@ -1149,9 +1151,11 @@ uint32_t nnfw_session::getOutputSize()
   if (isStateModelLoaded())
     return _nnpkg->outputSize();
 
+  // Session is prepared (general inference)
   if (_executions.empty())
     return _compiler_artifact->_executors->outputSize();
 
+  // Session is prepared (pipeline inference)
   return _executions[0]->primary_parentgraph().getOutputs().size();
 }
 
