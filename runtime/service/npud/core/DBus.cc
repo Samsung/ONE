@@ -49,10 +49,10 @@ void DBus::on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer us
 
   GError *error = NULL;
   NpudCore *core = npud_core_skeleton_new();
+  NpudCoreIface *iface = NPUD_CORE_GET_IFACE(core);
 
-  g_signal_connect(core, "handle-device-get-available-list",
-                   G_CALLBACK(on_handle_device_get_available_list), user_data);
-  g_signal_connect(core, "handle-context-create", G_CALLBACK(on_handle_context_create), NULL);
+  iface->handle_context_create = &on_handle_context_create;
+  iface->handle_device_get_available_list = &on_handle_device_get_available_list;
 
   if (!g_dbus_interface_skeleton_export(G_DBUS_INTERFACE_SKELETON(core), conn, "/org/tizen/npud",
                                         &error))
