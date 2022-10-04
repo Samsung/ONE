@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(nnrn-micro)
+project(nnrt-micro)
 
 enable_testing()
 
