@@ -19,6 +19,7 @@ import subprocess
 import json
 import requests
 import os
+import argparse
 
 
 def _run(cmd, is_shell=False):
@@ -46,9 +47,26 @@ def main():
     script_path = os.path.dirname(os.path.realpath(__file__))
     dockerfile_path = os.path.join(script_path, 'docker')
 
+    onecc_docker_usage = 'onecc-docker [-h] [-t TOKEN] [COMMAND <args>]'
+    onecc_docker_desc = 'Run onecc via docker'
+    parser = argparse.ArgumentParser(
+        usage=onecc_docker_usage, description=onecc_docker_desc)
+    parser.add_argument(
+        "-t",
+        "--token",
+        help=
+        "Token for authentication to GitHub. This is a workaround for Rate limit exceeded error"
+    )
+
+    args, onecc_arguments = parser.parse_known_args()
+    authorization_token = args.token
+
     LATEST_URL = "https://api.github.com/repos/Samsung/ONE/releases/latest"
+    headers = {}
+    if authorization_token:
+        headers = {"Authorization": "Bearer {}".format(authorization_token)}
     try:
-        response = requests.get(LATEST_URL)
+        response = requests.get(LATEST_URL, headers=headers)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         raise SystemExit('onecc-docker: error: {}'.format(e))
@@ -69,7 +87,7 @@ def main():
         print('Dockerfile successfully built.')
 
     contianer_name = f"onecc_{recent_version.replace('.','_')}"
-    user_cmd = ' '.join(sys.argv[1:])
+    user_cmd = ' '.join(onecc_arguments)
 
     run_cmd = [
         "docker", "run", "--rm", "-u", "$(id -u):$(id -g)", "--name", contianer_name,
