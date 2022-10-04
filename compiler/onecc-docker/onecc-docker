@@ -19,6 +19,8 @@ import subprocess
 import json
 import requests
 import os
+from typing import ContextManager, Optional
+from alive_progress import alive_bar
 
 
 def _run(cmd, is_shell=False):
@@ -40,6 +42,10 @@ def _image_exists(name):
     cmd = ['docker', 'images', '-q', name]
     lines = _run(cmd).splitlines()
     return lines
+
+
+def spinner(title: Optional[str] = None) -> ContextManager:
+    return alive_bar(monitor=None, stats=None, title=title)
 
 
 def main():
@@ -65,7 +71,8 @@ def main():
             "docker", "build", "-t", image_name, "--build-arg", build_arg, dockerfile_path
         ]
         print('build Docker image ...')
-        _run(build_cmd)
+        with spinner("build Docker image ..."):
+            _run(build_cmd)
         print('Dockerfile successfully built.')
 
     contianer_name = f"onecc_{recent_version.replace('.','_')}"
