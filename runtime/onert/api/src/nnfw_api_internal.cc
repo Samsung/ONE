@@ -657,7 +657,7 @@ NNFW_STATUS nnfw_session::input_size(uint32_t *number)
       std::cerr << "Error during nnfw_session::input_size, number is null pointer." << std::endl;
       return NNFW_STATUS_UNEXPECTED_NULL;
     }
-    *number = primary_subgraph()->getInputs().size();
+    *number = getInputSize();
   }
   catch (const std::exception &e)
   {
@@ -679,7 +679,7 @@ NNFW_STATUS nnfw_session::output_size(uint32_t *number)
       std::cerr << "Error during nnfw_session::output_size, number is null pointer." << std::endl;
       return NNFW_STATUS_UNEXPECTED_NULL;
     }
-    *number = primary_subgraph()->getOutputs().size();
+    *number = getOutputSize();
   }
   catch (const std::exception &e)
   {
@@ -822,7 +822,7 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
                 << std::endl;
       return NNFW_STATUS_UNEXPECTED_NULL;
     }
-    if (index >= primary_subgraph()->getInputs().size())
+    if (index >= getInputSize())
     {
       std::cerr << "Error during nnfw_session::input_tensorinfo, index is out of range."
                 << std::endl;
@@ -858,15 +858,15 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
-  if (index >= primary_subgraph()->getOutputs().size())
-  {
-    std::cerr << "Error during nnfw_session::output_tensorinfo, index is out of range."
-              << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
   try
   {
+    if (index >= getOutputSize())
+    {
+      std::cerr << "Error during nnfw_session::output_tensorinfo, index is out of range."
+                << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
     auto opidx = primary_subgraph()->getOutputs().at(index);
     auto shape = primary_subgraph()->operands().at(opidx).shape();
     // If it is called after `nnfw_run` then get the shape from Execution, not from the graph
@@ -1125,6 +1125,38 @@ const onert::ir::Graph *nnfw_session::primary_subgraph()
 
     return &_execution->primary_subgraph();
   }
+}
+
+uint32_t nnfw_session::getInputSize()
+{
+  if (isStateInitialized())
+    throw std::runtime_error{"Model is not loaded yet"};
+
+  if (isStateModelLoaded())
+    return _nnpkg->inputSize();
+
+  // Session is prepared (general inference)
+  if (_executions.empty())
+    return _compiler_artifact->_executors->inputSize();
+
+  // Session is prepared (pipeline inference)
+  return _executions[0]->primary_parentgraph().getInputs().size();
+}
+
+uint32_t nnfw_session::getOutputSize()
+{
+  if (isStateInitialized())
+    throw std::runtime_error{"Model is not loaded yet"};
+
+  if (isStateModelLoaded())
+    return _nnpkg->outputSize();
+
+  // Session is prepared (general inference)
+  if (_executions.empty())
+    return _compiler_artifact->_executors->outputSize();
+
+  // Session is prepared (pipeline inference)
+  return _executions[0]->primary_parentgraph().getOutputs().size();
 }
 
 NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_size)

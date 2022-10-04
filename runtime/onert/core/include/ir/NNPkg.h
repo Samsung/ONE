@@ -21,6 +21,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include "ir/Graph.h"
 #include "ir/Index.h"
 #include "ir/Model.h"
 
@@ -89,7 +90,7 @@ public:
   ~NNPkg() = default;
 
   NNPkg(std::shared_ptr<Model> model) { _models[ModelIndex{0}] = model; }
-  std::shared_ptr<Model> primary_model() { return _models.at(onert::ir::ModelIndex{0}); }
+  std::shared_ptr<Model> primary_model() const { return _models.at(onert::ir::ModelIndex{0}); }
 
   /**
    * @brief Put model at index
@@ -179,6 +180,24 @@ public:
    * @return  Edge set reference
    */
   const ModelEdges &model_edges() { return _edges; }
+
+  /**
+   * @brief   Get model input size
+   */
+  uint32_t inputSize() const
+  {
+    return _models.size() == 1 ? primary_model()->primary_subgraph()->getInputs().size()
+                               : _edges.pkg_inputs.size();
+  }
+
+  /**
+   * @brief   Get model output size
+   */
+  uint32_t outputSize() const
+  {
+    return _models.size() == 1 ? primary_model()->primary_subgraph()->getOutputs().size()
+                               : _edges.pkg_outputs.size();
+  }
 
   // TODO: Add iterate() or getter for edges
 
