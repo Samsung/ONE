@@ -19,7 +19,7 @@
 
 #include "core/RuntimeGraph.h"
 #include "luci_interpreter/MemoryManager.h"
-#include "luci_interpreter/core/CircleMicroReader.h"
+#include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <map>
 

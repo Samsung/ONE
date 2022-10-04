@@ -20,7 +20,7 @@
 #include "core/Kernel.h"
 #include "core/RuntimeGraph.h"
 
-#include "luci_interpreter/core/CircleMicroReader.h"
+#include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <memory>
 #include <unordered_map>

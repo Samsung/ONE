@@ -28,13 +28,15 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
         DEPENDS "${SCHEMA_FILE}"
         )
 
-FlatBuffers_Target(circle_schema
+FlatBuffers_Target(luci_micro_circle_schema
         OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen/circle-generated/circle"
         INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
         SCHEMA_DIR "${CMAKE_CURRENT_BINARY_DIR}"
         SCHEMA_FILES "schema.fbs"
         )
 
+set(LUCI_INTERPRETER_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/include")
+add_subdirectory(luci-interpreter/src/core/reader)
 
 # TODO: add cmake option to choose pal from command line
 set(LUCI_INTERPRETER_PAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/pal/mcu")
@@ -86,9 +88,9 @@ add_custom_target(luci_interpreter_micro_arm_cmake DEPENDS "${MICRO_ARM_BUILD_DE
 # Generate KernelsToBuild list from circle model
 if (GENERATE_KERNELS_LIST_FROM)
   add_executable(generator_kernels_list_exec helpers/GenerateKernelsListHelper.cpp)
-  # TODO: remove mio_circle04 dependency
-  target_link_libraries(generator_kernels_list_exec circle_reader)
-  target_link_libraries(generator_kernels_list_exec circle_schema)
+
+  target_link_libraries(generator_kernels_list_exec luci_micro_circle_reader)
+  target_link_libraries(generator_kernels_list_exec luci_micro_circle_schema)
 
   target_include_directories(generator_kernels_list_exec PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/include")
 
@@ -97,20 +99,21 @@ if (GENERATE_KERNELS_LIST_FROM)
           COMMAND generator_kernels_list_exec ${GENERATE_KERNELS_LIST_FROM} ${GENERATED_KERNELS_LIST_PATH}
           COMMENT "Generating KernelsToBuild list"
   )
-  add_dependencies(generate_kernels_list circle_schema)
+  add_dependencies(generate_kernels_list luci_micro_circle_reader)
+  add_dependencies(luci_interpreter_micro_arm_cmake generate_kernels_list)
 
 endif()
 
 # To remove GENERATE_KERNELS_LIST_FROM variable from cmake cache
 unset(GENERATE_KERNELS_LIST_FROM CACHE)
 
-set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/compiler/luci-micro/luci-interpreter/src/libluci_interpreter.a")
+set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/libluci_interpreter_micro.a")
 
 add_custom_command(
   OUTPUT "${MICRO_ARM_BINARY}"
   COMMAND "${CMAKE_MAKE_PROGRAM}" luci_interpreter_micro -j ${CPU_COUNT}
   WORKING_DIRECTORY "${MICRO_ARM_BUILD_DIR}"
-  DEPENDS luci_interpreter_micro_arm_cmake circle_schema
+  DEPENDS luci_interpreter_micro_arm_cmake luci_micro_circle_schema
   VERBATIM
 )
 

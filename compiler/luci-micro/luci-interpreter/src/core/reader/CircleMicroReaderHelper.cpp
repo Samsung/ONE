@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci_interpreter/core/CircleMicroReaderHelper.h"
+#include "luci_interpreter/core/reader/CircleMicroReaderHelper.h"
 
 namespace circle
 {
