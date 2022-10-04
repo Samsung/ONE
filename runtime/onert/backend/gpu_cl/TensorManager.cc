@@ -42,22 +42,27 @@ void TensorManager::deallocateConsts(void) { _const_mgr->deallocate(); }
 void TensorManager::deallocateNonconsts(void) { _nonconst_mgr->deallocate(); }
 
 void TensorManager::buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
-                                std::shared_ptr<tflite::gpu::cl::Environment> environment,
-                                tflite::gpu::cl::DeviceInfo &device_info, TensorType type)
+                                TensorType type)
 {
   assert(_ind_to_mgr.find(ind) == _ind_to_mgr.end());
 
   if (info.isConstant())
   {
-    _const_mgr->buildTensor(ind, info, create_info, environment, device_info, type);
+    _const_mgr->buildTensor(ind, info, type);
     _ind_to_mgr.insert({ind, *_const_mgr});
   }
   else
   {
-    _nonconst_mgr->buildTensor(ind, info, create_info, environment, device_info, type);
+    _nonconst_mgr->buildTensor(ind, info, type);
     _ind_to_mgr.insert({ind, *_nonconst_mgr});
   }
+}
+ir::OperandIndex TensorManager::addTensor(const ir::Shape &shape)
+{
+  auto ind = _nonconst_mgr->addTensor(shape);
+  _ind_to_mgr.insert({ind, *_nonconst_mgr});
+
+  return ind;
 }
 
 void TensorManager::startLifetime(const ir::OperandIndex &ind)
@@ -94,29 +99,6 @@ ir::OperandIndexMap<std::shared_ptr<operand::CLTensor>> &TensorManager::constTen
 ir::OperandIndexMap<std::shared_ptr<operand::CLTensor>> &TensorManager::nonconstTensors(void)
 {
   return _nonconst_mgr->tensors();
-}
-
-std::shared_ptr<InferenceContextEx::DummyTensor> TensorManager::atR(const ir::OperandIndex &ind)
-{
-  if (_nonconst_mgr->tensorReservers().HaveTensor(ind.value()))
-  {
-    return _nonconst_mgr->tensorReservers().Get(ind.value());
-  }
-  else if (_const_mgr->tensorReservers().HaveTensor(ind.value()))
-  {
-    return _const_mgr->tensorReservers().Get(ind.value());
-  }
-  return nullptr;
-}
-
-InferenceContextEx::TensorReserverEx &TensorManager::constTensorReservers(void)
-{
-  return _const_mgr->tensorReservers();
-}
-
-InferenceContextEx::TensorReserverEx &TensorManager::nonconstTensorReservers(void)
-{
-  return _nonconst_mgr->tensorReservers();
 }
 
 void TensorManager::iterate(const std::function<void(const ir::OperandIndex &)> &fn)

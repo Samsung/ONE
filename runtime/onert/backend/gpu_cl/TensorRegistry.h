@@ -44,7 +44,7 @@ public:
 
   auto getClTensor(const ir::OperandIndex &ind) { return _tensor_mgr->at(ind).get(); }
 
-  auto getClTensorReserver(const ir::OperandIndex &ind) { return _tensor_mgr->atR(ind); }
+  ir::OperandIndex addNewClTensor(const ir::Shape &shape) { return _tensor_mgr->addTensor(shape); }
 
 private:
   TensorManager *_tensor_mgr;

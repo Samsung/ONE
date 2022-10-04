@@ -21,7 +21,6 @@
 
 #include "TensorManager.h"
 
-#include "tensorflow/lite/delegates/gpu/cl/tensor_type.h"
 #include "tensorflow/lite/delegates/gpu/cl/tensor_type_util.h"
 #include "tensorflow/lite/delegates/gpu/cl/cl_device.h"
 #include "tensorflow/lite/delegates/gpu/cl/inference_context.h"
@@ -45,11 +44,8 @@ namespace gpu_cl
 
 using UsesType = cl_common::UsesType;
 
-TensorBuilder::TensorBuilder(const ir::Operands &operands, TensorManager *tensor_mgr,
-                             tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
-                             const std::shared_ptr<tflite::gpu::cl::Environment> &environment)
-  : _operands{operands}, _tensor_mgr{tensor_mgr}, _create_info{create_info}, _environment{
-                                                                               environment}
+TensorBuilder::TensorBuilder(const ir::Operands &operands, TensorManager *tensor_mgr)
+  : _operands{operands}, _tensor_mgr{tensor_mgr}
 {
   assert(_tensor_mgr);
 }
@@ -125,9 +121,13 @@ void TensorBuilder::buildTensors(void)
       continue;
     auto type = _tensor_type_map.at(ind);
     const auto &info = entry.second;
-    _tensor_mgr->buildTensor(ind, info, _create_info, _environment, _environment->device().info_,
-                             type);
+    _tensor_mgr->buildTensor(ind, info, type);
   }
+}
+
+ir::OperandIndex TensorBuilder::addTensor(const ir::Shape &shape)
+{
+  return _tensor_mgr->addTensor(shape);
 }
 
 } // namespace gpu_cl

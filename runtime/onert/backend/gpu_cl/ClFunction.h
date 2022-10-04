@@ -22,9 +22,9 @@
 #include <vector>
 #include <memory>
 
-#include "tensorflow/lite/delegates/gpu/cl/kernels/gpu_operation.h"
-#include "tensorflow/lite/delegates/gpu/cl/cl_command_queue.h"
 #include "tensorflow/lite/delegates/gpu/common/status.h"
+#include "tensorflow/lite/delegates/gpu/cl/cl_command_queue.h"
+#include "tensorflow/lite/delegates/gpu/cl/cl_operation.h"
 
 namespace onert
 {
@@ -35,53 +35,51 @@ namespace gpu_cl
 class ClFunction : public ::onert::exec::IFunction
 {
 public:
-  ClFunction() : _gpu_operations(), _creation_context() {}
-
-public:
-  void configure(std::shared_ptr<tflite::gpu::cl::CreationContext> creation_context)
+  ClFunction(std::shared_ptr<tflite::gpu::cl::CreationContext> creation_context)
+    : _creation_context(creation_context), _gpu_operations()
   {
-    _creation_context = creation_context;
   }
 
-  void add_operation(std::unique_ptr<tflite::gpu::cl::GPUOperation> gpu_operation)
+public:
+  void add_operation(tflite::gpu::cl::ClOperation *gpu_operation)
   {
-    _gpu_operations.push_back(std::move(gpu_operation));
+    _gpu_operations.push_back(gpu_operation);
   }
 
   void run() override
   {
-    for (const auto &gpu_operation : _gpu_operations)
+    for (const auto gpu_operation : _gpu_operations)
     {
       if (!gpu_operation->AddToQueue(_creation_context->queue).ok())
       {
         throw std::runtime_error("Failed to AddToQueue.");
-      }
-      if (!_creation_context->queue->WaitForCompletion().ok())
-      {
-        throw std::runtime_error("Failed to WaitForCompletion.");
       }
     }
   }
 
   void prepare() override
   {
-    for (const auto &gpu_operation : _gpu_operations)
+    for (const auto gpu_operation : _gpu_operations)
     {
+      if (!gpu_operation->GetGpuOperation().AssembleCode(_creation_context->GetGpuInfo()).ok())
+      {
+        throw std::runtime_error("Failed to AssembleCode.");
+      }
       if (!gpu_operation->Compile(*_creation_context).ok())
       {
         throw std::runtime_error("Failed to Compile.");
       }
-
       if (!gpu_operation->UpdateParams().ok())
       {
         throw std::runtime_error("Failed to UpdateParams.");
       }
+      gpu_operation->GetGpuOperation().args_.ReleaseCPURepresentation();
     }
   }
 
 private:
-  std::vector<std::unique_ptr<tflite::gpu::cl::GPUOperation>> _gpu_operations;
   std::shared_ptr<tflite::gpu::cl::CreationContext> _creation_context;
+  std::vector<tflite::gpu::cl::ClOperation *> _gpu_operations;
 };
 
 } // namespace gpu_cl

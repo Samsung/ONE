@@ -11,6 +11,9 @@ option(GENERATE_RUNTIME_NNAPI_TESTS "Generate NNAPI operation gtest" OFF)
 option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" OFF)
 
 option(DOWNLOAD_OPENCL_HEADERS "Download Opencl_headers source" ON)
-option(DOWNLOAD_TENSORFLOW_GPU "Download Tensorflow GPU delegate source" ON)
+option(DOWNLOAD_OPENGL_HEADERS "Download Opengl_headers source" ON)
+option(DOWNLOAD_EGL_HEADERS "Download Egl_headers source" ON)
+option(DOWNLOAD_VULKAN "Download vulkan source" ON)
+
 option(BUILD_GPU_CL "Build gpu_cl backend" ON)
 option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the downloaded source" ON)

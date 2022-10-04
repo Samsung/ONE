@@ -34,9 +34,7 @@ namespace gpu_cl
 class TensorBuilder
 {
 public:
-  TensorBuilder(const ir::Operands &operands, TensorManager *tensor_mgr,
-                tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
-                const std::shared_ptr<tflite::gpu::cl::Environment> &environment);
+  TensorBuilder(const ir::Operands &operands, TensorManager *tensor_mgr);
 
   /**
    * @brief     Register tensor information to allocate on ACL-CL backend
@@ -83,6 +81,7 @@ public:
 private:
   void buildTensors(void);
   ir::OperandIndex findRootParent(ir::OperandIndex index);
+  ir::OperandIndex addTensor(const ir::Shape &shape);
 
 private:
   const ir::Operands &_operands;
@@ -92,8 +91,6 @@ private:
   ir::OperandIndexMap<size_t> _uses_count_map;
 
   std::unique_ptr<TensorManager> _tensor_mgr;
-  tflite::gpu::cl::InferenceContext::CreateInferenceInfo _create_info;
-  std::shared_ptr<tflite::gpu::cl::Environment> _environment;
 
   // for linear executor
   cl_common::LifetimeSeq _lifetime_seq;

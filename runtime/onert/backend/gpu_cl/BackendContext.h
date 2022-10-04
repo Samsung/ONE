@@ -25,6 +25,7 @@
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
+
 #include "tensorflow/lite/delegates/gpu/cl/inference_context.h"
 
 namespace onert
@@ -52,6 +53,7 @@ public:
   }
 
   ITensorRegistry *genTensors() override;
+  FunctionMap genKernels() override;
 
 protected:
   void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,

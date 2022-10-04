@@ -19,7 +19,7 @@
 #include "tensorflow/lite/delegates/gpu/cl/buffer.h"
 #include "tensorflow/lite/delegates/gpu/cl/cl_context.h"
 #include "tensorflow/lite/delegates/gpu/cl/tensor.h"
-#include "tensorflow/lite/delegates/gpu/cl/tensor_type.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor_type_util.h"
 
 using namespace tflite::gpu::cl;
 
@@ -32,9 +32,9 @@ namespace gpu_cl
 namespace operand
 {
 
-CLTensor::CLTensor(size_t rank, ir::Shape shape,
-                   std::shared_ptr<tflite::gpu::cl::Environment> environment, TensorType type)
-  : ICLTensor{rank, shape, environment, type}, _tensor(std::make_shared<Tensor>())
+CLTensor::CLTensor(size_t rank, TensorType type, tflite::gpu::BHWC shape,
+                   tflite::gpu::TensorDescriptor desc)
+  : ICLTensor{rank, type, shape, desc}, _tensor(std::make_shared<Tensor>())
 {
 }
 

@@ -38,8 +38,8 @@ public:
   CLTensor() = delete;
 
 public:
-  CLTensor(size_t rank, ir::Shape shape, std::shared_ptr<tflite::gpu::cl::Environment> environment,
-           TensorType type);
+  CLTensor(size_t rank, TensorType type, tflite::gpu::BHWC shape,
+           tflite::gpu::TensorDescriptor desc);
 
 public:
   const tflite::gpu::cl::Tensor *handle() const override;

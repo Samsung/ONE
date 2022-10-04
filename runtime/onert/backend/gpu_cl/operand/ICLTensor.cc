@@ -43,8 +43,10 @@ void ICLTensor::access(const std::function<void(ITensor &tensor)> &fn)
   fn(*this);
 }
 
-void ICLTensor::writeConvertInit()
+void ICLTensor::writeConvertInit(tflite::gpu::TensorObjectConverterBuilder *converter_builder,
+                                 std::shared_ptr<tflite::gpu::cl::Environment> environment)
 {
+  _environment = environment;
   TensorObjectDef input_def;
   input_def.dimensions.b = handle()->Batch();
   input_def.dimensions.h = handle()->Height();
@@ -74,21 +76,20 @@ void ICLTensor::writeConvertInit()
   output_def.object_def.data_type = handle()->GetDataType();
   input_def.object_def.user_provided = false;
 
-  _converter_builder = NewConverterBuilder(_environment.get());
-  if (!_converter_builder->MakeConverter(input_def, permute_def, &_converter_to).ok())
+  if (!converter_builder->MakeConverter(input_def, permute_def, &_converter_to).ok())
   {
     throw std::runtime_error("Failed to make converter_to");
   }
-  if (!_converter_builder->MakeConverter(permute_def, output_def, &_converter_from).ok())
+  if (!converter_builder->MakeConverter(permute_def, output_def, &_converter_from).ok())
   {
     throw std::runtime_error("Failed to make converter_from");
   }
 }
 
-void ICLTensor::readConvertInit()
+void ICLTensor::readConvertInit(tflite::gpu::TensorObjectConverterBuilder *converter_builder,
+                                std::shared_ptr<tflite::gpu::cl::Environment> environment)
 {
-  _converter_builder = NewConverterBuilder(_environment.get());
-
+  _environment = environment;
   TensorObjectDef input_def;
   input_def.dimensions.b = handle()->Batch();
   input_def.dimensions.h = handle()->Height();
@@ -118,20 +119,20 @@ void ICLTensor::readConvertInit()
   TensorObjectDef output_def = permute_def;
   output_def.object_def.object_type = ObjectType::CPU_MEMORY;
 
-  if (!_converter_builder->MakeConverter(input_def, permute_def, &_converter_from).ok())
+  if (!converter_builder->MakeConverter(input_def, permute_def, &_converter_from).ok())
   {
     throw std::runtime_error("Failed to make converter_from");
   }
-  if (!_converter_builder->MakeConverter(permute_def, output_def, &_converter_to).ok())
+  if (!converter_builder->MakeConverter(permute_def, output_def, &_converter_to).ok())
   {
     throw std::runtime_error("Failed to make converter_to");
   }
 }
 
-void ICLTensor::enqueueWriteBuffer(const void *ptr, bool)
+void ICLTensor::enqueueWriteBuffer(const void *ptr, bool blocking)
 {
-  TensorObject input_obj =
-    MakeReadableCpuMemory(absl::MakeSpan(static_cast<const float *>(ptr), _shape.num_elements()));
+  TensorObject input_obj = MakeReadableCpuMemory(
+    absl::MakeSpan(static_cast<const float *>(ptr), _info._shape.DimensionsProduct()));
 
   TensorObject output_obj;
 
@@ -162,13 +163,19 @@ void ICLTensor::enqueueWriteBuffer(const void *ptr, bool)
   {
     throw std::runtime_error("Failed to write cl buffer from cpu memory");
   }
+
+  if (blocking && !_environment->queue()->WaitForCompletion().ok())
+  {
+    throw std::runtime_error("Failed to WaitForCompletion");
+  }
+
   if (!_converter_from->Convert(permute_obj, output_obj).ok())
   {
     throw std::runtime_error("Failed to change layout");
   }
 }
 
-void ICLTensor::enqueueReadBuffer(void *ptr, bool)
+void ICLTensor::enqueueReadBuffer(void *ptr, bool blocking)
 {
   TensorObject input_obj;
 
@@ -196,7 +203,7 @@ void ICLTensor::enqueueReadBuffer(void *ptr, bool)
   }
 
   TensorObject output_obj =
-    MakeCpuMemory(absl::MakeSpan(static_cast<float *>(ptr), _shape.num_elements()));
+    MakeCpuMemory(absl::MakeSpan(static_cast<float *>(ptr), _info._shape.DimensionsProduct()));
 
   if (!_converter_from->Convert(input_obj, permute_obj).ok())
   {
@@ -205,6 +212,11 @@ void ICLTensor::enqueueReadBuffer(void *ptr, bool)
   if (!_converter_to->Convert(permute_obj, output_obj).ok())
   {
     throw std::runtime_error("Failed to read cl buffer");
+  }
+
+  if (blocking && !_environment->queue()->WaitForCompletion().ok())
+  {
+    throw std::runtime_error("Failed to WaitForCompletion");
   }
 }
 

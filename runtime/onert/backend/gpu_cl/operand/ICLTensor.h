@@ -26,7 +26,7 @@
 #include "tensorflow/lite/delegates/gpu/cl/tensor.h"
 #include "tensorflow/lite/delegates/gpu/cl/environment.h"
 
-#include "TensorBuilderHelper.h"
+#include "Utils.h"
 
 namespace onert
 {
@@ -37,6 +37,12 @@ namespace gpu_cl
 namespace operand
 {
 
+struct TensorInfo
+{
+  tflite::gpu::BHWC _shape;
+  tflite::gpu::TensorDescriptor _desc;
+};
+
 class ICLTensor : public ITensor
 {
 public:
@@ -46,15 +52,15 @@ public:
   ICLTensor(ICLTensor &&) = default;
   ICLTensor &operator=(ICLTensor &&) = default;
 
-  ICLTensor(size_t rank, ir::Shape shape, std::shared_ptr<tflite::gpu::cl::Environment> environment,
-            TensorType type)
-    : _rank{rank}, _shape{shape}, _environment(environment), _type(type)
+  ICLTensor(size_t rank, TensorType type, tflite::gpu::BHWC shape,
+            tflite::gpu::TensorDescriptor desc)
+    : _rank{rank}, _type(type), _info{shape, desc}
   {
   }
 
 public:
   uint8_t *buffer() const final { return reinterpret_cast<uint8_t *>(handle()->GetMemoryPtr()); }
-  size_t total_size() const final { return _shape.num_elements() * sizeof(float); }
+  size_t total_size() const final { return _info._shape.DimensionsProduct() * sizeof(float); }
   size_t calcOffset(const ir::Coordinates &) const final
   {
     throw std::runtime_error("ICLTensor::calcOffset() is not supported.");
@@ -78,16 +84,38 @@ public:
     throw std::runtime_error("ICLTensor::data_zero_points() is not supported.");
   }
   bool is_dynamic() const override { return false; }
-  ir::Shape getShape() const override { return _shape; }
+  ir::Shape getShape() const override
+  {
+    tflite::gpu::BHWC shape = _info._shape;
+    switch (_rank)
+    {
+      case 1:
+        return ir::Shape{shape.b};
+      case 2:
+        return ir::Shape{shape.b, shape.c};
+      case 3:
+        return ir::Shape{shape.b, shape.w, shape.c};
+      case 4:
+        return ir::Shape{shape.b, shape.h, shape.w, shape.c};
+      default:
+        break;
+    }
+    return ir::Shape{};
+  }
   bool has_padding() const override { return false; }
   void access(const std::function<void(ITensor &tensor)> &fn) final;
   bool needMemoryMap() const final { return true; }
   void enqueueWriteBuffer(const void *ptr, bool blocking = true) final;
   void enqueueReadBuffer(void *ptr, bool blocking = true) final;
 
-  void writeConvertInit();
-  void readConvertInit();
+  void writeConvertInit(tflite::gpu::TensorObjectConverterBuilder *converter_builder,
+                        std::shared_ptr<tflite::gpu::cl::Environment> environment);
+  void readConvertInit(tflite::gpu::TensorObjectConverterBuilder *converter_builder,
+                       std::shared_ptr<tflite::gpu::cl::Environment> environment);
+
   TensorType get_type() { return _type; }
+  TensorType set_type(TensorType type) { return _type = type; }
+  const TensorInfo get_info() { return _info; }
 
 public:
   virtual const tflite::gpu::cl::Tensor *handle() const = 0;
@@ -96,11 +124,10 @@ public:
 private:
 protected:
   size_t _rank; // Actual rank (reflects extended rank)
-  ir::Shape _shape;
-  std::shared_ptr<tflite::gpu::cl::Environment> _environment;
   TensorType _type;
-  std::unique_ptr<tflite::gpu::TensorObjectConverterBuilder> _converter_builder;
+  TensorInfo _info;
   tflite::gpu::cl::CLMemory _cl_memory;
+  std::shared_ptr<tflite::gpu::cl::Environment> _environment;
   std::unique_ptr<tflite::gpu::TensorObjectConverter> _converter_to;
   std::unique_ptr<tflite::gpu::TensorObjectConverter> _converter_from;
 };

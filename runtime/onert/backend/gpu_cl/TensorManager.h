@@ -19,8 +19,10 @@
 
 #include "MemoryManager.h"
 
+#include "Utils.h"
+
 #include "tensorflow/lite/delegates/gpu/cl/inference_context.h"
-#include "tensorflow/lite/delegates/gpu/cl/tensor_type.h"
+#include "tensorflow/lite/delegates/gpu/cl/tensor_type_util.h"
 
 #include "ir/OperandInfo.h"
 #include "ir/OperandIndexMap.h"
@@ -44,10 +46,8 @@ public:
   void deallocateConsts(void);
   void deallocateNonconsts(void);
 
-  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                   tflite::gpu::cl::InferenceContext::CreateInferenceInfo create_info,
-                   std::shared_ptr<tflite::gpu::cl::Environment> environment,
-                   tflite::gpu::cl::DeviceInfo &device_info, TensorType type);
+  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &info, TensorType type);
+  ir::OperandIndex addTensor(const ir::Shape &shape);
 
   std::shared_ptr<operand::ICLTensor> findTensorAsParent(const ir::OperandIndex &ind);
 
@@ -55,10 +55,6 @@ public:
   void finishLifetime(const ir::OperandIndex &ind);
 
   std::shared_ptr<operand::ICLTensor> at(const ir::OperandIndex &ind);
-  std::shared_ptr<InferenceContextEx::DummyTensor> atR(const ir::OperandIndex &ind);
-
-  InferenceContextEx::TensorReserverEx &constTensorReservers(void);
-  InferenceContextEx::TensorReserverEx &nonconstTensorReservers(void);
 
   ir::OperandIndexMap<std::shared_ptr<operand::CLTensor>> &constTensors(void);
   ir::OperandIndexMap<std::shared_ptr<operand::CLTensor>> &nonconstTensors(void);
@@ -73,10 +69,14 @@ private:
   ir::OperandIndexMap<MemoryManager &> _ind_to_mgr;
 };
 
-inline TensorManager *createTensorManager(tflite::gpu::cl::CLContext *context)
+inline TensorManager *
+createTensorManager(tflite::gpu::cl::CLContext *context,
+                    tflite::gpu::CreateGpuModelInfo create_info,
+                    const std::shared_ptr<tflite::gpu::cl::Environment> &environment)
 {
   VERBOSE(createTensorManager) << "GPU-CL TensorManager" << std::endl;
-  return new TensorManager(new MemoryManager(context), new MemoryManager(context));
+  return new TensorManager(new MemoryManager(context, create_info, environment),
+                           new MemoryManager(context, create_info, environment));
 }
 
 } // namespace gpu_cl

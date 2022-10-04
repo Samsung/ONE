@@ -86,6 +86,32 @@ ITensorRegistry *BackendContext::genTensors()
   return tensor_registry.get();
 }
 
+FunctionMap BackendContext::genKernels()
+{
+  FunctionMap fn_map;
+
+  for (auto op_ind : _data.op_order)
+  {
+    auto fn_seq = kernel_gen->generate(op_ind);
+    fn_map.emplace_back(op_ind, std::move(fn_seq));
+  }
+
+  kernel_gen->get_operation(fn_map);
+  tensor_builder->allocate();
+  // NOTE For memory optimization, we want to free some operand data
+  const_cast<ir::Graph &>(*_data.graph)
+    .operands()
+    .iterate([&](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
+
+  for (auto &it : fn_map)
+  {
+    auto &fn_seq = it.second;
+    fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
+  }
+
+  return fn_map;
+}
+
 } // namespace gpu_cl
 } // namespace backend
 } // namespace onert
