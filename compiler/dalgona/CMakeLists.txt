@@ -49,7 +49,8 @@ endif(NOT ENABLE_TEST)
 # dalgona is executable, so we do not link it to the test.
 # Instead, we use TEST_SOURCES to specify sources used for tests.
 set(TEST_SOURCES
-    "src/StringUtils.cpp")
+    "src/StringUtils.cpp"
+    "src/RandomUtils.cpp")
 
 nnas_find_package(GTest REQUIRED)
 GTest_AddTest(dalgona_unit_test ${TESTS} ${TEST_SOURCES})
