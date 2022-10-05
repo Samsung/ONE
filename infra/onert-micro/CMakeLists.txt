@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(nnrt-micro)
+project(onert-micro)
 
 enable_testing()
 
@@ -98,4 +98,4 @@ if(ENABLE_COVERAGE)
     target_link_libraries(nnrt_micro_coverage INTERFACE gcov)
 endif(ENABLE_COVERAGE)
 
-add_subdirectory("${NNAS_PROJECT_SOURCE_DIR}/runtime-lite" "${CMAKE_BINARY_DIR}/runtime-lite")
+add_subdirectory("${NNAS_PROJECT_SOURCE_DIR}/onert-micro" "${CMAKE_BINARY_DIR}/onert-micro")
