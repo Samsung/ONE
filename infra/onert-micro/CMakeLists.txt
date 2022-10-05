@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.15)
 
 project(onert-micro)
 
@@ -21,11 +21,11 @@ set(NNAS_EXTERNALS_DIR
         "${NNAS_PROJECT_SOURCE_DIR}/externals" CACHE
         INTERNAL "Where to download external dependencies"
         )
-set(NNRT_MICRO_OVERLAY_DIR "${CMAKE_BINARY_DIR}/overlay" CACHE
+set(ONERT_MICRO_OVERLAY_DIR "${CMAKE_BINARY_DIR}/overlay" CACHE
         INTERNAL "Where locally built external dependencies are installed")
 
 # Share package build script with runtime
-set(EXT_OVERLAY_DIR ${NNRT_MICRO_OVERLAY_DIR})
+set(EXT_OVERLAY_DIR ${ONERT_MICRO_OVERLAY_DIR})
 
 # This allows find_package to access configurations installed inside overlay
 list(APPEND CMAKE_PREFIX_PATH "${EXT_OVERLAY_DIR}")
@@ -87,15 +87,15 @@ include("cmake/ApplyCompileFlags.cmake")
 ###
 ### Target
 ###
-add_library(nnrt_micro_common INTERFACE)
+add_library(onert_micro_common INTERFACE)
 if(ENABLE_STRICT_BUILD)
-    target_compile_options(nnrt_micro_common INTERFACE -Werror -Wall -Wextra -Wno-reorder)
+    target_compile_options(onert_micro_common INTERFACE -Werror -Wall -Wextra -Wno-reorder)
 endif(ENABLE_STRICT_BUILD)
 
-add_library(nnrt_micro_coverage INTERFACE)
+add_library(onert_micro_coverage INTERFACE)
 if(ENABLE_COVERAGE)
-    target_compile_options(nnrt_micro_coverage INTERFACE -g -O0 -fprofile-arcs -ftest-coverage)
-    target_link_libraries(nnrt_micro_coverage INTERFACE gcov)
+    target_compile_options(onert_micro_coverage INTERFACE -g -O0 -fprofile-arcs -ftest-coverage)
+    target_link_libraries(onert_micro_coverage INTERFACE gcov)
 endif(ENABLE_COVERAGE)
 
 add_subdirectory("${NNAS_PROJECT_SOURCE_DIR}/onert-micro" "${CMAKE_BINARY_DIR}/onert-micro")
