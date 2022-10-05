@@ -1297,8 +1297,8 @@ void BaseLoader<LoaderDomain>::loadIf(const Operator *op, ir::Graph &subg)
   verifySubgraphIndex(else_index);
 
   ir::operation::If::Param param;
-  param.then_subg_index = ir::SubgraphIndex{static_cast<uint32_t>(then_index)};
-  param.else_subg_index = ir::SubgraphIndex{static_cast<uint32_t>(else_index)};
+  param.then_subg_index = ir::SubgraphIndex{static_cast<uint16_t>(then_index)};
+  param.else_subg_index = ir::SubgraphIndex{static_cast<uint16_t>(else_index)};
 
   loadOperationTo<ir::operation::If>(op, subg, param);
 }
@@ -1314,8 +1314,8 @@ void BaseLoader<LoaderDomain>::loadWhile(const Operator *op, ir::Graph &subg)
   verifySubgraphIndex(body_index);
 
   ir::operation::While::Param param;
-  param.cond_subg_index = ir::SubgraphIndex{static_cast<uint32_t>(cond_index)};
-  param.body_subg_index = ir::SubgraphIndex{static_cast<uint32_t>(body_index)};
+  param.cond_subg_index = ir::SubgraphIndex{static_cast<uint16_t>(cond_index)};
+  param.body_subg_index = ir::SubgraphIndex{static_cast<uint16_t>(body_index)};
 
   loadOperationTo<ir::operation::While>(op, subg, param);
 }
@@ -1688,10 +1688,15 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
   // Load subgraphs and map operations on subgraph
   const auto subgraphs = _domain_model->subgraphs();
   auto model = std::make_unique<ir::Model>();
-  for (uint32_t subgraph_index = 0; subgraph_index < subgraphs->size(); ++subgraph_index)
+  if (subgraphs->size() - 1 > ir::SubgraphIndex::max())
+    throw std::runtime_error{"The number of subgraphs cannot exceed " +
+                             std::to_string(ir::SubgraphIndex::max() + 1)};
+  for (uint16_t subgraph_index = 0; subgraph_index < subgraphs->size(); ++subgraph_index)
   {
     auto subg = loadSubgraph((*_domain_model->subgraphs())[subgraph_index]);
-    model->push(ir::SubgraphIndex{subgraph_index}, std::move(subg));
+    // NOTE: Used () instead of {}, which does not check narrowing.
+    // It is okay since overflow is checked the above if-statement.
+    model->push(ir::SubgraphIndex(subgraph_index), std::move(subg));
   }
   _model = std::move(model);
 }
