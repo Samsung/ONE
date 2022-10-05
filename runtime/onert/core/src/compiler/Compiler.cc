@@ -664,21 +664,28 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   const Json::Value &map = root["partition_map"];
   const Json::Value &np = root["num_partitions"];
 
-  if (!pmfs.is_open())
-    throw std::runtime_error("There is no partition map file");
+  uint32_t num_graphs = 1;
 
-  for (uint32_t i = 0; i < map.size(); ++i)
+  if (pmfs.is_open())
   {
-    auto subg_idx = map[i].asUInt();
-    if (subg_idx > ir::SubgraphIndex::max())
-      throw std::runtime_error("The number of partition cannot exceed " +
-                               std::to_string(ir::SubgraphIndex::max() + 1));
-    else
-      options.partial_graph_options.index_to_graph[ir::OperationIndex{i}] =
-        ir::SubgraphIndex(subg_idx);
+    num_graphs = np.asUInt();
+    for (uint32_t i = 0; i < (uint32_t)map.size(); ++i)
+    {
+      auto subg_idx = map[i].asUInt();
+      if (subg_idx > ir::SubgraphIndex::max())
+        throw std::runtime_error("The number of partition cannot exceed " +
+                                 std::to_string(ir::SubgraphIndex::max() + 1));
+      else
+        options.partial_graph_options.index_to_graph[ir::OperationIndex{i}] =
+          ir::SubgraphIndex(subg_idx);
+    }
   }
-  uint32_t num_partial_graphs = np.asUInt();
-  if (!buildPartialGraph(num_partial_graphs))
+  else
+  {
+    throw std::runtime_error("There is no partition map file");
+  }
+
+  if (!buildPartialGraph(num_graphs))
   {
     throw std::runtime_error("It doesn't support in case there are subgraphs");
   }
