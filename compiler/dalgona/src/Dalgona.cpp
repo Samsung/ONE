@@ -16,6 +16,7 @@
 
 #include "Dalgona.h"
 #include "PythonHooks.h"
+#include "RandomUtils.h"
 
 #include <luci/Importer.h>
 #include <foder/FileLoader.h>
@@ -24,7 +25,7 @@
 #include <pybind11/embed.h>
 
 #include <iostream>
-#include <random>
+#include <limits>
 
 using Shape = std::vector<loco::Dimension>;
 using DataType = loco::DataType;
@@ -201,23 +202,66 @@ void Dalgona::runAnalysisWithRandomInput(const std::string &analysis_path,
   const auto input_nodes = loco::input_nodes(_module->graph());
   const auto num_inputs = input_nodes.size();
 
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  // TODO Support more bounded random data , e.g., sync with record-minmax
-  std::uniform_int_distribution<> dist(0, 255);
-
   for (uint32_t input_idx = 0; input_idx < num_inputs; input_idx++)
   {
     const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
     assert(input_node->index() == input_idx);
     checkInputDimension(input_node);
-    std::vector<uint8_t> input_data(getByteSize(input_node));
 
-    // Write random data
-    for (auto &iter : input_data)
-      iter = static_cast<uint8_t>(dist(gen));
-
-    _interpreter->writeInputTensor(input_node, input_data.data(), input_data.size());
+    uint32_t num_elems = numElements(input_node);
+    switch (input_node->dtype())
+    {
+      case DataType::FLOAT32:
+      {
+        // Synced with record-minmax (-5,5)
+        auto input_data = genRandomFloatData(num_elems, -5, 5);
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(float));
+        break;
+      }
+      case DataType::U8:
+      {
+        auto input_data = genRandomIntData<uint8_t>(num_elems, std::numeric_limits<uint8_t>::min(),
+                                                    std::numeric_limits<uint8_t>::max());
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(uint8_t));
+        break;
+      }
+      case DataType::S16:
+      {
+        auto input_data = genRandomIntData<int16_t>(num_elems, std::numeric_limits<int16_t>::min(),
+                                                    std::numeric_limits<int16_t>::max());
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(int16_t));
+        break;
+      }
+      case DataType::S32:
+      {
+        // Synced with record-minmax (0, 100)
+        auto input_data = genRandomIntData<int32_t>(num_elems, 0, 100);
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(int32_t));
+        break;
+      }
+      case DataType::S64:
+      {
+        // Synced with record-minmax (0, 100)
+        auto input_data = genRandomIntData<int64_t>(num_elems, 0, 100);
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(int64_t));
+        break;
+      }
+      case DataType::BOOL:
+      {
+        // Bool is represented as uint8 (0 or 1)
+        auto input_data = genRandomIntData<uint8_t>(num_elems, 0, 1);
+        _interpreter->writeInputTensor(input_node, input_data.data(),
+                                       input_data.size() * sizeof(uint8_t));
+        break;
+      }
+      default:
+        throw std::runtime_error("Unsupported input data type in " + input_node->name());
+    }
   }
 
   _hooks->startNetworkExecution(_module->graph());
