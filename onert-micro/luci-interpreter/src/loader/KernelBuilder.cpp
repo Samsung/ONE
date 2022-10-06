@@ -21,9 +21,12 @@ namespace luci_interpreter
 {
 enum class BuilderId
 {
-// TODO: Check it
 #define REGISTER_KERNEL(builtin_operator, name) Circle##name,
+#if USE_GENERATED_LIST
+#include "GeneratedKernelsToBuild.lst"
+#else
 #include "KernelsToBuild.lst"
+#endif
   Size // casts to count of values in BuilderId enum
 };
 #undef REGISTER_KERNEL
@@ -47,7 +50,11 @@ public:
   register_kernel_builder(circle::BuiltinOperator::BuiltinOperator_##builtin_operator, \
                           build_kernel_Circle##name);
 
+#if USE_GENERATED_LIST
+#include "GeneratedKernelsToBuild.lst"
+#else
 #include "KernelsToBuild.lst"
+#endif
 
 #undef REGISTER_KERNEL
   }
