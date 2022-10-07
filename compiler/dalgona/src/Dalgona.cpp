@@ -52,7 +52,7 @@ template <typename NodeT> size_t getByteSize(const NodeT *node)
   assert(node != nullptr); // FIX_CALLER_UNLESS
 
   uint32_t dtype_size = loco::size(node->dtype());
-  return dtype_size * numElements(node);
+  return static_cast<size_t>(dtype_size) * static_cast<size_t>(numElements(node));
 }
 
 // Throw exception if input has one of the following conditions.
