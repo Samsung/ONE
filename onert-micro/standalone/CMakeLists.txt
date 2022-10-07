@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(luci_interpreter_micro_standalone)
 
-# Add fake target, so nothing is build
-set(BUILD_WHITELIST "dummy")
-
-add_subdirectory(${NNAS_ROOT}/infra/nncc ${CMAKE_CURRENT_BINARY_DIR}/nncc)
+include(${NNAS_ROOT}/infra/onert-micro/utils.cmake)
 
 nnas_find_package(FlatBuffersSource EXACT 2.0 QUIET)
 include_directories(${FlatBuffersSource_DIR}/include)
