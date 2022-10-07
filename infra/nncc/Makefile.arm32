@@ -4,6 +4,7 @@
 #
 
 BUILD_TYPE?=Debug
+BUILD_JOBS?=1
 
 CURRENT_DIR=$(shell pwd)
 BUILDFOLDER=build
@@ -112,12 +113,12 @@ int_configure_arm32:
 # builds
 #
 int_build_arm32_host:
-	NNCC_WORKSPACE=$(BUILD_ARM32_HOST) ./nncc build -j1
+	NNCC_WORKSPACE=$(BUILD_ARM32_HOST) ./nncc build -j$(BUILD_JOBS)
 
 int_build_arm32:
 	ROOTFS_DIR=$(ROOTFS_ARM) TARGET_ARCH=armv7l \
 	BUILD_HOST_EXEC=$(CURRENT_DIR)/$(BUILD_ARM32_HOST) \
-	NNCC_WORKSPACE=$(BUILD_ARM32_FOLDER) ./nncc build -j1
+	NNCC_WORKSPACE=$(BUILD_ARM32_FOLDER) ./nncc build -j$(BUILD_JOBS)
 
 #
 # host test; run test in host to generate random input and expected outputs
