@@ -10,7 +10,9 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 #
 # Platform specific compile flag setting
 #
-include("${CMAKE_CURRENT_LIST_DIR}/buildtool/config/config_${TARGET_PLATFORM}.cmake")
+if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/buildtool/config/config_${TARGET_PLATFORM}.cmake")
+    include("${CMAKE_CURRENT_LIST_DIR}/buildtool/config/config_${TARGET_PLATFORM}.cmake")
+endif()
 
 #
 # Apply compile flags
