@@ -100,7 +100,7 @@ void ParallelExecutor::executeImpl()
 
   VERBOSE(ParallelExecutor) << "INITIAL JOBS : " << _ready_jobs.size() << std::endl;
 
-  auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_graph);
+  auto profiling_subg_index = _tracing_ctx->getOrigin(&_graph);
 
   _subject.notifySubgraphBegin(profiling_subg_index);
 

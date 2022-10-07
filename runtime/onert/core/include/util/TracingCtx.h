@@ -29,6 +29,8 @@ namespace onert
 namespace util
 {
 
+using Origin = ir::SubgraphIndex;
+
 /**
  * @brief Class to maintain information about profiling per session
  */
@@ -51,14 +53,14 @@ public:
   bool hasMultipleSessions() const { return _next_session_id > 1; }
 
   /**
-   * @brief Set subgraph index of a graph
+   * @brief Set origin of a graph
    */
-  void setSubgraphIndex(const ir::Graph *g, uint32_t index) { _subgraph_indices.emplace(g, index); }
+  void setOrigin(const ir::Graph *g, uint32_t index) { _origin_map.emplace(g, index); }
 
   /**
-   * @brief Get subgraph index of a graph.
+   * @brief Get origin of a graph.
    */
-  ir::SubgraphIndex getSubgraphIndex(const ir::Graph *g) const { return _subgraph_indices.at(g); }
+  Origin getOrigin(const ir::Graph *g) const { return _origin_map.at(g); }
 
 private:
   void decideSessionID()
@@ -69,7 +71,7 @@ private:
   }
 
 private:
-  std::unordered_map<const ir::Graph *, ir::SubgraphIndex> _subgraph_indices;
+  std::unordered_map<const ir::Graph *, Origin> _origin_map;
   uint32_t _session_id;
   static std::mutex _session_id_mutex;
   static uint32_t _next_session_id;

@@ -141,7 +141,7 @@ void DataflowExecutor::executeImpl()
   }
   assert(!_ready_jobs.empty()); // Cannot begin if there is no initial jobs
 
-  auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_graph);
+  auto profiling_subg_index = _tracing_ctx->getOrigin(&_graph);
 
   _subject.notifySubgraphBegin(profiling_subg_index);
 

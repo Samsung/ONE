@@ -542,8 +542,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
         std::make_unique<compiler::LoweredGraph>(subg, *_voptions[i]);
       // Set tracing_ctx for copied graph
       if (tracing_ctx != nullptr)
-        tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),
-                                      subg_index.value());
+        tracing_ctx->setOrigin(&(lowered_subgs[model_index][subg_index]->graph()),
+                               subg_index.value());
     });
   }
 
