@@ -29,7 +29,11 @@ namespace luci_interpreter
     std::vector<const Tensor *> &&inputs, std::vector<Tensor *> &&outputs, \
     const uint32_t op_index, KernelBuilder &builder);
 
+#if USE_GENERATED_LIST
+#include "GeneratedKernelsToBuild.lst"
+#else
 #include "KernelsToBuild.lst"
+#endif
 
 #undef REGISTER_KERNEL
 
