@@ -184,7 +184,7 @@ addeval(Unpack_003)
 #addeval(While_001)
 #addeval(While_002)
 #addeval(While_003)
-addeval(YUV_TO_RGB_U8_000)
+#addeval(YUV_TO_RGB_U8_000)
 #addeval(ZerosLike_000)
 
 # Simple Network test
