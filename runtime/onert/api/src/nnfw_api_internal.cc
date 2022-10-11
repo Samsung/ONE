@@ -778,15 +778,10 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
 
   if (!isStatePreparedOrFinishedRun())
   {
-    // In this case, if we apply input shape in primary_subgraph, it will propagate after
-    // compilation and excution
-    auto model = _nnpkg->primary_model();
-    auto primary_subgraph = model->primary_subgraph();
-    auto ind = primary_subgraph->getInputs().at(index);
-    auto &input = primary_subgraph->operands().at(ind);
 
-    // overwrite input shape with the shape from ti
-    input.info().shape(new_shape);
+    // In this case, if we apply input shape, it will propagate after compilation and excution
+    auto &info = _nnpkg->inputInfo(index);
+    info.shape(new_shape);
   }
   else // when called after nnfw_session::prepare()
   {
@@ -822,21 +817,37 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
                 << std::endl;
       return NNFW_STATUS_UNEXPECTED_NULL;
     }
+
     if (index >= getInputSize())
     {
       std::cerr << "Error during nnfw_session::input_tensorinfo, index is out of range."
                 << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    auto opidx = primary_subgraph()->getInputs().at(index);
-    auto shape = primary_subgraph()->operands().at(opidx).shape();
-    if (isStatePreparedOrFinishedRun())
+
+    if (isStateModelLoaded())
     {
-      shape = _execution ? _execution->getInputShape(onert::ir::IOIndex{index})
-                         : _executions.at(0)->getInputShape(onert::ir::IOIndex{index});
+      auto info = _nnpkg->inputInfo(index);
+      fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
-    auto dtype = primary_subgraph()->operands().at(opidx).typeInfo().type();
-    fillTensorInfo(ti, shape, dtype);
+    else
+    {
+      auto io_index = onert::ir::IOIndex{index};
+      if (_executions.empty())
+      {
+        auto shape = _execution->getInputShape(io_index);
+        auto dtype = _compiler_artifact->_executors->inputInfo(io_index).typeInfo().type();
+        fillTensorInfo(ti, shape, dtype);
+      }
+      else
+      {
+        auto shape = _executions[0]->getInputShape(io_index);
+        auto operand_index = _executions[0]->primary_parentgraph().getInputs().at(io_index);
+        auto dtype =
+          _executions[0]->primary_parentgraph().operands().at(operand_index).typeInfo().type();
+        fillTensorInfo(ti, shape, dtype);
+      }
+    }
   }
   catch (const std::exception &e)
   {
@@ -867,17 +878,29 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
       return NNFW_STATUS_ERROR;
     }
 
-    auto opidx = primary_subgraph()->getOutputs().at(index);
-    auto shape = primary_subgraph()->operands().at(opidx).shape();
-    // If it is called after `nnfw_run` then get the shape from Execution, not from the graph
-    if (isStateFinishedRun())
+    if (isStateModelLoaded())
     {
-      shape = _execution
-                ? _execution->getOutputShape(onert::ir::IOIndex{index})
-                : _executions.at(_executions.size() - 1)->getOutputShape(onert::ir::IOIndex{index});
+      auto info = _nnpkg->outputInfo(index);
+      fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
-    auto dtype = primary_subgraph()->operands().at(opidx).typeInfo().type();
-    fillTensorInfo(ti, shape, dtype);
+    else
+    {
+      auto io_index = onert::ir::IOIndex{index};
+      if (_executions.empty())
+      {
+        auto shape = _execution->getOutputShape(io_index);
+        auto dtype = _compiler_artifact->_executors->outputInfo(io_index).typeInfo().type();
+        fillTensorInfo(ti, shape, dtype);
+      }
+      else
+      {
+        auto shape = _executions[0]->getOutputShape(io_index);
+        auto operand_index = _executions[0]->primary_parentgraph().getOutputs().at(io_index);
+        auto dtype =
+          _executions[0]->primary_parentgraph().operands().at(operand_index).typeInfo().type();
+        fillTensorInfo(ti, shape, dtype);
+      }
+    }
   }
   catch (const std::exception &e)
   {
