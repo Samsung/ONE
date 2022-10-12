@@ -20,7 +20,7 @@ def generate_model():
         f.write(tflite_model)
 
 def convert_tflite2circle():
-    subprocess.run("../../../build/compiler/tflite2circle/tflite2circle", FILENAME_TFLITE_MODEL, FILENAME_CIRCLE_MODEL)
+    subprocess.run("../../build/compiler/tflite2circle/tflite2circle", FILENAME_TFLITE_MODEL, FILENAME_CIRCLE_MODEL)
 
 def convert_circle2header():
-    subprocess.run("../../../../bin2c/bin2c", FILENAME_CIRCLE_MODEL, FILENAME_HEADER_MODEL, "circle_model_raw")
+    subprocess.run("/../../bin2c/bin2c", FILENAME_CIRCLE_MODEL, FILENAME_HEADER_MODEL, "circle_model_raw")
