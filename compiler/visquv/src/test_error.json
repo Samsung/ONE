@@ -1,0 +1,16 @@
+{
+  "meta" : {
+    "model" : "test_error.circle",
+    "metric": "PEIR",
+    "colorscheme" : [
+      { "b": "0.0020", "e": "0.0929", "c": "#ffeda0" },
+      { "b": "0.0929", "e": "0.1838", "c": "#feb24c" },
+      { "b": "0.1838", "e": "0.2747", "c": "#800026" }
+    ]
+  },
+  "error": {
+    "ofm_conv": "0.01",
+    "ofm_mul": "0.1",
+    "ofm_add": "0.2"
+  }
+}

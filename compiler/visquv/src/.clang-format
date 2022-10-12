@@ -1,0 +1,5 @@
+BasedOnStyle: Google
+Language: JavaScript
+ColumnLimit: 100
+NamespaceIndentation: None
+IndentWidth: 4

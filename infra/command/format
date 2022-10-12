@@ -174,6 +174,49 @@ function check_python_files() {
   fi
 }
 
+function check_js_files() {
+  if [[ ${__Check_JS} -eq 0 ]]; then
+    echo "[SKIPPED] JS check is skipped"
+    return
+  fi
+
+  CLANG_FORMAT_CANDIDATES+=($DEFAULT_CLANG_FORMAT)
+  for CLANG_FORMAT_CANDIDATE in ${CLANG_FORMAT_CANDIDATES[@]}; do
+    if command_exists ${CLANG_FORMAT_CANDIDATE} ; then
+      CLANG_FORMAT="${CLANG_FORMAT_CANDIDATE}"
+      break
+    fi
+  done
+
+  if [[ -z ${CLANG_FORMAT}  ]]; then
+    echo "[ERROR] $CLANG_FORMAT is unavailable"
+    echo
+    echo "        Please install $DEFAULT_CLANG_FORMAT before running format check"
+    exit 1
+  fi
+
+  # Check c++ files: replace ' ' with newline, check with grep
+  FILES_TO_CHECK_JS=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '((\.js))$'`
+  # Manually ignore style checking
+  FILES_TO_CHECK_JS=`echo "$FILES_TO_CHECK_JS" | egrep -v '((/NeuralNetworks\.h)|(/NeuralNetworksExtensions\.h))$'`
+  # Transform to array
+  FILES_TO_CHECK_JS=($FILES_TO_CHECK_JS)
+
+  # Skip by '.FORMATDENY' file
+  for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
+    FILES_TO_CHECK_JS=(${FILES_TO_CHECK_JS[*]/$s*/})
+    FILES_TO_CHECK_JS_BY_CLANG_FORMAT_8=(${FILES_TO_CHECK_JS_BY_CLANG_FORMAT_8[*]/$s*/})
+  done
+
+  if [[ ${#FILES_TO_CHECK_JS} -ne 0 ]]; then
+    ${CLANG_FORMAT} -i ${FILES_TO_CHECK_JS[@]}
+    EXIT_CODE=$?
+    if [[ ${EXIT_CODE} -ne 0 ]]; then
+      INVALID_EXIT=${EXIT_CODE}
+    fi
+  fi
+}
+
 pushd ${NNAS_PROJECT_PATH}
 
 if [[ -n "$(git diff)" ]] && { [[ "${CHECK_DIFF_ONLY}" != "1" ]] || [[ "${CHECK_STAGED_ONLY}" != "1" ]]; }; then
@@ -183,6 +226,7 @@ fi
 
 __Check_CPP=${CHECK_CPP:-"1"}
 __Check_PYTHON=${CHECK_PYTHON:-"1"}
+__Check_JS=${CHECK_JS:-"1"}
 
 # Git file mode
 #   120000: symbolic link
@@ -217,6 +261,7 @@ check_newline
 check_permission
 check_cpp_files
 check_python_files
+check_js_files
 
 if [[ "${CHECK_DIFF_ONLY}" = "1" ]] && [[ "${CHECK_STAGED_ONLY}" = "1" ]]; then
   if [[ ! -z "${FILES_TO_CHECK}" ]]; then
