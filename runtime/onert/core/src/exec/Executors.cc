@@ -91,7 +91,7 @@ void Executors::checkSupportedMultimodel() const
   // Models
   //   size: n
   //   sizeof(model(a).outputs) == sizeof(model(a+1).inputs)
-  auto const model_size = getModels();
+  auto const model_count = modelCount();
 
   for (auto &pair : _executors)
   {
@@ -158,7 +158,7 @@ void Executors::checkSupportedMultimodel() const
   {
     auto output = _model_edges->pkg_outputs[i];
     if ((std::get<ir::ModelIndex>(output) !=
-         ir::ModelIndex{static_cast<uint16_t>(model_size - 1)}) ||
+         ir::ModelIndex{static_cast<uint16_t>(model_count - 1)}) ||
         (std::get<ir::SubgraphIndex>(output) != ir::SubgraphIndex{0}) ||
         (std::get<ir::IOIndex>(output) != ir::IOIndex{i}))
     {
@@ -176,11 +176,11 @@ void Executors::executeModels(const IODescription &desc)
   std::vector<std::unique_ptr<uint8_t[]>> input_bufs;
   std::vector<std::unique_ptr<uint8_t[]>> output_bufs;
   const auto layout = ir::Layout::NHWC;
-  auto const model_size = getModels();
+  auto const model_count = modelCount();
 
   // Execute each model
   // NOTE May be better to use vector instead of unordered_map for _executors
-  for (auto model_index = ir::ModelIndex{0}; model_index.value() < model_size; model_index++)
+  for (auto model_index = ir::ModelIndex{0}; model_index.value() < model_count; model_index++)
   {
     // Find executor
     auto executor = at(model_index, ir::SubgraphIndex{0});
@@ -218,7 +218,7 @@ void Executors::executeModels(const IODescription &desc)
       auto const &info = executor->graph().operands().at(index).info();
 
       // Last model
-      if (model_index.value() + 1 == model_size)
+      if (model_index.value() + 1 == model_count)
       {
         assert(desc.outputs[i]->info.total_size() == info.total_size());
         desc_inter.outputs[i] = std::make_unique<OutputDesc>(*desc.outputs[i].get());
@@ -234,15 +234,15 @@ void Executors::executeModels(const IODescription &desc)
   }
 }
 
-uint16_t Executors::getModels() const
+uint16_t Executors::modelCount() const
 {
-  uint16_t model_size = 0;
-  for (; _executors.find(std::make_pair(ir::ModelIndex{model_size}, ir::SubgraphIndex{0})) !=
+  uint16_t model_count = 0;
+  for (; _executors.find(std::make_pair(ir::ModelIndex{model_count}, ir::SubgraphIndex{0})) !=
          _executors.end();
-       model_size++)
+       model_count++)
     ;
 
-  return model_size;
+  return model_count;
 }
 
 } // namespace exec
