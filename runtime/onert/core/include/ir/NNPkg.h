@@ -181,6 +181,9 @@ public:
    */
   const ModelEdges &model_edges() { return _edges; }
 
+  // TODO Find better way to handle single model NNPackage and multi model NNPackage on inputSize(),
+  //      outputSize(), inputInfo(), outputInfo()
+
   /**
    * @brief   Get model input size
    */
@@ -197,6 +200,42 @@ public:
   {
     return _models.size() == 1 ? primary_model()->primary_subgraph()->getOutputs().size()
                                : _edges.pkg_outputs.size();
+  }
+
+  /**
+   * @brief   Get model input info
+   */
+  OperandInfo &inputInfo(uint32_t index) const
+  {
+    if (_models.size() == 1)
+    {
+      auto const graph = primary_model()->primary_subgraph();
+      auto const operand_index = graph->getInputs().at(index);
+      return graph->operands().at(operand_index).info();
+    }
+
+    auto const &desc = input(index);
+    auto const graph = model(std::get<ModelIndex>(desc))->primary_subgraph();
+    auto const operand_index = graph->getInputs().at(std::get<IOIndex>(desc).value());
+    return graph->operands().at(operand_index).info();
+  }
+
+  /**
+   * @brief   Get model output info
+   */
+  OperandInfo &outputInfo(uint32_t index) const
+  {
+    if (_models.size() == 1)
+    {
+      auto const graph = primary_model()->primary_subgraph();
+      auto const operand_index = graph->getOutputs().at(index);
+      return graph->operands().at(operand_index).info();
+    }
+
+    auto const &desc = output(index);
+    auto const graph = model(std::get<ModelIndex>(desc))->primary_subgraph();
+    auto const operand_index = graph->getOutputs().at(std::get<IOIndex>(desc).value());
+    return graph->operands().at(operand_index).info();
   }
 
   // TODO: Add iterate() or getter for edges

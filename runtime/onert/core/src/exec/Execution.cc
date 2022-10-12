@@ -251,10 +251,16 @@ ir::Shape Execution::getInputShape(ir::IOIndex ind) const
   }
 }
 
+// NNAPI return fail if ANeuralNetworksExecution_getOutputOperandRank or
+// ANeuralNetworksExecution_getOutputOperandDimensions is called before execution.
+// On the other hand, NNFW API return static shape inference result if nnfw_output_tensorinfo is
+// called before execution.
+// To handle both case, this method retun static shape inference result and fail will be handled on
+// NNAPI frontend.
 ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
 {
   if (!isFinished())
-    throw std::runtime_error("Cannot get output shape before execution is finished");
+    return _executors->outputInfo(ind).shape();
 
   const auto &output_desc = _io_desc.outputs.at(ind.value());
 
