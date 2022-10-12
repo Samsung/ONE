@@ -85,7 +85,7 @@ void Executors::execute(const IODescription &desc)
   entryExecutor()->execute(desc);
 }
 
-void Executors::executeModels(const IODescription &desc)
+void Executors::checkSupportedMultimodel() const
 {
   // Assume 2 executors only
   // Assume that each model may have only one subgraph
@@ -140,6 +140,17 @@ void Executors::executeModels(const IODescription &desc)
   {
     throw std::runtime_error{"NYI: Unsupported model edge pattern"};
   }
+}
+
+void Executors::executeModels(const IODescription &desc)
+{
+  // Check supported multi model package
+  checkSupportedMultimodel();
+
+  const auto &executor1 = at(ir::ModelIndex{0}, ir::SubgraphIndex{0});
+  const auto &graph1 = executor1->graph();
+  const auto &executor2 = at(ir::ModelIndex{1}, ir::SubgraphIndex{0});
+  const auto &graph2 = executor2->graph();
 
   // Prepare buffer
   // Assume buffer layout is NHWC

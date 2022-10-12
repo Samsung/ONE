@@ -70,6 +70,7 @@ public:
   void execute(const IODescription &desc);
 
 private:
+  void checkSupportedMultimodel() const;
   void executeModels(const IODescription &desc);
 
 private:
