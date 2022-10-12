@@ -217,12 +217,13 @@ NNFW_STATUS nnfw_session::create(nnfw_session **session)
   catch (const std::bad_alloc &e)
   {
     std::cerr << "Error during session creation" << std::endl;
+    *session = nullptr; // Set nullptr on error to keep the old behavior
     return NNFW_STATUS_OUT_OF_MEMORY;
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during session initialization : " << e.what() << std::endl;
-    *session = nullptr; // Set nullptr to keep the old behavior
+    *session = nullptr; // Set nullptr on error to keep the old behavior
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;
