@@ -208,29 +208,23 @@ NNFW_STATUS nnfw_session::create(nnfw_session **session)
 {
   if (session == nullptr)
     return NNFW_STATUS_UNEXPECTED_NULL;
-
-  // Create session
-  *session = new (std::nothrow) nnfw_session();
-  if (*session == nullptr)
+  try
+  {
+    auto new_session = std::unique_ptr<nnfw_session>(new nnfw_session());
+    new_session->_kernel_registry = std::make_shared<onert::api::CustomKernelRegistry>();
+    *session = new_session.release();
+  }
+  catch (const std::bad_alloc &e)
   {
     std::cerr << "Error during session creation" << std::endl;
     return NNFW_STATUS_OUT_OF_MEMORY;
   }
-
-  // Initialize fields
-  try
-  {
-    (*session)->_kernel_registry = std::make_shared<onert::api::CustomKernelRegistry>();
-  }
   catch (const std::exception &e)
   {
     std::cerr << "Error during session initialization : " << e.what() << std::endl;
-    delete *session;
-    *session = nullptr;
-
+    *session = nullptr; // Set nullptr to keep the old behavior
     return NNFW_STATUS_ERROR;
   }
-
   return NNFW_STATUS_NO_ERROR;
 }
 
