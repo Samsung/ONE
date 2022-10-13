@@ -186,13 +186,19 @@ host.BrowserHost = class {
         this._menu.add({label: 'About ' + this.document.title, click: () => this._about()});
 
         // Load QError file
-        this._request('THE_QERROR_JSON_FILE', null, 'application/json')
+        this._request('THE_VISQ_QERROR_FILE', null, 'application/json')
             .then((response) => {
-                const json = JSON.parse(response);
-                this._setQerrorStyle(json);
-                this._setQerrorNodes(json);
-                this._addQerrorLegends(json);
-                this._openModel(json.meta.model, 'model.circle');
+                const qerror = JSON.parse(response);
+                const model = qerror.meta.model;
+                const ext = model.split('.').pop().toLowerCase();
+                if (ext === 'circle') {
+                    this._setQerrorStyle(qerror);
+                    this._setQerrorNodes(qerror);
+                    this._addQerrorLegends(qerror);
+                    this._openModel(model, model);
+                } else {
+                    this.error('Invalid model file type');
+                }
             })
             .catch((err) => {
                 this.error('QError request failed.', err.message);
@@ -413,13 +419,12 @@ host.BrowserHost = class {
         return (0.299 * r + 0.587 * g + 0.114 * b);
     }
 
-    _setQerrorStyle(json) {
+    _setQerrorStyle(qerror) {
         let styleElement = document.createElement('style');
         let styleHTML = '';
         let index = 0;
-        let length = json.meta.colorscheme.length;
-        for (const idx in json.meta.colorscheme) {
-            let item = json.meta.colorscheme[idx];
+        for (const idx in qerror.meta.colorscheme) {
+            let item = qerror.meta.colorscheme[idx];
             this._qerr_scheme.push(item);
 
             let color = item.c;
@@ -435,15 +440,15 @@ host.BrowserHost = class {
         document.getElementsByTagName('head')[0].appendChild(styleElement);
     }
 
-    _setQerrorNodes(json) {
-        this._qerr_nodes = json.error;
+    _setQerrorNodes(qerror) {
+        this._qerr_nodes = qerror.error;
     }
 
-    _addQerrorLegends(json) {
+    _addQerrorLegends(qerror) {
         let legendDiv = document.getElementById('legend');
         let table = document.createElement('table');
-        for (const idx in json.meta.colorscheme) {
-            let item = json.meta.colorscheme[idx];
+        for (const idx in qerror.meta.colorscheme) {
+            let item = qerror.meta.colorscheme[idx];
             let lum = this._colorLuminance(item.c);
             let color = lum > 0x80 ? '#000' : '#fff';
             let tr = document.createElement('tr');

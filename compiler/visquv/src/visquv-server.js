@@ -25,7 +25,7 @@ server.Server = class {
     constructor() {
         this._ipaddr = undefined;
         this._port = 7070;
-        this._run_path = __dirname;
+        this._model_path = __dirname;
         this._load_file = undefined;
     }
 
@@ -48,12 +48,13 @@ server.Server = class {
     }
 
     help() {
-        console.log('Usage: one-visquv [-h] [-i ADDR] [-p PORT] ErrorFile');
+        console.log('Usage: node visquv-server [-h] [-i ADDR] [-p PORT] [--path PATH] ErrorFile');
         console.log('');
         console.log('optional arguments:');
         console.log('  -h, --help          Show help');
         console.log('  -i, --ip   ADDR     Listen to ADDR address');
         console.log('  -p, --port PORT     Listen to PORT port, default is ' + this._port);
+        console.log('      --path PATH     Path to model file')
     }
 
     parseArgs() {
@@ -71,10 +72,9 @@ server.Server = class {
             } else if (args[idx] === '--port' || args[idx] === '-p') {
                 idx++;
                 this._port = args[idx];
-            } else if (args[idx] === '--run_path') {
-                // this is hidden option to set run_path, where one-visq was called
+            } else if (args[idx] === '--path') {
                 idx++;
-                this._run_path = args[idx];
+                this._model_path = args[idx];
             } else if (args[idx].startsWith('-')) {
                 console.log('Unknown option: ' + args[idx]);
                 process.exit();
@@ -84,7 +84,7 @@ server.Server = class {
         }
 
         if (this._load_file === undefined) {
-            console.log('ErrorFile unknow.')
+            console.log('ErrorFile is not provided.')
             process.exit(1);
         }
     }
@@ -112,13 +112,13 @@ server.Server = class {
             if (url === '/') {
                 filepath = __dirname + '/visquv-index.html';
             }
-            if (url === '/THE_QERROR_JSON_FILE') {
+            if (url === '/THE_VISQ_QERROR_FILE') {
                 url = thiz._load_file;
                 if (thiz._load_file.startsWith('/')) {
-                    // file is absolute path.
+                    // _load_file is absolute path so don't use _model_path
                     filepath = thiz._load_file;
                 } else {
-                    filepath = thiz._run_path + '/' + thiz._load_file;
+                    filepath = thiz._model_path + '/' + thiz._load_file;
                 }
             }
 
@@ -146,7 +146,7 @@ server.Server = class {
             let url = 'http://' + svrinfo.address + ':' + svrinfo.port + '/';
             console.log('Open in browser with ' + url);
             console.log('Use Control-C to stop visquv-server.')
-            // enable open browser
+            // TODO enable open browser
             // let cmd = (process.platform === 'linux' ? 'xdg-open' :
             //            process.platform === 'win32' ? 'start' : 'open');
             // cp.exec(`${cmd} ${url}`);

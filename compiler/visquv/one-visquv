@@ -20,5 +20,5 @@ MODEL_PATH="$(pwd)"
 DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 pushd $DRIVER_PATH/visquv
-node visquv-server.js --run_path $MODEL_PATH $@
+node visquv-server.js --path $MODEL_PATH $@
 popd
