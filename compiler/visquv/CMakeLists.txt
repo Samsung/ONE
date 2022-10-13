@@ -2,6 +2,7 @@ set(VISQUV_FILES
     visquv-server.js
     visquv-index.html
     visquv-index.js
+    visquv-view.js
     test_error.json
     test_error.circle
 )
@@ -44,7 +45,6 @@ set(VISQUV_EXT_FILES
     tar.js
     view-grapher.js
     view-sidebar.js
-    view.js
     view-grapher.css
     view-sidebar.css
     circle.js
