@@ -317,10 +317,11 @@ host.BrowserHost = class {
     }
 
     qerr_index(name) {
-        if (!Object.prototype.hasOwnProperty.call(this._qerr_nodes, name)) {
+        const qerr_nodes = this._qerr_nodes[0];
+        if (!Object.prototype.hasOwnProperty.call(qerr_nodes, name)) {
             return undefined;
         }
-        let qerror = parseFloat(this._qerr_nodes[name]);
+        let qerror = parseFloat(qerr_nodes[name]);
         for (const idx in this._qerr_scheme) {
             let item = this._qerr_scheme[idx];
             if (item.b <= qerror && qerror < item.e) {
@@ -331,10 +332,11 @@ host.BrowserHost = class {
     }
 
     qerr_peir(name) {
-        if (!Object.prototype.hasOwnProperty.call(this._qerr_nodes, name)) {
+        const qerr_nodes = this._qerr_nodes[0];
+        if (!Object.prototype.hasOwnProperty.call(qerr_nodes, name)) {
             return undefined;
         }
-        return ` (${this._qerr_nodes[name]})`;
+        return ` (${qerr_nodes[name]})`;
     }
 
     _request(url, headers, encoding, timeout) {
