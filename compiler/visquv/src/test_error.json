@@ -9,8 +9,8 @@
     ]
   },
   "error": {
-    "ofm_conv": "0.01",
-    "ofm_mul": "0.1",
-    "ofm_add": "0.2"
+    "ofm_conv": "0.0123",
+    "ofm_mul": "0.151",
+    "ofm_add": "0.271"
   }
 }

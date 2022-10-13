@@ -1047,6 +1047,7 @@ view.Node = class extends grapher.Node {
         const header =  this.header();
         const styles = [ 'node-item-type' ];
         const type = node.type;
+        let visuv_peir = undefined;
         // visquv customized
         if (node.outputs) {
             node.outputs.forEach((output) => {
@@ -1060,6 +1061,7 @@ view.Node = class extends grapher.Node {
                         let qstyle = 'node-item-type-qerr-' + index;
                         styles.push(qstyle);
                     }
+                    visuv_peir = this.context.view.host.qerr_peir(nodeName);
                 });
             });
         }
@@ -1069,7 +1071,8 @@ view.Node = class extends grapher.Node {
         }
         const content = this.context.view.options.names && (node.name || node.location) ? (node.name || node.location) : type.name.split('.').pop();
         const tooltip = this.context.view.options.names && (node.name || node.location) ? type.name : (node.name || node.location);
-        const title = header.add(null, styles, content, tooltip);
+        const content_peir = visuv_peir ? content + visuv_peir : content;
+        const title = header.add(null, styles, content_peir, tooltip);
         title.on('click', () => this.context.view.showNodeProperties(node, null));
         if (node.type.nodes && node.type.nodes.length > 0) {
             const definition = header.add(null, styles, '\u0192', 'Show Function Definition');

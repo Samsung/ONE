@@ -330,6 +330,13 @@ host.BrowserHost = class {
         return undefined;
     }
 
+    qerr_peir(name) {
+        if (!Object.prototype.hasOwnProperty.call(this._qerr_nodes, name)) {
+            return undefined;
+        }
+        return ` (${this._qerr_nodes[name]})`;
+    }
+
     _request(url, headers, encoding, timeout) {
         return new Promise((resolve, reject) => {
             const request = new XMLHttpRequest();
