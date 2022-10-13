@@ -129,6 +129,7 @@ button { font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI"
 .default .logo { display: none; }
 .default .graph { display: flex; opacity: 1; }
 .default .toolbar { display: table; }
+.legend { position: absolute; top: 50px; left: 5px; padding: 5px; margin: 5px; border: 1px solid #555; user-select: none; -webkit-user-select: none; -moz-user-select: none; }
 @media all and (max-width: 640px) {
 .welcome .logo { width: 240px; }
 .welcome .logo-text { opacity: 0; }
@@ -199,6 +200,7 @@ button { font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI"
         </p>
     </div>
 </div>
+<div id="legend" class="legend"></div>
 <div id="transparent" class="transparent"></div>
 <div class="center logo">
     <a href="https://github.com/lutzroeder/netron" target="blank_">

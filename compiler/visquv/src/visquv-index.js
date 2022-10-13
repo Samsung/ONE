@@ -185,11 +185,13 @@ host.BrowserHost = class {
         this._menu.add({});
         this._menu.add({label: 'About ' + this.document.title, click: () => this._about()});
 
+        // Load QError file
         this._request('THE_QERROR_JSON_FILE', null, 'application/json')
             .then((response) => {
                 const json = JSON.parse(response);
                 this._setQerrorStyle(json);
                 this._setQerrorNodes(json);
+                this._addQerrorLegends(json);
                 this._openModel(json.meta.model, 'model.circle');
             })
             .catch((err) => {
@@ -435,6 +437,24 @@ host.BrowserHost = class {
 
     _setQerrorNodes(json) {
         this._qerr_nodes = json.error;
+    }
+
+    _addQerrorLegends(json) {
+        let legendDiv = document.getElementById('legend');
+        let table = document.createElement('table');
+        for (const idx in json.meta.colorscheme) {
+            let item = json.meta.colorscheme[idx];
+            let lum = this._colorLuminance(item.c);
+            let color = lum > 0x80 ? '#000' : '#fff';
+            let tr = document.createElement('tr');
+            let td = document.createElement('td');
+            td.innerText = `PEIR ${item.b} ~ ${item.e}`
+            td.style.background = item.c;
+            td.style.color = color;
+            tr.appendChild(td);
+            table.appendChild(tr);
+        }
+        legendDiv.appendChild(table);
     }
 
     _openModel(url, identifier) {
