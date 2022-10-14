@@ -44,7 +44,7 @@ void execute_node(loco::TensorBroadcast *tensor_broadcast)
   auto input_data = annot_data(tensor_broadcast->input());
   if (input_data == nullptr)
   {
-    throw std::runtime_error("Any annotation is found in TensorBroadcast");
+    throw std::runtime_error("Annotation is required for TensorBroadcast input");
   }
 
   // Calculate output shape
