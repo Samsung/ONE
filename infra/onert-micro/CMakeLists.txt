@@ -13,6 +13,18 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+if (NOT DEFINED TARGET_ARCH)
+    set(TARGET_ARCH "armv7em")
+endif()
+
+if (NOT DEFINED TARGET_CPU)
+    set(TARGET_CPU "cortex-m7")
+endif()
+
+if (NOT DEFINED TARGET_OS)
+    set(TARGET_OS "generic")
+endif()
+
 include(utils.cmake)
 
 nnas_find_package(GTest QUIET)
