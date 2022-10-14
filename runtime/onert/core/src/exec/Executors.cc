@@ -85,26 +85,73 @@ void Executors::execute(const IODescription &desc)
   entryExecutor()->execute(desc);
 }
 
+// Allow below case only
+//  input(s) -> 1st model -> 2nd model -> ... -> (n-1)th model -> (n)th model -> output(s)
 void Executors::checkSupportedMultimodel() const
 {
-  // Assume 2 executors only
-  // Assume that each model may have only one subgraph
-  // TODO Support general case
-  if (_executors.size() != 2)
-    throw std::runtime_error{"NYI: Multi model execution for this package is not supported yet"};
+  auto const model_count = modelCount();
 
-  // Assume all edges are 0:0:x -> 1:0:x
-  for (auto edge : _model_edges->edges)
+  // If package includes no-connection model, model_count is less than real model count in package.
+  // Then this method will throw exception based on model index
+  //  1st model: input assumption
+  //  (n)th model: output assumption
+  //  Otherwise: edges assumption
+
+  // Assumption: executor input/output size
+  //  Models size: n
+  //  sizeof(model(x).outputs) == sizeof(model(x+1).inputs) if 0 < x < n-2
+  //  sizeof(model(0).inputs) == sizeof(package.inputs)
+  //  sizeof(moddel(n-1).outputs) == sizeof(package.outputs)
+  for (auto &pair : _executors)
   {
-    if ((std::get<ir::ModelIndex>(edge.from) != ir::ModelIndex{0}) ||
-        (std::get<ir::ModelIndex>(edge.to) != ir::ModelIndex{1}) ||
-        (std::get<ir::SubgraphIndex>(edge.from) != ir::SubgraphIndex{0}) ||
-        (std::get<ir::SubgraphIndex>(edge.to) != ir::SubgraphIndex{0}) ||
-        (std::get<ir::IOIndex>(edge.from) != std::get<ir::IOIndex>(edge.to)))
-      throw std::runtime_error{"NYI: Multi model execution for this edge is not supported yet"};
+    auto const &model_index = pair.first.first;
+    auto const &subg_index = pair.first.second;
+
+    // Skip inner subgraph
+    if (subg_index != ir::SubgraphIndex{0})
+      continue;
+
+    auto executor = at(model_index, subg_index);
+
+    // Last model's output
+    if (model_index.value() == model_count - 1)
+    {
+      if (executor->graph().getOutputs().size() != _model_edges->pkg_outputs.size())
+        throw std::runtime_error{"NYI: Unsupported model edge pattern"};
+
+      continue;
+    }
+
+    // 1st model's input
+    if ((model_index == ir::ModelIndex{0}) &&
+        (executor->graph().getInputs().size() != _model_edges->pkg_inputs.size()))
+      throw std::runtime_error{"NYI: Unsupported model edge pattern"};
+
+    auto const next_index = ir::ModelIndex{static_cast<uint16_t>(model_index.value() + 1)};
+    auto const next_executor = at(next_index, ir::SubgraphIndex{0});
+
+    if (executor->graph().getOutputs().size() != next_executor->graph().getInputs().size())
+      throw std::runtime_error{"NYI: Multi model execution for this package is not supported yet"};
   }
 
-  // Assume all package inputs are 0:0:x
+  // Assumption: edges
+  //   x:0:z -> x+1:0:z  (0 < x < n-2)
+  for (auto edge : _model_edges->edges)
+  {
+    auto const model_from = std::get<ir::ModelIndex>(edge.from);
+    auto const model_to = std::get<ir::ModelIndex>(edge.to);
+    auto const subg_from = std::get<ir::SubgraphIndex>(edge.from);
+    auto const subg_to = std::get<ir::SubgraphIndex>(edge.to);
+    auto const output_from = std::get<ir::IOIndex>(edge.from);
+    auto const input_to = std::get<ir::IOIndex>(edge.to);
+
+    if (((model_from.value() + 1) != model_to.value()) || (subg_from != ir::SubgraphIndex{0}) ||
+        (subg_to != ir::SubgraphIndex{0}) || (output_from != input_to))
+      throw std::runtime_error{"NYI: Multi model execution for this edge set is not supported yet"};
+  }
+
+  // Assumption: package inputs
+  //  All package inputs are 0:0:x
   for (uint32_t i = 0; i < _model_edges->pkg_inputs.size(); i++)
   {
     auto input = _model_edges->pkg_inputs[i];
@@ -116,29 +163,18 @@ void Executors::checkSupportedMultimodel() const
     }
   }
 
-  // Assume all package outputs are 1:0:x
+  // Assumption: package outputs
+  //  All package outputs are n-1:0:x
   for (uint32_t i = 0; i < _model_edges->pkg_outputs.size(); i++)
   {
     auto output = _model_edges->pkg_outputs[i];
-    if ((std::get<ir::ModelIndex>(output) != ir::ModelIndex{1}) ||
+    if ((std::get<ir::ModelIndex>(output) !=
+         ir::ModelIndex{static_cast<uint16_t>(model_count - 1)}) ||
         (std::get<ir::SubgraphIndex>(output) != ir::SubgraphIndex{0}) ||
         (std::get<ir::IOIndex>(output) != ir::IOIndex{i}))
     {
-      throw std::runtime_error{"NYI: Support package output from 2nd model with same order"};
+      throw std::runtime_error{"NYI: Support package output from (n-1)th model with same order"};
     }
-  }
-
-  const auto &executor1 = at(ir::ModelIndex{0}, ir::SubgraphIndex{0});
-  const auto &graph1 = executor1->graph();
-  const auto &executor2 = at(ir::ModelIndex{1}, ir::SubgraphIndex{0});
-  const auto &graph2 = executor2->graph();
-
-  if ((graph1.getInputs().size() != _model_edges->pkg_inputs.size()) ||
-      (graph2.getOutputs().size() != _model_edges->pkg_outputs.size()) ||
-      (graph1.getOutputs().size() != graph2.getInputs().size()) ||
-      (graph1.getOutputs().size() != _model_edges->edges.size()))
-  {
-    throw std::runtime_error{"NYI: Unsupported model edge pattern"};
   }
 }
 
@@ -147,56 +183,82 @@ void Executors::executeModels(const IODescription &desc)
   // Check supported multi model package
   checkSupportedMultimodel();
 
-  const auto &executor1 = at(ir::ModelIndex{0}, ir::SubgraphIndex{0});
-  const auto &graph1 = executor1->graph();
-  const auto &executor2 = at(ir::ModelIndex{1}, ir::SubgraphIndex{0});
-  const auto &graph2 = executor2->graph();
-
-  // Prepare buffer
-  // Assume buffer layout is NHWC
-  std::vector<std::unique_ptr<uint8_t[]>> bufs(_model_edges->edges.size());
-  std::vector<const ir::OperandInfo *> buf_infos(_model_edges->edges.size());
+  // TODO Find better way to manage buffer between executors
+  std::vector<std::unique_ptr<uint8_t[]>> input_bufs;
+  std::vector<std::unique_ptr<uint8_t[]>> output_bufs;
   const auto layout = ir::Layout::NHWC;
+  auto const model_count = modelCount();
 
-  for (uint32_t i = 0; i < graph1.getOutputs().size(); i++)
+  // Execute each model
+  // NOTE May be better to use vector instead of unordered_map for _executors
+  for (auto model_index = ir::ModelIndex{0}; model_index.value() < model_count; model_index++)
   {
-    const auto buf_index = executor1->graph().getOutputs().at(ir::IOIndex{i});
-    buf_infos[i] = &executor1->graph().operands().at(buf_index).info();
-    const auto buf_size = buf_infos[i]->total_size();
-    bufs[i] = std::make_unique<uint8_t[]>(buf_size);
-  }
+    // Find executor
+    auto executor = at(model_index, ir::SubgraphIndex{0});
 
-  // 1st executor
-  {
-    IODescription desc1;
-    const auto input_size = graph1.getInputs().size();
-    const auto output_size = graph1.getOutputs().size();
-    desc1.inputs.resize(input_size);
-    desc1.outputs.resize(output_size);
+    // Set IODescription
+    IODescription desc_inter;
+    auto const input_size = executor->graph().getInputs().size();
+    auto const output_size = executor->graph().getOutputs().size();
+    desc_inter.inputs.resize(input_size);
+    desc_inter.outputs.resize(output_size);
+
+    input_bufs.resize(input_size);
     for (uint32_t i = 0; i < input_size; i++)
-      desc1.inputs[i] = std::make_unique<InputDesc>(*desc.inputs[i].get());
+    {
+      auto const &index = executor->graph().getInputs().at(ir::IOIndex{i});
+      auto const &info = executor->graph().operands().at(index).info();
+
+      // 1st model
+      if (model_index == 0)
+      {
+        assert(desc.inputs[i]->info.total_size() == info.total_size());
+        desc_inter.inputs[i] = std::make_unique<InputDesc>(*desc.inputs[i].get());
+        continue;
+      }
+
+      input_bufs[i] = std::move(output_bufs[i]);
+      desc_inter.inputs[i] =
+        std::make_unique<InputDesc>(info, input_bufs[i].get(), info.total_size(), layout);
+    }
+
+    output_bufs.resize(output_size);
     for (uint32_t i = 0; i < output_size; i++)
-      desc1.outputs[i] = std::make_unique<OutputDesc>(*buf_infos[i], bufs[i].get(),
-                                                      buf_infos[i]->total_size(), layout);
+    {
+      auto const &index = executor->graph().getOutputs().at(ir::IOIndex{i});
+      auto const &info = executor->graph().operands().at(index).info();
 
-    executor1->execute(desc1);
+      // Last model
+      if (model_index.value() + 1 == model_count)
+      {
+        assert(desc.outputs[i]->info.total_size() == info.total_size());
+        desc_inter.outputs[i] = std::make_unique<OutputDesc>(*desc.outputs[i].get());
+        continue;
+      }
+
+      output_bufs[i] = std::make_unique<uint8_t[]>(info.total_size());
+      desc_inter.outputs[i] =
+        std::make_unique<OutputDesc>(info, output_bufs[i].get(), info.total_size(), layout);
+    }
+
+    executor->execute(desc_inter);
   }
+}
 
-  // 2nd executor
-  {
-    IODescription desc2;
-    const auto input_size = graph2.getInputs().size();
-    const auto output_size = graph2.getOutputs().size();
-    desc2.inputs.resize(input_size);
-    desc2.outputs.resize(output_size);
-    for (uint32_t i = 0; i < input_size; i++)
-      desc2.inputs[i] = std::make_unique<InputDesc>(*buf_infos[i], bufs[i].get(),
-                                                    buf_infos[i]->total_size(), layout);
-    for (uint32_t i = 0; i < output_size; i++)
-      desc2.outputs[i] = std::make_unique<OutputDesc>(*desc.outputs[i].get());
+// modelCount() iterates _executors.
+// It assumes that Compiler will generate Executor for all models and _executors includes all
+// generated Executor.
+// If nnpackage includes model(s) which has no connection and Compiler does not
+// generate Executor for them, modelCount() return less value than real model count.
+uint16_t Executors::modelCount() const
+{
+  uint16_t model_count = 0;
+  for (; _executors.find(std::make_pair(ir::ModelIndex{model_count}, ir::SubgraphIndex{0})) !=
+         _executors.end();
+       model_count++)
+    ;
 
-    executor2->execute(desc2);
-  }
+  return model_count;
 }
 
 } // namespace exec
