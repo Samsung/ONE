@@ -22,10 +22,10 @@
 #ifndef __ONERT_EXEC_EXECUTOR_H_
 #define __ONERT_EXEC_EXECUTOR_H_
 
-#include "ExecutorBase.h"
-
 #include "compiler/CodeMap.h"
+#include "ExecutorBase.h"
 #include "ir/Index.h"
+#include "ExecutionEventEmitter.h"
 #include "util/TracingCtx.h"
 
 namespace onert
@@ -37,7 +37,7 @@ namespace exec
  * @brief Class to handle execution phase. Simple run the sequence of operations that is sorted in
  *        topological order
  */
-class LinearExecutor final : public ExecutorBase
+class LinearExecutor final : public ExecutorBase, public ExecutionEventEmitter
 {
 public:
   /**
