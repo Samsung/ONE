@@ -75,6 +75,7 @@ server.Server = class {
             } else if (args[idx] === '--path') {
                 idx++;
                 this._model_path = args[idx];
+                console.log('Model path:', this._model_path);
             } else if (args[idx].startsWith('-')) {
                 console.log('Unknown option: ' + args[idx]);
                 process.exit();
@@ -106,7 +107,8 @@ server.Server = class {
                 'html': 'text/html',
                 'json': 'application/json',
                 'js': 'text/javascript',
-                'css': 'text/css'
+                'css': 'text/css',
+                'circle': 'application/x-circle'
             };
 
             if (url === '/') {
@@ -122,12 +124,22 @@ server.Server = class {
                 }
             }
 
-            // check if ? exist
-            let qidx = filepath.indexOf('?');
-            let fileonly = filepath.substring(0, qidx != -1 ? qidx : filepath.length);
+            const filterQuery =
+                (fp) => {
+                    // check if ? exist for query string in URL
+                    let qidx = fp.indexOf('?');
+                    return fp.substring(0, qidx != -1 ? qidx : fp.length);
+                }
+
+            let fileonly = filterQuery(filepath);
             if (!fs.existsSync(fileonly)) {
-                console.log('File not found:', fileonly);
-                return response.writeHead(404);
+                // this maybe the model file, try with model path
+                filepath = thiz._model_path + '/' + url;
+                fileonly = filterQuery(filepath);
+                if (!fs.existsSync(fileonly)) {
+                    console.log('File not found:', fileonly);
+                    return response.writeHead(404);
+                }
             }
             console.log('Send:', fileonly);
             let data = fs.readFileSync(fileonly);

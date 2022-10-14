@@ -4,7 +4,7 @@ set(VISQUV_FILES
     visquv-index.js
     visquv-view.js
     test_error.json
-    test_error.circle
+    #test_error.circle
 )
 
 foreach(VISQUV_ITEM IN ITEMS ${VISQUV_FILES})
