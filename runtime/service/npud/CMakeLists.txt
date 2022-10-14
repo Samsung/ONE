@@ -14,7 +14,7 @@ endif(NOT GDBUS_CODEGEN)
 
 set(DBUS_CORE "dbus-core")
 set(DBUS_SOURCE_FILE "${DBUS_CORE}.c")
-set(DBUS_CORE_INTROSPECTION_XML "core/org.tizen.npud.xml")
+set(DBUS_CORE_INTROSPECTION_XML "org.tizen.npud.xml")
 set(DBUS_SERVICE_CONFIG "org.tizen.npud.conf")
 
 add_custom_command(OUTPUT ${DBUS_SOURCE_FILE}

@@ -17,5 +17,9 @@
       <arg name="priority" type="i" direction="in" />
       <arg name="ctx" type="t" direction="out" />
     </method>
+    <method name="context_destroy">
+	    <arg name="ctx" type="t" direction="in"  />
+	    <arg name="error" type="i" direction="out"  />
+    </method>
   </interface>
 </node>
