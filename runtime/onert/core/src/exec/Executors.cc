@@ -93,9 +93,9 @@ void Executors::checkSupportedMultimodel() const
 
   // If package includes no-connection model, model_count is less than real model count in package.
   // Then this method will throw exception based on model index
-  //  1st model: input assuption
-  //  (n)th model: output assuption
-  //  Otherwise: edges assuption
+  //  1st model: input assumption
+  //  (n)th model: output assumption
+  //  Otherwise: edges assumption
 
   // Assumption: executor input/output size
   //  Models size: n
