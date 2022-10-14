@@ -190,12 +190,13 @@ host.BrowserHost = class {
             .then((response) => {
                 const qerror = JSON.parse(response);
                 const model = qerror.meta.model;
+                const title = qerror.meta.title;
                 const ext = model.split('.').pop().toLowerCase();
                 if (ext === 'circle') {
                     this._setQerrorStyle(qerror);
                     this._setQerrorNodes(qerror);
                     this._addQerrorLegends(qerror);
-                    this._openModel(model, model);
+                    this._openModel(model, model, title);
                 } else {
                     this.error('Invalid model file type');
                 }
@@ -471,7 +472,7 @@ host.BrowserHost = class {
         legendDiv.appendChild(table);
     }
 
-    _openModel(url, identifier) {
+    _openModel(url, identifier, title) {
         url = url + ((/\?/).test(url) ? '&' : '?') + 'cb=' + (new Date()).getTime();
         this._view.show('welcome spinner');
         this._request(url)
@@ -479,7 +480,7 @@ host.BrowserHost = class {
                 const context = new host.BrowserHost.BrowserContext(this, url, identifier, buffer);
                 this._view.open(context)
                     .then(() => {
-                        this.document.title = identifier || context.identifier;
+                        this.document.title = title || identifier || context.identifier;
                     })
                     .catch((err) => {
                         if (err) {

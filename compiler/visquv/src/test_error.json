@@ -1,5 +1,6 @@
 {
   "meta" : {
+    "title": "Test of VISQ",
     "model" : "test_error.circle",
     "metric": "PEIR",
     "colorscheme" : [
