@@ -53,6 +53,7 @@ void execute_node(loco::TensorConstantPad *pad)
 
   auto constant_node = pad->constant();
   auto constant_data = annot_data(constant_node);
+  validate(constant_data != nullptr, "constant is not found");
   validate(constant_data->dtype() == input_data->dtype(), "constant and input have same data type");
   validate(constant_data->shape()->rank() == 1 && constant_data->shape()->dim(0) == 1,
            "constant should have one rank with one dimension at zero axis");
