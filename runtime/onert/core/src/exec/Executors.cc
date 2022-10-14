@@ -85,48 +85,57 @@ void Executors::execute(const IODescription &desc)
   entryExecutor()->execute(desc);
 }
 
+// Allow below case only
+//  input(s) -> 1st model -> 2nd model -> ... -> (n-1)th model -> (n)th model -> output(s)
 void Executors::checkSupportedMultimodel() const
 {
-  // Assumption
-  // Models
-  //   size: n
-  //   sizeof(model(a).outputs) == sizeof(model(a+1).inputs)
   auto const model_count = modelCount();
 
+  // If package includes no-connection model, model_count is less than real model count in package.
+  // Then this method will throw exception based on model index
+  //  1st model: input assuption
+  //  (n)th model: output assuption
+  //  Otherwise: edges assuption
+
+  // Assumption: executor input/output size
+  //  Models size: n
+  //  sizeof(model(x).outputs) == sizeof(model(x+1).inputs) if 0 < x < n-2
+  //  sizeof(model(0).inputs) == sizeof(package.inputs)
+  //  sizeof(moddel(n-1).outputs) == sizeof(package.outputs)
   for (auto &pair : _executors)
   {
     auto const &model_index = pair.first.first;
     auto const &subg_index = pair.first.second;
 
-    // Inner subgraph
+    // Skip inner subgraph
     if (subg_index != ir::SubgraphIndex{0})
       continue;
 
+    auto executor = at(model_index, subg_index);
+
     // Last model's output
-    auto const next_index = ir::ModelIndex{static_cast<uint16_t>(model_index.value() + 1)};
-    if (_executors.find(std::make_pair(next_index, ir::SubgraphIndex{0})) == _executors.end())
+    if (model_index.value() == model_count - 1)
     {
-      auto executor = at(model_index, subg_index);
       if (executor->graph().getOutputs().size() != _model_edges->pkg_outputs.size())
         throw std::runtime_error{"NYI: Unsupported model edge pattern"};
 
       continue;
     }
 
-    auto executor_from = at(model_index, subg_index);
-    auto executor_to = at(next_index, subg_index);
-
-    if (executor_from->graph().getOutputs().size() != executor_to->graph().getInputs().size())
-      throw std::runtime_error{"NYI: Multi model execution for this package is not supported yet"};
-
     // 1st model's input
     if ((model_index == ir::ModelIndex{0}) &&
-        (executor_from->graph().getInputs().size() != _model_edges->pkg_inputs.size()))
+        (executor->graph().getInputs().size() != _model_edges->pkg_inputs.size()))
       throw std::runtime_error{"NYI: Unsupported model edge pattern"};
+
+    auto const next_index = ir::ModelIndex{static_cast<uint16_t>(model_index.value() + 1)};
+    auto const next_executor = at(next_index, ir::SubgraphIndex{0});
+
+    if (executor->graph().getOutputs().size() != next_executor->graph().getInputs().size())
+      throw std::runtime_error{"NYI: Multi model execution for this package is not supported yet"};
   }
 
-  // Edges
-  //   a:0:z -> a+1:0:z  (0 < a < n-2)
+  // Assumption: edges
+  //   x:0:z -> x+1:0:z  (0 < x < n-2)
   for (auto edge : _model_edges->edges)
   {
     auto const model_from = std::get<ir::ModelIndex>(edge.from);
@@ -141,7 +150,8 @@ void Executors::checkSupportedMultimodel() const
       throw std::runtime_error{"NYI: Multi model execution for this edge set is not supported yet"};
   }
 
-  // Assume all package inputs are 0:0:x
+  // Assumption: package inputs
+  //  All package inputs are 0:0:x
   for (uint32_t i = 0; i < _model_edges->pkg_inputs.size(); i++)
   {
     auto input = _model_edges->pkg_inputs[i];
@@ -153,7 +163,8 @@ void Executors::checkSupportedMultimodel() const
     }
   }
 
-  // Assume all package outputs are n-1:0:x
+  // Assumption: package outputs
+  //  All package outputs are n-1:0:x
   for (uint32_t i = 0; i < _model_edges->pkg_outputs.size(); i++)
   {
     auto output = _model_edges->pkg_outputs[i];
@@ -234,6 +245,11 @@ void Executors::executeModels(const IODescription &desc)
   }
 }
 
+// modelCount() iterates _executors.
+// It assumes that Compiler will generate Executor for all models and _executors includes all
+// generated Executor.
+// If nnpackage includes model(s) which has no connection and Compiler does not
+// generate Executor for them, modelCount() return less value than real model count.
 uint16_t Executors::modelCount() const
 {
   uint16_t model_count = 0;
