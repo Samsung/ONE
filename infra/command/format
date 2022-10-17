@@ -159,6 +159,8 @@ function check_python_files() {
   FILES_TO_CHECK_PYTHON+=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '^compiler/one-cmds/[^(\./)]*$' | egrep -v '^compiler/one-cmds/one-prepare-venv$'`)
   # Exceptional case: onecc-docker don't have '.py' extension.
   FILES_TO_CHECK_PYTHON+=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '^compiler/onecc-docker/onecc-docker$'`)
+  # Exceptional case: visq don't have '.py' extension.
+  FILES_TO_CHECK_PYTHON+=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '^compiler/visq/visq$'`)
 
   for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
     skip=${s#'.'/}/
