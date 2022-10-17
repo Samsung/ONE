@@ -117,7 +117,7 @@ void Executors::checkSupportedMultimodel() const
     if (model_index.value() == model_count - 1)
     {
       if (executor->graph().getOutputs().size() != _model_edges->pkg_outputs.size())
-        throw std::runtime_error{"NYI: Unsupported model edge pattern"};
+        throw std::runtime_error{"NYI: Unsupported package output pattern"};
 
       continue;
     }
@@ -125,13 +125,29 @@ void Executors::checkSupportedMultimodel() const
     // 1st model's input
     if ((model_index == ir::ModelIndex{0}) &&
         (executor->graph().getInputs().size() != _model_edges->pkg_inputs.size()))
-      throw std::runtime_error{"NYI: Unsupported model edge pattern"};
+      throw std::runtime_error{"NYI: Unsupported package input pattern"};
 
     auto const next_index = ir::ModelIndex{static_cast<uint16_t>(model_index.value() + 1)};
     auto const next_executor = at(next_index, ir::SubgraphIndex{0});
 
     if (executor->graph().getOutputs().size() != next_executor->graph().getInputs().size())
       throw std::runtime_error{"NYI: Multi model execution for this package is not supported yet"};
+
+    // Check model output is connected to other model
+    for (uint32_t i = 0; i < executor->graph().getOutputs().size(); i++)
+    {
+      auto const &edges = _model_edges->edges;
+      auto check_from_edge = [&](const ir::ModelEdge &edge) {
+        return (std::get<ir::ModelIndex>(edge.from) == model_index) &&
+               (std::get<ir::SubgraphIndex>(edge.from) == subg_index) &&
+               (std::get<ir::IOIndex>(edge.from).value() == i);
+      };
+
+      if (std::find_if(edges.begin(), edges.end(), check_from_edge) == edges.end())
+      {
+        throw std::runtime_error{"NYI: Unsupported model edge pattern"};
+      }
+    }
   }
 
   // Assumption: edges
