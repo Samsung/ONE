@@ -127,6 +127,27 @@ void Args::Initialize(void)
     }
   };
 
+  auto process_modelfile = [&](const std::string &model_filename) {
+    _model_filename = model_filename;
+
+    std::cerr << "Model Filename " << _model_filename << std::endl;
+    if (_model_filename.empty())
+    {
+      // TODO Print usage instead of the below message
+      std::cerr << "Please specify model file. Run with `--help` for usage."
+                << "\n";
+
+      exit(1);
+    }
+    else
+    {
+      if (access(_model_filename.c_str(), F_OK) == -1)
+      {
+        std::cerr << "Model file not found: " << _model_filename << "\n";
+      }
+    }
+  };
+
   auto process_output_sizes = [&](const std::string &output_sizes_json_str) {
     Json::Value root;
     Json::Reader reader;
@@ -196,7 +217,8 @@ void Args::Initialize(void)
   general.add_options()
     ("help,h", "Print available options")
     ("version", "Print version and exit immediately")
-    ("nnpackage", po::value<std::string>()->required()->notifier(process_nnpackage))
+    ("nnpackage", po::value<std::string>()->notifier(process_nnpackage), "NN Package file(directory) name")
+    ("modelfile", po::value<std::string>()->notifier(process_modelfile), "NN Model filename\nYou should use one of two options: 'nnpackage' or 'modelfile'")
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
     ("dump,d", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _dump_filename = v; }), "Output filename")
     ("load,l", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _load_filename = v; }), "Input filename")
@@ -214,9 +236,9 @@ void Args::Initialize(void)
     ("mem_poll,m", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _mem_poll = v; }), "Check memory polling")
     ("write_report,p", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _write_report = v; }),
          "Write report\n"
-         "{exec}-{nnpkg}-{backend}.csv will be generated.\n"
+         "{exec}-{nnpkg|modelfile}-{backend}.csv will be generated.\n"
          "e.g. nnpackage_run-UNIT_Add_000-acl_cl.csv.\n"
-         "{nnpkg} name may be changed to realpath if you use symbolic-link.")
+         "{nnpkg|modelfile} name may be changed to realpath if you use symbolic-link.")
     ("shape_prepare", po::value<std::string>()->default_value("[]")->notifier(process_shape_prepare),
          "Please refer to the description of 'shape_run'")
     ("shape_run", po::value<std::string>()->default_value("[]")->notifier(process_shape_run),
@@ -258,10 +280,25 @@ void Args::Parse(const int argc, char **argv)
       }
     };
 
+    auto require_one_of_two = [&](const std::string &o1, const std::string &o2) {
+      if ((!vm.count(o1) && !vm.count(o2)))
+        throw boost::program_options::error(std::string("Require one of two options '") + o1 +
+                                            "' or '" + o2 + ".");
+    };
+
     // calling, e.g., "nnpackage_run .. -- shape_prepare .. --shape_run .." should theoretically
     // work but allowing both options together on command line makes the usage and implemenation
     // of nnpackage_run too complicated. Therefore let's not allow those option together.
     conflicting_options("shape_prepare", "shape_run");
+
+    // Cannot use both single model file and nnpackage at once
+    conflicting_options("modelfile", "nnpackage");
+
+    // Require modelfile or nnpackage
+    require_one_of_two("modelfile", "nnpackage");
+
+    if (vm.count("modelfile"))
+      _use_single_model = true;
   }
 
   if (vm.count("help"))

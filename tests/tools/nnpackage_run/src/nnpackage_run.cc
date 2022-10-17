@@ -55,7 +55,6 @@ int main(const int argc, char **argv)
   try
   {
     Args args(argc, argv);
-    auto nnpackage_path = args.getPackageFilename();
     if (args.printVersion())
     {
       uint32_t version;
@@ -79,7 +78,11 @@ int main(const int argc, char **argv)
 
     // ModelLoad
     phases.run("MODEL_LOAD", [&](const benchmark::Phase &, uint32_t) {
-      NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, nnpackage_path.c_str()));
+      if (args.useSingleModel())
+        NNPR_ENSURE_STATUS(
+          nnfw_load_model_from_modelfile(session, args.getModelFilename().c_str()));
+      else
+        NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getPackageFilename().c_str()));
     });
 
     char *available_backends = std::getenv("BACKENDS");
@@ -297,14 +300,15 @@ int main(const int argc, char **argv)
     std::string backend_name = (available_backends) ? available_backends : default_backend_cand;
     {
       char buf[PATH_MAX];
-      char *res = realpath(nnpackage_path.c_str(), buf);
+      char *res = args.useSingleModel() ? realpath(args.getModelFilename().c_str(), buf)
+                                        : realpath(args.getPackageFilename().c_str(), buf);
       if (res)
       {
         nnpkg_basename = basename(buf);
       }
       else
       {
-        std::cerr << "E: during getting realpath from nnpackage_path." << std::endl;
+        std::cerr << "E: during getting realpath from nnpackage or model path." << std::endl;
         exit(-1);
       }
       exec_basename = basename(argv[0]);

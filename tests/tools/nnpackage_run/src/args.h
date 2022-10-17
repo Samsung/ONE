@@ -47,6 +47,8 @@ public:
   void print(void);
 
   const std::string &getPackageFilename(void) const { return _package_filename; }
+  const std::string &getModelFilename(void) const { return _model_filename; }
+  const bool useSingleModel(void) const { return _use_single_model; }
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   const std::string &getDumpFilename(void) const { return _dump_filename; }
   const std::string &getLoadFilename(void) const { return _load_filename; }
@@ -77,6 +79,7 @@ private:
   po::options_description _options;
 
   std::string _package_filename;
+  std::string _model_filename;
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   std::string _dump_filename;
   std::string _load_filename;
@@ -95,6 +98,7 @@ private:
   bool _write_report;
   bool _print_version = false;
   int _verbose_level;
+  bool _use_single_model = false;
 };
 
 } // end of namespace nnpkg_run
