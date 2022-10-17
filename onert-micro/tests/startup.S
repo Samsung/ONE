@@ -5,5 +5,5 @@
 
 .global start
 start:
-        ldr r1, =c_entry
+        ldr r1, =main
         bx r1
