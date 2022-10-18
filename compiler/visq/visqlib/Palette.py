@@ -62,6 +62,8 @@ class YLORRD9Palette(UniformPalette):
         # **kwargs should have min/max
         assert 'min' in kwargs
         assert 'max' in kwargs
+        if kwargs['min'] >= kwargs['max']:
+            raise RuntimeError('min must be less than max')
 
         # From https://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=9
         colors = [
