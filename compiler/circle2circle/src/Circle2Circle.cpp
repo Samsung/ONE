@@ -81,6 +81,8 @@ int entry(int argc, char **argv)
   add_switch(arser, "--fold_sparse_to_dense", "This will fold SparseToDense operator");
   add_switch(arser, "--forward_reshape_to_unaryop",
              "This will move Reshape after UnaryOp for centain condition");
+  add_switch(arser, "--forward_transpose_op",
+             "This will move Transpose Op forward if possible (for further optimization)");
   add_switch(arser, "--fuse_activation_function",
              "This will fuse Activation function to a preceding operator");
   add_switch(arser, "--fuse_add_with_fully_connected",
@@ -222,6 +224,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FoldSparseToDense);
   if (arser.get<bool>("--forward_reshape_to_unaryop"))
     options->enable(Algorithms::ForwardReshapeToUnaryOp);
+  if (arser.get<bool>("--forward_transpose_op"))
+    options->enable(Algorithms::ForwardTransposeOp);
   if (arser.get<bool>("--fuse_activation_function"))
     options->enable(Algorithms::FuseActivationFunction);
   if (arser.get<bool>("--fuse_batchnorm_with_conv"))

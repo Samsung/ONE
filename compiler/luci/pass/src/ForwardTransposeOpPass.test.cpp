@@ -1,0 +1,161 @@
+/*
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include <logo/Phase.h>
+#include "luci/Pass/ForwardTransposeOpPass.h"
+#include "luci/Pass/CircleShapeInferencePass.h"
+
+#include <luci/IR/CircleNodes.h>
+
+#include <luci/test/TestIOGraph.h>
+
+#include <gtest/gtest.h>
+
+#include <vector>
+
+namespace
+{
+
+using namespace luci::test;
+
+class TransposeAddGraphlet
+{
+public:
+  TransposeAddGraphlet() = default;
+
+public:
+  void init(loco::Graph *g, const ShapeU32 shape_in, const ShapeU32 perm)
+  {
+    std::vector<uint32_t> shape_in_v = shape_in;
+    std::vector<uint32_t> perm_v = perm;
+
+    assert(shape_in_v.size() == perm_v.size()); // FIX_CALLER_UNLESS
+
+    _perm = g->nodes()->create<luci::CircleConst>();
+    _const = g->nodes()->create<luci::CircleConst>();
+    _transpose = g->nodes()->create<luci::CircleTranspose>();
+    _add = g->nodes()->create<luci::CircleAdd>();
+
+    _perm->dtype(loco::DataType::S32);
+    _perm->rank(1);
+    _perm->dim(0).set(perm_v.size());
+    _perm->shape_status(luci::ShapeStatus::VALID);
+
+    _const->dtype(loco::DataType::FLOAT32);
+    _const->rank(shape_in_v.size());
+    for (uint32_t i = 0; i < shape_in_v.size(); i++)
+      _const->dim(i).set(shape_in_v[perm_v[i]]);
+    _const->shape_status(luci::ShapeStatus::VALID);
+
+    // values
+    const auto size = perm_v.size();
+    _perm->size<loco::DataType::S32>(size);
+    for (uint32_t i = 0; i < size; i++)
+      _perm->at<loco::DataType::S32>(i) = perm_v[i];
+
+    uint32_t elems = 1;
+    for (uint32_t i = 0; i < size; i++)
+      elems *= shape_in_v[i];
+
+    _const->size<loco::DataType::FLOAT32>(elems);
+    for (uint32_t i = 0; i < elems; i++)
+      _const->at<loco::DataType::FLOAT32>(i) = i;
+
+    _perm->name("transpose_perm");
+    _transpose->name("transpose");
+    _add->name("add");
+  }
+
+protected:
+  luci::CircleTranspose *_transpose = nullptr;
+  luci::CircleAdd *_add = nullptr;
+  luci::CircleConst *_perm = nullptr;
+  luci::CircleConst *_const = nullptr;
+};
+
+class ForwardTransposeToAddGraph : public TestIOGraph, public TransposeAddGraphlet
+{
+public:
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    TransposeAddGraphlet::init(g(), shape_in, shape_out);
+
+    // connect network
+    _transpose->a(input());
+    _transpose->perm(_perm);
+    _add->x(_transpose);
+    _add->y(_const);
+
+    output()->from(_add);
+  }
+};
+
+void run_phase(loco::Graph *g)
+{
+  logo::Phase phase;
+
+  // Default passes.
+  phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+
+  // Pass to test
+  phase.emplace_back(std::make_unique<luci::ForwardTransposeOpPass>());
+
+  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+  phase_runner.run(phase);
+}
+
+class ForwardTransposeToAddGraphTest : public ::testing::Test
+{
+public:
+  void run_pass(void) { run_phase(_graph.g()); }
+
+protected:
+  ForwardTransposeToAddGraph _graph;
+};
+
+} // namespace
+
+TEST_F(ForwardTransposeToAddGraphTest, forward_add)
+{
+  _graph.init({1, 64, 51, 1}, {0, 3, 2, 1});
+
+  run_pass();
+
+  auto transpose = dynamic_cast<luci::CircleTranspose *>(_graph.output()->from());
+  EXPECT_NE(nullptr, transpose);
+  EXPECT_EQ(4, transpose->rank());
+  EXPECT_EQ(1, transpose->dim(0).value());
+  EXPECT_EQ(1, transpose->dim(1).value());
+  EXPECT_EQ(51, transpose->dim(2).value());
+  EXPECT_EQ(64, transpose->dim(3).value());
+
+  auto add = dynamic_cast<luci::CircleAdd *>(transpose->a());
+  EXPECT_NE(nullptr, add);
+  EXPECT_EQ(4, add->rank());
+  EXPECT_EQ(1, add->dim(0).value());
+  EXPECT_EQ(64, add->dim(1).value());
+  EXPECT_EQ(51, add->dim(2).value());
+  EXPECT_EQ(1, add->dim(3).value());
+
+  auto add_const = dynamic_cast<luci::CircleConst *>(add->y());
+  EXPECT_NE(nullptr, add_const);
+  EXPECT_EQ(4, add_const->rank());
+  EXPECT_EQ(1, add_const->dim(0).value());
+  EXPECT_EQ(64, add_const->dim(1).value());
+  EXPECT_EQ(51, add_const->dim(2).value());
+  EXPECT_EQ(1, add_const->dim(3).value());
+}
