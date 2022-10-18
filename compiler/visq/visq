@@ -1,0 +1,206 @@
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+'''exit 255                                                                            # '''
+
+# Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import argparse
+import subprocess
+import tempfile
+import json
+import os
+import math
+
+from shutil import copyfile
+from pathlib import Path
+
+from visqlib.Palette import YLORRD9Palette
+from visqlib.QErrorComputer import MPEIRComputer
+from visqlib.Util import valid_attr, pretty_float
+
+
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='Command line tool to visualize layer-wise quantization errors')
+    parser.add_argument(
+        "-f",
+        "--fp32_circle",
+        type=str,
+        help="Path to the fp32 circle model.",
+        required=True)
+    parser.add_argument(
+        "-q",
+        "--q_circle",
+        type=str,
+        help="Path to the quantized circle model.",
+        required=True)
+    parser.add_argument(
+        "-d",
+        "--data",
+        type=str,
+        help=
+        "Path to the data used for inference. Random data will be used if this option is not given.",
+        required=False)
+    parser.add_argument(
+        "--mpeir_output",
+        type=str,
+        help="Path to the output dot file (qerror metric = mPEIR).",
+        required=False)
+    return parser
+
+
+def _verify_args(args):
+    """Verify the given arguments"""
+
+    valid_outputs = ['mpeir_output', 'mse_output', 'mpesr_output']
+
+    # Check if at least one output option is given
+    num_outputs = 0
+    for output_name in valid_outputs:
+        if valid_attr(args, output_name):
+            num_outputs += 1
+
+    if num_outputs == 0:
+        raise RuntimeError("At least one output should be given.")
+
+
+def _run_dalgona(model, data, analysis, save_dir):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    dalgona_path = os.path.join(dir_path, 'dalgona')
+    cmd = [dalgona_path]
+    cmd += ['--input_model', str(model)]
+    cmd += ['--analysis', str(analysis)]
+    if data != None:
+        cmd += ['--input_data', str(data)]
+    cmd += ['--analysis_args', str(save_dir)]
+
+    try:
+        subprocess.run(cmd, capture_output=True, check=True)
+    except subprocess.CalledProcessError as e:
+        print('Error raised while running the below command')
+        print(' '.join(cmd))
+        print(e.output)
+        raise
+
+
+def _fake_quantize(input_model, output_model):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
+    cmd = [circle_quantizer_path]
+    cmd += ['--fake_quantize']
+    cmd += [str(input_model)]
+    cmd += [str(output_model)]
+
+    try:
+        subprocess.run(cmd, capture_output=True, check=True)
+    except subprocess.CalledProcessError as e:
+        print('Error raised while running the below command')
+        print(' '.join(cmd))
+        print(e.output)
+        raise
+
+
+# Recursively visit items and check if there is Infinity or NaN
+def _check_float(item):
+    if isinstance(item, dict):
+        for v in item.values():
+            _check_float(v)
+    if isinstance(item, list):
+        for v in item:
+            _check_float(v)
+    if isinstance(item, float):
+        if item == -float('inf') or item == float('inf'):
+            raise RuntimeError('Infinite value detected. Value must be float')
+        if math.isnan(item):
+            raise RuntimeError('NaN value detected. Value must be float')
+
+
+def _build_json(**kwargs):
+    # model: string
+    # metric: string
+    # colorscheme: list ['b': begin, 'e': end, 'c':color]
+    # error: dict {tensor_name:error}
+    assert 'metric' in kwargs
+    assert 'model' in kwargs
+    assert 'colorscheme' in kwargs
+    assert 'error' in kwargs
+
+    meta = {}
+    meta["model"] = Path(kwargs['model']).name
+    meta["metric"] = kwargs['metric']
+    meta["colorscheme"] = pretty_float(kwargs['colorscheme'])
+    result = {}
+    result["meta"] = meta
+    # Why list? To support multiple subgraphs
+    result["error"] = [pretty_float(kwargs['error'])]
+
+    # Invariants
+    _check_float(meta["colorscheme"])
+    _check_float(result["error"])
+    return result
+
+
+def main():
+    # parse arguments
+    parser = _get_parser()
+    args = parser.parse_args()
+    _verify_args(args)
+
+    fp32_model = args.fp32_circle
+    q_model = args.q_circle
+    data = None
+    if valid_attr(args, 'data'):
+        data = args.data
+
+    curr_dir = Path(__file__).parent.resolve()
+    dump_fp32_py = curr_dir / 'visqlib' / 'DumpFP32FM.py'
+    dump_fq_py = curr_dir / 'visqlib' / 'DumpFakeQuantFM.py'
+
+    with tempfile.TemporaryDirectory() as model_dir, \
+         tempfile.TemporaryDirectory() as fp32_dir, \
+         tempfile.TemporaryDirectory() as fq_dir:
+        fq_model = model_dir + '/fq_model.circle'
+
+        # Step 1. Fake quantize q circle
+        _fake_quantize(q_model, fq_model)
+
+        # Step 2. Run dalgona to dump intermediate FMs in fp32 model
+        _run_dalgona(fp32_model, data, dump_fp32_py, fp32_dir)
+
+        # Copy list of dumped tensors
+        copyfile(fp32_dir + '/tensors.txt', fq_dir + '/tensors.txt')
+
+        # Step 3. Run dalgona to dump intermediate FMs in fq model
+        _run_dalgona(fq_model, data, dump_fq_py, fq_dir)
+
+        # Step 4. Read results and compute qerror
+        if args.mpeir_output:
+            computer = MPEIRComputer(fp32_dir, fq_dir)
+            qerror_map = computer.run()
+            palette = YLORRD9Palette(min=0.0, max=1.0)
+            result = _build_json(
+                metric='MPEIR',
+                model=fp32_model,
+                colorscheme=palette.colorscheme(),
+                error=qerror_map)
+            with open(args.mpeir_output, "w") as f:
+                json.dump(result, f)
+
+
+if __name__ == '__main__':
+    main()
