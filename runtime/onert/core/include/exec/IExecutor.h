@@ -46,7 +46,6 @@ namespace onert
 {
 namespace exec
 {
-class IExecutionObserver;
 /**
  * @brief Struct to define interface of Executor
  */
