@@ -76,8 +76,6 @@ public:
 
 int main(const int argc, char **argv)
 {
-  const bool use_nnapi = nnfw::misc::EnvVar("USE_NNAPI").asBool(false);
-
   StderrReporter error_reporter;
 
   TFLiteRun::Args args(argc, argv);
@@ -122,16 +120,7 @@ int main(const int argc, char **argv)
     return 1;
   }
 
-  std::shared_ptr<nnfw::tflite::Session> sess;
-
-  if (use_nnapi)
-  {
-    sess = std::make_shared<nnfw::tflite::NNAPISession>(interpreter.get());
-  }
-  else
-  {
-    sess = std::make_shared<nnfw::tflite::InterpreterSession>(interpreter.get());
-  }
+  auto sess = std::make_shared<nnfw::tflite::InterpreterSession>(interpreter.get());
 
   try
   {
