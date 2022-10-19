@@ -44,7 +44,7 @@ void BatchThreadPool::worker(uint32_t thread_num)
     }
 
     // Pop a job in front of queue
-    std::function<void(uint32_t)> job = std::move(_job_queue.front());
+    auto job = std::move(_job_queue.front());
     _job_queue.pop();
     lock.unlock();
 
