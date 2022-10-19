@@ -26,29 +26,16 @@ function Usage()
     echo ""
     echo "--artifactpath            - (default={test-driver.sh's path}/../../) it should contain tests/ and Product/"
     echo ""
-    echo "Following options are needed when you want to tests of specific types. If you don't pass any one, unittest and verification will be run"
-    echo "--frameworktest           - (default=off) run framework test"
-    echo "--verification            - (default=on) run verification"
-    echo "--frameworktest_list_file - filepath of model list for test"
-    echo ""
     echo "Following option is only needed when you want to test benchmark."
     echo "--benchmark_onert_op     - (default=off) run benchmark per operation on onert"
     echo ""
     echo "etc."
-    echo "--framework_driverbin     - (default=../../Product/out/bin/tflite_run) runner for runnning framework tests"
-    echo "--verification_driverbin  - (default=../../Product/out/bin/nnapi_test) runner for runnning verification tests"
-    echo ""
     echo "--reportdir               - (default=\$ARTIFACT_PATH/report) directory to save report"
     echo ""
 }
 
 TEST_DRIVER_DIR="$( cd "$( dirname "${BASH_SOURCE}" )" && pwd )"
 ARTIFACT_PATH="$TEST_DRIVER_DIR/../../"
-FRAMEWORK_DRIVER_BIN=""
-VERIFICATION_DRIVER_BIN=""
-ALLTEST_ON="true"
-FRAMEWORKTEST_ON="false"
-VERIFICATION_ON="false"
 BENCHMARK_ONERT_OP_ON="false"
 REPORT_DIR=""
 
@@ -62,29 +49,7 @@ do
         --artifactpath=*)
             ARTIFACT_PATH=${i#*=}
             ;;
-        --framework_driverbin=*)
-            FRAMEWORK_DRIVER_BIN=${i#*=}
-            ;;
-        --verification_driverbin=*)
-            VERIFICATION_DRIVER_BIN=${i#*=}
-            ;;
-        --frameworktest)
-            ALLTEST_ON="false"
-            FRAMEWORKTEST_ON="true"
-            ;;
-        --frameworktest_list_file=*)
-            FRAMEWORKTEST_LIST_FILE=$PWD/${i#*=}
-            if [ ! -e "$FRAMEWORKTEST_LIST_FILE" ]; then
-                echo "Pass on with proper frameworktest_list_file"
-                exit 1
-            fi
-            ;;
-        --verification)
-            ALLTEST_ON="false"
-            VERIFICATION_ON="true"
-            ;;
         --benchmark_onert_op)
-            ALLTEST_ON="false"
             BENCHMARK_ONERT_OP_ON="true"
             ;;
         --reportdir=*)
@@ -109,37 +74,6 @@ if [ -z "$REPORT_DIR" ]; then
 fi
 
 source $TEST_DRIVER_DIR/common.sh
-
-# Run tflite_run with various tflite models
-if [ "$FRAMEWORKTEST_ON" == "true" ]; then
-    if [ -z "$FRAMEWORK_DRIVER_BIN" ]; then
-        FRAMEWORK_DRIVER_BIN=$ARTIFACT_PATH/Product/out/bin/tflite_run
-    fi
-
-    $TEST_DRIVER_DIR/test_framework.sh \
-        --driverbin=$FRAMEWORK_DRIVER_BIN \
-        --reportdir=$REPORT_DIR \
-        --tapname=framework_test.tap \
-        --logname=framework_test.log \
-        --testname="Frameworktest" \
-        --frameworktest_list_file=${FRAMEWORKTEST_LIST_FILE:-}
-fi
-
-# Run nnapi_test with various tflite models
-if [ "$ALLTEST_ON" == "true" ] || [ "$VERIFICATION_ON" == "true" ]; then
-    if [ -z "$VERIFICATION_DRIVER_BIN" ]; then
-        VERIFICATION_DRIVER_BIN=$ARTIFACT_PATH/Product/out/bin/nnapi_test
-    fi
-
-    # verification uses the same script as frameworktest does
-    $TEST_DRIVER_DIR/test_framework.sh \
-        --driverbin=$VERIFICATION_DRIVER_BIN \
-        --reportdir=$REPORT_DIR \
-        --tapname=verification_test.tap \
-        --logname=verification_test.log \
-        --testname="Verification" \
-        --frameworktest_list_file=${FRAMEWORKTEST_LIST_FILE:-}
-fi
 
 if [ "$BENCHMARK_ONERT_OP_ON" == "true" ]; then
     DRIVER_BIN=$ARTIFACT_PATH/Product/out/bin/tflite_run
