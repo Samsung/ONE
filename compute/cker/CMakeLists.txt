@@ -33,4 +33,4 @@ target_link_libraries(${TEST_CKER} nnfw_coverage)
 target_link_libraries(${TEST_CKER} gtest gtest_main ${LIB_PTHREAD})
 
 add_test(${TEST_CKER} ${TEST_CKER})
-install(TARGETS ${TEST_CKER} DESTINATION unittest_standalone)
+install(TARGETS ${TEST_CKER} DESTINATION unittest)

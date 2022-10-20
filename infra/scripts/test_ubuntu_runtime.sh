@@ -61,7 +61,7 @@ else
   echo "[[ ${TEST_PLATFORM}: ${BACKEND} backend test ]]"
 fi
 
-UNITTEST_SKIPLIST="Product/out/unittest/nnapi_gtest.skip.${TEST_PLATFORM}.${BACKEND}"
+UNITTEST_SKIPLIST="Product/out/nnapi-gtest/nnapi_gtest.skip.${TEST_PLATFORM}.${BACKEND}"
 TFLITE_TESTLIST="Product/out/test/list/tflite_comparator.${TEST_ARCH}.${BACKEND}.list"
 REPORT_BASE="report/${BACKEND}"
 EXECUTORS=("Linear" "Dataflow" "Parallel")

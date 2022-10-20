@@ -74,7 +74,7 @@ function NNAPIGTest()
 
   # Backup original nnapi_gtest.skip
   # TODO Pass skiplist to test-driver.sh
-  SKIPLIST_FILE="${INSTALL_PATH}/unittest/nnapi_gtest.skip"
+  SKIPLIST_FILE="${INSTALL_PATH}/nnapi-gtest/nnapi_gtest.skip"
   BACKUP_FILE="${SKIPLIST_FILE}.backup"
   if [[ "$2" != "" ]]; then
     cp ${SKIPLIST_FILE} ${BACKUP_FILE}
@@ -84,7 +84,7 @@ function NNAPIGTest()
   export BACKENDS=$1
   $INSTALL_PATH/test/onert-test unittest \
     --reportdir=$ROOT_PATH/$3 \
-    --unittestdir=$INSTALL_PATH/unittest
+    --unittestdir=$INSTALL_PATH/nnapi-gtest
   unset BACKENDS
 
   # TODO Pass skiplist to test-driver.sh
