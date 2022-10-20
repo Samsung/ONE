@@ -190,7 +190,8 @@ void ExecutionPlanner::make_execution_plan_onert_micro_split_buffer()
     if (circle_node->opcode() != luci::CircleOpcode::CIRCLECONST and
         circle_node->opcode() != luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
     {
-      luci::CircleNodeExecutionPlan execution_plan(counter_ops + input_size + output_size, _offsets[i]);
+      luci::CircleNodeExecutionPlan execution_plan(counter_ops + input_size + output_size,
+                                                   _offsets[i]);
       luci::add_execution_plan(loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]),
                                execution_plan);
       counter_ops++;
@@ -226,16 +227,20 @@ void ExecutionPlanner::make_execution_plan_onert_micro_common_buffer()
     if (circle_node->opcode() == luci::CircleOpcode::CIRCLEINPUT)
     {
       // Find input_position for proper position in execution order
-      const auto input_position = std::distance(inputs_nodes.begin(), std::find(inputs_nodes.begin(), inputs_nodes.end(), circle_node));
+      const auto input_position = std::distance(
+        inputs_nodes.begin(), std::find(inputs_nodes.begin(), inputs_nodes.end(), circle_node));
       luci::CircleNodeExecutionPlan execution_plan(input_position, _offsets[i]);
       luci::add_execution_plan(loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]),
                                execution_plan);
     }
     // Second write to actual output nodes (not luci::CircleOutput)
-    else if (std::find(output_prev_nodes.begin(), output_prev_nodes.end(), circle_node) != output_prev_nodes.end())
+    else if (std::find(output_prev_nodes.begin(), output_prev_nodes.end(), circle_node) !=
+             output_prev_nodes.end())
     {
       // Find output_position for proper position in execution order
-      const auto output_position = std::distance(output_prev_nodes.begin(), std::find(output_prev_nodes.begin(), output_prev_nodes.end(), circle_node));
+      const auto output_position =
+        std::distance(output_prev_nodes.begin(),
+                      std::find(output_prev_nodes.begin(), output_prev_nodes.end(), circle_node));
       luci::CircleNodeExecutionPlan execution_plan(input_nodes_size + output_position, _offsets[i]);
       luci::add_execution_plan(loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]),
                                execution_plan);
@@ -244,7 +249,8 @@ void ExecutionPlanner::make_execution_plan_onert_micro_common_buffer()
     else if (circle_node->opcode() != luci::CircleOpcode::CIRCLECONST and
              circle_node->opcode() != luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
     {
-      luci::CircleNodeExecutionPlan execution_plan(counter_ops + input_nodes_size + output_nodes_size, _offsets[i]);
+      luci::CircleNodeExecutionPlan execution_plan(
+        counter_ops + input_nodes_size + output_nodes_size, _offsets[i]);
       luci::add_execution_plan(loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]),
                                execution_plan);
       counter_ops++;
@@ -338,16 +344,17 @@ void ExecutionPlanner::get_default_execution_order_plan_without_inputs_and_outpu
   }
 
   // Remove input and real output nodes from _ordered_nodes
-  _ordered_nodes.erase(std::remove_if(_ordered_nodes.begin(), _ordered_nodes.end(),
-                                      [&output_prev_nodes](auto node)
-                                      {
-                                        const auto circle_node = dynamic_cast<luci::CircleNode *>(node);
+  _ordered_nodes.erase(
+    std::remove_if(_ordered_nodes.begin(), _ordered_nodes.end(),
+                   [&output_prev_nodes](auto node) {
+                     const auto circle_node = dynamic_cast<luci::CircleNode *>(node);
 
-                                        return circle_node->opcode() == luci::CircleOpcode::CIRCLEINPUT or
-                                               circle_node->opcode() == luci::CircleOpcode::CIRCLEOUTPUT or
-                                               std::find(output_prev_nodes.begin(), output_prev_nodes.end(), node) != output_prev_nodes.end();
-
-                                      }), _ordered_nodes.end());
+                     return circle_node->opcode() == luci::CircleOpcode::CIRCLEINPUT or
+                            circle_node->opcode() == luci::CircleOpcode::CIRCLEOUTPUT or
+                            std::find(output_prev_nodes.begin(), output_prev_nodes.end(), node) !=
+                              output_prev_nodes.end();
+                   }),
+    _ordered_nodes.end());
 }
 
 void ExecutionPlanner::get_usage_interval()

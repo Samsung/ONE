@@ -19,7 +19,8 @@
 namespace luci_interpreter
 {
 
-void StaticMemoryManager::base_allocate_memory(luci_interpreter::Tensor &tensor, uint8_t *buffer_ptr)
+void StaticMemoryManager::base_allocate_memory(luci_interpreter::Tensor &tensor,
+                                               uint8_t *buffer_ptr)
 {
   if (buffer_ptr == nullptr)
     assert("Buffer should be allocated\n");
@@ -60,7 +61,6 @@ void StaticMemoryManager::release_memory(luci_interpreter::Tensor &tensor)
 
 bool StaticMemoryManager::is_static_manager() const { return true; }
 
-
 void StaticMemoryManager::allocate_input_buf()
 {
   if (not _is_allocate_input)
@@ -82,9 +82,6 @@ void StaticMemoryManager::allocate_computing_buf()
     _buffer_ptr = new uint8_t[_buffer_req_size];
 }
 
-void StaticMemoryManager::release_computing_buf()
-{
-  delete[] _buffer_ptr;
-}
+void StaticMemoryManager::release_computing_buf() { delete[] _buffer_ptr; }
 
 } // namespace luci_interpreter

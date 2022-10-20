@@ -96,7 +96,7 @@ public:
   void execute() final;
   void configure() final;
 
-  void  configure_kernels();
+  void configure_kernels();
 };
 
 } // namespace luci_interpreter

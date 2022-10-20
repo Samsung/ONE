@@ -33,7 +33,8 @@ Interpreter::Interpreter(const char *model_data_raw, bool allocate_input)
   loader.load();
 }
 
-Interpreter::Interpreter(const char *model_data_raw, IMemoryManager *memory_manager, bool allocate_input)
+Interpreter::Interpreter(const char *model_data_raw, IMemoryManager *memory_manager,
+                         bool allocate_input)
 {
   assert(memory_manager && "Use Interpreter::Interpreter(module) constructor instead");
   _runtime_module = std::make_unique<RuntimeModule>();

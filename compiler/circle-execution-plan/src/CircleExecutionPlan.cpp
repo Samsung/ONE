@@ -36,10 +36,12 @@ int entry(int argc, char **argv)
   arser.add_argument("input").help("Input circle model");
   arser.add_argument("output").help("Output circle model");
   arser.add_argument("--platform").default_value("linux").help("Platform name: linux mcu cmsisnn");
-  arser.add_argument("--buffer_type").default_value("common").help("Buffer type name (only onert-micro option):"
-                                                                   "common - a single buffer is considered for all allocations"
-                                                                   "split - there are three buffers: for input,"
-                                                                   " for output and for intermediate calculations");
+  arser.add_argument("--buffer_type")
+    .default_value("common")
+    .help("Buffer type name (only onert-micro option):"
+          "common - a single buffer is considered for all allocations"
+          "split - there are three buffers: for input,"
+          " for output and for intermediate calculations");
   arser.add_argument("--runtime")
     .default_value("onert_micro")
     .help("Target runtime name: luci-interpreter onert-micro");
@@ -121,10 +123,12 @@ int entry(int argc, char **argv)
   if (buffer_type_name == "split")
   {
     buffer_type = circle_planner::SupportedBuffersType::SPLIT;
-  } else if (buffer_type_name == "common")
+  }
+  else if (buffer_type_name == "common")
   {
     buffer_type = circle_planner::SupportedBuffersType::COMMON;
-  } else
+  }
+  else
   {
     std::cerr << "ERROR: Invalid buffer type name '" << buffer_type_name << "'" << std::endl;
     return EXIT_FAILURE;
@@ -145,7 +149,8 @@ int entry(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  if (buffer_type == circle_planner::SupportedBuffersType::SPLIT and runtime_type == circle_planner::SupportedRuntimeType::LUCI_INTERPRETER)
+  if (buffer_type == circle_planner::SupportedBuffersType::SPLIT and
+      runtime_type == circle_planner::SupportedRuntimeType::LUCI_INTERPRETER)
     throw std::runtime_error("Split buffer type can only be used with onert-micro runtime");
 
   bool is_save_allocations = false;

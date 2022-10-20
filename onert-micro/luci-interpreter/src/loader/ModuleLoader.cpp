@@ -23,8 +23,7 @@ namespace luci_interpreter
 ModuleLoader::ModuleLoader(const char *model_data_raw, RuntimeModule *runtime_module,
                            IMemoryManager *memory_manager)
   : _model_data_raw(model_data_raw), _runtime_module(runtime_module),
-    _memory_manager(memory_manager),
-    _index_to_tensor(std::unordered_map<int32_t, Tensor *>{})
+    _memory_manager(memory_manager), _index_to_tensor(std::unordered_map<int32_t, Tensor *>{})
 {
 }
 
@@ -63,7 +62,8 @@ void ModuleLoader::load()
       BaseRuntimeGraph *runtime_graph = _runtime_graphs.at(i);
       runtime_graph->configure();
     }
-  } else
+  }
+  else
   {
     // Static memory manager case
     for (size_t i = 0; i < reader.num_subgraph(); ++i)

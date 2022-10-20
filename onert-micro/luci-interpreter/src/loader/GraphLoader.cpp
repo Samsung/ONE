@@ -256,8 +256,8 @@ void GraphLoader::loadOperators()
         if (not _memory_manager->is_static_manager() and
             isCouldBeEmplaceOperation(_reader->builtin_code(op)) and op->outputs()->size() == 1 and
             isCouldBeEmplaceTensor(input_index) and
-            not (std::find(graph_input_tensors.begin(), graph_input_tensors.end(), input_tensor) !=
-                                                    graph_input_tensors.end()))
+            not(std::find(graph_input_tensors.begin(), graph_input_tensors.end(), input_tensor) !=
+                graph_input_tensors.end()))
         {
           is_inplace = true;
         }

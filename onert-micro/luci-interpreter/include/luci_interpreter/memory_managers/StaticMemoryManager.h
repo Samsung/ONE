@@ -31,25 +31,24 @@ public:
   StaticMemoryManager() = delete;
 
   // To initialize static memory manager with preallocated buffer.
-  // Using Static Memory Manager with common buffer for input, output, and for intermediate computations tensors.
-  explicit StaticMemoryManager(uint8_t *buffer_ptr) : _buffer_ptr(buffer_ptr), _input_buffer_ptr(nullptr),
-                                                      _output_buffer_ptr(nullptr), _is_owning_buffers(false)
+  // Using Static Memory Manager with common buffer for input, output, and for intermediate
+  // computations tensors.
+  explicit StaticMemoryManager(uint8_t *buffer_ptr)
+    : _buffer_ptr(buffer_ptr), _input_buffer_ptr(nullptr), _output_buffer_ptr(nullptr),
+      _is_owning_buffers(false)
   { /* Do nothing */
   }
 
   // To initialize static memory manager with precalculating required buffers size for input,
   // output and for intermediate computations buffers.
-  // Using Static Memory Manager with common buffer for input, output, and for intermediate computations
+  // Using Static Memory Manager with common buffer for input, output, and for intermediate
+  // computations
   // TODO remove this *_req_size to reade it from circle file
-  explicit StaticMemoryManager(int32_t input_req_size,
-                               int32_t buffer_req_size,
-                               int32_t output_req_size) : _input_buffer_ptr(nullptr),
-                                                          _buffer_ptr(nullptr),
-                                                          _output_buffer_ptr(nullptr),
-                                                          _input_req_size(input_req_size),
-                                                          _buffer_req_size(buffer_req_size),
-                                                          _output_req_size(output_req_size),
-                                                          _is_owning_buffers(true)
+  explicit StaticMemoryManager(int32_t input_req_size, int32_t buffer_req_size,
+                               int32_t output_req_size)
+    : _input_buffer_ptr(nullptr), _buffer_ptr(nullptr), _output_buffer_ptr(nullptr),
+      _input_req_size(input_req_size), _buffer_req_size(buffer_req_size),
+      _output_req_size(output_req_size), _is_owning_buffers(true)
   { /* Do nothing */
   }
 
@@ -60,8 +59,8 @@ public:
   // Help function to identify is static memory manager
   bool is_static_manager() const final;
 
-
-  // Methods for static memory managers with split buffers (input, output and for intermediate calculations)
+  // Methods for static memory managers with split buffers (input, output and for intermediate
+  // calculations)
 
   // To identify memory managers with split buffers
   bool is_owning_buffers() const { return _is_owning_buffers; }
@@ -72,11 +71,14 @@ public:
   void allocate_memory_for_output(luci_interpreter::Tensor &tensor);
 
   // Methods to set data pointer for tensor
-  // To allocate input memory buffer with _input_req_size * size_type bytes. Result pointer - _input_buffer_ptr
+  // To allocate input memory buffer with _input_req_size * size_type bytes. Result pointer -
+  // _input_buffer_ptr
   void allocate_input_buf();
-  // To allocate input memory buffer with _output_req_size * size_type bytes. Result pointer - _output_buffer_ptr
+  // To allocate input memory buffer with _output_req_size * size_type bytes. Result pointer -
+  // _output_buffer_ptr
   void allocate_output_buf();
-  // To allocate intermediate computing memory buffer with _buffer_req_size * size_type bytes. Result pointer - _buffer_ptr
+  // To allocate intermediate computing memory buffer with _buffer_req_size * size_type bytes.
+  // Result pointer - _buffer_ptr
   void allocate_computing_buf();
 
   // To delete memory for intermediate computing buffer

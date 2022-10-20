@@ -24,8 +24,7 @@ namespace luci_interpreter
 {
 
 // BaseRuntimeGraph
-BaseRuntimeGraph::BaseRuntimeGraph(IMemoryManager *memory_manager)
-  : _memory_manager(memory_manager)
+BaseRuntimeGraph::BaseRuntimeGraph(IMemoryManager *memory_manager) : _memory_manager(memory_manager)
 {
 }
 
@@ -67,10 +66,7 @@ void BaseRuntimeGraph::addKernel(std::unique_ptr<Kernel> &&kernel)
 }
 
 // RuntimeGraph
-RuntimeGraph::RuntimeGraph(IMemoryManager *memory_manager)
-  : BaseRuntimeGraph(memory_manager)
-{
-}
+RuntimeGraph::RuntimeGraph(IMemoryManager *memory_manager) : BaseRuntimeGraph(memory_manager) {}
 
 RuntimeGraph::~RuntimeGraph()
 {
