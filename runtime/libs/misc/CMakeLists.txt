@@ -19,4 +19,4 @@ target_link_libraries(nnfw_lib_misc_test PRIVATE nnfw_coverage)
 target_link_libraries(nnfw_lib_misc_test PUBLIC gtest gtest_main ${LIB_PTHREAD})
 
 add_test(nnfw_lib_misc_test nnfw_lib_misc_test)
-install(TARGETS nnfw_lib_misc_test DESTINATION unittest_standalone)
+install(TARGETS nnfw_lib_misc_test DESTINATION unittest)

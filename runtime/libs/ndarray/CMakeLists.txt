@@ -23,6 +23,6 @@ target_link_libraries(ndarray_test PRIVATE nnfw_coverage)
 target_link_libraries(ndarray_test PUBLIC gtest gtest_main ${LIB_PTHREAD})
 
 add_test(ndarray_test ndarray_test)
-install(TARGETS ndarray_test DESTINATION unittest_standalone)
+install(TARGETS ndarray_test DESTINATION unittest)
 
 add_subdirectory(example)

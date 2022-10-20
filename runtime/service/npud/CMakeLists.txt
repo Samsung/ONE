@@ -37,4 +37,4 @@ target_link_libraries(npud_test PRIVATE ${GLIB2.0_LIBRARIES})
 target_link_libraries(npud_test PRIVATE ${LIB_PTHREAD})
 target_link_libraries(npud_test PRIVATE gtest_main dl)
 
-install(TARGETS npud_test DESTINATION unittest_standalone)
+install(TARGETS npud_test DESTINATION unittest)

@@ -240,22 +240,22 @@ install -m 0644 ./nnfw-plugin.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw-plugin
 
 %if %{test_build} == 1
 mkdir -p %{test_install_path}/bin
+mkdir -p %{test_install_path}/nnapi-gtest
 mkdir -p %{test_install_path}/unittest
-mkdir -p %{test_install_path}/unittest_standalone
 mkdir -p %{test_install_path}/test
 
 install -m 755 build/out/bin/nnpackage_run %{test_install_path}/bin
 install -m 755 build/out/bin/tflite_comparator %{test_install_path}/bin
 install -m 755 build/out/bin/tflite_run %{test_install_path}/bin
-install -m 755 build/out/unittest/* %{test_install_path}/unittest
-install -m 755 build/out/unittest_standalone/*_test %{test_install_path}/unittest_standalone
-install -m 755 build/out/unittest_standalone/test_* %{test_install_path}/unittest_standalone
+install -m 755 build/out/nnapi-gtest/* %{test_install_path}/nnapi-gtest
+install -m 755 build/out/unittest/*_test %{test_install_path}/unittest
+install -m 755 build/out/unittest/test_* %{test_install_path}/unittest
 cp -r build/out/test/* %{test_install_path}/test
-cp -r build/out/unittest_standalone/nnfw_api_gtest_models %{test_install_path}/unittest_standalone
+cp -r build/out/unittest/nnfw_api_gtest_models %{test_install_path}/unittest
 
 # Share test script with ubuntu (ignore error if there is no list for target)
-cp tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{test_install_path}/unittest/.
-cp %{test_install_path}/unittest/nnapi_gtest.skip.%{target_arch}-linux.cpu %{test_install_path}/unittest/nnapi_gtest.skip
+cp tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{test_install_path}/nnapi-gtest/.
+cp %{test_install_path}/nnapi-gtest/nnapi_gtest.skip.%{target_arch}-linux.cpu %{test_install_path}/nnapi-gtest/nnapi_gtest.skip
 tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
 
 %if %{coverage_build} == 1

@@ -17,7 +17,7 @@ pushd ${ROOT_PATH} > /dev/null
 echo ""
 echo "==== Run standalone unittest begin ===="
 echo ""
-Product/out/test/onert-test unittest --unittestdir=Product/out/unittest_standalone
+Product/out/test/onert-test unittest --unittestdir=Product/out/unittest
 echo ""
 echo "==== Run standalone unittest end ===="
 echo ""
@@ -33,7 +33,7 @@ BACKENDS=(acl_cl acl_neon cpu)
 
 # Get the intersect of framework test list files
 TESTLIST_PREFIX="Product/out/test/list/tflite_comparator.${TEST_ARCH}"
-SKIPLIST_PREFIX="Product/out/unittest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}"
+SKIPLIST_PREFIX="Product/out/nnapi-gtest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}"
 sort $TESTLIST_PREFIX.${BACKENDS[0]}.list > $TESTLIST_PREFIX.intersect.list
 sort $SKIPLIST_PREFIX.${BACKENDS[0]} > $SKIPLIST_PREFIX.union
 for BACKEND in "${BACKENDS[@]:1}"; do
@@ -59,5 +59,5 @@ export OP_BACKEND_Pool2D="acl_cl"
 export OP_BACKEND_FullyConnected="acl_neon"
 export ACL_LAYOUT="NCHW"
 export RUY_THREADS=4
-NNAPIGTest "acl_cl;acl_neon;cpu" "Product/out/unittest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}.union" "report/mixed"
+NNAPIGTest "acl_cl;acl_neon;cpu" "Product/out/nnapi-gtest/nnapi_gtest.skip.${TEST_ARCH}-${TEST_OS}.union" "report/mixed"
 TFLiteModelVerification "acl_cl;acl_neon;cpu" "${TESTLIST_PREFIX}.intersect.list" "report/mixed"

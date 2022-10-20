@@ -57,4 +57,4 @@ target_link_libraries(${TEST_ONERT_CORE} nnfw_coverage)
 target_link_libraries(${TEST_ONERT_CORE} gtest gtest_main dl ${LIB_PTHREAD})
 
 add_test(${TEST_ONERT_CORE} ${TEST_ONERT_CORE})
-install(TARGETS ${TEST_ONERT_CORE} DESTINATION unittest_standalone)
+install(TARGETS ${TEST_ONERT_CORE} DESTINATION unittest)
