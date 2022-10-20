@@ -74,8 +74,7 @@ class MPEIRComputer(QErrorComputer):
                 fp32_max = np.max(fp32_data.reshape(-1))
 
                 # Peak Error-to-Interval Ratio (PEIR)
-                #
-                # DESIGN NOTE: PEIR is an analogue of PSNR
+                # NOTE: PEIR is an analogue of PSNR (Peak Signal to Noise Ratio)
                 PEAK_ERROR = np.max(diff)
                 INTERVAL = fp32_max - fp32_min
 

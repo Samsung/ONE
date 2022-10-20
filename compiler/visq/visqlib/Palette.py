@@ -58,11 +58,8 @@ class UniformPalette(Palette):
 
 # Palette for ylorrd9 colorscheme
 class YLORRD9Palette(UniformPalette):
-    def __init__(self, **kwargs):
-        # **kwargs should have min/max
-        assert 'min' in kwargs
-        assert 'max' in kwargs
-        if kwargs['min'] >= kwargs['max']:
+    def __init__(self, qerror_min, qerror_max):
+        if qerror_min >= qerror_max:
             raise RuntimeError('min must be less than max')
 
         # From https://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=9
@@ -70,4 +67,4 @@ class YLORRD9Palette(UniformPalette):
             "#ffffcc", "#ffeda0", "#fed976", "#feb24c", "#fd8d3c", "#fc4e2a", "#e31a1c",
             "#bd0026", "#800026"
         ]
-        super().__init__(kwargs['min'], kwargs['max'], colors)
+        super().__init__(qerror_min, qerror_max, colors)

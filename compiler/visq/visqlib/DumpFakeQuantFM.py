@@ -46,7 +46,7 @@ def _name_before_fq(name):
 #  tensors.txt
 #  <TENSOR_NAME>.npy
 # NOTE TENSOR_NAME is transformed by to_filename
-class DumpFakeQuantFM(object):
+class DumpFakeQuantFM:
     def StartAnalysis(self, args):
         self._dir = Path(args)
         self._num_data = 0
@@ -56,6 +56,7 @@ class DumpFakeQuantFM(object):
     def EndNetworkExecution(self, outputs: list):
         self._num_data += 1
 
+    # TODO Use DequantizePost when dalgona supports it
     def DefaultOpPost(self, name, opcode, inputs, output):
         if opcode == 'Dequantize':
             orig_name = _name_before_fq(name)

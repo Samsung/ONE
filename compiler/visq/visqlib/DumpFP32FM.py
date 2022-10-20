@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Script that dumps FM of fp32 model
+# Script that dumps FM of FP32 model
 # NOTE This script runs on dalgona
 
 import numpy as np
@@ -21,7 +21,7 @@ from pathlib import Path
 from Util import to_filename
 
 
-# Dump fp32 model's intermediate FM data and their names
+# Dump FP32 model's intermediate FM data and their names
 #
 # Before
 # self._dir/
@@ -31,7 +31,7 @@ from Util import to_filename
 #  tensors.txt
 #  <TENSOR_NAME>.npy
 # NOTE TENSOR_NAME is transformed by to_filename
-class DumpFP32FM(object):
+class DumpFP32FM:
     def StartAnalysis(self, args):
         self._dir = Path(args)
         self._num_data = 0

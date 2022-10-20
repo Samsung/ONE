@@ -26,8 +26,8 @@ def valid_attr(args, attr):
     return hasattr(args, attr) and getattr(args, attr)
 
 
-# Recursively visit items and round floats with ndigits=4
-def pretty_float(item):
+# Recursively visit items and round floats with ndigits
+def pretty_float(item, ndigits=4):
     if isinstance(item, dict):
         return {k: pretty_float(v) for k, v in item.items()}
     if isinstance(item, list):
