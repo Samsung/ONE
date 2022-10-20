@@ -19,6 +19,7 @@
 
 #include "Signal.h"
 #include "DBus.h"
+#include "DevManager.h"
 
 #include <glib.h>
 #include <gio/gio.h>
@@ -39,6 +40,8 @@ public:
   bool isRunning() { return _isRunning.load(); }
   bool isServiceReady() { return _dbus->isReady(); }
 
+  DevManager *dev() { return _devManager.get(); }
+
   static Server &instance(void)
   {
     static Server server;
@@ -53,6 +56,7 @@ private:
   std::unique_ptr<GMainLoop, void (*)(GMainLoop *)> _mainloop;
   std::unique_ptr<Signal> _signal;
   std::unique_ptr<DBus> _dbus;
+  std::unique_ptr<DevManager> _devManager;
 };
 
 } // namespace core

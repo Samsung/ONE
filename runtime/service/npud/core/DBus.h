@@ -17,8 +17,7 @@
 #ifndef __ONE_SERVICE_NPUD_CORE_DBUS_H__
 #define __ONE_SERVICE_NPUD_CORE_DBUS_H__
 
-#include "dbus-core.h"
-
+#include <dbus-core.h>
 #include <gio/gio.h>
 #include <memory>
 #include <atomic>
@@ -34,6 +33,9 @@ public:
   DBus() noexcept;
   ~DBus() noexcept;
 
+  DBus(const DBus &) = delete;
+  DBus &operator=(const DBus &) = delete;
+
   bool isReady() { return _isReady.load(); }
 
   static void on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer user_data);
@@ -45,6 +47,14 @@ public:
                                                       GUnixFDList *fd_list);
   static gboolean on_handle_context_create(NpudCore *object, GDBusMethodInvocation *invocation,
                                            gint arg_device_id, gint arg_priority);
+  static gboolean on_handle_context_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                            guint64 arg_ctx);
+  static gboolean on_handle_network_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                           guint64 arg_ctx, const gchar *arg_binary_path);
+  static gboolean on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                            guint64 arg_ctx, guint64 arg_nw_handle);
+  static gboolean on_handle_execute_run(NpudCore *object, GDBusMethodInvocation *invocation,
+                                        guint64 arg_ctx, guint64 arg_nw_handle);
 
 private:
   guint _gdbus_id;

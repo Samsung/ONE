@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_UTIL_LOGGING_H__
-#define __ONE_SERVICE_NPUD_UTIL_LOGGING_H__
+#ifndef __ONE_SERVICE_NPUD_CORE_UTIL_LOGGING_H__
+#define __ONE_SERVICE_NPUD_CORE_UTIL_LOGGING_H__
 
 #include <iostream>
 #include <cstring>
@@ -23,6 +23,8 @@
 #include "ConfigSource.h"
 
 namespace npud
+{
+namespace core
 {
 namespace util
 {
@@ -68,21 +70,22 @@ inline std::string decorated_name(const char *input)
 }
 } // namespace logging
 } // namespace util
+} // namespace core
 } // namespace npud
 
-#define VERBOSE(name)                       \
-  if (::npud::util::logging::ctx.enabled()) \
-  std::cout << ::npud::util::logging::decorated_name(#name)
+#define VERBOSE(name)                             \
+  if (::npud::core::util::logging::ctx.enabled()) \
+  std::cout << ::npud::core::util::logging::decorated_name(#name)
 
-#define VERBOSE_F()                         \
-  if (::npud::util::logging::ctx.enabled()) \
-  std::cout << ::npud::util::logging::decorated_name(__func__)
+#define VERBOSE_F()                               \
+  if (::npud::core::util::logging::ctx.enabled()) \
+  std::cout << ::npud::core::util::logging::decorated_name(__func__)
 
-#define WHEN_LOG_ENABLED(METHOD)            \
-  if (::npud::util::logging::ctx.enabled()) \
-    do                                      \
-    {                                       \
-      METHOD;                               \
+#define WHEN_LOG_ENABLED(METHOD)                  \
+  if (::npud::core::util::logging::ctx.enabled()) \
+    do                                            \
+    {                                             \
+      METHOD;                                     \
   } while (0)
 
-#endif // __ONE_SERVICE_NPUD_UTIL_LOGGING_H__
+#endif // __ONE_SERVICE_NPUD_CORE_UTIL_LOGGING_H__

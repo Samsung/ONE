@@ -48,7 +48,7 @@ void Signal::init(void)
 
 void Signal::handleSignal(int signum)
 {
-  VERBOSE(signal) << "Signal received: " << strsignal(signum) << "(" << signum << ")\n";
+  VERBOSE(Signal) << "Signal received: " << strsignal(signum) << "(" << signum << ")\n";
   Server::instance().stop();
 }
 

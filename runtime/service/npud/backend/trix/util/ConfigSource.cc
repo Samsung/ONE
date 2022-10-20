@@ -27,6 +27,10 @@
 
 namespace npud
 {
+namespace backend
+{
+namespace trix
+{
 namespace util
 {
 
@@ -106,9 +110,15 @@ int getConfigInt(const std::string &key)
 std::string getConfigString(const std::string &key) { return getConfigOrDefault(key); }
 
 } // namespace util
+} // namespace trix
+} // namespace backend
 } // namespace npud
 
 namespace npud
+{
+namespace backend
+{
+namespace trix
 {
 namespace util
 {
@@ -123,4 +133,6 @@ namespace config
 
 } // namespace config
 } // namespace util
+} // namespace trix
+} // namespace backend
 } // namespace npud

@@ -14,27 +14,39 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
-#define __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
+#ifndef __ONE_SERVICE_NPUD_CORE_IR_DATATYPE_H__
+#define __ONE_SERVICE_NPUD_CORE_IR_DATATYPE_H__
+
+#include <cstdlib>
 
 namespace npud
 {
 namespace core
 {
-
-class Signal
+namespace ir
 {
-public:
-  Signal() noexcept;
 
-  Signal(const Signal &) = delete;
-  Signal &operator=(const Signal &) = delete;
-
-  void init(void);
-  static void handleSignal(int signum);
+enum class DataType
+{
+  FLOAT32 = 0,
+  INT32 = 1,
+  UINT32 = 2,
+  QUANT_UINT8_ASYMM = 3,
+  BOOL8 = 4,
+  UINT8 = 5,
+  QUANT_INT8_SYMM = 6,
+  FLOAT16 = 7,
+  INT64 = 8,
+  QUANT_INT8_ASYMM = 9,
+  QUANT_INT16_ASYMM = 10,
+  QUANT_INT8_SYMM_PER_CHANNEL = 11,
+  QUANT_INT16_SYMM = 12,
 };
 
+size_t sizeOfDataType(DataType data_type);
+
+} // namespace ir
 } // namespace core
 } // namespace npud
 
-#endif // __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
+#endif // __ONE_SERVICE_NPUD_CORE_IR_DATATYPE_H__

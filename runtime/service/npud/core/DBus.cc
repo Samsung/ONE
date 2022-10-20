@@ -15,6 +15,7 @@
  */
 
 #include "DBus.h"
+#include "Server.h"
 
 #include <atomic>
 #include <util/Logging.h>
@@ -51,8 +52,12 @@ void DBus::on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer us
   NpudCore *core = npud_core_skeleton_new();
   NpudCoreIface *iface = NPUD_CORE_GET_IFACE(core);
 
-  iface->handle_context_create = &on_handle_context_create;
   iface->handle_device_get_available_list = &on_handle_device_get_available_list;
+  iface->handle_context_create = &on_handle_context_create;
+  iface->handle_context_destroy = &on_handle_context_destroy;
+  iface->handle_network_create = &on_handle_network_create;
+  iface->handle_network_destroy = &on_handle_network_destroy;
+  iface->handle_execute_run = &on_handle_execute_run;
 
   if (!g_dbus_interface_skeleton_export(G_DBUS_INTERFACE_SKELETON(core), conn, "/org/tizen/npud",
                                         &error))
@@ -93,6 +98,51 @@ gboolean DBus::on_handle_context_create(NpudCore *object, GDBusMethodInvocation 
   // TODO Implement details
   guint64 out_ctx = 100;
   npud_core_complete_context_create(object, invocation, out_ctx);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_context_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                         guint64 arg_ctx)
+{
+  VERBOSE(DBus) << "on_handle_context_destroy with " << arg_ctx << std::endl;
+  // TODO Implement details
+  npud_core_complete_context_destroy(object, invocation, 0);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_network_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                        guint64 arg_ctx, const gchar *arg_binary_path)
+{
+  VERBOSE(DBus) << "on_handle_network_create with " << arg_ctx << ", " << arg_binary_path
+                << std::endl;
+  std::string binary_path(arg_binary_path);
+  // // method 1
+  // ModelID modelID = Server::instance().dev()->getBackend(DevID(arg_ctx))->registerModel(),
+  // binary_path);
+  // // method 2
+  // Device *dev = Server::instance().dev()->getDevice(DevID(arg_ctx));
+  // Backend *
+  // DevContext &context = Server::instance().dev()->getContext(DevID(arg_ctx));
+  // context.registerModel(binary_path);
+  ModelID modelID = 100;
+  npud_core_complete_network_create(object, invocation, guint64(modelID), 0);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                         guint64 arg_ctx, guint64 arg_nw_handle)
+{
+  VERBOSE(DBus) << "on_handle_network_destroy with " << arg_ctx << ", " << arg_nw_handle
+                << std::endl;
+  // Server::instance().dev()->unRegisterModel(DevID(arg_ctx), ModelID(arg_nw_handle));
+  npud_core_complete_network_destroy(object, invocation, 0);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_execute_run(NpudCore *object, GDBusMethodInvocation *invocation,
+                                     guint64 arg_ctx, guint64 arg_nw_handle)
+{
+  VERBOSE(DBus) << "on_handle_execute_run with " << arg_ctx << ", " << arg_nw_handle << std::endl;
   return TRUE;
 }
 

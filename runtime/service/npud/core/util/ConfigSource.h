@@ -14,27 +14,44 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
-#define __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
+#ifndef __ONE_SERVICE_NPUD_CORE_UTIL_CONFIG_SOURCE_H__
+#define __ONE_SERVICE_NPUD_CORE_UTIL_CONFIG_SOURCE_H__
+
+#include <string>
 
 namespace npud
 {
 namespace core
 {
-
-class Signal
+namespace util
 {
-public:
-  Signal() noexcept;
 
-  Signal(const Signal &) = delete;
-  Signal &operator=(const Signal &) = delete;
+bool getConfigBool(const std::string &key);
+int getConfigInt(const std::string &key);
+std::string getConfigString(const std::string &key);
 
-  void init(void);
-  static void handleSignal(int signum);
-};
-
+} // namespace util
 } // namespace core
 } // namespace npud
 
-#endif // __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
+namespace npud
+{
+namespace core
+{
+namespace util
+{
+namespace config
+{
+
+#define CONFIG(Name, Type, Default) extern const char *Name;
+
+#include "Config.lst"
+
+#undef CONFIG
+
+} // namespace config
+} // namespace util
+} // namespace core
+} // namespace npud
+
+#endif // __ONE_SERVICE_NPUD_CORE_UTIL_CONFIG_SOURCE_H__

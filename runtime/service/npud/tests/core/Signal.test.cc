@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "core/Server.h"
-#include "core/Signal.h"
+#include <core/Server.h>
+#include <core/Signal.h>
 
 #include <gtest/gtest.h>
 #include <thread>

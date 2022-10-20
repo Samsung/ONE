@@ -14,27 +14,42 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
-#define __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
+#ifndef __ONE_SERVICE_NPUD_CORE_DYNAMIC_LOADER_H__
+#define __ONE_SERVICE_NPUD_CORE_DYNAMIC_LOADER_H__
+
+#include "Backend.h"
+
+#include <dlfcn.h>
+#include <string>
+#include <memory>
 
 namespace npud
 {
 namespace core
 {
 
-class Signal
+using DLHandle = void *;
+
+class DynamicLoader
 {
 public:
-  Signal() noexcept;
+  DynamicLoader(const char *file, int flags = RTLD_LAZY);
+  ~DynamicLoader();
 
-  Signal(const Signal &) = delete;
-  Signal &operator=(const Signal &) = delete;
+  DynamicLoader(const DynamicLoader &) = delete;
+  // DynamicLoader &operator=(const DynamicLoader &) = delete;
 
-  void init(void);
-  static void handleSignal(int signum);
+  std::shared_ptr<Backend> getInstance();
+
+private:
+  DLHandle _handle;
+  std::string _filepath;
+  std::string _allocSymbol;
+  std::string _deallocSymbol;
+  std::shared_ptr<Backend> _backend;
 };
 
 } // namespace core
 } // namespace npud
 
-#endif // __ONE_SERVICE_NPUD_CORE_SIGNAL_H__
+#endif // __ONE_SERVICE_NPUD_CORE_DYNAMIC_LOADER_H__

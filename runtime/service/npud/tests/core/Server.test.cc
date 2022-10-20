@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#include "core/Server.h"
-
+#include <core/Server.h>
 #include <gtest/gtest.h>
 #include <thread>
 
