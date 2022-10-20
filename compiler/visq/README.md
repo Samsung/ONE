@@ -19,3 +19,4 @@ q: Result of quantized model
 
 - MPEIR: Mean Peak Error to Interval Ratio = Average(max(|f - q|) / (max(f) - min(f) + epsilon))
 epsilon: 1e-6
+- MSE: Mean Squared Error = Average(square(f - q))
