@@ -70,7 +70,9 @@ public:
     _scratchpad_helper = std::make_unique<ScratchpadHelperLinux>();
   }
 
-  explicit ExecutionPlanner(loco::Graph *graph, TargetPlatform target_platform) : _graph(graph)
+  explicit ExecutionPlanner(loco::Graph *graph, TargetPlatform target_platform,
+                            SupportedRuntimeType runtime_type, SupportedBuffersType buffers_type)
+    : _graph(graph), _runtime_type(runtime_type), _buffers_type(buffers_type)
   {
     switch (target_platform.platform_type)
     {
@@ -107,9 +109,29 @@ public:
   void create_json_allocation_file(const std::string &json_path);
 
 private:
+  // Save execution plan for onert-micro runtime base function.
+  //
+  // NOTE: First, according to ordered_node, the input nodes are written,
+  // then all outputs, finally all nodes in execution order.
+  // Constants are not written.
+  void make_execution_plan_onert_micro_base();
+
+  // Save execution plan for onert-micro runtime for common buffer type.
+  void make_execution_plan_onert_micro_common_buffer();
+
+  // Save execution plan for onert-micro runtime for common split type.
+  void make_execution_plan_onert_micro_split_buffer();
+
+  // Save execution plan for luci-interpreter runtime
+  void make_execution_plan_luci_interpreter();
+
   // Method gets default execution order plan and saves it in _ordered_nodes vector.
   // There can be different variants of execution order and this method provides main one.
   void get_default_execution_order_plan();
+
+  // Method gets default execution order plan,
+  // but without inputs and output nodes and saves it in _ordered_nodes vector
+  void get_default_execution_order_plan_without_inputs_and_outputs();
 
   // Method provides nodes with usage interval information.
   void get_usage_interval();
@@ -163,6 +185,12 @@ private:
 
   // Calculate size of scratchpad tensors for current platform
   std::unique_ptr<IScratchpadHelper> _scratchpad_helper;
+
+  // Supported runtime type
+  SupportedRuntimeType _runtime_type;
+
+  // Supported buffers type
+  SupportedBuffersType _buffers_type;
 
   // Required memory size.
   uint32_t _required_size = 0;

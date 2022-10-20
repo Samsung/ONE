@@ -36,6 +36,29 @@ int entry(int argc, char **argv)
   arser.add_argument("input").help("Input circle model");
   arser.add_argument("output").help("Output circle model");
   arser.add_argument("--platform").default_value("linux").help("Platform name: linux mcu cmsisnn");
+  arser.add_argument("--buffer_type")
+    .default_value("common")
+    .help("Buffer type name (only onert-micro option):"
+          "common - a single buffer is considered for all allocations"
+          "split - there are three buffers: for input,"
+          " for output and for intermediate calculations");
+  arser.add_argument("--runtime")
+    .default_value("onert_micro")
+    .help("Target runtime name: luci-interpreter onert-micro");
+  arser.add_argument("--null_const")
+    .nargs(1)
+    .type(arser::DataType::BOOL)
+    .required(false)
+    .default_value(true)
+    .help("Whether or not to take into account constants in memory allocation. "
+          "Default value - true, constants are not counted when allocating memory");
+  arser.add_argument("--null_input")
+    .nargs(1)
+    .type(arser::DataType::BOOL)
+    .required(false)
+    .default_value(false)
+    .help("Whether or not to take into account inputs in memory allocation. "
+          "Default value - false, inputs are counted when allocating memory");
   arser.add_argument("--use_dsp")
     .nargs(1)
     .type(arser::DataType::BOOL)
@@ -64,7 +87,11 @@ int entry(int argc, char **argv)
   const std::string input_path = arser.get<std::string>("input");
   const std::string output_path = arser.get<std::string>("output");
   const std::string platform_name = arser.get<std::string>("--platform");
+  const std::string buffer_type_name = arser.get<std::string>("--buffer_type");
+  const std::string runtime_name = arser.get<std::string>("--runtime");
   const bool use_dsp = arser.get<bool>("--use_dsp");
+  const bool is_null_const = arser.get<bool>("--null_const");
+  const bool is_null_input = arser.get<bool>("--null_input");
   const std::string json_path = arser.get<std::string>("--save_allocations");
 
   if (platform_name != "cmsisnn" && use_dsp)
@@ -91,6 +118,40 @@ int entry(int argc, char **argv)
     std::cerr << "ERROR: Invalid platform name '" << platform_name << "'" << std::endl;
     return EXIT_FAILURE;
   }
+
+  circle_planner::SupportedBuffersType buffer_type;
+  if (buffer_type_name == "split")
+  {
+    buffer_type = circle_planner::SupportedBuffersType::SPLIT;
+  }
+  else if (buffer_type_name == "common")
+  {
+    buffer_type = circle_planner::SupportedBuffersType::COMMON;
+  }
+  else
+  {
+    std::cerr << "ERROR: Invalid buffer type name '" << buffer_type_name << "'" << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  circle_planner::SupportedRuntimeType runtime_type;
+  if (runtime_name == "onert-micro")
+  {
+    runtime_type = circle_planner::SupportedRuntimeType::ONERT_MICRO;
+  }
+  else if (runtime_name == "luci-interpreter")
+  {
+    runtime_type = circle_planner::SupportedRuntimeType::LUCI_INTERPRETER;
+  }
+  else
+  {
+    std::cerr << "ERROR: Invalid runtime name '" << runtime_name << "'" << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  if (buffer_type == circle_planner::SupportedBuffersType::SPLIT and
+      runtime_type == circle_planner::SupportedRuntimeType::LUCI_INTERPRETER)
+    throw std::runtime_error("Split buffer type can only be used with onert-micro runtime");
 
   bool is_save_allocations = false;
 
@@ -131,7 +192,9 @@ int entry(int argc, char **argv)
   auto module = importer.importModule(circle_model);
 
   // Do main job
-  circle_planner::ExecutionPlanner execution_planner(module->graph(), {platform_type, use_dsp});
+  circle_planner::ExecutionPlanner execution_planner(module->graph(), {platform_type, use_dsp},
+                                                     runtime_type, buffer_type);
+  execution_planner.change_planning_mode(is_null_const, is_null_input, false);
   execution_planner.make_execution_plan();
 
   if (is_save_allocations)
