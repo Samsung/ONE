@@ -27,6 +27,18 @@ enum SupportedPlatformType
   CMSISNN
 };
 
+enum SupportedRuntimeType
+{
+  ONERT_MICRO,
+  LUCI_INTERPRETER
+};
+
+enum SupportedBuffersType
+{
+  COMMON,
+  SPLIT
+};
+
 struct TargetPlatform
 {
   SupportedPlatformType platform_type;

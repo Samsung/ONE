@@ -86,18 +86,189 @@ void create_allocation_node(Json::Value &allocations_node,
   allocations_node.append(allocation_node);
 }
 
+// TODO: Introduce inplace optimization
+bool can_be_inplace_optimization_node(luci::CircleNode *node)
+{
+  switch (node->opcode())
+  {
+    case luci::CircleOpcode::LOGISTIC:
+    case luci::CircleOpcode::RESHAPE:
+    case luci::CircleOpcode::EXPAND_DIMS:
+      return true;
+    default:
+      return false;
+  }
+}
+
 } // namespace
 
-void ExecutionPlanner::make_execution_plan()
+void ExecutionPlanner::make_execution_plan_luci_interpreter()
 {
   get_default_execution_order_plan();
   _required_size = get_offsets_with_greedy_by_size();
+
   for (uint32_t i = 0; i < _ordered_nodes.size(); i++)
   {
     luci::CircleNodeExecutionPlan execution_plan(i, _offsets[i]);
     luci::add_execution_plan(loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]),
                              execution_plan);
   }
+
+  printf("Buffer required memory = %d\n", _required_size);
+  dump_inform();
+}
+
+void ExecutionPlanner::make_execution_plan_onert_micro_base()
+{
+  switch (_buffers_type)
+  {
+    case SupportedBuffersType::COMMON:
+      make_execution_plan_onert_micro_common_buffer();
+      break;
+    case SupportedBuffersType::SPLIT:
+      make_execution_plan_onert_micro_split_buffer();
+      break;
+    default:
+      throw std::runtime_error("Unsupported buffer type\n");
+  }
+}
+
+void ExecutionPlanner::make_execution_plan_onert_micro_split_buffer()
+{
+  const auto input_size = _graph->inputs()->size();
+  const auto output_size = _graph->outputs()->size();
+
+  // Make execution plan for inputs
+  _ordered_nodes = loco::input_nodes(_graph);
+  const auto input_required_size = get_offsets_with_greedy_by_size();
+
+  for (uint32_t i = 0; i < _ordered_nodes.size(); i++)
+  {
+    luci::CircleNodeExecutionPlan execution_plan(i, _offsets[i]);
+    luci::add_execution_plan(loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]),
+                             execution_plan);
+  }
+  dump_inform();
+  printf("Input graph buffer required memory = %d\n", input_required_size);
+
+  // Clear structures for next buffer
+  _ordered_nodes.clear();
+  _alloc_node_inform_vector.clear();
+  _dealloc_node.clear();
+  _alloc_node.clear();
+  _offsets.clear();
+  _required_size = 0;
+
+  // Make execution plan for outputs
+  _ordered_nodes = loco::output_nodes(_graph);
+  const auto output_required_size = get_offsets_with_greedy_by_size();
+  for (uint32_t i = 0; i < _ordered_nodes.size(); i++)
+  {
+    luci::CircleNodeExecutionPlan execution_plan(i + input_size, _offsets[i]);
+    luci::add_execution_plan(loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]),
+                             execution_plan);
+  }
+  dump_inform();
+  printf("Output graph buffer required memory = %d\n", output_required_size);
+
+  // Clear structures for next buffer
+  _ordered_nodes.clear();
+  _alloc_node_inform_vector.clear();
+  _dealloc_node.clear();
+  _alloc_node.clear();
+  _offsets.clear();
+  _required_size = 0;
+
+  // Make execution plan for intermediates calculations
+  get_default_execution_order_plan_without_inputs_and_outputs();
+  const auto main_graph_required_size = get_offsets_with_greedy_by_size();
+
+  int counter_ops = 0;
+  for (uint32_t i = 0; i < _ordered_nodes.size(); i++)
+  {
+    const auto circle_node = dynamic_cast<luci::CircleNode *>(_ordered_nodes[i]);
+    if (circle_node->opcode() != luci::CircleOpcode::CIRCLECONST and
+        circle_node->opcode() != luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
+    {
+      luci::CircleNodeExecutionPlan execution_plan(counter_ops + input_size + output_size, _offsets[i]);
+      luci::add_execution_plan(loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]),
+                               execution_plan);
+      counter_ops++;
+    }
+  }
+  dump_inform();
+  printf("Main graph buffer required memory = %d\n", main_graph_required_size);
+}
+
+void ExecutionPlanner::make_execution_plan_onert_micro_common_buffer()
+{
+  get_default_execution_order_plan();
+  _required_size = get_offsets_with_greedy_by_size();
+
+  // Find prev nodes for output nodes (actual graph output node, not luci::CircleOutput)
+  const auto output_nodes = loco::output_nodes(const_cast<loco::Graph *>(_graph));
+  std::vector<loco::Node *> output_prev_nodes;
+  for (const auto output_node : output_nodes)
+  {
+    const auto prev_nodes = loco::preds(output_node);
+    std::copy(prev_nodes.begin(), prev_nodes.end(), std::back_inserter(output_prev_nodes));
+  }
+  const auto output_nodes_size = output_prev_nodes.size();
+
+  const auto inputs_nodes = loco::input_nodes(_graph);
+  const auto input_nodes_size = inputs_nodes.size();
+
+  int32_t counter_ops = 0;
+  for (uint32_t i = 0; i < _ordered_nodes.size(); i++)
+  {
+    const auto circle_node = dynamic_cast<luci::CircleNode *>(_ordered_nodes[i]);
+    // First write to input nodes
+    if (circle_node->opcode() == luci::CircleOpcode::CIRCLEINPUT)
+    {
+      // Find input_position for proper position in execution order
+      const auto input_position = std::distance(inputs_nodes.begin(), std::find(inputs_nodes.begin(), inputs_nodes.end(), circle_node));
+      luci::CircleNodeExecutionPlan execution_plan(input_position, _offsets[i]);
+      luci::add_execution_plan(loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]),
+                               execution_plan);
+    }
+    // Second write to actual output nodes (not luci::CircleOutput)
+    else if (std::find(output_prev_nodes.begin(), output_prev_nodes.end(), circle_node) != output_prev_nodes.end())
+    {
+      // Find output_position for proper position in execution order
+      const auto output_position = std::distance(output_prev_nodes.begin(), std::find(output_prev_nodes.begin(), output_prev_nodes.end(), circle_node));
+      luci::CircleNodeExecutionPlan execution_plan(input_nodes_size + output_position, _offsets[i]);
+      luci::add_execution_plan(loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]),
+                               execution_plan);
+    }
+    // Finally write to all intermediate nodes
+    else if (circle_node->opcode() != luci::CircleOpcode::CIRCLECONST and
+             circle_node->opcode() != luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
+    {
+      luci::CircleNodeExecutionPlan execution_plan(counter_ops + input_nodes_size + output_nodes_size, _offsets[i]);
+      luci::add_execution_plan(loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]),
+                               execution_plan);
+      counter_ops++;
+    }
+  }
+
+  dump_inform();
+  printf("Buffer required memory = %d\n", _required_size);
+}
+
+void ExecutionPlanner::make_execution_plan()
+{
+  switch (_runtime_type)
+  {
+    case ONERT_MICRO:
+      make_execution_plan_onert_micro_base();
+      break;
+    case LUCI_INTERPRETER:
+      make_execution_plan_luci_interpreter();
+      break;
+    default:
+      throw std::runtime_error("Unsupported runtime platform\n");
+  }
+
   auto settings = luci::UserSettings::settings();
   settings->set(luci::UserSettings::Key::ExecutionPlanGen, true);
 }
@@ -152,6 +323,33 @@ void ExecutionPlanner::get_default_execution_order_plan()
   _ordered_nodes = loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_graph)));
 }
 
+void ExecutionPlanner::get_default_execution_order_plan_without_inputs_and_outputs()
+{
+  // Get all nodes
+  _ordered_nodes = loco::postorder_traversal(loco::output_nodes(const_cast<loco::Graph *>(_graph)));
+
+  // Get real output nodes (not luci::CircleOutput)
+  const auto output_nodes = loco::output_nodes(const_cast<loco::Graph *>(_graph));
+  std::vector<loco::Node *> output_prev_nodes;
+  for (const auto output_node : output_nodes)
+  {
+    const auto prev_nodes = loco::preds(output_node);
+    std::copy(prev_nodes.begin(), prev_nodes.end(), std::back_inserter(output_prev_nodes));
+  }
+
+  // Remove input and real output nodes from _ordered_nodes
+  _ordered_nodes.erase(std::remove_if(_ordered_nodes.begin(), _ordered_nodes.end(),
+                                      [&output_prev_nodes](auto node)
+                                      {
+                                        const auto circle_node = dynamic_cast<luci::CircleNode *>(node);
+
+                                        return circle_node->opcode() == luci::CircleOpcode::CIRCLEINPUT or
+                                               circle_node->opcode() == luci::CircleOpcode::CIRCLEOUTPUT or
+                                               std::find(output_prev_nodes.begin(), output_prev_nodes.end(), node) != output_prev_nodes.end();
+
+                                      }), _ordered_nodes.end());
+}
+
 void ExecutionPlanner::get_usage_interval()
 {
   // Initialize vectors of first and last nodes for usage interval
@@ -179,6 +377,8 @@ void ExecutionPlanner::get_usage_interval()
   for (auto &output_node : output_nodes(_graph))
   {
     auto it = std::find(_ordered_nodes.begin(), _ordered_nodes.end(), output_node);
+    if (it == _ordered_nodes.end())
+      continue;
     size_t index = std::distance(_ordered_nodes.begin(), it);
     usages_counts[index]++;
   }
@@ -186,6 +386,8 @@ void ExecutionPlanner::get_usage_interval()
   for (auto &input_node : input_nodes(_graph))
   {
     auto it = std::find(_ordered_nodes.begin(), _ordered_nodes.end(), input_node);
+    if (it == _ordered_nodes.end())
+      continue;
     size_t index = std::distance(_ordered_nodes.begin(), it);
     usages_counts[index]++;
     allocate(0, index);
@@ -345,7 +547,7 @@ void ExecutionPlanner::create_alloc_node_inform_vector(bool null_consts, bool nu
   for (size_t i = 0; i < _ordered_nodes.size(); i++)
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]);
-    auto node_size = 1;
+    auto node_size = circle_node->rank() > 0 ? 1 : 0;
     for (uint32_t axis = 0; axis < circle_node->rank(); ++axis)
     {
       node_size *= circle_node->dim(axis).value();
@@ -357,7 +559,7 @@ void ExecutionPlanner::create_alloc_node_inform_vector(bool null_consts, bool nu
     _alloc_node_inform_vector[i].last_node = _dealloc_node[i];
 
     const auto *const_node = dynamic_cast<const luci::CircleConst *>(circle_node);
-    if (i == 0 && null_inputs)
+    if (circle_node->opcode() == luci::CircleOpcode::CIRCLEINPUT && null_inputs)
     {
       _alloc_node_inform_vector[i].size = 0;
     }
