@@ -180,6 +180,13 @@ First `make` will run above steps (1), (2) and (3). Second `make` will run (4).
 
 ### Test
 
+Preprequisite for testing in ARM32 device.
+```
+# numpy is required for value match in ARM32 target device
+sudo apt-get install python3-pip
+python3 -m pip install numpy
+```
+
 You can also run unit tests in ARM32 Ubuntu device with cross build results.
 First you need to run the test in host to prepare files that are currently
 complicated in target device.
