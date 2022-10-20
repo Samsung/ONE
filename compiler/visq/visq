@@ -209,7 +209,7 @@ def main():
             palette = YLORRD9Palette(qerror_min=q_min, qerror_max=q_max)
             result = _build_json(
                 metric='MSE',
-                model=fp32_model,
+                model=Path(fp32_model).name,
                 colorscheme=palette.colorscheme(),
                 error=qerror_map)
             with open(args.mse_output, "w") as f:
