@@ -29,9 +29,9 @@ def valid_attr(args, attr):
 # Recursively visit items and round floats with ndigits
 def pretty_float(item, ndigits=4):
     if isinstance(item, dict):
-        return {k: pretty_float(v) for k, v in item.items()}
+        return {k: pretty_float(v, ndigits) for k, v in item.items()}
     if isinstance(item, list):
-        return [pretty_float(x) for x in item]
+        return [pretty_float(x, ndigits) for x in item]
     if isinstance(item, float):
-        return round(item, 4)
+        return round(item, ndigits)
     return item
