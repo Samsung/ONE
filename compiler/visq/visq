@@ -192,7 +192,7 @@ def main():
             palette = YLORRD9Palette(qerror_min=0.0, qerror_max=1.0)
             result = _build_json(
                 metric='MPEIR',
-                model=Path(fp32_model).stem,
+                model=Path(fp32_model).name,
                 colorscheme=palette.colorscheme(),
                 error=qerror_map)
             with open(args.mpeir_output, "w") as f:
