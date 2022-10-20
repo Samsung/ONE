@@ -14,35 +14,22 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_STATIC_MEMORY_MANAGER_H
-#define LUCI_INTERPRETER_STATIC_MEMORY_MANAGER_H
+#ifndef LUCI_INTERPRETER_SIMPLE_MEMORY_MANAGER_H
+#define LUCI_INTERPRETER_SIMPLE_MEMORY_MANAGER_H
 
-#include "luci_interpreter/MemoryManager.h"
-
-#include <cassert>
+#include "MemoryManager.h"
 
 namespace luci_interpreter
 {
 
-// Used for allocations in static buffer, using offsets defined in luci model.
-class StaticMemoryManager : public IMemoryManager
+class SimpleMemoryManager : public IMemoryManager
 {
 public:
-  StaticMemoryManager() = delete;
-
-  explicit StaticMemoryManager(uint8_t *buffer_ptr) : _buffer_ptr(buffer_ptr)
-  { /* Do nothing */
-    assert(false && "Not supported now\n");
-  }
-
   void allocate_memory(luci_interpreter::Tensor &tensor) final;
   void release_memory(luci_interpreter::Tensor &tensor) final;
-
-private:
-  // Stores a pointer to the beginning of the allocated memory buffer.
-  uint8_t *_buffer_ptr;
+  bool is_static_manager() const final;
 };
 
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_STATIC_MEMORY_MANAGER_H
+#endif // LUCI_INTERPRETER_SIMPLE_MEMORY_MANAGER_H

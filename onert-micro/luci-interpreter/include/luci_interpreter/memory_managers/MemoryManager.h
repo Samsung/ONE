@@ -14,21 +14,28 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_SIMPLE_MEMORY_MANAGER_H
-#define LUCI_INTERPRETER_SIMPLE_MEMORY_MANAGER_H
+#ifndef LUCI_INTERPRETER_MEMORY_MANAGER_H
+#define LUCI_INTERPRETER_MEMORY_MANAGER_H
 
-#include "luci_interpreter/MemoryManager.h"
+#include "luci_interpreter/core/DataType.h"
+#include "luci_interpreter/core/Tensor.h"
 
 namespace luci_interpreter
 {
 
-class SimpleMemoryManager : public IMemoryManager
+class IMemoryManager
 {
 public:
-  void allocate_memory(luci_interpreter::Tensor &tensor) final;
-  void release_memory(luci_interpreter::Tensor &tensor) final;
+  virtual void allocate_memory(luci_interpreter::Tensor &tensor) = 0;
+  virtual void release_memory(luci_interpreter::Tensor &tensor) = 0;
+  virtual bool is_static_manager() const = 0;
+
+  virtual ~IMemoryManager() = default;
+
+protected:
+  bool _is_allocate_input = true;
 };
 
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_SIMPLE_MEMORY_MANAGER_H
+#endif // LUCI_INTERPRETER_MEMORY_MANAGER_H

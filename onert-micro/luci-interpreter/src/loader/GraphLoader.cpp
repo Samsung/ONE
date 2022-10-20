@@ -15,13 +15,16 @@
  */
 
 #include "loader/GraphLoader.h"
-
 #include "loader/KernelBuilder.h"
+
+#include "luci_interpreter/memory_managers/StaticMemoryManager.h"
 
 namespace luci_interpreter
 {
 namespace
 {
+
+using ExecutionPlanTable = std::map<uint32_t, std::vector<uint32_t>>;
 
 // TODO: add more operations
 bool isCouldBeEmplaceOperation(circle::BuiltinOperator op)
@@ -39,9 +42,9 @@ bool isCouldBeEmplaceOperation(circle::BuiltinOperator op)
 
 } // namespace
 
-GraphLoader::GraphLoader(CircleReader *reader, RuntimeGraph *runtime_graph,
+GraphLoader::GraphLoader(CircleReader *reader, BaseRuntimeGraph *runtime_graph,
                          IMemoryManager *memory_manager,
-                         std::map<int32_t, Tensor *> *index_to_tensor)
+                         std::unordered_map<int32_t, Tensor *> *index_to_tensor)
   : _reader(reader), _runtime_graph(runtime_graph), _memory_manager(memory_manager),
     _index_to_tensor(index_to_tensor)
 {
@@ -68,7 +71,6 @@ bool GraphLoader::isCouldBeEmplaceTensor(const int32_t tensor_index)
   return true;
 }
 
-// TODO: handle with static manager
 void GraphLoader::loadTensors()
 {
   for (uint32_t i = 0; i < _reader->tensors().size(); ++i)
@@ -165,7 +167,21 @@ void GraphLoader::initInputTensors() const
     }
 
     auto tensor_interpreter = std::make_unique<Tensor>(dtype, std::move(shape), quantization);
-    _memory_manager->allocate_memory(*tensor_interpreter);
+
+    tensor_interpreter->set_allocatable(_memory_manager->is_allocate_input());
+    if (not _memory_manager->is_static_manager())
+    {
+      // Using Dynamic Allocations
+      _memory_manager->allocate_memory(*tensor_interpreter);
+    }
+    else
+    {
+      // Using static allocations
+      const auto static_memory_manager = dynamic_cast<StaticMemoryManager *>(_memory_manager);
+      if (static_memory_manager->is_owning_buffers())
+        // Using split buffers (input, output and for intermediate computations)
+        static_memory_manager->allocate_input_buf();
+    }
 
     _runtime_graph->addInputTensor(tensor_interpreter.get());
     _index_to_tensor->emplace(input_ind, tensor_interpreter.get());
@@ -175,7 +191,48 @@ void GraphLoader::initInputTensors() const
 
 void GraphLoader::loadOperators()
 {
+  ExecutionPlanTable execution_plan;
+  // Set execution plan for Static memory manager
+  if (_memory_manager->is_static_manager())
+  {
+    // Read metadata
+    const auto metadata = _reader->metadata();
+    for (auto meta : metadata)
+    {
+      assert(meta != nullptr);
+
+      assert(meta->buffer() < _reader->buffers().size());
+      assert(_reader->buffers()[meta->buffer()] != nullptr);
+      const auto buffer = wrap(_reader->buffers()[meta->buffer()]->data());
+
+      if (meta->name()->str().compare("ONE_execution_plan_table") == 0)
+      {
+        execution_plan = read_metadata::decode_execution_plan(buffer);
+      }
+    }
+    if (execution_plan.empty())
+      assert(false && "Static Memory Manager should be used with circle-execution-planner");
+  }
+
   KernelBuilder kernel_builder(_runtime_graph, _reader);
+  const uint32_t input_size = _runtime_graph->getInputTensors().size();
+  const uint32_t output_size = _reader->outputs().size();
+
+  if (_memory_manager->is_static_manager())
+  {
+    // Set offset for input tensors
+    const auto static_memory_manager = dynamic_cast<StaticMemoryManager *>(_memory_manager);
+    for (int32_t input_ind = 0; input_ind < input_size; ++input_ind)
+    {
+      auto input_tensor = _runtime_graph->getInputTensors().at(input_ind);
+      input_tensor->set_offset(execution_plan.at(input_ind)[0]);
+
+      if (static_memory_manager->is_owning_buffers())
+        static_memory_manager->allocate_memory_for_input(*input_tensor);
+      else
+        static_memory_manager->allocate_memory(*input_tensor);
+    }
+  }
 
   for (uint32_t i = 0; i < _reader->operators().size(); ++i)
   {
@@ -191,15 +248,18 @@ void GraphLoader::loadOperators()
       const auto input_index = op->inputs()->operator[](j);
       if (_index_to_tensor->find(input_index) != _index_to_tensor->end())
       {
-        auto input_tensor = const_cast<const Tensor *>(_index_to_tensor->at(input_index));
+        auto input_tensor = _index_to_tensor->at(input_index);
         input_tensors.at(j) = input_tensor;
-        if (isCouldBeEmplaceOperation(_reader->builtin_code(op)) and op->outputs()->size() == 1 and
-            isCouldBeEmplaceTensor(input_index))
+        const auto &graph_input_tensors = _runtime_graph->getInputTensors();
+
+        // TODO: handle Inplace Optimization with Static Memory Manager
+        if (not _memory_manager->is_static_manager() and
+            isCouldBeEmplaceOperation(_reader->builtin_code(op)) and op->outputs()->size() == 1 and
+            isCouldBeEmplaceTensor(input_index) and
+            not (std::find(graph_input_tensors.begin(), graph_input_tensors.end(), input_tensor) !=
+                                                    graph_input_tensors.end()))
         {
-          const auto &graph_input_tensors = _runtime_graph->getInputTensors();
-          if (std::find(graph_input_tensors.begin(), graph_input_tensors.end(), input_tensor) ==
-              graph_input_tensors.end())
-            is_inplace = true;
+          is_inplace = true;
         }
       }
       else
@@ -239,6 +299,15 @@ void GraphLoader::loadOperators()
 
       auto tensor_interpreter = std::make_unique<Tensor>(dtype, std::move(shape), quantization);
 
+      if (_memory_manager->is_static_manager())
+      {
+        if (std::find(_reader->outputs().begin(), _reader->outputs().end(), output_index) ==
+            _reader->outputs().end())
+        {
+          tensor_interpreter->set_offset(execution_plan.at(i + input_size + output_size).at(0));
+        }
+      }
+
       _index_to_tensor->emplace(output_index, tensor_interpreter.get());
       output_tensors.at(j) = tensor_interpreter.get();
 
@@ -255,6 +324,14 @@ void GraphLoader::loadOperators()
     kernel->setInplaceValue(is_inplace);
 
     _runtime_graph->addKernel(std::move(kernel));
+  }
+  if (_memory_manager->is_static_manager())
+  {
+    for (int32_t ind = 0; ind < output_size; ++ind)
+    {
+      auto output_tensor = _runtime_graph->getOutputTensors().at(ind);
+      output_tensor->set_offset(execution_plan.at(input_size + ind)[0]);
+    }
   }
 }
 

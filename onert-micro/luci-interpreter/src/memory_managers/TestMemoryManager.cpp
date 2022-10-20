@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/memory_managers/TestMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -41,5 +41,7 @@ void TestMemoryManager::release_memory(luci_interpreter::Tensor &tensor)
 {
   tensor.set_data_buffer(nullptr);
 }
+
+bool TestMemoryManager::is_static_manager() const { return false; }
 
 } // namespace luci_interpreter
