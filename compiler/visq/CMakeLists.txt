@@ -64,3 +64,15 @@ install(DIRECTORY ${VISQ_PYTHON_DIR}
                           GROUP_READ
                           WORLD_READ
         DESTINATION bin)
+
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+find_package(PythonInterp 3.8 QUIET)
+
+add_test(
+  NAME visq_unittest
+  COMMAND ${PYTHON_EXECUTABLE} -m unittest
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
