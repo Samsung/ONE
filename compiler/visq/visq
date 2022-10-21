@@ -31,7 +31,7 @@ from shutil import copyfile
 from pathlib import Path
 
 from visqlib.Palette import YLORRD9Palette
-from visqlib.QErrorComputer import MPEIRComputer
+from visqlib.QErrorComputer import MPEIRComputer, MSEComputer
 from visqlib.Util import valid_attr, pretty_float
 
 
@@ -62,13 +62,18 @@ def _get_parser():
         type=str,
         help="Path to the output json file (qerror metric = MPEIR).",
         required=False)
+    parser.add_argument(
+        "--mse_output",
+        type=str,
+        help="Path to the output json file (qerror metric = MSE).",
+        required=False)
     return parser
 
 
 def _verify_args(args):
     """Verify the given arguments"""
 
-    valid_outputs = ['mpeir_output']
+    valid_outputs = ['mpeir_output', 'mse_output']
 
     # Check if at least one output option is given
     num_outputs = 0
@@ -196,6 +201,18 @@ def main():
                 colorscheme=palette.colorscheme(),
                 error=qerror_map)
             with open(args.mpeir_output, "w") as f:
+                json.dump(result, f)
+
+        if args.mse_output:
+            computer = MSEComputer(fp32_dir, fq_dir)
+            qerror_map, q_min, q_max = computer.run()
+            palette = YLORRD9Palette(qerror_min=q_min, qerror_max=q_max)
+            result = _build_json(
+                metric='MSE',
+                model=Path(fp32_model).name,
+                colorscheme=palette.colorscheme(),
+                error=qerror_map)
+            with open(args.mse_output, "w") as f:
                 json.dump(result, f)
 
 

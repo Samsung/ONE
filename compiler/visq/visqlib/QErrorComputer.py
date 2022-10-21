@@ -93,3 +93,38 @@ class MPEIRComputer(QErrorComputer):
             qerror_map[tensor_name] = acc / self._num_data
 
         return qerror_map
+
+
+class MSEComputer(QErrorComputer):
+    def __init__(self, fp32_dir, fq_dir):
+        super().__init__(fp32_dir, fq_dir)
+
+    def run(self):
+        qerror_map = dict()
+        qerror_min = float('inf')
+        qerror_max = -qerror_min
+        for data_idx in range(self._num_data):
+            fp32_results = glob.glob(self._fp32_dir + '/' + str(data_idx) + '/*.npy')
+            for fp32_data_path in fp32_results:
+                fp32_data = np.load(fp32_data_path)
+                p = Path(fp32_data_path)
+                fq_data_path = self._fq_dir + '/' + str(data_idx) + '/' + p.with_suffix(
+                    '.npy').name
+                fq_data = np.load(fq_data_path)
+
+                MSE = np.square(fp32_data - fq_data).mean()
+
+                filename = p.with_suffix('').name
+                tensor_name = self._filename_to_tensor[filename]
+                if tensor_name in qerror_map:
+                    qerror_map[tensor_name] += MSE
+                else:
+                    qerror_map[tensor_name] = MSE
+
+                qerror_min = min(MSE, qerror_min)
+                qerror_max = max(MSE, qerror_max)
+
+        for tensor_name, acc in qerror_map.items():
+            qerror_map[tensor_name] = acc / self._num_data
+
+        return qerror_map, qerror_min, qerror_max
