@@ -31,6 +31,7 @@ option(INSTALL_TEST_SCRIPTS "Install test scripts" ON)
 option(BUILD_GPU_CL "Build gpu_cl backend" OFF)
 option(BUILD_NPUD "Build NPU daemon" OFF)
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
+option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" ON)
 #
 # Default build configuration for contrib
 #

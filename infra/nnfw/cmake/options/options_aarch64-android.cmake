@@ -6,6 +6,8 @@ option(DOWNLOAD_NEON2SSE "Download NEON2SSE library source" OFF)
 option(DOWNLOAD_BOOST "Download boost source" ON)
 option(BUILD_BOOST "Build boost source" ON)
 option(BUILD_LOGGING "Build logging runtime" OFF)
+# Need HDF5 library
+option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)
 
 option(DOWNLOAD_OPENGL_HEADERS "Download Opengl_headers source" ON)
 option(DOWNLOAD_EGL_HEADERS "Download Egl_headers source" ON)
