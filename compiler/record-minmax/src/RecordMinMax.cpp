@@ -70,6 +70,8 @@ void readDataFromFile(const std::string &filename, std::vector<char> &data, size
     throw std::runtime_error("Cannot open file \"" + filename + "\".\n");
   if (fs.read(data.data(), data_size).fail())
     throw std::runtime_error("Failed to read data from file \"" + filename + "\".\n");
+  if (fs.peek() != EOF)
+    throw std::runtime_error("Input tensor size mismatches with \"" + filename + "\".\n");
 }
 
 std::vector<uint8_t> genRandomBoolData(std::mt19937 &gen, uint32_t num_elements)
