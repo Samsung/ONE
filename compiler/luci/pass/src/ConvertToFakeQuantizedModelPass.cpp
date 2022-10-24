@@ -222,10 +222,12 @@ struct FakeQuantize final : public luci::CircleNodeMutableVisitor<void>
   // (dtype will be automatically updated by type inference)
   void visit(luci::CircleCast *) {}
   void visit(luci::CircleConcatenation *) {}
+  void visit(luci::CircleDepthToSpace *) {}
   void visit(luci::CircleGather *) {}
   void visit(luci::CircleSlice *) {}
   void visit(luci::CircleStridedSlice *) {}
   void visit(luci::CircleReshape *) {}
+  void visit(luci::CircleSpaceToDepth *) {}
   void visit(luci::CircleSplit *) {}
   void visit(luci::CircleSplitOut *) {}
   void visit(luci::CircleSplitV *) {}
