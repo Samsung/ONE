@@ -23,7 +23,7 @@ namespace luci
 {
 
 /**
- * @brief  Class to Forward send Reshape after UnaryOp.
+ * @brief  Class to Forward Transpose Ops for further optimization.
  */
 struct ForwardTransposeOpPass final : public logo::Pass
 {
