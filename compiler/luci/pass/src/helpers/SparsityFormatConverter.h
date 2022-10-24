@@ -18,6 +18,7 @@
 #ifndef __LUCI_PASS_HELPERS_SPARSITY_FORMAT_CONVERTER_H__
 #define __LUCI_PASS_HELPERS_SPARSITY_FORMAT_CONVERTER_H__
 
+#include <cstddef>
 #include <cstdint>
 #include <vector>
 
