@@ -56,6 +56,7 @@ public:
       FoldGather,
       FoldSparseToDense,
       ForwardReshapeToUnaryOp,
+      ForwardTransposeOp,
       SparsifyTensorPass,
       FusePreActivationBatchNorm,
       MakeBatchNormGammaPositive,
