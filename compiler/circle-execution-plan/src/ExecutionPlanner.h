@@ -71,8 +71,8 @@ public:
   }
 
   explicit ExecutionPlanner(loco::Graph *graph, TargetPlatform target_platform,
-                            SupportedRuntimeType runtime_type, SupportedBuffersType buffers_type)
-    : _graph(graph), _runtime_type(runtime_type), _buffers_type(buffers_type)
+                            RuntimeType runtime_type, AllocatingMode allocating_mode)
+    : _graph(graph), _runtime_type(runtime_type), _allocating_mode(allocating_mode)
   {
     switch (target_platform.platform_type)
     {
@@ -96,14 +96,15 @@ public:
   void make_execution_plan();
 
   // Method change planning mode:
-  // is_null_consts = true - constants are no longer taken into account when planning
-  // is_null_inputs = true - input are no longer taken into account when planning
-  // is_null_scratchpads = true - scratchpads are no longer taken into account when planning
-  void change_planning_mode(bool is_null_consts, bool is_null_inputs, bool is_null_scratchpads)
+  // is_allocate_consts = false - constants are no longer taken into account when planning
+  // is_allocate_inputs = false - input are no longer taken into account when planning
+  // is_allocate_scratchpads = false - scratchpads are no longer taken into account when planning
+  void change_planning_mode(bool is_allocate_consts, bool is_allocate_inputs,
+                            bool is_allocate_scratchpads)
   {
-    _is_null_consts = is_null_consts;
-    _is_null_inputs = is_null_inputs;
-    _is_null_scratchpads = is_null_scratchpads;
+    _is_allocate_consts = is_allocate_consts;
+    _is_allocate_inputs = is_allocate_inputs;
+    _is_allocate_scratchpads = is_allocate_scratchpads;
   };
 
   void create_json_allocation_file(const std::string &json_path);
@@ -139,6 +140,8 @@ private:
   // Method dumps execution plan information.
   void dump_inform();
 
+  void write_execution_plan(uint32_t order_offset);
+
   // Method finds required offsets for all nodes from _ordered_nodes, using greedy by size approach.
   // It saves offsets in _offsets vector.
   // Return: required size of buffer.
@@ -149,14 +152,13 @@ private:
   uint32_t greedy_by_size_approach();
 
   // Method creates and fills _alloc_node_inform_vector with usage interval inform and node's sizes.
-  // null_consts = true - size of const nodes will be equal 0;
-  // null_inputs = true - size of input nodes will be equal 0;
-  // null_scratchpad = true - size of scratchpad nodes will be equal 0;
+  // _is_allocate_const = true - size of const nodes will be equal 0;
+  // _is_allocate_input = true - size of input nodes will be equal 0;
+  // _is_allocate_scratchpad = true - size of scratchpad nodes will be equal 0;
   // It using if we don't want to take input(const or scratchpads) nodes into account
   // when determining offsets and calculating the required buffer size. This is uses for
   // experiments.
-  void create_alloc_node_inform_vector(bool null_consts = false, bool null_inputs = false,
-                                       bool null_scratchpad = false);
+  void create_alloc_node_inform_vector();
 
   // Stores allocation additional information for the all nodes from _graph.
   std::vector<AllocationNodeInformation> _alloc_node_inform_vector;
@@ -187,21 +189,21 @@ private:
   std::unique_ptr<IScratchpadHelper> _scratchpad_helper;
 
   // Supported runtime type
-  SupportedRuntimeType _runtime_type;
+  RuntimeType _runtime_type;
 
   // Supported buffers type
-  SupportedBuffersType _buffers_type;
+  AllocatingMode _allocating_mode;
 
   // Required memory size.
   uint32_t _required_size = 0;
 
   // Flags for choosing different planning modes:
-  // _is_null_consts = true - constants are no longer taken into account when planning
-  // _is_null_inputs = true - input are no longer taken into account when planning
-  // _is_null_scratchpads = true - scratchpads are no longer taken into account when planning
-  bool _is_null_consts = false;
-  bool _is_null_inputs = false;
-  bool _is_null_scratchpads = false;
+  // _is_allocate_consts = false - constants are no longer taken into account when planning
+  // _is_allocate_inputs = false - input are no longer taken into account when planning
+  // _is_allocate_scratchpads = false - scratchpads are no longer taken into account when planning
+  bool _is_allocate_consts = true;
+  bool _is_allocate_inputs = true;
+  bool _is_allocate_scratchpads = true;
 };
 
 } // namespace circle_planner

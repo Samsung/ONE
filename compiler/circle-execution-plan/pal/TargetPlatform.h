@@ -27,13 +27,13 @@ enum SupportedPlatformType
   CMSISNN
 };
 
-enum SupportedRuntimeType
+enum RuntimeType
 {
   ONERT_MICRO,
   LUCI_INTERPRETER
 };
 
-enum SupportedBuffersType
+enum AllocatingMode
 {
   COMMON,
   SPLIT
