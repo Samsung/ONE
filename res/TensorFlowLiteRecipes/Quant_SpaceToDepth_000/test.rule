@@ -1,0 +1,12 @@
+# To check fake quantization of SpaceToDepth (S2D).
+# 1. ifm is float32.
+# 2. S2D is float32.
+# 3. Q/DQ is inserted at the beginning of the model (from ifm).
+# 4. Q/DQ is not inserted after S2D, because S2D does not change values of input.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "IFM_FP32"              $(tensor_dtype ifm) '=' FLOAT32
+RULE    "S2D_FP32"              $(tensor_dtype ofm) '=' FLOAT32
+RULE    "QUANTIZE_OP"           $(op_count QUANTIZE) '=' 1
+RULE    "DEQUANTIZE_OP"         $(op_count DEQUANTIZE) '=' 1
