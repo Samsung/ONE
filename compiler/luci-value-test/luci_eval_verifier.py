@@ -125,6 +125,12 @@ for idx in range(len(inpt_output_details)):
             if np.allclose(
                     luci_output_data, intp_output_data, rtol=rtolf32,
                     atol=atolf32) == False:
+                diff_val = np.subtract(intp_output_data, luci_output_data)
+                print("TFlite Result", intp_output_data)
+                print("Diff", diff_val)
+                print("Diff Max", np.ndarray.max(diff_val), "in tolerance", rtolf32,
+                      atolf32)
+
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
             output_dtype = "float32"

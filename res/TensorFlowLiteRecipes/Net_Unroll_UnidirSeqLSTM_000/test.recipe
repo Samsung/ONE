@@ -1,0 +1,307 @@
+#
+# NOTE generated with tflchef-reverse from model
+#      https://github.com/Samsung/ONE/issues/9940#issuecomment-1311134299
+#
+operand {
+  name: "serving_default_input_17:0"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/stack"
+  type: INT32
+  shape {
+    dim: 3
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "1"
+    arg: "1"
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/BiasAdd/ReadVariableOp"
+  type: FLOAT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "1"
+    arg: "0"
+    arg: "0"
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/zeros"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/split/split_dim"
+  type: INT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/MatMul"
+  type: FLOAT32
+  shape {
+    dim: 4
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "-0.28273"
+    arg: "-0.75107"
+    arg: "0.803036"
+    arg: "0.980479"
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/unstack"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/MatMul;sequential_16/lstm_16/lstm_cell_16/BiasAdd"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 4
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/split"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/split1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/split2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/split3"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/Sigmoid"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/Sigmoid_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/mul"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/Sigmoid_2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/Tanh"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/mul_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/add_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/Tanh_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "sequential_16/lstm_16/lstm_cell_16/mul_2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "StatefulPartitionedCall:0"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+  }
+}
+operation {
+  type: "Unpack"
+  input: "serving_default_input_17:0"
+  output: "sequential_16/lstm_16/unstack"
+  unpack_options {
+    num: 1
+    axis: 0
+  }
+}
+operation {
+  type: "FullyConnected"
+  input: "sequential_16/lstm_16/unstack"
+  input: "sequential_16/lstm_16/lstm_cell_16/MatMul"
+  input: "sequential_16/lstm_16/lstm_cell_16/BiasAdd/ReadVariableOp"
+  output: "sequential_16/lstm_16/lstm_cell_16/MatMul;sequential_16/lstm_16/lstm_cell_16/BiasAdd"
+  fullyconnected_options {
+    activation: NONE
+    keep_num_dims: false
+  }
+}
+operation {
+  type: "Split"
+  input: "sequential_16/lstm_16/lstm_cell_16/split/split_dim"
+  input: "sequential_16/lstm_16/lstm_cell_16/MatMul;sequential_16/lstm_16/lstm_cell_16/BiasAdd"
+  output: "sequential_16/lstm_16/lstm_cell_16/split"
+  output: "sequential_16/lstm_16/lstm_cell_16/split1"
+  output: "sequential_16/lstm_16/lstm_cell_16/split2"
+  output: "sequential_16/lstm_16/lstm_cell_16/split3"
+  split_options {
+    num_splits: 4
+  }
+}
+operation {
+  type: "Logistic"
+  input: "sequential_16/lstm_16/lstm_cell_16/split"
+  output: "sequential_16/lstm_16/lstm_cell_16/Sigmoid"
+}
+operation {
+  type: "Logistic"
+  input: "sequential_16/lstm_16/lstm_cell_16/split1"
+  output: "sequential_16/lstm_16/lstm_cell_16/Sigmoid_1"
+}
+operation {
+  type: "Mul"
+  input: "sequential_16/lstm_16/lstm_cell_16/Sigmoid_1"
+  input: "sequential_16/lstm_16/zeros"
+  output: "sequential_16/lstm_16/lstm_cell_16/mul"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Logistic"
+  input: "sequential_16/lstm_16/lstm_cell_16/split3"
+  output: "sequential_16/lstm_16/lstm_cell_16/Sigmoid_2"
+}
+operation {
+  type: "Tanh"
+  input: "sequential_16/lstm_16/lstm_cell_16/split2"
+  output: "sequential_16/lstm_16/lstm_cell_16/Tanh"
+}
+operation {
+  type: "Mul"
+  input: "sequential_16/lstm_16/lstm_cell_16/Sigmoid"
+  input: "sequential_16/lstm_16/lstm_cell_16/Tanh"
+  output: "sequential_16/lstm_16/lstm_cell_16/mul_1"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "sequential_16/lstm_16/lstm_cell_16/mul"
+  input: "sequential_16/lstm_16/lstm_cell_16/mul_1"
+  output: "sequential_16/lstm_16/lstm_cell_16/add_1"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Tanh"
+  input: "sequential_16/lstm_16/lstm_cell_16/add_1"
+  output: "sequential_16/lstm_16/lstm_cell_16/Tanh_1"
+}
+operation {
+  type: "Mul"
+  input: "sequential_16/lstm_16/lstm_cell_16/Sigmoid_2"
+  input: "sequential_16/lstm_16/lstm_cell_16/Tanh_1"
+  output: "sequential_16/lstm_16/lstm_cell_16/mul_2"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Reshape"
+  input: "sequential_16/lstm_16/lstm_cell_16/mul_2"
+  input: "sequential_16/lstm_16/stack"
+  output: "StatefulPartitionedCall:0"
+}
+input: "serving_default_input_17:0"
+output: "StatefulPartitionedCall:0"

@@ -187,6 +187,8 @@ bool validate(loco::Graph *g)
 
   // TODO add more validation
 
+  // TODO add validation for "virtual nodes must follow for requiring types"
+
   return true;
 }
 
