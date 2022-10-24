@@ -41,4 +41,4 @@ class RandomDataGenerator:
         gen_book[TensorType.INT16] = self._gen_int16
         gen_book[TensorType.FLOAT32] = self._gen_float32
 
-        return gen_book.get(dtype, self._unsupported_types)(dtype)
+        return gen_book.get(dtype, self._unsupported_types)()
