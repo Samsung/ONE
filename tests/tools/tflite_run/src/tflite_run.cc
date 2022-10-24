@@ -28,7 +28,6 @@
 #include "tflite/Session.h"
 #include "tflite/RandomInputInitializer.h"
 #include "tflite/InterpreterSession.h"
-#include "tflite/NNAPISession.h"
 #include "misc/tensor/IndexIterator.h"
 #include "misc/tensor/Object.h"
 #include "benchmark.h"
