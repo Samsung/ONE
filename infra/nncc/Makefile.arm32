@@ -55,8 +55,8 @@ ARM32_HOST_ITEMS+=;common-artifacts
 ARM32_HOST_ITEMS+=;luci-eval-driver;luci-value-test
 
 
-_SPACE_:=
-_SPACE_+=
+_EMPTY_:=
+_SPACE_:=$(_EMPTY_) $(_EMPTY_)
 ARM32_BUILD_WHITELIST=$(subst $(_SPACE_),,$(ARM32_BUILD_ITEMS))
 ARM32_HOST_WHITELIST=$(subst $(_SPACE_),,$(ARM32_HOST_ITEMS))
 
