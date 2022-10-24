@@ -17,7 +17,35 @@
 #include "loader/KernelBuilder.h"
 #include "loader/nodes/Builders.h"
 
+#include <luci/IR/CircleOpcode.h>
+#include <luci/IR/CircleNodeDecl.h>
+
 #include <stdexcept>
+
+namespace
+{
+
+// TODO Extract this helper function
+const std::string toString(luci::CircleOpcode opcode)
+{
+  static const char *names[] = {
+#define CIRCLE_NODE(OPCODE, CIRCLE_CLASS) #CIRCLE_CLASS,
+#define CIRCLE_VNODE(OPCODE, CIRCLE_CLASS) #CIRCLE_CLASS,
+#include <luci/IR/CircleNodes.lst>
+#undef CIRCLE_NODE
+#undef CIRCLE_VNODE
+  };
+
+  auto const node_name = names[static_cast<int>(opcode)];
+
+  assert(std::string(node_name).substr(0, 6) == "Circle"); // FIX_ME_UNLESS
+
+  // Return substring of class name ("Circle" is sliced out)
+  // Ex: Return "Conv2D" for "CircleConv2D" node
+  return std::string(node_name).substr(6);
+}
+
+} // namespace
 
 namespace luci_interpreter
 {
@@ -97,7 +125,7 @@ std::unique_ptr<Kernel> KernelBuilder::build(const luci::CircleNode *node)
     return specific_builder(node, *this);
 
   std::string msg = "Unsupported operator: ";
-  msg += std::to_string(static_cast<uint32_t>(node->opcode())) + " " + std::string(node->name());
+  msg += toString(node->opcode()) + " in " + std::string(node->name());
   throw std::invalid_argument(msg.c_str());
 }
 
