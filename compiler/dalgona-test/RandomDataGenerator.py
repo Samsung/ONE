@@ -23,16 +23,16 @@ class RandomDataGenerator:
     def __init__(self, shape):
         self.shape = shape
 
-    def _unsupported_types(self, dtype):
+    def _unsupported_types(self):
         raise RuntimeError('Unsupported data type')
 
-    def _gen_uint8(self, dtype):
+    def _gen_uint8(self):
         return np.random.randint(0, high=256, size=self.shape, dtype=np.uint8)
 
-    def _gen_int16(self, dtype):
+    def _gen_int16(self):
         return np.random.randint(-32767, high=32768, size=self.shape, dtype=np.int16)
 
-    def _gen_float32(self, dtype):
+    def _gen_float32(self):
         return np.array(10 * np.random.random_sample(self.shape) - 5, np.float32)
 
     def gen(self, dtype):
@@ -41,4 +41,4 @@ class RandomDataGenerator:
         gen_book[TensorType.INT16] = self._gen_int16
         gen_book[TensorType.FLOAT32] = self._gen_float32
 
-        return gen_book.get(dtype, self._unsupported_types)(dtype)
+        return gen_book.get(dtype, self._unsupported_types)()
