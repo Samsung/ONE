@@ -2,8 +2,9 @@
 
 ## Prerequisite
 
-- Python 3.X
-- TensorFlow 1.15
+- Python 3.8
+- TensorFlow 2.8.0
+- NOTE some examples may use old versions
 
 ## Directory Layout
 
@@ -20,7 +21,14 @@ Follow python API name
 
 ## HOWTO: Create a Python environment
 
-TBA
+Install release debian packages in https://github.com/Samsung/ONE/releases
+and enter virtual environment.
+```
+source /usr/share/one/bin/venv/bin/activate
+```
+You may have to prepare for the first time. Read [how-to-prepare-virtualenv.txt]
+(https://github.com/Samsung/ONE/blob/master/compiler/one-cmds/how-to-prepare-virtualenv.txt)
+for more information.
 
 ## HOWTO: Generate a pbtxt from examples
 
