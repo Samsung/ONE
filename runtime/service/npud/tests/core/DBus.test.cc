@@ -106,8 +106,9 @@ TEST_F(DBusTest, context_create)
   ASSERT_NE(proxy, nullptr);
 
   GError *error = nullptr;
-  guint64 out_ctx;
-  npud_core_call_context_create_sync(proxy, 1, 2, &out_ctx, NULL, &error);
+  guint64 out_ctx = 100;
+  int ret = 0;
+  npud_core_call_context_create_sync(proxy, 1, 2, &out_ctx, &ret, NULL, &error);
   if (error)
   {
     g_object_ref(error);

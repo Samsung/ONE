@@ -19,7 +19,8 @@
 
 #include "Signal.h"
 #include "DBus.h"
-#include "DevManager.h"
+#include "Core.h"
+// #include "DevManager.h"
 
 #include <glib.h>
 #include <gio/gio.h>
@@ -40,23 +41,28 @@ public:
   bool isRunning() { return _isRunning.load(); }
   bool isServiceReady() { return _dbus->isReady(); }
 
-  DevManager *dev() { return _devManager.get(); }
-
   static Server &instance(void)
   {
     static Server server;
     return server;
   }
 
+  static std::shared_ptr<Core> &core(void) { return instance()._core; }
+
 private:
   Server() noexcept;
 
   static std::atomic_bool _isRunning;
 
-  std::unique_ptr<GMainLoop, void (*)(GMainLoop *)> _mainloop;
+  // Note
+  // Keep this order.
+  // DBus object uses core object. Therefore, Core must be initialized before DBus.
   std::unique_ptr<Signal> _signal;
+  std::unique_ptr<GMainLoop, void (*)(GMainLoop *)> _mainloop;
+  std::shared_ptr<Core> _core;
   std::unique_ptr<DBus> _dbus;
-  std::unique_ptr<DevManager> _devManager;
+  // std::unique_ptr<DevManager> _devManager;
+  // std::unique_ptr<ContextManager> _contextManager;
 };
 
 } // namespace core

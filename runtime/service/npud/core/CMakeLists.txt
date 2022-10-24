@@ -29,6 +29,7 @@ install(TARGETS npud_core LIBRARY DESTINATION lib)
 # npud executable
 add_executable(npud ${MAIN_SOURCE_FILE})
 
+set_target_properties(npud_core PROPERTIES LINKER_LANGUAGE CXX)
 target_link_libraries(npud PRIVATE npud_core)
 
 install(TARGETS npud DESTINATION bin)

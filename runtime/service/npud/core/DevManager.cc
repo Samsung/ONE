@@ -29,19 +29,25 @@ namespace core
 
 #define DEFAULT_DEVICE_PATH "/usr/lib/npud/devices"
 
-DevManager::DevManager() : _devs{}
+DevManager::DevManager() : _devs{}, _defaultId(0)
 {
+  VERBOSE(DevManager) << "Constructor" << std::endl;
   const auto env = util::getConfigString(util::config::DEVICE_MODULE_PATH);
   _module_dir = std::move(env);
 }
 
-DevManager::~DevManager() {}
+DevManager::~DevManager() { VERBOSE(DevManager) << "Destructor" << std::endl; }
 
 void DevManager::loadModules(void)
 {
   VERBOSE(DevManager) << "load modules from " << _module_dir << std::endl;
 
-  static uint64_t _devInstance = 0;
+  // TODO Control if it exceeds the uint64_t range.
+  //      Solution 1. Use dev address. (No duplicated address)
+  // The _defaultId is initialized to 0.
+  // The _devInstance must start at 1 to distinguish whether _defaultID is
+  // an initial value or not.
+  static uint64_t _devInstance = 1;
 
   if (_devs.size() > 0)
   {
@@ -83,19 +89,35 @@ void DevManager::loadModules(void)
     std::unique_ptr<Device> dev = std::make_unique<Device>();
     dev->devId = _devInstance++;
     dev->modulePath = std::move(modulePath);
-    dev->device = nullptr; // TODO Implement
+    dev->device = std::make_unique<NpudDevice>();
     dev->loader = std::unique_ptr<DynamicLoader>(loader);
+
+    // Note The first loaded backend becomes the default backend.
+    if (!_defaultId)
+    {
+      _defaultId = dev->devId;
+      VERBOSE(DevManager) << "_defaultId: " << _defaultId << std::endl;
+    }
 
     _devs.emplace_back(std::move(dev));
   }
 
   closedir(dir);
 
-  listModules();
+  // Test
+  this->listModules();
 
+  // Test
   std::string version;
-  getDevice(0)->loader->getInstance()->getVersion(version);
-  getDevice(0)->loader->getInstance()->createContext(nullptr, 0, 0, nullptr);
+  try
+  {
+    getBackend()->getVersion(version);
+    getBackend()->createContext(nullptr, 0, 0, nullptr);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+  }
 }
 
 void DevManager::listModules(void)
@@ -132,9 +154,9 @@ Device *DevManager::getDevice(DevID id)
   return iter->get();
 }
 
-std::shared_ptr<Backend> DevManager::getBackend(DevID id)
+std::shared_ptr<Backend> DevManager::getBackend()
 {
-  return this->getDevice(id)->loader->getInstance();
+  return getDevice(_defaultId)->loader->getInstance();
 }
 
 } // namespace core

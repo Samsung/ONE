@@ -16,6 +16,7 @@
       <arg name="device_id" type="i" direction="in" />
       <arg name="priority" type="i" direction="in" />
       <arg name="ctx" type="t" direction="out" />
+      <arg name="error" type="i" direction="out"  />
     </method>
     <method name="context_destroy">
 	    <arg name="ctx" type="t" direction="in"  />

@@ -37,7 +37,6 @@ namespace core
 struct NpudDevice
 {
   int fd;
-  std::string name;
 };
 
 /**

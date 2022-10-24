@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_DEV_MANAGER_H__
-#define __ONE_SERVICE_NPUD_CORE_DEV_MANAGER_H__
-
-#include "Backend.h"
-#include "DynamicLoader.h"
+#ifndef __ONE_SERVICE_NPUD_CORE_CONTEXT_MANAGER_H__
+#define __ONE_SERVICE_NPUD_CORE_CONTEXT_MANAGER_H__
 
 #include <vector>
 #include <memory>
@@ -28,39 +25,33 @@ namespace npud
 namespace core
 {
 
-using DevID = uint64_t;
-struct Device
+using ContextID = uint64_t;
+struct Context
 {
-  DevID devId;
-  std::string modulePath;
-  std::unique_ptr<NpudDevice> device;
-  std::unique_ptr<DynamicLoader> loader;
+  // TODO Describe the variables
+  ContextID contextId;
 };
 
-class DevManager
+class ContextManager
 {
 public:
-  DevManager();
-  ~DevManager();
+  ContextManager() noexcept;
+  ~ContextManager() noexcept;
 
-  DevManager(const DevManager &) = delete;
-  DevManager &operator=(const DevManager &) = delete;
+  ContextManager(const ContextManager &) = delete;
+  ContextManager &operator=(const ContextManager &) = delete;
 
-  void loadModules(void);
-  void releaseModules(void);
-  std::shared_ptr<Backend> getBackend();
-
-private:
-  Device *getDevice(DevID id);
-  void listModules(void);
+  void newContext(ContextID *contextId);
+  void deleteContext(ContextID contextId);
 
 private:
-  std::vector<std::unique_ptr<Device>> _devs;
-  std::string _module_dir;
-  DevID _defaultId;
+  void listContexts(void);
+
+private:
+  std::vector<std::unique_ptr<Context>> _contexts;
 };
 
 } // namespace core
 } // namespace npud
 
-#endif // __ONE_SERVICE_NPUD_CORE_DEV_MANAGER_H__
+#endif // __ONE_SERVICE_NPUD_CORE_CONTEXT_MANAGER_H__

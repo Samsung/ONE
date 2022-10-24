@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_DYNAMIC_LOADER_H__
-#define __ONE_SERVICE_NPUD_CORE_DYNAMIC_LOADER_H__
+#ifndef __ONE_SERVICE_NPUD_CORE_CORE_H__
+#define __ONE_SERVICE_NPUD_CORE_CORE_H__
 
-#include "Backend.h"
+#include "DevManager.h"
+#include "ContextManager.h"
 
-#include <dlfcn.h>
-#include <string>
 #include <memory>
 
 namespace npud
@@ -28,27 +27,29 @@ namespace npud
 namespace core
 {
 
-using DLHandle = void *;
+// TODO Define error status
 
-class DynamicLoader
+class Core
 {
 public:
-  DynamicLoader(const char *file, int flags = RTLD_LAZY);
-  ~DynamicLoader();
+  Core() noexcept;
+  ~Core() noexcept;
 
-  DynamicLoader(const DynamicLoader &) = delete;
+  Core(const Core &) = delete;
+  Core &operator=(const Core &) = delete;
 
-  std::shared_ptr<Backend> getInstance();
+  void init();
+  void deinit();
+
+  int createContext(int deviceId, int priority, ContextID *contextId);
+  int destroyContext(ContextID contextId);
 
 private:
-  DLHandle _handle;
-  std::string _filepath;
-  std::string _allocSymbol;
-  std::string _deallocSymbol;
-  std::shared_ptr<Backend> _backend;
+  std::unique_ptr<DevManager> _devManager;
+  std::unique_ptr<ContextManager> _contextManager;
 };
 
 } // namespace core
 } // namespace npud
 
-#endif // __ONE_SERVICE_NPUD_CORE_DYNAMIC_LOADER_H__
+#endif // __ONE_SERVICE_NPUD_CORE_CORE_H__

@@ -95,9 +95,9 @@ gboolean DBus::on_handle_context_create(NpudCore *object, GDBusMethodInvocation 
 {
   VERBOSE(DBus) << "on_handle_context_create with " << arg_device_id << ", " << arg_priority
                 << std::endl;
-  // TODO Implement details
-  guint64 out_ctx = 100;
-  npud_core_complete_context_create(object, invocation, out_ctx);
+  guint64 out_ctx;
+  int ret = Server::core()->createContext(arg_device_id, arg_priority, &out_ctx);
+  npud_core_complete_context_create(object, invocation, out_ctx, ret);
   return TRUE;
 }
 
@@ -105,8 +105,8 @@ gboolean DBus::on_handle_context_destroy(NpudCore *object, GDBusMethodInvocation
                                          guint64 arg_ctx)
 {
   VERBOSE(DBus) << "on_handle_context_destroy with " << arg_ctx << std::endl;
-  // TODO Implement details
-  npud_core_complete_context_destroy(object, invocation, 0);
+  int ret = Server::core()->destroyContext(arg_ctx);
+  npud_core_complete_context_destroy(object, invocation, ret);
   return TRUE;
 }
 
@@ -134,7 +134,7 @@ gboolean DBus::on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation
 {
   VERBOSE(DBus) << "on_handle_network_destroy with " << arg_ctx << ", " << arg_nw_handle
                 << std::endl;
-  // Server::instance().dev()->unRegisterModel(DevID(arg_ctx), ModelID(arg_nw_handle));
+  // TODO Implement details
   npud_core_complete_network_destroy(object, invocation, 0);
   return TRUE;
 }
@@ -143,6 +143,8 @@ gboolean DBus::on_handle_execute_run(NpudCore *object, GDBusMethodInvocation *in
                                      guint64 arg_ctx, guint64 arg_nw_handle)
 {
   VERBOSE(DBus) << "on_handle_execute_run with " << arg_ctx << ", " << arg_nw_handle << std::endl;
+  // TODO Implement details
+  npud_core_complete_execute_run(object, invocation, 0);
   return TRUE;
 }
 

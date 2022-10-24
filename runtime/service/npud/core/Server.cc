@@ -29,7 +29,8 @@ std::atomic_bool Server::_isRunning(false);
 
 Server::Server() noexcept
   : _mainloop(g_main_loop_new(NULL, FALSE), g_main_loop_unref), _signal(std::make_unique<Signal>()),
-    _dbus(std::make_unique<DBus>()), _devManager(std::make_unique<DevManager>())
+    _core(std::make_shared<Core>()),
+    _dbus(std::make_unique<DBus>()) /*, _devManager(std::make_unique<DevManager>())*/
 {
 }
 
@@ -42,7 +43,8 @@ void Server::run(void)
     throw std::runtime_error("Mainloop is already running.");
   }
 
-  _devManager->loadModules();
+  _core->init();
+  // _devManager->loadModules();
 
   g_main_loop_run(_mainloop.get());
 }
@@ -51,7 +53,8 @@ void Server::stop(void)
 {
   VERBOSE(Server) << "Stop Server\n";
 
-  _devManager->releaseModules();
+  _core->deinit();
+  // _devManager->releaseModules();
 
   if (!_isRunning.load())
   {

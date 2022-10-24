@@ -17,6 +17,8 @@
 #ifndef __ONE_SERVICE_NPUD_CORE_DBUS_H__
 #define __ONE_SERVICE_NPUD_CORE_DBUS_H__
 
+#include "Core.h"
+
 #include <dbus-core.h>
 #include <gio/gio.h>
 #include <memory>
