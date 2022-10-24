@@ -6,6 +6,8 @@ import tensorflow as tf
 import importlib
 import argparse
 
+from pathlib import Path
+
 parser = argparse.ArgumentParser(description='Process TensorFlow Python Examples')
 
 parser.add_argument('examples', metavar='EXAMPLES', nargs='+')
