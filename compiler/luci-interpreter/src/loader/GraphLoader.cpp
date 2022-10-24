@@ -187,7 +187,11 @@ void GraphLoader::loadTensors()
     const auto *node = loco::must_cast<const luci::CircleNode *>(_graph->nodes()->at(i));
 
     if (node->opcode() == luci::CircleOpcode::CUSTOM && !isSupportedCustomNode(node))
-      throw std::runtime_error("Unsupported Custom operator. " + node->name());
+    {
+      const auto *cnode = loco::must_cast<const luci::CircleCustom *>(node);
+      throw std::runtime_error("Unsupported Custom operator. " + cnode->custom_code() + " in " +
+                               node->name());
+    }
 
     if (!isTensorProducingNode(node))
       continue;
