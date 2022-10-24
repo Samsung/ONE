@@ -27,6 +27,17 @@ enum SupportedPlatformType
   CMSISNN
 };
 
+enum RuntimeType
+{
+  ONERT_MICRO
+};
+
+enum AllocatingMode
+{
+  COMMON,
+  SPLIT
+};
+
 struct TargetPlatform
 {
   SupportedPlatformType platform_type;
