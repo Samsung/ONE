@@ -1,0 +1,12 @@
+# To check fake quantization of DepthToSpace (D2S).
+# 1. ifm is float32.
+# 2. D2S is float32.
+# 3. Q/DQ is inserted at the beginning of the model (from ifm).
+# 4. Q/DQ is not inserted after D2S, because D2S does not change values of input.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "IFM_FP32"              $(tensor_dtype ifm) '=' FLOAT32
+RULE    "D2S_FP32"              $(tensor_dtype ofm) '=' FLOAT32
+RULE    "QUANTIZE_OP"           $(op_count QUANTIZE) '=' 1
+RULE    "DEQUANTIZE_OP"         $(op_count DEQUANTIZE) '=' 1
