@@ -119,18 +119,50 @@ inline size_t sizeOfNnfwType(NNFW_TYPE type)
 }
 
 template <typename T>
-bool compareBuffersExact(const T *ref_buf, const std::vector<uint8_t> &act_buf, uint32_t index)
+bool compareBuffers(const T *ref_buf, const std::vector<uint8_t> &act_buf, uint32_t index)
 {
+  // TODO better way for handling quant error?
+  auto tolerance = static_cast<uint64_t>(nnfw::misc::EnvVar("TOLERANCE").asInt(0));
   bool match = true;
+
   for (uint32_t e = 0; e < act_buf.size() / sizeof(T); e++)
   {
     T ref = ref_buf[e];
     T act = reinterpret_cast<const T *>(act_buf.data())[e];
+    uint64_t diff = static_cast<uint64_t>(((ref > act) ? (ref - act) : (act - ref)));
 
-    if (ref != act)
+    if (ref != act && diff > tolerance)
     {
       std::cerr << "Output #" << index << ", Element Index : " << e << ", ref: " << ref
-                << ", act: " << act << std::endl;
+                << ", act: " << act << " (diff: " << diff << ")" << std::endl;
+      match = false;
+    }
+  }
+
+  return match;
+}
+
+template <>
+bool compareBuffers<float>(const float *ref_buf, const std::vector<uint8_t> &act_buf,
+                           uint32_t index)
+{
+  uint32_t tolerance = nnfw::misc::EnvVar("TOLERANCE").asInt(1);
+  bool match = true;
+
+  for (uint32_t e = 0; e < act_buf.size() / sizeof(float); e++)
+  {
+    float ref = ref_buf[e];
+    float act = reinterpret_cast<const float *>(act_buf.data())[e];
+    float diff = std::fabs(ref - act);
+
+    bool match_elem = nnfw::misc::fp32::absolute_epsilon_equal(ref, act)
+                        ? true
+                        : nnfw::misc::fp32::epsilon_equal(ref, act, tolerance);
+
+    if (!match_elem)
+    {
+      std::cerr << "Output #" << index << ", Element Index : " << e << ", ref: " << ref
+                << ", act: " << act << " (diff: " << diff << ")" << std::endl;
       match = false;
     }
   }
@@ -319,10 +351,7 @@ int main(const int argc, char **argv)
   }
   std::cout << "[Comparison] TFLite run done!" << std::endl;
 
-  // Calculate max difference over all outputs
-  float max_float_difference = 0.0f;
   bool find_unmatched_output = false;
-  auto tolerance = nnfw::misc::EnvVar("TOLERANCE").asInt(1);
 
   for (uint32_t out_idx = 0; out_idx < num_outputs; out_idx++)
   {
@@ -342,30 +371,19 @@ int main(const int argc, char **argv)
         break;
       case NNFW_TYPE_TENSOR_UINT8:
       case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-        matched = compareBuffersExact<uint8_t>(ref_output.uint8, output, out_idx);
+        matched = compareBuffers<uint8_t>(ref_output.uint8, output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
-        matched = compareBuffersExact<int8_t>(ref_output.int8, output, out_idx);
+        matched = compareBuffers<int8_t>(ref_output.int8, output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_INT32:
-        matched = compareBuffersExact<int32_t>(ref_output.i32, output, out_idx);
+        matched = compareBuffers<int32_t>(ref_output.i32, output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_FLOAT32:
-        // TODO better way for handling FP error?
-        for (uint32_t e = 0; e < num_elems(&ti); e++)
-        {
-          float refval = ref_output.f[e];
-          float val = reinterpret_cast<const float *>(output.data())[e];
-          if (std::abs(refval - val) > max_float_difference)
-            max_float_difference = std::abs(refval - val);
-
-          matched = nnfw::misc::fp32::absolute_epsilon_equal(refval, val)
-                      ? true
-                      : nnfw::misc::fp32::epsilon_equal(refval, val, tolerance);
-        }
+        matched = compareBuffers<float>(ref_output.f, output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_INT64:
-        matched = compareBuffersExact<int64_t>(ref_output.i64, output, out_idx);
+        matched = compareBuffers<int64_t>(ref_output.i64, output, out_idx);
         break;
       default:
         throw std::runtime_error{"Invalid tensor type"};
@@ -376,7 +394,6 @@ int main(const int argc, char **argv)
   }
 
   // Print results
-  std::cout << "[Comparison] Max float difference: " << max_float_difference << std::endl;
   int ret = 0;
   if (find_unmatched_output)
   {
