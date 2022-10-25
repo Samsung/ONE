@@ -11,7 +11,9 @@ div
 embedding_lookup
 exp
 floor
-fullyconnected
+fullyconnected/fc1
+fullyconnected/matmul2x2
+fullyconnected/weights_as_input
 gather
 hashtable_lookup
 l2_normalization
