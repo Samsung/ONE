@@ -51,6 +51,7 @@ public:
   std::shared_ptr<Backend> getBackend();
 
   int createContext(int deviceId, int priority, NpuContext **npuContext);
+  int destroyContext(NpuContext *npuContext);
 
 private:
   Device *getDevice(DevID id);

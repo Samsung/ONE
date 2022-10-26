@@ -33,11 +33,12 @@ ContextManager::~ContextManager() noexcept
   _contexts.clear();
 }
 
-void ContextManager::newContext(ContextID *contextId)
+void ContextManager::newContext(NpuContext *npuContext, ContextID *contextId)
 {
   auto context = std::make_unique<Context>();
   // TODO Consider the possibility of reusing the same address.
   context->contextId = reinterpret_cast<ContextID>(context.get());
+  context->npuContext = npuContext;
   *contextId = context->contextId;
   _contexts.emplace_back(std::move(context));
 
@@ -52,10 +53,13 @@ void ContextManager::deleteContext(ContextID contextId)
                    [&](std::unique_ptr<Context> &c) { return c->contextId == contextId; });
   if (iter == _contexts.end())
   {
-    throw std::runtime_error("ContextID is not valid.");
+    return;
   }
 
   _contexts.erase(iter, _contexts.end());
+
+  // Test
+  this->listContexts();
 }
 
 void ContextManager::listContexts()
@@ -67,6 +71,25 @@ void ContextManager::listContexts()
     VERBOSE(ContextManager) << "contextId: " << context->contextId << std::endl;
   }
   VERBOSE(ContextManager) << "==========================" << std::endl;
+}
+
+const std::vector<std::unique_ptr<Context>>::iterator ContextManager::getContext(ContextID contextId)
+{
+  const auto iter =
+    std::find_if(_contexts.begin(), _contexts.end(),
+                   [&](std::unique_ptr<Context> &c) { return c->contextId == contextId; });
+  return iter;
+}
+
+NpuContext *ContextManager::getNpuContext(ContextID contextId)
+{
+  const auto iter = getContext(contextId);
+  if (iter == _contexts.end())
+  {
+    return nullptr;
+  }
+
+  return iter->get()->npuContext;
 }
 
 } // namespace core

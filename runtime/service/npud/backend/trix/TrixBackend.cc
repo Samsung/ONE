@@ -76,9 +76,17 @@ NpuStatus TrixBackend::createContext(NpuDevice *device, int device_fd, int prior
   return NPU_STATUS_SUCCESS;
 }
 
-NpuStatus TrixBackend::destroyContext(NpuDevice *device, NpuContext ctx)
+NpuStatus TrixBackend::destroyContext(NpuDevice *device, NpuContext *ctx)
 {
-  return NPU_STATUS_ERROR_NOT_SUPPORTED;
+  VERBOSE(TrixBackend) << __FUNCTION__ << std::endl;
+
+  for (const auto &dev_handle: ctx->_handles)
+  {
+    unregisterNPUmodel_all(dev_handle);
+    putNPUdevice(dev_handle);
+  }
+  delete ctx;
+  return NPU_STATUS_SUCCESS;
 }
 
 NpuStatus TrixBackend::createBuffer(NpuDevice *device, GenericBuffer *buffer)

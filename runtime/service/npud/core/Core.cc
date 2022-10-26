@@ -39,11 +39,15 @@ int Core::createContext(int deviceId, int priority, ContextID *contextId)
 {
   VERBOSE(Core) << "createContext with " << deviceId << ", " << priority << std::endl;
   NpuContext *npuContext;
-  _devManager->createContext(deviceId, priority, &npuContext);
+  int ret = _devManager->createContext(deviceId, priority, &npuContext);
+  if (ret != NPU_STATUS_SUCCESS) {
+    VERBOSE(Core) << "Fail to create dev context" << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
 
-  // _devManager->getBackend()->createContext()
   ContextID _contextId;
-  _contextManager->newContext(&_contextId);
+  _contextManager->newContext(npuContext, &_contextId);
   *contextId = _contextId;
   return 0;
 }
@@ -51,15 +55,20 @@ int Core::createContext(int deviceId, int priority, ContextID *contextId)
 int Core::destroyContext(ContextID contextId)
 {
   VERBOSE(Core) << "destroyContext with " << contextId << std::endl;
-  try
+  NpuContext *npuContext = _contextManager->getNpuContext(contextId);
+  if (!npuContext)
   {
-    _contextManager->deleteContext(contextId);
-  }
-  catch (const std::exception &e)
-  {
-    VERBOSE(Core) << "destroyContext failed: " << e.what() << std::endl;
+    VERBOSE(Core) << "Invalid context id" << std::endl;
+    // TODO Define CoreStatus
     return 1;
   }
+
+  int ret = _devManager->destroyContext(npuContext);
+  if (ret != NPU_STATUS_SUCCESS) {
+    VERBOSE(Core) << "Fail to destroy npu context" << std::endl;
+  }
+
+  _contextManager->deleteContext(contextId);
   return 0;
 }
 

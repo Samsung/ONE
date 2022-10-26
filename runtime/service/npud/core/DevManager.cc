@@ -106,6 +106,7 @@ void DevManager::loadModules(void)
 
   // Test
   this->listModules();
+
 }
 
 void DevManager::listModules(void)
@@ -150,7 +151,13 @@ std::shared_ptr<Backend> DevManager::getBackend()
 int DevManager::createContext(int deviceId, int priority, NpuContext **npuContext)
 {
   Device *dev = getDevice(_defaultId);
-  getBackend()->createContext(dev->device.get(), deviceId, priority, npuContext);
+  return getBackend()->createContext(dev->device.get(), deviceId, priority, npuContext);
+}
+
+int DevManager::destroyContext(NpuContext *npuContext)
+{
+  Device *dev = getDevice(_defaultId);
+  return getBackend()->destroyContext(dev->device.get(), npuContext);
 }
 
 } // namespace core

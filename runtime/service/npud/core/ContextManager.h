@@ -17,6 +17,8 @@
 #ifndef __ONE_SERVICE_NPUD_CORE_CONTEXT_MANAGER_H__
 #define __ONE_SERVICE_NPUD_CORE_CONTEXT_MANAGER_H__
 
+#include "Backend.h"
+
 #include <vector>
 #include <memory>
 
@@ -30,6 +32,7 @@ struct Context
 {
   // TODO Describe the variables
   ContextID contextId;
+  NpuContext *npuContext;
 };
 
 class ContextManager
@@ -41,8 +44,10 @@ public:
   ContextManager(const ContextManager &) = delete;
   ContextManager &operator=(const ContextManager &) = delete;
 
-  void newContext(ContextID *contextId);
+  void newContext(NpuContext *npuContext, ContextID *contextId);
   void deleteContext(ContextID contextId);
+  const std::vector<std::unique_ptr<Context>>::iterator getContext(ContextID contextId);
+  NpuContext *getNpuContext(ContextID contextId);
 
 private:
   void listContexts(void);
