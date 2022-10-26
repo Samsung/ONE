@@ -18,7 +18,7 @@
 #define __ONE_SERVICE_NPUD_BACKEND_TRIX_BACKEND_H__
 
 #include <core/Backend.h>
-// #include <libnpuhost.h>
+#include <libnpuhost.h>
 #include <vector>
 #include <unordered_map>
 
@@ -34,12 +34,12 @@ using namespace ::npud::core;
 class TrixBackend : public Backend
 {
 public:
-  TrixBackend() = default;
+  TrixBackend();
   ~TrixBackend() = default;
 
   NpudStatus getVersion(std::string &version) override;
   NpudStatus createContext(NpudDevice *device, int device_fd, int priority,
-                           NpudContext *ctx) override;
+                           NpudContext **ctx) override;
   NpudStatus destroyContext(NpudDevice *device, NpudContext ctx) override;
   NpudStatus createBuffer(NpudDevice *device, GenericBuffer *buffer) override;
   NpudStatus destroyBuffer(NpudDevice *device, GenericBuffer *buffer) override;
@@ -55,6 +55,8 @@ public:
   NpudStatus submitRequest(NpudDevice *device, RequestID requestId) override;
 };
 
+private:
+  dev_type _dev_type;
 } // namespace trix
 } // namespace backend
 } // namespace npud

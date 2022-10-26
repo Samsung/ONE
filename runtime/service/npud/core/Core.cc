@@ -38,6 +38,8 @@ void Core::deinit() { _devManager->releaseModules(); }
 int Core::createContext(int deviceId, int priority, ContextID *contextId)
 {
   VERBOSE(Core) << "createContext with " << deviceId << ", " << priority << std::endl;
+  NpudContext *context;
+  _devManager->getBackend()->createContext(deviceId, priority, &context);
   // _devManager->getBackend()->createContext()
   ContextID _contextId;
   _contextManager->newContext(&_contextId);

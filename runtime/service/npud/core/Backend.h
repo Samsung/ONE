@@ -40,10 +40,13 @@ struct NpudDevice
 };
 
 /**
- * @brief Npud device handle
+ * @brief Npud context definition
  *
  */
-using NpudContext = uint64_t;
+struct NpudContext
+{
+  std::vector<void*> _handles;
+};
 
 /**
  * @brief Npud model ID
@@ -92,8 +95,8 @@ struct TensorDataInfo
 enum NpudStatus
 {
   NPUD_STATUS_SUCCESS = 0,
-  NPUD_STATUS_ERROR_PERM = 1,
-  NPUD_STATUS_NOT_SUPPORTED = 2,
+  NPUD_STATUS_ERROR_OPERATION_FAILED,
+  NPUD_STATUS_ERROR_NOT_SUPPORTED,
 };
 
 /**
@@ -109,7 +112,7 @@ public:
 
   virtual NpudStatus getVersion(std::string &version) = 0;
   virtual NpudStatus createContext(NpudDevice *device, int device_fd, int priority,
-                                   NpudContext *ctx) = 0;
+                                   NpudContext **ctx) = 0;
   virtual NpudStatus destroyContext(NpudDevice *device, NpudContext ctx) = 0;
   virtual NpudStatus createBuffer(NpudDevice *device, GenericBuffer *buffer) = 0;
   virtual NpudStatus destroyBuffer(NpudDevice *device, GenericBuffer *buffer) = 0;
