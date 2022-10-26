@@ -18,6 +18,7 @@
 #define __ONE_SERVICE_NPUD_CORE_SERVER_H__
 
 #include "Signal.h"
+#include "DBus.h"
 
 #include <glib.h>
 #include <memory>
@@ -49,6 +50,7 @@ private:
 
   std::unique_ptr<GMainLoop, void (*)(GMainLoop *)> _mainloop;
   std::unique_ptr<Signal> _signal;
+  std::unique_ptr<DBus> _dbus;
 };
 
 } // namespace core
