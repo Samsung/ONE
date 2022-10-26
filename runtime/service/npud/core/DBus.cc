@@ -124,8 +124,9 @@ gboolean DBus::on_handle_network_create(NpudCore *object, GDBusMethodInvocation 
   // Backend *
   // DevContext &context = Server::instance().dev()->getContext(DevID(arg_ctx));
   // context.registerModel(binary_path);
-  ModelID modelID = 100;
-  npud_core_complete_network_create(object, invocation, guint64(modelID), 0);
+  ModelID modelID;
+  int ret = Server::core()->createNetwork(arg_ctx, binary_path, &modelID);
+  npud_core_complete_network_create(object, invocation, guint64(modelID), ret);
   return TRUE;
 }
 

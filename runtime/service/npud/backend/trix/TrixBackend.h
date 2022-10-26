@@ -44,7 +44,7 @@ public:
   NpuStatus createBuffer(NpuDevice *device, GenericBuffer *buffer) override;
   NpuStatus destroyBuffer(NpuDevice *device, GenericBuffer *buffer) override;
   // TODO Support to register model from buffer
-  NpuStatus registerModel(NpuDevice *device, const std::string &modelPath,
+  NpuStatus registerModel(NpuDevice *device, NpuContext *ctx, const std::string &modelPath,
                            ModelID *modelId) override;
   NpuStatus unregisterModel(NpuDevice *device, ModelID modelId) override;
   NpuStatus createRequest(NpuDevice *device, ModelID modelId, RequestID *requestId) override;
@@ -55,7 +55,7 @@ public:
   NpuStatus submitRequest(NpuDevice *device, RequestID requestId) override;
 
 private:
-  dev_type _dev_type;
+  dev_type _devType;
 };
 
 } // namespace trix

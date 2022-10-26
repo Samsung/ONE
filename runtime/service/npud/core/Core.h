@@ -43,6 +43,7 @@ public:
 
   int createContext(int deviceId, int priority, ContextID *contextId);
   int destroyContext(ContextID contextId);
+  int createNetwork(ContextID contextId, const std::string &modelPath, ModelID *modelId);
 
 private:
   std::unique_ptr<DevManager> _devManager;

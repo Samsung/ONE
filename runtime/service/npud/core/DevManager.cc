@@ -160,5 +160,11 @@ int DevManager::destroyContext(NpuContext *npuContext)
   return getBackend()->destroyContext(dev->device.get(), npuContext);
 }
 
+int DevManager::registerModel(NpuContext *npuContext, const std::string &modelPath, ModelID *modelId)
+{
+  Device *dev = getDevice(_defaultId);
+  return getBackend()->registerModel(dev->device.get(), npuContext, modelPath, modelId);
+}
+
 } // namespace core
 } // namespace npud

@@ -35,7 +35,7 @@ namespace backend
 namespace trix
 {
 
-TrixBackend::TrixBackend() : _dev_type(NPUCOND_TRIV2_CONN_SOCIP)
+TrixBackend::TrixBackend() : _devType(NPUCOND_TRIV2_CONN_SOCIP)
 {
 
 }
@@ -51,27 +51,29 @@ NpuStatus TrixBackend::createContext(NpuDevice *device, int device_fd, int prior
 {
   VERBOSE(TrixBackend) << __FUNCTION__ << std::endl;
 
-  auto coreNum = getnumNPUdeviceByType(_dev_type);
+  auto coreNum = getnumNPUdeviceByType(_devType);
   if (coreNum <= 0) {
     return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
-  std::vector<npudev_h> _handles;
+  std::vector<npudev_h> handles;
   for (int i = 0; i < coreNum; ++i) {
     npudev_h handle;
-    if (getNPUdeviceByType(&handle, _dev_type, i) < 0) {
+    if (getNPUdeviceByType(&handle, _devType, i) < 0) {
       // Note Run for all cores.
       continue;
     }
-    _handles.emplace_back(handle);
+    handles.emplace_back(handle);
   }
 
-  if (_handles.size() == 0) {
+  if (handles.size() == 0) {
     return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
   NpuContext *context = new NpuContext();
-  context->_handles = std::move(_handles);
+  context->handles = std::move(handles);
+  context->modelIds.resize(context->handles.size());
+  context->defaultCore = 0;
   *ctx = context;
   return NPU_STATUS_SUCCESS;
 }
@@ -80,10 +82,10 @@ NpuStatus TrixBackend::destroyContext(NpuDevice *device, NpuContext *ctx)
 {
   VERBOSE(TrixBackend) << __FUNCTION__ << std::endl;
 
-  for (const auto &dev_handle: ctx->_handles)
+  for (const auto &handle: ctx->handles)
   {
-    unregisterNPUmodel_all(dev_handle);
-    putNPUdevice(dev_handle);
+    unregisterNPUmodel_all(handle);
+    putNPUdevice(handle);
   }
   delete ctx;
   return NPU_STATUS_SUCCESS;
@@ -99,10 +101,37 @@ NpuStatus TrixBackend::destroyBuffer(NpuDevice *device, GenericBuffer *buffer)
   return NPU_STATUS_ERROR_NOT_SUPPORTED;
 }
 
-NpuStatus TrixBackend::registerModel(NpuDevice *device, const std::string &modelPath,
+NpuStatus TrixBackend::registerModel(NpuDevice *device, NpuContext *ctx, const std::string &modelPath,
                                       ModelID *modelId)
 {
-  return NPU_STATUS_ERROR_NOT_SUPPORTED;
+  auto modelMap = ctx->modelIds.at(ctx->defaultCore);
+  auto iter = modelMap.find(modelPath);
+  if (iter != modelMap.end()) {
+    *modelId = iter->second;
+    return NPU_STATUS_SUCCESS;
+  }
+
+  auto meta = getNPUmodel_metadata(modelPath.c_str(), false);
+  if (meta == nullptr)
+  {
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+
+  generic_buffer fileInfo;
+  fileInfo.type = BUFFER_FILE;
+  fileInfo.filepath = modelPath.c_str();
+  fileInfo.size = meta->size;
+
+  ModelID id;
+  npudev_h handle = ctx->handles.at(ctx->defaultCore);
+  if (registerNPUmodel(handle, &fileInfo, &id) < 0)
+  {
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+
+  ctx->modelIds.at(ctx->defaultCore).insert({modelPath, id});
+  *modelId = id;
+  return NPU_STATUS_SUCCESS;
 }
 
 NpuStatus TrixBackend::unregisterModel(NpuDevice *device, ModelID modelId)

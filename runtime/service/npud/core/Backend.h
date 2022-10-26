@@ -22,6 +22,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 namespace npud
 {
@@ -31,24 +32,7 @@ namespace core
 /* Backend supports up to 16 buffers. */
 #define NPU_TENSOR_CARDINALITY_MAX (16)
 
-/**
- * @brief Npu device definition
- *
- */
-struct NpuDevice
-{
-  int fd;
-};
-
-/**
- * @brief Npu context definition
- *
- */
-struct NpuContext
-{
-  std::vector<void*> _handles;
-};
-
+using Handle = void *;
 /**
  * @brief Npu model ID
  *
@@ -101,6 +85,29 @@ enum NpuStatus
 };
 
 /**
+ * @brief Npu device definition
+ *
+ */
+struct NpuDevice
+{
+  int fd;
+};
+
+/**
+ * @brief Npu context definition
+ *
+ */
+struct NpuContext
+{
+  std::vector<Handle> handles;
+  // Note Manage model id per model path.
+  //      Do we need to handle the case of requesting different model files
+  //      with the same model path?
+  std::vector<std::map<const std::string, ModelID>> modelIds;
+  int defaultCore;
+};
+
+/**
  * @brief Npu backend interface
  *
  * @detail Backend module should implement this Backend interface.
@@ -118,7 +125,7 @@ public:
   virtual NpuStatus createBuffer(NpuDevice *device, GenericBuffer *buffer) = 0;
   virtual NpuStatus destroyBuffer(NpuDevice *device, GenericBuffer *buffer) = 0;
   // TODO Support to register model from buffer
-  virtual NpuStatus registerModel(NpuDevice *device, const std::string &modelPath,
+  virtual NpuStatus registerModel(NpuDevice *device, NpuContext *ctx, const std::string &modelPath,
                                    ModelID *modelId) = 0;
   virtual NpuStatus unregisterModel(NpuDevice *device, ModelID modelId) = 0;
   virtual NpuStatus createRequest(NpuDevice *device, ModelID modelId, RequestID *requestId) = 0;
