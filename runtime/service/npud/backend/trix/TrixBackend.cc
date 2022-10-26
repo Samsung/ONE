@@ -35,25 +35,25 @@ namespace backend
 namespace trix
 {
 
-TrixBackend::TrixBacked(): _dev_type(NPUCOND_TRIV2_CONN_SOCIP)
+TrixBackend::TrixBackend() : _dev_type(NPUCOND_TRIV2_CONN_SOCIP)
 {
 
 }
 
-NpudStatus TrixBackend::getVersion(std::string &version)
+NpuStatus TrixBackend::getVersion(std::string &version)
 {
   VERBOSE(TrixBackend) << "getVersion" << std::endl;
-  return NPUD_STATUS_ERROR_NOT_SUPPORTED;
+  return NPU_STATUS_ERROR_NOT_SUPPORTED;
 }
 
-NpudStatus TrixBackend::createContext(NpudDevice *device, int device_fd, int priority,
-                                      NpudContext **ctx)
+NpuStatus TrixBackend::createContext(NpuDevice *device, int device_fd, int priority,
+                                      NpuContext **ctx)
 {
   VERBOSE(TrixBackend) << __FUNCTION__ << std::endl;
 
   auto coreNum = getnumNPUdeviceByType(_dev_type);
   if (coreNum <= 0) {
-    return NPUD_STATUS_ERROR_OPERATION_FAILED;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
   std::vector<npudev_h> _handles;
@@ -66,61 +66,62 @@ NpudStatus TrixBackend::createContext(NpudDevice *device, int device_fd, int pri
     _handles.emplace_back(handle);
   }
 
-  if (_handle.size() == 0) {
-    return NPUD_STATUS_ERROR_OPERATION_FAILED;
+  if (_handles.size() == 0) {
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
-  NpudContext *context = new NpudContext();
+  NpuContext *context = new NpuContext();
   context->_handles = std::move(_handles);
-  return NPUD_STATUS_SUCCESS;
+  *ctx = context;
+  return NPU_STATUS_SUCCESS;
 }
 
-NpudStatus TrixBackend::destroyContext(NpudDevice *device, NpudContext ctx)
+NpuStatus TrixBackend::destroyContext(NpuDevice *device, NpuContext ctx)
 {
-  return NPUD_STATUS_ERROR_NOT_SUPPORTED;
+  return NPU_STATUS_ERROR_NOT_SUPPORTED;
 }
 
-NpudStatus TrixBackend::createBuffer(NpudDevice *device, GenericBuffer *buffer)
+NpuStatus TrixBackend::createBuffer(NpuDevice *device, GenericBuffer *buffer)
 {
-  return NPUD_STATUS_ERROR_NOT_SUPPORTED;
+  return NPU_STATUS_ERROR_NOT_SUPPORTED;
 }
 
-NpudStatus TrixBackend::destroyBuffer(NpudDevice *device, GenericBuffer *buffer)
+NpuStatus TrixBackend::destroyBuffer(NpuDevice *device, GenericBuffer *buffer)
 {
-  return NPUD_STATUS_ERROR_NOT_SUPPORTED;
+  return NPU_STATUS_ERROR_NOT_SUPPORTED;
 }
 
-NpudStatus TrixBackend::registerModel(NpudDevice *device, const std::string &modelPath,
+NpuStatus TrixBackend::registerModel(NpuDevice *device, const std::string &modelPath,
                                       ModelID *modelId)
 {
-  return NPUD_STATUS_ERROR_NOT_SUPPORTED;
+  return NPU_STATUS_ERROR_NOT_SUPPORTED;
 }
 
-NpudStatus TrixBackend::unregisterModel(NpudDevice *device, ModelID modelId)
+NpuStatus TrixBackend::unregisterModel(NpuDevice *device, ModelID modelId)
 {
-  return NPUD_STATUS_ERROR_NOT_SUPPORTED;
+  return NPU_STATUS_ERROR_NOT_SUPPORTED;
 }
 
-NpudStatus TrixBackend::createRequest(NpudDevice *device, ModelID modelId, RequestID *requestId)
+NpuStatus TrixBackend::createRequest(NpuDevice *device, ModelID modelId, RequestID *requestId)
 {
-  return NPUD_STATUS_ERROR_NOT_SUPPORTED;
+  return NPU_STATUS_ERROR_NOT_SUPPORTED;
 }
 
-NpudStatus TrixBackend::destroyRequest(NpudDevice *device, RequestID requestId)
+NpuStatus TrixBackend::destroyRequest(NpuDevice *device, RequestID requestId)
 {
-  return NPUD_STATUS_ERROR_NOT_SUPPORTED;
+  return NPU_STATUS_ERROR_NOT_SUPPORTED;
 }
 
-NpudStatus TrixBackend::setRequestData(NpudDevice *device, RequestID requestId,
+NpuStatus TrixBackend::setRequestData(NpuDevice *device, RequestID requestId,
                                        InputBuffers *input_bufs, TensorDataInfo *in_info,
                                        OutputBuffers *output_bufs, TensorDataInfo *out_info)
 {
-  return NPUD_STATUS_ERROR_NOT_SUPPORTED;
+  return NPU_STATUS_ERROR_NOT_SUPPORTED;
 }
 
-NpudStatus TrixBackend::submitRequest(NpudDevice *device, RequestID requestId)
+NpuStatus TrixBackend::submitRequest(NpuDevice *device, RequestID requestId)
 {
-  return NPUD_STATUS_ERROR_NOT_SUPPORTED;
+  return NPU_STATUS_ERROR_NOT_SUPPORTED;
 }
 
 } // namespace trix

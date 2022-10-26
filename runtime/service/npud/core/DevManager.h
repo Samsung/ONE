@@ -33,7 +33,7 @@ struct Device
 {
   DevID devId;
   std::string modulePath;
-  std::unique_ptr<NpudDevice> device;
+  std::unique_ptr<NpuDevice> device;
   std::unique_ptr<DynamicLoader> loader;
 };
 
@@ -49,6 +49,8 @@ public:
   void loadModules(void);
   void releaseModules(void);
   std::shared_ptr<Backend> getBackend();
+
+  int createContext(int deviceId, int priority, NpuContext **npuContext);
 
 private:
   Device *getDevice(DevID id);

@@ -37,26 +37,27 @@ public:
   TrixBackend();
   ~TrixBackend() = default;
 
-  NpudStatus getVersion(std::string &version) override;
-  NpudStatus createContext(NpudDevice *device, int device_fd, int priority,
-                           NpudContext **ctx) override;
-  NpudStatus destroyContext(NpudDevice *device, NpudContext ctx) override;
-  NpudStatus createBuffer(NpudDevice *device, GenericBuffer *buffer) override;
-  NpudStatus destroyBuffer(NpudDevice *device, GenericBuffer *buffer) override;
+  NpuStatus getVersion(std::string &version) override;
+  NpuStatus createContext(NpuDevice *device, int device_fd, int priority,
+                           NpuContext **ctx) override;
+  NpuStatus destroyContext(NpuDevice *device, NpuContext ctx) override;
+  NpuStatus createBuffer(NpuDevice *device, GenericBuffer *buffer) override;
+  NpuStatus destroyBuffer(NpuDevice *device, GenericBuffer *buffer) override;
   // TODO Support to register model from buffer
-  NpudStatus registerModel(NpudDevice *device, const std::string &modelPath,
+  NpuStatus registerModel(NpuDevice *device, const std::string &modelPath,
                            ModelID *modelId) override;
-  NpudStatus unregisterModel(NpudDevice *device, ModelID modelId) override;
-  NpudStatus createRequest(NpudDevice *device, ModelID modelId, RequestID *requestId) override;
-  NpudStatus destroyRequest(NpudDevice *device, RequestID requestId) override;
-  NpudStatus setRequestData(NpudDevice *device, RequestID requestId, InputBuffers *input_bufs,
+  NpuStatus unregisterModel(NpuDevice *device, ModelID modelId) override;
+  NpuStatus createRequest(NpuDevice *device, ModelID modelId, RequestID *requestId) override;
+  NpuStatus destroyRequest(NpuDevice *device, RequestID requestId) override;
+  NpuStatus setRequestData(NpuDevice *device, RequestID requestId, InputBuffers *input_bufs,
                             TensorDataInfo *in_info, OutputBuffers *output_bufs,
                             TensorDataInfo *out_info) override;
-  NpudStatus submitRequest(NpudDevice *device, RequestID requestId) override;
-};
+  NpuStatus submitRequest(NpuDevice *device, RequestID requestId) override;
 
 private:
   dev_type _dev_type;
+};
+
 } // namespace trix
 } // namespace backend
 } // namespace npud

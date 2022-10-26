@@ -32,11 +32,11 @@ DynamicLoader::DynamicLoader(const char *file, int flags)
     throw std::runtime_error("Fail to load " + _filepath + " module");
   }
 
-  NpudAlloc alloc;
-  NpudDealloc dealloc;
+  NpuAlloc alloc;
+  NpuDealloc dealloc;
 
-  alloc = reinterpret_cast<NpudAlloc>(dlsym(_handle, _allocSymbol.c_str()));
-  dealloc = reinterpret_cast<NpudDealloc>(dlsym(_handle, _deallocSymbol.c_str()));
+  alloc = reinterpret_cast<NpuAlloc>(dlsym(_handle, _allocSymbol.c_str()));
+  dealloc = reinterpret_cast<NpuDealloc>(dlsym(_handle, _deallocSymbol.c_str()));
   if (!alloc || !dealloc)
   {
     VERBOSE(DynamicLoader) << "Fail to load " << _filepath << " symbol: " << dlerror() << std::endl;

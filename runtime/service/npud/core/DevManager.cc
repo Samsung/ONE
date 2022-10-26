@@ -89,7 +89,7 @@ void DevManager::loadModules(void)
     std::unique_ptr<Device> dev = std::make_unique<Device>();
     dev->devId = _devInstance++;
     dev->modulePath = std::move(modulePath);
-    dev->device = std::make_unique<NpudDevice>();
+    dev->device = std::make_unique<NpuDevice>();
     dev->loader = std::unique_ptr<DynamicLoader>(loader);
 
     // Note The first loaded backend becomes the default backend.
@@ -106,18 +106,6 @@ void DevManager::loadModules(void)
 
   // Test
   this->listModules();
-
-  // Test
-  std::string version;
-  try
-  {
-    getBackend()->getVersion(version);
-    getBackend()->createContext(nullptr, 0, 0, nullptr);
-  }
-  catch (const std::exception &e)
-  {
-    VERBOSE(DevManager) << e.what() << std::endl;
-  }
 }
 
 void DevManager::listModules(void)
@@ -157,6 +145,12 @@ Device *DevManager::getDevice(DevID id)
 std::shared_ptr<Backend> DevManager::getBackend()
 {
   return getDevice(_defaultId)->loader->getInstance();
+}
+
+int DevManager::createContext(int deviceId, int priority, NpuContext **npuContext)
+{
+  Device *dev = getDevice(_defaultId);
+  getBackend()->createContext(dev->device.get(), deviceId, priority, npuContext);
 }
 
 } // namespace core

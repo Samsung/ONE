@@ -21,6 +21,7 @@
 #include "ir/DataType.h"
 
 #include <string>
+#include <vector>
 
 namespace npud
 {
@@ -31,31 +32,31 @@ namespace core
 #define NPU_TENSOR_CARDINALITY_MAX (16)
 
 /**
- * @brief Npud device definition
+ * @brief Npu device definition
  *
  */
-struct NpudDevice
+struct NpuDevice
 {
   int fd;
 };
 
 /**
- * @brief Npud context definition
+ * @brief Npu context definition
  *
  */
-struct NpudContext
+struct NpuContext
 {
   std::vector<void*> _handles;
 };
 
 /**
- * @brief Npud model ID
+ * @brief Npu model ID
  *
  */
 using ModelID = uint32_t;
 
 /**
- * @brief Npud request ID
+ * @brief Npu request ID
  *
  */
 using RequestID = uint32_t;
@@ -72,14 +73,14 @@ struct GenericBuffers
 };
 
 /**
- * @brief Npud input/output buffers are compotible with GenericBuffers.
+ * @brief Npu input/output buffers are compotible with GenericBuffers.
  *
  */
 typedef GenericBuffers InputBuffers;
 typedef GenericBuffers OutputBuffers;
 
 /**
- * @brief Npud tensor data info description.
+ * @brief Npu tensor data info description.
  *
  */
 struct TensorDataInfo
@@ -89,18 +90,18 @@ struct TensorDataInfo
 };
 
 /**
- * @brief Npud error status.
+ * @brief Npu error status.
  *
  */
-enum NpudStatus
+enum NpuStatus
 {
-  NPUD_STATUS_SUCCESS = 0,
-  NPUD_STATUS_ERROR_OPERATION_FAILED,
-  NPUD_STATUS_ERROR_NOT_SUPPORTED,
+  NPU_STATUS_SUCCESS = 0,
+  NPU_STATUS_ERROR_OPERATION_FAILED,
+  NPU_STATUS_ERROR_NOT_SUPPORTED,
 };
 
 /**
- * @brief Npud backend interface
+ * @brief Npu backend interface
  *
  * @detail Backend module should implement this Backend interface.
  *         Npu daemon will load this class symbol at runtime.
@@ -110,29 +111,29 @@ class Backend
 public:
   virtual ~Backend() = default;
 
-  virtual NpudStatus getVersion(std::string &version) = 0;
-  virtual NpudStatus createContext(NpudDevice *device, int device_fd, int priority,
-                                   NpudContext **ctx) = 0;
-  virtual NpudStatus destroyContext(NpudDevice *device, NpudContext ctx) = 0;
-  virtual NpudStatus createBuffer(NpudDevice *device, GenericBuffer *buffer) = 0;
-  virtual NpudStatus destroyBuffer(NpudDevice *device, GenericBuffer *buffer) = 0;
+  virtual NpuStatus getVersion(std::string &version) = 0;
+  virtual NpuStatus createContext(NpuDevice *device, int device_fd, int priority,
+                                   NpuContext **ctx) = 0;
+  virtual NpuStatus destroyContext(NpuDevice *device, NpuContext ctx) = 0;
+  virtual NpuStatus createBuffer(NpuDevice *device, GenericBuffer *buffer) = 0;
+  virtual NpuStatus destroyBuffer(NpuDevice *device, GenericBuffer *buffer) = 0;
   // TODO Support to register model from buffer
-  virtual NpudStatus registerModel(NpudDevice *device, const std::string &modelPath,
+  virtual NpuStatus registerModel(NpuDevice *device, const std::string &modelPath,
                                    ModelID *modelId) = 0;
-  virtual NpudStatus unregisterModel(NpudDevice *device, ModelID modelId) = 0;
-  virtual NpudStatus createRequest(NpudDevice *device, ModelID modelId, RequestID *requestId) = 0;
-  virtual NpudStatus destroyRequest(NpudDevice *device, RequestID requestId) = 0;
-  virtual NpudStatus setRequestData(NpudDevice *device, RequestID requestId,
+  virtual NpuStatus unregisterModel(NpuDevice *device, ModelID modelId) = 0;
+  virtual NpuStatus createRequest(NpuDevice *device, ModelID modelId, RequestID *requestId) = 0;
+  virtual NpuStatus destroyRequest(NpuDevice *device, RequestID requestId) = 0;
+  virtual NpuStatus setRequestData(NpuDevice *device, RequestID requestId,
                                     InputBuffers *input_bufs, TensorDataInfo *in_info,
                                     OutputBuffers *output_bufs, TensorDataInfo *out_info) = 0;
-  virtual NpudStatus submitRequest(NpudDevice *device, RequestID requestId) = 0;
+  virtual NpuStatus submitRequest(NpuDevice *device, RequestID requestId) = 0;
 };
 
 // std::string allocateSymbol("allocate");
 // std::string deallocateSymbol("deallocate");
 
-typedef Backend *(*NpudAlloc)();
-typedef void (*NpudDealloc)(Backend *);
+typedef Backend *(*NpuAlloc)();
+typedef void (*NpuDealloc)(Backend *);
 
 } // namespace core
 } // namespace npud
