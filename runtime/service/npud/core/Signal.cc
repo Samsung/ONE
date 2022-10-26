@@ -15,9 +15,8 @@
  */
 
 #include "Signal.h"
-
 #include "Server.h"
-#include <util/Logging.h>
+#include "util/Logging.h"
 
 #include <csignal>
 

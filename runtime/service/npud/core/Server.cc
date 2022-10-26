@@ -15,9 +15,9 @@
  */
 
 #include "Server.h"
+#include "util/Logging.h"
 
 #include <thread>
-#include <util/Logging.h>
 
 namespace npud
 {
