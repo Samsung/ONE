@@ -21,6 +21,7 @@
 #include "core/KernelParams.h"
 #include "luci_interpreter/core/Tensor.h"
 
+#include <tensorflow/lite/kernels/internal/tensor_utils.h>
 #include <tensorflow/lite/kernels/internal/types.h>
 
 #include <cassert>
@@ -75,6 +76,8 @@ inline int32_t calcOffset(const Shape &shape, int32_t d0, int32_t d1, int32_t d2
 {
   return ((d0 * shape.dim(1) + d1) * shape.dim(2) + d2) * shape.dim(3) + d3;
 }
+
+TfLiteFusedActivation getTfLiteActivation(Activation activation);
 
 template <typename T>
 void calculateActivationRange(Activation activation, T *activation_min, T *activation_max);
