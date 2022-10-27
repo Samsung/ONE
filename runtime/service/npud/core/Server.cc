@@ -37,7 +37,7 @@ void Server::run(void)
 
   if (_isRunning.exchange(true))
   {
-    throw std::runtime_error("Mainloop is already running.");
+    return;
   }
 
   g_main_loop_run(_mainloop.get());
@@ -49,7 +49,7 @@ void Server::stop(void)
 
   if (!_isRunning.load())
   {
-    throw std::runtime_error("Mainloop is not running");
+    return;
   }
 
   while (!g_main_loop_is_running(_mainloop.get()))
