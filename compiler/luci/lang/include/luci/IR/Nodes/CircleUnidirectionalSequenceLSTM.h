@@ -76,6 +76,10 @@ public:
   loco::Node *projection_bias(void) const { return at(17)->node(); }
   void projection_bias(loco::Node *node) { at(17)->node(node); }
 
+  // NOTE activation_state is renamed to output_state
+  loco::Node *output_state(void) const { return at(18)->node(); }
+  void output_state(loco::Node *node) { at(18)->node(node); }
+  // TODO remove activation_state
   loco::Node *activation_state(void) const { return at(18)->node(); }
   void activation_state(loco::Node *node) { at(18)->node(node); }
   loco::Node *cell_state(void) const { return at(19)->node(); }
