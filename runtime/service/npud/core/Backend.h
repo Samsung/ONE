@@ -82,6 +82,7 @@ enum NpuStatus
   NPU_STATUS_SUCCESS = 0,
   NPU_STATUS_ERROR_OPERATION_FAILED,
   NPU_STATUS_ERROR_NOT_SUPPORTED,
+  NPU_STATUS_ERROR_INVALID_ARGUMENT,
 };
 
 /**
@@ -127,7 +128,7 @@ public:
   // TODO Support to register model from buffer
   virtual NpuStatus registerModel(NpuDevice *device, NpuContext *ctx, const std::string &modelPath,
                                    ModelID *modelId) = 0;
-  virtual NpuStatus unregisterModel(NpuDevice *device, ModelID modelId) = 0;
+  virtual NpuStatus unregisterModel(NpuDevice *device, NpuContext *ctx, ModelID modelId) = 0;
   virtual NpuStatus createRequest(NpuDevice *device, ModelID modelId, RequestID *requestId) = 0;
   virtual NpuStatus destroyRequest(NpuDevice *device, RequestID requestId) = 0;
   virtual NpuStatus setRequestData(NpuDevice *device, RequestID requestId,

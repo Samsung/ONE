@@ -166,5 +166,11 @@ int DevManager::registerModel(NpuContext *npuContext, const std::string &modelPa
   return getBackend()->registerModel(dev->device.get(), npuContext, modelPath, modelId);
 }
 
+int DevManager::unregisterModel(NpuContext *npuContext, ModelID modelId)
+{
+  Device *dev = getDevice(_defaultId);
+  return getBackend()->unregisterModel(dev->device.get(), npuContext, modelId);
+}
+
 } // namespace core
 } // namespace npud

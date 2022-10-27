@@ -135,8 +135,8 @@ gboolean DBus::on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation
 {
   VERBOSE(DBus) << "on_handle_network_destroy with " << arg_ctx << ", " << arg_nw_handle
                 << std::endl;
-  // TODO Implement details
-  npud_core_complete_network_destroy(object, invocation, 0);
+  int ret = Server::core()->destroyNetwork(arg_ctx, arg_nw_handle);
+  npud_core_complete_network_destroy(object, invocation, ret);
   return TRUE;
 }
 

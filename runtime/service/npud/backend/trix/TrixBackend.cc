@@ -17,6 +17,7 @@
 #include "TrixBackend.h"
 
 #include "util/Logging.h"
+#include <algorithm>
 
 #if defined(__linux__)
 extern "C" {
@@ -104,7 +105,7 @@ NpuStatus TrixBackend::destroyBuffer(NpuDevice *device, GenericBuffer *buffer)
 NpuStatus TrixBackend::registerModel(NpuDevice *device, NpuContext *ctx, const std::string &modelPath,
                                       ModelID *modelId)
 {
-  auto modelMap = ctx->modelIds.at(ctx->defaultCore);
+  auto &modelMap = ctx->modelIds.at(ctx->defaultCore);
   auto iter = modelMap.find(modelPath);
   if (iter != modelMap.end()) {
     *modelId = iter->second;
@@ -129,14 +130,28 @@ NpuStatus TrixBackend::registerModel(NpuDevice *device, NpuContext *ctx, const s
     return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
-  ctx->modelIds.at(ctx->defaultCore).insert({modelPath, id});
+  modelMap.insert({modelPath, id});
   *modelId = id;
   return NPU_STATUS_SUCCESS;
 }
 
-NpuStatus TrixBackend::unregisterModel(NpuDevice *device, ModelID modelId)
+NpuStatus TrixBackend::unregisterModel(NpuDevice *device, NpuContext *ctx, ModelID modelId)
 {
-  return NPU_STATUS_ERROR_NOT_SUPPORTED;
+  // Note Unregister model from the same default core's handle.
+  auto &modelMap = ctx->modelIds.at(ctx->defaultCore);
+  auto iter = std::find_if(modelMap.begin(), modelMap.end(),
+                        [&](const std::pair<const std::string, ModelID> &p) { return p.second == modelId; });
+  if (iter == modelMap.end()) {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  npudev_h handle = ctx->handles.at(ctx->defaultCore);
+  if (unregisterNPUmodel(handle, modelId) < 0) {
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+
+  modelMap.erase(iter);
+  return NPU_STATUS_SUCCESS;
 }
 
 NpuStatus TrixBackend::createRequest(NpuDevice *device, ModelID modelId, RequestID *requestId)

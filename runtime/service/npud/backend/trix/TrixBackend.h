@@ -46,7 +46,7 @@ public:
   // TODO Support to register model from buffer
   NpuStatus registerModel(NpuDevice *device, NpuContext *ctx, const std::string &modelPath,
                            ModelID *modelId) override;
-  NpuStatus unregisterModel(NpuDevice *device, ModelID modelId) override;
+  NpuStatus unregisterModel(NpuDevice *device, NpuContext *ctx, ModelID modelId) override;
   NpuStatus createRequest(NpuDevice *device, ModelID modelId, RequestID *requestId) override;
   NpuStatus destroyRequest(NpuDevice *device, RequestID requestId) override;
   NpuStatus setRequestData(NpuDevice *device, RequestID requestId, InputBuffers *input_bufs,
