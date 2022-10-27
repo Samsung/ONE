@@ -1047,7 +1047,7 @@ CircleUnidirectionalSequenceLSTMSummaryBuilder::get_input_names(const luci::Circ
           "output_gate_bias",
           "projection_weights",
           "projection_bias",
-          "activation_state",
+          "output_state",
           "cell_state",
           "input_layer_norm_coefficients",
           "forget_layer_norm_coefficients",

@@ -50,7 +50,7 @@ CircleNode *CircleUnidirectionalSequenceLSTMGraphBuilder::build_node(
   node->output_gate_bias(inputs.at(15));
   node->projection_weights(inputs.at(16)); // Optional
   node->projection_bias(inputs.at(17));    // Optional
-  node->activation_state(inputs.at(18));
+  node->output_state(inputs.at(18));
   node->cell_state(inputs.at(19));
   node->input_layer_norm_coefficients(inputs.at(20));  // Optional
   node->forget_layer_norm_coefficients(inputs.at(21)); // Optional
