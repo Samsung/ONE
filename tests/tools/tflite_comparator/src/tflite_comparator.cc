@@ -119,7 +119,7 @@ inline size_t sizeOfNnfwType(NNFW_TYPE type)
 }
 
 template <typename T>
-bool compareBuffers(const T *ref_buf, const std::vector<uint8_t> &act_buf, uint32_t index)
+bool isClose(const T *ref_buf, const std::vector<uint8_t> &act_buf, uint32_t index)
 {
   // TODO better way for handling quant error?
   auto tolerance = static_cast<uint64_t>(nnfw::misc::EnvVar("TOLERANCE").asInt(0));
@@ -143,8 +143,7 @@ bool compareBuffers(const T *ref_buf, const std::vector<uint8_t> &act_buf, uint3
 }
 
 template <>
-bool compareBuffers<float>(const float *ref_buf, const std::vector<uint8_t> &act_buf,
-                           uint32_t index)
+bool isClose<float>(const float *ref_buf, const std::vector<uint8_t> &act_buf, uint32_t index)
 {
   uint32_t tolerance = nnfw::misc::EnvVar("TOLERANCE").asInt(1);
   bool match = true;
@@ -170,8 +169,7 @@ bool compareBuffers<float>(const float *ref_buf, const std::vector<uint8_t> &act
   return match;
 }
 
-bool compareBuffersExactBool(const uint8_t *ref_buf, const std::vector<uint8_t> &act_buf,
-                             uint32_t index)
+bool exact(const uint8_t *ref_buf, const std::vector<uint8_t> &act_buf, uint32_t index)
 {
   bool match = true;
   for (uint32_t e = 0; e < act_buf.size() / sizeof(uint8_t); e++)
@@ -367,23 +365,23 @@ int main(const int argc, char **argv)
     switch (ti.dtype)
     {
       case NNFW_TYPE_TENSOR_BOOL:
-        matched = compareBuffersExactBool(ref_output.uint8, output, out_idx);
+        matched = exact(ref_output.uint8, output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_UINT8:
       case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-        matched = compareBuffers<uint8_t>(ref_output.uint8, output, out_idx);
+        matched = isClose<uint8_t>(ref_output.uint8, output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
-        matched = compareBuffers<int8_t>(ref_output.int8, output, out_idx);
+        matched = isClose<int8_t>(ref_output.int8, output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_INT32:
-        matched = compareBuffers<int32_t>(ref_output.i32, output, out_idx);
+        matched = isClose<int32_t>(ref_output.i32, output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_FLOAT32:
-        matched = compareBuffers<float>(ref_output.f, output, out_idx);
+        matched = isClose<float>(ref_output.f, output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_INT64:
-        matched = compareBuffers<int64_t>(ref_output.i64, output, out_idx);
+        matched = isClose<int64_t>(ref_output.i64, output, out_idx);
         break;
       default:
         throw std::runtime_error{"Invalid tensor type"};
