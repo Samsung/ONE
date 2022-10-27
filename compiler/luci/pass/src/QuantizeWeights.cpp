@@ -90,6 +90,117 @@ void asym_wquant_per_channel(CircleConst *node, std::vector<float> &min,
   }
 }
 
+void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vector<float> &max,
+                            std::vector<float> &scaling_factor, std::vector<int64_t> &zp,
+                            std::vector<float> &nudged_min, std::vector<float> &nudged_max,
+                            int32_t &channel_dim_index)
+{
+  assert(node->dtype() == loco::DataType::FLOAT32);
+  const int32_t kMaxScale = std::numeric_limits<int16_t>::max();
+  const int32_t kMinScale = -kMaxScale;
+
+  uint32_t size = node->size<loco::DataType::FLOAT32>();
+  std::vector<int32_t> quantized_values(size);
+
+  for (size_t i = 0; i < min.size(); ++i)
+  {
+    compute_sym_scale_zp(min[i], max[i], scaling_factor[i], zp[i], nudged_min[i], nudged_max[i]);
+  }
+
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
+    int channel_idx = indices[channel_dim_index];
+    const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
+    auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
+    data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
+    data = data > nudged_max[channel_idx] ? nudged_max[channel_idx] : data;
+    quantized_values[cal_offset(dimension, indices)] =
+      static_cast<int32_t>(std::round(data * scaling_factor_inv));
+  };
+
+  iterate_per_channel(node, channel_dim_index, quantize);
+
+  node->dtype(loco::DataType::S16);      // change the type of tensor
+  node->size<loco::DataType::S16>(size); // resize tensor
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    node->at<loco::DataType::S16>(i) =
+      std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+  }
+}
+
+void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vector<float> &max,
+                            int32_t &channel_dim_index)
+{
+  loco::TensorShape dimension;
+  dimension.rank(4);
+
+  if (!get_channel_dim_index(node, dimension, channel_dim_index))
+  {
+    throw std::runtime_error("Failed to find channel index in " + node->name());
+  }
+  auto size = dimension.dim(channel_dim_index).value();
+
+  std::vector<bool> has_min_max_value(size, false);
+  min.resize(size);
+  max.resize(size);
+
+  auto cal_minmax = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
+    int channel_idx = indices[channel_dim_index];
+    auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
+    if (has_min_max_value[channel_idx])
+    {
+      min[channel_idx] = data < min[channel_idx] ? data : min[channel_idx];
+      max[channel_idx] = data > max[channel_idx] ? data : max[channel_idx];
+    }
+    else
+    {
+      min[channel_idx] = data;
+      max[channel_idx] = data;
+      has_min_max_value[channel_idx] = true;
+    }
+  };
+
+  iterate_per_channel(node, channel_dim_index, cal_minmax);
+}
+
+void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
+                                   std::vector<float> &max, std::vector<float> &scaling_factor,
+                                   std::vector<int64_t> &zp, std::vector<float> &nudged_min,
+                                   std::vector<float> &nudged_max, int32_t &channel_dim_index)
+{
+  assert(node->dtype() == loco::DataType::FLOAT32);
+
+  const int32_t kMinScale = 0;
+  const int32_t kMaxScale = 255;
+
+  uint32_t size = node->size<loco::DataType::FLOAT32>();
+  std::vector<int32_t> quantized_values(size);
+
+  for (size_t i = 0; i < min.size(); ++i)
+  {
+    compute_asym_scale_zp(min[i], max[i], scaling_factor[i], zp[i], nudged_min[i], nudged_max[i]);
+  }
+
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
+    int channel_idx = indices[channel_dim_index];
+    const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
+    auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
+    data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
+    data = data > nudged_max[channel_idx] ? nudged_max[channel_idx] : data;
+    quantized_values[cal_offset(dimension, indices)] =
+      static_cast<int32_t>(std::round((data - nudged_min[channel_idx]) * scaling_factor_inv));
+  };
+
+  iterate_per_channel(node, channel_dim_index, quantize);
+
+  node->dtype(loco::DataType::U8);      // change the type of tensor
+  node->size<loco::DataType::U8>(size); // resize tensor
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    node->at<loco::DataType::U8>(i) = std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+  }
+}
+
 void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_factor,
                             int32_t &channel_dim_index)
 {
@@ -250,7 +361,37 @@ void QuantizeWeights::quantize_weights(luci::CircleConst *weights)
     auto quantparam = weights->quantparam();
     if (quantparam == nullptr)
     {
-      assert(false && "quantparam is nullptr");
+      // Find min/max on the fly
+      // NOTE This is for the case when QuantizeDequantizeWeights is skipped
+      // TODO Reduce duplicate codes
+      std::vector<float> min;
+      std::vector<float> max;
+      int32_t channel_dim_index = 0;
+
+      cal_minmax_per_channel(weights, min, max, channel_dim_index);
+
+      std::vector<float> nudged_min(min.size());
+      std::vector<float> nudged_max(min.size());
+      std::vector<float> scaling_factor(min.size());
+      std::vector<int64_t> zp(min.size());
+
+      if (output_type == loco::DataType::U8)
+      {
+        asymmetric_wquant_per_channel(weights, min, max, scaling_factor, zp, nudged_min, nudged_max,
+                                      channel_dim_index);
+      }
+      else
+      {
+        sym_wquant_per_channel(weights, min, max, scaling_factor, zp, nudged_min, nudged_max,
+                               channel_dim_index);
+      }
+
+      auto quantparam = std::make_unique<CircleQuantParam>();
+      quantparam->scale = scaling_factor;
+      quantparam->zerop = zp;
+      quantparam->quantized_dimension = channel_dim_index;
+      weights->quantparam(std::move(quantparam));
+
       return;
     }
 
@@ -273,8 +414,35 @@ void QuantizeWeights::quantize_weights(luci::CircleConst *weights)
   // Find min/max per layer-wise
   else
   {
-    // Quantize using recorded quantparam
     auto quantparam = weights->quantparam();
+    if (quantparam == nullptr)
+    {
+      // Find min/max on the fly
+      // NOTE This is for the case when QuantizeDequantizeWeights is skipped
+      // TODO Reduce duplicate codes
+      float min = std::numeric_limits<float>::max();
+      float max = std::numeric_limits<float>::lowest();
+      for (uint32_t i = 0; i < weights->size<loco::DataType::FLOAT32>(); i++)
+      {
+        auto data = weights->at<loco::DataType::FLOAT32>(i);
+        min = data < min ? data : min;
+        max = data > max ? data : max;
+      }
+      float scaling_factor{0};
+      int64_t zp{0};
+      float nudged_min{0};
+      float nudged_max{0};
+
+      asymmetric_wquant_with_minmax_per_layer(weights, min, max, scaling_factor, zp, nudged_min,
+                                              nudged_max);
+      auto quantparam = std::make_unique<CircleQuantParam>();
+      quantparam->scale.push_back(scaling_factor);
+      quantparam->zerop.push_back(zp);
+      weights->quantparam(std::move(quantparam));
+      return;
+    }
+
+    // Quantize using recorded quantparam
     assert(quantparam != nullptr);
     assert(quantparam->min.size() == 1);   // only support layer-wise quant
     assert(quantparam->scale.size() == 1); // only support layer-wise quant
