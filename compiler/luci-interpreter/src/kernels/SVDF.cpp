@@ -26,30 +26,6 @@ namespace luci_interpreter
 namespace kernels
 {
 
-namespace
-{
-TfLiteFusedActivation get_tflite_activation(Activation activation)
-{
-  switch (activation)
-  {
-    case luci::FusedActFunc::RELU:
-      return kTfLiteActRelu;
-    case luci::FusedActFunc::RELU6:
-      return kTfLiteActRelu6;
-    case luci::FusedActFunc::RELU_N1_TO_1:
-      return kTfLiteActReluN1To1;
-    case luci::FusedActFunc::TANH:
-      return kTfLiteActTanh;
-    case luci::FusedActFunc::SIGN_BIT:
-      return kTfLiteActSignBit;
-    case luci::FusedActFunc::NONE:
-      return kTfLiteActNone;
-    default:
-      throw std::runtime_error("Unsupported activation type");
-  }
-}
-} // namespace
-
 SVDF::SVDF(const Tensor *input, const Tensor *weight_feature, const Tensor *weight_time,
            const Tensor *bias, const Tensor *input_activation_state, Tensor *output,
            Tensor *scratchpad_activation_state, Tensor *scratchpad_1, Tensor *scratchpad_2,
@@ -191,7 +167,7 @@ void SVDF::evalInteger() const
   TfLiteSVDFParams params_svdf{};
   params_svdf.asymmetric_quantize_inputs = params().asymmetric_quantize_inputs;
   params_svdf.rank = params().svdf_rank;
-  params_svdf.activation = get_tflite_activation(params().activation);
+  params_svdf.activation = getTfLiteActivation(params().activation);
 
   auto scratchpad_activation_state = getOutputTensors()[1];
   // Note: it is expected that activation_state input variable tensor reset to zero,
@@ -219,7 +195,7 @@ void SVDF::evalFloat() const
   TfLiteSVDFParams params_svdf{};
   params_svdf.asymmetric_quantize_inputs = params().asymmetric_quantize_inputs;
   params_svdf.rank = params().svdf_rank;
-  params_svdf.activation = get_tflite_activation(params().activation);
+  params_svdf.activation = getTfLiteActivation(params().activation);
 
   auto scratchpad_activation_state = getOutputTensors()[1];
   // Note: it is expected that activation_state input variable tensor reset to zero,
