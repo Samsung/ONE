@@ -52,7 +52,7 @@ TEST(CircleUnidirectionalSequenceLSTMTest, constructor_P)
   ASSERT_EQ(nullptr, trc_node.projection_weights());
   ASSERT_EQ(nullptr, trc_node.projection_bias());
 
-  ASSERT_EQ(nullptr, trc_node.activation_state());
+  ASSERT_EQ(nullptr, trc_node.output_state());
   ASSERT_EQ(nullptr, trc_node.cell_state());
 
   ASSERT_EQ(nullptr, trc_node.input_layer_norm_coefficients());
