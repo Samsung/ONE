@@ -61,8 +61,7 @@ void connect(luci::ConnectNode *cn, const luci::CircleUnidirectionalSequenceLSTM
     loco::must_cast<luci::CircleNode *>(node->projection_weights());
   luci::CircleNode *projection_bias = loco::must_cast<luci::CircleNode *>(node->projection_bias());
 
-  luci::CircleNode *activation_state =
-    loco::must_cast<luci::CircleNode *>(node->activation_state());
+  luci::CircleNode *output_state = loco::must_cast<luci::CircleNode *>(node->output_state());
   luci::CircleNode *cell_state = loco::must_cast<luci::CircleNode *>(node->cell_state());
 
   luci::CircleNode *input_layer_norm_coefficients =
@@ -98,7 +97,7 @@ void connect(luci::ConnectNode *cn, const luci::CircleUnidirectionalSequenceLSTM
   cloned->projection_weights(cn->find_clone(projection_weights));
   cloned->projection_bias(cn->find_clone(projection_bias));
 
-  cloned->activation_state(cn->find_clone(activation_state));
+  cloned->output_state(cn->find_clone(output_state));
   cloned->cell_state(cn->find_clone(cell_state));
 
   cloned->input_layer_norm_coefficients(cn->find_clone(input_layer_norm_coefficients));

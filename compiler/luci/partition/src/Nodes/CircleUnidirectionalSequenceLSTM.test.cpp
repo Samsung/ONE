@@ -79,7 +79,7 @@ public:
     node()->projection_weights(input(16));
     node()->projection_bias(input(17));
 
-    node()->activation_state(input(18));
+    node()->output_state(input(18));
     node()->cell_state(input(19));
 
     node()->input_layer_norm_coefficients(input(20));
