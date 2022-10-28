@@ -1,0 +1,20 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+  "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node name="/">
+  <!-- org.tizen.npud.core:
+       @short_description: Npud interface
+
+       The interface used to run AI models on npu devices.
+  -->
+  <interface name="org.tizen.npud.core">
+    <!--
+      device_get_available_list:
+      @error: The error status of the function.
+
+      Get all available npu device lists.
+    -->
+    <method name="device_get_available_list">
+	    <arg name="error" type="i" direction="out"  />
+    </method>
+  </interface>
+</node>
