@@ -51,6 +51,8 @@ endif()
 
 if("${TARGET_ARCH}" STREQUAL "x86_64")
   set(TARGET_ARCH_BASE ${TARGET_ARCH})
+elseif("${TARGET_ARCH}" STREQUAL "armv8-m")
+  set(TARGET_ARCH_BASE "arm")
 elseif("${TARGET_ARCH}" STREQUAL "armv7-r")
   set(TARGET_ARCH_BASE "arm")
 elseif("${TARGET_ARCH}" STREQUAL "armv7em")
