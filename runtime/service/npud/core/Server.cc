@@ -32,6 +32,23 @@ Server::Server() noexcept
 {
 }
 
+bool Server::isServiceReady()
+{
+  if (!_isRunning.load())
+  {
+    VERBOSE(Server) << "Server is not started." << std::endl;
+    return false;
+  }
+
+  if (!_dbus->isReady())
+  {
+    VERBOSE(Server) << "DBus service is not ready." << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
 void Server::run(void)
 {
   VERBOSE(Server) << "Starting Server\n";

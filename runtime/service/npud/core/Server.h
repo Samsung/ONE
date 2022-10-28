@@ -40,6 +40,7 @@ public:
   void stop(void);
 
   bool isRunning() { return _isRunning.load(); }
+  bool isServiceReady();
 
   static Server &instance(void)
   {
