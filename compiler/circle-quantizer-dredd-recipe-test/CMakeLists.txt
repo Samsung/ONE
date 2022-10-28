@@ -82,6 +82,47 @@ macro(AddFakeQuant RECIPE)
   list(APPEND TEST_NAMES ${RECIPE})
 endmacro(AddFakeQuant)
 
+# Macro to quantize without quantize_dequantize_weights
+macro(AddSkipQDQW RECIPE)
+  cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+  set(QCONFIG_OPT "")
+  if(ARG_USE_QCONFIG)
+    set(QCONFIG_OPT "--config" "${ARTIFACTS_BIN_PATH}/${RECIPE}.qconf.json")
+  endif()
+
+  set(INPUT_DTYPE_OPT "")
+  if(ARG_INPUT_DTYPE)
+    set(INPUT_DTYPE_OPT "--input_type" "${ARG_INPUT_DTYPE}")
+  endif()
+
+  set(OUTPUT_DTYPE_OPT "")
+  if(ARG_OUTPUT_DTYPE)
+    set(OUTPUT_DTYPE_OPT "--output_type" "${ARG_OUTPUT_DTYPE}")
+  endif()
+
+  set(CIRCLE_PATH "${ARTIFACTS_BIN_PATH}/${RECIPE}.circle")
+  set(RECORDED_CIRCLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${RECIPE}.recorded.circle")
+  set(QUANT_CIRCLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${RECIPE}.q.circle")
+
+  # Generate quantized .circle
+  add_custom_command(OUTPUT ${QUANT_CIRCLE_PATH}
+    COMMAND $<TARGET_FILE:record-minmax> --input_model ${CIRCLE_PATH} --output_model ${RECORDED_CIRCLE_PATH}
+    COMMAND $<TARGET_FILE:circle-quantizer>
+      --quantize_with_minmax float32 ${ARG_DTYPE} ${ARG_GRANULARITY}
+      ${QCONFIG_OPT} ${RECORDED_CIRCLE_PATH} ${QUANT_CIRCLE_PATH}
+      ${INPUT_DTYPE_OPT} ${OUTPUT_DTYPE_OPT}
+    DEPENDS 
+      circle-quantizer
+      record-minmax
+      ${CIRCLE_PATH}
+    COMMENT "Generate ${RECIPE}.q.circle"
+  )
+
+  list(APPEND TEST_DEPS ${QUANT_CIRCLE_PATH})
+  list(APPEND TEST_NAMES ${RECIPE})
+endmacro(AddSkipQDQW)
+
 # Read "test.lst"
 include("test.lst")
 
