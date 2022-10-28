@@ -80,3 +80,7 @@ Add(Quant_InstanceNorm_000 DTYPE uint8 GRANULARITY channel USE_QCONFIG)
 
 # MPQ Test (default: s16, target: u8)
 Add(Quant_InstanceNorm_001 DTYPE int16 GRANULARITY channel USE_QCONFIG)
+
+# Test for quantization without QuantizeDequantizeWeights
+AddSkipQDQW(Quant_Conv_005 DTYPE uint8 GRANULARITY channel)
+AddSkipQDQW(Quant_Conv_006 DTYPE int16 GRANULARITY channel)
