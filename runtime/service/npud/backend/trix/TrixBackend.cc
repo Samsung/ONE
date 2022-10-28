@@ -74,7 +74,6 @@ NpuStatus TrixBackend::createContext(NpuDevice *device, int device_fd, int prior
 
   NpuContext *context = new NpuContext();
   context->handles = std::move(handles);
-  context->modelIds.resize(context->handles.size());
   context->defaultCore = 0;
   *ctx = context;
   return NPU_STATUS_SUCCESS;
@@ -106,10 +105,13 @@ NpuStatus TrixBackend::destroyBuffer(NpuDevice *device, GenericBuffer *buffer)
 NpuStatus TrixBackend::registerModel(NpuDevice *device, NpuContext *ctx,
                                      const std::string &modelPath, ModelID *modelId)
 {
-  auto &modelMap = ctx->modelIds.at(ctx->defaultCore);
-  auto iter = std::find_if(
-    modelMap.begin(), modelMap.end(),
-    [&](const std::pair<ModelID, const std::string> &p) { return p.second == modelPath; });
+  // Note Find the modelId with the same modelPath and core number
+  auto &modelMap = ctx->modelIds;
+  auto iter =
+    std::find_if(modelMap.begin(), modelMap.end(),
+                 [&](const std::pair<const ModelID, std::unique_ptr<NpuModelInfo>> &p) {
+                   return p.second->path == modelPath && p.second->core == ctx->defaultCore;
+                 });
   if (iter != modelMap.end())
   {
     *modelId = iter->first;
@@ -134,7 +136,8 @@ NpuStatus TrixBackend::registerModel(NpuDevice *device, NpuContext *ctx,
     return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
-  modelMap.insert({id, modelPath});
+  modelMap.insert(
+    {id, std::unique_ptr<NpuModelInfo>(new NpuModelInfo({modelPath, ctx->defaultCore}))});
   *modelId = id;
   return NPU_STATUS_SUCCESS;
 }
@@ -142,14 +145,14 @@ NpuStatus TrixBackend::registerModel(NpuDevice *device, NpuContext *ctx,
 NpuStatus TrixBackend::unregisterModel(NpuDevice *device, NpuContext *ctx, ModelID modelId)
 {
   // Note Unregister model from the same default core's handle.
-  auto &modelMap = ctx->modelIds.at(ctx->defaultCore);
+  auto &modelMap = ctx->modelIds;
   auto iter = modelMap.find(modelId);
   if (iter == modelMap.end())
   {
-    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+    return NPU_STATUS_ERROR_INVALID_MODEL;
   }
 
-  npudev_h handle = ctx->handles.at(ctx->defaultCore);
+  npudev_h handle = ctx->handles.at(iter->second->core);
   if (unregisterNPUmodel(handle, modelId) < 0)
   {
     return NPU_STATUS_ERROR_OPERATION_FAILED;
@@ -162,29 +165,51 @@ NpuStatus TrixBackend::unregisterModel(NpuDevice *device, NpuContext *ctx, Model
 NpuStatus TrixBackend::createRequest(NpuDevice *device, NpuContext *ctx, ModelID modelId,
                                      RequestID *requestId)
 {
-  auto &modelMap = ctx->modelIds.at(ctx->defaultCore);
+  auto &modelMap = ctx->modelIds;
   auto iter = modelMap.find(modelId);
   if (iter == modelMap.end())
   {
-    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+    return NPU_STATUS_ERROR_INVALID_MODEL;
   }
 
   int id;
-  npudev_h handle = ctx->handles.at(ctx->defaultCore);
+  npudev_h handle = ctx->handles.at(iter->second->core);
   if (createNPU_request(handle, modelId, &id) < 0)
   {
     return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
   auto &requestMap = ctx->requestIds;
-  requestMap.insert({id, modelId});
+  requestMap.insert({id, std::unique_ptr<NpuRequestInfo>(new NpuRequestInfo({modelId}))});
   *requestId = id;
   return NPU_STATUS_SUCCESS;
 }
 
-NpuStatus TrixBackend::destroyRequest(NpuDevice *device, RequestID requestId)
+NpuStatus TrixBackend::destroyRequest(NpuDevice *device, NpuContext *ctx, RequestID requestId)
 {
-  return NPU_STATUS_ERROR_NOT_SUPPORTED;
+  auto &requestMap = ctx->requestIds;
+  auto iter = requestMap.find(requestId);
+  if (iter == requestMap.end())
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  ModelID modelId = iter->second->modelId;
+  auto &modelMap = ctx->modelIds;
+  auto modelIter = modelMap.find(modelId);
+  if (modelIter == modelMap.end())
+  {
+    return NPU_STATUS_ERROR_INVALID_MODEL;
+  }
+
+  npudev_h handle = ctx->handles.at(modelIter->second->core);
+  if (removeNPU_request(handle, requestId) < 0)
+  {
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+
+  requestMap.erase(iter);
+  return NPU_STATUS_SUCCESS;
 }
 
 NpuStatus TrixBackend::setRequestData(NpuDevice *device, RequestID requestId,

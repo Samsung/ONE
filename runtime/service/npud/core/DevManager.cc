@@ -178,5 +178,11 @@ int DevManager::createRequest(NpuContext *npuContext, ModelID modelId, RequestID
   return getBackend()->createRequest(dev->device.get(), npuContext, modelId, requestId);
 }
 
+int DevManager::destroyRequest(NpuContext *npuContext, RequestID requestId)
+{
+  Device *dev = getDevice(_defaultId);
+  return getBackend()->destroyRequest(dev->device.get(), npuContext, requestId);
+}
+
 } // namespace core
 } // namespace npud

@@ -49,7 +49,7 @@ public:
   NpuStatus unregisterModel(NpuDevice *device, NpuContext *ctx, ModelID modelId) override;
   NpuStatus createRequest(NpuDevice *device, NpuContext *ctx, ModelID modelId,
                           RequestID *requestId) override;
-  NpuStatus destroyRequest(NpuDevice *device, RequestID requestId) override;
+  NpuStatus destroyRequest(NpuDevice *device, NpuContext *ctx, RequestID requestId) override;
   NpuStatus setRequestData(NpuDevice *device, RequestID requestId, InputBuffers *input_bufs,
                            TensorDataInfo *in_info, OutputBuffers *output_bufs,
                            TensorDataInfo *out_info) override;

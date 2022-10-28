@@ -46,6 +46,7 @@ public:
   int createNetwork(ContextID contextId, const std::string &modelPath, ModelID *modelId);
   int destroyNetwork(ContextID contextId, ModelID modelId);
   int createRequest(ContextID contextId, ModelID modelId, RequestID *requestId);
+  int destroyRequest(ContextID contextId, RequestID requestId);
 
 private:
   std::unique_ptr<DevManager> _devManager;

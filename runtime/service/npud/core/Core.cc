@@ -67,7 +67,7 @@ int Core::destroyContext(ContextID contextId)
   int ret = _devManager->destroyContext(npuContext);
   if (ret != NPU_STATUS_SUCCESS)
   {
-    VERBOSE(Core) << "Fail to destroy npu context" << std::endl;
+    VERBOSE(Core) << "Failed to destroy npu context: " << ret << std::endl;
   }
 
   _contextManager->deleteContext(contextId);
@@ -89,7 +89,7 @@ int Core::createNetwork(ContextID contextId, const std::string &modelPath, Model
   int ret = _devManager->registerModel(npuContext, modelPath, &id);
   if (ret != NPU_STATUS_SUCCESS)
   {
-    VERBOSE(Core) << "Failed to register model: " << modelPath << std::endl;
+    VERBOSE(Core) << "Failed to register model: " << ret << std::endl;
     // TODO Define CoreStatus
     return 1;
   }
@@ -112,7 +112,7 @@ int Core::destroyNetwork(ContextID contextId, ModelID modelId)
   int ret = _devManager->unregisterModel(npuContext, modelId);
   if (ret != NPU_STATUS_SUCCESS)
   {
-    VERBOSE(Core) << "Failed to unregister model: " << modelId << std::endl;
+    VERBOSE(Core) << "Failed to unregister model: " << ret << std::endl;
     // TODO Define CoreStatus
     return 1;
   }
@@ -135,12 +135,34 @@ int Core::createRequest(ContextID contextId, ModelID modelId, RequestID *request
   int ret = _devManager->createRequest(npuContext, modelId, &id);
   if (ret != NPU_STATUS_SUCCESS)
   {
-    VERBOSE(Core) << "Failed to create request of model: " << modelId << std::endl;
+    VERBOSE(Core) << "Failed to create request of model: " << ret << std::endl;
     // TODO Define CoreStatus
     return 1;
   }
 
   *requestId = id;
+  return 0;
+}
+
+int Core::destroyRequest(ContextID contextId, RequestID requestId)
+{
+  VERBOSE(Core) << "destroyRequest with " << contextId << ", " << requestId << std::endl;
+  NpuContext *npuContext = _contextManager->getNpuContext(contextId);
+  if (!npuContext)
+  {
+    VERBOSE(Core) << "Invalid context id" << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  int ret = _devManager->destroyRequest(npuContext, requestId);
+  if (ret != NPU_STATUS_SUCCESS)
+  {
+    VERBOSE(Core) << "Failed to destroy request: " << ret << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
   return 0;
 }
 

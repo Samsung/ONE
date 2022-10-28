@@ -39,6 +39,11 @@
       <arg name="rq_handle" type="u" direction="out" />
       <arg name="error" type="i" direction="out" />
     </method>
+    <method name="request_destroy">
+      <arg name="ctx" type="t" direction="in" />
+      <arg name="rq_handle" type="u" direction="in" />
+      <arg name="error" type="i" direction="out" />
+    </method>
     <method name="execute_run">
 	    <arg name="ctx" type="t" direction="in"  />
 	    <arg name="nw_handle" type="u" direction="in"  />

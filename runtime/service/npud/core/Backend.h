@@ -22,6 +22,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include <map>
 
 namespace npud
@@ -83,6 +84,7 @@ enum NpuStatus
   NPU_STATUS_ERROR_OPERATION_FAILED,
   NPU_STATUS_ERROR_NOT_SUPPORTED,
   NPU_STATUS_ERROR_INVALID_ARGUMENT,
+  NPU_STATUS_ERROR_INVALID_MODEL,
 };
 
 /**
@@ -95,6 +97,25 @@ struct NpuDevice
 };
 
 /**
+ * @brief Npu model information
+ *
+ */
+struct NpuModelInfo
+{
+  std::string path;
+  int core;
+};
+
+/**
+ * @brief Npu request information
+ *
+ */
+struct NpuRequestInfo
+{
+  ModelID modelId;
+};
+
+/**
  * @brief Npu context definition
  *
  */
@@ -104,8 +125,8 @@ struct NpuContext
   // Note Manage model id per model path.
   //      Do we need to handle the case of requesting different model files
   //      with the same model path?
-  std::vector<std::map<ModelID, const std::string>> modelIds;
-  std::map<RequestID, ModelID> requestIds;
+  std::map<ModelID, std::unique_ptr<NpuModelInfo>> modelIds;
+  std::map<RequestID, std::unique_ptr<NpuRequestInfo>> requestIds;
   int defaultCore;
 };
 
@@ -132,7 +153,7 @@ public:
   virtual NpuStatus unregisterModel(NpuDevice *device, NpuContext *ctx, ModelID modelId) = 0;
   virtual NpuStatus createRequest(NpuDevice *device, NpuContext *ctx, ModelID modelId,
                                   RequestID *requestId) = 0;
-  virtual NpuStatus destroyRequest(NpuDevice *device, RequestID requestId) = 0;
+  virtual NpuStatus destroyRequest(NpuDevice *device, NpuContext *ctx, RequestID requestId) = 0;
   virtual NpuStatus setRequestData(NpuDevice *device, RequestID requestId, InputBuffers *input_bufs,
                                    TensorDataInfo *in_info, OutputBuffers *output_bufs,
                                    TensorDataInfo *out_info) = 0;

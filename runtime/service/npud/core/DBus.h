@@ -57,6 +57,8 @@ public:
                                             guint64 arg_ctx, guint arg_nw_handle);
   static gboolean on_handle_request_create(NpudCore *object, GDBusMethodInvocation *invocation,
                                            guint64 arg_ctx, guint arg_nw_handle);
+  static gboolean on_handle_request_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                            guint64 arg_ctx, guint arg_rq_handle);
   static gboolean on_handle_execute_run(NpudCore *object, GDBusMethodInvocation *invocation,
                                         guint64 arg_ctx, guint arg_nw_handle);
 
