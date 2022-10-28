@@ -54,9 +54,11 @@ public:
   static gboolean on_handle_network_create(NpudCore *object, GDBusMethodInvocation *invocation,
                                            guint64 arg_ctx, const gchar *arg_binary_path);
   static gboolean on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
-                                            guint64 arg_ctx, guint64 arg_nw_handle);
+                                            guint64 arg_ctx, guint arg_nw_handle);
+  static gboolean on_handle_request_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                           guint64 arg_ctx, guint arg_nw_handle);
   static gboolean on_handle_execute_run(NpudCore *object, GDBusMethodInvocation *invocation,
-                                        guint64 arg_ctx, guint64 arg_nw_handle);
+                                        guint64 arg_ctx, guint arg_nw_handle);
 
 private:
   guint _gdbus_id;

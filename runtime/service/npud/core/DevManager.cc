@@ -106,7 +106,6 @@ void DevManager::loadModules(void)
 
   // Test
   this->listModules();
-
 }
 
 void DevManager::listModules(void)
@@ -160,7 +159,8 @@ int DevManager::destroyContext(NpuContext *npuContext)
   return getBackend()->destroyContext(dev->device.get(), npuContext);
 }
 
-int DevManager::registerModel(NpuContext *npuContext, const std::string &modelPath, ModelID *modelId)
+int DevManager::registerModel(NpuContext *npuContext, const std::string &modelPath,
+                              ModelID *modelId)
 {
   Device *dev = getDevice(_defaultId);
   return getBackend()->registerModel(dev->device.get(), npuContext, modelPath, modelId);
@@ -170,6 +170,12 @@ int DevManager::unregisterModel(NpuContext *npuContext, ModelID modelId)
 {
   Device *dev = getDevice(_defaultId);
   return getBackend()->unregisterModel(dev->device.get(), npuContext, modelId);
+}
+
+int DevManager::createRequest(NpuContext *npuContext, ModelID modelId, RequestID *requestId)
+{
+  Device *dev = getDevice(_defaultId);
+  return getBackend()->createRequest(dev->device.get(), npuContext, modelId, requestId);
 }
 
 } // namespace core

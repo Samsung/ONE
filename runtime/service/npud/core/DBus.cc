@@ -57,6 +57,7 @@ void DBus::on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer us
   iface->handle_context_destroy = &on_handle_context_destroy;
   iface->handle_network_create = &on_handle_network_create;
   iface->handle_network_destroy = &on_handle_network_destroy;
+  iface->handle_request_create = &on_handle_request_create;
   iface->handle_execute_run = &on_handle_execute_run;
 
   if (!g_dbus_interface_skeleton_export(G_DBUS_INTERFACE_SKELETON(core), conn, "/org/tizen/npud",
@@ -126,12 +127,12 @@ gboolean DBus::on_handle_network_create(NpudCore *object, GDBusMethodInvocation 
   // context.registerModel(binary_path);
   ModelID modelID;
   int ret = Server::core()->createNetwork(arg_ctx, binary_path, &modelID);
-  npud_core_complete_network_create(object, invocation, guint64(modelID), ret);
+  npud_core_complete_network_create(object, invocation, guint(modelID), ret);
   return TRUE;
 }
 
 gboolean DBus::on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
-                                         guint64 arg_ctx, guint64 arg_nw_handle)
+                                         guint64 arg_ctx, guint arg_nw_handle)
 {
   VERBOSE(DBus) << "on_handle_network_destroy with " << arg_ctx << ", " << arg_nw_handle
                 << std::endl;
@@ -140,8 +141,19 @@ gboolean DBus::on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation
   return TRUE;
 }
 
+gboolean DBus::on_handle_request_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                        guint64 arg_ctx, guint arg_nw_handle)
+{
+  VERBOSE(DBus) << "on_handle_request_create with " << arg_ctx << ", " << arg_nw_handle
+                << std::endl;
+  RequestID requestID;
+  int ret = Server::core()->createRequest(arg_ctx, arg_nw_handle, &requestID);
+  npud_core_complete_request_create(object, invocation, guint(requestID), ret);
+  return TRUE;
+}
+
 gboolean DBus::on_handle_execute_run(NpudCore *object, GDBusMethodInvocation *invocation,
-                                     guint64 arg_ctx, guint64 arg_nw_handle)
+                                     guint64 arg_ctx, guint arg_nw_handle)
 {
   VERBOSE(DBus) << "on_handle_execute_run with " << arg_ctx << ", " << arg_nw_handle << std::endl;
   // TODO Implement details

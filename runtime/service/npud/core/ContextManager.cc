@@ -73,11 +73,12 @@ void ContextManager::listContexts()
   VERBOSE(ContextManager) << "==========================" << std::endl;
 }
 
-const std::vector<std::unique_ptr<Context>>::iterator ContextManager::getContext(ContextID contextId)
+const std::vector<std::unique_ptr<Context>>::iterator
+ContextManager::getContext(ContextID contextId)
 {
   const auto iter =
     std::find_if(_contexts.begin(), _contexts.end(),
-                   [&](std::unique_ptr<Context> &c) { return c->contextId == contextId; });
+                 [&](std::unique_ptr<Context> &c) { return c->contextId == contextId; });
   return iter;
 }
 

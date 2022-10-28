@@ -54,6 +54,7 @@ public:
   int destroyContext(NpuContext *npuContext);
   int registerModel(NpuContext *npuContext, const std::string &modelPath, ModelID *modelId);
   int unregisterModel(NpuContext *npuContext, ModelID modelId);
+  int createRequest(NpuContext *npuContext, ModelID modelId, RequestID *requestId);
 
 private:
   Device *getDevice(DevID id);

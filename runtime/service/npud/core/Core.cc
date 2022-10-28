@@ -40,7 +40,8 @@ int Core::createContext(int deviceId, int priority, ContextID *contextId)
   VERBOSE(Core) << "createContext with " << deviceId << ", " << priority << std::endl;
   NpuContext *npuContext;
   int ret = _devManager->createContext(deviceId, priority, &npuContext);
-  if (ret != NPU_STATUS_SUCCESS) {
+  if (ret != NPU_STATUS_SUCCESS)
+  {
     VERBOSE(Core) << "Fail to create dev context" << std::endl;
     // TODO Define CoreStatus
     return 1;
@@ -64,7 +65,8 @@ int Core::destroyContext(ContextID contextId)
   }
 
   int ret = _devManager->destroyContext(npuContext);
-  if (ret != NPU_STATUS_SUCCESS) {
+  if (ret != NPU_STATUS_SUCCESS)
+  {
     VERBOSE(Core) << "Fail to destroy npu context" << std::endl;
   }
 
@@ -85,7 +87,8 @@ int Core::createNetwork(ContextID contextId, const std::string &modelPath, Model
 
   ModelID id;
   int ret = _devManager->registerModel(npuContext, modelPath, &id);
-  if (ret != NPU_STATUS_SUCCESS) {
+  if (ret != NPU_STATUS_SUCCESS)
+  {
     VERBOSE(Core) << "Failed to register model: " << modelPath << std::endl;
     // TODO Define CoreStatus
     return 1;
@@ -107,12 +110,37 @@ int Core::destroyNetwork(ContextID contextId, ModelID modelId)
   }
 
   int ret = _devManager->unregisterModel(npuContext, modelId);
-  if (ret != NPU_STATUS_SUCCESS) {
+  if (ret != NPU_STATUS_SUCCESS)
+  {
     VERBOSE(Core) << "Failed to unregister model: " << modelId << std::endl;
     // TODO Define CoreStatus
     return 1;
   }
 
+  return 0;
+}
+
+int Core::createRequest(ContextID contextId, ModelID modelId, RequestID *requestId)
+{
+  VERBOSE(Core) << "createRequest with " << contextId << ", " << modelId << std::endl;
+  NpuContext *npuContext = _contextManager->getNpuContext(contextId);
+  if (!npuContext)
+  {
+    VERBOSE(Core) << "Invalid context id" << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  RequestID id;
+  int ret = _devManager->createRequest(npuContext, modelId, &id);
+  if (ret != NPU_STATUS_SUCCESS)
+  {
+    VERBOSE(Core) << "Failed to create request of model: " << modelId << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  *requestId = id;
   return 0;
 }
 

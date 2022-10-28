@@ -39,19 +39,20 @@ public:
 
   NpuStatus getVersion(std::string &version) override;
   NpuStatus createContext(NpuDevice *device, int device_fd, int priority,
-                           NpuContext **ctx) override;
+                          NpuContext **ctx) override;
   NpuStatus destroyContext(NpuDevice *device, NpuContext *ctx) override;
   NpuStatus createBuffer(NpuDevice *device, GenericBuffer *buffer) override;
   NpuStatus destroyBuffer(NpuDevice *device, GenericBuffer *buffer) override;
   // TODO Support to register model from buffer
   NpuStatus registerModel(NpuDevice *device, NpuContext *ctx, const std::string &modelPath,
-                           ModelID *modelId) override;
+                          ModelID *modelId) override;
   NpuStatus unregisterModel(NpuDevice *device, NpuContext *ctx, ModelID modelId) override;
-  NpuStatus createRequest(NpuDevice *device, ModelID modelId, RequestID *requestId) override;
+  NpuStatus createRequest(NpuDevice *device, NpuContext *ctx, ModelID modelId,
+                          RequestID *requestId) override;
   NpuStatus destroyRequest(NpuDevice *device, RequestID requestId) override;
   NpuStatus setRequestData(NpuDevice *device, RequestID requestId, InputBuffers *input_bufs,
-                            TensorDataInfo *in_info, OutputBuffers *output_bufs,
-                            TensorDataInfo *out_info) override;
+                           TensorDataInfo *in_info, OutputBuffers *output_bufs,
+                           TensorDataInfo *out_info) override;
   NpuStatus submitRequest(NpuDevice *device, RequestID requestId) override;
 
 private:

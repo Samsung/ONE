@@ -25,17 +25,23 @@
     <method name="network_create">
 	    <arg name="ctx" type="t" direction="in" />
 	    <arg name="binary_path" type="s" direction="in"  />
-	    <arg name="nw_handle" type="t" direction="out"  />
+	    <arg name="nw_handle" type="u" direction="out"  />
 	    <arg name="error" type="i" direction="out"  />
     </method>
     <method name="network_destroy">
       <arg name="ctx" type="t" direction="in" />
-      <arg name="nw_handle" type="t" direction="in" />
+      <arg name="nw_handle" type="u" direction="in" />
       <arg name="error" type="i" direction="out"  />
+    </method>
+    <method name="request_create">
+      <arg name="ctx" type="t" direction="in" />
+      <arg name="nw_handle" type="u" direction="in" />
+      <arg name="rq_handle" type="u" direction="out" />
+      <arg name="error" type="i" direction="out" />
     </method>
     <method name="execute_run">
 	    <arg name="ctx" type="t" direction="in"  />
-	    <arg name="nw_handle" type="t" direction="in"  />
+	    <arg name="nw_handle" type="u" direction="in"  />
 	    <arg name="error" type="i" direction="out"  />
     </method>
   </interface>

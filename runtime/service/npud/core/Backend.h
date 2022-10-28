@@ -104,7 +104,8 @@ struct NpuContext
   // Note Manage model id per model path.
   //      Do we need to handle the case of requesting different model files
   //      with the same model path?
-  std::vector<std::map<const std::string, ModelID>> modelIds;
+  std::vector<std::map<ModelID, const std::string>> modelIds;
+  std::map<RequestID, ModelID> requestIds;
   int defaultCore;
 };
 
@@ -121,19 +122,20 @@ public:
 
   virtual NpuStatus getVersion(std::string &version) = 0;
   virtual NpuStatus createContext(NpuDevice *device, int device_fd, int priority,
-                                   NpuContext **ctx) = 0;
+                                  NpuContext **ctx) = 0;
   virtual NpuStatus destroyContext(NpuDevice *device, NpuContext *ctx) = 0;
   virtual NpuStatus createBuffer(NpuDevice *device, GenericBuffer *buffer) = 0;
   virtual NpuStatus destroyBuffer(NpuDevice *device, GenericBuffer *buffer) = 0;
   // TODO Support to register model from buffer
   virtual NpuStatus registerModel(NpuDevice *device, NpuContext *ctx, const std::string &modelPath,
-                                   ModelID *modelId) = 0;
+                                  ModelID *modelId) = 0;
   virtual NpuStatus unregisterModel(NpuDevice *device, NpuContext *ctx, ModelID modelId) = 0;
-  virtual NpuStatus createRequest(NpuDevice *device, ModelID modelId, RequestID *requestId) = 0;
+  virtual NpuStatus createRequest(NpuDevice *device, NpuContext *ctx, ModelID modelId,
+                                  RequestID *requestId) = 0;
   virtual NpuStatus destroyRequest(NpuDevice *device, RequestID requestId) = 0;
-  virtual NpuStatus setRequestData(NpuDevice *device, RequestID requestId,
-                                    InputBuffers *input_bufs, TensorDataInfo *in_info,
-                                    OutputBuffers *output_bufs, TensorDataInfo *out_info) = 0;
+  virtual NpuStatus setRequestData(NpuDevice *device, RequestID requestId, InputBuffers *input_bufs,
+                                   TensorDataInfo *in_info, OutputBuffers *output_bufs,
+                                   TensorDataInfo *out_info) = 0;
   virtual NpuStatus submitRequest(NpuDevice *device, RequestID requestId) = 0;
 };
 
