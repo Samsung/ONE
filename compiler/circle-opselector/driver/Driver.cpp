@@ -16,7 +16,9 @@
 
 #include "ModuleIO.h"
 
+#include <luci/ConnectNode.h>
 #include <luci/Profile/CircleNodeID.h>
+#include <luci/Service/CircleNodeClone.h>
 
 #include <arser/arser.h>
 #include <vconone/vconone.h>
@@ -153,6 +155,107 @@ std::vector<std::string> split_name_input(const std::string &str)
   return ::split_into_vector(str, ',');
 }
 
+std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode *> nodes)
+{
+  auto graph = loco::make_graph();
+
+  luci::CloneContext ctx;
+  // clone nodes
+  for (const auto &n : nodes)
+  {
+    auto clone = luci::clone_node(n, graph.get());
+    ctx.emplace(n, clone);
+  }
+  // set graph input
+  for (const auto &n : nodes)
+  {
+    for (uint32_t i = 0; i < n->arity(); i++)
+    {
+      auto arg = n->arg(i);
+      auto input_node = dynamic_cast<luci::CircleNode *>(arg);
+      auto ctx_it = ctx.find(input_node);
+      // check if the node already has been cloned
+      if (ctx_it != ctx.end())
+        continue;
+      // the node isn't graph input if it is an other node's input
+      if (std::find(nodes.begin(), nodes.end(), arg) != nodes.end())
+        continue;
+      auto circle_const = dynamic_cast<luci::CircleConst *>(arg);
+      if (circle_const != nullptr)
+      {
+        auto clone = luci::clone_node(circle_const, graph.get());
+        ctx.emplace(circle_const, clone);
+      }
+      else
+      {
+        // circle input
+        auto circle_input = graph->nodes()->create<luci::CircleInput>();
+        input_node = dynamic_cast<luci::CircleNode *>(arg);
+        luci::copy_common_attributes(input_node, circle_input);
+        ctx.emplace(input_node, circle_input);
+        // graph input
+        auto graph_input = graph->inputs()->create();
+        graph_input->name(circle_input->name());
+        graph_input->dtype(circle_input->dtype());
+        // graph input shape
+        auto input_shape = std::make_unique<loco::TensorShape>();
+        input_shape->rank(circle_input->rank());
+        for (uint32_t i = 0; i < circle_input->rank(); i++)
+        {
+          if (circle_input->dim(i).known())
+          {
+            circle_input->dim(i).set(circle_input->dim(i).value());
+          }
+        }
+        graph_input->shape(std::move(input_shape));
+
+        circle_input->index(graph_input->index());
+      }
+    }
+  }
+  // set graph output
+  for (const auto &n : nodes)
+  {
+    auto outputs = loco::succs(n);
+    for (const auto &o : outputs)
+    {
+      // the node isn't graph output if it is an other node's output
+      if (std::find(nodes.begin(), nodes.end(), o) != nodes.end())
+        continue;
+      // circle output
+      auto circle_output = graph->nodes()->create<luci::CircleOutput>();
+      auto output_node = dynamic_cast<luci::CircleNode *>(o);
+      luci::copy_common_attributes(output_node, circle_output);
+      // connect to cloned output node
+      circle_output->from(ctx.find(n)->second);
+      // graph output
+      auto graph_output = graph->outputs()->create();
+      graph_output->name(output_node->name());
+      graph_output->dtype(output_node->dtype());
+      // graph output shape
+      auto output_shape = std::make_unique<loco::TensorShape>();
+      output_shape->rank(circle_output->rank());
+      for (uint32_t i = 0; i < circle_output->rank(); i++)
+      {
+        if (circle_output->dim(i).known())
+        {
+          circle_output->dim(i).set(circle_output->dim(i).value());
+        }
+      }
+      graph_output->shape(std::move(output_shape));
+
+      circle_output->index(graph_output->index());
+    }
+  }
+  // connect nodes
+  for (const auto &n : nodes)
+  {
+    luci::clone_connect(n, ctx);
+  }
+
+  return graph;
+}
+
 int entry(int argc, char **argv)
 {
   // TODO Add new option names!
@@ -210,6 +313,13 @@ int entry(int argc, char **argv)
   // Import original circle file.
   auto module = opselector::getModule(input_path);
 
+  // TODO support two or more subgraphs
+  if (module.get()->size() != 1)
+  {
+    std::cerr << "ERROR: Not support two or more subgraphs" << std::endl;
+    return EXIT_FAILURE;
+  }
+
   // Select nodes from user input.
   std::vector<const luci::CircleNode *> selected_nodes;
 
@@ -255,10 +365,17 @@ int entry(int argc, char **argv)
     std::cerr << "ERROR: No operator selected" << std::endl;
     exit(EXIT_FAILURE);
   }
-  // TODO implement node selections
+
+  // make module
+  auto new_module = std::make_unique<luci::Module>();
+  // make graph with selected nodes
+  auto new_graph = ::make_graph(selected_nodes);
+  // TODO set proper graph name
+
+  new_module->add(std::move(new_graph));
 
   // Export to output Circle file
-  assert(opselector::exportModule(module.get(), output_path));
+  assert(opselector::exportModule(new_module.get(), output_path));
 
   return 0;
 }
