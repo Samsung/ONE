@@ -93,6 +93,10 @@ public:
 
 private:
   void evalFloat() const;
+
+private:
+  void check_input_tensor_dimensions(int n_input, int n_output, int n_cell, bool use_layer_norm,
+                                     bool is_integer);
 };
 
 } // namespace kernels

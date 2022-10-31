@@ -18,6 +18,24 @@
 #ifndef LUCI_INTERPRETER_PAL_UNIDIRECTIONALSEQUENCELSTM_H
 #define LUCI_INTERPRETER_PAL_UNIDIRECTIONALSEQUENCELSTM_H
 
-// TODO implement
+namespace luci_interpreter_pal
+{
+
+static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad_3, bool use_cifg,
+                                         int32_t n_batch, int n_cell)
+{
+  if (use_cifg)
+  {
+    // Reserving space for Cell, Forget, Output gates
+    scratchpad_3->resize({n_batch, n_cell * 3});
+  }
+  else
+  {
+    // Reserving space for Input, Cell, Forget, Output gates
+    scratchpad_3->resize({n_batch, n_cell * 4});
+  }
+}
+
+} // namespace luci_interpreter_pal
 
 #endif // LUCI_INTERPRETER_PAL_UNIDIRECTIONALSEQUENCELSTM_H
