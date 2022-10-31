@@ -1,8 +1,8 @@
-if(BUILD_TENSORFLOW_LITE_2_8_0)
+if(BUILD_TENSORFLOW_LITE)
   macro(return_unless VAR)
   if(NOT ${VAR})
     message("TFLite 2.8: ${VAR} NOT TRUE")
-    set(TensorFlowLite_2_8_0_FOUND FALSE PARENT_SCOPE)
+    set(TensorFlowLite_FOUND FALSE PARENT_SCOPE)
     return()
   endif(NOT ${VAR})
   endmacro(return_unless)
@@ -14,8 +14,8 @@ if(BUILD_TENSORFLOW_LITE_2_8_0)
   return_unless(TensorFlowSource_FOUND)
 
   # Below urls come from https://github.com/tensorflow/tensorflow/blob/v2.3.0/tensorflow/tensorflow/workspace.bzl
-  nnas_find_package(AbseilSource QUIET)
-  return_unless(AbseilSource_FOUND)
+  nnas_find_package(Abseil QUIET)
+  return_unless(Abseil_FOUND)
   nnfw_find_package(Eigen QUIET)
   return_unless(Eigen_FOUND)
   nnas_find_package(Farmhash QUIET)
@@ -45,7 +45,7 @@ if(BUILD_TENSORFLOW_LITE_2_8_0)
   nnas_include(ExternalProjectTools)
   add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/TensorFlowLite" tflite-2.8.0)
 
-  set(TensorFlowLite_2_8_0_FOUND TRUE)
+  set(TensorFlowLite_FOUND TRUE)
   return()
 endif()
 
@@ -57,17 +57,17 @@ if(NOT TFLITE_INCLUDE_DIR)
   # Tizen install TensorFlow Lite 2.8 headers in /usr/include/tensorflow2
   find_path(TFLITE_INCLUDE_DIR NAMES tensorflow/lite/c/c_api.h PATHS "/usr/include/tensorflow2")
   if(NOT TFLITE_INCLUDE_DIR)
-    set(TensorFlowLite_2_8_0_FOUND FALSE)
+    set(TensorFlowLite_FOUND FALSE)
     return()
   endif(NOT TFLITE_INCLUDE_DIR)
 endif(NOT TFLITE_INCLUDE_DIR)
 
 if(NOT TFLITE_LIB)
-  set(TensorFlowLite_2_8_0_FOUND FALSE)
+  set(TensorFlowLite_FOUND FALSE)
   return()
 endif(NOT TFLITE_LIB)
 
-message(STATUS "Found TensorFlow Lite 2.8 : TRUE (include: ${TFLITE_INCLUDE_DIR}, lib: ${TFLITE_LIB}")
+message(STATUS "Found TensorFlow Lite: TRUE (include: ${TFLITE_INCLUDE_DIR}, lib: ${TFLITE_LIB}")
 
 # TODO Use IMPORTED target
 add_library(tensorflow-lite-2.8.0 INTERFACE)
@@ -87,4 +87,4 @@ if(Threads_FOUND)
   target_link_libraries(tensorflow-lite-2.8.0 INTERFACE ${CMAKE_THREAD_LIBS_INIT})
 endif(Threads_FOUND)
 
-set(TensorFlowLite_2_8_0_FOUND TRUE)
+set(TensorFlowLite_FOUND TRUE)

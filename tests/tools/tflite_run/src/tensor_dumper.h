@@ -17,6 +17,8 @@
 #ifndef __TFLITE_RUN_TENSOR_DUMPER_H__
 #define __TFLITE_RUN_TENSOR_DUMPER_H__
 
+#include <tensorflow/lite/c/c_api.h>
+
 #include <memory>
 #include <string>
 #include <vector>
@@ -42,11 +44,13 @@ private:
 
 public:
   TensorDumper();
-  void addTensors(tflite::Interpreter &interpreter, const std::vector<int> &indices);
+  void addInputTensors(TfLiteInterpreter &interpreter);
+  void addOutputTensors(TfLiteInterpreter &interpreter);
   void dump(const std::string &filename) const;
 
 private:
-  std::vector<Tensor> _tensors;
+  std::vector<Tensor> _input_tensors;
+  std::vector<Tensor> _output_tensors;
 };
 
 } // end of namespace TFLiteRun

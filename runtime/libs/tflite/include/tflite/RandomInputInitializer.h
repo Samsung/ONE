@@ -19,7 +19,7 @@
 
 #include <misc/RandomGenerator.h>
 
-#include <tensorflow/lite/interpreter.h>
+#include <tensorflow/lite/c/c_api.h>
 
 namespace nnfw
 {
@@ -34,10 +34,7 @@ public:
     // DO NOTHING
   }
 
-  void run(::tflite::Interpreter &interp);
-
-private:
-  template <typename T> void setValue(::tflite::Interpreter &interp, int tensor_idx);
+  void run(TfLiteInterpreter &interp);
 
 private:
   nnfw::misc::RandomGenerator &_randgen;

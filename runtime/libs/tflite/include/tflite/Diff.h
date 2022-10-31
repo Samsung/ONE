@@ -23,7 +23,7 @@
 #ifndef __NNFW_TFLITE_DIFF_H__
 #define __NNFW_TFLITE_DIFF_H__
 
-#include "tensorflow/lite/interpreter.h"
+#include "tflite/TensorView.h"
 
 #include "misc/RandomGenerator.h"
 #include "misc/tensor/Index.h"
@@ -31,7 +31,7 @@
 #include "misc/tensor/Shape.h"
 #include "misc/tensor/Comparator.h"
 
-#include "tflite/TensorView.h"
+#include <tensorflow/lite/c/c_api.h>
 
 #include <functional>
 #include <vector>
@@ -69,7 +69,7 @@ public:
    * @param[in] nnapi  Interpreter object of obtained(through NNAPI)
    * @return  @c true if two Interpreter results are same, otherwise @c false
    */
-  bool run(::tflite::Interpreter &pure, ::tflite::Interpreter &nnapi) const;
+  bool run(TfLiteInterpreter &pure, TfLiteInterpreter &nnapi) const;
   /**
    * @brief Compare two TensorView values and return the match result
    * @param[in] expected  TensorView object to read expected values

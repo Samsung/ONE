@@ -40,7 +40,7 @@ public:
    * @brief Construct a InterpreterSession object with interpreter of TfLite
    * @param[in] interp The TfLite interpreter pointer
    */
-  InterpreterSession(::tflite::Interpreter *interp) : _interp{interp}
+  InterpreterSession(TfLiteInterpreter *interp) : _interp{interp}
   {
     // DO NOTHING
   }
@@ -50,7 +50,7 @@ public:
    * @brief Get TfLite interpreter pointer
    * @return The TfLite interpreter
    */
-  ::tflite::Interpreter *interp(void) override { return _interp; }
+  TfLiteInterpreter *interp(void) override { return _interp; }
 
 public:
   /**
@@ -59,9 +59,7 @@ public:
    */
   bool prepare(void) override
   {
-    _interp->UseNNAPI(false);
-
-    if (kTfLiteOk != _interp->AllocateTensors())
+    if (kTfLiteOk != TfLiteInterpreterAllocateTensors(_interp))
     {
       return false;
     }
@@ -76,7 +74,7 @@ public:
   bool run(void) override
   {
     // Return true if Invoke returns kTfLiteOk
-    return kTfLiteOk == _interp->Invoke();
+    return kTfLiteOk == TfLiteInterpreterInvoke(_interp);
   }
 
   /**
@@ -90,7 +88,7 @@ public:
   }
 
 private:
-  ::tflite::Interpreter *const _interp;
+  TfLiteInterpreter *const _interp;
 };
 
 } // namespace tflite

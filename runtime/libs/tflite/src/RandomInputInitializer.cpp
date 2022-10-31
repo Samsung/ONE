@@ -23,42 +23,48 @@ namespace nnfw
 {
 namespace tflite
 {
-
-void RandomInputInitializer::run(::tflite::Interpreter &interp)
+namespace
 {
-  for (const auto &tensor_idx : interp.inputs())
+
+template <typename T>
+void setValue(nnfw::misc::RandomGenerator &randgen, const TfLiteTensor *tensor)
+{
+  auto tensor_view = nnfw::tflite::TensorView<T>::make(tensor);
+
+  nnfw::misc::tensor::iterate(tensor_view.shape())
+    << [&](const nnfw::misc::tensor::Index &ind) { tensor_view.at(ind) = randgen.generate<T>(); };
+}
+
+} // namespace
+
+void RandomInputInitializer::run(TfLiteInterpreter &interp)
+{
+  const auto input_count = TfLiteInterpreterGetInputTensorCount(&interp);
+  for (int32_t idx = 0; idx < input_count; idx++)
   {
-    TfLiteTensor *tensor = interp.tensor(tensor_idx);
-    switch (tensor->type)
+    auto tensor = TfLiteInterpreterGetInputTensor(&interp, idx);
+    auto const tensor_type = TfLiteTensorType(tensor);
+    switch (tensor_type)
     {
       case kTfLiteFloat32:
-        setValue<float>(interp, tensor_idx);
+        setValue<float>(_randgen, tensor);
         break;
       case kTfLiteInt32:
-        setValue<int32_t>(interp, tensor_idx);
+        setValue<int32_t>(_randgen, tensor);
         break;
       case kTfLiteUInt8:
-        setValue<uint8_t>(interp, tensor_idx);
+        setValue<uint8_t>(_randgen, tensor);
         break;
       case kTfLiteBool:
-        setValue<bool>(interp, tensor_idx);
+        setValue<bool>(_randgen, tensor);
         break;
       case kTfLiteInt8:
-        setValue<int8_t>(interp, tensor_idx);
+        setValue<int8_t>(_randgen, tensor);
         break;
       default:
         throw std::runtime_error{"Not supported input type"};
     }
   }
-}
-
-template <typename T>
-void RandomInputInitializer::setValue(::tflite::Interpreter &interp, int tensor_idx)
-{
-  auto tensor_view = nnfw::tflite::TensorView<T>::make(interp, tensor_idx);
-
-  nnfw::misc::tensor::iterate(tensor_view.shape())
-    << [&](const nnfw::misc::tensor::Index &ind) { tensor_view.at(ind) = _randgen.generate<T>(); };
 }
 
 } // namespace tflite

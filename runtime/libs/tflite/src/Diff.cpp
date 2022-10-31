@@ -22,6 +22,8 @@
 #include "misc/tensor/Zipper.h"
 #include "misc/tensor/Comparator.h"
 
+#include <tensorflow/lite/c/c_api.h>
+
 #include <iostream>
 #include <cassert>
 
@@ -190,53 +192,57 @@ bool TfLiteInterpMatchApp::compareSingleTensorView<float>(
 
 #include <map>
 
-bool TfLiteInterpMatchApp::run(::tflite::Interpreter &interp, ::tflite::Interpreter &nnapi) const
+bool TfLiteInterpMatchApp::run(TfLiteInterpreter &interp, TfLiteInterpreter &nnapi) const
 {
-  assert(interp.outputs() == nnapi.outputs());
+  auto output_count = TfLiteInterpreterGetOutputTensorCount(&interp);
+  assert(output_count == TfLiteInterpreterGetOutputTensorCount(&nnapi));
 
   bool all_matched = true;
 
-  using Comparator = std::function<bool(int id, ::tflite::Interpreter &, ::tflite::Interpreter &)>;
+  using Comparator = std::function<bool(int32_t, const TfLiteTensor *, const TfLiteTensor *)>;
 
   std::map<TfLiteType, Comparator> comparators;
 
-  comparators[kTfLiteUInt8] = [this](int id, ::tflite::Interpreter &interp,
-                                     ::tflite::Interpreter &nnapi) {
-    const auto expected = nnfw::tflite::TensorView<uint8_t>::make(interp, id);
-    const auto obtained = nnfw::tflite::TensorView<uint8_t>::make(nnapi, id);
+  comparators[kTfLiteUInt8] = [this](int32_t id, const TfLiteTensor *interp,
+                                     const TfLiteTensor *nnapi) {
+    const auto expected = nnfw::tflite::TensorView<uint8_t>::make(interp);
+    const auto obtained = nnfw::tflite::TensorView<uint8_t>::make(nnapi);
 
     return compareSingleTensorView(expected, obtained, id);
   };
 
-  comparators[kTfLiteInt32] = [this](int id, ::tflite::Interpreter &interp,
-                                     ::tflite::Interpreter &nnapi) {
-    const auto expected = nnfw::tflite::TensorView<int32_t>::make(interp, id);
-    const auto obtained = nnfw::tflite::TensorView<int32_t>::make(nnapi, id);
+  comparators[kTfLiteInt32] = [this](int32_t id, const TfLiteTensor *interp,
+                                     const TfLiteTensor *nnapi) {
+    const auto expected = nnfw::tflite::TensorView<int32_t>::make(interp);
+    const auto obtained = nnfw::tflite::TensorView<int32_t>::make(nnapi);
 
     return compareSingleTensorView(expected, obtained, id);
   };
 
-  comparators[kTfLiteFloat32] = [this](int id, ::tflite::Interpreter &interp,
-                                       ::tflite::Interpreter &nnapi) {
-    const auto expected = nnfw::tflite::TensorView<float>::make(interp, id);
-    const auto obtained = nnfw::tflite::TensorView<float>::make(nnapi, id);
+  comparators[kTfLiteFloat32] = [this](int32_t id, const TfLiteTensor *interp,
+                                       const TfLiteTensor *nnapi) {
+    const auto expected = nnfw::tflite::TensorView<float>::make(interp);
+    const auto obtained = nnfw::tflite::TensorView<float>::make(nnapi);
 
     return compareSingleTensorView(expected, obtained, id);
   };
 
-  comparators[kTfLiteBool] = [this](int id, ::tflite::Interpreter &interp,
-                                    ::tflite::Interpreter &nnapi) {
-    const auto expected = nnfw::tflite::TensorView<bool>::make(interp, id);
-    const auto obtained = nnfw::tflite::TensorView<bool>::make(nnapi, id);
+  comparators[kTfLiteBool] = [this](int32_t id, const TfLiteTensor *interp,
+                                    const TfLiteTensor *nnapi) {
+    const auto expected = nnfw::tflite::TensorView<bool>::make(interp);
+    const auto obtained = nnfw::tflite::TensorView<bool>::make(nnapi);
 
     return compareSingleTensorView(expected, obtained, id);
   };
 
-  for (const auto &id : interp.outputs())
+  for (int32_t idx = 0; idx < output_count; idx++)
   {
-    assert(interp.tensor(id)->type == nnapi.tensor(id)->type);
+    auto const interp_tensor = TfLiteInterpreterGetOutputTensor(&interp, idx);
+    auto const nnapi_tensor = TfLiteInterpreterGetOutputTensor(&nnapi, idx);
+    auto const tensor_type = TfLiteTensorType(interp_tensor);
+    assert(tensor_type == TfLiteTensorType(nnapi_tensor));
 
-    auto it = comparators.find(interp.tensor(id)->type);
+    auto it = comparators.find(tensor_type);
 
     if (it == comparators.end())
     {
@@ -245,7 +251,7 @@ bool TfLiteInterpMatchApp::run(::tflite::Interpreter &interp, ::tflite::Interpre
 
     const auto &comparator = it->second;
 
-    if (!comparator(id, interp, nnapi))
+    if (!comparator(idx, interp_tensor, nnapi_tensor))
     {
       all_matched = false;
     }
