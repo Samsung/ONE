@@ -1,0 +1,8 @@
+# To check model can be quantized without QuantizeDequantizeWeights.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "INPUT_INT16"             $(tensor_dtype ifm) '=' INT16
+RULE    "CONV_INT16"              $(tensor_dtype ofm) '=' INT16
+RULE    "WEIGHTS_INT16"           $(tensor_dtype filter) '=' INT16
+RULE    "BIAS_INT64"              $(tensor_dtype bias) '=' INT64
