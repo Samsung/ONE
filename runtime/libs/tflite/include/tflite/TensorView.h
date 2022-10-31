@@ -23,12 +23,12 @@
 #ifndef __NNFW_TFLITE_TENSOR_VIEW_H__
 #define __NNFW_TFLITE_TENSOR_VIEW_H__
 
-#include "tensorflow/lite/interpreter.h"
-
 #include "misc/tensor/Shape.h"
 #include "misc/tensor/Index.h"
 #include "misc/tensor/Reader.h"
 #include "misc/tensor/NonIncreasingStride.h"
+
+#include <tensorflow/lite/c/c_api.h>
 
 namespace nnfw
 {
@@ -98,19 +98,17 @@ public:
    * @param[in] tensor_index The tensor index
    * @return The new TensorView<T> object
    */
-  static TensorView<T> make(::tflite::Interpreter &interp, int tensor_index)
+  static TensorView<T> make(const TfLiteTensor *tensor)
   {
-    auto tensor_ptr = interp.tensor(tensor_index);
-
     // Set 'shape'
-    nnfw::misc::tensor::Shape shape(tensor_ptr->dims->size);
+    nnfw::misc::tensor::Shape shape(TfLiteTensorNumDims(tensor));
 
     for (uint32_t axis = 0; axis < shape.rank(); ++axis)
     {
-      shape.dim(axis) = tensor_ptr->dims->data[axis];
+      shape.dim(axis) = TfLiteTensorDim(tensor, axis);
     }
 
-    return TensorView<T>(shape, interp.typed_tensor<T>(tensor_index));
+    return TensorView<T>(shape, reinterpret_cast<T *>(TfLiteTensorData(tensor)));
   }
 };
 

@@ -24,7 +24,7 @@ not_equal
 one_hot
 pack
 reduce_max
-reduce_sum
+reduce_sum/float
 reshape/reshape1
 select
 softmax

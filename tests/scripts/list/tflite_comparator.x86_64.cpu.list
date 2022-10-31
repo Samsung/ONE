@@ -1,6 +1,5 @@
 MODELS/inception_module
 MODELS/mobilenet
-MODELS/mobilenet_quant8
 add
 average_pool_2d
 concat
@@ -11,7 +10,7 @@ logistic
 max_pool_2d
 mean
 reduce_max
-reduce_sum
+reduce_sum/float
 reshape/reshape1
 select
 softmax

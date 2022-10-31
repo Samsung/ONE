@@ -23,7 +23,7 @@
 #ifndef __NNFW_TFLITE_SESSION_H__
 #define __NNFW_TFLITE_SESSION_H__
 
-#include <tensorflow/lite/interpreter.h>
+#include <tensorflow/lite/c/c_api.h>
 
 namespace nnfw
 {
@@ -44,7 +44,7 @@ struct Session
    * @brief   Get the Interpreter object pointer
    * @return  The Interpreter object pointer
    */
-  virtual ::tflite::Interpreter *interp(void) = 0;
+  virtual TfLiteInterpreter *interp(void) = 0;
 
   /**
    * @brief   Prepare the session

@@ -25,15 +25,14 @@
 
 #include <tflite/Assert.h>
 #include <tflite/InterpreterSession.h>
-#include <tflite/interp/FlatBufferBuilder.h>
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <memory>
+#include <string>
 
 const int RUN_FAILED = 1;
 
-using namespace tflite;
 using namespace nnfw::tflite;
 
 const int FILE_ERROR = 2;
@@ -46,7 +45,7 @@ const int FILE_ERROR = 2;
   }
 
 // Read vector of floats from selected file
-void readData(const string &path, std::vector<uint8_t> &dest)
+void readData(const std::string &path, std::vector<uint8_t> &dest)
 {
   std::ifstream in(path);
   if (!in.good())
@@ -318,29 +317,18 @@ int main(const int argc, char **argv)
   // Compare with tflite
   std::cout << "[Comparison] Stage start!" << std::endl;
   // Read tflite model
-  StderrReporter error_reporter;
-  auto model = FlatBufferModel::BuildFromFile(tflite_file.c_str(), &error_reporter);
-  auto builder = FlatBufferBuilder(*model);
+  auto model = TfLiteModelCreateFromFile(tflite_file.c_str());
+  auto options = TfLiteInterpreterOptionsCreate();
+  TfLiteInterpreterOptionsSetNumThreads(options, nnfw::misc::EnvVar("THREAD").asInt(1));
+  auto interpreter = TfLiteInterpreterCreate(model, options);
 
-  std::unique_ptr<Interpreter> interpreter;
-  try
-  {
-    interpreter = builder.build();
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << e.what() << std::endl;
-    exit(FILE_ERROR);
-  }
-  interpreter->SetNumThreads(nnfw::misc::EnvVar("THREAD").asInt(1));
-
-  auto sess = std::make_shared<nnfw::tflite::InterpreterSession>(interpreter.get());
+  auto sess = std::make_shared<nnfw::tflite::InterpreterSession>(interpreter);
   sess->prepare();
   // Set input and run
   for (uint32_t i = 0; i < num_inputs; i++)
   {
-    auto input_tensor = interpreter->tensor(interpreter->inputs().at(i));
-    memcpy(input_tensor->data.uint8, inputs[i].data(), inputs[i].size());
+    auto input_tensor = TfLiteInterpreterGetInputTensor(interpreter, i);
+    memcpy(TfLiteTensorData(input_tensor), inputs[i].data(), inputs[i].size());
   }
   if (!sess->run())
   {
@@ -358,30 +346,30 @@ int main(const int argc, char **argv)
 
     bool matched = true;
     // Check output tensor values
-
-    const auto &ref_output = interpreter->tensor(interpreter->outputs().at(out_idx))->data;
+    auto output_tensor = TfLiteInterpreterGetOutputTensor(interpreter, out_idx);
+    auto ref_output = TfLiteTensorData(output_tensor);
     const auto &output = outputs[out_idx];
 
     switch (ti.dtype)
     {
       case NNFW_TYPE_TENSOR_BOOL:
-        matched = exact(ref_output.uint8, output, out_idx);
+        matched = exact(reinterpret_cast<uint8_t *>(ref_output), output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_UINT8:
       case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-        matched = isClose<uint8_t>(ref_output.uint8, output, out_idx);
+        matched = isClose<uint8_t>(reinterpret_cast<uint8_t *>(ref_output), output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
-        matched = isClose<int8_t>(ref_output.int8, output, out_idx);
+        matched = isClose<int8_t>(reinterpret_cast<int8_t *>(ref_output), output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_INT32:
-        matched = isClose<int32_t>(ref_output.i32, output, out_idx);
+        matched = isClose<int32_t>(reinterpret_cast<int32_t *>(ref_output), output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_FLOAT32:
-        matched = isClose<float>(ref_output.f, output, out_idx);
+        matched = isClose<float>(reinterpret_cast<float *>(ref_output), output, out_idx);
         break;
       case NNFW_TYPE_TENSOR_INT64:
-        matched = isClose<int64_t>(ref_output.i64, output, out_idx);
+        matched = isClose<int64_t>(reinterpret_cast<int64_t *>(ref_output), output, out_idx);
         break;
       default:
         throw std::runtime_error{"Invalid tensor type"};

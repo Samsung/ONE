@@ -20,7 +20,7 @@
 #include <iostream>
 #include <cstring>
 
-#include "tensorflow/lite/interpreter.h"
+#include <tensorflow/lite/c/c_api.h>
 
 namespace TFLiteRun
 {
@@ -30,16 +30,31 @@ TensorDumper::TensorDumper()
   // DO NOTHING
 }
 
-void TensorDumper::addTensors(tflite::Interpreter &interpreter, const std::vector<int> &indices)
+void TensorDumper::addInputTensors(TfLiteInterpreter &interpreter)
 {
-  for (const auto &o : indices)
+  auto const input_count = TfLiteInterpreterGetInputTensorCount(&interpreter);
+  for (int32_t idx = 0; idx < input_count; idx++)
   {
-    const TfLiteTensor *tensor = interpreter.tensor(o);
-    int size = tensor->bytes;
+    const TfLiteTensor *tensor = TfLiteInterpreterGetInputTensor(&interpreter, idx);
+    auto size = TfLiteTensorByteSize(tensor);
     std::vector<char> buffer;
     buffer.resize(size);
-    memcpy(buffer.data(), tensor->data.raw, size);
-    _tensors.emplace_back(o, std::move(buffer));
+    memcpy(buffer.data(), TfLiteTensorData(tensor), size);
+    _input_tensors.emplace_back(idx, std::move(buffer));
+  }
+}
+
+void TensorDumper::addOutputTensors(TfLiteInterpreter &interpreter)
+{
+  auto const output_count = TfLiteInterpreterGetOutputTensorCount(&interpreter);
+  for (int32_t idx = 0; idx < output_count; idx++)
+  {
+    const TfLiteTensor *tensor = TfLiteInterpreterGetOutputTensor(&interpreter, idx);
+    auto size = TfLiteTensorByteSize(tensor);
+    std::vector<char> buffer;
+    buffer.resize(size);
+    memcpy(buffer.data(), TfLiteTensorData(tensor), size);
+    _output_tensors.emplace_back(idx, std::move(buffer));
   }
 }
 
@@ -49,17 +64,30 @@ void TensorDumper::dump(const std::string &filename) const
   std::ofstream file(filename, std::ios::out | std::ios::binary);
 
   // Write number of tensors
-  uint32_t num_tensors = static_cast<uint32_t>(_tensors.size());
+  uint32_t num_tensors =
+    static_cast<uint32_t>(_input_tensors.size()) + static_cast<uint32_t>(_input_tensors.size());
   file.write(reinterpret_cast<const char *>(&num_tensors), sizeof(num_tensors));
 
-  // Write tensor indices
-  for (const auto &t : _tensors)
+  // Write input tensor indices
+  for (const auto &t : _input_tensors)
   {
     file.write(reinterpret_cast<const char *>(&t._index), sizeof(int));
   }
 
-  // Write data
-  for (const auto &t : _tensors)
+  // Write output tensor indices
+  for (const auto &t : _output_tensors)
+  {
+    file.write(reinterpret_cast<const char *>(&t._index), sizeof(int));
+  }
+
+  // Write input data
+  for (const auto &t : _input_tensors)
+  {
+    file.write(t._data.data(), t._data.size());
+  }
+
+  // Write output data
+  for (const auto &t : _output_tensors)
   {
     file.write(t._data.data(), t._data.size());
   }
