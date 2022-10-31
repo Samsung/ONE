@@ -97,99 +97,64 @@ void Executors::checkSupportedMultimodel() const
   //  (n)th model: output assumption
   //  Otherwise: edges assumption
 
-  // Assumption: executor input/output size
-  //  Models size: n
-  //  sizeof(model(x).outputs) == sizeof(model(x+1).inputs) if 0 < x < n-2
-  //  sizeof(model(0).inputs) == sizeof(package.inputs)
-  //  sizeof(moddel(n-1).outputs) == sizeof(package.outputs)
-  for (auto &pair : _executors)
-  {
-    auto const &model_index = pair.first.first;
-    auto const &subg_index = pair.first.second;
-
-    // Skip inner subgraph
-    if (subg_index != ir::SubgraphIndex{0})
-      continue;
-
-    auto executor = at(model_index, subg_index);
-
-    // Last model's output
-    if (model_index.value() == model_count - 1)
-    {
-      if (executor->graph().getOutputs().size() != _model_edges->pkg_outputs.size())
-        throw std::runtime_error{"NYI: Unsupported package output pattern"};
-
-      continue;
-    }
-
-    // 1st model's input
-    if ((model_index == ir::ModelIndex{0}) &&
-        (executor->graph().getInputs().size() != _model_edges->pkg_inputs.size()))
-      throw std::runtime_error{"NYI: Unsupported package input pattern"};
-
-    auto const next_index = ir::ModelIndex{static_cast<uint16_t>(model_index.value() + 1)};
-    auto const next_executor = at(next_index, ir::SubgraphIndex{0});
-
-    if (executor->graph().getOutputs().size() != next_executor->graph().getInputs().size())
-      throw std::runtime_error{"NYI: Multi model execution for this package is not supported yet"};
-
-    // Check model output is connected to other model
-    for (uint32_t i = 0; i < executor->graph().getOutputs().size(); i++)
-    {
-      auto const &edges = _model_edges->edges;
-      auto check_from_edge = [&](const ir::ModelEdge &edge) {
-        return (std::get<ir::ModelIndex>(edge.from) == model_index) &&
-               (std::get<ir::SubgraphIndex>(edge.from) == subg_index) &&
-               (std::get<ir::IOIndex>(edge.from).value() == i);
-      };
-
-      if (std::find_if(edges.begin(), edges.end(), check_from_edge) == edges.end())
-      {
-        throw std::runtime_error{"NYI: Unsupported model edge pattern"};
-      }
-    }
-  }
-
   // Assumption: edges
-  //   x:0:z -> x+1:0:z  (0 < x < n-2)
+  //   x:0:z -> x+1:0:z'
   for (auto edge : _model_edges->edges)
   {
     auto const model_from = std::get<ir::ModelIndex>(edge.from);
     auto const model_to = std::get<ir::ModelIndex>(edge.to);
     auto const subg_from = std::get<ir::SubgraphIndex>(edge.from);
     auto const subg_to = std::get<ir::SubgraphIndex>(edge.to);
-    auto const output_from = std::get<ir::IOIndex>(edge.from);
-    auto const input_to = std::get<ir::IOIndex>(edge.to);
 
     if (((model_from.value() + 1) != model_to.value()) || (subg_from != ir::SubgraphIndex{0}) ||
-        (subg_to != ir::SubgraphIndex{0}) || (output_from != input_to))
+        (subg_to != ir::SubgraphIndex{0}))
       throw std::runtime_error{"NYI: Multi model execution for this edge set is not supported yet"};
   }
 
   // Assumption: package inputs
-  //  All package inputs are 0:0:x
-  for (uint32_t i = 0; i < _model_edges->pkg_inputs.size(); i++)
+  //  All 1st model inputs come from package input
   {
-    auto input = _model_edges->pkg_inputs[i];
-    if ((std::get<ir::ModelIndex>(input) != ir::ModelIndex{0}) ||
-        (std::get<ir::SubgraphIndex>(input) != ir::SubgraphIndex{0}) ||
-        (std::get<ir::IOIndex>(input) != ir::IOIndex{i}))
+    auto first_executor = at(ir::ModelIndex{0}, ir::SubgraphIndex{0});
+    auto search_first_model = [&](const ir::IOIndex &input_index) {
+      for (auto &input : _model_edges->pkg_inputs)
+      {
+        if ((std::get<ir::ModelIndex>(input) == ir::ModelIndex{0}) ||
+            (std::get<ir::SubgraphIndex>(input) == ir::SubgraphIndex{0}) ||
+            (std::get<ir::IOIndex>(input) == input_index))
+          return true;
+      }
+
+      return false;
+    };
+
+    for (uint32_t i = 0; i < first_executor->graph().getInputs().size(); i++)
     {
-      throw std::runtime_error{"NYI: Support package input to 1st model with same order"};
+      if (!search_first_model(ir::IOIndex{i}))
+        throw std::runtime_error{"Cannot find 1st model's input buffer"};
     }
   }
 
   // Assumption: package outputs
-  //  All package outputs are n-1:0:x
-  for (uint32_t i = 0; i < _model_edges->pkg_outputs.size(); i++)
+  //  All last model outputs are go to package output
   {
-    auto output = _model_edges->pkg_outputs[i];
-    if ((std::get<ir::ModelIndex>(output) !=
-         ir::ModelIndex{static_cast<uint16_t>(model_count - 1)}) ||
-        (std::get<ir::SubgraphIndex>(output) != ir::SubgraphIndex{0}) ||
-        (std::get<ir::IOIndex>(output) != ir::IOIndex{i}))
+    auto last_model_index = ir::ModelIndex{static_cast<uint16_t>(model_count - 1)};
+    auto last_executor = at(last_model_index, ir::SubgraphIndex{0});
+    auto search_last_model = [&](const ir::IOIndex &output_index) {
+      for (auto &output : _model_edges->pkg_outputs)
+      {
+        if ((std::get<ir::ModelIndex>(output) == last_model_index) ||
+            (std::get<ir::SubgraphIndex>(output) == ir::SubgraphIndex{0}) ||
+            (std::get<ir::IOIndex>(output) == output_index))
+          return true;
+      }
+
+      return false;
+    };
+
+    for (uint32_t i = 0; i < last_executor->graph().getOutputs().size(); i++)
     {
-      throw std::runtime_error{"NYI: Support package output from (n-1)th model with same order"};
+      if (!search_last_model(ir::IOIndex{i}))
+        throw std::runtime_error{"Cannot find last model's output buffer"};
     }
   }
 }
@@ -200,10 +165,49 @@ void Executors::executeModels(const IODescription &desc)
   checkSupportedMultimodel();
 
   // TODO Find better way to manage buffer between executors
-  std::vector<std::unique_ptr<uint8_t[]>> input_bufs;
-  std::vector<std::unique_ptr<uint8_t[]>> output_bufs;
+  std::vector<std::unique_ptr<uint8_t[]>> prev_bufs;
+  std::vector<std::unique_ptr<uint8_t[]>> curr_bufs;
   const auto layout = ir::Layout::NHWC;
   auto const model_count = modelCount();
+
+  auto find_input_index = [&](const ir::ModelIndex &model_index,
+                              const ir::SubgraphIndex &subg_index, const ir::IOIndex &io_index) {
+    for (size_t i = 0; i < _model_edges->pkg_inputs.size(); i++)
+    {
+      auto &input_desc = _model_edges->pkg_inputs[i];
+      if ((std::get<ir::ModelIndex>(input_desc) == model_index) &&
+          (std::get<ir::SubgraphIndex>(input_desc) == subg_index) &&
+          (std::get<ir::IOIndex>(input_desc) == io_index))
+        return static_cast<int32_t>(i);
+    }
+    return -1;
+  };
+
+  auto find_output_index = [&](const ir::ModelIndex &model_index,
+                               const ir::SubgraphIndex &subg_index, const ir::IOIndex &io_index) {
+    for (size_t i = 0; i < _model_edges->pkg_outputs.size(); i++)
+    {
+      auto &input_desc = _model_edges->pkg_outputs[i];
+      if ((std::get<ir::ModelIndex>(input_desc) == model_index) &&
+          (std::get<ir::SubgraphIndex>(input_desc) == subg_index) &&
+          (std::get<ir::IOIndex>(input_desc) == io_index))
+        return static_cast<int32_t>(i);
+    }
+    return -1;
+  };
+
+  auto find_from = [&](const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
+                       const ir::IOIndex &io_index) {
+    for (auto &edge : _model_edges->edges)
+    {
+      if ((std::get<ir::ModelIndex>(edge.to) == model_index) &&
+          (std::get<ir::SubgraphIndex>(edge.to) == subg_index) &&
+          (std::get<ir::IOIndex>(edge.to) == io_index))
+        return edge.from;
+    }
+
+    throw std::runtime_error{"Cannot find edge for model input"};
+  };
 
   // Execute each model
   // NOTE May be better to use vector instead of unordered_map for _executors
@@ -219,45 +223,56 @@ void Executors::executeModels(const IODescription &desc)
     desc_inter.inputs.resize(input_size);
     desc_inter.outputs.resize(output_size);
 
-    input_bufs.resize(input_size);
     for (uint32_t i = 0; i < input_size; i++)
     {
       auto const &index = executor->graph().getInputs().at(ir::IOIndex{i});
       auto const &info = executor->graph().operands().at(index).info();
 
-      // 1st model
-      if (model_index == 0)
+      auto input_pkg_index = find_input_index(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
+      if (input_pkg_index != -1)
       {
-        assert(desc.inputs[i]->info.total_size() == info.total_size());
-        desc_inter.inputs[i] = std::make_unique<InputDesc>(*desc.inputs[i].get());
+        desc_inter.inputs[i] = std::make_unique<InputDesc>(*desc.inputs[input_pkg_index].get());
         continue;
       }
 
-      input_bufs[i] = std::move(output_bufs[i]);
+      auto from_iodesc = find_from(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
+      auto from_ioindex = std::get<ir::IOIndex>(from_iodesc).value();
+
+      // Comes from previous model
+      assert(std::get<ir::ModelIndex>(from_iodesc).value() + 1 == model_index.value());
+      assert(std::get<ir::SubgraphIndex>(from_iodesc).value() == 0);
+
       desc_inter.inputs[i] =
-        std::make_unique<InputDesc>(info, input_bufs[i].get(), info.total_size(), layout);
+        std::make_unique<InputDesc>(info, prev_bufs[from_ioindex].get(), info.total_size(), layout);
     }
 
-    output_bufs.resize(output_size);
+    curr_bufs.resize(output_size);
     for (uint32_t i = 0; i < output_size; i++)
     {
       auto const &index = executor->graph().getOutputs().at(ir::IOIndex{i});
       auto const &info = executor->graph().operands().at(index).info();
 
-      // Last model
-      if (model_index.value() + 1 == model_count)
+      auto output_pkg_index = find_output_index(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
+      if (output_pkg_index != -1)
       {
-        assert(desc.outputs[i]->info.total_size() == info.total_size());
-        desc_inter.outputs[i] = std::make_unique<OutputDesc>(*desc.outputs[i].get());
+        desc_inter.outputs[i] = std::make_unique<OutputDesc>(*desc.outputs[output_pkg_index].get());
         continue;
       }
 
-      output_bufs[i] = std::make_unique<uint8_t[]>(info.total_size());
+      curr_bufs[i] = std::make_unique<uint8_t[]>(info.total_size());
       desc_inter.outputs[i] =
-        std::make_unique<OutputDesc>(info, output_bufs[i].get(), info.total_size(), layout);
+        std::make_unique<OutputDesc>(info, curr_bufs[i].get(), info.total_size(), layout);
     }
 
     executor->execute(desc_inter);
+
+    if (model_index.value() + 1 != model_count)
+    {
+      // Backup output buffer to input buffer for next execution
+      prev_bufs.resize(output_size);
+      for (uint32_t i = 0; i < output_size; i++)
+        prev_bufs[i] = std::move(curr_bufs[i]);
+    }
   }
 }
 
