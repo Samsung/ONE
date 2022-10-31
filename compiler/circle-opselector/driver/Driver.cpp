@@ -181,7 +181,12 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
       if (std::find(nodes.begin(), nodes.end(), arg) != nodes.end())
         continue;
       auto circle_const = dynamic_cast<luci::CircleConst *>(arg);
-      if (circle_const == nullptr)
+      if (circle_const != nullptr)
+      {
+        auto clone = luci::clone_node(circle_const, graph.get());
+        ctx.emplace(circle_const, clone);
+      }
+      else
       {
         // circle input
         auto circle_input = graph->nodes()->create<luci::CircleInput>();
@@ -205,11 +210,6 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
         graph_input->shape(std::move(input_shape));
 
         circle_input->index(graph_input->index());
-      }
-      else
-      {
-        auto clone = luci::clone_node(circle_const, graph.get());
-        ctx.emplace(circle_const, clone);
       }
     }
   }
