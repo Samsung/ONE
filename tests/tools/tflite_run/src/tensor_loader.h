@@ -40,7 +40,6 @@ public:
   void loadDumpedTensors(const std::string &filename);
   void loadRawInputTensors(const std::string &filename);
   const nnfw::tflite::TensorView<float> &getOutput(int tensor_idx) const;
-  // size_t getNums() const { return _tensor_map.size(); }
 
 private:
   size_t loadInputTensorsFromRawData();
