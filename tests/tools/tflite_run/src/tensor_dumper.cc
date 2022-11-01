@@ -65,7 +65,7 @@ void TensorDumper::dump(const std::string &filename) const
 
   // Write number of tensors
   uint32_t num_tensors =
-    static_cast<uint32_t>(_input_tensors.size()) + static_cast<uint32_t>(_input_tensors.size());
+    static_cast<uint32_t>(_input_tensors.size()) + static_cast<uint32_t>(_output_tensors.size());
   file.write(reinterpret_cast<const char *>(&num_tensors), sizeof(num_tensors));
 
   // Write input tensor indices

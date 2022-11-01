@@ -66,10 +66,10 @@ public:
   /**
    * @brief Run two interpreter and return the output matching
    * @param[in] expected    Interpreter object of expected
-   * @param[in] obtainined  Interpreter object of obtained
+   * @param[in] obtained  Interpreter object of obtained
    * @return  @c true if two Interpreter results are same, otherwise @c false
    */
-  bool run(TfLiteInterpreter &expected, TfLiteInterpreter &obtainined) const;
+  bool run(TfLiteInterpreter &expected, TfLiteInterpreter &obtained) const;
   /**
    * @brief Compare two TensorView values and return the match result
    * @param[in] expected  TensorView object to read expected values

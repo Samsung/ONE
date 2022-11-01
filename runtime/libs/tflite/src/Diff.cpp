@@ -192,10 +192,10 @@ bool TfLiteInterpMatchApp::compareSingleTensorView<float>(
 
 #include <map>
 
-bool TfLiteInterpMatchApp::run(TfLiteInterpreter &expected, TfLiteInterpreter &obtainined) const
+bool TfLiteInterpMatchApp::run(TfLiteInterpreter &expected, TfLiteInterpreter &obtained) const
 {
   auto output_count = TfLiteInterpreterGetOutputTensorCount(&expected);
-  assert(output_count == TfLiteInterpreterGetOutputTensorCount(&obtainined));
+  assert(output_count == TfLiteInterpreterGetOutputTensorCount(&obtained));
 
   bool all_matched = true;
 
@@ -204,33 +204,33 @@ bool TfLiteInterpMatchApp::run(TfLiteInterpreter &expected, TfLiteInterpreter &o
   std::map<TfLiteType, Comparator> comparators;
 
   comparators[kTfLiteUInt8] = [this](int32_t id, const TfLiteTensor *expected_tensor,
-                                     const TfLiteTensor *obtainined_tensor) {
+                                     const TfLiteTensor *obtained_tensor) {
     const auto expected_view = nnfw::tflite::TensorView<uint8_t>::make(expected_tensor);
-    const auto obtained_view = nnfw::tflite::TensorView<uint8_t>::make(obtainined_tensor);
+    const auto obtained_view = nnfw::tflite::TensorView<uint8_t>::make(obtained_tensor);
 
     return compareSingleTensorView(expected_view, obtained_view, id);
   };
 
   comparators[kTfLiteInt32] = [this](int32_t id, const TfLiteTensor *expected_tensor,
-                                     const TfLiteTensor *obtainined_tensor) {
+                                     const TfLiteTensor *obtained_tensor) {
     const auto expected_view = nnfw::tflite::TensorView<int32_t>::make(expected_tensor);
-    const auto obtained_view = nnfw::tflite::TensorView<int32_t>::make(obtainined_tensor);
+    const auto obtained_view = nnfw::tflite::TensorView<int32_t>::make(obtained_tensor);
 
     return compareSingleTensorView(expected_view, obtained_view, id);
   };
 
   comparators[kTfLiteFloat32] = [this](int32_t id, const TfLiteTensor *expected_tensor,
-                                       const TfLiteTensor *obtainined_tensor) {
+                                       const TfLiteTensor *obtained_tensor) {
     const auto expected_view = nnfw::tflite::TensorView<float>::make(expected_tensor);
-    const auto obtained_view = nnfw::tflite::TensorView<float>::make(obtainined_tensor);
+    const auto obtained_view = nnfw::tflite::TensorView<float>::make(obtained_tensor);
 
     return compareSingleTensorView(expected_view, obtained_view, id);
   };
 
   comparators[kTfLiteBool] = [this](int32_t id, const TfLiteTensor *expected_tensor,
-                                    const TfLiteTensor *obtainined_tensor) {
+                                    const TfLiteTensor *obtained_tensor) {
     const auto expected_view = nnfw::tflite::TensorView<bool>::make(expected_tensor);
-    const auto obtained_view = nnfw::tflite::TensorView<bool>::make(obtainined_tensor);
+    const auto obtained_view = nnfw::tflite::TensorView<bool>::make(obtained_tensor);
 
     return compareSingleTensorView(expected_view, obtained_view, id);
   };
@@ -238,7 +238,7 @@ bool TfLiteInterpMatchApp::run(TfLiteInterpreter &expected, TfLiteInterpreter &o
   for (int32_t idx = 0; idx < output_count; idx++)
   {
     auto const expected_tensor = TfLiteInterpreterGetOutputTensor(&expected, idx);
-    auto const obtained_tensor = TfLiteInterpreterGetOutputTensor(&obtainined, idx);
+    auto const obtained_tensor = TfLiteInterpreterGetOutputTensor(&obtained, idx);
     auto const tensor_type = TfLiteTensorType(expected_tensor);
     assert(tensor_type == TfLiteTensorType(obtained_tensor));
 
