@@ -504,12 +504,251 @@ void UnidirectionalSequenceLSTM::check_input_tensor_dimensions(int n_input, int 
                                                                int n_cell, bool use_layer_norm,
                                                                bool is_integer)
 {
-  // TODO implement
-  (void)n_input;
-  (void)n_output;
-  (void)n_cell;
-  (void)use_layer_norm;
-  (void)is_integer;
+  // Making sure clipping parameters have valid values.
+  // == 0 means no clipping
+  //  > 0 means clipping
+  LUCI_INTERPRETER_CHECK(params().cell_clip >= 0);
+  LUCI_INTERPRETER_CHECK(params().proj_clip >= 0);
+
+  if (input_to_input_weights() != nullptr)
+  {
+    const Shape &input_to_input_weights_shape = input_to_input_weights()->shape();
+    LUCI_INTERPRETER_CHECK(input_to_input_weights_shape.num_dims() == 2);
+    LUCI_INTERPRETER_CHECK(input_to_input_weights_shape.dim(0) == n_cell);
+    LUCI_INTERPRETER_CHECK(input_to_input_weights_shape.dim(1) == n_input);
+  }
+
+  const Shape &input_to_forget_weights_shape = input_to_forget_weights()->shape();
+  LUCI_INTERPRETER_CHECK(input_to_forget_weights_shape.num_dims() == 2);
+  LUCI_INTERPRETER_CHECK(input_to_forget_weights_shape.dim(0) == n_cell);
+  LUCI_INTERPRETER_CHECK(input_to_forget_weights_shape.dim(1) == n_input);
+
+  const Shape &input_to_cell_weights_shape = input_to_cell_weights()->shape();
+  LUCI_INTERPRETER_CHECK(input_to_cell_weights_shape.num_dims() == 2);
+  LUCI_INTERPRETER_CHECK(input_to_cell_weights_shape.dim(0) == n_cell);
+  LUCI_INTERPRETER_CHECK(input_to_cell_weights_shape.dim(1) == n_input);
+
+  if (recurrent_to_input_weights() != nullptr)
+  {
+    const Shape &recurrent_to_input_weights_shape = recurrent_to_input_weights()->shape();
+    LUCI_INTERPRETER_CHECK(recurrent_to_input_weights_shape.num_dims() == 2);
+    LUCI_INTERPRETER_CHECK(recurrent_to_input_weights_shape.dim(0) == n_cell);
+    LUCI_INTERPRETER_CHECK(recurrent_to_input_weights_shape.dim(1) == n_output);
+  }
+
+  const Shape &recurrent_to_forget_weights_shape = recurrent_to_forget_weights()->shape();
+  LUCI_INTERPRETER_CHECK(recurrent_to_forget_weights_shape.num_dims() == 2);
+  LUCI_INTERPRETER_CHECK(recurrent_to_forget_weights_shape.dim(0) == n_cell);
+  LUCI_INTERPRETER_CHECK(recurrent_to_forget_weights_shape.dim(1) == n_output);
+
+  const Shape &recurrent_to_cell_weights_shape = recurrent_to_cell_weights()->shape();
+  LUCI_INTERPRETER_CHECK(recurrent_to_cell_weights_shape.num_dims() == 2);
+  LUCI_INTERPRETER_CHECK(recurrent_to_cell_weights_shape.dim(0) == n_cell);
+  LUCI_INTERPRETER_CHECK(recurrent_to_cell_weights_shape.dim(1) == n_output);
+
+  // We make sure the input-gate's parameters are either both present (regular
+  // LSTM) or not at all (CIFG-LSTM).
+  const bool cifg_weights_all_or_none =
+    ((input_to_input_weights() != nullptr) && (recurrent_to_input_weights() != nullptr)) ||
+    ((input_to_input_weights() == nullptr) && (recurrent_to_input_weights() == nullptr));
+  LUCI_INTERPRETER_CHECK(cifg_weights_all_or_none == true);
+
+  if (cell_to_input_weights() != nullptr)
+  {
+    const Shape &cell_to_input_weights_shape = cell_to_input_weights()->shape();
+    LUCI_INTERPRETER_CHECK(cell_to_input_weights_shape.num_dims() == 1);
+    LUCI_INTERPRETER_CHECK(cell_to_input_weights_shape.dim(0) == n_cell);
+    LUCI_INTERPRETER_CHECK(is_integer
+                             ? cell_to_input_weights()->element_type() == loco::DataType::S16
+                             : cell_to_input_weights()->element_type() ==
+                                 input_to_forget_weights()->element_type());
+  }
+
+  if (cell_to_forget_weights() != nullptr)
+  {
+    const Shape &cell_to_forget_weights_shape = cell_to_forget_weights()->shape();
+    LUCI_INTERPRETER_CHECK(cell_to_forget_weights_shape.num_dims() == 1);
+    LUCI_INTERPRETER_CHECK(cell_to_forget_weights_shape.dim(0) == n_cell);
+    LUCI_INTERPRETER_CHECK(is_integer
+                             ? cell_to_forget_weights()->element_type() == loco::DataType::S16
+                             : cell_to_forget_weights()->element_type() ==
+                                 input_to_forget_weights()->element_type());
+  }
+
+  if (cell_to_output_weights() != nullptr)
+  {
+    const Shape &cell_to_output_weights_shape = cell_to_output_weights()->shape();
+    LUCI_INTERPRETER_CHECK(cell_to_output_weights_shape.num_dims() == 1);
+    LUCI_INTERPRETER_CHECK(cell_to_output_weights_shape.dim(0) == n_cell);
+    LUCI_INTERPRETER_CHECK(is_integer
+                             ? cell_to_output_weights()->element_type() == loco::DataType::S16
+                             : cell_to_output_weights()->element_type() ==
+                                 input_to_forget_weights()->element_type());
+  }
+
+  // Making sure the peephole weights are there all or none.
+  const bool use_cifg = (input_to_input_weights() == nullptr);
+  const bool peephole_weights_all_or_none =
+    ((cell_to_input_weights() != nullptr || use_cifg) && (cell_to_forget_weights() != nullptr) &&
+     (cell_to_output_weights() != nullptr)) ||
+    ((cell_to_input_weights() == nullptr) && (cell_to_forget_weights() == nullptr) &&
+     (cell_to_output_weights() == nullptr));
+  LUCI_INTERPRETER_CHECK(peephole_weights_all_or_none == true);
+
+  // Make sure the input gate bias is present only when not a CIFG-LSTM.
+  if (use_cifg)
+  {
+    LUCI_INTERPRETER_CHECK(input_gate_bias() == nullptr);
+  }
+  else
+  {
+    const Shape &input_gate_bias_shape = input_gate_bias()->shape();
+    LUCI_INTERPRETER_CHECK(input_gate_bias_shape.num_dims() == 1);
+    LUCI_INTERPRETER_CHECK(input_gate_bias_shape.dim(0) == n_cell);
+    if (is_integer)
+    {
+      LUCI_INTERPRETER_CHECK(input_gate_bias()->element_type() == loco::DataType::S32);
+    }
+    else
+    {
+      LUCI_INTERPRETER_CHECK(input_gate_bias()->element_type() == loco::DataType::FLOAT32);
+    }
+  }
+
+  const Shape &forget_gate_bias_shape = forget_gate_bias()->shape();
+  LUCI_INTERPRETER_CHECK(forget_gate_bias_shape.num_dims() == 1);
+  LUCI_INTERPRETER_CHECK(forget_gate_bias_shape.dim(0) == n_cell);
+  if (is_integer)
+  {
+    LUCI_INTERPRETER_CHECK(forget_gate_bias()->element_type() == loco::DataType::S32);
+  }
+  else
+  {
+    LUCI_INTERPRETER_CHECK(forget_gate_bias()->element_type() == loco::DataType::FLOAT32);
+  }
+
+  const Shape &cell_gate_bias_shape = cell_gate_bias()->shape();
+  LUCI_INTERPRETER_CHECK(cell_gate_bias_shape.num_dims() == 1);
+  LUCI_INTERPRETER_CHECK(cell_gate_bias_shape.dim(0) == n_cell);
+  if (is_integer)
+  {
+    LUCI_INTERPRETER_CHECK(cell_gate_bias()->element_type() == loco::DataType::S32);
+  }
+  else
+  {
+    LUCI_INTERPRETER_CHECK(cell_gate_bias()->element_type() == loco::DataType::FLOAT32);
+  }
+
+  const Shape &output_gate_bias_shape = output_gate_bias()->shape();
+  LUCI_INTERPRETER_CHECK(output_gate_bias_shape.num_dims() == 1);
+  LUCI_INTERPRETER_CHECK(output_gate_bias_shape.dim(0) == n_cell);
+  if (is_integer)
+  {
+    LUCI_INTERPRETER_CHECK(output_gate_bias()->element_type() == loco::DataType::S32);
+  }
+  else
+  {
+    LUCI_INTERPRETER_CHECK(output_gate_bias()->element_type() == loco::DataType::FLOAT32);
+  }
+
+  if (projection_weights() != nullptr)
+  {
+    const Shape &projection_weights_shape = projection_weights()->shape();
+    LUCI_INTERPRETER_CHECK(projection_weights_shape.num_dims() == 2);
+    LUCI_INTERPRETER_CHECK(projection_weights_shape.dim(0) == n_output);
+    LUCI_INTERPRETER_CHECK(projection_weights_shape.dim(1) == n_cell);
+  }
+
+  if (projection_bias() != nullptr)
+  {
+    const Shape &projection_bias_shape = projection_bias()->shape();
+    LUCI_INTERPRETER_CHECK(projection_bias_shape.num_dims() == 1);
+    LUCI_INTERPRETER_CHECK(projection_bias_shape.dim(0) == n_output);
+    if (is_integer)
+    {
+      LUCI_INTERPRETER_CHECK(projection_bias()->element_type() == loco::DataType::S32);
+    }
+    else
+    {
+      LUCI_INTERPRETER_CHECK(projection_bias()->element_type() == loco::DataType::FLOAT32);
+    }
+  }
+
+  // Making sure the projection tensors are consistent:
+  // 1) If projection weight is not present, then projection bias should not be
+  // present.
+  // 2) If projection weight is present, then projection bias is optional.
+  // TODO(ghodrat): make sure this is correct.
+  const bool projecton_tensors_consistent =
+    ((projection_weights() != nullptr) || (projection_bias() == nullptr));
+  LUCI_INTERPRETER_CHECK(projecton_tensors_consistent == true);
+
+  if (use_layer_norm)
+  {
+    if (use_cifg)
+    {
+      LUCI_INTERPRETER_CHECK(input_layer_norm_coefficients() == nullptr);
+    }
+    else
+    {
+      LUCI_INTERPRETER_CHECK(input_layer_norm_coefficients() != nullptr)
+
+      const Shape &input_layer_norm_coefficients_shape = input_layer_norm_coefficients()->shape();
+      LUCI_INTERPRETER_CHECK(input_layer_norm_coefficients_shape.num_dims() == 1);
+      LUCI_INTERPRETER_CHECK(input_layer_norm_coefficients_shape.dim(0) == n_cell);
+      if (is_integer)
+      {
+        LUCI_INTERPRETER_CHECK(input_layer_norm_coefficients()->element_type() ==
+                               loco::DataType::S16);
+      }
+      else
+      {
+        LUCI_INTERPRETER_CHECK(input_layer_norm_coefficients()->element_type() ==
+                               loco::DataType::FLOAT32);
+      }
+    }
+
+    const Shape &forget_layer_norm_coefficients_shape = forget_layer_norm_coefficients()->shape();
+    LUCI_INTERPRETER_CHECK(forget_layer_norm_coefficients_shape.num_dims() == 1);
+    LUCI_INTERPRETER_CHECK(forget_layer_norm_coefficients_shape.dim(0) == n_cell);
+    if (is_integer)
+    {
+      LUCI_INTERPRETER_CHECK(forget_layer_norm_coefficients()->element_type() ==
+                             loco::DataType::S16);
+    }
+    else
+    {
+      LUCI_INTERPRETER_CHECK(forget_layer_norm_coefficients()->element_type() ==
+                             loco::DataType::FLOAT32);
+    }
+
+    const Shape &cell_layer_norm_coefficients_shape = cell_layer_norm_coefficients()->shape();
+    LUCI_INTERPRETER_CHECK(cell_layer_norm_coefficients_shape.num_dims() == 1);
+    LUCI_INTERPRETER_CHECK(cell_layer_norm_coefficients_shape.dim(0) == n_cell);
+    if (is_integer)
+    {
+      LUCI_INTERPRETER_CHECK(cell_layer_norm_coefficients()->element_type() == loco::DataType::S16);
+    }
+    else
+    {
+      LUCI_INTERPRETER_CHECK(cell_layer_norm_coefficients()->element_type() ==
+                             loco::DataType::FLOAT32);
+    }
+
+    const Shape &output_layer_norm_coefficients_shape = output_layer_norm_coefficients()->shape();
+    LUCI_INTERPRETER_CHECK(output_layer_norm_coefficients_shape.num_dims() == 1);
+    LUCI_INTERPRETER_CHECK(output_layer_norm_coefficients_shape.dim(0) == n_cell);
+    if (is_integer)
+    {
+      LUCI_INTERPRETER_CHECK(output_layer_norm_coefficients()->element_type() ==
+                             loco::DataType::S16);
+    }
+    else
+    {
+      LUCI_INTERPRETER_CHECK(output_layer_norm_coefficients()->element_type() ==
+                             loco::DataType::FLOAT32);
+    }
+  }
 }
 
 void UnidirectionalSequenceLSTM::configure()
