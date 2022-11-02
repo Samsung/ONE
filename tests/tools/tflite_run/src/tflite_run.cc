@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-#include "tensorflow/lite/kernels/register.h"
-#include "tensorflow/lite/model.h"
-
 #include "args.h"
 #include "tensor_dumper.h"
 #include "tensor_loader.h"
@@ -54,29 +51,10 @@ void print_max_idx(float *f, int size)
 
 static const char *default_backend_cand = "tflite_cpu";
 
-// Verifies whether the model is a flatbuffer file.
-class BMFlatBufferVerifier : public tflite::TfLiteVerifier
-{
-public:
-  bool Verify(const char *data, int length, tflite::ErrorReporter *reporter) override
-  {
-
-    flatbuffers::Verifier verifier(reinterpret_cast<const uint8_t *>(data), length);
-    if (!tflite::VerifyModelBuffer(verifier))
-    {
-      reporter->Report("The model is not a valid Flatbuffer file");
-      return false;
-    }
-    return true;
-  }
-};
-
 } // namespace
 
 int main(const int argc, char **argv)
 {
-  StderrReporter error_reporter;
-
   TFLiteRun::Args args(argc, argv);
 
   std::chrono::milliseconds t_model_load(0), t_prepare(0);
@@ -86,31 +64,12 @@ int main(const int argc, char **argv)
   benchmark::Phases phases(
     benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll(), args.getRunDelay()});
 
-  std::unique_ptr<FlatBufferModel> model;
-  std::unique_ptr<Interpreter> interpreter;
-  std::unique_ptr<tflite::TfLiteVerifier> verifier{new BMFlatBufferVerifier};
+  TfLiteModel *model = nullptr;
 
   try
   {
     phases.run("MODEL_LOAD", [&](const benchmark::Phase &, uint32_t) {
-      if (args.getModelValidate())
-      {
-        model = FlatBufferModel::VerifyAndBuildFromFile(args.getTFLiteFilename().c_str(),
-                                                        verifier.get(), &error_reporter);
-      }
-      else
-      {
-        model = FlatBufferModel::BuildFromFile(args.getTFLiteFilename().c_str(), &error_reporter);
-      }
-      if (model == nullptr)
-      {
-        throw std::runtime_error{"Cannot create model"};
-      }
-
-      tflite::ops::builtin::BuiltinOpResolver resolver;
-      InterpreterBuilder builder(*model, resolver);
-      TFLITE_ENSURE(builder(&interpreter))
-      interpreter->SetNumThreads(nnfw::misc::EnvVar("THREAD").asInt(1));
+      model = TfLiteModelCreateFromFile(args.getTFLiteFilename().c_str());
     });
   }
   catch (const std::exception &e)
@@ -119,8 +78,16 @@ int main(const int argc, char **argv)
     return 1;
   }
 
-  auto sess = std::make_shared<nnfw::tflite::InterpreterSession>(interpreter.get());
+  if (model == nullptr)
+  {
+    throw std::runtime_error{"Cannot create model"};
+  }
 
+  auto options = TfLiteInterpreterOptionsCreate();
+  TfLiteInterpreterOptionsSetNumThreads(options, nnfw::misc::EnvVar("THREAD").asInt(1));
+
+  TfLiteInterpreter *interpreter = TfLiteInterpreterCreate(model, options);
+  auto sess = std::make_shared<nnfw::tflite::InterpreterSession>(interpreter);
   try
   {
     phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) { sess->prepare(); });
@@ -133,27 +100,28 @@ int main(const int argc, char **argv)
 
   if (args.getInputShapes().size() != 0)
   {
-    const int dim_values = args.getInputShapes().size();
-    int offset = 0;
+    const auto dim_values = args.getInputShapes().size();
+    int32_t offset = 0;
 
-    for (const auto &id : interpreter->inputs())
+    auto const input_count = TfLiteInterpreterGetInputTensorCount(interpreter);
+    for (int32_t id = 0; id < input_count; id++)
     {
-      TfLiteTensor *tensor = interpreter->tensor(id);
+      TfLiteTensor *tensor = TfLiteInterpreterGetInputTensor(interpreter, id);
       std::vector<int32_t> new_dim;
-      new_dim.resize(tensor->dims->size);
+      new_dim.resize(TfLiteTensorNumDims(tensor));
 
-      for (uint32_t axis = 0; axis < tensor->dims->size; axis++, offset++)
+      for (int32_t axis = 0; axis < TfLiteTensorNumDims(tensor); axis++, offset++)
       {
         new_dim[axis] =
-          ((offset < dim_values) ? args.getInputShapes()[offset] : tensor->dims->data[axis]);
+          ((offset < dim_values) ? args.getInputShapes()[offset] : TfLiteTensorDim(tensor, axis));
       }
 
-      interpreter->ResizeInputTensor(id, new_dim);
+      TfLiteInterpreterResizeInputTensor(interpreter, id, new_dim.data(), new_dim.size());
 
       if (offset >= dim_values)
         break;
     }
-    interpreter->AllocateTensors();
+    TfLiteInterpreterAllocateTensors(interpreter);
   }
 
   TFLiteRun::TensorLoader tensor_loader(*interpreter);
@@ -164,20 +132,11 @@ int main(const int argc, char **argv)
   {
     if (!args.getInputFilename().empty())
     {
-      tensor_loader.loadRawTensors(args.getInputFilename(), interpreter->inputs());
+      tensor_loader.loadRawInputTensors(args.getInputFilename());
     }
     else
     {
       tensor_loader.loadDumpedTensors(args.getCompareFilename());
-    }
-
-    for (const auto &o : interpreter->inputs())
-    {
-      const auto &tensor_view = tensor_loader.get(o);
-      TfLiteTensor *tensor = interpreter->tensor(o);
-
-      memcpy(reinterpret_cast<void *>(tensor->data.f),
-             reinterpret_cast<const void *>(tensor_view._base), tensor->bytes);
     }
   }
   else
@@ -186,17 +145,18 @@ int main(const int argc, char **argv)
     nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
 
     RandomInputInitializer initializer{randgen};
-    initializer.run(*(interpreter.get()));
+    initializer.run(*interpreter);
   }
 
   TFLiteRun::TensorDumper tensor_dumper;
   // Must be called before `interpreter->Invoke()`
-  tensor_dumper.addTensors(*interpreter, interpreter->inputs());
+  tensor_dumper.addInputTensors(*interpreter);
 
   std::cout << "input tensor indices = [";
-  for (const auto &o : interpreter->inputs())
+  auto const input_count = TfLiteInterpreterGetInputTensorCount(interpreter);
+  for (int32_t idx = 0; idx < input_count; idx++)
   {
-    std::cout << o << ",";
+    std::cout << idx << ",";
   }
   std::cout << "]" << std::endl;
 
@@ -231,14 +191,15 @@ int main(const int argc, char **argv)
   sess->teardown();
 
   // Must be called after `interpreter->Invoke()`
-  tensor_dumper.addTensors(*interpreter, interpreter->outputs());
+  tensor_dumper.addOutputTensors(*interpreter);
 
   std::cout << "output tensor indices = [";
-  for (const auto &o : interpreter->outputs())
+  auto const output_count = TfLiteInterpreterGetOutputTensorCount(interpreter);
+  for (int32_t idx = 0; idx < output_count; idx++)
   {
-    std::cout << o << "(";
-
-    print_max_idx(interpreter->tensor(o)->data.f, interpreter->tensor(o)->bytes / sizeof(float));
+    auto tensor = TfLiteInterpreterGetOutputTensor(interpreter, idx);
+    print_max_idx(reinterpret_cast<float *>(TfLiteTensorData(tensor)),
+                  TfLiteTensorByteSize(tensor) / sizeof(float));
 
     std::cout << "),";
   }
@@ -302,12 +263,13 @@ int main(const int argc, char **argv)
     TfLiteInterpMatchApp app(comparator);
     bool res = true;
 
-    for (const auto &o : interpreter->outputs())
+    for (int32_t idx = 0; idx < output_count; idx++)
     {
-      auto expected = tensor_loader.get(o);
-      auto obtained = nnfw::tflite::TensorView<float>::make(*interpreter, o);
+      auto expected = tensor_loader.getOutput(idx);
+      auto const tensor = TfLiteInterpreterGetOutputTensor(interpreter, idx);
+      auto obtained = nnfw::tflite::TensorView<float>::make(tensor);
 
-      res = res && app.compareSingleTensorView(expected, obtained, o);
+      res = res && app.compareSingleTensorView(expected, obtained, idx);
     }
 
     if (!res)

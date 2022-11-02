@@ -18,6 +18,7 @@
 
 #include <assert.h>
 
+#include <cstring>
 #include <fstream>
 
 #include "misc/tensor/Shape.h"
@@ -25,7 +26,7 @@
 namespace TFLiteRun
 {
 
-TensorLoader::TensorLoader(tflite::Interpreter &interpreter)
+TensorLoader::TensorLoader(TfLiteInterpreter &interpreter)
   : _interpreter(interpreter), _raw_data(nullptr)
 {
 }
@@ -42,21 +43,20 @@ void TensorLoader::loadDumpedTensors(const std::string &filename)
 
   int tensor_indices_raw[num_tensors];
   file.read(reinterpret_cast<char *>(tensor_indices_raw), sizeof(tensor_indices_raw));
-  std::vector<int> tensor_indices(tensor_indices_raw, tensor_indices_raw + num_tensors);
 
   _raw_data = std::unique_ptr<float[]>(new float[file_size]);
   file.read(reinterpret_cast<char *>(_raw_data.get()), file_size);
   file.close();
 
-  size_t read_bytes = loadTensorsFromRawData(tensor_indices);
+  size_t read_bytes = loadInputTensorsFromRawData();
+  read_bytes += loadOutputTensorsFromRawData();
 
   // The file size and total output tensor size must match
   assert(file_size ==
          sizeof(num_tensors) + sizeof(tensor_indices_raw) + read_bytes * sizeof(float));
 }
 
-void TensorLoader::loadRawTensors(const std::string &filename,
-                                  const std::vector<int> &tensor_indices)
+void TensorLoader::loadRawInputTensors(const std::string &filename)
 {
   // TODO Handle file open/read error
   std::ifstream file(filename, std::ios::ate | std::ios::binary);
@@ -67,41 +67,74 @@ void TensorLoader::loadRawTensors(const std::string &filename,
   file.read(reinterpret_cast<char *>(_raw_data.get()), file_size);
   file.close();
 
-  size_t read_bytes = loadTensorsFromRawData(tensor_indices);
+  size_t read_bytes = loadInputTensorsFromRawData();
 
   // The file size and total output tensor size must match
   assert(file_size == read_bytes * sizeof(float));
 }
 
-size_t TensorLoader::loadTensorsFromRawData(const std::vector<int> &tensor_indices)
+size_t TensorLoader::loadInputTensorsFromRawData()
 {
   size_t offset = 0;
-  for (const auto &o : tensor_indices)
+  auto const input_count = TfLiteInterpreterGetInputTensorCount(&_interpreter);
+  for (auto idx = 0; idx < input_count; idx++)
   {
-    const TfLiteTensor *tensor = _interpreter.tensor(o);
+    const TfLiteTensor *tensor = TfLiteInterpreterGetInputTensor(&_interpreter, idx);
 
     // Convert tensor shape to `Shape` from `tensor->dims`
-    nnfw::misc::tensor::Shape shape(static_cast<size_t>(tensor->dims->size));
-    for (int d = 0; d < tensor->dims->size; d++)
+    nnfw::misc::tensor::Shape shape(TfLiteTensorNumDims(tensor));
+    for (int32_t d = 0; d < TfLiteTensorNumDims(tensor); d++)
     {
-      shape.dim(d) = tensor->dims->data[d];
+      shape.dim(d) = TfLiteTensorDim(tensor, d);
     }
 
     float *base = _raw_data.get() + offset;
 
-    assert(tensor->bytes % sizeof(float) == 0);
-    offset += (tensor->bytes / sizeof(float));
+    assert(TfLiteTensorByteSize(tensor) % sizeof(float) == 0);
+    offset += (TfLiteTensorByteSize(tensor) / sizeof(float));
 
-    _tensor_map.insert(std::make_pair(o, nnfw::tflite::TensorView<float>(shape, base)));
+    _input_tensor_map.emplace(idx, nnfw::tflite::TensorView<float>(shape, base));
+
+    memcpy(TfLiteTensorData(tensor), reinterpret_cast<const void *>(base),
+           TfLiteTensorByteSize(tensor));
   }
 
   return offset;
 }
 
-const nnfw::tflite::TensorView<float> &TensorLoader::get(int tensor_idx) const
+size_t TensorLoader::loadOutputTensorsFromRawData()
 {
-  auto found = _tensor_map.find(tensor_idx);
-  assert(found != _tensor_map.end());
+  size_t offset = 0;
+  auto const output_count = TfLiteInterpreterGetOutputTensorCount(&_interpreter);
+  for (auto idx = 0; idx < output_count; idx++)
+  {
+    const TfLiteTensor *tensor = TfLiteInterpreterGetOutputTensor(&_interpreter, idx);
+
+    // Convert tensor shape to `Shape` from `tensor->dims`
+    nnfw::misc::tensor::Shape shape(TfLiteTensorNumDims(tensor));
+    for (int32_t d = 0; d < TfLiteTensorNumDims(tensor); d++)
+    {
+      shape.dim(d) = TfLiteTensorDim(tensor, d);
+    }
+
+    float *base = _raw_data.get() + offset;
+
+    assert(TfLiteTensorByteSize(tensor) % sizeof(float) == 0);
+    offset += (TfLiteTensorByteSize(tensor) / sizeof(float));
+
+    _output_tensor_map.emplace(idx, nnfw::tflite::TensorView<float>(shape, base));
+
+    memcpy(TfLiteTensorData(tensor), reinterpret_cast<const void *>(base),
+           TfLiteTensorByteSize(tensor));
+  }
+
+  return offset;
+}
+
+const nnfw::tflite::TensorView<float> &TensorLoader::getOutput(int tensor_idx) const
+{
+  auto found = _output_tensor_map.find(tensor_idx);
+  assert(found != _output_tensor_map.end());
   return found->second;
 }
 

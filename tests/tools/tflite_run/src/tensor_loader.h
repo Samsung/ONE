@@ -17,12 +17,13 @@
 #ifndef __TFLITE_RUN_TENSOR_LOADER_H__
 #define __TFLITE_RUN_TENSOR_LOADER_H__
 
+#include "tflite/TensorView.h"
+
 #include <sys/mman.h>
 
+#include <memory>
 #include <string>
 #include <unordered_map>
-
-#include "tflite/TensorView.h"
 
 namespace tflite
 {
@@ -35,17 +36,18 @@ namespace TFLiteRun
 class TensorLoader
 {
 public:
-  TensorLoader(tflite::Interpreter &interpreter);
+  TensorLoader(TfLiteInterpreter &interpreter);
   void loadDumpedTensors(const std::string &filename);
-  void loadRawTensors(const std::string &filename, const std::vector<int> &tensor_indices);
-  const nnfw::tflite::TensorView<float> &get(int tensor_idx) const;
-  size_t getNums() const { return _tensor_map.size(); }
+  void loadRawInputTensors(const std::string &filename);
+  const nnfw::tflite::TensorView<float> &getOutput(int tensor_idx) const;
 
 private:
-  size_t loadTensorsFromRawData(const std::vector<int> &tensor_indices);
-  tflite::Interpreter &_interpreter;
+  size_t loadInputTensorsFromRawData();
+  size_t loadOutputTensorsFromRawData();
+  TfLiteInterpreter &_interpreter;
   std::unique_ptr<float[]> _raw_data;
-  std::unordered_map<int, nnfw::tflite::TensorView<float>> _tensor_map;
+  std::unordered_map<int, nnfw::tflite::TensorView<float>> _input_tensor_map;
+  std::unordered_map<int, nnfw::tflite::TensorView<float>> _output_tensor_map;
 };
 
 } // end of namespace TFLiteRun
