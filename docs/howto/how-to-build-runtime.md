@@ -1,6 +1,6 @@
 # How to Build Runtime
 
-This document is based on the system where Ubuntu Desktop Linux 18.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.
+This document is based on the system where Ubuntu Desktop Linux 20.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.
 
 ## Build requirements
 
@@ -8,11 +8,13 @@ If you are going to build this project, the following modules must be installed 
 
 - CMake
 - Boost C++ libraries
+- HDF5 C++ libraries
+- Gnome core C libraries 
 
 In the Ubuntu, you can easily install it with the following command.
 
 ```
-$ sudo apt-get install cmake libboost-all-dev
+$ sudo apt-get install cmake libboost-all-dev libhdf5-dev libglib2.0-dev
 ```
 
 If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in https://github.com/Samsung/ONE/blob/master/infra/docker/bionic/Dockerfile.
@@ -185,37 +187,20 @@ inception_v3.tflite
 The result of running the inception_v3 model using runtime is as follows. Please consider that this is a test that simply checks execution latency without considering the accuracy of the model.
 
 ```
-$ USE_NNAPI=1 ./Product/out/bin/tflite_run ./inception_v3.tflite
-nnapi function 'ANeuralNetworksModel_create' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_addOperand' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_setOperandValue' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_addOperation' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_identifyInputsAndOutputs' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_finish' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksCompilation_create' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksCompilation_finish' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
+$ USE_NNAPI=1 ./Product/out/bin/tflite_run ./inception_v3.tflite 
 input tensor indices = [317,]
-nnapi function 'ANeuralNetworksExecution_create' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksExecution_setInput' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksExecution_setOutput' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksExecution_startCompute' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksEvent_wait' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksEvent_free' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksExecution_free' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-output tensor indices = [316(max:905),]
+output tensor indices = [316(max:490),]
 ===================================
-MODEL_LOAD   takes 1.108 ms
-PREPARE      takes 0.190 ms
-EXECUTE      takes 183.895 ms
-- MEAN     :  183.895 ms
-- MAX      :  183.895 ms
-- MIN      :  183.895 ms
-- GEOMEAN  :  183.895 ms
+MODEL_LOAD   takes 2.010 ms
+PREPARE      takes 0.350 ms
+EXECUTE      takes 345.542 ms
+- MEAN     :  345.542 ms
+- MAX      :  345.542 ms
+- MIN      :  345.542 ms
+- GEOMEAN  :  345.542 ms
 ===================================
-nnapi function 'ANeuralNetworksCompilation_free' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_free' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
 ```
-Here, `USE_NNAPI=1` means that **ONE** runtime is used for model inference. If omitted, the model will be executed using Tensorflow lite, the basic framework for verification. From the previous build result, you can see that it is the path to the directory where `libneuralnetworks.so` and `libonert_core.so` are located.
+Here, `USE_NNAPI=1` means that **ONE** runtime is used for model inference. If omitted, the model will be executed using Tensorflow lite, the basic framework for verification. 
 
 If you come here without any problems, you have all of the basic environments for runtime development.
 
