@@ -10,7 +10,7 @@ logistic
 max_pool_2d
 mean
 reduce_max
-reduce_sum/float
+reduce_sum
 reshape/reshape1
 select
 softmax

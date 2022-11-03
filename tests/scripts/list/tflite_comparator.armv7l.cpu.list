@@ -26,7 +26,7 @@ not_equal
 one_hot
 pack
 reduce_max
-reduce_sum/float
+reduce_sum
 reshape/reshape1
 rsqrt
 select
