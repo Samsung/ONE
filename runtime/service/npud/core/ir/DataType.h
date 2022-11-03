@@ -28,19 +28,18 @@ namespace ir
 
 enum class DataType
 {
-  FLOAT32 = 0,
-  INT32 = 1,
-  UINT32 = 2,
-  QUANT_UINT8_ASYMM = 3,
-  BOOL8 = 4,
-  UINT8 = 5,
-  QUANT_INT8_SYMM = 6,
-  FLOAT16 = 7,
-  INT64 = 8,
-  QUANT_INT8_ASYMM = 9,
-  QUANT_INT16_ASYMM = 10,
-  QUANT_INT8_SYMM_PER_CHANNEL = 11,
-  QUANT_INT16_SYMM = 12,
+  INT8 = 0,
+  UINT8,
+  QUANT_UINT8_ASYMM,
+  INT16,
+  UINT16,
+  QUANT_INT16_SYMM,
+  INT32,
+  UINT32,
+  FLOAT32,
+  INT64,
+  UINT64,
+  FLOAT64,
 };
 
 size_t sizeOfDataType(DataType data_type);

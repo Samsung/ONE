@@ -30,8 +30,7 @@ namespace npud
 namespace core
 {
 
-/* Backend supports up to 16 buffers. */
-#define NPU_TENSOR_CARDINALITY_MAX (16)
+#define NPU_TENSOR_MAX (16)
 
 /**
  * @brief Npu model ID.
@@ -50,10 +49,15 @@ using RequestID = uint32_t;
  *
  */
 using GenericBuffer = void *;
+
+/**
+ * @brief Npu generic buffer array.
+ *
+ */
 struct GenericBuffers
 {
   uint32_t numBuffers;
-  GenericBuffer buffers[NPU_TENSOR_CARDINALITY_MAX];
+  GenericBuffer buffers[NPU_TENSOR_MAX];
 };
 
 /**
@@ -74,13 +78,13 @@ struct TensorDataInfo
 };
 
 /**
- * @brief Npu tensor data info arrays.
+ * @brief Npu tensor data info array.
  *
  */
 struct TensorDataInfos
 {
   uint32_t numInfos;
-  TensorDataInfo infos[NPU_TENSOR_CARDINALITY_MAX];
+  TensorDataInfo infos[NPU_TENSOR_MAX];
 };
 
 /**
