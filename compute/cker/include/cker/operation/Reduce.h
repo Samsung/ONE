@@ -312,12 +312,12 @@ public:
     }
 
     // Calculate mean by dividing output_data by num of aggregated element.
-    U num_elements_in_axis = 1;
+    size_t num_elements_in_axis = 1;
     for (int idx = 0; idx < num_resolved_axis; ++idx)
     {
       size_t current = static_cast<size_t>(input_shape.Dims(resolved_axis_data()[idx]));
       // Overflow prevention.
-      if (current > static_cast<size_t>(std::numeric_limits<U>::max() / num_elements_in_axis))
+      if (current > static_cast<size_t>(std::numeric_limits<size_t>::max() / num_elements_in_axis))
       {
         return false;
       }
@@ -330,7 +330,7 @@ public:
       if (compute_sum)
       {
         // TODO(b/116341117): Eliminate float and do this completely in 8bit.
-        const float bias = -input_zero_point * scale * num_elements_in_axis + 0.5f;
+        const float bias = -input_zero_point * scale * num_elements_in_axis;
         for (size_t idx = 0; idx < num_outputs; ++idx)
         {
           const U value =
@@ -340,7 +340,7 @@ public:
       }
       else
       {
-        const float bias = -input_zero_point * scale + 0.5f;
+        const float bias = -input_zero_point * scale;
         for (size_t idx = 0; idx < num_outputs; ++idx)
         {
           float float_mean =
