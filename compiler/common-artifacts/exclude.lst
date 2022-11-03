@@ -5,7 +5,6 @@
 
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
-optimize(UnidirectionalSequenceLSTM_001) # This recipe contains is_variable Tensor
 
 ## CircleRecipes
 
@@ -137,7 +136,6 @@ tcgenerate(Tile_U8_000)
 tcgenerate(TopKV2_000)
 tcgenerate(TopKV2_001)
 tcgenerate(UnidirectionalSequenceLSTM_000) # runtime and luci-interpreter doesn't support UnidirectionalSequenceLSTM op yet
-tcgenerate(UnidirectionalSequenceLSTM_001) # runtime and luci-interpreter doesn't support UnidirectionalSequenceLSTM op yet
 tcgenerate(Unique_000)
 tcgenerate(Unique_001)
 tcgenerate(Unique_002)
