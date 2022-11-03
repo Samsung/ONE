@@ -26,6 +26,11 @@ trap_err_onexit()
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
+  # for debug build test
+  if grep -1 "std::runtime_error" "${filename}.log"; then
+    echo "${filename_ext} SUCCESS"
+    exit 0
+  fi
 
   echo "${filename_ext} FAILED"
   exit 255
