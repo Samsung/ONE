@@ -135,7 +135,7 @@ tcgenerate(Tile_000)
 tcgenerate(Tile_U8_000)
 tcgenerate(TopKV2_000)
 tcgenerate(TopKV2_001)
-tcgenerate(UnidirectionalSequenceLSTM_000) # runtime and luci-interpreter doesn't support UnidirectionalSequenceLSTM op yet
+tcgenerate(UnidirectionalSequenceLSTM_000) # This mode is just for Op creation, cannot run
 tcgenerate(Unique_000)
 tcgenerate(Unique_001)
 tcgenerate(Unique_002)
