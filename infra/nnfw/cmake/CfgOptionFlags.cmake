@@ -34,7 +34,6 @@ option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" ON)
 #
 # Default build configuration for contrib
 #
-option(BUILD_ANDROID_TFLITE "Enable android support for TensorFlow Lite" OFF)
 option(BUILD_ANDROID_BENCHMARK_APP "Enable Android Benchmark App" OFF)
 option(BUILD_BENCHMARK_ACL "Build ARM Compute Library Benchmarks" OFF)
 option(BUILD_DETECTION_APP "Build detection example app" OFF)
