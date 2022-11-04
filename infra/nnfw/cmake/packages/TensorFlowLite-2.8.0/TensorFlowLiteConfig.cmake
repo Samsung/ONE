@@ -1,3 +1,9 @@
+# NOTE This line prevents multiple definitions of tensorflow-lite target
+if(TARGET tensorflow-lite-2.8.0)
+  set(TensorFlowLite_FOUND TRUE)
+  return()
+endif(TARGET tensorflow-lite-2.8.0)
+
 if(BUILD_TENSORFLOW_LITE)
   macro(return_unless VAR)
   if(NOT ${VAR})
