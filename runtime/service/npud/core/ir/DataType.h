@@ -42,8 +42,6 @@ enum class DataType
   FLOAT64,
 };
 
-size_t sizeOfDataType(DataType data_type);
-
 } // namespace ir
 } // namespace core
 } // namespace npud

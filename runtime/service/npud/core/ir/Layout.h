@@ -35,37 +35,8 @@ enum class Layout
   NCHW
 };
 
-inline std::string to_string(Layout layout)
-{
-  switch (layout)
-  {
-    case Layout::NHWC:
-      return std::string{"NHWC"};
-    case Layout::NCHW:
-      return std::string{"NCHW"};
-    case Layout::UNKNOWN:
-      return std::string{"UNKNOWN"};
-    default:
-      throw std::runtime_error("WRONG LAYOUT");
-  }
-}
-
 } // namespace ir
 } // namespace core
 } // namespace npud
-
-namespace std
-{
-
-template <> struct hash<npud::core::ir::Layout>
-{
-  size_t operator()(npud::core::ir::Layout value) const noexcept
-  {
-    using type = typename std::underlying_type<npud::core::ir::Layout>::type;
-    return hash<type>()(static_cast<type>(value));
-  }
-};
-
-} // namespace std
 
 #endif // __ONE_SERVICE_NPUD_CORE_IR_LAYOUT_H__
