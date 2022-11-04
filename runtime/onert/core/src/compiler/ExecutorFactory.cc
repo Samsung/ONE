@@ -25,6 +25,7 @@
 #include "../exec/ExecTime.h"
 #include "../exec/ExecutionObservers.h"
 #include "../exec/LinearExecutor.h"
+#include "../exec/MinMaxRecorder.h"
 #include "../exec/ParallelExecutor.h"
 #include "../ir/OperationCloner.h"
 
@@ -432,6 +433,11 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
 
   auto code_map = builder.releaseCodeMap();
 
+  auto mmr = options.minmax_filepath.empty()
+               ? nullptr
+               : std::make_unique<exec::MinMaxRecorder>(options.minmax_filepath,
+                                                        lowered_graph->graph(), backend_contexts);
+
   auto exec = new exec::LinearExecutor{std::move(lowered_graph),
                                        std::move(backend_contexts),
                                        tensor_regs,
@@ -445,6 +451,8 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
       std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph(), tracing_ctx);
     exec->addObserver(std::move(ctp));
   }
+  if (mmr)
+    exec->addObserver(std::move(mmr));
 
   return exec;
 }
