@@ -1,4 +1,9 @@
 #[[ Generate common python virtual enviornment ]]
+# NOTE find_package try to use at least python3.8 as follows depending on platform version
+#   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
+#   Ubuntu20.04; default python3.8
+#   Ubuntu22.04; default python3.10
+#   refer https://github.com/Samsung/ONE/issues/9962
 find_package(PythonInterp 3.8 QUIET)
 find_package(PythonLibs 3.8 QUIET)
 
