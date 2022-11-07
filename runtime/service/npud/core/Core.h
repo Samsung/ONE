@@ -14,50 +14,35 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_SERVER_H__
-#define __ONE_SERVICE_NPUD_CORE_SERVER_H__
+#ifndef __ONE_SERVICE_NPUD_CORE_CORE_H__
+#define __ONE_SERVICE_NPUD_CORE_CORE_H__
 
-#include "Signal.h"
-#include "Core.h"
-#include "DBus.h"
-
-#include <glib.h>
-#include <memory>
-#include <atomic>
+#include <vector>
+#include <string>
 
 namespace npud
 {
 namespace core
 {
 
-class Server
+// TODO Define error status
+
+class Core
 {
 public:
-  void run(void);
-  void stop(void);
+  Core() noexcept = default;
+  ~Core() noexcept = default;
 
-  bool isRunning() { return _isRunning.load(); }
+  Core(const Core &) = delete;
+  Core &operator=(const Core &) = delete;
 
-  static Server &instance(void)
-  {
-    static Server server;
-    return server;
-  }
+  void init();
+  void deinit();
 
-  static std::shared_ptr<Core> &core(void) { return instance()._core; }
-
-private:
-  Server() noexcept;
-
-  static std::atomic_bool _isRunning;
-
-  std::unique_ptr<GMainLoop, void (*)(GMainLoop *)> _mainloop;
-  std::unique_ptr<Signal> _signal;
-  std::shared_ptr<Core> _core;
-  std::unique_ptr<DBus> _dbus;
+  int getAvailableDeviceList(std::vector<std::string> &list);
 };
 
 } // namespace core
 } // namespace npud
 
-#endif // __ONE_SERVICE_NPUD_CORE_SERVER_H__
+#endif // __ONE_SERVICE_NPUD_CORE_CORE_H__
