@@ -26,6 +26,7 @@ target_link_libraries(circle_execution_plan luci_import)
 target_link_libraries(circle_execution_plan luci_export)
 target_link_libraries(circle_execution_plan luci_plan)
 target_link_libraries(circle_execution_plan arser)
+target_link_libraries(circle_execution_plan luci_log)
 
 target_include_directories(circle_execution_plan PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/pal")
 install(TARGETS circle_execution_plan DESTINATION bin)
