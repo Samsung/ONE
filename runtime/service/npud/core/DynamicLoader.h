@@ -14,50 +14,41 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_SERVER_H__
-#define __ONE_SERVICE_NPUD_CORE_SERVER_H__
+#ifndef __ONE_SERVICE_NPUD_CORE_DYNAMIC_LOADER_H__
+#define __ONE_SERVICE_NPUD_CORE_DYNAMIC_LOADER_H__
 
-#include "Signal.h"
-#include "Core.h"
-#include "DBus.h"
+#include "Backend.h"
 
-#include <glib.h>
+#include <dlfcn.h>
+#include <string>
 #include <memory>
-#include <atomic>
 
 namespace npud
 {
 namespace core
 {
 
-class Server
+using DLHandle = void *;
+
+class DynamicLoader
 {
 public:
-  void run(void);
-  void stop(void);
+  DynamicLoader(const char *file, int flags = RTLD_LAZY);
+  ~DynamicLoader();
 
-  bool isRunning() { return _isRunning.load(); }
+  DynamicLoader(const DynamicLoader &) = delete;
 
-  static Server &instance(void)
-  {
-    static Server server;
-    return server;
-  }
-
-  static std::shared_ptr<Core> &core(void) { return instance()._core; }
+  std::shared_ptr<Backend> getInstance();
 
 private:
-  Server() noexcept;
-
-  static std::atomic_bool _isRunning;
-
-  std::unique_ptr<Signal> _signal;
-  std::unique_ptr<GMainLoop, void (*)(GMainLoop *)> _mainloop;
-  std::shared_ptr<Core> _core;
-  std::unique_ptr<DBus> _dbus;
+  DLHandle _handle;
+  std::string _filepath;
+  std::string _allocSymbol;
+  std::string _deallocSymbol;
+  std::shared_ptr<Backend> _backend;
 };
 
 } // namespace core
 } // namespace npud
 
-#endif // __ONE_SERVICE_NPUD_CORE_SERVER_H__
+#endif // __ONE_SERVICE_NPUD_CORE_DYNAMIC_LOADER_H__

@@ -44,6 +44,20 @@ public:
 
   static gboolean on_handle_device_get_available_list(NpudCore *object,
                                                       GDBusMethodInvocation *invocation);
+  static gboolean on_handle_context_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                           gint arg_device_id, gint arg_priority);
+  static gboolean on_handle_context_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                            guint64 arg_ctx);
+  static gboolean on_handle_network_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                           guint64 arg_ctx, const gchar *arg_binary_path);
+  static gboolean on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                            guint64 arg_ctx, guint arg_nw_handle);
+  static gboolean on_handle_request_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                           guint64 arg_ctx, guint arg_nw_handle);
+  static gboolean on_handle_request_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                            guint64 arg_ctx, guint arg_rq_handle);
+  static gboolean on_handle_execute_run(NpudCore *object, GDBusMethodInvocation *invocation,
+                                        guint64 arg_ctx, guint arg_nw_handle);
 
 private:
   guint _gdbus_id;

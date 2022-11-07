@@ -98,6 +98,7 @@ enum NpuStatus
   NPU_STATUS_ERROR_NOT_SUPPORTED,
   NPU_STATUS_ERROR_INVALID_ARGUMENT,
   NPU_STATUS_ERROR_INVALID_MODEL,
+  NPU_STATUS_ERROR_INVALID_DATA,
 };
 
 /**
@@ -122,6 +123,11 @@ struct NpuRequestInfo
 {
   RequestID id;
   ModelID modelId;
+  InputBuffers *inBufs;
+  TensorDataInfos *inInfos;
+  OutputBuffers *outBufs;
+  TensorDataInfos *outInfos;
+  NpuRequestInfo(RequestID rid, ModelID mid): id(rid), modelId(mid) {}
 };
 
 /**

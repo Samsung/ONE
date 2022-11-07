@@ -35,4 +35,5 @@ target_link_libraries(npud_dbus PRIVATE ${GIO2.0_LIBRARIES})
 target_link_libraries(npud_dbus PRIVATE ${GIO_UNIX_2.0_LIBRARIES})
 
 add_subdirectory(core)
+add_subdirectory(backend)
 add_subdirectory(tests)
