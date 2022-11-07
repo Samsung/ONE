@@ -21,6 +21,8 @@ namespace npud
 namespace core
 {
 
+Core::Core() noexcept : _devManager(std::make_unique<DevManager>()) {}
+
 void Core::init()
 {
   // TODO Implement details
