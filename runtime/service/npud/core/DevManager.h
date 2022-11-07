@@ -54,8 +54,8 @@ public:
   int createRequest(NpuContext *npuContext, ModelID modelId, RequestID *requestId);
   int destroyRequest(NpuContext *npuContext, RequestID requestId);
   int setRequestData(NpuContext *npuContext, RequestID requestId, InputBuffers *inputBufs,
-                           TensorDataInfos *inputInfos, OutputBuffers *outputBufs,
-                           TensorDataInfos *outputInfos);
+                     TensorDataInfos *inputInfos, OutputBuffers *outputBufs,
+                     TensorDataInfos *outputInfos);
   int submitRequest(NpuContext *npuContext, RequestID requestId);
 
 private:

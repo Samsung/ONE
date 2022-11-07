@@ -127,7 +127,7 @@ struct NpuRequestInfo
   TensorDataInfos *inInfos;
   OutputBuffers *outBufs;
   TensorDataInfos *outInfos;
-  NpuRequestInfo(RequestID rid, ModelID mid): id(rid), modelId(mid) {}
+  NpuRequestInfo(RequestID rid, ModelID mid) : id(rid), modelId(mid) {}
 };
 
 /**

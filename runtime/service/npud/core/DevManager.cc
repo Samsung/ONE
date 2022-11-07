@@ -92,10 +92,7 @@ void DevManager::releaseModules(void)
   }
 }
 
-std::shared_ptr<Backend> DevManager::getBackend()
-{
-  return _dev->loader->getInstance();
-}
+std::shared_ptr<Backend> DevManager::getBackend() { return _dev->loader->getInstance(); }
 
 int DevManager::createContext(int deviceId, int priority, NpuContext **npuContext)
 {
@@ -129,10 +126,11 @@ int DevManager::destroyRequest(NpuContext *npuContext, RequestID requestId)
 }
 
 int DevManager::setRequestData(NpuContext *npuContext, RequestID requestId, InputBuffers *inputBufs,
-                           TensorDataInfos *inputInfos, OutputBuffers *outputBufs,
-                           TensorDataInfos *outputInfos)
+                               TensorDataInfos *inputInfos, OutputBuffers *outputBufs,
+                               TensorDataInfos *outputInfos)
 {
-  return getBackend()->setRequestData(npuContext, requestId, inputBufs, inputInfos, outputBufs, outputInfos);
+  return getBackend()->setRequestData(npuContext, requestId, inputBufs, inputInfos, outputBufs,
+                                      outputInfos);
 }
 
 int DevManager::submitRequest(NpuContext *npuContext, RequestID requestId)

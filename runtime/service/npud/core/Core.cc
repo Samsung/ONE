@@ -28,15 +28,9 @@ Core::Core() noexcept
 {
 }
 
-void Core::init()
-{
-  _devManager->loadModules();
-}
+void Core::init() { _devManager->loadModules(); }
 
-void Core::deinit()
-{
-  _devManager->releaseModules();
-}
+void Core::deinit() { _devManager->releaseModules(); }
 
 int Core::createContext(int deviceId, int priority, ContextID *contextId)
 {
