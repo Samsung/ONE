@@ -29,30 +29,17 @@ namespace core
 
 #define DEFAULT_DEVICE_PATH "/usr/lib/npud/devices"
 
-DevManager::DevManager() : _devs{}, _defaultId(0)
+DevManager::DevManager()
 {
-  VERBOSE(DevManager) << "Constructor" << std::endl;
   const auto env = util::getConfigString(util::config::DEVICE_MODULE_PATH);
   _module_dir = std::move(env);
 }
-
-DevManager::~DevManager() { VERBOSE(DevManager) << "Destructor" << std::endl; }
 
 void DevManager::loadModules(void)
 {
   VERBOSE(DevManager) << "load modules from " << _module_dir << std::endl;
 
-  // TODO Control if it exceeds the uint64_t range.
-  //      Solution 1. Use dev address. (No duplicated address)
-  // The _defaultId is initialized to 0.
-  // The _devInstance must start at 1 to distinguish whether _defaultID is
-  // an initial value or not.
-  static uint64_t _devInstance = 1;
-
-  if (_devs.size() > 0)
-  {
-    _devs.clear();
-  }
+  releaseModules();
 
   DIR *dir;
   struct dirent *entry;
@@ -87,63 +74,27 @@ void DevManager::loadModules(void)
     }
 
     std::unique_ptr<Device> dev = std::make_unique<Device>();
-    dev->devId = _devInstance++;
     dev->modulePath = std::move(modulePath);
     dev->loader = std::unique_ptr<DynamicLoader>(loader);
 
-    // Note The first loaded backend becomes the default backend.
-    if (!_defaultId)
-    {
-      _defaultId = dev->devId;
-      VERBOSE(DevManager) << "_defaultId: " << _defaultId << std::endl;
-    }
-
-    _devs.emplace_back(std::move(dev));
+    _dev = std::move(dev);
+    break;
   }
 
   closedir(dir);
-
-  // Test
-  this->listModules();
-}
-
-void DevManager::listModules(void)
-{
-  for (auto &dev : _devs)
-  {
-    VERBOSE(DevManager) << "==========================" << std::endl;
-    VERBOSE(DevManager) << "devId: " << dev->devId << std::endl;
-    VERBOSE(DevManager) << "modulePath: " << dev->modulePath << std::endl;
-  }
-  VERBOSE(DevManager) << "==========================" << std::endl;
 }
 
 void DevManager::releaseModules(void)
 {
-  for (auto &dev : _devs)
+  if (_dev)
   {
-    dev->loader.reset();
+    _dev.reset();
   }
-  if (_devs.size() > 0)
-  {
-    _devs.clear();
-  }
-}
-
-Device *DevManager::getDevice(DevID id)
-{
-  auto iter = std::find_if(_devs.begin(), _devs.end(),
-                           [&](std::unique_ptr<Device> &d) { return d->devId == id; });
-  if (iter == _devs.end())
-  {
-    throw std::runtime_error("DevID is not valid.");
-  }
-  return iter->get();
 }
 
 std::shared_ptr<Backend> DevManager::getBackend()
 {
-  return getDevice(_defaultId)->loader->getInstance();
+  return _dev->loader->getInstance();
 }
 
 int DevManager::createContext(int deviceId, int priority, NpuContext **npuContext)

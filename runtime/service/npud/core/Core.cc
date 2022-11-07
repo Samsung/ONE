@@ -26,14 +26,17 @@ namespace core
 Core::Core() noexcept
   : _devManager(std::make_unique<DevManager>()), _contextManager(std::make_unique<ContextManager>())
 {
-  VERBOSE(Core) << "Constructor" << std::endl;
 }
 
-Core::~Core() noexcept { VERBOSE(Core) << "Destructor" << std::endl; }
+void Core::init()
+{
+  _devManager->loadModules();
+}
 
-void Core::init() { _devManager->loadModules(); }
-
-void Core::deinit() { _devManager->releaseModules(); }
+void Core::deinit()
+{
+  _devManager->releaseModules();
+}
 
 int Core::createContext(int deviceId, int priority, ContextID *contextId)
 {

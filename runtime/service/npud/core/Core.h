@@ -33,7 +33,7 @@ class Core
 {
 public:
   Core() noexcept;
-  ~Core() noexcept;
+  ~Core() noexcept = default;
 
   Core(const Core &) = delete;
   Core &operator=(const Core &) = delete;

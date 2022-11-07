@@ -28,10 +28,8 @@ namespace npud
 namespace core
 {
 
-using DevID = uint64_t;
 struct Device
 {
-  DevID devId;
   std::string modulePath;
   std::unique_ptr<DynamicLoader> loader;
 };
@@ -40,7 +38,7 @@ class DevManager
 {
 public:
   DevManager();
-  ~DevManager();
+  ~DevManager() = default;
 
   DevManager(const DevManager &) = delete;
   DevManager &operator=(const DevManager &) = delete;
@@ -61,13 +59,8 @@ public:
   int submitRequest(NpuContext *npuContext, RequestID requestId);
 
 private:
-  Device *getDevice(DevID id);
-  void listModules(void);
-
-private:
-  std::vector<std::unique_ptr<Device>> _devs;
+  std::unique_ptr<Device> _dev;
   std::string _module_dir;
-  DevID _defaultId;
 };
 
 } // namespace core
