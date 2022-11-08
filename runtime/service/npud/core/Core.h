@@ -39,7 +39,7 @@ public:
   void init();
   void deinit();
 
-  int getAvailableDeviceList(std::vector<std::string> &list);
+  int getAvailableDeviceList(std::vector<std::string> &list) const;
 };
 
 } // namespace core

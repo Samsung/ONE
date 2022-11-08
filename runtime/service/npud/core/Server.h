@@ -44,7 +44,7 @@ public:
     return server;
   }
 
-  static std::shared_ptr<Core> core(void) { return instance()._core; }
+  static const Core &core(void) { return *instance()._core.get(); }
 
 private:
   Server() noexcept;
@@ -53,7 +53,7 @@ private:
 
   std::unique_ptr<GMainLoop, void (*)(GMainLoop *)> _mainloop;
   std::unique_ptr<Signal> _signal;
-  std::shared_ptr<Core> _core;
+  std::unique_ptr<Core> _core;
   std::unique_ptr<DBus> _dbus;
 };
 

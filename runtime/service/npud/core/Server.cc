@@ -28,7 +28,7 @@ std::atomic_bool Server::_isRunning(false);
 
 Server::Server() noexcept
   : _mainloop(g_main_loop_new(NULL, FALSE), g_main_loop_unref), _signal(std::make_unique<Signal>()),
-    _core(std::make_shared<Core>()), _dbus(std::make_unique<DBus>())
+    _core(std::make_unique<Core>()), _dbus(std::make_unique<DBus>())
 {
 }
 

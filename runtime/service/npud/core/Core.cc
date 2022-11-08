@@ -31,7 +31,7 @@ void Core::deinit()
   // TODO Implement details
 }
 
-int Core::getAvailableDeviceList(std::vector<std::string> &list) { return 0; }
+int Core::getAvailableDeviceList(std::vector<std::string> &list) const { return 0; }
 
 } // namespace core
 } // namespace npud
