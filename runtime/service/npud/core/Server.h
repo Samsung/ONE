@@ -44,7 +44,7 @@ public:
     return server;
   }
 
-  static std::shared_ptr<Core> &core(void) { return instance()._core; }
+  static std::shared_ptr<Core> core(void) { return instance()._core; }
 
 private:
   Server() noexcept;
