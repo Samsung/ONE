@@ -44,6 +44,24 @@ class VisqQErrorComputerTest(unittest.TestCase):
         np.save(self.fp32_dir.name + '/0/test.npy', test_data)
         np.save(self.fq_dir.name + '/0/test.npy', test_data)
 
+    def _setUpDifferentTensorData(self):
+        # Two fp32 data (test, test2)
+        # One fq data (test)
+        # NOTE When does this happen?
+        # This case can happen because visq ignores nodes that do not affect qerrors.
+        # For example, RESHAPE Op does not affect qerrors, so its fq data is not dumped,
+        # although it is listed in 'tensors.txt'.
+        with open(self.fp32_dir.name + '/tensors.txt', 'w') as f:
+            f.writelines(['test\n', 'test2'])
+        with open(self.fq_dir.name + '/tensors.txt', 'w') as f:
+            f.writelines(['test\n', 'test2'])
+        os.mkdir(self.fp32_dir.name + '/0')
+        os.mkdir(self.fq_dir.name + '/0')
+        test_data = np.zeros(16)
+        np.save(self.fp32_dir.name + '/0/test.npy', test_data)
+        np.save(self.fp32_dir.name + '/0/test2.npy', test_data)
+        np.save(self.fq_dir.name + '/0/test.npy', test_data)
+
     def test_MPEIR(self):
         self._setUpSingleTensorData()
 
@@ -51,8 +69,24 @@ class VisqQErrorComputerTest(unittest.TestCase):
         qmap = computer.run()
         self.assertAlmostEqual(0.0, qmap['test'])
 
+    def test_MPEIR_different_tensors(self):
+        self._setUpDifferentTensorData()
+
+        computer = MPEIRComputer(self.fp32_dir.name, self.fq_dir.name)
+        qmap = computer.run()
+        self.assertAlmostEqual(0.0, qmap['test'])
+
     def test_MSE(self):
         self._setUpSingleTensorData()
+
+        computer = MSEComputer(self.fp32_dir.name, self.fq_dir.name)
+        qmap, qmin, qmax = computer.run()
+        self.assertAlmostEqual(0.0, qmap['test'])
+        self.assertAlmostEqual(0.0, qmin)
+        self.assertAlmostEqual(0.0, qmax)
+
+    def test_MSE_different_tensors(self):
+        self._setUpDifferentTensorData()
 
         computer = MSEComputer(self.fp32_dir.name, self.fq_dir.name)
         qmap, qmin, qmax = computer.run()
