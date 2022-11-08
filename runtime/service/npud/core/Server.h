@@ -32,6 +32,9 @@ namespace core
 class Server
 {
 public:
+  Server(const Server &) = delete;
+  Server &operator=(const Server &) = delete;
+
   void run(void);
   void stop(void);
 
