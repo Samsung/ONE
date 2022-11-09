@@ -241,12 +241,32 @@ void ExecutionPlanner::make_execution_plan_onert_micro_common_buffer()
   VERBOSE(l, 0) << "Buffer required memory = " << _required_size << std::endl;
 }
 
+void ExecutionPlanner::make_execution_plan_luci_interpreter()
+{
+  LOGGER(l);
+
+  get_default_execution_order_plan();
+  _required_size = get_offsets_with_greedy_by_size();
+  for (uint32_t i = 0; i < _ordered_nodes.size(); i++)
+  {
+    luci::CircleNodeExecutionPlan execution_plan(i, _offsets[i]);
+    luci::add_execution_plan(loco::must_cast<luci::CircleNode *>(_ordered_nodes[i]),
+                             execution_plan);
+  }
+
+  VERBOSE(l, 0) << "Buffer required memory = " << _required_size << std::endl;
+  dump_inform();
+}
+
 void ExecutionPlanner::make_execution_plan()
 {
   switch (_runtime_type)
   {
     case ONERT_MICRO:
       make_execution_plan_onert_micro_base();
+      break;
+    case LUCI_INTERPRETER:
+      make_execution_plan_luci_interpreter();
       break;
     default:
       throw std::runtime_error("Unsupported runtime platform\n");

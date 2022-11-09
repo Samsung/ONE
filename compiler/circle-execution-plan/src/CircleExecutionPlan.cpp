@@ -140,9 +140,20 @@ int entry(int argc, char **argv)
   {
     runtime_type = circle_planner::RuntimeType::ONERT_MICRO;
   }
+  else if (runtime_name == "luci-interpreter")
+  {
+    runtime_type = circle_planner::RuntimeType::LUCI_INTERPRETER;
+  }
   else
   {
     std::cerr << "ERROR: Invalid runtime name '" << runtime_name << "'" << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  if (allocating_mode == circle_planner::AllocatingMode::SPLIT and
+      runtime_type == circle_planner::RuntimeType::LUCI_INTERPRETER)
+  {
+    std::cerr << "Split buffer type can only be used with onert-micro runtime" << std::endl;
     return EXIT_FAILURE;
   }
 
