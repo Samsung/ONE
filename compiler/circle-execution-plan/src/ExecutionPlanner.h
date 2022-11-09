@@ -117,6 +117,9 @@ private:
   // Constants are not written.
   void make_execution_plan_onert_micro_base();
 
+  // Save execution plan for luci-interpreter runtime base function.
+  void make_execution_plan_luci_interpreter();
+
   // Save execution plan for onert-micro runtime for common buffer type.
   void make_execution_plan_onert_micro_common_buffer();
 

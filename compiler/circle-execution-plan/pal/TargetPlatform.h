@@ -29,7 +29,8 @@ enum SupportedPlatformType
 
 enum RuntimeType
 {
-  ONERT_MICRO
+  ONERT_MICRO,
+  LUCI_INTERPRETER
 };
 
 enum AllocatingMode
