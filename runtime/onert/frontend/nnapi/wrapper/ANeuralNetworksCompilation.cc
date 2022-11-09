@@ -36,6 +36,7 @@ bool ANeuralNetworksCompilation::finish() noexcept
   try
   {
     _artifact = _compiler->compile();
+    _compiler = nullptr;
   }
   catch (const std::exception &e)
   {
