@@ -209,13 +209,16 @@ public:
 
     auto epsilon = node->epsilon();
 
+    auto fused_act = node->fusedActivationFunction();
+
     pySafeCall(hook,
-               node->name(), // name
-               inputs[0],    // input
-               inputs[1],    // gamma
-               inputs[2],    // beta
-               epsilon,      // epsilon
-               output        // output
+               node->name(),       // name
+               inputs[0],          // input
+               inputs[1],          // gamma
+               inputs[2],          // beta
+               epsilon,            // epsilon
+               output,             // output
+               toString(fused_act) // fused activation
     );
   }
 
