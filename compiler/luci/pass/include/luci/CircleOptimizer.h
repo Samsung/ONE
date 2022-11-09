@@ -84,6 +84,7 @@ public:
       RemoveRedundantReshape,
       RemoveFakeQuant,
       RemoveQuantDequantSeq,
+      RemoveDuplicateConst,
     };
 
     enum AlgorithmParameters
