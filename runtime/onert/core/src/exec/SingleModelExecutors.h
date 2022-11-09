@@ -49,6 +49,11 @@ public:
   void execute(const IODescription &desc);
 
 private:
+  // NOTE These executors does not have duplicated subgraph. This mean they do not allow support
+  // subgraphs being called recursively because data of non-constant tensor of parent executor will
+  // be updated by child executor. If you want to support subgraphs being called recursively, you
+  // have to add allocate non-constant tensor memory of executors in execution time when each
+  // subgraph is called.
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _executors;
 };
 

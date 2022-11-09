@@ -101,6 +101,10 @@ public:
 
   void dump();
 
+  static std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>>
+  createStaticShapeInferers(
+    const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<LoweredGraph>> &lowered_subgs);
+
 private:
   bool checkDynamicInput(const ir::Operation &op);
   bool checkDynamicOutput(const ir::Operation &op);

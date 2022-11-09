@@ -20,7 +20,7 @@
 #include "ir/Graph.h"
 #include "compiler/GraphLowerInfo.h"
 #include "compiler/BackendResolver.h"
-#include "compiler/Compiler.h"
+#include "compiler/ICompiler.h"
 
 namespace onert
 {

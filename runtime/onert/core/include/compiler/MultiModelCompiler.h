@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_COMPILER_H_
-#define __ONERT_COMPILER_COMPILER_H_
+#ifndef __ONERT_COMPILER_MULTI_MODEL_COMPILER_H_
+#define __ONERT_COMPILER_MULTI_MODEL_COMPILER_H_
 
 #include "ICompiler.h"
 #include "ir/NNPkg.h"
@@ -28,30 +28,23 @@ namespace compiler
 /**
  * @brief Class to compile NN package
  */
-class Compiler final : public ICompiler
+class MultiModelCompiler final : public ICompiler
 {
-public:
-  /**
-   * @brief     Construct a new Compiler object for single model
-   * @param[in] model     model to compile
-   * @param[in] coptions  Compiler Options
-   */
-  Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt);
-
-  /**
-   * @brief Destroy the Compiler object
-   */
-  ~Compiler() = default;
-
 public:
   /**
    * @brief     Construct a new Compiler object for NN package
    * @param[in] nnpkg    NN package to compile
    * @param[in] coptions Compiler option vector for each model in package
    */
-  Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
-           std::vector<std::unique_ptr<CompilerOptions>> &copts);
+  MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
+                     std::vector<std::unique_ptr<CompilerOptions>> &copts);
 
+  /**
+   * @brief Destroy the MultiModelCompiler object
+   */
+  ~MultiModelCompiler() = default;
+
+public:
   /**
    * @brief   Do compilation with the options
    *
@@ -66,14 +59,17 @@ public:
 
 private:
   void checkProfilerConditions();
-  std::shared_ptr<ir::Graph> &primary_subgraph() { return _model->at(ir::SubgraphIndex{0}); }
+  std::shared_ptr<ir::Graph> &primary_subgraph()
+  {
+    return _nnpkg->primary_model()->at(ir::SubgraphIndex{0});
+  }
 
 private:
-  std::shared_ptr<ir::Model> _model;
-  CompilerOptions *_options;
+  std::shared_ptr<ir::NNPkg> _nnpkg;
+  std::vector<CompilerOptions *> _voptions;
 };
 
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_COMPILER_COMPILER_H_
+#endif // __ONERT_COMPILER_MULTI_MODEL_COMPILER_H_

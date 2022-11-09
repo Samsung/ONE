@@ -18,7 +18,7 @@
 #define __ONERT_CORE_COMPILER_MANUAL_SCHEDULER_H__
 
 #include "IScheduler.h"
-#include "compiler/Compiler.h"
+#include "compiler/ICompiler.h"
 
 namespace onert
 {

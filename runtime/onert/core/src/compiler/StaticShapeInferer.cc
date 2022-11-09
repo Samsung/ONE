@@ -18,6 +18,8 @@
 #include "util/ShapeInference.h"
 #include "util/logging.h"
 
+#include <misc/polymorphic_downcast.h>
+
 #include <sstream>
 #include <stdexcept>
 
@@ -186,6 +188,95 @@ void StaticShapeInferer::dump()
                                   << (operand.info().isDynamic() ? "Dynamic" : "Static") << ", "
                                   << get_shape_str(operand.info().shape()) << std::endl;
     });
+}
+
+std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>>
+StaticShapeInferer::createStaticShapeInferers(
+  const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<LoweredGraph>> &lowered_subgs)
+{
+  // Allocate StaticShapeInferer per each subgraph
+  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers;
+  for (auto &pair : lowered_subgs)
+  {
+    const auto &subg_index = pair.first;
+    auto &lowered_subg = pair.second;
+    inferers[subg_index] = std::make_unique<StaticShapeInferer>(lowered_subg.get());
+  }
+
+  // Append observers in all StaticShapeInferers
+  for (auto &pair : lowered_subgs)
+  {
+    const auto &subg_index = pair.first;
+    auto &lowered_subg = pair.second;
+
+    // TODO: Change this iteration for all to controlflow iteration
+    lowered_subg->graph().operations().iterate(
+      [&](const ir::OperationIndex &, const ir::Operation &op) {
+        // A Function to append child inferers. These make it possible for a StaticShapeInferer to
+        // call StaticShapeInferes of child subgraphs recursively
+        auto appendChildInferer = [&](const ir::SubgraphIndex &child_subg_idx) {
+          auto *child_inferer = inferers.at(child_subg_idx).get();
+          inferers.at(subg_index)->appendChildInferer(child_subg_idx, child_inferer);
+        };
+
+        // A Function to appaend subg input observers. This makes it possible for a
+        // StaticShapeInferer to update inputs of child subgraphs
+        auto appendSubgraphInputObserver = [&](const ir::SubgraphIndex &child_subg_idx) {
+          std::vector<ir::Operand *> child_subg_inputs;
+          auto &child_subg = lowered_subgs.at(child_subg_idx)->graph();
+          for (const auto &input_idx : child_subg.getInputs())
+          {
+            auto operand_ptr = child_subg.operands().getRawPtr(input_idx);
+            child_subg_inputs.emplace_back(operand_ptr);
+          }
+          inferers.at(subg_index)
+            ->appendSubgInputObserver(child_subg_idx,
+                                      std::make_unique<OperandObserver>(child_subg_inputs));
+        };
+
+        // A Function to set controlflow output observers. This makes it possible for a
+        // StaticShapeInferer to update outputs of parent controlflow opeerations
+        auto setControlFlowOutputObserver = [&](const ir::SubgraphIndex &child_subg_idx) {
+          std::vector<ir::Operand *> cf_outputs;
+          auto &subg = lowered_subg->graph();
+          for (const auto &output_idx : op.getOutputs())
+          {
+            auto operand_ptr = subg.operands().getRawPtr(output_idx);
+            cf_outputs.emplace_back(operand_ptr);
+          }
+          inferers.at(child_subg_idx)
+            ->setControlflowOutputObserver(std::make_unique<compiler::OperandObserver>(cf_outputs));
+        };
+
+        // Append Observers in a StaticShapeInferer
+        if (op.opcode() == ir::OpCode::If)
+        {
+          const auto &if_op = nnfw::misc::polymorphic_downcast<const ir::operation::If &>(op);
+
+          appendChildInferer(if_op.param().then_subg_index);
+          appendChildInferer(if_op.param().else_subg_index);
+
+          appendSubgraphInputObserver(if_op.param().then_subg_index);
+          appendSubgraphInputObserver(if_op.param().else_subg_index);
+
+          setControlFlowOutputObserver(if_op.param().then_subg_index);
+        }
+        else if (op.opcode() == ir::OpCode::While)
+        {
+          const auto &while_op = nnfw::misc::polymorphic_downcast<const ir::operation::While &>(op);
+
+          appendChildInferer(while_op.param().cond_subg_index);
+          appendChildInferer(while_op.param().body_subg_index);
+
+          appendSubgraphInputObserver(while_op.param().cond_subg_index);
+          appendSubgraphInputObserver(while_op.param().body_subg_index);
+
+          setControlFlowOutputObserver(while_op.param().body_subg_index);
+        }
+      });
+  }
+
+  return inferers;
 }
 
 void StaticShapeInferer::visit(const ir::operation::ArgMinMax &op)
