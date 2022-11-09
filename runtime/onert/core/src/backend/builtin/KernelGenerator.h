@@ -23,7 +23,7 @@
 #include "../../compiler/TensorRegistries.h"
 
 #include "backend/basic/KernelGeneratorBase.h"
-#include "exec/Executors.h"
+#include "exec/IExecutors.h"
 #include "ir/Graph.h"
 
 namespace onert
@@ -44,7 +44,7 @@ public:
   {
     _tensor_registries = tensor_registries;
   }
-  void setExecutors(const std::shared_ptr<exec::Executors> &executors)
+  void setExecutors(const std::shared_ptr<exec::IExecutors> &executors)
   {
     // FIXME Using shared_ptr's raw pointer!
     _executors = executors.get();
@@ -67,7 +67,7 @@ private:
   DynamicTensorManager *_dyn_tensor_manager;
   std::shared_ptr<TensorRegistry> _tensor_reg;
   compiler::TensorRegistries _tensor_registries;
-  exec::Executors *_executors;
+  exec::IExecutors *_executors;
   ir::ModelIndex _model_index;
   const std::shared_ptr<ExternalContext> _external_context;
 };

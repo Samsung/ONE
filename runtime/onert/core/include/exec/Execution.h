@@ -22,7 +22,7 @@
 #define __ONERT_EXEC_EXECUTION_H__
 
 #include "ir/Layout.h"
-#include "exec/Executors.h"
+#include "exec/IExecutors.h"
 #include "IODescription.h"
 
 #include <thread>
@@ -46,7 +46,7 @@ public:
    * @brief     Construct a new Execution object
    * @param[in] executor  Model executor
    */
-  Execution(const std::shared_ptr<Executors> &executors);
+  Execution(const std::shared_ptr<IExecutors> &executors);
 
 public:
   /**
@@ -150,7 +150,7 @@ private:
   IExecutor *entryExecutor() { return _executors->entryExecutor(); };
 
 private:
-  const std::shared_ptr<Executors> _executors;
+  const std::shared_ptr<IExecutors> _executors;
   IODescription _io_desc;
   std::unique_ptr<std::thread> _exec_thread;
   bool finished{false};

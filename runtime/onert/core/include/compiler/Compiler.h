@@ -23,7 +23,7 @@
 #define __ONERT_COMPILER_COMPILE_H_
 
 #include "ir/NNPkg.h"
-#include "exec/Executors.h"
+#include "exec/IExecutors.h"
 #include "util/TracingCtx.h"
 
 namespace onert
@@ -68,11 +68,11 @@ public:
 struct CompilerArtifact
 {
   CompilerArtifact(void) = delete;
-  CompilerArtifact(std::shared_ptr<exec::Executors> executors,
+  CompilerArtifact(std::shared_ptr<exec::IExecutors> executors,
                    std::unique_ptr<const util::TracingCtx> tracing_ctx)
     : _executors{executors}, _tracing_ctx{std::move(tracing_ctx)} {};
 
-  std::shared_ptr<exec::Executors> _executors;
+  std::shared_ptr<exec::IExecutors> _executors;
   std::unique_ptr<const util::TracingCtx> _tracing_ctx;
 };
 

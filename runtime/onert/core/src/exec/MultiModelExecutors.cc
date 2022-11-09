@@ -14,80 +14,53 @@
  * limitations under the License.
  */
 
-#include "exec/Executors.h"
+#include "MultiModelExecutors.h"
 
 namespace onert
 {
 namespace exec
 {
 
-void Executors::emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
-                        std::unique_ptr<IExecutor> exec)
+void MultiModelExecutors::emplace(const ir::ModelIndex &model_index,
+                                  const ir::SubgraphIndex &subg_index,
+                                  std::unique_ptr<IExecutor> exec)
 {
   _executors.emplace(std::make_pair(model_index, subg_index), std::move(exec));
 }
 
-IExecutor *Executors::at(const ir::ModelIndex &model_index,
-                         const ir::SubgraphIndex &subg_index) const
+IExecutor *MultiModelExecutors::at(const ir::ModelIndex &model_index,
+                                   const ir::SubgraphIndex &subg_index) const
 {
   return _executors.at(std::make_pair(model_index, subg_index)).get();
 }
 
-uint32_t Executors::inputSize() const
+uint32_t MultiModelExecutors::inputSize() const { return _model_edges->pkg_inputs.size(); }
+
+uint32_t MultiModelExecutors::outputSize() const { return _model_edges->pkg_outputs.size(); }
+
+const ir::OperandInfo MultiModelExecutors::inputInfo(const ir::IOIndex &index)
 {
-  return _model_edges ? _model_edges->pkg_inputs.size()
-                      : entryExecutor()->graph().getInputs().size();
+  auto const desc = _model_edges->pkg_inputs[index.value()];
+  auto const model_index = std::get<0>(desc);
+  auto const subg_index = std::get<1>(desc);
+  auto const executor = at(model_index, subg_index);
+  auto const input_index = executor->graph().getInputs().at(std::get<2>(desc));
+  return executor->graph().operands().at(input_index).info();
 }
 
-uint32_t Executors::outputSize() const
+const ir::OperandInfo MultiModelExecutors::outputInfo(const ir::IOIndex &index)
 {
-  return _model_edges ? _model_edges->pkg_outputs.size()
-                      : entryExecutor()->graph().getOutputs().size();
-}
-
-const ir::OperandInfo Executors::inputInfo(const ir::IOIndex &index)
-{
-  if (_model_edges)
-  {
-    auto const desc = _model_edges->pkg_inputs[index.value()];
-    auto const model_index = std::get<0>(desc);
-    auto const subg_index = std::get<1>(desc);
-    auto const executor = at(model_index, subg_index);
-    auto const input_index = executor->graph().getInputs().at(std::get<2>(desc));
-    return executor->graph().operands().at(input_index).info();
-  }
-
-  const auto input_index = entryExecutor()->graph().getInputs().at(index);
-  return entryExecutor()->graph().operands().at(input_index).info();
-}
-
-const ir::OperandInfo Executors::outputInfo(const ir::IOIndex &index)
-{
-  if (_model_edges)
-  {
-    auto const desc = _model_edges->pkg_outputs[index.value()];
-    auto const model_index = std::get<0>(desc);
-    auto const subg_index = std::get<1>(desc);
-    auto const executor = at(model_index, subg_index);
-    auto const output_index = executor->graph().getOutputs().at(std::get<2>(desc));
-    return executor->graph().operands().at(output_index).info();
-  }
-
-  auto output_index = entryExecutor()->graph().getOutputs().at(index);
-  return entryExecutor()->graph().operands().at(output_index).info();
-}
-
-void Executors::execute(const IODescription &desc)
-{
-  if (_model_edges)
-    return executeModels(desc);
-
-  entryExecutor()->execute(desc);
+  auto const desc = _model_edges->pkg_outputs[index.value()];
+  auto const model_index = std::get<0>(desc);
+  auto const subg_index = std::get<1>(desc);
+  auto const executor = at(model_index, subg_index);
+  auto const output_index = executor->graph().getOutputs().at(std::get<2>(desc));
+  return executor->graph().operands().at(output_index).info();
 }
 
 // Allow below case only
 //  input(s) -> 1st model -> 2nd model -> ... -> (n-1)th model -> (n)th model -> output(s)
-void Executors::checkSupportedMultimodel() const
+void MultiModelExecutors::checkSupportedMultimodel() const
 {
   auto const model_count = modelCount();
 
@@ -159,7 +132,7 @@ void Executors::checkSupportedMultimodel() const
   }
 }
 
-void Executors::executeModels(const IODescription &desc)
+void MultiModelExecutors::execute(const IODescription &desc)
 {
   // Check supported multi model package
   checkSupportedMultimodel();
@@ -281,7 +254,7 @@ void Executors::executeModels(const IODescription &desc)
 // generated Executor.
 // If nnpackage includes model(s) which has no connection and Compiler does not
 // generate Executor for them, modelCount() return less value than real model count.
-uint16_t Executors::modelCount() const
+uint16_t MultiModelExecutors::modelCount() const
 {
   uint16_t model_count = 0;
   for (; _executors.find(std::make_pair(ir::ModelIndex{model_count}, ir::SubgraphIndex{0})) !=

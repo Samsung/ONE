@@ -24,6 +24,8 @@
 #include "pass/UnusedOperandEliminationPass.h"
 #include "../backend/builtin/Config.h"
 #include "../dumper/dot/DotDumper.h"
+#include "../exec/MultiModelExecutors.h"
+#include "../exec/SingleModelExecutors.h"
 #include "../interp/InterpExecutor.h"
 #include "../ir/OperationCloner.h"
 #include "../ir/OperationDumper.h"
@@ -323,7 +325,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     if (model_count > 1)
       throw std::runtime_error{"NYI: Disable compilation for multi model is not supported yet"};
 
-    auto executors = std::make_shared<exec::Executors>();
+    auto executors = std::make_shared<exec::SingleModelExecutors>();
 
     _nnpkg->primary_model()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(ir::ModelIndex{0}, index, std::make_unique<interp::InterpExecutor>(subg));
@@ -437,7 +439,12 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
-  auto executors = std::make_shared<exec::Executors>(std::move(model_edges));
+  std::shared_ptr<exec::IExecutors> executors = nullptr;
+  if (model_edges == nullptr)
+    executors = std::make_shared<exec::SingleModelExecutors>();
+  else
+    executors = std::make_shared<exec::MultiModelExecutors>(std::move(model_edges));
+
   for (auto &pair : lowered_subgs)
   {
     auto const &model_index = pair.first;

@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
  *
@@ -14,10 +15,10 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_EXECUTORS_H__
-#define __ONERT_EXEC_EXECUTORS_H__
+#ifndef __ONERT_EXEC_MULTI_MODEL_EXECUTORS_H__
+#define __ONERT_EXEC_MULTI_MODEL_EXECUTORS_H__
 
-#include "IExecutor.h"
+#include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
 
 namespace std
@@ -40,24 +41,22 @@ namespace onert
 namespace exec
 {
 
-/**
- * @brief Class to gather executors
- */
-class Executors
+class MultiModelExecutors final : public IExecutors
 {
 public:
-  Executors(void) = default;
-  Executors(std::unique_ptr<ir::ModelEdges> model_edges) { _model_edges = std::move(model_edges); }
-  Executors(const Executors &) = delete;
-  Executors(Executors &&) = default;
+  MultiModelExecutors(void) = default;
+  MultiModelExecutors(std::unique_ptr<ir::ModelEdges> model_edges)
+  {
+    _model_edges = std::move(model_edges);
+  }
+  MultiModelExecutors(const MultiModelExecutors &) = delete;
+  MultiModelExecutors(MultiModelExecutors &&) = default;
 
-  // TODO Use Executor index
+public:
   void emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
                std::unique_ptr<IExecutor> exec);
 
   IExecutor *at(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index) const;
-
-  IExecutor *entryExecutor() const { return at(ir::ModelIndex{0}, ir::SubgraphIndex{0}); }
 
   uint32_t inputSize() const;
 
@@ -71,7 +70,6 @@ public:
 
 private:
   void checkSupportedMultimodel() const;
-  void executeModels(const IODescription &desc);
   uint16_t modelCount() const;
 
 private:
@@ -84,4 +82,4 @@ private:
 } // namespace exec
 } // namespace onert
 
-#endif // __ONERT_EXEC_EXECUTORS_H__
+#endif // __ONERT_EXEC_MULTI_MODEL_EXECUTORS_H__
