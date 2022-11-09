@@ -167,7 +167,7 @@ class SingleOperatorTest(object):
                           output):
         self.testTransposeConv(padding, stride)
 
-    def testInstanceNorm(self, epsilon):
+    def testInstanceNorm(self, epsilon, fused_act):
         # Check opcode
         opcode = self._model.OperatorCodes(self._op.OpcodeIndex())
         checkOpcode(opcode.BuiltinCode(), BuiltinOperator.BuiltinOperator.INSTANCE_NORM)
@@ -180,12 +180,13 @@ class SingleOperatorTest(object):
         opt = InstanceNormOptions.InstanceNormOptions()
         opt.Init(self._opt.Bytes, self._opt.Pos)
         assertTrue(opt.Epsilon() == epsilon, "epsilon mismatches")
+        checkActivation(fused_act, opt.FusedActivationFunction())
 
-    def InstanceNormPre(self, name, input, gamma, beta, epsilon):
-        self.testInstanceNorm(epsilon)
+    def InstanceNormPre(self, name, input, gamma, beta, epsilon, fused_act):
+        self.testInstanceNorm(epsilon, fused_act)
 
-    def InstanceNormPost(self, name, input, gamma, beta, epsilon, output):
-        self.testInstanceNorm(epsilon)
+    def InstanceNormPost(self, name, input, gamma, beta, epsilon, output, fused_act):
+        self.testInstanceNorm(epsilon, fused_act)
 
     def testSplit(self, num_split):
         # Check opcode
