@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-#include "luci_interpreter/MemoryManager.h"
+#include "MemoryManager.h"
 
 #ifndef LUCI_INTERPRETER_BUDDY_MEMORY_MANAGER_H
 #define LUCI_INTERPRETER_BUDDY_MEMORY_MANAGER_H

@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_SIMPLE_MEMORY_MANAGER_H
 #define LUCI_INTERPRETER_SIMPLE_MEMORY_MANAGER_H
 
-#include "luci_interpreter/MemoryManager.h"
+#include "MemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -27,6 +27,7 @@ class SimpleMemoryManager : public IMemoryManager
 public:
   void allocate_memory(luci_interpreter::Tensor &tensor) final;
   void release_memory(luci_interpreter::Tensor &tensor) final;
+  bool is_static_manager() const final;
 };
 
 } // namespace luci_interpreter

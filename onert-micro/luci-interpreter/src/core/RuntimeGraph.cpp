@@ -15,14 +15,67 @@
  */
 
 #include "core/RuntimeGraph.h"
-
-#include "core/RuntimeModule.h"
+#include "luci_interpreter/memory_managers/StaticMemoryManager.h"
 
 #include <algorithm>
 #include <map>
 
 namespace luci_interpreter
 {
+
+// BaseRuntimeGraph
+BaseRuntimeGraph::BaseRuntimeGraph(IMemoryManager *memory_manager) : _memory_manager(memory_manager)
+{
+}
+
+Tensor *BaseRuntimeGraph::addTensor(std::unique_ptr<Tensor> &&tensor)
+{
+  assert(tensor != nullptr);
+  _tensors.push_back(std::move(tensor));
+  return _tensors.back().get();
+}
+
+AffineQuantization *
+BaseRuntimeGraph::addAffineQuantization(std::unique_ptr<AffineQuantization> &&quantization)
+{
+  assert(quantization != nullptr);
+  _affine_quantizations.push_back(std::move(quantization));
+  return _affine_quantizations.back().get();
+}
+
+void BaseRuntimeGraph::addInputTensor(Tensor *input_tensor)
+{
+  _input_tensors.push_back(input_tensor);
+}
+
+void BaseRuntimeGraph::addOutputTensor(Tensor *output_tensor)
+{
+  _output_tensors.push_back(output_tensor);
+}
+
+void BaseRuntimeGraph::configureAllocations(Tensor *tensor)
+{
+  _memory_manager->allocate_memory(*tensor);
+}
+
+void BaseRuntimeGraph::addKernel(std::unique_ptr<Kernel> &&kernel)
+{
+  assert(kernel != nullptr);
+  _kernels.push_back(std::move(kernel));
+  _is_valid = false;
+}
+
+// RuntimeGraph
+RuntimeGraph::RuntimeGraph(IMemoryManager *memory_manager) : BaseRuntimeGraph(memory_manager) {}
+
+RuntimeGraph::~RuntimeGraph()
+{
+  for (auto &tensor : _tensors)
+  {
+    if (tensor->is_data_allocated())
+      _memory_manager->release_memory(*tensor);
+  }
+}
 
 void RuntimeGraph::buildAllocDeallocPlan()
 {
@@ -89,54 +142,6 @@ void RuntimeGraph::deallocate(size_t kernel_index) const
   }
 }
 
-RuntimeGraph::RuntimeGraph(RuntimeModule *owning_module, IMemoryManager *memory_manager)
-  : _owning_module(owning_module), _memory_manager(memory_manager)
-{
-}
-
-RuntimeGraph::~RuntimeGraph()
-{
-  for (auto &tensor : _tensors)
-  {
-    if (tensor->is_data_allocated())
-      _memory_manager->release_memory(*tensor);
-  }
-}
-
-Tensor *RuntimeGraph::addTensor(std::unique_ptr<Tensor> &&tensor)
-{
-  assert(tensor != nullptr);
-  _tensors.push_back(std::move(tensor));
-  return _tensors.back().get();
-}
-
-AffineQuantization *
-RuntimeGraph::addAffineQuantization(std::unique_ptr<AffineQuantization> &&quantization)
-{
-  assert(quantization != nullptr);
-  _affine_quantizations.push_back(std::move(quantization));
-  return _affine_quantizations.back().get();
-}
-
-void RuntimeGraph::addInputTensor(Tensor *input_tensor) { _input_tensors.push_back(input_tensor); }
-
-void RuntimeGraph::addOutputTensor(Tensor *output_tensor)
-{
-  _output_tensors.push_back(output_tensor);
-}
-
-void RuntimeGraph::configureAllocations(Tensor *tensor)
-{
-  _memory_manager->allocate_memory(*tensor);
-}
-
-void RuntimeGraph::addKernel(std::unique_ptr<Kernel> &&kernel)
-{
-  assert(kernel != nullptr);
-  _kernels.push_back(std::move(kernel));
-  _is_valid = false;
-}
-
 void RuntimeGraph::configure()
 {
   if (not _is_valid)
@@ -146,6 +151,8 @@ void RuntimeGraph::configure()
   {
     kernel->configure();
   }
+
+  _is_valid = true;
 }
 
 void RuntimeGraph::execute()
@@ -166,6 +173,82 @@ void RuntimeGraph::execute()
 
     deallocate(index);
   }
+}
+
+// StaticRuntimeGraph
+StaticRuntimeGraph::StaticRuntimeGraph(IMemoryManager *memory_manager)
+  : BaseRuntimeGraph(memory_manager)
+{
+}
+
+StaticRuntimeGraph::~StaticRuntimeGraph()
+{
+  // Release intermediate computing buffer.
+  const auto static_memory_manager = dynamic_cast<StaticMemoryManager *>(_memory_manager);
+  if (static_memory_manager->is_owning_buffers())
+  {
+    static_memory_manager->release_computing_buf();
+    static_memory_manager->release_input_buf();
+    static_memory_manager->release_output_buf();
+  }
+}
+
+void StaticRuntimeGraph::configure()
+{
+  // Allocate memory for intermediate computing buffer and for output buffer.
+  const auto static_memory_manager = dynamic_cast<StaticMemoryManager *>(_memory_manager);
+  if (static_memory_manager->is_owning_buffers())
+  {
+    static_memory_manager->allocate_computing_buf();
+    static_memory_manager->allocate_output_buf();
+  }
+
+  // Set tensor's data pointer for intermediate tensors
+  for (auto &kernel : _kernels)
+  {
+    const auto output_tensors = kernel->getOutputTensors();
+
+    for (auto tensor : output_tensors)
+      _memory_manager->allocate_memory(*tensor);
+  }
+
+  // Set tensor's data pointer for output tensors
+  if (static_memory_manager->is_owning_buffers())
+  {
+    for (const auto output_tensor : _output_tensors)
+    {
+      static_memory_manager->allocate_memory_for_output(*output_tensor);
+    }
+  }
+
+  _is_valid = true;
+}
+
+void StaticRuntimeGraph::configure_kernels()
+{
+  for (auto &kernel : _kernels)
+  {
+    kernel->configure();
+  }
+}
+
+void StaticRuntimeGraph::execute()
+{
+  if (not _is_valid)
+    configure();
+
+  for (auto &kernel : _kernels)
+  {
+    // TODO: add kernel->configure for methods with dynamic shapes
+    kernel->execute();
+  }
+
+  // Release intermediate computing buffer.
+  const auto static_memory_manager = dynamic_cast<StaticMemoryManager *>(_memory_manager);
+  if (static_memory_manager->is_owning_buffers())
+    static_memory_manager->release_computing_buf();
+
+  _is_valid = false;
 }
 
 } // namespace luci_interpreter

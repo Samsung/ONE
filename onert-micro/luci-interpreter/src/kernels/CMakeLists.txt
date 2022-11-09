@@ -1,11 +1,7 @@
 set(SOURCES
         BinaryOpCommon.h
         Utils.h
-        Utils.cpp
-        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/TestMemoryManager.h"
-        ${LUCI_INTERPRETER_SOURCE_DIR}/TestMemoryManager.cpp
-        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/SimpleMemoryManager.h"
-        ${LUCI_INTERPRETER_SOURCE_DIR}/SimpleMemoryManager.cpp)
+        Utils.cpp)
 
 macro(REGISTER_KERNEL OPERATOR, NODE)
   list(APPEND SOURCES "${NODE}.h")
