@@ -80,7 +80,7 @@ gboolean DBus::on_handle_device_get_available_list(NpudCore *object,
 {
   VERBOSE(DBus) << __FUNCTION__ << std::endl;
   std::vector<std::string> list;
-  int error = Server::core().getAvailableDeviceList(list);
+  int error = Server::instance().core().getAvailableDeviceList(list);
   // TODO Implement variant outputs
   npud_core_complete_device_get_available_list(object, invocation, error);
   return TRUE;

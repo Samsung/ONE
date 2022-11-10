@@ -44,7 +44,7 @@ public:
     return server;
   }
 
-  static const Core &core(void) { return *instance()._core.get(); }
+  const Core &core(void) { return *_core.get(); }
 
 private:
   Server() noexcept;
