@@ -32,8 +32,8 @@ public:
 
 public:
   bool finish() noexcept;
+  bool isFinished() noexcept { return _compiler == nullptr; }
 
-  onert::compiler::State state(void) noexcept { return _compiler->state(); }
   void publish(std::shared_ptr<onert::exec::Executors> &executors) noexcept
   {
     executors = _artifact ? _artifact->_executors : nullptr;

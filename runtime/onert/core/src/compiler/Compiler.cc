@@ -238,14 +238,14 @@ std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
 }
 
 Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt)
-  : _nnpkg{std::make_shared<ir::NNPkg>(model)}, _state{State::CREATED}, _voptions{&copt}
+  : _nnpkg{std::make_shared<ir::NNPkg>(model)}, _voptions{&copt}
 {
   // DO NOTHING
 }
 
 Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
                    std::vector<std::unique_ptr<CompilerOptions>> &copts)
-  : _nnpkg{nnpkg}, _state{State::CREATED}, _voptions{}
+  : _nnpkg{nnpkg}, _voptions{}
 {
   for (uint32_t i = 0; i < copts.size(); i++)
   {
@@ -493,7 +493,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     _nnpkg->primary_model()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(ir::ModelIndex{0}, index, std::make_unique<interp::InterpExecutor>(subg));
     });
-    _state = State::COMPILED;
     return std::make_shared<CompilerArtifact>(executors, nullptr);
   }
 
@@ -631,7 +630,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   /********************************
    * Code generation phase finished
    ********************************/
-  _state = State::COMPILED;
   return std::make_shared<CompilerArtifact>(executors, std::move(tracing_ctx));
 }
 
@@ -743,7 +741,6 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
       executors->emplace(ir::ModelIndex{0}, index, std::make_unique<interp::InterpExecutor>(subg));
     });
     results.push_back(std::make_shared<CompilerArtifact>(executors, nullptr));
-    _state = State::COMPILED;
     return results;
   }
 
@@ -843,7 +840,6 @@ std::vector<std::shared_ptr<CompilerArtifact>> Compiler::compile(const char *pac
   /********************************
    * Code generation phase finished
    ********************************/
-  _state = State::COMPILED;
 
   return results;
 }

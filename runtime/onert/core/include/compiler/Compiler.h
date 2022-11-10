@@ -32,12 +32,6 @@ namespace onert
 namespace compiler
 {
 
-enum class State
-{
-  CREATED, // Before compilation
-  COMPILED // Success compilation
-};
-
 struct ManualSchedulerOptions
 {
 public:
@@ -126,8 +120,6 @@ public:
   std::vector<std::shared_ptr<CompilerArtifact>> compile(const char *package_file_path,
                                                          const char *map_file_path);
 
-  State state(void) const { return _state; }
-
   /**
    * @brief   Allow to compute float32 using float16 data type
    */
@@ -147,12 +139,6 @@ private:
 
 private:
   std::shared_ptr<ir::NNPkg> _nnpkg;
-  // NOTE These executors does not have duplicated subgraph. This mean they do not allow support
-  // subgraphs being called recursively because data of non-constant tensor of parent executor will
-  // be updated by child executor. If you want to support subgraphs being called recursively, you
-  // have to add allocate non-constant tensor memory of executors in execution time when each
-  // subgraph is called.
-  State _state;
   std::vector<CompilerOptions *> _voptions;
 };
 

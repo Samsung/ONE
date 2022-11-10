@@ -58,7 +58,7 @@ int ANeuralNetworksCompilation_finish(ANeuralNetworksCompilation *compilation)
     return ANEURALNETWORKS_UNEXPECTED_NULL;
   }
 
-  if (compilation->state() != ::onert::compiler::State::CREATED)
+  if (compilation->isFinished())
   {
     VERBOSE(NNAPI::Compilation) << "finish: Already finished" << std::endl;
     return ANEURALNETWORKS_BAD_STATE;
@@ -87,7 +87,7 @@ int ANeuralNetworksCompilation_setPreference(ANeuralNetworksCompilation *compila
     return ANEURALNETWORKS_UNEXPECTED_NULL;
   }
 
-  if (compilation->state() != ::onert::compiler::State::CREATED)
+  if (compilation->isFinished())
   {
     VERBOSE(NNAPI::Compilation) << "setPreference: Already finished" << std::endl;
     return ANEURALNETWORKS_BAD_STATE;
