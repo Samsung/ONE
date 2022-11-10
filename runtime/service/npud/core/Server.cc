@@ -28,7 +28,7 @@ std::atomic_bool Server::_isRunning(false);
 
 Server::Server() noexcept
   : _mainloop(g_main_loop_new(NULL, FALSE), g_main_loop_unref), _signal(std::make_unique<Signal>()),
-    _dbus(std::make_unique<DBus>())
+    _core(std::make_unique<Core>()), _dbus(std::make_unique<DBus>())
 {
 }
 
@@ -40,6 +40,8 @@ void Server::run(void)
   {
     return;
   }
+
+  _core->init();
 
   g_main_loop_run(_mainloop.get());
 }
@@ -57,6 +59,8 @@ void Server::stop(void)
   {
     std::this_thread::yield();
   }
+
+  _core->deinit();
 
   g_main_loop_quit(_mainloop.get());
   _isRunning = false;

@@ -18,6 +18,7 @@
 #define __ONE_SERVICE_NPUD_CORE_SERVER_H__
 
 #include "Signal.h"
+#include "Core.h"
 #include "DBus.h"
 
 #include <glib.h>
@@ -46,6 +47,8 @@ public:
     return server;
   }
 
+  const Core &core(void) { return *_core.get(); }
+
 private:
   Server() noexcept;
 
@@ -53,6 +56,7 @@ private:
 
   std::unique_ptr<GMainLoop, void (*)(GMainLoop *)> _mainloop;
   std::unique_ptr<Signal> _signal;
+  std::unique_ptr<Core> _core;
   std::unique_ptr<DBus> _dbus;
 };
 
