@@ -21,24 +21,29 @@
 namespace
 {
 
-template <loco::DataType DT> bool is_equal_consts(luci::CircleConst *left, luci::CircleConst *right)
+bool compare_quant_params(luci::CircleConst *left, luci::CircleConst *right)
 {
-  const auto left_rank = left->rank();
-  const auto right_rank = right->rank();
-
   const auto left_quant_param = left->quantparam();
   const auto right_quant_param = right->quantparam();
 
   if (left_quant_param != nullptr and right_quant_param != nullptr)
   {
     if (left_quant_param->scale != right_quant_param->scale or
-        left_quant_param->quantized_dimension != right_quant_param->quantized_dimension)
+        left_quant_param->quantized_dimension != right_quant_param->quantized_dimension or
+        left_quant_param->zerop != right_quant_param->zerop or
+        left_quant_param->min != right_quant_param->min or
+        left_quant_param->max != right_quant_param->max)
+    {
       return false;
-
-    if ((left->dtype() == loco::DataType::U8 or left->dtype() == loco::DataType::S8) and
-        left_quant_param->zerop != right_quant_param->zerop)
-      return false;
+    }
   }
+  return true;
+}
+
+bool compare_dim_values(luci::CircleConst *left, luci::CircleConst *right)
+{
+  const auto left_rank = left->rank();
+  const auto right_rank = right->rank();
 
   if (left_rank != right_rank)
     return false;
@@ -48,6 +53,17 @@ template <loco::DataType DT> bool is_equal_consts(luci::CircleConst *left, luci:
     if (left->dim(i).value() != right->dim(i).value())
       return false;
   }
+
+  return true;
+}
+
+template <loco::DataType DT> bool is_equal_consts(luci::CircleConst *left, luci::CircleConst *right)
+{
+  if (not compare_quant_params(left, right))
+    return false;
+
+  if (not compare_dim_values(left, right))
+    return false;
 
   for (uint32_t i = 0; i < left->size<DT>(); ++i)
   {
@@ -87,7 +103,7 @@ bool RemoveDuplicateConstPass::remove_duplicate_const()
         if (cur_const->dtype() != reference_const->dtype())
           continue;
 
-        bool is_equal;
+        bool is_equal = false;
 
         switch (cur_const->dtype())
         {
@@ -107,7 +123,7 @@ bool RemoveDuplicateConstPass::remove_duplicate_const()
             is_equal = is_equal_consts<loco::DataType::U8>(reference_const, cur_const);
             break;
           default:
-            is_equal = false;
+            throw std::runtime_error("Not supported type\n");
         }
 
         if (not is_equal)
