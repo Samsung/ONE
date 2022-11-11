@@ -26,18 +26,21 @@ bool compare_quant_params(luci::CircleConst *left, luci::CircleConst *right)
   const auto left_quant_param = left->quantparam();
   const auto right_quant_param = right->quantparam();
 
+  if (left_quant_param == right_quant_param)
+    return true;
+
   if (left_quant_param != nullptr and right_quant_param != nullptr)
   {
-    if (left_quant_param->scale != right_quant_param->scale or
-        left_quant_param->quantized_dimension != right_quant_param->quantized_dimension or
-        left_quant_param->zerop != right_quant_param->zerop or
-        left_quant_param->min != right_quant_param->min or
-        left_quant_param->max != right_quant_param->max)
+    if (left_quant_param->scale == right_quant_param->scale and
+        left_quant_param->quantized_dimension == right_quant_param->quantized_dimension and
+        left_quant_param->zerop == right_quant_param->zerop and
+        left_quant_param->min == right_quant_param->min and
+        left_quant_param->max == right_quant_param->max)
     {
-      return false;
+      return true;
     }
   }
-  return true;
+  return false;
 }
 
 bool compare_dim_values(luci::CircleConst *left, luci::CircleConst *right)
