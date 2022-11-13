@@ -34,8 +34,9 @@ This section explains the steps to create a pull request (PR).
 1. Create a commit
 
    It is time to create a commit for submission once you are convinced that your contribution is
-   ready to go. Please include signed-off message at the end of commit message. If not, your pull
-   request will be **rejected** by CI.
+   ready to go. Please include 
+   [signed-off message](https://github.com/Samsung/ONE/wiki/ONE-Developer's-Certificate-of-Origin) 
+   at the end of commit message. If not, your pull request will be **rejected** by CI.
 
 1. Check code format locally
 
