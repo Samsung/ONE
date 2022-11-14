@@ -14,40 +14,36 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_CORE_H__
-#define __ONE_SERVICE_NPUD_CORE_CORE_H__
+#ifndef __ONE_SERVICE_NPUD_CORE_DEV_MANAGER_H__
+#define __ONE_SERVICE_NPUD_CORE_DEV_MANAGER_H__
 
-#include "DevManager.h"
-
-#include <vector>
-#include <string>
+#include <memory>
 
 namespace npud
 {
 namespace core
 {
 
-// TODO Define error status
+struct Device
+{
+  std::string modulePath;
+};
 
-class Core
+class DevManager
 {
 public:
-  Core() noexcept;
-  ~Core() noexcept = default;
+  DevManager();
+  ~DevManager() = default;
 
-  Core(const Core &) = delete;
-  Core &operator=(const Core &) = delete;
-
-  void init();
-  void deinit();
-
-  int getAvailableDeviceList(std::vector<std::string> &list) const;
+  DevManager(const DevManager &) = delete;
+  DevManager &operator=(const DevManager &) = delete;
 
 private:
-  std::unique_ptr<DevManager> _devManager;
+  std::unique_ptr<Device> _dev;
+  std::string _module_dir;
 };
 
 } // namespace core
 } // namespace npud
 
-#endif // __ONE_SERVICE_NPUD_CORE_CORE_H__
+#endif // __ONE_SERVICE_NPUD_CORE_DEV_MANAGER_H__

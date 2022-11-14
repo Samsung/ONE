@@ -20,3 +20,4 @@
 
 //     Name                    | Type         | Default
 CONFIG(NPUD_LOG_ENABLE         , bool         , "0")
+CONFIG(DEVICE_MODULE_PATH      , std::string  , "/usr/lib/npud/devices")
