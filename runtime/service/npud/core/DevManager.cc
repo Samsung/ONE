@@ -15,8 +15,9 @@
  */
 
 #include "DevManager.h"
+#include "util/Logging.h"
 
-#include <util/ConfigSource.h>
+#include <dirent.h>
 
 namespace npud
 {
@@ -27,6 +28,73 @@ DevManager::DevManager()
 {
   const auto env = util::getConfigString(util::config::DEVICE_MODULE_PATH);
   _module_dir = std::move(env);
+}
+
+void DevManager::loadModules()
+{
+  VERBOSE(DevManager) << "load modules from " << _module_dir << std::endl;
+
+  releaseModules();
+
+  DIR *dir;
+  struct dirent *entry;
+
+  // NOTE
+  // Return NULL(0) value when opendir or readdir error occurs.
+  // NULL should be used instead of nullptr.
+  dir = opendir(_module_dir.c_str());
+  if (dir == NULL)
+  {
+    VERBOSE(DevManager) << "Fail to open module directory" << std::endl;
+    return;
+  }
+
+  while ((entry = readdir(dir)) != NULL)
+  {
+    std::string modulePath(entry->d_name);
+    if (modulePath.find("npud_backend") == std::string::npos)
+    {
+      continue;
+    }
+
+    DynamicLoader *loader = nullptr;
+    try
+    {
+      loader = new DynamicLoader(modulePath.c_str());
+    }
+    catch (const std::exception &e)
+    {
+      VERBOSE(DevManager) << e.what() << std::endl;
+      continue;
+    }
+
+    std::unique_ptr<Device> dev = std::make_unique<Device>();
+    dev->modulePath = std::move(modulePath);
+    dev->loader = std::unique_ptr<DynamicLoader>(loader);
+
+    _dev = std::move(dev);
+    break;
+  }
+
+  closedir(dir);
+}
+
+void DevManager::releaseModules()
+{
+  if (_dev)
+  {
+    _dev.reset();
+  }
+}
+
+std::shared_ptr<Backend> DevManager::getBackend()
+{
+  if (!_dev)
+  {
+    return nullptr;
+  }
+
+  return _dev->loader->getInstance();
 }
 
 } // namespace core

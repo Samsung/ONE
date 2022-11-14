@@ -23,15 +23,9 @@ namespace core
 
 Core::Core() noexcept : _devManager(std::make_unique<DevManager>()) {}
 
-void Core::init()
-{
-  // TODO Implement details
-}
+void Core::init() { _devManager->loadModules(); }
 
-void Core::deinit()
-{
-  // TODO Implement details
-}
+void Core::deinit() { _devManager->releaseModules(); }
 
 int Core::getAvailableDeviceList(std::vector<std::string> &list) const { return 0; }
 
