@@ -682,30 +682,6 @@ loco::NodeShape infer_fully_connected(const luci::CircleFullyConnected *node)
   auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
   auto weights_shape = luci::shape_get(node->weights()).as<loco::TensorShape>();
 
-// TODO Remove following unused code
-#if 0
-  // Checking shape capability for fully connected layer
-  // Input: a tensor of at least rank 2 [D1, D2, ... Dn]
-  // Weight: [# of units, K]
-  // Output: [D1 * D2 * ... * Dn / K, # of units]
-  if (input_shape.rank() < 2 || weights_shape.rank() != 2)
-  {
-    // Return node own shape if shape inference is not possible
-    return use_own(node);
-  }
-
-  uint32_t input_size = 1;
-  for (uint32_t i = 0; i < input_shape.rank(); i++)
-  {
-    input_size = input_size * input_shape.dim(i).value();
-  }
-  const uint32_t batch_size = input_size / weights_shape.dim(1).value();
-  loco::TensorShape out_shape;
-  out_shape.rank(2);
-  out_shape.dim(0) = batch_size;
-  out_shape.dim(1) = weights_shape.dim(0);
-#endif
-
   loco::TensorShape out_shape;
 
   // NOTE Some recipes in some repositories are using rank 4 input for FullyConnected.
