@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef __ONE_SERVICE_NPUD_CORE_DEV_MANAGER_H__
-#define __ONE_SERVICE_NPUD_CORE_DEV_MANAGER_H__
+#ifndef __ONE_SERVICE_NPUD_CORE_DYNAMIC_LOADER_H__
+#define __ONE_SERVICE_NPUD_CORE_DYNAMIC_LOADER_H__
 
-#include "DynamicLoader.h"
+#include "Backend.h"
 
+#include <dlfcn.h>
+#include <string>
 #include <memory>
 
 namespace npud
@@ -26,31 +28,27 @@ namespace npud
 namespace core
 {
 
-struct Device
-{
-  std::string modulePath;
-  std::unique_ptr<DynamicLoader> loader;
-};
+using DLHandle = void *;
 
-class DevManager
+class DynamicLoader
 {
 public:
-  DevManager();
-  ~DevManager() = default;
+  DynamicLoader(const char *file, int flags = RTLD_LAZY);
+  ~DynamicLoader();
 
-  DevManager(const DevManager &) = delete;
-  DevManager &operator=(const DevManager &) = delete;
+  DynamicLoader(const DynamicLoader &) = delete;
 
-  void loadModules();
-  void releaseModules();
-  std::shared_ptr<Backend> getBackend();
+  std::shared_ptr<Backend> getInstance();
 
 private:
-  std::unique_ptr<Device> _dev;
-  std::string _module_dir;
+  DLHandle _handle;
+  std::string _filepath;
+  std::string _allocSymbol;
+  std::string _deallocSymbol;
+  std::shared_ptr<Backend> _backend;
 };
 
 } // namespace core
 } // namespace npud
 
-#endif // __ONE_SERVICE_NPUD_CORE_DEV_MANAGER_H__
+#endif // __ONE_SERVICE_NPUD_CORE_DYNAMIC_LOADER_H__
