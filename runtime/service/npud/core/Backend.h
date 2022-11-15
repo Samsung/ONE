@@ -150,7 +150,7 @@ public:
   virtual ~Backend() = default;
 
   virtual NpuStatus getVersion(std::string &version) = 0;
-  virtual NpuStatus createContext(int device_fd, int priority, NpuContext **ctx) = 0;
+  virtual NpuStatus createContext(int deviceId, int priority, NpuContext **ctx) = 0;
   virtual NpuStatus destroyContext(NpuContext *ctx) = 0;
   virtual NpuStatus createBuffer(NpuContext *ctx, GenericBuffer *buffer) = 0;
   virtual NpuStatus destroyBuffer(NpuContext *ctx, GenericBuffer *buffer) = 0;
@@ -160,9 +160,9 @@ public:
   virtual NpuStatus unregisterModel(NpuContext *ctx, ModelID modelId) = 0;
   virtual NpuStatus createRequest(NpuContext *ctx, ModelID modelId, RequestID *requestId) = 0;
   virtual NpuStatus destroyRequest(NpuContext *ctx, RequestID requestId) = 0;
-  virtual NpuStatus setRequestData(NpuContext *ctx, RequestID requestId, InputBuffers *input_bufs,
-                                   TensorDataInfos *in_info, OutputBuffers *output_bufs,
-                                   TensorDataInfos *out_info) = 0;
+  virtual NpuStatus setRequestData(NpuContext *ctx, RequestID requestId, InputBuffers *inputBufs,
+                                   TensorDataInfos *inputInfos, OutputBuffers *outputBufs,
+                                   TensorDataInfos *outputInfos) = 0;
   virtual NpuStatus submitRequest(NpuContext *ctx, RequestID requestId) = 0;
 };
 
