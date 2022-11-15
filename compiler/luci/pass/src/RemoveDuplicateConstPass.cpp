@@ -126,7 +126,7 @@ bool RemoveDuplicateConstPass::remove_duplicate_const()
             is_equal = is_equal_consts<loco::DataType::U8>(reference_const, cur_const);
             break;
           default:
-            throw std::runtime_error("Not supported type\n");
+            continue;
         }
 
         if (not is_equal)
@@ -166,8 +166,28 @@ void RemoveDuplicateConstPass::add_to_map(luci::CircleConst *const_node)
   }
 }
 
-/*
+/**
  * Remove duplicate Const nodes.
+ *
+ * BEFORE
+ *    [CircleNode]   [CircleConst]
+ *          |        /
+ *          |      /
+ *    [CircleNode]    [CircleConst]
+ *          |        /
+ *          |      /
+ *    [CircleNode]
+ *
+ * AFTER
+ *
+ *    [CircleNode]   [CircleConst]
+ *          |        /     /
+ *          |      /     /
+ *    [CircleNode]     /
+ *          |        /
+ *          |      /
+ *    [CircleNode]
+ *
  */
 bool RemoveDuplicateConstPass::run(loco::Graph *g)
 {
