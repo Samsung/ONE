@@ -1,7 +1,4 @@
-# The libboost 1.74 uses IN_LIST operator, which requires the policy CMP0057, in a CMake file.
-# This policy requires ``cmake_minimum_required(VERSION 3.3)``.
-# Run "cmake --help-policy CMP0057" for policy details.
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.10)
 
 project(nncc)
 
@@ -14,11 +11,6 @@ set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 set(CMAKE_INSTALL_RPATH "$ORIGIN/../lib:$ORIGIN/")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-# This feature works with CMake 3.5.2 or later. However, using previous versions does not produce
-# an error. We are still officially using CMake 3.1.0, but put this code for the sake of semantic
-# support in various development tools.
-# Todo: Someday, CMake needs to be updated to 3.7.2 or later to take advantage of improvements
-#       such as `cmake-server`.
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(NNAS_PROJECT_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../.." CACHE

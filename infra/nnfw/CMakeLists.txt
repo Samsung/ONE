@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.10)
 
 project(nnfw)
 
@@ -64,11 +64,6 @@ endif()
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# This feature works with CMake 3.5.2 or later. However, using previous versions does not produce
-# an error. We are still officially using CMake 3.5.1, but put this code for the sake of semantic
-# support in various development tools.
-# Todo: Someday, CMake needs to be updated to 3.7.2 or later to take advantage of improvements
-#       such as `cmake-server`.
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # identify platform: HOST_PLATFORM, TARGET_PLATFORM and related
