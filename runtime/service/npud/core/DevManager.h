@@ -45,6 +45,9 @@ public:
   void releaseModules();
   std::shared_ptr<Backend> getBackend();
 
+  int createContext(int deviceId, int priority, NpuContext **npuContext);
+  int destroyContext(NpuContext *npuContext);
+
 private:
   std::unique_ptr<Device> _dev;
   std::string _module_dir;

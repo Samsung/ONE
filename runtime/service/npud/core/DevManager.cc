@@ -19,6 +19,7 @@
 
 #include <dirent.h>
 
+#define CHECK_BACKEND(b) ((b == nullptr) ? return NPU_STATUS_ERROR_OPERATION_FAILED;: ;)
 namespace npud
 {
 namespace core
@@ -95,6 +96,28 @@ std::shared_ptr<Backend> DevManager::getBackend()
   }
 
   return _dev->loader->getInstance();
+}
+
+int DevManager::createContext(int deviceId, int priority, NpuContext **npuContext)
+{
+  auto backend = getBackend();
+  if (!backend)
+  {
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+
+  return backend->createContext(deviceId, priority, npuContext);
+}
+
+int DevManager::destroyContext(NpuContext *npuContext)
+{
+  auto backend = getBackend();
+  if (!backend)
+  {
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+
+  return backend->destroyContext(npuContext);
 }
 
 } // namespace core
