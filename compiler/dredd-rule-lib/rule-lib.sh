@@ -234,4 +234,22 @@ tensor_dtype()
   echo ${ACTUAL}
 }
 
+const_count()
+{
+  argc_check $# 1
+  file_path_check ${COMPILED_FILE}
+  file_path_check ${INSPECT_PROG_PATH}
+
+  set -o pipefail
+
+  RESULT=`init_error_log ; ${INSPECT_PROG_PATH} --constants ${COMPILED_FILE}`
+  check_success_exit_code $? 0
+
+  # note : grep's exit code is 2 in case of error.
+  ACTUAL=`init_error_log ; echo "${RESULT}" | grep -wc "$1"`
+  check_error_exit_code $? 2
+
+  echo ${ACTUAL}
+}
+
 # TODO define more qullity test function

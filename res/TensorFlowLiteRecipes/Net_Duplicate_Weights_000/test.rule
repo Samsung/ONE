@@ -2,4 +2,7 @@
 
 RULE "VERIFY_FILE_FORMAT" $(verify_file_format) '=' 1
 
-RULE "CIRCLE_CONST_COUNT" $(op_count CONST) '=' 2
+RULE "FILTER_COUNT" $(const_count filter) '=' 1
+RULE "DUPLICATE_FILTER_COUNT" $(const_count filter_1) '=' 0
+RULE "BIAS_COUNT" $(const_count bias) '=' 1
+RULE "DUPLICATE_BIAS_COUNT" $(const_count bias_1) '=' 0
