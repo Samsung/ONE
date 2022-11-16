@@ -248,6 +248,14 @@ void OperationDumper::visit(const LSTM &node)
                << node.getOutputs().at(LSTM::Output::OUTPUT) << ")" << std::endl;
 }
 
+void OperationDumper::visit(const ModelEdge &node)
+{
+  VERBOSE(LIR) << "* " << node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(0) << ") " << std::endl;
+  VERBOSE(LIR) << "  - To_tensor : subg(" << node.param().to_subg_index << ") input("
+               << node.param().to_input_index << ")" << std::endl;
+}
+
 void OperationDumper::visit(const Pack &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const Pad &node)
