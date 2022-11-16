@@ -53,6 +53,8 @@ void DBus::on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer us
   NpudCoreIface *iface = NPUD_CORE_GET_IFACE(core);
 
   iface->handle_device_get_available_list = &on_handle_device_get_available_list;
+  iface->handle_context_create = &on_handle_context_create;
+  iface->handle_context_destroy = &on_handle_context_destroy;
 
   if (!g_dbus_interface_skeleton_export(G_DBUS_INTERFACE_SKELETON(core), conn, "/org/tizen/npud",
                                         &error))
@@ -83,6 +85,28 @@ gboolean DBus::on_handle_device_get_available_list(NpudCore *object,
   int error = Server::instance().core().getAvailableDeviceList(list);
   // TODO Implement variant outputs
   npud_core_complete_device_get_available_list(object, invocation, error);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_context_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                        gint arg_device_id, gint arg_priority)
+{
+  VERBOSE(DBus) << "on_handle_context_create with " << arg_device_id << ", " << arg_priority
+                << std::endl;
+  guint64 out_ctx;
+  int ret = -1;
+  // TODO Invoke Core function.
+  npud_core_complete_context_create(object, invocation, out_ctx, ret);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_context_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                         guint64 arg_ctx)
+{
+  VERBOSE(DBus) << "on_handle_context_destroy with " << arg_ctx << std::endl;
+  int ret = -1;
+  // TODO Invoke Core function.
+  npud_core_complete_context_destroy(object, invocation, ret);
   return TRUE;
 }
 
