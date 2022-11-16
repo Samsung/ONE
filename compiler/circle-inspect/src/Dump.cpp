@@ -202,3 +202,36 @@ void DumpTensorDType::run(std::ostream &os, const circle::Model *model)
 }
 
 } // namespace circleinspect
+
+namespace circleinspect
+{
+
+void DumpConstants::run(std::ostream &os, const circle::Model *model)
+{
+  mio::circle::Reader reader(model);
+
+  const uint32_t subgraph_size = reader.num_subgraph();
+
+  for (uint32_t g = 0; g < subgraph_size; g++)
+  {
+    reader.select_subgraph(g);
+    auto tensors = reader.tensors();
+
+    for (uint32_t i = 0; i < tensors->Length(); ++i)
+    {
+      const auto tensor = tensors->Get(i);
+      if (tensor->is_variable())
+        continue;
+
+      auto const buffer_id = tensor->buffer();
+
+      auto const buffer_size = reader.buffer_info(buffer_id, nullptr);
+      if (buffer_size == 0)
+        continue;
+
+      os << reader.tensor_name(tensor) << std::endl;
+    }
+  }
+}
+
+} // namespace circleinspect
