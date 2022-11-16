@@ -1,0 +1,7 @@
+# To check if Unroll of UnidriectionalSequenceLSTM works
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "NO_UNIDIRSEQLSTM"        $(op_count UNIDIRECTIONAL_SEQUENCE_LSTM) '=' 0
+RULE    "YES_LOGISTICS"           $(op_count LOGISTICS) '=' 3
+RULE    "YES_MUL"                 $(op_count MUL) '=' 3
