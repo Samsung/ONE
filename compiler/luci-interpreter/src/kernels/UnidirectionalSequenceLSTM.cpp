@@ -70,8 +70,6 @@ void CalculateLstmOutputFloat(int n_batch, int n_cell, int n_output, const float
   tensor_utils::VectorVectorCwiseProduct(output_gate, scratch, n_batch * n_cell, scratch);
 
   const bool use_projection = (projection_weights != nullptr);
-// TODO remove #pragma
-#pragma GCC diagnostic ignored "-Wrestrict"
   const bool use_projection_bias = (projection_bias != nullptr);
 
   if (use_projection)
