@@ -21,7 +21,10 @@ namespace npud
 namespace core
 {
 
-Core::Core() noexcept : _devManager(std::make_unique<DevManager>()) {}
+Core::Core() noexcept
+  : _devManager(std::make_unique<DevManager>()), _contextManager(std::make_unique<ContextManager>())
+{
+}
 
 void Core::init() { _devManager->loadModules(); }
 

@@ -18,6 +18,7 @@
 #define __ONE_SERVICE_NPUD_CORE_CORE_H__
 
 #include "DevManager.h"
+#include "ContextManager.h"
 
 #include <vector>
 #include <string>
@@ -45,6 +46,7 @@ public:
 
 private:
   std::unique_ptr<DevManager> _devManager;
+  std::unique_ptr<ContextManager> _contextManager;
 };
 
 } // namespace core
