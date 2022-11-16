@@ -857,6 +857,8 @@ void UnidirectionalSequenceLSTM::evalFloat() const
   std::fill_n(scratchpad_data, sp_output_state->shape().num_elements(), 0);
   scratchpad_data = getTensorData<float>(sp_cell_state);
   std::fill_n(scratchpad_data, sp_cell_state->shape().num_elements(), 0);
+  scratchpad_data = getTensorData<float>(sp_scratch_buffer);
+  std::fill_n(scratchpad_data, sp_scratch_buffer->shape().num_elements(), 0);
 
   TfLiteLSTMParams lstm_params{};
   lstm_params.activation = getTfLiteActivation(params().activation);
