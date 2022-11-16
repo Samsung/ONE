@@ -84,12 +84,8 @@ The build method described here is a `native build` in which the build environme
 ```
 $ tree -L 2 ./Product
 ./Product
-├── obj -> /home/sjlee/star/one/Product/x86_64-linux.release/obj
 ├── out -> /home/sjlee/star/one/Product/x86_64-linux.release/out
 └── x86_64-linux.release
-    ├── BUILD
-    ├── CONFIGURE
-    ├── INSTALL
     ├── obj
     └── out
 
@@ -98,17 +94,16 @@ $ tree -L 2 ./Product
 $ tree -L 3 ./Product/out
 ./Product/out
 ├── bin
-│   ├── nnapi_test
 │   ├── onert_run
 │   ├── tflite_comparator
 │   └── tflite_run
 ├── include
 │   ├── nnfw
-│   │   ├── NeuralNetworks.h
 │   │   ├── NeuralNetworksEx.h
 │   │   ├── NeuralNetworksExtensions.h
-│   │   ├── nnfw.h
-│   │   └── nnfw_experimental.h
+│   │   ├── NeuralNetworks.h
+│   │   ├── nnfw_experimental.h
+│   │   └── nnfw.h
 │   └── onert
 │       ├── backend
 │       ├── compiler
@@ -117,55 +112,59 @@ $ tree -L 3 ./Product/out
 │       └── util
 ├── lib
 │   ├── libbackend_cpu.so
-│   ├── libcircle_loader.so
+│   ├── libbackend_ruy.so
 │   ├── libneuralnetworks.so
 │   ├── libnnfw-dev.so
-│   ├── libonert_core.so
-│   └── libtflite_loader.so
+│   └── libonert_core.so
+├── nnapi-gtest
+│   ├── nnapi_gtest
+│   ├── nnapi_gtest.skip
+│   ├── nnapi_gtest.skip.noarch.interp
+│   └── nnapi_gtest.skip.x86_64-linux.cpu
 ├── test
-│   ├── FillFrom_runner
 │   ├── command
 │   │   ├── nnpkg-test
 │   │   ├── prepare-model
 │   │   ├── unittest
 │   │   └── verify-tflite
+│   ├── FillFrom_runner
 │   ├── list
 │   │   ├── benchmark_nnpkg_model_list.txt
-│   │   ├── frameworktest_list.aarch64.acl_cl.txt
-│   │   ├── frameworktest_list.aarch64.acl_neon.txt
-│   │   ├── frameworktest_list.aarch64.cpu.txt
-│   │   ├── frameworktest_list.armv7l.acl_cl.txt
-│   │   ├── frameworktest_list.armv7l.acl_neon.txt
-│   │   ├── frameworktest_list.armv7l.cpu.txt
-│   │   ├── frameworktest_list.noarch.interp.txt
-│   │   ├── frameworktest_list.x86_64.cpu.txt
 │   │   ├── nnpkg_test_list.armv7l-linux.acl_cl
 │   │   ├── nnpkg_test_list.armv7l-linux.acl_neon
 │   │   ├── nnpkg_test_list.armv7l-linux.cpu
 │   │   ├── nnpkg_test_list.noarch.interp
-│   │   ├── tflite_loader_list.aarch64.txt
-│   │   └── tflite_loader_list.armv7l.txt
+│   │   ├── tflite_comparator.aarch64.acl_cl.list
+│   │   ├── tflite_comparator.aarch64.acl_neon.list
+│   │   ├── tflite_comparator.aarch64.cpu.list
+│   │   ├── tflite_comparator.armv7l.acl_cl.list
+│   │   ├── tflite_comparator.armv7l.acl_neon.list
+│   │   ├── tflite_comparator.armv7l.cpu.list
+│   │   ├── tflite_comparator.noarch.interp.list
+│   │   └── tflite_comparator.x86_64.cpu.list
 │   ├── models
-│   │   ├── nnfw_api_gtest
 │   │   ├── run_test.sh
 │   │   └── tflite
 │   ├── nnpkgs
 │   │   └── FillFrom
 │   └── onert-test
-├── unittest
-│   ├── nnapi_gtest
-│   ├── nnapi_gtest.skip
-│   ├── nnapi_gtest.skip.noarch.interp
-│   └── nnapi_gtest.skip.x86_64-linux.cpu
-└── unittest_standalone
+└── unittest
+    ├── ndarray_test
     ├── nnfw_api_gtest
-    ├── test_compute
-    ├── test_onert
-    ├── test_onert_backend_cpu_common
+    ├── nnfw_api_gtest_models
+    │   ├── add
+    │   ├── add_invalid_manifest
+    │   ├── add_no_manifest
+    │   ├── if_dynamic
+    │   ├── mobilenet_v1_1.0_224
+    │   └── while_dynamic
+    ├── nnfw_lib_misc_test
+    ├── test_cker
+    ├── test_onert_core
     ├── test_onert_frontend_nnapi
     └── tflite_test
 
-20 directories, 47 files
+26 directories, 46 files
 
 ```
 
