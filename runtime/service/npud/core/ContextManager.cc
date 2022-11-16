@@ -42,8 +42,7 @@ void ContextManager::newContext(NpuContext *npuContext, ContextID *contextId)
   *contextId = context->contextId;
   _contexts.emplace_back(std::move(context));
 
-  // Test
-  this->listContexts();
+  listContexts();
 }
 
 void ContextManager::deleteContext(ContextID contextId)
@@ -58,12 +57,12 @@ void ContextManager::deleteContext(ContextID contextId)
 
   _contexts.erase(iter, _contexts.end());
 
-  // Test
-  this->listContexts();
+  listContexts();
 }
 
 void ContextManager::listContexts()
 {
+#ifdef DEBUG
   VERBOSE(ContextManager) << "Size: " << _contexts.size() << std::endl;
   for (auto &context : _contexts)
   {
@@ -71,6 +70,7 @@ void ContextManager::listContexts()
     VERBOSE(ContextManager) << "contextId: " << context->contextId << std::endl;
   }
   VERBOSE(ContextManager) << "==========================" << std::endl;
+#endif
 }
 
 const std::vector<std::unique_ptr<Context>>::iterator
