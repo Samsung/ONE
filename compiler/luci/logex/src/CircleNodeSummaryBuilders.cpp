@@ -63,6 +63,10 @@ std::string to_str(loco::DataType type)
   }
 }
 
+std::string to_str(float value) { return std::to_string(value); }
+
+std::string to_str(int32_t value) { return std::to_string(value); }
+
 std::string to_str(bool value) { return value ? "true" : "false"; }
 
 std::string to_str(luci::FusedActFunc fused)

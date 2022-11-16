@@ -185,6 +185,8 @@ addeval(Unpack_003)
 #addeval(While_002)
 #addeval(While_003)
 addeval(YUV_TO_RGB_U8_000)
+addeval(UnidirectionalSequenceLSTM_002)
+addeval(UnidirectionalSequenceLSTM_003)
 #addeval(ZerosLike_000)
 
 # Simple Network test

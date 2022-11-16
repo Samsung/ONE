@@ -17,7 +17,6 @@
 
 #include "kernels/UnidirectionalSequenceLSTM.h"
 #include "kernels/Utils.h"
-#include "PALUnidirectionalSequenceLSTM.h"
 
 #include <tensorflow/lite/kernels/internal/tensor_utils.h>
 
@@ -70,8 +69,6 @@ void CalculateLstmOutputFloat(int n_batch, int n_cell, int n_output, const float
   tensor_utils::VectorVectorCwiseProduct(output_gate, scratch, n_batch * n_cell, scratch);
 
   const bool use_projection = (projection_weights != nullptr);
-// TODO remove #pragma
-#pragma GCC diagnostic ignored "-Wrestrict"
   const bool use_projection_bias = (projection_bias != nullptr);
 
   if (use_projection)
@@ -807,9 +804,11 @@ void UnidirectionalSequenceLSTM::configure()
   // output_state and cell_state are variable tensor; use scratchpad.
   getOutputTensors()[1]->resize(output_state_shape);
   getOutputTensors()[2]->resize(cell_state_shape);
-
   const bool use_cifg = (input_to_input_weights() == nullptr);
-  luci_interpreter_pal::SetupScratchpadTensor(getOutputTensors()[3], use_cifg, n_batch, n_cell);
+  if (use_cifg)
+    getOutputTensors()[3]->resize({n_batch, n_cell * 3});
+  else
+    getOutputTensors()[3]->resize({n_batch, n_cell * 4});
 
   // hybrid not supported
   if (input_to_output_weights()->element_type() == loco::DataType::U8 &&
@@ -857,6 +856,8 @@ void UnidirectionalSequenceLSTM::evalFloat() const
   std::fill_n(scratchpad_data, sp_output_state->shape().num_elements(), 0);
   scratchpad_data = getTensorData<float>(sp_cell_state);
   std::fill_n(scratchpad_data, sp_cell_state->shape().num_elements(), 0);
+  scratchpad_data = getTensorData<float>(sp_scratch_buffer);
+  std::fill_n(scratchpad_data, sp_scratch_buffer->shape().num_elements(), 0);
 
   TfLiteLSTMParams lstm_params{};
   lstm_params.activation = getTfLiteActivation(params().activation);

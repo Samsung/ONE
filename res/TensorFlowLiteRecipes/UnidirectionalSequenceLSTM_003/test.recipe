@@ -1,0 +1,193 @@
+operand {
+  name: "serving_default_input_16:0"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+  }
+  is_variable: false
+}
+operand {
+  name: "sequential_15/lstm_15/zeros"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+  is_variable: true
+}
+operand {
+  name: "arith.constant"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "-0.960517"
+  }
+  is_variable: false
+}
+operand {
+  name: "arith.constant1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "-0.182756"
+  }
+}
+operand {
+  name: "arith.constant2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.028718"
+  }
+}
+operand {
+  name: "arith.constant3"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.207806"
+  }
+}
+operand {
+  name: "arith.constant4"
+  type: FLOAT32
+  shape {
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+  }
+}
+operand {
+  name: "arith.constant5"
+  type: FLOAT32
+  shape {
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+  }
+}
+operand {
+  name: "arith.constant6"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "-0.476033"
+  }
+}
+operand {
+  name: "arith.constant7"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.152916"
+  }
+}
+operand {
+  name: "arith.constant8"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.308059"
+  }
+}
+operand {
+  name: "arith.constant9"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.329067"
+  }
+}
+operand {
+  name: "sequential_15/lstm_15/zeros1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+  }
+  is_variable: true
+}
+operand {
+  name: "StatefulPartitionedCall:0"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+  }
+}
+operation {
+  type: "UnidirectionalSequenceLSTM"
+  input: "serving_default_input_16:0"
+  input: "arith.constant9"
+  input: "arith.constant8"
+  input: "arith.constant7"
+  input: "arith.constant6"
+  input: "arith.constant3"
+  input: "arith.constant2"
+  input: "arith.constant1"
+  input: "arith.constant"
+  input: ""
+  input: ""
+  input: ""
+  input: "arith.constant4"
+  input: "arith.constant5"
+  input: "arith.constant4"
+  input: "arith.constant4"
+  input: ""
+  input: ""
+  input: "sequential_15/lstm_15/zeros"
+  input: "sequential_15/lstm_15/zeros1"
+  input: ""
+  input: ""
+  input: ""
+  input: ""
+  output: "StatefulPartitionedCall:0"
+  unidirectional_sequence_lstm_options {
+    activation: TANH
+    cell_clip: 10
+    proj_clip: 0
+    time_major: false
+    asymmetric_quantize_inputs: false
+  }
+}
+input: "serving_default_input_16:0"
+output: "StatefulPartitionedCall:0"

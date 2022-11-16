@@ -120,6 +120,19 @@ for idx in range(num_outputs):
             if np.allclose(
                     luci_output_data, luci_output_data_ref, rtol=rtolf32,
                     atol=atolf32) == False:
+                diff_val = np.subtract(luci_output_data_ref, luci_output_data)
+                print("Reference", flush=True)
+                print(luci_output_data_ref, flush=True)
+                print("Diff", flush=True)
+                print(diff_val, flush=True)
+                print(
+                    "Diff Max",
+                    np.ndarray.max(diff_val),
+                    "in tolerance",
+                    rtolf32,
+                    atolf32,
+                    flush=True)
+
                 raise SystemExit("Execution result of " + circle_model_ref +
                                  " does not match with " + circle_model)
         elif output_dtype == np.int64:

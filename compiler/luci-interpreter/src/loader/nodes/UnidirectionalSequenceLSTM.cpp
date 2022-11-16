@@ -74,14 +74,16 @@ build_kernel_CircleUnidirectionalSequenceLSTM(const luci::CircleNode *circle_nod
   sp_output_state->set_observable(false);
   sp_output_state->set_data_buffer(nullptr);
   Tensor *tmp_1 = helper.getRuntimeGraph(node->graph())->addTensor(std::move(sp_output_state));
+  tmp_1->resize(output_state->shape());
 
   auto sp_cell_state =
     std::make_unique<Tensor>(cell_state->element_type(), Shape({}), AffineQuantization{}, "");
   sp_cell_state->set_observable(false);
   sp_cell_state->set_data_buffer(nullptr);
   Tensor *tmp_2 = helper.getRuntimeGraph(node->graph())->addTensor(std::move(sp_cell_state));
+  tmp_2->resize(cell_state->shape());
 
-  auto sp_3 = std::make_unique<Tensor>(input->element_type(), Shape({}), AffineQuantization{}, "");
+  auto sp_3 = std::make_unique<Tensor>(output->element_type(), Shape({}), AffineQuantization{}, "");
   sp_3->set_observable(false);
   sp_3->set_data_buffer(nullptr);
   Tensor *tmp_3 = helper.getRuntimeGraph(node->graph())->addTensor(std::move(sp_3));
@@ -94,11 +96,11 @@ build_kernel_CircleUnidirectionalSequenceLSTM(const luci::CircleNode *circle_nod
   params.asymmetric_quantize_inputs = node->asymmetric_quantize_inputs();
 
   return std::make_unique<kernels::UnidirectionalSequenceLSTM>(
-    input, input_to_input_weights, input_to_cell_weights, input_to_forget_weights,
-    input_to_output_weights, recurrent_to_input_weights, recurrent_to_cell_weights,
-    recurrent_to_forget_weights, recurrent_to_output_weights, cell_to_input_weights,
+    input, input_to_input_weights, input_to_forget_weights, input_to_cell_weights,
+    input_to_output_weights, recurrent_to_input_weights, recurrent_to_forget_weights,
+    recurrent_to_cell_weights, recurrent_to_output_weights, cell_to_input_weights,
     cell_to_forget_weights, cell_to_output_weights, input_gate_bias, forget_gate_bias,
-    cell_gate_bias, output_gate_bias, projection_weights, projection_bias, output_state, cell_state,
+    cell_gate_bias, output_gate_bias, projection_weights, projection_bias, tmp_1, tmp_2,
     input_layer_norm_coefficients, forget_layer_norm_coefficients, cell_layer_norm_coefficients,
     output_layer_norm_coefficients, output, tmp_1, tmp_2, tmp_3, params);
 }

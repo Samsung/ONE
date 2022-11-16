@@ -40,39 +40,49 @@ CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(const BuildN
   auto &inputs = bna.input_nodes;
   node->input(inputs.at(0));
   node->fw_input_to_input_weights(inputs.at(1)); // Optional
-  node->fw_input_to_cell_weights(inputs.at(2));
-  node->fw_input_to_forget_weights(inputs.at(3));
+  node->fw_input_to_forget_weights(inputs.at(2));
+  node->fw_input_to_cell_weights(inputs.at(3));
   node->fw_input_to_output_weights(inputs.at(4));
+
   node->fw_recurrent_to_input_weights(inputs.at(5)); // Optional
-  node->fw_recurrent_to_cell_weights(inputs.at(6));
-  node->fw_recurrent_to_forget_weights(inputs.at(7));
+  node->fw_recurrent_to_forget_weights(inputs.at(6));
+  node->fw_recurrent_to_cell_weights(inputs.at(7));
   node->fw_recurrent_to_output_weights(inputs.at(8));
+
   node->fw_cell_to_input_weights(inputs.at(9));   // Optional
   node->fw_cell_to_forget_weights(inputs.at(10)); // Optional
   node->fw_cell_to_output_weights(inputs.at(11)); // Optional
-  node->fw_input_gate_bias(inputs.at(12));        // Optional
+
+  node->fw_input_gate_bias(inputs.at(12)); // Optional
   node->fw_forget_gate_bias(inputs.at(13));
   node->fw_cell_gate_bias(inputs.at(14));
   node->fw_output_gate_bias(inputs.at(15));
-  node->fw_projection_weights(inputs.at(16));     // Optional
-  node->fw_projection_bias(inputs.at(17));        // Optional
+
+  node->fw_projection_weights(inputs.at(16)); // Optional
+  node->fw_projection_bias(inputs.at(17));    // Optional
+
   node->bw_input_to_input_weights(inputs.at(18)); // Optional
-  node->bw_input_to_cell_weights(inputs.at(19));
-  node->bw_input_to_forget_weights(inputs.at(20));
+  node->bw_input_to_forget_weights(inputs.at(19));
+  node->bw_input_to_cell_weights(inputs.at(20));
   node->bw_input_to_output_weights(inputs.at(21));
+
   node->bw_recurrent_to_input_weights(inputs.at(22)); // Optional
-  node->bw_recurrent_to_cell_weights(inputs.at(23));
-  node->bw_recurrent_to_forget_weights(inputs.at(24));
+  node->bw_recurrent_to_forget_weights(inputs.at(23));
+  node->bw_recurrent_to_cell_weights(inputs.at(24));
   node->bw_recurrent_to_output_weights(inputs.at(25));
+
   node->bw_cell_to_input_weights(inputs.at(26));  // Optional
   node->bw_cell_to_forget_weights(inputs.at(27)); // Optional
   node->bw_cell_to_output_weights(inputs.at(28)); // Optional
-  node->bw_input_gate_bias(inputs.at(29));        // Optional
+
+  node->bw_input_gate_bias(inputs.at(29)); // Optional
   node->bw_forget_gate_bias(inputs.at(30));
   node->bw_cell_gate_bias(inputs.at(31));
   node->bw_output_gate_bias(inputs.at(32));
+
   node->bw_projection_weights(inputs.at(33)); // Optional
   node->bw_projection_bias(inputs.at(34));    // Optional
+
   node->fw_activation_state(inputs.at(35));
   node->fw_cell_state(inputs.at(36));
   node->bw_activation_state(inputs.at(37));
@@ -83,6 +93,7 @@ CircleNode *CircleBidirectionalSequenceLSTMGraphBuilder::build_node(const BuildN
   node->fw_auxillary_input_to_forget_weights(inputs.at(41)); // Optional
   node->fw_auxillary_input_to_cell_weights(inputs.at(42));   // Optional
   node->fw_auxillary_input_to_output_weights(inputs.at(43)); // Optional
+
   node->bw_auxillary_input_to_input_weights(inputs.at(44));  // Optional
   node->bw_auxillary_input_to_forget_weights(inputs.at(45)); // Optional
   node->bw_auxillary_input_to_cell_weights(inputs.at(46));   // Optional

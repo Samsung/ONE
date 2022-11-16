@@ -85,6 +85,9 @@ for i in range(num_inputs):
     else:
         raise SystemExit("Unsupported input dtype")
 
+    print("Input", flush=True)
+    print(input_data, flush=True)
+
     interpreter.set_tensor(input_details["index"], input_data)
     input_data.tofile(circle_model + ".input" + str(i))
     input_details["shape"].tofile(circle_model + ".input" + str(i) + ".shape", sep=',')
@@ -125,6 +128,21 @@ for idx in range(len(inpt_output_details)):
             if np.allclose(
                     luci_output_data, intp_output_data, rtol=rtolf32,
                     atol=atolf32) == False:
+                diff_val = np.subtract(intp_output_data, luci_output_data)
+                print("Reference", flush=True)
+                print(intp_output_data, flush=True)
+                print("Output", flush=True)
+                print(luci_output_data, flush=True)
+                print("Diff", flush=True)
+                print(diff_val, flush=True)
+                print(
+                    "Diff Max",
+                    np.ndarray.max(diff_val),
+                    "in tolerance",
+                    rtolf32,
+                    atolf32,
+                    flush=True)
+
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
             output_dtype = "float32"
