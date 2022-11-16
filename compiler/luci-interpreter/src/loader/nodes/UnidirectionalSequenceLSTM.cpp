@@ -94,9 +94,9 @@ build_kernel_CircleUnidirectionalSequenceLSTM(const luci::CircleNode *circle_nod
   params.asymmetric_quantize_inputs = node->asymmetric_quantize_inputs();
 
   return std::make_unique<kernels::UnidirectionalSequenceLSTM>(
-    input, input_to_input_weights, input_to_cell_weights, input_to_forget_weights,
-    input_to_output_weights, recurrent_to_input_weights, recurrent_to_cell_weights,
-    recurrent_to_forget_weights, recurrent_to_output_weights, cell_to_input_weights,
+    input, input_to_input_weights, input_to_forget_weights, input_to_cell_weights,
+    input_to_output_weights, recurrent_to_input_weights, recurrent_to_forget_weights,
+    recurrent_to_cell_weights, recurrent_to_output_weights, cell_to_input_weights,
     cell_to_forget_weights, cell_to_output_weights, input_gate_bias, forget_gate_bias,
     cell_gate_bias, output_gate_bias, projection_weights, projection_bias, output_state, cell_state,
     input_layer_norm_coefficients, forget_layer_norm_coefficients, cell_layer_norm_coefficients,
