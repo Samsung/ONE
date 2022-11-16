@@ -68,6 +68,10 @@ public:
   {
     throw new std::runtime_error{"Interpreter does not support subgraph calls(control flow ops)"};
   }
+  const std::vector<backend::builtin::IOTensor *> &getInputTensors() const final
+  {
+    throw new std::runtime_error{"Interpreter does not support this function."};
+  }
   const std::vector<backend::builtin::IOTensor *> &getOutputTensors() const final
   {
     throw new std::runtime_error{"Interpreter does not support this function."};
