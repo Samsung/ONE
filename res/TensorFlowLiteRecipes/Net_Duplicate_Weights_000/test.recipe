@@ -1,0 +1,77 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 32 dim: 32 dim: 1 }
+}
+operand {
+  name: "filter"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 dim: 1 }
+  filler {
+    tag: "constant"
+    arg: "1"
+  }
+}
+operand {
+  name: "filter_1"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 dim: 1 }
+  filler {
+    tag: "constant"
+    arg: "1"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler {
+    tag: "constant"
+    arg: "1"
+  }
+}
+operand {
+  name: "bias_1"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler {
+    tag: "constant"
+    arg: "1"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 31 dim: 31 dim: 1 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+  input: "ifm"
+  input: "filter"
+  input: "bias"
+  output: "ofm"
+}
+operand {
+  name: "output"
+  type: FLOAT32
+  shape { dim: 1 dim: 30 dim: 30 dim: 1 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+  input: "ofm"
+  input: "filter_1"
+  input: "bias_1"
+  output: "output"
+}
+input: "ifm"
+output: "output"
