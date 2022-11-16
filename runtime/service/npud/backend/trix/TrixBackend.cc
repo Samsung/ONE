@@ -77,7 +77,7 @@ NpuStatus TrixBackend::getVersion(std::string &version)
   return NPU_STATUS_ERROR_NOT_SUPPORTED;
 }
 
-NpuStatus TrixBackend::createContext(int device_fd, int priority, NpuContext **ctx)
+NpuStatus TrixBackend::createContext(int deviceId, int priority, NpuContext **ctx)
 {
   // TODO Implement details
   return NPU_STATUS_ERROR_NOT_SUPPORTED;

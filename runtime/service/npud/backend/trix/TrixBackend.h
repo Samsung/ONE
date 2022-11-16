@@ -45,7 +45,7 @@ public:
   ~TrixBackend();
 
   NpuStatus getVersion(std::string &version) override;
-  NpuStatus createContext(int device_fd, int priority, NpuContext **ctx) override;
+  NpuStatus createContext(int deviceId, int priority, NpuContext **ctx) override;
   NpuStatus destroyContext(NpuContext *ctx) override;
   NpuStatus createBuffer(NpuContext *ctx, GenericBuffer *buffer) override;
   NpuStatus destroyBuffer(NpuContext *ctx, GenericBuffer *buffer) override;
