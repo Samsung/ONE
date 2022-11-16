@@ -17,7 +17,6 @@
 
 #include "kernels/UnidirectionalSequenceLSTM.h"
 #include "kernels/Utils.h"
-#include "PALUnidirectionalSequenceLSTM.h"
 
 #include <tensorflow/lite/kernels/internal/tensor_utils.h>
 
@@ -809,7 +808,10 @@ void UnidirectionalSequenceLSTM::configure()
   getOutputTensors()[2]->resize(cell_state_shape);
 
   const bool use_cifg = (input_to_input_weights() == nullptr);
-  luci_interpreter_pal::SetupScratchpadTensor(getOutputTensors()[3], use_cifg, n_batch, n_cell);
+  if (use_cifg)
+    getOutputTensors()[3]->resize({n_batch, n_cell * 3});
+  else
+    getOutputTensors()[3]->resize({n_batch, n_cell * 4});
 
   // hybrid not supported
   if (input_to_output_weights()->element_type() == loco::DataType::U8 &&
