@@ -124,6 +124,9 @@ struct UnrollLSTM
   luci::CircleConst *transpose_perm(void);
   luci::CircleTranspose *first_transpose(luci::CircleNode *input);
   std::vector<luci::CircleUnpackOut *> input_unpacks(luci::CircleNode *input);
+  luci::CircleConst *merged_weights(luci::CircleConst *iw, luci::CircleConst *fw,
+                                    luci::CircleConst *cw, luci::CircleConst *ow);
+  luci::CircleFullyConnected *create_input_matmul(luci::CircleNode *input);
 
   luci::CircleUnidirectionalSequenceLSTM *_lstm{nullptr};
   loco::Graph::NodeContext *_nctx{nullptr};
@@ -189,6 +192,82 @@ std::vector<luci::CircleUnpackOut *> UnrollLSTM::input_unpacks(luci::CircleNode 
   return outs;
 }
 
+luci::CircleConst *UnrollLSTM::merged_weights(luci::CircleConst *iw, luci::CircleConst *fw,
+                                              luci::CircleConst *cw, luci::CircleConst *ow)
+{
+  assert(iw != nullptr);
+  assert(fw != nullptr);
+  assert(cw != nullptr);
+  assert(ow != nullptr);
+
+  auto iw_rank = iw->rank();
+  assert(iw_rank == fw->rank());
+  assert(iw_rank == cw->rank());
+  assert(iw_rank == ow->rank());
+
+  uint32_t ne_w = 1;
+  for (uint32_t i = 0; i < iw_rank; i++)
+    ne_w *= iw->dim(i).value();
+
+  assert(iw->dtype() == loco::DataType::FLOAT32);
+  assert(fw->dtype() == loco::DataType::FLOAT32);
+  assert(cw->dtype() == loco::DataType::FLOAT32);
+  assert(ow->dtype() == loco::DataType::FLOAT32);
+
+  // merged weights
+  auto mw = _nctx->create<luci::CircleConst>();
+  mw->dtype(iw->dtype());
+  mw->rank(iw_rank);
+  mw->dim(0) = 4u * iw->dim(0).value();
+  for (uint32_t i = 1; i < iw_rank; i++)
+    mw->dim(i) = iw->dim(i);
+  mw->size<loco::DataType::FLOAT32>(4 * ne_w);
+  mw->shape_status(luci::ShapeStatus::VALID);
+  for (uint32_t i = 0; i < ne_w; ++i)
+  {
+    mw->at<loco::DataType::FLOAT32>(i + ne_w * 0) = iw->at<loco::DataType::FLOAT32>(i);
+    mw->at<loco::DataType::FLOAT32>(i + ne_w * 1) = fw->at<loco::DataType::FLOAT32>(i);
+    mw->at<loco::DataType::FLOAT32>(i + ne_w * 2) = cw->at<loco::DataType::FLOAT32>(i);
+    mw->at<loco::DataType::FLOAT32>(i + ne_w * 3) = ow->at<loco::DataType::FLOAT32>(i);
+  }
+  return mw;
+}
+
+luci::CircleFullyConnected *UnrollLSTM::create_input_matmul(luci::CircleNode *input)
+{
+  assert(input != nullptr);
+
+  // weights
+  auto iw = loco::must_cast<luci::CircleConst *>(_lstm->input_to_input_weights());
+  auto fw = loco::must_cast<luci::CircleConst *>(_lstm->input_to_forget_weights());
+  auto cw = loco::must_cast<luci::CircleConst *>(_lstm->input_to_cell_weights());
+  auto ow = loco::must_cast<luci::CircleConst *>(_lstm->input_to_output_weights());
+
+  auto fcw = merged_weights(iw, fw, cw, ow);
+  fcw->name(_name + "_fc_w");
+  luci::add_origin(fcw, luci::get_origin(_lstm));
+
+  // bias
+  auto ib = loco::must_cast<luci::CircleConst *>(_lstm->input_gate_bias());
+  auto fb = loco::must_cast<luci::CircleConst *>(_lstm->forget_gate_bias());
+  auto cb = loco::must_cast<luci::CircleConst *>(_lstm->cell_gate_bias());
+  auto ob = loco::must_cast<luci::CircleConst *>(_lstm->output_gate_bias());
+
+  auto fcb = merged_weights(ib, fb, cb, ob);
+  fcb->name(_name + "_fc_b");
+  luci::add_origin(fcb, luci::get_origin(_lstm));
+
+  auto fc = _nctx->create<luci::CircleFullyConnected>();
+  fc->input(input);
+  fc->weights(fcw);
+  fc->bias(fcb);
+  fc->fusedActivationFunction(luci::FusedActFunc::NONE);
+  fc->name(_name + "_fc");
+  luci::add_origin(fc, luci::get_origin(_lstm));
+
+  return fc;
+}
+
 bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
 {
   // NOTE shape of input of lstm is interpreted as [batch, timesteps, feature]
@@ -229,8 +308,12 @@ bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
   uint32_t step = 0;
   auto unpackout = unpacks[step];
 
+  // First FC
+  auto fc_1 = ulstm.create_input_matmul(unpackout);
+  assert(fc_1 != nullptr);
+
   // TODO implement
-  (void)unpackout;
+  (void)fc_1;
 
   return false;
 }
