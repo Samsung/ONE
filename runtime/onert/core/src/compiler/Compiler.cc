@@ -536,9 +536,21 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     model->iterate([&](const ir::SubgraphIndex &subg_index, ir::Graph &subg) {
       dot_dumper.dump(subg,
                       nnfw::misc::str("before_lower_model-", i, "-subg-", subg_index.value()));
+      // Find edges in subg
+      ir::ModelEdgeSet subg_edge_set;
+      if (model_edges != nullptr)
+      {
+        for (auto &edge : model_edges->edges)
+        {
+          if (model_index == std::get<0>(edge.from) && subg_index == std::get<1>(edge.from))
+            subg_edge_set.insert(edge);
+        }
+      }
+
       // Lower: Assign backend
       lowered_subgs[model_index][subg_index] =
-        std::make_unique<compiler::LoweredGraph>(subg, *_voptions[i]);
+        std::make_unique<compiler::LoweredGraph>(subg, *_voptions[i], subg_edge_set);
+
       // Set tracing_ctx for copied graph
       if (tracing_ctx != nullptr)
         tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),

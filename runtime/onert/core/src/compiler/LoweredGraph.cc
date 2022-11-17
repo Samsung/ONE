@@ -20,6 +20,7 @@
 #include "ManualScheduler.h"
 #include "pass/ConstantInsertionPass.h"
 #include "pass/ConstantLoweringPass.h"
+#include "pass/ModelEdgeInsertionPass.h"
 #include "pass/PassRunner.h"
 #include "pass/PermutationEliminationPass.h"
 #include "pass/PermutationInsertionPass.h"
@@ -39,9 +40,11 @@ namespace onert
 namespace compiler
 {
 
-LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &options) : _graph{graph}
+LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &options,
+                           const ir::ModelEdgeSet &edge_set)
+  : _graph{graph}
 {
-  lowerGraph(options);
+  lowerGraph(options, edge_set);
 }
 
 // TODO Design better class and constructor to represent parent_graph
@@ -49,10 +52,12 @@ LoweredGraph::LoweredGraph(const ir::Graph &parent_graph, const ir::Graph &graph
                            const CompilerOptions &options)
   : _graph{graph}, _parent_graph{parent_graph}
 {
-  lowerGraph(options);
+  // TODO Support real edge set
+  ir::ModelEdgeSet edge_set;
+  lowerGraph(options, edge_set);
 }
 
-void LoweredGraph::lowerGraph(const CompilerOptions &options)
+void LoweredGraph::lowerGraph(const CompilerOptions &options, const ir::ModelEdgeSet &edge_set)
 {
   // Build backend contexts
   auto &backend_manager = BackendManager::get();
@@ -98,6 +103,7 @@ void LoweredGraph::lowerGraph(const CompilerOptions &options)
   pass::PassRunner{}
     .append(std::make_unique<pass::ConstantInsertionPass>(*this))
     .append(std::make_unique<pass::ConstantLoweringPass>(*this))
+    .append(std::make_unique<pass::ModelEdgeInsertionPass>(*this, edge_set))
     .append(std::make_unique<pass::PermutationOperationPass>(*this))
     .append(std::make_unique<pass::PermutationInsertionPass>(*this))
     .run();
