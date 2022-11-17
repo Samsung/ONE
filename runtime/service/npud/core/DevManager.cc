@@ -92,50 +92,121 @@ void DevManager::releaseModules(void)
   }
 }
 
-std::shared_ptr<Backend> DevManager::getBackend() { return _dev->loader->getInstance(); }
+std::shared_ptr<Backend> DevManager::getBackend()
+{
+  if (!_dev)
+  {
+    throw std::runtime_error("No backend device.");
+  }
+  return _dev->loader->getInstance();
+}
 
 int DevManager::createContext(int deviceId, int priority, NpuContext **npuContext)
 {
-  return getBackend()->createContext(deviceId, priority, npuContext);
+  try
+  {
+    return getBackend()->createContext(deviceId, priority, npuContext);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
 }
 
 int DevManager::destroyContext(NpuContext *npuContext)
 {
-  return getBackend()->destroyContext(npuContext);
+  try
+  {
+    return getBackend()->destroyContext(npuContext);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
 }
 
 int DevManager::registerModel(NpuContext *npuContext, const std::string &modelPath,
                               ModelID *modelId)
 {
-  return getBackend()->registerModel(npuContext, modelPath, modelId);
+  try
+  {
+    return getBackend()->registerModel(npuContext, modelPath, modelId);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
 }
 
 int DevManager::unregisterModel(NpuContext *npuContext, ModelID modelId)
 {
-  return getBackend()->unregisterModel(npuContext, modelId);
+  try
+  {
+    return getBackend()->unregisterModel(npuContext, modelId);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
 }
 
 int DevManager::createRequest(NpuContext *npuContext, ModelID modelId, RequestID *requestId)
 {
-  return getBackend()->createRequest(npuContext, modelId, requestId);
+  try
+  {
+    return getBackend()->createRequest(npuContext, modelId, requestId);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
 }
 
 int DevManager::destroyRequest(NpuContext *npuContext, RequestID requestId)
 {
-  return getBackend()->destroyRequest(npuContext, requestId);
+  try
+  {
+    return getBackend()->destroyRequest(npuContext, requestId);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
 }
 
 int DevManager::setRequestData(NpuContext *npuContext, RequestID requestId, InputBuffers *inputBufs,
                                TensorDataInfos *inputInfos, OutputBuffers *outputBufs,
                                TensorDataInfos *outputInfos)
 {
-  return getBackend()->setRequestData(npuContext, requestId, inputBufs, inputInfos, outputBufs,
-                                      outputInfos);
+  try
+  {
+    return getBackend()->setRequestData(npuContext, requestId, inputBufs, inputInfos, outputBufs,
+                                        outputInfos);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
 }
 
 int DevManager::submitRequest(NpuContext *npuContext, RequestID requestId)
 {
-  return getBackend()->submitRequest(npuContext, requestId);
+  try
+  {
+    return getBackend()->submitRequest(npuContext, requestId);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
 }
 
 } // namespace core
