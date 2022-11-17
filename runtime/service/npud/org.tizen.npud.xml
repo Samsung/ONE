@@ -42,5 +42,35 @@
 	    <arg name="ctx" type="t" direction="in"  />
 	    <arg name="error" type="i" direction="out"  />
     </method>
+    <!--
+      network_create:
+      @ctx: The context handle.
+      @model_path: The model path to run.
+      @nw_handle: The Network handle.
+      @error: The error status of the function.
+
+      Create network.
+
+      TODO Support file descriptor input
+    -->
+    <method name="network_create">
+      <arg name="ctx" type="t" direction="in" />
+      <arg name="model_path" type="s" direction="in"  />
+      <arg name="nw_handle" type="u" direction="out"  />
+      <arg name="error" type="i" direction="out"  />
+    </method>
+    <!--
+      network_destroy:
+      @ctx: The context handle.
+      @nw_handle: The Network handle.
+      @error: The error status of the function.
+
+      Destroy network.
+    -->
+    <method name="network_destroy">
+      <arg name="ctx" type="t" direction="in" />
+      <arg name="nw_handle" type="u" direction="in" />
+      <arg name="error" type="i" direction="out"  />
+    </method>
   </interface>
 </node>
