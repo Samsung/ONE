@@ -91,10 +91,35 @@ std::shared_ptr<Backend> DevManager::getBackend()
 {
   if (!_dev)
   {
-    return nullptr;
+    throw std::runtime_error("No backend device.");
   }
-
   return _dev->loader->getInstance();
+}
+
+int DevManager::createContext(int deviceId, int priority, NpuContext **npuContext)
+{
+  try
+  {
+    return getBackend()->createContext(deviceId, priority, npuContext);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+}
+
+int DevManager::destroyContext(NpuContext *npuContext)
+{
+  try
+  {
+    return getBackend()->destroyContext(npuContext);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
 }
 
 } // namespace core

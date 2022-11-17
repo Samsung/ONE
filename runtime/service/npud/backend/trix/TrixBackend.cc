@@ -79,14 +79,26 @@ NpuStatus TrixBackend::getVersion(std::string &version)
 
 NpuStatus TrixBackend::createContext(int deviceId, int priority, NpuContext **ctx)
 {
-  // TODO Implement details
-  return NPU_STATUS_ERROR_NOT_SUPPORTED;
+  NpuContext *context = new NpuContext();
+  if (deviceId >= _dev->handles.size())
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+  context->defaultCore = deviceId;
+  // TODO Consider priority.
+  *ctx = context;
+  return NPU_STATUS_SUCCESS;
 }
 
 NpuStatus TrixBackend::destroyContext(NpuContext *ctx)
 {
-  // TODO Implement details
-  return NPU_STATUS_ERROR_NOT_SUPPORTED;
+  if (ctx == nullptr)
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  delete ctx;
+  return NPU_STATUS_SUCCESS;
 }
 
 NpuStatus TrixBackend::createBuffer(NpuContext *ctx, GenericBuffer *buffer)
