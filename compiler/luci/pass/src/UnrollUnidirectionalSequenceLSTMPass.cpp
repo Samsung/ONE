@@ -119,10 +119,45 @@
 namespace
 {
 
+struct UnrollLSTM
+{
+  luci::CircleUnidirectionalSequenceLSTM *_lstm{nullptr};
+  loco::Graph::NodeContext *_nctx{nullptr};
+  std::string _name;
+  uint32_t _batch{0};
+  uint32_t _timesteps{0};
+  uint32_t _units{0}; // output space dim
+};
+
 bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
 {
+  // NOTE shape of input of lstm is interpreted as [batch, timesteps, feature]
+  //      shape of output of lstm is interpreted as [batch, timesteps, units]
+  // TODO add more conditions to check LSTM
+  assert(lstm->rank() == 3); // use assert to findout when this happens
+  if (lstm->rank() != 3)
+    return false;
+  if (!(lstm->dim(0).known() and lstm->dim(1).known() and lstm->dim(2).known()))
+    return false;
+
+  UnrollLSTM ulstm;
+  ulstm._lstm = lstm;
+  ulstm._nctx = lstm->graph()->nodes();
+  ulstm._name = lstm->name();
+  ulstm._batch = lstm->dim(0).value();
+  ulstm._timesteps = lstm->dim(1).value();
+  ulstm._units = lstm->dim(2).value(); // output space dim
+
+  luci::CircleNode *input = loco::must_cast<luci::CircleNode *>(lstm->input());
+  assert(input->rank() == 3); // use assert to findout when this happens
+  if (input->rank() != 3)
+    return false;
+  assert(input->dim(0).value() == ulstm._batch);
+  assert(input->dim(1).value() == ulstm._timesteps);
+
   // TODO implement
-  (void)lstm;
+  (void)ulstm;
+
   return false;
 }
 
