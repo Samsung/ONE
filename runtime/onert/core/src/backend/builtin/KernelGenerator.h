@@ -56,6 +56,7 @@ public:
 
 private:
   void visit(const ir::operation::If &) override;
+  void visit(const ir::operation::ModelEdge &) override;
   void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::While &) override;
 

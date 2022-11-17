@@ -17,6 +17,7 @@
 #include "KernelGenerator.h"
 
 #include "kernel/IfLayer.h"
+#include "kernel/ModelEdgeLayer.h"
 #include "kernel/PermuteLayer.h"
 #include "kernel/WhileLayer.h"
 
@@ -92,6 +93,20 @@ void KernelGenerator::visit(const ir::operation::If &node)
     cond_tensor, input_tensors, output_tensors, then_subg_index, else_subg_index, _executors,
     _model_index, _external_context);
 
+  _return_fn = std::move(fn);
+}
+void KernelGenerator::visit(const ir::operation::ModelEdge &node)
+{
+  const auto to_model_index = node.param().to_model_index;
+  const auto to_subg_index = node.param().to_subg_index;
+  const auto to_input_index = node.param().to_input_index;
+
+  const auto input_index{node.getInputs().at(ir::operation::ModelEdge::Input::INPUT)};
+
+  std::vector<ITensor *> input_tensors{getTensor(input_index)};
+
+  auto fn = std::make_unique<kernel::ModelEdgeLayer>(input_tensors, to_model_index, to_subg_index,
+                                                     to_input_index, _executors, _external_context);
   _return_fn = std::move(fn);
 }
 
