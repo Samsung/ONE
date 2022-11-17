@@ -121,6 +121,9 @@ namespace
 
 struct UnrollLSTM
 {
+  luci::CircleConst *transpose_perm(void);
+  luci::CircleTranspose *first_transpose(luci::CircleNode *input);
+
   luci::CircleUnidirectionalSequenceLSTM *_lstm{nullptr};
   loco::Graph::NodeContext *_nctx{nullptr};
   std::string _name;
@@ -128,6 +131,36 @@ struct UnrollLSTM
   uint32_t _timesteps{0};
   uint32_t _units{0}; // output space dim
 };
+
+luci::CircleConst *UnrollLSTM::transpose_perm(void)
+{
+  auto perm = _nctx->create<luci::CircleConst>();
+  perm->dtype(loco::DataType::S32);
+  perm->rank(1);
+  perm->dim(0) = 3;
+  perm->size<loco::DataType::S32>(3);
+  perm->at<loco::DataType::S32>(0) = 1;
+  perm->at<loco::DataType::S32>(1) = 0;
+  perm->at<loco::DataType::S32>(2) = 2;
+  perm->shape_status(luci::ShapeStatus::VALID);
+
+  return perm;
+}
+
+luci::CircleTranspose *UnrollLSTM::first_transpose(luci::CircleNode *input)
+{
+  auto perm = transpose_perm();
+  perm->name(_name + "_perm1");
+  luci::add_origin(perm, luci::get_origin(_lstm));
+
+  auto transpose = _nctx->create<luci::CircleTranspose>();
+  transpose->a(input);
+  transpose->perm(perm);
+  transpose->name(_name + "_trans1");
+  luci::add_origin(transpose, luci::get_origin(_lstm));
+
+  return transpose;
+}
 
 bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
 {
@@ -155,8 +188,17 @@ bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
   assert(input->dim(0).value() == ulstm._batch);
   assert(input->dim(1).value() == ulstm._timesteps);
 
+  if (ulstm._timesteps > 1)
+  {
+    // Transpose to switch batch <-> timesteps
+    // NOTE TF uses Reshape when batch is 1 but as there is Transpose->Reshape
+    //      Pass, we can just use Transpose for both cases
+    auto transpose = ulstm.first_transpose(input);
+    input = transpose;
+  }
+
   // TODO implement
-  (void)ulstm;
+  (void)input;
 
   return false;
 }
