@@ -55,6 +55,8 @@ void DBus::on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer us
   iface->handle_device_get_available_list = &on_handle_device_get_available_list;
   iface->handle_context_create = &on_handle_context_create;
   iface->handle_context_destroy = &on_handle_context_destroy;
+  iface->handle_network_create = &on_handle_network_create;
+  iface->handle_network_destroy = &on_handle_network_destroy;
 
   if (!g_dbus_interface_skeleton_export(G_DBUS_INTERFACE_SKELETON(core), conn, "/org/tizen/npud",
                                         &error))
@@ -107,6 +109,29 @@ gboolean DBus::on_handle_context_destroy(NpudCore *object, GDBusMethodInvocation
   int ret = -1;
   // TODO Invoke Core function.
   npud_core_complete_context_destroy(object, invocation, ret);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_network_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                        guint64 arg_ctx, const gchar *arg_model_path)
+{
+  VERBOSE(DBus) << "on_handle_network_create with " << arg_ctx << ", " << arg_model_path
+                << std::endl;
+  ModelID modelId;
+  int ret = -1;
+  // TODO Invoke Core function.
+  npud_core_complete_network_create(object, invocation, guint(modelId), ret);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                         guint64 arg_ctx, guint arg_nw_handle)
+{
+  VERBOSE(DBus) << "on_handle_network_destroy with " << arg_ctx << ", " << arg_nw_handle
+                << std::endl;
+  int ret = -1;
+  // TODO Invoke Core function.
+  npud_core_complete_network_destroy(object, invocation, ret);
   return TRUE;
 }
 
