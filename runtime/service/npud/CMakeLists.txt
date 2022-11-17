@@ -18,6 +18,7 @@ set(DBUS_NAMESPACE "Npud")
 set(DBUS_INTROSPECTION_XML "org.tizen.npud.xml")
 set(DBUS_CORE "dbus-core")
 set(DBUS_CORE_SOURCE "${DBUS_CORE}.c")
+set(DBUS_CONFIG_FILE "org.tizen.npud.conf")
 
 add_custom_command(OUTPUT ${DBUS_CORE_SOURCE}
   COMMAND ${GDBUS_CODEGEN}
@@ -33,6 +34,8 @@ target_include_directories(npud_dbus PUBLIC ${GIO2.0_INCLUDE_DIRS})
 target_include_directories(npud_dbus PUBLIC ${GIO_UNIX_2.0_INCLUDE_DIRS})
 target_link_libraries(npud_dbus PRIVATE ${GIO2.0_LIBRARIES})
 target_link_libraries(npud_dbus PRIVATE ${GIO_UNIX_2.0_LIBRARIES})
+
+install(FILES ${DBUS_CONFIG_FILE} DESTINATION share)
 
 add_subdirectory(core)
 add_subdirectory(tests)
