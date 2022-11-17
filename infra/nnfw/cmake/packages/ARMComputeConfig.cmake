@@ -11,14 +11,25 @@ function(_ARMCompute_Import)
 
   message(STATUS "Search acl in ${ARMCompute_LIB_SEARCH_PATHS}")
 
-  if(NOT INCLUDE_DIR)
+  # ARMCompute v21.02 moves some headers into "src/".
+  # And we cannot build armcompute-ex library without these headers.
+  # So we need to download and use source code if our build root doesn't have headers in "src/" (tizen's devel package includes these headers).
+  # TODO Don't use headers in "src/"
+  find_path(HEADER_SRC_DIR NAMES src/core/CL/ICLKernel.h PATHS ${ARMCompute_INCLUDE_SEARCH_PATHS})
+  if(NOT INCLUDE_DIR OR NOT HEADER_SRC_DIR)
     nnas_find_package(ARMComputeSource QUIET)
     if (NOT ARMComputeSource_FOUND)
       set(ARMCompute_FOUND FALSE PARENT_SCOPE)
       return()
     endif()
-    set(INCLUDE_DIR ${ARMComputeSource_DIR} ${ARMComputeSource_DIR}/include)
-  endif(NOT INCLUDE_DIR)
+
+    # Clean if INCLUDE_DIR is NOT_FOUND
+    if(NOT INCLUDE_DIR)
+      unset(INCLUDE_DIR)
+    endif(NOT INCLUDE_DIR)
+
+    list(APPEND INCLUDE_DIR ${ARMComputeSource_DIR} ${ARMComputeSource_DIR}/include)
+  endif(NOT INCLUDE_DIR OR NOT HEADER_SRC_DIR)
 
   if(NOT CORE_LIBRARY)
     set(ARMCompute_FOUND FALSE PARENT_SCOPE)
