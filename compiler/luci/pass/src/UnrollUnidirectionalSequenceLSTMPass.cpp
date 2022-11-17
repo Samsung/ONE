@@ -123,6 +123,7 @@ struct UnrollLSTM
 {
   luci::CircleConst *transpose_perm(void);
   luci::CircleTranspose *first_transpose(luci::CircleNode *input);
+  std::vector<luci::CircleUnpackOut *> input_unpacks(luci::CircleNode *input);
 
   luci::CircleUnidirectionalSequenceLSTM *_lstm{nullptr};
   loco::Graph::NodeContext *_nctx{nullptr};
@@ -162,6 +163,32 @@ luci::CircleTranspose *UnrollLSTM::first_transpose(luci::CircleNode *input)
   return transpose;
 }
 
+std::vector<luci::CircleUnpackOut *> UnrollLSTM::input_unpacks(luci::CircleNode *input)
+{
+  assert(input != nullptr);
+
+  // NOTE unpack input can be LSTM or Transpose
+  auto unpack = _nctx->create<luci::CircleUnpack>();
+  unpack->num(_timesteps);
+  unpack->axis(0);
+  unpack->value(input);
+  unpack->name(_name + "_unpack");
+  luci::add_origin(unpack, luci::get_origin(_lstm));
+
+  std::vector<luci::CircleUnpackOut *> outs;
+  for (uint32_t idx = 0; idx < _timesteps; ++idx)
+  {
+    auto unpackout = _nctx->create<luci::CircleUnpackOut>();
+    unpackout->input(unpack);
+    unpackout->index(idx);
+    unpackout->name(_name + "_unpackout_" + std::to_string(idx));
+    luci::add_origin(unpackout, luci::get_origin(_lstm));
+    outs.push_back(unpackout);
+  }
+
+  return outs;
+}
+
 bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
 {
   // NOTE shape of input of lstm is interpreted as [batch, timesteps, feature]
@@ -197,8 +224,13 @@ bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
     input = transpose;
   }
 
+  auto unpacks = ulstm.input_unpacks(input);
+  assert(unpacks.size() == ulstm._timesteps);
+  uint32_t step = 0;
+  auto unpackout = unpacks[step];
+
   // TODO implement
-  (void)input;
+  (void)unpackout;
 
   return false;
 }
