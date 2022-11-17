@@ -16,5 +16,31 @@
     <method name="device_get_available_list">
 	    <arg name="error" type="i" direction="out"  />
     </method>
+    <!--
+      context_create:
+      @device_id: The device numger to use.
+      @priority: The device priority.
+      @ctx: The Context handle.
+      @error: The error status of the function.
+
+      Create context.
+    -->
+    <method name="context_create">
+      <arg name="device_id" type="i" direction="in" />
+      <arg name="priority" type="i" direction="in" />
+      <arg name="ctx" type="t" direction="out" />
+      <arg name="error" type="i" direction="out"  />
+    </method>
+    <!--
+      context_destroy:
+      @ctx: The Context handle to destroy.
+      @error: The error status of the function.
+
+      Destroy context.
+    -->
+    <method name="context_destroy">
+	    <arg name="ctx" type="t" direction="in"  />
+	    <arg name="error" type="i" direction="out"  />
+    </method>
   </interface>
 </node>

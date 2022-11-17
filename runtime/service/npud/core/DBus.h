@@ -44,6 +44,10 @@ public:
 
   static gboolean on_handle_device_get_available_list(NpudCore *object,
                                                       GDBusMethodInvocation *invocation);
+  static gboolean on_handle_context_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                           gint arg_device_id, gint arg_priority);
+  static gboolean on_handle_context_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                            guint64 arg_ctx);
 
 private:
   guint _gdbus_id;
