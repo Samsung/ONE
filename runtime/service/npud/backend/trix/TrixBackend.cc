@@ -116,14 +116,76 @@ NpuStatus TrixBackend::destroyBuffer(NpuContext *ctx, GenericBuffer *buffer)
 NpuStatus TrixBackend::registerModel(NpuContext *ctx, const std::string &modelPath,
                                      ModelID *modelId)
 {
-  // TODO Implement details
-  return NPU_STATUS_ERROR_NOT_SUPPORTED;
+  if (ctx == nullptr)
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  ModelID id;
+  auto iter = std::find_if(
+    _dev->models.begin(), _dev->models.end(), [&](const std::weak_ptr<NpuModelInfo> &p) {
+      auto info = p.lock();
+      return info ? (info->core == ctx->defaultCore && info->path == modelPath) : false;
+    });
+  // Already registered model.
+  if (iter != _dev->models.end())
+  {
+    auto info = iter->lock();
+    id = info->id;
+
+    auto mIter = ctx->models.find(id);
+    if (mIter == ctx->models.end())
+    {
+      ctx->models.insert(std::make_pair(id, info));
+    }
+  }
+  else
+  {
+    auto meta = getNPUmodel_metadata(modelPath.c_str(), false);
+    if (meta == nullptr)
+    {
+      return NPU_STATUS_ERROR_OPERATION_FAILED;
+    }
+
+    generic_buffer fileInfo;
+    fileInfo.type = BUFFER_FILE;
+    fileInfo.filepath = modelPath.c_str();
+    fileInfo.size = meta->size;
+
+    npudev_h handle = _dev->handles.at(ctx->defaultCore);
+    if (registerNPUmodel(handle, &fileInfo, &id) < 0)
+    {
+      return NPU_STATUS_ERROR_OPERATION_FAILED;
+    }
+
+    auto info = std::shared_ptr<NpuModelInfo>(new NpuModelInfo({id, modelPath, ctx->defaultCore}));
+    ctx->models.insert(std::make_pair(id, info));
+    _dev->models.emplace_back(info);
+  }
+
+  *modelId = id;
+  return NPU_STATUS_SUCCESS;
 }
 
 NpuStatus TrixBackend::unregisterModel(NpuContext *ctx, ModelID modelId)
 {
-  // TODO Implement details
-  return NPU_STATUS_ERROR_NOT_SUPPORTED;
+  if (ctx == nullptr)
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  auto iter = ctx->models.find(modelId);
+  if (iter == ctx->models.end())
+  {
+    return NPU_STATUS_ERROR_INVALID_MODEL;
+  }
+  iter->second.reset();
+  ctx->models.erase(iter);
+
+  auto mIter = std::remove_if(_dev->models.begin(), _dev->models.end(),
+                              [&](const std::weak_ptr<NpuModelInfo> &p) { return p.expired(); });
+  _dev->models.erase(mIter, _dev->models.end());
+  return NPU_STATUS_SUCCESS;
 }
 
 NpuStatus TrixBackend::createRequest(NpuContext *ctx, ModelID modelId, RequestID *requestId)
