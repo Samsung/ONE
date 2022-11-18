@@ -95,7 +95,7 @@ gboolean DBus::on_handle_context_create(NpudCore *object, GDBusMethodInvocation 
 {
   VERBOSE(DBus) << "on_handle_context_create with " << arg_device_id << ", " << arg_priority
                 << std::endl;
-  guint64 out_ctx;
+  guint64 out_ctx = 0;
   int ret = -1;
   // TODO Invoke Core function.
   npud_core_complete_context_create(object, invocation, out_ctx, ret);
@@ -117,7 +117,7 @@ gboolean DBus::on_handle_network_create(NpudCore *object, GDBusMethodInvocation 
 {
   VERBOSE(DBus) << "on_handle_network_create with " << arg_ctx << ", " << arg_model_path
                 << std::endl;
-  ModelID modelId;
+  ModelID modelId = 0;
   int ret = -1;
   // TODO Invoke Core function.
   npud_core_complete_network_create(object, invocation, guint(modelId), ret);
