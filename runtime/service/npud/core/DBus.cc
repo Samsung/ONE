@@ -95,9 +95,9 @@ gboolean DBus::on_handle_context_create(NpudCore *object, GDBusMethodInvocation 
 {
   VERBOSE(DBus) << "on_handle_context_create with " << arg_device_id << ", " << arg_priority
                 << std::endl;
+
   guint64 out_ctx = 0;
-  int ret = -1;
-  // TODO Invoke Core function.
+  int ret = Server::instance().core().createContext(arg_device_id, arg_priority, &out_ctx);
   npud_core_complete_context_create(object, invocation, out_ctx, ret);
   return TRUE;
 }
@@ -106,8 +106,7 @@ gboolean DBus::on_handle_context_destroy(NpudCore *object, GDBusMethodInvocation
                                          guint64 arg_ctx)
 {
   VERBOSE(DBus) << "on_handle_context_destroy with " << arg_ctx << std::endl;
-  int ret = -1;
-  // TODO Invoke Core function.
+  int ret = Server::instance().core().destroyContext(arg_ctx);
   npud_core_complete_context_destroy(object, invocation, ret);
   return TRUE;
 }
