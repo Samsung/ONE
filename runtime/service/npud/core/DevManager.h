@@ -47,6 +47,8 @@ public:
 
   int createContext(int deviceId, int priority, NpuContext **npuContext);
   int destroyContext(NpuContext *npuContext);
+  int registerModel(NpuContext *npuContext, const std::string &modelPath, ModelID *modelId);
+  int unregisterModel(NpuContext *npuContext, ModelID modelId);
 
 private:
   std::unique_ptr<Device> _dev;

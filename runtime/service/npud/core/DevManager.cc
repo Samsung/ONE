@@ -122,5 +122,32 @@ int DevManager::destroyContext(NpuContext *npuContext)
   }
 }
 
+int DevManager::registerModel(NpuContext *npuContext, const std::string &modelPath,
+                              ModelID *modelId)
+{
+  try
+  {
+    return getBackend()->registerModel(npuContext, modelPath, modelId);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+}
+
+int DevManager::unregisterModel(NpuContext *npuContext, ModelID modelId)
+{
+  try
+  {
+    return getBackend()->unregisterModel(npuContext, modelId);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+}
+
 } // namespace core
 } // namespace npud
