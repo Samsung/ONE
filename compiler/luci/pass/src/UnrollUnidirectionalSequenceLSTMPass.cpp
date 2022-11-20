@@ -128,6 +128,10 @@ struct UnrollLSTM
                                     luci::CircleConst *cw, luci::CircleConst *ow);
   luci::CircleFullyConnected *create_input_matmul(luci::CircleNode *input);
   std::vector<luci::CircleSplitOut *> matmul_splits(luci::CircleNode *input, uint32_t step);
+  luci::CircleConst *forget_zero(void);
+  luci::CircleMul *forget_gate_cell(std::vector<luci::CircleSplitOut *> &splits,
+                                    luci::CircleNode *prev, uint32_t step,
+                                    luci::CircleNode **retadd);
 
   luci::CircleUnidirectionalSequenceLSTM *_lstm{nullptr};
   loco::Graph::NodeContext *_nctx{nullptr};
@@ -328,6 +332,98 @@ std::vector<luci::CircleSplitOut *> UnrollLSTM::matmul_splits(luci::CircleNode *
   return outs;
 }
 
+luci::CircleConst *UnrollLSTM::forget_zero(void)
+{
+  uint32_t amount = _batch * _units;
+
+  auto zero = _nctx->create<luci::CircleConst>();
+  zero->dtype(loco::DataType::FLOAT32);
+  zero->rank(2);
+  zero->dim(0) = _batch;
+  zero->dim(1) = _units;
+  zero->size<loco::DataType::FLOAT32>(amount);
+  for (uint32_t idx = 0; idx < amount; ++idx)
+    zero->at<loco::DataType::FLOAT32>(idx) = 0.0;
+  zero->shape_status(luci::ShapeStatus::VALID);
+  zero->name(_name + "_zero");
+  luci::add_origin(zero, luci::get_origin(_lstm));
+  return zero;
+}
+
+luci::CircleMul *UnrollLSTM::forget_gate_cell(std::vector<luci::CircleSplitOut *> &splits,
+                                              luci::CircleNode *prev, uint32_t step,
+                                              luci::CircleNode **retadd)
+{
+  assert(splits.size() > 0);
+  assert(prev != nullptr);
+  assert(step < _timesteps);
+
+  std::string net_name = _name + "_net" + std::to_string(step);
+
+  auto split_0 = splits[0]; // input-input  : Logistic - Mul(c) - Add - Tanh - Mul
+  auto split_1 = splits[1]; // input-forget : Logistic - Mul(p) - Add - Tanh - Mul
+  auto split_2 = splits[2]; // input-cell   : Tanh - Mul(c) - Add - Tanh - Mul
+  auto split_3 = splits[3]; // input-output : Logistic - Mul
+
+  auto logis_0 = _nctx->create<luci::CircleLogistic>();
+  logis_0->x(split_0);
+  logis_0->name(net_name + "_log0");
+  luci::add_origin(logis_0, luci::get_origin(_lstm));
+
+  auto logis_1 = _nctx->create<luci::CircleLogistic>();
+  logis_1->x(split_1);
+  logis_1->name(net_name + "_log1");
+  luci::add_origin(logis_1, luci::get_origin(_lstm));
+
+  auto tanh_2 = _nctx->create<luci::CircleTanh>();
+  tanh_2->x(split_2);
+  tanh_2->name(net_name + "_tanh2");
+  luci::add_origin(tanh_2, luci::get_origin(_lstm));
+
+  auto logis_3 = _nctx->create<luci::CircleLogistic>();
+  logis_3->x(split_3);
+  logis_3->name(net_name + "_log3");
+  luci::add_origin(logis_3, luci::get_origin(_lstm));
+
+  auto mul_c = _nctx->create<luci::CircleMul>();
+  mul_c->x(logis_0);
+  mul_c->y(tanh_2);
+  mul_c->fusedActivationFunction(luci::FusedActFunc::NONE);
+  mul_c->name(net_name + "_mul1");
+  luci::add_origin(mul_c, luci::get_origin(_lstm));
+
+  auto mul_p = _nctx->create<luci::CircleMul>();
+  mul_p->x(logis_1);
+  mul_p->y(prev);
+  mul_p->fusedActivationFunction(luci::FusedActFunc::NONE);
+  mul_p->name(net_name + "_mul2");
+  luci::add_origin(mul_p, luci::get_origin(_lstm));
+
+  auto add_cp = _nctx->create<luci::CircleAdd>();
+  add_cp->x(mul_c);
+  add_cp->y(mul_p);
+  add_cp->fusedActivationFunction(luci::FusedActFunc::NONE);
+  add_cp->name(net_name + "_add1");
+  luci::add_origin(add_cp, luci::get_origin(_lstm));
+
+  if (retadd != nullptr)
+    *retadd = add_cp;
+
+  auto tanh_cp = _nctx->create<luci::CircleTanh>();
+  tanh_cp->x(add_cp);
+  tanh_cp->name(net_name + "_tanh3");
+  luci::add_origin(tanh_cp, luci::get_origin(_lstm));
+
+  auto mul_out = _nctx->create<luci::CircleMul>();
+  mul_out->x(logis_3);
+  mul_out->y(tanh_cp);
+  mul_out->fusedActivationFunction(luci::FusedActFunc::NONE);
+  mul_out->name(net_name + "_mul3");
+  luci::add_origin(mul_out, luci::get_origin(_lstm));
+
+  return mul_out;
+}
+
 bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
 {
   // NOTE shape of input of lstm is interpreted as [batch, timesteps, feature]
@@ -374,8 +470,20 @@ bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
   auto splits = ulstm.matmul_splits(fc_1, step);
   assert(splits.size() == 4);
 
+  luci::CircleNode *prev = nullptr; // prev step CircleAdd
+  luci::CircleNode *this_add = nullptr;
+
+  prev = ulstm.forget_zero(); // provide all zero constant for first step
+
+  std::vector<luci::CircleMul *> output_muls;
+  auto mul_gc = ulstm.forget_gate_cell(splits, prev, step, &this_add);
+  assert(mul_gc != nullptr);
+  assert(this_add != nullptr);
+  // gather all Muls for last Pack
+  output_muls.push_back(mul_gc);
+
   // TODO implement
-  (void)splits;
+  (void)output_muls;
 
   return false;
 }
