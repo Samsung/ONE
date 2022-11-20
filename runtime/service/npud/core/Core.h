@@ -43,6 +43,8 @@ public:
   void deinit();
 
   int getAvailableDeviceList(std::vector<std::string> &list) const;
+  int createContext(int deviceId, int priority, ContextID *contextId) const;
+  int destroyContext(ContextID contextId) const;
 
 private:
   std::unique_ptr<DevManager> _devManager;
