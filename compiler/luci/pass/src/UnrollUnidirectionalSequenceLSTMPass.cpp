@@ -127,6 +127,7 @@ struct UnrollLSTM
   luci::CircleConst *merged_weights(luci::CircleConst *iw, luci::CircleConst *fw,
                                     luci::CircleConst *cw, luci::CircleConst *ow);
   luci::CircleFullyConnected *create_input_matmul(luci::CircleNode *input);
+  std::vector<luci::CircleSplitOut *> matmul_splits(luci::CircleNode *input, uint32_t step);
 
   luci::CircleUnidirectionalSequenceLSTM *_lstm{nullptr};
   loco::Graph::NodeContext *_nctx{nullptr};
@@ -268,6 +269,63 @@ luci::CircleFullyConnected *UnrollLSTM::create_input_matmul(luci::CircleNode *in
   return fc;
 }
 
+std::vector<luci::CircleSplitOut *> UnrollLSTM::matmul_splits(luci::CircleNode *input,
+                                                              uint32_t step)
+{
+  assert(input != nullptr);
+  assert(step < _timesteps);
+
+  std::string split_name = _name + "_sp" + std::to_string(step);
+
+  auto split_dim = _nctx->create<luci::CircleConst>();
+  split_dim->dtype(loco::DataType::S32);
+  split_dim->rank(1);
+  split_dim->dim(0) = 1;
+  split_dim->size<loco::DataType::S32>(1);
+  split_dim->at<loco::DataType::S32>(0) = 1;
+  split_dim->shape_status(luci::ShapeStatus::VALID);
+  split_dim->name(split_name + "_dim");
+  luci::add_origin(split_dim, luci::get_origin(_lstm));
+
+  auto split = _nctx->create<luci::CircleSplit>();
+  split->num_split(4);
+  split->split_dim(split_dim);
+  split->input(input);
+  split->name(split_name);
+  luci::add_origin(split, luci::get_origin(_lstm));
+
+  auto split_o0 = _nctx->create<luci::CircleSplitOut>();
+  split_o0->input(split);
+  split_o0->index(0);
+  split_o0->name(split_name + "_spo0");
+  luci::add_origin(split_o0, luci::get_origin(_lstm));
+
+  auto split_o1 = _nctx->create<luci::CircleSplitOut>();
+  split_o1->input(split);
+  split_o1->index(1);
+  split_o1->name(split_name + "_spo1");
+  luci::add_origin(split_o1, luci::get_origin(_lstm));
+
+  auto split_o2 = _nctx->create<luci::CircleSplitOut>();
+  split_o2->input(split);
+  split_o2->index(2);
+  split_o2->name(split_name + "_spo2");
+  luci::add_origin(split_o2, luci::get_origin(_lstm));
+
+  auto split_o3 = _nctx->create<luci::CircleSplitOut>();
+  split_o3->input(split);
+  split_o3->index(3);
+  split_o3->name(split_name + "_spo3");
+  luci::add_origin(split_o3, luci::get_origin(_lstm));
+
+  std::vector<luci::CircleSplitOut *> outs;
+  outs.push_back(split_o0);
+  outs.push_back(split_o1);
+  outs.push_back(split_o2);
+  outs.push_back(split_o3);
+  return outs;
+}
+
 bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
 {
   // NOTE shape of input of lstm is interpreted as [batch, timesteps, feature]
@@ -311,9 +369,11 @@ bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
   // First FC
   auto fc_1 = ulstm.create_input_matmul(unpackout);
   assert(fc_1 != nullptr);
+  auto splits = ulstm.matmul_splits(fc_1, step);
+  assert(splits.size() == 4);
 
   // TODO implement
-  (void)fc_1;
+  (void)splits;
 
   return false;
 }
