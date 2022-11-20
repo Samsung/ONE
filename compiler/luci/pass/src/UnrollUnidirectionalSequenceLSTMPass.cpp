@@ -127,6 +127,8 @@ struct UnrollLSTM
   luci::CircleConst *merged_weights(luci::CircleConst *iw, luci::CircleConst *fw,
                                     luci::CircleConst *cw, luci::CircleConst *ow);
   luci::CircleFullyConnected *create_input_matmul(luci::CircleNode *input);
+  luci::CircleAdd *create_input_matmul(luci::CircleNode *input, luci::CircleMul *mul,
+                                       uint32_t step);
   std::vector<luci::CircleSplitOut *> matmul_splits(luci::CircleNode *input, uint32_t step);
   luci::CircleConst *forget_zero(void);
   luci::CircleMul *forget_gate_cell(std::vector<luci::CircleSplitOut *> &splits,
@@ -273,6 +275,83 @@ luci::CircleFullyConnected *UnrollLSTM::create_input_matmul(luci::CircleNode *in
   luci::add_origin(fc, luci::get_origin(_lstm));
 
   return fc;
+}
+
+luci::CircleAdd *UnrollLSTM::create_input_matmul(luci::CircleNode *input, luci::CircleMul *mul,
+                                                 uint32_t step)
+{
+  assert(input != nullptr);
+  assert(mul != nullptr);
+  assert(step < _timesteps);
+
+  auto base_name = _name + "_matmul" + std::to_string(step);
+
+  // input weights
+  auto iw = loco::must_cast<luci::CircleConst *>(_lstm->input_to_input_weights());
+  auto fw = loco::must_cast<luci::CircleConst *>(_lstm->input_to_forget_weights());
+  auto cw = loco::must_cast<luci::CircleConst *>(_lstm->input_to_cell_weights());
+  auto ow = loco::must_cast<luci::CircleConst *>(_lstm->input_to_output_weights());
+
+  auto fcw = merged_weights(iw, fw, cw, ow);
+  fcw->name(base_name + "_fc_w");
+  luci::add_origin(fcw, luci::get_origin(_lstm));
+
+  auto fcb = _nctx->create<luci::CircleOutputExclude>();
+  fcb->dtype(loco::DataType::FLOAT32); // Needed for type inference
+
+  auto fc = _nctx->create<luci::CircleFullyConnected>();
+  fc->input(input);
+  fc->weights(fcw);
+  fc->bias(fcb);
+  fc->fusedActivationFunction(luci::FusedActFunc::NONE);
+  fc->name(base_name + "_fc");
+  luci::add_origin(fc, luci::get_origin(_lstm));
+
+  // recurrent weights
+  auto ri = loco::must_cast<luci::CircleConst *>(_lstm->recurrent_to_input_weights());
+  auto rf = loco::must_cast<luci::CircleConst *>(_lstm->recurrent_to_forget_weights());
+  auto rc = loco::must_cast<luci::CircleConst *>(_lstm->recurrent_to_cell_weights());
+  auto ro = loco::must_cast<luci::CircleConst *>(_lstm->recurrent_to_output_weights());
+
+  auto fcrw = merged_weights(ri, rf, rc, ro);
+  fcrw->name(base_name + "_fcr_w");
+  luci::add_origin(fcrw, luci::get_origin(_lstm));
+
+  auto fcrb = _nctx->create<luci::CircleOutputExclude>();
+  fcrb->dtype(loco::DataType::FLOAT32); // Needed for type inference
+
+  auto fcr = _nctx->create<luci::CircleFullyConnected>();
+  fcr->input(mul);
+  fcr->weights(fcrw);
+  fcr->bias(fcrb);
+  fcr->fusedActivationFunction(luci::FusedActFunc::NONE);
+  fcr->name(base_name + "_fcr");
+  luci::add_origin(fcr, luci::get_origin(_lstm));
+
+  auto add_fc = _nctx->create<luci::CircleAdd>();
+  add_fc->x(fcr);
+  add_fc->y(fc);
+  add_fc->fusedActivationFunction(luci::FusedActFunc::NONE);
+  add_fc->name(base_name + "_addfc");
+  luci::add_origin(add_fc, luci::get_origin(_lstm));
+
+  // bias
+  auto ib = loco::must_cast<luci::CircleConst *>(_lstm->input_gate_bias());
+  auto fb = loco::must_cast<luci::CircleConst *>(_lstm->forget_gate_bias());
+  auto cb = loco::must_cast<luci::CircleConst *>(_lstm->cell_gate_bias());
+  auto ob = loco::must_cast<luci::CircleConst *>(_lstm->output_gate_bias());
+
+  auto bias = merged_weights(ib, fb, cb, ob);
+  bias->name(base_name + "_bias");
+
+  auto add_bias = _nctx->create<luci::CircleAdd>();
+  add_bias->x(add_fc);
+  add_bias->y(bias);
+  add_bias->fusedActivationFunction(luci::FusedActFunc::NONE);
+  add_bias->name(base_name + "_addbias");
+  luci::add_origin(add_bias, luci::get_origin(_lstm));
+
+  return add_bias;
 }
 
 std::vector<luci::CircleSplitOut *> UnrollLSTM::matmul_splits(luci::CircleNode *input,
@@ -481,6 +560,23 @@ bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
   assert(this_add != nullptr);
   // gather all Muls for last Pack
   output_muls.push_back(mul_gc);
+
+  for (step = 1; step < ulstm._timesteps; ++step)
+  {
+    auto unpackout = unpacks[step];
+    auto add_n = ulstm.create_input_matmul(unpackout, mul_gc, step);
+
+    auto splits = ulstm.matmul_splits(add_n, step);
+    assert(splits.size() == 4);
+
+    prev = this_add;
+    mul_gc = ulstm.forget_gate_cell(splits, prev, step, &this_add);
+    assert(mul_gc != nullptr);
+    assert(this_add != nullptr);
+
+    output_muls.push_back(mul_gc);
+  }
+  assert(output_muls.size() == ulstm._timesteps);
 
   // TODO implement
   (void)output_muls;
