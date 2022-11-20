@@ -154,6 +154,8 @@ luci::CircleConst *UnrollLSTM::transpose_perm(void)
 
 luci::CircleTranspose *UnrollLSTM::first_transpose(luci::CircleNode *input)
 {
+  assert(input != nullptr);
+
   auto perm = transpose_perm();
   perm->name(_name + "_perm1");
   luci::add_origin(perm, luci::get_origin(_lstm));
