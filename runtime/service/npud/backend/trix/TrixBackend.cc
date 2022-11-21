@@ -158,7 +158,7 @@ NpuStatus TrixBackend::registerModel(NpuContext *ctx, const std::string &modelPa
       return NPU_STATUS_ERROR_OPERATION_FAILED;
     }
 
-    auto info = std::shared_ptr<NpuModelInfo>(new NpuModelInfo({id, modelPath, ctx->defaultCore}));
+    auto info = std::shared_ptr<NpuModelInfo>(new NpuModelInfo{id, modelPath, ctx->defaultCore});
     ctx->models.insert(std::make_pair(id, info));
     _dev->models.emplace_back(info);
   }
@@ -179,7 +179,7 @@ NpuStatus TrixBackend::unregisterModel(NpuContext *ctx, ModelID modelId)
   {
     return NPU_STATUS_ERROR_INVALID_MODEL;
   }
-  iter->second.reset();
+
   ctx->models.erase(iter);
 
   auto mIter = std::remove_if(_dev->models.begin(), _dev->models.end(),
