@@ -134,6 +134,8 @@ struct UnrollLSTM
   luci::CircleMul *forget_gate_cell(std::vector<luci::CircleSplitOut *> &splits,
                                     luci::CircleNode *prev, uint32_t step,
                                     luci::CircleNode **retadd);
+  luci::CircleReshape *last_reshape(luci::CircleNode *input);
+  luci::CircleTranspose *last_transpose(std::vector<luci::CircleMul *> &output_muls);
 
   luci::CircleUnidirectionalSequenceLSTM *_lstm{nullptr};
   loco::Graph::NodeContext *_nctx{nullptr};
@@ -503,6 +505,59 @@ luci::CircleMul *UnrollLSTM::forget_gate_cell(std::vector<luci::CircleSplitOut *
   return mul_out;
 }
 
+luci::CircleReshape *UnrollLSTM::last_reshape(luci::CircleNode *input)
+{
+  assert(input != nullptr);
+
+  auto reshape_s = _nctx->create<luci::CircleConst>();
+  reshape_s->dtype(loco::DataType::S32);
+  reshape_s->rank(1);
+  reshape_s->dim(0) = 3;
+  reshape_s->size<loco::DataType::S32>(3);
+  reshape_s->at<loco::DataType::S32>(0) = _batch;
+  reshape_s->at<loco::DataType::S32>(1) = _timesteps;
+  reshape_s->at<loco::DataType::S32>(2) = _units;
+  reshape_s->shape_status(luci::ShapeStatus::VALID);
+  reshape_s->name(_name + "_reshape_s");
+  luci::add_origin(reshape_s, luci::get_origin(_lstm));
+
+  auto reshape = _nctx->create<luci::CircleReshape>();
+  reshape->tensor(input);
+  reshape->shape(reshape_s);
+  reshape->newShape()->rank(3);
+  reshape->newShape()->dim(0) = _batch;
+  reshape->newShape()->dim(1) = _timesteps;
+  reshape->newShape()->dim(2) = _units;
+  reshape->name(_name + "_reshape");
+  luci::add_origin(reshape, luci::get_origin(_lstm));
+
+  return reshape;
+}
+
+luci::CircleTranspose *UnrollLSTM::last_transpose(std::vector<luci::CircleMul *> &output_muls)
+{
+  assert(output_muls.size() == _timesteps);
+
+  auto pack = _nctx->create<luci::CirclePack>(_timesteps);
+  pack->axis(0);
+  for (uint32_t idx = 0; idx < _timesteps; ++idx)
+    pack->values(idx, output_muls[idx]);
+  pack->name(_name + "_pack");
+  luci::add_origin(pack, luci::get_origin(_lstm));
+
+  auto perm = transpose_perm();
+  perm->name(_name + "_perm2");
+  luci::add_origin(perm, luci::get_origin(_lstm));
+
+  auto transpose = _nctx->create<luci::CircleTranspose>();
+  transpose->a(pack);
+  transpose->perm(perm);
+  transpose->name(_name + "_trans2");
+  luci::add_origin(transpose, luci::get_origin(_lstm));
+
+  return transpose;
+}
+
 bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
 {
   // NOTE shape of input of lstm is interpreted as [batch, timesteps, feature]
@@ -578,10 +633,20 @@ bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
   }
   assert(output_muls.size() == ulstm._timesteps);
 
-  // TODO implement
-  (void)output_muls;
+  if (ulstm._timesteps == 1)
+  {
+    // Reshape for single step
+    auto reshape = ulstm.last_reshape(mul_gc);
+    loco::replace(lstm).with(reshape);
+  }
+  else
+  {
+    // Pack + Transpose for two or more steps
+    auto transpose = ulstm.last_transpose(output_muls);
+    loco::replace(lstm).with(transpose);
+  }
 
-  return false;
+  return true;
 }
 
 } // namespace
