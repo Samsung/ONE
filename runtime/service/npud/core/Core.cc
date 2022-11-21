@@ -73,5 +73,50 @@ int Core::destroyContext(ContextID contextId) const
   return 0;
 }
 
+int Core::createNetwork(ContextID contextId, const std::string &modelPath, ModelID *modelId) const
+{
+  VERBOSE(Core) << "createNetwork with " << contextId << ", " << modelPath << std::endl;
+  NpuContext *npuContext = _contextManager->getNpuContext(contextId);
+  if (!npuContext)
+  {
+    VERBOSE(Core) << "Invalid context id" << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  ModelID id;
+  int ret = _devManager->registerModel(npuContext, modelPath, &id);
+  if (ret != NPU_STATUS_SUCCESS)
+  {
+    VERBOSE(Core) << "Failed to register model: " << ret << std::endl;
+    return 1;
+  }
+
+  *modelId = id;
+  return 0;
+}
+
+int Core::destroyNetwork(ContextID contextId, ModelID modelId) const
+{
+  VERBOSE(Core) << "destroyNetwork with " << contextId << std::endl;
+  NpuContext *npuContext = _contextManager->getNpuContext(contextId);
+  if (!npuContext)
+  {
+    VERBOSE(Core) << "Invalid context id" << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  int ret = _devManager->unregisterModel(npuContext, modelId);
+  if (ret != NPU_STATUS_SUCCESS)
+  {
+    VERBOSE(Core) << "Failed to unregister model: " << ret << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  return 0;
+}
+
 } // namespace core
 } // namespace npud
