@@ -117,8 +117,7 @@ gboolean DBus::on_handle_network_create(NpudCore *object, GDBusMethodInvocation 
   VERBOSE(DBus) << "on_handle_network_create with " << arg_ctx << ", " << arg_model_path
                 << std::endl;
   ModelID modelId = 0;
-  int ret = -1;
-  // TODO Invoke Core function.
+  int ret = Server::instance().core().createNetwork(arg_ctx, arg_model_path, &modelId);
   npud_core_complete_network_create(object, invocation, guint(modelId), ret);
   return TRUE;
 }
@@ -128,8 +127,7 @@ gboolean DBus::on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation
 {
   VERBOSE(DBus) << "on_handle_network_destroy with " << arg_ctx << ", " << arg_nw_handle
                 << std::endl;
-  int ret = -1;
-  // TODO Invoke Core function.
+  int ret = Server::instance().core().destroyNetwork(arg_ctx, arg_nw_handle);
   npud_core_complete_network_destroy(object, invocation, ret);
   return TRUE;
 }

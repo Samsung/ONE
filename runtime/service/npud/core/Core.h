@@ -45,6 +45,8 @@ public:
   int getAvailableDeviceList(std::vector<std::string> &list) const;
   int createContext(int deviceId, int priority, ContextID *contextId) const;
   int destroyContext(ContextID contextId) const;
+  int createNetwork(ContextID contextId, const std::string &modelPath, ModelID *modelId) const;
+  int destroyNetwork(ContextID contextId, ModelID modelId) const;
 
 private:
   std::unique_ptr<DevManager> _devManager;
