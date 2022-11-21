@@ -95,4 +95,65 @@ TEST_F(DBusTest, device_get_available_list)
   ASSERT_EQ(out_error, 0);
 }
 
+TEST_F(DBusTest, context_create)
+{
+  NpudCore *proxy = this->getProxy();
+  ASSERT_NE(proxy, nullptr);
+
+  GError *error = NULL;
+  gint out_error = -1;
+  gint arg_device_id = 0;
+  gint arg_priority = 0;
+  guint64 out_ctx;
+  npud_core_call_context_create_sync(proxy, arg_device_id, arg_priority, &out_ctx, &out_error, NULL,
+                                     &error);
+  if (error)
+  {
+    g_error_free(error);
+  }
+  ASSERT_EQ(out_error, 0);
+}
+
+TEST_F(DBusTest, context_destroy)
+{
+  NpudCore *proxy = this->getProxy();
+  ASSERT_NE(proxy, nullptr);
+
+  GError *error = NULL;
+  gint out_error = -1;
+  gint arg_device_id = 0;
+  gint arg_priority = 0;
+  guint64 out_ctx = 0;
+  npud_core_call_context_create_sync(proxy, arg_device_id, arg_priority, &out_ctx, &out_error, NULL,
+                                     &error);
+  if (error)
+  {
+    g_error_free(error);
+  }
+  ASSERT_EQ(out_error, 0);
+
+  npud_core_call_context_destroy_sync(proxy, out_ctx, &out_error, NULL, &error);
+  if (error)
+  {
+    g_error_free(error);
+  }
+  ASSERT_EQ(out_error, 0);
+}
+
+TEST_F(DBusTest, context_destroy_invalid_ctx_NEG)
+{
+  NpudCore *proxy = this->getProxy();
+  ASSERT_NE(proxy, nullptr);
+
+  GError *error = NULL;
+  gint out_error = -1;
+  guint64 out_ctx = 0;
+  npud_core_call_context_destroy_sync(proxy, out_ctx, &out_error, NULL, &error);
+  if (error)
+  {
+    g_error_free(error);
+  }
+  ASSERT_NE(out_error, 0);
+}
+
 } // unnamed namespace
