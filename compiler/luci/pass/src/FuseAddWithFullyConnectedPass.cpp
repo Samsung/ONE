@@ -86,6 +86,14 @@ bool fuse_add_with_fc(luci::CircleFullyConnected *fc)
   if (not(addition->dim(rank - 1) == weights->dim(0)))
     return false;
 
+  auto bias = loco::must_cast<luci::CircleNode *>(fc->bias());
+
+  // We only support (1) constant bias (2) no bias
+  // If bias is neither (1) nor (2), it would be a feature map
+  if (bias->opcode() != luci::CircleOpcode::CIRCLECONST and
+      bias->opcode() != luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
+    return false;
+
   auto fused_bias = luci::clone(addition);
 
   // Add existing bias values
