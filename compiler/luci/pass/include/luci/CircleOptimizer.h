@@ -52,6 +52,7 @@ public:
       FoldCast,
       FoldDensify,
       FoldDepthwiseConv2D,
+      FoldFullyConnected,
       FoldDequantize,
       FoldGather,
       FoldSparseToDense,
