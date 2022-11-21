@@ -105,6 +105,13 @@ if [[ ! -s "Net_InstanceNorm_003.part" ]]; then
     # https://github.com/Samsung/ONE/issues/8570#issuecomment-1115804257
 fi
 
+if [[ ! -s "UnidirSeqLSTM.tflite" ]]; then
+    rm -rf UnidirSeqLSTM.zip
+    wget https://github.com/Samsung/ONE/files/10055255/UnidirSeqLSTM.zip
+    unzip UnidirSeqLSTM.zip
+    # https://github.com/Samsung/ONE/issues/9940#issuecomment-1293282484
+fi
+
 function files_missing() {
     condition="test "
 
