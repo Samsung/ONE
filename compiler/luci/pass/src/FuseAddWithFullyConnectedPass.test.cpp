@@ -125,6 +125,15 @@ public:
 public:
   luci::CircleFullyConnected *fc() { return _fc; }
 
+public:
+  void to_fm_bias(void)
+  {
+    assert(_fc != nullptr); // FIX_ME_UNLESS
+
+    auto new_fc = _fc->graph()->nodes()->create<luci::CircleFullyConnected>();
+    _fc->bias(new_fc);
+  }
+
 protected:
   luci::CircleFullyConnected *_fc = nullptr;
   luci::CircleAdd *_add = nullptr;
@@ -173,4 +182,15 @@ TEST_F(FuseAddWithFullyConnectedPassTest, simple_test)
   {
     EXPECT_EQ(i, bias->at<loco::DataType::FLOAT32>(i));
   }
+}
+
+TEST_F(FuseAddWithFullyConnectedPassTest, fm_bias_NEG)
+{
+  g.init();
+
+  // Bias is a feature map. Add is not fused.
+  g.to_fm_bias();
+
+  auto ret = pass.run(g.g());
+  EXPECT_EQ(false, ret);
 }
