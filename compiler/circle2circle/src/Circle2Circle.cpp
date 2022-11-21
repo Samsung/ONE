@@ -152,6 +152,7 @@ int entry(int argc, char **argv)
   add_switch(arser, "--substitute_transpose_to_reshape",
              "This will convert single input Transpose to Reshape");
   add_switch(arser, "--expand_broadcast_const", "This will expand broadcastable constant inputs");
+  add_switch(arser, "--unroll_unidirseqlstm", "Unroll UnidirectionalSequenceLSTM operator.");
   add_switch(arser, "--convert_nchw_to_nhwc",
              "Experimental: This will convert NCHW operators to NHWC under the assumption that "
              "input model is NCHW.");
@@ -307,6 +308,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::TransformMinReluToRelu6Pass);
   if (arser.get<bool>("--expand_broadcast_const"))
     options->enable(Algorithms::ExpandBroadcastConst);
+  if (arser.get<bool>("--unroll_unidirseqlstm"))
+    options->enable(Algorithms::UnrollUnidirSeqLSTM);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
