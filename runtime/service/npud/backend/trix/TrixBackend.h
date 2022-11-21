@@ -36,6 +36,14 @@ using Handle = void *;
 struct TrixDevice
 {
   std::vector<Handle> handles;
+  // Note
+  // Q. Why does it use `weak_ptr` here?
+  // A. The `TrixDevice` manages all model files. Each `NpuContext` shares model
+  //    information data with `TrixDevice`. Using `shared_ptr`, the model data is
+  //    not destroyed because `TrixDevice` always has a model data. Using `weak_ptr`
+  //    it can recognize that all `NpuContext` has unregistered the model and
+  //    delete the model data.
+  std::vector<std::weak_ptr<NpuModelInfo>> models;
 };
 
 class TrixBackend : public Backend
