@@ -85,6 +85,7 @@ public:
       RemoveFakeQuant,
       RemoveQuantDequantSeq,
       RemoveDuplicateConst,
+      UnrollUnidirSeqLSTM,
     };
 
     enum AlgorithmParameters

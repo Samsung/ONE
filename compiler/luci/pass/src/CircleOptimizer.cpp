@@ -68,6 +68,7 @@
 #include "luci/Pass/SubstituteTransposeToReshapePass.h"
 #include "luci/Pass/TransformMinMaxToRelu6Pass.h"
 #include "luci/Pass/TransformMinReluToRelu6Pass.h"
+#include "luci/Pass/UnrollUnidirectionalSequenceLSTMPass.h"
 // TODO add more passes
 
 #include "luci/Pass/CircleShapeInferencePass.h"
@@ -416,6 +417,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::TransformMinReluToRelu6Pass))
   {
     phase.emplace_back(std::make_unique<luci::TransformMinReluToRelu6Pass>());
+  }
+  if (_options->query(Options::Algorithm::UnrollUnidirSeqLSTM))
+  {
+    phase.emplace_back(std::make_unique<luci::UnrollUnidirectionalSequenceLSTMPass>());
   }
 
   /* TRANSFORM DECLARATION END */
