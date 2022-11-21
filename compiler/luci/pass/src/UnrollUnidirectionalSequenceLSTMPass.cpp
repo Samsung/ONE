@@ -508,6 +508,7 @@ bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
   // NOTE shape of input of lstm is interpreted as [batch, timesteps, feature]
   //      shape of output of lstm is interpreted as [batch, timesteps, units]
   // TODO add more conditions to check LSTM
+  assert(lstm != nullptr);
   assert(lstm->rank() == 3); // use assert to findout when this happens
   if (lstm->rank() != 3)
     return false;
