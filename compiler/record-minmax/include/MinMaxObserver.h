@@ -43,6 +43,15 @@ public:
     vectors.max_vector.push_back(max);
   }
 
+  void recordMinMaxVector(const luci::CircleNode *node, const MinMaxVectors &minmax_vector)
+  {
+    MinMaxVectors &vectors = _minmax_map[node];
+    vectors.min_vector.insert(vectors.min_vector.end(), minmax_vector.min_vector.begin(),
+                              minmax_vector.min_vector.end());
+    vectors.max_vector.insert(vectors.max_vector.end(), minmax_vector.max_vector.begin(),
+                              minmax_vector.max_vector.end());
+  }
+
   const std::unordered_map<const luci::CircleNode *, MinMaxVectors> *getMap() const
   {
     return &_minmax_map;

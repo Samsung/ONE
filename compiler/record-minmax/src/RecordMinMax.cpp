@@ -32,6 +32,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <random>
+#include <omp.h>
 
 using Shape = std::vector<loco::Dimension>;
 using DataType = loco::DataType;
@@ -169,7 +170,7 @@ void update_quantparam(record_minmax::MinMaxObserver *observer, const std::strin
 namespace record_minmax
 {
 
-void RecordMinMax::initialize(const std::string &input_model_path)
+void RecordMinMax::initializeCircleModule(const std::string &input_model_path)
 {
   // Load model from the file
   std::ifstream fs(input_model_path, std::ifstream::binary);
@@ -200,6 +201,11 @@ void RecordMinMax::initialize(const std::string &input_model_path)
   {
     throw std::runtime_error("Failed to load '" + input_model_path + "'");
   }
+}
+
+void RecordMinMax::initialize(const std::string &input_model_path)
+{
+  initializeCircleModule(input_model_path);
 
   // Initialize interpreter
   _interpreter = std::make_unique<luci_interpreter::Interpreter>(_module.get());
@@ -207,6 +213,28 @@ void RecordMinMax::initialize(const std::string &input_model_path)
   _observer = std::make_unique<MinMaxObserver>();
 
   _interpreter->attachObserver(_observer.get());
+}
+
+void RecordMinMax::initialize_with_parallel_record(const std::string &input_model_path)
+{
+  initializeCircleModule(input_model_path);
+
+  // Create and initialize interpreters and observers
+  const auto threads_size = omp_get_max_threads();
+
+  _vector_interpreters.resize(threads_size);
+  _vector_observers.resize(threads_size);
+
+  for (int t = 0; t < threads_size; ++t)
+  {
+    auto interpreter = std::make_unique<luci_interpreter::Interpreter>(_module.get());
+    auto observer = std::make_unique<MinMaxObserver>();
+
+    interpreter->attachObserver(observer.get());
+
+    _vector_observers[t] = std::move(observer);
+    _vector_interpreters[t] = std::move(interpreter);
+  }
 }
 
 // input_data_path is a path to the directory
@@ -338,8 +366,8 @@ void RecordMinMax::profileRawData(const std::string &mode, const std::string &in
   update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
 }
 
-void RecordMinMax::profileData(const std::string &mode, const std::string &input_data_path,
-                               float min_percentile, float max_percentile)
+std::vector<std::vector<std::vector<char>>>
+RecordMinMax::importH5Data(const std::string &input_data_path)
 {
   try
   {
@@ -355,12 +383,13 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
     const auto input_nodes = loco::input_nodes(_module->graph());
     const auto num_inputs = input_nodes.size();
 
-    for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
-    {
-      if (num_inputs != importer.numInputs(record_idx))
-        throw std::runtime_error("Wrong number of inputs.");
+    std::vector<std::vector<std::vector<char>>> vector_input_data(num_records);
 
-      std::cout << "Recording " << record_idx << "'th data" << std::endl;
+    // Read inputs to vector_input_data
+    for (int i = 0; i < num_records; ++i)
+    {
+      if (num_inputs != importer.numInputs(i))
+        throw std::runtime_error("Wrong number of inputs.");
 
       for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
       {
@@ -373,7 +402,7 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
         {
           DataType dtype;
           Shape shape;
-          importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data());
+          importer.readTensor(i, input_idx, &dtype, &shape, input_data.data());
 
           // Check the type and the shape of the input data is valid
           verifyTypeShape(input_node, dtype, shape);
@@ -381,24 +410,100 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
         else
         {
           // Skip type/shape check for raw data
-          importer.readTensor(record_idx, input_idx, input_data.data());
+          importer.readTensor(i, input_idx, input_data.data());
         }
-
-        // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
-        //       We can redcue the copy by directly writing data from file to interpreter inputs
-        _interpreter->writeInputTensor(input_node, input_data.data(), input_data.size());
+        vector_input_data[i].emplace_back(std::move(input_data));
       }
-
-      _interpreter->interpret();
     }
 
-    std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
+    return vector_input_data;
   }
   catch (const H5::Exception &e)
   {
     H5::Exception::printErrorStack();
     throw std::runtime_error("HDF5 error occurred.");
   }
+}
+
+void RecordMinMax::profileData(const std::string &mode, const std::string &input_data_path,
+                               float min_percentile, float max_percentile)
+{
+  const auto input_nodes = loco::input_nodes(_module->graph());
+  const auto num_inputs = input_nodes.size();
+  const auto vector_input_data = importH5Data(input_data_path);
+  const auto num_records = vector_input_data.size();
+
+  for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
+  {
+    std::cout << "Recording " << record_idx << "'th data" << std::endl;
+
+    for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+    {
+      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
+      const auto &cur_input_data = vector_input_data[record_idx][input_idx];
+
+      // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
+      //       We can redcue the copy by directly writing data from file to interpreter inputs
+      _interpreter->writeInputTensor(input_node, cur_input_data.data(), cur_input_data.size());
+    }
+
+    _interpreter->interpret();
+  }
+
+  std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
+
+  update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
+}
+
+void RecordMinMax::profileData_with_parallel_record(const std::string &mode,
+                                                    const std::string &input_data_path,
+                                                    float min_percentile, float max_percentile)
+{
+  const auto threads_size = omp_get_max_threads();
+  assert(_vector_interpreters.size() == threads_size);
+  assert(_vector_observers.size() == threads_size);
+  const auto vector_input_data = importH5Data(input_data_path);
+  const auto num_records = vector_input_data.size();
+  const auto input_nodes = loco::input_nodes(_module->graph());
+  const auto num_inputs = input_nodes.size();
+
+#pragma omp parallel shared(num_records, num_inputs, input_nodes, vector_input_data) default(none)
+  {
+#pragma omp for
+    for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
+    {
+      const auto current_thread_num = omp_get_thread_num();
+      for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+      {
+        const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
+
+        // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
+        //       We can reduce the copy by directly writing data from file to interpreter inputs
+        const auto &cur_input_data = vector_input_data[record_idx][input_idx];
+        _vector_interpreters[current_thread_num]->writeInputTensor(
+          input_node, cur_input_data.data(), cur_input_data.size());
+      }
+      _vector_interpreters[current_thread_num]->interpret();
+    }
+  }
+
+  // Copy all min, max values to one observer
+  _observer = std::make_unique<MinMaxObserver>();
+  auto main_min_max_map = const_cast<MinMaxMap *>(_observer->minMaxData());
+
+  for (const auto &obs : _vector_observers)
+  {
+    const auto cur_minmax_map = obs->minMaxData()->getMap();
+    for (auto &iter : *cur_minmax_map)
+    {
+      const auto node = iter.first;
+      const auto &minmax = iter.second;
+
+      main_min_max_map->recordMinMaxVector(node, minmax);
+    }
+  }
+
+  std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
   update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
 }

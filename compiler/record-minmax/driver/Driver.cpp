@@ -50,6 +50,10 @@ int entry(const int argc, char **argv)
     .type(arser::DataType::FLOAT)
     .help("Record n'th percentile of min");
 
+  arser.add_argument("--parallel_record")
+    .type(arser::DataType::BOOL)
+    .help("Use parallel recording");
+
   arser.add_argument("--max_percentile")
     .type(arser::DataType::FLOAT)
     .help("Record n'th percentile of max");
@@ -92,9 +96,13 @@ int entry(const int argc, char **argv)
   float min_percentile = 1.0;
   float max_percentile = 99.0;
   std::string input_data_format("h5");
+  bool parallel_record = false;
 
   if (arser["--min_percentile"])
     min_percentile = arser.get<float>("--min_percentile");
+
+  if (arser["--parallel_record"])
+    parallel_record = arser.get<bool>("--parallel_record");
 
   if (arser["--max_percentile"])
     max_percentile = arser.get<float>("--max_percentile");
@@ -113,17 +121,38 @@ int entry(const int argc, char **argv)
 
   RecordMinMax rmm;
 
+  // TODO: support parallel record for profile with random data
+  if (parallel_record and not arser["--input_data"])
+  {
+    throw std::runtime_error("Parallel recording is used only for h5 now\n");
+  }
+
   // Initialize interpreter and observer
-  rmm.initialize(input_model_path);
+  if (not parallel_record)
+    rmm.initialize(input_model_path);
+  else
+    rmm.initialize_with_parallel_record(input_model_path);
 
   if (arser["--input_data"])
   {
     auto input_data_path = arser.get<std::string>("--input_data");
 
+    // TODO: support parallel record from file and dir input data format
+    if (parallel_record and not(input_data_format == "h5") and not(input_data_format == "hdf5"))
+    {
+      throw std::runtime_error("Parallel recording is used only for h5 now\n");
+    }
+
     if (input_data_format == "h5" || input_data_format == "hdf5")
     {
       // Profile min/max while executing the H5 data
-      rmm.profileData(mode, input_data_path, min_percentile, max_percentile);
+      if (not parallel_record)
+        rmm.profileData(mode, input_data_path, min_percentile, max_percentile);
+      else
+      {
+        std::cout << "Using parallel recording" << std::endl;
+        rmm.profileData_with_parallel_record(mode, input_data_path, min_percentile, max_percentile);
+      }
     }
     // input_data is a text file having a file path in each line.
     // Each data file is composed of inputs of a model, concatenated in
