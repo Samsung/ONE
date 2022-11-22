@@ -47,7 +47,14 @@ DynamicLoader::DynamicLoader(const char *file, int flags)
   _backend = std::shared_ptr<Backend>(alloc(), [dealloc](Backend *b) { dealloc(b); });
 }
 
-DynamicLoader::~DynamicLoader() { dlclose(_handle); }
+DynamicLoader::~DynamicLoader()
+{
+  // NOTE
+  // The _backend shared_ptr must be explicitly deleted before
+  // the dynamic library handle is released.
+  _backend.reset();
+  dlclose(_handle);
+}
 
 std::shared_ptr<Backend> DynamicLoader::getInstance() { return _backend; }
 
