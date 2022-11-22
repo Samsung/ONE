@@ -106,12 +106,11 @@ int_configure_arm32:
 		$(NNCC_ARM32_DEBUG) $(NNCC_CFG_STRICT) \
 		-DCMAKE_TOOLCHAIN_FILE=$(ARM32_TOOLCHAIN_FILE) \
 		-DCMAKE_INSTALL_PREFIX="$(ARM32_INSTALL_FOLDER)" \
-		-DBUILD_ARM32_NEON=OFF \
+		-DBUILD_ARM32_NEON=ON \
 		-DENABLE_TEST=ON
 
-# NOTE BUILD_ARM32_NEON=OFF was given cause of RUY ARM32 compile error
-#      refer https://github.com/Samsung/ONE/issues/10050
-# TODO remove BUILD_ARM32_NEON=OFF
+# TODO remove BUILD_ARM32_NEON=ON as default is ON, after a while.
+#      explictly added to prevent using cached 'BUILD_ARM32_NEON=OFF'
 
 #
 # builds
