@@ -187,14 +187,10 @@ bool FoldFullyConnectedPass::run(loco::Graph *g)
     if (fc == nullptr)
       continue;
 
-    switch (fc->dtype())
-    {
-      case loco::DataType::FLOAT32:
-        changed = fold_fully_connected(fc);
-        break;
-      default:
-        break;
-    }
+    if (fc->dtype() != loco::DataType::FLOAT32)
+      continue;
+
+    changed = fold_fully_connected(fc);
   }
 
   return changed;
