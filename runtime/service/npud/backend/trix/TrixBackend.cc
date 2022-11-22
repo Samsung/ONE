@@ -211,7 +211,7 @@ NpuStatus TrixBackend::createRequest(NpuContext *ctx, ModelID modelId, RequestID
   }
 
   auto &requestMap = ctx->requests;
-  requestMap.insert({id, std::unique_ptr<NpuRequestInfo>(new NpuRequestInfo(id, modelId))});
+  requestMap.insert({id, std::unique_ptr<NpuRequestInfo>(new NpuRequestInfo{id, modelId})});
 
   *requestId = id;
   return NPU_STATUS_SUCCESS;
