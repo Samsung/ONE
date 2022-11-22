@@ -31,14 +31,12 @@ void Signal::init(void)
 {
   // NOTE Types of signals
   // SIGTERM: termination request, sent to the program
-  // SIGSEGV: invalid memory access (segmentation fault)
   // SIGINT:  external interrupt, usually initiated by the user
   // SIGILL:	invalid program image, such as invalid instruction
   // SIGABRT:	abnormal termination condition, as is e.g. initiated by std::abort()
   // SIGFPE: 	erroneous arithmetic operation such as divide by zero
   // from https://en.cppreference.com/w/cpp/utility/program/SIG_types
   std::signal(SIGTERM, handleSignal);
-  std::signal(SIGSEGV, handleSignal);
   std::signal(SIGINT, handleSignal);
   std::signal(SIGILL, handleSignal);
   std::signal(SIGABRT, handleSignal);
