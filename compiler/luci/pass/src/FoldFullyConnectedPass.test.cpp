@@ -41,8 +41,11 @@ namespace
  */
 class FoldFullyConnectedTest : public luci::ConstantFoldingTestGraph, public ::testing::Test
 {
+#define INPUT_DIM 80
+#define NUM_UNITS 32
+
 public:
-  FoldFullyConnectedTest() : luci::ConstantFoldingTestGraph({80}, loco::DataType::FLOAT32)
+  FoldFullyConnectedTest() : luci::ConstantFoldingTestGraph({INPUT_DIM}, loco::DataType::FLOAT32)
   {
     _fc = _g.nodes()->create<luci::CircleFullyConnected>();
     _fc_input = _g.nodes()->create<luci::CircleConst>();
@@ -54,29 +57,29 @@ public:
     _fc->input(_fc_input);
     _fc->weights(_fc_weights);
     _fc->bias(_fc_bias);
-    _fc->shape({32});
+    _fc->shape({NUM_UNITS});
     _fc->weights_format(luci::CircleFullyConnected::WeightsFormat::DEFAULT);
     _fc->keep_num_dims(true);
 
     _fc_input->dtype(loco::DataType::FLOAT32);
-    _fc_input->shape({80});
-    _fc_input->size<loco::DataType::FLOAT32>(80);
+    _fc_input->shape({INPUT_DIM});
+    _fc_input->size<loco::DataType::FLOAT32>(INPUT_DIM);
 
     _fc_weights->dtype(loco::DataType::FLOAT32);
-    _fc_weights->shape({32, 80});
-    _fc_weights->size<loco::DataType::FLOAT32>(32 * 80);
+    _fc_weights->shape({NUM_UNITS, INPUT_DIM});
+    _fc_weights->size<loco::DataType::FLOAT32>(NUM_UNITS * INPUT_DIM);
 
     _fc_bias->dtype(loco::DataType::FLOAT32);
-    _fc_bias->shape({1, 32});
-    _fc_bias->size<loco::DataType::FLOAT32>(32);
+    _fc_bias->shape({1, NUM_UNITS});
+    _fc_bias->size<loco::DataType::FLOAT32>(NUM_UNITS);
 
-    for (uint32_t i = 0; i < 80; ++i)
+    for (uint32_t i = 0; i < INPUT_DIM; ++i)
       _fc_input->at<loco::DataType::FLOAT32>(i) = 1.0;
 
-    for (uint32_t i = 0; i < 80 * 32; ++i)
+    for (uint32_t i = 0; i < INPUT_DIM * NUM_UNITS; ++i)
       _fc_weights->at<loco::DataType::FLOAT32>(i) = 1.0;
 
-    for (uint32_t i = 0; i < 32; ++i)
+    for (uint32_t i = 0; i < NUM_UNITS; ++i)
       _fc_bias->at<loco::DataType::FLOAT32>(i) = 0.0;
 
     _output->from(_fc);
@@ -99,6 +102,8 @@ protected:
   luci::CircleConst *_fc_input = nullptr;
   luci::CircleConst *_fc_weights = nullptr;
   luci::CircleConst *_fc_bias = nullptr;
+#undef INPUT_DIM
+#undef NUM_UNITS
 };
 
 } // namespace
@@ -140,6 +145,15 @@ TEST_F(FoldFullyConnectedTest, fold_fc_NEG)
 {
   auto new_fc = _g.nodes()->create<luci::CircleFullyConnected>();
   _fc->input(new_fc);
+
+  luci::FoldFullyConnectedPass pass;
+  ASSERT_FALSE(pass.run(&_g));
+}
+
+TEST_F(FoldFullyConnectedTest, fold_fc_weight_format_NEG)
+{
+  auto new_fc = _g.nodes()->create<luci::CircleFullyConnected>();
+  _fc->weights_format(luci::CircleFullyConnected::WeightsFormat::SHUFFLED4x16INT8);
 
   luci::FoldFullyConnectedPass pass;
   ASSERT_FALSE(pass.run(&_g));

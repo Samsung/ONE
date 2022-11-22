@@ -186,12 +186,6 @@ bool FoldFullyConnectedPass::run(loco::Graph *g)
   {
     auto fc = dynamic_cast<CircleFullyConnected *>(node);
 
-    if (fc == nullptr)
-      continue;
-
-    if (fc->dtype() != loco::DataType::FLOAT32)
-      continue;
-
     if (fold_fully_connected(fc))
       changed = true;
   }
