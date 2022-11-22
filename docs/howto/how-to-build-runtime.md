@@ -99,7 +99,7 @@ $ tree -L 3 ./Product/out
 ./Product/out
 ├── bin
 │   ├── nnapi_test
-│   ├── nnpackage_run
+│   ├── onert_run
 │   ├── tflite_comparator
 │   └── tflite_run
 ├── include

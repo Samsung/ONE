@@ -22,7 +22,7 @@
 #include <fstream>
 #include <stdexcept>
 
-namespace nnpkg_run
+namespace onert_run
 {
 void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocation> &inputs)
 {
@@ -90,8 +90,8 @@ void RawFormatter::dumpOutputs(const std::string &filename, std::vector<Allocati
   }
   catch (const std::runtime_error &e)
   {
-    std::cerr << "Error during dumpOutputs on nnpackage_run : " << e.what() << std::endl;
+    std::cerr << "Error during dumpOutputs on onert_run : " << e.what() << std::endl;
     std::exit(-1);
   }
 }
-} // end of namespace nnpkg_run
+} // end of namespace onert_run

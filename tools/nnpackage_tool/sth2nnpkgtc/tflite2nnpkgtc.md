@@ -41,6 +41,6 @@ nnpkg-tcs/cast
         └── input.h5
 
 # @ target
-# run nnpkg with nnpackage_run and compare with h5diff
+# run nnpkg with onert_run and compare with h5diff
 $ onert/test/onert-test nnpkg-test -i nnpkg-tcs cast
 ```

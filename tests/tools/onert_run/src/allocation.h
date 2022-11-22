@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-#ifndef __NNPACKAGE_RUN_NNFW_UTIL_H__
-#define __NNPACKAGE_RUN_NNFW_UTIL_H__
+#ifndef __ONERT_RUN_ALLOCATION_H__
+#define __ONERT_RUN_ALLOCATION_H__
 
-#include "nnfw.h"
+#include <cstdlib>
+#include <cstdint>
 
-#define NNPR_ENSURE_STATUS(a)        \
-  do                                 \
-  {                                  \
-    if ((a) != NNFW_STATUS_NO_ERROR) \
-    {                                \
-      exit(-1);                      \
-    }                                \
-  } while (0)
-
-namespace nnpkg_run
+namespace onert_run
 {
-uint64_t num_elems(const nnfw_tensorinfo *ti);
-uint64_t bufsize_for(const nnfw_tensorinfo *ti);
-} // end of namespace nnpkg_run
+class Allocation
+{
+public:
+  Allocation() : data_(nullptr) {}
+  ~Allocation() { free(data_); }
+  void *data() const { return data_; }
+  void *alloc(uint64_t sz) { return data_ = malloc(sz); }
 
-#endif // __NNPACKAGE_UTIL_H__
+private:
+  void *data_;
+};
+} // namespace onert_run
+
+#endif // __ONERT_RUN_ALLOCATION_H__

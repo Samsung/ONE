@@ -25,7 +25,7 @@
 namespace benchmark
 {
 
-// Data class between runner(nnpackage_run and tflite_run) and libbenchmark
+// Data class between runner(onert_run and tflite_run) and libbenchmark
 class Result
 {
 public:

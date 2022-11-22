@@ -24,7 +24,7 @@
 
 namespace
 {
-nnpkg_run::TensorShape getShape(H5::DataSet &data_set)
+onert_run::TensorShape getShape(H5::DataSet &data_set)
 {
   std::vector<hsize_t> h5_shape; // hsize_t is unsigned long long
   H5::DataSpace data_space = data_set.getSpace();
@@ -34,7 +34,7 @@ nnpkg_run::TensorShape getShape(H5::DataSet &data_set)
   // read shape info from H5 file
   data_space.getSimpleExtentDims(h5_shape.data(), NULL);
 
-  nnpkg_run::TensorShape shape;
+  onert_run::TensorShape shape;
   for (auto dim : h5_shape)
     shape.emplace_back(static_cast<int>(dim));
 
@@ -42,7 +42,7 @@ nnpkg_run::TensorShape getShape(H5::DataSet &data_set)
 }
 } // namespace
 
-namespace nnpkg_run
+namespace onert_run
 {
 static const char *h5_value_grpname = "value";
 
@@ -250,9 +250,9 @@ void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocatio
   }
   catch (const std::runtime_error &e)
   {
-    std::cerr << "Error during dumpOutputs on nnpackage_run : " << e.what() << std::endl;
+    std::cerr << "Error during dumpOutputs on onert_run : " << e.what() << std::endl;
     std::exit(-1);
   }
 };
 
-} // end of namespace nnpkg_run
+} // end of namespace onert_run

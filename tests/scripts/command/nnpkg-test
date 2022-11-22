@@ -9,7 +9,7 @@ command_exists() {
 progname=$(basename "${BASH_SOURCE[0]}")
 indir="."
 outdir="."
-nnpkg_run=${nnpkg_run:-"nnpackage_run"}
+nnpkg_run=${nnpkg_run:-"onert_run"}
 difftool=${difftool:-"h5diff"}
 delete_dumped_on_failure=0
 verbose_diff=0
@@ -31,7 +31,7 @@ usage() {
   echo "    -v   verbose result diff (default=$verbose_diff)"
   echo ""
   echo "Environment variables:"
-  echo "   nnpackage_run    path to nnpackage_run (default=nnpackage_run)"
+  echo "   onert_run    path to onert_run (default=onert_run)"
   echo "   difftool         path to i5diff or h5diff (default=h5diff)"
   echo ""
   echo "Examples:"

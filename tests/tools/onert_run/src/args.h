@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNPACKAGE_RUN_ARGS_H__
-#define __NNPACKAGE_RUN_ARGS_H__
+#ifndef __ONERT_RUN_ARGS_H__
+#define __ONERT_RUN_ARGS_H__
 
 #include <string>
 #include <unordered_map>
@@ -26,7 +26,7 @@
 
 namespace po = boost::program_options;
 
-namespace nnpkg_run
+namespace onert_run
 {
 
 using TensorShapeMap = std::unordered_map<uint32_t, TensorShape>;
@@ -101,6 +101,6 @@ private:
   bool _use_single_model = false;
 };
 
-} // end of namespace nnpkg_run
+} // end of namespace onert_run
 
-#endif // __NNPACKAGE_RUN_ARGS_H__
+#endif // __ONERT_RUN_ARGS_H__

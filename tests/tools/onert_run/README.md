@@ -1,6 +1,6 @@
-# nnpackage_run
+# onert_run
 
-`nnpackage_run` is a tool to run `nnpackage`.
+`onert_run` is a tool to run `nnpackage`.
 
 It takes `nnpackage` as input. It uses **runtime API** internally.
 
@@ -11,7 +11,7 @@ It takes `nnpackage` as input. It uses **runtime API** internally.
 This will run with random input data
 
 ```
-$ ./nnpackage_run path_to_nnpackage_directory
+$ ./onert_run path_to_nnpackage_directory
 ```
 
 Output would look like:

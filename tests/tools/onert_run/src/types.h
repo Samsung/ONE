@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef __NNPACKAGE_RUN_ALLOCATION_H__
-#define __NNPACKAGE_RUN_ALLOCATION_H__
+#ifndef __ONERT_RUN_TYPES_H__
+#define __ONERT_RUN_TYPES_H__
 
-#include <cstdlib>
-#include <cstdint>
-
-namespace nnpkg_run
+namespace onert_run
 {
-class Allocation
-{
-public:
-  Allocation() : data_(nullptr) {}
-  ~Allocation() { free(data_); }
-  void *data() const { return data_; }
-  void *alloc(uint64_t sz) { return data_ = malloc(sz); }
 
-private:
-  void *data_;
-};
-} // namespace nnpkg_run
+using TensorShape = std::vector<int>;
 
-#endif // __NNPACKAGE_RUN_ALLOCATION_H__
+} // end of namespace onert_run
+
+#endif // __ONERT_RUN_TYPES_H__

@@ -104,8 +104,8 @@ class Runner:
 
     def run_inference(self, solution):
         cmd_str = [
-            ". /tmp/envvars.sh && " + self._run_folder + "/nnpackage_run -w1 -r1 -m1 -l "
-            + self._model + "/metadata/tc/input.h5 " + self._model + " 2> /dev/null"
+            ". /tmp/envvars.sh && " + self._run_folder + "/onert_run -w1 -r1 -m1 -l " +
+            self._model + "/metadata/tc/input.h5 " + self._model + " 2> /dev/null"
         ]
         res = exec_shell(cmd_str, newline_split=True)
         try:

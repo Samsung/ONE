@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,34 @@
  * limitations under the License.
  */
 
-#ifndef __NNPACKAGE_RUN_RANDOMGEN_H__
-#define __NNPACKAGE_RUN_RANDOMGEN_H__
+#ifndef __ONERT_RUN_FORMATTER_H__
+#define __ONERT_RUN_FORMATTER_H__
 
 #include <string>
 #include <vector>
 
+#include "types.h"
 #include "allocation.h"
 
 struct nnfw_session;
 
-namespace nnpkg_run
+namespace onert_run
 {
-class RandomGenerator
+class Formatter
 {
 public:
-  RandomGenerator(nnfw_session *sess) : session_(sess) {}
-  void generate(std::vector<Allocation> &inputs);
+  virtual ~Formatter() = default;
+  Formatter(nnfw_session *sess) : session_(sess) {}
+  virtual void loadInputs(const std::string &filename, std::vector<Allocation> &inputs) = 0;
+  virtual void dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs) = 0;
+  virtual std::vector<TensorShape> readTensorShapes(const std::string &filename)
+  {
+    return std::vector<TensorShape>();
+  };
 
-private:
+protected:
   nnfw_session *session_;
 };
-} // namespace nnpkg_run
+} // namespace onert_run
 
-#endif // __NNPACKAGE_RUN_RANDOMGEN_H__
+#endif // __ONERT_RUN_FORMATTER_H__

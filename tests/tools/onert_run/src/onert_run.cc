@@ -41,8 +41,8 @@
 
 static const char *default_backend_cand = "cpu";
 
-void overwriteShapeMap(nnpkg_run::TensorShapeMap &shape_map,
-                       std::vector<nnpkg_run::TensorShape> shapes)
+void overwriteShapeMap(onert_run::TensorShapeMap &shape_map,
+                       std::vector<onert_run::TensorShape> shapes)
 {
   for (uint32_t i = 0; i < shapes.size(); i++)
     shape_map[i] = shapes[i];
@@ -50,7 +50,7 @@ void overwriteShapeMap(nnpkg_run::TensorShapeMap &shape_map,
 
 int main(const int argc, char **argv)
 {
-  using namespace nnpkg_run;
+  using namespace onert_run;
 
   try
   {

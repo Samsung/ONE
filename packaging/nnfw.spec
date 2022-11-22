@@ -239,7 +239,7 @@ mkdir -p %{test_install_path}/nnapi-gtest
 mkdir -p %{test_install_path}/unittest
 mkdir -p %{test_install_path}/test
 
-install -m 755 build/out/bin/nnpackage_run %{test_install_path}/bin
+install -m 755 build/out/bin/onert_run %{test_install_path}/bin
 install -m 755 build/out/bin/tflite_comparator %{test_install_path}/bin
 install -m 755 build/out/bin/tflite_run %{test_install_path}/bin
 install -m 755 build/out/nnapi-gtest/* %{test_install_path}/nnapi-gtest
