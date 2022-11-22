@@ -83,6 +83,8 @@ bool set_kernel_parameters(tflite::FullyConnectedParams *params, luci::CircleFul
  */
 bool fold_fully_connected(luci::CircleFullyConnected *node)
 {
+  RETURN_FALSE_UNLESS(node != nullptr);
+
   LOGGER(l);
 
   auto const input = dynamic_cast<luci::CircleConst *>(node->input());
@@ -190,7 +192,8 @@ bool FoldFullyConnectedPass::run(loco::Graph *g)
     if (fc->dtype() != loco::DataType::FLOAT32)
       continue;
 
-    changed = fold_fully_connected(fc);
+    if (fold_fully_connected(fc))
+      changed = true;
   }
 
   return changed;
