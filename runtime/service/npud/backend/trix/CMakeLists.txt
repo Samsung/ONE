@@ -17,3 +17,5 @@ if(ENVVAR_NPUD_CONFIG)
 endif(ENVVAR_NPUD_CONFIG)
 
 install(TARGETS npud_backend_trix DESTINATION lib)
+
+add_subdirectory(tests)
