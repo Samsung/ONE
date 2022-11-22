@@ -192,14 +192,60 @@ NpuStatus TrixBackend::unregisterModel(NpuContext *ctx, ModelID modelId)
 
 NpuStatus TrixBackend::createRequest(NpuContext *ctx, ModelID modelId, RequestID *requestId)
 {
-  // TODO Implement details
-  return NPU_STATUS_ERROR_NOT_SUPPORTED;
+  if (ctx == nullptr)
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  auto iter = ctx->models.find(modelId);
+  if (iter == ctx->models.end())
+  {
+    return NPU_STATUS_ERROR_INVALID_MODEL;
+  }
+
+  int id;
+  npudev_h handle = _dev->handles.at(iter->second->core);
+  if (createNPU_request(handle, modelId, &id) < 0)
+  {
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+
+  auto &requestMap = ctx->requests;
+  requestMap.insert({id, std::unique_ptr<NpuRequestInfo>(new NpuRequestInfo(id, modelId))});
+
+  *requestId = id;
+  return NPU_STATUS_SUCCESS;
 }
 
 NpuStatus TrixBackend::destroyRequest(NpuContext *ctx, RequestID requestId)
 {
-  // TODO Implement details
-  return NPU_STATUS_ERROR_NOT_SUPPORTED;
+  if (ctx == nullptr)
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  auto &requestMap = ctx->requests;
+  auto iter = requestMap.find(requestId);
+  if (iter == requestMap.end())
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  ModelID modelId = iter->second->modelId;
+  auto miter = ctx->models.find(modelId);
+  if (miter == ctx->models.end())
+  {
+    return NPU_STATUS_ERROR_INVALID_MODEL;
+  }
+
+  npudev_h handle = _dev->handles.at(miter->second->core);
+  if (removeNPU_request(handle, requestId) < 0)
+  {
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+
+  requestMap.erase(iter);
+  return NPU_STATUS_SUCCESS;
 }
 
 NpuStatus TrixBackend::setRequestData(NpuContext *ctx, RequestID requestId, InputBuffers *inputBufs,
