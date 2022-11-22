@@ -16,6 +16,8 @@
 
 #include "TrixBackend.h"
 
+#include <algorithm>
+
 #if defined(__linux__)
 extern "C" {
 using namespace ::npud::backend::trix;
