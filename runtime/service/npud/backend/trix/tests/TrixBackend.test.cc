@@ -21,7 +21,8 @@
 namespace
 {
 using namespace npud;
-using namespace core;
+using namespace backend;
+using namespace trix;
 
 //
 // TrixBackendTest setup/teardown
@@ -29,30 +30,12 @@ using namespace core;
 class TrixBackendTest : public ::testing::Test
 {
 protected:
-  static void runTask()
-  {
-    auto &server = Server::instance();
-    server.run();
-  }
+  void SetUp() override { _trix.createContext(0, 0, &_ctx); }
 
-  void SetUp() override
-  {
-    std::thread child = std::thread(runTask);
-    child.detach();
-    auto &server = Server::instance();
-    while (server.isRunning() != true)
-    {
-    }
-  }
+  void TearDown() override { _trix.destroyContext(_ctx); }
 
-  void TearDown() override
-  {
-    auto &server = Server::instance();
-    if (server.isRunning())
-    {
-      server.stop();
-    }
-  }
+  TrixBackend _trix;
+  NpuContext *_ctx;
 };
 
 //
@@ -60,17 +43,84 @@ protected:
 //
 TEST_F(TrixBackendTest, createContext)
 {
-  TrixBackend *trixBackend = new TrixBackend();
-  // trixBackend
-  // auto &server = Server::instance();
-  // ASSERT_EQ(server.isRunning(), true);
+  TrixBackend trixbackend;
+  NpuContext *ctx;
+  auto ret = trixbackend.createContext(0, 0, &ctx);
+  ASSERT_EQ(ret, NPU_STATUS_SUCCESS);
 }
 
-TEST_F(TrixBackendTest, stop)
+TEST_F(TrixBackendTest, createContext_invalid_id_NEG)
 {
-  // auto &server = Server::instance();
-  // server.stop();
-  // ASSERT_EQ(server.isRunning(), false);
+  TrixBackend trixbackend;
+  NpuContext *ctx;
+  auto ret = trixbackend.createContext(-1, 0, &ctx);
+  ASSERT_EQ(ret, NPU_STATUS_ERROR_INVALID_ARGUMENT);
+}
+
+TEST_F(TrixBackendTest, createContext_invalid_priority_NEG)
+{
+  // TODO Need to enable.
+  GTEST_SKIP();
+  TrixBackend trixbackend;
+  NpuContext *ctx;
+  auto ret = trixbackend.createContext(0, -1, &ctx);
+  ASSERT_EQ(ret, NPU_STATUS_ERROR_INVALID_ARGUMENT);
+}
+
+TEST_F(TrixBackendTest, destroyContext)
+{
+  TrixBackend trixbackend;
+  NpuContext *ctx;
+  auto ret = trixbackend.createContext(0, 0, &ctx);
+  ASSERT_EQ(ret, NPU_STATUS_SUCCESS);
+
+  ret = trixbackend.destroyContext(ctx);
+  ASSERT_EQ(ret, NPU_STATUS_SUCCESS);
+}
+
+TEST_F(TrixBackendTest, destroyContext_invalid_ctx_NEG)
+{
+  TrixBackend trixbackend;
+  NpuContext *ctx = nullptr;
+
+  auto ret = trixbackend.destroyContext(ctx);
+  ASSERT_EQ(ret, NPU_STATUS_ERROR_INVALID_ARGUMENT);
+}
+
+TEST_F(TrixBackendTest, registerModel)
+{
+  // TODO Use valid model.
+  const std::string modelPath = "abc.model";
+  ModelID id;
+  auto ret = _trix.registerModel(_ctx, modelPath, &id);
+  ASSERT_EQ(ret, NPU_STATUS_SUCCESS);
+}
+
+TEST_F(TrixBackendTest, registerModel_wrong_model_NEG)
+{
+  const std::string modelPath = "wrong.model";
+  ModelID id;
+  auto ret = _trix.registerModel(_ctx, modelPath, &id);
+  ASSERT_EQ(ret, NPU_STATUS_ERROR_OPERATION_FAILED);
+}
+
+TEST_F(TrixBackendTest, unregisterModel)
+{
+  // TODO Use valid model.
+  const std::string modelPath = "abc.model";
+  ModelID id;
+  auto ret = _trix.registerModel(_ctx, modelPath, &id);
+  ASSERT_EQ(ret, NPU_STATUS_SUCCESS);
+
+  ret = _trix.unregisterModel(_ctx, id);
+  ASSERT_EQ(ret, NPU_STATUS_SUCCESS);
+}
+
+TEST_F(TrixBackendTest, unregisterModel_invalid_id_NEG)
+{
+  ModelID id = 0;
+  auto ret = _trix.unregisterModel(_ctx, id);
+  ASSERT_EQ(ret, NPU_STATUS_ERROR_INVALID_MODEL);
 }
 
 } // unnamed namespace

@@ -4,7 +4,7 @@ if(NOT TRIXEngine_FOUND)
   return()
 endif(NOT TRIXEngine_FOUND)
 
-file(GLOB_RECURSE SOURCES "*.cc")
+file(GLOB SOURCES "*.cc")
 
 add_library(npud_backend_trix SHARED ${SOURCES})
 
