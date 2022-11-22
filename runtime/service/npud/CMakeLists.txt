@@ -39,3 +39,4 @@ install(FILES ${DBUS_CONFIG_FILE} DESTINATION share)
 
 add_subdirectory(core)
 add_subdirectory(tests)
+add_subdirectory(backend)
