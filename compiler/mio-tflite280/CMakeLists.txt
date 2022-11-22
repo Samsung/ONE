@@ -44,9 +44,16 @@ if(NOT TensorFlowGEMMLowpSource_FOUND)
   return()
 endif(NOT TensorFlowGEMMLowpSource_FOUND)
 
+nnas_find_package(TensorFlowRuySource EXACT 2.8.0 QUIET)
+
+if(NOT TensorFlowRuySource_FOUND)
+  return()
+endif(NOT TensorFlowRuySource_FOUND)
+
 add_library(mio_tflite280_inc INTERFACE)
 target_include_directories(mio_tflite280_inc SYSTEM INTERFACE "${TensorFlowSource_DIR}")
 target_include_directories(mio_tflite280_inc SYSTEM INTERFACE "${TensorFlowGEMMLowpSource_DIR}")
+target_include_directories(mio_tflite280_inc SYSTEM INTERFACE "${TensorFlowRuySource_DIR}")
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
