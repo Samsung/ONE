@@ -149,5 +149,31 @@ int DevManager::unregisterModel(NpuContext *npuContext, ModelID modelId)
   }
 }
 
+int DevManager::createRequest(NpuContext *npuContext, ModelID modelId, RequestID *requestId)
+{
+  try
+  {
+    return getBackend()->createRequest(npuContext, modelId, requestId);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+}
+
+int DevManager::destroyRequest(NpuContext *npuContext, RequestID requestId)
+{
+  try
+  {
+    return getBackend()->destroyRequest(npuContext, requestId);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+}
+
 } // namespace core
 } // namespace npud
