@@ -32,6 +32,7 @@ class CONSTANT:
         ('fold_densify', 'fold Densify op with sparse constant input'),
         ('fold_dequantize', 'fold Dequantize op'),
         ('fold_dwconv', 'fold Depthwise Convolution op with constant inputs'),
+        ('fold_fully_connected', 'fold FullyConnected op with constant inputs'),
         ('fold_gather', 'fold Gather op'),
         ('fold_sparse_to_dense', 'fold SparseToDense op'),
         ('forward_reshape_to_unaryop', 'Forward Reshape op'),
