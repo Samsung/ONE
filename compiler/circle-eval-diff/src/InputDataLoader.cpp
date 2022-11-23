@@ -55,7 +55,7 @@ std::vector<size_t> getEachByteSizeOf(const std::vector<loco::Node *> &nodes)
   for (const auto node : nodes)
   {
     const auto input_node = loco::must_cast<const luci::CircleInput *>(node);
-    size_t element_size = 1;
+    size_t element_size = loco::size(input_node->dtype());
 
     for (uint32_t index = 0; index < input_node->rank(); index++)
     {
