@@ -4,7 +4,7 @@ usage()
 {
   echo "$0 <options>"
   echo "Options"
-  echo "--nnpackage_run : specific nnpackage_run path"
+  echo "--onert_run : specific onert_run path"
   echo "--tflite_run : specific tflite_run path"
   echo "--dir : the dir path of models"
   echo "--list : the model list"
@@ -15,7 +15,7 @@ usage()
 
 scripts_dir="$( cd "$( dirname "${BASH_SOURCE}" )" && pwd )"
 nnfw_dir="${scripts_dir}/../.."
-nnpackage_run="${nnfw_dir}/Product/out/bin/nnpackage_run"
+onert_run="${nnfw_dir}/Product/out/bin/onert_run"
 tflite_run="${nnfw_dir}/Product/out/bin/tflite_run"
 base_name="$(basename $0)"
 base_name="${base_name%.*}"
@@ -27,8 +27,8 @@ tv_on="false"
 for i in "$@"
 do
 case $i in
-  --nnpackage_run=*)
-    nnpackage_run="${i#*=}"
+  --onert_run=*)
+    onert_run="${i#*=}"
     ;;
   --tflite_run=*)
     tflite_run="${i#*=}"
@@ -51,8 +51,8 @@ esac
 shift
 done
 
-if ! [ -f ${nnpackage_run} ]; then
-  echo "nnpackage_run file does not exists."
+if ! [ -f ${onert_run} ]; then
+  echo "onert_run file does not exists."
   usage
 fi
 
@@ -95,7 +95,7 @@ done
 for i in "${model_lists[@]}"; do
   echo "${i} result" | tee -a ${outfile}
 
-  CMD="${nnpackage_run} -r 10 -m 1 -p 1"
+  CMD="${onert_run} -r 10 -m 1 -p 1"
   if [ "$tv_on" == "true" ]; then
     ${CMD}="${CMD} -g 1"
   fi
@@ -128,7 +128,7 @@ for i in "${model_lists[@]}"; do
 
   echo "" >> ${outfile}
 
-  TFLITE_CMD="LD_LIBRARY_PATH=./Product/out/lib THREAD=3 ${tflite_run} -r 10 -m 1 -p 1" 
+  TFLITE_CMD="LD_LIBRARY_PATH=./Product/out/lib THREAD=3 ${tflite_run} -r 10 -m 1 -p 1"
   if [ "$tv_on" == "true" ]; then
     TFLITE_CMD="${TFLITE_CMD} -g 1"
   fi

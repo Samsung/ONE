@@ -250,7 +250,7 @@ void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocatio
   }
   catch (const std::runtime_error &e)
   {
-    std::cerr << "Error during dumpOutputs on nnpackage_run : " << e.what() << std::endl;
+    std::cerr << "Error during dumpOutputs on onert_run : " << e.what() << std::endl;
     std::exit(-1);
   }
 };

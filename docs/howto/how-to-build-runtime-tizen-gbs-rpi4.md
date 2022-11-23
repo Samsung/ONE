@@ -2,7 +2,7 @@
 
 This document describes how to build runtime with GBS for Tizen AARCH64.
 As a real example, we'll also describe how to prepare Tizen on Raspberry Pi 4
-and show you how to run our test package runner `nnpackage_run`.
+and show you how to run our test package runner `onert_run`.
 
 For ARM32, there would be not much difference with some changes.
 
@@ -70,7 +70,7 @@ $ cd ONE
 $ gbs -c infra/nnfw/config/gbs.conf build --include-all -A aarch64 --define 'test_build 1'
 ```
 - `-A aarch64` is to set architecture to AARCH64. Use `arm32` for ARM32 target.
-- `--define 'test_build 1'` is to enable test build so that we can use `nnpackage_run`
+- `--define 'test_build 1'` is to enable test build so that we can use `onert_run`
 
 Now take a cup of coffee.
 
@@ -300,7 +300,7 @@ Assume `mobilenet_v2_1.4_224` nnpackage is already copied to
 `/opt/usr/home/owner/media/models` folder with `sdb` command.
 
 ```
-sh-3.2# BACKENDS="cpu" Product/out/bin/nnpackage_run \
+sh-3.2# BACKENDS="cpu" Product/out/bin/onert_run \
 --nnpackage /opt/usr/home/owner/media/models/mobilenet_v2_1.4_224
 
 Package Filename /opt/usr/home/owner/media/models/mobilenet_v2_1.4_224
