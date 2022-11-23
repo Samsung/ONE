@@ -22,7 +22,7 @@ class ProfileArgs(argparse.ArgumentParser):
         super(ProfileArgs, self).__init__(args, kwargs)
         self.add_argument(
             'model', type=str, default=None, help='nnpackage name with path')
-        self.add_argument('run_folder', type=str, help="path to nnpackage_run executable")
+        self.add_argument('run_folder', type=str, help="path to onert_run executable")
         self.add_argument(
             '--mode',
             type=str.lower,

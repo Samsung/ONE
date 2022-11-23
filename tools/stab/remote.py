@@ -66,7 +66,7 @@ class RemoteSSH():
              self.remote(remote_trace_path), local_trace_path])
 
     def profile_backend(self, backend, backend_op_list):
-        nnpkg_run_path = self.base_dir / 'out/bin/nnpackage_run'
+        nnpkg_run_path = self.base_dir / 'out/bin/onert_run'
         nnpkg_path = self.base_dir / self.nnpkg_dir.name
 
         cmd = ["ssh", f"{self.host}"]

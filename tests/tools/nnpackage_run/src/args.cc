@@ -237,7 +237,7 @@ void Args::Initialize(void)
     ("write_report,p", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _write_report = v; }),
          "Write report\n"
          "{exec}-{nnpkg|modelfile}-{backend}.csv will be generated.\n"
-         "e.g. nnpackage_run-UNIT_Add_000-acl_cl.csv.\n"
+         "e.g. onert_run-UNIT_Add_000-acl_cl.csv.\n"
          "{nnpkg|modelfile} name may be changed to realpath if you use symbolic-link.")
     ("shape_prepare", po::value<std::string>()->default_value("[]")->notifier(process_shape_prepare),
          "Please refer to the description of 'shape_run'")
@@ -286,9 +286,9 @@ void Args::Parse(const int argc, char **argv)
                                             "' or '" + o2 + ".");
     };
 
-    // calling, e.g., "nnpackage_run .. -- shape_prepare .. --shape_run .." should theoretically
+    // calling, e.g., "onert_run .. -- shape_prepare .. --shape_run .." should theoretically
     // work but allowing both options together on command line makes the usage and implemenation
-    // of nnpackage_run too complicated. Therefore let's not allow those option together.
+    // of onert_run too complicated. Therefore let's not allow those option together.
     conflicting_options("shape_prepare", "shape_run");
 
     // Cannot use both single model file and nnpackage at once
@@ -303,7 +303,7 @@ void Args::Parse(const int argc, char **argv)
 
   if (vm.count("help"))
   {
-    std::cout << "nnpackage_run\n\n";
+    std::cout << "onert_run\n\n";
     std::cout << "Usage: " << argv[0] << " path to nnpackage root directory [<options>]\n\n";
     std::cout << _options;
     std::cout << "\n";

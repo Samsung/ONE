@@ -70,7 +70,7 @@ $ ./tests/scripts/test-driver.sh \
 - input.h5 (input data)
 - expected.h5 (expected outpute data)
 
-`nnpkg_test` uses `nnpackage_run` internally to run `nnpackage`.
+`nnpkg_test` uses `onert_run` internally to run `nnpackage`.
 
 Then, it compares through `difftool` (either `i5diff` or `h5diff`).
 
@@ -95,8 +95,8 @@ Options:
          (dumped file are always deleted on success) (default=0)
 
 Environment variables:
-   nnpackage_run    path to nnpackage_run (default=Product/out/bin/nnpackage_run)
-   difftool         path to i5diff or h5diff (default=h5diff)
+   onert_run    path to onert_run (default=Product/out/bin/onert_run)
+   difftool     path to i5diff or h5diff (default=h5diff)
 
 Examples:
     nnpkg_test.sh Add_000                => run ./Add_000 and check output
