@@ -6,7 +6,7 @@ if(NOT BUILD_ONERT)
   return()
 endif(NOT BUILD_ONERT)
 
-list(APPEND NNPACKAGE_RUN_SRCS "src/nnpackage_run.cc")
+list(APPEND NNPACKAGE_RUN_SRCS "src/onert_run.cc")
 list(APPEND NNPACKAGE_RUN_SRCS "src/args.cc")
 list(APPEND NNPACKAGE_RUN_SRCS "src/nnfw_util.cc")
 list(APPEND NNPACKAGE_RUN_SRCS "src/randomgen.cc")
