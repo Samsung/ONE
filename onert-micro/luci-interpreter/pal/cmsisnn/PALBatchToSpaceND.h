@@ -15,7 +15,7 @@
  */
 
 #ifndef LUCI_INTERPRETER_PAL_BATCHTOSPACEND_H
-#define LUCI_INTERPRETER_PAL_ARGMAX_H
+#define LUCI_INTERPRETER_PAL_BATCHTOSPACEND_H
 
 #include <tensorflow/lite/kernels/internal/reference/batch_to_space_nd.h>
 
