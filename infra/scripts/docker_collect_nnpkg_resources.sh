@@ -68,6 +68,8 @@ REQUIRED_UNITS+=("oops" "safemain" "foder" "crew" "arser" "vconone")
 REQUIRED_UNITS+=("hermes" "hermes-std")
 # loco IR and related utilities
 REQUIRED_UNITS+=("loco" "locop" "locomotiv" "logo-core" "logo")
+# Compute
+REQUIRED_UNITS+=("luci-compute")
 # Circle compiler library (.circle -> .circle)
 REQUIRED_UNITS+=("luci")
 # Flatbuffer I/O
