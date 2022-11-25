@@ -34,4 +34,4 @@ uint64_t num_elems(const nnfw_tensorinfo *ti);
 uint64_t bufsize_for(const nnfw_tensorinfo *ti);
 } // end of namespace onert_run
 
-#endif // __NNPACKAGE_UTIL_H__
+#endif // __ONERT_RUN_NNFW_UTIL_H__
