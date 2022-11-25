@@ -1,26 +1,26 @@
-if(NOT BUILD_NNPACKAGE_RUN)
+if(NOT BUILD_ONERT_RUN)
   return()
-endif(NOT BUILD_NNPACKAGE_RUN)
+endif(NOT BUILD_ONERT_RUN)
 
 if(NOT BUILD_ONERT)
   return()
 endif(NOT BUILD_ONERT)
 
-list(APPEND NNPACKAGE_RUN_SRCS "src/onert_run.cc")
-list(APPEND NNPACKAGE_RUN_SRCS "src/args.cc")
-list(APPEND NNPACKAGE_RUN_SRCS "src/nnfw_util.cc")
-list(APPEND NNPACKAGE_RUN_SRCS "src/randomgen.cc")
-list(APPEND NNPACKAGE_RUN_SRCS "src/rawformatter.cc")
+list(APPEND ONERT_RUN_SRCS "src/onert_run.cc")
+list(APPEND ONERT_RUN_SRCS "src/args.cc")
+list(APPEND ONERT_RUN_SRCS "src/nnfw_util.cc")
+list(APPEND ONERT_RUN_SRCS "src/randomgen.cc")
+list(APPEND ONERT_RUN_SRCS "src/rawformatter.cc")
 
 nnfw_find_package(Boost REQUIRED program_options)
 nnfw_find_package(Ruy QUIET)
 nnfw_find_package(HDF5 QUIET)
 
 if (HDF5_FOUND)
-  list(APPEND NNPACKAGE_RUN_SRCS "src/h5formatter.cc")
+  list(APPEND ONERT_RUN_SRCS "src/h5formatter.cc")
 endif()
 
-add_executable(onert_run ${NNPACKAGE_RUN_SRCS})
+add_executable(onert_run ${ONERT_RUN_SRCS})
 
 if (HDF5_FOUND)
   target_compile_definitions(onert_run PRIVATE ONERT_HAVE_HDF5=1)
