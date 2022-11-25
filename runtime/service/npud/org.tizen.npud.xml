@@ -72,5 +72,33 @@
       <arg name="nw_handle" type="u" direction="in" />
       <arg name="error" type="i" direction="out"  />
     </method>
+    <!--
+      request_create:
+      @ctx: The context handle.
+      @nw_handle: The Network handle.
+      @rq_handle: The Request handle.
+      @error: The error status of the function.
+
+      Create request.
+    -->
+    <method name="request_create">
+      <arg name="ctx" type="t" direction="in" />
+      <arg name="nw_handle" type="u" direction="in" />
+      <arg name="rq_handle" type="u" direction="out" />
+      <arg name="error" type="i" direction="out" />
+    </method>
+    <!--
+      request_destroy:
+      @ctx: The context handle.
+      @rq_handle: The Request handle.
+      @error: The error status of the function.
+
+      Destroy request.
+    -->
+    <method name="request_destroy">
+      <arg name="ctx" type="t" direction="in" />
+      <arg name="rq_handle" type="u" direction="in" />
+      <arg name="error" type="i" direction="out" />
+    </method>
   </interface>
 </node>

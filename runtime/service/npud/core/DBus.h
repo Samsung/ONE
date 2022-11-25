@@ -52,6 +52,10 @@ public:
                                            guint64 arg_ctx, const gchar *arg_model_path);
   static gboolean on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
                                             guint64 arg_ctx, guint arg_nw_handle);
+  static gboolean on_handle_request_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                           guint64 arg_ctx, guint arg_nw_handle);
+  static gboolean on_handle_request_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                            guint64 arg_ctx, guint arg_rq_handle);
 
 private:
   guint _gdbus_id;

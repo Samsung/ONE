@@ -57,6 +57,8 @@ void DBus::on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer us
   iface->handle_context_destroy = &on_handle_context_destroy;
   iface->handle_network_create = &on_handle_network_create;
   iface->handle_network_destroy = &on_handle_network_destroy;
+  iface->handle_request_create = &on_handle_request_create;
+  iface->handle_request_destroy = &on_handle_request_destroy;
 
   if (!g_dbus_interface_skeleton_export(G_DBUS_INTERFACE_SKELETON(core), conn, "/org/tizen/npud",
                                         &error))
@@ -129,6 +131,29 @@ gboolean DBus::on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation
                 << std::endl;
   int ret = Server::instance().core().destroyNetwork(arg_ctx, arg_nw_handle);
   npud_core_complete_network_destroy(object, invocation, ret);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_request_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                        guint64 arg_ctx, guint arg_nw_handle)
+{
+  VERBOSE(DBus) << "on_handle_request_create with " << arg_ctx << ", " << arg_nw_handle
+                << std::endl;
+  RequestID requestID = 0;
+  int ret = -1;
+  // TODO Invoke core function.
+  npud_core_complete_request_create(object, invocation, guint(requestID), ret);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_request_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                         guint64 arg_ctx, guint arg_rq_handle)
+{
+  VERBOSE(DBus) << "on_handle_request_destroy with " << arg_ctx << ", " << arg_rq_handle
+                << std::endl;
+  int ret = -1;
+  // TODO Invoke core function.
+  npud_core_complete_request_destroy(object, invocation, ret);
   return TRUE;
 }
 
