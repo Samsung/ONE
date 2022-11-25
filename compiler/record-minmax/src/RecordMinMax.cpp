@@ -467,7 +467,7 @@ void RecordMinMax::profileData_with_parallel_record(const std::string &mode,
   const auto input_nodes = loco::input_nodes(_module->graph());
   const auto num_inputs = input_nodes.size();
 
-#pragma omp parallel shared(num_records, num_inputs, input_nodes, vector_input_data) default(none)
+#pragma omp parallel
   {
 #pragma omp for
     for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
