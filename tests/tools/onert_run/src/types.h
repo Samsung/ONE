@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef __NNPACKAGE_RUN_TYPES_H__
-#define __NNPACKAGE_RUN_TYPES_H__
+#ifndef __ONERT_RUN_TYPES_H__
+#define __ONERT_RUN_TYPES_H__
 
-namespace nnpkg_run
+namespace onert_run
 {
 
 using TensorShape = std::vector<int>;
 
-} // end of namespace nnpkg_run
+} // end of namespace onert_run
 
-#endif // __NNPACKAGE_RUN_TYPES_H__
+#endif // __ONERT_RUN_TYPES_H__

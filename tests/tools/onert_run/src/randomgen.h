@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNPACKAGE_RUN_RANDOMGEN_H__
-#define __NNPACKAGE_RUN_RANDOMGEN_H__
+#ifndef __ONERT_RUN_RANDOMGEN_H__
+#define __ONERT_RUN_RANDOMGEN_H__
 
 #include <string>
 #include <vector>
@@ -24,7 +24,7 @@
 
 struct nnfw_session;
 
-namespace nnpkg_run
+namespace onert_run
 {
 class RandomGenerator
 {
@@ -35,6 +35,6 @@ public:
 private:
   nnfw_session *session_;
 };
-} // namespace nnpkg_run
+} // namespace onert_run
 
-#endif // __NNPACKAGE_RUN_RANDOMGEN_H__
+#endif // __ONERT_RUN_RANDOMGEN_H__

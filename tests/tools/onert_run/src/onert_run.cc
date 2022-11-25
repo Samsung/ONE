@@ -41,8 +41,8 @@
 
 static const char *default_backend_cand = "cpu";
 
-void overwriteShapeMap(nnpkg_run::TensorShapeMap &shape_map,
-                       std::vector<nnpkg_run::TensorShape> shapes)
+void overwriteShapeMap(onert_run::TensorShapeMap &shape_map,
+                       std::vector<onert_run::TensorShape> shapes)
 {
   for (uint32_t i = 0; i < shapes.size(); i++)
     shape_map[i] = shapes[i];
@@ -50,7 +50,7 @@ void overwriteShapeMap(nnpkg_run::TensorShapeMap &shape_map,
 
 int main(const int argc, char **argv)
 {
-  using namespace nnpkg_run;
+  using namespace onert_run;
 
   try
   {
@@ -59,7 +59,7 @@ int main(const int argc, char **argv)
     {
       uint32_t version;
       NNPR_ENSURE_STATUS(nnfw_query_info_u32(NULL, NNFW_INFO_ID_VERSION, &version));
-      std::cout << "nnpkg_run (nnfw runtime: v" << (version >> 24) << "."
+      std::cout << "onert_run (nnfw runtime: v" << (version >> 24) << "."
                 << ((version & 0x0000FF00) >> 8) << "." << (version & 0xFF) << ")" << std::endl;
       exit(0);
     }

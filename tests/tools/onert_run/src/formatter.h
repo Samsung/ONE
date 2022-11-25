@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNPACKAGE_RUN_FORMATTER_H__
-#define __NNPACKAGE_RUN_FORMATTER_H__
+#ifndef __ONERT_RUN_FORMATTER_H__
+#define __ONERT_RUN_FORMATTER_H__
 
 #include <string>
 #include <vector>
@@ -25,7 +25,7 @@
 
 struct nnfw_session;
 
-namespace nnpkg_run
+namespace onert_run
 {
 class Formatter
 {
@@ -42,6 +42,6 @@ public:
 protected:
   nnfw_session *session_;
 };
-} // namespace nnpkg_run
+} // namespace onert_run
 
-#endif // __NNPACKAGE_RUN_FORMATTER_H__
+#endif // __ONERT_RUN_FORMATTER_H__

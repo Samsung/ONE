@@ -56,7 +56,7 @@ std::unordered_map<uint32_t, Json::Value> argArrayToMap(const Json::Value &jsonv
 }
 
 // param shape_str is a form of, e.g., "[1, [2, 3], 3, []]" or "h5"
-void handleShapeJsonParam(nnpkg_run::TensorShapeMap &shape_map, const std::string &shape_str)
+void handleShapeJsonParam(onert_run::TensorShapeMap &shape_map, const std::string &shape_str)
 {
   Json::Value root;
   Json::Reader reader;
@@ -95,7 +95,7 @@ void handleShapeJsonParam(nnpkg_run::TensorShapeMap &shape_map, const std::strin
 
 } // namespace
 
-namespace nnpkg_run
+namespace onert_run
 {
 
 Args::Args(const int argc, char **argv)
@@ -352,4 +352,4 @@ bool Args::shapeParamProvided()
   return provided;
 }
 
-} // end of namespace nnpkg_run
+} // end of namespace onert_run

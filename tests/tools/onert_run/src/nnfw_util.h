@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNPACKAGE_RUN_NNFW_UTIL_H__
-#define __NNPACKAGE_RUN_NNFW_UTIL_H__
+#ifndef __ONERT_RUN_NNFW_UTIL_H__
+#define __ONERT_RUN_NNFW_UTIL_H__
 
 #include "nnfw.h"
 
@@ -28,10 +28,10 @@
     }                                \
   } while (0)
 
-namespace nnpkg_run
+namespace onert_run
 {
 uint64_t num_elems(const nnfw_tensorinfo *ti);
 uint64_t bufsize_for(const nnfw_tensorinfo *ti);
-} // end of namespace nnpkg_run
+} // end of namespace onert_run
 
-#endif // __NNPACKAGE_UTIL_H__
+#endif // __ONERT_RUN_NNFW_UTIL_H__

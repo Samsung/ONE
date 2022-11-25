@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef __NNPACKAGE_RUN_ALLOCATION_H__
-#define __NNPACKAGE_RUN_ALLOCATION_H__
+#ifndef __ONERT_RUN_ALLOCATION_H__
+#define __ONERT_RUN_ALLOCATION_H__
 
 #include <cstdlib>
 #include <cstdint>
 
-namespace nnpkg_run
+namespace onert_run
 {
 class Allocation
 {
@@ -33,6 +33,6 @@ public:
 private:
   void *data_;
 };
-} // namespace nnpkg_run
+} // namespace onert_run
 
-#endif // __NNPACKAGE_RUN_ALLOCATION_H__
+#endif // __ONERT_RUN_ALLOCATION_H__

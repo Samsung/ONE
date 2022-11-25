@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNPACKAGE_RUN_H5FORMATTER_H__
-#define __NNPACKAGE_RUN_H5FORMATTER_H__
+#ifndef __ONERT_RUN_H5FORMATTER_H__
+#define __ONERT_RUN_H5FORMATTER_H__
 
 #include "allocation.h"
 #include "formatter.h"
@@ -26,7 +26,7 @@
 
 struct nnfw_session;
 
-namespace nnpkg_run
+namespace onert_run
 {
 class H5Formatter : public Formatter
 {
@@ -36,6 +36,6 @@ public:
   void loadInputs(const std::string &filename, std::vector<Allocation> &inputs) override;
   void dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs) override;
 };
-} // namespace nnpkg_run
+} // namespace onert_run
 
-#endif // __NNPACKAGE_RUN_H5FORMATTER_H__
+#endif // __ONERT_RUN_H5FORMATTER_H__

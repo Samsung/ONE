@@ -21,7 +21,7 @@
 
 #include <iostream>
 
-namespace nnpkg_run
+namespace onert_run
 {
 
 template <class T> void randomData(nnfw::misc::RandomGenerator &randgen, void *data, uint64_t size)
@@ -74,4 +74,4 @@ void RandomGenerator::generate(std::vector<Allocation> &inputs)
   }
 };
 
-} // end of namespace nnpkg_run
+} // end of namespace onert_run
