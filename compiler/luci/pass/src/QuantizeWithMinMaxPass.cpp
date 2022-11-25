@@ -32,8 +32,6 @@
 #include <luci/Log.h>
 #include <logo/Phase.h>
 
-#include <oops/UserExn.h>
-
 #include <iostream>
 #include <cmath>
 
@@ -154,8 +152,8 @@ namespace
  * 2. After output feature map
  *
  * For example, if default_dtype = U8 and op_dtype = S16,
- * 1. Quantize Op for U8->S16 is inserted before ifm
- * 2. Quantize Op for S16->U8 is inserted after ofm
+ * 1. Quantize (U8->S16) is inserted before ifm
+ * 2. Quantize (S16->U8) is inserted after ofm
  *
  * Why not insert Quantize Op for const ifm?
  * We quantize const tensor at once to preserve precision.
@@ -453,7 +451,7 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
 
     auto from = loco::must_cast<luci::CircleNode *>(output->from());
 
-    // The last Op is not quantizable Op (ex: ArgMax)
+    // The last Op is not quantizable (ex: ArgMax)
     if (not from->quantparam())
       continue;
 
@@ -502,9 +500,9 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
  * Weights is quantized using min/max of its value
  *
  * Bias is quantized using input scale (s_i) and weights scale (s_w)
- * - Activation and weights should be quantized earlier than bias
+ * - Therefore, activation and weights should be quantized earlier than bias
  *
- * Quantization Steps
+ * Overall Quantization Steps
  * 1. Quantize Activation
  *   - Quantize using recorded min/max (QuantizeActivation)
  *   - Insert Quantize Ops for mixed-precision quantization (InsertQuantizeOp)
