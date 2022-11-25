@@ -227,6 +227,11 @@ struct UnidirectionalSequenceLSTMParams
   bool asymmetric_quantize_inputs;
 };
 
+struct UnidirectionalSequenceRNNParams
+{
+  // TODO: Implement
+};
+
 struct UnpackParams
 {
   int axis;
