@@ -18,7 +18,7 @@
 #include <string>
 #include "nnfw.h"
 
-namespace nnpkg_run
+namespace onert_run
 {
 uint64_t num_elems(const nnfw_tensorinfo *ti)
 {
@@ -46,4 +46,4 @@ uint64_t bufsize_for(const nnfw_tensorinfo *ti)
   return elmsize[ti->dtype] * num_elems(ti);
 }
 
-} // namespace nnpkg_run
+} // namespace onert_run
