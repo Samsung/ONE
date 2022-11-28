@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PRESET="20221125"
+
 function preset_configure()
 {
   REQUIRED_UNITS=()
@@ -70,7 +72,7 @@ function preset_install()
     "${NNAS_PROJECT_PATH}/tools/nnpackage_tool/model2nnpkg/model2nnpkg.sh"
 
   # Install tf2nnpkg
-  install -T -m 755 -D "${SCRIPT_PATH}/res/tf2nnpkg.20220323" "${NNAS_INSTALL_PREFIX}/bin/tf2nnpkg"
+  install -T -m 755 -D "${SCRIPT_PATH}/res/tf2nnpkg.${PRESET}" "${NNAS_INSTALL_PREFIX}/bin/tf2nnpkg"
 
   # Though you have to install tensorflow to run 'tf2tfliteV2',
   # tensorflow can't be installed in mingw. First, You can install tensorflow 
