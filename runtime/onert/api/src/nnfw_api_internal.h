@@ -136,9 +136,6 @@ public:
   NNFW_STATUS set_available_backends(const char *backends);
   NNFW_STATUS set_op_backend(const char *op, const char *backend);
 
-  // accessor
-  std::vector<std::shared_ptr<onert::exec::Execution>> *get_executions() { return &_executions; }
-
   //
   // Internal-only API
   //
@@ -151,7 +148,6 @@ public:
   //
   // Experimental API
   //
-  void make_dependency();
   NNFW_STATUS push_pipeline_input(std::vector<void *> *inputs, std::vector<uint32_t> *lengths);
   NNFW_STATUS pop_pipeline_output(std::vector<void *> *outputs);
 
@@ -184,8 +180,6 @@ private:
   std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
   std::vector<std::thread> _threads;
-  std::vector<std::shared_ptr<onert::exec::Execution>> _executions;
-  std::string _package_file_path;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__

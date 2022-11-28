@@ -53,8 +53,6 @@ public:
 
   const ir::Graph &graph() const final { return _graph; }
 
-  const ir::Graph &parent_graph() const final { return _parent_graph; }
-
   void execute(const IODescription &desc) final;
 
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
@@ -87,7 +85,6 @@ protected:
   std::unique_ptr<compiler::LoweredGraph> _lowered_graph;
   backend::BackendContexts _backend_contexts;
   const ir::Graph &_graph;
-  const ir::Graph &_parent_graph;
   std::vector<backend::builtin::IOTensor *> _input_tensors;
   std::vector<backend::builtin::IOTensor *> _output_tensors;
   std::mutex _mutex;

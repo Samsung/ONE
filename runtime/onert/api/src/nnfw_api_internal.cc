@@ -326,7 +326,6 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     std::string manifest_file_name = package_path + "/metadata/MANIFEST";
     std::ifstream mfs(manifest_file_name);
 
-    _package_file_path = package_path;
     // extract the filename of the first(index 0) model
     // e.g. In MANIFEST file, { "models" : [ "firstmodel.tflite", "2nd.tflite" ] }
     Json::Value root;
@@ -437,50 +436,10 @@ NNFW_STATUS nnfw_session::prepare()
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::prepare_pipeline(const char *map_file_path)
+NNFW_STATUS nnfw_session::prepare_pipeline(const char *)
 {
-  // NOTE. If users want to run prepare_pipeline() more than one time, this could be removed.
-  if (!isStateModelLoaded())
-  {
-    std::cerr << "Error during model prepare pipeline : ";
-    if (isStateInitialized())
-    {
-      std::cerr << "prepare_pipeline should be run once";
-    }
-    else
-    {
-      std::cerr << "invalid state";
-    }
-    std::cerr << std::endl;
-    return NNFW_STATUS_INVALID_STATE;
-  }
-
-  try
-  {
-    auto model = _nnpkg->primary_model();
-    auto compiler = std::make_unique<onert::compiler::Compiler>(model, *_coptions[0]);
-    _nnpkg.reset();
-    auto artifacts = compiler->compile(_package_file_path.c_str(), map_file_path);
-
-    for (auto it = artifacts.begin(); it != artifacts.end(); ++it)
-    {
-      _executions.push_back(std::make_shared<onert::exec::Execution>(it->get()->_executors));
-    }
-    make_dependency();
-    _threads.resize(_executions.size());
-    for (uint32_t i = 0; i < _threads.size(); i++)
-    {
-      _threads[i] = std::thread(&onert::exec::Execution::runInference, _executions[i].get());
-    }
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error during model prepare : " << e.what() << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  _state = State::PREPARED;
-  return NNFW_STATUS_NO_ERROR;
+  std::cerr << "Pipeline prepare_pipeline: deprecated feature " << std::endl;
+  return NNFW_STATUS_ERROR;
 }
 
 NNFW_STATUS nnfw_session::run()
@@ -490,12 +449,6 @@ NNFW_STATUS nnfw_session::run()
     std::cerr << "Error during nnfw_session::run : "
               << "run should be run after prepare" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
-  }
-
-  if (!_executions.empty())
-  {
-    std::cerr << "Error during nnfw_session::run : not supported for pipeline run" << std::endl;
-    return NNFW_STATUS_ERROR;
   }
 
   try
@@ -527,13 +480,6 @@ NNFW_STATUS nnfw_session::run_async()
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  if (!_executions.empty())
-  {
-    std::cerr << "Error during nnfw_session::run_async : not supported for pipeline run"
-              << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
   _execution->startExecute();
 
   _state = State::RUNNING;
@@ -546,12 +492,6 @@ NNFW_STATUS nnfw_session::await()
   {
     std::cerr << "Error during nnfw_session::run_await : "
               << "run_await should be run after run_async" << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  if (!_executions.empty())
-  {
-    std::cerr << "Error during nnfw_session::await : not supported for pipeline run" << std::endl;
     return NNFW_STATUS_ERROR;
   }
 
@@ -575,13 +515,6 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const vo
     std::cerr
       << "Error during nnfw_session::set_input : given buffer is NULL but the length is not 0"
       << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  if (!_executions.empty())
-  {
-    std::cerr << "Error during nnfw_session::set_input : not supported for pipeline run"
-              << std::endl;
     return NNFW_STATUS_ERROR;
   }
 
@@ -611,13 +544,6 @@ NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *b
     std::cerr
       << "Error during nnfw_session::set_output : given buffer is NULL but the length is not 0"
       << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  if (!_executions.empty())
-  {
-    std::cerr << "Error during nnfw_session::set_output : not supported for pipeline run"
-              << std::endl;
     return NNFW_STATUS_ERROR;
   }
 
@@ -679,6 +605,13 @@ NNFW_STATUS nnfw_session::output_size(uint32_t *number)
 
 NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
 {
+  if (!isStatePreparedOrFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::set_input_layout : "
+              << "run should be run after prepare" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
   try
   {
     if (layout != NNFW_LAYOUT_NONE && layout != NNFW_LAYOUT_CHANNELS_FIRST &&
@@ -687,14 +620,8 @@ NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
       std::cerr << "Error during nnfw_session::set_input_layout, not supported layout" << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    if (_execution)
-    {
-      _execution->setInputLayout(onert::ir::IOIndex(index), convertLayout(layout));
-    }
-    else
-    {
-      _executions.at(0)->setInputLayout(onert::ir::IOIndex(index), convertLayout(layout));
-    }
+
+    _execution->setInputLayout(onert::ir::IOIndex(index), convertLayout(layout));
   }
   catch (const std::exception &e)
   {
@@ -706,6 +633,13 @@ NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
 
 NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
 {
+  if (!isStatePreparedOrFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::set_output_layout : "
+              << "run should be run after prepare" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
   try
   {
     if (layout != NNFW_LAYOUT_NONE && layout != NNFW_LAYOUT_CHANNELS_FIRST &&
@@ -715,15 +649,8 @@ NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
                 << std::endl;
       return NNFW_STATUS_ERROR;
     }
-    if (_execution)
-    {
-      _execution->setOutputLayout(onert::ir::IOIndex(index), convertLayout(layout));
-    }
-    else
-    {
-      _executions.at(_executions.size() - 1)
-        ->setOutputLayout(onert::ir::IOIndex(index), convertLayout(layout));
-    }
+
+    _execution->setOutputLayout(onert::ir::IOIndex(index), convertLayout(layout));
   }
   catch (const std::exception &e)
   {
@@ -772,16 +699,7 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
     info.shape(new_shape);
   }
   else // when called after nnfw_session::prepare()
-  {
-    if (_execution)
-    {
-      _execution->changeInputShape(onert::ir::IOIndex(index), new_shape);
-    }
-    else
-    {
-      _executions.at(0)->changeInputShape(onert::ir::IOIndex(index), new_shape);
-    }
-  }
+    _execution->changeInputShape(onert::ir::IOIndex(index), new_shape);
 
   return NNFW_STATUS_NO_ERROR;
 }
@@ -821,20 +739,9 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     else
     {
       auto io_index = onert::ir::IOIndex{index};
-      if (_executions.empty())
-      {
-        auto shape = _execution->getInputShape(io_index);
-        auto dtype = _compiler_artifact->_executors->inputInfo(io_index).typeInfo().type();
-        fillTensorInfo(ti, shape, dtype);
-      }
-      else
-      {
-        auto shape = _executions[0]->getInputShape(io_index);
-        auto operand_index = _executions[0]->primary_parentgraph().getInputs().at(io_index);
-        auto dtype =
-          _executions[0]->primary_parentgraph().operands().at(operand_index).typeInfo().type();
-        fillTensorInfo(ti, shape, dtype);
-      }
+      auto shape = _execution->getInputShape(io_index);
+      auto dtype = _compiler_artifact->_executors->inputInfo(io_index).typeInfo().type();
+      fillTensorInfo(ti, shape, dtype);
     }
   }
   catch (const std::exception &e)
@@ -874,20 +781,9 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     else
     {
       auto io_index = onert::ir::IOIndex{index};
-      if (_executions.empty())
-      {
-        auto shape = _execution->getOutputShape(io_index);
-        auto dtype = _compiler_artifact->_executors->outputInfo(io_index).typeInfo().type();
-        fillTensorInfo(ti, shape, dtype);
-      }
-      else
-      {
-        auto shape = _executions[0]->getOutputShape(io_index);
-        auto operand_index = _executions[0]->primary_parentgraph().getOutputs().at(io_index);
-        auto dtype =
-          _executions[0]->primary_parentgraph().operands().at(operand_index).typeInfo().type();
-        fillTensorInfo(ti, shape, dtype);
-      }
+      auto shape = _execution->getOutputShape(io_index);
+      auto dtype = _compiler_artifact->_executors->outputInfo(io_index).typeInfo().type();
+      fillTensorInfo(ti, shape, dtype);
     }
   }
   catch (const std::exception &e)
@@ -899,86 +795,16 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
   return NNFW_STATUS_NO_ERROR;
 }
 
-void nnfw_session::make_dependency()
+NNFW_STATUS nnfw_session::push_pipeline_input(std::vector<void *> *, std::vector<uint32_t> *)
 {
-  for (uint32_t out_exe = 0; out_exe < _executions.size(); out_exe++)
-  {
-    auto &out_graph = _executions[out_exe]->primary_subgraph();
-    for (uint32_t in_exe = 0; in_exe < _executions.size(); in_exe++)
-    {
-      if (out_exe == in_exe)
-        continue;
-      auto &in_graph = _executions[in_exe]->primary_subgraph();
-      for (auto out = out_graph._name_to_output_begin(); out != out_graph._name_to_output_end();
-           out++)
-      {
-        auto out_opidx = out_graph.getOutputs().at(out->second);
-        auto out_shape = out_graph.operands().at(out_opidx).shape();
-        for (auto in = in_graph._name_to_input_begin(); in != in_graph._name_to_input_end(); in++)
-        {
-          if (out->first != in->first)
-            continue;
-
-          auto in_opidx = in_graph.getInputs().at(in->second);
-          auto in_shape = in_graph.operands().at(in_opidx).shape();
-          if (out_shape.rank() != in_shape.rank())
-            continue;
-
-          bool is_same = true;
-          for (int32_t i = 0; i < out_shape.rank(); i++)
-          {
-            if (out_shape.dim(i) != in_shape.dim(i))
-            {
-              is_same = false;
-              break;
-            }
-          }
-
-          if (is_same)
-            _executions[out_exe]->pushNextExe(_executions[in_exe], out->second, in->second);
-        }
-      }
-    }
-  }
+  std::cerr << "Pipeline push_pipeline_input: deprecated feature " << std::endl;
+  return NNFW_STATUS_ERROR;
 }
 
-NNFW_STATUS nnfw_session::push_pipeline_input(std::vector<void *> *inputs,
-                                              std::vector<uint32_t> *lengths)
+NNFW_STATUS nnfw_session::pop_pipeline_output(std::vector<void *> *)
 {
-  static uint32_t count = 0;
-  if (inputs->empty())
-  {
-    _executions[0]->setFinish();
-    for (uint32_t i = 0; i < _threads.size(); i++)
-    {
-      _threads[i].join();
-    }
-    return NNFW_STATUS_NO_ERROR;
-  }
-  _executions[0]->asyncIoDescSemWait();
-  _executions[0]->createNewAsyncDesc(count++);
-  for (uint32_t i = 0; i < inputs->size(); i++)
-  {
-    _executions[0]->executeAsyncInput(onert::ir::IOIndex(i), inputs->at(i), lengths->at(i));
-  }
-  _executions[0]->asyncIoDescSemPost();
-  return NNFW_STATUS_NO_ERROR;
-}
-
-NNFW_STATUS nnfw_session::pop_pipeline_output(std::vector<void *> *outputs)
-{
-  auto results = _executions[_executions.size() - 1]->getAsyncResults();
-  while (results->empty())
-  {
-    if (_executions[_executions.size() - 1]->stopWait())
-      return NNFW_STATUS_ERROR;
-  }
-
-  auto result = results->front();
-  results->pop_front();
-  for (uint32_t i = 0; i < result.size(); i++)
-    outputs->push_back(result[i]);
-  return NNFW_STATUS_NO_ERROR;
+  std::cerr << "Pipeline pop_pipeline_output: deprecated feature " << std::endl;
+  return NNFW_STATUS_ERROR;
 }
 
 NNFW_STATUS nnfw_session::register_custom_operation(const std::string &id,
@@ -1121,19 +947,13 @@ const onert::ir::Graph *nnfw_session::primary_subgraph()
 {
   if (_nnpkg != nullptr)
   {
-    assert(_execution == nullptr && _executions.empty());
+    assert(_execution == nullptr);
     return _nnpkg->primary_model()->primary_subgraph().get();
   }
   else
   {
-    assert(_execution != nullptr || !_executions.empty());
-    // TODO Remove const_cast
+    assert(_execution != nullptr);
     // We assumed the graph will not change after compilation, but shape could change
-    if (!_executions.empty())
-    {
-      return &_executions[0]->primary_parentgraph();
-    }
-
     return &_execution->primary_subgraph();
   }
 }
@@ -1147,11 +967,7 @@ uint32_t nnfw_session::getInputSize()
     return _nnpkg->inputSize();
 
   // Session is prepared (general inference)
-  if (_executions.empty())
-    return _compiler_artifact->_executors->inputSize();
-
-  // Session is prepared (pipeline inference)
-  return _executions[0]->primary_parentgraph().getInputs().size();
+  return _compiler_artifact->_executors->inputSize();
 }
 
 uint32_t nnfw_session::getOutputSize()
@@ -1163,11 +979,7 @@ uint32_t nnfw_session::getOutputSize()
     return _nnpkg->outputSize();
 
   // Session is prepared (general inference)
-  if (_executions.empty())
-    return _compiler_artifact->_executors->outputSize();
-
-  // Session is prepared (pipeline inference)
-  return _executions[0]->primary_parentgraph().getOutputs().size();
+  return _compiler_artifact->_executors->outputSize();
 }
 
 NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_size)
@@ -1224,7 +1036,7 @@ bool nnfw_session::isStateInitialized()
   {
     assert(_nnpkg == nullptr);
     assert(_coptions.empty());
-    assert(_execution == nullptr && _executions.empty());
+    assert(_execution == nullptr);
     return true;
   }
   else
@@ -1239,7 +1051,7 @@ bool nnfw_session::isStateModelLoaded()
   {
     assert(_nnpkg != nullptr);
     assert(!_coptions.empty());
-    assert(_execution == nullptr && _executions.empty());
+    assert(_execution == nullptr);
     return true;
   }
   else
@@ -1254,7 +1066,7 @@ bool nnfw_session::isStatePrepared()
   {
     assert(_nnpkg == nullptr);
     assert(!_coptions.empty());
-    assert(_execution != nullptr || !_executions.empty());
+    assert(_execution != nullptr);
     return true;
   }
   else
@@ -1269,7 +1081,7 @@ bool nnfw_session::isStateRunning()
   {
     assert(_nnpkg == nullptr);
     assert(!_coptions.empty());
-    assert(_execution != nullptr || !_executions.empty());
+    assert(_execution != nullptr);
     return true;
   }
   return false;
@@ -1281,7 +1093,7 @@ bool nnfw_session::isStateFinishedRun()
   {
     assert(_nnpkg == nullptr);
     assert(!_coptions.empty());
-    assert(_execution != nullptr || !_executions.empty());
+    assert(_execution != nullptr);
     return true;
   }
   else
