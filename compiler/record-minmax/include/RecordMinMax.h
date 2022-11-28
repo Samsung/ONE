@@ -24,19 +24,27 @@
 
 #include <memory>
 
+#ifdef _OPENMP
+#include <omp.h>
+#else
+#define omp_get_thread_num() 0
+#define omp_get_max_threads() 1
+#endif
+
 namespace record_minmax
 {
 
 class RecordMinMax
 {
 public:
-  explicit RecordMinMax() = default;
+  explicit RecordMinMax() : _threads_size(omp_get_max_threads())
+  {
+    // Do nothing
+  }
 
   ~RecordMinMax() = default;
 
   void initialize(const std::string &input_model_path);
-
-  void initialize_with_parallel_record(const std::string &input_model_path);
 
   void profileData(const std::string &mode, const std::string &input_data_path,
                    float min_percentile, float max_percentile);
@@ -61,12 +69,12 @@ private:
   std::vector<std::vector<std::vector<char>>> importH5Data(const std::string &input_data_path);
 
   std::unique_ptr<luci::Module> _module;
-  std::unique_ptr<luci_interpreter::Interpreter> _interpreter;
-  std::unique_ptr<MinMaxObserver> _observer;
 
   // Used in parallel execution
-  std::vector<std::unique_ptr<luci_interpreter::Interpreter>> _vector_interpreters;
-  std::vector<std::unique_ptr<MinMaxObserver>> _vector_observers;
+  std::vector<std::unique_ptr<luci_interpreter::Interpreter>> _interpreters;
+  std::vector<std::unique_ptr<MinMaxObserver>> _observers;
+
+  uint32_t _threads_size;
 };
 
 } // namespace record_minmax

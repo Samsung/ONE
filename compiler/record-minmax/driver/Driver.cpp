@@ -50,9 +50,7 @@ int entry(const int argc, char **argv)
     .type(arser::DataType::FLOAT)
     .help("Record n'th percentile of min");
 
-  arser.add_argument("--parallel_record")
-    .type(arser::DataType::BOOL)
-    .help("Use parallel recording");
+  arser.add_argument("--parallel").type(arser::DataType::BOOL).help("Use parallel recording");
 
   arser.add_argument("--max_percentile")
     .type(arser::DataType::FLOAT)
@@ -101,8 +99,8 @@ int entry(const int argc, char **argv)
   if (arser["--min_percentile"])
     min_percentile = arser.get<float>("--min_percentile");
 
-  if (arser["--parallel_record"])
-    parallel_record = arser.get<bool>("--parallel_record");
+  if (arser["--parallel"])
+    parallel_record = arser.get<bool>("--parallel");
 
   if (arser["--max_percentile"])
     max_percentile = arser.get<float>("--max_percentile");
@@ -128,10 +126,7 @@ int entry(const int argc, char **argv)
   }
 
   // Initialize interpreter and observer
-  if (not parallel_record)
-    rmm.initialize(input_model_path);
-  else
-    rmm.initialize_with_parallel_record(input_model_path);
+  rmm.initialize(input_model_path);
 
   if (arser["--input_data"])
   {
