@@ -51,9 +51,19 @@ function(ExternalSource_Download PREFIX)
     foreach(retry_count RANGE 5)
       message(STATUS "(Trial Count : ${retry_count})")
 
-      file(DOWNLOAD ${URL} "${DOWNLOAD_PATH}"
-                    STATUS status
-                    LOG log)
+      # For external mirror server
+      envoption(EXTERNAL_SERVER_USERPWD "")
+
+      if("${EXTERNAL_SERVER_USERPWD}" STREQUAL "")
+        file(DOWNLOAD ${URL} "${DOWNLOAD_PATH}"
+                      STATUS status
+                      USERPWD "${ARG_USERPWD}"
+                      LOG log)
+      else("${EXTERNAL_SERVER_USERPWD}" STREQUAL "")
+        file(DOWNLOAD ${URL} "${DOWNLOAD_PATH}"
+                      STATUS status
+                      LOG log)
+      endif("${EXTERNAL_SERVER_USERPWD}" STREQUAL "")
 
       list(GET status 0 status_code)
       list(GET status 1 status_string)
@@ -72,7 +82,7 @@ function(ExternalSource_Download PREFIX)
       if(retry_count EQUAL 5)
         message(FATAL_ERROR "Download ${PREFIX} from ${URL} - failed")
       endif()
-      
+
       # Retry after 10 seconds when download fails
       execute_process(COMMAND sleep 10)
     endforeach()
