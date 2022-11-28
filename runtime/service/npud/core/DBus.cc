@@ -140,8 +140,7 @@ gboolean DBus::on_handle_request_create(NpudCore *object, GDBusMethodInvocation 
   VERBOSE(DBus) << "on_handle_request_create with " << arg_ctx << ", " << arg_nw_handle
                 << std::endl;
   RequestID requestID = 0;
-  int ret = -1;
-  // TODO Invoke core function.
+  int ret = Server::instance().core().createRequest(arg_ctx, arg_nw_handle, &requestID);
   npud_core_complete_request_create(object, invocation, guint(requestID), ret);
   return TRUE;
 }
@@ -151,8 +150,7 @@ gboolean DBus::on_handle_request_destroy(NpudCore *object, GDBusMethodInvocation
 {
   VERBOSE(DBus) << "on_handle_request_destroy with " << arg_ctx << ", " << arg_rq_handle
                 << std::endl;
-  int ret = -1;
-  // TODO Invoke core function.
+  int ret = Server::instance().core().destroyRequest(arg_ctx, arg_rq_handle);
   npud_core_complete_request_destroy(object, invocation, ret);
   return TRUE;
 }
