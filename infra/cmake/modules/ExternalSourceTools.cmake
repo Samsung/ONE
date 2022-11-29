@@ -53,17 +53,10 @@ function(ExternalSource_Download PREFIX)
 
       # For external mirror server
       envoption(EXTERNAL_SERVER_USERPWD "")
-
-      if("${EXTERNAL_SERVER_USERPWD}" STREQUAL "")
-        file(DOWNLOAD ${URL} "${DOWNLOAD_PATH}"
-                      STATUS status
-                      USERPWD "${ARG_USERPWD}"
-                      LOG log)
-      else("${EXTERNAL_SERVER_USERPWD}" STREQUAL "")
-        file(DOWNLOAD ${URL} "${DOWNLOAD_PATH}"
-                      STATUS status
-                      LOG log)
-      endif("${EXTERNAL_SERVER_USERPWD}" STREQUAL "")
+      file(DOWNLOAD ${URL} "${DOWNLOAD_PATH}"
+                    STATUS status
+                    USERPWD "${EXTERNAL_SERVER_USERPWD}"
+                    LOG log)
 
       list(GET status 0 status_code)
       list(GET status 1 status_string)
