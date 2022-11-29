@@ -49,8 +49,8 @@ public:
   void profileData(const std::string &mode, const std::string &input_data_path,
                    float min_percentile, float max_percentile);
 
-  void profileData_with_parallel_record(const std::string &mode, const std::string &input_data_path,
-                                        float min_percentile, float max_percentile);
+  void profileDataInParallel(const std::string &mode, const std::string &input_data_path,
+                             float min_percentile, float max_percentile);
 
   void profileRawData(const std::string &mode, const std::string &input_data_path,
                       float min_percentile, float max_percentile);
@@ -70,7 +70,7 @@ private:
 
   std::unique_ptr<luci::Module> _module;
 
-  // Used in parallel execution
+  // Multiple interpreters are used for parallel execution
   std::vector<std::unique_ptr<luci_interpreter::Interpreter>> _interpreters;
   std::vector<std::unique_ptr<MinMaxObserver>> _observers;
 

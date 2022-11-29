@@ -43,7 +43,7 @@ public:
     vectors.max_vector.push_back(max);
   }
 
-  void recordMinMaxVector(const luci::CircleNode *node, const MinMaxVectors &minmax_vector)
+  void appendMinMaxVector(const luci::CircleNode *node, const MinMaxVectors &minmax_vector)
   {
     MinMaxVectors &vectors = _minmax_map[node];
     vectors.min_vector.insert(vectors.min_vector.end(), minmax_vector.min_vector.begin(),

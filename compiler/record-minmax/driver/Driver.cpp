@@ -50,7 +50,9 @@ int entry(const int argc, char **argv)
     .type(arser::DataType::FLOAT)
     .help("Record n'th percentile of min");
 
-  arser.add_argument("--parallel").type(arser::DataType::BOOL).help("Use parallel recording");
+  arser.add_argument("--parallel")
+    .type(arser::DataType::BOOL)
+    .help("Use parallel recording (default: false)");
 
   arser.add_argument("--max_percentile")
     .type(arser::DataType::FLOAT)
@@ -119,6 +121,15 @@ int entry(const int argc, char **argv)
 
   RecordMinMax rmm;
 
+#ifndef _OPENMP
+  if (parallel_record)
+  {
+    std::cout << "Warning: Parallel recording is not available in this platform. A single thread "
+                 "is used for recording.";
+    parallel_record = false;
+  }
+#endif
+
   // TODO: support parallel record for profile with random data
   if (parallel_record and not arser["--input_data"])
   {
@@ -146,7 +157,7 @@ int entry(const int argc, char **argv)
       else
       {
         std::cout << "Using parallel recording" << std::endl;
-        rmm.profileData_with_parallel_record(mode, input_data_path, min_percentile, max_percentile);
+        rmm.profileDataInParallel(mode, input_data_path, min_percentile, max_percentile);
       }
     }
     // input_data is a text file having a file path in each line.

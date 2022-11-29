@@ -414,36 +414,71 @@ RecordMinMax::importH5Data(const std::string &input_data_path)
 void RecordMinMax::profileData(const std::string &mode, const std::string &input_data_path,
                                float min_percentile, float max_percentile)
 {
-  const auto input_nodes = loco::input_nodes(_module->graph());
-  const auto num_inputs = input_nodes.size();
-  const auto vector_input_data = importH5Data(input_data_path);
-  const auto num_records = vector_input_data.size();
-
-  for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
+  try
   {
-    std::cout << "Recording " << record_idx << "'th data" << std::endl;
+    dio::hdf5::HDF5Importer importer(input_data_path);
+    importer.importGroup("value");
 
-    for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+    bool is_raw_data = importer.isRawData();
+
+    const auto num_records = importer.numData();
+    if (num_records == 0)
+      throw std::runtime_error("The input data file does not contain any record.");
+
+    const auto input_nodes = loco::input_nodes(_module->graph());
+    const auto num_inputs = input_nodes.size();
+
+    for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
     {
-      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
-      const auto &cur_input_data = vector_input_data[record_idx][input_idx];
+      if (num_inputs != importer.numInputs(record_idx))
+        throw std::runtime_error("Wrong number of inputs.");
 
-      // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
-      //       We can redcue the copy by directly writing data from file to interpreter inputs
-      _interpreters[0]->writeInputTensor(input_node, cur_input_data.data(), cur_input_data.size());
+      std::cout << "Recording " << record_idx << "'th data" << std::endl;
+
+      for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+      {
+        const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
+        assert(input_node->index() == input_idx);
+        checkInputDimension(input_node);
+        std::vector<char> input_data(getTensorSize(input_node));
+
+        if (!is_raw_data)
+        {
+          DataType dtype;
+          Shape shape;
+          importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data());
+
+          // Check the type and the shape of the input data is valid
+          verifyTypeShape(input_node, dtype, shape);
+        }
+        else
+        {
+          // Skip type/shape check for raw data
+          importer.readTensor(record_idx, input_idx, input_data.data());
+        }
+
+        // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
+        //       We can redcue the copy by directly writing data from file to interpreter inputs
+        _interpreters[0]->writeInputTensor(input_node, input_data.data(), input_data.size());
+      }
+
+      _interpreters[0]->interpret();
     }
 
-    _interpreters[0]->interpret();
+    std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
   }
-
-  std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
+  catch (const H5::Exception &e)
+  {
+    H5::Exception::printErrorStack();
+    throw std::runtime_error("HDF5 error occurred.");
+  }
 
   update_quantparam(_observers[0].get(), mode, min_percentile, max_percentile);
 }
 
-void RecordMinMax::profileData_with_parallel_record(const std::string &mode,
-                                                    const std::string &input_data_path,
-                                                    float min_percentile, float max_percentile)
+void RecordMinMax::profileDataInParallel(const std::string &mode,
+                                         const std::string &input_data_path, float min_percentile,
+                                         float max_percentile)
 {
   assert(_interpreters.size() == _threads_size);
   assert(_observers.size() == _threads_size);
@@ -460,8 +495,6 @@ void RecordMinMax::profileData_with_parallel_record(const std::string &mode,
     {
       const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
 
-      // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
-      //       We can reduce the copy by directly writing data from file to interpreter inputs
       const auto &cur_input_data = vector_input_data[record_idx][input_idx];
       _interpreters[current_thread_num]->writeInputTensor(input_node, cur_input_data.data(),
                                                           cur_input_data.size());
@@ -481,7 +514,7 @@ void RecordMinMax::profileData_with_parallel_record(const std::string &mode,
       const auto node = iter.first;
       const auto &minmax = iter.second;
 
-      main_min_max_map->recordMinMaxVector(node, minmax);
+      main_min_max_map->appendMinMaxVector(node, minmax);
     }
   }
 
