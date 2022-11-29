@@ -33,6 +33,8 @@ Interpreter::Interpreter(const char *model_data_raw, bool allocate_input)
   loader.load();
 }
 
+Interpreter::Interpreter(const char *model_data_raw) { Interpreter(model_data_raw, true); }
+
 Interpreter::Interpreter(const char *model_data_raw, IMemoryManager *memory_manager,
                          bool allocate_input)
 {
@@ -43,6 +45,11 @@ Interpreter::Interpreter(const char *model_data_raw, IMemoryManager *memory_mana
 
   ModuleLoader loader(model_data_raw, _runtime_module.get(), memory_manager);
   loader.load();
+}
+
+Interpreter::Interpreter(const char *model_data_raw, IMemoryManager *memory_manager)
+{
+  Interpreter(model_data_raw, memory_manager, true);
 }
 
 Interpreter::~Interpreter() = default;

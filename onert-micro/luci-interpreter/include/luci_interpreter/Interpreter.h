@@ -30,10 +30,12 @@ namespace luci_interpreter
 class Interpreter
 {
 public:
-  explicit Interpreter(const char *model_data_raw, bool allocate_input = true);
+  explicit Interpreter(const char *model_data_raw);
+  explicit Interpreter(const char *model_data_raw, bool allocate_input);
 
+  explicit Interpreter(const char *model_data_raw, IMemoryManager *memory_manager);
   explicit Interpreter(const char *model_data_raw, IMemoryManager *memory_manager,
-                       bool allocate_input = true);
+                       bool allocate_input);
 
   ~Interpreter();
 
