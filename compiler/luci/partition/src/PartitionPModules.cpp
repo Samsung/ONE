@@ -22,6 +22,8 @@
 
 #include <loco.h>
 
+#include <cassert>
+
 namespace
 {
 
@@ -88,11 +90,14 @@ std::unique_ptr<loco::Graph> clone_graph(loco::Graph *graph_org, luci::CloneCont
 {
   auto graph = loco::make_graph();
   auto graph_clone = graph.get();
+  auto &graph_name = graph_org->name();
 
-  graph_clone->name(graph_org->name());
+  graph_clone->name(graph_name);
 
   // clone inputs
-  for (uint32_t n = 0; n < graph_org->inputs()->size(); ++n)
+  auto inputs = graph_org->inputs();
+  assert(inputs);
+  for (uint32_t n = 0; n < inputs->size(); ++n)
   {
     auto input_org = luci::input_node(graph_org, n);
     assert(input_org != nullptr);
