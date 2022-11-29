@@ -148,6 +148,23 @@ bool validate_shape_dtype(loco::Graph *g)
   return true;
 }
 
+/**
+ * @brief Validate sequence of multi-output nodes are followed for specific
+ *        IRs such as CircleIfOut.
+ */
+bool validate_multi_outs(loco::Graph *g)
+{
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto const cnode = loco::must_cast<luci::CircleNode *>(node);
+
+    // TODO implement validate per cnode
+    (void)cnode;
+  }
+
+  return true;
+}
+
 class VirtualNodeDetector final : public luci::CircleNodeVisitor<bool>
 {
 public:
@@ -183,6 +200,9 @@ bool validate(loco::Graph *g)
     return false;
 
   if (!validate_shape_dtype(g))
+    return false;
+
+  if (!validate_multi_outs(g))
     return false;
 
   // TODO add more validation
