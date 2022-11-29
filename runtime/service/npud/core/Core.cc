@@ -118,5 +118,51 @@ int Core::destroyNetwork(ContextID contextId, ModelID modelId) const
   return 0;
 }
 
+int Core::createRequest(ContextID contextId, ModelID modelId, RequestID *requestId) const
+{
+  VERBOSE(Core) << "createRequest with " << contextId << ", " << modelId << std::endl;
+  NpuContext *npuContext = _contextManager->getNpuContext(contextId);
+  if (!npuContext)
+  {
+    VERBOSE(Core) << "Invalid context id" << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  RequestID id;
+  int ret = _devManager->createRequest(npuContext, modelId, &id);
+  if (ret != NPU_STATUS_SUCCESS)
+  {
+    VERBOSE(Core) << "Failed to create request of model: " << ret << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  *requestId = id;
+  return 0;
+}
+
+int Core::destroyRequest(ContextID contextId, RequestID requestId) const
+{
+  VERBOSE(Core) << "destroyRequest with " << contextId << ", " << requestId << std::endl;
+  NpuContext *npuContext = _contextManager->getNpuContext(contextId);
+  if (!npuContext)
+  {
+    VERBOSE(Core) << "Invalid context id" << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  int ret = _devManager->destroyRequest(npuContext, requestId);
+  if (ret != NPU_STATUS_SUCCESS)
+  {
+    VERBOSE(Core) << "Failed to destroy request: " << ret << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  return 0;
+}
+
 } // namespace core
 } // namespace npud
