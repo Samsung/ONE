@@ -172,6 +172,73 @@ public:
   bool visit(const luci::CircleNode *) final { return false; }
 };
 
+class MultiOutNodeValidate final : public luci::CircleNodeVisitor<bool>
+{
+public:
+  MultiOutNodeValidate() {}
+
+private:
+  template <class T> bool check(const luci::CircleNode *node)
+  {
+    auto succs = loco::succs(node);
+    if (succs.size() < 1)
+      return false;
+    for (const auto &cnode : succs)
+    {
+      auto const child = dynamic_cast<const T *>(cnode);
+      if (child == nullptr)
+        return false;
+    }
+    return true;
+  }
+
+public:
+  bool visit(const luci::CircleBidirectionalSequenceLSTM *node) final
+  {
+    return check<luci::CircleBidirectionalSequenceLSTMOut>(node);
+  }
+  bool visit(const luci::CircleCustom *node) final { return check<luci::CircleCustomOut>(node); }
+  bool visit(const luci::CircleIf *node) final { return check<luci::CircleIfOut>(node); }
+  bool visit(const luci::CircleNonMaxSuppressionV4 *node) final
+  {
+    return check<luci::CircleNonMaxSuppressionV4Out>(node);
+  }
+  bool visit(const luci::CircleNonMaxSuppressionV5 *node) final
+  {
+    return check<luci::CircleNonMaxSuppressionV5Out>(node);
+  }
+  bool visit(const luci::CircleSplit *node) final { return check<luci::CircleSplitOut>(node); }
+  bool visit(const luci::CircleSplitV *node) final { return check<luci::CircleSplitVOut>(node); }
+  bool visit(const luci::CircleTopKV2 *node) final { return check<luci::CircleTopKV2Out>(node); }
+  bool visit(const luci::CircleUnique *node) final { return check<luci::CircleUniqueOut>(node); }
+  bool visit(const luci::CircleUnpack *node) final { return check<luci::CircleUnpackOut>(node); }
+  bool visit(const luci::CircleWhile *node) final { return check<luci::CircleWhileOut>(node); }
+
+  bool visit(const luci::CircleNode *) final { return true; }
+};
+
+bool validate_multi_outs(loco::Graph *g)
+{
+  LOGGER(l);
+
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto const cnode = loco::must_cast<luci::CircleNode *>(node);
+
+    MultiOutNodeValidate d;
+    if (cnode->accept(&d))
+      continue;
+
+    auto const name = cnode->name();
+    INFO(l) << "Node: " << name << ", " << (uint32_t)(cnode->opcode()) << " has invalid child"
+            << std::endl;
+
+    return false;
+  }
+
+  return true;
+}
+
 } // namespace
 
 namespace luci
@@ -183,6 +250,9 @@ bool validate(loco::Graph *g)
     return false;
 
   if (!validate_shape_dtype(g))
+    return false;
+
+  if (!validate_multi_outs(g))
     return false;
 
   // TODO add more validation
