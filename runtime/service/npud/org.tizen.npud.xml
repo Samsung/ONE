@@ -25,6 +25,17 @@
 	    <arg name="ctx" type="t" direction="in"  />
 	    <arg name="error" type="i" direction="out"  />
     </method>
+    <method name="buffers_create">
+      <arg name="ctx" type="t" direction="in" />
+      <arg name="buffers" type="a(itu)" direction="in" />
+      <arg name="out_buffers" type="a(itu)" direction="out" />
+      <arg name="error" type="i" direction="out" />
+    </method>
+    <method name="buffers_destroy">
+      <arg name="ctx" type="t" direction="in" />
+      <arg name="buffers" type="a(itu)" direction="in" />
+      <arg name="error" type="i" direction="out" />
+    </method>
     <method name="network_create">
 	    <arg name="ctx" type="t" direction="in" />
 	    <arg name="binary_path" type="s" direction="in"  />
@@ -47,9 +58,30 @@
       <arg name="rq_handle" type="u" direction="in" />
       <arg name="error" type="i" direction="out" />
     </method>
+    <method name="request_set_data">
+      <arg name="ctx" type="t" direction="in" />
+      <arg name="rq_handle" type="u" direction="in" />
+      <arg name="input_buffers" type="a(itu)" direction="in" />
+      <arg name="output_buffers" type="a(itu)" direction="in" />
+      <arg name="error" type="i" direction="out" />
+    </method>
+    <method name="request_set_input">
+	    <arg name="ctx" type="t" direction="in"  />
+	    <arg name="rq_handle" type="u" direction="in"  />
+	    <arg name="index" type="i" direction="in"  />
+	    <arg name="input_buffer" type="(itu)" direction="in"  />
+	    <arg name="error" type="i" direction="out"  />
+    </method>
+    <method name="request_set_output">
+	    <arg name="ctx" type="t" direction="in"  />
+	    <arg name="rq_handle" type="u" direction="in"  />
+	    <arg name="index" type="i" direction="in"  />
+	    <arg name="output_buffer" type="(itu)" direction="in"  />
+	    <arg name="error" type="i" direction="out"  />
+    </method>
     <method name="execute_run">
 	    <arg name="ctx" type="t" direction="in"  />
-	    <arg name="nw_handle" type="u" direction="in"  />
+	    <arg name="rq_handle" type="u" direction="in"  />
 	    <arg name="error" type="i" direction="out"  />
     </method>
   </interface>

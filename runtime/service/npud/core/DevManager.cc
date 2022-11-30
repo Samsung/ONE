@@ -127,6 +127,32 @@ int DevManager::destroyContext(NpuContext *npuContext)
   }
 }
 
+int DevManager::createBuffers(NpuContext *npuContext, GenericBuffers *buffers)
+{
+  try
+  {
+    return getBackend()->createBuffers(npuContext, buffers);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+}
+
+int DevManager::destroyBuffers(NpuContext *npuContext, GenericBuffers *buffers)
+{
+  try
+  {
+    return getBackend()->destroyBuffers(npuContext, buffers);
+  }
+  catch (const std::exception &e)
+  {
+    VERBOSE(DevManager) << e.what() << std::endl;
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+}
+
 int DevManager::registerModel(NpuContext *npuContext, const std::string &modelPath,
                               ModelID *modelId)
 {
@@ -181,13 +207,12 @@ int DevManager::destroyRequest(NpuContext *npuContext, RequestID requestId)
 }
 
 int DevManager::setRequestData(NpuContext *npuContext, RequestID requestId, InputBuffers *inputBufs,
-                               TensorDataInfos *inputInfos, OutputBuffers *outputBufs,
-                               TensorDataInfos *outputInfos)
+                               OutputBuffers *outputBufs)
 {
+
   try
   {
-    return getBackend()->setRequestData(npuContext, requestId, inputBufs, inputInfos, outputBufs,
-                                        outputInfos);
+    return getBackend()->setRequestData(npuContext, requestId, inputBufs, outputBufs);
   }
   catch (const std::exception &e)
   {

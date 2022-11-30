@@ -43,10 +43,14 @@ public:
 
   int createContext(int deviceId, int priority, ContextID *contextId);
   int destroyContext(ContextID contextId);
+  int createBuffers(ContextID contextId, GenericBuffers *buffers);
+  int destroyBuffers(ContextID contextId, GenericBuffers *buffers);
   int createNetwork(ContextID contextId, const std::string &modelPath, ModelID *modelId);
   int destroyNetwork(ContextID contextId, ModelID modelId);
   int createRequest(ContextID contextId, ModelID modelId, RequestID *requestId);
   int destroyRequest(ContextID contextId, RequestID requestId);
+  int setRequestData(ContextID contextId, RequestID requestId, InputBuffers *inputBufs,
+                     InputBuffers *outputBufs);
 
 private:
   std::unique_ptr<DevManager> _devManager;

@@ -49,13 +49,14 @@ public:
 
   int createContext(int deviceId, int priority, NpuContext **npuContext);
   int destroyContext(NpuContext *npuContext);
+  int createBuffers(NpuContext *npuContext, GenericBuffers *buffers);
+  int destroyBuffers(NpuContext *npuContext, GenericBuffers *buffers);
   int registerModel(NpuContext *npuContext, const std::string &modelPath, ModelID *modelId);
   int unregisterModel(NpuContext *npuContext, ModelID modelId);
   int createRequest(NpuContext *npuContext, ModelID modelId, RequestID *requestId);
   int destroyRequest(NpuContext *npuContext, RequestID requestId);
   int setRequestData(NpuContext *npuContext, RequestID requestId, InputBuffers *inputBufs,
-                     TensorDataInfos *inputInfos, OutputBuffers *outputBufs,
-                     TensorDataInfos *outputInfos);
+                     OutputBuffers *outputBufs);
   int submitRequest(NpuContext *npuContext, RequestID requestId);
 
 private:

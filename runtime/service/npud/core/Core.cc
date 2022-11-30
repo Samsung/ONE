@@ -71,6 +71,44 @@ int Core::destroyContext(ContextID contextId)
   return 0;
 }
 
+int Core::createBuffers(ContextID contextId, GenericBuffers *buffers)
+{
+  VERBOSE(Core) << "createBuffers with " << contextId << std::endl;
+  NpuContext *npuContext = _contextManager->getNpuContext(contextId);
+  if (!npuContext)
+  {
+    VERBOSE(Core) << "Invalid context id" << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  int ret = _devManager->createBuffers(npuContext, buffers);
+  if (ret != NPU_STATUS_SUCCESS)
+  {
+    VERBOSE(Core) << "Failed to create buffers: " << ret << std::endl;
+  }
+  return 0;
+}
+
+int Core::destroyBuffers(ContextID contextId, GenericBuffers *buffers)
+{
+  VERBOSE(Core) << "destroyBuffers with " << contextId << std::endl;
+  NpuContext *npuContext = _contextManager->getNpuContext(contextId);
+  if (!npuContext)
+  {
+    VERBOSE(Core) << "Invalid context id" << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  int ret = _devManager->destroyBuffers(npuContext, buffers);
+  if (ret != NPU_STATUS_SUCCESS)
+  {
+    VERBOSE(Core) << "Failed to destroy buffers: " << ret << std::endl;
+  }
+  return 0;
+}
+
 int Core::createNetwork(ContextID contextId, const std::string &modelPath, ModelID *modelId)
 {
   VERBOSE(Core) << "createNetwork with " << contextId << ", " << modelPath << std::endl;
@@ -156,6 +194,29 @@ int Core::destroyRequest(ContextID contextId, RequestID requestId)
   if (ret != NPU_STATUS_SUCCESS)
   {
     VERBOSE(Core) << "Failed to destroy request: " << ret << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  return 0;
+}
+
+int Core::setRequestData(ContextID contextId, RequestID requestId, InputBuffers *inputBufs,
+                         InputBuffers *outputBufs)
+{
+  VERBOSE(Core) << "setRequestData with " << contextId << ", " << requestId << std::endl;
+  NpuContext *npuContext = _contextManager->getNpuContext(contextId);
+  if (!npuContext)
+  {
+    VERBOSE(Core) << "Invalid context id" << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  int ret = _devManager->setRequestData(npuContext, requestId, inputBufs, outputBufs);
+  if (ret != NPU_STATUS_SUCCESS)
+  {
+    VERBOSE(Core) << "Failed to set request data: " << ret << std::endl;
     // TODO Define CoreStatus
     return 1;
   }

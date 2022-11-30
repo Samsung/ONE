@@ -34,10 +34,32 @@ using namespace ::npud::core;
 
 using Handle = void *;
 
+/**
+ * @brief Npu model information
+ *
+ * @param path The model path.
+ * @param core The core number where the model is registered.
+ */
+struct TrixModelInfo
+{
+  ModelID id;
+  std::string path;
+  int core;
+  npubin_meta *meta;
+  int refCount;
+
+  // TrixModelInfo() : meta(nullptr), refCount(0) {}
+  TrixModelInfo(ModelID _id, std::string _path, int _core, npubin_meta *_meta)
+    : id(_id), path(_path), core(_core), meta(_meta), refCount(0)
+  {
+  }
+  ~TrixModelInfo() { free(meta); }
+};
+
 struct TrixDevice
 {
   std::vector<Handle> handles;
-  std::vector<std::weak_ptr<NpuModelInfo>> models;
+  std::map<ModelID, std::unique_ptr<TrixModelInfo>> models;
 };
 
 class TrixBackend : public Backend
@@ -49,16 +71,15 @@ public:
   NpuStatus getVersion(std::string &version) override;
   NpuStatus createContext(int device_fd, int priority, NpuContext **ctx) override;
   NpuStatus destroyContext(NpuContext *ctx) override;
-  NpuStatus createBuffer(NpuContext *ctx, GenericBuffer *buffer) override;
-  NpuStatus destroyBuffer(NpuContext *ctx, GenericBuffer *buffer) override;
+  NpuStatus createBuffers(NpuContext *ctx, GenericBuffers *bufs) override;
+  NpuStatus destroyBuffers(NpuContext *ctx, GenericBuffers *bufs) override;
   // TODO Support to register model from buffer
   NpuStatus registerModel(NpuContext *ctx, const std::string &modelPath, ModelID *modelId) override;
   NpuStatus unregisterModel(NpuContext *ctx, ModelID modelId) override;
   NpuStatus createRequest(NpuContext *ctx, ModelID modelId, RequestID *requestId) override;
   NpuStatus destroyRequest(NpuContext *ctx, RequestID requestId) override;
   NpuStatus setRequestData(NpuContext *ctx, RequestID requestId, InputBuffers *inputBufs,
-                           TensorDataInfos *inputInfos, OutputBuffers *outputBufs,
-                           TensorDataInfos *outputInfos) override;
+                           OutputBuffers *outputBufs) override;
   NpuStatus submitRequest(NpuContext *ctx, RequestID requestId) override;
 
 private:

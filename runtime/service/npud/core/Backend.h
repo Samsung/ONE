@@ -44,11 +44,39 @@ using ModelID = uint32_t;
  */
 using RequestID = uint32_t;
 
+enum BufferTypes
+{
+  NPU_BUFFER_FILE = 0, /**< buffer is a file */
+  NPU_BUFFER_MAPPED,   /**< buffer is a memory-mapped ptr */
+  NPU_BUFFER_DMABUF,   /**< buffer is a dmabuf fd, representing contiguous memory */
+  NPU_BUFFER_UNDEFINED /**< buffer type is undefined */
+};
+
 /**
  * @brief Various kinds of buffer supported for input/output/model.
  *
  */
-using GenericBuffer = void *;
+struct GenericBuffer
+{
+  union {
+    struct
+    {                       /** BUFFER_FILE */
+      const char *filepath; /**< The filepath for the data */
+      int fd;               /**< The file descriptor (optional) */
+    };
+    struct
+    {             /** BUFFER_MAPPED/DMABUF */
+      void *addr; /**< Mapped address of the buffer */
+      struct
+      {                  /** BUFFER_DMABUF only */
+        int dmabuf;      /**< The dma-buf fd handle of the memory allocated */
+        uint64_t offset; /**< Offset to be applied to the base memory address */
+      };
+    };
+  };
+  uint64_t size;    /**< The size of the buffer in bytes */
+  BufferTypes type; /**< Type of memory in this buffer */
+};
 
 /**
  * @brief Npu generic buffer array.
@@ -101,18 +129,18 @@ enum NpuStatus
   NPU_STATUS_ERROR_INVALID_DATA,
 };
 
-/**
- * @brief Npu model information
- *
- * @param path The model path.
- * @param core The core number where the model is registered.
- */
-struct NpuModelInfo
-{
-  ModelID id;
-  std::string path;
-  int core;
-};
+// /**
+//  * @brief Npu model information
+//  *
+//  * @param path The model path.
+//  * @param core The core number where the model is registered.
+//  */
+// struct NpuModelInfo
+// {
+//   ModelID id;
+//   std::string path;
+//   int core;
+// };
 
 /**
  * @brief Npu request information
@@ -123,11 +151,11 @@ struct NpuRequestInfo
 {
   RequestID id;
   ModelID modelId;
-  InputBuffers *inBufs;
-  TensorDataInfos *inInfos;
-  OutputBuffers *outBufs;
-  TensorDataInfos *outInfos;
-  NpuRequestInfo(RequestID rid, ModelID mid) : id(rid), modelId(mid) {}
+  // InputBuffers *inBufs;
+  // TensorDataInfos *inInfos;
+  // OutputBuffers *outBufs;
+  // TensorDataInfos *outInfos;
+  NpuRequestInfo(RequestID rid, ModelID mid, int _core) : id(rid), modelId(mid) {}
 };
 
 /**
@@ -139,7 +167,7 @@ struct NpuRequestInfo
  */
 struct NpuContext
 {
-  std::map<ModelID, std::shared_ptr<NpuModelInfo>> models;
+  std::vector<ModelID> models;
   std::map<RequestID, std::unique_ptr<NpuRequestInfo>> requests;
   int defaultCore;
 };
@@ -158,8 +186,8 @@ public:
   virtual NpuStatus getVersion(std::string &version) = 0;
   virtual NpuStatus createContext(int device_fd, int priority, NpuContext **ctx) = 0;
   virtual NpuStatus destroyContext(NpuContext *ctx) = 0;
-  virtual NpuStatus createBuffer(NpuContext *ctx, GenericBuffer *buffer) = 0;
-  virtual NpuStatus destroyBuffer(NpuContext *ctx, GenericBuffer *buffer) = 0;
+  virtual NpuStatus createBuffers(NpuContext *ctx, GenericBuffers *bufs) = 0;
+  virtual NpuStatus destroyBuffers(NpuContext *ctx, GenericBuffers *bufs) = 0;
   // TODO Support to register model from buffer
   virtual NpuStatus registerModel(NpuContext *ctx, const std::string &modelPath,
                                   ModelID *modelId) = 0;
@@ -167,8 +195,7 @@ public:
   virtual NpuStatus createRequest(NpuContext *ctx, ModelID modelId, RequestID *requestId) = 0;
   virtual NpuStatus destroyRequest(NpuContext *ctx, RequestID requestId) = 0;
   virtual NpuStatus setRequestData(NpuContext *ctx, RequestID requestId, InputBuffers *input_bufs,
-                                   TensorDataInfos *in_info, OutputBuffers *output_bufs,
-                                   TensorDataInfos *out_info) = 0;
+                                   OutputBuffers *output_bufs) = 0;
   virtual NpuStatus submitRequest(NpuContext *ctx, RequestID requestId) = 0;
 };
 

@@ -48,6 +48,10 @@ public:
                                            gint arg_device_id, gint arg_priority);
   static gboolean on_handle_context_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
                                             guint64 arg_ctx);
+  static gboolean on_handle_buffers_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                           guint64 arg_ctx, GVariant *arg_buffers);
+  static gboolean on_handle_buffers_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                            guint64 arg_ctx, GVariant *arg_buffers);
   static gboolean on_handle_network_create(NpudCore *object, GDBusMethodInvocation *invocation,
                                            guint64 arg_ctx, const gchar *arg_binary_path);
   static gboolean on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
@@ -56,8 +60,18 @@ public:
                                            guint64 arg_ctx, guint arg_nw_handle);
   static gboolean on_handle_request_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
                                             guint64 arg_ctx, guint arg_rq_handle);
+  static gboolean on_handle_request_set_data(NpudCore *object, GDBusMethodInvocation *invocation,
+                                             guint64 arg_ctx, guint arg_rq_handle,
+                                             GVariant *arg_input_buffers,
+                                             GVariant *arg_output_buffers);
+  static gboolean on_handle_request_set_input(NpudCore *object, GDBusMethodInvocation *invocation,
+                                              guint64 arg_ctx, guint arg_rq_handle, gint arg_index,
+                                              GVariant *arg_input_buffer);
+  static gboolean on_handle_request_set_output(NpudCore *object, GDBusMethodInvocation *invocation,
+                                               guint64 arg_ctx, guint arg_rq_handle, gint arg_index,
+                                               GVariant *arg_output_buffer);
   static gboolean on_handle_execute_run(NpudCore *object, GDBusMethodInvocation *invocation,
-                                        guint64 arg_ctx, guint arg_nw_handle);
+                                        guint64 arg_ctx, guint arg_rq_handle);
 
 private:
   guint _gdbus_id;
