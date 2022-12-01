@@ -38,8 +38,23 @@ FlatBuffers_Target(luci_micro_circle_schema
 set(LUCI_INTERPRETER_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/include")
 add_subdirectory(luci-interpreter/src/core/reader)
 
-# TODO: add cmake option to choose pal from command line
-set(LUCI_INTERPRETER_PAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/pal/mcu")
+# Choosing Kernel: reference mcu, optimized cmsisnn, optimized linux
+if (NOT KERNELS)
+    message(STATUS "KERNEL variable is not defined, default reference mcu kernels will be used")
+    set(LUCI_INTERPRETER_PAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/pal/mcu")
+elseif("${KERNELS}" STREQUAL "mcu")
+    message(STATUS "ONERT_MICRO will use reference mcu kernels")
+    set(LUCI_INTERPRETER_PAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/pal/mcu")
+elseif("${KERNELS}" STREQUAL "cmsisnn")
+    message(STATUS "ONERT_MICRO will use optimized cmsisnn kernels")
+    set(LUCI_INTERPRETER_PAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/pal/cmsisnn")
+elseif("${KERNELS}" STREQUAL "linux")
+    message(STATUS "ONERT_MICRO will use optimized linux kernels")
+    set(LUCI_INTERPRETER_PAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/pal/linux")
+else()
+    message(STATUS "Build onert-micro: FAILED (Non-existent kernel variable. Choose one of the following options: mcu, cmsisnn, linux)")
+    return()
+endif()
 
 set(CMAKE_ARM_OPTIONS
         -DLUCI_INTERPRETER_STATIC=ON
@@ -104,8 +119,9 @@ if (GENERATE_KERNELS_LIST_FROM)
 
 endif ()
 
-# To remove GENERATE_KERNELS_LIST_FROM variable from cmake cache
+# To remove GENERATE_KERNELS_LIST_FROM and KERNELS variable from cmake cache
 unset(GENERATE_KERNELS_LIST_FROM CACHE)
+unset(KERNELS CACHE)
 
 set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/libluci_interpreter_micro.a")
 
