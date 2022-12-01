@@ -38,7 +38,7 @@ private:
   IMemoryManager *_memory_manager;
   const char *_model_data_raw;
   RuntimeModule *_runtime_module;
-  std::vector<BaseRuntimeGraph *> _runtime_graphs;
+  std::vector<IBaseRuntimeGraph *> _runtime_graphs;
   std::unordered_map<int32_t, Tensor *> _index_to_tensor;
 };
 

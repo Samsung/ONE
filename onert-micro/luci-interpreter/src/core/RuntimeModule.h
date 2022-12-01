@@ -32,7 +32,7 @@ class RuntimeModule
 public:
   RuntimeModule() = default;
 
-  BaseRuntimeGraph *addGraph(IMemoryManager *memory_manager)
+  IBaseRuntimeGraph *addGraph(IMemoryManager *memory_manager)
   {
     if (memory_manager->is_static_manager())
       _graphs.push_back(std::make_unique<StaticRuntimeGraph>(memory_manager));
@@ -50,9 +50,9 @@ public:
   void execute() const { getMainGraph()->execute(); }
 
 private:
-  BaseRuntimeGraph *getMainGraph() const { return _graphs[0].get(); }
+  IBaseRuntimeGraph *getMainGraph() const { return _graphs[0].get(); }
 
-  std::vector<std::unique_ptr<BaseRuntimeGraph>> _graphs;
+  std::vector<std::unique_ptr<IBaseRuntimeGraph>> _graphs;
 };
 
 } // namespace luci_interpreter

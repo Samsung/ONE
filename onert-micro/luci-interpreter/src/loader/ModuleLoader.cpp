@@ -44,7 +44,7 @@ void ModuleLoader::load()
   {
     if (!reader.select_subgraph(i))
       assert(false && "Error during select subgraph");
-    BaseRuntimeGraph *runtime_graph = _runtime_graphs.at(i);
+    IBaseRuntimeGraph *runtime_graph = _runtime_graphs.at(i);
     GraphLoader loader(&reader, runtime_graph, _memory_manager, &_index_to_tensor);
 
     loader.initInputTensors();
@@ -59,7 +59,7 @@ void ModuleLoader::load()
     // Dynamic memory manager case
     for (size_t i = 0; i < reader.num_subgraph(); ++i)
     {
-      BaseRuntimeGraph *runtime_graph = _runtime_graphs.at(i);
+      IBaseRuntimeGraph *runtime_graph = _runtime_graphs.at(i);
       runtime_graph->configure();
     }
   }

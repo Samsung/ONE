@@ -29,7 +29,8 @@ namespace luci_interpreter
 class GraphLoader
 {
 public:
-  GraphLoader(CircleReader *reader, BaseRuntimeGraph *runtime_graph, IMemoryManager *memory_manager,
+  GraphLoader(CircleReader *reader, IBaseRuntimeGraph *runtime_graph,
+              IMemoryManager *memory_manager,
               std::unordered_map<int32_t, Tensor *> *index_to_tensor);
 
   void loadTensors();
@@ -39,7 +40,7 @@ public:
 private:
   bool isCouldBeEmplaceTensor(const int32_t tensor_index);
 
-  BaseRuntimeGraph *_runtime_graph;
+  IBaseRuntimeGraph *_runtime_graph;
   IMemoryManager *_memory_manager;
   CircleReader *_reader;
   std::unordered_map<int32_t, Tensor *> *_index_to_tensor;

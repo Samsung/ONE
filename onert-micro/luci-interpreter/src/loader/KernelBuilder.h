@@ -33,7 +33,7 @@ class KernelBuilderRegistry;
 class KernelBuilder
 {
 public:
-  KernelBuilder(BaseRuntimeGraph *runtime_graph, CircleReader *circle_reader);
+  KernelBuilder(IBaseRuntimeGraph *runtime_graph, CircleReader *circle_reader);
 
   ~KernelBuilder();
 
@@ -43,11 +43,11 @@ public:
 
   CircleReader *get_circle_reader() { return _circle_reader; }
 
-  BaseRuntimeGraph *get_runtime_graph() { return _runtime_graph; }
+  IBaseRuntimeGraph *get_runtime_graph() { return _runtime_graph; }
 
 private:
   std::unique_ptr<KernelBuilderRegistry> _builder_registry;
-  BaseRuntimeGraph *_runtime_graph;
+  IBaseRuntimeGraph *_runtime_graph;
   CircleReader *_circle_reader;
 };
 

@@ -23,12 +23,13 @@
 namespace luci_interpreter
 {
 
-// BaseRuntimeGraph
-BaseRuntimeGraph::BaseRuntimeGraph(IMemoryManager *memory_manager) : _memory_manager(memory_manager)
+// IBaseRuntimeGraph
+IBaseRuntimeGraph::IBaseRuntimeGraph(IMemoryManager *memory_manager)
+  : _memory_manager(memory_manager)
 {
 }
 
-Tensor *BaseRuntimeGraph::addTensor(std::unique_ptr<Tensor> &&tensor)
+Tensor *IBaseRuntimeGraph::addTensor(std::unique_ptr<Tensor> &&tensor)
 {
   assert(tensor != nullptr);
   _tensors.push_back(std::move(tensor));
@@ -36,29 +37,29 @@ Tensor *BaseRuntimeGraph::addTensor(std::unique_ptr<Tensor> &&tensor)
 }
 
 AffineQuantization *
-BaseRuntimeGraph::addAffineQuantization(std::unique_ptr<AffineQuantization> &&quantization)
+IBaseRuntimeGraph::addAffineQuantization(std::unique_ptr<AffineQuantization> &&quantization)
 {
   assert(quantization != nullptr);
   _affine_quantizations.push_back(std::move(quantization));
   return _affine_quantizations.back().get();
 }
 
-void BaseRuntimeGraph::addInputTensor(Tensor *input_tensor)
+void IBaseRuntimeGraph::addInputTensor(Tensor *input_tensor)
 {
   _input_tensors.push_back(input_tensor);
 }
 
-void BaseRuntimeGraph::addOutputTensor(Tensor *output_tensor)
+void IBaseRuntimeGraph::addOutputTensor(Tensor *output_tensor)
 {
   _output_tensors.push_back(output_tensor);
 }
 
-void BaseRuntimeGraph::configureAllocations(Tensor *tensor)
+void IBaseRuntimeGraph::configureAllocations(Tensor *tensor)
 {
   _memory_manager->allocate_memory(*tensor);
 }
 
-void BaseRuntimeGraph::addKernel(std::unique_ptr<Kernel> &&kernel)
+void IBaseRuntimeGraph::addKernel(std::unique_ptr<Kernel> &&kernel)
 {
   assert(kernel != nullptr);
   _kernels.push_back(std::move(kernel));
@@ -66,7 +67,7 @@ void BaseRuntimeGraph::addKernel(std::unique_ptr<Kernel> &&kernel)
 }
 
 // RuntimeGraph
-RuntimeGraph::RuntimeGraph(IMemoryManager *memory_manager) : BaseRuntimeGraph(memory_manager) {}
+RuntimeGraph::RuntimeGraph(IMemoryManager *memory_manager) : IBaseRuntimeGraph(memory_manager) {}
 
 RuntimeGraph::~RuntimeGraph()
 {
@@ -177,7 +178,7 @@ void RuntimeGraph::execute()
 
 // StaticRuntimeGraph
 StaticRuntimeGraph::StaticRuntimeGraph(IMemoryManager *memory_manager)
-  : BaseRuntimeGraph(memory_manager)
+  : IBaseRuntimeGraph(memory_manager)
 {
 }
 

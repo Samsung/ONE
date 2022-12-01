@@ -29,11 +29,11 @@ namespace luci_interpreter
 
 class RuntimeModule;
 
-class BaseRuntimeGraph
+class IBaseRuntimeGraph
 {
 public:
-  explicit BaseRuntimeGraph(IMemoryManager *memory_manager);
-  virtual ~BaseRuntimeGraph() = default;
+  explicit IBaseRuntimeGraph(IMemoryManager *memory_manager);
+  virtual ~IBaseRuntimeGraph() = default;
 
   Tensor *addTensor(std::unique_ptr<Tensor> &&tensor);
   AffineQuantization *addAffineQuantization(std::unique_ptr<AffineQuantization> &&quantization);
@@ -67,7 +67,7 @@ protected:
   std::vector<std::unique_ptr<Kernel>> _kernels;
 };
 
-class RuntimeGraph final : public BaseRuntimeGraph
+class RuntimeGraph final : public IBaseRuntimeGraph
 {
 public:
   explicit RuntimeGraph(IMemoryManager *memory_manager);
@@ -87,7 +87,7 @@ private:
   std::vector<std::vector<Tensor *>> _dealloc_plan;
 };
 
-class StaticRuntimeGraph final : public BaseRuntimeGraph
+class StaticRuntimeGraph final : public IBaseRuntimeGraph
 {
 public:
   explicit StaticRuntimeGraph(IMemoryManager *memory_manager);

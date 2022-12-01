@@ -42,7 +42,7 @@ bool isCouldBeEmplaceOperation(circle::BuiltinOperator op)
 
 } // namespace
 
-GraphLoader::GraphLoader(CircleReader *reader, BaseRuntimeGraph *runtime_graph,
+GraphLoader::GraphLoader(CircleReader *reader, IBaseRuntimeGraph *runtime_graph,
                          IMemoryManager *memory_manager,
                          std::unordered_map<int32_t, Tensor *> *index_to_tensor)
   : _reader(reader), _runtime_graph(runtime_graph), _memory_manager(memory_manager),
