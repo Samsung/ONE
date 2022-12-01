@@ -44,14 +44,6 @@ LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &option
   lowerGraph(options);
 }
 
-// TODO Design better class and constructor to represent parent_graph
-LoweredGraph::LoweredGraph(const ir::Graph &parent_graph, const ir::Graph &graph,
-                           const CompilerOptions &options)
-  : _graph{graph}, _parent_graph{parent_graph}
-{
-  lowerGraph(options);
-}
-
 void LoweredGraph::lowerGraph(const CompilerOptions &options)
 {
   // Build backend contexts

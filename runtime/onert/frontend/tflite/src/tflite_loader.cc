@@ -99,13 +99,13 @@ private:
     for (const std::int32_t input_ind : *tflite_subg->inputs())
     {
       subg->addInput(tensorIdxToOperandIdx(input_ind),
-                     _tensor_names->at(_tensor_to_operand[input_ind]));
+                     _tensor_names.at(_tensor_to_operand[input_ind]));
     }
     // Set outputs
     for (const std::int32_t output_ind : *tflite_subg->outputs())
     {
       subg->addOutput(tensorIdxToOperandIdx(output_ind),
-                      _tensor_names->at(_tensor_to_operand[output_ind]));
+                      _tensor_names.at(_tensor_to_operand[output_ind]));
     }
     // Create operations
     for (const auto *op : *tflite_subg->operators())
@@ -113,7 +113,6 @@ private:
       loadOperation(op, *subg);
     }
 
-    subg->setTensorName(_tensor_names);
     subg->verify();
 
     return subg;

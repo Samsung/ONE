@@ -43,11 +43,6 @@ public:
   std::unordered_map<ir::OperationIndex, std::string> index_to_backend;
 };
 
-struct PartialGraphOptions
-{
-  std::unordered_map<ir::OperationIndex, ir::SubgraphIndex> index_to_graph;
-};
-
 class CompilerOptions
 {
 public:
@@ -68,7 +63,6 @@ public:
   bool he_profiling_mode; //< Whether HEScheduler profiling mode ON/OFF
   bool disable_compile;   //< Run with Interpreter if true, try compilation otherwise
   bool fp16_enable;       //< Whether fp16 mode ON/OFF
-  PartialGraphOptions partial_graph_options;
 };
 
 struct CompilerArtifact
@@ -112,23 +106,9 @@ public:
   std::shared_ptr<CompilerArtifact> compile(void);
 
   /**
-   * @brief   Do compilation with the options
-   *
-   * @return std::vector<std::shared_ptr<CompilerArtifact>> Executors as a result of compilation
-   * for pipeline
-   */
-  std::vector<std::shared_ptr<CompilerArtifact>> compile(const char *package_file_path,
-                                                         const char *map_file_path);
-
-  /**
    * @brief   Allow to compute float32 using float16 data type
    */
   void enableToFp16();
-
-  /**
-   * @brief   Build the partial graphs to compile with original graph
-   */
-  bool buildPartialGraph(uint32_t num_graphs);
 
 private:
   void checkProfilerConditions();
