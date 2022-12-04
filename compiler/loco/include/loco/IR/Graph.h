@@ -264,7 +264,6 @@ struct GraphOutputIndexQueryService : public DialectService
   virtual GraphOutputIndex index(const Node *node) const = 0;
 };
 
-// TODO Use "const Graph *"
 std::vector<Node *> output_nodes(Graph *);
 
 /**
