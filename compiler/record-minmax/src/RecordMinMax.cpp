@@ -32,6 +32,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <random>
+#include <unordered_set>
 
 using Shape = std::vector<loco::Dimension>;
 using DataType = loco::DataType;
@@ -164,6 +165,50 @@ void update_quantparam(record_minmax::MinMaxObserver *observer, const std::strin
   }
 }
 
+std::unordered_set<std::string> list_regular_files(DIR *directory)
+{
+  std::unordered_set<std::string> regular_files;
+  while (auto *entry = readdir(directory))
+  {
+    // Skip if the entry is not a regular file
+    if (entry->d_type != DT_REG)
+      continue;
+
+    regular_files.emplace(entry->d_name);
+  }
+  return regular_files;
+}
+
+std::string clear_after_point(const std::string &filename)
+{
+  size_t last_point_index = filename.find_last_of('.');
+  if (last_point_index == std::string::npos)
+    return filename;
+  return filename.substr(0, last_point_index + 1);
+}
+
+std::unordered_set<std::string> find_enumerated_files(const std::unordered_set<std::string> &files,
+                                                      size_t count)
+{
+  std::unordered_set<std::string> enumerated;
+  std::unordered_set<std::string> excluded;
+  for (const auto &file : files)
+  {
+    auto without_index = clear_after_point(file);
+    if (without_index == file || enumerated.find(without_index) != enumerated.end() ||
+        excluded.find(without_index) != excluded.end())
+      continue;
+    size_t i;
+    for (i = 0; i < count; ++i)
+      if (files.find(without_index + std::to_string(i)) == files.end())
+        break;
+    if (i >= count)
+      enumerated.emplace(std::move(without_index));
+    else
+      excluded.emplace(std::move(without_index));
+  }
+  return enumerated;
+}
 } // namespace
 
 namespace record_minmax
@@ -237,13 +282,32 @@ void RecordMinMax::profileRawDataDirectory(const std::string &mode,
     total_input_size += getTensorSize(input_node);
   }
 
-  while (entry = readdir(dp))
+  auto files = list_regular_files(dp);
+  auto enumerated = find_enumerated_files(files, input_nodes.size());
+  std::unordered_set<std::string> excluded;
+  for (const auto &basename : enumerated)
   {
-    // Skip if the entry is not a regular file
-    if (entry->d_type != DT_REG)
-      continue;
+    std::cout << "Recording " << num_records << "'th data" << std::endl;
+    size_t current_input = 0;
+    for (auto *input : input_nodes)
+    {
+      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
+      std::vector<char> input_data(getTensorSize(input_node));
+      auto filename = basename + std::to_string(current_input++);
+      readDataFromFile(input_data_path + "/" + filename, input_data, input_data.size());
+      _interpreter->writeInputTensor(input_node, input_data.data(), input_data.size());
+      excluded.emplace(std::move(filename));
+    }
 
-    const std::string filename = entry->d_name;
+    _interpreter->interpret();
+
+    num_records++;
+  }
+
+  for (const auto &filename : files)
+  {
+    if (excluded.find(filename) != excluded.end())
+      continue;
     std::cout << "Recording " << num_records << "'th data" << std::endl;
 
     // Read data from file to buffer
