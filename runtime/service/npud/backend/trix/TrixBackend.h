@@ -60,6 +60,7 @@ struct TrixDevice
 {
   std::vector<Handle> handles;
   std::map<ModelID, std::unique_ptr<TrixModelInfo>> models;
+  std::vector<std::unique_ptr<NpuContext>> ctxs;
 };
 
 class TrixBackend : public Backend
