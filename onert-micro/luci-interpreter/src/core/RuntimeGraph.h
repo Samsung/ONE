@@ -18,7 +18,7 @@
 #define LUCI_INTERPRETER_CORE_RUNTIMEGRAPH_H
 
 #include "luci_interpreter/core/Tensor.h"
-#include "luci_interpreter/MemoryManager.h"
+#include "luci_interpreter/memory_managers/MemoryManager.h"
 #include "core/Kernel.h"
 
 #include <memory>
@@ -29,20 +29,17 @@ namespace luci_interpreter
 
 class RuntimeModule;
 
-class RuntimeGraph
+class IBaseRuntimeGraph
 {
 public:
-  explicit RuntimeGraph(RuntimeModule *owning_module, IMemoryManager *memory_manager);
-  ~RuntimeGraph();
+  explicit IBaseRuntimeGraph(IMemoryManager *memory_manager);
+  virtual ~IBaseRuntimeGraph() = default;
 
   Tensor *addTensor(std::unique_ptr<Tensor> &&tensor);
   AffineQuantization *addAffineQuantization(std::unique_ptr<AffineQuantization> &&quantization);
 
   void addInputTensor(Tensor *input_tensor);
   void addOutputTensor(Tensor *output_tensor);
-
-  void setInputTensors(const std::vector<Tensor *> &input_tensors);
-  void setOutputTensors(const std::vector<Tensor *> &output_tensors);
 
   void configureAllocations(Tensor *tensor);
 
@@ -51,20 +48,14 @@ public:
 
   void addKernel(std::unique_ptr<Kernel> &&kernel);
 
-  void execute();
-  void configure();
+  virtual void execute() = 0;
+  virtual void configure() = 0;
 
   void invalidate() { _is_valid = false; }
   bool isValid() const { return _is_valid; }
 
-private:
-  void buildAllocDeallocPlan();
-  void allocate(size_t kernel_index) const;
-  void deallocate(size_t kernel_index) const;
-
-private:
+protected:
   IMemoryManager *_memory_manager;
-  RuntimeModule *_owning_module;
   std::vector<std::unique_ptr<Tensor>> _tensors;
   std::vector<std::unique_ptr<AffineQuantization>> _affine_quantizations;
   std::vector<Tensor *> _input_tensors;
@@ -74,9 +65,38 @@ private:
 
   // Kernels in execution order.
   std::vector<std::unique_ptr<Kernel>> _kernels;
+};
+
+class RuntimeGraph final : public IBaseRuntimeGraph
+{
+public:
+  explicit RuntimeGraph(IMemoryManager *memory_manager);
+  ~RuntimeGraph() final;
+
+  void execute() final;
+  void configure() final;
+
+private:
+  void buildAllocDeallocPlan();
+  void allocate(size_t kernel_index) const;
+  void deallocate(size_t kernel_index) const;
+
+private:
   // Tensors that are not used anymore after given op
   std::vector<std::vector<Tensor *>> _alloc_plan;
   std::vector<std::vector<Tensor *>> _dealloc_plan;
+};
+
+class StaticRuntimeGraph final : public IBaseRuntimeGraph
+{
+public:
+  explicit StaticRuntimeGraph(IMemoryManager *memory_manager);
+  ~StaticRuntimeGraph() final;
+
+  void execute() final;
+  void configure() final;
+
+  void configure_kernels();
 };
 
 } // namespace luci_interpreter

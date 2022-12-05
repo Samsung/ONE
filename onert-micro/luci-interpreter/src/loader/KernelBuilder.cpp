@@ -73,7 +73,7 @@ private:
   }
 };
 
-KernelBuilder::KernelBuilder(RuntimeGraph *runtime_graph, CircleReader *circle_reader)
+KernelBuilder::KernelBuilder(IBaseRuntimeGraph *runtime_graph, CircleReader *circle_reader)
   : _runtime_graph(runtime_graph), _circle_reader(circle_reader)
 {
   _builder_registry = std::make_unique<KernelBuilderRegistry>();

@@ -15,30 +15,41 @@
  */
 
 #include "luci_interpreter/Interpreter.h"
-#include "luci_interpreter/SimpleMemoryManager.h"
+#include "luci_interpreter/memory_managers/SimpleMemoryManager.h"
 
 #include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
 {
 
-Interpreter::Interpreter(const char *model_data_raw)
+Interpreter::Interpreter(const char *model_data_raw, bool allocate_input)
 {
   _runtime_module = std::make_unique<RuntimeModule>();
 
   _default_memory_manager = std::make_unique<SimpleMemoryManager>();
+  _default_memory_manager->is_allocate_input(allocate_input);
 
   ModuleLoader loader(model_data_raw, _runtime_module.get(), _default_memory_manager.get());
   loader.load();
 }
 
-Interpreter::Interpreter(const char *model_data_raw, IMemoryManager *memory_manager)
+Interpreter::Interpreter(const char *model_data_raw) { Interpreter(model_data_raw, true); }
+
+Interpreter::Interpreter(const char *model_data_raw, IMemoryManager *memory_manager,
+                         bool allocate_input)
 {
   assert(memory_manager && "Use Interpreter::Interpreter(module) constructor instead");
   _runtime_module = std::make_unique<RuntimeModule>();
 
+  memory_manager->is_allocate_input(allocate_input);
+
   ModuleLoader loader(model_data_raw, _runtime_module.get(), memory_manager);
   loader.load();
+}
+
+Interpreter::Interpreter(const char *model_data_raw, IMemoryManager *memory_manager)
+{
+  Interpreter(model_data_raw, memory_manager, true);
 }
 
 Interpreter::~Interpreter() = default;
@@ -56,6 +67,12 @@ void Interpreter::writeInputTensor(Tensor *input_tensor, const void *data, size_
 {
   if (data != nullptr)
     input_tensor->writeData(data, data_size);
+}
+
+void Interpreter::writeInputTensorWithoutCopy(Tensor *input_tensor, const void *data)
+{
+  if (data != nullptr)
+    input_tensor->writeDataWithoutCopy(const_cast<void *>(data));
 }
 
 void Interpreter::readOutputTensor(const Tensor *output_tensor, void *data, size_t data_size)

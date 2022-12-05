@@ -18,7 +18,7 @@
 #define LUCI_INTERPRETER_INTERPRETER_H
 
 #include "luci_interpreter/core/Tensor.h"
-#include "luci_interpreter/MemoryManager.h"
+#include "luci_interpreter/memory_managers/MemoryManager.h"
 
 #include <memory>
 #include <vector>
@@ -31,12 +31,17 @@ class Interpreter
 {
 public:
   explicit Interpreter(const char *model_data_raw);
+  explicit Interpreter(const char *model_data_raw, bool allocate_input);
 
   explicit Interpreter(const char *model_data_raw, IMemoryManager *memory_manager);
+  explicit Interpreter(const char *model_data_raw, IMemoryManager *memory_manager,
+                       bool allocate_input);
 
   ~Interpreter();
 
   static void writeInputTensor(Tensor *input_tensor, const void *data, size_t data_size);
+
+  static void writeInputTensorWithoutCopy(Tensor *input_tensor, const void *data);
 
   static void readOutputTensor(const Tensor *output_tensor, void *data, size_t data_size);
 

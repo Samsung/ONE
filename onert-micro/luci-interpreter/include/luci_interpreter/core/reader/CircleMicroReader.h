@@ -30,6 +30,87 @@
 namespace luci_interpreter
 {
 
+namespace
+{
+
+using ExecutionPlanTable = std::map<uint32_t, std::vector<uint32_t>>;
+
+template <typename VECTORTYPE> uint32_t read_u32(const VECTORTYPE &buffer, uint32_t idx)
+{
+  static_assert(std::is_same<typename VECTORTYPE::value_type, uint8_t>::value, "Types mismatch!");
+
+  uint32_t val = 0;
+  val += (buffer.at(idx + 0) << 0 * 8);
+  val += (buffer.at(idx + 1) << 1 * 8);
+  val += (buffer.at(idx + 2) << 2 * 8);
+  val += (buffer.at(idx + 3) << 3 * 8);
+  return val;
+}
+
+} // namespace
+
+namespace read_metadata
+{
+
+template <typename VECTORTYPE>
+ExecutionPlanTable decode_execution_plan(const VECTORTYPE &execution_plan_data)
+{
+  static_assert(std::is_same<typename VECTORTYPE::value_type, uint8_t>::value, "Types mismatch!");
+
+  ExecutionPlanTable execution_plan_table;
+  uint32_t idx = 0;
+
+  if (execution_plan_data.size() < 4)
+    assert(false && "Op table decode error : invalid entry number");
+
+  uint32_t entry_number = read_u32(execution_plan_data, idx);
+  idx += sizeof(uint32_t);
+
+  while (idx < execution_plan_data.size())
+  {
+    if (idx + 2 * sizeof(uint32_t) > execution_plan_data.size())
+      assert(false && "Op table decode error : invalid entry item");
+
+    uint32_t id = read_u32(execution_plan_data, idx);
+    idx += sizeof(uint32_t);
+
+    uint32_t size = read_u32(execution_plan_data, idx);
+
+    if (size == 0)
+      assert(false && "Op table decode error : empty execution plan entry");
+
+    idx += sizeof(uint32_t);
+
+    if (idx + sizeof(uint32_t) * size > execution_plan_data.size())
+      assert(false && "Source table decode error : invalid entry data");
+
+    std::vector<uint32_t> execution_plan_vector;
+    uint32_t position = read_u32(execution_plan_data, idx);
+    idx += sizeof(uint32_t);
+
+    for (uint32_t j = 1; j < size; ++j)
+    {
+      uint32_t execution_plan_inform = read_u32(execution_plan_data, idx);
+      idx += sizeof(uint32_t);
+
+      execution_plan_vector.push_back(execution_plan_inform);
+    }
+
+    if (!execution_plan_table.insert({position, execution_plan_vector}).second)
+      assert(false && "Op table decode error : duplicated origin ID");
+  }
+
+  if (idx != execution_plan_data.size())
+    assert(false && "Op table decode error : data size invalid");
+
+  if (execution_plan_table.size() != entry_number)
+    assert(false && "Op table decode error : entry number invalid");
+
+  return execution_plan_table;
+}
+
+} // namespace read_metadata
+
 const char *tensor_name(const circle::Tensor *tensor);
 
 DataType luci_datatype(circle::TensorType type);

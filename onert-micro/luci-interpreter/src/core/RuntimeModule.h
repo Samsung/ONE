@@ -18,7 +18,7 @@
 #define LUCI_INTERPRETER_CORE_RUNTIMEMODULE_H
 
 #include "core/RuntimeGraph.h"
-#include "luci_interpreter/MemoryManager.h"
+#include "luci_interpreter/memory_managers/MemoryManager.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <memory>
@@ -32,9 +32,12 @@ class RuntimeModule
 public:
   RuntimeModule() = default;
 
-  RuntimeGraph *addGraph(IMemoryManager *memory_manager)
+  IBaseRuntimeGraph *addGraph(IMemoryManager *memory_manager)
   {
-    _graphs.push_back(std::make_unique<RuntimeGraph>(this, memory_manager));
+    if (memory_manager->is_static_manager())
+      _graphs.push_back(std::make_unique<StaticRuntimeGraph>(memory_manager));
+    else
+      _graphs.push_back(std::make_unique<RuntimeGraph>(memory_manager));
     return _graphs.back().get();
   }
 
@@ -47,9 +50,9 @@ public:
   void execute() const { getMainGraph()->execute(); }
 
 private:
-  RuntimeGraph *getMainGraph() const { return _graphs[0].get(); }
+  IBaseRuntimeGraph *getMainGraph() const { return _graphs[0].get(); }
 
-  std::vector<std::unique_ptr<RuntimeGraph>> _graphs;
+  std::vector<std::unique_ptr<IBaseRuntimeGraph>> _graphs;
 };
 
 } // namespace luci_interpreter

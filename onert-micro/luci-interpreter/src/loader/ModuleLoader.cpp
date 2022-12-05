@@ -23,8 +23,7 @@ namespace luci_interpreter
 ModuleLoader::ModuleLoader(const char *model_data_raw, RuntimeModule *runtime_module,
                            IMemoryManager *memory_manager)
   : _model_data_raw(model_data_raw), _runtime_module(runtime_module),
-    _memory_manager(memory_manager),
-    _index_to_tensor(std::make_unique<std::map<int32_t, Tensor *>>())
+    _memory_manager(memory_manager), _index_to_tensor(std::unordered_map<int32_t, Tensor *>{})
 {
 }
 
@@ -45,18 +44,33 @@ void ModuleLoader::load()
   {
     if (!reader.select_subgraph(i))
       assert(false && "Error during select subgraph");
-    RuntimeGraph *runtime_graph = _runtime_graphs.at(i);
-    GraphLoader loader(&reader, runtime_graph, _memory_manager, _index_to_tensor.get());
+    IBaseRuntimeGraph *runtime_graph = _runtime_graphs.at(i);
+    GraphLoader loader(&reader, runtime_graph, _memory_manager, &_index_to_tensor);
 
     loader.initInputTensors();
     loader.loadTensors();
     loader.loadOperators();
   }
 
-  for (size_t i = 0; i < reader.num_subgraph(); ++i)
+  // For Dynamic Memory manager we build memory allocate/deallocate plan and then configure kernels.
+  // For Static Memory manager we only configure kernels.
+  if (not _memory_manager->is_static_manager())
   {
-    RuntimeGraph *runtime_graph = _runtime_graphs.at(i);
-    runtime_graph->configure();
+    // Dynamic memory manager case
+    for (size_t i = 0; i < reader.num_subgraph(); ++i)
+    {
+      IBaseRuntimeGraph *runtime_graph = _runtime_graphs.at(i);
+      runtime_graph->configure();
+    }
+  }
+  else
+  {
+    // Static memory manager case
+    for (size_t i = 0; i < reader.num_subgraph(); ++i)
+    {
+      const auto static_runtime_graph = dynamic_cast<StaticRuntimeGraph *>(_runtime_graphs.at(i));
+      static_runtime_graph->configure_kernels();
+    }
   }
 }
 
