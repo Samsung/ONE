@@ -57,6 +57,24 @@ if [ ! -d "raw_files" ] || [ ! -s "datalist.txt" ]; then
     ../bin/venv/bin/python preprocess_images.py
 fi
 
+if [[ ! -s "img_files_enumerated" ]]; then
+    rm -rf img_files_enumerated.zip
+    wget https://github.com/Samsung/ONE/files/10154290/img_files_enumerated.zip
+    unzip img_files_enumerated.zip
+    # https://github.com/Samsung/ONE/issues/9977#issuecomment-1337294959
+fi
+
+if [[ ! -s "add_299_299_3.circle" ]]; then
+    rm -rf add_299_299_3.zip
+    wget https://github.com/Samsung/ONE/files/10154291/add_299_299_3.zip
+    unzip add_299_299_3.zip
+    # https://github.com/Samsung/ONE/issues/9977#issuecomment-1337294959
+fi
+
+if [ ! -d "raw_files_enumerated" ] || [ ! -s "datalist_enumerated.txt" ]; then
+    ../bin/venv/bin/python preprocess_images.py --input_dir img_files_enumerated --output_dir raw_files_enumerated --list_file datalist_enumerated.txt --output_extension ''
+fi
+
 if [[ ! -s "inception_v3_test_data.h5" ]]; then
   ../bin/venv/bin/python ../bin/rawdata2hdf5 \
   --data_list datalist.txt \

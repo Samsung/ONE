@@ -13,10 +13,21 @@
 # limitations under the License.
 
 import os, shutil, PIL.Image, numpy as np
+import argparse
 
-input_dir = 'img_files'
-output_dir = 'raw_files'
-list_file = 'datalist.txt'
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--input_dir', type=str, default='img_files')
+parser.add_argument('--output_dir', type=str, default='raw_files')
+parser.add_argument('--list_file', type=str, default='datalist.txt')
+parser.add_argument('--output_extension', type=str, default='data')
+
+args = parser.parse_args()
+
+input_dir = args.input_dir
+output_dir = args.output_dir
+list_file = args.list_file
+output_extension = args.output_extension
 
 if os.path.exists(output_dir):
     shutil.rmtree(output_dir, ignore_errors=True)
@@ -29,7 +40,10 @@ for (root, _, files) in os.walk(input_dir):
             img = np.array(image.resize((299, 299),
                                         PIL.Image.ANTIALIAS)).astype(np.float32)
             img = ((img / 255) - 0.5) * 2.0
-            output_file = output_dir + '/' + f.replace('jpg', 'data')
+            f = f.replace('.jpg', '')
+            if output_extension:
+                f = f + '.' + output_extension
+            output_file = output_dir + '/' + f
             img.tofile(output_file)
             datalist.writelines(os.path.abspath(output_file) + '\n')
     datalist.close()
