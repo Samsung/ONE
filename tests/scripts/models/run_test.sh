@@ -233,7 +233,7 @@ download_tests()
 
             rm -f $MODELFILE # Remove invalid file if exists
             pushd $CACHE_ROOT_PATH
-            wget --tries=3 --retry-connrefused --waitretry=2 -nv $MODELFILE_URL
+            curl --netrc-optional -kLsSO $MODELFILE_URL
             if [ "${MODELFILE_NAME##*.}" == "zip" ]; then
                 unzip -o $MODELFILE_NAME -d ${MODELFILE_NAME%.zip}
             fi
