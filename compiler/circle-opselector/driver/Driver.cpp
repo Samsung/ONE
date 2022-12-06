@@ -15,6 +15,7 @@
  */
 
 #include "ModuleIO.h"
+#include "OpSelector.h"
 
 #include <luci/ConnectNode.h>
 #include <luci/Profile/CircleNodeID.h>
@@ -37,6 +38,7 @@ void print_version(void)
   std::cout << vconone::get_copyright() << std::endl;
 }
 
+#if 0 // TODO remove this block
 std::vector<std::string> split_into_vector(const std::string &str, const char &delim)
 {
   std::vector<std::string> ret;
@@ -255,6 +257,7 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
 
   return graph;
 }
+#endif
 
 int entry(int argc, char **argv)
 {
@@ -287,27 +290,11 @@ int entry(int argc, char **argv)
   std::string input_path = arser.get<std::string>("input");
   std::string output_path = arser.get<std::string>("output");
 
-  std::string operator_input;
-
-  std::vector<uint32_t> by_id;
-  std::vector<std::string> by_name;
-
   if (!arser["--by_id"] && !arser["--by_name"] || arser["--by_id"] && arser["--by_name"])
   {
     std::cerr << "ERROR: Either option '--by_id' or '--by_name' must be specified" << std::endl;
     std::cerr << arser;
     return EXIT_FAILURE;
-  }
-
-  if (arser["--by_id"])
-  {
-    operator_input = arser.get<std::string>("--by_id");
-    by_id = split_id_input(operator_input);
-  }
-  if (arser["--by_name"])
-  {
-    operator_input = arser.get<std::string>("--by_name");
-    by_name = split_name_input(operator_input);
   }
 
   // Import original circle file.
@@ -320,6 +307,7 @@ int entry(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
+#if 0 // TODO remove this block
   // Select nodes from user input.
   std::vector<const luci::CircleNode *> selected_nodes;
 
@@ -375,6 +363,25 @@ int entry(int argc, char **argv)
   new_module->add(std::move(new_graph));
 
   // Export to output Circle file
+  assert(opselector::exportModule(new_module.get(), output_path));
+#endif
+
+  opselector::OpSelector op_selector{module.get()};
+
+  std::unique_ptr<luci::Module> new_module;
+  std::string operator_input;
+
+  if (arser["--by_id"])
+  {
+    operator_input = arser.get<std::string>("--by_id");
+    new_module = op_selector.select_by<opselector::SelectType::ID>(operator_input);
+  }
+  if (arser["--by_name"])
+  {
+    operator_input = arser.get<std::string>("--by_name");
+    new_module = op_selector.select_by<opselector::SelectType::NAME>(operator_input);
+  }
+
   assert(opselector::exportModule(new_module.get(), output_path));
 
   return 0;

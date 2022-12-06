@@ -1,6 +1,5 @@
-#if 0 // TODO remove this block
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +14,20 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_OPSELECTOR_DRIVER_TEST_H__
-#define __CIRCLE_OPSELECTOR_DRIVER_TEST_H__
+#ifndef __CIRCLE_OPSELECTOR_SELECT_TYPE_H__
+#define __CIRCLE_OPSELECTOR_SELECT_TYPE_H__
 
-#include <vector>
 #include <string>
 
-int entry(int argc, char **argv);
-bool is_number(const std::string &s);
-std::vector<uint32_t> split_id_input(const std::string &str);
+namespace opselector
+{
 
-#endif // __CIRCLE_OPSELECTOR_DRIVER_TEST_H__
-#endif
+enum class SelectType
+{
+  ID,
+  NAME,
+};
+
+} // namespace opselector
+
+#endif // __CIRCLE_OPSELECTOR_SELECT_TYPE_H__
