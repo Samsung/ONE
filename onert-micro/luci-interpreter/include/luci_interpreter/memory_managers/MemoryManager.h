@@ -28,12 +28,35 @@ class IMemoryManager
 public:
   virtual void allocate_memory(luci_interpreter::Tensor &tensor) = 0;
   virtual void release_memory(luci_interpreter::Tensor &tensor) = 0;
-  virtual bool is_static_manager() const = 0;
 
   virtual ~IMemoryManager() = default;
 
-  bool is_allocate_input() { return _is_allocate_input; }
+  bool is_allocate_input() const { return _is_allocate_input; }
   void is_allocate_input(bool allocate_input) { _is_allocate_input = allocate_input; }
+
+  // Methods for static allocations
+  // Methods to set data pointer for tensor
+  // To allocate input memory buffer with _input_req_size * size_type bytes. Result pointer -
+  // _input_buffer_ptr
+  virtual void allocate_input_buf() = 0;
+  // To allocate input memory buffer with _output_req_size * size_type bytes. Result pointer -
+  // _output_buffer_ptr
+  virtual void allocate_output_buf() = 0;
+  // To allocate intermediate computing memory buffer with _buffer_req_size * size_type bytes.
+  // Result pointer - _buffer_ptr
+  virtual void allocate_computing_buf() = 0;
+
+  // To delete memory for intermediate computing buffer
+  virtual void release_computing_buf() = 0;
+  // To delete memory for input buffer
+  virtual void release_input_buf() = 0;
+  // To delete memory for output buffer
+  virtual void release_output_buf() = 0;
+
+  // To set a pointer for tensor in input_buffer with right offset
+  virtual void allocate_memory_for_input(luci_interpreter::Tensor &tensor) = 0;
+  // To set a pointer for tensor in output_buffer with right offset
+  virtual void allocate_memory_for_output(luci_interpreter::Tensor &tensor) = 0;
 
 protected:
   bool _is_allocate_input = true;

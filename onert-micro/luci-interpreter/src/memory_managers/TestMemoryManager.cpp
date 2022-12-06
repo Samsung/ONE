@@ -42,6 +42,4 @@ void TestMemoryManager::release_memory(luci_interpreter::Tensor &tensor)
   tensor.set_data_buffer(nullptr);
 }
 
-bool TestMemoryManager::is_static_manager() const { return false; }
-
 } // namespace luci_interpreter

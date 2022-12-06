@@ -27,7 +27,7 @@ ModuleLoader::ModuleLoader(const char *model_data_raw, RuntimeModule *runtime_mo
 {
 }
 
-void ModuleLoader::load()
+void ModuleLoader::load(bool use_static_memory_manager)
 {
   const circle::Model *model = circle::GetModel(_model_data_raw);
 
@@ -37,7 +37,8 @@ void ModuleLoader::load()
 
   for (size_t i = 0; i < reader.num_subgraph(); ++i)
   {
-    _runtime_graphs.emplace_back(_runtime_module->addGraph(_memory_manager));
+    _runtime_graphs.emplace_back(
+      _runtime_module->addGraph(_memory_manager, use_static_memory_manager));
   }
 
   for (size_t i = 0; i < reader.num_subgraph(); ++i)
@@ -47,14 +48,14 @@ void ModuleLoader::load()
     IBaseRuntimeGraph *runtime_graph = _runtime_graphs.at(i);
     GraphLoader loader(&reader, runtime_graph, _memory_manager, &_index_to_tensor);
 
-    loader.initInputTensors();
+    loader.initInputTensors(use_static_memory_manager);
     loader.loadTensors();
-    loader.loadOperators();
+    loader.loadOperators(use_static_memory_manager);
   }
 
   // For Dynamic Memory manager we build memory allocate/deallocate plan and then configure kernels.
   // For Static Memory manager we only configure kernels.
-  if (not _memory_manager->is_static_manager())
+  if (not use_static_memory_manager)
   {
     // Dynamic memory manager case
     for (size_t i = 0; i < reader.num_subgraph(); ++i)
@@ -68,8 +69,7 @@ void ModuleLoader::load()
     // Static memory manager case
     for (size_t i = 0; i < reader.num_subgraph(); ++i)
     {
-      const auto static_runtime_graph = dynamic_cast<StaticRuntimeGraph *>(_runtime_graphs.at(i));
-      static_runtime_graph->configure_kernels();
+      _runtime_graphs.at(i)->configure_kernels();
     }
   }
 }

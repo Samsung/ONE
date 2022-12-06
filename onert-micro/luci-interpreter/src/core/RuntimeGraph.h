@@ -51,6 +51,8 @@ public:
   virtual void execute() = 0;
   virtual void configure() = 0;
 
+  virtual void configure_kernels() = 0;
+
   void invalidate() { _is_valid = false; }
   bool isValid() const { return _is_valid; }
 
@@ -76,6 +78,8 @@ public:
   void execute() final;
   void configure() final;
 
+  void configure_kernels() final { assert(false && "Use it only with static allocations"); }
+
 private:
   void buildAllocDeallocPlan();
   void allocate(size_t kernel_index) const;
@@ -96,7 +100,7 @@ public:
   void execute() final;
   void configure() final;
 
-  void configure_kernels();
+  void configure_kernels() final;
 };
 
 } // namespace luci_interpreter

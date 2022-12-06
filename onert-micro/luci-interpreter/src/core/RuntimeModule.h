@@ -32,9 +32,9 @@ class RuntimeModule
 public:
   RuntimeModule() = default;
 
-  IBaseRuntimeGraph *addGraph(IMemoryManager *memory_manager)
+  IBaseRuntimeGraph *addGraph(IMemoryManager *memory_manager, bool use_static_allocations)
   {
-    if (memory_manager->is_static_manager())
+    if (use_static_allocations)
       _graphs.push_back(std::make_unique<StaticRuntimeGraph>(memory_manager));
     else
       _graphs.push_back(std::make_unique<RuntimeGraph>(memory_manager));

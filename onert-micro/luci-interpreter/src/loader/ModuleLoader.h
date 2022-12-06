@@ -32,7 +32,7 @@ public:
   ModuleLoader(const char *model_data_raw, RuntimeModule *runtime_module,
                IMemoryManager *memory_manager);
 
-  void load();
+  void load(bool use_static_memory_manager);
 
 private:
   IMemoryManager *_memory_manager;
