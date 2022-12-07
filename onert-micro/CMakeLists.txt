@@ -64,7 +64,7 @@ set(CMAKE_ARM_OPTIONS
         -DTARGET_ARCH=${TARGET_ARCH}
         "-DEXT_OVERLAY_DIR=${CMAKE_CURRENT_BINARY_DIR}/../../overlay"
         "-DFlatbuffers_DIR=${CMAKE_CURRENT_BINARY_DIR}/../../overlay/lib/cmake/flatbuffers"
-        "-DCMAKE_TOOLCHAIN_FILE=${NNAS_PROJECT_SOURCE_DIR}/infra/nncc/cmake/buildtool/config/arm-none-eabi-gcc.cmake"
+        "-DCMAKE_TOOLCHAIN_FILE=${NNAS_PROJECT_SOURCE_DIR}/infra/onert-micro/cmake/buildtool/config/arm-none-eabi-gcc.cmake"
         "-DLUCI_INTERPRETER_PAL_DIR=${LUCI_INTERPRETER_PAL_DIR}"
         "-DNNAS_PROJECT_SOURCE_DIR=${NNAS_PROJECT_SOURCE_DIR}"
         "-DNNAS_EXTERNALS_DIR=${NNAS_EXTERNALS_DIR}"
