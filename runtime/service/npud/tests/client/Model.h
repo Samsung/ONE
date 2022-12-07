@@ -19,6 +19,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <cstring>
 #include <libnpuhost.h>
 
 namespace npud
@@ -31,7 +32,13 @@ namespace client
 class Model
 {
 public:
-  Model(std::string file) : _name(file), _meta(nullptr)
+  Model(std::string file)
+    : _name(file), _meta(nullptr), _inputs({
+                                     0,
+                                   }),
+      _outputs({
+        0,
+      })
   {
     auto meta = getNPUmodel_metadata(file.c_str(), false);
     if (meta == nullptr)

@@ -224,5 +224,27 @@ int Core::setRequestData(ContextID contextId, RequestID requestId, InputBuffers 
   return 0;
 }
 
+int Core::submitRequest(ContextID contextId, RequestID requestId)
+{
+  VERBOSE(Core) << "submitRequest with " << contextId << ", " << requestId << std::endl;
+  NpuContext *npuContext = _contextManager->getNpuContext(contextId);
+  if (!npuContext)
+  {
+    VERBOSE(Core) << "Invalid context id" << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  int ret = _devManager->submitRequest(npuContext, requestId);
+  if (ret != NPU_STATUS_SUCCESS)
+  {
+    VERBOSE(Core) << "Failed to submit request:  " << ret << std::endl;
+    // TODO Define CoreStatus
+    return 1;
+  }
+
+  return 0;
+}
+
 } // namespace core
 } // namespace npud

@@ -142,21 +142,23 @@ enum NpuStatus
 //   int core;
 // };
 
-/**
- * @brief Npu request information
- *
- * @param modelId The model id of request
- */
-struct NpuRequestInfo
-{
-  RequestID id;
-  ModelID modelId;
-  // InputBuffers *inBufs;
-  // TensorDataInfos *inInfos;
-  // OutputBuffers *outBufs;
-  // TensorDataInfos *outInfos;
-  NpuRequestInfo(RequestID rid, ModelID mid, int _core) : id(rid), modelId(mid) {}
-};
+// /**
+//  * @brief Npu request information
+//  *
+//  * @param modelId The model id of request
+//  */
+// struct NpuRequestInfo
+// {
+//   RequestID id;
+//   ModelID modelId;
+//   std::unique_ptr<InputBuffers> inBufs;
+//   std::unique_ptr<TensorDataInfos> inInfos;
+//   std::unique_ptr<OutputBuffers> outBufs;
+//   std::unique_ptr<TensorDataInfos> outInfos;
+//   NpuRequestInfo(RequestID rid, ModelID mid, int _core) : id(rid), modelId(mid),
+//   inBufs(std::make_unique<InputBuffers>()), inInfos(std::make_unique<TensorDataInfos>()),
+//   outBufs(std::make_unique<OutputBuffers>()), outInfos(std::make_unique<TensorDataInfos>()) {}
+// };
 
 /**
  * @brief Npu context definition
@@ -168,7 +170,7 @@ struct NpuRequestInfo
 struct NpuContext
 {
   std::vector<ModelID> models;
-  std::map<RequestID, std::unique_ptr<NpuRequestInfo>> requests;
+  std::vector<RequestID> requests;
   int defaultCore;
 };
 

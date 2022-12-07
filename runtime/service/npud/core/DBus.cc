@@ -333,10 +333,14 @@ gboolean DBus::on_handle_execute_run(NpudCore *object, GDBusMethodInvocation *in
                                      guint64 arg_ctx, guint arg_rq_handle)
 {
   VERBOSE(DBus) << "on_handle_execute_run with " << arg_ctx << ", " << arg_rq_handle << std::endl;
-  // TODO Implement details
-  npud_core_complete_execute_run(object, invocation, 0);
+  int ret = Server::instance().core()->submitRequest(arg_ctx, arg_rq_handle);
+  npud_core_complete_execute_run(object, invocation, ret);
   return TRUE;
 }
+
+// return execute_trigger(object, NULL, npumgr_core_complete_execute_trigger,
+//                        invocation, arg_ctx, arg_nw_handle,
+//                        g_dbus_method_invocation_get_sender(invocation));
 
 } // namespace core
 } // namespace npud

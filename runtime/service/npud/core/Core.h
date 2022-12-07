@@ -51,6 +51,7 @@ public:
   int destroyRequest(ContextID contextId, RequestID requestId);
   int setRequestData(ContextID contextId, RequestID requestId, InputBuffers *inputBufs,
                      InputBuffers *outputBufs);
+  int submitRequest(ContextID contextId, RequestID requestId);
 
 private:
   std::unique_ptr<DevManager> _devManager;

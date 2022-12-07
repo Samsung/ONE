@@ -213,6 +213,12 @@ public:
   {
     GError *error = nullptr;
     gint out_error = -1;
+    if (inbufs == nullptr || outbufs == nullptr)
+    {
+      std::cout << "Invalid buffers" << std::endl;
+      return 1;
+    }
+
     GVariantBuilder *input_builder = g_variant_builder_new(G_VARIANT_TYPE("a(itu)"));
     for (int i = 0; i < inbufs->num_buffers; ++i)
     {
@@ -228,6 +234,20 @@ public:
     npud_core_call_request_set_data_sync(
       _proxy, ctx, rq_handle, g_variant_builder_end(input_builder),
       g_variant_builder_end(output_builder), &out_error, NULL, &error);
+    if (error)
+    {
+      std::cout << error->message << std::endl;
+      g_error_free(error);
+      return 1;
+    }
+    return 0;
+  }
+
+  int execute_run(guint64 ctx, guint rq_handle)
+  {
+    GError *error = nullptr;
+    gint out_error = -1;
+    npud_core_call_execute_run_sync(_proxy, ctx, rq_handle, &out_error, NULL, &error);
     if (error)
     {
       std::cout << error->message << std::endl;

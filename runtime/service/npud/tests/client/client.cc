@@ -15,15 +15,44 @@
  */
 
 #include <string>
+#include <thread>
+#include <csignal>
 
 #include "Model.h"
 #include "Request.h"
+
+// GMainLoop *gmain;
+
+// void handleSignal(int signum)
+// {
+//   std::cout << "Signal received: " << signum << std::endl;
+//   while (!g_main_loop_is_running(gmain))
+//   {
+//     std::this_thread::yield();
+//   }
+
+//   g_main_loop_quit(gmain);
+// }
 
 int main(int argc, char *argv[])
 {
   using namespace npud::tests::client;
 
-  std::string model_path = "./test-models/model.tvn";
+  // std::signal(SIGTERM, handleSignal);
+
+  if (argc != 2)
+  {
+    std::cout << "Usage: " << argv[0] << " [model path]" << std::endl;
+    return 1;
+  }
+
+  std::string model_path = argv[1];
+  if (access(model_path.c_str(), F_OK) != 0)
+  {
+    std::cout << "[ERROR] Invalid model path: " << model_path << std::endl;
+    return 1;
+  }
+
   Model model(model_path);
   Request request;
 
@@ -66,5 +95,19 @@ int main(int argc, char *argv[])
     return 1;
   }
 
+  if (request.execute_run(ctx, rq_handle) != 0)
+  {
+    std::cout << "Failed to execute run" << std::endl;
+  }
+
+  // gmain = g_main_loop_new(NULL, FALSE);
+  // g_main_loop_run(gmain);
+
+  // std::cout << "Bye~~" << std::endl;
+  request.buffers_destroy(ctx, inbufs);
+  request.buffers_destroy(ctx, outbufs);
+  request.request_destroy(ctx, rq_handle);
+  request.network_destroy(ctx, nw_handle);
+  request.context_destroy(ctx);
   return 0;
 }

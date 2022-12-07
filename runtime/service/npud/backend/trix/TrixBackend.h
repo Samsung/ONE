@@ -56,10 +56,32 @@ struct TrixModelInfo
   ~TrixModelInfo() { free(meta); }
 };
 
+/**
+ * @brief Npu request information
+ *
+ * @param modelId The model id of request
+ */
+struct TrixRequestInfo
+{
+  RequestID id;
+  ModelID modelId;
+  std::unique_ptr<input_buffers> inBufs;
+  std::unique_ptr<tensors_data_info> inInfos;
+  std::unique_ptr<output_buffers> outBufs;
+  std::unique_ptr<tensors_data_info> outInfos;
+  TrixRequestInfo(RequestID rid, ModelID mid, int _core)
+    : id(rid), modelId(mid), inBufs(std::make_unique<input_buffers>()),
+      inInfos(std::make_unique<tensors_data_info>()), outBufs(std::make_unique<output_buffers>()),
+      outInfos(std::make_unique<tensors_data_info>())
+  {
+  }
+};
+
 struct TrixDevice
 {
   std::vector<Handle> handles;
   std::map<ModelID, std::unique_ptr<TrixModelInfo>> models;
+  std::map<RequestID, std::unique_ptr<TrixRequestInfo>> requests;
   std::vector<std::unique_ptr<NpuContext>> ctxs;
 };
 
@@ -82,6 +104,9 @@ public:
   NpuStatus setRequestData(NpuContext *ctx, RequestID requestId, InputBuffers *inputBufs,
                            OutputBuffers *outputBufs) override;
   NpuStatus submitRequest(NpuContext *ctx, RequestID requestId) override;
+
+private:
+  void setBuffers(GenericBuffers *source, generic_buffers *dest);
 
 private:
   dev_type _devType;

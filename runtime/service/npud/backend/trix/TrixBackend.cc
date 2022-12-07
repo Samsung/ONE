@@ -97,9 +97,9 @@ TrixBackend::~TrixBackend()
   {
     // TODO Exception controll of `at`
     npudev_h handle = _dev->handles.at(ctx->defaultCore);
-    for (auto &p : ctx->requests)
+    for (auto id : ctx->requests)
     {
-      removeNPU_request(handle, p.first);
+      removeNPU_request(handle, id);
     }
   }
 
@@ -127,17 +127,20 @@ NpuStatus TrixBackend::createContext(int device_fd, int priority, NpuContext **c
 
 NpuStatus TrixBackend::destroyContext(NpuContext *ctx)
 {
-  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(), [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
-  if (citer == _dev->ctxs.end()) {
+  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(),
+                            [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
+  if (citer == _dev->ctxs.end())
+  {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
+  // TODO Exception controll of `at`
+  npudev_h handle = _dev->handles.at(ctx->defaultCore);
+
   // TODO Remove request items
-  for (auto &p : ctx->requests)
+  for (auto id : ctx->requests)
   {
-    // TODO Exception controll of `at`
-    npudev_h handle = _dev->handles.at(ctx->defaultCore);
-    if (removeNPU_request(handle, p.first) < 0)
+    if (removeNPU_request(handle, id) < 0)
     {
       return NPU_STATUS_ERROR_OPERATION_FAILED;
     }
@@ -148,7 +151,6 @@ NpuStatus TrixBackend::destroyContext(NpuContext *ctx)
     auto &info = _dev->models.at(id);
     if (info->refCount - 1 == 0)
     {
-      npudev_h handle = _dev->handles.at(ctx->defaultCore);
       if (unregisterNPUmodel(handle, id) < 0)
       {
         return NPU_STATUS_ERROR_OPERATION_FAILED;
@@ -168,8 +170,10 @@ NpuStatus TrixBackend::destroyContext(NpuContext *ctx)
 
 NpuStatus TrixBackend::createBuffers(NpuContext *ctx, GenericBuffers *bufs)
 {
-  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(), [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
-  if (citer == _dev->ctxs.end()) {
+  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(),
+                            [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
+  if (citer == _dev->ctxs.end())
+  {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
@@ -185,8 +189,10 @@ NpuStatus TrixBackend::createBuffers(NpuContext *ctx, GenericBuffers *bufs)
 
 NpuStatus TrixBackend::destroyBuffers(NpuContext *ctx, GenericBuffers *bufs)
 {
-  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(), [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
-  if (citer == _dev->ctxs.end()) {
+  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(),
+                            [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
+  if (citer == _dev->ctxs.end())
+  {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
@@ -203,8 +209,10 @@ NpuStatus TrixBackend::destroyBuffers(NpuContext *ctx, GenericBuffers *bufs)
 NpuStatus TrixBackend::registerModel(NpuContext *ctx, const std::string &modelPath,
                                      ModelID *modelId)
 {
-  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(), [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
-  if (citer == _dev->ctxs.end()) {
+  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(),
+                            [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
+  if (citer == _dev->ctxs.end())
+  {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
@@ -277,8 +285,10 @@ NpuStatus TrixBackend::registerModel(NpuContext *ctx, const std::string &modelPa
 
 NpuStatus TrixBackend::unregisterModel(NpuContext *ctx, ModelID modelId)
 {
-  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(), [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
-  if (citer == _dev->ctxs.end()) {
+  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(),
+                            [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
+  if (citer == _dev->ctxs.end())
+  {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
@@ -289,10 +299,23 @@ NpuStatus TrixBackend::unregisterModel(NpuContext *ctx, ModelID modelId)
     return NPU_STATUS_ERROR_INVALID_MODEL;
   }
 
+  npudev_h handle = _dev->handles.at(ctx->defaultCore);
+
+  for (auto id : ctx->requests)
+  {
+    auto &rinfo = _dev->requests.at(id);
+    if (rinfo->modelId == modelId)
+    {
+      if (removeNPU_request(handle, id) < 0)
+      {
+        return NPU_STATUS_ERROR_OPERATION_FAILED;
+      }
+    }
+  }
+
   auto &info = _dev->models.at(modelId);
   if (info->refCount - 1 == 0)
   {
-    npudev_h handle = _dev->handles.at(ctx->defaultCore);
     if (unregisterNPUmodel(handle, modelId) < 0)
     {
       return NPU_STATUS_ERROR_OPERATION_FAILED;
@@ -315,8 +338,10 @@ NpuStatus TrixBackend::unregisterModel(NpuContext *ctx, ModelID modelId)
 
 NpuStatus TrixBackend::createRequest(NpuContext *ctx, ModelID modelId, RequestID *requestId)
 {
-  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(), [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
-  if (citer == _dev->ctxs.end()) {
+  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(),
+                            [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
+  if (citer == _dev->ctxs.end())
+  {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
@@ -334,9 +359,13 @@ NpuStatus TrixBackend::createRequest(NpuContext *ctx, ModelID modelId, RequestID
     return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
-  auto &requestMap = ctx->requests;
-  requestMap.insert(
-    {id, std::unique_ptr<NpuRequestInfo>(new NpuRequestInfo(id, modelId, ctx->defaultCore))});
+  // auto &requestMap = ctx->requests;
+  // requestMap.insert(
+  //   {id, std::unique_ptr<NpuRequestInfo>(new NpuRequestInfo(id, modelId, ctx->defaultCore))});
+
+  _dev->requests.insert(std::make_pair(
+    id, std::unique_ptr<TrixRequestInfo>(new TrixRequestInfo(id, modelId, ctx->defaultCore))));
+  ctx->requests.emplace_back(id);
 
   *requestId = id;
   return NPU_STATUS_SUCCESS;
@@ -344,14 +373,22 @@ NpuStatus TrixBackend::createRequest(NpuContext *ctx, ModelID modelId, RequestID
 
 NpuStatus TrixBackend::destroyRequest(NpuContext *ctx, RequestID requestId)
 {
-  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(), [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
-  if (citer == _dev->ctxs.end()) {
+  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(),
+                            [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
+  if (citer == _dev->ctxs.end())
+  {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
-  auto &requestMap = ctx->requests;
-  auto iter = requestMap.find(requestId);
-  if (iter == requestMap.end())
+  // auto &requestMap = ctx->requests;
+  // auto iter = requestMap.find(requestId);
+  // if (iter == requestMap.end())
+  // {
+  //   return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  // }
+
+  auto riter = std::find(ctx->requests.begin(), ctx->requests.end(), requestId);
+  if (riter == ctx->requests.end())
   {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
@@ -363,139 +400,179 @@ NpuStatus TrixBackend::destroyRequest(NpuContext *ctx, RequestID requestId)
     return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
-  requestMap.erase(iter);
+  // requestMap.erase(iter);
+  ctx->requests.erase(riter);
   return NPU_STATUS_SUCCESS;
 }
 
-// void TrixBackend::setDataInfo(GenericBuffers *bufs, tensor_data_info *info)
-// {
-//   info->num_info = bufs->numBuffers;
-
-//   for (int i = 0; i < info->num_info; ++i) {
-//     info->info[i].layout =
-//   }
-// }
-
-// void TrixBackend::setBuffers(GenericBuffers *bufs, genereic_buffers *bufs)
-// {
-
-// }
+void TrixBackend::setBuffers(GenericBuffers *source, generic_buffers *dest)
+{
+  if (source == nullptr || dest == nullptr)
+  {
+    return;
+  }
+  dest->num_buffers = source->numBuffers;
+  for (auto i = 0; i < dest->num_buffers; ++i)
+  {
+    if (source->buffers[i].type == NPU_BUFFER_FILE)
+    {
+      // TODO Implement details
+    }
+    else
+    {
+      dest->bufs[i].addr = source->buffers[i].addr;
+      dest->bufs[i].dmabuf = source->buffers[i].dmabuf;
+      dest->bufs[i].offset = source->buffers[i].offset;
+    }
+    dest->bufs[i].size = source->buffers[i].size;
+    dest->bufs[i].type = static_cast<buffer_types>(source->buffers[i].type);
+  }
+}
 
 NpuStatus TrixBackend::setRequestData(NpuContext *ctx, RequestID requestId, InputBuffers *inputBufs,
                                       OutputBuffers *outputBufs)
 {
-  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(), [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
-  if (citer == _dev->ctxs.end()) {
-    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
-  }
-
-  auto &requestMap = ctx->requests;
-  auto iter = requestMap.find(requestId);
-  if (iter == requestMap.end())
+  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(),
+                            [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
+  if (citer == _dev->ctxs.end())
   {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
-  ModelID modelId = iter->second->modelId;
-  auto miter = std::find(ctx->models.begin(), ctx->models.end(), modelId);
+  // auto &requestMap = ctx->requests;
+  // auto iter = requestMap.find(requestId);
+  // if (iter == requestMap.end())
+  // {
+  //   return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  // }
+
+  auto riter = std::find(ctx->requests.begin(), ctx->requests.end(), requestId);
+  if (riter == ctx->requests.end())
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  // ModelID modelId = iter->second->modelId;
+  // auto miter = std::find(ctx->models.begin(), ctx->models.end(), modelId);
+  // if (miter == ctx->models.end())
+  // {
+  //   return NPU_STATUS_ERROR_INVALID_DATA;
+  // }
+
+  auto &req = _dev->requests.at(requestId);
+  auto miter = std::find(ctx->models.begin(), ctx->models.end(), req->modelId);
   if (miter == ctx->models.end())
   {
-    return NPU_STATUS_ERROR_INVALID_DATA;
+    return NPU_STATUS_ERROR_INVALID_MODEL;
   }
 
   // TODO Exception controll of `at`
-  auto &minfo = _dev->models.at(modelId);
+  auto &minfo = _dev->models.at(req->modelId);
   if (minfo->meta->input_seg_num != inputBufs->numBuffers ||
       minfo->meta->output_seg_num != outputBufs->numBuffers)
   {
     return NPU_STATUS_ERROR_INVALID_DATA;
   }
 
-  tensors_data_info inInfos;
-  tensors_data_info outInfos;
+  auto &iter = _dev->requests.at(requestId);
+  auto &inInfos = iter->inInfos;
+  auto &outInfos = iter->outInfos;
 
-  inInfos.num_info = inputBufs->numBuffers;
-  for (auto i = 0; i < inInfos.num_info; ++i)
+  inInfos->num_info = inputBufs->numBuffers;
+  for (auto i = 0; i < inInfos->num_info; ++i)
   {
-    inInfos.info[i].layout = DATA_LAYOUT_MODEL;
-    inInfos.info[i].type = minfo->meta->input_seg_quant_type[i];
+    inInfos->info[i].layout = DATA_LAYOUT_MODEL;
+    inInfos->info[i].type = minfo->meta->input_seg_quant_type[i];
   }
 
-  outInfos.num_info = outputBufs->numBuffers;
-  for (auto i = 0; i < outInfos.num_info; ++i)
+  outInfos->num_info = outputBufs->numBuffers;
+  for (auto i = 0; i < outInfos->num_info; ++i)
   {
-    outInfos.info[i].layout = DATA_LAYOUT_MODEL;
-    outInfos.info[i].type = minfo->meta->output_seg_quant_type[i];
+    outInfos->info[i].layout = DATA_LAYOUT_MODEL;
+    outInfos->info[i].type = minfo->meta->output_seg_quant_type[i];
   }
 
-  // setDataInfo(inputBufs, &inInfos);
-  // setDataInfo(outputBufs, &outInfos);
+  auto &inBufs = iter->inBufs;
+  auto &outBufs = iter->outBufs;
 
   // setBuffers(inputBufs, &inBufs);
   // setBuffers(outputBufs, &outBufs);
 
-  // inInfos.num_info = inputInfos->numInfos;
-  // for (int i = 0; i < inputInfos->numInfos; ++i)
-  // {
-  //   inInfos.info[i].layout = convertDataLayout(inputInfos->infos[i].layout);
-  //   inInfos.info[i].type = convertDataType(inputInfos->infos[i].type);
-  // }
-
-  // outInfos.num_info = outputInfos->numInfos;
-  // for (int i = 0; i < outputInfos->numInfos; ++i)
-  // {
-  //   outInfos.info[i].layout = convertDataLayout(outputInfos->infos[i].layout);
-  //   outInfos.info[i].type = convertDataType(outputInfos->infos[i].type);
-  // }
-
-  input_buffers inBufs;
-  output_buffers outBufs;
-
-  inBufs.num_buffers = inputBufs->numBuffers;
-  for (auto i = 0; i < inBufs.num_buffers; ++i)
+  inBufs->num_buffers = inputBufs->numBuffers;
+  for (auto i = 0; i < inBufs->num_buffers; ++i)
   {
-    inBufs.bufs[i].addr = inputBufs->buffers[i].addr;
-    inBufs.bufs[i].size = inputBufs->buffers[i].size;
-    inBufs.bufs[i].type = BUFFER_MAPPED;
+    if (inputBufs->buffers[i].type == NPU_BUFFER_FILE)
+    {
+      // TODO Implement details
+    }
+    else
+    {
+      inBufs->bufs[i].addr = inputBufs->buffers[i].addr;
+      // inBufs.bufs[i].dmabuf = inputBufs->buffers[i].dmabuf;
+      // inBufs.bufs[i].offset = inputBufs->buffers[i].offset;
+    }
+    inBufs->bufs[i].size = inputBufs->buffers[i].size;
+    inBufs->bufs[i].type = static_cast<buffer_types>(inputBufs->buffers[i].type);
   }
 
-  outBufs.num_buffers = outputBufs->numBuffers;
-  for (auto i = 0; i < outBufs.num_buffers; ++i)
+  outBufs->num_buffers = outputBufs->numBuffers;
+  for (auto i = 0; i < outBufs->num_buffers; ++i)
   {
-    outBufs.bufs[i].addr = outputBufs->buffers[i].addr;
-    outBufs.bufs[i].size = outputBufs->buffers[i].size;
-    outBufs.bufs[i].type = BUFFER_MAPPED;
+    if (outputBufs->buffers[i].type == NPU_BUFFER_FILE)
+    {
+      // TODO Implement details
+    }
+    else
+    {
+      outBufs->bufs[i].addr = outputBufs->buffers[i].addr;
+      // outBufs.bufs[i].dmabuf = outputBufs->buffers[i].dmabuf;
+      // outBufs.bufs[i].offset = outputBufs->buffers[i].offset;
+    }
+    outBufs->bufs[i].size = outputBufs->buffers[i].size;
+    outBufs->bufs[i].type = static_cast<buffer_types>(outputBufs->buffers[i].type);
   }
 
   npudev_h handle = _dev->handles.at(ctx->defaultCore);
-  if (setNPU_requestData(handle, requestId, &inBufs, &inInfos, &outBufs, &outInfos) < 0)
+  if (setNPU_requestData(handle, requestId, inBufs.get(), inInfos.get(), outBufs.get(),
+                         outInfos.get()) < 0)
   {
     return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
-  // iter->second->inBufs = inputBufs;
-  // iter->second->inInfos = inputInfos;
-  // iter->second->outBufs = outputBufs;
-  // iter->second->outInfos = outputInfos;
   return NPU_STATUS_SUCCESS;
 }
 
 NpuStatus TrixBackend::submitRequest(NpuContext *ctx, RequestID requestId)
 {
-  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(), [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
-  if (citer == _dev->ctxs.end()) {
-    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
-  }
-
-  auto &requestMap = ctx->requests;
-  auto iter = requestMap.find(requestId);
-  if (iter == requestMap.end())
+  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(),
+                            [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
+  if (citer == _dev->ctxs.end())
   {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
-  ModelID modelId = iter->second->modelId;
-  auto miter = std::find(ctx->models.begin(), ctx->models.end(), modelId);
+  // auto &requestMap = ctx->requests;
+  // auto iter = requestMap.find(requestId);
+  // if (iter == requestMap.end())
+  // {
+  //   return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  // }
+
+  auto riter = std::find(ctx->requests.begin(), ctx->requests.end(), requestId);
+  if (riter == ctx->requests.end())
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  // ModelID modelId = iter->second->modelId;
+  // auto miter = std::find(ctx->models.begin(), ctx->models.end(), modelId);
+  // if (miter == ctx->models.end())
+  // {
+  //   return NPU_STATUS_ERROR_INVALID_MODEL;
+  // }
+
+  auto &req = _dev->requests.at(requestId);
+  auto miter = std::find(ctx->models.begin(), ctx->models.end(), req->modelId);
   if (miter == ctx->models.end())
   {
     return NPU_STATUS_ERROR_INVALID_MODEL;
