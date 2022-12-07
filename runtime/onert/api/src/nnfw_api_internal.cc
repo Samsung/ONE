@@ -16,8 +16,7 @@
 
 #include "nnfw_api_internal.h"
 #include "CustomKernelRegistry.h"
-#include "compiler/Compiler.h"
-#include "compiler/MultiModelCompiler.h"
+#include "compiler/CompilerFactory.h"
 #include "util/ConfigSource.h"
 #include "util/Exceptions.h"
 #include "util/logging.h"
@@ -422,18 +421,9 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    if (_nnpkg->model_count() == 1)
-    {
-      auto compiler = std::make_unique<onert::compiler::Compiler>(_nnpkg, _coptions);
-      _nnpkg.reset();
-      _compiler_artifact = compiler->compile();
-    }
-    else
-    {
-      auto compiler = std::make_unique<onert::compiler::MultiModelCompiler>(_nnpkg, _coptions);
-      _nnpkg.reset();
-      _compiler_artifact = compiler->compile();
-    }
+    auto compiler = onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions);
+    _nnpkg.reset();
+    _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
   }
   catch (const std::exception &e)
