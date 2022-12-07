@@ -160,9 +160,7 @@ NpuStatus TrixBackend::destroyContext(NpuContext *ctx)
     {
       _dev->models.erase(id);
     }
-    // p.second.reset();
   }
-  // ctx->models.clear();
 
   _dev->ctxs.erase(citer);
   return NPU_STATUS_SUCCESS;
@@ -222,18 +220,6 @@ NpuStatus TrixBackend::registerModel(NpuContext *ctx, const std::string &modelPa
                  [&](const std::pair<const ModelID, std::unique_ptr<TrixModelInfo>> &p) {
                    return p.second->core == ctx->defaultCore && p.second->path == modelPath;
                  });
-  // auto iter = std::find_if(_dev->models.begin(), _dev->models.end(),
-  //                          [&](const std::weak_ptr<NpuModelInfo> &p) {
-  //                            auto info = p.lock();
-  //                            if (info)
-  //                            {
-  //                              return info->core == ctx->defaultCore && info->path == modelPath;
-  //                            }
-  //                            else
-  //                            {
-  //                              return false;
-  //                            }
-  //                          });
   // Already registered model.
   if (iter != _dev->models.end())
   {
@@ -273,7 +259,6 @@ NpuStatus TrixBackend::registerModel(NpuContext *ctx, const std::string &modelPa
     }
 
     ctx->models.emplace_back(id);
-    // auto info = std::make_unique<TrixModelInfo>(id, modelPath, ctx->defaultCore, meta);
     _dev->models.insert(std::make_pair(id, std::unique_ptr<TrixModelInfo>(new TrixModelInfo(
                                              id, modelPath, ctx->defaultCore, meta))));
     _dev->models.at(id)->refCount++;
@@ -327,12 +312,7 @@ NpuStatus TrixBackend::unregisterModel(NpuContext *ctx, ModelID modelId)
   {
     _dev->models.erase(modelId);
   }
-  // iter->second.reset();
-  // ctx->models.erase(iter);
 
-  // auto mIter = std::remove_if(_dev->models.begin(), _dev->models.end(),
-  //                             [&](const std::weak_ptr<NpuModelInfo> &p) { return p.expired(); });
-  // _dev->models.erase(mIter, _dev->models.end());
   return NPU_STATUS_SUCCESS;
 }
 
@@ -359,10 +339,6 @@ NpuStatus TrixBackend::createRequest(NpuContext *ctx, ModelID modelId, RequestID
     return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
-  // auto &requestMap = ctx->requests;
-  // requestMap.insert(
-  //   {id, std::unique_ptr<NpuRequestInfo>(new NpuRequestInfo(id, modelId, ctx->defaultCore))});
-
   _dev->requests.insert(std::make_pair(
     id, std::unique_ptr<TrixRequestInfo>(new TrixRequestInfo(id, modelId, ctx->defaultCore))));
   ctx->requests.emplace_back(id);
@@ -380,13 +356,6 @@ NpuStatus TrixBackend::destroyRequest(NpuContext *ctx, RequestID requestId)
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
-  // auto &requestMap = ctx->requests;
-  // auto iter = requestMap.find(requestId);
-  // if (iter == requestMap.end())
-  // {
-  //   return NPU_STATUS_ERROR_INVALID_ARGUMENT;
-  // }
-
   auto riter = std::find(ctx->requests.begin(), ctx->requests.end(), requestId);
   if (riter == ctx->requests.end())
   {
@@ -400,33 +369,8 @@ NpuStatus TrixBackend::destroyRequest(NpuContext *ctx, RequestID requestId)
     return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
-  // requestMap.erase(iter);
   ctx->requests.erase(riter);
   return NPU_STATUS_SUCCESS;
-}
-
-void TrixBackend::setBuffers(GenericBuffers *source, generic_buffers *dest)
-{
-  if (source == nullptr || dest == nullptr)
-  {
-    return;
-  }
-  dest->num_buffers = source->numBuffers;
-  for (auto i = 0; i < dest->num_buffers; ++i)
-  {
-    if (source->buffers[i].type == NPU_BUFFER_FILE)
-    {
-      // TODO Implement details
-    }
-    else
-    {
-      dest->bufs[i].addr = source->buffers[i].addr;
-      dest->bufs[i].dmabuf = source->buffers[i].dmabuf;
-      dest->bufs[i].offset = source->buffers[i].offset;
-    }
-    dest->bufs[i].size = source->buffers[i].size;
-    dest->bufs[i].type = static_cast<buffer_types>(source->buffers[i].type);
-  }
 }
 
 NpuStatus TrixBackend::setRequestData(NpuContext *ctx, RequestID requestId, InputBuffers *inputBufs,
@@ -439,25 +383,11 @@ NpuStatus TrixBackend::setRequestData(NpuContext *ctx, RequestID requestId, Inpu
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
-  // auto &requestMap = ctx->requests;
-  // auto iter = requestMap.find(requestId);
-  // if (iter == requestMap.end())
-  // {
-  //   return NPU_STATUS_ERROR_INVALID_ARGUMENT;
-  // }
-
   auto riter = std::find(ctx->requests.begin(), ctx->requests.end(), requestId);
   if (riter == ctx->requests.end())
   {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
-
-  // ModelID modelId = iter->second->modelId;
-  // auto miter = std::find(ctx->models.begin(), ctx->models.end(), modelId);
-  // if (miter == ctx->models.end())
-  // {
-  //   return NPU_STATUS_ERROR_INVALID_DATA;
-  // }
 
   auto &req = _dev->requests.at(requestId);
   auto miter = std::find(ctx->models.begin(), ctx->models.end(), req->modelId);
@@ -494,9 +424,6 @@ NpuStatus TrixBackend::setRequestData(NpuContext *ctx, RequestID requestId, Inpu
 
   auto &inBufs = iter->inBufs;
   auto &outBufs = iter->outBufs;
-
-  // setBuffers(inputBufs, &inBufs);
-  // setBuffers(outputBufs, &outBufs);
 
   inBufs->num_buffers = inputBufs->numBuffers;
   for (auto i = 0; i < inBufs->num_buffers; ++i)
@@ -551,25 +478,11 @@ NpuStatus TrixBackend::submitRequest(NpuContext *ctx, RequestID requestId)
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
-  // auto &requestMap = ctx->requests;
-  // auto iter = requestMap.find(requestId);
-  // if (iter == requestMap.end())
-  // {
-  //   return NPU_STATUS_ERROR_INVALID_ARGUMENT;
-  // }
-
   auto riter = std::find(ctx->requests.begin(), ctx->requests.end(), requestId);
   if (riter == ctx->requests.end())
   {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
-
-  // ModelID modelId = iter->second->modelId;
-  // auto miter = std::find(ctx->models.begin(), ctx->models.end(), modelId);
-  // if (miter == ctx->models.end())
-  // {
-  //   return NPU_STATUS_ERROR_INVALID_MODEL;
-  // }
 
   auto &req = _dev->requests.at(requestId);
   auto miter = std::find(ctx->models.begin(), ctx->models.end(), req->modelId);

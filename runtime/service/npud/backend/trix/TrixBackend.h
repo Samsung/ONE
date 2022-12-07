@@ -106,9 +106,6 @@ public:
   NpuStatus submitRequest(NpuContext *ctx, RequestID requestId) override;
 
 private:
-  void setBuffers(GenericBuffers *source, generic_buffers *dest);
-
-private:
   dev_type _devType;
   std::unique_ptr<TrixDevice> _dev;
 };

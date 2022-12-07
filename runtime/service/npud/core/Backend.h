@@ -129,37 +129,6 @@ enum NpuStatus
   NPU_STATUS_ERROR_INVALID_DATA,
 };
 
-// /**
-//  * @brief Npu model information
-//  *
-//  * @param path The model path.
-//  * @param core The core number where the model is registered.
-//  */
-// struct NpuModelInfo
-// {
-//   ModelID id;
-//   std::string path;
-//   int core;
-// };
-
-// /**
-//  * @brief Npu request information
-//  *
-//  * @param modelId The model id of request
-//  */
-// struct NpuRequestInfo
-// {
-//   RequestID id;
-//   ModelID modelId;
-//   std::unique_ptr<InputBuffers> inBufs;
-//   std::unique_ptr<TensorDataInfos> inInfos;
-//   std::unique_ptr<OutputBuffers> outBufs;
-//   std::unique_ptr<TensorDataInfos> outInfos;
-//   NpuRequestInfo(RequestID rid, ModelID mid, int _core) : id(rid), modelId(mid),
-//   inBufs(std::make_unique<InputBuffers>()), inInfos(std::make_unique<TensorDataInfos>()),
-//   outBufs(std::make_unique<OutputBuffers>()), outInfos(std::make_unique<TensorDataInfos>()) {}
-// };
-
 /**
  * @brief Npu context definition
  *

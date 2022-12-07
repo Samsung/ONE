@@ -246,9 +246,7 @@ gboolean DBus::on_handle_request_set_data(NpudCore *object, GDBusMethodInvocatio
 
   GVariantIter *iter = NULL;
   InputBuffers inBufs;
-  // TensorDataInfos inInfos;
   OutputBuffers outBufs;
-  // TensorDataInfos outInfos;
   gint type;
   guint64 addr;
   guint32 size;
@@ -337,10 +335,6 @@ gboolean DBus::on_handle_execute_run(NpudCore *object, GDBusMethodInvocation *in
   npud_core_complete_execute_run(object, invocation, ret);
   return TRUE;
 }
-
-// return execute_trigger(object, NULL, npumgr_core_complete_execute_trigger,
-//                        invocation, arg_ctx, arg_nw_handle,
-//                        g_dbus_method_invocation_get_sender(invocation));
 
 } // namespace core
 } // namespace npud

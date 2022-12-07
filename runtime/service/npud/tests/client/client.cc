@@ -15,30 +15,13 @@
  */
 
 #include <string>
-#include <thread>
-#include <csignal>
 
 #include "Model.h"
 #include "Request.h"
 
-// GMainLoop *gmain;
-
-// void handleSignal(int signum)
-// {
-//   std::cout << "Signal received: " << signum << std::endl;
-//   while (!g_main_loop_is_running(gmain))
-//   {
-//     std::this_thread::yield();
-//   }
-
-//   g_main_loop_quit(gmain);
-// }
-
 int main(int argc, char *argv[])
 {
   using namespace npud::tests::client;
-
-  // std::signal(SIGTERM, handleSignal);
 
   if (argc != 2)
   {
@@ -100,10 +83,6 @@ int main(int argc, char *argv[])
     std::cout << "Failed to execute run" << std::endl;
   }
 
-  // gmain = g_main_loop_new(NULL, FALSE);
-  // g_main_loop_run(gmain);
-
-  // std::cout << "Bye~~" << std::endl;
   request.buffers_destroy(ctx, inbufs);
   request.buffers_destroy(ctx, outbufs);
   request.request_destroy(ctx, rq_handle);
