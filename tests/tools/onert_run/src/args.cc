@@ -271,6 +271,22 @@ void Args::Parse(const int argc, char **argv)
   po::store(po::command_line_parser(argc, argv).options(_options).positional(_positional).run(),
             vm);
 
+  if (vm.count("help"))
+  {
+    std::cout << "onert_run\n\n";
+    std::cout << "Usage: " << argv[0] << " path to nnpackage root directory [<options>]\n\n";
+    std::cout << _options;
+    std::cout << "\n";
+
+    exit(0);
+  }
+
+  if (vm.count("version"))
+  {
+    _print_version = true;
+    return;
+  }
+
   {
     auto conflicting_options = [&](const std::string &o1, const std::string &o2) {
       if ((vm.count(o1) && !vm[o1].defaulted()) && (vm.count(o2) && !vm[o2].defaulted()))
@@ -299,22 +315,6 @@ void Args::Parse(const int argc, char **argv)
 
     if (vm.count("modelfile"))
       _use_single_model = true;
-  }
-
-  if (vm.count("help"))
-  {
-    std::cout << "onert_run\n\n";
-    std::cout << "Usage: " << argv[0] << " path to nnpackage root directory [<options>]\n\n";
-    std::cout << _options;
-    std::cout << "\n";
-
-    exit(0);
-  }
-
-  if (vm.count("version"))
-  {
-    _print_version = true;
-    return;
   }
 
   try
