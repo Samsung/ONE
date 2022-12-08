@@ -20,19 +20,43 @@
 namespace luci_interpreter
 {
 
+enum MemoryManagerType
+{
+  STATIC,
+  DYNAMIC
+};
+
 class InterpreterConfigure
 {
 public:
   void setAllocateInputValue(bool allocate_input) { _allocate_input = allocate_input; }
   bool getAllocateInputValue() const { return _allocate_input; }
 
-  void useStaticMemoryManager(uint32_t input_buf_size, uint32_t temp_buf_size,
-                              uint32_t output_buf_size)
+  InterpreterConfigure &setMemoryManager(MemoryManagerType mm_type)
   {
-    _use_static_manager = true;
+    switch (mm_type)
+    {
+      case MemoryManagerType::STATIC:
+        _use_static_manager = true;
+        break;
+      case MemoryManagerType::DYNAMIC:
+        _use_static_manager = false;
+        break;
+      default:
+        assert(false);
+    }
+    return *this;
+  }
+
+  // TODO: remove this method
+  InterpreterConfigure &configStaticMemoryManager(uint32_t input_buf_size, uint32_t temp_buf_size,
+                                                  uint32_t output_buf_size)
+  {
+    assert(_use_static_manager);
     _input_buf_size = input_buf_size;
     _temp_buf_size = temp_buf_size;
     _output_buf_size = output_buf_size;
+    return *this;
   }
 
   bool isStaticManager() const { return _use_static_manager; }

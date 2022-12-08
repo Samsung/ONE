@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci_interpreter/memory_managers/SimpleMemoryManager.h"
+#include "SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {

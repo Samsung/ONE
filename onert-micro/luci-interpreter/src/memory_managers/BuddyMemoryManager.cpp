@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci_interpreter/memory_managers/BuddyMemoryManager.h"
+#include "BuddyMemoryManager.h"
 
 namespace luci_interpreter
 {

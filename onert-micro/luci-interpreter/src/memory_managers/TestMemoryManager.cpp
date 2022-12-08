@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci_interpreter/memory_managers/TestMemoryManager.h"
+#include "TestMemoryManager.h"
 
 namespace luci_interpreter
 {

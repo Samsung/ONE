@@ -18,7 +18,7 @@
 #define LUCI_INTERPRETER_CORE_RUNTIMEMODULE_H
 
 #include "core/RuntimeGraph.h"
-#include "luci_interpreter/memory_managers/MemoryManager.h"
+#include "memory_managers/MemoryManager.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <memory>

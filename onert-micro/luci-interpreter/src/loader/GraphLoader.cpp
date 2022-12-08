@@ -17,7 +17,7 @@
 #include "loader/GraphLoader.h"
 #include "loader/KernelBuilder.h"
 
-#include "luci_interpreter/memory_managers/StaticMemoryManager.h"
+#include "memory_managers/StaticMemoryManager.h"
 
 namespace luci_interpreter
 {

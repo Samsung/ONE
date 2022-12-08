@@ -18,7 +18,7 @@
 #define LUCI_INTERPRETER_CORE_RUNTIMEGRAPH_H
 
 #include "luci_interpreter/core/Tensor.h"
-#include "luci_interpreter/memory_managers/MemoryManager.h"
+#include "memory_managers/MemoryManager.h"
 #include "core/Kernel.h"
 
 #include <memory>

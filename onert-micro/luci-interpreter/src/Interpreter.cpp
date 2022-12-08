@@ -15,8 +15,8 @@
  */
 
 #include "luci_interpreter/Interpreter.h"
-#include "luci_interpreter/memory_managers/SimpleMemoryManager.h"
-#include "luci_interpreter/memory_managers/StaticMemoryManager.h"
+#include "memory_managers/SimpleMemoryManager.h"
+#include "memory_managers/StaticMemoryManager.h"
 
 #include "loader/ModuleLoader.h"
 

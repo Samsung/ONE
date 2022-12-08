@@ -18,8 +18,9 @@
 #define LUCI_INTERPRETER_INTERPRETER_H
 
 #include "luci_interpreter/core/Tensor.h"
-#include "luci_interpreter/memory_managers/MemoryManager.h"
 #include "luci_interpreter/InterpreterConfigure.h"
+
+#include "memory_managers/MemoryManager.h"
 
 #include <memory>
 #include <vector>

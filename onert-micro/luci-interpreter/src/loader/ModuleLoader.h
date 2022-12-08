@@ -18,7 +18,7 @@
 #define LUCI_INTERPRETER_LOADER_MODULELOADER_H
 
 #include "core/RuntimeModule.h"
-#include "luci_interpreter/memory_managers/MemoryManager.h"
+#include "memory_managers/MemoryManager.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <unordered_map>

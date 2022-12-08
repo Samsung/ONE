@@ -15,7 +15,7 @@
  */
 
 #include "core/RuntimeGraph.h"
-#include "luci_interpreter/memory_managers/StaticMemoryManager.h"
+#include "memory_managers/StaticMemoryManager.h"
 
 #include <algorithm>
 #include <map>
