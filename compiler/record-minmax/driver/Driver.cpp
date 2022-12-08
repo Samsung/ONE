@@ -119,16 +119,7 @@ int entry(const int argc, char **argv)
   if (arser["--input_data_format"])
     input_data_format = arser.get<std::string>("--input_data_format");
 
-  RecordMinMax rmm;
-
-#ifndef _OPENMP
-  if (parallel_record)
-  {
-    std::cout << "Warning: Parallel recording is not available in this platform. A single thread "
-                 "is used for recording.";
-    parallel_record = false;
-  }
-#endif
+  RecordMinMax rmm(parallel_record);
 
   // TODO: support parallel record for profile with random data
   if (parallel_record and not arser["--input_data"])

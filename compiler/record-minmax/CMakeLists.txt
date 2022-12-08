@@ -15,16 +15,6 @@ target_link_libraries(record-minmax dio_hdf5)
 target_link_libraries(record-minmax vconone)
 target_link_libraries(record-minmax nncc_coverage)
 
-find_package(OpenMP QUIET)
-if (OpenMP_FOUND)
-  set(_OPENMP ON)
-  target_link_libraries(record-minmax OpenMP::OpenMP_CXX)
-  message(STATUS "record-minmax with OpenMP")
-else()
-  message(WARNING "OpenMP not found")
-  set(_OPENMP OFF)
-endif(OpenMP_FOUND)
-
 install(TARGETS record-minmax DESTINATION bin)
 
 if(NOT ENABLE_TEST)

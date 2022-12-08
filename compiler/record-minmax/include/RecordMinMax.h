@@ -23,13 +23,7 @@
 #include "MinMaxObserver.h"
 
 #include <memory>
-
-#ifdef _OPENMP
-#include <omp.h>
-#else
-#define omp_get_thread_num() 0
-#define omp_get_max_threads() 1
-#endif
+#include <thread>
 
 namespace record_minmax
 {
@@ -37,9 +31,10 @@ namespace record_minmax
 class RecordMinMax
 {
 public:
-  explicit RecordMinMax() : _threads_size(omp_get_max_threads())
+  explicit RecordMinMax(bool use_parallel)
+    : _threads_size(use_parallel ? std::thread::hardware_concurrency() : 1)
   {
-    // Do nothing
+    assert(_threads_size > 0);
   }
 
   ~RecordMinMax() = default;
@@ -66,6 +61,10 @@ public:
 private:
   void initializeCircleModule(const std::string &input_model_path);
 
+  luci_interpreter::Interpreter *getInterpreter() const { return _interpreters[0].get(); }
+
+  MinMaxObserver *getObserver() const { return _observers[0].get(); }
+
   std::vector<std::vector<std::vector<char>>> importH5Data(const std::string &input_data_path);
 
   std::unique_ptr<luci::Module> _module;
@@ -74,7 +73,7 @@ private:
   std::vector<std::unique_ptr<luci_interpreter::Interpreter>> _interpreters;
   std::vector<std::unique_ptr<MinMaxObserver>> _observers;
 
-  uint32_t _threads_size;
+  uint32_t _threads_size = 0;
 };
 
 } // namespace record_minmax
