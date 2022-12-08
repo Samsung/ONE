@@ -21,7 +21,6 @@ source "${CONFIG_PATH}"
 
 echo "-- Found circle-inspect: ${CIRCLE_INSPECT_PATH}"
 echo "-- Found circle-verify: ${CIRCLE_VERIFY_PATH}"
-echo "-- Found circle2circle: ${CIRCLE2CIRCLE_PATH}"
 echo "-- Found common-artifacts: ${RESOURCE_DIR}"
 
 TESTED=()
