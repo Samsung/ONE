@@ -2,7 +2,8 @@
 
 It tests the non-functional conditions of the optimized circle binary resulting from circle2circle.
 
-This test basically refers to the _TensorFlowLiteRecipes_ resource. So you should add what you want to test to both of the resource and `test.lst`.
+This test basically refers to the _TensorFlowLiteRecipes_ resource.
+So you should add what you want to test to both of the resource and `test.lst`.
 
 ## Example
 
