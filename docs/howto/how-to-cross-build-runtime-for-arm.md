@@ -151,12 +151,10 @@ $ ssh odroid
 sjlee@odroid's password:
 ...
 $ cd ~/one/Product
-$ ln ${PWD}/armv7l-linux.debug/obj obj
 $ ln ${PWD}/armv7l-linux.debug/out out
 $ cd ..
 $ ls -la Product
 drwxrwxr-x  5 sjlee sjlee 4096 Jun  4 20:55 armv7l-linux.debug
-lrwxrwxrwx  1 sjlee sjlee   51 Jun  4 20:54 obj -> /home/sjlee/one/Product/armv7l-linux.debug/obj
 lrwxrwxrwx  1 sjlee sjlee   51 Jun  4 20:55 out -> /home/sjlee/one/Product/armv7l-linux.debug/out
 ```
 
