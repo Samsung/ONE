@@ -91,7 +91,6 @@ bool replace_fc_with_matmul(luci::CircleFullyConnected *fc)
 {
   luci::CircleNode *x = nullptr;
   luci::CircleNode *y = nullptr;
-  luci::CircleNode *b = nullptr;
   luci::CircleTranspose *ty = nullptr;
   luci::CircleTranspose *tx = nullptr;
   bool adj_x = false;
@@ -122,10 +121,13 @@ bool replace_fc_with_matmul(luci::CircleFullyConnected *fc)
     x = loco::must_cast<luci::CircleNode *>(fc->input());
   }
 
-  b = loco::must_cast<luci::CircleNode *>(fc->bias());
+  if (x->dtype() != loco::DataType::FLOAT32 || y->dtype() != loco::DataType::FLOAT32)
+    return false;
 
-  if (x->dtype() != loco::DataType::FLOAT32 || y->dtype() != loco::DataType::FLOAT32 ||
-      b->dtype() != loco::DataType::FLOAT32)
+  auto bc = dynamic_cast<luci::CircleConst *>(fc->bias());
+  // NOTE bias can be empty as CircleOutputExclude type
+  // NOTE we can only handle bias as FLOAT32 type as of now
+  if (nullptr != bc && bc->dtype() != loco::DataType::FLOAT32)
     return false;
 
   auto name = fc->name();
@@ -150,12 +152,11 @@ bool replace_fc_with_matmul(luci::CircleFullyConnected *fc)
     return ac;
   };
 
-  auto bc = dynamic_cast<luci::CircleConst *>(b);
-  if ((nullptr != bc) && !all_zero(bc))
+  if (nullptr != bc && !all_zero(bc))
   {
     auto bias_add = fc->graph()->nodes()->create<luci::CircleAdd>();
     bias_add->x(matmul);
-    bias_add->y(b);
+    bias_add->y(bc);
     bias_add->name(fc->name() + "/bias_add");
     bias_add->dtype(fc->dtype());
     add_origin(bias_add, get_origin(fc));
@@ -164,6 +165,7 @@ bool replace_fc_with_matmul(luci::CircleFullyConnected *fc)
   }
   else
   {
+    // NOTE bias doesn't exist or bias is all zero
     auto n = fromActivation(matmul, fc->fusedActivationFunction());
     add_origin(n, luci::get_origin(fc));
     n->name(fc->name() + "fusedActivation");
