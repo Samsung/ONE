@@ -60,7 +60,7 @@ function need_download()
     fi
 
     LOCAL_HASH=$(md5sum $LOCAL_PATH | awk '{ print $1 }')
-    REMOTE_HASH=$(curl -ss $REMOTE_URL | md5sum  | awk '{ print $1 }')
+    REMOTE_HASH=$(curl --netrc-optional -kLsS $REMOTE_URL | md5sum  | awk '{ print $1 }')
     # TODO Emit an error when Content-MD5 field was not found. (Server configuration issue)
     if [ "$LOCAL_HASH" != "$REMOTE_HASH" ]; then
         echo "Downloaded file is outdated or incomplete."
