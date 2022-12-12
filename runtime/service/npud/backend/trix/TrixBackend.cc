@@ -81,14 +81,15 @@ NpuStatus TrixBackend::getVersion(std::string &version)
 
 NpuStatus TrixBackend::createContext(int deviceId, int priority, NpuContext **ctx)
 {
-  NpuContext *context = new NpuContext();
   if (deviceId >= _dev->handles.size())
   {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
+  auto context = std::make_unique<NpuContext>();
   context->defaultCore = deviceId;
   // TODO Consider priority.
-  *ctx = context;
+  *ctx = context.get();
+  _dev->ctxs.emplace_back(std::move(context));
   return NPU_STATUS_SUCCESS;
 }
 
@@ -99,7 +100,14 @@ NpuStatus TrixBackend::destroyContext(NpuContext *ctx)
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
-  delete ctx;
+  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(),
+                            [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
+  if (citer == _dev->ctxs.end())
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  _dev->ctxs.erase(citer);
   return NPU_STATUS_SUCCESS;
 }
 

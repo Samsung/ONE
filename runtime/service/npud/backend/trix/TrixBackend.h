@@ -44,6 +44,7 @@ struct TrixDevice
   //    it can recognize that all `NpuContext` has unregistered the model and
   //    delete the model data.
   std::vector<std::weak_ptr<NpuModelInfo>> models;
+  std::vector<std::unique_ptr<NpuContext>> ctxs;
 };
 
 class TrixBackend : public Backend
