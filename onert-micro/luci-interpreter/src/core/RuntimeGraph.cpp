@@ -15,7 +15,7 @@
  */
 
 #include "core/RuntimeGraph.h"
-#include "luci_interpreter/memory_managers/StaticMemoryManager.h"
+#include "memory_managers/StaticMemoryManager.h"
 
 #include <algorithm>
 #include <map>
@@ -185,24 +185,17 @@ StaticRuntimeGraph::StaticRuntimeGraph(IMemoryManager *memory_manager)
 StaticRuntimeGraph::~StaticRuntimeGraph()
 {
   // Release intermediate computing buffer.
-  const auto static_memory_manager = dynamic_cast<StaticMemoryManager *>(_memory_manager);
-  if (static_memory_manager->is_owning_buffers())
-  {
-    static_memory_manager->release_computing_buf();
-    static_memory_manager->release_input_buf();
-    static_memory_manager->release_output_buf();
-  }
+  _memory_manager->release_computing_buf();
+  _memory_manager->release_input_buf();
+  _memory_manager->release_output_buf();
 }
 
 void StaticRuntimeGraph::configure()
 {
   // Allocate memory for intermediate computing buffer and for output buffer.
-  const auto static_memory_manager = dynamic_cast<StaticMemoryManager *>(_memory_manager);
-  if (static_memory_manager->is_owning_buffers())
-  {
-    static_memory_manager->allocate_computing_buf();
-    static_memory_manager->allocate_output_buf();
-  }
+
+  _memory_manager->allocate_computing_buf();
+  _memory_manager->allocate_output_buf();
 
   // Set tensor's data pointer for intermediate tensors
   for (auto &kernel : _kernels)
@@ -214,13 +207,8 @@ void StaticRuntimeGraph::configure()
   }
 
   // Set tensor's data pointer for output tensors
-  if (static_memory_manager->is_owning_buffers())
-  {
-    for (const auto output_tensor : _output_tensors)
-    {
-      static_memory_manager->allocate_memory_for_output(*output_tensor);
-    }
-  }
+  for (const auto output_tensor : _output_tensors)
+    _memory_manager->allocate_memory_for_output(*output_tensor);
 
   _is_valid = true;
 }
@@ -245,9 +233,7 @@ void StaticRuntimeGraph::execute()
   }
 
   // Release intermediate computing buffer.
-  const auto static_memory_manager = dynamic_cast<StaticMemoryManager *>(_memory_manager);
-  if (static_memory_manager->is_owning_buffers())
-    static_memory_manager->release_computing_buf();
+  _memory_manager->release_computing_buf();
 
   _is_valid = false;
 }

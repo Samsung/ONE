@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci_interpreter/memory_managers/SimpleMemoryManager.h"
+#include "SimpleMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -47,7 +47,5 @@ void SimpleMemoryManager::release_memory(luci_interpreter::Tensor &tensor)
   delete[] data;
   tensor.set_data_buffer(nullptr);
 }
-
-bool SimpleMemoryManager::is_static_manager() const { return false; }
 
 } // namespace luci_interpreter

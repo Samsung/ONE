@@ -17,7 +17,7 @@
 #include "loader/GraphLoader.h"
 #include "loader/KernelBuilder.h"
 
-#include "luci_interpreter/memory_managers/StaticMemoryManager.h"
+#include "memory_managers/StaticMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -137,7 +137,7 @@ void GraphLoader::loadTensors()
   }
 }
 
-void GraphLoader::initInputTensors() const
+void GraphLoader::initInputTensors(bool use_static_memory_manager) const
 {
   for (const auto input_ind : _reader->inputs())
   {
@@ -169,7 +169,7 @@ void GraphLoader::initInputTensors() const
     auto tensor_interpreter = std::make_unique<Tensor>(dtype, std::move(shape), quantization);
 
     tensor_interpreter->set_allocatable(_memory_manager->is_allocate_input());
-    if (not _memory_manager->is_static_manager())
+    if (not use_static_memory_manager)
     {
       // Using Dynamic Allocations
       _memory_manager->allocate_memory(*tensor_interpreter);
@@ -177,10 +177,7 @@ void GraphLoader::initInputTensors() const
     else
     {
       // Using static allocations
-      const auto static_memory_manager = dynamic_cast<StaticMemoryManager *>(_memory_manager);
-      if (static_memory_manager->is_owning_buffers())
-        // Using split buffers (input, output and for intermediate computations)
-        static_memory_manager->allocate_input_buf();
+      _memory_manager->allocate_input_buf();
     }
 
     _runtime_graph->addInputTensor(tensor_interpreter.get());
@@ -189,11 +186,11 @@ void GraphLoader::initInputTensors() const
   }
 }
 
-void GraphLoader::loadOperators()
+void GraphLoader::loadOperators(bool use_static_memory_manager)
 {
   ExecutionPlanTable execution_plan;
   // Set execution plan for static memory manager
-  if (_memory_manager->is_static_manager())
+  if (use_static_memory_manager)
   {
     // Read metadata
     const auto metadata = _reader->metadata();
@@ -218,19 +215,15 @@ void GraphLoader::loadOperators()
   const uint32_t input_size = _runtime_graph->getInputTensors().size();
   const uint32_t output_size = _reader->outputs().size();
 
-  if (_memory_manager->is_static_manager())
+  if (use_static_memory_manager)
   {
     // Set offset for input tensors
-    const auto static_memory_manager = dynamic_cast<StaticMemoryManager *>(_memory_manager);
     for (int32_t input_ind = 0; input_ind < input_size; ++input_ind)
     {
       auto input_tensor = _runtime_graph->getInputTensors().at(input_ind);
       input_tensor->set_offset(execution_plan.at(input_ind)[0]);
 
-      if (static_memory_manager->is_owning_buffers())
-        static_memory_manager->allocate_memory_for_input(*input_tensor);
-      else
-        static_memory_manager->allocate_memory(*input_tensor);
+      _memory_manager->allocate_memory_for_input(*input_tensor);
     }
   }
 
@@ -253,7 +246,7 @@ void GraphLoader::loadOperators()
         const auto &graph_input_tensors = _runtime_graph->getInputTensors();
 
         // TODO: handle Inplace Optimization with Static Memory Manager
-        if (not _memory_manager->is_static_manager() and
+        if (not use_static_memory_manager and
             isCouldBeEmplaceOperation(_reader->builtin_code(op)) and op->outputs()->size() == 1 and
             isCouldBeEmplaceTensor(input_index) and
             (std::find(graph_input_tensors.begin(), graph_input_tensors.end(), input_tensor) ==
@@ -299,7 +292,7 @@ void GraphLoader::loadOperators()
 
       auto tensor_interpreter = std::make_unique<Tensor>(dtype, std::move(shape), quantization);
 
-      if (_memory_manager->is_static_manager() and
+      if (use_static_memory_manager and
           (std::find(_reader->outputs().begin(), _reader->outputs().end(), output_index) ==
            _reader->outputs().end()))
       {
@@ -323,7 +316,7 @@ void GraphLoader::loadOperators()
 
     _runtime_graph->addKernel(std::move(kernel));
   }
-  if (_memory_manager->is_static_manager())
+  if (use_static_memory_manager)
   {
     for (int32_t ind = 0; ind < output_size; ++ind)
     {

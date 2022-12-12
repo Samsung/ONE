@@ -18,7 +18,9 @@
 #define LUCI_INTERPRETER_INTERPRETER_H
 
 #include "luci_interpreter/core/Tensor.h"
-#include "luci_interpreter/memory_managers/MemoryManager.h"
+#include "luci_interpreter/InterpreterConfigure.h"
+
+#include "memory_managers/MemoryManager.h"
 
 #include <memory>
 #include <vector>
@@ -30,12 +32,11 @@ namespace luci_interpreter
 class Interpreter
 {
 public:
+  // Construct default interpreter with dynamic allocations and with input allocations
   explicit Interpreter(const char *model_data_raw);
-  explicit Interpreter(const char *model_data_raw, bool allocate_input);
 
-  explicit Interpreter(const char *model_data_raw, IMemoryManager *memory_manager);
-  explicit Interpreter(const char *model_data_raw, IMemoryManager *memory_manager,
-                       bool allocate_input);
+  // Construct interpreter with configurations
+  explicit Interpreter(const char *model_data_raw, const InterpreterConfigure &configuration);
 
   ~Interpreter();
 
@@ -53,7 +54,7 @@ public:
 private:
   // _default_memory_manager should be before _runtime_module due to
   // the order of deletion in the destructor
-  std::unique_ptr<IMemoryManager> _default_memory_manager = nullptr;
+  std::unique_ptr<IMemoryManager> _memory_manager;
   std::unique_ptr<class RuntimeModule> _runtime_module;
 };
 

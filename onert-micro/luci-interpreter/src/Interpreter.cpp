@@ -15,41 +15,48 @@
  */
 
 #include "luci_interpreter/Interpreter.h"
-#include "luci_interpreter/memory_managers/SimpleMemoryManager.h"
+#include "memory_managers/SimpleMemoryManager.h"
+#include "memory_managers/StaticMemoryManager.h"
 
 #include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
 {
 
-Interpreter::Interpreter(const char *model_data_raw, bool allocate_input)
+// Construct default interpreter with dynamic allocations and with input allocations
+Interpreter::Interpreter(const char *model_data_raw)
 {
   _runtime_module = std::make_unique<RuntimeModule>();
 
-  _default_memory_manager = std::make_unique<SimpleMemoryManager>();
-  _default_memory_manager->is_allocate_input(allocate_input);
+  _memory_manager = std::make_unique<SimpleMemoryManager>();
+  _memory_manager->is_allocate_input(true);
 
-  ModuleLoader loader(model_data_raw, _runtime_module.get(), _default_memory_manager.get());
-  loader.load();
+  ModuleLoader loader(model_data_raw, _runtime_module.get(), _memory_manager.get());
+  loader.load(/* is_static_allocations */ false);
 }
 
-Interpreter::Interpreter(const char *model_data_raw) { Interpreter(model_data_raw, true); }
-
-Interpreter::Interpreter(const char *model_data_raw, IMemoryManager *memory_manager,
-                         bool allocate_input)
+// Construct interpreter with configurations
+Interpreter::Interpreter(const char *model_data_raw, const InterpreterConfigure &configuration)
 {
-  assert(memory_manager && "Use Interpreter::Interpreter(module) constructor instead");
   _runtime_module = std::make_unique<RuntimeModule>();
 
-  memory_manager->is_allocate_input(allocate_input);
+  // Note:
+  // configuration._input_buf_size, configuration._temp_buf_size, configuration._output_buf_size
+  // will be removed and will be read from circle file
+  if (configuration.isStaticManager())
+  {
+    _memory_manager = std::make_unique<StaticMemoryManager>(
+      configuration._input_buf_size, configuration._temp_buf_size, configuration._output_buf_size);
+  }
+  else
+  {
+    _memory_manager = std::make_unique<SimpleMemoryManager>();
+  }
 
-  ModuleLoader loader(model_data_raw, _runtime_module.get(), memory_manager);
-  loader.load();
-}
+  _memory_manager->is_allocate_input(configuration.getAllocateInputValue());
 
-Interpreter::Interpreter(const char *model_data_raw, IMemoryManager *memory_manager)
-{
-  Interpreter(model_data_raw, memory_manager, true);
+  ModuleLoader loader(model_data_raw, _runtime_module.get(), _memory_manager.get());
+  loader.load(configuration.isStaticManager());
 }
 
 Interpreter::~Interpreter() = default;

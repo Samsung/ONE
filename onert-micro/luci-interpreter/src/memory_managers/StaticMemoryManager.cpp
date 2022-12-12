@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci_interpreter/memory_managers/StaticMemoryManager.h"
+#include "StaticMemoryManager.h"
 
 namespace luci_interpreter
 {
@@ -29,9 +29,6 @@ void StaticMemoryManager::base_allocate_memory(luci_interpreter::Tensor &tensor,
   {
     return;
   }
-
-  if (tensor.is_data_allocated())
-    release_memory(tensor);
 
   const auto offset = tensor.get_offset();
   assert(offset >= 0);
@@ -59,25 +56,26 @@ void StaticMemoryManager::release_memory(luci_interpreter::Tensor &tensor)
   tensor.set_data_buffer(nullptr);
 }
 
-bool StaticMemoryManager::is_static_manager() const { return true; }
-
 void StaticMemoryManager::allocate_input_buf()
 {
   if (not _is_allocate_input)
     return;
 
+  assert(_input_req_size > 0);
   if (_input_buffer_ptr == nullptr)
     _input_buffer_ptr = new uint8_t[_input_req_size];
 }
 
 void StaticMemoryManager::allocate_output_buf()
 {
+  assert(_output_req_size > 0);
   if (_output_buffer_ptr == nullptr)
     _output_buffer_ptr = new uint8_t[_output_req_size];
 }
 
 void StaticMemoryManager::allocate_computing_buf()
 {
+  assert(_buffer_req_size > 0);
   if (_buffer_ptr == nullptr)
     _buffer_ptr = new uint8_t[_buffer_req_size];
 }

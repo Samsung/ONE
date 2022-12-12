@@ -29,7 +29,6 @@ class TestMemoryManager : public IMemoryManager
 public:
   void allocate_memory(luci_interpreter::Tensor &tensor) final;
   void release_memory(luci_interpreter::Tensor &tensor) final;
-  bool is_static_manager() const final;
 
   ~TestMemoryManager() override
   {

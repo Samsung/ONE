@@ -18,7 +18,7 @@
 #define LUCI_INTERPRETER_LOADER_GRAPHLOADER_H
 
 #include "core/RuntimeGraph.h"
-#include "luci_interpreter/memory_managers/MemoryManager.h"
+#include "memory_managers/MemoryManager.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <unordered_map>
@@ -34,8 +34,8 @@ public:
               std::unordered_map<int32_t, Tensor *> *index_to_tensor);
 
   void loadTensors();
-  void initInputTensors() const;
-  void loadOperators();
+  void initInputTensors(bool use_static_memory_manager) const;
+  void loadOperators(bool use_static_memory_manager);
 
 private:
   bool isCouldBeEmplaceTensor(const int32_t tensor_index);

@@ -27,7 +27,39 @@ class SimpleMemoryManager : public IMemoryManager
 public:
   void allocate_memory(luci_interpreter::Tensor &tensor) final;
   void release_memory(luci_interpreter::Tensor &tensor) final;
-  bool is_static_manager() const final;
+
+  void allocate_input_buf() final
+  {
+    assert(false && "Method can be used only for static memory manager");
+  }
+  void allocate_output_buf() final
+  {
+    assert(false && "Method can be used only for static memory manager");
+  }
+  void allocate_computing_buf() final
+  {
+    assert(false && "Method can be used only for static memory manager");
+  }
+  void release_computing_buf() final
+  {
+    assert(false && "Method can be used only for static memory manager");
+  }
+  void release_input_buf() final
+  {
+    assert(false && "Method can be used only for static memory manager");
+  }
+  void release_output_buf() final
+  {
+    assert(false && "Method can be used only for static memory manager");
+  }
+  void allocate_memory_for_input(luci_interpreter::Tensor &tensor) final
+  {
+    assert(false && "Method can be used only for static memory manager");
+  }
+  void allocate_memory_for_output(luci_interpreter::Tensor &tensor) final
+  {
+    assert(false && "Method can be used only for static memory manager");
+  }
 };
 
 } // namespace luci_interpreter
