@@ -262,7 +262,13 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 
 %if %{npud_build} == 1
 install -m 755 build/out/bin/npud %{buildroot}%{_bindir}
-%endif
+
+%if %{test_build} == 1
+mkdir -p %{test_install_path}/npud-gtest
+install -m 755 build/out/npud-gtest/* %{test_install_path}/npud-gtest
+%endif # test_build
+
+%endif # npud_build
 
 %endif
 
