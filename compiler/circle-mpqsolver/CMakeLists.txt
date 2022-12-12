@@ -1,0 +1,15 @@
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+
+add_executable(circle-mpqsolver "${SOURCES}")
+target_link_libraries(circle-mpqsolver luci_import)
+target_link_libraries(circle-mpqsolver luci_export)
+target_link_libraries(circle-mpqsolver luci_pass)
+target_link_libraries(circle-mpqsolver luci_service)
+target_link_libraries(circle-mpqsolver luci_interpreter)
+target_link_libraries(circle-mpqsolver luci_partition)
+target_link_libraries(circle-mpqsolver dio_hdf5)
+target_link_libraries(circle-mpqsolver arser)
+target_link_libraries(circle-mpqsolver vconone)
+target_link_libraries(circle-mpqsolver safemain)
+
+install(TARGETS circle-mpqsolver DESTINATION bin)
