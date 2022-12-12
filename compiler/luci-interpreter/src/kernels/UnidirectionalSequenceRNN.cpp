@@ -26,11 +26,11 @@ namespace kernels
 
 UnidirectionalSequenceRNN::UnidirectionalSequenceRNN(
   const Tensor *input, const Tensor *input_weights, const Tensor *input_recurrent_weights,
-  const Tensor *input_bias, const Tensor *input_hidden_state,
-  Tensor *output, const UnidirectionalSequenceRNNParams &params)
+  const Tensor *input_bias, const Tensor *input_hidden_state, Tensor *output,
+  const UnidirectionalSequenceRNNParams &params)
   : KernelWithParams<UnidirectionalSequenceRNNParams>(
-      {input, input_weights, input_recurrent_weights, input_bias, input_hidden_state},
-      {output}, params)
+      {input, input_weights, input_recurrent_weights, input_bias, input_hidden_state}, {output},
+      params)
 {
   // Do nothing
 }
@@ -90,11 +90,11 @@ namespace kernels
 
 UnidirectionalSequenceRNN::UnidirectionalSequenceRNN(
   const Tensor *input, const Tensor *input_weights, const Tensor *input_recurrent_weights,
-  const Tensor *input_bias, const Tensor *input_hidden_state,
-  Tensor *output, const UnidirectionalSequenceRNNParams &params)
+  const Tensor *input_bias, const Tensor *input_hidden_state, Tensor *output,
+  const UnidirectionalSequenceRNNParams &params)
   : KernelWithParams<UnidirectionalSequenceRNNParams>(
-      {input, input_weights, input_recurrent_weights, input_bias, input_hidden_state},
-      {output}, params)
+      {input, input_weights, input_recurrent_weights, input_bias, input_hidden_state}, {output},
+      params)
 {
   // Do nothing
 }
