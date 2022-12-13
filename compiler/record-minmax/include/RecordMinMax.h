@@ -31,8 +31,7 @@ namespace record_minmax
 class RecordMinMax
 {
 public:
-  explicit RecordMinMax(bool use_parallel)
-    : _threads_size(use_parallel ? std::thread::hardware_concurrency() : 1)
+  explicit RecordMinMax(int32_t num_threads) : _threads_size(num_threads)
   {
     assert(_threads_size > 0);
   }

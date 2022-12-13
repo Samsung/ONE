@@ -50,9 +50,9 @@ int entry(const int argc, char **argv)
     .type(arser::DataType::FLOAT)
     .help("Record n'th percentile of min");
 
-  arser.add_argument("--parallel")
-    .type(arser::DataType::BOOL)
-    .help("Use parallel recording (default: false)");
+  arser.add_argument("--num_threads")
+    .type(arser::DataType::INT32)
+    .help("Number of threads (default: 1)");
 
   arser.add_argument("--max_percentile")
     .type(arser::DataType::FLOAT)
@@ -96,13 +96,16 @@ int entry(const int argc, char **argv)
   float min_percentile = 1.0;
   float max_percentile = 99.0;
   std::string input_data_format("h5");
-  bool parallel_record = false;
+  int num_threads = 1;
 
   if (arser["--min_percentile"])
     min_percentile = arser.get<float>("--min_percentile");
 
-  if (arser["--parallel"])
-    parallel_record = arser.get<bool>("--parallel");
+  if (arser["--num_threads"])
+    num_threads = arser.get<int>("--num_threads");
+
+  if (num_threads < 1)
+    throw std::runtime_error("The number of threads must be greater than zero\n");
 
   if (arser["--max_percentile"])
     max_percentile = arser.get<float>("--max_percentile");
@@ -119,10 +122,10 @@ int entry(const int argc, char **argv)
   if (arser["--input_data_format"])
     input_data_format = arser.get<std::string>("--input_data_format");
 
-  RecordMinMax rmm(parallel_record);
+  RecordMinMax rmm(num_threads);
 
   // TODO: support parallel record for profile with random data
-  if (parallel_record and not arser["--input_data"])
+  if (num_threads > 1 and not arser["--input_data"])
   {
     throw std::runtime_error("Parallel recording is used only for h5 now\n");
   }
@@ -135,7 +138,7 @@ int entry(const int argc, char **argv)
     auto input_data_path = arser.get<std::string>("--input_data");
 
     // TODO: support parallel record from file and dir input data format
-    if (parallel_record and not(input_data_format == "h5") and not(input_data_format == "hdf5"))
+    if (num_threads > 1 and not(input_data_format == "h5") and not(input_data_format == "hdf5"))
     {
       throw std::runtime_error("Parallel recording is used only for h5 now\n");
     }
@@ -143,7 +146,7 @@ int entry(const int argc, char **argv)
     if (input_data_format == "h5" || input_data_format == "hdf5")
     {
       // Profile min/max while executing the H5 data
-      if (not parallel_record)
+      if (num_threads == 1)
         rmm.profileData(mode, input_data_path, min_percentile, max_percentile);
       else
       {

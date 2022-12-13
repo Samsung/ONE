@@ -164,24 +164,6 @@ void update_quantparam(record_minmax::MinMaxObserver *observer, const std::strin
   }
 }
 
-void interpret_batch_records(int first_record, int last_record,
-                             luci_interpreter::Interpreter *interpreter,
-                             const std::vector<std::vector<std::vector<char>>> &input_data,
-                             const std::vector<loco::Node *> &input_nodes)
-{
-  for (int record_index = first_record; record_index < last_record; ++record_index)
-  {
-    for (int32_t input_idx = 0; input_idx < input_nodes.size(); input_idx++)
-    {
-      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
-
-      const auto &cur_input_data = input_data[record_index][input_idx];
-      interpreter->writeInputTensor(input_node, cur_input_data.data(), cur_input_data.size());
-    }
-    interpreter->interpret();
-  }
-}
-
 } // namespace
 
 namespace record_minmax
@@ -515,18 +497,33 @@ void RecordMinMax::profileDataInParallel(const std::string &mode,
   }
   uint32_t records_batch = static_cast<int>(num_records / _threads_size);
 
+  auto interpret_batch = [&vector_input_data,
+                          &input_nodes](int first_record, int last_record,
+                                        luci_interpreter::Interpreter *interpreter) {
+    for (int record_index = first_record; record_index < last_record; ++record_index)
+    {
+      for (int32_t input_idx = 0; input_idx < input_nodes.size(); input_idx++)
+      {
+        const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
+
+        const auto &cur_input_data = vector_input_data[record_index][input_idx];
+        interpreter->writeInputTensor(input_node, cur_input_data.data(), cur_input_data.size());
+      }
+      interpreter->interpret();
+    }
+  };
+
   std::vector<std::thread> threads;
   for (uint32_t t = 0; t < _threads_size; ++t)
   {
     if (t < _threads_size - 1)
     {
-      threads.emplace_back(interpret_batch_records, records_batch * t, records_batch * (t + 1),
-                           _interpreters[t].get(), vector_input_data, input_nodes);
+      threads.emplace_back(interpret_batch, records_batch * t, records_batch * (t + 1),
+                           _interpreters[t].get());
     }
     else
     {
-      threads.emplace_back(interpret_batch_records, records_batch * t, num_records,
-                           _interpreters[t].get(), vector_input_data, input_nodes);
+      threads.emplace_back(interpret_batch, records_batch * t, num_records, _interpreters[t].get());
     }
   }
 

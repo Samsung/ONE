@@ -54,7 +54,7 @@ for TESTCASE in "$@"; do
       --input_model "${TESTCASE_FILE}.circle" \
       --input_data "${BIN_PATH}/${TESTCASE}.tflite.input.h5" \
       --output_model "${BIN_PATH}/${TESTCASE}.out.circle" \
-      --parallel "true"
+      --num_threads 4
 
     if [[ $? -ne 0 ]]; then
       echo "FAILED TO GENERATE CIRCLE OUTPUT"

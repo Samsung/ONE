@@ -17,10 +17,6 @@ unset(TEST_DEPS)
 
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
-# Add thread sanitizer to record-minmax
-target_compile_options(record-minmax PUBLIC -fsanitize=thread)
-target_link_options(record-minmax PUBLIC -fsanitize=thread)
-
 ###
 ### Generate test.config
 ###

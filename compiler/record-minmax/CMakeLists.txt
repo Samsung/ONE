@@ -14,6 +14,8 @@ target_link_libraries(record-minmax luci_interpreter)
 target_link_libraries(record-minmax dio_hdf5)
 target_link_libraries(record-minmax vconone)
 target_link_libraries(record-minmax nncc_coverage)
+target_compile_options(record-minmax PUBLIC -fsanitize=thread)
+target_link_libraries(record-minmax -fsanitize=thread)
 
 install(TARGETS record-minmax DESTINATION bin)
 
