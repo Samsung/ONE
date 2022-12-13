@@ -69,14 +69,6 @@ TEST_F(SignalTest, raise_SIGTERM)
   ASSERT_EQ(server.isRunning(), false);
 }
 
-TEST_F(SignalTest, raise_SIGSEGV)
-{
-  auto &server = Server::instance();
-  ASSERT_EQ(server.isRunning(), true);
-  std::raise(SIGSEGV);
-  ASSERT_EQ(server.isRunning(), false);
-}
-
 TEST_F(SignalTest, raise_SIGINT)
 {
   auto &server = Server::instance();
