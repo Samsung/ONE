@@ -13,6 +13,8 @@ DBUS_CONF="${INSTALL_PATH}/share/org.tizen.npud.conf"
 mkdir -p /usr/share/dbus-1/system.d/
 cp ${DBUS_CONF} /usr/share/dbus-1/system.d/
 
+service dbus restart
+
 function NpudTest()
 {
   pushd ${ROOT_PATH} > /dev/null
