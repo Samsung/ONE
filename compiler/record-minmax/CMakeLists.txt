@@ -14,14 +14,15 @@ target_link_libraries(record-minmax luci_interpreter)
 target_link_libraries(record-minmax dio_hdf5)
 target_link_libraries(record-minmax vconone)
 target_link_libraries(record-minmax nncc_coverage)
-target_compile_options(record-minmax PUBLIC -fsanitize=thread)
-target_link_libraries(record-minmax -fsanitize=thread)
 
 install(TARGETS record-minmax DESTINATION bin)
 
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
+
+target_compile_options(record-minmax PUBLIC -fsanitize=thread)
+target_link_libraries(record-minmax -fsanitize=thread)
 
 file(GLOB_RECURSE TESTS "tests/*.test.cpp")
 
