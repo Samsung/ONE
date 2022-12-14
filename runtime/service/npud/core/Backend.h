@@ -22,8 +22,6 @@
 
 #include <string>
 #include <vector>
-#include <memory>
-#include <map>
 
 namespace npud
 {
@@ -125,30 +123,6 @@ enum NpuStatus
 };
 
 /**
- * @brief Npu model information
- *
- * @param path The model path.
- * @param core The core number where the model is registered.
- */
-struct NpuModelInfo
-{
-  ModelID id;
-  std::string path;
-  int core;
-};
-
-/**
- * @brief Npu request information
- *
- * @param modelId The model id of request
- */
-struct NpuRequestInfo
-{
-  RequestID id;
-  ModelID modelId;
-};
-
-/**
  * @brief Npu context definition
  *
  * @param models The model lists.
@@ -157,8 +131,8 @@ struct NpuRequestInfo
  */
 struct NpuContext
 {
-  std::map<ModelID, std::shared_ptr<NpuModelInfo>> models;
-  std::map<RequestID, std::unique_ptr<NpuRequestInfo>> requests;
+  std::vector<ModelID> models;
+  std::vector<RequestID> requests;
   int defaultCore;
 };
 
