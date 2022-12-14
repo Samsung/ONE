@@ -66,6 +66,15 @@ TrixBackend::TrixBackend() : _devType(NPUCOND_TRIV2_CONN_SOCIP)
 
 TrixBackend::~TrixBackend()
 {
+  for (auto &ctx : _dev->ctxs)
+  {
+    npudev_h handle = _dev->handles.at(ctx->defaultCore);
+    for (auto id : ctx->requests)
+    {
+      removeNPU_request(handle, id);
+    }
+  }
+
   for (const auto &handle : _dev->handles)
   {
     unregisterNPUmodel_all(handle);
@@ -107,6 +116,30 @@ NpuStatus TrixBackend::destroyContext(NpuContext *ctx)
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
+  npudev_h handle = _dev->handles.at(ctx->defaultCore);
+
+  for (auto rid : ctx->requests)
+  {
+    if (removeNPU_request(handle, rid) < 0)
+    {
+      return NPU_STATUS_ERROR_OPERATION_FAILED;
+    }
+    _dev->requests.erase(rid);
+  }
+
+  for (auto mid : ctx->models)
+  {
+    auto &minfo = _dev->models.at(mid);
+    if (--minfo->refCount == 0)
+    {
+      if (unregisterNPUmodel(handle, mid) < 0)
+      {
+        return NPU_STATUS_ERROR_OPERATION_FAILED;
+      }
+      _dev->models.erase(mid);
+    }
+  }
+
   _dev->ctxs.erase(citer);
   return NPU_STATUS_SUCCESS;
 }
@@ -132,22 +165,16 @@ NpuStatus TrixBackend::registerModel(NpuContext *ctx, const std::string &modelPa
   }
 
   ModelID id;
-  auto iter = std::find_if(
-    _dev->models.begin(), _dev->models.end(), [&](const std::weak_ptr<NpuModelInfo> &p) {
-      auto info = p.lock();
-      return info ? (info->core == ctx->defaultCore && info->path == modelPath) : false;
-    });
+  auto iter =
+    std::find_if(_dev->models.begin(), _dev->models.end(),
+                 [&](const std::pair<const ModelID, std::unique_ptr<TrixModelInfo>> &p) {
+                   return p.second->core == ctx->defaultCore && p.second->path == modelPath;
+                 });
   // Already registered model.
   if (iter != _dev->models.end())
   {
-    auto info = iter->lock();
-    id = info->id;
-
-    auto mIter = ctx->models.find(id);
-    if (mIter == ctx->models.end())
-    {
-      ctx->models.insert(std::make_pair(id, info));
-    }
+    _dev->models.at(iter->first)->refCount++;
+    ctx->models.emplace_back(iter->first);
   }
   else
   {
@@ -168,9 +195,9 @@ NpuStatus TrixBackend::registerModel(NpuContext *ctx, const std::string &modelPa
       return NPU_STATUS_ERROR_OPERATION_FAILED;
     }
 
-    auto info = std::shared_ptr<NpuModelInfo>(new NpuModelInfo{id, modelPath, ctx->defaultCore});
-    ctx->models.insert(std::make_pair(id, info));
-    _dev->models.emplace_back(info);
+    _dev->models.insert(std::make_pair(id, std::unique_ptr<TrixModelInfo>(new TrixModelInfo{
+                                             id, modelPath, ctx->defaultCore, meta, 1})));
+    ctx->models.emplace_back(id);
   }
 
   *modelId = id;
@@ -184,17 +211,43 @@ NpuStatus TrixBackend::unregisterModel(NpuContext *ctx, ModelID modelId)
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
-  auto iter = ctx->models.find(modelId);
-  if (iter == ctx->models.end())
+  auto miter = std::find(ctx->models.begin(), ctx->models.end(), modelId);
+  if (miter == ctx->models.end())
   {
     return NPU_STATUS_ERROR_INVALID_MODEL;
   }
 
-  ctx->models.erase(iter);
+  npudev_h handle = _dev->handles.at(ctx->defaultCore);
 
-  auto mIter = std::remove_if(_dev->models.begin(), _dev->models.end(),
-                              [&](const std::weak_ptr<NpuModelInfo> &p) { return p.expired(); });
-  _dev->models.erase(mIter, _dev->models.end());
+  for (auto riter = ctx->requests.begin(); riter != ctx->requests.end();)
+  {
+    auto &rinfo = _dev->requests.at(*riter);
+    if (rinfo->modelId == modelId)
+    {
+      if (removeNPU_request(handle, rinfo->id) < 0)
+      {
+        return NPU_STATUS_ERROR_OPERATION_FAILED;
+      }
+      _dev->requests.erase(rinfo->id);
+      riter = ctx->requests.erase(riter);
+    }
+    else
+    {
+      ++riter;
+    }
+  }
+
+  auto &minfo = _dev->models.at(modelId);
+  if (--minfo->refCount == 0)
+  {
+    if (unregisterNPUmodel(handle, modelId) < 0)
+    {
+      return NPU_STATUS_ERROR_OPERATION_FAILED;
+    }
+    _dev->models.erase(modelId);
+  }
+
+  ctx->models.erase(miter);
   return NPU_STATUS_SUCCESS;
 }
 
@@ -205,21 +258,22 @@ NpuStatus TrixBackend::createRequest(NpuContext *ctx, ModelID modelId, RequestID
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
-  auto iter = ctx->models.find(modelId);
-  if (iter == ctx->models.end())
+  auto miter = std::find(ctx->models.begin(), ctx->models.end(), modelId);
+  if (miter == ctx->models.end())
   {
     return NPU_STATUS_ERROR_INVALID_MODEL;
   }
 
   int id;
-  npudev_h handle = _dev->handles.at(iter->second->core);
+  npudev_h handle = _dev->handles.at(ctx->defaultCore);
   if (createNPU_request(handle, modelId, &id) < 0)
   {
     return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
-  auto &requestMap = ctx->requests;
-  requestMap.insert({id, std::unique_ptr<NpuRequestInfo>(new NpuRequestInfo{id, modelId})});
+  _dev->requests.insert(std::make_pair(id, std::unique_ptr<TrixRequestInfo>(new TrixRequestInfo{
+                                             static_cast<RequestID>(id), modelId})));
+  ctx->requests.emplace_back(id);
 
   *requestId = id;
   return NPU_STATUS_SUCCESS;
@@ -232,27 +286,20 @@ NpuStatus TrixBackend::destroyRequest(NpuContext *ctx, RequestID requestId)
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
-  auto &requestMap = ctx->requests;
-  auto iter = requestMap.find(requestId);
-  if (iter == requestMap.end())
+  auto riter = std::find(ctx->requests.begin(), ctx->requests.end(), requestId);
+  if (riter == ctx->requests.end())
   {
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
-  ModelID modelId = iter->second->modelId;
-  auto miter = ctx->models.find(modelId);
-  if (miter == ctx->models.end())
-  {
-    return NPU_STATUS_ERROR_INVALID_MODEL;
-  }
-
-  npudev_h handle = _dev->handles.at(miter->second->core);
+  npudev_h handle = _dev->handles.at(ctx->defaultCore);
   if (removeNPU_request(handle, requestId) < 0)
   {
     return NPU_STATUS_ERROR_OPERATION_FAILED;
   }
 
-  requestMap.erase(iter);
+  _dev->requests.erase(requestId);
+  ctx->requests.erase(riter);
   return NPU_STATUS_SUCCESS;
 }
 
