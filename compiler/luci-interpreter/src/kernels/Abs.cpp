@@ -18,6 +18,8 @@
 
 #include "kernels/Utils.h"
 
+#include <cmath> // abs for float
+
 namespace luci_interpreter
 {
 namespace kernels
@@ -38,18 +40,6 @@ void Abs::execute() const
   {
     case DataType::FLOAT32:
       eval<float>();
-      break;
-    case DataType::S32:
-      eval<int>();
-      break;
-    case DataType::S8:
-      eval<int8_t>();
-      break;
-    case DataType::U8:
-      eval<uint8_t>();
-      break;
-    case DataType::S16:
-      eval<int16_t>();
       break;
     default:
       throw std::runtime_error("Unsupported type.");
