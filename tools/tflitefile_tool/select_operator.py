@@ -23,6 +23,7 @@ import tflite.SubGraph
 import tflite.BuiltinOptions
 import argparse
 import pkg_resources
+import json
 
 
 # On flatbuffers 2.0, EndVector doesn't require length argument any more.
@@ -1142,10 +1143,10 @@ def GenerateSubgraphs(args, new_builder, sample_model, operator_list, new_input_
     # The selected subgraph will be primary subgraph of the model to be created newly
     selected_subgraph = sample_model.Subgraphs(args.subgraph)
 
-    # k: old subg index, v: new subg index
+    # k: orginal subg index, v: new subg index
     # new subg index is sequential in used_subgraphs_dic
     for k, v in used_subgraphs_dic.items():
-        print("Append subgraphs, old index : ", k, ", new index : ", v)
+        print("Append subgraphs, orginal index : ", k, ", new index : ", v)
         if k == args.subgraph:
             assert v == 0
             new_subgraph = GenerateSubgraph(new_builder, selected_subgraph, operator_list,
@@ -1251,6 +1252,28 @@ def GenerateModel(args, new_builder, sample_model, operator_list, new_input_tens
     tflite.Model.ModelAddBuffers(new_builder, buffers)
 
     return tflite.Model.ModelEnd(new_builder)
+
+
+def StoreIOInfo(path, used_tensors, new_inputs, new_outputs):
+    ioinfo = {}
+
+    # For inputs and outputs
+    input_org_indices = []
+    input_new_indices = []
+    output_org_indices = []
+    output_new_indices = []
+    for input_tensor_idx in new_inputs:
+        input_org_indices.append(input_tensor_idx)
+        input_new_indices.append(used_tensors[input_tensor_idx])
+    for output_tensor_idx in new_outputs:
+        output_org_indices.append(output_tensor_idx)
+        output_new_indices.append(used_tensors[output_tensor_idx])
+
+    ioinfo["inputs"] = {"org": input_org_indices, "new": input_new_indices}
+    ioinfo["outputs"] = {"org": output_org_indices, "new": output_new_indices}
+
+    with open(path, "w") as json_file:
+        json.dump(ioinfo, json_file)
 
 
 def main(args):
@@ -1409,6 +1432,10 @@ def main(args):
 
     output_model_file.write(new_buf)
 
+    if args.store_io_info != "":
+        StoreIOInfo(args.store_io_info, used_tensors_dic, new_input_tensors,
+                    new_output_tensors)
+
 
 if __name__ == '__main__':
     # Define argument and read
@@ -1425,6 +1452,13 @@ if __name__ == '__main__':
         "output_model", type=argparse.FileType('wb'), help="output tflite model file")
     arg_parser.add_argument(
         '-g', '--subgraph', type=int, default=0, help="subgraph to use (default: 0)")
+    arg_parser.add_argument(
+        '-s',
+        '--store-io-info',
+        type=str,
+        required=False,
+        default="",
+        help="Path to io information to be stored")
 
     # TODO
     #   Select multiple subgraph
