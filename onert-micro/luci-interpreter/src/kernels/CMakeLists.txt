@@ -17,7 +17,6 @@ endif(NOT NNCC_LIBRARY_NO_PIC)
 target_include_directories(${LUCI_INTERPRETER_KERNELS} PUBLIC ${LUCI_INTERPRETER_SOURCE_DIR})
 
 target_link_libraries(${LUCI_INTERPRETER_KERNELS} PUBLIC ${LUCI_INTERPRETER_CORE})
-target_link_libraries(${LUCI_INTERPRETER_KERNELS} PRIVATE nncc_common)
 
 add_pal_to_target(${LUCI_INTERPRETER_KERNELS})
 

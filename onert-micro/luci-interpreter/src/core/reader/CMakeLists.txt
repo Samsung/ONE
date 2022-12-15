@@ -5,8 +5,8 @@ set(MICRO_READER_SOURCE
         "CircleMicroReaderHelper.cpp"
         )
 
-add_library(luci_micro_circle_reader STATIC ${MICRO_READER_SOURCE})
-target_link_libraries(luci_micro_circle_reader PUBLIC luci_micro_circle_schema)
+add_library("luci_micro_circle_reader${READER_SUFFIX}" STATIC ${MICRO_READER_SOURCE})
+target_link_libraries("luci_micro_circle_reader${READER_SUFFIX}" PUBLIC luci_micro_circle_schema)
 
-target_include_directories(luci_micro_circle_reader PUBLIC "${GENERATED_INCLUDE_DIR}")
-target_include_directories(luci_micro_circle_reader PUBLIC "${LUCI_INTERPRETER_INCLUDE_DIR}")
+target_include_directories("luci_micro_circle_reader${READER_SUFFIX}" PUBLIC "${GENERATED_INCLUDE_DIR}")
+target_include_directories("luci_micro_circle_reader${READER_SUFFIX}" PUBLIC "${LUCI_INTERPRETER_INCLUDE_DIR}")

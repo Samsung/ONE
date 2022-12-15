@@ -135,6 +135,8 @@ add_custom_command(
 
 add_custom_target(luci_interpreter_micro_arm DEPENDS "${MICRO_ARM_BINARY}")
 
+add_subdirectory(eval-driver)
+
 if (NOT DEFINED BUILD_TEST)
     return()
 endif ()
@@ -151,7 +153,6 @@ set(MBED_OS_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/tests/mbed-os")
 file(MAKE_DIRECTORY "${MBED_OS_BUILD_DIR}")
 
 set(MBED_OS_BUILD_DEPENDENCY "${MBED_OS_BUILD_DIR}/CMakeCache.txt")
-
 
 set(ONERTMICRO_SRC_DIR "${NNAS_PROJECT_SOURCE_DIR}/onert-micro")
 
