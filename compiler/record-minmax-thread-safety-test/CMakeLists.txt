@@ -29,13 +29,13 @@ add_custom_command(
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/standalone/CMakeLists.txt"
         VERBATIM
 )
-set(RECORD_MINMAX_PATH "$<TARGET_FILE:record-minmax>")
+set(RECORD_MINMAX_PATH "$<TARGET_FILE:record-minmax-for-thread-test>")
 
 add_custom_command(
         OUTPUT ${TEST_CONFIG}
         COMMAND ${CMAKE_COMMAND} -E remove -f ${TEST_CONFIG}
-        COMMAND ${CMAKE_COMMAND} -E echo 'RECORD_MINMAX_PATH=\"$<TARGET_FILE:record-minmax>\"' >> ${TEST_CONFIG}
-        DEPENDS record-minmax
+        COMMAND ${CMAKE_COMMAND} -E echo 'RECORD_MINMAX_PATH=\"$<TARGET_FILE:record-minmax-for-thread-test>\"' >> ${TEST_CONFIG}
+        DEPENDS record-minmax-for-thread-test
         COMMENT "Generate test configuration"
 )
 
