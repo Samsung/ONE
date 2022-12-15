@@ -102,6 +102,7 @@ private:
   void visit(luci::CircleNode *node);
 
   // Ops that receive a single activation as an input
+  void visit(luci::CircleAbs *node);
   void visit(luci::CircleArgMax *node);
   void visit(luci::CircleArgMin *node);
   void visit(luci::CircleBatchToSpaceND *node);

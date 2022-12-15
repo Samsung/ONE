@@ -212,6 +212,7 @@ void QuantizeConstInputActivation::visit(luci::CircleNode *node)
   }
 
 // Ops that receive a single activation as an input
+QUANTIZE_SINGLE_CONST_INPUT(luci::CircleAbs, x)
 QUANTIZE_SINGLE_CONST_INPUT(luci::CircleArgMax, input)
 QUANTIZE_SINGLE_CONST_INPUT(luci::CircleArgMin, input)
 QUANTIZE_SINGLE_CONST_INPUT(luci::CircleBatchToSpaceND, input)
