@@ -45,10 +45,34 @@ using ModelID = uint32_t;
 using RequestID = uint32_t;
 
 /**
+ * @brief Npu buffer type
+ *
+ */
+enum BufferTypes
+{
+  NPU_BUFFER_MAPPED,   /**< buffer is a memory-mapped ptr */
+  NPU_BUFFER_DMABUF,   /**< buffer is a dmabuf fd, representing contiguous memory */
+  NPU_BUFFER_UNDEFINED /**< buffer type is undefined */
+};
+
+/**
  * @brief Various kinds of buffer supported for input/output/model.
  *
  */
-using GenericBuffer = void *;
+struct GenericBuffer
+{
+  struct
+  {             /** NPU_BUFFER_MAPPED/DMABUF */
+    void *addr; /**< Mapped address of the buffer */
+    struct
+    {                  /** NPU_BUFFER_DMABUF only */
+      int dmabuf;      /**< The dma-buf fd handle of the memory allocated */
+      uint64_t offset; /**< Offset to be applied to the base memory address */
+    };
+  };
+  uint64_t size;    /**< The size of the buffer in bytes */
+  BufferTypes type; /**< Type of memory in this buffer */
+};
 
 /**
  * @brief Npu generic buffer array.

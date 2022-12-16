@@ -59,6 +59,7 @@ void DBus::on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer us
   iface->handle_network_destroy = &on_handle_network_destroy;
   iface->handle_request_create = &on_handle_request_create;
   iface->handle_request_destroy = &on_handle_request_destroy;
+  iface->handle_request_set_data = &on_handle_request_set_data;
 
   if (!g_dbus_interface_skeleton_export(G_DBUS_INTERFACE_SKELETON(core), conn, "/org/tizen/npud",
                                         &error))
@@ -152,6 +153,84 @@ gboolean DBus::on_handle_request_destroy(NpudCore *object, GDBusMethodInvocation
                 << std::endl;
   int ret = Server::instance().core().destroyRequest(arg_ctx, arg_rq_handle);
   npud_core_complete_request_destroy(object, invocation, ret);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_request_set_data(NpudCore *object, GDBusMethodInvocation *invocation,
+                                          guint64 arg_ctx, guint arg_rq_handle,
+                                          GVariant *arg_input_buffers, GVariant *arg_output_buffers)
+{
+  VERBOSE(DBus) << "on_handle_request_set_data with " << arg_ctx << ", " << arg_rq_handle
+                << std::endl;
+  GVariantIter *iter = NULL;
+  InputBuffers inBufs;
+  OutputBuffers outBufs;
+  gint32 type;
+  guint64 addr;
+  guint32 size;
+  int index = 0;
+
+  // inBufs
+  g_variant_get(arg_input_buffers, "a(itu)", &iter);
+  index = 0;
+  while (iter != NULL && g_variant_iter_loop(iter, "(itu)", &type, &addr, &size))
+  {
+    VERBOSE(DBus) << "in [" << index << "] Type: " << type << ", Addr: " << (void *)addr
+                  << ", Size: " << size << std::endl;
+    if (type == 0) // NPU_BUFFER_MAPPED
+    {
+      inBufs.buffers[index].addr = reinterpret_cast<void *>(addr);
+    }
+    else if (type == 1) // NPU_BUFFER_DMABUF
+    {
+      // TODO Support dma buffer
+      VERBOSE(DBus) << "[NYI] NPU_BUFFER_DMABUF" << std::endl;
+      continue;
+    }
+    else
+    {
+      VERBOSE(DBus) << "Wrong buffer type. Ignored." << std::endl;
+      continue;
+    }
+    inBufs.buffers[index].size = size;
+    inBufs.buffers[index].type = static_cast<BufferTypes>(type);
+    index++;
+  }
+  inBufs.numBuffers = index;
+  g_variant_iter_free(iter);
+
+  // outBufs
+  g_variant_get(arg_output_buffers, "a(itu)", &iter);
+  index = 0;
+  while (iter != NULL && g_variant_iter_loop(iter, "(itu)", &type, &addr, &size))
+  {
+    VERBOSE(DBus) << "out [" << index << "] Type: " << type << ", Addr: " << (void *)addr
+                  << ", Size: " << size << std::endl;
+    if (type == 0) // NPU_BUFFER_MAPPED
+    {
+      outBufs.buffers[index].addr = reinterpret_cast<void *>(addr);
+    }
+    else if (type == 1) // NPU_BUFFER_DMABUF
+    {
+      // TODO Support dma buffer
+      VERBOSE(DBus) << "[NYI] NPU_BUFFER_DMABUF" << std::endl;
+      continue;
+    }
+    else
+    {
+      VERBOSE(DBus) << "Wrong buffer type. Ignored." << std::endl;
+      continue;
+    }
+    outBufs.buffers[index].size = size;
+    outBufs.buffers[index].type = static_cast<BufferTypes>(type);
+    index++;
+  }
+  outBufs.numBuffers = index;
+  g_variant_iter_free(iter);
+
+  // TODO Invoke Core function.
+  int ret = -1;
+  npud_core_complete_request_set_data(object, invocation, ret);
   return TRUE;
 }
 

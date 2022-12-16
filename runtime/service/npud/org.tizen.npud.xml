@@ -100,5 +100,22 @@
       <arg name="rq_handle" type="u" direction="in" />
       <arg name="error" type="i" direction="out" />
     </method>
+    <!--
+      request_set_data:
+      @ctx: The context handle.
+      @rq_handle: The Request handle.
+      @input_buffers: The input buffer datas.
+      @output_buffers: The output buffer datas.
+      @error: The error status of the function.
+
+      Set request data.
+    -->
+    <method name="request_set_data">
+      <arg name="ctx" type="t" direction="in" />
+      <arg name="rq_handle" type="u" direction="in" />
+      <arg name="input_buffers" type="a(itu)" direction="in" />
+      <arg name="output_buffers" type="a(itu)" direction="in" />
+      <arg name="error" type="i" direction="out" />
+    </method>
   </interface>
 </node>
