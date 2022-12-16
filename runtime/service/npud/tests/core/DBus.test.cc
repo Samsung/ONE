@@ -177,7 +177,7 @@ TEST_F(DBusTest, network_create)
 
   out_error = -1;
   // TODO Use valid model.
-  const gchar *model_path = "abc.model";
+  const gchar *model_path = "./mv1.q8/mv1.q8.tvn";
   guint out_nw_handle = 0;
   npud_core_call_network_create_sync(proxy, out_ctx, model_path, &out_nw_handle, &out_error, NULL,
                                      &error);
@@ -197,7 +197,7 @@ TEST_F(DBusTest, network_create_invalid_ctx_NEG)
   gint out_error = -1;
   guint64 out_ctx = -1;
   // TODO Use valid model.
-  const gchar *model_path = "abc.model";
+  const gchar *model_path = "./mv1.q8/mv1.q8.tvn";
   guint out_nw_handle = 0;
   npud_core_call_network_create_sync(proxy, out_ctx, model_path, &out_nw_handle, &out_error, NULL,
                                      &error);
@@ -229,7 +229,7 @@ TEST_F(DBusTest, network_create_invalid_model_NEG)
 
   out_error = -1;
   // Invalid model
-  const gchar *model_path = "abc.model";
+  const gchar *model_path = "invalid.tvn";
   guint out_nw_handle = 0;
   npud_core_call_network_create_sync(proxy, out_ctx, model_path, &out_nw_handle, &out_error, NULL,
                                      &error);
@@ -261,7 +261,7 @@ TEST_F(DBusTest, network_destroy)
 
   out_error = -1;
   // TODO Use valid model
-  const gchar *model_path = "abc.model";
+  const gchar *model_path = "./mv1.q8/mv1.q8.tvn";
   guint out_nw_handle = 0;
   npud_core_call_network_create_sync(proxy, out_ctx, model_path, &out_nw_handle, &out_error, NULL,
                                      &error);
@@ -301,7 +301,7 @@ TEST_F(DBusTest, network_destroy_invalid_ctx_NEG)
 
   out_error = -1;
   // TODO Use valid model
-  const gchar *model_path = "abc.model";
+  const gchar *model_path = "./mv1.q8/mv1.q8.tvn";
   guint out_nw_handle = 0;
   npud_core_call_network_create_sync(proxy, out_ctx, model_path, &out_nw_handle, &out_error, NULL,
                                      &error);
@@ -372,7 +372,7 @@ TEST_F(DBusTest, request_create)
 
   out_error = -1;
   // TODO Use valid model.
-  const gchar *model_path = "abc.model";
+  const gchar *model_path = "./mv1.q8/mv1.q8.tvn";
   guint out_nw_handle = 0;
   npud_core_call_network_create_sync(proxy, out_ctx, model_path, &out_nw_handle, &out_error, NULL,
                                      &error);
@@ -415,7 +415,7 @@ TEST_F(DBusTest, request_create_invalid_ctx_NEG)
 
   out_error = -1;
   // TODO Use valid model.
-  const gchar *model_path = "abc.model";
+  const gchar *model_path = "./mv1.q8/mv1.q8.tvn";
   guint out_nw_handle = 0;
   npud_core_call_network_create_sync(proxy, out_ctx, model_path, &out_nw_handle, &out_error, NULL,
                                      &error);
@@ -428,7 +428,7 @@ TEST_F(DBusTest, request_create_invalid_ctx_NEG)
 
   out_error = -1;
   guint out_rq_handle = 0;
-  npud_core_call_request_create_sync(proxy, -1, out_nw_handle, &out_rq_handle, &out_error, NULL,
+  npud_core_call_request_create_sync(proxy, 0, out_nw_handle, &out_rq_handle, &out_error, NULL,
                                      &error);
   if (error)
   {
@@ -458,7 +458,7 @@ TEST_F(DBusTest, request_create_invalid_nw_NEG)
 
   out_error = -1;
   guint out_rq_handle = 0;
-  npud_core_call_request_create_sync(proxy, out_ctx, -1, &out_rq_handle, &out_error, NULL, &error);
+  npud_core_call_request_create_sync(proxy, out_ctx, 0, &out_rq_handle, &out_error, NULL, &error);
   if (error)
   {
     g_error_free(error);
@@ -487,7 +487,7 @@ TEST_F(DBusTest, request_destroy)
 
   out_error = -1;
   // TODO Use valid model.
-  const gchar *model_path = "abc.model";
+  const gchar *model_path = "./mv1.q8/mv1.q8.tvn";
   guint out_nw_handle = 0;
   npud_core_call_network_create_sync(proxy, out_ctx, model_path, &out_nw_handle, &out_error, NULL,
                                      &error);
@@ -538,7 +538,7 @@ TEST_F(DBusTest, request_destroy_invalid_ctx_NEG)
 
   out_error = -1;
   // TODO Use valid model.
-  const gchar *model_path = "abc.model";
+  const gchar *model_path = "./mv1.q8/mv1.q8.tvn";
   guint out_nw_handle = 0;
   npud_core_call_network_create_sync(proxy, out_ctx, model_path, &out_nw_handle, &out_error, NULL,
                                      &error);
@@ -560,12 +560,12 @@ TEST_F(DBusTest, request_destroy_invalid_ctx_NEG)
   ASSERT_EQ(out_error, 0);
 
   out_error = -1;
-  npud_core_call_request_destroy_sync(proxy, -1, out_rq_handle, &out_error, NULL, &error);
+  npud_core_call_request_destroy_sync(proxy, 0, out_rq_handle, &out_error, NULL, &error);
   if (error)
   {
     g_error_free(error);
   }
-  ASSERT_EQ(out_error, 0);
+  ASSERT_NE(out_error, 0);
 }
 
 TEST_F(DBusTest, request_destroy_invalid_rq_NEG)
@@ -588,12 +588,12 @@ TEST_F(DBusTest, request_destroy_invalid_rq_NEG)
   ASSERT_EQ(out_error, 0);
 
   out_error = -1;
-  npud_core_call_request_destroy_sync(proxy, out_ctx, -1, &out_error, NULL, &error);
+  npud_core_call_request_destroy_sync(proxy, out_ctx, 0, &out_error, NULL, &error);
   if (error)
   {
     g_error_free(error);
   }
-  ASSERT_EQ(out_error, 0);
+  ASSERT_NE(out_error, 0);
 }
 
 } // unnamed namespace
