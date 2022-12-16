@@ -1254,23 +1254,51 @@ def GenerateModel(args, new_builder, sample_model, operator_list, new_input_tens
     return tflite.Model.ModelEnd(new_builder)
 
 
-def StoreIOInfo(path, used_tensors, new_inputs, new_outputs):
+def StoreIOInfo(path, used_tensors, org_inputs, org_outputs, new_inputs, new_outputs):
     ioinfo = {}
 
-    # For inputs and outputs
-    input_org_indices = []
-    input_new_indices = []
-    output_org_indices = []
-    output_new_indices = []
-    for input_tensor_idx in new_inputs:
-        input_org_indices.append(input_tensor_idx)
-        input_new_indices.append(used_tensors[input_tensor_idx])
-    for output_tensor_idx in new_outputs:
-        output_org_indices.append(output_tensor_idx)
-        output_new_indices.append(used_tensors[output_tensor_idx])
+    # For inputs and outputs of org model
+    ioinfo["org-model"] = {
+        "inputs": {
+            "org": [],
+            "new": []
+        },
+        "outputs": {
+            "org": [],
+            "new": []
+        }
+    }
+    for input_tensor_idx in org_inputs:
+        # Cast to avoid the error "Object of type int32 is not JSON serializable"
+        ioinfo["org-model"]["inputs"]["org"].append(int(input_tensor_idx))
+        if input_tensor_idx in used_tensors:
+            ioinfo["org-model"]["inputs"]["new"].append(used_tensors[input_tensor_idx])
+        else:
+            ioinfo["org-model"]["inputs"]["new"].append(-1)
+    for output_tensor_idx in org_outputs:
+        ioinfo["org-model"]["outputs"]["org"].append(int(output_tensor_idx))
+        if output_tensor_idx in used_tensors:
+            ioinfo["org-model"]["outputs"]["new"].append(used_tensors[output_tensor_idx])
+        else:
+            ioinfo["org-model"]["outputs"]["new"].append(-1)
 
-    ioinfo["inputs"] = {"org": input_org_indices, "new": input_new_indices}
-    ioinfo["outputs"] = {"org": output_org_indices, "new": output_new_indices}
+    # For inputs and outputs of new model
+    ioinfo["new-model"] = {
+        "inputs": {
+            "org": [],
+            "new": []
+        },
+        "outputs": {
+            "org": [],
+            "new": []
+        }
+    }
+    for input_tensor_idx in new_inputs:
+        ioinfo["new-model"]["inputs"]["org"].append(int(input_tensor_idx))
+        ioinfo["new-model"]["inputs"]["new"].append(used_tensors[input_tensor_idx])
+    for output_tensor_idx in new_outputs:
+        ioinfo["new-model"]["outputs"]["org"].append(int(output_tensor_idx))
+        ioinfo["new-model"]["outputs"]["new"].append(used_tensors[output_tensor_idx])
 
     with open(path, "w") as json_file:
         json.dump(ioinfo, json_file)
@@ -1432,9 +1460,11 @@ def main(args):
 
     output_model_file.write(new_buf)
 
+    org_inputs = sample_subgraph.InputsAsNumpy()
+    org_outputs = sample_subgraph.OutputsAsNumpy()
     if args.store_io_info != "":
-        StoreIOInfo(args.store_io_info, used_tensors_dic, new_input_tensors,
-                    new_output_tensors)
+        StoreIOInfo(args.store_io_info, used_tensors_dic, org_inputs, org_outputs,
+                    new_input_tensors, new_output_tensors)
 
 
 if __name__ == '__main__':

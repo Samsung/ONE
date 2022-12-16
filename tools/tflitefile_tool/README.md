@@ -88,6 +88,48 @@ opcodelist.txt test.tflite -g 1
 
 Above selects operator index 11, 12, 13 in subgraph 1
 
+### Generating separate models for multi-model from a model file by using model generator here
+
+To make one model multi-model, separate models and inputs/outputs information of each model are required.
+So run model generator with the option `--store-io-info`
+
+#### How to use
+
+```
+./select_operator.py <base model file> <opcode list txt file> <output file name> --store-io-info <output json file name>
+```
+
+#### Example
+
+This example generates one model into two separate models.
+
+```
+$ cat 0-26.txt
+0-26
+
+$ cat 27-30.txt
+27-30
+
+$ ./tools/tflitefile_tool/select_operator.py mobilenet_v1_1.0_224.tflite 0-26.txt m1.tflite --store-io-info m1.json
+Input tensor(s): [81]
+Output tensor(s): [44]
+Append subgraphs, orginal index :  0 , new index :  0
+
+$ ./tools/tflitefile_tool/select_operator.py mobilenet_v1_1.0_224.tflite 27-30.txt m2.tflite --store-io-info m2.json
+Input tensor(s): [6]
+Output tensor(s): [7]
+Append subgraphs, orginal index :  0 , new index :  0
+
+$ cat m1.json
+{"org-model": {"inputs": {"org": [88], "new": [81]}, "outputs": {"org": [87], "new": [-1]}}, "new-model": {"inputs": {"org": [88], "new": [81]}, "outputs": {"org": [50], "new": [44]}}}
+
+$ cat m2.json
+{"org-model": {"inputs": {"org": [88], "new": [-1]}, "outputs": {"org": [87], "new": [7]}}, "new-model": {"inputs": {"org": [50], "new": [6]}, "outputs": {"org": [87], "new": [7]}}}
+
+```
+
+With the model files and inputs/outputs infomation files generated above, you can use `model2nnpkg.sh` to create nnpkg for multi-model.
+
 ## Colaboration model parser and model generator
 
 1. Get imformation about base model using model parser
