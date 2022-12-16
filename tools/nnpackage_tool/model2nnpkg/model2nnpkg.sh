@@ -47,7 +47,7 @@ while getopts "ho:p:c:m:" OPTION; do
     p) name=$OPTARG;;
     c)
       configs_src=($OPTARG)
-      until [[ $OPTIND -gt $# ]] || [[ $(eval "echo \${$OPTIND}") =~ ^-.* ]] || [ -z $(eval "echo \${$OPTIND}") ]; do
+      until [[ $OPTIND -gt $# ]] || [[ $(eval "echo \${$OPTIND}") =~ ^-.* ]] || [ -z "$(eval "echo \${$OPTIND}")" ]; do
         if [[ $OPTIND -eq $# ]] && [[ ${#models_src[@]} -eq 0 ]]; then
           # Backward compatibility (will be deprecated)
           # The last remain parameter is model if there is no option "-m"
@@ -60,7 +60,7 @@ while getopts "ho:p:c:m:" OPTION; do
       ;;
     m)
       models_src=($OPTARG)
-      until [[ $OPTIND -gt $# ]] || [[ $(eval "echo \${$OPTIND}") =~ ^-.* ]] || [ -z $(eval "echo \${$OPTIND}") ]; do
+      until [[ $OPTIND -gt $# ]] || [[ $(eval "echo \${$OPTIND}") =~ ^-.* ]] || [ -z "$(eval "echo \${$OPTIND}")" ]; do
         models_src+=($(eval "echo \${$OPTIND}"))
         OPTIND=$((OPTIND + 1))
       done
@@ -91,7 +91,7 @@ if [[ ${#configs_src[@]} -ne 0 ]] && [[ ${#configs_src[@]} -ne ${#models_src[@]}
 fi
 
 delim=""
-for modelpath in ${models_src[@]}
+for modelpath in "${models_src[@]}"
 do
   modelfile=$(basename "$modelpath")
 
@@ -101,8 +101,8 @@ do
     exit 1
   fi
 
-  if [ ! -e $modelpath ]; then
-    >&2 echo "error: "$modelpath" does not exist."
+  if [ ! -e "$modelpath" ]; then
+    >&2 echo "error: $modelpath does not exist."
     exit 1
   fi
 
@@ -112,12 +112,12 @@ do
 done
 
 delim=""
-for configpath in ${configs_src[@]}
+for configpath in "${configs_src[@]}"
 do
   configfile=$(basename "$configpath")
 
-  if [ ! -e $configpath ]; then
-    >&2 echo "error: "$configpath" does not exist."
+  if [ ! -e "$configpath" ]; then
+    >&2 echo "error: $configpath does not exist."
     exit 1
   fi
 
@@ -130,7 +130,7 @@ if [ -z "$name" ]; then
   name=${first_modelfile%.*}
 fi
 
-echo "$progname: Generating nnpackage "$name" in "$outdir""
+echo "$progname: Generating nnpackage $name in $outdir"
 mkdir -p "$outdir"/"$name"/metadata
 
 cat > "$outdir"/"$name"/metadata/MANIFEST <<-EOF
@@ -144,12 +144,12 @@ cat > "$outdir"/"$name"/metadata/MANIFEST <<-EOF
 }
 EOF
 
-for modelpath in ${models_src[@]}
+for modelpath in "${models_src[@]}"
 do
   cp "$modelpath" "$outdir"/"$name"
 done
 
-for configpath in ${configs_src[@]}
+for configpath in "${configs_src[@]}"
 do
   cp "$configpath" "$outdir/$name/metadata"
 done
