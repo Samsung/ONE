@@ -28,6 +28,7 @@ Source3015: TENSORFLOW-2.8.0-RUY.tar.gz
 Source3016: TENSORFLOW-2.8.0.tar.gz
 Source3017: VULKAN.tar.gz
 Source3018: XNNPACK.tar.gz
+Source3019: FLATBUFFERS-2.0.tar.gz
 
 %{!?build_type:     %define build_type      Release}
 %{!?npud_build:     %define npud_build      1}
@@ -44,8 +45,6 @@ Source3018: XNNPACK.tar.gz
 %endif
 
 BuildRequires:  cmake
-# Require flatbuffers-devel for onert frontend (model loading)
-BuildRequires:  pkgconfig(flatbuffers)
 
 %ifarch %{arm} aarch64
 # Require python for acl-ex library build pre-process
@@ -192,6 +191,7 @@ tar -xf %{SOURCE3015} -C ./externals
 tar -xf %{SOURCE3016} -C ./externals
 tar -xf %{SOURCE3017} -C ./externals
 tar -xf %{SOURCE3018} -C ./externals
+tar -xf %{SOURCE3019} -C ./externals
 
 %build
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
