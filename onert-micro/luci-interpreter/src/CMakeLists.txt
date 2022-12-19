@@ -30,7 +30,7 @@ message(STATUS "LUCI INTERPTER INITALIZED")
 set(SOURCES
         "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/Interpreter.h" Interpreter.cpp)
 
-  add_library(${LUCI_INTERPRETER_BINARY} STATIC ${SOURCES})
+add_library(${LUCI_INTERPRETER_BINARY} STATIC ${SOURCES})
 
 target_include_directories(${LUCI_INTERPRETER_BINARY} PUBLIC "${LUCI_INTERPRETER_INCLUDE_DIR}")
 target_include_directories(${LUCI_INTERPRETER_BINARY} PRIVATE "${LUCI_INTERPRETER_SOURCE_DIR}")

@@ -15,7 +15,7 @@ endif(NOT NNCC_LIBRARY_NO_PIC)
 
 add_subdirectory(reader)
 
-target_link_libraries(${LUCI_INTERPRETER_CORE} PUBLIC luci_micro_circle_reader)
+target_link_libraries(${LUCI_INTERPRETER_CORE} PUBLIC "luci_micro_circle_reader${READER_SUFFIX}")
 target_link_libraries(${LUCI_INTERPRETER_CORE} PUBLIC luci_micro_circle_schema)
 
 target_include_directories(${LUCI_INTERPRETER_CORE} PUBLIC "${LUCI_INTERPRETER_INCLUDE_DIR}")
