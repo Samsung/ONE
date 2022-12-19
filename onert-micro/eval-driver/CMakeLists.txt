@@ -2,6 +2,7 @@ set(SRCS_EVAL_TESTER Driver.cpp)
 
 add_executable(onert_micro_eval_driver ${SRCS_EVAL_TESTER})
 
+# This variable is needed to separate standalone interpreter libraries from the libraries used in driver
 set(READER_SUFFIX "_driver")
 
 add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/onert-micro/luci-interpreter ${CMAKE_CURRENT_BINARY_DIR}/luci-interpreter)

@@ -50,7 +50,7 @@ void writeDataToFile(const std::string &filename, const char *data, size_t data_
 
 size_t getTensorSize(const luci_interpreter::Tensor *tensor)
 {
-  uint32_t tensor_size = luci_interpreter::size(tensor->element_type());
+  size_t tensor_size = luci_interpreter::size(tensor->element_type());
   tensor_size *= tensor->shape().num_elements();
 
   return tensor_size;
@@ -85,8 +85,6 @@ int entry(int argc, char **argv)
     std::string errmsg = "Failed to open file";
     throw std::runtime_error(errmsg.c_str());
   }
-
-  file.unsetf(std::ios::skipws);
 
   file.seekg(0, std::ios::end);
   auto fileSize = file.tellg();
@@ -153,8 +151,8 @@ int entry(int argc, char **argv)
         shape_str += ",";
         shape_str += std::to_string(output_tensor->shape().dim(j));
       }
-      writeDataToFile(std::string(output_file) + std::to_string(i) + ".shape", shape_str.c_str(),
-                      shape_str.size());
+      const auto tensor_shape_file = std::string(output_file) + std::to_string(i) + ".shape";
+      writeDataToFile(tensor_shape_file, shape_str.c_str(), shape_str.size());
     }
   }
   return EXIT_SUCCESS;
