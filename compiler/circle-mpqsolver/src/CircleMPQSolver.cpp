@@ -40,10 +40,12 @@ int entry(int argc, char **argv)
 
   arser::Arser arser("circle-mpqsolver provides circle_model mixed precision quantization");
 
+
   arser::Helper::add_version(arser, print_version);
   arser::Helper::add_verbose(arser);
 
   arser.add_argument("--data").required(true).help(".h5 file with test data");
+
   arser.add_argument("--qerror_ratio")
     .type(arser::DataType::FLOAT)
     .default_value(0.5f)

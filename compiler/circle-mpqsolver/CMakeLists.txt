@@ -11,11 +11,8 @@ target_link_libraries(circle-mpqsolver luci_service)
 target_link_libraries(circle-mpqsolver luci_interpreter)
 target_link_libraries(circle-mpqsolver luci_partition)
 target_link_libraries(circle-mpqsolver dio_hdf5)
-target_link_libraries(circle-mpqsolver arser)
-target_link_libraries(circle-mpqsolver vconone)
-target_link_libraries(circle-mpqsolver safemain)
 
-install(TARGETS circle-mpqsolver DESTINATION bin)
+add_executable(circle-mpqsolver "${SOURCES}")
 
 if(NOT ENABLE_TEST)
   return()
@@ -39,3 +36,4 @@ target_link_libraries(circle_mpqsolver_test luci_pass)
 target_link_libraries(circle_mpqsolver_test luci_interpreter)
 target_link_libraries(circle_mpqsolver_test luci_partition)
 target_link_libraries(circle_mpqsolver_test dio_hdf5)
+

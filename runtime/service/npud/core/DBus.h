@@ -56,6 +56,10 @@ public:
                                            guint64 arg_ctx, guint arg_nw_handle);
   static gboolean on_handle_request_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
                                             guint64 arg_ctx, guint arg_rq_handle);
+  static gboolean on_handle_request_set_data(NpudCore *object, GDBusMethodInvocation *invocation,
+                                             guint64 arg_ctx, guint arg_rq_handle,
+                                             GVariant *arg_input_buffers,
+                                             GVariant *arg_output_buffers);
 
 private:
   guint _gdbus_id;

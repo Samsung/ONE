@@ -1,9 +1,22 @@
 # circle-mpqsolver
-_circle-mpqsolver_ provides light-weight methods for finding a high-quality mixed-precision model within a reasonable time. Currently only _bisection_ method is implemented. 
 
-# bisection
-So assuming the model is parameterized by single parameter (let's call it _depth_), we can split the model so that all layers with _depth_ parameter below _specified_depth_ will be in the _input_group_, while those layers with _depth_ above _specified_depth_ will be in the _output_group_ (node's _depth_ mimics distance from _input_ to the node).
-Then _bisection_ searches iteratively such a _depth_ parameter which achieves exactly the _target_loss_. In case _input_group_ is quantized into Q16 the pseudocode is the following: 
+_circle-mpqsolver_ provides light-weight methods for finding a high-quality mixed-precision model 
+within a reasonable time.
+
+## Methods
+
+### Bisection
+A model is split into two parts: front and back. One of them is quantized in uint8 and another in 
+int16. The precision of front and back is determined by our proxy metric, upperbound of total layer 
+errors. (See https://github.com/Samsung/ONE/pull/10170#discussion_r1042246598 for more details)
+
+The boundary between the front and the back is decided by the depth of operators (depth: distance 
+from input to the operator), i.e., given a depth d, layers with a depth less than d are included 
+in front, and the rest are included in back. Bisection performs binary search to find a proper 
+depth which achieves a qerror less than target_qerror.
+
+In case front is quantized into Q16 the pseudocode is the following: 
+
 ```
     until |_depth_max_ - _depth_min_| <=1 do
         _current_depth_ = 0.5 * (_depth_max_ + _depth_min_)
@@ -12,4 +25,48 @@ Then _bisection_ searches iteratively such a _depth_ parameter which achieves ex
         else
             _depth_min_ = _current_depth_
 ```
-, where _Loss(current_depth)_ - measure of discrepancy between input float model and quantized at _current_depth_ model. As every iteration halves the range containing _optimal_depth_ it converges in a ~_ln(depth_max - depth_min)_ number of iterations although it may produce not the _fastest_ model.
+
+, where Loss(current_depth) is the qerror of the mixied-precision model split at current_depth. 
+As every iteration halves the remaining range (|depth_max - depth_min|), it converges in 
+_~log2(max_depth)_ iterations.
+
+## Usage 
+Run _circle-mpqsolver_ with the following arguments.  
+
+--data: .h5 file with test data
+
+--input_model: Input float model initialized with min-max (recorded model)
+
+--output_model: Output qunatized mode
+
+--qerror_ratio: Target quantization error ratio. It should be in [0, 1]. 0 indicates qerror of full uint8 model, 1 indicates qerror of full int16 model.
+
+--bisection _mode_: input nodes should be at Q16 precision ['auto', 'true', 'false']
+
+```
+$ ./circle-mpqsolver
+  --data <.h5 data>
+  --input_model <input_recorded_model>
+  --output_model <output_model_pat>
+  --qerror_ratio <optional value for reproducing target _qerror_ default is 0.5>
+  --bisection <whether input nodes should be quantized into Q16 default is 'auto'>
+```
+
+For example:
+```
+$./circle-mpqsolver
+    --data dataset.h5
+    --input_model model.recorded.circle
+    --output_model model.q_opt.circle
+    --qerror_ratio 0.4f
+    --bisection true
+```
+
+It will produce _model.q_opt.circle_, which is _model.recorded.circle_ quantized to mixed precision 
+using _dataset.h5_, with input nodes set to _Q16_ precision and quantization error (_qerror_) of 
+_model.q_opt.circle_ will be less than
+```
+ _qerror(full_q16) + qerror_ratio * (qerror(full_q8) - qerror(full_q16))_
+ ```
+ (_full_q16_ - model quantized using Q16 precision, _full_q8_ - model quantized using Q8 precision).
+ 
