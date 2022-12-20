@@ -49,10 +49,10 @@ namespace
  *                     |  / /                                |     /
  *     [CircleTransposeConv]                            [CircleAdd]
  *                     |
- *              ([CircleRelu6])
+ *        ([CircleRelu]/[CircleRelu6])
  *                     |
  *
- * Note: CircleRelu6 is inserted if Add activation is ReLU6
+ * Note: CircleRelu or CircleRelu6 is inserted if Add activation is ReLU/ReLU6
  */
 bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
 {
@@ -80,7 +80,8 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
   if (add->dtype() != loco::DataType::FLOAT32)
     return false;
   if (add->fusedActivationFunction() != luci::FusedActFunc::NONE &&
-      add->fusedActivationFunction() != luci::FusedActFunc::RELU6)
+      add->fusedActivationFunction() != luci::FusedActFunc::RELU6 &&
+      add->fusedActivationFunction() != luci::FusedActFunc::RELU)
     return false;
 
   // tconv bias is optional
@@ -208,6 +209,16 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
     auto relu = add->graph()->nodes()->create<luci::CircleRelu6>();
     relu->features(fused_tconv);
     relu->name(name + "/Relu6");
+    luci::add_origin(relu, luci::get_origin(add));
+
+    replace(add).with(relu);
+  }
+  else if (add->fusedActivationFunction() == luci::FusedActFunc::RELU)
+  {
+    // separate relu op from add op
+    auto relu = add->graph()->nodes()->create<luci::CircleRelu>();
+    relu->features(fused_tconv);
+    relu->name(name + "/Relu");
     luci::add_origin(relu, luci::get_origin(add));
 
     replace(add).with(relu);
