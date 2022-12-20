@@ -169,8 +169,10 @@ void update_quantparam(record_minmax::MinMaxObserver *observer, const std::strin
 namespace record_minmax
 {
 
-void RecordMinMax::initializeCircleModule(const std::string &input_model_path)
+void RecordMinMax::initialize(const std::string &input_model_path)
 {
+  assert(_threads_size > 0);
+
   // Load model from the file
   std::ifstream fs(input_model_path, std::ifstream::binary);
   if (fs.fail())
@@ -179,6 +181,7 @@ void RecordMinMax::initializeCircleModule(const std::string &input_model_path)
   }
   std::vector<char> model_data((std::istreambuf_iterator<char>(fs)),
                                std::istreambuf_iterator<char>());
+
   // Verify flatbuffers
   flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(model_data.data()),
                                  model_data.size()};
@@ -186,23 +189,19 @@ void RecordMinMax::initializeCircleModule(const std::string &input_model_path)
   {
     throw std::runtime_error("Failed to verify circle '" + input_model_path + "'");
   }
+
   const circle::Model *circle_model = circle::GetModel(model_data.data());
   if (circle_model == nullptr)
   {
     throw std::runtime_error("Failed to load '" + input_model_path + "'");
   }
+
   _module = luci::Importer().importModule(circle_model);
+
   if (_module == nullptr)
   {
     throw std::runtime_error("Failed to load '" + input_model_path + "'");
   }
-}
-
-void RecordMinMax::initialize(const std::string &input_model_path)
-{
-  assert(_threads_size > 0);
-
-  initializeCircleModule(input_model_path);
 
   // Create and initialize interpreters and observers
   _interpreters.resize(_threads_size);

@@ -55,8 +55,6 @@ public:
   void saveModel(const std::string &output_model_path);
 
 private:
-  void initializeCircleModule(const std::string &input_model_path);
-
   luci_interpreter::Interpreter *getInterpreter() const { return _interpreters[0].get(); }
   MinMaxObserver *getObserver() const { return _observers[0].get(); }
 
