@@ -203,30 +203,37 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
     luci::add_origin(fused_tconv, luci::get_origin(bias));
   }
 
-  if (add->fusedActivationFunction() == luci::FusedActFunc::RELU6)
+  switch (add->fusedActivationFunction())
   {
-    // separate relu op from add op
-    auto relu = add->graph()->nodes()->create<luci::CircleRelu6>();
-    relu->features(fused_tconv);
-    relu->name(name + "/Relu6");
-    luci::add_origin(relu, luci::get_origin(add));
+    case luci::FusedActFunc::RELU6:
+    {
+      // separate relu op from add op
+      auto relu = add->graph()->nodes()->create<luci::CircleRelu6>();
+      relu->features(fused_tconv);
+      relu->name(name + "/Relu6");
+      luci::add_origin(relu, luci::get_origin(add));
 
-    replace(add).with(relu);
-  }
-  else if (add->fusedActivationFunction() == luci::FusedActFunc::RELU)
-  {
-    // separate relu op from add op
-    auto relu = add->graph()->nodes()->create<luci::CircleRelu>();
-    relu->features(fused_tconv);
-    relu->name(name + "/Relu");
-    luci::add_origin(relu, luci::get_origin(add));
+      replace(add).with(relu);
+      break;
+    }
+    case luci::FusedActFunc::RELU:
+    {
+      // separate relu op from add op
+      auto relu = add->graph()->nodes()->create<luci::CircleRelu>();
+      relu->features(fused_tconv);
+      relu->name(name + "/Relu");
+      luci::add_origin(relu, luci::get_origin(add));
 
-    replace(add).with(relu);
-  }
-  else
-  {
-    assert(add->fusedActivationFunction() == luci::FusedActFunc::NONE);
-    replace(add).with(fused_tconv);
+      replace(add).with(relu);
+      break;
+    }
+    case luci::FusedActFunc::NONE:
+      replace(add).with(fused_tconv);
+      break;
+
+    default:
+      assert(false);
+      break;
   }
 
   return true;
