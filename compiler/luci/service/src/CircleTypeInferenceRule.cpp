@@ -573,7 +573,14 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleOutputDummy *node) final { return node->dtype(); }
 
-  loco::DataType visit(const luci::CircleOutputExclude *node) final { return node->dtype(); }
+  loco::DataType visit(const luci::CircleOutputExclude *node) final
+  {
+    // NOTE We don't care CircleOutputExclude dtype, but set to FLOAT32
+    //      if it's Unknown to make type inference happy.
+    if (node->dtype() == loco::DataType::Unknown)
+      return loco::DataType::FLOAT32;
+    return node->dtype();
+  }
 
   loco::DataType visit(const luci::CircleCustomOut *node) final { return node->dtype(); }
 
