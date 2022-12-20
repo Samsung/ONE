@@ -7,17 +7,47 @@ It takes `modelfile` as input and generates `nnpackage`.
 ## Usage
 
 ```
-Usage: model2nnpkg.sh [options] modelfile
-Convert modelfile to nnpackage.
+Usage: model2nnpkg.sh [options]
+Convert modelfile (tflite, circle or tvn) to nnpackage.
 
 Options:
     -h   show this help
     -o   set nnpackage output directory (default=.)
-    -p   set nnpackage output name (default=[modelfile name])
+    -p   set nnpackage output name (default=[1st modelfile name])
+    -c   provide configuration files
+    -m   provide model files
 
 Examples:
-    model2nnpkg.sh add.tflite                  => create nnpackage 'add' in ./
-    model2nnpkg.sh -o out add.tflite           => create nnpackage 'add' in out/
-    model2nnpkg.sh -o out -p addpkg add.tflite => create nnpackage 'addpkg' in out/
+    model2nnpkg.sh -m add.tflite                                              => create nnpackage 'add' in ./
+    model2nnpkg.sh -o out -m add.tflite                                       => create nnpackage 'add' in out/
+    model2nnpkg.sh -o out -p addpkg -m add.tflite                             => create nnpackage 'addpkg' in out/
+    model2nnpkg.sh -c add.cfg -m add.tflite                                   => create nnpackage 'add' with add.cfg
+    model2nnpkg.py -o out -p addpkg -m a1.tflite a2.tflite => create nnpackage "addpkg" with models a1.tflite and a2.tflite in out/
 
+```
+
+## Usage of python script
+
+```
+usage:  model2nnpkg.py [options]
+  Examples:
+      model2nnpkg.py -m add.tflite                           => create nnpackage "add" in current directory
+      model2nnpkg.py -o out -m add.tflite                    => create nnpackage "add" in out/
+      model2nnpkg.py -o out -p addpkg -m add.tflite          => create nnpackage "addpkg" in out/
+      model2nnpkg.py -c add.cfg -m add.tflite                => create nnpackage "add" with add.cfg
+      model2nnpkg.py -o out -p addpkg -m a1.tflite a2.tflite => create nnpackage "addpkg" with models a1.tflite and a2.tflite in out/
+
+
+Convert model files (tflite, circle or tvn) to nnpackage.
+
+options:
+  -h, --help            show this help message and exit
+  -o output_directory, --outdir output_directory
+                        set nnpackage output directory
+  -p nnpackage_name, --nnpackage-name nnpackage_name
+                        set nnpackage output name (default=[1st modelfile name])
+  -c conf [conf ...], --config conf [conf ...]
+                        provide configuration files
+  -m model [model ...], --models model [model ...]
+                        provide model files
 ```
