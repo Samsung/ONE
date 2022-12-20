@@ -1258,47 +1258,46 @@ def StoreIOInfo(path, used_tensors, org_inputs, org_outputs, new_inputs, new_out
     ioinfo = {}
 
     # For inputs and outputs of org model
-    ioinfo["org-model"] = {
+    ioinfo["org-model-io"] = {
         "inputs": {
-            "org": [],
-            "new": []
+            "new-indices": []
         },
         "outputs": {
-            "org": [],
-            "new": []
+            "new-indices": []
         }
     }
     for input_tensor_idx in org_inputs:
-        # Cast to avoid the error "Object of type int32 is not JSON serializable"
-        ioinfo["org-model"]["inputs"]["org"].append(int(input_tensor_idx))
         if input_tensor_idx in used_tensors:
-            ioinfo["org-model"]["inputs"]["new"].append(used_tensors[input_tensor_idx])
+            ioinfo["org-model-io"]["inputs"]["new-indices"].append(
+                used_tensors[input_tensor_idx])
         else:
-            ioinfo["org-model"]["inputs"]["new"].append(-1)
+            ioinfo["org-model-io"]["inputs"]["new-indices"].append(-1)
     for output_tensor_idx in org_outputs:
-        ioinfo["org-model"]["outputs"]["org"].append(int(output_tensor_idx))
         if output_tensor_idx in used_tensors:
-            ioinfo["org-model"]["outputs"]["new"].append(used_tensors[output_tensor_idx])
+            ioinfo["org-model-io"]["outputs"]["new-indices"].append(
+                used_tensors[output_tensor_idx])
         else:
-            ioinfo["org-model"]["outputs"]["new"].append(-1)
+            ioinfo["org-model-io"]["outputs"]["new-indices"].append(-1)
 
     # For inputs and outputs of new model
-    ioinfo["new-model"] = {
+    ioinfo["new-model-io"] = {
         "inputs": {
-            "org": [],
-            "new": []
+            "org-indices": [],
+            "new-indices": []
         },
         "outputs": {
-            "org": [],
-            "new": []
+            "org-indices": [],
+            "new-indices": []
         }
     }
     for input_tensor_idx in new_inputs:
-        ioinfo["new-model"]["inputs"]["org"].append(int(input_tensor_idx))
-        ioinfo["new-model"]["inputs"]["new"].append(used_tensors[input_tensor_idx])
+        ioinfo["new-model-io"]["inputs"]["org-indices"].append(int(input_tensor_idx))
+        ioinfo["new-model-io"]["inputs"]["new-indices"].append(
+            used_tensors[input_tensor_idx])
     for output_tensor_idx in new_outputs:
-        ioinfo["new-model"]["outputs"]["org"].append(int(output_tensor_idx))
-        ioinfo["new-model"]["outputs"]["new"].append(used_tensors[output_tensor_idx])
+        ioinfo["new-model-io"]["outputs"]["org-indices"].append(int(output_tensor_idx))
+        ioinfo["new-model-io"]["outputs"]["new-indices"].append(
+            used_tensors[output_tensor_idx])
 
     with open(path, "w") as json_file:
         json.dump(ioinfo, json_file)
