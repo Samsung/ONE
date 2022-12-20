@@ -679,7 +679,6 @@ bool FuseBCQPass::run(luci::Module *m)
         if (output_node->index() == 0 || (int)output_node->index() > original_output_cnt)
         {
           auto noOp = main_graph->nodes()->create<luci::CircleOutputExclude>();
-          noOp->dtype(loco::DataType::FLOAT32); // TODO Remove this setting
           output_node->from(noOp);
           changed = true;
         }

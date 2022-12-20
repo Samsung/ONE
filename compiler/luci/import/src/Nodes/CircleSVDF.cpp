@@ -43,9 +43,6 @@ CircleNode *CircleSVDFBuilder::build_node(const circle::OperatorT &op,
   if (inputs.size() == 4)
   {
     auto *bias = graph->nodes()->create<CircleOutputExclude>();
-    // CircleOutputExclude doesn't need a type, but since all nodes must have a type,
-    // a dummy type is inserted.
-    bias->dtype(inputs.at(0)->dtype());
     node->bias(bias);
 
     node->input_activation_state(inputs.at(3));
