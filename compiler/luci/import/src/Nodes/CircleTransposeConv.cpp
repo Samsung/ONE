@@ -65,9 +65,6 @@ CircleNode *CircleTransposeConvGraphBuilder::build_node(const circle::OperatorT 
   if (inputs.size() == 3)
   {
     auto *bias = graph->nodes()->create<CircleOutputExclude>();
-    // CircleOutputExclude doesn't need a type, but since all nodes must have a type,
-    // a dummy type is inserted.
-    bias->dtype(loco::DataType::FLOAT32);
     node->bias(bias);
   }
   else

@@ -299,7 +299,6 @@ luci::CircleAdd *UnrollLSTM::create_input_matmul(luci::CircleNode *input, luci::
   luci::add_origin(fcw, luci::get_origin(_lstm));
 
   auto fcb = _nctx->create<luci::CircleOutputExclude>();
-  fcb->dtype(loco::DataType::FLOAT32); // Needed for type inference
 
   auto fc = _nctx->create<luci::CircleFullyConnected>();
   fc->input(input);
@@ -320,7 +319,6 @@ luci::CircleAdd *UnrollLSTM::create_input_matmul(luci::CircleNode *input, luci::
   luci::add_origin(fcrw, luci::get_origin(_lstm));
 
   auto fcrb = _nctx->create<luci::CircleOutputExclude>();
-  fcrb->dtype(loco::DataType::FLOAT32); // Needed for type inference
 
   auto fcr = _nctx->create<luci::CircleFullyConnected>();
   fcr->input(mul);
