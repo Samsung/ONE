@@ -47,9 +47,6 @@ CircleNode *GraphBuilder::build(const circle::OperatorT &op, GraphBuilderContext
     {
       // If there is no tensor, insert CircleOutputExclude.
       auto *node = context->graph()->nodes()->create<luci::CircleOutputExclude>();
-      // CircleOutputExclude doesn't need a type, but since all nodes must have a type,
-      // a dummy type is inserted.
-      node->dtype(loco::DataType::FLOAT32);
       input_nodes.push_back(node);
     }
   }

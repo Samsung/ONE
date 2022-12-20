@@ -153,7 +153,6 @@ bool resolve_matmul(luci::CircleCustom *cop)
   }
 
   auto empty_bias = graph->nodes()->create<luci::CircleOutputExclude>();
-  empty_bias->dtype(loco::DataType::FLOAT32); // Needed for type inference
 
   auto fc_node = graph->nodes()->create<luci::CircleFullyConnected>();
   fc_node->input(lhs);

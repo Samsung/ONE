@@ -49,7 +49,6 @@ public:
     _rw = weight_1x1(g);
     _gb = weight_1(g);
     _ex = g->nodes()->create<luci::CircleOutputExclude>();
-    _ex->dtype(loco::DataType::FLOAT32);
   }
 
 protected:
