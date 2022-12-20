@@ -225,6 +225,7 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
   }
   else
   {
+    assert(add->fusedActivationFunction() == luci::FusedActFunc::NONE);
     replace(add).with(fused_tconv);
   }
 
