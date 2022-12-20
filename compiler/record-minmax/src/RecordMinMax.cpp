@@ -169,7 +169,7 @@ void update_quantparam(record_minmax::MinMaxObserver *observer, const std::strin
 namespace record_minmax
 {
 
-void RecordMinMax::initialize(const std::string &input_model_path)
+void RecordMinMax::initializeCircleModule(const std::string &input_model_path)
 {
   // Load model from the file
   std::ifstream fs(input_model_path, std::ifstream::binary);
@@ -179,7 +179,6 @@ void RecordMinMax::initialize(const std::string &input_model_path)
   }
   std::vector<char> model_data((std::istreambuf_iterator<char>(fs)),
                                std::istreambuf_iterator<char>());
-
   // Verify flatbuffers
   flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(model_data.data()),
                                  model_data.size()};
@@ -187,26 +186,38 @@ void RecordMinMax::initialize(const std::string &input_model_path)
   {
     throw std::runtime_error("Failed to verify circle '" + input_model_path + "'");
   }
-
   const circle::Model *circle_model = circle::GetModel(model_data.data());
   if (circle_model == nullptr)
   {
     throw std::runtime_error("Failed to load '" + input_model_path + "'");
   }
-
   _module = luci::Importer().importModule(circle_model);
-
   if (_module == nullptr)
   {
     throw std::runtime_error("Failed to load '" + input_model_path + "'");
   }
+}
 
-  // Initialize interpreter
-  _interpreter = std::make_unique<luci_interpreter::Interpreter>(_module.get());
+void RecordMinMax::initialize(const std::string &input_model_path)
+{
+  assert(_threads_size > 0);
 
-  _observer = std::make_unique<MinMaxObserver>();
+  initializeCircleModule(input_model_path);
 
-  _interpreter->attachObserver(_observer.get());
+  // Create and initialize interpreters and observers
+  _interpreters.resize(_threads_size);
+  _observers.resize(_threads_size);
+
+  for (uint32_t thread_idx = 0; thread_idx < _threads_size; ++thread_idx)
+  {
+    auto interpreter = std::make_unique<luci_interpreter::Interpreter>(_module.get());
+    auto observer = std::make_unique<MinMaxObserver>();
+
+    interpreter->attachObserver(observer.get());
+
+    _observers[thread_idx] = std::move(observer);
+    _interpreters[thread_idx] = std::move(interpreter);
+  }
 }
 
 // input_data_path is a path to the directory
@@ -258,12 +269,12 @@ void RecordMinMax::profileRawDataDirectory(const std::string &mode,
     {
       const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
       const auto input_size = getTensorSize(input_node);
-      _interpreter->writeInputTensor(input_node, input_data.data() + offset, input_size);
+      getInterpreter()->writeInputTensor(input_node, input_data.data() + offset, input_size);
 
       offset += input_size;
     }
 
-    _interpreter->interpret();
+    getInterpreter()->interpret();
 
     num_records++;
   }
@@ -275,7 +286,7 @@ void RecordMinMax::profileRawDataDirectory(const std::string &mode,
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
+  update_quantparam(getObserver(), mode, min_percentile, max_percentile);
 }
 
 // input_data_path is a text file which specifies the representative data
@@ -320,12 +331,12 @@ void RecordMinMax::profileRawData(const std::string &mode, const std::string &in
     {
       const auto *input_node = loco::must_cast<const luci::CircleInput *>(input);
       const auto input_size = getTensorSize(input_node);
-      _interpreter->writeInputTensor(input_node, input_data.data() + offset, input_size);
+      getInterpreter()->writeInputTensor(input_node, input_data.data() + offset, input_size);
 
       offset += input_size;
     }
 
-    _interpreter->interpret();
+    getInterpreter()->interpret();
 
     num_records++;
   }
@@ -335,7 +346,7 @@ void RecordMinMax::profileRawData(const std::string &mode, const std::string &in
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
+  update_quantparam(getObserver(), mode, min_percentile, max_percentile);
 }
 
 void RecordMinMax::profileData(const std::string &mode, const std::string &input_data_path,
@@ -386,10 +397,10 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
 
         // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
         //       We can redcue the copy by directly writing data from file to interpreter inputs
-        _interpreter->writeInputTensor(input_node, input_data.data(), input_data.size());
+        getInterpreter()->writeInputTensor(input_node, input_data.data(), input_data.size());
       }
 
-      _interpreter->interpret();
+      getInterpreter()->interpret();
     }
 
     std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
@@ -400,7 +411,7 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
     throw std::runtime_error("HDF5 error occurred.");
   }
 
-  update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
+  update_quantparam(getObserver(), mode, min_percentile, max_percentile);
 }
 
 void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float min_percentile,
@@ -444,35 +455,35 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
 
         // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
         //       We can redcue the copy by directly writing data from file to interpreter inputs
-        _interpreter->writeInputTensor(input_node, input_data.data(),
-                                       input_data.size() * sizeof(float));
+        getInterpreter()->writeInputTensor(input_node, input_data.data(),
+                                           input_data.size() * sizeof(float));
       }
       else if (input_node->dtype() == DataType::BOOL)
       {
         auto input_data = genRandomBoolData(gen, num_elements);
-        _interpreter->writeInputTensor(input_node, input_data.data(),
-                                       input_data.size() * sizeof(uint8_t));
+        getInterpreter()->writeInputTensor(input_node, input_data.data(),
+                                           input_data.size() * sizeof(uint8_t));
       }
       else if (input_node->dtype() == DataType::S32)
       {
         auto input_data = genRandomIntData<int32_t>(gen, num_elements, 0, 100);
-        _interpreter->writeInputTensor(input_node, input_data.data(),
-                                       input_data.size() * sizeof(int32_t));
+        getInterpreter()->writeInputTensor(input_node, input_data.data(),
+                                           input_data.size() * sizeof(int32_t));
       }
       else if (input_node->dtype() == DataType::S64)
       {
         auto input_data = genRandomIntData<int64_t>(gen, num_elements, 0, 100);
-        _interpreter->writeInputTensor(input_node, input_data.data(),
-                                       input_data.size() * sizeof(int64_t));
+        getInterpreter()->writeInputTensor(input_node, input_data.data(),
+                                           input_data.size() * sizeof(int64_t));
       }
     }
 
-    _interpreter->interpret();
+    getInterpreter()->interpret();
   }
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  update_quantparam(_observer.get(), mode, min_percentile, max_percentile);
+  update_quantparam(getObserver(), mode, min_percentile, max_percentile);
 }
 
 void RecordMinMax::saveModel(const std::string &output_model_path)

@@ -92,6 +92,7 @@ int entry(const int argc, char **argv)
   float min_percentile = 1.0;
   float max_percentile = 99.0;
   std::string input_data_format("h5");
+  int num_threads = 1;
 
   if (arser["--min_percentile"])
     min_percentile = arser.get<float>("--min_percentile");
@@ -111,7 +112,7 @@ int entry(const int argc, char **argv)
   if (arser["--input_data_format"])
     input_data_format = arser.get<std::string>("--input_data_format");
 
-  RecordMinMax rmm;
+  RecordMinMax rmm(num_threads);
 
   // Initialize interpreter and observer
   rmm.initialize(input_model_path);
