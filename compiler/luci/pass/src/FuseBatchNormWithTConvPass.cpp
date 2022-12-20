@@ -23,6 +23,26 @@
 
 namespace
 {
+
+template <class CIRCLENODE>
+void replace_with_relu(luci::CircleNode *target, luci::CircleNode *feature,
+                       const std::string &relu_name)
+{
+  assert(target != nullptr);
+  assert(feature != nullptr);
+
+  auto relu = target->graph()->nodes()->create<CIRCLENODE>();
+  relu->features(feature);
+  relu->name(relu_name);
+  luci::add_origin(relu, luci::get_origin(target));
+
+  replace(target).with(relu);
+}
+
+} // namespace
+
+namespace
+{
 /**
  *  Fuse Mul-Add to TransposeConv if possible.
  *
@@ -206,27 +226,13 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
   switch (add->fusedActivationFunction())
   {
     case luci::FusedActFunc::RELU6:
-    {
-      // separate relu op from add op
-      auto relu = add->graph()->nodes()->create<luci::CircleRelu6>();
-      relu->features(fused_tconv);
-      relu->name(name + "/Relu6");
-      luci::add_origin(relu, luci::get_origin(add));
-
-      replace(add).with(relu);
+      replace_with_relu<luci::CircleRelu6>(add, fused_tconv, name + "/Relu6");
       break;
-    }
+
     case luci::FusedActFunc::RELU:
-    {
-      // separate relu op from add op
-      auto relu = add->graph()->nodes()->create<luci::CircleRelu>();
-      relu->features(fused_tconv);
-      relu->name(name + "/Relu");
-      luci::add_origin(relu, luci::get_origin(add));
-
-      replace(add).with(relu);
+      replace_with_relu<luci::CircleRelu>(add, fused_tconv, name + "/Relu");
       break;
-    }
+
     case luci::FusedActFunc::NONE:
       replace(add).with(fused_tconv);
       break;
