@@ -48,6 +48,19 @@ public:
   // All these default values should not be fetched from Env, when we stop supporting Android NNAPI.
   static std::unique_ptr<CompilerOptions> fromGlobalConfig();
 
+  /**
+   * @brief   Allow to compute float32 using float16 data type
+   */
+  void enableToFp16();
+
+  /**
+   * @brief Force default values of CompilerOptions for correct compilations
+   *
+   * @note  This should be called after CompilerOptions setting is finished
+   *        to prevent value overwriting
+   */
+  void forceInternalOptions();
+
   void verboseOptions();
 
 public:
@@ -91,11 +104,6 @@ public:
    * @return std::shared_ptr<CompilerArtifact> Executors as a result of compilation
    */
   virtual std::shared_ptr<CompilerArtifact> compile(void) = 0;
-
-  /**
-   * @brief   Allow to compute float32 using float16 data type
-   */
-  virtual void enableToFp16() = 0;
 };
 
 } // namespace compiler

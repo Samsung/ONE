@@ -49,30 +49,15 @@ MultiModelCompiler::MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
   }
 }
 
-void MultiModelCompiler::enableToFp16()
-{
-  for (auto options : _voptions)
-    options->fp16_enable = true;
-}
-
 std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
 {
   for (auto options : _voptions)
   {
-    // Set control flow backend for control flow operators
-    auto &builtin_id = backend::builtin::Config::ID;
-    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = builtin_id;
-    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = builtin_id;
-    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = builtin_id;
-
-    // FIXME This is a workaround for bcq operations, should remove it
-    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
-    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
-
-    // FIXME This is a workaround for bulk operations, should remove it
-    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
-
-    options->verboseOptions();
+    if (options)
+    {
+      options->forceInternalOptions();
+      options->verboseOptions();
+    }
   }
 
   // NYI: allow one model compilation

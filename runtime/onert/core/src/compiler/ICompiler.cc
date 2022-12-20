@@ -16,6 +16,8 @@
 
 #include "compiler/ICompiler.h"
 
+#include "../backend/builtin/Config.h"
+
 #include <misc/string_helpers.h>
 
 namespace
@@ -101,6 +103,24 @@ std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
     ms_options.setBackendMap(map_str);
   }
   return o;
+}
+
+void CompilerOptions::enableToFp16() { fp16_enable = true; }
+
+void CompilerOptions::forceInternalOptions()
+{
+  // Set control flow backend for control flow operators
+  auto &builtin_id = backend::builtin::Config::ID;
+  manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = builtin_id;
+  manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = builtin_id;
+  manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = builtin_id;
+
+  // FIXME This is a workaround for bcq operations, should remove it
+  manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
+  manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
+
+  // FIXME This is a workaround for bulk operations, should remove it
+  manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
 }
 
 void CompilerOptions::verboseOptions()

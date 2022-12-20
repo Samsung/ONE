@@ -57,35 +57,10 @@ Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
   assert(nnpkg->model_count() == 1);
 }
 
-void Compiler::enableToFp16() { _options->fp16_enable = true; }
-
-void Compiler::checkProfilerConditions()
-{
-  if (_options->he_scheduler)
-    throw std::runtime_error("Heterogeneous scheduler must be enabled during profiling.");
-
-  if (_options->executor != "Dataflow")
-    throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
-}
-
 std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 {
-  {
-    // Set control flow backend for control flow operators
-    auto &builtin_id = backend::builtin::Config::ID;
-    _options->manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = builtin_id;
-    _options->manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = builtin_id;
-    _options->manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = builtin_id;
-
-    // FIXME This is a workaround for bcq operations, should remove it
-    _options->manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
-    _options->manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
-
-    // FIXME This is a workaround for bulk operations, should remove it
-    _options->manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
-
-    _options->verboseOptions();
-  }
+  _options->forceInternalOptions();
+  _options->verboseOptions();
 
   {
     _model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
@@ -117,9 +92,14 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   }
 
   // Mode check
-  // TODO handle option for each model
   if (_options->he_profiling_mode)
-    checkProfilerConditions();
+  {
+    if (_options->he_scheduler)
+      throw std::runtime_error("Heterogeneous scheduler must be enabled during profiling.");
+
+    if (_options->executor != "Dataflow")
+      throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
+  }
 
   /***************************************************
    * Backend independent analysis & optimization phase
