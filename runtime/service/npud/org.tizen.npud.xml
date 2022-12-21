@@ -145,5 +145,18 @@
       <arg name="output_buffers" type="a(itu)" direction="in" />
       <arg name="error" type="i" direction="out" />
     </method>
+    <!--
+      execute_run:
+      @ctx: The context handle.
+      @rq_handle: The Request handle.
+      @error: The error status of the function.
+
+      Execute run.
+    -->
+    <method name="execute_run">
+	    <arg name="ctx" type="t" direction="in"  />
+	    <arg name="rq_handle" type="u" direction="in"  />
+	    <arg name="error" type="i" direction="out"  />
+    </method>
   </interface>
 </node>

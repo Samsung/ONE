@@ -62,6 +62,7 @@ void DBus::on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer us
   iface->handle_request_create = &on_handle_request_create;
   iface->handle_request_destroy = &on_handle_request_destroy;
   iface->handle_request_set_data = &on_handle_request_set_data;
+  iface->handle_execute_run = &on_handle_execute_run;
 
   if (!g_dbus_interface_skeleton_export(G_DBUS_INTERFACE_SKELETON(core), conn, "/org/tizen/npud",
                                         &error))
@@ -304,6 +305,16 @@ gboolean DBus::on_handle_request_set_data(NpudCore *object, GDBusMethodInvocatio
   // TODO Invoke Core function.
   int ret = -1;
   npud_core_complete_request_set_data(object, invocation, ret);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_execute_run(NpudCore *object, GDBusMethodInvocation *invocation,
+                                     guint64 arg_ctx, guint arg_rq_handle)
+{
+  VERBOSE(DBus) << "on_handle_execute_run with " << arg_ctx << ", " << arg_rq_handle << std::endl;
+  // TODO Invoke Core function.
+  int ret = -1;
+  npud_core_complete_execute_run(object, invocation, ret);
   return TRUE;
 }
 
