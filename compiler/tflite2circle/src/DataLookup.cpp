@@ -36,15 +36,22 @@ circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop)
 
 int8_t get_circle_builtin_code(int8_t tfl_bop_i8)
 {
-  tflite::BuiltinOperator tfl_bop = static_cast<tflite::BuiltinOperator>(tfl_bop_i8);
+  return get_circle_builtin_code(static_cast<int32_t>(tfl_bop_i8));
+}
+
+int32_t get_circle_builtin_code(int32_t tfl_bop_i32)
+{
+  tflite::BuiltinOperator tfl_bop = static_cast<tflite::BuiltinOperator>(tfl_bop_i32);
 
   switch (tfl_bop)
   {
 #define TFL_OPERATOR(OP)             \
   case tflite::BuiltinOperator_##OP: \
-    return static_cast<int8_t>(circle::BuiltinOperator_##OP);
+    return static_cast<int32_t>(circle::BuiltinOperator_##OP);
 #include "TFLOperator.lst"
 #undef TFL_OPERATOR
+    case tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES:
+      return static_cast<int32_t>(circle::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);
     default:
       throw std::runtime_error("tflite2circle: wrong op");
   }
