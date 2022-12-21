@@ -69,8 +69,16 @@ struct TrixRequestInfo
 {
   RequestID id;
   ModelID modelId;
-
-  TrixRequestInfo(RequestID _id, ModelID _mid) : id(_id), modelId(_mid) {}
+  std::unique_ptr<input_buffers> inBufs;
+  std::unique_ptr<tensors_data_info> inInfos;
+  std::unique_ptr<output_buffers> outBufs;
+  std::unique_ptr<tensors_data_info> outInfos;
+  TrixRequestInfo(RequestID _id, ModelID _mid)
+    : id(_id), modelId(_mid), inBufs(std::make_unique<input_buffers>()),
+      inInfos(std::make_unique<tensors_data_info>()), outBufs(std::make_unique<output_buffers>()),
+      outInfos(std::make_unique<tensors_data_info>())
+  {
+  }
 };
 
 /**
