@@ -21,6 +21,7 @@
 #include <libnpuhost.h>
 #include <memory>
 #include <vector>
+#include <map>
 
 namespace npud
 {
@@ -33,18 +34,59 @@ using namespace ::npud::core;
 
 using Handle = void *;
 
+/**
+ * @brief Trix model information.
+ *
+ * @param id The model identifier.
+ * @param path The model path.
+ * @param core The core number where the model is registered.
+ * @param meta The meta data of model.
+ * @param refCount The reference count of model users.
+ */
+struct TrixModelInfo
+{
+  ModelID id;
+  std::string path;
+  int core;
+  npubin_meta *meta;
+  int refCount;
+
+  TrixModelInfo() : meta(nullptr), refCount(0) {}
+  TrixModelInfo(ModelID _id, const std::string &_path, int _core, npubin_meta *_meta, int _refCount)
+    : id(_id), path(_path), core(_core), meta(_meta), refCount(_refCount)
+  {
+  }
+  ~TrixModelInfo() { free(meta); }
+};
+
+/**
+ * @brief Trix request information
+ *
+ * @param id The request identifier.
+ * @param modelId The model id of request.
+ */
+struct TrixRequestInfo
+{
+  RequestID id;
+  ModelID modelId;
+
+  TrixRequestInfo(RequestID _id, ModelID _mid) : id(_id), modelId(_mid) {}
+};
+
+/**
+ * @brief Trix device information
+ *
+ * @param handles The device handle list.
+ * @param ctxs The NpuContext list.
+ * @param models The model map.
+ * @param requests The request map.
+ */
 struct TrixDevice
 {
   std::vector<Handle> handles;
-  // Note
-  // Q. Why does it use `weak_ptr` here?
-  // A. The `TrixDevice` manages all model files. Each `NpuContext` shares model
-  //    information data with `TrixDevice`. Using `shared_ptr`, the model data is
-  //    not destroyed because `TrixDevice` always has a model data. Using `weak_ptr`
-  //    it can recognize that all `NpuContext` has unregistered the model and
-  //    delete the model data.
-  std::vector<std::weak_ptr<NpuModelInfo>> models;
   std::vector<std::unique_ptr<NpuContext>> ctxs;
+  std::map<ModelID, std::unique_ptr<TrixModelInfo>> models;
+  std::map<RequestID, std::unique_ptr<TrixRequestInfo>> requests;
 };
 
 class TrixBackend : public Backend
