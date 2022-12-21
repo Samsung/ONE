@@ -55,6 +55,8 @@ void DBus::on_bus_acquired(GDBusConnection *conn, const gchar *name, gpointer us
   iface->handle_device_get_available_list = &on_handle_device_get_available_list;
   iface->handle_context_create = &on_handle_context_create;
   iface->handle_context_destroy = &on_handle_context_destroy;
+  iface->handle_buffers_create = &on_handle_buffers_create;
+  iface->handle_buffers_destroy = &on_handle_buffers_destroy;
   iface->handle_network_create = &on_handle_network_create;
   iface->handle_network_destroy = &on_handle_network_destroy;
   iface->handle_request_create = &on_handle_request_create;
@@ -111,6 +113,77 @@ gboolean DBus::on_handle_context_destroy(NpudCore *object, GDBusMethodInvocation
   VERBOSE(DBus) << "on_handle_context_destroy with " << arg_ctx << std::endl;
   int ret = Server::instance().core().destroyContext(arg_ctx);
   npud_core_complete_context_destroy(object, invocation, ret);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_buffers_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                        guint64 arg_ctx, GVariant *arg_buffers)
+{
+  VERBOSE(DBus) << "on_handle_buffers_create with " << arg_ctx << std::endl;
+  GenericBuffers bufs;
+  GVariantIter *iter = NULL;
+  gint32 type;
+  guint64 addr;
+  guint32 size;
+  int index = 0;
+  g_variant_get(arg_buffers, "a(itu)", &iter);
+  while (iter != NULL && g_variant_iter_loop(iter, "(itu)", &type, &addr, &size))
+  {
+    VERBOSE(DBus) << "in [" << index << "] Type: " << type << ", Addr: " << addr
+                  << ", Size: " << size << std::endl;
+    bufs.buffers[index].type = static_cast<BufferTypes>(type);
+    bufs.buffers[index].addr = reinterpret_cast<void *>(addr);
+    bufs.buffers[index].size = size;
+    index++;
+  }
+  bufs.numBuffers = index;
+  g_variant_iter_free(iter);
+
+  // TODO Invoke Core function.
+  int ret = -1;
+
+  GVariantBuilder *builder;
+  builder = g_variant_builder_new(G_VARIANT_TYPE("a(itu)"));
+  if (ret == 0)
+  {
+    for (auto i = 0; i < bufs.numBuffers; ++i)
+    {
+      VERBOSE(DBus) << "out [" << index << "] Type: " << bufs.buffers[i].type
+                    << ", Addr: " << bufs.buffers[i].addr << ", Size: " << bufs.buffers[i].size
+                    << std::endl;
+      g_variant_builder_add(builder, "(itu)", bufs.buffers[i].type, bufs.buffers[i].addr,
+                            bufs.buffers[i].size);
+    }
+  }
+  npud_core_complete_buffers_create(object, invocation, g_variant_builder_end(builder), ret);
+  return TRUE;
+}
+
+gboolean DBus::on_handle_buffers_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                         guint64 arg_ctx, GVariant *arg_buffers)
+{
+  VERBOSE(DBus) << "on_handle_buffers_destroy with " << arg_ctx << std::endl;
+  GenericBuffers bufs;
+  GVariantIter *iter = NULL;
+  gint32 type;
+  guint64 addr;
+  guint32 size;
+  int index = 0;
+  g_variant_get(arg_buffers, "a(itu)", &iter);
+  while (iter != NULL && g_variant_iter_loop(iter, "(itu)", &type, &addr, &size))
+  {
+    VERBOSE(DBus) << "[" << index << "] Type: " << type << ", Addr: " << (void *)addr
+                  << ", Size: " << size << std::endl;
+    bufs.buffers[index].type = static_cast<BufferTypes>(type);
+    bufs.buffers[index].addr = reinterpret_cast<void *>(addr);
+    bufs.buffers[index].size = size;
+    index++;
+  }
+  bufs.numBuffers = index;
+  g_variant_iter_free(iter);
+  // TODO Invoke Core function.
+  int ret = -1;
+  npud_core_complete_buffers_destroy(object, invocation, ret);
   return TRUE;
 }
 

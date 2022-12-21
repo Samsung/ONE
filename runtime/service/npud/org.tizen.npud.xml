@@ -43,6 +43,34 @@
 	    <arg name="error" type="i" direction="out"  />
     </method>
     <!--
+      buffers_create:
+      @ctx: The Context handle.
+      @buffers: The array of buffer structure. (i:type, t:address, u:size)
+      @out_buffers: The array of buffer sturcture containing created buffer address.
+      @error: The error status of the function.
+
+      Create buffer array.
+    -->
+    <method name="buffers_create">
+      <arg name="ctx" type="t" direction="in" />
+      <arg name="buffers" type="a(itu)" direction="in" />
+      <arg name="out_buffers" type="a(itu)" direction="out" />
+      <arg name="error" type="i" direction="out" />
+    </method>
+    <!--
+      buffers_destroy:
+      @ctx: The Context handle.
+      @buffers: The array of buffer structure. (i:type, t:address, u:size)
+      @error: The error status of the function.
+
+      Destroy buffer array.
+    -->
+    <method name="buffers_destroy">
+      <arg name="ctx" type="t" direction="in" />
+      <arg name="buffers" type="a(itu)" direction="in" />
+      <arg name="error" type="i" direction="out" />
+    </method>
+    <!--
       network_create:
       @ctx: The context handle.
       @model_path: The model path to run.

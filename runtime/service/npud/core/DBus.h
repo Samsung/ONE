@@ -48,6 +48,10 @@ public:
                                            gint arg_device_id, gint arg_priority);
   static gboolean on_handle_context_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
                                             guint64 arg_ctx);
+  static gboolean on_handle_buffers_create(NpudCore *object, GDBusMethodInvocation *invocation,
+                                           guint64 arg_ctx, GVariant *arg_buffers);
+  static gboolean on_handle_buffers_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
+                                            guint64 arg_ctx, GVariant *arg_buffers);
   static gboolean on_handle_network_create(NpudCore *object, GDBusMethodInvocation *invocation,
                                            guint64 arg_ctx, const gchar *arg_model_path);
   static gboolean on_handle_network_destroy(NpudCore *object, GDBusMethodInvocation *invocation,
