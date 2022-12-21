@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +43,7 @@ def _verify_args(args):
         if args.config:
             config_path = os.path.basename(args.config[i])
             if not os.path.isfile(config_path):
-                raise Exception('error: {} does not exist.'.format(config_path))
+                raise Exception(f'error: {config_path} does not exist.')
 
 
 def _get_args():
@@ -103,7 +105,6 @@ def _generate_manifest(args):
         config_list = [os.path.basename(e) for e in args.config]
     models_list = [os.path.basename(e) for e in args.models]
     types_list = [os.path.basename(e).rsplit('.', 1)[1] for e in args.models]
-    # types_str = ','.join("{}".format(os.path.basename(e).rsplit('.', 1)[1]) for e in args.models)
 
     manifest = {}
     manifest["major-version"] = "1"
@@ -120,7 +121,7 @@ def main():
     # parse arguments
     args = _get_args()
 
-    print('{}: Generating nnpkg {} in {}'.format(args.prog, args.nnpkg_name, args.outdir))
+    print(f'{args.prog}: Generating nnpkg {args.nnpkg_name} in {args.outdir}')
     # mkdir nnpkg directory
     nnpkg_path = os.path.join(args.outdir, args.nnpkg_name)
     os.makedirs(os.path.join(nnpkg_path, 'metadata'), exist_ok=True)
