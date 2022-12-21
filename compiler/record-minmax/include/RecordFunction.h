@@ -69,13 +69,13 @@ float getMovingAverage(const std::vector<float> &vector, const float alpha,
   assert(alpha >= 0.0 && alpha <= 1.0);
   assert(batch_size > 0);
 
-  auto getBatchMinOrMax = [&](int start_index) {
-    assert(start_index >= 0 && start_index < vector.size());
+  auto getBatchMinOrMax = [&](uint32_t start_index) {
+    assert(start_index < vector.size());
 
     float res = is_min ? std::numeric_limits<float>::max() : std::numeric_limits<float>::lowest();
-    for (int offset = 0; offset < batch_size; offset++)
+    for (uint32_t offset = 0; offset < batch_size; offset++)
     {
-      int index = start_index + offset;
+      uint32_t index = start_index + offset;
       if (index >= vector.size())
         break;
 
@@ -92,7 +92,7 @@ float getMovingAverage(const std::vector<float> &vector, const float alpha,
   };
 
   float curr_avg = getBatchMinOrMax(0);
-  for (size_t i = batch_size; i < vector.size(); i += batch_size)
+  for (uint32_t i = batch_size; i < vector.size(); i += batch_size)
   {
     curr_avg = curr_avg * alpha + getBatchMinOrMax(i) * (1.0 - alpha);
   }

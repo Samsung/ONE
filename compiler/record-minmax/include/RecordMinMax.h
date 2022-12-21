@@ -31,7 +31,7 @@ namespace record_minmax
 class RecordMinMax
 {
 public:
-  explicit RecordMinMax(int32_t num_threads) : _threads_size(num_threads)
+  explicit RecordMinMax(uint32_t num_threads) : _threads_size(num_threads)
   {
     assert(_threads_size > 0);
   }
