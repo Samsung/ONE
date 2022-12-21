@@ -176,8 +176,8 @@ public:
   virtual NpuStatus getVersion(std::string &version) = 0;
   virtual NpuStatus createContext(int deviceId, int priority, NpuContext **ctx) = 0;
   virtual NpuStatus destroyContext(NpuContext *ctx) = 0;
-  virtual NpuStatus createBuffer(NpuContext *ctx, GenericBuffer *buffer) = 0;
-  virtual NpuStatus destroyBuffer(NpuContext *ctx, GenericBuffer *buffer) = 0;
+  virtual NpuStatus createBuffers(NpuContext *ctx, GenericBuffers *bufs) = 0;
+  virtual NpuStatus destroyBuffers(NpuContext *ctx, GenericBuffers *bufs) = 0;
   // TODO Support to register model from buffer
   virtual NpuStatus registerModel(NpuContext *ctx, const std::string &modelPath,
                                   ModelID *modelId) = 0;

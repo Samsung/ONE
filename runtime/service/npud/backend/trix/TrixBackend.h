@@ -56,8 +56,8 @@ public:
   NpuStatus getVersion(std::string &version) override;
   NpuStatus createContext(int deviceId, int priority, NpuContext **ctx) override;
   NpuStatus destroyContext(NpuContext *ctx) override;
-  NpuStatus createBuffer(NpuContext *ctx, GenericBuffer *buffer) override;
-  NpuStatus destroyBuffer(NpuContext *ctx, GenericBuffer *buffer) override;
+  NpuStatus createBuffers(NpuContext *ctx, GenericBuffers *bufs) override;
+  NpuStatus destroyBuffers(NpuContext *ctx, GenericBuffers *bufs) override;
   // TODO Support to register model from buffer
   NpuStatus registerModel(NpuContext *ctx, const std::string &modelPath, ModelID *modelId) override;
   NpuStatus unregisterModel(NpuContext *ctx, ModelID modelId) override;
