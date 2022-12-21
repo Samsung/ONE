@@ -22,7 +22,6 @@
 #include "pass/OddOutputPass.h"
 #include "pass/PassRunner.h"
 #include "pass/UnusedOperandEliminationPass.h"
-#include "../backend/builtin/Config.h"
 #include "../dumper/dot/DotDumper.h"
 #include "../interp/InterpExecutor.h"
 #include "../ir/OperationCloner.h"
@@ -30,8 +29,6 @@
 #include "../ir/verifier/Verifier.h"
 
 #include "compiler/StaticShapeInferer.h"
-#include "util/ConfigSource.h"
-#include "util/logging.h"
 
 #include <misc/polymorphic_downcast.h>
 #include <misc/string_helpers.h>
@@ -44,45 +41,6 @@ namespace
 {
 
 using namespace onert;
-
-std::string getOpBackends(std::unordered_map<ir::OpCode, std::string> &opcode_to_backend)
-{
-  std::unordered_map<ir::OpCode, std::string>::iterator it;
-  std::string opbackends;
-
-  for (it = opcode_to_backend.begin(); it != opcode_to_backend.end(); ++it)
-  {
-    if (!opbackends.empty())
-      opbackends = opbackends + ", ";
-
-    auto opcode = it->first;
-    const std::string opname = ir::toString(opcode);
-    opbackends += opname + "=" + it->second;
-  }
-  return opbackends;
-}
-
-void verboseOptions(compiler::CompilerOptions &options)
-{
-  VERBOSE(Compiler) << std::boolalpha << "==== Compiler Options ====" << std::endl;
-  VERBOSE(Compiler) << "backend_list             : "
-                    << nnfw::misc::join(options.backend_list.begin(), options.backend_list.end(),
-                                        "/")
-                    << std::endl;
-  VERBOSE(Compiler) << "trace_filepath           : " << options.trace_filepath << std::endl;
-  VERBOSE(Compiler) << "graph_dump_level         : " << options.graph_dump_level << std::endl;
-  VERBOSE(Compiler) << "executor                 : " << options.executor << std::endl;
-  VERBOSE(Compiler) << "manual backend_for_all   : "
-                    << options.manual_scheduler_options.backend_for_all << std::endl;
-  VERBOSE(Compiler) << "manual_scheduler_options : "
-                    << getOpBackends(options.manual_scheduler_options.opcode_to_backend)
-                    << std::endl;
-  VERBOSE(Compiler) << "he_scheduler             : " << options.he_scheduler << std::endl;
-  VERBOSE(Compiler) << "he_profiling_mode        : " << options.he_profiling_mode << std::endl;
-  VERBOSE(Compiler) << "disable_compile          : " << options.disable_compile << std::endl;
-  VERBOSE(Compiler) << "fp16_enable              : " << options.fp16_enable << std::endl
-                    << std::noboolalpha;
-}
 
 std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::StaticShapeInferer>>
 createStaticShapeInferers(
@@ -181,61 +139,6 @@ namespace onert
 
 namespace compiler
 {
-void ManualSchedulerOptions::setBackendMap(const std::string &str)
-{
-  // TODO Support multiple subgraphs for manual scheduling
-  auto key_val_list = nnfw::misc::split(str, ';');
-  for (const auto &key_val_str : key_val_list)
-  {
-    if (key_val_str.empty())
-    {
-      continue;
-    }
-
-    auto key_val = nnfw::misc::split(key_val_str, '=');
-    const auto &key_str = key_val.at(0);
-    const auto &val = key_val.at(1);
-    auto key = static_cast<uint32_t>(std::stoi(key_str));
-    this->index_to_backend.emplace(ir::OperationIndex{key}, val);
-  }
-}
-
-std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
-{
-  auto o = std::make_unique<CompilerOptions>();
-  o->backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
-  o->trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
-  o->graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
-  o->executor = util::getConfigString(util::config::EXECUTOR);
-  o->he_scheduler = util::getConfigBool(util::config::USE_SCHEDULER);
-  o->he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
-  o->disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
-  o->fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
-  {
-    // Backend for all
-    auto &ms_options = o->manual_scheduler_options;
-
-    // Default value for op_backend_all is first element in the backend list
-    ms_options.backend_for_all = util::getConfigString(util::config::OP_BACKEND_ALLOPS);
-
-// Opcode to Backend
-#define OP(OpName)                                                                      \
-  {                                                                                     \
-    const auto &backend_str = util::getConfigString(util::config::OP_BACKEND_##OpName); \
-    if (!backend_str.empty())                                                           \
-    {                                                                                   \
-      ms_options.opcode_to_backend[ir::OpCode::OpName] = backend_str;                   \
-    }                                                                                   \
-  }
-#include "ir/Operations.lst"
-#undef OP
-
-    // Index to Backend
-    auto map_str = util::getConfigString(util::config::OP_BACKEND_MAP);
-    ms_options.setBackendMap(map_str);
-  }
-  return o;
-}
 
 Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt)
   : _nnpkg{std::make_shared<ir::NNPkg>(model)}, _voptions{&copt}
@@ -251,12 +154,6 @@ Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
   {
     _voptions.push_back(copts[i].get());
   }
-}
-
-void Compiler::enableToFp16()
-{
-  for (auto options : _voptions)
-    options->fp16_enable = true;
 }
 
 void Compiler::checkProfilerConditions()
@@ -277,20 +174,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 {
   for (auto options : _voptions)
   {
-    // Set control flow backend for control flow operators
-    auto &builtin_id = backend::builtin::Config::ID;
-    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = builtin_id;
-    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = builtin_id;
-    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = builtin_id;
-
-    // FIXME This is a workaround for bcq operations, should remove it
-    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
-    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
-
-    // FIXME This is a workaround for bulk operations, should remove it
-    options->manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
-
-    verboseOptions(*options);
+    options->forceInternalOptions();
+    options->verboseOptions();
   }
 
   // NYI: allow one model compilation
