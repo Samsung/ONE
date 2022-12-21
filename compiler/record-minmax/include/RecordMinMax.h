@@ -23,6 +23,7 @@
 #include "MinMaxObserver.h"
 
 #include <memory>
+#include <thread>
 
 namespace record_minmax
 {
@@ -30,7 +31,10 @@ namespace record_minmax
 class RecordMinMax
 {
 public:
-  explicit RecordMinMax() = default;
+  explicit RecordMinMax(int32_t num_threads) : _threads_size(num_threads)
+  {
+    assert(_threads_size > 0);
+  }
 
   ~RecordMinMax() = default;
 
@@ -51,9 +55,16 @@ public:
   void saveModel(const std::string &output_model_path);
 
 private:
+  luci_interpreter::Interpreter *getInterpreter() const { return _interpreters[0].get(); }
+  MinMaxObserver *getObserver() const { return _observers[0].get(); }
+
   std::unique_ptr<luci::Module> _module;
-  std::unique_ptr<luci_interpreter::Interpreter> _interpreter;
-  std::unique_ptr<MinMaxObserver> _observer;
+
+  // Multiple interpreters are used for parallel execution
+  std::vector<std::unique_ptr<luci_interpreter::Interpreter>> _interpreters;
+  std::vector<std::unique_ptr<MinMaxObserver>> _observers;
+
+  uint32_t _threads_size = 0;
 };
 
 } // namespace record_minmax
