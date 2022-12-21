@@ -43,6 +43,9 @@ public:
   void profileData(const std::string &mode, const std::string &input_data_path,
                    float min_percentile, float max_percentile);
 
+  void profileDataInParallel(const std::string &mode, const std::string &input_data_path,
+                             float min_percentile, float max_percentile);
+
   void profileRawData(const std::string &mode, const std::string &input_data_path,
                       float min_percentile, float max_percentile);
 
@@ -57,6 +60,8 @@ public:
 private:
   luci_interpreter::Interpreter *getInterpreter() const { return _interpreters[0].get(); }
   MinMaxObserver *getObserver() const { return _observers[0].get(); }
+
+  std::vector<std::vector<std::vector<char>>> importH5Data(const std::string &input_data_path);
 
   std::unique_ptr<luci::Module> _module;
 

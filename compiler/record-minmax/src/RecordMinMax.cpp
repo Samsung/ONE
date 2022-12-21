@@ -348,6 +348,65 @@ void RecordMinMax::profileRawData(const std::string &mode, const std::string &in
   update_quantparam(getObserver(), mode, min_percentile, max_percentile);
 }
 
+std::vector<std::vector<std::vector<char>>>
+RecordMinMax::importH5Data(const std::string &input_data_path)
+{
+  try
+  {
+    dio::hdf5::HDF5Importer importer(input_data_path);
+    importer.importGroup("value");
+
+    bool is_raw_data = importer.isRawData();
+
+    const auto num_records = importer.numData();
+    if (num_records == 0)
+      throw std::runtime_error("The input data file does not contain any record.");
+
+    const auto input_nodes = loco::input_nodes(_module->graph());
+    const auto num_inputs = input_nodes.size();
+
+    std::vector<std::vector<std::vector<char>>> vector_input_data(num_records);
+
+    // Read inputs to vector_input_data
+    for (int i = 0; i < num_records; ++i)
+    {
+      if (num_inputs != static_cast<uint32_t>(importer.numInputs(i)))
+        throw std::runtime_error("Wrong number of inputs.");
+
+      for (uint32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+      {
+        const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
+        assert(input_node->index() == input_idx);
+        checkInputDimension(input_node);
+        std::vector<char> input_data(getTensorSize(input_node));
+
+        if (!is_raw_data)
+        {
+          DataType dtype;
+          Shape shape;
+          importer.readTensor(i, input_idx, &dtype, &shape, input_data.data());
+
+          // Check the type and the shape of the input data is valid
+          verifyTypeShape(input_node, dtype, shape);
+        }
+        else
+        {
+          // Skip type/shape check for raw data
+          importer.readTensor(i, input_idx, input_data.data());
+        }
+        vector_input_data[i].emplace_back(std::move(input_data));
+      }
+    }
+
+    return vector_input_data;
+  }
+  catch (const H5::Exception &e)
+  {
+    H5::Exception::printErrorStack();
+    throw std::runtime_error("HDF5 error occurred.");
+  }
+}
+
 void RecordMinMax::profileData(const std::string &mode, const std::string &input_data_path,
                                float min_percentile, float max_percentile)
 {
@@ -411,6 +470,81 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
   }
 
   update_quantparam(getObserver(), mode, min_percentile, max_percentile);
+}
+
+void RecordMinMax::profileDataInParallel(const std::string &mode,
+                                         const std::string &input_data_path, float min_percentile,
+                                         float max_percentile)
+{
+  assert(_interpreters.size() == _threads_size);
+  assert(_observers.size() == _threads_size);
+  const auto vector_input_data = importH5Data(input_data_path);
+  const auto num_records = vector_input_data.size();
+  const auto input_nodes = loco::input_nodes(_module->graph());
+
+  // Start parallel part
+  std::cout << _threads_size << " concurrent threads are supported.\n";
+
+  if (num_records < _threads_size)
+  {
+    _threads_size = num_records;
+  }
+  uint32_t records_batch = static_cast<int>(num_records / _threads_size);
+
+  auto interpret_batch = [&vector_input_data,
+                          &input_nodes](int first_record, int last_record,
+                                        luci_interpreter::Interpreter *interpreter) {
+    for (int record_index = first_record; record_index < last_record; ++record_index)
+    {
+      for (uint32_t input_idx = 0; input_idx < input_nodes.size(); input_idx++)
+      {
+        const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
+
+        const auto &cur_input_data = vector_input_data[record_index][input_idx];
+        interpreter->writeInputTensor(input_node, cur_input_data.data(), cur_input_data.size());
+      }
+      interpreter->interpret();
+    }
+  };
+
+  std::vector<std::thread> threads;
+  for (uint32_t t = 0; t < _threads_size; ++t)
+  {
+    if (t < _threads_size - 1)
+    {
+      threads.emplace_back(interpret_batch, records_batch * t, records_batch * (t + 1),
+                           _interpreters[t].get());
+    }
+    else
+    {
+      threads.emplace_back(interpret_batch, records_batch * t, num_records, _interpreters[t].get());
+    }
+  }
+
+  for (uint32_t i = 0; i < _threads_size; ++i)
+    threads.at(i).join();
+
+  // End parallel part
+
+  // Copy all min, max values to one observer
+  auto observer = std::make_unique<MinMaxObserver>();
+  auto main_min_max_map = const_cast<MinMaxMap *>(observer->minMaxData());
+
+  for (const auto &obs : _observers)
+  {
+    const auto cur_minmax_map = obs->minMaxData()->getMap();
+    for (auto &iter : *cur_minmax_map)
+    {
+      const auto node = iter.first;
+      const auto &minmax = iter.second;
+
+      main_min_max_map->appendMinMaxVector(node, minmax);
+    }
+  }
+
+  std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
+
+  update_quantparam(observer.get(), mode, min_percentile, max_percentile);
 }
 
 void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float min_percentile,
