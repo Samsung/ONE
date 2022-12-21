@@ -247,7 +247,7 @@ void RecordMinMax::profileRawDataDirectory(const std::string &mode,
     total_input_size += getTensorSize(input_node);
   }
 
-  while (entry = readdir(dp))
+  while ((entry = readdir(dp)))
   {
     // Skip if the entry is not a regular file
     if (entry->d_type != DT_REG)
@@ -367,12 +367,12 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
 
     for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
     {
-      if (num_inputs != importer.numInputs(record_idx))
+      if (num_inputs != static_cast<uint32_t>(importer.numInputs(record_idx)))
         throw std::runtime_error("Wrong number of inputs.");
 
       std::cout << "Recording " << record_idx << "'th data" << std::endl;
 
-      for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+      for (uint32_t input_idx = 0; input_idx < num_inputs; input_idx++)
       {
         const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
         assert(input_node->index() == input_idx);
@@ -426,11 +426,11 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
   std::mt19937 gen(rd());
   std::uniform_real_distribution<> dist(-5, 5);
 
-  for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
+  for (uint32_t record_idx = 0; record_idx < num_records; record_idx++)
   {
     std::cout << "Recording " << record_idx << "'th data" << std::endl;
 
-    for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+    for (uint32_t input_idx = 0; input_idx < num_inputs; input_idx++)
     {
       const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
       assert(input_node->index() == input_idx);

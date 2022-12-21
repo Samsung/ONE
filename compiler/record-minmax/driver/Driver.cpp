@@ -92,7 +92,7 @@ int entry(const int argc, char **argv)
   float min_percentile = 1.0;
   float max_percentile = 99.0;
   std::string input_data_format("h5");
-  int num_threads = 1;
+  uint32_t num_threads = 1;
 
   if (arser["--min_percentile"])
     min_percentile = arser.get<float>("--min_percentile");
