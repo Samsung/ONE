@@ -41,7 +41,7 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
                       GROUP_READ GROUP_EXECUTE
                       WORLD_READ WORLD_EXECUTE
           DESTINATION bin)
-          
+
 endforeach(ONE_COMMAND)
 
 set(ONE_UTILITY_FILES
@@ -73,6 +73,15 @@ foreach(ONE_UTILITY IN ITEMS ${ONE_UTILITY_FILES})
           DESTINATION bin)
 
 endforeach(ONE_UTILITY)
+
+# one-pack internally uses model2nnpkg tool
+set(MODEL2NNPKG "${NNAS_PROJECT_SOURCE_DIR}/tools/nnpackage_tool/model2nnpkg/model2nnpkg.sh")
+install(FILES ${MODEL2NNPKG}
+              PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+                          GROUP_READ GROUP_EXECUTE
+                          WORLD_READ WORLD_EXECUTE
+              DESTINATION bin
+              RENAME "model2nnpkg")
 
 # make python directory
 set(ONE_PYTHON_FILES constant.py

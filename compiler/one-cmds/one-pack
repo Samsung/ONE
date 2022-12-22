@@ -84,7 +84,7 @@ def _pack(args):
 
     with open(logfile_path, 'wb') as f:
         # make a command to package circle model and metadata into nnpackage
-        model2nnpkg_path = os.path.join(dir_path, 'model2nnpkg.sh')
+        model2nnpkg_path = os.path.join(dir_path, 'model2nnpkg')
         model2nnpkg_cmd = _make_model2nnpkg_cmd(model2nnpkg_path,
                                                 getattr(args, 'input_path'),
                                                 getattr(args, 'output_path'))
@@ -92,7 +92,7 @@ def _pack(args):
         f.write((' '.join(model2nnpkg_cmd) + '\n').encode())
 
         # convert tflite to circle
-        _utils._run(model2nnpkg_cmd, err_prefix="model2nnpkg.sh", logfile=f)
+        _utils._run(model2nnpkg_cmd, err_prefix="model2nnpkg", logfile=f)
 
 
 def main():
