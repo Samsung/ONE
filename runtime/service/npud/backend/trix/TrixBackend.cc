@@ -164,7 +164,7 @@ NpuStatus TrixBackend::registerModel(NpuContext *ctx, const std::string &modelPa
     return NPU_STATUS_ERROR_INVALID_ARGUMENT;
   }
 
-  ModelID id;
+  ModelID id = 0;
   auto iter =
     std::find_if(_dev->models.begin(), _dev->models.end(),
                  [&](const std::pair<const ModelID, std::unique_ptr<TrixModelInfo>> &p) {
@@ -264,7 +264,7 @@ NpuStatus TrixBackend::createRequest(NpuContext *ctx, ModelID modelId, RequestID
     return NPU_STATUS_ERROR_INVALID_MODEL;
   }
 
-  int id;
+  int id = 0;
   npudev_h handle = _dev->handles.at(ctx->defaultCore);
   if (createNPU_request(handle, modelId, &id) < 0)
   {
