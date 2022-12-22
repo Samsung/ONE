@@ -142,19 +142,20 @@ gboolean DBus::on_handle_buffers_create(NpudCore *object, GDBusMethodInvocation 
   // TODO Invoke Core function.
   int ret = -1;
 
-  GVariantBuilder *builder;
-  builder = g_variant_builder_new(G_VARIANT_TYPE("a(itu)"));
-  if (ret == 0)
-  {
-    for (auto i = 0; i < bufs.numBuffers; ++i)
-    {
-      VERBOSE(DBus) << "out [" << index << "] Type: " << bufs.buffers[i].type
-                    << ", Addr: " << bufs.buffers[i].addr << ", Size: " << bufs.buffers[i].size
-                    << std::endl;
-      g_variant_builder_add(builder, "(itu)", bufs.buffers[i].type, bufs.buffers[i].addr,
-                            bufs.buffers[i].size);
-    }
-  }
+  GVariantBuilder *builder = g_variant_builder_new(G_VARIANT_TYPE("a(itu)"));
+
+  // TODO Enable below code when we can update ret value by core function
+  // if (ret == 0)
+  // {
+  //   for (auto i = 0; i < bufs.numBuffers; ++i)
+  //   {
+  //     VERBOSE(DBus) << "out [" << index << "] Type: " << bufs.buffers[i].type
+  //                   << ", Addr: " << bufs.buffers[i].addr << ", Size: " << bufs.buffers[i].size
+  //                   << std::endl;
+  //     g_variant_builder_add(builder, "(itu)", bufs.buffers[i].type, bufs.buffers[i].addr,
+  //                           bufs.buffers[i].size);
+  //   }
+  // }
   npud_core_complete_buffers_create(object, invocation, g_variant_builder_end(builder), ret);
   return TRUE;
 }
