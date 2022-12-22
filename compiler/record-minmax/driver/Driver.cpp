@@ -20,6 +20,7 @@
 #include <vconone/vconone.h>
 
 #include <luci/UserSettings.h>
+#include <luci/Log.h>
 
 void print_version(void)
 {
@@ -30,6 +31,8 @@ void print_version(void)
 int entry(const int argc, char **argv)
 {
   using namespace record_minmax;
+
+  LOGGER(l);
 
   arser::Arser arser(
     "Embedding min/max values of activations to the circle model for post-training quantization");
@@ -105,7 +108,7 @@ int entry(const int argc, char **argv)
     num_threads = arser.get<int>("--num_threads");
 
   if (num_threads < 1)
-    throw std::runtime_error("The number of threads must be greater than zero\n");
+    throw std::runtime_error("The number of threads must be greater than zero");
 
   if (arser["--max_percentile"])
     max_percentile = arser.get<float>("--max_percentile");
@@ -127,7 +130,7 @@ int entry(const int argc, char **argv)
   // TODO: support parallel record for profile with random data
   if (num_threads > 1 and not arser["--input_data"])
   {
-    throw std::runtime_error("Parallel recording is used only for h5 now\n");
+    throw std::runtime_error("Input data must be given for parallel recording");
   }
 
   // Initialize interpreter and observer
@@ -150,7 +153,7 @@ int entry(const int argc, char **argv)
         rmm.profileData(mode, input_data_path, min_percentile, max_percentile);
       else
       {
-        std::cout << "Using parallel recording" << std::endl;
+        INFO(l) << "Using parallel recording" << std::endl;
         rmm.profileDataInParallel(mode, input_data_path, min_percentile, max_percentile);
       }
     }

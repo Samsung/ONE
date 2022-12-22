@@ -22,6 +22,7 @@
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
 #include <luci/IR/CircleQuantParam.h>
+#include <luci/Log.h>
 #include <dio_hdf5/HDF5Importer.h>
 
 #include <dirent.h>
@@ -38,6 +39,16 @@ using DataType = loco::DataType;
 
 namespace
 {
+// Max h5 file size for parallel recording in bytes = 1 GB
+const long h5_max_size_bytes = 1000000000;
+
+long getH5FileSize(const std::string &input_data_path)
+{
+  std::ifstream in_file(input_data_path, std::ios::binary);
+  in_file.seekg(0, std::ios::end);
+
+  return in_file.tellg();
+}
 
 uint32_t numElements(const luci::CircleNode *node)
 {
@@ -476,20 +487,37 @@ void RecordMinMax::profileDataInParallel(const std::string &mode,
                                          const std::string &input_data_path, float min_percentile,
                                          float max_percentile)
 {
+  LOGGER(l);
+
   assert(_interpreters.size() == _threads_size);
   assert(_observers.size() == _threads_size);
-  const auto vector_input_data = importH5Data(input_data_path);
+
+  const long h5_file_size = getH5FileSize(input_data_path);
+
+  std::cout << "File size = " << h5_file_size << std::endl;
+
+  if (h5_file_size > h5_max_size_bytes)
+    throw std::runtime_error("H5 file size is too large");
+
+  std::vector<std::vector<std::vector<char>>> vector_input_data;
+  try
+  {
+    vector_input_data = importH5Data(input_data_path);
+  }
+  catch (const std::bad_alloc &e)
+  {
+    throw std::runtime_error("Out of memory during h5 data load.");
+  }
+
   const auto num_records = vector_input_data.size();
   const auto input_nodes = loco::input_nodes(_module->graph());
 
   // Start parallel part
-  std::cout << _threads_size << " concurrent threads are supported.\n";
+  INFO(l) << _threads_size << " concurrent threads are supported." << std::endl;
 
-  if (num_records < _threads_size)
-  {
-    _threads_size = num_records;
-  }
-  uint32_t records_batch = static_cast<int>(num_records / _threads_size);
+  const auto run_threads = num_records < _threads_size ? num_records : _threads_size;
+
+  const auto records_batch = static_cast<uint32_t>(num_records / run_threads);
 
   auto interpret_batch = [&vector_input_data,
                           &input_nodes](int first_record, int last_record,
@@ -508,9 +536,9 @@ void RecordMinMax::profileDataInParallel(const std::string &mode,
   };
 
   std::vector<std::thread> threads;
-  for (uint32_t t = 0; t < _threads_size; ++t)
+  for (uint32_t t = 0; t < run_threads; ++t)
   {
-    if (t < _threads_size - 1)
+    if (t < run_threads - 1)
     {
       threads.emplace_back(interpret_batch, records_batch * t, records_batch * (t + 1),
                            _interpreters[t].get());
@@ -521,7 +549,7 @@ void RecordMinMax::profileDataInParallel(const std::string &mode,
     }
   }
 
-  for (uint32_t i = 0; i < _threads_size; ++i)
+  for (uint32_t i = 0; i < run_threads; ++i)
     threads.at(i).join();
 
   // End parallel part
