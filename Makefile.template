@@ -1,3 +1,5 @@
+#!/usr/bin/make -f
+
 HOST_ARCH?=$(shell uname -m)
 TARGET_ARCH?=$(shell uname -m)
 BUILD_TYPE?=Debug
@@ -133,7 +135,7 @@ create_acl_tar: acl_tar_internal
 $(WORKSPACE):
 	mkdir -p $@
 
-configure_internal: $(WORKSPACE) 
+configure_internal: $(WORKSPACE)
 ifneq ($(DEBIAN_BUILD),)
 	test -d externals || mkdir -p externals
 	find packaging/ -type f -name "*.tar.gz" | xargs -i tar xf {} -C externals
@@ -163,7 +165,7 @@ acl_tar_internal: configure_internal
 
 install_acl_internal:
 # Workaround to install acl for test (ignore error when there is no file to copy)
-	cp $(OVERLAY_FOLDER)/lib/libarm_compute*.so $(INSTALL_ALIAS)/lib || true	
+	cp $(OVERLAY_FOLDER)/lib/libarm_compute*.so $(INSTALL_ALIAS)/lib || true
 
 install_all_internal: install_internal install_acl_internal
 
