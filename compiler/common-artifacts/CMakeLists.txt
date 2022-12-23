@@ -91,7 +91,7 @@ set(TEST_RECIPE_FILENAME "test.recipe")
 set(TEST_RULE_FILENAME "test.rule")
 set(TEST_QCONFIG_FILENAME "test.qconf.json")
 
-set(MODEL2NNPKG "${NNAS_PROJECT_SOURCE_DIR}/tools/nnpackage_tool/model2nnpkg/model2nnpkg.sh")
+set(MODEL2NNPKG "${NNAS_PROJECT_SOURCE_DIR}/tools/nnpackage_tool/model2nnpkg/model2nnpkg.py")
 # Get test case list
 unset(RECIPES)
 file(GLOB TFLITE_SUBDIR RELATIVE ${TFLITE_RECIPE_REPO} ${TFLITE_RECIPE_REPO}/*)
@@ -275,7 +275,7 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   list(APPEND TEST_DEPS ${NNPKG_DIR})
 
   add_custom_command(OUTPUT ${NNPKG_MODEL}
-    COMMAND ${MODEL2NNPKG} ${MODEL_PATH}
+    COMMAND ${PYTHON_EXECUTABLE} ${MODEL2NNPKG} -m ${MODEL_PATH}
     DEPENDS ${MODEL2NNPKG} ${MODEL_PATH} ${NNPKG_DIR}
     COMMENT "Generate ${RECIPE} nnpackage"
   )
