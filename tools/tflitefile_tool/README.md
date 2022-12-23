@@ -121,14 +121,21 @@ Output tensor(s): [7]
 Append subgraphs, orginal index :  0 , new index :  0
 
 $ cat m1.json
-{"org-model": {"inputs": {"org": [88], "new": [81]}, "outputs": {"org": [87], "new": [-1]}}, "new-model": {"inputs": {"org": [88], "new": [81]}, "outputs": {"org": [50], "new": [44]}}}
+{"org-model-io": {"inputs": {"new-indices": [81]}, "outputs": {"new-indices": [-1]}}, "new-model-io": {"inputs": {"org-indices": [88], "new-indices": [81]}, "outputs": {"org-indices": [50], "new-indices": [44]}}}
 
 $ cat m2.json
-{"org-model": {"inputs": {"org": [88], "new": [-1]}, "outputs": {"org": [87], "new": [7]}}, "new-model": {"inputs": {"org": [50], "new": [6]}, "outputs": {"org": [87], "new": [7]}}}
+{"org-model-io": {"inputs": {"new-indices": [-1]}, "outputs": {"new-indices": [7]}}, "new-model-io": {"inputs": {"org-indices": [50], "new-indices": [6]}, "outputs": {"org-indices": [87], "new-indices": [7]}}}
 
 ```
+The meaning of `m1.json` above is as follows:
+- original model has 1 input and 1 output
+  - The only input is located at tensors[81] from new model.
+  - The only output has new-index -1, which means it is not in new-model.
+- new-model has 1 input and 1 output
+  - The only input was located at tensors[88] from org model, and it is located at tensors[81] from new model.
+  - The only output was located at tensors[50] from org model, and it is located at tensors[44] from new model.
 
-With the model files and inputs/outputs infomation files generated above, you can use `model2nnpkg.sh` to create nnpkg for multi-model.
+With the model files and inputs/outputs infomation files generated above, you can use `model2nnpkg.py` to create nnpkg for multi-model.
 
 ## Colaboration model parser and model generator
 
