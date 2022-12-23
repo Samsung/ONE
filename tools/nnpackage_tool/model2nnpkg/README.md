@@ -7,13 +7,13 @@ It takes `modelfile` as input and generates `nnpackage`.
 ## Usage
 
 ```
-usage:  model2nnpkg [options]
+usage:  model2nnpkg.py [options]
   Examples:
-      model2nnpkg -m add.tflite                           => create nnpkg "add" in current directory
-      model2nnpkg -o out -m add.tflite                    => create nnpkg "add" in out/
-      model2nnpkg -o out -p addpkg -m add.tflite          => create nnpkg "addpkg" in out/
-      model2nnpkg -c add.cfg -m add.tflite                => create nnpkg "add" with add.cfg
-      model2nnpkg -o out -p addpkg -m a1.tflite a2.tflite => create nnpkg "addpkg" with models a1.tflite and a2.tflite in out/
+      model2nnpkg.py -m add.tflite                           => create nnpkg "add" in current directory
+      model2nnpkg.py -o out -m add.tflite                    => create nnpkg "add" in out/
+      model2nnpkg.py -o out -p addpkg -m add.tflite          => create nnpkg "addpkg" in out/
+      model2nnpkg.py -c add.cfg -m add.tflite                => create nnpkg "add" with add.cfg
+      model2nnpkg.py -o out -p addpkg -m a1.tflite a2.tflite => create nnpkg "addpkg" with models a1.tflite and a2.tflite in out/
 
 
 Convert model files (tflite, circle or tvn) to nnpkg.
