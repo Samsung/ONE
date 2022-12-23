@@ -9,6 +9,8 @@ target_link_libraries(circle-mpqsolver safemain)
 target_link_libraries(circle-mpqsolver luci_lang)
 target_link_libraries(circle-mpqsolver luci_service)
 target_link_libraries(circle-mpqsolver luci_pass)
+target_link_libraries(circle-mpqsolver luci_interpreter)
+target_link_libraries(circle-mpqsolver dio_hdf5)
 
 install(TARGETS circle-mpqsolver DESTINATION bin)
 
@@ -27,4 +29,3 @@ GTest_AddTest(circle_mpqsolver_test ${TESTS} ${TEST_SOURCES})
 target_link_libraries(circle_mpqsolver_test luci_lang)
 target_link_libraries(circle_mpqsolver_test luci_service)
 target_link_libraries(circle_mpqsolver_test luci_pass)
-
