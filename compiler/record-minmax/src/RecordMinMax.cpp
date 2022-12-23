@@ -39,6 +39,7 @@ using DataType = loco::DataType;
 
 namespace
 {
+
 // Max h5 file size for parallel recording in bytes = 1 GB
 const long h5_max_size_bytes = 1000000000;
 
@@ -494,10 +495,8 @@ void RecordMinMax::profileDataInParallel(const std::string &mode,
 
   const long h5_file_size = getH5FileSize(input_data_path);
 
-  std::cout << "File size = " << h5_file_size << std::endl;
-
   if (h5_file_size > h5_max_size_bytes)
-    throw std::runtime_error("H5 file size is too large");
+    throw std::runtime_error("H5 file size is too large for parallel recording");
 
   std::vector<std::vector<std::vector<char>>> vector_input_data;
   try

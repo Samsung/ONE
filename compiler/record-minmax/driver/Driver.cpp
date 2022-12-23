@@ -20,6 +20,8 @@
 #include <vconone/vconone.h>
 
 #include <luci/UserSettings.h>
+
+// TODO declare own log signature of record-minmax
 #include <luci/Log.h>
 
 void print_version(void)
@@ -143,7 +145,7 @@ int entry(const int argc, char **argv)
     // TODO: support parallel record from file and dir input data format
     if (num_threads > 1 and not(input_data_format == "h5") and not(input_data_format == "hdf5"))
     {
-      throw std::runtime_error("Parallel recording is used only for h5 now\n");
+      throw std::runtime_error("Parallel recording is used only for h5 now");
     }
 
     if (input_data_format == "h5" || input_data_format == "hdf5")
