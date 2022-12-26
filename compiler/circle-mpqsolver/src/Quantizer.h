@@ -33,12 +33,11 @@ using LayerParams = std::vector<std::shared_ptr<LayerParam>>;
 class Quantizer final
 {
 public:
-  static std::unique_ptr<luci::Module>
-  quantize(const luci::Module *flt_module, const std::string &def_quant, LayerParams &layer_params);
+  static bool quantize(luci::Module *flt_module, const std::string &def_quant,
+                       LayerParams &layer_params);
 
-  static std::unique_ptr<luci::Module> fake_quantize(const luci::Module *flt_module,
-                                                     const std::string &def_quant,
-                                                     LayerParams &layer_params);
+  static bool fake_quantize(luci::Module *flt_module, const std::string &def_quant,
+                            LayerParams &layer_params);
 };
 
 } // namespace mpqsolver

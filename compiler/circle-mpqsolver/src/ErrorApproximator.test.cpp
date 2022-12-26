@@ -42,6 +42,7 @@ protected:
     qparam->min.assign(_channel_size, _a_min);
     qparam->max.assign(_channel_size, _a_max);
     ci_input->quantparam(std::move(qparam));
+    ci_input->shape_status(luci::ShapeStatus::VALID);
   }
 
   loco::Node *insertGraphBody(loco::Node *input) override

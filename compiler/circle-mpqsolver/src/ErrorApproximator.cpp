@@ -222,23 +222,59 @@ bool get_shape(const CircleNode *circle_node, std::vector<uint32_t> &shape)
   return false;
 }
 
+const CircleNode *get_activation_node(const CircleNode *node)
+{
+  // only convolutions are considered currently, so just one input
+  auto preds = loco::preds(node);
+  for (const auto &pred : preds)
+  {
+    auto cur_node = loco::must_cast<const CircleNode *>(pred);
+    if (cur_node->opcode() != CircleOpcode::CIRCLECONST)
+    {
+      return cur_node;
+    }
+  }
+  return nullptr;
+}
+
+uint32_t get_stride_multiplier(const CircleNode *node)
+{
+  uint32_t mult = 1;
+  if (node->opcode() == CircleOpcode::DEPTHWISE_CONV_2D)
+  {
+    auto dconv = loco::must_cast<const CircleDepthwiseConv2D *>(node);
+    auto stride = dconv->stride();
+    mult *= (stride->h() * stride->w());
+  }
+  else if (node->opcode() == CircleOpcode::CONV_2D)
+  {
+    auto nconv = loco::must_cast<const CircleConv2D *>(node);
+    auto stride = nconv->stride();
+    mult *= (stride->h() * stride->w());
+  }
+  else if (node->opcode() == CircleOpcode::TRANSPOSE_CONV)
+  {
+    auto nconv = loco::must_cast<const CircleTransposeConv *>(node);
+    auto stride = nconv->stride();
+    mult *= (stride->h() * stride->w());
+  }
+
+  return mult;
+}
+
 uint32_t get_computations_per_channel(const CircleNode *node)
 {
   uint32_t computations_per_channel = 1;
   std::vector<uint32_t> cir_shape;
   // size of activation map
-  if (get_shape(node, cir_shape))
+  auto activation = get_activation_node(node);
+  assert(activation != nullptr);
+  if (get_shape(activation, cir_shape))
   {
     for (uint32_t index = 0; index < cir_shape.size(); index++)
     {
       computations_per_channel *= cir_shape[index];
     }
-  }
-
-  // for depthwise convolution computation of output layer needs just single input layer
-  if (node->opcode() == CircleOpcode::DEPTHWISE_CONV_2D)
-  {
-    computations_per_channel /= cir_shape.back();
   }
 
   if (auto weights = loco::must_cast<CircleNode *>(get_weight(node)))
@@ -250,7 +286,9 @@ uint32_t get_computations_per_channel(const CircleNode *node)
     }
   }
 
-  return computations_per_channel;
+  uint32_t stride_mult = get_stride_multiplier(node);
+
+  return computations_per_channel / stride_mult;
 }
 
 void get_min_max_activation_values(const CircleNode *node, float &ci_min, float &ci_max)

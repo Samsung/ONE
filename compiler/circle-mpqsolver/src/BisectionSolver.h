@@ -49,7 +49,7 @@ public:
   BisectionSolver(const std::string &input_data_path, float qerror_ratio);
   ~BisectionSolver() = default;
 
-  std::unique_ptr<luci::Module> run(const luci::Module *in_module);
+  std::unique_ptr<luci::Module> run(const std::string &path);
 
 private:
   std::string _input_data_path;

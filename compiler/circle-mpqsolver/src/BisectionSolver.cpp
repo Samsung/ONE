@@ -16,11 +16,12 @@
 
 #include "BisectionSolver.h"
 #include "ErrorApproximator.h"
-#include "ModuleCloner.h"
 #include "Evaluator.h"
 #include "Quantizer.h"
 #include "DepthParameterizer.h"
 
+#include <luci/ImporterEx.h>
+#include <luci/Importer.h>
 #include <luci/Log.h>
 
 #include <cmath>
@@ -77,17 +78,30 @@ private:
 void BisectionOptionsImpl::enable(Q16AtInput q16AtInput) { _q16AtInput = q16AtInput; }
 bool BisectionOptionsImpl::query(Q16AtInput q16AtInput) { return _q16AtInput == q16AtInput; }
 
-float evaluate(const DatasetEvaluator &evaluator, const luci::Module *flt_module,
+std::unique_ptr<luci::Module> read_module(const std::string &path)
+{
+  luci::ImporterEx importerex;
+  auto module = importerex.importVerifyModule(path);
+  if (module.get() == nullptr)
+  {
+    std::cerr << "Failed to load " << path << std::endl;
+    return nullptr;
+  }
+
+  return module;
+}
+
+float evaluate(const DatasetEvaluator &evaluator, const std::string &flt_path,
                const std::string &def_quant, LayerParams layers)
 {
+  auto model = read_module(flt_path);
   // get fake quantized model for evaluation
-  auto fq_model = Quantizer::fake_quantize(flt_module, def_quant, layers);
-  if (!fq_model)
+  if (!Quantizer::fake_quantize(model.get(), def_quant, layers))
   {
     throw std::runtime_error("Failed to produce fake-quantized model.");
   }
 
-  return evaluator.evaluate(fq_model.get());
+  return evaluator.evaluate(model.get());
 }
 
 } // namespace
@@ -107,27 +121,28 @@ BisectionSolver::Options *BisectionSolver::options(void)
   return _options.get();
 }
 
-std::unique_ptr<luci::Module> BisectionSolver::run(const luci::Module *in_module)
+std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &flt_model_path)
 {
   LOGGER(l);
+
+  auto module = read_module(flt_model_path);
 
   float min_depth = 0.f;
   float max_depth = 0.f;
   NodeDepthType nodes_depth;
-  if (DepthParameterizer::compute_depth(in_module, nodes_depth, min_depth, max_depth) !=
+  if (DepthParameterizer::compute_depth(module.get(), nodes_depth, min_depth, max_depth) !=
       EXIT_SUCCESS)
   {
     std::cerr << "Invalid graph for bisectioning" << std::endl;
     return nullptr;
   }
 
-  DatasetEvaluator evaluator(in_module, _input_data_path);
-  // const auto &ref_output = compute_outputs(module.get(), _input_data_path);
+  DatasetEvaluator evaluator(module.get(), _input_data_path);
   LayerParams layer_params;
-  float int16_qerror = evaluate(evaluator, in_module, "int16", layer_params);
+  float int16_qerror = evaluate(evaluator, flt_model_path, "int16", layer_params);
   VERBOSE(l, 0) << "int16_quantization_error " << int16_qerror << std::endl;
 
-  float int8_qerror = evaluate(evaluator, in_module, "uint8", layer_params);
+  float int8_qerror = evaluate(evaluator, flt_model_path, "uint8", layer_params);
   VERBOSE(l, 0) << "int8_quantization_error " << int8_qerror << std::endl;
 
   _qerror = int16_qerror + _qerror_ratio * std::fabs(int8_qerror - int16_qerror);
@@ -141,13 +156,18 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const luci::Module *in_module
   if (int8_qerror < _qerror)
   {
     // no need for bisectioning just return Q8 model
-    return Quantizer::quantize(in_module, "uint8", layer_params);
+    if (!Quantizer::quantize(module.get(), "uint8", layer_params))
+    {
+      return nullptr;
+    }
+
+    return module;
   }
 
   int last_depth = -1;
   float best_depth = -1;
   LayerParams best_params;
-  auto graph = in_module->graph(0);
+  auto graph = module->graph(0);
   auto active_nodes = loco::active_nodes(loco::output_nodes(graph));
   // input and output nodes are not valid for quantization, so let's remove them
   for (auto node : loco::input_nodes(graph))
@@ -214,7 +234,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const luci::Module *in_module
       }
     }
 
-    float cur_accuracy = evaluate(evaluator, in_module, "uint8", layer_params);
+    float cur_accuracy = evaluate(evaluator, flt_model_path, "uint8", layer_params);
     VERBOSE(l, 0) << cut_depth << " : " << cur_accuracy << std::endl;
 
     if (cur_accuracy < _qerror)
@@ -236,5 +256,10 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const luci::Module *in_module
   }
 
   VERBOSE(l, 0) << "Found the best configuration at " << best_depth << " depth." << std::endl;
-  return Quantizer::quantize(in_module, "uint8", best_params);
+  if (!Quantizer::quantize(module.get(), "uint8", best_params))
+  {
+    return nullptr;
+  }
+
+  return module;
 }

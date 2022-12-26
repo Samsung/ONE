@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include "Evaluator.h"
-#include "ModuleCloner.h"
 
 #include <luci_interpreter/Interpreter.h>
 
@@ -39,8 +39,6 @@ template <typename NodeT> size_t get_tensor_size(const NodeT *node)
     tensor_size *= node->dim(i).value();
   return tensor_size;
 }
-
-} // namespace
 
 DatasetOutput compute_outputs(const luci::Module *module, const std::string &h5file)
 {
@@ -104,6 +102,8 @@ DatasetOutput compute_outputs(const luci::Module *module, const std::string &h5f
 
   return dataset_output;
 }
+
+} // namespace
 
 DatasetEvaluator::DatasetEvaluator(const luci::Module *ref_module, const std::string &h5file)
   : _ref_module(ref_module), _h5file(h5file)

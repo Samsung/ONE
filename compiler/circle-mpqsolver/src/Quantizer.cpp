@@ -15,7 +15,6 @@
  */
 
 #include "Quantizer.h"
-#include "ModuleCloner.h"
 #include <luci/Service/Validate.h>
 
 #include <iostream>
@@ -27,17 +26,12 @@ using Algorithms = luci::CircleQuantizer::Options::Algorithm;
 namespace mpqsolver
 {
 
-std::unique_ptr<luci::Module> create_fake_quantized_module(const luci::Module *in_module)
+bool make_model_fake_quantized(luci::Module *module)
 {
   luci::CircleQuantizer quantizer;
 
   auto options = quantizer.options();
   options->enable(Algorithms::ConvertToFakeQuantizedModel);
-  std::unique_ptr<luci::Module> module = ModuleCloner::clone(in_module);
-  if (!module)
-  {
-    return nullptr;
-  }
 
   for (size_t idx = 0; idx < module->size(); ++idx)
   {
@@ -46,19 +40,21 @@ std::unique_ptr<luci::Module> create_fake_quantized_module(const luci::Module *i
     quantizer.quantize(graph);
     if (!luci::validate(graph))
     {
-      return nullptr;
+      return false;
     }
   }
 
-  return module;
+  return true;
 }
 
 } // namespace mpqsolver
 
-std::unique_ptr<luci::Module> Quantizer::quantize(const luci::Module *flt_module,
-                                                  const std::string &def_quant,
-                                                  LayerParams &layer_params)
+bool Quantizer::quantize(luci::Module *module, const std::string &def_quant,
+                         LayerParams &layer_params)
 {
+  if (!module)
+    return false;
+
   static const std::string default_dtype = "float32";
   static const std::string input_dtype = "uint8";
   static const std::string output_dtype = "uint8";
@@ -85,15 +81,8 @@ std::unique_ptr<luci::Module> Quantizer::quantize(const luci::Module *flt_module
     catch (const std::runtime_error &e)
     {
       std::cerr << e.what() << '\n';
-      return nullptr;
+      return false;
     }
-  }
-
-  std::unique_ptr<luci::Module> module = ModuleCloner::clone(flt_module);
-  if (!module)
-  {
-    std::cerr << "ERROR: Failed to clone module" << std::endl;
-    return nullptr;
   }
 
   for (size_t idx = 0; idx < module->size(); ++idx)
@@ -104,17 +93,21 @@ std::unique_ptr<luci::Module> Quantizer::quantize(const luci::Module *flt_module
     if (!luci::validate(graph))
     {
       std::cerr << "ERROR: Quantized graph is invalid" << std::endl;
-      return nullptr;
+      return false;
     }
   }
 
-  return module;
+  return true;
 }
 
-std::unique_ptr<luci::Module> Quantizer::fake_quantize(const luci::Module *flt_module,
-                                                       const std::string &def_quant,
-                                                       LayerParams &layer_params)
+bool Quantizer::fake_quantize(luci::Module *module, const std::string &def_quant,
+                              LayerParams &layer_params)
 {
-  auto quantized = quantize(flt_module, def_quant, layer_params);
-  return create_fake_quantized_module(quantized.get());
+  if (!quantize(module, def_quant, layer_params))
+    return false;
+
+  if (!make_model_fake_quantized(module))
+    return false;
+
+  return true;
 }

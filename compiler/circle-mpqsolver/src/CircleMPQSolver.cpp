@@ -19,8 +19,6 @@
 #include <arser/arser.h>
 #include <vconone/vconone.h>
 
-#include <luci/ImporterEx.h>
-#include <luci/Importer.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
 
@@ -39,7 +37,6 @@ int entry(int argc, char **argv)
   const std::string bisection_str = "--bisection";
 
   arser::Arser arser("circle-mpqsolver provides circle_model mixed precision quantization");
-
 
   arser::Helper::add_version(arser, print_version);
   arser::Helper::add_verbose(arser);
@@ -96,15 +93,6 @@ int entry(int argc, char **argv)
   }
   auto start = std::chrono::high_resolution_clock::now();
 
-  // Load input model
-  luci::ImporterEx importerex;
-  auto module = importerex.importVerifyModule(input_model_path);
-  if (module.get() == nullptr)
-  {
-    std::cerr << "Failed to load " << input_model_path << std::endl;
-    return EXIT_FAILURE;
-  }
-
   // optimize
   mpqsolver::BisectionSolver solver(data_path, qerror_ratio);
   {
@@ -128,7 +116,7 @@ int entry(int argc, char **argv)
     }
   }
 
-  auto optimized = solver.run(module.get());
+  auto optimized = solver.run(input_model_path);
   if (optimized == nullptr)
   {
     std::cerr << "Failed to build mixed precision model" << input_model_path << std::endl;
