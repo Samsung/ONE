@@ -159,8 +159,8 @@ TEST_F(ReplaceNonConstFCWithBatchMatMulPassTest, simple_test)
   auto ret = pass.run(g.g());
   EXPECT_EQ(true, ret);
 
-  auto mm = dynamic_cast<luci::CircleBatchMatMul *>(g.output()->from());
-  EXPECT_NE(nullptr, mm);
+  auto res = dynamic_cast<luci::CircleReshape *>(g.output()->from());
+  EXPECT_NE(nullptr, res);
 }
 
 TEST_F(ReplaceNonConstFCWithBatchMatMulPassTest, nonzero_bias_test)
