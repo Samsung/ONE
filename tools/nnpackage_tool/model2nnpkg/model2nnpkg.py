@@ -100,7 +100,7 @@ def _get_args():
 
 
 def _generate_manifest(args):
-    config_list = ''
+    config_list = [""]
     if args.config:
         config_list = [os.path.basename(e) for e in args.config]
     models_list = [os.path.basename(e) for e in args.models]
