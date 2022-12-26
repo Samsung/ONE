@@ -90,11 +90,12 @@ def _get_args():
         description='Convert model files (tflite, circle or tvn) to nnpkg.',
         usage=''' %(prog)s [options]
   Examples:
-      %(prog)s -m add.tflite                                              => create nnpkg "add" in current directory
-      %(prog)s -o out -m add.tflite                                       => create nnpkg "add" in out/
-      %(prog)s -o out -p addpkg -m add.tflite                             => create nnpkg "addpkg" in out/
-      %(prog)s -c add.cfg -m add.tflite                                   => create nnpkg "add" with add.cfg
-      %(prog)s -o out -p addpkg -m a1.tflite a2.tflite -i a1.json a2.json => create nnpkg "addpkg" with models a1.tflite and a2.tflite in out/
+      %(prog)s -m add.tflite                           => create nnpkg "add" in current directory
+      %(prog)s -o out -m add.tflite                    => create nnpkg "add" in out/
+      %(prog)s -o out -p addpkg -m add.tflite          => create nnpkg "addpkg" in out/
+      %(prog)s -c add.cfg -m add.tflite                => create nnpkg "add" with add.cfg
+      %(prog)s -o out -p addpkg -m a1.tflite a2.tflite -i a1.json a2.json
+        => create nnpkg "addpkg" with models a1.tflite and a2.tflite in out/
   ''')
     parser.add_argument(
         '-o',
