@@ -8,6 +8,7 @@ test:
       - /runtime/libs/misc
       - /runtime/libs/ndarray
       - /runtime/onert
+      - /runtime/service/npud/tests
       - /tests/nnfw_api
 
     testFile:
