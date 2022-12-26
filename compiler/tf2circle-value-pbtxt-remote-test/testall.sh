@@ -102,7 +102,7 @@ while [[ $# -ne 0 ]]; do
       --post-arg "${WORKDIR}/${PREFIX}.expected.h5"
 
     # Generate nnpackage model
-    "${MODEL2NNPKG_PATH}" -o "${WORKDIR}" "${WORKDIR}/${PREFIX}.circle"
+    "${MODEL2NNPKG_PATH}" -o "${WORKDIR}" -m "${WORKDIR}/${PREFIX}.circle"
 
     # Copy h5 files into nnpackage
     mkdir -p "${WORKDIR}/${PREFIX}/metadata/tc"
