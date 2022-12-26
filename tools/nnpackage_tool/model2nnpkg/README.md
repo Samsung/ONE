@@ -9,16 +9,16 @@ It takes `modelfile` as input and generates `nnpackage`.
 ```
 usage:  model2nnpkg.py [options]
   Examples:
-      model2nnpkg.py -m add.tflite                           => create nnpkg "add" in current directory
-      model2nnpkg.py -o out -m add.tflite                    => create nnpkg "add" in out/
-      model2nnpkg.py -o out -p addpkg -m add.tflite          => create nnpkg "addpkg" in out/
-      model2nnpkg.py -c add.cfg -m add.tflite                => create nnpkg "add" with add.cfg
-      model2nnpkg.py -o out -p addpkg -m a1.tflite a2.tflite => create nnpkg "addpkg" with models a1.tflite and a2.tflite in out/
+      model2nnpkg.py -m add.tflite                                              => create nnpkg "add" in current directory
+      model2nnpkg.py -o out -m add.tflite                                       => create nnpkg "add" in out/
+      model2nnpkg.py -o out -p addpkg -m add.tflite                             => create nnpkg "addpkg" in out/
+      model2nnpkg.py -c add.cfg -m add.tflite                                   => create nnpkg "add" with add.cfg
+      model2nnpkg.py -o out -p addpkg -m a1.tflite a2.tflite -i a1.json a2.json => create nnpkg "addpkg" with models a1.tflite and a2.tflite in out/
 
 
 Convert model files (tflite, circle or tvn) to nnpkg.
 
-options:
+optional arguments:
   -h, --help            show this help message and exit
   -o output_directory, --outdir output_directory
                         set nnpkg output directory
@@ -28,6 +28,8 @@ options:
                         provide configuration files
   -m model [model ...], --models model [model ...]
                         provide model files
+  -i io_info [io_info ...], --io-info io_info [io_info ...]
+                        provide io info
 ```
 
 ## Usage (To be deprecated)
