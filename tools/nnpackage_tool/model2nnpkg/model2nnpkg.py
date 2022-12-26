@@ -130,7 +130,7 @@ def main():
     manifest = _generate_manifest(args)
     manifest_path = os.path.join(nnpkg_path, 'metadata', 'MANIFEST')
     with open(manifest_path, "w") as json_file:
-        json.dump(manifest, json_file, indent=2)
+        json_file.write(f'{json.dumps(manifest, indent=2)}\n')
 
     # copy models and configurations
     for i in range(len(args.models)):
