@@ -88,6 +88,55 @@ opcodelist.txt test.tflite -g 1
 
 Above selects operator index 11, 12, 13 in subgraph 1
 
+### Generating separate models for multi-model from a model file by using model generator here
+
+To make one model multi-model, separate models and inputs/outputs information of each model are required.
+So run model generator with the option `--store-io-info`
+
+#### How to use
+
+```
+./select_operator.py <base model file> <opcode list txt file> <output file name> --store-io-info <output json file name>
+```
+
+#### Example
+
+This example generates one model into two separate models.
+
+```
+$ cat 0-26.txt
+0-26
+
+$ cat 27-30.txt
+27-30
+
+$ ./tools/tflitefile_tool/select_operator.py mobilenet_v1_1.0_224.tflite 0-26.txt m1.tflite --store-io-info m1.json
+Input tensor(s): [81]
+Output tensor(s): [44]
+Append subgraphs, orginal index :  0 , new index :  0
+
+$ ./tools/tflitefile_tool/select_operator.py mobilenet_v1_1.0_224.tflite 27-30.txt m2.tflite --store-io-info m2.json
+Input tensor(s): [6]
+Output tensor(s): [7]
+Append subgraphs, orginal index :  0 , new index :  0
+
+$ cat m1.json
+{"org-model-io": {"inputs": {"new-indices": [81]}, "outputs": {"new-indices": [-1]}}, "new-model-io": {"inputs": {"org-indices": [88], "new-indices": [81]}, "outputs": {"org-indices": [50], "new-indices": [44]}}}
+
+$ cat m2.json
+{"org-model-io": {"inputs": {"new-indices": [-1]}, "outputs": {"new-indices": [7]}}, "new-model-io": {"inputs": {"org-indices": [50], "new-indices": [6]}, "outputs": {"org-indices": [87], "new-indices": [7]}}}
+
+```
+The meaning of `m1.json` above is as follows:
+- original model has 1 input and 1 output
+  - The only input is located at tensors[81] from new model.
+  - The only output has new-index -1, which means it is not in new-model.
+- new-model has 1 input and 1 output
+  - The only input was located at tensors[88] from org model, and it is located at tensors[81] from new model.
+  - The only output was located at tensors[50] from org model, and it is located at tensors[44] from new model.
+
+With the model files and inputs/outputs infomation files generated above, you can use `model2nnpkg.py` to create nnpkg for multi-model.
+
 ## Colaboration model parser and model generator
 
 1. Get imformation about base model using model parser
