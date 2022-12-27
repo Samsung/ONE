@@ -184,24 +184,8 @@ inception_v3.tflite
 The result of running the inception_v3 model using runtime is as follows. Please consider that this is a test that simply checks execution latency without considering the accuracy of the model.
 
 ```
-$ USE_NNAPI=1 ./Product/out/bin/tflite_run ./inception_v3.tflite
-nnapi function 'ANeuralNetworksModel_create' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_addOperand' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_setOperandValue' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_addOperation' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_identifyInputsAndOutputs' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_finish' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksCompilation_create' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksCompilation_finish' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-input tensor indices = [317,]
-nnapi function 'ANeuralNetworksExecution_create' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksExecution_setInput' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksExecution_setOutput' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksExecution_startCompute' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksEvent_wait' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksEvent_free' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksExecution_free' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-output tensor indices = [316(max:905),]
+$ ./Product/out/bin/onert_run --modelfile ./inception_v3.tflite
+Model Filename ./inception_v3.tflite
 ===================================
 MODEL_LOAD   takes 1.108 ms
 PREPARE      takes 0.190 ms
@@ -211,10 +195,8 @@ EXECUTE      takes 183.895 ms
 - MIN      :  183.895 ms
 - GEOMEAN  :  183.895 ms
 ===================================
-nnapi function 'ANeuralNetworksCompilation_free' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
-nnapi function 'ANeuralNetworksModel_free' is loaded from '/home/sjlee/star/one/Product/x86_64-linux.release/out/bin/../lib/libneuralnetworks.so'
 ```
-Here, `USE_NNAPI=1` means that **ONE** runtime is used for model inference. If omitted, the model will be executed using Tensorflow lite, the basic framework for verification. From the previous build result, you can see that it is the path to the directory where `libneuralnetworks.so` and `libonert_core.so` are located.
+If you use `tflite_run` instead of `onert_run`, the model will be executed using Tensorflow lite, the basic framework for verification. From the previous build result, you can see that it is the path to the directory where `tflite_run` and `onert_run` are located.
 
 If you come here without any problems, you have all of the basic environments for runtime development.
 
