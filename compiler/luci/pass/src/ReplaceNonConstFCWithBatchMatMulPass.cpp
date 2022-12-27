@@ -64,6 +64,40 @@ luci::CircleNode *fromActivation(luci::CircleNode *inp, luci::FusedActFunc act)
   }
 }
 
+// Create CircleReshape where
+// - dtype is same with node
+// - shape is same with node
+// NOTE: User should set input(tensor) of the returned Op.
+luci::CircleReshape *create_reshape(luci::CircleFullyConnected *node)
+{
+  assert(node); // FIX_CALLER_UNLESS
+
+  auto g = node->graph();
+
+  auto reshape = g->nodes()->create<luci::CircleReshape>();
+  reshape->name(node->name() + "/reshape");
+  reshape->dtype(node->dtype());
+  luci::add_origin(reshape, luci::get_origin(node));
+
+  auto shape_const = g->nodes()->create<luci::CircleConst>();
+  shape_const->dtype(loco::DataType::S32);
+  shape_const->rank(1);
+  shape_const->dim(0).set(node->rank());
+  shape_const->size<loco::DataType::S32>(node->rank());
+  for (uint32_t i = 0; i < node->rank(); i++)
+  {
+    assert(node->dim(i).known()); // FIX_CALLER_UNLESS
+    shape_const->at<loco::DataType::S32>(i) = node->dim(i).value();
+  }
+  shape_const->shape_status(luci::ShapeStatus::VALID);
+  shape_const->name(node->name() + "/shape");
+  luci::add_origin(shape_const, luci::get_origin(node));
+
+  reshape->shape(shape_const);
+
+  return reshape;
+}
+
 /**
  *  Replace Fully Connected with Batched MatMul
  *
@@ -79,13 +113,18 @@ luci::CircleNode *fromActivation(luci::CircleNode *inp, luci::FusedActFunc act)
  *
  *              [Node1]  [Node2]
  *                  \      /
- *               [BatchMatMul] [BiasValue]?
+ *               [BatchMatMul]
+ *                      |
+ *                 [Reshape]   [BiasValue]?
  *                        \       /
  *                          [Add]?
  *                            |
  *                       [Activation]?
  *
  * Nodes with "?" denote optional elements
+ * NOTE Reshape Op is inserted to keep the original shape of FullyConnected Op
+ * Reshape Op can be redundant (input shape == output shape). This can be removed
+ * by RemoveUnnecessaryReshapePass.
  */
 bool replace_fc_with_matmul(luci::CircleFullyConnected *fc)
 {
@@ -143,6 +182,9 @@ bool replace_fc_with_matmul(luci::CircleFullyConnected *fc)
 
   luci::add_origin(matmul, luci::get_origin(fc));
 
+  auto reshape = create_reshape(fc);
+  reshape->tensor(matmul);
+
   auto all_zero = [](const luci::CircleConst *c) {
     bool ac = true;
     for (uint32_t i = 0; i < c->size<loco::DataType::FLOAT32>() && ac; i++)
@@ -155,7 +197,7 @@ bool replace_fc_with_matmul(luci::CircleFullyConnected *fc)
   if (nullptr != bc && !all_zero(bc))
   {
     auto bias_add = fc->graph()->nodes()->create<luci::CircleAdd>();
-    bias_add->x(matmul);
+    bias_add->x(reshape);
     bias_add->y(bc);
     bias_add->name(fc->name() + "/bias_add");
     bias_add->dtype(fc->dtype());
@@ -166,7 +208,7 @@ bool replace_fc_with_matmul(luci::CircleFullyConnected *fc)
   else
   {
     // NOTE bias doesn't exist or bias is all zero
-    auto n = fromActivation(matmul, fc->fusedActivationFunction());
+    auto n = fromActivation(reshape, fc->fusedActivationFunction());
     add_origin(n, luci::get_origin(fc));
     n->name(fc->name() + "fusedActivation");
     n->dtype(fc->dtype());
