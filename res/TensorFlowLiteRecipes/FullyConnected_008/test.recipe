@@ -1,0 +1,29 @@
+operand {
+  name: "x"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 4 }
+}
+operand {
+  name: "y"
+  type: FLOAT32
+  shape { dim: 2 dim: 4 }
+}
+operand {
+  name: "out"
+  type: FLOAT32
+  shape { dim: 2 dim: 2 }
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+    keep_num_dims: false
+  }
+  input: "x"
+  input: "y"
+  input: ""
+  output: "out"
+}
+input: "x"
+input: "y"
+output: "out"
