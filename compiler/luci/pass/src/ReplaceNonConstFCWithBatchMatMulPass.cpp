@@ -70,6 +70,8 @@ luci::CircleNode *fromActivation(luci::CircleNode *inp, luci::FusedActFunc act)
 // NOTE: User should set input(tensor) of the returned Op.
 luci::CircleReshape *create_reshape(luci::CircleFullyConnected *node)
 {
+  assert(node); // FIX_CALLER_UNLESS
+
   auto g = node->graph();
 
   auto reshape = g->nodes()->create<luci::CircleReshape>();
