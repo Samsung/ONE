@@ -101,6 +101,15 @@ public:
 
   void dump();
 
+  /**
+   * @brief     Create a lowered model shape inferer map
+   * @param[in] lowered_subgs lowered model subgraph map
+   * @return    Shape inferer map
+   */
+  static std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>>
+  createStaticShapeInferers(
+    const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<LoweredGraph>> &lowered_subgs);
+
 private:
   bool checkDynamicInput(const ir::Operation &op);
   bool checkDynamicOutput(const ir::Operation &op);
