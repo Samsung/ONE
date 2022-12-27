@@ -157,123 +157,71 @@ bool check_perm(const CircleTranspose *t)
 // Elementwise Binary Operator with const
 class EBOWithConstPattern final : public CircleNodeMutableVisitor<bool>
 {
+private:
+  template <typename CIRCLE_OP_PTR> bool has_pattern(CIRCLE_OP_PTR node)
+  {
+    if (auto x = dynamic_cast<luci::CircleConst *>(node->x()))
+    {
+      if (auto y = dynamic_cast<luci::CircleTranspose *>(node->y()))
+      {
+        RETURN_FALSE_UNLESS(check_rank_four(x));
+        RETURN_FALSE_UNLESS(check_perm(y));
+
+        auto new_const = gen_new_const(y, x);
+        assert(new_const); // FIX_ME_UNLESS
+
+        auto new_transpose = create_cloned_transpose(y);
+        assert(new_transpose); // FIX_ME_UNLESS
+
+        // Reconnect network
+        node->x(new_const);
+        node->y(y->a());
+        loco::replace(node).with(new_transpose);
+        new_transpose->a(node);
+
+        // Do shape inference for this node again.
+        node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+        return true;
+      }
+    }
+
+    if (auto y = dynamic_cast<luci::CircleConst *>(node->y()))
+    {
+      if (auto x = dynamic_cast<luci::CircleTranspose *>(node->x()))
+      {
+        RETURN_FALSE_UNLESS(check_rank_four(y));
+        RETURN_FALSE_UNLESS(check_perm(x));
+
+        auto new_const = gen_new_const(x, y);
+        assert(new_const); // FIX_ME_UNLESS
+
+        auto new_transpose = create_cloned_transpose(x);
+        assert(new_transpose); // FIX_ME_UNLESS
+
+        // Reconnect network
+        node->y(new_const);
+        node->x(x->a());
+        loco::replace(node).with(new_transpose);
+        new_transpose->a(node);
+
+        // Do shape inference for this node again.
+        node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 public:
   // Default
   bool visit(luci::CircleNode *) { return false; }
 
-  bool visit(luci::CircleAdd *node)
-  {
-    if (auto x = dynamic_cast<luci::CircleConst *>(node->x()))
-    {
-      if (auto y = dynamic_cast<luci::CircleTranspose *>(node->y()))
-      {
-        RETURN_FALSE_UNLESS(check_rank_four(x));
-        RETURN_FALSE_UNLESS(check_perm(y));
+  bool visit(luci::CircleAdd *node) { return has_pattern(node); }
 
-        auto new_const = gen_new_const(y, x);
-        assert(new_const); // FIX_ME_UNLESS
-
-        auto new_transpose = create_cloned_transpose(y);
-        assert(new_transpose); // FIX_ME_UNLESS
-
-        // Reconnect network
-        node->x(new_const);
-        node->y(y->a());
-        loco::replace(node).with(new_transpose);
-        new_transpose->a(node);
-
-        // Do shape inference for this node again.
-        node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-        return true;
-      }
-    }
-
-    if (auto y = dynamic_cast<luci::CircleConst *>(node->y()))
-    {
-      if (auto x = dynamic_cast<luci::CircleTranspose *>(node->x()))
-      {
-        RETURN_FALSE_UNLESS(check_rank_four(y));
-        RETURN_FALSE_UNLESS(check_perm(x));
-
-        auto new_const = gen_new_const(x, y);
-        assert(new_const); // FIX_ME_UNLESS
-
-        auto new_transpose = create_cloned_transpose(x);
-        assert(new_transpose); // FIX_ME_UNLESS
-
-        // Reconnect network
-        node->y(new_const);
-        node->x(x->a());
-        loco::replace(node).with(new_transpose);
-        new_transpose->a(node);
-
-        // Do shape inference for this node again.
-        node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  bool visit(luci::CircleMul *node)
-  {
-    if (auto x = dynamic_cast<luci::CircleConst *>(node->x()))
-    {
-      if (auto y = dynamic_cast<luci::CircleTranspose *>(node->y()))
-      {
-        RETURN_FALSE_UNLESS(check_rank_four(x));
-        RETURN_FALSE_UNLESS(check_perm(y));
-
-        auto new_const = gen_new_const(y, x);
-        assert(new_const); // FIX_ME_UNLESS
-
-        auto new_transpose = create_cloned_transpose(y);
-        assert(new_transpose); // FIX_ME_UNLESS
-
-        // Reconnect network
-        node->x(new_const);
-        node->y(y->a());
-        loco::replace(node).with(new_transpose);
-        new_transpose->a(node);
-
-        // Do shape inference for this node again.
-        node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-        return true;
-      }
-    }
-
-    if (auto y = dynamic_cast<luci::CircleConst *>(node->y()))
-    {
-      if (auto x = dynamic_cast<luci::CircleTranspose *>(node->x()))
-      {
-        RETURN_FALSE_UNLESS(check_rank_four(y));
-        RETURN_FALSE_UNLESS(check_perm(x));
-
-        auto new_const = gen_new_const(x, y);
-        assert(new_const); // FIX_ME_UNLESS
-
-        auto new_transpose = create_cloned_transpose(x);
-        assert(new_transpose); // FIX_ME_UNLESS
-
-        // Reconnect network
-        node->y(new_const);
-        node->x(x->a());
-        loco::replace(node).with(new_transpose);
-        new_transpose->a(node);
-
-        // Do shape inference for this node again.
-        node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-        return true;
-      }
-    }
-
-    return false;
-  }
+  bool visit(luci::CircleMul *node) { return has_pattern(node); }
 
 private:
   // Return a new const node after Tranpose Op is forwarded
