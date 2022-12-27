@@ -123,6 +123,8 @@ luci::CircleReshape *create_reshape(luci::CircleFullyConnected *node)
  *
  * Nodes with "?" denote optional elements
  * NOTE Reshape Op is inserted to keep the original shape of FullyConnected Op
+ * Reshape Op can be redundant (input shape == output shape). This can be removed
+ * by RemoveUnnecessaryReshapePass.
  */
 bool replace_fc_with_matmul(luci::CircleFullyConnected *fc)
 {
