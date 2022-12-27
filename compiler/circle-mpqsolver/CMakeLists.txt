@@ -3,6 +3,7 @@ file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_executable(circle-mpqsolver "${SOURCES}")
+target_include_directories(circle-mpqsolver PRIVATE src)
 target_link_libraries(circle-mpqsolver arser)
 target_link_libraries(circle-mpqsolver vconone)
 target_link_libraries(circle-mpqsolver safemain)
@@ -11,6 +12,9 @@ target_link_libraries(circle-mpqsolver luci_service)
 target_link_libraries(circle-mpqsolver luci_pass)
 target_link_libraries(circle-mpqsolver luci_interpreter)
 target_link_libraries(circle-mpqsolver dio_hdf5)
+target_link_libraries(circle-mpqsolver luci_import)
+target_link_libraries(circle-mpqsolver luci_export)
+target_link_libraries(circle-mpqsolver luci_log)
 
 install(TARGETS circle-mpqsolver DESTINATION bin)
 
