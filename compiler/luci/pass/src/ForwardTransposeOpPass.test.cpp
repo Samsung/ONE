@@ -119,6 +119,24 @@ public:
   }
 };
 
+class ForwardTransposeToAddInvalidGraph : public TestIOGraph, public TransposeAddGraphlet
+{
+public:
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    TransposeAddGraphlet::init(g(), shape_in, shape_out);
+
+    // connect network
+    _transpose->a(input());
+    _transpose->perm(_perm);
+    _binary->x(_transpose);
+    _binary->y(_transpose);
+
+    output()->from(_binary);
+  }
+};
+
 class ForwardTransposeToMulGraph : public TestIOGraph, public TransposeMulGraphlet
 {
 public:
@@ -158,6 +176,15 @@ public:
 
 protected:
   ForwardTransposeToAddGraph _graph;
+};
+
+class ForwardTransposeToAddGraphNegTest : public ::testing::Test
+{
+public:
+  void run_pass(void) { run_phase(_graph.g()); }
+
+protected:
+  ForwardTransposeToAddInvalidGraph _graph;
 };
 
 class ForwardTransposeToMulGraphTest : public ::testing::Test
@@ -303,6 +330,14 @@ TEST_F(ForwardTransposeToAddGraphTest, forward_transpose_add_NEG)
 
   // Remove add
   _graph.output()->from(_graph.transpose());
+
+  luci::ForwardTransposeOpPass pass;
+  EXPECT_FALSE(pass.run(_graph.g()));
+}
+
+TEST_F(ForwardTransposeToAddGraphNegTest, forward_transpose_add_non_const_NEG)
+{
+  _graph.init({1, 64, 51, 1}, {0, 3, 2, 1});
 
   luci::ForwardTransposeOpPass pass;
   EXPECT_FALSE(pass.run(_graph.g()));
