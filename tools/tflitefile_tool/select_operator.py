@@ -1300,7 +1300,7 @@ def StoreIOInfo(path, used_tensors, org_inputs, org_outputs, new_inputs, new_out
             used_tensors[output_tensor_idx])
 
     with open(path, "w") as json_file:
-        json.dump(ioinfo, json_file)
+        json_file.write(f'{json.dumps(ioinfo, indent=2)}\n')
 
 
 def main(args):
