@@ -54,6 +54,6 @@ function NpudTest()
 
 TestPrepared
 
-DEVICE_MODULE_PATH=${INSTALL_PATH}/lib NpudTest
+DEVICE_MODULE_PATH=${INSTALL_PATH}/lib GTEST_MODEL_PATH=${MODEL_PATH} NpudTest
 
 TestCleanUp
