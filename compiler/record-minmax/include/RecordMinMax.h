@@ -28,6 +28,10 @@
 namespace record_minmax
 {
 
+using Buffer = std::vector<char>;
+using Output = std::vector<Buffer>;
+using WholeOutput = std::vector<Output>;
+
 class RecordMinMax
 {
 public:
@@ -61,7 +65,7 @@ private:
   luci_interpreter::Interpreter *getInterpreter() const { return _interpreters[0].get(); }
   MinMaxObserver *getObserver() const { return _observers[0].get(); }
 
-  std::vector<std::vector<std::vector<char>>> importH5Data(const std::string &input_data_path);
+  WholeOutput importH5Data(const std::string &input_data_path);
 
   std::unique_ptr<luci::Module> _module;
 

@@ -360,8 +360,7 @@ void RecordMinMax::profileRawData(const std::string &mode, const std::string &in
   update_quantparam(getObserver(), mode, min_percentile, max_percentile);
 }
 
-std::vector<std::vector<std::vector<char>>>
-RecordMinMax::importH5Data(const std::string &input_data_path)
+WholeOutput RecordMinMax::importH5Data(const std::string &input_data_path)
 {
   try
   {
@@ -377,9 +376,9 @@ RecordMinMax::importH5Data(const std::string &input_data_path)
     const auto input_nodes = loco::input_nodes(_module->graph());
     const auto num_inputs = input_nodes.size();
 
-    std::vector<std::vector<std::vector<char>>> vector_input_data(num_records);
+    WholeOutput whole_output(num_records);
 
-    // Read inputs to vector_input_data
+    // Read inputs to whole_output
     for (int i = 0; i < num_records; ++i)
     {
       if (num_inputs != static_cast<uint32_t>(importer.numInputs(i)))
@@ -390,7 +389,7 @@ RecordMinMax::importH5Data(const std::string &input_data_path)
         const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
         assert(input_node->index() == input_idx);
         checkInputDimension(input_node);
-        std::vector<char> input_data(getTensorSize(input_node));
+        Buffer input_data(getTensorSize(input_node));
 
         if (!is_raw_data)
         {
@@ -406,11 +405,11 @@ RecordMinMax::importH5Data(const std::string &input_data_path)
           // Skip type/shape check for raw data
           importer.readTensor(i, input_idx, input_data.data());
         }
-        vector_input_data[i].emplace_back(std::move(input_data));
+        whole_output[i].emplace_back(std::move(input_data));
       }
     }
 
-    return vector_input_data;
+    return whole_output;
   }
   catch (const H5::Exception &e)
   {
@@ -498,17 +497,17 @@ void RecordMinMax::profileDataInParallel(const std::string &mode,
   if (h5_file_size > h5_max_size_bytes)
     throw std::runtime_error("H5 file size is too large for parallel recording");
 
-  std::vector<std::vector<std::vector<char>>> vector_input_data;
+  WholeOutput whole_output;
   try
   {
-    vector_input_data = importH5Data(input_data_path);
+    whole_output = importH5Data(input_data_path);
   }
   catch (const std::bad_alloc &e)
   {
     throw std::runtime_error("Out of memory during h5 data load.");
   }
 
-  const auto num_records = vector_input_data.size();
+  const auto num_records = whole_output.size();
   const auto input_nodes = loco::input_nodes(_module->graph());
 
   // Start parallel part
@@ -518,16 +517,15 @@ void RecordMinMax::profileDataInParallel(const std::string &mode,
 
   const auto records_batch = static_cast<uint32_t>(num_records / run_threads);
 
-  auto interpret_batch = [&vector_input_data,
-                          &input_nodes](int first_record, int last_record,
-                                        luci_interpreter::Interpreter *interpreter) {
+  auto interpret_batch = [&whole_output, &input_nodes](int first_record, int last_record,
+                                                       luci_interpreter::Interpreter *interpreter) {
     for (int record_index = first_record; record_index < last_record; ++record_index)
     {
       for (uint32_t input_idx = 0; input_idx < input_nodes.size(); input_idx++)
       {
         const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
 
-        const auto &cur_input_data = vector_input_data[record_index][input_idx];
+        const auto &cur_input_data = whole_output[record_index][input_idx];
         interpreter->writeInputTensor(input_node, cur_input_data.data(), cur_input_data.size());
       }
       interpreter->interpret();
