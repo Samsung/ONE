@@ -23,6 +23,7 @@
 #define __ONERT_COMPILER_COMPILE_H_
 
 #include "CompilerOptions.h"
+#include "ICompiler.h"
 #include "ir/NNPkg.h"
 #include "exec/Executors.h"
 #include "util/TracingCtx.h"
@@ -33,21 +34,10 @@ namespace onert
 namespace compiler
 {
 
-struct CompilerArtifact
-{
-  CompilerArtifact(void) = delete;
-  CompilerArtifact(std::shared_ptr<exec::Executors> executors,
-                   std::unique_ptr<const util::TracingCtx> tracing_ctx)
-    : _executors{executors}, _tracing_ctx{std::move(tracing_ctx)} {};
-
-  std::shared_ptr<exec::Executors> _executors;
-  std::unique_ptr<const util::TracingCtx> _tracing_ctx;
-};
-
 /**
  * @brief Class to compile NN package
  */
-class Compiler
+class Compiler : public ICompiler
 {
 public:
   /**
@@ -64,6 +54,11 @@ public:
    */
   Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
            std::vector<std::unique_ptr<CompilerOptions>> &copts);
+
+  /**
+   * @brief Destroy the Compiler object
+   */
+  ~Compiler() = default;
 
 public:
   /**
