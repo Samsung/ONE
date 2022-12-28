@@ -106,4 +106,4 @@ ${ONE_IMPORT_BCQ_SCRIPT}
 # optimize
 "${ROOT}/bin/circle2circle" --resolve_customop_add "${TMPDIR}/${MODEL_NAME}.tmp.circle" "${TMPDIR}/${MODEL_NAME}.circle"
 
-"${ROOT}/bin/model2nnpkg.sh" -o "${OUTPUT_DIR}" "${TMPDIR}/${MODEL_NAME}.circle"
+"${ROOT}/bin/model2nnpkg" -o "${OUTPUT_DIR}" "${TMPDIR}/${MODEL_NAME}.circle"
