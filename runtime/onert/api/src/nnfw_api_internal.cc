@@ -16,7 +16,7 @@
 
 #include "nnfw_api_internal.h"
 #include "CustomKernelRegistry.h"
-#include "compiler/Compiler.h"
+#include "compiler/CompilerFactory.h"
 #include "util/ConfigSource.h"
 #include "util/Exceptions.h"
 #include "util/logging.h"
@@ -421,7 +421,7 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    auto compiler = std::make_unique<onert::compiler::Compiler>(_nnpkg, _coptions);
+    auto compiler = onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions);
     _nnpkg.reset();
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
