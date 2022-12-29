@@ -42,40 +42,25 @@ namespace onert
 namespace compiler
 {
 
-Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt)
-  : _nnpkg{std::make_shared<ir::NNPkg>(model)}, _voptions{&copt}
-{
-  // DO NOTHING
-}
-
-Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
-                   std::vector<std::unique_ptr<CompilerOptions>> &copts)
+MultiModelCompiler::MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
+                                       std::vector<std::unique_ptr<CompilerOptions>> &copts)
   : _nnpkg{nnpkg}, _voptions{}
 {
+  assert(nnpkg->model_count() != 1);
+
   for (uint32_t i = 0; i < copts.size(); i++)
   {
     _voptions.push_back(copts[i].get());
   }
 }
 
-void Compiler::checkProfilerConditions()
-{
-  if (_nnpkg->model_count() != 1)
-    throw std::runtime_error("NYI: Profiling mode for multiple model is not supported yet");
-
-  auto &options = *_voptions[0];
-
-  if (options.he_scheduler)
-    throw std::runtime_error("Heterogeneous scheduler must be enabled during profiling.");
-
-  if (options.executor != "Dataflow")
-    throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
-}
-
-std::shared_ptr<CompilerArtifact> Compiler::compile(void)
+std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
 {
   for (auto options : _voptions)
   {
+    if (!options)
+      throw std::runtime_error{"Empty compile option"};
+
     options->forceInternalOptions();
     options->verboseOptions();
   }
@@ -106,22 +91,12 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   // TODO: Support hybrid execution -
   //       execution between interpreter and compiled executor (including control flow)
   if (_voptions[0]->disable_compile)
-  {
-    if (model_count > 1)
-      throw std::runtime_error{"NYI: Disable compilation for multi model is not supported yet"};
-
-    auto executors = std::make_shared<exec::Executors>();
-
-    _nnpkg->primary_model()->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-      executors->emplace(ir::ModelIndex{0}, index, std::make_unique<interp::InterpExecutor>(subg));
-    });
-    return std::make_shared<CompilerArtifact>(executors, nullptr);
-  }
+    throw std::runtime_error{"NYI: Disable compilation for multi model is not supported yet"};
 
   // Mode check
   // TODO handle option for each model
   if (_voptions[0]->he_profiling_mode)
-    checkProfilerConditions();
+    throw std::runtime_error("NYI: Profiling mode for multiple model is not supported yet");
 
   /***************************************************
    * Backend independent analysis & optimization phase
@@ -131,24 +106,16 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   onert::dumper::dot::DotDumper dot_dumper(dump_level);
 
   // Tracing context
-  auto tracing_ctx = std::make_unique<util::TracingCtx>();
+  // TODO Support tracing_ctx for multiple model
+  std::unique_ptr<util::TracingCtx> tracing_ctx = nullptr;
 
-  // Model edge context
-  std::unique_ptr<ir::ModelEdges> model_edges = nullptr;
+  // Model edge context: copy model edge context
+  auto model_edges = std::make_unique<ir::ModelEdges>(_nnpkg->model_edges());
 
   // Lower: Assign backend
   std::unordered_map<ir::ModelIndex,
                      std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>>
     lowered_subgs;
-
-  if (model_count != 1)
-  {
-    // TODO Support tracing_ctx for multiple model
-    tracing_ctx = nullptr;
-
-    // Copy model edge context
-    model_edges = std::make_unique<ir::ModelEdges>(_nnpkg->model_edges());
-  }
 
   for (uint16_t i = 0; i < model_count; i++)
   {
@@ -247,6 +214,158 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       executor->setIndexedRanks(indexed_ranks);
       executors->emplace(model_index, subg_index, std::move(executor));
     }
+  }
+
+  /********************************
+   * Code generation phase finished
+   ********************************/
+  return std::make_shared<CompilerArtifact>(executors, std::move(tracing_ctx));
+}
+
+Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt)
+  : _model{model}, _options{&copt}
+{
+  // DO NOTHING
+}
+
+Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
+                   std::vector<std::unique_ptr<CompilerOptions>> &copts)
+  : _model{nnpkg->primary_model()}, _options{copts[0].get()}
+{
+  // Use for single model only
+  assert(nnpkg->model_count() == 1);
+}
+
+std::shared_ptr<CompilerArtifact> Compiler::compile(void)
+{
+  if (!_options)
+    throw std::runtime_error{"Empty compile option"};
+
+  _options->forceInternalOptions();
+  _options->verboseOptions();
+
+  _model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+    // Mandatory passes
+    pass::PassRunner{}
+      .append(std::make_unique<pass::ConstantOutputPass>(subg))
+      .append(std::make_unique<pass::OddOutputPass>(subg))
+      .run();
+
+    // Optimizations
+    pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
+  });
+
+  /***************************************************
+   * Prepare compilation phase
+   ***************************************************/
+  // Compilable check
+  // TODO: Support hybrid execution -
+  //       execution between interpreter and compiled executor (including control flow)
+  if (_options->disable_compile)
+  {
+    auto executors = std::make_shared<exec::Executors>();
+
+    _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
+      executors->emplace(ir::ModelIndex{0}, index, std::make_unique<interp::InterpExecutor>(subg));
+    });
+    return std::make_shared<CompilerArtifact>(executors, nullptr);
+  }
+
+  // Mode check
+  // TODO handle option for each model
+  if (_options->he_profiling_mode)
+  {
+    if (_options->he_scheduler)
+      throw std::runtime_error("Heterogeneous scheduler must be enabled during profiling.");
+
+    if (_options->executor != "Dataflow")
+      throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
+  }
+
+  /***************************************************
+   * Backend independent analysis & optimization phase
+   ***************************************************/
+  // TODO Handle dump level for each model
+  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options->graph_dump_level);
+  onert::dumper::dot::DotDumper dot_dumper(dump_level);
+
+  // Tracing context
+  auto tracing_ctx = std::make_unique<util::TracingCtx>();
+
+  // Model edge context
+  std::unique_ptr<ir::ModelEdges> model_edges = nullptr;
+
+  // Lower: Assign backend
+  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
+  {
+    _model->iterate([&](const ir::SubgraphIndex &subg_index, ir::Graph &subg) {
+      // Lower: Assign backend
+      lowered_subgs[subg_index] = std::make_unique<compiler::LoweredGraph>(subg, *_options);
+      // Set tracing_ctx for copied graph
+      if (tracing_ctx != nullptr)
+        tracing_ctx->setSubgraphIndex(&(lowered_subgs[subg_index]->graph()), subg_index.value());
+    });
+  }
+
+  _model.reset();
+
+  for (auto &pair : lowered_subgs)
+  {
+    const auto &subg_index = pair.first;
+    auto &lowered_subg = pair.second;
+    dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_subg-", subg_index.value()));
+  }
+
+  // Shape inference.
+  {
+    // Run the StaticShapeInfer of primary subg. All child StaticShapeInferers are called
+    // recursively
+    std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers =
+      StaticShapeInferer::createStaticShapeInferers(lowered_subgs);
+
+    const auto primary_subg_idx = ir::SubgraphIndex{0};
+    inferers.at(primary_subg_idx)->infer();
+
+    for (const auto &pair_inferer : inferers)
+    {
+      const auto inferer = pair_inferer.second.get();
+      inferer->dump();
+    }
+  }
+
+  // Shape validation
+  // TODO Move shape independent feature check from ShapeValidator to OperationValidator
+  // TODO Move ShapeValidator into shape inference
+  //      - Check input tensor shape validation
+  //      - Check parameter value validation which valid value is depend on input tensor shape
+  //      - Output tensor shape validation check is needless because
+  //        static/dynamic shape inferer will make valid output shape
+  for (auto &pair : lowered_subgs)
+  {
+    auto &lowered_subg = pair.second;
+    compiler::ShapeValidator{lowered_subg->graph()}();
+  }
+
+  /*************************************************************
+   *  Backend independent analysis & optimization phase finished
+   *************************************************************/
+  auto executors = std::make_shared<exec::Executors>(std::move(model_edges));
+  for (auto &pair : lowered_subgs)
+  {
+    auto const model_index = ir::ModelIndex{0};
+    auto const subg_index = pair.first;
+    auto &lowered_subg = pair.second;
+    auto const indexed_ranks = lowered_subg->indexed_ranks();
+
+    ir::OperationDumper dumper("Executor generation of Subgraph " +
+                               std::to_string(subg_index.value()));
+    lowered_subg->graph().operations().iterate(
+      [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
+
+    auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
+      std::move(lowered_subg), tracing_ctx.get(), *_options, executors, model_index)};
+    executor->setIndexedRanks(indexed_ranks);
+    executors->emplace(model_index, subg_index, std::move(executor));
   }
 
   /********************************
