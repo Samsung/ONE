@@ -1,5 +1,3 @@
-require("oops")
-require("loco")
 require("luci")
 require("luci-interpreter")
 require("safemain")
