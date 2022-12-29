@@ -56,10 +56,24 @@ MultiModelCompiler::MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
 
 std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
 {
+  /***************************************************
+   * Prepare compilation phase
+   ***************************************************/
   for (auto options : _voptions)
   {
     if (!options)
       throw std::runtime_error{"Empty compile option"};
+
+    // Compilable check
+    // TODO: Support hybrid execution -
+    //       execution between interpreter and compiled executor (including control flow)
+    if (options->disable_compile)
+      throw std::runtime_error{"NYI: Disable compilation for multi model is not supported yet"};
+
+    // Mode check
+    // TODO handle option for each model
+    if (options->he_profiling_mode)
+      throw std::runtime_error("NYI: Profiling mode for multiple model is not supported yet");
 
     options->forceInternalOptions();
     options->verboseOptions();
@@ -83,20 +97,6 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
     });
   }
-
-  /***************************************************
-   * Prepare compilation phase
-   ***************************************************/
-  // Compilable check
-  // TODO: Support hybrid execution -
-  //       execution between interpreter and compiled executor (including control flow)
-  if (_voptions[0]->disable_compile)
-    throw std::runtime_error{"NYI: Disable compilation for multi model is not supported yet"};
-
-  // Mode check
-  // TODO handle option for each model
-  if (_voptions[0]->he_profiling_mode)
-    throw std::runtime_error("NYI: Profiling mode for multiple model is not supported yet");
 
   /***************************************************
    * Backend independent analysis & optimization phase
@@ -238,8 +238,22 @@ Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
 
 std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 {
+  /***************************************************
+   * Prepare compilation phase
+   ***************************************************/
   if (!_options)
     throw std::runtime_error{"Empty compile option"};
+
+  // Mode check
+  // TODO handle option for each model
+  if (_options->he_profiling_mode)
+  {
+    if (_options->he_scheduler)
+      throw std::runtime_error("Heterogeneous scheduler must be enabled during profiling.");
+
+    if (_options->executor != "Dataflow")
+      throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
+  }
 
   _options->forceInternalOptions();
   _options->verboseOptions();
@@ -255,9 +269,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
   });
 
-  /***************************************************
-   * Prepare compilation phase
-   ***************************************************/
   // Compilable check
   // TODO: Support hybrid execution -
   //       execution between interpreter and compiled executor (including control flow)
@@ -269,17 +280,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       executors->emplace(ir::ModelIndex{0}, index, std::make_unique<interp::InterpExecutor>(subg));
     });
     return std::make_shared<CompilerArtifact>(executors, nullptr);
-  }
-
-  // Mode check
-  // TODO handle option for each model
-  if (_options->he_profiling_mode)
-  {
-    if (_options->he_scheduler)
-      throw std::runtime_error("Heterogeneous scheduler must be enabled during profiling.");
-
-    if (_options->executor != "Dataflow")
-      throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
   }
 
   /***************************************************
