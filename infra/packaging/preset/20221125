@@ -58,9 +58,6 @@ function preset_configure()
 
 function preset_install()
 {
-  install -t "${NNPKG_INSTALL_PREFIX}/bin" -D \
-    "${NNAS_PROJECT_PATH}/tools/nnpackage_tool/model2nnpkg/model2nnpkg.sh"
-
   # Install tf2nnpkg
   install -T -m 755 -D "${SCRIPT_PATH}/res/tf2nnpkg.${PRESET}" "${NNAS_INSTALL_PREFIX}/bin/tf2nnpkg"
 }
