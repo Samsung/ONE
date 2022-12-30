@@ -15,6 +15,7 @@ target_link_libraries(circle-mpqsolver dio_hdf5)
 target_link_libraries(circle-mpqsolver luci_import)
 target_link_libraries(circle-mpqsolver luci_export)
 target_link_libraries(circle-mpqsolver luci_log)
+target_link_libraries(circle-mpqsolver nncc_common)
 
 install(TARGETS circle-mpqsolver DESTINATION bin)
 
