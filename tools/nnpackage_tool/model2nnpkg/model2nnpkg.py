@@ -161,28 +161,51 @@ def _generate_io_conn_info(io_info_files):
 
     pkg_inputs = list(range(_get_org_model_input_size(io_info_files[0])))
     pkg_outputs = list(range(_get_org_model_output_size(io_info_files[0])))
-    model_connect = []
 
+    org_model_io = []
     new_model_io = {"inputs": [], "outputs": []}
-    for model_index, io_info_path in enumerate(io_info_files):
+    for model_pos, io_info_path in enumerate(io_info_files):
         with open(io_info_path, "r") as io_json:
             model_io = json.load(io_json)
 
-            # Set pkg-inputs
-            for org_model_input_pos, new_input_index in enumerate(
-                    model_io["org-model-io"]["inputs"]["new-indices"]):
-                if new_input_index != -1:
-                    pkg_inputs[org_model_input_pos] = f'{model_index}:0:{new_input_index}'
-
-            # Set pkg-outputs
-            for org_model_output_pos, new_output_index in enumerate(
-                    model_io["org-model-io"]["outputs"]["new-indices"]):
-                if new_output_index != -1:
-                    pkg_outputs[
-                        org_model_output_pos] = f'{model_index}:0:{new_output_index}'
-
+            org_model_io.append(model_io["org-model-io"])
             new_model_io["inputs"].append(model_io["new-model-io"]["inputs"])
             new_model_io["outputs"].append(model_io["new-model-io"]["outputs"])
+
+    for model_pos in range(len(org_model_io)):
+        # Set pkg-inputs
+        for org_model_input_pos, new_input_index in enumerate(
+                org_model_io[model_pos]["inputs"]["new-indices"]):
+            if new_input_index != -1:
+                for new_model_input_pos, input_index in enumerate(
+                        new_model_io["inputs"][model_pos]["new-indices"]):
+                    if new_input_index == input_index:
+                        pkg_inputs[
+                            org_model_input_pos] = f'{model_pos}:0:{new_model_input_pos}'
+                        break
+
+                if pkg_inputs[org_model_input_pos] == 0:
+                    raise Exception(
+                        f'error: Wrong io information\n' +
+                        "The input index {new_input_index} exists in org-model-io, but not in new-model-io\n"
+                        + "Please check {io_info_files[model_pos]}")
+
+        # Set pkg-outputs
+        for org_model_output_pos, new_output_index in enumerate(
+                org_model_io[model_pos]["outputs"]["new-indices"]):
+            if new_output_index != -1:
+                for new_model_output_pos, output_index in enumerate(
+                        new_model_io["outputs"][model_pos]["new-indices"]):
+                    if new_output_index == output_index:
+                        pkg_outputs[
+                            org_model_output_pos] = f'{model_pos}:0:{new_model_output_pos}'
+                        break
+
+                if pkg_outputs[org_model_output_pos] == 0:
+                    raise Exception(
+                        f'error: Wrong io information\n' +
+                        "The output index {new_output_index} exists in org-model-io, but not in new-model-io\n"
+                        + "Please check {io_info_files[model_pos]}")
 
     ret["pkg-inputs"] = pkg_inputs
     ret["pkg-outputs"] = pkg_outputs
@@ -205,7 +228,10 @@ def _generate_io_conn_info(io_info_files):
                         else:
                             model_connect[edge_from].append(edge_to)
 
-    ret["model-connect"] = model_connect
+    ret["model-connect"] = [{
+        "from": edge_from,
+        "to": edge_to
+    } for edge_from, edge_to in model_connect.items()]
 
     return ret
 
