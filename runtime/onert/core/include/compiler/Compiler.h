@@ -37,6 +37,44 @@ namespace compiler
 /**
  * @brief Class to compile NN package
  */
+class MultiModelCompiler final : public ICompiler
+{
+public:
+  /**
+   * @brief     Construct a new Compiler object for NN package
+   * @param[in] nnpkg    NN package to compile
+   * @param[in] coptions Compiler option vector for each model in package
+   */
+  MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
+                     std::vector<std::unique_ptr<CompilerOptions>> &copts);
+
+  /**
+   * @brief Destroy the MultiModelCompiler object
+   */
+  ~MultiModelCompiler() = default;
+
+public:
+  /**
+   * @brief   Do compilation with the options
+   *
+   * @return std::shared_ptr<CompilerArtifact> Executors as a result of compilation
+   */
+  std::shared_ptr<CompilerArtifact> compile(void);
+
+private:
+  std::shared_ptr<ir::Graph> &primary_subgraph()
+  {
+    return _nnpkg->primary_model()->at(ir::SubgraphIndex{0});
+  }
+
+private:
+  std::shared_ptr<ir::NNPkg> _nnpkg;
+  std::vector<CompilerOptions *> _voptions;
+};
+
+/**
+ * @brief Class to compile NN package
+ */
 class Compiler : public ICompiler
 {
 public:
@@ -69,15 +107,8 @@ public:
   std::shared_ptr<CompilerArtifact> compile(void);
 
 private:
-  void checkProfilerConditions();
-  std::shared_ptr<ir::Graph> &primary_subgraph()
-  {
-    return _nnpkg->primary_model()->at(ir::SubgraphIndex{0});
-  }
-
-private:
-  std::shared_ptr<ir::NNPkg> _nnpkg;
-  std::vector<CompilerOptions *> _voptions;
+  std::shared_ptr<ir::Model> _model;
+  CompilerOptions *_options;
 };
 
 } // namespace compiler

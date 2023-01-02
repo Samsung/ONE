@@ -33,8 +33,10 @@ std::unique_ptr<ICompiler>
 CompilerFactory::create(const std::shared_ptr<ir::NNPkg> &nnpkg,
                         std::vector<std::unique_ptr<CompilerOptions>> &copts)
 {
-  // TODO Use more compiler type: single/multi model
-  return std::make_unique<Compiler>(nnpkg, copts);
+  if (nnpkg->model_count() == 1)
+    return std::make_unique<Compiler>(nnpkg, copts);
+
+  return std::make_unique<MultiModelCompiler>(nnpkg, copts);
 }
 
 } // namespace compiler
