@@ -16,6 +16,8 @@
 
 #include "compiler/CompilerFactory.h"
 
+#include "MultiModelCompiler.h"
+
 #include "compiler/Compiler.h"
 
 namespace onert
