@@ -57,6 +57,7 @@ protected:
     _beta->size<loco::DataType::FLOAT32>(channel_size);
     _add->x(input);
     _add->y(_beta);
+    _add->fusedActivationFunction(luci::FusedActFunc::NONE);
 
     _add->name("add");
     _beta->name("beta");
