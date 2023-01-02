@@ -307,8 +307,104 @@ NpuStatus TrixBackend::setRequestData(NpuContext *ctx, RequestID requestId, Inpu
                                       TensorDataInfos *inputInfos, OutputBuffers *outputBufs,
                                       TensorDataInfos *outputInfos)
 {
-  // TODO Implement details
-  return NPU_STATUS_ERROR_NOT_SUPPORTED;
+  auto citer = std::find_if(_dev->ctxs.begin(), _dev->ctxs.end(),
+                            [&](std::unique_ptr<NpuContext> &c) { return c.get() == ctx; });
+  if (citer == _dev->ctxs.end())
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  auto riter = std::find(ctx->requests.begin(), ctx->requests.end(), requestId);
+  if (riter == ctx->requests.end())
+  {
+    return NPU_STATUS_ERROR_INVALID_ARGUMENT;
+  }
+
+  auto &req = _dev->requests.at(requestId);
+  auto miter = std::find(ctx->models.begin(), ctx->models.end(), req->modelId);
+  if (miter == ctx->models.end())
+  {
+    return NPU_STATUS_ERROR_INVALID_MODEL;
+  }
+
+  // TODO Exception controll of `at`
+  auto &minfo = _dev->models.at(req->modelId);
+  if (minfo->meta->input_seg_num != inputBufs->numBuffers ||
+      minfo->meta->output_seg_num != outputBufs->numBuffers)
+  {
+    return NPU_STATUS_ERROR_INVALID_DATA;
+  }
+
+  auto &inInfos = req->inInfos;
+  auto &outInfos = req->outInfos;
+
+  inInfos->num_info = inputBufs->numBuffers;
+  for (auto i = 0; i < inInfos->num_info; ++i)
+  {
+    inInfos->info[i].layout = DATA_LAYOUT_MODEL;
+    inInfos->info[i].type = minfo->meta->input_seg_quant_type[i];
+  }
+
+  outInfos->num_info = outputBufs->numBuffers;
+  for (auto i = 0; i < outInfos->num_info; ++i)
+  {
+    outInfos->info[i].layout = DATA_LAYOUT_MODEL;
+    outInfos->info[i].type = minfo->meta->output_seg_quant_type[i];
+  }
+
+  auto &inBufs = req->inBufs;
+  auto &outBufs = req->outBufs;
+
+  inBufs->num_buffers = inputBufs->numBuffers;
+  for (auto i = 0; i < inBufs->num_buffers; ++i)
+  {
+    if (inputBufs->buffers[i].type == NPU_BUFFER_MAPPED)
+    {
+      inBufs->bufs[i].addr = inputBufs->buffers[i].addr;
+    }
+    else if (inputBufs->buffers[i].type == NPU_BUFFER_DMABUF)
+    {
+      // TODO Implement details
+      // inBufs.bufs[i].dmabuf = inputBufs->buffers[i].dmabuf;
+      // inBufs.bufs[i].offset = inputBufs->buffers[i].offset;
+    }
+    else
+    {
+      continue;
+    }
+    inBufs->bufs[i].size = inputBufs->buffers[i].size;
+    inBufs->bufs[i].type = static_cast<buffer_types>(inputBufs->buffers[i].type);
+  }
+
+  outBufs->num_buffers = outputBufs->numBuffers;
+  for (auto i = 0; i < outBufs->num_buffers; ++i)
+  {
+    if (outputBufs->buffers[i].type == NPU_BUFFER_MAPPED)
+    {
+      outBufs->bufs[i].addr = outputBufs->buffers[i].addr;
+    }
+    else if (outputBufs->buffers[i].type == NPU_BUFFER_DMABUF)
+    {
+      // TODO Implement details
+      // outBufs.bufs[i].dmabuf = outputBufs->buffers[i].dmabuf;
+      // outBufs.bufs[i].offset = outputBufs->buffers[i].offset;
+    }
+    else
+    {
+      continue;
+    }
+    outBufs->bufs[i].size = outputBufs->buffers[i].size;
+    outBufs->bufs[i].type = static_cast<buffer_types>(outputBufs->buffers[i].type);
+  }
+
+  npudev_h handle = _dev->handles.at(ctx->defaultCore);
+  if (setNPU_requestData(handle, requestId, inBufs.get(), inInfos.get(), outBufs.get(),
+                         outInfos.get()) < 0)
+  {
+    return NPU_STATUS_ERROR_OPERATION_FAILED;
+  }
+
+  return NPU_STATUS_SUCCESS;
 }
 
 NpuStatus TrixBackend::submitRequest(NpuContext *ctx, RequestID requestId)
