@@ -276,7 +276,7 @@ foreach(RECIPE IN ITEMS ${RECIPES})
 
   add_custom_command(OUTPUT ${NNPKG_MODEL}
     COMMAND ${PYTHON_EXECUTABLE} ${MODEL2NNPKG} -m ${MODEL_PATH}
-    DEPENDS ${MODEL2NNPKG} ${MODEL_PATH} ${NNPKG_DIR}
+    DEPENDS ${MODEL2NNPKG} ${MODEL_PATH}
     COMMENT "Generate ${RECIPE} nnpackage"
   )
   list(APPEND TEST_DEPS ${NNPKG_MODEL})
@@ -286,7 +286,6 @@ foreach(RECIPE IN ITEMS ${RECIPES})
     set(TC_DIRECTORY "${NNPKG_DIR}/metadata/tc")
     add_custom_command(OUTPUT ${TC_DIRECTORY}
       COMMAND ${CMAKE_COMMAND} -E make_directory ${TC_DIRECTORY}
-      DEPENDS ${NNPKG_DIR}
       COMMENT "Generate ${RECIPE} nnpackage test directory"
     )
     list(APPEND TEST_DEPS ${TC_DIRECTORY})
