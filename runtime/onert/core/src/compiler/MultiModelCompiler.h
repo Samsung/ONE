@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
  */
 
 /**
- * @file  Compiler.h
- * @brief This file contains Compiler class to define and run compilation phase
+ * @file  MultiModelCompiler.h
+ * @brief This file contains MultiModelCompiler class to define and run compilation phase
  */
 
-#ifndef __ONERT_COMPILER_COMPILE_H_
-#define __ONERT_COMPILER_COMPILE_H_
+#ifndef __ONERT_COMPILER_MULTI_MODEL_COMPILE_H_
+#define __ONERT_COMPILER_MULTI_MODEL_COMPILE_H_
 
-#include "CompilerOptions.h"
-#include "ICompiler.h"
+#include "compiler/CompilerOptions.h"
+#include "compiler/ICompiler.h"
 #include "ir/NNPkg.h"
 
 namespace onert
@@ -34,28 +34,21 @@ namespace compiler
 /**
  * @brief Class to compile NN package
  */
-class Compiler : public ICompiler
+class MultiModelCompiler final : public ICompiler
 {
 public:
-  /**
-   * @brief     Construct a new Compiler object for single model
-   * @param[in] model     model to compile
-   * @param[in] coptions  Compiler Options
-   */
-  Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt);
-
   /**
    * @brief     Construct a new Compiler object for NN package
    * @param[in] nnpkg    NN package to compile
    * @param[in] coptions Compiler option vector for each model in package
    */
-  Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
-           std::vector<std::unique_ptr<CompilerOptions>> &copts);
+  MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
+                     std::vector<std::unique_ptr<CompilerOptions>> &copts);
 
   /**
-   * @brief Destroy the Compiler object
+   * @brief Destroy the MultiModelCompiler object
    */
-  ~Compiler() = default;
+  ~MultiModelCompiler() = default;
 
 public:
   /**
@@ -66,11 +59,17 @@ public:
   std::shared_ptr<CompilerArtifact> compile(void);
 
 private:
-  std::shared_ptr<ir::Model> _model;
-  CompilerOptions *_options;
+  std::shared_ptr<ir::Graph> &primary_subgraph()
+  {
+    return _nnpkg->primary_model()->at(ir::SubgraphIndex{0});
+  }
+
+private:
+  std::shared_ptr<ir::NNPkg> _nnpkg;
+  std::vector<CompilerOptions *> _voptions;
 };
 
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_COMPILER_COMPILE_H_
+#endif // __ONERT_COMPILER_MULTI_MODEL_COMPILE_H_
