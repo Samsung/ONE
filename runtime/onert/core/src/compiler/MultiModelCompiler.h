@@ -19,8 +19,8 @@
  * @brief This file contains MultiModelCompiler class to define and run compilation phase
  */
 
-#ifndef __ONERT_COMPILER_MULTI_MODEL_COMPILE_H_
-#define __ONERT_COMPILER_MULTI_MODEL_COMPILE_H_
+#ifndef __ONERT_COMPILER_MULTI_MODEL_COMPILER_H__
+#define __ONERT_COMPILER_MULTI_MODEL_COMPILER_H__
 
 #include "compiler/CompilerOptions.h"
 #include "compiler/ICompiler.h"
@@ -72,4 +72,4 @@ private:
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_COMPILER_MULTI_MODEL_COMPILE_H_
+#endif // __ONERT_COMPILER_MULTI_MODEL_COMPILER_H__
