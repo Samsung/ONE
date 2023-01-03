@@ -15,6 +15,7 @@
  */
 
 #include "InterpExecutor.h"
+#include "../exec/Executors.h"
 
 #include "exec/Execution.h"
 #include "ir/Graph.h"

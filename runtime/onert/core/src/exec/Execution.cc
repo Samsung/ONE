@@ -23,7 +23,7 @@ namespace onert
 namespace exec
 {
 
-Execution::Execution(const std::shared_ptr<Executors> &executors) : _executors{executors}
+Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{executors}
 {
   assert(executors != nullptr);
   assert(executors->entryExecutor() != nullptr);

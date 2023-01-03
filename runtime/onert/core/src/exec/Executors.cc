@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "exec/Executors.h"
+#include "Executors.h"
 
 namespace onert
 {

@@ -251,7 +251,7 @@ ExecutorFactory::ExecutorFactory()
 exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                                          const util::TracingCtx *tracing_ctx,
                                          const compiler::CompilerOptions &options,
-                                         const std::shared_ptr<exec::Executors> &executors,
+                                         const std::shared_ptr<exec::IExecutors> &executors,
                                          const ir::ModelIndex &index)
 {
   return _map.at(options.executor)(std::move(lowered_graph), tracing_ctx, options, executors,
@@ -286,7 +286,7 @@ void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_grap
 }
 
 void ExecutorFactory::prepareBuiltinBackend(const TensorRegistries &tensor_regs,
-                                            const std::shared_ptr<exec::Executors> &executors,
+                                            const std::shared_ptr<exec::IExecutors> &executors,
                                             const backend::BackendContexts &backend_contexts,
                                             const ir::ModelIndex &index)
 {
@@ -325,7 +325,7 @@ ExecutorFactory::orderBackendContext(const backend::BackendContexts &backend_con
 
 exec::IExecutor *ExecutorFactory::createLinearExecutor(
   std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
-  const compiler::CompilerOptions &options, const std::shared_ptr<exec::Executors> &executors,
+  const compiler::CompilerOptions &options, const std::shared_ptr<exec::IExecutors> &executors,
   const ir::ModelIndex &index)
 {
   auto &graph = lowered_graph->graph();
@@ -451,7 +451,7 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
 
 exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
-  const compiler::CompilerOptions &options, const std::shared_ptr<exec::Executors> &executors,
+  const compiler::CompilerOptions &options, const std::shared_ptr<exec::IExecutors> &executors,
   const ir::ModelIndex &index, bool parallel)
 {
   backend::BackendContexts backend_contexts =

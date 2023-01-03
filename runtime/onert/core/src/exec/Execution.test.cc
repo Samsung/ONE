@@ -209,7 +209,7 @@ class Inference
 {
 public:
   Inference(const float (&input1)[4], const float (&input2)[4], float (&output)[4],
-            std::shared_ptr<onert::exec::Executors> &executors)
+            std::shared_ptr<onert::exec::IExecutors> &executors)
     : _input1{input1}, _input2{input2}, _output{output}, _executors{executors}
   {
     // DO NOTHING
@@ -233,7 +233,7 @@ private:
   const float (&_input1)[4];
   const float (&_input2)[4];
   float (&_output)[4];
-  std::shared_ptr<onert::exec::Executors> &_executors;
+  std::shared_ptr<onert::exec::IExecutors> &_executors;
 };
 
 // Support multi-thread execution
