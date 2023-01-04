@@ -18,6 +18,7 @@ import argparse
 import json
 import os
 import shutil
+import sys
 
 
 def _is_json(myjson):
@@ -39,7 +40,7 @@ def _verify_args(args):
     for i in range(len(args.models)):
         model_path = args.models[i]
         if not os.path.isfile(model_path):
-            raise Exception('error: modelfile does not have extension.')
+            raise Exception(f'error: {model_path} does not exist.')
 
         modelfile = os.path.basename(model_path)
         if len(modelfile.split('.')) == 1:
@@ -257,25 +258,29 @@ def _generate_manifest(args):
 
 
 def main():
-    # parse arguments
-    args = _get_args()
+    try:
+        # parse arguments
+        args = _get_args()
 
-    print(f'{args.prog}: Generating nnpkg {args.nnpkg_name} in {args.outdir}')
-    # mkdir nnpkg directory
-    nnpkg_path = os.path.join(args.outdir, args.nnpkg_name)
-    os.makedirs(os.path.join(nnpkg_path, 'metadata'), exist_ok=True)
+        print(f'{args.prog}: Generating nnpkg {args.nnpkg_name} in {args.outdir}')
+        # mkdir nnpkg directory
+        nnpkg_path = os.path.join(args.outdir, args.nnpkg_name)
+        os.makedirs(os.path.join(nnpkg_path, 'metadata'), exist_ok=True)
 
-    # dump manifest file
-    manifest = _generate_manifest(args)
-    manifest_path = os.path.join(nnpkg_path, 'metadata', 'MANIFEST')
-    with open(manifest_path, "w") as json_file:
-        json_file.write(f'{json.dumps(manifest, indent=2)}\n')
+        # dump manifest file
+        manifest = _generate_manifest(args)
+        manifest_path = os.path.join(nnpkg_path, 'metadata', 'MANIFEST')
+        with open(manifest_path, "w") as json_file:
+            json_file.write(f'{json.dumps(manifest, indent=2)}\n')
 
-    # copy models and configurations
-    for i in range(len(args.models)):
-        shutil.copy2(args.models[i], nnpkg_path)
-        if args.config:
-            shutil.copy2(args.config[i], os.path.join(nnpkg_path, 'metadata'))
+        # copy models and configurations
+        for i in range(len(args.models)):
+            shutil.copy2(args.models[i], nnpkg_path)
+            if args.config:
+                shutil.copy2(args.config[i], os.path.join(nnpkg_path, 'metadata'))
+    except Exception as e:
+        print(e)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
