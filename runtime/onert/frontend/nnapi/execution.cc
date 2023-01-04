@@ -37,7 +37,7 @@ int ANeuralNetworksExecution_create(ANeuralNetworksCompilation *compilation,
     return ANEURALNETWORKS_UNEXPECTED_NULL;
   }
 
-  std::shared_ptr<onert::exec::Executors> executors;
+  std::shared_ptr<onert::exec::IExecutors> executors;
 
   compilation->publish(executors);
 

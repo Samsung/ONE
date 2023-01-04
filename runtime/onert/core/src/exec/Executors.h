@@ -17,7 +17,7 @@
 #ifndef __ONERT_EXEC_EXECUTORS_H__
 #define __ONERT_EXEC_EXECUTORS_H__
 
-#include "IExecutor.h"
+#include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
 
 namespace std
@@ -43,21 +43,20 @@ namespace exec
 /**
  * @brief Class to gather executors
  */
-class Executors
+class Executors : public IExecutors
 {
 public:
   Executors(void) = default;
   Executors(std::unique_ptr<ir::ModelEdges> model_edges) { _model_edges = std::move(model_edges); }
   Executors(const Executors &) = delete;
   Executors(Executors &&) = default;
+  ~Executors() = default;
 
   // TODO Use Executor index
   void emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
                std::unique_ptr<IExecutor> exec);
 
   IExecutor *at(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index) const;
-
-  IExecutor *entryExecutor() const { return at(ir::ModelIndex{0}, ir::SubgraphIndex{0}); }
 
   uint32_t inputSize() const;
 

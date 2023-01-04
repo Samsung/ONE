@@ -35,7 +35,7 @@ namespace kernel
 WhileLayer::WhileLayer(const std::vector<backend::IPortableTensor *> input_tensors,
                        const std::vector<backend::IPortableTensor *> output_tensors,
                        const ir::SubgraphIndex &cond_subg_index,
-                       const ir::SubgraphIndex &body_subg_index, exec::Executors *executors,
+                       const ir::SubgraphIndex &body_subg_index, exec::IExecutors *executors,
                        const ir::ModelIndex &model_index,
                        basic::DynamicMemoryManager *dyn_memory_manager,
                        const std::shared_ptr<ExternalContext> &external_context)
