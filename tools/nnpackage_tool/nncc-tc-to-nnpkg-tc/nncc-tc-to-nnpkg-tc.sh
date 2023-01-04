@@ -4,7 +4,7 @@ set -eu
 
 progname=$(basename "${BASH_SOURCE[0]}")
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-model2nnpkg=${model2nnpkg:-"$script_dir"/../model2nnpkg/model2nnpkg.sh}
+model2nnpkg=${model2nnpkg:-"$script_dir"/../model2nnpkg/model2nnpkg.py}
 # Need to install nncc package & set path to tf2nnpkg
 tf2nnpkg=$(which tf2nnpkg)
 
@@ -78,7 +78,7 @@ if [[ "$model_type" == "pb" ]]; then
   $tf2nnpkg --info "$indir/$tcname".info --graphdef "$indir/$tcname"."$model_type" \
   "$tf_intf_version" -o "$outdir"
 else
-  $model2nnpkg -o "$outdir" "$indir/$tcname"."$model_type"
+  $model2nnpkg -o "$outdir" -m "$indir/$tcname"."$model_type"
 fi
 
 extensions="
