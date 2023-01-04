@@ -16,6 +16,8 @@
 
 #include "Executors.h"
 
+#include "../backend/builtin/IOTensor.h"
+
 namespace onert
 {
 namespace exec
@@ -99,17 +101,17 @@ void Executors::checkSupportedMultimodel() const
 
   // Assumption: edges
   //   x:0:z -> x+1:0:z'
-  for (auto edge : _model_edges->edges)
-  {
-    auto const model_from = std::get<ir::ModelIndex>(edge.from);
-    auto const model_to = std::get<ir::ModelIndex>(edge.to);
-    auto const subg_from = std::get<ir::SubgraphIndex>(edge.from);
-    auto const subg_to = std::get<ir::SubgraphIndex>(edge.to);
+  // for (auto edge : _model_edges->edges)
+  // {
+  //   auto const model_from = std::get<ir::ModelIndex>(edge.from);
+  //   auto const model_to = std::get<ir::ModelIndex>(edge.to);
+  //   auto const subg_from = std::get<ir::SubgraphIndex>(edge.from);
+  //   auto const subg_to = std::get<ir::SubgraphIndex>(edge.to);
 
-    if (((model_from.value() + 1) != model_to.value()) || (subg_from != ir::SubgraphIndex{0}) ||
-        (subg_to != ir::SubgraphIndex{0}))
-      throw std::runtime_error{"NYI: Multi model execution for this edge set is not supported yet"};
-  }
+  //   if (((model_from.value() + 1) != model_to.value()) || (subg_from != ir::SubgraphIndex{0}) ||
+  //       (subg_to != ir::SubgraphIndex{0}))
+  //     throw std::runtime_error{"NYI: Multi model execution for this edge set is not supported yet"};
+  // }
 
   // Assumption: package inputs
   //  All 1st model inputs come from package input
@@ -164,9 +166,9 @@ void Executors::executeModels(const IODescription &desc)
   // Check supported multi model package
   checkSupportedMultimodel();
 
-  // TODO Find better way to manage buffer between executors
-  std::vector<std::unique_ptr<uint8_t[]>> prev_bufs;
-  std::vector<std::unique_ptr<uint8_t[]>> curr_bufs;
+  // TODO Find better way to handle executors
+  std::vector<std::unique_ptr<backend::builtin::IOTensor>> pkgs_inputs(desc.inputs.size());
+  std::vector<std::unique_ptr<backend::builtin::IOTensor>> pkgs_outputs(desc.outputs.size());
   const auto layout = ir::Layout::NHWC;
   auto const model_count = modelCount();
 
@@ -209,6 +211,15 @@ void Executors::executeModels(const IODescription &desc)
     throw std::runtime_error{"Cannot find edge for model input"};
   };
 
+  // TODO Find better way to pass and set buffers to outputs of executors that is not output of
+  //      nnpkgs
+  // NOTE Executor's outputs are IPortableTensor. If the backend of an output is using Tensor
+  //      that does not inherit IPortableTensor, a Permute operation is added at the compile stage
+  //      so that the output can become an IPortableTensor. This is to enable user's buffers to be
+  //      set as buffers of outputs of executors.
+  std::vector<std::unique_ptr<uint8_t[]>> temp_bufs;
+  std::vector<std::unique_ptr<backend::builtin::IOTensor>> temp_outputs;
+
   // Execute each model
   // NOTE May be better to use vector instead of unordered_map for _executors
   for (auto model_index = ir::ModelIndex{0}; model_index.value() < model_count; model_index++)
@@ -216,12 +227,13 @@ void Executors::executeModels(const IODescription &desc)
     // Find executor
     auto executor = at(model_index, ir::SubgraphIndex{0});
 
-    // Set IODescription
-    IODescription desc_inter;
+    // Set IOTensors
+    std::vector<backend::IPortableTensor *> inputs_inter;
+    std::vector<backend::IPortableTensor *> outputs_inter;
     auto const input_size = executor->graph().getInputs().size();
     auto const output_size = executor->graph().getOutputs().size();
-    desc_inter.inputs.resize(input_size);
-    desc_inter.outputs.resize(output_size);
+    inputs_inter.resize(input_size);
+    outputs_inter.resize(output_size);
 
     for (uint32_t i = 0; i < input_size; i++)
     {
@@ -231,22 +243,30 @@ void Executors::executeModels(const IODescription &desc)
       auto input_pkg_index = find_input_index(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
       if (input_pkg_index != -1)
       {
-        desc_inter.inputs[i] = std::make_unique<InputDesc>(*desc.inputs[input_pkg_index].get());
+        const auto input_desc = desc.inputs[input_pkg_index].get();
+        pkgs_inputs[input_pkg_index] = std::make_unique<backend::builtin::IOTensor>(info, layout);
+        // TODO Remove const_cast (we need const_cast as ITensor is writable)
+        pkgs_inputs[input_pkg_index]->setUserTensor(
+          reinterpret_cast<uint8_t *>(const_cast<void *>(input_desc->buffer)), input_desc->size);
+
+        inputs_inter[i] = pkgs_inputs[input_pkg_index].get();
         continue;
       }
 
       auto from_iodesc = find_from(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
-      auto from_ioindex = std::get<ir::IOIndex>(from_iodesc).value();
+      const auto &from_model_index = std::get<ir::ModelIndex>(from_iodesc);
+      const auto &from_subg_index = std::get<ir::SubgraphIndex>(from_iodesc);
+      const auto &from_ioindex = std::get<ir::IOIndex>(from_iodesc).value();
 
       // Comes from previous model
-      assert(std::get<ir::ModelIndex>(from_iodesc).value() + 1 == model_index.value());
-      assert(std::get<ir::SubgraphIndex>(from_iodesc).value() == 0);
+      assert(from_model_index.value() + 1 == model_index.value());
+      assert(from_subg_index.value() == 0);
 
-      desc_inter.inputs[i] =
-        std::make_unique<InputDesc>(info, prev_bufs[from_ioindex].get(), info.total_size(), layout);
+      // TODO Add check if from_executor has already been executed
+      const auto from_executor = _executors.at({from_model_index, from_subg_index}).get();
+      inputs_inter[i] = from_executor->getOutputTensors().at(from_ioindex);
     }
 
-    curr_bufs.resize(output_size);
     for (uint32_t i = 0; i < output_size; i++)
     {
       auto const &index = executor->graph().getOutputs().at(ir::IOIndex{i});
@@ -255,24 +275,25 @@ void Executors::executeModels(const IODescription &desc)
       auto output_pkg_index = find_output_index(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
       if (output_pkg_index != -1)
       {
-        desc_inter.outputs[i] = std::make_unique<OutputDesc>(*desc.outputs[output_pkg_index].get());
+        const auto output_desc = desc.outputs[output_pkg_index].get();
+        pkgs_outputs[output_pkg_index] = std::make_unique<backend::builtin::IOTensor>(info, layout);
+        // TODO Remove const_cast (we need const_cast as ITensor is writable)
+        pkgs_outputs[output_pkg_index]->setUserTensor(
+          reinterpret_cast<uint8_t *>(const_cast<void *>(output_desc->buffer)), output_desc->size);
+
+        outputs_inter[i] = pkgs_outputs[output_pkg_index].get();
         continue;
       }
 
-      curr_bufs[i] = std::make_unique<uint8_t[]>(info.total_size());
-      desc_inter.outputs[i] =
-        std::make_unique<OutputDesc>(info, curr_bufs[i].get(), info.total_size(), layout);
+      assert(temp_outputs.size() == temp_bufs.size());
+      const auto temp_index = temp_outputs.size();
+      temp_bufs.emplace_back(std::make_unique<uint8_t[]>(info.total_size()));
+      temp_outputs.emplace_back(std::make_unique<backend::builtin::IOTensor>(info, layout));
+      temp_outputs.at(temp_index)->setUserTensor(temp_bufs[temp_index].get(), info.total_size());
+      outputs_inter[i] = temp_outputs[temp_index].get();
     }
 
-    executor->execute(desc_inter);
-
-    if (model_index.value() + 1 != model_count)
-    {
-      // Backup output buffer to input buffer for next execution
-      prev_bufs.resize(output_size);
-      for (uint32_t i = 0; i < output_size; i++)
-        prev_bufs[i] = std::move(curr_bufs[i]);
-    }
+    executor->execute(inputs_inter, outputs_inter);
   }
 }
 
