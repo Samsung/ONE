@@ -80,6 +80,7 @@ for TESTCASE in "$@"; do
     PASSED+=("$TESTCASE")
   else
     FAILED+=("$TESTCASE")
+    cat ${BIN_PATH}/${TESTCASE}.log
   fi
 done
 popd
