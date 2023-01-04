@@ -49,7 +49,7 @@ tflite_basename=$(basename "$1")
 name=${tflite_basename%.*}
 
 tools/nnpackage_tool/gen_golden/gen_golden.py $1
-tools/nnpackage_tool/model2nnpkg/model2nnpkg.sh -o ${outdir} $1
+tools/nnpackage_tool/model2nnpkg/model2nnpkg.py -o ${outdir} -m $1
 mkdir -p ${outdir}/$name/metadata/tc
 mv {input,expected}.h5 ${outdir}/$name/metadata/tc/
 cp $1 ${outdir}/$name/

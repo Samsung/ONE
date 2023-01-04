@@ -73,7 +73,7 @@ tools/nnpackage_tool/tflite2circle/tflitejson2circlejson.py $name.$suffix.json.f
 ${flatc} -o ./ -b ${circle_schema} $name.$suffix.json.fused.datalayout
 mv $name.$suffix.json.fused.circle $name.$suffix.circle
 tools/nnpackage_tool/gen_golden/gen_golden.py $name.$suffix.pb
-tools/nnpackage_tool/model2nnpkg/model2nnpkg.sh -o ${outdir} $name.$suffix.circle
+tools/nnpackage_tool/model2nnpkg/model2nnpkg.py -o ${outdir} -m $name.$suffix.circle
 mkdir -p ${outdir}/$name.$suffix/metadata/tc
 mv {input,expected}.h5 ${outdir}/$name.$suffix/metadata/tc/
 mv $name.$suffix.{pb,tflite} ${outdir}/$name.$suffix/
