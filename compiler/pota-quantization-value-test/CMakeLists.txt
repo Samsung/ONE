@@ -7,12 +7,6 @@ unset(QUANTIZATION_VALUE_TEST_WITH_PARAM)
 unset(QUANTIZATION_CONFIG_VALUE_TEST)
 unset(QUANTIZATION_CONFIG_VALUE_TEST_WITH_PARAM)
 
-nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
-if(NOT FlatBuffers_FOUND)
-  message(STATUS "Build pota-quantization-value-test: FAILED (missing FlatBuffers)")
-  return()
-endif(NOT FlatBuffers_FOUND)
-
 macro(addTest NAME GRANULARITY DTYPE)
   list(APPEND QUANTIZATION_VALUE_TEST ${NAME})
   list(APPEND QUANTIZATION_VALUE_TEST_WITH_PARAM ${NAME} ${GRANULARITY} ${DTYPE})
@@ -31,7 +25,6 @@ include("test.local.lst" OPTIONAL)
 unset(TEST_DEPS)
 
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
-get_target_property(SCHEMA_BIN_PATH mio_circle04 BINARY_DIR)
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/gen_h5_explicit_inputs.py"
                "${CMAKE_CURRENT_BINARY_DIR}/gen_h5_explicit_inputs.py" COPYONLY)
@@ -56,21 +49,13 @@ add_custom_command(
   COMMENT "Generate test configuration"
 )
 
-###
-### Generate python interface for circle schema
-###
-set(CIRCLE_SCHEMA_PYTHON_DIR "${CMAKE_CURRENT_BINARY_DIR}/circle")
+# Import pics module
+get_target_property(PICS_BIN_PATH pics BINARY_DIR)
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/circle
+                   COMMAND ${CMAKE_COMMAND} -E create_symlink
+                   ${PICS_BIN_PATH}/circle ${CMAKE_CURRENT_BINARY_DIR}/circle)
 
-add_custom_command(
-  OUTPUT ${CIRCLE_SCHEMA_PYTHON_DIR}
-  COMMAND ${CMAKE_COMMAND} -E remove_directory "${CIRCLE_SCHEMA_PYTHON_DIR}"
-  COMMAND "$<TARGET_FILE:flatbuffers::flatc>" --python
-  -o "${CMAKE_CURRENT_BINARY_DIR}" "${SCHEMA_BIN_PATH}/schema.fbs"
-  DEPENDS flatbuffers::flatc
-  COMMENT "Generate python interface for circle schema"
-)
-
-list(APPEND TEST_DEPS "${TEST_CONFIG}" "${CIRCLE_SCHEMA_PYTHON_DIR}")
+list(APPEND TEST_DEPS "${TEST_CONFIG}" "${CMAKE_CURRENT_BINARY_DIR}/circle")
 
 # This enforces CMake to generate all the dependencies during "build" phase
 add_custom_target(pota_quantization_value_test_deps ALL DEPENDS ${TEST_DEPS})
