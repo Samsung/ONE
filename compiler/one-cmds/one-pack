@@ -73,6 +73,7 @@ def _make_model2nnpkg_cmd(driver_path, input_path, output_path):
     cmd = [os.path.expanduser(driver_path)]
     cmd.append('-o')
     cmd.append(os.path.expanduser(output_path))
+    cmd.append('-m')
     cmd.append(os.path.expanduser(input_path))
     return cmd
 
