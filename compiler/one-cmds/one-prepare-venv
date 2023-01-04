@@ -92,3 +92,5 @@ fi
 # NOTE refer https://github.com/protocolbuffers/protobuf/issues/10051
 # TODO remove this when issue is resolved
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade protobuf==3.20.1
+
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install pydot
