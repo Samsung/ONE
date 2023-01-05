@@ -71,8 +71,21 @@ endif(NOT ENABLE_TEST)
 
 find_package(PythonInterp 3.8 QUIET)
 
+unset(VISQ_TEST_DEPS)
+
+###
+### Copy test files
+###
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/test
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   ${CMAKE_CURRENT_SOURCE_DIR}/test ${CMAKE_CURRENT_BINARY_DIR}/test)
+
+list(APPEND VISQ_TEST_DEPS ${CMAKE_CURRENT_BINARY_DIR}/test)
+
+add_custom_target(visq_unittest ALL DEPENDS ${VISQ_TEST_DEPS})
+
 add_test(
   NAME visq_unittest
   COMMAND ${PYTHON_EXECUTABLE} -m unittest
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
