@@ -29,6 +29,10 @@ from circle import TransposeConvOptions
 from circle import InstanceNormOptions
 from circle import SplitOptions
 
+import sys
+
+print(sys.executable, "jinevening")
+
 
 class SingleOperatorTest(object):
     def StartAnalysis(self, args):
