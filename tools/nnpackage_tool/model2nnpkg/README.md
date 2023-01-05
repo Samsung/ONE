@@ -4,6 +4,10 @@
 
 It takes `modelfile` as input and generates `nnpackage`.
 
+## prerequisite
+
+Python 3.5 or greater
+
 ## Usage
 
 ```
