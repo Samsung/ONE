@@ -36,7 +36,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get -qqy install doxygen graphviz wget zip unzip clang-format-8 python3 python3-pip python3-venv python3-dev hdf5-tools pylint curl
 RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install yapf==0.22.0 numpy
+RUN python3 -m pip install yapf==0.22.0 numpy flatbuffers
 
 # Install google test (source)
 RUN apt-get update && apt-get -qqy install libgtest-dev
