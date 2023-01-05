@@ -4,6 +4,10 @@
 
 It takes `nncc-tc` as input and generates `nnpkg-tc`.
 
+## prerequisite
+
+Python 3.5 or greater (for internally using model2nnpkg)
+
 ## Usage
 
 ```
