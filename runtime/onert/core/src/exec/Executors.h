@@ -41,12 +41,43 @@ namespace exec
 {
 
 /**
+ * @brief Class to gather single model's executors
+ */
+class SingleModelExecutors : public IExecutors
+{
+public:
+  SingleModelExecutors(void) = default;
+  SingleModelExecutors(const SingleModelExecutors &) = delete;
+  SingleModelExecutors(SingleModelExecutors &&) = default;
+  ~SingleModelExecutors() = default;
+
+  // TODO Use Executor index
+  void emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
+               std::unique_ptr<IExecutor> exec);
+
+  IExecutor *at(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index) const;
+
+  uint32_t inputSize() const;
+
+  uint32_t outputSize() const;
+
+  const ir::OperandInfo inputInfo(const ir::IOIndex &index);
+
+  const ir::OperandInfo outputInfo(const ir::IOIndex &index);
+
+  void execute(const IODescription &desc);
+
+private:
+  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _executors;
+};
+
+/**
  * @brief Class to gather executors
  */
 class Executors : public IExecutors
 {
 public:
-  Executors(void) = default;
+  Executors(void) = delete;
   Executors(std::unique_ptr<ir::ModelEdges> model_edges) { _model_edges = std::move(model_edges); }
   Executors(const Executors &) = delete;
   Executors(Executors &&) = default;
@@ -70,7 +101,6 @@ public:
 
 private:
   void checkSupportedMultimodel() const;
-  void executeModels(const IODescription &desc);
   uint16_t modelCount() const;
 
 private:

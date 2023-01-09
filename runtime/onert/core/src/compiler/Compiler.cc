@@ -89,7 +89,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   //       execution between interpreter and compiled executor (including control flow)
   if (_options->disable_compile)
   {
-    auto executors = std::make_shared<exec::Executors>();
+    auto executors = std::make_shared<exec::SingleModelExecutors>();
 
     _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
       executors->emplace(ir::ModelIndex{0}, index, std::make_unique<interp::InterpExecutor>(subg));
@@ -106,9 +106,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
   // Tracing context
   auto tracing_ctx = std::make_unique<util::TracingCtx>();
-
-  // Model edge context
-  std::unique_ptr<ir::ModelEdges> model_edges = nullptr;
 
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
@@ -164,7 +161,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
-  auto executors = std::make_shared<exec::Executors>(std::move(model_edges));
+  auto executors = std::make_shared<exec::SingleModelExecutors>();
   for (auto &pair : lowered_subgs)
   {
     auto const model_index = ir::ModelIndex{0};
