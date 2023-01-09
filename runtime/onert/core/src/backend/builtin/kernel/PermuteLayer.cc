@@ -64,7 +64,7 @@ void PermuteLayer::optimize()
       src_offsets_it->resize(0);
       dst_offsets_it->resize(0);
       if (underlying_type(src->data_type()) != underlying_type(dst->data_type()))
-        throw std::runtime_error("data type does not match");
+        continue;
       const auto permute_type = [&]() -> PermuteType {
         if (src->getShape().rank() == 4 && src->layout() == ir::Layout::NHWC &&
             dst->layout() == ir::Layout::NCHW)
@@ -81,6 +81,8 @@ void PermuteLayer::optimize()
           return PermuteType::COPY;
         }
       }();
+
+      // TODO Support different types
       auto fn = [&](backend::ITensor &src_tensor) {
         dst->access([&](backend::ITensor &dst_tensor) {
           // NOTE The buffer of both tensor can be nullptr in this step
@@ -260,8 +262,10 @@ void PermuteLayer::run()
         // 1. The tasks for multithreathing was created
         // 2. The tasks's size > 1
         // 3. Both tensors are not dynamic
+        // 4. Data types of both tensors are different
         if (_tasks_map.find(src) == _tasks_map.end() || _tasks_map.at(src).size() == 1 ||
-            src->is_dynamic() || dst->is_dynamic())
+            src->is_dynamic() || dst->is_dynamic() ||
+            underlying_type(src->data_type()) != underlying_type(dst->data_type()))
         {
           permute(src, dst, src->getShape().rank(), src_offsets, dst_offsets);
         }
