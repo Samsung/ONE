@@ -24,6 +24,8 @@ if(NOT ENABLE_TEST)
 endif(NOT ENABLE_TEST)
 
 # create record-minmax-for-thread-test target
+# Note: record-minmax-for-thread-test is built with -fsanitize=thread so that thread sanitizer can check memory bugs,
+# record-minmax is built without the option for performance.
 add_executable(record-minmax-for-thread-test ${DRIVER} ${SOURCES})
 target_include_directories(record-minmax-for-thread-test PRIVATE include)
 
@@ -36,6 +38,7 @@ target_link_libraries(record-minmax-for-thread-test luci_interpreter)
 target_link_libraries(record-minmax-for-thread-test dio_hdf5)
 target_link_libraries(record-minmax-for-thread-test vconone)
 target_link_libraries(record-minmax-for-thread-test nncc_coverage)
+target_link_libraries(record-minmax-for-thread-test luci_log)
 
 install(TARGETS record-minmax-for-thread-test DESTINATION bin)
 target_compile_options(record-minmax-for-thread-test PUBLIC -fsanitize=thread)
