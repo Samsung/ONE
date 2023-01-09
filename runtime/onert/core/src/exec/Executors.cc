@@ -195,8 +195,18 @@ void Executors::executeModels(const IODescription &desc)
   //      and all inputs/outputs become IPortableTensor at compile stage.
   //      This allows user's buffers to be set to inputs/outputs of executors.
   // Shared buffers and tensors between executors
-  std::vector<std::unique_ptr<uint8_t[]>> edge_bufs;
-  std::vector<std::unique_ptr<backend::builtin::IOTensor>> edge_tensor;
+  std::vector<std::unique_ptr<backend::builtin::IOTensor>> edge_tensors;
+  std::unordered_map<ir::IODesc, std::unique_ptr<uint8_t[]>> internal_bufs;
+
+  // Reference count for each `from` of edges to reduce peak memory
+  std::unordered_map<ir::IODesc, int32_t> internal_tensor_ref_counts(_model_edges->edges.size());
+  for (const auto &edge : _model_edges->edges)
+  {
+    if (internal_tensor_ref_counts.find(edge.from) == internal_tensor_ref_counts.end())
+      internal_tensor_ref_counts[edge.from] = 1;
+    else
+      internal_tensor_ref_counts[edge.from]++;
+  }
 
   // Execute each model
   // NOTE May be better to use vector instead of unordered_map for _executors
@@ -265,16 +275,35 @@ void Executors::executeModels(const IODescription &desc)
       }
       else
       {
-        assert(edge_tensor.size() == edge_bufs.size());
-        const auto temp_index = edge_tensor.size();
-        edge_bufs.emplace_back(std::make_unique<uint8_t[]>(info.total_size()));
-        edge_tensor.emplace_back(std::make_unique<backend::builtin::IOTensor>(info, layout));
-        edge_tensor.at(temp_index)->setUserTensor(edge_bufs[temp_index].get(), info.total_size());
-        outputs_inter[i] = edge_tensor[temp_index].get();
+        const auto from_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
+        const auto temp_index = edge_tensors.size();
+        internal_bufs[from_iodesc] = std::make_unique<uint8_t[]>(info.total_size());
+        edge_tensors.emplace_back(std::make_unique<backend::builtin::IOTensor>(info, layout));
+        edge_tensors.at(temp_index)
+          ->setUserTensor(internal_bufs[from_iodesc].get(), info.total_size());
+        outputs_inter[i] = edge_tensors[temp_index].get();
       }
     }
 
     executor->execute(inputs_inter, outputs_inter);
+
+    // Release internal buffers that are no longer needed
+    for (uint32_t i = 0; i < input_size; i++)
+    {
+      const auto input_pkg_index =
+        find_input_index(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
+      if (input_pkg_index == -1)
+      {
+        const auto from_iodesc = find_from(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
+        internal_tensor_ref_counts[from_iodesc]--;
+
+        assert(internal_tensor_ref_counts[from_iodesc] >= 0);
+        if (internal_tensor_ref_counts[from_iodesc] == 0)
+        {
+          internal_bufs[from_iodesc].reset();
+        }
+      }
+    }
   }
 }
 
