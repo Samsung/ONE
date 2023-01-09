@@ -113,6 +113,6 @@ add_custom_target(visq_unittest ALL DEPENDS ${VISQ_TEST_DEPS})
 
 add_test(
   NAME visq_unittest
-  COMMAND ${PYTHON_EXECUTABLE} -m unittest
+  COMMAND ${NNCC_OVERLAY_DIR}/venv_2_8_0/bin/python -m unittest
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
