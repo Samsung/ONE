@@ -70,8 +70,6 @@ if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
-find_package(PythonInterp 3.8 QUIET)
-
 unset(VISQ_TEST_DEPS)
 
 ###
@@ -110,6 +108,7 @@ list(APPEND VISQ_TEST_DEPS ${RESOURCE_FILE})
 
 add_custom_target(visq_unittest ALL DEPENDS ${VISQ_TEST_DEPS})
 
+# Use Python in venv to run unittest with pydot module
 add_test(
   NAME visq_unittest
   COMMAND ${NNCC_OVERLAY_DIR}/venv_2_8_0/bin/python -m unittest
