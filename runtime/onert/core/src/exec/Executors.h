@@ -53,19 +53,20 @@ public:
 
   // TODO Use Executor index
   void emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
-               std::unique_ptr<IExecutor> exec);
+               std::unique_ptr<IExecutor> exec) override;
 
-  IExecutor *at(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index) const;
+  IExecutor *at(const ir::ModelIndex &model_index,
+                const ir::SubgraphIndex &subg_index) const override;
 
-  uint32_t inputSize() const;
+  uint32_t inputSize() const override;
 
-  uint32_t outputSize() const;
+  uint32_t outputSize() const override;
 
-  const ir::OperandInfo inputInfo(const ir::IOIndex &index);
+  const ir::OperandInfo &inputInfo(const ir::IOIndex &index) const override;
 
-  const ir::OperandInfo outputInfo(const ir::IOIndex &index);
+  const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const override;
 
-  void execute(const IODescription &desc);
+  void execute(const IODescription &desc) override;
 
 private:
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _executors;
@@ -85,19 +86,20 @@ public:
 
   // TODO Use Executor index
   void emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
-               std::unique_ptr<IExecutor> exec);
+               std::unique_ptr<IExecutor> exec) override;
 
-  IExecutor *at(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index) const;
+  IExecutor *at(const ir::ModelIndex &model_index,
+                const ir::SubgraphIndex &subg_index) const override;
 
-  uint32_t inputSize() const;
+  uint32_t inputSize() const override;
 
-  uint32_t outputSize() const;
+  uint32_t outputSize() const override;
 
-  const ir::OperandInfo inputInfo(const ir::IOIndex &index);
+  const ir::OperandInfo &inputInfo(const ir::IOIndex &index) const override;
 
-  const ir::OperandInfo outputInfo(const ir::IOIndex &index);
+  const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const override;
 
-  void execute(const IODescription &desc);
+  void execute(const IODescription &desc) override;
 
 private:
   void checkSupportedMultimodel() const;
