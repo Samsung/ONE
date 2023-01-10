@@ -31,7 +31,7 @@ namespace
 using namespace onert::ir;
 using InterpExecutor = onert::interp::InterpExecutor;
 using Execution = onert::exec::Execution;
-using Executors = onert::exec::Executors;
+using Executors = onert::exec::SingleModelExecutors;
 
 class InterpExecutorTest : public ::testing::Test
 {

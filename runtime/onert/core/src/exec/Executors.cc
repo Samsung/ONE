@@ -21,6 +21,42 @@ namespace onert
 namespace exec
 {
 
+void SingleModelExecutors::emplace(const ir::ModelIndex &, const ir::SubgraphIndex &subg_index,
+                                   std::unique_ptr<IExecutor> exec)
+{
+  _executors.emplace(subg_index, std::move(exec));
+}
+
+IExecutor *SingleModelExecutors::at(const ir::ModelIndex &,
+                                    const ir::SubgraphIndex &subg_index) const
+{
+  return _executors.at(subg_index).get();
+}
+
+uint32_t SingleModelExecutors::inputSize() const
+{
+  return entryExecutor()->graph().getInputs().size();
+}
+
+uint32_t SingleModelExecutors::outputSize() const
+{
+  return entryExecutor()->graph().getOutputs().size();
+}
+
+const ir::OperandInfo SingleModelExecutors::inputInfo(const ir::IOIndex &index)
+{
+  const auto input_index = entryExecutor()->graph().getInputs().at(index);
+  return entryExecutor()->graph().operands().at(input_index).info();
+}
+
+const ir::OperandInfo SingleModelExecutors::outputInfo(const ir::IOIndex &index)
+{
+  auto output_index = entryExecutor()->graph().getOutputs().at(index);
+  return entryExecutor()->graph().operands().at(output_index).info();
+}
+
+void SingleModelExecutors::execute(const IODescription &desc) { entryExecutor()->execute(desc); }
+
 void Executors::emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
                         std::unique_ptr<IExecutor> exec)
 {
@@ -33,56 +69,28 @@ IExecutor *Executors::at(const ir::ModelIndex &model_index,
   return _executors.at(std::make_pair(model_index, subg_index)).get();
 }
 
-uint32_t Executors::inputSize() const
-{
-  return _model_edges ? _model_edges->pkg_inputs.size()
-                      : entryExecutor()->graph().getInputs().size();
-}
+uint32_t Executors::inputSize() const { return _model_edges->pkg_inputs.size(); }
 
-uint32_t Executors::outputSize() const
-{
-  return _model_edges ? _model_edges->pkg_outputs.size()
-                      : entryExecutor()->graph().getOutputs().size();
-}
+uint32_t Executors::outputSize() const { return _model_edges->pkg_outputs.size(); }
 
 const ir::OperandInfo Executors::inputInfo(const ir::IOIndex &index)
 {
-  if (_model_edges)
-  {
-    auto const desc = _model_edges->pkg_inputs[index.value()];
-    auto const model_index = std::get<0>(desc);
-    auto const subg_index = std::get<1>(desc);
-    auto const executor = at(model_index, subg_index);
-    auto const input_index = executor->graph().getInputs().at(std::get<2>(desc));
-    return executor->graph().operands().at(input_index).info();
-  }
-
-  const auto input_index = entryExecutor()->graph().getInputs().at(index);
-  return entryExecutor()->graph().operands().at(input_index).info();
+  auto const desc = _model_edges->pkg_inputs[index.value()];
+  auto const model_index = std::get<0>(desc);
+  auto const subg_index = std::get<1>(desc);
+  auto const executor = at(model_index, subg_index);
+  auto const input_index = executor->graph().getInputs().at(std::get<2>(desc));
+  return executor->graph().operands().at(input_index).info();
 }
 
 const ir::OperandInfo Executors::outputInfo(const ir::IOIndex &index)
 {
-  if (_model_edges)
-  {
-    auto const desc = _model_edges->pkg_outputs[index.value()];
-    auto const model_index = std::get<0>(desc);
-    auto const subg_index = std::get<1>(desc);
-    auto const executor = at(model_index, subg_index);
-    auto const output_index = executor->graph().getOutputs().at(std::get<2>(desc));
-    return executor->graph().operands().at(output_index).info();
-  }
-
-  auto output_index = entryExecutor()->graph().getOutputs().at(index);
-  return entryExecutor()->graph().operands().at(output_index).info();
-}
-
-void Executors::execute(const IODescription &desc)
-{
-  if (_model_edges)
-    return executeModels(desc);
-
-  entryExecutor()->execute(desc);
+  auto const desc = _model_edges->pkg_outputs[index.value()];
+  auto const model_index = std::get<0>(desc);
+  auto const subg_index = std::get<1>(desc);
+  auto const executor = at(model_index, subg_index);
+  auto const output_index = executor->graph().getOutputs().at(std::get<2>(desc));
+  return executor->graph().operands().at(output_index).info();
 }
 
 // Allow below case only
@@ -159,7 +167,7 @@ void Executors::checkSupportedMultimodel() const
   }
 }
 
-void Executors::executeModels(const IODescription &desc)
+void Executors::execute(const IODescription &desc)
 {
   // Check supported multi model package
   checkSupportedMultimodel();
