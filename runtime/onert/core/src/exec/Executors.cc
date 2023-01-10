@@ -16,6 +16,8 @@
 
 #include "Executors.h"
 
+#include "../backend/builtin/IOTensor.h"
+
 namespace onert
 {
 namespace exec
@@ -93,20 +95,17 @@ const ir::OperandInfo Executors::outputInfo(const ir::IOIndex &index)
   return executor->graph().operands().at(output_index).info();
 }
 
-// Allow below case only
-//  input(s) -> 1st model -> 2nd model -> ... -> (n-1)th model -> (n)th model -> output(s)
+// Allow below edges only
+//  m1 < m2, s1 == 0 and s2 == 0 if m1:s1:o1 -> m2:s2:o2'
 void Executors::checkSupportedMultimodel() const
 {
-  auto const model_count = modelCount();
-
   // If package includes no-connection model, model_count is less than real model count in package.
   // Then this method will throw exception based on model index
   //  1st model: input assumption
-  //  (n)th model: output assumption
   //  Otherwise: edges assumption
 
   // Assumption: edges
-  //   x:0:z -> x+1:0:z'
+  // m1 < m2, s1 == 0 and s2 == 0 if edge 'm1:s1:o1 -> m2:s2:o2'
   for (auto edge : _model_edges->edges)
   {
     auto const model_from = std::get<ir::ModelIndex>(edge.from);
@@ -114,13 +113,18 @@ void Executors::checkSupportedMultimodel() const
     auto const subg_from = std::get<ir::SubgraphIndex>(edge.from);
     auto const subg_to = std::get<ir::SubgraphIndex>(edge.to);
 
-    if (((model_from.value() + 1) != model_to.value()) || (subg_from != ir::SubgraphIndex{0}) ||
+    if (model_from.value() == model_to.value())
+    {
+      throw std::runtime_error{"Multi model's edge set has invalid edge"};
+    }
+
+    if ((model_from.value() > model_to.value()) || (subg_from != ir::SubgraphIndex{0}) ||
         (subg_to != ir::SubgraphIndex{0}))
       throw std::runtime_error{"NYI: Multi model execution for this edge set is not supported yet"};
   }
 
   // Assumption: package inputs
-  //  All 1st model inputs come from package input
+  //  All 1st model inputs come from package input if always m1 < m2
   {
     auto first_executor = at(ir::ModelIndex{0}, ir::SubgraphIndex{0});
     auto search_first_model = [&](const ir::IOIndex &input_index) {
@@ -141,30 +145,6 @@ void Executors::checkSupportedMultimodel() const
         throw std::runtime_error{"Cannot find 1st model's input buffer"};
     }
   }
-
-  // Assumption: package outputs
-  //  All last model outputs are go to package output
-  {
-    auto last_model_index = ir::ModelIndex{static_cast<uint16_t>(model_count - 1)};
-    auto last_executor = at(last_model_index, ir::SubgraphIndex{0});
-    auto search_last_model = [&](const ir::IOIndex &output_index) {
-      for (auto &output : _model_edges->pkg_outputs)
-      {
-        if ((std::get<ir::ModelIndex>(output) == last_model_index) ||
-            (std::get<ir::SubgraphIndex>(output) == ir::SubgraphIndex{0}) ||
-            (std::get<ir::IOIndex>(output) == output_index))
-          return true;
-      }
-
-      return false;
-    };
-
-    for (uint32_t i = 0; i < last_executor->graph().getOutputs().size(); i++)
-    {
-      if (!search_last_model(ir::IOIndex{i}))
-        throw std::runtime_error{"Cannot find last model's output buffer"};
-    }
-  }
 }
 
 void Executors::execute(const IODescription &desc)
@@ -172,9 +152,9 @@ void Executors::execute(const IODescription &desc)
   // Check supported multi model package
   checkSupportedMultimodel();
 
-  // TODO Find better way to manage buffer between executors
-  std::vector<std::unique_ptr<uint8_t[]>> prev_bufs;
-  std::vector<std::unique_ptr<uint8_t[]>> curr_bufs;
+  // TODO Find better way to schedule order of executors
+  std::vector<std::unique_ptr<backend::builtin::IOTensor>> pkgs_inputs(desc.inputs.size());
+  std::vector<std::unique_ptr<backend::builtin::IOTensor>> pkgs_outputs(desc.outputs.size());
   const auto layout = ir::Layout::NHWC;
   auto const model_count = modelCount();
 
@@ -217,6 +197,25 @@ void Executors::execute(const IODescription &desc)
     throw std::runtime_error{"Cannot find edge for model input"};
   };
 
+  // TODO Find better way to share buffers and tensors between executors
+  // NOTE Executor's inputs/outputs are always IPortableTensor. If backend of inputs/outputs
+  //      is using tensor that does not inherit IPortableTensor, Permute operation is added
+  //      and all inputs/outputs become IPortableTensor at compile stage.
+  //      This allows user's buffers to be set to inputs/outputs of executors.
+  // Shared buffers and tensors between executors
+  std::vector<std::unique_ptr<backend::builtin::IOTensor>> edge_tensors;
+  std::unordered_map<ir::IODesc, std::unique_ptr<uint8_t[]>> internal_bufs;
+
+  // Reference count for each `from` of edges to reduce peak memory
+  std::unordered_map<ir::IODesc, int32_t> internal_tensor_ref_counts(_model_edges->edges.size());
+  for (const auto &edge : _model_edges->edges)
+  {
+    if (internal_tensor_ref_counts.find(edge.from) == internal_tensor_ref_counts.end())
+      internal_tensor_ref_counts[edge.from] = 1;
+    else
+      internal_tensor_ref_counts[edge.from]++;
+  }
+
   // Execute each model
   // NOTE May be better to use vector instead of unordered_map for _executors
   for (auto model_index = ir::ModelIndex{0}; model_index.value() < model_count; model_index++)
@@ -224,13 +223,15 @@ void Executors::execute(const IODescription &desc)
     // Find executor
     auto executor = at(model_index, ir::SubgraphIndex{0});
 
-    // Set IODescription
-    IODescription desc_inter;
+    // Set IOTensors
+    std::vector<backend::IPortableTensor *> inputs_inter;
+    std::vector<backend::IPortableTensor *> outputs_inter;
     auto const input_size = executor->graph().getInputs().size();
     auto const output_size = executor->graph().getOutputs().size();
-    desc_inter.inputs.resize(input_size);
-    desc_inter.outputs.resize(output_size);
+    inputs_inter.resize(input_size);
+    outputs_inter.resize(output_size);
 
+    // Set inputs of executor
     for (uint32_t i = 0; i < input_size; i++)
     {
       auto const &index = executor->graph().getInputs().at(ir::IOIndex{i});
@@ -239,22 +240,32 @@ void Executors::execute(const IODescription &desc)
       auto input_pkg_index = find_input_index(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
       if (input_pkg_index != -1)
       {
-        desc_inter.inputs[i] = std::make_unique<InputDesc>(*desc.inputs[input_pkg_index].get());
-        continue;
+        auto input_desc = desc.inputs[input_pkg_index].get();
+        pkgs_inputs[input_pkg_index] = std::make_unique<backend::builtin::IOTensor>(info, layout);
+        // TODO Remove const_cast (we need const_cast as ITensor is writable)
+        pkgs_inputs[input_pkg_index]->setUserTensor(
+          reinterpret_cast<uint8_t *>(const_cast<void *>(input_desc->buffer)), input_desc->size);
+
+        inputs_inter[i] = pkgs_inputs[input_pkg_index].get();
       }
+      else
+      {
+        auto from_iodesc = find_from(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
+        const auto &from_model_index = std::get<ir::ModelIndex>(from_iodesc);
+        const auto &from_subg_index = std::get<ir::SubgraphIndex>(from_iodesc);
+        const auto &from_ioindex = std::get<ir::IOIndex>(from_iodesc).value();
 
-      auto from_iodesc = find_from(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
-      auto from_ioindex = std::get<ir::IOIndex>(from_iodesc).value();
+        // Supported only sequantial execution of models
+        assert(from_model_index.value() < model_index.value());
+        assert(from_subg_index.value() == 0);
 
-      // Comes from previous model
-      assert(std::get<ir::ModelIndex>(from_iodesc).value() + 1 == model_index.value());
-      assert(std::get<ir::SubgraphIndex>(from_iodesc).value() == 0);
-
-      desc_inter.inputs[i] =
-        std::make_unique<InputDesc>(info, prev_bufs[from_ioindex].get(), info.total_size(), layout);
+        // TODO Add check if from_executor has already been executed
+        const auto from_executor = _executors.at({from_model_index, from_subg_index}).get();
+        inputs_inter[i] = from_executor->getOutputTensors().at(from_ioindex);
+      }
     }
 
-    curr_bufs.resize(output_size);
+    // Set outputs of executor
     for (uint32_t i = 0; i < output_size; i++)
     {
       auto const &index = executor->graph().getOutputs().at(ir::IOIndex{i});
@@ -263,23 +274,43 @@ void Executors::execute(const IODescription &desc)
       auto output_pkg_index = find_output_index(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
       if (output_pkg_index != -1)
       {
-        desc_inter.outputs[i] = std::make_unique<OutputDesc>(*desc.outputs[output_pkg_index].get());
-        continue;
-      }
+        auto output_desc = desc.outputs[output_pkg_index].get();
+        pkgs_outputs[output_pkg_index] = std::make_unique<backend::builtin::IOTensor>(info, layout);
+        pkgs_outputs[output_pkg_index]->setUserTensor(
+          reinterpret_cast<uint8_t *>(output_desc->buffer), output_desc->size);
 
-      curr_bufs[i] = std::make_unique<uint8_t[]>(info.total_size());
-      desc_inter.outputs[i] =
-        std::make_unique<OutputDesc>(info, curr_bufs[i].get(), info.total_size(), layout);
+        outputs_inter[i] = pkgs_outputs[output_pkg_index].get();
+      }
+      else
+      {
+        const auto from_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
+        const auto temp_index = edge_tensors.size();
+        internal_bufs[from_iodesc] = std::make_unique<uint8_t[]>(info.total_size());
+        edge_tensors.emplace_back(std::make_unique<backend::builtin::IOTensor>(info, layout));
+        edge_tensors.at(temp_index)
+          ->setUserTensor(internal_bufs[from_iodesc].get(), info.total_size());
+        outputs_inter[i] = edge_tensors[temp_index].get();
+      }
     }
 
-    executor->execute(desc_inter);
+    executor->execute(inputs_inter, outputs_inter);
 
-    if (model_index.value() + 1 != model_count)
+    // Release internal buffers that are no longer needed
+    for (uint32_t i = 0; i < input_size; i++)
     {
-      // Backup output buffer to input buffer for next execution
-      prev_bufs.resize(output_size);
-      for (uint32_t i = 0; i < output_size; i++)
-        prev_bufs[i] = std::move(curr_bufs[i]);
+      const auto input_pkg_index =
+        find_input_index(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
+      if (input_pkg_index == -1)
+      {
+        const auto from_iodesc = find_from(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
+        internal_tensor_ref_counts[from_iodesc]--;
+
+        assert(internal_tensor_ref_counts[from_iodesc] >= 0);
+        if (internal_tensor_ref_counts[from_iodesc] == 0)
+        {
+          internal_bufs[from_iodesc].reset();
+        }
+      }
     }
   }
 }
