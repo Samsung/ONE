@@ -50,9 +50,9 @@ public:
 
   virtual uint32_t outputSize() const = 0;
 
-  virtual const ir::OperandInfo inputInfo(const ir::IOIndex &index) = 0;
+  virtual const ir::OperandInfo &inputInfo(const ir::IOIndex &index) const = 0;
 
-  virtual const ir::OperandInfo outputInfo(const ir::IOIndex &index) = 0;
+  virtual const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const = 0;
 
   virtual void execute(const IODescription &desc) = 0;
 };

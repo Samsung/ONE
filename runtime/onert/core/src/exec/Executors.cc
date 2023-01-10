@@ -45,13 +45,13 @@ uint32_t SingleModelExecutors::outputSize() const
   return entryExecutor()->graph().getOutputs().size();
 }
 
-const ir::OperandInfo SingleModelExecutors::inputInfo(const ir::IOIndex &index)
+const ir::OperandInfo &SingleModelExecutors::inputInfo(const ir::IOIndex &index) const
 {
   const auto input_index = entryExecutor()->graph().getInputs().at(index);
   return entryExecutor()->graph().operands().at(input_index).info();
 }
 
-const ir::OperandInfo SingleModelExecutors::outputInfo(const ir::IOIndex &index)
+const ir::OperandInfo &SingleModelExecutors::outputInfo(const ir::IOIndex &index) const
 {
   auto output_index = entryExecutor()->graph().getOutputs().at(index);
   return entryExecutor()->graph().operands().at(output_index).info();
@@ -75,7 +75,7 @@ uint32_t Executors::inputSize() const { return _model_edges->pkg_inputs.size(); 
 
 uint32_t Executors::outputSize() const { return _model_edges->pkg_outputs.size(); }
 
-const ir::OperandInfo Executors::inputInfo(const ir::IOIndex &index)
+const ir::OperandInfo &Executors::inputInfo(const ir::IOIndex &index) const
 {
   auto const desc = _model_edges->pkg_inputs[index.value()];
   auto const model_index = std::get<0>(desc);
@@ -85,7 +85,7 @@ const ir::OperandInfo Executors::inputInfo(const ir::IOIndex &index)
   return executor->graph().operands().at(input_index).info();
 }
 
-const ir::OperandInfo Executors::outputInfo(const ir::IOIndex &index)
+const ir::OperandInfo &Executors::outputInfo(const ir::IOIndex &index) const
 {
   auto const desc = _model_edges->pkg_outputs[index.value()];
   auto const model_index = std::get<0>(desc);
