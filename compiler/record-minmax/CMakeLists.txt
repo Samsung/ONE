@@ -40,7 +40,6 @@ target_link_libraries(record-minmax-for-thread-test vconone)
 target_link_libraries(record-minmax-for-thread-test nncc_coverage)
 target_link_libraries(record-minmax-for-thread-test luci_log)
 
-install(TARGETS record-minmax-for-thread-test DESTINATION bin)
 target_compile_options(record-minmax-for-thread-test PUBLIC -fsanitize=thread)
 target_link_libraries(record-minmax-for-thread-test -fsanitize=thread)
 
