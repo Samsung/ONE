@@ -25,7 +25,7 @@ namespace exec
 {
 
 /**
- * @brief Class to gather executors
+ * @brief Class to gather NN package's executor set
  */
 class IExecutors
 {
@@ -37,23 +37,58 @@ public:
   virtual ~IExecutors() = default;
 
 public:
-  // TODO Use Executor index
+  /**
+   * @brief     Insert executor in executor set
+   * @param[in] model_index Model index
+   * @param[in] subg_index  Subgraph index
+   * @param[in] exec        Executor to insert
+   *
+   * @todo      Use Executor index
+   */
   virtual void emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
                        std::unique_ptr<IExecutor> exec) = 0;
 
+  /**
+   * @brief     Return executor of index
+   * @param[in] model_index Model index
+   * @param[in] subg_index  Subgraph index
+   * @return    Executor
+   */
   virtual IExecutor *at(const ir::ModelIndex &model_index,
                         const ir::SubgraphIndex &subg_index) const = 0;
 
   IExecutor *entryExecutor() const { return at(ir::ModelIndex{0}, ir::SubgraphIndex{0}); }
 
+  /**
+   * @brief   Return executor set's number of input
+   * @return  Number of input
+   */
   virtual uint32_t inputSize() const = 0;
 
+  /**
+   * @brief   Return executor set's number of output
+   * @return  Number of output
+   */
   virtual uint32_t outputSize() const = 0;
 
+  /**
+   * @brief     Return NN package input tensor info
+   * @param[in] index Input index
+   * @return    Tensor info
+   */
   virtual const ir::OperandInfo &inputInfo(const ir::IOIndex &index) const = 0;
 
+  /**
+   * @brief     Return NN package output tensor info
+   * @param[in] index Output index
+   * @return    Tensor info
+   */
   virtual const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const = 0;
 
+  /**
+   * @brief     Execute NN package executor set
+   * @param[in] desc  Input and output buffer description
+   */
   virtual void execute(const IODescription &desc) = 0;
 };
 
