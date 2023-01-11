@@ -26,7 +26,7 @@ import tempfile
 import json
 
 import utils as _utils
-from utils import Command
+from onelib.Command import Command
 
 # TODO Find better way to suppress trackback on error
 sys.tracebacklimit = 0
