@@ -83,6 +83,12 @@ class CfgRunner:
         self.import_drivers = list(oneutils._detect_one_import_drivers(dir).keys())
 
     def run(self, working_dir, verbose=False):
+        # set environment
+        CFG_ENV_SECTION = 'Environment'
+        if self.cfgparser.has_section(CFG_ENV_SECTION):
+            for key in self.cfgparser[CFG_ENV_SECTION]:
+                os.environ[key] = self.cfgparser[CFG_ENV_SECTION][key]
+
         section_to_run = []
         for d in self.import_drivers + self.driver_sequence:
             if self._is_available(d):
