@@ -22,16 +22,16 @@
 #include <cassert>
 #include <chrono>
 #include <iostream>
-#include <sys/time.h>
+#include <time.h>
 
 namespace
 {
 
 uint64_t nowMicros()
 {
-  struct timeval tv;
-  gettimeofday(&tv, nullptr);
-  return static_cast<uint64_t>(tv.tv_sec) * 1e6 + tv.tv_usec;
+  struct timespec ts;
+  clock_gettime(CLOCK_MONOTONIC, &ts);
+  return static_cast<uint64_t>(ts.tv_nsec) / 1e3 + static_cast<uint64_t>(ts.tv_sec) * 1e6;
 }
 
 void SleepForMicros(uint64_t micros)
