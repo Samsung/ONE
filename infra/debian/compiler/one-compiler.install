@@ -35,13 +35,13 @@ usr/bin/onelib/OptionBuilder.py usr/share/one/bin/onelib/
 usr/bin/onelib/TopologicalSortHelper.py usr/share/one/bin/onelib/
 usr/bin/onelib/WorkflowRunner.py usr/share/one/bin/onelib/
 usr/bin/onelib/Command.py usr/share/one/bin/onelib/
+usr/bin/onelib/utils.py usr/share/one/bin/onelib/
 usr/bin/onnx_legalizer.py usr/share/one/bin/
 usr/bin/rawdata2hdf5 usr/share/one/bin/
 usr/bin/record-minmax usr/share/one/bin/
 usr/bin/tf2nnpkg usr/share/one/bin/
 usr/bin/tf2tfliteV2.py usr/share/one/bin/
 usr/bin/tflite2circle usr/share/one/bin/
-usr/bin/utils.py usr/share/one/bin/
 usr/bin/visq usr/share/one/bin/
 usr/bin/visqlib/DumpFakeQuantFM.py usr/share/one/bin/visqlib/
 usr/bin/visqlib/DumpFP32FM.py usr/share/one/bin/visqlib/
