@@ -227,7 +227,7 @@ void DepthwiseConv2D::evalQuantizedPerChannel() const
             const int output_channel = m + in_channel * depth_multiplier;
             const int in_x_origin = (out_x * stride_width) - _padding_width;
             const int in_y_origin = (out_y * stride_height) - _padding_height;
-            int32 acc = 0;
+            int32_t acc = 0;
             for (int filter_y = 0; filter_y < filter_height; ++filter_y)
             {
               for (int filter_x = 0; filter_x < filter_width; ++filter_x)
@@ -239,9 +239,9 @@ void DepthwiseConv2D::evalQuantizedPerChannel() const
                   (in_x >= 0) && (in_x < input_width) && (in_y >= 0) && (in_y < input_height);
                 if (is_point_inside_image)
                 {
-                  int32 input_val =
+                  int32_t input_val =
                     input_data[calcOffset(input_shape, batch, in_y, in_x, in_channel)];
-                  int32 filter_val =
+                  int32_t filter_val =
                     filter_data[calcOffset(filter_shape, 0, filter_y, filter_x, output_channel)];
                   acc += (filter_val - filter()->zero_points()[output_channel]) *
                          (input_val - input()->zero_point());

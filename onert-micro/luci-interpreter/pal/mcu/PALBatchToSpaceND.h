@@ -24,8 +24,8 @@ namespace luci_interpreter_pal
 template <typename T>
 static inline void
 BatchToSpaceND(const tflite::RuntimeShape &unextended_input1_shape, const T *input1_data,
-               const tflite::RuntimeShape &unextended_input2_shape, const int32 *block_shape_data,
-               const tflite::RuntimeShape &unextended_input3_shape, const int32 *crops_data,
+               const tflite::RuntimeShape &unextended_input2_shape, const int32_t *block_shape_data,
+               const tflite::RuntimeShape &unextended_input3_shape, const int32_t *crops_data,
                const tflite::RuntimeShape &unextended_output_shape, T *output_data)
 {
   tflite::reference_ops::BatchToSpaceND(

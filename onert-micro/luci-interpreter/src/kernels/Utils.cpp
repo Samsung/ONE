@@ -134,9 +134,9 @@ void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier,
   }
 
   const double q = std::frexp(double_multiplier, shift);
-  auto q_fixed = static_cast<int64_t>(std::round(q * (INT64_C(1) << 31)));
+  auto q_fixed = static_cast<int64_t>(std::round(q * (int64_t(1) << 31)));
 
-  if (q_fixed == (INT64_C(1) << 31))
+  if (q_fixed == (int64_t(1) << 31))
   {
     q_fixed /= 2;
     ++*shift;
