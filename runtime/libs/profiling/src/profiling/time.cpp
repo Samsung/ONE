@@ -25,7 +25,7 @@
 #if defined(_MSC_VER)
 #include <chrono>  // NOLINT(build/c++11)
 #else
-#include <sys/time.h>
+#include <time.h>
 #endif
 
 namespace tflite {
@@ -43,9 +43,9 @@ uint64_t NowMicros() {
 #else
 
 uint64_t NowMicros() {
-  struct timeval tv;
-  gettimeofday(&tv, nullptr);
-  return static_cast<uint64_t>(tv.tv_sec) * 1000000 + tv.tv_usec;
+  struct timespec ts;
+  clock_gettime(CLOCK_MONOTONIC, &ts);
+  return static_cast<uint64_t>(ts.tv_nsec) / 1e3 + static_cast<uint64_t>(ts.tv_sec) * 1e6;
 }
 
 #endif  // defined(_MSC_VER)
