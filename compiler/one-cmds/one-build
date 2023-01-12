@@ -24,7 +24,7 @@ import configparser
 import os
 import sys
 
-import utils as _utils
+import onelib.utils as oneutils
 
 # TODO Find better way to suppress trackback on error
 # This suppression is applied only to `one-build`
@@ -35,9 +35,9 @@ def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to run ONE drivers in customized order')
 
-    _utils.add_default_arg(parser)
+    oneutils.add_default_arg(parser)
 
-    opt_name_list = _utils.get_optimization_list(get_name=True)
+    opt_name_list = oneutils.get_optimization_list(get_name=True)
     opt_name_list = ['-' + s for s in opt_name_list]
     if not opt_name_list:
         opt_help_message = '(No available optimization options)'
@@ -54,7 +54,7 @@ def _parse_arg(parser):
     args = parser.parse_args()
     # print version
     if args.version:
-        _utils.print_version_and_exit(__file__)
+        oneutils.print_version_and_exit(__file__)
 
     return args
 
@@ -62,12 +62,12 @@ def _parse_arg(parser):
 def _verify_arg(parser, args):
     """verify given arguments"""
     # check if required arguments is given
-    if not _utils.is_valid_attr(args, 'config'):
+    if not oneutils.is_valid_attr(args, 'config'):
         parser.error('-C/--config argument is required')
     # check if given optimization option exists
-    opt_name_list = _utils.get_optimization_list(get_name=True)
-    opt_name_list = [_utils.remove_prefix(s, 'O') for s in opt_name_list]
-    if _utils.is_valid_attr(args, 'O'):
+    opt_name_list = oneutils.get_optimization_list(get_name=True)
+    opt_name_list = [oneutils.remove_prefix(s, 'O') for s in opt_name_list]
+    if oneutils.is_valid_attr(args, 'O'):
         if ' ' in getattr(args, 'O'):
             parser.error('Not allowed to have space in the optimization name')
         if not getattr(args, 'O') in opt_name_list:
@@ -121,12 +121,12 @@ def _verify_cfg(driver_list, config):
 
 # verify given optimization option file
 def _verify_opt(args):
-    if _utils.is_valid_attr(args, 'O'):
+    if oneutils.is_valid_attr(args, 'O'):
         config = configparser.ConfigParser()
         config.optionxform = str
         opt_name_path_dic = dict(
-            zip(_utils.get_optimization_list(get_name=True),
-                _utils.get_optimization_list()))
+            zip(oneutils.get_optimization_list(get_name=True),
+                oneutils.get_optimization_list()))
         parsed = config.read(opt_name_path_dic['O' + getattr(args, 'O')])
         # check if given optimization option file exists
         if not parsed:
@@ -155,7 +155,7 @@ def main():
 
     # verify configuration file
     bin_dir = os.path.dirname(os.path.realpath(__file__))
-    import_drivers_dict = _utils.detect_one_import_drivers(bin_dir)
+    import_drivers_dict = oneutils.detect_one_import_drivers(bin_dir)
     transform_drivers = [
         'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile',
         'one-partition'
@@ -181,10 +181,10 @@ def main():
             driver_name = _get_driver_name(section)
         driver_path = os.path.join(dir_path, driver_name)
         cmd = [driver_path, '--config', getattr(args, 'config'), '--section', section]
-        if section == 'one-optimize' and _utils.is_valid_attr(args, 'O'):
+        if section == 'one-optimize' and oneutils.is_valid_attr(args, 'O'):
             cmd += ['-O', getattr(args, 'O')]
-        _utils.run(cmd)
+        oneutils.run(cmd)
 
 
 if __name__ == '__main__':
-    _utils.safemain(main, __file__)
+    oneutils.safemain(main, __file__)

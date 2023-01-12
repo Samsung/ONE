@@ -23,7 +23,7 @@ import argparse
 import os
 import sys
 
-import utils as _utils
+import onelib.utils as oneutils
 
 # TODO Find better way to suppress trackback on error
 sys.tracebacklimit = 0
@@ -33,7 +33,7 @@ def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to package circle and metadata into nnpackage')
 
-    _utils.add_default_arg(parser)
+    oneutils.add_default_arg(parser)
 
     ## model2nnpkg arguments
     model2nnpkg_group = parser.add_argument_group('arguments for packaging')
@@ -51,9 +51,9 @@ def _verify_arg(parser, args):
     """verify given arguments"""
     # check if required arguments is given
     missing = []
-    if not _utils.is_valid_attr(args, 'input_path'):
+    if not oneutils.is_valid_attr(args, 'input_path'):
         missing.append('-i/--input_path')
-    if not _utils.is_valid_attr(args, 'output_path'):
+    if not oneutils.is_valid_attr(args, 'output_path'):
         missing.append('-o/--output_path')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
@@ -63,7 +63,7 @@ def _parse_arg(parser):
     args = parser.parse_args()
     # print version
     if args.version:
-        _utils.print_version_and_exit(__file__)
+        oneutils.print_version_and_exit(__file__)
 
     return args
 
@@ -93,7 +93,7 @@ def _pack(args):
         f.write((' '.join(model2nnpkg_cmd) + '\n').encode())
 
         # convert tflite to circle
-        _utils.run(model2nnpkg_cmd, err_prefix="model2nnpkg", logfile=f)
+        oneutils.run(model2nnpkg_cmd, err_prefix="model2nnpkg", logfile=f)
 
 
 def main():
@@ -102,7 +102,7 @@ def main():
     args = _parse_arg(parser)
 
     # parse configuration file
-    _utils.parse_cfg(args, 'one-pack')
+    oneutils.parse_cfg(args, 'one-pack')
 
     # verify arguments
     _verify_arg(parser, args)
@@ -112,4 +112,4 @@ def main():
 
 
 if __name__ == '__main__':
-    _utils.safemain(main, __file__)
+    oneutils.safemain(main, __file__)

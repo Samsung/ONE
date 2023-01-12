@@ -24,7 +24,7 @@ import os
 import subprocess
 import sys
 
-import utils as _utils
+import onelib.utils as oneutils
 
 
 def _get_parser():
@@ -79,7 +79,7 @@ def _convert(args, unknown_args):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     # make cmd
     cmd = [sys.executable, os.path.join(dir_path, _get_driver_name(args.driver))]
-    if _utils.is_valid_attr(args, 'config'):
+    if oneutils.is_valid_attr(args, 'config'):
         cmd.append('--config')
         cmd.append(os.path.expanduser(args.config))
     return_code = subprocess.call(cmd + unknown_args)
@@ -100,4 +100,4 @@ def main():
 
 
 if __name__ == '__main__':
-    _utils.safemain(main, __file__)
+    oneutils.safemain(main, __file__)

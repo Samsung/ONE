@@ -20,7 +20,7 @@ import os
 from onelib.OptionBuilder import OptionBuilder
 from onelib.TopologicalSortHelper import TopologicalSortHelper
 from onelib.CfgRunner import CfgRunner
-import utils as oneutils
+import onelib.utils as oneutils
 
 
 class WorkflowRunner:

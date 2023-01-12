@@ -18,7 +18,7 @@ import configparser
 import os
 import warnings
 
-import utils as oneutils
+import onelib.utils as oneutils
 
 
 def _simple_warning(message, category, filename, lineno, file=None, line=None):
