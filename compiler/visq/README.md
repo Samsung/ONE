@@ -9,8 +9,15 @@ $ ./visq --fp32_circle sample.circle \
   --q_circle sample.q.circle \
   --data test.h5 \
   --mpeir_output sample.mpeir.visq.json \
-  --mse_output sample.mse.visq.json
+  --mse_output sample.mse.visq.json \
+  --dump_dot_graph
 ```
+
+The above command will generate
+- `sample.mpeir.visq.json`: Json file that contains layer-wise mpeir.
+- `sample.mse.visq.json`: Json file that conatins layer-wise mse.
+- `sample.mpeir.visq.json.dot`: Dot graph for layer-wise mpeir.
+- `sample.mse.visq.json.dot`: Dot graph for layer-wise mse.
 
 ## Quantization error metrics
 
