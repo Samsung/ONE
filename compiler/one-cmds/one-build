@@ -35,9 +35,9 @@ def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to run ONE drivers in customized order')
 
-    _utils._add_default_arg(parser)
+    _utils.add_default_arg(parser)
 
-    opt_name_list = _utils._get_optimization_list(get_name=True)
+    opt_name_list = _utils.get_optimization_list(get_name=True)
     opt_name_list = ['-' + s for s in opt_name_list]
     if not opt_name_list:
         opt_help_message = '(No available optimization options)'
@@ -54,7 +54,7 @@ def _parse_arg(parser):
     args = parser.parse_args()
     # print version
     if args.version:
-        _utils._print_version_and_exit(__file__)
+        _utils.print_version_and_exit(__file__)
 
     return args
 
@@ -62,12 +62,12 @@ def _parse_arg(parser):
 def _verify_arg(parser, args):
     """verify given arguments"""
     # check if required arguments is given
-    if not _utils._is_valid_attr(args, 'config'):
+    if not _utils.is_valid_attr(args, 'config'):
         parser.error('-C/--config argument is required')
     # check if given optimization option exists
-    opt_name_list = _utils._get_optimization_list(get_name=True)
-    opt_name_list = [_utils._remove_prefix(s, 'O') for s in opt_name_list]
-    if _utils._is_valid_attr(args, 'O'):
+    opt_name_list = _utils.get_optimization_list(get_name=True)
+    opt_name_list = [_utils.remove_prefix(s, 'O') for s in opt_name_list]
+    if _utils.is_valid_attr(args, 'O'):
         if ' ' in getattr(args, 'O'):
             parser.error('Not allowed to have space in the optimization name')
         if not getattr(args, 'O') in opt_name_list:
@@ -88,7 +88,7 @@ def _get_driver_name(driver_name):
     }[driver_name]
 
 
-def _parse_cfg(args):
+def parse_cfg(args):
     config = configparser.ConfigParser()
     config.optionxform = str
     parsed = config.read(os.path.expanduser(getattr(args, 'config')))
@@ -121,12 +121,12 @@ def _verify_cfg(driver_list, config):
 
 # verify given optimization option file
 def _verify_opt(args):
-    if _utils._is_valid_attr(args, 'O'):
+    if _utils.is_valid_attr(args, 'O'):
         config = configparser.ConfigParser()
         config.optionxform = str
         opt_name_path_dic = dict(
-            zip(_utils._get_optimization_list(get_name=True),
-                _utils._get_optimization_list()))
+            zip(_utils.get_optimization_list(get_name=True),
+                _utils.get_optimization_list()))
         parsed = config.read(opt_name_path_dic['O' + getattr(args, 'O')])
         # check if given optimization option file exists
         if not parsed:
@@ -151,11 +151,11 @@ def main():
     _verify_arg(parser, args)
 
     # parse configuration file
-    config = _parse_cfg(args)
+    config = parse_cfg(args)
 
     # verify configuration file
     bin_dir = os.path.dirname(os.path.realpath(__file__))
-    import_drivers_dict = _utils._detect_one_import_drivers(bin_dir)
+    import_drivers_dict = _utils.detect_one_import_drivers(bin_dir)
     transform_drivers = [
         'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile',
         'one-partition'
@@ -181,10 +181,10 @@ def main():
             driver_name = _get_driver_name(section)
         driver_path = os.path.join(dir_path, driver_name)
         cmd = [driver_path, '--config', getattr(args, 'config'), '--section', section]
-        if section == 'one-optimize' and _utils._is_valid_attr(args, 'O'):
+        if section == 'one-optimize' and _utils.is_valid_attr(args, 'O'):
             cmd += ['-O', getattr(args, 'O')]
-        _utils._run(cmd)
+        _utils.run(cmd)
 
 
 if __name__ == '__main__':
-    _utils._safemain(main, __file__)
+    _utils.safemain(main, __file__)

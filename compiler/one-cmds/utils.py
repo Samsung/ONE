@@ -26,7 +26,7 @@ import sys
 import onelib.constant as _constant
 
 
-def _add_default_arg(parser):
+def add_default_arg(parser):
     # version
     parser.add_argument(
         '-v',
@@ -47,7 +47,7 @@ def _add_default_arg(parser):
     parser.add_argument('-S', '--section', type=str, help=argparse.SUPPRESS)
 
 
-def _add_default_arg_no_CS(parser):
+def add_default_arg_no_CS(parser):
     """
     This adds -v -V args only (no -C nor -S)
     """
@@ -77,11 +77,11 @@ def is_accumulated_arg(arg, driver):
     return False
 
 
-def _is_valid_attr(args, attr):
+def is_valid_attr(args, attr):
     return hasattr(args, attr) and getattr(args, attr)
 
 
-def _parse_cfg_and_overwrite(config_path, section, args):
+def parse_cfg_and_overwrite(config_path, section, args):
     """
     parse given section of configuration file and set the values of args.
     Even if the values parsed from the configuration file already exist in args,
@@ -104,28 +104,28 @@ def _parse_cfg_and_overwrite(config_path, section, args):
     # TODO support accumulated arguments
 
 
-def _parse_cfg(args, driver_name):
+def parse_cfg(args, driver_name):
     """parse configuration file. If the option is directly given to the command line,
        the option is processed prior to the configuration file.
        That is, if the values parsed from the configuration file already exist in args,
        the values are ignored."""
-    if _is_valid_attr(args, 'config'):
+    if is_valid_attr(args, 'config'):
         config = configparser.ConfigParser()
         config.optionxform = str
         config.read(args.config)
         # if section is given, verify given section
-        if _is_valid_attr(args, 'section'):
+        if is_valid_attr(args, 'section'):
             if not config.has_section(args.section):
                 raise AssertionError('configuration file must have \'' + driver_name +
                                      '\' section')
             for key in config[args.section]:
                 if is_accumulated_arg(key, driver_name):
-                    if not _is_valid_attr(args, key):
+                    if not is_valid_attr(args, key):
                         setattr(args, key, [config[args.section][key]])
                     else:
                         getattr(args, key).append(config[args.section][key])
                     continue
-                if not _is_valid_attr(args, key):
+                if not is_valid_attr(args, key):
                     setattr(args, key, config[args.section][key])
         # if section is not given, section name is same with its driver name
         else:
@@ -135,16 +135,16 @@ def _parse_cfg(args, driver_name):
             secton_to_run = driver_name
             for key in config[secton_to_run]:
                 if is_accumulated_arg(key, driver_name):
-                    if not _is_valid_attr(args, key):
+                    if not is_valid_attr(args, key):
                         setattr(args, key, [config[secton_to_run][key]])
                     else:
                         getattr(args, key).append(config[secton_to_run][key])
                     continue
-                if not _is_valid_attr(args, key):
+                if not is_valid_attr(args, key):
                     setattr(args, key, config[secton_to_run][key])
 
 
-def _print_version_and_exit(file_path):
+def print_version_and_exit(file_path):
     """print version of the file located in the file_path"""
     script_path = os.path.realpath(file_path)
     dir_path = os.path.dirname(script_path)
@@ -154,7 +154,7 @@ def _print_version_and_exit(file_path):
     sys.exit()
 
 
-def _safemain(main, mainpath):
+def safemain(main, mainpath):
     """execute given method and print with program name for all uncaught exceptions"""
     try:
         main()
@@ -164,7 +164,7 @@ def _safemain(main, mainpath):
         sys.exit(255)
 
 
-def _run(cmd, err_prefix=None, logfile=None):
+def run(cmd, err_prefix=None, logfile=None):
     """Execute command in subprocess
 
     Args:
@@ -196,19 +196,19 @@ def _run(cmd, err_prefix=None, logfile=None):
         sys.exit(p.returncode)
 
 
-def _remove_prefix(str, prefix):
+def remove_prefix(str, prefix):
     if str.startswith(prefix):
         return str[len(prefix):]
     return str
 
 
-def _remove_suffix(str, suffix):
+def remove_suffix(str, suffix):
     if str.endswith(suffix):
         return str[:-len(suffix)]
     return str
 
 
-def _get_optimization_list(get_name=False):
+def get_optimization_list(get_name=False):
     """
     returns a list of optimization. If `get_name` is True,
     only basename without extension is returned rather than full file path.
@@ -242,12 +242,12 @@ def _get_optimization_list(get_name=False):
         # NOTE the name includes prefix 'O'
         # e.g. O1, O2, ONCHW not just 1, 2, NCHW
         opt_list = [ntpath.basename(f) for f in opt_list]
-        opt_list = [_remove_suffix(s, '.cfg') for s in opt_list]
+        opt_list = [remove_suffix(s, '.cfg') for s in opt_list]
 
     return opt_list
 
 
-def _detect_one_import_drivers(search_path):
+def detect_one_import_drivers(search_path):
     """Looks for import drivers in given directory
 
     Args:

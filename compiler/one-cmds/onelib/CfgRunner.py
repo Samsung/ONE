@@ -67,8 +67,8 @@ class CfgRunner:
         # make option names case sensitive
         self.optparser.optionxform = str
         opt_book = dict(
-            zip(oneutils._get_optimization_list(get_name=True),
-                oneutils._get_optimization_list()))
+            zip(oneutils.get_optimization_list(get_name=True),
+                oneutils.get_optimization_list()))
         parsed = self.optparser.read(opt_book['O' + opt])
         if not parsed:
             raise FileNotFoundError('Not found given optimization configuration file')
@@ -80,7 +80,7 @@ class CfgRunner:
         self.opt = opt
 
     def detect_import_drivers(self, dir):
-        self.import_drivers = list(oneutils._detect_one_import_drivers(dir).keys())
+        self.import_drivers = list(oneutils.detect_one_import_drivers(dir).keys())
 
     def run(self, working_dir, verbose=False):
         # set environment
@@ -102,4 +102,4 @@ class CfgRunner:
                 options.append('--verbose')
             driver_path = os.path.join(working_dir, section)
             cmd = [driver_path] + options
-            oneutils._run(cmd)
+            oneutils.run(cmd)

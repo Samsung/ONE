@@ -28,7 +28,7 @@ class Command:
     # Option values are collected from self.args
     def add_option_with_valid_args(self, option, attrs):
         for attr in attrs:
-            if not oneutils._is_valid_attr(self.args, attr):
+            if not oneutils.is_valid_attr(self.args, attr):
                 return self
         self.cmd.append(option)
         for attr in attrs:
@@ -44,11 +44,11 @@ class Command:
 
     # Add option with no argument (ex: --verbose) if attr is valid
     def add_noarg_option_if_valid_arg(self, option, attr):
-        if oneutils._is_valid_attr(self.args, attr):
+        if oneutils.is_valid_attr(self.args, attr):
             self.cmd.append(option)
         return self
 
     # Run cmd and save logs
     def run(self):
         self.log_file.write((' '.join(self.cmd) + '\n').encode())
-        oneutils._run(self.cmd, err_prefix=self.driver, logfile=self.log_file)
+        oneutils.run(self.cmd, err_prefix=self.driver, logfile=self.log_file)

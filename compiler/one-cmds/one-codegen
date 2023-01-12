@@ -79,7 +79,7 @@ def _get_parser(backends_list):
     parser = argparse.ArgumentParser(
         description='command line tool for code generation', usage=codegen_usage)
 
-    _utils._add_default_arg(parser)
+    _utils.add_default_arg(parser)
 
     # get backend list in the directory
     backends_name = [ntpath.basename(f) for f in backends_list]
@@ -98,7 +98,7 @@ def _verify_arg(parser, args):
     """verify given arguments"""
     # check if required arguments is given
     missing = []
-    if not _utils._is_valid_attr(args, 'backend'):
+    if not _utils.is_valid_attr(args, 'backend'):
         missing.append('-b/--backend')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
@@ -125,7 +125,7 @@ def _parse_arg(parser):
         codegen_args = parser.parse_args(codegen_args)
     # print version
     if len(args) and codegen_args.version:
-        _utils._print_version_and_exit(__file__)
+        _utils.print_version_and_exit(__file__)
 
     return codegen_args, backend_args, unknown_args
 
@@ -139,7 +139,7 @@ def main():
     args, backend_args, unknown_args = _parse_arg(parser)
 
     # parse configuration file
-    _utils._parse_cfg(args, 'one-codegen')
+    _utils.parse_cfg(args, 'one-codegen')
 
     # verify arguments
     _verify_arg(parser, args)
@@ -157,12 +157,12 @@ def main():
     if not codegen_path:
         raise FileNotFoundError(backend_base + ' not found')
     codegen_cmd = [codegen_path] + backend_args + unknown_args
-    if _utils._is_valid_attr(args, 'command'):
+    if _utils.is_valid_attr(args, 'command'):
         codegen_cmd += getattr(args, 'command').split()
 
     # run backend driver
-    _utils._run(codegen_cmd, err_prefix=backend_base)
+    _utils.run(codegen_cmd, err_prefix=backend_base)
 
 
 if __name__ == '__main__':
-    _utils._safemain(main, __file__)
+    _utils.safemain(main, __file__)

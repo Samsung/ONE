@@ -47,7 +47,7 @@ def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to convert PyTorch to Circle')
 
-    _utils._add_default_arg(parser)
+    _utils.add_default_arg(parser)
 
     ## converter arguments
     converter_group = parser.add_argument_group('converter arguments')
@@ -96,13 +96,13 @@ def _verify_arg(parser, args):
     """verify given arguments"""
     # check if required arguments is given
     missing = []
-    if not _utils._is_valid_attr(args, 'input_path'):
+    if not _utils.is_valid_attr(args, 'input_path'):
         missing.append('-i/--input_path')
-    if not _utils._is_valid_attr(args, 'output_path'):
+    if not _utils.is_valid_attr(args, 'output_path'):
         missing.append('-o/--output_path')
-    if not _utils._is_valid_attr(args, 'input_shapes'):
+    if not _utils.is_valid_attr(args, 'input_shapes'):
         missing.append('-s/--input_shapes')
-    if not _utils._is_valid_attr(args, 'input_types'):
+    if not _utils.is_valid_attr(args, 'input_types'):
         missing.append('-t/--input_types')
 
     if len(missing):
@@ -113,7 +113,7 @@ def _parse_arg(parser):
     args = parser.parse_args()
     # print version
     if args.version:
-        _utils._print_version_and_exit(__file__)
+        _utils.print_version_and_exit(__file__)
 
     return args
 
@@ -255,7 +255,7 @@ def _convert(args):
     logfile_path = os.path.realpath(args.output_path) + '.log'
     with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
         # save intermediate
-        if _utils._is_valid_attr(args, 'save_intermediate'):
+        if _utils.is_valid_attr(args, 'save_intermediate'):
             tmpdir = os.path.dirname(logfile_path)
         # convert pytorch to onnx model
         input_path = getattr(args, 'input_path')
@@ -310,8 +310,8 @@ def _convert(args):
         onnx_model = onnx.load(onnx_output_path)
 
         options = onnx_legalizer.LegalizeOptions()
-        options.unroll_rnn = _utils._is_valid_attr(args, 'unroll_rnn')
-        options.unroll_lstm = _utils._is_valid_attr(args, 'unroll_lstm')
+        options.unroll_rnn = _utils.is_valid_attr(args, 'unroll_rnn')
+        options.unroll_lstm = _utils.is_valid_attr(args, 'unroll_lstm')
         onnx_legalizer.legalize(onnx_model, options)
 
         tf_savedmodel = onnx_tf.backend.prepare(onnx_model)
@@ -334,7 +334,7 @@ def _convert(args):
         f.write((' '.join(tf2tfliteV2_cmd) + '\n').encode())
 
         # convert tf to tflite
-        _utils._run(tf2tfliteV2_cmd, logfile=f)
+        _utils.run(tf2tfliteV2_cmd, logfile=f)
 
         # make a command to convert from tflite to circle
         tflite2circle_path = os.path.join(dir_path, 'tflite2circle')
@@ -345,7 +345,7 @@ def _convert(args):
         f.write((' '.join(tflite2circle_cmd) + '\n').encode())
 
         # convert tflite to circle
-        _utils._run(tflite2circle_cmd, err_prefix="tflite2circle", logfile=f)
+        _utils.run(tflite2circle_cmd, err_prefix="tflite2circle", logfile=f)
 
 
 def main():
@@ -354,7 +354,7 @@ def main():
     args = _parse_arg(parser)
 
     # parse configuration file
-    _utils._parse_cfg(args, 'one-import-pytorch')
+    _utils.parse_cfg(args, 'one-import-pytorch')
 
     # verify arguments
     _verify_arg(parser, args)
@@ -364,4 +364,4 @@ def main():
 
 
 if __name__ == '__main__':
-    _utils._safemain(main, __file__)
+    _utils.safemain(main, __file__)
