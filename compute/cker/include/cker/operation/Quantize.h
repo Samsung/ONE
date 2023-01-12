@@ -18,6 +18,7 @@
 #ifndef __NNFW_CKER_QUANTIZE_H__
 #define __NNFW_CKER_QUANTIZE_H__
 
+#include "cker/operation/Round.h"
 #include "cker/Shape.h"
 #include "cker/Types.h"
 #include "cker/Utils.h"
@@ -41,6 +42,164 @@ inline void Quantize(const Shape &input_shape, const InputT *input_data, const S
   {
     int32_t unclamped = static_cast<int32_t>(round(input_data[i] / output_scale)) + output_offset;
     int32_t clamped = std::min(std::max(unclamped, min_val), max_val);
+    output_data[i] = clamped;
+  }
+}
+
+template <>
+inline void Quantize(const Shape &input_shape, const float *input_data, const Shape &output_shape,
+                     int8_t *output_data, const float scale, const int32_t zero_point)
+{
+  const int flat_size = MatchingFlatSize(input_shape, output_shape);
+  static constexpr int32_t min_val = std::numeric_limits<int8_t>::min();
+  static constexpr int32_t max_val = std::numeric_limits<int8_t>::max();
+
+  int i = 0;
+#ifdef USE_NEON
+  const float32x4_t reverse_scale_dup = vdupq_n_f32(1.0f / scale);
+  const int32x4_t zero_point_dup = vdupq_n_s32(zero_point);
+  const int32x4_t min_val_dup = vdupq_n_s32(min_val);
+  const int32x4_t max_val_dup = vdupq_n_s32(max_val);
+
+  for (; i <= flat_size - 8; i += 8)
+  {
+    const float *src_data_ptr = input_data + i;
+    float32x4_t input_val_0 = vld1q_f32(src_data_ptr);
+    float32x4_t input_val_1 = vld1q_f32(src_data_ptr + 4);
+
+    input_val_0 = vmulq_f32(input_val_0, reverse_scale_dup);
+    input_val_1 = vmulq_f32(input_val_1, reverse_scale_dup);
+
+    int32x4_t casted_val_0 = RoundToNearest(input_val_0);
+    int32x4_t casted_val_1 = RoundToNearest(input_val_1);
+
+    casted_val_0 = vaddq_s32(casted_val_0, zero_point_dup);
+    casted_val_1 = vaddq_s32(casted_val_1, zero_point_dup);
+
+    // Clamp the values to fit the target type's range.
+    casted_val_0 = vmaxq_s32(casted_val_0, min_val_dup);
+    casted_val_1 = vmaxq_s32(casted_val_1, min_val_dup);
+    casted_val_0 = vminq_s32(casted_val_0, max_val_dup);
+    casted_val_1 = vminq_s32(casted_val_1, max_val_dup);
+
+    const int16x4_t narrowed_val_0 = vmovn_s32(casted_val_0);
+    const int16x4_t narrowed_val_1 = vmovn_s32(casted_val_1);
+    const int16x8_t combined_val = vcombine_s16(narrowed_val_0, narrowed_val_1);
+    const int8x8_t combined_val_narrowed = vmovn_s16(combined_val);
+    vst1_s8(output_data + i, combined_val_narrowed);
+  }
+#endif // NEON
+
+  for (; i < flat_size; ++i)
+  {
+    const float val = input_data[i];
+    const int32_t unclamped = static_cast<int32_t>(round(val / scale)) + zero_point;
+    const int32_t clamped = std::min(std::max(unclamped, min_val), max_val);
+    output_data[i] = clamped;
+  }
+}
+
+template <>
+inline void Quantize(const Shape &input_shape, const float *input_data, const Shape &output_shape,
+                     uint8_t *output_data, const float scale, const int32_t zero_point)
+{
+  const int flat_size = MatchingFlatSize(input_shape, output_shape);
+  static constexpr int32_t min_val = std::numeric_limits<uint8_t>::min();
+  static constexpr int32_t max_val = std::numeric_limits<uint8_t>::max();
+
+  int i = 0;
+#ifdef USE_NEON
+  const float32x4_t reverse_scale_dup = vdupq_n_f32(1.0f / scale);
+  const int32x4_t zero_point_dup = vdupq_n_s32(zero_point);
+  const int32x4_t min_val_dup = vdupq_n_s32(min_val);
+  const int32x4_t max_val_dup = vdupq_n_s32(max_val);
+
+  for (; i <= flat_size - 8; i += 8)
+  {
+    const float *src_data_ptr = input_data + i;
+    float32x4_t input_val_0 = vld1q_f32(src_data_ptr);
+    float32x4_t input_val_1 = vld1q_f32(src_data_ptr + 4);
+
+    input_val_0 = vmulq_f32(input_val_0, reverse_scale_dup);
+    input_val_1 = vmulq_f32(input_val_1, reverse_scale_dup);
+
+    int32x4_t casted_val_0 = RoundToNearest(input_val_0);
+    int32x4_t casted_val_1 = RoundToNearest(input_val_1);
+
+    casted_val_0 = vaddq_s32(casted_val_0, zero_point_dup);
+    casted_val_1 = vaddq_s32(casted_val_1, zero_point_dup);
+
+    // Clamp the values to fit the target type's range.
+    casted_val_0 = vmaxq_s32(casted_val_0, min_val_dup);
+    casted_val_1 = vmaxq_s32(casted_val_1, min_val_dup);
+    casted_val_0 = vminq_s32(casted_val_0, max_val_dup);
+    casted_val_1 = vminq_s32(casted_val_1, max_val_dup);
+
+    const uint16x4_t narrowed_val_0 = vqmovun_s32(casted_val_0);
+    const uint16x4_t narrowed_val_1 = vqmovun_s32(casted_val_1);
+    const uint16x8_t combined_val = vcombine_u16(narrowed_val_0, narrowed_val_1);
+    const uint8x8_t combined_val_narrowed = vmovn_u16(combined_val);
+    vst1_u8(output_data + i, combined_val_narrowed);
+  }
+#endif // NEON
+
+  for (; i < flat_size; ++i)
+  {
+    const float val = input_data[i];
+    const int32_t unclamped = static_cast<int32_t>(round(val / scale)) + zero_point;
+    const int32_t clamped = std::min(std::max(unclamped, min_val), max_val);
+    output_data[i] = clamped;
+  }
+}
+
+template <>
+inline void Quantize(const Shape &input_shape, const float *input_data, const Shape &output_shape,
+                     int16_t *output_data, const float scale, const int32_t zero_point)
+{
+  const int flat_size = MatchingFlatSize(input_shape, output_shape);
+  static constexpr int32_t min_val = std::numeric_limits<int16_t>::min();
+  static constexpr int32_t max_val = std::numeric_limits<int16_t>::max();
+
+  int i = 0;
+#ifdef USE_NEON
+  const float32x4_t reverse_scale_dup = vdupq_n_f32(1.0f / scale);
+  const int32x4_t zero_point_dup = vdupq_n_s32(zero_point);
+  const int32x4_t min_val_dup = vdupq_n_s32(min_val);
+  const int32x4_t max_val_dup = vdupq_n_s32(max_val);
+
+  for (; i <= flat_size - 8; i += 8)
+  {
+    const float *src_data_ptr = input_data + i;
+    float32x4_t input_val_0 = vld1q_f32(src_data_ptr);
+    float32x4_t input_val_1 = vld1q_f32(src_data_ptr + 4);
+
+    input_val_0 = vmulq_f32(input_val_0, reverse_scale_dup);
+    input_val_1 = vmulq_f32(input_val_1, reverse_scale_dup);
+
+    int32x4_t casted_val_0 = RoundToNearest(input_val_0);
+    int32x4_t casted_val_1 = RoundToNearest(input_val_1);
+
+    casted_val_0 = vaddq_s32(casted_val_0, zero_point_dup);
+    casted_val_1 = vaddq_s32(casted_val_1, zero_point_dup);
+
+    // Clamp the values to fit the target type's range.
+    casted_val_0 = vmaxq_s32(casted_val_0, min_val_dup);
+    casted_val_1 = vmaxq_s32(casted_val_1, min_val_dup);
+    casted_val_0 = vminq_s32(casted_val_0, max_val_dup);
+    casted_val_1 = vminq_s32(casted_val_1, max_val_dup);
+
+    const int16x4_t narrowed_val_0 = vmovn_s32(casted_val_0);
+    const int16x4_t narrowed_val_1 = vmovn_s32(casted_val_1);
+    vst1_s16(output_data + i, narrowed_val_0);
+    vst1_s16(output_data + i + 4, narrowed_val_1);
+  }
+#endif // NEON
+
+  for (; i < flat_size; ++i)
+  {
+    const float val = input_data[i];
+    const int32_t unclamped = static_cast<int32_t>(round(val / scale)) + zero_point;
+    const int32_t clamped = std::min(std::max(unclamped, min_val), max_val);
     output_data[i] = clamped;
   }
 }
