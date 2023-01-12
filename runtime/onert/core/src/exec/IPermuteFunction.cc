@@ -33,7 +33,7 @@ namespace
 {
 using namespace onert;
 
-inline nnfw::cker::Shape getShape(const backend::IPortableTensor *tensor)
+inline nnfw::cker::Shape getShape(const backend::ITensor *tensor)
 {
   const ir::Shape shape = tensor->getShape();
 
@@ -49,46 +49,118 @@ inline nnfw::cker::Shape getShape(const backend::IPortableTensor *tensor)
   return ret;
 }
 
+// Quantize per element
+template <typename InputT, typename OutputT>
+void elementwiseQuantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor)
+{
+  const auto scale = dst_tensor->data_scale();
+  const auto zero_point = dst_tensor->data_zero_point();
+
+  int min_val = std::numeric_limits<OutputT>::min();
+  int max_val = std::numeric_limits<OutputT>::max();
+
+  auto loop_shape = src_tensor->getShape();
+  ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
+    const InputT *input_data =
+      reinterpret_cast<const InputT *>(src_tensor->buffer() + src_tensor->calcOffset(coords));
+    int32_t unclamped = static_cast<int32_t>(round(*input_data / scale)) + zero_point;
+    int32_t clamped = std::min(std::max(unclamped, min_val), max_val);
+    OutputT *output_data =
+      reinterpret_cast<OutputT *>(dst_tensor->buffer() + dst_tensor->calcOffset(coords));
+    *output_data = clamped;
+  });
+}
+
+// TODO Optimize the case where tensors has the same layout
+template <typename InputT, typename OutputT>
+void quantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor)
+{
+  if (!src_tensor->has_padding() && !dst_tensor->has_padding() &&
+      src_tensor->layout() == dst_tensor->layout() && !src_tensor->is_dynamic())
+  {
+    assert(!dst_tensor->is_dynamic());
+
+    // Call optimized neon kernel
+    nnfw::cker::Quantize(getShape(src_tensor),
+                         reinterpret_cast<const InputT *>(src_tensor->buffer()),
+                         getShape(dst_tensor), reinterpret_cast<OutputT *>(dst_tensor->buffer()),
+                         dst_tensor->data_scale(), dst_tensor->data_zero_point());
+  }
+  else
+  {
+    elementwiseQuantize<InputT, OutputT>(src_tensor, dst_tensor);
+  }
+}
+
+// Dequantize per element
+template <typename InputT, typename OutputT>
+void elementwiseDequantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor)
+{
+  const auto scale = src_tensor->data_scale();
+  const auto zero_point = src_tensor->data_zero_point();
+
+  auto loop_shape = src_tensor->getShape();
+  ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
+    const InputT *input_data =
+      reinterpret_cast<const InputT *>(src_tensor->buffer() + src_tensor->calcOffset(coords));
+    const OutputT result = static_cast<OutputT>(scale * (*input_data - zero_point));
+    OutputT *output_data =
+      reinterpret_cast<OutputT *>(dst_tensor->buffer() + dst_tensor->calcOffset(coords));
+    *output_data = result;
+  });
+}
+
+// TODO Optimize the case where tensors has the same layout
+template <typename InputT, typename OutputT>
+void dequantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor)
+{
+  if (!src_tensor->has_padding() && !dst_tensor->has_padding() &&
+      src_tensor->layout() == dst_tensor->layout() && !src_tensor->is_dynamic())
+  {
+    assert(!dst_tensor->is_dynamic());
+
+    // Call optimized neon kernel
+    nnfw::cker::Dequantize(getShape(src_tensor),
+                           reinterpret_cast<const InputT *>(src_tensor->buffer()),
+                           getShape(dst_tensor), reinterpret_cast<OutputT *>(dst_tensor->buffer()),
+                           src_tensor->data_scale(), src_tensor->data_zero_point());
+  }
+  else
+  {
+    elementwiseDequantize<InputT, OutputT>(src_tensor, dst_tensor);
+  }
+}
+
 template <typename SRC_T, typename DST_T,
           std::enable_if_t<std::is_base_of<backend::ITensor, SRC_T>::value &&
                              std::is_base_of<backend::ITensor, DST_T>::value,
                            bool> = true>
 void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor)
 {
-  if (dynamic_cast<const backend::IPortableTensor *>(src_tensor) == nullptr ||
-      src_tensor->layout() != ir::Layout::NHWC ||
-      dynamic_cast<backend::IPortableTensor *>(dst_tensor) == nullptr ||
-      dst_tensor->layout() != ir::Layout::NHWC)
+  // TODO Support different layouts
+  if (src_tensor->layout() != ir::Layout::NHWC || dst_tensor->layout() != ir::Layout::NHWC)
   {
     throw std::runtime_error("Currently, type-aware quantization supports only potable tensors");
   }
 
   // TODO Support other types
-  const auto src = nnfw::misc::polymorphic_downcast<const backend::IPortableTensor *>(src_tensor);
-  auto dst = nnfw::misc::polymorphic_downcast<backend::IPortableTensor *>(dst_tensor);
-  if (src->data_type() == ir::DataType::FLOAT32)
+  if (src_tensor->data_type() == ir::DataType::FLOAT32)
   {
-    switch (dst->data_type())
+    switch (dst_tensor->data_type())
     {
       case ir::DataType::QUANT_UINT8_ASYMM:
       {
-        nnfw::cker::Quantize(getShape(src), reinterpret_cast<const float *>(src->buffer()),
-                             getShape(dst), reinterpret_cast<uint8_t *>(dst->buffer()),
-                             dst->data_scale(), dst->data_zero_point());
+        quantize<float, uint8_t>(src_tensor, dst_tensor);
         break;
       }
       case ir::DataType::QUANT_INT8_SYMM:
       {
-        nnfw::cker::Quantize(getShape(src), reinterpret_cast<const float *>(src->buffer()),
-                             getShape(dst), reinterpret_cast<int8_t *>(dst->buffer()),
-                             dst->data_scale(), dst->data_zero_point());
+        quantize<float, int8_t>(src_tensor, dst_tensor);
         break;
       }
       case ir::DataType::QUANT_INT16_SYMM:
       {
-        nnfw::cker::Quantize(getShape(src), reinterpret_cast<const float *>(src->buffer()),
-                             getShape(dst), reinterpret_cast<int16_t *>(dst->buffer()),
-                             dst->data_scale(), dst->data_zero_point());
+        quantize<float, int16_t>(src_tensor, dst_tensor);
         break;
       }
       default:
@@ -98,29 +170,23 @@ void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor)
       }
     }
   }
-  else if (dst->data_type() == ir::DataType::FLOAT32)
+  else if (dst_tensor->data_type() == ir::DataType::FLOAT32)
   {
-    switch (src->data_type())
+    switch (src_tensor->data_type())
     {
       case ir::DataType::QUANT_UINT8_ASYMM:
       {
-        nnfw::cker::Dequantize(getShape(src), reinterpret_cast<const uint8_t *>(src), getShape(dst),
-                               reinterpret_cast<float *>(dst), src->data_scale(),
-                               src->data_zero_point());
+        dequantize<uint8_t, float>(src_tensor, dst_tensor);
         break;
       }
       case ir::DataType::QUANT_INT8_SYMM:
       {
-        nnfw::cker::Dequantize(getShape(src), reinterpret_cast<const int8_t *>(src), getShape(dst),
-                               reinterpret_cast<float *>(dst), src->data_scale(),
-                               src->data_zero_point());
+        dequantize<int8_t, float>(src_tensor, dst_tensor);
         break;
       }
       case ir::DataType::QUANT_INT16_SYMM:
       {
-        nnfw::cker::Dequantize(getShape(src), reinterpret_cast<const int16_t *>(src), getShape(dst),
-                               reinterpret_cast<float *>(dst), src->data_scale(),
-                               src->data_zero_point());
+        dequantize<int16_t, float>(src_tensor, dst_tensor);
         break;
       }
       default:
