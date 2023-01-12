@@ -23,42 +23,6 @@ namespace onert
 namespace exec
 {
 
-void SingleModelExecutors::emplace(const ir::ModelIndex &, const ir::SubgraphIndex &subg_index,
-                                   std::unique_ptr<IExecutor> exec)
-{
-  _executors.emplace(subg_index, std::move(exec));
-}
-
-IExecutor *SingleModelExecutors::at(const ir::ModelIndex &,
-                                    const ir::SubgraphIndex &subg_index) const
-{
-  return _executors.at(subg_index).get();
-}
-
-uint32_t SingleModelExecutors::inputSize() const
-{
-  return entryExecutor()->graph().getInputs().size();
-}
-
-uint32_t SingleModelExecutors::outputSize() const
-{
-  return entryExecutor()->graph().getOutputs().size();
-}
-
-const ir::OperandInfo &SingleModelExecutors::inputInfo(const ir::IOIndex &index) const
-{
-  const auto input_index = entryExecutor()->graph().getInputs().at(index);
-  return entryExecutor()->graph().operands().at(input_index).info();
-}
-
-const ir::OperandInfo &SingleModelExecutors::outputInfo(const ir::IOIndex &index) const
-{
-  auto output_index = entryExecutor()->graph().getOutputs().at(index);
-  return entryExecutor()->graph().operands().at(output_index).info();
-}
-
-void SingleModelExecutors::execute(const IODescription &desc) { entryExecutor()->execute(desc); }
-
 void Executors::emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
                         std::unique_ptr<IExecutor> exec)
 {

@@ -23,7 +23,7 @@
 #include "pass/PassRunner.h"
 #include "pass/UnusedOperandEliminationPass.h"
 #include "../dumper/dot/DotDumper.h"
-#include "../exec/Executors.h"
+#include "../exec/SingleModelExecutors.h"
 #include "../interp/InterpExecutor.h"
 #include "../ir/OperationDumper.h"
 #include "../ir/verifier/Verifier.h"
