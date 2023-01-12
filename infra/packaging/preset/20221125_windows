@@ -24,6 +24,8 @@ function preset_configure()
   REQUIRED_UNITS+=("luci-compute")
   # Circle compiler library (.circle -> .circle)
   REQUIRED_UNITS+=("luci")
+  # Python interface for circle schema
+  REQUIRED_UNITS+=("pics")
   # Tools
   REQUIRED_UNITS+=("tflite2circle" "circle2circle" "tflchef")
   REQUIRED_UNITS+=("circle-tensordump" "circledump")
