@@ -33,6 +33,7 @@ from pathlib import Path
 from visqlib.Palette import YLORRD9Palette
 from visqlib.QErrorComputer import MPEIRComputer, MSEComputer
 from visqlib.Util import valid_attr, pretty_float
+from visqlib.DotBuilder import DotBuilder
 
 
 def _get_parser():
@@ -67,6 +68,8 @@ def _get_parser():
         type=str,
         help="Path to the output json file (qerror metric = MSE).",
         required=False)
+    parser.add_argument(
+        "--dump_dot_graph", action="store_true", help="Dump dot graph.", required=False)
     return parser
 
 
@@ -157,6 +160,18 @@ def _build_json(model, metric, colorscheme, error):
     return result
 
 
+def _save_dot(circle_path: str, dot_path: str, metric: str, colors: list, qerror: dict):
+    # circle_path: Path to the circle model (required to build graph)
+    # dot_path: Path to the output dot file
+    # metric: Metric name (ex: MPEIR, MSE)
+    # colors: list [{'b': begin, 'e': end, 'c':color}, ..]
+    # qerror: dict {tensor_name (str) -> qerror (float)}
+    builder = DotBuilder(
+        circle_path=circle_path, dot_path=dot_path, metric=metric, colors=colors)
+
+    builder.save(qerror)
+
+
 def main():
     # parse arguments
     parser = _get_parser()
@@ -168,6 +183,7 @@ def main():
     data = None
     if valid_attr(args, 'data'):
         data = args.data
+    dump_dot_graph = args.dump_dot_graph
 
     curr_dir = Path(__file__).parent.resolve()
     dump_fp32_py = curr_dir / 'visqlib' / 'DumpFP32FM.py'
@@ -203,6 +219,14 @@ def main():
             with open(args.mpeir_output, "w") as f:
                 json.dump(result, f)
 
+            if dump_dot_graph:
+                _save_dot(
+                    circle_path=fp32_model,
+                    dot_path=args.mpeir_output + '.dot',
+                    metric='MPEIR',
+                    colors=palette.colorscheme(),
+                    qerror=qerror_map)
+
         if args.mse_output:
             computer = MSEComputer(fp32_dir, fq_dir)
             qerror_map, q_min, q_max = computer.run()
@@ -214,6 +238,14 @@ def main():
                 error=qerror_map)
             with open(args.mse_output, "w") as f:
                 json.dump(result, f)
+
+            if dump_dot_graph:
+                _save_dot(
+                    circle_path=fp32_model,
+                    dot_path=args.mse_output + '.dot',
+                    metric='MSE',
+                    colors=palette.colorscheme(),
+                    qerror=qerror_map)
 
 
 if __name__ == '__main__':
