@@ -25,7 +25,7 @@ import sys
 
 import onelib.constant as _constant
 import onelib.make_cmd as _make_cmd
-import utils as _utils
+import onelib.utils as oneutils
 
 # TODO Find better way to suppress trackback on error
 sys.tracebacklimit = 0
@@ -35,7 +35,7 @@ def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to optimize circle model')
 
-    _utils.add_default_arg(parser)
+    oneutils.add_default_arg(parser)
 
     ## utility arguments
     utility_group = parser.add_argument_group('arguments for utility')
@@ -75,9 +75,9 @@ def _verify_arg(parser, args):
     """verify given arguments"""
     # check if required arguments is given
     missing = []
-    if not _utils.is_valid_attr(args, 'input_path'):
+    if not oneutils.is_valid_attr(args, 'input_path'):
         missing.append('-i/--input_path')
-    if not _utils.is_valid_attr(args, 'output_path'):
+    if not oneutils.is_valid_attr(args, 'output_path'):
         missing.append('-o/--output_path')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
@@ -95,7 +95,7 @@ def _parse_arg(parser):
     args = parser.parse_args()
     # print version
     if args.version:
-        _utils.print_version_and_exit(__file__)
+        oneutils.print_version_and_exit(__file__)
 
     return args
 
@@ -113,25 +113,25 @@ def _optimize(args):
                                                              getattr(args, 'output_path'))
 
         # verbose
-        if _utils.is_valid_attr(args, 'verbose'):
+        if oneutils.is_valid_attr(args, 'verbose'):
             circle2circle_cmd.append('--verbose')
-        if _utils.is_valid_attr(args, 'change_outputs'):
+        if oneutils.is_valid_attr(args, 'change_outputs'):
             circle2circle_cmd.append('--change_outputs')
             circle2circle_cmd.append(getattr(args, 'change_outputs'))
 
         f.write((' '.join(circle2circle_cmd) + '\n').encode())
 
         # optimize
-        _utils.run(circle2circle_cmd, err_prefix="circle2circle", logfile=f)
+        oneutils.run(circle2circle_cmd, err_prefix="circle2circle", logfile=f)
 
 
 def _parse_opt(args):
-    if _utils.is_valid_attr(args, 'O'):
+    if oneutils.is_valid_attr(args, 'O'):
         opt_name_path_dic = dict(
-            zip(_utils.get_optimization_list(get_name=True),
-                _utils.get_optimization_list()))
+            zip(oneutils.get_optimization_list(get_name=True),
+                oneutils.get_optimization_list()))
         config_path = opt_name_path_dic['O' + getattr(args, 'O')]
-        _utils.parse_cfg_and_overwrite(config_path, 'one-optimize', args)
+        oneutils.parse_cfg_and_overwrite(config_path, 'one-optimize', args)
 
 
 def main():
@@ -140,7 +140,7 @@ def main():
     args = _parse_arg(parser)
 
     # parse configuration file
-    _utils.parse_cfg(args, 'one-optimize')
+    oneutils.parse_cfg(args, 'one-optimize')
 
     # parse optimization file
     # NOTE if there is a `one-optimize` section in above configuration file as well,
@@ -155,4 +155,4 @@ def main():
 
 
 if __name__ == '__main__':
-    _utils.safemain(main, __file__)
+    oneutils.safemain(main, __file__)

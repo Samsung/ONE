@@ -28,7 +28,7 @@ import os
 import sys
 
 import configparser
-import utils as _utils
+import onelib.utils as oneutils
 
 # TODO Find better way to suppress trackback on error
 sys.tracebacklimit = 0
@@ -152,7 +152,7 @@ def _get_parser(backends_list):
         'Currently tflite and onnx models are supported',
         usage=init_usage)
 
-    _utils.add_default_arg_no_CS(parser)
+    oneutils.add_default_arg_no_CS(parser)
 
     parser.add_argument(
         '-i', '--input_path', type=str, help='full filepath of the input model file')
@@ -197,23 +197,23 @@ def _get_parser(backends_list):
 def _verify_arg(parser, args):
     # check if required arguments is given
     missing = []
-    if not _utils.is_valid_attr(args, 'input_path'):
+    if not oneutils.is_valid_attr(args, 'input_path'):
         missing.append('-i/--input_path')
-    if not _utils.is_valid_attr(args, 'output_path'):
+    if not oneutils.is_valid_attr(args, 'output_path'):
         missing.append('-o/--output_path')
-    if not _utils.is_valid_attr(args, 'backend'):
+    if not oneutils.is_valid_attr(args, 'backend'):
         missing.append('-b/--backend')
 
-    if _utils.is_valid_attr(args, 'model_type'):
+    if oneutils.is_valid_attr(args, 'model_type'):
         # TODO Support model types other than onnx and tflite (e.g., TF)
         if getattr(args, 'model_type') not in ['onnx', 'tflite']:
             parser.error('Allowed value for --model_type: "onnx" or "tflite"')
 
-    if _utils.is_valid_attr(args, 'nchw_to_nhwc_input_shape'):
-        if not _utils.is_valid_attr(args, 'convert_nchw_to_nhwc'):
+    if oneutils.is_valid_attr(args, 'nchw_to_nhwc_input_shape'):
+        if not oneutils.is_valid_attr(args, 'convert_nchw_to_nhwc'):
             missing.append('--convert_nchw_to_nhwc')
-    if _utils.is_valid_attr(args, 'nchw_to_nhwc_output_shape'):
-        if not _utils.is_valid_attr(args, 'convert_nchw_to_nhwc'):
+    if oneutils.is_valid_attr(args, 'nchw_to_nhwc_output_shape'):
+        if not oneutils.is_valid_attr(args, 'convert_nchw_to_nhwc'):
             missing.append('--convert_nchw_to_nhwc')
 
     if len(missing):
@@ -236,13 +236,13 @@ def _parse_arg(parser):
         backend_args = backend_args if len(args) < 2 else args[1]
     # print version
     if len(args) and init_args.version:
-        _utils.print_version_and_exit(__file__)
+        oneutils.print_version_and_exit(__file__)
 
     return init_args, backend_args
 
 
 def _get_executable(args, backends_list):
-    if _utils.is_valid_attr(args, 'backend'):
+    if oneutils.is_valid_attr(args, 'backend'):
         backend_base = getattr(args, 'backend') + '-init'
         for cand in backends_list:
             if ntpath.basename(cand) == backend_base:
@@ -327,10 +327,10 @@ def _generate(args, model_type: str, inout_path: InputOutputPath):
 
 
 def _get_model_type(parser, args):
-    if _utils.is_valid_attr(args, 'model_type'):
+    if oneutils.is_valid_attr(args, 'model_type'):
         return args.model_type
 
-    if _utils.is_valid_attr(args, 'input_path'):
+    if oneutils.is_valid_attr(args, 'input_path'):
         _, ext = os.path.splitext(args.input_path)
 
         # ext would be, e.g., '.tflite' or '.onnx'.
@@ -366,10 +366,10 @@ def main():
     init_cmd = [driver_path] + backend_args
 
     # run backend driver
-    _utils.run(init_cmd, err_prefix=ntpath.basename(driver_path))
+    oneutils.run(init_cmd, err_prefix=ntpath.basename(driver_path))
 
     raise NotImplementedError("NYI")
 
 
 if __name__ == '__main__':
-    _utils.safemain(main, __file__)
+    oneutils.safemain(main, __file__)

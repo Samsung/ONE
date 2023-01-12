@@ -47,7 +47,6 @@ endforeach(ONE_COMMAND)
 set(ONE_UTILITY_FILES
     one-build.template.cfg
     onecc.template.cfg
-    utils.py
     onnx_legalizer.py
 )
 
@@ -89,7 +88,8 @@ set(ONE_PYTHON_FILES constant.py
                      CfgRunner.py
                      OptionBuilder.py
                      TopologicalSortHelper.py
-                     WorkflowRunner.py)
+                     WorkflowRunner.py
+                     utils.py)
 
 foreach(ONE_PYTHON_FILE IN ITEMS ${ONE_PYTHON_FILES})
 
