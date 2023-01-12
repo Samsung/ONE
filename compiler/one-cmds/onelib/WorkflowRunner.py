@@ -124,7 +124,7 @@ class WorkflowRunner:
                     # get the absolute path of the caller
                     driver_path = os.path.join(working_dir, driver_name)
                     cmd = [driver_path] + options
-                    oneutils._run(cmd)
+                    oneutils.run(cmd)
             elif self.CFG_REFERENCE_K in workflow:
                 cfg_path = workflow[self.CFG_REFERENCE_K]['path']
                 runner = CfgRunner(cfg_path)
