@@ -2,6 +2,13 @@ if(NOT ENABLE_TEST)
     return()
 endif(NOT ENABLE_TEST)
 
+# Build record-minmax-for-thread-test if target arch is 64bit
+# Thread sanitizer is only available on 64bit machine
+# (https://github.com/google/sanitizers/wiki/ThreadSanitizerCppManual#supported-platforms)
+if(NOT "${CMAKE_SIZEOF_VOID_P}" STREQUAL "8")
+    return()
+endif(NOT "${CMAKE_SIZEOF_VOID_P}" STREQUAL "8")
+
 unset(RECORD_MINMAX_THREAD_SAFETY_TEST)
 
 macro(addTest NAME)
