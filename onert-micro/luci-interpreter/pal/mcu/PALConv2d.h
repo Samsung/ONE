@@ -37,11 +37,11 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
 }
 
 static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeShape &input_shape,
-                        const uint8 *input_data, const tflite::RuntimeShape &filter_shape,
-                        const uint8 *filter_data, const tflite::RuntimeShape &bias_shape,
-                        const int32 *bias_data, const tflite::RuntimeShape &output_shape,
-                        uint8 *output_data, const tflite::RuntimeShape &scratchpad_shape,
-                        uint8 *scratchpad_data)
+                        const uint8_t *input_data, const tflite::RuntimeShape &filter_shape,
+                        const uint8_t *filter_data, const tflite::RuntimeShape &bias_shape,
+                        const int32_t *bias_data, const tflite::RuntimeShape &output_shape,
+                        uint8_t *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                        uint8_t *scratchpad_data)
 {
   (void)scratchpad_shape;
   (void)scratchpad_data;
@@ -50,13 +50,13 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
                               scratchpad_data, nullptr);
 }
 
-static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_t *mult,
-                                  const int32_t *shifts, const tflite::RuntimeShape &input_shape,
-                                  const int8 *input_data, const tflite::RuntimeShape &filter_shape,
-                                  const int8 *filter_data, const tflite::RuntimeShape &bias_shape,
-                                  const int32 *bias_data, const tflite::RuntimeShape &output_shape,
-                                  int8 *output_data, const tflite::RuntimeShape &scratchpad_shape,
-                                  int8 *scratchpad_data)
+static inline void
+ConvPerChannel(const tflite::ConvParams &params, const int32_t *mult, const int32_t *shifts,
+               const tflite::RuntimeShape &input_shape, const int8_t *input_data,
+               const tflite::RuntimeShape &filter_shape, const int8_t *filter_data,
+               const tflite::RuntimeShape &bias_shape, const int32_t *bias_data,
+               const tflite::RuntimeShape &output_shape, int8_t *output_data,
+               const tflite::RuntimeShape &scratchpad_shape, int8_t *scratchpad_data)
 {
   (void)scratchpad_shape;
   (void)scratchpad_data;

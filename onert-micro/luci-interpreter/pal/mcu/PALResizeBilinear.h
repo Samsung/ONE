@@ -25,7 +25,7 @@ template <typename T>
 static inline void
 ResizeBilinear(const tflite::ResizeBilinearParams &op_params,
                const tflite::RuntimeShape &unextended_input_shape, const T *input_data,
-               const tflite::RuntimeShape &output_size_shape, const int32 *output_size_data,
+               const tflite::RuntimeShape &output_size_shape, const int32_t *output_size_data,
                const tflite::RuntimeShape &unextended_output_shape, T *output_data)
 {
   tflite::reference_ops::ResizeBilinear(op_params, unextended_input_shape, input_data,

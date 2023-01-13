@@ -152,13 +152,14 @@ void TransposeConv::evalQuantized() const
 
   auto scratch_tensor = getOutputTensors()[1];
 
-  tflite::reference_ops::TransposeConv(op_params,                                                //
-                                       getTensorShape(input()), getTensorData<uint8>(input()),   //
-                                       getTensorShape(filter()), getTensorData<uint8>(filter()), //
-                                       getTensorShape(bias()), getTensorData<int32_t>(bias()),   //
-                                       getTensorShape(output()), getTensorData<uint8>(output()), //
-                                       tflite::RuntimeShape(), nullptr,                          //
-                                       getTensorData<int32_t>(scratch_tensor));
+  tflite::reference_ops::TransposeConv(
+    op_params,                                                  //
+    getTensorShape(input()), getTensorData<uint8_t>(input()),   //
+    getTensorShape(filter()), getTensorData<uint8_t>(filter()), //
+    getTensorShape(bias()), getTensorData<int32_t>(bias()),     //
+    getTensorShape(output()), getTensorData<uint8_t>(output()), //
+    tflite::RuntimeShape(), nullptr,                            //
+    getTensorData<int32_t>(scratch_tensor));
 }
 
 void TransposeConv::evalQuantizedPerChannel() const
