@@ -1,0 +1,5 @@
+<map id="nnc::ArtifactBinaryExpr" name="nnc::ArtifactBinaryExpr">
+<area shape="rect" id="node1" title="Represents different types of binary expressions." alt="" coords="5,152,157,177"/>
+<area shape="rect" id="node2" href="$classnnc_1_1_artifact_expr.html" title="Basic class for all expressions: identifiers, function calls, references etc." alt="" coords="23,79,139,104"/>
+<area shape="rect" id="node3" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="20,5,143,31"/>
+</map>

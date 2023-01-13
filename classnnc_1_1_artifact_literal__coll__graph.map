@@ -1,0 +1,5 @@
+<map id="nnc::ArtifactLiteral" name="nnc::ArtifactLiteral">
+<area shape="rect" id="node1" title="Represents literals which should go to the artifact source code as is." alt="" coords="5,152,132,177"/>
+<area shape="rect" id="node2" href="$classnnc_1_1_artifact_expr.html" title="Basic class for all expressions: identifiers, function calls, references etc." alt="" coords="11,79,127,104"/>
+<area shape="rect" id="node3" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="7,5,130,31"/>
+</map>

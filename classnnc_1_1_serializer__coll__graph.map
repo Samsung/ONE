@@ -1,0 +1,5 @@
+<map id="nnc::Serializer" name="nnc::Serializer">
+<area shape="rect" id="node1" title="Serializer of network parameters for soft backend." alt="" coords="5,152,108,177"/>
+<area shape="rect" id="node2" href="$classmir_1_1_visitor.html" title="Base visitor with empty fallback function." alt="" coords="15,79,98,104"/>
+<area shape="rect" id="node3" href="$classmir_1_1_i_visitor.html" title="Interface for visitors Use in MIR component if you want to enforce to implement visits for all operat..." alt="" coords="13,5,100,31"/>
+</map>

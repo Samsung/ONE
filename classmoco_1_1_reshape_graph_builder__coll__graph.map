@@ -1,0 +1,4 @@
+<map id="moco::ReshapeGraphBuilder" name="moco::ReshapeGraphBuilder">
+<area shape="rect" id="node1" title="GraphBuilder for Reshape node." alt="" coords="5,79,192,104"/>
+<area shape="rect" id="node2" href="$classmoco_1_1_graph_builder.html" title="Interface of convert TF NodeDef to loco::Node (e.g., Conv2DGraphBuilder)" alt="" coords="31,5,166,31"/>
+</map>

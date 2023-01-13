@@ -1,0 +1,4 @@
+<map id="nnc::ArtifactBlock" name="nnc::ArtifactBlock">
+<area shape="rect" id="node1" title="Represents a block of instructions." alt="" coords="5,79,129,104"/>
+<area shape="rect" id="node2" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="6,5,129,31"/>
+</map>

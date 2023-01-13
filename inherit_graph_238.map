@@ -1,0 +1,12 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" title=" " alt="" coords="5,241,87,267"/>
+<area shape="rect" id="node2" href="$classarm__compute_1_1_n_e_cast_bool_kernel.html" title="Class for the kernel converting boolean type." alt="" coords="155,5,369,31"/>
+<area shape="rect" id="node3" href="$classarm__compute_1_1_n_e_embedding_lookup_kernel.html" title=" " alt="" coords="167,55,357,95"/>
+<area shape="rect" id="node4" href="$classarm__compute_1_1_n_e_g_e_m_m_matrix_accumulate_biases_kernel.html" title=" " alt="" coords="162,119,362,159"/>
+<area shape="rect" id="node5" href="$classarm__compute_1_1_n_e_gather_kernel_ex.html" title=" " alt="" coords="155,184,369,209"/>
+<area shape="rect" id="node6" href="$classarm__compute_1_1_n_e_hashtable_lookup_kernel.html" title=" " alt="" coords="170,234,354,274"/>
+<area shape="rect" id="node7" href="$classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex.html" title=" " alt="" coords="135,298,389,338"/>
+<area shape="rect" id="node8" href="$classarm__compute_1_1_n_e_multiply_scale_factor_kernel.html" title=" " alt="" coords="161,362,363,402"/>
+<area shape="rect" id="node9" href="$classarm__compute_1_1_n_e_one_hot_kernel.html" title=" " alt="" coords="159,427,365,452"/>
+<area shape="rect" id="node10" href="$classarm__compute_1_1_n_e_quantization_symmetric_kernel.html" title=" " alt="" coords="163,477,361,517"/>
+</map>

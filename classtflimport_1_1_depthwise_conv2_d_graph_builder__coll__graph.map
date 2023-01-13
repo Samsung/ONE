@@ -1,0 +1,4 @@
+<map id="tflimport::DepthwiseConv2DGraphBuilder" name="tflimport::DepthwiseConv2DGraphBuilder">
+<area shape="rect" id="node1" title="GraphBuilder for DepthwiseConv2D operator." alt="" coords="5,79,177,119"/>
+<area shape="rect" id="node2" href="$classtflimport_1_1_graph_builder.html" title="Parent class of tflite operation graph builders (e.g., Conv2DGraphBuilder)" alt="" coords="17,5,166,31"/>
+</map>

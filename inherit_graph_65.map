@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classcirclechef_1_1_circle_op_chef.html" title="Interface for each operators to build circlechef." alt="" coords="5,99,167,125"/>
+<area shape="rect" id="node2" href="$classcirclechef_1_1_circle_op_b_c_q_fully_connected.html" title="circlechef operator builder for BCQFullyConnected" alt="" coords="228,5,417,45"/>
+<area shape="rect" id="node3" href="$classcirclechef_1_1_circle_op_b_c_q_gather.html" title="circlechef operator builder for BCQGather" alt="" coords="222,70,423,95"/>
+<area shape="rect" id="node4" href="$classcirclechef_1_1_circle_op_batch_mat_mul.html" title="circlechef operator builder for batchmatmul" alt="" coords="239,120,407,160"/>
+<area shape="rect" id="node5" href="$classcirclechef_1_1_circle_op_instance_norm.html" title="circlechef operator builder for INSTANCE_NORM" alt="" coords="215,185,431,210"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="coco::PadF" name="coco::PadF">
+<area shape="rect" id="node1" title="Introduce padding area." alt="" coords="15,225,102,251"/>
+<area shape="rect" id="node2" href="$classcoco_1_1_unary_op.html" title="Op with a single argument." alt="" coords="5,152,112,177"/>
+<area shape="rect" id="node3" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="22,79,95,104"/>
+<area shape="rect" id="node4" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="15,5,103,31"/>
+</map>

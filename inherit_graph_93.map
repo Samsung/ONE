@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$structcoco_1_1_feature_layout.html" title="A FeatureLayout connects each feature index to a Bag element." alt="" coords="5,95,144,120"/>
+<area shape="rect" id="node2" href="$classcoco_1_1_feature_layouts_1_1_b_c.html" title="BC (Channel&#45;wise Channel&#45;major) Feature Layout." alt="" coords="192,5,363,31"/>
+<area shape="rect" id="node3" href="$classcoco_1_1_feature_layouts_1_1_b_c_h_w.html" title="BCHW Feature Layout." alt="" coords="204,55,351,95"/>
+<area shape="rect" id="node4" href="$classcoco_1_1_feature_layouts_1_1_b_h_w_c.html" title="BHWC Feature Layout." alt="" coords="204,119,351,159"/>
+<area shape="rect" id="node5" href="$classcoco_1_1_feature_layouts_1_1_generic.html" title="Generic Feature Layout." alt="" coords="204,183,351,223"/>
+</map>

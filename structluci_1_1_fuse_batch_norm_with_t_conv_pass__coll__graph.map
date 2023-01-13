@@ -1,0 +1,4 @@
+<map id="luci::FuseBatchNormWithTConvPass" name="luci::FuseBatchNormWithTConvPass">
+<area shape="rect" id="node1" title="Class to fuse Batch Normalization into CircleTransposeConv." alt="" coords="5,79,243,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="83,5,165,31"/>
+</map>

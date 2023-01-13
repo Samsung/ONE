@@ -1,0 +1,4 @@
+<map id="tflchef::TFliteOpSegmentSum" name="tflchef::TFliteOpSegmentSum">
+<area shape="rect" id="node1" title="tflchef operator builder for SEGMENT_SUM" alt="" coords="5,79,197,104"/>
+<area shape="rect" id="node2" href="$classtflchef_1_1_t_flite_op_chef.html" title="Interface for each operators to build tflchef." alt="" coords="31,5,171,31"/>
+</map>

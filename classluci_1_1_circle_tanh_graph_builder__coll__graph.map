@@ -1,0 +1,5 @@
+<map id="luci::CircleTanhGraphBuilder" name="luci::CircleTanhGraphBuilder">
+<area shape="rect" id="node1" title=" " alt="" coords="5,152,191,177"/>
+<area shape="rect" id="node2" href="$classluci_1_1_graph_builder.html" title="Base of general single output graph builder(e.g., Conv2DGraphBuilder)" alt="" coords="37,79,159,104"/>
+<area shape="rect" id="node3" href="$structluci_1_1_graph_builder_base.html" title="Interface of convert circle::OperatorT to CircleNode." alt="" coords="21,5,175,31"/>
+</map>

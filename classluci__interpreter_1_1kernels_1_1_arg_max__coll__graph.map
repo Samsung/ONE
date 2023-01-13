@@ -1,0 +1,7 @@
+<map id="luci_interpreter::kernels::ArgMax" name="luci_interpreter::kernels::ArgMax">
+<area shape="rect" id="node1" title=" " alt="" coords="781,5,936,45"/>
+<area shape="rect" id="node2" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="528,5,732,45"/>
+<area shape="rect" id="node3" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,23,156,49"/>
+<area shape="rect" id="node5" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="205,51,365,91"/>
+<area shape="rect" id="node4" href="$structluci__interpreter_1_1_arg_max_params.html" title=" " alt="" coords="207,115,364,155"/>
+</map>

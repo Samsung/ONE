@@ -1,0 +1,4 @@
+<map id="luci::GraphBuilder" name="luci::GraphBuilder">
+<area shape="rect" id="node1" title="Base of general single output graph builder(e.g., Conv2DGraphBuilder)" alt="" coords="21,79,143,104"/>
+<area shape="rect" id="node2" href="$structluci_1_1_graph_builder_base.html" title="Interface of convert circle::OperatorT to CircleNode." alt="" coords="5,5,159,31"/>
+</map>

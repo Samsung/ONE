@@ -1,0 +1,4 @@
+<map id="nnc::DumperPass" name="nnc::DumperPass">
+<area shape="rect" id="node1" title="Dumps the graph to a dot file named number%.dot where number% is how many times the graph was dumped." alt="" coords="5,79,129,104"/>
+<area shape="rect" id="node2" href="$classnnc_1_1_pass.html" title="this class represent an interface for all compiler passes like that frontend, backend etc" alt="" coords="28,5,107,31"/>
+</map>

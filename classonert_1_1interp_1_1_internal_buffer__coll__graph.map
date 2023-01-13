@@ -1,0 +1,5 @@
+<map id="onert::interp::InternalBuffer" name="onert::interp::InternalBuffer">
+<area shape="rect" id="node1" title="Class for internally allocated data area." alt="" coords="5,152,177,177"/>
+<area shape="rect" id="node2" href="$classonert_1_1interp_1_1_buffer.html" title="Interface for writable data area." alt="" coords="27,79,156,104"/>
+<area shape="rect" id="node3" href="$structonert_1_1ir_1_1_data.html" title=" " alt="" coords="43,5,140,31"/>
+</map>

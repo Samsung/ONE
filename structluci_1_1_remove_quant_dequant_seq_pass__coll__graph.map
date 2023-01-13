@@ -1,0 +1,4 @@
+<map id="luci::RemoveQuantDequantSeqPass" name="luci::RemoveQuantDequantSeqPass">
+<area shape="rect" id="node1" title="Class to Remove Quantize&#45;Dequantize sequence." alt="" coords="5,79,184,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="53,5,136,31"/>
+</map>

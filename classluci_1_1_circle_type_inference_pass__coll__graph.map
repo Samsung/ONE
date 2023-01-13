@@ -1,0 +1,5 @@
+<map id="luci::CircleTypeInferencePass" name="luci::CircleTypeInferencePass">
+<area shape="rect" id="node1" title="Pass to infer type of circle nodes." alt="" coords="5,152,199,177"/>
+<area shape="rect" id="node2" href="$classluci_1_1_pass.html" title=" " alt="" coords="63,79,141,104"/>
+<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="61,5,143,31"/>
+</map>

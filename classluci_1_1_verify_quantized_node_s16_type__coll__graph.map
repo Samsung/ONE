@@ -1,0 +1,10 @@
+<map id="luci::VerifyQuantizedNodeS16Type" name="luci::VerifyQuantizedNodeS16Type">
+<area shape="rect" id="node1" title=" " alt="" coords="1408,35,1579,75"/>
+<area shape="rect" id="node2" href="$classluci_1_1_verify_quantized_node_type_base.html" title=" " alt="" coords="1176,27,1359,82"/>
+<area shape="rect" id="node3" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="595,67,745,107"/>
+<area shape="rect" id="node8" href="$classluci_1_1_verify_quantized_node_type_base.html" title="Verify using quantization type of a node and bias." alt="" coords="819,35,995,75"/>
+<area shape="rect" id="node4" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="264,50,473,75"/>
+<area shape="rect" id="node5" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="279,99,458,125"/>
+<area shape="rect" id="node6" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="5,99,215,125"/>
+<area shape="rect" id="node7" href="$classluci_1_1_verify_quantized_node_type.html" title="Verify the data type of quantized node." alt="" coords="571,7,769,33"/>
+</map>

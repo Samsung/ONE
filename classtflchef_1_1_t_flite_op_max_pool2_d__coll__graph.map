@@ -1,0 +1,4 @@
+<map id="tflchef::TFliteOpMaxPool2D" name="tflchef::TFliteOpMaxPool2D">
+<area shape="rect" id="node1" title="tflchef operator builder for MaxPool2D" alt="" coords="5,79,184,104"/>
+<area shape="rect" id="node2" href="$classtflchef_1_1_t_flite_op_chef.html" title="Interface for each operators to build tflchef." alt="" coords="25,5,165,31"/>
+</map>

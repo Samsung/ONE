@@ -1,0 +1,6 @@
+<map id="moco::tf::Conv2DBackpropInputCanonicalizer" name="moco::tf::Conv2DBackpropInputCanonicalizer">
+<area shape="rect" id="node1" title="Convert TFConv2DBackpropInput to Canonical TransposedConv2D." alt="" coords="32,287,207,327"/>
+<area shape="rect" id="node2" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="5,197,233,237"/>
+<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="73,5,155,31"/>
+<area shape="rect" id="node4" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="136,80,340,120"/>
+</map>

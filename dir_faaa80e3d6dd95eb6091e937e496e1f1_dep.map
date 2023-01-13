@@ -1,0 +1,13 @@
+<map id="runtime/onert/frontend/nnapi" name="runtime/onert/frontend/nnapi">
+<area shape="rect" id="node2" href="dir_dc56cd7571bd454441ebe6157ad8440c.html" title="wrapper" alt="" coords="109,136,177,161"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000473_000853.html" title="11" alt="" coords="142,110,157,124"/>
+<area shape="rect" id="node3" href="dir_b9590398d097b4e60dfc5c49a3eae98f.html" title="nnapi&#45;header" alt="" coords="5,209,101,235"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000473_000474.html" title="3" alt="" coords="70,189,78,204"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000853_000474.html" title="2" alt="" coords="84,197,92,212"/>
+<area shape="rect" id="node4" href="dir_e3ccf6623f9f3bff466090fdb94ba31c.html" title="core" alt="" coords="126,209,173,235"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000853_000130.html" title="13" alt="" coords="148,183,162,197"/>
+<area shape="rect" id="node5" href="dir_e955afc72e8af59637c9070b8690ff98.html" title="compiler" alt="" coords="197,209,267,235"/>
+<area shape="rect" id="edge5-headlabel" href="dir_000853_000106.html" title="1" alt="" coords="204,184,212,198"/>
+<area shape="rect" id="clust2" href="dir_faaa80e3d6dd95eb6091e937e496e1f1.html" alt="" coords="97,52,188,172"/>
+<area shape="rect" id="clust1" href="dir_7de0a71dec2e8c038a74a5e65a41854b.html" title="frontend" alt="" coords="87,16,199,183"/>
+</map>

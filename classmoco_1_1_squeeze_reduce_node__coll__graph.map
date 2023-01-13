@@ -1,0 +1,4 @@
+<map id="moco::SqueezeReduceNode" name="moco::SqueezeReduceNode">
+<area shape="rect" id="node1" title="If ReduceTypeOP don&#39;t keep dimensions, replace the ReduceTypeOp as new one to keep dimensions and ins..." alt="" coords="5,79,191,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="57,5,139,31"/>
+</map>

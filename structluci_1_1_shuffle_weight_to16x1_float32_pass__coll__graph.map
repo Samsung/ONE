@@ -1,0 +1,4 @@
+<map id="luci::ShuffleWeightTo16x1Float32Pass" name="luci::ShuffleWeightTo16x1Float32Pass">
+<area shape="rect" id="node1" title="Class to convert weight format of FullyConnected to SHUFFLED16x1FLOAT32." alt="" coords="5,79,175,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="49,5,131,31"/>
+</map>

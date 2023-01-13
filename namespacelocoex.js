@@ -1,0 +1,95 @@
+var namespacelocoex =
+[
+    [ "AttrTypeTrait", "structlocoex_1_1_attr_type_trait.html", null ],
+    [ "AttrTypeTrait< COpAttrType::Float >", "structlocoex_1_1_attr_type_trait_3_01_c_op_attr_type_1_1_float_01_4.html", "structlocoex_1_1_attr_type_trait_3_01_c_op_attr_type_1_1_float_01_4" ],
+    [ "AttrTypeTrait< COpAttrType::Int >", "structlocoex_1_1_attr_type_trait_3_01_c_op_attr_type_1_1_int_01_4.html", "structlocoex_1_1_attr_type_trait_3_01_c_op_attr_type_1_1_int_01_4" ],
+    [ "CircleDialect", "classlocoex_1_1_circle_dialect.html", "classlocoex_1_1_circle_dialect" ],
+    [ "CircleInstanceNorm", "classlocoex_1_1_circle_instance_norm.html", "classlocoex_1_1_circle_instance_norm" ],
+    [ "CircleNode", "structlocoex_1_1_circle_node.html", "structlocoex_1_1_circle_node" ],
+    [ "CircleNodeImpl", "structlocoex_1_1_circle_node_impl.html", "structlocoex_1_1_circle_node_impl" ],
+    [ "CircleNodeMixin", "classlocoex_1_1_circle_node_mixin.html", null ],
+    [ "CircleNodeMixin< CircleNodeTrait::FusedActFunc >", "classlocoex_1_1_circle_node_mixin_3_01_circle_node_trait_1_1_fused_act_func_01_4.html", "classlocoex_1_1_circle_node_mixin_3_01_circle_node_trait_1_1_fused_act_func_01_4" ],
+    [ "CircleNodeMutableVisitor", "structlocoex_1_1_circle_node_mutable_visitor.html", "structlocoex_1_1_circle_node_mutable_visitor" ],
+    [ "CircleNodeMutableVisitorBase", "structlocoex_1_1_circle_node_mutable_visitor_base.html", "structlocoex_1_1_circle_node_mutable_visitor_base" ],
+    [ "CircleNodeVisitor", "structlocoex_1_1_circle_node_visitor.html", "structlocoex_1_1_circle_node_visitor" ],
+    [ "CircleNodeVisitorBase", "structlocoex_1_1_circle_node_visitor_base.html", "structlocoex_1_1_circle_node_visitor_base" ],
+    [ "CircleShapeInferenceRule", "structlocoex_1_1_circle_shape_inference_rule.html", "structlocoex_1_1_circle_shape_inference_rule" ],
+    [ "CircleTypeInferenceRule", "structlocoex_1_1_circle_type_inference_rule.html", "structlocoex_1_1_circle_type_inference_rule" ],
+    [ "COpAttrData", "structlocoex_1_1_c_op_attr_data.html", "structlocoex_1_1_c_op_attr_data" ],
+    [ "COpAttrFloat", "structlocoex_1_1_c_op_attr_float.html", "structlocoex_1_1_c_op_attr_float" ],
+    [ "COpAttrInt", "structlocoex_1_1_c_op_attr_int.html", "structlocoex_1_1_c_op_attr_int" ],
+    [ "COpCall", "classlocoex_1_1_c_op_call.html", "classlocoex_1_1_c_op_call" ],
+    [ "COpDialect", "classlocoex_1_1_c_op_dialect.html", "classlocoex_1_1_c_op_dialect" ],
+    [ "COpNode", "structlocoex_1_1_c_op_node.html", "structlocoex_1_1_c_op_node" ],
+    [ "COpNodeSummaryBuilder", "classlocoex_1_1_c_op_node_summary_builder.html", "classlocoex_1_1_c_op_node_summary_builder" ],
+    [ "COpShapeInferenceRule", "structlocoex_1_1_c_op_shape_inference_rule.html", "structlocoex_1_1_c_op_shape_inference_rule" ],
+    [ "COpTypeInferenceRule", "structlocoex_1_1_c_op_type_inference_rule.html", "structlocoex_1_1_c_op_type_inference_rule" ],
+    [ "Filter", "classlocoex_1_1_filter.html", "classlocoex_1_1_filter" ],
+    [ "FixedArityNode", "classlocoex_1_1_fixed_arity_node.html", "classlocoex_1_1_fixed_arity_node" ],
+    [ "Stride", "classlocoex_1_1_stride.html", "classlocoex_1_1_stride" ],
+    [ "TFLAdd", "classlocoex_1_1_t_f_l_add.html", "classlocoex_1_1_t_f_l_add" ],
+    [ "TFLAveragePool2D", "classlocoex_1_1_t_f_l_average_pool2_d.html", "classlocoex_1_1_t_f_l_average_pool2_d" ],
+    [ "TFLConcatenation", "classlocoex_1_1_t_f_l_concatenation.html", "classlocoex_1_1_t_f_l_concatenation" ],
+    [ "TFLConst", "classlocoex_1_1_t_f_l_const.html", "classlocoex_1_1_t_f_l_const" ],
+    [ "TFLConv2D", "classlocoex_1_1_t_f_l_conv2_d.html", "classlocoex_1_1_t_f_l_conv2_d" ],
+    [ "TFLDepthwiseConv2D", "classlocoex_1_1_t_f_l_depthwise_conv2_d.html", "classlocoex_1_1_t_f_l_depthwise_conv2_d" ],
+    [ "TFLDialect", "classlocoex_1_1_t_f_l_dialect.html", "classlocoex_1_1_t_f_l_dialect" ],
+    [ "TFLDiv", "classlocoex_1_1_t_f_l_div.html", "classlocoex_1_1_t_f_l_div" ],
+    [ "TFLFullyConnected", "classlocoex_1_1_t_f_l_fully_connected.html", "classlocoex_1_1_t_f_l_fully_connected" ],
+    [ "TFLMaximum", "classlocoex_1_1_t_f_l_maximum.html", "classlocoex_1_1_t_f_l_maximum" ],
+    [ "TFLMaxPool2D", "classlocoex_1_1_t_f_l_max_pool2_d.html", "classlocoex_1_1_t_f_l_max_pool2_d" ],
+    [ "TFLMean", "classlocoex_1_1_t_f_l_mean.html", "classlocoex_1_1_t_f_l_mean" ],
+    [ "TFLMul", "classlocoex_1_1_t_f_l_mul.html", "classlocoex_1_1_t_f_l_mul" ],
+    [ "TFLNode", "structlocoex_1_1_t_f_l_node.html", "structlocoex_1_1_t_f_l_node" ],
+    [ "TFLNodeImpl", "structlocoex_1_1_t_f_l_node_impl.html", "structlocoex_1_1_t_f_l_node_impl" ],
+    [ "TFLNodeMixin", "classlocoex_1_1_t_f_l_node_mixin.html", null ],
+    [ "TFLNodeMixin< TFLNodeTrait::Bias >", "classlocoex_1_1_t_f_l_node_mixin_3_01_t_f_l_node_trait_1_1_bias_01_4.html", "classlocoex_1_1_t_f_l_node_mixin_3_01_t_f_l_node_trait_1_1_bias_01_4" ],
+    [ "TFLNodeMixin< TFLNodeTrait::FusedActFunc >", "classlocoex_1_1_t_f_l_node_mixin_3_01_t_f_l_node_trait_1_1_fused_act_func_01_4.html", "classlocoex_1_1_t_f_l_node_mixin_3_01_t_f_l_node_trait_1_1_fused_act_func_01_4" ],
+    [ "TFLNodeMutableVisitor", "structlocoex_1_1_t_f_l_node_mutable_visitor.html", "structlocoex_1_1_t_f_l_node_mutable_visitor" ],
+    [ "TFLNodeMutableVisitorBase", "structlocoex_1_1_t_f_l_node_mutable_visitor_base.html", "structlocoex_1_1_t_f_l_node_mutable_visitor_base" ],
+    [ "TFLNodeVisitor", "structlocoex_1_1_t_f_l_node_visitor.html", "structlocoex_1_1_t_f_l_node_visitor" ],
+    [ "TFLNodeVisitorBase", "structlocoex_1_1_t_f_l_node_visitor_base.html", "structlocoex_1_1_t_f_l_node_visitor_base" ],
+    [ "TFLRelu", "classlocoex_1_1_t_f_l_relu.html", "classlocoex_1_1_t_f_l_relu" ],
+    [ "TFLRelu6", "classlocoex_1_1_t_f_l_relu6.html", "classlocoex_1_1_t_f_l_relu6" ],
+    [ "TFLReshape", "classlocoex_1_1_t_f_l_reshape.html", "classlocoex_1_1_t_f_l_reshape" ],
+    [ "TFLRsqrt", "classlocoex_1_1_t_f_l_rsqrt.html", "classlocoex_1_1_t_f_l_rsqrt" ],
+    [ "TFLShapeInferenceRule", "structlocoex_1_1_t_f_l_shape_inference_rule.html", "structlocoex_1_1_t_f_l_shape_inference_rule" ],
+    [ "TFLSqrt", "classlocoex_1_1_t_f_l_sqrt.html", "classlocoex_1_1_t_f_l_sqrt" ],
+    [ "TFLSquaredDifference", "classlocoex_1_1_t_f_l_squared_difference.html", "classlocoex_1_1_t_f_l_squared_difference" ],
+    [ "TFLSub", "classlocoex_1_1_t_f_l_sub.html", "classlocoex_1_1_t_f_l_sub" ],
+    [ "TFLTranspose", "classlocoex_1_1_t_f_l_transpose.html", "classlocoex_1_1_t_f_l_transpose" ],
+    [ "TFLTransposeConv", "classlocoex_1_1_t_f_l_transpose_conv.html", "classlocoex_1_1_t_f_l_transpose_conv" ],
+    [ "TFLTypeInferenceRule", "structlocoex_1_1_t_f_l_type_inference_rule.html", "structlocoex_1_1_t_f_l_type_inference_rule" ],
+    [ "VariadicArityNode", "classlocoex_1_1_variadic_arity_node.html", "classlocoex_1_1_variadic_arity_node" ],
+    [ "CircleNodeTrait", "namespacelocoex.html#aa8fafad547cb5603a2a91368b74969ef", [
+      [ "FusedActFunc", "namespacelocoex.html#aa8fafad547cb5603a2a91368b74969efa4eb039764918dbda024c11be51c9ad50", null ]
+    ] ],
+    [ "CircleOpcode", "namespacelocoex.html#ae9186db1eda3decea5993b32af9d08b6", [
+      [ "CIRCLE_NODE", "namespacelocoex.html#ae9186db1eda3decea5993b32af9d08b6ace20b93d18f40841aa5b47b9632076a6", null ]
+    ] ],
+    [ "COpAttrType", "namespacelocoex.html#a856fa5c8ee124ce08cf54eea560149d1", [
+      [ "Int", "namespacelocoex.html#a856fa5c8ee124ce08cf54eea560149d1a1686a6c336b71b36d77354cea19a8b52", null ],
+      [ "Float", "namespacelocoex.html#a856fa5c8ee124ce08cf54eea560149d1a22ae0e2b89e5e3d477f988cc36d3272b", null ]
+    ] ],
+    [ "FusedActFunc", "namespacelocoex.html#a585e0c5c2732a27a543c8648db2e6c27", [
+      [ "UNDEFINED", "namespacelocoex.html#a585e0c5c2732a27a543c8648db2e6c27a0db45d2a4141101bdfe48e3314cfbca3", null ],
+      [ "NONE", "namespacelocoex.html#a585e0c5c2732a27a543c8648db2e6c27ab50339a10e1de285ac99d4c3990b8693", null ],
+      [ "RELU", "namespacelocoex.html#a585e0c5c2732a27a543c8648db2e6c27ad346bb4679d29be241279f15d7795c1c", null ],
+      [ "RELU6", "namespacelocoex.html#a585e0c5c2732a27a543c8648db2e6c27ac014a3d2b85dcb087a709b9b2a3b8e6b", null ]
+    ] ],
+    [ "Padding", "namespacelocoex.html#a6d4cf926bbe102f3406afbfcd6736f9b", [
+      [ "UNDEFINED", "namespacelocoex.html#a6d4cf926bbe102f3406afbfcd6736f9ba0db45d2a4141101bdfe48e3314cfbca3", null ],
+      [ "SAME", "namespacelocoex.html#a6d4cf926bbe102f3406afbfcd6736f9bac706ffd80b0ad0a4ef605c581e95252b", null ],
+      [ "VALID", "namespacelocoex.html#a6d4cf926bbe102f3406afbfcd6736f9bac9f1a6384b1c466d4612f513bd8e13ea", null ]
+    ] ],
+    [ "TFLNodeTrait", "namespacelocoex.html#a15a6a85a70f724315d81926ffb4cdc3b", [
+      [ "FusedActFunc", "namespacelocoex.html#a15a6a85a70f724315d81926ffb4cdc3ba4eb039764918dbda024c11be51c9ad50", null ],
+      [ "Bias", "namespacelocoex.html#a15a6a85a70f724315d81926ffb4cdc3ba4ad6b9e6418fd2d739906bd47e887ae3", null ]
+    ] ],
+    [ "TFLOpcode", "namespacelocoex.html#a2b1847c7daee8871f7226c601a1c1841", [
+      [ "TFL_NODE", "namespacelocoex.html#a2b1847c7daee8871f7226c601a1c1841af47f7ee283a613a094651efe918dd9d3", null ]
+    ] ],
+    [ "INSTANTIATE", "namespacelocoex.html#a678b7f5ac812db2567a9b0fc0831b68c", null ],
+    [ "INSTANTIATE", "namespacelocoex.html#aa6fe7f4e9ffd16bf1f79acbd25be7e54", null ],
+    [ "set_new_shape", "namespacelocoex.html#a40878dd8815889c0de48205370bec743", null ]
+];

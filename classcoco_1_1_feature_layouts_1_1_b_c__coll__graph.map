@@ -1,0 +1,4 @@
+<map id="coco::FeatureLayouts::BC" name="coco::FeatureLayouts::BC">
+<area shape="rect" id="node1" title="BC (Channel&#45;wise Channel&#45;major) Feature Layout." alt="" coords="5,79,176,104"/>
+<area shape="rect" id="node2" href="$structcoco_1_1_feature_layout.html" title="A FeatureLayout connects each feature index to a Bag element." alt="" coords="21,5,160,31"/>
+</map>

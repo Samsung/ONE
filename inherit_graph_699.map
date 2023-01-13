@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classnnc_1_1_i_artifact_generator.html" title="The interface of the artifact source code producer." alt="" coords="5,31,157,56"/>
+<area shape="rect" id="node2" href="$classnnc_1_1_artifact_generator_cpp_code.html" title="The ACL C++ artifact source code producer." alt="" coords="205,5,407,31"/>
+<area shape="rect" id="node3" href="$classnnc_1_1_artifact_generator_cpp_decl.html" title="The ACL C++ artifact header file producer." alt="" coords="207,55,405,80"/>
+</map>

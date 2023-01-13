@@ -1,0 +1,25 @@
+var classmio_1_1circle_1_1_reader =
+[
+    [ "Reader", "classmio_1_1circle_1_1_reader.html#aae2f9a487ec7bde425d16e9e40629cac", null ],
+    [ "Reader", "classmio_1_1circle_1_1_reader.html#ab36d0dc070c20965b873ed79ba934722", null ],
+    [ "buffer_info", "classmio_1_1circle_1_1_reader.html#a8fdcda88deddd622edf050c36b869796", null ],
+    [ "buffers", "classmio_1_1circle_1_1_reader.html#a5d8982115a9eb537b33cedd91e52321d", null ],
+    [ "builtin_code", "classmio_1_1circle_1_1_reader.html#aa8689f9c49fce18c0d9cf71dd80b1b73", null ],
+    [ "data_format", "classmio_1_1circle_1_1_reader.html#ad896db166773782f9f8edd9f0c59b09c", null ],
+    [ "inputs", "classmio_1_1circle_1_1_reader.html#ad1a5f98ac48502d55fb06a28e8a33bfa", null ],
+    [ "metadata", "classmio_1_1circle_1_1_reader.html#ad2c984d7141b305195d589ec04683881", null ],
+    [ "num_subgraph", "classmio_1_1circle_1_1_reader.html#a574539c07cbb65e88b0ed7fa90b43971", null ],
+    [ "opcode_name", "classmio_1_1circle_1_1_reader.html#a3ac640d4f24aac32502fb68848ee794a", null ],
+    [ "opcodes", "classmio_1_1circle_1_1_reader.html#a07296f3e591d54f6cc921459f71ab005", null ],
+    [ "operators", "classmio_1_1circle_1_1_reader.html#a645b2c5b8d2d42393a4ab7e381095d3a", null ],
+    [ "outputs", "classmio_1_1circle_1_1_reader.html#a5887fb27ef91349e769c14b1b82d333f", null ],
+    [ "outputs", "classmio_1_1circle_1_1_reader.html#ad21dd6301cca4c1ce8c133090cc60d7c", null ],
+    [ "select_subgraph", "classmio_1_1circle_1_1_reader.html#af95b54feb12024dce42f1ec99f68c5e1", null ],
+    [ "signature_defs", "classmio_1_1circle_1_1_reader.html#abba083c64f64da0b37a8a54424f6098b", null ],
+    [ "subgraph_index", "classmio_1_1circle_1_1_reader.html#a7c297af62d269e0fd6ff401e8d357f38", null ],
+    [ "subgraph_name", "classmio_1_1circle_1_1_reader.html#ad3f9189c7515d09393ecda71e66488f0", null ],
+    [ "tensor_dtype", "classmio_1_1circle_1_1_reader.html#a9bb7a7776e152f8a64228f3f2a812df1", null ],
+    [ "tensor_name", "classmio_1_1circle_1_1_reader.html#a702f314e90977318f13d37c28e3c9502", null ],
+    [ "tensors", "classmio_1_1circle_1_1_reader.html#a10d614ba78384b7f88b3a5c892f58128", null ],
+    [ "version", "classmio_1_1circle_1_1_reader.html#a7e74ededfe61ab69462067f5b502354e", null ]
+];

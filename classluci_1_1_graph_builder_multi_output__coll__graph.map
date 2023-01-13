@@ -1,0 +1,4 @@
+<map id="luci::GraphBuilderMultiOutput" name="luci::GraphBuilderMultiOutput">
+<area shape="rect" id="node1" title="Base of general multiple outputs graph builder(e.g., CircleIfGraphBuilder)" alt="" coords="5,79,196,104"/>
+<area shape="rect" id="node2" href="$structluci_1_1_graph_builder_base.html" title="Interface of convert circle::OperatorT to CircleNode." alt="" coords="24,5,177,31"/>
+</map>

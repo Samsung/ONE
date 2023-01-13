@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$structloco_1_1_depthwise_filter_encoder.html" title="Describe how to build a depthwise convolution filter from a tensor." alt="" coords="5,13,195,38"/>
+<area shape="rect" id="node2" href="$classloco_1_1_permuting_encoder_3_01_domain_1_1_depthwise_filter_01_4.html" title="Permutation&#45;based Tensor&#45;to&#45;DepthwiseFilter converter." alt="" coords="243,5,427,45"/>
+</map>

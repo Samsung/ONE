@@ -1,0 +1,13 @@
+<map id="locoex::CircleInstanceNorm" name="locoex::CircleInstanceNorm">
+<area shape="rect" id="node1" title="INSTANCE_NORM in circle." alt="" coords="1844,125,2024,150"/>
+<area shape="rect" id="node2" href="$classlocoex_1_1_fixed_arity_node.html" title=" " alt="" coords="1569,54,1795,109"/>
+<area shape="rect" id="node3" href="$structlocoex_1_1_circle_node_impl.html" title=" " alt="" coords="1175,18,1359,73"/>
+<area shape="rect" id="node4" href="$structlocoex_1_1_circle_node.html" title=" " alt="" coords="628,13,757,38"/>
+<area shape="rect" id="node8" href="$structlocoex_1_1_circle_node_impl.html" title=" " alt="" coords="807,34,961,74"/>
+<area shape="rect" id="node5" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="496,13,579,38"/>
+<area shape="rect" id="node6" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="309,6,447,46"/>
+<area shape="rect" id="node7" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,6,143,46"/>
+<area shape="rect" id="node9" href="$classlocoex_1_1_fixed_arity_node.html" title="Nodes with the fixed number of inputs." alt="" coords="1190,98,1343,138"/>
+<area shape="rect" id="node10" title=" " alt="" coords="858,105,910,130"/>
+<area shape="rect" id="node11" href="$classlocoex_1_1_circle_node_mixin_3_01_circle_node_trait_1_1_fused_act_func_01_4.html" title=" " alt="" coords="1569,134,1795,174"/>
+</map>

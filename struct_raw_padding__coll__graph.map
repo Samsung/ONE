@@ -1,0 +1,5 @@
+<map id="RawPadding" name="RawPadding">
+<area shape="rect" id="node1" title="A RawPadding denotes padding values stored in Caffe model." alt="" coords="55,168,150,193"/>
+<area shape="rect" id="node2" href="$class_padding_base.html" title=" " alt="" coords="5,93,200,119"/>
+<area shape="rect" id="node3" href="$class_padding_base.html" title="A PaddingBase encapsulates common implementation for derived Padding classes." alt="" coords="20,5,185,31"/>
+</map>

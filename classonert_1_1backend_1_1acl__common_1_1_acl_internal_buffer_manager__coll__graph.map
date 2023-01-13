@@ -1,0 +1,4 @@
+<map id="onert::backend::acl_common::AclInternalBufferManager&lt; T_MemoryManager, T_PoolManager, T_LifetimeManager, T_Allocator &gt;" name="onert::backend::acl_common::AclInternalBufferManager&lt; T_MemoryManager, T_PoolManager, T_LifetimeManager, T_Allocator &gt;">
+<area shape="rect" id="node1" title="class for InternalBufferManager which has arm_compute::IMemoryManager pointer" alt="" coords="5,93,244,177"/>
+<area shape="rect" id="node2" href="$structonert_1_1backend_1_1acl__common_1_1_i_internal_buffer_manager.html" title="Interface for InternalBufferManager which has arm_compute::IMemoryManager pointer." alt="" coords="17,5,233,45"/>
+</map>

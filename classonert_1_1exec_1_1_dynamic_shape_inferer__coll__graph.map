@@ -1,0 +1,4 @@
+<map id="onert::exec::DynamicShapeInferer" name="onert::exec::DynamicShapeInferer">
+<area shape="rect" id="node1" title="Class to infer shape of output tensor at execution time and allocate memory fo output tensor if neede..." alt="" coords="5,79,183,119"/>
+<area shape="rect" id="node2" href="$structonert_1_1ir_1_1_operation_visitor.html" title=" " alt="" coords="13,5,175,31"/>
+</map>

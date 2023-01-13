@@ -1,0 +1,11 @@
+<map id="loco::MatrixDecode" name="loco::MatrixDecode">
+<area shape="rect" id="node1" title="Create Tensor from Matrix." alt="" coords="1472,77,1603,102"/>
+<area shape="rect" id="node2" href="$structloco_1_1_canonical_node_def.html" title=" " alt="" coords="1199,62,1423,117"/>
+<area shape="rect" id="node3" href="$structloco_1_1_canonical_node.html" title=" " alt="" coords="643,67,783,93"/>
+<area shape="rect" id="node8" href="$structloco_1_1_canonical_node_def.html" title=" " alt="" coords="847,12,1007,52"/>
+<area shape="rect" id="node4" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="496,67,579,93"/>
+<area shape="rect" id="node5" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="309,60,447,100"/>
+<area shape="rect" id="node6" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,60,143,100"/>
+<area shape="rect" id="node7" title=" " alt="" coords="865,127,989,167"/>
+<area shape="rect" id="node9" title=" " alt="" coords="628,10,797,35"/>
+</map>

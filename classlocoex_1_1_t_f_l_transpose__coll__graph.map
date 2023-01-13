@@ -1,0 +1,12 @@
+<map id="locoex::TFLTranspose" name="locoex::TFLTranspose">
+<area shape="rect" id="node1" title="TRANSPOSE in TensorFlow Lite." alt="" coords="160,671,311,696"/>
+<area shape="rect" id="node2" href="$classlocoex_1_1_fixed_arity_node.html" title=" " alt="" coords="132,567,339,621"/>
+<area shape="rect" id="node3" href="$structlocoex_1_1_t_f_l_node_impl.html" title=" " alt="" coords="35,449,235,489"/>
+<area shape="rect" id="node4" href="$structlocoex_1_1_t_f_l_node.html" title=" " alt="" coords="14,272,134,297"/>
+<area shape="rect" id="node8" href="$structlocoex_1_1_t_f_l_node_impl.html" title=" " alt="" coords="96,347,241,387"/>
+<area shape="rect" id="node5" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="33,197,115,223"/>
+<area shape="rect" id="node6" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,108,143,148"/>
+<area shape="rect" id="node7" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,143,45"/>
+<area shape="rect" id="node9" href="$classlocoex_1_1_fixed_arity_node.html" title="Nodes with the fixed number of inputs." alt="" coords="260,449,413,489"/>
+<area shape="rect" id="node10" title=" " alt="" coords="311,354,363,379"/>
+</map>

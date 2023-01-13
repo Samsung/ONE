@@ -1,0 +1,5 @@
+<map id="onert::interp::Tensor" name="onert::interp::Tensor">
+<area shape="rect" id="node1" title="Class to handle tensor in interpreter as writable." alt="" coords="16,152,151,177"/>
+<area shape="rect" id="node2" href="$classonert_1_1interp_1_1_i_tensor.html" title="Interface to handle Tensor in interpreter." alt="" coords="14,79,153,104"/>
+<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,5,161,31"/>
+</map>

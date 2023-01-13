@@ -1,0 +1,5 @@
+<map id="coco::UnaryOp" name="coco::UnaryOp">
+<area shape="rect" id="node1" title="Op with a single argument." alt="" coords="5,152,112,177"/>
+<area shape="rect" id="node2" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="22,79,95,104"/>
+<area shape="rect" id="node3" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="15,5,103,31"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="souschef::GaussianFloat32DataChef" name="souschef::GaussianFloat32DataChef">
+<area shape="rect" id="node1" title="Generate a sequence of random values according to the gaussian(=normal) distribution." alt="" coords="5,79,184,119"/>
+<area shape="rect" id="node2" href="$structsouschef_1_1_data_chef.html" title="Data Generator." alt="" coords="27,5,162,31"/>
+</map>

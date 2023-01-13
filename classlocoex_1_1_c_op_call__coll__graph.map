@@ -1,0 +1,13 @@
+<map id="locoex::COpCall" name="locoex::COpCall">
+<area shape="rect" id="node1" title="Class to calls custom operation." alt="" coords="1181,125,1295,150"/>
+<area shape="rect" id="node2" href="$classlocoex_1_1_variadic_arity_node.html" title=" " alt="" coords="958,53,1127,93"/>
+<area shape="rect" id="node3" href="$structlocoex_1_1_c_op_node.html" title=" " alt="" coords="651,13,774,38"/>
+<area shape="rect" id="node4" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="496,13,579,38"/>
+<area shape="rect" id="node5" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="309,5,447,45"/>
+<area shape="rect" id="node6" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,143,45"/>
+<area shape="rect" id="node7" href="$classlocoex_1_1_variadic_arity_node.html" title="Nodes with the variadic inputs." alt="" coords="628,63,797,103"/>
+<area shape="rect" id="node8" title=" " alt="" coords="511,70,563,95"/>
+<area shape="rect" id="node9" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="953,117,1132,157"/>
+<area shape="rect" id="node10" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="641,147,784,173"/>
+<area shape="rect" id="node11" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="964,181,1121,221"/>
+</map>

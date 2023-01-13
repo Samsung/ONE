@@ -1,0 +1,4 @@
+<map id="luci::SparsifyTensorPass" name="luci::SparsifyTensorPass">
+<area shape="rect" id="node1" title="Pass to sparsify tensor." alt="" coords="5,79,171,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="47,5,129,31"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="luci::ForceQuantParamPass" name="luci::ForceQuantParamPass">
+<area shape="rect" id="node1" title="Pass to write quantparam (scale, zerop) to the specified tensors." alt="" coords="5,79,189,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="56,5,139,31"/>
+</map>

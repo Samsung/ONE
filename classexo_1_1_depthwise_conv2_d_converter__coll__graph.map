@@ -1,0 +1,6 @@
+<map id="exo::DepthwiseConv2DConverter" name="exo::DepthwiseConv2DConverter">
+<area shape="rect" id="node1" title="Convert loco::DepthwiseConv2D to locoex::TFLDepthwiseConv2D and auxiliary." alt="" coords="5,272,216,297"/>
+<area shape="rect" id="node2" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="15,183,207,223"/>
+<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="64,5,147,31"/>
+<area shape="rect" id="node4" href="$classexo_1_1_canonical_node_converter.html" title="Class to convert a canonical node to TFL node." alt="" coords="127,80,319,120"/>
+</map>

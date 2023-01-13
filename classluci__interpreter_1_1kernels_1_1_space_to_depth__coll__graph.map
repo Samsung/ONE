@@ -1,0 +1,7 @@
+<map id="luci_interpreter::kernels::SpaceToDepth" name="luci_interpreter::kernels::SpaceToDepth">
+<area shape="rect" id="node1" title=" " alt="" coords="872,5,1027,45"/>
+<area shape="rect" id="node2" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="576,5,823,45"/>
+<area shape="rect" id="node3" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,23,156,49"/>
+<area shape="rect" id="node5" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="208,51,368,91"/>
+<area shape="rect" id="node4" href="$structluci__interpreter_1_1_space_to_depth_params.html" title=" " alt="" coords="205,115,371,155"/>
+</map>

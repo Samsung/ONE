@@ -1,0 +1,4 @@
+<map id="luci::ConvertNCHWToNHWCPass" name="luci::ConvertNCHWToNHWCPass">
+<area shape="rect" id="node1" title="Class to convert NCHW Ops to NHWC." alt="" coords="5,79,225,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="74,5,157,31"/>
+</map>

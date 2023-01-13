@@ -1,0 +1,4 @@
+<map id="luci::ResolveCustomOpMaxPoolWithArgmaxPass" name="luci::ResolveCustomOpMaxPoolWithArgmaxPass">
+<area shape="rect" id="node1" title="Class to resolve custom op MaxPoolWithArgmax to subgraph with circle&#39;s MaxPool and ArgMax." alt="" coords="5,79,187,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="55,5,137,31"/>
+</map>

@@ -1,0 +1,26 @@
+var classonert_1_1backend_1_1_i_tensor =
+[
+    [ "~ITensor", "classonert_1_1backend_1_1_i_tensor.html#ac9e9975badbdee10bf30e99745e4ef7e", null ],
+    [ "access", "classonert_1_1backend_1_1_i_tensor.html#adb2aebdb3f72acfda09376bf15a901ae", null ],
+    [ "applyShape", "classonert_1_1backend_1_1_i_tensor.html#abde8d4d97e9220821e44c5fb8028b19d", null ],
+    [ "buffer", "classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85", null ],
+    [ "calcOffset", "classonert_1_1backend_1_1_i_tensor.html#a187884f2d0365b3e5b211f0a8f2fc794", null ],
+    [ "data_scale", "classonert_1_1backend_1_1_i_tensor.html#a2043ecba51a27f47854d0e772bdf7180", null ],
+    [ "data_scales", "classonert_1_1backend_1_1_i_tensor.html#a385936b68ff320f9d5517d3e2100dbb7", null ],
+    [ "data_type", "classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9", null ],
+    [ "data_zero_point", "classonert_1_1backend_1_1_i_tensor.html#a1c1b3de1613a8dc56d07e6dd87fb8979", null ],
+    [ "data_zero_points", "classonert_1_1backend_1_1_i_tensor.html#a62ca977ee95b1dac8ade7e4f509d5646", null ],
+    [ "deallocBuffer", "classonert_1_1backend_1_1_i_tensor.html#abab576907eb93805c01e9f906bf30566", null ],
+    [ "enqueueReadBuffer", "classonert_1_1backend_1_1_i_tensor.html#a62ba3bba38814d101849aabdd0adcb4c", null ],
+    [ "enqueueWriteBuffer", "classonert_1_1backend_1_1_i_tensor.html#ae3e96b563c5cd378f7862408d3fbdff9", null ],
+    [ "getShape", "classonert_1_1backend_1_1_i_tensor.html#aca51cb2522739092a25ca8813bf5e2f5", null ],
+    [ "has_padding", "classonert_1_1backend_1_1_i_tensor.html#a884840a84c0d452fbf9aa5f6997b7ff3", null ],
+    [ "is_constant", "classonert_1_1backend_1_1_i_tensor.html#a0aa4408d72f1ea3643c386520d9eb4e3", null ],
+    [ "is_dynamic", "classonert_1_1backend_1_1_i_tensor.html#a4202633be970298f135e2c00d217c0b0", null ],
+    [ "is_subtensor", "classonert_1_1backend_1_1_i_tensor.html#a628b99f37143b61adfbcb70d637788c3", null ],
+    [ "layout", "classonert_1_1backend_1_1_i_tensor.html#a9c6b4e796289ace0d82d7e60a5320305", null ],
+    [ "needMemoryMap", "classonert_1_1backend_1_1_i_tensor.html#a25d45dee8318a268826bc6ae1e882c83", null ],
+    [ "set_dynamic", "classonert_1_1backend_1_1_i_tensor.html#a23e5584d459f5e94117ca757ff33f9e4", null ],
+    [ "setShape", "classonert_1_1backend_1_1_i_tensor.html#abd048b570efab98e99d690b6d542c6a2", null ],
+    [ "total_size", "classonert_1_1backend_1_1_i_tensor.html#ae4d0d8bbbe8f7263f820914888ef3141", null ]
+];

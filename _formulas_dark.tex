@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage{ifthen}
+\usepackage{epsfig}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\color{white}
+\pagecolor{black}
+\usepackage{newunicodechar}
+  \newunicodechar{⁻}{${}^{-}$}% Superscript minus
+  \newunicodechar{²}{${}^{2}$}% Superscript two
+  \newunicodechar{³}{${}^{3}$}% Superscript three
+
+\pagestyle{empty}
+\begin{document}
+\[
+      width\_output = (width\_input - 1) \cdot stride\_x - 2 \cdot padding\_x + kernel\_x
+ \]
+\pagebreak
+
+\[
+      height\_output = (height\_input - 1) \cdot stride\_y - 2 \cdot padding\_y + kernel\_y
+ \]
+\pagebreak
+
+$ exp(x) $
+\pagebreak
+
+$ 1 / (1 + x) $
+\pagebreak
+
+\begin{eqnarray*}
+i_t =& \sigma(W_{xi}x_t+W_{hi}h_{t-1}+W_{ci}C_{t-1}+b_i) & \\
+f_t =& \sigma(W_{xf}x_t+W_{hf}h_{t-1}+W_{cf}C_{t-1}+b_f) & \\
+C_t =& clip(f_t \odot C_{t-1} + i_t \odot
+       g(W_{xc}x_t+W_{hc}h_{t-1}+b_c),\ t_{cell}) & \\
+o_t =& \sigma(W_{xo}x_t+W_{ho}h_{t-1}+W_{co}C_t+b_o) & \\
+     & & \\
+     & clip(W_{proj}(o_t \odot g(C_t))+b_{proj},\ t_{proj})
+     & if\ there\ is\ a\ projection; \\
+h_t =& & \\
+     & o_t \odot g(C_t) & otherwise. \\
+\end{eqnarray*}
+\pagebreak
+
+$x_t$
+\pagebreak
+
+$i_t$
+\pagebreak
+
+$f_t$
+\pagebreak
+
+$C_t$
+\pagebreak
+
+$o_t$
+\pagebreak
+
+$h_t$
+\pagebreak
+
+$\sigma$
+\pagebreak
+
+$g$
+\pagebreak
+
+$tahn$
+\pagebreak
+
+$W_{xi}$
+\pagebreak
+
+$W_{hi}$
+\pagebreak
+
+$W_{ci}$
+\pagebreak
+
+$b_i$
+\pagebreak
+
+$W_{xf}$
+\pagebreak
+
+$W_{hf}$
+\pagebreak
+
+$W_{cf}$
+\pagebreak
+
+$b_f$
+\pagebreak
+
+$W_{xc}$
+\pagebreak
+
+$W_{hc}$
+\pagebreak
+
+$b_c$
+\pagebreak
+
+$W_{xo}$
+\pagebreak
+
+$W_{ho}$
+\pagebreak
+
+$W_{co}$
+\pagebreak
+
+$b_o$
+\pagebreak
+
+$W_{proj}$
+\pagebreak
+
+$b_{proj}$
+\pagebreak
+
+$t_{cell}$
+\pagebreak
+
+$t_{proj}$
+\pagebreak
+
+$\odot$
+\pagebreak
+
+\begin{eqnarray*}
+  i_t = 1 - f_t
+  \end{eqnarray*}
+\pagebreak
+
+$h_{t-1}$
+\pagebreak
+
+$C_{t-1}$
+\pagebreak
+
+\end{document}

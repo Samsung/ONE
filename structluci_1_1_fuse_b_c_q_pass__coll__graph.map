@@ -1,0 +1,5 @@
+<map id="luci::FuseBCQPass" name="luci::FuseBCQPass">
+<area shape="rect" id="node1" title="Class to fuse certain pattern of subgraph into CircleBCQFullyConnected or CircleBCQGather." alt="" coords="5,152,140,177"/>
+<area shape="rect" id="node2" href="$classluci_1_1_pass.html" title=" " alt="" coords="33,79,112,104"/>
+<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="31,5,114,31"/>
+</map>

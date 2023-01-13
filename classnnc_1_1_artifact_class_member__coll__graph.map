@@ -1,0 +1,6 @@
+<map id="nnc::ArtifactClassMember" name="nnc::ArtifactClassMember">
+<area shape="rect" id="node1" title="Basic class for both class member variables and memmber functions." alt="" coords="5,243,176,268"/>
+<area shape="rect" id="node2" href="$classnnc_1_1_artifact_class.html" title="Represents a class." alt="" coords="29,155,153,180"/>
+<area shape="rect" id="node3" href="$classnnc_1_1_artifact_named.html" title="Represents any named entity in the code." alt="" coords="24,80,157,105"/>
+<area shape="rect" id="node4" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="29,5,152,31"/>
+</map>

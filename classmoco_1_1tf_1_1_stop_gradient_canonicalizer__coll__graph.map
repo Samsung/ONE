@@ -1,0 +1,6 @@
+<map id="moco::tf::StopGradientCanonicalizer" name="moco::tf::StopGradientCanonicalizer">
+<area shape="rect" id="node1" title="Canonicalize TF&#45;dialect TFStopGradient into canonical Forward node." alt="" coords="5,272,232,297"/>
+<area shape="rect" id="node2" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="17,183,221,223"/>
+<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="73,5,154,31"/>
+<area shape="rect" id="node4" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="135,80,339,120"/>
+</map>

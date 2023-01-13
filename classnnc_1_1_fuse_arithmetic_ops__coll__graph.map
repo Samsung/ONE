@@ -1,0 +1,4 @@
+<map id="nnc::FuseArithmeticOps" name="nnc::FuseArithmeticOps">
+<area shape="rect" id="node1" title="Main purpose of this pass &#45; is to fuse &#39;Conv&#45;&gt;BatchNorm&#39; into &#39;Conv&#39; Currently &#39;BatchNorm&#39; split by N..." alt="" coords="5,79,167,104"/>
+<area shape="rect" id="node2" href="$classnnc_1_1_pass.html" title="this class represent an interface for all compiler passes like that frontend, backend etc" alt="" coords="47,5,125,31"/>
+</map>

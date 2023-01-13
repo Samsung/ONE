@@ -1,0 +1,4 @@
+<map id="luci::FoldFullyConnectedPass" name="luci::FoldFullyConnectedPass">
+<area shape="rect" id="node1" title="Class to fold FullyConnected with constant input and filter into a constant tensor." alt="" coords="5,79,197,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="60,5,143,31"/>
+</map>

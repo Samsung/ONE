@@ -1,0 +1,4 @@
+<map id="luci::RequantizePass" name="luci::RequantizePass">
+<area shape="rect" id="node1" title="Pass to quantize weights." alt="" coords="5,79,148,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="35,5,118,31"/>
+</map>

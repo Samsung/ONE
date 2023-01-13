@@ -1,0 +1,6 @@
+<map id="onert::backend::builtin::IOTensor" name="onert::backend::builtin::IOTensor">
+<area shape="rect" id="node1" title="Tensor object that indirects to the tensor it is pointing to." alt="" coords="97,183,243,223"/>
+<area shape="rect" id="node2" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="88,93,252,133"/>
+<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,5,161,31"/>
+<area shape="rect" id="node4" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="186,5,327,31"/>
+</map>

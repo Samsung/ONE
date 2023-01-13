@@ -1,0 +1,5 @@
+<map id="coco::KernelObject" name="coco::KernelObject">
+<area shape="rect" id="node1" title="Convolution Kernel (in CNN) values." alt="" coords="5,152,136,177"/>
+<area shape="rect" id="node2" href="$classcoco_1_1_object.html" title="Base interface on all typed NN values." alt="" coords="23,79,118,104"/>
+<area shape="rect" id="node3" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="27,5,115,31"/>
+</map>

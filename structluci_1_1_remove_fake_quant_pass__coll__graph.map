@@ -1,0 +1,4 @@
+<map id="luci::RemoveFakeQuantPass" name="luci::RemoveFakeQuantPass">
+<area shape="rect" id="node1" title="Class to Remove FakeQuant node." alt="" coords="5,79,196,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="59,5,142,31"/>
+</map>

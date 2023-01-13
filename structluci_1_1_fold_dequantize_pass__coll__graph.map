@@ -1,0 +1,4 @@
+<map id="luci::FoldDequantizePass" name="luci::FoldDequantizePass">
+<area shape="rect" id="node1" title="Class to fold Dequantize, which can be folded by constant inputs." alt="" coords="5,79,172,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="47,5,130,31"/>
+</map>

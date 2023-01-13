@@ -1,0 +1,4 @@
+<map id="luci::RemoveUnnecessaryReshapeNetPass" name="luci::RemoveUnnecessaryReshapeNetPass">
+<area shape="rect" id="node1" title="Class to remove unnecessary Reshape nodes." alt="" coords="5,79,228,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="75,5,158,31"/>
+</map>

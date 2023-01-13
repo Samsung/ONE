@@ -1,0 +1,6 @@
+<map id="moco::tf::ConcatV2Canonicalizer" name="moco::tf::ConcatV2Canonicalizer">
+<area shape="rect" id="node1" title="Convert TFConcatV2 to Canonical TensorConcat." alt="" coords="5,272,213,297"/>
+<area shape="rect" id="node2" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="7,183,211,223"/>
+<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="63,5,145,31"/>
+<area shape="rect" id="node4" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="126,80,330,120"/>
+</map>

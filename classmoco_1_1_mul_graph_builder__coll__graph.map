@@ -1,0 +1,4 @@
+<map id="moco::MulGraphBuilder" name="moco::MulGraphBuilder">
+<area shape="rect" id="node1" title="GraphBuilder for Mul node." alt="" coords="5,79,161,104"/>
+<area shape="rect" id="node2" href="$classmoco_1_1_graph_builder.html" title="Interface of convert TF NodeDef to loco::Node (e.g., Conv2DGraphBuilder)" alt="" coords="16,5,151,31"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="exo::TensorTransposeConverter" name="exo::TensorTransposeConverter">
+<area shape="rect" id="node1" title="Convert loco::TensorTranspose to locoex::TFLTranspose." alt="" coords="5,272,211,297"/>
+<area shape="rect" id="node2" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="12,183,204,223"/>
+<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="61,5,144,31"/>
+<area shape="rect" id="node4" href="$classexo_1_1_canonical_node_converter.html" title="Class to convert a canonical node to TFL node." alt="" coords="124,80,316,120"/>
+</map>

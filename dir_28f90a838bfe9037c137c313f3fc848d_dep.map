@@ -1,0 +1,22 @@
+<map id="compiler/luci/partition" name="compiler/luci/partition">
+<area shape="rect" id="node1" href="dir_8f36621a7c245f0c4ffd7244abbd6018.html" title="lang" alt="" coords="74,209,121,235"/>
+<area shape="rect" id="node2" href="dir_5c51e2387780f91ec9705f91e7067314.html" title="log" alt="" coords="193,136,231,161"/>
+<area shape="rect" id="node3" href="dir_c248da60950ac1127e85dce755284268.html" title="logex" alt="" coords="255,136,307,161"/>
+<area shape="rect" id="node4" href="dir_5cd54429e7217a7fde88deea35721ada.html" title="service" alt="" coords="332,136,396,161"/>
+<area shape="rect" id="node6" href="dir_dd17e2bf2806c108d9af0515ae6d63f1.html" title="include" alt="" coords="38,136,101,161"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000258_000368.html" title="4" alt="" coords="90,181,98,196"/>
+<area shape="rect" id="node7" href="dir_d7b804b715b6af97ab862c7e089aed46.html" title="src" alt="" coords="37,63,77,88"/>
+<area shape="rect" id="edge5-headlabel" href="dir_000700_000368.html" title="8" alt="" coords="114,188,122,203"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000700_000385.html" title="5" alt="" coords="175,116,183,130"/>
+<area shape="rect" id="edge6-headlabel" href="dir_000700_000387.html" title="2" alt="" coords="236,118,244,133"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000700_000633.html" title="2" alt="" coords="312,119,320,134"/>
+<area shape="rect" id="edge8-headlabel" href="dir_000700_000258.html" title="139" alt="" coords="62,109,83,123"/>
+<area shape="rect" id="node8" href="dir_ed29be48e3d3afa6ae7ca5a34ae9f776.html" title="oops" alt="" coords="420,136,471,161"/>
+<area shape="rect" id="edge9-headlabel" href="dir_000700_000531.html" title="1" alt="" coords="400,118,408,133"/>
+<area shape="rect" id="node9" href="dir_540303a9734c1ffa55c59c2dd7b773b0.html" title="loco" alt="" coords="495,136,542,161"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000700_000376.html" title="2" alt="" coords="475,120,483,134"/>
+<area shape="rect" id="node10" href="dir_d75a071df0fd0abb08eef1d80345d27b.html" title="pepper&#45;csv2vec" alt="" coords="567,136,681,161"/>
+<area shape="rect" id="edge7-headlabel" href="dir_000700_000587.html" title="1" alt="" coords="545,120,553,134"/>
+<area shape="rect" id="clust2" href="dir_28f90a838bfe9037c137c313f3fc848d.html" alt="" coords="27,52,181,172"/>
+<area shape="rect" id="clust1" href="dir_d868bd9b9ef6b656f76179dd48055579.html" title="luci" alt="" coords="16,16,407,245"/>
+</map>

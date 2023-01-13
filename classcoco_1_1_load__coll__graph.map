@@ -1,0 +1,8 @@
+<map id="coco::Load" name="coco::Load">
+<area shape="rect" id="node1" title="Load an Object." alt="" coords="76,225,161,251"/>
+<area shape="rect" id="node2" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="13,152,86,177"/>
+<area shape="rect" id="node3" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="5,79,93,104"/>
+<area shape="rect" id="node4" href="$structcoco_1_1_object_1_1_consumer.html" title=" " alt="" coords="110,152,269,177"/>
+<area shape="rect" id="node5" href="$structcoco_1_1_bag_1_1_reader.html" title=" " alt="" coords="126,79,253,104"/>
+<area shape="rect" id="node6" href="$structcoco_1_1_locatable.html" title="Return the associated instruction if exists." alt="" coords="133,5,246,31"/>
+</map>

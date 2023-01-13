@@ -1,0 +1,4 @@
+<map id="luci::TransformMinMaxToRelu6Pass" name="luci::TransformMinMaxToRelu6Pass">
+<area shape="rect" id="node1" title="Class to transform Maximum(Minimum(input, 6), 0) to Relu6." alt="" coords="5,79,236,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="79,5,162,31"/>
+</map>

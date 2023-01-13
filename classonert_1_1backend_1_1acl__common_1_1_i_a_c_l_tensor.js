@@ -1,0 +1,28 @@
+var classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor =
+[
+    [ "IACLTensor", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#aeec0887851d6ab9de8f2549679f51390", null ],
+    [ "IACLTensor", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#af82585cc8e90480cbaa0927270ad1314", null ],
+    [ "IACLTensor", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#af8121ff6b550e123eac614496390e73e", null ],
+    [ "IACLTensor", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#aa087ae2e79d1a659d4ff5221a9a19774", null ],
+    [ "buffer", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a43adeae8f962e4456147e3551540b31e", null ],
+    [ "calcOffset", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a850ebfecc90b443caa225914b92e8c2f", null ],
+    [ "data_scale", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a1e16e7e91e6dbbe9efc3ccf783b79199", null ],
+    [ "data_scales", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a96c3056411deeaca82f177d6d58194b4", null ],
+    [ "data_type", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a377f248ebbc4573d14e23353f4249b87", null ],
+    [ "data_zero_point", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#ac465d66f8997cb46f2a05d22b46092a4", null ],
+    [ "data_zero_points", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a8e8410a304ab8868e8e04a3479650d13", null ],
+    [ "dimension", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a8b5cc91e676c8cddb9f7c35a60de9b2b", null ],
+    [ "getShape", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a610b21184748055f7da08552b4e7f6cf", null ],
+    [ "handle", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#ae99f7d632e25cca224554756748f6cb4", null ],
+    [ "handle", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a205075120daf099087492446585504b6", null ],
+    [ "has_padding", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#ac642963498921071bc639855a9970b5a", null ],
+    [ "info", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a35d767bb8f505155ac67ebf8d97a80fe", null ],
+    [ "info", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#afede75037ae586728ec1512b812d48bb", null ],
+    [ "is_dynamic", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#ad709b325dc3ec996301b6e3d93fbd637", null ],
+    [ "layout", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#ac4e990f58f1dd0a2da9972b006e678ef", null ],
+    [ "num_dimensions", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a182331339fc75e60dde6a1425f9e81d0", null ],
+    [ "operator=", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a33059ea8472aea1b62474944c1fc3057", null ],
+    [ "operator=", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a288e20ab0f2913265c330e280f1aea36", null ],
+    [ "total_size", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a5e39554f7e345aa4702829577f666458", null ],
+    [ "_rank", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a25368ebd866d1c5e6b93b64ff3ecb769", null ]
+];

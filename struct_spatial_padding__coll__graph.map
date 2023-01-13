@@ -1,0 +1,5 @@
+<map id="SpatialPadding" name="SpatialPadding">
+<area shape="rect" id="node1" title="A SpatialPadding denotes padding values for each &quot;spatial&quot; dimension." alt="" coords="55,168,164,193"/>
+<area shape="rect" id="node2" href="$class_padding_base.html" title=" " alt="" coords="5,93,213,119"/>
+<area shape="rect" id="node3" href="$class_padding_base.html" title="A PaddingBase encapsulates common implementation for derived Padding classes." alt="" coords="27,5,192,31"/>
+</map>

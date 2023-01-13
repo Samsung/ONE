@@ -1,0 +1,25 @@
+var namespaceonert_1_1backend =
+[
+    [ "acl_cl", "namespaceonert_1_1backend_1_1acl__cl.html", "namespaceonert_1_1backend_1_1acl__cl" ],
+    [ "acl_common", "namespaceonert_1_1backend_1_1acl__common.html", "namespaceonert_1_1backend_1_1acl__common" ],
+    [ "acl_neon", "namespaceonert_1_1backend_1_1acl__neon.html", "namespaceonert_1_1backend_1_1acl__neon" ],
+    [ "basic", "namespaceonert_1_1backend_1_1basic.html", "namespaceonert_1_1backend_1_1basic" ],
+    [ "builtin", "namespaceonert_1_1backend_1_1builtin.html", "namespaceonert_1_1backend_1_1builtin" ],
+    [ "cl_common", "namespaceonert_1_1backend_1_1cl__common.html", "namespaceonert_1_1backend_1_1cl__common" ],
+    [ "cpu", "namespaceonert_1_1backend_1_1cpu.html", "namespaceonert_1_1backend_1_1cpu" ],
+    [ "custom", "namespaceonert_1_1backend_1_1custom.html", "namespaceonert_1_1backend_1_1custom" ],
+    [ "gpu_cl", "namespaceonert_1_1backend_1_1gpu__cl.html", "namespaceonert_1_1backend_1_1gpu__cl" ],
+    [ "ruy", "namespaceonert_1_1backend_1_1ruy.html", "namespaceonert_1_1backend_1_1ruy" ],
+    [ "trix", "namespaceonert_1_1backend_1_1trix.html", "namespaceonert_1_1backend_1_1trix" ],
+    [ "xnnpack", "namespaceonert_1_1backend_1_1xnnpack.html", "namespaceonert_1_1backend_1_1xnnpack" ],
+    [ "Backend", "classonert_1_1backend_1_1_backend.html", "classonert_1_1backend_1_1_backend" ],
+    [ "BackendContext", "classonert_1_1backend_1_1_backend_context.html", "classonert_1_1backend_1_1_backend_context" ],
+    [ "ContextData", "structonert_1_1backend_1_1_context_data.html", "structonert_1_1backend_1_1_context_data" ],
+    [ "IConfig", "structonert_1_1backend_1_1_i_config.html", "structonert_1_1backend_1_1_i_config" ],
+    [ "IPortableTensor", "classonert_1_1backend_1_1_i_portable_tensor.html", "classonert_1_1backend_1_1_i_portable_tensor" ],
+    [ "ITensor", "classonert_1_1backend_1_1_i_tensor.html", "classonert_1_1backend_1_1_i_tensor" ],
+    [ "ITensorRegistry", "structonert_1_1backend_1_1_i_tensor_registry.html", "structonert_1_1backend_1_1_i_tensor_registry" ],
+    [ "PortableTensorRegistryTemplate", "classonert_1_1backend_1_1_portable_tensor_registry_template.html", "classonert_1_1backend_1_1_portable_tensor_registry_template" ],
+    [ "BackendContexts", "namespaceonert_1_1backend.html#ae138503c939b99456da0092d81727e62", null ],
+    [ "FunctionMap", "namespaceonert_1_1backend.html#a70c193539c226041330719aae7e2b52f", null ]
+];

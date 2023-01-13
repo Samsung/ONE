@@ -1,0 +1,4 @@
+<map id="moco::TFDialect" name="moco::TFDialect">
+<area shape="rect" id="node1" title="A singleton for TensorFlow Dialect." alt="" coords="5,79,121,104"/>
+<area shape="rect" id="node2" href="$classloco_1_1_dialect.html" title="Dialect interface." alt="" coords="17,5,109,31"/>
+</map>

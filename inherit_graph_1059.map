@@ -1,0 +1,36 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$structonert_1_1ir_1_1_operation_visitor.html" title=" " alt="" coords="457,298,619,323"/>
+<area shape="rect" id="node2" href="$classonert_1_1backend_1_1acl__common_1_1_acl_constant_initializer.html" title=" " alt="" coords="673,348,879,388"/>
+<area shape="rect" id="node5" href="$classonert_1_1backend_1_1acl__common_1_1_acl_sub_tensor_analyzer.html" title="Class to analyze tensor subsumption." alt="" coords="668,412,884,452"/>
+<area shape="rect" id="node6" href="$classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html" title=" " alt="" coords="700,476,852,516"/>
+<area shape="rect" id="node15" href="$classonert_1_1backend_1_1gpu__cl_1_1_cl_constant_initializer.html" title=" " alt="" coords="696,5,856,45"/>
+<area shape="rect" id="node17" href="$classonert_1_1compiler_1_1_shape_validator.html" title=" " alt="" coords="676,70,876,95"/>
+<area shape="rect" id="node18" href="$classonert_1_1compiler_1_1_static_shape_inferer.html" title="Class to infer shape before running kernels. It does the following:" alt="" coords="685,120,867,160"/>
+<area shape="rect" id="node19" href="$classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html" title="An optimization pass that removes Permute operations if possible." alt="" coords="681,540,871,580"/>
+<area shape="rect" id="node20" href="$classonert_1_1compiler_1_1pass_1_1_permutation_operation_pass.html" title=" " alt="" coords="684,604,868,644"/>
+<area shape="rect" id="node21" href="$classonert_1_1exec_1_1_dynamic_shape_inferer.html" title="Class to infer shape of output tensor at execution time and allocate memory fo output tensor if neede..." alt="" coords="687,184,865,224"/>
+<area shape="rect" id="node22" href="$classonert_1_1ir_1_1_operation_dumper.html" title=" " alt="" coords="691,249,861,274"/>
+<area shape="rect" id="node23" href="$classonert_1_1ir_1_1_operation_validator.html" title=" " alt="" coords="687,298,865,323"/>
+<area shape="rect" id="node3" href="$classonert_1_1backend_1_1acl__cl_1_1_constant_initializer.html" title=" " alt="" coords="941,188,1089,228"/>
+<area shape="rect" id="node4" href="$classonert_1_1backend_1_1acl__neon_1_1_constant_initializer.html" title=" " alt="" coords="932,252,1099,292"/>
+<area shape="rect" id="node7" href="$classonert_1_1backend_1_1acl__cl_1_1_kernel_generator.html" title=" " alt="" coords="946,316,1085,356"/>
+<area shape="rect" id="node8" href="$classonert_1_1backend_1_1acl__neon_1_1_kernel_generator.html" title=" " alt="" coords="937,380,1094,420"/>
+<area shape="rect" id="node9" href="$classonert_1_1backend_1_1builtin_1_1_kernel_generator.html" title=" " alt="" coords="942,444,1089,484"/>
+<area shape="rect" id="node10" href="$classonert_1_1backend_1_1cpu_1_1_kernel_generator.html" title=" " alt="" coords="949,508,1082,548"/>
+<area shape="rect" id="node11" href="$classonert_1_1backend_1_1gpu__cl_1_1_kernel_generator.html" title=" " alt="" coords="946,572,1085,612"/>
+<area shape="rect" id="node12" href="$classonert_1_1backend_1_1ruy_1_1_kernel_generator.html" title=" " alt="" coords="951,636,1080,676"/>
+<area shape="rect" id="node13" href="$classonert_1_1backend_1_1trix_1_1_kernel_generator.html" title=" " alt="" coords="951,700,1080,740"/>
+<area shape="rect" id="node14" href="$classonert_1_1backend_1_1xnnpack_1_1_kernel_generator.html" title=" " alt="" coords="935,764,1095,804"/>
+<area shape="rect" id="node16" href="$classonert_1_1backend_1_1gpu__cl_1_1_constant_initializer.html" title=" " alt="" coords="941,5,1089,45"/>
+<area shape="rect" id="node24" href="$classonert_1_1compiler_1_1pass_1_1_pass.html" title=" " alt="" coords="5,748,145,788"/>
+<area shape="rect" id="node25" href="$classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html" title="Pass to specially handle odd outputs in a subgraph." alt="" coords="231,716,371,756"/>
+<area shape="rect" id="node26" href="$classonert_1_1compiler_1_1pass_1_1_operand_pass.html" title=" " alt="" coords="231,780,371,820"/>
+<area shape="rect" id="node30" href="$classonert_1_1compiler_1_1pass_1_1_operation_pass.html" title="Class to iterate over operations and calls callback() method." alt="" coords="231,652,371,692"/>
+<area shape="rect" id="node34" href="$classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass.html" title="A pass to eliminate unused operands from the graph." alt="" coords="193,844,408,884"/>
+<area shape="rect" id="node27" href="$classonert_1_1compiler_1_1pass_1_1_constant_output_pass.html" title="Pass to specially handle constant model outputs." alt="" coords="463,764,613,804"/>
+<area shape="rect" id="node28" href="$classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html" title=" " alt="" coords="459,828,617,868"/>
+<area shape="rect" id="node29" href="$classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass.html" title=" " alt="" coords="687,828,865,868"/>
+<area shape="rect" id="node31" href="$classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html" title=" " alt="" coords="456,652,620,692"/>
+<area shape="rect" id="node32" href="$classonert_1_1compiler_1_1pass_1_1_constant_insertion_pass.html" title=" " alt="" coords="696,668,856,708"/>
+<area shape="rect" id="node33" href="$classonert_1_1compiler_1_1pass_1_1_constant_lowering_pass.html" title=" " alt="" coords="695,732,857,772"/>
+</map>

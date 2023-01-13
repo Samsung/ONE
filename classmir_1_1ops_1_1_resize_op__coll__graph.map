@@ -1,0 +1,4 @@
+<map id="mir::ops::ResizeOp" name="mir::ops::ResizeOp">
+<area shape="rect" id="node1" title="Resize operation scales are such that output = input * scale for each dimension and the number of dim..." alt="" coords="5,79,135,104"/>
+<area shape="rect" id="node2" href="$classmir_1_1_operation.html" title=" " alt="" coords="19,5,121,31"/>
+</map>

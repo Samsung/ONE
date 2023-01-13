@@ -1,0 +1,4 @@
+<map id="luci::ResolveCustomOpBatchMatMulPass" name="luci::ResolveCustomOpBatchMatMulPass">
+<area shape="rect" id="node1" title="Class to resolve certain custom op of subgraph into batchmatmul op in circle schema." alt="" coords="5,79,196,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="59,5,142,31"/>
+</map>

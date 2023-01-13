@@ -1,0 +1,4 @@
+<map id="moco::MeanGraphBuilder" name="moco::MeanGraphBuilder">
+<area shape="rect" id="node1" title="GraphBuilder for Mean node." alt="" coords="5,79,172,104"/>
+<area shape="rect" id="node2" href="$classmoco_1_1_graph_builder.html" title="Interface of convert TF NodeDef to loco::Node (e.g., Conv2DGraphBuilder)" alt="" coords="21,5,156,31"/>
+</map>

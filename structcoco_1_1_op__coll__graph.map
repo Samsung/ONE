@@ -1,0 +1,4 @@
+<map id="coco::Op" name="coco::Op">
+<area shape="rect" id="node1" title="Base interface on all supported NN operations." alt="" coords="13,79,86,104"/>
+<area shape="rect" id="node2" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="5,5,93,31"/>
+</map>

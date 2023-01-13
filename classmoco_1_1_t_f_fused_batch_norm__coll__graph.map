@@ -1,0 +1,12 @@
+<map id="moco::TFFusedBatchNorm" name="moco::TFFusedBatchNorm">
+<area shape="rect" id="node1" title=" " alt="" coords="161,656,339,681"/>
+<area shape="rect" id="node2" href="$classmoco_1_1_fixed_arity_node.html" title=" " alt="" coords="155,552,345,607"/>
+<area shape="rect" id="node3" href="$structmoco_1_1_t_f_node_impl.html" title=" " alt="" coords="49,435,253,475"/>
+<area shape="rect" id="node4" href="$structmoco_1_1_t_f_node.html" title=" " alt="" coords="21,272,127,297"/>
+<area shape="rect" id="node8" href="$structmoco_1_1_t_f_node_impl.html" title=" " alt="" coords="95,347,279,372"/>
+<area shape="rect" id="node5" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="33,197,115,223"/>
+<area shape="rect" id="node6" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,108,143,148"/>
+<area shape="rect" id="node7" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,143,45"/>
+<area shape="rect" id="node9" href="$classmoco_1_1_fixed_arity_node.html" title="Nodes with the fixed number of inputs." alt="" coords="284,435,432,475"/>
+<area shape="rect" id="node10" title=" " alt="" coords="340,347,392,372"/>
+</map>

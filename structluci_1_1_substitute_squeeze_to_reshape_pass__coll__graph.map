@@ -1,0 +1,4 @@
+<map id="luci::SubstituteSqueezeToReshapePass" name="luci::SubstituteSqueezeToReshapePass">
+<area shape="rect" id="node1" title="Class to Substitute Squeeze to Reshape node for certain conditions." alt="" coords="5,79,177,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="50,5,133,31"/>
+</map>

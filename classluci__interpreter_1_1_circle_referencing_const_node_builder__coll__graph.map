@@ -1,0 +1,6 @@
+<map id="luci_interpreter::CircleReferencingConstNodeBuilder" name="luci_interpreter::CircleReferencingConstNodeBuilder">
+<area shape="rect" id="node1" title="Builder creates CircleCustom node with pointer to constants data from Tensor with buffer." alt="" coords="8,287,204,327"/>
+<area shape="rect" id="node2" href="$classluci_1_1_typed_node_builder.html" title=" " alt="" coords="5,197,207,237"/>
+<area shape="rect" id="node3" href="$classluci_1_1_node_builder_base.html" title="Creates nodes from given Tensor and context." alt="" coords="26,5,175,31"/>
+<area shape="rect" id="node4" href="$classluci_1_1_typed_node_builder.html" title="Placeholder for builders of tensors with different types." alt="" coords="122,80,277,120"/>
+</map>

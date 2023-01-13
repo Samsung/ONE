@@ -1,0 +1,6 @@
+<map id="coco::Add" name="coco::Add">
+<area shape="rect" id="node1" title="Element&#45;wise addition." alt="" coords="21,225,99,251"/>
+<area shape="rect" id="node2" href="$classcoco_1_1_binary_op.html" title="Op with two arguments." alt="" coords="5,152,115,177"/>
+<area shape="rect" id="node3" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="23,79,97,104"/>
+<area shape="rect" id="node4" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="16,5,104,31"/>
+</map>

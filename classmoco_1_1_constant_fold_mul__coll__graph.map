@@ -1,0 +1,4 @@
+<map id="moco::ConstantFoldMul" name="moco::ConstantFoldMul">
+<area shape="rect" id="node1" title="Constant folder for Const + Mul &#45;&gt; Const." alt="" coords="5,79,164,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="43,5,126,31"/>
+</map>

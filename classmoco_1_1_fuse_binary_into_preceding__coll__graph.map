@@ -1,0 +1,4 @@
+<map id="moco::FuseBinaryIntoPreceding" name="moco::FuseBinaryIntoPreceding">
+<area shape="rect" id="node1" title="Fuse TFAdd, TFMul to preceding TFConv2D or TFDepthWiseConv2D." alt="" coords="5,79,211,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="67,5,149,31"/>
+</map>

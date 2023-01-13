@@ -1,0 +1,4 @@
+<map id="loco::PermutingDecoder&lt; Domain::DepthwiseFilter &gt;" name="loco::PermutingDecoder&lt; Domain::DepthwiseFilter &gt;">
+<area shape="rect" id="node1" title="Permutation&#45;based DepthwiseFilter&#45;to&#45;Tensor converter." alt="" coords="9,79,193,119"/>
+<area shape="rect" id="node2" href="$structloco_1_1_depthwise_filter_decoder.html" title="Describe how to build a tensor from a depthwise convolution filter." alt="" coords="5,5,196,31"/>
+</map>

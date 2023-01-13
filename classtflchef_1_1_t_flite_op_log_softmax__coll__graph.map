@@ -1,0 +1,4 @@
+<map id="tflchef::TFliteOpLogSoftmax" name="tflchef::TFliteOpLogSoftmax">
+<area shape="rect" id="node1" title="tflchef operator builder for LogSoftmax" alt="" coords="5,79,188,104"/>
+<area shape="rect" id="node2" href="$classtflchef_1_1_t_flite_op_chef.html" title="Interface for each operators to build tflchef." alt="" coords="27,5,167,31"/>
+</map>

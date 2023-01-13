@@ -1,0 +1,5 @@
+<map id="nnc::ModelAnalyzer" name="nnc::ModelAnalyzer">
+<area shape="rect" id="node1" title="Constructs inference sequence for given computational graph, gathers list of variables used in artifa..." alt="" coords="5,152,139,177"/>
+<area shape="rect" id="node2" href="$classmir_1_1_visitor.html" title="Base visitor with empty fallback function." alt="" coords="31,79,113,104"/>
+<area shape="rect" id="node3" href="$classmir_1_1_i_visitor.html" title="Interface for visitors Use in MIR component if you want to enforce to implement visits for all operat..." alt="" coords="29,5,115,31"/>
+</map>

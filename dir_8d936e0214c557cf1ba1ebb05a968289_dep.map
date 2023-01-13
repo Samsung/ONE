@@ -1,0 +1,12 @@
+<map id="compiler/oneco" name="compiler/oneco">
+<area shape="rect" id="node1" href="dir_540303a9734c1ffa55c59c2dd7b773b0.html" title="loco" alt="" coords="74,209,121,235"/>
+<area shape="rect" id="node2" href="dir_c235f378562daca28fad86b7cb587c91.html" title="cwrap" alt="" coords="182,136,239,161"/>
+<area shape="rect" id="node4" href="dir_6f28e2db73b3acc93ea189279a9da6f8.html" title="include" alt="" coords="38,136,101,161"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000294_000376.html" title="1" alt="" coords="90,181,98,196"/>
+<area shape="rect" id="node5" href="dir_b108f46c3543ff3e4b78d8b0380610b5.html" title="src" alt="" coords="37,63,77,88"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000732_000376.html" title="2" alt="" coords="114,188,122,203"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000732_000137.html" title="1" alt="" coords="168,113,176,128"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000732_000294.html" title="1" alt="" coords="69,109,77,123"/>
+<area shape="rect" id="clust2" href="dir_8d936e0214c557cf1ba1ebb05a968289.html" alt="" coords="27,52,171,172"/>
+<area shape="rect" id="clust1" href="dir_e955afc72e8af59637c9070b8690ff98.html" title="compiler" alt="" coords="16,16,251,245"/>
+</map>

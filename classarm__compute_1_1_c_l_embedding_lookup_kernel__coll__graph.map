@@ -1,0 +1,4 @@
+<map id="arm_compute::CLEmbeddingLookupKernel" name="arm_compute::CLEmbeddingLookupKernel">
+<area shape="rect" id="node1" title="Class to perform EmbeddingLookup operation with opencl kernel." alt="" coords="5,79,193,119"/>
+<area shape="rect" id="node2" title=" " alt="" coords="59,5,139,31"/>
+</map>

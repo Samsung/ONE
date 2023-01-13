@@ -1,0 +1,5 @@
+<map id="coco::Input" name="coco::Input">
+<area shape="rect" id="node1" title=" " alt="" coords="54,79,139,104"/>
+<area shape="rect" id="node2" href="$classcoco_1_1_arg.html" title="Base class for NN model arguments (Input/Output)" alt="" coords="5,5,81,31"/>
+<area shape="rect" id="node3" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="106,5,194,31"/>
+</map>

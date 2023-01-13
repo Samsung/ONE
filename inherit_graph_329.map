@@ -1,0 +1,10 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$structloco_1_1_type_inference_rule.html" title=" " alt="" coords="5,153,165,179"/>
+<area shape="rect" id="node2" href="$structloco_1_1_canonical_type_inference_rule.html" title="Type Inference Rule for Canonical Dialect." alt="" coords="219,5,436,31"/>
+<area shape="rect" id="node3" href="$classloco_1_1_multi_dialect_type_inference_rule.html" title="Type Inference Rule for multiple dialects." alt="" coords="213,55,441,80"/>
+<area shape="rect" id="node4" href="$structlocoex_1_1_c_op_type_inference_rule.html" title="Type Inference Rule for COpDialect." alt="" coords="228,104,427,129"/>
+<area shape="rect" id="node5" href="$structlocoex_1_1_circle_type_inference_rule.html" title="Type Inference Rule for CircleDialect." alt="" coords="224,153,431,179"/>
+<area shape="rect" id="node6" href="$structlocoex_1_1_t_f_l_type_inference_rule.html" title="Type Inference Rule for TFLDialect." alt="" coords="229,203,426,228"/>
+<area shape="rect" id="node7" href="$structluci_1_1_circle_type_inference_rule.html" title="Type Inference Rule for CircleDialect." alt="" coords="233,252,422,277"/>
+<area shape="rect" id="node8" href="$structmoco_1_1_t_f_type_inference_rule.html" title="Type Inference Rule for TFDialect." alt="" coords="235,301,419,327"/>
+</map>

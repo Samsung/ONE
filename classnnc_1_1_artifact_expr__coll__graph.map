@@ -1,0 +1,4 @@
+<map id="nnc::ArtifactExpr" name="nnc::ArtifactExpr">
+<area shape="rect" id="node1" title="Basic class for all expressions: identifiers, function calls, references etc." alt="" coords="9,79,125,104"/>
+<area shape="rect" id="node2" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="5,5,128,31"/>
+</map>

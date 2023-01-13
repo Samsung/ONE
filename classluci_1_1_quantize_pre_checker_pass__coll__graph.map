@@ -1,0 +1,4 @@
+<map id="luci::QuantizePreCheckerPass" name="luci::QuantizePreCheckerPass">
+<area shape="rect" id="node1" title="Pass to verify the input model has the form acceptable by quantizer." alt="" coords="5,79,203,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="63,5,145,31"/>
+</map>

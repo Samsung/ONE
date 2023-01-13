@@ -1,0 +1,4 @@
+<map id="exo::FuseRsqrtPass" name="exo::FuseRsqrtPass">
+<area shape="rect" id="node1" title="Class to fuse TFLSqrt that is divided(TFLDiv) by 1, into TFLRsqrt." alt="" coords="5,79,144,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="33,5,116,31"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="coco::AvgPool2D" name="coco::AvgPool2D">
+<area shape="rect" id="node1" title="2D Average Pooling" alt="" coords="5,225,127,251"/>
+<area shape="rect" id="node2" href="$classcoco_1_1_unary_op.html" title="Op with a single argument." alt="" coords="13,152,119,177"/>
+<area shape="rect" id="node3" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="29,79,103,104"/>
+<area shape="rect" id="node4" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="22,5,110,31"/>
+</map>

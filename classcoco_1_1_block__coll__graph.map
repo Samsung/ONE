@@ -1,0 +1,5 @@
+<map id="coco::Block" name="coco::Block">
+<area shape="rect" id="node1" title="A unit of (grouped) instructions." alt="" coords="105,93,194,119"/>
+<area shape="rect" id="node2" href="$classcoco_1_1_d_linked_list_1_1_node.html" title=" " alt="" coords="5,5,152,45"/>
+<area shape="rect" id="node3" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="176,13,264,38"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="compiler/nnkit&#45;tf/backend" name="compiler/nnkit&#45;tf/backend">
+<area shape="rect" id="node1" href="dir_e709727e07145b57e369432a17e68980.html" title="support" alt="" coords="30,125,95,151"/>
+<area shape="rect" id="node2" href="dir_4602eb06179aaff8f9340634998dfec7.html" title="backend" alt="" coords="27,52,98,77"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000034_000787.html" title="1" alt="" coords="67,99,75,114"/>
+<area shape="rect" id="node3" href="dir_9b5fab07e7fdca8263790cb277492d14.html" title="nnkit&#45;intf" alt="" coords="120,125,192,151"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000034_000492.html" title="1" alt="" coords="127,100,135,115"/>
+<area shape="rect" id="clust1" href="dir_7711ec0f73823c73c2c65364649f863d.html" title="nnkit&#45;tf" alt="" coords="16,16,109,161"/>
+</map>

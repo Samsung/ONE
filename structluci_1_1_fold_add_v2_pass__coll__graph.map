@@ -1,0 +1,4 @@
+<map id="luci::FoldAddV2Pass" name="luci::FoldAddV2Pass">
+<area shape="rect" id="node1" title="Class to fold AddV2 to a constant tensor." alt="" coords="5,79,148,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="35,5,118,31"/>
+</map>

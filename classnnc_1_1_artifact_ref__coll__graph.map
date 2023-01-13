@@ -1,0 +1,5 @@
+<map id="nnc::ArtifactRef" name="nnc::ArtifactRef">
+<area shape="rect" id="node1" title="Represents an entity with semantics like C/C++ address of (&amp;) operator." alt="" coords="11,152,122,177"/>
+<area shape="rect" id="node2" href="$classnnc_1_1_artifact_expr.html" title="Basic class for all expressions: identifiers, function calls, references etc." alt="" coords="9,79,125,104"/>
+<area shape="rect" id="node3" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="5,5,128,31"/>
+</map>

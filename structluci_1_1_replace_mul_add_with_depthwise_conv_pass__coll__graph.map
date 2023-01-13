@@ -1,0 +1,4 @@
+<map id="luci::ReplaceMulAddWithDepthwiseConvPass" name="luci::ReplaceMulAddWithDepthwiseConvPass">
+<area shape="rect" id="node1" title="Class to replace channel&#45;wise mul/add with CircleDepthwiseConv2D." alt="" coords="5,79,232,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="77,5,160,31"/>
+</map>

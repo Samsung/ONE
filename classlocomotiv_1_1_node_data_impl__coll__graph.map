@@ -1,0 +1,4 @@
+<map id="locomotiv::NodeDataImpl" name="locomotiv::NodeDataImpl">
+<area shape="rect" id="node1" title="An implementation of NodeData interface." alt="" coords="5,79,172,104"/>
+<area shape="rect" id="node2" href="$structlocomotiv_1_1_node_data.html" title="Read&#45;only no&#45;template wrapper for &#39;Buffer&#39;. Serves interface for input and output of &#39;Session&#39;." alt="" coords="17,5,160,31"/>
+</map>

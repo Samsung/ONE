@@ -1,0 +1,4 @@
+<map id="coco::KernelLayouts::Generic" name="coco::KernelLayouts::Generic">
+<area shape="rect" id="node1" title="Generic Kernel Layout." alt="" coords="5,79,144,119"/>
+<area shape="rect" id="node2" href="$structcoco_1_1_kernel_layout.html" title="A KernelLayout connectes each kernel index to an element (in a bag)" alt="" coords="9,5,141,31"/>
+</map>

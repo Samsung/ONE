@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$structloco_1_1_dialect_service.html" title="Dialect Service interface." alt="" coords="5,77,141,102"/>
+<area shape="rect" id="node2" href="$structloco_1_1_graph_input_index_query_service.html" title=" " alt="" coords="194,5,375,45"/>
+<area shape="rect" id="node3" href="$structloco_1_1_graph_output_index_query_service.html" title=" " alt="" coords="189,69,380,109"/>
+<area shape="rect" id="node4" href="$structlogo_1_1_dead_node_query_service.html" title=" " alt="" coords="189,134,380,159"/>
+<area shape="rect" id="node5" href="$structluci_1_1_dead_node_query_service_impl.html" title=" " alt="" coords="428,134,640,159"/>
+</map>

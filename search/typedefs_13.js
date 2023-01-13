@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['u32v_5ft_0',['u32v_t',['../namespacemoco.html#a855d2c43d2b5f9898cbef0ae68882684',1,'moco']]],
+  ['uint16_1',['uint16',['../ann-ref_2src_2ops_2internal_2_macro_8h.html#aea9840dd402bd5d5201bef4633398cb3',1,'Macro.h']]],
+  ['uint32_2',['uint32',['../ann-ref_2src_2ops_2internal_2_macro_8h.html#a8f95e75e58492e87412191fabadd8ca8',1,'Macro.h']]],
+  ['uint8_3',['uint8',['../ann-ref_2src_2ops_2internal_2_macro_8h.html#a115946cb5fc5879545e9ccea096a6031',1,'Macro.h']]],
+  ['unalignedconstflat_4',['UnalignedConstFlat',['../structnnfw_1_1cker_1_1_t_types.html#a84e8da19c1883e2f8704a9943c57daf5',1,'nnfw::cker::TTypes']]],
+  ['unalignedconstmatrix_5',['UnalignedConstMatrix',['../structnnfw_1_1cker_1_1_t_types.html#acb97915b50d5f1d7fb302f750c81ceb4',1,'nnfw::cker::TTypes']]],
+  ['unalignedconstscalar_6',['UnalignedConstScalar',['../structnnfw_1_1cker_1_1_t_types.html#a34064413422c852c8cea7588c9ccb087',1,'nnfw::cker::TTypes']]],
+  ['unalignedconsttensor_7',['UnalignedConstTensor',['../structnnfw_1_1cker_1_1_t_types.html#a222cd3a35afcfe8c6e1fc4734873b3ec',1,'nnfw::cker::TTypes']]],
+  ['unalignedconstvec_8',['UnalignedConstVec',['../structnnfw_1_1cker_1_1_t_types.html#a1c7bfb66968b56cfb3f7d9304193e584',1,'nnfw::cker::TTypes']]],
+  ['unalignedflat_9',['UnalignedFlat',['../structnnfw_1_1cker_1_1_t_types.html#a005ea510d872f416ccfd7650d5f4eb49',1,'nnfw::cker::TTypes']]],
+  ['unalignedmatrix_10',['UnalignedMatrix',['../structnnfw_1_1cker_1_1_t_types.html#a7a4c1d9f6e2aaffad9ae9e08ed72739a',1,'nnfw::cker::TTypes']]],
+  ['unalignedscalar_11',['UnalignedScalar',['../structnnfw_1_1cker_1_1_t_types.html#a0490e689629479a61fb229365b2dab9a',1,'nnfw::cker::TTypes']]],
+  ['unalignedtensor_12',['UnalignedTensor',['../structnnfw_1_1cker_1_1_t_types.html#a49c3abcea79bcb5c43febf150fade536',1,'nnfw::cker::TTypes']]],
+  ['unalignedvec_13',['UnalignedVec',['../structnnfw_1_1cker_1_1_t_types.html#aae4873dbaf0d36c9733c17c1fe794330',1,'nnfw::cker::TTypes']]],
+  ['updaterset_14',['UpdaterSet',['../classcoco_1_1_bag.html#ab371ac33a034ea05da1f8eaeaac23e00',1,'coco::Bag']]],
+  ['updateset_15',['UpdateSet',['../namespacecoco.html#ab4d0fe8a736c29e3d5397d9ad3bb0e2d',1,'coco']]],
+  ['useset_16',['UseSet',['../namespacecoco.html#a122b489cf4940ffaaf41706a44d14bbc',1,'coco']]],
+  ['usestype_17',['UsesType',['../classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#a6df36b5ce883e247be8b634f831042a9',1,'onert::backend::acl_common::AclTensorBuilder::UsesType()'],['../namespaceonert_1_1backend_1_1gpu__cl.html#a53dbe503e76e69a0eaeca8c245c03173',1,'onert::backend::gpu_cl::UsesType()']]]
+];

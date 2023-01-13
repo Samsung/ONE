@@ -1,0 +1,28 @@
+var classnnfw_1_1cker_1_1_shape =
+[
+    [ "Shape", "classnnfw_1_1cker_1_1_shape.html#ac8ba4e438031e7e5c5b2b3b80d9f6c49", null ],
+    [ "Shape", "classnnfw_1_1cker_1_1_shape.html#a97d643c5ad1e10f4e9662e8bb0362ec1", null ],
+    [ "Shape", "classnnfw_1_1cker_1_1_shape.html#a3ed2f25a7c7db22878a2a31423ca8cfb", null ],
+    [ "Shape", "classnnfw_1_1cker_1_1_shape.html#ad376997f9188343d16ceaf9a01791693", null ],
+    [ "Shape", "classnnfw_1_1cker_1_1_shape.html#a1506d62bf5230d20cb51a720806b0e8d", null ],
+    [ "Shape", "classnnfw_1_1cker_1_1_shape.html#aaaaa567ce14f269deee6a6346dfc3a0a", null ],
+    [ "~Shape", "classnnfw_1_1cker_1_1_shape.html#a41ae681e7762583ea4475d248a921743", null ],
+    [ "BuildFrom", "classnnfw_1_1cker_1_1_shape.html#ab5d0b521ab0b4d97f191f0735ea531af", null ],
+    [ "BuildFrom", "classnnfw_1_1cker_1_1_shape.html#a7521c27cafff0094548bba3a5070351d", null ],
+    [ "DimensionsCount", "classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839", null ],
+    [ "Dims", "classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31", null ],
+    [ "DimsData", "classnnfw_1_1cker_1_1_shape.html#ae77616d0ab21c7f405129c2fd6d77cc4", null ],
+    [ "DimsData", "classnnfw_1_1cker_1_1_shape.html#aed994cfd4954e9f453ad596db7ee743e", null ],
+    [ "DimsDataUpTo4D", "classnnfw_1_1cker_1_1_shape.html#af43c321ffb269dd115b2ed4c31dc74b3", null ],
+    [ "FlatSize", "classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12", null ],
+    [ "operator!=", "classnnfw_1_1cker_1_1_shape.html#abbb5cdf4d0b955136d8b7acc88b10d3f", null ],
+    [ "operator=", "classnnfw_1_1cker_1_1_shape.html#af1ec3d11739008c519e77a5ec2164b00", null ],
+    [ "operator==", "classnnfw_1_1cker_1_1_shape.html#a9e66b41f6db28d117f1dc9f4d974b5f0", null ],
+    [ "ReplaceWith", "classnnfw_1_1cker_1_1_shape.html#a628948b337b722d966a04eb0ff9ba822", null ],
+    [ "ReplaceWith", "classnnfw_1_1cker_1_1_shape.html#a3eb902ab9d3bade541a06bb4320d14b3", null ],
+    [ "ReplaceWith", "classnnfw_1_1cker_1_1_shape.html#a83e509d91326467ec01f437b6a446aca", null ],
+    [ "Resize", "classnnfw_1_1cker_1_1_shape.html#adc9906a95ce50b9f3e3e8b8d1a9bd13a", null ],
+    [ "SetDim", "classnnfw_1_1cker_1_1_shape.html#add4be77776eb8e9a4b7be19e19ac7717", null ],
+    [ "_dims", "classnnfw_1_1cker_1_1_shape.html#aff5897f06b4bde25aed0b9debfd8655e", null ],
+    [ "_dims_pointer", "classnnfw_1_1cker_1_1_shape.html#ad4c84f71624a61e9abd57c9fa247d8af", null ]
+];

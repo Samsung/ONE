@@ -1,0 +1,4 @@
+<map id="luci::ResolveCustomOpSplitVPass" name="luci::ResolveCustomOpSplitVPass">
+<area shape="rect" id="node1" title="Class to resolve certain custom op of subgraph into splitv op in circle schema." alt="" coords="5,79,188,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="55,5,138,31"/>
+</map>

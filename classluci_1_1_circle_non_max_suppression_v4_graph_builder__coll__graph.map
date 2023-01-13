@@ -1,0 +1,5 @@
+<map id="luci::CircleNonMaxSuppressionV4GraphBuilder" name="luci::CircleNonMaxSuppressionV4GraphBuilder">
+<area shape="rect" id="node1" title=" " alt="" coords="5,152,207,192"/>
+<area shape="rect" id="node2" href="$classluci_1_1_graph_builder_multi_output.html" title="Base of general multiple outputs graph builder(e.g., CircleIfGraphBuilder)" alt="" coords="11,79,201,104"/>
+<area shape="rect" id="node3" href="$structluci_1_1_graph_builder_base.html" title="Interface of convert circle::OperatorT to CircleNode." alt="" coords="29,5,183,31"/>
+</map>

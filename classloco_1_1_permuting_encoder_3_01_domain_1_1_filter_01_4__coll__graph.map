@@ -1,0 +1,4 @@
+<map id="loco::PermutingEncoder&lt; Domain::Filter &gt;" name="loco::PermutingEncoder&lt; Domain::Filter &gt;">
+<area shape="rect" id="node1" title="Permutation&#45;based Tensor&#45;to&#45;Filter converter." alt="" coords="5,79,164,119"/>
+<area shape="rect" id="node2" href="$structloco_1_1_filter_encoder.html" title="Decribe how to build a (convolution) filter from a tensor." alt="" coords="21,5,149,31"/>
+</map>

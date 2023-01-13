@@ -1,0 +1,26 @@
+var classonert_1_1ir_1_1_operand =
+[
+    [ "Operand", "classonert_1_1ir_1_1_operand.html#abcf1a1c633275dc1ed6532bb497d1590", null ],
+    [ "Operand", "classonert_1_1ir_1_1_operand.html#a443566e1cc1265329f95376074dcb26c", null ],
+    [ "asScalar", "classonert_1_1ir_1_1_operand.html#a2b4947ecae9fec608f7cc8fdb31e8470", null ],
+    [ "asVector", "classonert_1_1ir_1_1_operand.html#aa3503c3cf859c03305032dc5365be307", null ],
+    [ "clearDefUse", "classonert_1_1ir_1_1_operand.html#a5a08a156f530c27b6d035d2cadd580e7", null ],
+    [ "data", "classonert_1_1ir_1_1_operand.html#a91fb648d860ae4b9f23363093e386d38", null ],
+    [ "data", "classonert_1_1ir_1_1_operand.html#a984347fcb630320fb62c433c6c0c64e6", null ],
+    [ "data", "classonert_1_1ir_1_1_operand.html#a5dda59a3ed855297183ccd8b2f6e6bb7", null ],
+    [ "getDef", "classonert_1_1ir_1_1_operand.html#a1cf0da54783b8c9a3f1db31f51da86a4", null ],
+    [ "getUses", "classonert_1_1ir_1_1_operand.html#a00780328cbd27be92682a09e819aa058", null ],
+    [ "info", "classonert_1_1ir_1_1_operand.html#ae17f235ab441b8b5708a7b008bd75268", null ],
+    [ "info", "classonert_1_1ir_1_1_operand.html#a04832bc0c7adabf11e3a86804af0cdb2", null ],
+    [ "insertUse", "classonert_1_1ir_1_1_operand.html#ab933d2309d42d451faa8dfcf12fbc12f", null ],
+    [ "isConstant", "classonert_1_1ir_1_1_operand.html#adf7f1ce514558b7c27e75ba5457c74d7", null ],
+    [ "operandSize", "classonert_1_1ir_1_1_operand.html#ad2b2f3df3fb0c3861212edd3827059f2", null ],
+    [ "releaseData", "classonert_1_1ir_1_1_operand.html#ab3025602f90867a33eb8f98ddd5a93f1", null ],
+    [ "removeUse", "classonert_1_1ir_1_1_operand.html#ad8a880b857eab2ddcf4424369e7e112c", null ],
+    [ "setDef", "classonert_1_1ir_1_1_operand.html#a98a8f3d3ed4b009da2e4f22f04c44506", null ],
+    [ "shape", "classonert_1_1ir_1_1_operand.html#a701cef233994b0f0b209ffc7b0517589", null ],
+    [ "shareData", "classonert_1_1ir_1_1_operand.html#af96653c450ff2c67f0db84d995054754", null ],
+    [ "type", "classonert_1_1ir_1_1_operand.html#ae6894566a889a31fa5a2c194ab54db42", null ],
+    [ "typeInfo", "classonert_1_1ir_1_1_operand.html#a1d8cca581e5a51292e66e6efd7c7b086", null ],
+    [ "unsetDef", "classonert_1_1ir_1_1_operand.html#a33d6efda31a34f0e23fd0f5c67cae5f6", null ]
+];

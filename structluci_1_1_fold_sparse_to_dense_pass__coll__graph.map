@@ -1,0 +1,4 @@
+<map id="luci::FoldSparseToDensePass" name="luci::FoldSparseToDensePass">
+<area shape="rect" id="node1" title="Class to fold SparseToDense to a constant tensor." alt="" coords="5,79,201,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="62,5,145,31"/>
+</map>

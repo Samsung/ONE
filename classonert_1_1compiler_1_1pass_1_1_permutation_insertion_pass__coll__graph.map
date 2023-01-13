@@ -1,0 +1,8 @@
+<map id="onert::compiler::pass::PermutationInsertionPass" name="onert::compiler::pass::PermutationInsertionPass">
+<area shape="rect" id="node1" title=" " alt="" coords="74,375,253,415"/>
+<area shape="rect" id="node2" href="$classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html" title=" " alt="" coords="85,285,242,325"/>
+<area shape="rect" id="node3" href="$classonert_1_1compiler_1_1pass_1_1_operand_pass.html" title=" " alt="" coords="5,183,145,223"/>
+<area shape="rect" id="node4" href="$classonert_1_1compiler_1_1pass_1_1_pass.html" title=" " alt="" coords="5,93,145,133"/>
+<area shape="rect" id="node5" href="$classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="23,5,128,31"/>
+<area shape="rect" id="node6" href="$classonert_1_1compiler_1_1_lowered_graph.html" title="Class that contains lowering information on graph. In addition, after lowering, operands in graph wil..." alt="" coords="170,183,333,223"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="luci::DeadNodeQueryServiceImpl" name="luci::DeadNodeQueryServiceImpl">
+<area shape="rect" id="node1" title=" " alt="" coords="5,152,217,177"/>
+<area shape="rect" id="node2" href="$structlogo_1_1_dead_node_query_service.html" title=" " alt="" coords="16,79,207,104"/>
+<area shape="rect" id="node3" href="$structloco_1_1_dialect_service.html" title="Dialect Service interface." alt="" coords="43,5,179,31"/>
+</map>

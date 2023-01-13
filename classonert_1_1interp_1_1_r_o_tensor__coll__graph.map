@@ -1,0 +1,5 @@
+<map id="onert::interp::ROTensor" name="onert::interp::ROTensor">
+<area shape="rect" id="node1" title="Class to handle tensor in interpreter as read&#45;only." alt="" coords="6,152,161,177"/>
+<area shape="rect" id="node2" href="$classonert_1_1interp_1_1_i_tensor.html" title="Interface to handle Tensor in interpreter." alt="" coords="14,79,153,104"/>
+<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,5,161,31"/>
+</map>

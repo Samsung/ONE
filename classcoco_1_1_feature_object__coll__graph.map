@@ -1,0 +1,5 @@
+<map id="coco::FeatureObject" name="coco::FeatureObject">
+<area shape="rect" id="node1" title="FeatureMap values (used in CNN)" alt="" coords="5,152,144,177"/>
+<area shape="rect" id="node2" href="$classcoco_1_1_object.html" title="Base interface on all typed NN values." alt="" coords="27,79,122,104"/>
+<area shape="rect" id="node3" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="31,5,119,31"/>
+</map>

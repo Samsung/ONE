@@ -1,0 +1,4 @@
+<map id="onert::backend::basic::BumpPlanner" name="onert::backend::basic::BumpPlanner">
+<area shape="rect" id="node1" title="Class to plan memory by bump way." alt="" coords="5,93,148,133"/>
+<area shape="rect" id="node2" href="$structonert_1_1backend_1_1basic_1_1_i_memory_planner.html" title="Interface to plan memory." alt="" coords="5,5,148,45"/>
+</map>

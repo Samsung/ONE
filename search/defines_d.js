@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['ndarray_5fmax_5fdimension_5fcount_0',['NDARRAY_MAX_DIMENSION_COUNT',['../runtime_2libs_2ndarray_2include_2ndarray_2_common_8h.html#a88dba3746e9fe5251acfc72c9b5290a8',1,'Common.h']]],
+  ['ndims_5fcase_1',['NDIMS_CASE',['../compute_2cker_2include_2cker_2operation_2_einsum_8h.html#a8b4f8a9c5be9f851aa12699ed15f1a26',1,'Einsum.h']]],
+  ['neon_5for_5fportable_2',['NEON_OR_PORTABLE',['../cker_2include_2cker_2neon_2neon__check_8h.html#a760b877375718ba22d08c55f221e4c99',1,'NEON_OR_PORTABLE():&#160;neon_check.h'],['../ruy_2include_2ruy_2neon_2neon__check_8h.html#a760b877375718ba22d08c55f221e4c99',1,'NEON_OR_PORTABLE():&#160;neon_check.h']]],
+  ['nest_5fexpr_5fcast_5fmethod_5fname_3',['NEST_EXPR_CAST_METHOD_NAME',['../nest_2core_2include_2nest_2expr_2_macro_8h.html#aec3ef0194f5b36505b57cb8119ee740f',1,'Macro.h']]],
+  ['nest_5fexpr_5fclass_5fname_4',['NEST_EXPR_CLASS_NAME',['../nest_2core_2include_2nest_2expr_2_macro_8h.html#a4fd483b12095a6c7d0cc952a78b6c319',1,'Macro.h']]],
+  ['nest_5fstmt_5fcast_5fmethod_5fname_5',['NEST_STMT_CAST_METHOD_NAME',['../nest_2core_2include_2nest_2stmt_2_macro_8h.html#a334690affa13b0155c73adfc65c44862',1,'Macro.h']]],
+  ['nest_5fstmt_5fclass_5fname_6',['NEST_STMT_CLASS_NAME',['../nest_2core_2include_2nest_2stmt_2_macro_8h.html#a92168aeeb688fced99ec771bc94862c8',1,'Macro.h']]],
+  ['nnapi_5flog_7',['NNAPI_LOG',['../_neural_networks_load_helpers_8h.html#ad66e70cff7042d40dc740eb0c7c2b946',1,'NeuralNetworksLoadHelpers.h']]],
+  ['nnc_5ftarget_5farm_5fcpp_8',['NNC_TARGET_ARM_CPP',['../_options_8h.html#a0d89c491ba0cc060260e3eb93d842f3b',1,'Options.h']]],
+  ['nnc_5ftarget_5farm_5fgpu_5fcpp_9',['NNC_TARGET_ARM_GPU_CPP',['../_options_8h.html#a2c01338e3adf29e9de82495567bcc68a',1,'Options.h']]],
+  ['nnc_5ftarget_5finterpreter_10',['NNC_TARGET_INTERPRETER',['../_options_8h.html#a401a1b87f0369663fe66b19f96826d3f',1,'Options.h']]],
+  ['nnc_5ftarget_5fx86_5fcpp_11',['NNC_TARGET_X86_CPP',['../_options_8h.html#aa3de196ce105f4e0a2a471e27936bb41',1,'Options.h']]],
+  ['nnfw_5fmax_5frank_12',['NNFW_MAX_RANK',['../nnfw_8h.html#ae4a6c20a576dbf5f53f34aa891089a25',1,'nnfw.h']]],
+  ['nnfw_5freturn_5ferror_5fif_5fnull_13',['NNFW_RETURN_ERROR_IF_NULL',['../nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c',1,'NNFW_RETURN_ERROR_IF_NULL():&#160;nnfw_api.cc'],['../nnfw__debug_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c',1,'NNFW_RETURN_ERROR_IF_NULL():&#160;nnfw_debug.cc']]],
+  ['nnfw_5fversion_14',['NNFW_VERSION',['../nnfw__version_8h.html#aefc2e3e187d45d20ae9aaba452f7d97a',1,'nnfw_version.h']]],
+  ['no_5fuse_15',['NO_USE',['../interp_2_tensor_8cc.html#a2000a7bba3da19ba6db956d9a05be3a2',1,'Tensor.cc']]],
+  ['node_16',['NODE',['../_node_execution_8cpp.html#ae8470b23f89c23e56817daed65182e56',1,'NODE():&#160;NodeExecution.cpp'],['../_node_execution_8h.html#ae8470b23f89c23e56817daed65182e56',1,'NODE():&#160;NodeExecution.h']]],
+  ['npu_5ftensor_5fmax_17',['NPU_TENSOR_MAX',['../runtime_2service_2npud_2core_2_backend_8h.html#ac09c99377c75927bf9dd38d425523bea',1,'Backend.h']]],
+  ['nyi_18',['NYI',['../compiler_2ann-ref_2src_2_logging_8h.html#a8b43124f2727d5471bf4b4c20a342ce5',1,'Logging.h']]]
+];

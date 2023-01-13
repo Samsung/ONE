@@ -1,0 +1,4 @@
+<map id="hermes::ConsoleReporter" name="hermes::ConsoleReporter">
+<area shape="rect" id="node1" title="Print messages into standard console." alt="" coords="5,79,172,104"/>
+<area shape="rect" id="node2" href="$structhermes_1_1_sink.html" title="Message consumer interface." alt="" coords="40,5,137,31"/>
+</map>

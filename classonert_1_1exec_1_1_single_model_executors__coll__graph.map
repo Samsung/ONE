@@ -1,0 +1,4 @@
+<map id="onert::exec::SingleModelExecutors" name="onert::exec::SingleModelExecutors">
+<area shape="rect" id="node1" title="Class to gather executor set for single model NN package." alt="" coords="5,79,167,119"/>
+<area shape="rect" id="node2" href="$classonert_1_1exec_1_1_i_executors.html" title="Class to gather NN package&#39;s executor set." alt="" coords="11,5,161,31"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$structonert_1_1backend_1_1_i_tensor_registry.html" title=" " alt="" coords="5,135,208,160"/>
+<area shape="rect" id="node2" href="$classonert_1_1backend_1_1_portable_tensor_registry_template.html" title="TensorRegistry template class for the convenience of backend implementations." alt="" coords="270,5,433,60"/>
+<area shape="rect" id="node3" href="$classonert_1_1backend_1_1acl__common_1_1_acl_tensor_registry.html" title="Tensor registry class for acl backends." alt="" coords="256,84,447,139"/>
+<area shape="rect" id="node4" href="$classonert_1_1backend_1_1builtin_1_1_tensor_registry.html" title="Tensor registry class for builtin backend." alt="" coords="278,163,425,203"/>
+<area shape="rect" id="node5" href="$classonert_1_1backend_1_1gpu__cl_1_1_tensor_registry.html" title="Tensor registry class for gpu&#45;cl backends." alt="" coords="285,227,418,267"/>
+</map>

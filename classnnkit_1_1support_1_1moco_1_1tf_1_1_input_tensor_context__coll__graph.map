@@ -1,0 +1,5 @@
+<map id="nnkit::support::moco::tf::InputTensorContext" name="nnkit::support::moco::tf::InputTensorContext">
+<area shape="rect" id="node1" title="Class for the context of input tensors." alt="" coords="5,167,160,207"/>
+<area shape="rect" id="node2" href="$classnnkit_1_1support_1_1moco_1_1tf_1_1_tensor_context.html" title="Parent class of InputTensorContext and OutputTensorContext." alt="" coords="14,79,151,119"/>
+<area shape="rect" id="node3" href="$structnnkit_1_1_tensor_context.html" title=" " alt="" coords="13,5,153,31"/>
+</map>

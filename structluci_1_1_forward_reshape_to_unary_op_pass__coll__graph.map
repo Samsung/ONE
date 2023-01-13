@@ -1,0 +1,4 @@
+<map id="luci::ForwardReshapeToUnaryOpPass" name="luci::ForwardReshapeToUnaryOpPass">
+<area shape="rect" id="node1" title="Class to Forward send Reshape after UnaryOp." alt="" coords="5,79,200,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="61,5,144,31"/>
+</map>

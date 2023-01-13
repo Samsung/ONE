@@ -1,0 +1,4 @@
+<map id="exo::FuseReluPass" name="exo::FuseReluPass">
+<area shape="rect" id="node1" title="Class to fuse TFLRelu or TFLRelu6 into the TensorFlow Lite ops below:" alt="" coords="5,79,139,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="31,5,113,31"/>
+</map>

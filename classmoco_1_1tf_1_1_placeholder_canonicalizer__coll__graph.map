@@ -1,0 +1,6 @@
+<map id="moco::tf::PlaceholderCanonicalizer" name="moco::tf::PlaceholderCanonicalizer">
+<area shape="rect" id="node1" title="Convert TFPlaceholder to Canonical Pull." alt="" coords="5,272,224,297"/>
+<area shape="rect" id="node2" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="13,183,217,223"/>
+<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="69,5,150,31"/>
+<area shape="rect" id="node4" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="131,80,335,120"/>
+</map>

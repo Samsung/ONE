@@ -1,0 +1,39 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classcoco_1_1_arg.html" title="Base class for NN model arguments (Input/Output)" alt="" coords="202,180,278,205"/>
+<area shape="rect" id="node2" href="$classcoco_1_1_input.html" title=" " alt="" coords="398,155,483,180"/>
+<area shape="rect" id="node3" href="$classcoco_1_1_output.html" title=" " alt="" coords="393,204,488,229"/>
+<area shape="rect" id="node4" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="196,303,284,328"/>
+<area shape="rect" id="node5" href="$classcoco_1_1_bag.html" title="A collection of (abstracted) elements of the same type." alt="" coords="401,253,480,279"/>
+<area shape="rect" id="node6" href="$classcoco_1_1_block.html" title="A unit of (grouped) instructions." alt="" coords="396,413,485,439"/>
+<area shape="rect" id="node7" href="$classcoco_1_1_instr.html" title="Base interface on explicit computation steps in coco IR." alt="" coords="399,573,482,599"/>
+<area shape="rect" id="node13" href="$classcoco_1_1_object.html" title="Base interface on all typed NN values." alt="" coords="393,303,488,328"/>
+<area shape="rect" id="node16" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="404,352,477,377"/>
+<area shape="rect" id="node8" href="$class_a_n_n_conv2_d.html" title="2D Convolution through Andoird NN API" alt="" coords="589,524,686,549"/>
+<area shape="rect" id="node9" href="$class_a_n_n_depth_concat_f.html" title="Concatenate feature maps along &quot;depth&quot; dimension through Andoird NN API." alt="" coords="570,573,705,599"/>
+<area shape="rect" id="node10" href="$classcoco_1_1_copy.html" title="Index&#45;wise element transfer between two objects." alt="" coords="595,475,680,500"/>
+<area shape="rect" id="node11" href="$classcoco_1_1_eval.html" title="Evaluate an Object from a given Op." alt="" coords="597,623,678,648"/>
+<area shape="rect" id="node12" href="$classcoco_1_1_shuffle.html" title="Generic element transfer." alt="" coords="590,672,685,697"/>
+<area shape="rect" id="node14" href="$classcoco_1_1_feature_object.html" title="FeatureMap values (used in CNN)" alt="" coords="568,153,707,179"/>
+<area shape="rect" id="node15" href="$classcoco_1_1_kernel_object.html" title="Convolution Kernel (in CNN) values." alt="" coords="572,104,703,129"/>
+<area shape="rect" id="node17" href="$classcoco_1_1_binary_op.html" title="Op with two arguments." alt="" coords="583,327,692,352"/>
+<area shape="rect" id="node23" href="$classcoco_1_1_conv2_d.html" title="2D Convolution over 3D Feature Map with 4D kernel" alt="" coords="586,376,689,401"/>
+<area shape="rect" id="node24" href="$classcoco_1_1_load.html" title="Load an Object." alt="" coords="595,425,680,451"/>
+<area shape="rect" id="node25" href="$classcoco_1_1_unary_op.html" title="Op with a single argument." alt="" coords="584,203,691,228"/>
+<area shape="rect" id="node18" href="$classcoco_1_1_add.html" title="Element&#45;wise addition." alt="" coords="777,351,855,376"/>
+<area shape="rect" id="node19" href="$classcoco_1_1_concat_f.html" title="Concatenate two feature maps." alt="" coords="763,400,869,425"/>
+<area shape="rect" id="node20" href="$classcoco_1_1_div.html" title="Element&#45;wise division." alt="" coords="779,449,853,475"/>
+<area shape="rect" id="node21" href="$classcoco_1_1_mul.html" title="Element&#45;wise multiplication." alt="" coords="777,499,855,524"/>
+<area shape="rect" id="node22" href="$classcoco_1_1_sub.html" title="Element&#45;wise subtraction." alt="" coords="777,301,855,327"/>
+<area shape="rect" id="node26" href="$classcoco_1_1_avg_pool2_d.html" title="2D Average Pooling" alt="" coords="755,203,877,228"/>
+<area shape="rect" id="node27" href="$classcoco_1_1_max_pool2_d.html" title="2D Max Pooling" alt="" coords="755,252,877,277"/>
+<area shape="rect" id="node28" href="$classcoco_1_1_pad_f.html" title="Introduce padding area." alt="" coords="773,5,859,31"/>
+<area shape="rect" id="node29" href="$classcoco_1_1_re_l_u.html" title="Apply ReLU over elements." alt="" coords="771,55,861,80"/>
+<area shape="rect" id="node30" href="$classcoco_1_1_re_l_u6.html" title="Apply ReLU6 over elements." alt="" coords="767,104,865,129"/>
+<area shape="rect" id="node31" href="$classcoco_1_1_sqrt.html" title="Apply Sqrt over elements." alt="" coords="776,153,856,179"/>
+<area shape="rect" id="node32" href="$structcoco_1_1_locatable.html" title="Return the associated instruction if exists." alt="" coords="5,611,119,636"/>
+<area shape="rect" id="node33" href="$structcoco_1_1_bag_1_1_reader.html" title=" " alt="" coords="177,585,303,611"/>
+<area shape="rect" id="node35" href="$structcoco_1_1_bag_1_1_updater.html" title=" " alt="" coords="175,635,305,660"/>
+<area shape="rect" id="node34" href="$structcoco_1_1_object_1_1_consumer.html" title=" " alt="" coords="361,475,520,500"/>
+<area shape="rect" id="node36" href="$structcoco_1_1_object_1_1_producer.html" title=" " alt="" coords="365,524,517,549"/>
+<area shape="rect" id="node37" href="$classcoco_1_1_d_linked_list_1_1_node.html" title=" " alt="" coords="167,482,313,522"/>
+</map>

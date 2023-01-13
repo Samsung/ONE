@@ -1,0 +1,7 @@
+<map id="onert::backend::gpu_cl::ClConstantInitializer" name="onert::backend::gpu_cl::ClConstantInitializer">
+<area shape="rect" id="node1" title=" " alt="" coords="28,285,188,325"/>
+<area shape="rect" id="node2" href="$structonert_1_1ir_1_1_operation_visitor.html" title=" " alt="" coords="5,197,168,223"/>
+<area shape="rect" id="node3" href="$classonert_1_1ir_1_1_operands.html" title=" " alt="" coords="193,197,319,223"/>
+<area shape="rect" id="node4" href="$classonert_1_1util_1_1_object_manager.html" title=" " alt="" coords="166,108,346,148"/>
+<area shape="rect" id="node5" href="$classonert_1_1util_1_1_object_manager.html" title="Class that owns objects and maps them with indices as a handle for them." alt="" coords="172,5,340,45"/>
+</map>

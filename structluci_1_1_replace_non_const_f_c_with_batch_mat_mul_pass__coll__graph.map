@@ -1,0 +1,4 @@
+<map id="luci::ReplaceNonConstFCWithBatchMatMulPass" name="luci::ReplaceNonConstFCWithBatchMatMulPass">
+<area shape="rect" id="node1" title="Class to replace &quot;FC with non&#45;const weight&quot; with Batched MatMul." alt="" coords="5,79,201,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="62,5,145,31"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="onert::backend::basic::ExternalTensor" name="onert::backend::basic::ExternalTensor">
+<area shape="rect" id="node1" title="Class that uses data from external memory that is not managed by a backend instead of allocating and ..." alt="" coords="780,79,923,119"/>
+<area shape="rect" id="node2" href="$classonert_1_1backend_1_1basic_1_1_tensor.html" title=" " alt="" coords="588,79,731,119"/>
+<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="247,22,411,62"/>
+<area shape="rect" id="node4" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,5,161,31"/>
+<area shape="rect" id="node5" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="13,55,154,80"/>
+<area shape="rect" id="node6" title=" " alt="" coords="298,87,359,112"/>
+<area shape="rect" id="node7" href="$classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html" title=" " alt="" coords="241,137,416,177"/>
+</map>

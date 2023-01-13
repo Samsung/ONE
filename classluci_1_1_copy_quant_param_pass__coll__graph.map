@@ -1,0 +1,4 @@
+<map id="luci::CopyQuantParamPass" name="luci::CopyQuantParamPass">
+<area shape="rect" id="node1" title="Pass to copy quantparam (scale, zerop) of a tensor to another tensor." alt="" coords="5,79,185,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="54,5,137,31"/>
+</map>

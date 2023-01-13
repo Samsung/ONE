@@ -1,0 +1,25 @@
+var classonert_1_1interp_1_1_tensor =
+[
+    [ "Tensor", "classonert_1_1interp_1_1_tensor.html#ab2019e11593ba130088d1da33022e9d8", null ],
+    [ "Tensor", "classonert_1_1interp_1_1_tensor.html#a49942d231a8d212b4e3c77b7f90293a1", null ],
+    [ "buffer", "classonert_1_1interp_1_1_tensor.html#ab347140acb7638c57574fe91b11dfa1b", null ],
+    [ "bufferRO", "classonert_1_1interp_1_1_tensor.html#af875be3e5facb1370c1bbd26fba79da1", null ],
+    [ "calcOffset", "classonert_1_1interp_1_1_tensor.html#a3e3ef8b8fa82ae5c4dbc5d164e7b4d5f", null ],
+    [ "data_scale", "classonert_1_1interp_1_1_tensor.html#ae4816c2c570cae2263e89028133ff680", null ],
+    [ "data_scales", "classonert_1_1interp_1_1_tensor.html#a4cc979bb50a41b857e677a02a1dde420", null ],
+    [ "data_type", "classonert_1_1interp_1_1_tensor.html#a82df6a7880522abd8357d8a24ed56757", null ],
+    [ "data_zero_point", "classonert_1_1interp_1_1_tensor.html#a653812d47b9372fbb4e413322057cd7e", null ],
+    [ "data_zero_points", "classonert_1_1interp_1_1_tensor.html#a7f434d747c83a39c51c1c443ed967c04", null ],
+    [ "getShape", "classonert_1_1interp_1_1_tensor.html#a90fb303cd99bd3415917cfc431624fc7", null ],
+    [ "has_padding", "classonert_1_1interp_1_1_tensor.html#a7c73642ad506c2b1e66d25fa2bf579b8", null ],
+    [ "is_dynamic", "classonert_1_1interp_1_1_tensor.html#a07d4de225295e5f64c999cdb7491af29", null ],
+    [ "layout", "classonert_1_1interp_1_1_tensor.html#ad4363ef80681898f0490a6bc42a89784", null ],
+    [ "num_elements", "classonert_1_1interp_1_1_tensor.html#af96d10072df8f75462dca62445b395c1", null ],
+    [ "releaseData", "classonert_1_1interp_1_1_tensor.html#ad99fd8292f97e4e23564c17fc4af1884", null ],
+    [ "setBuffer", "classonert_1_1interp_1_1_tensor.html#ae9cdf1637403ad00f317bba3e0b17dce", null ],
+    [ "setData", "classonert_1_1interp_1_1_tensor.html#a2b4fc043834eb3b4a296bceb296196d9", null ],
+    [ "shareBuffer", "classonert_1_1interp_1_1_tensor.html#a92f30a62def497970f012f0bac576f41", null ],
+    [ "shareData", "classonert_1_1interp_1_1_tensor.html#a68c2d7d614a1806991d6a9b1c2a5ab0b", null ],
+    [ "tensorInfo", "classonert_1_1interp_1_1_tensor.html#a6a99dca15dcc12c0193b86e10d953f7a", null ],
+    [ "total_size", "classonert_1_1interp_1_1_tensor.html#ab4d6002b35962eb6cad29a7119c9599e", null ]
+];

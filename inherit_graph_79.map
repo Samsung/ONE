@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$structcli_1_1_command.html" title=" " alt="" coords="5,228,105,253"/>
+<area shape="rect" id="node2" href="$struct_decode_command.html" title=" " alt="" coords="168,5,293,31"/>
+<area shape="rect" id="node3" href="$struct_encode_command.html" title=" " alt="" coords="169,55,293,80"/>
+<area shape="rect" id="node4" href="$struct_init_command.html" title=" " alt="" coords="181,104,280,129"/>
+<area shape="rect" id="node5" href="$struct_merge_command.html" title="Takes .prototxt and .caffemodel filenames from ARGV and fills the model with trained weights...." alt="" coords="172,153,289,179"/>
+<area shape="rect" id="node6" href="$classcli_1_1_function_command.html" title=" " alt="" coords="155,203,306,228"/>
+<area shape="rect" id="node7" href="$structtfkit_1_1_convert_command.html" title=" " alt="" coords="153,252,308,277"/>
+<area shape="rect" id="node8" href="$structtfkit_1_1_decode_command.html" title=" " alt="" coords="154,301,307,327"/>
+<area shape="rect" id="node9" href="$structtfkit_1_1_encode_command.html" title=" " alt="" coords="155,351,307,376"/>
+<area shape="rect" id="node10" href="$structtfkit_1_1_pack_command.html" title=" " alt="" coords="161,400,300,425"/>
+<area shape="rect" id="node11" href="$structtfkit_1_1_unpack_command.html" title=" " alt="" coords="153,449,308,475"/>
+</map>

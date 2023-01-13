@@ -1,0 +1,27 @@
+var compiler_2luci_interpreter_2src_2kernels_2_utils_8h =
+[
+    [ "luci_interpreter::kernels::ChannelQuantMultipliers", "structluci__interpreter_1_1kernels_1_1_channel_quant_multipliers.html", "structluci__interpreter_1_1kernels_1_1_channel_quant_multipliers" ],
+    [ "luci_interpreter::kernels::BroadcastableWrapper< T >", "classluci__interpreter_1_1kernels_1_1_broadcastable_wrapper.html", "classluci__interpreter_1_1kernels_1_1_broadcastable_wrapper" ],
+    [ "luci_interpreter::kernels::VectorOfTensors< T, is_const >", "classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html", "classluci__interpreter_1_1kernels_1_1_vector_of_tensors" ],
+    [ "luci_interpreter::kernels::VectorOfQuantizedTensors< is_const >", "classluci__interpreter_1_1kernels_1_1_vector_of_quantized_tensors.html", "classluci__interpreter_1_1kernels_1_1_vector_of_quantized_tensors" ],
+    [ "LUCI_INTERPRETER_CHECK", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d", null ],
+    [ "calcOffset", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a37a90f10c7bd3ea54c104e06d5aa5ab9", null ],
+    [ "calculateActivationRange", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a8a9a24193bc38fd68fa6267c807bd354", null ],
+    [ "calculateActivationRangeQuantized", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a972dc14ee97042f40b0555b04b1d8815", null ],
+    [ "calculateShapeForBroadcast", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a40acb2e1491fa9978b94b4622ecbbeaa", null ],
+    [ "computeOutputSize", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#ae60919502a67829946ab89ad902bcd13", null ],
+    [ "computePadding", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a0d65c4eceec857b33bd462ee0873fef4", null ],
+    [ "computePaddingWithOffset", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#ac3be54c2b358be58058168bfdabbf230", null ],
+    [ "fillArithmeticActivationRange", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#aeaaf6fc79278622e60a687d6b17b815d", null ],
+    [ "getQuantizedConvolutionMultipler", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#ab09e74b805778ace392d93e577c75d73", null ],
+    [ "getQuantizedConvolutionMultiplers", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#ae6f5ad209c4d64063344b02ec5be4967", null ],
+    [ "getTensorData", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a65c674370a82f50945522faf80557b55", null ],
+    [ "getTensorData", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#ad3beb4b0cae9899ba1058ae0e890eab1", null ],
+    [ "getTensorShape", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a74f2161267eeabcf602a15e16c2350f5", null ],
+    [ "getTfLiteActivation", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a4ed6b9c9202ad76ab66811c677bc73b8", null ],
+    [ "one_of_types", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#aaeab94e4b66016c7ac88378ac1c045e0", null ],
+    [ "one_of_types", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#abc1fcd91990e1a4189758637adb1fe1b", null ],
+    [ "quantizeMultiplier", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#adcf639b916825841b3f99d5f4fccff22", null ],
+    [ "quantizeMultipliers", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a6b5c2c2a3d5a2ae6d365369c7053b948", null ],
+    [ "quantizeMultiplierSmallerThanOneExp", "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a91a8777c4f1154f256a768b6bbf54477", null ]
+];

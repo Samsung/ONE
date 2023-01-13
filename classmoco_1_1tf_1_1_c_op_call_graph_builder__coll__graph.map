@@ -1,0 +1,4 @@
+<map id="moco::tf::COpCallGraphBuilder" name="moco::tf::COpCallGraphBuilder">
+<area shape="rect" id="node1" title="GraphBuilder for COpCall node." alt="" coords="5,79,203,104"/>
+<area shape="rect" id="node2" href="$classmoco_1_1_graph_builder.html" title="Interface of convert TF NodeDef to loco::Node (e.g., Conv2DGraphBuilder)" alt="" coords="37,5,171,31"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="luci::SubstituteTransposeToReshapePass" name="luci::SubstituteTransposeToReshapePass">
+<area shape="rect" id="node1" title="Class to Substitute Transpose with certain input shape condition to single reshape node." alt="" coords="5,79,173,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="48,5,131,31"/>
+</map>

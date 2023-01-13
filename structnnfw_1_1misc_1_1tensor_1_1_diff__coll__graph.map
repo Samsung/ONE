@@ -1,0 +1,4 @@
+<map id="nnfw::misc::tensor::Diff&lt; T &gt;" name="nnfw::misc::tensor::Diff&lt; T &gt;">
+<area shape="rect" id="node1" title="Struct to have information after comparing two elements of two tensors." alt="" coords="5,108,132,148"/>
+<area shape="rect" id="node2" href="$structnnfw_1_1misc_1_1tensor_1_1_index.html" title="Struct to represent index of each dimension of a tensor." alt="" coords="5,5,132,45"/>
+</map>

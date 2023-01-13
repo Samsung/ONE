@@ -1,0 +1,4 @@
+<map id="luci::SubstituteStridedSliceToReshapePass" name="luci::SubstituteStridedSliceToReshapePass">
+<area shape="rect" id="node1" title="Class to substitute Strided_Slice with certain condition to single reshape node." alt="" coords="5,79,183,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="53,5,135,31"/>
+</map>

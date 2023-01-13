@@ -1,0 +1,4 @@
+<map id="luci::ResolveCustomOpAddPass" name="luci::ResolveCustomOpAddPass">
+<area shape="rect" id="node1" title="Class to resolve certain custom op of subgraph into add op in circle schema." alt="" coords="5,79,216,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="69,5,152,31"/>
+</map>

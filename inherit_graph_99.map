@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$structcoco_1_1_kernel_layout.html" title="A KernelLayout connectes each kernel index to an element (in a bag)" alt="" coords="5,77,137,102"/>
+<area shape="rect" id="node2" href="$classcoco_1_1_kernel_layouts_1_1_generic.html" title="Generic Kernel Layout." alt="" coords="185,5,324,45"/>
+<area shape="rect" id="node3" href="$classcoco_1_1_kernel_layouts_1_1_n_c_h_w.html" title="NCHW Kernel Layout." alt="" coords="185,69,324,109"/>
+<area shape="rect" id="node4" href="$classcoco_1_1_kernel_layouts_1_1_n_h_w_c.html" title="NHWC Kernel Layout." alt="" coords="185,133,324,173"/>
+</map>

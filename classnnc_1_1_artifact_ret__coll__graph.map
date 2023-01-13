@@ -1,0 +1,4 @@
+<map id="nnc::ArtifactRet" name="nnc::ArtifactRet">
+<area shape="rect" id="node1" title="Just represents return from function statement." alt="" coords="11,79,122,104"/>
+<area shape="rect" id="node2" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="5,5,128,31"/>
+</map>

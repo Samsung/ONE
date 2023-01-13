@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['quant_5fint16_5fasymm_0',['QUANT_INT16_ASYMM',['../namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a14bcd8d6bae57d713be9b3b01f84db6a',1,'onert::ir']]],
+  ['quant_5fint16_5fsymm_1',['QUANT_INT16_SYMM',['../namespacenpud_1_1core_1_1ir.html#a8ee47b856266ba0d140265b9cc8a399aa9aa185ccbba2c158bd867b0442c3c9aa',1,'npud::core::ir::QUANT_INT16_SYMM()'],['../namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a9aa185ccbba2c158bd867b0442c3c9aa',1,'onert::ir::QUANT_INT16_SYMM()']]],
+  ['quant_5fint8_5fasymm_2',['QUANT_INT8_ASYMM',['../namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331abbe1fa19839d6985b8161aeeb3a249b6',1,'onert::ir']]],
+  ['quant_5fint8_5fsymm_3',['QUANT_INT8_SYMM',['../namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a15063c63e0c6c9d18d12750f6d56a77e',1,'onert::ir']]],
+  ['quant_5fint8_5fsymm_5fper_5fchannel_4',['QUANT_INT8_SYMM_PER_CHANNEL',['../namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a7874c580051c95dc64b33be2dbada5c0',1,'onert::ir']]],
+  ['quant_5fuint8_5fasymm_5',['QUANT_UINT8_ASYMM',['../namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a43a4b3ebfe393544b710efcba2f69d3b',1,'onert::ir::QUANT_UINT8_ASYMM()'],['../namespacenpud_1_1core_1_1ir.html#a8ee47b856266ba0d140265b9cc8a399aa43a4b3ebfe393544b710efcba2f69d3b',1,'npud::core::ir::QUANT_UINT8_ASYMM()']]],
+  ['quantize_6',['QUANTIZE',['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5758d4b17069a02495ee183b937221b2',1,'onert::ir::operation::ElementwiseUnary']]],
+  ['quantize_5fdst_5ftensor_5fnames_7',['Quantize_dst_tensor_names',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a778dbd5896ca41e96870481d4b24921e',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5fgranularity_8',['Quantize_granularity',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a5a679c881fd3ff29a5ff85f51dffe860',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5finput_5fmodel_5fdtype_9',['Quantize_input_model_dtype',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164aea7f5c4f1df19f609e3040b91442dabf',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5finput_5ftype_10',['Quantize_input_type',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a8fbbb2c10149eee7761eda063810be0a',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5flayer_5fparams_11',['Quantize_layer_params',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164ab2d63e4c7b354785303b09d1e840f0c8',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5foutput_5fmodel_5fdtype_12',['Quantize_output_model_dtype',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a0ff557b88b835a0750dd22af2db795b0',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5foutput_5ftype_13',['Quantize_output_type',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a1b9ef5aa79baab3e894781bc13628d71',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5fscales_14',['Quantize_scales',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164aadd86807756614e6e44aca0c5d86aa3f',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5fsrc_5ftensor_5fnames_15',['Quantize_src_tensor_names',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164ab73b05658c14ab749f4f30815d312c08',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5ftensor_5fnames_16',['Quantize_tensor_names',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a43bffa6d60d6da0b297930372c8b7673',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5ftf_5fstyle_5fmaxpool_17',['Quantize_TF_style_maxpool',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164aa50cd038f21fb4050449db1d3db90586',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5fzero_5fpoints_18',['Quantize_zero_points',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a44a373449817aec06c9d3b3dd69c4a7c',1,'luci::CircleQuantizer::Options']]],
+  ['quantizedequantizeweights_19',['QuantizeDequantizeWeights',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba4010e5a4337957fb11c654a8252083dd',1,'luci::CircleQuantizer::Options']]],
+  ['quantizewithminmax_20',['QuantizeWithMinMax',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba2d6d30f0e4823d68cf32cc57781455f8',1,'luci::CircleQuantizer::Options']]],
+  ['queryable_21',['Queryable',['../namespacepepper.html#a599a9a53b75f33dd09854ff30fabd52fa3deee2078d7dd1672b690c7d17ddb89f',1,'pepper']]]
+];

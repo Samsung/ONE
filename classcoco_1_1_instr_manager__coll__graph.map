@@ -1,0 +1,6 @@
+<map id="coco::InstrManager" name="coco::InstrManager">
+<area shape="rect" id="node1" title=" " alt="" coords="154,168,286,193"/>
+<area shape="rect" id="node2" href="$classcoco_1_1_ptr_manager.html" title=" " alt="" coords="5,93,176,119"/>
+<area shape="rect" id="node3" href="$classcoco_1_1_ptr_manager.html" title=" " alt="" coords="14,5,167,31"/>
+<area shape="rect" id="node4" href="$classcoco_1_1_entity_builder.html" title="A base class for IR entity builders." alt="" coords="200,93,328,119"/>
+</map>

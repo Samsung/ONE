@@ -1,0 +1,4 @@
+<map id="arm_compute::CLCastBool" name="arm_compute::CLCastBool">
+<area shape="rect" id="node1" title="Class to run CLCastBoolKernel. This converts the boolean input tensor to the output tensor&#39;s type." alt="" coords="5,79,183,104"/>
+<area shape="rect" id="node2" title=" " alt="" coords="27,5,161,31"/>
+</map>

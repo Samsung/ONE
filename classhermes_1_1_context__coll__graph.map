@@ -1,0 +1,6 @@
+<map id="hermes::Context" name="hermes::Context">
+<area shape="rect" id="node1" title="Logging controller." alt="" coords="201,79,316,104"/>
+<area shape="rect" id="node2" href="$structhermes_1_1_message_bus.html" title="A bridge between Source and Sink." alt="" coords="5,5,152,31"/>
+<area shape="rect" id="node3" href="$structhermes_1_1_source_1_1_registry.html" title=" " alt="" coords="176,5,341,31"/>
+<area shape="rect" id="node4" href="$structhermes_1_1_sink_1_1_registry.html" title=" " alt="" coords="366,5,517,31"/>
+</map>

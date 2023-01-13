@@ -1,0 +1,4 @@
+<map id="nnfw::tflite::InterpreterSession" name="nnfw::tflite::InterpreterSession">
+<area shape="rect" id="node1" title="Class to define TfLite interpreter session which is inherited from Session class." alt="" coords="5,79,151,119"/>
+<area shape="rect" id="node2" href="$structnnfw_1_1tflite_1_1_session.html" title="Structure to provide interface methods of interpreter session." alt="" coords="11,5,145,31"/>
+</map>

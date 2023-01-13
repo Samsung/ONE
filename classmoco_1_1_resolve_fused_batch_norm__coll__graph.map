@@ -1,0 +1,4 @@
+<map id="moco::ResolveFusedBatchNorm" name="moco::ResolveFusedBatchNorm">
+<area shape="rect" id="node1" title="Trasform TFFusedBatchNorm into TFAdd + TFRsqrt + TFMul + TFBatchNorm." alt="" coords="5,79,215,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="69,5,151,31"/>
+</map>

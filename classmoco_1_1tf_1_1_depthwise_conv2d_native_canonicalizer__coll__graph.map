@@ -1,0 +1,6 @@
+<map id="moco::tf::DepthwiseConv2dNativeCanonicalizer" name="moco::tf::DepthwiseConv2dNativeCanonicalizer">
+<area shape="rect" id="node1" title="Convert TFDepthwiseConv2dNative to Canonical DepthwiseConv2D." alt="" coords="37,287,215,327"/>
+<area shape="rect" id="node2" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="5,197,247,237"/>
+<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="80,5,161,31"/>
+<area shape="rect" id="node4" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="143,80,347,120"/>
+</map>
