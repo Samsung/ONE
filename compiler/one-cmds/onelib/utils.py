@@ -228,7 +228,9 @@ def get_optimization_list(get_name=False):
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
     # optimization folder
-    files = [f for f in glob.glob(dir_path + '/../optimization/O*.cfg', recursive=True)]
+    files = [
+        f for f in glob.glob(dir_path + '/../../optimization/O*.cfg', recursive=True)
+    ]
     # exclude if the name has space
     files = [s for s in files if not ' ' in s]
 
