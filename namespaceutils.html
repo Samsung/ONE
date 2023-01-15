@@ -229,36 +229,36 @@ Args:
 Returns:
 dict: each entry is related to single detected driver,
       key is a config section name, value is a driver name</pre> 
-<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00250">250</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  250</span><span class="keyword">def </span>detect_one_import_drivers(search_path):</div>
-<div class="line"><span class="lineno">  251</span>    <span class="stringliteral">&quot;&quot;&quot;Looks for import drivers in given directory</span></div>
-<div class="line"><span class="lineno">  252</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  253</span><span class="stringliteral">    Args:</span></div>
-<div class="line"><span class="lineno">  254</span><span class="stringliteral">        search_path: path to the directory where to search </span><span class="keyword">import</span> drivers</div>
-<div class="line"><span class="lineno">  255</span> </div>
-<div class="line"><span class="lineno">  256</span>    Returns:</div>
-<div class="line"><span class="lineno">  257</span>    dict: each entry <span class="keywordflow">is</span> related to single detected driver,</div>
-<div class="line"><span class="lineno">  258</span>          key <span class="keywordflow">is</span> a config section name, value <span class="keywordflow">is</span> a driver name</div>
-<div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  261</span><span class="stringliteral">    import_drivers_dict = {}</span></div>
-<div class="line"><span class="lineno">  262</span><span class="stringliteral">    </span><span class="keywordflow">for</span> module_name <span class="keywordflow">in</span> os.listdir(search_path):</div>
-<div class="line"><span class="lineno">  263</span>        full_path = os.path.join(search_path, module_name)</div>
-<div class="line"><span class="lineno">  264</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(full_path):</div>
-<div class="line"><span class="lineno">  265</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  266</span>        <span class="keywordflow">if</span> module_name.find(<span class="stringliteral">&quot;one-import-&quot;</span>) != 0:</div>
+<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00252">252</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  252</span><span class="keyword">def </span>detect_one_import_drivers(search_path):</div>
+<div class="line"><span class="lineno">  253</span>    <span class="stringliteral">&quot;&quot;&quot;Looks for import drivers in given directory</span></div>
+<div class="line"><span class="lineno">  254</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  255</span><span class="stringliteral">    Args:</span></div>
+<div class="line"><span class="lineno">  256</span><span class="stringliteral">        search_path: path to the directory where to search </span><span class="keyword">import</span> drivers</div>
+<div class="line"><span class="lineno">  257</span> </div>
+<div class="line"><span class="lineno">  258</span>    Returns:</div>
+<div class="line"><span class="lineno">  259</span>    dict: each entry <span class="keywordflow">is</span> related to single detected driver,</div>
+<div class="line"><span class="lineno">  260</span>          key <span class="keywordflow">is</span> a config section name, value <span class="keywordflow">is</span> a driver name</div>
+<div class="line"><span class="lineno">  261</span> </div>
+<div class="line"><span class="lineno">  262</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  263</span><span class="stringliteral">    import_drivers_dict = {}</span></div>
+<div class="line"><span class="lineno">  264</span><span class="stringliteral">    </span><span class="keywordflow">for</span> module_name <span class="keywordflow">in</span> os.listdir(search_path):</div>
+<div class="line"><span class="lineno">  265</span>        full_path = os.path.join(search_path, module_name)</div>
+<div class="line"><span class="lineno">  266</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(full_path):</div>
 <div class="line"><span class="lineno">  267</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  268</span>        module_loader = importlib.machinery.SourceFileLoader(module_name, full_path)</div>
-<div class="line"><span class="lineno">  269</span>        module_spec = importlib.util.spec_from_loader(module_name, module_loader)</div>
-<div class="line"><span class="lineno">  270</span>        module = importlib.util.module_from_spec(module_spec)</div>
-<div class="line"><span class="lineno">  271</span>        <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  272</span>            module_loader.exec_module(module)</div>
-<div class="line"><span class="lineno">  273</span>            <span class="keywordflow">if</span> hasattr(module, <span class="stringliteral">&quot;get_driver_cfg_section&quot;</span>):</div>
-<div class="line"><span class="lineno">  274</span>                section = module.get_driver_cfg_section()</div>
-<div class="line"><span class="lineno">  275</span>                import_drivers_dict[section] = module_name</div>
-<div class="line"><span class="lineno">  276</span>        <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  277</span>            <span class="keywordflow">pass</span></div>
-<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">return</span> import_drivers_dict</div>
+<div class="line"><span class="lineno">  268</span>        <span class="keywordflow">if</span> module_name.find(<span class="stringliteral">&quot;one-import-&quot;</span>) != 0:</div>
+<div class="line"><span class="lineno">  269</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  270</span>        module_loader = importlib.machinery.SourceFileLoader(module_name, full_path)</div>
+<div class="line"><span class="lineno">  271</span>        module_spec = importlib.util.spec_from_loader(module_name, module_loader)</div>
+<div class="line"><span class="lineno">  272</span>        module = importlib.util.module_from_spec(module_spec)</div>
+<div class="line"><span class="lineno">  273</span>        <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  274</span>            module_loader.exec_module(module)</div>
+<div class="line"><span class="lineno">  275</span>            <span class="keywordflow">if</span> hasattr(module, <span class="stringliteral">&quot;get_driver_cfg_section&quot;</span>):</div>
+<div class="line"><span class="lineno">  276</span>                section = module.get_driver_cfg_section()</div>
+<div class="line"><span class="lineno">  277</span>                import_drivers_dict[section] = module_name</div>
+<div class="line"><span class="lineno">  278</span>        <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  279</span>            <span class="keywordflow">pass</span></div>
+<div class="line"><span class="lineno">  280</span>    <span class="keywordflow">return</span> import_drivers_dict</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -313,25 +313,27 @@ Optimization options must be placed in `optimization` folder
 <div class="line"><span class="lineno">  228</span><span class="stringliteral">    dir_path = os.path.dirname(os.path.realpath(__file__))</span></div>
 <div class="line"><span class="lineno">  229</span><span class="stringliteral"></span> </div>
 <div class="line"><span class="lineno">  230</span><span class="stringliteral">    </span><span class="comment"># optimization folder</span></div>
-<div class="line"><span class="lineno">  231</span>    files = [f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../optimization/O*.cfg&#39;</span>, recursive=<span class="keyword">True</span>)]</div>
-<div class="line"><span class="lineno">  232</span>    <span class="comment"># exclude if the name has space</span></div>
-<div class="line"><span class="lineno">  233</span>    files = [s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> files <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39; &#39;</span> <span class="keywordflow">in</span> s]</div>
-<div class="line"><span class="lineno">  234</span> </div>
-<div class="line"><span class="lineno">  235</span>    opt_list = []</div>
-<div class="line"><span class="lineno">  236</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> files:</div>
-<div class="line"><span class="lineno">  237</span>        base = ntpath.basename(cand)</div>
-<div class="line"><span class="lineno">  238</span>        <span class="keywordflow">if</span> os.path.isfile(cand) <span class="keywordflow">and</span> os.access(cand, os.R_OK):</div>
-<div class="line"><span class="lineno">  239</span>            opt_list.append(cand)</div>
-<div class="line"><span class="lineno">  240</span> </div>
-<div class="line"><span class="lineno">  241</span>    <span class="keywordflow">if</span> get_name == <span class="keyword">True</span>:</div>
-<div class="line"><span class="lineno">  242</span>        <span class="comment"># NOTE the name includes prefix &#39;O&#39;</span></div>
-<div class="line"><span class="lineno">  243</span>        <span class="comment"># e.g. O1, O2, ONCHW not just 1, 2, NCHW</span></div>
-<div class="line"><span class="lineno">  244</span>        opt_list = [ntpath.basename(f) <span class="keywordflow">for</span> f <span class="keywordflow">in</span> opt_list]</div>
-<div class="line"><span class="lineno">  245</span>        opt_list = [remove_suffix(s, <span class="stringliteral">&#39;.cfg&#39;</span>) <span class="keywordflow">for</span> s <span class="keywordflow">in</span> opt_list]</div>
-<div class="line"><span class="lineno">  246</span> </div>
-<div class="line"><span class="lineno">  247</span>    <span class="keywordflow">return</span> opt_list</div>
+<div class="line"><span class="lineno">  231</span>    files = [</div>
+<div class="line"><span class="lineno">  232</span>        f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../optimization/O*.cfg&#39;</span>, recursive=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  233</span>    ]</div>
+<div class="line"><span class="lineno">  234</span>    <span class="comment"># exclude if the name has space</span></div>
+<div class="line"><span class="lineno">  235</span>    files = [s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> files <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39; &#39;</span> <span class="keywordflow">in</span> s]</div>
+<div class="line"><span class="lineno">  236</span> </div>
+<div class="line"><span class="lineno">  237</span>    opt_list = []</div>
+<div class="line"><span class="lineno">  238</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> files:</div>
+<div class="line"><span class="lineno">  239</span>        base = ntpath.basename(cand)</div>
+<div class="line"><span class="lineno">  240</span>        <span class="keywordflow">if</span> os.path.isfile(cand) <span class="keywordflow">and</span> os.access(cand, os.R_OK):</div>
+<div class="line"><span class="lineno">  241</span>            opt_list.append(cand)</div>
+<div class="line"><span class="lineno">  242</span> </div>
+<div class="line"><span class="lineno">  243</span>    <span class="keywordflow">if</span> get_name == <span class="keyword">True</span>:</div>
+<div class="line"><span class="lineno">  244</span>        <span class="comment"># NOTE the name includes prefix &#39;O&#39;</span></div>
+<div class="line"><span class="lineno">  245</span>        <span class="comment"># e.g. O1, O2, ONCHW not just 1, 2, NCHW</span></div>
+<div class="line"><span class="lineno">  246</span>        opt_list = [ntpath.basename(f) <span class="keywordflow">for</span> f <span class="keywordflow">in</span> opt_list]</div>
+<div class="line"><span class="lineno">  247</span>        opt_list = [remove_suffix(s, <span class="stringliteral">&#39;.cfg&#39;</span>) <span class="keywordflow">for</span> s <span class="keywordflow">in</span> opt_list]</div>
 <div class="line"><span class="lineno">  248</span> </div>
-<div class="line"><span class="lineno">  249</span> </div>
+<div class="line"><span class="lineno">  249</span>    <span class="keywordflow">return</span> opt_list</div>
+<div class="line"><span class="lineno">  250</span> </div>
+<div class="line"><span class="lineno">  251</span> </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="utils_8py_source.html#l00205">remove_suffix()</a>.</p>
 

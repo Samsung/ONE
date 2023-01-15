@@ -322,54 +322,56 @@ $(document).ready(function(){initNavTree('utils_8py_source.html',''); initResiza
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="stringliteral">    dir_path = os.path.dirname(os.path.realpath(__file__))</span></div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="stringliteral"></span> </div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="stringliteral">    </span><span class="comment"># optimization folder</span></div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    files = [f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../optimization/O*.cfg&#39;</span>, recursive=<span class="keyword">True</span>)]</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="comment"># exclude if the name has space</span></div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    files = [s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> files <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39; &#39;</span> <span class="keywordflow">in</span> s]</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    opt_list = []</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> files:</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        base = ntpath.basename(cand)</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        <span class="keywordflow">if</span> os.path.isfile(cand) <span class="keywordflow">and</span> os.access(cand, os.R_OK):</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>            opt_list.append(cand)</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordflow">if</span> get_name == <span class="keyword">True</span>:</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        <span class="comment"># NOTE the name includes prefix &#39;O&#39;</span></div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        <span class="comment"># e.g. O1, O2, ONCHW not just 1, 2, NCHW</span></div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        opt_list = [ntpath.basename(f) <span class="keywordflow">for</span> f <span class="keywordflow">in</span> opt_list]</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        opt_list = [<a class="code hl_function" href="namespaceutils.html#a8c9d950acf492b7ad693c52b84924cd6">remove_suffix</a>(s, <span class="stringliteral">&#39;.cfg&#39;</span>) <span class="keywordflow">for</span> s <span class="keywordflow">in</span> opt_list]</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordflow">return</span> opt_list</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    files = [</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../optimization/O*.cfg&#39;</span>, recursive=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    ]</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="comment"># exclude if the name has space</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    files = [s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> files <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39; &#39;</span> <span class="keywordflow">in</span> s]</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    opt_list = []</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> files:</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        base = ntpath.basename(cand)</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="keywordflow">if</span> os.path.isfile(cand) <span class="keywordflow">and</span> os.access(cand, os.R_OK):</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>            opt_list.append(cand)</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keywordflow">if</span> get_name == <span class="keyword">True</span>:</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="comment"># NOTE the name includes prefix &#39;O&#39;</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        <span class="comment"># e.g. O1, O2, ONCHW not just 1, 2, NCHW</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        opt_list = [ntpath.basename(f) <span class="keywordflow">for</span> f <span class="keywordflow">in</span> opt_list]</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        opt_list = [<a class="code hl_function" href="namespaceutils.html#a8c9d950acf492b7ad693c52b84924cd6">remove_suffix</a>(s, <span class="stringliteral">&#39;.cfg&#39;</span>) <span class="keywordflow">for</span> s <span class="keywordflow">in</span> opt_list]</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno"><a class="line" href="namespaceutils.html#adc4dea9a3ff47cb71093a3de1a0cadab">  250</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceutils.html#adc4dea9a3ff47cb71093a3de1a0cadab">detect_one_import_drivers</a>(search_path):</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="stringliteral">&quot;&quot;&quot;Looks for import drivers in given directory</span></div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="stringliteral">    Args:</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="stringliteral">        search_path: path to the directory where to search </span><span class="keyword">import</span> drivers</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    Returns:</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    dict: each entry <span class="keywordflow">is</span> related to single detected driver,</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>          key <span class="keywordflow">is</span> a config section name, value <span class="keywordflow">is</span> a driver name</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="stringliteral">    import_drivers_dict = {}</span></div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="stringliteral">    </span><span class="keywordflow">for</span> module_name <span class="keywordflow">in</span> os.listdir(search_path):</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        full_path = os.path.join(search_path, module_name)</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(full_path):</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        <span class="keywordflow">if</span> module_name.find(<span class="stringliteral">&quot;one-import-&quot;</span>) != 0:</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="keywordflow">return</span> opt_list</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno"><a class="line" href="namespaceutils.html#adc4dea9a3ff47cb71093a3de1a0cadab">  252</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceutils.html#adc4dea9a3ff47cb71093a3de1a0cadab">detect_one_import_drivers</a>(search_path):</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="stringliteral">&quot;&quot;&quot;Looks for import drivers in given directory</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="stringliteral">    Args:</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="stringliteral">        search_path: path to the directory where to search </span><span class="keyword">import</span> drivers</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    Returns:</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    dict: each entry <span class="keywordflow">is</span> related to single detected driver,</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>          key <span class="keywordflow">is</span> a config section name, value <span class="keywordflow">is</span> a driver name</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="stringliteral">    import_drivers_dict = {}</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="stringliteral">    </span><span class="keywordflow">for</span> module_name <span class="keywordflow">in</span> os.listdir(search_path):</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        full_path = os.path.join(search_path, module_name)</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(full_path):</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        module_loader = importlib.machinery.SourceFileLoader(module_name, full_path)</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        module_spec = importlib.util.spec_from_loader(module_name, module_loader)</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        module = importlib.util.module_from_spec(module_spec)</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        <span class="keywordflow">try</span>:</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>            module_loader.exec_module(module)</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>            <span class="keywordflow">if</span> hasattr(module, <span class="stringliteral">&quot;get_driver_cfg_section&quot;</span>):</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                section = module.get_driver_cfg_section()</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                import_drivers_dict[section] = module_name</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        <span class="keywordflow">except</span>:</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>            <span class="keywordflow">pass</span></div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <span class="keywordflow">return</span> import_drivers_dict</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        <span class="keywordflow">if</span> module_name.find(<span class="stringliteral">&quot;one-import-&quot;</span>) != 0:</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        module_loader = importlib.machinery.SourceFileLoader(module_name, full_path)</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        module_spec = importlib.util.spec_from_loader(module_name, module_loader)</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        module = importlib.util.module_from_spec(module_spec)</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        <span class="keywordflow">try</span>:</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>            module_loader.exec_module(module)</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>            <span class="keywordflow">if</span> hasattr(module, <span class="stringliteral">&quot;get_driver_cfg_section&quot;</span>):</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>                section = module.get_driver_cfg_section()</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>                import_drivers_dict[section] = module_name</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        <span class="keywordflow">except</span>:</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>            <span class="keywordflow">pass</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    <span class="keywordflow">return</span> import_drivers_dict</div>
 <div class="ttc" id="aexample__array_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="example__array_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition:</b> <a href="example__array_8cpp_source.html#l00040">example_array.cpp:40</a></div></div>
 <div class="ttc" id="anamespaceutils_html_a2fbf6d2f678260c3856380193db659a8"><div class="ttname"><a href="namespaceutils.html#a2fbf6d2f678260c3856380193db659a8">utils.safemain</a></div><div class="ttdeci">def safemain(main, mainpath)</div><div class="ttdef"><b>Definition:</b> <a href="utils_8py_source.html#l00157">utils.py:157</a></div></div>
 <div class="ttc" id="anamespaceutils_html_a30a5194170a622b2b4b6fa7858b722ad"><div class="ttname"><a href="namespaceutils.html#a30a5194170a622b2b4b6fa7858b722ad">utils.add_default_arg_no_CS</a></div><div class="ttdeci">def add_default_arg_no_CS(parser)</div><div class="ttdef"><b>Definition:</b> <a href="utils_8py_source.html#l00050">utils.py:50</a></div></div>
@@ -382,7 +384,7 @@ $(document).ready(function(){initNavTree('utils_8py_source.html',''); initResiza
 <div class="ttc" id="anamespaceutils_html_abe630f340739016339ee8436b206e461"><div class="ttname"><a href="namespaceutils.html#abe630f340739016339ee8436b206e461">utils.print_version_and_exit</a></div><div class="ttdeci">def print_version_and_exit(file_path)</div><div class="ttdef"><b>Definition:</b> <a href="utils_8py_source.html#l00147">utils.py:147</a></div></div>
 <div class="ttc" id="anamespaceutils_html_ad13a165085daeb423dd6cd590294d08d"><div class="ttname"><a href="namespaceutils.html#ad13a165085daeb423dd6cd590294d08d">utils.is_accumulated_arg</a></div><div class="ttdeci">def is_accumulated_arg(arg, driver)</div><div class="ttdef"><b>Definition:</b> <a href="utils_8py_source.html#l00069">utils.py:69</a></div></div>
 <div class="ttc" id="anamespaceutils_html_ad76a188ab0b80880d0c6c0d4f7770818"><div class="ttname"><a href="namespaceutils.html#ad76a188ab0b80880d0c6c0d4f7770818">utils.run</a></div><div class="ttdeci">def run(cmd, err_prefix=None, logfile=None)</div><div class="ttdef"><b>Definition:</b> <a href="utils_8py_source.html#l00167">utils.py:167</a></div></div>
-<div class="ttc" id="anamespaceutils_html_adc4dea9a3ff47cb71093a3de1a0cadab"><div class="ttname"><a href="namespaceutils.html#adc4dea9a3ff47cb71093a3de1a0cadab">utils.detect_one_import_drivers</a></div><div class="ttdeci">def detect_one_import_drivers(search_path)</div><div class="ttdef"><b>Definition:</b> <a href="utils_8py_source.html#l00250">utils.py:250</a></div></div>
+<div class="ttc" id="anamespaceutils_html_adc4dea9a3ff47cb71093a3de1a0cadab"><div class="ttname"><a href="namespaceutils.html#adc4dea9a3ff47cb71093a3de1a0cadab">utils.detect_one_import_drivers</a></div><div class="ttdeci">def detect_one_import_drivers(search_path)</div><div class="ttdef"><b>Definition:</b> <a href="utils_8py_source.html#l00252">utils.py:252</a></div></div>
 <div class="ttc" id="anamespaceutils_html_adcd2b699ac90fd167f8377d1bda19dbd"><div class="ttname"><a href="namespaceutils.html#adcd2b699ac90fd167f8377d1bda19dbd">utils.get_optimization_list</a></div><div class="ttdeci">def get_optimization_list(get_name=False)</div><div class="ttdef"><b>Definition:</b> <a href="utils_8py_source.html#l00211">utils.py:211</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
