@@ -714,4 +714,189 @@ TEST(IPermuteFunction, qsymm16_to_float)
   }
 }
 
+TEST(IPermuteFunction, float_to_qasymm8_layout)
+{
+  const size_t input_pads[4] = {0, 0, 1, 2};
+  const size_t output_pads[4] = {0, 3, 2, 1};
+  const std::vector<Shape> shapes{{1, 1, 4, 1}, {2, 1, 2, 3}, {1, 2, 1, 2}, {1, 1, 2, 3}};
+  float expected_buffer[] = {10,  0,  -10,  -20, 30,   -40, 50,   -60, 70,
+                             -80, 90, -100, 110, -120, 130, -140, 150, -160};
+  float scale = 10;
+  int32_t zero_point = 128;
+
+  std::vector<std::unique_ptr<MockUpTensor>> inputs(4);
+  std::vector<std::unique_ptr<MockUpTensor>> outputs(4);
+  std::vector<std::unique_ptr<uint8_t[]>> output_buffers(4);
+  for (size_t i = 0; i < 4; ++i)
+  {
+    Layout layout = Layout::NHWC;
+    Shape shape = shapes[i];
+    if (i % 2 == 1)
+    {
+      layout = Layout::NCHW;
+      shape = Shape{shapes[i].dim(0), shapes[i].dim(3), shapes[i].dim(1), shapes[i].dim(2)};
+    }
+    inputs[i] =
+      std::make_unique<MockUpTensor>(shape, TypeInfo(DataType::FLOAT32), layout, input_pads[i]);
+    inputs[i]->setBuffer(reinterpret_cast<uint8_t *>(expected_buffer));
+
+    if (layout == Layout::NHWC)
+    {
+      layout = Layout::NCHW;
+      shape = Shape{shapes[i].dim(0), shapes[i].dim(3), shapes[i].dim(1), shapes[i].dim(2)};
+    }
+    else
+    {
+      layout = Layout::NHWC;
+      shape = shapes[i];
+    }
+    TypeInfo type_info{DataType::QUANT_UINT8_ASYMM, scale, zero_point};
+    outputs[i] = std::make_unique<MockUpTensor>(shape, type_info, layout, output_pads[i]);
+    output_buffers[i] = std::make_unique<uint8_t[]>(outputs[i]->total_size());
+    outputs[i]->setBuffer(output_buffers[i].get());
+  }
+
+  auto mockup_layer = std::make_unique<MockUpLayer>(
+    std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
+    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+  mockup_layer->run();
+
+  for (size_t i = 0; i < 4; ++i)
+  {
+    for (int32_t j = 0; j < shapes[i].dim(0); ++j)
+    {
+      for (int32_t k = 0; k < shapes[i].dim(1); ++k)
+      {
+        for (int32_t l = 0; l < shapes[i].dim(2); ++l)
+        {
+          for (int32_t m = 0; m < shapes[i].dim(3); ++m)
+          {
+            Coordinates input_coords;
+            Coordinates output_coords;
+            if (inputs[i]->layout() == Layout::NHWC)
+            {
+              input_coords = Coordinates{j, k, l, m};
+            }
+            else
+            {
+              input_coords = Coordinates{j, m, k, l};
+            }
+            if (outputs[i]->layout() == Layout::NHWC)
+            {
+              output_coords = Coordinates{j, k, l, m};
+            }
+            else
+            {
+              output_coords = Coordinates{j, m, k, l};
+            }
+            uint8_t qasymm8 = *reinterpret_cast<uint8_t *>(outputs[i]->buffer() +
+                                                           outputs[i]->calcOffset(output_coords));
+            float result = (qasymm8 - zero_point) * scale;
+            float expected =
+              *reinterpret_cast<float *>(inputs[i]->buffer() + inputs[i]->calcOffset(input_coords));
+            EXPECT_EQ(result, expected);
+          }
+        }
+      }
+    }
+  }
+}
+
+TEST(IPermuteFunction, asymm8_to_float_layout)
+{
+  const size_t input_pads[4] = {0, 0, 1, 2};
+  const size_t output_pads[4] = {0, 3, 2, 1};
+  const std::vector<Shape> shapes{{1, 1, 4, 1}, {2, 1, 2, 3}, {1, 2, 1, 2}, {1, 1, 2, 3}};
+  float expected_buffer[] = {10,  0,  -10,  -20, 30,   -40, 50,   -60, 70,
+                             -80, 90, -100, 110, -120, 130, -140, 150, -160};
+  float scale = 10;
+  int32_t zero_point = 128;
+  uint8_t input_buffer[18];
+
+  int32_t min_val = std::numeric_limits<int16_t>::min();
+  int32_t max_val = std::numeric_limits<int16_t>::max();
+  for (int32_t i = 0; i < sizeof(expected_buffer) / sizeof(float); ++i)
+  {
+    int32_t unclamped = static_cast<int32_t>(std::round(expected_buffer[i] / scale)) + zero_point;
+    input_buffer[i] = std::min(std::max(unclamped, min_val), max_val);
+  }
+
+  std::vector<std::unique_ptr<MockUpTensor>> inputs(4);
+  std::vector<std::unique_ptr<MockUpTensor>> outputs(4);
+  std::vector<std::unique_ptr<uint8_t[]>> output_buffers(4);
+  for (size_t i = 0; i < 4; ++i)
+  {
+    Layout layout = Layout::NHWC;
+    Shape shape = shapes[i];
+    if (i % 2 == 1)
+    {
+      layout = Layout::NCHW;
+      shape = Shape{shapes[i].dim(0), shapes[i].dim(3), shapes[i].dim(1), shapes[i].dim(2)};
+    }
+    TypeInfo type_info{DataType::QUANT_UINT8_ASYMM, scale, zero_point};
+    inputs[i] = std::make_unique<MockUpTensor>(shape, type_info, layout, input_pads[i]);
+    inputs[i]->setBuffer(reinterpret_cast<uint8_t *>(expected_buffer));
+
+    if (layout == Layout::NHWC)
+    {
+      layout = Layout::NCHW;
+      shape = Shape{shapes[i].dim(0), shapes[i].dim(3), shapes[i].dim(1), shapes[i].dim(2)};
+    }
+    else
+    {
+      layout = Layout::NHWC;
+      shape = shapes[i];
+    }
+    outputs[i] =
+      std::make_unique<MockUpTensor>(shape, TypeInfo(DataType::FLOAT32), layout, output_pads[i]);
+    output_buffers[i] = std::make_unique<uint8_t[]>(outputs[i]->total_size());
+    outputs[i]->setBuffer(output_buffers[i].get());
+  }
+
+  auto mockup_layer = std::make_unique<MockUpLayer>(
+    std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
+    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+  mockup_layer->run();
+
+  for (size_t i = 0; i < 4; ++i)
+  {
+    for (int32_t j = 0; j < shapes[i].dim(0); ++j)
+    {
+      for (int32_t k = 0; k < shapes[i].dim(1); ++k)
+      {
+        for (int32_t l = 0; l < shapes[i].dim(2); ++l)
+        {
+          for (int32_t m = 0; m < shapes[i].dim(3); ++m)
+          {
+            Coordinates input_coords;
+            Coordinates output_coords;
+            if (inputs[i]->layout() == Layout::NHWC)
+            {
+              input_coords = Coordinates{j, k, l, m};
+            }
+            else
+            {
+              input_coords = Coordinates{j, m, k, l};
+            }
+            if (outputs[i]->layout() == Layout::NHWC)
+            {
+              output_coords = Coordinates{j, k, l, m};
+            }
+            else
+            {
+              output_coords = Coordinates{j, m, k, l};
+            }
+            float result = *reinterpret_cast<float *>(outputs[i]->buffer() +
+                                                      outputs[i]->calcOffset(output_coords));
+            uint8_t qasymm8 = *reinterpret_cast<uint8_t *>(inputs[i]->buffer() +
+                                                           inputs[i]->calcOffset(input_coords));
+            float expected = (qasymm8 - zero_point) * scale;
+            EXPECT_EQ(result, expected);
+          }
+        }
+      }
+    }
+  }
+}
+
 } // namespace
