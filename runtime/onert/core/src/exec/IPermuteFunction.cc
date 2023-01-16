@@ -60,13 +60,23 @@ void elementwiseQuantize(const backend::ITensor *src_tensor, backend::ITensor *d
   int max_val = std::numeric_limits<OutputT>::max();
 
   auto loop_shape = src_tensor->getShape();
+  const bool is_permutation =
+    src_tensor->layout() != dst_tensor->layout() && loop_shape.rank() == 4;
+  const auto src_layout = src_tensor->layout();
+  const auto dst_layout = dst_tensor->layout();
   ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
     const InputT *input_data =
       reinterpret_cast<const InputT *>(src_tensor->buffer() + src_tensor->calcOffset(coords));
     int32_t unclamped = static_cast<int32_t>(round(*input_data / scale)) + zero_point;
     int32_t clamped = std::min(std::max(unclamped, min_val), max_val);
+
+    ir::Coordinates dst_coords = coords;
+    if (is_permutation)
+    {
+      dst_coords = ir::convertCoordinates(coords, src_layout, dst_layout);
+    }
     OutputT *output_data =
-      reinterpret_cast<OutputT *>(dst_tensor->buffer() + dst_tensor->calcOffset(coords));
+      reinterpret_cast<OutputT *>(dst_tensor->buffer() + dst_tensor->calcOffset(dst_coords));
     *output_data = clamped;
   });
 }
@@ -100,12 +110,22 @@ void elementwiseDequantize(const backend::ITensor *src_tensor, backend::ITensor 
   const auto zero_point = src_tensor->data_zero_point();
 
   auto loop_shape = src_tensor->getShape();
+  const bool is_permutation =
+    src_tensor->layout() != dst_tensor->layout() && loop_shape.rank() == 4;
+  const auto src_layout = src_tensor->layout();
+  const auto dst_layout = dst_tensor->layout();
   ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
     const InputT *input_data =
       reinterpret_cast<const InputT *>(src_tensor->buffer() + src_tensor->calcOffset(coords));
     const OutputT result = static_cast<OutputT>(scale * (*input_data - zero_point));
+
+    ir::Coordinates dst_coords = coords;
+    if (is_permutation)
+    {
+      dst_coords = ir::convertCoordinates(coords, src_layout, dst_layout);
+    }
     OutputT *output_data =
-      reinterpret_cast<OutputT *>(dst_tensor->buffer() + dst_tensor->calcOffset(coords));
+      reinterpret_cast<OutputT *>(dst_tensor->buffer() + dst_tensor->calcOffset(dst_coords));
     *output_data = result;
   });
 }
@@ -137,12 +157,6 @@ template <typename SRC_T, typename DST_T,
                            bool> = true>
 void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor)
 {
-  // TODO Support different layouts
-  if (src_tensor->layout() != ir::Layout::NHWC || dst_tensor->layout() != ir::Layout::NHWC)
-  {
-    throw std::runtime_error("Currently, type-aware quantization supports only potable tensors");
-  }
-
   // TODO Support other types
   if (src_tensor->data_type() == ir::DataType::FLOAT32)
   {
