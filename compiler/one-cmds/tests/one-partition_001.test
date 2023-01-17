@@ -30,6 +30,7 @@ inputfile="${testmodel}.circle"
 partfile="${testmodel}.part"
 outputfile="${testmodel}.conn.json"
 
+rm -f ${filename}.log
 rm -rf  ${testmodel}.000*
 rm -rf  ${testmodel}.conn.*
 rm -rf  ${testmodel}.*.log
@@ -37,7 +38,7 @@ rm -rf  ${testmodel}.*.log
 # run test
 one-partition \
 --input_file ${inputfile} \
---part_file ${partfile} > /dev/null 2>&1
+--part_file ${partfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

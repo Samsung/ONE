@@ -29,6 +29,8 @@ trap trap_err_onexit ERR
 # copy help-infer to bin folder
 cp help-infer ../bin/help-infer
 
+rm -f ${filename}.log
+
 # run test
 one-infer -d help-infer -- -h > ${filename}.log
 

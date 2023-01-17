@@ -28,12 +28,13 @@ trap trap_err_onexit ERR
 inputfile="./inception_v3.circle"
 outputfolder="nnpack"
 
+rm -f ${filename}.log
 rm -rf ${outputfolder}
 
 # run test
 one-pack \
 -i ${inputfile} \
--o ${outputfolder} > /dev/null 2>&1
+-o ${outputfolder} > ${filename}.log 2>&1
 
 if [[ ! -d "${outputfolder}" ]]; then
   trap_err_onexit

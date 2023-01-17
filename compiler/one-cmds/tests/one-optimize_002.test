@@ -28,13 +28,14 @@ trap trap_err_onexit ERR
 inputfile="./inception_v3.circle"
 outputfile="./inception_v3-opt.circle"
 
+rm -f ${filename}.log
 rm -rf ${outputfile}
 
 # run test
 one-optimize --resolve_customop_add \
 --change_outputs InceptionV3/Logits/SpatialSqueeze1 \
 --input_path ${inputfile} \
---output_path ${outputfile} > /dev/null 2>&1
+--output_path ${outputfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

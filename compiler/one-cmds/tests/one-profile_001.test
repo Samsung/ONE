@@ -29,6 +29,8 @@ trap trap_err_onexit ERR
 # copy help-profile to bin folder
 cp help-profile ../bin/help-profile
 
+rm -f ${filename}.log
+
 # run test
 one-profile -b help -- -h > ${filename}.log
 

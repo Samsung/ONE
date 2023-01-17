@@ -55,6 +55,7 @@ trap trap_err_onexit ERR
 configfile="onecc_024.cfg"
 outputfile="inception_v3.opt.circle"
 
+rm -f ${filename}.log
 rm -rf ${outputfile}
 
 if [ ! -d "../optimization" ]; then

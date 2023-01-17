@@ -38,6 +38,8 @@ fi
 # copy dummy-infer to bin folder
 cp dummy-infer ../bin/dummy-infer
 
+rm -f ${filename}.log
+
 # run test
 one-infer -C ${configfile} > ${filename}.log
 

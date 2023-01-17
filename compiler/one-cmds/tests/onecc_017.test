@@ -35,10 +35,11 @@ if [[ ! -s "${inputfile}" ]]; then
   trap_err_onexit
 fi
 
+rm -f ${filename}.log
 rm -rf ${outputfile}
 
 # run test
-onecc optimize -i ${inputfile} -o ${outputfile} > /dev/null 2>&1
+onecc optimize -i ${inputfile} -o ${outputfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
