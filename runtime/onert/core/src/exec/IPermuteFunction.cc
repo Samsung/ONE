@@ -63,7 +63,6 @@ void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor)
     throw std::runtime_error("Currently, type-aware quantization supports only potable tensors");
   }
 
-  // TODO Use optimized kernels
   // TODO Support other types
   const auto src = nnfw::misc::polymorphic_downcast<const backend::IPortableTensor *>(src_tensor);
   auto dst = nnfw::misc::polymorphic_downcast<backend::IPortableTensor *>(dst_tensor);

@@ -19,6 +19,7 @@
 #define __NNFW_CKER_ROUND_H__
 
 #include "cker/Shape.h"
+#include "cker/Utils.h"
 
 #include <cmath>
 
@@ -40,6 +41,26 @@ inline float RoundToNearest(float value)
     return floor_val = floor_val + 1.0f;
   }
 }
+
+#ifdef USE_NEON
+
+inline int32x4_t RoundToNearest(const float32x4_t input)
+{
+#if defined(__aarch64__) || defined(__SSSE3__)
+  // Note: vcvtnq_s32_f32 is not available in ARMv7
+  return vcvtnq_s32_f32(input);
+#else
+  static const float32x4_t zero_val_dup = vdupq_n_f32(0.0f);
+  static const float32x4_t point5_val_dup = vdupq_n_f32(0.5f);
+  static const float32x4_t minus_point5_val_dup = vdupq_n_f32(-0.5f);
+
+  const uint32x4_t mask = vcltq_f32(input, zero_val_dup);
+  const float32x4_t round = vbslq_f32(mask, minus_point5_val_dup, point5_val_dup);
+  return vcvtq_s32_f32(vaddq_f32(input, round));
+#endif // defined(__aarch64__) || defined(__SSSE3__)
+}
+
+#endif // NEON
 
 inline void Round(const Shape &input_shape, const float *input_data, const Shape &output_shape,
                   float *output_data)
