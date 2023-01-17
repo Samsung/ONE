@@ -1,2 +1,2 @@
 compiler/onecc-docker/onecc-docker /usr/share/one/bin/
-compiler/onecc-docker/docker/Dockerfile /usr/share/one/docker/
+compiler/onecc-docker/docker/Dockerfile /usr/share/one/bin/docker/
