@@ -68,6 +68,11 @@ public:
 
   void addObserver(std::unique_ptr<IExecutionObserver> ref) { _subject.add(std::move(ref)); };
 
+  const std::vector<backend::builtin::IOTensor *> &getInputTensors() const override
+  {
+    return _input_tensors;
+  }
+
   const std::vector<backend::builtin::IOTensor *> &getOutputTensors() const override
   {
     return _output_tensors;

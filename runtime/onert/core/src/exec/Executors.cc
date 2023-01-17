@@ -44,9 +44,9 @@ const ir::OperandInfo &Executors::inputInfo(const ir::IOIndex &index) const
   auto const desc = _model_edges->pkg_inputs[index.value()];
   auto const model_index = std::get<0>(desc);
   auto const subg_index = std::get<1>(desc);
+  auto const io_index = std::get<2>(desc);
   auto const executor = at(model_index, subg_index);
-  auto const input_index = executor->graph().getInputs().at(std::get<2>(desc));
-  return executor->graph().operands().at(input_index).info();
+  return executor->getInputTensors().at(io_index.value())->orig_info();
 }
 
 const ir::OperandInfo &Executors::outputInfo(const ir::IOIndex &index) const
@@ -54,9 +54,9 @@ const ir::OperandInfo &Executors::outputInfo(const ir::IOIndex &index) const
   auto const desc = _model_edges->pkg_outputs[index.value()];
   auto const model_index = std::get<0>(desc);
   auto const subg_index = std::get<1>(desc);
+  auto const io_index = std::get<2>(desc);
   auto const executor = at(model_index, subg_index);
-  auto const output_index = executor->graph().getOutputs().at(std::get<2>(desc));
-  return executor->graph().operands().at(output_index).info();
+  return executor->getOutputTensors().at(io_index.value())->orig_info();
 }
 
 // Allow below edges only
@@ -103,7 +103,7 @@ void Executors::checkSupportedMultimodel() const
       return false;
     };
 
-    for (uint32_t i = 0; i < first_executor->graph().getInputs().size(); i++)
+    for (uint32_t i = 0; i < first_executor->getInputTensors().size(); i++)
     {
       if (!search_first_model(ir::IOIndex{i}))
         throw std::runtime_error{"Cannot find 1st model's input buffer"};
@@ -111,15 +111,83 @@ void Executors::checkSupportedMultimodel() const
   }
 }
 
+// TODO Support type-aware quantization of nnpkg inputs/outputs
+void Executors::createTypeAwareQuantLayers()
+{
+  if (_is_created_type_quant_layers)
+  {
+    return;
+  }
+
+  // Initialize layers for type-ware quantization as empty layer
+  for (const auto &pair : _executors)
+  {
+    const auto &model_index = pair.first.first;
+    const auto &subg_index = pair.first.second;
+
+    std::vector<backend::ITensor *> inputs;
+    std::vector<backend::ITensor *> outputs;
+    _type_aware_quant_layers[{model_index, subg_index}] =
+      std::make_unique<PermuteLayer>(inputs, outputs);
+  }
+
+  for (const auto &pair : _edge_map)
+  {
+    const auto &from_iodesc = pair.first;
+    const auto &from_model_index = std::get<ir::ModelIndex>(from_iodesc);
+    const auto &from_subg_index = std::get<ir::SubgraphIndex>(from_iodesc);
+    const auto &from_io_index = std::get<ir::IOIndex>(from_iodesc);
+
+    const auto from_executor = _executors.at({from_model_index, from_subg_index}).get();
+    const auto from_tensor = from_executor->getOutputTensors().at(from_io_index.value());
+
+    const auto &to_list = pair.second;
+    std::vector<backend::ITensor *> inputs;
+    std::vector<backend::ITensor *> outputs;
+    for (const auto &to_iodesc : to_list)
+    {
+      const auto &to_model_index = std::get<ir::ModelIndex>(to_iodesc);
+      const auto &to_subg_index = std::get<ir::SubgraphIndex>(to_iodesc);
+      const auto &to_io_index = std::get<ir::IOIndex>(to_iodesc);
+
+      const auto to_executor = _executors.at({to_model_index, to_subg_index}).get();
+      const auto to_tensor = to_executor->getInputTensors().at(to_io_index.value());
+
+      // TODO Unify tensors with the same `from` tensor and same type
+      if (from_tensor->data_type() != to_tensor->data_type())
+      {
+        assert(inputs.size() == outputs.size());
+        const auto &to_info = to_executor->getInputTensors().at(to_io_index.value())->orig_info();
+        const auto to_layout = to_tensor->orig_layout();
+        inputs.emplace_back(from_tensor);
+
+        auto type_aware_quant_tensor =
+          std::make_unique<backend::builtin::IOTensor>(to_info, to_layout);
+        outputs.emplace_back(type_aware_quant_tensor.get());
+
+        _type_aware_quant_tensors[to_iodesc] = std::move(type_aware_quant_tensor);
+      }
+    }
+
+    auto layer = std::make_unique<PermuteLayer>(inputs, outputs);
+    layer->prepare();
+    _type_aware_quant_layers[{from_model_index, from_subg_index}] = std::move(layer);
+  }
+
+  _is_created_type_quant_layers = true;
+}
+
 void Executors::execute(const IODescription &desc)
 {
   // Check supported multi model package
   checkSupportedMultimodel();
 
+  // TODO Move creating layers for type-aware quantization in compilation stage
+  createTypeAwareQuantLayers();
+
   // TODO Find better way to schedule order of executors
   std::vector<std::unique_ptr<backend::builtin::IOTensor>> pkgs_inputs(desc.inputs.size());
   std::vector<std::unique_ptr<backend::builtin::IOTensor>> pkgs_outputs(desc.outputs.size());
-  const auto layout = ir::Layout::NHWC;
   auto const model_count = modelCount();
 
   auto find_input_index = [&](const ir::ModelIndex &model_index,
@@ -167,8 +235,10 @@ void Executors::execute(const IODescription &desc)
   //      and all inputs/outputs become IPortableTensor at compile stage.
   //      This allows user's buffers to be set to inputs/outputs of executors.
   // Shared buffers and tensors between executors
+  // TODO Introduce a new class for edge tensors
   std::vector<std::unique_ptr<backend::builtin::IOTensor>> edge_tensors;
   std::unordered_map<ir::IODesc, std::unique_ptr<uint8_t[]>> internal_bufs;
+  std::unordered_map<ir::IODesc, std::unique_ptr<uint8_t[]>> type_aware_bufs;
 
   // Reference count for each `from` of edges to reduce peak memory
   std::unordered_map<ir::IODesc, int32_t> internal_tensor_ref_counts(_model_edges->edges.size());
@@ -190,22 +260,29 @@ void Executors::execute(const IODescription &desc)
     // Set IOTensors
     std::vector<backend::IPortableTensor *> inputs_inter;
     std::vector<backend::IPortableTensor *> outputs_inter;
-    auto const input_size = executor->graph().getInputs().size();
-    auto const output_size = executor->graph().getOutputs().size();
+    const auto &input_tensors = executor->getInputTensors();
+    const auto &output_tensors = executor->getOutputTensors();
+    auto const input_size = input_tensors.size();
+    auto const output_size = output_tensors.size();
     inputs_inter.resize(input_size);
     outputs_inter.resize(output_size);
 
     // Set inputs of executor
     for (uint32_t i = 0; i < input_size; i++)
     {
-      auto const &index = executor->graph().getInputs().at(ir::IOIndex{i});
-      auto const &info = executor->graph().operands().at(index).info();
+      auto const &info = input_tensors.at(i)->orig_info();
 
       auto input_pkg_index = find_input_index(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
       if (input_pkg_index != -1)
       {
         auto input_desc = desc.inputs[input_pkg_index].get();
-        pkgs_inputs[input_pkg_index] = std::make_unique<backend::builtin::IOTensor>(info, layout);
+        const auto orig_layout = input_tensors.at(i)->orig_layout();
+        if (input_desc->layout != orig_layout)
+        {
+          throw std::runtime_error("Executors.cc: Changing layout is not supported");
+        }
+        pkgs_inputs[input_pkg_index] =
+          std::make_unique<backend::builtin::IOTensor>(info, input_desc->layout);
         // TODO Remove const_cast (we need const_cast as ITensor is writable)
         pkgs_inputs[input_pkg_index]->setUserTensor(
           reinterpret_cast<uint8_t *>(const_cast<void *>(input_desc->buffer)), input_desc->size);
@@ -225,21 +302,35 @@ void Executors::execute(const IODescription &desc)
 
         // TODO Add check if from_executor has already been executed
         const auto from_executor = _executors.at({from_model_index, from_subg_index}).get();
-        inputs_inter[i] = from_executor->getOutputTensors().at(from_ioindex);
+        const auto to_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
+        if (_type_aware_quant_tensors.find(to_iodesc) == _type_aware_quant_tensors.end())
+        {
+          inputs_inter[i] = from_executor->getOutputTensors().at(from_ioindex);
+        }
+        else
+        {
+          inputs_inter[i] = _type_aware_quant_tensors.at(to_iodesc).get();
+        }
       }
     }
 
     // Set outputs of executor
     for (uint32_t i = 0; i < output_size; i++)
     {
-      auto const &index = executor->graph().getOutputs().at(ir::IOIndex{i});
-      auto const &info = executor->graph().operands().at(index).info();
+      const auto &output_tensor = output_tensors.at(i);
+      auto const &info = output_tensor->orig_info();
 
       auto output_pkg_index = find_output_index(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
       if (output_pkg_index != -1)
       {
         auto output_desc = desc.outputs[output_pkg_index].get();
-        pkgs_outputs[output_pkg_index] = std::make_unique<backend::builtin::IOTensor>(info, layout);
+        const auto orig_layout = output_tensors.at(i)->orig_layout();
+        if (output_desc->layout != orig_layout)
+        {
+          throw std::runtime_error("Executors.cc: Changing layout is not supported");
+        }
+        pkgs_outputs[output_pkg_index] =
+          std::make_unique<backend::builtin::IOTensor>(info, output_desc->layout);
         pkgs_outputs[output_pkg_index]->setUserTensor(
           reinterpret_cast<uint8_t *>(output_desc->buffer), output_desc->size);
 
@@ -247,26 +338,102 @@ void Executors::execute(const IODescription &desc)
       }
       else
       {
+        // Allocate buffer and set it as buffer of `from` tensors
         const auto from_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
+        const auto from_layout = output_tensor->orig_layout();
+
         const auto temp_index = edge_tensors.size();
         internal_bufs[from_iodesc] = std::make_unique<uint8_t[]>(info.total_size());
-        edge_tensors.emplace_back(std::make_unique<backend::builtin::IOTensor>(info, layout));
+        edge_tensors.emplace_back(std::make_unique<backend::builtin::IOTensor>(info, from_layout));
         edge_tensors.at(temp_index)
           ->setUserTensor(internal_bufs[from_iodesc].get(), info.total_size());
         outputs_inter[i] = edge_tensors[temp_index].get();
+
+        // Allocate buffer and set it as buffer of tensors for type-aware quantization
+        for (const auto &to_iodesc : _edge_map[from_iodesc])
+        {
+          if (_type_aware_quant_tensors.find(to_iodesc) != _type_aware_quant_tensors.end())
+          {
+            const auto &to_model_index = std::get<ir::ModelIndex>(to_iodesc);
+            const auto &to_subg_index = std::get<ir::SubgraphIndex>(to_iodesc);
+            const auto &to_io_index = std::get<ir::IOIndex>(to_iodesc);
+
+            const auto to_executor = _executors.at({to_model_index, to_subg_index}).get();
+            auto type_aware_quant_tensor = _type_aware_quant_tensors.at(to_iodesc).get();
+
+            const auto to_tensor = to_executor->getInputTensors().at(to_io_index.value());
+            const auto total_size = to_tensor->orig_info().total_size();
+            type_aware_bufs[to_iodesc] = std::make_unique<uint8_t[]>(total_size);
+            type_aware_quant_tensor->setUserTensor(type_aware_bufs[to_iodesc].get(), total_size);
+          }
+        }
       }
     }
 
     executor->execute(inputs_inter, outputs_inter);
+    _type_aware_quant_layers[{model_index, ir::SubgraphIndex{0}}]->run();
 
-    // Release internal buffers that are no longer needed
+    // Release input buffers that are no longer needed
     for (uint32_t i = 0; i < input_size; i++)
     {
       const auto input_pkg_index =
         find_input_index(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
+
+      const auto to_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
       if (input_pkg_index == -1)
       {
-        const auto from_iodesc = find_from(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
+        if (type_aware_bufs.find(to_iodesc) != type_aware_bufs.end())
+        {
+          // Relase buffer if input tensor is using buffer for type-aware quantization
+          const auto to_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
+          if (type_aware_bufs.find(to_iodesc) != type_aware_bufs.end())
+          {
+            type_aware_bufs[to_iodesc].reset();
+          }
+        }
+        else
+        {
+          // Decrease reference count `from` tensor if input tensor is using the buffer of the
+          // `from` tensor
+          const auto from_iodesc = find_from(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
+          assert(internal_bufs.find(from_iodesc) != internal_bufs.end());
+          if (internal_tensor_ref_counts[from_iodesc] > 0)
+          {
+            internal_tensor_ref_counts[from_iodesc]--;
+
+            assert(internal_tensor_ref_counts[from_iodesc] >= 0);
+            if (internal_tensor_ref_counts[from_iodesc] == 0)
+            {
+              internal_bufs[from_iodesc].reset();
+            }
+          }
+        }
+      }
+    }
+
+    // Release output buffers if those buffers are no longer used other executors because of
+    // type-aware quantization
+    // FIXME if tensors for type-aware quantization unified for the same `from` tensor and same type
+    for (uint32_t i = 0; i < output_size; i++)
+    {
+      auto from_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
+
+      // Check if other executors will use the buffer of internal_bufs[from_iodesc]
+      const auto &to_list = _edge_map[from_iodesc];
+      if (to_list.size() == 0)
+      {
+        // This condition means `from_iodesc` tensor is an output of nnpkg
+        continue;
+      }
+
+      bool to_be_release =
+        !std::any_of(to_list.begin(), to_list.end(), [&](const ir::IODesc &to_iodesc) {
+          // This condition means another executor uses the buffer of internal_bufs[from_iodesc]
+          return type_aware_bufs.find(to_iodesc) == type_aware_bufs.end();
+        });
+
+      if (to_be_release)
+      {
         internal_tensor_ref_counts[from_iodesc]--;
 
         assert(internal_tensor_ref_counts[from_iodesc] >= 0);
