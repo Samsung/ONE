@@ -36,7 +36,7 @@ class VisqDotBuilderTest(unittest.TestCase):
 
         graph = pydot.graph_from_dot_file("Add_000.dot")[0]
         # Why 1? 0 is output
-        ofm_node = graph.get_node("ofm")[1]
+        ofm_node = graph.get_node("\"ofm\"")[1]
         self.assertEqual("green", ofm_node.get_fillcolor())
 
 

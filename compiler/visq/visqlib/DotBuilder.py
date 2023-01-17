@@ -25,6 +25,11 @@ def _tensor_name(graph, tid):
     return graph.Tensors(tid).Name().decode('utf-8')
 
 
+# Return double-quoted string
+def _quote(string: str):
+    return '"' + string + '"'
+
+
 # Class to build dot graph from qerror_map
 class DotBuilder:
     def __init__(self, circle_path: str, dot_path: str, metric: str, colors: str):
@@ -104,13 +109,13 @@ class DotBuilder:
         for i in range(graph.InputsLength()):
             name = _tensor_name(graph, graph.Inputs(i))
             output_to_op[name] = name
-            DOT.add_node(pydot.Node(name))
+            DOT.add_node(pydot.Node(_quote(name)))
 
         # Add Output nodes
         for i in range(graph.OutputsLength()):
             name = _tensor_name(graph, graph.Outputs(i))
             output_to_op[name] = name
-            DOT.add_node(pydot.Node(name))
+            DOT.add_node(pydot.Node(_quote(name)))
 
         # Add Edges
         for i in range(graph.OperatorsLength()):
@@ -124,7 +129,7 @@ class DotBuilder:
             if op_name in qerror_map:
                 qerror = qerror_map[op_name]
                 node = pydot.Node(
-                    op_name,
+                    _quote(op_name),
                     style="filled",
                     fillcolor=self._get_color(qerror),
                     xlabel=self._metric + ": {:.4f}".format(qerror))
@@ -133,7 +138,7 @@ class DotBuilder:
                 # When this happen? visq does not collect qerror info of some Ops
                 # For example, Reshape Op does not change values, so its qerror
                 # info is not collected.
-                node = pydot.Node(op_name, style="filled", fillcolor='gray')
+                node = pydot.Node(_quote(op_name), style="filled", fillcolor='gray')
 
             DOT.add_node(node)
 
@@ -155,6 +160,6 @@ class DotBuilder:
 
                 # Use the saved name to handle multiple outputs
                 op_input_name = output_to_op[op_input_name]
-                DOT.add_edge(pydot.Edge(op_input_name, op_name))
+                DOT.add_edge(pydot.Edge(_quote(op_input_name), _quote(op_name)))
 
         DOT.write(self._dot_path)
