@@ -49,6 +49,15 @@ struct BatchMatMulParams
   bool adj_y;
 };
 
+struct BidirectionalSequenceLSTMParams
+{
+  Activation activation;
+  float cell_clip;
+  float proj_clip;
+  bool time_major;
+  bool asymmetric_quantize_inputs;
+};
+
 struct ConcatenationParams
 {
   int axis;
