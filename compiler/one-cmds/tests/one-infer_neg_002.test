@@ -33,8 +33,10 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
+rm -f ${filename}.log
+
 # run test
-one-infer -d ${driver_name} -- -h> ${filename}.log 2>&1
+one-infer -d ${driver_name} -- -h > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

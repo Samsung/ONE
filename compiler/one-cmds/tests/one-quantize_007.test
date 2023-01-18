@@ -28,6 +28,7 @@ trap trap_err_onexit ERR
 inputfile="./inception_v3.circle"
 outputfile="./inception_v3.random.quantized.q16.iq8.circle"
 
+rm -f ${filename}.log
 rm -rf ${outputfile}
 
 # run test without input data
@@ -37,7 +38,7 @@ one-quantize \
 --granularity channel \
 --input_type uint8 \
 --input_path ${inputfile} \
---output_path ${outputfile} > /dev/null 2>&1
+--output_path ${outputfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

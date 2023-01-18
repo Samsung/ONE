@@ -31,16 +31,15 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 configfile="onecc_042.cfg"
-logfile="onecc_042.log"
 
 rm -rf ${outputfile}
-rm -rf ${logfile}
+rm -rf ${filename}.log
 
 # copy dummyEnv-compile to bin folder
 cp dummyEnv-compile ../bin/dummyEnv-compile
 
 # run test
-onecc -C ${configfile} > ${logfile} 2>&1
+onecc -C ${configfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

@@ -30,6 +30,7 @@ trap trap_err_onexit ERR
 workflowfile="onecc_028.workflow.json"
 outputfile="inception_v3_pkg"
 
+rm -f ${filename}.log
 rm -rf ${outputfile}
 
 # run test

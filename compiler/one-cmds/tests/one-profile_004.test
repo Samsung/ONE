@@ -38,6 +38,8 @@ fi
 # copy dummy-profile to bin folder
 cp dummy-profile ../bin/dummy-profile
 
+rm -f ${filename}.log
+
 # run test
 one-profile -C ${configfile} > ${filename}.log
 
