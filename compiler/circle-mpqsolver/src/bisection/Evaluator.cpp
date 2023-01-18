@@ -56,9 +56,9 @@ WholeOutput compute_outputs(const luci::Module *module, const std::string &h5fil
   luci_interpreter::Interpreter interpreter(module);
   for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
   {
-    if (num_inputs != importer.numInputs(record_idx))
+    if (num_inputs != static_cast<uint32_t>(importer.numInputs(record_idx)))
       throw std::runtime_error("Wrong number of inputs.");
-    for (int32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+    for (uint32_t input_idx = 0; input_idx < num_inputs; input_idx++)
     {
       const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
       assert(input_node->index() == input_idx);
@@ -86,7 +86,7 @@ WholeOutput compute_outputs(const luci::Module *module, const std::string &h5fil
 
     // Get output.
     const auto output_nodes = loco::output_nodes(module->graph());
-    for (int i = 0; i < module->graph()->outputs()->size(); i++)
+    for (size_t i = 0; i < module->graph()->outputs()->size(); i++)
     {
       const auto *output_node = loco::must_cast<const luci::CircleOutput *>(output_nodes[i]);
       Buffer output_data(get_tensor_size(output_node));
