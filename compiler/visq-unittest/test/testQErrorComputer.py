@@ -44,6 +44,23 @@ class VisqQErrorComputerTest(unittest.TestCase):
         np.save(self.fp32_dir.name + '/0/test.npy', test_data)
         np.save(self.fq_dir.name + '/0/test.npy', test_data)
 
+    def _setUpTwoTensorData(self):
+        with open(self.fp32_dir.name + '/tensors.txt', 'w') as f:
+            f.write('test')
+        with open(self.fq_dir.name + '/tensors.txt', 'w') as f:
+            f.write('test')
+        os.mkdir(self.fp32_dir.name + '/0')
+        os.mkdir(self.fp32_dir.name + '/1')
+        os.mkdir(self.fq_dir.name + '/0')
+        os.mkdir(self.fq_dir.name + '/1')
+        test_data_one = np.ones(16)
+        test_data_zero = np.zeros(16)
+        np.save(self.fp32_dir.name + '/0/test.npy', test_data_one)
+        np.save(self.fp32_dir.name + '/1/test.npy', test_data_zero)
+        np.save(self.fq_dir.name + '/0/test.npy', test_data_zero)
+        np.save(self.fq_dir.name + '/1/test.npy', test_data_zero)
+        # Golden: (1 + 0) / 2 = 0.5 for MSE
+
     def _setUpDifferentTensorData(self):
         # Two fp32 data (test, test2)
         # One fq data (test)
@@ -84,6 +101,15 @@ class VisqQErrorComputerTest(unittest.TestCase):
         self.assertAlmostEqual(0.0, qmap['test'])
         self.assertAlmostEqual(0.0, qmin)
         self.assertAlmostEqual(0.0, qmax)
+
+    def test_MSE_two(self):
+        self._setUpTwoTensorData()
+
+        computer = MSEComputer(self.fp32_dir.name, self.fq_dir.name)
+        qmap, qmin, qmax = computer.run()
+        self.assertAlmostEqual(0.5, qmap['test'])
+        self.assertAlmostEqual(0.0, qmin)
+        self.assertAlmostEqual(1.0, qmax)
 
     def test_MSE_different_tensors(self):
         self._setUpDifferentTensorData()
