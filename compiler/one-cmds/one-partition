@@ -24,7 +24,7 @@ import configparser
 import os
 import sys
 
-import utils as _utils
+import onelib.utils as oneutils
 
 # TODO Find better way to suppress trackback on error
 sys.tracebacklimit = 0
@@ -34,7 +34,7 @@ def _get_parser():
     parser = argparse.ArgumentParser(
         description='command line tool to partition circle model by multiple backends')
 
-    _utils._add_default_arg(parser)
+    oneutils.add_default_arg(parser)
 
     parser.add_argument(
         '--backends', type=str, help='backends in CSV to use for partitioning')
@@ -55,7 +55,7 @@ def _parse_arg(parser):
     args = parser.parse_args()
     # print version
     if args.version:
-        _utils._print_version_and_exit(__file__)
+        oneutils.print_version_and_exit(__file__)
 
     return args
 
@@ -64,9 +64,9 @@ def _verify_arg(parser, args):
     """verify given arguments"""
     # check if required arguments is given
     missing = []
-    if not _utils._is_valid_attr(args, 'part_file'):
+    if not oneutils.is_valid_attr(args, 'part_file'):
         missing.append('part_file')
-    if not _utils._is_valid_attr(args, 'input_file'):
+    if not oneutils.is_valid_attr(args, 'input_file'):
         missing.append('input_file')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
@@ -86,13 +86,13 @@ def _partition(args):
 
         cmd = [os.path.expanduser(circle_partitioner_path)]
 
-        if _utils._is_valid_attr(args, 'backends'):
+        if oneutils.is_valid_attr(args, 'backends'):
             cmd.append('--backends')
             cmd.append(getattr(args, 'backends'))
-        if _utils._is_valid_attr(args, 'default'):
+        if oneutils.is_valid_attr(args, 'default'):
             cmd.append('--default')
             cmd.append(getattr(args, 'default'))
-        if _utils._is_valid_attr(args, 'work_path'):
+        if oneutils.is_valid_attr(args, 'work_path'):
             cmd.append('--work_path')
             cmd.append(getattr(args, 'work_path'))
 
@@ -104,7 +104,7 @@ def _partition(args):
         f.write((' '.join(cmd) + '\n').encode())
 
         # run circle-partitoner
-        _utils._run(cmd, err_prefix='circle-partitioner', logfile=f)
+        oneutils.run(cmd, err_prefix='circle-partitioner', logfile=f)
 
 
 def main():
@@ -113,11 +113,11 @@ def main():
     args = _parse_arg(parser)
 
     # parse configuration file
-    _utils._parse_cfg(args, 'one-partition')
+    oneutils.parse_cfg(args, 'one-partition')
 
-    if _utils._is_valid_attr(args, 'config'):
+    if oneutils.is_valid_attr(args, 'config'):
         config_path = getattr(args, 'config')
-        _utils._parse_cfg_and_overwrite(config_path, 'one-partition', args)
+        oneutils.parse_cfg_and_overwrite(config_path, 'one-partition', args)
 
     # verify arguments
     _verify_arg(parser, args)
@@ -127,4 +127,4 @@ def main():
 
 
 if __name__ == '__main__':
-    _utils._safemain(main, __file__)
+    oneutils.safemain(main, __file__)

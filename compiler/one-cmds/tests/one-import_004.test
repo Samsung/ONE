@@ -30,10 +30,11 @@ trap trap_err_onexit ERR
 configfile="one-import_004.cfg"
 outputfile="test_keras_model.circle"
 
+rm -f ${filename}.log
 rm -f ${outputfile}
 
 # run test
-one-import tf -C ${configfile} > /dev/null 2>&1
+one-import tf -C ${configfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

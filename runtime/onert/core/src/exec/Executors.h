@@ -46,7 +46,7 @@ namespace exec
 class Executors : public IExecutors
 {
 public:
-  Executors(void) = default;
+  Executors(void) = delete;
   Executors(std::unique_ptr<ir::ModelEdges> model_edges) { _model_edges = std::move(model_edges); }
   Executors(const Executors &) = delete;
   Executors(Executors &&) = default;
@@ -54,23 +54,23 @@ public:
 
   // TODO Use Executor index
   void emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
-               std::unique_ptr<IExecutor> exec);
+               std::unique_ptr<IExecutor> exec) override;
 
-  IExecutor *at(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index) const;
+  IExecutor *at(const ir::ModelIndex &model_index,
+                const ir::SubgraphIndex &subg_index) const override;
 
-  uint32_t inputSize() const;
+  uint32_t inputSize() const override;
 
-  uint32_t outputSize() const;
+  uint32_t outputSize() const override;
 
-  const ir::OperandInfo inputInfo(const ir::IOIndex &index);
+  const ir::OperandInfo &inputInfo(const ir::IOIndex &index) const override;
 
-  const ir::OperandInfo outputInfo(const ir::IOIndex &index);
+  const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const override;
 
-  void execute(const IODescription &desc);
+  void execute(const IODescription &desc) override;
 
 private:
   void checkSupportedMultimodel() const;
-  void executeModels(const IODescription &desc);
   uint16_t modelCount() const;
 
 private:

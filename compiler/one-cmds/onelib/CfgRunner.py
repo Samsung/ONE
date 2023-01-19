@@ -18,7 +18,7 @@ import configparser
 import os
 import warnings
 
-import utils as oneutils
+import onelib.utils as oneutils
 
 
 def _simple_warning(message, category, filename, lineno, file=None, line=None):
@@ -67,8 +67,8 @@ class CfgRunner:
         # make option names case sensitive
         self.optparser.optionxform = str
         opt_book = dict(
-            zip(oneutils._get_optimization_list(get_name=True),
-                oneutils._get_optimization_list()))
+            zip(oneutils.get_optimization_list(get_name=True),
+                oneutils.get_optimization_list()))
         parsed = self.optparser.read(opt_book['O' + opt])
         if not parsed:
             raise FileNotFoundError('Not found given optimization configuration file')
@@ -80,9 +80,15 @@ class CfgRunner:
         self.opt = opt
 
     def detect_import_drivers(self, dir):
-        self.import_drivers = list(oneutils._detect_one_import_drivers(dir).keys())
+        self.import_drivers = list(oneutils.detect_one_import_drivers(dir).keys())
 
     def run(self, working_dir, verbose=False):
+        # set environment
+        CFG_ENV_SECTION = 'Environment'
+        if self.cfgparser.has_section(CFG_ENV_SECTION):
+            for key in self.cfgparser[CFG_ENV_SECTION]:
+                os.environ[key] = self.cfgparser[CFG_ENV_SECTION][key]
+
         section_to_run = []
         for d in self.import_drivers + self.driver_sequence:
             if self._is_available(d):
@@ -96,4 +102,4 @@ class CfgRunner:
                 options.append('--verbose')
             driver_path = os.path.join(working_dir, section)
             cmd = [driver_path] + options
-            oneutils._run(cmd)
+            oneutils.run(cmd)

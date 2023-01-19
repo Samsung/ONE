@@ -29,13 +29,14 @@ inputfile="./inception_v3.pb"
 outputfile="./inception_v3.circle"
 
 # Note: Do not remove output circle file as it's used for quantize tests
+rm -f ${filename}.log
 
 # run test
 one-import tf \
 --input_path ${inputfile} \
 --output_path ${outputfile} \
 --input_arrays input --input_shapes "1,299,299,3" \
---output_arrays InceptionV3/Predictions/Reshape_1 > /dev/null 2>&1
+--output_arrays InceptionV3/Predictions/Reshape_1 > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

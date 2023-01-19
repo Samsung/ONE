@@ -27,7 +27,7 @@ import ntpath
 import os
 import sys
 
-import utils as _utils
+import onelib.utils as oneutils
 
 # TODO Find better way to suppress trackback on error
 sys.tracebacklimit = 0
@@ -82,7 +82,7 @@ one-infer -d dummy-infer --post-process "script.py arg1 arg2" -- [arguments for 
         epilog=infer_detail,
         formatter_class=argparse.RawTextHelpFormatter)
 
-    _utils._add_default_arg(parser)
+    oneutils.add_default_arg(parser)
 
     driver_help_message = 'backend inference driver name to execute'
     parser.add_argument('-d', '--driver', type=str, help=driver_help_message)
@@ -96,7 +96,7 @@ one-infer -d dummy-infer --post-process "script.py arg1 arg2" -- [arguments for 
 def _verify_arg(parser, args):
     """verify given arguments"""
     missing = []
-    if not _utils._is_valid_attr(args, 'driver'):
+    if not oneutils.is_valid_attr(args, 'driver'):
         missing.append('-d/--driver')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
@@ -118,13 +118,13 @@ def _parse_arg(parser):
         backend_args = backend_args if len(args) < 2 else args[1]
     # print version
     if len(args) and infer_args.version:
-        _utils._print_version_and_exit(__file__)
+        oneutils.print_version_and_exit(__file__)
 
     return infer_args, backend_args
 
 
 def _get_executable(args):
-    driver = _utils._is_valid_attr(args, 'driver')
+    driver = oneutils.is_valid_attr(args, 'driver')
 
     executable = _search_backend_driver(driver)
     if executable:
@@ -139,7 +139,7 @@ def main():
     args, backend_args = _parse_arg(parser)
 
     # parse configuration file
-    _utils._parse_cfg(args, 'one-infer')
+    oneutils.parse_cfg(args, 'one-infer')
 
     # verify arguments
     _verify_arg(parser, args)
@@ -147,20 +147,20 @@ def main():
     # make a command to run given backend driver
     driver_path = _get_executable(args)
     infer_cmd = [driver_path] + backend_args
-    if _utils._is_valid_attr(args, 'command'):
+    if oneutils.is_valid_attr(args, 'command'):
         infer_cmd += getattr(args, 'command').split()
 
     # run backend driver
-    _utils._run(infer_cmd, err_prefix=ntpath.basename(driver_path))
+    oneutils.run(infer_cmd, err_prefix=ntpath.basename(driver_path))
 
     # run post process script if it's given
-    if _utils._is_valid_attr(args, 'post_process'):
+    if oneutils.is_valid_attr(args, 'post_process'):
         # NOTE: the given python script will be executed by venv of ONE
         python_path = sys.executable
         post_process_command = [python_path] + getattr(args,
                                                        'post_process').strip().split(' ')
-        _utils._run(post_process_command, err_prefix='one-infer')
+        oneutils.run(post_process_command, err_prefix='one-infer')
 
 
 if __name__ == '__main__':
-    _utils._safemain(main, __file__)
+    oneutils.safemain(main, __file__)

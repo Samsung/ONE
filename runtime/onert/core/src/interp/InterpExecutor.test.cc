@@ -15,7 +15,7 @@
  */
 
 #include "InterpExecutor.h"
-#include "../exec/Executors.h"
+#include "../exec/SingleModelExecutors.h"
 
 #include "exec/Execution.h"
 #include "ir/Graph.h"
@@ -31,7 +31,7 @@ namespace
 using namespace onert::ir;
 using InterpExecutor = onert::interp::InterpExecutor;
 using Execution = onert::exec::Execution;
-using Executors = onert::exec::Executors;
+using Executors = onert::exec::SingleModelExecutors;
 
 class InterpExecutorTest : public ::testing::Test
 {

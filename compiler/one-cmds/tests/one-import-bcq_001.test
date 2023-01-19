@@ -28,6 +28,7 @@ trap trap_err_onexit ERR
 inputfile="./bcq.pb"
 outputfile="./bcq.circle"
 
+rm -f ${filename}.log
 rm -rf $outputfile
 
 # run test
@@ -35,7 +36,7 @@ one-import-bcq \
 --input_path ${inputfile} \
 --output_path ${outputfile} \
 --input_arrays Placeholder \
---output_arrays MatMul > /dev/null 2>&1
+--output_arrays MatMul > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

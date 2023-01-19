@@ -25,8 +25,8 @@ template <typename T>
 static inline void
 SpaceToBatchND(const tflite::SpaceToBatchParams &params,
                const tflite::RuntimeShape &unextended_input1_shape, const T *input1_data,
-               const tflite::RuntimeShape &unextended_input2_shape, const int32 *block_shape_data,
-               const tflite::RuntimeShape &unextended_input3_shape, const int32 *paddings_data,
+               const tflite::RuntimeShape &unextended_input2_shape, const int32_t *block_shape_data,
+               const tflite::RuntimeShape &unextended_input3_shape, const int32_t *paddings_data,
                const tflite::RuntimeShape &unextended_output_shape, T *output_data)
 {
   tflite::reference_ops::SpaceToBatchND(

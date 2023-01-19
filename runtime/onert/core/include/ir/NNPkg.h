@@ -248,4 +248,18 @@ private:
 } // namespace ir
 } // namespace onert
 
+namespace std
+{
+
+template <> struct hash<onert::ir::IODesc>
+{
+  size_t operator()(const ::onert::ir::IODesc &iodesc) const noexcept
+  {
+    return (std::get<0>(iodesc).value() << 24) | (std::get<1>(iodesc).value() << 16) |
+           std::get<2>(iodesc).value();
+  }
+};
+
+} // namespace std
+
 #endif // __ONERT_IR_NNPKG_H__

@@ -25,11 +25,7 @@
 
 #include "backend/ITensor.h"
 #include "exec/IFunction.h"
-#include "ir/Index.h"
-#include "ir/Shape.h"
 #include <memory>
-#include <typeinfo>
-#include "util/Utils.h"
 #include <vector>
 #include <unordered_map>
 
@@ -79,31 +75,7 @@ protected:
   };
 
 public:
-  virtual void run() override
-  {
-    // TODO Optimization : Make control does not reach here? when (_src_tensors.size() == 0)
-    assert(_src_tensors.size() == _dst_tensors.size());
-    if (_src_tensors_offsets.size() == 0)
-    {
-      _src_tensors_offsets.resize(_src_tensors.size());
-      _dst_tensors_offsets.resize(_dst_tensors.size());
-    }
-    assert(_src_tensors.size() == _src_tensors_offsets.size());
-    assert(_src_tensors_offsets.size() == _dst_tensors_offsets.size());
-
-    for (size_t i = 0; i < _src_tensors.size(); ++i)
-    {
-      auto src_tensor = _src_tensors.at(i);
-      auto dst_tensor = _dst_tensors.at(i);
-      auto &src_offsets = _src_tensors_offsets.at(i);
-      auto &dst_offsets = _dst_tensors_offsets.at(i);
-      if (src_tensor != dst_tensor)
-      {
-        const auto rank = src_tensor->getShape().rank();
-        permute(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
-      }
-    }
-  }
+  virtual void run() override;
 
   virtual void prepare() override { optimize(); }
 
@@ -111,48 +83,7 @@ public:
 
 protected:
   void permute(backend::ITensor *src_tensor, backend::ITensor *dst_tensor, size_t rank,
-               std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets)
-  {
-    if (src_tensor->total_size() == 0)
-    {
-      assert(dst_tensor->total_size() == 0);
-      return;
-    }
-
-    assert(src_tensor != dst_tensor);
-    if (underlying_type(src_tensor->data_type()) != underlying_type(dst_tensor->data_type()))
-      throw std::runtime_error("data type does not match");
-    switch (src_tensor->data_type())
-    {
-      case ir::DataType::FLOAT32:
-        permute<float>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
-        break;
-      case ir::DataType::INT32:
-        permute<int32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
-        break;
-      case ir::DataType::UINT32:
-        permute<uint32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
-        break;
-      case ir::DataType::BOOL8:
-      case ir::DataType::QUANT_UINT8_ASYMM:
-      case ir::DataType::UINT8:
-        permute<uint8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
-        break;
-      case ir::DataType::QUANT_INT8_ASYMM:
-      case ir::DataType::QUANT_INT8_SYMM:
-        permute<int8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
-        break;
-      case ir::DataType::INT64:
-        permute<int64_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
-        break;
-      case ir::DataType::QUANT_INT16_SYMM:
-        permute<int16_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
-        break;
-      default:
-        throw std::runtime_error("IPermuteFunction: Not supported data type");
-        break;
-    }
-  }
+               std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets);
 
 private:
   // TODO make src const by proving const access()
@@ -322,31 +253,7 @@ protected:
   // NOTE The typeid expression is lvalue expression which refers to an object with static storage
   //      duration, of the polymorphic type const std::type_info or of some type derived from it.
   //      So std::type_info is non-copyable
-  const std::type_info &underlying_type(ir::DataType type) const
-  {
-    switch (type)
-    {
-      case ir::DataType::FLOAT32:
-        return typeid(float);
-      case ir::DataType::INT32:
-        return typeid(int32_t);
-      case ir::DataType::UINT32:
-        return typeid(uint32_t);
-      case ir::DataType::INT64:
-        return typeid(int64_t);
-      case ir::DataType::BOOL8:
-      case ir::DataType::QUANT_UINT8_ASYMM:
-      case ir::DataType::UINT8:
-        return typeid(uint8_t);
-      case ir::DataType::QUANT_INT8_ASYMM:
-      case ir::DataType::QUANT_INT8_SYMM:
-        return typeid(int8_t);
-      case ir::DataType::QUANT_INT16_SYMM:
-        return typeid(int16_t);
-      default:
-        throw std::runtime_error("IPermuteFunction: Not supported data type");
-    }
-  }
+  const std::type_info &underlying_type(ir::DataType type) const;
 
 protected:
   std::vector<backend::ITensor *> _src_tensors;

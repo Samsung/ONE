@@ -32,16 +32,10 @@ static inline void PopulateSoftmaxLookupTable(tflite::SoftmaxParams *data, float
 
 static inline void InitializeParams(tflite::SoftmaxParams *params, float input_scale, float beta)
 {
-  int32 input_beta_multiplier;
-  int input_beta_left_shift;
-  static const int kScaledDiffIntegerBits = 5;
-  tflite::PreprocessSoftmaxScaling(beta, input_scale, kScaledDiffIntegerBits,
-                                   &input_beta_multiplier, &input_beta_left_shift);
-
-  params->input_multiplier = input_beta_multiplier;
-  params->input_left_shift = input_beta_left_shift;
-  params->diff_min =
-    -tflite::CalculateInputRadius(kScaledDiffIntegerBits, params->input_left_shift);
+  assert(false && "Softmax NYI");
+  (void)params;
+  (void)input_scale;
+  (void)beta;
 }
 
 template <typename T>

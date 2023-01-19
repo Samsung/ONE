@@ -66,13 +66,10 @@ done
 "${LCOV_PATH}" -e "${RAW_COVERAGE_INFO_PATH}" -o "${EXTRACTED_COVERAGE_INFO_PATH}" \
   "${CANDIDATES[@]}"
 
-
-opencl_files=($(find ./runtime/onert/backend/gpu_cl/open_cl/ \( -name "*.cc" -o -name "*.h" \) -exec realpath {} \; ))
-
 # Exclude test files from coverage report
 # Exclude flatbuffer generated files from coverage report
 "${LCOV_PATH}" -r "${EXTRACTED_COVERAGE_INFO_PATH}" -o "${EXCLUDED_COVERAGE_INFO_PATH}" \
-  '*.test.cpp' '*.test.cc' '*/test/*' '*/tests/*' '*_schema_generated.h' "${opencl_files[@]}"
+  '*.test.cpp' '*.test.cc' '*/test/*' '*/tests/*' '*_schema_generated.h'
 
 # Final coverage data
 cp -v ${EXCLUDED_COVERAGE_INFO_PATH} ${COVERAGE_INFO_PATH}

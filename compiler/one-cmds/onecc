@@ -27,7 +27,7 @@ import sys
 
 from onelib.CfgRunner import CfgRunner
 from onelib.WorkflowRunner import WorkflowRunner
-import utils as _utils
+import onelib.utils as oneutils
 
 # TODO Find better way to suppress trackback on error
 sys.tracebacklimit = 0
@@ -53,7 +53,7 @@ def _call_driver(driver_name, options):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     driver_path = os.path.join(dir_path, driver_name)
     cmd = [driver_path] + options
-    _utils._run(cmd)
+    oneutils.run(cmd)
 
 
 def _check_subtool_exists():
@@ -71,9 +71,9 @@ def _get_parser():
     onecc_desc = 'Run ONE driver via several commands or configuration file'
     parser = argparse.ArgumentParser(description=onecc_desc, usage=onecc_usage)
 
-    _utils._add_default_arg(parser)
+    oneutils.add_default_arg(parser)
 
-    opt_name_list = _utils._get_optimization_list(get_name=True)
+    opt_name_list = oneutils.get_optimization_list(get_name=True)
     opt_name_list = ['-' + s for s in opt_name_list]
     if not opt_name_list:
         opt_help_message = '(No available optimization options)'
@@ -106,7 +106,7 @@ def _parse_arg(parser):
     args = parser.parse_args()
     # print version
     if args.version:
-        _utils._print_version_and_exit(__file__)
+        oneutils.print_version_and_exit(__file__)
 
     return args
 
@@ -114,13 +114,13 @@ def _parse_arg(parser):
 def _verify_arg(parser, args):
     """verify given arguments"""
     # check if required arguments is given
-    if not _utils._is_valid_attr(args, 'config') and not _utils._is_valid_attr(
+    if not oneutils.is_valid_attr(args, 'config') and not oneutils.is_valid_attr(
             args, 'workflow'):
         parser.error('-C/--config or -W/--workflow argument is required')
     # check if given optimization option exists
-    opt_name_list = _utils._get_optimization_list(get_name=True)
-    opt_name_list = [_utils._remove_prefix(s, 'O') for s in opt_name_list]
-    if _utils._is_valid_attr(args, 'O'):
+    opt_name_list = oneutils.get_optimization_list(get_name=True)
+    opt_name_list = [oneutils.remove_prefix(s, 'O') for s in opt_name_list]
+    if oneutils.is_valid_attr(args, 'O'):
         if ' ' in getattr(args, 'O'):
             parser.error('Not allowed to have space in the optimization name')
         if not getattr(args, 'O') in opt_name_list:
@@ -147,16 +147,16 @@ def main():
     _verify_arg(parser, args)
 
     bin_dir = os.path.dirname(os.path.realpath(__file__))
-    if _utils._is_valid_attr(args, 'config'):
+    if oneutils.is_valid_attr(args, 'config'):
         runner = CfgRunner(args.config)
         runner.detect_import_drivers(bin_dir)
-        if _utils._is_valid_attr(args, 'O'):
+        if oneutils.is_valid_attr(args, 'O'):
             runner.add_opt(getattr(args, 'O'))
         runner.run(bin_dir)
-    elif _utils._is_valid_attr(args, 'workflow'):
+    elif oneutils.is_valid_attr(args, 'workflow'):
         runner = WorkflowRunner(args.workflow)
         runner.run(bin_dir)
 
 
 if __name__ == '__main__':
-    _utils._safemain(main, __file__)
+    oneutils.safemain(main, __file__)

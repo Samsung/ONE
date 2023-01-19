@@ -28,6 +28,7 @@ trap trap_err_onexit ERR
 inputfile="./inception_v3.mat.q8.circle"
 outputfile="./inception_v3.one-quantize_005.q8.circle"
 
+rm -f ${filename}.log
 rm -rf ${outputfile}
 
 # run test with force_quantparam option
@@ -37,7 +38,7 @@ one-quantize \
 --scale 2.3 \
 --zero_point 33 \
 --input_path ${inputfile} \
---output_path ${outputfile} > /dev/null 2>&1
+--output_path ${outputfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

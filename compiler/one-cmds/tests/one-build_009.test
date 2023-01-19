@@ -31,13 +31,14 @@ trap trap_err_onexit ERR
 configfile="one-build_009.cfg"
 outputfile="onnx_conv2d_conv2d.bin"
 
-rm -rf ${outputfile}
+rm -f ${filename}.log
+rm -f ${outputfile}
 
 # copy dummy-compile to bin folder
 cp dummy-compile ../bin/dummy-compile
 
 # run test
-one-build -C ${configfile} > /dev/null 2>&1
+one-build -C ${configfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

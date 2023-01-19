@@ -38,13 +38,14 @@ if [[ ! -f "${inputfile}" ]]; then
   trap_err_onexit
 fi
 
+rm -f ${filename}.log
 rm -rf ${outputfile}
 
 # copy dummy-compile to bin folder
 cp dummy-compile ../bin/dummy-compile
 
 # run test
-onecc codegen -b dummy -o ${outputfile} ${inputfile} > /dev/null 2>&1
+onecc codegen -b dummy -o ${outputfile} ${inputfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit

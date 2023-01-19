@@ -55,8 +55,8 @@ trap trap_err_onexit ERR
 configfile="one-build_014.cfg"
 outputfile="inception_v3.opt.circle"
 
-rm -rf ${outputfile}
 rm -f ${filename}.log
+rm -f ${outputfile}
 
 if [ ! -d "../optimization" ]; then
   mkdir -p ../optimization

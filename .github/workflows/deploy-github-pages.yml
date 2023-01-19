@@ -1,0 +1,39 @@
+name: Build and deploy github page
+
+on:
+  schedule:
+    # Every weeks
+    - cron: '30 19 * * SUN'
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Push to github page branch or not'
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  build_and_deploy:
+    name: 'Deploy doxygen page'
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+      - name: 'Generate HTML'
+        uses: mattnotmitt/doxygen-action@v1.9
+        with:
+          doxyfile-path: 'infra/doxygen/Doxyfile'
+      - name: 'Tar artifact'
+        run: tar -zcf doxygen.tar.gz -C doxygen/html ./
+      - name: 'Generate artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: doxygen-html
+          path: doxygen.tar.gz
+      - name: 'Deploy'
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.publish == 'true' }}
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: doxygen/html
+          branch: gh-pages

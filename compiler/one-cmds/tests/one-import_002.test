@@ -30,9 +30,12 @@ trap trap_err_onexit ERR
 configfile="one-import_002.cfg"
 outputfile="inception_v3_cmd.circle"
 
+rm -f ${filename}.log
+rm -f ${outputfile}
+
 # run test
 one-import tf -C ${configfile} \
---output_path=${outputfile} > /dev/null 2>&1
+--output_path=${outputfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
