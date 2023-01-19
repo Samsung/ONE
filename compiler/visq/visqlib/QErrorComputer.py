@@ -59,16 +59,20 @@ class QErrorComputer:
         for data_idx in range(self._num_data):
             fp32_results = glob.glob(self._fp32_dir + '/' + str(data_idx) + '/*.npy')
             for fp32_data_path in fp32_results:
-                p = Path(fp32_data_path)
-                fq_data_path = self._fq_dir + '/' + str(data_idx) + '/' + p.with_suffix(
-                    '.npy').name
+                fp32_path = Path(fp32_data_path)
+                fq_data_path = self._fq_dir + '/' + str(
+                    data_idx) + '/' + fp32_path.with_suffix('.npy').name
                 fq_path = Path(fq_data_path)
-                filename = p.stem
+                filename = fp32_path.stem
                 tensor_name = self._filename_to_tensor[filename]
 
                 # Only save the tensors which have both fp32 data and fq data
-                if fq_path.is_file():
-                    self._data_path[tensor_name] = (fp32_data_path, fq_data_path)
+                if fq_path.is_file() and fp32_path.is_file():
+                    if tensor_name in self._data_path:
+                        self._data_path[tensor_name].append((fp32_data_path,
+                                                             fq_data_path))
+                    else:
+                        self._data_path[tensor_name] = [(fp32_data_path, fq_data_path)]
 
     def run(self):
         '''Return qerror map (dict: tensor_name(string) -> qerror(float)).'''
@@ -81,28 +85,29 @@ class MPEIRComputer(QErrorComputer):
 
     def run(self):
         qerror_map = dict()
-        for tensor_name, (fp32_data_path, fq_data_path) in self._data_path.items():
-            fp32_data = np.load(fp32_data_path)
-            fq_data = np.load(fq_data_path)
+        for tensor_name, data_path in self._data_path.items():
+            for (fp32_data_path, fq_data_path) in data_path:
+                fp32_data = np.load(fp32_data_path)
+                fq_data = np.load(fq_data_path)
 
-            diff = np.absolute(fp32_data - fq_data).reshape(-1)
+                diff = np.absolute(fp32_data - fq_data).reshape(-1)
 
-            fp32_min = np.min(fp32_data.reshape(-1))
-            fp32_max = np.max(fp32_data.reshape(-1))
+                fp32_min = np.min(fp32_data.reshape(-1))
+                fp32_max = np.max(fp32_data.reshape(-1))
 
-            # Peak Error-to-Interval Ratio (PEIR)
-            # NOTE: PEIR is an analogue of PSNR (Peak Signal to Noise Ratio)
-            PEAK_ERROR = np.max(diff)
-            INTERVAL = fp32_max - fp32_min
+                # Peak Error-to-Interval Ratio (PEIR)
+                # NOTE: PEIR is an analogue of PSNR (Peak Signal to Noise Ratio)
+                PEAK_ERROR = np.max(diff)
+                INTERVAL = fp32_max - fp32_min
 
-            # If INTERVAL is 0, PEIR becomes NaN.
-            # To prevent this, relaxed PEIR with epsilon(10^(-6)) is used.
-            rPEIR = PEAK_ERROR / (INTERVAL + 0.000001)
+                # If INTERVAL is 0, PEIR becomes NaN.
+                # To prevent this, relaxed PEIR with epsilon(10^(-6)) is used.
+                rPEIR = PEAK_ERROR / (INTERVAL + 0.000001)
 
-            if tensor_name in qerror_map:
-                qerror_map[tensor_name] += rPEIR
-            else:
-                qerror_map[tensor_name] = rPEIR
+                if tensor_name in qerror_map:
+                    qerror_map[tensor_name] += rPEIR
+                else:
+                    qerror_map[tensor_name] = rPEIR
 
         for tensor_name, acc in qerror_map.items():
             qerror_map[tensor_name] = acc / self._num_data
@@ -118,19 +123,20 @@ class MSEComputer(QErrorComputer):
         qerror_map = dict()
         qerror_min = float('inf')
         qerror_max = -qerror_min
-        for tensor_name, (fp32_data_path, fq_data_path) in self._data_path.items():
-            fp32_data = np.load(fp32_data_path)
-            fq_data = np.load(fq_data_path)
+        for tensor_name, data_path in self._data_path.items():
+            for (fp32_data_path, fq_data_path) in data_path:
+                fp32_data = np.load(fp32_data_path)
+                fq_data = np.load(fq_data_path)
 
-            MSE = np.square(fp32_data - fq_data).mean()
+                MSE = np.square(fp32_data - fq_data).mean()
 
-            if tensor_name in qerror_map:
-                qerror_map[tensor_name] += MSE
-            else:
-                qerror_map[tensor_name] = MSE
+                if tensor_name in qerror_map:
+                    qerror_map[tensor_name] += MSE
+                else:
+                    qerror_map[tensor_name] = MSE
 
-            qerror_min = min(MSE, qerror_min)
-            qerror_max = max(MSE, qerror_max)
+                qerror_min = min(MSE, qerror_min)
+                qerror_max = max(MSE, qerror_max)
 
         for tensor_name, acc in qerror_map.items():
             qerror_map[tensor_name] = acc / self._num_data
