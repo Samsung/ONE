@@ -19,6 +19,7 @@
 #include "ExecEnv.h"
 #include "Interpreter.h"
 
+#include "../backend/builtin/IOTensor.h"
 #include "util/logging.h"
 
 #include <memory>
@@ -27,6 +28,24 @@ namespace onert
 {
 namespace interp
 {
+
+InterpExecutor::InterpExecutor(const ir::Graph &graph) : _graph(graph)
+{
+  const auto layout = ir::Layout::NHWC;
+  for (const auto &index : _graph.getInputs())
+  {
+    const auto &info = _graph.operands().at(index).info();
+    _io_tensors[index] = std::make_shared<backend::builtin::IOTensor>(info, layout);
+    _input_tensors.emplace_back(_io_tensors[index].get());
+  }
+
+  for (const auto &index : _graph.getOutputs())
+  {
+    const auto &info = _graph.operands().at(index).info();
+    _io_tensors[index] = std::make_shared<backend::builtin::IOTensor>(info, layout);
+    _output_tensors.emplace_back(_io_tensors[index].get());
+  }
+}
 
 void InterpExecutor::execute(const exec::IODescription &desc)
 {
@@ -53,6 +72,10 @@ void InterpExecutor::execute(const exec::IODescription &desc)
     input_tensor->setData(std::make_shared<const ir::ExternalData>(
       reinterpret_cast<const uint8_t *>(input->buffer), input->size));
     tensor_map[input_index] = input_tensor;
+
+    // TODO Remove const_cast (we need const_cast as ITensor is writable)
+    _io_tensors[input_index]->setUserTensor(
+      reinterpret_cast<uint8_t *>(const_cast<void *>(input->buffer)), input->size);
   }
 
   /************************************************************************
@@ -89,6 +112,9 @@ void InterpExecutor::execute(const exec::IODescription &desc)
     interp_env->assignExternalBuffer(
       output_index,
       std::make_shared<ExternalBuffer>(reinterpret_cast<uint8_t *>(output->buffer), output->size));
+
+    _io_tensors[output_index]->setUserTensor(reinterpret_cast<uint8_t *>(output->buffer),
+                                             output->size);
   }
 
   // Allocate constant tensor

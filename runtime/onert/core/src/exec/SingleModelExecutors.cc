@@ -16,6 +16,8 @@
 
 #include "SingleModelExecutors.h"
 
+#include "../backend/builtin/IOTensor.h"
+
 namespace onert
 {
 namespace exec
@@ -35,24 +37,22 @@ IExecutor *SingleModelExecutors::at(const ir::ModelIndex &,
 
 uint32_t SingleModelExecutors::inputSize() const
 {
-  return entryExecutor()->graph().getInputs().size();
+  return entryExecutor()->getInputTensors().size();
 }
 
 uint32_t SingleModelExecutors::outputSize() const
 {
-  return entryExecutor()->graph().getOutputs().size();
+  return entryExecutor()->getOutputTensors().size();
 }
 
 const ir::OperandInfo &SingleModelExecutors::inputInfo(const ir::IOIndex &index) const
 {
-  const auto input_index = entryExecutor()->graph().getInputs().at(index);
-  return entryExecutor()->graph().operands().at(input_index).info();
+  return entryExecutor()->getInputTensors().at(index.value())->orig_info();
 }
 
 const ir::OperandInfo &SingleModelExecutors::outputInfo(const ir::IOIndex &index) const
 {
-  auto output_index = entryExecutor()->graph().getOutputs().at(index);
-  return entryExecutor()->graph().operands().at(output_index).info();
+  return entryExecutor()->getOutputTensors().at(index.value())->orig_info();
 }
 
 void SingleModelExecutors::execute(const IODescription &desc) { entryExecutor()->execute(desc); }
