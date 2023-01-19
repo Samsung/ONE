@@ -62,6 +62,7 @@ public:
       FusePreActivationBatchNorm,
       MakeBatchNormGammaPositive,
       FuseActivationFunction,
+      FusePRelu,
       ShuffleWeightTo16x1Float32,
       RemoveRedundantTranspose,
       ReplaceMulAddWithDepthwiseConv,

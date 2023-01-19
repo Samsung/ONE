@@ -1,0 +1,10 @@
+# To check if Sub-Graph can be converted to PReLU
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "ABS_NOT_EXIST"           $(op_count ABS) '=' 0
+RULE    "ADD_NOT_EXIST"           $(op_count ADD) '=' 0
+RULE    "MUL_NOT_EXIST"           $(op_count MUL) '=' 0
+RULE    "RELU_NOT_EXIST"          $(op_count RELU) '=' 0
+RULE    "SUB_NOT_EXIST"           $(op_count SUB) '=' 0
+RULE    "PRELU_EXIST"             $(op_count PRELU) '=' 1

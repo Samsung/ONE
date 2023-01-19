@@ -76,6 +76,26 @@ luci::CircleReshape *create_cloned_reshape(luci::CircleReshape *reshape)
   return new_reshape;
 }
 
+bool forward_reshape(luci::CircleReshape *reshape, luci::CircleAbs *abs)
+{
+  assert(reshape != nullptr); // FIX_CALLER_UNLESS
+  assert(abs != nullptr);     // FIX_CALLER_UNLESS
+
+  auto new_reshape = create_cloned_reshape(reshape);
+  if (not new_reshape)
+    return false;
+
+  // reconnect network
+  loco::replace(abs).with(new_reshape);
+  abs->x(reshape->tensor());
+  new_reshape->tensor(abs);
+
+  // Do shape inference for this node again.
+  abs->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  return true;
+}
+
 bool forward_reshape(luci::CircleReshape *reshape, luci::CircleNeg *neg)
 {
   assert(reshape != nullptr);
@@ -134,6 +154,14 @@ protected:
     LOGGER(l);
     INFO(l) << "ForwardReshape: Unsupported operator: " << node->name() << std::endl;
     return false;
+  }
+
+  bool visit(luci::CircleAbs *node)
+  {
+    auto reshape = as_reshape(node->x());
+    if (reshape == nullptr)
+      return false;
+    return forward_reshape(reshape, node);
   }
 
   bool visit(luci::CircleNeg *node)
