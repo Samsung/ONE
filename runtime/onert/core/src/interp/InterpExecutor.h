@@ -39,10 +39,7 @@ class ITensor;
 class InterpExecutor final : public exec::IExecutor
 {
 public:
-  explicit InterpExecutor(const ir::Graph &graph) : _graph(graph)
-  {
-    // DO NOTHING
-  }
+  explicit InterpExecutor(const ir::Graph &graph);
 
 public:
   /**
@@ -66,11 +63,11 @@ public:
   }
   const std::vector<backend::builtin::IOTensor *> &getInputTensors() const final
   {
-    throw new std::runtime_error{"Interpreter does not support this function."};
+    return _input_tensors;
   }
   const std::vector<backend::builtin::IOTensor *> &getOutputTensors() const final
   {
-    throw new std::runtime_error{"Interpreter does not support this function."};
+    return _output_tensors;
   }
 
 private:
@@ -81,6 +78,9 @@ private:
    */
   const ir::Graph _graph;
   ir::OperandIndexMap<std::shared_ptr<ITensor>> _tensor_map;
+  std::vector<backend::builtin::IOTensor *> _input_tensors;
+  std::vector<backend::builtin::IOTensor *> _output_tensors;
+  ir::OperandIndexMap<std::shared_ptr<backend::builtin::IOTensor>> _io_tensors;
 };
 
 } // namespace interp
