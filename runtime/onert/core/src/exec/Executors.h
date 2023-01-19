@@ -49,7 +49,8 @@ class Executors : public IExecutors
 public:
   Executors(void) = delete;
   Executors(std::unique_ptr<ir::ModelEdges> model_edges)
-    : _type_aware_quant_layers{}, _type_aware_quant_tensors{}, _is_created_type_quant_layers{false}
+    : _type_aware_quant_layers{}, _type_aware_quant_tensors{}, _edge_tensors{},
+      _is_created_type_quant_layers{false}
   {
     _model_edges = std::move(model_edges);
     for (const auto &edge : _model_edges->edges)
@@ -99,6 +100,8 @@ private:
     void optimize() override {}
   };
 
+  class EdgeTensor;
+
 private:
   std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<IExecutor>>
     _executors;
@@ -108,10 +111,12 @@ private:
   // TODO Replace PermuteLayer with backend::builtin::kernel::PermuteLayer
   std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<PermuteLayer>>
     _type_aware_quant_layers;
-  // TODO Introduce a new class for edge tensors
   // TODO Unify tensors with the same `from` tensor and same type
-  std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::IOTensor>>
-    _type_aware_quant_tensors;
+  // NOTE The incomplete type 'EdgeTensor' cannot be declared as unique_ptr.
+  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _type_aware_quant_tensors;
+  // Key: `from` IODesc, Value: EdgeTensor
+  // NOTE The incomplete type 'EdgeTensor' cannot be declared as unique_ptr.
+  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _edge_tensors;
   bool _is_created_type_quant_layers;
 };
 
