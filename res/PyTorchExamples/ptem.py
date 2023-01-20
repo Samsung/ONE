@@ -52,15 +52,17 @@ for example in args.examples:
     if hasattr(module._model_, 'onnx_opset_version'):
         opset_version = module._model_.onnx_opset_version()
 
+    onnx_model_path = output_folder + example + ".onnx"
+
     torch.onnx.export(
         module._model_,
         module._dummy_,
-        output_folder + example + ".onnx",
+        onnx_model_path,
         verbose=True,
         opset_version=opset_version)
     print("Generate '" + example + ".onnx' - Done")
 
-    onnx_model = onnx.load(output_folder + example + ".onnx")
+    onnx_model = onnx.load(onnx_model_path)
     onnx.checker.check_model(onnx_model)
 
     tf_prep = onnx_tf.backend.prepare(onnx_model)
