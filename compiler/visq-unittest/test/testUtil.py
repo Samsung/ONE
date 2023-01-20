@@ -42,7 +42,6 @@ class VisqUtilTest(unittest.TestCase):
         three_digits_ans = [0.123, 12.346, [0.123], {'test': [0.123]}]
         for test_data, ans in zip(test_configs, three_digits_ans):
             res = pretty_float(test_data, ndigits=3)
-            print(res)
             self.assertEqual(res, ans)
 
         test_configs = [0.123456, 12.3456, [0.123456], {'test': [0.123456]}]
