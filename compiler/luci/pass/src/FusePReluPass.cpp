@@ -64,9 +64,6 @@ public:
     _add_ofm = candidate;
   }
 
-private:
-  bool match();
-
 public:
   bool matched();
 
@@ -80,16 +77,13 @@ public:
   luci::CircleAdd *_add_ofm = nullptr;
   luci::CircleConst *_const_alpha = nullptr;
   luci::CircleConst *_const_half = nullptr;
-
-private:
-  bool _matched = false;
 };
 
 #define CHECK_OR_FALSE(condition) \
   if (not(condition))             \
     return false;
 
-bool PReluPattern::match()
+bool PReluPattern::matched()
 {
   // check pattern
   CHECK_OR_FALSE(luci::fill(&_relu, &_mul_half).with_commutative_args_of(_add_ofm));
@@ -100,6 +94,12 @@ bool PReluPattern::match()
 
   CHECK_OR_FALSE(_relu->features() == _ifm);
   CHECK_OR_FALSE(_abs->x() == _ifm);
+
+  // Check Activation to be NONE
+  CHECK_OR_FALSE(_sub->fusedActivationFunction() == luci::FusedActFunc::NONE);
+  CHECK_OR_FALSE(_mul_alpha->fusedActivationFunction() == luci::FusedActFunc::NONE);
+  CHECK_OR_FALSE(_mul_half->fusedActivationFunction() == luci::FusedActFunc::NONE);
+  CHECK_OR_FALSE(_add_ofm->fusedActivationFunction() == luci::FusedActFunc::NONE);
 
   // TODO support other types?
   // check if _const_half is really FLOAT32 & 0.5
@@ -112,14 +112,6 @@ bool PReluPattern::match()
   // TODO add more if needed
 
   return true;
-}
-
-bool PReluPattern::matched()
-{
-  if (_matched)
-    return true;
-
-  return match();
 }
 
 #undef CHECK_OR_FALSE

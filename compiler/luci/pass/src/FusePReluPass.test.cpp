@@ -71,6 +71,7 @@ public:
   }
 
   void invalid_half() { _const_half->at<loco::DataType::FLOAT32>(0) = 0.1; }
+  void invalid_act() { _add->fusedActivationFunction(luci::FusedActFunc::RELU); }
 
 protected:
   luci::CircleAbs *_abs = nullptr;
@@ -160,6 +161,17 @@ TEST(FusePReluPassTest, fuse_invalid_half_NEG)
 
   g.init();
   g.invalid_half();
+
+  EXPECT_FALSE(pass.run(g.g()));
+}
+
+TEST(FusePReluPassTest, fuse_invalid_act_NEG)
+{
+  FusePReluTestNegGraph g;
+  luci::FusePReluPass pass;
+
+  g.init();
+  g.invalid_act();
 
   EXPECT_FALSE(pass.run(g.g()));
 }
