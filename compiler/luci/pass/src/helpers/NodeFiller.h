@@ -57,6 +57,12 @@ public:
    */
   template <class COMM_NODE> bool with_commutative_args_of(const COMM_NODE *node);
 
+  /**
+   * @note Similar as with_commutative_args_of but not commutative.
+   *       _arg_1 and _arg_2 must match that of ARG_TYPE_1 and ARG_TYPE_2.
+   */
+  template <class COMM_NODE> bool with_args_of(const COMM_NODE *node);
+
 private:
   ARG_TYPE_1 **_arg_1;
   ARG_TYPE_2 **_arg_2;
@@ -94,6 +100,26 @@ bool NodeFiller<ARG_TYPE_1, ARG_TYPE_2>::with_commutative_args_of(const COMM_NOD
     {
       *_arg_1 = y;
       *_arg_2 = x;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+template <class ARG_TYPE_1, class ARG_TYPE_2>
+template <class COMM_NODE>
+bool NodeFiller<ARG_TYPE_1, ARG_TYPE_2>::with_args_of(const COMM_NODE *node)
+{
+  // X == ARG_TYPE_1 / Y == ARG_TYPE_2
+  {
+    auto x = dynamic_cast<ARG_TYPE_1 *>(node->x());
+    auto y = dynamic_cast<ARG_TYPE_2 *>(node->y());
+
+    if (x && y)
+    {
+      *_arg_1 = x;
+      *_arg_2 = y;
       return true;
     }
   }
