@@ -65,7 +65,11 @@ for example in args.examples:
     onnx_model = onnx.load(onnx_model_path)
     onnx.checker.check_model(onnx_model)
 
-    tf_prep = onnx_tf.backend.prepare(onnx_model)
+    inferred_model = onnx.shape_inference.infer_shapes(onnx_model)
+    onnx.checker.check_model(inferred_model)
+    onnx.save(inferred_model, onnx_model_path)
+
+    tf_prep = onnx_tf.backend.prepare(inferred_model)
     tf_prep.export_graph(path=output_folder + example + ".TF")
     print("Generate '" + example + " TF' - Done")
 
