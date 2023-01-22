@@ -4058,6 +4058,7 @@ var hierarchy =
       [ "luci::FuseBatchNormWithTConvPass", "structluci_1_1_fuse_batch_norm_with_t_conv_pass.html", null ],
       [ "luci::FuseInstanceNormPass", "structluci_1_1_fuse_instance_norm_pass.html", null ],
       [ "luci::FuseMeanWithMeanPass", "structluci_1_1_fuse_mean_with_mean_pass.html", null ],
+      [ "luci::FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", null ],
       [ "luci::FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", null ],
       [ "luci::FuseTransposeWithMeanPass", "structluci_1_1_fuse_transpose_with_mean_pass.html", null ],
       [ "luci::MakeBatchNormGammaPositivePass", "structluci_1_1_make_batch_norm_gamma_positive_pass.html", null ],

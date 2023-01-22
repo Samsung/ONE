@@ -104,6 +104,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a92b46f3e7865211d95be6c6309220cc7"><td class="memTemplParams" colspan="2">template&lt;class COMM_NODE &gt; </td></tr>
 <tr class="memitem:a92b46f3e7865211d95be6c6309220cc7"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classluci_1_1_node_filler.html#a92b46f3e7865211d95be6c6309220cc7">with_commutative_args_of</a> (const COMM_NODE *node)</td></tr>
 <tr class="separator:a92b46f3e7865211d95be6c6309220cc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a661110ec56a68f37dbf38dc648f7bde8"><td class="memTemplParams" colspan="2">template&lt;class COMM_NODE &gt; </td></tr>
+<tr class="memitem:a661110ec56a68f37dbf38dc648f7bde8"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classluci_1_1_node_filler.html#a661110ec56a68f37dbf38dc648f7bde8">with_args_of</a> (const COMM_NODE *node)</td></tr>
+<tr class="separator:a661110ec56a68f37dbf38dc648f7bde8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class ARG_TYPE_1, class ARG_TYPE_2&gt;<br />
@@ -159,6 +162,47 @@ template&lt;class ARG_TYPE_1 , class ARG_TYPE_2 &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a661110ec56a68f37dbf38dc648f7bde8" name="a661110ec56a68f37dbf38dc648f7bde8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a661110ec56a68f37dbf38dc648f7bde8">&#9670;&#160;</a></span>with_args_of()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class ARG_TYPE_1 , class ARG_TYPE_2 &gt; </div>
+<div class="memtemplate">
+template&lt;class COMM_NODE &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classluci_1_1_node_filler.html">luci::NodeFiller</a>&lt; ARG_TYPE_1, ARG_TYPE_2 &gt;::with_args_of </td>
+          <td>(</td>
+          <td class="paramtype">const COMM_NODE *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>Similar as with_commutative_args_of but not commutative. _arg_1 and _arg_2 must match that of ARG_TYPE_1 and ARG_TYPE_2. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_node_filler_8h_source.html#l00112">112</a> of file <a class="el" href="_node_filler_8h_source.html">NodeFiller.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  113</span>{</div>
+<div class="line"><span class="lineno">  114</span>  <span class="comment">// X == ARG_TYPE_1 / Y == ARG_TYPE_2</span></div>
+<div class="line"><span class="lineno">  115</span>  {</div>
+<div class="line"><span class="lineno">  116</span>    <span class="keyword">auto</span> x = <span class="keyword">dynamic_cast&lt;</span>ARG_TYPE_1 *<span class="keyword">&gt;</span>(node-&gt;x());</div>
+<div class="line"><span class="lineno">  117</span>    <span class="keyword">auto</span> y = <span class="keyword">dynamic_cast&lt;</span>ARG_TYPE_2 *<span class="keyword">&gt;</span>(node-&gt;y());</div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">if</span> (x &amp;&amp; y)</div>
+<div class="line"><span class="lineno">  120</span>    {</div>
+<div class="line"><span class="lineno">  121</span>      *_arg_1 = x;</div>
+<div class="line"><span class="lineno">  122</span>      *_arg_2 = y;</div>
+<div class="line"><span class="lineno">  123</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  124</span>    }</div>
+<div class="line"><span class="lineno">  125</span>  }</div>
+<div class="line"><span class="lineno">  126</span> </div>
+<div class="line"><span class="lineno">  127</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  128</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a92b46f3e7865211d95be6c6309220cc7" name="a92b46f3e7865211d95be6c6309220cc7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a92b46f3e7865211d95be6c6309220cc7">&#9670;&#160;</a></span>with_commutative_args_of()</h2>
 
@@ -183,36 +227,36 @@ template&lt;class COMM_NODE &gt; </div>
 false When 'node's argument types are NOT matched with 'ARG_TYPE_*' In such case, it does not amend '_arg_1' and '_arg_2'</dd></dl>
 <p>@require COMM_NODE has member x() and y() </p>
 
-<p class="definition">Definition at line <a class="el" href="_node_filler_8h_source.html#l00073">73</a> of file <a class="el" href="_node_filler_8h_source.html">NodeFiller.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span>{</div>
-<div class="line"><span class="lineno">   75</span>  <span class="comment">// Case 1) X == ARG_TYPE_1 / Y == ARG_TYPE_2</span></div>
-<div class="line"><span class="lineno">   76</span>  {</div>
-<div class="line"><span class="lineno">   77</span>    <span class="keyword">auto</span> x = <span class="keyword">dynamic_cast&lt;</span>ARG_TYPE_1 *<span class="keyword">&gt;</span>(node-&gt;x());</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keyword">auto</span> y = <span class="keyword">dynamic_cast&lt;</span>ARG_TYPE_2 *<span class="keyword">&gt;</span>(node-&gt;y());</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">if</span> (x &amp;&amp; y)</div>
-<div class="line"><span class="lineno">   81</span>    {</div>
-<div class="line"><span class="lineno">   82</span>      *_arg_1 = x;</div>
-<div class="line"><span class="lineno">   83</span>      *_arg_2 = y;</div>
-<div class="line"><span class="lineno">   84</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   85</span>    }</div>
-<div class="line"><span class="lineno">   86</span>  }</div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>  <span class="comment">// Case 2) X == ARG_TYPE_2 / Y == ARG_TYPE_1</span></div>
-<div class="line"><span class="lineno">   89</span>  {</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keyword">auto</span> x = <span class="keyword">dynamic_cast&lt;</span>ARG_TYPE_2 *<span class="keyword">&gt;</span>(node-&gt;x());</div>
-<div class="line"><span class="lineno">   91</span>    <span class="keyword">auto</span> y = <span class="keyword">dynamic_cast&lt;</span>ARG_TYPE_1 *<span class="keyword">&gt;</span>(node-&gt;y());</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">if</span> (x &amp;&amp; y)</div>
-<div class="line"><span class="lineno">   94</span>    {</div>
-<div class="line"><span class="lineno">   95</span>      *_arg_1 = y;</div>
-<div class="line"><span class="lineno">   96</span>      *_arg_2 = x;</div>
-<div class="line"><span class="lineno">   97</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   98</span>    }</div>
-<div class="line"><span class="lineno">   99</span>  }</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  102</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_node_filler_8h_source.html#l00079">79</a> of file <a class="el" href="_node_filler_8h_source.html">NodeFiller.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span>{</div>
+<div class="line"><span class="lineno">   81</span>  <span class="comment">// Case 1) X == ARG_TYPE_1 / Y == ARG_TYPE_2</span></div>
+<div class="line"><span class="lineno">   82</span>  {</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keyword">auto</span> x = <span class="keyword">dynamic_cast&lt;</span>ARG_TYPE_1 *<span class="keyword">&gt;</span>(node-&gt;x());</div>
+<div class="line"><span class="lineno">   84</span>    <span class="keyword">auto</span> y = <span class="keyword">dynamic_cast&lt;</span>ARG_TYPE_2 *<span class="keyword">&gt;</span>(node-&gt;y());</div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">if</span> (x &amp;&amp; y)</div>
+<div class="line"><span class="lineno">   87</span>    {</div>
+<div class="line"><span class="lineno">   88</span>      *_arg_1 = x;</div>
+<div class="line"><span class="lineno">   89</span>      *_arg_2 = y;</div>
+<div class="line"><span class="lineno">   90</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   91</span>    }</div>
+<div class="line"><span class="lineno">   92</span>  }</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span>  <span class="comment">// Case 2) X == ARG_TYPE_2 / Y == ARG_TYPE_1</span></div>
+<div class="line"><span class="lineno">   95</span>  {</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keyword">auto</span> x = <span class="keyword">dynamic_cast&lt;</span>ARG_TYPE_2 *<span class="keyword">&gt;</span>(node-&gt;x());</div>
+<div class="line"><span class="lineno">   97</span>    <span class="keyword">auto</span> y = <span class="keyword">dynamic_cast&lt;</span>ARG_TYPE_1 *<span class="keyword">&gt;</span>(node-&gt;y());</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">if</span> (x &amp;&amp; y)</div>
+<div class="line"><span class="lineno">  100</span>    {</div>
+<div class="line"><span class="lineno">  101</span>      *_arg_1 = y;</div>
+<div class="line"><span class="lineno">  102</span>      *_arg_2 = x;</div>
+<div class="line"><span class="lineno">  103</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  104</span>    }</div>
+<div class="line"><span class="lineno">  105</span>  }</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  108</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -36,6 +36,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "FuseMeanWithMeanPass.cpp", "_fuse_mean_with_mean_pass_8cpp.html", null ],
     [ "FusePreActivationBatchNormPass.cpp", "_fuse_pre_activation_batch_norm_pass_8cpp.html", "_fuse_pre_activation_batch_norm_pass_8cpp" ],
     [ "FusePreActivationBatchNormPassInternal.h", "_fuse_pre_activation_batch_norm_pass_internal_8h.html", "_fuse_pre_activation_batch_norm_pass_internal_8h" ],
+    [ "FusePReluPass.cpp", "_fuse_p_relu_pass_8cpp.html", "_fuse_p_relu_pass_8cpp" ],
     [ "FuseTransposeWithMeanPass.cpp", "_fuse_transpose_with_mean_pass_8cpp.html", null ],
     [ "MakeBatchNormGammaPositivePass.cpp", "_make_batch_norm_gamma_positive_pass_8cpp.html", null ],
     [ "ModulePhase.cpp", "_module_phase_8cpp.html", null ],

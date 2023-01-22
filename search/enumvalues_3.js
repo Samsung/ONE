@@ -19,11 +19,12 @@ var searchData=
   ['destroytmp_16',['destroyTmp',['../structnnc_1_1sir_1_1_action.html#af34846d6e6cc38c888083ba3c1a29c95a500b106b9f3701a2fb50d29bcf7addae',1,'nnc::sir::Action']]],
   ['dir_17',['DIR',['../namespacecircle__eval__diff.html#ac17f7feb24f5042958832418d4508273ac1561b120842fabe1310417083827590',1,'circle_eval_diff']]],
   ['disablevalidation_18',['DisableValidation',['../structluci_1_1_user_settings.html#acbbd046f4dbc1be62f2a04ef16cb8c8bac140ad8bb871d08c53a472b9042c04ea',1,'luci::UserSettings']]],
-  ['div_19',['DIV',['../classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa29bbf66f7f8529ec47e394fb5a36c646',1,'onert::ir::operation::BinaryArithmetic::DIV()'],['../namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a29bbf66f7f8529ec47e394fb5a36c646',1,'nnfw::cker::DIV()'],['../_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152a29bbf66f7f8529ec47e394fb5a36c646',1,'DIV():&#160;OperationType.h']]],
+  ['div_19',['DIV',['../classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa29bbf66f7f8529ec47e394fb5a36c646',1,'onert::ir::operation::BinaryArithmetic']]],
   ['div_20',['div',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9a38696558dc98494c08d951c052900a2a',1,'nnc']]],
-  ['divassign_21',['divAssign',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9aa177c7482160fe447cf7e4366f9ff196',1,'nnc']]],
-  ['dropout_22',['dropout',['../namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a7e756a3eef32ef713a98a21c3fee14a5',1,'mir_caffe2::dropout()'],['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a7e756a3eef32ef713a98a21c3fee14a5',1,'mir_caffe::dropout()']]],
-  ['dummydata_23',['dummyData',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aaf6b83251548bed8bf055889cc9ab602',1,'mir_caffe']]],
-  ['duplicated_24',['DUPLICATED',['../namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8',1,'onert::ir']]],
-  ['dynamic_25',['DYNAMIC',['../namespaceluci__interpreter.html#ac2cf41584cf0e7440abc61a74c75549da559146a94400a300075741bb4f876135',1,'luci_interpreter::DYNAMIC()'],['../namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9',1,'onert::ir::DYNAMIC()']]]
+  ['div_21',['DIV',['../namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a29bbf66f7f8529ec47e394fb5a36c646',1,'nnfw::cker::DIV()'],['../_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152a29bbf66f7f8529ec47e394fb5a36c646',1,'DIV():&#160;OperationType.h']]],
+  ['divassign_22',['divAssign',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9aa177c7482160fe447cf7e4366f9ff196',1,'nnc']]],
+  ['dropout_23',['dropout',['../namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a7e756a3eef32ef713a98a21c3fee14a5',1,'mir_caffe2::dropout()'],['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a7e756a3eef32ef713a98a21c3fee14a5',1,'mir_caffe::dropout()']]],
+  ['dummydata_24',['dummyData',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aaf6b83251548bed8bf055889cc9ab602',1,'mir_caffe']]],
+  ['duplicated_25',['DUPLICATED',['../namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8',1,'onert::ir']]],
+  ['dynamic_26',['DYNAMIC',['../namespaceluci__interpreter.html#ac2cf41584cf0e7440abc61a74c75549da559146a94400a300075741bb4f876135',1,'luci_interpreter::DYNAMIC()'],['../namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9',1,'onert::ir::DYNAMIC()']]]
 ];

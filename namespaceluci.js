@@ -467,6 +467,7 @@ var namespaceluci =
     [ "FuseInstanceNormPass", "structluci_1_1_fuse_instance_norm_pass.html", "structluci_1_1_fuse_instance_norm_pass" ],
     [ "FuseMeanWithMeanPass", "structluci_1_1_fuse_mean_with_mean_pass.html", "structluci_1_1_fuse_mean_with_mean_pass" ],
     [ "FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", "structluci_1_1_fuse_pre_activation_batch_norm_pass" ],
+    [ "FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", "structluci_1_1_fuse_p_relu_pass" ],
     [ "FuseTransposeWithMeanPass", "structluci_1_1_fuse_transpose_with_mean_pass.html", "structluci_1_1_fuse_transpose_with_mean_pass" ],
     [ "GraphBuilder", "classluci_1_1_graph_builder.html", "classluci_1_1_graph_builder" ],
     [ "GraphBuilderBase", "structluci_1_1_graph_builder_base.html", "structluci_1_1_graph_builder_base" ],

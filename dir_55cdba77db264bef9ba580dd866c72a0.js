@@ -15,7 +15,7 @@ var dir_55cdba77db264bef9ba580dd866c72a0 =
     [ "CircleNodes.h", "luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h.html", "luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h" ],
     [ "CircleNodeVisitor.forward.h", "luci_2lang_2include_2luci_2_i_r_2_circle_node_visitor_8forward_8h.html", null ],
     [ "CircleNodeVisitor.h", "luci_2lang_2include_2luci_2_i_r_2_circle_node_visitor_8h.html", "luci_2lang_2include_2luci_2_i_r_2_circle_node_visitor_8h" ],
-    [ "CircleOpcode.h", "luci_2lang_2include_2luci_2_i_r_2_circle_op_code_8h.html", "luci_2lang_2include_2luci_2_i_r_2_circle_op_code_8h" ],
+    [ "CircleOpcode.h", "luci_2lang_2include_2luci_2_i_r_2_circle_opcode_8h.html", "luci_2lang_2include_2luci_2_i_r_2_circle_opcode_8h" ],
     [ "CircleQuantParam.h", "_circle_quant_param_8h.html", "_circle_quant_param_8h" ],
     [ "DeadNodeQueryService.h", "luci_2lang_2include_2luci_2_i_r_2_dead_node_query_service_8h.html", "luci_2lang_2include_2luci_2_i_r_2_dead_node_query_service_8h" ],
     [ "ExecutionPlanTable.h", "_execution_plan_table_8h.html", "_execution_plan_table_8h" ],

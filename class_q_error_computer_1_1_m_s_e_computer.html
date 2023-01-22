@@ -117,7 +117,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00113">113</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00118">118</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a32a58d2b9de0dd991d1b1503ed5f4c72" name="a32a58d2b9de0dd991d1b1503ed5f4c72"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a32a58d2b9de0dd991d1b1503ed5f4c72">&#9670;&#160;</a></span>__init__()</h2>
@@ -153,14 +153,14 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_q_error_computer_1_1_q_error_computer.html#a40f21db53e4b59172eaf52654d859121">QErrorComputer.QErrorComputer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00114">114</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  114</span>    <span class="keyword">def </span>__init__(self, fp32_dir, fq_dir):</div>
-<div class="line"><span class="lineno">  115</span>        super().__init__(fp32_dir, fq_dir)</div>
-<div class="line"><span class="lineno">  116</span> </div>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00119">119</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  119</span>    <span class="keyword">def </span>__init__(self, fp32_dir, fq_dir):</div>
+<div class="line"><span class="lineno">  120</span>        super().__init__(fp32_dir, fq_dir)</div>
+<div class="line"><span class="lineno">  121</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00114">QErrorComputer.MSEComputer.__init__()</a>.</p>
+<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00119">QErrorComputer.MSEComputer.__init__()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00114">QErrorComputer.MSEComputer.__init__()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00119">QErrorComputer.MSEComputer.__init__()</a>.</p>
 
 </div>
 </div>
@@ -183,29 +183,30 @@ Public Member Functions</h2></td></tr>
 <pre class="fragment">Return qerror map (dict: tensor_name(string) -&gt; qerror(float)).</pre> 
 <p>Reimplemented from <a class="el" href="class_q_error_computer_1_1_q_error_computer.html#a4052a08ea0ba88f63bf33bb62128ad97">QErrorComputer.QErrorComputer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00117">117</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  117</span>    <span class="keyword">def </span><a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>(self):</div>
-<div class="line"><span class="lineno">  118</span>        qerror_map = dict()</div>
-<div class="line"><span class="lineno">  119</span>        qerror_min = float(<span class="stringliteral">&#39;inf&#39;</span>)</div>
-<div class="line"><span class="lineno">  120</span>        qerror_max = -qerror_min</div>
-<div class="line"><span class="lineno">  121</span>        <span class="keywordflow">for</span> tensor_name, (fp32_data_path, fq_data_path) <span class="keywordflow">in</span> self._data_path.items():</div>
-<div class="line"><span class="lineno">  122</span>            fp32_data = np.load(fp32_data_path)</div>
-<div class="line"><span class="lineno">  123</span>            fq_data = np.load(fq_data_path)</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>            MSE = np.square(fp32_data - fq_data).mean()</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>            <span class="keywordflow">if</span> tensor_name <span class="keywordflow">in</span> qerror_map:</div>
-<div class="line"><span class="lineno">  128</span>                qerror_map[tensor_name] += MSE</div>
-<div class="line"><span class="lineno">  129</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  130</span>                qerror_map[tensor_name] = MSE</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>            qerror_min = min(MSE, qerror_min)</div>
-<div class="line"><span class="lineno">  133</span>            qerror_max = max(MSE, qerror_max)</div>
-<div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span>        <span class="keywordflow">for</span> tensor_name, acc <span class="keywordflow">in</span> qerror_map.items():</div>
-<div class="line"><span class="lineno">  136</span>            qerror_map[tensor_name] = acc / self._num_data</div>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00122">122</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  122</span>    <span class="keyword">def </span><a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>(self):</div>
+<div class="line"><span class="lineno">  123</span>        qerror_map = dict()</div>
+<div class="line"><span class="lineno">  124</span>        qerror_min = float(<span class="stringliteral">&#39;inf&#39;</span>)</div>
+<div class="line"><span class="lineno">  125</span>        qerror_max = -qerror_min</div>
+<div class="line"><span class="lineno">  126</span>        <span class="keywordflow">for</span> tensor_name, data_path <span class="keywordflow">in</span> self._data_path.items():</div>
+<div class="line"><span class="lineno">  127</span>            <span class="keywordflow">for</span> (fp32_data_path, fq_data_path) <span class="keywordflow">in</span> data_path:</div>
+<div class="line"><span class="lineno">  128</span>                fp32_data = np.load(fp32_data_path)</div>
+<div class="line"><span class="lineno">  129</span>                fq_data = np.load(fq_data_path)</div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>                MSE = np.square(fp32_data - fq_data).mean()</div>
+<div class="line"><span class="lineno">  132</span> </div>
+<div class="line"><span class="lineno">  133</span>                <span class="keywordflow">if</span> tensor_name <span class="keywordflow">in</span> qerror_map:</div>
+<div class="line"><span class="lineno">  134</span>                    qerror_map[tensor_name] += MSE</div>
+<div class="line"><span class="lineno">  135</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  136</span>                    qerror_map[tensor_name] = MSE</div>
 <div class="line"><span class="lineno">  137</span> </div>
-<div class="line"><span class="lineno">  138</span>        <span class="keywordflow">return</span> qerror_map, qerror_min, qerror_max</div>
+<div class="line"><span class="lineno">  138</span>                qerror_min = min(MSE, qerror_min)</div>
+<div class="line"><span class="lineno">  139</span>                qerror_max = max(MSE, qerror_max)</div>
+<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">  141</span>        <span class="keywordflow">for</span> tensor_name, acc <span class="keywordflow">in</span> qerror_map.items():</div>
+<div class="line"><span class="lineno">  142</span>            qerror_map[tensor_name] = acc / self._num_data</div>
+<div class="line"><span class="lineno">  143</span> </div>
+<div class="line"><span class="lineno">  144</span>        <span class="keywordflow">return</span> qerror_map, qerror_min, qerror_max</div>
 <div class="ttc" id="a_generate_kernels_list_helper_8cpp_html_a3b45f71347f9da730e585edad717d140"><div class="ttname"><a href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a></div><div class="ttdeci">void run(std::ofstream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition:</b> <a href="_generate_kernels_list_helper_8cpp_source.html#l00182">GenerateKernelsListHelper.cpp:182</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00058">QErrorComputer.QErrorComputer._data_path</a>, <a class="el" href="_metric_printer_8h_source.html#l00085">circle_eval_diff::MAEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00107">circle_eval_diff::MSEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00129">circle_eval_diff::MAPEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00157">circle_eval_diff::MPEIRPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00210">circle_eval_diff::TopKMatchPrinter._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00052">DumpFakeQuantFM.DumpFakeQuantFM._num_data</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00037">DumpFP32FM.DumpFP32FM._num_data</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00038">QErrorComputer.QErrorComputer._num_data</a>.</p>

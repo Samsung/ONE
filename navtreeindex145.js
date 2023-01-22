@@ -1,5 +1,14 @@
 var NAVTREEINDEX145 =
 {
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_pad_8h.html":[35,0,0,110,2,1,0,0,58],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_pad_8h_source.html":[35,0,0,110,2,1,0,0,58],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_pad_v2_8h.html":[35,0,0,110,2,1,0,0,59],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_pad_v2_8h_source.html":[35,0,0,110,2,1,0,0,59],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_pow_8h.html":[35,0,0,110,2,1,0,0,60],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_pow_8h_source.html":[35,0,0,110,2,1,0,0,60],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_quantize_8h.html":[35,0,0,110,2,1,0,0,62],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_quantize_8h_source.html":[35,0,0,110,2,1,0,0,62],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_range_8h.html":[35,0,0,110,2,1,0,0,63],
 "compiler_2tflchef_2tflite_2src_2_op_2include_2_range_8h_source.html":[35,0,0,110,2,1,0,0,63],
 "compiler_2tflchef_2tflite_2src_2_op_2include_2_rank_8h.html":[35,0,0,110,2,1,0,0,64],
 "compiler_2tflchef_2tflite_2src_2_op_2include_2_rank_8h_source.html":[35,0,0,110,2,1,0,0,64],
@@ -240,14 +249,5 @@ var NAVTREEINDEX145 =
 "compute_2cker_2include_2cker_2operation_2_concatenation_8h.html#a4c0478f91b5ff06fd9b629b3a41d2a0d":[35,0,1,1,0,0,3,12,0],
 "compute_2cker_2include_2cker_2operation_2_concatenation_8h_source.html":[35,0,1,1,0,0,3,12],
 "compute_2cker_2include_2cker_2operation_2_conv_8h.html":[35,0,1,1,0,0,3,13],
-"compute_2cker_2include_2cker_2operation_2_conv_8h_source.html":[35,0,1,1,0,0,3,13],
-"compute_2cker_2include_2cker_2operation_2_depth_to_space_8h.html":[35,0,1,1,0,0,3,14],
-"compute_2cker_2include_2cker_2operation_2_depth_to_space_8h.html#a7d4d714390469315a5c43b8301bd7bff":[35,0,1,1,0,0,3,14,0],
-"compute_2cker_2include_2cker_2operation_2_depth_to_space_8h_source.html":[35,0,1,1,0,0,3,14],
-"compute_2cker_2include_2cker_2operation_2_dequantize_8h.html":[35,0,1,1,0,0,3,16],
-"compute_2cker_2include_2cker_2operation_2_dequantize_8h.html#a2cd8a42d277d6bcabcd35e18fdfa9d4c":[35,0,1,1,0,0,3,16,0],
-"compute_2cker_2include_2cker_2operation_2_dequantize_8h.html#ae73600139339a71df768d6453c6d3db1":[35,0,1,1,0,0,3,16,1],
-"compute_2cker_2include_2cker_2operation_2_dequantize_8h_source.html":[35,0,1,1,0,0,3,16],
-"compute_2cker_2include_2cker_2operation_2_e_l_u_8h.html":[35,0,1,1,0,0,3,19],
-"compute_2cker_2include_2cker_2operation_2_e_l_u_8h.html#aa6cd8baf6599a56672a509ddecb7a1ac":[35,0,1,1,0,0,3,19,0]
+"compute_2cker_2include_2cker_2operation_2_conv_8h_source.html":[35,0,1,1,0,0,3,13]
 };

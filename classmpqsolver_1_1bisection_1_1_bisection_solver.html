@@ -392,73 +392,74 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  137</span>  <span class="keywordtype">bool</span> int16_front = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  138</span>  <span class="keywordflow">switch</span> (_algorithm)</div>
 <div class="line"><span class="lineno">  139</span>  {</div>
-<div class="line"><span class="lineno">  140</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classmpqsolver_1_1bisection_1_1_bisection_solver.html#a1a63b99de33ce524cbc339ae545caf46a3547d7313b7612e9a7d48f952961a82c">Algorithm::ForceQ16Front</a>:</div>
-<div class="line"><span class="lineno">  141</span>      int16_front = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  142</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  143</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classmpqsolver_1_1bisection_1_1_bisection_solver.html#a1a63b99de33ce524cbc339ae545caf46a119baf3daba9b0b8fef3151598fda2b3">Algorithm::ForceQ16Back</a>:</div>
-<div class="line"><span class="lineno">  144</span>      int16_front = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  145</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  146</span>  }</div>
-<div class="line"><span class="lineno">  147</span> </div>
-<div class="line"><span class="lineno">  148</span>  <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
-<div class="line"><span class="lineno">  149</span>  {</div>
-<div class="line"><span class="lineno">  150</span>    <span class="keywordtype">int</span> cut_depth = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::floor(0.5f * (min_depth + max_depth)));</div>
-<div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>    <span class="keywordflow">if</span> (last_depth == cut_depth)</div>
-<div class="line"><span class="lineno">  153</span>    {</div>
-<div class="line"><span class="lineno">  154</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  155</span>    }</div>
-<div class="line"><span class="lineno">  156</span>    last_depth = cut_depth;</div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>    <a class="code hl_typedef" href="namespacempqsolver_1_1bisection.html#a70811656dd41209004045985d5ff770a">LayerParams</a> layer_params;</div>
-<div class="line"><span class="lineno">  159</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;node : active_nodes)</div>
-<div class="line"><span class="lineno">  160</span>    {</div>
-<div class="line"><span class="lineno">  161</span>      <span class="keyword">auto</span> cur_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  162</span>      <span class="keyword">auto</span> iter = nodes_depth.find(cur_node);</div>
-<div class="line"><span class="lineno">  163</span>      <span class="keywordflow">if</span> (iter == nodes_depth.end())</div>
-<div class="line"><span class="lineno">  164</span>      {</div>
-<div class="line"><span class="lineno">  165</span>        <span class="keywordflow">continue</span>; <span class="comment">// to filter out nodes like weights</span></div>
-<div class="line"><span class="lineno">  166</span>      }</div>
-<div class="line"><span class="lineno">  167</span> </div>
-<div class="line"><span class="lineno">  168</span>      <span class="keywordtype">float</span> depth = iter-&gt;second;</div>
-<div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>      <span class="keywordflow">if</span> ((depth &lt;= cut_depth &amp;&amp; int16_front) || (depth &gt;= cut_depth &amp;&amp; !int16_front))</div>
-<div class="line"><span class="lineno">  171</span>      {</div>
-<div class="line"><span class="lineno">  172</span>        <span class="keyword">auto</span> layer_param = std::make_shared&lt;LayerParam&gt;();</div>
-<div class="line"><span class="lineno">  173</span>        {</div>
-<div class="line"><span class="lineno">  174</span>          layer_param-&gt;name = cur_node-&gt;name();</div>
-<div class="line"><span class="lineno">  175</span>          layer_param-&gt;dtype = <span class="stringliteral">&quot;int16&quot;</span>;</div>
-<div class="line"><span class="lineno">  176</span>          layer_param-&gt;granularity = <span class="stringliteral">&quot;channel&quot;</span>;</div>
-<div class="line"><span class="lineno">  177</span>        }</div>
-<div class="line"><span class="lineno">  178</span> </div>
-<div class="line"><span class="lineno">  179</span>        layer_params.emplace_back(layer_param);</div>
-<div class="line"><span class="lineno">  180</span>      }</div>
-<div class="line"><span class="lineno">  181</span>    }</div>
-<div class="line"><span class="lineno">  182</span> </div>
-<div class="line"><span class="lineno">  183</span>    <span class="keywordtype">float</span> cur_accuracy = evaluate(evaluator, module_path, <span class="stringliteral">&quot;uint8&quot;</span>, layer_params);</div>
-<div class="line"><span class="lineno">  184</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(l, 0) &lt;&lt; cut_depth &lt;&lt; <span class="stringliteral">&quot; : &quot;</span> &lt;&lt; cur_accuracy &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  185</span> </div>
-<div class="line"><span class="lineno">  186</span>    <span class="keywordflow">if</span> (cur_accuracy &lt; _qerror)</div>
-<div class="line"><span class="lineno">  187</span>    {</div>
-<div class="line"><span class="lineno">  188</span>      int16_front ? (max_depth = cut_depth) : (min_depth = cut_depth);</div>
-<div class="line"><span class="lineno">  189</span>      best_params = layer_params;</div>
-<div class="line"><span class="lineno">  190</span>      best_depth = cut_depth;</div>
-<div class="line"><span class="lineno">  191</span>    }</div>
-<div class="line"><span class="lineno">  192</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  193</span>    {</div>
-<div class="line"><span class="lineno">  194</span>      int16_front ? (min_depth = cut_depth) : (max_depth = cut_depth);</div>
-<div class="line"><span class="lineno">  195</span>    }</div>
-<div class="line"><span class="lineno">  196</span>  }</div>
-<div class="line"><span class="lineno">  197</span> </div>
-<div class="line"><span class="lineno">  198</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(l, 0) &lt;&lt; <span class="stringliteral">&quot;Found the best configuration at &quot;</span> &lt;&lt; best_depth &lt;&lt; <span class="stringliteral">&quot; depth.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  199</span>  <span class="keywordflow">if</span> (!_quantizer-&gt;quantize(<a class="code hl_function" href="namespaceenco.html#ae4807d2384277227645837acf9c92a01">module</a>.get(), <span class="stringliteral">&quot;uint8&quot;</span>, best_params))</div>
-<div class="line"><span class="lineno">  200</span>  {</div>
-<div class="line"><span class="lineno">  201</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Failed to quantize model&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  202</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  203</span>  }</div>
-<div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#ae4807d2384277227645837acf9c92a01">module</a>;</div>
-<div class="line"><span class="lineno">  206</span>}</div>
+<div class="line"><span class="lineno">  140</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classmpqsolver_1_1bisection_1_1_bisection_solver.html#a1a63b99de33ce524cbc339ae545caf46a7699d45117db27338191cc266f18c05b">Algorithm::Auto</a>: <span class="comment">// TODO</span></div>
+<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classmpqsolver_1_1bisection_1_1_bisection_solver.html#a1a63b99de33ce524cbc339ae545caf46a3547d7313b7612e9a7d48f952961a82c">Algorithm::ForceQ16Front</a>:</div>
+<div class="line"><span class="lineno">  142</span>      int16_front = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  143</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classmpqsolver_1_1bisection_1_1_bisection_solver.html#a1a63b99de33ce524cbc339ae545caf46a119baf3daba9b0b8fef3151598fda2b3">Algorithm::ForceQ16Back</a>:</div>
+<div class="line"><span class="lineno">  145</span>      int16_front = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  146</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  147</span>  }</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
+<div class="line"><span class="lineno">  150</span>  {</div>
+<div class="line"><span class="lineno">  151</span>    <span class="keywordtype">int</span> cut_depth = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::floor(0.5f * (min_depth + max_depth)));</div>
+<div class="line"><span class="lineno">  152</span> </div>
+<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">if</span> (last_depth == cut_depth)</div>
+<div class="line"><span class="lineno">  154</span>    {</div>
+<div class="line"><span class="lineno">  155</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  156</span>    }</div>
+<div class="line"><span class="lineno">  157</span>    last_depth = cut_depth;</div>
+<div class="line"><span class="lineno">  158</span> </div>
+<div class="line"><span class="lineno">  159</span>    <a class="code hl_typedef" href="namespacempqsolver_1_1bisection.html#a70811656dd41209004045985d5ff770a">LayerParams</a> layer_params;</div>
+<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;node : active_nodes)</div>
+<div class="line"><span class="lineno">  161</span>    {</div>
+<div class="line"><span class="lineno">  162</span>      <span class="keyword">auto</span> cur_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  163</span>      <span class="keyword">auto</span> iter = nodes_depth.find(cur_node);</div>
+<div class="line"><span class="lineno">  164</span>      <span class="keywordflow">if</span> (iter == nodes_depth.end())</div>
+<div class="line"><span class="lineno">  165</span>      {</div>
+<div class="line"><span class="lineno">  166</span>        <span class="keywordflow">continue</span>; <span class="comment">// to filter out nodes like weights</span></div>
+<div class="line"><span class="lineno">  167</span>      }</div>
+<div class="line"><span class="lineno">  168</span> </div>
+<div class="line"><span class="lineno">  169</span>      <span class="keywordtype">float</span> depth = iter-&gt;second;</div>
+<div class="line"><span class="lineno">  170</span> </div>
+<div class="line"><span class="lineno">  171</span>      <span class="keywordflow">if</span> ((depth &lt;= cut_depth &amp;&amp; int16_front) || (depth &gt;= cut_depth &amp;&amp; !int16_front))</div>
+<div class="line"><span class="lineno">  172</span>      {</div>
+<div class="line"><span class="lineno">  173</span>        <span class="keyword">auto</span> layer_param = std::make_shared&lt;LayerParam&gt;();</div>
+<div class="line"><span class="lineno">  174</span>        {</div>
+<div class="line"><span class="lineno">  175</span>          layer_param-&gt;name = cur_node-&gt;name();</div>
+<div class="line"><span class="lineno">  176</span>          layer_param-&gt;dtype = <span class="stringliteral">&quot;int16&quot;</span>;</div>
+<div class="line"><span class="lineno">  177</span>          layer_param-&gt;granularity = <span class="stringliteral">&quot;channel&quot;</span>;</div>
+<div class="line"><span class="lineno">  178</span>        }</div>
+<div class="line"><span class="lineno">  179</span> </div>
+<div class="line"><span class="lineno">  180</span>        layer_params.emplace_back(layer_param);</div>
+<div class="line"><span class="lineno">  181</span>      }</div>
+<div class="line"><span class="lineno">  182</span>    }</div>
+<div class="line"><span class="lineno">  183</span> </div>
+<div class="line"><span class="lineno">  184</span>    <span class="keywordtype">float</span> cur_accuracy = evaluate(evaluator, module_path, <span class="stringliteral">&quot;uint8&quot;</span>, layer_params);</div>
+<div class="line"><span class="lineno">  185</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(l, 0) &lt;&lt; cut_depth &lt;&lt; <span class="stringliteral">&quot; : &quot;</span> &lt;&lt; cur_accuracy &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  186</span> </div>
+<div class="line"><span class="lineno">  187</span>    <span class="keywordflow">if</span> (cur_accuracy &lt; _qerror)</div>
+<div class="line"><span class="lineno">  188</span>    {</div>
+<div class="line"><span class="lineno">  189</span>      int16_front ? (max_depth = cut_depth) : (min_depth = cut_depth);</div>
+<div class="line"><span class="lineno">  190</span>      best_params = layer_params;</div>
+<div class="line"><span class="lineno">  191</span>      best_depth = cut_depth;</div>
+<div class="line"><span class="lineno">  192</span>    }</div>
+<div class="line"><span class="lineno">  193</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  194</span>    {</div>
+<div class="line"><span class="lineno">  195</span>      int16_front ? (min_depth = cut_depth) : (max_depth = cut_depth);</div>
+<div class="line"><span class="lineno">  196</span>    }</div>
+<div class="line"><span class="lineno">  197</span>  }</div>
+<div class="line"><span class="lineno">  198</span> </div>
+<div class="line"><span class="lineno">  199</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(l, 0) &lt;&lt; <span class="stringliteral">&quot;Found the best configuration at &quot;</span> &lt;&lt; best_depth &lt;&lt; <span class="stringliteral">&quot; depth.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  200</span>  <span class="keywordflow">if</span> (!_quantizer-&gt;quantize(<a class="code hl_function" href="namespaceenco.html#ae4807d2384277227645837acf9c92a01">module</a>.get(), <span class="stringliteral">&quot;uint8&quot;</span>, best_params))</div>
+<div class="line"><span class="lineno">  201</span>  {</div>
+<div class="line"><span class="lineno">  202</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Failed to quantize model&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  203</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  204</span>  }</div>
+<div class="line"><span class="lineno">  205</span> </div>
+<div class="line"><span class="lineno">  206</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#ae4807d2384277227645837acf9c92a01">module</a>;</div>
+<div class="line"><span class="lineno">  207</span>}</div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition:</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
 <div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a538c70103adc499bde424bb3fcdb8525"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a538c70103adc499bde424bb3fcdb8525">mpqsolver::MPQSolver::_qerror_ratio</a></div><div class="ttdeci">float _qerror_ratio</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00049">MPQSolver.h:49</a></div></div>
 <div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_ae18e719178db7dc1dd0f7cd5deef4c78"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#ae18e719178db7dc1dd0f7cd5deef4c78">mpqsolver::MPQSolver::_input_data_path</a></div><div class="ttdeci">std::string _input_data_path</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00046">MPQSolver.h:46</a></div></div>
@@ -474,7 +475,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="anamespacempqsolver_1_1bisection_html_a70811656dd41209004045985d5ff770a"><div class="ttname"><a href="namespacempqsolver_1_1bisection.html#a70811656dd41209004045985d5ff770a">mpqsolver::bisection::LayerParams</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; LayerParam &gt; &gt; LayerParams</div><div class="ttdef"><b>Definition:</b> <a href="_quantizer_8h_source.html#l00033">Quantizer.h:33</a></div></div>
 <div class="ttc" id="anamespacempqsolver_1_1bisection_html_ab3c32bece05300a61130099125e8facc"><div class="ttname"><a href="namespacempqsolver_1_1bisection.html#ab3c32bece05300a61130099125e8facc">mpqsolver::bisection::compute_depth</a></div><div class="ttdeci">ParameterizerResult compute_depth(const luci::Module *module, NodeDepthType &amp;nodes_depth, float &amp;min_depth, float &amp;max_depth)</div><div class="ttdoc">compute maximal distance from graph inputs to graph nodes along with min/max values of distance and r...</div><div class="ttdef"><b>Definition:</b> <a href="_depth_parameterizer_8cpp_source.html#l00028">DepthParameterizer.cpp:28</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_m_p_q_solver_8h_source.html#l00046">mpqsolver::MPQSolver::_input_data_path</a>, <a class="el" href="_m_p_q_solver_8h_source.html#l00049">mpqsolver::MPQSolver::_qerror_ratio</a>, <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="_depth_parameterizer_8cpp_source.html#l00028">mpqsolver::bisection::compute_depth()</a>, <a class="el" href="_bisection_solver_8h_source.html#l00044">ForceQ16Back</a>, <a class="el" href="_bisection_solver_8h_source.html#l00043">ForceQ16Front</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, <a class="el" href="namespacempqsolver_1_1bisection.html#a1ef117c0ef64a624663fbf7ea12a7cf0ad0749aaba8b833466dfcbb0428e4f89c">mpqsolver::bisection::SUCCESS</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
+<p class="reference">References <a class="el" href="_m_p_q_solver_8h_source.html#l00046">mpqsolver::MPQSolver::_input_data_path</a>, <a class="el" href="_m_p_q_solver_8h_source.html#l00049">mpqsolver::MPQSolver::_qerror_ratio</a>, <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="_bisection_solver_8h_source.html#l00042">Auto</a>, <a class="el" href="_depth_parameterizer_8cpp_source.html#l00028">mpqsolver::bisection::compute_depth()</a>, <a class="el" href="_bisection_solver_8h_source.html#l00044">ForceQ16Back</a>, <a class="el" href="_bisection_solver_8h_source.html#l00043">ForceQ16Front</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, <a class="el" href="namespacempqsolver_1_1bisection.html#a1ef117c0ef64a624663fbf7ea12a7cf0ad0749aaba8b833466dfcbb0428e4f89c">mpqsolver::bisection::SUCCESS</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_circle_m_p_q_solver_8cpp_source.html#l00035">entry()</a>.</p>
 

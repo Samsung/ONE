@@ -463,6 +463,8 @@ Functions</h2></td></tr>
 <tr class="separator:ae73600139339a71df768d6453c6d3db1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cd8a42d277d6bcabcd35e18fdfa9d4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a2cd8a42d277d6bcabcd35e18fdfa9d4c">Dequantize</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const int8_t *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;output_shape, float *output_data, const float scale, const int32_t zero_point)</td></tr>
 <tr class="separator:a2cd8a42d277d6bcabcd35e18fdfa9d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7acb2eac666c3531d1275f859743d87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#ad7acb2eac666c3531d1275f859743d87">Dequantize</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const int16_t *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;output_shape, float *output_data, const float scale, const int32_t zero_point)</td></tr>
+<tr class="separator:ad7acb2eac666c3531d1275f859743d87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf01ef2e90421fab3c98f6fed09099aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#aaf01ef2e90421fab3c98f6fed09099aa">Sin</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const float *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;output_shape, float *output_data)</td></tr>
 <tr class="separator:aaf01ef2e90421fab3c98f6fed09099aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e9209ba99d7b1c894e02deae0ad12a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a6e9209ba99d7b1c894e02deae0ad12a4">Cos</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const float *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;output_shape, float *output_data)</td></tr>
@@ -590,6 +592,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a364a0f3d557088ce4c2c123a16ed25c2"><td class="memTemplParams" colspan="2">template&lt;typename InputT , typename OutputT &gt; </td></tr>
 <tr class="memitem:a364a0f3d557088ce4c2c123a16ed25c2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a364a0f3d557088ce4c2c123a16ed25c2">Quantize</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const InputT *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;output_shape, OutputT *output_data, const float output_scale, const int32_t output_offset)</td></tr>
 <tr class="separator:a364a0f3d557088ce4c2c123a16ed25c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1675b8f52ae8ca56d53a6d259f7c6718"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a1675b8f52ae8ca56d53a6d259f7c6718"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a1675b8f52ae8ca56d53a6d259f7c6718">Quantize</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const float *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;output_shape, int8_t *output_data, const float scale, const int32_t zero_point)</td></tr>
+<tr class="separator:a1675b8f52ae8ca56d53a6d259f7c6718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07192b9c7a5bf8333c11d2fa76b39306"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a07192b9c7a5bf8333c11d2fa76b39306"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a07192b9c7a5bf8333c11d2fa76b39306">Quantize</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const float *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;output_shape, uint8_t *output_data, const float scale, const int32_t zero_point)</td></tr>
+<tr class="separator:a07192b9c7a5bf8333c11d2fa76b39306"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27f1f4bb2578320a7bad562e464ae8b4"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a27f1f4bb2578320a7bad562e464ae8b4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a27f1f4bb2578320a7bad562e464ae8b4">Quantize</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const float *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;output_shape, int16_t *output_data, const float scale, const int32_t zero_point)</td></tr>
+<tr class="separator:a27f1f4bb2578320a7bad562e464ae8b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6b704463459751ef31e5d9eb66f81ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#ac6b704463459751ef31e5d9eb66f81ec">Quantize</a> (const int32_t *multiplier, const int32_t *shift, int32_t channel_size, int32_t total_size, int32_t output_zp, int32_t output_min, int32_t output_max, int32_t *scratch, int8_t *output)</td></tr>
 <tr class="separator:ac6b704463459751ef31e5d9eb66f81ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a370789a061f0885017a913b15b7b3119"><td class="memTemplParams" colspan="2">template&lt;typename input_type , typename output_type &gt; </td></tr>
@@ -5781,8 +5792,101 @@ template&lt;typename T , typename TS &gt; </div>
 
 </div>
 </div>
+<a id="ad7acb2eac666c3531d1275f859743d87" name="ad7acb2eac666c3531d1275f859743d87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7acb2eac666c3531d1275f859743d87">&#9670;&#160;</a></span>Dequantize() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nnfw::cker::Dequantize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int16_t *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>output_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>output_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int32_t&#160;</td>
+          <td class="paramname"><em>zero_point</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_dequantize_8h_source.html#l00115">115</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_dequantize_8h_source.html">Dequantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  118</span>{</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, output_shape);</div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>  <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><span class="lineno">  122</span><span class="preprocessor">#ifdef USE_NEON</span></div>
+<div class="line"><span class="lineno">  123</span>  <span class="keyword">const</span> float32x4_t scale_dup = vdupq_n_f32(<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(scale));</div>
+<div class="line"><span class="lineno">  124</span>  <span class="keyword">const</span> float32x4_t zero_times_scale_dup = vdupq_n_f32(<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(-zero_point * scale));</div>
+<div class="line"><span class="lineno">  125</span>  <span class="keywordflow">for</span> (; i &lt;= flat_size - 8; i += 8)</div>
+<div class="line"><span class="lineno">  126</span>  {</div>
+<div class="line"><span class="lineno">  127</span>    <span class="keyword">const</span> int16x4_t input_s16_low = vld1_s16(input_data + i);</div>
+<div class="line"><span class="lineno">  128</span>    <span class="keyword">const</span> int16x4_t input_s16_high = vld1_s16(input_data + i + 4);</div>
+<div class="line"><span class="lineno">  129</span>    <span class="keyword">const</span> int32x4_t val_low = vmovl_s16(input_s16_low);</div>
+<div class="line"><span class="lineno">  130</span>    <span class="keyword">const</span> int32x4_t val_high = vmovl_s16(input_s16_high);</div>
+<div class="line"><span class="lineno">  131</span> </div>
+<div class="line"><span class="lineno">  132</span>    float32x4_t result_low, result_high;</div>
+<div class="line"><span class="lineno">  133</span>    ScaleWithNewZeroPoint(val_low, scale_dup, zero_times_scale_dup, &amp;result_low);</div>
+<div class="line"><span class="lineno">  134</span>    ScaleWithNewZeroPoint(val_high, scale_dup, zero_times_scale_dup, &amp;result_high);</div>
+<div class="line"><span class="lineno">  135</span> </div>
+<div class="line"><span class="lineno">  136</span>    vst1q_f32(output_data + i, result_low);</div>
+<div class="line"><span class="lineno">  137</span>    vst1q_f32(output_data + i + 4, result_high);</div>
+<div class="line"><span class="lineno">  138</span>  }</div>
+<div class="line"><span class="lineno">  139</span><span class="preprocessor">#endif </span><span class="comment">// NEON</span></div>
+<div class="line"><span class="lineno">  140</span>  <span class="keywordflow">for</span> (; i &lt; flat_size; ++i)</div>
+<div class="line"><span class="lineno">  141</span>  {</div>
+<div class="line"><span class="lineno">  142</span>    <span class="keyword">const</span> int32_t val = input_data[i];</div>
+<div class="line"><span class="lineno">  143</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> result = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(scale * (val - zero_point));</div>
+<div class="line"><span class="lineno">  144</span>    output_data[i] = result;</div>
+<div class="line"><span class="lineno">  145</span>  }</div>
+<div class="line"><span class="lineno">  146</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00301">MatchingFlatSize()</a>.</p>
+
+</div>
+</div>
 <a id="a2cd8a42d277d6bcabcd35e18fdfa9d4c" name="a2cd8a42d277d6bcabcd35e18fdfa9d4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cd8a42d277d6bcabcd35e18fdfa9d4c">&#9670;&#160;</a></span>Dequantize() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cd8a42d277d6bcabcd35e18fdfa9d4c">&#9670;&#160;</a></span>Dequantize() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5877,7 +5981,7 @@ template&lt;typename T , typename TS &gt; </div>
 </div>
 </div>
 <a id="ae73600139339a71df768d6453c6d3db1" name="ae73600139339a71df768d6453c6d3db1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae73600139339a71df768d6453c6d3db1">&#9670;&#160;</a></span>Dequantize() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae73600139339a71df768d6453c6d3db1">&#9670;&#160;</a></span>Dequantize() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9872,7 +9976,7 @@ template&lt;typename... Ts&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00272">checkMatching()</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">nnfw::cker::Shape::FlatSize()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00040">ComparisonImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00062">ComparisonWithScaling()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00041">Cos()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_dequantize_8h_source.html#l00044">Dequantize()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_e_l_u_8h_source.html#l00030">ELU()</a>, <a class="el" href="_erf_8h_source.html#l00029">Erf()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_exp_8h_source.html#l00030">Exp()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00090">Floor()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h_source.html#l00031">LeakyReLU()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00080">Log()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_logical_not_8h_source.html#l00028">LogicalNot()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00070">Neg()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_pow_8h_source.html#l00031">powImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00033">Quantize()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00044">Round()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00059">Rsqrt()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_select_8h_source.html#l00032">Select()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00031">Sin()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_soft_max_8h_source.html#l00116">Softmax()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00101">Sqrt()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00112">Square()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00040">ComparisonImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00062">ComparisonWithScaling()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00041">Cos()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_dequantize_8h_source.html#l00044">Dequantize()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_e_l_u_8h_source.html#l00030">ELU()</a>, <a class="el" href="_erf_8h_source.html#l00029">Erf()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_exp_8h_source.html#l00030">Exp()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00090">Floor()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h_source.html#l00031">LeakyReLU()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00080">Log()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_logical_not_8h_source.html#l00028">LogicalNot()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00070">Neg()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_pow_8h_source.html#l00031">powImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00034">Quantize()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00065">Round()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00059">Rsqrt()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_select_8h_source.html#l00032">Select()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00031">Sin()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_soft_max_8h_source.html#l00116">Softmax()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00101">Sqrt()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00112">Square()</a>.</p>
 
 </div>
 </div>
@@ -11281,7 +11385,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   99</span>    right_shift);</div>
 <div class="line"><span class="lineno">  100</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00109">nnfw::cker::reference::Conv()</a>, <a class="el" href="optimized_2_depthwise_conv_u_int8_8h_source.html#l01814">nnfw::cker::optimized::depthwise_conv::DepthwiseConvGeneral()</a>, <a class="el" href="reference_2integer__ops_2_depthwise_conv_u_int8_8h_source.html#l00031">nnfw::cker::reference_integer_ops::DepthwiseConvPerChannel()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_fully_connected_8h_source.html#l00092">FullyConnected()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00910">nnfw::cker::optimized::MulElementwise()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l01095">nnfw::cker::optimized::MulSimpleBroadcast()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00896">nnfw::cker::optimized::quant8_mul()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00048">Quantize()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00220">Requantize&lt; int8_t, uint8_t &gt;()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00152">Requantize&lt; uint8_t, int8_t &gt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00109">nnfw::cker::reference::Conv()</a>, <a class="el" href="optimized_2_depthwise_conv_u_int8_8h_source.html#l01814">nnfw::cker::optimized::depthwise_conv::DepthwiseConvGeneral()</a>, <a class="el" href="reference_2integer__ops_2_depthwise_conv_u_int8_8h_source.html#l00031">nnfw::cker::reference_integer_ops::DepthwiseConvPerChannel()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_fully_connected_8h_source.html#l00092">FullyConnected()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00910">nnfw::cker::optimized::MulElementwise()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l01095">nnfw::cker::optimized::MulSimpleBroadcast()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00896">nnfw::cker::optimized::quant8_mul()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00207">Quantize()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00379">Requantize&lt; int8_t, uint8_t &gt;()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00311">Requantize&lt; uint8_t, int8_t &gt;()</a>.</p>
 
 </div>
 </div>
@@ -13561,7 +13665,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="ac6b704463459751ef31e5d9eb66f81ec" name="ac6b704463459751ef31e5d9eb66f81ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6b704463459751ef31e5d9eb66f81ec">&#9670;&#160;</a></span>Quantize() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6b704463459751ef31e5d9eb66f81ec">&#9670;&#160;</a></span>Quantize() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -13636,103 +13740,448 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00048">48</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>{</div>
-<div class="line"><span class="lineno">   52</span>  <span class="comment">// Here we&#39;re trying to quantize the raw accumulators:</span></div>
-<div class="line"><span class="lineno">   53</span>  <span class="comment">//        output_channels</span></div>
-<div class="line"><span class="lineno">   54</span>  <span class="comment">//       data data data data data</span></div>
-<div class="line"><span class="lineno">   55</span>  <span class="comment">// rows  data data data data data</span></div>
-<div class="line"><span class="lineno">   56</span>  <span class="comment">//       data data data data data</span></div>
-<div class="line"><span class="lineno">   57</span>  <span class="comment">//          ....</span></div>
-<div class="line"><span class="lineno">   58</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno">   59</span>  <span class="comment">// In order to minimize the reload of the multipliers &amp; shifts, once we load</span></div>
-<div class="line"><span class="lineno">   60</span>  <span class="comment">// the multipliers &amp; shifts, we load &amp; quantize the raw accumulators for every</span></div>
-<div class="line"><span class="lineno">   61</span>  <span class="comment">// row.</span></div>
-<div class="line"><span class="lineno">   62</span><span class="preprocessor">#ifdef USE_NEON</span></div>
-<div class="line"><span class="lineno">   63</span>  <span class="keyword">const</span> int32x4_t output_offset_vec = vdupq_n_s32(output_zp);</div>
-<div class="line"><span class="lineno">   64</span>  <span class="keyword">const</span> int32x4_t output_activation_min_vec = vdupq_n_s32(output_min);</div>
-<div class="line"><span class="lineno">   65</span>  <span class="keyword">const</span> int32x4_t output_activation_max_vec = vdupq_n_s32(output_max);</div>
-<div class="line"><span class="lineno">   66</span>  <span class="keyword">const</span> int32x4_t zeros = vdupq_n_s32(0);</div>
-<div class="line"><span class="lineno">   67</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>  assert(total_size % channel_size == 0);</div>
-<div class="line"><span class="lineno">   70</span>  <span class="keyword">const</span> int32_t rows = total_size / channel_size;</div>
-<div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>  <span class="keywordtype">int</span> c = 0;</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span><span class="preprocessor">#ifdef USE_NEON</span></div>
-<div class="line"><span class="lineno">   75</span>  <span class="keyword">using </span>gemmlowp::RoundingDivideByPOT;</div>
-<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">for</span> (; c &lt;= channel_size - 8; c += 8)</div>
-<div class="line"><span class="lineno">   77</span>  {</div>
-<div class="line"><span class="lineno">   78</span>    int32x4_t out_shift_1 = vld1q_s32(shift + c);</div>
-<div class="line"><span class="lineno">   79</span>    int32x4_t out_shift_2 = vld1q_s32(shift + c + 4);</div>
-<div class="line"><span class="lineno">   80</span>    int32x4_t left_shift_1 = vmaxq_s32(out_shift_1, zeros);</div>
-<div class="line"><span class="lineno">   81</span>    int32x4_t left_shift_2 = vmaxq_s32(out_shift_2, zeros);</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>    <span class="comment">// Right shift will be performed as left shift with negative values.</span></div>
-<div class="line"><span class="lineno">   84</span>    int32x4_t right_shift_1 = vminq_s32(out_shift_1, zeros);</div>
-<div class="line"><span class="lineno">   85</span>    int32x4_t right_shift_2 = vminq_s32(out_shift_2, zeros);</div>
-<div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>    int32x4_t out_mul_1 = vld1q_s32(multiplier + c);</div>
-<div class="line"><span class="lineno">   88</span>    int32x4_t out_mul_2 = vld1q_s32(multiplier + c + 4);</div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> n = 0; n &lt; rows; ++n)</div>
-<div class="line"><span class="lineno">   90</span>    {</div>
-<div class="line"><span class="lineno">   91</span>      <span class="keywordtype">int</span> loc = n * channel_size + c;</div>
-<div class="line"><span class="lineno">   92</span>      int32x4_t acc_1 = vld1q_s32(scratch + loc);</div>
-<div class="line"><span class="lineno">   93</span>      int32x4_t acc_2 = vld1q_s32(scratch + loc + 4);</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>      <span class="comment">// Saturating Rounding Doubling High Mul.</span></div>
-<div class="line"><span class="lineno">   96</span>      acc_1 = vshlq_s32(acc_1, left_shift_1);</div>
-<div class="line"><span class="lineno">   97</span>      acc_1 = vqrdmulhq_s32(acc_1, out_mul_1);</div>
-<div class="line"><span class="lineno">   98</span>      acc_2 = vshlq_s32(acc_2, left_shift_2);</div>
-<div class="line"><span class="lineno">   99</span>      acc_2 = vqrdmulhq_s32(acc_2, out_mul_2);</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>      <span class="comment">// Rounding Dividing By POT.</span></div>
-<div class="line"><span class="lineno">  102</span>      acc_1 = vrshlq_s32(acc_1, right_shift_1);</div>
-<div class="line"><span class="lineno">  103</span>      acc_2 = vrshlq_s32(acc_2, right_shift_2);</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>      <span class="comment">// Add the output offset.</span></div>
-<div class="line"><span class="lineno">  106</span>      acc_1 = vaddq_s32(acc_1, output_offset_vec);</div>
-<div class="line"><span class="lineno">  107</span>      acc_2 = vaddq_s32(acc_2, output_offset_vec);</div>
-<div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>      <span class="comment">// Apply the activation function.</span></div>
-<div class="line"><span class="lineno">  110</span>      acc_1 = vmaxq_s32(acc_1, output_activation_min_vec);</div>
-<div class="line"><span class="lineno">  111</span>      acc_1 = vminq_s32(acc_1, output_activation_max_vec);</div>
-<div class="line"><span class="lineno">  112</span>      acc_2 = vmaxq_s32(acc_2, output_activation_min_vec);</div>
-<div class="line"><span class="lineno">  113</span>      acc_2 = vminq_s32(acc_2, output_activation_max_vec);</div>
-<div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span>      <span class="comment">// Saturating cast to int8 and store to destination.</span></div>
-<div class="line"><span class="lineno">  116</span>      <span class="keyword">const</span> int16x4_t acc_s16_1 = vqmovn_s32(acc_1);</div>
-<div class="line"><span class="lineno">  117</span>      <span class="keyword">const</span> int16x4_t acc_s16_2 = vqmovn_s32(acc_2);</div>
-<div class="line"><span class="lineno">  118</span>      <span class="keyword">const</span> int16x8_t res_s16 = vcombine_s16(acc_s16_1, acc_s16_2);</div>
-<div class="line"><span class="lineno">  119</span>      <span class="keyword">const</span> int8x8_t res_s8 = vqmovn_s16(res_s16);</div>
-<div class="line"><span class="lineno">  120</span>      vst1_s8(output + loc, res_s8);</div>
-<div class="line"><span class="lineno">  121</span>    }</div>
-<div class="line"><span class="lineno">  122</span>  }</div>
-<div class="line"><span class="lineno">  123</span> </div>
-<div class="line"><span class="lineno">  124</span><span class="preprocessor">#endif </span><span class="comment">// USE_NEON</span></div>
-<div class="line"><span class="lineno">  125</span>  <span class="comment">// Handle leftover values, one by one. This is very slow.</span></div>
-<div class="line"><span class="lineno">  126</span>  <span class="keywordflow">for</span> (; c &lt; channel_size; c++)</div>
-<div class="line"><span class="lineno">  127</span>  {</div>
-<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> n = 0; n &lt; rows; ++n)</div>
-<div class="line"><span class="lineno">  129</span>    {</div>
-<div class="line"><span class="lineno">  130</span>      <span class="keywordtype">int</span> loc = n * channel_size + c;</div>
-<div class="line"><span class="lineno">  131</span>      int32_t acc = scratch[loc];</div>
-<div class="line"><span class="lineno">  132</span>      acc = MultiplyByQuantizedMultiplier(acc, multiplier[c], shift[c]);</div>
-<div class="line"><span class="lineno">  133</span>      acc += output_zp;</div>
-<div class="line"><span class="lineno">  134</span>      acc = std::max(acc, output_min);</div>
-<div class="line"><span class="lineno">  135</span>      acc = std::min(acc, output_max);</div>
-<div class="line"><span class="lineno">  136</span>      output[loc] = <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(acc);</div>
-<div class="line"><span class="lineno">  137</span>    }</div>
-<div class="line"><span class="lineno">  138</span>  }</div>
-<div class="line"><span class="lineno">  139</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00207">207</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  210</span>{</div>
+<div class="line"><span class="lineno">  211</span>  <span class="comment">// Here we&#39;re trying to quantize the raw accumulators:</span></div>
+<div class="line"><span class="lineno">  212</span>  <span class="comment">//        output_channels</span></div>
+<div class="line"><span class="lineno">  213</span>  <span class="comment">//       data data data data data</span></div>
+<div class="line"><span class="lineno">  214</span>  <span class="comment">// rows  data data data data data</span></div>
+<div class="line"><span class="lineno">  215</span>  <span class="comment">//       data data data data data</span></div>
+<div class="line"><span class="lineno">  216</span>  <span class="comment">//          ....</span></div>
+<div class="line"><span class="lineno">  217</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno">  218</span>  <span class="comment">// In order to minimize the reload of the multipliers &amp; shifts, once we load</span></div>
+<div class="line"><span class="lineno">  219</span>  <span class="comment">// the multipliers &amp; shifts, we load &amp; quantize the raw accumulators for every</span></div>
+<div class="line"><span class="lineno">  220</span>  <span class="comment">// row.</span></div>
+<div class="line"><span class="lineno">  221</span><span class="preprocessor">#ifdef USE_NEON</span></div>
+<div class="line"><span class="lineno">  222</span>  <span class="keyword">const</span> int32x4_t output_offset_vec = vdupq_n_s32(output_zp);</div>
+<div class="line"><span class="lineno">  223</span>  <span class="keyword">const</span> int32x4_t output_activation_min_vec = vdupq_n_s32(output_min);</div>
+<div class="line"><span class="lineno">  224</span>  <span class="keyword">const</span> int32x4_t output_activation_max_vec = vdupq_n_s32(output_max);</div>
+<div class="line"><span class="lineno">  225</span>  <span class="keyword">const</span> int32x4_t zeros = vdupq_n_s32(0);</div>
+<div class="line"><span class="lineno">  226</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">  227</span> </div>
+<div class="line"><span class="lineno">  228</span>  assert(total_size % channel_size == 0);</div>
+<div class="line"><span class="lineno">  229</span>  <span class="keyword">const</span> int32_t rows = total_size / channel_size;</div>
+<div class="line"><span class="lineno">  230</span> </div>
+<div class="line"><span class="lineno">  231</span>  <span class="keywordtype">int</span> c = 0;</div>
+<div class="line"><span class="lineno">  232</span> </div>
+<div class="line"><span class="lineno">  233</span><span class="preprocessor">#ifdef USE_NEON</span></div>
+<div class="line"><span class="lineno">  234</span>  <span class="keyword">using </span>gemmlowp::RoundingDivideByPOT;</div>
+<div class="line"><span class="lineno">  235</span>  <span class="keywordflow">for</span> (; c &lt;= channel_size - 8; c += 8)</div>
+<div class="line"><span class="lineno">  236</span>  {</div>
+<div class="line"><span class="lineno">  237</span>    int32x4_t out_shift_1 = vld1q_s32(shift + c);</div>
+<div class="line"><span class="lineno">  238</span>    int32x4_t out_shift_2 = vld1q_s32(shift + c + 4);</div>
+<div class="line"><span class="lineno">  239</span>    int32x4_t left_shift_1 = vmaxq_s32(out_shift_1, zeros);</div>
+<div class="line"><span class="lineno">  240</span>    int32x4_t left_shift_2 = vmaxq_s32(out_shift_2, zeros);</div>
+<div class="line"><span class="lineno">  241</span> </div>
+<div class="line"><span class="lineno">  242</span>    <span class="comment">// Right shift will be performed as left shift with negative values.</span></div>
+<div class="line"><span class="lineno">  243</span>    int32x4_t right_shift_1 = vminq_s32(out_shift_1, zeros);</div>
+<div class="line"><span class="lineno">  244</span>    int32x4_t right_shift_2 = vminq_s32(out_shift_2, zeros);</div>
+<div class="line"><span class="lineno">  245</span> </div>
+<div class="line"><span class="lineno">  246</span>    int32x4_t out_mul_1 = vld1q_s32(multiplier + c);</div>
+<div class="line"><span class="lineno">  247</span>    int32x4_t out_mul_2 = vld1q_s32(multiplier + c + 4);</div>
+<div class="line"><span class="lineno">  248</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> n = 0; n &lt; rows; ++n)</div>
+<div class="line"><span class="lineno">  249</span>    {</div>
+<div class="line"><span class="lineno">  250</span>      <span class="keywordtype">int</span> loc = n * channel_size + c;</div>
+<div class="line"><span class="lineno">  251</span>      int32x4_t acc_1 = vld1q_s32(scratch + loc);</div>
+<div class="line"><span class="lineno">  252</span>      int32x4_t acc_2 = vld1q_s32(scratch + loc + 4);</div>
+<div class="line"><span class="lineno">  253</span> </div>
+<div class="line"><span class="lineno">  254</span>      <span class="comment">// Saturating Rounding Doubling High Mul.</span></div>
+<div class="line"><span class="lineno">  255</span>      acc_1 = vshlq_s32(acc_1, left_shift_1);</div>
+<div class="line"><span class="lineno">  256</span>      acc_1 = vqrdmulhq_s32(acc_1, out_mul_1);</div>
+<div class="line"><span class="lineno">  257</span>      acc_2 = vshlq_s32(acc_2, left_shift_2);</div>
+<div class="line"><span class="lineno">  258</span>      acc_2 = vqrdmulhq_s32(acc_2, out_mul_2);</div>
+<div class="line"><span class="lineno">  259</span> </div>
+<div class="line"><span class="lineno">  260</span>      <span class="comment">// Rounding Dividing By POT.</span></div>
+<div class="line"><span class="lineno">  261</span>      acc_1 = vrshlq_s32(acc_1, right_shift_1);</div>
+<div class="line"><span class="lineno">  262</span>      acc_2 = vrshlq_s32(acc_2, right_shift_2);</div>
+<div class="line"><span class="lineno">  263</span> </div>
+<div class="line"><span class="lineno">  264</span>      <span class="comment">// Add the output offset.</span></div>
+<div class="line"><span class="lineno">  265</span>      acc_1 = vaddq_s32(acc_1, output_offset_vec);</div>
+<div class="line"><span class="lineno">  266</span>      acc_2 = vaddq_s32(acc_2, output_offset_vec);</div>
+<div class="line"><span class="lineno">  267</span> </div>
+<div class="line"><span class="lineno">  268</span>      <span class="comment">// Apply the activation function.</span></div>
+<div class="line"><span class="lineno">  269</span>      acc_1 = vmaxq_s32(acc_1, output_activation_min_vec);</div>
+<div class="line"><span class="lineno">  270</span>      acc_1 = vminq_s32(acc_1, output_activation_max_vec);</div>
+<div class="line"><span class="lineno">  271</span>      acc_2 = vmaxq_s32(acc_2, output_activation_min_vec);</div>
+<div class="line"><span class="lineno">  272</span>      acc_2 = vminq_s32(acc_2, output_activation_max_vec);</div>
+<div class="line"><span class="lineno">  273</span> </div>
+<div class="line"><span class="lineno">  274</span>      <span class="comment">// Saturating cast to int8 and store to destination.</span></div>
+<div class="line"><span class="lineno">  275</span>      <span class="keyword">const</span> int16x4_t acc_s16_1 = vqmovn_s32(acc_1);</div>
+<div class="line"><span class="lineno">  276</span>      <span class="keyword">const</span> int16x4_t acc_s16_2 = vqmovn_s32(acc_2);</div>
+<div class="line"><span class="lineno">  277</span>      <span class="keyword">const</span> int16x8_t res_s16 = vcombine_s16(acc_s16_1, acc_s16_2);</div>
+<div class="line"><span class="lineno">  278</span>      <span class="keyword">const</span> int8x8_t res_s8 = vqmovn_s16(res_s16);</div>
+<div class="line"><span class="lineno">  279</span>      vst1_s8(output + loc, res_s8);</div>
+<div class="line"><span class="lineno">  280</span>    }</div>
+<div class="line"><span class="lineno">  281</span>  }</div>
+<div class="line"><span class="lineno">  282</span> </div>
+<div class="line"><span class="lineno">  283</span><span class="preprocessor">#endif </span><span class="comment">// USE_NEON</span></div>
+<div class="line"><span class="lineno">  284</span>  <span class="comment">// Handle leftover values, one by one. This is very slow.</span></div>
+<div class="line"><span class="lineno">  285</span>  <span class="keywordflow">for</span> (; c &lt; channel_size; c++)</div>
+<div class="line"><span class="lineno">  286</span>  {</div>
+<div class="line"><span class="lineno">  287</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> n = 0; n &lt; rows; ++n)</div>
+<div class="line"><span class="lineno">  288</span>    {</div>
+<div class="line"><span class="lineno">  289</span>      <span class="keywordtype">int</span> loc = n * channel_size + c;</div>
+<div class="line"><span class="lineno">  290</span>      int32_t acc = scratch[loc];</div>
+<div class="line"><span class="lineno">  291</span>      acc = MultiplyByQuantizedMultiplier(acc, multiplier[c], shift[c]);</div>
+<div class="line"><span class="lineno">  292</span>      acc += output_zp;</div>
+<div class="line"><span class="lineno">  293</span>      acc = std::max(acc, output_min);</div>
+<div class="line"><span class="lineno">  294</span>      acc = std::min(acc, output_max);</div>
+<div class="line"><span class="lineno">  295</span>      output[loc] = <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(acc);</div>
+<div class="line"><span class="lineno">  296</span>    }</div>
+<div class="line"><span class="lineno">  297</span>  }</div>
+<div class="line"><span class="lineno">  298</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_utils_8h_source.html#l00093">MultiplyByQuantizedMultiplier()</a>.</p>
 
 </div>
 </div>
+<a id="a27f1f4bb2578320a7bad562e464ae8b4" name="a27f1f4bb2578320a7bad562e464ae8b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27f1f4bb2578320a7bad562e464ae8b4">&#9670;&#160;</a></span>Quantize() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nnfw::cker::Quantize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>output_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int16_t *&#160;</td>
+          <td class="paramname"><em>output_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int32_t&#160;</td>
+          <td class="paramname"><em>zero_point</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00156">156</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  158</span>{</div>
+<div class="line"><span class="lineno">  159</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, output_shape);</div>
+<div class="line"><span class="lineno">  160</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t min_val = std::numeric_limits&lt;int16_t&gt;::min();</div>
+<div class="line"><span class="lineno">  161</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t max_val = std::numeric_limits&lt;int16_t&gt;::max();</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>  <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><span class="lineno">  164</span><span class="preprocessor">#ifdef USE_NEON</span></div>
+<div class="line"><span class="lineno">  165</span>  <span class="keyword">const</span> float32x4_t reverse_scale_dup = vdupq_n_f32(1.0f / scale);</div>
+<div class="line"><span class="lineno">  166</span>  <span class="keyword">const</span> int32x4_t zero_point_dup = vdupq_n_s32(zero_point);</div>
+<div class="line"><span class="lineno">  167</span>  <span class="keyword">const</span> int32x4_t min_val_dup = vdupq_n_s32(min_val);</div>
+<div class="line"><span class="lineno">  168</span>  <span class="keyword">const</span> int32x4_t max_val_dup = vdupq_n_s32(max_val);</div>
+<div class="line"><span class="lineno">  169</span> </div>
+<div class="line"><span class="lineno">  170</span>  <span class="keywordflow">for</span> (; i &lt;= flat_size - 8; i += 8)</div>
+<div class="line"><span class="lineno">  171</span>  {</div>
+<div class="line"><span class="lineno">  172</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *src_data_ptr = input_data + i;</div>
+<div class="line"><span class="lineno">  173</span>    float32x4_t input_val_0 = vld1q_f32(src_data_ptr);</div>
+<div class="line"><span class="lineno">  174</span>    float32x4_t input_val_1 = vld1q_f32(src_data_ptr + 4);</div>
+<div class="line"><span class="lineno">  175</span> </div>
+<div class="line"><span class="lineno">  176</span>    input_val_0 = vmulq_f32(input_val_0, reverse_scale_dup);</div>
+<div class="line"><span class="lineno">  177</span>    input_val_1 = vmulq_f32(input_val_1, reverse_scale_dup);</div>
+<div class="line"><span class="lineno">  178</span> </div>
+<div class="line"><span class="lineno">  179</span>    int32x4_t casted_val_0 = <a class="code hl_function" href="namespacennfw_1_1cker.html#a49838cb8ff6402e51924b7e6fe9919a8">RoundToNearest</a>(input_val_0);</div>
+<div class="line"><span class="lineno">  180</span>    int32x4_t casted_val_1 = <a class="code hl_function" href="namespacennfw_1_1cker.html#a49838cb8ff6402e51924b7e6fe9919a8">RoundToNearest</a>(input_val_1);</div>
+<div class="line"><span class="lineno">  181</span> </div>
+<div class="line"><span class="lineno">  182</span>    casted_val_0 = vaddq_s32(casted_val_0, zero_point_dup);</div>
+<div class="line"><span class="lineno">  183</span>    casted_val_1 = vaddq_s32(casted_val_1, zero_point_dup);</div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span>    <span class="comment">// Clamp the values to fit the target type&#39;s range.</span></div>
+<div class="line"><span class="lineno">  186</span>    casted_val_0 = vmaxq_s32(casted_val_0, min_val_dup);</div>
+<div class="line"><span class="lineno">  187</span>    casted_val_1 = vmaxq_s32(casted_val_1, min_val_dup);</div>
+<div class="line"><span class="lineno">  188</span>    casted_val_0 = vminq_s32(casted_val_0, max_val_dup);</div>
+<div class="line"><span class="lineno">  189</span>    casted_val_1 = vminq_s32(casted_val_1, max_val_dup);</div>
+<div class="line"><span class="lineno">  190</span> </div>
+<div class="line"><span class="lineno">  191</span>    <span class="keyword">const</span> int16x4_t narrowed_val_0 = vmovn_s32(casted_val_0);</div>
+<div class="line"><span class="lineno">  192</span>    <span class="keyword">const</span> int16x4_t narrowed_val_1 = vmovn_s32(casted_val_1);</div>
+<div class="line"><span class="lineno">  193</span>    vst1_s16(output_data + i, narrowed_val_0);</div>
+<div class="line"><span class="lineno">  194</span>    vst1_s16(output_data + i + 4, narrowed_val_1);</div>
+<div class="line"><span class="lineno">  195</span>  }</div>
+<div class="line"><span class="lineno">  196</span><span class="preprocessor">#endif </span><span class="comment">// NEON</span></div>
+<div class="line"><span class="lineno">  197</span> </div>
+<div class="line"><span class="lineno">  198</span>  <span class="keywordflow">for</span> (; i &lt; flat_size; ++i)</div>
+<div class="line"><span class="lineno">  199</span>  {</div>
+<div class="line"><span class="lineno">  200</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> val = input_data[i];</div>
+<div class="line"><span class="lineno">  201</span>    <span class="keyword">const</span> int32_t unclamped = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(round(val / scale)) + zero_point;</div>
+<div class="line"><span class="lineno">  202</span>    <span class="keyword">const</span> int32_t clamped = std::min(std::max(unclamped, min_val), max_val);</div>
+<div class="line"><span class="lineno">  203</span>    output_data[i] = clamped;</div>
+<div class="line"><span class="lineno">  204</span>  }</div>
+<div class="line"><span class="lineno">  205</span>}</div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a49838cb8ff6402e51924b7e6fe9919a8"><div class="ttname"><a href="namespacennfw_1_1cker.html#a49838cb8ff6402e51924b7e6fe9919a8">nnfw::cker::RoundToNearest</a></div><div class="ttdeci">float RoundToNearest(float value)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00031">Round.h:31</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00301">MatchingFlatSize()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00031">RoundToNearest()</a>.</p>
+
+</div>
+</div>
+<a id="a1675b8f52ae8ca56d53a6d259f7c6718" name="a1675b8f52ae8ca56d53a6d259f7c6718"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1675b8f52ae8ca56d53a6d259f7c6718">&#9670;&#160;</a></span>Quantize() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nnfw::cker::Quantize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>output_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t *&#160;</td>
+          <td class="paramname"><em>output_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int32_t&#160;</td>
+          <td class="paramname"><em>zero_point</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00050">50</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
+<div class="line"><span class="lineno">   53</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, output_shape);</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t min_val = std::numeric_limits&lt;int8_t&gt;::min();</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t max_val = std::numeric_limits&lt;int8_t&gt;::max();</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><span class="lineno">   58</span><span class="preprocessor">#ifdef USE_NEON</span></div>
+<div class="line"><span class="lineno">   59</span>  <span class="keyword">const</span> float32x4_t reverse_scale_dup = vdupq_n_f32(1.0f / scale);</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keyword">const</span> int32x4_t zero_point_dup = vdupq_n_s32(zero_point);</div>
+<div class="line"><span class="lineno">   61</span>  <span class="keyword">const</span> int32x4_t min_val_dup = vdupq_n_s32(min_val);</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keyword">const</span> int32x4_t max_val_dup = vdupq_n_s32(max_val);</div>
+<div class="line"><span class="lineno">   63</span> </div>
+<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">for</span> (; i &lt;= flat_size - 8; i += 8)</div>
+<div class="line"><span class="lineno">   65</span>  {</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *src_data_ptr = input_data + i;</div>
+<div class="line"><span class="lineno">   67</span>    float32x4_t input_val_0 = vld1q_f32(src_data_ptr);</div>
+<div class="line"><span class="lineno">   68</span>    float32x4_t input_val_1 = vld1q_f32(src_data_ptr + 4);</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>    input_val_0 = vmulq_f32(input_val_0, reverse_scale_dup);</div>
+<div class="line"><span class="lineno">   71</span>    input_val_1 = vmulq_f32(input_val_1, reverse_scale_dup);</div>
+<div class="line"><span class="lineno">   72</span> </div>
+<div class="line"><span class="lineno">   73</span>    int32x4_t casted_val_0 = <a class="code hl_function" href="namespacennfw_1_1cker.html#a49838cb8ff6402e51924b7e6fe9919a8">RoundToNearest</a>(input_val_0);</div>
+<div class="line"><span class="lineno">   74</span>    int32x4_t casted_val_1 = <a class="code hl_function" href="namespacennfw_1_1cker.html#a49838cb8ff6402e51924b7e6fe9919a8">RoundToNearest</a>(input_val_1);</div>
+<div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span>    casted_val_0 = vaddq_s32(casted_val_0, zero_point_dup);</div>
+<div class="line"><span class="lineno">   77</span>    casted_val_1 = vaddq_s32(casted_val_1, zero_point_dup);</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>    <span class="comment">// Clamp the values to fit the target type&#39;s range.</span></div>
+<div class="line"><span class="lineno">   80</span>    casted_val_0 = vmaxq_s32(casted_val_0, min_val_dup);</div>
+<div class="line"><span class="lineno">   81</span>    casted_val_1 = vmaxq_s32(casted_val_1, min_val_dup);</div>
+<div class="line"><span class="lineno">   82</span>    casted_val_0 = vminq_s32(casted_val_0, max_val_dup);</div>
+<div class="line"><span class="lineno">   83</span>    casted_val_1 = vminq_s32(casted_val_1, max_val_dup);</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span>    <span class="keyword">const</span> int16x4_t narrowed_val_0 = vmovn_s32(casted_val_0);</div>
+<div class="line"><span class="lineno">   86</span>    <span class="keyword">const</span> int16x4_t narrowed_val_1 = vmovn_s32(casted_val_1);</div>
+<div class="line"><span class="lineno">   87</span>    <span class="keyword">const</span> int16x8_t combined_val = vcombine_s16(narrowed_val_0, narrowed_val_1);</div>
+<div class="line"><span class="lineno">   88</span>    <span class="keyword">const</span> int8x8_t combined_val_narrowed = vmovn_s16(combined_val);</div>
+<div class="line"><span class="lineno">   89</span>    vst1_s8(output_data + i, combined_val_narrowed);</div>
+<div class="line"><span class="lineno">   90</span>  }</div>
+<div class="line"><span class="lineno">   91</span><span class="preprocessor">#endif </span><span class="comment">// NEON</span></div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">for</span> (; i &lt; flat_size; ++i)</div>
+<div class="line"><span class="lineno">   94</span>  {</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> val = input_data[i];</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keyword">const</span> int32_t unclamped = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(round(val / scale)) + zero_point;</div>
+<div class="line"><span class="lineno">   97</span>    <span class="keyword">const</span> int32_t clamped = std::min(std::max(unclamped, min_val), max_val);</div>
+<div class="line"><span class="lineno">   98</span>    output_data[i] = clamped;</div>
+<div class="line"><span class="lineno">   99</span>  }</div>
+<div class="line"><span class="lineno">  100</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00301">MatchingFlatSize()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00031">RoundToNearest()</a>.</p>
+
+</div>
+</div>
+<a id="a07192b9c7a5bf8333c11d2fa76b39306" name="a07192b9c7a5bf8333c11d2fa76b39306"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07192b9c7a5bf8333c11d2fa76b39306">&#9670;&#160;</a></span>Quantize() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nnfw::cker::Quantize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>output_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>output_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int32_t&#160;</td>
+          <td class="paramname"><em>zero_point</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00103">103</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span>{</div>
+<div class="line"><span class="lineno">  106</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, output_shape);</div>
+<div class="line"><span class="lineno">  107</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t min_val = std::numeric_limits&lt;uint8_t&gt;::min();</div>
+<div class="line"><span class="lineno">  108</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t max_val = std::numeric_limits&lt;uint8_t&gt;::max();</div>
+<div class="line"><span class="lineno">  109</span> </div>
+<div class="line"><span class="lineno">  110</span>  <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><span class="lineno">  111</span><span class="preprocessor">#ifdef USE_NEON</span></div>
+<div class="line"><span class="lineno">  112</span>  <span class="keyword">const</span> float32x4_t reverse_scale_dup = vdupq_n_f32(1.0f / scale);</div>
+<div class="line"><span class="lineno">  113</span>  <span class="keyword">const</span> int32x4_t zero_point_dup = vdupq_n_s32(zero_point);</div>
+<div class="line"><span class="lineno">  114</span>  <span class="keyword">const</span> int32x4_t min_val_dup = vdupq_n_s32(min_val);</div>
+<div class="line"><span class="lineno">  115</span>  <span class="keyword">const</span> int32x4_t max_val_dup = vdupq_n_s32(max_val);</div>
+<div class="line"><span class="lineno">  116</span> </div>
+<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">for</span> (; i &lt;= flat_size - 8; i += 8)</div>
+<div class="line"><span class="lineno">  118</span>  {</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *src_data_ptr = input_data + i;</div>
+<div class="line"><span class="lineno">  120</span>    float32x4_t input_val_0 = vld1q_f32(src_data_ptr);</div>
+<div class="line"><span class="lineno">  121</span>    float32x4_t input_val_1 = vld1q_f32(src_data_ptr + 4);</div>
+<div class="line"><span class="lineno">  122</span> </div>
+<div class="line"><span class="lineno">  123</span>    input_val_0 = vmulq_f32(input_val_0, reverse_scale_dup);</div>
+<div class="line"><span class="lineno">  124</span>    input_val_1 = vmulq_f32(input_val_1, reverse_scale_dup);</div>
+<div class="line"><span class="lineno">  125</span> </div>
+<div class="line"><span class="lineno">  126</span>    int32x4_t casted_val_0 = <a class="code hl_function" href="namespacennfw_1_1cker.html#a49838cb8ff6402e51924b7e6fe9919a8">RoundToNearest</a>(input_val_0);</div>
+<div class="line"><span class="lineno">  127</span>    int32x4_t casted_val_1 = <a class="code hl_function" href="namespacennfw_1_1cker.html#a49838cb8ff6402e51924b7e6fe9919a8">RoundToNearest</a>(input_val_1);</div>
+<div class="line"><span class="lineno">  128</span> </div>
+<div class="line"><span class="lineno">  129</span>    casted_val_0 = vaddq_s32(casted_val_0, zero_point_dup);</div>
+<div class="line"><span class="lineno">  130</span>    casted_val_1 = vaddq_s32(casted_val_1, zero_point_dup);</div>
+<div class="line"><span class="lineno">  131</span> </div>
+<div class="line"><span class="lineno">  132</span>    <span class="comment">// Clamp the values to fit the target type&#39;s range.</span></div>
+<div class="line"><span class="lineno">  133</span>    casted_val_0 = vmaxq_s32(casted_val_0, min_val_dup);</div>
+<div class="line"><span class="lineno">  134</span>    casted_val_1 = vmaxq_s32(casted_val_1, min_val_dup);</div>
+<div class="line"><span class="lineno">  135</span>    casted_val_0 = vminq_s32(casted_val_0, max_val_dup);</div>
+<div class="line"><span class="lineno">  136</span>    casted_val_1 = vminq_s32(casted_val_1, max_val_dup);</div>
+<div class="line"><span class="lineno">  137</span> </div>
+<div class="line"><span class="lineno">  138</span>    <span class="keyword">const</span> uint16x4_t narrowed_val_0 = vqmovun_s32(casted_val_0);</div>
+<div class="line"><span class="lineno">  139</span>    <span class="keyword">const</span> uint16x4_t narrowed_val_1 = vqmovun_s32(casted_val_1);</div>
+<div class="line"><span class="lineno">  140</span>    <span class="keyword">const</span> uint16x8_t combined_val = vcombine_u16(narrowed_val_0, narrowed_val_1);</div>
+<div class="line"><span class="lineno">  141</span>    <span class="keyword">const</span> uint8x8_t combined_val_narrowed = vmovn_u16(combined_val);</div>
+<div class="line"><span class="lineno">  142</span>    vst1_u8(output_data + i, combined_val_narrowed);</div>
+<div class="line"><span class="lineno">  143</span>  }</div>
+<div class="line"><span class="lineno">  144</span><span class="preprocessor">#endif </span><span class="comment">// NEON</span></div>
+<div class="line"><span class="lineno">  145</span> </div>
+<div class="line"><span class="lineno">  146</span>  <span class="keywordflow">for</span> (; i &lt; flat_size; ++i)</div>
+<div class="line"><span class="lineno">  147</span>  {</div>
+<div class="line"><span class="lineno">  148</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> val = input_data[i];</div>
+<div class="line"><span class="lineno">  149</span>    <span class="keyword">const</span> int32_t unclamped = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(round(val / scale)) + zero_point;</div>
+<div class="line"><span class="lineno">  150</span>    <span class="keyword">const</span> int32_t clamped = std::min(std::max(unclamped, min_val), max_val);</div>
+<div class="line"><span class="lineno">  151</span>    output_data[i] = clamped;</div>
+<div class="line"><span class="lineno">  152</span>  }</div>
+<div class="line"><span class="lineno">  153</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00301">MatchingFlatSize()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00031">RoundToNearest()</a>.</p>
+
+</div>
+</div>
 <a id="a364a0f3d557088ce4c2c123a16ed25c2" name="a364a0f3d557088ce4c2c123a16ed25c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a364a0f3d557088ce4c2c123a16ed25c2">&#9670;&#160;</a></span>Quantize() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a364a0f3d557088ce4c2c123a16ed25c2">&#9670;&#160;</a></span>Quantize() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -13791,19 +14240,19 @@ template&lt;typename InputT , typename OutputT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00033">33</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
-<div class="line"><span class="lineno">   36</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, output_shape);</div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordtype">int</span> min_val = std::numeric_limits&lt;OutputT&gt;::min();</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordtype">int</span> max_val = std::numeric_limits&lt;OutputT&gt;::max();</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; i++)</div>
-<div class="line"><span class="lineno">   41</span>  {</div>
-<div class="line"><span class="lineno">   42</span>    int32_t unclamped = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(round(input_data[i] / output_scale)) + output_offset;</div>
-<div class="line"><span class="lineno">   43</span>    int32_t clamped = std::min(std::max(unclamped, min_val), max_val);</div>
-<div class="line"><span class="lineno">   44</span>    output_data[i] = clamped;</div>
-<div class="line"><span class="lineno">   45</span>  }</div>
-<div class="line"><span class="lineno">   46</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00034">34</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, output_shape);</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordtype">int</span> min_val = std::numeric_limits&lt;OutputT&gt;::min();</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordtype">int</span> max_val = std::numeric_limits&lt;OutputT&gt;::max();</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; i++)</div>
+<div class="line"><span class="lineno">   42</span>  {</div>
+<div class="line"><span class="lineno">   43</span>    int32_t unclamped = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(round(input_data[i] / output_scale)) + output_offset;</div>
+<div class="line"><span class="lineno">   44</span>    int32_t clamped = std::min(std::max(unclamped, min_val), max_val);</div>
+<div class="line"><span class="lineno">   45</span>    output_data[i] = clamped;</div>
+<div class="line"><span class="lineno">   46</span>  }</div>
+<div class="line"><span class="lineno">   47</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00301">MatchingFlatSize()</a>.</p>
 
@@ -14785,12 +15234,12 @@ template&lt;typename input_type , typename output_type &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00142">142</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  145</span>{</div>
-<div class="line"><span class="lineno">  146</span>  assert(!<span class="stringliteral">&quot;Requantize: not supported type. It shouldn&#39;t reach here.&quot;</span>);</div>
-<div class="line"><span class="lineno">  147</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l.html">UNUSED_ALL</a>(input_data, size, effective_scale_multiplier, effective_scale_shift, input_zeropoint,</div>
-<div class="line"><span class="lineno">  148</span>             output_zeropoint, output_data);</div>
-<div class="line"><span class="lineno">  149</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00301">301</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  304</span>{</div>
+<div class="line"><span class="lineno">  305</span>  assert(!<span class="stringliteral">&quot;Requantize: not supported type. It shouldn&#39;t reach here.&quot;</span>);</div>
+<div class="line"><span class="lineno">  306</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l.html">UNUSED_ALL</a>(input_data, size, effective_scale_multiplier, effective_scale_shift, input_zeropoint,</div>
+<div class="line"><span class="lineno">  307</span>             output_zeropoint, output_data);</div>
+<div class="line"><span class="lineno">  308</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -14860,74 +15309,74 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00220">220</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  224</span>{</div>
-<div class="line"><span class="lineno">  225</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t kMinOutput = std::numeric_limits&lt;uint8_t&gt;::min();</div>
-<div class="line"><span class="lineno">  226</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t kMaxOutput = std::numeric_limits&lt;uint8_t&gt;::max();</div>
-<div class="line"><span class="lineno">  227</span> </div>
-<div class="line"><span class="lineno">  228</span>  <span class="keywordtype">int</span> i = 0;</div>
-<div class="line"><span class="lineno">  229</span><span class="preprocessor">#ifdef USE_NEON</span></div>
-<div class="line"><span class="lineno">  230</span>  <span class="comment">// Constants.</span></div>
-<div class="line"><span class="lineno">  231</span>  <span class="keyword">const</span> int32x4_t input_zero_point_dup = vdupq_n_s32(-input_zeropoint);</div>
-<div class="line"><span class="lineno">  232</span>  <span class="keyword">const</span> int32x4_t output_zero_point_dup = vdupq_n_s32(output_zeropoint);</div>
-<div class="line"><span class="lineno">  233</span>  <span class="keyword">const</span> int32x4_t min_val_dup = vdupq_n_s32(kMinOutput);</div>
-<div class="line"><span class="lineno">  234</span>  <span class="keyword">const</span> int32x4_t max_val_dup = vdupq_n_s32(kMaxOutput);</div>
-<div class="line"><span class="lineno">  235</span> </div>
-<div class="line"><span class="lineno">  236</span>  <span class="keywordflow">for</span> (; i &lt;= size - 16; i += 16)</div>
-<div class="line"><span class="lineno">  237</span>  {</div>
-<div class="line"><span class="lineno">  238</span>    <span class="keyword">const</span> int8x16_t input_vec = vld1q_s8(input_data + i);</div>
-<div class="line"><span class="lineno">  239</span>    <span class="keyword">const</span> int16x8_t first_half = vmovl_s8(vget_low_s8(input_vec));</div>
-<div class="line"><span class="lineno">  240</span>    <span class="keyword">const</span> int16x8_t second_half = vmovl_s8(vget_high_s8(input_vec));</div>
-<div class="line"><span class="lineno">  241</span>    int32x4x4_t input;</div>
-<div class="line"><span class="lineno">  242</span>    input.val[0] = vmovl_s16(vget_low_s16(first_half));</div>
-<div class="line"><span class="lineno">  243</span>    input.val[1] = vmovl_s16(vget_high_s16(first_half));</div>
-<div class="line"><span class="lineno">  244</span>    input.val[2] = vmovl_s16(vget_low_s16(second_half));</div>
-<div class="line"><span class="lineno">  245</span>    input.val[3] = vmovl_s16(vget_high_s16(second_half));</div>
-<div class="line"><span class="lineno">  246</span>    input.val[0] = vaddq_s32(input.val[0], input_zero_point_dup);</div>
-<div class="line"><span class="lineno">  247</span>    input.val[1] = vaddq_s32(input.val[1], input_zero_point_dup);</div>
-<div class="line"><span class="lineno">  248</span>    input.val[2] = vaddq_s32(input.val[2], input_zero_point_dup);</div>
-<div class="line"><span class="lineno">  249</span>    input.val[3] = vaddq_s32(input.val[3], input_zero_point_dup);</div>
-<div class="line"><span class="lineno">  250</span> </div>
-<div class="line"><span class="lineno">  251</span>    int32x4x4_t result =</div>
-<div class="line"><span class="lineno">  252</span>      MultiplyByQuantizedMultiplier4Rows(input, effective_scale_multiplier, effective_scale_shift);</div>
-<div class="line"><span class="lineno">  253</span> </div>
-<div class="line"><span class="lineno">  254</span>    result.val[0] = vaddq_s32(result.val[0], output_zero_point_dup);</div>
-<div class="line"><span class="lineno">  255</span>    result.val[1] = vaddq_s32(result.val[1], output_zero_point_dup);</div>
-<div class="line"><span class="lineno">  256</span>    result.val[2] = vaddq_s32(result.val[2], output_zero_point_dup);</div>
-<div class="line"><span class="lineno">  257</span>    result.val[3] = vaddq_s32(result.val[3], output_zero_point_dup);</div>
-<div class="line"><span class="lineno">  258</span>    result.val[0] = vmaxq_s32(vminq_s32(result.val[0], max_val_dup), min_val_dup);</div>
-<div class="line"><span class="lineno">  259</span>    result.val[1] = vmaxq_s32(vminq_s32(result.val[1], max_val_dup), min_val_dup);</div>
-<div class="line"><span class="lineno">  260</span>    result.val[2] = vmaxq_s32(vminq_s32(result.val[2], max_val_dup), min_val_dup);</div>
-<div class="line"><span class="lineno">  261</span>    result.val[3] = vmaxq_s32(vminq_s32(result.val[3], max_val_dup), min_val_dup);</div>
-<div class="line"><span class="lineno">  262</span> </div>
-<div class="line"><span class="lineno">  263</span>    <span class="keyword">const</span> uint32x4_t result_val_1_unsigned = vreinterpretq_u32_s32(result.val[0]);</div>
-<div class="line"><span class="lineno">  264</span>    <span class="keyword">const</span> uint32x4_t result_val_2_unsigned = vreinterpretq_u32_s32(result.val[1]);</div>
-<div class="line"><span class="lineno">  265</span>    <span class="keyword">const</span> uint32x4_t result_val_3_unsigned = vreinterpretq_u32_s32(result.val[2]);</div>
-<div class="line"><span class="lineno">  266</span>    <span class="keyword">const</span> uint32x4_t result_val_4_unsigned = vreinterpretq_u32_s32(result.val[3]);</div>
-<div class="line"><span class="lineno">  267</span> </div>
-<div class="line"><span class="lineno">  268</span>    <span class="keyword">const</span> uint16x4_t narrowed_val_1 = vqmovn_u32(result_val_1_unsigned);</div>
-<div class="line"><span class="lineno">  269</span>    <span class="keyword">const</span> uint16x4_t narrowed_val_2 = vqmovn_u32(result_val_2_unsigned);</div>
-<div class="line"><span class="lineno">  270</span>    <span class="keyword">const</span> uint16x4_t narrowed_val_3 = vqmovn_u32(result_val_3_unsigned);</div>
-<div class="line"><span class="lineno">  271</span>    <span class="keyword">const</span> uint16x4_t narrowed_val_4 = vqmovn_u32(result_val_4_unsigned);</div>
-<div class="line"><span class="lineno">  272</span>    <span class="keyword">const</span> uint16x8_t output_first_half = vcombine_u16(narrowed_val_1, narrowed_val_2);</div>
-<div class="line"><span class="lineno">  273</span>    <span class="keyword">const</span> uint16x8_t output_second_half = vcombine_u16(narrowed_val_3, narrowed_val_4);</div>
-<div class="line"><span class="lineno">  274</span>    <span class="keyword">const</span> uint8x8_t narrowed_first_half = vqmovn_u16(output_first_half);</div>
-<div class="line"><span class="lineno">  275</span>    <span class="keyword">const</span> uint8x8_t narrowed_second_half = vqmovn_u16(output_second_half);</div>
-<div class="line"><span class="lineno">  276</span>    <span class="keyword">const</span> uint8x16_t narrowed_result = vcombine_u8(narrowed_first_half, narrowed_second_half);</div>
-<div class="line"><span class="lineno">  277</span>    vst1q_u8(output_data + i, narrowed_result);</div>
-<div class="line"><span class="lineno">  278</span>  }</div>
-<div class="line"><span class="lineno">  279</span> </div>
-<div class="line"><span class="lineno">  280</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  281</span>  <span class="keywordflow">for</span> (; i &lt; size; ++i)</div>
-<div class="line"><span class="lineno">  282</span>  {</div>
-<div class="line"><span class="lineno">  283</span>    <span class="keyword">const</span> int32_t input = input_data[i] - input_zeropoint;</div>
-<div class="line"><span class="lineno">  284</span>    <span class="keyword">const</span> int32_t output =</div>
-<div class="line"><span class="lineno">  285</span>      MultiplyByQuantizedMultiplier(input, effective_scale_multiplier, effective_scale_shift) +</div>
-<div class="line"><span class="lineno">  286</span>      output_zeropoint;</div>
-<div class="line"><span class="lineno">  287</span>    <span class="keyword">const</span> int32_t clamped_output = std::max(std::min(output, kMaxOutput), kMinOutput);</div>
-<div class="line"><span class="lineno">  288</span>    output_data[i] = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(clamped_output);</div>
-<div class="line"><span class="lineno">  289</span>  }</div>
-<div class="line"><span class="lineno">  290</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00379">379</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  383</span>{</div>
+<div class="line"><span class="lineno">  384</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t kMinOutput = std::numeric_limits&lt;uint8_t&gt;::min();</div>
+<div class="line"><span class="lineno">  385</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t kMaxOutput = std::numeric_limits&lt;uint8_t&gt;::max();</div>
+<div class="line"><span class="lineno">  386</span> </div>
+<div class="line"><span class="lineno">  387</span>  <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><span class="lineno">  388</span><span class="preprocessor">#ifdef USE_NEON</span></div>
+<div class="line"><span class="lineno">  389</span>  <span class="comment">// Constants.</span></div>
+<div class="line"><span class="lineno">  390</span>  <span class="keyword">const</span> int32x4_t input_zero_point_dup = vdupq_n_s32(-input_zeropoint);</div>
+<div class="line"><span class="lineno">  391</span>  <span class="keyword">const</span> int32x4_t output_zero_point_dup = vdupq_n_s32(output_zeropoint);</div>
+<div class="line"><span class="lineno">  392</span>  <span class="keyword">const</span> int32x4_t min_val_dup = vdupq_n_s32(kMinOutput);</div>
+<div class="line"><span class="lineno">  393</span>  <span class="keyword">const</span> int32x4_t max_val_dup = vdupq_n_s32(kMaxOutput);</div>
+<div class="line"><span class="lineno">  394</span> </div>
+<div class="line"><span class="lineno">  395</span>  <span class="keywordflow">for</span> (; i &lt;= size - 16; i += 16)</div>
+<div class="line"><span class="lineno">  396</span>  {</div>
+<div class="line"><span class="lineno">  397</span>    <span class="keyword">const</span> int8x16_t input_vec = vld1q_s8(input_data + i);</div>
+<div class="line"><span class="lineno">  398</span>    <span class="keyword">const</span> int16x8_t first_half = vmovl_s8(vget_low_s8(input_vec));</div>
+<div class="line"><span class="lineno">  399</span>    <span class="keyword">const</span> int16x8_t second_half = vmovl_s8(vget_high_s8(input_vec));</div>
+<div class="line"><span class="lineno">  400</span>    int32x4x4_t input;</div>
+<div class="line"><span class="lineno">  401</span>    input.val[0] = vmovl_s16(vget_low_s16(first_half));</div>
+<div class="line"><span class="lineno">  402</span>    input.val[1] = vmovl_s16(vget_high_s16(first_half));</div>
+<div class="line"><span class="lineno">  403</span>    input.val[2] = vmovl_s16(vget_low_s16(second_half));</div>
+<div class="line"><span class="lineno">  404</span>    input.val[3] = vmovl_s16(vget_high_s16(second_half));</div>
+<div class="line"><span class="lineno">  405</span>    input.val[0] = vaddq_s32(input.val[0], input_zero_point_dup);</div>
+<div class="line"><span class="lineno">  406</span>    input.val[1] = vaddq_s32(input.val[1], input_zero_point_dup);</div>
+<div class="line"><span class="lineno">  407</span>    input.val[2] = vaddq_s32(input.val[2], input_zero_point_dup);</div>
+<div class="line"><span class="lineno">  408</span>    input.val[3] = vaddq_s32(input.val[3], input_zero_point_dup);</div>
+<div class="line"><span class="lineno">  409</span> </div>
+<div class="line"><span class="lineno">  410</span>    int32x4x4_t result =</div>
+<div class="line"><span class="lineno">  411</span>      MultiplyByQuantizedMultiplier4Rows(input, effective_scale_multiplier, effective_scale_shift);</div>
+<div class="line"><span class="lineno">  412</span> </div>
+<div class="line"><span class="lineno">  413</span>    result.val[0] = vaddq_s32(result.val[0], output_zero_point_dup);</div>
+<div class="line"><span class="lineno">  414</span>    result.val[1] = vaddq_s32(result.val[1], output_zero_point_dup);</div>
+<div class="line"><span class="lineno">  415</span>    result.val[2] = vaddq_s32(result.val[2], output_zero_point_dup);</div>
+<div class="line"><span class="lineno">  416</span>    result.val[3] = vaddq_s32(result.val[3], output_zero_point_dup);</div>
+<div class="line"><span class="lineno">  417</span>    result.val[0] = vmaxq_s32(vminq_s32(result.val[0], max_val_dup), min_val_dup);</div>
+<div class="line"><span class="lineno">  418</span>    result.val[1] = vmaxq_s32(vminq_s32(result.val[1], max_val_dup), min_val_dup);</div>
+<div class="line"><span class="lineno">  419</span>    result.val[2] = vmaxq_s32(vminq_s32(result.val[2], max_val_dup), min_val_dup);</div>
+<div class="line"><span class="lineno">  420</span>    result.val[3] = vmaxq_s32(vminq_s32(result.val[3], max_val_dup), min_val_dup);</div>
+<div class="line"><span class="lineno">  421</span> </div>
+<div class="line"><span class="lineno">  422</span>    <span class="keyword">const</span> uint32x4_t result_val_1_unsigned = vreinterpretq_u32_s32(result.val[0]);</div>
+<div class="line"><span class="lineno">  423</span>    <span class="keyword">const</span> uint32x4_t result_val_2_unsigned = vreinterpretq_u32_s32(result.val[1]);</div>
+<div class="line"><span class="lineno">  424</span>    <span class="keyword">const</span> uint32x4_t result_val_3_unsigned = vreinterpretq_u32_s32(result.val[2]);</div>
+<div class="line"><span class="lineno">  425</span>    <span class="keyword">const</span> uint32x4_t result_val_4_unsigned = vreinterpretq_u32_s32(result.val[3]);</div>
+<div class="line"><span class="lineno">  426</span> </div>
+<div class="line"><span class="lineno">  427</span>    <span class="keyword">const</span> uint16x4_t narrowed_val_1 = vqmovn_u32(result_val_1_unsigned);</div>
+<div class="line"><span class="lineno">  428</span>    <span class="keyword">const</span> uint16x4_t narrowed_val_2 = vqmovn_u32(result_val_2_unsigned);</div>
+<div class="line"><span class="lineno">  429</span>    <span class="keyword">const</span> uint16x4_t narrowed_val_3 = vqmovn_u32(result_val_3_unsigned);</div>
+<div class="line"><span class="lineno">  430</span>    <span class="keyword">const</span> uint16x4_t narrowed_val_4 = vqmovn_u32(result_val_4_unsigned);</div>
+<div class="line"><span class="lineno">  431</span>    <span class="keyword">const</span> uint16x8_t output_first_half = vcombine_u16(narrowed_val_1, narrowed_val_2);</div>
+<div class="line"><span class="lineno">  432</span>    <span class="keyword">const</span> uint16x8_t output_second_half = vcombine_u16(narrowed_val_3, narrowed_val_4);</div>
+<div class="line"><span class="lineno">  433</span>    <span class="keyword">const</span> uint8x8_t narrowed_first_half = vqmovn_u16(output_first_half);</div>
+<div class="line"><span class="lineno">  434</span>    <span class="keyword">const</span> uint8x8_t narrowed_second_half = vqmovn_u16(output_second_half);</div>
+<div class="line"><span class="lineno">  435</span>    <span class="keyword">const</span> uint8x16_t narrowed_result = vcombine_u8(narrowed_first_half, narrowed_second_half);</div>
+<div class="line"><span class="lineno">  436</span>    vst1q_u8(output_data + i, narrowed_result);</div>
+<div class="line"><span class="lineno">  437</span>  }</div>
+<div class="line"><span class="lineno">  438</span> </div>
+<div class="line"><span class="lineno">  439</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">  440</span>  <span class="keywordflow">for</span> (; i &lt; size; ++i)</div>
+<div class="line"><span class="lineno">  441</span>  {</div>
+<div class="line"><span class="lineno">  442</span>    <span class="keyword">const</span> int32_t input = input_data[i] - input_zeropoint;</div>
+<div class="line"><span class="lineno">  443</span>    <span class="keyword">const</span> int32_t output =</div>
+<div class="line"><span class="lineno">  444</span>      MultiplyByQuantizedMultiplier(input, effective_scale_multiplier, effective_scale_shift) +</div>
+<div class="line"><span class="lineno">  445</span>      output_zeropoint;</div>
+<div class="line"><span class="lineno">  446</span>    <span class="keyword">const</span> int32_t clamped_output = std::max(std::min(output, kMaxOutput), kMinOutput);</div>
+<div class="line"><span class="lineno">  447</span>    output_data[i] = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(clamped_output);</div>
+<div class="line"><span class="lineno">  448</span>  }</div>
+<div class="line"><span class="lineno">  449</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_utils_8h_source.html#l00093">MultiplyByQuantizedMultiplier()</a>.</p>
 
@@ -15001,69 +15450,69 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00152">152</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  156</span>{</div>
-<div class="line"><span class="lineno">  157</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t kMinOutput = std::numeric_limits&lt;int8_t&gt;::min();</div>
-<div class="line"><span class="lineno">  158</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t kMaxOutput = std::numeric_limits&lt;int8_t&gt;::max();</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>  <span class="keywordtype">int</span> i = 0;</div>
-<div class="line"><span class="lineno">  161</span><span class="preprocessor">#ifdef USE_NEON</span></div>
-<div class="line"><span class="lineno">  162</span>  <span class="comment">// Constants.</span></div>
-<div class="line"><span class="lineno">  163</span>  <span class="keyword">const</span> int32x4_t input_zero_point_dup = vdupq_n_s32(-input_zeropoint);</div>
-<div class="line"><span class="lineno">  164</span>  <span class="keyword">const</span> int32x4_t output_zero_point_dup = vdupq_n_s32(output_zeropoint);</div>
-<div class="line"><span class="lineno">  165</span>  <span class="keyword">const</span> int32x4_t min_val_dup = vdupq_n_s32(kMinOutput);</div>
-<div class="line"><span class="lineno">  166</span>  <span class="keyword">const</span> int32x4_t max_val_dup = vdupq_n_s32(kMaxOutput);</div>
-<div class="line"><span class="lineno">  167</span> </div>
-<div class="line"><span class="lineno">  168</span>  <span class="keywordflow">for</span> (; i &lt;= size - 16; i += 16)</div>
-<div class="line"><span class="lineno">  169</span>  {</div>
-<div class="line"><span class="lineno">  170</span>    <span class="keyword">const</span> uint8x16_t input_vec = vld1q_u8(input_data + i);</div>
-<div class="line"><span class="lineno">  171</span>    <span class="keyword">const</span> uint16x8_t first_half = vmovl_u8(vget_low_u8(input_vec));</div>
-<div class="line"><span class="lineno">  172</span>    <span class="keyword">const</span> uint16x8_t second_half = vmovl_u8(vget_high_u8(input_vec));</div>
-<div class="line"><span class="lineno">  173</span>    int32x4x4_t input;</div>
-<div class="line"><span class="lineno">  174</span>    input.val[0] = vreinterpretq_s32_u32(vmovl_u16(vget_low_u16(first_half)));</div>
-<div class="line"><span class="lineno">  175</span>    input.val[1] = vreinterpretq_s32_u32(vmovl_u16(vget_high_u16(first_half)));</div>
-<div class="line"><span class="lineno">  176</span>    input.val[2] = vreinterpretq_s32_u32(vmovl_u16(vget_low_u16(second_half)));</div>
-<div class="line"><span class="lineno">  177</span>    input.val[3] = vreinterpretq_s32_u32(vmovl_u16(vget_high_u16(second_half)));</div>
-<div class="line"><span class="lineno">  178</span>    input.val[0] = vaddq_s32(input.val[0], input_zero_point_dup);</div>
-<div class="line"><span class="lineno">  179</span>    input.val[1] = vaddq_s32(input.val[1], input_zero_point_dup);</div>
-<div class="line"><span class="lineno">  180</span>    input.val[2] = vaddq_s32(input.val[2], input_zero_point_dup);</div>
-<div class="line"><span class="lineno">  181</span>    input.val[3] = vaddq_s32(input.val[3], input_zero_point_dup);</div>
-<div class="line"><span class="lineno">  182</span> </div>
-<div class="line"><span class="lineno">  183</span>    int32x4x4_t result =</div>
-<div class="line"><span class="lineno">  184</span>      MultiplyByQuantizedMultiplier4Rows(input, effective_scale_multiplier, effective_scale_shift);</div>
-<div class="line"><span class="lineno">  185</span> </div>
-<div class="line"><span class="lineno">  186</span>    result.val[0] = vaddq_s32(result.val[0], output_zero_point_dup);</div>
-<div class="line"><span class="lineno">  187</span>    result.val[1] = vaddq_s32(result.val[1], output_zero_point_dup);</div>
-<div class="line"><span class="lineno">  188</span>    result.val[2] = vaddq_s32(result.val[2], output_zero_point_dup);</div>
-<div class="line"><span class="lineno">  189</span>    result.val[3] = vaddq_s32(result.val[3], output_zero_point_dup);</div>
-<div class="line"><span class="lineno">  190</span>    result.val[0] = vmaxq_s32(vminq_s32(result.val[0], max_val_dup), min_val_dup);</div>
-<div class="line"><span class="lineno">  191</span>    result.val[1] = vmaxq_s32(vminq_s32(result.val[1], max_val_dup), min_val_dup);</div>
-<div class="line"><span class="lineno">  192</span>    result.val[2] = vmaxq_s32(vminq_s32(result.val[2], max_val_dup), min_val_dup);</div>
-<div class="line"><span class="lineno">  193</span>    result.val[3] = vmaxq_s32(vminq_s32(result.val[3], max_val_dup), min_val_dup);</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span>    <span class="keyword">const</span> int16x4_t narrowed_val_1 = vqmovn_s32(result.val[0]);</div>
-<div class="line"><span class="lineno">  196</span>    <span class="keyword">const</span> int16x4_t narrowed_val_2 = vqmovn_s32(result.val[1]);</div>
-<div class="line"><span class="lineno">  197</span>    <span class="keyword">const</span> int16x4_t narrowed_val_3 = vqmovn_s32(result.val[2]);</div>
-<div class="line"><span class="lineno">  198</span>    <span class="keyword">const</span> int16x4_t narrowed_val_4 = vqmovn_s32(result.val[3]);</div>
-<div class="line"><span class="lineno">  199</span>    <span class="keyword">const</span> int16x8_t output_first_half = vcombine_s16(narrowed_val_1, narrowed_val_2);</div>
-<div class="line"><span class="lineno">  200</span>    <span class="keyword">const</span> int16x8_t output_second_half = vcombine_s16(narrowed_val_3, narrowed_val_4);</div>
-<div class="line"><span class="lineno">  201</span>    <span class="keyword">const</span> int8x8_t narrowed_first_half = vqmovn_s16(output_first_half);</div>
-<div class="line"><span class="lineno">  202</span>    <span class="keyword">const</span> int8x8_t narrowed_second_half = vqmovn_s16(output_second_half);</div>
-<div class="line"><span class="lineno">  203</span>    <span class="keyword">const</span> int8x16_t narrowed_result = vcombine_s8(narrowed_first_half, narrowed_second_half);</div>
-<div class="line"><span class="lineno">  204</span>    vst1q_s8(output_data + i, narrowed_result);</div>
-<div class="line"><span class="lineno">  205</span>  }</div>
-<div class="line"><span class="lineno">  206</span> </div>
-<div class="line"><span class="lineno">  207</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  208</span>  <span class="keywordflow">for</span> (; i &lt; size; ++i)</div>
-<div class="line"><span class="lineno">  209</span>  {</div>
-<div class="line"><span class="lineno">  210</span>    <span class="keyword">const</span> int32_t input = input_data[i] - input_zeropoint;</div>
-<div class="line"><span class="lineno">  211</span>    <span class="keyword">const</span> int32_t output =</div>
-<div class="line"><span class="lineno">  212</span>      MultiplyByQuantizedMultiplier(input, effective_scale_multiplier, effective_scale_shift) +</div>
-<div class="line"><span class="lineno">  213</span>      output_zeropoint;</div>
-<div class="line"><span class="lineno">  214</span>    <span class="keyword">const</span> int32_t clamped_output = std::max(std::min(output, kMaxOutput), kMinOutput);</div>
-<div class="line"><span class="lineno">  215</span>    output_data[i] = <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(clamped_output);</div>
-<div class="line"><span class="lineno">  216</span>  }</div>
-<div class="line"><span class="lineno">  217</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00311">311</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html">Quantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  315</span>{</div>
+<div class="line"><span class="lineno">  316</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t kMinOutput = std::numeric_limits&lt;int8_t&gt;::min();</div>
+<div class="line"><span class="lineno">  317</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t kMaxOutput = std::numeric_limits&lt;int8_t&gt;::max();</div>
+<div class="line"><span class="lineno">  318</span> </div>
+<div class="line"><span class="lineno">  319</span>  <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"><span class="lineno">  320</span><span class="preprocessor">#ifdef USE_NEON</span></div>
+<div class="line"><span class="lineno">  321</span>  <span class="comment">// Constants.</span></div>
+<div class="line"><span class="lineno">  322</span>  <span class="keyword">const</span> int32x4_t input_zero_point_dup = vdupq_n_s32(-input_zeropoint);</div>
+<div class="line"><span class="lineno">  323</span>  <span class="keyword">const</span> int32x4_t output_zero_point_dup = vdupq_n_s32(output_zeropoint);</div>
+<div class="line"><span class="lineno">  324</span>  <span class="keyword">const</span> int32x4_t min_val_dup = vdupq_n_s32(kMinOutput);</div>
+<div class="line"><span class="lineno">  325</span>  <span class="keyword">const</span> int32x4_t max_val_dup = vdupq_n_s32(kMaxOutput);</div>
+<div class="line"><span class="lineno">  326</span> </div>
+<div class="line"><span class="lineno">  327</span>  <span class="keywordflow">for</span> (; i &lt;= size - 16; i += 16)</div>
+<div class="line"><span class="lineno">  328</span>  {</div>
+<div class="line"><span class="lineno">  329</span>    <span class="keyword">const</span> uint8x16_t input_vec = vld1q_u8(input_data + i);</div>
+<div class="line"><span class="lineno">  330</span>    <span class="keyword">const</span> uint16x8_t first_half = vmovl_u8(vget_low_u8(input_vec));</div>
+<div class="line"><span class="lineno">  331</span>    <span class="keyword">const</span> uint16x8_t second_half = vmovl_u8(vget_high_u8(input_vec));</div>
+<div class="line"><span class="lineno">  332</span>    int32x4x4_t input;</div>
+<div class="line"><span class="lineno">  333</span>    input.val[0] = vreinterpretq_s32_u32(vmovl_u16(vget_low_u16(first_half)));</div>
+<div class="line"><span class="lineno">  334</span>    input.val[1] = vreinterpretq_s32_u32(vmovl_u16(vget_high_u16(first_half)));</div>
+<div class="line"><span class="lineno">  335</span>    input.val[2] = vreinterpretq_s32_u32(vmovl_u16(vget_low_u16(second_half)));</div>
+<div class="line"><span class="lineno">  336</span>    input.val[3] = vreinterpretq_s32_u32(vmovl_u16(vget_high_u16(second_half)));</div>
+<div class="line"><span class="lineno">  337</span>    input.val[0] = vaddq_s32(input.val[0], input_zero_point_dup);</div>
+<div class="line"><span class="lineno">  338</span>    input.val[1] = vaddq_s32(input.val[1], input_zero_point_dup);</div>
+<div class="line"><span class="lineno">  339</span>    input.val[2] = vaddq_s32(input.val[2], input_zero_point_dup);</div>
+<div class="line"><span class="lineno">  340</span>    input.val[3] = vaddq_s32(input.val[3], input_zero_point_dup);</div>
+<div class="line"><span class="lineno">  341</span> </div>
+<div class="line"><span class="lineno">  342</span>    int32x4x4_t result =</div>
+<div class="line"><span class="lineno">  343</span>      MultiplyByQuantizedMultiplier4Rows(input, effective_scale_multiplier, effective_scale_shift);</div>
+<div class="line"><span class="lineno">  344</span> </div>
+<div class="line"><span class="lineno">  345</span>    result.val[0] = vaddq_s32(result.val[0], output_zero_point_dup);</div>
+<div class="line"><span class="lineno">  346</span>    result.val[1] = vaddq_s32(result.val[1], output_zero_point_dup);</div>
+<div class="line"><span class="lineno">  347</span>    result.val[2] = vaddq_s32(result.val[2], output_zero_point_dup);</div>
+<div class="line"><span class="lineno">  348</span>    result.val[3] = vaddq_s32(result.val[3], output_zero_point_dup);</div>
+<div class="line"><span class="lineno">  349</span>    result.val[0] = vmaxq_s32(vminq_s32(result.val[0], max_val_dup), min_val_dup);</div>
+<div class="line"><span class="lineno">  350</span>    result.val[1] = vmaxq_s32(vminq_s32(result.val[1], max_val_dup), min_val_dup);</div>
+<div class="line"><span class="lineno">  351</span>    result.val[2] = vmaxq_s32(vminq_s32(result.val[2], max_val_dup), min_val_dup);</div>
+<div class="line"><span class="lineno">  352</span>    result.val[3] = vmaxq_s32(vminq_s32(result.val[3], max_val_dup), min_val_dup);</div>
+<div class="line"><span class="lineno">  353</span> </div>
+<div class="line"><span class="lineno">  354</span>    <span class="keyword">const</span> int16x4_t narrowed_val_1 = vqmovn_s32(result.val[0]);</div>
+<div class="line"><span class="lineno">  355</span>    <span class="keyword">const</span> int16x4_t narrowed_val_2 = vqmovn_s32(result.val[1]);</div>
+<div class="line"><span class="lineno">  356</span>    <span class="keyword">const</span> int16x4_t narrowed_val_3 = vqmovn_s32(result.val[2]);</div>
+<div class="line"><span class="lineno">  357</span>    <span class="keyword">const</span> int16x4_t narrowed_val_4 = vqmovn_s32(result.val[3]);</div>
+<div class="line"><span class="lineno">  358</span>    <span class="keyword">const</span> int16x8_t output_first_half = vcombine_s16(narrowed_val_1, narrowed_val_2);</div>
+<div class="line"><span class="lineno">  359</span>    <span class="keyword">const</span> int16x8_t output_second_half = vcombine_s16(narrowed_val_3, narrowed_val_4);</div>
+<div class="line"><span class="lineno">  360</span>    <span class="keyword">const</span> int8x8_t narrowed_first_half = vqmovn_s16(output_first_half);</div>
+<div class="line"><span class="lineno">  361</span>    <span class="keyword">const</span> int8x8_t narrowed_second_half = vqmovn_s16(output_second_half);</div>
+<div class="line"><span class="lineno">  362</span>    <span class="keyword">const</span> int8x16_t narrowed_result = vcombine_s8(narrowed_first_half, narrowed_second_half);</div>
+<div class="line"><span class="lineno">  363</span>    vst1q_s8(output_data + i, narrowed_result);</div>
+<div class="line"><span class="lineno">  364</span>  }</div>
+<div class="line"><span class="lineno">  365</span> </div>
+<div class="line"><span class="lineno">  366</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">  367</span>  <span class="keywordflow">for</span> (; i &lt; size; ++i)</div>
+<div class="line"><span class="lineno">  368</span>  {</div>
+<div class="line"><span class="lineno">  369</span>    <span class="keyword">const</span> int32_t input = input_data[i] - input_zeropoint;</div>
+<div class="line"><span class="lineno">  370</span>    <span class="keyword">const</span> int32_t output =</div>
+<div class="line"><span class="lineno">  371</span>      MultiplyByQuantizedMultiplier(input, effective_scale_multiplier, effective_scale_shift) +</div>
+<div class="line"><span class="lineno">  372</span>      output_zeropoint;</div>
+<div class="line"><span class="lineno">  373</span>    <span class="keyword">const</span> int32_t clamped_output = std::max(std::min(output, kMaxOutput), kMinOutput);</div>
+<div class="line"><span class="lineno">  374</span>    output_data[i] = <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(clamped_output);</div>
+<div class="line"><span class="lineno">  375</span>  }</div>
+<div class="line"><span class="lineno">  376</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_utils_8h_source.html#l00093">MultiplyByQuantizedMultiplier()</a>.</p>
 
@@ -16150,21 +16599,20 @@ template&lt;typename Scalar &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00044">44</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html">Round.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, output_shape);</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; ++i)</div>
-<div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span>    <span class="comment">// Note that this implementation matches that of tensorFlow tf.round</span></div>
-<div class="line"><span class="lineno">   51</span>    <span class="comment">// and corresponds to the bankers rounding method.</span></div>
-<div class="line"><span class="lineno">   52</span>    <span class="comment">// cfenv (for fesetround) is not yet supported universally on Android, so</span></div>
-<div class="line"><span class="lineno">   53</span>    <span class="comment">// using a work around.</span></div>
-<div class="line"><span class="lineno">   54</span>    output_data[i] = <a class="code hl_function" href="namespacennfw_1_1cker.html#a49838cb8ff6402e51924b7e6fe9919a8">RoundToNearest</a>(input_data[i]);</div>
-<div class="line"><span class="lineno">   55</span>  }</div>
-<div class="line"><span class="lineno">   56</span>}</div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a49838cb8ff6402e51924b7e6fe9919a8"><div class="ttname"><a href="namespacennfw_1_1cker.html#a49838cb8ff6402e51924b7e6fe9919a8">nnfw::cker::RoundToNearest</a></div><div class="ttdeci">float RoundToNearest(float value)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00030">Round.h:30</a></div></div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00065">65</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html">Round.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>{</div>
+<div class="line"><span class="lineno">   68</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, output_shape);</div>
+<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; ++i)</div>
+<div class="line"><span class="lineno">   70</span>  {</div>
+<div class="line"><span class="lineno">   71</span>    <span class="comment">// Note that this implementation matches that of tensorFlow tf.round</span></div>
+<div class="line"><span class="lineno">   72</span>    <span class="comment">// and corresponds to the bankers rounding method.</span></div>
+<div class="line"><span class="lineno">   73</span>    <span class="comment">// cfenv (for fesetround) is not yet supported universally on Android, so</span></div>
+<div class="line"><span class="lineno">   74</span>    <span class="comment">// using a work around.</span></div>
+<div class="line"><span class="lineno">   75</span>    output_data[i] = <a class="code hl_function" href="namespacennfw_1_1cker.html#a49838cb8ff6402e51924b7e6fe9919a8">RoundToNearest</a>(input_data[i]);</div>
+<div class="line"><span class="lineno">   76</span>  }</div>
+<div class="line"><span class="lineno">   77</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00301">MatchingFlatSize()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00030">RoundToNearest()</a>.</p>
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00301">MatchingFlatSize()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00031">RoundToNearest()</a>.</p>
 
 </div>
 </div>
@@ -16224,21 +16672,21 @@ template&lt;typename Scalar &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00030">30</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html">Round.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  <span class="keyword">auto</span> floor_val = std::floor(value);</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keyword">auto</span> diff = value - floor_val;</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">if</span> ((diff &lt; 0.5f) || ((diff == 0.5f) &amp;&amp; (<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(floor_val) % 2 == 0)))</div>
-<div class="line"><span class="lineno">   35</span>  {</div>
-<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">return</span> floor_val;</div>
-<div class="line"><span class="lineno">   37</span>  }</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   39</span>  {</div>
-<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> floor_val = floor_val + 1.0f;</div>
-<div class="line"><span class="lineno">   41</span>  }</div>
-<div class="line"><span class="lineno">   42</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00031">31</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html">Round.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
+<div class="line"><span class="lineno">   33</span>  <span class="keyword">auto</span> floor_val = std::floor(value);</div>
+<div class="line"><span class="lineno">   34</span>  <span class="keyword">auto</span> diff = value - floor_val;</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> ((diff &lt; 0.5f) || ((diff == 0.5f) &amp;&amp; (<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(floor_val) % 2 == 0)))</div>
+<div class="line"><span class="lineno">   36</span>  {</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">return</span> floor_val;</div>
+<div class="line"><span class="lineno">   38</span>  }</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   40</span>  {</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">return</span> floor_val = floor_val + 1.0f;</div>
+<div class="line"><span class="lineno">   42</span>  }</div>
+<div class="line"><span class="lineno">   43</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00044">Round()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00050">Quantize()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00065">Round()</a>.</p>
 
 </div>
 </div>
