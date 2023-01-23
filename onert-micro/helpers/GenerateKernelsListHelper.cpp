@@ -146,6 +146,8 @@ std::string get_register_kernel_str(const circle::BuiltinOperator builtin_operat
       return "REGISTER_KERNEL(TRANSPOSE, Transpose)";
     case circle::BuiltinOperator_TRANSPOSE_CONV:
       return "REGISTER_KERNEL(TRANSPOSE_CONV, TransposeConv)";
+    case circle::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM:
+      return "REGISTER_KERNEL(UNIDIRECTIONAL_SEQUENCE_LSTM, UnidirectionalSequenceLSTM)";
     default:
       assert(false && "Not supported kernel");
   }
