@@ -116,9 +116,7 @@ int entry(int argc, char **argv)
       auto value = arser.get<std::string>(bisection_str);
       if (value == "auto")
       {
-        // TODO
-        VERBOSE(l, 0) << "Not implemented yet " << input_model_path << std::endl;
-        return EXIT_FAILURE;
+        solver.algorithm(BisectionSolver::Algorithm::Auto);
       }
       else if (value == "true")
       {

@@ -39,7 +39,7 @@ public:
    */
   enum Algorithm
   {
-    Auto, // NYI
+    Auto,
     ForceQ16Front,
     ForceQ16Back,
   };
