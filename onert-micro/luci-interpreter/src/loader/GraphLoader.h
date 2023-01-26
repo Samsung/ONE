@@ -33,7 +33,7 @@ public:
               IMemoryManager *memory_manager,
               std::unordered_map<int32_t, Tensor *> *index_to_tensor);
 
-  void loadTensors();
+  void loadTensors(bool use_static_memory_manager);
   void initInputTensors(bool use_static_memory_manager) const;
   void loadOperators(bool use_static_memory_manager);
 

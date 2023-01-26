@@ -71,15 +71,15 @@ bool GraphLoader::isCouldBeEmplaceTensor(const int32_t tensor_index)
   return true;
 }
 
-void GraphLoader::loadTensors()
+void GraphLoader::loadTensors(bool use_static_memory_manager)
 {
   for (uint32_t i = 0; i < _reader->tensors().size(); ++i)
   {
     const auto const_tensor = _reader->tensors().at(i);
 
     // TODO: handle with variable tensors
-    if (const_tensor->is_variable())
-      continue;
+    if (const_tensor->is_variable() and use_static_memory_manager)
+      assert(false && "Not supported now");
 
     auto const buffer = wrap(_reader->buffers()[const_tensor->buffer()]->data());
     auto const const_dims = wrap(const_tensor->shape()); // in NHWC
@@ -95,7 +95,7 @@ void GraphLoader::loadTensors()
       size *= const_dim;
     }
 
-    if (buffer.empty() && size > 0)
+    if (buffer.empty() && size > 0 && not const_tensor->is_variable())
     {
       // normal empty tensor
       continue;
@@ -111,10 +111,10 @@ void GraphLoader::loadTensors()
     const auto dtype = luci_datatype(const_tensor->type());
 
     AffineQuantization *quantization = nullptr;
-    if (dtype == DataType::U8 or dtype == DataType::S8 or dtype == DataType::S16)
+    const auto quant_params = const_tensor->quantization();
+    if (quant_params)
     {
       auto unique_ptr_quantization = std::make_unique<AffineQuantization>();
-      const auto quant_params = const_tensor->quantization();
       assert(quant_params->zero_point()->size() == quant_params->scale()->size());
       unique_ptr_quantization->scale.assign(quant_params->scale()->cbegin(),
                                             quant_params->scale()->cend());
@@ -125,12 +125,23 @@ void GraphLoader::loadTensors()
       quantization = _runtime_graph->addAffineQuantization(std::move(unique_ptr_quantization));
     }
 
+    if (size == 0)
+    {
+      if (quantization != nullptr)
+        _runtime_graph->addIntermediateTensorAffineQuantization(quantization);
+
+      continue;
+    }
+
     // Get pointer to data from buffer
     auto data_ptr = const_cast<unsigned char *>(buffer.data());
 
     auto tensor = std::make_unique<Tensor>(dtype, std::move(shape), quantization);
     // Save pointer to const data
-    tensor->writeDataWithoutCopy(static_cast<void *>(data_ptr));
+    assert(data_ptr != nullptr or const_tensor->is_variable());
+
+    if (data_ptr)
+      tensor->writeDataWithoutCopy(static_cast<void *>(data_ptr));
 
     _index_to_tensor->emplace(i, tensor.get());
     _runtime_graph->addTensor(std::move(tensor));
@@ -152,10 +163,10 @@ void GraphLoader::initInputTensors(bool use_static_memory_manager) const
     }
 
     AffineQuantization *quantization = nullptr;
-    if (dtype == DataType::U8 or dtype == DataType::S8 or dtype == DataType::S16)
+    const auto quant_params = tensor->quantization();
+    if (quant_params)
     {
       auto unique_ptr_quantization = std::make_unique<AffineQuantization>();
-      const auto quant_params = tensor->quantization();
       assert(quant_params->zero_point()->size() == quant_params->scale()->size());
       unique_ptr_quantization->scale.assign(quant_params->scale()->cbegin(),
                                             quant_params->scale()->cend());
@@ -279,10 +290,10 @@ void GraphLoader::loadOperators(bool use_static_memory_manager)
       }
 
       AffineQuantization *quantization = nullptr;
-      if (dtype == DataType::U8 or dtype == DataType::S8 or dtype == DataType::S16)
+      const auto quant_params = tensor->quantization();
+      if (quant_params)
       {
         auto unique_ptr_quantization = std::make_unique<AffineQuantization>();
-        const auto quant_params = tensor->quantization();
         assert(quant_params->zero_point()->size() == quant_params->scale()->size());
         unique_ptr_quantization->scale.assign(quant_params->scale()->cbegin(),
                                               quant_params->scale()->cend());

@@ -19,6 +19,7 @@
 
 #include "luci_interpreter/core/DataType.h"
 #include "luci_interpreter/core/ParamsType.h"
+#include "luci_interpreter/core/Tensor.h"
 
 #include <cstdint>
 #include <vector>
@@ -211,6 +212,92 @@ struct TransposeConvParams
   Padding padding;
   int32_t stride_height;
   int32_t stride_width;
+};
+
+struct UnidirectionalSequenceLSTMParams
+{
+  Activation activation;
+  float cell_clip;
+  float proj_clip;
+  bool time_major;
+  bool asymmetric_quantize_inputs;
+  std::vector<AffineQuantization *> intermediate_affine_quant;
+};
+
+// TODO: replace it
+struct IntegerLSTMParams
+{
+  int16_t quantized_cell_clip;
+  int8_t quantized_proj_clip;
+  int cell_scale;
+
+  int32_t effective_input_to_input_scale_a;
+  int32_t effective_input_to_input_scale_b;
+
+  int32_t effective_recurrent_to_input_scale_a;
+  int32_t effective_recurrent_to_input_scale_b;
+
+  int32_t effective_cell_to_input_scale_a;
+  int32_t effective_cell_to_input_scale_b;
+
+  int32_t effective_input_to_forget_scale_a;
+  int32_t effective_input_to_forget_scale_b;
+
+  int32_t effective_recurrent_to_forget_scale_a;
+  int32_t effective_recurrent_to_forget_scale_b;
+
+  int32_t effective_cell_to_forget_scale_a;
+  int32_t effective_cell_to_forget_scale_b;
+
+  int32_t effective_input_to_cell_scale_a;
+  int32_t effective_input_to_cell_scale_b;
+
+  int32_t effective_recurrent_to_cell_scale_a;
+  int32_t effective_recurrent_to_cell_scale_b;
+
+  int32_t effective_input_to_output_scale_a;
+  int32_t effective_input_to_output_scale_b;
+
+  int32_t effective_recurrent_to_output_scale_a;
+  int32_t effective_recurrent_to_output_scale_b;
+
+  int32_t effective_cell_to_output_scale_a;
+  int32_t effective_cell_to_output_scale_b;
+
+  int32_t effective_proj_scale_a;
+  int32_t effective_proj_scale_b;
+
+  int32_t effective_hidden_scale_a;
+  int32_t effective_hidden_scale_b;
+
+  int32_t layer_norm_input_scale_a;
+  int32_t layer_norm_input_scale_b;
+
+  int32_t layer_norm_forget_scale_a;
+  int32_t layer_norm_forget_scale_b;
+
+  int32_t layer_norm_cell_scale_a;
+  int32_t layer_norm_cell_scale_b;
+
+  int32_t layer_norm_output_scale_a;
+  int32_t layer_norm_output_scale_b;
+
+  int32_t hidden_zp;
+
+  int32_t input_variance_guard;
+  int32_t forget_variance_guard;
+  int32_t cell_variance_guard;
+  int32_t output_variance_guard;
+
+  std::vector<int32_t> input_to_forget_effective_bias;
+  std::vector<int32_t> recurrent_to_forget_effective_bias;
+  std::vector<int32_t> input_to_cell_effective_bias;
+  std::vector<int32_t> recurrent_to_cell_effective_bias;
+  std::vector<int32_t> input_to_output_effective_bias;
+  std::vector<int32_t> recurrent_to_output_effective_bias;
+  std::vector<int32_t> input_to_input_effective_bias;
+  std::vector<int32_t> recurrent_to_input_effective_bias;
+  std::vector<int32_t> projection_effective_bias;
 };
 
 struct UnpackParams

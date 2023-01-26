@@ -38,11 +38,16 @@ public:
   Tensor *addTensor(std::unique_ptr<Tensor> &&tensor);
   AffineQuantization *addAffineQuantization(std::unique_ptr<AffineQuantization> &&quantization);
 
+  void addIntermediateTensorAffineQuantization(AffineQuantization *intermediate_tensor);
   void addInputTensor(Tensor *input_tensor);
   void addOutputTensor(Tensor *output_tensor);
 
   void configureAllocations(Tensor *tensor);
 
+  const std::vector<AffineQuantization *> &getIntermediateAffineQuantizations() const
+  {
+    return _intermediate_tensors_affine_quantizations;
+  }
   const std::vector<Tensor *> &getInputTensors() const { return _input_tensors; }
   const std::vector<Tensor *> &getOutputTensors() const { return _output_tensors; }
 
@@ -61,6 +66,7 @@ protected:
   std::vector<std::unique_ptr<Tensor>> _tensors;
   std::vector<std::unique_ptr<AffineQuantization>> _affine_quantizations;
   std::vector<Tensor *> _input_tensors;
+  std::vector<AffineQuantization *> _intermediate_tensors_affine_quantizations;
   std::vector<Tensor *> _output_tensors;
 
   bool _is_valid = false;

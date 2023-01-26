@@ -22,7 +22,6 @@
 #include "luci_interpreter/core/Tensor.h"
 
 #include <tensorflow/lite/kernels/internal/types.h>
-
 #include <cassert>
 #include <cstdint>
 
@@ -30,6 +29,9 @@ namespace luci_interpreter
 {
 namespace kernels
 {
+
+void matrixScalarMultiplyAccumulate(const int8_t *matrix, int32_t scalar, int32_t n_row,
+                                    int32_t n_col, int32_t *output);
 
 #define LUCI_INTERPRETER_CHECK(cond)                 \
   if (!(cond))                                       \
