@@ -54,6 +54,7 @@ class CONSTANT:
          ' So, use it only when the impact is known to be acceptable.'),
         ('fuse_activation_function', 'fuse Activation function to a preceding operator'),
         ('fuse_instnorm', 'fuse ops to InstanceNorm operator'),
+        ('fuse_prelu', 'fuse ops to PReLU operator'),
         ('replace_cw_mul_add_with_depthwise_conv',
          'replace channel-wise Mul/Add with DepthwiseConv2D'),
         ('remove_fakequant', 'remove FakeQuant ops'),
