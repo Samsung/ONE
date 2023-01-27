@@ -169,6 +169,7 @@ Current transformation options are
 - fuse_instnorm: This will convert instance normalization related operators to
   one InstanceNormalization operator that our onert provides for faster
   execution.
+- fuse_prelu: This will fuse operators to PReLU operator
 - fuse_preactivation_batchnorm: This fuses batch normalization operators of pre-activations to Conv operators.
 - fuse_activation_function: This fuses Activation function to a preceding operator.
 - fuse_mean_with_mean: This fuses two consecutive ReduceMean operations into one.
