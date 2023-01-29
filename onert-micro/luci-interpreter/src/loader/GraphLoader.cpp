@@ -236,6 +236,7 @@ void GraphLoader::loadOperators(bool use_static_memory_manager)
     std::vector<Tensor *> output_tensors(op->outputs()->size());
 
     bool is_inplace = false;
+    bool is_graph_input = false;
     for (int32_t j = 0; j < op->inputs()->size(); ++j)
     {
       const auto input_index = op->inputs()->operator[](j);
@@ -245,12 +246,14 @@ void GraphLoader::loadOperators(bool use_static_memory_manager)
         input_tensors.at(j) = input_tensor;
         const auto &graph_input_tensors = _runtime_graph->getInputTensors();
 
+        is_graph_input = (std::find(graph_input_tensors.begin(), graph_input_tensors.end(),
+                                    input_tensor) != graph_input_tensors.end()) or
+                         is_graph_input;
+
         // TODO: handle Inplace Optimization with Static Memory Manager
         if (not use_static_memory_manager and
             isCouldBeEmplaceOperation(_reader->builtin_code(op)) and op->outputs()->size() == 1 and
-            isCouldBeEmplaceTensor(input_index) and
-            (std::find(graph_input_tensors.begin(), graph_input_tensors.end(), input_tensor) ==
-             graph_input_tensors.end()))
+            isCouldBeEmplaceTensor(input_index) and not is_graph_input)
         {
           is_inplace = true;
         }
