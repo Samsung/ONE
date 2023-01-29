@@ -1,5 +1,11 @@
 var NAVTREEINDEX161 =
 {
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_not_8h_source.html":[35,0,0,51,3,0,0,0,0,51],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_or_8h.html":[35,0,0,51,3,0,0,0,0,52],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_or_8h_source.html":[35,0,0,51,3,0,0,0,0,52],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logistic_8h.html":[35,0,0,51,3,0,0,0,0,53],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logistic_8h_source.html":[35,0,0,51,3,0,0,0,0,53],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_matrix_diag_8h.html":[35,0,0,51,3,0,0,0,0,55],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_matrix_diag_8h_source.html":[35,0,0,51,3,0,0,0,0,55],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_matrix_set_diag_8h.html":[35,0,0,51,3,0,0,0,0,56],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_matrix_set_diag_8h_source.html":[35,0,0,51,3,0,0,0,0,56],
@@ -243,11 +249,5 @@ var NAVTREEINDEX161 =
 "locoex-customop_2src_2_c_op_call_8cpp.html#a006d7251f8a1034cc7c9250104475d0f":[35,0,0,45,1,1,0],
 "locoex-customop_2src_2_c_op_call_8cpp_source.html":[35,0,0,45,1,1],
 "locomotiv_2src_2_node_2_avg_pool2_d_8cpp.html":[35,0,0,46,1,0,0],
-"locomotiv_2src_2_node_2_avg_pool2_d_8cpp_source.html":[35,0,0,46,1,0,0],
-"locomotiv_2src_2_node_2_bias_add_8cpp.html":[35,0,0,46,1,0,1],
-"locomotiv_2src_2_node_2_bias_add_8cpp_source.html":[35,0,0,46,1,0,1],
-"locomotiv_2src_2_node_2_mat_mul_8cpp.html":[35,0,0,46,1,0,17],
-"locomotiv_2src_2_node_2_mat_mul_8cpp_source.html":[35,0,0,46,1,0,17],
-"locomotiv_2src_2_session_8cpp.html":[35,0,0,46,1,8],
-"locomotiv_2src_2_session_8cpp_source.html":[35,0,0,46,1,8]
+"locomotiv_2src_2_node_2_avg_pool2_d_8cpp_source.html":[35,0,0,46,1,0,0]
 };

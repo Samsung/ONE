@@ -1,5 +1,11 @@
 var NAVTREEINDEX137 =
 {
+"compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_depthwise_conv2d_8h.html#a6f98040ce5b2f996abbfdc80fb1d5cfd":[35,0,0,53,1,0,5,0],
+"compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_depthwise_conv2d_8h_source.html":[35,0,0,53,1,0,5],
+"compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_dequantize_8h.html":[35,0,0,53,1,0,6],
+"compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_dequantize_8h_source.html":[35,0,0,53,1,0,6],
+"compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_elu_8h.html":[35,0,0,53,1,0,7],
+"compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_elu_8h_source.html":[35,0,0,53,1,0,7],
 "compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_fully_connected_8h.html":[35,0,0,53,1,0,8],
 "compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_fully_connected_8h.html#a90a2d5d095d1e99b34df27491a89fdd6":[35,0,0,53,1,0,8,0],
 "compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html":[35,0,0,53,1,0,8],
@@ -243,11 +249,5 @@ var NAVTREEINDEX137 =
 "compiler_2luci-interpreter_2src_2_static_memory_manager_8cpp.html":[35,0,0,53,2,7],
 "compiler_2luci-interpreter_2src_2_static_memory_manager_8cpp_source.html":[35,0,0,53,2,7],
 "compiler_2luci-interpreter_2src_2_test_memory_manager_8cpp.html":[35,0,0,53,2,8],
-"compiler_2luci-interpreter_2src_2_test_memory_manager_8cpp_source.html":[35,0,0,53,2,8],
-"compiler_2luci-interpreter_2src_2core_2_kernel_8h.html":[35,0,0,53,2,0,1],
-"compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html":[35,0,0,53,2,0,1],
-"compiler_2luci-interpreter_2src_2core_2_kernel_params_8h.html":[35,0,0,53,2,0,2],
-"compiler_2luci-interpreter_2src_2core_2_kernel_params_8h.html#a228e5a1fc6979fe43bba60cd7d80ef2d":[35,0,0,53,2,0,2,33],
-"compiler_2luci-interpreter_2src_2core_2_kernel_params_8h.html#a2695bf46949a48f22f2b49d96a3c339b":[35,0,0,53,2,0,2,34],
-"compiler_2luci-interpreter_2src_2core_2_kernel_params_8h.html#a90fd79eea976371bc175be8e10ba5147":[35,0,0,53,2,0,2,32]
+"compiler_2luci-interpreter_2src_2_test_memory_manager_8cpp_source.html":[35,0,0,53,2,8]
 };

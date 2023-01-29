@@ -1,5 +1,11 @@
 var NAVTREEINDEX160 =
 {
+"infer__testcases_8py.html#aacfb66358077cb73a282ed6cb1add539":[35,0,0,70,7,2,0,0],
+"infer__testcases_8py.html#ab38c7615c54ceba5e6134d34e46a00e0":[35,0,0,70,7,2,0,4],
+"infer__testcases_8py.html#ab4de68839acb0154d6b80a58680e0bd7":[35,0,0,70,7,2,0,9],
+"infer__testcases_8py.html#abd833f173ab3112053948a2cb0cc7773":[35,0,0,70,7,2,0,7],
+"infer__testcases_8py.html#abded461bcda38fc7fa413a78273909c1":[35,0,0,70,7,2,0,13],
+"infer__testcases_8py.html#abe44abcbf4a6ec01263f4812c1a1ee91":[35,0,0,70,7,2,0,12],
 "infer__testcases_8py.html#ac55efa4c32b7ef88464b1e8133a18717":[35,0,0,70,7,2,0,24],
 "infer__testcases_8py.html#ad0d434c7b1aafb339369b12c6e1799eb":[35,0,0,70,7,2,0,14],
 "infer__testcases_8py.html#aeaa3a6cae5673ce2e2af437e8518b800":[35,0,0,70,7,2,0,19],
@@ -243,11 +249,5 @@ var NAVTREEINDEX160 =
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_log_softmax_8h_source.html":[35,0,0,51,3,0,0,0,0,54],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_and_8h.html":[35,0,0,51,3,0,0,0,0,50],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_and_8h_source.html":[35,0,0,51,3,0,0,0,0,50],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_not_8h.html":[35,0,0,51,3,0,0,0,0,51],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_not_8h_source.html":[35,0,0,51,3,0,0,0,0,51],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_or_8h.html":[35,0,0,51,3,0,0,0,0,52],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_or_8h_source.html":[35,0,0,51,3,0,0,0,0,52],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_logistic_8h.html":[35,0,0,51,3,0,0,0,0,53],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_logistic_8h_source.html":[35,0,0,51,3,0,0,0,0,53],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_matrix_diag_8h.html":[35,0,0,51,3,0,0,0,0,55]
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_not_8h.html":[35,0,0,51,3,0,0,0,0,51]
 };

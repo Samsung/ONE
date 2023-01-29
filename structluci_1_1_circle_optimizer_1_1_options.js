@@ -29,6 +29,7 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "FusePreActivationBatchNorm", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea2eadd97d15b7b1a4a2ade77fbfc4eed1", null ],
       [ "MakeBatchNormGammaPositive", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeab9d1e96b0d84baea84aa364ecb66e657", null ],
       [ "FuseActivationFunction", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea4ebcdc4b6d580c00f996566cf19f2121", null ],
+      [ "FusePRelu", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea34202927f543664fcb80f36bf30c26ae", null ],
       [ "ShuffleWeightTo16x1Float32", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea8087c9df5329fea6b3b8c8273223567b", null ],
       [ "RemoveRedundantTranspose", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeadbff75368fde1acc32973a4028256629", null ],
       [ "ReplaceMulAddWithDepthwiseConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeacd6163f03e8989d2d462a43507dd4772", null ],

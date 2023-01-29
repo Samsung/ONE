@@ -139,6 +139,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ab3c32bece05300a61130099125e8facc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacempqsolver_1_1bisection.html#a1ef117c0ef64a624663fbf7ea12a7cf0">ParameterizerResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacempqsolver_1_1bisection.html#ab3c32bece05300a61130099125e8facc">compute_depth</a> (const <a class="el" href="classluci_1_1_module.html">luci::Module</a> *module, <a class="el" href="namespacempqsolver_1_1bisection.html#a286c973e6531a1759bb45c77ca65d0a0">NodeDepthType</a> &amp;nodes_depth, float &amp;min_depth, float &amp;max_depth)</td></tr>
 <tr class="memdesc:ab3c32bece05300a61130099125e8facc"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute maximal distance from graph inputs to graph nodes along with min/max values of distance and return status of computation (Assumes graph has no cycles)  <a href="namespacempqsolver_1_1bisection.html#ab3c32bece05300a61130099125e8facc">More...</a><br /></td></tr>
 <tr class="separator:ab3c32bece05300a61130099125e8facc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad565c8e297a5d1c495016eb579fca754"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacempqsolver_1_1bisection.html#ad565c8e297a5d1c495016eb579fca754">approximate</a> (const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node)</td></tr>
+<tr class="memdesc:ad565c8e297a5d1c495016eb579fca754"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximate error introduced while quantizing node into Q8  <a href="namespacempqsolver_1_1bisection.html#ad565c8e297a5d1c495016eb579fca754">More...</a><br /></td></tr>
+<tr class="separator:ad565c8e297a5d1c495016eb579fca754"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a7359d03292685b7c31dca835a7c4003e" name="a7359d03292685b7c31dca835a7c4003e"></a>
@@ -275,6 +278,49 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ad565c8e297a5d1c495016eb579fca754" name="ad565c8e297a5d1c495016eb579fca754"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad565c8e297a5d1c495016eb579fca754">&#9670;&#160;</a></span>approximate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float mpqsolver::bisection::approximate </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structluci_1_1_circle_node.html">CircleNode</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>approximate error introduced while quantizing node into Q8 </p>
+<p >How Approximate works?</p>
+<p >Currently it works just for convolution layers, but may be generalized for other types as well. See discussion at <a href="https://github.com/Samsung/ONE/pull/10170#discussion_r1042246598">https://github.com/Samsung/ONE/pull/10170#discussion_r1042246598</a> Convolution can be expressed as a matrix multiplication. While quantizing we introduce quantization error into convolution operand (activations) as well as into convolution weights. A_q * W_q = (A + q_err(A)) * (W + q_err(W)) = A * W + A * q_err(W) + W * q_err(A) + q_err(A) * q_err(W), assuming q_err(A) * q_err(W) are negligible as quadratic terms, we get A_q * W_q ~ A * W + A * q_err(W) + W * q_err(A) , q_err - quantization error, W - weight matrix, A - activations from previous layer (IFM), so quantization error of matrix multiplication can be approximated as A * q_err(W) + W * q_err(A). Estimating its upper bound we get A * q_err(W) + W * q_err(A) &lt;= number_of_additions * (A_max * (W_max - W_min) / 255 + W_max * (A_max - A_min) / 255) The following code tries to get total error for quantizing convolution node into Q8. It's just an heuristic (Metric sensitivity depends highly on derivatives as well). </p>
+
+<p class="definition">Definition at line <a class="el" href="_error_approximator_8cpp_source.html#l00368">368</a> of file <a class="el" href="_error_approximator_8cpp_source.html">ErrorApproximator.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  369</span>{</div>
+<div class="line"><span class="lineno">  370</span>  <span class="keyword">auto</span> opcode = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">opcode</a>();</div>
+<div class="line"><span class="lineno">  371</span>  <span class="keywordtype">float</span> qerror = 0.f;</div>
+<div class="line"><span class="lineno">  372</span>  <span class="keywordflow">switch</span> (opcode)</div>
+<div class="line"><span class="lineno">  373</span>  {</div>
+<div class="line"><span class="lineno">  374</span>    <span class="keywordflow">case</span> CircleOpcode::DEPTHWISE_CONV_2D:</div>
+<div class="line"><span class="lineno">  375</span>    <span class="keywordflow">case</span> CircleOpcode::CONV_2D:</div>
+<div class="line"><span class="lineno">  376</span>    <span class="keywordflow">case</span> CircleOpcode::TRANSPOSE_CONV:</div>
+<div class="line"><span class="lineno">  377</span>      qerror = approximate_conv(node);</div>
+<div class="line"><span class="lineno">  378</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  379</span>    <span class="keywordflow">default</span>: <span class="comment">// TODO (FULLY_CONNECTED e.g.)</span></div>
+<div class="line"><span class="lineno">  380</span>      qerror = 0.f;</div>
+<div class="line"><span class="lineno">  381</span>  }</div>
+<div class="line"><span class="lineno">  382</span> </div>
+<div class="line"><span class="lineno">  383</span>  <span class="keywordflow">return</span> qerror;</div>
+<div class="line"><span class="lineno">  384</span>}</div>
+<div class="ttc" id="astructluci_1_1_circle_node_html_a963f9812635ceac6d5a207594b5028af"><div class="ttname"><a href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode</a></div><div class="ttdeci">virtual CircleOpcode opcode(void) const =0</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>.</p>
+
+</div>
+</div>
 <a id="ab3c32bece05300a61130099125e8facc" name="ab3c32bece05300a61130099125e8facc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab3c32bece05300a61130099125e8facc">&#9670;&#160;</a></span>compute_depth()</h2>
 
@@ -385,7 +431,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespacempqsolver_1_1bisection.html#a1ef117c0ef64a624663fbf7ea12a7cf0a36fc6065a3e970bc3e6b2e59da52bf2a">FAILURE</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, <a class="el" href="namespacempqsolver_1_1bisection.html#a1ef117c0ef64a624663fbf7ea12a7cf0ad0749aaba8b833466dfcbb0428e4f89c">SUCCESS</a>, and <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">loco::succs()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_bisection_solver_8cpp_source.html#l00070">mpqsolver::bisection::BisectionSolver::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_bisection_solver_8cpp_source.html#l00104">mpqsolver::bisection::BisectionSolver::run()</a>.</p>
 
 </div>
 </div>

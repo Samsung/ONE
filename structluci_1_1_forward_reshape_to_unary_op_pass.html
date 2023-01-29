@@ -190,18 +190,18 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classlogo_1_1_pass.html#a3076e513d3bf84dafeb158a028725374">logo::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_forward_reshape_to_unary_op_pass_8cpp_source.html#l00190">190</a> of file <a class="el" href="_forward_reshape_to_unary_op_pass_8cpp_source.html">ForwardReshapeToUnaryOpPass.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  191</span>{</div>
-<div class="line"><span class="lineno">  192</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  193</span>  ForwardReshape forward;</div>
-<div class="line"><span class="lineno">  194</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
-<div class="line"><span class="lineno">  195</span>  {</div>
-<div class="line"><span class="lineno">  196</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  197</span>    <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;forward))</div>
-<div class="line"><span class="lineno">  198</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  199</span>  }</div>
-<div class="line"><span class="lineno">  200</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><span class="lineno">  201</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_forward_reshape_to_unary_op_pass_8cpp_source.html#l00218">218</a> of file <a class="el" href="_forward_reshape_to_unary_op_pass_8cpp_source.html">ForwardReshapeToUnaryOpPass.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  219</span>{</div>
+<div class="line"><span class="lineno">  220</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  221</span>  ForwardReshape forward;</div>
+<div class="line"><span class="lineno">  222</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
+<div class="line"><span class="lineno">  223</span>  {</div>
+<div class="line"><span class="lineno">  224</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  225</span>    <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;forward))</div>
+<div class="line"><span class="lineno">  226</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  227</span>  }</div>
+<div class="line"><span class="lineno">  228</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><span class="lineno">  229</span>}</div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition:</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition:</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
 </div><!-- fragment -->

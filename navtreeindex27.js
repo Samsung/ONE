@@ -1,5 +1,11 @@
 var NAVTREEINDEX27 =
 {
+"_view_impl_8h.html":[35,0,0,1,0,1,0,0,1,10],
+"_view_impl_8h_source.html":[35,0,0,1,0,1,0,0,1,10],
+"_weight_8h.html":[35,0,0,34,1,1,0,0,12],
+"_weight_8h_source.html":[35,0,0,34,1,1,0,0,12],
+"_weight_inventory_8cpp.html":[35,0,0,34,1,1,0,0,13],
+"_weight_inventory_8cpp_source.html":[35,0,0,34,1,1,0,0,13],
 "_weight_inventory_8h.html":[35,0,0,34,1,1,0,0,14],
 "_weight_inventory_8h_source.html":[35,0,0,34,1,1,0,0,14],
 "_where_options_8cpp.html":[35,0,0,112,2,0,174],
@@ -243,11 +249,5 @@ var NAVTREEINDEX27 =
 "backend_2cpu_2_backend_context_8h.html":[35,0,4,2,1,4,3],
 "backend_2cpu_2_backend_context_8h_source.html":[35,0,4,2,1,4,3],
 "backend_2cpu_2_config_8cc.html":[35,0,4,2,1,4,4],
-"backend_2cpu_2_config_8cc_source.html":[35,0,4,2,1,4,4],
-"backend_2cpu_2_external_context_8h.html":[35,0,4,2,1,4,7],
-"backend_2cpu_2_external_context_8h_source.html":[35,0,4,2,1,4,7],
-"backend_2cpu_2_kernel_generator_8cc.html":[35,0,4,2,1,4,8],
-"backend_2cpu_2_kernel_generator_8cc_source.html":[35,0,4,2,1,4,8],
-"backend_2cpu_2_kernel_generator_8h.html":[35,0,4,2,1,4,9],
-"backend_2cpu_2_kernel_generator_8h_source.html":[35,0,4,2,1,4,9]
+"backend_2cpu_2_config_8cc_source.html":[35,0,4,2,1,4,4]
 };

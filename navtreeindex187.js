@@ -1,5 +1,12 @@
 var NAVTREEINDEX187 =
 {
+"runtime_2onert_2core_2include_2ir_2operation_2_range_8h_source.html":[35,0,4,2,2,0,3,0,43],
+"runtime_2onert_2core_2include_2ir_2operation_2_rank_8h.html":[35,0,4,2,2,0,3,0,44],
+"runtime_2onert_2core_2include_2ir_2operation_2_rank_8h_source.html":[35,0,4,2,2,0,3,0,44],
+"runtime_2onert_2core_2include_2ir_2operation_2_reduce_8h.html":[35,0,4,2,2,0,3,0,45],
+"runtime_2onert_2core_2include_2ir_2operation_2_reduce_8h_source.html":[35,0,4,2,2,0,3,0,45],
+"runtime_2onert_2core_2include_2ir_2operation_2_reshape_8h.html":[35,0,4,2,2,0,3,0,46],
+"runtime_2onert_2core_2include_2ir_2operation_2_reshape_8h_source.html":[35,0,4,2,2,0,3,0,46],
 "runtime_2onert_2core_2include_2ir_2operation_2_resize_bilinear_8h.html":[35,0,4,2,2,0,3,0,47],
 "runtime_2onert_2core_2include_2ir_2operation_2_resize_bilinear_8h_source.html":[35,0,4,2,2,0,3,0,47],
 "runtime_2onert_2core_2include_2ir_2operation_2_resize_nearest_neighbor_8h.html":[35,0,4,2,2,0,3,0,48],
@@ -242,12 +249,5 @@ var NAVTREEINDEX187 =
 "service_2src_2_nodes_2_circle_arg_max_8cpp_source.html":[35,0,0,51,10,1,0,3],
 "service_2src_2_nodes_2_circle_arg_min_8cpp.html":[35,0,0,51,10,1,0,4],
 "service_2src_2_nodes_2_circle_arg_min_8cpp_source.html":[35,0,0,51,10,1,0,4],
-"service_2src_2_nodes_2_circle_average_pool2_d_8cpp.html":[35,0,0,51,10,1,0,5],
-"service_2src_2_nodes_2_circle_average_pool2_d_8cpp_source.html":[35,0,0,51,10,1,0,5],
-"service_2src_2_nodes_2_circle_b_c_q_fully_connected_8cpp.html":[35,0,0,51,10,1,0,8],
-"service_2src_2_nodes_2_circle_b_c_q_fully_connected_8cpp_source.html":[35,0,0,51,10,1,0,8],
-"service_2src_2_nodes_2_circle_b_c_q_gather_8cpp.html":[35,0,0,51,10,1,0,9],
-"service_2src_2_nodes_2_circle_b_c_q_gather_8cpp_source.html":[35,0,0,51,10,1,0,9],
-"service_2src_2_nodes_2_circle_batch_mat_mul_8cpp.html":[35,0,0,51,10,1,0,6],
-"service_2src_2_nodes_2_circle_batch_mat_mul_8cpp_source.html":[35,0,0,51,10,1,0,6]
+"service_2src_2_nodes_2_circle_average_pool2_d_8cpp.html":[35,0,0,51,10,1,0,5]
 };

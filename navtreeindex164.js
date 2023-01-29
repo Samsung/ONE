@@ -1,5 +1,11 @@
 var NAVTREEINDEX164 =
 {
+"mir_2include_2mir_2_quantization_8h.html":[35,0,0,61,0,0,13],
+"mir_2include_2mir_2_quantization_8h_source.html":[35,0,0,61,0,0,13],
+"mir_2include_2mir_2_visitor_8h.html":[35,0,0,61,0,0,21],
+"mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[35,0,0,61,0,0,21,2],
+"mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[35,0,0,61,0,0,21,3],
+"mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[35,0,0,61,0,0,21,4],
 "mir_2include_2mir_2_visitor_8h_source.html":[35,0,0,61,0,0,21],
 "mir_2src_2_graph_8cpp.html":[35,0,0,61,1,9],
 "mir_2src_2_graph_8cpp.html#aaf7f8fc0215983ba36a402319779e34e":[35,0,0,61,1,9,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX164 =
 "morph_2include_2morph_2dims_8h.html#aa99b14b3992c5801d3e46acfc4f19909":[35,0,0,67,0,0,1,1],
 "morph_2include_2morph_2dims_8h_source.html":[35,0,0,67,0,0,1],
 "morph_2src_2dims_8cpp.html":[35,0,0,67,1,1],
-"morph_2src_2dims_8cpp.html#aa99b14b3992c5801d3e46acfc4f19909":[35,0,0,67,1,1,0],
-"morph_2src_2dims_8cpp_source.html":[35,0,0,67,1,1],
-"namespace_analysis_template.html":[33,0,1],
-"namespace_cfg_runner.html":[33,0,9],
-"namespace_command.html":[33,0,21],
-"namespace_dot_builder.html":[33,0,30],
-"namespace_dump_f_p32_f_m.html":[33,0,32]
+"morph_2src_2dims_8cpp.html#aa99b14b3992c5801d3e46acfc4f19909":[35,0,0,67,1,1,0]
 };

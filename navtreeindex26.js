@@ -1,5 +1,11 @@
 var NAVTREEINDEX26 =
 {
+"_transpose_8cc.html":[35,0,4,2,2,1,5,0,65],
+"_transpose_8cc_source.html":[35,0,4,2,2,1,5,0,65],
+"_transpose_conv_options_8cpp.html":[35,0,0,112,2,0,164],
+"_transpose_conv_options_8cpp.html#aa563d07698c0f57b789f133b9da6d62f":[35,0,0,112,2,0,164,0],
+"_transpose_conv_options_8cpp_source.html":[35,0,0,112,2,0,164],
+"_transpose_conv_options_8h.html":[35,0,0,112,2,0,165],
 "_transpose_conv_options_8h.html#aa563d07698c0f57b789f133b9da6d62f":[35,0,0,112,2,0,165,0],
 "_transpose_conv_options_8h_source.html":[35,0,0,112,2,0,165],
 "_transpose_layer_8cc.html":[35,0,4,2,1,4,0,102],
@@ -243,11 +249,5 @@ var NAVTREEINDEX26 =
 "_verify_quantized_node_type_8cpp.html#aa04d5e646f4e595a5ba6f44fec9ed430":[35,0,0,51,7,1,97,0],
 "_verify_quantized_node_type_8cpp_source.html":[35,0,0,51,7,1,97],
 "_verify_quantized_node_type_8h.html":[35,0,0,51,7,1,98],
-"_verify_quantized_node_type_8h_source.html":[35,0,0,51,7,1,98],
-"_view_impl_8h.html":[35,0,0,1,0,1,0,0,1,10],
-"_view_impl_8h_source.html":[35,0,0,1,0,1,0,0,1,10],
-"_weight_8h.html":[35,0,0,34,1,1,0,0,12],
-"_weight_8h_source.html":[35,0,0,34,1,1,0,0,12],
-"_weight_inventory_8cpp.html":[35,0,0,34,1,1,0,0,13],
-"_weight_inventory_8cpp_source.html":[35,0,0,34,1,1,0,0,13]
+"_verify_quantized_node_type_8h_source.html":[35,0,0,51,7,1,98]
 };

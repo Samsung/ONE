@@ -15,5 +15,6 @@ var namespacempqsolver_1_1bisection =
       [ "SUCCESS", "namespacempqsolver_1_1bisection.html#a1ef117c0ef64a624663fbf7ea12a7cf0ad0749aaba8b833466dfcbb0428e4f89c", null ],
       [ "FAILURE", "namespacempqsolver_1_1bisection.html#a1ef117c0ef64a624663fbf7ea12a7cf0a36fc6065a3e970bc3e6b2e59da52bf2a", null ]
     ] ],
+    [ "approximate", "namespacempqsolver_1_1bisection.html#ad565c8e297a5d1c495016eb579fca754", null ],
     [ "compute_depth", "namespacempqsolver_1_1bisection.html#ab3c32bece05300a61130099125e8facc", null ]
 ];

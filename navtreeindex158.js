@@ -1,5 +1,11 @@
 var NAVTREEINDEX158 =
 {
+"hermes_8h_source.html":[35,0,0,40,0,1],
+"hierarchy.html":[34,2],
+"i5diff_2src_2_entry_8cpp.html":[35,0,0,42,0,0],
+"i5diff_2src_2_entry_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198":[35,0,0,42,0,0,0],
+"i5diff_2src_2_entry_8cpp_source.html":[35,0,0,42,0,0],
+"import_2include_2luci_2_import_2_nodes_2_circle_abs_8h.html":[35,0,0,51,2,0,0,0,0,0],
 "import_2include_2luci_2_import_2_nodes_2_circle_abs_8h_source.html":[35,0,0,51,2,0,0,0,0,0],
 "import_2include_2luci_2_import_2_nodes_2_circle_add_8h.html":[35,0,0,51,2,0,0,0,0,1],
 "import_2include_2luci_2_import_2_nodes_2_circle_add_8h_source.html":[35,0,0,51,2,0,0,0,0,1],
@@ -243,11 +249,5 @@ var NAVTREEINDEX158 =
 "import_2src_2_nodes_2_circle_add_8cpp.html":[35,0,0,51,2,1,0,1],
 "import_2src_2_nodes_2_circle_add_8cpp_source.html":[35,0,0,51,2,1,0,1],
 "import_2src_2_nodes_2_circle_add_n_8cpp.html":[35,0,0,51,2,1,0,2],
-"import_2src_2_nodes_2_circle_add_n_8cpp_source.html":[35,0,0,51,2,1,0,2],
-"import_2src_2_nodes_2_circle_arg_max_8cpp.html":[35,0,0,51,2,1,0,3],
-"import_2src_2_nodes_2_circle_arg_max_8cpp_source.html":[35,0,0,51,2,1,0,3],
-"import_2src_2_nodes_2_circle_arg_min_8cpp.html":[35,0,0,51,2,1,0,4],
-"import_2src_2_nodes_2_circle_arg_min_8cpp_source.html":[35,0,0,51,2,1,0,4],
-"import_2src_2_nodes_2_circle_average_pool2_d_8cpp.html":[35,0,0,51,2,1,0,5],
-"import_2src_2_nodes_2_circle_average_pool2_d_8cpp_source.html":[35,0,0,51,2,1,0,5]
+"import_2src_2_nodes_2_circle_add_n_8cpp_source.html":[35,0,0,51,2,1,0,2]
 };

@@ -1,5 +1,11 @@
 var NAVTREEINDEX154 =
 {
+"gemm__helpers_8h.html#a8eea56ab5aebc4c42c5843931ea3531f":[35,0,1,0,1,0,0,0,1,151],
+"gemm__helpers_8h.html#a90b573562baa916273977081d78cd70b":[35,0,1,0,1,0,0,0,1,34],
+"gemm__helpers_8h.html#a91b9e33c8e3a2eceddbfc4db85ede8ac":[35,0,1,0,1,0,0,0,1,166],
+"gemm__helpers_8h.html#a9380081c8880d146db4a96152cb82c41":[35,0,1,0,1,0,0,0,1,73],
+"gemm__helpers_8h.html#a9444374f91effec8941ac8151dbbd7b6":[35,0,1,0,1,0,0,0,1,171],
+"gemm__helpers_8h.html#a9497bbc5b37de40e645cb1f8a556257f":[35,0,1,0,1,0,0,0,1,91],
 "gemm__helpers_8h.html#a94ece2dcf5f2af7300d54a40b2ab56f4":[35,0,1,0,1,0,0,0,1,192],
 "gemm__helpers_8h.html#a95da845fbd8793b29a1e09d148949fa4":[35,0,1,0,1,0,0,0,1,31],
 "gemm__helpers_8h.html#a95e48c8e88afb7e8b51e7dd85650d91f":[35,0,1,0,1,0,0,0,1,163],
@@ -230,8 +236,8 @@ var NAVTREEINDEX154 =
 "group___neural_networks.html#ga113c33d5f1fe49a4fcf7c53afde629b5":[32,0,137],
 "group___neural_networks.html#ga16ce3c18aa2574df91f7b7932bfdf48d":[32,0,131],
 "group___neural_networks.html#ga181eb35072be36440b386eb6571cb3b2":[32,0,110],
-"group___neural_networks.html#ga1aa0c2cbc257093f98d6f0a2eb1932a5":[32,0,23],
 "group___neural_networks.html#ga1aa0c2cbc257093f98d6f0a2eb1932a5":[32,0,22],
+"group___neural_networks.html#ga1aa0c2cbc257093f98d6f0a2eb1932a5":[32,0,23],
 "group___neural_networks.html#ga2287b1751678d75a349faa36956602fb":[32,0,151],
 "group___neural_networks.html#ga2324b730b593482fda8f8f3a129ba06d":[32,0,150],
 "group___neural_networks.html#ga2e823929ef6335826ebd460f396748d4":[32,0,124],
@@ -243,11 +249,5 @@ var NAVTREEINDEX154 =
 "group___neural_networks.html#ga39ee06437cf045123a311f1b0a8c61a6":[32,0,99],
 "group___neural_networks.html#ga42428f04168032a22b8a2c073435d834":[32,0,107],
 "group___neural_networks.html#ga4472907d12644156ec45935be26c0852":[32,0,123],
-"group___neural_networks.html#ga4525857fd53a696b7a048d97281522ab":[32,0,100],
-"group___neural_networks.html#ga46406c51161140e3aadaacfbc8ae88c6":[32,0,113],
-"group___neural_networks.html#ga4adbdd519e2d3f770784fc55d197159f":[32,0,26],
-"group___neural_networks.html#ga4ce6f20a94d3a2de47fa5a810feeb9a4":[32,0,18],
-"group___neural_networks.html#ga4ce6f20a94d3a2de47fa5a810feeb9a4":[32,0,19],
-"group___neural_networks.html#ga4d08bf42436ce06241074394e122bbcc":[32,0,116],
-"group___neural_networks.html#ga4ec620045a39909a6bf00b3ee0c4d414":[32,0,27]
+"group___neural_networks.html#ga4525857fd53a696b7a048d97281522ab":[32,0,100]
 };

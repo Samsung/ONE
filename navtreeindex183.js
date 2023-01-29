@@ -1,5 +1,12 @@
 var NAVTREEINDEX183 =
 {
+"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_logical_and_8cpp_source.html":[35,0,3,2,2,3,0,32],
+"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_logical_not_8cpp.html":[35,0,3,2,2,3,0,33],
+"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_logical_not_8cpp.html#ae04ed2ed3b64afcf7caf287435dd5ea7":[35,0,3,2,2,3,0,33,0],
+"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_logical_not_8cpp_source.html":[35,0,3,2,2,3,0,33],
+"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_logical_or_8cpp.html":[35,0,3,2,2,3,0,34],
+"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_logical_or_8cpp.html#afc02dfedbf8376a6b2c2e12197ad380a":[35,0,3,2,2,3,0,34,0],
+"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_logical_or_8cpp_source.html":[35,0,3,2,2,3,0,34],
 "onert-micro_2luci-interpreter_2src_2loader_2nodes_2_logistic_8cpp.html":[35,0,3,2,2,3,0,35],
 "onert-micro_2luci-interpreter_2src_2loader_2nodes_2_logistic_8cpp.html#aa1d7d064a05083f478d39d6c3f062b19":[35,0,3,2,2,3,0,35,0],
 "onert-micro_2luci-interpreter_2src_2loader_2nodes_2_logistic_8cpp_source.html":[35,0,3,2,2,3,0,35],
@@ -242,12 +249,5 @@ var NAVTREEINDEX183 =
 "optimized_2_depthwise_conv_u_int8_8h.html#a7f843a8c10add9f97826e1952b289a07":[35,0,1,1,0,0,3,1,4,3],
 "optimized_2_depthwise_conv_u_int8_8h.html#a9e5f7a3eadfba82e028f4983a462c5cb":[35,0,1,1,0,0,3,1,4,2],
 "optimized_2_depthwise_conv_u_int8_8h.html#aa432b80504a69aefe8ee0a4f0a4d94f8":[35,0,1,1,0,0,3,1,4,7],
-"optimized_2_depthwise_conv_u_int8_8h.html#ab9b6acc151e330c9742628a2f37650b6":[35,0,1,1,0,0,3,1,4,5],
-"optimized_2_depthwise_conv_u_int8_8h.html#adf2547e9a7129861ac2bb8a7b32ab4b2":[35,0,1,1,0,0,3,1,4,6],
-"optimized_2_depthwise_conv_u_int8_8h_source.html":[35,0,1,1,0,0,3,1,4],
-"pages.html":[],
-"part__eval__one_8py.html":[35,0,0,17,0],
-"part__eval__one_8py.html#a07b3ca30c379b61770b9fa744336c9e5":[35,0,0,17,0,1],
-"part__eval__one_8py.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462":[35,0,0,17,0,15],
-"part__eval__one_8py.html#a0d9bae0bd03b89b0b68bda1b31381a84":[35,0,0,17,0,9]
+"optimized_2_depthwise_conv_u_int8_8h.html#ab9b6acc151e330c9742628a2f37650b6":[35,0,1,1,0,0,3,1,4,5]
 };

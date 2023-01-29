@@ -1,5 +1,11 @@
 var NAVTREEINDEX139 =
 {
+"compiler_2luci-interpreter_2src_2kernels_2_resize_nearest_neighbor_8h.html":[35,0,0,53,2,2,118],
+"compiler_2luci-interpreter_2src_2kernels_2_resize_nearest_neighbor_8h_source.html":[35,0,0,53,2,2,118],
+"compiler_2luci-interpreter_2src_2kernels_2_reverse_v2_8cpp.html":[35,0,0,53,2,2,119],
+"compiler_2luci-interpreter_2src_2kernels_2_reverse_v2_8cpp_source.html":[35,0,0,53,2,2,119],
+"compiler_2luci-interpreter_2src_2kernels_2_reverse_v2_8h.html":[35,0,0,53,2,2,120],
+"compiler_2luci-interpreter_2src_2kernels_2_reverse_v2_8h_source.html":[35,0,0,53,2,2,120],
 "compiler_2luci-interpreter_2src_2kernels_2_rsqrt_8cpp.html":[35,0,0,53,2,2,121],
 "compiler_2luci-interpreter_2src_2kernels_2_rsqrt_8cpp_source.html":[35,0,0,53,2,2,121],
 "compiler_2luci-interpreter_2src_2kernels_2_rsqrt_8h.html":[35,0,0,53,2,2,122],
@@ -243,11 +249,5 @@ var NAVTREEINDEX139 =
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_l2_normalize_8cpp.html":[35,0,0,53,2,3,0,27],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_l2_normalize_8cpp.html#a1a4ce5b2c2b51d9a7d56521a649b4f3d":[35,0,0,53,2,3,0,27,0],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_l2_normalize_8cpp_source.html":[35,0,0,53,2,3,0,27],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_l2_pool2_d_8cpp.html":[35,0,0,53,2,3,0,28],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_l2_pool2_d_8cpp.html#a954d9bd82bcbff7de307ff755ae29ea1":[35,0,0,53,2,3,0,28,0],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_l2_pool2_d_8cpp_source.html":[35,0,0,53,2,3,0,28],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_leaky_relu_8cpp.html":[35,0,0,53,2,3,0,29],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_leaky_relu_8cpp.html#aa92301980d51b10774621c4ca328e67b":[35,0,0,53,2,3,0,29,0],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_leaky_relu_8cpp_source.html":[35,0,0,53,2,3,0,29],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_less_8cpp.html":[35,0,0,53,2,3,0,30]
+"compiler_2luci-interpreter_2src_2loader_2nodes_2_l2_pool2_d_8cpp.html":[35,0,0,53,2,3,0,28]
 };

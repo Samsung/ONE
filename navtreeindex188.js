@@ -1,5 +1,12 @@
 var NAVTREEINDEX188 =
 {
+"service_2src_2_nodes_2_circle_average_pool2_d_8cpp_source.html":[35,0,0,51,10,1,0,5],
+"service_2src_2_nodes_2_circle_b_c_q_fully_connected_8cpp.html":[35,0,0,51,10,1,0,8],
+"service_2src_2_nodes_2_circle_b_c_q_fully_connected_8cpp_source.html":[35,0,0,51,10,1,0,8],
+"service_2src_2_nodes_2_circle_b_c_q_gather_8cpp.html":[35,0,0,51,10,1,0,9],
+"service_2src_2_nodes_2_circle_b_c_q_gather_8cpp_source.html":[35,0,0,51,10,1,0,9],
+"service_2src_2_nodes_2_circle_batch_mat_mul_8cpp.html":[35,0,0,51,10,1,0,6],
+"service_2src_2_nodes_2_circle_batch_mat_mul_8cpp_source.html":[35,0,0,51,10,1,0,6],
 "service_2src_2_nodes_2_circle_batch_to_space_n_d_8cpp.html":[35,0,0,51,10,1,0,7],
 "service_2src_2_nodes_2_circle_batch_to_space_n_d_8cpp_source.html":[35,0,0,51,10,1,0,7],
 "service_2src_2_nodes_2_circle_cast_8cpp.html":[35,0,0,51,10,1,0,10],
@@ -242,12 +249,5 @@ var NAVTREEINDEX188 =
 "service_2src_2_nodes_2_circle_while_out_8cpp.html":[35,0,0,51,10,1,0,128],
 "service_2src_2_nodes_2_circle_while_out_8cpp_source.html":[35,0,0,51,10,1,0,128],
 "service_2src_2_nodes_2_circle_zeros_like_8cpp.html":[35,0,0,51,10,1,0,129],
-"service_2src_2_nodes_2_circle_zeros_like_8cpp_source.html":[35,0,0,51,10,1,0,129],
-"souschef_2include_2souschef_2_arguments_8h.html":[35,0,0,100,0,0,1],
-"souschef_2include_2souschef_2_arguments_8h_source.html":[35,0,0,100,0,0,1],
-"souschef_2include_2souschef_2_data_2_constant_8h.html":[35,0,0,100,0,0,0,0],
-"souschef_2include_2souschef_2_data_2_constant_8h_source.html":[35,0,0,100,0,0,0,0],
-"souschef_2include_2souschef_2dims_8h.html":[35,0,0,100,0,0,5],
-"souschef_2include_2souschef_2dims_8h.html#a10d51f2d9d0d47521dab1a8eee903de4":[35,0,0,100,0,0,5,1],
-"souschef_2include_2souschef_2dims_8h.html#a7e8607f8d2dc0b463db477b36c6ab989":[35,0,0,100,0,0,5,2]
+"service_2src_2_nodes_2_circle_zeros_like_8cpp_source.html":[35,0,0,51,10,1,0,129]
 };
