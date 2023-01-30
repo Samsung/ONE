@@ -181,6 +181,34 @@ public:
    */
   const ModelEdges &model_edges() { return _edges; }
 
+  /**
+   * @brief Verify NNPkg
+   *
+   */
+  void verify(void)
+  {
+    // Verify edges information
+    //
+    // Only duplicates of nnpkg output and Edge `from` are possible.
+    // | Whether duplicates are possible   | Edge `to` | Edge `from` |
+    // | nnpkg input  (input of subgraph)  | X (*1)    | X (*2)      |
+    // | nnpkg output (output of subgraph) | X (*2)    | O           |
+    // *1. The subjects who determine values of each buffer are different.
+    //    - nnpkg input : user input
+    //    - Edge `to`   : output of another subgraph
+    // *2. `IOIndex` of inputs and outputs of subgraph is distinct.
+    //
+    for (const auto &edge : _edges.edges)
+    {
+      if (std::find(_edges.pkg_inputs.begin(), _edges.pkg_inputs.end(), edge.to) !=
+          _edges.pkg_inputs.end())
+      {
+        throw std::runtime_error{
+          "Invalid edge information. NNPkg inputs and Edge `to` cannot be duplicated"};
+      }
+    }
+  }
+
   // TODO Find better way to handle single model NNPackage and multi model NNPackage on inputSize(),
   //      outputSize(), inputInfo(), outputInfo()
 
