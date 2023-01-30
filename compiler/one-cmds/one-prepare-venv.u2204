@@ -37,6 +37,7 @@ VER_TENSORFLOW=2.10.1
 VER_ONNX=1.12.0
 VER_ONNXRUNTIME=1.12.1
 VER_ONNX_TF=1.10.0
+VER_PYDOT=1.4.2
 
 # Install tensorflow
 
@@ -91,3 +92,6 @@ fi
 # NOTE refer https://github.com/protocolbuffers/protobuf/issues/10051
 # TODO remove this when issue is resolved
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade protobuf==3.19.6
+
+# Install pydot for visq
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install pydot==${VER_PYDOT}
