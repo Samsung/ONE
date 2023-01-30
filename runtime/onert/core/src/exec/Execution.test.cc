@@ -600,4 +600,39 @@ TEST(ExecInstance, multi_model_async)
   }
 }
 
+TEST(ExecInstance, multi_model_dequant_input_quant_output)
+{
+  auto mockup = CompiledMockUpMultiModel();
+  auto executors = mockup.artifact->_executors;
+
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
+
+  const uint8_t input1_buffer[4] = {138, 128, 118, 108}; // {1, 0, -1, -2}
+  const uint8_t input2_buffer[4] = {138, 98, 148, 88};   // {1, -3, 2, -4}
+  uint8_t output_buffer[4] = {};
+  const uint8_t output_expected[4] = {198, 78, 138, 58}; // {7, -5, 1, -7}
+  float scale = 0.1;
+  int32_t zero_point = 128;
+
+  onert::exec::Execution execution{executors};
+
+  onert::ir::TypeInfo type_info{onert::ir::DataType::QUANT_UINT8_ASYMM, scale, zero_point};
+  execution.setInput(input1, type_info, execution.getInputShape(input1),
+                     reinterpret_cast<const void *>(input1_buffer), 4, onert::ir::Layout::NHWC);
+  execution.setInput(input2, type_info, execution.getInputShape(input2),
+                     reinterpret_cast<const void *>(input2_buffer), 4, onert::ir::Layout::NHWC);
+  execution.setOutput(output, type_info, execution.getOutputShape(output),
+                      reinterpret_cast<void *>(output_buffer), 4, onert::ir::Layout::NHWC);
+  execution.execute();
+
+  for (auto i = 0; i < 4; i++)
+  {
+    EXPECT_EQ(output_buffer[i], output_expected[i]);
+  }
+}
+
+// TODO Add an unittest multi_model_quant_input_dequant_output
+
 } // namespace
