@@ -49,6 +49,12 @@ void IBaseRuntimeGraph::addInputTensor(Tensor *input_tensor)
   _input_tensors.push_back(input_tensor);
 }
 
+void IBaseRuntimeGraph::addIntermediateTensorAffineQuantization(
+  AffineQuantization *intermediate_tensor_affine_quant)
+{
+  _intermediate_tensors_affine_quantizations.push_back(intermediate_tensor_affine_quant);
+}
+
 void IBaseRuntimeGraph::addOutputTensor(Tensor *output_tensor)
 {
   _output_tensors.push_back(output_tensor);

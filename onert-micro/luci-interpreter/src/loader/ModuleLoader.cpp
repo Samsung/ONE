@@ -49,7 +49,7 @@ void ModuleLoader::load(bool use_static_memory_manager)
     GraphLoader loader(&reader, runtime_graph, _memory_manager, &_index_to_tensor);
 
     loader.initInputTensors(use_static_memory_manager);
-    loader.loadTensors();
+    loader.loadTensors(use_static_memory_manager);
     loader.loadOperators(use_static_memory_manager);
   }
 
