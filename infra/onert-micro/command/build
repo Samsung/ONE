@@ -1,0 +1,11 @@
+#!/bin/bash
+
+import "build.configuration"
+
+BUILD_WORKSPACE_PATH="${NNMI_PROJECT_PATH}/${BUILD_WORKSPACE_RPATH}"
+
+if [[ ! -d "${BUILD_WORKSPACE_PATH}" ]]; then
+  echo "'${BUILD_WORKSPACE_RPATH}' does not exist. Please run 'configure' first"
+  exit 255
+fi
+cd "${BUILD_WORKSPACE_PATH}" && cmake --build . -- "$@"

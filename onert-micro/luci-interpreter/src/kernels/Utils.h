@@ -21,6 +21,7 @@
 #include "core/KernelParams.h"
 #include "luci_interpreter/core/Tensor.h"
 
+#include <tensorflow/lite/c/builtin_op_data.h>
 #include <tensorflow/lite/kernels/internal/types.h>
 
 #include <cassert>
@@ -74,6 +75,27 @@ inline int32_t computeOutputSize(Padding padding, int32_t image_size, int32_t fi
 inline int32_t calcOffset(const Shape &shape, int32_t d0, int32_t d1, int32_t d2, int32_t d3)
 {
   return ((d0 * shape.dim(1) + d1) * shape.dim(2) + d2) * shape.dim(3) + d3;
+}
+
+inline TfLiteFusedActivation getTfLiteActivation(Activation activation)
+{
+  switch (activation)
+  {
+    case Activation::RELU:
+      return kTfLiteActRelu;
+    case Activation::RELU6:
+      return kTfLiteActRelu6;
+    case Activation::RELU_N1_TO_1:
+      return kTfLiteActReluN1To1;
+    case Activation::TANH:
+      return kTfLiteActTanh;
+    case Activation::SIGN_BIT:
+      return kTfLiteActSignBit;
+    case Activation::NONE:
+      return kTfLiteActNone;
+    default:
+      assert(false && "Unsupported activation.");
+  }
 }
 
 template <typename T>
