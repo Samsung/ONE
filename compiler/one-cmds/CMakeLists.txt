@@ -1,3 +1,5 @@
+# NOTE these files should not have extensions.
+#      below code will remove extension when copy and install.
 set(ONE_COMMAND_FILES
     one-build
     one-import
@@ -12,9 +14,17 @@ set(ONE_COMMAND_FILES
     one-profile
     one-infer
     one-codegen
-    one-prepare-venv
     onecc
 )
+
+# TODO find better way for per-platform files
+if(ONE_UBUNTU_CODENAME_JAMMY)
+  # NOTE copy one-prepare-venv.u2204 as build/../one-prepare-venv
+  #      and install build/../one-prepare-venv file
+  list(APPEND ONE_COMMAND_FILES one-prepare-venv.u2204)
+else()
+  list(APPEND ONE_COMMAND_FILES one-prepare-venv)
+endif()
 
 # pytorch importer is an experimental feature, it is not used in default configuration
 if(ENABLE_ONE_IMPORT_PYTORCH)
@@ -25,7 +35,9 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
 
   set(ONE_COMMAND_FILE ${ONE_COMMAND})
   set(ONE_COMMAND_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${ONE_COMMAND_FILE}")
-  set(ONE_COMMAND_BIN "${CMAKE_CURRENT_BINARY_DIR}/${ONE_COMMAND_FILE}")
+  # strip extension from the name
+  get_filename_component(ONE_COMMNAD_FILE_NAME ${ONE_COMMAND} NAME_WE)
+  set(ONE_COMMAND_BIN "${CMAKE_CURRENT_BINARY_DIR}/${ONE_COMMNAD_FILE_NAME}")
   set(ONE_COMMAND_TARGET "${ONE_COMMAND}_target")
 
   add_custom_command(OUTPUT ${ONE_COMMAND_BIN}
@@ -36,7 +48,7 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
 
   add_custom_target(${ONE_COMMAND_TARGET} ALL DEPENDS ${ONE_COMMAND_BIN})
 
-  install(FILES ${ONE_COMMAND}
+  install(FILES ${ONE_COMMAND_BIN}
           PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
                       GROUP_READ GROUP_EXECUTE
                       WORLD_READ WORLD_EXECUTE
