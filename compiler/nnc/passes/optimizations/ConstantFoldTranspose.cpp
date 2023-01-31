@@ -62,7 +62,7 @@ PassData ConstantFoldTranspose::run(PassData data)
   auto matches = matcher.matchEdge(is_constant, is_transpose);
   while (!matches.empty())
   {
-    for (const auto match : matches)
+    for (const auto &match : matches)
     {
       auto constant_op = dynamic_cast<ops::ConstantOp *>(match.first);
       auto transpose_op = dynamic_cast<ops::TransposeOp *>(match.second);
