@@ -1,0 +1,10 @@
+#!/bin/bash
+
+import "build.configuration"
+
+BUILD_WORKSPACE_PATH="${NNMI_PROJECT_PATH}/${BUILD_WORKSPACE_RPATH}"
+
+mkdir -p "${BUILD_WORKSPACE_PATH}"
+
+cd "${BUILD_WORKSPACE_PATH}"
+cmake "${NNMI_PROJECT_PATH}/infra/onert-micro" "$@"

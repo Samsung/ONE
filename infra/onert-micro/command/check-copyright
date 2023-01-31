@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# HOW TO USE
+#
+# Create .COPYRIGHT file at the root of your project (compiler/[PROJECT]/.COPYRIGHT)
+# with the copyright pattern required for your project.
+#
+# echo "Copyright (c) [0-9]\+ Samsung Electronics Co., Ltd. All Rights Reserved" > compiler/[PROJECT]/.COPYRIGHT
+#
+# DISCLAIMER
+#
+# This check works only when your copyright notice is of the following form:
+#
+# /**
+#  * [Copyright notice]
+#  ...
+#  */
+#
+# NOTE
+#
+# The current implementation does not validate YEAR in the copyright notice.
+#
+# TODO Validate YEAR without FALSE POSTIVIES
+#
+# It already turns out that checking the initial commit year introduces
+# FALSE POSITIVES if there are relocated files.
+INVALID_FILES=()
+
+for COPYRIGHT_PATH in $(ls ${NNCC_PROJECT_PATH}/compiler/*/.COPYRIGHT); do
+  PROJECT_PATH="$(dirname ${COPYRIGHT_PATH})"
+  PROJECT_NAME="$(basename ${PROJECT_PATH})"
+
+  CANDIDATE_FILES=$(find "${PROJECT_PATH}" -iname '*.h' -o -iname '*.hpp' -o -iname '*.cpp' -o -iname '*.c')
+
+  # Skip copyright check if there is no candidate files
+  #
+  # NOTE "git ls-files" with no argument will enumerate all the files in the repo
+  if [[ -z ${CANDIDATE_FILES} ]]; then
+    continue
+  fi
+
+  for TRACKED_FILE in $(git ls-files $CANDIDATE_FILES); do
+    MATCHED=$(cat "${NNCC_PROJECT_PATH}/${TRACKED_FILE}" | head -n2 | tail -n1 | sed 's/^ \* //g' | grep -f "${COPYRIGHT_PATH}" | wc -l)
+
+    if [[ ${MATCHED} -ne 1 ]]; then
+      INVALID_FILES+=(${TRACKED_FILE})
+    fi
+  done
+done
+
+if [[ ${#INVALID_FILES[@]} -ne 0 ]]; then
+  echo ">> FAILED <<"
+  echo
+  echo "PLEASE CHECK THE FOLLOWING FILES"
+  for INVALID_FILE in "${INVALID_FILES[@]}"; do
+    echo "- ${INVALID_FILE}"
+  done
+  exit 255
+fi
+
+echo ">> PASSED <<"
+exit 0
