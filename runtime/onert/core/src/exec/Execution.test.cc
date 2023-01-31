@@ -17,6 +17,7 @@
 #include "exec/Execution.h"
 
 #include "compiler/Compiler.h"
+#include "compiler/CompilerFactory.h"
 #include "ir/Graph.h"
 #include "ir/operation/BinaryArithmetic.h"
 #include "util/TracingCtx.h"
@@ -88,6 +89,164 @@ public:
   std::shared_ptr<Graph> graph;
   std::unique_ptr<onert::compiler::CompilerOptions> coptions;
   std::shared_ptr<onert::compiler::CompilerArtifact> artifact;
+};
+
+class CompiledMockUpMultiModel
+{
+public:
+  CompiledMockUpMultiModel()
+  {
+    // Model0: a float elementwise add operation
+    // Model0 input: lhs0, rhs0
+    // Model0 output: add result (result0)
+
+    // Model1: a qasymm8 elementwise add operation
+    // Model1 input: result0, rhs1
+    // Model1 output: add result (result1)
+
+    // Model2: a float elementwise add operation
+    // Model2 input: result0, result1
+    // Model2 output: add result (result2)
+
+    // constant: rhs2
+    // result0 <= (lhs0 + rhs0)
+    // result1 <= (result0 + rhs1)
+    // result2 <= (result0 + result1)
+    // lhs0, rhs0, rh1, result0, result1, result2 shape: {1, 2, 2, 1}
+    // activation: none (constant)
+
+    // Update edge information
+    edges.pkg_inputs.emplace_back(ModelIndex{0}, SubgraphIndex{0}, IOIndex{0});
+    edges.pkg_inputs.emplace_back(ModelIndex{0}, SubgraphIndex{0}, IOIndex{1});
+    edges.pkg_outputs.emplace_back(ModelIndex{2}, SubgraphIndex{0}, IOIndex{0});
+    // From
+    const auto result0 = IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}};
+    const auto result1 = IODesc{ModelIndex{1}, SubgraphIndex{0}, IOIndex{0}};
+    // To
+    const auto lhs1 = IODesc{ModelIndex{1}, SubgraphIndex{0}, IOIndex{0}};
+    const auto lhs2 = IODesc{ModelIndex{2}, SubgraphIndex{0}, IOIndex{0}};
+    const auto rhs2 = IODesc{ModelIndex{2}, SubgraphIndex{0}, IOIndex{1}};
+    edges.edges.insert({result0, lhs1});
+    edges.edges.insert({result0, lhs2});
+    edges.edges.insert({result1, rhs2});
+
+    for (size_t i = 0; i < 3; ++i)
+    {
+      graphs.emplace_back(std::make_shared<Graph>());
+    }
+    Shape shape{1, 2, 2, 1};
+
+    // Model0's add operands (result1 <= lhs0 + rhs0)
+    DataType types[3] = {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM, DataType::FLOAT32};
+    auto operand_lhs0 = graphs[0]->addOperand(shape, TypeInfo{types[0]});
+    auto operand_rhs0 = graphs[0]->addOperand(shape, TypeInfo{types[0]});
+    auto operand_result0 = graphs[0]->addOperand(shape, TypeInfo{types[0]});
+
+    // Model0's add operation
+    operation::BinaryArithmetic::Param param0;
+    param0.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
+    param0.activation = Activation::NONE;
+    auto input_set0 = OperandIndexSequence{operand_lhs0, operand_rhs0};
+    auto output_set0 = OperandIndexSequence{operand_result0};
+    graphs[0]->addOperation(
+      std::make_unique<operation::BinaryArithmetic>(input_set0, output_set0, param0));
+
+    // Model0's inputs/outputs
+    graphs[0]->addInput(operand_lhs0);
+    graphs[0]->addInput(operand_rhs0);
+    graphs[0]->addOutput(operand_result0);
+    graphs[0]->verify();
+
+    edges.pkg_inputs.emplace_back(ModelIndex{0}, SubgraphIndex{0}, IOIndex{0});
+    edges.pkg_inputs.emplace_back(ModelIndex{0}, SubgraphIndex{0}, IOIndex{1});
+
+    // Model1's add operands (result2 <= Model0 result + rhs1)
+    // static float rhs1_data[4] = {3, 1, -1, 5};
+    static uint8_t rhs1_data[4] = {131, 129, 127, 133};
+    const float scale = 1;
+    const int32_t zero_point = 128;
+    auto operand_lhs1 = graphs[1]->addOperand(shape, TypeInfo{types[1], scale, zero_point});
+    auto operand_rhs1 = graphs[1]->addOperand(shape, TypeInfo{types[1], scale, zero_point});
+    auto operand_result1 = graphs[1]->addOperand(shape, TypeInfo{types[1], scale, zero_point});
+    graphs[1]
+      ->operands()
+      .at(operand_rhs1)
+      .data(std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(&rhs1_data), 4));
+
+    // Model1's add operation
+    operation::BinaryArithmetic::Param param1;
+    param1.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
+    param1.activation = Activation::NONE;
+    auto input_set1 = OperandIndexSequence{operand_lhs1, operand_rhs1};
+    auto output_set1 = OperandIndexSequence{operand_result1};
+    graphs[1]->addOperation(
+      std::make_unique<operation::BinaryArithmetic>(input_set1, output_set1, param1));
+
+    // Model1's inputs/outputs
+    graphs[1]->addInput(operand_lhs1);
+    graphs[1]->addOutput(operand_result1);
+    graphs[1]->verify();
+
+    // Model2's additional operands (result3 <= Model0 result + Model1 result)
+    auto operand_lhs2 = graphs[2]->addOperand(shape, TypeInfo{types[2]});
+    auto operand_rhs2 = graphs[2]->addOperand(shape, TypeInfo{types[2]});
+    auto operand_result2 = graphs[2]->addOperand(shape, TypeInfo{types[2]});
+
+    // Model2's add operation
+    operation::BinaryArithmetic::Param param2;
+    param2.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
+    param2.activation = Activation::NONE;
+    auto input_set2 = OperandIndexSequence{operand_lhs2, operand_rhs2};
+    auto output_set2 = OperandIndexSequence{operand_result2};
+    graphs[2]->addOperation(
+      std::make_unique<operation::BinaryArithmetic>(input_set2, output_set2, param2));
+
+    // Model1's inputs/outputs
+    graphs[2]->addInput(operand_lhs2);
+    graphs[2]->addInput(operand_rhs2);
+    graphs[2]->addOutput(operand_result2);
+    graphs[2]->verify();
+
+    // Compile
+    compile();
+  }
+
+public:
+  void compile()
+  {
+    auto nnpkg = std::make_shared<onert::ir::NNPkg>();
+    coptions.clear();
+    for (uint16_t i = 0; i < graphs.size(); ++i)
+    {
+      coptions.emplace_back(onert::compiler::CompilerOptions::fromGlobalConfig());
+
+      auto model = std::make_shared<onert::ir::Model>();
+      model->push(SubgraphIndex{0}, graphs[i]);
+
+      nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
+    }
+    for (const auto &pkg_input : edges.pkg_inputs)
+    {
+      nnpkg->addInput(pkg_input);
+    }
+    for (const auto &pkg_output : edges.pkg_outputs)
+    {
+      nnpkg->addOutput(pkg_output);
+    }
+    for (const auto &edge : edges.edges)
+    {
+      nnpkg->addEdge(edge.from, edge.to);
+    }
+    auto compiler = onert::compiler::CompilerFactory::get().create(nnpkg, coptions);
+    nnpkg.reset();
+    artifact = compiler->compile();
+  }
+
+public:
+  std::vector<std::shared_ptr<Graph>> graphs;
+  std::vector<std::unique_ptr<onert::compiler::CompilerOptions>> coptions;
+  std::shared_ptr<onert::compiler::CompilerArtifact> artifact;
+  ModelEdges edges;
 };
 
 TEST(ExecInstance, simple)
@@ -284,6 +443,148 @@ TEST(ExecInstance, async)
   const float input2_buffer[4] = {1, -3, 2, -4};
   float output_buffer[4] = {};
   const float output_expected[4] = {5, -2, 0, -1};
+
+  onert::exec::Execution execution{executors};
+
+  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
+  execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
+  execution.startExecute();
+  execution.waitFinish();
+
+  for (auto i = 0; i < 4; i++)
+  {
+    EXPECT_EQ(output_buffer[i], output_expected[i]);
+  }
+}
+
+TEST(ExecInstance, multi_model_simple)
+{
+  auto mockup = CompiledMockUpMultiModel();
+  auto executors = mockup.artifact->_executors;
+
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
+
+  const float input1_buffer[4] = {1, 0, -1, -2};
+  const float input2_buffer[4] = {1, -3, 2, -4};
+  float output_buffer[4] = {};
+  const float output_expected[4] = {7, -5, 1, -7};
+
+  onert::exec::Execution execution{executors};
+
+  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
+  execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
+  execution.execute();
+
+  for (auto i = 0; i < 4; i++)
+  {
+    EXPECT_EQ(output_buffer[i], output_expected[i]);
+  }
+}
+
+TEST(ExecInstance, multi_model_twoCompile)
+{
+  auto mockup = CompiledMockUpMultiModel();
+  auto executors1 = mockup.artifact->_executors;
+  onert::exec::Execution execution1{executors1};
+
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
+
+  const float exe1_input1_buffer[4] = {1, 0, -1, -2};
+  const float exe1_input2_buffer[4] = {1, -3, 2, -4};
+  float exe1_output_buffer[4] = {};
+  const float exe1_output_expected[4] = {7, -5, 1, -7};
+
+  execution1.setInput(input1, reinterpret_cast<const void *>(exe1_input1_buffer), 16);
+  execution1.setInput(input2, reinterpret_cast<const void *>(exe1_input2_buffer), 16);
+  execution1.setOutput(output, reinterpret_cast<void *>(exe1_output_buffer), 16);
+
+  // Make new executor: compile again
+  mockup.compile();
+  onert::exec::Execution execution2{mockup.artifact->_executors};
+
+  const float exe2_input1_buffer[4] = {2, 1, -2, 0};
+  const float exe2_input2_buffer[4] = {-3, 3, 1, 2};
+  float exe2_output_buffer[4] = {};
+  const float exe2_output_expected[4] = {1, 9, -3, 9};
+
+  execution2.setInput(input1, reinterpret_cast<const void *>(exe2_input1_buffer), 16);
+  execution2.setInput(input2, reinterpret_cast<const void *>(exe2_input2_buffer), 16);
+  execution2.setOutput(output, reinterpret_cast<void *>(exe2_output_buffer), 16);
+
+  execution1.execute();
+  execution2.execute();
+
+  for (auto i = 0; i < 4; i++)
+  {
+    EXPECT_EQ(exe1_output_buffer[i], exe1_output_expected[i]);
+    EXPECT_EQ(exe2_output_buffer[i], exe2_output_expected[i]);
+  }
+}
+
+// Support two initialized execution instance then ordered execution
+TEST(ExecInstance, multi_model_twoExecution)
+{
+  auto mockup = CompiledMockUpMultiModel();
+  auto executors = mockup.artifact->_executors;
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output1 = IOIndex{0};
+
+  const float exe1_input1_buffer[4] = {1, 0, -1, -2};
+  const float exe1_input2_buffer[4] = {1, -3, 2, -4};
+  float exe1_output_buffer[4] = {};
+  const float exe1_output_expected[4] = {7, -5, 1, -7};
+  const float exe2_output_expected[4] = {1, 9, -3, 9};
+
+  onert::exec::Execution execution1{executors};
+  execution1.setInput(input1, reinterpret_cast<const void *>(exe1_input1_buffer), 16);
+  execution1.setInput(input2, reinterpret_cast<const void *>(exe1_input2_buffer), 16);
+  execution1.setOutput(output1, reinterpret_cast<void *>(exe1_output_buffer), 16);
+
+  const float exe2_input1_buffer[4] = {2, 1, -2, 0};
+  const float exe2_input2_buffer[4] = {-3, 3, 1, 2};
+  float exe2_output_buffer[4] = {};
+
+  // Make new execution
+  onert::exec::Execution execution2{executors};
+  execution2.setInput(input1, reinterpret_cast<const void *>(exe2_input1_buffer), 16);
+  execution2.setInput(input2, reinterpret_cast<const void *>(exe2_input2_buffer), 16);
+  execution2.setOutput(output1, reinterpret_cast<void *>(exe2_output_buffer), 16);
+
+  execution1.execute();
+  execution1.execute();
+  execution2.execute();
+  execution2.execute();
+
+  for (auto i = 0; i < 4; i++)
+  {
+    EXPECT_EQ(exe1_output_buffer[i], exe1_output_expected[i]);
+    EXPECT_EQ(exe2_output_buffer[i], exe2_output_expected[i]);
+  }
+}
+
+// Multi-model is not thread-safe yet
+
+// Support asynchronous execution
+TEST(ExecInstance, multi_model_async)
+{
+  auto mockup = CompiledMockUpMultiModel();
+  auto executors = mockup.artifact->_executors;
+
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
+
+  const float input1_buffer[4] = {1, 0, -1, -2};
+  const float input2_buffer[4] = {1, -3, 2, -4};
+  float output_buffer[4] = {};
+  const float output_expected[4] = {7, -5, 1, -7};
 
   onert::exec::Execution execution{executors};
 

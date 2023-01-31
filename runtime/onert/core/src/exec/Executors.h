@@ -19,6 +19,7 @@
 
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
+#include "IPermuteFunction.h"
 
 namespace std
 {
@@ -47,7 +48,15 @@ class Executors : public IExecutors
 {
 public:
   Executors(void) = delete;
-  Executors(std::unique_ptr<ir::ModelEdges> model_edges) { _model_edges = std::move(model_edges); }
+  Executors(std::unique_ptr<ir::ModelEdges> model_edges)
+    : _type_aware_quant_layers{}, _type_aware_quant_tensors{}, _is_created_type_quant_layers{false}
+  {
+    _model_edges = std::move(model_edges);
+    for (const auto &edge : _model_edges->edges)
+    {
+      _edge_map[edge.from].emplace_back(edge.to);
+    }
+  }
   Executors(const Executors &) = delete;
   Executors(Executors &&) = default;
   ~Executors() = default;
@@ -71,13 +80,39 @@ public:
 
 private:
   void checkSupportedMultimodel() const;
+  void createTypeAwareQuantLayers();
   uint16_t modelCount() const;
+
+private:
+  // TODO Remove this class
+  class PermuteLayer : public exec::IPermuteFunction
+  {
+  public:
+    PermuteLayer(const std::vector<backend::ITensor *> &inputs,
+                 const std::vector<backend::ITensor *> &outputs)
+    {
+      assert(inputs.size() == outputs.size());
+      _src_tensors = inputs;
+      _dst_tensors = outputs;
+    }
+    virtual ~PermuteLayer() {}
+    void optimize() override {}
+  };
 
 private:
   std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<IExecutor>>
     _executors;
   // NOTE _model_edges may use different struct type for executor implementation
   std::unique_ptr<ir::ModelEdges> _model_edges;
+  std::unordered_map<ir::IODesc, std::vector<ir::IODesc>> _edge_map;
+  // TODO Replace PermuteLayer with backend::builtin::kernel::PermuteLayer
+  std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<PermuteLayer>>
+    _type_aware_quant_layers;
+  // TODO Introduce a new class for edge tensors
+  // TODO Unify tensors with the same `from` tensor and same type
+  std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::IOTensor>>
+    _type_aware_quant_tensors;
+  bool _is_created_type_quant_layers;
 };
 
 } // namespace exec

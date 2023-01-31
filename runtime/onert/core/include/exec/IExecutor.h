@@ -92,6 +92,13 @@ struct IExecutor
                        const std::vector<backend::IPortableTensor *> &outputs) = 0;
 
   /**
+   * @brief Get input tensor objects
+   *
+   * @return Vector of @c IOTensor
+   */
+  virtual const std::vector<backend::builtin::IOTensor *> &getInputTensors() const = 0;
+
+  /**
    * @brief Get output tensor objects
    *
    * @return Vector of @c IOTensor

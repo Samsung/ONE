@@ -47,7 +47,7 @@ public:
 public:
   void setTensor(IPortableTensor *tensor);
   void setUserTensor(uint8_t *buffer, size_t size);
-  ir::OperandInfo orig_info() const { return _orig_info; }
+  const ir::OperandInfo &orig_info() const { return _orig_info; }
   ir::Layout orig_layout() const { return _orig_layout; }
 
 public:
