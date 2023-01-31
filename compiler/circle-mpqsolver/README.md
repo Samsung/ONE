@@ -36,7 +36,7 @@ Run _circle-mpqsolver_ with the following arguments.
 
 --output_model: Output qunatized mode
 
---qerror_ratio: Target quantization error ratio. It should be in [0, 1]. 0 indicates qerror of full uint8 model, 1 indicates qerror of full int16 model.
+--qerror_ratio: Target quantization error ratio. It should be in [0, 1]. 0 indicates qerror of full uint16 model, 1 indicates qerror of full int8 model. The lower `qerror_ratio` the more accurate the solution.
 
 --bisection _mode_: input nodes should be at Q16 precision ['auto', 'true', 'false']
 
