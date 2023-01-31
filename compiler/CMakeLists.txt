@@ -1,3 +1,21 @@
+# get CODENAME to perform per codename actions
+# set focal as default
+set(ONE_UBUNTU_CODENAME "focal")
+find_program(LSB_RELEASE_EXEC lsb_release)
+if(LSB_RELEASE_EXEC)
+  # output should be one of 'bionic', 'focal', 'jammy'
+  # others are not tested
+  execute_process(COMMAND "${LSB_RELEASE_EXEC}" --short --codename
+                  OUTPUT_VARIABLE ONE_UBUNTU_CODENAME
+                  OUTPUT_STRIP_TRAILING_WHITESPACE)
+else()
+  message(STATUS "WARNING: lsb_release not found")
+endif()
+
+if(${ONE_UBUNTU_CODENAME} STREQUAL "jammy")
+  set(ONE_UBUNTU_CODENAME_JAMMY TRUE)
+endif()
+
 # TODO Validate the argument of "requires"
 function(get_project_build_order VAR)
   # This file will describe the dependencies among projects
