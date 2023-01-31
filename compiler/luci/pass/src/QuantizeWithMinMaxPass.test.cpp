@@ -74,3 +74,16 @@ TEST(QuantizeWithMinMaxPassTest, int_concat)
   EXPECT_EQ(nullptr, g.input_1->quantparam());
   EXPECT_EQ(nullptr, g.input_2->quantparam());
 }
+
+TEST(QuantizeWithMinMaxPassTest, inactive_input)
+{
+  SimpleConcatGraph g(loco::DataType::FLOAT32);
+
+  // Unused input
+  g.g.nodes()->create<luci::CircleInput>();
+
+  luci::QuantizeWithMinMaxPass qwmm(loco::DataType::FLOAT32, loco::DataType::U8,
+                                    luci::QuantizationGranularity::LayerWise);
+
+  EXPECT_NO_THROW(qwmm.run(&g.g));
+}
