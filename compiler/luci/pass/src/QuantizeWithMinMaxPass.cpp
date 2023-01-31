@@ -558,7 +558,10 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   };
 
   // Quantize activation
-  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  // Why all_nodes?
+  // Models can have inactive (unused) inputs.
+  // We do not reject such models, but quantize them too
+  for (auto node : loco::all_nodes(g))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     QuantizeActivation qa(_ctx->input_model_dtype, quantize_dtype(circle_node));
