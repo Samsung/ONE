@@ -213,6 +213,15 @@ struct TransposeConvParams
   int32_t stride_width;
 };
 
+struct UnidirectionalSequenceLSTMParams
+{
+  Activation activation;
+  float cell_clip;
+  float proj_clip;
+  bool time_major;
+  bool asymmetric_quantize_inputs;
+};
+
 struct UnpackParams
 {
   int axis;
