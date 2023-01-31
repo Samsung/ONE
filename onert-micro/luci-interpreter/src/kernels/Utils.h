@@ -21,6 +21,7 @@
 #include "core/KernelParams.h"
 #include "luci_interpreter/core/Tensor.h"
 
+#include <tensorflow/lite/c/builtin_op_data.h>
 #include <tensorflow/lite/kernels/internal/types.h>
 
 #include <cassert>
@@ -130,6 +131,27 @@ void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quan
                                          int *left_shift);
 
 Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_shape);
+
+inline TfLiteFusedActivation getTfLiteActivation(Activation activation)
+{
+  switch (activation)
+  {
+    case Activation::RELU:
+      return kTfLiteActRelu;
+    case Activation::RELU6:
+      return kTfLiteActRelu6;
+    case Activation::RELU_N1_TO_1:
+      return kTfLiteActReluN1To1;
+    case Activation::TANH:
+      return kTfLiteActTanh;
+    case Activation::SIGN_BIT:
+      return kTfLiteActSignBit;
+    case Activation::NONE:
+      return kTfLiteActNone;
+    default:
+      assert(false && "Unsupported activation.");
+  }
+}
 
 inline double getQuantizedConvolutionMultipler(float input_scale, float filter_scale,
                                                float output_scale)
