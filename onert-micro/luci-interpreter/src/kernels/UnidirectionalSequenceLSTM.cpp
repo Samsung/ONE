@@ -32,6 +32,7 @@ namespace
 
 using namespace tflite;
 
+// TODO: move this functions to another helper file (PAL, templates ?)
 void UpdateLstmCellFloat(int n_batch, int n_cell, float *cell_state, const float *input_gate,
                          float *forget_gate, const float *cell_gate, bool use_cifg, float clip)
 {
