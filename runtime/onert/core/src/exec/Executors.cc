@@ -60,45 +60,18 @@ namespace onert
 namespace exec
 {
 
-class Executors::EdgeTensor : public backend::builtin::IOTensor
+Executors::Executors(std::unique_ptr<ir::ModelEdges> model_edges)
+  : _executors{}, _model_edges{std::move(model_edges)}, _edge_quant_layers{}, _edge_quant_tensors{},
+    _edge_tensors{}, _is_created_edge_quant_layers{false}, _pkg_input_quant_layers{},
+    _pkg_output_quant_layers{}, _pkg_io_edge_tensors{}, _pkg_inputs{}, _pkg_outputs{},
+    _memory_manager{std::make_unique<MemoryManager>()}, _dynamic_memory_manager{
+                                                          std::make_unique<DynamicMemoryManager>()}
 {
-public:
-  EdgeTensor(const ir::OperandInfo &info, ir::Layout layout)
-    : backend::builtin::IOTensor(info, layout), _buffer{nullptr}, _ref_count{0}
+  for (const auto &edge : _model_edges->edges)
   {
+    _edge_map[edge.from].emplace_back(edge.to);
   }
-  ~EdgeTensor() = default;
-
-  void allocate_buffer()
-  {
-    const auto total_size = orig_info().total_size();
-    _buffer = std::make_unique<uint8_t[]>(total_size);
-    _ref_count = 1;
-
-    // NOTE Executor's inputs/outputs are always IPortableTensor. If backend of inputs/outputs
-    //      is using tensor that does not inherit IPortableTensor, Permute operation is added
-    //      and all inputs/outputs become IPortableTensor at compile stage.
-    //      This allows user's buffers to be set to inputs/outputs of executors.
-    setUserTensor(_buffer.get(), total_size);
-  }
-
-  void increase_ref() { _ref_count++; }
-
-  void decrease_ref()
-  {
-    assert(_ref_count > 0);
-    _ref_count--;
-    if (_ref_count == 0)
-    {
-      _buffer.reset();
-      setUserTensor(nullptr, orig_info().total_size());
-    }
-  }
-
-private:
-  std::unique_ptr<uint8_t[]> _buffer;
-  int32_t _ref_count;
-};
+}
 
 void Executors::emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
                         std::unique_ptr<IExecutor> exec)
@@ -231,7 +204,8 @@ void Executors::createEdgeQuantLayers()
 
     const auto &from_info = from_tensor->orig_info();
     const auto from_layout = from_tensor->orig_layout();
-    _edge_tensors[from_iodesc] = std::make_unique<EdgeTensor>(from_info, from_layout);
+    _edge_tensors[from_iodesc] =
+      std::make_unique<EdgeTensor>(from_info, from_layout, _dynamic_memory_manager.get());
   }
 
   for (auto &pair : _executors)
@@ -269,7 +243,8 @@ void Executors::createEdgeQuantLayers()
             const auto to_layout = to_tensor->orig_layout();
             inputs.emplace_back(from_tensor);
 
-            auto type_aware_quant_tensor = std::make_unique<EdgeTensor>(to_info, to_layout);
+            auto type_aware_quant_tensor =
+              std::make_unique<EdgeTensor>(to_info, to_layout, _dynamic_memory_manager.get());
             outputs.emplace_back(type_aware_quant_tensor.get());
 
             _edge_quant_tensors[to_iodesc] = std::move(type_aware_quant_tensor);
@@ -330,7 +305,8 @@ void Executors::InitPkgIO(const IODescription &desc)
       if (input_desc->info.typeInfo().type() != input_tensor->orig_info().typeInfo().type())
       {
         const auto orig_layout = input_tensor->orig_layout();
-        auto pkg_input_edge_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
+        auto pkg_input_edge_tensor =
+          std::make_unique<EdgeTensor>(orig_info, orig_layout, _dynamic_memory_manager.get());
         _pkg_io_edge_tensors[pkg_input] = std::move(pkg_input_edge_tensor);
 
         // Append type-aware quantization layer's inputs/outputs
@@ -375,7 +351,8 @@ void Executors::InitPkgIO(const IODescription &desc)
       if (output_desc->info.typeInfo().type() != output_tensor->orig_info().typeInfo().type())
       {
         const auto orig_layout = output_tensor->orig_layout();
-        auto pkg_output_edge_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
+        auto pkg_output_edge_tensor =
+          std::make_unique<EdgeTensor>(orig_info, orig_layout, _dynamic_memory_manager.get());
         _pkg_io_edge_tensors[pkg_output] = std::move(pkg_output_edge_tensor);
 
         // Append type-aware quantization layer's inputs/outputs
@@ -451,8 +428,9 @@ void Executors::execute(const IODescription &desc)
         const auto input_io_desc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
         if (_pkg_io_edge_tensors.find(input_io_desc) != _pkg_io_edge_tensors.end())
         {
-          _pkg_io_edge_tensors[input_io_desc]->allocate_buffer();
-          inputs_inter[i] = _pkg_io_edge_tensors[input_io_desc].get();
+          auto pkg_input_quant_tensor = _pkg_io_edge_tensors[input_io_desc].get();
+          allocateMemory(pkg_input_quant_tensor);
+          inputs_inter[i] = pkg_input_quant_tensor;
         }
         else
         {
@@ -494,8 +472,9 @@ void Executors::execute(const IODescription &desc)
         const auto output_io_desc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
         if (_pkg_io_edge_tensors.find(output_io_desc) != _pkg_io_edge_tensors.end())
         {
-          _pkg_io_edge_tensors[output_io_desc]->allocate_buffer();
-          outputs_inter[i] = _pkg_io_edge_tensors[output_io_desc].get();
+          auto pkg_output_quant_tensor = _pkg_io_edge_tensors[output_io_desc].get();
+          allocateMemory(pkg_output_quant_tensor);
+          outputs_inter[i] = pkg_output_quant_tensor;
         }
         else
         {
@@ -506,8 +485,9 @@ void Executors::execute(const IODescription &desc)
       {
         // Allocate buffer of `from` tensors
         const auto from_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
-        _edge_tensors[from_iodesc]->allocate_buffer();
-        outputs_inter[i] = _edge_tensors[from_iodesc].get();
+        auto edge_tensor = _edge_tensors[from_iodesc].get();
+        allocateMemory(edge_tensor);
+        outputs_inter[i] = edge_tensor;
 
         // Allocate buffer of tensors for type-aware quantization
         for (const auto &to_iodesc : _edge_map[from_iodesc])
@@ -516,7 +496,7 @@ void Executors::execute(const IODescription &desc)
           if (_edge_quant_tensors.find(to_iodesc) != _edge_quant_tensors.end())
           {
             auto type_aware_quant_tensor = _edge_quant_tensors.at(to_iodesc).get();
-            type_aware_quant_tensor->allocate_buffer();
+            allocateMemory(type_aware_quant_tensor);
 
             _edge_tensors[from_iodesc]->decrease_ref();
           }
@@ -618,6 +598,13 @@ uint16_t Executors::modelCount() const
     ;
 
   return model_count;
+}
+
+void Executors::allocateMemory(EdgeTensor *edge_tensor)
+{
+  auto alloc = _memory_manager->allocate(edge_tensor, edge_tensor->total_size());
+  edge_tensor->setBuffer(alloc);
+  edge_tensor->increase_ref();
 }
 
 } // namespace exec

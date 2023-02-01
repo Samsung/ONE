@@ -17,6 +17,8 @@
 #ifndef __ONERT_EXEC_EXECUTORS_H__
 #define __ONERT_EXEC_EXECUTORS_H__
 
+#include "backend/basic/MemoryManager.h"
+#include "backend/basic/Tensor.h"
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
 #include "IPermuteFunction.h"
@@ -48,17 +50,7 @@ class Executors : public IExecutors
 {
 public:
   Executors(void) = delete;
-  Executors(std::unique_ptr<ir::ModelEdges> model_edges)
-    : _executors{}, _model_edges{std::move(model_edges)}, _edge_quant_layers{},
-      _edge_quant_tensors{}, _edge_tensors{}, _is_created_edge_quant_layers{false},
-      _pkg_input_quant_layers{}, _pkg_output_quant_layers{}, _pkg_io_edge_tensors{}, _pkg_inputs{},
-      _pkg_outputs{}
-  {
-    for (const auto &edge : _model_edges->edges)
-    {
-      _edge_map[edge.from].emplace_back(edge.to);
-    }
-  }
+  Executors(std::unique_ptr<ir::ModelEdges> model_edges);
   Executors(const Executors &) = delete;
   Executors(Executors &&) = default;
   ~Executors() = default;
@@ -81,12 +73,6 @@ public:
   void execute(const IODescription &desc) override;
 
 private:
-  void checkSupportedMultimodel() const;
-  void createEdgeQuantLayers();
-  void InitPkgIO(const IODescription &desc);
-  uint16_t modelCount() const;
-
-private:
   // TODO Remove this class
   class PermuteLayer : public exec::IPermuteFunction
   {
@@ -102,7 +88,36 @@ private:
     void optimize() override {}
   };
 
-  class EdgeTensor;
+  // There are two barriers to using backend::basic::DynamicMemoryManager instead of this class
+  //
+  // 1. In order to allocate backend::basic::Tensor's memory, applyShape() must be called, but when
+  //    called, it is changed to a dynamic tensor.
+  //    - Type-aware quantzation does not support dynamic tensor yet.
+  //    - Dynamic EdgeTensor can make tensors in executors dynamic. it increases memory usage.
+  //
+  // 2. backend::basic::DynamicMemoryManager does not allow calling allocate() more than once for
+  //    the same tensor.
+  class MemoryManager
+  {
+  public:
+    MemoryManager() = default;
+    virtual ~MemoryManager() = default;
+
+    std::shared_ptr<backend::basic::Allocator> allocate(const backend::ITensor *, uint32_t capacity)
+    {
+      return std::make_shared<backend::basic::Allocator>(capacity);
+    }
+  };
+
+  using DynamicMemoryManager = backend::basic::DynamicMemoryManager;
+  using EdgeTensor = backend::basic::Tensor;
+
+private:
+  void checkSupportedMultimodel() const;
+  void createEdgeQuantLayers();
+  void InitPkgIO(const IODescription &desc);
+  uint16_t modelCount() const;
+  void allocateMemory(EdgeTensor *edge_tensor);
 
 private:
   std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<IExecutor>>
@@ -133,6 +148,10 @@ private:
   std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _pkg_io_edge_tensors;
   std::vector<std::unique_ptr<backend::builtin::IOTensor>> _pkg_inputs;
   std::vector<std::unique_ptr<backend::builtin::IOTensor>> _pkg_outputs;
+
+  // TODO Support RNN model
+  std::unique_ptr<MemoryManager> _memory_manager;
+  std::unique_ptr<DynamicMemoryManager> _dynamic_memory_manager;
 };
 
 } // namespace exec
