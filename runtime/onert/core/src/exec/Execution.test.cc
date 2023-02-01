@@ -157,9 +157,6 @@ public:
     graphs[0]->addOutput(operand_result0);
     graphs[0]->verify();
 
-    edges.pkg_inputs.emplace_back(ModelIndex{0}, SubgraphIndex{0}, IOIndex{0});
-    edges.pkg_inputs.emplace_back(ModelIndex{0}, SubgraphIndex{0}, IOIndex{1});
-
     // Model1's add operands (result2 <= Model0 result + rhs1)
     // static float rhs1_data[4] = {3, 1, -1, 5};
     static uint8_t rhs1_data[4] = {131, 129, 127, 133};
