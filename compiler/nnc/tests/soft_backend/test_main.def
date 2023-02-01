@@ -1,8 +1,9 @@
+#include <string>
 int main()
 {
   Shape s{1, 2, 3};
   Tensor in_t(s);
-  NNModel model("nnmodel.params");
+  NNModel model(std::string("nnmodel.params"));
   model.set_in(in_t);
   model.doInference();
   std::shared_ptr<Tensor> out_t = model.get_out();
