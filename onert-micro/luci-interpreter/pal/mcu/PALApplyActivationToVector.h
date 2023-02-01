@@ -69,5 +69,7 @@ inline void ApplyActivationToVector(const float *vector, int v_size,
     *result++ = (activation_func)(*vector++);
   }
 }
+
 } // namespace luci_interpreter_pal
+
 #endif // LUCI_INTERPRETER_PAL_APPLY_ACTIVATION_TO_VECTOR_H
