@@ -40,8 +40,7 @@ template <size_t from, size_t to, typename Enable = void> struct ForEachDimensio
     for (auto v = 0; v < d; v++)
     {
       coords.set(from, v);
-      ForEachDimension<from + 1, to>::unroll(shape, coords, std::forward<L>(lambda_function),
-                                             std::forward<Args>(args)...);
+      ForEachDimension<from + 1, to>::unroll(shape, coords, lambda_function, args...);
     }
   }
 };
