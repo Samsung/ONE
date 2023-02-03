@@ -206,8 +206,6 @@ TEST_F(ValidationTestAddModelLoaded, debug_set_config)
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "USE_SCHEDULER", "1"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "PROFILING_MODE", "0"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "PROFILING_MODE", "1"));
-  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "DISABLE_COMPILE", "0"));
-  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "DISABLE_COMPILE", "1"));
   SUCCEED();
 }
 

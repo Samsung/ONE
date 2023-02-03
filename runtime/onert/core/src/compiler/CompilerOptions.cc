@@ -80,7 +80,6 @@ std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
   o->executor = util::getConfigString(util::config::EXECUTOR);
   o->he_scheduler = util::getConfigBool(util::config::USE_SCHEDULER);
   o->he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
-  o->disable_compile = util::getConfigBool(util::config::DISABLE_COMPILE);
   o->fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
   {
     // Backend for all
@@ -138,7 +137,6 @@ void CompilerOptions::verboseOptions()
                     << getOpBackends(manual_scheduler_options.opcode_to_backend) << std::endl;
   VERBOSE(Compiler) << "he_scheduler             : " << he_scheduler << std::endl;
   VERBOSE(Compiler) << "he_profiling_mode        : " << he_profiling_mode << std::endl;
-  VERBOSE(Compiler) << "disable_compile          : " << disable_compile << std::endl;
   VERBOSE(Compiler) << "fp16_enable              : " << fp16_enable << std::endl
                     << std::noboolalpha;
 }

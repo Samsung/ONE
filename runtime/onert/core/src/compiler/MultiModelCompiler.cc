@@ -58,12 +58,6 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
     if (!options)
       throw std::runtime_error{"Empty compile option"};
 
-    // Compilable check
-    // TODO: Support hybrid execution -
-    //       execution between interpreter and compiled executor (including control flow)
-    if (options->disable_compile)
-      throw std::runtime_error{"NYI: Disable compilation for multi model is not supported yet"};
-
     // Mode check
     // TODO handle option for each model
     if (options->he_profiling_mode)

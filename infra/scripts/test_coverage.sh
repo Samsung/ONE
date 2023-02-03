@@ -35,9 +35,6 @@ export TRACE_FILEPATH=trace.json
 TFLiteModelVerification "acl_cl" "Product/out/test/list/tflite_comparator.armv7l.acl_cl.list" "report/acl_cl/trace"
 unset TRACE_FILEPATH
 
-# Interpreter
-./infra/scripts/test_ubuntu_runtime.sh --interp
-
 # nnpackage test suite
 if [[ -e ${ARCHIVE_PATH}/nnpkg-test-suite.tar.gz ]]; then
   tar -zxf ${ARCHIVE_PATH}/nnpkg-test-suite.tar.gz -C ./

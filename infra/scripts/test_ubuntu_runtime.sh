@@ -39,10 +39,6 @@ do
       LINEAR_ONLY="1"
       shift
       ;;
-    --interp)
-      RUN_INTERP="1"
-      shift;
-      ;;
     *)
       # Ignore
       shift
@@ -52,14 +48,7 @@ done
 
 CheckTestPrepared
 
-if [ $RUN_INTERP = "1" ]; then
-  TEST_PLATFORM="noarch"
-  TEST_ARCH="noarch"
-  BACKEND="interp"
-  echo "[[ Interpreter test ]]"
-else
-  echo "[[ ${TEST_PLATFORM}: ${BACKEND} backend test ]]"
-fi
+echo "[[ ${TEST_PLATFORM}: ${BACKEND} backend test ]]"
 
 UNITTEST_SKIPLIST="Product/out/nnapi-gtest/nnapi_gtest.skip.${TEST_PLATFORM}.${BACKEND}"
 TFLITE_TESTLIST="Product/out/test/list/tflite_comparator.${TEST_ARCH}.${BACKEND}.list"
@@ -69,28 +58,16 @@ EXECUTORS=("Linear" "Dataflow" "Parallel")
 if [ $LINEAR_ONLY = "1" ]; then
   EXECUTORS=("Linear")
 fi
-if [ $RUN_INTERP = "1" ]; then
-  EXECUTORS=("Interpreter")
-fi
 
 for EXECUTOR in "${EXECUTORS[@]}";
 do
   echo "[EXECUTOR]: ${EXECUTOR}"
   REPORT_PATH="${REPORT_BASE}/${EXECUTOR}"
 
-  if [ $EXECUTOR = "Interpreter" ]; then
-    export DISABLE_COMPILE=1
-    BACKEND=""
-  else
-    export EXECUTOR="${EXECUTOR}"
-  fi
+  export EXECUTOR="${EXECUTOR}"
 
   NNAPIGTest "${BACKEND}" "${UNITTEST_SKIPLIST}" "${REPORT_PATH}"
   TFLiteModelVerification "${BACKEND}" "${TFLITE_TESTLIST}" "${REPORT_PATH}"
 
-  if [ $EXECUTOR = "Interpreter" ]; then
-    unset DISABLE_COMPILE
-  else
-    unset EXECUTOR
-  fi
+  unset EXECUTOR
 done

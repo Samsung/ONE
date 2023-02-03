@@ -24,7 +24,6 @@
 #include "pass/UnusedOperandEliminationPass.h"
 #include "../dumper/dot/DotDumper.h"
 #include "../exec/SingleModelExecutors.h"
-#include "../interp/InterpExecutor.h"
 #include "../ir/OperationDumper.h"
 #include "../ir/verifier/Verifier.h"
 
@@ -83,19 +82,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     // Optimizations
     pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
   });
-
-  // Compilable check
-  // TODO: Support hybrid execution -
-  //       execution between interpreter and compiled executor (including control flow)
-  if (_options->disable_compile)
-  {
-    auto executors = std::make_shared<exec::SingleModelExecutors>();
-
-    _model->iterate([&](const ir::SubgraphIndex &index, ir::Graph &subg) {
-      executors->emplace(ir::ModelIndex{0}, index, std::make_unique<interp::InterpExecutor>(subg));
-    });
-    return std::make_shared<CompilerArtifact>(executors, nullptr);
-  }
 
   /***************************************************
    * Backend independent analysis & optimization phase

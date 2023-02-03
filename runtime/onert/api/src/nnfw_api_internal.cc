@@ -932,10 +932,6 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   {
     options.he_profiling_mode = toBool(value);
   }
-  else if (skey == config::DISABLE_COMPILE)
-  {
-    options.disable_compile = toBool(value);
-  }
   else
   {
     return NNFW_STATUS_ERROR;
