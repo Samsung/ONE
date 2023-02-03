@@ -54,7 +54,7 @@ def GetTypeSize(type_name):
 
 
 TYPE_TO_NPTYPE = {
-    'BOOL': np.bool,
+    'BOOL': np.bool_,
     'COMPLEX64': np.cdouble,
     'FLOAT16': np.float16,
     'FLOAT32': np.float32,
