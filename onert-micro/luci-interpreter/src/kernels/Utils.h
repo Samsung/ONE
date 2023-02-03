@@ -46,6 +46,9 @@ inline int32_t computePadding(int32_t stride, int32_t dilation_rate, int32_t in_
   return padding > 0 ? padding : 0;
 }
 
+void matrixScalarMultiplyAccumulate(const int8_t *matrix, int32_t scalar, int32_t n_row,
+                                    int32_t n_col, int32_t *output);
+
 inline int32_t computePaddingWithOffset(int32_t stride, int32_t dilation_rate, int32_t in_size,
                                         int32_t filter_size, int32_t out_size, int32_t *offset)
 {

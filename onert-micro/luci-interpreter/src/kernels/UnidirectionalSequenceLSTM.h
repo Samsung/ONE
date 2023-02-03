@@ -46,13 +46,10 @@ public:
 
     const Tensor *projection_weights, const Tensor *projection_bias,
 
-    const Tensor *output_state, const Tensor *cell_state,
-
     const Tensor *input_layer_norm_coefficients, const Tensor *forget_layer_norm_coefficients,
     const Tensor *cell_layer_norm_coefficients, const Tensor *output_layer_norm_coefficients,
 
-    Tensor *output, Tensor *scratchpad_1, Tensor *scratchpad_2, Tensor *scratchpad_3,
-    const UnidirectionalSequenceLSTMParams &params);
+    std::vector<Tensor *> &&outputs, const UnidirectionalSequenceLSTMParams &params);
 
   const Tensor *input() const { return _inputs[0]; }
 
@@ -78,13 +75,29 @@ public:
   const Tensor *projection_weights() const { return _inputs[16]; }
   const Tensor *projection_bias() const { return _inputs[17]; }
 
-  const Tensor *output_state() const { return _inputs[18]; }
-  const Tensor *cell_state() const { return _inputs[19]; }
+  Tensor *output_state() const
+  {
+    // For Integer LSTM output_state position will be 6 (INT variant producing 5 temporary tensors +
+    // main output) for float LSTM output_state position wll be 4 (FLOAT variant producing 3
+    // temporary tensors + main output)
+    const auto position = _outputs.size() == 8 ? 6 : 4;
+    return _outputs[position];
+  }
+  Tensor *cell_state() const
+  {
+    // For Integer LSTM cell_state position will be 7 (INT variant producing 5 temporary tensors +
+    // main output + output_state) for float LSTM output_state position wll be 5 (FLOAT variant
+    // producing 3 temporary tensors + main output + output_state)
+    const auto position = _outputs.size() == 8 ? 7 : 5;
+    return _outputs[position];
+  }
 
-  const Tensor *input_layer_norm_coefficients() const { return _inputs[20]; }
-  const Tensor *forget_layer_norm_coefficients() const { return _inputs[21]; }
-  const Tensor *cell_layer_norm_coefficients() const { return _inputs[22]; }
-  const Tensor *output_layer_norm_coefficients() const { return _inputs[23]; }
+  // NOTE: for easier reading of the code, we keep the numbering and do '-2'
+  // due to replace output_state and cell_state tensors from inputs to outputs
+  const Tensor *input_layer_norm_coefficients() const { return _inputs[20 - 2]; }
+  const Tensor *forget_layer_norm_coefficients() const { return _inputs[21 - 2]; }
+  const Tensor *cell_layer_norm_coefficients() const { return _inputs[22 - 2]; }
+  const Tensor *output_layer_norm_coefficients() const { return _inputs[23 - 2]; }
 
   Tensor *output() const { return _outputs[0]; }
 
@@ -93,10 +106,22 @@ public:
 
 private:
   void evalFloat() const;
+  void evalInt8() const;
 
 private:
   void check_input_tensor_dimensions(int n_input, int n_output, int n_cell, bool use_layer_norm,
                                      bool is_integer);
+  void populate_quantized_lstm_params();
+
+  void populate_precomputed_zp_times_weight_with_bias();
+
+  static void precompute_zero_point_times_weight_with_bias(int32_t zero_point,
+                                                           const Tensor *weight_tensor,
+                                                           const Tensor *bias_tensor,
+                                                           std::vector<int32_t> &output);
+
+private:
+  IntegerLSTMParams integer_lstm_params;
 };
 
 } // namespace kernels
