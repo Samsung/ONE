@@ -82,7 +82,6 @@ public:
   ManualSchedulerOptions manual_scheduler_options; //< Options for ManualScheduler
   bool he_scheduler;      //< HEScheduler if true, ManualScheduler otherwise
   bool he_profiling_mode; //< Whether HEScheduler profiling mode ON/OFF
-  bool disable_compile;   //< Run with Interpreter if true, try compilation otherwise
   bool fp16_enable;       //< Whether fp16 mode ON/OFF
 };
 
