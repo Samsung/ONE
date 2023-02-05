@@ -15,8 +15,7 @@ var searchData=
   ['nnfw_5fmax_5frank_12',['NNFW_MAX_RANK',['../nnfw_8h.html#ae4a6c20a576dbf5f53f34aa891089a25',1,'nnfw.h']]],
   ['nnfw_5freturn_5ferror_5fif_5fnull_13',['NNFW_RETURN_ERROR_IF_NULL',['../nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c',1,'NNFW_RETURN_ERROR_IF_NULL():&#160;nnfw_api.cc'],['../nnfw__debug_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c',1,'NNFW_RETURN_ERROR_IF_NULL():&#160;nnfw_debug.cc']]],
   ['nnfw_5fversion_14',['NNFW_VERSION',['../nnfw__version_8h.html#aefc2e3e187d45d20ae9aaba452f7d97a',1,'nnfw_version.h']]],
-  ['no_5fuse_15',['NO_USE',['../interp_2_tensor_8cc.html#a2000a7bba3da19ba6db956d9a05be3a2',1,'Tensor.cc']]],
-  ['node_16',['NODE',['../_node_execution_8cpp.html#ae8470b23f89c23e56817daed65182e56',1,'NODE():&#160;NodeExecution.cpp'],['../_node_execution_8h.html#ae8470b23f89c23e56817daed65182e56',1,'NODE():&#160;NodeExecution.h']]],
-  ['npu_5ftensor_5fmax_17',['NPU_TENSOR_MAX',['../runtime_2service_2npud_2core_2_backend_8h.html#ac09c99377c75927bf9dd38d425523bea',1,'Backend.h']]],
-  ['nyi_18',['NYI',['../compiler_2ann-ref_2src_2_logging_8h.html#a8b43124f2727d5471bf4b4c20a342ce5',1,'Logging.h']]]
+  ['node_15',['NODE',['../_node_execution_8cpp.html#ae8470b23f89c23e56817daed65182e56',1,'NODE():&#160;NodeExecution.cpp'],['../_node_execution_8h.html#ae8470b23f89c23e56817daed65182e56',1,'NODE():&#160;NodeExecution.h']]],
+  ['npu_5ftensor_5fmax_16',['NPU_TENSOR_MAX',['../runtime_2service_2npud_2core_2_backend_8h.html#ac09c99377c75927bf9dd38d425523bea',1,'Backend.h']]],
+  ['nyi_17',['NYI',['../compiler_2ann-ref_2src_2_logging_8h.html#a8b43124f2727d5471bf4b4c20a342ce5',1,'Logging.h']]]
 ];

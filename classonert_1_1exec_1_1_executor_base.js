@@ -6,6 +6,7 @@ var classonert_1_1exec_1_1_executor_base =
     [ "execute", "classonert_1_1exec_1_1_executor_base.html#ad602e711f5628814a6994ce5690155dd", null ],
     [ "execute", "classonert_1_1exec_1_1_executor_base.html#a08de9bf64443bc86474b18c4e31e40c6", null ],
     [ "executeImpl", "classonert_1_1exec_1_1_executor_base.html#a2d7838260864ff44e92920e257d88fef", null ],
+    [ "getInputTensors", "classonert_1_1exec_1_1_executor_base.html#a05e470e994b82ab0c25e575d2437676d", null ],
     [ "getOutputTensors", "classonert_1_1exec_1_1_executor_base.html#aac01f002567975ca8819bf36ce75112a", null ],
     [ "graph", "classonert_1_1exec_1_1_executor_base.html#ac7b0a4c653fb21dae514d757d0ff4be1", null ],
     [ "hasDynamicInput", "classonert_1_1exec_1_1_executor_base.html#a985b4f11863debf6d9cf423608a6f69f", null ],

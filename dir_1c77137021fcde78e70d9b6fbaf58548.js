@@ -79,7 +79,7 @@ var dir_1c77137021fcde78e70d9b6fbaf58548 =
     [ "Tanh.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_tanh_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_tanh_8cpp" ],
     [ "Transpose.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_transpose_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_transpose_8cpp" ],
     [ "TransposeConv.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_transpose_conv_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_transpose_conv_8cpp" ],
-    [ "UnidirectionalSequenceLSTM.cpp", "luci-interpreter_2src_2loader_2nodes_2_unidirectional_sequence_l_s_t_m_8cpp.html", "luci-interpreter_2src_2loader_2nodes_2_unidirectional_sequence_l_s_t_m_8cpp" ],
+    [ "UnidirectionalSequenceLSTM.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_unidirectional_sequence_l_s_t_m_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_unidirectional_sequence_l_s_t_m_8cpp" ],
     [ "Unpack.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_unpack_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_unpack_8cpp" ],
     [ "While.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_while_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_while_8cpp" ]
 ];

@@ -9,7 +9,7 @@ var searchData=
   ['tanhimpl_3c_20uint8_5ft_20_3e_6',['TanhImpl&lt; uint8_t &gt;',['../structmir__interpreter_1_1_tanh_impl_3_01uint8__t_01_4.html',1,'mir_interpreter']]],
   ['tanhop_7',['TanhOp',['../classmir_1_1ops_1_1_tanh_op.html',1,'mir::ops']]],
   ['targetplatform_8',['TargetPlatform',['../structcircle__planner_1_1_target_platform.html',1,'circle_planner']]],
-  ['tensor_9',['Tensor',['../structcircle__eval__diff_1_1_tensor.html',1,'circle_eval_diff::Tensor'],['../classluci__interpreter_1_1_tensor.html',1,'luci_interpreter::Tensor'],['../classmir_1_1_tensor.html',1,'mir::Tensor&lt; T &gt;'],['../structnnfw_1_1cker_1_1_tensor.html',1,'nnfw::cker::Tensor'],['../classonert_1_1backend_1_1basic_1_1_tensor.html',1,'onert::backend::basic::Tensor'],['../classonert_1_1interp_1_1_tensor.html',1,'onert::interp::Tensor'],['../class_tensor.html',1,'Tensor']]],
+  ['tensor_9',['Tensor',['../structcircle__eval__diff_1_1_tensor.html',1,'circle_eval_diff::Tensor'],['../classluci__interpreter_1_1_tensor.html',1,'luci_interpreter::Tensor'],['../classmir_1_1_tensor.html',1,'mir::Tensor&lt; T &gt;'],['../structnnfw_1_1cker_1_1_tensor.html',1,'nnfw::cker::Tensor'],['../classonert_1_1backend_1_1basic_1_1_tensor.html',1,'onert::backend::basic::Tensor'],['../class_tensor.html',1,'Tensor']]],
   ['tensor3d_10',['Tensor3D',['../struct_tensor3_d.html',1,'']]],
   ['tensor4d_11',['Tensor4D',['../struct_tensor4_d.html',1,'']]],
   ['tensorallocplan_12',['TensorAllocPlan',['../classluci__interpreter_1_1_runtime_graph_1_1_tensor_alloc_plan.html',1,'luci_interpreter::RuntimeGraph']]],

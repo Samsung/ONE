@@ -1,5 +1,6 @@
 var dir_132de01d1c06e6c7d9be57d5e7d50eec =
 [
+    [ "PALApplyActivationToVector.h", "_p_a_l_apply_activation_to_vector_8h.html", "_p_a_l_apply_activation_to_vector_8h" ],
     [ "PALArgMax.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_arg_max_8h.html", null ],
     [ "PALAveragePool2d.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_average_pool2d_8h.html", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_average_pool2d_8h" ],
     [ "PALBatchToSpaceND.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_batch_to_space_n_d_8h.html", null ],

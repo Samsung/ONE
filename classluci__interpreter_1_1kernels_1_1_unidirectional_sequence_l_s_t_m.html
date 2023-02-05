@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('classluci__interpreter_1_1kernels_1_1_
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for luci_interpreter::kernels::UnidirectionalSequenceLSTM:</div>
 <div class="dyncontent">
@@ -111,6 +111,62 @@ Collaboration diagram for luci_interpreter::kernels::UnidirectionalSequenceLSTM:
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a6fc9a2f2e983c0602f52c138b0fb3bba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a6fc9a2f2e983c0602f52c138b0fb3bba">UnidirectionalSequenceLSTM</a> (const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a1e517b66299e79db1d84393297190ea8">input</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#ac0add4602fa9f9837a97eacf8aaddc7b">input_to_input_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a9ce41d4e7a477b8d82d8b94905828f84">input_to_forget_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a95f78f583f8d3caa4912fd112c1bdd38">input_to_cell_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a4faf666988678de550f0398d405f99d7">input_to_output_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a13b1e799b0e3f64d2bf837c5d4d4d6d0">recurrent_to_input_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a442a82f8b612f7164402e3dfa6a885e3">recurrent_to_forget_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#af53625b67c9467a6eb3792e5770b4c87">recurrent_to_cell_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a849de09cb73f9f8e7911cc28c4ddd7bc">recurrent_to_output_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#adf4a204d9bccc93a957250f2f0c812f1">cell_to_input_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a2b1191ba4e85a12d96474f93f6d2d5a8">cell_to_forget_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a42014d3a047fc430d28464141a1ea53f">cell_to_output_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a804c2b13db66a70db9aae88a5001e7df">input_gate_bias</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a2c973578f4025e0d2303b0a2f6792be7">forget_gate_bias</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a763dd719a2fb8e045030717a961af325">cell_gate_bias</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a59d37cc050ff7b88420c1254b0f34390">output_gate_bias</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a78c687cd6f21d57b4d6b51067131a201">projection_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a9e9daffdf10589228ffd515d4f6d8cb4">projection_bias</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a90103602bacca5590cf13ada4d451f54">output_state</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a55d009e7111a8a49ecdb069f92894803">cell_state</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a896a359f1be0b7df97f2488c3d5870c3">input_layer_norm_coefficients</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aaaebe1cde8b957b6fc902eb2d57d5712">forget_layer_norm_coefficients</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aea246a582b9594d8a0d0957b1b630137">cell_layer_norm_coefficients</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#adadbf7488d424da40d82a5b33cbd5a3a">output_layer_norm_coefficients</a>, <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aa5020bae301292540c3aab5739adeb17">output</a>, <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *scratchpad_1, <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *scratchpad_2, <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *scratchpad_3, const <a class="el" href="structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html">UnidirectionalSequenceLSTMParams</a> &amp;<a class="el" href="classluci__interpreter_1_1_kernel_with_params.html#aa20ab0316772ae7b0a607e2d43ce5eb6">params</a>)</td></tr>
+<tr class="separator:a6fc9a2f2e983c0602f52c138b0fb3bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e517b66299e79db1d84393297190ea8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a1e517b66299e79db1d84393297190ea8">input</a> () const</td></tr>
+<tr class="separator:a1e517b66299e79db1d84393297190ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0add4602fa9f9837a97eacf8aaddc7b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#ac0add4602fa9f9837a97eacf8aaddc7b">input_to_input_weights</a> () const</td></tr>
+<tr class="separator:ac0add4602fa9f9837a97eacf8aaddc7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ce41d4e7a477b8d82d8b94905828f84"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a9ce41d4e7a477b8d82d8b94905828f84">input_to_forget_weights</a> () const</td></tr>
+<tr class="separator:a9ce41d4e7a477b8d82d8b94905828f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95f78f583f8d3caa4912fd112c1bdd38"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a95f78f583f8d3caa4912fd112c1bdd38">input_to_cell_weights</a> () const</td></tr>
+<tr class="separator:a95f78f583f8d3caa4912fd112c1bdd38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4faf666988678de550f0398d405f99d7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a4faf666988678de550f0398d405f99d7">input_to_output_weights</a> () const</td></tr>
+<tr class="separator:a4faf666988678de550f0398d405f99d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13b1e799b0e3f64d2bf837c5d4d4d6d0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a13b1e799b0e3f64d2bf837c5d4d4d6d0">recurrent_to_input_weights</a> () const</td></tr>
+<tr class="separator:a13b1e799b0e3f64d2bf837c5d4d4d6d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a442a82f8b612f7164402e3dfa6a885e3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a442a82f8b612f7164402e3dfa6a885e3">recurrent_to_forget_weights</a> () const</td></tr>
+<tr class="separator:a442a82f8b612f7164402e3dfa6a885e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af53625b67c9467a6eb3792e5770b4c87"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#af53625b67c9467a6eb3792e5770b4c87">recurrent_to_cell_weights</a> () const</td></tr>
+<tr class="separator:af53625b67c9467a6eb3792e5770b4c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a849de09cb73f9f8e7911cc28c4ddd7bc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a849de09cb73f9f8e7911cc28c4ddd7bc">recurrent_to_output_weights</a> () const</td></tr>
+<tr class="separator:a849de09cb73f9f8e7911cc28c4ddd7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf4a204d9bccc93a957250f2f0c812f1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#adf4a204d9bccc93a957250f2f0c812f1">cell_to_input_weights</a> () const</td></tr>
+<tr class="separator:adf4a204d9bccc93a957250f2f0c812f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b1191ba4e85a12d96474f93f6d2d5a8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a2b1191ba4e85a12d96474f93f6d2d5a8">cell_to_forget_weights</a> () const</td></tr>
+<tr class="separator:a2b1191ba4e85a12d96474f93f6d2d5a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42014d3a047fc430d28464141a1ea53f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a42014d3a047fc430d28464141a1ea53f">cell_to_output_weights</a> () const</td></tr>
+<tr class="separator:a42014d3a047fc430d28464141a1ea53f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a804c2b13db66a70db9aae88a5001e7df"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a804c2b13db66a70db9aae88a5001e7df">input_gate_bias</a> () const</td></tr>
+<tr class="separator:a804c2b13db66a70db9aae88a5001e7df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c973578f4025e0d2303b0a2f6792be7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a2c973578f4025e0d2303b0a2f6792be7">forget_gate_bias</a> () const</td></tr>
+<tr class="separator:a2c973578f4025e0d2303b0a2f6792be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a763dd719a2fb8e045030717a961af325"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a763dd719a2fb8e045030717a961af325">cell_gate_bias</a> () const</td></tr>
+<tr class="separator:a763dd719a2fb8e045030717a961af325"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d37cc050ff7b88420c1254b0f34390"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a59d37cc050ff7b88420c1254b0f34390">output_gate_bias</a> () const</td></tr>
+<tr class="separator:a59d37cc050ff7b88420c1254b0f34390"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78c687cd6f21d57b4d6b51067131a201"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a78c687cd6f21d57b4d6b51067131a201">projection_weights</a> () const</td></tr>
+<tr class="separator:a78c687cd6f21d57b4d6b51067131a201"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e9daffdf10589228ffd515d4f6d8cb4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a9e9daffdf10589228ffd515d4f6d8cb4">projection_bias</a> () const</td></tr>
+<tr class="separator:a9e9daffdf10589228ffd515d4f6d8cb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90103602bacca5590cf13ada4d451f54"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a90103602bacca5590cf13ada4d451f54">output_state</a> () const</td></tr>
+<tr class="separator:a90103602bacca5590cf13ada4d451f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55d009e7111a8a49ecdb069f92894803"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a55d009e7111a8a49ecdb069f92894803">cell_state</a> () const</td></tr>
+<tr class="separator:a55d009e7111a8a49ecdb069f92894803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a896a359f1be0b7df97f2488c3d5870c3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a896a359f1be0b7df97f2488c3d5870c3">input_layer_norm_coefficients</a> () const</td></tr>
+<tr class="separator:a896a359f1be0b7df97f2488c3d5870c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaebe1cde8b957b6fc902eb2d57d5712"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aaaebe1cde8b957b6fc902eb2d57d5712">forget_layer_norm_coefficients</a> () const</td></tr>
+<tr class="separator:aaaebe1cde8b957b6fc902eb2d57d5712"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea246a582b9594d8a0d0957b1b630137"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aea246a582b9594d8a0d0957b1b630137">cell_layer_norm_coefficients</a> () const</td></tr>
+<tr class="separator:aea246a582b9594d8a0d0957b1b630137"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adadbf7488d424da40d82a5b33cbd5a3a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#adadbf7488d424da40d82a5b33cbd5a3a">output_layer_norm_coefficients</a> () const</td></tr>
+<tr class="separator:adadbf7488d424da40d82a5b33cbd5a3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5020bae301292540c3aab5739adeb17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aa5020bae301292540c3aab5739adeb17">output</a> () const</td></tr>
+<tr class="separator:aa5020bae301292540c3aab5739adeb17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a679704f8ff291844857590c86ebe8529"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a679704f8ff291844857590c86ebe8529">configure</a> () override</td></tr>
+<tr class="separator:a679704f8ff291844857590c86ebe8529"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dc8f257026a2792fd6aac1586660003"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a3dc8f257026a2792fd6aac1586660003">execute</a> () const override</td></tr>
+<tr class="separator:a3dc8f257026a2792fd6aac1586660003"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fc9a2f2e983c0602f52c138b0fb3bba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a6fc9a2f2e983c0602f52c138b0fb3bba">UnidirectionalSequenceLSTM</a> (const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a1e517b66299e79db1d84393297190ea8">input</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#ac0add4602fa9f9837a97eacf8aaddc7b">input_to_input_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a9ce41d4e7a477b8d82d8b94905828f84">input_to_forget_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a95f78f583f8d3caa4912fd112c1bdd38">input_to_cell_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a4faf666988678de550f0398d405f99d7">input_to_output_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a13b1e799b0e3f64d2bf837c5d4d4d6d0">recurrent_to_input_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a442a82f8b612f7164402e3dfa6a885e3">recurrent_to_forget_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#af53625b67c9467a6eb3792e5770b4c87">recurrent_to_cell_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a849de09cb73f9f8e7911cc28c4ddd7bc">recurrent_to_output_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#adf4a204d9bccc93a957250f2f0c812f1">cell_to_input_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a2b1191ba4e85a12d96474f93f6d2d5a8">cell_to_forget_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a42014d3a047fc430d28464141a1ea53f">cell_to_output_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a804c2b13db66a70db9aae88a5001e7df">input_gate_bias</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a2c973578f4025e0d2303b0a2f6792be7">forget_gate_bias</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a763dd719a2fb8e045030717a961af325">cell_gate_bias</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a59d37cc050ff7b88420c1254b0f34390">output_gate_bias</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a78c687cd6f21d57b4d6b51067131a201">projection_weights</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a9e9daffdf10589228ffd515d4f6d8cb4">projection_bias</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a90103602bacca5590cf13ada4d451f54">output_state</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a55d009e7111a8a49ecdb069f92894803">cell_state</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a896a359f1be0b7df97f2488c3d5870c3">input_layer_norm_coefficients</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aaaebe1cde8b957b6fc902eb2d57d5712">forget_layer_norm_coefficients</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aea246a582b9594d8a0d0957b1b630137">cell_layer_norm_coefficients</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#adadbf7488d424da40d82a5b33cbd5a3a">output_layer_norm_coefficients</a>, <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aa5020bae301292540c3aab5739adeb17">output</a>, <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *scratchpad_1, <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *scratchpad_2, <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *scratchpad_3, const <a class="el" href="structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html">UnidirectionalSequenceLSTMParams</a> &amp;<a class="el" href="classluci__interpreter_1_1_kernel_with_params.html#aa20ab0316772ae7b0a607e2d43ce5eb6">params</a>)</td></tr>
 <tr class="separator:a6fc9a2f2e983c0602f52c138b0fb3bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e517b66299e79db1d84393297190ea8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a1e517b66299e79db1d84393297190ea8">input</a> () const</td></tr>
@@ -223,10 +279,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00029">29</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00029">29</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6fc9a2f2e983c0602f52c138b0fb3bba" name="a6fc9a2f2e983c0602f52c138b0fb3bba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6fc9a2f2e983c0602f52c138b0fb3bba">&#9670;&#160;</a></span>UnidirectionalSequenceLSTM()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fc9a2f2e983c0602f52c138b0fb3bba">&#9670;&#160;</a></span>UnidirectionalSequenceLSTM() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -413,7 +469,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">440</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html">UnidirectionalSequenceLSTM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">440</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html">UnidirectionalSequenceLSTM.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  463</span>  : KernelWithParams&lt;UnidirectionalSequenceLSTMParams&gt;(</div>
 <div class="line"><span class="lineno">  464</span>      {<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a1e517b66299e79db1d84393297190ea8">input</a>,</div>
 <div class="line"><span class="lineno">  465</span>       <a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#ac0add4602fa9f9837a97eacf8aaddc7b">input_to_input_weights</a>,</div>
@@ -450,39 +506,229 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  496</span>  <span class="comment">// Do nothing</span></div>
 <div class="line"><span class="lineno">  497</span>}</div>
 <div class="ttc" id="aclassluci__interpreter_1_1_kernel_with_params_html_aa20ab0316772ae7b0a607e2d43ce5eb6"><div class="ttname"><a href="classluci__interpreter_1_1_kernel_with_params.html#aa20ab0316772ae7b0a607e2d43ce5eb6">luci_interpreter::KernelWithParams&lt; UnidirectionalSequenceLSTMParams &gt;::params</a></div><div class="ttdeci">const UnidirectionalSequenceLSTMParams &amp; params() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00067">Kernel.h:67</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a13b1e799b0e3f64d2bf837c5d4d4d6d0"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a13b1e799b0e3f64d2bf837c5d4d4d6d0">luci_interpreter::kernels::UnidirectionalSequenceLSTM::recurrent_to_input_weights</a></div><div class="ttdeci">const Tensor * recurrent_to_input_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00064">UnidirectionalSequenceLSTM.h:64</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a1e517b66299e79db1d84393297190ea8"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a1e517b66299e79db1d84393297190ea8">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input</a></div><div class="ttdeci">const Tensor * input() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00057">UnidirectionalSequenceLSTM.h:57</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a2b1191ba4e85a12d96474f93f6d2d5a8"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a2b1191ba4e85a12d96474f93f6d2d5a8">luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_to_forget_weights</a></div><div class="ttdeci">const Tensor * cell_to_forget_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00070">UnidirectionalSequenceLSTM.h:70</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a2c973578f4025e0d2303b0a2f6792be7"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a2c973578f4025e0d2303b0a2f6792be7">luci_interpreter::kernels::UnidirectionalSequenceLSTM::forget_gate_bias</a></div><div class="ttdeci">const Tensor * forget_gate_bias() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00074">UnidirectionalSequenceLSTM.h:74</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a42014d3a047fc430d28464141a1ea53f"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a42014d3a047fc430d28464141a1ea53f">luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_to_output_weights</a></div><div class="ttdeci">const Tensor * cell_to_output_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00071">UnidirectionalSequenceLSTM.h:71</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a442a82f8b612f7164402e3dfa6a885e3"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a442a82f8b612f7164402e3dfa6a885e3">luci_interpreter::kernels::UnidirectionalSequenceLSTM::recurrent_to_forget_weights</a></div><div class="ttdeci">const Tensor * recurrent_to_forget_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00065">UnidirectionalSequenceLSTM.h:65</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a4faf666988678de550f0398d405f99d7"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a4faf666988678de550f0398d405f99d7">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_to_output_weights</a></div><div class="ttdeci">const Tensor * input_to_output_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00062">UnidirectionalSequenceLSTM.h:62</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a55d009e7111a8a49ecdb069f92894803"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a55d009e7111a8a49ecdb069f92894803">luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_state</a></div><div class="ttdeci">const Tensor * cell_state() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00082">UnidirectionalSequenceLSTM.h:82</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a59d37cc050ff7b88420c1254b0f34390"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a59d37cc050ff7b88420c1254b0f34390">luci_interpreter::kernels::UnidirectionalSequenceLSTM::output_gate_bias</a></div><div class="ttdeci">const Tensor * output_gate_bias() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00076">UnidirectionalSequenceLSTM.h:76</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a763dd719a2fb8e045030717a961af325"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a763dd719a2fb8e045030717a961af325">luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_gate_bias</a></div><div class="ttdeci">const Tensor * cell_gate_bias() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00075">UnidirectionalSequenceLSTM.h:75</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a78c687cd6f21d57b4d6b51067131a201"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a78c687cd6f21d57b4d6b51067131a201">luci_interpreter::kernels::UnidirectionalSequenceLSTM::projection_weights</a></div><div class="ttdeci">const Tensor * projection_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00078">UnidirectionalSequenceLSTM.h:78</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a804c2b13db66a70db9aae88a5001e7df"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a804c2b13db66a70db9aae88a5001e7df">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_gate_bias</a></div><div class="ttdeci">const Tensor * input_gate_bias() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00073">UnidirectionalSequenceLSTM.h:73</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a849de09cb73f9f8e7911cc28c4ddd7bc"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a849de09cb73f9f8e7911cc28c4ddd7bc">luci_interpreter::kernels::UnidirectionalSequenceLSTM::recurrent_to_output_weights</a></div><div class="ttdeci">const Tensor * recurrent_to_output_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00067">UnidirectionalSequenceLSTM.h:67</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a896a359f1be0b7df97f2488c3d5870c3"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a896a359f1be0b7df97f2488c3d5870c3">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_layer_norm_coefficients</a></div><div class="ttdeci">const Tensor * input_layer_norm_coefficients() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00084">UnidirectionalSequenceLSTM.h:84</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a90103602bacca5590cf13ada4d451f54"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a90103602bacca5590cf13ada4d451f54">luci_interpreter::kernels::UnidirectionalSequenceLSTM::output_state</a></div><div class="ttdeci">const Tensor * output_state() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00081">UnidirectionalSequenceLSTM.h:81</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a95f78f583f8d3caa4912fd112c1bdd38"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a95f78f583f8d3caa4912fd112c1bdd38">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_to_cell_weights</a></div><div class="ttdeci">const Tensor * input_to_cell_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00061">UnidirectionalSequenceLSTM.h:61</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a9ce41d4e7a477b8d82d8b94905828f84"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a9ce41d4e7a477b8d82d8b94905828f84">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_to_forget_weights</a></div><div class="ttdeci">const Tensor * input_to_forget_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00060">UnidirectionalSequenceLSTM.h:60</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a9e9daffdf10589228ffd515d4f6d8cb4"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a9e9daffdf10589228ffd515d4f6d8cb4">luci_interpreter::kernels::UnidirectionalSequenceLSTM::projection_bias</a></div><div class="ttdeci">const Tensor * projection_bias() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00079">UnidirectionalSequenceLSTM.h:79</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_aa5020bae301292540c3aab5739adeb17"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aa5020bae301292540c3aab5739adeb17">luci_interpreter::kernels::UnidirectionalSequenceLSTM::output</a></div><div class="ttdeci">Tensor * output() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00089">UnidirectionalSequenceLSTM.h:89</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_aaaebe1cde8b957b6fc902eb2d57d5712"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aaaebe1cde8b957b6fc902eb2d57d5712">luci_interpreter::kernels::UnidirectionalSequenceLSTM::forget_layer_norm_coefficients</a></div><div class="ttdeci">const Tensor * forget_layer_norm_coefficients() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00085">UnidirectionalSequenceLSTM.h:85</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_ac0add4602fa9f9837a97eacf8aaddc7b"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#ac0add4602fa9f9837a97eacf8aaddc7b">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_to_input_weights</a></div><div class="ttdeci">const Tensor * input_to_input_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00059">UnidirectionalSequenceLSTM.h:59</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_adadbf7488d424da40d82a5b33cbd5a3a"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#adadbf7488d424da40d82a5b33cbd5a3a">luci_interpreter::kernels::UnidirectionalSequenceLSTM::output_layer_norm_coefficients</a></div><div class="ttdeci">const Tensor * output_layer_norm_coefficients() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00087">UnidirectionalSequenceLSTM.h:87</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_adf4a204d9bccc93a957250f2f0c812f1"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#adf4a204d9bccc93a957250f2f0c812f1">luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_to_input_weights</a></div><div class="ttdeci">const Tensor * cell_to_input_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00069">UnidirectionalSequenceLSTM.h:69</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_aea246a582b9594d8a0d0957b1b630137"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aea246a582b9594d8a0d0957b1b630137">luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_layer_norm_coefficients</a></div><div class="ttdeci">const Tensor * cell_layer_norm_coefficients() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00086">UnidirectionalSequenceLSTM.h:86</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_af53625b67c9467a6eb3792e5770b4c87"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#af53625b67c9467a6eb3792e5770b4c87">luci_interpreter::kernels::UnidirectionalSequenceLSTM::recurrent_to_cell_weights</a></div><div class="ttdeci">const Tensor * recurrent_to_cell_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00066">UnidirectionalSequenceLSTM.h:66</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a13b1e799b0e3f64d2bf837c5d4d4d6d0"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a13b1e799b0e3f64d2bf837c5d4d4d6d0">luci_interpreter::kernels::UnidirectionalSequenceLSTM::recurrent_to_input_weights</a></div><div class="ttdeci">const Tensor * recurrent_to_input_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00064">UnidirectionalSequenceLSTM.h:64</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a1e517b66299e79db1d84393297190ea8"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a1e517b66299e79db1d84393297190ea8">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input</a></div><div class="ttdeci">const Tensor * input() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00057">UnidirectionalSequenceLSTM.h:57</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a2b1191ba4e85a12d96474f93f6d2d5a8"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a2b1191ba4e85a12d96474f93f6d2d5a8">luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_to_forget_weights</a></div><div class="ttdeci">const Tensor * cell_to_forget_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00070">UnidirectionalSequenceLSTM.h:70</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a2c973578f4025e0d2303b0a2f6792be7"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a2c973578f4025e0d2303b0a2f6792be7">luci_interpreter::kernels::UnidirectionalSequenceLSTM::forget_gate_bias</a></div><div class="ttdeci">const Tensor * forget_gate_bias() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00074">UnidirectionalSequenceLSTM.h:74</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a42014d3a047fc430d28464141a1ea53f"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a42014d3a047fc430d28464141a1ea53f">luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_to_output_weights</a></div><div class="ttdeci">const Tensor * cell_to_output_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00071">UnidirectionalSequenceLSTM.h:71</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a442a82f8b612f7164402e3dfa6a885e3"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a442a82f8b612f7164402e3dfa6a885e3">luci_interpreter::kernels::UnidirectionalSequenceLSTM::recurrent_to_forget_weights</a></div><div class="ttdeci">const Tensor * recurrent_to_forget_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00065">UnidirectionalSequenceLSTM.h:65</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a4faf666988678de550f0398d405f99d7"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a4faf666988678de550f0398d405f99d7">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_to_output_weights</a></div><div class="ttdeci">const Tensor * input_to_output_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00062">UnidirectionalSequenceLSTM.h:62</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a55d009e7111a8a49ecdb069f92894803"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a55d009e7111a8a49ecdb069f92894803">luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_state</a></div><div class="ttdeci">const Tensor * cell_state() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00082">UnidirectionalSequenceLSTM.h:82</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a59d37cc050ff7b88420c1254b0f34390"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a59d37cc050ff7b88420c1254b0f34390">luci_interpreter::kernels::UnidirectionalSequenceLSTM::output_gate_bias</a></div><div class="ttdeci">const Tensor * output_gate_bias() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00076">UnidirectionalSequenceLSTM.h:76</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a763dd719a2fb8e045030717a961af325"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a763dd719a2fb8e045030717a961af325">luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_gate_bias</a></div><div class="ttdeci">const Tensor * cell_gate_bias() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00075">UnidirectionalSequenceLSTM.h:75</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a78c687cd6f21d57b4d6b51067131a201"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a78c687cd6f21d57b4d6b51067131a201">luci_interpreter::kernels::UnidirectionalSequenceLSTM::projection_weights</a></div><div class="ttdeci">const Tensor * projection_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00078">UnidirectionalSequenceLSTM.h:78</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a804c2b13db66a70db9aae88a5001e7df"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a804c2b13db66a70db9aae88a5001e7df">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_gate_bias</a></div><div class="ttdeci">const Tensor * input_gate_bias() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00073">UnidirectionalSequenceLSTM.h:73</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a849de09cb73f9f8e7911cc28c4ddd7bc"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a849de09cb73f9f8e7911cc28c4ddd7bc">luci_interpreter::kernels::UnidirectionalSequenceLSTM::recurrent_to_output_weights</a></div><div class="ttdeci">const Tensor * recurrent_to_output_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00067">UnidirectionalSequenceLSTM.h:67</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a896a359f1be0b7df97f2488c3d5870c3"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a896a359f1be0b7df97f2488c3d5870c3">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_layer_norm_coefficients</a></div><div class="ttdeci">const Tensor * input_layer_norm_coefficients() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00084">UnidirectionalSequenceLSTM.h:84</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a90103602bacca5590cf13ada4d451f54"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a90103602bacca5590cf13ada4d451f54">luci_interpreter::kernels::UnidirectionalSequenceLSTM::output_state</a></div><div class="ttdeci">const Tensor * output_state() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00081">UnidirectionalSequenceLSTM.h:81</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a95f78f583f8d3caa4912fd112c1bdd38"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a95f78f583f8d3caa4912fd112c1bdd38">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_to_cell_weights</a></div><div class="ttdeci">const Tensor * input_to_cell_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00061">UnidirectionalSequenceLSTM.h:61</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a9ce41d4e7a477b8d82d8b94905828f84"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a9ce41d4e7a477b8d82d8b94905828f84">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_to_forget_weights</a></div><div class="ttdeci">const Tensor * input_to_forget_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00060">UnidirectionalSequenceLSTM.h:60</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_a9e9daffdf10589228ffd515d4f6d8cb4"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a9e9daffdf10589228ffd515d4f6d8cb4">luci_interpreter::kernels::UnidirectionalSequenceLSTM::projection_bias</a></div><div class="ttdeci">const Tensor * projection_bias() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00079">UnidirectionalSequenceLSTM.h:79</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_aa5020bae301292540c3aab5739adeb17"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aa5020bae301292540c3aab5739adeb17">luci_interpreter::kernels::UnidirectionalSequenceLSTM::output</a></div><div class="ttdeci">Tensor * output() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00089">UnidirectionalSequenceLSTM.h:89</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_aaaebe1cde8b957b6fc902eb2d57d5712"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aaaebe1cde8b957b6fc902eb2d57d5712">luci_interpreter::kernels::UnidirectionalSequenceLSTM::forget_layer_norm_coefficients</a></div><div class="ttdeci">const Tensor * forget_layer_norm_coefficients() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00085">UnidirectionalSequenceLSTM.h:85</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_ac0add4602fa9f9837a97eacf8aaddc7b"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#ac0add4602fa9f9837a97eacf8aaddc7b">luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_to_input_weights</a></div><div class="ttdeci">const Tensor * input_to_input_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00059">UnidirectionalSequenceLSTM.h:59</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_adadbf7488d424da40d82a5b33cbd5a3a"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#adadbf7488d424da40d82a5b33cbd5a3a">luci_interpreter::kernels::UnidirectionalSequenceLSTM::output_layer_norm_coefficients</a></div><div class="ttdeci">const Tensor * output_layer_norm_coefficients() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00087">UnidirectionalSequenceLSTM.h:87</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_adf4a204d9bccc93a957250f2f0c812f1"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#adf4a204d9bccc93a957250f2f0c812f1">luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_to_input_weights</a></div><div class="ttdeci">const Tensor * cell_to_input_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00069">UnidirectionalSequenceLSTM.h:69</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_aea246a582b9594d8a0d0957b1b630137"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#aea246a582b9594d8a0d0957b1b630137">luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_layer_norm_coefficients</a></div><div class="ttdeci">const Tensor * cell_layer_norm_coefficients() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00086">UnidirectionalSequenceLSTM.h:86</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m_html_af53625b67c9467a6eb3792e5770b4c87"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#af53625b67c9467a6eb3792e5770b4c87">luci_interpreter::kernels::UnidirectionalSequenceLSTM::recurrent_to_cell_weights</a></div><div class="ttdeci">const Tensor * recurrent_to_cell_weights() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00066">UnidirectionalSequenceLSTM.h:66</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00075">cell_gate_bias()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00086">cell_layer_norm_coefficients()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00082">cell_state()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00070">cell_to_forget_weights()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00069">cell_to_input_weights()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00071">cell_to_output_weights()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00074">forget_gate_bias()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00085">forget_layer_norm_coefficients()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00057">input()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00073">input_gate_bias()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00084">input_layer_norm_coefficients()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00061">input_to_cell_weights()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00060">input_to_forget_weights()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00059">input_to_input_weights()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00062">input_to_output_weights()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00076">output_gate_bias()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00087">output_layer_norm_coefficients()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00081">output_state()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00079">projection_bias()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00078">projection_weights()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00066">recurrent_to_cell_weights()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00065">recurrent_to_forget_weights()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00064">recurrent_to_input_weights()</a>, and <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00067">recurrent_to_output_weights()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00075">cell_gate_bias()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00086">cell_layer_norm_coefficients()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00082">cell_state()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00070">cell_to_forget_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00069">cell_to_input_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00071">cell_to_output_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00074">forget_gate_bias()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00085">forget_layer_norm_coefficients()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00057">input()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00073">input_gate_bias()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00084">input_layer_norm_coefficients()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00061">input_to_cell_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00060">input_to_forget_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00059">input_to_input_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00062">input_to_output_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00076">output_gate_bias()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00087">output_layer_norm_coefficients()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00081">output_state()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00079">projection_bias()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00078">projection_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00066">recurrent_to_cell_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00065">recurrent_to_forget_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00064">recurrent_to_input_weights()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00067">recurrent_to_output_weights()</a>.</p>
+
+</div>
+</div>
+<a id="a6fc9a2f2e983c0602f52c138b0fb3bba" name="a6fc9a2f2e983c0602f52c138b0fb3bba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fc9a2f2e983c0602f52c138b0fb3bba">&#9670;&#160;</a></span>UnidirectionalSequenceLSTM() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">luci_interpreter::kernels::UnidirectionalSequenceLSTM::UnidirectionalSequenceLSTM </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input_to_input_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input_to_forget_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input_to_cell_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input_to_output_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>recurrent_to_input_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>recurrent_to_forget_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>recurrent_to_cell_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>recurrent_to_output_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>cell_to_input_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>cell_to_forget_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>cell_to_output_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input_gate_bias</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>forget_gate_bias</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>cell_gate_bias</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>output_gate_bias</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>projection_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>projection_bias</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>output_state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>cell_state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input_layer_norm_coefficients</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>forget_layer_norm_coefficients</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>cell_layer_norm_coefficients</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>output_layer_norm_coefficients</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>scratchpad_1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>scratchpad_2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>scratchpad_3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html">UnidirectionalSequenceLSTMParams</a> &amp;&#160;</td>
+          <td class="paramname"><em>params</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a763dd719a2fb8e045030717a961af325" name="a763dd719a2fb8e045030717a961af325"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a763dd719a2fb8e045030717a961af325">&#9670;&#160;</a></span>cell_gate_bias()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a763dd719a2fb8e045030717a961af325">&#9670;&#160;</a></span>cell_gate_bias() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -504,18 +750,48 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00075">75</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00075">75</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   75</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[14]; }</div>
 <div class="ttc" id="aclassluci__interpreter_1_1_kernel_html_aab6171afbe5214f7f295e15bfb082d77"><div class="ttname"><a href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">luci_interpreter::Kernel::_inputs</a></div><div class="ttdeci">const std::vector&lt; const Tensor * &gt; _inputs</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">Kernel.h:52</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a763dd719a2fb8e045030717a961af325" name="a763dd719a2fb8e045030717a961af325"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a763dd719a2fb8e045030717a961af325">&#9670;&#160;</a></span>cell_gate_bias() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_gate_bias </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00075">75</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[14]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="aea246a582b9594d8a0d0957b1b630137" name="aea246a582b9594d8a0d0957b1b630137"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea246a582b9594d8a0d0957b1b630137">&#9670;&#160;</a></span>cell_layer_norm_coefficients()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aea246a582b9594d8a0d0957b1b630137">&#9670;&#160;</a></span>cell_layer_norm_coefficients() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -537,17 +813,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00086">86</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00086">86</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   86</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[22]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="aea246a582b9594d8a0d0957b1b630137" name="aea246a582b9594d8a0d0957b1b630137"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea246a582b9594d8a0d0957b1b630137">&#9670;&#160;</a></span>cell_layer_norm_coefficients() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_layer_norm_coefficients </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00086">86</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[22]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a55d009e7111a8a49ecdb069f92894803" name="a55d009e7111a8a49ecdb069f92894803"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55d009e7111a8a49ecdb069f92894803">&#9670;&#160;</a></span>cell_state()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a55d009e7111a8a49ecdb069f92894803">&#9670;&#160;</a></span>cell_state() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -569,17 +875,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00082">82</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00082">82</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   82</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[19]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, and <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a55d009e7111a8a49ecdb069f92894803" name="a55d009e7111a8a49ecdb069f92894803"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55d009e7111a8a49ecdb069f92894803">&#9670;&#160;</a></span>cell_state() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_state </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00082">82</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[19]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a2b1191ba4e85a12d96474f93f6d2d5a8" name="a2b1191ba4e85a12d96474f93f6d2d5a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b1191ba4e85a12d96474f93f6d2d5a8">&#9670;&#160;</a></span>cell_to_forget_weights()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b1191ba4e85a12d96474f93f6d2d5a8">&#9670;&#160;</a></span>cell_to_forget_weights() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -601,17 +937,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00070">70</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00070">70</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   70</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[10]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a2b1191ba4e85a12d96474f93f6d2d5a8" name="a2b1191ba4e85a12d96474f93f6d2d5a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b1191ba4e85a12d96474f93f6d2d5a8">&#9670;&#160;</a></span>cell_to_forget_weights() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_to_forget_weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00070">70</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[10]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="adf4a204d9bccc93a957250f2f0c812f1" name="adf4a204d9bccc93a957250f2f0c812f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf4a204d9bccc93a957250f2f0c812f1">&#9670;&#160;</a></span>cell_to_input_weights()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adf4a204d9bccc93a957250f2f0c812f1">&#9670;&#160;</a></span>cell_to_input_weights() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -633,17 +999,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00069">69</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00069">69</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   69</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[9]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="adf4a204d9bccc93a957250f2f0c812f1" name="adf4a204d9bccc93a957250f2f0c812f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf4a204d9bccc93a957250f2f0c812f1">&#9670;&#160;</a></span>cell_to_input_weights() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_to_input_weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00069">69</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[9]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a42014d3a047fc430d28464141a1ea53f" name="a42014d3a047fc430d28464141a1ea53f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42014d3a047fc430d28464141a1ea53f">&#9670;&#160;</a></span>cell_to_output_weights()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a42014d3a047fc430d28464141a1ea53f">&#9670;&#160;</a></span>cell_to_output_weights() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -665,17 +1061,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00071">71</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00071">71</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   71</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[11]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a42014d3a047fc430d28464141a1ea53f" name="a42014d3a047fc430d28464141a1ea53f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42014d3a047fc430d28464141a1ea53f">&#9670;&#160;</a></span>cell_to_output_weights() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::cell_to_output_weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00071">71</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[11]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a679704f8ff291844857590c86ebe8529" name="a679704f8ff291844857590c86ebe8529"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a679704f8ff291844857590c86ebe8529">&#9670;&#160;</a></span>configure()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a679704f8ff291844857590c86ebe8529">&#9670;&#160;</a></span>configure() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -699,7 +1125,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classluci__interpreter_1_1_kernel.html#ad474727b0a11b3ab3ed2913c3f7b5418">luci_interpreter::Kernel</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">751</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html">UnidirectionalSequenceLSTM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">751</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html">UnidirectionalSequenceLSTM.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  752</span>{</div>
 <div class="line"><span class="lineno">  753</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="classluci__interpreter_1_1_kernel.html#aba8a09c088bd2de1d684532875ad118e">getInputTensors</a>().<a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>() == 24);</div>
 <div class="line"><span class="lineno">  754</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="classluci__interpreter_1_1_kernel.html#a62be5c6f7a173e450f98bb5d88280da3">getOutputTensors</a>().<a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>() &gt;= 1);</div>
@@ -781,12 +1207,39 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="astruct_shape_html"><div class="ttname"><a href="struct_shape.html">Shape</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2ann-ref_2src_2_shape_8h_source.html#l00027">Shape.h:28</a></div></div>
 <div class="ttc" id="astructluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params_html_a0bc8a69a2beccb2103af37da949bcfab"><div class="ttname"><a href="structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html#a0bc8a69a2beccb2103af37da949bcfab">luci_interpreter::UnidirectionalSequenceLSTMParams::time_major</a></div><div class="ttdeci">bool time_major</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00226">KernelParams.h:226</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00082">cell_state()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00041">luci_interpreter::Shape::dim()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00085">forget_layer_norm_coefficients()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00039">luci_interpreter::Kernel::getInputTensors()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00040">luci_interpreter::Kernel::getOutputTensors()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00057">input()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00059">input_to_input_weights()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00062">input_to_output_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">LUCI_INTERPRETER_CHECK</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00039">luci_interpreter::Shape::num_dims()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00053">luci_interpreter::Shape::num_elements()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00089">output()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00081">output_state()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00067">luci_interpreter::KernelWithParams&lt; UnidirectionalSequenceLSTMParams &gt;::params()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00067">recurrent_to_output_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_tensor_8cpp_source.html#l00056">luci_interpreter::Tensor::resize()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00096">luci_interpreter::Tensor::shape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00150">luci_interpreter::size()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00226">luci_interpreter::UnidirectionalSequenceLSTMParams::time_major</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00082">cell_state()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00041">luci_interpreter::Shape::dim()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00085">forget_layer_norm_coefficients()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00039">luci_interpreter::Kernel::getInputTensors()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00040">luci_interpreter::Kernel::getOutputTensors()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00057">input()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00059">input_to_input_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00062">input_to_output_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">LUCI_INTERPRETER_CHECK</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00039">luci_interpreter::Shape::num_dims()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00053">luci_interpreter::Shape::num_elements()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00089">output()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00081">output_state()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00067">luci_interpreter::KernelWithParams&lt; UnidirectionalSequenceLSTMParams &gt;::params()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00067">recurrent_to_output_weights()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_tensor_8cpp_source.html#l00056">luci_interpreter::Tensor::resize()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00096">luci_interpreter::Tensor::shape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00150">luci_interpreter::size()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00226">luci_interpreter::UnidirectionalSequenceLSTMParams::time_major</a>.</p>
+
+</div>
+</div>
+<a id="a679704f8ff291844857590c86ebe8529" name="a679704f8ff291844857590c86ebe8529"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a679704f8ff291844857590c86ebe8529">&#9670;&#160;</a></span>configure() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter::kernels::UnidirectionalSequenceLSTM::configure </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classluci__interpreter_1_1_kernel.html#ad474727b0a11b3ab3ed2913c3f7b5418">luci_interpreter::Kernel</a>.</p>
 
 </div>
 </div>
 <a id="a3dc8f257026a2792fd6aac1586660003" name="a3dc8f257026a2792fd6aac1586660003"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3dc8f257026a2792fd6aac1586660003">&#9670;&#160;</a></span>execute()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dc8f257026a2792fd6aac1586660003">&#9670;&#160;</a></span>execute() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -810,7 +1263,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classluci__interpreter_1_1_kernel.html#aed203bb36ee44f736811d1fc3471437e">luci_interpreter::Kernel</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00824">824</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html">UnidirectionalSequenceLSTM.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00824">824</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html">UnidirectionalSequenceLSTM.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  825</span>{</div>
 <div class="line"><span class="lineno">  826</span>  <span class="keywordflow">switch</span> (<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html#a1e517b66299e79db1d84393297190ea8">input</a>()-&gt;element_type())</div>
 <div class="line"><span class="lineno">  827</span>  {</div>
@@ -822,12 +1275,39 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  833</span>  }</div>
 <div class="line"><span class="lineno">  834</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00057">input()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00057">input()</a>.</p>
+
+</div>
+</div>
+<a id="a3dc8f257026a2792fd6aac1586660003" name="a3dc8f257026a2792fd6aac1586660003"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dc8f257026a2792fd6aac1586660003">&#9670;&#160;</a></span>execute() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter::kernels::UnidirectionalSequenceLSTM::execute </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classluci__interpreter_1_1_kernel.html#aed203bb36ee44f736811d1fc3471437e">luci_interpreter::Kernel</a>.</p>
 
 </div>
 </div>
 <a id="a2c973578f4025e0d2303b0a2f6792be7" name="a2c973578f4025e0d2303b0a2f6792be7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c973578f4025e0d2303b0a2f6792be7">&#9670;&#160;</a></span>forget_gate_bias()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c973578f4025e0d2303b0a2f6792be7">&#9670;&#160;</a></span>forget_gate_bias() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -849,17 +1329,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00074">74</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00074">74</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   74</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[13]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a2c973578f4025e0d2303b0a2f6792be7" name="a2c973578f4025e0d2303b0a2f6792be7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c973578f4025e0d2303b0a2f6792be7">&#9670;&#160;</a></span>forget_gate_bias() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::forget_gate_bias </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00074">74</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   74</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[13]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="aaaebe1cde8b957b6fc902eb2d57d5712" name="aaaebe1cde8b957b6fc902eb2d57d5712"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaaebe1cde8b957b6fc902eb2d57d5712">&#9670;&#160;</a></span>forget_layer_norm_coefficients()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaebe1cde8b957b6fc902eb2d57d5712">&#9670;&#160;</a></span>forget_layer_norm_coefficients() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -881,17 +1391,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00085">85</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00085">85</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   85</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[21]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, and <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="aaaebe1cde8b957b6fc902eb2d57d5712" name="aaaebe1cde8b957b6fc902eb2d57d5712"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaebe1cde8b957b6fc902eb2d57d5712">&#9670;&#160;</a></span>forget_layer_norm_coefficients() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::forget_layer_norm_coefficients </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00085">85</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[21]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a1e517b66299e79db1d84393297190ea8" name="a1e517b66299e79db1d84393297190ea8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e517b66299e79db1d84393297190ea8">&#9670;&#160;</a></span>input()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e517b66299e79db1d84393297190ea8">&#9670;&#160;</a></span>input() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -913,17 +1453,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00057">57</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00057">57</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   57</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[0]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00824">execute()</a>, and <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00824">execute()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a1e517b66299e79db1d84393297190ea8" name="a1e517b66299e79db1d84393297190ea8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e517b66299e79db1d84393297190ea8">&#9670;&#160;</a></span>input() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::input </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00057">57</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[0]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a804c2b13db66a70db9aae88a5001e7df" name="a804c2b13db66a70db9aae88a5001e7df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a804c2b13db66a70db9aae88a5001e7df">&#9670;&#160;</a></span>input_gate_bias()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a804c2b13db66a70db9aae88a5001e7df">&#9670;&#160;</a></span>input_gate_bias() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -945,17 +1515,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00073">73</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00073">73</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   73</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[12]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a804c2b13db66a70db9aae88a5001e7df" name="a804c2b13db66a70db9aae88a5001e7df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a804c2b13db66a70db9aae88a5001e7df">&#9670;&#160;</a></span>input_gate_bias() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_gate_bias </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00073">73</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[12]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a896a359f1be0b7df97f2488c3d5870c3" name="a896a359f1be0b7df97f2488c3d5870c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a896a359f1be0b7df97f2488c3d5870c3">&#9670;&#160;</a></span>input_layer_norm_coefficients()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a896a359f1be0b7df97f2488c3d5870c3">&#9670;&#160;</a></span>input_layer_norm_coefficients() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -977,17 +1577,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00084">84</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00084">84</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   84</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[20]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a896a359f1be0b7df97f2488c3d5870c3" name="a896a359f1be0b7df97f2488c3d5870c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a896a359f1be0b7df97f2488c3d5870c3">&#9670;&#160;</a></span>input_layer_norm_coefficients() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_layer_norm_coefficients </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00084">84</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[20]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a95f78f583f8d3caa4912fd112c1bdd38" name="a95f78f583f8d3caa4912fd112c1bdd38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95f78f583f8d3caa4912fd112c1bdd38">&#9670;&#160;</a></span>input_to_cell_weights()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a95f78f583f8d3caa4912fd112c1bdd38">&#9670;&#160;</a></span>input_to_cell_weights() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1009,17 +1639,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00061">61</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00061">61</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   61</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[3]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a95f78f583f8d3caa4912fd112c1bdd38" name="a95f78f583f8d3caa4912fd112c1bdd38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95f78f583f8d3caa4912fd112c1bdd38">&#9670;&#160;</a></span>input_to_cell_weights() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_to_cell_weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00061">61</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[3]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a9ce41d4e7a477b8d82d8b94905828f84" name="a9ce41d4e7a477b8d82d8b94905828f84"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ce41d4e7a477b8d82d8b94905828f84">&#9670;&#160;</a></span>input_to_forget_weights()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ce41d4e7a477b8d82d8b94905828f84">&#9670;&#160;</a></span>input_to_forget_weights() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1041,17 +1701,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00060">60</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00060">60</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   60</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[2]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a9ce41d4e7a477b8d82d8b94905828f84" name="a9ce41d4e7a477b8d82d8b94905828f84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ce41d4e7a477b8d82d8b94905828f84">&#9670;&#160;</a></span>input_to_forget_weights() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_to_forget_weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00060">60</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[2]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="ac0add4602fa9f9837a97eacf8aaddc7b" name="ac0add4602fa9f9837a97eacf8aaddc7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0add4602fa9f9837a97eacf8aaddc7b">&#9670;&#160;</a></span>input_to_input_weights()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0add4602fa9f9837a97eacf8aaddc7b">&#9670;&#160;</a></span>input_to_input_weights() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1073,17 +1763,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00059">59</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00059">59</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   59</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[1]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, and <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="ac0add4602fa9f9837a97eacf8aaddc7b" name="ac0add4602fa9f9837a97eacf8aaddc7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0add4602fa9f9837a97eacf8aaddc7b">&#9670;&#160;</a></span>input_to_input_weights() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_to_input_weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00059">59</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[1]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a4faf666988678de550f0398d405f99d7" name="a4faf666988678de550f0398d405f99d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4faf666988678de550f0398d405f99d7">&#9670;&#160;</a></span>input_to_output_weights()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4faf666988678de550f0398d405f99d7">&#9670;&#160;</a></span>input_to_output_weights() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1105,17 +1825,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00062">62</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00062">62</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   62</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[4]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, and <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a4faf666988678de550f0398d405f99d7" name="a4faf666988678de550f0398d405f99d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4faf666988678de550f0398d405f99d7">&#9670;&#160;</a></span>input_to_output_weights() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::input_to_output_weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00062">62</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[4]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="aa5020bae301292540c3aab5739adeb17" name="aa5020bae301292540c3aab5739adeb17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5020bae301292540c3aab5739adeb17">&#9670;&#160;</a></span>output()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5020bae301292540c3aab5739adeb17">&#9670;&#160;</a></span>output() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1137,18 +1887,48 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00089">89</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00089">89</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   89</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aa8a517975a72d35747e8352e59e05a3c">_outputs</a>[0]; }</div>
 <div class="ttc" id="aclassluci__interpreter_1_1_kernel_html_aa8a517975a72d35747e8352e59e05a3c"><div class="ttname"><a href="classluci__interpreter_1_1_kernel.html#aa8a517975a72d35747e8352e59e05a3c">luci_interpreter::Kernel::_outputs</a></div><div class="ttdeci">const std::vector&lt; Tensor * &gt; _outputs</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00053">Kernel.h:53</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00053">luci_interpreter::Kernel::_outputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>.</p>
+
+</div>
+</div>
+<a id="aa5020bae301292540c3aab5739adeb17" name="aa5020bae301292540c3aab5739adeb17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5020bae301292540c3aab5739adeb17">&#9670;&#160;</a></span>output() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::output </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00089">89</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   89</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aa8a517975a72d35747e8352e59e05a3c">_outputs</a>[0]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00053">luci_interpreter::Kernel::_outputs</a>.</p>
 
 </div>
 </div>
 <a id="a59d37cc050ff7b88420c1254b0f34390" name="a59d37cc050ff7b88420c1254b0f34390"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59d37cc050ff7b88420c1254b0f34390">&#9670;&#160;</a></span>output_gate_bias()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a59d37cc050ff7b88420c1254b0f34390">&#9670;&#160;</a></span>output_gate_bias() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1170,17 +1950,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00076">76</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00076">76</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   76</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[15]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a59d37cc050ff7b88420c1254b0f34390" name="a59d37cc050ff7b88420c1254b0f34390"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59d37cc050ff7b88420c1254b0f34390">&#9670;&#160;</a></span>output_gate_bias() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::output_gate_bias </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00076">76</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[15]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="adadbf7488d424da40d82a5b33cbd5a3a" name="adadbf7488d424da40d82a5b33cbd5a3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adadbf7488d424da40d82a5b33cbd5a3a">&#9670;&#160;</a></span>output_layer_norm_coefficients()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adadbf7488d424da40d82a5b33cbd5a3a">&#9670;&#160;</a></span>output_layer_norm_coefficients() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1202,17 +2012,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00087">87</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00087">87</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   87</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[23]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="adadbf7488d424da40d82a5b33cbd5a3a" name="adadbf7488d424da40d82a5b33cbd5a3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adadbf7488d424da40d82a5b33cbd5a3a">&#9670;&#160;</a></span>output_layer_norm_coefficients() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::output_layer_norm_coefficients </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00087">87</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[23]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a90103602bacca5590cf13ada4d451f54" name="a90103602bacca5590cf13ada4d451f54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90103602bacca5590cf13ada4d451f54">&#9670;&#160;</a></span>output_state()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a90103602bacca5590cf13ada4d451f54">&#9670;&#160;</a></span>output_state() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1234,17 +2074,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00081">81</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00081">81</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   81</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[18]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, and <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a90103602bacca5590cf13ada4d451f54" name="a90103602bacca5590cf13ada4d451f54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90103602bacca5590cf13ada4d451f54">&#9670;&#160;</a></span>output_state() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::output_state </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00081">81</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   81</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[18]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a9e9daffdf10589228ffd515d4f6d8cb4" name="a9e9daffdf10589228ffd515d4f6d8cb4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e9daffdf10589228ffd515d4f6d8cb4">&#9670;&#160;</a></span>projection_bias()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e9daffdf10589228ffd515d4f6d8cb4">&#9670;&#160;</a></span>projection_bias() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1266,17 +2136,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00079">79</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00079">79</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   79</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[17]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a9e9daffdf10589228ffd515d4f6d8cb4" name="a9e9daffdf10589228ffd515d4f6d8cb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e9daffdf10589228ffd515d4f6d8cb4">&#9670;&#160;</a></span>projection_bias() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::projection_bias </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00079">79</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   79</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[17]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a78c687cd6f21d57b4d6b51067131a201" name="a78c687cd6f21d57b4d6b51067131a201"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78c687cd6f21d57b4d6b51067131a201">&#9670;&#160;</a></span>projection_weights()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78c687cd6f21d57b4d6b51067131a201">&#9670;&#160;</a></span>projection_weights() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1298,17 +2198,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00078">78</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00078">78</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   78</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[16]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a78c687cd6f21d57b4d6b51067131a201" name="a78c687cd6f21d57b4d6b51067131a201"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78c687cd6f21d57b4d6b51067131a201">&#9670;&#160;</a></span>projection_weights() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::projection_weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00078">78</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   78</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[16]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="af53625b67c9467a6eb3792e5770b4c87" name="af53625b67c9467a6eb3792e5770b4c87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af53625b67c9467a6eb3792e5770b4c87">&#9670;&#160;</a></span>recurrent_to_cell_weights()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af53625b67c9467a6eb3792e5770b4c87">&#9670;&#160;</a></span>recurrent_to_cell_weights() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1330,17 +2260,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00066">66</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00066">66</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   66</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[7]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="af53625b67c9467a6eb3792e5770b4c87" name="af53625b67c9467a6eb3792e5770b4c87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af53625b67c9467a6eb3792e5770b4c87">&#9670;&#160;</a></span>recurrent_to_cell_weights() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::recurrent_to_cell_weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00066">66</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   66</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[7]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a442a82f8b612f7164402e3dfa6a885e3" name="a442a82f8b612f7164402e3dfa6a885e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a442a82f8b612f7164402e3dfa6a885e3">&#9670;&#160;</a></span>recurrent_to_forget_weights()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a442a82f8b612f7164402e3dfa6a885e3">&#9670;&#160;</a></span>recurrent_to_forget_weights() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1362,17 +2322,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00065">65</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00065">65</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   65</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[6]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a442a82f8b612f7164402e3dfa6a885e3" name="a442a82f8b612f7164402e3dfa6a885e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a442a82f8b612f7164402e3dfa6a885e3">&#9670;&#160;</a></span>recurrent_to_forget_weights() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::recurrent_to_forget_weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00065">65</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[6]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a13b1e799b0e3f64d2bf837c5d4d4d6d0" name="a13b1e799b0e3f64d2bf837c5d4d4d6d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13b1e799b0e3f64d2bf837c5d4d4d6d0">&#9670;&#160;</a></span>recurrent_to_input_weights()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a13b1e799b0e3f64d2bf837c5d4d4d6d0">&#9670;&#160;</a></span>recurrent_to_input_weights() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1394,17 +2384,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00064">64</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00064">64</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   64</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[5]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a13b1e799b0e3f64d2bf837c5d4d4d6d0" name="a13b1e799b0e3f64d2bf837c5d4d4d6d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13b1e799b0e3f64d2bf837c5d4d4d6d0">&#9670;&#160;</a></span>recurrent_to_input_weights() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::recurrent_to_input_weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00064">64</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[5]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <a id="a849de09cb73f9f8e7911cc28c4ddd7bc" name="a849de09cb73f9f8e7911cc28c4ddd7bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a849de09cb73f9f8e7911cc28c4ddd7bc">&#9670;&#160;</a></span>recurrent_to_output_weights()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a849de09cb73f9f8e7911cc28c4ddd7bc">&#9670;&#160;</a></span>recurrent_to_output_weights() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1426,18 +2446,50 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00067">67</a> of file <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00067">67</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[8]; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, and <a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">configure()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00440">UnidirectionalSequenceLSTM()</a>.</p>
+
+</div>
+</div>
+<a id="a849de09cb73f9f8e7911cc28c4ddd7bc" name="a849de09cb73f9f8e7911cc28c4ddd7bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a849de09cb73f9f8e7911cc28c4ddd7bc">&#9670;&#160;</a></span>recurrent_to_output_weights() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * luci_interpreter::kernels::UnidirectionalSequenceLSTM::recurrent_to_output_weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00067">67</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#aab6171afbe5214f7f295e15bfb082d77">_inputs</a>[8]; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>compiler/luci-interpreter/src/kernels/<a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a></li>
-<li>compiler/luci-interpreter/src/kernels/<a class="el" href="luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html">UnidirectionalSequenceLSTM.cpp</a></li>
+<li>compiler/luci-interpreter/src/kernels/<a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a></li>
+<li>onert-micro/luci-interpreter/src/kernels/<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html">UnidirectionalSequenceLSTM.h</a></li>
+<li>compiler/luci-interpreter/src/kernels/<a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html">UnidirectionalSequenceLSTM.cpp</a></li>
+<li>onert-micro/luci-interpreter/src/kernels/<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html">UnidirectionalSequenceLSTM.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

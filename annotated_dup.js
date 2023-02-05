@@ -1505,6 +1505,9 @@ var annotated_dup =
       [ "UnpackParams", "structluci__interpreter_1_1_unpack_params.html", "structluci__interpreter_1_1_unpack_params" ],
       [ "VectorWrapper", "classluci__interpreter_1_1_vector_wrapper.html", "classluci__interpreter_1_1_vector_wrapper" ]
     ] ],
+    [ "luci_interpreter_pal", "namespaceluci__interpreter__pal.html", [
+      [ "ActivationFunctor", "classluci__interpreter__pal_1_1_activation_functor.html", "classluci__interpreter__pal_1_1_activation_functor" ]
+    ] ],
     [ "mio", "namespacemio.html", [
       [ "circle", "namespacemio_1_1circle.html", [
         [ "Reader", "classmio_1_1circle_1_1_reader.html", "classmio_1_1circle_1_1_reader" ]
@@ -2586,19 +2589,6 @@ var annotated_dup =
         [ "ThreadPool", "classonert_1_1exec_1_1_thread_pool.html", "classonert_1_1exec_1_1_thread_pool" ],
         [ "TracingObserver", "classonert_1_1exec_1_1_tracing_observer.html", "classonert_1_1exec_1_1_tracing_observer" ],
         [ "WorkQueue", "classonert_1_1exec_1_1_work_queue.html", "classonert_1_1exec_1_1_work_queue" ]
-      ] ],
-      [ "interp", "namespaceonert_1_1interp.html", [
-        [ "Buffer", "classonert_1_1interp_1_1_buffer.html", "classonert_1_1interp_1_1_buffer" ],
-        [ "ExecEnv", "classonert_1_1interp_1_1_exec_env.html", "classonert_1_1interp_1_1_exec_env" ],
-        [ "ExternalBuffer", "classonert_1_1interp_1_1_external_buffer.html", "classonert_1_1interp_1_1_external_buffer" ],
-        [ "InternalBuffer", "classonert_1_1interp_1_1_internal_buffer.html", "classonert_1_1interp_1_1_internal_buffer" ],
-        [ "InterpExecutor", "classonert_1_1interp_1_1_interp_executor.html", "classonert_1_1interp_1_1_interp_executor" ],
-        [ "Interpreter", "classonert_1_1interp_1_1_interpreter.html", "classonert_1_1interp_1_1_interpreter" ],
-        [ "ITensor", "classonert_1_1interp_1_1_i_tensor.html", "classonert_1_1interp_1_1_i_tensor" ],
-        [ "OperationExecutor", "classonert_1_1interp_1_1_operation_executor.html", "classonert_1_1interp_1_1_operation_executor" ],
-        [ "OpKernel", "structonert_1_1interp_1_1_op_kernel.html", "structonert_1_1interp_1_1_op_kernel" ],
-        [ "ROTensor", "classonert_1_1interp_1_1_r_o_tensor.html", "classonert_1_1interp_1_1_r_o_tensor" ],
-        [ "Tensor", "classonert_1_1interp_1_1_tensor.html", "classonert_1_1interp_1_1_tensor" ]
       ] ],
       [ "ir", "namespaceonert_1_1ir.html", [
         [ "operation", "namespaceonert_1_1ir_1_1operation.html", [

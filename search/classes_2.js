@@ -78,7 +78,7 @@ var searchData=
   ['broadcasttocheffactory_75',['BroadcastToChefFactory',['../struct_broadcast_to_chef_factory.html',1,'']]],
   ['broadcasttolayer_76',['BroadcastToLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_broadcast_to_layer.html',1,'onert::backend::cpu::ops']]],
   ['buddymemorymanager_77',['BuddyMemoryManager',['../classluci__interpreter_1_1_buddy_memory_manager.html',1,'luci_interpreter']]],
-  ['buffer_78',['Buffer',['../classnncc_1_1core_1_1_a_d_t_1_1feature_1_1_buffer.html',1,'nncc::core::ADT::feature::Buffer&lt; T &gt;'],['../classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_buffer.html',1,'nncc::core::ADT::kernel::Buffer&lt; T &gt;'],['../classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_buffer.html',1,'nncc::core::ADT::tensor::Buffer&lt; T &gt;'],['../classonert_1_1interp_1_1_buffer.html',1,'onert::interp::Buffer']]],
+  ['buffer_78',['Buffer',['../classnncc_1_1core_1_1_a_d_t_1_1feature_1_1_buffer.html',1,'nncc::core::ADT::feature::Buffer&lt; T &gt;'],['../classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_buffer.html',1,'nncc::core::ADT::kernel::Buffer&lt; T &gt;'],['../classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_buffer.html',1,'nncc::core::ADT::tensor::Buffer&lt; T &gt;']]],
   ['buffer_3c_20float_20_3e_79',['Buffer&lt; float &gt;',['../classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_buffer.html',1,'nncc::core::ADT::kernel']]],
   ['bufferlink_80',['BufferLink',['../structtflite2circle_1_1_buffer_link.html',1,'tflite2circle']]],
   ['buildnodeargs_81',['BuildNodeArgs',['../structluci_1_1_graph_builder_multi_output_1_1_build_node_args.html',1,'luci::GraphBuilderMultiOutput']]],

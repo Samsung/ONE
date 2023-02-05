@@ -1,21 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,237,161,262"/>
-<area shape="rect" id="node2" href="$class_mock_tensor.html" title=" " alt="" coords="229,83,353,109"/>
-<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="209,133,373,173"/>
-<area shape="rect" id="node8" href="$classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html" title="Class representing Tensor for ACL." alt="" coords="214,229,369,269"/>
-<area shape="rect" id="node15" href="$classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_i_c_l_tensor.html" title=" " alt="" coords="212,309,371,349"/>
-<area shape="rect" id="node17" href="$classonert_1_1interp_1_1_i_tensor.html" title="Interface to handle Tensor in interpreter." alt="" coords="222,390,361,415"/>
-<area shape="rect" id="node4" href="$classonert_1_1backend_1_1basic_1_1_tensor.html" title=" " alt="" coords="439,5,581,45"/>
-<area shape="rect" id="node6" href="$classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html" title="Tensor object that indirects to the tensor it is pointing to." alt="" coords="437,69,583,109"/>
-<area shape="rect" id="node7" href="$classonert_1_1backend_1_1builtin_1_1_user_tensor.html" title="Tensor object that is for Input and Output tensors from the user." alt="" coords="437,133,583,173"/>
-<area shape="rect" id="node5" href="$classonert_1_1backend_1_1basic_1_1_external_tensor.html" title="Class that uses data from external memory that is not managed by a backend instead of allocating and ..." alt="" coords="673,5,816,45"/>
-<area shape="rect" id="node9" href="$classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html" title=" " alt="" coords="431,197,589,237"/>
-<area shape="rect" id="node12" href="$classonert_1_1backend_1_1acl__neon_1_1operand_1_1_i_n_e_tensor.html" title=" " alt="" coords="421,261,599,301"/>
-<area shape="rect" id="node10" href="$classonert_1_1backend_1_1acl__cl_1_1operand_1_1_c_l_sub_tensor.html" title=" " alt="" coords="656,133,833,173"/>
-<area shape="rect" id="node11" href="$classonert_1_1backend_1_1acl__cl_1_1operand_1_1_c_l_tensor.html" title=" " alt="" coords="667,197,822,237"/>
-<area shape="rect" id="node13" href="$classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_sub_tensor.html" title=" " alt="" coords="647,261,843,301"/>
-<area shape="rect" id="node14" href="$classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor.html" title=" " alt="" coords="658,325,831,365"/>
-<area shape="rect" id="node16" href="$classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_c_l_tensor.html" title=" " alt="" coords="433,325,587,365"/>
-<area shape="rect" id="node18" href="$classonert_1_1interp_1_1_r_o_tensor.html" title="Class to handle tensor in interpreter as read&#45;only." alt="" coords="433,390,587,415"/>
-<area shape="rect" id="node19" href="$classonert_1_1interp_1_1_tensor.html" title="Class to handle tensor in interpreter as writable." alt="" coords="443,439,577,465"/>
+<area shape="rect" id="node1" href="$structonert_1_1backend_1_1_i_config.html" title=" " alt="" coords="5,237,157,262"/>
+<area shape="rect" id="node2" href="$classonert_1_1backend_1_1acl__cl_1_1_config.html" title=" " alt="" coords="221,5,350,45"/>
+<area shape="rect" id="node3" href="$classonert_1_1backend_1_1acl__neon_1_1_config.html" title=" " alt="" coords="221,69,350,109"/>
+<area shape="rect" id="node4" href="$classonert_1_1backend_1_1builtin_1_1_config.html" title=" " alt="" coords="212,133,359,173"/>
+<area shape="rect" id="node5" href="$classonert_1_1backend_1_1cpu_1_1_config.html" title=" " alt="" coords="219,197,352,237"/>
+<area shape="rect" id="node6" href="$classonert_1_1backend_1_1gpu__cl_1_1_config.html" title=" " alt="" coords="219,261,352,301"/>
+<area shape="rect" id="node7" href="$classonert_1_1backend_1_1ruy_1_1_config.html" title=" " alt="" coords="221,325,350,365"/>
+<area shape="rect" id="node8" href="$classonert_1_1backend_1_1trix_1_1_config.html" title=" " alt="" coords="221,389,350,429"/>
+<area shape="rect" id="node9" href="$classonert_1_1backend_1_1xnnpack_1_1_config.html" title=" " alt="" coords="205,453,365,493"/>
 </map>

@@ -90,6 +90,7 @@ $(document).ready(function(){initNavTree('classonert_1_1exec_1_1_executors.html'
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle"><div class="title">onert::exec::Executors Class Reference</div></div>
 </div><!--header-->
@@ -173,7 +174,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Class to gather executors. </p>
 
-<p class="definition">Definition at line <a class="el" href="_executors_8h_source.html#l00046">46</a> of file <a class="el" href="_executors_8h_source.html">Executors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executors_8h_source.html#l00047">47</a> of file <a class="el" href="_executors_8h_source.html">Executors.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab673717f8ee7a0a0c862199606ce8f34" name="ab673717f8ee7a0a0c862199606ce8f34"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab673717f8ee7a0a0c862199606ce8f34">&#9670;&#160;</a></span>Executors() <span class="overload">[1/4]</span></h2>
@@ -225,8 +226,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executors_8h_source.html#l00050">50</a> of file <a class="el" href="_executors_8h_source.html">Executors.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{ _model_edges = std::move(model_edges); }</div>
+<p class="definition">Definition at line <a class="el" href="_executors_8h_source.html#l00051">51</a> of file <a class="el" href="_executors_8h_source.html">Executors.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>    : _type_aware_quant_layers{}, _type_aware_quant_tensors{}, _is_created_type_quant_layers{<span class="keyword">false</span>}</div>
+<div class="line"><span class="lineno">   53</span>  {</div>
+<div class="line"><span class="lineno">   54</span>    _model_edges = std::move(model_edges);</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;edge : _model_edges-&gt;edges)</div>
+<div class="line"><span class="lineno">   56</span>    {</div>
+<div class="line"><span class="lineno">   57</span>      _edge_map[edge.from].emplace_back(edge.to);</div>
+<div class="line"><span class="lineno">   58</span>    }</div>
+<div class="line"><span class="lineno">   59</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -359,7 +367,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   35</span>  <span class="keywordflow">return</span> _executors.at(std::make_pair(model_index, subg_index)).get();</div>
 <div class="line"><span class="lineno">   36</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_executors_8cc_source.html#l00114">execute()</a>, <a class="el" href="_executors_8cc_source.html#l00042">inputInfo()</a>, and <a class="el" href="_executors_8cc_source.html#l00052">outputInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_executors_8cc_source.html#l00180">execute()</a>, <a class="el" href="_executors_8cc_source.html#l00042">inputInfo()</a>, and <a class="el" href="_executors_8cc_source.html#l00052">outputInfo()</a>.</p>
 
 </div>
 </div>
@@ -456,188 +464,286 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_executors.html#ae3bfeba573d736eebfd9e3d8a8820a97">onert::exec::IExecutors</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_executors_8cc_source.html#l00114">114</a> of file <a class="el" href="_executors_8cc_source.html">Executors.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  115</span>{</div>
-<div class="line"><span class="lineno">  116</span>  <span class="comment">// Check supported multi model package</span></div>
-<div class="line"><span class="lineno">  117</span>  checkSupportedMultimodel();</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>  <span class="comment">// TODO Find better way to schedule order of executors</span></div>
-<div class="line"><span class="lineno">  120</span>  std::vector&lt;std::unique_ptr&lt;backend::builtin::IOTensor&gt;&gt; pkgs_inputs(desc.inputs.size());</div>
-<div class="line"><span class="lineno">  121</span>  std::vector&lt;std::unique_ptr&lt;backend::builtin::IOTensor&gt;&gt; pkgs_outputs(desc.outputs.size());</div>
-<div class="line"><span class="lineno">  122</span>  <span class="keyword">const</span> <span class="keyword">auto</span> layout = <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>;</div>
-<div class="line"><span class="lineno">  123</span>  <span class="keyword">auto</span> <span class="keyword">const</span> model_count = modelCount();</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>  <span class="keyword">auto</span> find_input_index = [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a> &amp;model_index,</div>
-<div class="line"><span class="lineno">  126</span>                              <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> &amp;subg_index, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;io_index) {</div>
-<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; _model_edges-&gt;pkg_inputs.size(); i++)</div>
-<div class="line"><span class="lineno">  128</span>    {</div>
-<div class="line"><span class="lineno">  129</span>      <span class="keyword">auto</span> &amp;input_desc = _model_edges-&gt;pkg_inputs[i];</div>
-<div class="line"><span class="lineno">  130</span>      <span class="keywordflow">if</span> ((std::get&lt;ir::ModelIndex&gt;(input_desc) == model_index) &amp;&amp;</div>
-<div class="line"><span class="lineno">  131</span>          (std::get&lt;ir::SubgraphIndex&gt;(input_desc) == subg_index) &amp;&amp;</div>
-<div class="line"><span class="lineno">  132</span>          (std::get&lt;ir::IOIndex&gt;(input_desc) == io_index))</div>
-<div class="line"><span class="lineno">  133</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(i);</div>
-<div class="line"><span class="lineno">  134</span>    }</div>
-<div class="line"><span class="lineno">  135</span>    <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="lineno">  136</span>  };</div>
-<div class="line"><span class="lineno">  137</span> </div>
-<div class="line"><span class="lineno">  138</span>  <span class="keyword">auto</span> find_output_index = [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a> &amp;model_index,</div>
-<div class="line"><span class="lineno">  139</span>                               <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> &amp;subg_index, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;io_index) {</div>
-<div class="line"><span class="lineno">  140</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; _model_edges-&gt;pkg_outputs.size(); i++)</div>
-<div class="line"><span class="lineno">  141</span>    {</div>
-<div class="line"><span class="lineno">  142</span>      <span class="keyword">auto</span> &amp;input_desc = _model_edges-&gt;pkg_outputs[i];</div>
-<div class="line"><span class="lineno">  143</span>      <span class="keywordflow">if</span> ((std::get&lt;ir::ModelIndex&gt;(input_desc) == model_index) &amp;&amp;</div>
-<div class="line"><span class="lineno">  144</span>          (std::get&lt;ir::SubgraphIndex&gt;(input_desc) == subg_index) &amp;&amp;</div>
-<div class="line"><span class="lineno">  145</span>          (std::get&lt;ir::IOIndex&gt;(input_desc) == io_index))</div>
-<div class="line"><span class="lineno">  146</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(i);</div>
-<div class="line"><span class="lineno">  147</span>    }</div>
-<div class="line"><span class="lineno">  148</span>    <span class="keywordflow">return</span> -1;</div>
-<div class="line"><span class="lineno">  149</span>  };</div>
-<div class="line"><span class="lineno">  150</span> </div>
-<div class="line"><span class="lineno">  151</span>  <span class="keyword">auto</span> find_from = [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a> &amp;model_index, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> &amp;subg_index,</div>
-<div class="line"><span class="lineno">  152</span>                       <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;io_index) {</div>
-<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;edge : _model_edges-&gt;edges)</div>
-<div class="line"><span class="lineno">  154</span>    {</div>
-<div class="line"><span class="lineno">  155</span>      <span class="keywordflow">if</span> ((std::get&lt;ir::ModelIndex&gt;(edge.to) == model_index) &amp;&amp;</div>
-<div class="line"><span class="lineno">  156</span>          (std::get&lt;ir::SubgraphIndex&gt;(edge.to) == subg_index) &amp;&amp;</div>
-<div class="line"><span class="lineno">  157</span>          (std::get&lt;ir::IOIndex&gt;(edge.to) == io_index))</div>
-<div class="line"><span class="lineno">  158</span>        <span class="keywordflow">return</span> edge.from;</div>
-<div class="line"><span class="lineno">  159</span>    }</div>
-<div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Cannot find edge for model input&quot;</span>};</div>
-<div class="line"><span class="lineno">  162</span>  };</div>
-<div class="line"><span class="lineno">  163</span> </div>
-<div class="line"><span class="lineno">  164</span>  <span class="comment">// TODO Find better way to share buffers and tensors between executors</span></div>
-<div class="line"><span class="lineno">  165</span>  <span class="comment">// NOTE Executor&#39;s inputs/outputs are always IPortableTensor. If backend of inputs/outputs</span></div>
-<div class="line"><span class="lineno">  166</span>  <span class="comment">//      is using tensor that does not inherit IPortableTensor, Permute operation is added</span></div>
-<div class="line"><span class="lineno">  167</span>  <span class="comment">//      and all inputs/outputs become IPortableTensor at compile stage.</span></div>
-<div class="line"><span class="lineno">  168</span>  <span class="comment">//      This allows user&#39;s buffers to be set to inputs/outputs of executors.</span></div>
-<div class="line"><span class="lineno">  169</span>  <span class="comment">// Shared buffers and tensors between executors</span></div>
-<div class="line"><span class="lineno">  170</span>  std::vector&lt;std::unique_ptr&lt;backend::builtin::IOTensor&gt;&gt; edge_tensors;</div>
-<div class="line"><span class="lineno">  171</span>  std::unordered_map&lt;ir::IODesc, std::unique_ptr&lt;uint8_t[]&gt;&gt; internal_bufs;</div>
-<div class="line"><span class="lineno">  172</span> </div>
-<div class="line"><span class="lineno">  173</span>  <span class="comment">// Reference count for each `from` of edges to reduce peak memory</span></div>
-<div class="line"><span class="lineno">  174</span>  std::unordered_map&lt;ir::IODesc, int32_t&gt; internal_tensor_ref_counts(_model_edges-&gt;edges.size());</div>
-<div class="line"><span class="lineno">  175</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;edge : _model_edges-&gt;edges)</div>
-<div class="line"><span class="lineno">  176</span>  {</div>
-<div class="line"><span class="lineno">  177</span>    <span class="keywordflow">if</span> (internal_tensor_ref_counts.find(edge.from) == internal_tensor_ref_counts.end())</div>
-<div class="line"><span class="lineno">  178</span>      internal_tensor_ref_counts[edge.from] = 1;</div>
-<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  180</span>      internal_tensor_ref_counts[edge.from]++;</div>
-<div class="line"><span class="lineno">  181</span>  }</div>
-<div class="line"><span class="lineno">  182</span> </div>
-<div class="line"><span class="lineno">  183</span>  <span class="comment">// Execute each model</span></div>
-<div class="line"><span class="lineno">  184</span>  <span class="comment">// NOTE May be better to use vector instead of unordered_map for _executors</span></div>
-<div class="line"><span class="lineno">  185</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> model_index = <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a>{0}; model_index.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>() &lt; model_count; model_index++)</div>
-<div class="line"><span class="lineno">  186</span>  {</div>
-<div class="line"><span class="lineno">  187</span>    <span class="comment">// Find executor</span></div>
-<div class="line"><span class="lineno">  188</span>    <span class="keyword">auto</span> executor = <a class="code hl_function" href="classonert_1_1exec_1_1_executors.html#a34220dc52fcdbd8117e483b451332bea">at</a>(model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0});</div>
-<div class="line"><span class="lineno">  189</span> </div>
-<div class="line"><span class="lineno">  190</span>    <span class="comment">// Set IOTensors</span></div>
-<div class="line"><span class="lineno">  191</span>    std::vector&lt;backend::IPortableTensor *&gt; inputs_inter;</div>
-<div class="line"><span class="lineno">  192</span>    std::vector&lt;backend::IPortableTensor *&gt; outputs_inter;</div>
-<div class="line"><span class="lineno">  193</span>    <span class="keyword">auto</span> <span class="keyword">const</span> input_size = executor-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">graph</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a126b6c671828dc955ba85505261aad63">getInputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">size</a>();</div>
-<div class="line"><span class="lineno">  194</span>    <span class="keyword">auto</span> <span class="keyword">const</span> output_size = executor-&gt;graph().getOutputs().size();</div>
-<div class="line"><span class="lineno">  195</span>    inputs_inter.resize(input_size);</div>
-<div class="line"><span class="lineno">  196</span>    outputs_inter.resize(output_size);</div>
-<div class="line"><span class="lineno">  197</span> </div>
-<div class="line"><span class="lineno">  198</span>    <span class="comment">// Set inputs of executor</span></div>
-<div class="line"><span class="lineno">  199</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; input_size; i++)</div>
-<div class="line"><span class="lineno">  200</span>    {</div>
-<div class="line"><span class="lineno">  201</span>      <span class="keyword">auto</span> <span class="keyword">const</span> &amp;<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = executor-&gt;graph().getInputs().at(<a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i});</div>
-<div class="line"><span class="lineno">  202</span>      <span class="keyword">auto</span> <span class="keyword">const</span> &amp;<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = executor-&gt;graph().operands().at(index).info();</div>
-<div class="line"><span class="lineno">  203</span> </div>
-<div class="line"><span class="lineno">  204</span>      <span class="keyword">auto</span> input_pkg_index = find_input_index(model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i});</div>
-<div class="line"><span class="lineno">  205</span>      <span class="keywordflow">if</span> (input_pkg_index != -1)</div>
-<div class="line"><span class="lineno">  206</span>      {</div>
-<div class="line"><span class="lineno">  207</span>        <span class="keyword">auto</span> input_desc = desc.inputs[input_pkg_index].get();</div>
-<div class="line"><span class="lineno">  208</span>        pkgs_inputs[input_pkg_index] = std::make_unique&lt;backend::builtin::IOTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
-<div class="line"><span class="lineno">  209</span>        <span class="comment">// TODO Remove const_cast (we need const_cast as ITensor is writable)</span></div>
-<div class="line"><span class="lineno">  210</span>        pkgs_inputs[input_pkg_index]-&gt;setUserTensor(</div>
-<div class="line"><span class="lineno">  211</span>          <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(<span class="keyword">const_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(input_desc-&gt;buffer)), input_desc-&gt;size);</div>
-<div class="line"><span class="lineno">  212</span> </div>
-<div class="line"><span class="lineno">  213</span>        inputs_inter[i] = pkgs_inputs[input_pkg_index].get();</div>
-<div class="line"><span class="lineno">  214</span>      }</div>
-<div class="line"><span class="lineno">  215</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  216</span>      {</div>
-<div class="line"><span class="lineno">  217</span>        <span class="keyword">auto</span> from_iodesc = find_from(model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i});</div>
-<div class="line"><span class="lineno">  218</span>        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;from_model_index = std::get&lt;ir::ModelIndex&gt;(from_iodesc);</div>
-<div class="line"><span class="lineno">  219</span>        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;from_subg_index = std::get&lt;ir::SubgraphIndex&gt;(from_iodesc);</div>
-<div class="line"><span class="lineno">  220</span>        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;from_ioindex = std::get&lt;ir::IOIndex&gt;(from_iodesc).value();</div>
-<div class="line"><span class="lineno">  221</span> </div>
-<div class="line"><span class="lineno">  222</span>        <span class="comment">// Supported only sequantial execution of models</span></div>
-<div class="line"><span class="lineno">  223</span>        assert(from_model_index.value() &lt; model_index.value());</div>
-<div class="line"><span class="lineno">  224</span>        assert(from_subg_index.value() == 0);</div>
-<div class="line"><span class="lineno">  225</span> </div>
-<div class="line"><span class="lineno">  226</span>        <span class="comment">// TODO Add check if from_executor has already been executed</span></div>
-<div class="line"><span class="lineno">  227</span>        <span class="keyword">const</span> <span class="keyword">auto</span> from_executor = _executors.at({from_model_index, from_subg_index}).<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>();</div>
-<div class="line"><span class="lineno">  228</span>        inputs_inter[i] = from_executor-&gt;getOutputTensors().at(from_ioindex);</div>
-<div class="line"><span class="lineno">  229</span>      }</div>
-<div class="line"><span class="lineno">  230</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="_executors_8cc_source.html#l00180">180</a> of file <a class="el" href="_executors_8cc_source.html">Executors.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  181</span>{</div>
+<div class="line"><span class="lineno">  182</span>  <span class="comment">// Check supported multi model package</span></div>
+<div class="line"><span class="lineno">  183</span>  checkSupportedMultimodel();</div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span>  <span class="comment">// TODO Move creating layers for type-aware quantization in compilation stage</span></div>
+<div class="line"><span class="lineno">  186</span>  createTypeAwareQuantLayers();</div>
+<div class="line"><span class="lineno">  187</span> </div>
+<div class="line"><span class="lineno">  188</span>  <span class="comment">// TODO Find better way to schedule order of executors</span></div>
+<div class="line"><span class="lineno">  189</span>  std::vector&lt;std::unique_ptr&lt;backend::builtin::IOTensor&gt;&gt; pkgs_inputs(desc.inputs.size());</div>
+<div class="line"><span class="lineno">  190</span>  std::vector&lt;std::unique_ptr&lt;backend::builtin::IOTensor&gt;&gt; pkgs_outputs(desc.outputs.size());</div>
+<div class="line"><span class="lineno">  191</span>  <span class="keyword">auto</span> <span class="keyword">const</span> model_count = modelCount();</div>
+<div class="line"><span class="lineno">  192</span> </div>
+<div class="line"><span class="lineno">  193</span>  <span class="keyword">auto</span> find_input_index = [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a> &amp;model_index,</div>
+<div class="line"><span class="lineno">  194</span>                              <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> &amp;subg_index, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;io_index) {</div>
+<div class="line"><span class="lineno">  195</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; _model_edges-&gt;pkg_inputs.size(); i++)</div>
+<div class="line"><span class="lineno">  196</span>    {</div>
+<div class="line"><span class="lineno">  197</span>      <span class="keyword">auto</span> &amp;input_desc = _model_edges-&gt;pkg_inputs[i];</div>
+<div class="line"><span class="lineno">  198</span>      <span class="keywordflow">if</span> ((std::get&lt;ir::ModelIndex&gt;(input_desc) == model_index) &amp;&amp;</div>
+<div class="line"><span class="lineno">  199</span>          (std::get&lt;ir::SubgraphIndex&gt;(input_desc) == subg_index) &amp;&amp;</div>
+<div class="line"><span class="lineno">  200</span>          (std::get&lt;ir::IOIndex&gt;(input_desc) == io_index))</div>
+<div class="line"><span class="lineno">  201</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(i);</div>
+<div class="line"><span class="lineno">  202</span>    }</div>
+<div class="line"><span class="lineno">  203</span>    <span class="keywordflow">return</span> -1;</div>
+<div class="line"><span class="lineno">  204</span>  };</div>
+<div class="line"><span class="lineno">  205</span> </div>
+<div class="line"><span class="lineno">  206</span>  <span class="keyword">auto</span> find_output_index = [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a> &amp;model_index,</div>
+<div class="line"><span class="lineno">  207</span>                               <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> &amp;subg_index, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;io_index) {</div>
+<div class="line"><span class="lineno">  208</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; _model_edges-&gt;pkg_outputs.size(); i++)</div>
+<div class="line"><span class="lineno">  209</span>    {</div>
+<div class="line"><span class="lineno">  210</span>      <span class="keyword">auto</span> &amp;input_desc = _model_edges-&gt;pkg_outputs[i];</div>
+<div class="line"><span class="lineno">  211</span>      <span class="keywordflow">if</span> ((std::get&lt;ir::ModelIndex&gt;(input_desc) == model_index) &amp;&amp;</div>
+<div class="line"><span class="lineno">  212</span>          (std::get&lt;ir::SubgraphIndex&gt;(input_desc) == subg_index) &amp;&amp;</div>
+<div class="line"><span class="lineno">  213</span>          (std::get&lt;ir::IOIndex&gt;(input_desc) == io_index))</div>
+<div class="line"><span class="lineno">  214</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(i);</div>
+<div class="line"><span class="lineno">  215</span>    }</div>
+<div class="line"><span class="lineno">  216</span>    <span class="keywordflow">return</span> -1;</div>
+<div class="line"><span class="lineno">  217</span>  };</div>
+<div class="line"><span class="lineno">  218</span> </div>
+<div class="line"><span class="lineno">  219</span>  <span class="keyword">auto</span> find_from = [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a> &amp;model_index, <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> &amp;subg_index,</div>
+<div class="line"><span class="lineno">  220</span>                       <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;io_index) {</div>
+<div class="line"><span class="lineno">  221</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;edge : _model_edges-&gt;edges)</div>
+<div class="line"><span class="lineno">  222</span>    {</div>
+<div class="line"><span class="lineno">  223</span>      <span class="keywordflow">if</span> ((std::get&lt;ir::ModelIndex&gt;(edge.to) == model_index) &amp;&amp;</div>
+<div class="line"><span class="lineno">  224</span>          (std::get&lt;ir::SubgraphIndex&gt;(edge.to) == subg_index) &amp;&amp;</div>
+<div class="line"><span class="lineno">  225</span>          (std::get&lt;ir::IOIndex&gt;(edge.to) == io_index))</div>
+<div class="line"><span class="lineno">  226</span>        <span class="keywordflow">return</span> edge.from;</div>
+<div class="line"><span class="lineno">  227</span>    }</div>
+<div class="line"><span class="lineno">  228</span> </div>
+<div class="line"><span class="lineno">  229</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Cannot find edge for model input&quot;</span>};</div>
+<div class="line"><span class="lineno">  230</span>  };</div>
 <div class="line"><span class="lineno">  231</span> </div>
-<div class="line"><span class="lineno">  232</span>    <span class="comment">// Set outputs of executor</span></div>
-<div class="line"><span class="lineno">  233</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; output_size; i++)</div>
-<div class="line"><span class="lineno">  234</span>    {</div>
-<div class="line"><span class="lineno">  235</span>      <span class="keyword">auto</span> <span class="keyword">const</span> &amp;<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = executor-&gt;graph().getOutputs().at(<a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i});</div>
-<div class="line"><span class="lineno">  236</span>      <span class="keyword">auto</span> <span class="keyword">const</span> &amp;<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = executor-&gt;graph().operands().at(index).info();</div>
-<div class="line"><span class="lineno">  237</span> </div>
-<div class="line"><span class="lineno">  238</span>      <span class="keyword">auto</span> output_pkg_index = find_output_index(model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i});</div>
-<div class="line"><span class="lineno">  239</span>      <span class="keywordflow">if</span> (output_pkg_index != -1)</div>
-<div class="line"><span class="lineno">  240</span>      {</div>
-<div class="line"><span class="lineno">  241</span>        <span class="keyword">auto</span> output_desc = desc.outputs[output_pkg_index].get();</div>
-<div class="line"><span class="lineno">  242</span>        pkgs_outputs[output_pkg_index] = std::make_unique&lt;backend::builtin::IOTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
-<div class="line"><span class="lineno">  243</span>        pkgs_outputs[output_pkg_index]-&gt;setUserTensor(</div>
-<div class="line"><span class="lineno">  244</span>          <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(output_desc-&gt;buffer), output_desc-&gt;size);</div>
-<div class="line"><span class="lineno">  245</span> </div>
-<div class="line"><span class="lineno">  246</span>        outputs_inter[i] = pkgs_outputs[output_pkg_index].get();</div>
-<div class="line"><span class="lineno">  247</span>      }</div>
-<div class="line"><span class="lineno">  248</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  249</span>      {</div>
-<div class="line"><span class="lineno">  250</span>        <span class="keyword">const</span> <span class="keyword">auto</span> from_iodesc = <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a054e57a584412f9d194952596c7db844">ir::IODesc</a>{model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i}};</div>
-<div class="line"><span class="lineno">  251</span>        <span class="keyword">const</span> <span class="keyword">auto</span> temp_index = edge_tensors.size();</div>
-<div class="line"><span class="lineno">  252</span>        internal_bufs[from_iodesc] = std::make_unique&lt;uint8_t[]&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.total_size());</div>
-<div class="line"><span class="lineno">  253</span>        edge_tensors.emplace_back(std::make_unique&lt;backend::builtin::IOTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout));</div>
-<div class="line"><span class="lineno">  254</span>        edge_tensors.at(temp_index)</div>
-<div class="line"><span class="lineno">  255</span>          -&gt;setUserTensor(internal_bufs[from_iodesc].<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>(), <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.total_size());</div>
-<div class="line"><span class="lineno">  256</span>        outputs_inter[i] = edge_tensors[temp_index].get();</div>
-<div class="line"><span class="lineno">  257</span>      }</div>
-<div class="line"><span class="lineno">  258</span>    }</div>
+<div class="line"><span class="lineno">  232</span>  <span class="comment">// TODO Find better way to share buffers and tensors between executors</span></div>
+<div class="line"><span class="lineno">  233</span>  <span class="comment">// NOTE Executor&#39;s inputs/outputs are always IPortableTensor. If backend of inputs/outputs</span></div>
+<div class="line"><span class="lineno">  234</span>  <span class="comment">//      is using tensor that does not inherit IPortableTensor, Permute operation is added</span></div>
+<div class="line"><span class="lineno">  235</span>  <span class="comment">//      and all inputs/outputs become IPortableTensor at compile stage.</span></div>
+<div class="line"><span class="lineno">  236</span>  <span class="comment">//      This allows user&#39;s buffers to be set to inputs/outputs of executors.</span></div>
+<div class="line"><span class="lineno">  237</span>  <span class="comment">// Shared buffers and tensors between executors</span></div>
+<div class="line"><span class="lineno">  238</span>  <span class="comment">// TODO Introduce a new class for edge tensors</span></div>
+<div class="line"><span class="lineno">  239</span>  std::vector&lt;std::unique_ptr&lt;backend::builtin::IOTensor&gt;&gt; edge_tensors;</div>
+<div class="line"><span class="lineno">  240</span>  std::unordered_map&lt;ir::IODesc, std::unique_ptr&lt;uint8_t[]&gt;&gt; internal_bufs;</div>
+<div class="line"><span class="lineno">  241</span>  std::unordered_map&lt;ir::IODesc, std::unique_ptr&lt;uint8_t[]&gt;&gt; type_aware_bufs;</div>
+<div class="line"><span class="lineno">  242</span> </div>
+<div class="line"><span class="lineno">  243</span>  <span class="comment">// Reference count for each `from` of edges to reduce peak memory</span></div>
+<div class="line"><span class="lineno">  244</span>  std::unordered_map&lt;ir::IODesc, int32_t&gt; internal_tensor_ref_counts(_model_edges-&gt;edges.size());</div>
+<div class="line"><span class="lineno">  245</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;edge : _model_edges-&gt;edges)</div>
+<div class="line"><span class="lineno">  246</span>  {</div>
+<div class="line"><span class="lineno">  247</span>    <span class="keywordflow">if</span> (internal_tensor_ref_counts.find(edge.from) == internal_tensor_ref_counts.end())</div>
+<div class="line"><span class="lineno">  248</span>      internal_tensor_ref_counts[edge.from] = 1;</div>
+<div class="line"><span class="lineno">  249</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  250</span>      internal_tensor_ref_counts[edge.from]++;</div>
+<div class="line"><span class="lineno">  251</span>  }</div>
+<div class="line"><span class="lineno">  252</span> </div>
+<div class="line"><span class="lineno">  253</span>  <span class="comment">// Execute each model</span></div>
+<div class="line"><span class="lineno">  254</span>  <span class="comment">// NOTE May be better to use vector instead of unordered_map for _executors</span></div>
+<div class="line"><span class="lineno">  255</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> model_index = <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a>{0}; model_index.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>() &lt; model_count; model_index++)</div>
+<div class="line"><span class="lineno">  256</span>  {</div>
+<div class="line"><span class="lineno">  257</span>    <span class="comment">// Find executor</span></div>
+<div class="line"><span class="lineno">  258</span>    <span class="keyword">auto</span> executor = <a class="code hl_function" href="classonert_1_1exec_1_1_executors.html#a34220dc52fcdbd8117e483b451332bea">at</a>(model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0});</div>
 <div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span>    executor-&gt;execute(inputs_inter, outputs_inter);</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>    <span class="comment">// Release internal buffers that are no longer needed</span></div>
-<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; input_size; i++)</div>
-<div class="line"><span class="lineno">  264</span>    {</div>
-<div class="line"><span class="lineno">  265</span>      <span class="keyword">const</span> <span class="keyword">auto</span> input_pkg_index =</div>
-<div class="line"><span class="lineno">  266</span>        find_input_index(model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i});</div>
-<div class="line"><span class="lineno">  267</span>      <span class="keywordflow">if</span> (input_pkg_index == -1)</div>
-<div class="line"><span class="lineno">  268</span>      {</div>
-<div class="line"><span class="lineno">  269</span>        <span class="keyword">const</span> <span class="keyword">auto</span> from_iodesc = find_from(model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i});</div>
-<div class="line"><span class="lineno">  270</span>        internal_tensor_ref_counts[from_iodesc]--;</div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>        assert(internal_tensor_ref_counts[from_iodesc] &gt;= 0);</div>
-<div class="line"><span class="lineno">  273</span>        <span class="keywordflow">if</span> (internal_tensor_ref_counts[from_iodesc] == 0)</div>
-<div class="line"><span class="lineno">  274</span>        {</div>
-<div class="line"><span class="lineno">  275</span>          internal_bufs[from_iodesc].reset();</div>
-<div class="line"><span class="lineno">  276</span>        }</div>
-<div class="line"><span class="lineno">  277</span>      }</div>
-<div class="line"><span class="lineno">  278</span>    }</div>
-<div class="line"><span class="lineno">  279</span>  }</div>
-<div class="line"><span class="lineno">  280</span>}</div>
+<div class="line"><span class="lineno">  260</span>    <span class="comment">// Set IOTensors</span></div>
+<div class="line"><span class="lineno">  261</span>    std::vector&lt;backend::IPortableTensor *&gt; inputs_inter;</div>
+<div class="line"><span class="lineno">  262</span>    std::vector&lt;backend::IPortableTensor *&gt; outputs_inter;</div>
+<div class="line"><span class="lineno">  263</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;input_tensors = executor-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a2624f04e864973792bfc8ca489b3ac07">getInputTensors</a>();</div>
+<div class="line"><span class="lineno">  264</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_tensors = executor-&gt;getOutputTensors();</div>
+<div class="line"><span class="lineno">  265</span>    <span class="keyword">auto</span> <span class="keyword">const</span> input_size = input_tensors.size();</div>
+<div class="line"><span class="lineno">  266</span>    <span class="keyword">auto</span> <span class="keyword">const</span> output_size = output_tensors.size();</div>
+<div class="line"><span class="lineno">  267</span>    inputs_inter.resize(input_size);</div>
+<div class="line"><span class="lineno">  268</span>    outputs_inter.resize(output_size);</div>
+<div class="line"><span class="lineno">  269</span> </div>
+<div class="line"><span class="lineno">  270</span>    <span class="comment">// Set inputs of executor</span></div>
+<div class="line"><span class="lineno">  271</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; input_size; i++)</div>
+<div class="line"><span class="lineno">  272</span>    {</div>
+<div class="line"><span class="lineno">  273</span>      <span class="keyword">auto</span> <span class="keyword">const</span> &amp;<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = input_tensors.at(i)-&gt;orig_info();</div>
+<div class="line"><span class="lineno">  274</span> </div>
+<div class="line"><span class="lineno">  275</span>      <span class="keyword">auto</span> input_pkg_index = find_input_index(model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i});</div>
+<div class="line"><span class="lineno">  276</span>      <span class="keywordflow">if</span> (input_pkg_index != -1)</div>
+<div class="line"><span class="lineno">  277</span>      {</div>
+<div class="line"><span class="lineno">  278</span>        <span class="keyword">auto</span> input_desc = desc.inputs[input_pkg_index].get();</div>
+<div class="line"><span class="lineno">  279</span>        <span class="keyword">const</span> <span class="keyword">auto</span> orig_layout = input_tensors.at(i)-&gt;orig_layout();</div>
+<div class="line"><span class="lineno">  280</span>        <span class="keywordflow">if</span> (input_desc-&gt;layout != orig_layout)</div>
+<div class="line"><span class="lineno">  281</span>        {</div>
+<div class="line"><span class="lineno">  282</span>          <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Executors.cc: Changing layout is not supported&quot;</span>);</div>
+<div class="line"><span class="lineno">  283</span>        }</div>
+<div class="line"><span class="lineno">  284</span>        pkgs_inputs[input_pkg_index] =</div>
+<div class="line"><span class="lineno">  285</span>          std::make_unique&lt;backend::builtin::IOTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, input_desc-&gt;layout);</div>
+<div class="line"><span class="lineno">  286</span>        <span class="comment">// TODO Remove const_cast (we need const_cast as ITensor is writable)</span></div>
+<div class="line"><span class="lineno">  287</span>        pkgs_inputs[input_pkg_index]-&gt;setUserTensor(</div>
+<div class="line"><span class="lineno">  288</span>          <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(<span class="keyword">const_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(input_desc-&gt;buffer)), input_desc-&gt;size);</div>
+<div class="line"><span class="lineno">  289</span> </div>
+<div class="line"><span class="lineno">  290</span>        inputs_inter[i] = pkgs_inputs[input_pkg_index].get();</div>
+<div class="line"><span class="lineno">  291</span>      }</div>
+<div class="line"><span class="lineno">  292</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  293</span>      {</div>
+<div class="line"><span class="lineno">  294</span>        <span class="keyword">auto</span> from_iodesc = find_from(model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i});</div>
+<div class="line"><span class="lineno">  295</span>        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;from_model_index = std::get&lt;ir::ModelIndex&gt;(from_iodesc);</div>
+<div class="line"><span class="lineno">  296</span>        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;from_subg_index = std::get&lt;ir::SubgraphIndex&gt;(from_iodesc);</div>
+<div class="line"><span class="lineno">  297</span>        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;from_ioindex = std::get&lt;ir::IOIndex&gt;(from_iodesc).value();</div>
+<div class="line"><span class="lineno">  298</span> </div>
+<div class="line"><span class="lineno">  299</span>        <span class="comment">// Supported only sequantial execution of models</span></div>
+<div class="line"><span class="lineno">  300</span>        assert(from_model_index.value() &lt; model_index.value());</div>
+<div class="line"><span class="lineno">  301</span>        assert(from_subg_index.value() == 0);</div>
+<div class="line"><span class="lineno">  302</span> </div>
+<div class="line"><span class="lineno">  303</span>        <span class="comment">// TODO Add check if from_executor has already been executed</span></div>
+<div class="line"><span class="lineno">  304</span>        <span class="keyword">const</span> <span class="keyword">auto</span> from_executor = _executors.at({from_model_index, from_subg_index}).<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>();</div>
+<div class="line"><span class="lineno">  305</span>        <span class="keyword">const</span> <span class="keyword">auto</span> to_iodesc = <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a054e57a584412f9d194952596c7db844">ir::IODesc</a>{model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i}};</div>
+<div class="line"><span class="lineno">  306</span>        <span class="keywordflow">if</span> (_type_aware_quant_tensors.find(to_iodesc) == _type_aware_quant_tensors.end())</div>
+<div class="line"><span class="lineno">  307</span>        {</div>
+<div class="line"><span class="lineno">  308</span>          inputs_inter[i] = from_executor-&gt;getOutputTensors().at(from_ioindex);</div>
+<div class="line"><span class="lineno">  309</span>        }</div>
+<div class="line"><span class="lineno">  310</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  311</span>        {</div>
+<div class="line"><span class="lineno">  312</span>          inputs_inter[i] = _type_aware_quant_tensors.at(to_iodesc).get();</div>
+<div class="line"><span class="lineno">  313</span>        }</div>
+<div class="line"><span class="lineno">  314</span>      }</div>
+<div class="line"><span class="lineno">  315</span>    }</div>
+<div class="line"><span class="lineno">  316</span> </div>
+<div class="line"><span class="lineno">  317</span>    <span class="comment">// Set outputs of executor</span></div>
+<div class="line"><span class="lineno">  318</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; output_size; i++)</div>
+<div class="line"><span class="lineno">  319</span>    {</div>
+<div class="line"><span class="lineno">  320</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = output_tensors.at(i);</div>
+<div class="line"><span class="lineno">  321</span>      <span class="keyword">auto</span> <span class="keyword">const</span> &amp;<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a>-&gt;orig_info();</div>
+<div class="line"><span class="lineno">  322</span> </div>
+<div class="line"><span class="lineno">  323</span>      <span class="keyword">auto</span> output_pkg_index = find_output_index(model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i});</div>
+<div class="line"><span class="lineno">  324</span>      <span class="keywordflow">if</span> (output_pkg_index != -1)</div>
+<div class="line"><span class="lineno">  325</span>      {</div>
+<div class="line"><span class="lineno">  326</span>        <span class="keyword">auto</span> output_desc = desc.outputs[output_pkg_index].get();</div>
+<div class="line"><span class="lineno">  327</span>        <span class="keyword">const</span> <span class="keyword">auto</span> orig_layout = output_tensors.at(i)-&gt;orig_layout();</div>
+<div class="line"><span class="lineno">  328</span>        <span class="keywordflow">if</span> (output_desc-&gt;layout != orig_layout)</div>
+<div class="line"><span class="lineno">  329</span>        {</div>
+<div class="line"><span class="lineno">  330</span>          <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Executors.cc: Changing layout is not supported&quot;</span>);</div>
+<div class="line"><span class="lineno">  331</span>        }</div>
+<div class="line"><span class="lineno">  332</span>        pkgs_outputs[output_pkg_index] =</div>
+<div class="line"><span class="lineno">  333</span>          std::make_unique&lt;backend::builtin::IOTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, output_desc-&gt;layout);</div>
+<div class="line"><span class="lineno">  334</span>        pkgs_outputs[output_pkg_index]-&gt;setUserTensor(</div>
+<div class="line"><span class="lineno">  335</span>          <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(output_desc-&gt;buffer), output_desc-&gt;size);</div>
+<div class="line"><span class="lineno">  336</span> </div>
+<div class="line"><span class="lineno">  337</span>        outputs_inter[i] = pkgs_outputs[output_pkg_index].get();</div>
+<div class="line"><span class="lineno">  338</span>      }</div>
+<div class="line"><span class="lineno">  339</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  340</span>      {</div>
+<div class="line"><span class="lineno">  341</span>        <span class="comment">// Allocate buffer and set it as buffer of `from` tensors</span></div>
+<div class="line"><span class="lineno">  342</span>        <span class="keyword">const</span> <span class="keyword">auto</span> from_iodesc = <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a054e57a584412f9d194952596c7db844">ir::IODesc</a>{model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i}};</div>
+<div class="line"><span class="lineno">  343</span>        <span class="keyword">const</span> <span class="keyword">auto</span> from_layout = <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a>-&gt;orig_layout();</div>
+<div class="line"><span class="lineno">  344</span> </div>
+<div class="line"><span class="lineno">  345</span>        <span class="keyword">const</span> <span class="keyword">auto</span> temp_index = edge_tensors.size();</div>
+<div class="line"><span class="lineno">  346</span>        internal_bufs[from_iodesc] = std::make_unique&lt;uint8_t[]&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.total_size());</div>
+<div class="line"><span class="lineno">  347</span>        edge_tensors.emplace_back(std::make_unique&lt;backend::builtin::IOTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, from_layout));</div>
+<div class="line"><span class="lineno">  348</span>        edge_tensors.at(temp_index)</div>
+<div class="line"><span class="lineno">  349</span>          -&gt;setUserTensor(internal_bufs[from_iodesc].<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>(), <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.total_size());</div>
+<div class="line"><span class="lineno">  350</span>        outputs_inter[i] = edge_tensors[temp_index].get();</div>
+<div class="line"><span class="lineno">  351</span> </div>
+<div class="line"><span class="lineno">  352</span>        <span class="comment">// Allocate buffer and set it as buffer of tensors for type-aware quantization</span></div>
+<div class="line"><span class="lineno">  353</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;to_iodesc : _edge_map[from_iodesc])</div>
+<div class="line"><span class="lineno">  354</span>        {</div>
+<div class="line"><span class="lineno">  355</span>          <span class="keywordflow">if</span> (_type_aware_quant_tensors.find(to_iodesc) != _type_aware_quant_tensors.end())</div>
+<div class="line"><span class="lineno">  356</span>          {</div>
+<div class="line"><span class="lineno">  357</span>            <span class="keyword">const</span> <span class="keyword">auto</span> &amp;to_model_index = std::get&lt;ir::ModelIndex&gt;(to_iodesc);</div>
+<div class="line"><span class="lineno">  358</span>            <span class="keyword">const</span> <span class="keyword">auto</span> &amp;to_subg_index = std::get&lt;ir::SubgraphIndex&gt;(to_iodesc);</div>
+<div class="line"><span class="lineno">  359</span>            <span class="keyword">const</span> <span class="keyword">auto</span> &amp;to_io_index = std::get&lt;ir::IOIndex&gt;(to_iodesc);</div>
+<div class="line"><span class="lineno">  360</span> </div>
+<div class="line"><span class="lineno">  361</span>            <span class="keyword">const</span> <span class="keyword">auto</span> to_executor = _executors.at({to_model_index, to_subg_index}).<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>();</div>
+<div class="line"><span class="lineno">  362</span>            <span class="keyword">auto</span> type_aware_quant_tensor = _type_aware_quant_tensors.at(to_iodesc).get();</div>
+<div class="line"><span class="lineno">  363</span> </div>
+<div class="line"><span class="lineno">  364</span>            <span class="keyword">const</span> <span class="keyword">auto</span> to_tensor = to_executor-&gt;getInputTensors().at(to_io_index.value());</div>
+<div class="line"><span class="lineno">  365</span>            <span class="keyword">const</span> <span class="keyword">auto</span> total_size = to_tensor-&gt;orig_info().total_size();</div>
+<div class="line"><span class="lineno">  366</span>            type_aware_bufs[to_iodesc] = std::make_unique&lt;uint8_t[]&gt;(total_size);</div>
+<div class="line"><span class="lineno">  367</span>            type_aware_quant_tensor-&gt;setUserTensor(type_aware_bufs[to_iodesc].<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>(), total_size);</div>
+<div class="line"><span class="lineno">  368</span>          }</div>
+<div class="line"><span class="lineno">  369</span>        }</div>
+<div class="line"><span class="lineno">  370</span>      }</div>
+<div class="line"><span class="lineno">  371</span>    }</div>
+<div class="line"><span class="lineno">  372</span> </div>
+<div class="line"><span class="lineno">  373</span>    executor-&gt;execute(inputs_inter, outputs_inter);</div>
+<div class="line"><span class="lineno">  374</span>    _type_aware_quant_layers[{model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}}]-&gt;run();</div>
+<div class="line"><span class="lineno">  375</span> </div>
+<div class="line"><span class="lineno">  376</span>    <span class="comment">// Release input buffers that are no longer needed</span></div>
+<div class="line"><span class="lineno">  377</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; input_size; i++)</div>
+<div class="line"><span class="lineno">  378</span>    {</div>
+<div class="line"><span class="lineno">  379</span>      <span class="keyword">const</span> <span class="keyword">auto</span> input_pkg_index =</div>
+<div class="line"><span class="lineno">  380</span>        find_input_index(model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i});</div>
+<div class="line"><span class="lineno">  381</span> </div>
+<div class="line"><span class="lineno">  382</span>      <span class="keyword">const</span> <span class="keyword">auto</span> to_iodesc = <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a054e57a584412f9d194952596c7db844">ir::IODesc</a>{model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i}};</div>
+<div class="line"><span class="lineno">  383</span>      <span class="keywordflow">if</span> (input_pkg_index == -1)</div>
+<div class="line"><span class="lineno">  384</span>      {</div>
+<div class="line"><span class="lineno">  385</span>        <span class="keywordflow">if</span> (type_aware_bufs.find(to_iodesc) != type_aware_bufs.end())</div>
+<div class="line"><span class="lineno">  386</span>        {</div>
+<div class="line"><span class="lineno">  387</span>          <span class="comment">// Relase buffer if input tensor is using buffer for type-aware quantization</span></div>
+<div class="line"><span class="lineno">  388</span>          <span class="keyword">const</span> <span class="keyword">auto</span> to_iodesc = <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a054e57a584412f9d194952596c7db844">ir::IODesc</a>{model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i}};</div>
+<div class="line"><span class="lineno">  389</span>          <span class="keywordflow">if</span> (type_aware_bufs.find(to_iodesc) != type_aware_bufs.end())</div>
+<div class="line"><span class="lineno">  390</span>          {</div>
+<div class="line"><span class="lineno">  391</span>            type_aware_bufs[to_iodesc].reset();</div>
+<div class="line"><span class="lineno">  392</span>          }</div>
+<div class="line"><span class="lineno">  393</span>        }</div>
+<div class="line"><span class="lineno">  394</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  395</span>        {</div>
+<div class="line"><span class="lineno">  396</span>          <span class="comment">// Decrease reference count `from` tensor if input tensor is using the buffer of the</span></div>
+<div class="line"><span class="lineno">  397</span>          <span class="comment">// `from` tensor</span></div>
+<div class="line"><span class="lineno">  398</span>          <span class="keyword">const</span> <span class="keyword">auto</span> from_iodesc = find_from(model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i});</div>
+<div class="line"><span class="lineno">  399</span>          assert(internal_bufs.find(from_iodesc) != internal_bufs.end());</div>
+<div class="line"><span class="lineno">  400</span>          <span class="keywordflow">if</span> (internal_tensor_ref_counts[from_iodesc] &gt; 0)</div>
+<div class="line"><span class="lineno">  401</span>          {</div>
+<div class="line"><span class="lineno">  402</span>            internal_tensor_ref_counts[from_iodesc]--;</div>
+<div class="line"><span class="lineno">  403</span> </div>
+<div class="line"><span class="lineno">  404</span>            assert(internal_tensor_ref_counts[from_iodesc] &gt;= 0);</div>
+<div class="line"><span class="lineno">  405</span>            <span class="keywordflow">if</span> (internal_tensor_ref_counts[from_iodesc] == 0)</div>
+<div class="line"><span class="lineno">  406</span>            {</div>
+<div class="line"><span class="lineno">  407</span>              internal_bufs[from_iodesc].reset();</div>
+<div class="line"><span class="lineno">  408</span>            }</div>
+<div class="line"><span class="lineno">  409</span>          }</div>
+<div class="line"><span class="lineno">  410</span>        }</div>
+<div class="line"><span class="lineno">  411</span>      }</div>
+<div class="line"><span class="lineno">  412</span>    }</div>
+<div class="line"><span class="lineno">  413</span> </div>
+<div class="line"><span class="lineno">  414</span>    <span class="comment">// Release output buffers if those buffers are no longer used other executors because of</span></div>
+<div class="line"><span class="lineno">  415</span>    <span class="comment">// type-aware quantization</span></div>
+<div class="line"><span class="lineno">  416</span>    <span class="comment">// FIXME if tensors for type-aware quantization unified for the same `from` tensor and same type</span></div>
+<div class="line"><span class="lineno">  417</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; output_size; i++)</div>
+<div class="line"><span class="lineno">  418</span>    {</div>
+<div class="line"><span class="lineno">  419</span>      <span class="keyword">auto</span> from_iodesc = <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a054e57a584412f9d194952596c7db844">ir::IODesc</a>{model_index, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>{i}};</div>
+<div class="line"><span class="lineno">  420</span> </div>
+<div class="line"><span class="lineno">  421</span>      <span class="comment">// Check if other executors will use the buffer of internal_bufs[from_iodesc]</span></div>
+<div class="line"><span class="lineno">  422</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;to_list = _edge_map[from_iodesc];</div>
+<div class="line"><span class="lineno">  423</span>      <span class="keywordflow">if</span> (to_list.size() == 0)</div>
+<div class="line"><span class="lineno">  424</span>      {</div>
+<div class="line"><span class="lineno">  425</span>        <span class="comment">// This condition means `from_iodesc` tensor is an output of nnpkg</span></div>
+<div class="line"><span class="lineno">  426</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  427</span>      }</div>
+<div class="line"><span class="lineno">  428</span> </div>
+<div class="line"><span class="lineno">  429</span>      <span class="keywordtype">bool</span> to_be_release =</div>
+<div class="line"><span class="lineno">  430</span>        !std::any_of(to_list.begin(), to_list.end(), [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a054e57a584412f9d194952596c7db844">ir::IODesc</a> &amp;to_iodesc) {</div>
+<div class="line"><span class="lineno">  431</span>          <span class="comment">// This condition means another executor uses the buffer of internal_bufs[from_iodesc]</span></div>
+<div class="line"><span class="lineno">  432</span>          return type_aware_bufs.find(to_iodesc) == type_aware_bufs.end();</div>
+<div class="line"><span class="lineno">  433</span>        });</div>
+<div class="line"><span class="lineno">  434</span> </div>
+<div class="line"><span class="lineno">  435</span>      <span class="keywordflow">if</span> (to_be_release)</div>
+<div class="line"><span class="lineno">  436</span>      {</div>
+<div class="line"><span class="lineno">  437</span>        internal_tensor_ref_counts[from_iodesc]--;</div>
+<div class="line"><span class="lineno">  438</span> </div>
+<div class="line"><span class="lineno">  439</span>        assert(internal_tensor_ref_counts[from_iodesc] &gt;= 0);</div>
+<div class="line"><span class="lineno">  440</span>        <span class="keywordflow">if</span> (internal_tensor_ref_counts[from_iodesc] == 0)</div>
+<div class="line"><span class="lineno">  441</span>        {</div>
+<div class="line"><span class="lineno">  442</span>          internal_bufs[from_iodesc].reset();</div>
+<div class="line"><span class="lineno">  443</span>        }</div>
+<div class="line"><span class="lineno">  444</span>      }</div>
+<div class="line"><span class="lineno">  445</span>    }</div>
+<div class="line"><span class="lineno">  446</span>  }</div>
+<div class="line"><span class="lineno">  447</span>}</div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_executors_html_a34220dc52fcdbd8117e483b451332bea"><div class="ttname"><a href="classonert_1_1exec_1_1_executors.html#a34220dc52fcdbd8117e483b451332bea">onert::exec::Executors::at</a></div><div class="ttdeci">IExecutor * at(const ir::ModelIndex &amp;model_index, const ir::SubgraphIndex &amp;subg_index) const override</div><div class="ttdoc">Return executor of index.</div><div class="ttdef"><b>Definition:</b> <a href="_executors_8cc_source.html#l00032">Executors.cc:32</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_a126b6c671828dc955ba85505261aad63"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#a126b6c671828dc955ba85505261aad63">onert::ir::Graph::getInputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getInputs() const</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00119">Graph.h:119</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html_a21198772782368109e672c63800268e1"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">onert::ir::OperandIndexSequence::size</a></div><div class="ttdeci">uint32_t size() const</div><div class="ttdef"><b>Definition:</b> <a href="_operand_index_sequence_8h_source.html#l00049">OperandIndexSequence.h:49</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html_a94c365fc1cb51e44ff8be2a384d4177d"><div class="ttname"><a href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">onert::util::Index::value</a></div><div class="ttdeci">T value() const</div><div class="ttdoc">Return underlying value.</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">Index.h:139</a></div></div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition:</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
 <div class="ttc" id="anamespaceexo_html_aff46e62f58bb005a0fc63b6bed6f8698"><div class="ttname"><a href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">exo::get</a></div><div class="ttdeci">KnobTrait&lt; K &gt;::ValueType get(void)</div></div>
-<div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition:</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a054e57a584412f9d194952596c7db844"><div class="ttname"><a href="namespaceonert_1_1ir.html#a054e57a584412f9d194952596c7db844">onert::ir::IODesc</a></div><div class="ttdeci">std::tuple&lt; ModelIndex, SubgraphIndex, IOIndex &gt; IODesc</div><div class="ttdef"><b>Definition:</b> <a href="_n_n_pkg_8h_source.html#l00033">NNPkg.h:33</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a4c948b78203567852dfbc65ee63ec940"><div class="ttname"><a href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">onert::ir::IOIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, IOIndexTag &gt; IOIndex</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00036">Index.h:36</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ade411191d6afc15a55a4384b8cea2ac9"><div class="ttname"><a href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">onert::ir::ModelIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint16_t, ModelIndexTag &gt; ModelIndex</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00042">Index.h:42</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_afff9e77cac191f4fcc8c447e4bea053c"><div class="ttname"><a href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">onert::ir::SubgraphIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint16_t, SubgraphIndexTag &gt; SubgraphIndex</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00039">Index.h:39</a></div></div>
-<div class="ttc" id="astructonert_1_1exec_1_1_i_executor_html_a7126c492a92520efacb7bc800474cce1"><div class="ttname"><a href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">onert::exec::IExecutor::graph</a></div><div class="ttdeci">virtual const ir::Graph &amp; graph() const =0</div><div class="ttdoc">Returns graph object.</div></div>
+<div class="ttc" id="anamespacepart__eval__one_html_a187620ffdf72abdf0acf204385501746"><div class="ttname"><a href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">part_eval_one.output_tensor</a></div><div class="ttdeci">output_tensor</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00117">part_eval_one.py:117</a></div></div>
+<div class="ttc" id="astructonert_1_1exec_1_1_i_executor_html_a2624f04e864973792bfc8ca489b3ac07"><div class="ttname"><a href="structonert_1_1exec_1_1_i_executor.html#a2624f04e864973792bfc8ca489b3ac07">onert::exec::IExecutor::getInputTensors</a></div><div class="ttdeci">virtual const std::vector&lt; backend::builtin::IOTensor * &gt; &amp; getInputTensors() const =0</div><div class="ttdoc">Get input tensor objects.</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_executors_8cc_source.html#l00032">at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00119">onert::ir::Graph::getInputs()</a>, <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">onert::exec::IExecutor::graph()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, <a class="el" href="_i_o_description_8h_source.html#l00064">onert::exec::IODescription::inputs</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>, <a class="el" href="_i_o_description_8h_source.html#l00065">onert::exec::IODescription::outputs</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00049">onert::ir::OperandIndexSequence::size()</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
+<p class="reference">References <a class="el" href="_executors_8cc_source.html#l00032">at()</a>, <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a2624f04e864973792bfc8ca489b3ac07">onert::exec::IExecutor::getInputTensors()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, <a class="el" href="_i_o_description_8h_source.html#l00064">onert::exec::IODescription::inputs</a>, <a class="el" href="_i_o_description_8h_source.html#l00065">onert::exec::IODescription::outputs</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
 
 </div>
 </div>
@@ -681,11 +787,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   44</span>  <span class="keyword">auto</span> <span class="keyword">const</span> desc = _model_edges-&gt;pkg_inputs[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.value()];</div>
 <div class="line"><span class="lineno">   45</span>  <span class="keyword">auto</span> <span class="keyword">const</span> model_index = std::get&lt;0&gt;(desc);</div>
 <div class="line"><span class="lineno">   46</span>  <span class="keyword">auto</span> <span class="keyword">const</span> subg_index = std::get&lt;1&gt;(desc);</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keyword">auto</span> <span class="keyword">const</span> executor = <a class="code hl_function" href="classonert_1_1exec_1_1_executors.html#a34220dc52fcdbd8117e483b451332bea">at</a>(model_index, subg_index);</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a> = executor-&gt;graph().getInputs().at(std::get&lt;2&gt;(desc));</div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">return</span> executor-&gt;graph().operands().at(input_index).info();</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keyword">auto</span> <span class="keyword">const</span> io_index = std::get&lt;2&gt;(desc);</div>
+<div class="line"><span class="lineno">   48</span>  <span class="keyword">auto</span> <span class="keyword">const</span> executor = <a class="code hl_function" href="classonert_1_1exec_1_1_executors.html#a34220dc52fcdbd8117e483b451332bea">at</a>(model_index, subg_index);</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">return</span> executor-&gt;getInputTensors().at(io_index.value())-&gt;orig_info();</div>
 <div class="line"><span class="lineno">   50</span>}</div>
-<div class="ttc" id="anamespace_gen_h5_random_inputs_html_ae2b1c0809b846c696f9011ba5dc18e69"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">GenH5RandomInputs.input_index</a></div><div class="ttdeci">input_index</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00060">GenH5RandomInputs.py:60</a></div></div>
+<div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition:</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_executors_8cc_source.html#l00032">at()</a>.</p>
 
@@ -764,9 +870,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   54</span>  <span class="keyword">auto</span> <span class="keyword">const</span> desc = _model_edges-&gt;pkg_outputs[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.value()];</div>
 <div class="line"><span class="lineno">   55</span>  <span class="keyword">auto</span> <span class="keyword">const</span> model_index = std::get&lt;0&gt;(desc);</div>
 <div class="line"><span class="lineno">   56</span>  <span class="keyword">auto</span> <span class="keyword">const</span> subg_index = std::get&lt;1&gt;(desc);</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keyword">auto</span> <span class="keyword">const</span> executor = <a class="code hl_function" href="classonert_1_1exec_1_1_executors.html#a34220dc52fcdbd8117e483b451332bea">at</a>(model_index, subg_index);</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keyword">auto</span> <span class="keyword">const</span> output_index = executor-&gt;graph().getOutputs().at(std::get&lt;2&gt;(desc));</div>
-<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">return</span> executor-&gt;graph().operands().at(output_index).info();</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keyword">auto</span> <span class="keyword">const</span> io_index = std::get&lt;2&gt;(desc);</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keyword">auto</span> <span class="keyword">const</span> executor = <a class="code hl_function" href="classonert_1_1exec_1_1_executors.html#a34220dc52fcdbd8117e483b451332bea">at</a>(model_index, subg_index);</div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">return</span> executor-&gt;getOutputTensors().at(io_index.value())-&gt;orig_info();</div>
 <div class="line"><span class="lineno">   60</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_executors_8cc_source.html#l00032">at()</a>.</p>

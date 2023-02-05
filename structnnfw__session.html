@@ -409,53 +409,53 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l00985">985</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  986</span>{</div>
-<div class="line"><span class="lineno">  987</span>  <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
-<div class="line"><span class="lineno">  988</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno">  989</span> </div>
-<div class="line"><span class="lineno">  990</span>  <span class="keywordflow">if</span> (!key || !value)</div>
-<div class="line"><span class="lineno">  991</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3">NNFW_STATUS_UNEXPECTED_NULL</a>;</div>
-<div class="line"><span class="lineno">  992</span> </div>
-<div class="line"><span class="lineno">  993</span>  <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a> = *_coptions[0];</div>
-<div class="line"><span class="lineno">  994</span> </div>
-<div class="line"><span class="lineno">  995</span>  <span class="keyword">auto</span> check_boundary = [](<span class="keywordtype">size_t</span> dest_size, std::string &amp;src) {</div>
-<div class="line"><span class="lineno">  996</span>    <span class="keywordflow">if</span> (dest_size &lt; src.length() + 1 <span class="comment">/* for &#39;\0&#39; */</span>)</div>
-<div class="line"><span class="lineno">  997</span>    {</div>
-<div class="line"><span class="lineno">  998</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;buffer is small to copy config value.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  999</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno"> 1000</span>    }</div>
-<div class="line"><span class="lineno"> 1001</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno"> 1002</span>  };</div>
-<div class="line"><span class="lineno"> 1003</span> </div>
-<div class="line"><span class="lineno"> 1004</span>  <span class="keyword">const</span> std::string skey = key;</div>
-<div class="line"><span class="lineno"> 1005</span> </div>
-<div class="line"><span class="lineno"> 1006</span>  <span class="keywordflow">if</span> (skey == onert::util::config::BACKENDS)</div>
-<div class="line"><span class="lineno"> 1007</span>  {</div>
-<div class="line"><span class="lineno"> 1008</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.backend_list.size() == 0)</div>
-<div class="line"><span class="lineno"> 1009</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>; <span class="comment">// no setting backend is not an error of get_config_str()</span></div>
-<div class="line"><span class="lineno"> 1010</span> </div>
-<div class="line"><span class="lineno"> 1011</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a> = <a class="code hl_function" href="namespacennfw_1_1misc.html#a61c7e738bcc4d89ec864577736cc0e8f">nnfw::misc::join</a>(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.backend_list.begin(), <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.backend_list.end(), <span class="stringliteral">&quot;;&quot;</span>);</div>
-<div class="line"><span class="lineno"> 1012</span> </div>
-<div class="line"><span class="lineno"> 1013</span>    <span class="keywordflow">if</span> (!check_boundary(value_size, str))</div>
-<div class="line"><span class="lineno"> 1014</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1015</span> </div>
-<div class="line"><span class="lineno"> 1016</span>    strncpy(value, <a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>.c_str(), value_size);</div>
-<div class="line"><span class="lineno"> 1017</span>  }</div>
-<div class="line"><span class="lineno"> 1018</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (skey == onert::util::config::EXECUTOR)</div>
-<div class="line"><span class="lineno"> 1019</span>  {</div>
-<div class="line"><span class="lineno"> 1020</span>    <span class="keywordflow">if</span> (!check_boundary(value_size, <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.executor))</div>
-<div class="line"><span class="lineno"> 1021</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1022</span> </div>
-<div class="line"><span class="lineno"> 1023</span>    strncpy(value, <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.executor.c_str(), <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.executor.length());</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l00981">981</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  982</span>{</div>
+<div class="line"><span class="lineno">  983</span>  <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
+<div class="line"><span class="lineno">  984</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno">  985</span> </div>
+<div class="line"><span class="lineno">  986</span>  <span class="keywordflow">if</span> (!key || !value)</div>
+<div class="line"><span class="lineno">  987</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3">NNFW_STATUS_UNEXPECTED_NULL</a>;</div>
+<div class="line"><span class="lineno">  988</span> </div>
+<div class="line"><span class="lineno">  989</span>  <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a> = *_coptions[0];</div>
+<div class="line"><span class="lineno">  990</span> </div>
+<div class="line"><span class="lineno">  991</span>  <span class="keyword">auto</span> check_boundary = [](<span class="keywordtype">size_t</span> dest_size, std::string &amp;src) {</div>
+<div class="line"><span class="lineno">  992</span>    <span class="keywordflow">if</span> (dest_size &lt; src.length() + 1 <span class="comment">/* for &#39;\0&#39; */</span>)</div>
+<div class="line"><span class="lineno">  993</span>    {</div>
+<div class="line"><span class="lineno">  994</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;buffer is small to copy config value.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  995</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  996</span>    }</div>
+<div class="line"><span class="lineno">  997</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  998</span>  };</div>
+<div class="line"><span class="lineno">  999</span> </div>
+<div class="line"><span class="lineno"> 1000</span>  <span class="keyword">const</span> std::string skey = key;</div>
+<div class="line"><span class="lineno"> 1001</span> </div>
+<div class="line"><span class="lineno"> 1002</span>  <span class="keywordflow">if</span> (skey == onert::util::config::BACKENDS)</div>
+<div class="line"><span class="lineno"> 1003</span>  {</div>
+<div class="line"><span class="lineno"> 1004</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.backend_list.size() == 0)</div>
+<div class="line"><span class="lineno"> 1005</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>; <span class="comment">// no setting backend is not an error of get_config_str()</span></div>
+<div class="line"><span class="lineno"> 1006</span> </div>
+<div class="line"><span class="lineno"> 1007</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a> = <a class="code hl_function" href="namespacennfw_1_1misc.html#a61c7e738bcc4d89ec864577736cc0e8f">nnfw::misc::join</a>(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.backend_list.begin(), <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.backend_list.end(), <span class="stringliteral">&quot;;&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1008</span> </div>
+<div class="line"><span class="lineno"> 1009</span>    <span class="keywordflow">if</span> (!check_boundary(value_size, str))</div>
+<div class="line"><span class="lineno"> 1010</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1011</span> </div>
+<div class="line"><span class="lineno"> 1012</span>    strncpy(value, <a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>.c_str(), value_size);</div>
+<div class="line"><span class="lineno"> 1013</span>  }</div>
+<div class="line"><span class="lineno"> 1014</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (skey == onert::util::config::EXECUTOR)</div>
+<div class="line"><span class="lineno"> 1015</span>  {</div>
+<div class="line"><span class="lineno"> 1016</span>    <span class="keywordflow">if</span> (!check_boundary(value_size, <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.executor))</div>
+<div class="line"><span class="lineno"> 1017</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1018</span> </div>
+<div class="line"><span class="lineno"> 1019</span>    strncpy(value, <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.executor.c_str(), <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.executor.length());</div>
+<div class="line"><span class="lineno"> 1020</span>  }</div>
+<div class="line"><span class="lineno"> 1021</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 1022</span>  {</div>
+<div class="line"><span class="lineno"> 1023</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
 <div class="line"><span class="lineno"> 1024</span>  }</div>
-<div class="line"><span class="lineno"> 1025</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 1026</span>  {</div>
-<div class="line"><span class="lineno"> 1027</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1028</span>  }</div>
-<div class="line"><span class="lineno"> 1029</span> </div>
-<div class="line"><span class="lineno"> 1030</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1031</span>}</div>
+<div class="line"><span class="lineno"> 1025</span> </div>
+<div class="line"><span class="lineno"> 1026</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1027</span>}</div>
 <div class="ttc" id="anamespacennfw_1_1misc_html_a61c7e738bcc4d89ec864577736cc0e8f"><div class="ttname"><a href="namespacennfw_1_1misc.html#a61c7e738bcc4d89ec864577736cc0e8f">nnfw::misc::join</a></div><div class="ttdeci">std::string join(InputIt first, InputIt last, const std::string &amp;concat)</div><div class="ttdef"><b>Definition:</b> <a href="string__helpers_8h_source.html#l00065">string_helpers.h:65</a></div></div>
 <div class="ttc" id="anamespaceonnx__legalizer_html_a5f63ff6f9c0c3e7103c2b9b88021555e"><div class="ttname"><a href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">onnx_legalizer.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition:</b> <a href="onnx__legalizer_8py_source.html#l01057">onnx_legalizer.py:1057</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_afc9dd8b2ac5b9f8a2a04466cf313732a"><div class="ttname"><a href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">part_eval_one.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00019">part_eval_one.py:19</a></div></div>
@@ -533,10 +533,10 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01110">1110</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1111</span>{</div>
-<div class="line"><span class="lineno"> 1112</span>  <span class="keywordflow">return</span> getTensorIndexImpl(*primary_subgraph(), tensorname, index, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno"> 1113</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01106">1106</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1107</span>{</div>
+<div class="line"><span class="lineno"> 1108</span>  <span class="keywordflow">return</span> getTensorIndexImpl(*primary_subgraph(), tensorname, index, <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno"> 1109</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -934,10 +934,10 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01115">1115</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1116</span>{</div>
-<div class="line"><span class="lineno"> 1117</span>  <span class="keywordflow">return</span> getTensorIndexImpl(*primary_subgraph(), tensorname, index, <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno"> 1118</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01111">1111</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1112</span>{</div>
+<div class="line"><span class="lineno"> 1113</span>  <span class="keywordflow">return</span> getTensorIndexImpl(*primary_subgraph(), tensorname, index, <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno"> 1114</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1345,20 +1345,20 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Set backends with string-encoded mapping from operation index to backend type (cpu, acl_cl) </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01120">1120</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1121</span>{</div>
-<div class="line"><span class="lineno"> 1122</span>  <span class="keywordflow">if</span> (backend_settings == NULL)</div>
-<div class="line"><span class="lineno"> 1123</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1124</span> </div>
-<div class="line"><span class="lineno"> 1125</span>  <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
-<div class="line"><span class="lineno"> 1126</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01116">1116</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1117</span>{</div>
+<div class="line"><span class="lineno"> 1118</span>  <span class="keywordflow">if</span> (backend_settings == NULL)</div>
+<div class="line"><span class="lineno"> 1119</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1120</span> </div>
+<div class="line"><span class="lineno"> 1121</span>  <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
+<div class="line"><span class="lineno"> 1122</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno"> 1123</span> </div>
+<div class="line"><span class="lineno"> 1124</span>  <span class="comment">// Backend for all</span></div>
+<div class="line"><span class="lineno"> 1125</span>  <span class="keyword">auto</span> &amp;ms_options = _coptions[0]-&gt;manual_scheduler_options;</div>
+<div class="line"><span class="lineno"> 1126</span>  ms_options.setBackendMap(std::string{backend_settings});</div>
 <div class="line"><span class="lineno"> 1127</span> </div>
-<div class="line"><span class="lineno"> 1128</span>  <span class="comment">// Backend for all</span></div>
-<div class="line"><span class="lineno"> 1129</span>  <span class="keyword">auto</span> &amp;ms_options = _coptions[0]-&gt;manual_scheduler_options;</div>
-<div class="line"><span class="lineno"> 1130</span>  ms_options.setBackendMap(std::string{backend_settings});</div>
-<div class="line"><span class="lineno"> 1131</span> </div>
-<div class="line"><span class="lineno"> 1132</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1133</span>}</div>
+<div class="line"><span class="lineno"> 1128</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1129</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00121">NNFW_STATUS_INVALID_STATE</a>, and <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>.</p>
 
@@ -1428,16 +1428,12 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  932</span>  {</div>
 <div class="line"><span class="lineno">  933</span>    <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.he_profiling_mode = <a class="code hl_function" href="namespaceonert_1_1util.html#a51da3edc734010fdce0f59a9e8812ccd">toBool</a>(value);</div>
 <div class="line"><span class="lineno">  934</span>  }</div>
-<div class="line"><span class="lineno">  935</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (skey == config::DISABLE_COMPILE)</div>
+<div class="line"><span class="lineno">  935</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  936</span>  {</div>
-<div class="line"><span class="lineno">  937</span>    <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.disable_compile = <a class="code hl_function" href="namespaceonert_1_1util.html#a51da3edc734010fdce0f59a9e8812ccd">toBool</a>(value);</div>
+<div class="line"><span class="lineno">  937</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
 <div class="line"><span class="lineno">  938</span>  }</div>
-<div class="line"><span class="lineno">  939</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  940</span>  {</div>
-<div class="line"><span class="lineno">  941</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno">  942</span>  }</div>
-<div class="line"><span class="lineno">  943</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno">  944</span>}</div>
+<div class="line"><span class="lineno">  939</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno">  940</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1util_html_a1f772352fb1129126666b3d06ce74f80"><div class="ttname"><a href="namespaceonert_1_1util.html#a1f772352fb1129126666b3d06ce74f80">onert::util::toInt</a></div><div class="ttdeci">int toInt(const std::string &amp;val)</div><div class="ttdef"><b>Definition:</b> <a href="onert_2core_2src_2util_2_config_source_8cc_source.html#l00116">ConfigSource.cc:116</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1util_html_a51da3edc734010fdce0f59a9e8812ccd"><div class="ttname"><a href="namespaceonert_1_1util.html#a51da3edc734010fdce0f59a9e8812ccd">onert::util::toBool</a></div><div class="ttdeci">bool toBool(const std::string &amp;val)</div><div class="ttdef"><b>Definition:</b> <a href="onert_2core_2src_2util_2_config_source_8cc_source.html#l00109">ConfigSource.cc:109</a></div></div>
 </div><!-- fragment -->

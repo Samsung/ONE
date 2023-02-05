@@ -179,7 +179,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  149</span>  <span class="keyword">auto</span> ann_ctx = <a class="code hl_function" href="structenco_1_1_subnet_manager.html#a2f6092b07560f62155c895f0dbb90704">enco::SubnetManager::context</a>(<a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>);</div>
 <div class="line"><span class="lineno">  150</span> </div>
 <div class="line"><span class="lineno">  151</span>  NetworkStruct network;</div>
-<div class="line"><span class="lineno">  152</span>  InvokeFunction <a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>;</div>
+<div class="line"><span class="lineno">  152</span>  InvokeFunction invoke;</div>
 <div class="line"><span class="lineno">  153</span>  <a class="code hl_class" href="classpp_1_1_linear_document.html">pp::LinearDocument</a> internal;</div>
 <div class="line"><span class="lineno">  154</span> </div>
 <div class="line"><span class="lineno">  155</span>  <span class="keyword">auto</span> data_exp = [<span class="keyword">this</span>](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceenco.html#a81b59f2e10a9142e39eaccf332e9b9ef">GlobalOffset</a> &amp;off) { <span class="keywordflow">return</span> pp::fmt(_varname, <span class="stringliteral">&quot; + &quot;</span>, off); };</div>
@@ -296,10 +296,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  285</span>      <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">  286</span>    }</div>
 <div class="line"><span class="lineno">  287</span> </div>
-<div class="line"><span class="lineno">  288</span>    <span class="keyword">auto</span> name = <a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>.local();</div>
+<div class="line"><span class="lineno">  288</span>    <span class="keyword">auto</span> name = invoke.local();</div>
 <div class="line"><span class="lineno">  289</span> </div>
-<div class="line"><span class="lineno">  290</span>    <a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>.head.append(<span class="stringliteral">&quot;auto &quot;</span>, name, <span class="stringliteral">&quot; = new uint8_t[&quot;</span>, bag-&gt;size() * <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), <span class="stringliteral">&quot;];&quot;</span>);</div>
-<div class="line"><span class="lineno">  291</span>    <a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>.tail.append(<span class="stringliteral">&quot;delete[] &quot;</span>, name, <span class="stringliteral">&quot;;&quot;</span>);</div>
+<div class="line"><span class="lineno">  290</span>    invoke.head.append(<span class="stringliteral">&quot;auto &quot;</span>, name, <span class="stringliteral">&quot; = new uint8_t[&quot;</span>, bag-&gt;size() * <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), <span class="stringliteral">&quot;];&quot;</span>);</div>
+<div class="line"><span class="lineno">  291</span>    invoke.tail.append(<span class="stringliteral">&quot;delete[] &quot;</span>, name, <span class="stringliteral">&quot;;&quot;</span>);</div>
 <div class="line"><span class="lineno">  292</span> </div>
 <div class="line"><span class="lineno">  293</span>    mem.base(bag, name);</div>
 <div class="line"><span class="lineno">  294</span>    mem.size(bag, pp::fmt(bag-&gt;size() * <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>)));</div>
@@ -319,24 +319,24 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  308</span> </div>
 <div class="line"><span class="lineno">  309</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> blk = <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>-&gt;block()-&gt;head(); blk; blk = blk-&gt;next())</div>
 <div class="line"><span class="lineno">  310</span>  {</div>
-<div class="line"><span class="lineno">  311</span>    <a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>.body.append(<span class="stringliteral">&quot;{&quot;</span>);</div>
-<div class="line"><span class="lineno">  312</span>    <a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>.body.indent();</div>
+<div class="line"><span class="lineno">  311</span>    invoke.body.append(<span class="stringliteral">&quot;{&quot;</span>);</div>
+<div class="line"><span class="lineno">  312</span>    invoke.body.indent();</div>
 <div class="line"><span class="lineno">  313</span> </div>
 <div class="line"><span class="lineno">  314</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> binder = ann_ctx-&gt;find(blk))</div>
 <div class="line"><span class="lineno">  315</span>    {</div>
 <div class="line"><span class="lineno">  316</span>      <span class="comment">// Generate code that invokes Android NN sub-network</span></div>
 <div class="line"><span class="lineno">  317</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#ad83dbba747fb570d68e3d580aed3a8be">lines</a> = subnet_compiler.compile(binder);</div>
-<div class="line"><span class="lineno">  318</span>      <a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>.body.append(*lines);</div>
+<div class="line"><span class="lineno">  318</span>      invoke.body.append(*lines);</div>
 <div class="line"><span class="lineno">  319</span>    }</div>
 <div class="line"><span class="lineno">  320</span>    <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  321</span>    {</div>
 <div class="line"><span class="lineno">  322</span>      <span class="comment">// Generate code on-the-fly for Android NN-incompatible blocks</span></div>
 <div class="line"><span class="lineno">  323</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#ad83dbba747fb570d68e3d580aed3a8be">lines</a> = host_compiler.compile(blk);</div>
-<div class="line"><span class="lineno">  324</span>      <a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>.body.append(*lines);</div>
+<div class="line"><span class="lineno">  324</span>      invoke.body.append(*lines);</div>
 <div class="line"><span class="lineno">  325</span>    }</div>
 <div class="line"><span class="lineno">  326</span> </div>
-<div class="line"><span class="lineno">  327</span>    <a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>.body.unindent();</div>
-<div class="line"><span class="lineno">  328</span>    <a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>.body.append(<span class="stringliteral">&quot;}&quot;</span>);</div>
+<div class="line"><span class="lineno">  327</span>    invoke.body.unindent();</div>
+<div class="line"><span class="lineno">  328</span>    invoke.body.append(<span class="stringliteral">&quot;}&quot;</span>);</div>
 <div class="line"><span class="lineno">  329</span>  }</div>
 <div class="line"><span class="lineno">  330</span> </div>
 <div class="line"><span class="lineno">  331</span>  <span class="comment">//</span></div>
@@ -552,9 +552,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  541</span> </div>
 <div class="line"><span class="lineno">  542</span>  source.<a class="code hl_function" href="classpp_1_1_linear_document.html#a6706d86543359485cb8d0ba6134817e4">append</a>(<span class="stringliteral">&quot;void &quot;</span>, name, <span class="stringliteral">&quot;_invoke(&quot;</span>, name, <span class="stringliteral">&quot; *net) {&quot;</span>);</div>
 <div class="line"><span class="lineno">  543</span>  source.<a class="code hl_function" href="classpp_1_1_linear_document.html#a286efd8099f1decd488a34a1ae389ca2">indent</a>();</div>
-<div class="line"><span class="lineno">  544</span>  source.<a class="code hl_function" href="classpp_1_1_linear_document.html#a6706d86543359485cb8d0ba6134817e4">append</a>(<a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>.head);</div>
-<div class="line"><span class="lineno">  545</span>  source.<a class="code hl_function" href="classpp_1_1_linear_document.html#a6706d86543359485cb8d0ba6134817e4">append</a>(<a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>.body);</div>
-<div class="line"><span class="lineno">  546</span>  source.<a class="code hl_function" href="classpp_1_1_linear_document.html#a6706d86543359485cb8d0ba6134817e4">append</a>(<a class="code hl_function" href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">invoke</a>.tail);</div>
+<div class="line"><span class="lineno">  544</span>  source.<a class="code hl_function" href="classpp_1_1_linear_document.html#a6706d86543359485cb8d0ba6134817e4">append</a>(invoke.head);</div>
+<div class="line"><span class="lineno">  545</span>  source.<a class="code hl_function" href="classpp_1_1_linear_document.html#a6706d86543359485cb8d0ba6134817e4">append</a>(invoke.body);</div>
+<div class="line"><span class="lineno">  546</span>  source.<a class="code hl_function" href="classpp_1_1_linear_document.html#a6706d86543359485cb8d0ba6134817e4">append</a>(invoke.tail);</div>
 <div class="line"><span class="lineno">  547</span>  source.<a class="code hl_function" href="classpp_1_1_linear_document.html#a61329e26654bcdaa90fed31f0f9a3dbd">unindent</a>();</div>
 <div class="line"><span class="lineno">  548</span>  source.<a class="code hl_function" href="classpp_1_1_linear_document.html#a6706d86543359485cb8d0ba6134817e4">append</a>(<span class="stringliteral">&quot;}&quot;</span>);</div>
 <div class="line"><span class="lineno">  549</span> </div>
@@ -575,7 +575,6 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs_html_ad83dbba747fb570d68e3d580aed3a8be"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#ad83dbba747fb570d68e3d580aed3a8be">gen_h5_explicit_inputs.lines</a></div><div class="ttdeci">lines</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00067">gen_h5_explicit_inputs.py:67</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
 <div class="ttc" id="anamespacemorph_html_aa99b14b3992c5801d3e46acfc4f19909"><div class="ttname"><a href="namespacemorph.html#aa99b14b3992c5801d3e46acfc4f19909">morph::as_dims</a></div><div class="ttdeci">Dims&lt; uint32_t &gt; as_dims(const nncc::core::ADT::tensor::Shape &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="morph_2src_2dims_8cpp_source.html#l00024">dims.cpp:24</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1interp_1_1concat_html_a9ef112b5ee886fc566871b208b3338c3"><div class="ttname"><a href="namespaceonert_1_1interp_1_1concat.html#a9ef112b5ee886fc566871b208b3338c3">onert::interp::concat::invoke</a></div><div class="ttdeci">void invoke(const std::vector&lt; const ITensor * &gt; in_tensors, const ITensor *out_tensor, uint32_t axis)</div><div class="ttdef"><b>Definition:</b> <a href="interp_2operations_2_concat_8cc_source.html#l00083">Concat.cc:83</a></div></div>
 <div class="ttc" id="astructenco_1_1_code_html_a022dab73aea454d37ada345303b6e848"><div class="ttname"><a href="structenco_1_1_code.html#a022dab73aea454d37ada345303b6e848">enco::Code::module</a></div><div class="ttdeci">coco::Module * module(void) const</div><div class="ttdef"><b>Definition:</b> <a href="_code_8h_source.html#l00037">Code.h:37</a></div></div>
 <div class="ttc" id="astructenco_1_1_code_html_a6bc0f12c7cbe99f0d43855f9964969d2"><div class="ttname"><a href="structenco_1_1_code.html#a6bc0f12c7cbe99f0d43855f9964969d2">enco::Code::data</a></div><div class="ttdeci">coco::Data * data(void) const</div><div class="ttdef"><b>Definition:</b> <a href="_code_8h_source.html#l00038">Code.h:38</a></div></div>
 <div class="ttc" id="astructenco_1_1_global_data_html_a13586af11aca8723275be473810d9ebe"><div class="ttname"><a href="structenco_1_1_global_data.html#a13586af11aca8723275be473810d9ebe">enco::GlobalData::data_offset</a></div><div class="ttdeci">static GlobalOffset data_offset(const ann::Operand *)</div><div class="ttdef"><b>Definition:</b> <a href="_global_data_generation_8cpp_source.html#l00095">GlobalDataGeneration.cpp:95</a></div></div>

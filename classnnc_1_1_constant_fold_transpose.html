@@ -216,7 +216,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   62</span>  <span class="keyword">auto</span> matches = matcher.matchEdge(is_constant, is_transpose);</div>
 <div class="line"><span class="lineno">   63</span>  <span class="keywordflow">while</span> (!matches.empty())</div>
 <div class="line"><span class="lineno">   64</span>  {</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> match : matches)</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;match : matches)</div>
 <div class="line"><span class="lineno">   66</span>    {</div>
 <div class="line"><span class="lineno">   67</span>      <span class="keyword">auto</span> constant_op = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classmir_1_1ops_1_1_constant_op.html">ops::ConstantOp</a> *<span class="keyword">&gt;</span>(match.first);</div>
 <div class="line"><span class="lineno">   68</span>      <span class="keyword">auto</span> transpose_op = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classmir_1_1ops_1_1_transpose_op.html">ops::TransposeOp</a> *<span class="keyword">&gt;</span>(match.second);</div>

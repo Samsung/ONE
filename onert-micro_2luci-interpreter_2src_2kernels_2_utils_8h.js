@@ -18,6 +18,7 @@ var onert_micro_2luci_interpreter_2src_2kernels_2_utils_8h =
     [ "getTensorData", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a65c674370a82f50945522faf80557b55", null ],
     [ "getTensorData", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#ad3beb4b0cae9899ba1058ae0e890eab1", null ],
     [ "getTensorShape", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a74f2161267eeabcf602a15e16c2350f5", null ],
+    [ "getTfLiteActivation", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a4ed6b9c9202ad76ab66811c677bc73b8", null ],
     [ "one_of_types", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#aaeab94e4b66016c7ac88378ac1c045e0", null ],
     [ "one_of_types", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#abc1fcd91990e1a4189758637adb1fe1b", null ],
     [ "quantizeMultiplier", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#adcf639b916825841b3f99d5f4fccff22", null ],

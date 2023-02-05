@@ -1,5 +1,6 @@
 var NAVTREEINDEX27 =
 {
+"_verify_quantized_node_type_8h_source.html":[35,0,0,51,7,1,98],
 "_view_impl_8h.html":[35,0,0,1,0,1,0,0,1,10],
 "_view_impl_8h_source.html":[35,0,0,1,0,1,0,0,1,10],
 "_weight_8h.html":[35,0,0,34,1,1,0,0,12],
@@ -14,8 +15,8 @@ var NAVTREEINDEX27 =
 "_where_options_8h.html":[35,0,0,112,2,0,175],
 "_where_options_8h.html#aa099bbf4ae2bee4b3e3e84130f6bd80b":[35,0,0,112,2,0,175,0],
 "_where_options_8h_source.html":[35,0,0,112,2,0,175],
-"_while_8cc.html":[35,0,4,2,2,1,5,0,68],
-"_while_8cc_source.html":[35,0,4,2,2,1,5,0,68],
+"_while_8cc.html":[35,0,4,2,2,1,4,0,68],
+"_while_8cc_source.html":[35,0,4,2,2,1,4,0,68],
 "_while_layer_8cc.html":[35,0,4,2,2,1,0,1,0,4],
 "_while_layer_8cc_source.html":[35,0,4,2,2,1,0,1,0,4],
 "_while_layer_8h.html":[35,0,4,2,2,1,0,1,0,5],
@@ -240,8 +241,6 @@ var NAVTREEINDEX27 =
 "backend_2acl__neon_2_tensor_builder_8h.html":[35,0,4,2,1,2,12],
 "backend_2acl__neon_2_tensor_builder_8h.html#a536aa69ea8e78215e0cc5dd8dd50f701":[35,0,4,2,1,2,12,0],
 "backend_2acl__neon_2_tensor_builder_8h_source.html":[35,0,4,2,1,2,12],
-"backend_2basic_2_tensor_8cc.html":[35,0,4,2,2,1,0,0,9],
-"backend_2basic_2_tensor_8cc_source.html":[35,0,4,2,2,1,0,0,9],
 "backend_2cl__common_2include_2cl__common_2_backend_context_8h.html":[35,0,4,2,1,3,0,0,0],
 "backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html":[35,0,4,2,1,3,0,0,0],
 "backend_2cpu_2_backend_context_8cc.html":[35,0,4,2,1,4,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX27 =
 "backend_2cpu_2_backend_context_8h.html":[35,0,4,2,1,4,3],
 "backend_2cpu_2_backend_context_8h_source.html":[35,0,4,2,1,4,3],
 "backend_2cpu_2_config_8cc.html":[35,0,4,2,1,4,4],
-"backend_2cpu_2_config_8cc_source.html":[35,0,4,2,1,4,4]
+"backend_2cpu_2_config_8cc_source.html":[35,0,4,2,1,4,4],
+"backend_2cpu_2_external_context_8h.html":[35,0,4,2,1,4,7]
 };

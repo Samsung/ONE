@@ -10,7 +10,6 @@ var namespaceonert =
     [ "compiler", "namespaceonert_1_1compiler.html", "namespaceonert_1_1compiler" ],
     [ "dumper", "namespaceonert_1_1dumper.html", "namespaceonert_1_1dumper" ],
     [ "exec", "namespaceonert_1_1exec.html", "namespaceonert_1_1exec" ],
-    [ "interp", "namespaceonert_1_1interp.html", "namespaceonert_1_1interp" ],
     [ "ir", "namespaceonert_1_1ir.html", "namespaceonert_1_1ir" ],
     [ "shape_inference", "namespaceonert_1_1shape__inference.html", "namespaceonert_1_1shape__inference" ],
     [ "tflite_loader", "namespaceonert_1_1tflite__loader.html", [

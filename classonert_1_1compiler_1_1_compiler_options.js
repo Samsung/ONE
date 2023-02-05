@@ -4,7 +4,6 @@ var classonert_1_1compiler_1_1_compiler_options =
     [ "forceInternalOptions", "classonert_1_1compiler_1_1_compiler_options.html#a0a48a88699f589af86602387a0fb54e6", null ],
     [ "verboseOptions", "classonert_1_1compiler_1_1_compiler_options.html#a5d9f0d836edd6f1a1d7a2a58f846a52c", null ],
     [ "backend_list", "classonert_1_1compiler_1_1_compiler_options.html#ae43d2031de19b822a7ff3bd3087a2b0c", null ],
-    [ "disable_compile", "classonert_1_1compiler_1_1_compiler_options.html#a3d04128f060cb3ba85467ca4d321d161", null ],
     [ "executor", "classonert_1_1compiler_1_1_compiler_options.html#aa0e2dc3382c9ccc47568497811249792", null ],
     [ "fp16_enable", "classonert_1_1compiler_1_1_compiler_options.html#afde60b00d28466b3b35e0dc077845ec1", null ],
     [ "graph_dump_level", "classonert_1_1compiler_1_1_compiler_options.html#aaaa6d3e4777fa9fb9da5e8290ea7824f", null ],

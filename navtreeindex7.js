@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"_dep_8cpp.html":[35,0,0,26,0,1,1,9],
 "_dep_8cpp_source.html":[35,0,0,26,0,1,1,9],
 "_dep_8forward_8h.html":[35,0,0,26,0,0,0,1,9],
 "_dep_8forward_8h_source.html":[35,0,0,26,0,0,0,1,9],
@@ -18,8 +19,8 @@ var NAVTREEINDEX7 =
 "_depth_parameterizer_8h.html#a286c973e6531a1759bb45c77ca65d0a0":[35,0,0,13,0,0,3,0],
 "_depth_parameterizer_8h.html#ab3c32bece05300a61130099125e8facc":[35,0,0,13,0,0,3,2],
 "_depth_parameterizer_8h_source.html":[35,0,0,13,0,0,3],
-"_depth_to_space_8cc.html":[35,0,4,2,2,1,5,0,15],
-"_depth_to_space_8cc_source.html":[35,0,4,2,2,1,5,0,15],
+"_depth_to_space_8cc.html":[35,0,4,2,2,1,4,0,15],
+"_depth_to_space_8cc_source.html":[35,0,4,2,2,1,4,0,15],
 "_depth_to_space_layer_8cc.html":[35,0,4,2,1,4,0,18],
 "_depth_to_space_layer_8cc_source.html":[35,0,4,2,1,4,0,18],
 "_depth_to_space_layer_8h.html":[35,0,4,2,1,4,0,19],
@@ -30,6 +31,8 @@ var NAVTREEINDEX7 =
 "_depth_to_space_options_8h.html":[35,0,0,112,2,0,27],
 "_depth_to_space_options_8h.html#ae3d92edcc5153c43a728ee9f91e053ac":[35,0,0,112,2,0,27,0],
 "_depth_to_space_options_8h_source.html":[35,0,0,112,2,0,27],
+"_depthwise_conv2_d_8cc.html":[35,0,4,2,2,1,4,0,16],
+"_depthwise_conv2_d_8cc_source.html":[35,0,4,2,2,1,4,0,16],
 "_depthwise_conv2_d_8float_8cpp.html":[35,0,0,3,0,0,18],
 "_depthwise_conv2_d_8float_8cpp.html#a074aee95b808ef745eae10a697572228":[35,0,0,3,0,0,18,1],
 "_depthwise_conv2_d_8float_8cpp.html#a5873079e5ea4742a4db7e2cbcc03f8dc":[35,0,0,3,0,0,18,5],
@@ -123,8 +126,8 @@ var NAVTREEINDEX7 =
 "_dequantize_options_8h_source.html":[35,0,0,112,2,0,31],
 "_deref_node_8h.html":[35,0,0,68,0,1,0,0,1],
 "_deref_node_8h_source.html":[35,0,0,68,0,1,0,0,1],
-"_detection_post_process_8cc.html":[35,0,4,2,2,1,5,0,17],
-"_detection_post_process_8cc_source.html":[35,0,4,2,2,1,5,0,17],
+"_detection_post_process_8cc.html":[35,0,4,2,2,1,4,0,17],
+"_detection_post_process_8cc_source.html":[35,0,4,2,2,1,4,0,17],
 "_detection_post_process_8h.html":[35,0,4,2,2,0,3,0,17],
 "_detection_post_process_8h_source.html":[35,0,4,2,2,0,3,0,17],
 "_detection_post_process_layer_8cc.html":[35,0,4,2,1,4,0,22],
@@ -246,8 +249,5 @@ var NAVTREEINDEX7 =
 "_dumper_pass_8cpp_source.html":[35,0,0,70,4,0,0],
 "_dumper_pass_8h.html":[35,0,0,70,2,2,0,0],
 "_dumper_pass_8h_source.html":[35,0,0,70,2,2,0,0],
-"_duplicate_8cpp.html":[35,0,0,34,1,1,4,14],
-"_duplicate_8cpp.html#a64ffef250ffa33efadd30fe871066da2":[35,0,0,34,1,1,4,14,0],
-"_duplicate_8cpp_source.html":[35,0,0,34,1,1,4,14],
-"_duplicate_8h.html":[35,0,0,34,1,1,4,15]
+"_duplicate_8cpp.html":[35,0,0,34,1,1,4,14]
 };

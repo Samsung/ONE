@@ -90,11 +90,17 @@ $(document).ready(function(){initNavTree('namespaceluci__interpreter__pal.html',
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">luci_interpreter_pal Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter__pal_1_1_activation_functor.html">ActivationFunctor</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a2b511b1d94072321b3ee9fc3319f5a76"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
@@ -156,6 +162,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a06c37e5c5684e26564fd05195d5e3e32"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:a06c37e5c5684e26564fd05195d5e3e32"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a06c37e5c5684e26564fd05195d5e3e32">Mul</a> (tflite::ArithmeticParams &amp;params, const tflite::RuntimeShape &amp;input1_shape, const int64_t *input1_data, const tflite::RuntimeShape &amp;input2_shape, const int64_t *input2_data, const tflite::RuntimeShape &amp;output_shape, int64_t *output_data)</td></tr>
 <tr class="separator:a06c37e5c5684e26564fd05195d5e3e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a538db269338776f01a3c6f56e503f9a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a538db269338776f01a3c6f56e503f9a8">ApplyActivationToVector</a> (const float *vector, int v_size, TfLiteFusedActivation activation, float *result)</td></tr>
+<tr class="separator:a538db269338776f01a3c6f56e503f9a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b511b1d94072321b3ee9fc3319f5a76"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:a2b511b1d94072321b3ee9fc3319f5a76"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a2b511b1d94072321b3ee9fc3319f5a76">AveragePool&lt; int8_t &gt;</a> (const tflite::PoolParams &amp;params, const tflite::RuntimeShape &amp;input_shape, const int8_t *input_data, const tflite::RuntimeShape &amp;output_shape, int8_t *output_data, const tflite::RuntimeShape &amp;scratchpad_shape, int8_t *scratchpad_data)</td></tr>
 <tr class="separator:a2b511b1d94072321b3ee9fc3319f5a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,6 +175,64 @@ Functions</h2></td></tr>
 <tr class="separator:a90a2d5d095d1e99b34df27491a89fdd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a538db269338776f01a3c6f56e503f9a8" name="a538db269338776f01a3c6f56e503f9a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a538db269338776f01a3c6f56e503f9a8">&#9670;&#160;</a></span>ApplyActivationToVector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter_pal::ApplyActivationToVector </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>vector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>v_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TfLiteFusedActivation&#160;</td>
+          <td class="paramname"><em>activation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>result</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_p_a_l_apply_activation_to_vector_8h_source.html#l00063">63</a> of file <a class="el" href="_p_a_l_apply_activation_to_vector_8h_source.html">PALApplyActivationToVector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>{</div>
+<div class="line"><span class="lineno">   66</span>  <span class="keyword">auto</span> activation_func = <a class="code hl_class" href="classluci__interpreter__pal_1_1_activation_functor.html">ActivationFunctor</a>(activation);</div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> v = 0; v &lt; v_size; v++)</div>
+<div class="line"><span class="lineno">   68</span>  {</div>
+<div class="line"><span class="lineno">   69</span>    *result++ = (activation_func)(*vector++);</div>
+<div class="line"><span class="lineno">   70</span>  }</div>
+<div class="line"><span class="lineno">   71</span>}</div>
+<div class="ttc" id="aclassluci__interpreter__pal_1_1_activation_functor_html"><div class="ttname"><a href="classluci__interpreter__pal_1_1_activation_functor.html">luci_interpreter_pal::ActivationFunctor</a></div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_apply_activation_to_vector_8h_source.html#l00035">PALApplyActivationToVector.h:36</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a2b511b1d94072321b3ee9fc3319f5a76" name="a2b511b1d94072321b3ee9fc3319f5a76"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b511b1d94072321b3ee9fc3319f5a76">&#9670;&#160;</a></span>AveragePool&lt; int8_t &gt;() <span class="overload">[1/6]</span></h2>
 

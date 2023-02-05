@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classonert_1_1backend_1_1acl__neon_1_1_optimizer.html" title=" " alt="" coords="5,5,135,45"/>
+<area shape="rect" id="node1" href="$structonert_1_1backend_1_1acl__common_1_1_i_internal_buffer_manager.html" title="Interface for InternalBufferManager which has arm_compute::IMemoryManager pointer." alt="" coords="5,27,221,67"/>
+<area shape="rect" id="node2" href="$classonert_1_1backend_1_1acl__common_1_1_acl_internal_buffer_manager.html" title="class for InternalBufferManager which has arm_compute::IMemoryManager pointer" alt="" coords="269,5,508,89"/>
 </map>

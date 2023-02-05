@@ -1,8 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"_max_min_8h_source.html":[35,0,1,1,0,0,3,39],
-"_max_op_8h.html":[35,0,0,61,0,0,0,22],
-"_max_op_8h_source.html":[35,0,0,61,0,0,0,22],
 "_max_pool2_d_8float_8cpp.html":[35,0,0,3,0,0,30],
 "_max_pool2_d_8float_8cpp.html#a4d4744978650e89a01b4b84985f5f57b":[35,0,0,3,0,0,30,3],
 "_max_pool2_d_8float_8cpp.html#a5e29d564846dd0bc3b10f662cfda024f":[35,0,0,3,0,0,30,1],
@@ -141,8 +138,8 @@ var NAVTREEINDEX14 =
 "_mirror_pad_options_8h.html":[35,0,0,112,2,0,85],
 "_mirror_pad_options_8h.html#adae4c7b675979192b95428b41b00ab32":[35,0,0,112,2,0,85,0],
 "_mirror_pad_options_8h_source.html":[35,0,0,112,2,0,85],
-"_mock_node_8h.html":[35,0,4,2,2,1,5,7],
-"_mock_node_8h_source.html":[35,0,4,2,2,1,5,7],
+"_mock_node_8h.html":[35,0,4,2,2,1,4,7],
+"_mock_node_8h_source.html":[35,0,4,2,2,1,4,7],
 "_mock_tensor_8h.html":[35,0,4,2,2,1,3,0,3],
 "_mock_tensor_8h_source.html":[35,0,4,2,2,1,3,0,3],
 "_mockup_node_8h.html":[35,0,0,44,1,1,20],
@@ -249,5 +246,8 @@ var NAVTREEINDEX14 =
 "_n_e_binary_logical_operation_kernel_8cpp_source.html":[35,0,1,0,1,0,1,0,0],
 "_n_e_binary_logical_operation_kernel_8h.html":[35,0,1,0,0,0,1,0,0],
 "_n_e_binary_logical_operation_kernel_8h_source.html":[35,0,1,0,0,0,1,0,0],
-"_n_e_cast_bool_8cpp.html":[35,0,1,0,1,1,1,0,1]
+"_n_e_cast_bool_8cpp.html":[35,0,1,0,1,1,1,0,1],
+"_n_e_cast_bool_8cpp_source.html":[35,0,1,0,1,1,1,0,1],
+"_n_e_cast_bool_8h.html":[35,0,1,0,0,1,1,0,1],
+"_n_e_cast_bool_8h_source.html":[35,0,1,0,0,1,1,0,1]
 };

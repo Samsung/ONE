@@ -54,6 +54,7 @@ var hierarchy =
     [ "ActivationFunctionImpl< FusedActivationFunctionType::kRelu >", "struct_activation_function_impl_3_01_fused_activation_function_type_1_1k_relu_01_4.html", null ],
     [ "ActivationFunctionImpl< FusedActivationFunctionType::kRelu1 >", "struct_activation_function_impl_3_01_fused_activation_function_type_1_1k_relu1_01_4.html", null ],
     [ "ActivationFunctionImpl< FusedActivationFunctionType::kRelu6 >", "struct_activation_function_impl_3_01_fused_activation_function_type_1_1k_relu6_01_4.html", null ],
+    [ "luci_interpreter_pal::ActivationFunctor", "classluci__interpreter__pal_1_1_activation_functor.html", null ],
     [ "nnfw::cker::ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", null ],
     [ "mir_interpreter::AddImpl< T >", "structmir__interpreter_1_1_add_impl.html", null ],
     [ "mir_interpreter::AddImpl< uint8_t >", "structmir__interpreter_1_1_add_impl_3_01uint8__t_01_4.html", null ],
@@ -1707,10 +1708,6 @@ var hierarchy =
     [ "dalgona::Dalgona", "classdalgona_1_1_dalgona.html", null ],
     [ "coco::Data", "structcoco_1_1_data.html", null ],
     [ "onert::ir::Data", "structonert_1_1ir_1_1_data.html", [
-      [ "onert::interp::Buffer", "classonert_1_1interp_1_1_buffer.html", [
-        [ "onert::interp::ExternalBuffer", "classonert_1_1interp_1_1_external_buffer.html", null ],
-        [ "onert::interp::InternalBuffer", "classonert_1_1interp_1_1_internal_buffer.html", null ]
-      ] ],
       [ "onert::ir::CachedData", "classonert_1_1ir_1_1_cached_data.html", null ],
       [ "onert::ir::ExternalData", "classonert_1_1ir_1_1_external_data.html", [
         [ "onert::ir::MMapedData", "classonert_1_1ir_1_1_m_maped_data.html", null ]
@@ -1947,7 +1944,6 @@ var hierarchy =
       [ "oops::InternalExn", "classoops_1_1_internal_exn.html", null ],
       [ "oops::UserExn", "classoops_1_1_user_exn.html", null ]
     ] ],
-    [ "onert::interp::ExecEnv", "classonert_1_1interp_1_1_exec_env.html", null ],
     [ "onert::exec::ExecTime", "classonert_1_1exec_1_1_exec_time.html", null ],
     [ "onert::exec::Execution", "classonert_1_1exec_1_1_execution.html", null ],
     [ "ExecutionBuilder", "class_execution_builder.html", null ],
@@ -2361,8 +2357,7 @@ var hierarchy =
           [ "onert::exec::ParallelExecutor", "classonert_1_1exec_1_1_parallel_executor.html", null ]
         ] ],
         [ "onert::exec::LinearExecutor", "classonert_1_1exec_1_1_linear_executor.html", null ]
-      ] ],
-      [ "onert::interp::InterpExecutor", "classonert_1_1interp_1_1_interp_executor.html", null ]
+      ] ]
     ] ],
     [ "onert::exec::IExecutors", "classonert_1_1exec_1_1_i_executors.html", [
       [ "onert::exec::Executors", "classonert_1_1exec_1_1_executors.html", null ],
@@ -2555,7 +2550,6 @@ var hierarchy =
     [ "InstrBuilder", "class_instr_builder.html", null ],
     [ "coco::InstrIndex", "classcoco_1_1_instr_index.html", null ],
     [ "luci_interpreter::Interpreter", "classluci__interpreter_1_1_interpreter.html", null ],
-    [ "onert::interp::Interpreter", "classonert_1_1interp_1_1_interpreter.html", null ],
     [ "nnc::InterpreterBackend", "classnnc_1_1_interpreter_backend.html", null ],
     [ "luci_interpreter::InterpreterConfigure", "classluci__interpreter_1_1_interpreter_configure.html", null ],
     [ "kuma::details::IntervalMask", "structkuma_1_1details_1_1_interval_mask.html", null ],
@@ -2596,10 +2590,6 @@ var hierarchy =
       ] ],
       [ "onert::backend::gpu_cl::operand::ICLTensor", "classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_i_c_l_tensor.html", [
         [ "onert::backend::gpu_cl::operand::CLTensor", "classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_c_l_tensor.html", null ]
-      ] ],
-      [ "onert::interp::ITensor", "classonert_1_1interp_1_1_i_tensor.html", [
-        [ "onert::interp::ROTensor", "classonert_1_1interp_1_1_r_o_tensor.html", null ],
-        [ "onert::interp::Tensor", "classonert_1_1interp_1_1_tensor.html", null ]
       ] ]
     ] ],
     [ "onert::backend::ITensorRegistry", "structonert_1_1backend_1_1_i_tensor_registry.html", [
@@ -2781,6 +2771,7 @@ var hierarchy =
         [ "luci_interpreter::kernels::TransposeConv", "classluci__interpreter_1_1kernels_1_1_transpose_conv.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< UnidirectionalSequenceLSTMParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
+        [ "luci_interpreter::kernels::UnidirectionalSequenceLSTM", "classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html", null ],
         [ "luci_interpreter::kernels::UnidirectionalSequenceLSTM", "classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< UnpackParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -3634,7 +3625,6 @@ var hierarchy =
       [ "onert_test::ir::SimpleMock", "classonert__test_1_1ir_1_1_simple_mock.html", null ]
     ] ],
     [ "Operation", "struct_operation.html", null ],
-    [ "onert::interp::OperationExecutor", "classonert_1_1interp_1_1_operation_executor.html", null ],
     [ "OperationFactory", "class_operation_factory.html", null ],
     [ "onert::ir::OperationIndexSet", "classonert_1_1ir_1_1_operation_index_set.html", null ],
     [ "ann::OperationInventory", "classann_1_1_operation_inventory.html", null ],
@@ -3667,7 +3657,6 @@ var hierarchy =
       [ "onert::ir::OperationValidator", "classonert_1_1ir_1_1_operation_validator.html", null ]
     ] ],
     [ "tflite2circle::OperatorCodeLink", "structtflite2circle_1_1_operator_code_link.html", null ],
-    [ "onert::interp::OpKernel", "structonert_1_1interp_1_1_op_kernel.html", null ],
     [ "circledump::OpPrinter", "classcircledump_1_1_op_printer.html", [
       [ "circledump::AddPrinter", "classcircledump_1_1_add_printer.html", null ],
       [ "circledump::ArgMaxPrinter", "classcircledump_1_1_arg_max_printer.html", null ],

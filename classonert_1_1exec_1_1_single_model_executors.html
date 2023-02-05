@@ -329,10 +329,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_executors.html#a57aa05c327c0d2795daea7ebf8341cc0">onert::exec::IExecutors</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_single_model_executors_8cc_source.html#l00030">30</a> of file <a class="el" href="_single_model_executors_8cc_source.html">SingleModelExecutors.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">return</span> _executors.at(subg_index).get();</div>
-<div class="line"><span class="lineno">   34</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_single_model_executors_8cc_source.html#l00032">32</a> of file <a class="el" href="_single_model_executors_8cc_source.html">SingleModelExecutors.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">return</span> _executors.at(subg_index).get();</div>
+<div class="line"><span class="lineno">   36</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -388,10 +388,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_executors.html#a43eb8c4c8af4bd6dea7d65edbc72b9c5">onert::exec::IExecutors</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_single_model_executors_8cc_source.html#l00024">24</a> of file <a class="el" href="_single_model_executors_8cc_source.html">SingleModelExecutors.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
-<div class="line"><span class="lineno">   27</span>  _executors.emplace(subg_index, std::move(exec));</div>
-<div class="line"><span class="lineno">   28</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_single_model_executors_8cc_source.html#l00026">26</a> of file <a class="el" href="_single_model_executors_8cc_source.html">SingleModelExecutors.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   28</span>{</div>
+<div class="line"><span class="lineno">   29</span>  _executors.emplace(subg_index, std::move(exec));</div>
+<div class="line"><span class="lineno">   30</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -473,19 +473,14 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_executors.html#af11aabcafc569ef98b094ac114b504f9">onert::exec::IExecutors</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_single_model_executors_8cc_source.html#l00046">46</a> of file <a class="el" href="_single_model_executors_8cc_source.html">SingleModelExecutors.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a> = <a class="code hl_function" href="classonert_1_1exec_1_1_i_executors.html#a1d6f5140cb2508e75931bd3699352f91">entryExecutor</a>()-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">graph</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a126b6c671828dc955ba85505261aad63">getInputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a32ff6ad5b12e14c8e710fd0896d4eacf">at</a>(index);</div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1_i_executors.html#a1d6f5140cb2508e75931bd3699352f91">entryExecutor</a>()-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">graph</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a22112007ffac1f6dcfced6eb000639b2">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(input_index).info();</div>
-<div class="line"><span class="lineno">   50</span>}</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_a126b6c671828dc955ba85505261aad63"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#a126b6c671828dc955ba85505261aad63">onert::ir::Graph::getInputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getInputs() const</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00119">Graph.h:119</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_a22112007ffac1f6dcfced6eb000639b2"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#a22112007ffac1f6dcfced6eb000639b2">onert::ir::Graph::operands</a></div><div class="ttdeci">const Operands &amp; operands() const</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00125">Graph.h:125</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html_a32ff6ad5b12e14c8e710fd0896d4eacf"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html#a32ff6ad5b12e14c8e710fd0896d4eacf">onert::ir::OperandIndexSequence::at</a></div><div class="ttdeci">const OperandIndex &amp; at(IOIndex set_index) const</div><div class="ttdef"><b>Definition:</b> <a href="_operand_index_sequence_8h_source.html#l00050">OperandIndexSequence.h:50</a></div></div>
-<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_adb269e5affe5040bceb6a80b457a01be"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">onert::util::ObjectManager::at</a></div><div class="ttdeci">const Object &amp; at(const Index &amp;index) const</div><div class="ttdoc">Get the object that is associated with the given index.</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">ObjectManager.h:121</a></div></div>
-<div class="ttc" id="anamespace_gen_h5_random_inputs_html_ae2b1c0809b846c696f9011ba5dc18e69"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">GenH5RandomInputs.input_index</a></div><div class="ttdeci">input_index</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00060">GenH5RandomInputs.py:60</a></div></div>
-<div class="ttc" id="astructonert_1_1exec_1_1_i_executor_html_a7126c492a92520efacb7bc800474cce1"><div class="ttname"><a href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">onert::exec::IExecutor::graph</a></div><div class="ttdeci">virtual const ir::Graph &amp; graph() const =0</div><div class="ttdoc">Returns graph object.</div></div>
+<p class="definition">Definition at line <a class="el" href="_single_model_executors_8cc_source.html#l00048">48</a> of file <a class="el" href="_single_model_executors_8cc_source.html">SingleModelExecutors.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
+<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1_i_executors.html#a1d6f5140cb2508e75931bd3699352f91">entryExecutor</a>()-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a2624f04e864973792bfc8ca489b3ac07">getInputTensors</a>().at(<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.value())-&gt;orig_info();</div>
+<div class="line"><span class="lineno">   51</span>}</div>
+<div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition:</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
+<div class="ttc" id="astructonert_1_1exec_1_1_i_executor_html_a2624f04e864973792bfc8ca489b3ac07"><div class="ttname"><a href="structonert_1_1exec_1_1_i_executor.html#a2624f04e864973792bfc8ca489b3ac07">onert::exec::IExecutor::getInputTensors</a></div><div class="ttdeci">virtual const std::vector&lt; backend::builtin::IOTensor * &gt; &amp; getInputTensors() const =0</div><div class="ttdoc">Get input tensor objects.</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="_i_executors_8h_source.html#l00060">onert::exec::IExecutors::entryExecutor()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00119">onert::ir::Graph::getInputs()</a>, <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">onert::exec::IExecutor::graph()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00125">onert::ir::Graph::operands()</a>.</p>
+<p class="reference">References <a class="el" href="_i_executors_8h_source.html#l00060">onert::exec::IExecutors::entryExecutor()</a>, and <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a2624f04e864973792bfc8ca489b3ac07">onert::exec::IExecutor::getInputTensors()</a>.</p>
 
 </div>
 </div>
@@ -517,13 +512,12 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_executors.html#af1b46fbf2e066cb2a1795e4b95b3d222">onert::exec::IExecutors</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_single_model_executors_8cc_source.html#l00036">36</a> of file <a class="el" href="_single_model_executors_8cc_source.html">SingleModelExecutors.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1_i_executors.html#a1d6f5140cb2508e75931bd3699352f91">entryExecutor</a>()-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">graph</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a126b6c671828dc955ba85505261aad63">getInputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">size</a>();</div>
-<div class="line"><span class="lineno">   39</span>}</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html_a21198772782368109e672c63800268e1"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">onert::ir::OperandIndexSequence::size</a></div><div class="ttdeci">uint32_t size() const</div><div class="ttdef"><b>Definition:</b> <a href="_operand_index_sequence_8h_source.html#l00049">OperandIndexSequence.h:49</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_single_model_executors_8cc_source.html#l00038">38</a> of file <a class="el" href="_single_model_executors_8cc_source.html">SingleModelExecutors.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1_i_executors.html#a1d6f5140cb2508e75931bd3699352f91">entryExecutor</a>()-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a2624f04e864973792bfc8ca489b3ac07">getInputTensors</a>().size();</div>
+<div class="line"><span class="lineno">   41</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_executors_8h_source.html#l00060">onert::exec::IExecutors::entryExecutor()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00119">onert::ir::Graph::getInputs()</a>, <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">onert::exec::IExecutor::graph()</a>, and <a class="el" href="_operand_index_sequence_8h_source.html#l00049">onert::ir::OperandIndexSequence::size()</a>.</p>
+<p class="reference">References <a class="el" href="_i_executors_8h_source.html#l00060">onert::exec::IExecutors::entryExecutor()</a>, and <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a2624f04e864973792bfc8ca489b3ac07">onert::exec::IExecutor::getInputTensors()</a>.</p>
 
 </div>
 </div>
@@ -562,14 +556,13 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_executors.html#a0a5d23929fe21913407ddf0ea2e34177">onert::exec::IExecutors</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_single_model_executors_8cc_source.html#l00052">52</a> of file <a class="el" href="_single_model_executors_8cc_source.html">SingleModelExecutors.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keyword">auto</span> output_index = <a class="code hl_function" href="classonert_1_1exec_1_1_i_executors.html#a1d6f5140cb2508e75931bd3699352f91">entryExecutor</a>()-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">graph</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a11df6761cc6a9eb9a52014e953ad5877">getOutputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a32ff6ad5b12e14c8e710fd0896d4eacf">at</a>(index);</div>
-<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1_i_executors.html#a1d6f5140cb2508e75931bd3699352f91">entryExecutor</a>()-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">graph</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a22112007ffac1f6dcfced6eb000639b2">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(output_index).info();</div>
+<p class="definition">Definition at line <a class="el" href="_single_model_executors_8cc_source.html#l00053">53</a> of file <a class="el" href="_single_model_executors_8cc_source.html">SingleModelExecutors.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1_i_executors.html#a1d6f5140cb2508e75931bd3699352f91">entryExecutor</a>()-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a8fa47e6e9593c9c7132703ec01a07303">getOutputTensors</a>().at(<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.value())-&gt;orig_info();</div>
 <div class="line"><span class="lineno">   56</span>}</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_a11df6761cc6a9eb9a52014e953ad5877"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#a11df6761cc6a9eb9a52014e953ad5877">onert::ir::Graph::getOutputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getOutputs() const</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00121">Graph.h:121</a></div></div>
+<div class="ttc" id="astructonert_1_1exec_1_1_i_executor_html_a8fa47e6e9593c9c7132703ec01a07303"><div class="ttname"><a href="structonert_1_1exec_1_1_i_executor.html#a8fa47e6e9593c9c7132703ec01a07303">onert::exec::IExecutor::getOutputTensors</a></div><div class="ttdeci">virtual const std::vector&lt; backend::builtin::IOTensor * &gt; &amp; getOutputTensors() const =0</div><div class="ttdoc">Get output tensor objects.</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="_i_executors_8h_source.html#l00060">onert::exec::IExecutors::entryExecutor()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00121">onert::ir::Graph::getOutputs()</a>, <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">onert::exec::IExecutor::graph()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00125">onert::ir::Graph::operands()</a>.</p>
+<p class="reference">References <a class="el" href="_i_executors_8h_source.html#l00060">onert::exec::IExecutors::entryExecutor()</a>, and <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a8fa47e6e9593c9c7132703ec01a07303">onert::exec::IExecutor::getOutputTensors()</a>.</p>
 
 </div>
 </div>
@@ -601,12 +594,12 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_executors.html#a6cf70b3f09f5fa6e381962d4b8214321">onert::exec::IExecutors</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_single_model_executors_8cc_source.html#l00041">41</a> of file <a class="el" href="_single_model_executors_8cc_source.html">SingleModelExecutors.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1_i_executors.html#a1d6f5140cb2508e75931bd3699352f91">entryExecutor</a>()-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">graph</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a11df6761cc6a9eb9a52014e953ad5877">getOutputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">size</a>();</div>
-<div class="line"><span class="lineno">   44</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_single_model_executors_8cc_source.html#l00043">43</a> of file <a class="el" href="_single_model_executors_8cc_source.html">SingleModelExecutors.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1_i_executors.html#a1d6f5140cb2508e75931bd3699352f91">entryExecutor</a>()-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a8fa47e6e9593c9c7132703ec01a07303">getOutputTensors</a>().size();</div>
+<div class="line"><span class="lineno">   46</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_executors_8h_source.html#l00060">onert::exec::IExecutors::entryExecutor()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00121">onert::ir::Graph::getOutputs()</a>, <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">onert::exec::IExecutor::graph()</a>, and <a class="el" href="_operand_index_sequence_8h_source.html#l00049">onert::ir::OperandIndexSequence::size()</a>.</p>
+<p class="reference">References <a class="el" href="_i_executors_8h_source.html#l00060">onert::exec::IExecutors::entryExecutor()</a>, and <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a8fa47e6e9593c9c7132703ec01a07303">onert::exec::IExecutor::getOutputTensors()</a>.</p>
 
 </div>
 </div>

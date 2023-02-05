@@ -99,6 +99,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="contents">
 <div class="textblock"><code>#include &quot;core/KernelParams.h&quot;</code><br />
 <code>#include &quot;luci_interpreter/core/Tensor.h&quot;</code><br />
+<code>#include &lt;tensorflow/lite/c/builtin_op_data.h&gt;</code><br />
 <code>#include &lt;tensorflow/lite/kernels/internal/types.h&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
@@ -158,6 +159,8 @@ Functions</h2></td></tr>
 <tr class="separator:a91a8777c4f1154f256a768b6bbf54477"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40acb2e1491fa9978b94b4622ecbbeaa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_shape.html">Shape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a40acb2e1491fa9978b94b4622ecbbeaa">luci_interpreter::kernels::calculateShapeForBroadcast</a> (const <a class="el" href="struct_shape.html">Shape</a> &amp;input1_shape, const <a class="el" href="struct_shape.html">Shape</a> &amp;input2_shape)</td></tr>
 <tr class="separator:a40acb2e1491fa9978b94b4622ecbbeaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ed6b9c9202ad76ab66811c677bc73b8"><td class="memItemLeft" align="right" valign="top">TfLiteFusedActivation&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a4ed6b9c9202ad76ab66811c677bc73b8">luci_interpreter::kernels::getTfLiteActivation</a> (Activation activation)</td></tr>
+<tr class="separator:a4ed6b9c9202ad76ab66811c677bc73b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab09e74b805778ace392d93e577c75d73"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ab09e74b805778ace392d93e577c75d73">luci_interpreter::kernels::getQuantizedConvolutionMultipler</a> (float input_scale, float filter_scale, float output_scale)</td></tr>
 <tr class="separator:ab09e74b805778ace392d93e577c75d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6f5ad209c4d64063344b02ec5be4967"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ae6f5ad209c4d64063344b02ec5be4967">luci_interpreter::kernels::getQuantizedConvolutionMultiplers</a> (float input_scale, const std::vector&lt; float &gt; &amp;filter_scale, float output_scale)</td></tr>
@@ -194,7 +197,7 @@ Functions</h2></td></tr>
 <div class="line">    assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;LUCI_INTERPRETER_CHECK fails&quot;</span>); \</div>
 <div class="line">  }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00034">34</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00035">35</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
 
 </div>
 </div>

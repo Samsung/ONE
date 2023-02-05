@@ -285,6 +285,7 @@ var namespaceluci__interpreter =
     [ "build_kernel_CircleTransposeConv", "namespaceluci__interpreter.html#a701c415c4b1c118345b15b1367c2f185", null ],
     [ "build_kernel_CircleTransposeConv", "namespaceluci__interpreter.html#a73c7fae1f984d38f44e27984c2b02a61", null ],
     [ "build_kernel_CircleUnidirectionalSequenceLSTM", "namespaceluci__interpreter.html#a67d619d4d08832d89de4acfc553094e9", null ],
+    [ "build_kernel_CircleUnidirectionalSequenceLSTM", "namespaceluci__interpreter.html#ad93ba658c990443f998f71304a3456ba", null ],
     [ "build_kernel_CircleUnpack", "namespaceluci__interpreter.html#a6c0fa81f26a6b2da4145abac42a8332b", null ],
     [ "build_kernel_CircleUnpack", "namespaceluci__interpreter.html#a9c708557906b65b221013626ae8e88a0", null ],
     [ "build_kernel_CircleWhile", "namespaceluci__interpreter.html#ad8105f82362824185a184b4a39e759d2", null ],

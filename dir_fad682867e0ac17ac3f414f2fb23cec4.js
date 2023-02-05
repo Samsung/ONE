@@ -106,7 +106,7 @@ var dir_fad682867e0ac17ac3f414f2fb23cec4 =
     [ "TopKV2.cpp", "tflite_2src_2_op_2_top_k_v2_8cpp.html", null ],
     [ "Transpose.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_transpose_8cpp.html", null ],
     [ "TransposeConv.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_transpose_conv_8cpp.html", null ],
-    [ "UnidirectionalSequenceLSTM.cpp", "tflchef_2tflite_2src_2_op_2_unidirectional_sequence_l_s_t_m_8cpp.html", null ],
+    [ "UnidirectionalSequenceLSTM.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_unidirectional_sequence_l_s_t_m_8cpp.html", null ],
     [ "Unique.cpp", "tflite_2src_2_op_2_unique_8cpp.html", null ],
     [ "Unpack.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_unpack_8cpp.html", null ],
     [ "Where.cpp", "tflite_2src_2_op_2_where_8cpp.html", null ],

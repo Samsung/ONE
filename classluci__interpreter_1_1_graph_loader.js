@@ -7,5 +7,5 @@ var classluci__interpreter_1_1_graph_loader =
     [ "loadOperators", "classluci__interpreter_1_1_graph_loader.html#a47e7a5e1b527ab630192c7b80cb9d955", null ],
     [ "loadOperators", "classluci__interpreter_1_1_graph_loader.html#ae54986b9a4ca570ca5f51e044b23c075", null ],
     [ "loadTensors", "classluci__interpreter_1_1_graph_loader.html#a8860de440a6c9a99eaf88e6615b16dcc", null ],
-    [ "loadTensors", "classluci__interpreter_1_1_graph_loader.html#a8860de440a6c9a99eaf88e6615b16dcc", null ]
+    [ "loadTensors", "classluci__interpreter_1_1_graph_loader.html#aae2dfee128c193cc713686f281eb5443", null ]
 ];
