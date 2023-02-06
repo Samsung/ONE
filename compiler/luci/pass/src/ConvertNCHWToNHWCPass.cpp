@@ -1454,6 +1454,10 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       collect_intermediate = [&](loco::Node *n) {
         for (auto succ : loco::succs(n))
         {
+          // Skip unnecessary traversal
+          if (intermediate.find(succ) != intermediate.end())
+            continue;
+
           // Exit condition
           if (is_post_transpose(succ) || is_post_reshape(succ))
             continue;
