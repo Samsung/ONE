@@ -29,9 +29,9 @@
 
 template <size_t from, size_t to, typename Enable = void> struct ForEachDimension
 {
-  template <typename L, typename... Args>
+  template <typename L>
   static void unroll(const onert::ir::Shape &shape, onert::ir::Coordinates &coords,
-                     L &&lambda_function, Args &&... args)
+                     L lambda_function)
   {
     static_assert(from < to, "from must not be less than to");
     assert(static_cast<int>(to) <= shape.rank());
@@ -40,8 +40,7 @@ template <size_t from, size_t to, typename Enable = void> struct ForEachDimensio
     for (auto v = 0; v < d; v++)
     {
       coords.set(from, v);
-      ForEachDimension<from + 1, to>::unroll(shape, coords, std::forward<L>(lambda_function),
-                                             std::forward<Args>(args)...);
+      ForEachDimension<from + 1, to>::unroll(shape, coords, lambda_function);
     }
   }
 };
@@ -49,18 +48,17 @@ template <size_t from, size_t to, typename Enable = void> struct ForEachDimensio
 template <size_t from, size_t to>
 struct ForEachDimension<from, to, typename std::enable_if<from == to>::type>
 {
-  template <typename L, typename... Args>
+  template <typename L>
   static void unroll(const onert::ir::Shape &shape, onert::ir::Coordinates &coords,
-                     L &&lambda_function, Args &&... args)
+                     L lambda_function)
   {
     UNUSED_RELEASE(shape);
     assert(static_cast<int>(to) <= shape.rank());
-    lambda_function(coords, std::forward<Args>(args)...);
+    lambda_function(coords);
   }
 };
 
-template <typename L, typename... Args>
-inline void ShapeLoop(const onert::ir::Shape &shape, L &&lambda_function, Args &&... args)
+template <typename L> inline void ShapeLoop(const onert::ir::Shape &shape, L lambda_function)
 {
   assert(shape.rank() > 0);
   for (auto i = 0; i < shape.rank(); ++i)
@@ -73,32 +71,25 @@ inline void ShapeLoop(const onert::ir::Shape &shape, L &&lambda_function, Args &
   {
     case 0:
       coords.set(0, 0);
-      ForEachDimension<0, 0>::unroll(shape, coords, std::forward<L>(lambda_function),
-                                     std::forward<Args>(args)...);
+      ForEachDimension<0, 0>::unroll(shape, coords, lambda_function);
       break;
     case 1:
-      ForEachDimension<0, 1>::unroll(shape, coords, std::forward<L>(lambda_function),
-                                     std::forward<Args>(args)...);
+      ForEachDimension<0, 1>::unroll(shape, coords, lambda_function);
       break;
     case 2:
-      ForEachDimension<0, 2>::unroll(shape, coords, std::forward<L>(lambda_function),
-                                     std::forward<Args>(args)...);
+      ForEachDimension<0, 2>::unroll(shape, coords, lambda_function);
       break;
     case 3:
-      ForEachDimension<0, 3>::unroll(shape, coords, std::forward<L>(lambda_function),
-                                     std::forward<Args>(args)...);
+      ForEachDimension<0, 3>::unroll(shape, coords, lambda_function);
       break;
     case 4:
-      ForEachDimension<0, 4>::unroll(shape, coords, std::forward<L>(lambda_function),
-                                     std::forward<Args>(args)...);
+      ForEachDimension<0, 4>::unroll(shape, coords, lambda_function);
       break;
     case 5:
-      ForEachDimension<0, 5>::unroll(shape, coords, std::forward<L>(lambda_function),
-                                     std::forward<Args>(args)...);
+      ForEachDimension<0, 5>::unroll(shape, coords, lambda_function);
       break;
     case 6:
-      ForEachDimension<0, 6>::unroll(shape, coords, std::forward<L>(lambda_function),
-                                     std::forward<Args>(args)...);
+      ForEachDimension<0, 6>::unroll(shape, coords, lambda_function);
       break;
     default:
       assert(false && "ShapeLoop, 1 <= Shape'rank <= 6");
