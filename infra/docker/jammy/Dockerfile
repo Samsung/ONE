@@ -45,5 +45,14 @@ RUN apt-get update && apt-get -qqy install libgtest-dev
 # TODO: Install gbs & sdb
 # gbs & sdb are not support ubuntu jammy yet
 
+# Setup user to match host user, and give superuser permissions
+ARG USER_ID=1000
+ARG GROUP_ID=${USER_ID}
+RUN addgroup --gid ${GROUP_ID} ubuntu && adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} ubuntu && usermod -aG sudo ubuntu
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
+
+# Set user to the one we just created
+USER ${USER_ID}
