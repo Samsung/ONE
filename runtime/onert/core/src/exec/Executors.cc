@@ -23,6 +23,46 @@ namespace onert
 namespace exec
 {
 
+class Executors::EdgeTensor : public backend::builtin::IOTensor
+{
+public:
+  EdgeTensor(const ir::OperandInfo &info, ir::Layout layout)
+    : backend::builtin::IOTensor(info, layout), _buffer{nullptr}, _ref_count{0}
+  {
+  }
+  ~EdgeTensor() = default;
+
+  void allocate_buffer()
+  {
+    const auto total_size = orig_info().total_size();
+    _buffer = std::make_unique<uint8_t[]>(total_size);
+    _ref_count = 1;
+
+    // NOTE Executor's inputs/outputs are always IPortableTensor. If backend of inputs/outputs
+    //      is using tensor that does not inherit IPortableTensor, Permute operation is added
+    //      and all inputs/outputs become IPortableTensor at compile stage.
+    //      This allows user's buffers to be set to inputs/outputs of executors.
+    setUserTensor(_buffer.get(), total_size);
+  }
+
+  void increase_ref() { _ref_count++; }
+
+  void decrease_ref()
+  {
+    assert(_ref_count > 0);
+    _ref_count--;
+    if (_ref_count == 0)
+    {
+      _buffer.reset();
+      setUserTensor(nullptr, orig_info().total_size());
+    }
+  }
+
+private:
+  std::unique_ptr<uint8_t[]> _buffer;
+  int32_t _ref_count;
+};
+
 void Executors::emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
                         std::unique_ptr<IExecutor> exec)
 {
@@ -141,6 +181,10 @@ void Executors::createTypeAwareQuantLayers()
     const auto from_executor = _executors.at({from_model_index, from_subg_index}).get();
     const auto from_tensor = from_executor->getOutputTensors().at(from_io_index.value());
 
+    const auto &from_info = from_tensor->orig_info();
+    const auto from_layout = from_tensor->orig_layout();
+    _edge_tensors[from_iodesc] = std::make_unique<EdgeTensor>(from_info, from_layout);
+
     const auto &to_list = pair.second;
     std::vector<backend::ITensor *> inputs;
     std::vector<backend::ITensor *> outputs;
@@ -161,8 +205,7 @@ void Executors::createTypeAwareQuantLayers()
         const auto to_layout = to_tensor->orig_layout();
         inputs.emplace_back(from_tensor);
 
-        auto type_aware_quant_tensor =
-          std::make_unique<backend::builtin::IOTensor>(to_info, to_layout);
+        auto type_aware_quant_tensor = std::make_unique<EdgeTensor>(to_info, to_layout);
         outputs.emplace_back(type_aware_quant_tensor.get());
 
         _type_aware_quant_tensors[to_iodesc] = std::move(type_aware_quant_tensor);
@@ -229,27 +272,6 @@ void Executors::execute(const IODescription &desc)
     throw std::runtime_error{"Cannot find edge for model input"};
   };
 
-  // TODO Find better way to share buffers and tensors between executors
-  // NOTE Executor's inputs/outputs are always IPortableTensor. If backend of inputs/outputs
-  //      is using tensor that does not inherit IPortableTensor, Permute operation is added
-  //      and all inputs/outputs become IPortableTensor at compile stage.
-  //      This allows user's buffers to be set to inputs/outputs of executors.
-  // Shared buffers and tensors between executors
-  // TODO Introduce a new class for edge tensors
-  std::vector<std::unique_ptr<backend::builtin::IOTensor>> edge_tensors;
-  std::unordered_map<ir::IODesc, std::unique_ptr<uint8_t[]>> internal_bufs;
-  std::unordered_map<ir::IODesc, std::unique_ptr<uint8_t[]>> type_aware_bufs;
-
-  // Reference count for each `from` of edges to reduce peak memory
-  std::unordered_map<ir::IODesc, int32_t> internal_tensor_ref_counts(_model_edges->edges.size());
-  for (const auto &edge : _model_edges->edges)
-  {
-    if (internal_tensor_ref_counts.find(edge.from) == internal_tensor_ref_counts.end())
-      internal_tensor_ref_counts[edge.from] = 1;
-    else
-      internal_tensor_ref_counts[edge.from]++;
-  }
-
   // Execute each model
   // NOTE May be better to use vector instead of unordered_map for _executors
   for (auto model_index = ir::ModelIndex{0}; model_index.value() < model_count; model_index++)
@@ -299,8 +321,6 @@ void Executors::execute(const IODescription &desc)
         // Supported only sequantial execution of models
         assert(from_model_index.value() < model_index.value());
         assert(from_subg_index.value() == 0);
-
-        // TODO Add check if from_executor has already been executed
         const auto from_executor = _executors.at({from_model_index, from_subg_index}).get();
         const auto to_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
         if (_type_aware_quant_tensors.find(to_iodesc) == _type_aware_quant_tensors.end())
@@ -311,6 +331,7 @@ void Executors::execute(const IODescription &desc)
         {
           inputs_inter[i] = _type_aware_quant_tensors.at(to_iodesc).get();
         }
+        assert(inputs_inter[i]->buffer() != nullptr);
       }
     }
 
@@ -338,33 +359,21 @@ void Executors::execute(const IODescription &desc)
       }
       else
       {
-        // Allocate buffer and set it as buffer of `from` tensors
+        // Allocate buffer of `from` tensors
         const auto from_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
-        const auto from_layout = output_tensor->orig_layout();
+        _edge_tensors[from_iodesc]->allocate_buffer();
+        outputs_inter[i] = _edge_tensors[from_iodesc].get();
 
-        const auto temp_index = edge_tensors.size();
-        internal_bufs[from_iodesc] = std::make_unique<uint8_t[]>(info.total_size());
-        edge_tensors.emplace_back(std::make_unique<backend::builtin::IOTensor>(info, from_layout));
-        edge_tensors.at(temp_index)
-          ->setUserTensor(internal_bufs[from_iodesc].get(), info.total_size());
-        outputs_inter[i] = edge_tensors[temp_index].get();
-
-        // Allocate buffer and set it as buffer of tensors for type-aware quantization
+        // Allocate buffer of tensors for type-aware quantization
         for (const auto &to_iodesc : _edge_map[from_iodesc])
         {
+          _edge_tensors[from_iodesc]->increase_ref();
           if (_type_aware_quant_tensors.find(to_iodesc) != _type_aware_quant_tensors.end())
           {
-            const auto &to_model_index = std::get<ir::ModelIndex>(to_iodesc);
-            const auto &to_subg_index = std::get<ir::SubgraphIndex>(to_iodesc);
-            const auto &to_io_index = std::get<ir::IOIndex>(to_iodesc);
-
-            const auto to_executor = _executors.at({to_model_index, to_subg_index}).get();
             auto type_aware_quant_tensor = _type_aware_quant_tensors.at(to_iodesc).get();
+            type_aware_quant_tensor->allocate_buffer();
 
-            const auto to_tensor = to_executor->getInputTensors().at(to_io_index.value());
-            const auto total_size = to_tensor->orig_info().total_size();
-            type_aware_bufs[to_iodesc] = std::make_unique<uint8_t[]>(total_size);
-            type_aware_quant_tensor->setUserTensor(type_aware_bufs[to_iodesc].get(), total_size);
+            _edge_tensors[from_iodesc]->decrease_ref();
           }
         }
       }
@@ -382,31 +391,21 @@ void Executors::execute(const IODescription &desc)
       const auto to_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
       if (input_pkg_index == -1)
       {
-        if (type_aware_bufs.find(to_iodesc) != type_aware_bufs.end())
+        if (_type_aware_quant_tensors.find(to_iodesc) != _type_aware_quant_tensors.end())
         {
-          // Relase buffer if input tensor is using buffer for type-aware quantization
+          // Decrease reference count of tensor for type-aware quantization if input tensor is the
+          // tensor
           const auto to_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
-          if (type_aware_bufs.find(to_iodesc) != type_aware_bufs.end())
+          if (_type_aware_quant_tensors.find(to_iodesc) != _type_aware_quant_tensors.end())
           {
-            type_aware_bufs[to_iodesc].reset();
+            _type_aware_quant_tensors[to_iodesc]->decrease_ref();
           }
         }
         else
         {
-          // Decrease reference count `from` tensor if input tensor is using the buffer of the
-          // `from` tensor
+          // Decrease reference count of `from` tensor if input tensor is the `from` tensor
           const auto from_iodesc = find_from(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
-          assert(internal_bufs.find(from_iodesc) != internal_bufs.end());
-          if (internal_tensor_ref_counts[from_iodesc] > 0)
-          {
-            internal_tensor_ref_counts[from_iodesc]--;
-
-            assert(internal_tensor_ref_counts[from_iodesc] >= 0);
-            if (internal_tensor_ref_counts[from_iodesc] == 0)
-            {
-              internal_bufs[from_iodesc].reset();
-            }
-          }
+          _edge_tensors[from_iodesc]->decrease_ref();
         }
       }
     }
@@ -418,7 +417,7 @@ void Executors::execute(const IODescription &desc)
     {
       auto from_iodesc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
 
-      // Check if other executors will use the buffer of internal_bufs[from_iodesc]
+      // Check if other executors will use the buffer of edge tensor
       const auto &to_list = _edge_map[from_iodesc];
       if (to_list.size() == 0)
       {
@@ -428,19 +427,15 @@ void Executors::execute(const IODescription &desc)
 
       bool to_be_release =
         !std::any_of(to_list.begin(), to_list.end(), [&](const ir::IODesc &to_iodesc) {
-          // This condition means another executor uses the buffer of internal_bufs[from_iodesc]
-          return type_aware_bufs.find(to_iodesc) == type_aware_bufs.end();
+          // This condition means another executor uses the buffer of edge tensor
+          return _type_aware_quant_tensors.find(to_iodesc) == _type_aware_quant_tensors.end();
         });
 
       if (to_be_release)
       {
-        internal_tensor_ref_counts[from_iodesc]--;
-
-        assert(internal_tensor_ref_counts[from_iodesc] >= 0);
-        if (internal_tensor_ref_counts[from_iodesc] == 0)
-        {
-          internal_bufs[from_iodesc].reset();
-        }
+        // This edge tensor's buffer won't be used in other executors
+        // Tensors for type-aware quantization take over the role of this edge tensor instead
+        _edge_tensors[from_iodesc]->decrease_ref();
       }
     }
   }
