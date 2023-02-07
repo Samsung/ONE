@@ -841,11 +841,6 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleLogistic *node) { return convert_unary_x<luci::CircleLogistic>(node); }
 
-  bool visit(luci::CircleLogSoftmax *node)
-  {
-    return convert_unary_logits<luci::CircleLogSoftmax>(node);
-  }
-
   bool visit(luci::CircleMaximum *node)
   {
     if ((not is_const(node->x())) and is_scalar_const(node->y()))
@@ -1253,8 +1248,6 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleRsqrt *node) { return convert_unary_x<luci::CircleRsqrt>(node); }
 
-  bool visit(luci::CircleSoftmax *node) { return convert_unary_logits<luci::CircleSoftmax>(node); }
-
   bool visit(luci::CircleSplitV *node)
   {
     // Change split dimension
@@ -1512,12 +1505,13 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
           set_data_format(node, DataFormat::NCHW);
         }
         break;
+      // SOFTMAX, LOG_SOFTMAX are not converted, because
+      // tflite/circle assumes the last channel is always axis
       case luci::CircleOpcode::ADD:
       case luci::CircleOpcode::CONCATENATION:
       case luci::CircleOpcode::ELU:
       case luci::CircleOpcode::LEAKY_RELU:
       case luci::CircleOpcode::LOGISTIC:
-      case luci::CircleOpcode::LOG_SOFTMAX:
       case luci::CircleOpcode::MAXIMUM:
       case luci::CircleOpcode::MEAN:
       case luci::CircleOpcode::MINIMUM:
@@ -1530,7 +1524,6 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       case luci::CircleOpcode::RELU:
       case luci::CircleOpcode::RELU6:
       case luci::CircleOpcode::RSQRT:
-      case luci::CircleOpcode::SOFTMAX:
       case luci::CircleOpcode::SPLIT_V:
       case luci::CircleOpcode::SQUARED_DIFFERENCE:
       case luci::CircleOpcode::SUB:

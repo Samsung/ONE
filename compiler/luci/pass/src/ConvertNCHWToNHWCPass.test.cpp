@@ -483,22 +483,6 @@ public:
   luci::CircleLogistic *logistic = nullptr;
 };
 
-class LogSoftmaxGraph final : public SimpleGraph
-{
-protected:
-  loco::Node *insertGraphBody(loco::Node *input) override
-  {
-    log_softmax = g.nodes()->create<luci::CircleLogSoftmax>();
-    log_softmax->logits(input);
-    log_softmax->name("log_softmax");
-
-    return log_softmax;
-  }
-
-public:
-  luci::CircleLogSoftmax *log_softmax = nullptr;
-};
-
 class MaximumGraph final : public SimpleGraph
 {
 protected:
@@ -988,22 +972,6 @@ public:
   luci::CircleRsqrt *rsqrt = nullptr;
 };
 
-class SoftmaxGraph final : public SimpleGraph
-{
-protected:
-  loco::Node *insertGraphBody(loco::Node *input) override
-  {
-    softmax = g.nodes()->create<luci::CircleSoftmax>();
-    softmax->logits(input);
-    softmax->name("softmax");
-
-    return softmax;
-  }
-
-public:
-  luci::CircleSoftmax *softmax = nullptr;
-};
-
 class SplitVGraphlet
 {
 public:
@@ -1421,26 +1389,6 @@ TEST(ConvertNCHWToNHWC, Logistic)
   EXPECT_EQ(4, g.logistic->dim(1).value());
   EXPECT_EQ(4, g.logistic->dim(2).value());
   EXPECT_EQ(16, g.logistic->dim(3).value());
-}
-
-TEST(ConvertNCHWToNHWC, LogSoftmax)
-{
-  LogSoftmaxGraph g;
-  g.init();
-
-  run_phase(&g.g, true, true);
-
-  check_pre_trans(g.log_softmax->logits());
-
-  auto log_softmax_succs = loco::succs(g.log_softmax);
-  EXPECT_EQ(1, log_softmax_succs.size());
-  check_post_trans(*log_softmax_succs.begin());
-
-  // Check log_softmax shape
-  EXPECT_EQ(1, g.log_softmax->dim(0).value());
-  EXPECT_EQ(4, g.log_softmax->dim(1).value());
-  EXPECT_EQ(4, g.log_softmax->dim(2).value());
-  EXPECT_EQ(16, g.log_softmax->dim(3).value());
 }
 
 TEST(ConvertNCHWToNHWC, Maximum)
@@ -2133,26 +2081,6 @@ TEST(ConvertNCHWToNHWC, Rsqrt)
   EXPECT_EQ(4, g.rsqrt->dim(1).value());
   EXPECT_EQ(4, g.rsqrt->dim(2).value());
   EXPECT_EQ(16, g.rsqrt->dim(3).value());
-}
-
-TEST(ConvertNCHWToNHWC, Softmax)
-{
-  SoftmaxGraph g;
-  g.init();
-
-  run_phase(&g.g, true, true);
-
-  check_pre_trans(g.softmax->logits());
-
-  auto softmax_succs = loco::succs(g.softmax);
-  EXPECT_EQ(1, softmax_succs.size());
-  check_post_trans(*softmax_succs.begin());
-
-  // Check softmax shape
-  EXPECT_EQ(1, g.softmax->dim(0).value());
-  EXPECT_EQ(4, g.softmax->dim(1).value());
-  EXPECT_EQ(4, g.softmax->dim(2).value());
-  EXPECT_EQ(16, g.softmax->dim(3).value());
 }
 
 TEST(ConvertNCHWToNHWC, SplitV)
