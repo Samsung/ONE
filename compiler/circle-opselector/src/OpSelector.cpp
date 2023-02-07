@@ -138,35 +138,41 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
   for (const auto &n : nodes)
   {
     auto outputs = loco::succs(n);
+    bool beingUsed = false;
     for (const auto &o : outputs)
     {
-      // the node isn't graph output if it is an other node's output
       if (std::find(nodes.begin(), nodes.end(), o) != nodes.end())
-        continue;
-      // circle output
-      auto circle_output = graph->nodes()->create<luci::CircleOutput>();
-      auto output_node = dynamic_cast<luci::CircleNode *>(o);
-      luci::copy_common_attributes(output_node, circle_output);
-      // connect to cloned output node
-      circle_output->from(ctx.find(n)->second);
-      // graph output
-      auto graph_output = graph->outputs()->create();
-      graph_output->name(output_node->name());
-      graph_output->dtype(output_node->dtype());
-      // graph output shape
-      auto output_shape = std::make_unique<loco::TensorShape>();
-      output_shape->rank(circle_output->rank());
-      for (uint32_t i = 0; i < circle_output->rank(); i++)
       {
-        if (circle_output->dim(i).known())
-        {
-          circle_output->dim(i).set(circle_output->dim(i).value());
-        }
+        beingUsed = true;
+        break;
       }
-      graph_output->shape(std::move(output_shape));
-
-      circle_output->index(graph_output->index());
     }
+    // the node isn't graph output if it is an other node's output
+    if (beingUsed)
+      continue;
+    // circle output
+    auto circle_output = graph->nodes()->create<luci::CircleOutput>();
+    auto output_node = n;
+    luci::copy_common_attributes(output_node, circle_output);
+    // connect to cloned output node
+    circle_output->from(ctx.find(output_node)->second);
+    // graph output
+    auto graph_output = graph->outputs()->create();
+    graph_output->name(output_node->name());
+    graph_output->dtype(output_node->dtype());
+    // graph output shape
+    auto output_shape = std::make_unique<loco::TensorShape>();
+    output_shape->rank(circle_output->rank());
+    for (uint32_t i = 0; i < output_shape->rank(); i++)
+    {
+      if (circle_output->dim(i).known())
+      {
+        output_shape->dim(i).set(circle_output->dim(i).value());
+      }
+    }
+    graph_output->shape(std::move(output_shape));
+
+    circle_output->index(graph_output->index());
   }
   // connect nodes
   for (const auto &n : nodes)
