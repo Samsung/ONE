@@ -131,5 +131,14 @@ ENV LC_ALL "C.UTF-8"
 # setup adb server
 EXPOSE 5037
 
+# Setup user to match host user, and give superuser permissions
+ARG USER_ID=1000
+ARG GROUP_ID=${USER_ID}
+RUN addgroup --gid ${GROUP_ID} ubuntu && adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} ubuntu && usermod -aG sudo ubuntu
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
+
+# Set user to the one we just created
+USER ${USER_ID}

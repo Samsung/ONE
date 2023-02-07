@@ -48,5 +48,14 @@ RUN wget http://download.tizen.org/sdk/tizenstudio/official/binary/sdb_4.2.19_ub
 RUN unzip -d tmp sdb.zip && rm sdb.zip
 RUN cp tmp/data/tools/sdb /usr/bin/. && rm -rf tmp/*
 
+# Setup user to match host user, and give superuser permissions
+ARG USER_ID=1000
+ARG GROUP_ID=${USER_ID}
+RUN addgroup --gid ${GROUP_ID} ubuntu && adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} ubuntu && usermod -aG sudo ubuntu
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
+
+# Set user to the one we just created
+USER ${USER_ID}
