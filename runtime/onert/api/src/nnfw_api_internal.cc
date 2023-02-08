@@ -391,6 +391,8 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       for (uint32_t j = 0; j < tos.size(); ++j)
         _nnpkg->addEdge(toIODesc(fromtos[i]["from"].asString()), toIODesc(tos[j].asString()));
     }
+
+    _nnpkg->verify();
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
