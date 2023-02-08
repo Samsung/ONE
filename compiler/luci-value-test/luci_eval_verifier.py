@@ -24,11 +24,16 @@ circle_model = args.model + ".circle"
 
 rtolf32 = 1e-5
 atolf32 = 1e-5
+# NOTE reuse f32 value as int value too
+rtolint = 0
+atolint = 0
 try:
     if args.rtolf32 != None:
         rtolf32 = float(args.rtolf32)
+        rtolint = int(rtolf32)
     if args.atolf32 != None:
         atolf32 = float(args.atolf32)
+        atolint = int(atolf32)
 except ValueError:
     print("rtolf32 or atolf32 is not a number")
     quit(128)
@@ -117,7 +122,9 @@ for idx in range(len(inpt_output_details)):
     intp_output_data = interpreter.get_tensor(output_tensor)
     try:
         if output_details["dtype"] == np.uint8:
-            if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
+            if np.allclose(
+                    luci_output_data, intp_output_data, rtol=rtolint,
+                    atol=atolint) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
             output_dtype = "uint8"
@@ -129,17 +136,23 @@ for idx in range(len(inpt_output_details)):
                                  " does not match with " + circle_model)
             output_dtype = "float32"
         elif output_details["dtype"] == np.int64:
-            if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
+            if np.allclose(
+                    luci_output_data, intp_output_data, rtol=rtolint,
+                    atol=atolint) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
             output_dtype = "int64"
         elif output_details["dtype"] == np.int32:
-            if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
+            if np.allclose(
+                    luci_output_data, intp_output_data, rtol=rtolint,
+                    atol=atolint) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
             output_dtype = "int32"
         elif output_details["dtype"] == np.int16:
-            if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
+            if np.allclose(
+                    luci_output_data, intp_output_data, rtol=rtolint,
+                    atol=atolint) == False:
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
             output_dtype = "int16"
