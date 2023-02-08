@@ -31,6 +31,7 @@ luci::CircleNode *CloneNodeLet<CN::DEF>::visit(const luci::CircleFullyConnected 
   {
     cloned->fusedActivationFunction(node->fusedActivationFunction());
     cloned->weights_format(node->weights_format());
+    cloned->keep_num_dims(node->keep_num_dims());
   }
   return cloned;
 }
