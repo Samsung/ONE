@@ -125,6 +125,8 @@ for idx in range(len(inpt_output_details)):
             if np.allclose(
                     luci_output_data, intp_output_data, rtol=rtolint,
                     atol=atolint) == False:
+                print("intp_output_data", intp_output_data)
+                print("luci_output_data", luci_output_data)
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
             output_dtype = "uint8"
@@ -132,6 +134,8 @@ for idx in range(len(inpt_output_details)):
             if np.allclose(
                     luci_output_data, intp_output_data, rtol=rtolf32,
                     atol=atolf32) == False:
+                print("intp_output_data", intp_output_data)
+                print("luci_output_data", luci_output_data)
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
             output_dtype = "float32"
@@ -139,6 +143,8 @@ for idx in range(len(inpt_output_details)):
             if np.allclose(
                     luci_output_data, intp_output_data, rtol=rtolint,
                     atol=atolint) == False:
+                print("intp_output_data", intp_output_data)
+                print("luci_output_data", luci_output_data)
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
             output_dtype = "int64"
@@ -146,6 +152,8 @@ for idx in range(len(inpt_output_details)):
             if np.allclose(
                     luci_output_data, intp_output_data, rtol=rtolint,
                     atol=atolint) == False:
+                print("intp_output_data", intp_output_data)
+                print("luci_output_data", luci_output_data)
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
             output_dtype = "int32"
@@ -153,11 +161,15 @@ for idx in range(len(inpt_output_details)):
             if np.allclose(
                     luci_output_data, intp_output_data, rtol=rtolint,
                     atol=atolint) == False:
+                print("intp_output_data", intp_output_data)
+                print("luci_output_data", luci_output_data)
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
             output_dtype = "int16"
         elif output_details["dtype"] == np.bool_:
             if np.allclose(luci_output_data, intp_output_data, rtol=0, atol=0) == False:
+                print("intp_output_data", intp_output_data)
+                print("luci_output_data", luci_output_data)
                 raise SystemExit("Execution result of " + tflite_model +
                                  " does not match with " + circle_model)
             output_dtype = "bool"
