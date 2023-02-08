@@ -188,8 +188,6 @@ addeval(UnidirectionalSequenceLSTM_002)
 #addeval(While_001)
 #addeval(While_002)
 #addeval(While_003)
-# NOTE temporary disable to make CI happy, https://github.com/Samsung/ONE/issues/10438
-# addeval(YUV_TO_RGB_U8_000)
 #addeval(ZerosLike_000)
 
 # Simple Network test
@@ -199,3 +197,5 @@ addeval(Part_While_001)
 # Tests with tolerance
 addevaltol(SVDF_000 8e-3 8e-3)
 addevaltol(SVDF_001 8e-3 8e-3)
+# refer https://github.com/Samsung/ONE/issues/10438
+addevaltol(YUV_TO_RGB_U8_000 1 1)

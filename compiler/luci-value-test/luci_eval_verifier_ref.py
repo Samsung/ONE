@@ -55,11 +55,16 @@ circle_model = args.work_path + ".circle"
 
 rtolf32 = 1e-5
 atolf32 = 1e-5
+# NOTE reuse f32 value as int value too
+rtolint = 0
+atolint = 0
 try:
     if args.rtolf32 != None:
         rtolf32 = float(args.rtolf32)
+        rtolint = int(rtolf32)
     if args.atolf32 != None:
         atolf32 = float(args.atolf32)
+        atolint = int(atolf32)
 except ValueError:
     print("rtolf32 or atolf32 is not a number")
     quit(128)
@@ -113,7 +118,8 @@ for idx in range(num_outputs):
     try:
         if output_dtype == np.uint8:
             if np.allclose(
-                    luci_output_data, luci_output_data_ref, rtol=0, atol=0) == False:
+                    luci_output_data, luci_output_data_ref, rtol=rtolint,
+                    atol=atolint) == False:
                 raise SystemExit("Execution result of " + circle_model_ref +
                                  " does not match with " + circle_model)
         elif output_dtype == np.float32:
@@ -124,17 +130,20 @@ for idx in range(num_outputs):
                                  " does not match with " + circle_model)
         elif output_dtype == np.int64:
             if np.allclose(
-                    luci_output_data, luci_output_data_ref, rtol=0, atol=0) == False:
+                    luci_output_data, luci_output_data_ref, rtol=rtolint,
+                    atol=atolint) == False:
                 raise SystemExit("Execution result of " + circle_model_ref +
                                  " does not match with " + circle_model)
         elif output_dtype == np.int32:
             if np.allclose(
-                    luci_output_data, luci_output_data_ref, rtol=0, atol=0) == False:
+                    luci_output_data, luci_output_data_ref, rtol=rtolint,
+                    atol=atolint) == False:
                 raise SystemExit("Execution result of " + circle_model_ref +
                                  " does not match with " + circle_model)
         elif output_dtype == np.int16:
             if np.allclose(
-                    luci_output_data, luci_output_data_ref, rtol=0, atol=0) == False:
+                    luci_output_data, luci_output_data_ref, rtol=rtolint,
+                    atol=atolint) == False:
                 raise SystemExit("Execution result of " + circle_model_ref +
                                  " does not match with " + circle_model)
         elif output_dtype == np.bool_:
