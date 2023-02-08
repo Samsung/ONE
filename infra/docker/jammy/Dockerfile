@@ -48,6 +48,7 @@ RUN apt-get update && apt-get -qqy install libgtest-dev
 # Setup user to match host user, and give superuser permissions
 ARG USER_ID=1000
 ARG GROUP_ID=${USER_ID}
+RUN apt-get update && apt-get -qqy install sudo
 RUN addgroup --gid ${GROUP_ID} ubuntu && adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} ubuntu && usermod -aG sudo ubuntu
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
