@@ -202,12 +202,12 @@ public:
     // This implementation is a workaround in case of adding operands while iteration
     std::list<Index> l;
 
-    for (auto &e : _objects)
+    for (const auto &e : _objects)
     {
       l.push_back(e.first);
     }
 
-    for (auto &index : l)
+    for (const auto &index : l)
     {
       fn(index, *_objects[index]);
     }

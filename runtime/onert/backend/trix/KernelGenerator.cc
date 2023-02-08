@@ -61,11 +61,11 @@ void KernelGenerator::visit(const ir::operation::Bulk &node)
   using ir::operation::Bulk;
 
   std::vector<IPortableTensor *> output_tensors;
-  for (auto &ofm_idx : node.getOutputs())
+  for (const auto &ofm_idx : node.getOutputs())
     output_tensors.emplace_back(_tensor_reg->getPortableTensor(ofm_idx));
 
   std::vector<const IPortableTensor *> input_tensors;
-  for (auto &ifm_idx : node.getInputs())
+  for (const auto &ifm_idx : node.getInputs())
     input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx));
 
   // parameters

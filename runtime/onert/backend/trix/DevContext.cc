@@ -203,7 +203,7 @@ void DevContext::requestRun(ModelID model_id, input_buffers *input_bufs, tensors
       batch_futures.emplace_back(std::move(future));
     }
 
-    for (auto &future : batch_futures)
+    for (auto &&future : batch_futures)
     {
       future.get();
     }

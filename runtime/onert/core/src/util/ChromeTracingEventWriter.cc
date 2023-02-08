@@ -168,7 +168,7 @@ void ChromeTracingWriter::flush(const std::vector<std::unique_ptr<EventRecorder>
   _os << "{\n";
   _os << "  " << quote("traceEvents") << ": [\n";
 
-  for (auto &recorder : recorders)
+  for (const auto &recorder : recorders)
   {
     flushOneRecord(*recorder);
   }
@@ -180,7 +180,7 @@ void ChromeTracingWriter::flush(const std::vector<std::unique_ptr<EventRecorder>
 
 void ChromeTracingWriter::flushOneRecord(const EventRecorder &recorder)
 {
-  for (auto &evt : recorder.duration_events())
+  for (const auto &evt : recorder.duration_events())
   {
     const std::string name = getLabel(*evt);
     const std::string tid = getTid(*evt);
@@ -188,7 +188,7 @@ void ChromeTracingWriter::flushOneRecord(const EventRecorder &recorder)
     _os << "    " << object(*evt, name, tid) << ",\n";
   }
 
-  for (auto &evt : recorder.counter_events())
+  for (const auto &evt : recorder.counter_events())
   {
     _os << "    " << object(evt) << ",\n";
   }

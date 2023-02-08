@@ -126,7 +126,7 @@ public:
     {
       cl_int buildErr = CL_SUCCESS;
       auto buildInfo = program_.getBuildInfo<CL_PROGRAM_BUILD_LOG>(&buildErr);
-      for (auto &pair : buildInfo)
+      for (const auto &pair : buildInfo)
       {
         std::cerr << pair.second << std::endl << std::endl;
       }

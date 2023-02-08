@@ -218,11 +218,11 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::allocate(void)
 {
   auto lifetime_map = cl_common::createLifetimeMap(_lifetime_seq, _parent_map);
 
-  for (auto &entry : lifetime_map)
+  for (const auto &entry : lifetime_map)
   {
-    auto &use = entry.second;
-    auto use_type = use.first;
-    auto use_index = use.second;
+    const auto &use = entry.second;
+    const auto &use_type = use.first;
+    const auto &use_index = use.second;
     assert(use_index.valid());
     if (use_type == UsesType::FIRST)
       _tensor_mgr->startLifetime(use_index);
@@ -255,9 +255,9 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
   assert(_tensor_mgr->nonconstTensors().size() == 0);
 
   // Normal tensors
-  for (auto &entry : _tensor_info_map)
+  for (const auto &entry : _tensor_info_map)
   {
-    auto ind = entry.first;
+    const auto &ind = entry.first;
     if (_parent_map.count(ind) > 0)
       continue;
 
@@ -273,9 +273,9 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
   assert(_tensor_mgr->nonconstSubtensors().size() == 0);
   // TODO Iterate `_parent_map` instead, once the optimizer bug is fixed
   //      `Optimizer` iterates the entire Operations, so there is a bug if iterating _parent_map
-  for (auto &entry : _tensor_info_map)
+  for (const auto &entry : _tensor_info_map)
   {
-    auto ind = entry.first;
+    const auto &ind = entry.first;
     if (_parent_map.count(ind) == 0)
       continue;
 
@@ -343,7 +343,7 @@ template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 bool AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::areSubTensorsOf(
   const ir::OperandIndex &parent, const ir::OperandIndexSequence &seq)
 {
-  for (auto &cand : seq)
+  for (const auto &cand : seq)
   {
     if (!isSubTensorOf(parent, cand))
     {

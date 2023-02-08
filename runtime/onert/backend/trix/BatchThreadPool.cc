@@ -58,7 +58,7 @@ BatchThreadPool::~BatchThreadPool()
   _stop_all = true;
   _cv_job_queue.notify_all();
 
-  for (auto &t : _worker_threads)
+  for (auto &&t : _worker_threads)
   {
     t.join();
   }

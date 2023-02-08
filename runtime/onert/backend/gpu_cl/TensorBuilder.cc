@@ -85,9 +85,9 @@ void TensorBuilder::allocate(void)
 {
   auto lifetime_map = cl_common::createLifetimeMap(_lifetime_seq, _parent_map);
 
-  for (auto &entry : lifetime_map)
+  for (const auto &entry : lifetime_map)
   {
-    auto &use = entry.second;
+    const auto &use = entry.second;
     auto use_type = use.first;
     auto use_index = use.second;
     assert(use_index.valid());
@@ -114,9 +114,9 @@ void TensorBuilder::buildTensors(void)
   assert(_tensor_mgr->constTensors().size() == 0);
   assert(_tensor_mgr->nonconstTensors().size() == 0);
   // Normal tensors
-  for (auto &entry : _tensor_info_map)
+  for (const auto &entry : _tensor_info_map)
   {
-    auto ind = entry.first;
+    const auto &ind = entry.first;
     if (_parent_map.count(ind) > 0)
       continue;
     auto type = _tensor_type_map.at(ind);

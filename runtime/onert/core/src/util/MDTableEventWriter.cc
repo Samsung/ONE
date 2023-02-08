@@ -32,7 +32,7 @@ namespace
 void writeMDTableRow(std::ostream &os, const std::vector<std::string> &list)
 {
   os << "| ";
-  for (auto &key : list)
+  for (const auto &key : list)
   {
     os << key << " | ";
   }
@@ -227,7 +227,7 @@ struct MDTableBuilder
 
   MDTableBuilder &build()
   {
-    for (auto &it : divideGraph())
+    for (const auto &it : divideGraph())
     {
       size_t begin_idx = it.first;
       size_t end_idx = it.second;
@@ -314,7 +314,7 @@ struct MDTableBuilder
     graph.end_ts = std::stoull(_duration_events[end_idx]->ts);
     graph.setOperations(name_to_op);
 
-    for (auto &arg : _duration_events[end_idx]->args)
+    for (const auto &arg : _duration_events[end_idx]->args)
     {
       if (arg.first == "session")
         graph.session_index = arg.second;
@@ -358,7 +358,7 @@ struct MDTableBuilder
 
 void MDTableWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &records)
 {
-  for (auto &recorder : records)
+  for (const auto &recorder : records)
   {
     MDTableBuilder(recorder->duration_events(), recorder->counter_events()).build().write(_os);
   }

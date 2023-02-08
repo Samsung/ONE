@@ -48,7 +48,7 @@ uint32_t ThreadPool::numJobsInQueue() { return _worker.numJobsInQueue(); }
 
 void ThreadPool::join()
 {
-  for (auto &thread : _threads)
+  for (auto &&thread : _threads)
   {
     thread.join();
   }

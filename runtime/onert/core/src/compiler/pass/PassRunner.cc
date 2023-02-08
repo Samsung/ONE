@@ -31,7 +31,7 @@ PassRunner &PassRunner::append(std::unique_ptr<Pass> pass)
 
 void PassRunner::run()
 {
-  for (auto &pass : _passes)
+  for (auto &&pass : _passes)
   {
     VERBOSE(PassRunner) << "Start running '" << pass->id() << "'" << std::endl;
     pass->run();

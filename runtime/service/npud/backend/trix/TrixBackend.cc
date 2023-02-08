@@ -66,10 +66,10 @@ TrixBackend::TrixBackend() : _devType(NPUCOND_TRIV2_CONN_SOCIP)
 
 TrixBackend::~TrixBackend()
 {
-  for (auto &ctx : _dev->ctxs)
+  for (const auto &ctx : _dev->ctxs)
   {
     npudev_h handle = _dev->handles.at(ctx->defaultCore);
-    for (auto id : ctx->requests)
+    for (const auto id : ctx->requests)
     {
       removeNPU_request(handle, id);
     }

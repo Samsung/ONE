@@ -176,7 +176,7 @@ void ExecutorBase::execute(const IODescription &desc)
 
 bool ExecutorBase::hasDynamicInput()
 {
-  for (auto &tensor : _input_tensors)
+  for (auto &&tensor : _input_tensors)
   {
     if (tensor->is_dynamic())
       return true;

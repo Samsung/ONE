@@ -58,7 +58,7 @@ void FirstFitPlanner::claim(const ir::OperandIndex &ind, size_t size)
 {
   // Find the right position for claiming
   uint32_t next_offset = 0;
-  for (auto &mem_claim : _claim_table)
+  for (const auto &mem_claim : _claim_table)
   {
     auto claimed_base_offset = mem_claim.first;
     auto claimed_size = _mem_plans[mem_claim.second].size;

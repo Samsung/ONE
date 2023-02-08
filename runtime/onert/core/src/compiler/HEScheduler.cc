@@ -512,7 +512,7 @@ HEScheduler::ESTAndExecTime(const backend::Backend *backend, const ir::Operation
   // Find free time for data transferring and insert it into backend taskset. This is needed:
   //  1. Time for multiple permutations for this node's input is found correctly
   //  2. If backend==cpu, then free time for this node must come after permutations
-  for (auto &it : transfer_st_exec_time)
+  for (auto &&it : transfer_st_exec_time)
   {
     if (_is_parallel_exec)
     {

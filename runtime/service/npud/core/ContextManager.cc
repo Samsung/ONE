@@ -59,7 +59,7 @@ void ContextManager::listContexts()
 {
 #ifdef DEBUG
   VERBOSE(ContextManager) << "Size: " << _contexts.size() << std::endl;
-  for (auto &context : _contexts)
+  for (const auto &context : _contexts)
   {
     VERBOSE(ContextManager) << "==========================" << std::endl;
     VERBOSE(ContextManager) << "contextId: " << context->contextId << std::endl;

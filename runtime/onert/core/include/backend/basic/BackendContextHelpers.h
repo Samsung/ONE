@@ -84,19 +84,23 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
     tensor_builder->notifyFirstUse(ind);
   }
 
-  for (auto &pair : def_map)
+  for (const auto &pair : def_map)
   {
-    if (pair.second == 0)
-      tensor_builder->notifyFirstUse(pair.first);
+    const auto &ind = pair.first;
+    const auto def_count = pair.second;
+    if (def_count == 0)
+      tensor_builder->notifyFirstUse(ind);
   }
 
   // This is a workaround to keep the operands over the execution
   // (the operands look like they are unused)
   std::vector<ir::OperandIndex> operands_last_until_end;
-  for (auto &pair : uses_map)
+  for (const auto &pair : uses_map)
   {
-    if (pair.second == 0)
-      operands_last_until_end.push_back(pair.first);
+    const auto &ind = pair.first;
+    const auto use_count = pair.second;
+    if (use_count == 0)
+      operands_last_until_end.push_back(ind);
   }
 
   // At each operation,
@@ -161,7 +165,7 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
     }
   }
 
-  for (auto &ind : operands_last_until_end)
+  for (const auto &ind : operands_last_until_end)
   {
     tensor_builder->notifyLastUse(ind);
   }

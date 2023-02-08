@@ -39,7 +39,7 @@ void StaticTensorManager::allocateNonconsts(void)
 {
   _nonconst_mgr->allocate();
 
-  for (auto &pair : _tensors->native_tensors())
+  for (auto &&pair : _tensors->native_tensors())
   {
     const auto &ind = pair.first;
     auto tensor = pair.second.get();

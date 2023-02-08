@@ -64,7 +64,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
 
   // 2. Backend per operation type
   std::unordered_map<ir::OpCode, backend::Backend *> op_type_map;
-  for (auto &pair : manual_options.opcode_to_backend)
+  for (const auto &pair : manual_options.opcode_to_backend)
   {
     op_type_map.emplace(pair.first, BackendManager::get().get(pair.second));
   }
@@ -80,7 +80,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   });
 
   // 3. Backend per operation
-  for (auto &pair : manual_options.index_to_backend)
+  for (const auto &pair : manual_options.index_to_backend)
   {
     const auto &key = pair.first;
     const auto &val = pair.second;

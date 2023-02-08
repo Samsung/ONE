@@ -196,7 +196,7 @@ StaticShapeInferer::createStaticShapeInferers(
 {
   // Allocate StaticShapeInferer per each subgraph
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers;
-  for (auto &pair : lowered_subgs)
+  for (auto &&pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
     auto &lowered_subg = pair.second;
@@ -204,7 +204,7 @@ StaticShapeInferer::createStaticShapeInferers(
   }
 
   // Append observers in all StaticShapeInferers
-  for (auto &pair : lowered_subgs)
+  for (auto &&pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
     auto &lowered_subg = pair.second;

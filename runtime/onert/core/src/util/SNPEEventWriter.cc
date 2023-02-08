@@ -103,9 +103,9 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
   // Memory
   {
     std::unordered_map<std::string, Stat> mem_stats;
-    for (auto &recorder : recorders)
+    for (const auto &recorder : recorders)
     {
-      for (auto &evt : recorder->counter_events())
+      for (const auto &evt : recorder->counter_events())
       {
         auto &mem_stat = mem_stats[evt.name];
         uint64_t val = std::stoull(evt.values.at("value"));
@@ -114,7 +114,7 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
     }
 
     auto &mem = exec_data["memory"] = Json::Value{Json::objectValue};
-    for (auto &kv : mem_stats)
+    for (const auto &kv : mem_stats)
     {
       auto &key = kv.first;
       auto &val = kv.second;
@@ -132,9 +132,9 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
     // 2D keys : stats[tid][name]
     std::unordered_map<std::string, std::unordered_map<std::string, Stat>> stats;
     std::unordered_map<std::string, std::unordered_map<std::string, uint64_t>> begin_timestamps;
-    for (auto &recorder : recorders)
+    for (const auto &recorder : recorders)
     {
-      for (auto &evt : recorder->duration_events())
+      for (const auto &evt : recorder->duration_events())
       {
         std::string evt_name = getLabel(*evt);
         std::string evt_tid = getBackend(*evt);
@@ -160,17 +160,17 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
       }
     }
 
-    for (auto &kv : begin_timestamps)
-      for (auto &kv2 : kv.second)
+    for (const auto &kv : begin_timestamps)
+      for (const auto &kv2 : kv.second)
         if (kv2.second != 0)
           throw std::runtime_error{"Invalid Data - B and E pair does not match."};
 
-    for (auto &kv : stats)
+    for (const auto &kv : stats)
     {
-      auto &tid = kv.first;
-      auto &map = kv.second;
+      const auto &tid = kv.first;
+      const auto &map = kv.second;
       auto &json_tid = exec_data[tid] = Json::Value{Json::objectValue};
-      for (auto &kv : map)
+      for (const auto &kv : map)
       {
         auto &name = kv.first;
         auto &val = kv.second;

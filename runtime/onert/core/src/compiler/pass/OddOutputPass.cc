@@ -34,7 +34,7 @@ void OddOutputPass::run()
 
   VERBOSE(OddOutputPass) << "Case 1 : An operand which is a model output and a model input"
                          << std::endl;
-  for (auto &ind : outputs)
+  for (const auto &ind : outputs)
   {
     if (_graph.getInputs().contains(ind))
     {
@@ -46,7 +46,7 @@ void OddOutputPass::run()
 
   VERBOSE(OddOutputPass) << "Case 2 : Two or more duplicated outputs" << std::endl;
   std::unordered_set<ir::OperandIndex> occurence;
-  for (auto &ind : outputs)
+  for (auto &&ind : outputs)
   {
     auto &obj = _graph.operands().at(ind);
     if (occurence.count(ind) == 0)

@@ -132,7 +132,7 @@ void Executors::checkSupportedMultimodel() const
   {
     auto first_executor = at(ir::ModelIndex{0}, ir::SubgraphIndex{0});
     auto search_first_model = [&](const ir::IOIndex &input_index) {
-      for (auto &input : _model_edges->pkg_inputs)
+      for (const auto &input : _model_edges->pkg_inputs)
       {
         if ((std::get<ir::ModelIndex>(input) == ir::ModelIndex{0}) ||
             (std::get<ir::SubgraphIndex>(input) == ir::SubgraphIndex{0}) ||
@@ -272,7 +272,7 @@ void Executors::execute(const IODescription &desc)
 
   auto find_from = [&](const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
                        const ir::IOIndex &io_index) {
-    for (auto &edge : _model_edges->edges)
+    for (const auto &edge : _model_edges->edges)
     {
       if ((std::get<ir::ModelIndex>(edge.to) == model_index) &&
           (std::get<ir::SubgraphIndex>(edge.to) == subg_index) &&

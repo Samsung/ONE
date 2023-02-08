@@ -196,7 +196,7 @@ backend::BackendContexts createBackendContexts(compiler::LoweredGraph &lgraph, b
 
   // Create contexts
   auto whole_op_order = lgraph.graph().topolSortOperations();
-  for (auto &pair : context_data_map)
+  for (auto &&pair : context_data_map)
   {
     auto backend = pair.first;
     auto &data = pair.second;
@@ -290,7 +290,7 @@ void ExecutorFactory::prepareBuiltinBackend(const TensorRegistries &tensor_regs,
                                             const backend::BackendContexts &backend_contexts,
                                             const ir::ModelIndex &index)
 {
-  for (auto &pair : backend_contexts)
+  for (auto &&pair : backend_contexts)
   {
     auto builtin_context = dynamic_cast<backend::builtin::BackendContext *>(pair.second.get());
     if (builtin_context != nullptr)
@@ -308,7 +308,7 @@ ExecutorFactory::orderBackendContext(const backend::BackendContexts &backend_con
 {
   std::deque<std::pair<const backend::Backend *, backend::BackendContext *>> ordered_contexts;
 
-  for (auto &pair : backend_contexts)
+  for (auto &&pair : backend_contexts)
   {
     // NOTE builtin backend must be processed lastly.
     // This is because of Permute layer's specialty which is the only operation that could have
@@ -344,7 +344,7 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
   auto order = Linear::linearize(*lowered_graph);
   Linear::dump(*lowered_graph, order);
 
-  for (auto &pair : backend_contexts)
+  for (auto &&pair : backend_contexts)
   {
     pair.second->genTensors();
   }
@@ -413,10 +413,10 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
   }
 
   // Generate kernels
-  for (auto &pair : ordered_contexts)
+  for (auto &&pair : ordered_contexts)
   {
     auto codes = pair.second->genKernels();
-    for (auto &pair : codes)
+    for (auto &&pair : codes)
     {
       auto &op_ind = pair.first;
       auto &fn_seq = pair.second;
@@ -464,7 +464,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
       ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
-  for (auto &pair : backend_contexts)
+  for (auto &&pair : backend_contexts)
   {
     pair.second->genTensors();
   }
@@ -480,10 +480,10 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   auto ordered_contexts = orderBackendContext(backend_contexts);
 
   // Generate kernels
-  for (auto &pair : ordered_contexts)
+  for (auto &&pair : ordered_contexts)
   {
     auto codes = pair.second->genKernels();
-    for (auto &pair : codes)
+    for (auto &&pair : codes)
     {
       auto &op_ind = pair.first;
       auto &fn_seq = pair.second;

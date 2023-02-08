@@ -28,7 +28,7 @@ void ExecutionObservee::add(std::unique_ptr<IExecutionObserver> observer)
 
 void ExecutionObservee::notifySubgraphBegin(ir::SubgraphIndex ind)
 {
-  for (auto &o : _observers)
+  for (auto &&o : _observers)
   {
     o->handleSubgraphBegin(ind);
   }
@@ -36,7 +36,7 @@ void ExecutionObservee::notifySubgraphBegin(ir::SubgraphIndex ind)
 
 void ExecutionObservee::notifySubgraphEnd(ir::SubgraphIndex ind)
 {
-  for (auto &o : _observers)
+  for (auto &&o : _observers)
   {
     o->handleSubgraphEnd(ind);
   }
@@ -45,7 +45,7 @@ void ExecutionObservee::notifySubgraphEnd(ir::SubgraphIndex ind)
 void ExecutionObservee::notifyJobBegin(IExecutor *executor, ir::SubgraphIndex subg_ind,
                                        ir::OperationIndex op_ind, const backend::Backend *backend)
 {
-  for (auto &o : _observers)
+  for (auto &&o : _observers)
   {
     o->handleJobBegin(executor, subg_ind, op_ind, backend);
   }
@@ -54,7 +54,7 @@ void ExecutionObservee::notifyJobBegin(IExecutor *executor, ir::SubgraphIndex su
 void ExecutionObservee::notifyJobEnd(IExecutor *executor, ir::SubgraphIndex subg_ind,
                                      ir::OperationIndex op_ind, const backend::Backend *backend)
 {
-  for (auto &o : _observers)
+  for (auto &&o : _observers)
   {
     o->handleJobEnd(executor, subg_ind, op_ind, backend);
   }
