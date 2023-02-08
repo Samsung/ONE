@@ -76,6 +76,24 @@ bool is_number(const std::vector<std::string> &vec)
   return true;
 }
 
+// TODO Move this class into a separate header for reuse
+class IsMultiOutputNode final : public luci::CircleNodeVisitor<bool>
+{
+public:
+  bool visit(const luci::CircleCustom *) final { return true; }
+  bool visit(const luci::CircleIf *) final { return true; }
+  bool visit(const luci::CircleNonMaxSuppressionV4 *) final { return true; }
+  bool visit(const luci::CircleNonMaxSuppressionV5 *) final { return true; }
+  bool visit(const luci::CircleSplit *) final { return true; }
+  bool visit(const luci::CircleSplitV *) final { return true; }
+  bool visit(const luci::CircleTopKV2 *) final { return true; }
+  bool visit(const luci::CircleUnique *) final { return true; }
+  bool visit(const luci::CircleUnpack *) final { return true; }
+  bool visit(const luci::CircleWhile *) final { return true; }
+  // default is false
+  bool visit(const luci::CircleNode *) final { return false; }
+};
+
 std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode *> nodes)
 {
   auto graph = loco::make_graph();
@@ -135,7 +153,7 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
     }
   }
   // set graph output
-  for (const auto &n : nodes)
+  for (auto &n : nodes)
   {
     auto outputs = loco::succs(n);
     bool beingUsed = false;
@@ -150,29 +168,46 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
     // the node isn't graph output if it is an other node's output
     if (beingUsed)
       continue;
-    // circle output
-    auto circle_output = graph->nodes()->create<luci::CircleOutput>();
-    auto output_node = n;
-    luci::copy_common_attributes(output_node, circle_output);
-    // connect to cloned output node
-    circle_output->from(ctx.find(output_node)->second);
-    // graph output
-    auto graph_output = graph->outputs()->create();
-    graph_output->name(output_node->name());
-    graph_output->dtype(output_node->dtype());
-    // graph output shape
-    auto output_shape = std::make_unique<loco::TensorShape>();
-    output_shape->rank(circle_output->rank());
-    for (uint32_t i = 0; i < output_shape->rank(); i++)
-    {
-      if (circle_output->dim(i).known())
-      {
-        output_shape->dim(i).set(circle_output->dim(i).value());
-      }
-    }
-    graph_output->shape(std::move(output_shape));
 
-    circle_output->index(graph_output->index());
+    IsMultiOutputNode multiout_visitor;
+    bool isMultiOut = n->accept(&multiout_visitor);
+    for (auto &o : outputs)
+    {
+      const luci::CircleNode *output_node = nullptr;
+      if (isMultiOut)
+      {
+        output_node = dynamic_cast<const luci::CircleNode *>(o);
+        assert(output_node);
+      }
+      else
+      {
+        output_node = n;
+      }
+      // circle output
+      auto circle_output = graph->nodes()->create<luci::CircleOutput>();
+      luci::copy_common_attributes(output_node, circle_output);
+      // connect to cloned output node
+      circle_output->from(ctx.find(output_node)->second);
+      // graph output
+      auto graph_output = graph->outputs()->create();
+      graph_output->name(output_node->name());
+      graph_output->dtype(output_node->dtype());
+      // graph output shape
+      auto output_shape = std::make_unique<loco::TensorShape>();
+      output_shape->rank(circle_output->rank());
+      for (uint32_t i = 0; i < output_shape->rank(); i++)
+      {
+        if (circle_output->dim(i).known())
+        {
+          output_shape->dim(i).set(circle_output->dim(i).value());
+        }
+      }
+      graph_output->shape(std::move(output_shape));
+
+      circle_output->index(graph_output->index());
+      if (not isMultiOut)
+        break;
+    }
   }
   // connect nodes
   for (const auto &n : nodes)
@@ -313,6 +348,20 @@ std::unique_ptr<luci::Module> OpSelector::select_by(const std::string &str)
   assert(_module->size() == 1);
 
   auto selected_nodes = select_by<SELECT_TYPE>(colon_tokens);
+
+  // multiout node should be considered
+  IsMultiOutputNode multiout_visitor;
+  for (const auto &node : selected_nodes)
+  {
+    if (node->accept(&multiout_visitor))
+    {
+      auto outputs = loco::succs(node);
+      for (auto &o : outputs)
+      {
+        selected_nodes.push_back(dynamic_cast<luci::CircleNode *>(o));
+      }
+    }
+  }
 
   auto new_module = std::make_unique<luci::Module>();
   new_module->add(::make_graph(selected_nodes));
