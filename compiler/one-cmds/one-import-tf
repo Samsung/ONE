@@ -111,6 +111,12 @@ def _get_parser():
         action='store_true',
         help='Save intermediate files to output folder')
 
+    # experimental options
+    parser.add_argument(
+        '--experimental_disable_batchmatmul_unfold',
+        action='store_true',
+        help='Experimental disable BatchMatMul unfold')
+
     return parser
 
 
