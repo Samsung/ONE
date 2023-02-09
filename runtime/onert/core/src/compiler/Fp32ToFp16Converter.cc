@@ -393,10 +393,10 @@ void Fp32ToFp16Converter::convertOperandsOfOpSequence(ir::OpSequence &op_seq)
   const auto &op_seq_inputs = _lowered_graph.graph().getInputs();
   const auto &op_seq_outputs = _lowered_graph.graph().getOutputs();
 
-  for (auto &op_idx : op_seq)
+  for (const auto &op_idx : op_seq)
   {
     const auto &node = operations.at(op_idx);
-    for (auto &ind : node.getInputs() | ir::Remove::UNDEFINED)
+    for (const auto &ind : node.getInputs() | ir::Remove::UNDEFINED)
     {
       if (node.opcode() == ir::OpCode::ConvertFp32ToFp16 || op_seq_inputs.contains(ind))
         continue;
@@ -410,7 +410,7 @@ void Fp32ToFp16Converter::convertOperandsOfOpSequence(ir::OpSequence &op_seq)
       VERBOSE(Fp32ToFp16Converter) << "Input Operand " << ind << ": fp16" << std::endl;
     }
 
-    for (auto &ind : node.getOutputs())
+    for (const auto &ind : node.getOutputs())
     {
       if (node.opcode() == ir::OpCode::ConvertFp16ToFp32 || op_seq_outputs.contains(ind))
         continue;
@@ -747,7 +747,7 @@ Fp32ToFp16Converter::findOpSequencesContiguous(const InputToOpSeqs &input_to_op_
     //    |                       |
     // [OPERATION]             [OPERATION]
     //
-    for (auto &op_seq_ind : found_input_in_op_seqs->second)
+    for (const auto &op_seq_ind : found_input_in_op_seqs->second)
     {
       auto found_in_fp32_to_fp16 = _list_fp32_to_fp16.find(op_seq_ind);
       if (found_in_fp32_to_fp16 != _list_fp32_to_fp16.end())
@@ -799,13 +799,13 @@ Fp32ToFp16Converter::getListOpSequences(const OpSeqIndexToOpSeqIndexList &opseq_
   OpSeqIndexList list;
   for (const auto &it : opseq_map_to_delete)
   {
-    auto &opseq_ind_fp16_to_fp32 = it.first;
+    const auto &opseq_ind_fp16_to_fp32 = it.first;
     if (list.find(opseq_ind_fp16_to_fp32) == list.end())
     {
       list.emplace(opseq_ind_fp16_to_fp32);
     }
 
-    for (auto &opseq_ind_fp32_to_fp16 : it.second)
+    for (const auto &opseq_ind_fp32_to_fp16 : it.second)
     {
       if (list.find(opseq_ind_fp32_to_fp16) == list.end())
       {
@@ -869,7 +869,7 @@ void Fp32ToFp16Converter::manipulateContiguousOpSequences(
     auto &op_seq_fp16_to_fp32 = op_seqs.at(op_seq_ind_fp16_to_fp32);
     auto &input_ind_fp16_to_fp32 = op_seq_fp16_to_fp32.getInputs().at(0);
 
-    for (auto &op_seq_ind_fp32_to_fp16 : it.second)
+    for (const auto &op_seq_ind_fp32_to_fp16 : it.second)
     {
       auto &op_seq_fp32_to_fp16 = op_seqs.at(op_seq_ind_fp32_to_fp16);
       assert(op_seq_fp32_to_fp16.size() == 1);
@@ -879,7 +879,7 @@ void Fp32ToFp16Converter::manipulateContiguousOpSequences(
       auto found_next_to_fp16 = input_to_op_seqs.find(output_ind_fp32_to_fp16);
       assert(found_next_to_fp16 != input_to_op_seqs.end());
 
-      for (auto &op_seq_ind_next_to_fp16 : found_next_to_fp16->second)
+      for (const auto &op_seq_ind_next_to_fp16 : found_next_to_fp16->second)
       {
         manipulateInput(op_seq_ind_next_to_fp16, output_ind_fp32_to_fp16, input_ind_fp16_to_fp32);
       }
@@ -901,7 +901,7 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
   auto &operations = _lowered_graph.graph().operations();
   auto &op_seqs = _lowered_graph.op_seqs();
 
-  for (auto &op_seq_ind : list_to_delete_op_seqs)
+  for (const auto &op_seq_ind : list_to_delete_op_seqs)
   {
     auto &op_seq = op_seqs.at(op_seq_ind);
     assert(op_seq.size() == 1);
@@ -914,7 +914,7 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
     VERBOSE(Fp32ToFp16Converter) << "Delete Node " << first_node_ind << std::endl;
 
     // Uses
-    for (auto &ind : first_node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &ind : first_node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       auto &obj = operands.at(ind);
       obj.removeUse(first_node_ind);
@@ -923,7 +923,7 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
     }
 
     // Def
-    for (auto &ind : first_node.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &ind : first_node.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       auto &obj = operands.at(ind);
       assert(obj.getDef() == first_node_ind);
@@ -942,7 +942,7 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
   }
 
   // Operand
-  for (auto &ind : list_to_delete_ops)
+  for (const auto &ind : list_to_delete_ops)
   {
     operands.remove(ind);
     VERBOSE(Fp32ToFp16Converter) << "Operand " << ind << " is removed" << std::endl;

@@ -163,7 +163,7 @@ void setOperationsExecutionTime(const std::vector<const Backend *> &backends,
   ExecTime et(backends);
   for (int i = 0; i < op_names.size(); ++i)
   {
-    for (auto &backend : backends)
+    for (const auto backend : backends)
       setOperationExecTime(et, backend, op_names[i], false, op_sizes[i], exec_time);
   }
   et.storeOperationsExecTime();
@@ -189,7 +189,7 @@ void setPermutationsExecutionTime(const std::vector<const Backend *> &backends,
   ExecTime et(backends);
   for (const auto &backend : backends)
   {
-    for (auto &other_backend : backends)
+    for (const auto other_backend : backends)
     {
       if (backend == other_backend)
         continue;

@@ -125,22 +125,22 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
 
   _nnpkg.reset();
 
-  for (auto &pair : lowered_subgs)
+  for (const auto &pair : lowered_subgs)
   {
     const auto &model_index = pair.first;
-    auto &model_lsubg = pair.second;
+    const auto &model_lsubg = pair.second;
 
-    for (auto &pair_inner : model_lsubg)
+    for (const auto &pair_inner : model_lsubg)
     {
       const auto &subg_index = pair_inner.first;
-      auto &lowered_subg = pair_inner.second;
+      const auto &lowered_subg = pair_inner.second;
       dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_model-", model_index.value(),
                                                      "-subg-", subg_index.value()));
     }
   }
 
   // Shape inference.
-  for (auto &pair : lowered_subgs)
+  for (auto &&pair : lowered_subgs)
   {
     auto &model_lsubgs = pair.second;
     // Run the StaticShapeInfer of primary subg. All child StaticShapeInferers are called
@@ -165,13 +165,13 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
   //      - Check parameter value validation which valid value is depend on input tensor shape
   //      - Output tensor shape validation check is needless because
   //        static/dynamic shape inferer will make valid output shape
-  for (auto &pair : lowered_subgs)
+  for (const auto &pair : lowered_subgs)
   {
-    auto &model_lsubgs = pair.second;
+    const auto &model_lsubgs = pair.second;
 
-    for (auto &pair_inner : model_lsubgs)
+    for (const auto &pair_inner : model_lsubgs)
     {
-      auto &lowered_subg = pair_inner.second;
+      const auto &lowered_subg = pair_inner.second;
       compiler::ShapeValidator{lowered_subg->graph()}();
     }
   }
@@ -180,12 +180,12 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
   auto executors = std::make_shared<exec::Executors>(std::move(model_edges));
-  for (auto &pair : lowered_subgs)
+  for (auto &&pair : lowered_subgs)
   {
     auto const &model_index = pair.first;
     auto &model_lsubgs = pair.second;
 
-    for (auto &pair_inner : model_lsubgs)
+    for (auto &&pair_inner : model_lsubgs)
     {
       auto const subg_index = pair_inner.first;
       auto &lowered_subg = pair_inner.second;

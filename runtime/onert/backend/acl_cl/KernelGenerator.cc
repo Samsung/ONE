@@ -256,7 +256,7 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
 
   auto output_tensor = _tensor_reg->getAclTensor(ofm_index);
   std::vector<const ::arm_compute::ICLTensor *> input_tensors;
-  for (auto &ifm_ind : input_indexes)
+  for (const auto &ifm_ind : input_indexes)
     input_tensors.emplace_back(_tensor_reg->getAclTensor(ifm_ind)->handle());
 
   std::unique_ptr<::arm_compute::IFunction> fn;

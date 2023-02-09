@@ -94,7 +94,7 @@ void DynamicMemoryManager::deallocate(const ITensor *tensor)
 
 void DynamicMemoryManager::deallocate(void)
 {
-  for (auto &mem_alloc : _mem_alloc_map)
+  for (auto &&mem_alloc : _mem_alloc_map)
   {
     // Release memory buffer of mem_alloc
     mem_alloc.second->release();

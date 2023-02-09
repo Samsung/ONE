@@ -65,7 +65,7 @@ public:
       .operands()
       .iterate([&](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
 
-    for (auto &it : ret)
+    for (auto &&it : ret)
     {
       auto &fn_seq = it.second;
       fn_seq->iterate([&](exec::IFunction &ifunc) {

@@ -71,7 +71,7 @@ void KernelGenerator::get_operation(FunctionMap &Functions)
 {
   size_t size = _nodes.size();
   size_t i = 0;
-  for (auto &it : Functions)
+  for (auto &&it : Functions)
   {
     auto index = it.first;
     auto node_index = _operation_indexes[i];

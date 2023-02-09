@@ -66,7 +66,7 @@ public:
 
   template <typename T, typename... Args> void wrap(Args &&... args)
   {
-    for (auto &function : _functions)
+    for (auto &&function : _functions)
     {
       function = std::make_unique<T>(std::move(function), args...);
     }

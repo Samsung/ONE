@@ -105,9 +105,9 @@ void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Opera
       }
     }
 
-    for (auto &operation : remove_list)
+    for (const auto &operation_index : remove_list)
     {
-      object.removeUse(operation);
+      object.removeUse(operation_index);
     }
   }
 }

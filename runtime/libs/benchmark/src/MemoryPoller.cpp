@@ -121,7 +121,7 @@ void MemoryPoller::process()
     }
     uint32_t cur_pss = getPssSum();
 
-    for (auto &phase : _phases)
+    for (const auto &phase : _phases)
     {
       auto &rss = _rss_map.at(phase);
       if (rss < cur_rss)

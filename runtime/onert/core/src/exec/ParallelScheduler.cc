@@ -45,7 +45,7 @@ void ParallelScheduler::assign(std::unique_ptr<IFunction> &&fn, const backend::B
 
 void ParallelScheduler::finish()
 {
-  for (auto &itr : _thread_pools)
+  for (auto &&itr : _thread_pools)
   {
     itr.second->finish();
   }

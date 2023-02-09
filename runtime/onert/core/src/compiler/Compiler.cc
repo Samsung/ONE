@@ -107,10 +107,10 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
   _model.reset();
 
-  for (auto &pair : lowered_subgs)
+  for (const auto &pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
-    auto &lowered_subg = pair.second;
+    const auto &lowered_subg = pair.second;
     dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_subg-", subg_index.value()));
   }
 
@@ -138,7 +138,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   //      - Check parameter value validation which valid value is depend on input tensor shape
   //      - Output tensor shape validation check is needless because
   //        static/dynamic shape inferer will make valid output shape
-  for (auto &pair : lowered_subgs)
+  for (const auto &pair : lowered_subgs)
   {
     auto &lowered_subg = pair.second;
     compiler::ShapeValidator{lowered_subg->graph()}();
@@ -148,7 +148,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
   auto executors = std::make_shared<exec::SingleModelExecutors>();
-  for (auto &pair : lowered_subgs)
+  for (auto &&pair : lowered_subgs)
   {
     auto const model_index = ir::ModelIndex{0};
     auto const subg_index = pair.first;

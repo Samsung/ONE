@@ -279,7 +279,7 @@ void KernelGenerator::visit(const ir::operation::AddN &node)
   const auto output_index{node.getOutputs().at(0)};
 
   std::vector<const IPortableTensor *> input_tensors;
-  for (auto &input_idx : node.getInputs())
+  for (const auto &input_idx : node.getInputs())
     input_tensors.emplace_back(_tensor_reg->getPortableTensor(input_idx));
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
@@ -386,7 +386,7 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   auto output_tensor = _tensor_reg->getPortableTensor(ofm_index);
 
   std::vector<const IPortableTensor *> input_tensors;
-  for (auto &ifm_idx : node.getInputs())
+  for (const auto &ifm_idx : node.getInputs())
     input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx));
 
   auto fn = std::make_unique<ops::ConcatLayer>();
@@ -626,7 +626,7 @@ void KernelGenerator::visit(const ir::operation::Einsum &node)
 
   auto output_tensor = _tensor_reg->getPortableTensor(ofm_index);
   std::vector<const IPortableTensor *> input_tensors;
-  for (auto &ifm_idx : node.getInputs())
+  for (const auto &ifm_idx : node.getInputs())
     input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx));
 
   const auto equation = node.param().equation;
@@ -643,7 +643,7 @@ void KernelGenerator::visit(const ir::operation::Custom &node)
   auto fill_op_info = [&](const ir::OperandIndexSequence &opSeq,
                           std::vector<custom::TypeInfo> &types,
                           std::vector<IPortableTensor *> &tensors) {
-    for (auto &idx : opSeq)
+    for (const auto &idx : opSeq)
     {
       const auto &operand = _ctx.at(idx);
       // TODO make sure using `_current_layout` is correct for custom operations
@@ -750,7 +750,7 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
   auto output_tensor = _tensor_reg->getPortableTensor(ofm_index);
 
   std::vector<const IPortableTensor *> input_tensors;
-  for (auto &ifm_idx : node.getInputs())
+  for (const auto &ifm_idx : node.getInputs())
     input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx));
 
   auto fn = std::make_unique<ops::PackLayer>();
@@ -772,7 +772,7 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
 
   std::vector<IPortableTensor *> output_tensors;
-  for (auto &output_idx : node.getOutputs())
+  for (const auto &output_idx : node.getOutputs())
     output_tensors.emplace_back(_tensor_reg->getPortableTensor(output_idx));
 
   auto fn = std::make_unique<ops::UnpackLayer>();
@@ -934,7 +934,7 @@ void KernelGenerator::visit(const ir::operation::Split &node)
   auto axis_tensor = _tensor_reg->getPortableTensor(axis_idx);
 
   std::vector<IPortableTensor *> out_tensors;
-  for (auto &output_idx : node.getOutputs())
+  for (const auto &output_idx : node.getOutputs())
     out_tensors.emplace_back(_tensor_reg->getPortableTensor(output_idx));
 
   auto fn = std::make_unique<ops::SplitLayer>();
@@ -1261,7 +1261,7 @@ void KernelGenerator::visit(const ir::operation::FusedBatchNorm &node)
 
   auto output_tensor = _tensor_reg->getPortableTensor(ofm_index);
   std::vector<const IPortableTensor *> input_tensors;
-  for (auto &ifm_idx : node.getInputs())
+  for (const auto &ifm_idx : node.getInputs())
     input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx));
 
   const auto epsilon = node.param().epsilon;
@@ -1372,7 +1372,7 @@ void KernelGenerator::visit(const ir::operation::SplitV &node)
   auto in_split_dim = _tensor_reg->getPortableTensor(split_dim);
 
   std::vector<IPortableTensor *> out_tensors;
-  for (auto &output_idx : node.getOutputs())
+  for (const auto &output_idx : node.getOutputs())
     out_tensors.emplace_back(_tensor_reg->getPortableTensor(output_idx));
 
   auto fn = std::make_unique<ops::SplitVLayer>();
