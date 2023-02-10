@@ -51,28 +51,14 @@ build_kernel_CircleUnidirectionalSequenceLSTM(std::vector<const Tensor *> &&inpu
   const Tensor *projection_weights = inputs.at(16);
   const Tensor *projection_bias = inputs.at(17);
 
-  const Tensor *output_state = inputs.at(18);
-  const Tensor *cell_state = inputs.at(19);
+  Tensor *output_state = const_cast<Tensor *>(inputs.at(18));
+  Tensor *cell_state = const_cast<Tensor *>(inputs.at(19));
 
   const Tensor *input_layer_norm_coefficients = inputs.at(20);
   const Tensor *forget_layer_norm_coefficients = inputs.at(21);
   const Tensor *cell_layer_norm_coefficients = inputs.at(22);
   const Tensor *output_layer_norm_coefficients = inputs.at(23);
   Tensor *output = outputs.at(0);
-
-  // scratch pad tensor
-  // NOTE provide more scratch pads if support hybrid or integer
-  auto sp_output_state = std::make_unique<Tensor>(output_state->element_type(), Shape({}), nullptr);
-  sp_output_state->set_data_buffer(nullptr);
-  Tensor *tmp_1 = builder.get_runtime_graph()->addTensor(std::move(sp_output_state));
-
-  auto sp_cell_state = std::make_unique<Tensor>(cell_state->element_type(), Shape({}), nullptr);
-  sp_cell_state->set_data_buffer(nullptr);
-  Tensor *tmp_2 = builder.get_runtime_graph()->addTensor(std::move(sp_cell_state));
-
-  auto sp_3 = std::make_unique<Tensor>(input->element_type(), Shape({}), nullptr);
-  sp_3->set_data_buffer(nullptr);
-  Tensor *tmp_3 = builder.get_runtime_graph()->addTensor(std::move(sp_3));
 
   circle::OperatorT oper_t;
   builder.get_circle_reader()->operators()[op_index]->UnPackTo(&oper_t);
@@ -85,14 +71,75 @@ build_kernel_CircleUnidirectionalSequenceLSTM(std::vector<const Tensor *> &&inpu
   params.time_major = options->time_major;
   params.asymmetric_quantize_inputs = options->asymmetric_quantize_inputs;
 
+  // scratch pad tensor
+  const bool is_integer = input->element_type() == DataType::S8;
+  bool use_layer_norm = (forget_layer_norm_coefficients != nullptr);
+
+  if (is_integer)
+  {
+    if (not use_layer_norm)
+    {
+      params.intermediate_affine_quant =
+        builder.get_runtime_graph()->getIntermediateAffineQuantizations();
+
+      // For integer LSTM need 4 16-bit buffer with size n_batch * n_cell
+      // and 1 8-bit buffer with size n_batch * n_cell
+      auto tmp_1 = std::make_unique<Tensor>(DataType::S16, Shape({}), nullptr);
+      tmp_1->set_data_buffer(nullptr);
+      outputs.push_back(builder.get_runtime_graph()->addTensor(std::move(tmp_1)));
+
+      auto tmp_2 = std::make_unique<Tensor>(DataType::S16, Shape({}), nullptr);
+      tmp_2->set_data_buffer(nullptr);
+      outputs.push_back(builder.get_runtime_graph()->addTensor(std::move(tmp_2)));
+
+      auto tmp_3 = std::make_unique<Tensor>(DataType::S16, Shape({}), nullptr);
+      tmp_3->set_data_buffer(nullptr);
+      outputs.push_back(builder.get_runtime_graph()->addTensor(std::move(tmp_3)));
+
+      auto tmp_4 = std::make_unique<Tensor>(DataType::S16, Shape({}), nullptr);
+      tmp_4->set_data_buffer(nullptr);
+      outputs.push_back(builder.get_runtime_graph()->addTensor(std::move(tmp_4)));
+
+      auto tmp_5 = std::make_unique<Tensor>(
+        DataType::S8, Shape({}),
+        builder.get_runtime_graph()->getIntermediateAffineQuantizations()[0]);
+      tmp_5->set_data_buffer(nullptr);
+      outputs.push_back(builder.get_runtime_graph()->addTensor(std::move(tmp_5)));
+    }
+    else
+    {
+      // TODO: support float
+      assert(false && "Not supported now");
+    }
+  }
+  else
+  {
+    // NOTE provide more scratch pads if support hybrid or integer
+    auto sp_output_state =
+      std::make_unique<Tensor>(output_state->element_type(), Shape({}), nullptr);
+    sp_output_state->set_data_buffer(nullptr);
+    outputs.push_back(builder.get_runtime_graph()->addTensor(std::move(sp_output_state)));
+
+    auto sp_cell_state = std::make_unique<Tensor>(cell_state->element_type(), Shape({}), nullptr);
+    sp_cell_state->set_data_buffer(nullptr);
+    outputs.push_back(builder.get_runtime_graph()->addTensor(std::move(sp_cell_state)));
+
+    auto sp_3 = std::make_unique<Tensor>(input->element_type(), Shape({}), nullptr);
+    sp_3->set_data_buffer(nullptr);
+    outputs.push_back(builder.get_runtime_graph()->addTensor(std::move(sp_3)));
+  }
+
+  outputs.push_back(output_state);
+  outputs.push_back(cell_state);
+
   return std::make_unique<kernels::UnidirectionalSequenceLSTM>(
     input, input_to_input_weights, input_to_forget_weights, input_to_cell_weights,
     input_to_output_weights, recurrent_to_input_weights, recurrent_to_forget_weights,
     recurrent_to_cell_weights, recurrent_to_output_weights, cell_to_input_weights,
     cell_to_forget_weights, cell_to_output_weights, input_gate_bias, forget_gate_bias,
-    cell_gate_bias, output_gate_bias, projection_weights, projection_bias, output_state, cell_state,
+    cell_gate_bias, output_gate_bias, projection_weights, projection_bias,
     input_layer_norm_coefficients, forget_layer_norm_coefficients, cell_layer_norm_coefficients,
-    output_layer_norm_coefficients, output, tmp_1, tmp_2, tmp_3, params);
+    output_layer_norm_coefficients, std::move(outputs), params);
 }
 
 } // namespace luci_interpreter
