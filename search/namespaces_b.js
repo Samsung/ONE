@@ -6,7 +6,7 @@ var searchData=
   ['locomotiv_3',['locomotiv',['../namespacelocomotiv.html',1,'']]],
   ['locop_4',['locop',['../namespacelocop.html',1,'']]],
   ['logo_5',['logo',['../namespacelogo.html',1,'']]],
-  ['lstm_6',['lstm',['../namespaceluci__interpreter_1_1kernels_1_1lstm.html',1,'luci_interpreter::kernels']]],
+  ['lstm_6',['lstm',['../namespaceluci__interpreter_1_1kernels_1_1lstm.html',1,'luci_interpreter::kernels::lstm'],['../namespaceluci__interpreter__pal_1_1lstm.html',1,'luci_interpreter_pal::lstm']]],
   ['luci_7',['luci',['../namespaceluci.html',1,'']]],
   ['luci_5feval_5fverifier_8',['luci_eval_verifier',['../namespaceluci__eval__verifier.html',1,'']]],
   ['luci_5feval_5fverifier_5fref_9',['luci_eval_verifier_ref',['../namespaceluci__eval__verifier__ref.html',1,'']]],

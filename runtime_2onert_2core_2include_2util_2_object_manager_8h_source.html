@@ -198,12 +198,12 @@ $(document).ready(function(){initNavTree('runtime_2onert_2core_2include_2util_2_
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="comment">// This implementation is a workaround in case of adding operands while iteration</span></div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    std::list&lt;Index&gt; l;</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;e : <a class="code hl_variable" href="classonert_1_1util_1_1_object_manager.html#ad80200282c5a775b8f3096b3cd59ce33">_objects</a>)</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;e : <a class="code hl_variable" href="classonert_1_1util_1_1_object_manager.html#ad80200282c5a775b8f3096b3cd59ce33">_objects</a>)</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    {</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>      l.push_back(e.first);</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    }</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;index : l)</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;index : l)</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    {</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>      fn(index, *<a class="code hl_variable" href="classonert_1_1util_1_1_object_manager.html#ad80200282c5a775b8f3096b3cd59ce33">_objects</a>[index]);</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    }</div>

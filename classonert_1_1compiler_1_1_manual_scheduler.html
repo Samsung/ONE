@@ -212,7 +212,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   64</span> </div>
 <div class="line"><span class="lineno">   65</span>  <span class="comment">// 2. Backend per operation type</span></div>
 <div class="line"><span class="lineno">   66</span>  std::unordered_map&lt;ir::OpCode, backend::Backend *&gt; op_type_map;</div>
-<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pair : manual_options.opcode_to_backend)</div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : manual_options.opcode_to_backend)</div>
 <div class="line"><span class="lineno">   68</span>  {</div>
 <div class="line"><span class="lineno">   69</span>    op_type_map.emplace(pair.first, <a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">BackendManager::get</a>().<a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">get</a>(pair.second));</div>
 <div class="line"><span class="lineno">   70</span>  }</div>
@@ -228,7 +228,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   80</span>  });</div>
 <div class="line"><span class="lineno">   81</span> </div>
 <div class="line"><span class="lineno">   82</span>  <span class="comment">// 3. Backend per operation</span></div>
-<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pair : manual_options.index_to_backend)</div>
+<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : manual_options.index_to_backend)</div>
 <div class="line"><span class="lineno">   84</span>  {</div>
 <div class="line"><span class="lineno">   85</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;key = pair.first;</div>
 <div class="line"><span class="lineno">   86</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;val = pair.second;</div>

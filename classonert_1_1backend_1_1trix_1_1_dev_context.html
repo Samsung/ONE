@@ -465,7 +465,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  203</span>      batch_futures.emplace_back(std::move(future));</div>
 <div class="line"><span class="lineno">  204</span>    }</div>
 <div class="line"><span class="lineno">  205</span> </div>
-<div class="line"><span class="lineno">  206</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;future : batch_futures)</div>
+<div class="line"><span class="lineno">  206</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;future : batch_futures)</div>
 <div class="line"><span class="lineno">  207</span>    {</div>
 <div class="line"><span class="lineno">  208</span>      future.get();</div>
 <div class="line"><span class="lineno">  209</span>    }</div>

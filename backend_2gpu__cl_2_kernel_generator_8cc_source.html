@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('backend_2gpu__cl_2_kernel_generator_8c
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>{</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordtype">size_t</span> size = _nodes.size();</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordtype">size_t</span> i = 0;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;it : Functions)</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it : Functions)</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  {</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">auto</span> index = it.first;</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keyword">auto</span> node_index = _operation_indexes[i];</div>

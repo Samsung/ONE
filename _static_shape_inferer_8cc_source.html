@@ -290,7 +290,7 @@ $(document).ready(function(){initNavTree('_static_shape_inferer_8cc_source.html'
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>{</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  <span class="comment">// Allocate StaticShapeInferer per each subgraph</span></div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  std::unordered_map&lt;ir::SubgraphIndex, std::unique_ptr&lt;StaticShapeInferer&gt;&gt; inferers;</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  {</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;subg_index = pair.first;</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keyword">auto</span> &amp;lowered_subg = pair.second;</div>
@@ -298,7 +298,7 @@ $(document).ready(function(){initNavTree('_static_shape_inferer_8cc_source.html'
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  }</div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <span class="comment">// Append observers in all StaticShapeInferers</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  {</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;subg_index = pair.first;</div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keyword">auto</span> &amp;lowered_subg = pair.second;</div>

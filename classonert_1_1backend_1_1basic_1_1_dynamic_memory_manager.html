@@ -255,7 +255,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_memory_manager_8cc_source.html#l00095">95</a> of file <a class="el" href="_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   96</span>{</div>
-<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;mem_alloc : _mem_alloc_map)</div>
+<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;mem_alloc : _mem_alloc_map)</div>
 <div class="line"><span class="lineno">   98</span>  {</div>
 <div class="line"><span class="lineno">   99</span>    <span class="comment">// Release memory buffer of mem_alloc</span></div>
 <div class="line"><span class="lineno">  100</span>    mem_alloc.second-&gt;release();</div>

@@ -256,7 +256,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   71</span>{</div>
 <div class="line"><span class="lineno">   72</span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a> = _nodes.size();</div>
 <div class="line"><span class="lineno">   73</span>  <span class="keywordtype">size_t</span> i = 0;</div>
-<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;it : Functions)</div>
+<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it : Functions)</div>
 <div class="line"><span class="lineno">   75</span>  {</div>
 <div class="line"><span class="lineno">   76</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = it.first;</div>
 <div class="line"><span class="lineno">   77</span>    <span class="keyword">auto</span> node_index = _operation_indexes[i];</div>

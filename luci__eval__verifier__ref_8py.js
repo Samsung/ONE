@@ -4,6 +4,7 @@ var luci__eval__verifier__ref_8py =
     [ "args", "luci__eval__verifier__ref_8py.html#ae7d6724baf3696147cf88d49146824ac", null ],
     [ "atol", "luci__eval__verifier__ref_8py.html#a6b13060fe92321dc65f0392a811e7562", null ],
     [ "atolf32", "luci__eval__verifier__ref_8py.html#a37a95192671bbe1bef9e9b0f8ed0727b", null ],
+    [ "atolint", "luci__eval__verifier__ref_8py.html#a244f3e9dbf45831d41a61e55dae5f0ea", null ],
     [ "check", "luci__eval__verifier__ref_8py.html#acd720be35c1d91ebd314ecccf6530694", null ],
     [ "check_input", "luci__eval__verifier__ref_8py.html#a4f4dd9f6a01baeae25500cf1a224ccaa", null ],
     [ "check_output", "luci__eval__verifier__ref_8py.html#a42162a751aba8c4d5797e310003af1e9", null ],
@@ -24,6 +25,7 @@ var luci__eval__verifier__ref_8py =
     [ "required", "luci__eval__verifier__ref_8py.html#abb9b2e3fe6ad5bc7948138c39e2a26b0", null ],
     [ "rtol", "luci__eval__verifier__ref_8py.html#ac05dc1a582b340839415677d9b13c180", null ],
     [ "rtolf32", "luci__eval__verifier__ref_8py.html#ababd1faaafbfef3991d1863ba9cc6cbf", null ],
+    [ "rtolint", "luci__eval__verifier__ref_8py.html#a98433d7bfe4debf0816b73437bd530a2", null ],
     [ "shape_file", "luci__eval__verifier__ref_8py.html#a780375677f3d0468c0591228c2554345", null ],
     [ "str", "luci__eval__verifier__ref_8py.html#a35c2055a06cfcb3c022aa717f77c7f5a", null ],
     [ "type", "luci__eval__verifier__ref_8py.html#a232aa06a22fa9ad07fb7d843256121bf", null ]

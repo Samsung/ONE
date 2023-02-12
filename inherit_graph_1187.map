@@ -1,3 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classtflinspect_1_1_reader.html" title="Loads TF lite file and provides helpers to access attributes." alt="" coords="5,5,127,31"/>
+<area shape="rect" id="node1" href="$classtflinspect_1_1_dump_interface.html" title=" " alt="" coords="5,63,171,88"/>
+<area shape="rect" id="node2" href="$classtflinspect_1_1_dump_conv2_d_weight.html" title=" " alt="" coords="219,5,419,31"/>
+<area shape="rect" id="node3" href="$classtflinspect_1_1_dump_operator_version.html" title=" " alt="" coords="237,55,401,95"/>
+<area shape="rect" id="node4" href="$classtflinspect_1_1_dump_operators.html" title=" " alt="" coords="233,120,404,145"/>
 </map>

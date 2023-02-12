@@ -90,12 +90,18 @@ $(document).ready(function(){initNavTree('namespaceluci__interpreter__pal.html',
 
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">luci_interpreter_pal Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceluci__interpreter__pal_1_1lstm"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal_1_1lstm.html">lstm</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter__pal_1_1_activation_functor.html">ActivationFunctor</a></td></tr>
@@ -173,6 +179,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a90a2d5d095d1e99b34df27491a89fdd6"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:a90a2d5d095d1e99b34df27491a89fdd6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a90a2d5d095d1e99b34df27491a89fdd6">FullyConnected&lt; int8_t &gt;</a> (const tflite::FullyConnectedParams &amp;params, const tflite::RuntimeShape &amp;input_shape, const int8_t *input_data, const tflite::RuntimeShape &amp;filter_shape, const int8_t *filter_data, const tflite::RuntimeShape &amp;bias_shape, const int32_t *bias_data, const tflite::RuntimeShape &amp;output_shape, int8_t *output_data)</td></tr>
 <tr class="separator:a90a2d5d095d1e99b34df27491a89fdd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a0b2d1d970f94be53e13b87b4bffa13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a6a0b2d1d970f94be53e13b87b4bffa13">eval_integer_8x8_16_lstm</a> (const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input_to_input_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input_to_forget_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input_to_cell_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input_to_output_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *recurrent_to_input_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *recurrent_to_forget_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *recurrent_to_cell_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *recurrent_to_output_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *cell_to_input_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *cell_to_forget_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *cell_to_output_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input_layer_norm_coefficients, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *forget_layer_norm_coefficients, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *cell_layer_norm_coefficients, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *output_layer_norm_coefficients, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input_gate_bias, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *forget_gate_bias, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *cell_gate_bias, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *output_gate_bias, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *projection_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *projection_bias, const <a class="el" href="structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html">luci_interpreter::UnidirectionalSequenceLSTMParams</a> &amp;params, bool forward_sequence, bool time_major, const <a class="el" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html">luci_interpreter::IntegerLSTMParams</a> &amp;integer_lstm_param, int32_t output_state_zp, <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *output_state, <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *cell_state, <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *output, int16_t *scratch0, int16_t *scratch1, int16_t *scratch2, int16_t *scratch3, int8_t *scratch4, int32_t *scratch5)</td></tr>
+<tr class="separator:a6a0b2d1d970f94be53e13b87b4bffa13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a538db269338776f01a3c6f56e503f9a8" name="a538db269338776f01a3c6f56e503f9a8"></a>
@@ -1647,6 +1655,580 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   69</span>    bias_shape, bias_data, output_shape, output_data);</div>
 <div class="line"><span class="lineno">   70</span>}</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a6a0b2d1d970f94be53e13b87b4bffa13" name="a6a0b2d1d970f94be53e13b87b4bffa13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a0b2d1d970f94be53e13b87b4bffa13">&#9670;&#160;</a></span>eval_integer_8x8_16_lstm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter_pal::eval_integer_8x8_16_lstm </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input_to_input_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input_to_forget_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input_to_cell_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input_to_output_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>recurrent_to_input_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>recurrent_to_forget_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>recurrent_to_cell_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>recurrent_to_output_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>cell_to_input_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>cell_to_forget_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>cell_to_output_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input_layer_norm_coefficients</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>forget_layer_norm_coefficients</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>cell_layer_norm_coefficients</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>output_layer_norm_coefficients</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>input_gate_bias</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>forget_gate_bias</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>cell_gate_bias</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>output_gate_bias</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>projection_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>projection_bias</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html">luci_interpreter::UnidirectionalSequenceLSTMParams</a> &amp;&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>forward_sequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>time_major</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html">luci_interpreter::IntegerLSTMParams</a> &amp;&#160;</td>
+          <td class="paramname"><em>integer_lstm_param</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>output_state_zp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>output_state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>cell_state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *&#160;</td>
+          <td class="paramname"><em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int16_t *&#160;</td>
+          <td class="paramname"><em>scratch0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int16_t *&#160;</td>
+          <td class="paramname"><em>scratch1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int16_t *&#160;</td>
+          <td class="paramname"><em>scratch2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int16_t *&#160;</td>
+          <td class="paramname"><em>scratch3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t *&#160;</td>
+          <td class="paramname"><em>scratch4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>scratch5</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00745">745</a> of file <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html">PALUnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  770</span>{</div>
+<div class="line"><span class="lineno">  771</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_shape = input-&gt;shape();</div>
+<div class="line"><span class="lineno">  772</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(input_shape.num_dims() &gt;= 2 &amp;&amp; input_shape.num_dims() &lt;= 3);</div>
+<div class="line"><span class="lineno">  773</span> </div>
+<div class="line"><span class="lineno">  774</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> n_input = input_shape.dim(input_shape.num_dims() - 1);</div>
+<div class="line"><span class="lineno">  775</span>  <span class="keywordtype">int</span> max_time, n_batch;</div>
+<div class="line"><span class="lineno">  776</span>  <span class="keywordflow">if</span> (input_shape.num_dims() == 2)</div>
+<div class="line"><span class="lineno">  777</span>  {</div>
+<div class="line"><span class="lineno">  778</span>    max_time = 1;</div>
+<div class="line"><span class="lineno">  779</span>    n_batch = input_shape.dim(0);</div>
+<div class="line"><span class="lineno">  780</span>  }</div>
+<div class="line"><span class="lineno">  781</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  782</span>  {</div>
+<div class="line"><span class="lineno">  783</span>    max_time = (time_major) ? input_shape.dim(0) : input_shape.dim(1);</div>
+<div class="line"><span class="lineno">  784</span>    n_batch = (time_major) ? input_shape.dim(1) : input_shape.dim(0);</div>
+<div class="line"><span class="lineno">  785</span>  }</div>
+<div class="line"><span class="lineno">  786</span> </div>
+<div class="line"><span class="lineno">  787</span>  <span class="comment">// n_cell and n_output will be the same size when there is no projection.</span></div>
+<div class="line"><span class="lineno">  788</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> n_cell = input_to_output_weights-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a5ea62328ce6d801a3aef30b903b95d69">shape</a>().<a class="code hl_function" href="classluci__interpreter_1_1_shape.html#a83aee8788dd50f2ea66c48697c7c0a34">dim</a>(0);</div>
+<div class="line"><span class="lineno">  789</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> n_output = recurrent_to_output_weights-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a5ea62328ce6d801a3aef30b903b95d69">shape</a>().<a class="code hl_function" href="classluci__interpreter_1_1_shape.html#a83aee8788dd50f2ea66c48697c7c0a34">dim</a>(1);</div>
+<div class="line"><span class="lineno">  790</span> </div>
+<div class="line"><span class="lineno">  791</span>  <span class="comment">// Get params for time/batch/sequence.</span></div>
+<div class="line"><span class="lineno">  792</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_batch_leading_dim = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;shape().dim(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;shape().num_dims() - 1);</div>
+<div class="line"><span class="lineno">  793</span> </div>
+<div class="line"><span class="lineno">  794</span>  <span class="keywordflow">if</span> (time_major)</div>
+<div class="line"><span class="lineno">  795</span>  {</div>
+<div class="line"><span class="lineno">  796</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> input_step = n_batch * n_input;</div>
+<div class="line"><span class="lineno">  797</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> output_step = n_batch * output_batch_leading_dim;</div>
+<div class="line"><span class="lineno">  798</span> </div>
+<div class="line"><span class="lineno">  799</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> t = 0; t &lt; max_time; t++)</div>
+<div class="line"><span class="lineno">  800</span>    {</div>
+<div class="line"><span class="lineno">  801</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> t_rel = t;</div>
+<div class="line"><span class="lineno">  802</span>      int8_t *output_ptr =</div>
+<div class="line"><span class="lineno">  803</span>        luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(output) + t_rel * output_step;</div>
+<div class="line"><span class="lineno">  804</span>      <span class="keyword">const</span> int8_t *input_ptr =</div>
+<div class="line"><span class="lineno">  805</span>        luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(input) + t_rel * input_step;</div>
+<div class="line"><span class="lineno">  806</span> </div>
+<div class="line"><span class="lineno">  807</span>      lstm::lstm_step_integer_8x8_16(</div>
+<div class="line"><span class="lineno">  808</span>        input_ptr,</div>
+<div class="line"><span class="lineno">  809</span>        input_to_input_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  810</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  811</span>          : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(input_to_input_weights),</div>
+<div class="line"><span class="lineno">  812</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a1815b45d4e9979eaf81cb89f299c8f79">effective_input_to_input_scale_a</a>,</div>
+<div class="line"><span class="lineno">  813</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aab48dc57abe245d257c35cc1c6ad7354">effective_input_to_input_scale_b</a>,</div>
+<div class="line"><span class="lineno">  814</span>        input_to_forget_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  815</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  816</span>          : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(input_to_forget_weights),</div>
+<div class="line"><span class="lineno">  817</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aad3a135d4309854e3ca3ffcf375aa07a">effective_input_to_forget_scale_a</a>,</div>
+<div class="line"><span class="lineno">  818</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#adc38a56e44f8a3e6550bc80bfaca363e">effective_input_to_forget_scale_b</a>,</div>
+<div class="line"><span class="lineno">  819</span>        input_to_cell_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  820</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  821</span>          : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(input_to_cell_weights),</div>
+<div class="line"><span class="lineno">  822</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a17aa2b0f550808acc80edf483d9aefc0">effective_input_to_cell_scale_a</a>,</div>
+<div class="line"><span class="lineno">  823</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a88ce1ec27fc97e74415f066b281bcb71">effective_input_to_cell_scale_b</a>,</div>
+<div class="line"><span class="lineno">  824</span>        input_to_output_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  825</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  826</span>          : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(input_to_output_weights),</div>
+<div class="line"><span class="lineno">  827</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a436a706c17cf37479593607220ff0aab">effective_input_to_output_scale_a</a>,</div>
+<div class="line"><span class="lineno">  828</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a8f050cf3537363681b3aff86395f7813">effective_input_to_output_scale_b</a>,</div>
+<div class="line"><span class="lineno">  829</span>        recurrent_to_input_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  830</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  831</span>          : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(recurrent_to_input_weights),</div>
+<div class="line"><span class="lineno">  832</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a38de4e598127e2fb764fce6a21c2fc9e">effective_recurrent_to_input_scale_a</a>,</div>
+<div class="line"><span class="lineno">  833</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a9686553df691e2b1b8c716615f13753e">effective_recurrent_to_input_scale_b</a>,</div>
+<div class="line"><span class="lineno">  834</span>        recurrent_to_forget_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  835</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  836</span>          : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(recurrent_to_forget_weights),</div>
+<div class="line"><span class="lineno">  837</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a786a7d187a322aab6e8d07bfb157c834">effective_recurrent_to_forget_scale_a</a>,</div>
+<div class="line"><span class="lineno">  838</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a0f2e283966be688baf8353cb83d6cabe">effective_recurrent_to_forget_scale_b</a>,</div>
+<div class="line"><span class="lineno">  839</span>        recurrent_to_cell_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  840</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  841</span>          : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(recurrent_to_cell_weights),</div>
+<div class="line"><span class="lineno">  842</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ae8b58fbab6226ddb2b3d5b972ca47a3d">effective_recurrent_to_cell_scale_a</a>,</div>
+<div class="line"><span class="lineno">  843</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a7429f0edf41d6c2ffce4987830d31235">effective_recurrent_to_cell_scale_b</a>,</div>
+<div class="line"><span class="lineno">  844</span>        recurrent_to_output_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  845</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  846</span>          : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(recurrent_to_output_weights),</div>
+<div class="line"><span class="lineno">  847</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a1ef00ac5637652bc42302b668595c14f">effective_recurrent_to_output_scale_a</a>,</div>
+<div class="line"><span class="lineno">  848</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a397af438d6a1e7051cd78da4dbb743ba">effective_recurrent_to_output_scale_b</a>,</div>
+<div class="line"><span class="lineno">  849</span>        cell_to_input_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  850</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  851</span>          : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(cell_to_input_weights),</div>
+<div class="line"><span class="lineno">  852</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#abe40c57692043111c35301789a9218e6">effective_cell_to_input_scale_a</a>,</div>
+<div class="line"><span class="lineno">  853</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aacc97958d62163e8f69f44703bd2b411">effective_cell_to_input_scale_b</a>,</div>
+<div class="line"><span class="lineno">  854</span>        cell_to_forget_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  855</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  856</span>          : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(cell_to_forget_weights),</div>
+<div class="line"><span class="lineno">  857</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a6e524defb86176d1c87074f90d30b6fc">effective_cell_to_forget_scale_a</a>,</div>
+<div class="line"><span class="lineno">  858</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aab68f6adb9ab9fbdcb02b1561939f623">effective_cell_to_forget_scale_b</a>,</div>
+<div class="line"><span class="lineno">  859</span>        cell_to_output_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  860</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  861</span>          : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(cell_to_output_weights),</div>
+<div class="line"><span class="lineno">  862</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#affdebdc0521280db0be1bec0434c04e4">effective_cell_to_output_scale_a</a>,</div>
+<div class="line"><span class="lineno">  863</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a760916e38abee7495fa35d198ba96008">effective_cell_to_output_scale_b</a>,</div>
+<div class="line"><span class="lineno">  864</span>        projection_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  865</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  866</span>          : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(projection_weights),</div>
+<div class="line"><span class="lineno">  867</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a27867e3ab1cbefb506f3d384587b5a32">effective_proj_scale_a</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a78b06d907d35a460555947d9ce6b6192">effective_proj_scale_b</a>,</div>
+<div class="line"><span class="lineno">  868</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a9179415a87f49b1efd429c501c20432c">hidden_zp</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#abb27a971ebf03b639b8c9206fdaa392f">effective_hidden_scale_a</a>,</div>
+<div class="line"><span class="lineno">  869</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a3fed6619c9e6f648f17f00aa5af6aacd">effective_hidden_scale_b</a>,</div>
+<div class="line"><span class="lineno">  870</span>        input_layer_norm_coefficients == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  871</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  872</span>          : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(input_layer_norm_coefficients),</div>
+<div class="line"><span class="lineno">  873</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ac0c85d53bd0a78802d42a9493616fa9e">layer_norm_input_scale_a</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#afde0dc24fcf4a78b859be82f28632b61">layer_norm_input_scale_b</a>,</div>
+<div class="line"><span class="lineno">  874</span>        forget_layer_norm_coefficients == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  875</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  876</span>          : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(forget_layer_norm_coefficients),</div>
+<div class="line"><span class="lineno">  877</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a4f17d869e9a7e018549d323949d507e8">layer_norm_forget_scale_a</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aff505a21fe1205ce8de8d6349274d1be">layer_norm_forget_scale_b</a>,</div>
+<div class="line"><span class="lineno">  878</span>        cell_layer_norm_coefficients == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  879</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  880</span>          : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(cell_layer_norm_coefficients),</div>
+<div class="line"><span class="lineno">  881</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aa121ea209ac56e9b152ea2b7a8818715">layer_norm_cell_scale_a</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a63778507ff2e28c090b2937fba31cbf2">layer_norm_cell_scale_b</a>,</div>
+<div class="line"><span class="lineno">  882</span>        output_layer_norm_coefficients == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  883</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  884</span>          : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(output_layer_norm_coefficients),</div>
+<div class="line"><span class="lineno">  885</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a05119ca8a00dfb53b66ca3cc187c5b05">layer_norm_output_scale_a</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ac3690c9c36794675982ba9ec3607f8b7">layer_norm_output_scale_b</a>,</div>
+<div class="line"><span class="lineno">  886</span>        input_gate_bias == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  887</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  888</span>          : luci_interpreter::kernels::getTensorData&lt;int32_t&gt;(input_gate_bias),</div>
+<div class="line"><span class="lineno">  889</span>        forget_gate_bias == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  890</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  891</span>          : luci_interpreter::kernels::getTensorData&lt;int32_t&gt;(forget_gate_bias),</div>
+<div class="line"><span class="lineno">  892</span>        cell_gate_bias == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  893</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  894</span>          : luci_interpreter::kernels::getTensorData&lt;int32_t&gt;(cell_gate_bias),</div>
+<div class="line"><span class="lineno">  895</span>        output_gate_bias == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  896</span>          ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  897</span>          : luci_interpreter::kernels::getTensorData&lt;int32_t&gt;(output_gate_bias),</div>
+<div class="line"><span class="lineno">  898</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a8462a1a6cced18ac3a6b82306bfcc780">quantized_cell_clip</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ac8ddd6f032f01eaefa39a8a1259e900d">quantized_proj_clip</a>,</div>
+<div class="line"><span class="lineno">  899</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ab7664e69aed93448fcc3bae80cff7b57">cell_scale</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#af9a05c5052c25714265807ee320bc966">input_variance_guard</a>,</div>
+<div class="line"><span class="lineno">  900</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ad4ee84a5a78c2c9dfe7fabe78b9388d1">forget_variance_guard</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ae922b35a1ae080073fce915fb42eb4c7">cell_variance_guard</a>,</div>
+<div class="line"><span class="lineno">  901</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a34cb17f71c767ce6ad0b60daeec89c18">output_variance_guard</a>,</div>
+<div class="line"><span class="lineno">  902</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a5230bd10273c2df881d2992ca89d764d">input_to_forget_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno">  903</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a08150d9662d4b9e4471a0fb28298a5c2">recurrent_to_forget_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno">  904</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#add6e3338ffe810eff38750897882d35c">input_to_cell_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno">  905</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#af8e50735cb0b964413f1c273220131d6">recurrent_to_cell_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno">  906</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a66f2874ced3aa8934bf0ee93ae61cec0">input_to_output_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno">  907</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a7a79444954718b6ec2b01bb61afcd40b">recurrent_to_output_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno">  908</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a3a42233043f3d11e76ff7e5a48b98609">input_to_input_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno">  909</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a88d966314f5bce1f3dab6a948436f409">recurrent_to_input_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno">  910</span>        integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a72134384372348fba20502cd12af5fe9">projection_effective_bias</a>.data(), n_batch, n_cell, n_input, n_output,</div>
+<div class="line"><span class="lineno">  911</span>        luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(output_state), output_state_zp,</div>
+<div class="line"><span class="lineno">  912</span>        luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(cell_state), output_ptr, scratch0,</div>
+<div class="line"><span class="lineno">  913</span>        scratch1, scratch2, scratch3, scratch4, scratch5);</div>
+<div class="line"><span class="lineno">  914</span>    }</div>
+<div class="line"><span class="lineno">  915</span>  }</div>
+<div class="line"><span class="lineno">  916</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  917</span>  {</div>
+<div class="line"><span class="lineno">  918</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; n_batch; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>++)</div>
+<div class="line"><span class="lineno">  919</span>    {</div>
+<div class="line"><span class="lineno">  920</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> input_step = n_input;</div>
+<div class="line"><span class="lineno">  921</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> output_step = output_batch_leading_dim;</div>
+<div class="line"><span class="lineno">  922</span> </div>
+<div class="line"><span class="lineno">  923</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> t = 0; t &lt; max_time; t++)</div>
+<div class="line"><span class="lineno">  924</span>      {</div>
+<div class="line"><span class="lineno">  925</span>        <span class="comment">// If this is the forward_sequence, step forward, otherwise step</span></div>
+<div class="line"><span class="lineno">  926</span>        <span class="comment">// backwards.</span></div>
+<div class="line"><span class="lineno">  927</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> t_rel = forward_sequence ? t : max_time - t - 1;</div>
+<div class="line"><span class="lineno">  928</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> time_offset = <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * max_time + t_rel;</div>
+<div class="line"><span class="lineno">  929</span>        <span class="keyword">const</span> int8_t *input_ptr =</div>
+<div class="line"><span class="lineno">  930</span>          luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(input) + time_offset * input_step;</div>
+<div class="line"><span class="lineno">  931</span>        int8_t *output_ptr =</div>
+<div class="line"><span class="lineno">  932</span>          luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(output) + time_offset * output_step;</div>
+<div class="line"><span class="lineno">  933</span> </div>
+<div class="line"><span class="lineno">  934</span>        <span class="comment">// Offset the {output,cell}_state pointers to the right batch.</span></div>
+<div class="line"><span class="lineno">  935</span>        int8_t *output_state_ptr = luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(output_state) +</div>
+<div class="line"><span class="lineno">  936</span>                                   <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * output_batch_leading_dim;</div>
+<div class="line"><span class="lineno">  937</span>        int16_t *cell_state_ptr =</div>
+<div class="line"><span class="lineno">  938</span>          luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(cell_state) + <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * n_cell;</div>
+<div class="line"><span class="lineno">  939</span> </div>
+<div class="line"><span class="lineno">  940</span>        lstm::lstm_step_integer_8x8_16(</div>
+<div class="line"><span class="lineno">  941</span>          input_ptr,</div>
+<div class="line"><span class="lineno">  942</span>          input_to_input_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  943</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  944</span>            : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(input_to_input_weights),</div>
+<div class="line"><span class="lineno">  945</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a1815b45d4e9979eaf81cb89f299c8f79">effective_input_to_input_scale_a</a>,</div>
+<div class="line"><span class="lineno">  946</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aab48dc57abe245d257c35cc1c6ad7354">effective_input_to_input_scale_b</a>,</div>
+<div class="line"><span class="lineno">  947</span>          input_to_forget_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  948</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  949</span>            : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(input_to_forget_weights),</div>
+<div class="line"><span class="lineno">  950</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aad3a135d4309854e3ca3ffcf375aa07a">effective_input_to_forget_scale_a</a>,</div>
+<div class="line"><span class="lineno">  951</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#adc38a56e44f8a3e6550bc80bfaca363e">effective_input_to_forget_scale_b</a>,</div>
+<div class="line"><span class="lineno">  952</span>          input_to_cell_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  953</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  954</span>            : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(input_to_cell_weights),</div>
+<div class="line"><span class="lineno">  955</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a17aa2b0f550808acc80edf483d9aefc0">effective_input_to_cell_scale_a</a>,</div>
+<div class="line"><span class="lineno">  956</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a88ce1ec27fc97e74415f066b281bcb71">effective_input_to_cell_scale_b</a>,</div>
+<div class="line"><span class="lineno">  957</span>          input_to_output_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  958</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  959</span>            : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(input_to_output_weights),</div>
+<div class="line"><span class="lineno">  960</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a436a706c17cf37479593607220ff0aab">effective_input_to_output_scale_a</a>,</div>
+<div class="line"><span class="lineno">  961</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a8f050cf3537363681b3aff86395f7813">effective_input_to_output_scale_b</a>,</div>
+<div class="line"><span class="lineno">  962</span>          recurrent_to_input_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  963</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  964</span>            : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(recurrent_to_input_weights),</div>
+<div class="line"><span class="lineno">  965</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a38de4e598127e2fb764fce6a21c2fc9e">effective_recurrent_to_input_scale_a</a>,</div>
+<div class="line"><span class="lineno">  966</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a9686553df691e2b1b8c716615f13753e">effective_recurrent_to_input_scale_b</a>,</div>
+<div class="line"><span class="lineno">  967</span>          recurrent_to_forget_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  968</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  969</span>            : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(recurrent_to_forget_weights),</div>
+<div class="line"><span class="lineno">  970</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a786a7d187a322aab6e8d07bfb157c834">effective_recurrent_to_forget_scale_a</a>,</div>
+<div class="line"><span class="lineno">  971</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a0f2e283966be688baf8353cb83d6cabe">effective_recurrent_to_forget_scale_b</a>,</div>
+<div class="line"><span class="lineno">  972</span>          recurrent_to_cell_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  973</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  974</span>            : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(recurrent_to_cell_weights),</div>
+<div class="line"><span class="lineno">  975</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ae8b58fbab6226ddb2b3d5b972ca47a3d">effective_recurrent_to_cell_scale_a</a>,</div>
+<div class="line"><span class="lineno">  976</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a7429f0edf41d6c2ffce4987830d31235">effective_recurrent_to_cell_scale_b</a>,</div>
+<div class="line"><span class="lineno">  977</span>          recurrent_to_output_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  978</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  979</span>            : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(recurrent_to_output_weights),</div>
+<div class="line"><span class="lineno">  980</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a1ef00ac5637652bc42302b668595c14f">effective_recurrent_to_output_scale_a</a>,</div>
+<div class="line"><span class="lineno">  981</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a397af438d6a1e7051cd78da4dbb743ba">effective_recurrent_to_output_scale_b</a>,</div>
+<div class="line"><span class="lineno">  982</span>          cell_to_input_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  983</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  984</span>            : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(cell_to_input_weights),</div>
+<div class="line"><span class="lineno">  985</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#abe40c57692043111c35301789a9218e6">effective_cell_to_input_scale_a</a>,</div>
+<div class="line"><span class="lineno">  986</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aacc97958d62163e8f69f44703bd2b411">effective_cell_to_input_scale_b</a>,</div>
+<div class="line"><span class="lineno">  987</span>          cell_to_forget_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  988</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  989</span>            : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(cell_to_forget_weights),</div>
+<div class="line"><span class="lineno">  990</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a6e524defb86176d1c87074f90d30b6fc">effective_cell_to_forget_scale_a</a>,</div>
+<div class="line"><span class="lineno">  991</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aab68f6adb9ab9fbdcb02b1561939f623">effective_cell_to_forget_scale_b</a>,</div>
+<div class="line"><span class="lineno">  992</span>          cell_to_output_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  993</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  994</span>            : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(cell_to_output_weights),</div>
+<div class="line"><span class="lineno">  995</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#affdebdc0521280db0be1bec0434c04e4">effective_cell_to_output_scale_a</a>,</div>
+<div class="line"><span class="lineno">  996</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a760916e38abee7495fa35d198ba96008">effective_cell_to_output_scale_b</a>,</div>
+<div class="line"><span class="lineno">  997</span>          projection_weights == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  998</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno">  999</span>            : luci_interpreter::kernels::getTensorData&lt;int8_t&gt;(projection_weights),</div>
+<div class="line"><span class="lineno"> 1000</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a27867e3ab1cbefb506f3d384587b5a32">effective_proj_scale_a</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a78b06d907d35a460555947d9ce6b6192">effective_proj_scale_b</a>,</div>
+<div class="line"><span class="lineno"> 1001</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a9179415a87f49b1efd429c501c20432c">hidden_zp</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#abb27a971ebf03b639b8c9206fdaa392f">effective_hidden_scale_a</a>,</div>
+<div class="line"><span class="lineno"> 1002</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a3fed6619c9e6f648f17f00aa5af6aacd">effective_hidden_scale_b</a>,</div>
+<div class="line"><span class="lineno"> 1003</span>          input_layer_norm_coefficients == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1004</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1005</span>            : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(input_layer_norm_coefficients),</div>
+<div class="line"><span class="lineno"> 1006</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ac0c85d53bd0a78802d42a9493616fa9e">layer_norm_input_scale_a</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#afde0dc24fcf4a78b859be82f28632b61">layer_norm_input_scale_b</a>,</div>
+<div class="line"><span class="lineno"> 1007</span>          forget_layer_norm_coefficients == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1008</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1009</span>            : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(forget_layer_norm_coefficients),</div>
+<div class="line"><span class="lineno"> 1010</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a4f17d869e9a7e018549d323949d507e8">layer_norm_forget_scale_a</a>,</div>
+<div class="line"><span class="lineno"> 1011</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aff505a21fe1205ce8de8d6349274d1be">layer_norm_forget_scale_b</a>,</div>
+<div class="line"><span class="lineno"> 1012</span>          cell_layer_norm_coefficients == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1013</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1014</span>            : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(cell_layer_norm_coefficients),</div>
+<div class="line"><span class="lineno"> 1015</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aa121ea209ac56e9b152ea2b7a8818715">layer_norm_cell_scale_a</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a63778507ff2e28c090b2937fba31cbf2">layer_norm_cell_scale_b</a>,</div>
+<div class="line"><span class="lineno"> 1016</span>          output_layer_norm_coefficients == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1017</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1018</span>            : luci_interpreter::kernels::getTensorData&lt;int16_t&gt;(output_layer_norm_coefficients),</div>
+<div class="line"><span class="lineno"> 1019</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a05119ca8a00dfb53b66ca3cc187c5b05">layer_norm_output_scale_a</a>,</div>
+<div class="line"><span class="lineno"> 1020</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ac3690c9c36794675982ba9ec3607f8b7">layer_norm_output_scale_b</a>,</div>
+<div class="line"><span class="lineno"> 1021</span>          input_gate_bias == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1022</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1023</span>            : luci_interpreter::kernels::getTensorData&lt;int32_t&gt;(input_gate_bias),</div>
+<div class="line"><span class="lineno"> 1024</span>          forget_gate_bias == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1025</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1026</span>            : luci_interpreter::kernels::getTensorData&lt;int32_t&gt;(forget_gate_bias),</div>
+<div class="line"><span class="lineno"> 1027</span>          cell_gate_bias == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1028</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1029</span>            : luci_interpreter::kernels::getTensorData&lt;int32_t&gt;(cell_gate_bias),</div>
+<div class="line"><span class="lineno"> 1030</span>          output_gate_bias == <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1031</span>            ? <span class="keyword">nullptr</span></div>
+<div class="line"><span class="lineno"> 1032</span>            : luci_interpreter::kernels::getTensorData&lt;int32_t&gt;(output_gate_bias),</div>
+<div class="line"><span class="lineno"> 1033</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a8462a1a6cced18ac3a6b82306bfcc780">quantized_cell_clip</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ac8ddd6f032f01eaefa39a8a1259e900d">quantized_proj_clip</a>,</div>
+<div class="line"><span class="lineno"> 1034</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ab7664e69aed93448fcc3bae80cff7b57">cell_scale</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#af9a05c5052c25714265807ee320bc966">input_variance_guard</a>,</div>
+<div class="line"><span class="lineno"> 1035</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ad4ee84a5a78c2c9dfe7fabe78b9388d1">forget_variance_guard</a>, integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ae922b35a1ae080073fce915fb42eb4c7">cell_variance_guard</a>,</div>
+<div class="line"><span class="lineno"> 1036</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a34cb17f71c767ce6ad0b60daeec89c18">output_variance_guard</a>,</div>
+<div class="line"><span class="lineno"> 1037</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a5230bd10273c2df881d2992ca89d764d">input_to_forget_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno"> 1038</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a08150d9662d4b9e4471a0fb28298a5c2">recurrent_to_forget_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno"> 1039</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#add6e3338ffe810eff38750897882d35c">input_to_cell_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno"> 1040</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#af8e50735cb0b964413f1c273220131d6">recurrent_to_cell_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno"> 1041</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a66f2874ced3aa8934bf0ee93ae61cec0">input_to_output_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno"> 1042</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a7a79444954718b6ec2b01bb61afcd40b">recurrent_to_output_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno"> 1043</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a3a42233043f3d11e76ff7e5a48b98609">input_to_input_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno"> 1044</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a88d966314f5bce1f3dab6a948436f409">recurrent_to_input_effective_bias</a>.data(),</div>
+<div class="line"><span class="lineno"> 1045</span>          integer_lstm_param.<a class="code hl_variable" href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a72134384372348fba20502cd12af5fe9">projection_effective_bias</a>.data(), <span class="comment">/*n_batch=*/</span>1, n_cell, n_input,</div>
+<div class="line"><span class="lineno"> 1046</span>          n_output, output_state_ptr, output_state_zp, cell_state_ptr, output_ptr, scratch0,</div>
+<div class="line"><span class="lineno"> 1047</span>          scratch1, scratch2, scratch3, scratch4, scratch5);</div>
+<div class="line"><span class="lineno"> 1048</span>      }</div>
+<div class="line"><span class="lineno"> 1049</span>    }</div>
+<div class="line"><span class="lineno"> 1050</span>  }</div>
+<div class="line"><span class="lineno"> 1051</span>}</div>
+<div class="ttc" id="aclassluci__interpreter_1_1_shape_html_a83aee8788dd50f2ea66c48697c7c0a34"><div class="ttname"><a href="classluci__interpreter_1_1_shape.html#a83aee8788dd50f2ea66c48697c7c0a34">luci_interpreter::Shape::dim</a></div><div class="ttdeci">int32_t dim(int i) const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00041">Tensor.h:41</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1_tensor_html_a5ea62328ce6d801a3aef30b903b95d69"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html#a5ea62328ce6d801a3aef30b903b95d69">luci_interpreter::Tensor::shape</a></div><div class="ttdeci">const Shape &amp; shape() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00096">Tensor.h:96</a></div></div>
+<div class="ttc" id="acompiler_2luci-interpreter_2src_2kernels_2_utils_8h_html_a231f5fa1ff2a3f19222b42cc9bbd1f2d"><div class="ttname"><a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a></div><div class="ttdeci">#define LUCI_INTERPRETER_CHECK(cond)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">Utils.h:36</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacejpeg2hdf5_html_a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1"><div class="ttname"><a href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">jpeg2hdf5.b</a></div><div class="ttdeci">b</div><div class="ttdef"><b>Definition:</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a05119ca8a00dfb53b66ca3cc187c5b05"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a05119ca8a00dfb53b66ca3cc187c5b05">luci_interpreter::IntegerLSTMParams::layer_norm_output_scale_a</a></div><div class="ttdeci">int32_t layer_norm_output_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00283">KernelParams.h:283</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a08150d9662d4b9e4471a0fb28298a5c2"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a08150d9662d4b9e4471a0fb28298a5c2">luci_interpreter::IntegerLSTMParams::recurrent_to_forget_effective_bias</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; recurrent_to_forget_effective_bias</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00294">KernelParams.h:294</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a0f2e283966be688baf8353cb83d6cabe"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a0f2e283966be688baf8353cb83d6cabe">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_forget_scale_b</a></div><div class="ttdeci">int32_t effective_recurrent_to_forget_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00248">KernelParams.h:248</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a17aa2b0f550808acc80edf483d9aefc0"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a17aa2b0f550808acc80edf483d9aefc0">luci_interpreter::IntegerLSTMParams::effective_input_to_cell_scale_a</a></div><div class="ttdeci">int32_t effective_input_to_cell_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00253">KernelParams.h:253</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a1815b45d4e9979eaf81cb89f299c8f79"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a1815b45d4e9979eaf81cb89f299c8f79">luci_interpreter::IntegerLSTMParams::effective_input_to_input_scale_a</a></div><div class="ttdeci">int32_t effective_input_to_input_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00235">KernelParams.h:235</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a1ef00ac5637652bc42302b668595c14f"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a1ef00ac5637652bc42302b668595c14f">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_output_scale_a</a></div><div class="ttdeci">int32_t effective_recurrent_to_output_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00262">KernelParams.h:262</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a27867e3ab1cbefb506f3d384587b5a32"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a27867e3ab1cbefb506f3d384587b5a32">luci_interpreter::IntegerLSTMParams::effective_proj_scale_a</a></div><div class="ttdeci">int32_t effective_proj_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00268">KernelParams.h:268</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a34cb17f71c767ce6ad0b60daeec89c18"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a34cb17f71c767ce6ad0b60daeec89c18">luci_interpreter::IntegerLSTMParams::output_variance_guard</a></div><div class="ttdeci">int32_t output_variance_guard</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00291">KernelParams.h:291</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a38de4e598127e2fb764fce6a21c2fc9e"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a38de4e598127e2fb764fce6a21c2fc9e">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_input_scale_a</a></div><div class="ttdeci">int32_t effective_recurrent_to_input_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00238">KernelParams.h:238</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a397af438d6a1e7051cd78da4dbb743ba"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a397af438d6a1e7051cd78da4dbb743ba">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_output_scale_b</a></div><div class="ttdeci">int32_t effective_recurrent_to_output_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00263">KernelParams.h:263</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a3a42233043f3d11e76ff7e5a48b98609"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a3a42233043f3d11e76ff7e5a48b98609">luci_interpreter::IntegerLSTMParams::input_to_input_effective_bias</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; input_to_input_effective_bias</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00299">KernelParams.h:299</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a3fed6619c9e6f648f17f00aa5af6aacd"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a3fed6619c9e6f648f17f00aa5af6aacd">luci_interpreter::IntegerLSTMParams::effective_hidden_scale_b</a></div><div class="ttdeci">int32_t effective_hidden_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00272">KernelParams.h:272</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a436a706c17cf37479593607220ff0aab"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a436a706c17cf37479593607220ff0aab">luci_interpreter::IntegerLSTMParams::effective_input_to_output_scale_a</a></div><div class="ttdeci">int32_t effective_input_to_output_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00259">KernelParams.h:259</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a4f17d869e9a7e018549d323949d507e8"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a4f17d869e9a7e018549d323949d507e8">luci_interpreter::IntegerLSTMParams::layer_norm_forget_scale_a</a></div><div class="ttdeci">int32_t layer_norm_forget_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00277">KernelParams.h:277</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a5230bd10273c2df881d2992ca89d764d"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a5230bd10273c2df881d2992ca89d764d">luci_interpreter::IntegerLSTMParams::input_to_forget_effective_bias</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; input_to_forget_effective_bias</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00293">KernelParams.h:293</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a63778507ff2e28c090b2937fba31cbf2"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a63778507ff2e28c090b2937fba31cbf2">luci_interpreter::IntegerLSTMParams::layer_norm_cell_scale_b</a></div><div class="ttdeci">int32_t layer_norm_cell_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00281">KernelParams.h:281</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a66f2874ced3aa8934bf0ee93ae61cec0"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a66f2874ced3aa8934bf0ee93ae61cec0">luci_interpreter::IntegerLSTMParams::input_to_output_effective_bias</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; input_to_output_effective_bias</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00297">KernelParams.h:297</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a6e524defb86176d1c87074f90d30b6fc"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a6e524defb86176d1c87074f90d30b6fc">luci_interpreter::IntegerLSTMParams::effective_cell_to_forget_scale_a</a></div><div class="ttdeci">int32_t effective_cell_to_forget_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00250">KernelParams.h:250</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a72134384372348fba20502cd12af5fe9"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a72134384372348fba20502cd12af5fe9">luci_interpreter::IntegerLSTMParams::projection_effective_bias</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; projection_effective_bias</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00301">KernelParams.h:301</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a7429f0edf41d6c2ffce4987830d31235"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a7429f0edf41d6c2ffce4987830d31235">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_cell_scale_b</a></div><div class="ttdeci">int32_t effective_recurrent_to_cell_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00257">KernelParams.h:257</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a760916e38abee7495fa35d198ba96008"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a760916e38abee7495fa35d198ba96008">luci_interpreter::IntegerLSTMParams::effective_cell_to_output_scale_b</a></div><div class="ttdeci">int32_t effective_cell_to_output_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00266">KernelParams.h:266</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a786a7d187a322aab6e8d07bfb157c834"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a786a7d187a322aab6e8d07bfb157c834">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_forget_scale_a</a></div><div class="ttdeci">int32_t effective_recurrent_to_forget_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00247">KernelParams.h:247</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a78b06d907d35a460555947d9ce6b6192"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a78b06d907d35a460555947d9ce6b6192">luci_interpreter::IntegerLSTMParams::effective_proj_scale_b</a></div><div class="ttdeci">int32_t effective_proj_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00269">KernelParams.h:269</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a7a79444954718b6ec2b01bb61afcd40b"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a7a79444954718b6ec2b01bb61afcd40b">luci_interpreter::IntegerLSTMParams::recurrent_to_output_effective_bias</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; recurrent_to_output_effective_bias</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00298">KernelParams.h:298</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a8462a1a6cced18ac3a6b82306bfcc780"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a8462a1a6cced18ac3a6b82306bfcc780">luci_interpreter::IntegerLSTMParams::quantized_cell_clip</a></div><div class="ttdeci">int16_t quantized_cell_clip</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00231">KernelParams.h:231</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a88ce1ec27fc97e74415f066b281bcb71"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a88ce1ec27fc97e74415f066b281bcb71">luci_interpreter::IntegerLSTMParams::effective_input_to_cell_scale_b</a></div><div class="ttdeci">int32_t effective_input_to_cell_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00254">KernelParams.h:254</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a88d966314f5bce1f3dab6a948436f409"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a88d966314f5bce1f3dab6a948436f409">luci_interpreter::IntegerLSTMParams::recurrent_to_input_effective_bias</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; recurrent_to_input_effective_bias</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00300">KernelParams.h:300</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a8f050cf3537363681b3aff86395f7813"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a8f050cf3537363681b3aff86395f7813">luci_interpreter::IntegerLSTMParams::effective_input_to_output_scale_b</a></div><div class="ttdeci">int32_t effective_input_to_output_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00260">KernelParams.h:260</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a9179415a87f49b1efd429c501c20432c"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a9179415a87f49b1efd429c501c20432c">luci_interpreter::IntegerLSTMParams::hidden_zp</a></div><div class="ttdeci">int32_t hidden_zp</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00286">KernelParams.h:286</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_a9686553df691e2b1b8c716615f13753e"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#a9686553df691e2b1b8c716615f13753e">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_input_scale_b</a></div><div class="ttdeci">int32_t effective_recurrent_to_input_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00239">KernelParams.h:239</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_aa121ea209ac56e9b152ea2b7a8818715"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aa121ea209ac56e9b152ea2b7a8818715">luci_interpreter::IntegerLSTMParams::layer_norm_cell_scale_a</a></div><div class="ttdeci">int32_t layer_norm_cell_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00280">KernelParams.h:280</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_aab48dc57abe245d257c35cc1c6ad7354"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aab48dc57abe245d257c35cc1c6ad7354">luci_interpreter::IntegerLSTMParams::effective_input_to_input_scale_b</a></div><div class="ttdeci">int32_t effective_input_to_input_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00236">KernelParams.h:236</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_aab68f6adb9ab9fbdcb02b1561939f623"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aab68f6adb9ab9fbdcb02b1561939f623">luci_interpreter::IntegerLSTMParams::effective_cell_to_forget_scale_b</a></div><div class="ttdeci">int32_t effective_cell_to_forget_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00251">KernelParams.h:251</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_aacc97958d62163e8f69f44703bd2b411"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aacc97958d62163e8f69f44703bd2b411">luci_interpreter::IntegerLSTMParams::effective_cell_to_input_scale_b</a></div><div class="ttdeci">int32_t effective_cell_to_input_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00242">KernelParams.h:242</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_aad3a135d4309854e3ca3ffcf375aa07a"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aad3a135d4309854e3ca3ffcf375aa07a">luci_interpreter::IntegerLSTMParams::effective_input_to_forget_scale_a</a></div><div class="ttdeci">int32_t effective_input_to_forget_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00244">KernelParams.h:244</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_ab7664e69aed93448fcc3bae80cff7b57"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ab7664e69aed93448fcc3bae80cff7b57">luci_interpreter::IntegerLSTMParams::cell_scale</a></div><div class="ttdeci">int cell_scale</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00233">KernelParams.h:233</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_abb27a971ebf03b639b8c9206fdaa392f"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#abb27a971ebf03b639b8c9206fdaa392f">luci_interpreter::IntegerLSTMParams::effective_hidden_scale_a</a></div><div class="ttdeci">int32_t effective_hidden_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00271">KernelParams.h:271</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_abe40c57692043111c35301789a9218e6"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#abe40c57692043111c35301789a9218e6">luci_interpreter::IntegerLSTMParams::effective_cell_to_input_scale_a</a></div><div class="ttdeci">int32_t effective_cell_to_input_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00241">KernelParams.h:241</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_ac0c85d53bd0a78802d42a9493616fa9e"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ac0c85d53bd0a78802d42a9493616fa9e">luci_interpreter::IntegerLSTMParams::layer_norm_input_scale_a</a></div><div class="ttdeci">int32_t layer_norm_input_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00274">KernelParams.h:274</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_ac3690c9c36794675982ba9ec3607f8b7"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ac3690c9c36794675982ba9ec3607f8b7">luci_interpreter::IntegerLSTMParams::layer_norm_output_scale_b</a></div><div class="ttdeci">int32_t layer_norm_output_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00284">KernelParams.h:284</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_ac8ddd6f032f01eaefa39a8a1259e900d"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ac8ddd6f032f01eaefa39a8a1259e900d">luci_interpreter::IntegerLSTMParams::quantized_proj_clip</a></div><div class="ttdeci">int8_t quantized_proj_clip</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00232">KernelParams.h:232</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_ad4ee84a5a78c2c9dfe7fabe78b9388d1"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ad4ee84a5a78c2c9dfe7fabe78b9388d1">luci_interpreter::IntegerLSTMParams::forget_variance_guard</a></div><div class="ttdeci">int32_t forget_variance_guard</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00289">KernelParams.h:289</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_adc38a56e44f8a3e6550bc80bfaca363e"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#adc38a56e44f8a3e6550bc80bfaca363e">luci_interpreter::IntegerLSTMParams::effective_input_to_forget_scale_b</a></div><div class="ttdeci">int32_t effective_input_to_forget_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00245">KernelParams.h:245</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_add6e3338ffe810eff38750897882d35c"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#add6e3338ffe810eff38750897882d35c">luci_interpreter::IntegerLSTMParams::input_to_cell_effective_bias</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; input_to_cell_effective_bias</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00295">KernelParams.h:295</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_ae8b58fbab6226ddb2b3d5b972ca47a3d"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ae8b58fbab6226ddb2b3d5b972ca47a3d">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_cell_scale_a</a></div><div class="ttdeci">int32_t effective_recurrent_to_cell_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00256">KernelParams.h:256</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_ae922b35a1ae080073fce915fb42eb4c7"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#ae922b35a1ae080073fce915fb42eb4c7">luci_interpreter::IntegerLSTMParams::cell_variance_guard</a></div><div class="ttdeci">int32_t cell_variance_guard</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00290">KernelParams.h:290</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_af8e50735cb0b964413f1c273220131d6"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#af8e50735cb0b964413f1c273220131d6">luci_interpreter::IntegerLSTMParams::recurrent_to_cell_effective_bias</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; recurrent_to_cell_effective_bias</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00296">KernelParams.h:296</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_af9a05c5052c25714265807ee320bc966"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#af9a05c5052c25714265807ee320bc966">luci_interpreter::IntegerLSTMParams::input_variance_guard</a></div><div class="ttdeci">int32_t input_variance_guard</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00288">KernelParams.h:288</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_afde0dc24fcf4a78b859be82f28632b61"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#afde0dc24fcf4a78b859be82f28632b61">luci_interpreter::IntegerLSTMParams::layer_norm_input_scale_b</a></div><div class="ttdeci">int32_t layer_norm_input_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00275">KernelParams.h:275</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_aff505a21fe1205ce8de8d6349274d1be"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#aff505a21fe1205ce8de8d6349274d1be">luci_interpreter::IntegerLSTMParams::layer_norm_forget_scale_b</a></div><div class="ttdeci">int32_t layer_norm_forget_scale_b</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00278">KernelParams.h:278</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_integer_l_s_t_m_params_html_affdebdc0521280db0be1bec0434c04e4"><div class="ttname"><a href="structluci__interpreter_1_1_integer_l_s_t_m_params.html#affdebdc0521280db0be1bec0434c04e4">luci_interpreter::IntegerLSTMParams::effective_cell_to_output_scale_a</a></div><div class="ttdeci">int32_t effective_cell_to_output_scale_a</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00265">KernelParams.h:265</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00233">luci_interpreter::IntegerLSTMParams::cell_scale</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00290">luci_interpreter::IntegerLSTMParams::cell_variance_guard</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00041">luci_interpreter::Shape::dim()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00250">luci_interpreter::IntegerLSTMParams::effective_cell_to_forget_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00251">luci_interpreter::IntegerLSTMParams::effective_cell_to_forget_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00241">luci_interpreter::IntegerLSTMParams::effective_cell_to_input_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00242">luci_interpreter::IntegerLSTMParams::effective_cell_to_input_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00265">luci_interpreter::IntegerLSTMParams::effective_cell_to_output_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00266">luci_interpreter::IntegerLSTMParams::effective_cell_to_output_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00271">luci_interpreter::IntegerLSTMParams::effective_hidden_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00272">luci_interpreter::IntegerLSTMParams::effective_hidden_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00253">luci_interpreter::IntegerLSTMParams::effective_input_to_cell_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00254">luci_interpreter::IntegerLSTMParams::effective_input_to_cell_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00244">luci_interpreter::IntegerLSTMParams::effective_input_to_forget_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00245">luci_interpreter::IntegerLSTMParams::effective_input_to_forget_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00235">luci_interpreter::IntegerLSTMParams::effective_input_to_input_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00236">luci_interpreter::IntegerLSTMParams::effective_input_to_input_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00259">luci_interpreter::IntegerLSTMParams::effective_input_to_output_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00260">luci_interpreter::IntegerLSTMParams::effective_input_to_output_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00268">luci_interpreter::IntegerLSTMParams::effective_proj_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00269">luci_interpreter::IntegerLSTMParams::effective_proj_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00256">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_cell_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00257">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_cell_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00247">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_forget_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00248">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_forget_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00238">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_input_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00239">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_input_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00262">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_output_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00263">luci_interpreter::IntegerLSTMParams::effective_recurrent_to_output_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00289">luci_interpreter::IntegerLSTMParams::forget_variance_guard</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00286">luci_interpreter::IntegerLSTMParams::hidden_zp</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00295">luci_interpreter::IntegerLSTMParams::input_to_cell_effective_bias</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00293">luci_interpreter::IntegerLSTMParams::input_to_forget_effective_bias</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00299">luci_interpreter::IntegerLSTMParams::input_to_input_effective_bias</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00297">luci_interpreter::IntegerLSTMParams::input_to_output_effective_bias</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00288">luci_interpreter::IntegerLSTMParams::input_variance_guard</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00280">luci_interpreter::IntegerLSTMParams::layer_norm_cell_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00281">luci_interpreter::IntegerLSTMParams::layer_norm_cell_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00277">luci_interpreter::IntegerLSTMParams::layer_norm_forget_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00278">luci_interpreter::IntegerLSTMParams::layer_norm_forget_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00274">luci_interpreter::IntegerLSTMParams::layer_norm_input_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00275">luci_interpreter::IntegerLSTMParams::layer_norm_input_scale_b</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00283">luci_interpreter::IntegerLSTMParams::layer_norm_output_scale_a</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00284">luci_interpreter::IntegerLSTMParams::layer_norm_output_scale_b</a>, <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00612">luci_interpreter_pal::lstm::lstm_step_integer_8x8_16()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">LUCI_INTERPRETER_CHECK</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00291">luci_interpreter::IntegerLSTMParams::output_variance_guard</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00301">luci_interpreter::IntegerLSTMParams::projection_effective_bias</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00231">luci_interpreter::IntegerLSTMParams::quantized_cell_clip</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00232">luci_interpreter::IntegerLSTMParams::quantized_proj_clip</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00296">luci_interpreter::IntegerLSTMParams::recurrent_to_cell_effective_bias</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00294">luci_interpreter::IntegerLSTMParams::recurrent_to_forget_effective_bias</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00300">luci_interpreter::IntegerLSTMParams::recurrent_to_input_effective_bias</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_kernel_params_8h_source.html#l00298">luci_interpreter::IntegerLSTMParams::recurrent_to_output_effective_bias</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00096">luci_interpreter::Tensor::shape()</a>.</p>
+
 </div>
 </div>
 <a id="a90a2d5d095d1e99b34df27491a89fdd6" name="a90a2d5d095d1e99b34df27491a89fdd6"></a>

@@ -1465,6 +1465,7 @@ var annotated_dup =
       [ "IBaseRuntimeGraph", "classluci__interpreter_1_1_i_base_runtime_graph.html", "classluci__interpreter_1_1_i_base_runtime_graph" ],
       [ "IMemoryManager", "classluci__interpreter_1_1_i_memory_manager.html", "classluci__interpreter_1_1_i_memory_manager" ],
       [ "InstanceNormParams", "structluci__interpreter_1_1_instance_norm_params.html", "structluci__interpreter_1_1_instance_norm_params" ],
+      [ "IntegerLSTMParams", "structluci__interpreter_1_1_integer_l_s_t_m_params.html", "structluci__interpreter_1_1_integer_l_s_t_m_params" ],
       [ "Interpreter", "classluci__interpreter_1_1_interpreter.html", "classluci__interpreter_1_1_interpreter" ],
       [ "InterpreterConfigure", "classluci__interpreter_1_1_interpreter_configure.html", "classluci__interpreter_1_1_interpreter_configure" ],
       [ "Kernel", "classluci__interpreter_1_1_kernel.html", "classluci__interpreter_1_1_kernel" ],

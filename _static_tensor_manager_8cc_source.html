@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('_static_tensor_manager_8cc_source.html
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>{</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  _nonconst_mgr-&gt;allocate();</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pair : _tensors-&gt;native_tensors())</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : _tensors-&gt;native_tensors())</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  {</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind = pair.first;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">auto</span> tensor = pair.second.get();</div>

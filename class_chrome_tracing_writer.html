@@ -224,7 +224,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  168</span>  <a class="code hl_variable" href="class_event_format_writer.html#a034b381f3d9a3acc8370a17e808b7bf2">_os</a> &lt;&lt; <span class="stringliteral">&quot;{\n&quot;</span>;</div>
 <div class="line"><span class="lineno">  169</span>  <a class="code hl_variable" href="class_event_format_writer.html#a034b381f3d9a3acc8370a17e808b7bf2">_os</a> &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; quote(<span class="stringliteral">&quot;traceEvents&quot;</span>) &lt;&lt; <span class="stringliteral">&quot;: [\n&quot;</span>;</div>
 <div class="line"><span class="lineno">  170</span> </div>
-<div class="line"><span class="lineno">  171</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;recorder : recorders)</div>
+<div class="line"><span class="lineno">  171</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;recorder : recorders)</div>
 <div class="line"><span class="lineno">  172</span>  {</div>
 <div class="line"><span class="lineno">  173</span>    flushOneRecord(*recorder);</div>
 <div class="line"><span class="lineno">  174</span>  }</div>

@@ -300,7 +300,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  103</span>    .operands()</div>
 <div class="line"><span class="lineno">  104</span>    .iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;, ir::Operand &amp;obj) { <a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.releaseData(); });</div>
 <div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;it : fn_map)</div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it : fn_map)</div>
 <div class="line"><span class="lineno">  107</span>  {</div>
 <div class="line"><span class="lineno">  108</span>    <span class="keyword">auto</span> &amp;fn_seq = it.second;</div>
 <div class="line"><span class="lineno">  109</span>    fn_seq-&gt;iterate([&amp;](exec::IFunction &amp;ifunc) { ifunc.prepare(); });</div>

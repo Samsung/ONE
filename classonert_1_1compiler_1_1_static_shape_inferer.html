@@ -325,7 +325,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  196</span>{</div>
 <div class="line"><span class="lineno">  197</span>  <span class="comment">// Allocate StaticShapeInferer per each subgraph</span></div>
 <div class="line"><span class="lineno">  198</span>  std::unordered_map&lt;ir::SubgraphIndex, std::unique_ptr&lt;StaticShapeInferer&gt;&gt; inferers;</div>
-<div class="line"><span class="lineno">  199</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
+<div class="line"><span class="lineno">  199</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
 <div class="line"><span class="lineno">  200</span>  {</div>
 <div class="line"><span class="lineno">  201</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;subg_index = pair.first;</div>
 <div class="line"><span class="lineno">  202</span>    <span class="keyword">auto</span> &amp;lowered_subg = pair.second;</div>
@@ -333,7 +333,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  204</span>  }</div>
 <div class="line"><span class="lineno">  205</span> </div>
 <div class="line"><span class="lineno">  206</span>  <span class="comment">// Append observers in all StaticShapeInferers</span></div>
-<div class="line"><span class="lineno">  207</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
+<div class="line"><span class="lineno">  207</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
 <div class="line"><span class="lineno">  208</span>  {</div>
 <div class="line"><span class="lineno">  209</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;subg_index = pair.first;</div>
 <div class="line"><span class="lineno">  210</span>    <span class="keyword">auto</span> &amp;lowered_subg = pair.second;</div>

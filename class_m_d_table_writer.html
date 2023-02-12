@@ -221,7 +221,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_m_d_table_event_writer_8cc_source.html#l00359">359</a> of file <a class="el" href="_m_d_table_event_writer_8cc_source.html">MDTableEventWriter.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  360</span>{</div>
-<div class="line"><span class="lineno">  361</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;recorder : records)</div>
+<div class="line"><span class="lineno">  361</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;recorder : records)</div>
 <div class="line"><span class="lineno">  362</span>  {</div>
 <div class="line"><span class="lineno">  363</span>    MDTableBuilder(recorder-&gt;duration_events(), recorder-&gt;counter_events()).build().write(<a class="code hl_variable" href="class_event_format_writer.html#a034b381f3d9a3acc8370a17e808b7bf2">_os</a>);</div>
 <div class="line"><span class="lineno">  364</span>  }</div>

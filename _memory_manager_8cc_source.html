@@ -188,7 +188,7 @@ $(document).ready(function(){initNavTree('_memory_manager_8cc_source.html',''); 
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#a154d14afcb92e1280351e89aa0299679">   95</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#a154d14afcb92e1280351e89aa0299679">DynamicMemoryManager::deallocate</a>(<span class="keywordtype">void</span>)</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>{</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;mem_alloc : _mem_alloc_map)</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;mem_alloc : _mem_alloc_map)</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  {</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="comment">// Release memory buffer of mem_alloc</span></div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    mem_alloc.second-&gt;release();</div>

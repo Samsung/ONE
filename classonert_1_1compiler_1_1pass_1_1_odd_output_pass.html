@@ -248,7 +248,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   34</span> </div>
 <div class="line"><span class="lineno">   35</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(OddOutputPass) &lt;&lt; <span class="stringliteral">&quot;Case 1 : An operand which is a model output and a model input&quot;</span></div>
 <div class="line"><span class="lineno">   36</span>                         &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;ind : outputs)</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : outputs)</div>
 <div class="line"><span class="lineno">   38</span>  {</div>
 <div class="line"><span class="lineno">   39</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1compiler_1_1pass_1_1_pass.html#a4dc6ceb0842c58f3caaa1bd16cd4b978">_graph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a126b6c671828dc955ba85505261aad63">getInputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a32c2fa862fb0c0ae333c31f372817bcf">contains</a>(ind))</div>
 <div class="line"><span class="lineno">   40</span>    {</div>
@@ -260,7 +260,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   46</span> </div>
 <div class="line"><span class="lineno">   47</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(OddOutputPass) &lt;&lt; <span class="stringliteral">&quot;Case 2 : Two or more duplicated outputs&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">   48</span>  std::unordered_set&lt;ir::OperandIndex&gt; occurence;</div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;ind : outputs)</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;ind : outputs)</div>
 <div class="line"><span class="lineno">   50</span>  {</div>
 <div class="line"><span class="lineno">   51</span>    <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a> = <a class="code hl_variable" href="classonert_1_1compiler_1_1pass_1_1_pass.html#a4dc6ceb0842c58f3caaa1bd16cd4b978">_graph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a22112007ffac1f6dcfced6eb000639b2">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind);</div>
 <div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (occurence.count(ind) == 0)</div>

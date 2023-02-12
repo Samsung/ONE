@@ -1,3 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classtflimport_1_1_tensor_bags.html" title="Pre&#45;creates coco:Bags for each operands(tensors)" alt="" coords="5,5,149,31"/>
+<area shape="rect" id="node1" href="$classtflimport_1_1_graph_builder_registry.html" title="Class to return graph builder for passed tflite::builtinOperator." alt="" coords="5,5,201,31"/>
 </map>

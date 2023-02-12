@@ -192,7 +192,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00045">45</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;o : _observers)</div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
 <div class="line"><span class="lineno">   49</span>  {</div>
 <div class="line"><span class="lineno">   50</span>    o-&gt;handleJobBegin(executor, subg_ind, op_ind, backend);</div>
 <div class="line"><span class="lineno">   51</span>  }</div>
@@ -242,7 +242,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00054">54</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;o : _observers)</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
 <div class="line"><span class="lineno">   58</span>  {</div>
 <div class="line"><span class="lineno">   59</span>    o-&gt;handleJobEnd(executor, subg_ind, op_ind, backend);</div>
 <div class="line"><span class="lineno">   60</span>  }</div>
@@ -270,7 +270,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00029">29</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;o : _observers)</div>
+<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
 <div class="line"><span class="lineno">   32</span>  {</div>
 <div class="line"><span class="lineno">   33</span>    o-&gt;handleSubgraphBegin(ind);</div>
 <div class="line"><span class="lineno">   34</span>  }</div>
@@ -298,7 +298,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00037">37</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
-<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;o : _observers)</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
 <div class="line"><span class="lineno">   40</span>  {</div>
 <div class="line"><span class="lineno">   41</span>    o-&gt;handleSubgraphEnd(ind);</div>
 <div class="line"><span class="lineno">   42</span>  }</div>

@@ -268,11 +268,11 @@ template&lt;typename T_ITensor , typename T_Tensor , typename T_SubTensor &gt; <
 <div class="fragment"><div class="line"><span class="lineno">  218</span>{</div>
 <div class="line"><span class="lineno">  219</span>  <span class="keyword">auto</span> lifetime_map = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cl__common.html#a8b47b87d413d0d63c33c70d2e21b6e4e">cl_common::createLifetimeMap</a>(_lifetime_seq, _parent_map);</div>
 <div class="line"><span class="lineno">  220</span> </div>
-<div class="line"><span class="lineno">  221</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> : lifetime_map)</div>
+<div class="line"><span class="lineno">  221</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> : lifetime_map)</div>
 <div class="line"><span class="lineno">  222</span>  {</div>
-<div class="line"><span class="lineno">  223</span>    <span class="keyword">auto</span> &amp;use = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.second;</div>
-<div class="line"><span class="lineno">  224</span>    <span class="keyword">auto</span> use_type = use.first;</div>
-<div class="line"><span class="lineno">  225</span>    <span class="keyword">auto</span> use_index = use.second;</div>
+<div class="line"><span class="lineno">  223</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;use = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.second;</div>
+<div class="line"><span class="lineno">  224</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;use_type = use.first;</div>
+<div class="line"><span class="lineno">  225</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;use_index = use.second;</div>
 <div class="line"><span class="lineno">  226</span>    assert(use_index.valid());</div>
 <div class="line"><span class="lineno">  227</span>    <span class="keywordflow">if</span> (use_type == UsesType::FIRST)</div>
 <div class="line"><span class="lineno">  228</span>      _tensor_mgr-&gt;startLifetime(use_index);</div>
@@ -328,7 +328,7 @@ template&lt;typename T_ITensor , typename T_Tensor , typename T_SubTensor &gt; <
 
 <p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00343">343</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  345</span>{</div>
-<div class="line"><span class="lineno">  346</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;cand : seq)</div>
+<div class="line"><span class="lineno">  346</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;cand : seq)</div>
 <div class="line"><span class="lineno">  347</span>  {</div>
 <div class="line"><span class="lineno">  348</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#a8f7a24e6cc3cfaa05f24f57b09584fac">isSubTensorOf</a>(parent, cand))</div>
 <div class="line"><span class="lineno">  349</span>    {</div>

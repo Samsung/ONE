@@ -163,7 +163,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   58</span>  _stop_all = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   59</span>  _cv_job_queue.notify_all();</div>
 <div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;t : _worker_threads)</div>
+<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;t : _worker_threads)</div>
 <div class="line"><span class="lineno">   62</span>  {</div>
 <div class="line"><span class="lineno">   63</span>    t.join();</div>
 <div class="line"><span class="lineno">   64</span>  }</div>

@@ -1,5 +1,6 @@
 var classonert_1_1exec_1_1_executors =
 [
+    [ "EdgeTensor", "classonert_1_1exec_1_1_executors_1_1_edge_tensor.html", "classonert_1_1exec_1_1_executors_1_1_edge_tensor" ],
     [ "Executors", "classonert_1_1exec_1_1_executors.html#ab673717f8ee7a0a0c862199606ce8f34", null ],
     [ "Executors", "classonert_1_1exec_1_1_executors.html#a3a9f75c3a684abb262df125e8ffa0d33", null ],
     [ "Executors", "classonert_1_1exec_1_1_executors.html#acf7428f0969e4750c74ecce839dba35c", null ],

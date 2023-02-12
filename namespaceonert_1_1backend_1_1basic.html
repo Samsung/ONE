@@ -190,42 +190,42 @@ template&lt;typename T_BackendContext &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_backend_context_helpers_8h_source.html#l00188">188</a> of file <a class="el" href="_backend_context_helpers_8h_source.html">BackendContextHelpers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  189</span>{</div>
-<div class="line"><span class="lineno">  190</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;graph = *ctx.graph();</div>
-<div class="line"><span class="lineno">  191</span>  <span class="keyword">auto</span> tensor_builder = ctx.tensor_builder;</div>
-<div class="line"><span class="lineno">  192</span> </div>
-<div class="line"><span class="lineno">  193</span>  <span class="keyword">auto</span> model_io =</div>
-<div class="line"><span class="lineno">  194</span>    (graph.getInputs() + graph.getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;</div>
-<div class="line"><span class="lineno">  195</span>  graph.operands().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;ind, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operand.html">ir::Operand</a> &amp;obj) {</div>
-<div class="line"><span class="lineno">  196</span>    <span class="keywordflow">if</span> (ctx.external_operands().contains(ind))</div>
-<div class="line"><span class="lineno">  197</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  198</span>    <span class="comment">// NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)</span></div>
-<div class="line"><span class="lineno">  199</span>    assert(graph.layout() != ir::Layout::NCHW);</div>
-<div class="line"><span class="lineno">  200</span>    <a class="code hl_class" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),</div>
-<div class="line"><span class="lineno">  201</span>                                 obj.isConstant()};</div>
-<div class="line"><span class="lineno">  202</span>    tensor_builder-&gt;registerTensorInfo(ind, backend_info, ir::Layout::NHWC);</div>
-<div class="line"><span class="lineno">  203</span>  });</div>
-<div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span>  <span class="comment">// TODO Get compiler options from compiler, and use it rather than getting it from Env</span></div>
-<div class="line"><span class="lineno">  206</span>  <span class="keywordflow">if</span> (util::getConfigString(util::config::EXECUTOR) == <span class="stringliteral">&quot;Linear&quot;</span>)</div>
-<div class="line"><span class="lineno">  207</span>  {</div>
-<div class="line"><span class="lineno">  208</span>    basic::planTensors(ctx);</div>
-<div class="line"><span class="lineno">  209</span>  }</div>
-<div class="line"><span class="lineno">  210</span>  <span class="keywordflow">else</span></div>
+<p class="definition">Definition at line <a class="el" href="_backend_context_helpers_8h_source.html#l00192">192</a> of file <a class="el" href="_backend_context_helpers_8h_source.html">BackendContextHelpers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  193</span>{</div>
+<div class="line"><span class="lineno">  194</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;graph = *ctx.graph();</div>
+<div class="line"><span class="lineno">  195</span>  <span class="keyword">auto</span> tensor_builder = ctx.tensor_builder;</div>
+<div class="line"><span class="lineno">  196</span> </div>
+<div class="line"><span class="lineno">  197</span>  <span class="keyword">auto</span> model_io =</div>
+<div class="line"><span class="lineno">  198</span>    (graph.getInputs() + graph.getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;</div>
+<div class="line"><span class="lineno">  199</span>  graph.operands().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;ind, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operand.html">ir::Operand</a> &amp;obj) {</div>
+<div class="line"><span class="lineno">  200</span>    <span class="keywordflow">if</span> (ctx.external_operands().contains(ind))</div>
+<div class="line"><span class="lineno">  201</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  202</span>    <span class="comment">// NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)</span></div>
+<div class="line"><span class="lineno">  203</span>    assert(graph.layout() != ir::Layout::NCHW);</div>
+<div class="line"><span class="lineno">  204</span>    <a class="code hl_class" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),</div>
+<div class="line"><span class="lineno">  205</span>                                 obj.isConstant()};</div>
+<div class="line"><span class="lineno">  206</span>    tensor_builder-&gt;registerTensorInfo(ind, backend_info, ir::Layout::NHWC);</div>
+<div class="line"><span class="lineno">  207</span>  });</div>
+<div class="line"><span class="lineno">  208</span> </div>
+<div class="line"><span class="lineno">  209</span>  <span class="comment">// TODO Get compiler options from compiler, and use it rather than getting it from Env</span></div>
+<div class="line"><span class="lineno">  210</span>  <span class="keywordflow">if</span> (util::getConfigString(util::config::EXECUTOR) == <span class="stringliteral">&quot;Linear&quot;</span>)</div>
 <div class="line"><span class="lineno">  211</span>  {</div>
-<div class="line"><span class="lineno">  212</span>    <span class="comment">// For the executors that does not have fixed linear execution order:</span></div>
-<div class="line"><span class="lineno">  213</span>    <span class="comment">// To make tensors never be deallocated, this is a workaround to use static memory planner</span></div>
-<div class="line"><span class="lineno">  214</span>    graph.operands().iterate([&amp;](<span class="keyword">const</span> ir::OperandIndex &amp;ind, <span class="keyword">const</span> ir::Operand &amp;) {</div>
-<div class="line"><span class="lineno">  215</span>      <span class="keywordflow">if</span> (tensor_builder-&gt;isRegistered(ind))</div>
-<div class="line"><span class="lineno">  216</span>        tensor_builder-&gt;notifyFirstUse(ind);</div>
-<div class="line"><span class="lineno">  217</span>    });</div>
-<div class="line"><span class="lineno">  218</span>  }</div>
-<div class="line"><span class="lineno">  219</span> </div>
-<div class="line"><span class="lineno">  220</span>  tensor_builder-&gt;allocate();</div>
-<div class="line"><span class="lineno">  221</span> </div>
-<div class="line"><span class="lineno">  222</span>  <span class="keywordflow">return</span> ctx.tensor_registry.get();</div>
-<div class="line"><span class="lineno">  223</span>}</div>
+<div class="line"><span class="lineno">  212</span>    basic::planTensors(ctx);</div>
+<div class="line"><span class="lineno">  213</span>  }</div>
+<div class="line"><span class="lineno">  214</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  215</span>  {</div>
+<div class="line"><span class="lineno">  216</span>    <span class="comment">// For the executors that does not have fixed linear execution order:</span></div>
+<div class="line"><span class="lineno">  217</span>    <span class="comment">// To make tensors never be deallocated, this is a workaround to use static memory planner</span></div>
+<div class="line"><span class="lineno">  218</span>    graph.operands().iterate([&amp;](<span class="keyword">const</span> ir::OperandIndex &amp;ind, <span class="keyword">const</span> ir::Operand &amp;) {</div>
+<div class="line"><span class="lineno">  219</span>      <span class="keywordflow">if</span> (tensor_builder-&gt;isRegistered(ind))</div>
+<div class="line"><span class="lineno">  220</span>        tensor_builder-&gt;notifyFirstUse(ind);</div>
+<div class="line"><span class="lineno">  221</span>    });</div>
+<div class="line"><span class="lineno">  222</span>  }</div>
+<div class="line"><span class="lineno">  223</span> </div>
+<div class="line"><span class="lineno">  224</span>  tensor_builder-&gt;allocate();</div>
+<div class="line"><span class="lineno">  225</span> </div>
+<div class="line"><span class="lineno">  226</span>  <span class="keywordflow">return</span> ctx.tensor_registry.get();</div>
+<div class="line"><span class="lineno">  227</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html">onert::ir::Graph</a></div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00043">Graph.h:44</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_html"><div class="ttname"><a href="classonert_1_1ir_1_1_operand.html">onert::ir::Operand</a></div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00035">Operand.h:36</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html">onert::ir::OperandInfo</a></div><div class="ttdoc">Class to save tensor's shape and type.</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00054">OperandInfo.h:55</a></div></div>
@@ -261,27 +261,27 @@ template&lt;typename T_BackendContext &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_backend_context_helpers_8h_source.html#l00225">225</a> of file <a class="el" href="_backend_context_helpers_8h_source.html">BackendContextHelpers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  226</span>{</div>
-<div class="line"><span class="lineno">  227</span>  ctx.<a class="code hl_function" href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">graph</a>()-&gt;<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a22112007ffac1f6dcfced6eb000639b2">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">iterate</a>([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;ind, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operand.html">ir::Operand</a> &amp;operand) {</div>
-<div class="line"><span class="lineno">  228</span>    <span class="keywordflow">if</span> (ctx.<a class="code hl_function" href="classonert_1_1backend_1_1_backend_context.html#af2614248c40a6d65b63893e2d4e6ab34">external_operands</a>().contains(ind) || !operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#adf7f1ce514558b7c27e75ba5457c74d7">isConstant</a>())</div>
-<div class="line"><span class="lineno">  229</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>    <span class="keyword">auto</span> tensor = ctx.<a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a2104ac8b3e1ae28ea2dfbb7ca00e2806">tensor_registry</a>-&gt;getNativeITensor(ind);</div>
-<div class="line"><span class="lineno">  232</span>    assert(tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  233</span> </div>
-<div class="line"><span class="lineno">  234</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(FillOperandData) &lt;&lt; <span class="stringliteral">&quot;Fill data for &quot;</span> &lt;&lt; ind &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  235</span> </div>
-<div class="line"><span class="lineno">  236</span>    <span class="keyword">auto</span> data = operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#af96653c450ff2c67f0db84d995054754">shareData</a>();</div>
-<div class="line"><span class="lineno">  237</span>    assert(data &amp;&amp; data-&gt;base());</div>
-<div class="line"><span class="lineno">  238</span>    <a class="code hl_class" href="classonert_1_1backend_1_1basic_1_1_external_tensor.html">ExternalTensor</a> *ext_tensor = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classonert_1_1backend_1_1basic_1_1_external_tensor.html">ExternalTensor</a> *<span class="keyword">&gt;</span>(tensor);</div>
+<p class="definition">Definition at line <a class="el" href="_backend_context_helpers_8h_source.html#l00229">229</a> of file <a class="el" href="_backend_context_helpers_8h_source.html">BackendContextHelpers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  230</span>{</div>
+<div class="line"><span class="lineno">  231</span>  ctx.<a class="code hl_function" href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">graph</a>()-&gt;<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a22112007ffac1f6dcfced6eb000639b2">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">iterate</a>([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;ind, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operand.html">ir::Operand</a> &amp;operand) {</div>
+<div class="line"><span class="lineno">  232</span>    <span class="keywordflow">if</span> (ctx.<a class="code hl_function" href="classonert_1_1backend_1_1_backend_context.html#af2614248c40a6d65b63893e2d4e6ab34">external_operands</a>().contains(ind) || !operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#adf7f1ce514558b7c27e75ba5457c74d7">isConstant</a>())</div>
+<div class="line"><span class="lineno">  233</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  234</span> </div>
+<div class="line"><span class="lineno">  235</span>    <span class="keyword">auto</span> tensor = ctx.<a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a2104ac8b3e1ae28ea2dfbb7ca00e2806">tensor_registry</a>-&gt;getNativeITensor(ind);</div>
+<div class="line"><span class="lineno">  236</span>    assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  237</span> </div>
+<div class="line"><span class="lineno">  238</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(FillOperandData) &lt;&lt; <span class="stringliteral">&quot;Fill data for &quot;</span> &lt;&lt; ind &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  239</span> </div>
-<div class="line"><span class="lineno">  240</span>    <span class="keywordflow">if</span> (ext_tensor == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  241</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;This tensor is not external tensor&quot;</span>};</div>
-<div class="line"><span class="lineno">  242</span> </div>
-<div class="line"><span class="lineno">  243</span>    ext_tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_external_tensor.html#abff88ff11a8ae2338d04986e8c5a6145">setData</a>(data);</div>
-<div class="line"><span class="lineno">  244</span>  });</div>
-<div class="line"><span class="lineno">  245</span>}</div>
+<div class="line"><span class="lineno">  240</span>    <span class="keyword">auto</span> data = operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#af96653c450ff2c67f0db84d995054754">shareData</a>();</div>
+<div class="line"><span class="lineno">  241</span>    assert(data &amp;&amp; data-&gt;base());</div>
+<div class="line"><span class="lineno">  242</span>    <a class="code hl_class" href="classonert_1_1backend_1_1basic_1_1_external_tensor.html">ExternalTensor</a> *ext_tensor = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classonert_1_1backend_1_1basic_1_1_external_tensor.html">ExternalTensor</a> *<span class="keyword">&gt;</span>(tensor);</div>
+<div class="line"><span class="lineno">  243</span> </div>
+<div class="line"><span class="lineno">  244</span>    <span class="keywordflow">if</span> (ext_tensor == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  245</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;This tensor is not external tensor&quot;</span>};</div>
+<div class="line"><span class="lineno">  246</span> </div>
+<div class="line"><span class="lineno">  247</span>    ext_tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_external_tensor.html#abff88ff11a8ae2338d04986e8c5a6145">setData</a>(data);</div>
+<div class="line"><span class="lineno">  248</span>  });</div>
+<div class="line"><span class="lineno">  249</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_backend_context_html_a2104ac8b3e1ae28ea2dfbb7ca00e2806"><div class="ttname"><a href="classonert_1_1backend_1_1_backend_context.html#a2104ac8b3e1ae28ea2dfbb7ca00e2806">onert::backend::BackendContext::tensor_registry</a></div><div class="ttdeci">std::shared_ptr&lt; ITensorRegistry &gt; tensor_registry</div><div class="ttdef"><b>Definition:</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00079">BackendContext.h:79</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_backend_context_html_aa46736f718462405643dd0e37cca0568"><div class="ttname"><a href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">onert::backend::BackendContext::graph</a></div><div class="ttdeci">const ir::Graph * graph() const</div><div class="ttdef"><b>Definition:</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00066">BackendContext.h:66</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_backend_context_html_af2614248c40a6d65b63893e2d4e6ab34"><div class="ttname"><a href="classonert_1_1backend_1_1_backend_context.html#af2614248c40a6d65b63893e2d4e6ab34">onert::backend::BackendContext::external_operands</a></div><div class="ttdeci">const util::Set&lt; ir::OperandIndex &gt; &amp; external_operands() const</div><div class="ttdef"><b>Definition:</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00067">BackendContext.h:67</a></div></div>
@@ -367,106 +367,110 @@ template&lt;typename T_BackendContext &gt; </div>
 <div class="line"><span class="lineno">   84</span>    tensor_builder-&gt;notifyFirstUse(ind);</div>
 <div class="line"><span class="lineno">   85</span>  }</div>
 <div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pair : def_map)</div>
+<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : def_map)</div>
 <div class="line"><span class="lineno">   88</span>  {</div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">if</span> (pair.second == 0)</div>
-<div class="line"><span class="lineno">   90</span>      tensor_builder-&gt;notifyFirstUse(pair.first);</div>
-<div class="line"><span class="lineno">   91</span>  }</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>  <span class="comment">// This is a workaround to keep the operands over the execution</span></div>
-<div class="line"><span class="lineno">   94</span>  <span class="comment">// (the operands look like they are unused)</span></div>
-<div class="line"><span class="lineno">   95</span>  std::vector&lt;ir::OperandIndex&gt; operands_last_until_end;</div>
-<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pair : uses_map)</div>
-<div class="line"><span class="lineno">   97</span>  {</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">if</span> (pair.second == 0)</div>
-<div class="line"><span class="lineno">   99</span>      operands_last_until_end.push_back(pair.first);</div>
-<div class="line"><span class="lineno">  100</span>  }</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span>  <span class="comment">// At each operation,</span></div>
-<div class="line"><span class="lineno">  103</span>  <span class="comment">// 1. Scan DEF of outputs. If the DEF, allocate it</span></div>
-<div class="line"><span class="lineno">  104</span>  <span class="comment">// 2. Scan DEF of inputs. If variable tensor, allocate it</span></div>
-<div class="line"><span class="lineno">  105</span>  <span class="comment">// 3. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0</span></div>
-<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;op_ind : order)</div>
-<div class="line"><span class="lineno">  107</span>  {</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.operations().at(op_ind);</div>
-<div class="line"><span class="lineno">  109</span>    <span class="keyword">auto</span> op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;</div>
-<div class="line"><span class="lineno">  110</span>    <span class="keyword">auto</span> op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;</div>
-<div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span>    <span class="comment">// Define outputs</span></div>
-<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : op_outputs)</div>
-<div class="line"><span class="lineno">  114</span>    {</div>
-<div class="line"><span class="lineno">  115</span>      <span class="keywordflow">if</span> (ctx.external_operands().contains(ind))</div>
-<div class="line"><span class="lineno">  116</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  117</span>      <span class="keywordflow">if</span> (!tensor_builder-&gt;isRegistered(ind))</div>
-<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  119</span>      assert(def_map.find(ind) != def_map.end());</div>
-<div class="line"><span class="lineno">  120</span>      <span class="keywordflow">if</span> (def_map[ind])</div>
-<div class="line"><span class="lineno">  121</span>      {</div>
-<div class="line"><span class="lineno">  122</span>        def_map[ind] = 0;</div>
-<div class="line"><span class="lineno">  123</span>        tensor_builder-&gt;notifyFirstUse(ind);</div>
-<div class="line"><span class="lineno">  124</span>      }</div>
-<div class="line"><span class="lineno">  125</span>    }</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>    <span class="comment">// Scan variable tensors</span></div>
-<div class="line"><span class="lineno">  128</span>    <span class="comment">// This tensor has features like constant. But OperandInfo and LowerInfo treat them as</span></div>
-<div class="line"><span class="lineno">  129</span>    <span class="comment">// non-constant because of less memory usage by memory planning in here</span></div>
-<div class="line"><span class="lineno">  130</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : op_inputs)</div>
-<div class="line"><span class="lineno">  131</span>    {</div>
-<div class="line"><span class="lineno">  132</span>      <span class="keywordflow">if</span> (ctx.external_operands().contains(ind))</div>
-<div class="line"><span class="lineno">  133</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  134</span>      <span class="keywordflow">if</span> (!tensor_builder-&gt;isRegistered(ind))</div>
-<div class="line"><span class="lineno">  135</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  136</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;operand = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.operands().at(ind);</div>
-<div class="line"><span class="lineno">  137</span>      <span class="keywordflow">if</span> (operand.info().isVariable())</div>
-<div class="line"><span class="lineno">  138</span>      {</div>
-<div class="line"><span class="lineno">  139</span>        <span class="comment">// The variable tensor with buffer is not supported yet</span></div>
-<div class="line"><span class="lineno">  140</span>        assert(operand.data() == <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  141</span>        assert(operand.getUses().size() == 1 &amp;&amp; !operand.getDef().valid());</div>
-<div class="line"><span class="lineno">  142</span>        assert(uses_map[ind] == 1 &amp;&amp; def_map[ind] == 0);</div>
-<div class="line"><span class="lineno">  143</span>        tensor_builder-&gt;notifyFirstUse(ind);</div>
-<div class="line"><span class="lineno">  144</span>      }</div>
-<div class="line"><span class="lineno">  145</span>    }</div>
-<div class="line"><span class="lineno">  146</span> </div>
-<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : op_inputs)</div>
-<div class="line"><span class="lineno">  148</span>    {</div>
-<div class="line"><span class="lineno">  149</span>      <span class="keywordflow">if</span> (ctx.external_operands().contains(ind))</div>
-<div class="line"><span class="lineno">  150</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  151</span>      <span class="keywordflow">if</span> (!tensor_builder-&gt;isRegistered(ind))</div>
-<div class="line"><span class="lineno">  152</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  153</span>      assert(uses_map.find(ind) != uses_map.end());</div>
-<div class="line"><span class="lineno">  154</span>      assert(uses_map[ind] &gt; 0);</div>
-<div class="line"><span class="lineno">  155</span>      uses_map[ind]--;</div>
-<div class="line"><span class="lineno">  156</span>      <span class="keywordflow">if</span> (uses_map[ind] == 0)</div>
-<div class="line"><span class="lineno">  157</span>      {</div>
-<div class="line"><span class="lineno">  158</span>        <span class="comment">// plan for deallocation of static tensornode</span></div>
-<div class="line"><span class="lineno">  159</span>        tensor_builder-&gt;notifyLastUse(ind);</div>
-<div class="line"><span class="lineno">  160</span>      }</div>
-<div class="line"><span class="lineno">  161</span>    }</div>
-<div class="line"><span class="lineno">  162</span>  }</div>
-<div class="line"><span class="lineno">  163</span> </div>
-<div class="line"><span class="lineno">  164</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;ind : operands_last_until_end)</div>
-<div class="line"><span class="lineno">  165</span>  {</div>
-<div class="line"><span class="lineno">  166</span>    tensor_builder-&gt;notifyLastUse(ind);</div>
-<div class="line"><span class="lineno">  167</span>  }</div>
-<div class="line"><span class="lineno">  168</span> </div>
-<div class="line"><span class="lineno">  169</span>  <span class="comment">// Dispose and validate</span></div>
-<div class="line"><span class="lineno">  170</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : constants)</div>
-<div class="line"><span class="lineno">  171</span>  {</div>
-<div class="line"><span class="lineno">  172</span>    --uses_map[ind];</div>
-<div class="line"><span class="lineno">  173</span>    <span class="keywordflow">if</span> (uses_map[ind] == 0) <span class="comment">// To prevent notifyLastUse from being called twice</span></div>
-<div class="line"><span class="lineno">  174</span>    {</div>
-<div class="line"><span class="lineno">  175</span>      tensor_builder-&gt;notifyLastUse(ind);</div>
-<div class="line"><span class="lineno">  176</span>    }</div>
-<div class="line"><span class="lineno">  177</span>  }</div>
-<div class="line"><span class="lineno">  178</span> </div>
-<div class="line"><span class="lineno">  179</span>  assert(</div>
-<div class="line"><span class="lineno">  180</span>    std::all_of(uses_map.begin(), uses_map.end(),</div>
-<div class="line"><span class="lineno">  181</span>                [](std::pair&lt;const ir::OperandIndex, uint32_t&gt; it) { return it.second == 0; }));</div>
+<div class="line"><span class="lineno">   89</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind = pair.first;</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keyword">const</span> <span class="keyword">auto</span> def_count = pair.second;</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">if</span> (def_count == 0)</div>
+<div class="line"><span class="lineno">   92</span>      tensor_builder-&gt;notifyFirstUse(ind);</div>
+<div class="line"><span class="lineno">   93</span>  }</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>  <span class="comment">// This is a workaround to keep the operands over the execution</span></div>
+<div class="line"><span class="lineno">   96</span>  <span class="comment">// (the operands look like they are unused)</span></div>
+<div class="line"><span class="lineno">   97</span>  std::vector&lt;ir::OperandIndex&gt; operands_last_until_end;</div>
+<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : uses_map)</div>
+<div class="line"><span class="lineno">   99</span>  {</div>
+<div class="line"><span class="lineno">  100</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind = pair.first;</div>
+<div class="line"><span class="lineno">  101</span>    <span class="keyword">const</span> <span class="keyword">auto</span> use_count = pair.second;</div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">if</span> (use_count == 0)</div>
+<div class="line"><span class="lineno">  103</span>      operands_last_until_end.push_back(ind);</div>
+<div class="line"><span class="lineno">  104</span>  }</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>  <span class="comment">// At each operation,</span></div>
+<div class="line"><span class="lineno">  107</span>  <span class="comment">// 1. Scan DEF of outputs. If the DEF, allocate it</span></div>
+<div class="line"><span class="lineno">  108</span>  <span class="comment">// 2. Scan DEF of inputs. If variable tensor, allocate it</span></div>
+<div class="line"><span class="lineno">  109</span>  <span class="comment">// 3. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0</span></div>
+<div class="line"><span class="lineno">  110</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;op_ind : order)</div>
+<div class="line"><span class="lineno">  111</span>  {</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.operations().at(op_ind);</div>
+<div class="line"><span class="lineno">  113</span>    <span class="keyword">auto</span> op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;</div>
+<div class="line"><span class="lineno">  114</span>    <span class="keyword">auto</span> op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;</div>
+<div class="line"><span class="lineno">  115</span> </div>
+<div class="line"><span class="lineno">  116</span>    <span class="comment">// Define outputs</span></div>
+<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : op_outputs)</div>
+<div class="line"><span class="lineno">  118</span>    {</div>
+<div class="line"><span class="lineno">  119</span>      <span class="keywordflow">if</span> (ctx.external_operands().contains(ind))</div>
+<div class="line"><span class="lineno">  120</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  121</span>      <span class="keywordflow">if</span> (!tensor_builder-&gt;isRegistered(ind))</div>
+<div class="line"><span class="lineno">  122</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  123</span>      assert(def_map.find(ind) != def_map.end());</div>
+<div class="line"><span class="lineno">  124</span>      <span class="keywordflow">if</span> (def_map[ind])</div>
+<div class="line"><span class="lineno">  125</span>      {</div>
+<div class="line"><span class="lineno">  126</span>        def_map[ind] = 0;</div>
+<div class="line"><span class="lineno">  127</span>        tensor_builder-&gt;notifyFirstUse(ind);</div>
+<div class="line"><span class="lineno">  128</span>      }</div>
+<div class="line"><span class="lineno">  129</span>    }</div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>    <span class="comment">// Scan variable tensors</span></div>
+<div class="line"><span class="lineno">  132</span>    <span class="comment">// This tensor has features like constant. But OperandInfo and LowerInfo treat them as</span></div>
+<div class="line"><span class="lineno">  133</span>    <span class="comment">// non-constant because of less memory usage by memory planning in here</span></div>
+<div class="line"><span class="lineno">  134</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : op_inputs)</div>
+<div class="line"><span class="lineno">  135</span>    {</div>
+<div class="line"><span class="lineno">  136</span>      <span class="keywordflow">if</span> (ctx.external_operands().contains(ind))</div>
+<div class="line"><span class="lineno">  137</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  138</span>      <span class="keywordflow">if</span> (!tensor_builder-&gt;isRegistered(ind))</div>
+<div class="line"><span class="lineno">  139</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  140</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;operand = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.operands().at(ind);</div>
+<div class="line"><span class="lineno">  141</span>      <span class="keywordflow">if</span> (operand.info().isVariable())</div>
+<div class="line"><span class="lineno">  142</span>      {</div>
+<div class="line"><span class="lineno">  143</span>        <span class="comment">// The variable tensor with buffer is not supported yet</span></div>
+<div class="line"><span class="lineno">  144</span>        assert(operand.data() == <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  145</span>        assert(operand.getUses().size() == 1 &amp;&amp; !operand.getDef().valid());</div>
+<div class="line"><span class="lineno">  146</span>        assert(uses_map[ind] == 1 &amp;&amp; def_map[ind] == 0);</div>
+<div class="line"><span class="lineno">  147</span>        tensor_builder-&gt;notifyFirstUse(ind);</div>
+<div class="line"><span class="lineno">  148</span>      }</div>
+<div class="line"><span class="lineno">  149</span>    }</div>
+<div class="line"><span class="lineno">  150</span> </div>
+<div class="line"><span class="lineno">  151</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : op_inputs)</div>
+<div class="line"><span class="lineno">  152</span>    {</div>
+<div class="line"><span class="lineno">  153</span>      <span class="keywordflow">if</span> (ctx.external_operands().contains(ind))</div>
+<div class="line"><span class="lineno">  154</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  155</span>      <span class="keywordflow">if</span> (!tensor_builder-&gt;isRegistered(ind))</div>
+<div class="line"><span class="lineno">  156</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  157</span>      assert(uses_map.find(ind) != uses_map.end());</div>
+<div class="line"><span class="lineno">  158</span>      assert(uses_map[ind] &gt; 0);</div>
+<div class="line"><span class="lineno">  159</span>      uses_map[ind]--;</div>
+<div class="line"><span class="lineno">  160</span>      <span class="keywordflow">if</span> (uses_map[ind] == 0)</div>
+<div class="line"><span class="lineno">  161</span>      {</div>
+<div class="line"><span class="lineno">  162</span>        <span class="comment">// plan for deallocation of static tensornode</span></div>
+<div class="line"><span class="lineno">  163</span>        tensor_builder-&gt;notifyLastUse(ind);</div>
+<div class="line"><span class="lineno">  164</span>      }</div>
+<div class="line"><span class="lineno">  165</span>    }</div>
+<div class="line"><span class="lineno">  166</span>  }</div>
+<div class="line"><span class="lineno">  167</span> </div>
+<div class="line"><span class="lineno">  168</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : operands_last_until_end)</div>
+<div class="line"><span class="lineno">  169</span>  {</div>
+<div class="line"><span class="lineno">  170</span>    tensor_builder-&gt;notifyLastUse(ind);</div>
+<div class="line"><span class="lineno">  171</span>  }</div>
+<div class="line"><span class="lineno">  172</span> </div>
+<div class="line"><span class="lineno">  173</span>  <span class="comment">// Dispose and validate</span></div>
+<div class="line"><span class="lineno">  174</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : constants)</div>
+<div class="line"><span class="lineno">  175</span>  {</div>
+<div class="line"><span class="lineno">  176</span>    --uses_map[ind];</div>
+<div class="line"><span class="lineno">  177</span>    <span class="keywordflow">if</span> (uses_map[ind] == 0) <span class="comment">// To prevent notifyLastUse from being called twice</span></div>
+<div class="line"><span class="lineno">  178</span>    {</div>
+<div class="line"><span class="lineno">  179</span>      tensor_builder-&gt;notifyLastUse(ind);</div>
+<div class="line"><span class="lineno">  180</span>    }</div>
+<div class="line"><span class="lineno">  181</span>  }</div>
 <div class="line"><span class="lineno">  182</span> </div>
 <div class="line"><span class="lineno">  183</span>  assert(</div>
-<div class="line"><span class="lineno">  184</span>    std::all_of(def_map.begin(), def_map.end(),</div>
+<div class="line"><span class="lineno">  184</span>    std::all_of(uses_map.begin(), uses_map.end(),</div>
 <div class="line"><span class="lineno">  185</span>                [](std::pair&lt;const ir::OperandIndex, uint32_t&gt; it) { return it.second == 0; }));</div>
-<div class="line"><span class="lineno">  186</span>}</div>
+<div class="line"><span class="lineno">  186</span> </div>
+<div class="line"><span class="lineno">  187</span>  assert(</div>
+<div class="line"><span class="lineno">  188</span>    std::all_of(def_map.begin(), def_map.end(),</div>
+<div class="line"><span class="lineno">  189</span>                [](std::pair&lt;const ir::OperandIndex, uint32_t&gt; it) { return it.second == 0; }));</div>
+<div class="line"><span class="lineno">  190</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html">onert::ir::OperandIndexSequence</a></div><div class="ttdef"><b>Definition:</b> <a href="_operand_index_sequence_8h_source.html#l00036">OperandIndexSequence.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html_a9e8f537f480cdb2cc219452180ca3036"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html#a9e8f537f480cdb2cc219452180ca3036">onert::ir::OperandIndexSequence::append</a></div><div class="ttdeci">void append(const OperandIndex &amp;index)</div><div class="ttdef"><b>Definition:</b> <a href="_operand_index_sequence_8h_source.html#l00045">OperandIndexSequence.h:45</a></div></div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition:</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
@@ -475,7 +479,7 @@ template&lt;typename T_BackendContext &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00045">onert::ir::OperandIndexSequence::append()</a>, <a class="el" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">onert::ir::DUPLICATED</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>, and <a class="el" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">onert::ir::UNDEFINED</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_backend_context_helpers_8h_source.html#l00188">genTensors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_backend_context_helpers_8h_source.html#l00192">genTensors()</a>.</p>
 
 </div>
 </div>

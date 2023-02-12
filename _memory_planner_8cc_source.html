@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('_memory_planner_8cc_source.html',''); 
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>{</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="comment">// Find the right position for claiming</span></div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  uint32_t next_offset = 0;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;mem_claim : _claim_table)</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;mem_claim : _claim_table)</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  {</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keyword">auto</span> claimed_base_offset = mem_claim.first;</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keyword">auto</span> claimed_size = _mem_plans[mem_claim.second].size;</div>

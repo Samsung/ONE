@@ -122,7 +122,7 @@ $(document).ready(function(){initNavTree('_execution_observee_8cc_source.html','
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_execution_observee.html#a17d0a6ece0fbacaf85642f34b632131c">   29</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_execution_observee.html#a17d0a6ece0fbacaf85642f34b632131c">ExecutionObservee::notifySubgraphBegin</a>(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> ind)</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;o : _observers)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  {</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    o-&gt;handleSubgraphBegin(ind);</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  }</div>
@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('_execution_observee_8cc_source.html','
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_execution_observee.html#a37778579482fd58fef5060970b1e31ec">   37</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_execution_observee.html#a37778579482fd58fef5060970b1e31ec">ExecutionObservee::notifySubgraphEnd</a>(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> ind)</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;o : _observers)</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  {</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    o-&gt;handleSubgraphEnd(ind);</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  }</div>
@@ -139,7 +139,7 @@ $(document).ready(function(){initNavTree('_execution_observee_8cc_source.html','
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_execution_observee.html#a1747078a26f8e51f8e47a5291fdc835c">   45</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_execution_observee.html#a1747078a26f8e51f8e47a5291fdc835c">ExecutionObservee::notifyJobBegin</a>(<a class="code hl_struct" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> *executor, <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> subg_ind,</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                                       <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperationIndex</a> op_ind, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *backend)</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;o : _observers)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  {</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    o-&gt;handleJobBegin(executor, subg_ind, op_ind, backend);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  }</div>
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('_execution_observee_8cc_source.html','
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_execution_observee.html#a1e1d3c9d42db26e22e09536903256c02">   54</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_execution_observee.html#a1e1d3c9d42db26e22e09536903256c02">ExecutionObservee::notifyJobEnd</a>(<a class="code hl_struct" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> *executor, <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> subg_ind,</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                                     <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperationIndex</a> op_ind, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *backend)</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>{</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;o : _observers)</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  {</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    o-&gt;handleJobEnd(executor, subg_ind, op_ind, backend);</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>

@@ -23,5 +23,6 @@ var classonert_1_1ir_1_1_n_n_pkg =
     [ "outputInfo", "classonert_1_1ir_1_1_n_n_pkg.html#a2dc5e2819c5306d511df410f154f8c29", null ],
     [ "outputSize", "classonert_1_1ir_1_1_n_n_pkg.html#ad0d2f97af0adb6374ba55e300a03c309", null ],
     [ "primary_model", "classonert_1_1ir_1_1_n_n_pkg.html#a26715290d61b2707e5006f2afa78fb0c", null ],
-    [ "push", "classonert_1_1ir_1_1_n_n_pkg.html#af3ec069bb925c9c0ddc5116fb380b2e7", null ]
+    [ "push", "classonert_1_1ir_1_1_n_n_pkg.html#af3ec069bb925c9c0ddc5116fb380b2e7", null ],
+    [ "verify", "classonert_1_1ir_1_1_n_n_pkg.html#a38c144d087e7ce6bf73655c1003f0258", null ]
 ];

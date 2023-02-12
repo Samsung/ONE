@@ -392,7 +392,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  279</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
 <div class="line"><span class="lineno">  280</span> </div>
 <div class="line"><span class="lineno">  281</span>  std::vector&lt;const IPortableTensor *&gt; input_tensors;</div>
-<div class="line"><span class="lineno">  282</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;input_idx : node.getInputs())</div>
+<div class="line"><span class="lineno">  282</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;input_idx : node.getInputs())</div>
 <div class="line"><span class="lineno">  283</span>    input_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(input_idx));</div>
 <div class="line"><span class="lineno">  284</span> </div>
 <div class="line"><span class="lineno">  285</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(output_index);</div>
@@ -744,7 +744,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  386</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(ofm_index);</div>
 <div class="line"><span class="lineno">  387</span> </div>
 <div class="line"><span class="lineno">  388</span>  std::vector&lt;const IPortableTensor *&gt; input_tensors;</div>
-<div class="line"><span class="lineno">  389</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;ifm_idx : node.getInputs())</div>
+<div class="line"><span class="lineno">  389</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ifm_idx : node.getInputs())</div>
 <div class="line"><span class="lineno">  390</span>    input_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(ifm_idx));</div>
 <div class="line"><span class="lineno">  391</span> </div>
 <div class="line"><span class="lineno">  392</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::ConcatLayer&gt;();</div>
@@ -864,7 +864,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  643</span>  <span class="keyword">auto</span> fill_op_info = [&amp;](<span class="keyword">const</span> ir::OperandIndexSequence &amp;opSeq,</div>
 <div class="line"><span class="lineno">  644</span>                          std::vector&lt;custom::TypeInfo&gt; &amp;types,</div>
 <div class="line"><span class="lineno">  645</span>                          std::vector&lt;IPortableTensor *&gt; &amp;tensors) {</div>
-<div class="line"><span class="lineno">  646</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;idx : opSeq)</div>
+<div class="line"><span class="lineno">  646</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;idx : opSeq)</div>
 <div class="line"><span class="lineno">  647</span>    {</div>
 <div class="line"><span class="lineno">  648</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;operand = _ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(idx);</div>
 <div class="line"><span class="lineno">  649</span>      <span class="comment">// TODO make sure using `_current_layout` is correct for custom operations</span></div>
@@ -1103,7 +1103,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  626</span> </div>
 <div class="line"><span class="lineno">  627</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(ofm_index);</div>
 <div class="line"><span class="lineno">  628</span>  std::vector&lt;const IPortableTensor *&gt; input_tensors;</div>
-<div class="line"><span class="lineno">  629</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;ifm_idx : node.getInputs())</div>
+<div class="line"><span class="lineno">  629</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ifm_idx : node.getInputs())</div>
 <div class="line"><span class="lineno">  630</span>    input_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(ifm_idx));</div>
 <div class="line"><span class="lineno">  631</span> </div>
 <div class="line"><span class="lineno">  632</span>  <span class="keyword">const</span> <span class="keyword">auto</span> equation = node.param().equation;</div>
@@ -1437,7 +1437,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno"> 1261</span> </div>
 <div class="line"><span class="lineno"> 1262</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(ofm_index);</div>
 <div class="line"><span class="lineno"> 1263</span>  std::vector&lt;const IPortableTensor *&gt; input_tensors;</div>
-<div class="line"><span class="lineno"> 1264</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;ifm_idx : node.getInputs())</div>
+<div class="line"><span class="lineno"> 1264</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ifm_idx : node.getInputs())</div>
 <div class="line"><span class="lineno"> 1265</span>    input_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(ifm_idx));</div>
 <div class="line"><span class="lineno"> 1266</span> </div>
 <div class="line"><span class="lineno"> 1267</span>  <span class="keyword">const</span> <span class="keyword">auto</span> epsilon = node.param().epsilon;</div>
@@ -1997,7 +1997,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  750</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(ofm_index);</div>
 <div class="line"><span class="lineno">  751</span> </div>
 <div class="line"><span class="lineno">  752</span>  std::vector&lt;const IPortableTensor *&gt; input_tensors;</div>
-<div class="line"><span class="lineno">  753</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;ifm_idx : node.getInputs())</div>
+<div class="line"><span class="lineno">  753</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ifm_idx : node.getInputs())</div>
 <div class="line"><span class="lineno">  754</span>    input_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(ifm_idx));</div>
 <div class="line"><span class="lineno">  755</span> </div>
 <div class="line"><span class="lineno">  756</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::PackLayer&gt;();</div>
@@ -2818,7 +2818,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  934</span>  <span class="keyword">auto</span> axis_tensor = _tensor_reg-&gt;getPortableTensor(axis_idx);</div>
 <div class="line"><span class="lineno">  935</span> </div>
 <div class="line"><span class="lineno">  936</span>  std::vector&lt;IPortableTensor *&gt; out_tensors;</div>
-<div class="line"><span class="lineno">  937</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;output_idx : node.getOutputs())</div>
+<div class="line"><span class="lineno">  937</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_idx : node.getOutputs())</div>
 <div class="line"><span class="lineno">  938</span>    out_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(output_idx));</div>
 <div class="line"><span class="lineno">  939</span> </div>
 <div class="line"><span class="lineno">  940</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::SplitLayer&gt;();</div>
@@ -2872,7 +2872,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno"> 1372</span>  <span class="keyword">auto</span> in_split_dim = _tensor_reg-&gt;getPortableTensor(split_dim);</div>
 <div class="line"><span class="lineno"> 1373</span> </div>
 <div class="line"><span class="lineno"> 1374</span>  std::vector&lt;IPortableTensor *&gt; out_tensors;</div>
-<div class="line"><span class="lineno"> 1375</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;output_idx : node.getOutputs())</div>
+<div class="line"><span class="lineno"> 1375</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_idx : node.getOutputs())</div>
 <div class="line"><span class="lineno"> 1376</span>    out_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(output_idx));</div>
 <div class="line"><span class="lineno"> 1377</span> </div>
 <div class="line"><span class="lineno"> 1378</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::SplitVLayer&gt;();</div>
@@ -3213,7 +3213,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  772</span>  <span class="keyword">auto</span> input_tensor = _tensor_reg-&gt;getPortableTensor(input_index);</div>
 <div class="line"><span class="lineno">  773</span> </div>
 <div class="line"><span class="lineno">  774</span>  std::vector&lt;IPortableTensor *&gt; output_tensors;</div>
-<div class="line"><span class="lineno">  775</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;output_idx : node.getOutputs())</div>
+<div class="line"><span class="lineno">  775</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_idx : node.getOutputs())</div>
 <div class="line"><span class="lineno">  776</span>    output_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(output_idx));</div>
 <div class="line"><span class="lineno">  777</span> </div>
 <div class="line"><span class="lineno">  778</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::UnpackLayer&gt;();</div>

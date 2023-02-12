@@ -300,11 +300,11 @@ $(document).ready(function(){initNavTree('_acl_tensor_builder_8h_source.html',''
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>{</div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  <span class="keyword">auto</span> lifetime_map = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cl__common.html#a8b47b87d413d0d63c33c70d2e21b6e4e">cl_common::createLifetimeMap</a>(_lifetime_seq, _parent_map);</div>
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> : lifetime_map)</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> : lifetime_map)</div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  {</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    <span class="keyword">auto</span> &amp;use = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.second;</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keyword">auto</span> use_type = use.first;</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keyword">auto</span> use_index = use.second;</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;use = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.second;</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;use_type = use.first;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;use_index = use.second;</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    assert(use_index.valid());</div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="keywordflow">if</span> (use_type == UsesType::FIRST)</div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>      _tensor_mgr-&gt;startLifetime(use_index);</div>
@@ -337,9 +337,9 @@ $(document).ready(function(){initNavTree('_acl_tensor_builder_8h_source.html',''
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  assert(_tensor_mgr-&gt;nonconstTensors().size() == 0);</div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <span class="comment">// Normal tensors</span></div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> : _tensor_info_map)</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> : _tensor_info_map)</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  {</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    <span class="keyword">auto</span> ind = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.first;</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.first;</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    <span class="keywordflow">if</span> (_parent_map.count(ind) &gt; 0)</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>      <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
@@ -355,9 +355,9 @@ $(document).ready(function(){initNavTree('_acl_tensor_builder_8h_source.html',''
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  assert(_tensor_mgr-&gt;nonconstSubtensors().size() == 0);</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  <span class="comment">// TODO Iterate `_parent_map` instead, once the optimizer bug is fixed</span></div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  <span class="comment">//      `Optimizer` iterates the entire Operations, so there is a bug if iterating _parent_map</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> : _tensor_info_map)</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> : _tensor_info_map)</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  {</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <span class="keyword">auto</span> ind = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.first;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.first;</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <span class="keywordflow">if</span> (_parent_map.count(ind) == 0)</div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>      <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
@@ -425,7 +425,7 @@ $(document).ready(function(){initNavTree('_acl_tensor_builder_8h_source.html',''
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#a3076bc4373ecfc1ece95a55f206e5858">  343</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#a3076bc4373ecfc1ece95a55f206e5858">AclTensorBuilder&lt;T_ITensor, T_Tensor, T_SubTensor&gt;::areSubTensorsOf</a>(</div>
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;parent, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operand_index_sequence.html">ir::OperandIndexSequence</a> &amp;seq)</div>
 <div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>{</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;cand : seq)</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;cand : seq)</div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  {</div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    <span class="keywordflow">if</span> (!isSubTensorOf(parent, cand))</div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    {</div>

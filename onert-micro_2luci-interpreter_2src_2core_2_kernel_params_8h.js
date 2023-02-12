@@ -31,5 +31,6 @@ var onert_micro_2luci_interpreter_2src_2core_2_kernel_params_8h =
     [ "luci_interpreter::SqueezeParams", "structluci__interpreter_1_1_squeeze_params.html", "structluci__interpreter_1_1_squeeze_params" ],
     [ "luci_interpreter::TransposeConvParams", "structluci__interpreter_1_1_transpose_conv_params.html", "structluci__interpreter_1_1_transpose_conv_params" ],
     [ "luci_interpreter::UnidirectionalSequenceLSTMParams", "structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html", "structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params" ],
+    [ "luci_interpreter::IntegerLSTMParams", "structluci__interpreter_1_1_integer_l_s_t_m_params.html", "structluci__interpreter_1_1_integer_l_s_t_m_params" ],
     [ "luci_interpreter::UnpackParams", "structluci__interpreter_1_1_unpack_params.html", "structluci__interpreter_1_1_unpack_params" ]
 ];

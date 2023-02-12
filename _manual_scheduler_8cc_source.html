@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('_manual_scheduler_8cc_source.html','')
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">// 2. Backend per operation type</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  std::unordered_map&lt;ir::OpCode, backend::Backend *&gt; op_type_map;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pair : manual_options.opcode_to_backend)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : manual_options.opcode_to_backend)</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  {</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    op_type_map.emplace(pair.first, <a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">BackendManager::get</a>().<a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">get</a>(pair.second));</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  }</div>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('_manual_scheduler_8cc_source.html','')
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  });</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="comment">// 3. Backend per operation</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pair : manual_options.index_to_backend)</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : manual_options.index_to_backend)</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  {</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;key = pair.first;</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;val = pair.second;</div>

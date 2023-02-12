@@ -187,9 +187,9 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   85</span>{</div>
 <div class="line"><span class="lineno">   86</span>  <span class="keyword">auto</span> lifetime_map = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cl__common.html#a8b47b87d413d0d63c33c70d2e21b6e4e">cl_common::createLifetimeMap</a>(_lifetime_seq, _parent_map);</div>
 <div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> : lifetime_map)</div>
+<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> : lifetime_map)</div>
 <div class="line"><span class="lineno">   89</span>  {</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keyword">auto</span> &amp;use = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.second;</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;use = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.second;</div>
 <div class="line"><span class="lineno">   91</span>    <span class="keyword">auto</span> use_type = use.first;</div>
 <div class="line"><span class="lineno">   92</span>    <span class="keyword">auto</span> use_index = use.second;</div>
 <div class="line"><span class="lineno">   93</span>    assert(use_index.valid());</div>

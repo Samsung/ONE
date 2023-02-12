@@ -606,7 +606,7 @@ $(document).ready(function(){initNavTree('_h_e_scheduler_8cc_source.html',''); i
 <div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>  <span class="comment">// Find free time for data transferring and insert it into backend taskset. This is needed:</span></div>
 <div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>  <span class="comment">//  1. Time for multiple permutations for this node&#39;s input is found correctly</span></div>
 <div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>  <span class="comment">//  2. If backend==cpu, then free time for this node must come after permutations</span></div>
-<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;it : transfer_st_exec_time)</div>
+<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it : transfer_st_exec_time)</div>
 <div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>  {</div>
 <div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>    <span class="keywordflow">if</span> (_is_parallel_exec)</div>
 <div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>    {</div>

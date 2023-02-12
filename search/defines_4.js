@@ -14,5 +14,6 @@ var searchData=
   ['dequantize_5fimpl_11',['DEQUANTIZE_IMPL',['../helpers__asymm_8h.html#ac5fe0200eafe2b88af574a2ed34c3c11',1,'helpers_asymm.h']]],
   ['dequantize_5fstr_12',['DEQUANTIZE_STR',['../helpers__asymm_8h.html#ab98579b6a5e03ada17294034cbe4aa02',1,'helpers_asymm.h']]],
   ['disable_5ffloat_5fequality_5fwarning_13',['DISABLE_FLOAT_EQUALITY_WARNING',['../_random_op_cpu_8h.html#a22907a1b26c4a38796dd9eec7ac20468',1,'RandomOpCpu.h']]],
-  ['double1_14',['double1',['../helpers_8h.html#adc30a7690418156dd429314c58634328',1,'helpers.h']]]
+  ['dispatch_5ftanh_14',['DISPATCH_TANH',['../_p_a_l_unidirectional_sequence_l_s_t_m_8h.html#a740521307802d978b1a8134e3eb4acf9',1,'PALUnidirectionalSequenceLSTM.h']]],
+  ['double1_15',['double1',['../helpers_8h.html#adc30a7690418156dd429314c58634328',1,'helpers.h']]]
 ];

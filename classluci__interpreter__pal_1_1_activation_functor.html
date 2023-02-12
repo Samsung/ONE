@@ -166,20 +166,25 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   41</span>  {</div>
 <div class="line"><span class="lineno">   42</span>    <span class="keywordflow">switch</span> (act_)</div>
 <div class="line"><span class="lineno">   43</span>    {</div>
-<div class="line"><span class="lineno">   44</span>      <span class="keywordflow">case</span> kTfLiteActNone:</div>
+<div class="line"><span class="lineno">   44</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63a611f6492ff91826833d1b9e42f7f9a5e">kTfLiteActNone</a>:</div>
 <div class="line"><span class="lineno">   45</span>        <span class="keywordflow">return</span> a;</div>
-<div class="line"><span class="lineno">   46</span>      <span class="keywordflow">case</span> kTfLiteActRelu:</div>
+<div class="line"><span class="lineno">   46</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63a06a35e36dd2f10a2e82095f663eb7cb7">kTfLiteActRelu</a>:</div>
 <div class="line"><span class="lineno">   47</span>        <span class="keywordflow">return</span> a &lt; 0.f ? 0.f : a;</div>
-<div class="line"><span class="lineno">   48</span>      <span class="keywordflow">case</span> kTfLiteActRelu6:</div>
+<div class="line"><span class="lineno">   48</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63adcc6c589b6ffe8ff89fd701c70b38342">kTfLiteActRelu6</a>:</div>
 <div class="line"><span class="lineno">   49</span>        <span class="keywordflow">return</span> std::max(0.f, std::min(a, 6.f));</div>
-<div class="line"><span class="lineno">   50</span>      <span class="keywordflow">case</span> kTfLiteActTanh:</div>
+<div class="line"><span class="lineno">   50</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63a60bdd9a337a5f1f2866fd65c7d8ffdce">kTfLiteActTanh</a>:</div>
 <div class="line"><span class="lineno">   51</span>        <span class="keywordflow">return</span> std::tanh(a);</div>
-<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">case</span> kTfLiteActSigmoid:</div>
+<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63ab211c831f880a63ebc80994bb0cf2dc2">kTfLiteActSigmoid</a>:</div>
 <div class="line"><span class="lineno">   53</span>        <span class="keywordflow">return</span> 1.0f / (1.0f + std::exp(-a));</div>
 <div class="line"><span class="lineno">   54</span>      <span class="keywordflow">default</span>:</div>
 <div class="line"><span class="lineno">   55</span>        assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Activation functor is not supported&quot;</span>);</div>
 <div class="line"><span class="lineno">   56</span>    }</div>
 <div class="line"><span class="lineno">   57</span>  }</div>
+<div class="ttc" id="anamespaceluci__interpreter__pal_1_1lstm_html_ae73bbfa7d9e0192734d7e01e5c05df63a06a35e36dd2f10a2e82095f663eb7cb7"><div class="ttname"><a href="namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63a06a35e36dd2f10a2e82095f663eb7cb7">luci_interpreter_pal::lstm::kTfLiteActRelu</a></div><div class="ttdeci">@ kTfLiteActRelu</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00034">PALUnidirectionalSequenceLSTM.h:34</a></div></div>
+<div class="ttc" id="anamespaceluci__interpreter__pal_1_1lstm_html_ae73bbfa7d9e0192734d7e01e5c05df63a60bdd9a337a5f1f2866fd65c7d8ffdce"><div class="ttname"><a href="namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63a60bdd9a337a5f1f2866fd65c7d8ffdce">luci_interpreter_pal::lstm::kTfLiteActTanh</a></div><div class="ttdeci">@ kTfLiteActTanh</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00037">PALUnidirectionalSequenceLSTM.h:37</a></div></div>
+<div class="ttc" id="anamespaceluci__interpreter__pal_1_1lstm_html_ae73bbfa7d9e0192734d7e01e5c05df63a611f6492ff91826833d1b9e42f7f9a5e"><div class="ttname"><a href="namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63a611f6492ff91826833d1b9e42f7f9a5e">luci_interpreter_pal::lstm::kTfLiteActNone</a></div><div class="ttdeci">@ kTfLiteActNone</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00033">PALUnidirectionalSequenceLSTM.h:33</a></div></div>
+<div class="ttc" id="anamespaceluci__interpreter__pal_1_1lstm_html_ae73bbfa7d9e0192734d7e01e5c05df63ab211c831f880a63ebc80994bb0cf2dc2"><div class="ttname"><a href="namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63ab211c831f880a63ebc80994bb0cf2dc2">luci_interpreter_pal::lstm::kTfLiteActSigmoid</a></div><div class="ttdeci">@ kTfLiteActSigmoid</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00039">PALUnidirectionalSequenceLSTM.h:39</a></div></div>
+<div class="ttc" id="anamespaceluci__interpreter__pal_1_1lstm_html_ae73bbfa7d9e0192734d7e01e5c05df63adcc6c589b6ffe8ff89fd701c70b38342"><div class="ttname"><a href="namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63adcc6c589b6ffe8ff89fd701c70b38342">luci_interpreter_pal::lstm::kTfLiteActRelu6</a></div><div class="ttdeci">@ kTfLiteActRelu6</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00036">PALUnidirectionalSequenceLSTM.h:36</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

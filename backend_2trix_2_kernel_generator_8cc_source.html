@@ -155,11 +155,11 @@ $(document).ready(function(){initNavTree('backend_2trix_2_kernel_generator_8cc_s
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keyword">using </span><a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_bulk.html">ir::operation::Bulk</a>;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  std::vector&lt;IPortableTensor *&gt; output_tensors;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;ofm_idx : node.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#aad624998d935a5d7702c1a88496ad62c">getOutputs</a>())</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ofm_idx : node.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#aad624998d935a5d7702c1a88496ad62c">getOutputs</a>())</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    output_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(ofm_idx));</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  std::vector&lt;const IPortableTensor *&gt; input_tensors;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;ifm_idx : node.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a9f59a46100157938710e64d40e2f2a88">getInputs</a>())</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ifm_idx : node.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a9f59a46100157938710e64d40e2f2a88">getInputs</a>())</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    input_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(ifm_idx));</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">// parameters</span></div>

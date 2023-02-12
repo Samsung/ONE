@@ -139,7 +139,7 @@ $(document).ready(function(){initNavTree('_parallel_scheduler_8cc_source.html','
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_parallel_scheduler.html#a9657449582b4e44a290490b60988bbdc">   46</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_parallel_scheduler.html#a9657449582b4e44a290490b60988bbdc">ParallelScheduler::finish</a>()</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;itr : _thread_pools)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;itr : _thread_pools)</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  {</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    itr.second-&gt;finish();</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  }</div>

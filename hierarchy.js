@@ -2549,6 +2549,7 @@ var hierarchy =
     [ "nnfw::cker::InstanceNormParams", "structnnfw_1_1cker_1_1_instance_norm_params.html", null ],
     [ "InstrBuilder", "class_instr_builder.html", null ],
     [ "coco::InstrIndex", "classcoco_1_1_instr_index.html", null ],
+    [ "luci_interpreter::IntegerLSTMParams", "structluci__interpreter_1_1_integer_l_s_t_m_params.html", null ],
     [ "luci_interpreter::Interpreter", "classluci__interpreter_1_1_interpreter.html", null ],
     [ "nnc::InterpreterBackend", "classnnc_1_1_interpreter_backend.html", null ],
     [ "luci_interpreter::InterpreterConfigure", "classluci__interpreter_1_1_interpreter_configure.html", null ],
@@ -2575,7 +2576,9 @@ var hierarchy =
         [ "onert::backend::basic::Tensor", "classonert_1_1backend_1_1basic_1_1_tensor.html", [
           [ "onert::backend::basic::ExternalTensor", "classonert_1_1backend_1_1basic_1_1_external_tensor.html", null ]
         ] ],
-        [ "onert::backend::builtin::IOTensor", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html", null ],
+        [ "onert::backend::builtin::IOTensor", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html", [
+          [ "onert::exec::Executors::EdgeTensor", "classonert_1_1exec_1_1_executors_1_1_edge_tensor.html", null ]
+        ] ],
         [ "onert::backend::builtin::UserTensor", "classonert_1_1backend_1_1builtin_1_1_user_tensor.html", null ]
       ] ],
       [ "onert::backend::acl_common::IACLTensor", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html", [

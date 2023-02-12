@@ -99,24 +99,24 @@ $(document).ready(function(){initNavTree('struct_for_each_dimension_3_01from_00_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a6e319b167c2e19b33fef7e6abee507b5"><td class="memTemplParams" colspan="2">template&lt;typename L , typename... Args&gt; </td></tr>
-<tr class="memitem:a6e319b167c2e19b33fef7e6abee507b5"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="struct_for_each_dimension_3_01from_00_01to_00_01typename_01std_1_1enable__if_3_01from_0a_0ato_01_4_1_1type_01_4.html#a6e319b167c2e19b33fef7e6abee507b5">unroll</a> (const <a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">onert::ir::Shape</a> &amp;shape, <a class="el" href="classonert_1_1ir_1_1_coordinates.html">onert::ir::Coordinates</a> &amp;<a class="el" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>, L &amp;&amp;lambda_function, Args &amp;&amp;... args)</td></tr>
-<tr class="separator:a6e319b167c2e19b33fef7e6abee507b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ee6a4906cde7a0f78f22ff3702ab185"><td class="memTemplParams" colspan="2">template&lt;typename L &gt; </td></tr>
+<tr class="memitem:a6ee6a4906cde7a0f78f22ff3702ab185"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="struct_for_each_dimension_3_01from_00_01to_00_01typename_01std_1_1enable__if_3_01from_0a_0ato_01_4_1_1type_01_4.html#a6ee6a4906cde7a0f78f22ff3702ab185">unroll</a> (const <a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">onert::ir::Shape</a> &amp;shape, <a class="el" href="classonert_1_1ir_1_1_coordinates.html">onert::ir::Coordinates</a> &amp;<a class="el" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>, L lambda_function)</td></tr>
+<tr class="separator:a6ee6a4906cde7a0f78f22ff3702ab185"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;size_t from, size_t to&gt;<br />
 struct ForEachDimension&lt; from, to, typename std::enable_if&lt; from==to &gt;::type &gt;</div>
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00050">50</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html">Utils.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00049">49</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html">Utils.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6e319b167c2e19b33fef7e6abee507b5" name="a6e319b167c2e19b33fef7e6abee507b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e319b167c2e19b33fef7e6abee507b5">&#9670;&#160;</a></span>unroll()</h2>
+<a id="a6ee6a4906cde7a0f78f22ff3702ab185" name="a6ee6a4906cde7a0f78f22ff3702ab185"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ee6a4906cde7a0f78f22ff3702ab185">&#9670;&#160;</a></span>unroll()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;size_t from, size_t to&gt; </div>
 <div class="memtemplate">
-template&lt;typename L , typename... Args&gt; </div>
+template&lt;typename L &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -136,14 +136,8 @@ template&lt;typename L , typename... Args&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">L &amp;&amp;&#160;</td>
-          <td class="paramname"><em>lambda_function</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args &amp;&amp;...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
+          <td class="paramtype">L&#160;</td>
+          <td class="paramname"><em>lambda_function</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -158,12 +152,12 @@ template&lt;typename L , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00053">53</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>  {</div>
-<div class="line"><span class="lineno">   56</span>    <a class="code hl_define" href="runtime_2onert_2core_2include_2util_2_utils_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(shape);</div>
-<div class="line"><span class="lineno">   57</span>    assert(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(to) &lt;= shape.rank());</div>
-<div class="line"><span class="lineno">   58</span>    lambda_function(<a class="code hl_variable" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>, std::forward&lt;Args&gt;(args)...);</div>
-<div class="line"><span class="lineno">   59</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00052">52</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>  {</div>
+<div class="line"><span class="lineno">   55</span>    <a class="code hl_define" href="runtime_2onert_2core_2include_2util_2_utils_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(shape);</div>
+<div class="line"><span class="lineno">   56</span>    assert(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(to) &lt;= shape.rank());</div>
+<div class="line"><span class="lineno">   57</span>    lambda_function(<a class="code hl_variable" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>);</div>
+<div class="line"><span class="lineno">   58</span>  }</div>
 <div class="ttc" id="a_detection_post_process_layer_8cc_html_a56ac4a0f8f593e61e643fc044dd3a61a"><div class="ttname"><a href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a></div><div class="ttdeci">Array&lt; CornerBox &gt; coords</div><div class="ttdef"><b>Definition:</b> <a href="_detection_post_process_layer_8cc_source.html#l00054">DetectionPostProcessLayer.cc:54</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2include_2util_2_utils_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="runtime_2onert_2core_2include_2util_2_utils_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00028">Utils.h:28</a></div></div>
 </div><!-- fragment -->
