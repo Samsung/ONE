@@ -283,10 +283,9 @@ void Executors::execute(const IODescription &desc)
     throw std::runtime_error{"Cannot find edge for model input"};
   };
 
-  // Assumption: nnpkg inputs/outputs are not duplicated.
-  // TODO Unify _type_aware_quant_tensors, pkg_input_edge_tensors and pkg_output_edge_tensors into
-  // one
-  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> pkg_io_edge_tensors;
+  // Tensors of nnpkg inputs/outputs for type-aware quantization
+  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> pkg_input_quant_tensors;
+  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> pkg_output_quant_tensors;
 
   // Execute each model
   // NOTE May be better to use vector instead of unordered_map for _executors
@@ -331,13 +330,13 @@ void Executors::execute(const IODescription &desc)
           // TODO Move creating EdgeTensor into the function createTypeAwareQuantLayers
           const auto input_io_desc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
           const auto orig_layout = input_tensor->orig_layout();
-          auto pkg_input_edge_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
-          pkg_input_edge_tensor->allocate_buffer();
-          pkg_io_edge_tensors[input_io_desc] = std::move(pkg_input_edge_tensor);
+          auto pkg_input_quant_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
+          pkg_input_quant_tensor->allocate_buffer();
+          pkg_input_quant_tensors[input_io_desc] = std::move(pkg_input_quant_tensor);
 
           pkg_input_src_tensors.emplace_back(pkgs_inputs[input_pkg_index].get());
-          pkg_input_dst_tensors.emplace_back(pkg_io_edge_tensors[input_io_desc].get());
-          inputs_inter[i] = pkg_io_edge_tensors[input_io_desc].get();
+          pkg_input_dst_tensors.emplace_back(pkg_input_quant_tensors[input_io_desc].get());
+          inputs_inter[i] = pkg_input_quant_tensors[input_io_desc].get();
         }
       }
       else
@@ -395,13 +394,13 @@ void Executors::execute(const IODescription &desc)
           // TODO Move creating EdgeTensor into the function createTypeAwareQuantLayers
           const auto output_io_desc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
           const auto orig_layout = output_tensor->orig_layout();
-          auto pkg_output_edge_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
-          pkg_output_edge_tensor->allocate_buffer();
-          pkg_io_edge_tensors[output_io_desc] = std::move(pkg_output_edge_tensor);
+          auto pkg_output_quant_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
+          pkg_output_quant_tensor->allocate_buffer();
+          pkg_output_quant_tensors[output_io_desc] = std::move(pkg_output_quant_tensor);
 
-          pkg_output_src_tensors.emplace_back(pkg_io_edge_tensors[output_io_desc].get());
+          pkg_output_src_tensors.emplace_back(pkg_output_quant_tensors[output_io_desc].get());
           pkg_output_dst_tensors.emplace_back(pkgs_outputs[output_pkg_index].get());
-          outputs_inter[i] = pkg_io_edge_tensors[output_io_desc].get();
+          outputs_inter[i] = pkg_output_quant_tensors[output_io_desc].get();
         }
       }
       else
@@ -468,10 +467,9 @@ void Executors::execute(const IODescription &desc)
           _edge_tensors[from_iodesc]->decrease_ref();
 
           // Decrease reference count of nnpkg inputs
-          // Assumption: nnpkg inputs/outputs are not duplicated with edges.
-          if (pkg_io_edge_tensors.find(to_iodesc) != pkg_io_edge_tensors.end())
+          if (pkg_input_quant_tensors.find(to_iodesc) != pkg_input_quant_tensors.end())
           {
-            pkg_io_edge_tensors[to_iodesc]->decrease_ref();
+            pkg_input_quant_tensors[to_iodesc]->decrease_ref();
           }
         }
       }
@@ -506,10 +504,9 @@ void Executors::execute(const IODescription &desc)
       }
 
       // Decrease reference count of nnpkg outputs
-      // Assumption: nnpkg inputs/outputs are not duplicated with edges.
-      if (pkg_io_edge_tensors.find(from_iodesc) != pkg_io_edge_tensors.end())
+      if (pkg_output_quant_tensors.find(from_iodesc) != pkg_output_quant_tensors.end())
       {
-        pkg_io_edge_tensors[from_iodesc]->decrease_ref();
+        pkg_output_quant_tensors[from_iodesc]->decrease_ref();
       }
     }
   }
