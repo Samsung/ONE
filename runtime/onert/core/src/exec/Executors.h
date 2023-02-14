@@ -50,7 +50,9 @@ public:
   Executors(void) = delete;
   Executors(std::unique_ptr<ir::ModelEdges> model_edges)
     : _type_aware_quant_layers{}, _type_aware_quant_tensors{}, _edge_tensors{},
-      _is_created_type_quant_layers{false}
+      _is_created_type_quant_layers{false}, _pkg_input_quant_layers{}, _pkg_output_quant_layers{},
+      _pkg_input_quant_tensors{}, _pkg_output_quant_tensors{}, _pkg_input_tensors{},
+      _pkg_output_tensors{}
   {
     _model_edges = std::move(model_edges);
     for (const auto &edge : _model_edges->edges)
@@ -82,6 +84,8 @@ public:
 private:
   void checkSupportedMultimodel() const;
   void createTypeAwareQuantLayers();
+  void CreatePkgIOTensors(const IODescription &desc);
+  void createPkgIOQuantLayers(const IODescription &desc);
   uint16_t modelCount() const;
 
 private:
@@ -118,6 +122,19 @@ private:
   // NOTE The incomplete type 'EdgeTensor' cannot be declared as unique_ptr.
   std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _edge_tensors;
   bool _is_created_type_quant_layers;
+
+  // TODO Replace PermuteLayer with backend::builtin::kernel::PermuteLayer
+  std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<PermuteLayer>>
+    _pkg_input_quant_layers;
+  // TODO Replace PermuteLayer with backend::builtin::kernel::PermuteLayer
+  std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<PermuteLayer>>
+    _pkg_output_quant_layers;
+  // Edge tensors of nnpkg inputs/outputs for type-aware quantization
+  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _pkg_input_quant_tensors;
+  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _pkg_output_quant_tensors;
+  // IOTensors for user buffer
+  std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::IOTensor>> _pkg_input_tensors;
+  std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::IOTensor>> _pkg_output_tensors;
 };
 
 } // namespace exec
