@@ -1,6 +1,6 @@
-if (NOT BUILD_TRIX_LOADER)
+if(NOT BUILD_TRIX_LOADER)
   return()
-endif ()
+endif()
 
 nnfw_find_package(TRIXEngine QUIET 2.5.0)
 if(TRIXEngine_FOUND)

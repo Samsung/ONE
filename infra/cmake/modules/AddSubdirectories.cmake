@@ -1,9 +1,10 @@
 function(list_subdirectories OUTPUT_VARIABLE)
   cmake_parse_arguments(ARG "" "" "EXCLUDES" ${ARGN})
 
-  file(GLOB PROJECT_FILES
-            RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-            "*/CMakeLists.txt")
+  file(
+    GLOB PROJECT_FILES
+    RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    "*/CMakeLists.txt")
 
   foreach(PROJECT_FILE IN ITEMS ${PROJECT_FILES})
     get_filename_component(PROJECT_DIR ${PROJECT_FILE} DIRECTORY)
@@ -13,7 +14,9 @@ function(list_subdirectories OUTPUT_VARIABLE)
     endif(${PROJECT_INDEX} EQUAL -1)
   endforeach(PROJECT_FILE)
 
-  set(${OUTPUT_VARIABLE} ${PROJECT_LIST} PARENT_SCOPE)
+  set(${OUTPUT_VARIABLE}
+      ${PROJECT_LIST}
+      PARENT_SCOPE)
 endfunction(list_subdirectories)
 
 function(add_subdirectories)

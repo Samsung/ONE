@@ -40,10 +40,8 @@ macro(Add PREFIX)
       message(FATAL_ERROR "${TEST_KEY} - Download script is missing")
     endif(NOT EXISTS "${MODEL_DOWNLOAD_SCRIPT}")
 
-    execute_process(
-      COMMAND ${CMAKE_COMMAND} -D OUTPUT_PATH=${MODEL_PB_FILE} -P "${MODEL_DOWNLOAD_SCRIPT}"
-      RESULT_VARIABLE EXITCODE
-    )
+    execute_process(COMMAND ${CMAKE_COMMAND} -D OUTPUT_PATH=${MODEL_PB_FILE} -P "${MODEL_DOWNLOAD_SCRIPT}"
+                    RESULT_VARIABLE EXITCODE)
 
     if(NOT EXITCODE EQUAL 0)
       message(FATAL_ERROR "${TEST_KEY} - Download fails")
@@ -68,8 +66,7 @@ macro(Add PREFIX)
     COMMAND ${CMAKE_COMMAND} -E remove -f ${TEST_CONFIG_FILE}
     COMMAND ${CMAKE_COMMAND} -E echo 'MODEL_PB_PATH="${MODEL_PB_FILE}"' >> ${TEST_CONFIG_FILE}
     COMMAND ${CMAKE_COMMAND} -E echo 'MODEL_INFO_PATH="${MODEL_INFO_FILE}"' >> ${TEST_CONFIG_FILE}
-    COMMENT "Generate ${TEST_KEY} configuration"
-  )
+    COMMENT "Generate ${TEST_KEY} configuration")
 
   list(APPEND KEYS "${TEST_KEY}")
   list(APPEND DEPS "${TEST_CONFIG_FILE}")
@@ -89,21 +86,22 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo 'TF_BACKEND_PATH=\"$<TARGET_FILE:nnkit_tf_backend>\"' >> ${TOOLCHAIN_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'TFLITE_BACKEND_PATH=\"$<TARGET_FILE:nnkit_tflite_backend>\"' >> ${TOOLCHAIN_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'TF2TFLITE_PATH=\"$<TARGET_FILE:tf2tflite>\"' >> ${TOOLCHAIN_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'RANDOMIZE_ACTION_PATH=\"$<TARGET_FILE:nnkit_randomize_action>\"' >> ${TOOLCHAIN_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'HDF5_EXPORT_ACTION_PATH=\"$<TARGET_FILE:nnkit_HDF5_export_action>\"' >> ${TOOLCHAIN_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'HDF5_IMPORT_ACTION_PATH=\"$<TARGET_FILE:nnkit_HDF5_import_action>\"' >> ${TOOLCHAIN_CONFIG}
+  COMMAND ${CMAKE_COMMAND} -E echo 'RANDOMIZE_ACTION_PATH=\"$<TARGET_FILE:nnkit_randomize_action>\"' >>
+          ${TOOLCHAIN_CONFIG}
+  COMMAND ${CMAKE_COMMAND} -E echo 'HDF5_EXPORT_ACTION_PATH=\"$<TARGET_FILE:nnkit_HDF5_export_action>\"' >>
+          ${TOOLCHAIN_CONFIG}
+  COMMAND ${CMAKE_COMMAND} -E echo 'HDF5_IMPORT_ACTION_PATH=\"$<TARGET_FILE:nnkit_HDF5_import_action>\"' >>
+          ${TOOLCHAIN_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'I5DIFF_PATH=\"$<TARGET_FILE:i5diff>\"' >> ${TOOLCHAIN_CONFIG}
-  DEPENDS
-    nnkit-run
-    nnkit_tf_backend
-    nnkit_tflite_backend
-    tf2tflite
-    nnkit_randomize_action
-    nnkit_HDF5_export_action
-    nnkit_HDF5_import_action
-    i5diff
-  COMMENT "Generate toolchin configuration"
-)
+  DEPENDS nnkit-run
+          nnkit_tf_backend
+          nnkit_tflite_backend
+          tf2tflite
+          nnkit_randomize_action
+          nnkit_HDF5_export_action
+          nnkit_HDF5_import_action
+          i5diff
+  COMMENT "Generate toolchin configuration")
 
 list(APPEND DEPS "${TOOLCHAIN_CONFIG}")
 
@@ -117,8 +115,7 @@ add_custom_command(
   OUTPUT ${TEST_RUNNER_SCRIPT}
   COMMAND ${CMAKE_COMMAND} -E copy "${TEST_RUNNER_SOURCE}" "${TEST_RUNNER_SCRIPT}"
   DEPENDS ${TEST_RUNNER_SOURCE}
-  COMMENT "Generate test runner"
-)
+  COMMENT "Generate test runner")
 
 list(APPEND DEPS "${TEST_RUNNER_SCRIPT}")
 
@@ -126,10 +123,4 @@ list(APPEND DEPS "${TEST_RUNNER_SCRIPT}")
 add_custom_target(tf2tflite_value_pb_test_deps ALL DEPENDS ${DEPS})
 
 # NOTE This target is not built by default
-add_test(
-  NAME tf2tflite_value_pb_test
-  COMMAND
-    "${TEST_RUNNER_SCRIPT}"
-    "${TOOLCHAIN_CONFIG}"
-    ${KEYS}
-)
+add_test(NAME tf2tflite_value_pb_test COMMAND "${TEST_RUNNER_SCRIPT}" "${TOOLCHAIN_CONFIG}" ${KEYS})

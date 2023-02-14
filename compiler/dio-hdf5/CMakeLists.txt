@@ -16,8 +16,11 @@ target_link_libraries(dio_hdf5 PUBLIC ${HDF5_CXX_LIBRARIES})
 target_link_libraries(dio_hdf5 PUBLIC loco)
 
 install(TARGETS dio_hdf5 DESTINATION lib)
-install(DIRECTORY include/ DESTINATION include
-        FILES_MATCHING PATTERN "*.h")
+install(
+  DIRECTORY include/
+  DESTINATION include
+  FILES_MATCHING
+  PATTERN "*.h")
 
 if(NOT ENABLE_TEST)
   return()

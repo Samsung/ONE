@@ -24,20 +24,16 @@ if(ONE_UBUNTU_CODENAME_JAMMY)
   set(VIRTUALENV_OVERLAY_TF_2_10_1 "${NNCC_OVERLAY_DIR}/venv_2_10_1")
 endif(ONE_UBUNTU_CODENAME_JAMMY)
 
-add_custom_command(
-  OUTPUT ${VIRTUALENV_OVERLAY_TF_2_8_0}
-  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_2_8_0}
-)
+add_custom_command(OUTPUT ${VIRTUALENV_OVERLAY_TF_2_8_0} COMMAND ${PYTHON_EXECUTABLE} -m venv
+                                                                 ${VIRTUALENV_OVERLAY_TF_2_8_0})
 
 # Create requirements.txt and install required pip packages
 set(REQUIREMENTS_FILE "requirements.txt")
 set(REQUIREMENTS_OVERLAY_PATH_TF_2_8_0 "${VIRTUALENV_OVERLAY_TF_2_8_0}/${REQUIREMENTS_FILE}")
 
 if(ONE_UBUNTU_CODENAME_JAMMY)
-  add_custom_command(
-    OUTPUT ${VIRTUALENV_OVERLAY_TF_2_10_1}
-    COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_2_10_1}
-  )
+  add_custom_command(OUTPUT ${VIRTUALENV_OVERLAY_TF_2_10_1} COMMAND ${PYTHON_EXECUTABLE} -m venv
+                                                                    ${VIRTUALENV_OVERLAY_TF_2_10_1})
   set(REQUIREMENTS_FILE "requirements.txt")
   set(REQUIREMENTS_OVERLAY_PATH_TF_2_10_1 "${VIRTUALENV_OVERLAY_TF_2_10_1}/${REQUIREMENTS_FILE}")
 endif(ONE_UBUNTU_CODENAME_JAMMY)
@@ -48,9 +44,10 @@ if(PYTHON_EXECUTABLE MATCHES python3.8)
 endif()
 
 # NOTE when using behind proxy with self signed certificate, need to set '--trusted-host' options
-set(PIP_OPTION_TRUSTED_HOST )
+set(PIP_OPTION_TRUSTED_HOST)
 if(DEFINED ENV{ONE_PIP_OPTION_TRUST_HOST})
-  set(PIP_OPTION_TRUSTED_HOST --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org)
+  set(PIP_OPTION_TRUSTED_HOST --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host
+                              pypi.org)
 endif()
 
 # NOTE refer https://github.com/protocolbuffers/protobuf/issues/10051
@@ -62,17 +59,14 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==1.12" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
   COMMAND ${CMAKE_COMMAND} -E echo "protobuf==3.20.1" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
   COMMAND ${CMAKE_COMMAND} -E echo "pydot==1.4.2" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_8_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-          ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
-  COMMAND ${VIRTUALENV_OVERLAY_TF_2_8_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-          ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0} --upgrade
-  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_8_0}
-)
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_8_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000 ${PIP_OPTION_TRUSTED_HOST}
+          install --upgrade pip setuptools
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_8_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000 ${PIP_OPTION_TRUSTED_HOST}
+          install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0} --upgrade
+  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_8_0})
 
-add_custom_target(common_artifacts_python_deps ALL
-  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_8_0}
-          ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
-)
+add_custom_target(common_artifacts_python_deps ALL DEPENDS ${VIRTUALENV_OVERLAY_TF_2_8_0}
+                                                           ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0})
 
 if(ONE_UBUNTU_CODENAME_JAMMY)
   add_custom_command(
@@ -86,13 +80,10 @@ if(ONE_UBUNTU_CODENAME_JAMMY)
             ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
     COMMAND ${VIRTUALENV_OVERLAY_TF_2_10_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
             ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_10_1} --upgrade
-    DEPENDS ${VIRTUALENV_OVERLAY_TF_2_10_1}
-  )
+    DEPENDS ${VIRTUALENV_OVERLAY_TF_2_10_1})
 
-  add_custom_target(common_artifacts_python_u22_deps ALL
-    DEPENDS ${VIRTUALENV_OVERLAY_TF_2_10_1}
-            ${REQUIREMENTS_OVERLAY_PATH_TF_2_10_1}
-  )
+  add_custom_target(common_artifacts_python_u22_deps ALL DEPENDS ${VIRTUALENV_OVERLAY_TF_2_10_1}
+                                                                 ${REQUIREMENTS_OVERLAY_PATH_TF_2_10_1})
 endif(ONE_UBUNTU_CODENAME_JAMMY)
 
 #[[ Generate common resources ]]
@@ -129,13 +120,19 @@ set(TEST_QCONFIG_FILENAME "test.qconf.json")
 set(MODEL2NNPKG "${NNAS_PROJECT_SOURCE_DIR}/tools/nnpackage_tool/model2nnpkg/model2nnpkg.py")
 # Get test case list
 unset(RECIPES)
-file(GLOB TFLITE_SUBDIR RELATIVE ${TFLITE_RECIPE_REPO} ${TFLITE_RECIPE_REPO}/*)
+file(
+  GLOB TFLITE_SUBDIR
+  RELATIVE ${TFLITE_RECIPE_REPO}
+  ${TFLITE_RECIPE_REPO}/*)
 foreach(DIR IN ITEMS ${TFLITE_SUBDIR})
   if(IS_DIRECTORY ${TFLITE_RECIPE_REPO}/${DIR})
     list(APPEND RECIPES ${DIR})
   endif()
 endforeach()
-file(GLOB CIRCLE_SUBDIR RELATIVE ${CIRCLE_RECIPE_REPO} ${CIRCLE_RECIPE_REPO}/*)
+file(
+  GLOB CIRCLE_SUBDIR
+  RELATIVE ${CIRCLE_RECIPE_REPO}
+  ${CIRCLE_RECIPE_REPO}/*)
 foreach(DIR IN ITEMS ${CIRCLE_SUBDIR})
   if(IS_DIRECTORY ${CIRCLE_RECIPE_REPO}/${DIR})
     list(APPEND RECIPES ${DIR})
@@ -219,59 +216,59 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   set(CIRCLE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${CIRCLE_FILE}")
 
   # Copy .recipe
-  add_custom_command(OUTPUT ${RECIPE_BINARY_PATH}
+  add_custom_command(
+    OUTPUT ${RECIPE_BINARY_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy "${RECIPE_SOURCE_PATH}" "${RECIPE_BINARY_PATH}"
     DEPENDS ${RECIPE_SOURCE_PATH}
-    COMMENT "Generate ${RECIPE_FILE}"
-  )
+    COMMENT "Generate ${RECIPE_FILE}")
   list(APPEND TEST_DEPS ${RECIPE_BINARY_PATH})
 
   if(DEFINED RULE_SOURCE_PATH)
     # Copy .rule
-    add_custom_command(OUTPUT ${RULE_BINARY_PATH}
+    add_custom_command(
+      OUTPUT ${RULE_BINARY_PATH}
       COMMAND ${CMAKE_COMMAND} -E copy "${RULE_SOURCE_PATH}" "${RULE_BINARY_PATH}"
       DEPENDS ${RULE_SOURCE_PATH}
-      COMMENT "Generate ${RULE_FILE}"
-    )
+      COMMENT "Generate ${RULE_FILE}")
     list(APPEND TEST_DEPS ${RULE_BINARY_PATH})
   endif()
 
   if(DEFINED QCONFIG_SOURCE_PATH)
     # Copy .qconf.json
-    add_custom_command(OUTPUT ${QCONFIG_BINARY_PATH}
+    add_custom_command(
+      OUTPUT ${QCONFIG_BINARY_PATH}
       COMMAND ${CMAKE_COMMAND} -E copy "${QCONFIG_SOURCE_PATH}" "${QCONFIG_BINARY_PATH}"
       DEPENDS ${QCONFIG_SOURCE_PATH}
-      COMMENT "Generate ${QCONFIG_FILE}"
-    )
+      COMMENT "Generate ${QCONFIG_FILE}")
     list(APPEND TEST_DEPS ${QCONFIG_BINARY_PATH})
   endif()
 
   if(${MODEL_FORMAT} STREQUAL "tflite")
     # Generate .tflite
-    add_custom_command(OUTPUT ${TFLITE_OUTPUT_PATH}
+    add_custom_command(
+      OUTPUT ${TFLITE_OUTPUT_PATH}
       COMMAND $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH} ${TFLITE_OUTPUT_PATH}
       DEPENDS $<TARGET_FILE:tflchef-file> ${RECIPE_BINARY_PATH}
-      COMMENT "Generate ${TFLITE_FILE}"
-    )
+      COMMENT "Generate ${TFLITE_FILE}")
     list(APPEND TEST_DEPS ${TFLITE_OUTPUT_PATH})
 
     if(NOT DEFINED NO_CIRCLIZE_${RECIPE})
       # Generate .circle
-      add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
+      add_custom_command(
+        OUTPUT ${CIRCLE_OUTPUT_PATH}
         COMMAND $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH} ${CIRCLE_OUTPUT_PATH}
         DEPENDS $<TARGET_FILE:tflite2circle> ${TFLITE_OUTPUT_PATH}
-        COMMENT "Generate ${CIRCLE_FILE}"
-      )
+        COMMENT "Generate ${CIRCLE_FILE}")
       set(MODEL_FORMAT "circle")
       list(APPEND TEST_DEPS ${CIRCLE_OUTPUT_PATH})
     endif()
   else()
     # Generate .circle
-    add_custom_command(OUTPUT ${CIRCLE_OUTPUT_PATH}
+    add_custom_command(
+      OUTPUT ${CIRCLE_OUTPUT_PATH}
       COMMAND $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH} ${CIRCLE_OUTPUT_PATH}
       DEPENDS $<TARGET_FILE:circlechef-file> ${RECIPE_BINARY_PATH}
-      COMMENT "Generate ${CIRCLE_FILE}"
-    )
+      COMMENT "Generate ${CIRCLE_FILE}")
     list(APPEND TEST_DEPS ${CIRCLE_OUTPUT_PATH})
   endif()
 
@@ -280,17 +277,17 @@ foreach(RECIPE IN ITEMS ${RECIPES})
 
   if(NOT DEFINED NO_OPTIMIZE_${RECIPE})
     # Generate optimized .circle
-    add_custom_command(OUTPUT ${OPT_CIRCLE_OUTPUT_PATH}
+    add_custom_command(
+      OUTPUT ${OPT_CIRCLE_OUTPUT_PATH}
       # NOTE --resolve_customop_add is just to added for old -O1, no particular meaning
       #      --fold_dequantize is added to fold Tensor(FLOAT16) + DEQUANTIZE (Net_Dequantize_Add)
       #      model. FLOAT16 in general is NOT supported but only Tensor(FLOAT16) + DEQUANTIZE
       #      sequence accepted as folded to Tensor(FLOAT32).
       # TODO revise giving options from the list file
-      COMMAND $<TARGET_FILE:circle2circle> --resolve_customop_add --fold_dequantize --fold_densify
-              ${CIRCLE_OUTPUT_PATH} ${OPT_CIRCLE_OUTPUT_PATH}
-      DEPENDS $<TARGET_FILE:circle2circle>  ${CIRCLE_OUTPUT_PATH}
-      COMMENT "Generate ${OPT_CIRCLE_FILE}"
-    )
+      COMMAND $<TARGET_FILE:circle2circle> --resolve_customop_add --fold_dequantize --fold_densify ${CIRCLE_OUTPUT_PATH}
+              ${OPT_CIRCLE_OUTPUT_PATH}
+      DEPENDS $<TARGET_FILE:circle2circle> ${CIRCLE_OUTPUT_PATH}
+      COMMENT "Generate ${OPT_CIRCLE_FILE}")
     set(OPT_FORMAT ".opt")
     list(APPEND TEST_DEPS ${OPT_CIRCLE_OUTPUT_PATH})
   endif()
@@ -302,31 +299,31 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   set(NNPKG_MODEL "${NNPKG_DIR}/${MODEL_FILE}")
 
   # Generate nnpackage directory
-  add_custom_command(OUTPUT ${NNPKG_DIR}
-      COMMAND ${CMAKE_COMMAND} -E make_directory ${NNPKG_DIR}
-      DEPENDS ${MODEL_PATH}
-      COMMENT "Generate ${RECIPE} nnpackage directory"
-    )
+  add_custom_command(
+    OUTPUT ${NNPKG_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${NNPKG_DIR}
+    DEPENDS ${MODEL_PATH}
+    COMMENT "Generate ${RECIPE} nnpackage directory")
   list(APPEND TEST_DEPS ${NNPKG_DIR})
 
-  add_custom_command(OUTPUT ${NNPKG_MODEL}
+  add_custom_command(
+    OUTPUT ${NNPKG_MODEL}
     COMMAND ${PYTHON_EXECUTABLE} ${MODEL2NNPKG} -m ${MODEL_PATH}
     DEPENDS ${MODEL2NNPKG} ${MODEL_PATH}
-    COMMENT "Generate ${RECIPE} nnpackage"
-  )
+    COMMENT "Generate ${RECIPE} nnpackage")
   list(APPEND TEST_DEPS ${NNPKG_MODEL})
 
   if(NOT DEFINED NO_TCGEN_${RECIPE})
     # Generate test directory
     set(TC_DIRECTORY "${NNPKG_DIR}/metadata/tc")
-    add_custom_command(OUTPUT ${TC_DIRECTORY}
+    add_custom_command(
+      OUTPUT ${TC_DIRECTORY}
       COMMAND ${CMAKE_COMMAND} -E make_directory ${TC_DIRECTORY}
-      COMMENT "Generate ${RECIPE} nnpackage test directory"
-    )
+      COMMENT "Generate ${RECIPE} nnpackage test directory")
     list(APPEND TEST_DEPS ${TC_DIRECTORY})
 
     # set ADDITIONAL_OPTIONS as empty (one space before closing is intentional)
-    set(ADDITIONAL_OPTIONS )
+    set(ADDITIONAL_OPTIONS)
     if(DEFINED TCGEN_OPT_${RECIPE})
       set(ADDITIONAL_OPTIONS ${ADDITIONAL_OPTIONS} ${TCGEN_OPT_${RECIPE}})
     endif()
@@ -334,15 +331,12 @@ foreach(RECIPE IN ITEMS ${RECIPES})
     # Generate input.h5, expected.h5
     set(INPUT_HDF5_FILE "${TC_DIRECTORY}/input.h5")
     set(EXPECTED_HDF5_FILE "${TC_DIRECTORY}/expected.h5")
-    add_custom_command(OUTPUT ${INPUT_HDF5_FILE} ${EXPECTED_HDF5_FILE}
-      COMMAND $<TARGET_FILE:testDataGenerator>
-              --input_data ${INPUT_HDF5_FILE}
-              --expected_data ${EXPECTED_HDF5_FILE}
-              ${ADDITIONAL_OPTIONS}
-              ${MODEL_FILE}
+    add_custom_command(
+      OUTPUT ${INPUT_HDF5_FILE} ${EXPECTED_HDF5_FILE}
+      COMMAND $<TARGET_FILE:testDataGenerator> --input_data ${INPUT_HDF5_FILE} --expected_data ${EXPECTED_HDF5_FILE}
+              ${ADDITIONAL_OPTIONS} ${MODEL_FILE}
       DEPENDS $<TARGET_FILE:testDataGenerator> ${MODEL_FILE} ${TC_DIRECTORY}
-      COMMENT "Generate input.h5 and expected.h5 in ${NNPKG_FILE}/metadata/tc"
-    )
+      COMMENT "Generate input.h5 and expected.h5 in ${NNPKG_FILE}/metadata/tc")
     list(APPEND TEST_DEPS ${INPUT_HDF5_FILE} ${EXPECTED_HDF5_FILE})
   endif()
 endforeach()

@@ -7,7 +7,7 @@ target_include_directories(ndarray PUBLIC include)
 option(NDARRAY_INLINE_TEMPLATES "Set to ON to disable extern declarations for common types")
 
 if(${NDARRAY_INLINE_TEMPLATES})
-    target_compile_definitions(ndarray PUBLIC -DNDARRAY_INLINE_TEMPLATES=1)
+  target_compile_definitions(ndarray PUBLIC -DNDARRAY_INLINE_TEMPLATES=1)
 endif()
 
 target_link_libraries(ndarray PRIVATE nnfw_common)

@@ -10,7 +10,7 @@ target_link_libraries(moco_import PUBLIC mio_tf)
 target_link_libraries(moco_import PRIVATE nncc_common)
 target_link_libraries(moco_import PRIVATE plier_tf)
 target_link_libraries(moco_import PRIVATE oops)
-install(TARGETS moco_import DESTINATION lib)  # moco_tf_frontend requires moco_import
+install(TARGETS moco_import DESTINATION lib) # moco_tf_frontend requires moco_import
 
 if(NOT ENABLE_TEST)
   return()

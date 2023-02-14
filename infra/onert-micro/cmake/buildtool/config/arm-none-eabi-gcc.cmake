@@ -7,7 +7,9 @@ set(CMAKE_CXX_COMPILER "${CXX_COMPILER}")
 set(CMAKE_ASM_COMPILER "${ASM_COMPILER}")
 set(CMAKE_OBJCOPY "${OBJCOPY}")
 
-set(TARGET_CPU "cortex-m4" CACHE STRING "Target CPU")
+set(TARGET_CPU
+    "cortex-m4"
+    CACHE STRING "Target CPU")
 
 # Convert TARGET_CPU=Cortex-M33+nofp+nodsp into
 #   - CMAKE_SYSTEM_PROCESSOR=cortex-m33
@@ -27,40 +29,30 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 14)
 
 # Compile options
-add_compile_options(
-        -mcpu=${TARGET_CPU}
-        -mthumb
-        "$<$<CONFIG:DEBUG>:-gdwarf-3>"
-        "$<$<COMPILE_LANGUAGE:CXX>:-funwind-tables;-frtti;-fexceptions>")
+add_compile_options(-mcpu=${TARGET_CPU} -mthumb "$<$<CONFIG:DEBUG>:-gdwarf-3>"
+                    "$<$<COMPILE_LANGUAGE:CXX>:-funwind-tables;-frtti;-fexceptions>")
 
 # Compile definescd
-add_compile_definitions(
-        "$<$<NOT:$<CONFIG:DEBUG>>:NDEBUG>")
+add_compile_definitions("$<$<NOT:$<CONFIG:DEBUG>>:NDEBUG>")
 
 # Link options
-add_link_options(
-        -mcpu=${TARGET_CPU}
-        -mthumb
-        --specs=nosys.specs)
+add_link_options(-mcpu=${TARGET_CPU} -mthumb --specs=nosys.specs)
 
 # Set floating point unit
 if("${TARGET_CPU}" MATCHES "\\+fp")
-    set(FLOAT hard)
+  set(FLOAT hard)
 elseif("${TARGET_CPU}" MATCHES "\\+nofp")
-    set(FLOAT soft)
-elseif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "cortex-m33" OR
-        "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "cortex-m55")
-    set(FLOAT hard)
+  set(FLOAT soft)
+elseif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "cortex-m33" OR "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "cortex-m55")
+  set(FLOAT hard)
 else()
-    set(FLOAT soft)
+  set(FLOAT soft)
 endif()
 
-if (FLOAT)
-    add_compile_options(-mfloat-abi=${FLOAT})
-    add_link_options(-mfloat-abi=${FLOAT})
+if(FLOAT)
+  add_compile_options(-mfloat-abi=${FLOAT})
+  add_link_options(-mfloat-abi=${FLOAT})
 endif()
 
 # Compilation warnings
-add_compile_options(
-        -Wno-all
-)
+add_compile_options(-Wno-all)

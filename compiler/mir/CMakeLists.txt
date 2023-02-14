@@ -1,30 +1,30 @@
 set(MIR_SOURCES
-        src/ops/AvgPool2DOp.cpp
-        src/ops/BinaryElementwiseOp.cpp
-        src/ops/BroadcastOp.cpp
-        src/ops/ConcatOp.cpp
-        src/ops/Conv2DOp.cpp
-        src/ops/DeConv2DOp.cpp
-        src/ops/DepthwiseConv2DOp.cpp
-        src/ops/FullyConnectedOp.cpp
-        src/ops/GatherOp.cpp
-        src/ops/MaxPool2DOp.cpp
-        src/ops/PadOp.cpp
-        src/ops/ReduceOp.cpp
-        src/ops/SqueezeOp.cpp
-        src/ops/SliceOp.cpp
-        src/ops/TransposeOp.cpp
-        src/DotGraph.cpp
-        src/DotNodeBuilder.cpp
-        src/Graph.cpp
-        src/GraphPatternMatcher.cpp
-        src/Index.cpp
-        src/IrDotDumper.cpp
-        src/Operation.cpp
-        src/Shape.cpp
-        src/Tensor.cpp
-        src/TensorVariant.cpp
-        src/Visitor.cpp)
+    src/ops/AvgPool2DOp.cpp
+    src/ops/BinaryElementwiseOp.cpp
+    src/ops/BroadcastOp.cpp
+    src/ops/ConcatOp.cpp
+    src/ops/Conv2DOp.cpp
+    src/ops/DeConv2DOp.cpp
+    src/ops/DepthwiseConv2DOp.cpp
+    src/ops/FullyConnectedOp.cpp
+    src/ops/GatherOp.cpp
+    src/ops/MaxPool2DOp.cpp
+    src/ops/PadOp.cpp
+    src/ops/ReduceOp.cpp
+    src/ops/SqueezeOp.cpp
+    src/ops/SliceOp.cpp
+    src/ops/TransposeOp.cpp
+    src/DotGraph.cpp
+    src/DotNodeBuilder.cpp
+    src/Graph.cpp
+    src/GraphPatternMatcher.cpp
+    src/Index.cpp
+    src/IrDotDumper.cpp
+    src/Operation.cpp
+    src/Shape.cpp
+    src/Tensor.cpp
+    src/TensorVariant.cpp
+    src/Visitor.cpp)
 
 add_library(mir STATIC ${MIR_SOURCES})
 target_include_directories(mir PUBLIC include)

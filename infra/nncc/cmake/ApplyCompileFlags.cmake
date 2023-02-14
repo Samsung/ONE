@@ -2,9 +2,9 @@
 # Platform independent compile flag setting
 #
 # flags for build type: debug, release
-set(CMAKE_C_FLAGS_DEBUG     "-O0 -g -DDEBUG")
-set(CMAKE_CXX_FLAGS_DEBUG   "-O0 -g -DDEBUG")
-set(CMAKE_C_FLAGS_RELEASE   "-O3 -DNDEBUG")
+set(CMAKE_C_FLAGS_DEBUG "-O0 -g -DDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -DDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 
 #

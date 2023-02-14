@@ -25,10 +25,7 @@ list(APPEND PROTO_FILES tensorflow/core/framework/node_def.proto)
 list(APPEND PROTO_FILES tensorflow/core/framework/function.proto)
 list(APPEND PROTO_FILES tensorflow/core/framework/graph.proto)
 
-Protobuf_Generate(GRAPHDEF_PROTO
-                  "${CMAKE_CURRENT_BINARY_DIR}/generated"
-                  "${TensorFlowSource_DIR}"
-                  ${PROTO_FILES})
+Protobuf_Generate(GRAPHDEF_PROTO "${CMAKE_CURRENT_BINARY_DIR}/generated" "${TensorFlowSource_DIR}" ${PROTO_FILES})
 
 add_library(mio_tf STATIC ${GRAPHDEF_PROTO_SOURCES})
 set_target_properties(mio_tf PROPERTIES POSITION_INDEPENDENT_CODE ON)

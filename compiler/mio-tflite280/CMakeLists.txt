@@ -17,18 +17,22 @@ message(STATUS "Build mio-tflite280: TRUE")
 set(SCHEMA_FILE "${TensorFlowSource_DIR}/tensorflow/lite/schema/schema.fbs")
 
 # NOTE Use copy of schema.fbs as to provide unified way for circle also
-add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
+add_custom_command(
+  OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
   COMMAND ${CMAKE_COMMAND} -E copy "${SCHEMA_FILE}" schema.fbs
   WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-  DEPENDS "${SCHEMA_FILE}"
-)
+  DEPENDS "${SCHEMA_FILE}")
 
-FlatBuffers_Target(mio_tflite280
-  OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen/mio/tflite"
-  INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
-  SCHEMA_DIR "${CMAKE_CURRENT_BINARY_DIR}"
-  SCHEMA_FILES "schema.fbs"
-)
+FlatBuffers_Target(
+  mio_tflite280
+  OUTPUT_DIR
+  "${CMAKE_CURRENT_BINARY_DIR}/gen/mio/tflite"
+  INCLUDE_DIR
+  "${CMAKE_CURRENT_BINARY_DIR}/gen"
+  SCHEMA_DIR
+  "${CMAKE_CURRENT_BINARY_DIR}"
+  SCHEMA_FILES
+  "schema.fbs")
 
 add_executable(mio_tflite280_example example.cpp)
 target_link_libraries(mio_tflite280_example mio_tflite280)

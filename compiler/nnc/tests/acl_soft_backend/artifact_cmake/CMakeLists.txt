@@ -13,10 +13,10 @@ find_library(ARM_COMPUTE arm_compute PATHS ${ODROID_ACL_BUILD_DIR})
 find_library(ARM_COMPUTE_CORE arm_compute_core PATHS ${ODROID_ACL_BUILD_DIR})
 nnas_find_package(HDF5 QUIET)
 
+add_executable(nnc_test AclArtifact.cpp main.cpp)
 
-add_executable(nnc_test main.cpp AclArtifact.cpp)
-
-target_include_directories(nnc_test PRIVATE . ${ODROID_MIRROR_DIR}${ODROID_ACL_INC_DIR}
-    ${ODROID_MIRROR_DIR}${ODROID_ACL_DIR} ${ODROID_MIRROR_DIR}${HDF5_INCLUDE_DIRS})
+target_include_directories(
+  nnc_test PRIVATE . ${ODROID_MIRROR_DIR}${ODROID_ACL_INC_DIR} ${ODROID_MIRROR_DIR}${ODROID_ACL_DIR}
+                   ${ODROID_MIRROR_DIR}${HDF5_INCLUDE_DIRS})
 target_link_libraries(nnc_test ${ARM_COMPUTE} ${ARM_COMPUTE_CORE} ${OPEN_CL} ${HDF5_CXX_LIBRARIES})
 target_compile_definitions(nnc_test PRIVATE ARM_COMPUTE_CL)

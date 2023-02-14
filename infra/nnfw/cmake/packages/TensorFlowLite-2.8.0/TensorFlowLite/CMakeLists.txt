@@ -29,9 +29,7 @@ endmacro()
 # relative to TFLITE_SOURCE_DIR. See populate_source_vars() for the
 # description of arguments including and following SOURCES_VAR.
 macro(populate_tflite_source_vars RELATIVE_DIR SOURCES_VAR)
-  populate_source_vars(
-    "${TFLITE_SOURCE_DIR}/${RELATIVE_DIR}" ${SOURCES_VAR} ${ARGN}
-  )
+  populate_source_vars("${TFLITE_SOURCE_DIR}/${RELATIVE_DIR}" ${SOURCES_VAR} ${ARGN})
 endmacro()
 
 # Build a list of source files to compile into the TF Lite library.
@@ -60,69 +58,38 @@ populate_tflite_source_vars("c" TFLITE_C_SRCS)
 populate_tflite_source_vars("delegates" TFLITE_DELEGATES_SRCS)
 
 # Enable NNAPI
-populate_tflite_source_vars("delegates/nnapi"
-TFLITE_DELEGATES_NNAPI_SRCS
-FILTER "(_test_list|_disabled)\\.(cc|h)$"
-)
-populate_tflite_source_vars(
-"nnapi" TFLITE_NNAPI_SRCS FILTER "(_disabled)\\.(cc|h)$"
-)
+populate_tflite_source_vars("delegates/nnapi" TFLITE_DELEGATES_NNAPI_SRCS FILTER "(_test_list|_disabled)\\.(cc|h)$")
+populate_tflite_source_vars("nnapi" TFLITE_NNAPI_SRCS FILTER "(_disabled)\\.(cc|h)$")
 
 # Disable XNNPack
 
 # Enable  experimental support for resource (need for build success)
-populate_tflite_source_vars("experimental/resource"
-TFLITE_EXPERIMENTAL_RESOURCE_SRCS
-)
+populate_tflite_source_vars("experimental/resource" TFLITE_EXPERIMENTAL_RESOURCE_SRCS)
 
 # Enable Ruy
-populate_tflite_source_vars("experimental/ruy"
-  TFLITE_EXPERIMENTAL_RUY_SRCS
-  FILTER
-  ".*(test(_fast|_slow|_special_specs))\\.(cc|h)$"
-  ".*(benchmark|tune_tool|example)\\.(cc|h)$"
-)
-populate_tflite_source_vars("experimental/ruy/profiler"
-  TFLITE_EXPERIMENTAL_RUY_PROFILER_SRCS
-  FILTER ".*(test|test_instrumented_library)\\.(cc|h)$"
-)
+populate_tflite_source_vars(
+  "experimental/ruy" TFLITE_EXPERIMENTAL_RUY_SRCS FILTER ".*(test(_fast|_slow|_special_specs))\\.(cc|h)$"
+  ".*(benchmark|tune_tool|example)\\.(cc|h)$")
+populate_tflite_source_vars("experimental/ruy/profiler" TFLITE_EXPERIMENTAL_RUY_PROFILER_SRCS FILTER
+                            ".*(test|test_instrumented_library)\\.(cc|h)$")
 list(APPEND TFLITE_TARGET_PUBLIC_OPTIONS "-DTFLITE_WITH_RUY")
 
-populate_tflite_source_vars("kernels"
-  TFLITE_KERNEL_SRCS
-  FILTER "(.*_test_util_internal|test_.*|.*_ops_wrapper)\\.(cc|h)"
-)
+populate_tflite_source_vars("kernels" TFLITE_KERNEL_SRCS FILTER
+                            "(.*_test_util_internal|test_.*|.*_ops_wrapper)\\.(cc|h)")
 populate_tflite_source_vars("kernels/internal" TFLITE_KERNEL_INTERNAL_SRCS)
-populate_tflite_source_vars("kernels/internal/optimized"
-  TFLITE_KERNEL_INTERNAL_OPT_SRCS
-)
-populate_tflite_source_vars("kernels/internal/optimized/integer_ops"
-  TFLITE_KERNEL_INTERNAL_OPT_INTEGER_OPS_SRCS
-)
-populate_tflite_source_vars("kernels/internal/optimized/sparse_ops"
-  TFLITE_KERNEL_INTERNAL_OPT_SPARSE_OPS_SRCS
-)
-populate_tflite_source_vars("kernels/internal/reference"
-  TFLITE_KERNEL_INTERNAL_REF_SRCS
-)
-populate_tflite_source_vars("kernels/internal/reference/integer_ops"
-  TFLITE_KERNEL_INTERNAL_REF_INTEGER_OPS_SRCS
-)
-populate_tflite_source_vars("kernels/internal/reference/sparse_ops"
-  TFLITE_KERNEL_INTERNAL_REF_SPARSE_OPS_SRCS
-)
+populate_tflite_source_vars("kernels/internal/optimized" TFLITE_KERNEL_INTERNAL_OPT_SRCS)
+populate_tflite_source_vars("kernels/internal/optimized/integer_ops" TFLITE_KERNEL_INTERNAL_OPT_INTEGER_OPS_SRCS)
+populate_tflite_source_vars("kernels/internal/optimized/sparse_ops" TFLITE_KERNEL_INTERNAL_OPT_SPARSE_OPS_SRCS)
+populate_tflite_source_vars("kernels/internal/reference" TFLITE_KERNEL_INTERNAL_REF_SRCS)
+populate_tflite_source_vars("kernels/internal/reference/integer_ops" TFLITE_KERNEL_INTERNAL_REF_INTEGER_OPS_SRCS)
+populate_tflite_source_vars("kernels/internal/reference/sparse_ops" TFLITE_KERNEL_INTERNAL_REF_SPARSE_OPS_SRCS)
 set(TFLITE_PROFILER_SRCS ${TFLITE_SOURCE_DIR}/profiling/platform_profiler.cc)
 if(CMAKE_SYSTEM_NAME MATCHES "Android")
-  list(APPEND TFLITE_PROFILER_SRCS
-    ${TFLITE_SOURCE_DIR}/profiling/atrace_profiler.cc
-  )
+  list(APPEND TFLITE_PROFILER_SRCS ${TFLITE_SOURCE_DIR}/profiling/atrace_profiler.cc)
 endif()
 
 # Common include directories
-set(TFLITE_INCLUDE_DIRS
-  "${TENSORFLOW_SOURCE_DIR}"
-  "${TFLITE_FLATBUFFERS_SCHEMA_DIR}"
-)
+set(TFLITE_INCLUDE_DIRS "${TENSORFLOW_SOURCE_DIR}" "${TFLITE_FLATBUFFERS_SCHEMA_DIR}")
 
 # include headers
 list(APPEND TFLITE_INCLUDE_DIRS "${TensorFlowSource_DIR}")
@@ -136,7 +103,8 @@ if(NEON2SSESource_FOUND)
 endif(NEON2SSESource_FOUND)
 
 # TFLite library
-add_library(tensorflow-lite-2.8.0 STATIC
+add_library(
+  tensorflow-lite-2.8.0 STATIC
   ${TFLITE_CORE_API_SRCS}
   ${TFLITE_CORE_SRCS}
   ${TFLITE_C_SRCS}
@@ -159,16 +127,24 @@ add_library(tensorflow-lite-2.8.0 STATIC
   ${TFLITE_SOURCE_DIR}/kernels/internal/utils/sparsity_format_converter.cc
   ${TFLITE_SOURCE_DIR}/schema/schema_utils.cc
   ${OouraFFTSource_DIR}/fftsg.c
-  ${OouraFFTSource_DIR}/fftsg2d.c
-)
-target_include_directories(tensorflow-lite-2.8.0
-  SYSTEM PUBLIC
-    ${TFLITE_INCLUDE_DIRS}
-)
+  ${OouraFFTSource_DIR}/fftsg2d.c)
+target_include_directories(tensorflow-lite-2.8.0 SYSTEM PUBLIC ${TFLITE_INCLUDE_DIRS})
 
-target_compile_definitions(tensorflow-lite-2.8.0 PUBLIC "GEMMLOWP_ALLOW_SLOW_SCALAR_FALLBACK -DTFLITE_WITH_RUY -DTFLITE_WITH_RUY_GEMV -DRUY_HAVE_CPUINFO -DNNAPI_VERBOSE_VALIDATION")
+target_compile_definitions(
+  tensorflow-lite-2.8.0
+  PUBLIC
+    "GEMMLOWP_ALLOW_SLOW_SCALAR_FALLBACK -DTFLITE_WITH_RUY -DTFLITE_WITH_RUY_GEMV -DRUY_HAVE_CPUINFO -DNNAPI_VERBOSE_VALIDATION"
+)
 set_property(TARGET tensorflow-lite-2.8.0 PROPERTY POSITION_INDEPENDENT_CODE ON)
-target_link_libraries(tensorflow-lite-2.8.0 eigen flatbuffers::flatbuffers ruy abseil farmhash ${LIB_PTHREAD} dl)
+target_link_libraries(
+  tensorflow-lite-2.8.0
+  eigen
+  flatbuffers::flatbuffers
+  ruy
+  abseil
+  farmhash
+  ${LIB_PTHREAD}
+  dl)
 if(NOT ANDROID)
   target_link_libraries(tensorflow-lite-2.8.0 rt)
 endif()

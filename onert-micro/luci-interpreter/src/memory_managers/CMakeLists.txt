@@ -1,14 +1,18 @@
 set(SOURCES
-        "SimpleMemoryManager.h" SimpleMemoryManager.cpp
-        "TestMemoryManager.h" TestMemoryManager.cpp
-        "BuddyMemoryManager.h" BuddyMemoryManager.cpp
-        "StaticMemoryManager.h" StaticMemoryManager.cpp)
+    "SimpleMemoryManager.h"
+    SimpleMemoryManager.cpp
+    "TestMemoryManager.h"
+    TestMemoryManager.cpp
+    "BuddyMemoryManager.h"
+    BuddyMemoryManager.cpp
+    "StaticMemoryManager.h"
+    StaticMemoryManager.cpp)
 
 add_library(${LUCI_INTERPRETER_MEMORY_MANAGER} STATIC ${SOURCES})
 target_include_directories(${LUCI_INTERPRETER_MEMORY_MANAGER} PUBLIC "${LUCI_INTERPRETER_INCLUDE_DIR}")
 
 if(NOT ENABLE_TEST)
-    return()
+  return()
 endif(NOT ENABLE_TEST)
 
 set(TEST_SOURCES BuddyMemoryManager.test.cpp)

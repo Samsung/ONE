@@ -4,7 +4,8 @@ endfunction(acl_warn)
 
 # Path to the folder where the Odroid root folder is either mounted or copied.
 if(NOT DEFINED ENV{ODROID_MIRROR_DIR})
-  acl_warn("the ODROID_MIRROR_DIR environment variable was not defined.\n\
+  acl_warn(
+    "the ODROID_MIRROR_DIR environment variable was not defined.\n\
     As a cross-build is done, this variable should point to a directory\n\
     which is either mounted to (with e.g. SSHFS) or contains a copy of the target\n\
     (e.g. Odroid XU4) device file system.")
@@ -22,7 +23,8 @@ endif()
 # Path to the HDF5 library on the Odroid.
 # It must most likely be: /usr/lib/arm-linux-gnueabihf/hdf5/serial
 if(NOT DEFINED ENV{ODROID_H5_DIR})
-  acl_warn("the ODROID_H5_DIR environment variable was not defined.\n\
+  acl_warn(
+    "the ODROID_H5_DIR environment variable was not defined.\n\
     As a cross-build is done, this variable should contain the path to the root directory\n\
     of the HDF5 library on the target (e.g. Odroid XU4) device.\n\
     Often it would be the: /usr/lib/arm-linux-gnueabihf/hdf5/serial directory.")
@@ -38,11 +40,13 @@ configure_file(BuildInfo.h.in BuildInfo.h)
 
 GTest_AddTest(nnc_acl_soft_backend_system_test AclCppOperations.cpp)
 add_dependencies(nnc_acl_soft_backend_system_test tensor_gen caffegen nnkit-run)
-target_include_directories(nnc_acl_soft_backend_system_test PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-    ${HDF5_INCLUDE_DIRS})
+target_include_directories(nnc_acl_soft_backend_system_test PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${HDF5_INCLUDE_DIRS})
 target_link_libraries(nnc_acl_soft_backend_system_test ${HDF5_CXX_LIBRARIES})
 
-file(GLOB MODELS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "models/*.prototxt")
+file(
+  GLOB MODELS
+  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+  "models/*.prototxt")
 
 # Loop over all the existing system test models.
 foreach(MODEL IN ITEMS ${MODELS})
@@ -75,52 +79,101 @@ foreach(MODEL IN ITEMS ${MODELS})
   add_custom_target(${COPIED_MODEL_TARGET} ALL ${CMAKE_COMMAND} -E copy ${MODEL_FILE} ${COPIED_MODEL_FILE})
 
   # Copy the artifact main and project files into the model subfolder inside the binary directory.
-  add_custom_target(${MAIN_FILE_TARGET} ALL ${CMAKE_COMMAND}
-      -E copy ${CMAKE_CURRENT_SOURCE_DIR}/artifact_cmake/main.cpp ${MODEL_DIR}/main.cpp)
+  add_custom_target(${MAIN_FILE_TARGET} ALL ${CMAKE_COMMAND} -E copy
+                                            ${CMAKE_CURRENT_SOURCE_DIR}/artifact_cmake/main.cpp ${MODEL_DIR}/main.cpp)
 
   # Copy the artifact CMakeLists.txt to the artifact build directory.
-  add_custom_target(${ARTIFACT_TARGET_CMAKE} ALL ${CMAKE_COMMAND}
-      -E copy ${CMAKE_CURRENT_SOURCE_DIR}/artifact_cmake/CMakeLists.txt ${MODEL_DIR}/CMakeLists.txt)
+  add_custom_target(
+    ${ARTIFACT_TARGET_CMAKE} ALL ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/artifact_cmake/CMakeLists.txt
+                                 ${MODEL_DIR}/CMakeLists.txt)
 
   # Copy the artifact toolchain file to the artifact build directory.
-  add_custom_target(${ARTIFACT_TARGET_TOOLCHAIN} ALL ${CMAKE_COMMAND}
-      -E copy ${CMAKE_CURRENT_SOURCE_DIR}/artifact_cmake/odroid.cmake ${MODEL_DIR}/odroid.cmake)
+  add_custom_target(
+    ${ARTIFACT_TARGET_TOOLCHAIN} ALL ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/artifact_cmake/odroid.cmake
+                                     ${MODEL_DIR}/odroid.cmake)
 
   # Initialize the model with weights.
-  add_custom_target(${INITIALIZED_MODEL_TARGET} ALL cat ${COPIED_MODEL_FILE} | GLOG_minloglevel=2
-      $<TARGET_FILE:caffegen> init > ${INITIALIZED_MODEL_FILE}
-      DEPENDS ${COPIED_MODEL_TARGET})
+  add_custom_target(
+    ${INITIALIZED_MODEL_TARGET} ALL
+    cat
+    ${COPIED_MODEL_FILE}
+    |
+    GLOG_minloglevel=2
+    $<TARGET_FILE:caffegen>
+    init
+    >
+    ${INITIALIZED_MODEL_FILE}
+    DEPENDS ${COPIED_MODEL_TARGET})
 
   # Encode the model.
-  add_custom_target(${ENCODED_MODEL_TARGET} ALL cat ${INITIALIZED_MODEL_FILE} | GLOG_minloglevel=2
-      $<TARGET_FILE:caffegen> encode > ${ENCODED_MODEL_FILE}
-      DEPENDS ${INITIALIZED_MODEL_TARGET})
+  add_custom_target(
+    ${ENCODED_MODEL_TARGET} ALL
+    cat
+    ${INITIALIZED_MODEL_FILE}
+    |
+    GLOG_minloglevel=2
+    $<TARGET_FILE:caffegen>
+    encode
+    >
+    ${ENCODED_MODEL_FILE}
+    DEPENDS ${INITIALIZED_MODEL_TARGET})
 
-  add_custom_target(${INPUT_TARGET} ALL $<TARGET_FILE:tensor_gen> data ${MODEL_NAME} 1 3 4 8
-      WORKING_DIRECTORY ${MODEL_DIR})
+  add_custom_target(
+    ${INPUT_TARGET} ALL
+    $<TARGET_FILE:tensor_gen>
+    data
+    ${MODEL_NAME}
+    1
+    3
+    4
+    8
+    WORKING_DIRECTORY ${MODEL_DIR})
 
-    message("INPUT_FILE = ${INPUT_FILE}")
+  message("INPUT_FILE = ${INPUT_FILE}")
 
   # Generate the 'reference' output with NNKIT.
-  add_custom_target(${REFERENCE_OUTPUT_TARGET} ALL $<TARGET_FILE:nnkit-run>
-      --backend $<TARGET_FILE:nnkit_caffe_backend> --backend-arg ${INITIALIZED_MODEL_FILE}
-      --pre $<TARGET_FILE:nnkit_HDF5_import_action> --pre-arg ${INPUT_FILE}
-      --post $<TARGET_FILE:nnkit_HDF5_export_action> --post-arg ${REFERENCE_OUTPUT}
-      DEPENDS $<TARGET_FILE:nnkit-run> ${INPUT_TARGET} ${INITIALIZED_MODEL_TARGET})
+  add_custom_target(
+    ${REFERENCE_OUTPUT_TARGET} ALL
+    $<TARGET_FILE:nnkit-run>
+    --backend
+    $<TARGET_FILE:nnkit_caffe_backend>
+    --backend-arg
+    ${INITIALIZED_MODEL_FILE}
+    --pre
+    $<TARGET_FILE:nnkit_HDF5_import_action>
+    --pre-arg
+    ${INPUT_FILE}
+    --post
+    $<TARGET_FILE:nnkit_HDF5_export_action>
+    --post-arg
+    ${REFERENCE_OUTPUT}
+    DEPENDS $<TARGET_FILE:nnkit-run> ${INPUT_TARGET} ${INITIALIZED_MODEL_TARGET})
 
   # Generate an artifact from the model.
-  add_custom_target(${ARTIFACT_TARGET} ALL $<TARGET_FILE:nnc>
-      --caffe -m ${ENCODED_MODEL_FILE} -o AclArtifact -d ${MODEL_DIR} --target=arm-gpu-c++
-      DEPENDS $<TARGET_FILE:nnc> ${ENCODED_MODEL_FILE})
+  add_custom_target(
+    ${ARTIFACT_TARGET} ALL
+    $<TARGET_FILE:nnc>
+    --caffe
+    -m
+    ${ENCODED_MODEL_FILE}
+    -o
+    AclArtifact
+    -d
+    ${MODEL_DIR}
+    --target=arm-gpu-c++
+    DEPENDS $<TARGET_FILE:nnc> ${ENCODED_MODEL_FILE})
 
   # Generate a Makefile for the artifact cross-building.
-  add_custom_target(${ARTIFACT_TARGET_MAKE} ALL cmake .
-      -DCMAKE_TOOLCHAIN_FILE=odroid.cmake
-      DEPENDS ${ARTIFACT_TARGET_CMAKE} ${ARTIFACT_TARGET_TOOLCHAIN} ${ARTIFACT_TARGET}
-      WORKING_DIRECTORY ${MODEL_DIR})
+  add_custom_target(
+    ${ARTIFACT_TARGET_MAKE} ALL
+    cmake . -DCMAKE_TOOLCHAIN_FILE=odroid.cmake
+    DEPENDS ${ARTIFACT_TARGET_CMAKE} ${ARTIFACT_TARGET_TOOLCHAIN} ${ARTIFACT_TARGET}
+    WORKING_DIRECTORY ${MODEL_DIR})
 
   # Cross-build the artifact with the generated Makefile.
-  add_custom_target(${ARTIFACT_TARGET_BINARY} ALL make
-      DEPENDS ${ARTIFACT_TARGET_MAKE}
-      WORKING_DIRECTORY ${MODEL_DIR})
+  add_custom_target(
+    ${ARTIFACT_TARGET_BINARY} ALL
+    make
+    DEPENDS ${ARTIFACT_TARGET_MAKE}
+    WORKING_DIRECTORY ${MODEL_DIR})
 endforeach(MODEL)

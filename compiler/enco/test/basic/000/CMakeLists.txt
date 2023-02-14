@@ -13,11 +13,10 @@ target_link_libraries(${PREFIX}-frontend enco_intf_cmdline)
 target_link_libraries(${PREFIX}-frontend enco_intf_frontend)
 
 # NOTE BYPRODUCTS are not specified in order to enforce source code generation
-add_custom_command(OUTPUT ${GENERATED_CPP} ${GENERATED_ASM} ${GENERATED_BIN}
-                   COMMAND $<TARGET_FILE:enco-cli>
-                           --frontend $<TARGET_FILE:${PREFIX}-frontend>
-                           --backend-arg ${PREFIX}
-                   DEPENDS enco-cli ${PREFIX}-frontend)
+add_custom_command(
+  OUTPUT ${GENERATED_CPP} ${GENERATED_ASM} ${GENERATED_BIN}
+  COMMAND $<TARGET_FILE:enco-cli> --frontend $<TARGET_FILE:${PREFIX}-frontend> --backend-arg ${PREFIX}
+  DEPENDS enco-cli ${PREFIX}-frontend)
 set_source_files_properties(${GENERATED_ASM} PROPERTIES GENERATED TRUE LANGUAGE C)
 add_library(${LIB_TARGET} SHARED ${GENERATED_CPP} ${GENERATED_ASM})
 # NOTE This line is necessary to compile the generated assembly (it includes the generated bin file)

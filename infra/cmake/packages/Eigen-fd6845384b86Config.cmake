@@ -8,7 +8,9 @@ function(_Eigen_import)
   nnas_find_package(EigenSource-fd6845384b86 QUIET)
 
   if(NOT EigenSource-fd6845384b86_FOUND)
-    set(Eigen-fd6845384b86_FOUND FALSE PARENT_SCOPE)
+    set(Eigen-fd6845384b86_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT EigenSource-fd6845384b86_FOUND)
 
@@ -19,7 +21,9 @@ function(_Eigen_import)
     target_compile_definitions(eigen-fd6845384b86 INTERFACE EIGEN_MPL2_ONLY)
   endif(NOT TARGET eigen-fd6845384b86)
 
-  set(Eigen-fd6845384b86_FOUND TRUE PARENT_SCOPE)
+  set(Eigen-fd6845384b86_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_Eigen_import)
 
 _Eigen_import()

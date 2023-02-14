@@ -1,10 +1,12 @@
 # TensorFlowGpuConfig.cmake
 macro(return_unless VAR)
-if(NOT ${VAR})
-  message("TensorFlowGpu: ${VAR} NOT TRUE")
-  set(TensorFlowGpu_FOUND FALSE PARENT_SCOPE)
-  return()
-endif(NOT ${VAR})
+  if(NOT ${VAR})
+    message("TensorFlowGpu: ${VAR} NOT TRUE")
+    set(TensorFlowGpu_FOUND
+        FALSE
+        PARENT_SCOPE)
+    return()
+  endif(NOT ${VAR})
 endmacro(return_unless)
 
 function(_Build_TfliteGpuDelagate_)
@@ -39,13 +41,21 @@ function(_Build_TfliteGpuDelagate_)
     nnas_include(ExternalProjectTools)
     add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/TensorFlowLiteGpu" TensorFlowLiteGpu)
   endif()
-  set(TensorFlowSource_DIR ${TensorFlowSource_DIR} PARENT_SCOPE)
-  set(TensorFlowGpu_DIR ${TensorFlowGpu_DIR} PARENT_SCOPE)
+  set(TensorFlowSource_DIR
+      ${TensorFlowSource_DIR}
+      PARENT_SCOPE)
+  set(TensorFlowGpu_DIR
+      ${TensorFlowGpu_DIR}
+      PARENT_SCOPE)
 endfunction(_Build_TfliteGpuDelagate_)
 
 if(BUILD_TENSORFLOW_LITE_GPU)
   _Build_TfliteGpuDelagate_()
-  set(TensorFlowGpu_FOUND TRUE PARENT_SCOPE)
+  set(TensorFlowGpu_FOUND
+      TRUE
+      PARENT_SCOPE)
 else(BUILD_TENSORFLOW_LITE_GPU)
-  set(TensorFlowGpu_FOUND FALSE PARENT_SCOPE)
+  set(TensorFlowGpu_FOUND
+      FALSE
+      PARENT_SCOPE)
 endif(BUILD_TENSORFLOW_LITE_GPU)

@@ -10,4 +10,3 @@ target_link_libraries(tflite_accuracy tensorflow-lite ${LIB_PTHREAD} dl nnfw_lib
 target_link_libraries(tflite_accuracy boost_program_options boost_system boost_filesystem)
 
 install(TARGETS tflite_accuracy DESTINATION bin)
-

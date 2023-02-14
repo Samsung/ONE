@@ -22,25 +22,29 @@ target_link_libraries(onert_core PRIVATE ruy)
 target_link_libraries(onert_core INTERFACE ruy_instrumentation)
 
 if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
-  add_custom_command(TARGET onert_core POST_BUILD
-                     COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:onert_core>)
+  add_custom_command(
+    TARGET onert_core
+    POST_BUILD
+    COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:onert_core>)
 endif()
 
 # NOTE Below line is added to remove warning for android build
 #      It will be removed after android build uses gold linker
-if (ANDROID)
+if(ANDROID)
   target_link_libraries(onert_core INTERFACE log)
-endif (ANDROID)
+endif(ANDROID)
 
 if(ENVVAR_ONERT_CONFIG)
   target_compile_definitions(onert_core PRIVATE ENVVAR_FOR_DEFAULT_CONFIG)
 endif(ENVVAR_ONERT_CONFIG)
 
 install(TARGETS onert_core LIBRARY DESTINATION lib)
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
-        DESTINATION "include/onert"
-        FILES_MATCHING PATTERN "*.h" PATTERN "*.lst"
-        )
+install(
+  DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+  DESTINATION "include/onert"
+  FILES_MATCHING
+  PATTERN "*.h"
+  PATTERN "*.lst")
 
 if(NOT ENABLE_TEST)
   return()

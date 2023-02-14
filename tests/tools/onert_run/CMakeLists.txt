@@ -16,13 +16,13 @@ nnfw_find_package(Boost REQUIRED program_options)
 nnfw_find_package(Ruy QUIET)
 nnfw_find_package(HDF5 QUIET)
 
-if (HDF5_FOUND)
+if(HDF5_FOUND)
   list(APPEND ONERT_RUN_SRCS "src/h5formatter.cc")
 endif()
 
 add_executable(onert_run ${ONERT_RUN_SRCS})
 
-if (HDF5_FOUND)
+if(HDF5_FOUND)
   target_compile_definitions(onert_run PRIVATE ONERT_HAVE_HDF5=1)
   target_include_directories(onert_run PRIVATE ${HDF5_INCLUDE_DIRS})
   target_link_libraries(onert_run ${HDF5_CXX_LIBRARIES})

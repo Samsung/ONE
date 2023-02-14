@@ -7,13 +7,13 @@ include(config)
 include(utils)
 
 # configure file that contains extern definitions
-configure_file(${NNC_ROOT_SRC_DIR}/include/Definitions.h.in
-        ${NNC_ROOT_BIN_DIR}/include/Definitions.h)
+configure_file(${NNC_ROOT_SRC_DIR}/include/Definitions.h.in ${NNC_ROOT_BIN_DIR}/include/Definitions.h)
 
 # add interface header files
 
 # target for compiler executable
-add_executable(${NNC_TARGET_EXECUTABLE} ${NNC_DRIVER_DIR}/main.cpp ${NNC_DRIVER_DIR}/Driver.cpp ${NNC_DRIVER_DIR}/Options.cpp)
+add_executable(${NNC_TARGET_EXECUTABLE} ${NNC_DRIVER_DIR}/main.cpp ${NNC_DRIVER_DIR}/Driver.cpp
+                                        ${NNC_DRIVER_DIR}/Options.cpp)
 
 # install compiler
 nnc_install_executable(${NNC_TARGET_EXECUTABLE})

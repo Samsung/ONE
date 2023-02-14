@@ -12,7 +12,6 @@ file(GLOB_RECURSE TESTS "src/*.test.cpp")
 
 GTest_AddTest(circle-operator-test ${TESTS})
 
-set_tests_properties(circle-operator-test
-                     PROPERTIES
-                     ENVIRONMENT "ARTIFACTS_PATH=${ARTIFACTS_PATH};CIRCLE_OPERATOR_PATH=${CIRCLE_OPERATOR_PATH}"
-                     )
+set_tests_properties(
+  circle-operator-test PROPERTIES ENVIRONMENT
+                                  "ARTIFACTS_PATH=${ARTIFACTS_PATH};CIRCLE_OPERATOR_PATH=${CIRCLE_OPERATOR_PATH}")

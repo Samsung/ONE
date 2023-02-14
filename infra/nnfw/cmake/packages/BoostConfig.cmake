@@ -8,9 +8,10 @@ function(_Boost_Build Boost_PREFIX)
 
   #### Generic configurations
   if(NOT EXISTS ${BoostSource_DIR}/b2)
-    execute_process(COMMAND "${BoostSource_DIR}/bootstrap.sh"
-                    WORKING_DIRECTORY ${BoostSource_DIR}
-                    RESULT_VARIABLE Boost_BUILD)
+    execute_process(
+      COMMAND "${BoostSource_DIR}/bootstrap.sh"
+      WORKING_DIRECTORY ${BoostSource_DIR}
+      RESULT_VARIABLE Boost_BUILD)
   endif()
 
   set(BoostBuild_DIR ${CMAKE_BINARY_DIR}/externals/boost)
@@ -51,7 +52,8 @@ function(_Boost_Build Boost_PREFIX)
   set(JAM_FILENAME ${BoostBuild_DIR}/user-config.jam)
 
   if(ANDROID)
-    set(NDK_CXX ${NDK_DIR}/toolchains/llvm/prebuilt/linux-x86_64/bin/${TARGET_ARCH}-linux-android${ANDROID_API_LEVEL}-clang++)
+    set(NDK_CXX
+        ${NDK_DIR}/toolchains/llvm/prebuilt/linux-x86_64/bin/${TARGET_ARCH}-linux-android${ANDROID_API_LEVEL}-clang++)
     file(WRITE ${JAM_FILENAME} "using clang : arm64v8a : ${NDK_CXX} ;")
     list(APPEND Boost_Options toolset=clang-arm64v8a)
     # without target-os=android, it complains it cannot find -lrt.
@@ -63,10 +65,11 @@ function(_Boost_Build Boost_PREFIX)
 
   # Install Boost libraries
   execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory "${BoostInstall_DIR}")
-  execute_process(COMMAND /usr/bin/env BOOST_BUILD_PATH="${BoostBuild_DIR}" ${BoostSource_DIR}/b2 install ${Boost_Options}
-                  WORKING_DIRECTORY ${BoostSource_DIR}
-                  OUTPUT_FILE ${BUILD_LOG_PATH}
-                  RESULT_VARIABLE BUILD_EXITCODE)
+  execute_process(
+    COMMAND /usr/bin/env BOOST_BUILD_PATH="${BoostBuild_DIR}" ${BoostSource_DIR}/b2 install ${Boost_Options}
+    WORKING_DIRECTORY ${BoostSource_DIR}
+    OUTPUT_FILE ${BUILD_LOG_PATH}
+    RESULT_VARIABLE BUILD_EXITCODE)
 
   if(NOT BUILD_EXITCODE EQUAL 0)
     message(FATAL_ERROR "${PKG_NAME} Package: Build and install failed (check '${BUILD_LOG_PATH}' for details)")
@@ -77,7 +80,7 @@ function(_Boost_Build Boost_PREFIX)
 endfunction(_Boost_Build)
 
 # Find pre-installed boost library and update Boost variables.
-if (NOT BUILD_BOOST)
+if(NOT BUILD_BOOST)
   # BoostConfig.cmake does not honor QUIET argument at least till cmake 1.70.0.
   # Thus, don't try to find_package if you're not entirely sure you have boost.
   find_package(Boost 1.58.0 QUIET COMPONENTS log program_options filesystem system)

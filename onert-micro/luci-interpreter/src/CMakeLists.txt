@@ -2,7 +2,7 @@ include("${LUCI_INTERPRETER_PAL_DIR}/pal.cmake")
 
 initialize_pal()
 
-if (NOT PAL_INITIALIZED)
+if(NOT PAL_INITIALIZED)
   message("PAL Failed to initialize, skip luci-interpreter")
   return()
 endif()
@@ -27,16 +27,18 @@ message(STATUS "LUCI INTERPRETER LOADER")
 
 message(STATUS "LUCI INTERPTER INITALIZED")
 
-set(SOURCES
-        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/Interpreter.h" Interpreter.cpp)
+set(SOURCES "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/Interpreter.h" Interpreter.cpp)
 
 add_library(${LUCI_INTERPRETER_BINARY} STATIC ${SOURCES})
 
 target_include_directories(${LUCI_INTERPRETER_BINARY} PUBLIC "${LUCI_INTERPRETER_INCLUDE_DIR}")
 target_include_directories(${LUCI_INTERPRETER_BINARY} PRIVATE "${LUCI_INTERPRETER_SOURCE_DIR}")
-target_link_libraries(${LUCI_INTERPRETER_BINARY}
-        PUBLIC ${LUCI_INTERPRETER_MEMORY_MANAGER} ${LUCI_INTERPRETER_LOADER} ${LUCI_INTERPRETER_CORE})
+target_link_libraries(${LUCI_INTERPRETER_BINARY} PUBLIC ${LUCI_INTERPRETER_MEMORY_MANAGER} ${LUCI_INTERPRETER_LOADER}
+                                                        ${LUCI_INTERPRETER_CORE})
 
 install(TARGETS ${LUCI_INTERPRETER_BINARY} DESTINATION lib)
-install(DIRECTORY include/ DESTINATION include
-        FILES_MATCHING PATTERN "*.h")
+install(
+  DIRECTORY include/
+  DESTINATION include
+  FILES_MATCHING
+  PATTERN "*.h")

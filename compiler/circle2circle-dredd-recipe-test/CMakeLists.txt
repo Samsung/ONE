@@ -35,11 +35,11 @@ macro(Add RECIPE)
   set(OPT_CIRCLE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${OPT_CIRCLE_FILE}")
 
   # Generate optimized .circle
-  add_custom_command(OUTPUT ${OPT_CIRCLE_OUTPUT_PATH}
+  add_custom_command(
+    OUTPUT ${OPT_CIRCLE_OUTPUT_PATH}
     COMMAND $<TARGET_FILE:circle2circle> ${OPT_OPTIONS} ${CIRCLE_PATH} ${OPT_CIRCLE_OUTPUT_PATH}
     DEPENDS $<TARGET_FILE:circle2circle> ${CIRCLE_PATH}
-    COMMENT "Generate ${OPT_CIRCLE_FILE}"
-  )
+    COMMENT "Generate ${OPT_CIRCLE_FILE}")
 
   list(APPEND TEST_DEPS ${OPT_CIRCLE_OUTPUT_PATH})
   list(APPEND TEST_NAMES ${RECIPE})
@@ -58,8 +58,7 @@ add_custom_command(
   OUTPUT ${TEST_RUNNER}
   COMMAND ${CMAKE_COMMAND} -E copy "${TEST_RUNNER_SOURCE}" "${TEST_RUNNER}"
   DEPENDS ${TEST_RUNNER_SOURCE}
-  COMMENT "Generate test runner"
-)
+  COMMENT "Generate test runner")
 
 list(APPEND TEST_DEPS "${TEST_RUNNER}")
 
@@ -73,11 +72,8 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E remove -f ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'CIRCLE_INSPECT_PATH=\"$<TARGET_FILE:circle-inspect>\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'CIRCLE_VERIFY_PATH=\"$<TARGET_FILE:circle-verify>\"' >> ${TEST_CONFIG}
-  DEPENDS
-    circle-inspect
-    circle-verify
-  COMMENT "Generate test configuration"
-)
+  DEPENDS circle-inspect circle-verify
+  COMMENT "Generate test configuration")
 
 list(APPEND TEST_DEPS "${TEST_CONFIG}")
 
@@ -95,8 +91,7 @@ add_custom_command(
   OUTPUT ${RULE_LIB_BINARY_PATH}
   COMMAND ${CMAKE_COMMAND} -E copy "${RULE_LIB_SOURCE_PATH}" "${RULE_LIB_BINARY_PATH}"
   DEPENDS ${RULE_LIB_SOURCE_PATH}
-  COMMENT "Generate rule lib"
-)
+  COMMENT "Generate rule lib")
 
 list(APPEND TEST_DEPS "${RULE_LIB_BINARY_PATH}")
 
@@ -107,10 +102,5 @@ add_dependencies(circle2circle_dredd_recipe_test common_artifacts_deps)
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
 # Run tests
-add_test(
-  NAME circle2circle_dredd_recipe_test
-  COMMAND "${TEST_RUNNER}"
-          "${TEST_CONFIG}"
-          "${ARTIFACTS_BIN_PATH}"
-          ${TEST_NAMES}
-)
+add_test(NAME circle2circle_dredd_recipe_test COMMAND "${TEST_RUNNER}" "${TEST_CONFIG}" "${ARTIFACTS_BIN_PATH}"
+                                                      ${TEST_NAMES})

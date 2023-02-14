@@ -1,4 +1,7 @@
-find_package(HDF5 COMPONENTS CXX QUIET)
+find_package(
+  HDF5
+  COMPONENTS CXX
+  QUIET)
 
 if(NOT HDF5_FOUND)
   return()

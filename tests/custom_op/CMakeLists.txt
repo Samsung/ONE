@@ -27,11 +27,11 @@ set(SUFFIX ".${TARGET_ARCH}-${TARGET_OS}.${BUILD_TYPE}")
 # KERNELS: the custom op kernel names that the app uses
 function(add_nnfw_custom_op_app NAME)
   cmake_parse_arguments(
-    PARSED_ARGS       # prefix of output variables
-    ""                # list of names of the boolean arguments (only defined ones will be true)
-    ""                # list of names of mono-valued arguments
+    PARSED_ARGS # prefix of output variables
+    "" # list of names of the boolean arguments (only defined ones will be true)
+    "" # list of names of mono-valued arguments
     "SOURCES;KERNELS" # list of names of multi-valued arguments (output variables are lists)
-    ${ARGN}           # arguments of the function to parse, here we take the all original ones
+    ${ARGN} # arguments of the function to parse, here we take the all original ones
   )
   add_executable(${NAME} ${PARSED_ARGS_SOURCES})
   set(LIBNAMELIST "")

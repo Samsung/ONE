@@ -27,8 +27,7 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E remove -f ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'RECORD_MINMAX_PATH=\"$<TARGET_FILE:record-minmax>\"' >> ${TEST_CONFIG}
   DEPENDS record-minmax
-  COMMENT "Generate test configuration"
-)
+  COMMENT "Generate test configuration")
 
 list(APPEND TEST_DEPS "${TEST_CONFIG}")
 
@@ -36,22 +35,12 @@ list(APPEND TEST_DEPS "${TEST_CONFIG}")
 add_custom_target(record_minmax_conversion_test_deps ALL DEPENDS ${TEST_DEPS})
 
 # Run tests
-add_test(
-  NAME record_minmax_conversion_test
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/testall.sh"
-          "${TEST_CONFIG}"
-          "${ARTIFACTS_BIN_PATH}"
-          "${NNCC_OVERLAY_DIR}/venv_2_8_0"
-          ${RECORD_MINMAX_CONVERSION_TEST}
-)
+add_test(NAME record_minmax_conversion_test
+         COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/testall.sh" "${TEST_CONFIG}" "${ARTIFACTS_BIN_PATH}"
+                 "${NNCC_OVERLAY_DIR}/venv_2_8_0" ${RECORD_MINMAX_CONVERSION_TEST})
 
 if(ONE_UBUNTU_CODENAME_JAMMY)
-  add_test(
-    NAME record_minmax_conversion_210_test
-    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/testall.sh"
-            "${TEST_CONFIG}"
-            "${ARTIFACTS_BIN_PATH}"
-            "${NNCC_OVERLAY_DIR}/venv_2_10_1"
-            ${RECORD_MINMAX_CONVERSION_TEST}
-  )
+  add_test(NAME record_minmax_conversion_210_test
+           COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/testall.sh" "${TEST_CONFIG}" "${ARTIFACTS_BIN_PATH}"
+                   "${NNCC_OVERLAY_DIR}/venv_2_10_1" ${RECORD_MINMAX_CONVERSION_TEST})
 endif(ONE_UBUNTU_CODENAME_JAMMY)

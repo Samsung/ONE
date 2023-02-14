@@ -8,5 +8,4 @@ message(STATUS "Building for AARCH64 Linux")
 include("cmake/buildtool/config/config_linux.cmake")
 
 # addition for aarch64-linux
-set(FLAGS_COMMON ${FLAGS_COMMON}
-    )
+set(FLAGS_COMMON ${FLAGS_COMMON})

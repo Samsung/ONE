@@ -42,18 +42,18 @@ foreach(PREFIX IN ITEMS ${TESTCASES})
   set(INFO_PATH "${CMAKE_CURRENT_BINARY_DIR}/${INFO_FILE}")
 
   # Copy .pbtxt
-  add_custom_command(OUTPUT ${PBTXT_PATH}
+  add_custom_command(
+    OUTPUT ${PBTXT_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy "${PBTXT_SOURCE_PATH}" "${PBTXT_PATH}"
     DEPENDS ${PBTXT_SOURCE_PATH}
-    COMMENT "Generate ${PBTXT_FILE}"
-  )
+    COMMENT "Generate ${PBTXT_FILE}")
 
   # Copy .info
-  add_custom_command(OUTPUT ${INFO_PATH}
+  add_custom_command(
+    OUTPUT ${INFO_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy "${INFO_SOURCE_PATH}" "${INFO_PATH}"
     DEPENDS ${INFO_SOURCE_PATH}
-    COMMENT "Generate ${INFO_FILE}"
-  )
+    COMMENT "Generate ${INFO_FILE}")
 
   list(APPEND TEST_DEPS ${INFO_PATH} ${PBTXT_PATH})
   list(APPEND TEST_NAMES ${PREFIX})
@@ -69,8 +69,7 @@ add_custom_command(
   OUTPUT ${TEST_RUNNER}
   COMMAND ${CMAKE_COMMAND} -E copy "${TEST_RUNNER_SOURCE}" "${TEST_RUNNER}"
   DEPENDS ${TEST_RUNNER_SOURCE}
-  COMMENT "Generate test runner"
-)
+  COMMENT "Generate test runner")
 
 list(APPEND TEST_DEPS "${TEST_RUNNER}")
 
@@ -97,10 +96,8 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E remove -f ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'TF2TFLITEV2_PATH=\"${TF2TFLITEV2_PATH}\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'VIRTUALENV=\"${VIRTUALENV}\"' >> ${TEST_CONFIG}
-  DEPENDS
-    tf2tfliteV2
-  COMMENT "Generate test configuration"
-)
+  DEPENDS tf2tfliteV2
+  COMMENT "Generate test configuration")
 
 list(APPEND TEST_DEPS "${TEST_CONFIG}")
 

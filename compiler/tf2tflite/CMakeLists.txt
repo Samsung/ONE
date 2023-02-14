@@ -18,10 +18,7 @@ if(NOT Protobuf_FOUND)
 endif(NOT Protobuf_FOUND)
 
 # generating and building schema for customop.conf
-Protobuf_Generate(CUSTOMOP_INFO_PROTO
-                  "${CMAKE_CURRENT_BINARY_DIR}/generated"
-                  "./proto"
-                  CustomOpInfo.proto)
+Protobuf_Generate(CUSTOMOP_INFO_PROTO "${CMAKE_CURRENT_BINARY_DIR}/generated" "./proto" CustomOpInfo.proto)
 
 add_library(tf2tflite_customop_info_proto SHARED ${CUSTOMOP_INFO_PROTO_SOURCES})
 set_target_properties(tf2tflite_customop_info_proto PROPERTIES POSITION_INDEPENDENT_CODE ON)

@@ -39,9 +39,9 @@ if(NOT Egl_HeadersSource_FOUND)
   return()
 endif(NOT Egl_HeadersSource_FOUND)
 
-if (NOT ${TARGET_OS} MATCHES "tizen")
+if(NOT ${TARGET_OS} MATCHES "tizen")
   nnas_find_package(FlatBuffers REQUIRED)
-endif ()
+endif()
 
 nnfw_find_package(TensorFlowGpu QUIET)
 if(NOT TensorFlowGpu_FOUND)
@@ -59,9 +59,9 @@ target_include_directories(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${VulkanSource_DI
 target_include_directories(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${Opengl_HeadersSource_DIR}/api)
 target_include_directories(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${Egl_HeadersSource_DIR}/api)
 
-if (${TARGET_OS} MATCHES "tizen")
-    target_compile_options(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE "-Wno-error=deprecated-copy")
-endif ()
+if(${TARGET_OS} MATCHES "tizen")
+  target_compile_options(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE "-Wno-error=deprecated-copy")
+endif()
 
 target_compile_options(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE "-DCL_TARGET_OPENCL_VERSION=220" "-DEGL_NO_X11")
 
@@ -75,17 +75,19 @@ target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE onert_core)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${LIB_ONERT_BACKEND_CL_COMMON})
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_coverage)
-if (${TARGET_OS} MATCHES "tizen")
+if(${TARGET_OS} MATCHES "tizen")
   target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE flatbuffers)
 else()
   target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE flatbuffers::flatbuffers)
-endif ()
+endif()
 
 set_target_properties(${LIB_ONERT_BACKEND_GPU_CL} PROPERTIES OUTPUT_NAME backend_gpu_cl)
 
 if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
-  add_custom_command(TARGET ${LIB_ONERT_BACKEND_GPU_CL} POST_BUILD
-                     COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:${LIB_ONERT_BACKEND_GPU_CL}>)
+  add_custom_command(
+    TARGET ${LIB_ONERT_BACKEND_GPU_CL}
+    POST_BUILD
+    COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:${LIB_ONERT_BACKEND_GPU_CL}>)
 endif()
 
 add_library(tflite_ignore_warnings INTERFACE)

@@ -36,7 +36,7 @@ macro(Add MODEL_DIR)
   cmake_parse_arguments(ARG "${ARG_OPTION}" "${ARG_ONE_VALUE}" "${ARG_MULTI_VALUE}" ${ARGN})
 
   if(NOT ARG_RULE)
-    message( FATAL_ERROR "RULE is mandadatory arg" )
+    message(FATAL_ERROR "RULE is mandadatory arg")
   endif()
 
   set(RULE_FILENAME ${ARG_RULE})
@@ -67,32 +67,32 @@ macro(Add MODEL_DIR)
   endif(NOT EXISTS "${TXT_SOURCE_RULE_PATH}")
 
   # Copy .pbtxt
-  add_custom_command(OUTPUT ${TXT_TARGET_PBTXT_PATH}
+  add_custom_command(
+    OUTPUT ${TXT_TARGET_PBTXT_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy "${TXT_SOURCE_PBTXT_PATH}" "${TXT_TARGET_PBTXT_PATH}"
     DEPENDS ${TXT_SOURCE_PBTXT_PATH}
-    COMMENT "Generate ${TXT_TARGET_PBTXT_PATH}"
-  )
+    COMMENT "Generate ${TXT_TARGET_PBTXT_PATH}")
 
   # Copy .info
-  add_custom_command(OUTPUT ${TXT_TARGET_INFO_PATH}
+  add_custom_command(
+    OUTPUT ${TXT_TARGET_INFO_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy "${TXT_SOURCE_INFO_PATH}" "${TXT_TARGET_INFO_PATH}"
     DEPENDS ${TXT_SOURCE_INFO_PATH}
-    COMMENT "Generate ${TXT_TARGET_INFO_PATH}"
-  )
+    COMMENT "Generate ${TXT_TARGET_INFO_PATH}")
 
   # Copy .rule
-  add_custom_command(OUTPUT ${TXT_TARGET_RULE_PATH}
+  add_custom_command(
+    OUTPUT ${TXT_TARGET_RULE_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy "${TXT_SOURCE_RULE_PATH}" "${TXT_TARGET_RULE_PATH}"
     DEPENDS ${TXT_SOURCE_RULE_PATH}
-    COMMENT "Generate ${TXT_TARGET_RULE_PATH}"
-  )
+    COMMENT "Generate ${TXT_TARGET_RULE_PATH}")
 
   # Generate .pb from .pbtxt
-  add_custom_command(OUTPUT ${TXT_TARGET_PB_PATH}
+  add_custom_command(
+    OUTPUT ${TXT_TARGET_PB_PATH}
     COMMAND $<TARGET_FILE:tfkit> encode ${TXT_TARGET_PBTXT_PATH} ${TXT_TARGET_PB_PATH}
     DEPENDS ${TXT_TARGET_PBTXT_PATH}
-    COMMENT "Generate ${TXT_TARGET_PB_PATH}"
-  )
+    COMMENT "Generate ${TXT_TARGET_PB_PATH}")
 
   # Generate .test file which declares path of target pb, info, rule files
   # this file is used inside runner.sh
@@ -104,12 +104,8 @@ macro(Add MODEL_DIR)
     COMMAND ${CMAKE_COMMAND} -E echo 'MODEL_PB_PATH="${TXT_TARGET_PB_PATH}"' >> ${TEST_CONFIG_FILE}
     COMMAND ${CMAKE_COMMAND} -E echo 'MODEL_INFO_PATH="${TXT_TARGET_INFO_PATH}"' >> ${TEST_CONFIG_FILE}
     COMMAND ${CMAKE_COMMAND} -E echo 'MODEL_RULE_PATH="${TXT_TARGET_RULE_PATH}"' >> ${TEST_CONFIG_FILE}
-    DEPENDS
-      ${TXT_TARGET_PB_PATH}
-      ${TXT_TARGET_INFO_PATH}
-      ${TXT_TARGET_RULE_PATH}
-    COMMENT "Generate ${TARGET_TESTNAME} configuration for TXT"
-  )
+    DEPENDS ${TXT_TARGET_PB_PATH} ${TXT_TARGET_INFO_PATH} ${TXT_TARGET_RULE_PATH}
+    COMMENT "Generate ${TARGET_TESTNAME} configuration for TXT")
 
   list(APPEND DEPS "${TEST_CONFIG_FILE}")
   list(APPEND KEYS "${TARGET_TESTNAME}")
@@ -133,12 +129,8 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo 'TFL_VERIFY_PATH=\"$<TARGET_FILE:tfl-verify>\"' >> ${TOOLCHAIN_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'TF2TFLITE_PATH=\"$<TARGET_FILE:tf2tflite>\"' >> ${TOOLCHAIN_CONFIG}
   # add more if new excutable file is needed in runner.sh and rule-lib.sh
-  DEPENDS
-    tfl-inspect
-    tfl-verify
-    tf2tflite
-  COMMENT "Generate toolchin configuration"
-)
+  DEPENDS tfl-inspect tfl-verify tf2tflite
+  COMMENT "Generate toolchin configuration")
 
 list(APPEND DEPS "${TOOLCHAIN_CONFIG}")
 
@@ -152,8 +144,7 @@ add_custom_command(
   OUTPUT ${TARGET_RUNNER}
   COMMAND ${CMAKE_COMMAND} -E copy "${SOURCE_RUNNER}" "${TARGET_RUNNER}"
   DEPENDS ${SOURCE_RUNNER}
-  COMMENT "Generate test runner"
-)
+  COMMENT "Generate test runner")
 
 list(APPEND DEPS "${TARGET_RUNNER}")
 
@@ -171,18 +162,11 @@ add_custom_command(
   OUTPUT ${TARGET_RULE_LIB}
   COMMAND ${CMAKE_COMMAND} -E copy "${SOURCE_RULE_LIB}" "${TARGET_RULE_LIB}"
   DEPENDS ${SOURCE_RULE_LIB}
-  COMMENT "Generate rule lib"
-)
+  COMMENT "Generate rule lib")
 
 list(APPEND DEPS "${TARGET_RULE_LIB}")
 
 # Generate dependencies
 add_custom_target(tf2tflite_dredd_pbtxt_deps ALL DEPENDS ${DEPS})
 
-add_test(
-  NAME tf2tflite_dredd_pbtxt_test
-  COMMAND
-    "${TARGET_RUNNER}"
-    "${TOOLCHAIN_CONFIG}"
-    ${KEYS}
-)
+add_test(NAME tf2tflite_dredd_pbtxt_test COMMAND "${TARGET_RUNNER}" "${TOOLCHAIN_CONFIG}" ${KEYS})

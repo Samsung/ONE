@@ -1,12 +1,12 @@
 option(ONECO_VALUE_PBTXT_TEST "Enable oneco value test for pbtxt input model" ON)
 
 if(NOT ONECO_VALUE_PBTXT_TEST)
- return()
+  return()
 endif(NOT ONECO_VALUE_PBTXT_TEST)
 
 if(NOT TARGET onnxkit)
- message(STATUS "oneco: Skip test material preparation as onnxkit is not defined")
- return()
+  message(STATUS "oneco: Skip test material preparation as onnxkit is not defined")
+  return()
 endif(NOT TARGET onnxkit)
 
 #
@@ -17,7 +17,10 @@ set(TEST_PBTXT_FILE "test.pbtxt")
 set(TEST_REPO "${CMAKE_CURRENT_SOURCE_DIR}") # Where to find tests
 set(TEST_SPACE "${CMAKE_CURRENT_BINARY_DIR}") # Where to run tests
 
-file(GLOB PBTXTFILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*/${TEST_PBTXT_FILE}")
+file(
+  GLOB PBTXTFILES
+  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+  "*/${TEST_PBTXT_FILE}")
 
 unset(TEST_DEPS)
 
@@ -35,16 +38,14 @@ foreach(PBTXTFILE IN ITEMS ${PBTXTFILES})
     OUTPUT ${PBTXT_SOURCE_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy "${TEST_REPO}/${PBTXTFILE}" "${PBTXT_SOURCE_PATH}"
     COMMENT "Copy ${PBTXT_SOURCE_FILE}"
-    DEPENDS "${TEST_REPO}/${PBTXTFILE}"
-  )
+    DEPENDS "${TEST_REPO}/${PBTXTFILE}")
 
   # Use onnxkit to encode
   add_custom_command(
     OUTPUT ${PB_OUTPUT_PATH}
     COMMAND $<TARGET_FILE:onnxkit> encode ${PBTXT_SOURCE_PATH} ${PB_OUTPUT_PATH}
     DEPENDS ${PBTXT_SOURCE_PATH}
-    COMMENT "Generate ${PB_OUTPUT_FILE}"
-  )
+    COMMENT "Generate ${PB_OUTPUT_FILE}")
 
   list(APPEND TEST_DEPS "${PB_OUTPUT_PATH}")
 endforeach(PBTXTFILE)

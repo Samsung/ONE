@@ -13,16 +13,16 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(NNAS_PROJECT_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../.." CACHE
-  INTERNAL "Where to find nnas top-level source directory"
-)
+set(NNAS_PROJECT_SOURCE_DIR
+    "${CMAKE_CURRENT_LIST_DIR}/../.."
+    CACHE INTERNAL "Where to find nnas top-level source directory")
 
 set(NNAS_EXTERNALS_DIR
-  "${NNAS_PROJECT_SOURCE_DIR}/externals" CACHE
-  INTERNAL "Where to download external dependencies"
-)
-set(NNCC_OVERLAY_DIR "${CMAKE_BINARY_DIR}/overlay" CACHE
-    INTERNAL "Where locally built external dependencies are installed")
+    "${NNAS_PROJECT_SOURCE_DIR}/externals"
+    CACHE INTERNAL "Where to download external dependencies")
+set(NNCC_OVERLAY_DIR
+    "${CMAKE_BINARY_DIR}/overlay"
+    CACHE INTERNAL "Where locally built external dependencies are installed")
 
 # Share package build script with runtime
 set(EXT_OVERLAY_DIR ${NNCC_OVERLAY_DIR})
@@ -35,17 +35,18 @@ macro(nnas_include PREFIX)
 endmacro(nnas_include)
 
 macro(nnas_find_package PREFIX)
-  find_package(${PREFIX}
-               CONFIG NO_DEFAULT_PATH
-               PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
-               ${ARGN})
+  find_package(${PREFIX} CONFIG NO_DEFAULT_PATH PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages ${ARGN})
 endmacro(nnas_find_package)
 
 macro(nnas_find_package_folder PREFIX FIND_FOLDER)
-  find_package(${PREFIX}
-               CONFIG NO_DEFAULT_PATH
-               PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages ${FIND_FOLDER}
-               ${ARGN})
+  find_package(
+    ${PREFIX}
+    CONFIG
+    NO_DEFAULT_PATH
+    PATHS
+    ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
+    ${FIND_FOLDER}
+    ${ARGN})
 endmacro(nnas_find_package_folder)
 
 # nncc_find_resource(NAME) will update the following variables
@@ -58,19 +59,27 @@ function(nncc_find_resource NAME)
   set(RESOURCE_DIR "${NNAS_PROJECT_SOURCE_DIR}/res/${NAME}")
 
   if(NOT IS_DIRECTORY ${RESOURCE_DIR})
-    set(${NAME}_FOUND FALSE PARENT_SCOPE)
+    set(${NAME}_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT IS_DIRECTORY ${RESOURCE_DIR})
 
-  set(${NAME}_DIR ${RESOURCE_DIR} PARENT_SCOPE)
-  set(${NAME}_FOUND TRUE PARENT_SCOPE)
+  set(${NAME}_DIR
+      ${RESOURCE_DIR}
+      PARENT_SCOPE)
+  set(${NAME}_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(nncc_find_resource)
 
 ###
 ### CMake configuration
 ###
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Type of build" FORCE)
+  set(CMAKE_BUILD_TYPE
+      "Debug"
+      CACHE STRING "Type of build" FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 message(STATUS "Use '${CMAKE_BUILD_TYPE}' configuration")
 

@@ -8,8 +8,7 @@ add_custom_command(
   OUTPUT ${TARGET_RULE_LIB}
   COMMAND ${CMAKE_COMMAND} -E copy "${SOURCE_RULE_LIB}" "${TARGET_RULE_LIB}"
   DEPENDS ${SOURCE_RULE_LIB}
-  COMMENT "Generate rule lib"
-)
+  COMMENT "Generate rule lib")
 
 # Generate dependencies
 add_custom_target(dredd_rule_lib ALL DEPENDS ${TARGET_RULE_LIB})

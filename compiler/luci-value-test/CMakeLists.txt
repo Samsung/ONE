@@ -26,44 +26,26 @@ if(NOT CMAKE_CROSSCOMPILING)
   get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
   add_test(NAME luci_value_test
-    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify.sh"
-            "${CMAKE_CURRENT_BINARY_DIR}"
-            "${ARTIFACTS_BIN_PATH}"
-            "${NNCC_OVERLAY_DIR}/venv_2_8_0"
-            "$<TARGET_FILE:luci_eval_driver>"
-            ${LUCI_VALUE_TESTS}
-  )
+           COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify.sh" "${CMAKE_CURRENT_BINARY_DIR}" "${ARTIFACTS_BIN_PATH}"
+                   "${NNCC_OVERLAY_DIR}/venv_2_8_0" "$<TARGET_FILE:luci_eval_driver>" ${LUCI_VALUE_TESTS})
 
   if(DEFINED LUCI_VALUE_TESTS_TOL)
-    add_test(NAME luci_value_tol_test
-      COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverifytol.sh"
-              "${CMAKE_CURRENT_BINARY_DIR}"
-              "${ARTIFACTS_BIN_PATH}"
-              "${NNCC_OVERLAY_DIR}/venv_2_8_0"
-              "$<TARGET_FILE:luci_eval_driver>"
-              ${LUCI_VALUE_TESTS_TOL}
-    )
+    add_test(
+      NAME luci_value_tol_test
+      COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverifytol.sh" "${CMAKE_CURRENT_BINARY_DIR}" "${ARTIFACTS_BIN_PATH}"
+              "${NNCC_OVERLAY_DIR}/venv_2_8_0" "$<TARGET_FILE:luci_eval_driver>" ${LUCI_VALUE_TESTS_TOL})
   endif()
 
   if(ONE_UBUNTU_CODENAME_JAMMY)
     add_test(NAME luci_value_210_test
-      COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify.sh"
-              "${CMAKE_CURRENT_BINARY_DIR}"
-              "${ARTIFACTS_BIN_PATH}"
-              "${NNCC_OVERLAY_DIR}/venv_2_10_1"
-              "$<TARGET_FILE:luci_eval_driver>"
-              ${LUCI_VALUE_TESTS}
-    )
+             COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify.sh" "${CMAKE_CURRENT_BINARY_DIR}" "${ARTIFACTS_BIN_PATH}"
+                     "${NNCC_OVERLAY_DIR}/venv_2_10_1" "$<TARGET_FILE:luci_eval_driver>" ${LUCI_VALUE_TESTS})
 
     if(DEFINED LUCI_VALUE_TESTS_TOL)
-      add_test(NAME luci_value_tol_210_test
-        COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverifytol.sh"
-                "${CMAKE_CURRENT_BINARY_DIR}"
-                "${ARTIFACTS_BIN_PATH}"
-                "${NNCC_OVERLAY_DIR}/venv_2_10_1"
-                "$<TARGET_FILE:luci_eval_driver>"
-                ${LUCI_VALUE_TESTS_TOL}
-      )
+      add_test(
+        NAME luci_value_tol_210_test
+        COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverifytol.sh" "${CMAKE_CURRENT_BINARY_DIR}" "${ARTIFACTS_BIN_PATH}"
+                "${NNCC_OVERLAY_DIR}/venv_2_10_1" "$<TARGET_FILE:luci_eval_driver>" ${LUCI_VALUE_TESTS_TOL})
     endif()
   endif(ONE_UBUNTU_CODENAME_JAMMY)
 
@@ -82,21 +64,13 @@ else(NOT CMAKE_CROSSCOMPILING)
   set(ARTIFACTS_BIN_PATH $ENV{BUILD_HOST_EXEC}/compiler/common-artifacts)
 
   add_test(NAME luci_value_cross_test
-    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify_ref.sh"
-            "${CMAKE_CURRENT_BINARY_DIR}"
-            "${ARTIFACTS_BIN_PATH}"
-            "$<TARGET_FILE:luci_eval_driver>"
-            ${LUCI_VALUE_TESTS}
-  )
+           COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify_ref.sh" "${CMAKE_CURRENT_BINARY_DIR}"
+                   "${ARTIFACTS_BIN_PATH}" "$<TARGET_FILE:luci_eval_driver>" ${LUCI_VALUE_TESTS})
 
   if(DEFINED LUCI_VALUE_TESTS_TOL)
     add_test(NAME luci_value_cross_tol_test
-             COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverifytol_ref.sh"
-                     "${CMAKE_CURRENT_BINARY_DIR}"
-                     "${ARTIFACTS_BIN_PATH}"
-                     "$<TARGET_FILE:luci_eval_driver>"
-                     ${LUCI_VALUE_TESTS_TOL}
-    )
+             COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverifytol_ref.sh" "${CMAKE_CURRENT_BINARY_DIR}"
+                     "${ARTIFACTS_BIN_PATH}" "$<TARGET_FILE:luci_eval_driver>" ${LUCI_VALUE_TESTS_TOL})
   endif()
 
 endif(NOT CMAKE_CROSSCOMPILING)

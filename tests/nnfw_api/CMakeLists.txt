@@ -1,8 +1,8 @@
-if (NOT BUILD_RUNTIME_NNFW_API_TEST)
+if(NOT BUILD_RUNTIME_NNFW_API_TEST)
   return()
 endif(NOT BUILD_RUNTIME_NNFW_API_TEST)
 
-if (NOT BUILD_ONERT)
+if(NOT BUILD_ONERT)
   message(STATUS "Skip build NNFW API test: no runtime build")
   return()
 endif(NOT BUILD_ONERT)
@@ -29,8 +29,7 @@ if(Opencl_Headers_FOUND)
   target_compile_definitions(${RUNTIME_NNFW_API_TEST} PRIVATE TEST_GPU_CL_BACKEND)
 endif(Opencl_Headers_FOUND)
 
-set(RUNTIME_NNFW_API_TEST_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include
-                                  ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(RUNTIME_NNFW_API_TEST_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(${RUNTIME_NNFW_API_TEST} PRIVATE ${RUNTIME_NNFW_API_TEST_INCLUDE})
 
 target_link_libraries(${RUNTIME_NNFW_API_TEST} nnfw-dev jsoncpp)
@@ -65,4 +64,3 @@ install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}
 # Install nnpackage test model (mobilenet)
 set(NNPACKAGE_MODEL_DIR ${NNAS_PROJECT_SOURCE_DIR}/runtime/contrib/TFLiteSharp/TFLiteTestApp/res/)
 install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/mobilenet_v1_1.0_224)
-

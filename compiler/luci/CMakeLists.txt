@@ -3,7 +3,7 @@
 # and suppress various cmake warnings.
 #
 # Currently this feature is used for luci-interpreter MCU builds.
-if (STATIC_LUCI)
+if(STATIC_LUCI)
   set(LUCI_LIBRARY_TYPE "STATIC")
 else()
   set(LUCI_LIBRARY_TYPE "SHARED")

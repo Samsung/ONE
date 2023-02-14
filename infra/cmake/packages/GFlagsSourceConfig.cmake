@@ -1,6 +1,8 @@
 function(_GFlagsSource_import)
   if(NOT DOWNLOAD_GFLAGS)
-    set(GFlagsSource_FOUND False PARENT_SCOPE)
+    set(GFlagsSource_FOUND
+        False
+        PARENT_SCOPE)
     return()
   endif(NOT DOWNLOAD_GFLAGS)
 
@@ -12,8 +14,12 @@ function(_GFlagsSource_import)
 
   ExternalSource_Download(GFLAGS ${GFLAGS_URL})
 
-  set(GFLAGS_SOURCE_DIR ${GFLAGS_SOURCE_DIR} PARENT_SCOPE)
-  set(GFlagsSource_FOUND True PARENT_SCOPE)
+  set(GFLAGS_SOURCE_DIR
+      ${GFLAGS_SOURCE_DIR}
+      PARENT_SCOPE)
+  set(GFlagsSource_FOUND
+      True
+      PARENT_SCOPE)
 endfunction(_GFlagsSource_import)
 
 _GFlagsSource_import()

@@ -11,7 +11,6 @@ nnas_find_package(GTest REQUIRED)
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
 GTest_AddTest(circle-interpreter-test ${TESTS})
 
-set_tests_properties(circle-interpreter-test
-                     PROPERTIES
-                     ENVIRONMENT "ARTIFACTS_PATH=${ARTIFACTS_PATH};CIRCLE_INTERPRETER_PATH=${CIRCLE_INTERPRETER_PATH}"
-                     )
+set_tests_properties(
+  circle-interpreter-test
+  PROPERTIES ENVIRONMENT "ARTIFACTS_PATH=${ARTIFACTS_PATH};CIRCLE_INTERPRETER_PATH=${CIRCLE_INTERPRETER_PATH}")

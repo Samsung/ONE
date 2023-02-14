@@ -4,7 +4,7 @@ if(NOT Jsoncpp_FOUND)
   return()
 endif(NOT Jsoncpp_FOUND)
 
-set (SOURCES src/CircleQuantizer.cpp)
+set(SOURCES src/CircleQuantizer.cpp)
 
 add_executable(circle-quantizer "${SOURCES}")
 target_include_directories(circle-quantizer PRIVATE ${Jsoncpp_INCLUDE_DIRS})

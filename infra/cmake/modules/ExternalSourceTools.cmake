@@ -53,10 +53,11 @@ function(ExternalSource_Download PREFIX)
 
       # For external mirror server
       envoption(EXTERNAL_SERVER_USERPWD "")
-      file(DOWNLOAD ${URL} "${DOWNLOAD_PATH}"
-                    STATUS status
-                    USERPWD "${EXTERNAL_SERVER_USERPWD}"
-                    LOG log)
+      file(
+        DOWNLOAD ${URL} "${DOWNLOAD_PATH}"
+        STATUS status
+        USERPWD "${EXTERNAL_SERVER_USERPWD}"
+        LOG log)
 
       list(GET status 0 status_code)
       list(GET status 1 status_string)
@@ -66,7 +67,9 @@ function(ExternalSource_Download PREFIX)
         break()
       endif()
 
-      message(WARNING "error: downloading '${URL}' failed
+      message(
+        WARNING
+          "error: downloading '${URL}' failed
               status_code: ${status_code}
               status_string: ${status_string}
               log: ${log}")
@@ -105,10 +108,11 @@ function(ExternalSource_Download PREFIX)
     endif(ARG_CHECKSUM)
 
     message(STATUS "Extract ${PREFIX}")
-    execute_process(COMMAND ${CMAKE_COMMAND} -E tar xfz "${DOWNLOAD_PATH}"
-                    WORKING_DIRECTORY "${TMP_DIR}"
-                    RESULT_VARIABLE EXTRACTION_RESULT
-                    ERROR_VARIABLE EXTRACTION_ERROR)
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E tar xfz "${DOWNLOAD_PATH}"
+      WORKING_DIRECTORY "${TMP_DIR}"
+      RESULT_VARIABLE EXTRACTION_RESULT
+      ERROR_VARIABLE EXTRACTION_ERROR)
 
     if(EXTRACTION_RESULT AND NOT EXTRACTION_RESULT EQUAL 0)
       message(FATAL_ERROR "Extract ${PREFIX} - failed: ${EXTRACTION_ERROR}")
@@ -129,10 +133,11 @@ function(ExternalSource_Download PREFIX)
     file(RENAME ${contents} "${OUT_DIR}")
     if(ARG_PATCH)
       message(STATUS "Patch with ${ARG_PATCH}")
-      execute_process(COMMAND patch -p1 -i ${ARG_PATCH}
-                      WORKING_DIRECTORY ${OUT_DIR}
-                      RESULT_VARIABLE EXEC_RESULT
-                      ERROR_VARIABLE EXEC_ERROR)
+      execute_process(
+        COMMAND patch -p1 -i ${ARG_PATCH}
+        WORKING_DIRECTORY ${OUT_DIR}
+        RESULT_VARIABLE EXEC_RESULT
+        ERROR_VARIABLE EXEC_ERROR)
       if(NOT EXEC_RESULT EQUAL 0)
         message(FATAL_ERROR "${PREFIX} failed patch ${ARG_PATCH}")
       endif(NOT EXEC_RESULT EQUAL 0)
@@ -145,5 +150,7 @@ function(ExternalSource_Download PREFIX)
     message(STATUS "Cleanup ${PREFIX} - done")
   endif()
 
-  set(${PREFIX}_SOURCE_DIR "${OUT_DIR}" PARENT_SCOPE)
+  set(${PREFIX}_SOURCE_DIR
+      "${OUT_DIR}"
+      PARENT_SCOPE)
 endfunction(ExternalSource_Download)

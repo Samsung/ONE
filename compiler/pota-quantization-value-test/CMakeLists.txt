@@ -51,14 +51,13 @@ add_custom_command(
   DEPENDS record-minmax
   DEPENDS circle-quantizer
   DEPENDS circle-tensordump
-  COMMENT "Generate test configuration"
-)
+  COMMENT "Generate test configuration")
 
 # Import pics module
 get_target_property(PICS_BIN_PATH pics BINARY_DIR)
-add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/circle
-                   COMMAND ${CMAKE_COMMAND} -E create_symlink
-                   ${PICS_BIN_PATH}/circle ${CMAKE_CURRENT_BINARY_DIR}/circle)
+add_custom_command(
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/circle COMMAND ${CMAKE_COMMAND} -E create_symlink ${PICS_BIN_PATH}/circle
+                                                    ${CMAKE_CURRENT_BINARY_DIR}/circle)
 
 list(APPEND TEST_DEPS "${TEST_CONFIG}" "${CMAKE_CURRENT_BINARY_DIR}/circle")
 
@@ -66,53 +65,26 @@ list(APPEND TEST_DEPS "${TEST_CONFIG}" "${CMAKE_CURRENT_BINARY_DIR}/circle")
 add_custom_target(pota_quantization_value_test_deps ALL DEPENDS ${TEST_DEPS})
 
 # Run tests
-add_test(
-  NAME pota_fake_wquant_test
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_fake_wquant.sh"
-          "${TEST_CONFIG}"
-          "${ARTIFACTS_BIN_PATH}"
-          ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
-)
+add_test(NAME pota_fake_wquant_test COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_fake_wquant.sh" "${TEST_CONFIG}"
+                                            "${ARTIFACTS_BIN_PATH}" ${QUANTIZATION_VALUE_TEST_WITH_PARAM})
 
-add_test(
-  NAME pota_record_minmax_test
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_record_minmax.sh"
-          "${TEST_CONFIG}"
-          "${ARTIFACTS_BIN_PATH}"
-          ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
-)
+add_test(NAME pota_record_minmax_test COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_record_minmax.sh" "${TEST_CONFIG}"
+                                              "${ARTIFACTS_BIN_PATH}" ${QUANTIZATION_VALUE_TEST_WITH_PARAM})
 
-add_test(
-  NAME pota_quantization_test
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_quantization.sh"
-          "${TEST_CONFIG}"
-          "${ARTIFACTS_BIN_PATH}"
-          ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
-)
+add_test(NAME pota_quantization_test COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_quantization.sh" "${TEST_CONFIG}"
+                                             "${ARTIFACTS_BIN_PATH}" ${QUANTIZATION_VALUE_TEST_WITH_PARAM})
 
-add_test(
-  NAME pota_fake_wquant_test_with_config
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_fake_wquant_with_config.sh"
-          "${TEST_CONFIG}"
-          "${ARTIFACTS_BIN_PATH}"
-          ${QUANTIZATION_CONFIG_VALUE_TEST_WITH_PARAM}
-)
+add_test(NAME pota_fake_wquant_test_with_config
+         COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_fake_wquant_with_config.sh" "${TEST_CONFIG}" "${ARTIFACTS_BIN_PATH}"
+                 ${QUANTIZATION_CONFIG_VALUE_TEST_WITH_PARAM})
 
-add_test(
-  NAME pota_parallel_record_minmax_test
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_parallel_record_minmax.sh"
-          "${TEST_CONFIG}"
-          "${ARTIFACTS_BIN_PATH}"
-          ${QUANTIZATION_VALUE_TEST_WITH_PARAM}
-)
+add_test(NAME pota_parallel_record_minmax_test
+         COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_parallel_record_minmax.sh" "${TEST_CONFIG}" "${ARTIFACTS_BIN_PATH}"
+                 ${QUANTIZATION_VALUE_TEST_WITH_PARAM})
 
-add_test(
-  NAME pota_quantization_test_with_config
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_quantization_with_config.sh"
-          "${TEST_CONFIG}"
-          "${ARTIFACTS_BIN_PATH}"
-          ${QUANTIZATION_CONFIG_VALUE_TEST_WITH_PARAM}
-)
+add_test(NAME pota_quantization_test_with_config
+         COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_quantization_with_config.sh" "${TEST_CONFIG}"
+                 "${ARTIFACTS_BIN_PATH}" ${QUANTIZATION_CONFIG_VALUE_TEST_WITH_PARAM})
 
 set_tests_properties(pota_record_minmax_test PROPERTIES DEPENDS pota_fake_wquant_test)
 set_tests_properties(pota_quantization_test PROPERTIES DEPENDS pota_record_minmax_test)

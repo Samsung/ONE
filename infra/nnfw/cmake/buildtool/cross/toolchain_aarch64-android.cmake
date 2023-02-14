@@ -1,10 +1,10 @@
 # A workaround for accessing to NDK_DIR. This works since Env Vars are always accessible
 # while cache variables are not
-if (NDK_DIR)
-    set(ENV{_NDK_DIR} "${NDK_DIR}")
-else (NDK_DIR)
-    set(NDK_DIR "$ENV{_NDK_DIR}")
-endif (NDK_DIR)
+if(NDK_DIR)
+  set(ENV{_NDK_DIR} "${NDK_DIR}")
+else(NDK_DIR)
+  set(NDK_DIR "$ENV{_NDK_DIR}")
+endif(NDK_DIR)
 
 if(NOT DEFINED NDK_DIR)
   message(FATAL_ERROR "NDK_DIR should be specified via cmake argument")

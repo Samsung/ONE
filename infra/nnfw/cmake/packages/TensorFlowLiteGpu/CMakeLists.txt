@@ -10,36 +10,42 @@ set(TENSORFLOW_LITE_BASE ${TENSORFLOWSOURCE_DIR}/tensorflow/lite)
 set(REF_TENSORFLOW_LITE_GPU_DELEGATE_SRC_BASE "${TENSORFLOW_LITE_BASE}/delegates/gpu")
 
 set(SRC_BASE "${REF_TENSORFLOW_LITE_GPU_DELEGATE_SRC_BASE}")
-file(GLOB GPU_CL_SRC_LIST   "${SRC_BASE}/cl/*.cc"
-                                    "${SRC_BASE}/cl/kernels/*.cc"
-                                    "${SRC_BASE}/common/*.cc"
-                                    "${SRC_BASE}/common/selectors/*.cc"
-                                    "${SRC_BASE}/common/selectors/default/*.cc"
-                                    "${SRC_BASE}/common/task/*.cc"
-                                    "${SRC_BASE}/common/tasks/*.cc"
-                                    "${SRC_BASE}/common/tasks/special/*.cc"
-                                    "${SRC_BASE}/common/memory_management/*.cc"
-                                    "${SRC_BASE}/common/transformations/*.cc"
-                                     )
+file(
+  GLOB
+  GPU_CL_SRC_LIST
+  "${SRC_BASE}/cl/*.cc"
+  "${SRC_BASE}/cl/kernels/*.cc"
+  "${SRC_BASE}/common/*.cc"
+  "${SRC_BASE}/common/selectors/*.cc"
+  "${SRC_BASE}/common/selectors/default/*.cc"
+  "${SRC_BASE}/common/task/*.cc"
+  "${SRC_BASE}/common/tasks/*.cc"
+  "${SRC_BASE}/common/tasks/special/*.cc"
+  "${SRC_BASE}/common/memory_management/*.cc"
+  "${SRC_BASE}/common/transformations/*.cc")
 
-file(GLOB REMOVE_TEST_SRCS          "${SRC_BASE}/cl/*_test*.cc"
-                                    "${SRC_BASE}/cl/testing/*.cc"
-                                    "${SRC_BASE}/cl/kernels/*_test*.cc"
-                                    "${SRC_BASE}/common/*_test*.cc"
-                                    "${SRC_BASE}/common/tasks/*_test*.cc"
-                                    "${SRC_BASE}/common/transformations/*_test*.cc"
-                                    )
+file(
+  GLOB
+  REMOVE_TEST_SRCS
+  "${SRC_BASE}/cl/*_test*.cc"
+  "${SRC_BASE}/cl/testing/*.cc"
+  "${SRC_BASE}/cl/kernels/*_test*.cc"
+  "${SRC_BASE}/common/*_test*.cc"
+  "${SRC_BASE}/common/tasks/*_test*.cc"
+  "${SRC_BASE}/common/transformations/*_test*.cc")
 # Not available
-file(GLOB REMOVE_SRCS               "${SRC_BASE}/cl/*gl*.cc"
-                                    "${SRC_BASE}/cl/gpu_api_delegate.cc"
-                                    "${SRC_BASE}/cl/serialization.cc"
-                                    "${SRC_BASE}/common/lstm_parser.cc"
-                                    "${SRC_BASE}/common/model_builder.cc"
-                                    "${SRC_BASE}/common/model_builder_helper.cc"
-                                    "${SRC_BASE}/common/object_reader.cc"
-                                    "${SRC_BASE}/common/quantization_util.cc"
-                                    "${SRC_BASE}/common/memory_management/*_test.cc"
-                                    )
+file(
+  GLOB
+  REMOVE_SRCS
+  "${SRC_BASE}/cl/*gl*.cc"
+  "${SRC_BASE}/cl/gpu_api_delegate.cc"
+  "${SRC_BASE}/cl/serialization.cc"
+  "${SRC_BASE}/common/lstm_parser.cc"
+  "${SRC_BASE}/common/model_builder.cc"
+  "${SRC_BASE}/common/model_builder_helper.cc"
+  "${SRC_BASE}/common/object_reader.cc"
+  "${SRC_BASE}/common/quantization_util.cc"
+  "${SRC_BASE}/common/memory_management/*_test.cc")
 
 list(APPEND GPU_CL_SRC_LIST "${TENSORFLOW_LITE_BASE}/experimental/acceleration/compatibility/android_info.cc")
 

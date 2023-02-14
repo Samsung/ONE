@@ -1,7 +1,7 @@
 nnas_find_package(Boost REQUIRED COMPONENTS filesystem)
 
-set(ACL_SOFT_BACKEND_CPP_SOURCES AclCppGenerator.cpp AclCppOpGenerator.cpp
-    ArtifactGeneratorCppCode.cpp ArtifactGeneratorCppDecl.cpp ArtifactModel.cpp)
+set(ACL_SOFT_BACKEND_CPP_SOURCES AclCppGenerator.cpp AclCppOpGenerator.cpp ArtifactGeneratorCppCode.cpp
+                                 ArtifactGeneratorCppDecl.cpp ArtifactModel.cpp)
 
 file(GLOB_RECURSE ACL_IN_SOURCES "*.in")
 nnc_make_generated_sources("${ACL_IN_SOURCES}" ${CMAKE_CURRENT_BINARY_DIR} ACL_GENERATED_SOURCES)

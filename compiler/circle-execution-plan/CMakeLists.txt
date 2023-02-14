@@ -1,19 +1,18 @@
 nnas_find_package(Jsoncpp)
 if(NOT Jsoncpp_FOUND)
-    message(STATUS "Build circle-execution-plan: FAILED (missing jsoncpp)")
-    return()
+  message(STATUS "Build circle-execution-plan: FAILED (missing jsoncpp)")
+  return()
 endif(NOT Jsoncpp_FOUND)
 
 set(SOURCES
-        pal/IScratchpadHelper.h
-        pal/ScratchpadHelperLinux.h
-        pal/ScratchpadHelperMCU.h
-        pal/ScratchpadHelperCMSISNN.h
-        pal/TargetPlatform.h
-        src/CircleExecutionPlan.cpp
-        src/ExecutionPlanner.cpp
-        src/ExecutionPlanner.h
-        )
+    pal/IScratchpadHelper.h
+    pal/ScratchpadHelperLinux.h
+    pal/ScratchpadHelperMCU.h
+    pal/ScratchpadHelperCMSISNN.h
+    pal/TargetPlatform.h
+    src/CircleExecutionPlan.cpp
+    src/ExecutionPlanner.cpp
+    src/ExecutionPlanner.h)
 
 add_executable(circle_execution_plan "${SOURCES}")
 target_include_directories(circle_execution_plan PRIVATE ${Jsoncpp_INCLUDE_DIRS})

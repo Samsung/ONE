@@ -3,14 +3,20 @@ function(_Opencl_Headers_import)
 
   # NOTE This line prevents multiple definitions of target
   if(TARGET OpenCL_Headers)
-    set(Opencl_HeadersSource_DIR ${Opencl_HeadersSource_DIR} PARENT_SCOPE)
-    set(Opencl_Headers_FOUND TRUE PARENT_SCOPE)
+    set(Opencl_HeadersSource_DIR
+        ${Opencl_HeadersSource_DIR}
+        PARENT_SCOPE)
+    set(Opencl_Headers_FOUND
+        TRUE
+        PARENT_SCOPE)
     return()
   endif(TARGET OpenCL_Headers)
 
   if(NOT Opencl_HeadersSource_FOUND)
     message(STATUS "Opencl_Headers: Source not found")
-    set(Opencl_Headers_FOUND FALSE PARENT_SCOPE)
+    set(Opencl_Headers_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT Opencl_HeadersSource_FOUND)
 
@@ -20,8 +26,12 @@ function(_Opencl_Headers_import)
   add_library(OpenCL_Headers INTERFACE)
   target_include_directories(OpenCL_Headers INTERFACE ${Opencl_HeadersSource_DIR})
 
-  set(Opencl_Headers_DIR ${Opencl_HeadersSource_DIR} PARENT_SCOPE)
-  set(Opencl_Headers_FOUND TRUE PARENT_SCOPE)
+  set(Opencl_Headers_DIR
+      ${Opencl_HeadersSource_DIR}
+      PARENT_SCOPE)
+  set(Opencl_Headers_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_Opencl_Headers_import)
 
 _Opencl_Headers_import()

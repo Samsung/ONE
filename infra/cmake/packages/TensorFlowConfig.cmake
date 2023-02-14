@@ -1,39 +1,53 @@
-set(TENSORFLOW_PREFIX "/usr" CACHE PATH "The location of pre-installed TensorFlow library")
+set(TENSORFLOW_PREFIX
+    "/usr"
+    CACHE PATH "The location of pre-installed TensorFlow library")
 set(TENSORFLOW_VERSION_REQUIRED "1.12.0")
 
 # TODO Build TensorFlow from the (downloaded) source
 
 function(_TensorFlow_import)
   # Find the header & lib
-  find_library(TensorFlow_LIB NAMES tensorflow PATHS "${TENSORFLOW_PREFIX}/lib")
-  find_path(TensorFlow_INCLUDE_DIR NAMES tensorflow/c/c_api.h PATHS "${TENSORFLOW_PREFIX}/include")
+  find_library(
+    TensorFlow_LIB
+    NAMES tensorflow
+    PATHS "${TENSORFLOW_PREFIX}/lib")
+  find_path(
+    TensorFlow_INCLUDE_DIR
+    NAMES tensorflow/c/c_api.h
+    PATHS "${TENSORFLOW_PREFIX}/include")
 
   if(NOT TensorFlow_LIB OR NOT TensorFlow_INCLUDE_DIR)
     message(STATUS "Found TensorFlow: FALSE")
 
-    set(TensorFlow_FOUND FALSE PARENT_SCOPE)
+    set(TensorFlow_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT TensorFlow_LIB OR NOT TensorFlow_INCLUDE_DIR)
 
   # Check TensorFlow version
-  try_run(RUN_RESULT_VAR COMPILE_RESULT_VAR
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_CURRENT_LIST_DIR}/TensorFlowVersionChecker.c
-    COMPILE_DEFINITIONS -I${TensorFlow_INCLUDE_DIR}
-    LINK_LIBRARIES ${TensorFlow_LIB}
+  try_run(
+    RUN_RESULT_VAR COMPILE_RESULT_VAR ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_LIST_DIR}/TensorFlowVersionChecker.c
+    COMPILE_DEFINITIONS -I${TensorFlow_INCLUDE_DIR} LINK_LIBRARIES ${TensorFlow_LIB}
     ARGS ${TENSORFLOW_VERSION_REQUIRED})
 
   if(NOT COMPILE_RESULT_VAR)
-    message(STATUS "Failed to build TensorFlowVersionChecker. Your libtensorflow may be built on different version of Ubuntu.")
+    message(
+      STATUS "Failed to build TensorFlowVersionChecker. Your libtensorflow may be built on different version of Ubuntu."
+    )
     message(STATUS "Found TensorFlow: FALSE")
-    set(TensorFlow_FOUND FALSE PARENT_SCOPE)
+    set(TensorFlow_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT COMPILE_RESULT_VAR)
 
   if(NOT RUN_RESULT_VAR EQUAL 0)
     message(STATUS "you need tensorflow version ${TENSORFLOW_VERSION_REQUIRED}")
     message(STATUS "Found TensorFlow: FALSE")
-    set(TensorFlow_FOUND FALSE PARENT_SCOPE)
+    set(TensorFlow_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT RUN_RESULT_VAR EQUAL 0)
 
@@ -47,7 +61,9 @@ function(_TensorFlow_import)
     target_include_directories(tensorflow INTERFACE ${TensorFlow_INCLUDE_DIR})
   endif(NOT TARGET tensorflow)
 
-  set(TensorFlow_FOUND TRUE PARENT_SCOPE)
+  set(TensorFlow_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_TensorFlow_import)
 
 _TensorFlow_import()

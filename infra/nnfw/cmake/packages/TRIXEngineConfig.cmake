@@ -1,17 +1,19 @@
 # Looking for pre-installed TRIX engine package
-set(TRIX_ENGINE_PREFIX "/usr" CACHE PATH "Where to find TRIX engine header and library")
+set(TRIX_ENGINE_PREFIX
+    "/usr"
+    CACHE PATH "Where to find TRIX engine header and library")
 
 function(_TRIXEngine_import)
   # Find the header & lib
-  find_library(TRIXEngine_LIB
+  find_library(
+    TRIXEngine_LIB
     NAMES npu-engine
-    PATHS "${TRIX_ENGINE_PREFIX}/lib"
-  )
+    PATHS "${TRIX_ENGINE_PREFIX}/lib")
 
-  find_path(TRIXEngine_INCLUDE_DIR
+  find_path(
+    TRIXEngine_INCLUDE_DIR
     NAMES libnpuhost.h
-    PATHS "${TRIX_ENGINE_PREFIX}/include/npu-engine"
-  )
+    PATHS "${TRIX_ENGINE_PREFIX}/include/npu-engine")
 
   set(TRIXEngine_FOUND TRUE)
 
@@ -35,8 +37,12 @@ function(_TRIXEngine_import)
     endif(NOT TARGET trix_engine)
   endif(NOT TRIXEngine_FOUND)
 
-  set(TRIXEngine_FOUND ${TRIXEngine_FOUND} PARENT_SCOPE)
-  set(TRIXEngine_INCLUDE_DIRS ${TRIXEngine_INCLUDE_DIR} PARENT_SCOPE)
+  set(TRIXEngine_FOUND
+      ${TRIXEngine_FOUND}
+      PARENT_SCOPE)
+  set(TRIXEngine_INCLUDE_DIRS
+      ${TRIXEngine_INCLUDE_DIR}
+      PARENT_SCOPE)
 endfunction(_TRIXEngine_import)
 
 _TRIXEngine_import()

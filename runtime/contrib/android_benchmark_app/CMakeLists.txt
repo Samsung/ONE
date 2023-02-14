@@ -41,9 +41,9 @@ set(LIB_DIR ${PKG_DIR}/lib/arm64-v8a)
 set(ASSETS_DIR ${PKG_DIR}/assets)
 set(SRC_LIST ${CMAKE_CURRENT_BINARY_DIR}/src.list)
 
-if (ANDROID_BOOST_ROOT)
+if(ANDROID_BOOST_ROOT)
   set(BOOST_ROOT ${ANDROID_BOOST_ROOT})
-endif (ANDROID_BOOST_ROOT)
+endif(ANDROID_BOOST_ROOT)
 
 nnfw_find_package(Boost REQUIRED)
 
@@ -58,20 +58,19 @@ target_link_libraries(android_benchmark_native log)
 nnas_find_package(FlatBuffersSource EXACT 2.0 REQUIRED)
 target_include_directories(android_benchmark_native PUBLIC ${FlatBuffersSource_DIR}/include .)
 
-add_custom_target(android-benchmark-apk ALL
+add_custom_target(
+  android-benchmark-apk ALL
   COMMAND ${CMAKE_COMMAND} -E remove_directory ${GEN_DIR}
   COMMAND ${CMAKE_COMMAND} -E make_directory ${GEN_DIR}
-  COMMAND ${ANDROID_BUILD_TOOLS_DIR}/aapt package -m -J ${GEN_DIR}
-                                                  -M ${CMAKE_CURRENT_SOURCE_DIR}/AndroidManifest.xml
-                                                  -S ${CMAKE_CURRENT_SOURCE_DIR}/res
-                                                  -I ${ANDROID_PLATFORM_DIR}/android.jar
+  COMMAND ${ANDROID_BUILD_TOOLS_DIR}/aapt package -m -J ${GEN_DIR} -M ${CMAKE_CURRENT_SOURCE_DIR}/AndroidManifest.xml -S
+          ${CMAKE_CURRENT_SOURCE_DIR}/res -I ${ANDROID_PLATFORM_DIR}/android.jar
   COMMAND ${CMAKE_COMMAND} -E remove_directory ${OBJ_DIR}
   COMMAND ${CMAKE_COMMAND} -E make_directory ${OBJ_DIR}
   COMMAND ${CMAKE_COMMAND} -E remove -f ${SRC_LIST}
   COMMAND find ${CMAKE_CURRENT_SOURCE_DIR}/java -name '*.java' >> ${SRC_LIST}
   COMMAND find ${GEN_DIR} -name '*.java' >> ${SRC_LIST}
-  COMMAND javac -d ${OBJ_DIR} -source 1.7 -target 1.7 -bootclasspath "${JAVA_HOME}/jre/lib/rt.jar"
-                -classpath ${ANDROID_PLATFORM_DIR}/android.jar @${SRC_LIST}
+  COMMAND javac -d ${OBJ_DIR} -source 1.7 -target 1.7 -bootclasspath "${JAVA_HOME}/jre/lib/rt.jar" -classpath
+          ${ANDROID_PLATFORM_DIR}/android.jar @${SRC_LIST}
   COMMAND ${CMAKE_COMMAND} -E remove_directory ${PKG_DIR}
   COMMAND ${CMAKE_COMMAND} -E make_directory ${PKG_DIR}
   COMMAND ${CMAKE_COMMAND} -E make_directory ${ASSETS_DIR}
@@ -86,12 +85,12 @@ add_custom_target(android-benchmark-apk ALL
   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:arm_compute_ex> ${LIB_DIR}
   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:onert_backend_acl_neon> ${LIB_DIR}
   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:onert_backend_cpu> ${LIB_DIR}
-  COMMAND ${CMAKE_COMMAND} -E echo ${ANDROID_BUILD_TOOLS_DIR}/aapt package -f -0 tflite -M ${CMAKE_CURRENT_SOURCE_DIR}/AndroidManifest.xml -S ${CMAKE_CURRENT_SOURCE_DIR}/res/ -I ${ANDROID_PLATFORM_DIR}/android.jar -F ${CMAKE_CURRENT_BINARY_DIR}/android-benchmark.unsigned.pkg ${PKG_DIR}
-  COMMAND ${ANDROID_BUILD_TOOLS_DIR}/aapt package -f
-                                                  -0 tflite
-                                                  -M ${CMAKE_CURRENT_SOURCE_DIR}/AndroidManifest.xml
-                                                  -S ${CMAKE_CURRENT_SOURCE_DIR}/res/
-                                                  -I ${ANDROID_PLATFORM_DIR}/android.jar
-                                                  -F ${CMAKE_CURRENT_BINARY_DIR}/android-benchmark.unsigned.pkg
-                                                  ${PKG_DIR}
+  COMMAND
+    ${CMAKE_COMMAND} -E echo ${ANDROID_BUILD_TOOLS_DIR}/aapt package -f -0 tflite -M
+    ${CMAKE_CURRENT_SOURCE_DIR}/AndroidManifest.xml -S ${CMAKE_CURRENT_SOURCE_DIR}/res/ -I
+    ${ANDROID_PLATFORM_DIR}/android.jar -F ${CMAKE_CURRENT_BINARY_DIR}/android-benchmark.unsigned.pkg ${PKG_DIR}
+  COMMAND
+    ${ANDROID_BUILD_TOOLS_DIR}/aapt package -f -0 tflite -M ${CMAKE_CURRENT_SOURCE_DIR}/AndroidManifest.xml -S
+    ${CMAKE_CURRENT_SOURCE_DIR}/res/ -I ${ANDROID_PLATFORM_DIR}/android.jar -F
+    ${CMAKE_CURRENT_BINARY_DIR}/android-benchmark.unsigned.pkg ${PKG_DIR}
   DEPENDS android_benchmark_native onert onert_backend_acl_cl onert_backend_acl_neon onert_backend_cpu)

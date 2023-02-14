@@ -20,7 +20,7 @@ option(TF2NNPKG_FOR_WINDOWS "Use Windows filesystem" OFF)
 if(TF2NNPKG_FOR_WINDOWS)
   list(APPEND SOURCES "src/filesystem_windows.cpp")
 else()
-  list(APPEND SOURCES "src/filesystem_linux.cpp")  # default
+  list(APPEND SOURCES "src/filesystem_linux.cpp") # default
 endif()
 
 add_executable(tf2nnpkg ${SOURCES})

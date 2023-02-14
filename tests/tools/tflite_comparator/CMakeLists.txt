@@ -18,6 +18,7 @@ target_include_directories(tflite_comparator PRIVATE ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(tflite_comparator nnfw-dev)
 target_link_libraries(tflite_comparator nnfw_lib_tflite nnfw_lib_misc)
-target_link_libraries(tflite_comparator ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
+target_link_libraries(tflite_comparator ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_SYSTEM_LIBRARY}
+                      ${Boost_FILESYSTEM_LIBRARY})
 
 install(TARGETS tflite_comparator DESTINATION bin)

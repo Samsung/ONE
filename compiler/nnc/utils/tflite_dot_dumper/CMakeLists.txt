@@ -1,5 +1,5 @@
-if (NOT TARGET mir_tflite_importer)
-  return ()
+if(NOT TARGET mir_tflite_importer)
+  return()
 endif()
 
 add_executable(tflite_model_dumper model_dump.cpp)

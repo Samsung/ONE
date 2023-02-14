@@ -3,14 +3,16 @@ function(_Protobuf_module_import)
   find_package(Protobuf MODULE QUIET)
 
   if(NOT PROTOBUF_FOUND)
-    set(Protobuf_FOUND FALSE PARENT_SCOPE)
+    set(Protobuf_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT PROTOBUF_FOUND)
 
   if(NOT TARGET protoc)
     add_executable(protoc IMPORTED)
     set_target_properties(protoc PROPERTIES IMPORTED_LOCATION ${PROTOBUF_PROTOC_EXECUTABLE})
-   endif(NOT TARGET protoc)
+  endif(NOT TARGET protoc)
 
   if(NOT TARGET libprotobuf)
     add_library(libprotobuf INTERFACE)
@@ -18,7 +20,9 @@ function(_Protobuf_module_import)
     target_link_libraries(libprotobuf INTERFACE ${PROTOBUF_LIBRARIES})
   endif(NOT TARGET libprotobuf)
 
-  set(Protobuf_FOUND TRUE PARENT_SCOPE)
+  set(Protobuf_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_Protobuf_module_import)
 
 function(_Protobuf_import)
@@ -27,7 +31,9 @@ function(_Protobuf_import)
   find_package(protobuf EXACT 3.5.2 QUIET)
 
   if(NOT protobuf_FOUND)
-    set(Protobuf_FOUND FALSE PARENT_SCOPE)
+    set(Protobuf_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT protobuf_FOUND)
 
@@ -36,7 +42,9 @@ function(_Protobuf_import)
     target_link_libraries(libprotobuf INTERFACE protobuf::libprotobuf)
   endif(NOT TARGET libprotobuf)
 
-  set(Protobuf_FOUND TRUE PARENT_SCOPE)
+  set(Protobuf_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_Protobuf_import)
 
 function(_Protobuf_build)
@@ -60,13 +68,22 @@ function(_Protobuf_build)
   endif(NOT DEFINED ENV{EXTERNAL_JS_EMBED})
 
   nnas_include(ExternalBuildTools)
-  ExternalBuild_CMake(CMAKE_DIR   ${ProtobufSource_DIR}/cmake
-                      BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/PROTOBUF/build
-                      INSTALL_DIR ${EXT_OVERLAY_DIR}
-                      BUILD_FLAGS -fPIC
-                      EXTRA_OPTS  -Dprotobuf_BUILD_TESTS=OFF -Dprotobuf_WITH_ZLIB=OFF
-                      IDENTIFIER  "3.5.2-fix2"
-                      PKG_NAME    "PROTOBUF")
+  ExternalBuild_CMake(
+    CMAKE_DIR
+    ${ProtobufSource_DIR}/cmake
+    BUILD_DIR
+    ${CMAKE_BINARY_DIR}/externals/PROTOBUF/build
+    INSTALL_DIR
+    ${EXT_OVERLAY_DIR}
+    BUILD_FLAGS
+    -fPIC
+    EXTRA_OPTS
+    -Dprotobuf_BUILD_TESTS=OFF
+    -Dprotobuf_WITH_ZLIB=OFF
+    IDENTIFIER
+    "3.5.2-fix2"
+    PKG_NAME
+    "PROTOBUF")
 
 endfunction(_Protobuf_build)
 
@@ -111,13 +128,20 @@ if(Protobuf_FOUND)
       list(APPEND OUTPUT_FILES "${abs_output_dir}/${dir}/${fil_we}.pb.cc")
     endforeach()
 
-    add_custom_command(OUTPUT ${OUTPUT_FILES}
-                       COMMAND ${CMAKE_COMMAND} -E make_directory "${abs_output_dir}"
-                       COMMAND "${PROTOC_PATH}" --cpp_out "${abs_output_dir}" -I "${abs_proto_dir}" ${PROTO_FILES}
-                       DEPENDS ${PROTO_FILES})
+    add_custom_command(
+      OUTPUT ${OUTPUT_FILES}
+      COMMAND ${CMAKE_COMMAND} -E make_directory "${abs_output_dir}"
+      COMMAND "${PROTOC_PATH}" --cpp_out "${abs_output_dir}" -I "${abs_proto_dir}" ${PROTO_FILES}
+      DEPENDS ${PROTO_FILES})
 
-    set(${PREFIX}_SOURCES ${OUTPUT_FILES} PARENT_SCOPE)
-    set(${PREFIX}_INCLUDE_DIRS ${abs_output_dir} PARENT_SCOPE)
-    set(${PREFIX}_LIBRARIES protobuf::libprotobuf PARENT_SCOPE)
+    set(${PREFIX}_SOURCES
+        ${OUTPUT_FILES}
+        PARENT_SCOPE)
+    set(${PREFIX}_INCLUDE_DIRS
+        ${abs_output_dir}
+        PARENT_SCOPE)
+    set(${PREFIX}_LIBRARIES
+        protobuf::libprotobuf
+        PARENT_SCOPE)
   endfunction(Protobuf_Generate)
 endif(Protobuf_FOUND)

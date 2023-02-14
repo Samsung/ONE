@@ -2,7 +2,9 @@ function(_Eigen_import)
   nnas_find_package(TensorFlowEigenSource EXACT 2.8.0 QUIET)
 
   if(NOT TensorFlowEigenSource_FOUND)
-    set(Eigen_FOUND FALSE PARENT_SCOPE)
+    set(Eigen_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT TensorFlowEigenSource_FOUND)
 
@@ -13,7 +15,9 @@ function(_Eigen_import)
     target_compile_definitions(eigen INTERFACE EIGEN_MPL2_ONLY)
   endif(NOT TARGET eigen)
 
-  set(Eigen_FOUND TRUE PARENT_SCOPE)
+  set(Eigen_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_Eigen_import)
 
 _Eigen_import()

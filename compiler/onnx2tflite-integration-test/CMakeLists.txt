@@ -46,18 +46,18 @@ foreach(PREFIX IN ITEMS ${TESTCASES})
   set(ONNX_PATH "${CMAKE_CURRENT_BINARY_DIR}/${ONNX_FILE}")
 
   # Copy .pbtxt
-  add_custom_command(OUTPUT ${PBTXT_PATH}
+  add_custom_command(
+    OUTPUT ${PBTXT_PATH}
     COMMAND ${CMAKE_COMMAND} -E copy "${PBTXT_SOURCE_PATH}" "${PBTXT_PATH}"
     DEPENDS ${PBTXT_SOURCE_PATH}
-    COMMENT "Generate ${PBTXT_FILE}"
-  )
+    COMMENT "Generate ${PBTXT_FILE}")
 
   # Generate .onnx from .pbtxt
-  add_custom_command(OUTPUT ${ONNX_PATH}
+  add_custom_command(
+    OUTPUT ${ONNX_PATH}
     COMMAND $<TARGET_FILE:onnxkit> encode ${PBTXT_PATH} ${ONNX_PATH}
     DEPENDS ${PBTXT_PATH}
-    COMMENT "Generate ${ONNX_FILE}"
-  )
+    COMMENT "Generate ${ONNX_FILE}")
 
   list(APPEND DEPS ${INFO_PATH} ${ONNX_PATH})
   list(APPEND KEYS ${PREFIX})
@@ -73,8 +73,7 @@ add_custom_command(
   OUTPUT ${TEST_RUNNER}
   COMMAND ${CMAKE_COMMAND} -E copy "${TEST_RUNNER_TEMPLATE}" "${TEST_RUNNER}"
   DEPENDS ${TEST_RUNNER_TEMPLATE}
-  COMMENT "Generate test runner"
-)
+  COMMENT "Generate test runner")
 
 list(APPEND DEPS "${TEST_RUNNER}")
 
@@ -89,22 +88,23 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo 'NNKIT_RUN_PATH=\"$<TARGET_FILE:nnkit-run>\"' >> ${TOOLCHAIN_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'ONNX_BACKEND_PATH=\"$<TARGET_FILE:nnkit_onnx_backend>\"' >> ${TOOLCHAIN_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'TFLITE_BACKEND_PATH=\"$<TARGET_FILE:nnkit_tflite_backend>\"' >> ${TOOLCHAIN_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'RANDOMIZE_ACTION_PATH=\"$<TARGET_FILE:nnkit_randomize_action>\"' >> ${TOOLCHAIN_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'HDF5_EXPORT_ACTION_PATH=\"$<TARGET_FILE:nnkit_HDF5_export_action>\"' >> ${TOOLCHAIN_CONFIG}
-  COMMAND ${CMAKE_COMMAND} -E echo 'HDF5_IMPORT_ACTION_PATH=\"$<TARGET_FILE:nnkit_HDF5_import_action>\"' >> ${TOOLCHAIN_CONFIG}
+  COMMAND ${CMAKE_COMMAND} -E echo 'RANDOMIZE_ACTION_PATH=\"$<TARGET_FILE:nnkit_randomize_action>\"' >>
+          ${TOOLCHAIN_CONFIG}
+  COMMAND ${CMAKE_COMMAND} -E echo 'HDF5_EXPORT_ACTION_PATH=\"$<TARGET_FILE:nnkit_HDF5_export_action>\"' >>
+          ${TOOLCHAIN_CONFIG}
+  COMMAND ${CMAKE_COMMAND} -E echo 'HDF5_IMPORT_ACTION_PATH=\"$<TARGET_FILE:nnkit_HDF5_import_action>\"' >>
+          ${TOOLCHAIN_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'ONNX2TFLITE_PATH=\"$<TARGET_FILE:onnx2tflite>\"' >> ${TOOLCHAIN_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'I5DIFF_PATH=\"$<TARGET_FILE:i5diff>\"' >> ${TOOLCHAIN_CONFIG}
-  DEPENDS
-    nnkit-run
-    nnkit_onnx_backend
-    nnkit_tflite_backend
-    nnkit_randomize_action
-    nnkit_HDF5_export_action
-    nnkit_HDF5_import_action
-    onnx2tflite
-    i5diff
-  COMMENT "Generate toolchain configuration"
-)
+  DEPENDS nnkit-run
+          nnkit_onnx_backend
+          nnkit_tflite_backend
+          nnkit_randomize_action
+          nnkit_HDF5_export_action
+          nnkit_HDF5_import_action
+          onnx2tflite
+          i5diff
+  COMMENT "Generate toolchain configuration")
 
 list(APPEND DEPS "${TOOLCHAIN_CONFIG}")
 
@@ -112,9 +112,4 @@ list(APPEND DEPS "${TOOLCHAIN_CONFIG}")
 add_custom_target(onnx2tflite_integration_test_deps ALL DEPENDS ${DEPS})
 
 # Run tests
-add_test(
-  NAME onnx2tflite_integration_test
-  COMMAND "${TEST_RUNNER}"
-          "${TOOLCHAIN_CONFIG}"
-          ${KEYS}
-)
+add_test(NAME onnx2tflite_integration_test COMMAND "${TEST_RUNNER}" "${TOOLCHAIN_CONFIG}" ${KEYS})

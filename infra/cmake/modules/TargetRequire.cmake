@@ -3,10 +3,14 @@
 # TargetRequire_Check(NAME ...) sets "NAME" as TRUE if all the required targets are
 # available, and FALSE otherwise.
 function(TargetRequire_Check VARNAME)
-  set(${VARNAME} TRUE PARENT_SCOPE)
+  set(${VARNAME}
+      TRUE
+      PARENT_SCOPE)
   foreach(REQUIRED_TARGET IN ITEMS ${ARGN})
     if(NOT TARGET ${REQUIRED_TARGET})
-      set(${VARNAME} FALSE PARENT_SCOPE)
+      set(${VARNAME}
+          FALSE
+          PARENT_SCOPE)
       return()
     endif(NOT TARGET ${REQUIRED_TARGET})
   endforeach(REQUIRED_TARGET)

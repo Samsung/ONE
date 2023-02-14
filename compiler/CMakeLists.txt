@@ -5,9 +5,10 @@ find_program(LSB_RELEASE_EXEC lsb_release)
 if(LSB_RELEASE_EXEC)
   # output should be one of 'bionic', 'focal', 'jammy'
   # others are not tested
-  execute_process(COMMAND "${LSB_RELEASE_EXEC}" --short --codename
-                  OUTPUT_VARIABLE ONE_UBUNTU_CODENAME
-                  OUTPUT_STRIP_TRAILING_WHITESPACE)
+  execute_process(
+    COMMAND "${LSB_RELEASE_EXEC}" --short --codename
+    OUTPUT_VARIABLE ONE_UBUNTU_CODENAME
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
 else()
   message(STATUS "WARNING: lsb_release not found")
 endif()
@@ -44,22 +45,27 @@ function(get_project_build_order VAR)
   # NOTE "tsort" is a part of the POSIX.1 standard.
   #
   # Reference: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/tsort.html
-  execute_process(COMMAND tsort "${DEPS_FILE}"
-                  OUTPUT_VARIABLE ORDER
-                  OUTPUT_STRIP_TRAILING_WHITESPACE)
+  execute_process(
+    COMMAND tsort "${DEPS_FILE}"
+    OUTPUT_VARIABLE ORDER
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
 
   # Remove newline characters
   # TODO Check which one (UNIX_COMMAND or WINDOWS_COMMAND) is correct
   separate_arguments(ORDER UNIX_COMMAND ${ORDER})
 
-  set(${VAR} "${ORDER}" PARENT_SCOPE)
+  set(${VAR}
+      "${ORDER}"
+      PARENT_SCOPE)
 endfunction(get_project_build_order)
 
 function(add_compiler_directory DIR)
   string(TOUPPER ${DIR} PREFIX)
 
   option(BUILD_COMPILER_${PREFIX} "Build compiler/${dir}" ON)
-  set(BUILD_WHITELIST "" CACHE STRING "Set modules to be built")
+  set(BUILD_WHITELIST
+      ""
+      CACHE STRING "Set modules to be built")
 
   if(NOT BUILD_WHITELIST STREQUAL "")
     set(ENABLE OFF)

@@ -3,7 +3,7 @@ file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(logo_ex STATIC ${SOURCES})
-if (NOT NNCC_LIBRARY_NO_PIC)
+if(NOT NNCC_LIBRARY_NO_PIC)
   set_target_properties(logo_ex PROPERTIES POSITION_INDEPENDENT_CODE ON)
 endif(NOT NNCC_LIBRARY_NO_PIC)
 target_include_directories(logo_ex PRIVATE src)

@@ -2,7 +2,7 @@ include("${LUCI_INTERPRETER_PAL_DIR}/pal.cmake")
 
 initialize_pal()
 
-if (NOT PAL_INITIALIZED)
+if(NOT PAL_INITIALIZED)
   message("PAL Failed to initialize, skip luci-interpreter")
   return()
 endif()
@@ -28,28 +28,37 @@ message(STATUS "LUCI INTERPTER INITALIZED")
 
 set(SOURCES
     "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/Interpreter.h"
-    Interpreter.cpp "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/SimpleMemoryManager.h" SimpleMemoryManager.cpp
-        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/TestMemoryManager.h" TestMemoryManager.cpp
-        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/BuddyMemoryManager.h" BuddyMemoryManager.cpp
-        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/StaticMemoryManager.h" StaticMemoryManager.cpp)
+    Interpreter.cpp
+    "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/SimpleMemoryManager.h"
+    SimpleMemoryManager.cpp
+    "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/TestMemoryManager.h"
+    TestMemoryManager.cpp
+    "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/BuddyMemoryManager.h"
+    BuddyMemoryManager.cpp
+    "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/StaticMemoryManager.h"
+    StaticMemoryManager.cpp)
 
-if (NOT LUCI_INTERPRETER_STATIC)
+if(NOT LUCI_INTERPRETER_STATIC)
   add_library(${LUCI_INTERPRETER_BINARY} SHARED ${SOURCES})
-else ()
+else()
   add_library(${LUCI_INTERPRETER_BINARY} STATIC ${SOURCES})
-endif ()
+endif()
 
 set(TEST_SOURCES BuddyMemoryManager.test.cpp)
 
 target_include_directories(${LUCI_INTERPRETER_BINARY} PUBLIC "${LUCI_INTERPRETER_INCLUDE_DIR}")
 target_include_directories(${LUCI_INTERPRETER_BINARY} PRIVATE "${LUCI_INTERPRETER_SOURCE_DIR}")
-target_link_libraries(${LUCI_INTERPRETER_BINARY}
-    PUBLIC luci_lang ${LUCI_INTERPRETER_LOADER} ${LUCI_INTERPRETER_CORE}
-    PRIVATE nncc_common)
+target_link_libraries(
+  ${LUCI_INTERPRETER_BINARY}
+  PUBLIC luci_lang ${LUCI_INTERPRETER_LOADER} ${LUCI_INTERPRETER_CORE}
+  PRIVATE nncc_common)
 
 install(TARGETS ${LUCI_INTERPRETER_BINARY} DESTINATION lib)
-install(DIRECTORY include/ DESTINATION include
-        FILES_MATCHING PATTERN "*.h")
+install(
+  DIRECTORY include/
+  DESTINATION include
+  FILES_MATCHING
+  PATTERN "*.h")
 
 if(NOT ENABLE_TEST)
   return()

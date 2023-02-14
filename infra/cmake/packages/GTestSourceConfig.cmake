@@ -1,6 +1,8 @@
 function(_GTestSource_import)
   if(NOT DOWNLOAD_GTEST)
-    set(GTestSource_FOUND FALSE PARENT_SCOPE)
+    set(GTestSource_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT DOWNLOAD_GTEST)
 
@@ -12,8 +14,12 @@ function(_GTestSource_import)
 
   ExternalSource_Download(GTEST ${GTEST_URL})
 
-  set(GTestSource_DIR ${GTEST_SOURCE_DIR} PARENT_SCOPE)
-  set(GTestSource_FOUND TRUE PARENT_SCOPE)
+  set(GTestSource_DIR
+      ${GTEST_SOURCE_DIR}
+      PARENT_SCOPE)
+  set(GTestSource_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_GTestSource_import)
 
 _GTestSource_import()

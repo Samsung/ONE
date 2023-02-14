@@ -1,6 +1,6 @@
-if (NOT BUILD_OPENCL_TOOL)
+if(NOT BUILD_OPENCL_TOOL)
   return()
-endif (NOT BUILD_OPENCL_TOOL)
+endif(NOT BUILD_OPENCL_TOOL)
 
 list(APPEND OPENCL_INFO_SOURCE "src/opencl_info.cc")
 

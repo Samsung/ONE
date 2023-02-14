@@ -87,7 +87,6 @@ option(BUILD_FP16 "Build fp16 library from the source" ON)
 option(DOWNLOAD_FXDIV "Download fxdiv source" ON)
 option(BUILD_FXDIV "Build fxdiv library from the source" ON)
 
-
 #
 ## Default sample build configuration
 #

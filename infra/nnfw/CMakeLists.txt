@@ -12,16 +12,16 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 ### CMAKE_BUILD_TYPE_LC: Build type lower case
 string(TOLOWER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_LC)
 
-set(NNAS_PROJECT_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../.." CACHE
-  INTERNAL "Where to find nnas top-level source directory"
-)
+set(NNAS_PROJECT_SOURCE_DIR
+    "${CMAKE_CURRENT_LIST_DIR}/../.."
+    CACHE INTERNAL "Where to find nnas top-level source directory")
 
 set(NNAS_EXTERNALS_DIR
-  "${NNAS_PROJECT_SOURCE_DIR}/externals" CACHE
-  INTERNAL "Where to download external dependencies"
-)
-set(NNFW_OVERLAY_DIR "${CMAKE_BINARY_DIR}/overlay" CACHE
-    INTERNAL "Where locally built external dependencies are installed")
+    "${NNAS_PROJECT_SOURCE_DIR}/externals"
+    CACHE INTERNAL "Where to download external dependencies")
+set(NNFW_OVERLAY_DIR
+    "${CMAKE_BINARY_DIR}/overlay"
+    CACHE INTERNAL "Where locally built external dependencies are installed")
 
 # Share package build script with compiler
 set(EXT_OVERLAY_DIR ${NNFW_OVERLAY_DIR})
@@ -41,18 +41,12 @@ endmacro(nnas_include)
 #  nnfw_find_package(Boost QUIET): Load settings silently, without warnings
 #  nnfw_find_package(Boost REQUIRED): Load settings but stop with error when failed
 macro(nnfw_find_package PREFIX)
-  find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
-    PATHS ${CMAKE_SOURCE_DIR}/cmake/packages
-    ${ARGN}
-  )
+  find_package(${PREFIX} CONFIG NO_DEFAULT_PATH PATHS ${CMAKE_SOURCE_DIR}/cmake/packages ${ARGN})
 endmacro(nnfw_find_package)
 
 # Common 'find_package()' wrapper to find in infra/cmake/packages folder
 macro(nnas_find_package PREFIX)
-  find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
-    PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
-    ${ARGN}
-  )
+  find_package(${PREFIX} CONFIG NO_DEFAULT_PATH PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages ${ARGN})
 endmacro(nnas_find_package)
 
 # C++14 feature requires 5 or later

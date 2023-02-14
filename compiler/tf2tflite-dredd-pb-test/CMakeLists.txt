@@ -20,7 +20,7 @@ function(check_file_exist)
 
   foreach(FILE_PATH IN LISTS ARGV)
     if(NOT EXISTS "${FILE_PATH}")
-      message(FATAL_ERROR "${FILE_PATH} does not exist." )
+      message(FATAL_ERROR "${FILE_PATH} does not exist.")
     endif()
   endforeach()
 
@@ -42,8 +42,8 @@ macro(Add MODEL_DIR)
   set(ARG_MULTI_VALUE)
   cmake_parse_arguments(ARG "${ARG_OPTION}" "${ARG_ONE_VALUE}" "${ARG_MULTI_VALUE}" ${ARGN})
 
-  if(NOT ARG_RULE )
-    message( FATAL_ERROR "RULE is mandadatory arg" )
+  if(NOT ARG_RULE)
+    message(FATAL_ERROR "RULE is mandadatory arg")
   endif()
 
   set(RULE_FILENAME ${ARG_RULE})
@@ -66,10 +66,8 @@ macro(Add MODEL_DIR)
     COMMAND ${CMAKE_COMMAND} -E echo 'MODEL_PB_PATH="${PB_PATH}"' >> ${TEST_CONFIG_FILE}
     COMMAND ${CMAKE_COMMAND} -E echo 'MODEL_INFO_PATH="${INFO_PATH}"' >> ${TEST_CONFIG_FILE}
     COMMAND ${CMAKE_COMMAND} -E echo 'MODEL_RULE_PATH="${RULE_PATH}"' >> ${TEST_CONFIG_FILE}
-    DEPENDS
-      ${PB_PATH}
-    COMMENT "Generate ${TARGET_TESTNAME} configuration for BIN"
-  )
+    DEPENDS ${PB_PATH}
+    COMMENT "Generate ${TARGET_TESTNAME} configuration for BIN")
 
   list(APPEND KEYS "${TARGET_TESTNAME}")
   list(APPEND DEPS "${TEST_CONFIG_FILE}")
@@ -90,12 +88,8 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo 'TFL_VERIFY_PATH=\"$<TARGET_FILE:tfl-verify>\"' >> ${TOOLCHAIN_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'TF2TFLITE_PATH=\"$<TARGET_FILE:tf2tflite>\"' >> ${TOOLCHAIN_CONFIG}
   # add more if new excutable file is needed in runner.sh and rule-lib.sh
-  DEPENDS
-    tfl-inspect
-    tfl-verify
-    tf2tflite
-  COMMENT "Generate toolchin configuration"
-)
+  DEPENDS tfl-inspect tfl-verify tf2tflite
+  COMMENT "Generate toolchin configuration")
 
 list(APPEND DEPS "${TOOLCHAIN_CONFIG}")
 
@@ -109,8 +103,7 @@ add_custom_command(
   OUTPUT ${TARGET_RUNNER}
   COMMAND ${CMAKE_COMMAND} -E copy "${SOURCE_RUNNER}" "${TARGET_RUNNER}"
   DEPENDS ${SOURCE_RUNNER}
-  COMMENT "Generate test runner"
-)
+  COMMENT "Generate test runner")
 
 list(APPEND DEPS "${TARGET_RUNNER}")
 
@@ -128,18 +121,11 @@ add_custom_command(
   OUTPUT ${TARGET_RULE_LIB}
   COMMAND ${CMAKE_COMMAND} -E copy "${SOURCE_RULE_LIB}" "${TARGET_RULE_LIB}"
   DEPENDS ${SOURCE_RULE_LIB}
-  COMMENT "Generate rule lib"
-)
+  COMMENT "Generate rule lib")
 
 list(APPEND DEPS "${TARGET_RULE_LIB}")
 
 # Generate dependencies
 add_custom_target(tf2tflite_dredd_pb_deps ALL DEPENDS ${DEPS})
 
-add_test(
-  NAME tf2tflite_dredd_pb_test
-  COMMAND
-    "${TARGET_RUNNER}"
-    "${TOOLCHAIN_CONFIG}"
-    ${KEYS}
-)
+add_test(NAME tf2tflite_dredd_pb_test COMMAND "${TARGET_RUNNER}" "${TOOLCHAIN_CONFIG}" ${KEYS})

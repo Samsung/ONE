@@ -6,7 +6,7 @@ include(CMakeForceCompiler)
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR armv7l)
 
-set(CMAKE_C_COMPILER   arm-linux-gnueabi-gcc)
+set(CMAKE_C_COMPILER arm-linux-gnueabi-gcc)
 set(CMAKE_CXX_COMPILER arm-linux-gnueabi-g++)
 
 set(TIZEN_TOOLCHAIN "armv7l-tizen-linux-gnueabi/6.2.1")
@@ -32,8 +32,9 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
 # Set cache variable to ignore try-run error by find_package(Threads REQUIRED) on cross build
-set(THREADS_PTHREAD_ARG "2" CACHE STRING "Result from TRY_RUN" FORCE)
-
+set(THREADS_PTHREAD_ARG
+    "2"
+    CACHE STRING "Result from TRY_RUN" FORCE)
 
 add_compile_options(-mthumb)
 add_compile_options(-mfpu=neon-vfpv4)

@@ -17,17 +17,23 @@ message(STATUS "Build exo: TRUE")
 set(TFLITE_SCHEMA_DIR "${TensorFlowSource_DIR}/tensorflow/lite/schema")
 set(CIRCLE_SCHEMA_DIR "${NNAS_PROJECT_SOURCE_DIR}/res/CircleSchema/0.3")
 
-FlatBuffers_Target(exo_tflite_fbs
-  OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
-  SCHEMA_DIR "${TFLITE_SCHEMA_DIR}"
-  SCHEMA_FILES schema.fbs
-)
+FlatBuffers_Target(
+  exo_tflite_fbs
+  OUTPUT_DIR
+  "${CMAKE_CURRENT_BINARY_DIR}/gen"
+  SCHEMA_DIR
+  "${TFLITE_SCHEMA_DIR}"
+  SCHEMA_FILES
+  schema.fbs)
 
-FlatBuffers_Target(exo_circle_fbs
-  OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
-  SCHEMA_DIR "${CIRCLE_SCHEMA_DIR}"
-  SCHEMA_FILES circle_schema.fbs
-)
+FlatBuffers_Target(
+  exo_circle_fbs
+  OUTPUT_DIR
+  "${CMAKE_CURRENT_BINARY_DIR}/gen"
+  SCHEMA_DIR
+  "${CIRCLE_SCHEMA_DIR}"
+  SCHEMA_FILES
+  circle_schema.fbs)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
@@ -54,9 +60,9 @@ install(TARGETS exo DESTINATION lib)
 #      Please refer to the top-level CMakeLists.txt for details
 target_link_libraries(exo PRIVATE nncc_common)
 
-if (NOT ENABLE_TEST)
+if(NOT ENABLE_TEST)
   return()
-endif (NOT ENABLE_TEST)
+endif(NOT ENABLE_TEST)
 
 # Google Test is mandatory for internal testing
 nnas_find_package(GTest REQUIRED)

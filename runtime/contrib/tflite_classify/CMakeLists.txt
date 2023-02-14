@@ -11,7 +11,9 @@ find_package(OpenCV REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 
 # Without this line, this appliation couldn't search the opencv library that were already installed in ${ROOTFS_DIR}/usr/lib/arm-linux-gnueabihf directory
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--rpath=${ROOTFS_DIR}/usr/lib/arm-linux-gnueabihf -Wl,--rpath=${ROOTFS_DIR}/lib/arm-linux-gnueabihf")
+set(CMAKE_EXE_LINKER_FLAGS
+    "-Wl,--as-needed -Wl,--rpath=${ROOTFS_DIR}/usr/lib/arm-linux-gnueabihf -Wl,--rpath=${ROOTFS_DIR}/lib/arm-linux-gnueabihf"
+)
 
 add_executable(tflite_classify ${SOURCES})
 target_include_directories(tflite_classify PRIVATE src)

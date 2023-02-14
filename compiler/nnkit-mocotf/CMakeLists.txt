@@ -1,4 +1,4 @@
-if (NOT TARGET moco_tf_frontend)
+if(NOT TARGET moco_tf_frontend)
   return()
 endif(NOT TARGET moco_tf_frontend)
 

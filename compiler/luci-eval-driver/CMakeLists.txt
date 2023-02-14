@@ -1,6 +1,4 @@
-set(SRCS_EVAL_TESTER
-      src/EvalDriver.cpp
-   )
+set(SRCS_EVAL_TESTER src/EvalDriver.cpp)
 
 add_executable(luci_eval_driver ${SRCS_EVAL_TESTER})
 target_link_libraries(luci_eval_driver PRIVATE luci_import)

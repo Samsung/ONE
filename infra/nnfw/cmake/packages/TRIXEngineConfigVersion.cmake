@@ -9,21 +9,23 @@
 #
 # Reference: https://cmake.org/cmake/help/v3.10/command/find_package.html
 
-set(TRIX_ENGINE_PREFIX "/usr" CACHE PATH "Where to find TRIX engine header and library")
+set(TRIX_ENGINE_PREFIX
+    "/usr"
+    CACHE PATH "Where to find TRIX engine header and library")
 
 if(NOT PACKAGE_FIND_VERSION)
   message(FATAL_ERROR "Please pass version requirement to use TRIX Engine dependency")
 endif()
 
 # Find the header & lib from TRIX_ENGINE_PREFIX
-find_library(TRIXEngine_LIB
+find_library(
+  TRIXEngine_LIB
   NAMES npu-engine
-  HINTS "${TRIX_ENGINE_PREFIX}/lib"
-)
-find_path(TRIXEngine_INCLUDE_DIR
+  HINTS "${TRIX_ENGINE_PREFIX}/lib")
+find_path(
+  TRIXEngine_INCLUDE_DIR
   NAMES libnpuhost.h
-  HINTS "${TRIX_ENGINE_PREFIX}/include/npu-engine"
-)
+  HINTS "${TRIX_ENGINE_PREFIX}/include/npu-engine")
 
 if(NOT TRIXEngine_INCLUDE_DIR OR NOT TRIXEngine_LIB)
   set(PACKAGE_VERSION_EXACT FALSE)
@@ -35,12 +37,9 @@ endif(NOT TRIXEngine_INCLUDE_DIR OR NOT TRIXEngine_LIB)
 # TODO Assert TRIX_ENGINE_PREFIX is directory
 
 # TODO Can we run this only once per configure?
-try_run(MAJOR_VER MAJOR_COMPILABLE "${CMAKE_BINARY_DIR}/TRIXEngineConfigVersion.major"
-  SOURCES "${CMAKE_CURRENT_LIST_DIR}/TRIXEngineConfigVersion.major.cpp"
-  CMAKE_FLAGS
-  "-DINCLUDE_DIRECTORIES=${TRIXEngine_INCLUDE_DIR}"
-  "-DLINK_LIBRARIES=${TRIXEngine_LIB}"
-)
+try_run(MAJOR_VER MAJOR_COMPILABLE "${CMAKE_BINARY_DIR}/TRIXEngineConfigVersion.major" SOURCES
+        "${CMAKE_CURRENT_LIST_DIR}/TRIXEngineConfigVersion.major.cpp"
+        CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${TRIXEngine_INCLUDE_DIR}" "-DLINK_LIBRARIES=${TRIXEngine_LIB}")
 
 if(NOT MAJOR_COMPILABLE)
   # This means VERSION < 2.2.7
@@ -56,19 +55,13 @@ if(NOT MAJOR_COMPILABLE)
   endif()
 endif(NOT MAJOR_COMPILABLE)
 
-try_run(MINOR_VER MINOR_COMPILABLE "${CMAKE_BINARY_DIR}/TRIXEngineConfigVersion.minor"
-  SOURCES "${CMAKE_CURRENT_LIST_DIR}/TRIXEngineConfigVersion.minor.cpp"
-  CMAKE_FLAGS
-  "-DINCLUDE_DIRECTORIES=${TRIXEngine_INCLUDE_DIR}"
-  "-DLINK_LIBRARIES=${TRIXEngine_LIB}"
-)
+try_run(MINOR_VER MINOR_COMPILABLE "${CMAKE_BINARY_DIR}/TRIXEngineConfigVersion.minor" SOURCES
+        "${CMAKE_CURRENT_LIST_DIR}/TRIXEngineConfigVersion.minor.cpp"
+        CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${TRIXEngine_INCLUDE_DIR}" "-DLINK_LIBRARIES=${TRIXEngine_LIB}")
 
-try_run(EXTRA_VER EXTRA_COMPILABLE "${CMAKE_BINARY_DIR}/TRIXEngineConfigVersion.extra"
-  SOURCES "${CMAKE_CURRENT_LIST_DIR}/TRIXEngineConfigVersion.extra.cpp"
-  CMAKE_FLAGS
-  "-DINCLUDE_DIRECTORIES=${TRIXEngine_INCLUDE_DIR}"
-  "-DLINK_LIBRARIES=${TRIXEngine_LIB}"
-)
+try_run(EXTRA_VER EXTRA_COMPILABLE "${CMAKE_BINARY_DIR}/TRIXEngineConfigVersion.extra" SOURCES
+        "${CMAKE_CURRENT_LIST_DIR}/TRIXEngineConfigVersion.extra.cpp"
+        CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${TRIXEngine_INCLUDE_DIR}" "-DLINK_LIBRARIES=${TRIXEngine_LIB}")
 
 macro(assert)
   # if(NOT ${ARGV}) makes error when ARGV starts with 'NOT'

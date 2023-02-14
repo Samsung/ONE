@@ -18,9 +18,12 @@ unset(TEST_DEPS)
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
 # Place test scripts in one place
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/GenH5RandomInputs.py" "${CMAKE_CURRENT_BINARY_DIR}/GenH5RandomInputs.py" COPYONLY)
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/SingleOperatorTest.py" "${CMAKE_CURRENT_BINARY_DIR}/SingleOperatorTest.py" COPYONLY)
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/RandomDataGenerator.py" "${CMAKE_CURRENT_BINARY_DIR}/RandomDataGenerator.py" COPYONLY)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/GenH5RandomInputs.py" "${CMAKE_CURRENT_BINARY_DIR}/GenH5RandomInputs.py"
+               COPYONLY)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/SingleOperatorTest.py" "${CMAKE_CURRENT_BINARY_DIR}/SingleOperatorTest.py"
+               COPYONLY)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/RandomDataGenerator.py"
+               "${CMAKE_CURRENT_BINARY_DIR}/RandomDataGenerator.py" COPYONLY)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/TestUtil.py" "${CMAKE_CURRENT_BINARY_DIR}/TestUtil.py" COPYONLY)
 
 ###
@@ -33,14 +36,13 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E remove -f ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'DALGONA_PATH=\"$<TARGET_FILE:dalgona>\"' >> ${TEST_CONFIG}
   DEPENDS dalgona
-  COMMENT "Generate test configuration"
-)
+  COMMENT "Generate test configuration")
 
 # Import pics module
 get_target_property(PICS_BIN_PATH pics BINARY_DIR)
-add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/circle
-                   COMMAND ${CMAKE_COMMAND} -E create_symlink
-                   ${PICS_BIN_PATH}/circle ${CMAKE_CURRENT_BINARY_DIR}/circle)
+add_custom_command(
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/circle COMMAND ${CMAKE_COMMAND} -E create_symlink ${PICS_BIN_PATH}/circle
+                                                    ${CMAKE_CURRENT_BINARY_DIR}/circle)
 
 list(APPEND TEST_DEPS "${TEST_CONFIG}" "${CMAKE_CURRENT_BINARY_DIR}/circle")
 
@@ -48,22 +50,12 @@ list(APPEND TEST_DEPS "${TEST_CONFIG}" "${CMAKE_CURRENT_BINARY_DIR}/circle")
 add_custom_target(dalgona_test_deps ALL DEPENDS ${TEST_DEPS})
 
 # Run tests
-add_test(
-  NAME dalgona_single_op_test
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/TestSingleOp.sh"
-          "${TEST_CONFIG}"
-          "${ARTIFACTS_BIN_PATH}"
-          "${NNCC_OVERLAY_DIR}/venv_2_8_0"
-          ${DALGONA_SINGLE_OP_TEST}
-)
+add_test(NAME dalgona_single_op_test
+         COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/TestSingleOp.sh" "${TEST_CONFIG}" "${ARTIFACTS_BIN_PATH}"
+                 "${NNCC_OVERLAY_DIR}/venv_2_8_0" ${DALGONA_SINGLE_OP_TEST})
 
 if(ONE_UBUNTU_CODENAME_JAMMY)
-  add_test(
-    NAME dalgona_single_op_210_test
-    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/TestSingleOp.sh"
-            "${TEST_CONFIG}"
-            "${ARTIFACTS_BIN_PATH}"
-            "${NNCC_OVERLAY_DIR}/venv_2_10_1"
-            ${DALGONA_SINGLE_OP_TEST}
-  )
+  add_test(NAME dalgona_single_op_210_test
+           COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/TestSingleOp.sh" "${TEST_CONFIG}" "${ARTIFACTS_BIN_PATH}"
+                   "${NNCC_OVERLAY_DIR}/venv_2_10_1" ${DALGONA_SINGLE_OP_TEST})
 endif(ONE_UBUNTU_CODENAME_JAMMY)

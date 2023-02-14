@@ -1,4 +1,4 @@
-if (NOT TARGET mir_caffe2_importer)
+if(NOT TARGET mir_caffe2_importer)
   return()
 endif()
 

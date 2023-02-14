@@ -2,7 +2,7 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
-if (NOT LUCI_LIBRARY_TYPE)
+if(NOT LUCI_LIBRARY_TYPE)
   set(LUCI_LIBRARY_TYPE "SHARED")
 endif(NOT LUCI_LIBRARY_TYPE)
 
@@ -16,8 +16,11 @@ target_link_libraries(luci_service PRIVATE luci_logex)
 target_link_libraries(luci_service PRIVATE nncc_common)
 target_link_libraries(luci_service PRIVATE oops)
 install(TARGETS luci_service DESTINATION lib)
-install(DIRECTORY include/ DESTINATION include
-        FILES_MATCHING PATTERN "*.h")
+install(
+  DIRECTORY include/
+  DESTINATION include
+  FILES_MATCHING
+  PATTERN "*.h")
 
 if(NOT ENABLE_TEST)
   return()

@@ -26,11 +26,11 @@ macro(addeval RECIPE PASS_OPTION)
   #      as this will become like '"--optiona_a --optionb"' which is one string argument
 
   # Generate optimized .circle
-  add_custom_command(OUTPUT ${PASS_CIRCLE_OUTPUT_PATH}
+  add_custom_command(
+    OUTPUT ${PASS_CIRCLE_OUTPUT_PATH}
     COMMAND $<TARGET_FILE:circle2circle> ${DASH_PASS_OPTION} ${CIRCLE_PATH} ${PASS_CIRCLE_OUTPUT_PATH}
     DEPENDS $<TARGET_FILE:circle2circle> ${CIRCLE_PATH}
-    COMMENT "Generate ${PASS_CIRCLE_FILE} with ${DASH_PASS_OPTION}"
-  )
+    COMMENT "Generate ${PASS_CIRCLE_FILE} with ${DASH_PASS_OPTION}")
 
   # depends
   list(APPEND TEST_DEPS ${PASS_CIRCLE_OUTPUT_PATH})
@@ -46,21 +46,11 @@ add_custom_target(luci_pass_value_test_files ALL DEPENDS ${TEST_DEPS})
 add_dependencies(luci_pass_value_test_files common_artifacts_deps)
 
 add_test(NAME luci_pass_value_test
-  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/eval_driver.sh"
-          "${CMAKE_CURRENT_BINARY_DIR}"
-          "${ARTIFACTS_BIN_PATH}"
-          "${NNCC_OVERLAY_DIR}/venv_2_8_0"
-          "$<TARGET_FILE:luci_eval_driver>"
-          ${LUCI_PASS_VALUE_TESTS}
-)
+         COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/eval_driver.sh" "${CMAKE_CURRENT_BINARY_DIR}" "${ARTIFACTS_BIN_PATH}"
+                 "${NNCC_OVERLAY_DIR}/venv_2_8_0" "$<TARGET_FILE:luci_eval_driver>" ${LUCI_PASS_VALUE_TESTS})
 
 if(ONE_UBUNTU_CODENAME_JAMMY)
   add_test(NAME luci_pass_value_210_test
-    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/eval_driver.sh"
-            "${CMAKE_CURRENT_BINARY_DIR}"
-            "${ARTIFACTS_BIN_PATH}"
-            "${NNCC_OVERLAY_DIR}/venv_2_10_1"
-            "$<TARGET_FILE:luci_eval_driver>"
-            ${LUCI_PASS_VALUE_TESTS}
-  )
+           COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/eval_driver.sh" "${CMAKE_CURRENT_BINARY_DIR}" "${ARTIFACTS_BIN_PATH}"
+                   "${NNCC_OVERLAY_DIR}/venv_2_10_1" "$<TARGET_FILE:luci_eval_driver>" ${LUCI_PASS_VALUE_TESTS})
 endif(ONE_UBUNTU_CODENAME_JAMMY)

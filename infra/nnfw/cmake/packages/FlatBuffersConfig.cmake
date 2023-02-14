@@ -2,7 +2,9 @@ function(_FlatBuffers_import)
 
   find_package(Flatbuffers QUIET)
   if(Flatbuffers_FOUND)
-    set(FlatBuffers_FOUND TRUE PARENT_SCOPE)
+    set(FlatBuffers_FOUND
+        TRUE
+        PARENT_SCOPE)
     return()
   endif(Flatbuffers_FOUND)
 
@@ -10,7 +12,9 @@ function(_FlatBuffers_import)
   nnas_find_package(FlatBuffersSource EXACT 2.0 QUIET)
 
   if(NOT FlatBuffersSource_FOUND)
-    set(FlatBuffers_FOUND FALSE PARENT_SCOPE)
+    set(FlatBuffers_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT FlatBuffersSource_FOUND)
 
@@ -29,7 +33,9 @@ function(_FlatBuffers_import)
     add_library(flatbuffers::flatbuffers ALIAS flatbuffers)
   endif(NOT TARGET flatbuffers::flatbuffers)
 
-  set(FlatBuffers_FOUND TRUE PARENT_SCOPE)
+  set(FlatBuffers_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_FlatBuffers_import)
 
 _FlatBuffers_import()

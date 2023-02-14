@@ -18,12 +18,8 @@ message(STATUS "Build tfts: TRUE")
 # "nnkit_tf_backend" supports only TF_FLOAT32 input/output.
 #
 # TODO Remove nnkit dependency
-add_custom_target(tfts_check
-  COMMAND
-    "${CMAKE_CURRENT_SOURCE_DIR}/check_all.sh"
-    "${TensorFlowTests_DIR}"
-    $<TARGET_FILE:tfkit>
-    $<TARGET_FILE:nnkit-run>
-    $<TARGET_FILE:nnkit_tf_backend>
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-)
+add_custom_target(
+  tfts_check
+  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/check_all.sh" "${TensorFlowTests_DIR}" $<TARGET_FILE:tfkit>
+          $<TARGET_FILE:nnkit-run> $<TARGET_FILE:nnkit_tf_backend>
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})

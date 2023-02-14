@@ -1,4 +1,4 @@
-if (NOT VCONONE_VERSION)
+if(NOT VCONONE_VERSION)
   set(VCONONE_VERSION 0x0000000000160001)
   # NOTE order is [build patch minor major]
   # if VCONONE_VERSION is set with -D option, it will be cached

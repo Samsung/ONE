@@ -1,7 +1,4 @@
-set(ONNX_TOOL_FILES
-    onnx-dump.py
-    onnx-ops.py
-)
+set(ONNX_TOOL_FILES onnx-dump.py onnx-ops.py)
 
 foreach(ONNX_TOOL IN ITEMS ${ONNX_TOOL_FILES})
 
@@ -10,18 +7,24 @@ foreach(ONNX_TOOL IN ITEMS ${ONNX_TOOL_FILES})
   set(ONNX_TOOL_BIN "${CMAKE_CURRENT_BINARY_DIR}/${ONNX_TOOL_FILE}")
   set(ONNX_TOOL_TARGET "${ONNX_TOOL}_target")
 
-  add_custom_command(OUTPUT ${ONNX_TOOL_BIN}
+  add_custom_command(
+    OUTPUT ${ONNX_TOOL_BIN}
     COMMAND ${CMAKE_COMMAND} -E copy "${ONNX_TOOL_SRC}" "${ONNX_TOOL_BIN}"
     DEPENDS ${ONNX_TOOL_SRC}
-    COMMENT "Generate ${ONNX_TOOL_BIN}"
-  )
+    COMMENT "Generate ${ONNX_TOOL_BIN}")
 
   add_custom_target(${ONNX_TOOL_TARGET} ALL DEPENDS ${ONNX_TOOL_BIN})
 
-  install(FILES ${ONNX_TOOL_BIN}
-          PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
-                      GROUP_READ GROUP_EXECUTE
-                      WORLD_READ WORLD_EXECUTE
-          DESTINATION bin)
+  install(
+    FILES ${ONNX_TOOL_BIN}
+    PERMISSIONS
+      OWNER_WRITE
+      OWNER_READ
+      OWNER_EXECUTE
+      GROUP_READ
+      GROUP_EXECUTE
+      WORLD_READ
+      WORLD_EXECUTE
+    DESTINATION bin)
 
 endforeach(ONNX_TOOL)

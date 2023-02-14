@@ -4,6 +4,4 @@
 message(STATUS "Building for x86-64 Darwin")
 
 # SIMD for x86
-set(FLAGS_COMMON ${FLAGS_COMMON}
-    "-msse4"
-    )
+set(FLAGS_COMMON ${FLAGS_COMMON} "-msse4")

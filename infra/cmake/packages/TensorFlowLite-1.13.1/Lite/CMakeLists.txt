@@ -14,7 +14,9 @@ message(STATUS "Build TensorFlow Lite from ${TensorFlowSource_DIR}")
 
 set(TensorFlowLiteSource_DIR ${TensorFlowSource_DIR}/tensorflow/lite)
 
-file(GLOB CORE_SRCS
+file(
+  GLOB
+  CORE_SRCS
   "${TensorFlowLiteSource_DIR}/*.c"
   "${TensorFlowLiteSource_DIR}/*.cc"
   "${TensorFlowLiteSource_DIR}/c/*.c"
@@ -44,4 +46,12 @@ if(COMPILER_SUPPORT_EXTERN_C_COMPAT_WARNING)
   target_compile_options(tensorflowlite-1.13.1 PUBLIC -Wno-extern-c-compat)
 endif(COMPILER_SUPPORT_EXTERN_C_COMPAT_WARNING)
 target_compile_definitions(tensorflowlite-1.13.1 PUBLIC "GEMMLOWP_ALLOW_SLOW_SCALAR_FALLBACK")
-target_link_libraries(tensorflowlite-1.13.1 flatbuffers-2.0 eigen gemmlowp neon2sse farmhash abseil dl)
+target_link_libraries(
+  tensorflowlite-1.13.1
+  flatbuffers-2.0
+  eigen
+  gemmlowp
+  neon2sse
+  farmhash
+  abseil
+  dl)

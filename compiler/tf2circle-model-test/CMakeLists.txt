@@ -29,10 +29,8 @@ macro(Add PREFIX)
       message(FATAL_ERROR "${TEST_KEY} - Download script is missing")
     endif(NOT EXISTS "${MODEL_DOWNLOAD_SCRIPT}")
 
-    execute_process(
-      COMMAND ${CMAKE_COMMAND} -D OUTPUT_PATH=${MODEL_PB_FILE} -P "${MODEL_DOWNLOAD_SCRIPT}"
-      RESULT_VARIABLE EXITCODE
-    )
+    execute_process(COMMAND ${CMAKE_COMMAND} -D OUTPUT_PATH=${MODEL_PB_FILE} -P "${MODEL_DOWNLOAD_SCRIPT}"
+                    RESULT_VARIABLE EXITCODE)
 
     if(NOT EXITCODE EQUAL 0)
       message(FATAL_ERROR "${TEST_KEY} - Download fails")
@@ -57,8 +55,7 @@ macro(Add PREFIX)
     COMMAND ${CMAKE_COMMAND} -E remove -f ${TEST_CONFIG_FILE}
     COMMAND ${CMAKE_COMMAND} -E echo 'MODEL_PB_PATH="${MODEL_PB_FILE}"' >> ${TEST_CONFIG_FILE}
     COMMAND ${CMAKE_COMMAND} -E echo 'MODEL_INFO_PATH="${MODEL_INFO_FILE}"' >> ${TEST_CONFIG_FILE}
-    COMMENT "Generate ${TEST_KEY} configuration"
-  )
+    COMMENT "Generate ${TEST_KEY} configuration")
 
   list(APPEND KEYS "${TEST_KEY}")
   list(APPEND DEPS "${TEST_CONFIG_FILE}")
@@ -75,10 +72,8 @@ add_custom_command(
   OUTPUT ${TOOLCHAIN_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E remove -f ${TOOLCHAIN_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'TF2CIRCLE_PATH=\"$<TARGET_FILE:tf2circle>\"' >> ${TOOLCHAIN_CONFIG}
-  DEPENDS
-    tf2circle
-  COMMENT "Generate toolchin configuration"
-)
+  DEPENDS tf2circle
+  COMMENT "Generate toolchin configuration")
 
 list(APPEND DEPS "${TOOLCHAIN_CONFIG}")
 
@@ -92,8 +87,7 @@ add_custom_command(
   OUTPUT ${TEST_RUNNER_SCRIPT}
   COMMAND ${CMAKE_COMMAND} -E copy "${TEST_RUNNER_SOURCE}" "${TEST_RUNNER_SCRIPT}"
   DEPENDS ${TEST_RUNNER_SOURCE}
-  COMMENT "Generate test runner"
-)
+  COMMENT "Generate test runner")
 
 list(APPEND DEPS "${TEST_RUNNER_SCRIPT}")
 
@@ -105,10 +99,4 @@ if(NOT ENABLE_TEST)
 endif(NOT ENABLE_TEST)
 
 # NOTE This target is not built by default
-add_test(
-  NAME tf2circle_model_test
-  COMMAND
-    "${TEST_RUNNER_SCRIPT}"
-    "${TOOLCHAIN_CONFIG}"
-    ${KEYS}
-)
+add_test(NAME tf2circle_model_test COMMAND "${TEST_RUNNER_SCRIPT}" "${TOOLCHAIN_CONFIG}" ${KEYS})

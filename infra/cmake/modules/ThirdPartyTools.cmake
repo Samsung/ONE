@@ -38,5 +38,7 @@ function(ThirdParty_URL VARNAME)
     endif()
   endif(ARG_ENV)
 
-  set("${VARNAME}" "${VALUE}" PARENT_SCOPE)
+  set("${VARNAME}"
+      "${VALUE}"
+      PARENT_SCOPE)
 endfunction(ThirdParty_URL)

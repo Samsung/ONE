@@ -1,13 +1,11 @@
-set(SOURCES
-    "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/GraphBuilderRegistry.h"
-    GraphBuilderRegistry.cpp)
+set(SOURCES "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/GraphBuilderRegistry.h" GraphBuilderRegistry.cpp)
 
 # include specific builders
 file(GLOB_RECURSE NODES "Nodes/*")
 list(APPEND SOURCES ${NODES})
 
 add_library(${LUCI_INTERPRETER_IMPORT} STATIC ${SOURCES})
-if (NOT NNCC_LIBRARY_NO_PIC)
+if(NOT NNCC_LIBRARY_NO_PIC)
   set_target_properties(${LUCI_INTERPRETER_IMPORT} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 endif(NOT NNCC_LIBRARY_NO_PIC)
 

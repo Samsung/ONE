@@ -1,5 +1,5 @@
-if (NOT TARGET mir_caffe_importer)
-  return ()
+if(NOT TARGET mir_caffe_importer)
+  return()
 endif()
 
 add_executable(caffe_model_dumper model_dump.cpp)

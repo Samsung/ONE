@@ -1,6 +1,8 @@
 function(_PytorchSource_import)
   if(NOT DOWNLOAD_PYTORCH)
-    set(PytorchSource_FOUND FALSE PARENT_SCOPE)
+    set(PytorchSource_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT DOWNLOAD_PYTORCH)
 
@@ -12,8 +14,12 @@ function(_PytorchSource_import)
 
   ExternalSource_Download(PYTORCH ${PYTORCH_URL})
 
-  set(PytorchSource_DIR ${PYTORCH_SOURCE_DIR} PARENT_SCOPE)
-  set(PytorchSource_FOUND ${DOWNLOAD_PYTORCH} PARENT_SCOPE)
+  set(PytorchSource_DIR
+      ${PYTORCH_SOURCE_DIR}
+      PARENT_SCOPE)
+  set(PytorchSource_FOUND
+      ${DOWNLOAD_PYTORCH}
+      PARENT_SCOPE)
 endfunction(_PytorchSource_import)
 
 _PytorchSource_import()

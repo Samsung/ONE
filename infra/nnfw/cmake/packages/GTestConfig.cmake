@@ -67,7 +67,11 @@ else(${GTEST_FOUND} AND TARGET Threads::Threads)
   find_library(GMOCK_LIBRARIES libgmock.so)
   find_library(GMOCK_MAIN_LIBRARIES libgmock_main.so)
 
-  if(GTEST_INCLUDE_DIR AND GMOCK_INCLUDE_DIR AND GMOCK_LIBRARIES AND GMOCK_MAIN_LIBRARIES AND TARGET Threads::Threads)
+  if(GTEST_INCLUDE_DIR
+     AND GMOCK_INCLUDE_DIR
+     AND GMOCK_LIBRARIES
+     AND GMOCK_MAIN_LIBRARIES
+     AND TARGET Threads::Threads)
     if(NOT TARGET gmock)
       add_library(gmock INTERFACE)
       target_include_directories(gmock INTERFACE ${GMOCK_INCLUDE_DIRS})
@@ -95,5 +99,10 @@ else(${GTEST_FOUND} AND TARGET Threads::Threads)
     endif(NOT TARGET gtest_main)
 
     set(GTest_FOUND TRUE)
-  endif(GTEST_INCLUDE_DIR AND GMOCK_INCLUDE_DIR AND GMOCK_LIBRARIES AND GMOCK_MAIN_LIBRARIES AND TARGET Threads::Threads)
+  endif(
+    GTEST_INCLUDE_DIR
+    AND GMOCK_INCLUDE_DIR
+    AND GMOCK_LIBRARIES
+    AND GMOCK_MAIN_LIBRARIES
+    AND TARGET Threads::Threads)
 endif(${GTEST_FOUND} AND TARGET Threads::Threads)

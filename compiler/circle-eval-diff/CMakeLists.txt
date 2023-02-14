@@ -26,10 +26,7 @@ endif(NOT ENABLE_TEST)
 
 # circle-eval-diff is executable, so we do not link it to the test.
 # Instead, we use TEST_SOURCES to specify sources uesd for tests.
-set(TEST_SOURCES
-    "src/MetricPrinter.cpp"
-    "src/Tensor.cpp"
-    "src/InputDataLoader.cpp")
+set(TEST_SOURCES "src/MetricPrinter.cpp" "src/Tensor.cpp" "src/InputDataLoader.cpp")
 
 nnas_find_package(GTest REQUIRED)
 GTest_AddTest(circle_eval_diff_test ${TESTS} ${TEST_SOURCES})

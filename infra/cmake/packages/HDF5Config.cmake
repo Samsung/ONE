@@ -19,35 +19,36 @@ function(_HDF5_build)
     set(H5TINIT_C_FROM_NATIVE ${CMAKE_CURRENT_LIST_DIR}/H5Tinit.c.linux-armv7l)
     set(H5TINIT_C_COPY ${CMAKE_BINARY_DIR}/externals/HDF5/build/H5Tinit.c)
     message(STATUS "Copy H5Tinit.c generated from target native build")
-    execute_process(
-      COMMAND ${CMAKE_COMMAND} -E copy "${H5TINIT_C_FROM_NATIVE}" "${H5TINIT_C_COPY}"
-    )
+    execute_process(COMMAND ${CMAKE_COMMAND} -E copy "${H5TINIT_C_FROM_NATIVE}" "${H5TINIT_C_COPY}")
   endif(DEFINED ENV{BUILD_HOST_EXEC})
 
   nnas_include(ExternalBuildTools)
-  ExternalBuild_CMake(CMAKE_DIR   ${HDF5Source_DIR}
-                      BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/HDF5/build
-                      INSTALL_DIR ${EXT_OVERLAY_DIR}
-                      IDENTIFIER  "1.8.16"
-                      PKG_NAME    "HDF5"
-                      EXTRA_OPTS "-DBUILD_SHARED_LIBS:BOOL=ON"
-                                 "-DHDF5_BUILD_TOOLS:BOOL=ON"
-                                 "-DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF"
-                                 "-DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF")
+  ExternalBuild_CMake(
+    CMAKE_DIR
+    ${HDF5Source_DIR}
+    BUILD_DIR
+    ${CMAKE_BINARY_DIR}/externals/HDF5/build
+    INSTALL_DIR
+    ${EXT_OVERLAY_DIR}
+    IDENTIFIER
+    "1.8.16"
+    PKG_NAME
+    "HDF5"
+    EXTRA_OPTS
+    "-DBUILD_SHARED_LIBS:BOOL=ON"
+    "-DHDF5_BUILD_TOOLS:BOOL=ON"
+    "-DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF"
+    "-DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF")
 
 endfunction(_HDF5_build)
 
 _HDF5_build()
 
-find_path(HDF5_CONFIG_DIR "hdf5-config.cmake"
-          PATHS ${EXT_OVERLAY_DIR}
-          NO_CMAKE_FIND_ROOT_PATH
-          PATH_SUFFIXES
-            cmake
-            share/cmake
-            share/cmake/hdf5
-            cmake/hdf5
-            lib/cmake/hdf5)
+find_path(
+  HDF5_CONFIG_DIR "hdf5-config.cmake"
+  PATHS ${EXT_OVERLAY_DIR}
+  NO_CMAKE_FIND_ROOT_PATH
+  PATH_SUFFIXES cmake share/cmake share/cmake/hdf5 cmake/hdf5 lib/cmake/hdf5)
 
 include(${HDF5_CONFIG_DIR}/hdf5-config.cmake)
 

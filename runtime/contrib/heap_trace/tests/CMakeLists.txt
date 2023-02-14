@@ -11,23 +11,24 @@ add_library(test_sample3 SHARED src/test_sample3/test_sample3.cc)
 
 add_library(test_sample4 SHARED src/test_sample4/test_sample4.cc)
 
-add_executable(${HEAP_TRACE_TESTS} src/cl_release_mem_object_interception_test.cc
-        src/symbol_searcher_test.cc
-        src/cl_create_buffer_interception_test.cc
-        src/cl_retain_mem_object_interception_test.cc
-        src/free_interception_test.cc
-        src/main.cc
-        src/common_test_environment.cc
-        src/trace_test.cc
-        src/malloc_interception_test.cc
-        src/realloc_interception_test.cc
-        src/valloc_interception_test.cc
-        src/calloc_interception_test.cc
-        src/posix_memalign_interception_test.cc
-        src/aligned_alloc_interception_test.cc
-        src/file_content_manipulations.cc
-        src/memory_pool_for_symbol_searcher_internals_test.cc
-        )
+add_executable(
+  ${HEAP_TRACE_TESTS}
+  src/aligned_alloc_interception_test.cc
+  src/calloc_interception_test.cc
+  src/cl_create_buffer_interception_test.cc
+  src/cl_release_mem_object_interception_test.cc
+  src/cl_retain_mem_object_interception_test.cc
+  src/common_test_environment.cc
+  src/file_content_manipulations.cc
+  src/free_interception_test.cc
+  src/main.cc
+  src/malloc_interception_test.cc
+  src/memory_pool_for_symbol_searcher_internals_test.cc
+  src/posix_memalign_interception_test.cc
+  src/realloc_interception_test.cc
+  src/symbol_searcher_test.cc
+  src/trace_test.cc
+  src/valloc_interception_test.cc)
 target_include_directories(${HEAP_TRACE_TESTS} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src)
 target_link_libraries(${HEAP_TRACE_TESTS} test_sample1)
 target_link_libraries(${HEAP_TRACE_TESTS} heap_trace)

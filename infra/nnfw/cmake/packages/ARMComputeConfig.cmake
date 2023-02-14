@@ -3,11 +3,26 @@ function(_ARMCompute_Import)
 
   list(APPEND ARMCompute_LIB_SEARCH_PATHS ${ARMCompute_PREFIX}/lib)
 
-  find_path(INCLUDE_DIR NAMES arm_compute/core/ITensor.h PATHS ${ARMCompute_INCLUDE_SEARCH_PATHS})
+  find_path(
+    INCLUDE_DIR
+    NAMES arm_compute/core/ITensor.h
+    PATHS ${ARMCompute_INCLUDE_SEARCH_PATHS})
 
-  find_library(CORE_LIBRARY NAMES  	 arm_compute_core  PATHS ${ARMCompute_LIB_SEARCH_PATHS} CMAKE_FIND_ROOT_PATH_BOTH)
-  find_library(RUNTIME_LIBRARY NAMES arm_compute       PATHS ${ARMCompute_LIB_SEARCH_PATHS} CMAKE_FIND_ROOT_PATH_BOTH)
-  find_library(GRAPH_LIBRARY NAMES   arm_compute_graph PATHS ${ARMCompute_LIB_SEARCH_PATHS} CMAKE_FIND_ROOT_PATH_BOTH)
+  find_library(
+    CORE_LIBRARY
+    NAMES arm_compute_core
+    PATHS ${ARMCompute_LIB_SEARCH_PATHS}
+    CMAKE_FIND_ROOT_PATH_BOTH)
+  find_library(
+    RUNTIME_LIBRARY
+    NAMES arm_compute
+    PATHS ${ARMCompute_LIB_SEARCH_PATHS}
+    CMAKE_FIND_ROOT_PATH_BOTH)
+  find_library(
+    GRAPH_LIBRARY
+    NAMES arm_compute_graph
+    PATHS ${ARMCompute_LIB_SEARCH_PATHS}
+    CMAKE_FIND_ROOT_PATH_BOTH)
 
   message(STATUS "Search acl in ${ARMCompute_LIB_SEARCH_PATHS}")
 
@@ -15,11 +30,16 @@ function(_ARMCompute_Import)
   # And we cannot build armcompute-ex library without these headers.
   # So we need to download and use source code if our build root doesn't have headers in "src/" (tizen's devel package includes these headers).
   # TODO Don't use headers in "src/"
-  find_path(HEADER_SRC_DIR NAMES src/core/CL/ICLKernel.h PATHS ${ARMCompute_INCLUDE_SEARCH_PATHS})
+  find_path(
+    HEADER_SRC_DIR
+    NAMES src/core/CL/ICLKernel.h
+    PATHS ${ARMCompute_INCLUDE_SEARCH_PATHS})
   if(NOT INCLUDE_DIR OR NOT HEADER_SRC_DIR)
     nnas_find_package(ARMComputeSource QUIET)
-    if (NOT ARMComputeSource_FOUND)
-      set(ARMCompute_FOUND FALSE PARENT_SCOPE)
+    if(NOT ARMComputeSource_FOUND)
+      set(ARMCompute_FOUND
+          FALSE
+          PARENT_SCOPE)
       return()
     endif()
 
@@ -32,27 +52,33 @@ function(_ARMCompute_Import)
   endif(NOT INCLUDE_DIR OR NOT HEADER_SRC_DIR)
 
   if(NOT CORE_LIBRARY)
-    set(ARMCompute_FOUND FALSE PARENT_SCOPE)
+    set(ARMCompute_FOUND
+        FALSE
+        PARENT_SCOPE)
     message(STATUS "Cannot find libarm_compute_core.so")
     return()
   endif()
 
   if(NOT RUNTIME_LIBRARY)
     message(STATUS "Cannot find libarm_compute.so")
-    set(ARMCompute_FOUND FALSE PARENT_SCOPE)
+    set(ARMCompute_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif()
 
   if(NOT GRAPH_LIBRARY)
     message(STATUS "Cannot find libarm_compute_graph.so")
-    set(ARMCompute_FOUND FALSE PARENT_SCOPE)
+    set(ARMCompute_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif()
 
   if(NOT TARGET arm_compute_core)
     add_library(arm_compute_core INTERFACE)
     target_include_directories(arm_compute_core SYSTEM INTERFACE ${INCLUDE_DIR})
-	target_link_libraries(arm_compute_core INTERFACE dl ${LIB_PTHREAD})
+    target_link_libraries(arm_compute_core INTERFACE dl ${LIB_PTHREAD})
     target_link_libraries(arm_compute_core INTERFACE ${CORE_LIBRARY})
   endif(NOT TARGET arm_compute_core)
 
@@ -70,7 +96,9 @@ function(_ARMCompute_Import)
     target_link_libraries(arm_compute_graph INTERFACE arm_compute)
   endif(NOT TARGET arm_compute_graph)
 
-  set(ARMCompute_FOUND TRUE PARENT_SCOPE)
+  set(ARMCompute_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_ARMCompute_Import)
 
 # Let's build and install ARMCompute libraries
@@ -167,7 +195,8 @@ function(_ARMCompute_Build ARMComputeInstall_DIR)
   set(SCONS_CXX "g++")
   if(ANDROID)
     list(APPEND SCONS_OPTIONS "toolchain_prefix=${ANDROID_TOOLCHAIN_PREFIX}")
-    list(APPEND SCONS_OPTIONS "compiler_prefix=${ANDROID_TOOLCHAIN_ROOT}/bin/aarch64-linux-android${ANDROID_API_LEVEL}-")
+    list(APPEND SCONS_OPTIONS
+         "compiler_prefix=${ANDROID_TOOLCHAIN_ROOT}/bin/aarch64-linux-android${ANDROID_API_LEVEL}-")
     set(SCONS_CC "clang")
     set(SCONS_CXX "clang++")
   endif(ANDROID)
@@ -177,9 +206,10 @@ function(_ARMCompute_Build ARMComputeInstall_DIR)
   # Build ARMCompute libraries with SCONS
   # NOTE ARMCompute build process don't allow logging by using OUTPUT_FILE and ERROR_FILE option
   execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory "${ARMComputeInstall_DIR}")
-  execute_process(COMMAND /usr/bin/env CC=${SCONS_CC} CXX=${SCONS_CXX} "${SCONS_PATH}" ${SCONS_OPTIONS}
-                  WORKING_DIRECTORY ${ARMComputeSource_DIR}
-                  RESULT_VARIABLE BUILD_EXITCODE)
+  execute_process(
+    COMMAND /usr/bin/env CC=${SCONS_CC} CXX=${SCONS_CXX} "${SCONS_PATH}" ${SCONS_OPTIONS}
+    WORKING_DIRECTORY ${ARMComputeSource_DIR}
+    RESULT_VARIABLE BUILD_EXITCODE)
 
   if(NOT BUILD_EXITCODE EQUAL 0)
     message(FATAL_ERROR "${PKG_NAME} Package: Build and install failed (check '${BUILD_LOG_PATH}' for details)")

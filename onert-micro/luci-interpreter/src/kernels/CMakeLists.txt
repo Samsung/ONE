@@ -1,7 +1,4 @@
-set(SOURCES
-        BinaryOpCommon.h
-        Utils.h
-        Utils.cpp)
+set(SOURCES BinaryOpCommon.h Utils.h Utils.cpp)
 
 macro(REGISTER_KERNEL OPERATOR, NODE)
   list(APPEND SOURCES "${NODE}.h")
@@ -11,7 +8,7 @@ endmacro(REGISTER_KERNEL)
 include(${KERNEL_REGISTER_FILE})
 
 add_library(${LUCI_INTERPRETER_KERNELS} STATIC ${SOURCES})
-if (NOT NNCC_LIBRARY_NO_PIC)
+if(NOT NNCC_LIBRARY_NO_PIC)
   set_target_properties(${LUCI_INTERPRETER_KERNELS} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 endif(NOT NNCC_LIBRARY_NO_PIC)
 target_include_directories(${LUCI_INTERPRETER_KERNELS} PUBLIC ${LUCI_INTERPRETER_SOURCE_DIR})

@@ -27,18 +27,12 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo 'TESTCASE_BASE="${TensorFlowTests_DIR}"' >> ${CONFIG_PATH}
   COMMAND ${CMAKE_COMMAND} -E echo 'TFKIT_PATH=\"$<TARGET_FILE:tfkit>\"' >> ${CONFIG_PATH}
   COMMAND ${CMAKE_COMMAND} -E echo 'TF2CIRCLE_PATH=\"$<TARGET_FILE:tf2circle>\"' >> ${CONFIG_PATH}
-  DEPENDS
-    tfkit
-    tf2circle
-  COMMENT "Generate configuration"
-)
+  DEPENDS tfkit tf2circle
+  COMMENT "Generate configuration")
 
 ## NOTE tf2circle_ui_check is not built by default
-add_custom_target(tf2circle_ui_check
-  COMMAND
-    "${CMAKE_CURRENT_SOURCE_DIR}/checkall.sh"
-    "${CONFIG_PATH}"
-    ${TESTCASES}
+add_custom_target(
+  tf2circle_ui_check
+  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/checkall.sh" "${CONFIG_PATH}" ${TESTCASES}
   DEPENDS "${CONFIG_PATH}"
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-)
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})

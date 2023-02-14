@@ -45,19 +45,15 @@ macro(Add RECIPE)
   set(QUANT_CIRCLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${RECIPE}.q.circle")
 
   # Generate quantized .circle
-  add_custom_command(OUTPUT ${QUANT_CIRCLE_PATH}
-    COMMAND $<TARGET_FILE:circle-quantizer> --quantize_dequantize_weights float32 ${ARG_DTYPE} ${ARG_GRANULARITY} ${QCONFIG_OPT} ${CIRCLE_PATH} ${FAKE_QUANT_CIRCLE_PATH}
+  add_custom_command(
+    OUTPUT ${QUANT_CIRCLE_PATH}
+    COMMAND $<TARGET_FILE:circle-quantizer> --quantize_dequantize_weights float32 ${ARG_DTYPE} ${ARG_GRANULARITY}
+            ${QCONFIG_OPT} ${CIRCLE_PATH} ${FAKE_QUANT_CIRCLE_PATH}
     COMMAND $<TARGET_FILE:record-minmax> --input_model ${FAKE_QUANT_CIRCLE_PATH} --output_model ${RECORDED_CIRCLE_PATH}
-    COMMAND $<TARGET_FILE:circle-quantizer>
-      --quantize_with_minmax float32 ${ARG_DTYPE} ${ARG_GRANULARITY}
-      ${QCONFIG_OPT} ${RECORDED_CIRCLE_PATH} ${QUANT_CIRCLE_PATH}
-      ${INPUT_DTYPE_OPT} ${OUTPUT_DTYPE_OPT}
-    DEPENDS 
-      circle-quantizer
-      record-minmax
-      ${CIRCLE_PATH}
-    COMMENT "Generate ${RECIPE}.q.circle"
-  )
+    COMMAND $<TARGET_FILE:circle-quantizer> --quantize_with_minmax float32 ${ARG_DTYPE} ${ARG_GRANULARITY}
+            ${QCONFIG_OPT} ${RECORDED_CIRCLE_PATH} ${QUANT_CIRCLE_PATH} ${INPUT_DTYPE_OPT} ${OUTPUT_DTYPE_OPT}
+    DEPENDS circle-quantizer record-minmax ${CIRCLE_PATH}
+    COMMENT "Generate ${RECIPE}.q.circle")
 
   list(APPEND TEST_DEPS ${QUANT_CIRCLE_PATH})
   list(APPEND TEST_NAMES ${RECIPE})
@@ -70,13 +66,11 @@ macro(AddFakeQuant RECIPE)
   set(FULL_FAKE_QUANT_CIRCLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${RECIPE}.q.circle")
 
   # Generate fully fake-quantized .circle
-  add_custom_command(OUTPUT ${FULL_FAKE_QUANT_CIRCLE_PATH}
+  add_custom_command(
+    OUTPUT ${FULL_FAKE_QUANT_CIRCLE_PATH}
     COMMAND $<TARGET_FILE:circle-quantizer> --fake_quantize ${CIRCLE_PATH} ${FULL_FAKE_QUANT_CIRCLE_PATH}
-    DEPENDS
-      circle-quantizer
-      ${CIRCLE_PATH}
-    COMMENT "Generate ${RECIPE}.q.circle"
-  )
+    DEPENDS circle-quantizer ${CIRCLE_PATH}
+    COMMENT "Generate ${RECIPE}.q.circle")
 
   list(APPEND TEST_DEPS ${FULL_FAKE_QUANT_CIRCLE_PATH})
   list(APPEND TEST_NAMES ${RECIPE})
@@ -106,18 +100,13 @@ macro(AddSkipQDQW RECIPE)
   set(QUANT_CIRCLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${RECIPE}.q.circle")
 
   # Generate quantized .circle
-  add_custom_command(OUTPUT ${QUANT_CIRCLE_PATH}
+  add_custom_command(
+    OUTPUT ${QUANT_CIRCLE_PATH}
     COMMAND $<TARGET_FILE:record-minmax> --input_model ${CIRCLE_PATH} --output_model ${RECORDED_CIRCLE_PATH}
-    COMMAND $<TARGET_FILE:circle-quantizer>
-      --quantize_with_minmax float32 ${ARG_DTYPE} ${ARG_GRANULARITY}
-      ${QCONFIG_OPT} ${RECORDED_CIRCLE_PATH} ${QUANT_CIRCLE_PATH}
-      ${INPUT_DTYPE_OPT} ${OUTPUT_DTYPE_OPT}
-    DEPENDS
-      circle-quantizer
-      record-minmax
-      ${CIRCLE_PATH}
-    COMMENT "Generate ${RECIPE}.q.circle"
-  )
+    COMMAND $<TARGET_FILE:circle-quantizer> --quantize_with_minmax float32 ${ARG_DTYPE} ${ARG_GRANULARITY}
+            ${QCONFIG_OPT} ${RECORDED_CIRCLE_PATH} ${QUANT_CIRCLE_PATH} ${INPUT_DTYPE_OPT} ${OUTPUT_DTYPE_OPT}
+    DEPENDS circle-quantizer record-minmax ${CIRCLE_PATH}
+    COMMENT "Generate ${RECIPE}.q.circle")
 
   list(APPEND TEST_DEPS ${QUANT_CIRCLE_PATH})
   list(APPEND TEST_NAMES ${RECIPE})
@@ -136,8 +125,7 @@ add_custom_command(
   OUTPUT ${TEST_RUNNER}
   COMMAND ${CMAKE_COMMAND} -E copy "${TEST_RUNNER_SOURCE}" "${TEST_RUNNER}"
   DEPENDS ${TEST_RUNNER_SOURCE}
-  COMMENT "Generate test runner"
-)
+  COMMENT "Generate test runner")
 
 list(APPEND TEST_DEPS "${TEST_RUNNER}")
 
@@ -153,13 +141,8 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo 'CIRCLE_VERIFY_PATH=\"$<TARGET_FILE:circle-verify>\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'RECORD_MINMAX_PATH=\"$<TARGET_FILE:record-minmax>\"' >> ${TEST_CONFIG}
   COMMAND ${CMAKE_COMMAND} -E echo 'CIRCLE_QUANTIZER_PATH=\"$<TARGET_FILE:circle-quantizer>\"' >> ${TEST_CONFIG}
-  DEPENDS
-    circle-inspect
-    circle-verify
-    record-minmax
-    circle-quantizer
-  COMMENT "Generate test configuration"
-)
+  DEPENDS circle-inspect circle-verify record-minmax circle-quantizer
+  COMMENT "Generate test configuration")
 
 list(APPEND TEST_DEPS "${TEST_CONFIG}")
 
@@ -177,8 +160,7 @@ add_custom_command(
   OUTPUT ${RULE_LIB_BINARY_PATH}
   COMMAND ${CMAKE_COMMAND} -E copy "${RULE_LIB_SOURCE_PATH}" "${RULE_LIB_BINARY_PATH}"
   DEPENDS ${RULE_LIB_SOURCE_PATH}
-  COMMENT "Generate rule lib"
-)
+  COMMENT "Generate rule lib")
 
 list(APPEND TEST_DEPS "${RULE_LIB_BINARY_PATH}")
 
@@ -189,10 +171,5 @@ add_dependencies(circle_quantizer_dredd_recipe_test common_artifacts_deps)
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
 # Run tests
-add_test(
-  NAME circle_quantizer_dredd_recipe_test
-  COMMAND ${TEST_RUNNER}
-          ${TEST_CONFIG}
-          ${ARTIFACTS_BIN_PATH}
-          ${TEST_NAMES}
-)
+add_test(NAME circle_quantizer_dredd_recipe_test COMMAND ${TEST_RUNNER} ${TEST_CONFIG} ${ARTIFACTS_BIN_PATH}
+                                                         ${TEST_NAMES})

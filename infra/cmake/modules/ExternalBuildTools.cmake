@@ -7,12 +7,7 @@ function(ExternalBuild_CMake)
   # BUILD_FLAGS Multiple argument to set compiler flag
   # EXTRA_OPTS  Multiple argument to pass options, etc for cmake configuration
   include(CMakeParseArguments)
-  cmake_parse_arguments(ARG
-                        ""
-                        "CMAKE_DIR;BUILD_DIR;INSTALL_DIR;PKG_NAME;IDENTIFIER"
-                        "BUILD_FLAGS;EXTRA_OPTS"
-                        ${ARGN}
-  )
+  cmake_parse_arguments(ARG "" "CMAKE_DIR;BUILD_DIR;INSTALL_DIR;PKG_NAME;IDENTIFIER" "BUILD_FLAGS;EXTRA_OPTS" ${ARGN})
 
   set(BUILD_LOG_PATH "${ARG_BUILD_DIR}/${ARG_PKG_NAME}.log")
   set(INSTALL_STAMP_PATH "${ARG_INSTALL_DIR}/${ARG_PKG_NAME}.stamp")
@@ -50,17 +45,13 @@ function(ExternalBuild_CMake)
   file(MAKE_DIRECTORY ${ARG_BUILD_DIR})
   file(MAKE_DIRECTORY ${ARG_INSTALL_DIR})
 
-  execute_process(COMMAND ${CMAKE_COMMAND}
-                            -G "${CMAKE_GENERATOR}"
-                            -DCMAKE_INSTALL_PREFIX=${ARG_INSTALL_DIR}
-                            -DCMAKE_BUILD_TYPE=Release
-                            -DCMAKE_CXX_FLAGS=${ARG_BUILD_FLAGS}
-                            ${ARG_EXTRA_OPTS}
-                            ${ARG_CMAKE_DIR}
-                  OUTPUT_FILE ${BUILD_LOG_PATH}
-                  ERROR_FILE ${BUILD_LOG_PATH}
-                  WORKING_DIRECTORY ${ARG_BUILD_DIR}
-                  RESULT_VARIABLE BUILD_EXITCODE)
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" -DCMAKE_INSTALL_PREFIX=${ARG_INSTALL_DIR}
+            -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=${ARG_BUILD_FLAGS} ${ARG_EXTRA_OPTS} ${ARG_CMAKE_DIR}
+    OUTPUT_FILE ${BUILD_LOG_PATH}
+    ERROR_FILE ${BUILD_LOG_PATH}
+    WORKING_DIRECTORY ${ARG_BUILD_DIR}
+    RESULT_VARIABLE BUILD_EXITCODE)
 
   if(NOT BUILD_EXITCODE EQUAL 0)
     message(FATAL_ERROR "${ARG_PKG_NAME} Package: Build failed (check '${BUILD_LOG_PATH}' for details)")
@@ -71,11 +62,12 @@ function(ExternalBuild_CMake)
     set(NUM_BUILD_THREADS ${EXTERNALS_BUILD_THREADS})
   endif(DEFINED EXTERNALS_BUILD_THREADS)
 
-  execute_process(COMMAND ${CMAKE_COMMAND} --build . -- -j${NUM_BUILD_THREADS} install
-                  OUTPUT_FILE ${INSTALL_LOG_PATH}
-                  ERROR_FILE ${INSTALL_LOG_PATH}
-                  WORKING_DIRECTORY ${ARG_BUILD_DIR}
-                  RESULT_VARIABLE INSTALL_EXITCODE)
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} --build . -- -j${NUM_BUILD_THREADS} install
+    OUTPUT_FILE ${INSTALL_LOG_PATH}
+    ERROR_FILE ${INSTALL_LOG_PATH}
+    WORKING_DIRECTORY ${ARG_BUILD_DIR}
+    RESULT_VARIABLE INSTALL_EXITCODE)
 
   if(NOT INSTALL_EXITCODE EQUAL 0)
     message(FATAL_ERROR "${ARG_PKG_NAME} Package: Installation failed (check '${INSTALL_LOG_PATH}' for details)")

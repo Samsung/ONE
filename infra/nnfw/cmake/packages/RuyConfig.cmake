@@ -1,7 +1,9 @@
 function(_Ruy_Build)
   # NOTE This line prevents multiple definitions of ruy target
   if(TARGET ruy)
-    set(Ruy_FOUND TRUE PARENT_SCOPE)
+    set(Ruy_FOUND
+        TRUE
+        PARENT_SCOPE)
     return()
   endif(TARGET ruy)
 
@@ -10,13 +12,17 @@ function(_Ruy_Build)
 
   if(NOT TensorFlowRuySource_FOUND)
     message(STATUS "RUY: Source not found")
-    set(Ruy_FOUND FALSE PARENT_SCOPE)
+    set(Ruy_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT TensorFlowRuySource_FOUND)
 
-  if (NOT CpuInfo_FOUND)
+  if(NOT CpuInfo_FOUND)
     message(STATUS "RUY: CPUINFO not found")
-    set(Ruy_FOUND FALSE PARENT_SCOPE)
+    set(Ruy_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT CpuInfo_FOUND)
 
@@ -32,7 +38,9 @@ function(_Ruy_Build)
   #target_compile_options(ruy INTERFACE -Wno-comment)
 
   add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/Ruy" ruy)
-  set(Ruy_FOUND TRUE PARENT_SCOPE)
+  set(Ruy_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_Ruy_Build)
 
 if(BUILD_RUY)

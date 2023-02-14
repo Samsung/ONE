@@ -1,6 +1,8 @@
 function(_OouraFFTSource_import)
   if(NOT DOWNLOAD_OOURAFFT)
-    set(OouraFFTSource_FOUND FALSE PARENT_SCOPE)
+    set(OouraFFTSource_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT DOWNLOAD_OOURAFFT)
 
@@ -13,8 +15,12 @@ function(_OouraFFTSource_import)
 
   ExternalSource_Download(OOURAFFT ${OOURAFFT_URL})
 
-  set(OouraFFTSource_DIR ${OOURAFFT_SOURCE_DIR} PARENT_SCOPE)
-  set(OouraFFTSource_FOUND TRUE PARENT_SCOPE)
+  set(OouraFFTSource_DIR
+      ${OOURAFFT_SOURCE_DIR}
+      PARENT_SCOPE)
+  set(OouraFFTSource_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_OouraFFTSource_import)
 
 _OouraFFTSource_import()

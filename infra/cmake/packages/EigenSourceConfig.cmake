@@ -1,6 +1,8 @@
 function(_EigenSource_import)
   if(NOT DOWNLOAD_EIGEN)
-    set(EigenSource_FOUND FALSE PARENT_SCOPE)
+    set(EigenSource_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT DOWNLOAD_EIGEN)
 
@@ -13,12 +15,14 @@ function(_EigenSource_import)
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://mirror.bazel.build/bitbucket.org")
   envoption(EIGEN_1_13_1_URL ${EXTERNAL_DOWNLOAD_SERVER}/eigen/eigen/get/88fc23324517.tar.gz)
 
-  ExternalSource_Download(EIGEN
-    DIRNAME EIGEN
-    URL ${EIGEN_1_13_1_URL})
+  ExternalSource_Download(EIGEN DIRNAME EIGEN URL ${EIGEN_1_13_1_URL})
 
-  set(EigenSource_DIR ${EIGEN_SOURCE_DIR} PARENT_SCOPE)
-  set(EigenSource_FOUND TRUE PARENT_SCOPE)
+  set(EigenSource_DIR
+      ${EIGEN_SOURCE_DIR}
+      PARENT_SCOPE)
+  set(EigenSource_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_EigenSource_import)
 
 _EigenSource_import()

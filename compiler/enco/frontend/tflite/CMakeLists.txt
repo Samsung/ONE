@@ -4,10 +4,14 @@ if(NOT FlatBuffers_FOUND)
   return()
 endif(NOT FlatBuffers_FOUND)
 
-FlatBuffers_Target(enco_tflite_schema
-                   OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated"
-                   SCHEMA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/schema"
-                   SCHEMA_FILES schema.fbs)
+FlatBuffers_Target(
+  enco_tflite_schema
+  OUTPUT_DIR
+  "${CMAKE_CURRENT_BINARY_DIR}/generated"
+  SCHEMA_DIR
+  "${CMAKE_CURRENT_SOURCE_DIR}/schema"
+  SCHEMA_FILES
+  schema.fbs)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE TESTS "src/*.test.cpp")

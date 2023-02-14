@@ -5,10 +5,7 @@ if(NOT Protobuf_FOUND)
 endif(NOT Protobuf_FOUND)
 
 # generating and building schema
-Protobuf_Generate(TFINFO_PROTO
-                  "${CMAKE_CURRENT_BINARY_DIR}/generated"
-                  "./proto"
-                  tfinfo-v2.proto)
+Protobuf_Generate(TFINFO_PROTO "${CMAKE_CURRENT_BINARY_DIR}/generated" "./proto" tfinfo-v2.proto)
 
 add_library(tfinfo_v2_proto STATIC ${TFINFO_PROTO_SOURCES})
 set_target_properties(tfinfo_v2_proto PROPERTIES POSITION_INDEPENDENT_CODE ON)

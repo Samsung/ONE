@@ -13,16 +13,16 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if (NOT DEFINED TARGET_ARCH)
-    set(TARGET_ARCH "armv7em")
+if(NOT DEFINED TARGET_ARCH)
+  set(TARGET_ARCH "armv7em")
 endif()
 
-if (NOT DEFINED TARGET_CPU)
-    set(TARGET_CPU "cortex-m7")
+if(NOT DEFINED TARGET_CPU)
+  set(TARGET_CPU "cortex-m7")
 endif()
 
-if (NOT DEFINED TARGET_OS)
-    set(TARGET_OS "generic")
+if(NOT DEFINED TARGET_OS)
+  set(TARGET_OS "generic")
 endif()
 
 include(utils.cmake)
@@ -32,16 +32,16 @@ nnas_find_package(GTest QUIET)
 option(ENABLE_TEST "Build Tests using Google Test" ${GTest_FOUND})
 
 if(${ENABLE_TEST} AND NOT ${GTest_FOUND})
-    message(FATAL_ERROR "Google Test is required to enable test")
+  message(FATAL_ERROR "Google Test is required to enable test")
 endif(${ENABLE_TEST} AND NOT ${GTest_FOUND})
 
 option(ENABLE_COVERAGE "Build for coverage test" OFF)
 if(${ENABLE_COVERAGE} AND NOT ${ENABLE_TEST})
-    message(FATAL_ERROR "Test should be enabled to measure test coverage")
+  message(FATAL_ERROR "Test should be enabled to measure test coverage")
 endif(${ENABLE_COVERAGE} AND NOT ${ENABLE_TEST})
 
 if(${ENABLE_TEST})
-    include(CTest)
+  include(CTest)
 endif(${ENABLE_TEST})
 
 ###
@@ -49,13 +49,13 @@ endif(${ENABLE_TEST})
 ###
 add_library(onert_micro_common INTERFACE)
 if(ENABLE_STRICT_BUILD)
-    target_compile_options(onert_micro_common INTERFACE -Werror -Wall -Wextra -Wno-reorder)
+  target_compile_options(onert_micro_common INTERFACE -Werror -Wall -Wextra -Wno-reorder)
 endif(ENABLE_STRICT_BUILD)
 
 add_library(onert_micro_coverage INTERFACE)
 if(ENABLE_COVERAGE)
-    target_compile_options(onert_micro_coverage INTERFACE -g -O0 -fprofile-arcs -ftest-coverage)
-    target_link_libraries(onert_micro_coverage INTERFACE gcov)
+  target_compile_options(onert_micro_coverage INTERFACE -g -O0 -fprofile-arcs -ftest-coverage)
+  target_link_libraries(onert_micro_coverage INTERFACE gcov)
 endif(ENABLE_COVERAGE)
 
 add_subdirectory("${NNAS_PROJECT_SOURCE_DIR}/onert-micro" "${CMAKE_BINARY_DIR}/onert-micro")

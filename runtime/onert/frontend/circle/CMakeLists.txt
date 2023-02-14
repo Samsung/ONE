@@ -1,6 +1,6 @@
-if (NOT BUILD_CIRCLE_LOADER)
-    return()
-endif ()
+if(NOT BUILD_CIRCLE_LOADER)
+  return()
+endif()
 
 set(CIRCLE_LOADER_SOURCES src/circle_loader.cc)
 

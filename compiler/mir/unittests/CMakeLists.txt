@@ -1,13 +1,7 @@
-set(MIR_TEST_SOURCES
-    Operation.cpp
-    Index.cpp
-    ShapeInference.cpp
-    ShapeRange.cpp
-    TensorVariant.cpp
-    NodeReplacer.cpp)
+set(MIR_TEST_SOURCES Operation.cpp Index.cpp ShapeInference.cpp ShapeRange.cpp TensorVariant.cpp NodeReplacer.cpp)
 
 if(NOT ENABLE_TEST)
-    return()
+  return()
 endif(NOT ENABLE_TEST)
 
 nnas_find_package(GTest REQUIRED)

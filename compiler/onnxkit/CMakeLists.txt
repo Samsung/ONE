@@ -11,10 +11,7 @@ endif(NOT ONNXSource_FOUND)
 
 message(STATUS "Build onnxkit: TRUE")
 
-Protobuf_Generate(ONNX_PROTO
-                  "${CMAKE_CURRENT_BINARY_DIR}/generated"
-                  "${ONNXSource_DIR}"
-                  "onnx/onnx.proto")
+Protobuf_Generate(ONNX_PROTO "${CMAKE_CURRENT_BINARY_DIR}/generated" "${ONNXSource_DIR}" "onnx/onnx.proto")
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 

@@ -1,6 +1,8 @@
 function(_CaffeSource_import)
   if(NOT DOWNLOAD_CAFFE)
-    set(CaffeSource_FOUND FALSE PARENT_SCOPE)
+    set(CaffeSource_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT DOWNLOAD_CAFFE)
 
@@ -12,8 +14,12 @@ function(_CaffeSource_import)
 
   ExternalSource_Download(CAFFE ${CAFFE_URL})
 
-  set(CaffeSource_DIR ${CAFFE_SOURCE_DIR} PARENT_SCOPE)
-  set(CaffeSource_FOUND ${DOWNLOAD_CAFFE} PARENT_SCOPE)
+  set(CaffeSource_DIR
+      ${CAFFE_SOURCE_DIR}
+      PARENT_SCOPE)
+  set(CaffeSource_FOUND
+      ${DOWNLOAD_CAFFE}
+      PARENT_SCOPE)
 endfunction(_CaffeSource_import)
 
 _CaffeSource_import()

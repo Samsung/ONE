@@ -1,6 +1,4 @@
-set(INTERPRETER
-      src/CircleInterpreter.cpp
-   )
+set(INTERPRETER src/CircleInterpreter.cpp)
 
 add_executable(circle-interpreter ${INTERPRETER})
 target_link_libraries(circle-interpreter PRIVATE arser)

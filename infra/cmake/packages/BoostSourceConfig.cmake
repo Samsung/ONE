@@ -1,6 +1,8 @@
 function(_BoostSource_import)
   if(NOT ${DOWNLOAD_BOOST})
-    set(BoostSource_FOUND FALSE PARENT_SCOPE)
+    set(BoostSource_FOUND
+        FALSE
+        PARENT_SCOPE)
     return()
   endif(NOT ${DOWNLOAD_BOOST})
 
@@ -12,8 +14,12 @@ function(_BoostSource_import)
   envoption(BOOST_URL ${EXTERNAL_DOWNLOAD_SERVER}/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz)
   ExternalSource_Download(BOOST ${BOOST_URL})
 
-  set(BoostSource_DIR ${BOOST_SOURCE_DIR} PARENT_SCOPE)
-  set(BoostSource_FOUND TRUE PARENT_SCOPE)
+  set(BoostSource_DIR
+      ${BOOST_SOURCE_DIR}
+      PARENT_SCOPE)
+  set(BoostSource_FOUND
+      TRUE
+      PARENT_SCOPE)
 endfunction(_BoostSource_import)
 
 _BoostSource_import()

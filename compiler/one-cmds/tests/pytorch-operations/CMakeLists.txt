@@ -2,8 +2,14 @@
 
 # Gather test scripts
 set(EXAMPLES_DIR "${NNAS_PROJECT_SOURCE_DIR}/res/PyTorchExamples/examples")
-file(GLOB TEST_EXAMPLES RELATIVE "${EXAMPLES_DIR}" "${EXAMPLES_DIR}/*")
-file(GLOB SPECIAL_TEST_ITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.test")
+file(
+  GLOB TEST_EXAMPLES
+  RELATIVE "${EXAMPLES_DIR}"
+  "${EXAMPLES_DIR}/*")
+file(
+  GLOB SPECIAL_TEST_ITEMS
+  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+  "./*.test")
 
 set(TEST_DST test/pytorch-operations)
 
@@ -15,7 +21,7 @@ foreach(TEST_ITEM IN ITEMS ${TEST_EXAMPLES})
   set(TEST_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/${TEST_ITEM}.test")
 
   # generate test script
-  file(WRITE  "${TEST_SCRIPT}" "#!/bin/bash\n\n")
+  file(WRITE "${TEST_SCRIPT}" "#!/bin/bash\n\n")
   file(APPEND "${TEST_SCRIPT}" "filename_ext=\"\$(basename -- $0)\"\n")
   file(APPEND "${TEST_SCRIPT}" "filename=\"\${filename_ext%.*}\"\n")
   file(APPEND "${TEST_SCRIPT}" "trap_err_onexit()\n")
@@ -37,11 +43,10 @@ foreach(TEST_ITEM IN ITEMS ${TEST_EXAMPLES})
   install(FILES "${TEST_SCRIPT}" DESTINATION "${TEST_DST}")
 endforeach(TEST_ITEM)
 
-
 # Create a script to run the tests at installation folder
 set(DRIVER_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/runtestall.sh")
 
-file(WRITE  "${DRIVER_SCRIPT}" "#!/bin/bash\n\n")
+file(WRITE "${DRIVER_SCRIPT}" "#!/bin/bash\n\n")
 file(APPEND "${DRIVER_SCRIPT}" "SCRIPT_PATH=$(cd $(dirname \${BASH_SOURCE[0]}) && pwd)\n")
 file(APPEND "${DRIVER_SCRIPT}" "pushd $SCRIPT_PATH > /dev/null\n")
 file(APPEND "${DRIVER_SCRIPT}" "rm -rf runtestall.log\n")
@@ -68,8 +73,9 @@ endforeach(TEST_ITEM)
 
 file(APPEND "${DRIVER_SCRIPT}" "popd > /dev/null\n\n")
 
-file(APPEND "${DRIVER_SCRIPT}"
-"if [[ $fail_count != 0 ]]; then
+file(
+  APPEND "${DRIVER_SCRIPT}"
+  "if [[ $fail_count != 0 ]]; then
   echo \"$fail_count TESTS FAILED\"
   exit 255
 else
@@ -81,29 +87,52 @@ set(PREPARE_TEST_MATERIALS_SH "${CMAKE_CURRENT_SOURCE_DIR}/prepare_test_material
 set(EXAMPLE_GENERATOR "${CMAKE_CURRENT_SOURCE_DIR}/example_generator.py")
 set(AUX_GENERATOR "${CMAKE_CURRENT_SOURCE_DIR}/aux_generator.py")
 
-install(FILES "${DRIVER_SCRIPT}"
-        PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
-                    GROUP_READ GROUP_EXECUTE
-                    WORLD_READ WORLD_EXECUTE
-        DESTINATION "${TEST_DST}")
+install(
+  FILES "${DRIVER_SCRIPT}"
+  PERMISSIONS
+    OWNER_WRITE
+    OWNER_READ
+    OWNER_EXECUTE
+    GROUP_READ
+    GROUP_EXECUTE
+    WORLD_READ
+    WORLD_EXECUTE
+  DESTINATION "${TEST_DST}")
 
-install(FILES "${PREPARE_TEST_MATERIALS_SH}"
-        PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
-                    GROUP_READ GROUP_EXECUTE
-                    WORLD_READ WORLD_EXECUTE
-        DESTINATION "${TEST_DST}")
+install(
+  FILES "${PREPARE_TEST_MATERIALS_SH}"
+  PERMISSIONS
+    OWNER_WRITE
+    OWNER_READ
+    OWNER_EXECUTE
+    GROUP_READ
+    GROUP_EXECUTE
+    WORLD_READ
+    WORLD_EXECUTE
+  DESTINATION "${TEST_DST}")
 
-install(FILES "${EXAMPLE_GENERATOR}" "${AUX_GENERATOR}"
-        PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
-        GROUP_READ GROUP_EXECUTE
-        WORLD_READ WORLD_EXECUTE
-        DESTINATION "${TEST_DST}")
+install(
+  FILES "${EXAMPLE_GENERATOR}" "${AUX_GENERATOR}"
+  PERMISSIONS
+    OWNER_WRITE
+    OWNER_READ
+    OWNER_EXECUTE
+    GROUP_READ
+    GROUP_EXECUTE
+    WORLD_READ
+    WORLD_EXECUTE
+  DESTINATION "${TEST_DST}")
 
-install(FILES ${SPECIAL_TEST_ITEMS}
-        PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
-        GROUP_READ GROUP_EXECUTE
-        WORLD_READ WORLD_EXECUTE
-        DESTINATION "${TEST_DST}")
+install(
+  FILES ${SPECIAL_TEST_ITEMS}
+  PERMISSIONS
+    OWNER_WRITE
+    OWNER_READ
+    OWNER_EXECUTE
+    GROUP_READ
+    GROUP_EXECUTE
+    WORLD_READ
+    WORLD_EXECUTE
+  DESTINATION "${TEST_DST}")
 
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/README.md"
-        DESTINATION "${TEST_DST}")
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/README.md" DESTINATION "${TEST_DST}")
