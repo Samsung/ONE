@@ -118,6 +118,18 @@ def parse_cfg(args, driver_name):
             if not config.has_section(args.section):
                 raise AssertionError('configuration file must have \'' + driver_name +
                                      '\' section')
+
+            if driver_name == 'one-optimize':
+                # Set default options to true. this can be overwritten later.
+                if 'O1' in config[args.section]:
+                    for opt in _constant.CONSTANT.O1:
+                        setattr(args, opt, True)
+                    del config[args.section]['O1']
+
+                # Overwrite values of individual passes.
+                for key in config[args.section]:
+                    setattr(args, key, config[args.section][key])
+
             for key in config[args.section]:
                 if is_accumulated_arg(key, driver_name):
                     if not is_valid_attr(args, key):
