@@ -176,6 +176,25 @@ function check_python_files() {
   fi
 }
 
+function check_cmake_files() {
+  if ! command_exists cmake-format; then
+    echo "[ERROR] cmake-format is unavailable"
+    echo "       Please install cmake-format (cmakelang)."
+    exit 1
+  fi
+
+  # Check cmake files
+  FILES_TO_CHECK_CMAKE=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep 'CMakeLists\.txt$'`)
+  FILES_TO_CHECK_CMAKE+=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '^infra/[^(\.)]*\.cmake'`)
+  if [[ ${#FILES_TO_CHECK_CMAKE} -ne 0 ]]; then
+    cmake-format -i ${FILES_TO_CHECK_CMAKE[@]}
+    EXIT_CODE=$?
+    if [[ ${EXIT_CODE} -ne 0 ]]; then
+      INVALID_EXIT=${EXIT_CODE}
+    fi
+  fi
+}
+
 pushd ${NNAS_PROJECT_PATH}
 
 if [[ -n "$(git diff)" ]] && { [[ "${CHECK_DIFF_ONLY}" != "1" ]] || [[ "${CHECK_STAGED_ONLY}" != "1" ]]; }; then
@@ -219,6 +238,7 @@ check_newline
 check_permission
 check_cpp_files
 check_python_files
+check_cmake_files
 
 if [[ "${CHECK_DIFF_ONLY}" = "1" ]] && [[ "${CHECK_STAGED_ONLY}" = "1" ]]; then
   if [[ ! -z "${FILES_TO_CHECK}" ]]; then
