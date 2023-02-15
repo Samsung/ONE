@@ -122,6 +122,17 @@ def parse_cfg(args, driver_name):
             raise AssertionError('configuration file must have \'' + section_to_run +
                                  '\' section')
 
+        if section_to_run == 'one-optimize':
+            # Q. Why we handle default options first?
+            # A. We allow users to overwrite individual options. For example,
+            #    if O1=True and FoldDequantize=False, FoldDequantize is set to False.
+            if 'O1' in config[section_to_run]:
+                for opt in _constant.CONSTANT.O1:
+                    if opt in config[section_to_run]:
+                        continue
+                    setattr(args, opt, True)
+                del config[section_to_run]['O1']
+
         for key in config[section_to_run]:
             if is_accumulated_arg(key, driver_name):
                 if not is_valid_attr(args, key):
