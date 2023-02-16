@@ -113,35 +113,24 @@ def parse_cfg(args, driver_name):
         config = configparser.ConfigParser()
         config.optionxform = str
         config.read(args.config)
-        # if section is given, verify given section
+        section_to_run = driver_name
+        # if section is given, use the given section
         if is_valid_attr(args, 'section'):
-            if not config.has_section(args.section):
-                raise AssertionError('configuration file must have \'' + driver_name +
-                                     '\' section')
-            for key in config[args.section]:
-                if is_accumulated_arg(key, driver_name):
-                    if not is_valid_attr(args, key):
-                        setattr(args, key, [config[args.section][key]])
-                    else:
-                        getattr(args, key).append(config[args.section][key])
-                    continue
+            section_to_run = args.section
+
+        if not config.has_section(section_to_run):
+            raise AssertionError('configuration file must have \'' + section_to_run +
+                                 '\' section')
+
+        for key in config[section_to_run]:
+            if is_accumulated_arg(key, driver_name):
                 if not is_valid_attr(args, key):
-                    setattr(args, key, config[args.section][key])
-        # if section is not given, section name is same with its driver name
-        else:
-            if not config.has_section(driver_name):
-                raise AssertionError('configuration file must have \'' + driver_name +
-                                     '\' section')
-            secton_to_run = driver_name
-            for key in config[secton_to_run]:
-                if is_accumulated_arg(key, driver_name):
-                    if not is_valid_attr(args, key):
-                        setattr(args, key, [config[secton_to_run][key]])
-                    else:
-                        getattr(args, key).append(config[secton_to_run][key])
-                    continue
-                if not is_valid_attr(args, key):
-                    setattr(args, key, config[secton_to_run][key])
+                    setattr(args, key, [config[section_to_run][key]])
+                else:
+                    getattr(args, key).append(config[section_to_run][key])
+                continue
+            if not is_valid_attr(args, key):
+                setattr(args, key, config[section_to_run][key])
 
 
 def print_version_and_exit(file_path):
