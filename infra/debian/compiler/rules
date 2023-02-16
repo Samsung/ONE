@@ -17,5 +17,3 @@ override_dh_install:
 	install -T -m 755 -D "infra/packaging/res/tf2nnpkg.${PRESET}" "$(_DESTDIR)/bin/tf2nnpkg"
 	dh_install
 
-override_dh_builddeb:
-	dh_builddeb --destdir=$(NNAS_BUILD_PREFIX)
