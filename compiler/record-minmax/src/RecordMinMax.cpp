@@ -215,6 +215,18 @@ void RecordMinMax::initialize(const std::string &input_model_path)
     throw std::runtime_error("Failed to load '" + input_model_path + "'");
   }
 
+  // Set unknown batch to 1
+  auto input_nodes = loco::input_nodes(_module->graph());
+  for (auto input : input_nodes)
+  {
+    auto input_node = loco::must_cast<luci::CircleInput *>(input);
+
+    // If input is rank 4, we assume the input is NHWC or NCHW
+    // If batch size (N) is unknown, we assume a single batch
+    if (input_node->rank() == 4 and !input_node->dim(0).known())
+      input_node->dim(0).set(1);
+  }
+
   // Create and initialize interpreters and observers
   _interpreters.resize(_threads_size);
   _observers.resize(_threads_size);
