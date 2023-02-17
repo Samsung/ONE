@@ -20,8 +20,21 @@ class CONSTANT:
 
     # Basic optimization passes
     # These passes do not change the execution result of the model
+    O1 = list()
     with open('O1.txt', 'r') as f:
-        O1 = f.read().split()
+        for line in f:
+            # Ignore the comments
+            if line.startswith('#'):
+                continue
+
+            # Ignore empty line
+            if not line.strip():
+                continue
+
+            O1.append(line.rstrip())
+
+    # Make it immutable
+    O1 = tuple(O1)
 
     OPTIMIZATION_OPTS = (
         # (OPTION_NAME, HELP_MESSAGE)

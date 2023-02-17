@@ -1,3 +1,4 @@
+# Constant folding
 fold_add_v2
 fold_cast
 fold_densify
@@ -6,6 +7,8 @@ fold_dwconv
 fold_fully_connected
 fold_gather
 fold_sparse_to_dense
+
+# Operator fusion
 fuse_add_with_tconv
 fuse_add_with_fully_connected
 fuse_batchnorm_with_conv
@@ -18,12 +21,17 @@ fuse_mean_with_mean
 fuse_transpose_with_mean
 transform_min_max_to_relu6
 transform_min_relu_to_relu6
+
+# Remove redundant operators
 remove_redundant_reshape
 remove_redundant_transpose
 remove_unnecessary_reshape
 remove_unnecessary_slice
 remove_unnecessary_strided_slice
 remove_unnecessary_split
+
+# Canonicalization
+# (passes to help further optimization)
 resolve_customop_add
 resolve_customop_batchmatmul
 resolve_customop_matmul
