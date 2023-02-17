@@ -101,7 +101,8 @@ set(ONE_PYTHON_FILES constant.py
                      OptionBuilder.py
                      TopologicalSortHelper.py
                      WorkflowRunner.py
-                     utils.py)
+                     utils.py
+                     O1.txt)
 
 foreach(ONE_PYTHON_FILE IN ITEMS ${ONE_PYTHON_FILES})
 
@@ -151,3 +152,21 @@ endif(NOT ENABLE_TEST)
 add_subdirectory(dummy-driver)
 add_subdirectory(tests)
 add_subdirectory(validate-onnx2circle)
+
+# Copy O1.txt file to test directory
+set(ONELIB_O1_FILE ${CMAKE_CURRENT_BINARY_DIR}/onelib/O1.txt)
+set(TEST_O1_FILE ${CMAKE_CURRENT_BINARY_DIR}/tests/O1.txt)
+
+add_custom_command(OUTPUT ${TEST_O1_FILE}
+  COMMAND ${CMAKE_COMMAND} -E copy ${ONELIB_O1_FILE} ${TEST_O1_FILE}
+  DEPENDS ${ONELIB_O1_FILE}
+  COMMENT "Copy O1.txt to tests directory"
+)
+
+add_custom_target(TGT_TEST_O1_FILE ALL DEPENDS ${TEST_O1_FILE})
+
+install(FILES ${TEST_O1_FILE}
+        PERMISSIONS OWNER_READ
+        GROUP_READ
+        WORLD_READ
+        DESTINATION test)
