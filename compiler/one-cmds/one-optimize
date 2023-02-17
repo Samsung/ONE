@@ -97,6 +97,12 @@ def _parse_arg(parser):
     if args.version:
         oneutils.print_version_and_exit(__file__)
 
+    # handle default options given by cmdline
+    if oneutils.is_valid_attr(args, 'O1'):
+        for opt in _constant.CONSTANT.O1:
+            setattr(args, opt, True)
+        setattr(args, 'O1', False)
+
     return args
 
 

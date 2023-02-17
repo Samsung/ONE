@@ -17,8 +17,64 @@
 
 class CONSTANT:
     __slots__ = ()  # This prevents access via __dict__.
+
+    # Basic optimization passes
+    # These passes do not change the execution result of the model
+    O1 = (
+        # Constant folding
+        'fold_add_v2',
+        'fold_cast',
+        'fold_densify',
+        'fold_dequantize',
+        'fold_dwconv',
+        'fold_fully_connected',
+        'fold_gather',
+        'fold_sparse_to_dense',
+
+        # Operator fusion
+        'fuse_add_with_tconv',
+        'fuse_add_with_fully_connected',
+        'fuse_batchnorm_with_conv',
+        'fuse_batchnorm_with_dwconv',
+        'fuse_batchnorm_with_tconv',
+        'fuse_activation_function',
+        'fuse_instnorm',
+        'fuse_prelu',
+        'fuse_mean_with_mean',
+        'fuse_transpose_with_mean',
+        'transform_min_max_to_relu6',
+        'transform_min_relu_to_relu6',
+
+        # Remove redundant operators
+        'remove_redundant_reshape',
+        'remove_redundant_transpose',
+        'remove_unnecessary_reshape',
+        'remove_unnecessary_slice',
+        'remove_unnecessary_strided_slice',
+        'remove_unnecessary_split',
+
+        # Canonicalization
+        # (passes to help further optimization)
+        'resolve_customop_add',
+        'resolve_customop_batchmatmul',
+        'resolve_customop_matmul',
+        'resolve_customop_max_pool_with_argmax',
+        'resolve_customop_splitv',
+        'substitute_pack_to_reshape',
+        'substitute_padv2_to_pad',
+        'substitute_splitv_to_split',
+        'substitute_squeeze_to_reshape',
+        'substitute_strided_slice_to_reshape',
+        'substitute_transpose_to_reshape',
+        'forward_reshape_to_unaryop',
+        'forward_transpose_op',
+        'replace_non_const_fc_with_batch_matmul',  # For quantization
+    )
+
     OPTIMIZATION_OPTS = (
         # (OPTION_NAME, HELP_MESSAGE)
+        ('O1', 'A basic set of optimization options. This will not change the ' +
+         'execution result of the model and finish within a resonable time.'),
         ('convert_nchw_to_nhwc',
          'Experimental: This will convert NCHW operators to NHWC under the assumption that input model is NCHW.'
          ),
