@@ -246,7 +246,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_executors_8cc_source.html#l00026">26</a> of file <a class="el" href="_executors_8cc_source.html">Executors.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executors_8cc_source.html#l00063">63</a> of file <a class="el" href="_executors_8cc_source.html">Executors.cc</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af0fbd63bfe6a3d6d5363299d2ce2d30d" name="af0fbd63bfe6a3d6d5363299d2ce2d30d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af0fbd63bfe6a3d6d5363299d2ce2d30d">&#9670;&#160;</a></span>EdgeTensor()</h2>
@@ -282,10 +282,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executors_8cc_source.html#l00029">29</a> of file <a class="el" href="_executors_8cc_source.html">Executors.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>    : backend::builtin::IOTensor(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a25bcc7bdd78fcde02d602bcfd1fbd53c">layout</a>), _buffer{<span class="keyword">nullptr</span>}, _ref_count{0}</div>
-<div class="line"><span class="lineno">   31</span>  {</div>
-<div class="line"><span class="lineno">   32</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_executors_8cc_source.html#l00066">66</a> of file <a class="el" href="_executors_8cc_source.html">Executors.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>    : <a class="code hl_class" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html">backend::builtin::IOTensor</a>(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a25bcc7bdd78fcde02d602bcfd1fbd53c">layout</a>), _buffer{<span class="keyword">nullptr</span>}, _ref_count{0}</div>
+<div class="line"><span class="lineno">   68</span>  {</div>
+<div class="line"><span class="lineno">   69</span>  }</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_i_o_tensor_html"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html">onert::backend::builtin::IOTensor</a></div><div class="ttdoc">Tensor object that indirects to the tensor it is pointing to.</div><div class="ttdef"><b>Definition:</b> <a href="_i_o_tensor_8h_source.html#l00041">IOTensor.h:42</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_i_o_tensor_html_a25bcc7bdd78fcde02d602bcfd1fbd53c"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a25bcc7bdd78fcde02d602bcfd1fbd53c">onert::backend::builtin::IOTensor::layout</a></div><div class="ttdeci">ir::Layout layout() const override</div><div class="ttdef"><b>Definition:</b> <a href="_i_o_tensor_8h_source.html#l00060">IOTensor.h:60</a></div></div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition:</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
 </div><!-- fragment -->
@@ -340,18 +341,18 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executors_8cc_source.html#l00035">35</a> of file <a class="el" href="_executors_8cc_source.html">Executors.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>  {</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ad0aeba64f92f6dbdb746fe115632c86a">total_size</a> = <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#abe2db1e9648092c379d0c1b5c8fd2c87">orig_info</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a0a8795e5b155f413a7974ce0786257d8">total_size</a>();</div>
-<div class="line"><span class="lineno">   38</span>    _buffer = std::make_unique&lt;uint8_t[]&gt;(<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ad0aeba64f92f6dbdb746fe115632c86a">total_size</a>);</div>
-<div class="line"><span class="lineno">   39</span>    _ref_count = 1;</div>
-<div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>    <span class="comment">// NOTE Executor&#39;s inputs/outputs are always IPortableTensor. If backend of inputs/outputs</span></div>
-<div class="line"><span class="lineno">   42</span>    <span class="comment">//      is using tensor that does not inherit IPortableTensor, Permute operation is added</span></div>
-<div class="line"><span class="lineno">   43</span>    <span class="comment">//      and all inputs/outputs become IPortableTensor at compile stage.</span></div>
-<div class="line"><span class="lineno">   44</span>    <span class="comment">//      This allows user&#39;s buffers to be set to inputs/outputs of executors.</span></div>
-<div class="line"><span class="lineno">   45</span>    <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ae6dcb2f67ad5ca53b62b5143309442ad">setUserTensor</a>(_buffer.get(), <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ad0aeba64f92f6dbdb746fe115632c86a">total_size</a>);</div>
-<div class="line"><span class="lineno">   46</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_executors_8cc_source.html#l00072">72</a> of file <a class="el" href="_executors_8cc_source.html">Executors.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>  {</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ad0aeba64f92f6dbdb746fe115632c86a">total_size</a> = <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#abe2db1e9648092c379d0c1b5c8fd2c87">orig_info</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a0a8795e5b155f413a7974ce0786257d8">total_size</a>();</div>
+<div class="line"><span class="lineno">   75</span>    _buffer = std::make_unique&lt;uint8_t[]&gt;(<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ad0aeba64f92f6dbdb746fe115632c86a">total_size</a>);</div>
+<div class="line"><span class="lineno">   76</span>    _ref_count = 1;</div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>    <span class="comment">// NOTE Executor&#39;s inputs/outputs are always IPortableTensor. If backend of inputs/outputs</span></div>
+<div class="line"><span class="lineno">   79</span>    <span class="comment">//      is using tensor that does not inherit IPortableTensor, Permute operation is added</span></div>
+<div class="line"><span class="lineno">   80</span>    <span class="comment">//      and all inputs/outputs become IPortableTensor at compile stage.</span></div>
+<div class="line"><span class="lineno">   81</span>    <span class="comment">//      This allows user&#39;s buffers to be set to inputs/outputs of executors.</span></div>
+<div class="line"><span class="lineno">   82</span>    <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ae6dcb2f67ad5ca53b62b5143309442ad">setUserTensor</a>(_buffer.get(), <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ad0aeba64f92f6dbdb746fe115632c86a">total_size</a>);</div>
+<div class="line"><span class="lineno">   83</span>  }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_i_o_tensor_html_abe2db1e9648092c379d0c1b5c8fd2c87"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#abe2db1e9648092c379d0c1b5c8fd2c87">onert::backend::builtin::IOTensor::orig_info</a></div><div class="ttdeci">const ir::OperandInfo &amp; orig_info() const</div><div class="ttdef"><b>Definition:</b> <a href="_i_o_tensor_8h_source.html#l00050">IOTensor.h:50</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_i_o_tensor_html_ad0aeba64f92f6dbdb746fe115632c86a"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ad0aeba64f92f6dbdb746fe115632c86a">onert::backend::builtin::IOTensor::total_size</a></div><div class="ttdeci">size_t total_size() const override</div><div class="ttdef"><b>Definition:</b> <a href="_i_o_tensor_8h_source.html#l00055">IOTensor.h:55</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_i_o_tensor_html_ae6dcb2f67ad5ca53b62b5143309442ad"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ae6dcb2f67ad5ca53b62b5143309442ad">onert::backend::builtin::IOTensor::setUserTensor</a></div><div class="ttdeci">void setUserTensor(uint8_t *buffer, size_t size)</div><div class="ttdef"><b>Definition:</b> <a href="_i_o_tensor_8cc_source.html#l00048">IOTensor.cc:48</a></div></div>
@@ -384,16 +385,16 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executors_8cc_source.html#l00050">50</a> of file <a class="el" href="_executors_8cc_source.html">Executors.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>  {</div>
-<div class="line"><span class="lineno">   52</span>    assert(_ref_count &gt; 0);</div>
-<div class="line"><span class="lineno">   53</span>    _ref_count--;</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">if</span> (_ref_count == 0)</div>
-<div class="line"><span class="lineno">   55</span>    {</div>
-<div class="line"><span class="lineno">   56</span>      _buffer.reset();</div>
-<div class="line"><span class="lineno">   57</span>      <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ae6dcb2f67ad5ca53b62b5143309442ad">setUserTensor</a>(<span class="keyword">nullptr</span>, <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#abe2db1e9648092c379d0c1b5c8fd2c87">orig_info</a>().<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ad0aeba64f92f6dbdb746fe115632c86a">total_size</a>());</div>
-<div class="line"><span class="lineno">   58</span>    }</div>
-<div class="line"><span class="lineno">   59</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_executors_8cc_source.html#l00087">87</a> of file <a class="el" href="_executors_8cc_source.html">Executors.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span>  {</div>
+<div class="line"><span class="lineno">   89</span>    assert(_ref_count &gt; 0);</div>
+<div class="line"><span class="lineno">   90</span>    _ref_count--;</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">if</span> (_ref_count == 0)</div>
+<div class="line"><span class="lineno">   92</span>    {</div>
+<div class="line"><span class="lineno">   93</span>      _buffer.reset();</div>
+<div class="line"><span class="lineno">   94</span>      <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ae6dcb2f67ad5ca53b62b5143309442ad">setUserTensor</a>(<span class="keyword">nullptr</span>, <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#abe2db1e9648092c379d0c1b5c8fd2c87">orig_info</a>().<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ad0aeba64f92f6dbdb746fe115632c86a">total_size</a>());</div>
+<div class="line"><span class="lineno">   95</span>    }</div>
+<div class="line"><span class="lineno">   96</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_o_tensor_8h_source.html#l00050">onert::backend::builtin::IOTensor::orig_info()</a>, <a class="el" href="_i_o_tensor_8cc_source.html#l00048">onert::backend::builtin::IOTensor::setUserTensor()</a>, and <a class="el" href="_i_o_tensor_8h_source.html#l00055">onert::backend::builtin::IOTensor::total_size()</a>.</p>
 
@@ -422,8 +423,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executors_8cc_source.html#l00048">48</a> of file <a class="el" href="_executors_8cc_source.html">Executors.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>{ _ref_count++; }</div>
+<p class="definition">Definition at line <a class="el" href="_executors_8cc_source.html#l00085">85</a> of file <a class="el" href="_executors_8cc_source.html">Executors.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>{ _ref_count++; }</div>
 </div><!-- fragment -->
 </div>
 </div>

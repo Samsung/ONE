@@ -15,6 +15,7 @@ var namespaceluci__interpreter__pal =
       [ "apply_tanh_impl", "namespaceluci__interpreter__pal_1_1lstm.html#af16a4f8e96b58833ba85f9b5ef120b6c", null ],
       [ "calculate_lstm_gate_integer_8x8_16", "namespaceluci__interpreter__pal_1_1lstm.html#adaa95dd338f0bbd9be680fd7dfc6d1aa", null ],
       [ "calculate_lstm_output_integer8x8_16", "namespaceluci__interpreter__pal_1_1lstm.html#ad07afcc83af092c475787d8184538098", null ],
+      [ "convert_lstm_params", "namespaceluci__interpreter__pal_1_1lstm.html#a15e54cf21be2fb24c7575d140e2a8d1a", null ],
       [ "count_leading_zeros", "namespaceluci__interpreter__pal_1_1lstm.html#acef25fe5a003e2ff65b2c8ccb2711207", null ],
       [ "cwise_add", "namespaceluci__interpreter__pal_1_1lstm.html#af4923cae88d2f75c29b49c78c9a00f99", null ],
       [ "cwise_clipping", "namespaceluci__interpreter__pal_1_1lstm.html#a4e414d74814834c72b789c80e68e843b", null ],

@@ -17,7 +17,7 @@ var dir_c4a85e64d6b44b6088d388e953098055 =
     [ "Cast.h", "compiler_2luci-interpreter_2src_2kernels_2_cast_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_cast_8h" ],
     [ "Concatenation.cpp", "compiler_2luci-interpreter_2src_2kernels_2_concatenation_8cpp.html", null ],
     [ "Concatenation.h", "compiler_2luci-interpreter_2src_2kernels_2_concatenation_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_concatenation_8h" ],
-    [ "Conv2D.cpp", "compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp.html", null ],
+    [ "Conv2D.cpp", "compiler_2luci-interpreter_2src_2kernels_2conv2d_8cpp.html", null ],
     [ "Conv2D.h", "compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8h" ],
     [ "DepthToSpace.cpp", "compiler_2luci-interpreter_2src_2kernels_2_depth_to_space_8cpp.html", null ],
     [ "DepthToSpace.h", "compiler_2luci-interpreter_2src_2kernels_2_depth_to_space_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_depth_to_space_8h" ],

@@ -457,35 +457,35 @@ Optimization options must be placed in `optimization` folder
 <div class="line"><span class="lineno">  113</span>        config = configparser.ConfigParser()</div>
 <div class="line"><span class="lineno">  114</span>        config.optionxform = str</div>
 <div class="line"><span class="lineno">  115</span>        config.read(args.config)</div>
-<div class="line"><span class="lineno">  116</span>        <span class="comment"># if section is given, verify given section</span></div>
-<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;section&#39;</span>):</div>
-<div class="line"><span class="lineno">  118</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> config.has_section(args.section):</div>
-<div class="line"><span class="lineno">  119</span>                <span class="keywordflow">raise</span> AssertionError(<span class="stringliteral">&#39;configuration file must have \&#39;&#39;</span> + driver_name +</div>
-<div class="line"><span class="lineno">  120</span>                                     <span class="stringliteral">&#39;\&#39; section&#39;</span>)</div>
-<div class="line"><span class="lineno">  121</span>            <span class="keywordflow">for</span> key <span class="keywordflow">in</span> config[args.section]:</div>
-<div class="line"><span class="lineno">  122</span>                <span class="keywordflow">if</span> is_accumulated_arg(key, driver_name):</div>
-<div class="line"><span class="lineno">  123</span>                    <span class="keywordflow">if</span> <span class="keywordflow">not</span> is_valid_attr(args, key):</div>
-<div class="line"><span class="lineno">  124</span>                        setattr(args, key, [config[args.section][key]])</div>
-<div class="line"><span class="lineno">  125</span>                    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  126</span>                        getattr(args, key).append(config[args.section][key])</div>
-<div class="line"><span class="lineno">  127</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  128</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> is_valid_attr(args, key):</div>
-<div class="line"><span class="lineno">  129</span>                    setattr(args, key, config[args.section][key])</div>
-<div class="line"><span class="lineno">  130</span>        <span class="comment"># if section is not given, section name is same with its driver name</span></div>
-<div class="line"><span class="lineno">  131</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  132</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> config.has_section(driver_name):</div>
-<div class="line"><span class="lineno">  133</span>                <span class="keywordflow">raise</span> AssertionError(<span class="stringliteral">&#39;configuration file must have \&#39;&#39;</span> + driver_name +</div>
-<div class="line"><span class="lineno">  134</span>                                     <span class="stringliteral">&#39;\&#39; section&#39;</span>)</div>
-<div class="line"><span class="lineno">  135</span>            secton_to_run = driver_name</div>
-<div class="line"><span class="lineno">  136</span>            <span class="keywordflow">for</span> key <span class="keywordflow">in</span> config[secton_to_run]:</div>
-<div class="line"><span class="lineno">  137</span>                <span class="keywordflow">if</span> is_accumulated_arg(key, driver_name):</div>
-<div class="line"><span class="lineno">  138</span>                    <span class="keywordflow">if</span> <span class="keywordflow">not</span> is_valid_attr(args, key):</div>
-<div class="line"><span class="lineno">  139</span>                        setattr(args, key, [config[secton_to_run][key]])</div>
-<div class="line"><span class="lineno">  140</span>                    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  141</span>                        getattr(args, key).append(config[secton_to_run][key])</div>
-<div class="line"><span class="lineno">  142</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  143</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> is_valid_attr(args, key):</div>
-<div class="line"><span class="lineno">  144</span>                    setattr(args, key, config[secton_to_run][key])</div>
+<div class="line"><span class="lineno">  116</span>        section_to_run = driver_name</div>
+<div class="line"><span class="lineno">  117</span>        <span class="comment"># if section is given, use the given section</span></div>
+<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;section&#39;</span>):</div>
+<div class="line"><span class="lineno">  119</span>            section_to_run = args.section</div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> config.has_section(section_to_run):</div>
+<div class="line"><span class="lineno">  122</span>            <span class="keywordflow">raise</span> AssertionError(<span class="stringliteral">&#39;configuration file must have \&#39;&#39;</span> + section_to_run +</div>
+<div class="line"><span class="lineno">  123</span>                                 <span class="stringliteral">&#39;\&#39; section&#39;</span>)</div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>        <span class="keywordflow">if</span> section_to_run == <span class="stringliteral">&#39;one-optimize&#39;</span>:</div>
+<div class="line"><span class="lineno">  126</span>            <span class="comment"># Q. Why we handle default options first?</span></div>
+<div class="line"><span class="lineno">  127</span>            <span class="comment"># A. We allow users to overwrite individual options. For example,</span></div>
+<div class="line"><span class="lineno">  128</span>            <span class="comment">#    if O1=True and FoldDequantize=False, FoldDequantize is set to False.</span></div>
+<div class="line"><span class="lineno">  129</span>            <span class="keywordflow">if</span> <span class="stringliteral">&#39;O1&#39;</span> <span class="keywordflow">in</span> config[section_to_run]:</div>
+<div class="line"><span class="lineno">  130</span>                <span class="keywordflow">for</span> opt <span class="keywordflow">in</span> _constant.CONSTANT.O1:</div>
+<div class="line"><span class="lineno">  131</span>                    <span class="keywordflow">if</span> opt <span class="keywordflow">in</span> config[section_to_run]:</div>
+<div class="line"><span class="lineno">  132</span>                        <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  133</span>                    setattr(args, opt, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  134</span>                del config[section_to_run][<span class="stringliteral">&#39;O1&#39;</span>]</div>
+<div class="line"><span class="lineno">  135</span> </div>
+<div class="line"><span class="lineno">  136</span>        <span class="keywordflow">for</span> key <span class="keywordflow">in</span> config[section_to_run]:</div>
+<div class="line"><span class="lineno">  137</span>            <span class="keywordflow">if</span> is_accumulated_arg(key, driver_name):</div>
+<div class="line"><span class="lineno">  138</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> is_valid_attr(args, key):</div>
+<div class="line"><span class="lineno">  139</span>                    setattr(args, key, [config[section_to_run][key]])</div>
+<div class="line"><span class="lineno">  140</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  141</span>                    getattr(args, key).append(config[section_to_run][key])</div>
+<div class="line"><span class="lineno">  142</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  143</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> is_valid_attr(args, key):</div>
+<div class="line"><span class="lineno">  144</span>                setattr(args, key, config[section_to_run][key])</div>
 <div class="line"><span class="lineno">  145</span> </div>
 <div class="line"><span class="lineno">  146</span> </div>
 </div><!-- fragment -->

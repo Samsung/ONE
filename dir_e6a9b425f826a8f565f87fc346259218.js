@@ -23,5 +23,6 @@ var dir_e6a9b425f826a8f565f87fc346259218 =
     [ "PALSpaceToBatchND.h", "onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_space_to_batch_n_d_8h.html", null ],
     [ "PALSpaceToDepth.h", "onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_space_to_depth_8h.html", null ],
     [ "PALSub.h", "onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_sub_8h.html", null ],
-    [ "PALSVDF.h", "onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_s_v_d_f_8h.html", null ]
+    [ "PALSVDF.h", "onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_s_v_d_f_8h.html", null ],
+    [ "PALUnidirectionalSequenceLSTM.h", "cmsisnn_2_p_a_l_unidirectional_sequence_l_s_t_m_8h.html", "cmsisnn_2_p_a_l_unidirectional_sequence_l_s_t_m_8h" ]
 ];
