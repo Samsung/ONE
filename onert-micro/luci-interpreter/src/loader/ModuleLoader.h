@@ -18,7 +18,6 @@
 #define LUCI_INTERPRETER_LOADER_MODULELOADER_H
 
 #include "core/RuntimeModule.h"
-#include "memory_managers/MemoryManager.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <unordered_map>
@@ -29,17 +28,8 @@ namespace luci_interpreter
 class ModuleLoader
 {
 public:
-  ModuleLoader(const char *model_data_raw, RuntimeModule *runtime_module,
-               IMemoryManager *memory_manager);
-
-  void load(bool use_static_memory_manager);
-
-private:
-  IMemoryManager *_memory_manager;
-  const char *_model_data_raw;
-  RuntimeModule *_runtime_module;
-  std::vector<IBaseRuntimeGraph *> _runtime_graphs;
-  std::unordered_map<int32_t, Tensor *> _index_to_tensor;
+  static void load(RuntimeModule *runtime_module, MemoryManager *memory_manager,
+                   const char *model_data_raw);
 };
 
 } // namespace luci_interpreter

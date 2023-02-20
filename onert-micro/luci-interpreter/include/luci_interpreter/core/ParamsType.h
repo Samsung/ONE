@@ -23,7 +23,7 @@
 
 namespace luci_interpreter
 {
-
+// TODO check can we remove it
 enum class FusedActFunc
 {
   UNDEFINED, // This is not defined by TFLite or Circle. This was added to

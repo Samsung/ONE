@@ -18,22 +18,11 @@
 #include "luci_interpreter/core/reader/CircleMicroReaderHelper.h"
 
 #include <algorithm>
-#include <memory>
-#include <string>
 
 namespace luci_interpreter
 {
 
-const char *tensor_name(const circle::Tensor *tensor)
-{
-  assert(tensor != nullptr);
-
-  if (tensor->name() == nullptr || std::string(tensor->name()->c_str()).empty())
-    return "(noname)";
-
-  return tensor->name()->c_str();
-}
-
+// TODO check can we remove it
 DataType luci_datatype(const circle::TensorType type)
 {
   switch (type)
@@ -48,8 +37,6 @@ DataType luci_datatype(const circle::TensorType type)
       return DataType::U8;
     case circle::TensorType_INT64:
       return DataType::S64;
-    case circle::TensorType_STRING:
-      return DataType::STRING;
     case circle::TensorType_BOOL:
       return DataType::BOOL;
     case circle::TensorType_INT16:
@@ -112,11 +99,6 @@ MirrorPadMode luci_mirrorpad_mode(const circle::MirrorPadMode mode)
   }
   assert(false);
   return MirrorPadMode::UNDEFINED;
-}
-
-std::string fb_string2std_string(const flatbuffers::String *fb_str)
-{
-  return fb_str == nullptr ? "" : fb_str->str();
 }
 
 circle::BuiltinOperator CircleReader::builtin_code(const circle::Operator *op) const

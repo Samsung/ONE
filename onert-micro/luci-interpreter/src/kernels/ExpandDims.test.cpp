@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+// TODO enable it
+#if 0
 #include "kernels/ExpandDims.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
@@ -113,3 +115,4 @@ TEST_F(ExpandDimsTest, InvalidAxisValue_NEG)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif

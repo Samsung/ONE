@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "kernels/MaxPool2D.h"
+#include "Builders.h"
 
 #include "kernels/Utils.h"
 
@@ -24,126 +24,197 @@
 namespace luci_interpreter
 {
 
-namespace kernels
+namespace
 {
 
-MaxPool2D::MaxPool2D(const Tensor *input, Tensor *output, const Pool2DParams &params)
-  : KernelWithParams<Pool2DParams>({input}, {output}, params)
+#ifndef DIS_FLOAT
+
+void evalFloat(const circle::Tensor *input, const circle::Tensor *output,
+               const circle::Pool2DOptions *options, BaseRuntimeGraph *runtime_graph)
 {
+  const int32_t input_height = Tensor::dim(input, 1);
+  const int32_t input_width = Tensor::dim(input, 2);
+
+  const int32_t output_height = kernels::computeOutputSize(
+    luci_padding(options->padding()), input_height, options->filter_height(), options->stride_h());
+  const int32_t output_width = kernels::computeOutputSize(
+    luci_padding(options->padding()), input_width, options->filter_width(), options->stride_w());
+
+  const auto padding_height = kernels::computePadding(options->stride_h(), 1, input_height,
+                                                      options->filter_height(), output_height);
+  const auto padding_width = kernels::computePadding(options->stride_w(), 1, input_width,
+                                                     options->filter_width(), output_width);
+
+  const auto *input_data = runtime_graph->getDataByTensor(input);
+  auto *output_data = runtime_graph->getDataByTensor(output);
+
+  float activation_min{};
+  float activation_max{};
+  kernels::calculateActivationRange(luci_actfunc(options->fused_activation_function()),
+                                    &activation_min, &activation_max);
+  tflite::PoolParams params{};
+  params.padding_values.height = padding_height;
+  params.padding_values.width = padding_width;
+  params.stride_height = options->stride_h();
+  params.stride_width = options->stride_w();
+  params.filter_height = options->filter_height();
+  params.filter_width = options->filter_width();
+  params.float_activation_min = activation_min;
+  params.float_activation_max = activation_max;
+
+  tflite::reference_ops::MaxPool(
+    params, kernels::getTensorShape(input), kernels::getTensorData<float>(input_data),
+    kernels::getTensorShape(output), kernels::getTensorData<float>(output_data));
 }
 
-void MaxPool2D::configure()
+#endif // DIS_FLOAT
+
+#ifndef DIS_QUANT
+void evalQuantized(const circle::Tensor *input, const circle::Tensor *output,
+                   const circle::Pool2DOptions *options, BaseRuntimeGraph *runtime_graph)
 {
-  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
-  assert(input()->shape().num_dims() == 4);
-  const Shape &input_shape = input()->shape();
-  const int32_t batches = input_shape.dim(0);
-  const int32_t input_height = input_shape.dim(1);
-  const int32_t input_width = input_shape.dim(2);
-  const int32_t depth = input_shape.dim(3);
+  int32_t activation_min{};
+  int32_t activation_max{};
+  kernels::calculateActivationRangeQuantized(luci_actfunc(options->fused_activation_function()),
+                                             output, &activation_min, &activation_max);
 
-  const int32_t output_height =
-    computeOutputSize(_params.padding, input_height, _params.filter_height, _params.stride_height);
-  const int32_t output_width =
-    computeOutputSize(_params.padding, input_width, _params.filter_width, _params.stride_width);
+  // Compute padding
+  const int32_t input_height = Tensor::dim(input, 1);
+  const int32_t input_width = Tensor::dim(input, 2);
 
-  _padding_height =
-    computePadding(_params.stride_height, 1, input_height, _params.filter_height, output_height);
-  _padding_width =
-    computePadding(_params.stride_width, 1, input_width, _params.filter_width, output_width);
+  const int32_t output_height = kernels::computeOutputSize(
+    luci_padding(options->padding()), input_height, options->filter_height(), options->stride_h());
+  const int32_t output_width = kernels::computeOutputSize(
+    luci_padding(options->padding()), input_width, options->filter_width(), options->stride_w());
 
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize({batches, output_height, output_width, depth});
-  if (input()->element_type() == DataType::U8)
-  {
-    LUCI_INTERPRETER_CHECK(std::abs(output()->scale() - input()->scale()) <= 1.0e-6);
-    LUCI_INTERPRETER_CHECK(output()->zero_point() == input()->zero_point());
-  }
-  else if (input()->element_type() == DataType::S16)
-  {
-    LUCI_INTERPRETER_CHECK(std::abs(output()->scale() - input()->scale()) <= 1.0e-6);
-    LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && output()->zero_point() == 0);
-  }
+  const auto padding_height = kernels::computePadding(options->stride_h(), 1, input_height,
+                                                      options->filter_height(), output_height);
+  const auto padding_width = kernels::computePadding(options->stride_w(), 1, input_width,
+                                                     options->filter_width(), output_width);
+
+  tflite::PoolParams params{};
+  params.padding_values.height = padding_height;
+  params.padding_values.width = padding_width;
+  params.stride_height = options->stride_h();
+  params.stride_width = options->stride_w();
+  params.filter_height = options->filter_height();
+  params.filter_width = options->filter_width();
+  params.quantized_activation_min = activation_min;
+  params.quantized_activation_max = activation_max;
+
+  const auto *input_data = runtime_graph->getDataByTensor(input);
+  auto *output_data = runtime_graph->getDataByTensor(output);
+
+  tflite::reference_ops::MaxPool(
+    params, kernels::getTensorShape(input), kernels::getTensorData<uint8_t>(input_data),
+    kernels::getTensorShape(output), kernels::getTensorData<uint8_t>(output_data));
 }
 
-void MaxPool2D::execute() const
+void evalSInt16(const circle::Tensor *input, const circle::Tensor *output,
+                const circle::Pool2DOptions *options, BaseRuntimeGraph *runtime_graph)
 {
-  switch (input()->element_type())
+  int32_t activation_min{};
+  int32_t activation_max{};
+  kernels::calculateActivationRangeQuantized(luci_actfunc(options->fused_activation_function()),
+                                             output, &activation_min, &activation_max);
+
+  // Compute padding
+  const int32_t input_height = Tensor::dim(input, 1);
+  const int32_t input_width = Tensor::dim(input, 2);
+
+  const int32_t output_height = kernels::computeOutputSize(
+    luci_padding(options->padding()), input_height, options->filter_height(), options->stride_h());
+  const int32_t output_width = kernels::computeOutputSize(
+    luci_padding(options->padding()), input_width, options->filter_width(), options->stride_w());
+
+  const auto padding_height = kernels::computePadding(options->stride_h(), 1, input_height,
+                                                      options->filter_height(), output_height);
+  const auto padding_width = kernels::computePadding(options->stride_w(), 1, input_width,
+                                                     options->filter_width(), output_width);
+
+  tflite::PoolParams params{};
+  params.padding_values.height = padding_height;
+  params.padding_values.width = padding_width;
+  params.stride_height = options->stride_h();
+  params.stride_width = options->stride_w();
+  params.filter_height = options->filter_height();
+  params.filter_width = options->filter_width();
+  params.quantized_activation_min = activation_min;
+  params.quantized_activation_max = activation_max;
+
+  const auto *input_data = runtime_graph->getDataByTensor(input);
+  auto *output_data = runtime_graph->getDataByTensor(output);
+
+  tflite::reference_integer_ops::MaxPool(
+    params, kernels::getTensorShape(input), kernels::getTensorData<int16_t>(input_data),
+    kernels::getTensorShape(output), kernels::getTensorData<int16_t>(output_data));
+}
+
+#endif // DIS_QUANT
+
+} // namespace
+
+void configure_kernel_CircleMaxPool2D(const circle::Operator *cur_op,
+                                      BaseRuntimeGraph *runtime_graph)
+{
+  const auto input_index = cur_op->inputs()->operator[](0);
+  const auto output_index = cur_op->outputs()->operator[](0);
+
+  assert(input_index != -1);
+  assert(output_index != -1);
+
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == Tensor::element_type(output));
+  assert(Tensor::num_dims(input) == 4);
+
+#ifndef DIS_QUANT
+  if (Tensor::element_type(input) == DataType::U8)
   {
+    LUCI_INTERPRETER_CHECK(std::abs(Tensor::scale(output) - Tensor::scale(input)) <= 1.0e-6);
+    LUCI_INTERPRETER_CHECK(Tensor::zero_point(output) == Tensor::zero_point(input));
+  }
+  else if (Tensor::element_type(input) == DataType::S16)
+  {
+    LUCI_INTERPRETER_CHECK(std::abs(Tensor::scale(output) - Tensor::scale(input)) <= 1.0e-6);
+    LUCI_INTERPRETER_CHECK(Tensor::zero_point(input) == 0 && Tensor::zero_point(output) == 0);
+  }
+#endif // DIS_QUANT
+}
+
+void execute_kernel_CircleMaxPool2D(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
+                                    bool)
+{
+  const auto input_index = cur_op->inputs()->operator[](0);
+  const auto output_index = cur_op->outputs()->operator[](0);
+
+  assert(input_index != -1);
+  assert(output_index != -1);
+
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  auto output = runtime_graph->getCircleTensorByIndex(output_index);
+
+  const auto *options = cur_op->builtin_options_as_Pool2DOptions();
+
+  switch (Tensor::element_type(input))
+  {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalFloat();
+      evalFloat(input, output, options, runtime_graph);
       break;
+#endif // DIS_FLOAT
+#ifndef DIS_QUANT
     case DataType::U8:
-      evalQuantized();
+      evalQuantized(input, output, options, runtime_graph);
       break;
     case DataType::S16:
-      evalSInt16();
+      evalSInt16(input, output, options, runtime_graph);
       break;
+#endif // DIS_QUANT
     default:
       assert(false && "Unsupported type.");
   }
 }
 
-void MaxPool2D::evalFloat() const
-{
-  float activation_min{};
-  float activation_max{};
-  calculateActivationRange(_params.activation, &activation_min, &activation_max);
-
-  tflite::PoolParams params{};
-  params.padding_values.height = _padding_height;
-  params.padding_values.width = _padding_width;
-  params.stride_height = _params.stride_height;
-  params.stride_width = _params.stride_width;
-  params.filter_height = _params.filter_height;
-  params.filter_width = _params.filter_width;
-  params.float_activation_min = activation_min;
-  params.float_activation_max = activation_max;
-
-  tflite::reference_ops::MaxPool(params, getTensorShape(input()), getTensorData<float>(input()),
-                                 getTensorShape(output()), getTensorData<float>(output()));
-}
-
-void MaxPool2D::evalQuantized() const
-{
-  int32_t activation_min{};
-  int32_t activation_max{};
-  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
-
-  tflite::PoolParams params{};
-  params.padding_values.height = _padding_height;
-  params.padding_values.width = _padding_width;
-  params.stride_height = _params.stride_height;
-  params.stride_width = _params.stride_width;
-  params.filter_height = _params.filter_height;
-  params.filter_width = _params.filter_width;
-  params.quantized_activation_min = activation_min;
-  params.quantized_activation_max = activation_max;
-
-  tflite::reference_ops::MaxPool(params, getTensorShape(input()), getTensorData<uint8_t>(input()),
-                                 getTensorShape(output()), getTensorData<uint8_t>(output()));
-}
-
-void MaxPool2D::evalSInt16() const
-{
-  int32_t activation_min{};
-  int32_t activation_max{};
-  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
-
-  tflite::PoolParams params{};
-  params.padding_values.height = _padding_height;
-  params.padding_values.width = _padding_width;
-  params.stride_height = _params.stride_height;
-  params.stride_width = _params.stride_width;
-  params.filter_height = _params.filter_height;
-  params.filter_width = _params.filter_width;
-  params.quantized_activation_min = activation_min;
-  params.quantized_activation_max = activation_max;
-
-  tflite::reference_integer_ops::MaxPool(
-    params, getTensorShape(input()), getTensorData<int16_t>(input()), //
-    getTensorShape(output()), getTensorData<int16_t>(output()));
-}
-
-} // namespace kernels
 } // namespace luci_interpreter

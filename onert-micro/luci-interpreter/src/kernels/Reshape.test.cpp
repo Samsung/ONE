@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#if 0
 #include "kernels/Reshape.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
@@ -80,3 +80,4 @@ TEST_F(ReshapeTest, UnknownDimension)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif

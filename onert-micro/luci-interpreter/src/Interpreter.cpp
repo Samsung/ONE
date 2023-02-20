@@ -15,77 +15,94 @@
  */
 
 #include "luci_interpreter/Interpreter.h"
-#include "memory_managers/SimpleMemoryManager.h"
-#include "memory_managers/StaticMemoryManager.h"
 
 #include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
 {
 
-// Construct default interpreter with dynamic allocations and with input allocations
-Interpreter::Interpreter(const char *model_data_raw)
-{
-  _runtime_module = std::make_unique<RuntimeModule>();
-
-  _memory_manager = std::make_unique<SimpleMemoryManager>();
-  _memory_manager->is_allocate_input(true);
-
-  ModuleLoader loader(model_data_raw, _runtime_module.get(), _memory_manager.get());
-  loader.load(/* is_static_allocations */ false);
-}
-
-// Construct interpreter with configurations
+#ifdef USE_STATIC_ALLOC
+// Construct static interpreter with configurations
 Interpreter::Interpreter(const char *model_data_raw, const InterpreterConfigure &configuration)
 {
   _runtime_module = std::make_unique<RuntimeModule>();
 
-  // Note:
-  // configuration._input_buf_size, configuration._temp_buf_size, configuration._output_buf_size
-  // will be removed and will be read from circle file
-  if (configuration.isStaticManager())
+  _memory_manager = StaticMemoryManager(configuration._input_buf_size, configuration._temp_buf_size,
+                                        configuration._output_buf_size)
+
+    // Note:
+    // configuration._input_buf_size, configuration._temp_buf_size, configuration._output_buf_size
+    // will be removed and will be read from circle file
+    if (configuration.isStaticManager())
   {
     _memory_manager = std::make_unique<StaticMemoryManager>(
       configuration._input_buf_size, configuration._temp_buf_size, configuration._output_buf_size);
   }
-  else
-  {
-    _memory_manager = std::make_unique<SimpleMemoryManager>();
-  }
+  else { _memory_manager = std::make_unique<SimpleMemoryManager>(); }
 
   _memory_manager->is_allocate_input(configuration.getAllocateInputValue());
 
-  ModuleLoader loader(model_data_raw, _runtime_module.get(), _memory_manager.get());
-  loader.load(configuration.isStaticManager());
+  ModuleLoader loader();
+  ModuleLoader::load(_runtime_module.get(), _memory_manager.get(),
+                     /* is_static_allocations */ configuration.isStaticManager(), model_data_raw);
+
+  ModuleLoader loader(_runtime_module.get(), _memory_manager.get());
+  loader.load(configuration.isStaticManager(), model_data_raw);
 }
+#else
+
+// Construct default interpreter with dynamic allocations and with input allocations
+Interpreter::Interpreter(const char *model_data_raw)
+{
+  ModuleLoader::load(&_runtime_module, &_memory_manager, model_data_raw);
+}
+
+#endif // USE_STATIC_ALLOC
 
 Interpreter::~Interpreter() = default;
 
-void Interpreter::interpret() { _runtime_module->execute(); }
+void Interpreter::interpret() { _runtime_module.execute(); }
 
-std::vector<Tensor *> Interpreter::getInputTensors() { return _runtime_module->getInputTensors(); }
-
-std::vector<Tensor *> Interpreter::getOutputTensors()
+int32_t Interpreter::getInputDataSizeByIndex(int32_t input_tensor_index)
 {
-  return _runtime_module->getOutputTensors();
+  auto *runtime_graph = _runtime_module.getMainGraph();
+
+  return runtime_graph->getInputDataSizeByIndex(input_tensor_index);
 }
 
-void Interpreter::writeInputTensor(Tensor *input_tensor, const void *data, size_t data_size)
+int32_t Interpreter::getOutputDataSizeByIndex(int32_t output_tensor_index)
 {
-  if (data != nullptr)
-    input_tensor->writeData(data, data_size);
+  auto *runtime_graph = _runtime_module.getMainGraph();
+
+  return runtime_graph->getOutputDataSizeByIndex(output_tensor_index);
 }
 
-void Interpreter::writeInputTensorWithoutCopy(Tensor *input_tensor, const void *data)
+void Interpreter::allocateAndWriteInputTensor(int32_t input_tensor_index, const void *data,
+                                              size_t data_size)
 {
-  if (data != nullptr)
-    input_tensor->writeDataWithoutCopy(const_cast<void *>(data));
+  assert(data_size > 0);
+  assert(data != nullptr);
+  assert(input_tensor_index >= 0);
+  auto *runtime_graph = _runtime_module.getMainGraph();
+  auto tensor_data = runtime_graph->configureGraphInput(input_tensor_index);
+
+  std::memcpy(tensor_data, data, data_size);
 }
 
-void Interpreter::readOutputTensor(const Tensor *output_tensor, void *data, size_t data_size)
+uint8_t *Interpreter::allocateInputTensor(int32_t input_tensor_index)
 {
-  if (data != nullptr)
-    output_tensor->readData(data, data_size);
+  assert(input_tensor_index >= 0);
+
+  auto *runtime_graph = _runtime_module.getMainGraph();
+
+  return runtime_graph->configureGraphInput(input_tensor_index);
+}
+
+uint8_t *Interpreter::readOutputTensor(int32_t output_tensor_index)
+{
+  auto *runtime_graph = _runtime_module.getMainGraph();
+
+  return runtime_graph->getOutputDataByIndex(output_tensor_index);
 }
 
 } // namespace luci_interpreter

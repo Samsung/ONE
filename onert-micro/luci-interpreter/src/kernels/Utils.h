@@ -18,12 +18,9 @@
 #ifndef LUCI_INTERPRETER_KERNELS_UTILS_H
 #define LUCI_INTERPRETER_KERNELS_UTILS_H
 
-#include "core/KernelParams.h"
 #include "luci_interpreter/core/Tensor.h"
 
-#include <tensorflow/lite/c/builtin_op_data.h>
 #include <tensorflow/lite/kernels/internal/types.h>
-
 #include <cassert>
 #include <cstdint>
 
@@ -31,6 +28,8 @@ namespace luci_interpreter
 {
 namespace kernels
 {
+
+using Activation = luci_interpreter::FusedActFunc;
 
 #define LUCI_INTERPRETER_CHECK(cond)                 \
   if (!(cond))                                       \
@@ -45,9 +44,6 @@ inline int32_t computePadding(int32_t stride, int32_t dilation_rate, int32_t in_
   const int32_t padding = ((out_size - 1) * stride + effective_filter_size - in_size) / 2;
   return padding > 0 ? padding : 0;
 }
-
-void matrixScalarMultiplyAccumulate(const int8_t *matrix, int32_t scalar, int32_t n_row,
-                                    int32_t n_col, int32_t *output);
 
 inline int32_t computePaddingWithOffset(int32_t stride, int32_t dilation_rate, int32_t in_size,
                                         int32_t filter_size, int32_t out_size, int32_t *offset)
@@ -75,130 +71,20 @@ inline int32_t computeOutputSize(Padding padding, int32_t image_size, int32_t fi
   }
 }
 
-inline int32_t calcOffset(const Shape &shape, int32_t d0, int32_t d1, int32_t d2, int32_t d3)
+inline int32_t calcOffset(const circle::Tensor *tensor, int32_t d0, int32_t d1, int32_t d2,
+                          int32_t d3)
 {
-  return ((d0 * shape.dim(1) + d1) * shape.dim(2) + d2) * shape.dim(3) + d3;
+
+  return ((d0 * Tensor::dim(tensor, 1) + d1) * Tensor::dim(tensor, 2) + d2) *
+           Tensor::dim(tensor, 3) +
+         d3;
 }
 
 template <typename T>
 void calculateActivationRange(Activation activation, T *activation_min, T *activation_max);
 
-void calculateActivationRangeQuantized(Activation activation, const Tensor *output,
-                                       int32_t *activation_min, int32_t *activation_max);
-
-template <typename T> constexpr bool one_of_types() { return false; }
-
-// Checks if T is equal to one of {U,Other} types
-template <typename T, typename U, typename... Other> constexpr bool one_of_types()
-{
-  return std::is_same<T, U>::value || one_of_types<T, Other...>();
-}
-
-/**
- * Fills activation min and max parameters depending on given data type and activation
- *
- * T is a template parameter, so after optimization this code left with only required if case
- *
- * @tparam T data type of arithmetic operation output tensor
- * @param params tflite params to fill
- * @param activation luci_interpreter::Activation of arithmetic operation
- */
-template <typename T>
-void fillArithmeticActivationRange(tflite::ArithmeticParams &p, Activation act)
-{
-  static_assert(one_of_types<T, float, int32_t, int64_t>(), "Unsupported dtype");
-
-  if (std::is_same<T, float>::value)
-    calculateActivationRange(act, &p.float_activation_min, &p.float_activation_max);
-  if (std::is_same<T, int32_t>::value)
-    calculateActivationRange(act, &p.quantized_activation_min, &p.quantized_activation_max);
-  else
-    calculateActivationRange(act, &p.int64_activation_min, &p.int64_activation_max);
-}
-
-// Decompose a double multiplier into a Q0.31 int32 representation of its
-// significand, and shift representation of its exponent.
-//
-// Handles an arbitrary positive multiplier. The 'shift' output-value is
-// basically the 'floating-point exponent' of the multiplier:
-// Negative for a right-shift (when the multiplier is <1), positive for a
-// left-shift (when the multiplier is >1)
-void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift);
-
-// Decompose a double multiplier into a Q0.31 int32 representation of its
-// significand, and shift representation of NEGATIVE its exponent ---
-// this is intended as a RIGHT-shift.
-//
-// Restricted to the case where the multiplier < 1 (and non-negative).
-void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quantized_multiplier,
-                                         int *left_shift);
-
-Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_shape);
-
-inline TfLiteFusedActivation getTfLiteActivation(Activation activation)
-{
-  switch (activation)
-  {
-    case Activation::RELU:
-      return kTfLiteActRelu;
-    case Activation::RELU6:
-      return kTfLiteActRelu6;
-    case Activation::RELU_N1_TO_1:
-      return kTfLiteActReluN1To1;
-    case Activation::TANH:
-      return kTfLiteActTanh;
-    case Activation::SIGN_BIT:
-      return kTfLiteActSignBit;
-    case Activation::NONE:
-      return kTfLiteActNone;
-    default:
-      assert(false && "Unsupported activation.");
-  }
-}
-
-inline double getQuantizedConvolutionMultipler(float input_scale, float filter_scale,
-                                               float output_scale)
-{
-  const double input_product_scale = static_cast<double>(input_scale * filter_scale);
-  LUCI_INTERPRETER_CHECK(input_product_scale >= 0);
-  return input_product_scale / static_cast<double>(output_scale);
-}
-
-// TODO rename getQuantizedConvolutionMultiplers to something more general
-// it is used for non conv operators too
-inline std::vector<double> getQuantizedConvolutionMultiplers(float input_scale,
-                                                             const std::vector<float> &filter_scale,
-                                                             float output_scale)
-{
-  std::vector<double> effective_output_scales;
-  size_t n = filter_scale.size();
-  effective_output_scales.reserve(n);
-  for (size_t i = 0; i < n; ++i)
-  {
-    effective_output_scales.push_back(
-      getQuantizedConvolutionMultipler(input_scale, filter_scale[i], output_scale));
-  }
-  return effective_output_scales;
-}
-
-struct ChannelQuantMultipliers
-{
-  int shift;
-  int32_t multiplier;
-  ChannelQuantMultipliers() = default;
-};
-
-inline std::vector<ChannelQuantMultipliers>
-quantizeMultipliers(const std::vector<double> &effective_scale)
-{
-  size_t n = effective_scale.size();
-  std::vector<ChannelQuantMultipliers> params(n);
-  for (size_t i = 0; i < n; ++i)
-  {
-    quantizeMultiplier(effective_scale[i], &params[i].multiplier, &params[i].shift);
-  }
-  return params;
-}
+tflite::RuntimeShape calculateShapeForBroadcast(const circle::Tensor *input1,
+                                                const circle::Tensor *input2);
 
 // Helper wrapper to hide broadcast logic
 template <typename T> class BroadcastableWrapper
@@ -213,28 +99,27 @@ private:
   int _stride;
 };
 
-inline tflite::RuntimeShape getTensorShape(const Tensor *tensor)
+inline tflite::RuntimeShape getTensorShape(const circle::Tensor *tensor)
 {
   if (tensor == nullptr)
     return tflite::RuntimeShape();
 
-  const Shape &shape = tensor->shape();
-  tflite::RuntimeShape runtime_shape(shape.num_dims());
-  for (int i = 0; i < shape.num_dims(); ++i)
+  tflite::RuntimeShape runtime_shape(Tensor::num_dims(tensor));
+  for (int i = 0; i < Tensor::num_dims(tensor); ++i)
   {
-    runtime_shape.SetDim(i, shape.dim(i));
+    runtime_shape.SetDim(i, Tensor::dim(tensor, i));
   }
   return runtime_shape;
 }
 
-template <typename T> const T *getTensorData(const Tensor *tensor)
+template <typename T> const T *getTensorData(const uint8_t *tensor_data)
 {
-  return tensor != nullptr ? tensor->data<T>() : nullptr;
+  return tensor_data != nullptr ? reinterpret_cast<const T *>(tensor_data) : nullptr;
 }
 
-template <typename T> T *getTensorData(Tensor *tensor)
+template <typename T> T *getTensorData(uint8_t *tensor_data)
 {
-  return tensor != nullptr ? tensor->data<T>() : nullptr;
+  return tensor_data != nullptr ? reinterpret_cast<T *>(tensor_data) : nullptr;
 }
 
 // A list of tensors in a format that can be used by kernels like split and
@@ -286,6 +171,101 @@ private:
   std::vector<tflite::RuntimeShape *> all_shape_ptr_;
 };
 
+#ifndef DIS_QUANT
+void calculateActivationRangeQuantized(Activation activation, const circle::Tensor *output,
+                                       int32_t *activation_min, int32_t *activation_max);
+
+template <typename T> constexpr bool one_of_types() { return false; }
+
+// Checks if T is equal to one of {U,Other} types
+template <typename T, typename U, typename... Other> constexpr bool one_of_types()
+{
+  return std::is_same<T, U>::value || one_of_types<T, Other...>();
+}
+
+/**
+ * Fills activation min and max parameters depending on given data type and activation
+ *
+ * T is a template parameter, so after optimization this code left with only required if case
+ *
+ * @tparam T data type of arithmetic operation output tensor
+ * @param params tflite params to fill
+ * @param activation luci_interpreter::Activation of arithmetic operation
+ */
+template <typename T>
+void fillArithmeticActivationRange(tflite::ArithmeticParams &p, Activation act)
+{
+  static_assert(one_of_types<T, float, int32_t, int64_t>(), "Unsupported dtype");
+
+  if (std::is_same<T, float>::value)
+    calculateActivationRange(act, &p.float_activation_min, &p.float_activation_max);
+  if (std::is_same<T, int32_t>::value)
+    calculateActivationRange(act, &p.quantized_activation_min, &p.quantized_activation_max);
+  else
+    calculateActivationRange(act, &p.int64_activation_min, &p.int64_activation_max);
+}
+
+// Decompose a double multiplier into a Q0.31 int32 representation of its
+// significand, and shift representation of its exponent.
+//
+// Handles an arbitrary positive multiplier. The 'shift' output-value is
+// basically the 'floating-point exponent' of the multiplier:
+// Negative for a right-shift (when the multiplier is <1), positive for a
+// left-shift (when the multiplier is >1)
+void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift);
+
+// Decompose a double multiplier into a Q0.31 int32 representation of its
+// significand, and shift representation of NEGATIVE its exponent ---
+// this is intended as a RIGHT-shift.
+//
+// Restricted to the case where the multiplier < 1 (and non-negative).
+void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quantized_multiplier,
+                                         int *left_shift);
+
+inline double getQuantizedConvolutionMultipler(float input_scale, float filter_scale,
+                                               float output_scale)
+{
+  const double input_product_scale = static_cast<double>(input_scale * filter_scale);
+  LUCI_INTERPRETER_CHECK(input_product_scale >= 0);
+  return input_product_scale / static_cast<double>(output_scale);
+}
+
+// TODO rename getQuantizedConvolutionMultiplers to something more general
+// it is used for non conv operators too
+inline std::vector<double> getQuantizedConvolutionMultiplers(float input_scale,
+                                                             const std::vector<float> &filter_scale,
+                                                             float output_scale)
+{
+  std::vector<double> effective_output_scales;
+  size_t n = filter_scale.size();
+  effective_output_scales.reserve(n);
+  for (size_t i = 0; i < n; ++i)
+  {
+    effective_output_scales.push_back(
+      getQuantizedConvolutionMultipler(input_scale, filter_scale[i], output_scale));
+  }
+  return effective_output_scales;
+}
+
+struct ChannelQuantMultipliers
+{
+  int shift;
+  int32_t multiplier;
+  ChannelQuantMultipliers() = default;
+};
+
+inline std::vector<ChannelQuantMultipliers>
+quantizeMultipliers(const std::vector<double> &effective_scale)
+{
+  size_t n = effective_scale.size();
+  std::vector<ChannelQuantMultipliers> params(n);
+  for (size_t i = 0; i < n; ++i)
+  {
+    quantizeMultiplier(effective_scale[i], &params[i].multiplier, &params[i].shift);
+  }
+  return params;
+}
+
 // A list of quantized tensors in a format that can be used by kernels like
 // split and concatenation.
 template <bool is_const> class VectorOfQuantizedTensors : public VectorOfTensors<uint8_t, is_const>
@@ -311,6 +291,7 @@ private:
   std::vector<int32_t> zero_point_;
   std::vector<float> scale_;
 };
+#endif // DIS_QUANT
 
 } // namespace kernels
 } // namespace luci_interpreter

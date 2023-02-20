@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#include "kernels/Softmax.h"
-
+#include "Builders.h"
 #include "kernels/Utils.h"
 
 #include <tensorflow/lite/kernels/internal/reference/softmax.h>
@@ -24,68 +23,110 @@
 namespace luci_interpreter
 {
 
-namespace kernels
+namespace
 {
 
-Softmax::Softmax(const Tensor *input, Tensor *output, const SoftmaxParams &params)
-  : KernelWithParams<SoftmaxParams>({input}, {output}, params)
+#ifndef DIS_FLOAT
+void evalFloat(const circle::Tensor *input, const circle::Tensor *output,
+               const circle::SoftmaxOptions *options, BaseRuntimeGraph *runtime_graph)
 {
+  const auto *input_data = runtime_graph->getDataByTensor(input);
+  auto *output_data = runtime_graph->getDataByTensor(output);
+
+  tflite::SoftmaxParams op_params{};
+  op_params.beta = options->beta();
+
+  tflite::reference_ops::Softmax(
+    op_params, kernels::getTensorShape(input), kernels::getTensorData<float>(input_data),
+    kernels::getTensorShape(output), kernels::getTensorData<float>(output_data));
 }
+#endif // DIS_FLOAT
 
-void Softmax::configure()
+#ifndef DIS_QUANT
+template <typename T>
+void evalQuantized(const circle::Tensor *input, const circle::Tensor *output,
+                   const circle::SoftmaxOptions *options, BaseRuntimeGraph *runtime_graph)
 {
-  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
-  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() >= 1);
-  if (input()->element_type() == DataType::U8 || input()->element_type() == DataType::S8)
+  // TODO: Enable it
+  assert(false && "Not impl yet");
+
+  const auto *input_data = runtime_graph->getDataByTensor(input);
+  auto *output_data = runtime_graph->getDataByTensor(output);
+
+  tflite::SoftmaxParams op_params{};
+
+  luci_interpreter_pal::InitializeParams(&op_params, Tensor::scale(input), options->beta());
+  luci_interpreter_pal::Softmax(
+    op_params, kernels::getTensorShape(input), kernels::getTensorData<T>(input_data),
+    kernels::getTensorShape(output), kernels::getTensorData<T>(output_data));
+}
+#endif
+
+} // namespace
+
+void configure_kernel_CircleSoftmax(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
+{
+  const auto input_index = cur_op->inputs()->operator[](0);
+  const auto output_index = cur_op->outputs()->operator[](0);
+
+  assert(input_index != -1);
+  assert(output_index != -1);
+
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  auto output = runtime_graph->getCircleTensorByIndex(output_index);
+
+  assert(input != nullptr);
+  assert(output != nullptr);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == Tensor::element_type(output));
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(input) >= 1);
+
+#ifndef DIS_QUANT
+  if (Tensor::element_type(input) == DataType::U8 || Tensor::element_type(input) == DataType::S8)
   {
-    LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::S8 || output()->zero_point() == 0);
-    LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::U8 ||
-                           output()->zero_point() == std::numeric_limits<int8_t>::min());
-    tflite::SoftmaxParams op_params{};
-    op_params.table = _table;
-    luci_interpreter_pal::PopulateSoftmaxLookupTable(&op_params, input()->scale(), params().beta);
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == DataType::S8 ||
+                           Tensor::zero_point(output) == 0);
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == DataType::U8 ||
+                           Tensor::zero_point(output) == std::numeric_limits<int8_t>::min());
   }
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(input()->shape());
+#endif
 }
 
-void Softmax::execute() const
+void execute_kernel_CircleSoftmax(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
+                                  bool)
 {
-  switch (input()->element_type())
+  const auto input_index = cur_op->inputs()->operator[](0);
+  const auto output_index = cur_op->outputs()->operator[](0);
+
+  assert(input_index != -1);
+  assert(output_index != -1);
+
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  auto output = runtime_graph->getCircleTensorByIndex(output_index);
+
+  assert(input != nullptr);
+  assert(output != nullptr);
+
+  const auto *options = cur_op->builtin_options_as_SoftmaxOptions();
+
+  switch (Tensor::element_type(input))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalFloat();
+      evalFloat(input, output, options, runtime_graph);
       break;
+#endif // DIS_FLOAT
+#ifndef DIS_QUANT
     case DataType::S8:
-      evalQuantized<int8_t>();
+      evalQuantized<int8_t>(input, output, options, runtime_graph);
       break;
     case DataType::U8:
-      evalQuantized<uint8_t>();
+      evalQuantized<uint8_t>(input, output, options, runtime_graph);
       break;
+#endif // DIS_QUANT
     default:
       assert(false && "Unsupported type.");
   }
 }
 
-void Softmax::evalFloat() const
-{
-  tflite::SoftmaxParams op_params{};
-  op_params.beta = params().beta;
-
-  tflite::reference_ops::Softmax(op_params, getTensorShape(input()), getTensorData<float>(input()),
-                                 getTensorShape(output()), getTensorData<float>(output()));
-}
-
-template <typename T> void Softmax::evalQuantized() const
-{
-  tflite::SoftmaxParams op_params{};
-  op_params.table = const_cast<float *>(_table);
-  op_params.zero_point = output()->zero_point();
-  op_params.scale = output()->scale();
-  luci_interpreter_pal::InitializeParams(&op_params, input()->scale(), params().beta);
-  luci_interpreter_pal::Softmax(op_params, getTensorShape(input()), getTensorData<T>(input()),
-                                getTensorShape(output()), getTensorData<T>(output()));
-}
-
-} // namespace kernels
 } // namespace luci_interpreter

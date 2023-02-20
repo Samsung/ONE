@@ -14,53 +14,33 @@
  * limitations under the License.
  */
 
+#ifdef USE_STATIC_ALLOC
+
 #include "StaticMemoryManager.h"
 
 namespace luci_interpreter
 {
 
-void StaticMemoryManager::base_allocate_memory(luci_interpreter::Tensor &tensor,
-                                               uint8_t *buffer_ptr)
+uint8_t *StaticMemoryManager::allocate_memory(int32_t offset)
 {
-  if (buffer_ptr == nullptr)
-    assert("Buffer should be allocated\n");
-
-  if (!tensor.is_allocatable())
-  {
-    return;
-  }
-
-  const auto offset = tensor.get_offset();
-  assert(offset >= 0);
-  auto tensor_ptr = buffer_ptr + offset;
-  tensor.set_data_buffer(tensor_ptr);
+  assert(_buffer_ptr != nullptr);
+  return _buffer_ptr + offset;
 }
 
-void StaticMemoryManager::allocate_memory(luci_interpreter::Tensor &tensor)
+uint8_t *StaticMemoryManager::allocate_memory_for_input(int32_t offset)
 {
-  base_allocate_memory(tensor, _buffer_ptr);
+  assert(_input_buffer_ptr != nullptr);
+  return _input_buffer_ptr + offset;
 }
 
-void StaticMemoryManager::allocate_memory_for_input(luci_interpreter::Tensor &tensor)
+uint8_t *StaticMemoryManager::allocate_memory_for_output(int32_t offset)
 {
-  base_allocate_memory(tensor, _input_buffer_ptr);
-}
-
-void StaticMemoryManager::allocate_memory_for_output(luci_interpreter::Tensor &tensor)
-{
-  base_allocate_memory(tensor, _output_buffer_ptr);
-}
-
-void StaticMemoryManager::release_memory(luci_interpreter::Tensor &tensor)
-{
-  tensor.set_data_buffer(nullptr);
+  assert(_output_buffer_ptr != nullptr);
+  return _output_buffer_ptr + offset;
 }
 
 void StaticMemoryManager::allocate_input_buf()
 {
-  if (not _is_allocate_input)
-    return;
-
   assert(_input_req_size > 0);
   if (_input_buffer_ptr == nullptr)
     _input_buffer_ptr = new uint8_t[_input_req_size];
@@ -99,3 +79,5 @@ void StaticMemoryManager::release_output_buf()
 }
 
 } // namespace luci_interpreter
+
+#endif // USE_STATIC_ALLOC
