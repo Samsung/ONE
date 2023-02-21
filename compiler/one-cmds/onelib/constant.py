@@ -21,7 +21,7 @@ class CONSTANT:
     # Basic optimization passes
     # These passes do not change the execution result of the model
     O1 = list()
-    with open('O1.txt', 'r') as f:
+    with open('O1.options', 'r') as f:
         for line in f:
             # Ignore the comments
             if line.startswith('#'):

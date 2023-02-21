@@ -101,8 +101,7 @@ set(ONE_PYTHON_FILES constant.py
                      OptionBuilder.py
                      TopologicalSortHelper.py
                      WorkflowRunner.py
-                     utils.py
-                     O1.txt)
+                     utils.py)
 
 foreach(ONE_PYTHON_FILE IN ITEMS ${ONE_PYTHON_FILES})
 
@@ -133,6 +132,34 @@ foreach(ONE_PYTHON_FILE IN ITEMS ${ONE_PYTHON_FILES})
 
 endforeach(ONE_PYTHON_FILE)
 
+# Make .options files
+set(ONE_OPTIONS_FILES O1.options)
+
+foreach(ONE_OPTIONS_FILE IN ITEMS ${ONE_OPTIONS_FILES})
+
+  # Let's save .options files in onelib directory
+  set(ONE_OPTIONS_DIR "onelib")
+  set(ONE_OPTIONS_DIR_BIN "${CMAKE_CURRENT_BINARY_DIR}/${ONE_OPTIONS_DIR}")
+  set(ONE_OPTIONS_FILE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${ONE_OPTIONS_DIR}/${ONE_OPTIONS_FILE}")
+  set(ONE_OPTIONS_FILE_BIN "${CMAKE_CURRENT_BINARY_DIR}/${ONE_OPTIONS_DIR}/${ONE_OPTIONS_FILE}")
+  set(ONE_OPTIONS_TARGET "${ONE_OPTIONS_FILE}_target")
+
+  add_custom_command(OUTPUT ${ONE_OPTIONS_FILE_BIN}
+    COMMAND ${CMAKE_COMMAND} -E copy "${ONE_OPTIONS_FILE_SRC}" "${ONE_OPTIONS_FILE_BIN}"
+    DEPENDS ${ONE_OPTIONS_FILE_SRC}
+    COMMENT "Generate ${ONE_OPTIONS_FILE_BIN}"
+  )
+
+  add_custom_target(${ONE_OPTIONS_TARGET} ALL DEPENDS ${ONE_OPTIONS_DIR_BIN} ${ONE_OPTIONS_FILE_BIN})
+
+  install(DIRECTORY ${ONE_OPTIONS_DIR}
+          FILE_PERMISSIONS OWNER_WRITE OWNER_READ
+                           GROUP_READ
+                           WORLD_READ
+          DESTINATION bin)
+
+endforeach(ONE_OPTIONS_FILE)
+
 set(ONE_DOCUMENT_FILES
     how-to-use-one-commands.txt
     how-to-prepare-virtualenv.txt
@@ -153,20 +180,28 @@ add_subdirectory(dummy-driver)
 add_subdirectory(tests)
 add_subdirectory(validate-onnx2circle)
 
-# Copy O1.txt file to test directory
-set(ONELIB_O1_FILE ${CMAKE_CURRENT_BINARY_DIR}/onelib/O1.txt)
-set(TEST_O1_FILE ${CMAKE_CURRENT_BINARY_DIR}/tests/O1.txt)
+# Copy .options files to test directory
+foreach(ONE_OPTIONS_FILE IN ITEMS ${ONE_OPTIONS_FILES})
 
-add_custom_command(OUTPUT ${TEST_O1_FILE}
-  COMMAND ${CMAKE_COMMAND} -E copy ${ONELIB_O1_FILE} ${TEST_O1_FILE}
-  DEPENDS ${ONELIB_O1_FILE}
-  COMMENT "Copy O1.txt to tests directory"
-)
+  # Let's save .options files in onelib directory
+  set(ONE_TEST_DIR "tests")
+  set(ONE_OPTIONS_DIR "onelib")
+  set(ONE_OPTIONS_FILE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${ONE_OPTIONS_DIR}/${ONE_OPTIONS_FILE}")
+  set(ONE_OPTIONS_TEST_BIN "${CMAKE_CURRENT_BINARY_DIR}/${ONE_TEST_DIR}/${ONE_OPTIONS_FILE}")
+  set(ONE_OPTIONS_TEST_TARGET "${ONE_OPTIONS_FILE}_test_target")
 
-add_custom_target(TGT_TEST_O1_FILE ALL DEPENDS ${TEST_O1_FILE})
+  add_custom_command(OUTPUT ${ONE_OPTIONS_TEST_BIN}
+    COMMAND ${CMAKE_COMMAND} -E copy "${ONE_OPTIONS_FILE_SRC}" "${ONE_OPTIONS_TEST_BIN}"
+    DEPENDS ${ONE_OPTIONS_FILE_SRC}
+    COMMENT "Generate ${ONE_OPTIONS_TEST_BIN}"
+  )
 
-install(FILES ${TEST_O1_FILE}
-        PERMISSIONS OWNER_READ
-        GROUP_READ
-        WORLD_READ
-        DESTINATION test)
+  add_custom_target(${ONE_OPTIONS_TEST_TARGET} ALL DEPENDS ${ONE_OPTIONS_TEST_BIN})
+
+  install(FILES ${ONE_OPTIONS_TEST_BIN}
+          PERMISSIONS OWNER_READ
+          GROUP_READ
+          WORLD_READ
+          DESTINATION test)
+
+endforeach(ONE_OPTIONS_FILE)
