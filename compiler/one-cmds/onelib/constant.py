@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 
 class CONSTANT:
     __slots__ = ()  # This prevents access via __dict__.
@@ -21,7 +23,8 @@ class CONSTANT:
     # Basic optimization passes
     # These passes do not change the execution result of the model
     O1 = list()
-    with open('O1.options', 'r') as f:
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    with open(dir_path + '/O1.options', 'r') as f:
         for line in f:
             # Ignore the comments
             if line.startswith('#'):
