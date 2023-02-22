@@ -44,7 +44,7 @@ if(${GTEST_FOUND} AND TARGET Threads::Threads)
       add_library(gmock INTERFACE)
       target_include_directories(gmock INTERFACE ${GMOCK_INCLUDE_DIR})
       target_link_libraries(gmock INTERFACE ${GMOCK_LIBRARIES} Threads::Threads)
-    endif(GMOCK_LIBRARIES)
+    endif(GMOCK_LIBRARIES AND GMOCK_INCLUDE_DIR)
   endif(NOT TARGET gmock)
 
   if(NOT TARGET gmock_main)
