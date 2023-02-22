@@ -23,6 +23,8 @@ import os
 import subprocess
 import sys
 
+from typing import Union
+
 import onelib.constant as _constant
 
 
@@ -104,33 +106,37 @@ def parse_cfg_and_overwrite(config_path, section, args):
     # TODO support accumulated arguments
 
 
-def parse_cfg(args, driver_name):
-    """parse configuration file. If the option is directly given to the command line,
-       the option is processed prior to the configuration file.
-       That is, if the values parsed from the configuration file already exist in args,
-       the values are ignored."""
-    if is_valid_attr(args, 'config'):
-        config = configparser.ConfigParser()
-        config.optionxform = str
-        config.read(args.config)
-        section_to_run = driver_name
-        # if section is given, use the given section
-        if is_valid_attr(args, 'section'):
-            section_to_run = args.section
+def parse_cfg(config_path: Union[str, None], section_to_parse: str, args,
+              overwrite=False):
+    """
+    parse configuration file and save the information to args
+    
+    :param config_path: path to configuration file
+    :param section_to_parse: section name to parse
+    :param args: object to store the parsed information
+    :param overwrite: flag indicating whether to overwrite the args
+    """
+    if config_path is None:
+        return
 
-        if not config.has_section(section_to_run):
-            raise AssertionError('configuration file must have \'' + section_to_run +
-                                 '\' section')
+    parser = configparser.ConfigParser()
+    parser.optionxform = str
+    parser.read(config_path)
 
-        for key in config[section_to_run]:
-            if is_accumulated_arg(key, driver_name):
-                if not is_valid_attr(args, key):
-                    setattr(args, key, [config[section_to_run][key]])
-                else:
-                    getattr(args, key).append(config[section_to_run][key])
-                continue
+    if not parser.has_section(section_to_parse):
+        raise AssertionError('configuration file must have \'' + section_to_parse +
+                             '\' section')
+
+    for key in parser[section_to_parse]:
+        if is_accumulated_arg(key, section_to_parse):
             if not is_valid_attr(args, key):
-                setattr(args, key, config[section_to_run][key])
+                setattr(args, key, [parser[section_to_parse][key]])
+            else:
+                getattr(args, key).append(parser[section_to_parse][key])
+            continue
+        if not overwrite and hasattr(args, key) and getattr(args, key):
+            continue
+        setattr(args, key, parser[section_to_parse][key])
 
 
 def print_version_and_exit(file_path):
