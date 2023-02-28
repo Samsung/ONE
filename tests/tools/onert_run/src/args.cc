@@ -18,6 +18,7 @@
 
 #include <functional>
 #include <iostream>
+#include <sys/stat.h>
 #include <json/json.h>
 
 namespace
@@ -93,6 +94,46 @@ void handleShapeJsonParam(onert_run::TensorShapeMap &shape_map, const std::strin
   }
 }
 
+void checkModelfile(const std::string &model_filename)
+{
+  if (model_filename.empty())
+  {
+    // TODO Print usage instead of the below message
+    std::cerr << "Please specify model file. Run with `--help` for usage."
+              << "\n";
+
+    exit(1);
+  }
+  else
+  {
+    if (access(model_filename.c_str(), F_OK) == -1)
+    {
+      std::cerr << "Model file not found: " << model_filename << "\n";
+      exit(1);
+    }
+  }
+}
+
+void checPackage(const std::string &package_filename)
+{
+  if (package_filename.empty())
+  {
+    // TODO Print usage instead of the below message
+    std::cerr << "Please specify nnpackage file. Run with `--help` for usage."
+              << "\n";
+
+    exit(1);
+  }
+  else
+  {
+    if (access(package_filename.c_str(), F_OK) == -1)
+    {
+      std::cerr << "nnpackage not found: " << package_filename << "\n";
+      exit(1);
+    }
+  }
+}
+
 } // namespace
 
 namespace onert_run
@@ -110,41 +151,40 @@ void Args::Initialize(void)
     _package_filename = package_filename;
 
     std::cerr << "Package Filename " << _package_filename << std::endl;
-    if (_package_filename.empty())
-    {
-      // TODO Print usage instead of the below message
-      std::cerr << "Please specify nnpackage file. Run with `--help` for usage."
-                << "\n";
-
-      exit(1);
-    }
-    else
-    {
-      if (access(_package_filename.c_str(), F_OK) == -1)
-      {
-        std::cerr << "nnpackage not found: " << _package_filename << "\n";
-      }
-    }
+    checPackage(package_filename);
   };
 
   auto process_modelfile = [&](const std::string &model_filename) {
     _model_filename = model_filename;
 
     std::cerr << "Model Filename " << _model_filename << std::endl;
-    if (_model_filename.empty())
-    {
-      // TODO Print usage instead of the below message
-      std::cerr << "Please specify model file. Run with `--help` for usage."
-                << "\n";
+    checkModelfile(model_filename);
 
-      exit(1);
+    _use_single_model = true;
+  };
+
+  auto process_path = [&](const std::string &path) {
+    struct stat sb;
+    if (stat(path.c_str(), &sb) == 0)
+    {
+      if (sb.st_mode & S_IFDIR)
+      {
+        _package_filename = path;
+        checPackage(path);
+        std::cerr << "Package Filename " << path << std::endl;
+      }
+      else
+      {
+        _model_filename = path;
+        checkModelfile(path);
+        std::cerr << "Model Filename " << path << std::endl;
+        _use_single_model = true;
+      }
     }
     else
     {
-      if (access(_model_filename.c_str(), F_OK) == -1)
-      {
-        std::cerr << "Model file not found: " << _model_filename << "\n";
-      }
+      std::cerr << "Cannot find: " << path << "\n";
+      exit(1);
     }
   };
 
@@ -218,7 +258,8 @@ void Args::Initialize(void)
     ("help,h", "Print available options")
     ("version", "Print version and exit immediately")
     ("nnpackage", po::value<std::string>()->notifier(process_nnpackage), "NN Package file(directory) name")
-    ("modelfile", po::value<std::string>()->notifier(process_modelfile), "NN Model filename\nYou should use one of two options: 'nnpackage' or 'modelfile'")
+    ("modelfile", po::value<std::string>()->notifier(process_modelfile), "NN Model filename")
+    ("path", po::value<std::string>()->notifier(process_path), "NN Package or NN Modelfile path")
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
     ("dump,d", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _dump_filename = v; }), "Output filename")
     ("load,l", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _load_filename = v; }), "Input filename")
@@ -262,7 +303,7 @@ void Args::Initialize(void)
   // clang-format on
 
   _options.add(general);
-  _positional.add("nnpackage", 1);
+  _positional.add("path", -1);
 }
 
 void Args::Parse(const int argc, char **argv)
@@ -296,12 +337,6 @@ void Args::Parse(const int argc, char **argv)
       }
     };
 
-    auto require_one_of_two = [&](const std::string &o1, const std::string &o2) {
-      if ((!vm.count(o1) && !vm.count(o2)))
-        throw boost::program_options::error(std::string("Require one of two options '") + o1 +
-                                            "' or '" + o2 + ".");
-    };
-
     // calling, e.g., "onert_run .. -- shape_prepare .. --shape_run .." should theoretically
     // work but allowing both options together on command line makes the usage and implemenation
     // of onert_run too complicated. Therefore let's not allow those option together.
@@ -310,11 +345,10 @@ void Args::Parse(const int argc, char **argv)
     // Cannot use both single model file and nnpackage at once
     conflicting_options("modelfile", "nnpackage");
 
-    // Require modelfile or nnpackage
-    require_one_of_two("modelfile", "nnpackage");
-
-    if (vm.count("modelfile"))
-      _use_single_model = true;
+    // Require modelfile, nnpackage, or path
+    if (!vm.count("modelfile") && !vm.count("nnpackage") && !vm.count("path"))
+      throw boost::program_options::error(
+        std::string("Require one of options modelfile, nnpackage, or path."));
   }
 
   try
