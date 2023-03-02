@@ -7,10 +7,11 @@ res/** linguist-detectable=false
 * text eol=lf
 
 # Binary - ignore text file setting
-*.caffemodel -text
-*.png -text
-*.pdf -text
-*.h5 -text
-*.tar.gz -text
-*.tflite -text
-*.bmp -text
+*.bmp binary
+*.caffemodel binary
+*.h5 binary
+*.jar binary
+*.pdf binary
+*.png binary
+*.tar.gz binary
+*.tflite binary
