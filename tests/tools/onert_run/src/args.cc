@@ -114,7 +114,7 @@ void checkModelfile(const std::string &model_filename)
   }
 }
 
-void checPackage(const std::string &package_filename)
+void checkPackage(const std::string &package_filename)
 {
   if (package_filename.empty())
   {
@@ -151,7 +151,7 @@ void Args::Initialize(void)
     _package_filename = package_filename;
 
     std::cerr << "Package Filename " << _package_filename << std::endl;
-    checPackage(package_filename);
+    checkPackage(package_filename);
   };
 
   auto process_modelfile = [&](const std::string &model_filename) {
@@ -170,7 +170,7 @@ void Args::Initialize(void)
       if (sb.st_mode & S_IFDIR)
       {
         _package_filename = path;
-        checPackage(path);
+        checkPackage(path);
         std::cerr << "Package Filename " << path << std::endl;
       }
       else
