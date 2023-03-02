@@ -353,3 +353,186 @@ TEST_F(ForwardTransposeToMulGraphTest, forward_transpose_mul_NEG)
   luci::ForwardTransposeOpPass pass;
   EXPECT_FALSE(pass.run(_graph.g()));
 }
+
+// Unary
+
+namespace
+{
+
+template <typename T> class TransposeUnaryOpGraphlet
+{
+public:
+  TransposeUnaryOpGraphlet() = default;
+
+public:
+  virtual ~TransposeUnaryOpGraphlet() = default;
+
+public:
+  void init(loco::Graph *g, const ShapeU32 shape_in, const ShapeU32 perm)
+  {
+    std::vector<uint32_t> shape_in_v = shape_in;
+    std::vector<uint32_t> perm_v = perm;
+
+    assert(shape_in_v.size() == perm_v.size()); // FIX_CALLER_UNLESS
+
+    _perm = g->nodes()->create<luci::CircleConst>();
+    _const = g->nodes()->create<luci::CircleConst>();
+    _transpose = g->nodes()->create<luci::CircleTranspose>();
+    _unary = g->nodes()->create<T>();
+
+    _perm->dtype(loco::DataType::S32);
+    _perm->rank(1);
+    _perm->dim(0).set(perm_v.size());
+    _perm->shape_status(luci::ShapeStatus::VALID);
+
+    _const->dtype(loco::DataType::FLOAT32);
+    _const->rank(shape_in_v.size());
+    for (uint32_t i = 0; i < shape_in_v.size(); i++)
+      _const->dim(i).set(shape_in_v[perm_v[i]]);
+    _const->shape_status(luci::ShapeStatus::VALID);
+
+    // values
+    const auto size = perm_v.size();
+    _perm->size<loco::DataType::S32>(size);
+    for (uint32_t i = 0; i < size; i++)
+      _perm->at<loco::DataType::S32>(i) = perm_v[i];
+
+    uint32_t elems = 1;
+    for (uint32_t i = 0; i < size; i++)
+      elems *= shape_in_v[i];
+
+    _const->size<loco::DataType::FLOAT32>(elems);
+    for (uint32_t i = 0; i < elems; i++)
+      _const->at<loco::DataType::FLOAT32>(i) = i;
+
+    _perm->name("transpose_perm");
+    _transpose->name("transpose");
+    _unary->name("_unary");
+  }
+
+  luci::CircleTranspose *transpose(void) { return _transpose; }
+
+protected:
+  luci::CircleTranspose *_transpose = nullptr;
+  T *_unary = nullptr;
+  luci::CircleConst *_perm = nullptr;
+  luci::CircleConst *_const = nullptr;
+};
+
+using TransposeAbsGraphlet = TransposeUnaryOpGraphlet<luci::CircleAbs>;
+
+class ForwardTransposeToAbsGraph : public TestIOGraph, public TransposeAbsGraphlet
+{
+public:
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    TransposeAbsGraphlet::init(g(), shape_in, shape_out);
+
+    // connect network
+    _transpose->a(input());
+    _transpose->perm(_perm);
+    _unary->x(_transpose);
+
+    output()->from(_unary);
+  }
+};
+
+class ForwardTransposeToAbsInvalidGraph : public TestIOGraph, public TransposeAbsGraphlet
+{
+public:
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    TransposeAbsGraphlet::init(g(), shape_in, shape_out);
+
+    _relu = g()->nodes()->create<luci::CircleRelu>();
+    _relu->dtype(loco::DataType::FLOAT32);
+    _relu->name("relu");
+
+    // connect network
+    _relu->features(input());
+    _unary->x(_relu);
+
+    output()->from(_unary);
+  }
+
+protected:
+  luci::CircleRelu *_relu = nullptr;
+};
+
+void run_phase_unary(loco::Graph *g)
+{
+  logo::Phase phase;
+
+  // Default passes.
+  phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+
+  // Pass to test
+  phase.emplace_back(std::make_unique<luci::ForwardTransposeOpPass>());
+
+  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+  phase_runner.run(phase);
+}
+
+class ForwardTransposeToAbsGraphTest : public ::testing::Test
+{
+public:
+  void run_pass(void) { run_phase(_graph.g()); }
+
+protected:
+  ForwardTransposeToAbsGraph _graph;
+};
+
+class ForwardTransposeToAbsGraphNegTest : public ::testing::Test
+{
+public:
+  void run_pass(void) { run_phase(_graph.g()); }
+
+protected:
+  ForwardTransposeToAbsInvalidGraph _graph;
+};
+
+} // namespace
+
+TEST_F(ForwardTransposeToAbsGraphTest, forward_abs_x)
+{
+  _graph.init({1, 64, 51, 1}, {0, 3, 2, 1});
+
+  run_pass();
+
+  auto transpose = dynamic_cast<luci::CircleTranspose *>(_graph.output()->from());
+  EXPECT_NE(nullptr, transpose);
+  EXPECT_EQ(4, transpose->rank());
+  EXPECT_EQ(1, transpose->dim(0).value());
+  EXPECT_EQ(1, transpose->dim(1).value());
+  EXPECT_EQ(51, transpose->dim(2).value());
+  EXPECT_EQ(64, transpose->dim(3).value());
+
+  auto abs = dynamic_cast<luci::CircleAbs *>(transpose->a());
+  EXPECT_NE(nullptr, abs);
+  EXPECT_EQ(4, abs->rank());
+  EXPECT_EQ(1, abs->dim(0).value());
+  EXPECT_EQ(64, abs->dim(1).value());
+  EXPECT_EQ(51, abs->dim(2).value());
+  EXPECT_EQ(1, abs->dim(3).value());
+}
+
+TEST_F(ForwardTransposeToAbsGraphTest, forward_transpose_abs_NEG)
+{
+  _graph.init({1, 64, 51, 1}, {0, 3, 2, 1});
+
+  // Remove abs
+  _graph.output()->from(_graph.transpose());
+
+  luci::ForwardTransposeOpPass pass;
+  EXPECT_FALSE(pass.run(_graph.g()));
+}
+
+TEST_F(ForwardTransposeToAbsGraphNegTest, forward_transpose_abs_non_transpose_NEG)
+{
+  _graph.init({1, 64, 51, 1}, {0, 3, 2, 1});
+
+  luci::ForwardTransposeOpPass pass;
+  EXPECT_FALSE(pass.run(_graph.g()));
+}
