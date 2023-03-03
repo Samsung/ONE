@@ -1,6 +1,7 @@
 #
 # armv7l tizen cmake options
 #
+option(DOWNLOAD_ARMCOMPUTE "Download ARM Compute source" OFF)
 option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" OFF)
 option(BUILD_TENSORFLOW_LITE "Build TensorFlow Lite from the downloaded source" OFF)
 option(DOWNLOAD_NEON2SSE "Download NEON2SSE library source" OFF)

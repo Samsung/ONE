@@ -49,7 +49,6 @@ BuildRequires:  cmake
 %ifarch %{arm} aarch64
 # Require python for acl-ex library build pre-process
 BuildRequires:  python3
-BuildRequires:  libarmcl-devel >= v21.02
 %endif
 
 Requires(post): /sbin/ldconfig
