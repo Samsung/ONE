@@ -17,7 +17,7 @@
 #include "BisectionSolver.h"
 #include "DepthParameterizer.h"
 #include "ErrorMetric.h"
-#include "ErrorApproximator.h"
+#include "VISQErrorApproximator.h"
 
 #include <luci/ImporterEx.h>
 #include <luci/Log.h>
@@ -30,15 +30,24 @@ using namespace mpqsolver::bisection;
 namespace
 {
 
-bool error_at_input_is_larger_than_at_output(const NodeDepthType &nodes_depth, float cut_depth)
+std::unique_ptr<luci::Module> read_module(const std::string &path);
+
+/**
+ * @brief compare error of front half with an error of the rear part
+ */
+bool get_int16_at_front(const NodeDepthType &nodes_depth, const std::string &visq_path,
+                        float cut_depth)
 {
   LOGGER(l);
+
+  VISQErrorApproximator approximator;
+  approximator.init(visq_path);
 
   float error_at_input = 0;
   float error_at_output = 0;
   for (auto &iter : nodes_depth)
   {
-    float cur_error = approximate(iter.first);
+    float cur_error = approximator.approximate(iter.first->name());
     if (iter.second < cut_depth)
     {
       error_at_input += cur_error;
@@ -100,6 +109,8 @@ float BisectionSolver::evaluate(const DatasetEvaluator &evaluator, const std::st
 }
 
 void BisectionSolver::algorithm(Algorithm algorithm) { _algorithm = algorithm; }
+
+void BisectionSolver::setVisqPath(const std::string &visq_path) { _visq_data_path = visq_path; }
 
 std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_path)
 {
@@ -172,9 +183,19 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   switch (_algorithm)
   {
     case Algorithm::Auto:
+    {
+      auto model = read_module(module_path);
+      if (!_quantizer->quantize(model.get(), "uint8", layer_params))
+      {
+        std::cerr << "ERROR: Failed to quantize model" << std::endl;
+        return nullptr;
+      }
+
+      // whether error (sensitivity) at front nodes is larger than error at rear nodes
       int16_front =
-        error_at_input_is_larger_than_at_output(nodes_depth, 0.5f * (max_depth + min_depth));
-      break;
+        get_int16_at_front(nodes_depth, _visq_data_path, 0.5f * (max_depth + min_depth));
+    }
+    break;
     case Algorithm::ForceQ16Front:
       int16_front = true;
       break;

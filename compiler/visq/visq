@@ -27,11 +27,15 @@ import os
 import math
 import sys
 
+import h5py as h5
+import numpy as np
+import time
+
 from shutil import copyfile
 from pathlib import Path
 
 from visqlib.Palette import YLORRD9Palette
-from visqlib.QErrorComputer import MPEIRComputer, MSEComputer
+from visqlib.QErrorComputer import MPEIRComputer, MSEComputer, TAEComputer
 from visqlib.Util import valid_attr, pretty_float
 from visqlib.DotBuilder import DotBuilder
 
@@ -70,13 +74,25 @@ def _get_parser():
         required=False)
     parser.add_argument(
         "--dump_dot_graph", action="store_true", help="Dump dot graph.", required=False)
+    parser.add_argument(
+        "--tae_output",
+        type=str,
+        help="Path to the output json file (qerror metric = TAE).",
+        required=False)
+    parser.add_argument(
+        "-b",
+        "--batch_size",
+        type=int,
+        help="Batch size to process large datasets.",
+        required=False)
+
     return parser
 
 
 def _verify_args(args):
     """Verify the given arguments"""
 
-    valid_outputs = ['mpeir_output', 'mse_output']
+    valid_outputs = ['mpeir_output', 'mse_output', 'tae_output']
 
     # Check if at least one output option is given
     num_outputs = 0
@@ -105,6 +121,64 @@ def _run_dalgona(model, data, analysis, save_dir):
         print(' '.join(cmd))
         print(e.output)
         raise
+
+
+def save_inputs(inputs, inputs_path):
+    # Create h5 file
+    output_path = inputs_path + "/inputs.h5"
+    h5_file = h5.File(output_path, 'w')
+    group = h5_file.create_group("value")
+    group.attrs['desc'] = "Input data"
+
+    for i in range(len(inputs)):
+        sample = group.create_group(str(i))
+        for j in range(len(inputs[i])):
+            sample.create_dataset(str(j), data=inputs[i][j])
+
+    h5_file.close()
+    return output_path
+
+
+def advance_on_data(models, data_batch_path, computers):
+
+    curr_dir = Path(__file__).parent.resolve()
+    dump_fp32_py = curr_dir / 'visqlib' / 'DumpFP32FM.py'
+    dump_fq_py = curr_dir / 'visqlib' / 'DumpFakeQuantFM.py'
+
+    with tempfile.TemporaryDirectory() as fp32_dir, \
+         tempfile.TemporaryDirectory() as fq_dir:
+
+        #print("advance on data + {fp_dir} + {fq_dir}".format(fp_dir = fp32_dir, fq_dir = fq_dir))
+        _run_dalgona(models[0], data_batch_path, dump_fp32_py, fp32_dir)
+        copyfile(fp32_dir + '/tensors.txt', fq_dir + '/tensors.txt')
+        _run_dalgona(models[1], data_batch_path, dump_fq_py, fq_dir)
+
+        for metric_key in computers:
+            computers[metric_key][0].advance_on(fp32_dir, fq_dir)
+
+
+def _run_batch(models, data, computers, batch_size):
+    with tempfile.TemporaryDirectory() as inputs_dir:
+        with h5.File(data, 'r') as f:
+            dataset = f['value']
+
+            inputs = []
+            for index, data_index in enumerate(dataset):
+                cur_inputs = []
+                for input_index in dataset[data_index]:
+                    d = dataset[data_index][input_index][:]
+                    cur_inputs.append(np.array(d, np.float32))
+
+                inputs.append(cur_inputs)
+                if len(inputs) >= batch_size:
+                    input_path = save_inputs(inputs, inputs_dir)
+                    advance_on_data(models, input_path, computers)
+                    inputs = []
+
+            if len(inputs) > 0:
+                input_path = save_inputs(inputs, inputs_dir)
+                advance_on_data(models, input_path, computers)
+                inputs = []
 
 
 def _fake_quantize(input_model, output_model):
@@ -172,19 +246,49 @@ def _save_dot(circle_path: str, dot_path: str, metric: str, colors: list, qerror
     builder.save(qerror)
 
 
-def main():
-    # parse arguments
-    parser = _get_parser()
-    args = parser.parse_args()
-    _verify_args(args)
+def run_on_data_batchwise(fp32_model, q_model, data, dump_dot_graph, computers,
+                          batch_size):
 
-    fp32_model = args.fp32_circle
-    q_model = args.q_circle
-    data = None
-    if valid_attr(args, 'data'):
-        data = args.data
-    dump_dot_graph = args.dump_dot_graph
+    with tempfile.TemporaryDirectory() as model_dir:
+        fq_model = model_dir + '/fq_model.circle'
 
+        # Step 1. Fake quantize quantized circle model
+        _fake_quantize(q_model, fq_model)
+
+        # process the whole dataset batch by batch
+        models = [fp32_model, fq_model]
+        _run_batch(models, data, computers, batch_size)
+
+        #compute the final results
+        for metric_key in computers:
+            cur_computer = computers[metric_key][0]
+            output = computers[metric_key][1]
+            if metric_key == 'MPEIR':
+                qerror_map = cur_computer.get_final_result()
+                q_min = 0.0
+                q_max = 1.0
+            elif metric_key == 'MSE' or metric_key == 'TAE':
+                qerror_map, q_min, q_max = cur_computer.get_final_result()
+
+            palette = YLORRD9Palette(qerror_min=q_min, qerror_max=q_max)
+            result = _build_json(
+                metric=metric_key,
+                model=Path(fp32_model).name,
+                colorscheme=palette.colorscheme(),
+                error=qerror_map)
+            with open(output, "w") as f:
+                json.dump(result, f)
+
+            if dump_dot_graph:
+                _save_dot(
+                    circle_path=fp32_model,
+                    dot_path=output + '.dot',
+                    metric=metric_key,
+                    colors=palette.colorscheme(),
+                    qerror=qerror_map)
+
+
+def run_on_data(fp32_model, q_model, data, dump_dot_graph, computers):
     curr_dir = Path(__file__).parent.resolve()
     dump_fp32_py = curr_dir / 'visqlib' / 'DumpFP32FM.py'
     dump_fq_py = curr_dir / 'visqlib' / 'DumpFakeQuantFM.py'
@@ -207,45 +311,65 @@ def main():
         _run_dalgona(fq_model, data, dump_fq_py, fq_dir)
 
         # Step 4. Read results and compute qerror
-        if args.mpeir_output:
-            computer = MPEIRComputer(fp32_dir, fq_dir)
-            qerror_map = computer.run()
-            palette = YLORRD9Palette(qerror_min=0.0, qerror_max=1.0)
-            result = _build_json(
-                metric='MPEIR',
-                model=Path(fp32_model).name,
-                colorscheme=palette.colorscheme(),
-                error=qerror_map)
-            with open(args.mpeir_output, "w") as f:
-                json.dump(result, f)
+        for metric_key in computers:
+            cur_computer = computers[metric_key][0]
+            output = computers[metric_key][1]
+            if metric_key == 'MPEIR':
+                qerror_map = cur_computer.run(fp32_dir, fq_dir)
+                q_min = 0.0
+                q_max = 1.0
+            elif metric_key == 'MSE' or metric_key == 'TAE':
+                qerror_map, q_min, q_max = cur_computer.run(fp32_dir, fq_dir)
 
-            if dump_dot_graph:
-                _save_dot(
-                    circle_path=fp32_model,
-                    dot_path=args.mpeir_output + '.dot',
-                    metric='MPEIR',
-                    colors=palette.colorscheme(),
-                    qerror=qerror_map)
-
-        if args.mse_output:
-            computer = MSEComputer(fp32_dir, fq_dir)
-            qerror_map, q_min, q_max = computer.run()
             palette = YLORRD9Palette(qerror_min=q_min, qerror_max=q_max)
             result = _build_json(
-                metric='MSE',
+                metric=metric_key,
                 model=Path(fp32_model).name,
                 colorscheme=palette.colorscheme(),
                 error=qerror_map)
-            with open(args.mse_output, "w") as f:
+            with open(output, "w") as f:
                 json.dump(result, f)
 
             if dump_dot_graph:
                 _save_dot(
                     circle_path=fp32_model,
-                    dot_path=args.mse_output + '.dot',
-                    metric='MSE',
+                    dot_path=output + '.dot',
+                    metric=metric_key,
                     colors=palette.colorscheme(),
                     qerror=qerror_map)
+
+
+def main():
+    # parse arguments
+    parser = _get_parser()
+    args = parser.parse_args()
+    _verify_args(args)
+
+    fp32_model = args.fp32_circle
+    q_model = args.q_circle
+    data = None
+    if valid_attr(args, 'data'):
+        data = args.data
+    dump_dot_graph = args.dump_dot_graph
+    batch_size = None
+    if valid_attr(args, 'batch_size'):
+        batch_size = args.batch_size
+
+    computers = {}
+    if args.mpeir_output:
+        computers['MPEIR'] = (MPEIRComputer(None, None), args.mpeir_output)
+
+    if args.mse_output:
+        computers['MSE'] = (MSEComputer(None, None), args.mse_output)
+
+    if args.tae_output:
+        computers['TAE'] = (TAEComputer(None, None), args.tae_output)
+
+    if batch_size == None:
+        run_on_data(fp32_model, q_model, data, dump_dot_graph, computers)
+    else:
+        run_on_data_batchwise(fp32_model, q_model, data, dump_dot_graph, computers,
+                              batch_size)
 
 
 if __name__ == '__main__':

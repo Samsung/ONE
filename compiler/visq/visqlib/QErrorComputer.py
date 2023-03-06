@@ -24,6 +24,17 @@ class QErrorComputer:
     def __init__(self, fp32_dir, fq_dir):
         self._fp32_dir = fp32_dir
         self._fq_dir = fq_dir
+        self.qerror_map = dict()
+        self._num_processed_data = 0
+
+    def update_dirs(self, fp32_dir, fq_dir):
+        if fp32_dir != None:
+            self._fp32_dir = fp32_dir
+        if fq_dir != None:
+            self._fq_dir = fq_dir
+        self.update_data()
+
+    def update_data(self):
         # Assumption: FM data are saved as follows
         #
         # fp32_dir/
@@ -35,12 +46,17 @@ class QErrorComputer:
         #   tensors.txt
         #   <DATA_INDEX>/
         #     <TENSOR_NAME>.npy
-        self._num_data = len(list(filter(os.path.isdir, glob.glob(fp32_dir + '/*'))))
-        if self._num_data != len(list(filter(os.path.isdir, glob.glob(fq_dir + '/*')))):
+
+        self._num_data = len(
+            list(filter(os.path.isdir, glob.glob(self._fp32_dir + '/*'))))
+        if self._num_data != len(
+                list(filter(os.path.isdir, glob.glob(self._fq_dir + '/*')))):
             raise RuntimeError("Number of data mistmatches")
 
+        self._num_processed_data += self._num_data
+
         self._filename_to_tensor = dict()
-        with open(Path(fp32_dir) / 'tensors.txt') as f:
+        with open(Path(self._fp32_dir) / 'tensors.txt') as f:
             tensors = set([line.rstrip() for line in f])
             for tensor in tensors:
                 # Check if filename is unique
@@ -74,7 +90,7 @@ class QErrorComputer:
                     else:
                         self._data_path[tensor_name] = [(fp32_data_path, fq_data_path)]
 
-    def run(self):
+    def run(self, fp32_dir, fq_dir):
         '''Return qerror map (dict: tensor_name(string) -> qerror(float)).'''
         raise NotImplementedError  # Child must implement this
 
@@ -83,8 +99,8 @@ class MPEIRComputer(QErrorComputer):
     def __init__(self, fp32_dir, fq_dir):
         super().__init__(fp32_dir, fq_dir)
 
-    def run(self):
-        qerror_map = dict()
+    def advance_on(self, fp32_dir, fq_dir):
+        self.update_dirs(fp32_dir, fq_dir)
         for tensor_name, data_path in self._data_path.items():
             for (fp32_data_path, fq_data_path) in data_path:
                 fp32_data = np.load(fp32_data_path)
@@ -104,25 +120,31 @@ class MPEIRComputer(QErrorComputer):
                 # To prevent this, relaxed PEIR with epsilon(10^(-6)) is used.
                 rPEIR = PEAK_ERROR / (INTERVAL + 0.000001)
 
-                if tensor_name in qerror_map:
-                    qerror_map[tensor_name] += rPEIR
+                if tensor_name in self.qerror_map:
+                    self.qerror_map[tensor_name] += rPEIR
                 else:
-                    qerror_map[tensor_name] = rPEIR
+                    self.qerror_map[tensor_name] = rPEIR
 
-        for tensor_name, acc in qerror_map.items():
-            qerror_map[tensor_name] = acc / self._num_data
+    def get_final_result(self):
+        qerror_map = dict()
+        for tensor_name, acc in self.qerror_map.items():
+            qerror_map[tensor_name] = acc / self._num_processed_data
 
         return qerror_map
+
+    def run(self, fp32_dir=None, fq_dir=None):
+        self.advance_on(fp32_dir, fq_dir)
+        return self.get_final_result()
 
 
 class MSEComputer(QErrorComputer):
     def __init__(self, fp32_dir, fq_dir):
         super().__init__(fp32_dir, fq_dir)
+        self.qerror_min = float('inf')
+        self.qerror_max = -self.qerror_min
 
-    def run(self):
-        qerror_map = dict()
-        qerror_min = float('inf')
-        qerror_max = -qerror_min
+    def advance_on(self, fp32_dir, fq_dir):
+        self.update_dirs(fp32_dir, fq_dir)
         for tensor_name, data_path in self._data_path.items():
             for (fp32_data_path, fq_data_path) in data_path:
                 fp32_data = np.load(fp32_data_path)
@@ -130,15 +152,57 @@ class MSEComputer(QErrorComputer):
 
                 MSE = np.square(fp32_data - fq_data).mean()
 
-                if tensor_name in qerror_map:
-                    qerror_map[tensor_name] += MSE
+                if tensor_name in self.qerror_map:
+                    self.qerror_map[tensor_name] += MSE
                 else:
-                    qerror_map[tensor_name] = MSE
+                    self.qerror_map[tensor_name] = MSE
 
-                qerror_min = min(MSE, qerror_min)
-                qerror_max = max(MSE, qerror_max)
+                self.qerror_min = min(MSE, self.qerror_min)
+                self.qerror_max = max(MSE, self.qerror_max)
 
-        for tensor_name, acc in qerror_map.items():
-            qerror_map[tensor_name] = acc / self._num_data
+    def get_final_result(self):
+        qerror_map = dict()
+        for tensor_name, acc in self.qerror_map.items():
+            qerror_map[tensor_name] = acc / self._num_processed_data
 
-        return qerror_map, qerror_min, qerror_max
+        return qerror_map, self.qerror_min, self.qerror_max
+
+    def run(self, fp32_dir=None, fq_dir=None):
+        self.advance_on(fp32_dir, fq_dir)
+        return self.get_final_result()
+
+
+class TAEComputer(QErrorComputer):  #total absolute error
+    def __init__(self, fp32_dir, fq_dir):
+        super().__init__(fp32_dir, fq_dir)
+        self.total_error = 0
+        self.qerror_min = float('inf')
+        self.qerror_max = -self.qerror_min
+
+    def advance_on(self, fp32_dir, fq_dir):
+        self.update_dirs(fp32_dir, fq_dir)
+        for tensor_name, data_path in self._data_path.items():
+            for (fp32_data_path, fq_data_path) in data_path:
+                fp32_data = np.load(fp32_data_path)
+                fq_data = np.load(fq_data_path)
+
+                total_error = np.sum(np.abs(fp32_data - fq_data))
+
+                if tensor_name in self.qerror_map:
+                    self.qerror_map[tensor_name] += total_error
+                else:
+                    self.qerror_map[tensor_name] = total_error
+
+                self.qerror_min = min(total_error, self.qerror_min)
+                self.qerror_max = max(total_error, self.qerror_max)
+
+    def get_final_result(self):
+        qerror_map = dict()
+        for tensor_name, acc in self.qerror_map.items():
+            qerror_map[tensor_name] = acc / self._num_processed_data
+
+        return qerror_map, self.qerror_min, self.qerror_max
+
+    def run(self, fp32_dir=None, fq_dir=None):
+        self.advance_on(fp32_dir, fq_dir)
+        return self.get_final_result()
