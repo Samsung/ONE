@@ -46,12 +46,6 @@ Source3019: FLATBUFFERS-2.0.tar.gz
 
 BuildRequires:  cmake
 
-%ifarch %{arm} aarch64
-# Require python for acl-ex library build pre-process
-BuildRequires:  python3
-BuildRequires:  libarmcl-devel >= v21.02
-%endif
-
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
