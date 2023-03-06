@@ -24,7 +24,7 @@ class CONSTANT:
     # These passes do not change the execution result of the model
     O1 = list()
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    with open(dir_path + '/O1.options', 'r') as f:
+    with open(os.path.join(dir_path, 'O1.options'), 'r') as f:
         for line in f:
             # Ignore the comments
             if line.startswith('#'):
