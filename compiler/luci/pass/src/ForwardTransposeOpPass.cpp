@@ -256,6 +256,41 @@ private:
   }
 };
 
+// Elementwise Unary Operator
+class EwUnaryPattern final : public CircleNodeMutableVisitor<bool>
+{
+private:
+  // input is 'x'
+  template <typename CIRCLE_OP_PTR> bool has_pattern_x(CIRCLE_OP_PTR node)
+  {
+    if (auto x = dynamic_cast<luci::CircleTranspose *>(node->x()))
+    {
+      RETURN_FALSE_UNLESS(check_perm(x));
+
+      auto new_transpose = create_cloned_transpose(x);
+      assert(new_transpose); // FIX_ME_UNLESS
+
+      // Reconnect network
+      node->x(x->a());
+      loco::replace(node).with(new_transpose);
+      new_transpose->a(node);
+
+      // Do shape inference for this node again.
+      node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+      return true;
+    }
+
+    return false;
+  }
+
+public:
+  // Default
+  bool visit(luci::CircleNode *) { return false; }
+
+  bool visit(luci::CircleAbs *node) { return has_pattern_x(node); }
+};
+
 } // namespace
 
 namespace luci
@@ -275,11 +310,33 @@ namespace luci
  *
  *   BinaryOp: CircleAdd, CircleMul, ...
  *
+ *                       |
+ *                  [CircleNode]  [CircleConst]
+ *                       |       /
+ *              [CircleTranspose]
+ *                /      |
+ *     [CircleNode]  [(UnaryOp)]
+ *          |            |     \
+ *          |            |      [CircleNode]
+ *          |            |           |
+ *
+ *   UnaryOp: CircleAbs, ...
+ *
  * AFTER
  *                       |
  *   [CircleConst]  [CircleNode]  [CircleConst(updated)]
  *         |       /     |       /
  *  [CircleTranspose] [(BinaryOp)] [CircleConst]
+ *         |             |        /
+ *   [CircleNode] [CircleTranspose]
+ *         |             |      \
+ *         |             |       [CircleNode]
+ *         |             |            |
+ *
+ *                       |
+ *   [CircleConst]  [CircleNode]
+ *         |       /     |
+ *  [CircleTranspose] [(UnaryOp)] [CircleConst]
  *         |             |        /
  *   [CircleNode] [CircleTranspose]
  *         |             |      \
@@ -292,10 +349,13 @@ bool ForwardTransposeOpPass::run(loco::Graph *g)
 {
   bool changed = false;
   EBOWithConstPattern eboc;
+  EwUnaryPattern ewu;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     if (circle_node->accept(&eboc))
+      changed = true;
+    else if (circle_node->accept(&ewu))
       changed = true;
   }
   return changed;
