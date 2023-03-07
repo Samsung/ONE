@@ -235,6 +235,9 @@ struct FakeQuantize final : public luci::CircleNodeMutableVisitor<void>
   void visit(luci::CircleSplitV *) {}
   void visit(luci::CircleSplitVOut *) {}
   void visit(luci::CircleTranspose *) {}
+  void visit(luci::CirclePack *) {}
+  void visit(luci::CircleUnpack *) {}
+  void visit(luci::CircleUnpackOut *) {}
 
   // For Ops that return index, fake quantization is unnecessary
   void visit(luci::CircleArgMax *) {}
