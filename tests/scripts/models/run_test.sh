@@ -29,41 +29,15 @@ function command_exists() {
 
 function Usage()
 {
-    echo "Usage: ./$0 --driverbin={such as tflite_run} {tests to test or empty for all of tests}"
+    echo "Usage: ./$0 --driverbin={such as onert_run} {tests to test or empty for all of tests}"
     echo "Usage: ./$0 --driverbin=Product/out/bin/tflite_run --reportdir=report --tapname=verification.tap avgpool1 avgpool2"
     echo ""
-    echo "--driverbin           - (default=../../Product/out/bin/tflite_run) Runner for runnning model tests"
+    echo "--driverbin           - (default=$DRIVER_BIN) Runner for runnning model tests"
     echo "--reportdir           - (default=report) Directory to place tap files"
     echo "--tapname             - (default=framework_test.tap) File name to be written for tap"
     echo "--configdir           - (default=$TEST_ROOT_PATH) Config directory to download and test model"
     echo "--cachedir            - (default=$CACHE_ROOT_PATH) Directory to download model"
     echo ""
-}
-
-function need_download()
-{
-    LOCAL_PATH=$1
-    REMOTE_URL=$2
-    if [ ! -e $LOCAL_PATH ]; then
-        return 0;
-    fi
-    # Ignore checking md5 in cache
-    # TODO Use "--md5" option only and remove IGNORE_MD5 environment variable
-    if [ ! -z $IGNORE_MD5 ] && [ "$IGNORE_MD5" == "1" ]; then
-        return 1
-    fi
-    if [ "$MD5_CHECK" = "off" ]; then
-        return 1
-    fi
-
-    LOCAL_HASH=$(md5sum $LOCAL_PATH | awk '{ print $1 }')
-    REMOTE_HASH=$(curl --netrc-optional -kLsS $REMOTE_URL | md5sum  | awk '{ print $1 }')
-    # TODO Emit an error when Content-MD5 field was not found. (Server configuration issue)
-    if [ "$LOCAL_HASH" != "$REMOTE_HASH" ]; then
-        echo "Downloaded file is outdated or incomplete."
-        return 0
-    fi
-    return 1
 }
 
 DRIVER_BIN=""
@@ -107,7 +81,7 @@ if [[ ${#TEST_LIST[@]} -eq 0 ]]; then
 fi
 
 if [ ! -n "$DRIVER_BIN" ]; then
-    DRIVER_BIN="$NNFW_HOME/Product/out/bin/tflite_run"
+    DRIVER_BIN="$NNFW_HOME/Product/out/bin/onert_run"
 fi
 
 if [ ! -d "$TEST_ROOT_PATH" ]; then
