@@ -55,6 +55,7 @@ do
             ;;
         --backends=*)
             BACKEND_LIST=${i#*=}
+            ;;
     esac
     shift
 done
@@ -77,7 +78,6 @@ function get_benchmark_op_list()
 
 function run_benchmark_and_print()
 {
-
     local WRITE_FILE_NAME=$1
     local MSG=$2
     local MODEL=$3
@@ -124,7 +124,6 @@ function run_benchmark_test()
     local REPORT_MODEL_DIR=
 
     export COUNT=5
-    export ONERT_LOG_ENABLE=1
     echo
     echo "============================================"
     echo
@@ -176,7 +175,7 @@ prepare_test_model
 
 echo ""
 # print the result AND append to log file
-run_benchmark_test 2>&1 | tee -a onert_benchmarks.txt
+run_benchmark_test 2>&1 | tee -a $REPORT_DIR/onert_benchmarks.txt
 echo ""
 
 # Make json file.
