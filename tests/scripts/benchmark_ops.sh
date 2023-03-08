@@ -87,7 +87,7 @@ function run_benchmark_and_print()
     print_with_dots $MSG
     RESULT=$(get_result_of_benchmark_test $DRIVER_BIN $MODEL $LOG_FILE)
     echo "$RESULT ms"
-    print_result_of_benchmark_test "$MSG" "$RESULT" $RESULT_FILE
+    echo "$MSG $RESULT" > $RESULT_FILE
 }
 
 function run_onert_with_all_config()
