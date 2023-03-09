@@ -24,6 +24,10 @@ class QErrorComputer:
     def __init__(self, fp32_dir, fq_dir):
         self._fp32_dir = fp32_dir
         self._fq_dir = fq_dir
+        self.qerror_map = dict()
+        self._num_processed_data = 0
+
+    def collect_data_path(self, fp32_dir, fq_dir):
         # Assumption: FM data are saved as follows
         #
         # fp32_dir/
@@ -38,6 +42,8 @@ class QErrorComputer:
         self._num_data = len(list(filter(os.path.isdir, glob.glob(fp32_dir + '/*'))))
         if self._num_data != len(list(filter(os.path.isdir, glob.glob(fq_dir + '/*')))):
             raise RuntimeError("Number of data mistmatches")
+
+        self._num_processed_data += self._num_data
 
         self._filename_to_tensor = dict()
         with open(Path(fp32_dir) / 'tensors.txt') as f:
@@ -55,24 +61,25 @@ class QErrorComputer:
         #   <tensor_name>: (fp32_path, fq_path),
         #   ...
         # }
-        self._data_path = dict()
+        data_paths = dict()
         for data_idx in range(self._num_data):
-            fp32_results = glob.glob(self._fp32_dir + '/' + str(data_idx) + '/*.npy')
+            fp32_results = glob.glob(fp32_dir + '/' + str(data_idx) + '/*.npy')
             for fp32_data_path in fp32_results:
                 fp32_path = Path(fp32_data_path)
-                fq_data_path = self._fq_dir + '/' + str(
-                    data_idx) + '/' + fp32_path.with_suffix('.npy').name
+                fq_data_path = fq_dir + '/' + str(data_idx) + '/' + fp32_path.with_suffix(
+                    '.npy').name
                 fq_path = Path(fq_data_path)
                 filename = fp32_path.stem
                 tensor_name = self._filename_to_tensor[filename]
 
                 # Only save the tensors which have both fp32 data and fq data
                 if fq_path.is_file() and fp32_path.is_file():
-                    if tensor_name in self._data_path:
-                        self._data_path[tensor_name].append((fp32_data_path,
-                                                             fq_data_path))
+                    if tensor_name in data_paths:
+                        data_paths[tensor_name].append((fp32_data_path, fq_data_path))
                     else:
-                        self._data_path[tensor_name] = [(fp32_data_path, fq_data_path)]
+                        data_paths[tensor_name] = [(fp32_data_path, fq_data_path)]
+
+        return data_paths
 
     def run(self):
         '''Return qerror map (dict: tensor_name(string) -> qerror(float)).'''
@@ -83,9 +90,10 @@ class MPEIRComputer(QErrorComputer):
     def __init__(self, fp32_dir, fq_dir):
         super().__init__(fp32_dir, fq_dir)
 
-    def run(self):
-        qerror_map = dict()
-        for tensor_name, data_path in self._data_path.items():
+    # Incrementally compute Qerror while traversing all data in fp32_dir and fq_dir
+    def advance_on(self, fp32_dir, fq_dir):
+        data_paths = self.collect_data_path(fp32_dir, fq_dir)
+        for tensor_name, data_path in data_paths.items():
             for (fp32_data_path, fq_data_path) in data_path:
                 fp32_data = np.load(fp32_data_path)
                 fq_data = np.load(fq_data_path)
@@ -104,41 +112,54 @@ class MPEIRComputer(QErrorComputer):
                 # To prevent this, relaxed PEIR with epsilon(10^(-6)) is used.
                 rPEIR = PEAK_ERROR / (INTERVAL + 0.000001)
 
-                if tensor_name in qerror_map:
-                    qerror_map[tensor_name] += rPEIR
+                if tensor_name in self.qerror_map:
+                    self.qerror_map[tensor_name] += rPEIR
                 else:
-                    qerror_map[tensor_name] = rPEIR
+                    self.qerror_map[tensor_name] = rPEIR
 
-        for tensor_name, acc in qerror_map.items():
-            qerror_map[tensor_name] = acc / self._num_data
+    def get_final_result(self):
+        qerror_map = dict()
+        for tensor_name, acc in self.qerror_map.items():
+            qerror_map[tensor_name] = acc / self._num_processed_data
 
         return qerror_map
+
+    def run(self):
+        self.advance_on(self._fp32_dir, self._fq_dir)
+        return self.get_final_result()
 
 
 class MSEComputer(QErrorComputer):
     def __init__(self, fp32_dir, fq_dir):
         super().__init__(fp32_dir, fq_dir)
+        self.qerror_min = float('inf')
+        self.qerror_max = -self.qerror_min
 
-    def run(self):
-        qerror_map = dict()
-        qerror_min = float('inf')
-        qerror_max = -qerror_min
-        for tensor_name, data_path in self._data_path.items():
+    # Incrementally compute Qerror while traversing all data in fp32_dir and fq_dir
+    def advance_on(self, fp32_dir, fq_dir):
+        data_paths = self.collect_data_path(fp32_dir, fq_dir)
+        for tensor_name, data_path in data_paths.items():
             for (fp32_data_path, fq_data_path) in data_path:
                 fp32_data = np.load(fp32_data_path)
                 fq_data = np.load(fq_data_path)
 
                 MSE = np.square(fp32_data - fq_data).mean()
 
-                if tensor_name in qerror_map:
-                    qerror_map[tensor_name] += MSE
+                if tensor_name in self.qerror_map:
+                    self.qerror_map[tensor_name] += MSE
                 else:
-                    qerror_map[tensor_name] = MSE
+                    self.qerror_map[tensor_name] = MSE
 
-                qerror_min = min(MSE, qerror_min)
-                qerror_max = max(MSE, qerror_max)
+                self.qerror_min = min(MSE, self.qerror_min)
+                self.qerror_max = max(MSE, self.qerror_max)
 
-        for tensor_name, acc in qerror_map.items():
-            qerror_map[tensor_name] = acc / self._num_data
+    def get_final_result(self):
+        qerror_map = dict()
+        for tensor_name, acc in self.qerror_map.items():
+            qerror_map[tensor_name] = acc / self._num_processed_data
 
-        return qerror_map, qerror_min, qerror_max
+        return qerror_map, self.qerror_min, self.qerror_max
+
+    def run(self):
+        self.advance_on(self._fp32_dir, self._fq_dir)
+        return self.get_final_result()
