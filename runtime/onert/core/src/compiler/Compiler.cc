@@ -62,7 +62,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   // TODO handle option for each model
   if (_options->he_profiling_mode)
   {
-    if (_options->he_scheduler)
+    if (!_options->he_scheduler)
       throw std::runtime_error("Heterogeneous scheduler must be enabled during profiling.");
 
     if (_options->executor != "Dataflow")
