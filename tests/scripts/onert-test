@@ -17,11 +17,16 @@
 [[ "${BASH_SOURCE[0]}" != "${0}" ]] && echo "Please don't source ${BASH_SOURCE[0]}, execute it" && return
 
 DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-INSTALL_PATH="$(dirname $DRIVER_PATH)"
-COMMAND_PATH=$INSTALL_PATH/test/command
-BIN_PATH=$INSTALL_PATH/bin
 
-export PATH=$BIN_PATH:$PATH
+# Common variables which are used on test commands
+# INSTALL_PATH: test package installed folder
+# CACHE_PATH: cache folder for test resource download
+INSTALL_PATH="$(dirname $DRIVER_PATH)"
+CACHE_PATH=$DRIVER_PATH/cache
+
+export PATH=$INSTALL_PATH/bin:$PATH
+
+COMMAND_PATH=$DRIVER_PATH/command
 
 function Usage()
 {

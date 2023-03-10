@@ -14,10 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-COMMAND_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-INSTALL_DIR="$(dirname $(dirname $COMMAND_DIR))"
 UNITTEST_REPORT_DIR=
-UNITTEST_TEST_DIR=$INSTALL_DIR/unittest
+UNITTEST_TEST_DIR=$INSTALL_PATH/unittest
 UNITTEST_RESULT=0
 UNITTEST_RUN_ALL=""
 
