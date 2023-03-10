@@ -15,6 +15,22 @@
 # limitations under the License.
 
 MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ROOT_PATH="$(cd ${MY_PATH}/../../ && pwd)"
+
+# Install path on CI
+INSTALL_PATH=$ROOT_PATH/Product/out
+TEST_CACHE_PATH=$INSTALL_PATH/test/cache
+
+function prepare_test_model()
+{
+  # Model download server setting
+  if [[ -z "${MODELFILE_SERVER}" ]]; then
+    echo "Model file server is not set. Try to use default setting."
+  else
+    echo "Model Server: ${MODELFILE_SERVER}"
+  fi
+  $INSTALL_PATH/test/onert-test prepare-model --cachedir=$TEST_CACHE_PATH
+}
 
 function get_result_of_benchmark_test()
 {
@@ -23,7 +39,7 @@ function get_result_of_benchmark_test()
     local LOG_FILE=$3
 
     local RET=0
-    $MY_PATH/models/run_test.sh --driverbin="$DRIVER_BIN  -r 5 -w 3" $MODEL > $LOG_FILE 2>&1
+    $INSTALL_PATH/test/models/run_test.sh --driverbin="$DRIVER_BIN -r 5 -w 3" --cachedir=$TEST_CACHE_PATH $MODEL > $LOG_FILE 2>&1
     RET=$?
     if [[ $RET -ne 0 ]]; then
         echo "Testing $MODEL aborted... exit code: $RET"

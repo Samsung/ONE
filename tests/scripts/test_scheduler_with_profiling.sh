@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eo pipefail
+
 MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $MY_PATH/common.sh
 
@@ -7,11 +9,10 @@ BACKEND_CNT=3
 # Run profiler BACKEND_CNT+1 times: on each run of the first BACKEND_CNT runs it will
 #     collect metrics for one unmeasured backend. On the last run metrics for data transfer
 PROFILING_RUN_CNT=$((BACKEND_CNT+1))
-TEST_DRIVER_DIR="$( cd "$( dirname "${BASH_SOURCE}" )" && pwd )"
-ARTIFACT_PATH="$TEST_DRIVER_DIR/../.."
-BENCHMARK_DRIVER_BIN=$ARTIFACT_PATH/Product/out/bin/tflite_run
+ARTIFACT_PATH="$MY_PATH/../.."
+BENCHMARK_DRIVER_BIN=$INSTALL_PATH/bin/onert_run
 REPORT_DIR=$ARTIFACT_PATH/report
-RUN_TEST_SH=$ARTIFACT_PATH/tests/scripts/models/run_test.sh
+RUN_TEST_SH=$INSTALL_PATH/test/models/run_test.sh
 BENCHMARK_MODEL_LIST="MODELS/inception_nonslim MODELS/inception_slim MODELS/mobilenet"
 
 if [ ! -e "$RUN_TEST_SH" ]; then
@@ -19,9 +20,17 @@ if [ ! -e "$RUN_TEST_SH" ]; then
     exit 1
 fi
 
-
 BENCHMARK_REPORT_DIR=$REPORT_DIR/benchmark
 BENCHMARK_MODELS_FILE=$BENCHMARK_REPORT_DIR/benchmark_models.txt
+
+# Cleanup report files
+rm -rf $BENCHMARK_REPORT_DIR
+rm -f $BENCHMARK_MODELS_FILE
+mkdir -p $BENCHMARK_REPORT_DIR
+touch $BENCHMARK_MODELS_FILE
+
+# Prepare models
+prepare_test_model
 
 function run_without_sched()
 {
@@ -39,7 +48,7 @@ function run_without_sched()
 
     RESULT=$(get_result_of_benchmark_test $BENCHMARK_DRIVER_BIN $MODEL $LOG_FILE)
 
-    printf -v RESULT_INT '%d' $RESULT 2>/dev/null
+    printf -v RESULT_INT '%.0f' $RESULT
     PERCENTAGE=$((100-RESULT_SCH_INT*100/RESULT_INT))
     echo "$RESULT ms. Parallel scheduler is $PERCENTAGE% faster"
 }
@@ -53,11 +62,10 @@ function run_benchmark_test()
     export COUNT=5
     echo "============================================"
     local i=0
-    export USE_NNAPI=1
     export BACKENDS="acl_cl;acl_neon;cpu"
     # Remove metrics so that profiler can get metrics for operations
     #      with input&output sizes the same as the model
-    rm "exec_time.json" 2>/dev/null
+    rm -f "exec_time.json" 2>/dev/null
     for MODEL in $BENCHMARK_MODEL_LIST; do
 
         echo "Benchmark test with `basename $BENCHMARK_DRIVER_BIN` & `echo $MODEL`"
@@ -79,7 +87,7 @@ function run_benchmark_test()
 
             print_with_dots "Profiling run #$j out of $PROFILING_RUN_CNT"
 
-            $RUN_TEST_SH --driverbin=$BENCHMARK_DRIVER_BIN $MODEL > $LOG_FILE 2>&1
+            RESULT=$(get_result_of_benchmark_test $BENCHMARK_DRIVER_BIN $MODEL $LOG_FILE)
             RET=$?
             if [[ $RET -ne 0 ]]; then
                 echo "Profiling $MODEL aborted in run#$j... exit code: $RET"
@@ -90,7 +98,6 @@ function run_benchmark_test()
             cp "exec_time.json" $REPORT_MODEL_DIR/"exec_time_$j.json"
         done
         unset ONERT_LOG_ENABLE
-
 
 ##################################################################################
         # Turn off profiling
@@ -108,7 +115,7 @@ function run_benchmark_test()
         RESULT=$(get_result_of_benchmark_test $BENCHMARK_DRIVER_BIN $MODEL $LOG_FILE)
         echo "$RESULT ms"
 
-        printf -v RESULT_SCH_INT '%d' $RESULT 2>/dev/null
+        printf -v RESULT_SCH_INT '%.0f' $RESULT
 
         mv "after_lower_subg-0.dot" $REPORT_MODEL_DIR/"after_lower_subg-0_parallel.dot"
 
@@ -122,7 +129,7 @@ function run_benchmark_test()
 
         RESULT=$(get_result_of_benchmark_test $BENCHMARK_DRIVER_BIN $MODEL $LOG_FILE)
 
-        printf -v RESULT_INT '%d' $RESULT 2>/dev/null
+        printf -v RESULT_INT '%.0f' $RESULT
         PERCENTAGE=$((100-RESULT_SCH_INT*100/RESULT_INT))
         echo "$RESULT ms. Parallel scheduler is $PERCENTAGE% faster"
 
