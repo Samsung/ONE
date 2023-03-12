@@ -13,7 +13,7 @@ var dir_fad682867e0ac17ac3f414f2fb23cec4 =
     [ "Cast.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_cast_8cpp.html", null ],
     [ "Ceil.cpp", "tflite_2src_2_op_2_ceil_8cpp.html", null ],
     [ "Concatenation.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_concatenation_8cpp.html", null ],
-    [ "Conv2D.cpp", "compiler_2tflchef_2tflite_2src_2_op_2conv2d_8cpp.html", null ],
+    [ "Conv2D.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_conv2_d_8cpp.html", null ],
     [ "Cos.cpp", "tflite_2src_2_op_2_cos_8cpp.html", null ],
     [ "DepthToSpace.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_depth_to_space_8cpp.html", null ],
     [ "DepthwiseConv2D.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_depthwise_conv2_d_8cpp.html", null ],
