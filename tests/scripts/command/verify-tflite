@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-MD5_CHECK="on"
-TFLITE_LOADER="loader"
 REPORT_DIR="report"
 TEST_LIST_FILE=
 
@@ -24,7 +22,6 @@ function Usage()
     echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [OPTIONS]"
     echo ""
     echo "Options:"
-    echo "      --ignoremd5             Ignore MD5 check when download model files"
     echo "      --reportdir=PATH        Path to write report (default=$REPORT_DIR)"
     echo "      --list=FILE             List file to test. Test all if list option is not passed"
     echo "      --cachedir=PATH         Set downloaded resouces cache directory (default: $CACHE_PATH)"
@@ -36,9 +33,6 @@ do
         -h|--help|help)
             Usage
             exit 1
-            ;;
-        --ignoremd5)
-            MD5_CHECK="off"
             ;;
         --reportdir=*)
             REPORT_DIR=${i#*=}
@@ -71,7 +65,6 @@ TEST_NAME="Loader Verification"
 TEST_DRIVER=tflite_comparator
 
 $INSTALL_PATH/test/models/run_test.sh --driverbin=$TEST_DRIVER \
-    --download=off --run=on \
     --reportdir=$REPORT_DIR \
     --tapname=$TAP_NAME \
     --cachedir=$CACHE_PATH \
