@@ -145,9 +145,9 @@ def advance_on_data(fp32_model, fq_model, data, computers):
     with tempfile.TemporaryDirectory() as fp32_dir, \
          tempfile.TemporaryDirectory() as fq_dir:
 
-        _run_dalgona(fp32_dir, data, dump_fp32_py, fp32_dir)
+        _run_dalgona(fp32_model, data, dump_fp32_py, fp32_dir)
         copyfile(fp32_dir + '/tensors.txt', fq_dir + '/tensors.txt')
-        _run_dalgona(fq_dir, data, dump_fq_py, fq_dir)
+        _run_dalgona(fq_model, data, dump_fq_py, fq_dir)
 
         for metric_key in computers:
             computers[metric_key][0].advance_on(fp32_dir, fq_dir)
@@ -308,12 +308,13 @@ def run_on_data(fp32_model, q_model, data, dump_dot_graph, computers):
         for metric_key in computers:
             cur_computer = computers[metric_key][0]
             output = computers[metric_key][1]
+            cur_computer.advance_on(fp32_dir, fq_dir)
             if metric_key == 'MPEIR':
-                qerror_map = cur_computer.run(fp32_dir, fq_dir)
+                qerror_map = cur_computer.get_final_result()
                 q_min = 0.0
                 q_max = 1.0
             elif metric_key == 'MSE':
-                qerror_map, q_min, q_max = cur_computer.run(fp32_dir, fq_dir)
+                qerror_map, q_min, q_max = cur_computer.get_final_result()
 
             palette = YLORRD9Palette(qerror_min=q_min, qerror_max=q_max)
             result = _build_json(
