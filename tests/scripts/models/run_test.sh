@@ -32,12 +32,9 @@ function Usage()
     echo "Usage: ./$0 --driverbin={such as tflite_run} {tests to test or empty for all of tests}"
     echo "Usage: ./$0 --driverbin=Product/out/bin/tflite_run --reportdir=report --tapname=verification.tap avgpool1 avgpool2"
     echo ""
-    echo "--download            - (default=on) Download model files"
-    echo "--run                 - (default=on) Test model files"
     echo "--driverbin           - (default=../../Product/out/bin/tflite_run) Runner for runnning model tests"
     echo "--reportdir           - (default=report) Directory to place tap files"
     echo "--tapname             - (default=framework_test.tap) File name to be written for tap"
-    echo "--md5                 - (default=on) MD5 check when download model files"
     echo "--configdir           - (default=$TEST_ROOT_PATH) Config directory to download and test model"
     echo "--cachedir            - (default=$CACHE_ROOT_PATH) Directory to download model"
     echo ""
@@ -72,9 +69,6 @@ function need_download()
 DRIVER_BIN=""
 TAP_NAME="framework_test.tap"
 TEST_LIST=()
-DOWNLOAD_MODEL="on"
-RUN_TEST="on"
-MD5_CHECK="on"
 
 # Support environment variable setting for mirror server
 FIXED_MODELFILE_SERVER="${MODELFILE_SERVER:-}"
@@ -94,15 +88,6 @@ do
             ;;
         --tapname=*)
             TAP_NAME=${i#*=}
-            ;;
-        --download=*)
-            DOWNLOAD_MODEL=${i#*=}
-            ;;
-        --md5=*)
-            MD5_CHECK=${i#*=}
-            ;;
-        --run=*)
-            RUN_TEST=${i#*=}
             ;;
         --configdir=*)
             TEST_ROOT_PATH=${i#*=}
@@ -131,7 +116,7 @@ if [ ! -d "$TEST_ROOT_PATH" ]; then
 fi
 
 # Check test driver setting
-if ! command_exists $DRIVER_BIN && [ "$RUN_TEST" = "on" ]; then
+if ! command_exists $DRIVER_BIN ; then
     echo "Cannot find test driver" $DRIVER_BIN ": please set proper DRIVER_BIN"
     exit 1
 fi
@@ -194,56 +179,6 @@ run_tests()
     return $TOTAL_RESULT
 }
 
-download_tests()
-{
-    SELECTED_TESTS=$@
-
-    echo ""
-    echo "Downloading tests:"
-    echo "======================"
-    for TEST_NAME in $SELECTED_TESTS; do
-        echo $TEST_NAME
-    done
-    echo "======================"
-
-    i=0
-    for TEST_NAME in $SELECTED_TESTS; do
-        # Test configure initialization
-        ((i++))
-        MODELFILE_URL_BASE=""
-        MODELFILE_NAME=""
-        source $TEST_ROOT_PATH/$TEST_NAME/config.sh
-
-        MODELFILE=$CACHE_ROOT_PATH/$MODELFILE_NAME
-        MODELFILE_URL="$MODELFILE_URL_BASE/$MODELFILE_NAME"
-        if [ -n  "$FIXED_MODELFILE_SERVER" ]; then
-            MODELFILE_URL="$FIXED_MODELFILE_SERVER/$MODELFILE_NAME"
-        fi
-
-        # Download model file
-        if [ ! -e $CACHE_ROOT_PATH ]; then
-            mkdir -p $CACHE_ROOT_PATH
-        fi
-
-        # Download unless we have it in cache (Also check md5sum)
-        if need_download "$MODELFILE" "$MODELFILE_URL"; then
-            echo ""
-            echo "Download test file for $TEST_NAME"
-            echo "======================"
-
-            rm -f $MODELFILE # Remove invalid file if exists
-            pushd $CACHE_ROOT_PATH
-            curl --netrc-optional -kLsSO $MODELFILE_URL
-            if [ "${MODELFILE_NAME##*.}" == "zip" ]; then
-                unzip -o $MODELFILE_NAME -d ${MODELFILE_NAME%.zip}
-            fi
-            popd
-        fi
-
-    done
-}
-
-
 find_tests()
 {
     local TEST_DIRS="$@"
@@ -271,12 +206,6 @@ find_tests()
 
 mkdir -p $REPORT_DIR
 TESTS_TO_RUN=$(find_tests ${TEST_LIST[@]})
+run_tests $TESTS_TO_RUN
 
-if [ "$DOWNLOAD_MODEL" = "on" ]; then
-    download_tests $TESTS_TO_RUN
-fi
-
-if [ "$RUN_TEST" = "on" ]; then
-    run_tests $TESTS_TO_RUN
-fi
 exit $?
