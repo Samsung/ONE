@@ -113,8 +113,16 @@ void run_phase(loco::Graph *g, Type quantized_dtype, Granularity granularity)
   // Default passes.
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
-  phase.emplace_back(
-    std::make_unique<luci::QuantizeWithMinMaxPass>(Type::FLOAT32, quantized_dtype, granularity));
+  auto ctx = std::make_unique<luci::QuantizeWithMinMaxPass::Context>();
+  {
+    ctx->input_model_dtype = loco::DataType::FLOAT32;
+    ctx->output_model_dtype = quantized_dtype;
+    ctx->granularity = granularity;
+    ctx->input_type = quantized_dtype;
+    ctx->output_type = quantized_dtype;
+  }
+
+  phase.emplace_back(std::make_unique<luci::QuantizeWithMinMaxPass>(std::move(ctx)));
 
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
   phase_runner.run(phase);
