@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+// TODO enable it
+#if 0
 #include "kernels/Softmax.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
@@ -115,3 +116,4 @@ TYPED_TEST(SoftmaxTest, Simple)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif

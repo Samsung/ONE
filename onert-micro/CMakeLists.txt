@@ -56,6 +56,25 @@ else()
     return()
 endif()
 
+if (USE_STATIC_ALLOC)
+    # TODO: enable it
+    message(STATUS "FAILED ONERT-MICRO is not support Static Memory Manager now")
+    return()
+else()
+    message(STATUS "USE_STATIC_ALLOC variable is not defined, default dynamic memory manager will be used")
+endif()
+
+if (DIS_QUANT)
+    message(STATUS "ONERT-MICRO will not use part for QUANTIZED models")
+    add_definitions(-DDIS_QUANT)
+endif()
+
+if (DIS_FLOAT)
+    message(STATUS "ONERT-MICRO will not use part for FLOAT models")
+    add_definitions(-DDIS_FLOAT)
+endif()
+
+
 set(CMAKE_ARM_OPTIONS
         -DLUCI_INTERPRETER_STATIC=ON
         -DLUCI_STATIC=ON
@@ -122,6 +141,9 @@ endif ()
 # To remove GENERATE_KERNELS_LIST_FROM and KERNELS variable from cmake cache
 unset(GENERATE_KERNELS_LIST_FROM CACHE)
 unset(KERNELS CACHE)
+unset(USE_STATIC_KERNEL CACHE)
+unset(DIS_QUANT CACHE)
+unset(DIS_FLOAT CACHE)
 
 set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/libluci_interpreter_micro.a")
 

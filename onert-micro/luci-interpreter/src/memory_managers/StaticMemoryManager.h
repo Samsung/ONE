@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
+#ifdef USE_STATIC_ALLOC
+
 #ifndef LUCI_INTERPRETER_STATIC_MEMORY_MANAGER_H
 #define LUCI_INTERPRETER_STATIC_MEMORY_MANAGER_H
 
-#include "MemoryManager.h"
+#include "luci_interpreter/core/DataType.h"
+#include "luci_interpreter/core/Tensor.h"
 
 #include <cassert>
 
@@ -25,7 +28,7 @@ namespace luci_interpreter
 {
 
 // Used for allocations in static buffer, using offsets defined in luci model.
-class StaticMemoryManager : public IMemoryManager
+class StaticMemoryManager
 {
 public:
   StaticMemoryManager() = delete;
@@ -44,36 +47,31 @@ public:
   }
 
   // To set a pointer for tensor in _buffer_ptr with right offset
-  void allocate_memory(luci_interpreter::Tensor &tensor) final;
-  // To set tensor data pointer to nullptr
-  void release_memory(luci_interpreter::Tensor &tensor) final;
-
+  uint8_t *allocate_memory(int32_t offset);
   // To set a pointer for tensor in input_buffer with right offset
-  void allocate_memory_for_input(luci_interpreter::Tensor &tensor) final;
+  uint8_t *allocate_memory_for_input(int32_t offset);
   // To set a pointer for tensor in output_buffer with right offset
-  void allocate_memory_for_output(luci_interpreter::Tensor &tensor) final;
+  uint8_t *allocate_memory_for_output(int32_t offset);
 
   // Methods to set data pointer for tensor
   // To allocate input memory buffer with _input_req_size * size_type bytes. Result pointer -
   // _input_buffer_ptr
-  void allocate_input_buf() final;
+  void allocate_input_buf();
   // To allocate input memory buffer with _output_req_size * size_type bytes. Result pointer -
   // _output_buffer_ptr
-  void allocate_output_buf() final;
+  void allocate_output_buf();
   // To allocate intermediate computing memory buffer with _buffer_req_size * size_type bytes.
   // Result pointer - _buffer_ptr
-  void allocate_computing_buf() final;
+  void allocate_computing_buf();
 
   // To delete memory for intermediate computing buffer
-  void release_computing_buf() final;
+  void release_computing_buf();
   // To delete memory for input buffer
-  void release_input_buf() final;
+  void release_input_buf();
   // To delete memory for output buffer
-  void release_output_buf() final;
+  void release_output_buf();
 
 private:
-  void base_allocate_memory(luci_interpreter::Tensor &tensor, uint8_t *buffer_ptr);
-
   // Stores a pointer to the beginning of the allocated memory buffer.
   uint8_t *_buffer_ptr;
   uint8_t *_input_buffer_ptr;
@@ -88,3 +86,5 @@ private:
 } // namespace luci_interpreter
 
 #endif // LUCI_INTERPRETER_STATIC_MEMORY_MANAGER_H
+
+#endif // USE_STATIC_ALLOC

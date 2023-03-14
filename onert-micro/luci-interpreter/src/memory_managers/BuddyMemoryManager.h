@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+#if 0
+
 #include "MemoryManager.h"
 
 #ifndef LUCI_INTERPRETER_BUDDY_MEMORY_MANAGER_H
@@ -142,3 +144,5 @@ private:
 } // namespace luci_interpreter
 
 #endif // LUCI_INTERPRETER_BUDDY_MEMORY_MANAGER_H
+
+#endif

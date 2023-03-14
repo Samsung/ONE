@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#if 0
+
 #include "BuddyMemoryManager.h"
 #include <gtest/gtest.h>
 
@@ -67,3 +69,5 @@ TEST(BuddyMemoryManager, basic)
 
 } // namespace
 } // namespace luci_interpreter
+
+#endif

@@ -48,14 +48,6 @@ void writeDataToFile(const std::string &filename, const char *data, size_t data_
   }
 }
 
-size_t getTensorSize(const luci_interpreter::Tensor *tensor)
-{
-  size_t tensor_size = luci_interpreter::size(tensor->element_type());
-  tensor_size *= tensor->shape().num_elements();
-
-  return tensor_size;
-}
-
 } // namespace
 
 /*
@@ -107,53 +99,30 @@ int entry(int argc, char **argv)
   // Set input.
   // Data for n'th input is read from ${input_prefix}n
   // (ex: Add.circle.input0, Add.circle.input1 ..)
-  const auto input_tensors = interpreter.getInputTensors();
-  assert(num_inputs == input_tensors.size());
-  for (int32_t i = 0; i < num_inputs; i++)
+  int num_inference = 1;
+  for (int j = 0; j < num_inference; ++j)
   {
-    auto *input_tensor = input_tensors[i];
-    std::vector<char> input_data(getTensorSize(input_tensor));
-    readDataFromFile(std::string(input_prefix) + std::to_string(i), input_data.data(),
-                     input_data.size());
-    luci_interpreter::Interpreter::writeInputTensor(input_tensor, input_data.data(),
-                                                    input_data.size());
+    for (int32_t i = 0; i < num_inputs; i++)
+    {
+      auto input_data = reinterpret_cast<char *>(interpreter.allocateInputTensor(i));
+      readDataFromFile(std::string(input_prefix) + std::to_string(i), input_data,
+                       interpreter.getInputDataSizeByIndex(i));
+    }
+
+    // Do inference.
+    interpreter.interpret();
   }
 
-  // Do inference.
-  interpreter.interpret();
-
   // Get output.
-  const auto output_tensors = interpreter.getOutputTensors();
-  for (int i = 0; i < output_tensors.size(); i++)
+  int num_outputs = 1;
+  for (int i = 0; i < num_outputs; i++)
   {
-    const auto *output_tensor = output_tensors[i];
-    std::vector<char> output_data(getTensorSize(output_tensor));
-    luci_interpreter::Interpreter::readOutputTensor(output_tensor, output_data.data(),
-                                                    output_data.size());
+    auto data = interpreter.readOutputTensor(i);
 
     // Output data is written in ${output_file}
     // (ex: Add.circle.output0)
-    // Output shape is written in ${output_file}.shape
-    // (ex: Add.circle.output0.shape)
-    writeDataToFile(std::string(output_file) + std::to_string(i), output_data.data(),
-                    output_data.size());
-    // In case of Tensor output is Scalar value.
-    // The output tensor with rank 0 is treated as a scalar with shape (1)
-    if (output_tensor->shape().num_dims() == 0)
-    {
-      writeDataToFile(std::string(output_file) + std::to_string(i) + ".shape", "1", 1);
-    }
-    else
-    {
-      auto shape_str = std::to_string(output_tensor->shape().dim(0));
-      for (int j = 1; j < output_tensor->shape().num_dims(); j++)
-      {
-        shape_str += ",";
-        shape_str += std::to_string(output_tensor->shape().dim(j));
-      }
-      const auto tensor_shape_file = std::string(output_file) + std::to_string(i) + ".shape";
-      writeDataToFile(tensor_shape_file, shape_str.c_str(), shape_str.size());
-    }
+    writeDataToFile(std::string(output_file) + std::to_string(i), reinterpret_cast<char *>(data),
+                    interpreter.getOutputDataSizeByIndex(i));
   }
   return EXIT_SUCCESS;
 }

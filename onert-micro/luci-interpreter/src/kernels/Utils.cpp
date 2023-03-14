@@ -73,12 +73,13 @@ template void calculateActivationRange(Activation activation, int32_t *activatio
 template void calculateActivationRange(Activation activation, int64_t *activation_min,
                                        int64_t *activation_max);
 
+#ifndef DIS_QUANT
 static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t qmin, int32_t qmax,
-                                                  const Tensor *output, int32_t *activation_min,
-                                                  int32_t *activation_max)
+                                                  const circle::Tensor *output,
+                                                  int32_t *activation_min, int32_t *activation_max)
 {
-  const float scale = output->scale();
-  const int32_t zero_point = output->zero_point();
+  const float scale = Tensor::scale(output);
+  const int32_t zero_point = Tensor::zero_point(output);
 
   auto quantize = [scale, zero_point](float x) {
     return zero_point + static_cast<int32_t>(std::round(x / scale));
@@ -108,13 +109,13 @@ static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t
   }
 }
 
-void calculateActivationRangeQuantized(Activation activation, const Tensor *output,
+void calculateActivationRangeQuantized(Activation activation, const circle::Tensor *output,
                                        int32_t *activation_min, int32_t *activation_max)
 {
-  assert(output->zero_points().size() == 1);
+  assert(Tensor::zero_points(output).size() == 1);
   int32_t qmin{};
   int32_t qmax{};
-  switch (output->element_type())
+  switch (Tensor::element_type(output))
   {
     case DataType::U8:
       qmin = 0;
@@ -126,7 +127,7 @@ void calculateActivationRangeQuantized(Activation activation, const Tensor *outp
       break;
     case DataType::S16:
       // For now, assume that signed int16 type implies signed symmetric quantization.
-      assert(output->zero_point() == 0);
+      assert(Tensor::zero_point(output) == 0);
       qmin = -std::numeric_limits<int16_t>::max();
       qmax = std::numeric_limits<int16_t>::max();
       break;
@@ -184,24 +185,28 @@ void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quan
   assert(shift <= 0);
   *left_shift = shift;
 }
+#endif
 
-Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_shape)
+tflite::RuntimeShape calculateShapeForBroadcast(const circle::Tensor *input1,
+                                                const circle::Tensor *input2)
 {
-  const int num_input1_dims = input1_shape.num_dims();
-  const int num_input2_dims = input2_shape.num_dims();
+  const int num_input1_dims = Tensor::num_dims(input1);
+  const int num_input2_dims = Tensor::num_dims(input2);
   const int num_out_dims = std::max(num_input1_dims, num_input2_dims);
-  Shape output_shape(num_out_dims);
+  tflite::RuntimeShape output_shape(num_out_dims);
 
   for (int i = 0; i < num_out_dims; ++i)
   {
-    const int32_t input1_dim = i < num_input1_dims ? input1_shape.dim(num_input1_dims - i - 1) : 1;
-    const int32_t input2_dim = i < num_input2_dims ? input2_shape.dim(num_input2_dims - i - 1) : 1;
+    const int32_t input1_dim =
+      i < num_input1_dims ? Tensor::dim(input1, num_input1_dims - i - 1) : 1;
+    const int32_t input2_dim =
+      i < num_input2_dims ? Tensor::dim(input2, num_input2_dims - i - 1) : 1;
 
     bool need_broadcast = input1_dim != input2_dim;
     bool can_broadcast = input1_dim == 1 || input2_dim == 1;
     LUCI_INTERPRETER_CHECK(!need_broadcast || can_broadcast);
 
-    output_shape.dim(num_out_dims - i - 1) = std::max(input1_dim, input2_dim);
+    output_shape.SetDim(num_out_dims - i - 1, std::max(input1_dim, input2_dim));
   }
 
   return output_shape;

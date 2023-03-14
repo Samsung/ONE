@@ -18,96 +18,95 @@
 #define LUCI_INTERPRETER_CORE_RUNTIMEGRAPH_H
 
 #include "luci_interpreter/core/Tensor.h"
-#include "memory_managers/MemoryManager.h"
-#include "core/Kernel.h"
+#ifdef USE_STATIC_ALLOC
+#include "memory_managers/StaticMemoryManager.h"
+#else
+#include "memory_managers/SimpleMemoryManager.h"
+#endif // USE_STATIC_ALLOC
+
+#include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <memory>
 #include <vector>
+#include <unordered_map>
+#include <unordered_set>
 
 namespace luci_interpreter
 {
 
 class RuntimeModule;
 
-class IBaseRuntimeGraph
-{
-public:
-  explicit IBaseRuntimeGraph(IMemoryManager *memory_manager);
-  virtual ~IBaseRuntimeGraph() = default;
-
-  Tensor *addTensor(std::unique_ptr<Tensor> &&tensor);
-  AffineQuantization *addAffineQuantization(std::unique_ptr<AffineQuantization> &&quantization);
-
-  void addIntermediateTensorAffineQuantization(AffineQuantization *intermediate_tensor);
-  void addInputTensor(Tensor *input_tensor);
-  void addOutputTensor(Tensor *output_tensor);
-
-  void configureAllocations(Tensor *tensor);
-
-  const std::vector<AffineQuantization *> &getIntermediateAffineQuantizations() const
-  {
-    return _intermediate_tensors_affine_quantizations;
-  }
-  const std::vector<Tensor *> &getInputTensors() const { return _input_tensors; }
-  const std::vector<Tensor *> &getOutputTensors() const { return _output_tensors; }
-
-  void addKernel(std::unique_ptr<Kernel> &&kernel);
-
-  virtual void execute() = 0;
-  virtual void configure() = 0;
-
-  virtual void configure_kernels() = 0;
-
-  void invalidate() { _is_valid = false; }
-  bool isValid() const { return _is_valid; }
-
-protected:
-  IMemoryManager *_memory_manager;
-  std::vector<std::unique_ptr<Tensor>> _tensors;
-  std::vector<std::unique_ptr<AffineQuantization>> _affine_quantizations;
-  std::vector<Tensor *> _input_tensors;
-  std::vector<AffineQuantization *> _intermediate_tensors_affine_quantizations;
-  std::vector<Tensor *> _output_tensors;
-
-  bool _is_valid = false;
-
-  // Kernels in execution order.
-  std::vector<std::unique_ptr<Kernel>> _kernels;
-};
-
-class RuntimeGraph final : public IBaseRuntimeGraph
-{
-public:
-  explicit RuntimeGraph(IMemoryManager *memory_manager);
-  ~RuntimeGraph() final;
-
-  void execute() final;
-  void configure() final;
-
-  void configure_kernels() final { assert(false && "Use it only with static allocations"); }
-
-private:
-  void buildAllocDeallocPlan();
-  void allocate(size_t kernel_index) const;
-  void deallocate(size_t kernel_index) const;
-
-private:
-  // Tensors that are not used anymore after given op
-  std::vector<std::vector<Tensor *>> _alloc_plan;
-  std::vector<std::vector<Tensor *>> _dealloc_plan;
-};
-
+#ifdef USE_STATIC_ALLOC
+// TODO: Enable it
+#if 0
 class StaticRuntimeGraph final : public IBaseRuntimeGraph
 {
 public:
-  explicit StaticRuntimeGraph(IMemoryManager *memory_manager);
+  explicit StaticRuntimeGraph(IMemoryManager *memory_manager, CircleReader *circle_reader);
   ~StaticRuntimeGraph() final;
 
+  void configureGraphInputs() final;
   void execute() final;
   void configure() final;
 
   void configure_kernels() final;
 };
+#endif
+#else
+
+class RuntimeGraph
+{
+public:
+  explicit RuntimeGraph(SimpleMemoryManager *memory_manager, CircleReader *circle_reader);
+  ~RuntimeGraph();
+
+  Tensor *addTensor(const circle::Tensor *raw_tensor, std::unique_ptr<Tensor> &&tensor);
+
+  const circle::Tensor *getCircleTensorByIndex(int32_t index);
+
+  void makeInplaceOperation(const circle::Tensor *src_tensor, const circle::Tensor *dst_tensor);
+
+  uint8_t *getDataByTensor(const circle::Tensor *raw_tensor);
+  uint8_t *getConstDataByTensor(const circle::Tensor *raw_tensor);
+
+  uint8_t *configureGraphInput(int32_t input_index);
+  void configureGraphInput(int32_t input_index, uint8_t *data);
+
+  int32_t getInputDataSizeByIndex(int32_t input_index);
+  int32_t getOutputDataSizeByIndex(int32_t output_index);
+
+  uint8_t *getOutputDataByIndex(int32_t output_index);
+
+  void addInplaceOpIndex(uint32_t index) { _inplace_op_indexes.insert(index); }
+
+  void execute();
+  void configure();
+
+  void invalidate() { _is_valid = false; }
+  bool isValid() const { return _is_valid; }
+
+private:
+  void buildAllocDeallocPlan();
+  void allocate(size_t kernel_index);
+  void deallocate(size_t kernel_index);
+
+  void resetOutputTensorsData();
+
+private:
+  SimpleMemoryManager *_memory_manager;
+  CircleReader *_reader;
+
+  std::unordered_map<const circle::Tensor *, uint8_t *> _tensor_to_data;
+  std::unordered_set<uint32_t> _inplace_op_indexes;
+
+  bool _is_valid = false;
+
+  // Tensors that are not used anymore after given op
+  std::vector<std::vector<const circle::Tensor *>> _alloc_plan;
+  std::vector<std::vector<const circle::Tensor *>> _dealloc_plan;
+};
+
+#endif // USE_STATIC_ALLOC
 
 } // namespace luci_interpreter
 

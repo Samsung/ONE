@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_LOADER_NODES_BUILDERS_H
-#define LUCI_INTERPRETER_LOADER_NODES_BUILDERS_H
+#ifndef LUCI_INTERPRETER_KERNELS_NODES_BUILDERS_H
+#define LUCI_INTERPRETER_KERNELS_NODES_BUILDERS_H
 
-#include "loader/KernelBuilder.h"
+#include "KernelBuilder.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
 #include "core/RuntimeGraph.h"
 
 namespace luci_interpreter
 {
 
-#define REGISTER_KERNEL(builtin_operator, name)                            \
-  std::unique_ptr<Kernel> build_kernel_Circle##name(                       \
-    std::vector<const Tensor *> &&inputs, std::vector<Tensor *> &&outputs, \
-    const uint32_t op_index, KernelBuilder &builder);
+#define REGISTER_KERNEL(builtin_operator, name)                        \
+  void configure_kernel_Circle##name(const circle::Operator *cur_op,   \
+                                     BaseRuntimeGraph *runtime_graph); \
+                                                                       \
+  void execute_kernel_Circle##name(const circle::Operator *cur_op,     \
+                                   BaseRuntimeGraph *runtime_graph, bool is_inplace);
 
 #if USE_GENERATED_LIST
 #include "GeneratedKernelsToBuild.lst"
@@ -39,4 +41,4 @@ namespace luci_interpreter
 
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_LOADER_NODES_BUILDERS_H
+#endif // LUCI_INTERPRETER_KERNELS_NODES_BUILDERS_H

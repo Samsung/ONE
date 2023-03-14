@@ -14,54 +14,26 @@
  * limitations under the License.
  */
 
+#ifndef USE_STATIC_ALLOC
 #ifndef LUCI_INTERPRETER_SIMPLE_MEMORY_MANAGER_H
 #define LUCI_INTERPRETER_SIMPLE_MEMORY_MANAGER_H
 
-#include "MemoryManager.h"
+#include "luci_interpreter/core/DataType.h"
+#include "luci_interpreter/core/Tensor.h"
+
+#include <cassert>
 
 namespace luci_interpreter
 {
 
-class SimpleMemoryManager : public IMemoryManager
+class SimpleMemoryManager
 {
 public:
-  void allocate_memory(luci_interpreter::Tensor &tensor) final;
-  void release_memory(luci_interpreter::Tensor &tensor) final;
-
-  void allocate_input_buf() final
-  {
-    assert(false && "Method can be used only for static memory manager");
-  }
-  void allocate_output_buf() final
-  {
-    assert(false && "Method can be used only for static memory manager");
-  }
-  void allocate_computing_buf() final
-  {
-    assert(false && "Method can be used only for static memory manager");
-  }
-  void release_computing_buf() final
-  {
-    assert(false && "Method can be used only for static memory manager");
-  }
-  void release_input_buf() final
-  {
-    assert(false && "Method can be used only for static memory manager");
-  }
-  void release_output_buf() final
-  {
-    assert(false && "Method can be used only for static memory manager");
-  }
-  void allocate_memory_for_input(luci_interpreter::Tensor &tensor) final
-  {
-    assert(false && "Method can be used only for static memory manager");
-  }
-  void allocate_memory_for_output(luci_interpreter::Tensor &tensor) final
-  {
-    assert(false && "Method can be used only for static memory manager");
-  }
+  uint8_t *allocate_memory(const circle::Tensor *tensor);
+  void release_memory(uint8_t *data);
 };
 
 } // namespace luci_interpreter
 
 #endif // LUCI_INTERPRETER_SIMPLE_MEMORY_MANAGER_H
+#endif // USE_STATIC_ALLOC

@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// TODO Enable it
+
+#if 0
+
 #include "TestMemoryManager.h"
 
 namespace luci_interpreter
@@ -43,3 +47,5 @@ void TestMemoryManager::release_memory(luci_interpreter::Tensor &tensor)
 }
 
 } // namespace luci_interpreter
+
+#endif

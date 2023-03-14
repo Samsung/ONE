@@ -32,6 +32,7 @@ static inline void PopulateSoftmaxLookupTable(tflite::SoftmaxParams *data, float
 
 static inline void InitializeParams(tflite::SoftmaxParams *params, float input_scale, float beta)
 {
+  // TODO Impl it
   assert(false && "Softmax NYI");
   (void)params;
   (void)input_scale;
@@ -43,6 +44,7 @@ static inline void Softmax(const tflite::SoftmaxParams &params,
                            const tflite::RuntimeShape &input_shape, const T *input_data,
                            const tflite::RuntimeShape &output_shape, T *output_data)
 {
+  // TODO Impl it
   // MARK: At this moment this operation doesn't support on mcu
   assert(false && "Softmax NYI");
   (void)params;

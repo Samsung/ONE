@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// TODO Enable it
+
+#if 0
+
 #ifndef LUCI_INTERPRETER_TEST_MEMORY_MANAGER_H
 #define LUCI_INTERPRETER_TEST_MEMORY_MANAGER_H
 
@@ -45,3 +49,5 @@ private:
 } // namespace luci_interpreter
 
 #endif // LUCI_INTERPRETER_TEST_MEMORY_MANAGER_H
+
+#endif

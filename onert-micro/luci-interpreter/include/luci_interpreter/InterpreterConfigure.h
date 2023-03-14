@@ -19,6 +19,7 @@
 
 namespace luci_interpreter
 {
+#ifdef USE_STATIC_ALLOC
 
 enum MemoryManagerType
 {
@@ -71,6 +72,8 @@ public:
   uint32_t _temp_buf_size = 0;
   uint32_t _output_buf_size = 0;
 };
+
+#endif
 
 } // namespace luci_interpreter
 

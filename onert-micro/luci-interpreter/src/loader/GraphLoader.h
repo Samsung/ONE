@@ -18,7 +18,6 @@
 #define LUCI_INTERPRETER_LOADER_GRAPHLOADER_H
 
 #include "core/RuntimeGraph.h"
-#include "memory_managers/MemoryManager.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <unordered_map>
@@ -29,21 +28,7 @@ namespace luci_interpreter
 class GraphLoader
 {
 public:
-  GraphLoader(CircleReader *reader, IBaseRuntimeGraph *runtime_graph,
-              IMemoryManager *memory_manager,
-              std::unordered_map<int32_t, Tensor *> *index_to_tensor);
-
-  void loadTensors(bool use_static_memory_manager);
-  void initInputTensors(bool use_static_memory_manager) const;
-  void loadOperators(bool use_static_memory_manager);
-
-private:
-  bool isCouldBeEmplaceTensor(const int32_t tensor_index);
-
-  IBaseRuntimeGraph *_runtime_graph;
-  IMemoryManager *_memory_manager;
-  CircleReader *_reader;
-  std::unordered_map<int32_t, Tensor *> *_index_to_tensor;
+  static void checkInplaceOps(CircleReader *reader, RuntimeGraph *runtime_graph);
 };
 
 } // namespace luci_interpreter

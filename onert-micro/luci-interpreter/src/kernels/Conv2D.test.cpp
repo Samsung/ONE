@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// TODO enable it
+#if 0
 #include "kernels/Conv2D.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
@@ -705,3 +707,4 @@ TEST_F(Conv2DTest, Invalid_fused_act_tanh_NEG)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif

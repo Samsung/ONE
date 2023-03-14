@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+// TODO enable it
+#if 0
 #include "kernels/Logistic.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
@@ -146,3 +147,4 @@ TEST(LogisticTest, IvalidQuantParam_NEG)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif

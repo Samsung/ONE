@@ -20,57 +20,42 @@
 
 namespace luci_interpreter
 {
-ModuleLoader::ModuleLoader(const char *model_data_raw, RuntimeModule *runtime_module,
-                           IMemoryManager *memory_manager)
-  : _model_data_raw(model_data_raw), _runtime_module(runtime_module),
-    _memory_manager(memory_manager), _index_to_tensor(std::unordered_map<int32_t, Tensor *>{})
-{
-}
 
-void ModuleLoader::load(bool use_static_memory_manager)
+void ModuleLoader::load(RuntimeModule *runtime_module, SimpleMemoryManager *memory_manager,
+                        const char *model_data_raw)
 {
-  const circle::Model *model = circle::GetModel(_model_data_raw);
+  const circle::Model *model = circle::GetModel(model_data_raw);
 
-  CircleReader reader;
+  CircleReader &reader = runtime_module->getCircleReader();
   if (!reader.parse(model))
     assert(false && "Error during parse");
 
   for (size_t i = 0; i < reader.num_subgraph(); ++i)
   {
-    _runtime_graphs.emplace_back(
-      _runtime_module->addGraph(_memory_manager, use_static_memory_manager));
+    runtime_module->addGraph(memory_manager);
   }
 
+#ifndef USE_STATIC_ALLOC
   for (size_t i = 0; i < reader.num_subgraph(); ++i)
   {
     if (!reader.select_subgraph(i))
       assert(false && "Error during select subgraph");
-    IBaseRuntimeGraph *runtime_graph = _runtime_graphs.at(i);
-    GraphLoader loader(&reader, runtime_graph, _memory_manager, &_index_to_tensor);
-
-    loader.initInputTensors(use_static_memory_manager);
-    loader.loadTensors(use_static_memory_manager);
-    loader.loadOperators(use_static_memory_manager);
+    auto *runtime_graph = runtime_module->getRuntimeGraphAt(i);
+    // For Dynamic memory manager we can use inplace optimization
+    GraphLoader::checkInplaceOps(&reader, runtime_graph);
   }
+#endif // USE_STATIC_ALLOC
 
   // For Dynamic Memory manager we build memory allocate/deallocate plan and then configure kernels.
   // For Static Memory manager we only configure kernels.
-  if (not use_static_memory_manager)
+  for (size_t i = 0; i < reader.num_subgraph(); ++i)
   {
-    // Dynamic memory manager case
-    for (size_t i = 0; i < reader.num_subgraph(); ++i)
-    {
-      IBaseRuntimeGraph *runtime_graph = _runtime_graphs.at(i);
-      runtime_graph->configure();
-    }
-  }
-  else
-  {
-    // Static memory manager case
-    for (size_t i = 0; i < reader.num_subgraph(); ++i)
-    {
-      _runtime_graphs.at(i)->configure_kernels();
-    }
+    auto *runtime_graph = runtime_module->getRuntimeGraphAt(i);
+#ifdef USE_STATIC_ALLOC
+    runtime_graph->configure_kernels();
+#else
+    runtime_graph->configure();
+#endif // USE_STATIC_ALLOC
   }
 }
 

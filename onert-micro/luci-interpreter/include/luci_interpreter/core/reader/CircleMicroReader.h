@@ -24,12 +24,12 @@
 
 #include <map>
 #include <memory>
-#include <string>
 #include <vector>
 
 namespace luci_interpreter
 {
 
+#ifdef USE_STATIC_ALLOC
 namespace
 {
 
@@ -110,15 +110,12 @@ ExecutionPlanTable decode_execution_plan(const VECTORTYPE &execution_plan_data)
 }
 
 } // namespace read_metadata
-
-const char *tensor_name(const circle::Tensor *tensor);
+#endif
 
 DataType luci_datatype(circle::TensorType type);
 FusedActFunc luci_actfunc(circle::ActivationFunctionType type);
 Padding luci_padding(circle::Padding padding);
 MirrorPadMode luci_mirrorpad_mode(circle::MirrorPadMode mode);
-
-std::string fb_string2std_string(const flatbuffers::String *fb_str);
 
 /**
  * @brief Wrapper to use flatbuffers::Vector pointer as std::vector entity
@@ -156,7 +153,7 @@ template <typename T> VectorWrapper<T> wrap(const flatbuffers::Vector<T> *vec)
  */
 class CircleReader
 {
-private: // direct API
+public:
   using CircleBuffers = VectorWrapper<flatbuffers::Offset<circle::Buffer>>;
   using CircleTensors = VectorWrapper<flatbuffers::Offset<circle::Tensor>>;
   using CircleOperators = VectorWrapper<flatbuffers::Offset<circle::Operator>>;
@@ -173,14 +170,11 @@ public: // direct API
   CircleOperators operators() const { return wrap(_current_subgraph->operators()); }
   VectorWrapper<int32_t> inputs() const { return wrap(_current_subgraph->inputs()); }
   VectorWrapper<int32_t> outputs() const { return wrap(_current_subgraph->outputs()); }
-  std::string name() const { return fb_string2std_string(_current_subgraph->name()); }
   circle::DataFormat data_format() const { return _current_subgraph->data_format(); }
   CircleMetadataSet metadata() const { return wrap(_model->metadata()); }
 
   uint32_t num_subgraph() const { return wrap(_model->subgraphs()).size(); }
-
   circle::BuiltinOperator builtin_code(const circle::Operator *op) const;
-  std::string opcode_name(const circle::Operator *op) const;
 
 public:
   bool parse(const circle::Model *model);

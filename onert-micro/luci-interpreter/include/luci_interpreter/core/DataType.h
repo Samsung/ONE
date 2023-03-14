@@ -24,7 +24,7 @@
 
 namespace luci_interpreter
 {
-
+// TODO check can we remove it
 /**
  * @brief "scalar" value type
  */
@@ -49,9 +49,6 @@ enum class DataType
   // WARNING the size of Bool may vary for NN frameworks
   // TODO we need to find a way to resolve this issue
   BOOL, // Boolean
-
-  // WARNING STRING is NOT fully supported yet
-  STRING, // String
 };
 
 /**
@@ -137,12 +134,6 @@ template <> struct DataTypeImpl<DataType::BOOL>
   using Type = uint8_t;
 };
 
-template <> struct DataTypeImpl<DataType::STRING>
-{
-  // Use C++ std::string type for STRING
-  using Type = std::string;
-};
-
 /**
  * @brief Returns the size of the data type.
  * @note If you need the size at compile time, use `sizeof(typename DataTypeImpl<DT>::Type)`.
@@ -175,9 +166,6 @@ inline uint32_t size(DataType data_type)
       return sizeof(DataTypeImpl<DataType::FLOAT64>::Type);
     case DataType::BOOL:
       return sizeof(DataTypeImpl<DataType::BOOL>::Type);
-    case DataType::STRING:
-      // STRING is variable length. Cannot decide size by type
-      assert(false && "Invalid size call with STRING type");
     default:
       // TODO Support remaining data types.
       assert(false);

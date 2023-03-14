@@ -15,134 +15,166 @@
  * limitations under the License.
  */
 
-#include "kernels/Concatenation.h"
+#include "Builders.h"
 #include "kernels/Utils.h"
 
 #include <tensorflow/lite/kernels/internal/reference/concatenation.h>
 
 namespace luci_interpreter
 {
-namespace kernels
+
+namespace
 {
 
-Concatenation::Concatenation(std::vector<const Tensor *> inputs, Tensor *output,
-                             const ConcatenationParams &params)
-  : KernelWithParams<ConcatenationParams>(std::move(inputs), {output}, params)
+template <typename T>
+void evalGeneric(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph, bool)
 {
+  const auto output_index = cur_op->outputs()->operator[](0);
+
+  assert(output_index != -1);
+
+  auto output = runtime_graph->getCircleTensorByIndex(output_index);
+
+  const auto *options = cur_op->builtin_options_as_ConcatenationOptions();
+
+  int axis = options->axis();
+  if (axis < 0)
+    axis += Tensor::num_dims(output);
+
+  const auto input_sizes = cur_op->inputs()->size();
+
+  std::vector<const T *> all_input_data;
+  std::vector<tflite::RuntimeShape> all_shape;
+  std::vector<tflite::RuntimeShape *> all_shape_ptr;
+
+  all_input_data.reserve(input_sizes);
+  all_shape.reserve(input_sizes);
+  all_shape_ptr.reserve(input_sizes);
+
+  for (int32_t i = 0; i < input_sizes; ++i)
+  {
+    auto input_index = cur_op->inputs()->operator[](i);
+    const auto *tensor = runtime_graph->getCircleTensorByIndex(input_index);
+
+    auto *data = reinterpret_cast<const T *>(runtime_graph->getDataByTensor(tensor));
+
+    all_input_data.push_back(data);
+    all_shape.push_back(kernels::getTensorShape(tensor));
+  }
+
+  for (tflite::RuntimeShape &shape : all_shape)
+  {
+    all_shape_ptr.push_back(&shape);
+  }
+
+  auto *output_data = reinterpret_cast<T *>(runtime_graph->getDataByTensor(output));
+
+  // kernels::VectorOfTensors<T, true> inputs(_inputs);
+  tflite::ConcatenationParams params{};
+  params.axis = axis;
+  params.inputs_count = input_sizes;
+  tflite::reference_ops::Concatenation(params, all_shape_ptr.data(), all_input_data.data(),
+                                       kernels::getTensorShape(output), output_data);
 }
 
-void Concatenation::configure()
+} // namespace
+
+void configure_kernel_CircleConcatenation(const circle::Operator *cur_op,
+                                          BaseRuntimeGraph *runtime_graph)
 {
-  const int num_inputs = _inputs.size();
+  const int num_inputs = cur_op->inputs()->size();
   LUCI_INTERPRETER_CHECK(num_inputs > 0);
-  const Tensor *t0 = _inputs[0];
+
+  auto input_index = cur_op->inputs()->operator[](0);
+  auto output_index = cur_op->outputs()->operator[](0);
+
+  assert(input_index != -1);
+  assert(output_index != -1);
+
+  const auto *t0 = runtime_graph->getCircleTensorByIndex(input_index);
+  const auto *output = runtime_graph->getCircleTensorByIndex(output_index);
+
+  const auto *params = cur_op->builtin_options_as_ConcatenationOptions();
 
   // TODO: Support concat with fused activation function
-  LUCI_INTERPRETER_CHECK(params().activation == FusedActFunc::NONE);
+  LUCI_INTERPRETER_CHECK(luci_actfunc(params->fused_activation_function()) == FusedActFunc::NONE);
 
-  int axis = _params.axis;
+  int axis = params->axis();
   if (axis < 0)
-    axis += t0->shape().num_dims();
-  LUCI_INTERPRETER_CHECK(axis >= 0 && axis < t0->shape().num_dims());
+    axis += Tensor::num_dims(t0);
+  LUCI_INTERPRETER_CHECK(axis >= 0 && axis < Tensor::num_dims(t0));
 
-  int32_t sum_axis = t0->shape().dim(axis);
+  int32_t sum_axis = Tensor::dim(t0, axis);
   for (int i = 1; i < num_inputs; ++i)
   {
-    const Tensor *tensor = _inputs[i];
-    LUCI_INTERPRETER_CHECK(tensor->element_type() == t0->element_type());
-    LUCI_INTERPRETER_CHECK(tensor->shape().num_dims() == t0->shape().num_dims());
-    for (int d = 0; d < t0->shape().num_dims(); ++d)
+    input_index = cur_op->inputs()->operator[](i);
+    const auto *tensor = runtime_graph->getCircleTensorByIndex(input_index);
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(tensor) == Tensor::element_type(t0));
+    LUCI_INTERPRETER_CHECK(Tensor::num_dims(tensor) == Tensor::num_dims(t0));
+    for (int d = 0; d < Tensor::num_dims(t0); ++d)
     {
       if (d == axis)
       {
-        sum_axis += tensor->shape().dim(axis);
+        sum_axis += Tensor::dim(tensor, axis);
       }
       else
       {
-        LUCI_INTERPRETER_CHECK(tensor->shape().dim(d) == t0->shape().dim(d));
+        LUCI_INTERPRETER_CHECK(Tensor::dim(tensor, d) == Tensor::dim(t0, d));
       }
     }
   }
 
-  Shape output_shape = t0->shape();
-  output_shape.dim(axis) = sum_axis;
-
+#ifndef DIS_QUANT
   // If input tensors are INT8 type then quantization parameters of all input tensors and the output
   // should be the same
-  for (auto current_tensor : _inputs)
+  for (int i = 1; i < num_inputs; ++i)
   {
-    if (current_tensor->element_type() == DataType::S8)
+    input_index = cur_op->inputs()->operator[](i);
+    const auto *tensor = runtime_graph->getCircleTensorByIndex(input_index);
+    if (Tensor::element_type(tensor) == DataType::S8)
     {
-      LUCI_INTERPRETER_CHECK(current_tensor->quantized_dimension() ==
-                             output()->quantized_dimension());
+      LUCI_INTERPRETER_CHECK(Tensor::quantized_dimension(tensor) ==
+                             Tensor::quantized_dimension(output));
 
-      LUCI_INTERPRETER_CHECK(current_tensor->zero_points().size() ==
-                             current_tensor->scales().size());
-      LUCI_INTERPRETER_CHECK(current_tensor->zero_points() == output()->zero_points());
-      LUCI_INTERPRETER_CHECK(current_tensor->scales() == output()->scales());
+      LUCI_INTERPRETER_CHECK(Tensor::zero_points(tensor).size() == Tensor::scales(tensor).size());
+      LUCI_INTERPRETER_CHECK(Tensor::zero_points(tensor) == Tensor::zero_points(output));
+      LUCI_INTERPRETER_CHECK(Tensor::scales(tensor) == Tensor::scales(output));
     }
   }
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(output_shape);
+#endif // DIS_QUANT
 }
 
-void Concatenation::execute() const
+void execute_kernel_CircleConcatenation(const circle::Operator *cur_op,
+                                        BaseRuntimeGraph *runtime_graph, bool is_inplace)
 {
-  switch (_inputs[0]->element_type())
+  int num_inputs = cur_op->inputs()->size();
+  LUCI_INTERPRETER_CHECK(num_inputs > 0);
+
+  const auto input_index = cur_op->inputs()->operator[](0);
+  assert(input_index != -1);
+  const auto *t0 = runtime_graph->getCircleTensorByIndex(input_index);
+
+  switch (Tensor::element_type(t0))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalGeneric<float>();
+      evalGeneric<float>(cur_op, runtime_graph, is_inplace);
       break;
-    case DataType::U8:
-      evalQuantized();
-      break;
+#endif // DIS_FLOAT
+#ifndef DIS_QUANT
     case DataType::S8:
-      evalGeneric<int8_t>();
+      evalGeneric<int8_t>(cur_op, runtime_graph, is_inplace);
       break;
     case DataType::S32:
-      evalGeneric<int32_t>();
+      evalGeneric<int32_t>(cur_op, runtime_graph, is_inplace);
       break;
     case DataType::S64:
-      evalGeneric<int64_t>();
+      evalGeneric<int64_t>(cur_op, runtime_graph, is_inplace);
       break;
+#endif
     default:
       assert(false && "Unsupported type.");
   }
 }
 
-template <typename T> void Concatenation::evalGeneric() const
-{
-  int axis = _params.axis;
-  if (axis < 0)
-    axis += output()->shape().num_dims();
-
-  VectorOfTensors<T, true> inputs(_inputs);
-  tflite::ConcatenationParams params{};
-  params.axis = axis;
-  params.inputs_count = _inputs.size();
-  tflite::reference_ops::Concatenation(params, inputs.shapes(), inputs.data(),
-                                       getTensorShape(output()), getTensorData<T>(output()));
-}
-
-void Concatenation::evalQuantized() const
-{
-  int axis = _params.axis;
-  if (axis < 0)
-    axis += output()->shape().num_dims();
-
-  VectorOfQuantizedTensors<true> inputs(_inputs);
-  tflite::ConcatenationParams params{};
-  params.axis = axis;
-  params.input_zeropoint = inputs.zero_point();
-  params.input_scale = inputs.scale();
-  params.inputs_count = _inputs.size();
-  params.output_zeropoint = output()->zero_point();
-  params.output_scale = output()->scale();
-
-  tflite::reference_ops::ConcatenationWithScaling(params, inputs.shapes(), inputs.data(),
-                                                  getTensorShape(output()),
-                                                  getTensorData<uint8_t>(output()));
-}
-
-} // namespace kernels
 } // namespace luci_interpreter

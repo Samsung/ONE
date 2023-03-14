@@ -18,13 +18,16 @@
 #define LUCI_INTERPRETER_INTERPRETER_H
 
 #include "luci_interpreter/core/Tensor.h"
+
+#ifdef USE_STATIC_ALLOC
 #include "luci_interpreter/InterpreterConfigure.h"
+#include "memory_managers/StaticMemoryManager.h"
+#else
+#include "memory_managers/SimpleMemoryManager.h"
+#endif // USE_STATIC_ALLOC
 
-#include "memory_managers/MemoryManager.h"
-
+#include "loader/ModuleLoader.h"
 #include <memory>
-#include <vector>
-#include <unordered_map>
 
 namespace luci_interpreter
 {
@@ -35,27 +38,28 @@ public:
   // Construct default interpreter with dynamic allocations and with input allocations
   explicit Interpreter(const char *model_data_raw);
 
+#ifdef USE_STATIC_ALLOC
   // Construct interpreter with configurations
   explicit Interpreter(const char *model_data_raw, const InterpreterConfigure &configuration);
+#endif // USE_STATIC_ALLOC
 
   ~Interpreter();
 
-  static void writeInputTensor(Tensor *input_tensor, const void *data, size_t data_size);
+  void allocateAndWriteInputTensor(int32_t input_tensor_index, const void *data, size_t data_size);
+  uint8_t *allocateInputTensor(int32_t input_tensor_index);
 
-  static void writeInputTensorWithoutCopy(Tensor *input_tensor, const void *data);
+  uint8_t *readOutputTensor(int32_t output_tensor_index);
 
-  static void readOutputTensor(const Tensor *output_tensor, void *data, size_t data_size);
+  int32_t getInputDataSizeByIndex(int32_t input_tensor_index);
+  int32_t getOutputDataSizeByIndex(int32_t output_tensor_index);
 
   void interpret();
-
-  std::vector<Tensor *> getInputTensors();
-  std::vector<Tensor *> getOutputTensors();
 
 private:
   // _default_memory_manager should be before _runtime_module due to
   // the order of deletion in the destructor
-  std::unique_ptr<IMemoryManager> _memory_manager;
-  std::unique_ptr<class RuntimeModule> _runtime_module;
+  MemoryManager _memory_manager{};
+  RuntimeModule _runtime_module{};
 };
 
 } // namespace luci_interpreter

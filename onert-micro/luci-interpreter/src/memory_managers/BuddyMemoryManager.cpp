@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#if 0
+
 #include "BuddyMemoryManager.h"
 
 namespace luci_interpreter
@@ -94,3 +96,5 @@ void BuddyMemoryManager::release_memory(luci_interpreter::Tensor &tensor)
 }
 
 } // namespace luci_interpreter
+
+#endif

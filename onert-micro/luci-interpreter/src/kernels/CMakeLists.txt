@@ -1,10 +1,12 @@
 set(SOURCES
         BinaryOpCommon.h
         Utils.h
-        Utils.cpp)
+        Utils.cpp
+        Builders.h
+        KernelBuilder.h
+        KernelBuilder.cpp)
 
 macro(REGISTER_KERNEL OPERATOR, NODE)
-  list(APPEND SOURCES "${NODE}.h")
   list(APPEND SOURCES "${NODE}.cpp")
 endmacro(REGISTER_KERNEL)
 

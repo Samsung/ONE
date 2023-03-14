@@ -18,7 +18,6 @@
 #define LUCI_INTERPRETER_CORE_RUNTIMEMODULE_H
 
 #include "core/RuntimeGraph.h"
-#include "memory_managers/MemoryManager.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <memory>
@@ -27,32 +26,36 @@
 namespace luci_interpreter
 {
 
+#ifdef USE_STATIC_ALLOC
+using BaseRuntimeGraph = StaticRuntimeGraph;
+using MemoryManager = StaticMemoryManager;
+#else
+using BaseRuntimeGraph = RuntimeGraph;
+using MemoryManager = SimpleMemoryManager;
+#endif // USE_STATIC_ALLOC
+
 class RuntimeModule
 {
 public:
   RuntimeModule() = default;
 
-  IBaseRuntimeGraph *addGraph(IMemoryManager *memory_manager, bool use_static_allocations)
+  void addGraph(MemoryManager *memory_manager)
   {
-    if (use_static_allocations)
-      _graphs.push_back(std::make_unique<StaticRuntimeGraph>(memory_manager));
-    else
-      _graphs.push_back(std::make_unique<RuntimeGraph>(memory_manager));
-    return _graphs.back().get();
+    _graphs.emplace_back(memory_manager, &_circle_reader);
   }
 
-  const std::vector<Tensor *> &getInputTensors() const { return getMainGraph()->getInputTensors(); }
-  const std::vector<Tensor *> &getOutputTensors() const
-  {
-    return getMainGraph()->getOutputTensors();
-  }
+  BaseRuntimeGraph *getRuntimeGraphAt(uint32_t pos) { return &_graphs.at(pos); }
 
-  void execute() const { getMainGraph()->execute(); }
+  void execute() { getMainGraph()->execute(); }
+
+  CircleReader &getCircleReader() { return _circle_reader; }
+
+  BaseRuntimeGraph *getMainGraph() const { return const_cast<BaseRuntimeGraph *>(&_graphs[0]); }
 
 private:
-  IBaseRuntimeGraph *getMainGraph() const { return _graphs[0].get(); }
+  std::vector<BaseRuntimeGraph> _graphs;
 
-  std::vector<std::unique_ptr<IBaseRuntimeGraph>> _graphs;
+  CircleReader _circle_reader;
 };
 
 } // namespace luci_interpreter

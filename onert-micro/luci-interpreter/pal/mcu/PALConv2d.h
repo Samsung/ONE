@@ -77,7 +77,7 @@ static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
   (void)input_shape;
   (void)filter_shape;
   (void)output_shape;
-  scratchpad->set_allocatable(false);
+  (void)scratchpad;
 }
 
 } // namespace luci_interpreter_pal
