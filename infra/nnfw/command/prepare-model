@@ -1,0 +1,18 @@
+#!/bin/bash
+
+import "build.configuration"
+
+# This command is used to download test materials on host environment
+# by using test command on host
+
+# Common variables
+DRIVER_PATH=$NNFW_PROJECT_PATH/tests/scripts
+CACHE_PATH=${CACHE_PATH:-$WORKSPACE_PATH/out/test/cache}
+
+COMMAND_FILE=$DRIVER_PATH/command/prepare-model
+if [[ ! -f $COMMAND_FILE ]]; then
+  echo "ERROR: '$COMMAND' is not supported"
+  exit 255
+fi
+
+source $COMMAND_FILE $@
