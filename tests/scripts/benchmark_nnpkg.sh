@@ -1,65 +1,57 @@
 #!/bin/bash
 
-usage()
-{
-  echo "$0 <options>"
-  echo "Options"
-  echo "--onert_run : specific onert_run path"
-  echo "--tflite_run : specific tflite_run path"
-  echo "--dir : the dir path of models"
-  echo "--list : the model list"
-  echo "--out  : the file name of out results"
-  echo "--tv   : for tv"
-  exit 1
-}
+MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-scripts_dir="$( cd "$( dirname "${BASH_SOURCE}" )" && pwd )"
-nnfw_dir="${scripts_dir}/../.."
-onert_run="${nnfw_dir}/Product/out/bin/onert_run"
-tflite_run="${nnfw_dir}/Product/out/bin/tflite_run"
+source $MY_PATH/common.sh
+
+# Caution: DO NOT USE "pipefail"
+#          We should run test all nnpackages
+
+onert_run="$INSTALL_PATH/bin/onert_run"
+tflite_run="$INSTALL_PATH/bin/tflite_run"
 base_name="$(basename $0)"
 base_name="${base_name%.*}"
 outfile="${base_name}_result.txt"
 dir=""
-list="${scripts_dir}/list/${base_name}_model_list.txt"
+list="$INSTALL_PATH/test/list/benchmark_nnpkg_model_list.txt"
 tv_on="false"
+
+function usage()
+{
+  echo "Usage: ${BASH_SOURCE[0]} [OPTIONS]"
+  echo "Options"
+  echo "    --dir=PATH    : the dir path of models"
+  echo "    --list=FILE   : the model list (default: $list)"
+  echo "    --out=FILE    : the file name of out results (default: $outfile)"
+  echo "    --tv          : for tv"
+  echo "    --help        : display this help message and exit"
+  exit 1
+}
 
 for i in "$@"
 do
-case $i in
-  --onert_run=*)
-    onert_run="${i#*=}"
-    ;;
-  --tflite_run=*)
-    tflite_run="${i#*=}"
-    ;;
-  --out=*)
-    outfile="${i#*=}"
-    ;;
-  --dir=*)
-    dir="${i#*=}"
-    ;;
-  --list=*)
-    list="${i#*=}"
-    ;;
-  --tv)
-    tv_on="true"
-    ;;
-  *)
-    ;;
-esac
-shift
+  case $i in
+    --out=*)
+      outfile="${i#*=}"
+      ;;
+    --dir=*)
+      dir="${i#*=}"
+      ;;
+    --list=*)
+      list="${i#*=}"
+      ;;
+    --tv)
+      tv_on="true"
+      ;;
+    --help)
+      usage
+      exit 1
+      ;;
+    *)
+      ;;
+  esac
+  shift
 done
-
-if ! [ -f ${onert_run} ]; then
-  echo "onert_run file does not exists."
-  usage
-fi
-
-if ! [ -f ${tflite_run} ]; then
-  echo "tflite_run file does not exists."
-  usage
-fi
 
 if ! [ -f ${list} ]; then
   echo "model list file does not exists."
@@ -128,7 +120,7 @@ for i in "${model_lists[@]}"; do
 
   echo "" >> ${outfile}
 
-  TFLITE_CMD="LD_LIBRARY_PATH=./Product/out/lib THREAD=3 ${tflite_run} -r 10 -m 1 -p 1"
+  TFLITE_CMD="THREAD=3 ${tflite_run} -r 10 -m 1 -p 1"
   if [ "$tv_on" == "true" ]; then
     TFLITE_CMD="${TFLITE_CMD} -g 1"
   fi
@@ -143,4 +135,4 @@ for i in "${model_lists[@]}"; do
   sleep 20 # for avoiding cpu overheated
 done # ${model_lists}
 
-${scripts_dir}/merge_result_of_benchmark_nnpkg.py -i . -o . -l ${list}
+python3 $MY_PATH/merge_result_of_benchmark_nnpkg.py -i . -o . -l ${list}
