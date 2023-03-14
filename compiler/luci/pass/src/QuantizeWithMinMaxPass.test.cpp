@@ -53,8 +53,14 @@ public:
 
 TEST(QuantizeWithMinMaxPassTest, name)
 {
-  luci::QuantizeWithMinMaxPass pass(loco::DataType::FLOAT32, loco::DataType::U8,
-                                    luci::QuantizationGranularity::LayerWise);
+  auto ctx = std::make_unique<luci::QuantizeWithMinMaxPass::Context>();
+  {
+    ctx->input_model_dtype = loco::DataType::FLOAT32;
+    ctx->output_model_dtype = loco::DataType::U8;
+    ctx->granularity = luci::QuantizationGranularity::LayerWise;
+  }
+
+  luci::QuantizeWithMinMaxPass pass(std::move(ctx));
   auto const name = pass.name();
   ASSERT_NE(nullptr, name);
 }
@@ -65,8 +71,14 @@ TEST(QuantizeWithMinMaxPassTest, int_concat)
 {
   SimpleConcatGraph g(loco::DataType::S32);
 
-  luci::QuantizeWithMinMaxPass qwmm(loco::DataType::FLOAT32, loco::DataType::U8,
-                                    luci::QuantizationGranularity::LayerWise);
+  auto ctx = std::make_unique<luci::QuantizeWithMinMaxPass::Context>();
+  {
+    ctx->input_model_dtype = loco::DataType::FLOAT32;
+    ctx->output_model_dtype = loco::DataType::U8;
+    ctx->granularity = luci::QuantizationGranularity::LayerWise;
+  }
+
+  luci::QuantizeWithMinMaxPass qwmm(std::move(ctx));
 
   qwmm.run(&g.g);
 
@@ -82,8 +94,14 @@ TEST(QuantizeWithMinMaxPassTest, inactive_input)
   // Unused input
   g.g.nodes()->create<luci::CircleInput>();
 
-  luci::QuantizeWithMinMaxPass qwmm(loco::DataType::FLOAT32, loco::DataType::U8,
-                                    luci::QuantizationGranularity::LayerWise);
+  auto ctx = std::make_unique<luci::QuantizeWithMinMaxPass::Context>();
+  {
+    ctx->input_model_dtype = loco::DataType::FLOAT32;
+    ctx->output_model_dtype = loco::DataType::U8;
+    ctx->granularity = luci::QuantizationGranularity::LayerWise;
+  }
+
+  luci::QuantizeWithMinMaxPass qwmm(std::move(ctx));
 
   EXPECT_NO_THROW(qwmm.run(&g.g));
 }

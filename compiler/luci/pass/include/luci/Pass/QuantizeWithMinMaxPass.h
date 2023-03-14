@@ -45,23 +45,6 @@ public:
     std::vector<LayerInfo> layers_info;
   };
 
-  // For backward-compatibility
-  // TODO Remove this constructor
-public:
-  QuantizeWithMinMaxPass(loco::DataType input_model_dtype, loco::DataType output_model_dtype,
-                         QuantizationGranularity granularity)
-  {
-    _ctx = std::make_unique<Context>();
-    {
-      _ctx->input_model_dtype = input_model_dtype;
-      _ctx->output_model_dtype = output_model_dtype;
-      _ctx->granularity = granularity;
-      _ctx->input_type = output_model_dtype;
-      _ctx->output_type = output_model_dtype;
-      _ctx->TF_style_maxpool = false;
-    }
-  }
-
 public:
   QuantizeWithMinMaxPass(std::unique_ptr<Context> &&ctx) : _ctx{std::move(ctx)}
   {
