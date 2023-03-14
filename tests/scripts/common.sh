@@ -68,23 +68,3 @@ function print_with_dots()
     printf '%s' "$MSG"
     printf '%*.*s ' 0 $padlength "$pad"
 }
-
-
-function run_benchmark_and_print()
-{
-    local WRITE_FILE_NAME=$1
-    local MSG=$2
-    local MODEL=$3
-    local REPORT_MODEL_DIR=$4
-    local PAUSE_TIME_IN_SEC=$5
-    local DRIVER_BIN=$6
-    local BENCHMARK_RUN_TEST_SH=$7
-
-    LOG_FILE=$REPORT_MODEL_DIR/$WRITE_FILE_NAME.txt
-    RESULT_FILE=$REPORT_MODEL_DIR/$WRITE_FILE_NAME.result
-    print_with_dots $MSG
-    RESULT=$(get_result_of_benchmark_test $DRIVER_BIN $MODEL $LOG_FILE)
-    echo "$RESULT ms"
-    print_result_of_benchmark_test "$MSG" "$RESULT" $RESULT_FILE
-    sleep $PAUSE_TIME_IN_SEC
-}

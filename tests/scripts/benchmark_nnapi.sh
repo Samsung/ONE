@@ -14,22 +14,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO Rename this script
+
 MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source $MY_PATH/common.sh
 
-BENCHMARK_DRIVER_BIN=
-BENCHMARK_REPORT_DIR=
-BENCHMARK_MODELS_FILE=
-MODEL_TEST_ROOT_PATH=
-TEST_OP="false"
-BENCHMARK_MODEL_LIST="MODELS/inception_nonslim MODELS/inception_slim MODELS/mobilenet"
-BACKEND_LIST="acl_cl acl_neon cpu" #TODO: accept this list as argument
-EXECUTORS="Linear Parallel" #TODO: accept this list as argument
+# Caution: DO NOT USE "pipefail"
+#          We should run test all operators
+
+ONERT_DRIVER_BIN=$INSTALL_PATH/bin/onert_run
+TFLITE_DRIVER_BIN=$INSTALL_PATH/bin/tflite_run
+REPORT_DIR=$ROOT_PATH/report
+BENCHMARK_REPORT_DIR=$REPORT_DIR/benchmark_op
+BENCHMARK_MODELS_FILE=$BENCHMARK_REPORT_DIR/benchmark_models.txt
+MODEL_TEST_ROOT_PATH=$INSTALL_PATH/test/models/tflite
+BENCHMARK_MODEL_LIST=
+BACKEND_LIST="acl_cl acl_neon cpu"
+TEST_DIRS="."
 
 function Usage()
 {
-    echo "Usage: ./$0 --reportdir=. --driverbin=Product/out/bin/tflite_run"
+    echo "Usage: ${BASH_SOURCE[0]} [OPTIONS]"
+    echo ""
+    echo "Options:"
+    echo "      --backends=STRING       Backends to test. (default='$BACKEND_LIST')"
+    echo "      --list=FILE             List file to test. Test all if list option is not passed"
 }
 
 for i in "$@"
@@ -39,34 +49,19 @@ do
             Usage
             exit 1
             ;;
-        --test_op)
-            TEST_OP="true"
-            ;;
-        --driverbin=*)
-            BENCHMARK_DRIVER_BIN=${i#*=}
-            ;;
-        --reportdir=*)
-            BENCHMARK_REPORT_DIR=${i#*=}
-            BENCHMARK_MODELS_FILE=$BENCHMARK_REPORT_DIR/benchmark_models.txt
-            ;;
-        --modelfilepath=*)
+        --list=*)
             TEST_LIST_PATH=${i#*=}
-            MODEL_TEST_ROOT_PATH=$TEST_LIST_PATH/tests
+            TEST_DIRS=$(grep -v '#' $TEST_LIST_PATH | tr '\n' ' ' )
             ;;
+        --backends=*)
+            BACKEND_LIST=${i#*=}
     esac
     shift
 done
 
 function get_benchmark_op_list()
 {
-    local TEST_DIRS="$@"
     local TESTS_TO_RUN=""
-
-    if [[ $# -eq 0 ]]; then
-        TEST_DIRS="."
-    fi
-
-    shift $#
 
     pushd $MODEL_TEST_ROOT_PATH > /dev/null
     for DIR in $TEST_DIRS; do
@@ -80,73 +75,28 @@ function get_benchmark_op_list()
     BENCHMARK_MODEL_LIST=$(echo "${TESTS_TO_RUN}")
 }
 
-function profile_for_he_shed()
+function run_benchmark_and_print()
 {
 
-    local REPORT_MODEL_DIR=$1
-    local RUN_TEST_SH=$2
-    local BENCHMARK_DRIVER_BIN=$3
-    local MODEL=$4
-    local PROFILING_RUN_CNT=$5
+    local WRITE_FILE_NAME=$1
+    local MSG=$2
+    local MODEL=$3
+    local REPORT_MODEL_DIR=$4
+    local DRIVER_BIN=$5
 
-    export USE_SCHEDULER=1
-    export PROFILING_MODE=1
-    export EXECUTOR="Dataflow"
-    export ONERT_LOG_ENABLE=1
-
-    rm "exec_time.json" 2>/dev/null
-    for ((j = 1 ; j <= $PROFILING_RUN_CNT ; j++)); do
-        # Save the verbose log of each run
-        LOG_FILE=$REPORT_MODEL_DIR/tflite_profiling_$j.txt
-
-        print_with_dots "Profiling run #$j out of $PROFILING_RUN_CNT"
-
-        $RUN_TEST_SH --driverbin=$BENCHMARK_DRIVER_BIN $MODEL > $LOG_FILE 2>&1
-        RET=$?
-        if [[ $RET -ne 0 ]]; then
-            echo "Profiling $MODEL aborted in run#$j... exit code: $RET"
-            exit $RET
-        fi
-        echo "finished"
-        # Save the exec_time.json of each run
-        cp "exec_time.json" $REPORT_MODEL_DIR/"exec_time_$j.json"
-    done
-    unset USE_SCHEDULER PROFILING_MODE EXECUTOR ONERT_LOG_ENABLE
-}
-
-function run_with_he_scheduler()
-{
-    local REPORT_MODEL_DIR=$1
-    local RUN_TEST_SH=$2
-    local BENCHMARK_DRIVER_BIN=$3
-    local MODEL=$4
-    local EXECUTOR=$5
-
-    LOG_FILE=$REPORT_MODEL_DIR/tflite_onert_with_he_scheduler_in_$EXECUTOR.txt
-    export EXECUTOR=$EXECUTOR
-    export GRAPH_DOT_DUMP=1
-    export USE_SCHEDULER=1
-    export ONERT_LOG_ENABLE=1
-
-    print_with_dots "TFLite onert $EXECUTOR with HEScheduler"
-
-    RESULT=$(get_result_of_benchmark_test $RUN_TEST_SH $BENCHMARK_DRIVER_BIN $MODEL $LOG_FILE)
+    LOG_FILE=$REPORT_MODEL_DIR/$WRITE_FILE_NAME.txt
+    RESULT_FILE=$REPORT_MODEL_DIR/$WRITE_FILE_NAME.result
+    print_with_dots $MSG
+    RESULT=$(get_result_of_benchmark_test $DRIVER_BIN $MODEL $LOG_FILE)
     echo "$RESULT ms"
-
-    mv "after_lower.dot" $REPORT_MODEL_DIR/"after_lower_$EXECUTOR.dot"
-    unset EXECUTOR GRAPH_DOT_DUMP USE_SCHEDULER ONERT_LOG_ENABLE
+    print_result_of_benchmark_test "$MSG" "$RESULT" $RESULT_FILE
 }
 
 function run_onert_with_all_config()
 {
     local MODEL=$1
     local REPORT_MODEL_DIR=$2
-    local PAUSE_TIME_IN_SEC=$3
-    local BENCHMARK_DRIVER_BIN=$4
-    local EXECUTORS=$5
-    local BACKEND_LIST=$6
-
-    export USE_NNAPI=1
+    local BENCHMARK_DRIVER_BIN=$3
 
     # Run profiler BACKEND_CNT+1 times: on each run of the first BACKEND_CNT runs it will
     #     collect metrics for one unmeasured backend. On the last run metrics for data transfer
@@ -157,22 +107,13 @@ function run_onert_with_all_config()
         ((++PROFILING_RUN_CNT))
     done
     export BACKENDS=$BACKENDS_TO_USE
-    if [ "$TEST_OP" == "false" ]; then
-        profile_for_he_shed $REPORT_MODEL_DIR $BENCHMARK_DRIVER_BIN $MODEL $PROFILING_RUN_CNT
-    fi
-
-    for executor in $EXECUTORS; do
-        export EXECUTOR=$executor
-        if [ "$TEST_OP" == "false" ]; then
-            run_with_he_scheduler $REPORT_MODEL_DIR $BENCHMARK_DRIVER_BIN $MODEL $executor
-        fi
-        for backend in $BACKEND_LIST; do
-            export OP_BACKEND_ALLOPS=$backend
-            run_benchmark_and_print "tflite_onert_"$executor"_executor_$backend" "TFLite onert $executor Executor $backend"\
-                                    $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN
-        done
+    export EXECUTOR="Linear"
+    for backend in $BACKEND_LIST; do
+        export OP_BACKEND_ALLOPS=$backend
+        run_benchmark_and_print "onert_$backend" "ONERT-${backend^^}"\
+                                $MODEL $REPORT_MODEL_DIR $BENCHMARK_DRIVER_BIN
     done
-    unset USE_NNAPI EXECUTOR OP_BACKEND_ALLOPS BACKENDS
+    unset EXECUTOR OP_BACKEND_ALLOPS BACKENDS
 }
 
 function run_benchmark_test()
@@ -193,32 +134,25 @@ function run_benchmark_test()
     for MODEL in $BENCHMARK_MODEL_LIST; do
 
         STATUS="enabled"
-        if [ "$TEST_OP" == "true" ]; then
-            source $MODEL_TEST_ROOT_PATH/$MODEL/config.sh
-        fi
+        source $MODEL_TEST_ROOT_PATH/$MODEL/config.sh
 
         # Skip 'disabled' tests
         if [ $(tr '[:upper:]' '[:lower:]' <<< "$STATUS") == "disabled" ]; then
             continue
         fi
 
-        echo "Benchmark test with `basename $BENCHMARK_DRIVER_BIN` & `echo $MODEL`"
+        echo "Benchmark test `echo $MODEL`"
         echo $MODEL >> $BENCHMARK_MODELS_FILE
 
         REPORT_MODEL_DIR=$BENCHMARK_REPORT_DIR/$MODEL
         mkdir -p $REPORT_MODEL_DIR
 
         # TFLite+CPU
-        unset USE_NNAPI
-        run_benchmark_and_print "tflite_cpu" "TFLite CPU" $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN
+        run_benchmark_and_print "tflite_cpu" "TFLite-CPU" $MODEL $REPORT_MODEL_DIR $TFLITE_DRIVER_BIN
 
         # run onert
-        if [ "$TEST_OP" == "true" ]; then
-          # Operation test don't need to test each scheduler
-          run_onert_with_all_config $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN "Linear" "$BACKEND_LIST"
-        else
-          run_onert_with_all_config $MODEL $REPORT_MODEL_DIR 0 $BENCHMARK_DRIVER_BIN "$EXECUTORS" "$BACKEND_LIST"
-        fi
+        # Operation test don't need to test each scheduler
+        run_onert_with_all_config $MODEL $REPORT_MODEL_DIR $ONERT_DRIVER_BIN
 
         if [[ $i -ne $(echo $BENCHMARK_MODEL_LIST | wc -w)-1 ]]; then
             echo ""
@@ -233,13 +167,19 @@ if [ ! -e "$BENCHMARK_REPORT_DIR" ]; then
     mkdir -p $BENCHMARK_REPORT_DIR
 fi
 
-if [ "$TEST_OP" == "true" ]; then
-    get_benchmark_op_list
-fi
+get_benchmark_op_list
 
 rm -rf $BENCHMARK_MODELS_FILE
+
+# Model download server setting
+prepare_test_model
 
 echo ""
 # print the result AND append to log file
 run_benchmark_test 2>&1 | tee -a onert_benchmarks.txt
 echo ""
+
+# Make json file.
+# functions to fill json with benchmark results
+source $MY_PATH/print_to_json.sh
+print_to_json $BENCHMARK_REPORT_DIR $REPORT_DIR "benchmark_op_result.json"
