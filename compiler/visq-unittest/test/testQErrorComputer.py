@@ -20,6 +20,7 @@ import os
 
 from visqlib.QErrorComputer import MPEIRComputer
 from visqlib.QErrorComputer import MSEComputer
+from visqlib.QErrorComputer import TAEComputer
 
 
 class VisqQErrorComputerTest(unittest.TestCase):
@@ -119,6 +120,30 @@ class VisqQErrorComputerTest(unittest.TestCase):
         self.assertAlmostEqual(0.0, qmap['test'])
         self.assertAlmostEqual(0.0, qmin)
         self.assertAlmostEqual(0.0, qmax)
+
+    def test_TAE(self):
+        self._setUpSingleTensorData()
+
+        computer = TAEComputer(self.fp32_dir.name, self.fq_dir.name)
+        qmap, qmin, qmax = computer.run()
+        self.assertAlmostEqual(0.0, qmap['test'])
+
+    def test_TAE_different_options(self):
+        self._setUpDifferentTensorData()
+
+        computer = TAEComputer(self.fp32_dir.name, self.fq_dir.name)
+        qmap, qmin, qmax = computer.run()
+        self.assertAlmostEqual(0.0, qmap['test'])
+        self.assertAlmostEqual(0.0, qmin)
+        self.assertAlmostEqual(0.0, qmax)
+
+    def test_TAE_two(self):
+        self._setUpTwoTensorData()
+        computer = TAEComputer(self.fp32_dir.name, self.fq_dir.name)
+        qmap, qmin, qmax = computer.run()
+        self.assertAlmostEqual(0.0, qmin)
+        self.assertAlmostEqual(8.0, qmap['test'])
+        self.assertAlmostEqual(16.0, qmax)
 
 
 if __name__ == '__main__':
