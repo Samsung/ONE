@@ -16,7 +16,6 @@
 
 #include "Strings.h"
 
-#include <sstream>
 #include <algorithm>
 
 namespace luci
@@ -76,21 +75,6 @@ loco::DataType str_to_dtype(const std::string &str)
     return loco::DataType::BOOL;
 
   return loco::DataType::Unknown;
-}
-
-std::vector<std::string> parse_comma_separated_str(const std::string &str)
-{
-  std::stringstream ss(str);
-  std::vector<std::string> res;
-
-  while (ss.good())
-  {
-    std::string substr;
-    std::getline(ss, substr, ',');
-    res.push_back(substr);
-  }
-
-  return res;
 }
 
 // Convert string to a vector of loco::DataType

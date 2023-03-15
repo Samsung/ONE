@@ -40,6 +40,7 @@
 
 #include <luci/IR/CircleNode.h>
 #include <logo/Phase.h>
+#include <pepper/csv2vec.h>
 
 #include <memory>
 
@@ -412,8 +413,8 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     if (output_type.empty())
       output_type = output_model_dtype;
 
-    auto input_type_vec = parse_comma_separated_str(input_type);
-    auto output_type_vec = parse_comma_separated_str(output_type);
+    auto input_type_vec = pepper::csv_to_vector<std::string>(input_type);
+    auto output_type_vec = pepper::csv_to_vector<std::string>(output_type);
 
     bool TF_style_maxpool =
       _options->param(Options::AlgorithmParameters::Quantize_TF_style_maxpool) == "True";

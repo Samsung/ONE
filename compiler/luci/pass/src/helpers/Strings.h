@@ -36,8 +36,6 @@ std::string to_lower_case(std::string);
 
 loco::DataType str_to_dtype(const std::string &);
 
-std::vector<std::string> parse_comma_separated_str(const std::string &);
-
 std::vector<loco::DataType> str_vec_to_dtype_vec(std::vector<std::string> &);
 
 QuantizationGranularity str_to_granularity(const std::string &);
