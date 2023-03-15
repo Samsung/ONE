@@ -16,6 +16,7 @@
 
 #include "Strings.h"
 
+#include <sstream>
 #include <algorithm>
 
 namespace luci
@@ -75,6 +76,30 @@ loco::DataType str_to_dtype(const std::string &str)
     return loco::DataType::BOOL;
 
   return loco::DataType::Unknown;
+}
+
+std::vector<std::string> parse_comma_separated_str(const std::string &str)
+{
+  std::stringstream ss(str);
+  std::vector<std::string> res;
+
+  while (ss.good())
+  {
+    std::string substr;
+    std::getline(ss, substr, ',');
+    res.push_back(substr);
+  }
+
+  return res;
+}
+
+// Convert string to a vector of loco::DataType
+std::vector<loco::DataType> str_vec_to_dtype_vec(std::vector<std::string> &vec)
+{
+  std::vector<loco::DataType> res;
+  std::transform(vec.begin(), vec.end(), std::back_inserter(res),
+                 [](std::string s) -> loco::DataType { return str_to_dtype(to_lower_case(s)); });
+  return res;
 }
 
 QuantizationGranularity str_to_granularity(const std::string &str)

@@ -49,6 +49,148 @@ namespace
 using namespace luci;
 using LayerParam = luci::CircleQuantizer::Options::LayerParam;
 
+// This function updates user-given input_type to match with the input signature of graph
+// If user gives only one input_type, it will be expanded to the number of graph inputs
+void canonicalize_input_type(loco::Graph *g, std::vector<loco::DataType> &input_type)
+{
+  assert(g); // FIX_CALLER_UNLESS
+  const auto inputs = g->inputs();
+
+  assert(inputs); // FIX_CALLER_UNLESS
+
+  // Check validity of the number of input dtype given by a user
+  if (input_type.size() != 1 and input_type.size() != inputs->size())
+  {
+    throw std::runtime_error(
+      "Invalid number of input dtype. The number of input dtype should be 1 or "
+      "the same as the number of graph inputs.");
+  }
+
+  // Handle the case when a user gives only one input dtype
+  if (input_type.size() == 1)
+  {
+    const auto user_given_dtype = input_type[0];
+    input_type.clear();
+
+    // Expand input dtype to the number of graph inputs
+    // Since quantizer can only quantize float32, user_given_dtype is set only for float32 inputs
+    auto input_nodes = loco::input_nodes(g);
+    for (uint32_t i = 0; i < input_nodes.size(); i++)
+    {
+      auto input = loco::must_cast<luci::CircleInput *>(input_nodes[i]);
+
+      if (input->dtype() == loco::DataType::FLOAT32)
+        input_type.push_back(user_given_dtype);
+      else
+        input_type.push_back(input->dtype());
+    }
+  }
+
+  // Finally, check validity of input_type
+  // input_type is valid if
+  // C1. for non-float32 model input, input_type == model's input dtype
+  // or
+  // C2. for float32 model input, input_type == uint8, int16, or float32
+  auto input_nodes = loco::input_nodes(g);
+  for (uint32_t i = 0; i < input_nodes.size(); i++)
+  {
+    auto input = loco::must_cast<luci::CircleInput *>(input_nodes[i]);
+    assert(i == input->index()); // FIX_ME_UNLESS
+
+    if (input->dtype() != loco::DataType::FLOAT32)
+    {
+      // C1
+      if (input->dtype() != input_type[i])
+        throw std::runtime_error(
+          "Input dtype of " + input->name() +
+          " is invalid. It has to be the same with the model's input dtype.");
+    }
+    else
+    {
+      // C2
+      if (input_type[i] != loco::DataType::FLOAT32 and input_type[i] != loco::DataType::U8 and
+          input_type[i] != loco::DataType::S16)
+      {
+        throw std::runtime_error("Input dtype of " + input->name() +
+                                 " is invalid. Model's input is not float32.");
+      }
+    }
+  }
+}
+
+// This function updates user-given input_type to match with the input signature of graph
+// If user gives only one input_type, it will be expanded to the number of graph inputs
+// NOTE This function is almost same with canonicalize_input_type, but it is written as a
+// separate function for more precise error messaging.
+// TODO Find a way to reduce duplicate codes
+void canonicalize_output_type(loco::Graph *g, std::vector<loco::DataType> &output_type)
+{
+  assert(g); // FIX_CALLER_UNLESS
+  const auto outputs = g->outputs();
+
+  assert(outputs); // FIX_CALLER_UNLESS
+
+  // Check validity of the number of output dtype given by a user
+  if (output_type.size() != 1 and output_type.size() != outputs->size())
+  {
+    throw std::runtime_error(
+      "Invalid number of output dtype. The number of output dtype should be 1 or "
+      "the same as the number of graph outputs.");
+  }
+
+  // Handle the case when a user gives only one output dtype
+  if (output_type.size() == 1)
+  {
+    const auto user_given_dtype = output_type[0];
+    output_type.clear();
+
+    // Expand output dtype to the number of graph outputs
+    // If dtype of graph output is float32, it will be replaced with user_given_dtype
+    // Otherwise, it will not change
+    auto output_nodes = loco::output_nodes(g);
+    for (uint32_t i = 0; i < output_nodes.size(); i++)
+    {
+      auto output = loco::must_cast<luci::CircleOutput *>(output_nodes[i]);
+
+      if (output->dtype() == loco::DataType::FLOAT32)
+        output_type.push_back(user_given_dtype);
+      else
+        output_type.push_back(output->dtype());
+    }
+  }
+
+  // Finally, check validity of output_type
+  // output_type is valid if
+  // C1. for non-float32 model output, output_type == model's output dtype
+  // or
+  // C2. for float32 model output, output_type == uint8, int16, or float32
+  auto output_nodes = loco::output_nodes(g);
+  for (uint32_t i = 0; i < output_nodes.size(); i++)
+  {
+    auto output = loco::must_cast<luci::CircleOutput *>(output_nodes[i]);
+    assert(i == output->index()); // FIX_ME_UNLESS
+
+    if (output->dtype() != loco::DataType::FLOAT32)
+    {
+      // C1
+      if (output->dtype() != output_type[i])
+        throw std::runtime_error(
+          "Output dtype of " + output->name() +
+          " is invalid. It has to be the same with the model's output dtype.");
+    }
+    else
+    {
+      // C2
+      if (output_type[i] != loco::DataType::FLOAT32 and output_type[i] != loco::DataType::U8 and
+          output_type[i] != loco::DataType::S16)
+      {
+        throw std::runtime_error("Output dtype of " + output->name() +
+                                 " is invalid. Model's output is not float32.");
+      }
+    }
+  }
+}
+
 template <typename T> T lexical_cast(const std::string &str)
 {
   std::istringstream ss;
@@ -253,8 +395,10 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     static const std::vector<std::string> qwmm_supported_input_model_dtype{"float32"};
     static const std::vector<std::string> qwmm_supported_output_model_dtype{"uint8", "int16"};
     static const std::vector<std::string> qwmm_supported_granularity{"layer", "channel"};
-    static const std::vector<std::string> qwmm_supported_input_type{"uint8", "int16", "float32"};
-    static const std::vector<std::string> qwmm_supported_output_type{"uint8", "int16", "float32"};
+    static const std::vector<std::string> qwmm_supported_input_type{"uint8", "int16",   "int32",
+                                                                    "int64", "float32", "bool"};
+    static const std::vector<std::string> qwmm_supported_output_type{"uint8", "int16",   "int32",
+                                                                     "int64", "float32", "bool"};
 
     auto input_model_dtype =
       _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
@@ -267,6 +411,9 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     auto output_type = _options->param(Options::AlgorithmParameters::Quantize_output_type);
     if (output_type.empty())
       output_type = output_model_dtype;
+
+    auto input_type_vec = parse_comma_separated_str(input_type);
+    auto output_type_vec = parse_comma_separated_str(output_type);
 
     bool TF_style_maxpool =
       _options->param(Options::AlgorithmParameters::Quantize_TF_style_maxpool) == "True";
@@ -285,13 +432,19 @@ void CircleQuantizer::quantize(loco::Graph *g) const
       throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
                                to_string(qwmm_supported_granularity));
 
-    if (!in_array(to_lower_case(input_type), qwmm_supported_input_type))
-      throw std::runtime_error("Unsupported input type. List of supported input types: " +
-                               to_string(qwmm_supported_input_type));
+    for (auto dtype : input_type_vec)
+    {
+      if (!in_array(to_lower_case(dtype), qwmm_supported_input_type))
+        throw std::runtime_error("Unsupported input type. List of supported input types: " +
+                                 to_string(qwmm_supported_input_type));
+    }
 
-    if (!in_array(to_lower_case(output_type), qwmm_supported_output_type))
-      throw std::runtime_error("Unsupported output type. List of supported output types: " +
-                               to_string(qwmm_supported_output_type));
+    for (auto dtype : output_type_vec)
+    {
+      if (!in_array(to_lower_case(dtype), qwmm_supported_output_type))
+        throw std::runtime_error("Unsupported output type. List of supported output types: " +
+                                 to_string(qwmm_supported_output_type));
+    }
 
     if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
         str_to_dtype(output_model_dtype) != loco::DataType::U8)
@@ -314,6 +467,13 @@ void CircleQuantizer::quantize(loco::Graph *g) const
       }
     }
 
+    auto input_types = str_vec_to_dtype_vec(input_type_vec);
+    auto output_types = str_vec_to_dtype_vec(output_type_vec);
+
+    // Canonicalize user-given input/output_type (match with # of inputs/outputs)
+    canonicalize_input_type(g, input_types);
+    canonicalize_output_type(g, output_types);
+
     // Input model checker for quantization
     luci::QuantizePreCheckerPass input_model_checker{};
     input_model_checker.run(g);
@@ -323,8 +483,9 @@ void CircleQuantizer::quantize(loco::Graph *g) const
       ctx->input_model_dtype = str_to_dtype(input_model_dtype);
       ctx->output_model_dtype = str_to_dtype(output_model_dtype);
       ctx->granularity = str_to_granularity(granularity);
-      ctx->input_type = str_to_dtype(input_type);
-      ctx->output_type = str_to_dtype(output_type);
+      // TODO Change input/output_type to vector
+      ctx->input_type = input_types[0];
+      ctx->output_type = output_types[0];
       ctx->TF_style_maxpool = TF_style_maxpool;
 
       for (auto layer_param : layer_params)
@@ -347,8 +508,9 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     {
       verify_ctx->output_model_dtype = str_to_dtype(output_model_dtype);
       verify_ctx->granularity = str_to_granularity(granularity);
-      verify_ctx->input_type = str_to_dtype(input_type);
-      verify_ctx->output_type = str_to_dtype(output_type);
+      // TODO Change input/output_type to vector
+      verify_ctx->input_type = input_types[0];
+      verify_ctx->output_type = output_types[0];
       verify_ctx->TF_style_maxpool = TF_style_maxpool;
 
       for (auto layer_param : layer_params)
