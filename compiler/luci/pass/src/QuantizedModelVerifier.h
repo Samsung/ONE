@@ -45,19 +45,6 @@ public:
   };
 
 public:
-  QuantizedModelVerifier(loco::DataType quantized_dtype, QuantizationGranularity granularity)
-  {
-    _ctx = std::make_unique<Context>();
-    {
-      _ctx->output_model_dtype = quantized_dtype;
-      _ctx->granularity = granularity;
-      _ctx->input_type = quantized_dtype;
-      _ctx->output_type = quantized_dtype;
-      _ctx->TF_style_maxpool = false;
-    }
-  }
-
-public:
   QuantizedModelVerifier(std::unique_ptr<Context> &&ctx) : _ctx{std::move(ctx)}
   {
     // DO NOTHING
