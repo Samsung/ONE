@@ -174,6 +174,9 @@ private:
 #ifndef DIS_QUANT
 void calculateActivationRangeQuantized(Activation activation, const circle::Tensor *output,
                                        int32_t *activation_min, int32_t *activation_max);
+void calculateActivationRangeQuantized(Activation activation, int32_t output_zero_point,
+                                       float output_scale, DataType data_type,
+                                       int32_t *activation_min, int32_t *activation_max);
 
 template <typename T> constexpr bool one_of_types() { return false; }
 
@@ -182,6 +185,9 @@ template <typename T, typename U, typename... Other> constexpr bool one_of_types
 {
   return std::is_same<T, U>::value || one_of_types<T, Other...>();
 }
+
+void matrixScalarMultiplyAccumulate(const int8_t *matrix, int32_t scalar, int32_t n_row,
+                                    int32_t n_col, int32_t *output);
 
 /**
  * Fills activation min and max parameters depending on given data type and activation

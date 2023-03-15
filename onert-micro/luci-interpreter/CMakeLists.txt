@@ -16,6 +16,14 @@ else()
     set(LUCI_INTERPRETER_SUFFIX ${CUSTOM_LUCI_INTERPRETER_SUFFIX})
 endif()
 
+if (DIS_QUANT)
+    add_definitions(-DDIS_QUANT)
+endif()
+
+if (DIS_FLOAT)
+    add_definitions(-DDIS_FLOAT)
+endif()
+
 add_compile_options(-fno-exceptions)
 add_compile_options(-Os)
 add_subdirectory(src)

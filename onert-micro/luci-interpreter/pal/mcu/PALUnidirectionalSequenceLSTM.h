@@ -18,14 +18,18 @@
 #ifndef LUCI_INTERPRETER_PAL_UNIDIRECTIONAL_SEQUENCE_LSTM_H
 #define LUCI_INTERPRETER_PAL_UNIDIRECTIONAL_SEQUENCE_LSTM_H
 
-#include "core/KernelParams.h"
+#include "kernels/UnidirectionalSequenceLSTM.h"
+#include "tensorflow/lite/kernels/internal/reference/fully_connected.h"
 #include "tensorflow/lite/kernels/internal/reference/integer_ops/logistic.h"
+#include "tensorflow/lite/kernels/internal/reference/logistic.h"
 #include "tensorflow/lite/kernels/internal/reference/integer_ops/tanh.h"
-#include "fixedpoint/fixedpoint.h"
+#include "tensorflow/lite/kernels/internal/reference/tanh.h"
 
 namespace luci_interpreter_pal
 {
-namespace lstm
+namespace lstm_internal
+{
+namespace
 {
 // Possible fused activation functions.
 typedef enum
@@ -39,7 +43,35 @@ typedef enum
   kTfLiteActSigmoid,
 } TfLiteFusedActivation;
 
-inline int32_t multiply_by_quantized_multiplier(int32_t x, int32_t quantized_multiplier, int shift)
+} // namespace
+
+template <typename T>
+inline T activationFunctionWithMinMax(T x, T output_activation_min, T output_activation_max)
+{
+  using std::max;
+  using std::min;
+  return min(max(x, output_activation_min), output_activation_max);
+}
+
+template <typename T>
+inline void mul(const luci_interpreter::lstm::ArithmeticParams *params,
+                const tflite::RuntimeShape &input1_shape, const T *input1_data,
+                const tflite::RuntimeShape &input2_shape, const T *input2_data,
+                const tflite::RuntimeShape &output_shape, T *output_data)
+{
+  T output_activation_min = params->quantized_activation_min;
+  T output_activation_max = params->quantized_activation_max;
+
+  const int flat_size = input1_shape.FlatSize();
+  for (int i = 0; i < flat_size; ++i)
+  {
+    output_data[i] = activationFunctionWithMinMax(input1_data[i] * input2_data[i],
+                                                  output_activation_min, output_activation_max);
+  }
+}
+
+#ifndef DIS_QUANT
+inline int32_t multiplyByQuantizedMultiplier(int32_t x, int32_t quantized_multiplier, int shift)
 {
   using gemmlowp::RoundingDivideByPOT;
   using gemmlowp::SaturatingRoundingDoublingHighMul;
@@ -49,1003 +81,594 @@ inline int32_t multiply_by_quantized_multiplier(int32_t x, int32_t quantized_mul
     SaturatingRoundingDoublingHighMul(x * (1 << left_shift), quantized_multiplier), right_shift);
 }
 
-void cwise_mul(const int16_t *input_1, const int16_t *input_2, int32_t multiplier, int32_t shift,
-               int32_t n_batch, int32_t n_input, int32_t output_zp, int8_t *output)
+template <typename InputType, typename WeightType, typename OutputType, typename BiasType>
+void fullyConnectedInteger(const tflite::FullyConnectedParams &params,
+                           const tflite::RuntimeShape &input_shape, const InputType *input_data,
+                           const tflite::RuntimeShape &filter_shape, const WeightType *filter_data,
+                           const tflite::RuntimeShape &bias_shape, const BiasType *bias_data,
+                           const tflite::RuntimeShape &output_shape, OutputType *output_data)
 {
-  for (int batch = 0; batch < n_batch; ++batch)
-  {
-    for (int i = 0; i < n_input; ++i)
-    {
-      const int index = batch * n_input + i;
-      const int16_t a = input_1[index];
-      const int16_t b = input_2[index];
-      int32_t value = static_cast<int32_t>(a) * static_cast<int32_t>(b);
-      value = multiply_by_quantized_multiplier(value, multiplier, shift);
-      value -= output_zp;
-      value = std::min(std::max(static_cast<int32_t>(-128), value), static_cast<int32_t>(127));
+  const int32_t input_offset = params.input_offset;
+  const int32_t filter_offset = params.weights_offset;
+  const int32_t output_offset = params.output_offset;
+  const int32_t output_multiplier = params.output_multiplier;
+  const int output_shift = params.output_shift;
+  const int32_t output_activation_min = params.quantized_activation_min;
+  const int32_t output_activation_max = params.quantized_activation_max;
+  TFLITE_DCHECK_GE(filter_shape.DimensionsCount(), 2);
+  TFLITE_DCHECK_GE(output_shape.DimensionsCount(), 1);
 
-      output[index] = static_cast<int8_t>(value);
+  TFLITE_DCHECK_LE(output_activation_min, output_activation_max);
+  const int filter_dim_count = filter_shape.DimensionsCount();
+  const int output_dim_count = output_shape.DimensionsCount();
+  const int batches = FlatSizeSkipDim(output_shape, output_dim_count - 1);
+  const int output_depth = output_shape.Dims(output_dim_count - 1);
+  TFLITE_DCHECK_LE(output_depth, filter_shape.Dims(filter_dim_count - 2));
+  const int accum_depth = filter_shape.Dims(filter_dim_count - 1);
+  for (int b = 0; b < batches; ++b)
+  {
+    for (int out_c = 0; out_c < output_depth; ++out_c)
+    {
+      BiasType acc = 0;
+      for (int d = 0; d < accum_depth; ++d)
+      {
+        int32_t input_val = input_data[b * accum_depth + d];
+        int32_t filter_val = filter_data[out_c * accum_depth + d];
+        acc += (filter_val + filter_offset) * (input_val + input_offset);
+      }
+      if (bias_data)
+      {
+        acc += bias_data[out_c];
+      }
+      int32_t acc_scaled = multiplyByQuantizedMultiplier(acc, output_multiplier, output_shift);
+      acc_scaled += output_offset;
+      acc_scaled = std::max(acc_scaled, output_activation_min);
+      acc_scaled = std::min(acc_scaled, output_activation_max);
+      output_data[out_c + output_depth * b] = static_cast<OutputType>(acc_scaled);
     }
   }
 }
 
-void sub1_vector(const int16_t *vector, int v_size, int16_t *result)
+void fullyConnected(const tflite::FullyConnectedParams &params,
+                    const tflite::RuntimeShape &input_shape, const int8_t *input_data,
+                    const tflite::RuntimeShape &filter_shape, const int8_t *filter_data,
+                    const tflite::RuntimeShape &bias_shape, const int32_t *bias_data,
+                    const tflite::RuntimeShape &output_shape, int16_t *output_data)
 {
-  static const int16_t kOne = 32767;
-  for (int v = 0; v < v_size; v++)
+  return fullyConnectedInteger(params, input_shape, input_data, filter_shape, filter_data,
+                               bias_shape, bias_data, output_shape, output_data);
+}
+
+void fullyConnected(const tflite::FullyConnectedParams &params,
+                    const tflite::RuntimeShape &input_shape, const int16_t *input_data,
+                    const tflite::RuntimeShape &filter_shape, const int8_t *filter_data,
+                    const tflite::RuntimeShape &bias_shape, const int64_t *bias_data,
+                    const tflite::RuntimeShape &output_shape, int16_t *output_data)
+{
+  return fullyConnectedInteger(params, input_shape, input_data, filter_shape, filter_data,
+                               bias_shape, bias_data, output_shape, output_data);
+}
+
+template <typename InputType, typename OutputType>
+void mulElementwise(int size, const luci_interpreter::lstm::ArithmeticParams *params,
+                    const InputType *input1_data, const InputType *input2_data,
+                    OutputType *output_data)
+{
+  for (int i = 0; i < size; ++i)
   {
-    *result++ = kOne - *vector++;
+    const int32_t input1_val = params->input1_offset + input1_data[i];
+    const int32_t input2_val = params->input2_offset + input2_data[i];
+    const int32_t unclamped_result =
+      params->output_offset + multiplyByQuantizedMultiplier(input1_val * input2_val,
+                                                            params->output_multiplier,
+                                                            params->output_shift);
+    const int32_t clamped_output =
+      std::min(params->quantized_activation_max,
+               std::max(params->quantized_activation_min, unclamped_result));
+    output_data[i] = static_cast<OutputType>(clamped_output);
   }
 }
 
-template <typename T> void cwise_clipping(T *vector, const int v_size, const T &clipping_value)
+// Input and output have the same shape in LSTM
+void mul(const tflite::RuntimeShape &shape, const luci_interpreter::lstm::ArithmeticParams *params,
+         const int16_t *input1_data, const int16_t *input2_data, int8_t *output_data)
 {
-  for (int i = 0; i < v_size; i++)
-  {
-    vector[i] = std::max(std::min(clipping_value, vector[i]), static_cast<T>(-clipping_value));
-  }
+  return mulElementwise<int16_t, int8_t>(shape.FlatSize(), params, input1_data, input2_data,
+                                         output_data);
 }
 
-void cwise_add(const int16_t *input_1, const int16_t *input_2, int n_batch, int n_input,
-               int16_t *output)
+// Input and output have the same shape in LSTM
+void mul(const tflite::RuntimeShape &shape, const luci_interpreter::lstm::ArithmeticParams *params,
+         const int16_t *input1_data, const int16_t *input2_data, int16_t *output_data)
 {
-  const int32_t kInt16Max = std::numeric_limits<int16_t>::max();
-  const int32_t kInt16Min = std::numeric_limits<int16_t>::min();
+  return mulElementwise(shape.FlatSize(), params, input1_data, input2_data, output_data);
+}
+
+void addElementWise(const int16_t *input_1, const int16_t *input_2, int n_batch, int n_input,
+                    int16_t *output)
+{
   for (int batch = 0; batch < n_batch; ++batch)
   {
     for (int i = 0; i < n_input; ++i)
     {
       const int index = batch * n_input + i;
       int32_t sum = input_1[index] + input_2[index];
-      const int32_t sum_clamped = std::min(kInt16Max, std::max(kInt16Min, sum));
+      const int32_t sum_clamped =
+        std::min(static_cast<int32_t>(std::numeric_limits<int16_t>::max()),
+                 std::max(static_cast<int32_t>(std::numeric_limits<int16_t>::min()), sum));
       output[index] = static_cast<int16_t>(sum_clamped);
     }
   }
 }
 
-template <typename T> int count_leading_zeros(T integer_input)
+void tanh(int32_t cell_state_scale_power, const tflite::RuntimeShape &input_data_shape,
+          int16_t *input_data, const tflite::RuntimeShape &output_data_shape, int16_t *output_data)
 {
-  static_assert(std::is_unsigned<T>::value, "Only unsigned integer types handled.");
-#if defined(__GNUC__)
-  return integer_input ? __builtin_clz(integer_input) : std::numeric_limits<T>::digits;
-#else
-  if (integer_input == 0)
+  int32_t tanh_input_left_shift = (15 + cell_state_scale_power) - 3;
+  int32_t input_multiplier = 0;
+  if (tanh_input_left_shift < 0) /* handling negative shift value */
   {
-    return std::numeric_limits<T>::digits;
+    tanh_input_left_shift = -tanh_input_left_shift;
+    input_multiplier = 3;
   }
-
-  const T one_in_leading_positive = static_cast<T>(1) << (std::numeric_limits<T>::digits - 1);
-  int leading_zeros = 0;
-  while (integer_input < one_in_leading_positive)
-  {
-    integer_input <<= 1;
-    ++leading_zeros;
-  }
-  return leading_zeros;
-#endif
+  tflite::reference_integer_ops::Tanh(input_multiplier, tanh_input_left_shift, input_data_shape,
+                                      input_data, output_data_shape, output_data);
 }
 
-inline void get_inv_sqrt_quantized_multiplier_exp(int32_t input, int reverse_shift,
-                                                  int32_t *output_inv_sqrt, int *output_shift)
+void sigmoid(const tflite::RuntimeShape &data_shape, int16_t *data)
 {
-  if (input <= 1)
-  {
-    // Handle the input value 1 separately to avoid overflow in that case
-    // in the general computation below (b/143972021). Also handle 0 as if it
-    // were a 1. 0 is an invalid input here (divide by zero) and 1 is a valid
-    // but rare/unrealistic input value. We can expect both to occur in some
-    // incompletely trained models, but probably not in fully trained models.
-    *output_inv_sqrt = std::numeric_limits<std::int32_t>::max();
-    *output_shift = 0;
-    return;
-  }
-  *output_shift = 11;
-  while (input >= (1 << 29))
-  {
-    input /= 4;
-    ++*output_shift;
-  }
-  const unsigned max_left_shift_bits = count_leading_zeros(static_cast<uint32_t>(input)) - 1;
-  const unsigned max_left_shift_bit_pairs = max_left_shift_bits / 2;
-  const unsigned left_shift_bit_pairs = max_left_shift_bit_pairs - 1;
-  *output_shift -= left_shift_bit_pairs;
-  input <<= 2 * left_shift_bit_pairs;
-  using gemmlowp::FixedPoint;
-  using gemmlowp::Rescale;
-  using gemmlowp::SaturatingRoundingMultiplyByPOT;
-  // Using 3 integer bits gives us enough room for the internal arithmetic in
-  // this Newton-Raphson iteration.
-  using F3 = FixedPoint<int32_t, 3>;
-  using F0 = FixedPoint<int32_t, 0>;
-  const F3 fixedpoint_input = F3::FromRaw(input >> 1);
-  const F3 fixedpoint_half_input = SaturatingRoundingMultiplyByPOT<-1>(fixedpoint_input);
-  const F3 fixedpoint_half_three =
-    GEMMLOWP_CHECKED_FIXEDPOINT_CONSTANT(F3, (1 << 28) + (1 << 27), 1.5);
-  // Newton-Raphson iteration
-  // Naive unoptimized starting guess: x = 1
-  F3 x = F3::One();
-  // Naive unoptimized number of iterations: 5
-  for (int i = 0; i < 5; i++)
-  {
-    const F3 x3 = Rescale<3>(x * x * x);
-    x = Rescale<3>(fixedpoint_half_three * x - fixedpoint_half_input * x3);
-  }
-  const F0 fixedpoint_half_sqrt_2 =
-    GEMMLOWP_CHECKED_FIXEDPOINT_CONSTANT(F0, 1518500250, std::sqrt(2.) / 2.);
-  x = x * fixedpoint_half_sqrt_2;
-  *output_inv_sqrt = x.raw();
-  if (*output_shift < 0)
-  {
-    *output_inv_sqrt <<= -*output_shift;
-    *output_shift = 0;
-  }
-  // Convert right shift (right is positive) to left shift.
-  *output_shift *= reverse_shift;
+  tflite::reference_integer_ops::Logistic(0 /*data->input_multiplier*/,
+                                          0 /*data->input_left_shift */,
+                                          data_shape.FlatSize() /*NumElements(input->dims)*/,
+                                          data /* tflite::micro::GetTensorData<int16_t>(input) */,
+                                          data /*tflite::micro::GetTensorData<int16_t>(output) */);
 }
 
-void apply_layer_norm(const int16_t *input, const int16_t *layer_norm_weights, const int32_t *bias,
-                      int32_t layer_norm_scale_a, int32_t layer_norm_scale_b,
-                      int32_t variance_limit, int n_batch, int n_input, int16_t *output)
+void clipping(const int v_size, const luci_interpreter::lstm::CellStateInfo *cell_state_info,
+              int16_t *vector)
 {
-  // The square of std::pow(2, 10), which is the extra factor that makes sure
-  // normalized values has enough resolution.
-  static const int kTwoToPower20 = 1 << 20;
-  const int32_t kInt16Max = std::numeric_limits<int16_t>::max();
-  const int32_t kInt16Min = std::numeric_limits<int16_t>::min();
-  for (int i = 0; i < n_batch; ++i)
+  for (int i = 0; i < v_size; i++)
   {
-    int64_t sum = 0;
-    int64_t sum_sq = 0;
-    for (int j = 0; j < n_input; ++j)
-    {
-      const int32_t index = i * n_input + j;
-      int32_t val = static_cast<int32_t>(input[index]);
-      sum += val;
-      sum_sq += val * val;
-    }
-    int32_t mean = static_cast<int32_t>(static_cast<int64_t>(sum) * 1024 / n_input);
-    // TODO Avoids overflow but only works for POT n_input.
-    int32_t temp = kTwoToPower20 / n_input;
-    int64_t variance = sum_sq * temp - static_cast<int64_t>(mean) * static_cast<int64_t>(mean);
-    int32_t variance2 = static_cast<int32_t>(variance / kTwoToPower20);
-    if (variance2 < 1)
-    {
-      variance2 = variance_limit;
-    }
-    int32_t stddev_inverse_a;
-    int stddev_inverse_b;
-    get_inv_sqrt_quantized_multiplier_exp(variance2, /*reverse_shift*/ -1, &stddev_inverse_a,
-                                          &stddev_inverse_b);
-
-    for (int j = 0; j < n_input; ++j)
-    {
-      const int32_t index = i * n_input + j;
-      int32_t val = static_cast<int32_t>(input[index]);
-      int32_t shifted = 1024 * val - mean;
-      int32_t rescaled =
-        multiply_by_quantized_multiplier(shifted, stddev_inverse_a, stddev_inverse_b);
-      // TODO: Saturate this.
-      int64_t val3 = rescaled * layer_norm_weights[j] + bias[j];
-      int32_t val4 = static_cast<int32_t>((val3 > 0 ? val3 + 512 : val3 - 512) / 1024);
-      int32_t val5 =
-        multiply_by_quantized_multiplier(val4, layer_norm_scale_a, layer_norm_scale_b + 12);
-      val5 = std::min(std::max(kInt16Min, val5), kInt16Max);
-      output[index] = static_cast<int16_t>(val5);
-    }
+    vector[i] = std::max(std::min(cell_state_info->quantized_cell_clip, vector[i]),
+                         static_cast<int16_t>(-cell_state_info->quantized_cell_clip));
   }
 }
+#endif // DIS_QUANT
 
-void vector_batch_vector_cwise_product_accumulate(const int16_t *vector, int v_size,
-                                                  const int16_t *batch_vector, int n_batch,
-                                                  int32_t multiplier, int shift, int16_t *result)
+#ifndef DIS_FLOAT
+void fullyConnected(const tflite::FullyConnectedParams &params,
+                    const tflite::RuntimeShape &input_shape, const float *input_data,
+                    const tflite::RuntimeShape &filter_shape, const float *filter_data,
+                    const tflite::RuntimeShape &bias_shape, const float *bias_data,
+                    const tflite::RuntimeShape &output_shape, float *output_data)
 {
-  for (int b = 0; b < n_batch; b++)
-  {
-    for (int v = 0; v < v_size; v++)
-    {
-      int32_t prod = vector[v] * *batch_vector++;
-      prod = multiply_by_quantized_multiplier(prod, multiplier, shift);
-      int32_t output = prod + *result;
-      output =
-        std::max(std::min(static_cast<int32_t>(32767), output), static_cast<int32_t>(-32768));
-      *result++ = output;
-    }
-  }
+  return tflite::reference_ops::FullyConnected(params, input_shape, input_data, filter_shape,
+                                               filter_data, bias_shape, bias_data, output_shape,
+                                               output_data);
 }
 
-template <typename T>
-void matrix_batch_vector_multiply_accumulate(const int8_t *input, const int32_t *bias,
-                                             const int8_t *input_to_gate_weights,
-                                             int32_t multiplier, int32_t shift, int32_t n_batch,
-                                             int32_t n_input, int32_t n_output, int32_t output_zp,
-                                             T *output)
+// Input and output have the same shape in LSTM
+void mul(const tflite::RuntimeShape &shape, const luci_interpreter::lstm::ArithmeticParams *params,
+         const float *input1_data, const float *input2_data, float *output_data)
 {
-  const int16_t output_max = std::numeric_limits<T>::max();
-  const int16_t output_min = std::numeric_limits<T>::min();
-  for (int batch = 0; batch < n_batch; ++batch)
-  {
-    for (int row = 0; row < n_output; ++row)
-    {
-      int32_t acc = bias[row];
-      for (int col = 0; col < n_input; ++col)
-      {
-        int8_t input_val = input[batch * n_input + col];
-        int8_t weights_val = input_to_gate_weights[row * n_input + col];
-        acc += input_val * weights_val;
-      }
-      acc = multiply_by_quantized_multiplier(acc, multiplier, shift);
-      acc += output_zp;
-      acc += output[batch * n_output + row];
-      if (acc > output_max)
-      {
-        acc = output_max;
-      }
-      if (acc < output_min)
-      {
-        acc = output_min;
-      }
-      output[batch * n_output + row] = static_cast<T>(acc);
-    }
-  }
+  return mul(params, shape, input1_data, shape, input2_data, shape, output_data);
 }
 
-template <int IntegerBits>
-void apply_tanh_impl(const int16_t *input, int32_t n_batch, int32_t n_input, int16_t *output)
+void addElementWise(const float *input_1, const float *input_2, int n_batch, int n_input,
+                    float *output)
 {
-  using FX = gemmlowp::FixedPoint<std::int16_t, IntegerBits>;
-  using F0 = gemmlowp::FixedPoint<std::int16_t, 0>;
   for (int batch = 0; batch < n_batch; ++batch)
   {
     for (int i = 0; i < n_input; ++i)
     {
       const int index = batch * n_input + i;
-      FX tanh_input = FX::FromRaw(input[index]);
-      F0 tanh_output = gemmlowp::tanh(tanh_input);
-      output[index] = tanh_output.raw();
+      output[index] = input_1[index] + input_2[index];
     }
   }
 }
 
-void apply_tanh(int32_t integer_bits, const int16_t *input, int32_t n_batch, int32_t n_input,
-                int16_t *output)
+void tanh(int32_t cell_state_scale_power, const tflite::RuntimeShape &input_data_shape,
+          float *input_data, const tflite::RuntimeShape &output_data_shape, float *output_data)
 {
-  assert(integer_bits <= 6);
-#define DISPATCH_TANH(i)                                 \
-  case i:                                                \
-    apply_tanh_impl<i>(input, n_batch, n_input, output); \
-    break;
-  switch (integer_bits)
+  tflite::reference_ops::Tanh(input_data_shape, input_data, output_data_shape, output_data);
+}
+
+void sigmoid(const tflite::RuntimeShape &data_shape, float *data)
+{
+  tflite::reference_ops::Logistic(data_shape, data, data_shape, data);
+}
+
+void clipping(const int v_size, const luci_interpreter::lstm::CellStateInfo *cell_state_info,
+              float *vector)
+{
+  for (int i = 0; i < v_size; i++)
   {
-    DISPATCH_TANH(0);
-    DISPATCH_TANH(1);
-    DISPATCH_TANH(2);
-    DISPATCH_TANH(3);
-    DISPATCH_TANH(4);
-    DISPATCH_TANH(5);
-    DISPATCH_TANH(6);
-    default:
+    vector[i] =
+      std::max(std::min(cell_state_info->cell_clip, vector[i]), -cell_state_info->cell_clip);
+  }
+}
+#endif // DIS_FLOAT
+
+// Size information about the LSTM kernel, which is deduced from tensors stored
+// in the flat buffer file.
+struct LstmSizeInfo
+{
+  bool time_major;
+  int32_t batch_size;
+  int32_t time_steps;
+  int32_t input_dimension;
+  int32_t state_dimension;
+};
+
+class LstmStepManager
+{
+public:
+  LstmStepManager() = delete;
+  // Does not take any ownership, and all pointers must refer to valid objects
+  // that outlive the one constructed.
+  explicit LstmStepManager(const LstmSizeInfo &size_info) : size_info_(size_info) {}
+
+  void updateTime()
+  {
+    current_time_ += 1;
+    // default as one batch per inference
+    int input_step = size_info_.input_dimension;
+    int output_step = size_info_.state_dimension;
+    // time major: batch inference
+    if (size_info_.time_major)
+    {
+      input_step = input_step * size_info_.batch_size;
+      output_step = output_step * size_info_.batch_size;
+    }
+
+    input_offset_ += input_step;
+    output_offset_ += output_step;
+  }
+
+  void updateBatch()
+  {
+    current_batch_ += 1;
+    TFLITE_DCHECK_LE(current_batch_, size_info_.batch_size);
+    // batch inference for time major: no action needed
+    if (size_info_.time_major)
+    {
       return;
-  }
-#undef DISPATCH_TANH
-}
-
-// Calculates the output state tensor of an LSTM step. See Float and hybrid
-// versions as well.
-//
-// Parameters:
-//  - n_batch: batches: the number of distinct vectors in each array.
-//  - n_cell, n_output: sizes of vectors.
-//  - cell_state, output_gate: input vectors, size n_batch*n_cell.
-//  - cell_state_scale: scaling of cell_state.
-//  - hidden_scale_[a|b]: effective scale of cell_state.*output_gate
-//  - hidden_zp: zero_point for cell_state.*output_gate
-//  - projection_weights, proj_scale_[a|b], projection_bias:
-//      constant inputs, describing projection matrix and bias.
-//  - output_state_zp: zero point of output_state. (Input, calibrated value.)
-//  - quantized_proj_clip: if > 0, clip the output of the projection.
-//  - output_state: output vector, size n_batch*n_output. Must be contigous.
-//  - scratch0: scratch area of size n_batch*n_cell
-//  - scratch1: scratch area of size n_batch*n_cell
-//  - scratch2: scratch area used by MatrixBatchVectorMultiplyAccumulate
-void calculate_lstm_output_integer8x8_16(int n_batch, int n_cell, int n_output, int16_t *cell_state,
-                                         int32_t cell_state_scale, const int16_t *output_gate,
-                                         int32_t hidden_scale_a, int32_t hidden_scale_b,
-                                         int32_t hidden_zp, const int8_t *projection_weights,
-                                         int32_t proj_scale_a, int32_t proj_scale_b,
-                                         const int32_t *projection_bias, int32_t output_state_zp,
-                                         int8_t quantized_proj_clip, int8_t *output_state,
-                                         int16_t *scratch0, int8_t *scratch1, int32_t *scratch2)
-{
-  // Note: unlike float/hybrid, the activation is always Tanh.
-  apply_tanh(15 + cell_state_scale, cell_state, n_batch, n_cell, scratch0);
-  const bool use_projection = (projection_weights != nullptr);
-
-  if (use_projection)
-  {
-    // b/246629213 the projection operation assumes -hidden_zp in CwiseMul
-    cwise_mul(output_gate, scratch0, hidden_scale_a, hidden_scale_b, n_batch, n_cell, -hidden_zp,
-              scratch1);
-    // Note: no bias like in float/hybrid
-    std::fill_n(output_state, n_batch * n_output, 0);
-    matrix_batch_vector_multiply_accumulate(scratch1, projection_bias, projection_weights,
-                                            proj_scale_a, proj_scale_b, n_batch, n_cell, n_output,
-                                            output_state_zp, output_state);
-    if (quantized_proj_clip > 0)
-    {
-      cwise_clipping(output_state, n_batch * n_output, quantized_proj_clip);
     }
+    // otherwise: singe batch inference, go to the next batch
+    hidden_state_offset_ += size_info_.state_dimension;
+    cell_state_offset_ += size_info_.state_dimension;
   }
-  else
-  {
-    cwise_mul(output_gate, scratch0, hidden_scale_a, hidden_scale_b, n_batch, n_cell, hidden_zp,
-              output_state);
-  }
-}
 
-void cwise_mul(const int16_t *input_1, const int16_t *input_2, int n_batch, int n_input, int shift,
-               int16_t *output)
-{
-  for (int batch = 0; batch < n_batch; ++batch)
+  void resetTime() { current_time_ = 0; }
+
+  tflite::RuntimeShape inputShape() const
   {
-    for (int i = 0; i < n_input; ++i)
+    int batch_size = 1;
+    if (size_info_.time_major)
     {
-      const int index = batch * n_input + i;
-      const int16_t a = input_1[index];
-      const int16_t b = input_2[index];
-      const int32_t value = static_cast<int32_t>(a) * static_cast<int32_t>(b);
-      output[index] = static_cast<int16_t>(gemmlowp::RoundingDivideByPOT(value, shift));
+      batch_size = size_info_.batch_size;
     }
-  }
-}
-
-// Updates the LSTM cell state, used by both integer LSTM versions.
-// Also see UpdateLstmCellFloat.
-//
-// Parameters:
-//  - n_batch, n_cell: sizes of vectors
-//  - cell_state: input/output vector, size n_batch*n_cell
-//  - cell_state_scale: scaling factor of cell state.
-//  - input_gate: input vector, size n_batch*n_cell.
-//  - forget_gate: input/scratch vector, size n_batch*n_cell, always modified.
-//  - cell_gate: input vector, size n_batch*n_cell.
-//  - use_cifg: use 1-forget_gate instead of input_gate.
-//  - clip: if > 0, clip the resulting cell state to [-clip, +clip].
-void update_lstm_cell_integer(int n_batch, int n_cell, int16_t *cell_state,
-                              int32_t cell_state_scale, const int16_t *input_gate,
-                              int16_t *forget_gate, const int16_t *cell_gate, bool use_cifg,
-                              int16_t clip)
-{
-  // Use the forget_gate array as scratch, as input_gate array is not allocated
-  // in CIFG case. (Be careful not to write to the scratch before reading the
-  // forget gate data.)
-  int16_t *scratch = forget_gate;
-
-  cwise_mul(forget_gate, cell_state, n_batch, n_cell, 15, cell_state);
-  if (use_cifg)
-  {
-    sub1_vector(forget_gate, n_batch * n_cell, scratch);
-    cwise_mul(scratch, cell_gate, n_batch, n_cell, 30 + cell_state_scale, scratch);
-  }
-  else
-  {
-    cwise_mul(input_gate, cell_gate, n_batch, n_cell, 30 + cell_state_scale, scratch);
-  }
-  cwise_add(cell_state, scratch, n_batch, n_cell, cell_state);
-
-  if (clip > 0)
-  {
-    cwise_clipping(cell_state, n_batch * n_cell, clip);
-  }
-}
-
-// Calculates a single LSTM gate, int8x8_16 version.
-// Implements the same functionality as CalculateLstmGateFloat.
-void calculate_lstm_gate_integer_8x8_16(
-  // Input and weights
-  const int8_t *input, const int8_t *input_to_gate_weights, const int32_t *input_to_gate_bias,
-  const int32_t input_to_gate_scale_a, const int32_t input_to_gate_scale_b,
-  // Output state and weights
-  const int8_t *output_state, const int8_t *recurrent_to_gate_weights,
-  const int32_t *recurrent_to_gate_bias, const int32_t recurrent_to_gate_scale_a,
-  const int32_t recurrent_to_gate_scale_b,
-  // Cell state and weights
-  const int16_t *cell_state, const int16_t *cell_to_gate_weights,
-  const int32_t cell_to_gate_scale_a, const int32_t cell_to_gate_scale_b,
-  // Layer normalization parameters (layer norm LSTM)
-  const int16_t *layer_norm_coefficients, const int32_t *layer_norm_bias,
-  const int32_t layer_norm_input_scale_a, const int32_t layer_norm_input_scale_b,
-  const int32_t layer_norm_variance_guard,
-  // Array sizes
-  const int n_batch, const int n_input, const int n_output, const int n_cell,
-  const TfLiteFusedActivation activation,
-  // Output
-  int16_t *gate,
-  // Parameters for performance optimizations
-  // Scratch arrays
-  int32_t *scratch5)
-{
-  const bool use_peephole = (cell_to_gate_weights != nullptr);
-  const bool use_layer_norm = (layer_norm_coefficients != nullptr);
-
-  // Initialize scratch buffers with zeros. Note that unlike float and hybrid
-  // versions, bias is only used in layer normalization.
-  memset(gate, 0, n_batch * n_cell * sizeof(int16_t));
-  // For each batch and cell: compute input_weight * input.
-  matrix_batch_vector_multiply_accumulate(input, input_to_gate_bias, input_to_gate_weights,
-                                          input_to_gate_scale_a, input_to_gate_scale_b, n_batch,
-                                          n_input, n_cell, 0, gate);
-  // Note: no aux_input.
-  // For each batch and cell: compute recurrent_weight * output_state.
-  matrix_batch_vector_multiply_accumulate(
-    output_state, recurrent_to_gate_bias, recurrent_to_gate_weights, recurrent_to_gate_scale_a,
-    recurrent_to_gate_scale_b, n_batch, n_output, n_cell, 0, gate);
-  // For each batch and cell: compute cell_weight * cell_state (peephole LSTM)
-  if (use_peephole)
-  {
-    vector_batch_vector_cwise_product_accumulate(cell_to_gate_weights, n_output, cell_state,
-                                                 n_batch, cell_to_gate_scale_a,
-                                                 cell_to_gate_scale_b, gate);
-  }
-  // Do layer normalization (if layer norm LSTM)
-  if (use_layer_norm)
-  {
-    apply_layer_norm(gate, layer_norm_coefficients, layer_norm_bias, layer_norm_input_scale_a,
-                     layer_norm_input_scale_b, layer_norm_variance_guard, n_batch, n_cell, gate);
+    const int dims[2] = {batch_size, size_info_.input_dimension};
+    const int32_t *dims_data = reinterpret_cast<const int32_t *>(dims);
+    return tflite::RuntimeShape(2, dims_data);
   }
 
-  // Apply activation
-  switch (activation)
+  tflite::RuntimeShape stateShape() const
   {
-    case kTfLiteActSigmoid:
-      tflite::reference_integer_ops::Logistic(
-        0 /*data->input_multiplier*/, 0 /*data->input_left_shift */,
-        n_batch * n_cell /*NumElements(input->dims)*/,
-        gate /* tflite::micro::GetTensorData<int16_t>(input) */,
-        gate /*tflite::micro::GetTensorData<int16_t>(output) */);
-
-      break;
-    case kTfLiteActTanh:
+    int batch_size = 1;
+    if (size_info_.time_major)
     {
-      int32_t dims_data = n_batch * n_cell;
-      tflite::RuntimeShape tanh_inp_shape = tflite::RuntimeShape(1, &dims_data);
-      tflite::reference_integer_ops::Tanh(0, 0, tanh_inp_shape, gate, tanh_inp_shape, gate);
+      batch_size = size_info_.batch_size;
     }
-    break;
-    default:
-      // Only Sigmoid or Tanh is used.
-      TFLITE_ASSERT_FALSE;
+    const int dims[2] = {batch_size, size_info_.state_dimension};
+    const int32_t *dims_data = reinterpret_cast<const int32_t *>(dims);
+    return tflite::RuntimeShape(2, dims_data);
   }
-}
 
-// Fully quantized lstm kernel for 16 bit gate matmul output.
-//
-// Input tensor of size n_batch * n_input:
-//   input_ptr
-//
-// LSTM weights:
-// Quantized input weights of size 'n_cell * n_input':
-//   input_to_input_weight_ptr            - optional
-//   input_to_forget_weight_ptr           - optional
-//   input_to_cell_weight_ptr             - optional
-//   input_to_output_weight_ptr           - optional
-//
-// Quantized recurrent weights of size 'n_cell * n_output':
-//   recurrent_to_input_weight_ptr        - optional
-//   recurrent_to_forget_weights_ptr
-//   recurrent_to_cell_weights_ptr
-//   recurrent_to_input_weights_ptr
-//
-// Quantized peephole weights of size 'n_cell', representing diagonal matrices.
-//   cell_to_input_weights               - optional
-//   cell_to_cell_weights                - optional
-//   cell_to_output_weights              - optional
-//
-// Quantized projection weights of size 'n_output * n_cell'
-//   projection_weight_ptr                     - optional
-//
-// Weight scales (scalars) for each of the weights above.
-//   effective_input_to_input_scale_a    - optional
-//   effective_input_to_input_scale_b    - optional
-//   effective_input_to_forget_scale_a
-//   effective_input_to_forget_scale_b
-//   effective_input_to_cell_scale_a
-//   effective_input_to_cell_scale_b
-//   effective_input_to_output_scale_a
-//   effective_input_to_output_scale_b
-//   effective_recurrent_to_input_scale_a    - optional
-//   effective_recurrent_to_input_scale_b    - optional
-//   effective_recurrent_to_forget_scale_a
-//   effective_recurrent_to_forget_scale_b
-//   effective_recurrent_to_cell_scale_a
-//   effective_recurrent_to_cell_scale_b
-//   effective_recurrent_to_output_scale_a
-//   effective_recurrent_to_output_scale_b
-//   effective_proj_scale_a                  - optional
-//   effective_proj_scale_b                  - optional
-//
-// Gate biases of size 'n_cell':
-//   input_gate_bias_ptr                 - optional
-//   forget_gate_bias_ptr
-//   cell_gate_bias_ptr
-//   output_gate_bias_ptr
-//
-// Layer norm coefficients of size 'n_cell', representing diagonal matrices.
-//   layer_norm_input_weight_ptr    - optional
-//   layer_norm_forget_weight_ptr   - optional
-//   layer_norm_cell_weight_ptr     - optional
-//   layer_norm_output_weight_ptr   - optional
-//
-// Layer norm scales of size 'n_cell'.
-//   layer_norm_input_scale_a     - optional
-//   layer_norm_input_scale_b     - optional
-//   layer_norm_forget_scale_a    - optional
-//   layer_norm_forget_scale_b    - optional
-//   layer_norm_cell_scale_a      - optional
-//   layer_norm_cell_scale_b      - optional
-//   layer_norm_output_scale_a    - optional
-//   layer_norm_output_scale_b    - optional
-//
-// Scalar values:
-//   quantized_cell_clip: quantized clip value for cell.
-//   quantized_proj_clip: quantized clip value for projection.
-//   cell_state_scale: the power of two scale for cell state.
-//
-// Zero points:
-//   output_state_zp: zero point of output state
-//   hidden_zp: zero point for hidden state.
-//
-// Temporary pre-allocated storage for the calculation. Each is of size n_cell *
-// n_batch.
-//   scratch0
-//   scratch1
-//   scratch2
-//   scratch3
-//   scratch4
-//   scratch5: this scratch buffer is created purely for optimizing the
-//              MatrixBatchVectorMultiplyAccumulate.
-//
-// Outputs:
-//   output_state_ptr - size 'n_batch * n_output'
-//   cell_state_ptr   - size 'n_batch * n_cell'
-//   output_ptr       - size 'n_batch * n_output'
-// TODO(b/159947023): scratch0 is not used if (!cifg). Don't allocate then.
-void lstm_step_integer_8x8_16(
-  const int8_t *input_ptr, const int8_t *input_to_input_weight_ptr,
-  int32_t effective_input_to_input_scale_a, int32_t effective_input_to_input_scale_b,
-  const int8_t *input_to_forget_weight_ptr, int32_t effective_input_to_forget_scale_a,
-  int32_t effective_input_to_forget_scale_b, const int8_t *input_to_cell_weight_ptr,
-  int32_t effective_input_to_cell_scale_a, int32_t effective_input_to_cell_scale_b,
-  const int8_t *input_to_output_weight_ptr, int32_t effective_input_to_output_scale_a,
-  int32_t effective_input_to_output_scale_b, const int8_t *recurrent_to_input_weight_ptr,
-  int32_t effective_recurrent_to_input_scale_a, int32_t effective_recurrent_to_input_scale_b,
-  const int8_t *recurrent_to_forget_weight_ptr, int32_t effective_recurrent_to_forget_scale_a,
-  int32_t effective_recurrent_to_forget_scale_b, const int8_t *recurrent_to_cell_weight_ptr,
-  int32_t effective_recurrent_to_cell_scale_a, int32_t effective_recurrent_to_cell_scale_b,
-  const int8_t *recurrent_to_output_weight_ptr, int32_t effective_recurrent_to_output_scale_a,
-  int32_t effective_recurrent_to_output_scale_b, const int16_t *cell_to_input_weight_ptr,
-  int32_t effective_cell_to_input_scale_a, int32_t effective_cell_to_input_scale_b,
-  const int16_t *cell_to_forget_weight_ptr, int32_t effective_cell_to_forget_scale_a,
-  int32_t effective_cell_to_forget_scale_b, const int16_t *cell_to_output_weight_ptr,
-  int32_t effective_cell_to_output_scale_a, int32_t effective_cell_to_output_scale_b,
-  const int8_t *projection_weight_ptr, int32_t effective_proj_scale_a,
-  int32_t effective_proj_scale_b, int32_t hidden_zp, int32_t effective_hidden_scale_a,
-  int32_t effective_hidden_scale_b, const int16_t *layer_norm_input_weight_ptr,
-  int32_t layer_norm_input_scale_a, int32_t layer_norm_input_scale_b,
-  const int16_t *layer_norm_forget_weight_ptr, int32_t layer_norm_forget_scale_a,
-  int32_t layer_norm_forget_scale_b, const int16_t *layer_norm_cell_weight_ptr,
-  int32_t layer_norm_cell_scale_a, int32_t layer_norm_cell_scale_b,
-  const int16_t *layer_norm_output_weight_ptr, int32_t layer_norm_output_scale_a,
-  int32_t layer_norm_output_scale_b, const int32_t *input_gate_bias_ptr,
-  const int32_t *forget_gate_bias_ptr, const int32_t *cell_gate_bias_ptr,
-  const int32_t *output_gate_bias_ptr, int16_t quantized_cell_clip, int8_t quantized_proj_clip,
-  int32_t cell_state_scale, int32_t input_variance_guard, int32_t forget_variance_guard,
-  int32_t cell_variance_guard, int32_t output_variance_guard,
-  const int32_t *input_to_forget_effective_bias, const int32_t *recurrent_to_forget_effective_bias,
-  const int32_t *input_to_cell_effective_bias, const int32_t *recurrent_to_cell_effective_bias,
-  const int32_t *input_to_output_effective_bias, const int32_t *recurrent_to_output_effective_bias,
-  const int32_t *input_to_input_effective_bias, const int32_t *recurrent_to_input_effective_bias,
-  const int32_t *projection_effective_bias, int n_batch, int n_cell, int n_input, int n_output,
-  int8_t *output_state_ptr, int32_t output_state_zp, int16_t *cell_state_ptr, int8_t *output_ptr,
-  int16_t *scratch0, int16_t *scratch1, int16_t *scratch2, int16_t *scratch3, int8_t *scratch4,
-  int32_t *scratch5)
+  int inputOffset() const { return input_offset_; }
+
+  int outputOffset() const { return output_offset_; }
+
+  int hiddenStateOffset() const { return hidden_state_offset_; }
+
+  int cellStateOffset() const { return cell_state_offset_; }
+
+private:
+  int32_t current_time_ = 0;
+  int32_t current_batch_ = 0;
+  int32_t input_offset_ = 0;
+  int32_t output_offset_ = 0;
+  int32_t hidden_state_offset_ = 0;
+  int32_t cell_state_offset_ = 0;
+
+  const LstmSizeInfo &size_info_;
+};
+
+// Calculates a single LSTM gate.
+// Implements the following formula:
+//   gate = activate(FC(input) + FC(recurrent))
+// Activation is sigmoid except for the "cell" gate (configurable, usually tanh)
+template <typename ActivationType, typename WeightType, typename CellType, typename BiasType>
+void calculateLstmGate(const LstmStepManager *step_info,
+                       const luci_interpreter::lstm::GateParameters *gate_params,
+                       // Input FC
+                       ActivationType *input_data, const circle::Tensor *input_weight,
+                       const circle::Tensor *input_bias,
+                       // Recurrent FC
+                       ActivationType *recurrent_data, const circle::Tensor *recurrent_weight,
+                       const circle::Tensor *recurrent_bias,
+                       // Output
+                       CellType *gate_output,
+                       // Scratch arrays
+                       CellType *fc_output_buffer, const TfLiteFusedActivation activation,
+                       luci_interpreter::BaseRuntimeGraph *runtime_graph)
 {
-  // Make named scratch buffers for the different gates.
-  int16_t *input_gate_scratch = scratch0;
-  int16_t *forget_gate_scratch = scratch1;
-  int16_t *cell_gate_scratch = scratch2;
-  int16_t *output_gate_scratch = scratch3;
-
-  // Since we have already checked that weights are all there or none, we
-  // can check the existence of only one to the get the condition.
-  const bool use_cifg = (input_to_input_weight_ptr == nullptr);
-
-  LUCI_INTERPRETER_CHECK(input_to_forget_effective_bias);
-  LUCI_INTERPRETER_CHECK(recurrent_to_forget_effective_bias);
-  LUCI_INTERPRETER_CHECK(input_to_cell_effective_bias);
-  LUCI_INTERPRETER_CHECK(recurrent_to_cell_effective_bias);
-  LUCI_INTERPRETER_CHECK(input_to_output_effective_bias);
-  LUCI_INTERPRETER_CHECK(recurrent_to_output_effective_bias);
-
-  if (!use_cifg)
+  // Input FC
+  const auto gate_output_shape = step_info->stateShape();
   {
-    LUCI_INTERPRETER_CHECK(input_to_input_effective_bias);
-    LUCI_INTERPRETER_CHECK(recurrent_to_input_effective_bias);
+    tflite::FullyConnectedParams op_params{};
+    op_params.input_offset = gate_params->input_fc_params.input_offset;
+    op_params.weights_offset = gate_params->input_fc_params.weights_offset;
+    op_params.output_offset = gate_params->input_fc_params.output_offset;
+    op_params.output_multiplier = gate_params->input_fc_params.output_multiplier;
+    op_params.output_shift = gate_params->input_fc_params.output_shift;
+    op_params.quantized_activation_min = gate_params->input_fc_params.quantized_activation_min;
+    op_params.quantized_activation_max = gate_params->input_fc_params.quantized_activation_max;
+    op_params.float_activation_max = gate_params->input_fc_params.float_activation_max;
+    op_params.float_activation_min = gate_params->input_fc_params.float_activation_min;
+
+    fullyConnected(op_params, step_info->inputShape(), input_data + step_info->inputOffset(),
+                   luci_interpreter::kernels::getTensorShape(input_weight),
+                   luci_interpreter::kernels::getTensorData<WeightType>(
+                     runtime_graph->getConstDataByTensor(input_weight)),
+                   luci_interpreter::kernels::getTensorShape(input_bias),
+                   luci_interpreter::kernels::getTensorData<BiasType>(
+                     runtime_graph->getConstDataByTensor(input_bias)),
+                   gate_output_shape, gate_output);
   }
 
-  const bool use_projection = (projection_weight_ptr != nullptr);
-  if (use_projection)
+  // Recurrent FC
   {
-    LUCI_INTERPRETER_CHECK(projection_effective_bias);
-  }
+    tflite::FullyConnectedParams op_params{};
+    op_params.input_offset = gate_params->recurrent_fc_params.input_offset;
+    op_params.weights_offset = gate_params->recurrent_fc_params.weights_offset;
+    op_params.output_offset = gate_params->recurrent_fc_params.output_offset;
+    op_params.output_multiplier = gate_params->recurrent_fc_params.output_multiplier;
+    op_params.output_shift = gate_params->recurrent_fc_params.output_shift;
+    op_params.quantized_activation_min = gate_params->recurrent_fc_params.quantized_activation_min;
+    op_params.quantized_activation_max = gate_params->recurrent_fc_params.quantized_activation_max;
+    op_params.float_activation_max = gate_params->recurrent_fc_params.float_activation_max;
+    op_params.float_activation_min = gate_params->recurrent_fc_params.float_activation_min;
 
-  if (!use_cifg)
-  {
-    // Calculate the input gate. (If not CIFG.)
-    calculate_lstm_gate_integer_8x8_16(
-      input_ptr, input_to_input_weight_ptr, input_to_input_effective_bias,
-      effective_input_to_input_scale_a, effective_input_to_input_scale_b, output_state_ptr,
-      recurrent_to_input_weight_ptr, recurrent_to_input_effective_bias,
-      effective_recurrent_to_input_scale_a, effective_recurrent_to_input_scale_b, cell_state_ptr,
-      cell_to_input_weight_ptr, effective_cell_to_input_scale_a, effective_cell_to_input_scale_b,
-      layer_norm_input_weight_ptr, input_gate_bias_ptr, layer_norm_input_scale_a,
-      layer_norm_input_scale_b, input_variance_guard, n_batch, n_input, n_output, n_cell,
-      kTfLiteActSigmoid, input_gate_scratch, scratch5);
-  }
+    fullyConnected(op_params, step_info->stateShape(),
+                   recurrent_data + step_info->hiddenStateOffset(),
+                   luci_interpreter::kernels::getTensorShape(recurrent_weight),
+                   luci_interpreter::kernels::getTensorData<WeightType>(
+                     runtime_graph->getConstDataByTensor(recurrent_weight)),
+                   luci_interpreter::kernels::getTensorShape(recurrent_bias),
+                   luci_interpreter::kernels::getTensorData<BiasType>(
+                     runtime_graph->getConstDataByTensor(recurrent_bias)),
+                   gate_output_shape, fc_output_buffer);
 
-  // Calculate the forget gate.
-  calculate_lstm_gate_integer_8x8_16(
-    input_ptr, input_to_forget_weight_ptr, input_to_forget_effective_bias,
-    effective_input_to_forget_scale_a, effective_input_to_forget_scale_b, output_state_ptr,
-    recurrent_to_forget_weight_ptr, recurrent_to_forget_effective_bias,
-    effective_recurrent_to_forget_scale_a, effective_recurrent_to_forget_scale_b, cell_state_ptr,
-    cell_to_forget_weight_ptr, effective_cell_to_forget_scale_a, effective_cell_to_forget_scale_b,
-    layer_norm_forget_weight_ptr, forget_gate_bias_ptr, layer_norm_forget_scale_a,
-    layer_norm_forget_scale_b, forget_variance_guard, n_batch, n_input, n_output, n_cell,
-    kTfLiteActSigmoid, forget_gate_scratch, scratch5);
+    addElementWise(gate_output, fc_output_buffer, /*n_batch=*/gate_output_shape.DimsData()[0],
+                   /*n_state=*/gate_output_shape.DimsData()[1], gate_output);
 
-  // Calculate the cell update gate.
-  calculate_lstm_gate_integer_8x8_16(
-    input_ptr, input_to_cell_weight_ptr, input_to_cell_effective_bias,
-    effective_input_to_cell_scale_a, effective_input_to_cell_scale_b, output_state_ptr,
-    recurrent_to_cell_weight_ptr, recurrent_to_cell_effective_bias,
-    effective_recurrent_to_cell_scale_a, effective_recurrent_to_cell_scale_b, cell_state_ptr,
-    /*cell_to_gate_weights=*/nullptr, /*cell_to_gate_scale_a=*/0,
-    /*cell_to_gate_scale_b=*/0, layer_norm_cell_weight_ptr, cell_gate_bias_ptr,
-    layer_norm_cell_scale_a, layer_norm_cell_scale_b, cell_variance_guard, n_batch, n_input,
-    n_output, n_cell, kTfLiteActTanh, cell_gate_scratch, scratch5);
-
-  // Update the cell state.
-  update_lstm_cell_integer(n_batch, n_cell, cell_state_ptr, cell_state_scale, input_gate_scratch,
-                           forget_gate_scratch, cell_gate_scratch, use_cifg, quantized_cell_clip);
-
-  // Calculate the output gate.
-  calculate_lstm_gate_integer_8x8_16(
-    input_ptr, input_to_output_weight_ptr, input_to_output_effective_bias,
-    effective_input_to_output_scale_a, effective_input_to_output_scale_b, output_state_ptr,
-    recurrent_to_output_weight_ptr, recurrent_to_output_effective_bias,
-    effective_recurrent_to_output_scale_a, effective_recurrent_to_output_scale_b, cell_state_ptr,
-    cell_to_output_weight_ptr, effective_cell_to_output_scale_a, effective_cell_to_output_scale_b,
-    layer_norm_output_weight_ptr, output_gate_bias_ptr, layer_norm_output_scale_a,
-    layer_norm_output_scale_b, output_variance_guard, n_batch, n_input, n_output, n_cell,
-    kTfLiteActSigmoid, output_gate_scratch, scratch5);
-
-  // Update the output state.
-  calculate_lstm_output_integer8x8_16(
-    n_batch, n_cell, n_output, cell_state_ptr, cell_state_scale, output_gate_scratch,
-    effective_hidden_scale_a, effective_hidden_scale_b, hidden_zp, projection_weight_ptr,
-    effective_proj_scale_a, effective_proj_scale_b, projection_effective_bias, output_state_zp,
-    quantized_proj_clip, output_state_ptr, scratch0, scratch4, scratch5);
-  // Copy output state to the output. Note that unlike float or hybrid, output
-  // is always contiguous.
-  std::copy_n(output_state_ptr, n_batch * n_output, output_ptr);
-}
-
-} // namespace lstm
-
-void eval_integer_8x8_16_lstm(
-  const luci_interpreter::Tensor *input, const luci_interpreter::Tensor *input_to_input_weights,
-  const luci_interpreter::Tensor *input_to_forget_weights,
-  const luci_interpreter::Tensor *input_to_cell_weights,
-  const luci_interpreter::Tensor *input_to_output_weights,
-  const luci_interpreter::Tensor *recurrent_to_input_weights,
-  const luci_interpreter::Tensor *recurrent_to_forget_weights,
-  const luci_interpreter::Tensor *recurrent_to_cell_weights,
-  const luci_interpreter::Tensor *recurrent_to_output_weights,
-  const luci_interpreter::Tensor *cell_to_input_weights,
-  const luci_interpreter::Tensor *cell_to_forget_weights,
-  const luci_interpreter::Tensor *cell_to_output_weights,
-  const luci_interpreter::Tensor *input_layer_norm_coefficients,
-  const luci_interpreter::Tensor *forget_layer_norm_coefficients,
-  const luci_interpreter::Tensor *cell_layer_norm_coefficients,
-  const luci_interpreter::Tensor *output_layer_norm_coefficients,
-  const luci_interpreter::Tensor *input_gate_bias, const luci_interpreter::Tensor *forget_gate_bias,
-  const luci_interpreter::Tensor *cell_gate_bias, const luci_interpreter::Tensor *output_gate_bias,
-  const luci_interpreter::Tensor *projection_weights,
-  const luci_interpreter::Tensor *projection_bias,
-  const luci_interpreter::UnidirectionalSequenceLSTMParams &params, bool forward_sequence,
-  bool time_major, const luci_interpreter::IntegerLSTMParams &integer_lstm_param,
-  int32_t output_state_zp, luci_interpreter::Tensor *output_state,
-  luci_interpreter::Tensor *cell_state, luci_interpreter::Tensor *output, int16_t *scratch0,
-  int16_t *scratch1, int16_t *scratch2, int16_t *scratch3, int8_t *scratch4, int32_t *scratch5)
-{
-  const auto input_shape = input->shape();
-  LUCI_INTERPRETER_CHECK(input_shape.num_dims() >= 2 && input_shape.num_dims() <= 3);
-
-  const int n_input = input_shape.dim(input_shape.num_dims() - 1);
-  int max_time, n_batch;
-  if (input_shape.num_dims() == 2)
-  {
-    max_time = 1;
-    n_batch = input_shape.dim(0);
-  }
-  else
-  {
-    max_time = (time_major) ? input_shape.dim(0) : input_shape.dim(1);
-    n_batch = (time_major) ? input_shape.dim(1) : input_shape.dim(0);
-  }
-
-  // n_cell and n_output will be the same size when there is no projection.
-  const int n_cell = input_to_output_weights->shape().dim(0);
-  const int n_output = recurrent_to_output_weights->shape().dim(1);
-
-  // Get params for time/batch/sequence.
-  const int output_batch_leading_dim = output->shape().dim(output->shape().num_dims() - 1);
-
-  if (time_major)
-  {
-    const int input_step = n_batch * n_input;
-    const int output_step = n_batch * output_batch_leading_dim;
-
-    for (int t = 0; t < max_time; t++)
+    switch (activation)
     {
-      const int t_rel = t;
-      int8_t *output_ptr =
-        luci_interpreter::kernels::getTensorData<int8_t>(output) + t_rel * output_step;
-      const int8_t *input_ptr =
-        luci_interpreter::kernels::getTensorData<int8_t>(input) + t_rel * input_step;
-
-      lstm::lstm_step_integer_8x8_16(
-        input_ptr,
-        input_to_input_weights == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int8_t>(input_to_input_weights),
-        integer_lstm_param.effective_input_to_input_scale_a,
-        integer_lstm_param.effective_input_to_input_scale_b,
-        input_to_forget_weights == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int8_t>(input_to_forget_weights),
-        integer_lstm_param.effective_input_to_forget_scale_a,
-        integer_lstm_param.effective_input_to_forget_scale_b,
-        input_to_cell_weights == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int8_t>(input_to_cell_weights),
-        integer_lstm_param.effective_input_to_cell_scale_a,
-        integer_lstm_param.effective_input_to_cell_scale_b,
-        input_to_output_weights == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int8_t>(input_to_output_weights),
-        integer_lstm_param.effective_input_to_output_scale_a,
-        integer_lstm_param.effective_input_to_output_scale_b,
-        recurrent_to_input_weights == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int8_t>(recurrent_to_input_weights),
-        integer_lstm_param.effective_recurrent_to_input_scale_a,
-        integer_lstm_param.effective_recurrent_to_input_scale_b,
-        recurrent_to_forget_weights == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int8_t>(recurrent_to_forget_weights),
-        integer_lstm_param.effective_recurrent_to_forget_scale_a,
-        integer_lstm_param.effective_recurrent_to_forget_scale_b,
-        recurrent_to_cell_weights == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int8_t>(recurrent_to_cell_weights),
-        integer_lstm_param.effective_recurrent_to_cell_scale_a,
-        integer_lstm_param.effective_recurrent_to_cell_scale_b,
-        recurrent_to_output_weights == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int8_t>(recurrent_to_output_weights),
-        integer_lstm_param.effective_recurrent_to_output_scale_a,
-        integer_lstm_param.effective_recurrent_to_output_scale_b,
-        cell_to_input_weights == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int16_t>(cell_to_input_weights),
-        integer_lstm_param.effective_cell_to_input_scale_a,
-        integer_lstm_param.effective_cell_to_input_scale_b,
-        cell_to_forget_weights == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int16_t>(cell_to_forget_weights),
-        integer_lstm_param.effective_cell_to_forget_scale_a,
-        integer_lstm_param.effective_cell_to_forget_scale_b,
-        cell_to_output_weights == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int16_t>(cell_to_output_weights),
-        integer_lstm_param.effective_cell_to_output_scale_a,
-        integer_lstm_param.effective_cell_to_output_scale_b,
-        projection_weights == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int8_t>(projection_weights),
-        integer_lstm_param.effective_proj_scale_a, integer_lstm_param.effective_proj_scale_b,
-        integer_lstm_param.hidden_zp, integer_lstm_param.effective_hidden_scale_a,
-        integer_lstm_param.effective_hidden_scale_b,
-        input_layer_norm_coefficients == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int16_t>(input_layer_norm_coefficients),
-        integer_lstm_param.layer_norm_input_scale_a, integer_lstm_param.layer_norm_input_scale_b,
-        forget_layer_norm_coefficients == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int16_t>(forget_layer_norm_coefficients),
-        integer_lstm_param.layer_norm_forget_scale_a, integer_lstm_param.layer_norm_forget_scale_b,
-        cell_layer_norm_coefficients == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int16_t>(cell_layer_norm_coefficients),
-        integer_lstm_param.layer_norm_cell_scale_a, integer_lstm_param.layer_norm_cell_scale_b,
-        output_layer_norm_coefficients == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int16_t>(output_layer_norm_coefficients),
-        integer_lstm_param.layer_norm_output_scale_a, integer_lstm_param.layer_norm_output_scale_b,
-        input_gate_bias == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int32_t>(input_gate_bias),
-        forget_gate_bias == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int32_t>(forget_gate_bias),
-        cell_gate_bias == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int32_t>(cell_gate_bias),
-        output_gate_bias == nullptr
-          ? nullptr
-          : luci_interpreter::kernels::getTensorData<int32_t>(output_gate_bias),
-        integer_lstm_param.quantized_cell_clip, integer_lstm_param.quantized_proj_clip,
-        integer_lstm_param.cell_scale, integer_lstm_param.input_variance_guard,
-        integer_lstm_param.forget_variance_guard, integer_lstm_param.cell_variance_guard,
-        integer_lstm_param.output_variance_guard,
-        integer_lstm_param.input_to_forget_effective_bias.data(),
-        integer_lstm_param.recurrent_to_forget_effective_bias.data(),
-        integer_lstm_param.input_to_cell_effective_bias.data(),
-        integer_lstm_param.recurrent_to_cell_effective_bias.data(),
-        integer_lstm_param.input_to_output_effective_bias.data(),
-        integer_lstm_param.recurrent_to_output_effective_bias.data(),
-        integer_lstm_param.input_to_input_effective_bias.data(),
-        integer_lstm_param.recurrent_to_input_effective_bias.data(),
-        integer_lstm_param.projection_effective_bias.data(), n_batch, n_cell, n_input, n_output,
-        luci_interpreter::kernels::getTensorData<int8_t>(output_state), output_state_zp,
-        luci_interpreter::kernels::getTensorData<int16_t>(cell_state), output_ptr, scratch0,
-        scratch1, scratch2, scratch3, scratch4, scratch5);
-    }
-  }
-  else
-  {
-    for (int b = 0; b < n_batch; b++)
-    {
-      const int input_step = n_input;
-      const int output_step = output_batch_leading_dim;
-
-      for (int t = 0; t < max_time; t++)
+      case TfLiteFusedActivation::kTfLiteActSigmoid:
+        sigmoid(gate_output_shape, gate_output);
+        break;
+      case TfLiteFusedActivation::kTfLiteActTanh:
       {
-        // If this is the forward_sequence, step forward, otherwise step
-        // backwards.
-        const int t_rel = forward_sequence ? t : max_time - t - 1;
-        const int time_offset = b * max_time + t_rel;
-        const int8_t *input_ptr =
-          luci_interpreter::kernels::getTensorData<int8_t>(input) + time_offset * input_step;
-        int8_t *output_ptr =
-          luci_interpreter::kernels::getTensorData<int8_t>(output) + time_offset * output_step;
-
-        // Offset the {output,cell}_state pointers to the right batch.
-        int8_t *output_state_ptr = luci_interpreter::kernels::getTensorData<int8_t>(output_state) +
-                                   b * output_batch_leading_dim;
-        int16_t *cell_state_ptr =
-          luci_interpreter::kernels::getTensorData<int16_t>(cell_state) + b * n_cell;
-
-        lstm::lstm_step_integer_8x8_16(
-          input_ptr,
-          input_to_input_weights == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int8_t>(input_to_input_weights),
-          integer_lstm_param.effective_input_to_input_scale_a,
-          integer_lstm_param.effective_input_to_input_scale_b,
-          input_to_forget_weights == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int8_t>(input_to_forget_weights),
-          integer_lstm_param.effective_input_to_forget_scale_a,
-          integer_lstm_param.effective_input_to_forget_scale_b,
-          input_to_cell_weights == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int8_t>(input_to_cell_weights),
-          integer_lstm_param.effective_input_to_cell_scale_a,
-          integer_lstm_param.effective_input_to_cell_scale_b,
-          input_to_output_weights == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int8_t>(input_to_output_weights),
-          integer_lstm_param.effective_input_to_output_scale_a,
-          integer_lstm_param.effective_input_to_output_scale_b,
-          recurrent_to_input_weights == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int8_t>(recurrent_to_input_weights),
-          integer_lstm_param.effective_recurrent_to_input_scale_a,
-          integer_lstm_param.effective_recurrent_to_input_scale_b,
-          recurrent_to_forget_weights == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int8_t>(recurrent_to_forget_weights),
-          integer_lstm_param.effective_recurrent_to_forget_scale_a,
-          integer_lstm_param.effective_recurrent_to_forget_scale_b,
-          recurrent_to_cell_weights == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int8_t>(recurrent_to_cell_weights),
-          integer_lstm_param.effective_recurrent_to_cell_scale_a,
-          integer_lstm_param.effective_recurrent_to_cell_scale_b,
-          recurrent_to_output_weights == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int8_t>(recurrent_to_output_weights),
-          integer_lstm_param.effective_recurrent_to_output_scale_a,
-          integer_lstm_param.effective_recurrent_to_output_scale_b,
-          cell_to_input_weights == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int16_t>(cell_to_input_weights),
-          integer_lstm_param.effective_cell_to_input_scale_a,
-          integer_lstm_param.effective_cell_to_input_scale_b,
-          cell_to_forget_weights == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int16_t>(cell_to_forget_weights),
-          integer_lstm_param.effective_cell_to_forget_scale_a,
-          integer_lstm_param.effective_cell_to_forget_scale_b,
-          cell_to_output_weights == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int16_t>(cell_to_output_weights),
-          integer_lstm_param.effective_cell_to_output_scale_a,
-          integer_lstm_param.effective_cell_to_output_scale_b,
-          projection_weights == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int8_t>(projection_weights),
-          integer_lstm_param.effective_proj_scale_a, integer_lstm_param.effective_proj_scale_b,
-          integer_lstm_param.hidden_zp, integer_lstm_param.effective_hidden_scale_a,
-          integer_lstm_param.effective_hidden_scale_b,
-          input_layer_norm_coefficients == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int16_t>(input_layer_norm_coefficients),
-          integer_lstm_param.layer_norm_input_scale_a, integer_lstm_param.layer_norm_input_scale_b,
-          forget_layer_norm_coefficients == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int16_t>(forget_layer_norm_coefficients),
-          integer_lstm_param.layer_norm_forget_scale_a,
-          integer_lstm_param.layer_norm_forget_scale_b,
-          cell_layer_norm_coefficients == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int16_t>(cell_layer_norm_coefficients),
-          integer_lstm_param.layer_norm_cell_scale_a, integer_lstm_param.layer_norm_cell_scale_b,
-          output_layer_norm_coefficients == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int16_t>(output_layer_norm_coefficients),
-          integer_lstm_param.layer_norm_output_scale_a,
-          integer_lstm_param.layer_norm_output_scale_b,
-          input_gate_bias == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int32_t>(input_gate_bias),
-          forget_gate_bias == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int32_t>(forget_gate_bias),
-          cell_gate_bias == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int32_t>(cell_gate_bias),
-          output_gate_bias == nullptr
-            ? nullptr
-            : luci_interpreter::kernels::getTensorData<int32_t>(output_gate_bias),
-          integer_lstm_param.quantized_cell_clip, integer_lstm_param.quantized_proj_clip,
-          integer_lstm_param.cell_scale, integer_lstm_param.input_variance_guard,
-          integer_lstm_param.forget_variance_guard, integer_lstm_param.cell_variance_guard,
-          integer_lstm_param.output_variance_guard,
-          integer_lstm_param.input_to_forget_effective_bias.data(),
-          integer_lstm_param.recurrent_to_forget_effective_bias.data(),
-          integer_lstm_param.input_to_cell_effective_bias.data(),
-          integer_lstm_param.recurrent_to_cell_effective_bias.data(),
-          integer_lstm_param.input_to_output_effective_bias.data(),
-          integer_lstm_param.recurrent_to_output_effective_bias.data(),
-          integer_lstm_param.input_to_input_effective_bias.data(),
-          integer_lstm_param.recurrent_to_input_effective_bias.data(),
-          integer_lstm_param.projection_effective_bias.data(), /*n_batch=*/1, n_cell, n_input,
-          n_output, output_state_ptr, output_state_zp, cell_state_ptr, output_ptr, scratch0,
-          scratch1, scratch2, scratch3, scratch4, scratch5);
+        // Set the scale power to -12 to avoid shift
+        tanh(/*cell_state_scale_power=*/-12, gate_output_shape, gate_output, gate_output_shape,
+             gate_output);
       }
+      break;
+      default:
+        // Only Sigmoid or Tanh is used.
+        assert(false && "Only Sigmoid or Tanh is used");
+    }
+  }
+}
+
+// Update the hidden state of the LSTM kernel using the following formula:
+// updated_hidden_state = Tanh(updated_cell_state) * output_gate_output, * means
+// element wise multiplication
+template <typename CellType, typename ActivationType>
+void updateLstmHidden(const LstmStepManager *step_info, CellType *cell_state_data_base,
+                      ActivationType *hidden_state_data, const CellType *output_gate_output,
+                      const luci_interpreter::lstm::ArithmeticParams *mul_params,
+                      int32_t cell_state_scale_power, CellType *buffer)
+{
+  auto cell_state_shape = step_info->stateShape();
+  CellType *cell_state_data = cell_state_data_base + step_info->cellStateOffset();
+  // Tanh(cell_state)
+  tanh(cell_state_scale_power, cell_state_shape, cell_state_data, cell_state_shape, buffer);
+  // Update the hidden state
+  mul(cell_state_shape, mul_params, buffer, output_gate_output,
+      hidden_state_data + step_info->hiddenStateOffset());
+}
+
+// Update the cell state using the output from the forget gate, input gate, and
+// cell gate Formula: updated_cell_state = forget_gate_output*cell_state +
+// input_gate_output * cell_gate_output, where * denotes element wise
+// multiplication
+template <typename CellType>
+void updateLstmCell(const LstmStepManager *step_info, CellType *cell_state_data,
+                    // Gate outputs
+                    CellType *forget_gate_output, const CellType *input_gate_output,
+                    const CellType *cell_gate_output,
+                    // Mul parameters
+                    const luci_interpreter::lstm::ArithmeticParams &forget_cell_mul_params,
+                    const luci_interpreter::lstm::ArithmeticParams &input_mul_params,
+                    const luci_interpreter::lstm::CellStateInfo *cell_state_info, CellType *buffer)
+{
+  auto cell_state_shape = step_info->stateShape();
+  // Forget Gate x Cell State
+  mul(cell_state_shape, &forget_cell_mul_params, forget_gate_output,
+      cell_state_data + step_info->cellStateOffset(),
+      cell_state_data + step_info->cellStateOffset());
+  // Input Gate x Cell Gate
+  mul(cell_state_shape, &input_mul_params, input_gate_output, cell_gate_output, buffer);
+
+  // Update the cell state
+  addElementWise(cell_state_data + step_info->cellStateOffset(), buffer,
+                 /*n_batch=*/cell_state_shape.DimsData()[0],
+                 /*n_state=*/cell_state_shape.DimsData()[1],
+                 cell_state_data + step_info->cellStateOffset());
+
+  if (cell_state_info->cell_clip > 0)
+  {
+    clipping(cell_state_shape.FlatSize(), cell_state_info,
+             cell_state_data + step_info->cellStateOffset());
+  }
+}
+
+template <typename ActivationType, typename WeightType, typename CellType, typename BiasType>
+void lstmStep(luci_interpreter::lstm::LSTMStruct *lstm_struct,
+              luci_interpreter::lstm::LSTMParameters *lstm_params, LstmStepManager *step_info,
+              luci_interpreter::lstm::CellStateInfo *cell_state_info,
+              ActivationType *output_state_data, CellType *cell_state_data, CellType *scratch0,
+              CellType *scratch1, CellType *scratch2, CellType *scratch3,
+              luci_interpreter::BaseRuntimeGraph *runtime_graph)
+{
+  /*Step1: Calculate gate outputs to prepare cell state update*/
+  CellType *gate_internal_buffer = scratch3;
+  CellType *forget_gate_output = scratch0;
+
+  auto input_data = luci_interpreter::kernels::getTensorData<ActivationType>(
+    runtime_graph->getDataByTensor(lstm_struct->input()));
+
+  calculateLstmGate<ActivationType, WeightType, CellType, BiasType>(
+    step_info, &lstm_params->forget_gate_parameters,
+    // Input FC
+    input_data, lstm_struct->input_to_forget_weights(), lstm_struct->forget_gate_bias(),
+    // Recurrent FC
+    output_state_data, lstm_struct->recurrent_to_forget_weights(), nullptr,
+    // Output
+    forget_gate_output, gate_internal_buffer, TfLiteFusedActivation::kTfLiteActSigmoid,
+    runtime_graph);
+
+  // Input Gate calculation;
+  CellType *input_gate_output = scratch1;
+  calculateLstmGate<ActivationType, WeightType, CellType, BiasType>(
+    step_info, &lstm_params->input_gate_parameters,
+    // Input FC
+    input_data, lstm_struct->input_to_input_weights(), lstm_struct->input_gate_bias(),
+    // Recurrent FC
+    output_state_data, lstm_struct->recurrent_to_input_weights(),
+    /*recurrent_bias*/ nullptr,
+    // Output
+    input_gate_output,
+    // Scratch arrays
+    gate_internal_buffer, TfLiteFusedActivation::kTfLiteActSigmoid, runtime_graph);
+
+  // Cell Gate calculation
+  CellType *cell_gate_output = scratch2;
+  calculateLstmGate<ActivationType, WeightType, CellType, BiasType>(
+    step_info, &lstm_params->cell_gate_parameters,
+    // Input FC
+    input_data, lstm_struct->input_to_cell_weights(), lstm_struct->cell_gate_bias(),
+    // Recurrent FC
+    output_state_data, lstm_struct->recurrent_to_cell_weights(),
+    /*recurrent_bias*/ nullptr,
+    // Output
+    cell_gate_output,
+    // Scratch arrays
+    gate_internal_buffer, TfLiteFusedActivation::kTfLiteActTanh, runtime_graph);
+
+  /*Step2: update the cell state */
+  {
+    // const InterGateParameters& inter_gate_params = op_data.inter_gate_parameters;
+    CellType *updated_input_buffer = scratch1; // reuse buffer
+
+    updateLstmCell<CellType>(
+      step_info, cell_state_data, forget_gate_output, input_gate_output, cell_gate_output,
+      lstm_params->inter_gate_parameters.forget_cell_mul_params,
+      lstm_params->inter_gate_parameters.input_mul_params, cell_state_info, updated_input_buffer);
+  }
+
+  {
+    /*Step3: update the hidden state */
+    CellType *output_gate_output = scratch1; // reuse buffer
+    calculateLstmGate<ActivationType, WeightType, CellType, BiasType>(
+      step_info, &lstm_params->output_gate_parameters,
+      // Input FC
+      input_data, lstm_struct->input_to_output_weights(), lstm_struct->output_gate_bias(),
+      // Recurrent FC
+      output_state_data, lstm_struct->recurrent_to_output_weights(), nullptr,
+      // Output
+      output_gate_output,
+      // Scratch arrays
+      gate_internal_buffer, TfLiteFusedActivation::kTfLiteActSigmoid, runtime_graph);
+    CellType *tanh_activated_cell_buffer = scratch0; // reuse buffer
+    updateLstmHidden<CellType, ActivationType>(
+      step_info, cell_state_data, output_state_data, output_gate_output,
+      &lstm_params->inter_gate_parameters.output_mul_params,
+      cell_state_info->cell_state_scale_power, tanh_activated_cell_buffer);
+
+    ActivationType *output_ptr = luci_interpreter::kernels::getTensorData<ActivationType>(
+      runtime_graph->getDataByTensor(lstm_struct->output()));
+    std::memcpy(output_ptr + step_info->outputOffset(),
+                output_state_data + step_info->hiddenStateOffset(),
+                step_info->stateShape().FlatSize() * sizeof(ActivationType));
+  }
+}
+
+} // namespace lstm_internal
+
+// Evaluate the LSTM kernel with (potential) multi-steps and multi-batch input
+template <typename ActivationType, typename WeightType, typename CellType, typename BiasType>
+void evalLSTM(luci_interpreter::lstm::LSTMStruct *lstm_struct,
+              luci_interpreter::lstm::LSTMParameters *lstm_params,
+              luci_interpreter::lstm::CellStateInfo *cell_state_info,
+              ActivationType *output_state_data, CellType *cell_state_data, CellType *scratch0,
+              CellType *scratch1, CellType *scratch2, CellType *scratch3,
+              luci_interpreter::BaseRuntimeGraph *runtime_graph)
+{
+  lstm_internal::LstmSizeInfo size_info;
+
+  size_info.time_major = lstm_struct->options->time_major();
+  size_info.batch_size = size_info.time_major
+                           ? luci_interpreter::Tensor::dim(lstm_struct->input(), 1)
+                           : luci_interpreter::Tensor::dim(lstm_struct->input(), 0);
+  size_info.time_steps = size_info.time_major
+                           ? luci_interpreter::Tensor::dim(lstm_struct->input(), 0)
+                           : luci_interpreter::Tensor::dim(lstm_struct->input(), 1);
+  size_info.input_dimension = luci_interpreter::Tensor::dim(lstm_struct->input(), 2);
+  size_info.state_dimension = luci_interpreter::Tensor::dim(lstm_struct->output_state(), 1);
+
+  lstm_internal::LstmStepManager step_info(size_info);
+
+  // time is the first dimention, enable batch computation
+  if (size_info.time_major)
+  {
+    for (int t = 0; t < size_info.time_steps; t++)
+    {
+      lstm_internal::lstmStep<ActivationType, WeightType, CellType, BiasType>(
+        lstm_struct, lstm_params, &step_info, cell_state_info, output_state_data, cell_state_data,
+        scratch0, scratch1, scratch2, scratch3, runtime_graph);
+      // prepare for the next time step
+      step_info.updateTime();
+    }
+  }
+  else
+  {
+    // batch first, unable to size the input data. single batch inference
+    for (int b = 0; b < size_info.batch_size; b++)
+    {
+      for (int t = 0; t < size_info.time_steps; t++)
+      {
+        lstm_internal::lstmStep<ActivationType, WeightType, CellType, BiasType>(
+          lstm_struct, lstm_params, &step_info, cell_state_info, output_state_data, cell_state_data,
+          scratch0, scratch1, scratch2, scratch3, runtime_graph);
+        // prepare for the next time step
+        step_info.updateTime();
+      }
+      // prepare for the next batch
+      step_info.updateBatch();
+      step_info.resetTime();
     }
   }
 }
