@@ -34,7 +34,7 @@ from shutil import copyfile
 from pathlib import Path
 
 from visqlib.Palette import YLORRD9Palette
-from visqlib.QErrorComputer import MPEIRComputer, MSEComputer
+from visqlib.QErrorComputer import MPEIRComputer, MSEComputer, TAEComputer
 from visqlib.Util import valid_attr, pretty_float
 from visqlib.DotBuilder import DotBuilder
 
@@ -72,6 +72,11 @@ def _get_parser():
         help="Path to the output json file (qerror metric = MSE).",
         required=False)
     parser.add_argument(
+        "--tae_output",
+        type=str,
+        help="Path to the output json file (qerror metric = TAE).",
+        required=False)
+    parser.add_argument(
         "--dump_dot_graph", action="store_true", help="Dump dot graph.", required=False)
     parser.add_argument(
         "-b",
@@ -86,7 +91,7 @@ def _get_parser():
 def _verify_args(args):
     """Verify the given arguments"""
 
-    valid_outputs = ['mpeir_output', 'mse_output']
+    valid_outputs = ['mpeir_output', 'mse_output', 'tae_output']
 
     # Check if at least one output option is given
     num_outputs = 0
@@ -261,7 +266,7 @@ def run_on_data_batchwise(fp32_model, q_model, data, dump_dot_graph, computers,
                 qerror_map = cur_computer.get_final_result()
                 q_min = 0.0
                 q_max = 1.0
-            elif metric_key == 'MSE':
+            elif metric_key == 'MSE' or metric_key == 'TAE':
                 qerror_map, q_min, q_max = cur_computer.get_final_result()
 
             palette = YLORRD9Palette(qerror_min=q_min, qerror_max=q_max)
@@ -313,7 +318,7 @@ def run_on_data(fp32_model, q_model, data, dump_dot_graph, computers):
                 qerror_map = cur_computer.get_final_result()
                 q_min = 0.0
                 q_max = 1.0
-            elif metric_key == 'MSE':
+            elif metric_key == 'MSE' or metric_key == 'TAE':
                 qerror_map, q_min, q_max = cur_computer.get_final_result()
 
             palette = YLORRD9Palette(qerror_min=q_min, qerror_max=q_max)
@@ -356,6 +361,9 @@ def main():
 
     if args.mse_output:
         computers['MSE'] = (MSEComputer(None, None), args.mse_output)
+
+    if args.tae_output:
+        computers['TAE'] = (TAEComputer(None, None), args.tae_output)
 
     if batch_size == None:
         run_on_data(fp32_model, q_model, data, dump_dot_graph, computers)

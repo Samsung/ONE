@@ -163,3 +163,38 @@ class MSEComputer(QErrorComputer):
     def run(self):
         self.advance_on(self._fp32_dir, self._fq_dir)
         return self.get_final_result()
+
+
+class TAEComputer(QErrorComputer):  #total absolute error
+    def __init__(self, fp32_dir, fq_dir):
+        super().__init__(fp32_dir, fq_dir)
+        self.total_error = 0
+        self.qerror_min = float('inf')
+        self.qerror_max = -self.qerror_min
+
+    def advance_on(self, fp32_dir, fq_dir):
+        data_paths = self.collect_data_path(fp32_dir, fq_dir)
+        for tensor_name, data_path in data_paths.items():
+            for (fp32_data_path, fq_data_path) in data_path:
+                fp32_data = np.load(fp32_data_path)
+                fq_data = np.load(fq_data_path)
+
+                total_error = np.sum(np.abs(fp32_data - fq_data))
+
+                if tensor_name in self.qerror_map:
+                    self.qerror_map[tensor_name] += total_error
+                else:
+                    self.qerror_map[tensor_name] = total_error
+
+                self.qerror_min = min(total_error, self.qerror_min)
+                self.qerror_max = max(total_error, self.qerror_max)
+
+    def get_final_result(self):
+        qerror_map = dict()
+        for tensor_name, acc in self.qerror_map.items():
+            qerror_map[tensor_name] = acc / self._num_processed_data
+        return qerror_map, self.qerror_min, self.qerror_max
+
+    def run(self):
+        self.advance_on(self._fp32_dir, self._fq_dir)
+        return self.get_final_result()
