@@ -54,7 +54,9 @@ using LayerParam = luci::CircleQuantizer::Options::LayerParam;
 // If user gives only one input_type, it will be expanded to the number of graph inputs
 void canonicalize_input_type(loco::Graph *g, std::vector<loco::DataType> &input_type)
 {
-  assert(g); // FIX_CALLER_UNLESS
+  if (g == nullptr)
+    return;
+
   const auto inputs = g->inputs();
 
   assert(inputs); // FIX_CALLER_UNLESS
@@ -127,7 +129,9 @@ void canonicalize_input_type(loco::Graph *g, std::vector<loco::DataType> &input_
 // TODO Find a way to reduce duplicate codes
 void canonicalize_output_type(loco::Graph *g, std::vector<loco::DataType> &output_type)
 {
-  assert(g); // FIX_CALLER_UNLESS
+  if (g == nullptr)
+    return;
+
   const auto outputs = g->outputs();
 
   assert(outputs); // FIX_CALLER_UNLESS
