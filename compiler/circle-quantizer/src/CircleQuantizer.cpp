@@ -175,10 +175,14 @@ int entry(int argc, char **argv)
           "destination_tensor_name(string)");
 
   arser.add_argument("--input_type")
-    .help("Input type of quantized model (uint8, int16, or float32)");
+    .help("Input type of quantized model (uint8, int16, int32, int64, float32, or bool). For "
+          "multiple inputs, "
+          "use comma-separated values. e.g., uint8,int16");
 
   arser.add_argument("--output_type")
-    .help("Output type of quantized model (uint8, int16, or float32)");
+    .help("Output type of quantized model (uint8, int16, int32, int64, float32, or bool). For "
+          "multiple outputs, "
+          "use comma-separated values. e.g., uint8,int16");
 
   arser.add_argument(cfg).help("Path to the quantization configuration file");
 
