@@ -113,14 +113,15 @@ void canonicalize_input_type(loco::Graph *g, std::vector<loco::DataType> &input_
           input_type[i] != loco::DataType::S16)
       {
         throw std::runtime_error("Input dtype of " + input->name() +
-                                 " is invalid. Model's input is not float32.");
+                                 " is invalid. For float32 input, the input dtype after "
+                                 "quantization must be one of uint8, int16, or float32.");
       }
     }
   }
 }
 
-// This function updates user-given input_type to match with the input signature of graph
-// If user gives only one input_type, it will be expanded to the number of graph inputs
+// This function updates user-given output_type to match with the output signature of graph
+// If user gives only one output_type, it will be expanded to the number of graph outputs
 // NOTE This function is almost same with canonicalize_input_type, but it is written as a
 // separate function for more precise error messaging.
 // TODO Find a way to reduce duplicate codes
@@ -186,7 +187,8 @@ void canonicalize_output_type(loco::Graph *g, std::vector<loco::DataType> &outpu
           output_type[i] != loco::DataType::S16)
       {
         throw std::runtime_error("Output dtype of " + output->name() +
-                                 " is invalid. Model's output is not float32.");
+                                 " is invalid. For float32 output, the output dtype after "
+                                 "quantization must be one of uint8, int16, or float32.");
       }
     }
   }
