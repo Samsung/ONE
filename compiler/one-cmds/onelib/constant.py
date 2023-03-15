@@ -73,8 +73,6 @@ class CONSTANT:
 
     OPTIMIZATION_OPTS = (
         # (OPTION_NAME, HELP_MESSAGE)
-        ('O1', 'A basic set of optimization options. This will not change the ' +
-         'execution result of the model and finish within a resonable time.'),
         ('convert_nchw_to_nhwc',
          'Experimental: This will convert NCHW operators to NHWC under the assumption that input model is NCHW.'
          ),
