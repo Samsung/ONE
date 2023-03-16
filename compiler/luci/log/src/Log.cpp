@@ -79,28 +79,6 @@ void LoggerConfig::configure(const hermes::Source *source, hermes::Source::Setti
 
 void LoggerConfig::configure(const Logger *, hermes::Source::Setting &setting) const
 {
-  // TODO remove deprecated codes
-#if 0
-  setting.filter(hermes::SeverityCategory::FATAL).reject_all();
-  setting.filter(hermes::SeverityCategory::ERROR).reject_all();
-  setting.filter(hermes::SeverityCategory::WARN).reject_all();
-  setting.filter(hermes::SeverityCategory::INFO).reject_all();
-  setting.filter(hermes::SeverityCategory::VERBOSE).reject_all();
-
-  // TODO enable FATAL and ERROR
-  if (_show_warn)
-  {
-    setting.filter(hermes::SeverityCategory::WARN).accept_all();
-  }
-  if (_show_info)
-  {
-    setting.filter(hermes::SeverityCategory::INFO).accept_all();
-  }
-  if (_show_verbose)
-  {
-    setting.filter(hermes::SeverityCategory::VERBOSE).accept_upto(_show_verbose);
-  }
-#endif
   setting.reject_all();
   setting.filter(hermes::SeverityCategory::FATAL).accept_upto(_show_verbose);
   setting.filter(hermes::SeverityCategory::ERROR).accept_upto(_show_verbose);
