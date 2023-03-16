@@ -77,6 +77,11 @@ def _get_parser():
         help="Path to the output json file (qerror metric = TAE).",
         required=False)
     parser.add_argument(
+        "--srmse_output",
+        type=str,
+        help="Path to the output json file (qerror metric = SRMSE).",
+        required=False)
+    parser.add_argument(
         "--dump_dot_graph", action="store_true", help="Dump dot graph.", required=False)
     parser.add_argument(
         "-b",
@@ -318,7 +323,7 @@ def run_on_data(fp32_model, q_model, data, dump_dot_graph, computers):
                 qerror_map = cur_computer.get_final_result()
                 q_min = 0.0
                 q_max = 1.0
-            elif metric_key == 'MSE' or metric_key == 'TAE':
+            elif metric_key == 'MSE' or metric_key == 'TAE' or metric_key == 'SRMSE':
                 qerror_map, q_min, q_max = cur_computer.get_final_result()
 
             palette = YLORRD9Palette(qerror_min=q_min, qerror_max=q_max)
@@ -364,6 +369,9 @@ def main():
 
     if args.tae_output:
         computers['TAE'] = (TAEComputer(None, None), args.tae_output)
+
+    if args.srmse_output:
+        computers['SRMSE'] = (SRMSEComputer(None, None), args.srmse_output)
 
     if batch_size == None:
         run_on_data(fp32_model, q_model, data, dump_dot_graph, computers)

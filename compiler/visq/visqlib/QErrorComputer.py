@@ -15,6 +15,7 @@
 import os
 import glob
 import numpy as np
+import json
 
 from pathlib import Path
 from visqlib.Util import to_filename
@@ -194,6 +195,49 @@ class TAEComputer(QErrorComputer):  #total absolute error
         for tensor_name, acc in self.qerror_map.items():
             qerror_map[tensor_name] = acc / self._num_processed_data
         return qerror_map, self.qerror_min, self.qerror_max
+
+    def run(self):
+        self.advance_on(self._fp32_dir, self._fq_dir)
+        return self.get_final_result()
+
+
+# Scaled Root Mean Square Error (SRMSE)
+# SRMSE = sqrt(MSE) / scale
+class SRMSEComputer(QErrorComputer):
+    def __init__(self, fp32_dir, fq_dir):
+        super().__init__(fp32_dir, fq_dir)
+        self.scale_file = Path(fq_dir) / 'scales.txt'
+
+    # Incrementally compute Qerror while traversing all data in fp32_dir and fq_dir
+    def advance_on(self, fp32_dir, fq_dir):
+        data_paths = self.collect_data_path(fp32_dir, fq_dir)
+
+        for tensor_name, data_path in data_paths.items():
+            for (fp32_data_path, fq_data_path) in data_path:
+                fp32_data = np.load(fp32_data_path)
+                fq_data = np.load(fq_data_path)
+
+                MSE = np.square(fp32_data - fq_data).mean()
+
+                if tensor_name in self.qerror_map:
+                    self.qerror_map[tensor_name] += MSE
+                else:
+                    self.qerror_map[tensor_name] = MSE
+
+    def get_final_result(self):
+        with open(self.scale_file) as f:
+            # scale_map: {tensor_name(str) -> scale(float)}
+            scale_map = json.load(f)
+
+        qerror_max = 0.0
+        qerror_map = dict()
+        for tensor_name, acc in self.qerror_map.items():
+            MSE = acc / self._num_processed_data
+            SRMSE = np.sqrt(MSE) / scale_map[tensor_name]
+            qerror_map[tensor_name] = SRMSE
+            qerror_max = max(SRMSE, qerror_max)
+
+        return qerror_map, 0.0, qerror_max
 
     def run(self):
         self.advance_on(self._fp32_dir, self._fq_dir)
