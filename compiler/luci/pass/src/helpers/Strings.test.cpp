@@ -48,3 +48,26 @@ TEST(StringsTest, str_to_granularity)
 
   EXPECT_THROW(luci::str_to_granularity("foo"), std::runtime_error);
 }
+
+TEST(StringsTest, str_vec_to_dtype_vec)
+{
+  std::vector<std::string> input1 = {"uint8", "int16", "float32"};
+  auto result1 = luci::str_vec_to_dtype_vec(input1);
+  ASSERT_EQ(3, result1.size());
+  ASSERT_EQ(loco::DataType::U8, result1[0]);
+  ASSERT_EQ(loco::DataType::S16, result1[1]);
+  ASSERT_EQ(loco::DataType::FLOAT32, result1[2]);
+
+  std::vector<std::string> input2 = {"uint8", "int16", "float32", ""};
+  auto result2 = luci::str_vec_to_dtype_vec(input2);
+  ASSERT_EQ(4, result2.size());
+  ASSERT_EQ(loco::DataType::U8, result2[0]);
+  ASSERT_EQ(loco::DataType::S16, result2[1]);
+  ASSERT_EQ(loco::DataType::FLOAT32, result2[2]);
+  ASSERT_EQ(loco::DataType::Unknown, result2[3]);
+
+  std::vector<std::string> input3 = {"uint8"};
+  auto result3 = luci::str_vec_to_dtype_vec(input3);
+  ASSERT_EQ(1, result3.size());
+  ASSERT_EQ(loco::DataType::U8, result3[0]);
+}

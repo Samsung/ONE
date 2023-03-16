@@ -77,6 +77,15 @@ loco::DataType str_to_dtype(const std::string &str)
   return loco::DataType::Unknown;
 }
 
+// Convert string to a vector of loco::DataType
+std::vector<loco::DataType> str_vec_to_dtype_vec(std::vector<std::string> &vec)
+{
+  std::vector<loco::DataType> res;
+  std::transform(vec.begin(), vec.end(), std::back_inserter(res),
+                 [](std::string s) -> loco::DataType { return str_to_dtype(to_lower_case(s)); });
+  return res;
+}
+
 QuantizationGranularity str_to_granularity(const std::string &str)
 {
   if (to_lower_case(str).compare("layer") == 0)
