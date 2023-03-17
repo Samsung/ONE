@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-MODEL_ROOT_DIR=$INSTALL_PATH/test/models
+MODEL_ROOT_DIR=$DRIVER_PATH/models
 MD5_CHECK="on"
 
 function Usage()
