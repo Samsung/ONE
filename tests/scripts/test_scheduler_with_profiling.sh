@@ -185,7 +185,6 @@ function run_benchmark_test()
     unset BACKENDS
     echo "============================================"
     unset COUNT
-    unset USE_NNAPI
 }
 
 echo ""
