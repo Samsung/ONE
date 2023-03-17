@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO Rename this script
-
 MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source $MY_PATH/common.sh
@@ -55,6 +53,7 @@ do
             ;;
         --backends=*)
             BACKEND_LIST=${i#*=}
+            ;;
     esac
     shift
 done
@@ -89,7 +88,7 @@ function run_benchmark_and_print()
     print_with_dots $MSG
     RESULT=$(get_result_of_benchmark_test $DRIVER_BIN $MODEL $LOG_FILE)
     echo "$RESULT ms"
-    print_result_of_benchmark_test "$MSG" "$RESULT" $RESULT_FILE
+    echo "$MSG $RESULT" > $RESULT_FILE
 }
 
 function run_onert_with_all_config()
@@ -124,7 +123,6 @@ function run_benchmark_test()
     local REPORT_MODEL_DIR=
 
     export COUNT=5
-    export ONERT_LOG_ENABLE=1
     echo
     echo "============================================"
     echo
@@ -176,7 +174,7 @@ prepare_test_model
 
 echo ""
 # print the result AND append to log file
-run_benchmark_test 2>&1 | tee -a onert_benchmarks.txt
+run_benchmark_test 2>&1 | tee -a $REPORT_DIR/onert_benchmarks.txt
 echo ""
 
 # Make json file.

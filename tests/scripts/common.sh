@@ -50,15 +50,6 @@ function get_result_of_benchmark_test()
     echo "$RESULT"
 }
 
-function print_result_of_benchmark_test()
-{
-    local NAME=$1
-    local RESULT=$2
-    local RESULT_FILE=$3
-
-    echo "$NAME $RESULT" > $RESULT_FILE
-}
-
 function print_with_dots()
 {
     PRINT_WIDTH=45
