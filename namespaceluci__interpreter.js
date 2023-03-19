@@ -1,9 +1,6 @@
 var namespaceluci__interpreter =
 [
     [ "kernels", "namespaceluci__interpreter_1_1kernels.html", "namespaceluci__interpreter_1_1kernels" ],
-    [ "read_metadata", "namespaceluci__interpreter_1_1read__metadata.html", [
-      [ "decode_execution_plan", "namespaceluci__interpreter_1_1read__metadata.html#af1c418563644dcb4f214f5f314d32f54", null ]
-    ] ],
     [ "AddParams", "structluci__interpreter_1_1_add_params.html", "structluci__interpreter_1_1_add_params" ],
     [ "AffineQuantization", "structluci__interpreter_1_1_affine_quantization.html", "structluci__interpreter_1_1_affine_quantization" ],
     [ "ArgMaxParams", "structluci__interpreter_1_1_arg_max_params.html", "structluci__interpreter_1_1_arg_max_params" ],
@@ -22,7 +19,6 @@ var namespaceluci__interpreter =
     [ "DataTypeImpl< DataType::S32 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s32_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s32_01_4" ],
     [ "DataTypeImpl< DataType::S64 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s64_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s64_01_4" ],
     [ "DataTypeImpl< DataType::S8 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s8_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s8_01_4" ],
-    [ "DataTypeImpl< DataType::STRING >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s_t_r_i_n_g_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s_t_r_i_n_g_01_4" ],
     [ "DataTypeImpl< DataType::U16 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u16_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u16_01_4" ],
     [ "DataTypeImpl< DataType::U32 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u32_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u32_01_4" ],
     [ "DataTypeImpl< DataType::U64 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u64_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u64_01_4" ],
@@ -35,16 +31,15 @@ var namespaceluci__interpreter =
     [ "FullyConnectedParams", "structluci__interpreter_1_1_fully_connected_params.html", "structluci__interpreter_1_1_fully_connected_params" ],
     [ "GatherParams", "structluci__interpreter_1_1_gather_params.html", "structluci__interpreter_1_1_gather_params" ],
     [ "GraphLoader", "classluci__interpreter_1_1_graph_loader.html", "classluci__interpreter_1_1_graph_loader" ],
-    [ "IBaseRuntimeGraph", "classluci__interpreter_1_1_i_base_runtime_graph.html", "classluci__interpreter_1_1_i_base_runtime_graph" ],
     [ "IMemoryManager", "classluci__interpreter_1_1_i_memory_manager.html", "classluci__interpreter_1_1_i_memory_manager" ],
     [ "InstanceNormParams", "structluci__interpreter_1_1_instance_norm_params.html", "structluci__interpreter_1_1_instance_norm_params" ],
-    [ "IntegerLSTMParams", "structluci__interpreter_1_1_integer_l_s_t_m_params.html", "structluci__interpreter_1_1_integer_l_s_t_m_params" ],
     [ "Interpreter", "classluci__interpreter_1_1_interpreter.html", "classluci__interpreter_1_1_interpreter" ],
-    [ "InterpreterConfigure", "classluci__interpreter_1_1_interpreter_configure.html", "classluci__interpreter_1_1_interpreter_configure" ],
     [ "Kernel", "classluci__interpreter_1_1_kernel.html", "classluci__interpreter_1_1_kernel" ],
     [ "KernelBuilder", "classluci__interpreter_1_1_kernel_builder.html", "classluci__interpreter_1_1_kernel_builder" ],
     [ "KernelBuilderHelper", "classluci__interpreter_1_1_kernel_builder_helper.html", "classluci__interpreter_1_1_kernel_builder_helper" ],
     [ "KernelBuilderRegistry", "classluci__interpreter_1_1_kernel_builder_registry.html", "classluci__interpreter_1_1_kernel_builder_registry" ],
+    [ "KernelConfigureRegistry", "classluci__interpreter_1_1_kernel_configure_registry.html", "classluci__interpreter_1_1_kernel_configure_registry" ],
+    [ "KernelExecuteRegistry", "classluci__interpreter_1_1_kernel_execute_registry.html", "classluci__interpreter_1_1_kernel_execute_registry" ],
     [ "KernelWithParams", "classluci__interpreter_1_1_kernel_with_params.html", "classluci__interpreter_1_1_kernel_with_params" ],
     [ "L2NormParams", "structluci__interpreter_1_1_l2_norm_params.html", "structluci__interpreter_1_1_l2_norm_params" ],
     [ "LeakyReluParams", "structluci__interpreter_1_1_leaky_relu_params.html", "structluci__interpreter_1_1_leaky_relu_params" ],
@@ -68,7 +63,6 @@ var namespaceluci__interpreter =
     [ "SpaceToDepthParams", "structluci__interpreter_1_1_space_to_depth_params.html", "structluci__interpreter_1_1_space_to_depth_params" ],
     [ "SqueezeParams", "structluci__interpreter_1_1_squeeze_params.html", "structluci__interpreter_1_1_squeeze_params" ],
     [ "StaticMemoryManager", "classluci__interpreter_1_1_static_memory_manager.html", "classluci__interpreter_1_1_static_memory_manager" ],
-    [ "StaticRuntimeGraph", "classluci__interpreter_1_1_static_runtime_graph.html", "classluci__interpreter_1_1_static_runtime_graph" ],
     [ "StridedSliceParams", "structluci__interpreter_1_1_strided_slice_params.html", "structluci__interpreter_1_1_strided_slice_params" ],
     [ "SubParams", "structluci__interpreter_1_1_sub_params.html", "structluci__interpreter_1_1_sub_params" ],
     [ "SVDFParams", "structluci__interpreter_1_1_s_v_d_f_params.html", "structluci__interpreter_1_1_s_v_d_f_params" ],
@@ -78,19 +72,14 @@ var namespaceluci__interpreter =
     [ "UnidirectionalSequenceLSTMParams", "structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html", "structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params" ],
     [ "UnpackParams", "structluci__interpreter_1_1_unpack_params.html", "structluci__interpreter_1_1_unpack_params" ],
     [ "VectorWrapper", "classluci__interpreter_1_1_vector_wrapper.html", "classluci__interpreter_1_1_vector_wrapper" ],
-    [ "Activation", "namespaceluci__interpreter.html#a90fd79eea976371bc175be8e10ba5147", null ],
+    [ "Activation", "namespaceluci__interpreter.html#a8d7c785096a52951aadcd97f6d83bbb8", null ],
+    [ "BaseRuntimeGraph", "namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71", null ],
     [ "DataType", "namespaceluci__interpreter.html#af95d87442906a8c93aaabc70b9c4fed5", null ],
     [ "DataTypeImpl", "namespaceluci__interpreter.html#aabbfe775c93e9ada62f74d376e55556b", null ],
+    [ "MemoryManager", "namespaceluci__interpreter.html#a9f6d3069ae5a00cda9601b213a0d2548", null ],
     [ "MirrorPadMode", "namespaceluci__interpreter.html#a228e5a1fc6979fe43bba60cd7d80ef2d", null ],
     [ "Padding", "namespaceluci__interpreter.html#a2695bf46949a48f22f2b49d96a3c339b", null ],
     [ "BuilderId", "namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8", [
-      [ "Size", "namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8a6f6cb72d544962fa333e2e34ce64f719", null ],
-      [ "REGISTER_KERNEL", "namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8a46b9a46fe1de96a0ff7ee864ec4b7caa", null ],
-      [ "Size", "namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8a6f6cb72d544962fa333e2e34ce64f719", null ]
-    ] ],
-    [ "BuilderId", "namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8", [
-      [ "Size", "namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8a6f6cb72d544962fa333e2e34ce64f719", null ],
-      [ "REGISTER_KERNEL", "namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8a46b9a46fe1de96a0ff7ee864ec4b7caa", null ],
       [ "Size", "namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8a6f6cb72d544962fa333e2e34ce64f719", null ]
     ] ],
     [ "DataType", "namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffb", [
@@ -106,8 +95,7 @@ var namespaceluci__interpreter =
       [ "FLOAT16", "namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffbac49f280a5ad551ccc77be0b01a2f386a", null ],
       [ "FLOAT32", "namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffba967d280b5c16d95f2947647dd2ca6cc2", null ],
       [ "FLOAT64", "namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffba139882c654db8a57f7c3092de1dd0b02", null ],
-      [ "BOOL", "namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffbaa97b2c144243b2b9d2c593ec268b62f5", null ],
-      [ "STRING", "namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffba63b588d5559f64f89a416e656880b949", null ]
+      [ "BOOL", "namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffbaa97b2c144243b2b9d2c593ec268b62f5", null ]
     ] ],
     [ "FusedActFunc", "namespaceluci__interpreter.html#a43d157784df8ea24209eb53c2e02e1f3", [
       [ "UNDEFINED", "namespaceluci__interpreter.html#a43d157784df8ea24209eb53c2e02e1f3a0db45d2a4141101bdfe48e3314cfbca3", null ],
@@ -117,10 +105,6 @@ var namespaceluci__interpreter =
       [ "RELU6", "namespaceluci__interpreter.html#a43d157784df8ea24209eb53c2e02e1f3ac014a3d2b85dcb087a709b9b2a3b8e6b", null ],
       [ "TANH", "namespaceluci__interpreter.html#a43d157784df8ea24209eb53c2e02e1f3a143c8c6f51b9bb893ce71e38702e3cc1", null ],
       [ "SIGN_BIT", "namespaceluci__interpreter.html#a43d157784df8ea24209eb53c2e02e1f3a44e6f47f77ff75eb42fec482870912ad", null ]
-    ] ],
-    [ "MemoryManagerType", "namespaceluci__interpreter.html#ac2cf41584cf0e7440abc61a74c75549d", [
-      [ "STATIC", "namespaceluci__interpreter.html#ac2cf41584cf0e7440abc61a74c75549da509aa46f6fadac9a4ed46cb79bb4e1ad", null ],
-      [ "DYNAMIC", "namespaceluci__interpreter.html#ac2cf41584cf0e7440abc61a74c75549da559146a94400a300075741bb4f876135", null ]
     ] ],
     [ "MirrorPadMode", "namespaceluci__interpreter.html#acb38d50d874e73ab22c2da1abdee4b3f", [
       [ "UNDEFINED", "namespaceluci__interpreter.html#acb38d50d874e73ab22c2da1abdee4b3fa0db45d2a4141101bdfe48e3314cfbca3", null ],
@@ -292,7 +276,22 @@ var namespaceluci__interpreter =
     [ "build_kernel_CircleWhile", "namespaceluci__interpreter.html#ad8105f82362824185a184b4a39e759d2", null ],
     [ "build_kernel_CircleWhile", "namespaceluci__interpreter.html#a63d97eb2efd3d35e4f938946d9f66f25", null ],
     [ "collectOutputNodes", "namespaceluci__interpreter.html#a6a4284c13acba9c254dcc0c72d9661ca", null ],
-    [ "fb_string2std_string", "namespaceluci__interpreter.html#ae767f14b65f8ce25a1bcd7a47039b777", null ],
+    [ "configure_kernel_CircleConcatenation", "namespaceluci__interpreter.html#ac2ac768643d73962effd36b346548366", null ],
+    [ "configure_kernel_CircleConv2D", "namespaceluci__interpreter.html#ae4a432de91a1d5cb73450b76ecde20c1", null ],
+    [ "configure_kernel_CircleExpandDims", "namespaceluci__interpreter.html#aa95c982cc6bad94d0dd7c2603f59719d", null ],
+    [ "configure_kernel_CircleFullyConnected", "namespaceluci__interpreter.html#aab2a147dc7b4028847a520508ed18e36", null ],
+    [ "configure_kernel_CircleLogistic", "namespaceluci__interpreter.html#a9c6fd3c5b0bf67c5977b0ecc8b54b0cc", null ],
+    [ "configure_kernel_CircleMaxPool2D", "namespaceluci__interpreter.html#a7b1129cbe07a1cb957ece89bc926294b", null ],
+    [ "configure_kernel_CircleReshape", "namespaceluci__interpreter.html#a071fb452eca5246c6796d7df29b242c8", null ],
+    [ "configure_kernel_CircleSoftmax", "namespaceluci__interpreter.html#a0d55a8306682746ce15f0b65b584d15e", null ],
+    [ "execute_kernel_CircleConcatenation", "namespaceluci__interpreter.html#ae898b584126123cdbae2077baae5d7f6", null ],
+    [ "execute_kernel_CircleConv2D", "namespaceluci__interpreter.html#ab89dbaee334cd1d5fd16bd3a2512c495", null ],
+    [ "execute_kernel_CircleExpandDims", "namespaceluci__interpreter.html#a95d5a5f0d592ef0c968e8aeaa255f23b", null ],
+    [ "execute_kernel_CircleFullyConnected", "namespaceluci__interpreter.html#a2df3997022806bfe93ce4e3c1ea167ee", null ],
+    [ "execute_kernel_CircleLogistic", "namespaceluci__interpreter.html#aff371f8a56569355a78b3d237a4f2f65", null ],
+    [ "execute_kernel_CircleMaxPool2D", "namespaceluci__interpreter.html#a9cd9c69918cb6e4f5a0a47ccd4cbbce2", null ],
+    [ "execute_kernel_CircleReshape", "namespaceluci__interpreter.html#adc44e9e658a86a1b2dc774d46de268cc", null ],
+    [ "execute_kernel_CircleSoftmax", "namespaceluci__interpreter.html#a9e823af3772108faf7279a61f1c8b6bc", null ],
     [ "getDataTypeSize", "namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32", null ],
     [ "luci_actfunc", "namespaceluci__interpreter.html#a3ef1b0de498871057a9677490bd21196", null ],
     [ "luci_datatype", "namespaceluci__interpreter.html#a54299b78de68f12b81ae08383bfada3d", null ],
@@ -308,6 +307,5 @@ var namespaceluci__interpreter =
     [ "REGISTER_WRAPPER", "namespaceluci__interpreter.html#ae8a8a37d254acec129a81094483acf62", null ],
     [ "size", "namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a", null ],
     [ "source_without_constant_copying", "namespaceluci__interpreter.html#a3d393d8d996c4d6dca80805ea0a20654", null ],
-    [ "tensor_name", "namespaceluci__interpreter.html#a2a53c883765410315a99acffb10d12c5", null ],
     [ "wrap", "namespaceluci__interpreter.html#a1a4e7153aee647857a88e14a34ff17d6", null ]
 ];

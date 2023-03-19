@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('classmoco_1_1onnx_1_1_graph_builder_re
 <p>Class to return graph builder for passed onnx Operator.  
  <a href="classmoco_1_1onnx_1_1_graph_builder_registry.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="compiler_2oneco_2src_2_graph_builder_registry_8h_source.html">GraphBuilderRegistry.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="oneco_2src_2_graph_builder_registry_8h_source.html">GraphBuilderRegistry.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -117,7 +117,7 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Class to return graph builder for passed onnx Operator. </p>
 
-<p class="definition">Definition at line <a class="el" href="compiler_2oneco_2src_2_graph_builder_registry_8h_source.html#l00032">32</a> of file <a class="el" href="compiler_2oneco_2src_2_graph_builder_registry_8h_source.html">GraphBuilderRegistry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="oneco_2src_2_graph_builder_registry_8h_source.html#l00032">32</a> of file <a class="el" href="oneco_2src_2_graph_builder_registry_8h_source.html">GraphBuilderRegistry.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a7b3950c276d5a7e05226c13e5d78ec7a" name="a7b3950c276d5a7e05226c13e5d78ec7a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b3950c276d5a7e05226c13e5d78ec7a">&#9670;&#160;</a></span>add()</h2>
@@ -153,7 +153,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compiler_2oneco_2src_2_graph_builder_registry_8h_source.html#l00054">54</a> of file <a class="el" href="compiler_2oneco_2src_2_graph_builder_registry_8h_source.html">GraphBuilderRegistry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="oneco_2src_2_graph_builder_registry_8h_source.html#l00054">54</a> of file <a class="el" href="oneco_2src_2_graph_builder_registry_8h_source.html">GraphBuilderRegistry.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   55</span>  {</div>
 <div class="line"><span class="lineno">   56</span>    _builder_map[op] = std::move(builder);</div>
 <div class="line"><span class="lineno">   57</span>  }</div>
@@ -183,7 +183,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compiler_2oneco_2src_2_graph_builder_registry_8h_source.html#l00047">47</a> of file <a class="el" href="compiler_2oneco_2src_2_graph_builder_registry_8h_source.html">GraphBuilderRegistry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="oneco_2src_2_graph_builder_registry_8h_source.html#l00047">47</a> of file <a class="el" href="oneco_2src_2_graph_builder_registry_8h_source.html">GraphBuilderRegistry.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   48</span>  {</div>
 <div class="line"><span class="lineno">   49</span>    <span class="keyword">static</span> GraphBuilderRegistry me;</div>
 <div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> me;</div>
@@ -217,7 +217,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Returns registered GraphBuilder pointer for operator or nullptr if not registered. </p>
 
-<p class="definition">Definition at line <a class="el" href="compiler_2oneco_2src_2_graph_builder_registry_8h_source.html#l00039">39</a> of file <a class="el" href="compiler_2oneco_2src_2_graph_builder_registry_8h_source.html">GraphBuilderRegistry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="oneco_2src_2_graph_builder_registry_8h_source.html#l00039">39</a> of file <a class="el" href="oneco_2src_2_graph_builder_registry_8h_source.html">GraphBuilderRegistry.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   40</span>  {</div>
 <div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> (_builder_map.find(op) == _builder_map.end())</div>
 <div class="line"><span class="lineno">   42</span>      <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
@@ -228,7 +228,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>compiler/oneco/src/<a class="el" href="compiler_2oneco_2src_2_graph_builder_registry_8h_source.html">GraphBuilderRegistry.h</a></li>
+<li>compiler/oneco/src/<a class="el" href="oneco_2src_2_graph_builder_registry_8h_source.html">GraphBuilderRegistry.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

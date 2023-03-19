@@ -1449,7 +1449,6 @@ var annotated_dup =
       [ "DataTypeImpl< DataType::S32 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s32_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s32_01_4" ],
       [ "DataTypeImpl< DataType::S64 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s64_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s64_01_4" ],
       [ "DataTypeImpl< DataType::S8 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s8_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s8_01_4" ],
-      [ "DataTypeImpl< DataType::STRING >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s_t_r_i_n_g_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s_t_r_i_n_g_01_4" ],
       [ "DataTypeImpl< DataType::U16 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u16_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u16_01_4" ],
       [ "DataTypeImpl< DataType::U32 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u32_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u32_01_4" ],
       [ "DataTypeImpl< DataType::U64 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u64_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u64_01_4" ],
@@ -1462,16 +1461,15 @@ var annotated_dup =
       [ "FullyConnectedParams", "structluci__interpreter_1_1_fully_connected_params.html", "structluci__interpreter_1_1_fully_connected_params" ],
       [ "GatherParams", "structluci__interpreter_1_1_gather_params.html", "structluci__interpreter_1_1_gather_params" ],
       [ "GraphLoader", "classluci__interpreter_1_1_graph_loader.html", "classluci__interpreter_1_1_graph_loader" ],
-      [ "IBaseRuntimeGraph", "classluci__interpreter_1_1_i_base_runtime_graph.html", "classluci__interpreter_1_1_i_base_runtime_graph" ],
       [ "IMemoryManager", "classluci__interpreter_1_1_i_memory_manager.html", "classluci__interpreter_1_1_i_memory_manager" ],
       [ "InstanceNormParams", "structluci__interpreter_1_1_instance_norm_params.html", "structluci__interpreter_1_1_instance_norm_params" ],
-      [ "IntegerLSTMParams", "structluci__interpreter_1_1_integer_l_s_t_m_params.html", "structluci__interpreter_1_1_integer_l_s_t_m_params" ],
       [ "Interpreter", "classluci__interpreter_1_1_interpreter.html", "classluci__interpreter_1_1_interpreter" ],
-      [ "InterpreterConfigure", "classluci__interpreter_1_1_interpreter_configure.html", "classluci__interpreter_1_1_interpreter_configure" ],
       [ "Kernel", "classluci__interpreter_1_1_kernel.html", "classluci__interpreter_1_1_kernel" ],
       [ "KernelBuilder", "classluci__interpreter_1_1_kernel_builder.html", "classluci__interpreter_1_1_kernel_builder" ],
       [ "KernelBuilderHelper", "classluci__interpreter_1_1_kernel_builder_helper.html", "classluci__interpreter_1_1_kernel_builder_helper" ],
       [ "KernelBuilderRegistry", "classluci__interpreter_1_1_kernel_builder_registry.html", "classluci__interpreter_1_1_kernel_builder_registry" ],
+      [ "KernelConfigureRegistry", "classluci__interpreter_1_1_kernel_configure_registry.html", "classluci__interpreter_1_1_kernel_configure_registry" ],
+      [ "KernelExecuteRegistry", "classluci__interpreter_1_1_kernel_execute_registry.html", "classluci__interpreter_1_1_kernel_execute_registry" ],
       [ "KernelWithParams", "classluci__interpreter_1_1_kernel_with_params.html", "classluci__interpreter_1_1_kernel_with_params" ],
       [ "L2NormParams", "structluci__interpreter_1_1_l2_norm_params.html", "structluci__interpreter_1_1_l2_norm_params" ],
       [ "LeakyReluParams", "structluci__interpreter_1_1_leaky_relu_params.html", "structluci__interpreter_1_1_leaky_relu_params" ],
@@ -1495,7 +1493,6 @@ var annotated_dup =
       [ "SpaceToDepthParams", "structluci__interpreter_1_1_space_to_depth_params.html", "structluci__interpreter_1_1_space_to_depth_params" ],
       [ "SqueezeParams", "structluci__interpreter_1_1_squeeze_params.html", "structluci__interpreter_1_1_squeeze_params" ],
       [ "StaticMemoryManager", "classluci__interpreter_1_1_static_memory_manager.html", "classluci__interpreter_1_1_static_memory_manager" ],
-      [ "StaticRuntimeGraph", "classluci__interpreter_1_1_static_runtime_graph.html", "classluci__interpreter_1_1_static_runtime_graph" ],
       [ "StridedSliceParams", "structluci__interpreter_1_1_strided_slice_params.html", "structluci__interpreter_1_1_strided_slice_params" ],
       [ "SubParams", "structluci__interpreter_1_1_sub_params.html", "structluci__interpreter_1_1_sub_params" ],
       [ "SVDFParams", "structluci__interpreter_1_1_s_v_d_f_params.html", "structluci__interpreter_1_1_s_v_d_f_params" ],
@@ -2772,7 +2769,8 @@ var annotated_dup =
     [ "QErrorComputer", "namespace_q_error_computer.html", [
       [ "MPEIRComputer", "class_q_error_computer_1_1_m_p_e_i_r_computer.html", "class_q_error_computer_1_1_m_p_e_i_r_computer" ],
       [ "MSEComputer", "class_q_error_computer_1_1_m_s_e_computer.html", "class_q_error_computer_1_1_m_s_e_computer" ],
-      [ "QErrorComputer", "class_q_error_computer_1_1_q_error_computer.html", "class_q_error_computer_1_1_q_error_computer" ]
+      [ "QErrorComputer", "class_q_error_computer_1_1_q_error_computer.html", "class_q_error_computer_1_1_q_error_computer" ],
+      [ "TAEComputer", "class_q_error_computer_1_1_t_a_e_computer.html", "class_q_error_computer_1_1_t_a_e_computer" ]
     ] ],
     [ "RandomDataGenerator", "namespace_random_data_generator.html", [
       [ "RandomDataGenerator", "class_random_data_generator_1_1_random_data_generator.html", "class_random_data_generator_1_1_random_data_generator" ]

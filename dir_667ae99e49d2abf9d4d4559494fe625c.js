@@ -47,7 +47,7 @@ var dir_667ae99e49d2abf9d4d4559494fe625c =
     [ "MatrixDiag.h", "tflite_2src_2_op_2include_2_matrix_diag_8h.html", "tflite_2src_2_op_2include_2_matrix_diag_8h" ],
     [ "MatrixSetDiag.h", "tflite_2src_2_op_2include_2_matrix_set_diag_8h.html", "tflite_2src_2_op_2include_2_matrix_set_diag_8h" ],
     [ "Maximum.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_maximum_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_maximum_8h" ],
-    [ "MaxPool2D.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_max_pool2_d_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_max_pool2_d_8h" ],
+    [ "MaxPool2D.h", "tflchef_2tflite_2src_2_op_2include_2_max_pool2_d_8h.html", "tflchef_2tflite_2src_2_op_2include_2_max_pool2_d_8h" ],
     [ "Mean.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_mean_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_mean_8h" ],
     [ "Minimum.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_minimum_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_minimum_8h" ],
     [ "MirrorPad.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_mirror_pad_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_mirror_pad_8h" ],

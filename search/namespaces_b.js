@@ -12,9 +12,8 @@ var searchData=
   ['luci_5feval_5fverifier_5fref_9',['luci_eval_verifier_ref',['../namespaceluci__eval__verifier__ref.html',1,'']]],
   ['luci_5finterpreter_10',['luci_interpreter',['../namespaceluci__interpreter.html',1,'']]],
   ['luci_5finterpreter_5fpal_11',['luci_interpreter_pal',['../namespaceluci__interpreter__pal.html',1,'']]],
-  ['read_5fmetadata_12',['read_metadata',['../namespaceluci__interpreter_1_1read__metadata.html',1,'luci_interpreter']]],
-  ['sinf_13',['sinf',['../namespaceluci_1_1sinf.html',1,'luci']]],
-  ['test_14',['test',['../namespacelogo_1_1test.html',1,'logo::test'],['../namespaceluci_1_1test.html',1,'luci::test']]],
-  ['testing_15',['testing',['../namespaceluci__interpreter_1_1kernels_1_1testing.html',1,'luci_interpreter::kernels']]],
-  ['tinf_16',['tinf',['../namespaceluci_1_1tinf.html',1,'luci']]]
+  ['sinf_12',['sinf',['../namespaceluci_1_1sinf.html',1,'luci']]],
+  ['test_13',['test',['../namespacelogo_1_1test.html',1,'logo::test'],['../namespaceluci_1_1test.html',1,'luci::test']]],
+  ['testing_14',['testing',['../namespaceluci__interpreter_1_1kernels_1_1testing.html',1,'luci_interpreter::kernels']]],
+  ['tinf_15',['tinf',['../namespaceluci_1_1tinf.html',1,'luci']]]
 ];

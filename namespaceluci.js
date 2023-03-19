@@ -786,6 +786,7 @@ var namespaceluci =
     [ "SparsifyTensorPass::sparsify_tensor< loco::DataType::S8 >", "namespaceluci.html#ac21c791dbdc8f3892a743d67d57a246c", null ],
     [ "str_to_dtype", "namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26", null ],
     [ "str_to_granularity", "namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842", null ],
+    [ "str_vec_to_dtype_vec", "namespaceluci.html#a5aa6aed869be37a785205e2451ee0206", null ],
     [ "swap_mul_add", "namespaceluci.html#ab46996da8c5c407bc43ef70e0ae4e955", null ],
     [ "symmetric_wquant_with_minmax_per_layer", "namespaceluci.html#af48f27baf3488be19af9e1e84a2f0938", null ],
     [ "tensor_name", "namespaceluci.html#a4438f6b29d02d97c6d8aef9a31481cb9", null ],

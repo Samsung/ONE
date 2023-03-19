@@ -92,6 +92,9 @@ var namespaces_dup =
       [ "type", "namespaceeval__result__verifier.html#a58814b286364541d9536071a6306fbc8", null ]
     ] ],
     [ "exo", "namespaceexo.html", "namespaceexo" ],
+    [ "export_constant", "namespaceexport__constant.html", [
+      [ "main", "namespaceexport__constant.html#adea646733deb807d62118442631f384c", null ]
+    ] ],
     [ "filesystem", "namespacefilesystem.html", [
       [ "basename", "namespacefilesystem.html#af959d1d54ec1589026cb935cae1471e7", null ],
       [ "is_dir", "namespacefilesystem.html#a65ac6e31bf1bd74608932d51d2e46e4e", null ],

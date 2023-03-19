@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['activation_0',['Activation',['../namespaceluci__interpreter.html#a90fd79eea976371bc175be8e10ba5147',1,'luci_interpreter']]],
+  ['activation_0',['Activation',['../namespaceluci__interpreter.html#a8d7c785096a52951aadcd97f6d83bbb8',1,'luci_interpreter::Activation()'],['../namespaceluci__interpreter_1_1kernels.html#a7e6d0f8aa60d2f54876de5b83cb2238c',1,'luci_interpreter::kernels::Activation()']]],
   ['activationbuilder_1',['ActivationBuilder',['../namespaceonert_1_1backend_1_1acl__cl.html#aa0673ca06bf4d182fa3fca6535d2edcd',1,'onert::backend::acl_cl::ActivationBuilder()'],['../namespaceonert_1_1backend_1_1acl__neon.html#a83fd8486280d570d411be80445e45c91',1,'onert::backend::acl_neon::ActivationBuilder()']]],
   ['activationfunctiontype_2',['ActivationFunctionType',['../classonert_1_1base__loader_1_1_base_loader.html#af5b6daee61affa000b74a3851593a569',1,'onert::base_loader::BaseLoader']]],
   ['af_3',['AF',['../_d_o_m_to_text_8cpp.html#a13acb38466d6e40304b809971fa64955',1,'DOMToText.cpp']]],

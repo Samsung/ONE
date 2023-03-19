@@ -7,8 +7,6 @@ var compiler_2luci_interpreter_2src_2loader_2_kernel_builder_8cpp =
     [ "CIRCLE_VNODE", "compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp.html#ab968e7590faa832d708fdf28b656fa76", null ],
     [ "REGISTER_KERNEL", "compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp.html#a59f867085e2fdfd747e0aa64cfb6c6ed", null ],
     [ "BuilderId", "compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp.html#a1f2a0f001c3cf88ea589d4b263616ab8", [
-      [ "Size", "compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp.html#a1f2a0f001c3cf88ea589d4b263616ab8a6f6cb72d544962fa333e2e34ce64f719", null ],
-      [ "REGISTER_KERNEL", "compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp.html#a1f2a0f001c3cf88ea589d4b263616ab8a46b9a46fe1de96a0ff7ee864ec4b7caa", null ],
       [ "Size", "compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp.html#a1f2a0f001c3cf88ea589d4b263616ab8a6f6cb72d544962fa333e2e34ce64f719", null ]
     ] ]
 ];

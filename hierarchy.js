@@ -1757,7 +1757,6 @@ var hierarchy =
     [ "loco::DataTypeImpl< DataType::S8 >", "structloco_1_1_data_type_impl_3_01_data_type_1_1_s8_01_4.html", null ],
     [ "luci_interpreter::DataTypeImpl< DataType::S8 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s8_01_4.html", null ],
     [ "loco::DataTypeImpl< DataType::STRING >", "structloco_1_1_data_type_impl_3_01_data_type_1_1_s_t_r_i_n_g_01_4.html", null ],
-    [ "luci_interpreter::DataTypeImpl< DataType::STRING >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s_t_r_i_n_g_01_4.html", null ],
     [ "loco::DataTypeImpl< DataType::U16 >", "structloco_1_1_data_type_impl_3_01_data_type_1_1_u16_01_4.html", null ],
     [ "luci_interpreter::DataTypeImpl< DataType::U16 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_u16_01_4.html", null ],
     [ "loco::DataTypeImpl< DataType::U32 >", "structloco_1_1_data_type_impl_3_01_data_type_1_1_u32_01_4.html", null ],
@@ -2287,10 +2286,6 @@ var hierarchy =
       [ "nnc::ArtifactGeneratorCppCode", "classnnc_1_1_artifact_generator_cpp_code.html", null ],
       [ "nnc::ArtifactGeneratorCppDecl", "classnnc_1_1_artifact_generator_cpp_decl.html", null ]
     ] ],
-    [ "luci_interpreter::IBaseRuntimeGraph", "classluci__interpreter_1_1_i_base_runtime_graph.html", [
-      [ "luci_interpreter::RuntimeGraph", "classluci__interpreter_1_1_runtime_graph.html", null ],
-      [ "luci_interpreter::StaticRuntimeGraph", "classluci__interpreter_1_1_static_runtime_graph.html", null ]
-    ] ],
     [ "ICLKernel", null, [
       [ "arm_compute::CLArgMinMaxLayerKernelEx", "classarm__compute_1_1_c_l_arg_min_max_layer_kernel_ex.html", null ],
       [ "arm_compute::CLBinaryLogicalOpKernel", "classarm__compute_1_1_c_l_binary_logical_op_kernel.html", null ],
@@ -2467,12 +2462,8 @@ var hierarchy =
     [ "Image", "struct_image.html", null ],
     [ "luci_interpreter::IMemoryManager", "classluci__interpreter_1_1_i_memory_manager.html", [
       [ "luci_interpreter::BuddyMemoryManager", "classluci__interpreter_1_1_buddy_memory_manager.html", null ],
-      [ "luci_interpreter::BuddyMemoryManager", "classluci__interpreter_1_1_buddy_memory_manager.html", null ],
-      [ "luci_interpreter::SimpleMemoryManager", "classluci__interpreter_1_1_simple_memory_manager.html", null ],
       [ "luci_interpreter::SimpleMemoryManager", "classluci__interpreter_1_1_simple_memory_manager.html", null ],
       [ "luci_interpreter::StaticMemoryManager", "classluci__interpreter_1_1_static_memory_manager.html", null ],
-      [ "luci_interpreter::StaticMemoryManager", "classluci__interpreter_1_1_static_memory_manager.html", null ],
-      [ "luci_interpreter::TestMemoryManager", "classluci__interpreter_1_1_test_memory_manager.html", null ],
       [ "luci_interpreter::TestMemoryManager", "classluci__interpreter_1_1_test_memory_manager.html", null ]
     ] ],
     [ "onert::backend::basic::IMemoryPlanner", "structonert_1_1backend_1_1basic_1_1_i_memory_planner.html", [
@@ -2549,10 +2540,8 @@ var hierarchy =
     [ "nnfw::cker::InstanceNormParams", "structnnfw_1_1cker_1_1_instance_norm_params.html", null ],
     [ "InstrBuilder", "class_instr_builder.html", null ],
     [ "coco::InstrIndex", "classcoco_1_1_instr_index.html", null ],
-    [ "luci_interpreter::IntegerLSTMParams", "structluci__interpreter_1_1_integer_l_s_t_m_params.html", null ],
     [ "luci_interpreter::Interpreter", "classluci__interpreter_1_1_interpreter.html", null ],
     [ "nnc::InterpreterBackend", "classnnc_1_1_interpreter_backend.html", null ],
-    [ "luci_interpreter::InterpreterConfigure", "classluci__interpreter_1_1_interpreter_configure.html", null ],
     [ "kuma::details::IntervalMask", "structkuma_1_1details_1_1_interval_mask.html", null ],
     [ "kuma::details::IntervalSet", "classkuma_1_1details_1_1_interval_set.html", null ],
     [ "tfkit::IOConfiguration", "classtfkit_1_1_i_o_configuration.html", null ],
@@ -2660,7 +2649,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::AveragePool2D", "classluci__interpreter_1_1kernels_1_1_average_pool2_d.html", null ],
         [ "luci_interpreter::kernels::L2Pool2D", "classluci__interpreter_1_1kernels_1_1_l2_pool2_d.html", null ],
         [ "luci_interpreter::kernels::L2Pool2D", "classluci__interpreter_1_1kernels_1_1_l2_pool2_d.html", null ],
-        [ "luci_interpreter::kernels::MaxPool2D", "classluci__interpreter_1_1kernels_1_1_max_pool2_d.html", null ],
         [ "luci_interpreter::kernels::MaxPool2D", "classluci__interpreter_1_1kernels_1_1_max_pool2_d.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< BatchMatMulParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -2668,11 +2656,9 @@ var hierarchy =
         [ "luci_interpreter::kernels::BatchMatMul", "classluci__interpreter_1_1kernels_1_1_batch_mat_mul.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< ConcatenationParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::Concatenation", "classluci__interpreter_1_1kernels_1_1_concatenation.html", null ],
         [ "luci_interpreter::kernels::Concatenation", "classluci__interpreter_1_1kernels_1_1_concatenation.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< Conv2DParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::Conv2D", "classluci__interpreter_1_1kernels_1_1_conv2_d.html", null ],
         [ "luci_interpreter::kernels::Conv2D", "classluci__interpreter_1_1kernels_1_1_conv2_d.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< DepthToSpaceParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -2688,7 +2674,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::Div", "classluci__interpreter_1_1kernels_1_1_div.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< FullyConnectedParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::FullyConnected", "classluci__interpreter_1_1kernels_1_1_fully_connected.html", null ],
         [ "luci_interpreter::kernels::FullyConnected", "classluci__interpreter_1_1kernels_1_1_fully_connected.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< GatherParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -2750,7 +2735,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::ShapeKernel", "classluci__interpreter_1_1kernels_1_1_shape_kernel.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< SoftmaxParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::Softmax", "classluci__interpreter_1_1kernels_1_1_softmax.html", null ],
         [ "luci_interpreter::kernels::Softmax", "classluci__interpreter_1_1kernels_1_1_softmax.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< SpaceToDepthParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -2781,39 +2765,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::Unpack", "classluci__interpreter_1_1kernels_1_1_unpack.html", null ],
         [ "luci_interpreter::kernels::Unpack", "classluci__interpreter_1_1kernels_1_1_unpack.html", null ]
       ] ],
-      [ "luci_interpreter::KernelWithParams< AddParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< ArgMaxParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< Pool2DParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< BatchMatMulParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< ConcatenationParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< Conv2DParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< DepthToSpaceParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< DepthwiseConv2DParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< DivParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< FullyConnectedParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< GatherParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< InstanceNormParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< L2NormParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< LeakyReluParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< LocalResponseNormalizationParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< ReducerParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< MirrorPadParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< MulParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< OneHotParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< PackParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< ResizeBilinearParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< ResizeNearestNeighborParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< SVDFParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< ShapeParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< SoftmaxParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< SpaceToDepthParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< SqueezeParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< StridedSliceParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< SubParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< TransposeConvParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< UnidirectionalSequenceLSTMParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< UnpackParams >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
-      [ "luci_interpreter::KernelWithParams< Params >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
       [ "luci_interpreter::KernelWithParams< Params >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
       [ "luci_interpreter::kernels::Abs", "classluci__interpreter_1_1kernels_1_1_abs.html", null ],
       [ "luci_interpreter::kernels::BatchToSpaceND", "classluci__interpreter_1_1kernels_1_1_batch_to_space_n_d.html", null ],
@@ -2829,7 +2780,6 @@ var hierarchy =
       [ "luci_interpreter::kernels::Exp", "classluci__interpreter_1_1kernels_1_1_exp.html", null ],
       [ "luci_interpreter::kernels::Exp", "classluci__interpreter_1_1kernels_1_1_exp.html", null ],
       [ "luci_interpreter::kernels::ExpandDims", "classluci__interpreter_1_1kernels_1_1_expand_dims.html", null ],
-      [ "luci_interpreter::kernels::ExpandDims", "classluci__interpreter_1_1kernels_1_1_expand_dims.html", null ],
       [ "luci_interpreter::kernels::Fill", "classluci__interpreter_1_1kernels_1_1_fill.html", null ],
       [ "luci_interpreter::kernels::Fill", "classluci__interpreter_1_1kernels_1_1_fill.html", null ],
       [ "luci_interpreter::kernels::Floor", "classluci__interpreter_1_1kernels_1_1_floor.html", null ],
@@ -2855,7 +2805,6 @@ var hierarchy =
       [ "luci_interpreter::kernels::LogicalOr", "classluci__interpreter_1_1kernels_1_1_logical_or.html", null ],
       [ "luci_interpreter::kernels::LogicalOr", "classluci__interpreter_1_1kernels_1_1_logical_or.html", null ],
       [ "luci_interpreter::kernels::Logistic", "classluci__interpreter_1_1kernels_1_1_logistic.html", null ],
-      [ "luci_interpreter::kernels::Logistic", "classluci__interpreter_1_1kernels_1_1_logistic.html", null ],
       [ "luci_interpreter::kernels::Maximum", "classluci__interpreter_1_1kernels_1_1_maximum.html", null ],
       [ "luci_interpreter::kernels::Maximum", "classluci__interpreter_1_1kernels_1_1_maximum.html", null ],
       [ "luci_interpreter::kernels::Minimum", "classluci__interpreter_1_1kernels_1_1_minimum.html", null ],
@@ -2878,7 +2827,6 @@ var hierarchy =
       [ "luci_interpreter::kernels::Relu", "classluci__interpreter_1_1kernels_1_1_relu.html", null ],
       [ "luci_interpreter::kernels::Relu6", "classluci__interpreter_1_1kernels_1_1_relu6.html", null ],
       [ "luci_interpreter::kernels::Relu6", "classluci__interpreter_1_1kernels_1_1_relu6.html", null ],
-      [ "luci_interpreter::kernels::Reshape", "classluci__interpreter_1_1kernels_1_1_reshape.html", null ],
       [ "luci_interpreter::kernels::Reshape", "classluci__interpreter_1_1kernels_1_1_reshape.html", null ],
       [ "luci_interpreter::kernels::ReverseV2", "classluci__interpreter_1_1kernels_1_1_reverse_v2.html", null ],
       [ "luci_interpreter::kernels::ReverseV2", "classluci__interpreter_1_1kernels_1_1_reverse_v2.html", null ],
@@ -2909,6 +2857,8 @@ var hierarchy =
       [ "luci_interpreter::KernelBuilder", "classluci__interpreter_1_1_kernel_builder.html", null ]
     ] ],
     [ "luci_interpreter::KernelBuilderRegistry", "classluci__interpreter_1_1_kernel_builder_registry.html", null ],
+    [ "luci_interpreter::KernelConfigureRegistry", "classluci__interpreter_1_1_kernel_configure_registry.html", null ],
+    [ "luci_interpreter::KernelExecuteRegistry", "classluci__interpreter_1_1_kernel_execute_registry.html", null ],
     [ "coco::KernelLayout", "structcoco_1_1_kernel_layout.html", [
       [ "coco::KernelLayouts::Generic", "classcoco_1_1_kernel_layouts_1_1_generic.html", null ],
       [ "coco::KernelLayouts::NCHW", "classcoco_1_1_kernel_layouts_1_1_n_c_h_w.html", null ],
@@ -3155,7 +3105,6 @@ var hierarchy =
     [ "luci::NodeBuilderBase", "classluci_1_1_node_builder_base.html", [
       [ "luci::TypedNodeBuilder< NodeBuilderType::BUFFER >", "classluci_1_1_typed_node_builder.html", [
         [ "luci::CircleConstNodeBuilder", "classluci_1_1_circle_const_node_builder.html", null ],
-        [ "luci_interpreter::CircleReferencingConstNodeBuilder", "classluci__interpreter_1_1_circle_referencing_const_node_builder.html", null ],
         [ "luci_interpreter::CircleReferencingConstNodeBuilder", "classluci__interpreter_1_1_circle_referencing_const_node_builder.html", null ]
       ] ],
       [ "luci::TypedNodeBuilder< Type >", "classluci_1_1_typed_node_builder.html", null ]
@@ -4219,7 +4168,8 @@ var hierarchy =
     ] ],
     [ "QErrorComputer.QErrorComputer", "class_q_error_computer_1_1_q_error_computer.html", [
       [ "QErrorComputer.MPEIRComputer", "class_q_error_computer_1_1_m_p_e_i_r_computer.html", null ],
-      [ "QErrorComputer.MSEComputer", "class_q_error_computer_1_1_m_s_e_computer.html", null ]
+      [ "QErrorComputer.MSEComputer", "class_q_error_computer_1_1_m_s_e_computer.html", null ],
+      [ "QErrorComputer.TAEComputer", "class_q_error_computer_1_1_t_a_e_computer.html", null ]
     ] ],
     [ "onert::ir::Quantization", "structonert_1_1ir_1_1_quantization.html", null ],
     [ "nnfw::cker::optimized::depthwise_conv::QuantizedDepthwiseConvKernel< kAllowStrided, kFixedInputDepth, kFixedDepthMultiplier >", "structnnfw_1_1cker_1_1optimized_1_1depthwise__conv_1_1_quantized_depthwise_conv_kernel.html", null ],
@@ -4315,6 +4265,7 @@ var hierarchy =
     [ "std::runtime_error", null, [
       [ "nnc::AclCppException", "classnnc_1_1_acl_cpp_exception.html", null ]
     ] ],
+    [ "luci_interpreter::RuntimeGraph", "classluci__interpreter_1_1_runtime_graph.html", null ],
     [ "luci_interpreter::RuntimeModule", "classluci__interpreter_1_1_runtime_module.html", null ],
     [ "RunTimeOperandInfo", "struct_run_time_operand_info.html", null ],
     [ "RunTimePoolInfo", "struct_run_time_pool_info.html", null ],

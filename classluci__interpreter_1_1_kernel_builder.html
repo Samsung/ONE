@@ -114,16 +114,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac5dc667efc225cf0af730787ce6d3e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa93bca7383cbdd465d244f1cfb93310"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_kernel_builder.html#aaa93bca7383cbdd465d244f1cfb93310">build</a> (const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node)</td></tr>
 <tr class="separator:aaa93bca7383cbdd465d244f1cfb93310"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3af97bedc485954c518336e2edf750c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_kernel_builder.html#ac3af97bedc485954c518336e2edf750c">KernelBuilder</a> (<a class="el" href="classluci__interpreter_1_1_i_base_runtime_graph.html">IBaseRuntimeGraph</a> *runtime_graph, <a class="el" href="classluci_1_1_circle_reader.html">CircleReader</a> *circle_reader)</td></tr>
-<tr class="separator:ac3af97bedc485954c518336e2edf750c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5dc667efc225cf0af730787ce6d3e0a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_kernel_builder.html#ac5dc667efc225cf0af730787ce6d3e0a">~KernelBuilder</a> ()</td></tr>
-<tr class="separator:ac5dc667efc225cf0af730787ce6d3e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada3f65a1ab1b4f4d0ef081724bb7277d"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_kernel_builder.html#ada3f65a1ab1b4f4d0ef081724bb7277d">build</a> (std::vector&lt; const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * &gt; &amp;&amp;inputs, std::vector&lt; <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * &gt; &amp;&amp;output, const circle::BuiltinOperator opcode, const int32_t op_index)</td></tr>
-<tr class="separator:ada3f65a1ab1b4f4d0ef081724bb7277d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abae20ebed5aaa8bf3d64f7c0c1cc4216"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci_1_1_circle_reader.html">CircleReader</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_kernel_builder.html#abae20ebed5aaa8bf3d64f7c0c1cc4216">get_circle_reader</a> ()</td></tr>
-<tr class="separator:abae20ebed5aaa8bf3d64f7c0c1cc4216"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2d1ef19624bd3009acaaf749cf6d811"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_i_base_runtime_graph.html">IBaseRuntimeGraph</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_kernel_builder.html#ab2d1ef19624bd3009acaaf749cf6d811">get_runtime_graph</a> ()</td></tr>
-<tr class="separator:ab2d1ef19624bd3009acaaf749cf6d811"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classluci__interpreter_1_1_kernel_builder_helper"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classluci__interpreter_1_1_kernel_builder_helper')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html">luci_interpreter::KernelBuilderHelper</a></td></tr>
 <tr class="memitem:aa8296ccc869f3f059be48c92027ea12f inherit pub_methods_classluci__interpreter_1_1_kernel_builder_helper"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html#aa8296ccc869f3f059be48c92027ea12f">KernelBuilderHelper</a> (const std::unordered_map&lt; const <a class="el" href="classloco_1_1_graph.html">loco::Graph</a> *, <a class="el" href="classluci__interpreter_1_1_runtime_graph.html">RuntimeGraph</a> * &gt; &amp;<a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html#a2b4cae87323924660bf95288332ad3f7">graph_to_runtime_graph</a>, const std::unordered_map&lt; const <a class="el" href="classloco_1_1_node.html">loco::Node</a> *, <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * &gt; &amp;<a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html#a560ad3430a6536bac94c54d2a1158ee2">node_to_tensor</a>)</td></tr>
 <tr class="separator:aa8296ccc869f3f059be48c92027ea12f inherit pub_methods_classluci__interpreter_1_1_kernel_builder_helper"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,7 +137,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8h_source.html#l00035">35</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8h_source.html">KernelBuilder.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9d2598253458c8cb173ad547f62a948c" name="a9d2598253458c8cb173ad547f62a948c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d2598253458c8cb173ad547f62a948c">&#9670;&#160;</a></span>KernelBuilder() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d2598253458c8cb173ad547f62a948c">&#9670;&#160;</a></span>KernelBuilder()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -184,7 +174,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="ac5dc667efc225cf0af730787ce6d3e0a" name="ac5dc667efc225cf0af730787ce6d3e0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5dc667efc225cf0af730787ce6d3e0a">&#9670;&#160;</a></span>~KernelBuilder() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5dc667efc225cf0af730787ce6d3e0a">&#9670;&#160;</a></span>~KernelBuilder()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -206,60 +196,9 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="ac3af97bedc485954c518336e2edf750c" name="ac3af97bedc485954c518336e2edf750c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3af97bedc485954c518336e2edf750c">&#9670;&#160;</a></span>KernelBuilder() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">luci_interpreter::KernelBuilder::KernelBuilder </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_i_base_runtime_graph.html">IBaseRuntimeGraph</a> *&#160;</td>
-          <td class="paramname"><em>runtime_graph</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classluci_1_1_circle_reader.html">CircleReader</a> *&#160;</td>
-          <td class="paramname"><em>circle_reader</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html#l00076">76</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html">KernelBuilder.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span>  : _runtime_graph(runtime_graph), _circle_reader(circle_reader)</div>
-<div class="line"><span class="lineno">   78</span>{</div>
-<div class="line"><span class="lineno">   79</span>  _builder_registry = std::make_unique&lt;KernelBuilderRegistry&gt;();</div>
-<div class="line"><span class="lineno">   80</span>}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="ac5dc667efc225cf0af730787ce6d3e0a" name="ac5dc667efc225cf0af730787ce6d3e0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5dc667efc225cf0af730787ce6d3e0a">&#9670;&#160;</a></span>~KernelBuilder() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">luci_interpreter::KernelBuilder::~KernelBuilder </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="aaa93bca7383cbdd465d244f1cfb93310" name="aaa93bca7383cbdd465d244f1cfb93310"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa93bca7383cbdd465d244f1cfb93310">&#9670;&#160;</a></span>build() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa93bca7383cbdd465d244f1cfb93310">&#9670;&#160;</a></span>build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -294,120 +233,9 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ada3f65a1ab1b4f4d0ef081724bb7277d" name="ada3f65a1ab1b4f4d0ef081724bb7277d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada3f65a1ab1b4f4d0ef081724bb7277d">&#9670;&#160;</a></span>build() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt; luci_interpreter::KernelBuilder::build </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"><em>inputs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * &gt; &amp;&amp;&#160;</td>
-          <td class="paramname"><em>output</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const circle::BuiltinOperator&#160;</td>
-          <td class="paramname"><em>opcode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int32_t&#160;</td>
-          <td class="paramname"><em>op_index</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html#l00088">88</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html">KernelBuilder.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>{</div>
-<div class="line"><span class="lineno">   93</span>  <span class="keyword">auto</span> specific_builder = _builder_registry-&gt;get_kernel_builder_func(opcode);</div>
-<div class="line"><span class="lineno">   94</span>  <span class="keywordflow">if</span> (specific_builder != <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">return</span> specific_builder(std::move(inputs), std::move(outputs), op_index, *<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>  assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported operator&quot;</span>);</div>
-<div class="line"><span class="lineno">   98</span>}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="abae20ebed5aaa8bf3d64f7c0c1cc4216" name="abae20ebed5aaa8bf3d64f7c0c1cc4216"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abae20ebed5aaa8bf3d64f7c0c1cc4216">&#9670;&#160;</a></span>get_circle_reader()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classluci_1_1_circle_reader.html">CircleReader</a> * luci_interpreter::KernelBuilder::get_circle_reader </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8h_source.html#l00044">44</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8h_source.html">KernelBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> _circle_reader; }</div>
-</div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_add_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleAdd()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_arg_max_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleArgMax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_average_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleAveragePool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_batch_mat_mul_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleBatchMatMul()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_concatenation_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleConcatenation()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_conv2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_depth_to_space_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleDepthToSpace()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_depthwise_conv2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleDepthwiseConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_div_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleDiv()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_fully_connected_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleFullyConnected()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_gather_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleGather()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_instance_norm_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleInstanceNorm()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_l2_normalize_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleL2Normalize()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_l2_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleL2Pool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_leaky_relu_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleLeakyRelu()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_local_response_normalization_8cpp_source.html#l00025">luci_interpreter::build_kernel_CircleLocalResponseNormalization()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_max_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleMaxPool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_mean_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleMean()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_mirror_pad_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleMirrorPad()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_mul_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleMul()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_one_hot_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleOneHot()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_pack_8cpp_source.html#l00024">luci_interpreter::build_kernel_CirclePack()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_resize_bilinear_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleResizeBilinear()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_resize_nearest_neighbor_8cpp_source.html#l00025">luci_interpreter::build_kernel_CircleResizeNearestNeighbor()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_shape_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleShape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_softmax_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleSoftmax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_space_to_depth_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleSpaceToDepth()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_squeeze_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleSqueeze()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_strided_slice_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleStridedSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_sub_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleSub()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_s_v_d_f_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleSVDF()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_transpose_conv_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleTransposeConv()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00026">luci_interpreter::build_kernel_CircleUnidirectionalSequenceLSTM()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_unpack_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleUnpack()</a>.</p>
-
-</div>
-</div>
-<a id="ab2d1ef19624bd3009acaaf749cf6d811" name="ab2d1ef19624bd3009acaaf749cf6d811"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2d1ef19624bd3009acaaf749cf6d811">&#9670;&#160;</a></span>get_runtime_graph()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classluci__interpreter_1_1_i_base_runtime_graph.html">IBaseRuntimeGraph</a> * luci_interpreter::KernelBuilder::get_runtime_graph </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8h_source.html#l00046">46</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8h_source.html">KernelBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> _runtime_graph; }</div>
-</div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_average_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleAveragePool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_batch_mat_mul_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleBatchMatMul()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_conv2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_depthwise_conv2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleDepthwiseConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_mean_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleMean()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_s_v_d_f_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleSVDF()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_transpose_conv_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleTransposeConv()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00026">luci_interpreter::build_kernel_CircleUnidirectionalSequenceLSTM()</a>.</p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>compiler/luci-interpreter/src/loader/<a class="el" href="compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8h_source.html">KernelBuilder.h</a></li>
-<li>onert-micro/luci-interpreter/src/loader/<a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8h_source.html">KernelBuilder.h</a></li>
 <li>compiler/luci-interpreter/src/loader/<a class="el" href="compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html">KernelBuilder.cpp</a></li>
-<li>onert-micro/luci-interpreter/src/loader/<a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html">KernelBuilder.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

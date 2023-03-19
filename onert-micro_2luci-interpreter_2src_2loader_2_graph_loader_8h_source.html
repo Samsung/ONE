@@ -112,44 +112,25 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2lo
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define LUCI_INTERPRETER_LOADER_GRAPHLOADER_H</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;core/RuntimeGraph.h&quot;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="onert-micro_2luci-interpreter_2src_2memory__managers_2_memory_manager_8h.html">memory_managers/MemoryManager.h</a>&quot;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="_circle_micro_reader_8h.html">luci_interpreter/core/reader/CircleMicroReader.h</a>&quot;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci__interpreter.html">luci_interpreter</a></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">class </span>GraphLoader</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <a class="code hl_function" href="classluci__interpreter_1_1_graph_loader.html#aae5f03a10057055dca5ec34daccca933">GraphLoader</a>(CircleReader *reader, IBaseRuntimeGraph *runtime_graph,</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>              IMemoryManager *memory_manager,</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>              std::unordered_map&lt;int32_t, Tensor *&gt; *index_to_tensor);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="_circle_micro_reader_8h.html">luci_interpreter/core/reader/CircleMicroReader.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci__interpreter.html">luci_interpreter</a></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">class </span>GraphLoader</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classluci__interpreter_1_1_graph_loader.html#a6831d3c686bfd091905278d629504664">checkInplaceOps</a>(CircleReader *reader, RuntimeGraph *runtime_graph);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// namespace luci_interpreter</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classluci__interpreter_1_1_graph_loader.html#a8860de440a6c9a99eaf88e6615b16dcc">loadTensors</a>(<span class="keywordtype">bool</span> use_static_memory_manager);</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classluci__interpreter_1_1_graph_loader.html#a85be8a4400ec4bae336f6b4a262508ee">initInputTensors</a>(<span class="keywordtype">bool</span> use_static_memory_manager) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classluci__interpreter_1_1_graph_loader.html#a47e7a5e1b527ab630192c7b80cb9d955">loadOperators</a>(<span class="keywordtype">bool</span> use_static_memory_manager);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordtype">bool</span> isCouldBeEmplaceTensor(<span class="keyword">const</span> int32_t tensor_index);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  IBaseRuntimeGraph *_runtime_graph;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  IMemoryManager *_memory_manager;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  CircleReader *_reader;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  std::unordered_map&lt;int32_t, Tensor *&gt; *_index_to_tensor;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>} <span class="comment">// namespace luci_interpreter</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif </span><span class="comment">// LUCI_INTERPRETER_LOADER_GRAPHLOADER_H</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#endif </span><span class="comment">// LUCI_INTERPRETER_LOADER_GRAPHLOADER_H</span></div>
 <div class="ttc" id="a_circle_micro_reader_8h_html"><div class="ttname"><a href="_circle_micro_reader_8h.html">CircleMicroReader.h</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1_graph_loader_html_a47e7a5e1b527ab630192c7b80cb9d955"><div class="ttname"><a href="classluci__interpreter_1_1_graph_loader.html#a47e7a5e1b527ab630192c7b80cb9d955">luci_interpreter::GraphLoader::loadOperators</a></div><div class="ttdeci">void loadOperators()</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00291">GraphLoader.cpp:291</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1_graph_loader_html_a85be8a4400ec4bae336f6b4a262508ee"><div class="ttname"><a href="classluci__interpreter_1_1_graph_loader.html#a85be8a4400ec4bae336f6b4a262508ee">luci_interpreter::GraphLoader::initInputTensors</a></div><div class="ttdeci">void initInputTensors(bool use_static_memory_manager) const</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00153">GraphLoader.cpp:153</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1_graph_loader_html_a8860de440a6c9a99eaf88e6615b16dcc"><div class="ttname"><a href="classluci__interpreter_1_1_graph_loader.html#a8860de440a6c9a99eaf88e6615b16dcc">luci_interpreter::GraphLoader::loadTensors</a></div><div class="ttdeci">void loadTensors()</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00183">GraphLoader.cpp:183</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1_graph_loader_html_aae5f03a10057055dca5ec34daccca933"><div class="ttname"><a href="classluci__interpreter_1_1_graph_loader.html#aae5f03a10057055dca5ec34daccca933">luci_interpreter::GraphLoader::GraphLoader</a></div><div class="ttdeci">GraphLoader(const loco::Graph *graph, RuntimeGraph *runtime_graph, RuntimeToIR &amp;runtime_to_ir, const std::unordered_map&lt; const loco::Graph *, RuntimeGraph * &gt; &amp;graph_to_runtime_graph, std::unordered_map&lt; const loco::Node *, Tensor * &gt; &amp;node_to_tensor, IMemoryManager *memory_manager)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00173">GraphLoader.cpp:173</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1_graph_loader_html_a6831d3c686bfd091905278d629504664"><div class="ttname"><a href="classluci__interpreter_1_1_graph_loader.html#a6831d3c686bfd091905278d629504664">luci_interpreter::GraphLoader::checkInplaceOps</a></div><div class="ttdeci">static void checkInplaceOps(CircleReader *reader, RuntimeGraph *runtime_graph)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00061">GraphLoader.cpp:61</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html"><div class="ttname"><a href="namespaceluci__interpreter.html">luci_interpreter</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h_source.html#l00021">BuddyMemoryManager.h:22</a></div></div>
-<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2memory__managers_2_memory_manager_8h_html"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2memory__managers_2_memory_manager_8h.html">MemoryManager.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

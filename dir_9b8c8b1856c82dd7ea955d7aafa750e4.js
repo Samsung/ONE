@@ -2,7 +2,7 @@ var dir_9b8c8b1856c82dd7ea955d7aafa750e4 =
 [
     [ "ActivationUtils.h", "_activation_utils_8h.html", "_activation_utils_8h" ],
     [ "Array.h", "compiler_2ann-ref_2src_2ops_2internal_2_array_8h.html", "compiler_2ann-ref_2src_2ops_2internal_2_array_8h" ],
-    [ "Dims.h", "ann-ref_2src_2ops_2internal_2_dims_8h.html", "ann-ref_2src_2ops_2internal_2_dims_8h" ],
+    [ "Dims.h", "ann-ref_2src_2ops_2internal_2dims_8h.html", "ann-ref_2src_2ops_2internal_2dims_8h" ],
     [ "Elementwise.cpp", "_elementwise_8cpp.html", "_elementwise_8cpp" ],
     [ "Elementwise.h", "compiler_2ann-ref_2src_2ops_2internal_2_elementwise_8h.html", "compiler_2ann-ref_2src_2ops_2internal_2_elementwise_8h" ],
     [ "FeatureMap.h", "_feature_map_8h.html", "_feature_map_8h" ],

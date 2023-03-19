@@ -13,7 +13,6 @@ var onert_micro_2luci_interpreter_2include_2luci__interpreter_2core_2_data_type_
     [ "luci_interpreter::DataTypeImpl< DataType::FLOAT32 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_f_l_o_a_t32_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_f_l_o_a_t32_01_4" ],
     [ "luci_interpreter::DataTypeImpl< DataType::FLOAT64 >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_f_l_o_a_t64_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_f_l_o_a_t64_01_4" ],
     [ "luci_interpreter::DataTypeImpl< DataType::BOOL >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_b_o_o_l_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_b_o_o_l_01_4" ],
-    [ "luci_interpreter::DataTypeImpl< DataType::STRING >", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s_t_r_i_n_g_01_4.html", "structluci__interpreter_1_1_data_type_impl_3_01_data_type_1_1_s_t_r_i_n_g_01_4" ],
     [ "DataType", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#aad9df55f11269ecadf7448b6b9a10ffb", [
       [ "Unknown", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#aad9df55f11269ecadf7448b6b9a10ffba88183b946cc5f0e8c96b2e66e1c74a7e", null ],
       [ "U8", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#aad9df55f11269ecadf7448b6b9a10ffba6669348b484e3008dca2bfa8e85e40b5", null ],
@@ -27,8 +26,7 @@ var onert_micro_2luci_interpreter_2include_2luci__interpreter_2core_2_data_type_
       [ "FLOAT16", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#aad9df55f11269ecadf7448b6b9a10ffbac49f280a5ad551ccc77be0b01a2f386a", null ],
       [ "FLOAT32", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#aad9df55f11269ecadf7448b6b9a10ffba967d280b5c16d95f2947647dd2ca6cc2", null ],
       [ "FLOAT64", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#aad9df55f11269ecadf7448b6b9a10ffba139882c654db8a57f7c3092de1dd0b02", null ],
-      [ "BOOL", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#aad9df55f11269ecadf7448b6b9a10ffbaa97b2c144243b2b9d2c593ec268b62f5", null ],
-      [ "STRING", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#aad9df55f11269ecadf7448b6b9a10ffba63b588d5559f64f89a416e656880b949", null ]
+      [ "BOOL", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#aad9df55f11269ecadf7448b6b9a10ffbaa97b2c144243b2b9d2c593ec268b62f5", null ]
     ] ],
     [ "getDataTypeSize", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#aa129d157edeab20d5916101a10cd9f32", null ],
     [ "size", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#ae1ed28847eae6c24ff4c31d64255a23a", null ]

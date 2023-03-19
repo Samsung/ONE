@@ -103,8 +103,6 @@ $(document).ready(function(){initNavTree('classluci__interpreter_1_1_kernel_buil
 Public Types</h2></td></tr>
 <tr class="memitem:a87fa24b8731313d44a612771dc4446af"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_kernel_builder_registry.html#a87fa24b8731313d44a612771dc4446af">KernelBuilderFunc</a> = std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;(const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *, <a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html">KernelBuilderHelper</a> &amp;)</td></tr>
 <tr class="separator:a87fa24b8731313d44a612771dc4446af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a424d04e24b360e78433ed6ff950db4bc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_kernel_builder_registry.html#a424d04e24b360e78433ed6ff950db4bc">KernelBuilderFunc</a> = std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;(std::vector&lt; const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * &gt; &amp;&amp;, std::vector&lt; <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * &gt; &amp;&amp;, const uint32_t, <a class="el" href="classluci__interpreter_1_1_kernel_builder.html">KernelBuilder</a> &amp;)</td></tr>
-<tr class="separator:a424d04e24b360e78433ed6ff950db4bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -112,20 +110,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acbb68db858e8e42d724dfb7e08a7bd9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa749ffd7d92900388a8c161b71508ca0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_kernel_builder_registry.html#a87fa24b8731313d44a612771dc4446af">KernelBuilderFunc</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_kernel_builder_registry.html#aa749ffd7d92900388a8c161b71508ca0">get_kernel_builder_func</a> (<a class="el" href="namespaceluci.html#a311e4e8fc7a65afbda7a68d7a12d3ffc">luci::CircleOpcode</a> opcode) const</td></tr>
 <tr class="separator:aa749ffd7d92900388a8c161b71508ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbb68db858e8e42d724dfb7e08a7bd9d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_kernel_builder_registry.html#acbb68db858e8e42d724dfb7e08a7bd9d">KernelBuilderRegistry</a> ()</td></tr>
-<tr class="separator:acbb68db858e8e42d724dfb7e08a7bd9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fe40b77f37c512db0593e55d4393022"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_kernel_builder_registry.html#a87fa24b8731313d44a612771dc4446af">KernelBuilderFunc</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_kernel_builder_registry.html#a3fe40b77f37c512db0593e55d4393022">get_kernel_builder_func</a> (circle::BuiltinOperator opcode) const</td></tr>
-<tr class="separator:a3fe40b77f37c512db0593e55d4393022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Registry of kernel builders. </p>
-<p >This class contains mapping from Opcodes to kernel builder functions</p>
 <p >This class contains mapping from Opcodes to kernel builder functions </p>
 
 <p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html#l00074">74</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html">KernelBuilder.cpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a87fa24b8731313d44a612771dc4446af" name="a87fa24b8731313d44a612771dc4446af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87fa24b8731313d44a612771dc4446af">&#9670;&#160;</a></span>KernelBuilderFunc <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a87fa24b8731313d44a612771dc4446af">&#9670;&#160;</a></span>KernelBuilderFunc</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -140,25 +133,9 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a424d04e24b360e78433ed6ff950db4bc" name="a424d04e24b360e78433ed6ff950db4bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a424d04e24b360e78433ed6ff950db4bc">&#9670;&#160;</a></span>KernelBuilderFunc <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classluci__interpreter_1_1_kernel_builder_registry.html#a87fa24b8731313d44a612771dc4446af">luci_interpreter::KernelBuilderRegistry::KernelBuilderFunc</a> =  std::unique_ptr&lt;<a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a>&gt;(std::vector&lt;const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&gt; &amp;&amp;, std::vector&lt;<a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&gt; &amp;&amp;, const uint32_t, <a class="el" href="classluci__interpreter_1_1_kernel_builder.html">KernelBuilder</a> &amp;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html#l00043">43</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html">KernelBuilder.cpp</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="acbb68db858e8e42d724dfb7e08a7bd9d" name="acbb68db858e8e42d724dfb7e08a7bd9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbb68db858e8e42d724dfb7e08a7bd9d">&#9670;&#160;</a></span>KernelBuilderRegistry() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acbb68db858e8e42d724dfb7e08a7bd9d">&#9670;&#160;</a></span>KernelBuilderRegistry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -194,80 +171,9 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="acbb68db858e8e42d724dfb7e08a7bd9d" name="acbb68db858e8e42d724dfb7e08a7bd9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbb68db858e8e42d724dfb7e08a7bd9d">&#9670;&#160;</a></span>KernelBuilderRegistry() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">luci_interpreter::KernelBuilderRegistry::KernelBuilderRegistry </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html#l00047">47</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html">KernelBuilder.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>  {</div>
-<div class="line"><span class="lineno">   49</span><span class="preprocessor">#define REGISTER_KERNEL(builtin_operator, name)                                        \</span></div>
-<div class="line"><span class="lineno">   50</span><span class="preprocessor">  register_kernel_builder(circle::BuiltinOperator::BuiltinOperator_##builtin_operator, \</span></div>
-<div class="line"><span class="lineno">   51</span><span class="preprocessor">                          build_kernel_Circle##name);</span></div>
-<div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span><span class="preprocessor">#if USE_GENERATED_LIST</span></div>
-<div class="line"><span class="lineno">   54</span><span class="preprocessor">#include &quot;GeneratedKernelsToBuild.lst&quot;</span></div>
-<div class="line"><span class="lineno">   55</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">   56</span><span class="preprocessor">#include &quot;KernelsToBuild.lst&quot;</span></div>
-<div class="line"><span class="lineno">   57</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span><span class="preprocessor">#undef REGISTER_KERNEL</span></div>
-<div class="line"><span class="lineno">   60</span>  }</div>
-</div><!-- fragment -->
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3fe40b77f37c512db0593e55d4393022" name="a3fe40b77f37c512db0593e55d4393022"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3fe40b77f37c512db0593e55d4393022">&#9670;&#160;</a></span>get_kernel_builder_func() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classluci__interpreter_1_1_kernel_builder_registry.html#a87fa24b8731313d44a612771dc4446af">KernelBuilderFunc</a> * luci_interpreter::KernelBuilderRegistry::get_kernel_builder_func </td>
-          <td>(</td>
-          <td class="paramtype">circle::BuiltinOperator&#160;</td>
-          <td class="paramname"><em>opcode</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html#l00062">62</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html">KernelBuilder.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>  {</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">return</span> _operator_builders.at(<span class="keywordtype">size_t</span>(opcode));</div>
-<div class="line"><span class="lineno">   65</span>  }</div>
-</div><!-- fragment -->
-</div>
-</div>
 <a id="aa749ffd7d92900388a8c161b71508ca0" name="aa749ffd7d92900388a8c161b71508ca0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa749ffd7d92900388a8c161b71508ca0">&#9670;&#160;</a></span>get_kernel_builder_func() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa749ffd7d92900388a8c161b71508ca0">&#9670;&#160;</a></span>get_kernel_builder_func()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -297,9 +203,8 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>compiler/luci-interpreter/src/loader/<a class="el" href="compiler_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html">KernelBuilder.cpp</a></li>
-<li>onert-micro/luci-interpreter/src/loader/<a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_kernel_builder_8cpp_source.html">KernelBuilder.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

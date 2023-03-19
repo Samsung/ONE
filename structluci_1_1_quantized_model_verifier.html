@@ -108,8 +108,6 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8191567ef8ca9808057e98df35a64032"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantized_model_verifier.html#a8191567ef8ca9808057e98df35a64032">QuantizedModelVerifier</a> (<a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a> quantized_dtype, <a class="el" href="namespaceluci.html#a1dbbe7778504a3210934cf9f1415315a">QuantizationGranularity</a> granularity)</td></tr>
-<tr class="separator:a8191567ef8ca9808057e98df35a64032"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a574a9db699b40acd03dcbd90de07306b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantized_model_verifier.html#a574a9db699b40acd03dcbd90de07306b">QuantizedModelVerifier</a> (std::unique_ptr&lt; <a class="el" href="structluci_1_1_quantized_model_verifier_1_1_context.html">Context</a> &gt; &amp;&amp;ctx)</td></tr>
 <tr class="separator:a574a9db699b40acd03dcbd90de07306b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc985326e99c5e6024f3df6342dce68c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantized_model_verifier.html#afc985326e99c5e6024f3df6342dce68c">verify</a> (<a class="el" href="classloco_1_1_graph.html">loco::Graph</a> *g)</td></tr>
@@ -121,56 +119,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_quantized_model_verifier_8h_source.html#l00034">34</a> of file <a class="el" href="_quantized_model_verifier_8h_source.html">QuantizedModelVerifier.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8191567ef8ca9808057e98df35a64032" name="a8191567ef8ca9808057e98df35a64032"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8191567ef8ca9808057e98df35a64032">&#9670;&#160;</a></span>QuantizedModelVerifier() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">luci::QuantizedModelVerifier::QuantizedModelVerifier </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a>&#160;</td>
-          <td class="paramname"><em>quantized_dtype</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceluci.html#a1dbbe7778504a3210934cf9f1415315a">QuantizationGranularity</a>&#160;</td>
-          <td class="paramname"><em>granularity</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_quantized_model_verifier_8h_source.html#l00048">48</a> of file <a class="el" href="_quantized_model_verifier_8h_source.html">QuantizedModelVerifier.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span>    _ctx = std::make_unique&lt;Context&gt;();</div>
-<div class="line"><span class="lineno">   51</span>    {</div>
-<div class="line"><span class="lineno">   52</span>      _ctx-&gt;output_model_dtype = quantized_dtype;</div>
-<div class="line"><span class="lineno">   53</span>      _ctx-&gt;granularity = granularity;</div>
-<div class="line"><span class="lineno">   54</span>      _ctx-&gt;input_type = quantized_dtype;</div>
-<div class="line"><span class="lineno">   55</span>      _ctx-&gt;output_type = quantized_dtype;</div>
-<div class="line"><span class="lineno">   56</span>      _ctx-&gt;TF_style_maxpool = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   57</span>    }</div>
-<div class="line"><span class="lineno">   58</span>  }</div>
-</div><!-- fragment -->
-</div>
-</div>
 <a id="a574a9db699b40acd03dcbd90de07306b" name="a574a9db699b40acd03dcbd90de07306b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a574a9db699b40acd03dcbd90de07306b">&#9670;&#160;</a></span>QuantizedModelVerifier() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a574a9db699b40acd03dcbd90de07306b">&#9670;&#160;</a></span>QuantizedModelVerifier()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,11 +143,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantized_model_verifier_8h_source.html#l00061">61</a> of file <a class="el" href="_quantized_model_verifier_8h_source.html">QuantizedModelVerifier.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>                                                       : _ctx{std::move(ctx)}</div>
-<div class="line"><span class="lineno">   62</span>  {</div>
-<div class="line"><span class="lineno">   63</span>    <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   64</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_quantized_model_verifier_8h_source.html#l00048">48</a> of file <a class="el" href="_quantized_model_verifier_8h_source.html">QuantizedModelVerifier.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>                                                       : _ctx{std::move(ctx)}</div>
+<div class="line"><span class="lineno">   49</span>  {</div>
+<div class="line"><span class="lineno">   50</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   51</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -283,7 +233,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="_verify_quantized_bias_scale_8h_source.html#l00039">luci::VerifyQuantizedBiasScale::create()</a>, <a class="el" href="_verify_quantized_node_granularity_8cpp_source.html#l00028">luci::VerifyQuantizedNodeGranularity::create()</a>, <a class="el" href="_verify_quantized_node_type_8cpp_source.html#l00032">luci::VerifyQuantizedNodeType::create()</a>, <a class="el" href="_layer_info_map_8cpp_source.html#l00142">luci::layer_info_map()</a>, and <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci_2pass_2src_2_circle_quantizer_8cpp_source.html#l00170">luci::CircleQuantizer::quantize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="luci_2pass_2src_2_circle_quantizer_8cpp_source.html#l00319">luci::CircleQuantizer::quantize()</a>.</p>
 
 </div>
 </div>

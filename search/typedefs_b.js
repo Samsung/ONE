@@ -5,7 +5,7 @@ var searchData=
   ['matrix_2',['Matrix',['../structnnfw_1_1cker_1_1_t_types.html#ad595708194e658a545e2ef15000e810f',1,'nnfw::cker::TTypes']]],
   ['matrixmap_3',['MatrixMap',['../namespacennfw_1_1cker.html#af0c8d67ba855462165cef7650358e704',1,'nnfw::cker::MatrixMap()'],['../_matrix_8h.html#adc3c90e1206207df34bc41c687e250f2',1,'MatrixMap():&#160;Matrix.h']]],
   ['measurementdata_4',['MeasurementData',['../namespaceonert_1_1exec.html#a893a10751ea3505eaad6ffe3da376aef',1,'onert::exec']]],
-  ['memorymanager_5',['MemoryManager',['../namespaceonert_1_1backend_1_1acl__cl.html#aec9f8d43988a9d43b9dcbfaa13891484',1,'onert::backend::acl_cl::MemoryManager()'],['../namespaceonert_1_1backend_1_1acl__neon.html#ab6b72123ac53105035f0411fa9ca2391',1,'onert::backend::acl_neon::MemoryManager()']]],
+  ['memorymanager_5',['MemoryManager',['../namespaceluci__interpreter.html#a9f6d3069ae5a00cda9601b213a0d2548',1,'luci_interpreter::MemoryManager()'],['../namespaceonert_1_1backend_1_1acl__cl.html#aec9f8d43988a9d43b9dcbfaa13891484',1,'onert::backend::acl_cl::MemoryManager()'],['../namespaceonert_1_1backend_1_1acl__neon.html#ab6b72123ac53105035f0411fa9ca2391',1,'onert::backend::acl_neon::MemoryManager()']]],
   ['memoryoffset_6',['MemoryOffset',['../namespacekuma.html#a56eb60c063d89aaef20b7ad37a5aa2be',1,'kuma']]],
   ['memoryplans_7',['MemoryPlans',['../structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#aa8395e112911426c87e6158cb38e0166',1,'onert::backend::basic::IMemoryPlanner']]],
   ['memorysize_8',['MemorySize',['../namespacekuma.html#aa887f95a62bbe57942ed4fb85cdaeedb',1,'kuma']]],

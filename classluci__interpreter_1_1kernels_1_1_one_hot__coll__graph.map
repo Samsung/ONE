@@ -1,8 +1,8 @@
 <map id="luci_interpreter::kernels::OneHot" name="luci_interpreter::kernels::OneHot">
-<area shape="rect" id="node1" title=" " alt="" coords="809,5,964,45"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="555,5,760,45"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,13,156,38"/>
-<area shape="rect" id="node6" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="231,40,391,80"/>
-<area shape="rect" id="node4" href="$structluci__interpreter_1_1_one_hot_params.html" title=" " alt="" coords="231,104,390,144"/>
-<area shape="rect" id="node5" title=" " alt="" coords="50,111,111,137"/>
+<area shape="rect" id="node1" title=" " alt="" coords="809,26,964,66"/>
+<area shape="rect" id="node2" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="555,26,760,66"/>
+<area shape="rect" id="node3" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,156,31"/>
+<area shape="rect" id="node6" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="231,26,391,66"/>
+<area shape="rect" id="node4" href="$structluci__interpreter_1_1_one_hot_params.html" title=" " alt="" coords="231,90,390,130"/>
+<area shape="rect" id="node5" title=" " alt="" coords="50,97,111,123"/>
 </map>

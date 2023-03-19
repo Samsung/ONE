@@ -93,13 +93,12 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Utils.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;core/KernelParams.h&quot;</code><br />
-<code>#include &quot;luci_interpreter/core/Tensor.h&quot;</code><br />
-<code>#include &lt;tensorflow/lite/c/builtin_op_data.h&gt;</code><br />
+<div class="textblock"><code>#include &quot;luci_interpreter/core/Tensor.h&quot;</code><br />
 <code>#include &lt;tensorflow/lite/kernels/internal/types.h&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
@@ -108,11 +107,11 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci__interpreter_1_1kernels_1_1_channel_quant_multipliers.html">luci_interpreter::kernels::ChannelQuantMultipliers</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_broadcastable_wrapper.html">luci_interpreter::kernels::BroadcastableWrapper&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html">luci_interpreter::kernels::VectorOfTensors&lt; T, is_const &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci__interpreter_1_1kernels_1_1_channel_quant_multipliers.html">luci_interpreter::kernels::ChannelQuantMultipliers</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_vector_of_quantized_tensors.html">luci_interpreter::kernels::VectorOfQuantizedTensors&lt; is_const &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,23 +128,36 @@ Macros</h2></td></tr>
 <tr class="memitem:a231f5fa1ff2a3f19222b42cc9bbd1f2d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(cond)</td></tr>
 <tr class="separator:a231f5fa1ff2a3f19222b42cc9bbd1f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a7e6d0f8aa60d2f54876de5b83cb2238c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a7e6d0f8aa60d2f54876de5b83cb2238c">luci_interpreter::kernels::Activation</a> = <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945">luci_interpreter::FusedActFunc</a></td></tr>
+<tr class="separator:a7e6d0f8aa60d2f54876de5b83cb2238c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a0d65c4eceec857b33bd462ee0873fef4"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a0d65c4eceec857b33bd462ee0873fef4">luci_interpreter::kernels::computePadding</a> (int32_t stride, int32_t dilation_rate, int32_t in_size, int32_t filter_size, int32_t out_size)</td></tr>
 <tr class="separator:a0d65c4eceec857b33bd462ee0873fef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd0d7e8134f1365f84ef40571dec5ea8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#afd0d7e8134f1365f84ef40571dec5ea8">luci_interpreter::kernels::matrixScalarMultiplyAccumulate</a> (const int8_t *matrix, int32_t scalar, int32_t n_row, int32_t n_col, int32_t *output)</td></tr>
-<tr class="separator:afd0d7e8134f1365f84ef40571dec5ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3be54c2b358be58058168bfdabbf230"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ac3be54c2b358be58058168bfdabbf230">luci_interpreter::kernels::computePaddingWithOffset</a> (int32_t stride, int32_t dilation_rate, int32_t in_size, int32_t filter_size, int32_t out_size, int32_t *<a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>)</td></tr>
 <tr class="separator:ac3be54c2b358be58058168bfdabbf230"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae60919502a67829946ab89ad902bcd13"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ae60919502a67829946ab89ad902bcd13">luci_interpreter::kernels::computeOutputSize</a> (Padding padding, int32_t image_size, int32_t filter_size, int32_t stride, int32_t dilation_rate=1)</td></tr>
 <tr class="separator:ae60919502a67829946ab89ad902bcd13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37a90f10c7bd3ea54c104e06d5aa5ab9"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a37a90f10c7bd3ea54c104e06d5aa5ab9">luci_interpreter::kernels::calcOffset</a> (const <a class="el" href="struct_shape.html">Shape</a> &amp;shape, int32_t d0, int32_t d1, int32_t d2, int32_t d3)</td></tr>
-<tr class="separator:a37a90f10c7bd3ea54c104e06d5aa5ab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98a3bc29bb49235d704aea9373bdb866"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a98a3bc29bb49235d704aea9373bdb866">luci_interpreter::kernels::calcOffset</a> (const circle::Tensor *tensor, int32_t d0, int32_t d1, int32_t d2, int32_t d3)</td></tr>
+<tr class="separator:a98a3bc29bb49235d704aea9373bdb866"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a9a24193bc38fd68fa6267c807bd354"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a8a9a24193bc38fd68fa6267c807bd354"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a8a9a24193bc38fd68fa6267c807bd354">luci_interpreter::kernels::calculateActivationRange</a> (Activation activation, T *activation_min, T *activation_max)</td></tr>
 <tr class="separator:a8a9a24193bc38fd68fa6267c807bd354"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a972dc14ee97042f40b0555b04b1d8815"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a972dc14ee97042f40b0555b04b1d8815">luci_interpreter::kernels::calculateActivationRangeQuantized</a> (Activation activation, const <a class="el" href="class_tensor.html">Tensor</a> *output, int32_t *activation_min, int32_t *activation_max)</td></tr>
-<tr class="separator:a972dc14ee97042f40b0555b04b1d8815"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a282484a34a3997dda2a7a6abdc4df151"><td class="memItemLeft" align="right" valign="top">tflite::RuntimeShape&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a282484a34a3997dda2a7a6abdc4df151">luci_interpreter::kernels::calculateShapeForBroadcast</a> (const circle::Tensor *input1, const circle::Tensor *input2)</td></tr>
+<tr class="separator:a282484a34a3997dda2a7a6abdc4df151"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46ddb4fcfc40db388a80ec1680a00676"><td class="memItemLeft" align="right" valign="top">tflite::RuntimeShape&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a46ddb4fcfc40db388a80ec1680a00676">luci_interpreter::kernels::getTensorShape</a> (const circle::Tensor *tensor)</td></tr>
+<tr class="separator:a46ddb4fcfc40db388a80ec1680a00676"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4b854d27a207793b08b8e5acf096b26"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab4b854d27a207793b08b8e5acf096b26"><td class="memTemplItemLeft" align="right" valign="top">const T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ab4b854d27a207793b08b8e5acf096b26">luci_interpreter::kernels::getTensorData</a> (const uint8_t *tensor_data)</td></tr>
+<tr class="separator:ab4b854d27a207793b08b8e5acf096b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3526506fb019cee89c33b5e361201ef4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3526506fb019cee89c33b5e361201ef4"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a3526506fb019cee89c33b5e361201ef4">luci_interpreter::kernels::getTensorData</a> (uint8_t *tensor_data)</td></tr>
+<tr class="separator:a3526506fb019cee89c33b5e361201ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a477eb643e22685b5fbaae14f1c981ddc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a477eb643e22685b5fbaae14f1c981ddc">luci_interpreter::kernels::calculateActivationRangeQuantized</a> (Activation activation, const circle::Tensor *output, int32_t *activation_min, int32_t *activation_max)</td></tr>
+<tr class="separator:a477eb643e22685b5fbaae14f1c981ddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaeab94e4b66016c7ac88378ac1c045e0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aaeab94e4b66016c7ac88378ac1c045e0"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#aaeab94e4b66016c7ac88378ac1c045e0">luci_interpreter::kernels::one_of_types</a> ()</td></tr>
 <tr class="separator:aaeab94e4b66016c7ac88378ac1c045e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,24 +171,12 @@ Functions</h2></td></tr>
 <tr class="separator:adcf639b916825841b3f99d5f4fccff22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91a8777c4f1154f256a768b6bbf54477"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a91a8777c4f1154f256a768b6bbf54477">luci_interpreter::kernels::quantizeMultiplierSmallerThanOneExp</a> (double double_multiplier, int32_t *quantized_multiplier, int *left_shift)</td></tr>
 <tr class="separator:a91a8777c4f1154f256a768b6bbf54477"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40acb2e1491fa9978b94b4622ecbbeaa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_shape.html">Shape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a40acb2e1491fa9978b94b4622ecbbeaa">luci_interpreter::kernels::calculateShapeForBroadcast</a> (const <a class="el" href="struct_shape.html">Shape</a> &amp;input1_shape, const <a class="el" href="struct_shape.html">Shape</a> &amp;input2_shape)</td></tr>
-<tr class="separator:a40acb2e1491fa9978b94b4622ecbbeaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ed6b9c9202ad76ab66811c677bc73b8"><td class="memItemLeft" align="right" valign="top">TfLiteFusedActivation&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a4ed6b9c9202ad76ab66811c677bc73b8">luci_interpreter::kernels::getTfLiteActivation</a> (Activation activation)</td></tr>
-<tr class="separator:a4ed6b9c9202ad76ab66811c677bc73b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab09e74b805778ace392d93e577c75d73"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ab09e74b805778ace392d93e577c75d73">luci_interpreter::kernels::getQuantizedConvolutionMultipler</a> (float input_scale, float filter_scale, float output_scale)</td></tr>
 <tr class="separator:ab09e74b805778ace392d93e577c75d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6f5ad209c4d64063344b02ec5be4967"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ae6f5ad209c4d64063344b02ec5be4967">luci_interpreter::kernels::getQuantizedConvolutionMultiplers</a> (float input_scale, const std::vector&lt; float &gt; &amp;filter_scale, float output_scale)</td></tr>
 <tr class="separator:ae6f5ad209c4d64063344b02ec5be4967"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b5c2c2a3d5a2ae6d365369c7053b948"><td class="memItemLeft" align="right" valign="top">std::vector&lt; ChannelQuantMultipliers &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a6b5c2c2a3d5a2ae6d365369c7053b948">luci_interpreter::kernels::quantizeMultipliers</a> (const std::vector&lt; double &gt; &amp;effective_scale)</td></tr>
 <tr class="separator:a6b5c2c2a3d5a2ae6d365369c7053b948"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74f2161267eeabcf602a15e16c2350f5"><td class="memItemLeft" align="right" valign="top">tflite::RuntimeShape&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a74f2161267eeabcf602a15e16c2350f5">luci_interpreter::kernels::getTensorShape</a> (const <a class="el" href="class_tensor.html">Tensor</a> *tensor)</td></tr>
-<tr class="separator:a74f2161267eeabcf602a15e16c2350f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65c674370a82f50945522faf80557b55"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a65c674370a82f50945522faf80557b55"><td class="memTemplItemLeft" align="right" valign="top">const T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a65c674370a82f50945522faf80557b55">luci_interpreter::kernels::getTensorData</a> (const <a class="el" href="class_tensor.html">Tensor</a> *tensor)</td></tr>
-<tr class="separator:a65c674370a82f50945522faf80557b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3beb4b0cae9899ba1058ae0e890eab1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ad3beb4b0cae9899ba1058ae0e890eab1"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ad3beb4b0cae9899ba1058ae0e890eab1">luci_interpreter::kernels::getTensorData</a> (<a class="el" href="class_tensor.html">Tensor</a> *tensor)</td></tr>
-<tr class="separator:ad3beb4b0cae9899ba1058ae0e890eab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a231f5fa1ff2a3f19222b42cc9bbd1f2d" name="a231f5fa1ff2a3f19222b42cc9bbd1f2d"></a>
@@ -199,7 +199,7 @@ Functions</h2></td></tr>
 <div class="line">    assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;LUCI_INTERPRETER_CHECK fails&quot;</span>); \</div>
 <div class="line">  }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00035">35</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00034">34</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
 
 </div>
 </div>

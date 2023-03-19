@@ -90,6 +90,7 @@ $(document).ready(function(){initNavTree('classluci__interpreter_1_1_circle_read
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle"><div class="title">luci_interpreter::CircleReader Class Reference</div></div>
 </div><!--header-->
@@ -100,34 +101,43 @@ $(document).ready(function(){initNavTree('classluci__interpreter_1_1_circle_read
 
 <p><code>#include &lt;<a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:abdb3b3b6ee2a903e2babe8e32da2b914"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#abdb3b3b6ee2a903e2babe8e32da2b914">CircleBuffers</a> = <a class="el" href="classluci_1_1_vector_wrapper.html">VectorWrapper</a>&lt; flatbuffers::Offset&lt; circle::Buffer &gt; &gt;</td></tr>
+<tr class="separator:abdb3b3b6ee2a903e2babe8e32da2b914"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a466034d8dd0af78eac081c6ae61acbe8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a466034d8dd0af78eac081c6ae61acbe8">CircleTensors</a> = <a class="el" href="classluci_1_1_vector_wrapper.html">VectorWrapper</a>&lt; flatbuffers::Offset&lt; circle::Tensor &gt; &gt;</td></tr>
+<tr class="separator:a466034d8dd0af78eac081c6ae61acbe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab22cc40fb5796138b74092ca8b43e0b1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#ab22cc40fb5796138b74092ca8b43e0b1">CircleOperators</a> = <a class="el" href="classluci_1_1_vector_wrapper.html">VectorWrapper</a>&lt; flatbuffers::Offset&lt; circle::Operator &gt; &gt;</td></tr>
+<tr class="separator:ab22cc40fb5796138b74092ca8b43e0b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7371f586086b8b949fb415d20f5d1384"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a7371f586086b8b949fb415d20f5d1384">CircleOperatorCodes</a> = <a class="el" href="classluci_1_1_vector_wrapper.html">VectorWrapper</a>&lt; flatbuffers::Offset&lt; circle::OperatorCode &gt; &gt;</td></tr>
+<tr class="separator:a7371f586086b8b949fb415d20f5d1384"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc6adf6d6bed0b6aee662582c9fe9a11"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#abc6adf6d6bed0b6aee662582c9fe9a11">CircleMetadataSet</a> = <a class="el" href="classluci_1_1_vector_wrapper.html">VectorWrapper</a>&lt; flatbuffers::Offset&lt; circle::Metadata &gt; &gt;</td></tr>
+<tr class="separator:abc6adf6d6bed0b6aee662582c9fe9a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa06d00473772f4a24085cca713d1d2cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#aa06d00473772f4a24085cca713d1d2cc">CircleReader</a> ()=default</td></tr>
 <tr class="separator:aa06d00473772f4a24085cca713d1d2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f7e1f9f19ee2bf52a22a714c8b4a66e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci_1_1_vector_wrapper.html">CircleOperatorCodes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a5f7e1f9f19ee2bf52a22a714c8b4a66e">opcodes</a> () const</td></tr>
+<tr class="memitem:a5f7e1f9f19ee2bf52a22a714c8b4a66e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a7371f586086b8b949fb415d20f5d1384">CircleOperatorCodes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a5f7e1f9f19ee2bf52a22a714c8b4a66e">opcodes</a> () const</td></tr>
 <tr class="separator:a5f7e1f9f19ee2bf52a22a714c8b4a66e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a248e88d24c0aa38d4f7e0d14ef70c003"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci_1_1_vector_wrapper.html">CircleBuffers</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a248e88d24c0aa38d4f7e0d14ef70c003">buffers</a> () const</td></tr>
+<tr class="memitem:a248e88d24c0aa38d4f7e0d14ef70c003"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#abdb3b3b6ee2a903e2babe8e32da2b914">CircleBuffers</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a248e88d24c0aa38d4f7e0d14ef70c003">buffers</a> () const</td></tr>
 <tr class="separator:a248e88d24c0aa38d4f7e0d14ef70c003"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dc165a59e8f3056af6d2f200a04d8ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci_1_1_vector_wrapper.html">CircleTensors</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a3dc165a59e8f3056af6d2f200a04d8ca">tensors</a> () const</td></tr>
+<tr class="memitem:a3dc165a59e8f3056af6d2f200a04d8ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a466034d8dd0af78eac081c6ae61acbe8">CircleTensors</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a3dc165a59e8f3056af6d2f200a04d8ca">tensors</a> () const</td></tr>
 <tr class="separator:a3dc165a59e8f3056af6d2f200a04d8ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7508cb4ab276cc79a96c982eaba755ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci_1_1_vector_wrapper.html">CircleOperators</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a7508cb4ab276cc79a96c982eaba755ad">operators</a> () const</td></tr>
+<tr class="memitem:a7508cb4ab276cc79a96c982eaba755ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#ab22cc40fb5796138b74092ca8b43e0b1">CircleOperators</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a7508cb4ab276cc79a96c982eaba755ad">operators</a> () const</td></tr>
 <tr class="separator:a7508cb4ab276cc79a96c982eaba755ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43845f9a419f126d769f75e4e507470b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci_1_1_vector_wrapper.html">VectorWrapper</a>&lt; int32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a43845f9a419f126d769f75e4e507470b">inputs</a> () const</td></tr>
 <tr class="separator:a43845f9a419f126d769f75e4e507470b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48f3b8d6d91847466b51b3bea0637f50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci_1_1_vector_wrapper.html">VectorWrapper</a>&lt; int32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a48f3b8d6d91847466b51b3bea0637f50">outputs</a> () const</td></tr>
 <tr class="separator:a48f3b8d6d91847466b51b3bea0637f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47bad1d6724920cffab4ca4ca1f38ff0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a47bad1d6724920cffab4ca4ca1f38ff0">name</a> () const</td></tr>
-<tr class="separator:a47bad1d6724920cffab4ca4ca1f38ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a6677216cce091b34e68237e60bf1f7"><td class="memItemLeft" align="right" valign="top">circle::DataFormat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a3a6677216cce091b34e68237e60bf1f7">data_format</a> () const</td></tr>
 <tr class="separator:a3a6677216cce091b34e68237e60bf1f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0029ae47e29d706958c286d2ecde37e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci_1_1_vector_wrapper.html">CircleMetadataSet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a0029ae47e29d706958c286d2ecde37e1">metadata</a> () const</td></tr>
+<tr class="memitem:a0029ae47e29d706958c286d2ecde37e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#abc6adf6d6bed0b6aee662582c9fe9a11">CircleMetadataSet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a0029ae47e29d706958c286d2ecde37e1">metadata</a> () const</td></tr>
 <tr class="separator:a0029ae47e29d706958c286d2ecde37e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cc213416adfedbeacf27b2d6746f94a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a5cc213416adfedbeacf27b2d6746f94a">num_subgraph</a> () const</td></tr>
 <tr class="separator:a5cc213416adfedbeacf27b2d6746f94a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92d3eb40f5440a480efbd0ebef1dc1a4"><td class="memItemLeft" align="right" valign="top">circle::BuiltinOperator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a92d3eb40f5440a480efbd0ebef1dc1a4">builtin_code</a> (const circle::Operator *op) const</td></tr>
 <tr class="separator:a92d3eb40f5440a480efbd0ebef1dc1a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a100c84c560ea5d78133cba9b0179d690"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a100c84c560ea5d78133cba9b0179d690">opcode_name</a> (const circle::Operator *op) const</td></tr>
-<tr class="separator:a100c84c560ea5d78133cba9b0179d690"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd03654bf4885531d1a1228db0cfa335"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#abd03654bf4885531d1a1228db0cfa335">parse</a> (const circle::Model *model)</td></tr>
 <tr class="separator:abd03654bf4885531d1a1228db0cfa335"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a521013fe39256de7e187b2519c7b5db9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a521013fe39256de7e187b2519c7b5db9">select_subgraph</a> (uint32_t subgraph)</td></tr>
@@ -136,8 +146,89 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Loads Circle file and provides helpers to access attributes. </p>
 
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00154">154</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="abdb3b3b6ee2a903e2babe8e32da2b914" name="abdb3b3b6ee2a903e2babe8e32da2b914"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdb3b3b6ee2a903e2babe8e32da2b914">&#9670;&#160;</a></span>CircleBuffers</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classluci__interpreter_1_1_circle_reader.html#abdb3b3b6ee2a903e2babe8e32da2b914">luci_interpreter::CircleReader::CircleBuffers</a> =  <a class="el" href="classluci_1_1_vector_wrapper.html">VectorWrapper</a>&lt;flatbuffers::Offset&lt;circle::Buffer&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 <p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00157">157</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+
+</div>
+</div>
+<a id="abc6adf6d6bed0b6aee662582c9fe9a11" name="abc6adf6d6bed0b6aee662582c9fe9a11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc6adf6d6bed0b6aee662582c9fe9a11">&#9670;&#160;</a></span>CircleMetadataSet</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classluci__interpreter_1_1_circle_reader.html#abc6adf6d6bed0b6aee662582c9fe9a11">luci_interpreter::CircleReader::CircleMetadataSet</a> =  <a class="el" href="classluci_1_1_vector_wrapper.html">VectorWrapper</a>&lt;flatbuffers::Offset&lt;circle::Metadata&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00161">161</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+
+</div>
+</div>
+<a id="a7371f586086b8b949fb415d20f5d1384" name="a7371f586086b8b949fb415d20f5d1384"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7371f586086b8b949fb415d20f5d1384">&#9670;&#160;</a></span>CircleOperatorCodes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classluci__interpreter_1_1_circle_reader.html#a7371f586086b8b949fb415d20f5d1384">luci_interpreter::CircleReader::CircleOperatorCodes</a> =  <a class="el" href="classluci_1_1_vector_wrapper.html">VectorWrapper</a>&lt;flatbuffers::Offset&lt;circle::OperatorCode&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00160">160</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+
+</div>
+</div>
+<a id="ab22cc40fb5796138b74092ca8b43e0b1" name="ab22cc40fb5796138b74092ca8b43e0b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab22cc40fb5796138b74092ca8b43e0b1">&#9670;&#160;</a></span>CircleOperators</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classluci__interpreter_1_1_circle_reader.html#ab22cc40fb5796138b74092ca8b43e0b1">luci_interpreter::CircleReader::CircleOperators</a> =  <a class="el" href="classluci_1_1_vector_wrapper.html">VectorWrapper</a>&lt;flatbuffers::Offset&lt;circle::Operator&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00159">159</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+
+</div>
+</div>
+<a id="a466034d8dd0af78eac081c6ae61acbe8" name="a466034d8dd0af78eac081c6ae61acbe8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a466034d8dd0af78eac081c6ae61acbe8">&#9670;&#160;</a></span>CircleTensors</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classluci__interpreter_1_1_circle_reader.html#a466034d8dd0af78eac081c6ae61acbe8">luci_interpreter::CircleReader::CircleTensors</a> =  <a class="el" href="classluci_1_1_vector_wrapper.html">VectorWrapper</a>&lt;flatbuffers::Offset&lt;circle::Tensor&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00158">158</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa06d00473772f4a24085cca713d1d2cc" name="aa06d00473772f4a24085cca713d1d2cc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa06d00473772f4a24085cca713d1d2cc">&#9670;&#160;</a></span>CircleReader()</h2>
 
@@ -174,7 +265,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classluci_1_1_vector_wrapper.html">CircleBuffers</a> luci_interpreter::CircleReader::buffers </td>
+          <td class="memname"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#abdb3b3b6ee2a903e2babe8e32da2b914">CircleBuffers</a> luci_interpreter::CircleReader::buffers </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -187,8 +278,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00171">171</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  171</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_model-&gt;buffers()); }</div>
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00168">168</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  168</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_model-&gt;buffers()); }</div>
 <div class="ttc" id="anamespaceluci_html_a727b91def9b4553b7e3aeb4a146b7f22"><div class="ttname"><a href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">luci::wrap</a></div><div class="ttdeci">VectorWrapper&lt; T &gt; wrap(const flatbuffers::Vector&lt; T &gt; *vec)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8h_source.html#l00081">CircleReader.h:81</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
@@ -236,8 +327,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00177">177</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  177</span>{ <span class="keywordflow">return</span> _current_subgraph-&gt;data_format(); }</div>
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00173">173</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  173</span>{ <span class="keywordflow">return</span> _current_subgraph-&gt;data_format(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -264,8 +355,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00174">174</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_current_subgraph-&gt;inputs()); }</div>
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00171">171</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  171</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_current_subgraph-&gt;inputs()); }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
 
@@ -283,7 +374,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classluci_1_1_vector_wrapper.html">CircleMetadataSet</a> luci_interpreter::CircleReader::metadata </td>
+          <td class="memname"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#abc6adf6d6bed0b6aee662582c9fe9a11">CircleMetadataSet</a> luci_interpreter::CircleReader::metadata </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -296,41 +387,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00178">178</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  178</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_model-&gt;metadata()); }</div>
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00174">174</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  174</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_model-&gt;metadata()); }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
-
-</div>
-</div>
-<a id="a47bad1d6724920cffab4ca4ca1f38ff0" name="a47bad1d6724920cffab4ca4ca1f38ff0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47bad1d6724920cffab4ca4ca1f38ff0">&#9670;&#160;</a></span>name()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string luci_interpreter::CircleReader::name </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00176">176</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  176</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#aaec9402bcde136a29e9efb0dbab25765">fb_string2std_string</a>(_current_subgraph-&gt;name()); }</div>
-<div class="ttc" id="anamespaceluci_html_aaec9402bcde136a29e9efb0dbab25765"><div class="ttname"><a href="namespaceluci.html#aaec9402bcde136a29e9efb0dbab25765">luci::fb_string2std_string</a></div><div class="ttdeci">std::string fb_string2std_string(const flatbuffers::String *fb_str)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8cpp_source.html#l00290">CircleReader.cpp:290</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00290">luci::fb_string2std_string()</a>.</p>
 
 </div>
 </div>
@@ -357,28 +417,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00180">180</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  180</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_model-&gt;subgraphs()).size(); }</div>
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00176">176</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  176</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_model-&gt;subgraphs()).size(); }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
-
-</div>
-</div>
-<a id="a100c84c560ea5d78133cba9b0179d690" name="a100c84c560ea5d78133cba9b0179d690"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a100c84c560ea5d78133cba9b0179d690">&#9670;&#160;</a></span>opcode_name()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string luci_interpreter::CircleReader::opcode_name </td>
-          <td>(</td>
-          <td class="paramtype">const circle::Operator *&#160;</td>
-          <td class="paramname"><em>op</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -392,7 +434,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classluci_1_1_vector_wrapper.html">CircleOperatorCodes</a> luci_interpreter::CircleReader::opcodes </td>
+          <td class="memname"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a7371f586086b8b949fb415d20f5d1384">CircleOperatorCodes</a> luci_interpreter::CircleReader::opcodes </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -405,8 +447,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00170">170</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  170</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_model-&gt;operator_codes()); }</div>
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00167">167</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  167</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_model-&gt;operator_codes()); }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
 
@@ -422,7 +464,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classluci_1_1_vector_wrapper.html">CircleOperators</a> luci_interpreter::CircleReader::operators </td>
+          <td class="memname"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#ab22cc40fb5796138b74092ca8b43e0b1">CircleOperators</a> luci_interpreter::CircleReader::operators </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -435,8 +477,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00173">173</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  173</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_current_subgraph-&gt;operators()); }</div>
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00170">170</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  170</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_current_subgraph-&gt;operators()); }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
 
@@ -465,8 +507,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00175">175</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  175</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_current_subgraph-&gt;outputs()); }</div>
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00172">172</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  172</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_current_subgraph-&gt;outputs()); }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
 
@@ -520,7 +562,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classluci_1_1_vector_wrapper.html">CircleTensors</a> luci_interpreter::CircleReader::tensors </td>
+          <td class="memname"><a class="el" href="classluci__interpreter_1_1_circle_reader.html#a466034d8dd0af78eac081c6ae61acbe8">CircleTensors</a> luci_interpreter::CircleReader::tensors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -533,8 +575,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00172">172</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  172</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_current_subgraph-&gt;tensors()); }</div>
+<p class="definition">Definition at line <a class="el" href="_circle_micro_reader_8h_source.html#l00169">169</a> of file <a class="el" href="_circle_micro_reader_8h_source.html">CircleMicroReader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  169</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_current_subgraph-&gt;tensors()); }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
 

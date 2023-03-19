@@ -15,7 +15,7 @@ var dir_92e81532f5abc4f798a1c05d226b80a7 =
     [ "IrDotDumper.cpp", "_ir_dot_dumper_8cpp.html", "_ir_dot_dumper_8cpp" ],
     [ "Operation.cpp", "src_2_operation_8cpp.html", "src_2_operation_8cpp" ],
     [ "Shape.cpp", "compiler_2mir_2src_2_shape_8cpp.html", "compiler_2mir_2src_2_shape_8cpp" ],
-    [ "Tensor.cpp", "compiler_2mir_2src_2_tensor_8cpp.html", null ],
+    [ "Tensor.cpp", "mir_2src_2_tensor_8cpp.html", null ],
     [ "TensorVariant.cpp", "src_2_tensor_variant_8cpp.html", null ],
     [ "Visitor.cpp", "mir_2src_2_visitor_8cpp.html", "mir_2src_2_visitor_8cpp" ]
 ];
