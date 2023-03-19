@@ -372,11 +372,10 @@ private:
 
 void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
 {
-  assert(g); // FIX_CALLER_UNLESS
   auto inputs = g->inputs();
 
-  assert(inputs);                                    // FIX_CALLER_UNLESS
-  assert(inputs->size() == _ctx->input_type.size()); // FIX_CALLER_UNLESS
+  assert(inputs);                                     // FIX_CALLER_UNLESS
+  assert(inputs->size() == _ctx->input_types.size()); // FIX_CALLER_UNLESS
 
   // NOTE loco::input_nodes returns input nodes following the order of InputIndex
   auto input_nodes = loco::input_nodes(g);
@@ -385,7 +384,7 @@ void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
     auto input = loco::must_cast<luci::CircleInput *>(input_nodes[i]);
     assert(i == input->index()); // Fix input_type logic
 
-    const auto user_given_dtype = _ctx->input_type[i];
+    const auto user_given_dtype = _ctx->input_types[i];
 
     if (input->dtype() == user_given_dtype)
       continue;
@@ -450,11 +449,9 @@ void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
 
 void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
 {
-  assert(g); // FIX_CALLER_UNLESS
-
   auto outputs = g->outputs();
-  assert(outputs);                                     // FIX_CALLER_UNLESS
-  assert(outputs->size() == _ctx->output_type.size()); // Fix CircleQuantizer unless
+  assert(outputs);                                      // FIX_CALLER_UNLESS
+  assert(outputs->size() == _ctx->output_types.size()); // Fix CircleQuantizer unless
 
   // NOTE loco::output_nodes returns output nodes following the order of OutputIndex
   auto output_nodes = loco::output_nodes(g);
@@ -463,7 +460,7 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
     auto output = loco::must_cast<luci::CircleOutput *>(output_nodes[i]);
     assert(i == output->index()); // Fix output_type logic
 
-    const auto user_given_dtype = _ctx->output_type[i];
+    const auto user_given_dtype = _ctx->output_types[i];
 
     if (output->dtype() == user_given_dtype)
       continue;

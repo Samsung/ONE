@@ -119,8 +119,8 @@ void run_phase(loco::Graph *g, Type quantized_dtype, Granularity granularity)
     ctx->output_model_dtype = quantized_dtype;
     ctx->granularity = granularity;
     // Test graph has only one input/output
-    ctx->input_type = {quantized_dtype};
-    ctx->output_type = {quantized_dtype};
+    ctx->input_types = {quantized_dtype};
+    ctx->output_types = {quantized_dtype};
   }
 
   phase.emplace_back(std::make_unique<luci::QuantizeWithMinMaxPass>(std::move(ctx)));
@@ -179,8 +179,8 @@ void quantize_and_verify_with_layer_info(loco::Graph *g, Type quantized_dtype,
       ctx->output_model_dtype = quantized_dtype;
       ctx->granularity = granularity;
       // Test graph has only one input/output
-      ctx->input_type = {quantized_dtype};
-      ctx->output_type = {quantized_dtype};
+      ctx->input_types = {quantized_dtype};
+      ctx->output_types = {quantized_dtype};
       ctx->TF_style_maxpool = false;
       ctx->layers_info.push_back(info);
     }
