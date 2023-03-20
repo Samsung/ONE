@@ -1315,22 +1315,22 @@ public:
     TypedTestGraph::init(T, {32}, {32});
 
     _const = create_dummy_const<T>(g(), {32});
-    _add = g()->nodes()->create<luci::CircleMul>();
+    _mul = g()->nodes()->create<luci::CircleMul>();
     {
-      _add->x(input());
-      _add->y(_const);
-      _add->fusedActivationFunction(luci::FusedActFunc::NONE);
-      _add->name("test");
-      _add->dtype(T);
+      _mul->x(input());
+      _mul->y(_const);
+      _mul->fusedActivationFunction(luci::FusedActFunc::NONE);
+      _mul->name("test");
+      _mul->dtype(T);
     }
-    output()->from(_add);
+    output()->from(_mul);
   }
 
-  loco::Node *x() { return _add->x(); }
-  loco::Node *y() { return _add->y(); }
+  loco::Node *x() { return _mul->x(); }
+  loco::Node *y() { return _mul->y(); }
 
 private:
-  luci::CircleMul *_add = nullptr;
+  luci::CircleMul *_mul = nullptr;
   luci::CircleConst *_const = nullptr;
 };
 
