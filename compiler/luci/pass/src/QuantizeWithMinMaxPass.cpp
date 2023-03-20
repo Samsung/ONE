@@ -373,10 +373,20 @@ private:
 void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
 {
   auto inputs = g->inputs();
-  for (auto node : loco::input_nodes(g))
+
+  assert(inputs);                                     // FIX_CALLER_UNLESS
+  assert(inputs->size() == _ctx->input_types.size()); // FIX_CALLER_UNLESS
+
+  // NOTE loco::input_nodes returns input nodes following the order of InputIndex
+  auto input_nodes = loco::input_nodes(g);
+  for (uint32_t i = 0; i < input_nodes.size(); i++)
   {
-    auto input = loco::must_cast<luci::CircleInput *>(node);
-    if (input->dtype() == _ctx->input_type)
+    auto input = loco::must_cast<luci::CircleInput *>(input_nodes[i]);
+    assert(i == input->index()); // Fix input_type logic
+
+    const auto user_given_dtype = _ctx->input_types[i];
+
+    if (input->dtype() == user_given_dtype)
       continue;
 
     // Bool type is not quantizable
@@ -402,7 +412,7 @@ void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
 
     // Update qparam of input
     // This step is skipped if input_type is float32
-    if (_ctx->input_type != loco::DataType::FLOAT32)
+    if (user_given_dtype != loco::DataType::FLOAT32)
     {
       auto quantparam = input->quantparam();
       assert(quantparam);
@@ -416,13 +426,13 @@ void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
       float nudged_min{0};
       float nudged_max{0};
 
-      if (_ctx->input_type == loco::DataType::U8)
+      if (user_given_dtype == loco::DataType::U8)
       {
         compute_asym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
       }
       else
       {
-        assert(_ctx->input_type == loco::DataType::S16);
+        assert(user_given_dtype == loco::DataType::S16);
         compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
       }
       input->quantparam()->scale[0] = scaling_factor;
@@ -430,20 +440,29 @@ void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
     }
 
     // Update dtype of input
-    input->dtype(_ctx->input_type);
+    input->dtype(user_given_dtype);
 
     auto graph_input = inputs->at(input->index());
-    graph_input->dtype(_ctx->input_type);
+    graph_input->dtype(user_given_dtype);
   }
 }
 
 void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
 {
   auto outputs = g->outputs();
-  for (auto node : loco::output_nodes(g))
+  assert(outputs);                                      // FIX_CALLER_UNLESS
+  assert(outputs->size() == _ctx->output_types.size()); // Fix CircleQuantizer unless
+
+  // NOTE loco::output_nodes returns output nodes following the order of OutputIndex
+  auto output_nodes = loco::output_nodes(g);
+  for (uint32_t i = 0; i < output_nodes.size(); i++)
   {
-    auto output = loco::must_cast<luci::CircleOutput *>(node);
-    if (output->dtype() == _ctx->output_type)
+    auto output = loco::must_cast<luci::CircleOutput *>(output_nodes[i]);
+    assert(i == output->index()); // Fix output_type logic
+
+    const auto user_given_dtype = _ctx->output_types[i];
+
+    if (output->dtype() == user_given_dtype)
       continue;
 
     // Bool type is not quantizable
@@ -457,7 +476,7 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
       continue;
 
     // Insert Dequantize Op for float32 output_type
-    if (_ctx->output_type == loco::DataType::FLOAT32)
+    if (user_given_dtype == loco::DataType::FLOAT32)
     {
       auto dequant_op = create_dequantize(from);
       loco::replace(from).with(dequant_op);
@@ -466,7 +485,7 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
     else
     {
       // Insert Quantize Op for non-float32 output_type
-      auto quant_op = create_quantize_op(from, _ctx->output_type);
+      auto quant_op = create_quantize_op(from, user_given_dtype);
       loco::replace(from).with(quant_op);
       quant_op->input(from);
 
@@ -475,10 +494,10 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
     }
 
     // Update dtype of output
-    output->dtype(_ctx->output_type);
+    output->dtype(user_given_dtype);
 
     auto graph_output = outputs->at(output->index());
-    graph_output->dtype(_ctx->output_type);
+    graph_output->dtype(user_given_dtype);
   }
 }
 

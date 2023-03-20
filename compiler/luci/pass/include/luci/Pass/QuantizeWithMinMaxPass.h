@@ -39,8 +39,8 @@ public:
     loco::DataType input_model_dtype = loco::DataType::Unknown;
     loco::DataType output_model_dtype = loco::DataType::Unknown;
     QuantizationGranularity granularity = QuantizationGranularity::ChannelWise;
-    loco::DataType input_type = loco::DataType::Unknown;
-    loco::DataType output_type = loco::DataType::Unknown;
+    std::vector<loco::DataType> input_types;
+    std::vector<loco::DataType> output_types;
     bool TF_style_maxpool = false;
     std::vector<LayerInfo> layers_info;
   };
