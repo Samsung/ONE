@@ -514,9 +514,8 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     {
       verify_ctx->output_model_dtype = str_to_dtype(output_model_dtype);
       verify_ctx->granularity = str_to_granularity(granularity);
-      // TODO Change input/output_type to vector
-      verify_ctx->input_type = input_types[0];
-      verify_ctx->output_type = output_types[0];
+      verify_ctx->input_types = input_types;
+      verify_ctx->output_types = output_types;
       verify_ctx->TF_style_maxpool = TF_style_maxpool;
 
       for (auto layer_param : layer_params)

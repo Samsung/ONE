@@ -151,8 +151,8 @@ void quantize_and_verify(loco::Graph *g, Type quantized_dtype, Granularity granu
     ctx->output_model_dtype = quantized_dtype;
     ctx->granularity = granularity;
     // Test graph has only one input/output
-    ctx->input_type = {quantized_dtype};
-    ctx->output_type = {quantized_dtype};
+    ctx->input_types = {quantized_dtype};
+    ctx->output_types = {quantized_dtype};
   }
 
   luci::QuantizedModelVerifier verifier(std::move(ctx));
@@ -194,8 +194,8 @@ void quantize_and_verify_with_layer_info(loco::Graph *g, Type quantized_dtype,
     {
       ctx->output_model_dtype = quantized_dtype;
       ctx->granularity = granularity;
-      ctx->input_type = quantized_dtype;
-      ctx->output_type = quantized_dtype;
+      ctx->input_types = {quantized_dtype};
+      ctx->output_types = {quantized_dtype};
       ctx->TF_style_maxpool = false;
       ctx->layers_info.push_back(info);
     }
@@ -220,8 +220,8 @@ void quantize_and_verify_with_wrong_type(luci::test::TestIOGraph *g, Type quanti
     ctx->output_model_dtype = quantized_dtype;
     ctx->granularity = granularity;
     // Test graph has only one input/output
-    ctx->input_type = {quantized_dtype};
-    ctx->output_type = {quantized_dtype};
+    ctx->input_types = {quantized_dtype};
+    ctx->output_types = {quantized_dtype};
   }
 
   luci::QuantizedModelVerifier verifier(std::move(ctx));
@@ -243,8 +243,8 @@ void quantize_and_verify_with_wrong_granularity(luci::test::TestIOGraph *g, Type
     ctx->output_model_dtype = quantized_dtype;
     ctx->granularity = granularity;
     // Test graph has only one input/output
-    ctx->input_type = {quantized_dtype};
-    ctx->output_type = {quantized_dtype};
+    ctx->input_types = {quantized_dtype};
+    ctx->output_types = {quantized_dtype};
   }
 
   luci::QuantizedModelVerifier verifier(std::move(ctx));
@@ -1415,8 +1415,8 @@ private:
     {                                                                               \
       ctx->output_model_dtype = type;                                               \
       ctx->granularity = granularity_;                                              \
-      ctx->input_type = {type};                                                     \
-      ctx->output_type = {type};                                                    \
+      ctx->input_types = {type};                                                    \
+      ctx->output_types = {type};                                                   \
     }                                                                               \
     luci::QuantizedModelVerifier verifier(std::move(ctx));                          \
     EXPECT_ANY_THROW(verifier.verify(g.g()));                                       \
@@ -1437,8 +1437,8 @@ private:
     {                                                                         \
       ctx->output_model_dtype = type;                                         \
       ctx->granularity = granularity_;                                        \
-      ctx->input_type = {type};                                               \
-      ctx->output_type = {type};                                              \
+      ctx->input_types = {type};                                              \
+      ctx->output_types = {type};                                             \
     }                                                                         \
     luci::QuantizedModelVerifier verifier(std::move(ctx));                    \
     EXPECT_ANY_THROW(verifier.verify(g.g()));                                 \
