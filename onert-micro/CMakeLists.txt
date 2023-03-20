@@ -64,17 +64,6 @@ else()
     message(STATUS "USE_STATIC_ALLOC variable is not defined, default dynamic memory manager will be used")
 endif()
 
-if (DIS_QUANT)
-    message(STATUS "ONERT-MICRO will not use part for QUANTIZED models")
-    add_definitions(-DDIS_QUANT)
-endif()
-
-if (DIS_FLOAT)
-    message(STATUS "ONERT-MICRO will not use part for FLOAT models")
-    add_definitions(-DDIS_FLOAT)
-endif()
-
-
 set(CMAKE_ARM_OPTIONS
         -DLUCI_INTERPRETER_STATIC=ON
         -DLUCI_STATIC=ON
@@ -103,6 +92,18 @@ if (GENERATE_KERNELS_LIST_FROM)
     set(GENERATED_KERNELS_LIST_PATH "${LUCI_INTERPRETER_PAL_DIR}/GeneratedKernelsToBuild.lst")
     list(APPEND CMAKE_ARM_OPTIONS "-DLUCI_INTERPRETER_KERNELS_BUILD_LIST=${GENERATED_KERNELS_LIST_PATH}")
 endif ()
+
+if (DIS_QUANT)
+    message(STATUS "ONERT-MICRO will not use part for QUANTIZED models")
+    add_definitions(-DDIS_QUANT)
+    list(APPEND CMAKE_ARM_OPTIONS "-DDIS_QUANT=ON")
+endif()
+
+if (DIS_FLOAT)
+    message(STATUS "ONERT-MICRO will not use part for FLOAT models")
+    add_definitions(-DDIS_FLOAT)
+    list(APPEND CMAKE_ARM_OPTIONS "-DDIS_FLOAT=ON")
+endif()
 
 set(MICRO_ARM_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/standalone_arm")
 file(MAKE_DIRECTORY "${MICRO_ARM_BUILD_DIR}")

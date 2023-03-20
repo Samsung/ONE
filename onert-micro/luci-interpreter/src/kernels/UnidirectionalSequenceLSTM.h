@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,116 +14,236 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_KERNELS_UNIDIRECTIONALSEQUENCELSTM_H
-#define LUCI_INTERPRETER_KERNELS_UNIDIRECTIONALSEQUENCELSTM_H
+#ifndef LUCI_INTERPRETER_KERNELS_UNIDIRECTIONAL_SEQUENCE_LSTM_H
+#define LUCI_INTERPRETER_KERNELS_UNIDIRECTIONAL_SEQUENCE_LSTM_H
 
-#include "core/Kernel.h"
-#include "core/KernelParams.h"
+#include "Utils.h"
 
 namespace luci_interpreter
 {
-namespace kernels
+namespace lstm
 {
 
-class UnidirectionalSequenceLSTM : public KernelWithParams<UnidirectionalSequenceLSTMParams>
+struct LSTMStruct
 {
-public:
-  UnidirectionalSequenceLSTM(
-    const Tensor *input,
+  LSTMStruct() = delete;
+  LSTMStruct(const LSTMStruct &) = delete;
 
-    const Tensor *input_to_input_weights, const Tensor *input_to_forget_weights,
-    const Tensor *input_to_cell_weights, const Tensor *input_to_output_weights,
-
-    const Tensor *recurrent_to_input_weights, const Tensor *recurrent_to_forget_weights,
-    const Tensor *recurrent_to_cell_weights, const Tensor *recurrent_to_output_weights,
-
-    const Tensor *cell_to_input_weights, const Tensor *cell_to_forget_weights,
-    const Tensor *cell_to_output_weights,
-
-    const Tensor *input_gate_bias, const Tensor *forget_gate_bias, const Tensor *cell_gate_bias,
-    const Tensor *output_gate_bias,
-
-    const Tensor *projection_weights, const Tensor *projection_bias,
-
-    const Tensor *input_layer_norm_coefficients, const Tensor *forget_layer_norm_coefficients,
-    const Tensor *cell_layer_norm_coefficients, const Tensor *output_layer_norm_coefficients,
-
-    std::vector<Tensor *> &&outputs, const UnidirectionalSequenceLSTMParams &params);
-
-  const Tensor *input() const { return _inputs[0]; }
-
-  const Tensor *input_to_input_weights() const { return _inputs[1]; }
-  const Tensor *input_to_forget_weights() const { return _inputs[2]; }
-  const Tensor *input_to_cell_weights() const { return _inputs[3]; }
-  const Tensor *input_to_output_weights() const { return _inputs[4]; }
-
-  const Tensor *recurrent_to_input_weights() const { return _inputs[5]; }
-  const Tensor *recurrent_to_forget_weights() const { return _inputs[6]; }
-  const Tensor *recurrent_to_cell_weights() const { return _inputs[7]; }
-  const Tensor *recurrent_to_output_weights() const { return _inputs[8]; }
-
-  const Tensor *cell_to_input_weights() const { return _inputs[9]; }
-  const Tensor *cell_to_forget_weights() const { return _inputs[10]; }
-  const Tensor *cell_to_output_weights() const { return _inputs[11]; }
-
-  const Tensor *input_gate_bias() const { return _inputs[12]; }
-  const Tensor *forget_gate_bias() const { return _inputs[13]; }
-  const Tensor *cell_gate_bias() const { return _inputs[14]; }
-  const Tensor *output_gate_bias() const { return _inputs[15]; }
-
-  const Tensor *projection_weights() const { return _inputs[16]; }
-  const Tensor *projection_bias() const { return _inputs[17]; }
-
-  Tensor *output_state() const
+  explicit LSTMStruct(const circle::Operator *cur_op,
+                      luci_interpreter::BaseRuntimeGraph *runtime_graph)
   {
-    // For Integer LSTM output_state position will be 6 (INT variant producing 5 temporary tensors +
-    // main output) for float LSTM output_state position wll be 4 (FLOAT variant producing 3
-    // temporary tensors + main output)
-    const auto position = _outputs.size() == 8 ? 6 : 4;
-    return _outputs[position];
+    const auto input_index = cur_op->inputs()->operator[](0);
+    const auto input_to_input_weights_index = cur_op->inputs()->operator[](1);
+    const auto input_to_forget_weights_index = cur_op->inputs()->operator[](2);
+    const auto input_to_cell_weights_index = cur_op->inputs()->operator[](3);
+    const auto input_to_output_weights_index = cur_op->inputs()->operator[](4);
+    assert(input_index != -1);
+    // input_to_input_weights_index - optional
+    assert(input_to_forget_weights_index != -1);
+    assert(input_to_cell_weights_index != -1);
+    assert(input_to_output_weights_index != -1);
+    internal_tensors[0] = runtime_graph->getCircleTensorByIndex(input_index);
+    internal_tensors[1] = runtime_graph->getCircleTensorByIndex(input_to_input_weights_index);
+    internal_tensors[2] = runtime_graph->getCircleTensorByIndex(input_to_forget_weights_index);
+    internal_tensors[3] = runtime_graph->getCircleTensorByIndex(input_to_cell_weights_index);
+    internal_tensors[4] = runtime_graph->getCircleTensorByIndex(input_to_output_weights_index);
+
+    const auto recurrent_to_input_weights_index = cur_op->inputs()->operator[](5);
+    const auto recurrent_to_forget_weights_index = cur_op->inputs()->operator[](6);
+    const auto recurrent_to_cell_weights_index = cur_op->inputs()->operator[](7);
+    const auto recurrent_to_output_weights_index = cur_op->inputs()->operator[](8);
+    // recurrent_to_input_weights_index - optional
+    assert(recurrent_to_forget_weights_index != -1);
+    assert(recurrent_to_cell_weights_index != -1);
+    assert(recurrent_to_output_weights_index != -1);
+    internal_tensors[5] = runtime_graph->getCircleTensorByIndex(recurrent_to_input_weights_index);
+    internal_tensors[6] = runtime_graph->getCircleTensorByIndex(recurrent_to_forget_weights_index);
+    internal_tensors[7] = runtime_graph->getCircleTensorByIndex(recurrent_to_cell_weights_index);
+    internal_tensors[8] = runtime_graph->getCircleTensorByIndex(recurrent_to_output_weights_index);
+
+    const auto cell_to_input_weights_index = cur_op->inputs()->operator[](9);
+    const auto cell_to_forget_weights_index = cur_op->inputs()->operator[](10);
+    const auto cell_to_output_weights_index = cur_op->inputs()->operator[](11);
+    // optional cell_to_input_weights_index
+    // optional cell_to_forget_weights_index
+    // optional cell_to_output_weights_index
+    internal_tensors[9] = runtime_graph->getCircleTensorByIndex(cell_to_input_weights_index);
+    internal_tensors[10] = runtime_graph->getCircleTensorByIndex(cell_to_forget_weights_index);
+    internal_tensors[11] = runtime_graph->getCircleTensorByIndex(cell_to_output_weights_index);
+
+    const auto input_gate_bias_index = cur_op->inputs()->operator[](12);
+    const auto forget_gate_bias_index = cur_op->inputs()->operator[](13);
+    const auto cell_gate_bias_index = cur_op->inputs()->operator[](14);
+    const auto output_gate_bias_index = cur_op->inputs()->operator[](15);
+    // optional input_gate_bias_index
+    assert(forget_gate_bias_index != -1);
+    assert(cell_gate_bias_index != -1);
+    assert(output_gate_bias_index != -1);
+    internal_tensors[12] = runtime_graph->getCircleTensorByIndex(input_gate_bias_index);
+    internal_tensors[13] = runtime_graph->getCircleTensorByIndex(forget_gate_bias_index);
+    internal_tensors[14] = runtime_graph->getCircleTensorByIndex(cell_gate_bias_index);
+    internal_tensors[15] = runtime_graph->getCircleTensorByIndex(output_gate_bias_index);
+
+    const auto projection_weights_index = cur_op->inputs()->operator[](16);
+    const auto projection_bias_index = cur_op->inputs()->operator[](17);
+    // optional projection_weights_index
+    // optional projection_bias_index
+    internal_tensors[16] = runtime_graph->getCircleTensorByIndex(projection_weights_index);
+    internal_tensors[17] = runtime_graph->getCircleTensorByIndex(projection_bias_index);
+
+    const auto output_state_index = cur_op->inputs()->operator[](18);
+    const auto cell_state_index = cur_op->inputs()->operator[](19);
+    assert(output_state_index != -1);
+    assert(cell_state_index != -1);
+    internal_tensors[18] = runtime_graph->getCircleTensorByIndex(output_state_index);
+    internal_tensors[19] = runtime_graph->getCircleTensorByIndex(cell_state_index);
+
+    const auto input_layer_norm_coefficients_index = cur_op->inputs()->operator[](20);
+    const auto forget_layer_norm_coefficients_index = cur_op->inputs()->operator[](21);
+    const auto cell_layer_norm_coefficients_index = cur_op->inputs()->operator[](22);
+    const auto output_layer_norm_coefficients_index = cur_op->inputs()->operator[](23);
+    // optional input_layer_norm_coefficients_index
+    // optional forget_layer_norm_coefficients_index
+    // optional cell_layer_norm_coefficients_index
+    // optional output_layer_norm_coefficients_index
+    internal_tensors[20] =
+      runtime_graph->getCircleTensorByIndex(input_layer_norm_coefficients_index);
+    internal_tensors[21] =
+      runtime_graph->getCircleTensorByIndex(forget_layer_norm_coefficients_index);
+    internal_tensors[22] =
+      runtime_graph->getCircleTensorByIndex(cell_layer_norm_coefficients_index);
+    internal_tensors[23] =
+      runtime_graph->getCircleTensorByIndex(output_layer_norm_coefficients_index);
+
+    const auto output_index = cur_op->outputs()->operator[](0);
+    assert(output_index != -1);
+    output_internal = runtime_graph->getCircleTensorByIndex(output_index);
+
+    options = cur_op->builtin_options_as_UnidirectionalSequenceLSTMOptions();
   }
-  Tensor *cell_state() const
+
+  void validateTensorTypes()
   {
-    // For Integer LSTM cell_state position will be 7 (INT variant producing 5 temporary tensors +
-    // main output + output_state) for float LSTM output_state position wll be 5 (FLOAT variant
-    // producing 3 temporary tensors + main output + output_state)
-    const auto position = _outputs.size() == 8 ? 7 : 5;
-    return _outputs[position];
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(input()) == Tensor::element_type(output_state()));
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(output()) == Tensor::element_type(input()));
+
+    for (int32_t i = 1; i < 9; ++i)
+    {
+      LUCI_INTERPRETER_CHECK(internal_tensors[i] == nullptr or
+                             Tensor::element_type(input_to_forget_weights()) ==
+                               Tensor::element_type(internal_tensors[i]));
+    }
+
+    for (int32_t i = 12; i < 16; ++i)
+    {
+      LUCI_INTERPRETER_CHECK(internal_tensors[i] == nullptr or
+                             Tensor::element_type(forget_gate_bias()) ==
+                               Tensor::element_type(internal_tensors[i]));
+    }
   }
 
-  // NOTE: for easier reading of the code, we keep the numbering and do '-2'
-  // due to replace output_state and cell_state tensors from inputs to outputs
-  const Tensor *input_layer_norm_coefficients() const { return _inputs[20 - 2]; }
-  const Tensor *forget_layer_norm_coefficients() const { return _inputs[21 - 2]; }
-  const Tensor *cell_layer_norm_coefficients() const { return _inputs[22 - 2]; }
-  const Tensor *output_layer_norm_coefficients() const { return _inputs[23 - 2]; }
+  const circle::Tensor *input() { return internal_tensors[0]; };
 
-  Tensor *output() const { return _outputs[0]; }
+  const circle::Tensor *input_to_input_weights() { return internal_tensors[1]; };
+  const circle::Tensor *input_to_forget_weights() { return internal_tensors[2]; };
+  const circle::Tensor *input_to_cell_weights() { return internal_tensors[3]; };
+  const circle::Tensor *input_to_output_weights() { return internal_tensors[4]; };
 
-  void configure() override;
-  void execute() const override;
+  const circle::Tensor *recurrent_to_input_weights() { return internal_tensors[5]; };
+  const circle::Tensor *recurrent_to_forget_weights() { return internal_tensors[6]; };
+  const circle::Tensor *recurrent_to_cell_weights() { return internal_tensors[7]; };
+  const circle::Tensor *recurrent_to_output_weights() { return internal_tensors[8]; };
+
+  const circle::Tensor *cell_to_input_weights() { return internal_tensors[9]; };
+  const circle::Tensor *cell_to_forget_weights() { return internal_tensors[10]; };
+  const circle::Tensor *cell_to_output_weights() { return internal_tensors[11]; };
+
+  const circle::Tensor *input_gate_bias() { return internal_tensors[12]; };
+  const circle::Tensor *forget_gate_bias() { return internal_tensors[13]; };
+  const circle::Tensor *cell_gate_bias() { return internal_tensors[14]; };
+  const circle::Tensor *output_gate_bias() { return internal_tensors[15]; };
+
+  const circle::Tensor *projection_weights() { return internal_tensors[16]; };
+  const circle::Tensor *projection_bias() { return internal_tensors[17]; };
+
+  const circle::Tensor *output_state() { return internal_tensors[18]; };
+  const circle::Tensor *cell_state() { return internal_tensors[19]; };
+
+  const circle::Tensor *input_layer_norm_coefficients() { return internal_tensors[20]; };
+  const circle::Tensor *forget_layer_norm_coefficients() { return internal_tensors[21]; };
+  const circle::Tensor *cell_layer_norm_coefficients() { return internal_tensors[22]; };
+  const circle::Tensor *output_layer_norm_coefficients() { return internal_tensors[23]; };
+  const circle::Tensor *output() { return output_internal; };
+
+  const circle::UnidirectionalSequenceLSTMOptions *options;
+
+  const circle::Tensor *get_internal_tensor(int i) { return internal_tensors[i]; }
 
 private:
-  void evalFloat() const;
-  void evalInt8() const;
-
-private:
-  void check_input_tensor_dimensions(int n_input, int n_output, int n_cell, bool use_layer_norm,
-                                     bool is_integer);
-  void populate_quantized_lstm_params();
-
-  void populate_precomputed_zp_times_weight_with_bias();
-
-  static void precompute_zero_point_times_weight_with_bias(int32_t zero_point,
-                                                           const Tensor *weight_tensor,
-                                                           const Tensor *bias_tensor,
-                                                           std::vector<int32_t> &output);
-
-private:
-  IntegerLSTMParams integer_lstm_params;
+  const circle::Tensor *output_internal;
+  const circle::Tensor *internal_tensors[24];
 };
 
-} // namespace kernels
+struct FullyConnectedParams
+{
+  int32_t input_offset;
+  int32_t weights_offset;
+  int32_t output_offset;
+  int32_t output_multiplier;
+  int32_t output_shift;
+  int32_t quantized_activation_min;
+  int32_t quantized_activation_max;
+  int32_t float_activation_min;
+  int32_t float_activation_max;
+};
+
+struct GateParameters
+{
+  FullyConnectedParams input_fc_params;
+  FullyConnectedParams recurrent_fc_params;
+};
+
+struct ArithmeticParams
+{
+  int32_t input1_offset;
+  int32_t input2_offset;
+  int32_t quantized_activation_min;
+  int32_t quantized_activation_max;
+  int32_t output_offset;
+  int32_t output_multiplier;
+  int32_t output_shift;
+  int32_t float_activation_min;
+  int32_t float_activation_max;
+};
+
+struct InterGateParameters
+{
+  ArithmeticParams forget_cell_mul_params;
+  ArithmeticParams input_mul_params;
+  ArithmeticParams output_mul_params;
+};
+
+struct CellStateInfo
+{
+  float cell_clip;
+  // clipping range for cell state only 16 bits cell is supported (could be
+  // generalized through templatation)
+  int16_t quantized_cell_clip;
+  // 2^-cell_state_scale_power = cell state scale, required by integer tanh
+  // computation
+  int32_t cell_state_scale_power;
+};
+
+struct LSTMParameters
+{
+  GateParameters forget_gate_parameters;
+  GateParameters input_gate_parameters;
+  GateParameters cell_gate_parameters;
+  GateParameters output_gate_parameters;
+  InterGateParameters inter_gate_parameters;
+};
+
+} // namespace lstm
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_KERNELS_UNIDIRECTIONALSEQUENCELSTM_H
+#endif // LUCI_INTERPRETER_KERNELS_UNIDIRECTIONAL_SEQUENCE_LSTM_H

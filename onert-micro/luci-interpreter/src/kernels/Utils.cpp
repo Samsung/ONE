@@ -74,13 +74,11 @@ template void calculateActivationRange(Activation activation, int64_t *activatio
                                        int64_t *activation_max);
 
 #ifndef DIS_QUANT
+
 static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t qmin, int32_t qmax,
-                                                  const circle::Tensor *output,
+                                                  int32_t zero_point, float scale,
                                                   int32_t *activation_min, int32_t *activation_max)
 {
-  const float scale = Tensor::scale(output);
-  const int32_t zero_point = Tensor::zero_point(output);
-
   auto quantize = [scale, zero_point](float x) {
     return zero_point + static_cast<int32_t>(std::round(x / scale));
   };
@@ -109,13 +107,24 @@ static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t
   }
 }
 
-void calculateActivationRangeQuantized(Activation activation, const circle::Tensor *output,
+static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t qmin, int32_t qmax,
+                                                  const circle::Tensor *output,
+                                                  int32_t *activation_min, int32_t *activation_max)
+{
+  const float scale = Tensor::scale(output);
+  const int32_t zero_point = Tensor::zero_point(output);
+
+  calculateActivationRangeQuantizedImpl(activation, qmin, qmax, zero_point, zero_point,
+                                        activation_min, activation_max);
+}
+
+void calculateActivationRangeQuantized(Activation activation, int32_t output_zero_point,
+                                       float output_scale, DataType data_type,
                                        int32_t *activation_min, int32_t *activation_max)
 {
-  assert(Tensor::zero_points(output).size() == 1);
   int32_t qmin{};
   int32_t qmax{};
-  switch (Tensor::element_type(output))
+  switch (data_type)
   {
     case DataType::U8:
       qmin = 0;
@@ -127,7 +136,7 @@ void calculateActivationRangeQuantized(Activation activation, const circle::Tens
       break;
     case DataType::S16:
       // For now, assume that signed int16 type implies signed symmetric quantization.
-      assert(Tensor::zero_point(output) == 0);
+      assert(output_zero_point == 0);
       qmin = -std::numeric_limits<int16_t>::max();
       qmax = std::numeric_limits<int16_t>::max();
       break;
@@ -135,8 +144,18 @@ void calculateActivationRangeQuantized(Activation activation, const circle::Tens
       assert(false && "Unsupported type.");
   }
 
-  calculateActivationRangeQuantizedImpl(activation, qmin, qmax, output, activation_min,
-                                        activation_max);
+  calculateActivationRangeQuantizedImpl(activation, qmin, qmax, output_zero_point, output_scale,
+                                        activation_min, activation_max);
+}
+
+void calculateActivationRangeQuantized(Activation activation, const circle::Tensor *output,
+                                       int32_t *activation_min, int32_t *activation_max)
+{
+  assert(Tensor::zero_points(output).size() == 1);
+  const float scale = Tensor::scale(output);
+  const int32_t zero_point = Tensor::zero_point(output);
+  calculateActivationRangeQuantized(activation, zero_point, scale, Tensor::element_type(output),
+                                    activation_min, activation_max);
 }
 
 void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift)
