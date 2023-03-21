@@ -244,6 +244,10 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleMirrorPa
 template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleMul *node)
 {
+  // Allow mul of indices
+  if (group_has_type(node, loco::DataType::S32) or group_has_type(node, loco::DataType::S64))
+    return true;
+
   return group_has_type(node, Qtype);
 }
 

@@ -1307,6 +1307,33 @@ private:
   luci::CircleConst *_const = nullptr;
 };
 
+template <Type T> class IntMulTestGraph final : public TypedTestGraph
+{
+public:
+  void init(void) override
+  {
+    TypedTestGraph::init(T, {32}, {32});
+
+    _const = create_dummy_const<T>(g(), {32});
+    _mul = g()->nodes()->create<luci::CircleMul>();
+    {
+      _mul->x(input());
+      _mul->y(_const);
+      _mul->fusedActivationFunction(luci::FusedActFunc::NONE);
+      _mul->name("test");
+      _mul->dtype(T);
+    }
+    output()->from(_mul);
+  }
+
+  loco::Node *x() { return _mul->x(); }
+  loco::Node *y() { return _mul->y(); }
+
+private:
+  luci::CircleMul *_mul = nullptr;
+  luci::CircleConst *_const = nullptr;
+};
+
 class AddTestGraph final : public SimpleTestGraph
 {
 public:
@@ -2692,6 +2719,29 @@ TEST(QuantizedModelVerifierTest, Mul_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY_TARGET(MulTestGraph, Type::U8, Granularity::LayerWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(MulTestGraph, Type::U8, Granularity::ChannelWise, g.y());
   TEST_WITH_WRONG_GRANULARITY_TARGET(MulTestGraph, Type::S16, Granularity::ChannelWise, g.y());
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Mul_inttype)
+{
+  // Tests for S32
+  TEST_WITH_GRAPH(IntMulTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(IntMulTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(IntMulTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(IntMulTestGraph<Type::S32>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(IntMulTestGraph<Type::S32>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(IntMulTestGraph<Type::S32>, Type::S16, Granularity::ChannelWise);
+
+  // Tests for S64
+  TEST_WITH_GRAPH(IntMulTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(IntMulTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(IntMulTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(IntMulTestGraph<Type::S64>, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(IntMulTestGraph<Type::S64>, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(IntMulTestGraph<Type::S64>, Type::S16, Granularity::ChannelWise);
+
   SUCCEED();
 }
 
