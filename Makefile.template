@@ -173,14 +173,15 @@ test_suite_internal: install_all_internal
 	@echo "packaging test suite"
 	@rm -rf $(INSTALL_PATH)/test-suite.tar.gz
 # TODO Divide runtime package, external library package, and test suite
-	@tar -zcf test-suite.tar.gz tests/scripts infra Product/out --dereference
+	@tar -zcf test-suite.tar.gz -C $(INSTALL_PATH) --dereference .
 	@mv test-suite.tar.gz $(INSTALL_PATH)/.
 
 coverage_suite_internal: install_all_internal
 	@echo "packaging test-coverage suite"
-	@rm -rf $(INSTALL_PATH)/coverage-suite.tar.gz
-	@find Product -name "*.gcno" > include_lists.txt
-	@pwd | grep -o '/' | wc -l > tests/scripts/build_path_depth.txt
-	@tar -zcf coverage-suite.tar.gz tests/scripts infra Product/out --dereference -T include_lists.txt
-	@rm -rf include_lists.txt tests/scripts/build_path_depth.txt
+	@rm -rf $(INSTALL_PATH)/coverage-suite.tar.gz $(INSTALL_PATH)/gcov $(INSTALL_PATH)/test/scripts/build_path_depth.txt
+	@mkdir -p $(INSTALL_PATH)/gcov
+	@find $(WORKSPACE)/obj -name "*.gcno" -exec cp {} $(INSTALL_PATH)/gcov/. \;
+	@pwd | grep -o '/' | wc -l > $(INSTALL_PATH)/test/scripts/build_path_depth.txt
+	@tar -zcf coverage-suite.tar.gz -C $(INSTALL_PATH) --dereference .
+	@rm -rf $(INSTALL_PATH)/gcov $(INSTALL_PATH)/test/scripts/build_path_depth.txt
 	@mv coverage-suite.tar.gz $(INSTALL_PATH)/.

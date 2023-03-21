@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-MODEL_ROOT_DIR=$DRIVER_PATH/models
+MODEL_ROOT_DIR=$INSTALL_PATH/test/models
 MD5_CHECK="on"
 
 function Usage()
@@ -22,9 +22,10 @@ function Usage()
     echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [OPTIONS]"
     echo ""
     echo "Options:"
-    echo "          --ignoremd5     Ignore MD5 check when download model files"
-    echo "          --cachedir=PATH Set downloaded resouces cache directory (default: $CACHE_PATH)"
-    echo "      -h, --help          Display this help message and exit"
+    echo "          --ignoremd5         Ignore MD5 check when download model files"
+    echo "          --configdir=PATH    set config directory to download model (default: $MODEL_ROOT_DIR)"
+    echo "          --cachedir=PATH     Set downloaded resouces cache directory (default: $CACHE_PATH)"
+    echo "      -h, --help              Display this help message and exit"
 }
 
 for i in "$@"
@@ -36,6 +37,9 @@ do
             ;;
         --ignoremd5)
             MD5_CHECK="off"
+            ;;
+        --configdir=*)
+            MODEL_ROOT_DIR=${i#*=}
             ;;
         --cachedir=*)
             CACHE_PATH=${i#*=}

@@ -23,7 +23,7 @@ source $MY_PATH/common.sh
 
 ONERT_DRIVER_BIN=$INSTALL_PATH/bin/onert_run
 TFLITE_DRIVER_BIN=$INSTALL_PATH/bin/tflite_run
-REPORT_DIR=$ROOT_PATH/report
+REPORT_DIR=report
 BENCHMARK_REPORT_DIR=$REPORT_DIR/benchmark_op
 BENCHMARK_MODELS_FILE=$BENCHMARK_REPORT_DIR/benchmark_models.txt
 MODEL_TEST_ROOT_PATH=$INSTALL_PATH/test/models/tflite
@@ -170,7 +170,7 @@ get_benchmark_op_list
 rm -rf $BENCHMARK_MODELS_FILE
 
 # Model download server setting
-prepare_test_model
+PrepareTestModel
 
 echo ""
 # print the result AND append to log file

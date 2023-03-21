@@ -30,7 +30,7 @@ mkdir -p $BENCHMARK_REPORT_DIR
 touch $BENCHMARK_MODELS_FILE
 
 # Prepare models
-prepare_test_model
+PrepareTestModel
 
 function run_without_sched()
 {

@@ -6,7 +6,6 @@
 # Test suite: nnpkg-test-suite.tar.gz
 
 set -eo pipefail
-source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 NNAS_WORKSPACE=${NNAS_WORKSPACE:-build}
 if [[ -z "${ARCHIVE_PATH}" ]]; then
