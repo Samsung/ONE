@@ -102,7 +102,7 @@ def main():
     args = _parse_arg(parser)
 
     # parse configuration file
-    oneutils.parse_cfg(args, 'one-pack')
+    oneutils.parse_cfg(args.config, 'one-pack', args)
 
     # verify arguments
     _verify_arg(parser, args)

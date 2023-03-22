@@ -1,3 +1,16 @@
+find_package(PythonInterp 3.8 QUIET)
+find_package(PythonLibs 3.8 QUIET)
+
+if(NOT ${PYTHONINTERP_FOUND})
+  message(STATUS "Build one-cmds: FALSE (Python3 is missing)")
+  return()
+endif()
+
+if(${PYTHON_VERSION_MINOR} LESS 8)
+  message(STATUS "Build one-cmds: FALSE (You need to install Python version higher than 3.8)")
+  return()
+endif()
+
 # NOTE these files should not have extensions.
 #      below code will remove extension when copy and install.
 set(ONE_COMMAND_FILES
@@ -96,6 +109,7 @@ install(FILES ${MODEL2NNPKG}
 
 # make python directory
 set(ONE_PYTHON_FILES constant.py
+                     export_constant.py
                      make_cmd.py
                      CfgRunner.py
                      OptionBuilder.py
@@ -131,6 +145,26 @@ foreach(ONE_PYTHON_FILE IN ITEMS ${ONE_PYTHON_FILES})
           DESTINATION bin)
 
 endforeach(ONE_PYTHON_FILE)
+
+set(CONSTANT_EXPORTING_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/${ONE_PYTHON_DIR}/export_constant.py")
+set(O1_OPTION "O1")
+set(O1_CFG_FILE "${O1_OPTION}.cfg")
+set(O1_CFG_FILE_BIN "${CMAKE_CURRENT_BINARY_DIR}/${ONE_PYTHON_DIR}/${O1_CFG_FILE}")
+
+add_custom_command(OUTPUT ${O1_CFG_FILE_BIN}
+  COMMAND ${PYTHON_EXECUTABLE} ${CONSTANT_EXPORTING_SCRIPT} --constant ${O1_OPTION}
+                                    --format cfg --output_path ${O1_CFG_FILE_BIN}
+  DEPENDS ${CONSTANT_EXPORTING_SCRIPT}
+  COMMENT "Generate ${O1_CFG_FILE}"
+)
+
+add_custom_target("O1_cfg_target" ALL DEPENDS ${O1_CFG_FILE_BIN})
+
+install(FILES ${O1_CFG_FILE_BIN}
+        PERMISSIONS OWNER_WRITE OWNER_READ
+                         GROUP_READ
+                         WORLD_READ
+        DESTINATION optimization)
 
 set(ONE_DOCUMENT_FILES
     how-to-use-one-commands.txt

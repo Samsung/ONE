@@ -116,6 +116,8 @@ def _parse_arg(parser):
         infer_args = args[0]
         infer_args = parser.parse_args(infer_args)
         backend_args = backend_args if len(args) < 2 else args[1]
+    else:
+        infer_args = parser.parse_args(infer_args)
     # print version
     if len(args) and infer_args.version:
         oneutils.print_version_and_exit(__file__)
@@ -139,7 +141,7 @@ def main():
     args, backend_args = _parse_arg(parser)
 
     # parse configuration file
-    oneutils.parse_cfg(args, 'one-infer')
+    oneutils.parse_cfg(args.config, 'one-infer', args)
 
     # verify arguments
     _verify_arg(parser, args)

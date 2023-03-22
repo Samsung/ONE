@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+# Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,33 +14,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# positive usage with overriding option
+# invalid group option
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
+  if grep -q "Invalid group option" "${filename}.log"; then
+    echo "${filename_ext} SUCCESS"
+    exit 0
+  fi
+
   echo "${filename_ext} FAILED"
   exit 255
 }
 
 trap trap_err_onexit ERR
 
-configfile="one-import_002.cfg"
-outputfile_cmd="inception_v3_cmd.circle"
-outputfile_cfg="inception_v3_cfg.circle"
+configfile="onecc_neg_025.cfg"
 
 rm -f ${filename}.log
-rm -f ${outputfile_cmd}
-rm -f ${outputfile_cfg}
 
 # run test
-one-import tf -C ${configfile} \
---output_path=${outputfile_cmd} > ${filename}.log 2>&1
+onecc -C ${configfile} > ${filename}.log 2>&1
 
-if [[ ! -s "${outputfile_cmd}" ]]; then
-  trap_err_onexit
-fi
-
-echo "${filename_ext} SUCCESS"
+echo "${filename_ext} FAILED"
+exit 255
