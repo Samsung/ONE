@@ -106,15 +106,13 @@ def parse_cfg_and_overwrite(config_path, section, args):
     # TODO support accumulated arguments
 
 
-def parse_cfg(config_path: Union[str, None], section_to_parse: str, args,
-              overwrite=False):
+def parse_cfg(config_path: Union[str, None], section_to_parse: str, args):
     """
     parse configuration file and save the information to args
     
     :param config_path: path to configuration file
     :param section_to_parse: section name to parse
     :param args: object to store the parsed information
-    :param overwrite: flag indicating whether to overwrite the args
     """
     if config_path is None:
         return
@@ -134,7 +132,7 @@ def parse_cfg(config_path: Union[str, None], section_to_parse: str, args,
             else:
                 getattr(args, key).append(parser[section_to_parse][key])
             continue
-        if not overwrite and hasattr(args, key) and getattr(args, key):
+        if hasattr(args, key) and getattr(args, key):
             continue
         setattr(args, key, parser[section_to_parse][key])
 
