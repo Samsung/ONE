@@ -41,6 +41,7 @@ function preset_configure()
   REQUIRED_UNITS+=("bcq-tools")
   REQUIRED_UNITS+=("dalgona")
   REQUIRED_UNITS+=("visq")
+  REQUIRED_UNITS+=("circle-opselector")
 
   # Dependent modules needed for build
   REQUIRED_UNITS+=("circlechef")
