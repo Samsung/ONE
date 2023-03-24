@@ -37,6 +37,7 @@ configfile="onecc_neg_026.cfg"
 
 rm -f ${filename}.log
 
+# TODO Generate input file in prepare_test_materials.sh
 if [[ ! -s "${inputfile}" ]]; then
   one-import onnx -i reshape_matmul.onnx -o ${inputfile}
 fi

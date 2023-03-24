@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# check error message is printed when qconfig file is not json
+# Wrong number of input_type in one-quantize
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -37,6 +37,7 @@ outputfile="./reshape_matmul.quantized.neg_021.circle"
 
 rm -f ${filename}.log
 
+# TODO Generate input file in prepare_test_materials.sh
 if [[ ! -s "${inputfile}" ]]; then
   one-import onnx -i reshape_matmul.onnx -o ${inputfile}
 fi

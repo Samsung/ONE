@@ -34,6 +34,7 @@ rm -f ${filename}.first.cdump
 rm -f ${filename}.second.cdump
 rm -f ${outputfile}
 
+# TODO Generate input file in prepare_test_materials.sh
 if [[ ! -s "${inputfile}" ]]; then
   one-import onnx -i reshape_matmul.onnx -o ${inputfile}
 fi
