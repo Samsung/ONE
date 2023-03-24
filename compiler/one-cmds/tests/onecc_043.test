@@ -40,6 +40,7 @@ if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
 fi
 
+# O1.list is dynamically created from onelib/export_constant.py
 readarray -t O1_OPTS < "O1.list"
 readarray -t NO_O1_OPTS < "non-O1.list"
 

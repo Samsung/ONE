@@ -108,7 +108,7 @@ def parse_cfg_and_overwrite(config_path, section, args):
 
 def parse_cfg(config_path: Union[str, None], section_to_parse: str, args):
     """
-    parse configuration file and save the information to args
+    parse configuration file and store the information to args
     
     :param config_path: path to configuration file
     :param section_to_parse: section name to parse
