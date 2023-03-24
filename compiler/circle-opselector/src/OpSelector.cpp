@@ -130,6 +130,10 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
         // circle input
         auto circle_input = graph->nodes()->create<luci::CircleInput>();
         input_node = dynamic_cast<luci::CircleNode *>(arg);
+        if (not input_node)
+        {
+          throw std::runtime_error{"ERROR: Invliad graph"};
+        }
         luci::copy_common_attributes(input_node, circle_input);
         ctx.emplace(input_node, circle_input);
         // graph input
@@ -177,7 +181,10 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
       if (isMultiOut)
       {
         output_node = dynamic_cast<const luci::CircleNode *>(o);
-        assert(output_node);
+        if (not output_node)
+        {
+          throw std::runtime_error{"ERROR: Invalid graph"};
+        }
       }
       else
       {
@@ -351,6 +358,7 @@ std::unique_ptr<luci::Module> OpSelector::select_by(const std::string &str)
 
   // multiout node should be considered
   IsMultiOutputNode multiout_visitor;
+  std::vector<const luci::CircleNode *> output_nodes;
   for (const auto &node : selected_nodes)
   {
     if (node->accept(&multiout_visitor))
@@ -358,10 +366,11 @@ std::unique_ptr<luci::Module> OpSelector::select_by(const std::string &str)
       auto outputs = loco::succs(node);
       for (auto &o : outputs)
       {
-        selected_nodes.push_back(dynamic_cast<luci::CircleNode *>(o));
+        output_nodes.push_back(dynamic_cast<luci::CircleNode *>(o));
       }
     }
   }
+  selected_nodes.insert(selected_nodes.end(), output_nodes.begin(), output_nodes.end());
 
   auto new_module = std::make_unique<luci::Module>();
   new_module->add(::make_graph(selected_nodes));
