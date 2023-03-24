@@ -1,3 +1,16 @@
+one (1.22.0) bionic; urgency=medium
+
+  * Introduce new optimization options: `unroll_unidirseqlstm`, `forward_transpose_op`, `fold_fully_connected`, `fuse_prelu`
+  * Support more Ops for fake quantization: `Depth2Space`, `Space2Depth`, `Pack`, `Unpack`, `Abs`
+  * Support more Ops for quantization: `Abs`, `ReduceProd`
+  * Introduce _visq_ tool for quantization error visualization
+  * Introduce _Environment_ section into configuration file
+  * Improve speed of `convert_nchw_to_nhwc` option
+  * Support `Add`, `Mul` of index-type (int32, int64) tensors in _one-quantize_
+  * Support ubuntu 20.04
+
+ -- seongwoo <mhs4670go@naver.com>  Fri, 24 Mar 2023 13:58:16 +0900
+
 one (1.21.0) bionic; urgency=medium
 
   * Support unrolling of LSTM and RNN Ops in `one-import-onnx` tool
