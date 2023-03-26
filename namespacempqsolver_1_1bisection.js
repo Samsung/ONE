@@ -5,6 +5,7 @@ var namespacempqsolver_1_1bisection =
     [ "ErrorMetric", "classmpqsolver_1_1bisection_1_1_error_metric.html", "classmpqsolver_1_1bisection_1_1_error_metric" ],
     [ "MAEMetric", "classmpqsolver_1_1bisection_1_1_m_a_e_metric.html", "classmpqsolver_1_1bisection_1_1_m_a_e_metric" ],
     [ "Quantizer", "classmpqsolver_1_1bisection_1_1_quantizer.html", "classmpqsolver_1_1bisection_1_1_quantizer" ],
+    [ "VISQErrorApproximator", "classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator.html", "classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator" ],
     [ "Buffer", "namespacempqsolver_1_1bisection.html#a7359d03292685b7c31dca835a7c4003e", null ],
     [ "LayerParam", "namespacempqsolver_1_1bisection.html#ac41bb2f1ee31398faa63f82987febfde", null ],
     [ "LayerParams", "namespacempqsolver_1_1bisection.html#a70811656dd41209004045985d5ff770a", null ],

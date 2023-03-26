@@ -105,10 +105,10 @@ Data Fields</h2></td></tr>
 <tr class="separator:ac6aa085027e0192cf2cf3da7f65475ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69290f8e4214b3dd9b2cf546c2f56871"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a1dbbe7778504a3210934cf9f1415315a">QuantizationGranularity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantize_with_min_max_pass_1_1_context.html#a69290f8e4214b3dd9b2cf546c2f56871">granularity</a> = <a class="el" href="namespaceluci.html#a1dbbe7778504a3210934cf9f1415315aacf412d006a6d6229f10554753b62b9b2">QuantizationGranularity::ChannelWise</a></td></tr>
 <tr class="separator:a69290f8e4214b3dd9b2cf546c2f56871"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76036a89a2c5b33cea463553a72b87d6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantize_with_min_max_pass_1_1_context.html#a76036a89a2c5b33cea463553a72b87d6">input_type</a> = loco::DataType::Unknown</td></tr>
-<tr class="separator:a76036a89a2c5b33cea463553a72b87d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba7c491bb80d0e00e2499912767a1c9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantize_with_min_max_pass_1_1_context.html#aba7c491bb80d0e00e2499912767a1c9f">output_type</a> = loco::DataType::Unknown</td></tr>
-<tr class="separator:aba7c491bb80d0e00e2499912767a1c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9332b950d0294c55254b759b9dce1283"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantize_with_min_max_pass_1_1_context.html#a9332b950d0294c55254b759b9dce1283">input_types</a></td></tr>
+<tr class="separator:a9332b950d0294c55254b759b9dce1283"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c957016117432bf8b8606944f66132f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantize_with_min_max_pass_1_1_context.html#a0c957016117432bf8b8606944f66132f">output_types</a></td></tr>
+<tr class="separator:a0c957016117432bf8b8606944f66132f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4b9d0d077c2f6ecefb494b27e5188ad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantize_with_min_max_pass_1_1_context.html#ad4b9d0d077c2f6ecefb494b27e5188ad">TF_style_maxpool</a> = false</td></tr>
 <tr class="separator:ad4b9d0d077c2f6ecefb494b27e5188ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac76a1418c1599221eaf71c5671c31bcc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structluci_1_1_layer_info.html">LayerInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantize_with_min_max_pass_1_1_context.html#ac76a1418c1599221eaf71c5671c31bcc">layers_info</a></td></tr>
@@ -150,14 +150,14 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a76036a89a2c5b33cea463553a72b87d6" name="a76036a89a2c5b33cea463553a72b87d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76036a89a2c5b33cea463553a72b87d6">&#9670;&#160;</a></span>input_type</h2>
+<a id="a9332b950d0294c55254b759b9dce1283" name="a9332b950d0294c55254b759b9dce1283"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9332b950d0294c55254b759b9dce1283">&#9670;&#160;</a></span>input_types</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a> luci::QuantizeWithMinMaxPass::Context::input_type = loco::DataType::Unknown</td>
+          <td class="memname">std::vector&lt;<a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a>&gt; luci::QuantizeWithMinMaxPass::Context::input_types</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -198,14 +198,14 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="aba7c491bb80d0e00e2499912767a1c9f" name="aba7c491bb80d0e00e2499912767a1c9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba7c491bb80d0e00e2499912767a1c9f">&#9670;&#160;</a></span>output_type</h2>
+<a id="a0c957016117432bf8b8606944f66132f" name="a0c957016117432bf8b8606944f66132f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c957016117432bf8b8606944f66132f">&#9670;&#160;</a></span>output_types</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a> luci::QuantizeWithMinMaxPass::Context::output_type = loco::DataType::Unknown</td>
+          <td class="memname">std::vector&lt;<a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a>&gt; luci::QuantizeWithMinMaxPass::Context::output_types</td>
         </tr>
       </table>
 </div><div class="memdoc">

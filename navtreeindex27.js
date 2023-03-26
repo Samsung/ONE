@@ -1,5 +1,9 @@
 var NAVTREEINDEX27 =
 {
+"_verify_quantized_node_granularity_8cpp_source.html":[35,0,0,51,7,1,95],
+"_verify_quantized_node_granularity_8h.html":[35,0,0,51,7,1,96],
+"_verify_quantized_node_granularity_8h.html#a21d1b8802dcf1c397c10cfe8aa2d433d":[35,0,0,51,7,1,96,4],
+"_verify_quantized_node_granularity_8h.html#aa04d5e646f4e595a5ba6f44fec9ed430":[35,0,0,51,7,1,96,3],
 "_verify_quantized_node_granularity_8h_source.html":[35,0,0,51,7,1,96],
 "_verify_quantized_node_type_8cpp.html":[35,0,0,51,7,1,97],
 "_verify_quantized_node_type_8cpp.html#aa04d5e646f4e595a5ba6f44fec9ed430":[35,0,0,51,7,1,97,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX27 =
 "backend_2acl__neon_2_kernel_generator_8cc.html#a83fd8486280d570d411be80445e45c91":[35,0,4,2,1,2,8,0],
 "backend_2acl__neon_2_kernel_generator_8cc_source.html":[35,0,4,2,1,2,8],
 "backend_2acl__neon_2_kernel_generator_8h.html":[35,0,4,2,1,2,9],
-"backend_2acl__neon_2_kernel_generator_8h_source.html":[35,0,4,2,1,2,9],
-"backend_2acl__neon_2_tensor_builder_8h.html":[35,0,4,2,1,2,12],
-"backend_2acl__neon_2_tensor_builder_8h.html#a536aa69ea8e78215e0cc5dd8dd50f701":[35,0,4,2,1,2,12,0],
-"backend_2acl__neon_2_tensor_builder_8h_source.html":[35,0,4,2,1,2,12],
-"backend_2cl__common_2include_2cl__common_2_backend_context_8h.html":[35,0,4,2,1,3,0,0,0]
+"backend_2acl__neon_2_kernel_generator_8h_source.html":[35,0,4,2,1,2,9]
 };

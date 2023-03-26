@@ -1431,6 +1431,15 @@ var annotated_dup =
         [ "VectorOfTensors", "classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html", "classluci__interpreter_1_1kernels_1_1_vector_of_tensors" ],
         [ "While", "classluci__interpreter_1_1kernels_1_1_while.html", "classluci__interpreter_1_1kernels_1_1_while" ]
       ] ],
+      [ "lstm", "namespaceluci__interpreter_1_1lstm.html", [
+        [ "ArithmeticParams", "structluci__interpreter_1_1lstm_1_1_arithmetic_params.html", "structluci__interpreter_1_1lstm_1_1_arithmetic_params" ],
+        [ "CellStateInfo", "structluci__interpreter_1_1lstm_1_1_cell_state_info.html", "structluci__interpreter_1_1lstm_1_1_cell_state_info" ],
+        [ "FullyConnectedParams", "structluci__interpreter_1_1lstm_1_1_fully_connected_params.html", "structluci__interpreter_1_1lstm_1_1_fully_connected_params" ],
+        [ "GateParameters", "structluci__interpreter_1_1lstm_1_1_gate_parameters.html", "structluci__interpreter_1_1lstm_1_1_gate_parameters" ],
+        [ "InterGateParameters", "structluci__interpreter_1_1lstm_1_1_inter_gate_parameters.html", "structluci__interpreter_1_1lstm_1_1_inter_gate_parameters" ],
+        [ "LSTMParameters", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters.html", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters" ],
+        [ "LSTMStruct", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct" ]
+      ] ],
       [ "AddParams", "structluci__interpreter_1_1_add_params.html", "structluci__interpreter_1_1_add_params" ],
       [ "AffineQuantization", "structluci__interpreter_1_1_affine_quantization.html", "structluci__interpreter_1_1_affine_quantization" ],
       [ "ArgMaxParams", "structluci__interpreter_1_1_arg_max_params.html", "structluci__interpreter_1_1_arg_max_params" ],
@@ -1504,6 +1513,10 @@ var annotated_dup =
       [ "VectorWrapper", "classluci__interpreter_1_1_vector_wrapper.html", "classluci__interpreter_1_1_vector_wrapper" ]
     ] ],
     [ "luci_interpreter_pal", "namespaceluci__interpreter__pal.html", [
+      [ "lstm_internal", "namespaceluci__interpreter__pal_1_1lstm__internal.html", [
+        [ "LstmSizeInfo", "structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html", "structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info" ],
+        [ "LstmStepManager", "classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager.html", "classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager" ]
+      ] ],
       [ "ActivationFunctor", "classluci__interpreter__pal_1_1_activation_functor.html", "classluci__interpreter__pal_1_1_activation_functor" ]
     ] ],
     [ "mio", "namespacemio.html", [
@@ -1834,7 +1847,8 @@ var annotated_dup =
         [ "DatasetEvaluator", "classmpqsolver_1_1bisection_1_1_dataset_evaluator.html", "classmpqsolver_1_1bisection_1_1_dataset_evaluator" ],
         [ "ErrorMetric", "classmpqsolver_1_1bisection_1_1_error_metric.html", "classmpqsolver_1_1bisection_1_1_error_metric" ],
         [ "MAEMetric", "classmpqsolver_1_1bisection_1_1_m_a_e_metric.html", "classmpqsolver_1_1bisection_1_1_m_a_e_metric" ],
-        [ "Quantizer", "classmpqsolver_1_1bisection_1_1_quantizer.html", "classmpqsolver_1_1bisection_1_1_quantizer" ]
+        [ "Quantizer", "classmpqsolver_1_1bisection_1_1_quantizer.html", "classmpqsolver_1_1bisection_1_1_quantizer" ],
+        [ "VISQErrorApproximator", "classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator.html", "classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator" ]
       ] ],
       [ "MPQSolver", "classmpqsolver_1_1_m_p_q_solver.html", "classmpqsolver_1_1_m_p_q_solver" ]
     ] ],

@@ -95,12 +95,10 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
   <div class="headertitle"><div class="title">UnidirectionalSequenceLSTM.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;kernels/UnidirectionalSequenceLSTM.h&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_builders_8h_source.html">Builders.h</a>&quot;</code><br />
 <code>#include &quot;kernels/Utils.h&quot;</code><br />
 <code>#include &quot;PALUnidirectionalSequenceLSTM.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="_p_a_l_apply_activation_to_vector_8h_source.html">PALApplyActivationToVector.h</a>&quot;</code><br />
-<code>#include &lt;tensorflow/lite/kernels/internal/tensor_utils_common.h&gt;</code><br />
-<code>#include &lt;tensorflow/lite/kernels/internal/reference/portable_tensor_utils.h&gt;</code><br />
 </div>
 <p><a href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -108,15 +106,13 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceluci__interpreter"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html">luci_interpreter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceluci__interpreter_1_1kernels"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html">luci_interpreter::kernels</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceluci__interpreter_1_1kernels_1_1lstm"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels_1_1lstm.html">luci_interpreter::kernels::lstm</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a28ef2db9d8cfc7dc0029484f66a14811"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels_1_1lstm.html#a28ef2db9d8cfc7dc0029484f66a14811">luci_interpreter::kernels::lstm::EvalFloat</a> (const <a class="el" href="class_tensor.html">Tensor</a> *input, const <a class="el" href="class_tensor.html">Tensor</a> *input_to_input_weights, const <a class="el" href="class_tensor.html">Tensor</a> *input_to_forget_weights, const <a class="el" href="class_tensor.html">Tensor</a> *input_to_cell_weights, const <a class="el" href="class_tensor.html">Tensor</a> *input_to_output_weights, const <a class="el" href="class_tensor.html">Tensor</a> *recurrent_to_input_weights, const <a class="el" href="class_tensor.html">Tensor</a> *recurrent_to_forget_weights, const <a class="el" href="class_tensor.html">Tensor</a> *recurrent_to_cell_weights, const <a class="el" href="class_tensor.html">Tensor</a> *recurrent_to_output_weights, const <a class="el" href="class_tensor.html">Tensor</a> *cell_to_input_weights, const <a class="el" href="class_tensor.html">Tensor</a> *cell_to_forget_weights, const <a class="el" href="class_tensor.html">Tensor</a> *cell_to_output_weights, const <a class="el" href="class_tensor.html">Tensor</a> *input_layer_norm_coefficients, const <a class="el" href="class_tensor.html">Tensor</a> *forget_layer_norm_coefficients, const <a class="el" href="class_tensor.html">Tensor</a> *cell_layer_norm_coefficients, const <a class="el" href="class_tensor.html">Tensor</a> *output_layer_norm_coefficients, const <a class="el" href="class_tensor.html">Tensor</a> *aux_input, const <a class="el" href="class_tensor.html">Tensor</a> *aux_input_to_input_weights, const <a class="el" href="class_tensor.html">Tensor</a> *aux_input_to_forget_weights, const <a class="el" href="class_tensor.html">Tensor</a> *aux_input_to_cell_weights, const <a class="el" href="class_tensor.html">Tensor</a> *aux_input_to_output_weights, const <a class="el" href="class_tensor.html">Tensor</a> *input_gate_bias, const <a class="el" href="class_tensor.html">Tensor</a> *forget_gate_bias, const <a class="el" href="class_tensor.html">Tensor</a> *cell_gate_bias, const <a class="el" href="class_tensor.html">Tensor</a> *output_gate_bias, const <a class="el" href="class_tensor.html">Tensor</a> *projection_weights, const <a class="el" href="class_tensor.html">Tensor</a> *projection_bias, const TfLiteLSTMParams *params, bool forward_sequence, bool time_major, int output_offset, <a class="el" href="class_tensor.html">Tensor</a> *scratch_buffer, <a class="el" href="class_tensor.html">Tensor</a> *output_state, <a class="el" href="class_tensor.html">Tensor</a> *cell_state, <a class="el" href="class_tensor.html">Tensor</a> *output)</td></tr>
-<tr class="separator:a28ef2db9d8cfc7dc0029484f66a14811"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cd9d58495a0cc85155c98fa7904a9d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#a9cd9d58495a0cc85155c98fa7904a9d6">luci_interpreter::configure_kernel_CircleUnidirectionalSequenceLSTM</a> (const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)</td></tr>
+<tr class="separator:a9cd9d58495a0cc85155c98fa7904a9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab11931ef52048dfc48bc6970afca431a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#ab11931ef52048dfc48bc6970afca431a">luci_interpreter::execute_kernel_CircleUnidirectionalSequenceLSTM</a> (const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph, bool in_place)</td></tr>
+<tr class="separator:ab11931ef52048dfc48bc6970afca431a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

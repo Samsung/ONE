@@ -101,6 +101,8 @@ $(document).ready(function(){initNavTree('namespaceluci__interpreter__pal.html',
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceluci__interpreter__pal_1_1lstm"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal_1_1lstm.html">lstm</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceluci__interpreter__pal_1_1lstm__internal"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal_1_1lstm__internal.html">lstm_internal</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
@@ -181,6 +183,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a90a2d5d095d1e99b34df27491a89fdd6"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:a90a2d5d095d1e99b34df27491a89fdd6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a90a2d5d095d1e99b34df27491a89fdd6">FullyConnected&lt; int8_t &gt;</a> (const tflite::FullyConnectedParams &amp;params, const tflite::RuntimeShape &amp;input_shape, const int8_t *input_data, const tflite::RuntimeShape &amp;filter_shape, const int8_t *filter_data, const tflite::RuntimeShape &amp;bias_shape, const int32_t *bias_data, const tflite::RuntimeShape &amp;output_shape, int8_t *output_data)</td></tr>
 <tr class="separator:a90a2d5d095d1e99b34df27491a89fdd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae403fa636add73b8f7a8597039e70131"><td class="memTemplParams" colspan="2">template&lt;typename ActivationType , typename WeightType , typename CellType , typename BiasType &gt; </td></tr>
+<tr class="memitem:ae403fa636add73b8f7a8597039e70131"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#ae403fa636add73b8f7a8597039e70131">evalLSTM</a> (<a class="el" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html">luci_interpreter::lstm::LSTMStruct</a> *lstm_struct, <a class="el" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters.html">luci_interpreter::lstm::LSTMParameters</a> *lstm_params, <a class="el" href="structluci__interpreter_1_1lstm_1_1_cell_state_info.html">luci_interpreter::lstm::CellStateInfo</a> *cell_state_info, ActivationType *output_state_data, CellType *cell_state_data, CellType *scratch0, CellType *scratch1, CellType *scratch2, CellType *scratch3, <a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">luci_interpreter::BaseRuntimeGraph</a> *runtime_graph)</td></tr>
+<tr class="separator:ae403fa636add73b8f7a8597039e70131"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a538db269338776f01a3c6f56e503f9a8" name="a538db269338776f01a3c6f56e503f9a8"></a>
@@ -1982,6 +1987,148 @@ template&lt;&gt; </div>
 <div class="ttc" id="acompiler_2luci-interpreter_2src_2kernels_2_utils_8h_html_a231f5fa1ff2a3f19222b42cc9bbd1f2d"><div class="ttname"><a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a></div><div class="ttdeci">#define LUCI_INTERPRETER_CHECK(cond)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">Utils.h:36</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="cmsisnn_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00033">luci_interpreter_pal::lstm::convert_lstm_params()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00041">luci_interpreter::Shape::dim()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">LUCI_INTERPRETER_CHECK</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00096">luci_interpreter::Tensor::shape()</a>.</p>
+
+</div>
+</div>
+<a id="ae403fa636add73b8f7a8597039e70131" name="ae403fa636add73b8f7a8597039e70131"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae403fa636add73b8f7a8597039e70131">&#9670;&#160;</a></span>evalLSTM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ActivationType , typename WeightType , typename CellType , typename BiasType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter_pal::evalLSTM </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html">luci_interpreter::lstm::LSTMStruct</a> *&#160;</td>
+          <td class="paramname"><em>lstm_struct</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters.html">luci_interpreter::lstm::LSTMParameters</a> *&#160;</td>
+          <td class="paramname"><em>lstm_params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structluci__interpreter_1_1lstm_1_1_cell_state_info.html">luci_interpreter::lstm::CellStateInfo</a> *&#160;</td>
+          <td class="paramname"><em>cell_state_info</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ActivationType *&#160;</td>
+          <td class="paramname"><em>output_state_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CellType *&#160;</td>
+          <td class="paramname"><em>cell_state_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CellType *&#160;</td>
+          <td class="paramname"><em>scratch0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CellType *&#160;</td>
+          <td class="paramname"><em>scratch1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CellType *&#160;</td>
+          <td class="paramname"><em>scratch2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CellType *&#160;</td>
+          <td class="paramname"><em>scratch3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">luci_interpreter::BaseRuntimeGraph</a> *&#160;</td>
+          <td class="paramname"><em>runtime_graph</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00623">623</a> of file <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html">PALUnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  629</span>{</div>
+<div class="line"><span class="lineno">  630</span>  <a class="code hl_struct" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html">lstm_internal::LstmSizeInfo</a> size_info;</div>
+<div class="line"><span class="lineno">  631</span> </div>
+<div class="line"><span class="lineno">  632</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">time_major</a> = lstm_struct-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a508cb785c9678c744c5265f0578b5f5f">options</a>-&gt;time_major();</div>
+<div class="line"><span class="lineno">  633</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#aa0e1c34c2bddb52181fb7d0446d829e5">batch_size</a> = size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">time_major</a></div>
+<div class="line"><span class="lineno">  634</span>                           ? <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">luci_interpreter::Tensor::dim</a>(lstm_struct-&gt;<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>(), 1)</div>
+<div class="line"><span class="lineno">  635</span>                           : <a class="code hl_namespace" href="namespaceluci__interpreter.html">luci_interpreter</a>::<a class="code hl_class" href="class_tensor.html">Tensor</a>::dim(lstm_struct-&gt;input(), 0);</div>
+<div class="line"><span class="lineno">  636</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af906856fe0ea73c3cb242f5e8de1c21d">time_steps</a> = size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">time_major</a></div>
+<div class="line"><span class="lineno">  637</span>                           ? <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">luci_interpreter::Tensor::dim</a>(lstm_struct-&gt;<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>(), 0)</div>
+<div class="line"><span class="lineno">  638</span>                           : <a class="code hl_namespace" href="namespaceluci__interpreter.html">luci_interpreter</a>::<a class="code hl_class" href="class_tensor.html">Tensor</a>::dim(lstm_struct-&gt;input(), 1);</div>
+<div class="line"><span class="lineno">  639</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#a2b33623c51f63533b256070e6f68f5dd">input_dimension</a> = <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">luci_interpreter::Tensor::dim</a>(lstm_struct-&gt;<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>(), 2);</div>
+<div class="line"><span class="lineno">  640</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#ae83403d96192e896a8fb766b70e05919">state_dimension</a> = <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">luci_interpreter::Tensor::dim</a>(lstm_struct-&gt;<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a8bd7f330047f012b2bc71d238dd2afa2">output_state</a>(), 1);</div>
+<div class="line"><span class="lineno">  641</span> </div>
+<div class="line"><span class="lineno">  642</span>  <a class="code hl_class" href="classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager.html">lstm_internal::LstmStepManager</a> step_info(size_info);</div>
+<div class="line"><span class="lineno">  643</span> </div>
+<div class="line"><span class="lineno">  644</span>  <span class="comment">// time is the first dimention, enable batch computation</span></div>
+<div class="line"><span class="lineno">  645</span>  <span class="keywordflow">if</span> (size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">time_major</a>)</div>
+<div class="line"><span class="lineno">  646</span>  {</div>
+<div class="line"><span class="lineno">  647</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> t = 0; t &lt; size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af906856fe0ea73c3cb242f5e8de1c21d">time_steps</a>; t++)</div>
+<div class="line"><span class="lineno">  648</span>    {</div>
+<div class="line"><span class="lineno">  649</span>      lstm_internal::lstmStep&lt;ActivationType, WeightType, CellType, BiasType&gt;(</div>
+<div class="line"><span class="lineno">  650</span>        lstm_struct, lstm_params, &amp;step_info, cell_state_info, output_state_data, cell_state_data,</div>
+<div class="line"><span class="lineno">  651</span>        scratch0, scratch1, scratch2, scratch3, runtime_graph);</div>
+<div class="line"><span class="lineno">  652</span>      <span class="comment">// prepare for the next time step</span></div>
+<div class="line"><span class="lineno">  653</span>      step_info.updateTime();</div>
+<div class="line"><span class="lineno">  654</span>    }</div>
+<div class="line"><span class="lineno">  655</span>  }</div>
+<div class="line"><span class="lineno">  656</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  657</span>  {</div>
+<div class="line"><span class="lineno">  658</span>    <span class="comment">// batch first, unable to size the input data. single batch inference</span></div>
+<div class="line"><span class="lineno">  659</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#aa0e1c34c2bddb52181fb7d0446d829e5">batch_size</a>; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>++)</div>
+<div class="line"><span class="lineno">  660</span>    {</div>
+<div class="line"><span class="lineno">  661</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> t = 0; t &lt; size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af906856fe0ea73c3cb242f5e8de1c21d">time_steps</a>; t++)</div>
+<div class="line"><span class="lineno">  662</span>      {</div>
+<div class="line"><span class="lineno">  663</span>        lstm_internal::lstmStep&lt;ActivationType, WeightType, CellType, BiasType&gt;(</div>
+<div class="line"><span class="lineno">  664</span>          lstm_struct, lstm_params, &amp;step_info, cell_state_info, output_state_data, cell_state_data,</div>
+<div class="line"><span class="lineno">  665</span>          scratch0, scratch1, scratch2, scratch3, runtime_graph);</div>
+<div class="line"><span class="lineno">  666</span>        <span class="comment">// prepare for the next time step</span></div>
+<div class="line"><span class="lineno">  667</span>        step_info.updateTime();</div>
+<div class="line"><span class="lineno">  668</span>      }</div>
+<div class="line"><span class="lineno">  669</span>      <span class="comment">// prepare for the next batch</span></div>
+<div class="line"><span class="lineno">  670</span>      step_info.updateBatch();</div>
+<div class="line"><span class="lineno">  671</span>      step_info.resetTime();</div>
+<div class="line"><span class="lineno">  672</span>    }</div>
+<div class="line"><span class="lineno">  673</span>  }</div>
+<div class="line"><span class="lineno">  674</span>}</div>
+<div class="ttc" id="aclass_tensor_html"><div class="ttname"><a href="class_tensor.html">Tensor</a></div><div class="ttdef"><b>Definition:</b> <a href="tensor__gen_8cpp_source.html#l00031">tensor_gen.cpp:32</a></div></div>
+<div class="ttc" id="aclassluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager_html"><div class="ttname"><a href="classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager.html">luci_interpreter_pal::lstm_internal::LstmStepManager</a></div><div class="ttdef"><b>Definition:</b> <a href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00303">PALUnidirectionalSequenceLSTM.h:304</a></div></div>
+<div class="ttc" id="anamespacejpeg2hdf5_html_a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1"><div class="ttname"><a href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">jpeg2hdf5.b</a></div><div class="ttdeci">b</div><div class="ttdef"><b>Definition:</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
+<div class="ttc" id="anamespaceluci__interpreter_html"><div class="ttname"><a href="namespaceluci__interpreter.html">luci_interpreter</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h_source.html#l00021">BuddyMemoryManager.h:22</a></div></div>
+<div class="ttc" id="astructcircle__eval__diff_1_1_tensor_shape_html_a510764c1277c26b857ec5517a7962e6f"><div class="ttname"><a href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">circle_eval_diff::TensorShape::dim</a></div><div class="ttdeci">const loco::Dimension &amp; dim(uint32_t axis) const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00044">Tensor.h:44</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1lstm_1_1_l_s_t_m_struct_html_a508cb785c9678c744c5265f0578b5f5f"><div class="ttname"><a href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a508cb785c9678c744c5265f0578b5f5f">luci_interpreter::lstm::LSTMStruct::options</a></div><div class="ttdeci">const circle::UnidirectionalSequenceLSTMOptions * options</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00178">UnidirectionalSequenceLSTM.h:178</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1lstm_1_1_l_s_t_m_struct_html_a744ca2bef714c74b4b2af604c2931296"><div class="ttname"><a href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">luci_interpreter::lstm::LSTMStruct::input</a></div><div class="ttdeci">const circle::Tensor * input()</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00145">UnidirectionalSequenceLSTM.h:145</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1lstm_1_1_l_s_t_m_struct_html_a8bd7f330047f012b2bc71d238dd2afa2"><div class="ttname"><a href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a8bd7f330047f012b2bc71d238dd2afa2">luci_interpreter::lstm::LSTMStruct::output_state</a></div><div class="ttdeci">const circle::Tensor * output_state()</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00169">UnidirectionalSequenceLSTM.h:169</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info_html"><div class="ttname"><a href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html">luci_interpreter_pal::lstm_internal::LstmSizeInfo</a></div><div class="ttdef"><b>Definition:</b> <a href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00294">PALUnidirectionalSequenceLSTM.h:295</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info_html_a2b33623c51f63533b256070e6f68f5dd"><div class="ttname"><a href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#a2b33623c51f63533b256070e6f68f5dd">luci_interpreter_pal::lstm_internal::LstmSizeInfo::input_dimension</a></div><div class="ttdeci">int32_t input_dimension</div><div class="ttdef"><b>Definition:</b> <a href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00299">PALUnidirectionalSequenceLSTM.h:299</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info_html_aa0e1c34c2bddb52181fb7d0446d829e5"><div class="ttname"><a href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#aa0e1c34c2bddb52181fb7d0446d829e5">luci_interpreter_pal::lstm_internal::LstmSizeInfo::batch_size</a></div><div class="ttdeci">int32_t batch_size</div><div class="ttdef"><b>Definition:</b> <a href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00297">PALUnidirectionalSequenceLSTM.h:297</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info_html_ae83403d96192e896a8fb766b70e05919"><div class="ttname"><a href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#ae83403d96192e896a8fb766b70e05919">luci_interpreter_pal::lstm_internal::LstmSizeInfo::state_dimension</a></div><div class="ttdeci">int32_t state_dimension</div><div class="ttdef"><b>Definition:</b> <a href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00300">PALUnidirectionalSequenceLSTM.h:300</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info_html_af04705d5fb47306f96d174300fb303fa"><div class="ttname"><a href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">luci_interpreter_pal::lstm_internal::LstmSizeInfo::time_major</a></div><div class="ttdeci">bool time_major</div><div class="ttdef"><b>Definition:</b> <a href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00296">PALUnidirectionalSequenceLSTM.h:296</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info_html_af906856fe0ea73c3cb242f5e8de1c21d"><div class="ttname"><a href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af906856fe0ea73c3cb242f5e8de1c21d">luci_interpreter_pal::lstm_internal::LstmSizeInfo::time_steps</a></div><div class="ttdeci">int32_t time_steps</div><div class="ttdef"><b>Definition:</b> <a href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00298">PALUnidirectionalSequenceLSTM.h:298</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00297">luci_interpreter_pal::lstm_internal::LstmSizeInfo::batch_size</a>, <a class="el" href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00044">circle_eval_diff::TensorShape::dim()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00145">luci_interpreter::lstm::LSTMStruct::input()</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00299">luci_interpreter_pal::lstm_internal::LstmSizeInfo::input_dimension</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00178">luci_interpreter::lstm::LSTMStruct::options</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00169">luci_interpreter::lstm::LSTMStruct::output_state()</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00342">luci_interpreter_pal::lstm_internal::LstmStepManager::resetTime()</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00300">luci_interpreter_pal::lstm_internal::LstmSizeInfo::state_dimension</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00296">luci_interpreter_pal::lstm_internal::LstmSizeInfo::time_major</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00298">luci_interpreter_pal::lstm_internal::LstmSizeInfo::time_steps</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00328">luci_interpreter_pal::lstm_internal::LstmStepManager::updateBatch()</a>, and <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00311">luci_interpreter_pal::lstm_internal::LstmStepManager::updateTime()</a>.</p>
 
 </div>
 </div>

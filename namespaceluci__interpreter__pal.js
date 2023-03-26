@@ -1,34 +1,9 @@
 var namespaceluci__interpreter__pal =
 [
     [ "lstm", "namespaceluci__interpreter__pal_1_1lstm.html", [
-      [ "TfLiteFusedActivation", "namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63", [
-        [ "kTfLiteActNone", "namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63a611f6492ff91826833d1b9e42f7f9a5e", null ],
-        [ "kTfLiteActRelu", "namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63a06a35e36dd2f10a2e82095f663eb7cb7", null ],
-        [ "kTfLiteActReluN1To1", "namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63a9f385b0941a619677310da5deb8c0751", null ],
-        [ "kTfLiteActRelu6", "namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63adcc6c589b6ffe8ff89fd701c70b38342", null ],
-        [ "kTfLiteActTanh", "namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63a60bdd9a337a5f1f2866fd65c7d8ffdce", null ],
-        [ "kTfLiteActSignBit", "namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63ad5ee29be46ddc348e9865b96129a533a", null ],
-        [ "kTfLiteActSigmoid", "namespaceluci__interpreter__pal_1_1lstm.html#ae73bbfa7d9e0192734d7e01e5c05df63ab211c831f880a63ebc80994bb0cf2dc2", null ]
-      ] ],
-      [ "apply_layer_norm", "namespaceluci__interpreter__pal_1_1lstm.html#a9c34168ef2084dd14025705bf93271ed", null ],
-      [ "apply_tanh", "namespaceluci__interpreter__pal_1_1lstm.html#ae5995c2f4e037e3d18ef8f0462079564", null ],
-      [ "apply_tanh_impl", "namespaceluci__interpreter__pal_1_1lstm.html#af16a4f8e96b58833ba85f9b5ef120b6c", null ],
-      [ "calculate_lstm_gate_integer_8x8_16", "namespaceluci__interpreter__pal_1_1lstm.html#adaa95dd338f0bbd9be680fd7dfc6d1aa", null ],
-      [ "calculate_lstm_output_integer8x8_16", "namespaceluci__interpreter__pal_1_1lstm.html#ad07afcc83af092c475787d8184538098", null ],
-      [ "convert_lstm_params", "namespaceluci__interpreter__pal_1_1lstm.html#a15e54cf21be2fb24c7575d140e2a8d1a", null ],
-      [ "count_leading_zeros", "namespaceluci__interpreter__pal_1_1lstm.html#acef25fe5a003e2ff65b2c8ccb2711207", null ],
-      [ "cwise_add", "namespaceluci__interpreter__pal_1_1lstm.html#af4923cae88d2f75c29b49c78c9a00f99", null ],
-      [ "cwise_clipping", "namespaceluci__interpreter__pal_1_1lstm.html#a4e414d74814834c72b789c80e68e843b", null ],
-      [ "cwise_mul", "namespaceluci__interpreter__pal_1_1lstm.html#ad0b6a487395ebcaaef58516ae80581a7", null ],
-      [ "cwise_mul", "namespaceluci__interpreter__pal_1_1lstm.html#a13269908e5cbb4827f974e782b98f6b2", null ],
-      [ "get_inv_sqrt_quantized_multiplier_exp", "namespaceluci__interpreter__pal_1_1lstm.html#a4a2d78fd09384fe6419222fac94e71b3", null ],
-      [ "lstm_step_integer_8x8_16", "namespaceluci__interpreter__pal_1_1lstm.html#aff32234d5392b0c7fdbccc7cad115c0e", null ],
-      [ "matrix_batch_vector_multiply_accumulate", "namespaceluci__interpreter__pal_1_1lstm.html#ad9970c643958b6d2c26dcd2506bac62b", null ],
-      [ "multiply_by_quantized_multiplier", "namespaceluci__interpreter__pal_1_1lstm.html#acbe525077503e0d3f37d59b7fc8276e2", null ],
-      [ "sub1_vector", "namespaceluci__interpreter__pal_1_1lstm.html#a7b3a8ce5736307c9146154fd4639e0cb", null ],
-      [ "update_lstm_cell_integer", "namespaceluci__interpreter__pal_1_1lstm.html#ab554f067a0e70af0121424c774ad3880", null ],
-      [ "vector_batch_vector_cwise_product_accumulate", "namespaceluci__interpreter__pal_1_1lstm.html#a7361af5bb813813c50859760c4cc8f8a", null ]
+      [ "convert_lstm_params", "namespaceluci__interpreter__pal_1_1lstm.html#a15e54cf21be2fb24c7575d140e2a8d1a", null ]
     ] ],
+    [ "lstm_internal", "namespaceluci__interpreter__pal_1_1lstm__internal.html", "namespaceluci__interpreter__pal_1_1lstm__internal" ],
     [ "ActivationFunctor", "classluci__interpreter__pal_1_1_activation_functor.html", "classluci__interpreter__pal_1_1_activation_functor" ],
     [ "ApplyActivationToVector", "namespaceluci__interpreter__pal.html#a538db269338776f01a3c6f56e503f9a8", null ],
     [ "AveragePool< int8_t >", "namespaceluci__interpreter__pal.html#a2b511b1d94072321b3ee9fc3319f5a76", null ],
@@ -45,6 +20,7 @@ var namespaceluci__interpreter__pal =
     [ "DepthwiseConvPerChannel< int8_t >", "namespaceluci__interpreter__pal.html#a6f98040ce5b2f996abbfdc80fb1d5cfd", null ],
     [ "DepthwiseConvPerChannel< int8_t >", "namespaceluci__interpreter__pal.html#a6f98040ce5b2f996abbfdc80fb1d5cfd", null ],
     [ "eval_integer_8x8_16_lstm", "namespaceluci__interpreter__pal.html#a6a0b2d1d970f94be53e13b87b4bffa13", null ],
+    [ "evalLSTM", "namespaceluci__interpreter__pal.html#ae403fa636add73b8f7a8597039e70131", null ],
     [ "FullyConnected< int8_t >", "namespaceluci__interpreter__pal.html#a90a2d5d095d1e99b34df27491a89fdd6", null ],
     [ "FullyConnected< int8_t >", "namespaceluci__interpreter__pal.html#a90a2d5d095d1e99b34df27491a89fdd6", null ],
     [ "FullyConnected< int8_t >", "namespaceluci__interpreter__pal.html#a90a2d5d095d1e99b34df27491a89fdd6", null ],

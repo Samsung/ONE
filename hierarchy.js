@@ -1167,6 +1167,7 @@ var hierarchy =
       [ "souschef::RangedArguments< InputIt >", "classsouschef_1_1_ranged_arguments.html", null ]
     ] ],
     [ "Argv< N >", "class_argv.html", null ],
+    [ "luci_interpreter::lstm::ArithmeticParams", "structluci__interpreter_1_1lstm_1_1_arithmetic_params.html", null ],
     [ "onert::backend::acl_common::ARMComputeAxis", "classonert_1_1backend_1_1acl__common_1_1_a_r_m_compute_axis.html", null ],
     [ "ndarray::Array< T >", "classndarray_1_1_array.html", null ],
     [ "nnfw::cker::random::Array< T, ElementCount >", "classnnfw_1_1cker_1_1random_1_1_array.html", null ],
@@ -1314,6 +1315,7 @@ var hierarchy =
     ] ],
     [ "mir_interpreter::CappedReLUImpl< T >", "structmir__interpreter_1_1_capped_re_l_u_impl.html", null ],
     [ "mir_interpreter::CappedReLUImpl< uint8_t >", "structmir__interpreter_1_1_capped_re_l_u_impl_3_01uint8__t_01_4.html", null ],
+    [ "luci_interpreter::lstm::CellStateInfo", "structluci__interpreter_1_1lstm_1_1_cell_state_info.html", null ],
     [ "onert::backend::cpu::ops::DetectionPostProcessLayer::CenterSizeBox", "structonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer_1_1_center_size_box.html", null ],
     [ "CfgRunner.CfgRunner", "class_cfg_runner_1_1_cfg_runner.html", null ],
     [ "luci_interpreter::kernels::ChannelQuantMultipliers", "structluci__interpreter_1_1kernels_1_1_channel_quant_multipliers.html", null ],
@@ -2025,11 +2027,13 @@ var hierarchy =
     [ "mir_interpreter::FullyConnectedImpl< T >", "structmir__interpreter_1_1_fully_connected_impl.html", null ],
     [ "mir_interpreter::FullyConnectedImpl< uint8_t >", "structmir__interpreter_1_1_fully_connected_impl_3_01uint8__t_01_4.html", null ],
     [ "luci_interpreter::FullyConnectedParams", "structluci__interpreter_1_1_fully_connected_params.html", null ],
+    [ "luci_interpreter::lstm::FullyConnectedParams", "structluci__interpreter_1_1lstm_1_1_fully_connected_params.html", null ],
     [ "nnfw::cker::FullyConnectedParams", "structnnfw_1_1cker_1_1_fully_connected_params.html", null ],
     [ "nnfw::ruy::FullyConnectedParams", "structnnfw_1_1ruy_1_1_fully_connected_params.html", null ],
     [ "nnfw::cker::FusedBatchNorm", "classnnfw_1_1cker_1_1_fused_batch_norm.html", null ],
     [ "nnfw::cker::FusedBatchNormParams", "structnnfw_1_1cker_1_1_fused_batch_norm_params.html", null ],
     [ "nest::FV", "structnest_1_1_f_v.html", null ],
+    [ "luci_interpreter::lstm::GateParameters", "structluci__interpreter_1_1lstm_1_1_gate_parameters.html", null ],
     [ "mir_interpreter::GatherByT< T >", "structmir__interpreter_1_1_gather_by_t.html", null ],
     [ "mir_interpreter::GatherImpl< T, IndicesT >", "structmir__interpreter_1_1_gather_impl.html", null ],
     [ "tflite::reference_ops::GatherNdHelperResult", "structtflite_1_1reference__ops_1_1_gather_nd_helper_result.html", null ],
@@ -2540,6 +2544,7 @@ var hierarchy =
     [ "nnfw::cker::InstanceNormParams", "structnnfw_1_1cker_1_1_instance_norm_params.html", null ],
     [ "InstrBuilder", "class_instr_builder.html", null ],
     [ "coco::InstrIndex", "classcoco_1_1_instr_index.html", null ],
+    [ "luci_interpreter::lstm::InterGateParameters", "structluci__interpreter_1_1lstm_1_1_inter_gate_parameters.html", null ],
     [ "luci_interpreter::Interpreter", "classluci__interpreter_1_1_interpreter.html", null ],
     [ "nnc::InterpreterBackend", "classnnc_1_1_interpreter_backend.html", null ],
     [ "kuma::details::IntervalMask", "structkuma_1_1details_1_1_interval_mask.html", null ],
@@ -2758,7 +2763,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::TransposeConv", "classluci__interpreter_1_1kernels_1_1_transpose_conv.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< UnidirectionalSequenceLSTMParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::UnidirectionalSequenceLSTM", "classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html", null ],
         [ "luci_interpreter::kernels::UnidirectionalSequenceLSTM", "classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< UnpackParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -2925,7 +2929,11 @@ var hierarchy =
       [ "nnc::cli::BadOption", "classnnc_1_1cli_1_1_bad_option.html", null ]
     ] ],
     [ "onert::compiler::LoweredGraph", "classonert_1_1compiler_1_1_lowered_graph.html", null ],
+    [ "luci_interpreter::lstm::LSTMParameters", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters.html", null ],
     [ "nnfw::cker::LSTMParams", "structnnfw_1_1cker_1_1_l_s_t_m_params.html", null ],
+    [ "luci_interpreter_pal::lstm_internal::LstmSizeInfo", "structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html", null ],
+    [ "luci_interpreter_pal::lstm_internal::LstmStepManager", "classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager.html", null ],
+    [ "luci_interpreter::lstm::LSTMStruct", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html", null ],
     [ "onert::compiler::ManualSchedulerOptions", "structonert_1_1compiler_1_1_manual_scheduler_options.html", null ],
     [ "loco::TensorBroadcast::Mapping", "classloco_1_1_tensor_broadcast_1_1_mapping.html", null ],
     [ "nnfw::cker::MatMulBCast", "classnnfw_1_1cker_1_1_mat_mul_b_cast.html", null ],
@@ -4769,6 +4777,7 @@ var hierarchy =
     [ "nncc::core::ADT::kernel::ViewImpl< float >", "classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_view_impl.html", null ],
     [ "nest::expr::Visitor< T >", "structnest_1_1expr_1_1_visitor.html", null ],
     [ "nest::stmt::Visitor< T >", "structnest_1_1stmt_1_1_visitor.html", null ],
+    [ "mpqsolver::bisection::VISQErrorApproximator", "classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator.html", null ],
     [ "VLogging", "class_v_logging.html", null ],
     [ "ann::Weight", "classann_1_1_weight.html", null ],
     [ "caffeimport::WeightContext", "classcaffeimport_1_1_weight_context.html", null ],

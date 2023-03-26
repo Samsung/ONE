@@ -70,5 +70,9 @@ var searchData=
   ['loweredoperationpass_67',['LoweredOperationPass',['../classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html',1,'onert::compiler::pass']]],
   ['lstm_68',['LSTM',['../classonert_1_1ir_1_1operation_1_1_l_s_t_m.html',1,'onert::ir::operation']]],
   ['lstmlayer_69',['LSTMLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_l_s_t_m_layer.html',1,'onert::backend::cpu::ops']]],
-  ['lstmparams_70',['LSTMParams',['../structnnfw_1_1cker_1_1_l_s_t_m_params.html',1,'nnfw::cker']]]
+  ['lstmparameters_70',['LSTMParameters',['../structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters.html',1,'luci_interpreter::lstm']]],
+  ['lstmparams_71',['LSTMParams',['../structnnfw_1_1cker_1_1_l_s_t_m_params.html',1,'nnfw::cker']]],
+  ['lstmsizeinfo_72',['LstmSizeInfo',['../structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html',1,'luci_interpreter_pal::lstm_internal']]],
+  ['lstmstepmanager_73',['LstmStepManager',['../classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager.html',1,'luci_interpreter_pal::lstm_internal']]],
+  ['lstmstruct_74',['LSTMStruct',['../structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html',1,'luci_interpreter::lstm']]]
 ];

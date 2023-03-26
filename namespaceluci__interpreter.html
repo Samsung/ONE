@@ -103,6 +103,8 @@ $(document).ready(function(){initNavTree('namespaceluci__interpreter.html',''); 
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceluci__interpreter_1_1kernels"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html">kernels</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceluci__interpreter_1_1lstm"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1lstm.html">lstm</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
@@ -555,6 +557,10 @@ Functions</h2></td></tr>
 <tr class="separator:a0d55a8306682746ce15f0b65b584d15e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e823af3772108faf7279a61f1c8b6bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#a9e823af3772108faf7279a61f1c8b6bc">execute_kernel_CircleSoftmax</a> (const circle::Operator *cur_op, <a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *runtime_graph, bool)</td></tr>
 <tr class="separator:a9e823af3772108faf7279a61f1c8b6bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cd9d58495a0cc85155c98fa7904a9d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#a9cd9d58495a0cc85155c98fa7904a9d6">configure_kernel_CircleUnidirectionalSequenceLSTM</a> (const circle::Operator *cur_op, <a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *runtime_graph)</td></tr>
+<tr class="separator:a9cd9d58495a0cc85155c98fa7904a9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab11931ef52048dfc48bc6970afca431a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#ab11931ef52048dfc48bc6970afca431a">execute_kernel_CircleUnidirectionalSequenceLSTM</a> (const circle::Operator *cur_op, <a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *runtime_graph, bool in_place)</td></tr>
+<tr class="separator:ab11931ef52048dfc48bc6970afca431a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad68b076a6379deaa9ac9ee3cef11d5c9"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#ad68b076a6379deaa9ac9ee3cef11d5c9">build_kernel_CircleAdd</a> (std::vector&lt; const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * &gt; &amp;&amp;inputs, std::vector&lt; <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * &gt; &amp;&amp;outputs, const uint32_t op_index, <a class="el" href="classluci__interpreter_1_1_kernel_builder.html">KernelBuilder</a> &amp;builder)</td></tr>
 <tr class="separator:ad68b076a6379deaa9ac9ee3cef11d5c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8af797f9e257170d46da4314fdfdd10"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#af8af797f9e257170d46da4314fdfdd10">build_kernel_CircleArgMax</a> (std::vector&lt; const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * &gt; &amp;&amp;inputs, std::vector&lt; <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> * &gt; &amp;&amp;outputs, const uint32_t op_index, <a class="el" href="classluci__interpreter_1_1_kernel_builder.html">KernelBuilder</a> &amp;builder)</td></tr>
@@ -10081,6 +10087,63 @@ template&lt;typename CircleNodeOut &gt; </div>
 
 </div>
 </div>
+<a id="a9cd9d58495a0cc85155c98fa7904a9d6" name="a9cd9d58495a0cc85155c98fa7904a9d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cd9d58495a0cc85155c98fa7904a9d6">&#9670;&#160;</a></span>configure_kernel_CircleUnidirectionalSequenceLSTM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter::configure_kernel_CircleUnidirectionalSequenceLSTM </td>
+          <td>(</td>
+          <td class="paramtype">const circle::Operator *&#160;</td>
+          <td class="paramname"><em>cur_op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *&#160;</td>
+          <td class="paramname"><em>runtime_graph</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00389">389</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html">UnidirectionalSequenceLSTM.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  391</span>{</div>
+<div class="line"><span class="lineno">  392</span>  <a class="code hl_struct" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html">lstm::LSTMStruct</a> lstm_struct(cur_op, runtime_graph);</div>
+<div class="line"><span class="lineno">  393</span> </div>
+<div class="line"><span class="lineno">  394</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::element_type(lstm_struct.input()) == DataType::FLOAT32 or</div>
+<div class="line"><span class="lineno">  395</span>                         Tensor::element_type(lstm_struct.input()) == DataType::S8);</div>
+<div class="line"><span class="lineno">  396</span> </div>
+<div class="line"><span class="lineno">  397</span>  lstm_struct.validateTensorTypes();</div>
+<div class="line"><span class="lineno">  398</span> </div>
+<div class="line"><span class="lineno">  399</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> time_major = lstm_struct.options-&gt;time_major();</div>
+<div class="line"><span class="lineno">  400</span> </div>
+<div class="line"><span class="lineno">  401</span>  validateTensorsSize(&amp;lstm_struct, time_major);</div>
+<div class="line"><span class="lineno">  402</span> </div>
+<div class="line"><span class="lineno">  403</span>  <span class="comment">// No peephole</span></div>
+<div class="line"><span class="lineno">  404</span>  <span class="keywordflow">for</span> (int32_t i = 9; i &lt; 12; ++i)</div>
+<div class="line"><span class="lineno">  405</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(lstm_struct.get_internal_tensor(i) == <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  406</span> </div>
+<div class="line"><span class="lineno">  407</span>  <span class="comment">// No projection</span></div>
+<div class="line"><span class="lineno">  408</span>  <span class="keywordflow">for</span> (int32_t i = 16; i &lt; 18; ++i)</div>
+<div class="line"><span class="lineno">  409</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(lstm_struct.get_internal_tensor(i) == <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  410</span> </div>
+<div class="line"><span class="lineno">  411</span>  <span class="comment">// No internal layer norm</span></div>
+<div class="line"><span class="lineno">  412</span>  <span class="keywordflow">for</span> (int32_t i = 20; i &lt; 24; ++i)</div>
+<div class="line"><span class="lineno">  413</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(lstm_struct.get_internal_tensor(i) == <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  414</span>}</div>
+<div class="ttc" id="astructluci__interpreter_1_1lstm_1_1_l_s_t_m_struct_html"><div class="ttname"><a href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html">luci_interpreter::lstm::LSTMStruct</a></div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00027">UnidirectionalSequenceLSTM.h:28</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00180">luci_interpreter::lstm::LSTMStruct::get_internal_tensor()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00145">luci_interpreter::lstm::LSTMStruct::input()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">LUCI_INTERPRETER_CHECK</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00178">luci_interpreter::lstm::LSTMStruct::options</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00125">luci_interpreter::lstm::LSTMStruct::validateTensorTypes()</a>.</p>
+
+</div>
+</div>
 <a id="ae898b584126123cdbae2077baae5d7f6" name="ae898b584126123cdbae2077baae5d7f6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae898b584126123cdbae2077baae5d7f6">&#9670;&#160;</a></span>execute_kernel_CircleConcatenation()</h2>
 
@@ -10660,6 +10723,66 @@ template&lt;typename CircleNodeOut &gt; </div>
 
 </div>
 </div>
+<a id="ab11931ef52048dfc48bc6970afca431a" name="ab11931ef52048dfc48bc6970afca431a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab11931ef52048dfc48bc6970afca431a">&#9670;&#160;</a></span>execute_kernel_CircleUnidirectionalSequenceLSTM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter::execute_kernel_CircleUnidirectionalSequenceLSTM </td>
+          <td>(</td>
+          <td class="paramtype">const circle::Operator *&#160;</td>
+          <td class="paramname"><em>cur_op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *&#160;</td>
+          <td class="paramname"><em>runtime_graph</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>in_place</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00416">416</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html">UnidirectionalSequenceLSTM.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  418</span>{</div>
+<div class="line"><span class="lineno">  419</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_index = cur_op-&gt;inputs()-&gt;operator[](0);</div>
+<div class="line"><span class="lineno">  420</span>  assert(input_index != -1);</div>
+<div class="line"><span class="lineno">  421</span> </div>
+<div class="line"><span class="lineno">  422</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a6226607d34657d1f7efbabb13c80ad39">getCircleTensorByIndex</a>(input_index);</div>
+<div class="line"><span class="lineno">  423</span> </div>
+<div class="line"><span class="lineno">  424</span>  <span class="keywordflow">switch</span> (Tensor::element_type(input))</div>
+<div class="line"><span class="lineno">  425</span>  {</div>
+<div class="line"><span class="lineno">  426</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">  427</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
+<div class="line"><span class="lineno">  428</span>      evalFloat(cur_op, runtime_graph, in_place);</div>
+<div class="line"><span class="lineno">  429</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  430</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">  431</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><span class="lineno">  432</span>    <span class="keywordflow">case</span> DataType::S8:</div>
+<div class="line"><span class="lineno">  433</span>      evalInt8(cur_op, runtime_graph, in_place);</div>
+<div class="line"><span class="lineno">  434</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  435</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><span class="lineno">  436</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  437</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">  438</span>  }</div>
+<div class="line"><span class="lineno">  439</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00287">luci_interpreter::RuntimeGraph::getCircleTensorByIndex()</a>.</p>
+
+</div>
+</div>
 <a id="aa129d157edeab20d5916101a10cd9f32" name="aa129d157edeab20d5916101a10cd9f32"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa129d157edeab20d5916101a10cd9f32">&#9670;&#160;</a></span>getDataTypeSize()</h2>
 
@@ -11052,7 +11175,7 @@ template&lt;typename CircleNodeOut &gt; </div>
 <div class="line"><span class="lineno">  174</span>}</div>
 <div class="ttc" id="astructluci__interpreter_1_1_data_type_impl_html"><div class="ttname"><a href="structluci__interpreter_1_1_data_type_impl.html">luci_interpreter::DataTypeImpl</a></div><div class="ttdoc">C++ scalar type corresponding to each DataType.</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00057">DataType.h:58</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2_buddy_memory_manager_8cpp_source.html#l00043">luci_interpreter::BuddyMemoryManager::allocate_memory()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_resize_bilinear_8cpp_source.html#l00024">build_kernel_CircleResizeBilinear()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_resize_nearest_neighbor_8cpp_source.html#l00025">build_kernel_CircleResizeNearestNeighbor()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_slice_8cpp_source.html#l00024">build_kernel_CircleSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00112">luci_interpreter::kernels::calculateActivationRangeQuantized()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00037">luci_interpreter::kernels::calculateOutputShape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00061">luci_interpreter::GraphLoader::checkInplaceOps()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00297">luci_interpreter::RuntimeGraph::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_add_8cpp_source.html#l00038">luci_interpreter::kernels::Add::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00038">luci_interpreter::kernels::Conv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_depthwise_conv2_d_8cpp_source.html#l00037">luci_interpreter::kernels::DepthwiseConv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_dequantize_8cpp_source.html#l00028">luci_interpreter::kernels::Dequantize::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_if_8cpp_source.html#l00042">luci_interpreter::kernels::If::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_mul_8cpp_source.html#l00039">luci_interpreter::kernels::Mul::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_p_relu_8cpp_source.html#l00043">luci_interpreter::kernels::PRelu::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">luci_interpreter::kernels::UnidirectionalSequenceLSTM::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_while_8cpp_source.html#l00067">luci_interpreter::kernels::While::configure()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_concatenation_8cpp_source.html#l00082">configure_kernel_CircleConcatenation()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00386">configure_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00317">luci_interpreter::RuntimeGraph::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00136">luci_interpreter::kernels::Conv2D::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_depthwise_conv2_d_8cpp_source.html#l00123">luci_interpreter::kernels::DepthwiseConv2D::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_transpose_8cpp_source.html#l00058">luci_interpreter::kernels::Transpose::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_transpose_conv_8cpp_source.html#l00094">luci_interpreter::kernels::TransposeConv::execute()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00465">execute_kernel_CircleConv2D()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00064">luci_interpreter::kernels::getBeginAndSizeVectors()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00213">luci_interpreter::RuntimeGraph::getInputDataSizeByIndex()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00223">luci_interpreter::RuntimeGraph::getOutputDataSizeByIndex()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00183">luci_interpreter::GraphLoader::loadTensors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2_buddy_memory_manager_8cpp_source.html#l00043">luci_interpreter::BuddyMemoryManager::allocate_memory()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_resize_bilinear_8cpp_source.html#l00024">build_kernel_CircleResizeBilinear()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_resize_nearest_neighbor_8cpp_source.html#l00025">build_kernel_CircleResizeNearestNeighbor()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_slice_8cpp_source.html#l00024">build_kernel_CircleSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00151">luci_interpreter::kernels::calculateActivationRangeQuantized()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00037">luci_interpreter::kernels::calculateOutputShape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00061">luci_interpreter::GraphLoader::checkInplaceOps()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00297">luci_interpreter::RuntimeGraph::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_add_8cpp_source.html#l00038">luci_interpreter::kernels::Add::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00038">luci_interpreter::kernels::Conv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_depthwise_conv2_d_8cpp_source.html#l00037">luci_interpreter::kernels::DepthwiseConv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_dequantize_8cpp_source.html#l00028">luci_interpreter::kernels::Dequantize::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_if_8cpp_source.html#l00042">luci_interpreter::kernels::If::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_mul_8cpp_source.html#l00039">luci_interpreter::kernels::Mul::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_p_relu_8cpp_source.html#l00043">luci_interpreter::kernels::PRelu::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00751">luci_interpreter::kernels::UnidirectionalSequenceLSTM::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_while_8cpp_source.html#l00067">luci_interpreter::kernels::While::configure()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_concatenation_8cpp_source.html#l00082">configure_kernel_CircleConcatenation()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00386">configure_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00317">luci_interpreter::RuntimeGraph::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00136">luci_interpreter::kernels::Conv2D::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_depthwise_conv2_d_8cpp_source.html#l00123">luci_interpreter::kernels::DepthwiseConv2D::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_transpose_8cpp_source.html#l00058">luci_interpreter::kernels::Transpose::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_transpose_conv_8cpp_source.html#l00094">luci_interpreter::kernels::TransposeConv::execute()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00465">execute_kernel_CircleConv2D()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00064">luci_interpreter::kernels::getBeginAndSizeVectors()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00213">luci_interpreter::RuntimeGraph::getInputDataSizeByIndex()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00223">luci_interpreter::RuntimeGraph::getOutputDataSizeByIndex()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00183">luci_interpreter::GraphLoader::loadTensors()</a>.</p>
 
 </div>
 </div>

@@ -1,6 +1,7 @@
 var namespaceluci__interpreter =
 [
     [ "kernels", "namespaceluci__interpreter_1_1kernels.html", "namespaceluci__interpreter_1_1kernels" ],
+    [ "lstm", "namespaceluci__interpreter_1_1lstm.html", "namespaceluci__interpreter_1_1lstm" ],
     [ "AddParams", "structluci__interpreter_1_1_add_params.html", "structluci__interpreter_1_1_add_params" ],
     [ "AffineQuantization", "structluci__interpreter_1_1_affine_quantization.html", "structluci__interpreter_1_1_affine_quantization" ],
     [ "ArgMaxParams", "structluci__interpreter_1_1_arg_max_params.html", "structluci__interpreter_1_1_arg_max_params" ],
@@ -284,6 +285,7 @@ var namespaceluci__interpreter =
     [ "configure_kernel_CircleMaxPool2D", "namespaceluci__interpreter.html#a7b1129cbe07a1cb957ece89bc926294b", null ],
     [ "configure_kernel_CircleReshape", "namespaceluci__interpreter.html#a071fb452eca5246c6796d7df29b242c8", null ],
     [ "configure_kernel_CircleSoftmax", "namespaceluci__interpreter.html#a0d55a8306682746ce15f0b65b584d15e", null ],
+    [ "configure_kernel_CircleUnidirectionalSequenceLSTM", "namespaceluci__interpreter.html#a9cd9d58495a0cc85155c98fa7904a9d6", null ],
     [ "execute_kernel_CircleConcatenation", "namespaceluci__interpreter.html#ae898b584126123cdbae2077baae5d7f6", null ],
     [ "execute_kernel_CircleConv2D", "namespaceluci__interpreter.html#ab89dbaee334cd1d5fd16bd3a2512c495", null ],
     [ "execute_kernel_CircleExpandDims", "namespaceluci__interpreter.html#a95d5a5f0d592ef0c968e8aeaa255f23b", null ],
@@ -292,6 +294,7 @@ var namespaceluci__interpreter =
     [ "execute_kernel_CircleMaxPool2D", "namespaceluci__interpreter.html#a9cd9c69918cb6e4f5a0a47ccd4cbbce2", null ],
     [ "execute_kernel_CircleReshape", "namespaceluci__interpreter.html#adc44e9e658a86a1b2dc774d46de268cc", null ],
     [ "execute_kernel_CircleSoftmax", "namespaceluci__interpreter.html#a9e823af3772108faf7279a61f1c8b6bc", null ],
+    [ "execute_kernel_CircleUnidirectionalSequenceLSTM", "namespaceluci__interpreter.html#ab11931ef52048dfc48bc6970afca431a", null ],
     [ "getDataTypeSize", "namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32", null ],
     [ "luci_actfunc", "namespaceluci__interpreter.html#a3ef1b0de498871057a9677490bd21196", null ],
     [ "luci_datatype", "namespaceluci__interpreter.html#a54299b78de68f12b81ae08383bfada3d", null ],

@@ -42,5 +42,6 @@ var searchData=
   ['visitor_39',['Visitor',['../structcoco_1_1_instr_1_1_visitor.html',1,'coco::Instr::Visitor&lt; T &gt;'],['../structcoco_1_1_op_1_1_visitor.html',1,'coco::Op::Visitor&lt; T &gt;'],['../classmir_1_1_visitor.html',1,'mir::Visitor'],['../structnest_1_1expr_1_1_visitor.html',1,'nest::expr::Visitor&lt; T &gt;'],['../structnest_1_1stmt_1_1_visitor.html',1,'nest::stmt::Visitor&lt; T &gt;']]],
   ['visitor_3c_20pp_3a_3alineardocument_20_3e_40',['Visitor&lt; pp::LinearDocument &gt;',['../structcoco_1_1_instr_1_1_visitor.html',1,'coco::Instr']]],
   ['visitor_3c_20void_20_3e_41',['Visitor&lt; void &gt;',['../structcoco_1_1_instr_1_1_visitor.html',1,'coco::Instr']]],
-  ['vlogging_42',['VLogging',['../class_v_logging.html',1,'']]]
+  ['visqerrorapproximator_42',['VISQErrorApproximator',['../classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator.html',1,'mpqsolver::bisection']]],
+  ['vlogging_43',['VLogging',['../class_v_logging.html',1,'']]]
 ];

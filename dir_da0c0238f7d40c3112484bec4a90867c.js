@@ -12,5 +12,7 @@ var dir_da0c0238f7d40c3112484bec4a90867c =
     [ "Evaluator.h", "_evaluator_8h.html", "_evaluator_8h" ],
     [ "Quantizer.cpp", "_quantizer_8cpp.html", "_quantizer_8cpp" ],
     [ "Quantizer.h", "_quantizer_8h.html", "_quantizer_8h" ],
-    [ "TestHelper.h", "circle-mpqsolver_2src_2bisection_2_test_helper_8h.html", "circle-mpqsolver_2src_2bisection_2_test_helper_8h" ]
+    [ "TestHelper.h", "circle-mpqsolver_2src_2bisection_2_test_helper_8h.html", "circle-mpqsolver_2src_2bisection_2_test_helper_8h" ],
+    [ "VISQErrorApproximator.cpp", "_v_i_s_q_error_approximator_8cpp.html", null ],
+    [ "VISQErrorApproximator.h", "_v_i_s_q_error_approximator_8h.html", "_v_i_s_q_error_approximator_8h" ]
 ];

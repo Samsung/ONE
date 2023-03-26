@@ -114,6 +114,7 @@ var namespaceluci__interpreter_1_1kernels =
     [ "calculateActivationRange", "namespaceluci__interpreter_1_1kernels.html#a8a9a24193bc38fd68fa6267c807bd354", null ],
     [ "calculateActivationRangeQuantized", "namespaceluci__interpreter_1_1kernels.html#a477eb643e22685b5fbaae14f1c981ddc", null ],
     [ "calculateActivationRangeQuantized", "namespaceluci__interpreter_1_1kernels.html#a972dc14ee97042f40b0555b04b1d8815", null ],
+    [ "calculateActivationRangeQuantized", "namespaceluci__interpreter_1_1kernels.html#aa927fdc0b589de75449d8d5cf991e398", null ],
     [ "calculateOutputShape", "namespaceluci__interpreter_1_1kernels.html#a32a2b3aab5dc56ec1e7254336fd5ebf4", null ],
     [ "calculateShapeForBroadcast", "namespaceluci__interpreter_1_1kernels.html#a282484a34a3997dda2a7a6abdc4df151", null ],
     [ "calculateShapeForBroadcast", "namespaceluci__interpreter_1_1kernels.html#a40acb2e1491fa9978b94b4622ecbbeaa", null ],
