@@ -132,7 +132,7 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
         input_node = dynamic_cast<luci::CircleNode *>(arg);
         if (not input_node)
         {
-          throw std::runtime_error{"ERROR: Invliad graph"};
+          throw std::runtime_error{"ERROR: Invalid graph"};
         }
         luci::copy_common_attributes(input_node, circle_input);
         ctx.emplace(input_node, circle_input);
