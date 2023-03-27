@@ -69,6 +69,31 @@ macro(add_pal_to_target TGT)
                 )
     endif(BUILD_ARM32_NEON)
 
+    if(BUILD_ARM64_NEON)
+        # NOTE may need to revise this list for version upgrade
+        set(PAL_SOURCES ${PAL_SOURCES}
+                ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/optimized/neon_tensor_utils.cc
+                ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/optimized/cpu_check.cc
+                ${TensorFlowRuySource_DIR}/ruy/allocator.cc
+                ${TensorFlowRuySource_DIR}/ruy/block_map.cc
+                ${TensorFlowRuySource_DIR}/ruy/blocking_counter.cc
+                ${TensorFlowRuySource_DIR}/ruy/context_get_ctx.cc
+                ${TensorFlowRuySource_DIR}/ruy/cpuinfo.cc
+                ${TensorFlowRuySource_DIR}/ruy/ctx.cc
+                ${TensorFlowRuySource_DIR}/ruy/denormal.cc
+                ${TensorFlowRuySource_DIR}/ruy/frontend.cc
+                ${TensorFlowRuySource_DIR}/ruy/pack_arm.cc
+                ${TensorFlowRuySource_DIR}/ruy/prepacked_cache.cc
+                ${TensorFlowRuySource_DIR}/ruy/prepare_packed_matrices.cc
+                ${TensorFlowRuySource_DIR}/ruy/system_aligned_alloc.cc
+                ${TensorFlowRuySource_DIR}/ruy/thread_pool.cc
+                ${TensorFlowRuySource_DIR}/ruy/trmul.cc
+                ${TensorFlowRuySource_DIR}/ruy/tune.cc
+                ${TensorFlowRuySource_DIR}/ruy/wait.cc
+                ${TensorFlowRuySource_DIR}/ruy/kernel_arm64.cc
+                )
+    endif(BUILD_ARM64_NEON)
+
     add_library(luci_interpreter_linux_pal STATIC ${PAL_SOURCES})
     set_target_properties(luci_interpreter_linux_pal PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_include_directories(luci_interpreter_linux_pal SYSTEM PRIVATE
