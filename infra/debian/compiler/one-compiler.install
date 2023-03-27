@@ -53,3 +53,5 @@ usr/bin/visqlib/Util.py usr/share/one/bin/visqlib/
 usr/lib/* usr/share/one/lib/
 # doc
 usr/doc/* usr/share/one/doc/
+# optimization
+usr/optimization/* usr/share/one/optimization/
