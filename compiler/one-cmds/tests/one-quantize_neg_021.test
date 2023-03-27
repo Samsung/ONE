@@ -37,11 +37,6 @@ outputfile="./reshape_matmul.quantized.neg_021.circle"
 
 rm -f ${filename}.log
 
-# TODO Generate input file in prepare_test_materials.sh
-if [[ ! -s "${inputfile}" ]]; then
-  one-import onnx -i reshape_matmul.onnx -o ${inputfile}
-fi
-
 # run test with wrong number of input_type
 one-quantize \
 --input_dtype float32 \
