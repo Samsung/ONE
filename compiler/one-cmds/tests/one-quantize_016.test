@@ -17,6 +17,14 @@
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
+# TODO Resolve circledump not found
+# https://github.com/Samsung/ONE/issues/10550
+if ! command -v circledump &> /dev/null
+then
+  echo "${filename_ext} SKIPPED"
+  exit 0
+fi
+
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
