@@ -28,7 +28,7 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 inputfile="./reshape_matmul.onnx"
-outputfile="./reshape_matmul.circle"
+outputfile="./reshape_matmul.one-import-onnx_002.circle"
 
 rm -rf ${outputfile}
 rm -rf ${outputfile}.log
@@ -42,7 +42,7 @@ if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
 fi
 
-circle-operator --code reshape_matmul.circle > ${outputfile}.log 2>&1
+circle-operator --code ${outputfile} > ${outputfile}.log 2>&1
 
 if ! grep -q "FULLY_CONNECTED" "${outputfile}.log"; then
   trap_err_onexit
@@ -61,7 +61,7 @@ if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
 fi
 
-circle-operator --code reshape_matmul.circle > ${outputfile}.log 2>&1
+circle-operator --code ${outputfile} > ${outputfile}.log 2>&1
 
 if ! grep -q "BATCH_MATMUL" "${outputfile}.log"; then
   trap_err_onexit
