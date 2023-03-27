@@ -98,6 +98,13 @@ if [[ ! -s "reshape_matmul.onnx" ]]; then
     # https://github.com/Samsung/ONE/issues/9405#issuecomment-1180198137
 fi
 
+# prepare 'reshape_matmul.circle' file used for tests
+if [[ ! -s "reshape_matmul.circle" ]]; then
+    ../bin/one-import onnx \
+    -i reshape_matmul.onnx \
+    -o reshape_matmul.circle
+fi
+
 if [[ ! -s "Net_InstanceNorm_003.part" ]]; then
     rm -rf Net_InstanceNorm_003.zip
     wget -nv https://github.com/Samsung/ONE/files/8608844/Net_InstanceNorm_003.zip
