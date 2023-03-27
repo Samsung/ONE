@@ -101,6 +101,7 @@ fi
 # prepare 'reshape_matmul.circle' file used for tests
 if [[ ! -s "reshape_matmul.circle" ]]; then
     ../bin/one-import onnx \
+    --experimental_disable_batchmatmul_unfold \
     -i reshape_matmul.onnx \
     -o reshape_matmul.circle
 fi
