@@ -46,6 +46,15 @@ class CfgRunner:
         self.import_drivers = [
             'one-import-bcq', 'one-import-onnx', 'one-import-tf', 'one-import-tflite'
         ]
+        # parse group option
+        GROUP_OPTION_KEY = 'include'
+        if self.cfgparser.has_option('onecc', GROUP_OPTION_KEY):
+            groups = self.cfgparser['onecc'][GROUP_OPTION_KEY].split()
+            for o in groups:
+                if o == 'O' or not o.startswith('O'):
+                    raise ValueError('Invalid group option')
+                # add_opt receives group name except first 'O'
+                self.add_opt(o[1:])
 
     def _verify_cfg(self, cfgparser):
         if not cfgparser.has_section('onecc'):

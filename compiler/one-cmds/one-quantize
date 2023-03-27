@@ -557,7 +557,7 @@ def main():
     args = _parse_arg(parser)
 
     # parse configuration file
-    oneutils.parse_cfg(args, 'one-quantize')
+    oneutils.parse_cfg(args.config, 'one-quantize', args)
 
     # set default values
     _set_default_values(args)

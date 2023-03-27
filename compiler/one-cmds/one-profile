@@ -111,6 +111,8 @@ def _parse_arg(parser):
     del argv[0]
     # split by '--'
     args = [list(y) for x, y in itertools.groupby(argv, lambda z: z == '--') if not x]
+    if len(args) == 0:
+        profile_args = parser.parse_args(profile_args)
     # one-profile has two interfaces
     # 1. one-profile [-h] [-v] [-C CONFIG] [-b BACKEND] [COMMANDS FOR BACKEND]
     if len(args) == 1:
@@ -137,7 +139,7 @@ def main():
     args, backend_args, unknown_args = _parse_arg(parser)
 
     # parse configuration file
-    oneutils.parse_cfg(args, 'one-profile')
+    oneutils.parse_cfg(args.config, 'one-profile', args)
 
     # verify arguments
     _verify_arg(parser, args)

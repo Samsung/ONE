@@ -70,7 +70,7 @@ LUCI_LOG=5 one-build -C ${configfile} -OONE-BUILD_014 > ${filename}.log 2>&1
 
 clean_envir
 
-if grep -q "MakeBatchNormGammaPositivePass" "${filename}.log"; then
+if ! grep -q "MakeBatchNormGammaPositivePass" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
 fi

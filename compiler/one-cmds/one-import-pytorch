@@ -354,7 +354,7 @@ def main():
     args = _parse_arg(parser)
 
     # parse configuration file
-    oneutils.parse_cfg(args, 'one-import-pytorch')
+    oneutils.parse_cfg(args.config, 'one-import-pytorch', args)
 
     # verify arguments
     _verify_arg(parser, args)

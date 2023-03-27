@@ -191,7 +191,7 @@ def main():
     args = _parse_arg(parser)
 
     # parse configuration file
-    oneutils.parse_cfg(args, 'one-import-bcq')
+    oneutils.parse_cfg(args.config, 'one-import-bcq', args)
 
     # verify arguments
     _verify_arg(parser, args)

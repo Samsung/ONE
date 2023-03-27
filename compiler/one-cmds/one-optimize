@@ -131,16 +131,36 @@ def _parse_opt(args):
             zip(oneutils.get_optimization_list(get_name=True),
                 oneutils.get_optimization_list()))
         config_path = opt_name_path_dic['O' + getattr(args, 'O')]
-        oneutils.parse_cfg_and_overwrite(config_path, 'one-optimize', args)
+        # group option do not overwrite existing args
+        oneutils.parse_cfg(config_path, 'one-optimize', args)
 
 
+# There are several cases to receive the optimization options:
+#  - Indivisual option
+#    1. From command line
+#    2. From cfg file
+#  - Group option
+#    3. From command line
+#
+# Their priority is as follows, since each option can be given simultaneously:
+#  1. Indivisual option from command line
+#  2. Indivisual option from cfg file
+#  3. Group option from command line
+#
+# To follow their priority, options with higher priority should be parsed first.
+#
+# DO NOT MODIFY the order of below function calls.
+#
+# NOTE. Assume all the optimization options must follow 'store_true' only.
+# NOTE. Group option from cfg file (`include` in `[onecc]` section) is passed
+#        as a command line argument.
 def main():
     # parse arguments
     parser = _get_parser()
     args = _parse_arg(parser)
 
     # parse configuration file
-    oneutils.parse_cfg(args, 'one-optimize')
+    oneutils.parse_cfg(args.config, 'one-optimize', args)
 
     # parse optimization file
     # NOTE if there is a `one-optimize` section in above configuration file as well,

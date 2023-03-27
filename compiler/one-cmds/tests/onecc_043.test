@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+# Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# positive usage with overriding option
+# Test for "O1=True" option in onecc config file
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -27,20 +27,35 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-configfile="one-import_002.cfg"
-outputfile_cmd="inception_v3_cmd.circle"
-outputfile_cfg="inception_v3_cfg.circle"
+configfile="onecc_043.cfg"
+outputfile="inception_v3.onecc_043.opt.circle"
 
 rm -f ${filename}.log
-rm -f ${outputfile_cmd}
-rm -f ${outputfile_cfg}
+rm -rf ${outputfile}
 
 # run test
-one-import tf -C ${configfile} \
---output_path=${outputfile_cmd} > ${filename}.log 2>&1
+onecc -C ${configfile} > ${filename}.log 2>&1
 
-if [[ ! -s "${outputfile_cmd}" ]]; then
+if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
 fi
+
+# O1.list is dynamically created from onelib/export_constant.py
+readarray -t O1_OPTS < "O1.list"
+readarray -t NO_O1_OPTS < "non-O1.list"
+
+for opt in "${O1_OPTS[@]}"
+do
+  if ! grep -q ${opt} ${outputfile}.log; then
+    trap_err_onexit
+  fi
+done
+
+for no_opt in "${NO_O1_OPTS[@]}"
+do
+  if grep -q ${no_opt} ${outputfile}.log; then
+    trap_err_onexit
+  fi
+done
 
 echo "${filename_ext} SUCCESS"

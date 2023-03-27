@@ -113,11 +113,7 @@ def main():
     args = _parse_arg(parser)
 
     # parse configuration file
-    oneutils.parse_cfg(args, 'one-partition')
-
-    if oneutils.is_valid_attr(args, 'config'):
-        config_path = getattr(args, 'config')
-        oneutils.parse_cfg_and_overwrite(config_path, 'one-partition', args)
+    oneutils.parse_cfg(args.config, 'one-partition', args)
 
     # verify arguments
     _verify_arg(parser, args)
