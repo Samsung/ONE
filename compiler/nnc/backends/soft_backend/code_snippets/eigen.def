@@ -13381,7 +13381,7 @@ struct palign_impl<Offset,Type>\
         if (Offset!=0)\
             first = Command(first, second, Offset);\
     }\
-};\
+};
 PALIGN_NEON(0,Packet2d,vextq_f64)
 PALIGN_NEON(1,Packet2d,vextq_f64)
 #undef PALIGN_NEON
