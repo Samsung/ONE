@@ -17,6 +17,7 @@
 #include "VISQErrorApproximator.h"
 
 #include <fstream>
+#include <json.h>
 
 using namespace mpqsolver::bisection;
 
@@ -30,9 +31,28 @@ void VISQErrorApproximator::init(const std::string &visq_data_path)
   }
 }
 
-bool VISQErrorApproximator::init(std::istream &)
+bool VISQErrorApproximator::init(std::istream &visq_data)
 {
-  // TODO
+  Json::Reader reader;
+  Json::Value completeJsonData;
+  if (!reader.parse(visq_data, completeJsonData))
+  {
+    return false;
+  }
+
+  if (!completeJsonData.isMember("error"))
+  {
+    return false;
+  }
+
+  auto layers = completeJsonData["error"][0];
+  auto names = layers.getMemberNames();
+  for (auto name : names)
+  {
+    auto value = layers[name].asFloat();
+    _layer_errors[name] = value;
+  }
+
   return true;
 }
 
