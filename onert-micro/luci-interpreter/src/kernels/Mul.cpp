@@ -15,120 +15,50 @@
  * limitations under the License.
  */
 
-#include "kernels/Mul.h"
+#include "Builders.h"
+#include "kernels/Utils.h"
 
 #include "kernels/BinaryOpCommon.h"
-#include "kernels/Utils.h"
 
 #include "PALMul.h"
 
-#include <tensorflow/lite/kernels/internal/reference/process_broadcast_shapes.h>
-
 namespace luci_interpreter
 {
-namespace kernels
+namespace
 {
 
-Mul::Mul(const Tensor *input1, const Tensor *input2, Tensor *output, const MulParams &params)
-  : KernelWithParams<MulParams>({input1, input2}, {output}, params)
+#ifndef DIS_QUANT
+template <typename T, typename Options = nullptr_t>
+void evalTISOQuantizedS16Kernel(kernels::TISOKernel *kernel, kernels::TISOData *kernel_data,
+                                const Options *options)
 {
-}
+  const auto *input1 = kernel->input1();
+  const auto *input2 = kernel->input2();
+  const auto *output = kernel->output();
 
-void Mul::configure()
-{
-  LUCI_INTERPRETER_CHECK(input1()->element_type() == input2()->element_type());
-  LUCI_INTERPRETER_CHECK(output()->element_type() == input1()->element_type());
-  if (input1()->element_type() == DataType::S16)
-  {
-    LUCI_INTERPRETER_CHECK(input1()->zero_points().size() == 1 &&
-                           input2()->zero_points().size() == 1)
-    LUCI_INTERPRETER_CHECK(input1()->zero_point() == 0 && input2()->zero_point() == 0 &&
-                           output()->zero_point() == 0);
-  }
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
-}
+  const auto input1_scale = static_cast<double>(Tensor::scale(input1));
+  const auto input2_scale = static_cast<double>(Tensor::scale(input2));
+  const auto output_scale = static_cast<double>(Tensor::scale(output));
 
-void Mul::execute() const
-{
-  switch (input1()->element_type())
-  {
-    case DataType::FLOAT32:
-      evalFloat();
-      break;
-    case DataType::S64:
-      evalInteger<int64_t>();
-      break;
-    case DataType::S32:
-      evalInteger<int32_t>();
-      break;
-    case DataType::S16:
-      evalQuantizedS16();
-      break;
-    default:
-      assert(false && "Unsupported type.");
-  }
-}
+  constexpr int left_shift = 12;
+  const double twice_max_input_scale = 2 * std::max(input1_scale, input2_scale);
+  const double real_input1_multiplier = input1_scale / twice_max_input_scale;
+  const double real_input2_multiplier = input2_scale / twice_max_input_scale;
+  const double real_output_multiplier = twice_max_input_scale / ((1 << left_shift) * output_scale);
 
-void Mul::evalFloat() const
-{
-  tflite::ArithmeticParams params{};
-  fillArithmeticActivationRange<float>(params, _params.activation);
-
-  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-    getTensorShape(input1()), getTensorShape(input2()), &params);
-
-  if (need_broadcast)
-  {
-    luci_interpreter_pal::BroadcastMul4DSlow(
-      params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
-      getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
-  }
-  else
-  {
-    luci_interpreter_pal::Mul(params, getTensorShape(input1()), getTensorData<float>(input1()),
-                              getTensorShape(input2()), getTensorData<float>(input2()),
-                              getTensorShape(output()), getTensorData<float>(output()));
-  }
-}
-
-template <typename T> void Mul::evalInteger() const
-{
-  tflite::ArithmeticParams params{};
-  fillArithmeticActivationRange<T>(params, _params.activation);
-
-  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-    getTensorShape(input1()), getTensorShape(input2()), &params);
-
-  if (need_broadcast)
-  {
-    luci_interpreter_pal::BroadcastMul4DSlow(
-      params, getTensorShape(input1()), getTensorData<T>(input1()), getTensorShape(input2()),
-      getTensorData<T>(input2()), getTensorShape(output()), getTensorData<T>(output()));
-  }
-  else
-  {
-    luci_interpreter_pal::Mul(params, getTensorShape(input1()), getTensorData<T>(input1()),
-                              getTensorShape(input2()), getTensorData<T>(input2()),
-                              getTensorShape(output()), getTensorData<T>(output()));
-  }
-}
-
-void Mul::evalQuantizedS16() const
-{
-  const auto input1_scale = static_cast<double>(input1()->scale());
-  const auto input2_scale = static_cast<double>(input2()->scale());
-  const auto output_scale = static_cast<double>(output()->scale());
-
-  const double real_multiplier = input1_scale * input2_scale / output_scale;
-
-  int32_t output_multiplier;
-  int output_shift;
-  quantizeMultiplier(real_multiplier, &output_multiplier, &output_shift);
+  int32_t input1_multiplier{}, input2_multiplier{}, output_multiplier{};
+  int input1_shift{}, input2_shift{}, output_shift{};
+  kernels::quantizeMultiplierSmallerThanOneExp(real_input1_multiplier, &input1_multiplier,
+                                               &input1_shift);
+  kernels::quantizeMultiplierSmallerThanOneExp(real_input2_multiplier, &input2_multiplier,
+                                               &input2_shift);
+  kernels::quantizeMultiplierSmallerThanOneExp(real_output_multiplier, &output_multiplier,
+                                               &output_shift);
 
   int32_t activation_min{};
   int32_t activation_max{};
-  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+  kernels::calculateActivationRangeQuantized(luci_actfunc(options->fused_activation_function()),
+                                             output, &activation_min, &activation_max);
 
   auto fn = [output_multiplier, output_shift, activation_min, activation_max](int16_t input1_val,
                                                                               int16_t input2_val) {
@@ -139,10 +69,164 @@ void Mul::evalQuantizedS16() const
     return static_cast<int16_t>(output);
   };
 
-  BinaryOpBroadcastSlow(getTensorShape(input1()), getTensorData<int16_t>(input1()),
-                        getTensorShape(input2()), getTensorData<int16_t>(input2()),
-                        getTensorShape(output()), getTensorData<int16_t>(output()), fn);
+  kernels::BinaryOpBroadcastSlow(
+    kernels::getTensorShape(input1), kernels::getTensorData<int16_t>(kernel_data->input1_data),
+    kernels::getTensorShape(input2), kernels::getTensorData<int16_t>(kernel_data->input2_data),
+    kernels::getTensorShape(output), kernels::getTensorData<int16_t>(kernel_data->output_data), fn);
 }
 
-} // namespace kernels
+template <typename T, typename Options = nullptr_t>
+void evalTISOInplaceQuantizedS16Kernel(kernels::TISOKernel *kernel, const Options *options)
+{
+  uint8_t *inplace_data_ptr = nullptr;
+  circle::Tensor *input_inplace_tensor = nullptr;
+
+  kernels::TISOData kernel_data = kernel->readInplaceData(inplace_data_ptr, input_inplace_tensor);
+
+  evalTISOQuantizedS16Kernel<T, Options>(kernel, &kernel_data, options);
+
+  kernel->runtime_graph()->makeInplaceOperation(input_inplace_tensor, kernel->output());
+  if (input_inplace_tensor == kernel->input1())
+  {
+    kernel->runtime_graph()->makeInplaceOperation(kernel->input2(), nullptr);
+  }
+  else
+  {
+    kernel->runtime_graph()->makeInplaceOperation(kernel->input1(), nullptr);
+  }
+}
+
+#endif // DIS_QUANT
+
+} // namespace
+
+void configure_kernel_CircleMul(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
+{
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.input2()));
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.input2()));
+#ifndef DIS_QUANT
+  if (Tensor::element_type(kernel.input1()) == DataType::S16)
+  {
+    LUCI_INTERPRETER_CHECK(Tensor::zero_points(kernel.input1()).size() == 1 &&
+                           Tensor::zero_points(kernel.input2()).size() == 1);
+    LUCI_INTERPRETER_CHECK(Tensor::zero_point(kernel.input1()) == 0 &&
+                           Tensor::zero_point(kernel.input2()) == 0 &&
+                           Tensor::zero_point(kernel.output()) == 0);
+  }
+#endif // DIS_QUANT
+}
+
+void execute_kernel_CircleMul(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
+                              bool is_inplace)
+{
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
+
+  const auto *options = cur_op->builtin_options_as_MulOptions();
+
+  switch (Tensor::element_type(kernel.input1()))
+  {
+#ifndef DIS_FLOAT
+    case DataType::FLOAT32:
+    {
+      auto tiso_func = luci_interpreter_pal::Mul<float>;
+      auto broadcast_tiso_func = luci_interpreter_pal::BroadcastMul4DSlow<float>;
+      if (is_inplace)
+      {
+        kernels::evalTISOInplaceKernel<float>(tiso_func, broadcast_tiso_func, &kernel, options);
+      }
+      else
+      {
+        kernels::TISOData kernel_data = kernel.readData();
+        kernels::evalTISOKernel<float>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
+                                       options);
+      }
+    }
+    break;
+#endif // DIS_FLOAT
+    case DataType::S64:
+    {
+      auto tiso_func = luci_interpreter_pal::Mul<int64_t>;
+      auto broadcast_tiso_func = luci_interpreter_pal::BroadcastMul4DSlow<int64_t>;
+      if (is_inplace)
+      {
+        kernels::evalTISOInplaceKernel<int64_t>(tiso_func, broadcast_tiso_func, &kernel, options);
+      }
+      else
+      {
+        kernels::TISOData kernel_data = kernel.readData();
+        kernels::evalTISOKernel<int64_t>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
+                                         options);
+      }
+    }
+    break;
+    case DataType::S32:
+    {
+      auto tiso_func = luci_interpreter_pal::Mul<int32_t>;
+      auto broadcast_tiso_func = luci_interpreter_pal::BroadcastMul4DSlow<int32_t>;
+      if (is_inplace)
+      {
+        kernels::evalTISOInplaceKernel<int32_t>(tiso_func, broadcast_tiso_func, &kernel, options);
+      }
+      else
+      {
+        kernels::TISOData kernel_data = kernel.readData();
+        kernels::evalTISOKernel<int32_t>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
+                                         options);
+      }
+    }
+    break;
+#ifndef DIS_QUANT
+    case DataType::U8:
+    {
+      auto tiso_func = [](const tflite::ArithmeticParams &params,
+                          const tflite::RuntimeShape &input1_shape, const uint8_t *input1_data,
+                          const tflite::RuntimeShape &input2_shape, const uint8_t *input2_data,
+                          const tflite::RuntimeShape &output_shape, uint8_t *output_data) {
+        luci_interpreter_pal::Mul(params, input1_shape, input1_data, input2_shape, input2_data,
+                                  output_shape, output_data);
+      };
+      auto broadcast_tiso_func =
+        [](const tflite::ArithmeticParams &params, const tflite::RuntimeShape &input1_shape,
+           const uint8_t *input1_data, const tflite::RuntimeShape &input2_shape,
+           const uint8_t *input2_data, const tflite::RuntimeShape &output_shape,
+           uint8_t *output_data) {
+          luci_interpreter_pal::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,
+                                                   input2_data, output_shape, output_data);
+        };
+      if (is_inplace)
+      {
+        kernels::evalTISOInplaceQuantizedKernel<uint8_t>(tiso_func, broadcast_tiso_func, &kernel,
+                                                         options);
+      }
+      else
+      {
+        kernels::TISOData kernel_data = kernel.readData();
+        kernels::evalTISOQuantizedKernel<uint8_t>(tiso_func, broadcast_tiso_func, &kernel,
+                                                  &kernel_data, options);
+      }
+    }
+    break;
+    case DataType::S16:
+    {
+      if (is_inplace)
+      {
+        evalTISOInplaceQuantizedS16Kernel<int16_t>(&kernel, options);
+      }
+      else
+      {
+        kernels::TISOData kernel_data = kernel.readData();
+        evalTISOQuantizedS16Kernel<int16_t>(&kernel, &kernel_data, options);
+      }
+    }
+    break;
+#endif // DIS_QUANT
+    default:
+      assert(false && "Unsupported type.");
+  }
+}
+
 } // namespace luci_interpreter

@@ -4,7 +4,10 @@ set(SOURCES
         Utils.cpp
         Builders.h
         KernelBuilder.h
-        KernelBuilder.cpp)
+        KernelBuilder.cpp
+        SISOKernel.h
+        TISOKernel.h
+        MISOKernel.h)
 
 macro(REGISTER_KERNEL OPERATOR, NODE)
   list(APPEND SOURCES "${NODE}.cpp")

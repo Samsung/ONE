@@ -41,7 +41,8 @@ public:
 
   void addGraph(MemoryManager *memory_manager)
   {
-    _graphs.emplace_back(memory_manager, &_circle_reader);
+    _graphs.emplace_back(memory_manager, &_circle_reader, this,
+                         _circle_reader.get_current_subgraph_index());
   }
 
   BaseRuntimeGraph *getRuntimeGraphAt(uint32_t pos) { return &_graphs.at(pos); }
@@ -51,6 +52,8 @@ public:
   CircleReader &getCircleReader() { return _circle_reader; }
 
   BaseRuntimeGraph *getMainGraph() const { return const_cast<BaseRuntimeGraph *>(&_graphs[0]); }
+
+  void selectSubgraph(uint32_t index) { _circle_reader.select_subgraph(index); }
 
 private:
   std::vector<BaseRuntimeGraph> _graphs;

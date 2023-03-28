@@ -14,81 +14,180 @@
  * limitations under the License.
  */
 
-#include "kernels/Tanh.h"
-
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "SISOKernel.h"
 
 #include <tensorflow/lite/kernels/internal/reference/tanh.h>
+#include <tensorflow/lite/kernels/internal/reference/integer_ops/tanh.h>
 
 namespace luci_interpreter
 {
-namespace kernels
-{
 
-Tanh::Tanh(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
+#ifndef DIS_QUANT
 
-void Tanh::configure()
+namespace
 {
-  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
-  if (input()->element_type() == DataType::U8)
+void calculateArithmeticData(const circle::Tensor *input, const circle::Tensor *output,
+                             int32_t &input_zero_point, int32_t &input_range_radius,
+                             int32_t &input_multiplier, int &input_left_shift)
+{
+  const auto input_dtype = Tensor::element_type(input);
+  switch (input_dtype)
   {
-    populateLookupTable();
+    case DataType::S8:
+    {
+      static constexpr int input_integer_bits = 4;
+      const double input_real_multiplier = static_cast<double>(Tensor::scale(input)) *
+                                           static_cast<double>(1 << (31 - input_integer_bits));
+
+      const double q = std::frexp(input_real_multiplier, &input_left_shift);
+      input_multiplier = static_cast<int32_t>(std::round(q * (1ll << 31)));
+      input_range_radius = kernels::calculateInputRadius(input_integer_bits, input_left_shift, 31);
+    }
+    break;
+    case DataType::S16:
+    {
+      static constexpr int input_integer_bits = 3;
+      static constexpr int output_fractional_bits = 15;
+
+      // These operators are implemented in fixed-point arithmetic,
+      // which intrinsically wants symmetric ranges (zero_point==0)
+      // and power-of-two scales (power-of-two is abbreviated below as POT).
+      // While more general support would be possible by means of rescaling,
+      // that would add some overhead and some loss of accuracy and wouldn't
+      // be used at the moment as current quantized LSTM applications are
+      // happy with symmetric, power-of-two-scales quantization. So we just
+      // implement that narrow case only for now.
+
+      int input_scale_log2_rounded;
+      bool param_scale_pot = kernels::checkedLog2(Tensor::scale(input), &input_scale_log2_rounded);
+
+      input_left_shift = (15 - input_integer_bits) + input_scale_log2_rounded;
+      param_scale_pot &= (input_left_shift == 0 || input_left_shift == 1);
+
+      if (param_scale_pot)
+      {
+        input_multiplier = 0;
+      }
+      else
+      {
+        // Calculate multiplier to change input scale to 1/(3*4096)
+        // as required by the table lookup.
+        // The number 3.0 in the multiplier comes from here,
+        // because the interval is [-10.7, 10.7] instead of [-8, 8].
+        // So, in this scaling +/-2^17 represents +/-10.7.
+
+        double multiplier = static_cast<double>(Tensor::scale(input)) * 4096.0 * 3.0;
+        input_left_shift = 0;
+
+        while (multiplier <= 32767.0 / 2.0 && input_left_shift <= 30)
+        {
+          input_left_shift++;
+          multiplier = multiplier * 2.0;
+        }
+
+        input_multiplier = static_cast<int32_t>(multiplier);
+      }
+
+      int output_scale_log2_rounded;
+      kernels::checkedLog2(Tensor::scale(output), &output_scale_log2_rounded);
+      assert(output_scale_log2_rounded == -output_fractional_bits);
+    }
+    break;
+    default:
+      assert(false && "Unsupported type");
   }
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(input()->shape());
 }
 
-void Tanh::execute() const
+} // namespace
+
+void evalInteger(const circle::Tensor *input, const circle::Tensor *output,
+                 BaseRuntimeGraph *runtime_graph)
 {
-  switch (input()->element_type())
+  int32_t input_zero_point = 0;
+  int32_t input_range_radius = 0;
+  int32_t input_multiplier = 0;
+  int input_left_shift = 0;
+
+  calculateArithmeticData(input, output, input_zero_point, input_range_radius, input_multiplier,
+                          input_left_shift);
+
+  const auto *input_data = runtime_graph->getDataByTensor(input);
+  assert(input_data);
+
+  auto *output_data = runtime_graph->getDataByTensor(output);
+  assert(output_data);
+
+  const auto input_dtype = Tensor::element_type(input);
+  switch (input_dtype)
   {
-    case DataType::FLOAT32:
-      evalFloat();
+    case DataType::S8:
+      tflite::reference_integer_ops::Tanh(
+        input_zero_point, input_range_radius, input_multiplier, input_left_shift,
+        kernels::getTensorShape(input), kernels::getTensorData<int8_t>(input_data),
+        kernels::getTensorShape(output), kernels::getTensorData<int8_t>(output_data));
       break;
-    case DataType::U8:
-      evalQuantized();
+    case DataType::S16:
+      tflite::reference_integer_ops::Tanh(
+        input_multiplier, input_left_shift, kernels::getTensorShape(input),
+        kernels::getTensorData<int16_t>(input_data), kernels::getTensorShape(output),
+        kernels::getTensorData<int16_t>(output_data));
       break;
     default:
-      assert(false && "Unsupported type.");
+      assert(false && "Not support yet");
   }
 }
+#endif // DIS_QUANT
 
-void Tanh::evalFloat() const
+void configure_kernel_CircleTanh(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  tflite::reference_ops::Tanh(getTensorShape(input()), getTensorData<float>(input()),
-                              getTensorShape(output()), getTensorData<float>(output()));
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input()) ==
+                         Tensor::element_type(kernel.output()));
 }
 
-void Tanh::evalQuantized() const
+void execute_kernel_CircleTanh(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
+                               bool is_inplace)
 {
-  const int size = tflite::MatchingFlatSize(getTensorShape(input()), getTensorShape(output()));
-  uint8_t *output_data = getTensorData<uint8_t>(output());
-  const uint8_t *input_data = getTensorData<uint8_t>(input());
-  for (int i = 0; i < size; ++i)
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
+
+  const auto *input_data = runtime_graph->getDataByTensor(kernel.input());
+  assert(input_data);
+
+  auto *output_data = runtime_graph->getDataByTensor(kernel.output());
+
+  switch (Tensor::element_type(kernel.input()))
   {
-    output_data[i] = getTableValue(input_data[i]);
-  }
-}
+#ifndef DIS_FLOAT
+    case DataType::FLOAT32:
+    {
+      const float *input_data_float = kernels::getTensorData<float>(input_data);
+      float *output_data_float = kernels::getTensorData<float>(output_data);
+      if (is_inplace)
+      {
+        output_data_float = const_cast<float *>(input_data_float);
+      }
 
-void Tanh::populateLookupTable()
-{
-  const auto input_scale = static_cast<double>(input()->scale());
-  const auto input_zero_point = static_cast<int32_t>(input()->zero_point());
-  const auto output_scale = static_cast<double>(output()->scale());
-  const auto output_zero_point = static_cast<int32_t>(output()->zero_point());
-  const float inverse_scale = 1 / output_scale;
-  int32_t maxval = std::numeric_limits<uint8_t>::max();
-  int32_t minval = std::numeric_limits<uint8_t>::min();
-  for (int32_t val = minval; val <= maxval; ++val)
-  {
-    const float dequantized = input_scale * (val - input_zero_point);
-    const float transformed = std::tanh(dequantized);
-    const float rescaled = std::round(transformed * inverse_scale);
-    const int32_t quantized = static_cast<int32_t>(rescaled + output_zero_point);
-    setTableValue(static_cast<uint8_t>(std::max(std::min(maxval, quantized), minval)),
-                  static_cast<uint8_t>(val));
-  }
-}
+      assert(output_data_float);
 
-} // namespace kernels
+      tflite::reference_ops::Tanh(kernels::getTensorShape(kernel.input()), input_data_float,
+                                  kernels::getTensorShape(kernel.output()), output_data_float);
+      break;
+    }
+#endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case DataType::S16:
+    case DataType::S8:
+      evalInteger(kernel.input(), kernel.output(), runtime_graph);
+      break;
+#endif // DIS_QUANT
+    default:
+      assert(false && "Unsupported type");
+  }
+
+  if (is_inplace)
+    runtime_graph->makeInplaceOperation(kernel.input(), kernel.output());
+}
 } // namespace luci_interpreter

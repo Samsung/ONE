@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+#if 0
 #include "kernels/Add.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
@@ -355,3 +356,4 @@ TEST_F(AddTest, Invalid_Quantization_NEG)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif

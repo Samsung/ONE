@@ -99,6 +99,12 @@ public:
   }
 #endif
 
+  static bool is_constant_tensor(const luci_interpreter::CircleReader *reader,
+                                 const circle::Tensor *circle_tensor)
+  {
+    return reader->buffers()[circle_tensor->buffer()]->data() != nullptr;
+  }
+
   static DataType element_type(const circle::Tensor *circle_tensor)
   {
     return luci_datatype(circle_tensor->type());
@@ -107,7 +113,7 @@ public:
   static int num_dims(const circle::Tensor *circle_tensor)
   {
     // TODO check removing of wrap
-    auto const &const_dims = wrap(circle_tensor->shape());
+    auto const const_dims = wrap(circle_tensor->shape());
     return const_dims.size();
   }
 
@@ -115,7 +121,7 @@ public:
   {
     // TODO check removing of wrap
     assert(i >= 0);
-    auto const &const_dims = wrap(circle_tensor->shape());
+    auto const const_dims = wrap(circle_tensor->shape());
     assert(i < const_dims.size());
 
     return const_dims[i];
@@ -124,7 +130,7 @@ public:
   static int32_t num_elements(const circle::Tensor *circle_tensor)
   {
     int32_t result = 1;
-    auto const &const_dims = wrap(circle_tensor->shape());
+    auto const const_dims = wrap(circle_tensor->shape());
     for (const int32_t dim : const_dims)
     {
       result *= dim;

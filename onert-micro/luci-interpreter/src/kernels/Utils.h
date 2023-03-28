@@ -24,6 +24,8 @@
 #include <cassert>
 #include <cstdint>
 
+#include <cmath>
+
 namespace luci_interpreter
 {
 namespace kernels
@@ -171,13 +173,6 @@ private:
   std::vector<tflite::RuntimeShape *> all_shape_ptr_;
 };
 
-#ifndef DIS_QUANT
-void calculateActivationRangeQuantized(Activation activation, const circle::Tensor *output,
-                                       int32_t *activation_min, int32_t *activation_max);
-void calculateActivationRangeQuantized(Activation activation, int32_t output_zero_point,
-                                       float output_scale, DataType data_type,
-                                       int32_t *activation_min, int32_t *activation_max);
-
 template <typename T> constexpr bool one_of_types() { return false; }
 
 // Checks if T is equal to one of {U,Other} types
@@ -210,6 +205,18 @@ void fillArithmeticActivationRange(tflite::ArithmeticParams &p, Activation act)
   else
     calculateActivationRange(act, &p.int64_activation_min, &p.int64_activation_max);
 }
+
+#ifndef DIS_QUANT
+bool checkedLog2(const float x, int *log2_result);
+
+int calculateInputRadius(int input_integer_bits, int input_left_shift, int total_signed_bits);
+
+void calculateActivationRangeQuantized(Activation activation, const circle::Tensor *output,
+                                       int32_t *activation_min, int32_t *activation_max);
+
+void calculateActivationRangeQuantized(Activation activation, int32_t output_zero_point,
+                                       float output_scale, DataType data_type,
+                                       int32_t *activation_min, int32_t *activation_max);
 
 // Decompose a double multiplier into a Q0.31 int32 representation of its
 // significand, and shift representation of its exponent.

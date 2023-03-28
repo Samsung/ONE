@@ -22,7 +22,7 @@ namespace luci_interpreter
 {
 
 void ModuleLoader::load(RuntimeModule *runtime_module, SimpleMemoryManager *memory_manager,
-                        const char *model_data_raw)
+                        const char *model_data_raw, bool dealloc_input)
 {
   const circle::Model *model = circle::GetModel(model_data_raw);
 
@@ -32,19 +32,16 @@ void ModuleLoader::load(RuntimeModule *runtime_module, SimpleMemoryManager *memo
 
   for (size_t i = 0; i < reader.num_subgraph(); ++i)
   {
-    runtime_module->addGraph(memory_manager);
-  }
-
-#ifndef USE_STATIC_ALLOC
-  for (size_t i = 0; i < reader.num_subgraph(); ++i)
-  {
     if (!reader.select_subgraph(i))
       assert(false && "Error during select subgraph");
+    runtime_module->addGraph(memory_manager);
+
+#ifndef USE_STATIC_ALLOC
     auto *runtime_graph = runtime_module->getRuntimeGraphAt(i);
     // For Dynamic memory manager we can use inplace optimization
     GraphLoader::checkInplaceOps(&reader, runtime_graph);
-  }
 #endif // USE_STATIC_ALLOC
+  }
 
   // For Dynamic Memory manager we build memory allocate/deallocate plan and then configure kernels.
   // For Static Memory manager we only configure kernels.
@@ -54,9 +51,12 @@ void ModuleLoader::load(RuntimeModule *runtime_module, SimpleMemoryManager *memo
 #ifdef USE_STATIC_ALLOC
     runtime_graph->configure_kernels();
 #else
-    runtime_graph->configure();
+    runtime_graph->configure(dealloc_input);
 #endif // USE_STATIC_ALLOC
   }
+
+  // Select main subgraph
+  reader.select_subgraph(0);
 }
 
 } // namespace luci_interpreter

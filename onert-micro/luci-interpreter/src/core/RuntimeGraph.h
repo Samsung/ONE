@@ -57,7 +57,10 @@ public:
 class RuntimeGraph
 {
 public:
-  explicit RuntimeGraph(SimpleMemoryManager *memory_manager, CircleReader *circle_reader);
+  RuntimeGraph() = delete;
+
+  explicit RuntimeGraph(SimpleMemoryManager *memory_manager, CircleReader *circle_reader,
+                        RuntimeModule *runtime_module, uint32_t subgraph_index);
   ~RuntimeGraph();
 
   Tensor *addTensor(const circle::Tensor *raw_tensor, std::unique_ptr<Tensor> &&tensor);
@@ -75,26 +78,50 @@ public:
   int32_t getInputDataSizeByIndex(int32_t input_index);
   int32_t getOutputDataSizeByIndex(int32_t output_index);
 
+  int32_t getNumOfInputTensors();
+  int32_t getNumOfOutputTensors();
+
+  const circle::Tensor *getInputTensorByIndex(int32_t input_index);
+  const circle::Tensor *getOutputTensorByIndex(int32_t input_index);
+
   uint8_t *getOutputDataByIndex(int32_t output_index);
 
   void addInplaceOpIndex(uint32_t index) { _inplace_op_indexes.insert(index); }
 
   void execute();
-  void configure();
+  void configure(bool dealloc_input);
 
   void invalidate() { _is_valid = false; }
   bool isValid() const { return _is_valid; }
 
+  void selectOwnSubgraph() { _reader->select_subgraph(_subgraph_index); };
+  void resetOutputTensorsData();
+
+  void clearTensors();
+
+  void setDataToTensor(const circle::Tensor *tensor, uint8_t *data);
+
+  void resetTensorData(uint8_t *new_data, const circle::Tensor *tensor);
+
+  RuntimeModule *getRuntimeModule() { return _runtime_module; };
+
+#ifndef DIS_DYN_SHAPES
+  void addDynamicShapeTensor(const circle::Tensor *tensor, std::vector<int32_t> &&shapes);
+
+  std::vector<int32_t> *getDynamicShapeTensor(const circle::Tensor *tensor);
+
+  void removeDynamicShapeTensor(const circle::Tensor *tensor);
+#endif // DIS_DYN_SHAPES
+
 private:
-  void buildAllocDeallocPlan();
+  void buildAllocDeallocPlan(bool dealloc_input);
   void allocate(size_t kernel_index);
   void deallocate(size_t kernel_index);
-
-  void resetOutputTensorsData();
 
 private:
   SimpleMemoryManager *_memory_manager;
   CircleReader *_reader;
+  RuntimeModule *_runtime_module;
 
   std::unordered_map<const circle::Tensor *, uint8_t *> _tensor_to_data;
   std::unordered_set<uint32_t> _inplace_op_indexes;
@@ -104,6 +131,12 @@ private:
   // Tensors that are not used anymore after given op
   std::vector<std::vector<const circle::Tensor *>> _alloc_plan;
   std::vector<std::vector<const circle::Tensor *>> _dealloc_plan;
+
+  uint32_t _subgraph_index;
+
+#ifndef DIS_DYN_SHAPES
+  std::unordered_map<const circle::Tensor *, std::vector<int32_t>> _dynamic_tensor_shapes;
+#endif // DIS_DYN_SHAPES
 };
 
 #endif // USE_STATIC_ALLOC

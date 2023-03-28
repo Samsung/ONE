@@ -74,6 +74,26 @@ template void calculateActivationRange(Activation activation, int64_t *activatio
                                        int64_t *activation_max);
 
 #ifndef DIS_QUANT
+bool checkedLog2(const float x, int *log2_result)
+{
+  const float x_log2 = std::log(x) * (1.0f / std::log(2.0f));
+  const float x_log2_rounded = std::round(x_log2);
+  const float x_log2_fracpart = x_log2 - x_log2_rounded;
+
+  *log2_result = static_cast<int>(x_log2_rounded);
+  return std::abs(x_log2_fracpart) < 1e-3f;
+}
+
+int calculateInputRadius(int input_integer_bits, int input_left_shift, int total_signed_bits)
+{
+  const double max_input_rescaled = 1.0 * ((1 << input_integer_bits) - 1) *
+                                    (1LL << (total_signed_bits - input_integer_bits)) /
+                                    (1LL << input_left_shift);
+  // Tighten bound using floor.  Suppose that we could use the exact value.
+  // After scaling the difference, the result would be at the maximum.  Thus we
+  // must ensure that our value has lower magnitude.
+  return static_cast<int>(std::floor(max_input_rescaled));
+}
 
 static void calculateActivationRangeQuantizedImpl(Activation activation, int32_t qmin, int32_t qmax,
                                                   int32_t zero_point, float scale,
