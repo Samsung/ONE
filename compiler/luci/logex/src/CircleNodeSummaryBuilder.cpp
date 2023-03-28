@@ -61,6 +61,19 @@ bool CircleNodeSummaryBuilder::build(const loco::Node *node, const locop::Symbol
     return ss.str();
   };
 
+  auto shape_to_str = [](const luci::CircleNode *node) {
+    std::stringstream ss;
+    ss << "<";
+    for (uint32_t i = 0; i < node->rank(); ++i)
+    {
+      if (i)
+        ss << ",";
+      ss << node->dim(i).known() ? node->dim(i).value() : -1;
+    }
+    ss << ">";
+    return ss.str();
+  };
+
   auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
   if (const auto builder = create_builder(circle_node))
   {
@@ -79,7 +92,8 @@ bool CircleNodeSummaryBuilder::build(const loco::Node *node, const locop::Symbol
     builder->update_status(s);
 
     s.opname(circle_opname(circle_node->opcode()));
-    s.comments().append("[" + circle_node->name() + "] = " + ptr_to_str(node));
+    s.comments().append("[" + circle_node->name() + " " + shape_to_str(circle_node) +
+                        "] = " + ptr_to_str(node));
 
     return true;
   }
