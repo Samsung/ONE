@@ -25,24 +25,21 @@ void VISQErrorApproximator::init(const std::string &visq_data_path)
 {
   // read file
   std::ifstream file(visq_data_path);
-  if (!init(file))
-  {
-    throw std::runtime_error("Invalid visq file " + visq_data_path);
-  }
+  init(file);
 }
 
-bool VISQErrorApproximator::init(std::istream &visq_data)
+void VISQErrorApproximator::init(std::istream &visq_data)
 {
   Json::Reader reader;
   Json::Value completeJsonData;
   if (!reader.parse(visq_data, completeJsonData))
   {
-    return false;
+    throw std::runtime_error("Invalid visq stream");
   }
 
   if (!completeJsonData.isMember("error"))
   {
-    return false;
+    throw std::runtime_error("No 'error' section in visq stream");
   }
 
   auto layers = completeJsonData["error"][0];
@@ -52,8 +49,6 @@ bool VISQErrorApproximator::init(std::istream &visq_data)
     auto value = layers[name].asFloat();
     _layer_errors[name] = value;
   }
-
-  return true;
 }
 
 float VISQErrorApproximator::approximate(const std::string &node_name) const
