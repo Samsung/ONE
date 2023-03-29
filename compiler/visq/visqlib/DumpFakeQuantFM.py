@@ -16,6 +16,7 @@
 # NOTE This script runs on dalgona
 
 import numpy as np
+import json
 
 from pathlib import Path
 from Util import to_filename
@@ -52,6 +53,7 @@ class DumpFakeQuantFM:
         self._num_data = 0
         with open(self._dir / 'tensors.txt') as f:
             self._target_tensors = set([line.rstrip() for line in f])
+        self._scale_map = {}
 
     def EndNetworkExecution(self, outputs: list):
         self._num_data += 1
@@ -64,3 +66,13 @@ class DumpFakeQuantFM:
                 data_path = self._dir / str(self._num_data)
                 data_path.mkdir(parents=False, exist_ok=True)
                 np.save(str(data_path / to_filename(orig_name)), output['data'])
+                # Save scales (scale is fixed, so saving once)
+                if orig_name not in self._scale_map:
+                    assert len(inputs) == 1
+                    scale = inputs[0]['quantparam']['scale'][0]
+                    self._scale_map[orig_name] = scale
+
+    def EndAnalysis(self):
+        # Dump saved scales into scales.txt
+        with open(self._dir / 'scales.txt', 'w') as f:
+            json.dump(self._scale_map, f)
