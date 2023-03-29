@@ -21,7 +21,7 @@ filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  if grep -q "Input shape mismatch" "${filename}.log"; then
+  if grep -q "Buffer size does not match" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
