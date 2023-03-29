@@ -163,13 +163,14 @@ void Dalgona::runAnalysisWithH5Input(const std::string &input_data_path,
         if (is_raw_data)
         {
           // Skip type/shape check for raw data
-          importer.readTensor(record_idx, input_idx, input_data.data());
+          importer.readTensor(record_idx, input_idx, input_data.data(), input_data.size());
         }
         else
         {
           DataType dtype;
           Shape shape;
-          importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data());
+          importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data(),
+                              input_data.size());
 
           // Check the type and the shape of the input data is valid
           verifyTypeShape(input_node, dtype, shape);
