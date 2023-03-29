@@ -64,6 +64,13 @@ public:
    */
   void algorithm(Algorithm algorithm);
 
+  /**
+   * @brief   set visq_file path to be used in 'auto' mode
+   * @details this is used to handle which way (8 or 16bit) of
+   *          splitting the neural network will be the best for accuracy.
+   */
+  void setVisqPath(const std::string &visq_path);
+
 private:
   float evaluate(const DatasetEvaluator &evaluator, const std::string &module_path,
                  const std::string &def_quant, LayerParams &layers);
@@ -72,6 +79,7 @@ private:
   float _qerror = 0.f; // quantization error
   Algorithm _algorithm = Algorithm::ForceQ16Front;
   std::unique_ptr<Quantizer> _quantizer;
+  std::string _visq_data_path;
 };
 
 } // namespace bisection

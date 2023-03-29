@@ -101,6 +101,8 @@ float BisectionSolver::evaluate(const DatasetEvaluator &evaluator, const std::st
 
 void BisectionSolver::algorithm(Algorithm algorithm) { _algorithm = algorithm; }
 
+void BisectionSolver::setVisqPath(const std::string &visq_path) { _visq_data_path = visq_path; }
+
 std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_path)
 {
   LOGGER(l);
