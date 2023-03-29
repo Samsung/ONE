@@ -132,3 +132,18 @@ TEST(dio_hdf5_test, input_out_of_index_NEG)
   // Read non-existing input (input_idx = 1)
   EXPECT_ANY_THROW(h5.readTensor(0, 1, &dtype, &shape, buffer.data()));
 }
+
+TEST(dio_hdf5_test, wrong_buffer_size_NEG)
+{
+  createFile();
+
+  HDF5Importer h5(::file_name);
+
+  h5.importGroup("value");
+
+  std::vector<float> buffer(6);
+
+  DataType dtype;
+  Shape shape;
+  EXPECT_ANY_THROW(h5.readTensor(0, 0, &dtype, &shape, buffer.data(), 1 /* wrong buffer size */));
+}
