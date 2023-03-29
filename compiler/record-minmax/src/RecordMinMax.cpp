@@ -395,7 +395,7 @@ WholeOutput RecordMinMax::importH5Data(const std::string &input_data_path)
         {
           DataType dtype;
           Shape shape;
-          importer.readTensor(i, input_idx, &dtype, &shape, input_data.data());
+          importer.readTensor(i, input_idx, &dtype, &shape, input_data.data(), input_data.size());
 
           // Check the type and the shape of the input data is valid
           verifyTypeShape(input_node, dtype, shape);
@@ -403,7 +403,7 @@ WholeOutput RecordMinMax::importH5Data(const std::string &input_data_path)
         else
         {
           // Skip type/shape check for raw data
-          importer.readTensor(i, input_idx, input_data.data());
+          importer.readTensor(i, input_idx, input_data.data(), input_data.size());
         }
         whole_output[i].emplace_back(std::move(input_data));
       }
@@ -453,7 +453,8 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
         {
           DataType dtype;
           Shape shape;
-          importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data());
+          importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data(),
+                              input_data.size());
 
           // Check the type and the shape of the input data is valid
           verifyTypeShape(input_node, dtype, shape);
@@ -461,7 +462,7 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
         else
         {
           // Skip type/shape check for raw data
-          importer.readTensor(record_idx, input_idx, input_data.data());
+          importer.readTensor(record_idx, input_idx, input_data.data(), input_data.size());
         }
 
         // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
