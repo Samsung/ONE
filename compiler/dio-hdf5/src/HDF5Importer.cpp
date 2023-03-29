@@ -128,45 +128,6 @@ int32_t HDF5Importer::numInputs(int32_t record_idx)
   return records.getNumObjs();
 }
 
-void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, void *buffer)
-{
-  auto record = _group.openGroup(std::to_string(record_idx));
-  auto tensor = record.openDataSet(std::to_string(input_idx));
-
-  readTensorData(tensor, static_cast<uint8_t *>(buffer));
-}
-
-void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, DataType *dtype, Shape *shape,
-                              void *buffer)
-{
-  auto record = _group.openGroup(std::to_string(record_idx));
-  auto tensor = record.openDataSet(std::to_string(input_idx));
-
-  auto tensor_dtype = tensor.getDataType();
-  *dtype = toInternalDtype(tensor_dtype);
-
-  auto tensor_shape = tensor.getSpace();
-  *shape = toInternalShape(tensor_shape);
-
-  switch (*dtype)
-  {
-    case DataType::FLOAT32:
-      readTensorData(tensor, static_cast<float *>(buffer));
-      break;
-    case DataType::S32:
-      readTensorData(tensor, static_cast<int32_t *>(buffer));
-      break;
-    case DataType::S64:
-      readTensorData(tensor, static_cast<int64_t *>(buffer));
-      break;
-    case DataType::BOOL:
-      readTensorData(tensor, static_cast<uint8_t *>(buffer));
-      break;
-    default:
-      throw std::runtime_error{"Unsupported data type for input data (.h5)"};
-  }
-}
-
 void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, void *buffer,
                               size_t buffer_bytes)
 {
