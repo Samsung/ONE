@@ -45,9 +45,9 @@ public:
 
 private:
   /**
-   * @brief initiliaze by visq_data (returns success)
+   * @brief initiliaze by visq_data (throws on failure)
    */
-  bool init(std::istream &visq_data);
+  void init(std::istream &visq_data);
 
 private:
   std::string _visq_data_path;
