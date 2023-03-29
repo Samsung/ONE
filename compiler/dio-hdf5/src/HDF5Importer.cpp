@@ -167,5 +167,51 @@ void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, DataType *d
   }
 }
 
+void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, void *buffer,
+                              size_t buffer_bytes)
+{
+  auto record = _group.openGroup(std::to_string(record_idx));
+  auto tensor = record.openDataSet(std::to_string(input_idx));
+
+  if (tensor.getInMemDataSize() != buffer_bytes)
+    throw std::runtime_error("Buffer size does not matched with the size of tensor data");
+
+  readTensorData(tensor, static_cast<uint8_t *>(buffer));
+}
+
+void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, DataType *dtype, Shape *shape,
+                              void *buffer, size_t buffer_bytes)
+{
+  auto record = _group.openGroup(std::to_string(record_idx));
+  auto tensor = record.openDataSet(std::to_string(input_idx));
+
+  auto tensor_dtype = tensor.getDataType();
+  *dtype = toInternalDtype(tensor_dtype);
+
+  auto tensor_shape = tensor.getSpace();
+  *shape = toInternalShape(tensor_shape);
+
+  if (tensor.getInMemDataSize() != buffer_bytes)
+    throw std::runtime_error("Buffer size does not matched with the size of tensor data");
+
+  switch (*dtype)
+  {
+    case DataType::FLOAT32:
+      readTensorData(tensor, static_cast<float *>(buffer));
+      break;
+    case DataType::S32:
+      readTensorData(tensor, static_cast<int32_t *>(buffer));
+      break;
+    case DataType::S64:
+      readTensorData(tensor, static_cast<int64_t *>(buffer));
+      break;
+    case DataType::BOOL:
+      readTensorData(tensor, static_cast<uint8_t *>(buffer));
+      break;
+    default:
+      throw std::runtime_error{"Unsupported data type for input data (.h5)"};
+  }
+}
+
 } // namespace hdf5
 } // namespace dio

@@ -126,17 +126,19 @@ InputDataLoader::Data HDF5Loader::get(uint32_t data_idx) const
     data.at(input_idx) = *createEmptyTensor(input_node).get();
 
     auto input_buffer = data.at(input_idx).buffer();
+    const auto input_buffer_bytes = data.at(input_idx).byte_size();
+
     try
     {
       if (_hdf5->isRawData())
       {
-        _hdf5->readTensor(data_idx, input_idx, input_buffer);
+        _hdf5->readTensor(data_idx, input_idx, input_buffer, input_buffer_bytes);
       }
       else
       {
         DataType dtype;
         Shape shape;
-        _hdf5->readTensor(data_idx, input_idx, &dtype, &shape, input_buffer);
+        _hdf5->readTensor(data_idx, input_idx, &dtype, &shape, input_buffer, input_buffer_bytes);
 
         // Check the type and the shape of the input data is valid
         verifyTypeShape(input_node, dtype, shape);
