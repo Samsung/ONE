@@ -69,12 +69,13 @@ WholeOutput compute_outputs(const luci::Module *module, const std::string &h5fil
       {
         loco::DataType dtype;
         Shape shape;
-        importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data());
+        importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data(),
+                            input_data.size());
       }
       else
       {
         // Skip type/shape check for raw data
-        importer.readTensor(record_idx, input_idx, input_data.data());
+        importer.readTensor(record_idx, input_idx, input_data.data(), input_data.size());
       }
 
       interpreter.writeInputTensor(input_node, input_data.data(), input_data.size());
