@@ -73,7 +73,7 @@ TEST(dio_hdf5_test, read_with_type_shape)
 
   DataType dtype;
   Shape shape;
-  h5.readTensor(0, 0, &dtype, &shape, buffer.data());
+  h5.readTensor(0, 0, &dtype, &shape, buffer.data(), buffer.size() * sizeof(float));
 
   for (uint32_t i = 0; i < 6; i++)
     EXPECT_EQ(i, buffer[i]);
@@ -114,7 +114,8 @@ TEST(dio_hdf5_test, data_out_of_index_NEG)
   DataType dtype;
   Shape shape;
   // Read non-existing data (data_idx = 1)
-  EXPECT_ANY_THROW(h5.readTensor(1, 0, &dtype, &shape, buffer.data()));
+  EXPECT_ANY_THROW(
+    h5.readTensor(1, 0, &dtype, &shape, buffer.data(), buffer.size() * sizeof(float)));
 }
 
 TEST(dio_hdf5_test, input_out_of_index_NEG)
@@ -130,7 +131,8 @@ TEST(dio_hdf5_test, input_out_of_index_NEG)
   DataType dtype;
   Shape shape;
   // Read non-existing input (input_idx = 1)
-  EXPECT_ANY_THROW(h5.readTensor(0, 1, &dtype, &shape, buffer.data()));
+  EXPECT_ANY_THROW(
+    h5.readTensor(0, 1, &dtype, &shape, buffer.data(), buffer.size() * sizeof(float)));
 }
 
 TEST(dio_hdf5_test, wrong_buffer_size_NEG)

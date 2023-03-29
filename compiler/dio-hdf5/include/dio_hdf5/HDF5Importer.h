@@ -58,23 +58,6 @@ public:
    * @param dtype : pointer to write the tensor's data type
    * @param shape : pointer to write the tensor's shape
    * @param buffer : pointer to write the tensor's data
-   */
-  // TODO Deprecate this API (use the one with buffer_bytes)
-  void readTensor(int32_t data_idx, int32_t input_idx, loco::DataType *dtype,
-                  std::vector<loco::Dimension> *shape, void *buffer);
-
-  // Read a raw tensor (no type/shape is specified)
-  // TODO Deprecate this API (use the one with buffer_bytes)
-  void readTensor(int32_t data_idx, int32_t input_idx, void *buffer);
-
-  /**
-   * @brief Read tensor data from file and store it into buffer
-   * @details A tensor in the file can be retrieved with (data_idx, input_idx)
-   * @param data_idx : index of the data
-   * @param input_idx : index of the input
-   * @param dtype : pointer to write the tensor's data type
-   * @param shape : pointer to write the tensor's shape
-   * @param buffer : pointer to write the tensor's data
    * @param buffer_bytes : byte size of the buffer
    */
   void readTensor(int32_t data_idx, int32_t input_idx, loco::DataType *dtype,
