@@ -30,8 +30,11 @@ using namespace mpqsolver::bisection;
 namespace
 {
 
-bool error_at_input_is_larger_than_at_output(const NodeDepthType &nodes_depth,
-                                             const std::string &visq_path, float cut_depth)
+/**
+ * @brief compare error of front half with an error of the rear part
+ */
+bool get_int16_at_front(const NodeDepthType &nodes_depth, const std::string &visq_path,
+                        float cut_depth)
 {
   LOGGER(l);
 
@@ -178,8 +181,8 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   switch (_algorithm)
   {
     case Algorithm::Auto:
-      int16_front = error_at_input_is_larger_than_at_output(nodes_depth, _visq_data_path,
-                                                            0.5f * (max_depth + min_depth));
+      int16_front =
+        get_int16_at_front(nodes_depth, _visq_data_path, 0.5f * (max_depth + min_depth));
       break;
     case Algorithm::ForceQ16Front:
       int16_front = true;
