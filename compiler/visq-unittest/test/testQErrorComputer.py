@@ -17,10 +17,12 @@ import unittest
 import tempfile
 import numpy as np
 import os
+import json
 
 from visqlib.QErrorComputer import MPEIRComputer
 from visqlib.QErrorComputer import MSEComputer
 from visqlib.QErrorComputer import TAEComputer
+from visqlib.QErrorComputer import SRMSEComputer
 
 
 class VisqQErrorComputerTest(unittest.TestCase):
@@ -39,6 +41,10 @@ class VisqQErrorComputerTest(unittest.TestCase):
             f.write('test')
         with open(self.fq_dir.name + '/tensors.txt', 'w') as f:
             f.write('test')
+        scales = {}
+        scales['test'] = 2.0
+        with open(self.fq_dir.name + '/scales.txt', 'w') as f:
+            json.dump(scales, f)
         os.mkdir(self.fp32_dir.name + '/0')
         os.mkdir(self.fq_dir.name + '/0')
         test_data = np.zeros(16)
@@ -50,6 +56,10 @@ class VisqQErrorComputerTest(unittest.TestCase):
             f.write('test')
         with open(self.fq_dir.name + '/tensors.txt', 'w') as f:
             f.write('test')
+        scales = {}
+        scales['test'] = 2.0
+        with open(self.fq_dir.name + '/scales.txt', 'w') as f:
+            json.dump(scales, f)
         os.mkdir(self.fp32_dir.name + '/0')
         os.mkdir(self.fp32_dir.name + '/1')
         os.mkdir(self.fq_dir.name + '/0')
@@ -73,6 +83,11 @@ class VisqQErrorComputerTest(unittest.TestCase):
             f.writelines(['test\n', 'test2'])
         with open(self.fq_dir.name + '/tensors.txt', 'w') as f:
             f.writelines(['test\n', 'test2'])
+        scales = {}
+        scales['test'] = 2.0
+        scales['test2'] = 1.0
+        with open(self.fq_dir.name + '/scales.txt', 'w') as f:
+            json.dump(scales, f)
         os.mkdir(self.fp32_dir.name + '/0')
         os.mkdir(self.fq_dir.name + '/0')
         test_data = np.zeros(16)
@@ -144,6 +159,33 @@ class VisqQErrorComputerTest(unittest.TestCase):
         self.assertAlmostEqual(0.0, qmin)
         self.assertAlmostEqual(8.0, qmap['test'])
         self.assertAlmostEqual(16.0, qmax)
+
+    def test_SRMSE(self):
+        self._setUpSingleTensorData()
+
+        computer = SRMSEComputer(self.fp32_dir.name, self.fq_dir.name)
+        qmap, qmin, qmax = computer.run()
+        self.assertAlmostEqual(0.0, qmap['test'])
+        self.assertAlmostEqual(0.0, qmin)
+        self.assertAlmostEqual(0.0, qmax)
+
+    def test_SRMSE_different_options(self):
+        self._setUpDifferentTensorData()
+
+        computer = SRMSEComputer(self.fp32_dir.name, self.fq_dir.name)
+        qmap, qmin, qmax = computer.run()
+        self.assertAlmostEqual(0.0, qmap['test'])
+        self.assertAlmostEqual(0.0, qmin)
+        self.assertAlmostEqual(0.0, qmax)
+
+    def test_SRMSE_two(self):
+        self._setUpTwoTensorData()
+        computer = SRMSEComputer(self.fp32_dir.name, self.fq_dir.name)
+        qmap, qmin, qmax = computer.run()
+        # Golden: sqrt(Golden of MSE) / scale = sqrt(0.5) / 2
+        self.assertAlmostEqual(np.sqrt(0.5) / 2, qmap['test'])
+        self.assertAlmostEqual(0.0, qmin)
+        self.assertAlmostEqual(np.sqrt(0.5) / 2, qmax)
 
 
 if __name__ == '__main__':
