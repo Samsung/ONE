@@ -31,6 +31,15 @@ void writeDataToFile(const std::string &path, const std::string &data)
   file.close();
 }
 
+void makeTemporaryFile(char *name_template)
+{
+  int fd = mkstemp(name_template);
+  if (fd == -1)
+  {
+    throw std::runtime_error{"mkstemp failed"};
+  }
+}
+
 } // namespace
 
 TEST(CircleMPQSolverVISQErrorApproximatorTest, verifyResultsTest)
@@ -46,13 +55,15 @@ TEST(CircleMPQSolverVISQErrorApproximatorTest, verifyResultsTest)
 
   Json::StreamWriterBuilder builder;
   auto data = Json::writeString(builder, error_data);
-  std::string path = std::tmpnam(nullptr);
+
+  char path[] = "VISQErrorApproximator-TEST-XXXXXX";
+  makeTemporaryFile(path);
   writeDataToFile(path, data);
 
   mpqsolver::bisection::VISQErrorApproximator approximator;
   EXPECT_NO_THROW(approximator.init(path));
   EXPECT_FLOAT_EQ(approximator.approximate(layer_key), layer_error);
-  unlink(path.c_str());
+  unlink(path);
 }
 
 TEST(CircleMPQSolverVISQErrorApproximatorTest, verifyResultsTest_NEG)
@@ -61,10 +72,12 @@ TEST(CircleMPQSolverVISQErrorApproximatorTest, verifyResultsTest_NEG)
   // just an empty json
   Json::StreamWriterBuilder builder;
   auto data = Json::writeString(builder, error_data);
-  std::string path = std::tmpnam(nullptr);
+
+  char path[] = "VISQErrorApproximator-TEST-NEG-XXXXXX";
+  makeTemporaryFile(path);
   writeDataToFile(path, data);
 
   mpqsolver::bisection::VISQErrorApproximator approximator;
   EXPECT_THROW(approximator.init(path), std::exception);
-  unlink(path.c_str());
+  unlink(path);
 }
