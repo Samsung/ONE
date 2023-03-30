@@ -17,7 +17,7 @@
 #include "BisectionSolver.h"
 #include "DepthParameterizer.h"
 #include "ErrorMetric.h"
-#include "ErrorApproximator.h"
+#include "VISQErrorApproximator.h"
 
 #include <luci/ImporterEx.h>
 #include <luci/Log.h>
@@ -30,15 +30,19 @@ using namespace mpqsolver::bisection;
 namespace
 {
 
-bool error_at_input_is_larger_than_at_output(const NodeDepthType &nodes_depth, float cut_depth)
+bool error_at_input_is_larger_than_at_output(const NodeDepthType &nodes_depth,
+                                             const std::string &visq_path, float cut_depth)
 {
   LOGGER(l);
+
+  VISQErrorApproximator approximator;
+  approximator.init(visq_path);
 
   float error_at_input = 0;
   float error_at_output = 0;
   for (auto &iter : nodes_depth)
   {
-    float cur_error = approximate(iter.first);
+    float cur_error = approximator.approximate(iter.first->name());
     if (iter.second < cut_depth)
     {
       error_at_input += cur_error;
@@ -174,8 +178,8 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   switch (_algorithm)
   {
     case Algorithm::Auto:
-      int16_front =
-        error_at_input_is_larger_than_at_output(nodes_depth, 0.5f * (max_depth + min_depth));
+      int16_front = error_at_input_is_larger_than_at_output(nodes_depth, _visq_data_path,
+                                                            0.5f * (max_depth + min_depth));
       break;
     case Algorithm::ForceQ16Front:
       int16_front = true;
