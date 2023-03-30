@@ -84,14 +84,14 @@ class VisqQErrorComputerTest(unittest.TestCase):
         self._setUpSingleTensorData()
 
         computer = MPEIRComputer(self.fp32_dir.name, self.fq_dir.name)
-        qmap = computer.run()
+        qmap, _, _ = computer.run()
         self.assertAlmostEqual(0.0, qmap['test'])
 
     def test_MPEIR_different_tensors(self):
         self._setUpDifferentTensorData()
 
         computer = MPEIRComputer(self.fp32_dir.name, self.fq_dir.name)
-        qmap = computer.run()
+        qmap, _, _ = computer.run()
         self.assertAlmostEqual(0.0, qmap['test'])
 
     def test_MSE(self):
