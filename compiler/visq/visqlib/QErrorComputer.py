@@ -19,13 +19,14 @@ import json
 
 from pathlib import Path
 from visqlib.Util import to_filename
+from collections import defaultdict
 
 
 class QErrorComputer:
     def __init__(self, fp32_dir, fq_dir):
         self._fp32_dir = fp32_dir
         self._fq_dir = fq_dir
-        self.qerror_map = dict()
+        self.qerror_map = defaultdict(float)
         self._num_processed_data = 0
 
     def collect_data_path(self, fp32_dir, fq_dir):
@@ -113,10 +114,7 @@ class MPEIRComputer(QErrorComputer):
                 # To prevent this, relaxed PEIR with epsilon(10^(-6)) is used.
                 rPEIR = PEAK_ERROR / (INTERVAL + 0.000001)
 
-                if tensor_name in self.qerror_map:
-                    self.qerror_map[tensor_name] += rPEIR
-                else:
-                    self.qerror_map[tensor_name] = rPEIR
+                self.qerror_map[tensor_name] += rPEIR
 
     def get_final_result(self):
         qerror_map = dict()
@@ -146,10 +144,7 @@ class MSEComputer(QErrorComputer):
 
                 MSE = np.square(fp32_data - fq_data).mean()
 
-                if tensor_name in self.qerror_map:
-                    self.qerror_map[tensor_name] += MSE
-                else:
-                    self.qerror_map[tensor_name] = MSE
+                self.qerror_map[tensor_name] += MSE
 
                 self.qerror_min = min(MSE, self.qerror_min)
                 self.qerror_max = max(MSE, self.qerror_max)
@@ -182,10 +177,7 @@ class TAEComputer(QErrorComputer):  #total absolute error
 
                 total_error = np.sum(np.abs(fp32_data - fq_data))
 
-                if tensor_name in self.qerror_map:
-                    self.qerror_map[tensor_name] += total_error
-                else:
-                    self.qerror_map[tensor_name] = total_error
+                self.qerror_map[tensor_name] += total_error
 
                 self.qerror_min = min(total_error, self.qerror_min)
                 self.qerror_max = max(total_error, self.qerror_max)
@@ -219,10 +211,7 @@ class SRMSEComputer(QErrorComputer):
 
                 MSE = np.square(fp32_data - fq_data).mean()
 
-                if tensor_name in self.qerror_map:
-                    self.qerror_map[tensor_name] += MSE
-                else:
-                    self.qerror_map[tensor_name] = MSE
+                self.qerror_map[tensor_name] += MSE
 
     def get_final_result(self):
         with open(self.scale_file) as f:
