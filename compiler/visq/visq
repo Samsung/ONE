@@ -267,12 +267,7 @@ def run_on_data_batchwise(fp32_model, q_model, data, dump_dot_graph, computers,
         for metric_key in computers:
             cur_computer = computers[metric_key][0]
             output = computers[metric_key][1]
-            if metric_key == 'MPEIR':
-                qerror_map = cur_computer.get_final_result()
-                q_min = 0.0
-                q_max = 1.0
-            elif metric_key == 'MSE' or metric_key == 'TAE':
-                qerror_map, q_min, q_max = cur_computer.get_final_result()
+            qerror_map, q_min, q_max = cur_computer.get_final_result()
 
             palette = YLORRD9Palette(qerror_min=q_min, qerror_max=q_max)
             result = _build_json(
@@ -319,12 +314,7 @@ def run_on_data(fp32_model, q_model, data, dump_dot_graph, computers):
             cur_computer = computers[metric_key][0]
             output = computers[metric_key][1]
             cur_computer.advance_on(fp32_dir, fq_dir)
-            if metric_key == 'MPEIR':
-                qerror_map = cur_computer.get_final_result()
-                q_min = 0.0
-                q_max = 1.0
-            elif metric_key == 'MSE' or metric_key == 'TAE' or metric_key == 'SRMSE':
-                qerror_map, q_min, q_max = cur_computer.get_final_result()
+            qerror_map, q_min, q_max = cur_computer.get_final_result()
 
             palette = YLORRD9Palette(qerror_min=q_min, qerror_max=q_max)
             result = _build_json(
