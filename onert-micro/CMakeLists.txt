@@ -106,7 +106,7 @@ if (DIS_FLOAT)
 endif()
 
 if (DIS_DYN_SHAPES)
-    message(STATUS "ONERT-MICRO will use dynamic shapes")
+    message(STATUS "ONERT-MICRO will not use dynamic shapes")
     add_definitions(-DDIS_DYN_SHAPES)
 endif()
 
