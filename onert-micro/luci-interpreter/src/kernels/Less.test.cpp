@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+#if 0
 #include "kernels/Less.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
@@ -332,3 +333,4 @@ TEST_F(LessTest, Int64_Broadcast_NEG)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif

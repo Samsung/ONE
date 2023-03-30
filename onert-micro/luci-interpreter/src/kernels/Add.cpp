@@ -15,167 +15,30 @@
  * limitations under the License.
  */
 
-#include "kernels/Add.h"
-
-#include "kernels/BinaryOpCommon.h"
+#include "Builders.h"
 #include "kernels/Utils.h"
 
+#include "kernels/BinaryOpCommon.h"
+
 #include <tensorflow/lite/kernels/internal/reference/add.h>
-#include <tensorflow/lite/kernels/internal/reference/process_broadcast_shapes.h>
 
 namespace luci_interpreter
 {
-namespace kernels
+namespace
 {
 
-Add::Add(const Tensor *input1, const Tensor *input2, Tensor *output, const AddParams &params)
-  : KernelWithParams<AddParams>({input1, input2}, {output}, params)
+#ifndef DIS_QUANT
+template <typename T, typename Options = nullptr_t>
+void evalTISOQuantizedS16Kernel(kernels::TISOKernel *kernel, kernels::TISOData *kernel_data,
+                                const Options *options)
 {
-}
+  const auto *input1 = kernel->input1();
+  const auto *input2 = kernel->input2();
+  const auto *output = kernel->output();
 
-void Add::configure()
-{
-  LUCI_INTERPRETER_CHECK(input1()->element_type() == input2()->element_type());
-  LUCI_INTERPRETER_CHECK(input1()->element_type() == output()->element_type());
-  if (input1()->element_type() == DataType::S16)
-  {
-    LUCI_INTERPRETER_CHECK(input1()->zero_points().size() == 1 &&
-                           input2()->zero_points().size() == 1);
-    LUCI_INTERPRETER_CHECK(input1()->zero_point() == 0 && input2()->zero_point() == 0 &&
-                           output()->zero_point() == 0);
-  }
-
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
-}
-
-void Add::execute() const
-{
-  switch (input1()->element_type())
-  {
-    case DataType::FLOAT32:
-      evalFloat();
-      break;
-    case DataType::S64:
-      evalInteger<int64_t>();
-      break;
-    case DataType::S32:
-      evalInteger<int32_t>();
-      break;
-    case DataType::U8:
-      evalQuantized();
-      break;
-    case DataType::S16:
-      evalQuantizedS16();
-      break;
-    default:
-      assert(false && "Unsupported type.");
-  }
-}
-
-void Add::evalFloat() const
-{
-  tflite::ArithmeticParams params{};
-  fillArithmeticActivationRange<float>(params, _params.activation);
-
-  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-    getTensorShape(input1()), getTensorShape(input2()), &params);
-
-  if (need_broadcast)
-  {
-    tflite::reference_ops::BroadcastAdd4DSlow(
-      params, getTensorShape(input1()), getTensorData<float>(input1()), getTensorShape(input2()),
-      getTensorData<float>(input2()), getTensorShape(output()), getTensorData<float>(output()));
-  }
-  else
-  {
-    tflite::reference_ops::Add(params, getTensorShape(input1()), getTensorData<float>(input1()),
-                               getTensorShape(input2()), getTensorData<float>(input2()),
-                               getTensorShape(output()), getTensorData<float>(output()));
-  }
-}
-
-template <typename T> void Add::evalInteger() const
-{
-  tflite::ArithmeticParams params{};
-  fillArithmeticActivationRange<T>(params, _params.activation);
-
-  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-    getTensorShape(input1()), getTensorShape(input2()), &params);
-
-  if (need_broadcast)
-  {
-    tflite::reference_ops::BroadcastAdd4DSlow(
-      params, getTensorShape(input1()), getTensorData<T>(input1()), getTensorShape(input2()),
-      getTensorData<T>(input2()), getTensorShape(output()), getTensorData<T>(output()));
-  }
-  else
-  {
-    tflite::reference_ops::Add(params, getTensorShape(input1()), getTensorData<T>(input1()),
-                               getTensorShape(input2()), getTensorData<T>(input2()),
-                               getTensorShape(output()), getTensorData<T>(output()));
-  }
-}
-
-void Add::evalQuantized() const
-{
-  const auto input1_scale = static_cast<double>(input1()->scale());
-  const auto input2_scale = static_cast<double>(input2()->scale());
-  const auto output_scale = static_cast<double>(output()->scale());
-
-  const int left_shift = 20;
-  const double twice_max_input_scale = 2 * std::max(input1_scale, input2_scale);
-  const double real_input1_multiplier = input1_scale / twice_max_input_scale;
-  const double real_input2_multiplier = input2_scale / twice_max_input_scale;
-  const double real_output_multiplier = twice_max_input_scale / ((1 << left_shift) * output_scale);
-
-  int32_t input1_multiplier{}, input2_multiplier{}, output_multiplier{};
-  int input1_shift{}, input2_shift{}, output_shift{};
-  quantizeMultiplierSmallerThanOneExp(real_input1_multiplier, &input1_multiplier, &input1_shift);
-  quantizeMultiplierSmallerThanOneExp(real_input2_multiplier, &input2_multiplier, &input2_shift);
-  quantizeMultiplierSmallerThanOneExp(real_output_multiplier, &output_multiplier, &output_shift);
-
-  int32_t activation_min{};
-  int32_t activation_max{};
-  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
-
-  tflite::ArithmeticParams params{};
-  params.left_shift = left_shift;
-  // The kernel expects inputs' zero points to be negated.
-  params.input1_offset = -input1()->zero_point(); // Note the '-'.
-  params.input1_multiplier = input1_multiplier;
-  params.input1_shift = input1_shift;
-  params.input2_offset = -input2()->zero_point(); // Note the '-'.
-  params.input2_multiplier = input2_multiplier;
-  params.input2_shift = input2_shift;
-  params.output_offset = output()->zero_point();
-  params.output_multiplier = output_multiplier;
-  params.output_shift = output_shift;
-  params.quantized_activation_min = activation_min;
-  params.quantized_activation_max = activation_max;
-
-  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-    getTensorShape(input1()), getTensorShape(input2()), &params);
-
-  if (need_broadcast)
-  {
-    tflite::reference_ops::BroadcastAdd4DSlow(
-      params, getTensorShape(input1()), getTensorData<uint8_t>(input1()), getTensorShape(input2()),
-      getTensorData<uint8_t>(input2()), getTensorShape(output()), getTensorData<uint8_t>(output()));
-  }
-  else
-  {
-    tflite::reference_ops::Add(params, getTensorShape(input1()), getTensorData<uint8_t>(input1()),
-                               getTensorShape(input2()), getTensorData<uint8_t>(input2()),
-                               getTensorShape(output()), getTensorData<uint8_t>(output()));
-  }
-}
-
-void Add::evalQuantizedS16() const
-{
-  const auto input1_scale = static_cast<double>(input1()->scale());
-  const auto input2_scale = static_cast<double>(input2()->scale());
-  const auto output_scale = static_cast<double>(output()->scale());
+  const auto input1_scale = static_cast<double>(Tensor::scale(input1));
+  const auto input2_scale = static_cast<double>(Tensor::scale(input2));
+  const auto output_scale = static_cast<double>(Tensor::scale(output));
 
   constexpr int left_shift = 12;
   const double twice_max_input_scale = 2 * std::max(input1_scale, input2_scale);
@@ -185,13 +48,17 @@ void Add::evalQuantizedS16() const
 
   int32_t input1_multiplier{}, input2_multiplier{}, output_multiplier{};
   int input1_shift{}, input2_shift{}, output_shift{};
-  quantizeMultiplierSmallerThanOneExp(real_input1_multiplier, &input1_multiplier, &input1_shift);
-  quantizeMultiplierSmallerThanOneExp(real_input2_multiplier, &input2_multiplier, &input2_shift);
-  quantizeMultiplierSmallerThanOneExp(real_output_multiplier, &output_multiplier, &output_shift);
+  kernels::quantizeMultiplierSmallerThanOneExp(real_input1_multiplier, &input1_multiplier,
+                                               &input1_shift);
+  kernels::quantizeMultiplierSmallerThanOneExp(real_input2_multiplier, &input2_multiplier,
+                                               &input2_shift);
+  kernels::quantizeMultiplierSmallerThanOneExp(real_output_multiplier, &output_multiplier,
+                                               &output_shift);
 
   int32_t activation_min{};
   int32_t activation_max{};
-  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+  kernels::calculateActivationRangeQuantized(luci_actfunc(options->fused_activation_function()),
+                                             output, &activation_min, &activation_max);
 
   auto fn = [input1_multiplier, input1_shift, //
              input2_multiplier, input2_shift, //
@@ -210,10 +77,165 @@ void Add::evalQuantizedS16() const
     return static_cast<int16_t>(clamped_output);
   };
 
-  BinaryOpBroadcastSlow(getTensorShape(input1()), getTensorData<int16_t>(input1()),
-                        getTensorShape(input2()), getTensorData<int16_t>(input2()),
-                        getTensorShape(output()), getTensorData<int16_t>(output()), fn);
+  kernels::BinaryOpBroadcastSlow(
+    kernels::getTensorShape(input1), kernels::getTensorData<int16_t>(kernel_data->input1_data),
+    kernels::getTensorShape(input2), kernels::getTensorData<int16_t>(kernel_data->input2_data),
+    kernels::getTensorShape(output), kernels::getTensorData<int16_t>(kernel_data->output_data), fn);
 }
 
-} // namespace kernels
+template <typename T, typename Options = nullptr_t>
+void evalTISOInplaceQuantizedS16Kernel(kernels::TISOKernel *kernel, const Options *options)
+{
+  uint8_t *inplace_data_ptr = nullptr;
+  circle::Tensor *input_inplace_tensor = nullptr;
+
+  kernels::TISOData kernel_data = kernel->readInplaceData(inplace_data_ptr, input_inplace_tensor);
+
+  evalTISOQuantizedS16Kernel<T, Options>(kernel, &kernel_data, options);
+
+  kernel->runtime_graph()->makeInplaceOperation(input_inplace_tensor, kernel->output());
+  if (input_inplace_tensor == kernel->input1())
+  {
+    kernel->runtime_graph()->makeInplaceOperation(kernel->input2(), nullptr);
+  }
+  else
+  {
+    kernel->runtime_graph()->makeInplaceOperation(kernel->input1(), nullptr);
+  }
+}
+
+#endif // DIS_QUANT
+
+} // namespace
+
+void configure_kernel_CircleAdd(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
+{
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.input2()));
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.input2()));
+
+#ifndef DIS_QUANT
+  if (Tensor::element_type(kernel.input1()) == DataType::S16)
+  {
+    LUCI_INTERPRETER_CHECK(Tensor::zero_points(kernel.input1()).size() == 1 &&
+                           Tensor::zero_points(kernel.input2()).size() == 1);
+    LUCI_INTERPRETER_CHECK(Tensor::zero_point(kernel.input1()) == 0 &&
+                           Tensor::zero_point(kernel.input2()) == 0 &&
+                           Tensor::zero_point(kernel.output()) == 0);
+  }
+#endif // DIS_QUANT
+}
+
+void execute_kernel_CircleAdd(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
+                              bool is_inplace)
+{
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
+
+  const auto *options = cur_op->builtin_options_as_AddOptions();
+
+  switch (Tensor::element_type(kernel.input1()))
+  {
+#ifndef DIS_FLOAT
+    case DataType::FLOAT32:
+    {
+      auto tiso_func = tflite::reference_ops::Add<float>;
+      auto broadcast_tiso_func = tflite::reference_ops::BroadcastAdd4DSlow<float>;
+      if (is_inplace)
+      {
+        kernels::evalTISOInplaceKernel<float>(tiso_func, broadcast_tiso_func, &kernel, options);
+      }
+      else
+      {
+        kernels::TISOData kernel_data = kernel.readData();
+        kernels::evalTISOKernel<float>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
+                                       options);
+      }
+    }
+    break;
+#endif // DIS_FLOAT
+    case DataType::S64:
+    {
+      auto tiso_func = tflite::reference_ops::Add<int64_t>;
+      auto broadcast_tiso_func = tflite::reference_ops::BroadcastAdd4DSlow<int64_t>;
+      if (is_inplace)
+      {
+        kernels::evalTISOInplaceKernel<int64_t>(tiso_func, broadcast_tiso_func, &kernel, options);
+      }
+      else
+      {
+        kernels::TISOData kernel_data = kernel.readData();
+        kernels::evalTISOKernel<int64_t>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
+                                         options);
+      }
+    }
+    break;
+    case DataType::S32:
+    {
+      auto tiso_func = tflite::reference_ops::Add<int32_t>;
+      auto broadcast_tiso_func = tflite::reference_ops::BroadcastAdd4DSlow<int32_t>;
+      if (is_inplace)
+      {
+        kernels::evalTISOInplaceKernel<int32_t>(tiso_func, broadcast_tiso_func, &kernel, options);
+      }
+      else
+      {
+        kernels::TISOData kernel_data = kernel.readData();
+        kernels::evalTISOKernel<int32_t>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
+                                         options);
+      }
+    }
+    break;
+#ifndef DIS_QUANT
+    case DataType::U8:
+    {
+      auto tiso_func = [](const tflite::ArithmeticParams &params,
+                          const tflite::RuntimeShape &input1_shape, const uint8_t *input1_data,
+                          const tflite::RuntimeShape &input2_shape, const uint8_t *input2_data,
+                          const tflite::RuntimeShape &output_shape, uint8_t *output_data) {
+        tflite::reference_ops::Add(params, input1_shape, input1_data, input2_shape, input2_data,
+                                   output_shape, output_data);
+      };
+      auto broadcast_tiso_func =
+        [](const tflite::ArithmeticParams &params, const tflite::RuntimeShape &input1_shape,
+           const uint8_t *input1_data, const tflite::RuntimeShape &input2_shape,
+           const uint8_t *input2_data, const tflite::RuntimeShape &output_shape,
+           uint8_t *output_data) {
+          tflite::reference_ops::BroadcastAdd4DSlow(params, input1_shape, input1_data, input2_shape,
+                                                    input2_data, output_shape, output_data);
+        };
+      if (is_inplace)
+      {
+        kernels::evalTISOInplaceQuantizedKernel<uint8_t>(tiso_func, broadcast_tiso_func, &kernel,
+                                                         options);
+      }
+      else
+      {
+        kernels::TISOData kernel_data = kernel.readData();
+        kernels::evalTISOQuantizedKernel<uint8_t>(tiso_func, broadcast_tiso_func, &kernel,
+                                                  &kernel_data, options);
+      }
+    }
+    break;
+    case DataType::S16:
+    {
+      if (is_inplace)
+      {
+        evalTISOInplaceQuantizedS16Kernel<int16_t>(&kernel, options);
+      }
+      else
+      {
+        kernels::TISOData kernel_data = kernel.readData();
+        evalTISOQuantizedS16Kernel<int16_t>(&kernel, &kernel_data, options);
+      }
+    }
+    break;
+#endif // DIS_QUANT
+    default:
+      assert(false && "Unsupported type.");
+  }
+}
+
 } // namespace luci_interpreter

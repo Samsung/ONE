@@ -47,19 +47,42 @@ void evalGeneric(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph
   std::vector<tflite::RuntimeShape> all_shape;
   std::vector<tflite::RuntimeShape *> all_shape_ptr;
 
-  all_input_data.reserve(input_sizes);
-  all_shape.reserve(input_sizes);
-  all_shape_ptr.reserve(input_sizes);
-
   for (int32_t i = 0; i < input_sizes; ++i)
   {
     auto input_index = cur_op->inputs()->operator[](i);
     const auto *tensor = runtime_graph->getCircleTensorByIndex(input_index);
 
-    auto *data = reinterpret_cast<const T *>(runtime_graph->getDataByTensor(tensor));
+    const auto *tensor_data = runtime_graph->getDataByTensor(tensor);
+    if (tensor_data == nullptr)
+      tensor_data = runtime_graph->getConstDataByTensor(tensor);
 
+    auto *data = reinterpret_cast<const T *>(tensor_data);
+
+#ifndef DIS_DYN_SHAPES
+    auto *dynamic_shape_vector = runtime_graph->getDynamicShapeTensor(tensor);
+    if (dynamic_shape_vector == nullptr)
+    {
+      all_input_data.push_back(data);
+      all_shape.push_back(kernels::getTensorShape(tensor));
+    }
+    else
+    {
+      if (data != nullptr)
+      {
+        tflite::RuntimeShape runtime_shape(dynamic_shape_vector->size());
+        for (int n = 0; n < dynamic_shape_vector->size(); ++n)
+        {
+          runtime_shape.SetDim(n, dynamic_shape_vector->at(n));
+        }
+        all_shape.push_back(runtime_shape);
+        all_input_data.push_back(data);
+      }
+    }
+#else // DIS_DYN_SHAPES
+    assert(tensor_data);
     all_input_data.push_back(data);
     all_shape.push_back(kernels::getTensorShape(tensor));
+#endif
   }
 
   for (tflite::RuntimeShape &shape : all_shape)
@@ -72,7 +95,7 @@ void evalGeneric(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph
   // kernels::VectorOfTensors<T, true> inputs(_inputs);
   tflite::ConcatenationParams params{};
   params.axis = axis;
-  params.inputs_count = input_sizes;
+  params.inputs_count = all_shape.size();
   tflite::reference_ops::Concatenation(params, all_shape_ptr.data(), all_input_data.data(),
                                        kernels::getTensorShape(output), output_data);
 }
@@ -104,24 +127,12 @@ void configure_kernel_CircleConcatenation(const circle::Operator *cur_op,
     axis += Tensor::num_dims(t0);
   LUCI_INTERPRETER_CHECK(axis >= 0 && axis < Tensor::num_dims(t0));
 
-  int32_t sum_axis = Tensor::dim(t0, axis);
   for (int i = 1; i < num_inputs; ++i)
   {
     input_index = cur_op->inputs()->operator[](i);
     const auto *tensor = runtime_graph->getCircleTensorByIndex(input_index);
     LUCI_INTERPRETER_CHECK(Tensor::element_type(tensor) == Tensor::element_type(t0));
     LUCI_INTERPRETER_CHECK(Tensor::num_dims(tensor) == Tensor::num_dims(t0));
-    for (int d = 0; d < Tensor::num_dims(t0); ++d)
-    {
-      if (d == axis)
-      {
-        sum_axis += Tensor::dim(tensor, axis);
-      }
-      else
-      {
-        LUCI_INTERPRETER_CHECK(Tensor::dim(tensor, d) == Tensor::dim(t0, d));
-      }
-    }
   }
 
 #ifndef DIS_QUANT
@@ -165,13 +176,13 @@ void execute_kernel_CircleConcatenation(const circle::Operator *cur_op,
     case DataType::S8:
       evalGeneric<int8_t>(cur_op, runtime_graph, is_inplace);
       break;
+#endif // DIS_QUANT
     case DataType::S32:
       evalGeneric<int32_t>(cur_op, runtime_graph, is_inplace);
       break;
     case DataType::S64:
       evalGeneric<int64_t>(cur_op, runtime_graph, is_inplace);
       break;
-#endif
     default:
       assert(false && "Unsupported type.");
   }

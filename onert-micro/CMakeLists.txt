@@ -105,6 +105,11 @@ if (DIS_FLOAT)
     list(APPEND CMAKE_ARM_OPTIONS "-DDIS_FLOAT=ON")
 endif()
 
+if (DIS_DYN_SHAPES)
+    message(STATUS "ONERT-MICRO will not use dynamic shapes")
+    add_definitions(-DDIS_DYN_SHAPES)
+endif()
+
 set(MICRO_ARM_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/standalone_arm")
 file(MAKE_DIRECTORY "${MICRO_ARM_BUILD_DIR}")
 

@@ -23,11 +23,12 @@
 namespace luci_interpreter
 {
 
-void configure_kernel_CircleReshape(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
+void configure_kernel_CircleReshape(const circle::Operator *, BaseRuntimeGraph *)
 {
   // Do nothing
 }
 
+// TODO: reduce code duplication with ExpandDims
 void execute_kernel_CircleReshape(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
                                   bool is_inplace)
 {

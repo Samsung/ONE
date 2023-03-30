@@ -14,140 +14,207 @@
  * limitations under the License.
  */
 
-#include "kernels/Slice.h"
-#include "Utils.h"
-#include "PALSlice.h"
+#include "Builders.h"
+#include "kernels/Utils.h"
+#include "MISOKernel.h"
 
 #include <cassert>
-#include <cstring>
 
 namespace luci_interpreter
 {
 
-namespace kernels
+namespace
 {
-const int max_dim = 4;
+const int max_dim = 5;
 
-Slice::Slice(const Tensor *input, const Tensor *begin, const Tensor *size, Tensor *output)
-  : Kernel({input, begin, size}, {output})
+template <typename T>
+inline void slice(const tflite::SliceParams &op_params, const tflite::RuntimeShape &input_shape,
+                  const T *input_data, const tflite::RuntimeShape &output_shape, T *output_data)
 {
+  const tflite::RuntimeShape ext_shape = tflite::RuntimeShape::ExtendedShape(5, input_shape);
+  const int begin_count = op_params.begin_count;
+  const int size_count = op_params.size_count;
+  // We front-pad the begin and size vectors.
+  int start[5];
+  int stop[5];
+  for (int i = 0; i < 5; ++i)
+  {
+    int padded_i = 5 - i;
+    start[i] = begin_count < padded_i ? 0 : op_params.begin[begin_count - padded_i];
+    stop[i] = (size_count < padded_i || op_params.size[size_count - padded_i] == -1)
+                ? ext_shape.Dims(i)
+                : start[i] + op_params.size[size_count - padded_i];
+  }
+
+  for (int i0 = start[0]; i0 < stop[0]; ++i0)
+  {
+    for (int i1 = start[1]; i1 < stop[1]; ++i1)
+    {
+      for (int i2 = start[2]; i2 < stop[2]; ++i2)
+      {
+        for (int i3 = start[3]; i3 < stop[3]; ++i3)
+        {
+          for (int i4 = start[4]; i4 < stop[4]; ++i4)
+          {
+            auto position = tflite::Offset(ext_shape, i0, i1, i2, i3, i4);
+            *output_data++ = input_data[position];
+          }
+        }
+      }
+    }
+  }
 }
 
 template <typename T>
-Shape calculateOutputShape(const Tensor *input, const Tensor *begin, const Tensor *size)
+void getBeginAndSizeVectors(int dimensions, const uint8_t *begin_data, const uint8_t *size_data,
+                            int32_t *begins, int32_t *sizes)
 {
-  Shape output_shape = Shape(input->shape().num_dims());
-  for (int idx = 0; idx < input->shape().num_dims(); idx++)
+  int offset = max_dim - dimensions;
+  for (int idx = 0; idx < dimensions; ++idx)
   {
-    T size_value = getTensorData<T>(size)[idx];
-    if (size_value < 0)
-    {
-      if (size_value != -1)
-      {
-        assert(false && "Invalid size.");
-      }
-      size_value = input->shape().dim(idx) - getTensorData<T>(begin)[idx];
-    }
-    else
-    {
-      if (input->shape().dim(idx) < getTensorData<T>(begin)[idx] + size_value)
-      {
-        assert(false && "Invalid begin and size.");
-      }
-    }
-    output_shape.dim(idx) = static_cast<int>(size_value);
-  }
-  return output_shape;
-}
-
-template <typename T>
-void getBeginAndSizeVectors(int dimensions, const Tensor *begin, const Tensor *size,
-                            std::vector<int> *begins, std::vector<int> *sizes)
-{
-  for (int idx = dimensions - 1; idx >= 0; --idx)
-  {
-    begins->push_back(getTensorData<T>(begin)[idx]);
-    sizes->push_back(getTensorData<T>(size)[idx]);
+    begins[offset + idx] = kernels::getTensorData<T>(begin_data)[idx];
+    sizes[offset + idx] = kernels::getTensorData<T>(size_data)[idx];
   }
 }
+} // namespace
 
-void Slice::configure()
+void configure_kernel_CircleSlice(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  assert(input()->element_type() == output()->element_type());
-  assert(begin()->element_type() == DataType::S32 || begin()->element_type() == DataType::S64);
-  assert(size()->element_type() == DataType::S32 || size()->element_type() == DataType::S64);
-  assert(begin()->shape().num_dims() == 1);
-  assert(size()->shape().num_dims() == 1);
-  assert(input()->shape().num_dims() <= max_dim);
-  // TODO: enable it only if kernel with dynamic shapes
-  if (begin()->element_type() == DataType::S32)
-  {
-    output()->resize(calculateOutputShape<int32_t>(input(), begin(), size()));
-  }
-  else if (begin()->element_type() == DataType::S64)
-  {
-    output()->resize(calculateOutputShape<int64_t>(input(), begin(), size()));
-  }
-  else
-  {
-    assert(false && "Unsupported type.");
-  }
+  kernels::MISOKernel kernel(cur_op, runtime_graph);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input2()) == DataType::S32 ||
+                         Tensor::element_type(kernel.input2()) == DataType::S64);
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input3()) == DataType::S32 ||
+                         Tensor::element_type(kernel.input3()) == DataType::S64);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input2()) == 1);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input3()) == 1);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input1()) <= max_dim);
 }
 
-void Slice::execute() const
+void execute_kernel_CircleSlice(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
+                                bool)
 {
-  std::vector<int> begins;
-  begins.reserve(max_dim);
-  std::vector<int> sizes;
-  sizes.reserve(max_dim);
-  if (begin()->element_type() == DataType::S32)
-  {
-    getBeginAndSizeVectors<int32_t>(input()->shape().num_dims(), begin(), size(), &begins, &sizes);
-  }
-  else if (begin()->element_type() == DataType::S64)
-  {
-    getBeginAndSizeVectors<int64_t>(input()->shape().num_dims(), begin(), size(), &begins, &sizes);
-  }
-  else
-  {
-    assert(false && "Unsupported begin type.");
-  }
-  for (int i = input()->shape().num_dims(); i < max_dim; ++i)
-  {
-    begins.push_back(0);
-    sizes.push_back(1);
-  }
+  kernels::MISOKernel kernel(cur_op, runtime_graph);
 
-  assert(begins.size() == 4);
-  assert(sizes.size() == 4);
+  bool is_dynamic_shapes = false;
+
+  const circle::Tensor *input = kernel.input1();
+  const circle::Tensor *begin = kernel.input2();
+  const circle::Tensor *size_tensor = kernel.input3();
+  const circle::Tensor *output = kernel.output();
+
+  const auto *input_data = runtime_graph->getDataByTensor(input);
+  if (input_data == nullptr)
+    input_data = runtime_graph->getConstDataByTensor(input);
+  assert(input_data);
+
+  const auto *begin_data = runtime_graph->getDataByTensor(begin);
+  if (begin_data == nullptr)
+  {
+    begin_data = runtime_graph->getConstDataByTensor(begin);
+    is_dynamic_shapes = true;
+  }
+  assert(begin_data);
+
+  const auto *size_data = runtime_graph->getDataByTensor(size_tensor);
+  if (size_data == nullptr)
+  {
+    size_data = runtime_graph->getConstDataByTensor(size_tensor);
+    is_dynamic_shapes = true;
+  }
+  assert(size_data);
+
+  auto *output_data = runtime_graph->getDataByTensor(output);
+  assert(output_data);
+
   tflite::SliceParams op_params{};
-  op_params.begin_count = 4;
-  op_params.size_count = 4;
-  for (int i = 0; i < 4; i++)
+  op_params.begin_count = max_dim;
+  op_params.size_count = max_dim;
+  for (int i = 0; i < max_dim; i++)
   {
-    op_params.begin[i] = begins[3 - i];
-    op_params.size[i] = sizes[3 - i];
+    op_params.begin[i] = 0;
+    op_params.size[i] = 1;
   }
-  switch (input()->element_type())
+  auto num_dim = Tensor::num_dims(input);
+
+  if (Tensor::element_type(begin) == DataType::S32)
   {
+    getBeginAndSizeVectors<int32_t>(num_dim, begin_data, size_data, op_params.begin,
+                                    op_params.size);
+  }
+  else if (Tensor::element_type(begin) == DataType::S64)
+  {
+    getBeginAndSizeVectors<int64_t>(num_dim, begin_data, size_data, op_params.begin,
+                                    op_params.size);
+  }
+  else
+  {
+    assert(false && "Unsupported type");
+  }
+
+#ifndef DIS_DYN_SHAPES
+  if (is_dynamic_shapes)
+  {
+    int32_t data_size = 1;
+    std::vector<int32_t> dynamic_shapes(max_dim - num_dim + 1);
+    int offset = max_dim - Tensor::num_dims(input);
+    for (int i = 0; i <= max_dim - num_dim; ++i)
+    {
+      auto cur_size = op_params.size[i + offset] != -1
+                        ? op_params.size[i + offset]
+                        : Tensor::dim(input, i) - op_params.begin[i + offset];
+      data_size *= cur_size;
+
+      dynamic_shapes[i] = cur_size; // op_params.begin[i + offset] + op_params.size[i + offset];
+    }
+    data_size *= size(Tensor::element_type(output));
+
+    runtime_graph->addDynamicShapeTensor(output, std::move(dynamic_shapes));
+
+    if (data_size == 0)
+    {
+      runtime_graph->resetTensorData(nullptr, output);
+      return;
+    }
+
+    auto new_output_data = new uint8_t[data_size];
+    output_data = new_output_data;
+    runtime_graph->resetTensorData(new_output_data, output);
+  }
+#else
+  assert(is_dynamic_shapes == false);
+#endif // DIS_DYN_SHAPES
+
+  switch (Tensor::element_type(input))
+  {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      luci_interpreter_pal::Slice(op_params, getTensorShape(input()), getTensorData<float>(input()),
-                                  getTensorShape(output()), getTensorData<float>(output()));
+      slice<float>(op_params, kernels::getTensorShape(input),
+                   kernels::getTensorData<float>(input_data), kernels::getTensorShape(output),
+                   kernels::getTensorData<float>(output_data));
       break;
+#endif // DIS_FLOAT
+#ifndef DIS_QUANT
     case DataType::U8:
-      luci_interpreter_pal::Slice(op_params, getTensorShape(input()),
-                                  getTensorData<uint8_t>(input()), getTensorShape(output()),
-                                  getTensorData<uint8_t>(output()));
+      slice<uint8_t>(op_params, kernels::getTensorShape(input),
+                     kernels::getTensorData<uint8_t>(input_data), kernels::getTensorShape(output),
+                     kernels::getTensorData<uint8_t>(output_data));
       break;
     case DataType::S8:
-      luci_interpreter_pal::Slice(op_params, getTensorShape(input()),
-                                  getTensorData<int8_t>(input()), getTensorShape(output()),
-                                  getTensorData<int8_t>(output()));
+      slice<int8_t>(op_params, kernels::getTensorShape(input),
+                    kernels::getTensorData<int8_t>(input_data), kernels::getTensorShape(output),
+                    kernels::getTensorData<int8_t>(output_data));
       break;
+    case DataType::S16:
+      slice<int16_t>(op_params, kernels::getTensorShape(input),
+                     kernels::getTensorData<int16_t>(input_data), kernels::getTensorShape(output),
+                     kernels::getTensorData<int16_t>(output_data));
+#endif // DIS_QUANT
     default:
       assert(false && "Unsupported input type.");
   }
 }
 
-} // namespace kernels
 } // namespace luci_interpreter

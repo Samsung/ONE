@@ -36,7 +36,7 @@ class Interpreter
 {
 public:
   // Construct default interpreter with dynamic allocations and with input allocations
-  explicit Interpreter(const char *model_data_raw);
+  explicit Interpreter(const char *model_data_raw, bool dealloc_input);
 
 #ifdef USE_STATIC_ALLOC
   // Construct interpreter with configurations

@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_KERNEL_KERNELBUILDER_H
 #define LUCI_INTERPRETER_KERNEL_KERNELBUILDER_H
 
-#include "core/RuntimeGraph.h"
+#include "core/RuntimeModule.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <memory>

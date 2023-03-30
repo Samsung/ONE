@@ -179,10 +179,12 @@ public: // direct API
 public:
   bool parse(const circle::Model *model);
   bool select_subgraph(uint32_t subgraph);
+  uint32_t get_current_subgraph_index() const { return _current_subgraph_index; }
 
 private:
   const circle::Model *_model{nullptr};
   const circle::SubGraph *_current_subgraph{nullptr};
+  uint32_t _current_subgraph_index{0};
 };
 
 } // namespace luci_interpreter

@@ -14,128 +14,141 @@
  * limitations under the License.
  */
 
-#include "kernels/Less.h"
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "TISOKernel.h"
 
 #include <tensorflow/lite/kernels/internal/reference/comparisons.h>
 
 namespace luci_interpreter
 {
 
-namespace kernels
+namespace
 {
-
-Less::Less(const Tensor *x, const Tensor *y, Tensor *output) : Kernel({x, y}, {output}) {}
-
-void Less::configure()
+#ifndef DIS_QUANT
+void evalQuantized(const circle::Tensor *x, const circle::Tensor *y, const circle::Tensor *output,
+                   BaseRuntimeGraph *runtime_graph)
 {
-  LUCI_INTERPRETER_CHECK(x()->element_type() == y()->element_type());
-  LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::BOOL);
+  auto x_data = kernels::getTensorData<uint8_t>(runtime_graph->getDataByTensor(x));
+  if (x_data == nullptr)
+    x_data = kernels::getTensorData<uint8_t>(runtime_graph->getConstDataByTensor(x));
 
-  if (x()->element_type() == DataType::U8)
+  assert(x_data != nullptr);
+
+  auto y_data = kernels::getTensorData<uint8_t>(runtime_graph->getDataByTensor(y));
+  if (y_data == nullptr)
+    y_data = kernels::getTensorData<uint8_t>(runtime_graph->getConstDataByTensor(y));
+
+  assert(y_data != nullptr);
+
+  auto output_data = kernels::getTensorData<bool>(runtime_graph->getDataByTensor(output));
+
+  int32_t x_multiplier;
+  int x_shift;
+
+  int32_t y_multiplier;
+  int y_shift;
+
+  kernels::quantizeMultiplierSmallerThanOneExp(Tensor::scale(x), &x_multiplier, &x_shift);
+  kernels::quantizeMultiplierSmallerThanOneExp(Tensor::scale(y), &y_multiplier, &y_shift);
+
+  tflite::ComparisonParams op_params;
+  op_params.left_shift = 8;
+  op_params.input1_offset = -Tensor::zero_point(x); // Note the '-'
+  op_params.input1_shift = x_shift;
+  op_params.input1_multiplier = x_multiplier;
+  op_params.input2_offset = -Tensor::zero_point(y); // Note the '-'
+  op_params.input2_shift = y_shift;
+  op_params.input2_multiplier = y_multiplier;
+  op_params.is_broadcast = Tensor::num_elements(x) != Tensor::num_elements(y);
+
+  if (op_params.is_broadcast)
   {
-    quantizeMultiplierSmallerThanOneExp(x()->scale(), &_x_multiplier, &_x_shift);
-    quantizeMultiplierSmallerThanOneExp(y()->scale(), &_y_multiplier, &_y_shift);
+    tflite::reference_ops::Broadcast4DSlowLessWithScaling(
+      op_params, kernels::getTensorShape(x), x_data, kernels::getTensorShape(y), y_data,
+      kernels::getTensorShape(output), output_data);
   }
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(calculateShapeForBroadcast(x()->shape(), y()->shape()));
+  else
+  {
+    tflite::reference_ops::LessWithScaling(op_params, kernels::getTensorShape(x), x_data,
+                                           kernels::getTensorShape(y), y_data,
+                                           kernels::getTensorShape(output), output_data);
+  }
+}
+#endif // DIS_QUANT
+
+template <typename T>
+void evalGeneric(const circle::Tensor *x, const circle::Tensor *y, const circle::Tensor *output,
+                 BaseRuntimeGraph *runtime_graph)
+{
+  auto x_data = kernels::getTensorData<T>(runtime_graph->getDataByTensor(x));
+  if (x_data == nullptr)
+    x_data = kernels::getTensorData<T>(runtime_graph->getConstDataByTensor(x));
+
+  assert(x_data != nullptr);
+
+  auto y_data = kernels::getTensorData<T>(runtime_graph->getDataByTensor(y));
+  if (y_data == nullptr)
+    y_data = kernels::getTensorData<T>(runtime_graph->getConstDataByTensor(y));
+
+  assert(y_data != nullptr);
+
+  auto output_data = kernels::getTensorData<bool>(runtime_graph->getDataByTensor(output));
+
+  tflite::ComparisonParams op_params;
+  op_params.is_broadcast = Tensor::num_elements(x) != Tensor::num_elements(y);
+
+  if (op_params.is_broadcast)
+  {
+    tflite::reference_ops::Broadcast4DSlowLessNoScaling(
+      op_params, kernels::getTensorShape(x), x_data, kernels::getTensorShape(y), y_data,
+      kernels::getTensorShape(output), output_data);
+  }
+  else
+  {
+    tflite::reference_ops::LessNoScaling(op_params, kernels::getTensorShape(x), x_data,
+                                         kernels::getTensorShape(y), y_data,
+                                         kernels::getTensorShape(output), output_data);
+  }
 }
 
-void Less::execute() const
+} // namespace
+
+void configure_kernel_CircleLess(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  switch (x()->element_type())
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.input2()));
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.output()) == DataType::BOOL);
+}
+
+void execute_kernel_CircleLess(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
+                               bool)
+{
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
+
+  switch (Tensor::element_type(kernel.input1()))
   {
-    case DataType::FLOAT32:
-      evalFloat();
-      break;
     case DataType::S64:
-      evalInteger<int64_t>();
+      evalGeneric<int64_t>(kernel.input1(), kernel.input2(), kernel.output(), runtime_graph);
       break;
     case DataType::S32:
-      evalInteger<int32_t>();
+      evalGeneric<int32_t>(kernel.input1(), kernel.input2(), kernel.output(), runtime_graph);
       break;
+#ifndef DIS_QUANT
     case DataType::U8:
-      evalQuantized();
+      evalQuantized(kernel.input1(), kernel.input2(), kernel.output(), runtime_graph);
       break;
+#endif // DIS_QUANT
+#ifndef DIS_FLOAT
+    case DataType::FLOAT32:
+      evalGeneric<float>(kernel.input1(), kernel.input2(), kernel.output(), runtime_graph);
+      break;
+#endif // DIS_FLOAT
     default:
       assert(false && "Unsupported type.");
   }
 }
 
-void Less::evalFloat() const
-{
-  const auto x_data = getTensorData<float>(x());
-  const auto y_data = getTensorData<float>(y());
-  auto output_data = getTensorData<bool>(output());
-
-  tflite::ComparisonParams op_params;
-  op_params.is_broadcast = x()->shape() != y()->shape();
-
-  if (op_params.is_broadcast)
-  {
-    tflite::reference_ops::Broadcast4DSlowLess(op_params, getTensorShape(x()), x_data,
-                                               getTensorShape(y()), y_data,
-                                               getTensorShape(output()), output_data);
-  }
-  else
-  {
-    tflite::reference_ops::Less(op_params, getTensorShape(x()), x_data, getTensorShape(y()), y_data,
-                                getTensorShape(output()), output_data);
-  }
-}
-
-template <typename T> void Less::evalInteger() const
-{
-  const auto x_data = getTensorData<T>(x());
-  const auto y_data = getTensorData<T>(y());
-  auto output_data = getTensorData<bool>(output());
-
-  tflite::ComparisonParams op_params;
-  op_params.is_broadcast = x()->shape() != y()->shape();
-
-  if (op_params.is_broadcast)
-  {
-    tflite::reference_ops::Broadcast4DSlowLessNoScaling(op_params, getTensorShape(x()), x_data,
-                                                        getTensorShape(y()), y_data,
-                                                        getTensorShape(output()), output_data);
-  }
-  else
-  {
-    tflite::reference_ops::LessNoScaling(op_params, getTensorShape(x()), x_data,
-                                         getTensorShape(y()), y_data, getTensorShape(output()),
-                                         output_data);
-  }
-}
-
-void Less::evalQuantized() const
-{
-  const auto x_data = getTensorData<uint8_t>(x());
-  const auto y_data = getTensorData<uint8_t>(y());
-  auto output_data = getTensorData<bool>(output());
-
-  tflite::ComparisonParams op_params;
-  op_params.left_shift = 8;
-  op_params.input1_offset = -x()->zero_point(); // Note the '-'
-  op_params.input1_shift = _x_shift;
-  op_params.input1_multiplier = _x_multiplier;
-  op_params.input2_offset = -y()->zero_point(); // Note the '-'
-  op_params.input2_shift = _y_shift;
-  op_params.input2_multiplier = _y_multiplier;
-  op_params.is_broadcast = x()->shape() != y()->shape();
-
-  if (op_params.is_broadcast)
-  {
-    tflite::reference_ops::Broadcast4DSlowLessWithScaling(op_params, getTensorShape(x()), x_data,
-                                                          getTensorShape(y()), y_data,
-                                                          getTensorShape(output()), output_data);
-  }
-  else
-  {
-    tflite::reference_ops::LessWithScaling(op_params, getTensorShape(x()), x_data,
-                                           getTensorShape(y()), y_data, getTensorShape(output()),
-                                           output_data);
-  }
-}
-
-} // namespace kernels
 } // namespace luci_interpreter

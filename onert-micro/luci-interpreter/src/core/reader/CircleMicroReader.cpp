@@ -139,6 +139,8 @@ bool CircleReader::select_subgraph(uint32_t sgindex)
   _current_subgraph = subgraphs->Get(sgindex);
   assert(_current_subgraph != nullptr);
 
+  _current_subgraph_index = sgindex;
+
   return true;
 }
 

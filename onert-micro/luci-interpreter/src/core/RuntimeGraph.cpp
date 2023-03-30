@@ -24,10 +24,12 @@ namespace luci_interpreter
 {
 
 // IBaseRuntimeGraph
-RuntimeGraph::RuntimeGraph(SimpleMemoryManager *memory_manager, CircleReader *circle_reader)
+RuntimeGraph::RuntimeGraph(SimpleMemoryManager *memory_manager, CircleReader *circle_reader,
+                           RuntimeModule *runtime_module, uint32_t subgraph_index)
   : _memory_manager(memory_manager),
     _tensor_to_data(std::unordered_map<const circle::Tensor *, uint8_t *>{}),
-    _reader(circle_reader), _inplace_op_indexes(std::unordered_set<uint32_t>{})
+    _runtime_module(runtime_module), _reader(circle_reader),
+    _inplace_op_indexes(std::unordered_set<uint32_t>{}), _subgraph_index(subgraph_index)
 {
 }
 
@@ -42,19 +44,23 @@ RuntimeGraph::~RuntimeGraph()
 }
 
 // TODO: modify this
-void RuntimeGraph::buildAllocDeallocPlan()
+void RuntimeGraph::buildAllocDeallocPlan(bool dealloc_input)
 {
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
   invalidate();
   using Lifetime = std::pair<int32_t, int32_t>;
   std::map<const circle::Tensor *, Lifetime> lifetimes;
   const size_t num_kernels = _reader->operators().size();
 
-  for (const auto input_ind : _reader->inputs())
+  if (dealloc_input)
   {
-    const auto raw_tensor = _reader->tensors()[input_ind];
+    for (const auto input_ind : _reader->inputs())
+    {
+      const auto raw_tensor = _reader->tensors()[input_ind];
 
-    assert(lifetimes.count(raw_tensor) == 0);
-    lifetimes[raw_tensor] = Lifetime(-1, 0);
+      assert(lifetimes.count(raw_tensor) == 0);
+      lifetimes[raw_tensor] = Lifetime(-1, 0);
+    }
   }
 
   for (int32_t index = 0; index < num_kernels; ++index)
@@ -72,12 +78,8 @@ void RuntimeGraph::buildAllocDeallocPlan()
       const auto raw_tensor = _reader->tensors()[input_index];
 
       // Pass constant tensors
-      auto const &buffer = wrap(_reader->buffers()[raw_tensor->buffer()]->data());
-      if (not buffer.empty())
-      {
-        // unknown shape tensor and scalar tensor
+      if (Tensor::is_constant_tensor(_reader, raw_tensor))
         continue;
-      }
 
       if (lifetimes.count(raw_tensor) > 0)
       {
@@ -123,6 +125,7 @@ void RuntimeGraph::buildAllocDeallocPlan()
 
 void RuntimeGraph::allocate(size_t kernel_index)
 {
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
   assert(_is_valid && kernel_index < _alloc_plan.size());
   for (const circle::Tensor *tensor : _alloc_plan[kernel_index])
   {
@@ -136,8 +139,37 @@ void RuntimeGraph::allocate(size_t kernel_index)
   }
 }
 
+#ifndef DIS_DYN_SHAPES
+void RuntimeGraph::addDynamicShapeTensor(const circle::Tensor *tensor,
+                                         std::vector<int32_t> &&shapes)
+{
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+  _dynamic_tensor_shapes[tensor] = std::move(shapes);
+}
+
+std::vector<int32_t> *RuntimeGraph::getDynamicShapeTensor(const circle::Tensor *tensor)
+{
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+  auto it = _dynamic_tensor_shapes.find(tensor);
+
+  return it == _dynamic_tensor_shapes.end() ? nullptr : &_dynamic_tensor_shapes[tensor];
+}
+
+void RuntimeGraph::removeDynamicShapeTensor(const circle::Tensor *tensor)
+{
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+  auto it = _dynamic_tensor_shapes.find(tensor);
+
+  assert(it != _dynamic_tensor_shapes.end());
+
+  _dynamic_tensor_shapes.erase(it);
+}
+
+#endif // DIS_DYN_SHAPES
+
 void RuntimeGraph::deallocate(size_t kernel_index)
 {
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
   assert(_is_valid && kernel_index < _dealloc_plan.size());
   for (const circle::Tensor *tensor : _dealloc_plan[kernel_index])
   {
@@ -151,12 +183,31 @@ void RuntimeGraph::deallocate(size_t kernel_index)
   }
 }
 
+void RuntimeGraph::resetTensorData(uint8_t *new_data, const circle::Tensor *tensor)
+{
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+  auto tensor_it = _tensor_to_data.find(tensor);
+  if (tensor_it != _tensor_to_data.end())
+  {
+    auto *data = _tensor_to_data.at(tensor);
+    _memory_manager->release_memory(data);
+  }
+
+  _tensor_to_data[tensor] = new_data;
+}
+
 void RuntimeGraph::resetOutputTensorsData()
 {
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+  const auto graph_inputs = _reader->inputs();
   for (int i = 0; i < _reader->outputs().size(); ++i)
   {
     const auto tensor_index = _reader->outputs()[i];
     assert(tensor_index != -1);
+
+    if (std::find(graph_inputs.begin(), graph_inputs.end(), tensor_index) != graph_inputs.end())
+      return;
+
     const auto tensor = _reader->tensors()[tensor_index];
     assert(tensor != nullptr);
 
@@ -172,29 +223,22 @@ void RuntimeGraph::resetOutputTensorsData()
 
 uint8_t *RuntimeGraph::configureGraphInput(int32_t input_index)
 {
-  resetOutputTensorsData();
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
 
   const auto tensor_index = _reader->inputs()[input_index];
   assert(tensor_index != -1);
   const auto tensor = _reader->tensors()[tensor_index];
   assert(tensor != nullptr);
 
-  if (_tensor_to_data.find(tensor) != _tensor_to_data.end())
-  {
-    auto *data = _tensor_to_data.at(tensor);
-    _memory_manager->release_memory(data);
-  }
-
   auto *data = _memory_manager->allocate_memory(tensor);
-  _tensor_to_data[tensor] = data;
+  configureGraphInput(input_index, data);
 
   return data;
 }
 
-// To save data
-// TODO maybe remove it
 void RuntimeGraph::configureGraphInput(int32_t input_index, uint8_t *data)
 {
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
   resetOutputTensorsData();
 
   const auto tensor_index = _reader->inputs()[input_index];
@@ -205,13 +249,15 @@ void RuntimeGraph::configureGraphInput(int32_t input_index, uint8_t *data)
   if (_tensor_to_data.find(tensor) != _tensor_to_data.end())
   {
     auto *data_prev = _tensor_to_data.at(tensor);
-    _memory_manager->release_memory(data_prev);
+    if (data_prev != data)
+      _memory_manager->release_memory(data_prev);
   }
   _tensor_to_data[tensor] = data;
 }
 
 int32_t RuntimeGraph::getInputDataSizeByIndex(int32_t input_index)
 {
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
   const auto tensor_index = _reader->inputs()[input_index];
   assert(tensor_index != -1);
   const auto tensor = _reader->tensors()[tensor_index];
@@ -220,8 +266,42 @@ int32_t RuntimeGraph::getInputDataSizeByIndex(int32_t input_index)
   return Tensor::num_elements(tensor) * size(Tensor::element_type(tensor));
 }
 
+int32_t RuntimeGraph::getNumOfInputTensors()
+{
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+  return _reader->inputs().size();
+}
+
+int32_t RuntimeGraph::getNumOfOutputTensors()
+{
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+  return _reader->outputs().size();
+}
+
+const circle::Tensor *RuntimeGraph::getInputTensorByIndex(int32_t input_index)
+{
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+
+  const auto tensor_index = _reader->inputs()[input_index];
+  const auto tensor = _reader->tensors()[tensor_index];
+  assert(tensor != nullptr);
+  return tensor;
+}
+
+const circle::Tensor *RuntimeGraph::getOutputTensorByIndex(int32_t input_index)
+{
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+
+  const auto tensor_index = _reader->outputs()[input_index];
+  const auto tensor = _reader->tensors()[tensor_index];
+  assert(tensor != nullptr);
+  return tensor;
+}
+
 int32_t RuntimeGraph::getOutputDataSizeByIndex(int32_t output_index)
 {
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+
   const auto tensor_index = _reader->outputs()[output_index];
   assert(tensor_index != -1);
   const auto tensor = _reader->tensors()[tensor_index];
@@ -232,6 +312,8 @@ int32_t RuntimeGraph::getOutputDataSizeByIndex(int32_t output_index)
 
 uint8_t *RuntimeGraph::getOutputDataByIndex(int32_t output_index)
 {
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+
   const auto tensor_index = _reader->outputs()[output_index];
   assert(tensor_index != -1);
   const auto tensor = _reader->tensors()[tensor_index];
@@ -244,6 +326,8 @@ uint8_t *RuntimeGraph::getOutputDataByIndex(int32_t output_index)
 
 uint8_t *RuntimeGraph::getDataByTensor(const circle::Tensor *raw_tensor)
 {
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+
   if (raw_tensor == nullptr)
     return nullptr;
 
@@ -255,19 +339,28 @@ uint8_t *RuntimeGraph::getDataByTensor(const circle::Tensor *raw_tensor)
   return _tensor_to_data.at(raw_tensor);
 }
 
-void RuntimeGraph::makeInplaceOperation(const circle::Tensor *src_tensor,
+void RuntimeGraph::clearTensors() { _tensor_to_data.clear(); }
+
+void RuntimeGraph::makeInplaceOperation(const circle::Tensor *removing_tensor,
                                         const circle::Tensor *dst_tensor)
 {
-  if (src_tensor == nullptr or dst_tensor == nullptr)
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+  assert(removing_tensor != nullptr);
+
+  auto src_it = _tensor_to_data.find(removing_tensor);
+
+  if (src_it == _tensor_to_data.end())
     return;
 
-  auto src_it = _tensor_to_data.find(src_tensor);
-
-  assert(src_it != _tensor_to_data.end() && "Failed makeInplaceOperation");
-
-  auto *data = _tensor_to_data[src_tensor];
+  auto *data = _tensor_to_data[removing_tensor];
 
   _tensor_to_data.erase(src_it);
+
+  if (dst_tensor == nullptr)
+  {
+    delete[] data;
+    return;
+  }
 
   assert(_tensor_to_data.find(dst_tensor) == _tensor_to_data.end() &&
          "Failed makeInplaceOperation");
@@ -276,6 +369,7 @@ void RuntimeGraph::makeInplaceOperation(const circle::Tensor *src_tensor,
 
 uint8_t *RuntimeGraph::getConstDataByTensor(const circle::Tensor *raw_tensor)
 {
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
   if (raw_tensor == nullptr)
     return nullptr;
 
@@ -286,6 +380,7 @@ uint8_t *RuntimeGraph::getConstDataByTensor(const circle::Tensor *raw_tensor)
 
 const circle::Tensor *RuntimeGraph::getCircleTensorByIndex(int32_t index)
 {
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
   if (index < 0)
     return nullptr;
 
@@ -294,8 +389,10 @@ const circle::Tensor *RuntimeGraph::getCircleTensorByIndex(int32_t index)
   return raw_tensor;
 }
 
-void RuntimeGraph::configure()
+void RuntimeGraph::configure(bool dealloc_input)
 {
+  selectOwnSubgraph();
+
   KernelConfigureRegistry kernel_configure;
 
   for (uint32_t i = 0; i < _reader->operators().size(); ++i)
@@ -309,15 +406,22 @@ void RuntimeGraph::configure()
   }
 
   if (not _is_valid)
-    buildAllocDeallocPlan();
+    buildAllocDeallocPlan(dealloc_input);
 
   _is_valid = true;
 }
 
+void RuntimeGraph::setDataToTensor(const circle::Tensor *tensor, uint8_t *data)
+{
+  _tensor_to_data[tensor] = data;
+}
+
 void RuntimeGraph::execute()
 {
+  selectOwnSubgraph();
+
   if (not _is_valid)
-    configure();
+    configure(true);
 
   KernelExecuteRegistry kernel_executor;
 
