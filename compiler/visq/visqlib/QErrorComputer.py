@@ -118,12 +118,17 @@ class MPEIRComputer(QErrorComputer):
                 else:
                     self.qerror_map[tensor_name] = rPEIR
 
+    # Return
+    # qerror_map (dict: tensor_name(string) -> qerror(float))
+    # qerror_min (float)
+    # qerror_max (float)
     def get_final_result(self):
         qerror_map = dict()
         for tensor_name, acc in self.qerror_map.items():
             qerror_map[tensor_name] = acc / self._num_processed_data
 
-        return qerror_map
+        # Fixed qerror_min (0), qerror_max (1)
+        return qerror_map, 0.0, 1.0
 
     def run(self):
         self.advance_on(self._fp32_dir, self._fq_dir)
@@ -154,6 +159,10 @@ class MSEComputer(QErrorComputer):
                 self.qerror_min = min(MSE, self.qerror_min)
                 self.qerror_max = max(MSE, self.qerror_max)
 
+    # Return
+    # qerror_map (dict: tensor_name(string) -> qerror(float))
+    # qerror_min (float)
+    # qerror_max (float)
     def get_final_result(self):
         qerror_map = dict()
         for tensor_name, acc in self.qerror_map.items():
@@ -190,6 +199,10 @@ class TAEComputer(QErrorComputer):  #total absolute error
                 self.qerror_min = min(total_error, self.qerror_min)
                 self.qerror_max = max(total_error, self.qerror_max)
 
+    # Return
+    # qerror_map (dict: tensor_name(string) -> qerror(float))
+    # qerror_min (float)
+    # qerror_max (float)
     def get_final_result(self):
         qerror_map = dict()
         for tensor_name, acc in self.qerror_map.items():
@@ -224,6 +237,10 @@ class SRMSEComputer(QErrorComputer):
                 else:
                     self.qerror_map[tensor_name] = MSE
 
+    # Return
+    # qerror_map (dict: tensor_name(string) -> qerror(float))
+    # qerror_min (float)
+    # qerror_max (float)
     def get_final_result(self):
         with open(self.scale_file) as f:
             # scale_map: {tensor_name(str) -> scale(float)}
