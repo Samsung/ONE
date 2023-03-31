@@ -31,10 +31,11 @@ namespace
 {
 
 /**
- * @brief compare error of front half with an error of the rear part
+ * @brief Compare errors of two disjoint subsets of a model sliced by cut_depth
+ * @return True if the front part (< cut_depth) has larger errors than the rear part (>= cut_depth)
  */
-bool get_int16_at_front(const NodeDepthType &nodes_depth, const std::string &visq_path,
-                        float cut_depth)
+bool front_has_higher_error(const NodeDepthType &nodes_depth, const std::string &visq_path,
+                            float cut_depth)
 {
   LOGGER(l);
 
@@ -182,7 +183,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   {
     case Algorithm::Auto:
       int16_front =
-        get_int16_at_front(nodes_depth, _visq_data_path, 0.5f * (max_depth + min_depth));
+        front_has_higher_error(nodes_depth, _visq_data_path, 0.5f * (max_depth + min_depth));
       break;
     case Algorithm::ForceQ16Front:
       int16_front = true;
