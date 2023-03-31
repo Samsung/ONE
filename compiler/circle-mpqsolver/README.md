@@ -39,6 +39,7 @@ Run _circle-mpqsolver_ with the following arguments.
 --qerror_ratio: Target quantization error ratio. It should be in [0, 1]. 0 indicates qerror of full int16 model, 1 indicates qerror of full uint8 model. The lower `qerror_ratio` indicates the more accurate solution.
 
 --bisection _mode_: input nodes should be at Q16 precision ['auto', 'true', 'false']
+--visq_file: .visq.json file to be used in 'auto' mode
 
 ```
 $ ./circle-mpqsolver
@@ -47,6 +48,7 @@ $ ./circle-mpqsolver
   --output_model <output_model_pat>
   --qerror_ratio <optional value for reproducing target _qerror_ default is 0.5>
   --bisection <whether input nodes should be quantized into Q16 default is 'auto'>
+  --visq_file <*.visq.json file with quantization errors>
 ```
 
 For example:
