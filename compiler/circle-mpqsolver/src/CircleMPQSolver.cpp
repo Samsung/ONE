@@ -32,6 +32,19 @@ void print_version(void)
   std::cout << vconone::get_copyright() << std::endl;
 }
 
+int handleAutoAlgorithm(arser::Arser &arser, mpqsolver::bisection::BisectionSolver &solver)
+{
+  solver.algorithm(mpqsolver::bisection::BisectionSolver::Algorithm::Auto);
+  auto data_path = arser.get<std::string>("--visq_file");
+  if (data_path.empty())
+  {
+    std::cerr << "ERROR: please provide visq_file for auto mode" << std::endl;
+    return false;
+  }
+  solver.setVisqPath(data_path);
+  return true;
+}
+
 int entry(int argc, char **argv)
 {
   LOGGER(l);
@@ -73,6 +86,12 @@ int entry(int argc, char **argv)
     .help("Data type of quantized model's outputs (default: uint8)");
 
   arser.add_argument("--output_model").required(true).help("Output quantized model");
+
+  arser.add_argument("--visq_file")
+    .type(arser::DataType::STR)
+    .default_value("")
+    .required(false)
+    .help("*.visq.json file with quantization errors");
 
   try
   {
@@ -116,7 +135,10 @@ int entry(int argc, char **argv)
       auto value = arser.get<std::string>(bisection_str);
       if (value == "auto")
       {
-        solver.algorithm(BisectionSolver::Algorithm::Auto);
+        if (!handleAutoAlgorithm(arser, solver))
+        {
+          return EXIT_FAILURE;
+        }
       }
       else if (value == "true")
       {
