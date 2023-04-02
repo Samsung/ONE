@@ -2797,7 +2797,6 @@ var hierarchy =
       [ "luci_interpreter::kernels::If", "classluci__interpreter_1_1kernels_1_1_if.html", null ],
       [ "luci_interpreter::kernels::If", "classluci__interpreter_1_1kernels_1_1_if.html", null ],
       [ "luci_interpreter::kernels::Less", "classluci__interpreter_1_1kernels_1_1_less.html", null ],
-      [ "luci_interpreter::kernels::Less", "classluci__interpreter_1_1kernels_1_1_less.html", null ],
       [ "luci_interpreter::kernels::LessEqual", "classluci__interpreter_1_1kernels_1_1_less_equal.html", null ],
       [ "luci_interpreter::kernels::LessEqual", "classluci__interpreter_1_1kernels_1_1_less_equal.html", null ],
       [ "luci_interpreter::kernels::LogSoftmax", "classluci__interpreter_1_1kernels_1_1_log_softmax.html", null ],
@@ -2990,6 +2989,7 @@ var hierarchy =
     [ "record_minmax::MinMaxMap", "classrecord__minmax_1_1_min_max_map.html", null ],
     [ "record_minmax::MinMaxVectors", "structrecord__minmax_1_1_min_max_vectors.html", null ],
     [ "luci_interpreter::MirrorPadParams", "structluci__interpreter_1_1_mirror_pad_params.html", null ],
+    [ "luci_interpreter::kernels::MISOKernel", "classluci__interpreter_1_1kernels_1_1_m_i_s_o_kernel.html", null ],
     [ "FixedArity::Mixin", null, [
       [ "loco::CanonicalNodeDef< CanonicalOpcode::ConstGen, FixedArity< 0 >::Mixin, With< NodeTrait::DataType >::Mixin, With< NodeTrait::TensorShape >::Mixin >", "structloco_1_1_canonical_node_def.html", null ],
       [ "loco::CanonicalNodeDef< CanonicalOpcode::Pull, FixedArity< 0 >::Mixin, With< NodeTrait::TensorShape >::Mixin >", "structloco_1_1_canonical_node_def.html", null ]
@@ -4177,6 +4177,7 @@ var hierarchy =
     [ "QErrorComputer.QErrorComputer", "class_q_error_computer_1_1_q_error_computer.html", [
       [ "QErrorComputer.MPEIRComputer", "class_q_error_computer_1_1_m_p_e_i_r_computer.html", null ],
       [ "QErrorComputer.MSEComputer", "class_q_error_computer_1_1_m_s_e_computer.html", null ],
+      [ "QErrorComputer.SRMSEComputer", "class_q_error_computer_1_1_s_r_m_s_e_computer.html", null ],
       [ "QErrorComputer.TAEComputer", "class_q_error_computer_1_1_t_a_e_computer.html", null ]
     ] ],
     [ "onert::ir::Quantization", "structonert_1_1ir_1_1_quantization.html", null ],
@@ -4341,6 +4342,7 @@ var hierarchy =
       [ "hermes::ConsoleReporter", "structhermes_1_1_console_reporter.html", null ]
     ] ],
     [ "loco::ShapeInferenceRule::Sink", "structloco_1_1_shape_inference_rule_1_1_sink.html", null ],
+    [ "luci_interpreter::kernels::SISOKernel", "classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html", null ],
     [ "mir_interpreter::SliceImpl< T >", "structmir__interpreter_1_1_slice_impl.html", null ],
     [ "nnfw::cker::SliceParams", "structnnfw_1_1cker_1_1_slice_params.html", null ],
     [ "adt::small_vector< T, Capacity >", "classadt_1_1small__vector.html", null ],
@@ -4658,6 +4660,8 @@ var hierarchy =
     [ "Eigen::ThreadPoolInterface", null, [
       [ "nnfw::cker::eigen_support::EigenThreadPoolWrapper", "classnnfw_1_1cker_1_1eigen__support_1_1_eigen_thread_pool_wrapper.html", null ]
     ] ],
+    [ "luci_interpreter::kernels::TISOData", "structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html", null ],
+    [ "luci_interpreter::kernels::TISOKernel", "classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html", null ],
     [ "nnfw::rt::optimized_ops::TopContainer< T >", "classnnfw_1_1rt_1_1optimized__ops_1_1_top_container.html", null ],
     [ "TopologicalSortHelper.TopologicalSortHelper", "class_topological_sort_helper_1_1_topological_sort_helper.html", null ],
     [ "onert::util::TracingCtx", "classonert_1_1util_1_1_tracing_ctx.html", null ],

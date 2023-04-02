@@ -37,7 +37,7 @@ var dir_548dc81bad8612a5ffdb7fb677e03b7c =
     [ "Identity.cpp", "mir_2src_2mir__onnx__importer_2_op_2_identity_8cpp.html", "mir_2src_2mir__onnx__importer_2_op_2_identity_8cpp" ],
     [ "Identity.h", "mir_2src_2mir__onnx__importer_2_op_2_identity_8h.html", "mir_2src_2mir__onnx__importer_2_op_2_identity_8h" ],
     [ "Less.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_less_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_less_8cpp" ],
-    [ "Less.h", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_less_8h.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_less_8h" ],
+    [ "Less.h", "mir_2src_2mir__onnx__importer_2_op_2_less_8h.html", "mir_2src_2mir__onnx__importer_2_op_2_less_8h" ],
     [ "MatMul.cpp", "mir_2src_2mir__onnx__importer_2_op_2_mat_mul_8cpp.html", "mir_2src_2mir__onnx__importer_2_op_2_mat_mul_8cpp" ],
     [ "MatMul.h", "mir_2src_2mir__onnx__importer_2_op_2_mat_mul_8h.html", "mir_2src_2mir__onnx__importer_2_op_2_mat_mul_8h" ],
     [ "Max.cpp", "mir_2src_2mir__onnx__importer_2_op_2_max_8cpp.html", "mir_2src_2mir__onnx__importer_2_op_2_max_8cpp" ],

@@ -315,7 +315,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">luci::CircleNode::name()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00116">circle_eval_diff::HDF5Loader::get()</a>, <a class="el" href="_input_data_loader_8cpp_source.html#l00181">circle_eval_diff::DirectoryLoader::get()</a>, and <a class="el" href="_circle_eval_diff_8cpp_source.html#l00125">interpret()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00116">circle_eval_diff::HDF5Loader::get()</a>, <a class="el" href="_input_data_loader_8cpp_source.html#l00183">circle_eval_diff::DirectoryLoader::get()</a>, and <a class="el" href="_circle_eval_diff_8cpp_source.html#l00125">interpret()</a>.</p>
 
 </div>
 </div>
@@ -359,7 +359,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_data_type_traits_8h_source.html#l00122">loco::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00181">circle_eval_diff::DirectoryLoader::get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00183">circle_eval_diff::DirectoryLoader::get()</a>.</p>
 
 </div>
 </div>
@@ -401,7 +401,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_data_type_traits_8h_source.html#l00122">loco::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00155">circle_eval_diff::DirectoryLoader::DirectoryLoader()</a>, and <a class="el" href="_input_data_loader_8cpp_source.html#l00181">circle_eval_diff::DirectoryLoader::get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00157">circle_eval_diff::DirectoryLoader::DirectoryLoader()</a>, and <a class="el" href="_input_data_loader_8cpp_source.html#l00183">circle_eval_diff::DirectoryLoader::get()</a>.</p>
 
 </div>
 </div>
@@ -593,22 +593,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_input_data_loader_8cpp_source.html#l00217">217</a> of file <a class="el" href="_input_data_loader_8cpp_source.html">InputDataLoader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  220</span>{</div>
-<div class="line"><span class="lineno">  221</span>  <span class="keywordflow">switch</span> (format)</div>
-<div class="line"><span class="lineno">  222</span>  {</div>
-<div class="line"><span class="lineno">  223</span>    <span class="keywordflow">case</span> InputFormat::H5:</div>
-<div class="line"><span class="lineno">  224</span>    {</div>
-<div class="line"><span class="lineno">  225</span>      <span class="keywordflow">return</span> std::make_unique&lt;HDF5Loader&gt;(file_path, input_nodes);</div>
-<div class="line"><span class="lineno">  226</span>    }</div>
-<div class="line"><span class="lineno">  227</span>    <span class="keywordflow">case</span> InputFormat::DIR:</div>
-<div class="line"><span class="lineno">  228</span>    {</div>
-<div class="line"><span class="lineno">  229</span>      <span class="keywordflow">return</span> std::make_unique&lt;DirectoryLoader&gt;(file_path, input_nodes);</div>
-<div class="line"><span class="lineno">  230</span>    }</div>
-<div class="line"><span class="lineno">  231</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  232</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unsupported input format.&quot;</span>};</div>
-<div class="line"><span class="lineno">  233</span>  }</div>
-<div class="line"><span class="lineno">  234</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_input_data_loader_8cpp_source.html#l00219">219</a> of file <a class="el" href="_input_data_loader_8cpp_source.html">InputDataLoader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  222</span>{</div>
+<div class="line"><span class="lineno">  223</span>  <span class="keywordflow">switch</span> (format)</div>
+<div class="line"><span class="lineno">  224</span>  {</div>
+<div class="line"><span class="lineno">  225</span>    <span class="keywordflow">case</span> InputFormat::H5:</div>
+<div class="line"><span class="lineno">  226</span>    {</div>
+<div class="line"><span class="lineno">  227</span>      <span class="keywordflow">return</span> std::make_unique&lt;HDF5Loader&gt;(file_path, input_nodes);</div>
+<div class="line"><span class="lineno">  228</span>    }</div>
+<div class="line"><span class="lineno">  229</span>    <span class="keywordflow">case</span> InputFormat::DIR:</div>
+<div class="line"><span class="lineno">  230</span>    {</div>
+<div class="line"><span class="lineno">  231</span>      <span class="keywordflow">return</span> std::make_unique&lt;DirectoryLoader&gt;(file_path, input_nodes);</div>
+<div class="line"><span class="lineno">  232</span>    }</div>
+<div class="line"><span class="lineno">  233</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  234</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unsupported input format.&quot;</span>};</div>
+<div class="line"><span class="lineno">  235</span>  }</div>
+<div class="line"><span class="lineno">  236</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespacecircle__eval__diff.html#ac17f7feb24f5042958832418d4508273ac1561b120842fabe1310417083827590">DIR</a>, and <a class="el" href="namespacecircle__eval__diff.html#ac17f7feb24f5042958832418d4508273a830652084dda69b6b957e2c3a7bd9b18">H5</a>.</p>
 

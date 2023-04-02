@@ -159,16 +159,16 @@ Public Member Functions</h2></td></tr>
 
 <p>approximate error introduced while quantizing node into Q8 </p>
 
-<p class="definition">Definition at line <a class="el" href="_v_i_s_q_error_approximator_8cpp_source.html#l00039">39</a> of file <a class="el" href="_v_i_s_q_error_approximator_8cpp_source.html">VISQErrorApproximator.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{</div>
-<div class="line"><span class="lineno">   41</span>  <span class="keyword">auto</span> iter = _layer_errors.find(node_name);</div>
-<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">if</span> (iter == _layer_errors.end())</div>
-<div class="line"><span class="lineno">   43</span>  {</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span> 0.f;</div>
-<div class="line"><span class="lineno">   45</span>  }</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> iter-&gt;second;</div>
-<div class="line"><span class="lineno">   48</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_v_i_s_q_error_approximator_8cpp_source.html#l00054">54</a> of file <a class="el" href="_v_i_s_q_error_approximator_8cpp_source.html">VISQErrorApproximator.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{</div>
+<div class="line"><span class="lineno">   56</span>  <span class="keyword">auto</span> iter = _layer_errors.find(node_name);</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">if</span> (iter == _layer_errors.end())</div>
+<div class="line"><span class="lineno">   58</span>  {</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">return</span> 0.f;</div>
+<div class="line"><span class="lineno">   60</span>  }</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">return</span> iter-&gt;second;</div>
+<div class="line"><span class="lineno">   63</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -190,21 +190,18 @@ Public Member Functions</h2></td></tr>
 
 <p>initiliaze by visq_data_path (throws on failure) </p>
 
-<p class="definition">Definition at line <a class="el" href="_v_i_s_q_error_approximator_8cpp_source.html#l00023">23</a> of file <a class="el" href="_v_i_s_q_error_approximator_8cpp_source.html">VISQErrorApproximator.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   24</span>{</div>
-<div class="line"><span class="lineno">   25</span>  <span class="comment">// read file</span></div>
-<div class="line"><span class="lineno">   26</span>  std::ifstream <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>(visq_data_path);</div>
-<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator.html#a98c3a13c14d41a8e1ce194e6d167c035">init</a>(file))</div>
-<div class="line"><span class="lineno">   28</span>  {</div>
-<div class="line"><span class="lineno">   29</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid visq file &quot;</span> + visq_data_path);</div>
-<div class="line"><span class="lineno">   30</span>  }</div>
-<div class="line"><span class="lineno">   31</span>}</div>
-<div class="ttc" id="aclassmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator_html_a98c3a13c14d41a8e1ce194e6d167c035"><div class="ttname"><a href="classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator.html#a98c3a13c14d41a8e1ce194e6d167c035">mpqsolver::bisection::VISQErrorApproximator::init</a></div><div class="ttdeci">void init(const std::string &amp;visq_data_path)</div><div class="ttdoc">initiliaze by visq_data_path (throws on failure)</div><div class="ttdef"><b>Definition:</b> <a href="_v_i_s_q_error_approximator_8cpp_source.html#l00023">VISQErrorApproximator.cpp:23</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_v_i_s_q_error_approximator_8cpp_source.html#l00024">24</a> of file <a class="el" href="_v_i_s_q_error_approximator_8cpp_source.html">VISQErrorApproximator.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>{</div>
+<div class="line"><span class="lineno">   26</span>  <span class="comment">// read file</span></div>
+<div class="line"><span class="lineno">   27</span>  std::ifstream <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>(visq_data_path);</div>
+<div class="line"><span class="lineno">   28</span>  <a class="code hl_function" href="classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator.html#a98c3a13c14d41a8e1ce194e6d167c035">init</a>(file);</div>
+<div class="line"><span class="lineno">   29</span>}</div>
+<div class="ttc" id="aclassmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator_html_a98c3a13c14d41a8e1ce194e6d167c035"><div class="ttname"><a href="classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator.html#a98c3a13c14d41a8e1ce194e6d167c035">mpqsolver::bisection::VISQErrorApproximator::init</a></div><div class="ttdeci">void init(const std::string &amp;visq_data_path)</div><div class="ttdoc">initiliaze by visq_data_path (throws on failure)</div><div class="ttdef"><b>Definition:</b> <a href="_v_i_s_q_error_approximator_8cpp_source.html#l00024">VISQErrorApproximator.cpp:24</a></div></div>
 <div class="ttc" id="anamespacetf2tflite_v2_html_abe660e9c50ccb26ca3f53160f59fabb7"><div class="ttname"><a href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">tf2tfliteV2.file</a></div><div class="ttdeci">file</div><div class="ttdef"><b>Definition:</b> <a href="tf2tflite_v2_8py_source.html#l00300">tf2tfliteV2.py:300</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_v_i_s_q_error_approximator_8cpp_source.html#l00023">init()</a>.</p>
+<p class="reference">References <a class="el" href="_v_i_s_q_error_approximator_8cpp_source.html#l00024">init()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_v_i_s_q_error_approximator_8cpp_source.html#l00023">init()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_v_i_s_q_error_approximator_8cpp_source.html#l00024">init()</a>.</p>
 
 </div>
 </div>

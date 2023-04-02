@@ -126,8 +126,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a03f3dd21ec7f62db6c554b68178edc15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70de0eedebc428c88ed3bbe062d5b8df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a70de0eedebc428c88ed3bbe062d5b8df">execute</a> () const</td></tr>
 <tr class="separator:a70de0eedebc428c88ed3bbe062d5b8df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeedcb0bccb7bbab20cb30b6a9b054c4c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#aeedcb0bccb7bbab20cb30b6a9b054c4c">RuntimeGraph</a> (<a class="el" href="classluci__interpreter_1_1_simple_memory_manager.html">SimpleMemoryManager</a> *memory_manager, <a class="el" href="classluci_1_1_circle_reader.html">CircleReader</a> *circle_reader)</td></tr>
-<tr class="separator:aeedcb0bccb7bbab20cb30b6a9b054c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3af158846f59f69d9238496610644ff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#ac3af158846f59f69d9238496610644ff">RuntimeGraph</a> ()=delete</td></tr>
+<tr class="separator:ac3af158846f59f69d9238496610644ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2d250551b1321868cfe4e653a04c3d7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#aa2d250551b1321868cfe4e653a04c3d7">RuntimeGraph</a> (<a class="el" href="classluci__interpreter_1_1_simple_memory_manager.html">SimpleMemoryManager</a> *memory_manager, <a class="el" href="classluci_1_1_circle_reader.html">CircleReader</a> *circle_reader, <a class="el" href="classluci__interpreter_1_1_runtime_module.html">RuntimeModule</a> *runtime_module, uint32_t subgraph_index)</td></tr>
+<tr class="separator:aa2d250551b1321868cfe4e653a04c3d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03ab9e86f7a80183aa51ae4f201686ea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a03ab9e86f7a80183aa51ae4f201686ea">~RuntimeGraph</a> ()</td></tr>
 <tr class="separator:a03ab9e86f7a80183aa51ae4f201686ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9317ae3a05112fa40dda44b577630fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#aa9317ae3a05112fa40dda44b577630fa">addTensor</a> (const circle::Tensor *raw_tensor, std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> &gt; &amp;&amp;tensor)</td></tr>
@@ -148,18 +150,44 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9608f7731c3c8249ab94434c38ed9ca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab87a92a879b2b74c265ef29611d7eabd"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#ab87a92a879b2b74c265ef29611d7eabd">getOutputDataSizeByIndex</a> (int32_t output_index)</td></tr>
 <tr class="separator:ab87a92a879b2b74c265ef29611d7eabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0f5866f3a0f824f3b1220b9233fcbf4"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#ab0f5866f3a0f824f3b1220b9233fcbf4">getNumOfInputTensors</a> ()</td></tr>
+<tr class="separator:ab0f5866f3a0f824f3b1220b9233fcbf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5607399e8a8d93a8411c7eff8c13667"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#ae5607399e8a8d93a8411c7eff8c13667">getNumOfOutputTensors</a> ()</td></tr>
+<tr class="separator:ae5607399e8a8d93a8411c7eff8c13667"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae88e069e304d04700eaae29800e93880"><td class="memItemLeft" align="right" valign="top">const circle::Tensor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#ae88e069e304d04700eaae29800e93880">getInputTensorByIndex</a> (int32_t input_index)</td></tr>
+<tr class="separator:ae88e069e304d04700eaae29800e93880"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad817e140a1f6fc5ebec7a324ce4d9b81"><td class="memItemLeft" align="right" valign="top">const circle::Tensor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#ad817e140a1f6fc5ebec7a324ce4d9b81">getOutputTensorByIndex</a> (int32_t input_index)</td></tr>
+<tr class="separator:ad817e140a1f6fc5ebec7a324ce4d9b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb0cfd66c613ad30734e03355148c9c7"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#abb0cfd66c613ad30734e03355148c9c7">getOutputDataByIndex</a> (int32_t output_index)</td></tr>
 <tr class="separator:abb0cfd66c613ad30734e03355148c9c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14945506b3bbe34d894008db702cd1ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a14945506b3bbe34d894008db702cd1ba">addInplaceOpIndex</a> (uint32_t index)</td></tr>
 <tr class="separator:a14945506b3bbe34d894008db702cd1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f3a9dbdeccb41686fd3d8562bf54386"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a9f3a9dbdeccb41686fd3d8562bf54386">execute</a> ()</td></tr>
 <tr class="separator:a9f3a9dbdeccb41686fd3d8562bf54386"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31dfe818dddd7f80430ca3e606fb1791"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a31dfe818dddd7f80430ca3e606fb1791">configure</a> ()</td></tr>
-<tr class="separator:a31dfe818dddd7f80430ca3e606fb1791"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a540cdda07a3610e5bcc93b286728d3c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a540cdda07a3610e5bcc93b286728d3c4">configure</a> (bool dealloc_input)</td></tr>
+<tr class="separator:a540cdda07a3610e5bcc93b286728d3c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b51702b15f8278427362cd2744d52d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a1b51702b15f8278427362cd2744d52d1">invalidate</a> ()</td></tr>
 <tr class="separator:a1b51702b15f8278427362cd2744d52d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5e053917d6069b77f7125babb2d7a57"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#ac5e053917d6069b77f7125babb2d7a57">isValid</a> () const</td></tr>
 <tr class="separator:ac5e053917d6069b77f7125babb2d7a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74df90e900ff0cae9969f45ecd1ae42f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a74df90e900ff0cae9969f45ecd1ae42f">selectOwnSubgraph</a> ()</td></tr>
+<tr class="separator:a74df90e900ff0cae9969f45ecd1ae42f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a570735b2e2991e93ec3376c15a52e0cf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a570735b2e2991e93ec3376c15a52e0cf">resetOutputTensorsData</a> ()</td></tr>
+<tr class="separator:a570735b2e2991e93ec3376c15a52e0cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f9cb1ff71b6bcb16fc0b1371dba627f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a5f9cb1ff71b6bcb16fc0b1371dba627f">clearTensors</a> ()</td></tr>
+<tr class="separator:a5f9cb1ff71b6bcb16fc0b1371dba627f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81e2598fc6aa94910cac7004701b355f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a81e2598fc6aa94910cac7004701b355f">setDataToTensor</a> (const circle::Tensor *tensor, uint8_t *data)</td></tr>
+<tr class="separator:a81e2598fc6aa94910cac7004701b355f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82c3e9346564a7542a691e5e7cdee631"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a82c3e9346564a7542a691e5e7cdee631">resetTensorData</a> (uint8_t *new_data, const circle::Tensor *tensor)</td></tr>
+<tr class="separator:a82c3e9346564a7542a691e5e7cdee631"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af91b5d5e4e4c6708b96d65c4420c7d93"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_runtime_module.html">RuntimeModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#af91b5d5e4e4c6708b96d65c4420c7d93">getRuntimeModule</a> ()</td></tr>
+<tr class="separator:af91b5d5e4e4c6708b96d65c4420c7d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab82643598294bdb609a77a80ea5ccfae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#ab82643598294bdb609a77a80ea5ccfae">addDynamicShapeTensor</a> (const circle::Tensor *tensor, std::vector&lt; int32_t &gt; &amp;&amp;shapes)</td></tr>
+<tr class="separator:ab82643598294bdb609a77a80ea5ccfae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91666f1edc0a1e44b14ff098c81988ba"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int32_t &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#a91666f1edc0a1e44b14ff098c81988ba">getDynamicShapeTensor</a> (const circle::Tensor *tensor)</td></tr>
+<tr class="separator:a91666f1edc0a1e44b14ff098c81988ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af86be2a32f95adb74c4782b358899158"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_runtime_graph.html#af86be2a32f95adb74c4782b358899158">removeDynamicShapeTensor</a> (const circle::Tensor *tensor)</td></tr>
+<tr class="separator:af86be2a32f95adb74c4782b358899158"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -171,7 +199,7 @@ Friends</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00032">32</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html">RuntimeGraph.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aae212939af435e3ea50d7bcc94a74d00" name="aae212939af435e3ea50d7bcc94a74d00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae212939af435e3ea50d7bcc94a74d00">&#9670;&#160;</a></span>RuntimeGraph() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aae212939af435e3ea50d7bcc94a74d00">&#9670;&#160;</a></span>RuntimeGraph() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -242,8 +270,33 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="aeedcb0bccb7bbab20cb30b6a9b054c4c" name="aeedcb0bccb7bbab20cb30b6a9b054c4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeedcb0bccb7bbab20cb30b6a9b054c4c">&#9670;&#160;</a></span>RuntimeGraph() <span class="overload">[2/2]</span></h2>
+<a id="ac3af158846f59f69d9238496610644ff" name="ac3af158846f59f69d9238496610644ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3af158846f59f69d9238496610644ff">&#9670;&#160;</a></span>RuntimeGraph() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">luci_interpreter::RuntimeGraph::RuntimeGraph </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa2d250551b1321868cfe4e653a04c3d7" name="aa2d250551b1321868cfe4e653a04c3d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2d250551b1321868cfe4e653a04c3d7">&#9670;&#160;</a></span>RuntimeGraph() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,7 +314,19 @@ Friends</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classluci_1_1_circle_reader.html">CircleReader</a> *&#160;</td>
-          <td class="paramname"><em>circle_reader</em>&#160;</td>
+          <td class="paramname"><em>circle_reader</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_runtime_module.html">RuntimeModule</a> *&#160;</td>
+          <td class="paramname"><em>runtime_module</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>subgraph_index</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -277,11 +342,12 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00027">27</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>  : _memory_manager(memory_manager),</div>
-<div class="line"><span class="lineno">   29</span>    _tensor_to_data(std::unordered_map&lt;const circle::Tensor *, uint8_t *&gt;{}),</div>
-<div class="line"><span class="lineno">   30</span>    _reader(circle_reader), _inplace_op_indexes(std::unordered_set&lt;uint32_t&gt;{})</div>
-<div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>  : _memory_manager(memory_manager),</div>
+<div class="line"><span class="lineno">   30</span>    _tensor_to_data(std::unordered_map&lt;const circle::Tensor *, uint8_t *&gt;{}),</div>
+<div class="line"><span class="lineno">   31</span>    _runtime_module(runtime_module), _reader(circle_reader),</div>
+<div class="line"><span class="lineno">   32</span>    _inplace_op_indexes(std::unordered_set&lt;uint32_t&gt;{}), _subgraph_index(subgraph_index)</div>
+<div class="line"><span class="lineno">   33</span>{</div>
+<div class="line"><span class="lineno">   34</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -303,6 +369,42 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab82643598294bdb609a77a80ea5ccfae" name="ab82643598294bdb609a77a80ea5ccfae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab82643598294bdb609a77a80ea5ccfae">&#9670;&#160;</a></span>addDynamicShapeTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter::RuntimeGraph::addDynamicShapeTensor </td>
+          <td>(</td>
+          <td class="paramtype">const circle::Tensor *&#160;</td>
+          <td class="paramname"><em>tensor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; int32_t &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>shapes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00143">143</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  145</span>{</div>
+<div class="line"><span class="lineno">  146</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  147</span>  _dynamic_tensor_shapes[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>] = std::move(shapes);</div>
+<div class="line"><span class="lineno">  148</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>.</p>
+
+</div>
+</div>
 <a id="a14945506b3bbe34d894008db702cd1ba" name="a14945506b3bbe34d894008db702cd1ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a14945506b3bbe34d894008db702cd1ba">&#9670;&#160;</a></span>addInplaceOpIndex()</h2>
 
@@ -327,10 +429,10 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00080">80</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html">RuntimeGraph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>{ _inplace_op_indexes.insert(index); }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00089">89</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html">RuntimeGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   89</span>{ _inplace_op_indexes.insert(index); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00061">luci_interpreter::GraphLoader::checkInplaceOps()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00079">luci_interpreter::GraphLoader::checkInplaceOps()</a>.</p>
 
 </div>
 </div>
@@ -416,14 +518,14 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a31dfe818dddd7f80430ca3e606fb1791" name="a31dfe818dddd7f80430ca3e606fb1791"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31dfe818dddd7f80430ca3e606fb1791">&#9670;&#160;</a></span>configure()</h2>
+<a id="a5f9cb1ff71b6bcb16fc0b1371dba627f" name="a5f9cb1ff71b6bcb16fc0b1371dba627f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f9cb1ff71b6bcb16fc0b1371dba627f">&#9670;&#160;</a></span>clearTensors()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void luci_interpreter::RuntimeGraph::configure </td>
+          <td class="memname">void luci_interpreter::RuntimeGraph::clearTensors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -431,33 +533,57 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00297">297</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  298</span>{</div>
-<div class="line"><span class="lineno">  299</span>  KernelConfigureRegistry kernel_configure;</div>
-<div class="line"><span class="lineno">  300</span> </div>
-<div class="line"><span class="lineno">  301</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a1af8661dad6b1a8b6ea46b9fb322aea2">operators</a>().<a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>(); ++i)</div>
-<div class="line"><span class="lineno">  302</span>  {</div>
-<div class="line"><span class="lineno">  303</span>    <span class="keyword">const</span> <span class="keyword">auto</span> op = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a1af8661dad6b1a8b6ea46b9fb322aea2">operators</a>().<a class="code hl_function" href="classluci_1_1_vector_wrapper.html#acb4fcd319072289ca0797ad27a12a62c">at</a>(i);</div>
-<div class="line"><span class="lineno">  304</span>    assert(op != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  305</span> </div>
-<div class="line"><span class="lineno">  306</span>    <span class="keyword">const</span> <span class="keyword">auto</span> opcode = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a92d3eb40f5440a480efbd0ebef1dc1a4">builtin_code</a>(op);</div>
-<div class="line"><span class="lineno">  307</span> </div>
-<div class="line"><span class="lineno">  308</span>    kernel_configure.configure_kernel(op, opcode, <span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">  309</span>  }</div>
-<div class="line"><span class="lineno">  310</span> </div>
-<div class="line"><span class="lineno">  311</span>  <span class="keywordflow">if</span> (not _is_valid)</div>
-<div class="line"><span class="lineno">  312</span>    buildAllocDeallocPlan();</div>
-<div class="line"><span class="lineno">  313</span> </div>
-<div class="line"><span class="lineno">  314</span>  _is_valid = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  315</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00342">342</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  342</span>{ _tensor_to_data.clear(); }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a540cdda07a3610e5bcc93b286728d3c4" name="a540cdda07a3610e5bcc93b286728d3c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a540cdda07a3610e5bcc93b286728d3c4">&#9670;&#160;</a></span>configure()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter::RuntimeGraph::configure </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>dealloc_input</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00392">392</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  393</span>{</div>
+<div class="line"><span class="lineno">  394</span>  <a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a74df90e900ff0cae9969f45ecd1ae42f">selectOwnSubgraph</a>();</div>
+<div class="line"><span class="lineno">  395</span> </div>
+<div class="line"><span class="lineno">  396</span>  KernelConfigureRegistry kernel_configure;</div>
+<div class="line"><span class="lineno">  397</span> </div>
+<div class="line"><span class="lineno">  398</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a1af8661dad6b1a8b6ea46b9fb322aea2">operators</a>().<a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>(); ++i)</div>
+<div class="line"><span class="lineno">  399</span>  {</div>
+<div class="line"><span class="lineno">  400</span>    <span class="keyword">const</span> <span class="keyword">auto</span> op = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a1af8661dad6b1a8b6ea46b9fb322aea2">operators</a>().<a class="code hl_function" href="classluci_1_1_vector_wrapper.html#acb4fcd319072289ca0797ad27a12a62c">at</a>(i);</div>
+<div class="line"><span class="lineno">  401</span>    assert(op != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  402</span> </div>
+<div class="line"><span class="lineno">  403</span>    <span class="keyword">const</span> <span class="keyword">auto</span> opcode = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a92d3eb40f5440a480efbd0ebef1dc1a4">builtin_code</a>(op);</div>
+<div class="line"><span class="lineno">  404</span> </div>
+<div class="line"><span class="lineno">  405</span>    kernel_configure.configure_kernel(op, opcode, <span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">  406</span>  }</div>
+<div class="line"><span class="lineno">  407</span> </div>
+<div class="line"><span class="lineno">  408</span>  <span class="keywordflow">if</span> (not _is_valid)</div>
+<div class="line"><span class="lineno">  409</span>    buildAllocDeallocPlan(dealloc_input);</div>
+<div class="line"><span class="lineno">  410</span> </div>
+<div class="line"><span class="lineno">  411</span>  _is_valid = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  412</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_reader_html_a1af8661dad6b1a8b6ea46b9fb322aea2"><div class="ttname"><a href="classluci_1_1_circle_reader.html#a1af8661dad6b1a8b6ea46b9fb322aea2">luci::CircleReader::operators</a></div><div class="ttdeci">CircleOperators operators() const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8h_source.html#l00105">CircleReader.h:105</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_reader_html_a92d3eb40f5440a480efbd0ebef1dc1a4"><div class="ttname"><a href="classluci_1_1_circle_reader.html#a92d3eb40f5440a480efbd0ebef1dc1a4">luci::CircleReader::builtin_code</a></div><div class="ttdeci">circle::BuiltinOperator builtin_code(const circle::Operator *op) const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8cpp_source.html#l00295">CircleReader.cpp:295</a></div></div>
 <div class="ttc" id="aclassluci_1_1_vector_wrapper_html_acb4fcd319072289ca0797ad27a12a62c"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#acb4fcd319072289ca0797ad27a12a62c">luci::VectorWrapper::at</a></div><div class="ttdeci">value_type at(uint32_t i) const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8cpp_source.html#l00374">CircleReader.cpp:374</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a74df90e900ff0cae9969f45ecd1ae42f"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a74df90e900ff0cae9969f45ecd1ae42f">luci_interpreter::RuntimeGraph::selectOwnSubgraph</a></div><div class="ttdeci">void selectOwnSubgraph()</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00097">RuntimeGraph.h:97</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html_ae1ed28847eae6c24ff4c31d64255a23a"><div class="ttname"><a href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">luci_interpreter::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">DataType.h:141</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00374">luci::VectorWrapper&lt; T &gt;::at()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00295">luci::CircleReader::builtin_code()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8cpp_source.html#l00038">luci_interpreter::KernelConfigureRegistry::configure_kernel()</a>, <a class="el" href="_circle_reader_8h_source.html#l00105">luci::CircleReader::operators()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">luci_interpreter::size()</a>.</p>
+<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00374">luci::VectorWrapper&lt; T &gt;::at()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00295">luci::CircleReader::builtin_code()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8cpp_source.html#l00038">luci_interpreter::KernelConfigureRegistry::configure_kernel()</a>, <a class="el" href="_circle_reader_8h_source.html#l00105">luci::CircleReader::operators()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00097">selectOwnSubgraph()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">luci_interpreter::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00317">execute()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_module_loader_8cpp_source.html#l00024">luci_interpreter::ModuleLoader::load()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00419">execute()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_module_loader_8cpp_source.html#l00024">luci_interpreter::ModuleLoader::load()</a>.</p>
 
 </div>
 </div>
@@ -503,32 +629,29 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00173">173</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
-<div class="line"><span class="lineno">  175</span>  resetOutputTensorsData();</div>
-<div class="line"><span class="lineno">  176</span> </div>
-<div class="line"><span class="lineno">  177</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#aae516732afc634a3478e53024165b5c1">inputs</a>()[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>];</div>
-<div class="line"><span class="lineno">  178</span>  assert(tensor_index != -1);</div>
-<div class="line"><span class="lineno">  179</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
-<div class="line"><span class="lineno">  180</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span>  <span class="keywordflow">if</span> (_tensor_to_data.find(tensor) != _tensor_to_data.end())</div>
-<div class="line"><span class="lineno">  183</span>  {</div>
-<div class="line"><span class="lineno">  184</span>    <span class="keyword">auto</span> *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a> = _tensor_to_data.at(tensor);</div>
-<div class="line"><span class="lineno">  185</span>    _memory_manager-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_i_memory_manager.html#a04badb0c6862d6d24501cab99ee7afe7">release_memory</a>(data);</div>
-<div class="line"><span class="lineno">  186</span>  }</div>
-<div class="line"><span class="lineno">  187</span> </div>
-<div class="line"><span class="lineno">  188</span>  <span class="keyword">auto</span> *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a> = _memory_manager-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_i_memory_manager.html#ae15e9cd45720f15e4b83824a6b7fca4e">allocate_memory</a>(tensor);</div>
-<div class="line"><span class="lineno">  189</span>  _tensor_to_data[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>] = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>;</div>
-<div class="line"><span class="lineno">  190</span> </div>
-<div class="line"><span class="lineno">  191</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>;</div>
-<div class="line"><span class="lineno">  192</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00224">224</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  225</span>{</div>
+<div class="line"><span class="lineno">  226</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  227</span> </div>
+<div class="line"><span class="lineno">  228</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#aae516732afc634a3478e53024165b5c1">inputs</a>()[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>];</div>
+<div class="line"><span class="lineno">  229</span>  assert(tensor_index != -1);</div>
+<div class="line"><span class="lineno">  230</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
+<div class="line"><span class="lineno">  231</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  232</span> </div>
+<div class="line"><span class="lineno">  233</span>  <span class="keyword">auto</span> *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a> = _memory_manager-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_i_memory_manager.html#ae15e9cd45720f15e4b83824a6b7fca4e">allocate_memory</a>(tensor);</div>
+<div class="line"><span class="lineno">  234</span>  <a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#afc0e874c75a17c98851e0481e0d75e72">configureGraphInput</a>(input_index, data);</div>
+<div class="line"><span class="lineno">  235</span> </div>
+<div class="line"><span class="lineno">  236</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>;</div>
+<div class="line"><span class="lineno">  237</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_reader_html_a29042e0a86379708d34163b4d4c9f3b4"><div class="ttname"><a href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">luci::CircleReader::tensors</a></div><div class="ttdeci">CircleTensors tensors() const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8h_source.html#l00104">CircleReader.h:104</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_reader_html_aae516732afc634a3478e53024165b5c1"><div class="ttname"><a href="classluci_1_1_circle_reader.html#aae516732afc634a3478e53024165b5c1">luci::CircleReader::inputs</a></div><div class="ttdeci">VectorWrapper&lt; int32_t &gt; inputs() const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8h_source.html#l00106">CircleReader.h:106</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_afc0e874c75a17c98851e0481e0d75e72"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#afc0e874c75a17c98851e0481e0d75e72">luci_interpreter::RuntimeGraph::configureGraphInput</a></div><div class="ttdeci">uint8_t * configureGraphInput(int32_t input_index)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00224">RuntimeGraph.cpp:224</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a57e930c09fd3ed0664cc4dc6c4ab2c88"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">GenH5RandomInputs.data</a></div><div class="ttdeci">data</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00064">GenH5RandomInputs.py:64</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ae2b1c0809b846c696f9011ba5dc18e69"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">GenH5RandomInputs.input_index</a></div><div class="ttdeci">input_index</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00060">GenH5RandomInputs.py:60</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classluci__interpreter_1_1_i_memory_manager.html#ae15e9cd45720f15e4b83824a6b7fca4e">luci_interpreter::IMemoryManager::allocate_memory()</a>, <a class="el" href="_circle_reader_8h_source.html#l00106">luci::CircleReader::inputs()</a>, <a class="el" href="classluci__interpreter_1_1_i_memory_manager.html#a04badb0c6862d6d24501cab99ee7afe7">luci_interpreter::IMemoryManager::release_memory()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00104">luci::CircleReader::tensors()</a>.</p>
+<p class="reference">References <a class="el" href="classluci__interpreter_1_1_i_memory_manager.html#ae15e9cd45720f15e4b83824a6b7fca4e">luci_interpreter::IMemoryManager::allocate_memory()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00224">configureGraphInput()</a>, <a class="el" href="_circle_reader_8h_source.html#l00106">luci::CircleReader::inputs()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00104">luci::CircleReader::tensors()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00224">configureGraphInput()</a>.</p>
 
 </div>
 </div>
@@ -558,24 +681,27 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00196">196</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  197</span>{</div>
-<div class="line"><span class="lineno">  198</span>  resetOutputTensorsData();</div>
-<div class="line"><span class="lineno">  199</span> </div>
-<div class="line"><span class="lineno">  200</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#aae516732afc634a3478e53024165b5c1">inputs</a>()[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>];</div>
-<div class="line"><span class="lineno">  201</span>  assert(tensor_index != -1);</div>
-<div class="line"><span class="lineno">  202</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
-<div class="line"><span class="lineno">  203</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span>  <span class="keywordflow">if</span> (_tensor_to_data.find(tensor) != _tensor_to_data.end())</div>
-<div class="line"><span class="lineno">  206</span>  {</div>
-<div class="line"><span class="lineno">  207</span>    <span class="keyword">auto</span> *data_prev = _tensor_to_data.at(tensor);</div>
-<div class="line"><span class="lineno">  208</span>    _memory_manager-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_i_memory_manager.html#a04badb0c6862d6d24501cab99ee7afe7">release_memory</a>(data_prev);</div>
-<div class="line"><span class="lineno">  209</span>  }</div>
-<div class="line"><span class="lineno">  210</span>  _tensor_to_data[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>] = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>;</div>
-<div class="line"><span class="lineno">  211</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00239">239</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  240</span>{</div>
+<div class="line"><span class="lineno">  241</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  242</span>  <a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a570735b2e2991e93ec3376c15a52e0cf">resetOutputTensorsData</a>();</div>
+<div class="line"><span class="lineno">  243</span> </div>
+<div class="line"><span class="lineno">  244</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#aae516732afc634a3478e53024165b5c1">inputs</a>()[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>];</div>
+<div class="line"><span class="lineno">  245</span>  assert(tensor_index != -1);</div>
+<div class="line"><span class="lineno">  246</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
+<div class="line"><span class="lineno">  247</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  248</span> </div>
+<div class="line"><span class="lineno">  249</span>  <span class="keywordflow">if</span> (_tensor_to_data.find(tensor) != _tensor_to_data.end())</div>
+<div class="line"><span class="lineno">  250</span>  {</div>
+<div class="line"><span class="lineno">  251</span>    <span class="keyword">auto</span> *data_prev = _tensor_to_data.at(tensor);</div>
+<div class="line"><span class="lineno">  252</span>    <span class="keywordflow">if</span> (data_prev != data)</div>
+<div class="line"><span class="lineno">  253</span>      _memory_manager-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_i_memory_manager.html#a04badb0c6862d6d24501cab99ee7afe7">release_memory</a>(data_prev);</div>
+<div class="line"><span class="lineno">  254</span>  }</div>
+<div class="line"><span class="lineno">  255</span>  _tensor_to_data[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>] = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>;</div>
+<div class="line"><span class="lineno">  256</span>}</div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a570735b2e2991e93ec3376c15a52e0cf"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a570735b2e2991e93ec3376c15a52e0cf">luci_interpreter::RuntimeGraph::resetOutputTensorsData</a></div><div class="ttdeci">void resetOutputTensorsData()</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00199">RuntimeGraph.cpp:199</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00106">luci::CircleReader::inputs()</a>, <a class="el" href="classluci__interpreter_1_1_i_memory_manager.html#a04badb0c6862d6d24501cab99ee7afe7">luci_interpreter::IMemoryManager::release_memory()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00104">luci::CircleReader::tensors()</a>.</p>
+<p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00106">luci::CircleReader::inputs()</a>, <a class="el" href="classluci__interpreter_1_1_i_memory_manager.html#a04badb0c6862d6d24501cab99ee7afe7">luci_interpreter::IMemoryManager::release_memory()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00199">resetOutputTensorsData()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00104">luci::CircleReader::tensors()</a>.</p>
 
 </div>
 </div>
@@ -594,35 +720,37 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00317">317</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  318</span>{</div>
-<div class="line"><span class="lineno">  319</span>  <span class="keywordflow">if</span> (not _is_valid)</div>
-<div class="line"><span class="lineno">  320</span>    <a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a31dfe818dddd7f80430ca3e606fb1791">configure</a>();</div>
-<div class="line"><span class="lineno">  321</span> </div>
-<div class="line"><span class="lineno">  322</span>  KernelExecuteRegistry kernel_executor;</div>
-<div class="line"><span class="lineno">  323</span> </div>
-<div class="line"><span class="lineno">  324</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a1af8661dad6b1a8b6ea46b9fb322aea2">operators</a>().<a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>(); ++i)</div>
-<div class="line"><span class="lineno">  325</span>  {</div>
-<div class="line"><span class="lineno">  326</span>    <span class="keyword">const</span> <span class="keyword">auto</span> op = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a1af8661dad6b1a8b6ea46b9fb322aea2">operators</a>().<a class="code hl_function" href="classluci_1_1_vector_wrapper.html#acb4fcd319072289ca0797ad27a12a62c">at</a>(i);</div>
-<div class="line"><span class="lineno">  327</span>    assert(op != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  328</span> </div>
-<div class="line"><span class="lineno">  329</span>    <span class="keyword">const</span> <span class="keyword">auto</span> opcode = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a92d3eb40f5440a480efbd0ebef1dc1a4">builtin_code</a>(op);</div>
-<div class="line"><span class="lineno">  330</span> </div>
-<div class="line"><span class="lineno">  331</span>    allocate(i);</div>
-<div class="line"><span class="lineno">  332</span> </div>
-<div class="line"><span class="lineno">  333</span>    <span class="keywordtype">bool</span> is_inplace = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  334</span> </div>
-<div class="line"><span class="lineno">  335</span>    <span class="keywordflow">if</span> (_inplace_op_indexes.find(i) != _inplace_op_indexes.end())</div>
-<div class="line"><span class="lineno">  336</span>      is_inplace = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  337</span> </div>
-<div class="line"><span class="lineno">  338</span>    kernel_executor.execute_kernel(op, opcode, <span class="keyword">this</span>, is_inplace);</div>
-<div class="line"><span class="lineno">  339</span> </div>
-<div class="line"><span class="lineno">  340</span>    deallocate(i);</div>
-<div class="line"><span class="lineno">  341</span>  }</div>
-<div class="line"><span class="lineno">  342</span>}</div>
-<div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a31dfe818dddd7f80430ca3e606fb1791"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a31dfe818dddd7f80430ca3e606fb1791">luci_interpreter::RuntimeGraph::configure</a></div><div class="ttdeci">void configure()</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00297">RuntimeGraph.cpp:297</a></div></div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00419">419</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  420</span>{</div>
+<div class="line"><span class="lineno">  421</span>  <a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a74df90e900ff0cae9969f45ecd1ae42f">selectOwnSubgraph</a>();</div>
+<div class="line"><span class="lineno">  422</span> </div>
+<div class="line"><span class="lineno">  423</span>  <span class="keywordflow">if</span> (not _is_valid)</div>
+<div class="line"><span class="lineno">  424</span>    <a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a540cdda07a3610e5bcc93b286728d3c4">configure</a>(<span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  425</span> </div>
+<div class="line"><span class="lineno">  426</span>  KernelExecuteRegistry kernel_executor;</div>
+<div class="line"><span class="lineno">  427</span> </div>
+<div class="line"><span class="lineno">  428</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a1af8661dad6b1a8b6ea46b9fb322aea2">operators</a>().<a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>(); ++i)</div>
+<div class="line"><span class="lineno">  429</span>  {</div>
+<div class="line"><span class="lineno">  430</span>    <span class="keyword">const</span> <span class="keyword">auto</span> op = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a1af8661dad6b1a8b6ea46b9fb322aea2">operators</a>().<a class="code hl_function" href="classluci_1_1_vector_wrapper.html#acb4fcd319072289ca0797ad27a12a62c">at</a>(i);</div>
+<div class="line"><span class="lineno">  431</span>    assert(op != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  432</span> </div>
+<div class="line"><span class="lineno">  433</span>    <span class="keyword">const</span> <span class="keyword">auto</span> opcode = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a92d3eb40f5440a480efbd0ebef1dc1a4">builtin_code</a>(op);</div>
+<div class="line"><span class="lineno">  434</span> </div>
+<div class="line"><span class="lineno">  435</span>    allocate(i);</div>
+<div class="line"><span class="lineno">  436</span> </div>
+<div class="line"><span class="lineno">  437</span>    <span class="keywordtype">bool</span> is_inplace = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  438</span> </div>
+<div class="line"><span class="lineno">  439</span>    <span class="keywordflow">if</span> (_inplace_op_indexes.find(i) != _inplace_op_indexes.end())</div>
+<div class="line"><span class="lineno">  440</span>      is_inplace = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  441</span> </div>
+<div class="line"><span class="lineno">  442</span>    kernel_executor.execute_kernel(op, opcode, <span class="keyword">this</span>, is_inplace);</div>
+<div class="line"><span class="lineno">  443</span> </div>
+<div class="line"><span class="lineno">  444</span>    deallocate(i);</div>
+<div class="line"><span class="lineno">  445</span>  }</div>
+<div class="line"><span class="lineno">  446</span>}</div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a540cdda07a3610e5bcc93b286728d3c4"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a540cdda07a3610e5bcc93b286728d3c4">luci_interpreter::RuntimeGraph::configure</a></div><div class="ttdeci">void configure(bool dealloc_input)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00392">RuntimeGraph.cpp:392</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00374">luci::VectorWrapper&lt; T &gt;::at()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00295">luci::CircleReader::builtin_code()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00297">configure()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8cpp_source.html#l00064">luci_interpreter::KernelExecuteRegistry::execute_kernel()</a>, <a class="el" href="_circle_reader_8h_source.html#l00105">luci::CircleReader::operators()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">luci_interpreter::size()</a>.</p>
+<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00374">luci::VectorWrapper&lt; T &gt;::at()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00295">luci::CircleReader::builtin_code()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00392">configure()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8cpp_source.html#l00064">luci_interpreter::KernelExecuteRegistry::execute_kernel()</a>, <a class="el" href="_circle_reader_8h_source.html#l00105">luci::CircleReader::operators()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00097">selectOwnSubgraph()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">luci_interpreter::size()</a>.</p>
 
 </div>
 </div>
@@ -718,19 +846,20 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00287">287</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  288</span>{</div>
-<div class="line"><span class="lineno">  289</span>  <span class="keywordflow">if</span> (index &lt; 0)</div>
-<div class="line"><span class="lineno">  290</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  291</span> </div>
-<div class="line"><span class="lineno">  292</span>  <span class="keyword">const</span> <span class="keyword">auto</span> raw_tensor = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
-<div class="line"><span class="lineno">  293</span> </div>
-<div class="line"><span class="lineno">  294</span>  <span class="keywordflow">return</span> raw_tensor;</div>
-<div class="line"><span class="lineno">  295</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00381">381</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  382</span>{</div>
+<div class="line"><span class="lineno">  383</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  384</span>  <span class="keywordflow">if</span> (index &lt; 0)</div>
+<div class="line"><span class="lineno">  385</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  386</span> </div>
+<div class="line"><span class="lineno">  387</span>  <span class="keyword">const</span> <span class="keyword">auto</span> raw_tensor = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
+<div class="line"><span class="lineno">  388</span> </div>
+<div class="line"><span class="lineno">  389</span>  <span class="keywordflow">return</span> raw_tensor;</div>
+<div class="line"><span class="lineno">  390</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00104">luci::CircleReader::tensors()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_concatenation_8cpp_source.html#l00082">luci_interpreter::configure_kernel_CircleConcatenation()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00386">luci_interpreter::configure_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00023">luci_interpreter::configure_kernel_CircleExpandDims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_fully_connected_8cpp_source.html#l00159">luci_interpreter::configure_kernel_CircleFullyConnected()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_logistic_8cpp_source.html#l00073">luci_interpreter::configure_kernel_CircleLogistic()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00157">luci_interpreter::configure_kernel_CircleMaxPool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_softmax_8cpp_source.html#l00067">luci_interpreter::configure_kernel_CircleSoftmax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_concatenation_8cpp_source.html#l00147">luci_interpreter::execute_kernel_CircleConcatenation()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00465">luci_interpreter::execute_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00066">luci_interpreter::execute_kernel_CircleExpandDims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_fully_connected_8cpp_source.html#l00221">luci_interpreter::execute_kernel_CircleFullyConnected()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_logistic_8cpp_source.html#l00098">luci_interpreter::execute_kernel_CircleLogistic()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00186">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_reshape_8cpp_source.html#l00031">luci_interpreter::execute_kernel_CircleReshape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_softmax_8cpp_source.html#l00095">luci_interpreter::execute_kernel_CircleSoftmax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00416">luci_interpreter::execute_kernel_CircleUnidirectionalSequenceLSTM()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00032">luci_interpreter::lstm::LSTMStruct::LSTMStruct()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_concatenation_8cpp_source.html#l00105">luci_interpreter::configure_kernel_CircleConcatenation()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00386">luci_interpreter::configure_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00023">luci_interpreter::configure_kernel_CircleExpandDims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_fully_connected_8cpp_source.html#l00159">luci_interpreter::configure_kernel_CircleFullyConnected()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_logistic_8cpp_source.html#l00073">luci_interpreter::configure_kernel_CircleLogistic()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00157">luci_interpreter::configure_kernel_CircleMaxPool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_split_8cpp_source.html#l00081">luci_interpreter::configure_kernel_CircleSplit()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_concatenation_8cpp_source.html#l00158">luci_interpreter::execute_kernel_CircleConcatenation()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00465">luci_interpreter::execute_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00066">luci_interpreter::execute_kernel_CircleExpandDims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_fully_connected_8cpp_source.html#l00221">luci_interpreter::execute_kernel_CircleFullyConnected()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_logistic_8cpp_source.html#l00098">luci_interpreter::execute_kernel_CircleLogistic()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00186">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_reshape_8cpp_source.html#l00032">luci_interpreter::execute_kernel_CircleReshape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_split_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSplit()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00416">luci_interpreter::execute_kernel_CircleUnidirectionalSequenceLSTM()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00032">luci_interpreter::lstm::LSTMStruct::LSTMStruct()</a>, <a class="el" href="_m_i_s_o_kernel_8h_source.html#l00031">luci_interpreter::kernels::MISOKernel::MISOKernel()</a>, <a class="el" href="_s_i_s_o_kernel_8h_source.html#l00031">luci_interpreter::kernels::SISOKernel::SISOKernel()</a>, and <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00041">luci_interpreter::kernels::TISOKernel::TISOKernel()</a>.</p>
 
 </div>
 </div>
@@ -750,22 +879,23 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00277">277</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  278</span>{</div>
-<div class="line"><span class="lineno">  279</span>  <span class="keywordflow">if</span> (raw_tensor == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  280</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  281</span> </div>
-<div class="line"><span class="lineno">  282</span>  <span class="keyword">auto</span> <span class="keyword">const</span> &amp;buffer = <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a2788375299ddbc774a313ed06825e2e5">buffers</a>()[raw_tensor-&gt;buffer()]-&gt;<a class="code hl_function" href="classluci_1_1_vector_wrapper.html#a686898ce8d41f701146d9cb39e5c2fdf">data</a>());</div>
-<div class="line"><span class="lineno">  283</span> </div>
-<div class="line"><span class="lineno">  284</span>  <span class="keywordflow">return</span> <span class="keyword">const_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(buffer.data());</div>
-<div class="line"><span class="lineno">  285</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00370">370</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  371</span>{</div>
+<div class="line"><span class="lineno">  372</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  373</span>  <span class="keywordflow">if</span> (raw_tensor == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  374</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  375</span> </div>
+<div class="line"><span class="lineno">  376</span>  <span class="keyword">auto</span> <span class="keyword">const</span> &amp;buffer = <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(_reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a2788375299ddbc774a313ed06825e2e5">buffers</a>()[raw_tensor-&gt;buffer()]-&gt;<a class="code hl_function" href="classluci_1_1_vector_wrapper.html#a686898ce8d41f701146d9cb39e5c2fdf">data</a>());</div>
+<div class="line"><span class="lineno">  377</span> </div>
+<div class="line"><span class="lineno">  378</span>  <span class="keywordflow">return</span> <span class="keyword">const_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(buffer.data());</div>
+<div class="line"><span class="lineno">  379</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_reader_html_a2788375299ddbc774a313ed06825e2e5"><div class="ttname"><a href="classluci_1_1_circle_reader.html#a2788375299ddbc774a313ed06825e2e5">luci::CircleReader::buffers</a></div><div class="ttdeci">CircleBuffers buffers() const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8h_source.html#l00103">CircleReader.h:103</a></div></div>
 <div class="ttc" id="aclassluci_1_1_vector_wrapper_html_a686898ce8d41f701146d9cb39e5c2fdf"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#a686898ce8d41f701146d9cb39e5c2fdf">luci::VectorWrapper::data</a></div><div class="ttdeci">const T * data() const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8cpp_source.html#l00359">CircleReader.cpp:359</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a727b91def9b4553b7e3aeb4a146b7f22"><div class="ttname"><a href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">luci::wrap</a></div><div class="ttdeci">VectorWrapper&lt; T &gt; wrap(const flatbuffers::Vector&lt; T &gt; *vec)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8h_source.html#l00081">CircleReader.h:81</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00103">luci::CircleReader::buffers()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00359">luci::VectorWrapper&lt; T &gt;::data()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00392">luci_interpreter_pal::lstm_internal::calculateLstmGate()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00386">luci_interpreter::configure_kernel_CircleConv2D()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00023">luci_interpreter::configure_kernel_CircleExpandDims()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00392">luci_interpreter_pal::lstm_internal::calculateLstmGate()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00386">luci_interpreter::configure_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00023">luci_interpreter::configure_kernel_CircleExpandDims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_split_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSplit()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00067">luci_interpreter::kernels::TISOKernel::readData()</a>, and <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00085">luci_interpreter::kernels::TISOKernel::readInplaceData()</a>.</p>
 
 </div>
 </div>
@@ -785,21 +915,49 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00245">245</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  246</span>{</div>
-<div class="line"><span class="lineno">  247</span>  <span class="keywordflow">if</span> (raw_tensor == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  248</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>  <span class="keywordflow">if</span> (_tensor_to_data.find(raw_tensor) == _tensor_to_data.end())</div>
-<div class="line"><span class="lineno">  251</span>  {</div>
-<div class="line"><span class="lineno">  252</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  253</span>  }</div>
-<div class="line"><span class="lineno">  254</span> </div>
-<div class="line"><span class="lineno">  255</span>  <span class="keywordflow">return</span> _tensor_to_data.at(raw_tensor);</div>
-<div class="line"><span class="lineno">  256</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00327">327</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  328</span>{</div>
+<div class="line"><span class="lineno">  329</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  330</span> </div>
+<div class="line"><span class="lineno">  331</span>  <span class="keywordflow">if</span> (raw_tensor == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  332</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  333</span> </div>
+<div class="line"><span class="lineno">  334</span>  <span class="keywordflow">if</span> (_tensor_to_data.find(raw_tensor) == _tensor_to_data.end())</div>
+<div class="line"><span class="lineno">  335</span>  {</div>
+<div class="line"><span class="lineno">  336</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  337</span>  }</div>
+<div class="line"><span class="lineno">  338</span> </div>
+<div class="line"><span class="lineno">  339</span>  <span class="keywordflow">return</span> _tensor_to_data.at(raw_tensor);</div>
+<div class="line"><span class="lineno">  340</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00066">luci_interpreter::execute_kernel_CircleExpandDims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_reshape_8cpp_source.html#l00031">luci_interpreter::execute_kernel_CircleReshape()</a>, and <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00529">luci_interpreter_pal::lstm_internal::lstmStep()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_tanh_8cpp_source.html#l00105">luci_interpreter::evalInteger()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00066">luci_interpreter::execute_kernel_CircleExpandDims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_reshape_8cpp_source.html#l00032">luci_interpreter::execute_kernel_CircleReshape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_split_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSplit()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_tanh_8cpp_source.html#l00151">luci_interpreter::execute_kernel_CircleTanh()</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00529">luci_interpreter_pal::lstm_internal::lstmStep()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00067">luci_interpreter::kernels::TISOKernel::readData()</a>, and <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00085">luci_interpreter::kernels::TISOKernel::readInplaceData()</a>.</p>
 
+</div>
+</div>
+<a id="a91666f1edc0a1e44b14ff098c81988ba" name="a91666f1edc0a1e44b14ff098c81988ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91666f1edc0a1e44b14ff098c81988ba">&#9670;&#160;</a></span>getDynamicShapeTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; int32_t &gt; * luci_interpreter::RuntimeGraph::getDynamicShapeTensor </td>
+          <td>(</td>
+          <td class="paramtype">const circle::Tensor *&#160;</td>
+          <td class="paramname"><em>tensor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00150">150</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  151</span>{</div>
+<div class="line"><span class="lineno">  152</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  153</span>  <span class="keyword">auto</span> it = _dynamic_tensor_shapes.find(tensor);</div>
+<div class="line"><span class="lineno">  154</span> </div>
+<div class="line"><span class="lineno">  155</span>  <span class="keywordflow">return</span> it == _dynamic_tensor_shapes.end() ? nullptr : &amp;_dynamic_tensor_shapes[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>];</div>
+<div class="line"><span class="lineno">  156</span>}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a9608f7731c3c8249ab94434c38ed9ca8" name="a9608f7731c3c8249ab94434c38ed9ca8"></a>
@@ -818,17 +976,48 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00213">213</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  214</span>{</div>
-<div class="line"><span class="lineno">  215</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#aae516732afc634a3478e53024165b5c1">inputs</a>()[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>];</div>
-<div class="line"><span class="lineno">  216</span>  assert(tensor_index != -1);</div>
-<div class="line"><span class="lineno">  217</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
-<div class="line"><span class="lineno">  218</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  219</span> </div>
-<div class="line"><span class="lineno">  220</span>  <span class="keywordflow">return</span> Tensor::num_elements(tensor) * <a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>(Tensor::element_type(tensor));</div>
-<div class="line"><span class="lineno">  221</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00258">258</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  259</span>{</div>
+<div class="line"><span class="lineno">  260</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  261</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#aae516732afc634a3478e53024165b5c1">inputs</a>()[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>];</div>
+<div class="line"><span class="lineno">  262</span>  assert(tensor_index != -1);</div>
+<div class="line"><span class="lineno">  263</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
+<div class="line"><span class="lineno">  264</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  265</span> </div>
+<div class="line"><span class="lineno">  266</span>  <span class="keywordflow">return</span> Tensor::num_elements(tensor) * <a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>(Tensor::element_type(tensor));</div>
+<div class="line"><span class="lineno">  267</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00106">luci::CircleReader::inputs()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">luci_interpreter::size()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00104">luci::CircleReader::tensors()</a>.</p>
+
+</div>
+</div>
+<a id="ae88e069e304d04700eaae29800e93880" name="ae88e069e304d04700eaae29800e93880"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae88e069e304d04700eaae29800e93880">&#9670;&#160;</a></span>getInputTensorByIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const circle::Tensor * luci_interpreter::RuntimeGraph::getInputTensorByIndex </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>input_index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00281">281</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  282</span>{</div>
+<div class="line"><span class="lineno">  283</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  284</span> </div>
+<div class="line"><span class="lineno">  285</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#aae516732afc634a3478e53024165b5c1">inputs</a>()[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>];</div>
+<div class="line"><span class="lineno">  286</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
+<div class="line"><span class="lineno">  287</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  288</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>;</div>
+<div class="line"><span class="lineno">  289</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00106">luci::CircleReader::inputs()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00104">luci::CircleReader::tensors()</a>.</p>
 
 </div>
 </div>
@@ -862,6 +1051,57 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="ab0f5866f3a0f824f3b1220b9233fcbf4" name="ab0f5866f3a0f824f3b1220b9233fcbf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0f5866f3a0f824f3b1220b9233fcbf4">&#9670;&#160;</a></span>getNumOfInputTensors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t luci_interpreter::RuntimeGraph::getNumOfInputTensors </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00269">269</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  270</span>{</div>
+<div class="line"><span class="lineno">  271</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  272</span>  <span class="keywordflow">return</span> _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#aae516732afc634a3478e53024165b5c1">inputs</a>().size();</div>
+<div class="line"><span class="lineno">  273</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00106">luci::CircleReader::inputs()</a>.</p>
+
+</div>
+</div>
+<a id="ae5607399e8a8d93a8411c7eff8c13667" name="ae5607399e8a8d93a8411c7eff8c13667"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5607399e8a8d93a8411c7eff8c13667">&#9670;&#160;</a></span>getNumOfOutputTensors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t luci_interpreter::RuntimeGraph::getNumOfOutputTensors </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00275">275</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  276</span>{</div>
+<div class="line"><span class="lineno">  277</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  278</span>  <span class="keywordflow">return</span> _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a3b6e91e4d8a0d41c0ad8e0eea3270c27">outputs</a>().size();</div>
+<div class="line"><span class="lineno">  279</span>}</div>
+<div class="ttc" id="aclassluci_1_1_circle_reader_html_a3b6e91e4d8a0d41c0ad8e0eea3270c27"><div class="ttname"><a href="classluci_1_1_circle_reader.html#a3b6e91e4d8a0d41c0ad8e0eea3270c27">luci::CircleReader::outputs</a></div><div class="ttdeci">VectorWrapper&lt; int32_t &gt; outputs() const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8h_source.html#l00107">CircleReader.h:107</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00107">luci::CircleReader::outputs()</a>.</p>
+
+</div>
+</div>
 <a id="abb0cfd66c613ad30734e03355148c9c7" name="abb0cfd66c613ad30734e03355148c9c7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abb0cfd66c613ad30734e03355148c9c7">&#9670;&#160;</a></span>getOutputDataByIndex()</h2>
 
@@ -878,18 +1118,19 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00233">233</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  234</span>{</div>
-<div class="line"><span class="lineno">  235</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a3b6e91e4d8a0d41c0ad8e0eea3270c27">outputs</a>()[output_index];</div>
-<div class="line"><span class="lineno">  236</span>  assert(tensor_index != -1);</div>
-<div class="line"><span class="lineno">  237</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
-<div class="line"><span class="lineno">  238</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  239</span> </div>
-<div class="line"><span class="lineno">  240</span>  assert(_tensor_to_data.find(tensor) != _tensor_to_data.end());</div>
-<div class="line"><span class="lineno">  241</span> </div>
-<div class="line"><span class="lineno">  242</span>  <span class="keywordflow">return</span> _tensor_to_data[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>];</div>
-<div class="line"><span class="lineno">  243</span>}</div>
-<div class="ttc" id="aclassluci_1_1_circle_reader_html_a3b6e91e4d8a0d41c0ad8e0eea3270c27"><div class="ttname"><a href="classluci_1_1_circle_reader.html#a3b6e91e4d8a0d41c0ad8e0eea3270c27">luci::CircleReader::outputs</a></div><div class="ttdeci">VectorWrapper&lt; int32_t &gt; outputs() const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8h_source.html#l00107">CircleReader.h:107</a></div></div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00313">313</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  314</span>{</div>
+<div class="line"><span class="lineno">  315</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  316</span> </div>
+<div class="line"><span class="lineno">  317</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a3b6e91e4d8a0d41c0ad8e0eea3270c27">outputs</a>()[output_index];</div>
+<div class="line"><span class="lineno">  318</span>  assert(tensor_index != -1);</div>
+<div class="line"><span class="lineno">  319</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
+<div class="line"><span class="lineno">  320</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  321</span> </div>
+<div class="line"><span class="lineno">  322</span>  assert(_tensor_to_data.find(tensor) != _tensor_to_data.end());</div>
+<div class="line"><span class="lineno">  323</span> </div>
+<div class="line"><span class="lineno">  324</span>  <span class="keywordflow">return</span> _tensor_to_data[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>];</div>
+<div class="line"><span class="lineno">  325</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00107">luci::CircleReader::outputs()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00104">luci::CircleReader::tensors()</a>.</p>
 
@@ -911,17 +1152,49 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00223">223</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  224</span>{</div>
-<div class="line"><span class="lineno">  225</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a3b6e91e4d8a0d41c0ad8e0eea3270c27">outputs</a>()[output_index];</div>
-<div class="line"><span class="lineno">  226</span>  assert(tensor_index != -1);</div>
-<div class="line"><span class="lineno">  227</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
-<div class="line"><span class="lineno">  228</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  229</span> </div>
-<div class="line"><span class="lineno">  230</span>  <span class="keywordflow">return</span> Tensor::num_elements(tensor) * <a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>(Tensor::element_type(tensor));</div>
-<div class="line"><span class="lineno">  231</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00301">301</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  302</span>{</div>
+<div class="line"><span class="lineno">  303</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  304</span> </div>
+<div class="line"><span class="lineno">  305</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a3b6e91e4d8a0d41c0ad8e0eea3270c27">outputs</a>()[output_index];</div>
+<div class="line"><span class="lineno">  306</span>  assert(tensor_index != -1);</div>
+<div class="line"><span class="lineno">  307</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
+<div class="line"><span class="lineno">  308</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  309</span> </div>
+<div class="line"><span class="lineno">  310</span>  <span class="keywordflow">return</span> Tensor::num_elements(tensor) * <a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>(Tensor::element_type(tensor));</div>
+<div class="line"><span class="lineno">  311</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00107">luci::CircleReader::outputs()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">luci_interpreter::size()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00104">luci::CircleReader::tensors()</a>.</p>
+
+</div>
+</div>
+<a id="ad817e140a1f6fc5ebec7a324ce4d9b81" name="ad817e140a1f6fc5ebec7a324ce4d9b81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad817e140a1f6fc5ebec7a324ce4d9b81">&#9670;&#160;</a></span>getOutputTensorByIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const circle::Tensor * luci_interpreter::RuntimeGraph::getOutputTensorByIndex </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>input_index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00291">291</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  292</span>{</div>
+<div class="line"><span class="lineno">  293</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  294</span> </div>
+<div class="line"><span class="lineno">  295</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a3b6e91e4d8a0d41c0ad8e0eea3270c27">outputs</a>()[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>];</div>
+<div class="line"><span class="lineno">  296</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
+<div class="line"><span class="lineno">  297</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  298</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>;</div>
+<div class="line"><span class="lineno">  299</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00107">luci::CircleReader::outputs()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00104">luci::CircleReader::tensors()</a>.</p>
 
 </div>
 </div>
@@ -955,6 +1228,36 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="af91b5d5e4e4c6708b96d65c4420c7d93" name="af91b5d5e4e4c6708b96d65c4420c7d93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af91b5d5e4e4c6708b96d65c4420c7d93">&#9670;&#160;</a></span>getRuntimeModule()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classluci__interpreter_1_1_runtime_module.html">RuntimeModule</a> * luci_interpreter::RuntimeGraph::getRuntimeModule </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00106">106</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html">RuntimeGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span>{ <span class="keywordflow">return</span> _runtime_module; };</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_while_8cpp_source.html#l00026">luci_interpreter::configure_kernel_CircleWhile()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_while_8cpp_source.html#l00061">luci_interpreter::execute_kernel_CircleWhile()</a>.</p>
+
+</div>
+</div>
 <a id="a1b51702b15f8278427362cd2744d52d1" name="a1b51702b15f8278427362cd2744d52d1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1b51702b15f8278427362cd2744d52d1">&#9670;&#160;</a></span>invalidate()</h2>
 
@@ -978,8 +1281,8 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00085">85</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html">RuntimeGraph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>{ _is_valid = <span class="keyword">false</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00094">94</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html">RuntimeGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>{ _is_valid = <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00048">luci_interpreter::RuntimeGraph::TensorAllocPlan::build()</a>.</p>
 
@@ -1008,8 +1311,8 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00086">86</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html">RuntimeGraph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>{ <span class="keywordflow">return</span> _is_valid; }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00095">95</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html">RuntimeGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>{ <span class="keywordflow">return</span> _is_valid; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1039,26 +1342,216 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00258">258</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  260</span>{</div>
-<div class="line"><span class="lineno">  261</span>  <span class="keywordflow">if</span> (src_tensor == <span class="keyword">nullptr</span> or dst_tensor == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  262</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  263</span> </div>
-<div class="line"><span class="lineno">  264</span>  <span class="keyword">auto</span> src_it = _tensor_to_data.find(src_tensor);</div>
-<div class="line"><span class="lineno">  265</span> </div>
-<div class="line"><span class="lineno">  266</span>  assert(src_it != _tensor_to_data.end() &amp;&amp; <span class="stringliteral">&quot;Failed makeInplaceOperation&quot;</span>);</div>
-<div class="line"><span class="lineno">  267</span> </div>
-<div class="line"><span class="lineno">  268</span>  <span class="keyword">auto</span> *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a> = _tensor_to_data[src_tensor];</div>
-<div class="line"><span class="lineno">  269</span> </div>
-<div class="line"><span class="lineno">  270</span>  _tensor_to_data.erase(src_it);</div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>  assert(_tensor_to_data.find(dst_tensor) == _tensor_to_data.end() &amp;&amp;</div>
-<div class="line"><span class="lineno">  273</span>         <span class="stringliteral">&quot;Failed makeInplaceOperation&quot;</span>);</div>
-<div class="line"><span class="lineno">  274</span>  _tensor_to_data[dst_tensor] = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>;</div>
-<div class="line"><span class="lineno">  275</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00344">344</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  346</span>{</div>
+<div class="line"><span class="lineno">  347</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  348</span>  assert(removing_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  349</span> </div>
+<div class="line"><span class="lineno">  350</span>  <span class="keyword">auto</span> src_it = _tensor_to_data.find(removing_tensor);</div>
+<div class="line"><span class="lineno">  351</span> </div>
+<div class="line"><span class="lineno">  352</span>  <span class="keywordflow">if</span> (src_it == _tensor_to_data.end())</div>
+<div class="line"><span class="lineno">  353</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  354</span> </div>
+<div class="line"><span class="lineno">  355</span>  <span class="keyword">auto</span> *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a> = _tensor_to_data[removing_tensor];</div>
+<div class="line"><span class="lineno">  356</span> </div>
+<div class="line"><span class="lineno">  357</span>  _tensor_to_data.erase(src_it);</div>
+<div class="line"><span class="lineno">  358</span> </div>
+<div class="line"><span class="lineno">  359</span>  <span class="keywordflow">if</span> (dst_tensor == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  360</span>  {</div>
+<div class="line"><span class="lineno">  361</span>    <span class="keyword">delete</span>[] <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>;</div>
+<div class="line"><span class="lineno">  362</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  363</span>  }</div>
+<div class="line"><span class="lineno">  364</span> </div>
+<div class="line"><span class="lineno">  365</span>  assert(_tensor_to_data.find(dst_tensor) == _tensor_to_data.end() &amp;&amp;</div>
+<div class="line"><span class="lineno">  366</span>         <span class="stringliteral">&quot;Failed makeInplaceOperation&quot;</span>);</div>
+<div class="line"><span class="lineno">  367</span>  _tensor_to_data[dst_tensor] = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>;</div>
+<div class="line"><span class="lineno">  368</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00066">luci_interpreter::execute_kernel_CircleExpandDims()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_reshape_8cpp_source.html#l00031">luci_interpreter::execute_kernel_CircleReshape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00066">luci_interpreter::kernels::evalTISOInplaceKernel()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00161">luci_interpreter::kernels::evalTISOInplaceQuantizedKernel()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00066">luci_interpreter::execute_kernel_CircleExpandDims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_reshape_8cpp_source.html#l00032">luci_interpreter::execute_kernel_CircleReshape()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_tanh_8cpp_source.html#l00151">luci_interpreter::execute_kernel_CircleTanh()</a>.</p>
 
+</div>
+</div>
+<a id="af86be2a32f95adb74c4782b358899158" name="af86be2a32f95adb74c4782b358899158"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af86be2a32f95adb74c4782b358899158">&#9670;&#160;</a></span>removeDynamicShapeTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter::RuntimeGraph::removeDynamicShapeTensor </td>
+          <td>(</td>
+          <td class="paramtype">const circle::Tensor *&#160;</td>
+          <td class="paramname"><em>tensor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00158">158</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  159</span>{</div>
+<div class="line"><span class="lineno">  160</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  161</span>  <span class="keyword">auto</span> it = _dynamic_tensor_shapes.find(tensor);</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>  assert(it != _dynamic_tensor_shapes.end());</div>
+<div class="line"><span class="lineno">  164</span> </div>
+<div class="line"><span class="lineno">  165</span>  _dynamic_tensor_shapes.erase(it);</div>
+<div class="line"><span class="lineno">  166</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a570735b2e2991e93ec3376c15a52e0cf" name="a570735b2e2991e93ec3376c15a52e0cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a570735b2e2991e93ec3376c15a52e0cf">&#9670;&#160;</a></span>resetOutputTensorsData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter::RuntimeGraph::resetOutputTensorsData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00199">199</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  200</span>{</div>
+<div class="line"><span class="lineno">  201</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  202</span>  <span class="keyword">const</span> <span class="keyword">auto</span> graph_inputs = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#aae516732afc634a3478e53024165b5c1">inputs</a>();</div>
+<div class="line"><span class="lineno">  203</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a3b6e91e4d8a0d41c0ad8e0eea3270c27">outputs</a>().<a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>(); ++i)</div>
+<div class="line"><span class="lineno">  204</span>  {</div>
+<div class="line"><span class="lineno">  205</span>    <span class="keyword">const</span> <span class="keyword">auto</span> tensor_index = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a3b6e91e4d8a0d41c0ad8e0eea3270c27">outputs</a>()[i];</div>
+<div class="line"><span class="lineno">  206</span>    assert(tensor_index != -1);</div>
+<div class="line"><span class="lineno">  207</span> </div>
+<div class="line"><span class="lineno">  208</span>    <span class="keywordflow">if</span> (std::find(graph_inputs.begin(), graph_inputs.end(), tensor_index) != graph_inputs.end())</div>
+<div class="line"><span class="lineno">  209</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  210</span> </div>
+<div class="line"><span class="lineno">  211</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>()[tensor_index];</div>
+<div class="line"><span class="lineno">  212</span>    assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  213</span> </div>
+<div class="line"><span class="lineno">  214</span>    <span class="keyword">auto</span> tensor_it = _tensor_to_data.find(tensor);</div>
+<div class="line"><span class="lineno">  215</span>    <span class="keywordflow">if</span> (tensor_it != _tensor_to_data.end())</div>
+<div class="line"><span class="lineno">  216</span>    {</div>
+<div class="line"><span class="lineno">  217</span>      <span class="keyword">auto</span> *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a> = _tensor_to_data.at(tensor);</div>
+<div class="line"><span class="lineno">  218</span>      _memory_manager-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_i_memory_manager.html#a04badb0c6862d6d24501cab99ee7afe7">release_memory</a>(data);</div>
+<div class="line"><span class="lineno">  219</span>      _tensor_to_data.erase(tensor_it);</div>
+<div class="line"><span class="lineno">  220</span>    }</div>
+<div class="line"><span class="lineno">  221</span>  }</div>
+<div class="line"><span class="lineno">  222</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00106">luci::CircleReader::inputs()</a>, <a class="el" href="_circle_reader_8h_source.html#l00107">luci::CircleReader::outputs()</a>, <a class="el" href="classluci__interpreter_1_1_i_memory_manager.html#a04badb0c6862d6d24501cab99ee7afe7">luci_interpreter::IMemoryManager::release_memory()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">luci_interpreter::size()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00104">luci::CircleReader::tensors()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00239">configureGraphInput()</a>.</p>
+
+</div>
+</div>
+<a id="a82c3e9346564a7542a691e5e7cdee631" name="a82c3e9346564a7542a691e5e7cdee631"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82c3e9346564a7542a691e5e7cdee631">&#9670;&#160;</a></span>resetTensorData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter::RuntimeGraph::resetTensorData </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>new_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const circle::Tensor *&#160;</td>
+          <td class="paramname"><em>tensor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00186">186</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  187</span>{</div>
+<div class="line"><span class="lineno">  188</span>  assert(_reader-&gt;get_current_subgraph_index() == _subgraph_index);</div>
+<div class="line"><span class="lineno">  189</span>  <span class="keyword">auto</span> tensor_it = _tensor_to_data.find(tensor);</div>
+<div class="line"><span class="lineno">  190</span>  <span class="keywordflow">if</span> (tensor_it != _tensor_to_data.end())</div>
+<div class="line"><span class="lineno">  191</span>  {</div>
+<div class="line"><span class="lineno">  192</span>    <span class="keyword">auto</span> *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a> = _tensor_to_data.at(tensor);</div>
+<div class="line"><span class="lineno">  193</span>    _memory_manager-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_i_memory_manager.html#a04badb0c6862d6d24501cab99ee7afe7">release_memory</a>(data);</div>
+<div class="line"><span class="lineno">  194</span>  }</div>
+<div class="line"><span class="lineno">  195</span> </div>
+<div class="line"><span class="lineno">  196</span>  _tensor_to_data[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>] = new_data;</div>
+<div class="line"><span class="lineno">  197</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="classluci__interpreter_1_1_i_memory_manager.html#a04badb0c6862d6d24501cab99ee7afe7">luci_interpreter::IMemoryManager::release_memory()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>.</p>
+
+</div>
+</div>
+<a id="a74df90e900ff0cae9969f45ecd1ae42f" name="a74df90e900ff0cae9969f45ecd1ae42f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74df90e900ff0cae9969f45ecd1ae42f">&#9670;&#160;</a></span>selectOwnSubgraph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter::RuntimeGraph::selectOwnSubgraph </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00097">97</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html">RuntimeGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   97</span>{ _reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a521013fe39256de7e187b2519c7b5db9">select_subgraph</a>(_subgraph_index); };</div>
+<div class="ttc" id="aclassluci_1_1_circle_reader_html_a521013fe39256de7e187b2519c7b5db9"><div class="ttname"><a href="classluci_1_1_circle_reader.html#a521013fe39256de7e187b2519c7b5db9">luci::CircleReader::select_subgraph</a></div><div class="ttdeci">bool select_subgraph(uint32_t subgraph)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8cpp_source.html#l00330">CircleReader.cpp:330</a></div></div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00392">configure()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00419">execute()</a>.</p>
+
+</div>
+</div>
+<a id="a81e2598fc6aa94910cac7004701b355f" name="a81e2598fc6aa94910cac7004701b355f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81e2598fc6aa94910cac7004701b355f">&#9670;&#160;</a></span>setDataToTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter::RuntimeGraph::setDataToTensor </td>
+          <td>(</td>
+          <td class="paramtype">const circle::Tensor *&#160;</td>
+          <td class="paramname"><em>tensor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00414">414</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html">RuntimeGraph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  415</span>{</div>
+<div class="line"><span class="lineno">  416</span>  _tensor_to_data[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>] = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>;</div>
+<div class="line"><span class="lineno">  417</span>}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="ad5ab05e36a191dbcf4d9dd75d82fb023" name="ad5ab05e36a191dbcf4d9dd75d82fb023"></a>

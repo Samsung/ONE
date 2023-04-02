@@ -5,6 +5,6 @@ var classdio_1_1hdf5_1_1_h_d_f5_importer =
     [ "isRawData", "classdio_1_1hdf5_1_1_h_d_f5_importer.html#a74a9cadfe1b6659bfba754c0fa4593f8", null ],
     [ "numData", "classdio_1_1hdf5_1_1_h_d_f5_importer.html#a088f62858ba6788d06ce83c09f5aff64", null ],
     [ "numInputs", "classdio_1_1hdf5_1_1_h_d_f5_importer.html#ad821cff6f5ba7d0fced3a062b4b3b913", null ],
-    [ "readTensor", "classdio_1_1hdf5_1_1_h_d_f5_importer.html#a9a7ab59b11a9f212dcc2e73907065a52", null ],
-    [ "readTensor", "classdio_1_1hdf5_1_1_h_d_f5_importer.html#a79173cf74d10ea8c665ebf22c80b647a", null ]
+    [ "readTensor", "classdio_1_1hdf5_1_1_h_d_f5_importer.html#a256c35ad075518654bffb1b35d2f6606", null ],
+    [ "readTensor", "classdio_1_1hdf5_1_1_h_d_f5_importer.html#a27485cd2d26f429b614a7e43df908021", null ]
 ];

@@ -9,6 +9,7 @@ var classluci__interpreter_1_1_circle_reader =
     [ "buffers", "classluci__interpreter_1_1_circle_reader.html#a248e88d24c0aa38d4f7e0d14ef70c003", null ],
     [ "builtin_code", "classluci__interpreter_1_1_circle_reader.html#a92d3eb40f5440a480efbd0ebef1dc1a4", null ],
     [ "data_format", "classluci__interpreter_1_1_circle_reader.html#a3a6677216cce091b34e68237e60bf1f7", null ],
+    [ "get_current_subgraph_index", "classluci__interpreter_1_1_circle_reader.html#adba7799fc81939cebc360326bdccbb62", null ],
     [ "inputs", "classluci__interpreter_1_1_circle_reader.html#a43845f9a419f126d769f75e4e507470b", null ],
     [ "metadata", "classluci__interpreter_1_1_circle_reader.html#a0029ae47e29d706958c286d2ecde37e1", null ],
     [ "num_subgraph", "classluci__interpreter_1_1_circle_reader.html#a5cc213416adfedbeacf27b2d6746f94a", null ],

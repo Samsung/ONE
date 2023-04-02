@@ -8,5 +8,6 @@ var classmpqsolver_1_1bisection_1_1_bisection_solver =
     [ "BisectionSolver", "classmpqsolver_1_1bisection_1_1_bisection_solver.html#aa20739538397bb3683a18d11342376e3", null ],
     [ "BisectionSolver", "classmpqsolver_1_1bisection_1_1_bisection_solver.html#a008e9c281bc5f93026fb0cfa67968382", null ],
     [ "algorithm", "classmpqsolver_1_1bisection_1_1_bisection_solver.html#a20ab5d69d050094142c5b83bf9229497", null ],
-    [ "run", "classmpqsolver_1_1bisection_1_1_bisection_solver.html#ac68c4d68041be550acec24cad7da8f37", null ]
+    [ "run", "classmpqsolver_1_1bisection_1_1_bisection_solver.html#ac68c4d68041be550acec24cad7da8f37", null ],
+    [ "setVisqPath", "classmpqsolver_1_1bisection_1_1_bisection_solver.html#a514556c8d80e55bb14a04f20f2a55cb7", null ]
 ];

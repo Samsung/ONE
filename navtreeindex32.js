@@ -1,5 +1,14 @@
 var NAVTREEINDEX32 =
 {
+"class_fully_connected_chef.html#a1566dc7d7f00279e8ac9348f5213a6d2":[34,0,217,1],
+"class_fully_connected_chef.html#a6b4fa40f7e6d09dcfad30a78e422d1c6":[34,0,217,0],
+"class_fully_connected_chef.html#a6fe79310bce13a75f00b7aaa0e09f88a":[34,0,217,3],
+"class_gather_chef.html":[34,0,219],
+"class_gather_chef.html#a0b0d84fccbefd49efe217d4515647bbd":[34,0,219,0],
+"class_gather_chef.html#a0bf34aeb8c735443d7b4c0f28f8bc9b4":[34,0,219,1],
+"class_gather_chef.html#abf2e24941a8fc14c8e881433565620d5":[34,0,219,2],
+"class_gather_chef.html#aed2f019f87472e2c21511c8cc09ce87a":[34,0,219,3],
+"class_gather_nd_chef.html":[34,0,221],
 "class_gather_nd_chef.html#a53eb1a5d9b56c0bc0f50e0bb4086f705":[34,0,221,2],
 "class_gather_nd_chef.html#ac78667d371d0ca63ccb8a0bc0b500db7":[34,0,221,1],
 "class_gather_nd_chef.html#adedcf9d3429d3dd7b5f96cb68c35acba":[34,0,221,0],
@@ -240,14 +249,5 @@ var NAVTREEINDEX32 =
 "class_max_pool_with_argmax_chef.html":[34,0,289],
 "class_max_pool_with_argmax_chef.html#a18a7fe4b65f9f3df672ded5d7ba6b2ff":[34,0,289,3],
 "class_max_pool_with_argmax_chef.html#a73c54c88cb2707c0035dc4af9bdd0e81":[34,0,289,4],
-"class_max_pool_with_argmax_chef.html#a827e4b9bfd709d9b59fc4cabb37a98ee":[34,0,289,0],
-"class_max_pool_with_argmax_chef.html#a961de7ad887f28f285345546cc9d51cc":[34,0,289,2],
-"class_max_pool_with_argmax_chef.html#ab39563df19450227a0d85d79b650e20e":[34,0,289,1],
-"class_maximum_chef.html":[34,0,285],
-"class_maximum_chef.html#a186fa7b400347a159a0eda69308d0d20":[34,0,285,0],
-"class_maximum_chef.html#a7be795a826737c0162da170a9a972458":[34,0,285,2],
-"class_maximum_chef.html#a9e5802174ed5168e58ab46adf71316ba":[34,0,285,1],
-"class_maximum_chef.html#ae02f57703aafcb6020f89e39bf1ea67f":[34,0,285,3],
-"class_mean_chef.html":[34,0,292],
-"class_mean_chef.html#a4270b7648f04e5e8e506bd4755a32b63":[34,0,292,1]
+"class_max_pool_with_argmax_chef.html#a827e4b9bfd709d9b59fc4cabb37a98ee":[34,0,289,0]
 };

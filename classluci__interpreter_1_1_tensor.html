@@ -159,6 +159,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a2819d18b3f7c9dfdf96eac14ae981a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb544a8d1a7c515f8808317fcc98acff"><td class="memItemLeft" align="right" valign="top">static int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_tensor.html#afb544a8d1a7c515f8808317fcc98acff">quantized_dimension</a> (const circle::Tensor *circle_tensor)</td></tr>
 <tr class="separator:afb544a8d1a7c515f8808317fcc98acff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab38bd4a24d5cfc296138151b7af1cc4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_tensor.html#aab38bd4a24d5cfc296138151b7af1cc4">is_constant_tensor</a> (const <a class="el" href="classluci_1_1_circle_reader.html">luci_interpreter::CircleReader</a> *reader, const circle::Tensor *circle_tensor)</td></tr>
+<tr class="separator:aab38bd4a24d5cfc296138151b7af1cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b9bf8c14453698fe6c8b8f5057f8431"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffb">DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_tensor.html#a7b9bf8c14453698fe6c8b8f5057f8431">element_type</a> (const circle::Tensor *circle_tensor)</td></tr>
 <tr class="separator:a7b9bf8c14453698fe6c8b8f5057f8431"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40f924711d674f91803e0d3f0364cc5d"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_tensor.html#a40f924711d674f91803e0d3f0364cc5d">num_dims</a> (const circle::Tensor *circle_tensor)</td></tr>
@@ -326,20 +328,20 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00114">114</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  115</span>  {</div>
-<div class="line"><span class="lineno">  116</span>    <span class="comment">// TODO check removing of wrap</span></div>
-<div class="line"><span class="lineno">  117</span>    assert(i &gt;= 0);</div>
-<div class="line"><span class="lineno">  118</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;const_dims = <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(circle_tensor-&gt;shape());</div>
-<div class="line"><span class="lineno">  119</span>    assert(i &lt; const_dims.size());</div>
-<div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">return</span> const_dims[i];</div>
-<div class="line"><span class="lineno">  122</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00120">120</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  121</span>  {</div>
+<div class="line"><span class="lineno">  122</span>    <span class="comment">// TODO check removing of wrap</span></div>
+<div class="line"><span class="lineno">  123</span>    assert(i &gt;= 0);</div>
+<div class="line"><span class="lineno">  124</span>    <span class="keyword">auto</span> <span class="keyword">const</span> const_dims = <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(circle_tensor-&gt;shape());</div>
+<div class="line"><span class="lineno">  125</span>    assert(i &lt; const_dims.size());</div>
+<div class="line"><span class="lineno">  126</span> </div>
+<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">return</span> const_dims[i];</div>
+<div class="line"><span class="lineno">  128</span>  }</div>
 <div class="ttc" id="anamespaceluci_html_a727b91def9b4553b7e3aeb4a146b7f22"><div class="ttname"><a href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">luci::wrap</a></div><div class="ttdeci">VectorWrapper&lt; T &gt; wrap(const flatbuffers::Vector&lt; T &gt; *vec)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8h_source.html#l00081">CircleReader.h:81</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00124">num_elements()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00130">num_elements()</a>.</p>
 
 </div>
 </div>
@@ -397,10 +399,10 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00102">102</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span>  {</div>
-<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a2e83620deea300e0affbd8c5878d0ff4">luci_datatype</a>(circle_tensor-&gt;type());</div>
-<div class="line"><span class="lineno">  105</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">108</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  109</span>  {</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a2e83620deea300e0affbd8c5878d0ff4">luci_datatype</a>(circle_tensor-&gt;type());</div>
+<div class="line"><span class="lineno">  111</span>  }</div>
 <div class="ttc" id="anamespaceluci_html_a2e83620deea300e0affbd8c5878d0ff4"><div class="ttname"><a href="namespaceluci.html#a2e83620deea300e0affbd8c5878d0ff4">luci::luci_datatype</a></div><div class="ttdeci">loco::DataType luci_datatype(circle::TensorType type)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8cpp_source.html#l00045">CircleReader.cpp:45</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00045">luci::luci_datatype()</a>.</p>
@@ -461,6 +463,51 @@ template&lt;typename T &gt; </div>
 <p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00155">155</a> of file <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  155</span>{ <span class="keywordflow">return</span> _is_allocatable; }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="aab38bd4a24d5cfc296138151b7af1cc4" name="aab38bd4a24d5cfc296138151b7af1cc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab38bd4a24d5cfc296138151b7af1cc4">&#9670;&#160;</a></span>is_constant_tensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool luci_interpreter::Tensor::is_constant_tensor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classluci_1_1_circle_reader.html">luci_interpreter::CircleReader</a> *&#160;</td>
+          <td class="paramname"><em>reader</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const circle::Tensor *&#160;</td>
+          <td class="paramname"><em>circle_tensor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00102">102</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>  {</div>
+<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">return</span> reader-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a2788375299ddbc774a313ed06825e2e5">buffers</a>()[circle_tensor-&gt;buffer()]-&gt;<a class="code hl_function" href="classluci_1_1_vector_wrapper.html#a686898ce8d41f701146d9cb39e5c2fdf">data</a>() != <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  106</span>  }</div>
+<div class="ttc" id="aclassluci_1_1_circle_reader_html_a2788375299ddbc774a313ed06825e2e5"><div class="ttname"><a href="classluci_1_1_circle_reader.html#a2788375299ddbc774a313ed06825e2e5">luci::CircleReader::buffers</a></div><div class="ttdeci">CircleBuffers buffers() const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8h_source.html#l00103">CircleReader.h:103</a></div></div>
+<div class="ttc" id="aclassluci_1_1_vector_wrapper_html_a686898ce8d41f701146d9cb39e5c2fdf"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#a686898ce8d41f701146d9cb39e5c2fdf">luci::VectorWrapper::data</a></div><div class="ttdeci">const T * data() const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8cpp_source.html#l00359">CircleReader.cpp:359</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00103">luci::CircleReader::buffers()</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00359">luci::VectorWrapper&lt; T &gt;::data()</a>.</p>
+
 </div>
 </div>
 <a id="a7d782b7dd54db9d88c0740845f20aedf" name="a7d782b7dd54db9d88c0740845f20aedf"></a>
@@ -571,12 +618,12 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00107">107</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  108</span>  {</div>
-<div class="line"><span class="lineno">  109</span>    <span class="comment">// TODO check removing of wrap</span></div>
-<div class="line"><span class="lineno">  110</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;const_dims = <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(circle_tensor-&gt;shape());</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">return</span> const_dims.size();</div>
-<div class="line"><span class="lineno">  112</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00113">113</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  114</span>  {</div>
+<div class="line"><span class="lineno">  115</span>    <span class="comment">// TODO check removing of wrap</span></div>
+<div class="line"><span class="lineno">  116</span>    <span class="keyword">auto</span> <span class="keyword">const</span> const_dims = <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(circle_tensor-&gt;shape());</div>
+<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">return</span> const_dims.size();</div>
+<div class="line"><span class="lineno">  118</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
 
@@ -606,19 +653,19 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00124">124</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  125</span>  {</div>
-<div class="line"><span class="lineno">  126</span>    int32_t result = 1;</div>
-<div class="line"><span class="lineno">  127</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;const_dims = <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(circle_tensor-&gt;shape());</div>
-<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> int32_t <a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a76a07ca9feb6e2ab5f9d111cf0d3f8f9">dim</a> : const_dims)</div>
-<div class="line"><span class="lineno">  129</span>    {</div>
-<div class="line"><span class="lineno">  130</span>      result *= <a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a76a07ca9feb6e2ab5f9d111cf0d3f8f9">dim</a>;</div>
-<div class="line"><span class="lineno">  131</span>    }</div>
-<div class="line"><span class="lineno">  132</span>    <span class="keywordflow">return</span> result;</div>
-<div class="line"><span class="lineno">  133</span>  }</div>
-<div class="ttc" id="aclassluci__interpreter_1_1_tensor_html_a76a07ca9feb6e2ab5f9d111cf0d3f8f9"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html#a76a07ca9feb6e2ab5f9d111cf0d3f8f9">luci_interpreter::Tensor::dim</a></div><div class="ttdeci">static int32_t dim(const circle::Tensor *circle_tensor, int i)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00114">Tensor.h:114</a></div></div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00130">130</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  131</span>  {</div>
+<div class="line"><span class="lineno">  132</span>    int32_t result = 1;</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keyword">auto</span> <span class="keyword">const</span> const_dims = <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(circle_tensor-&gt;shape());</div>
+<div class="line"><span class="lineno">  134</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> int32_t <a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a76a07ca9feb6e2ab5f9d111cf0d3f8f9">dim</a> : const_dims)</div>
+<div class="line"><span class="lineno">  135</span>    {</div>
+<div class="line"><span class="lineno">  136</span>      result *= <a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a76a07ca9feb6e2ab5f9d111cf0d3f8f9">dim</a>;</div>
+<div class="line"><span class="lineno">  137</span>    }</div>
+<div class="line"><span class="lineno">  138</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">  139</span>  }</div>
+<div class="ttc" id="aclassluci__interpreter_1_1_tensor_html_a76a07ca9feb6e2ab5f9d111cf0d3f8f9"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html#a76a07ca9feb6e2ab5f9d111cf0d3f8f9">luci_interpreter::Tensor::dim</a></div><div class="ttdeci">static int32_t dim(const circle::Tensor *circle_tensor, int i)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00120">Tensor.h:120</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00114">dim()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00120">dim()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="luci-interpreter_2src_2core_2_tensor_8cpp_source.html#l00032">readData()</a>, and <a class="el" href="luci-interpreter_2src_2core_2_tensor_8cpp_source.html#l00044">writeData()</a>.</p>
 
@@ -730,10 +777,10 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   41</span>  std::memcpy(data_ptr, data&lt;void&gt;(), data_size);</div>
 <div class="line"><span class="lineno">   42</span>}</div>
 <div class="ttc" id="aclassluci__interpreter_1_1_shape_html_aae55571338ee0b228d7b8990e0826025"><div class="ttname"><a href="classluci__interpreter_1_1_shape.html#aae55571338ee0b228d7b8990e0826025">luci_interpreter::Shape::num_elements</a></div><div class="ttdeci">int32_t num_elements() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00053">Tensor.h:53</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1_tensor_html_a9bd1e9aeca95999f6785b8dda859f634"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html#a9bd1e9aeca95999f6785b8dda859f634">luci_interpreter::Tensor::num_elements</a></div><div class="ttdeci">static int32_t num_elements(const circle::Tensor *circle_tensor)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00124">Tensor.h:124</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1_tensor_html_a9bd1e9aeca95999f6785b8dda859f634"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html#a9bd1e9aeca95999f6785b8dda859f634">luci_interpreter::Tensor::num_elements</a></div><div class="ttdeci">static int32_t num_elements(const circle::Tensor *circle_tensor)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00130">Tensor.h:130</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html_aa129d157edeab20d5916101a10cd9f32"><div class="ttname"><a href="namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32">luci_interpreter::getDataTypeSize</a></div><div class="ttdeci">size_t getDataTypeSize(DataType data_type)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00032">DataType.h:32</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">element_type()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00032">luci_interpreter::getDataTypeSize()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00053">luci_interpreter::Shape::num_elements()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00124">num_elements()</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00096">shape()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">element_type()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00032">luci_interpreter::getDataTypeSize()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00053">luci_interpreter::Shape::num_elements()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00130">num_elements()</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00096">shape()</a>.</p>
 
 </div>
 </div>
@@ -1108,7 +1155,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   53</span>  std::memcpy(data&lt;void&gt;(), data_ptr, data_size);</div>
 <div class="line"><span class="lineno">   54</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">element_type()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00032">luci_interpreter::getDataTypeSize()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00053">luci_interpreter::Shape::num_elements()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00124">num_elements()</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00096">shape()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">element_type()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00032">luci_interpreter::getDataTypeSize()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00053">luci_interpreter::Shape::num_elements()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00130">num_elements()</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00096">shape()</a>.</p>
 
 </div>
 </div>

@@ -11,5 +11,6 @@ var classluci__interpreter_1_1_runtime_module =
     [ "getInputTensors", "classluci__interpreter_1_1_runtime_module.html#a9119e5799f10907eaedf58ccfad3a0c5", null ],
     [ "getMainGraph", "classluci__interpreter_1_1_runtime_module.html#a22b5848bce78c1ac8e01d16ccf3a680d", null ],
     [ "getOutputTensors", "classluci__interpreter_1_1_runtime_module.html#a22e332333112c886d385db4cdf94b4f3", null ],
-    [ "getRuntimeGraphAt", "classluci__interpreter_1_1_runtime_module.html#a16812d12e8ae90bb4b1b08f0c117b744", null ]
+    [ "getRuntimeGraphAt", "classluci__interpreter_1_1_runtime_module.html#a16812d12e8ae90bb4b1b08f0c117b744", null ],
+    [ "selectSubgraph", "classluci__interpreter_1_1_runtime_module.html#a53574abd7a4eff77a1af2806621ca36b", null ]
 ];

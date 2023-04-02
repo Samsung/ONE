@@ -115,8 +115,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a427f7dd4fe2ff762acb16aace182766f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1939b6473e2d26660a72a6ae5bc7d652"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_interpreter.html#a1939b6473e2d26660a72a6ae5bc7d652">getTensor</a> (const <a class="el" href="classloco_1_1_node.html">loco::Node</a> *node)</td></tr>
 <tr class="separator:a1939b6473e2d26660a72a6ae5bc7d652"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12360300e54070deb37c892541f89ed4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_interpreter.html#a12360300e54070deb37c892541f89ed4">Interpreter</a> (const char *model_data_raw)</td></tr>
-<tr class="separator:a12360300e54070deb37c892541f89ed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44f223b9d1f5a1c7a7270c42b15eec68"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_interpreter.html#a44f223b9d1f5a1c7a7270c42b15eec68">Interpreter</a> (const char *model_data_raw, bool dealloc_input)</td></tr>
+<tr class="separator:a44f223b9d1f5a1c7a7270c42b15eec68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ff74c7aae99250e8cbee386cb621ba9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_interpreter.html#a9ff74c7aae99250e8cbee386cb621ba9">~Interpreter</a> ()</td></tr>
 <tr class="separator:a9ff74c7aae99250e8cbee386cb621ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadfc04e73a386a452a23d4a48b382da8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_interpreter.html#aadfc04e73a386a452a23d4a48b382da8">allocateAndWriteInputTensor</a> (int32_t input_tensor_index, const void *data, size_t data_size)</td></tr>
@@ -253,8 +253,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a12360300e54070deb37c892541f89ed4" name="a12360300e54070deb37c892541f89ed4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12360300e54070deb37c892541f89ed4">&#9670;&#160;</a></span>Interpreter() <span class="overload">[3/3]</span></h2>
+<a id="a44f223b9d1f5a1c7a7270c42b15eec68" name="a44f223b9d1f5a1c7a7270c42b15eec68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44f223b9d1f5a1c7a7270c42b15eec68">&#9670;&#160;</a></span>Interpreter() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -266,8 +266,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname">luci_interpreter::Interpreter::Interpreter </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>model_data_raw</em></td><td>)</td>
+          <td class="paramname"><em>model_data_raw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>dealloc_input</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -279,7 +289,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00055">55</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2_interpreter_8cpp_source.html">Interpreter.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
-<div class="line"><span class="lineno">   57</span>  <a class="code hl_function" href="classluci__interpreter_1_1_module_loader.html#a6a56c17005eebbe86759c10b5cd4f176">ModuleLoader::load</a>(&amp;_runtime_module, &amp;_memory_manager, model_data_raw);</div>
+<div class="line"><span class="lineno">   57</span>  <a class="code hl_function" href="classluci__interpreter_1_1_module_loader.html#a6a56c17005eebbe86759c10b5cd4f176">ModuleLoader::load</a>(&amp;_runtime_module, &amp;_memory_manager, model_data_raw, dealloc_input);</div>
 <div class="line"><span class="lineno">   58</span>}</div>
 <div class="ttc" id="aclassluci__interpreter_1_1_module_loader_html_a6a56c17005eebbe86759c10b5cd4f176"><div class="ttname"><a href="classluci__interpreter_1_1_module_loader.html#a6a56c17005eebbe86759c10b5cd4f176">luci_interpreter::ModuleLoader::load</a></div><div class="ttdeci">void load()</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2loader_2_module_loader_8cpp_source.html#l00033">ModuleLoader.cpp:33</a></div></div>
 </div><!-- fragment -->
@@ -499,7 +509,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00128">128</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html">Interpreter.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  128</span>{ _runtime_module-&gt;execute(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_record_min_max_8cpp_source.html#l00421">record_minmax::RecordMinMax::profileData()</a>, <a class="el" href="_record_min_max_8cpp_source.html#l00575">record_minmax::RecordMinMax::profileDataWithRandomInputs()</a>, <a class="el" href="_record_min_max_8cpp_source.html#l00309">record_minmax::RecordMinMax::profileRawData()</a>, and <a class="el" href="_record_min_max_8cpp_source.html#l00238">record_minmax::RecordMinMax::profileRawDataDirectory()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_record_min_max_8cpp_source.html#l00421">record_minmax::RecordMinMax::profileData()</a>, <a class="el" href="_record_min_max_8cpp_source.html#l00576">record_minmax::RecordMinMax::profileDataWithRandomInputs()</a>, <a class="el" href="_record_min_max_8cpp_source.html#l00309">record_minmax::RecordMinMax::profileRawData()</a>, and <a class="el" href="_record_min_max_8cpp_source.html#l00238">record_minmax::RecordMinMax::profileRawDataDirectory()</a>.</p>
 
 </div>
 </div>
@@ -646,7 +656,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_input_8cpp_source.html#l00025">luci::CircleInput::index()</a>, <a class="el" href="luci_2lang_2src_2_circle_nodes_8cpp_source.html#l00045">luci::input_node()</a>, and <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">luci::CircleNode::name()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_record_min_max_8cpp_source.html#l00421">record_minmax::RecordMinMax::profileData()</a>, <a class="el" href="_record_min_max_8cpp_source.html#l00575">record_minmax::RecordMinMax::profileDataWithRandomInputs()</a>, <a class="el" href="_record_min_max_8cpp_source.html#l00309">record_minmax::RecordMinMax::profileRawData()</a>, and <a class="el" href="_record_min_max_8cpp_source.html#l00238">record_minmax::RecordMinMax::profileRawDataDirectory()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_record_min_max_8cpp_source.html#l00421">record_minmax::RecordMinMax::profileData()</a>, <a class="el" href="_record_min_max_8cpp_source.html#l00576">record_minmax::RecordMinMax::profileDataWithRandomInputs()</a>, <a class="el" href="_record_min_max_8cpp_source.html#l00309">record_minmax::RecordMinMax::profileRawData()</a>, and <a class="el" href="_record_min_max_8cpp_source.html#l00238">record_minmax::RecordMinMax::profileRawDataDirectory()</a>.</p>
 
 </div>
 </div>

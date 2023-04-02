@@ -1,5 +1,8 @@
 var NAVTREEINDEX15 =
 {
+"_n_e_binary_logical_operation_kernel_8h.html":[35,0,1,0,0,0,1,0,0],
+"_n_e_binary_logical_operation_kernel_8h_source.html":[35,0,1,0,0,0,1,0,0],
+"_n_e_cast_bool_8cpp.html":[35,0,1,0,1,1,1,0,1],
 "_n_e_cast_bool_8cpp_source.html":[35,0,1,0,1,1,1,0,1],
 "_n_e_cast_bool_8h.html":[35,0,1,0,0,1,1,0,1],
 "_n_e_cast_bool_8h_source.html":[35,0,1,0,0,1,1,0,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX15 =
 "_neural_networks_types_8h.html#aff083b3e8cd3cb7b9942261a92b09b18":[35,0,4,0,3,0,3,35],
 "_neural_networks_types_8h.html#affd33340ef341715d8a1338c44a23074":[35,0,4,0,3,0,3,26],
 "_neural_networks_types_8h_source.html":[35,0,4,0,3,0,3],
-"_node_8cc.html":[35,0,4,2,2,1,2,0,4],
-"_node_8cc_source.html":[35,0,4,2,2,1,2,0,4],
-"_node_8forward_8h.html":[35,0,0,44,0,0,1,36],
-"_node_8forward_8h_source.html":[35,0,0,44,0,0,1,36]
+"_node_8cc.html":[35,0,4,2,2,1,2,0,4]
 };

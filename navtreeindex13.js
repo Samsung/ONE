@@ -1,5 +1,6 @@
 var NAVTREEINDEX13 =
 {
+"_l2_normalization_8h_source.html":[35,0,4,2,2,0,3,0,31],
 "_l2_normalize_options_8cpp.html":[35,0,0,112,2,0,60],
 "_l2_normalize_options_8cpp.html#a5e18d4459f509f90bb35a55c1d193095":[35,0,0,112,2,0,60,0],
 "_l2_normalize_options_8cpp_source.html":[35,0,0,112,2,0,60],
@@ -179,6 +180,8 @@ var NAVTREEINDEX13 =
 "_m_i_r_to_d_o_m_8cpp.html#af2c4f598f6bc189ec51f197c1b6af328":[35,0,0,70,6,0,1,20],
 "_m_i_r_to_d_o_m_8cpp.html#af44df5a7decdca001dd7b4596ab5125d":[35,0,0,70,6,0,1,4],
 "_m_i_r_to_d_o_m_8cpp_source.html":[35,0,0,70,6,0,1],
+"_m_i_s_o_kernel_8h.html":[35,0,3,2,2,1,79],
+"_m_i_s_o_kernel_8h_source.html":[35,0,3,2,2,1,79],
 "_m_p_q_solver_8cpp.html":[35,0,0,13,0,2],
 "_m_p_q_solver_8cpp_source.html":[35,0,0,13,0,2],
 "_m_p_q_solver_8h.html":[35,0,0,13,0,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX13 =
 "_matrix_set_diag_options_8h_source.html":[35,0,0,112,2,0,81],
 "_matrix_shape_8h.html":[35,0,0,44,0,0,1,35],
 "_matrix_shape_8h_source.html":[35,0,0,44,0,0,1,35],
-"_max_min_8h.html":[35,0,1,1,0,0,3,39],
-"_max_min_8h.html#a027f9ec0b280f5cd1b0a57d28eba46b7":[35,0,1,1,0,0,3,39,4],
-"_max_min_8h.html#a377a6a2b0b566696002662d9fdd751cf":[35,0,1,1,0,0,3,39,2],
-"_max_min_8h.html#afef4121a5707008b992710a02e4312a9":[35,0,1,1,0,0,3,39,3]
+"_max_min_8h.html":[35,0,1,1,0,0,3,39]
 };

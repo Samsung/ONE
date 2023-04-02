@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"_gather_options_8h_source.html":[35,0,0,112,2,0,53],
 "_gaussian_8cpp.html":[35,0,0,100,1,2],
 "_gaussian_8cpp_source.html":[35,0,0,100,1,2],
 "_gaussian_8h.html":[35,0,0,100,0,0,0,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "_i_o_tensor_8h.html":[35,0,4,2,2,1,0,1,10],
 "_i_o_tensor_8h_source.html":[35,0,4,2,2,1,0,1,10],
 "_i_permute_function_8cc.html":[35,0,4,2,2,1,3,17],
-"_i_permute_function_8cc_source.html":[35,0,4,2,2,1,3,17],
-"_i_permute_function_8h.html":[35,0,4,2,2,1,3,18]
+"_i_permute_function_8cc_source.html":[35,0,4,2,2,1,3,17]
 };

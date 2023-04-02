@@ -1,5 +1,8 @@
 var NAVTREEINDEX20 =
 {
+"_quantizer_8cpp.html":[35,0,0,13,0,0,10],
+"_quantizer_8cpp.html#a6228f896a64b52198522eca1543146a7":[35,0,0,13,0,0,10,1],
+"_quantizer_8cpp.html#ad70a2daf5649d9dbde0335251b9aa520":[35,0,0,13,0,0,10,0],
 "_quantizer_8cpp_source.html":[35,0,0,13,0,0,10],
 "_quantizer_8h.html":[35,0,0,13,0,0,11],
 "_quantizer_8h.html#a70811656dd41209004045985d5ff770a":[35,0,0,13,0,0,11,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX20 =
 "_remove_unnecessary_reshape_net_pass_8h_source.html":[35,0,0,51,7,0,0,0,43],
 "_remove_unnecessary_reshape_pass_8cpp.html":[35,0,0,51,7,1,67],
 "_remove_unnecessary_reshape_pass_8cpp_source.html":[35,0,0,51,7,1,67],
-"_remove_unnecessary_reshape_pass_8h.html":[35,0,0,51,7,0,0,0,44],
-"_remove_unnecessary_reshape_pass_8h_source.html":[35,0,0,51,7,0,0,0,44],
-"_remove_unnecessary_slice_pass_8cpp.html":[35,0,0,51,7,1,68],
-"_remove_unnecessary_slice_pass_8cpp_source.html":[35,0,0,51,7,1,68]
+"_remove_unnecessary_reshape_pass_8h.html":[35,0,0,51,7,0,0,0,44]
 };

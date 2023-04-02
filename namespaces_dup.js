@@ -508,7 +508,7 @@ var namespaces_dup =
       [ "get_optimization_list", "namespaceutils.html#adcd2b699ac90fd167f8377d1bda19dbd", null ],
       [ "is_accumulated_arg", "namespaceutils.html#ad13a165085daeb423dd6cd590294d08d", null ],
       [ "is_valid_attr", "namespaceutils.html#a5211bbee1d05ea1992619d36bb4d3449", null ],
-      [ "parse_cfg", "namespaceutils.html#a73038798a5f91a88c37a2ba2b6d2ff23", null ],
+      [ "parse_cfg", "namespaceutils.html#ad9bb85ec3a2e1fe87ab2006e11a9e51c", null ],
       [ "parse_cfg_and_overwrite", "namespaceutils.html#aacdc65b1ce9d59feb823c9c2d9d9b0b6", null ],
       [ "print_version_and_exit", "namespaceutils.html#abe630f340739016339ee8436b206e461", null ],
       [ "remove_prefix", "namespaceutils.html#a4772690cf9827d7505592b095f5069f3", null ],

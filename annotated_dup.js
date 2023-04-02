@@ -1389,6 +1389,7 @@ var annotated_dup =
         [ "Mean", "classluci__interpreter_1_1kernels_1_1_mean.html", "classluci__interpreter_1_1kernels_1_1_mean" ],
         [ "Minimum", "classluci__interpreter_1_1kernels_1_1_minimum.html", "classluci__interpreter_1_1kernels_1_1_minimum" ],
         [ "MirrorPad", "classluci__interpreter_1_1kernels_1_1_mirror_pad.html", "classluci__interpreter_1_1kernels_1_1_mirror_pad" ],
+        [ "MISOKernel", "classluci__interpreter_1_1kernels_1_1_m_i_s_o_kernel.html", "classluci__interpreter_1_1kernels_1_1_m_i_s_o_kernel" ],
         [ "Mul", "classluci__interpreter_1_1kernels_1_1_mul.html", "classluci__interpreter_1_1kernels_1_1_mul" ],
         [ "Neg", "classluci__interpreter_1_1kernels_1_1_neg.html", "classluci__interpreter_1_1kernels_1_1_neg" ],
         [ "NotEqual", "classluci__interpreter_1_1kernels_1_1_not_equal.html", "classluci__interpreter_1_1kernels_1_1_not_equal" ],
@@ -1409,6 +1410,7 @@ var annotated_dup =
         [ "ReverseV2", "classluci__interpreter_1_1kernels_1_1_reverse_v2.html", "classluci__interpreter_1_1kernels_1_1_reverse_v2" ],
         [ "Rsqrt", "classluci__interpreter_1_1kernels_1_1_rsqrt.html", "classluci__interpreter_1_1kernels_1_1_rsqrt" ],
         [ "ShapeKernel", "classluci__interpreter_1_1kernels_1_1_shape_kernel.html", "classluci__interpreter_1_1kernels_1_1_shape_kernel" ],
+        [ "SISOKernel", "classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html", "classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel" ],
         [ "Slice", "classluci__interpreter_1_1kernels_1_1_slice.html", "classluci__interpreter_1_1kernels_1_1_slice" ],
         [ "Softmax", "classluci__interpreter_1_1kernels_1_1_softmax.html", "classluci__interpreter_1_1kernels_1_1_softmax" ],
         [ "SpaceToBatchND", "classluci__interpreter_1_1kernels_1_1_space_to_batch_n_d.html", "classluci__interpreter_1_1kernels_1_1_space_to_batch_n_d" ],
@@ -1423,6 +1425,8 @@ var annotated_dup =
         [ "Sub", "classluci__interpreter_1_1kernels_1_1_sub.html", "classluci__interpreter_1_1kernels_1_1_sub" ],
         [ "SVDF", "classluci__interpreter_1_1kernels_1_1_s_v_d_f.html", "classluci__interpreter_1_1kernels_1_1_s_v_d_f" ],
         [ "Tanh", "classluci__interpreter_1_1kernels_1_1_tanh.html", "classluci__interpreter_1_1kernels_1_1_tanh" ],
+        [ "TISOData", "structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html", "structluci__interpreter_1_1kernels_1_1_t_i_s_o_data" ],
+        [ "TISOKernel", "classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html", "classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel" ],
         [ "Transpose", "classluci__interpreter_1_1kernels_1_1_transpose.html", "classluci__interpreter_1_1kernels_1_1_transpose" ],
         [ "TransposeConv", "classluci__interpreter_1_1kernels_1_1_transpose_conv.html", "classluci__interpreter_1_1kernels_1_1_transpose_conv" ],
         [ "UnidirectionalSequenceLSTM", "classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html", "classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m" ],
@@ -2784,6 +2788,7 @@ var annotated_dup =
       [ "MPEIRComputer", "class_q_error_computer_1_1_m_p_e_i_r_computer.html", "class_q_error_computer_1_1_m_p_e_i_r_computer" ],
       [ "MSEComputer", "class_q_error_computer_1_1_m_s_e_computer.html", "class_q_error_computer_1_1_m_s_e_computer" ],
       [ "QErrorComputer", "class_q_error_computer_1_1_q_error_computer.html", "class_q_error_computer_1_1_q_error_computer" ],
+      [ "SRMSEComputer", "class_q_error_computer_1_1_s_r_m_s_e_computer.html", "class_q_error_computer_1_1_s_r_m_s_e_computer" ],
       [ "TAEComputer", "class_q_error_computer_1_1_t_a_e_computer.html", "class_q_error_computer_1_1_t_a_e_computer" ]
     ] ],
     [ "RandomDataGenerator", "namespace_random_data_generator.html", [
