@@ -97,42 +97,35 @@ def _get_parser(backends_list):
 
 def _verify_arg(parser, args, cfg_args):
     """verify given arguments"""
-    if oneutils.is_valid_attr(cfg_args, 'backend') and oneutils.is_valid_attr(
-            cfg_args, 'backends') and oneutils.is_valid_attr(cfg_args, 'command'):
+    cmd_backend_exist = oneutils.is_valid_attr(args, 'backend')
+    cfg_backend_exist = oneutils.is_valid_attr(cfg_args, 'backend')
+    cfg_backends_exist = oneutils.is_valid_attr(cfg_args, 'backends')
+    if cfg_backend_exist and cfg_backends_exist:
         parser.error(
             '\'backend\' option and \'backends\' option cannot be used simultaneously.')
 
     # Check if given backend from command line exists in the configuration file
-    if oneutils.is_valid_attr(args, 'backend') and oneutils.is_valid_attr(
-            cfg_args, 'backend'):
+    if cmd_backend_exist and cfg_backend_exist:
         if args.backend != cfg_args.backend:
             parser.error('Not found the command of given backend')
 
     # check if required arguments is given
     missing = []
-    if not oneutils.is_valid_attr(args, 'backend') and not oneutils.is_valid_attr(
-            args, 'backends') and not oneutils.is_valid_attr(
-                cfg_args, 'backend') and not oneutils.is_valid_attr(cfg_args, 'backends'):
+    if not cmd_backend_exist and not cfg_backend_exist and not cfg_backends_exist:
         missing.append('-b/--backend')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
 
-    if oneutils.is_valid_attr(cfg_args, 'backends'):
-        backends = getattr(cfg_args, 'backends').split(',')
+    if cfg_backends_exist:
+        cfg_backends = getattr(cfg_args, 'backends').split(',')
         # check if commands of given backends exist
-        for b in backends:
+        for b in cfg_backends:
             if not oneutils.is_valid_attr(cfg_args, b):
                 parser.error('Not found the command for ' + b)
 
         # Check if given backend from command line exists in the configuration file
-        if oneutils.is_valid_attr(args, 'backend') and oneutils.is_valid_attr(
-                cfg_args, 'backends'):
-            exists = False
-            for b in backends:
-                if b == args.backend:
-                    exists = True
-                    break
-            if not exists:
+        if cmd_backend_exist:
+            if args.backend not in cfg_backends:
                 parser.error('Not found the command of given backend')
 
 
@@ -164,22 +157,6 @@ def _parse_arg(parser):
     return codegen_args, backend_args, unknown_args
 
 
-'''
-one-codegen defines its behavior for below cases.
-
-[1] one-codegen -h
-[2] one-codegen -v
-[3] one-codegen -C ${cfg} (backend, command key in cfg)
-[4] one-codegen -C ${cfg} (backends key in cfg)
-[5] one-codegen -b ${backend} ${command}
-[6] one-codegen -b ${backend} -- ${command}
-[7] one-codegen -b ${backend} -C {cfg} (backend, command key in cfg)
-[8] one-codegen -b ${backend} -C {cfg} (backends key in cfg)
-
-All other cases are not allowed or an undefined behavior.
-'''
-
-
 def main():
     # get backend list
     backends_list = _get_backends_list()
@@ -197,7 +174,21 @@ def main():
 
     # verify arguments
     _verify_arg(parser, args, cfg_args)
+    '''
+    one-codegen defines its behavior for below cases.
 
+    [1] one-codegen -h
+    [2] one-codegen -v
+    [3] one-codegen -C ${cfg} (backend, command key in cfg)
+    [4] one-codegen -C ${cfg} (backends key in cfg)
+    [5] one-codegen -b ${backend} ${command}
+    [6] one-codegen -b ${backend} -- ${command}
+    [7] one-codegen -b ${backend} -C {cfg} (backend, command key in cfg)
+    [8] one-codegen -b ${backend} -C {cfg} (backends key in cfg) (Only 'backend' is invoked, 
+         even though cfg file has multiple backends)
+
+    All other cases are not allowed or an undefined behavior.
+    '''
     if oneutils.is_valid_attr(args, 'config'):
         assert (not backend_args or not unknown_args)
         # [7], [8]
