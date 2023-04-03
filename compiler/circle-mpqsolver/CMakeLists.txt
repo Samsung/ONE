@@ -15,7 +15,6 @@ target_link_libraries(circle-mpqsolver ${Jsoncpp_STATIC_LIB})
 target_link_libraries(circle-mpqsolver arser)
 target_link_libraries(circle-mpqsolver vconone)
 target_link_libraries(circle-mpqsolver safemain)
-target_link_libraries(circle-mpqsolver luci_lang)
 target_link_libraries(circle-mpqsolver luci_service)
 target_link_libraries(circle-mpqsolver luci_pass)
 target_link_libraries(circle-mpqsolver luci_interpreter)
@@ -36,7 +35,6 @@ endif(NOT ENABLE_TEST)
 set(TEST_SOURCES
     "src/bisection/DepthParameterizer.cpp"
     "src/bisection/Quantizer.cpp"
-    "src/bisection/ErrorApproximator.cpp"
     "src/bisection/VISQErrorApproximator.cpp"
 )
 
@@ -44,6 +42,5 @@ nnas_find_package(GTest REQUIRED)
 GTest_AddTest(circle_mpqsolver_test ${TESTS} ${TEST_SOURCES})
 target_include_directories(circle_mpqsolver_test PRIVATE ${Jsoncpp_INCLUDE_DIRS})
 target_link_libraries(circle_mpqsolver_test ${Jsoncpp_STATIC_LIB})
-target_link_libraries(circle_mpqsolver_test luci_lang)
 target_link_libraries(circle_mpqsolver_test luci_service)
 target_link_libraries(circle_mpqsolver_test luci_pass)
