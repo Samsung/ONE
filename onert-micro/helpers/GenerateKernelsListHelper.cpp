@@ -88,6 +88,8 @@ std::string get_register_kernel_str(const circle::BuiltinOperator builtin_operat
       return "REGISTER_KERNEL(LOGICAL_OR, LogicalOr)";
     case circle::BuiltinOperator_LOGISTIC:
       return "REGISTER_KERNEL(LOGISTIC, Logistic)";
+    case circle::BuiltinOperator_GATHER:
+      return "REGISTER_KERNEL(GATHER, Gather)";
     case circle::BuiltinOperator_MAXIMUM:
       return "REGISTER_KERNEL(MAXIMUM, Maximum)";
     case circle::BuiltinOperator_MAX_POOL_2D:
@@ -126,6 +128,8 @@ std::string get_register_kernel_str(const circle::BuiltinOperator builtin_operat
       return "REGISTER_KERNEL(SPACE_TO_BATCH_ND, SpaceToBatchND)";
     case circle::BuiltinOperator_SPACE_TO_DEPTH:
       return "REGISTER_KERNEL(SPACE_TO_DEPTH, SpaceToDepth)";
+    case circle::BuiltinOperator_SLICE:
+      return "REGISTER_KERNEL(SLICE, Slice)";
     case circle::BuiltinOperator_STRIDED_SLICE:
       return "REGISTER_KERNEL(STRIDED_SLICE, StridedSlice)";
     case circle::BuiltinOperator_SQRT:
@@ -140,6 +144,8 @@ std::string get_register_kernel_str(const circle::BuiltinOperator builtin_operat
       return "REGISTER_KERNEL(SUB, Sub)";
     case circle::BuiltinOperator_SVDF:
       return "REGISTER_KERNEL(SVDF, SVDF)";
+    case circle::BuiltinOperator_SPLIT:
+      return "REGISTER_KERNEL(SPLIT, Split)";
     case circle::BuiltinOperator_TANH:
       return "REGISTER_KERNEL(TANH, Tanh)";
     case circle::BuiltinOperator_TRANSPOSE:
@@ -148,6 +154,8 @@ std::string get_register_kernel_str(const circle::BuiltinOperator builtin_operat
       return "REGISTER_KERNEL(TRANSPOSE_CONV, TransposeConv)";
     case circle::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM:
       return "REGISTER_KERNEL(UNIDIRECTIONAL_SEQUENCE_LSTM, UnidirectionalSequenceLSTM)";
+    case circle::BuiltinOperator_WHILE:
+      return "REGISTER_KERNEL(WHILE, While)";
     default:
       assert(false && "Not supported kernel");
   }
