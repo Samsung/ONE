@@ -67,7 +67,7 @@ def _check_subtool_exists():
 
 
 def _get_parser():
-    onecc_usage = 'onecc [-h] [-v] [-C CONFIG] [-W WORKFLOW] [-O OPTIMIZATION] [COMMAND <args>]'
+    onecc_usage = 'onecc [-h] [-v] [-C CONFIG] [-b BACKEND] [-W WORKFLOW] [-O OPTIMIZATION] [COMMAND <args>]'
     onecc_desc = 'Run ONE driver via several commands or configuration file'
     parser = argparse.ArgumentParser(description=onecc_desc, usage=onecc_usage)
 
@@ -85,6 +85,9 @@ def _get_parser():
 
     parser.add_argument(
         '-W', '--workflow', type=str, metavar='WORKFLOW', help='run with workflow file')
+
+    parser.add_argument(
+        '-b', '--backend', type=str, help='generate code for given backend')
 
     # just for help message
     compile_group = parser.add_argument_group('compile to circle model')
@@ -126,6 +129,10 @@ def _verify_arg(parser, args):
         if not getattr(args, 'O') in opt_name_list:
             parser.error('Invalid optimization option')
 
+    if oneutils.is_valid_attr(args, 'backend') and oneutils.is_valid_attr(
+            args, 'workflow'):
+        parser.error('\'backend\' option can be used only with \'config\' option')
+
 
 def main():
     # check if there is subtool argument
@@ -152,6 +159,8 @@ def main():
         runner.detect_import_drivers(bin_dir)
         if oneutils.is_valid_attr(args, 'O'):
             runner.add_opt(getattr(args, 'O'))
+        if oneutils.is_valid_attr(args, 'backend'):
+            runner.set_backend(args.backend)
         runner.run(bin_dir)
     elif oneutils.is_valid_attr(args, 'workflow'):
         runner = WorkflowRunner(args.workflow)

@@ -27,6 +27,7 @@ import ntpath
 import os
 import sys
 import shutil
+from types import SimpleNamespace
 
 import onelib.utils as oneutils
 
@@ -94,14 +95,38 @@ def _get_parser(backends_list):
     return parser
 
 
-def _verify_arg(parser, args):
+def _verify_arg(parser, args, cfg_args):
     """verify given arguments"""
+    cmd_backend_exist = oneutils.is_valid_attr(args, 'backend')
+    cfg_backend_exist = oneutils.is_valid_attr(cfg_args, 'backend')
+    cfg_backends_exist = oneutils.is_valid_attr(cfg_args, 'backends')
+    if cfg_backend_exist and cfg_backends_exist:
+        parser.error(
+            '\'backend\' option and \'backends\' option cannot be used simultaneously.')
+
+    # Check if given backend from command line exists in the configuration file
+    if cmd_backend_exist and cfg_backend_exist:
+        if args.backend != cfg_args.backend:
+            parser.error('Not found the command of given backend')
+
     # check if required arguments is given
     missing = []
-    if not oneutils.is_valid_attr(args, 'backend'):
+    if not cmd_backend_exist and not cfg_backend_exist and not cfg_backends_exist:
         missing.append('-b/--backend')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
+
+    if cfg_backends_exist:
+        cfg_backends = getattr(cfg_args, 'backends').split(',')
+        # check if commands of given backends exist
+        for b in cfg_backends:
+            if not oneutils.is_valid_attr(cfg_args, b):
+                parser.error('Not found the command for ' + b)
+
+        # Check if given backend from command line exists in the configuration file
+        if cmd_backend_exist:
+            if args.backend not in cfg_backends:
+                parser.error('Not found the command of given backend')
 
 
 def _parse_arg(parser):
@@ -141,29 +166,70 @@ def main():
     args, backend_args, unknown_args = _parse_arg(parser)
 
     # parse configuration file
-    oneutils.parse_cfg(args.config, 'one-codegen', args)
+    cfg_args = SimpleNamespace()
+    oneutils.parse_cfg(args.config, 'one-codegen', cfg_args)
+
+    # parse configuration file (args has arguments parsed from command line + cfg)
+    # oneutils.parse_cfg(args.config, 'one-codegen', args)
 
     # verify arguments
-    _verify_arg(parser, args)
+    _verify_arg(parser, args, cfg_args)
+    '''
+    one-codegen defines its behavior for below cases.
 
-    # make a command to run given backend driver
-    codegen_path = None
-    backend_base = getattr(args, 'backend') + '-compile'
-    for cand in backends_list:
-        if ntpath.basename(cand) == backend_base:
-            codegen_path = cand
-    if not codegen_path:
-        # Find backend from system path
-        codegen_path = shutil.which(backend_base)
+    [1] one-codegen -h
+    [2] one-codegen -v
+    [3] one-codegen -C ${cfg} (backend, command key in cfg)
+    [4] one-codegen -C ${cfg} (backends key in cfg)
+    [5] one-codegen -b ${backend} ${command}
+    [6] one-codegen -b ${backend} -- ${command}
+    [7] one-codegen -b ${backend} -C {cfg} (backend, command key in cfg)
+    [8] one-codegen -b ${backend} -C {cfg} (backends key in cfg) (Only 'backend' is invoked, 
+         even though cfg file has multiple backends)
 
-    if not codegen_path:
-        raise FileNotFoundError(backend_base + ' not found')
-    codegen_cmd = [codegen_path] + backend_args + unknown_args
-    if oneutils.is_valid_attr(args, 'command'):
-        codegen_cmd += getattr(args, 'command').split()
+    All other cases are not allowed or an undefined behavior.
+    '''
+    if oneutils.is_valid_attr(args, 'config'):
+        assert (not backend_args or not unknown_args)
+        # [7], [8]
+        if oneutils.is_valid_attr(args, 'backend'):
+            given_backends = [args.backend]
+            if oneutils.is_valid_attr(cfg_args, 'backend'):
+                assert (oneutils.is_valid_attr(cfg_args, 'command'))
+                setattr(cfg_args, args.backend, cfg_args.command)
+        else:
+            # [3]
+            if oneutils.is_valid_attr(cfg_args, 'backend'):
+                assert (oneutils.is_valid_attr(cfg_args, 'command'))
+                given_backends = [cfg_args.backend]
+                setattr(cfg_args, cfg_args.backend, cfg_args.command)
+            # [4]
+            if oneutils.is_valid_attr(cfg_args, 'backends'):
+                given_backends = cfg_args.backends.split(',')
+    # [5], [6]
+    else:
+        assert (backend_args or unknown_args)
+        given_backends = [args.backend]
 
-    # run backend driver
-    oneutils.run(codegen_cmd, err_prefix=backend_base)
+    for given_backend in given_backends:
+        # make a command to run given backend driver
+        codegen_path = None
+        backend_base = given_backend + '-compile'
+        for cand in backends_list:
+            if ntpath.basename(cand) == backend_base:
+                codegen_path = cand
+        if not codegen_path:
+            # Find backend from system path
+            codegen_path = shutil.which(backend_base)
+
+        if not codegen_path:
+            raise FileNotFoundError(backend_base + ' not found')
+        codegen_cmd = [codegen_path] + backend_args + unknown_args
+        if oneutils.is_valid_attr(cfg_args, given_backend):
+            codegen_cmd += getattr(cfg_args, given_backend).split()
+
+        # run backend driver
+        oneutils.run(codegen_cmd, err_prefix=backend_base)
 
 
 if __name__ == '__main__':

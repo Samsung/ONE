@@ -56,6 +56,8 @@ class CfgRunner:
                 # add_opt receives group name except first 'O'
                 self.add_opt(o[1:])
 
+        self.backend = None
+
     def _verify_cfg(self, cfgparser):
         if not cfgparser.has_section('onecc'):
             if cfgparser.has_section('one-build'):
@@ -88,6 +90,9 @@ class CfgRunner:
             )
         self.opt = opt
 
+    def set_backend(self, backend: str):
+        self.backend = backend
+
     def detect_import_drivers(self, dir):
         self.import_drivers = list(oneutils.detect_one_import_drivers(dir).keys())
 
@@ -109,6 +114,8 @@ class CfgRunner:
                 options += ['-O', self.opt]
             if verbose:
                 options.append('--verbose')
+            if section == 'one-codegen' and self.backend:
+                options += ['-b', self.backend]
             driver_path = os.path.join(working_dir, section)
             cmd = [driver_path] + options
             oneutils.run(cmd)
