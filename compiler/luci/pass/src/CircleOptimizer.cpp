@@ -319,14 +319,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::FoldSparseToDensePass>());
   }
-  if (_options->query(Options::Algorithm::ForwardReshapeToUnaryOp))
-  {
-    phase.emplace_back(std::make_unique<luci::ForwardReshapeToUnaryOpPass>());
-  }
-  if (_options->query(Options::Algorithm::ForwardTransposeOp))
-  {
-    phase.emplace_back(std::make_unique<luci::ForwardTransposeOpPass>());
-  }
   if (_options->query(Options::Algorithm::FusePreActivationBatchNorm))
   {
     phase.emplace_back(std::make_unique<luci::FusePreActivationBatchNormPass>());
@@ -431,6 +423,15 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::UnrollUnidirSeqLSTM))
   {
     phase.emplace_back(std::make_unique<luci::UnrollUnidirectionalSequenceLSTMPass>());
+  }
+  // Forward Reshape/Transpose after trying to remove redundant Reshape/Transpose
+  if (_options->query(Options::Algorithm::ForwardReshapeToUnaryOp))
+  {
+    phase.emplace_back(std::make_unique<luci::ForwardReshapeToUnaryOpPass>());
+  }
+  if (_options->query(Options::Algorithm::ForwardTransposeOp))
+  {
+    phase.emplace_back(std::make_unique<luci::ForwardTransposeOpPass>());
   }
 
   /* TRANSFORM DECLARATION END */
