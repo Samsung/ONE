@@ -102,7 +102,11 @@ int entry(int argc, char **argv)
     new_module = op_selector.select_by<opselector::SelectType::NAME>(operator_input);
   }
 
-  assert(opselector::exportModule(new_module.get(), output_path));
+  if (not opselector::exportModule(new_module.get(), output_path))
+  {
+    std::cerr << "ERROR: Cannot export the module" << std::endl;
+    return EXIT_FAILURE;
+  }
 
   return 0;
 }
