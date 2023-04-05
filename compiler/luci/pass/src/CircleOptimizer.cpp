@@ -424,7 +424,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::UnrollUnidirectionalSequenceLSTMPass>());
   }
-  // Forward Reshape/Transpose after trying to remove redundant Reshape/Transpose
+  // Forward Reshape/Transpose is done after
+  // 1. SubstituteXXXToReshape
+  // 2. RemoveRedundantReshape/Transpose
+  // See https://github.com/Samsung/ONE/pull/10596 for more details
   if (_options->query(Options::Algorithm::ForwardReshapeToUnaryOp))
   {
     phase.emplace_back(std::make_unique<luci::ForwardReshapeToUnaryOpPass>());
