@@ -34,7 +34,7 @@ namespace onert
 {
 namespace exec
 {
-class IExecutionEventListener;
+struct IExecutionEventListener;
 struct IExecutionEventEmitter
 {
   /**
