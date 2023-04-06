@@ -83,29 +83,6 @@ def is_valid_attr(args, attr):
     return hasattr(args, attr) and getattr(args, attr)
 
 
-def parse_cfg_and_overwrite(config_path, section, args):
-    """
-    parse given section of configuration file and set the values of args.
-    Even if the values parsed from the configuration file already exist in args,
-    the values are overwritten.
-    """
-    if config_path == None:
-        # DO NOTHING
-        return
-    config = configparser.ConfigParser()
-    # make option names case sensitive
-    config.optionxform = str
-    parsed = config.read(config_path)
-    if not parsed:
-        raise FileNotFoundError('Not found given configuration file')
-    if not config.has_section(section):
-        raise AssertionError('configuration file doesn\'t have \'' + section +
-                             '\' section')
-    for key in config[section]:
-        setattr(args, key, config[section][key])
-    # TODO support accumulated arguments
-
-
 def parse_cfg(config_path: Union[str, None], section_to_parse: str, args):
     """
     parse configuration file and store the information to args
