@@ -138,4 +138,4 @@ TEST_F(MaxPool2DTest, SInt16)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
-#ednif
+#endif

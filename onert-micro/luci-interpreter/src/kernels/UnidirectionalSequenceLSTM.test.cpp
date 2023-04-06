@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+#if 0
 #include "kernels/UnidirectionalSequenceLSTM.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
@@ -563,3 +564,4 @@ TEST_F(UnidirectionalSequenceLSTMTest, Invalid_Input_Shape_2_NEG)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif

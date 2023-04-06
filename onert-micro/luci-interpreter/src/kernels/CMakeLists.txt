@@ -40,4 +40,4 @@ include(${KERNEL_REGISTER_FILE})
 list(APPEND TEST_SOURCES TestUtils.h TestUtils.cpp)
 
 GTest_AddTest(${LUCI_INTERPRETER_KERNELS}_test ${TEST_SOURCES})
-target_link_libraries(${LUCI_INTERPRETER_KERNELS}_test ${LUCI_INTERPRETER_KERNELS})
+target_link_libraries(${LUCI_INTERPRETER_KERNELS}_test ${LUCI_INTERPRETER_LOADER})

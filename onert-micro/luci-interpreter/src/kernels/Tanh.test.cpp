@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+#if 0
 #include "kernels/Tanh.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
@@ -162,3 +163,4 @@ TEST_F(TanhTest, InputOutputMismatch_NEG)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif

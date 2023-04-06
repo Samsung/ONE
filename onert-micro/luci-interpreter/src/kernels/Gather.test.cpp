@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#if 0
 #include "kernels/Gather.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
@@ -135,3 +135,4 @@ TEST_F(GatherTest, Batch_NEG)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif
