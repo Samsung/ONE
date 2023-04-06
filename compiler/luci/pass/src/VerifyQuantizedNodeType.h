@@ -119,6 +119,7 @@ private:
   bool visit(const luci::CircleSplitVOut *node);
   bool visit(const luci::CircleSqrt *node);
   bool visit(const luci::CircleStridedSlice *node);
+  bool visit(const luci::CircleSum *node);
   bool visit(const luci::CircleTranspose *node);
   bool visit(const luci::CircleTransposeConv *node);
   bool visit(const luci::CircleUnpack *node);
