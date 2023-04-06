@@ -298,6 +298,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleSum *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node));
+    RETURN_FALSE_UNLESS(is_lwq(node->input()));
+    return true;
+  }
+
   bool visit(const luci::CircleArgMax *node)
   {
     // node's output is index, thus not quantized

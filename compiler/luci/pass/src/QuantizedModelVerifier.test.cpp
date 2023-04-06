@@ -595,6 +595,31 @@ private:
   luci::CircleConst *_strides = nullptr;
 };
 
+class SumTestGraph final : public SimpleTestGraph
+{
+public:
+  void init(void) override
+  {
+    TestIOGraph::init({4, 3, 2}, {2});
+
+    _axis = create_const<Type::S32, int32_t>(g(), {2}, {1, 0});
+    _sum = g()->nodes()->create<luci::CircleSum>();
+    {
+      _sum->input(input());
+      _sum->reduction_indices(_axis);
+      _sum->name("test");
+      _sum->keep_dims(false);
+    }
+    output()->from(_sum);
+
+    set_minmax_to_non_const(g(), -1, 1);
+  }
+
+private:
+  luci::CircleSum *_sum = nullptr;
+  luci::CircleConst *_axis = nullptr;
+};
+
 class ReshapeTestGraph final : public SimpleTestGraph
 {
 public:
@@ -1783,6 +1808,34 @@ TEST(QuantizedModelVerifierTest, StridedSlice_wrong_granularity_NEG)
   TEST_WITH_WRONG_GRANULARITY(StridedSliceTestGraph, Type::U8, Granularity::LayerWise);
   TEST_WITH_WRONG_GRANULARITY(StridedSliceTestGraph, Type::U8, Granularity::ChannelWise);
   TEST_WITH_WRONG_GRANULARITY(StridedSliceTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Sum)
+{
+  TEST_WITH_GRAPH(SumTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_GRAPH(SumTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_GRAPH(SumTestGraph, Type::S16, Granularity::ChannelWise);
+
+  TEST_WITH_LAYER_INFO(SumTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_LAYER_INFO(SumTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_LAYER_INFO(SumTestGraph, Type::S16, Granularity::ChannelWise);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Sum_wrong_type_NEG)
+{
+  TEST_WITH_WRONG_TYPE(SumTestGraph, Type::U8, Granularity::LayerWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SumTestGraph, Type::U8, Granularity::ChannelWise, Type::S16);
+  TEST_WITH_WRONG_TYPE(SumTestGraph, Type::S16, Granularity::ChannelWise, Type::U8);
+  SUCCEED();
+}
+
+TEST(QuantizedModelVerifierTest, Sum_wrong_granularity_NEG)
+{
+  TEST_WITH_WRONG_GRANULARITY(SumTestGraph, Type::U8, Granularity::LayerWise);
+  TEST_WITH_WRONG_GRANULARITY(SumTestGraph, Type::U8, Granularity::ChannelWise);
+  TEST_WITH_WRONG_GRANULARITY(SumTestGraph, Type::S16, Granularity::ChannelWise);
   SUCCEED();
 }
 

@@ -454,6 +454,15 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleStridedS
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
+bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleSum *node)
+{
+  RETURN_FALSE_UNLESS(has_type(node, Qtype))
+  RETURN_FALSE_UNLESS(has_type(node->input(), Qtype))
+  RETURN_FALSE_UNLESS(has_type(node->reduction_indices(), loco::DataType::S32))
+  return true;
+}
+
+template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleTranspose *node)
 {
   RETURN_FALSE_UNLESS(has_type(node, Qtype))
