@@ -55,16 +55,18 @@ bool broadcastable(const luci::CircleConst *from, const luci::CircleNode *to)
   return true;
 }
 
-// Expand node to rank 4
+// Return node with rank 4
 // node should have rank less than or equal to 4
-void expand_to_rank_4(luci::CircleConst *node)
+// 1 is inserted to the front of shape if rank is less than 4
+// For example, [2] -> [1, 1, 1, 2]
+luci::CircleConst *expand_to_rank_4(luci::CircleConst *node)
 {
   auto original_rank = node->rank();
 
   assert(original_rank <= 4); // FIX_CALLER_UNLESS
 
   if (original_rank == 4)
-    return;
+    return node;
 
   std::vector<uint32_t> original_shape;
   for (uint32_t i = 0; i < original_rank; i++)
@@ -72,12 +74,17 @@ void expand_to_rank_4(luci::CircleConst *node)
     original_shape.emplace_back(node->dim(i).value());
   }
 
-  node->rank(4);
+  auto cloned = luci::clone(node);
+  cloned->name(cloned->name() + "_rank4");
+
+  cloned->rank(4);
   for (uint32_t i = 0; i < (4 - original_rank); i++)
-    node->dim(i) = 1;
+    cloned->dim(i) = 1;
 
   for (uint32_t i = 0; i < original_rank; i++)
-    node->dim(i + (4 - original_rank)) = original_shape.at(i);
+    cloned->dim(i + (4 - original_rank)) = original_shape.at(i);
+
+  return cloned;
 }
 
 bool is_output(const loco::Node *node)
@@ -564,7 +571,7 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
   if (not broadcastable(multiplier, node))
     return false;
 
-  expand_to_rank_4(multiplier);
+  multiplier = expand_to_rank_4(multiplier);
 
   return true;
 }
@@ -602,7 +609,7 @@ bool is_NCHW_with_const(const luci::CircleAdd *node, luci::CircleNode *&pred_nod
   if (not broadcastable(beta, node))
     return false;
 
-  expand_to_rank_4(beta);
+  beta = expand_to_rank_4(beta);
 
   return true;
 }
