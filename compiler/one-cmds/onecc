@@ -129,7 +129,7 @@ def _verify_codegen(parser, args):
 
     if cfg_backend_exist and cfg_backends_exist:
         parser.error(
-            '\'backend\' option and \'backends\' option cannot be used simultaneously.')
+            "'backend' option and 'backends' option cannot be used simultaneously.")
 
     # Check if given backend from command line exists in the configuration file
     if cmd_backend_exist and cfg_backend_exist:
