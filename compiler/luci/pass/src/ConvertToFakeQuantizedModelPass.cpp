@@ -217,6 +217,8 @@ struct FakeQuantize final : public luci::CircleNodeMutableVisitor<void>
   void visit(luci::CircleRsqrt *node) { fq_activation(node); }
   void visit(luci::CircleSoftmax *node) { fq_activation(node); }
   void visit(luci::CircleSqrt *node) { fq_activation(node); }
+  void visit(luci::CircleSquaredDifference *node) { fq_activation(node); }
+  void visit(luci::CircleSub *node) { fq_activation(node); }
   void visit(luci::CircleSum *node) { fq_activation(node); }
   void visit(luci::CircleTanh *node) { fq_activation(node); }
   void visit(luci::CircleTransposeConv *node) { fq_activation(node); }
