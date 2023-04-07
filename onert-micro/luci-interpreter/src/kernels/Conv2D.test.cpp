@@ -17,6 +17,7 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/conv2d/FloatConv2DKernel.h"
 #include "luci_interpreter/test_models/conv2d/U8Conv2DKernel.h"
+#include "luci_interpreter/test_models/conv2d/S32Conv2DKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -77,6 +78,14 @@ TEST_F(Conv2DTest, U8_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
+TEST_F(Conv2DTest, S32_NEG)
+{
+  // No broadcast
+  {
+    test_kernel::TestDataS32Conv2D test_data_kernel;
+    EXPECT_DEATH(checkConv2DKernel<int32_t>(&test_data_kernel), "Unsupported type.");
+  }
+}
 // TODO: add negative tests?
 
 } // namespace

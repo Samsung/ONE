@@ -17,6 +17,7 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/fully_connected/FloatFullyConnectedKernel.h"
 #include "luci_interpreter/test_models/fully_connected/U8FullyConnectedKernel.h"
+#include "luci_interpreter/test_models/fully_connected/S32FullyConnectedKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -78,6 +79,11 @@ TEST_F(FullyConnectedTest, U8_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
+TEST_F(FullyConnectedTest, S32_NEG)
+{
+  test_kernel::TestDataS32FullyConnected test_data_kernel;
+  EXPECT_DEATH(checkFullyConnectedKernel<int32_t>(&test_data_kernel), "Unsupported type.");
+}
 // TODO: add tests for S8
 // TODO: add negative tests?
 

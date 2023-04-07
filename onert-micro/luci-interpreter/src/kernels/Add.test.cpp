@@ -18,6 +18,7 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/add/FloatAddKernel.h"
 #include "luci_interpreter/test_models/add/IntAddKernel.h"
+#include "luci_interpreter/test_models/add/U8AddKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -132,6 +133,15 @@ TEST_F(AddTest, INT32_P)
   }
 }
 
+TEST_F(AddTest, U8_NEG)
+{
+  // No broadcast
+  {
+    const bool is_with_broadcast = false;
+    test_kernel::TestDataU8Add test_data_u8_add_no_broadcasting(is_with_broadcast);
+    EXPECT_DEATH(checkAddKernel<uint8_t>(&test_data_u8_add_no_broadcasting), "Unsupported type.");
+  }
+}
 // TODO: add tests for U8 and S16
 // TODO: add tests for inplace optimizations for all types
 // TODO: add negative tests?
