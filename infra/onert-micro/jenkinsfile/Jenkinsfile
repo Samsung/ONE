@@ -1,0 +1,11 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                git 'https://github.com/Samsung/ONE.git'
+                sh "cd build && cmake ../infra/onert-micro/ && make -j\$(nproc) luci_interpreter_micro_arm"
+            }
+        }
+    }
+}
