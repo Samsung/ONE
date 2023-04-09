@@ -235,12 +235,13 @@ var searchData=
   ['substitutesqueezetoreshapepass_232',['SubstituteSqueezeToReshapePass',['../structluci_1_1_substitute_squeeze_to_reshape_pass.html',1,'luci']]],
   ['substitutestridedslicetoreshapepass_233',['SubstituteStridedSliceToReshapePass',['../structluci_1_1_substitute_strided_slice_to_reshape_pass.html',1,'luci']]],
   ['substitutetransposetoreshapepass_234',['SubstituteTransposeToReshapePass',['../structluci_1_1_substitute_transpose_to_reshape_pass.html',1,'luci']]],
-  ['sumchef_235',['SumChef',['../class_sum_chef.html',1,'']]],
-  ['sumcheffactory_236',['SumChefFactory',['../struct_sum_chef_factory.html',1,'']]],
-  ['svdf_237',['SVDF',['../classluci__interpreter_1_1kernels_1_1_s_v_d_f.html',1,'luci_interpreter::kernels']]],
-  ['svdfchef_238',['SVDFChef',['../class_s_v_d_f_chef.html',1,'']]],
-  ['svdfcheffactory_239',['SVDFChefFactory',['../struct_s_v_d_f_chef_factory.html',1,'']]],
-  ['svdfparams_240',['SVDFParams',['../structluci__interpreter_1_1_s_v_d_f_params.html',1,'luci_interpreter']]],
-  ['svdfprinter_241',['SVDFPrinter',['../classcircledump_1_1_s_v_d_f_printer.html',1,'circledump::SVDFPrinter'],['../classtfldump_1_1_s_v_d_f_printer.html',1,'tfldump::SVDFPrinter']]],
-  ['symboltable_242',['SymbolTable',['../structlocop_1_1_symbol_table.html',1,'locop::SymbolTable'],['../classmoco_1_1onnx_1_1_symbol_table.html',1,'moco::onnx::SymbolTable'],['../classmoco_1_1_symbol_table.html',1,'moco::SymbolTable']]]
+  ['sum_235',['Sum',['../classluci__interpreter_1_1kernels_1_1_sum.html',1,'luci_interpreter::kernels']]],
+  ['sumchef_236',['SumChef',['../class_sum_chef.html',1,'']]],
+  ['sumcheffactory_237',['SumChefFactory',['../struct_sum_chef_factory.html',1,'']]],
+  ['svdf_238',['SVDF',['../classluci__interpreter_1_1kernels_1_1_s_v_d_f.html',1,'luci_interpreter::kernels']]],
+  ['svdfchef_239',['SVDFChef',['../class_s_v_d_f_chef.html',1,'']]],
+  ['svdfcheffactory_240',['SVDFChefFactory',['../struct_s_v_d_f_chef_factory.html',1,'']]],
+  ['svdfparams_241',['SVDFParams',['../structluci__interpreter_1_1_s_v_d_f_params.html',1,'luci_interpreter']]],
+  ['svdfprinter_242',['SVDFPrinter',['../classcircledump_1_1_s_v_d_f_printer.html',1,'circledump::SVDFPrinter'],['../classtfldump_1_1_s_v_d_f_printer.html',1,'tfldump::SVDFPrinter']]],
+  ['symboltable_243',['SymbolTable',['../structlocop_1_1_symbol_table.html',1,'locop::SymbolTable'],['../classmoco_1_1onnx_1_1_symbol_table.html',1,'moco::onnx::SymbolTable'],['../classmoco_1_1_symbol_table.html',1,'moco::SymbolTable']]]
 ];

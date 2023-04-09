@@ -1,5 +1,17 @@
 var NAVTREEINDEX143 =
 {
+"compiler_2tflchef_2tflite_2src_2_op_2_reverse_v2_8cpp.html":[35,0,0,110,2,1,0,77],
+"compiler_2tflchef_2tflite_2src_2_op_2_reverse_v2_8cpp_source.html":[35,0,0,110,2,1,0,77],
+"compiler_2tflchef_2tflite_2src_2_op_2_rsqrt_8cpp.html":[35,0,0,110,2,1,0,79],
+"compiler_2tflchef_2tflite_2src_2_op_2_rsqrt_8cpp_source.html":[35,0,0,110,2,1,0,79],
+"compiler_2tflchef_2tflite_2src_2_op_2_s_v_d_f_8cpp.html":[35,0,0,110,2,1,0,100],
+"compiler_2tflchef_2tflite_2src_2_op_2_s_v_d_f_8cpp_source.html":[35,0,0,110,2,1,0,100],
+"compiler_2tflchef_2tflite_2src_2_op_2_shape_8cpp.html":[35,0,0,110,2,1,0,84],
+"compiler_2tflchef_2tflite_2src_2_op_2_shape_8cpp_source.html":[35,0,0,110,2,1,0,84],
+"compiler_2tflchef_2tflite_2src_2_op_2_slice_8cpp.html":[35,0,0,110,2,1,0,86],
+"compiler_2tflchef_2tflite_2src_2_op_2_slice_8cpp_source.html":[35,0,0,110,2,1,0,86],
+"compiler_2tflchef_2tflite_2src_2_op_2_softmax_8cpp.html":[35,0,0,110,2,1,0,87],
+"compiler_2tflchef_2tflite_2src_2_op_2_softmax_8cpp_source.html":[35,0,0,110,2,1,0,87],
 "compiler_2tflchef_2tflite_2src_2_op_2_space_to_batch_n_d_8cpp.html":[35,0,0,110,2,1,0,88],
 "compiler_2tflchef_2tflite_2src_2_op_2_space_to_batch_n_d_8cpp_source.html":[35,0,0,110,2,1,0,88],
 "compiler_2tflchef_2tflite_2src_2_op_2_space_to_depth_8cpp.html":[35,0,0,110,2,1,0,89],
@@ -237,17 +249,5 @@ var NAVTREEINDEX143 =
 "compute_2cker_2include_2cker_2_tensor_utils_8h.html#a97514158a93f892f0f777864d4c0a7bb":[35,0,1,1,0,0,9,8],
 "compute_2cker_2include_2cker_2_tensor_utils_8h.html#a99b2798fb7403b592e8b860ddf97b937":[35,0,1,1,0,0,9,10],
 "compute_2cker_2include_2cker_2_tensor_utils_8h.html#acfbd4ad2e41a2fded6cd669424e07fe5":[35,0,1,1,0,0,9,1],
-"compute_2cker_2include_2cker_2_tensor_utils_8h.html#ad0b7e90f00bda647bed28b59caed8927":[35,0,1,1,0,0,9,14],
-"compute_2cker_2include_2cker_2_tensor_utils_8h.html#ad2604d27d5e99cf215fd7f2553e658a8":[35,0,1,1,0,0,9,9],
-"compute_2cker_2include_2cker_2_tensor_utils_8h.html#af82fa9f0cdbd15fed59567999835cebf":[35,0,1,1,0,0,9,2],
-"compute_2cker_2include_2cker_2_tensor_utils_8h.html#afb7760d00eca9875e4974b51e4874de5":[35,0,1,1,0,0,9,12],
-"compute_2cker_2include_2cker_2_tensor_utils_8h_source.html":[35,0,1,1,0,0,9],
-"compute_2cker_2include_2cker_2_types_8h.html":[35,0,1,1,0,0,10],
-"compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6":[35,0,1,1,0,0,10,31],
-"compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6a19bb0af2c3c530538cb41aff7f235b96":[35,0,1,1,0,0,10,31,1],
-"compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6a1cfdf0e8d0c87a228c1f40d9bee7888b":[35,0,1,1,0,0,10,31,4],
-"compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6a758b05d899def79c9eb864ad4f96be1f":[35,0,1,1,0,0,10,31,3],
-"compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6a8768a6821cd735aea4f5b0df88c1fc6a":[35,0,1,1,0,0,10,31,2],
-"compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6ad3e6fdac55bb7b0edd7834c968ba1f38":[35,0,1,1,0,0,10,31,5],
-"compute_2cker_2include_2cker_2_types_8h.html#a04e74b636ed65b7eb628f5a76798b5d6af5f286e73bda105e538310b3190f75c5":[35,0,1,1,0,0,10,31,0]
+"compute_2cker_2include_2cker_2_tensor_utils_8h.html#ad0b7e90f00bda647bed28b59caed8927":[35,0,1,1,0,0,9,14]
 };

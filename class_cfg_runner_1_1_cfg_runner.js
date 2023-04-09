@@ -4,6 +4,8 @@ var class_cfg_runner_1_1_cfg_runner =
     [ "add_opt", "class_cfg_runner_1_1_cfg_runner.html#af2aa5654d9a8ff2720b12522dc473a63", null ],
     [ "detect_import_drivers", "class_cfg_runner_1_1_cfg_runner.html#a62df954f64face38dbca28acb21d93ec", null ],
     [ "run", "class_cfg_runner_1_1_cfg_runner.html#ab8085d897fa069bc4f64fb110b67b9ff", null ],
+    [ "set_backend", "class_cfg_runner_1_1_cfg_runner.html#adafd824366c6cbcc0c54c90920f1e9fc", null ],
+    [ "backend", "class_cfg_runner_1_1_cfg_runner.html#a8525e9186cb1243ba126c67cc51cf915", null ],
     [ "cfgparser", "class_cfg_runner_1_1_cfg_runner.html#a4006c7673d1402f6c7cb983677d8a5e2", null ],
     [ "import_drivers", "class_cfg_runner_1_1_cfg_runner.html#a9bd0cba932f5781bd230f1c803e21ae3", null ],
     [ "opt", "class_cfg_runner_1_1_cfg_runner.html#acc2e13a3af86c25d479cbdfb0cef3ee5", null ],

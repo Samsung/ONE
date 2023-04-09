@@ -7,7 +7,6 @@ var utils_8py =
     [ "is_accumulated_arg", "utils_8py.html#ad13a165085daeb423dd6cd590294d08d", null ],
     [ "is_valid_attr", "utils_8py.html#a5211bbee1d05ea1992619d36bb4d3449", null ],
     [ "parse_cfg", "utils_8py.html#ad9bb85ec3a2e1fe87ab2006e11a9e51c", null ],
-    [ "parse_cfg_and_overwrite", "utils_8py.html#aacdc65b1ce9d59feb823c9c2d9d9b0b6", null ],
     [ "print_version_and_exit", "utils_8py.html#abe630f340739016339ee8436b206e461", null ],
     [ "remove_prefix", "utils_8py.html#a4772690cf9827d7505592b095f5069f3", null ],
     [ "remove_suffix", "utils_8py.html#a8c9d950acf492b7ad693c52b84924cd6", null ],

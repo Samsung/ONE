@@ -1423,6 +1423,7 @@ var annotated_dup =
         [ "Squeeze", "classluci__interpreter_1_1kernels_1_1_squeeze.html", "classluci__interpreter_1_1kernels_1_1_squeeze" ],
         [ "StridedSlice", "classluci__interpreter_1_1kernels_1_1_strided_slice.html", "classluci__interpreter_1_1kernels_1_1_strided_slice" ],
         [ "Sub", "classluci__interpreter_1_1kernels_1_1_sub.html", "classluci__interpreter_1_1kernels_1_1_sub" ],
+        [ "Sum", "classluci__interpreter_1_1kernels_1_1_sum.html", "classluci__interpreter_1_1kernels_1_1_sum" ],
         [ "SVDF", "classluci__interpreter_1_1kernels_1_1_s_v_d_f.html", "classluci__interpreter_1_1kernels_1_1_s_v_d_f" ],
         [ "Tanh", "classluci__interpreter_1_1kernels_1_1_tanh.html", "classluci__interpreter_1_1kernels_1_1_tanh" ],
         [ "TISOData", "structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html", "structluci__interpreter_1_1kernels_1_1_t_i_s_o_data" ],

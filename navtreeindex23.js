@@ -1,11 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"_sparse_to_dense_options_8h.html#ae41c86ca8e852a9d91f2ff2250b20992":[35,0,0,112,2,0,143,0],
-"_sparse_to_dense_options_8h_source.html":[35,0,0,112,2,0,143],
-"_sparsifier_8cpp.html":[35,0,0,51,7,1,81],
-"_sparsifier_8cpp_source.html":[35,0,0,51,7,1,81],
-"_sparsifier_8h.html":[35,0,0,51,7,1,82],
-"_sparsifier_8h_source.html":[35,0,0,51,7,1,82],
 "_sparsify_tensor_pass_8cpp.html":[35,0,0,51,7,1,83],
 "_sparsify_tensor_pass_8cpp.html#a6d1c4a2e2b4c217b292d7612d692f3f3":[35,0,0,51,7,1,83,1],
 "_sparsify_tensor_pass_8cpp.html#a6edb6c60c4b98328eded9710cc01992a":[35,0,0,51,7,1,83,0],
@@ -249,5 +243,11 @@ var NAVTREEINDEX23 =
 "_substitute_pad_v2_to_pad_pass_8h.html":[35,0,0,51,7,0,0,0,60],
 "_substitute_pad_v2_to_pad_pass_8h_source.html":[35,0,0,51,7,0,0,0,60],
 "_substitute_split_v_to_split_pass_8cpp.html":[35,0,0,51,7,1,86],
-"_substitute_split_v_to_split_pass_8cpp_source.html":[35,0,0,51,7,1,86]
+"_substitute_split_v_to_split_pass_8cpp_source.html":[35,0,0,51,7,1,86],
+"_substitute_split_v_to_split_pass_8h.html":[35,0,0,51,7,0,0,0,61],
+"_substitute_split_v_to_split_pass_8h_source.html":[35,0,0,51,7,0,0,0,61],
+"_substitute_squeeze_to_reshape_pass_8cpp.html":[35,0,0,51,7,1,87],
+"_substitute_squeeze_to_reshape_pass_8cpp_source.html":[35,0,0,51,7,1,87],
+"_substitute_squeeze_to_reshape_pass_8h.html":[35,0,0,51,7,0,0,0,62],
+"_substitute_squeeze_to_reshape_pass_8h_source.html":[35,0,0,51,7,0,0,0,62]
 };

@@ -1,11 +1,5 @@
 var NAVTREEINDEX19 =
 {
-"_passes_ex_8h_source.html":[35,0,0,50,0,0,1],
-"_permutation_elimination_pass_8cc.html":[35,0,4,2,2,1,1,0,17],
-"_permutation_elimination_pass_8cc_source.html":[35,0,4,2,2,1,1,0,17],
-"_permutation_elimination_pass_8h.html":[35,0,4,2,2,1,1,0,18],
-"_permutation_elimination_pass_8h_source.html":[35,0,4,2,2,1,1,0,18],
-"_permutation_insertion_pass_8cc.html":[35,0,4,2,2,1,1,0,19],
 "_permutation_insertion_pass_8cc_source.html":[35,0,4,2,2,1,1,0,19],
 "_permutation_insertion_pass_8h.html":[35,0,4,2,2,1,1,0,20],
 "_permutation_insertion_pass_8h_source.html":[35,0,4,2,2,1,1,0,20],
@@ -249,5 +243,11 @@ var NAVTREEINDEX19 =
 "_quantized_model_verifier_8cpp.html":[35,0,0,51,7,1,53],
 "_quantized_model_verifier_8cpp_source.html":[35,0,0,51,7,1,53],
 "_quantized_model_verifier_8h.html":[35,0,0,51,7,1,54],
-"_quantized_model_verifier_8h_source.html":[35,0,0,51,7,1,54]
+"_quantized_model_verifier_8h_source.html":[35,0,0,51,7,1,54],
+"_quantizer_8cpp.html":[35,0,0,13,0,0,8],
+"_quantizer_8cpp.html#a6228f896a64b52198522eca1543146a7":[35,0,0,13,0,0,8,1],
+"_quantizer_8cpp.html#ad70a2daf5649d9dbde0335251b9aa520":[35,0,0,13,0,0,8,0],
+"_quantizer_8cpp_source.html":[35,0,0,13,0,0,8],
+"_quantizer_8h.html":[35,0,0,13,0,0,9],
+"_quantizer_8h.html#a70811656dd41209004045985d5ff770a":[35,0,0,13,0,0,9,2]
 };

@@ -103,6 +103,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4d4994b8a43b59779a08fa2ee8959102"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2aa5654d9a8ff2720b12522dc473a63"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cfg_runner_1_1_cfg_runner.html#af2aa5654d9a8ff2720b12522dc473a63">add_opt</a> (self, <a class="el" href="class_cfg_runner_1_1_cfg_runner.html#acc2e13a3af86c25d479cbdfb0cef3ee5">opt</a>)</td></tr>
 <tr class="separator:af2aa5654d9a8ff2720b12522dc473a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adafd824366c6cbcc0c54c90920f1e9fc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cfg_runner_1_1_cfg_runner.html#adafd824366c6cbcc0c54c90920f1e9fc">set_backend</a> (self, str <a class="el" href="class_cfg_runner_1_1_cfg_runner.html#a8525e9186cb1243ba126c67cc51cf915">backend</a>)</td></tr>
+<tr class="separator:adafd824366c6cbcc0c54c90920f1e9fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62df954f64face38dbca28acb21d93ec"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cfg_runner_1_1_cfg_runner.html#a62df954f64face38dbca28acb21d93ec">detect_import_drivers</a> (self, dir)</td></tr>
 <tr class="separator:a62df954f64face38dbca28acb21d93ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8085d897fa069bc4f64fb110b67b9ff"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cfg_runner_1_1_cfg_runner.html#ab8085d897fa069bc4f64fb110b67b9ff">run</a> (self, working_dir, verbose=False)</td></tr>
@@ -118,6 +120,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:a4006c7673d1402f6c7cb983677d8a5e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bd0cba932f5781bd230f1c803e21ae3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cfg_runner_1_1_cfg_runner.html#a9bd0cba932f5781bd230f1c803e21ae3">import_drivers</a></td></tr>
 <tr class="separator:a9bd0cba932f5781bd230f1c803e21ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8525e9186cb1243ba126c67cc51cf915"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cfg_runner_1_1_cfg_runner.html#a8525e9186cb1243ba126c67cc51cf915">backend</a></td></tr>
+<tr class="separator:a8525e9186cb1243ba126c67cc51cf915"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc2e13a3af86c25d479cbdfb0cef3ee5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cfg_runner_1_1_cfg_runner.html#acc2e13a3af86c25d479cbdfb0cef3ee5">opt</a></td></tr>
 <tr class="separator:acc2e13a3af86c25d479cbdfb0cef3ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -182,6 +186,8 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   56</span>                <span class="comment"># add_opt receives group name except first &#39;O&#39;</span></div>
 <div class="line"><span class="lineno">   57</span>                self.add_opt(o[1:])</div>
 <div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span>        self.backend = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   60</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -212,24 +218,24 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00074">74</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span>    <span class="keyword">def </span>add_opt(self, opt):</div>
-<div class="line"><span class="lineno">   75</span>        self.optparser = configparser.ConfigParser()</div>
-<div class="line"><span class="lineno">   76</span>        <span class="comment"># make option names case sensitive</span></div>
-<div class="line"><span class="lineno">   77</span>        self.optparser.optionxform = str</div>
-<div class="line"><span class="lineno">   78</span>        opt_book = dict(</div>
-<div class="line"><span class="lineno">   79</span>            zip(oneutils.get_optimization_list(get_name=<span class="keyword">True</span>),</div>
-<div class="line"><span class="lineno">   80</span>                oneutils.get_optimization_list()))</div>
-<div class="line"><span class="lineno">   81</span>        parsed = self.optparser.read(opt_book[<span class="stringliteral">&#39;O&#39;</span> + opt])</div>
-<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> parsed:</div>
-<div class="line"><span class="lineno">   83</span>            <span class="keywordflow">raise</span> FileNotFoundError(<span class="stringliteral">&#39;Not found given optimization configuration file&#39;</span>)</div>
-<div class="line"><span class="lineno">   84</span>        <span class="keywordflow">if</span> len(self.optparser.sections()) != 1 <span class="keywordflow">or</span> self.optparser.sections(</div>
-<div class="line"><span class="lineno">   85</span>        )[0] != <span class="stringliteral">&#39;one-optimize&#39;</span>:</div>
-<div class="line"><span class="lineno">   86</span>            <span class="keywordflow">raise</span> AssertionError(</div>
-<div class="line"><span class="lineno">   87</span>                <span class="stringliteral">&#39;Optimization configuration file only allowed to have a \&#39;one-optimize\&#39; section&#39;</span></div>
-<div class="line"><span class="lineno">   88</span>            )</div>
-<div class="line"><span class="lineno">   89</span>        self.opt = opt</div>
-<div class="line"><span class="lineno">   90</span> </div>
+<p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00076">76</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>    <span class="keyword">def </span>add_opt(self, opt):</div>
+<div class="line"><span class="lineno">   77</span>        self.optparser = configparser.ConfigParser()</div>
+<div class="line"><span class="lineno">   78</span>        <span class="comment"># make option names case sensitive</span></div>
+<div class="line"><span class="lineno">   79</span>        self.optparser.optionxform = str</div>
+<div class="line"><span class="lineno">   80</span>        opt_book = dict(</div>
+<div class="line"><span class="lineno">   81</span>            zip(oneutils.get_optimization_list(get_name=<span class="keyword">True</span>),</div>
+<div class="line"><span class="lineno">   82</span>                oneutils.get_optimization_list()))</div>
+<div class="line"><span class="lineno">   83</span>        parsed = self.optparser.read(opt_book[<span class="stringliteral">&#39;O&#39;</span> + opt])</div>
+<div class="line"><span class="lineno">   84</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> parsed:</div>
+<div class="line"><span class="lineno">   85</span>            <span class="keywordflow">raise</span> FileNotFoundError(<span class="stringliteral">&#39;Not found given optimization configuration file&#39;</span>)</div>
+<div class="line"><span class="lineno">   86</span>        <span class="keywordflow">if</span> len(self.optparser.sections()) != 1 <span class="keywordflow">or</span> self.optparser.sections(</div>
+<div class="line"><span class="lineno">   87</span>        )[0] != <span class="stringliteral">&#39;one-optimize&#39;</span>:</div>
+<div class="line"><span class="lineno">   88</span>            <span class="keywordflow">raise</span> AssertionError(</div>
+<div class="line"><span class="lineno">   89</span>                <span class="stringliteral">&#39;Optimization configuration file only allowed to have a \&#39;one-optimize\&#39; section&#39;</span></div>
+<div class="line"><span class="lineno">   90</span>            )</div>
+<div class="line"><span class="lineno">   91</span>        self.opt = opt</div>
+<div class="line"><span class="lineno">   92</span> </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_cfg_runner_8py_source.html#l00036">CfgRunner.CfgRunner.optparser</a>.</p>
 
@@ -261,10 +267,10 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00091">91</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   91</span>    <span class="keyword">def </span>detect_import_drivers(self, dir):</div>
-<div class="line"><span class="lineno">   92</span>        self.import_drivers = list(oneutils.detect_one_import_drivers(dir).keys())</div>
-<div class="line"><span class="lineno">   93</span> </div>
+<p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00096">96</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   96</span>    <span class="keyword">def </span>detect_import_drivers(self, dir):</div>
+<div class="line"><span class="lineno">   97</span>        self.import_drivers = list(oneutils.detect_one_import_drivers(dir).keys())</div>
+<div class="line"><span class="lineno">   98</span> </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_cfg_runner_8py_source.html#l00046">CfgRunner.CfgRunner.import_drivers</a>.</p>
 
@@ -302,35 +308,90 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00094">94</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>    <span class="keyword">def </span><a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>(self, working_dir, verbose=False):</div>
-<div class="line"><span class="lineno">   95</span>        <span class="comment"># set environment</span></div>
-<div class="line"><span class="lineno">   96</span>        CFG_ENV_SECTION = <span class="stringliteral">&#39;Environment&#39;</span></div>
-<div class="line"><span class="lineno">   97</span>        <span class="keywordflow">if</span> self.cfgparser.has_section(CFG_ENV_SECTION):</div>
-<div class="line"><span class="lineno">   98</span>            <span class="keywordflow">for</span> key <span class="keywordflow">in</span> self.cfgparser[CFG_ENV_SECTION]:</div>
-<div class="line"><span class="lineno">   99</span>                os.environ[key] = self.cfgparser[CFG_ENV_SECTION][key]</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>        section_to_run = []</div>
-<div class="line"><span class="lineno">  102</span>        <span class="keywordflow">for</span> d <span class="keywordflow">in</span> self.import_drivers + self.driver_sequence:</div>
-<div class="line"><span class="lineno">  103</span>            <span class="keywordflow">if</span> self._is_available(d):</div>
-<div class="line"><span class="lineno">  104</span>                section_to_run.append(d)</div>
+<p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00099">99</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   99</span>    <span class="keyword">def </span><a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>(self, working_dir, verbose=False):</div>
+<div class="line"><span class="lineno">  100</span>        <span class="comment"># set environment</span></div>
+<div class="line"><span class="lineno">  101</span>        CFG_ENV_SECTION = <span class="stringliteral">&#39;Environment&#39;</span></div>
+<div class="line"><span class="lineno">  102</span>        <span class="keywordflow">if</span> self.cfgparser.has_section(CFG_ENV_SECTION):</div>
+<div class="line"><span class="lineno">  103</span>            <span class="keywordflow">for</span> key <span class="keywordflow">in</span> self.cfgparser[CFG_ENV_SECTION]:</div>
+<div class="line"><span class="lineno">  104</span>                os.environ[key] = self.cfgparser[CFG_ENV_SECTION][key]</div>
 <div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>        <span class="keywordflow">for</span> section <span class="keywordflow">in</span> section_to_run:</div>
-<div class="line"><span class="lineno">  107</span>            options = [<span class="stringliteral">&#39;--config&#39;</span>, self.path, <span class="stringliteral">&#39;--section&#39;</span>, section]</div>
-<div class="line"><span class="lineno">  108</span>            <span class="keywordflow">if</span> section == <span class="stringliteral">&#39;one-optimize&#39;</span> <span class="keywordflow">and</span> self.optparser:</div>
-<div class="line"><span class="lineno">  109</span>                options += [<span class="stringliteral">&#39;-O&#39;</span>, self.opt]</div>
-<div class="line"><span class="lineno">  110</span>            <span class="keywordflow">if</span> verbose:</div>
-<div class="line"><span class="lineno">  111</span>                options.append(<span class="stringliteral">&#39;--verbose&#39;</span>)</div>
-<div class="line"><span class="lineno">  112</span>            driver_path = os.path.join(working_dir, section)</div>
-<div class="line"><span class="lineno">  113</span>            cmd = [driver_path] + options</div>
-<div class="line"><span class="lineno">  114</span>            oneutils.run(cmd)</div>
-<div class="ttc" id="a_generate_kernels_list_helper_8cpp_html_a3b45f71347f9da730e585edad717d140"><div class="ttname"><a href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a></div><div class="ttdeci">void run(std::ofstream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition:</b> <a href="_generate_kernels_list_helper_8cpp_source.html#l00184">GenerateKernelsListHelper.cpp:184</a></div></div>
+<div class="line"><span class="lineno">  106</span>        section_to_run = []</div>
+<div class="line"><span class="lineno">  107</span>        <span class="keywordflow">for</span> d <span class="keywordflow">in</span> self.import_drivers + self.driver_sequence:</div>
+<div class="line"><span class="lineno">  108</span>            <span class="keywordflow">if</span> self._is_available(d):</div>
+<div class="line"><span class="lineno">  109</span>                section_to_run.append(d)</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>        <span class="keywordflow">for</span> section <span class="keywordflow">in</span> section_to_run:</div>
+<div class="line"><span class="lineno">  112</span>            options = [<span class="stringliteral">&#39;--config&#39;</span>, self.path, <span class="stringliteral">&#39;--section&#39;</span>, section]</div>
+<div class="line"><span class="lineno">  113</span>            <span class="keywordflow">if</span> section == <span class="stringliteral">&#39;one-optimize&#39;</span> <span class="keywordflow">and</span> self.optparser:</div>
+<div class="line"><span class="lineno">  114</span>                options += [<span class="stringliteral">&#39;-O&#39;</span>, self.opt]</div>
+<div class="line"><span class="lineno">  115</span>            <span class="keywordflow">if</span> verbose:</div>
+<div class="line"><span class="lineno">  116</span>                options.append(<span class="stringliteral">&#39;--verbose&#39;</span>)</div>
+<div class="line"><span class="lineno">  117</span>            <span class="keywordflow">if</span> section == <span class="stringliteral">&#39;one-codegen&#39;</span> <span class="keywordflow">and</span> self.backend:</div>
+<div class="line"><span class="lineno">  118</span>                options += [<span class="stringliteral">&#39;-b&#39;</span>, self.backend]</div>
+<div class="line"><span class="lineno">  119</span>            driver_path = os.path.join(working_dir, section)</div>
+<div class="line"><span class="lineno">  120</span>            cmd = [driver_path] + options</div>
+<div class="line"><span class="lineno">  121</span>            oneutils.run(cmd)</div>
+<div class="ttc" id="a_generate_kernels_list_helper_8cpp_html_a3b45f71347f9da730e585edad717d140"><div class="ttname"><a href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a></div><div class="ttdeci">void run(std::ofstream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition:</b> <a href="_generate_kernels_list_helper_8cpp_source.html#l00192">GenerateKernelsListHelper.cpp:192</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_cfg_runner_8py_source.html#l00068">CfgRunner.CfgRunner._is_available()</a>, <a class="el" href="_cfg_runner_8py_source.html#l00037">CfgRunner.CfgRunner.cfgparser</a>, <a class="el" href="_cfg_runner_8py_source.html#l00029">CfgRunner.CfgRunner.driver_sequence</a>, <a class="el" href="_cfg_runner_8py_source.html#l00046">CfgRunner.CfgRunner.import_drivers</a>, <a class="el" href="_cfg_runner_8py_source.html#l00089">CfgRunner.CfgRunner.opt</a>, <a class="el" href="_cfg_runner_8py_source.html#l00036">CfgRunner.CfgRunner.optparser</a>, <a class="el" href="_cfg_runner_8py_source.html#l00035">CfgRunner.CfgRunner.path</a>, and <a class="el" href="_trix_backend_8h_source.html#l00049">npud::backend::trix::TrixModelInfo.path</a>.</p>
+<p class="reference">References <a class="el" href="_cfg_runner_8py_source.html#l00070">CfgRunner.CfgRunner._is_available()</a>, <a class="el" href="_cfg_runner_8py_source.html#l00059">CfgRunner.CfgRunner.backend</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00065">onert::backend::BackendContext.backend()</a>, <a class="el" href="_operation_lower_info_8h_source.html#l00042">onert::compiler::OperationLowerInfo.backend()</a>, <a class="el" href="_permute_factor_8h_source.html#l00077">onert::compiler::PermuteFactor.backend()</a>, <a class="el" href="_event_collector_8h_source.html#l00088">EventCollector::OpSeqEvent.backend</a>, <a class="el" href="_event_recorder_8h_source.html#l00057">OpSeqDurationEvent.backend</a>, <a class="el" href="_m_d_table_event_writer_8cc_source.html#l00092">Operation.backend</a>, <a class="el" href="_cfg_runner_8py_source.html#l00037">CfgRunner.CfgRunner.cfgparser</a>, <a class="el" href="_cfg_runner_8py_source.html#l00029">CfgRunner.CfgRunner.driver_sequence</a>, <a class="el" href="_cfg_runner_8py_source.html#l00046">CfgRunner.CfgRunner.import_drivers</a>, <a class="el" href="_cfg_runner_8py_source.html#l00091">CfgRunner.CfgRunner.opt</a>, <a class="el" href="_cfg_runner_8py_source.html#l00036">CfgRunner.CfgRunner.optparser</a>, <a class="el" href="_cfg_runner_8py_source.html#l00035">CfgRunner.CfgRunner.path</a>, and <a class="el" href="_trix_backend_8h_source.html#l00049">npud::backend::trix::TrixModelInfo.path</a>.</p>
+
+</div>
+</div>
+<a id="adafd824366c6cbcc0c54c90920f1e9fc" name="adafd824366c6cbcc0c54c90920f1e9fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adafd824366c6cbcc0c54c90920f1e9fc">&#9670;&#160;</a></span>set_backend()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def CfgRunner.CfgRunner.set_backend </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">str&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00093">93</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   93</span>    <span class="keyword">def </span>set_backend(self, backend: str):</div>
+<div class="line"><span class="lineno">   94</span>        self.backend = backend</div>
+<div class="line"><span class="lineno">   95</span> </div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_cfg_runner_8py_source.html#l00059">CfgRunner.CfgRunner.backend</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00065">onert::backend::BackendContext.backend()</a>, <a class="el" href="_operation_lower_info_8h_source.html#l00042">onert::compiler::OperationLowerInfo.backend()</a>, <a class="el" href="_permute_factor_8h_source.html#l00077">onert::compiler::PermuteFactor.backend()</a>, <a class="el" href="_event_collector_8h_source.html#l00088">EventCollector::OpSeqEvent.backend</a>, <a class="el" href="_event_recorder_8h_source.html#l00057">OpSeqDurationEvent.backend</a>, and <a class="el" href="_m_d_table_event_writer_8cc_source.html#l00092">Operation.backend</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Field Documentation</h2>
+<a id="a8525e9186cb1243ba126c67cc51cf915" name="a8525e9186cb1243ba126c67cc51cf915"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8525e9186cb1243ba126c67cc51cf915">&#9670;&#160;</a></span>backend</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CfgRunner.CfgRunner.backend</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00059">59</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00099">CfgRunner.CfgRunner.run()</a>, and <a class="el" href="_cfg_runner_8py_source.html#l00093">CfgRunner.CfgRunner.set_backend()</a>.</p>
+
+</div>
+</div>
 <a id="a4006c7673d1402f6c7cb983677d8a5e2" name="a4006c7673d1402f6c7cb983677d8a5e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4006c7673d1402f6c7cb983677d8a5e2">&#9670;&#160;</a></span>cfgparser</h2>
 
@@ -345,7 +406,7 @@ Static Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00037">37</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00094">CfgRunner.CfgRunner.run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00099">CfgRunner.CfgRunner.run()</a>.</p>
 
 </div>
 </div>
@@ -375,7 +436,7 @@ Static Public Attributes</h2></td></tr>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00029">29</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00094">CfgRunner.CfgRunner.run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00099">CfgRunner.CfgRunner.run()</a>.</p>
 
 </div>
 </div>
@@ -393,7 +454,7 @@ Static Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00046">46</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00091">CfgRunner.CfgRunner.detect_import_drivers()</a>, and <a class="el" href="_cfg_runner_8py_source.html#l00094">CfgRunner.CfgRunner.run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00096">CfgRunner.CfgRunner.detect_import_drivers()</a>, and <a class="el" href="_cfg_runner_8py_source.html#l00099">CfgRunner.CfgRunner.run()</a>.</p>
 
 </div>
 </div>
@@ -409,9 +470,9 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00089">89</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00091">91</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00094">CfgRunner.CfgRunner.run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00099">CfgRunner.CfgRunner.run()</a>.</p>
 
 </div>
 </div>
@@ -429,7 +490,7 @@ Static Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00036">36</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00074">CfgRunner.CfgRunner.add_opt()</a>, and <a class="el" href="_cfg_runner_8py_source.html#l00094">CfgRunner.CfgRunner.run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00076">CfgRunner.CfgRunner.add_opt()</a>, and <a class="el" href="_cfg_runner_8py_source.html#l00099">CfgRunner.CfgRunner.run()</a>.</p>
 
 </div>
 </div>
@@ -447,7 +508,7 @@ Static Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_cfg_runner_8py_source.html#l00035">35</a> of file <a class="el" href="_cfg_runner_8py_source.html">CfgRunner.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00094">CfgRunner.CfgRunner.run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00099">CfgRunner.CfgRunner.run()</a>.</p>
 
 </div>
 </div>

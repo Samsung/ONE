@@ -1,11 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"_fold_add_v2_pass_8cpp_source.html":[35,0,0,51,7,1,13],
-"_fold_add_v2_pass_8h.html":[35,0,0,51,7,0,0,0,6],
-"_fold_add_v2_pass_8h_source.html":[35,0,0,51,7,0,0,0,6],
-"_fold_cast_pass_8cpp.html":[35,0,0,51,7,1,14],
-"_fold_cast_pass_8cpp_source.html":[35,0,0,51,7,1,14],
-"_fold_cast_pass_8h.html":[35,0,0,51,7,0,0,0,7],
 "_fold_cast_pass_8h_source.html":[35,0,0,51,7,0,0,0,7],
 "_fold_densify_pass_8cpp.html":[35,0,0,51,7,1,15],
 "_fold_densify_pass_8cpp_source.html":[35,0,0,51,7,1,15],
@@ -249,5 +243,11 @@ var NAVTREEINDEX10 =
 "_gather_options_8cpp.html#ac45bf9e447c161ddaa640ac1e153a443":[35,0,0,112,2,0,52,0],
 "_gather_options_8cpp_source.html":[35,0,0,112,2,0,52],
 "_gather_options_8h.html":[35,0,0,112,2,0,53],
-"_gather_options_8h.html#ac45bf9e447c161ddaa640ac1e153a443":[35,0,0,112,2,0,53,0]
+"_gather_options_8h.html#ac45bf9e447c161ddaa640ac1e153a443":[35,0,0,112,2,0,53,0],
+"_gather_options_8h_source.html":[35,0,0,112,2,0,53],
+"_gaussian_8cpp.html":[35,0,0,100,1,2],
+"_gaussian_8cpp_source.html":[35,0,0,100,1,2],
+"_gaussian_8h.html":[35,0,0,100,0,0,0,2],
+"_gaussian_8h_source.html":[35,0,0,100,0,0,0,2],
+"_gemm_8cpp.html":[35,0,0,61,1,2,0,28]
 };

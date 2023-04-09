@@ -1,11 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"_i_permute_function_8h.html":[35,0,4,2,2,1,3,18],
-"_i_permute_function_8h.html#a0fa6f84a48d6412bbee7b65b635a7272":[35,0,4,2,2,1,3,18,2],
-"_i_permute_function_8h.html#a5514cb98c3c1055ba91a77b9b4f0ba98":[35,0,4,2,2,1,3,18,1],
-"_i_permute_function_8h.html#a7f95b8f74beaad6d7902f84d08f94353":[35,0,4,2,2,1,3,18,3],
-"_i_permute_function_8h_source.html":[35,0,4,2,2,1,3,18],
-"_i_portable_tensor_8cc.html":[35,0,4,2,2,1,0,3],
 "_i_portable_tensor_8cc_source.html":[35,0,4,2,2,1,0,3],
 "_i_portable_tensor_8h.html":[35,0,4,2,2,0,0,5],
 "_i_portable_tensor_8h_source.html":[35,0,4,2,2,0,0,5],
@@ -249,5 +243,11 @@ var NAVTREEINDEX12 =
 "_l2_norm_layer_8h_source.html":[35,0,4,2,1,4,0,43],
 "_l2_normalization_8cc.html":[35,0,4,2,2,1,4,0,31],
 "_l2_normalization_8cc_source.html":[35,0,4,2,2,1,4,0,31],
-"_l2_normalization_8h.html":[35,0,4,2,2,0,3,0,31]
+"_l2_normalization_8h.html":[35,0,4,2,2,0,3,0,31],
+"_l2_normalization_8h_source.html":[35,0,4,2,2,0,3,0,31],
+"_l2_normalize_options_8cpp.html":[35,0,0,112,2,0,60],
+"_l2_normalize_options_8cpp.html#a5e18d4459f509f90bb35a55c1d193095":[35,0,0,112,2,0,60,0],
+"_l2_normalize_options_8cpp_source.html":[35,0,0,112,2,0,60],
+"_l2_normalize_options_8h.html":[35,0,0,112,2,0,61],
+"_l2_normalize_options_8h.html#a5e18d4459f509f90bb35a55c1d193095":[35,0,0,112,2,0,61,0]
 };

@@ -262,6 +262,7 @@ var namespaceluci__interpreter =
     [ "build_kernel_CircleStridedSlice", "namespaceluci__interpreter.html#ac11bb239d00a5828aca672f97c3486ec", null ],
     [ "build_kernel_CircleSub", "namespaceluci__interpreter.html#a5034166f6ef078c147b9890851bd3fbc", null ],
     [ "build_kernel_CircleSub", "namespaceluci__interpreter.html#a86272b14f7798e09c0833fca443eaae2", null ],
+    [ "build_kernel_CircleSum", "namespaceluci__interpreter.html#a0761ad3764150f2d22aabfe2973857d3", null ],
     [ "build_kernel_CircleSVDF", "namespaceluci__interpreter.html#a0ca68c3bf2a22d7489d151e55f2b3f38", null ],
     [ "build_kernel_CircleSVDF", "namespaceluci__interpreter.html#a92a40f30399d1d94ed1760c673475271", null ],
     [ "build_kernel_CircleTanh", "namespaceluci__interpreter.html#a396e88486532da2874b874e1b9e708c0", null ],

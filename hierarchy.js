@@ -2705,7 +2705,8 @@ var hierarchy =
         [ "luci_interpreter::kernels::Mean", "classluci__interpreter_1_1kernels_1_1_mean.html", null ],
         [ "luci_interpreter::kernels::Mean", "classluci__interpreter_1_1kernels_1_1_mean.html", null ],
         [ "luci_interpreter::kernels::ReduceMax", "classluci__interpreter_1_1kernels_1_1_reduce_max.html", null ],
-        [ "luci_interpreter::kernels::ReduceProd", "classluci__interpreter_1_1kernels_1_1_reduce_prod.html", null ]
+        [ "luci_interpreter::kernels::ReduceProd", "classluci__interpreter_1_1kernels_1_1_reduce_prod.html", null ],
+        [ "luci_interpreter::kernels::Sum", "classluci__interpreter_1_1kernels_1_1_sum.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< MirrorPadParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
         [ "luci_interpreter::kernels::MirrorPad", "classluci__interpreter_1_1kernels_1_1_mirror_pad.html", null ],
