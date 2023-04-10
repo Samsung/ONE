@@ -46,6 +46,7 @@ struct IExecutionEventEmitter
   virtual void notifyExecuteOpEnd(ir::SubgraphIndex, ir::OperationIndex, ir::OpCode,
                                   backend::ITensor **, uint32_t) = 0;
   virtual void notifyExecuteSubgEnd(ir::SubgraphIndex) = 0;
+  virtual ~IExecutionEventEmitter() = default;
 };
 } // namespace exec
 } // namespace onert
