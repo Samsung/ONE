@@ -39,7 +39,7 @@ TEST(NDArrayContiguousSpanTests, slice_assign_test)
     ASSERT_EQ(span2.at(2), 3);
     ASSERT_EQ(span2.at(4), 5);
 
-    ASSERT_EQ(*(span1.data() + 2), *(span1.data() + 2));
+    ASSERT_EQ(*(span1.data() + 2), *(span2.data() + 2));
 
     ContiguousSpan<float> span3(span2.offset(1));
     ASSERT_EQ(span3.size(), 4);
@@ -63,8 +63,6 @@ TEST(NDArrayContiguousSpanTests, slice_assign_test)
     ASSERT_EQ(span5.at(1), 3);
     ASSERT_EQ(span5[2], 4);
     ASSERT_EQ(span5[3], 5);
-
-    ASSERT_EQ(*(span5.data() + 2), *(span5.data() + 2));
   }
 
   // int32_t
@@ -84,7 +82,7 @@ TEST(NDArrayContiguousSpanTests, slice_assign_test)
     ASSERT_EQ(span2.at(2), 3);
     ASSERT_EQ(span2.at(4), 5);
 
-    ASSERT_EQ(*(span1.data() + 2), *(span1.data() + 2));
+    ASSERT_EQ(*(span1.data() + 2), *(span2.data() + 2));
 
     ContiguousSpan<int32_t> span3(span2.offset(1));
     ASSERT_EQ(span3.size(), 4);
@@ -127,7 +125,7 @@ TEST(NDArrayContiguousSpanTests, slice_assign_test)
     ASSERT_EQ(span2.at(2), 3);
     ASSERT_EQ(span2.at(4), 5);
 
-    ASSERT_EQ(*(span1.data() + 2), *(span1.data() + 2));
+    ASSERT_EQ(*(span1.data() + 2), *(span2.data() + 2));
 
     ContiguousSpan<uint32_t> span3(span2.offset(1));
     ASSERT_EQ(span3.size(), 4);
@@ -170,7 +168,7 @@ TEST(NDArrayContiguousSpanTests, slice_assign_test)
     ASSERT_EQ(span2.at(2), 3);
     ASSERT_EQ(span2.at(4), 5);
 
-    ASSERT_EQ(*(span1.data() + 2), *(span1.data() + 2));
+    ASSERT_EQ(*(span1.data() + 2), *(span2.data() + 2));
 
     ContiguousSpan<int8_t> span3(span2.offset(1));
     ASSERT_EQ(span3.size(), 4);
