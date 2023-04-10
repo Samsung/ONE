@@ -1,0 +1,88 @@
+operand {
+  name: "Input"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 32
+    dim: 32
+  }
+}
+operand {
+  name: "Const"
+  type: FLOAT32
+  shape {
+    dim: 1
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+  }
+}
+operand {
+  name: "Mul1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 3
+    dim: 32
+    dim: 32
+  }
+}
+operand {
+  name: "ShapeConst"
+  type: INT32
+  shape {
+    dim: 3
+  }
+  filler {
+    tag: "explicit"
+    arg: "3"
+    arg: "32"
+    arg: "32"
+  }
+}
+operand {
+  name: "Reshape"
+  type: FLOAT32
+  shape {
+    dim: 3
+    dim: 32
+    dim: 32
+  }
+}
+operand {
+  name: "Mul2"
+  type: FLOAT32
+  shape {
+    dim: 3
+    dim: 32
+    dim: 32
+  }
+}
+operation {
+  type: "Mul"
+  input: "Input"
+  input: "Const"
+  output: "Mul1"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Reshape"
+  input: "Mul1"
+  input: "ShapeConst"
+  output: "Reshape"
+}
+operation {
+  type: "Mul"
+  input: "Reshape"
+  input: "Const"
+  output: "Mul2"
+  mul_options {
+    activation: NONE
+  }
+}
+input: "Input"
+output: "Mul2"

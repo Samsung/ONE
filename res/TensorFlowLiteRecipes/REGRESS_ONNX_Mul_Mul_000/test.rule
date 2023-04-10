@@ -1,0 +1,7 @@
+# To check NCHW to NHWC conversion is OK
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "MUL_EXIST"               $(op_count MUL) '=' 2
+RULE    "RESHAPE_EXIST"           $(op_count RESHAPE) '=' 1
+RULE    "TRANSPOSE"               $(op_count TRANSPOSE) '=' 2
