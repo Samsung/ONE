@@ -89,3 +89,6 @@ Add(REGRESS_ONNX_Conv_BN_MeanMean_001 PASS
       fuse_activation_function
       fuse_mean_with_mean
       fuse_transpose_with_mean)
+
+Add(REGRESS_ONNX_Mul_Mul_000 PASS
+      convert_nchw_to_nhwc)
