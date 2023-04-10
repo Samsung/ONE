@@ -44,7 +44,7 @@ struct IExecutionEventEmitter
    */
   virtual void addListener(std::unique_ptr<IExecutionEventListener> listener) = 0;
   virtual void notifyExecuteOpEnd(ir::SubgraphIndex, ir::OperationIndex, ir::OpCode,
-                                  backend::ITensor *) = 0;
+                                  backend::ITensor **, uint32_t) = 0;
   virtual void notifyExecuteSubgEnd(ir::SubgraphIndex) = 0;
 };
 } // namespace exec

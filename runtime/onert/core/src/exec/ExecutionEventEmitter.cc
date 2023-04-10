@@ -27,11 +27,12 @@ void ExecutionEventEmitter::addListener(std::unique_ptr<IExecutionEventListener>
 }
 
 void ExecutionEventEmitter::notifyExecuteOpEnd(ir::SubgraphIndex s, ir::OperationIndex o,
-                                               ir::OpCode opcode, backend::ITensor *tensor)
+                                               ir::OpCode opcode, backend::ITensor **tensors,
+                                               uint32_t ntensors)
 {
   for (auto &l : _listeners)
   {
-    l->handleExecuteOpEnd(s, o, opcode, tensor);
+    l->handleExecuteOpEnd(s, o, opcode, tensors, ntensors);
   }
 }
 

@@ -36,7 +36,7 @@ namespace exec
 struct IExecutionEventListener
 {
   virtual void handleExecuteOpEnd(ir::SubgraphIndex, ir::OperationIndex, ir::OpCode,
-                                  backend::ITensor *) = 0;
+                                  backend::ITensor **, uint32_t) = 0;
   virtual void handleExecuteSubgEnd(ir::SubgraphIndex) = 0;
 };
 

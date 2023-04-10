@@ -38,8 +38,8 @@ class ExecutionEventEmitter : public IExecutionEventEmitter
 {
 public:
   void addListener(std::unique_ptr<IExecutionEventListener> listener) override;
-  void notifyExecuteOpEnd(ir::SubgraphIndex, ir::OperationIndex, ir::OpCode,
-                          backend::ITensor *) override;
+  void notifyExecuteOpEnd(ir::SubgraphIndex, ir::OperationIndex, ir::OpCode, backend::ITensor **,
+                          uint32_t) override;
   void notifyExecuteSubgEnd(ir::SubgraphIndex) override;
 
 private:
