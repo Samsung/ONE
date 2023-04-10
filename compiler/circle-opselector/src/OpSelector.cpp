@@ -94,7 +94,8 @@ public:
   bool visit(const luci::CircleNode *) final { return false; }
 };
 
-std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode *> nodes)
+std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode *> nodes,
+                                        loco::Graph *g)
 {
   auto graph = loco::make_graph();
 
@@ -156,6 +157,9 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
       }
     }
   }
+
+  const auto original_outputs = loco::output_nodes(g);
+
   // set graph output
   for (auto &n : nodes)
   {
@@ -169,8 +173,19 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
         break;
       }
     }
+
+    bool originalOutput = false;
+    for (const auto &o : outputs)
+    {
+      if (std::find(original_outputs.begin(), original_outputs.end(), o) != original_outputs.end())
+      {
+        originalOutput = true;
+        break;
+      }
+    }
+
     // the node isn't graph output if it is an other node's output
-    if (beingUsed)
+    if (beingUsed and not originalOutput)
       continue;
 
     IsMultiOutputNode multiout_visitor;
@@ -373,7 +388,7 @@ std::unique_ptr<luci::Module> OpSelector::select_by(const std::string &str)
   selected_nodes.insert(selected_nodes.end(), output_nodes.begin(), output_nodes.end());
 
   auto new_module = std::make_unique<luci::Module>();
-  new_module->add(::make_graph(selected_nodes));
+  new_module->add(::make_graph(selected_nodes, _module->graph()));
 
   return new_module;
 }
