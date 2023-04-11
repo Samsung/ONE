@@ -94,8 +94,7 @@ public:
   bool visit(const luci::CircleNode *) final { return false; }
 };
 
-std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode *> nodes,
-                                        loco::Graph *g)
+std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode *> nodes)
 {
   auto graph = loco::make_graph();
 
@@ -158,7 +157,8 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
     }
   }
 
-  const auto original_outputs = loco::output_nodes(g);
+  const auto original_graph = nodes.at(0)->graph();
+  const auto original_outputs = loco::output_nodes(const_cast<loco::Graph *>(original_graph));
 
   // set graph output
   for (auto &n : nodes)
@@ -388,7 +388,7 @@ std::unique_ptr<luci::Module> OpSelector::select_by(const std::string &str)
   selected_nodes.insert(selected_nodes.end(), output_nodes.begin(), output_nodes.end());
 
   auto new_module = std::make_unique<luci::Module>();
-  new_module->add(::make_graph(selected_nodes, _module->graph()));
+  new_module->add(::make_graph(selected_nodes));
 
   return new_module;
 }
