@@ -156,6 +156,10 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
       }
     }
   }
+
+  const auto original_graph = nodes.at(0)->graph();
+  const auto original_outputs = loco::output_nodes(const_cast<loco::Graph *>(original_graph));
+
   // set graph output
   for (auto &n : nodes)
   {
@@ -169,8 +173,19 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
         break;
       }
     }
+
+    bool originalOutput = false;
+    for (const auto &o : outputs)
+    {
+      if (std::find(original_outputs.begin(), original_outputs.end(), o) != original_outputs.end())
+      {
+        originalOutput = true;
+        break;
+      }
+    }
+
     // the node isn't graph output if it is an other node's output
-    if (beingUsed)
+    if (beingUsed and not originalOutput)
       continue;
 
     IsMultiOutputNode multiout_visitor;
