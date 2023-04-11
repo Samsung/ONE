@@ -75,6 +75,7 @@ std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
 {
   auto o = std::make_unique<CompilerOptions>();
   o->backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
+  o->minmax_filepath = util::getConfigString(util::config::MINMAX_FILEPATH);
   o->trace_filepath = util::getConfigString(util::config::TRACE_FILEPATH);
   o->graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
   o->executor = util::getConfigString(util::config::EXECUTOR);

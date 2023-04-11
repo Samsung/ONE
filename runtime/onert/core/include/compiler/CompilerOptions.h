@@ -74,6 +74,7 @@ public:
 public:
   // GENERAL OPTIONS
   std::vector<std::string> backend_list;
+  std::string minmax_filepath; //< File path to save minmax
 
   // OPTIONS ONLY FOR DEBUGGING/PROFILING
   std::string trace_filepath; //< File path to save trace records
