@@ -126,6 +126,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
       ParameterizerResult::SUCCESS)
   {
     std::cerr << "ERROR: Invalid graph for bisectioning" << std::endl;
+    return nullptr;
   }
 
   VERBOSE(l, 0) << std::endl << ">> Computing baseline qerrors" << std::endl;
