@@ -24,7 +24,6 @@
 
 #include <iostream>
 #include <iomanip>
-#include <chrono>
 
 void print_version(void)
 {
@@ -123,7 +122,12 @@ int entry(int argc, char **argv)
     std::cerr << "ERROR: quantization ratio must be in [0, 1]" << std::endl;
     return EXIT_FAILURE;
   }
-  auto start = std::chrono::high_resolution_clock::now();
+
+  VERBOSE(l, 0) << ">> Searching mixed precision configuration " << std::endl
+                << "model:" << input_model_path << std::endl
+                << "dataset: " << data_path << std::endl
+                << "input dtype: " << input_dtype << std::endl
+                << "output dtype: " << output_dtype << std::endl;
 
   if (arser[bisection_str])
   {
@@ -135,6 +139,7 @@ int entry(int argc, char **argv)
       auto value = arser.get<std::string>(bisection_str);
       if (value == "auto")
       {
+        VERBOSE(l, 0) << "algorithm: bisection (auto)" << std::endl;
         if (!handleAutoAlgorithm(arser, solver))
         {
           return EXIT_FAILURE;
@@ -142,10 +147,12 @@ int entry(int argc, char **argv)
       }
       else if (value == "true")
       {
+        VERBOSE(l, 0) << "algorithm: bisection (Q16AtFront)";
         solver.algorithm(BisectionSolver::Algorithm::ForceQ16Front);
       }
       else if (value == "false")
       {
+        VERBOSE(l, 0) << "algorithm: bisection (Q8AtFront)";
         solver.algorithm(BisectionSolver::Algorithm::ForceQ16Back);
       }
       else
@@ -156,6 +163,9 @@ int entry(int argc, char **argv)
       }
     }
 
+    VERBOSE(l, 0) << "qerror metric: MSE" << std::endl
+                  << "target qerror ratio: " << qerror_ratio << std::endl;
+
     auto optimized = solver.run(input_model_path);
     if (optimized == nullptr)
     {
@@ -165,6 +175,7 @@ int entry(int argc, char **argv)
 
     // save optimized
     {
+      VERBOSE(l, 0) << "Saving output model to " << output_model_path << std::endl;
       luci::CircleExporter exporter;
       luci::CircleFileExpContract contract(optimized.get(), output_model_path);
       if (!exporter.invoke(&contract))
@@ -180,11 +191,6 @@ int entry(int argc, char **argv)
     std::cerr << "ERROR: Unrecognized solver" << std::endl;
     return EXIT_FAILURE;
   }
-
-  auto duration = std::chrono::duration_cast<std::chrono::seconds>(
-    std::chrono::high_resolution_clock::now() - start);
-  VERBOSE(l, 0) << "Elapsed Time: " << std::setprecision(5) << duration.count() / 60.f
-                << " minutes." << std::endl;
 
   return EXIT_SUCCESS;
 }
