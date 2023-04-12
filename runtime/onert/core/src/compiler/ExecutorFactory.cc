@@ -432,12 +432,8 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
 
   auto code_map = builder.releaseCodeMap();
 
-  auto exec = new exec::LinearExecutor{std::move(lowered_graph),
-                                       std::move(backend_contexts),
-                                       tensor_regs,
-                                       std::move(code_map),
-                                       order,
-                                       tracing_ctx};
+  auto exec = new exec::LinearExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map),
+                                       order, tracing_ctx};
 
   if (!options.trace_filepath.empty())
   {
@@ -500,14 +496,13 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   exec::ExecutorBase *exec = nullptr;
   if (parallel)
   {
-    exec = new exec::ParallelExecutor{std::move(lowered_graph), std::move(backend_contexts),
-                                      tensor_regs, std::move(code_map), tracing_ctx};
+    exec = new exec::ParallelExecutor{std::move(lowered_graph), tensor_regs, std::move(code_map),
+                                      tracing_ctx};
   }
   else
   {
-    auto dataflow_exec =
-      new exec::DataflowExecutor{std::move(lowered_graph), std::move(backend_contexts), tensor_regs,
-                                 std::move(code_map), tracing_ctx};
+    auto dataflow_exec = new exec::DataflowExecutor{std::move(lowered_graph), tensor_regs,
+                                                    std::move(code_map), tracing_ctx};
     if (options.he_profiling_mode)
     {
       std::vector<const backend::Backend *> backends;
