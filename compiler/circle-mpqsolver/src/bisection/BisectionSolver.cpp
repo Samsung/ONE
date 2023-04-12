@@ -189,7 +189,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
       int16_front = true;
       break;
     case Algorithm::ForceQ16Back:
-      int16_front = true;
+      int16_front = false;
       break;
   }
 
