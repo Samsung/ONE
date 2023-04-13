@@ -70,3 +70,20 @@ TEST_F(GenModelTest, OneOp_BatchToSpaceND_Crop)
   _context->setBackends({"cpu"});
   SUCCEED();
 }
+
+TEST_F(GenModelTest, neg_OneOp_BatchToSpaceND_DifferentType)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{4, 1, 1, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT32});
+  int block = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32});
+  cgen.addOperatorBatchToSpaceND({{in, block}, {out}});
+  cgen.setInputsAndOutputs({in, block}, {out});
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(TestCaseData{}
+                          .addInput<float>({1, 2, 3, 4})
+                          .addInput<int32_t>({2, 2})
+                          .addOutput<int>({1, 2, 3, 4}));
+  _context->expectFailModelLoad();
+  SUCCEED();
+}
