@@ -2,7 +2,10 @@ file(GLOB_RECURSE SOURCES "src/*.cc")
 file(GLOB_RECURSE TESTS "*.test.cc")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
-nnfw_find_package(Ruy REQUIRED)
+if(NOT BUILD_MINMAX_H5DUMPER)
+  file(GLOB_RECURSE H5DUMPER_SRC "src/dumper/h5/*.cc")
+  list(REMOVE_ITEM SOURCES ${H5DUMPER_SRC})
+endif(NOT BUILD_MINMAX_H5DUMPER)
 
 add_library(onert_core SHARED ${SOURCES})
 set_target_properties(onert_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -18,8 +21,18 @@ target_link_libraries(onert_core PRIVATE nnfw_lib_misc nnfw_lib_cker)
 target_link_libraries(onert_core PRIVATE nnfw_common)
 target_link_libraries(onert_core PRIVATE nnfw_coverage)
 target_link_libraries(onert_core PRIVATE dl ${LIB_PTHREAD})
+
+# Ruy
+nnfw_find_package(Ruy REQUIRED)
 target_link_libraries(onert_core PRIVATE ruy)
 target_link_libraries(onert_core INTERFACE ruy_instrumentation)
+
+# H5 Minmax Dumper
+if(BUILD_MINMAX_H5DUMPER)
+  nnfw_find_package(HDF5 REQUIRED)
+  target_include_directories(onert_core PRIVATE ${HDF5_INCLUDE_DIRS})
+  target_link_libraries(onert_core PRIVATE ${HDF5_CXX_LIBRARIES})
+endif(BUILD_MINMAX_H5DUMPER)
 
 if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
   add_custom_command(TARGET onert_core POST_BUILD
