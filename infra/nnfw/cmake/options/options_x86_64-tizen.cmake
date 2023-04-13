@@ -16,3 +16,5 @@ option(DOWNLOAD_OPENCL_HEADERS "Download opencl headers" OFF)
 option(BUILD_NPUD "Build NPU daemon" ON)
 # Do not allow to use CONFIG option on Tizen
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
+
+option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)
