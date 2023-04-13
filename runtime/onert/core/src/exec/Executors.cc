@@ -285,6 +285,8 @@ void Executors::CreatePkgIOTensors(const IODescription &desc)
     const auto &io_index = std::get<ir::IOIndex>(pkg_input);
     const auto input_pkg_index =
       find_input_index(_model_edges->pkg_inputs, model_index, subg_index, io_index);
+    if (input_pkg_index == -1)
+      throw std::runtime_error{"Cannot find multi model input index"};
     auto input_desc = desc.inputs[input_pkg_index].get();
     _pkg_input_tensors[pkg_input] =
       std::make_unique<backend::builtin::IOTensor>(input_desc->info, input_desc->layout);
@@ -298,6 +300,8 @@ void Executors::CreatePkgIOTensors(const IODescription &desc)
     const auto &io_index = std::get<ir::IOIndex>(pkg_output);
     const auto output_pkg_index =
       find_output_index(_model_edges->pkg_outputs, model_index, subg_index, io_index);
+    if (output_pkg_index == -1)
+      throw std::runtime_error{"Cannot find multi model output index"};
     auto output_desc = desc.outputs[output_pkg_index].get();
     _pkg_output_tensors[pkg_output] =
       std::make_unique<backend::builtin::IOTensor>(output_desc->info, output_desc->layout);
@@ -331,6 +335,8 @@ void Executors::createPkgIOQuantLayers(const IODescription &desc)
       const auto &io_index = std::get<ir::IOIndex>(pkg_input);
       const auto input_pkg_index =
         find_input_index(_model_edges->pkg_inputs, model_index, subg_index, io_index);
+      if (input_pkg_index == -1)
+        throw std::runtime_error{"Cannot find multi model input index"};
       auto input_desc = desc.inputs[input_pkg_index].get();
 
       // Create EdgeTensor for nnpkg input if type is different
@@ -372,6 +378,8 @@ void Executors::createPkgIOQuantLayers(const IODescription &desc)
       const auto &io_index = std::get<ir::IOIndex>(pkg_output);
       const auto output_pkg_index =
         find_output_index(_model_edges->pkg_outputs, model_index, subg_index, io_index);
+      if (output_pkg_index == -1)
+        throw std::runtime_error{"Cannot find multi model output index"};
       auto output_desc = desc.outputs[output_pkg_index].get();
 
       // Create EdgeTensor for nnpkg output if type is different
