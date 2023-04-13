@@ -479,15 +479,15 @@ void QuantizeWithMinMaxPass::set_output_type(loco::Graph *g) const
     if (user_given_dtype == loco::DataType::FLOAT32)
     {
       auto dequant_op = create_dequantize(from);
-      loco::replace(from).with(dequant_op);
       dequant_op->input(from);
+      output->from(dequant_op);
     }
     else
     {
       // Insert Quantize Op for non-float32 output_type
       auto quant_op = create_quantize_op(from, user_given_dtype);
-      loco::replace(from).with(quant_op);
       quant_op->input(from);
+      output->from(quant_op);
 
       // TODO Set a proper origin (Quantize should have its own Origin)
       luci::add_origin(quant_op, luci::get_origin(from));
