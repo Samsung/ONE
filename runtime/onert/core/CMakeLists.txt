@@ -3,8 +3,10 @@ file(GLOB_RECURSE TESTS "*.test.cc")
 list(REMOVE_ITEM SOURCES ${TESTS})
 
 if(NOT BUILD_MINMAX_H5DUMPER)
-  file(GLOB_RECURSE H5DUMPER_SRC "src/dumper/h5/*.cc")
-  list(REMOVE_ITEM SOURCES ${H5DUMPER_SRC})
+  file(GLOB_RECURSE SRC_TO_REMOVE "src/dumper/h5/*.cc")
+  list(REMOVE_ITEM SOURCES ${SRC_TO_REMOVE})
+  file(GLOB_RECURSE SRC_TO_REMOVE "src/exec/MinMaxRecorder.cc")
+  list(REMOVE_ITEM SOURCES ${SRC_TO_REMOVE})
 endif(NOT BUILD_MINMAX_H5DUMPER)
 
 add_library(onert_core SHARED ${SOURCES})
