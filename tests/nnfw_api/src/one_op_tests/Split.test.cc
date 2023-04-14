@@ -60,3 +60,26 @@ TEST_F(GenModelTest, OneOp_SplitNonConstAxis)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, neg_OneOp_SplitNegatveSplitNum)
+{
+  CircleGen cgen;
+  int in = cgen.addTensor({{2, 4}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<int32_t> axis_data{1};
+  uint32_t axis_buf = cgen.addBuffer(axis_data);
+  int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, axis_buf});
+
+  int out1 = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int out2 = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorSplit({{axis, in}, {out1, out2}}, -3);
+  cgen.setInputsAndOutputs({in}, {out1, out2});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(
+    uniformTCD<float>({{1, 2, 3, 4, 5, 6, 7, 8}}, {{1, 2, 5, 6}, {3, 4, 7, 8}}));
+  _context->setBackends({"cpu", "acl_cl", "acl_neon"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
