@@ -32,6 +32,7 @@ target_link_libraries(onert_core INTERFACE ruy_instrumentation)
 # H5 Minmax Dumper
 if(BUILD_MINMAX_H5DUMPER)
   nnfw_find_package(HDF5 REQUIRED)
+  target_compile_definitions(onert_core PRIVATE MINMAX_H5DUMPER=1)
   target_include_directories(onert_core PRIVATE ${HDF5_INCLUDE_DIRS})
   target_link_libraries(onert_core PRIVATE ${HDF5_CXX_LIBRARIES})
 endif(BUILD_MINMAX_H5DUMPER)
