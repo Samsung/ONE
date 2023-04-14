@@ -57,3 +57,26 @@ TEST_F(GenModelTest, OneOp_ReverseV2_1D)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, neg_OneOp_ReverseV2_3D_DifferentType)
+{
+  CircleGen cgen;
+
+  int in = cgen.addTensor({{4, 3, 2}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<int32_t> axis_data{1};
+  uint32_t axis_buf = cgen.addBuffer(axis_data);
+  int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, axis_buf});
+  int out = cgen.addTensor({{4, 3, 2}, circle::TensorType::TensorType_INT32});
+
+  cgen.addOperatorReverseV2({{in, axis}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"acl_cl", "cpu"});
+  _context->addTestCase(uniformTCD<int>(
+    {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24}},
+    {{5, 6, 3, 4, 1, 2, 11, 12, 9, 10, 7, 8, 17, 18, 15, 16, 13, 14, 23, 24, 21, 22, 19, 20}}));
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
