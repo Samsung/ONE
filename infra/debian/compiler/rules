@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 export DH_VERBOSE = 1
 export NNAS_BUILD_PREFIX = build
-export PRESET = 20221125
+export PRESET = 20230413
 export _DESTDIR = debian/tmp/usr
 
 %:
