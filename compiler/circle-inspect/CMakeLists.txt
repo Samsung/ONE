@@ -1,6 +1,6 @@
-if(NOT TARGET mio_circle04)
+if(NOT TARGET mio_circle05)
   return()
-endif(NOT TARGET mio_circle04)
+endif(NOT TARGET mio_circle05)
 
 set(DRIVER "driver/Driver.cpp")
 
@@ -10,6 +10,6 @@ add_executable(circle-inspect ${DRIVER} ${SOURCES})
 target_include_directories(circle-inspect PRIVATE src)
 target_link_libraries(circle-inspect arser)
 target_link_libraries(circle-inspect foder)
-target_link_libraries(circle-inspect mio_circle04)
-target_link_libraries(circle-inspect mio_circle04_helper)
+target_link_libraries(circle-inspect mio_circle05)
+target_link_libraries(circle-inspect mio_circle05_helper)
 target_link_libraries(circle-inspect safemain)

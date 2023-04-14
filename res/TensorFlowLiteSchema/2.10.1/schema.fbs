@@ -1,4 +1,3 @@
-// Copyright (c) 2019~2023 Samsung Electronics Co., Ltd. All Rights Reserved
 // Copyright 2017 The TensorFlow Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,29 +13,21 @@
 // limitations under the License.
 
 // Revision History
-//
-// Version Major.Minor
-//
-// Major version is schema version.
-// We keep schema version if it is compatible
-// Minor version is for human communication
-// It will not be stored in circle model.
-//
-// Version 0.0: Initial version. Based on TensorFlow Lite v1.13.1 schema.
-// Version 0.1: Based on TF v2.2-rc2 + more (from TensorFlow `56d281c`)
-//              `BATCH_MATMUL` operator, `FLOAT64` tensor type,
-//              `asymmetric_quantize_inputs` for several operator options
-// Version 0.2: BCQ_GATHER and BCQ_FULLY_CONNECTED are added.
-// Version 0.3: SHUFFLED16x1FLOAT32 is added.
-// Version 0.4: Base up to TensorFlow Lite v2.7.0 schema.
-// Version 0.5: Base up to TensorFlow Lite v2.10.1 schema.
+// Version 0: Initial version.
+// Version 1: Add subgraphs to schema.
+// Version 2: Rename operators to conform to NN API.
+// Version 3: Move buffer data from Model.Subgraph.Tensors to Model.Buffers.
+// Version 3a: Add new builtin op code field. Has backward compatibility with
+//             version 3.
+// Version 3b: Rename fields in SignatureDef. Has backward compatibility with
+//             version 3 and 3a.
 
-namespace circle;
+namespace tflite;
 
 // This corresponds to the version.
-file_identifier "CIR0";
+file_identifier "TFL3";
 // File extension of any written files.
-file_extension "circle";
+file_extension "tflite";
 
 // IMPORTANT: All new members of tables, enums and unions must be added at the
 // end to ensure backwards compatibility.
@@ -241,9 +232,6 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
-  BCQ_GATHER = -4,
-  BCQ_FULLY_CONNECTED = -3,
-  INSTANCE_NORM = -2,
   ADD = 0,
   AVERAGE_POOL_2D = 1,
   CONCATENATION = 2,
@@ -532,14 +520,14 @@ union BuiltinOptions {
   UnsortedSegmentProdOptions,
   UnsortedSegmentMaxOptions,
   UnsortedSegmentSumOptions,
-  ATan2Options,
-  BCQGatherOptions = 252,
-  BCQFullyConnectedOptions = 253,
-  InstanceNormOptions = 254,
+  ATan2Options
 }
 
+// LINT.IfChange
 enum Padding : byte { SAME, VALID }
+// LINT.ThenChange(//tensorflow/compiler/mlir/lite/ir/tfl_op_enums.td)
 
+// LINT.IfChange
 enum ActivationFunctionType : byte {
   NONE = 0,
   RELU = 1,
@@ -548,6 +536,7 @@ enum ActivationFunctionType : byte {
   TANH = 4,
   SIGN_BIT = 5,
 }
+// LINT.ThenChange(//tensorflow/compiler/mlir/lite/ir/tfl_op_enums.td)
 
 table Conv2DOptions {
   padding:Padding;
@@ -639,11 +628,12 @@ table BidirectionalSequenceRNNOptions {
   asymmetric_quantize_inputs:bool;
 }
 
+// LINT.IfChange
 enum FullyConnectedOptionsWeightsFormat: byte {
   DEFAULT = 0,
   SHUFFLED4x16INT8 = 1,
-  SHUFFLED16x1FLOAT32 = 127
 }
+// LINT.ThenChange(//tensorflow/compiler/mlir/lite/ir/tfl_op_enums.td)
 
 // An implementation of TensorFlow fully_connected (a.k.a Dense) layer.
 table FullyConnectedOptions {
@@ -696,12 +686,14 @@ table LocalResponseNormalizationOptions {
   beta:float;
 }
 
+// LINT.IfChange
 enum LSTMKernelType : byte {
   // Full LSTM kernel which supports peephole and projection.
   FULL = 0,
   // Basic LSTM kernels. Equivalent to TensorFlow BasicLSTMCell.
   BASIC = 1,
 }
+// LINT.ThenChange(//tensorflow/compiler/mlir/lite/ir/tfl_op_enums.td)
 
 // An implementation of TensorFlow LSTMCell and CoupledInputForgetGateLSTMCell
 table LSTMOptions {
@@ -1001,12 +993,14 @@ table LeakyReluOptions {
 table SquaredDifferenceOptions {
 }
 
+// LINT.IfChange
 enum MirrorPadMode : byte {
   // Doesn't include borders.
   REFLECT = 0,
   // Includes borders.
   SYMMETRIC = 1,
 }
+// LINT.ThenChange(//tensorflow/compiler/mlir/lite/ir/tfl_op_enums.td)
 
 table MirrorPadOptions {
   mode:MirrorPadMode;
@@ -1075,8 +1069,8 @@ table SegmentSumOptions {
 }
 
 table BatchMatMulOptions {
-  adjoint_lhs:bool;
-  adjoint_rhs:bool;
+  adj_x:bool;
+  adj_y:bool;
   // Parameters for BatchMatMul version 4 or above.
   // If set to true, then weights-only op will use asymmetric quantization for
   // inputs.
@@ -1150,20 +1144,6 @@ table UnsortedSegmentSumOptions {
 table ATan2Options {
 }
 
-table BCQGatherOptions {
-  input_hidden_size: int;
-  axis: int;
-}
-
-table BCQFullyConnectedOptions {
-  weights_hidden_size: int;
-  fused_activation_function:ActivationFunctionType;
-}
-
-table InstanceNormOptions {
-  epsilon:float;
-  fused_activation_function:ActivationFunctionType;
-}
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a
 // builtin, or a string if the operator is custom.
@@ -1187,15 +1167,6 @@ table OperatorCode {
 
 enum CustomOptionsFormat : byte {
   FLEXBUFFERS = 0,
-}
-
-enum DataFormat : byte {
-  // For 2D data, NHWC(batch, height, width, channels)
-  // For 3D data, NDHWC(batch, depth, height, width, channels)
-  CHANNELS_LAST = 0,
-  // For 2D data, NCHW(batch, channels, height, width)
-  // For 3D data, NCDHW(batch, channels, depth, height, width)
-  CHANNELS_FIRST = 1,
 }
 
 // An operator takes tensors as inputs and outputs. The type of operation being
@@ -1255,9 +1226,6 @@ table SubGraph {
 
   // Name of this subgraph (used for debugging).
   name:string;
-
-  // Data format for input/output of SubGraph
-  data_format: DataFormat;
 }
 
 // Table of raw data buffers (used for constant tensors). Referenced by tensors
