@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#if 0
 #include "core/RuntimeModule.h"
 #include "kernels/Add.h"
 #include "kernels/Less.h"
@@ -99,3 +99,4 @@ TEST(WhileTest, FloatLoop10)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif

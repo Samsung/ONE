@@ -93,6 +93,11 @@ if (GENERATE_KERNELS_LIST_FROM)
     list(APPEND CMAKE_ARM_OPTIONS "-DLUCI_INTERPRETER_KERNELS_BUILD_LIST=${GENERATED_KERNELS_LIST_PATH}")
 endif ()
 
+if (ENABLE_TEST)
+    message(STATUS "Enable tests")
+    list(APPEND CMAKE_ARM_OPTIONS "-DENABLE_TEST=ON")
+endif ()
+
 if (DIS_QUANT)
     message(STATUS "ONERT-MICRO will not use part for QUANTIZED models")
     add_definitions(-DDIS_QUANT)

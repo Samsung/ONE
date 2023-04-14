@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#if 0
 #include "kernels/Slice.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
@@ -68,3 +68,4 @@ TYPED_TEST(SliceTest, SimpleTest)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif

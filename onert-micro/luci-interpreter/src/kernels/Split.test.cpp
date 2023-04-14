@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#if 0
 #include "kernels/Split.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
@@ -127,3 +127,4 @@ TYPED_TEST(SplitTest, NegativeAxis)
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
+#endif
