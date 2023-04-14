@@ -77,6 +77,7 @@ public:
   {
     return _output_tensors;
   }
+  backend::BackendContexts &getBackendContexts() { return _backend_contexts; }
 
 protected:
   /**
