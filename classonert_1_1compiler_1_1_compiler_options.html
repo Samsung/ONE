@@ -130,6 +130,8 @@ Static Public Member Functions</h2></td></tr>
 Data Fields</h2></td></tr>
 <tr class="memitem:ae43d2031de19b822a7ff3bd3087a2b0c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_compiler_options.html#ae43d2031de19b822a7ff3bd3087a2b0c">backend_list</a></td></tr>
 <tr class="separator:ae43d2031de19b822a7ff3bd3087a2b0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a954cebf067d95ba97dcb1f84447ba7f0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_compiler_options.html#a954cebf067d95ba97dcb1f84447ba7f0">minmax_filepath</a></td></tr>
+<tr class="separator:a954cebf067d95ba97dcb1f84447ba7f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b905a4bda3686d971e6569fb0565cee"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_compiler_options.html#a8b905a4bda3686d971e6569fb0565cee">trace_filepath</a></td></tr>
 <tr class="separator:a8b905a4bda3686d971e6569fb0565cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaaa6d3e4777fa9fb9da5e8290ea7824f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_compiler_options.html#aaaa6d3e4777fa9fb9da5e8290ea7824f">graph_dump_level</a></td></tr>
@@ -176,9 +178,9 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00059">59</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   59</span>{ <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#afde60b00d28466b3b35e0dc077845ec1">fp16_enable</a> = <span class="keyword">true</span>; }</div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_afde60b00d28466b3b35e0dc077845ec1"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#afde60b00d28466b3b35e0dc077845ec1">onert::compiler::CompilerOptions::fp16_enable</a></div><div class="ttdeci">bool fp16_enable</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00085">CompilerOptions.h:85</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_afde60b00d28466b3b35e0dc077845ec1"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#afde60b00d28466b3b35e0dc077845ec1">onert::compiler::CompilerOptions::fp16_enable</a></div><div class="ttdeci">bool fp16_enable</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00086">CompilerOptions.h:86</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_compiler_options_8h_source.html#l00085">fp16_enable</a>.</p>
+<p class="reference">References <a class="el" href="_compiler_options_8h_source.html#l00086">fp16_enable</a>.</p>
 
 </div>
 </div>
@@ -200,26 +202,26 @@ Data Fields</h2></td></tr>
 <p>Force default values of CompilerOptions for correct compilations. </p>
 <dl class="section note"><dt>Note</dt><dd>This should be called after CompilerOptions setting is finished to prevent value overwriting </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_compiler_options_8cc_source.html#l00110">110</a> of file <a class="el" href="_compiler_options_8cc_source.html">CompilerOptions.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  111</span>{</div>
-<div class="line"><span class="lineno">  112</span>  <span class="comment">// Set control flow backend for control flow operators</span></div>
-<div class="line"><span class="lineno">  113</span>  <span class="keyword">auto</span> &amp;builtin_id = <a class="code hl_variable" href="classonert_1_1backend_1_1builtin_1_1_config.html#a7f04a99077a76b37523d18508275647f">backend::builtin::Config::ID</a>;</div>
-<div class="line"><span class="lineno">  114</span>  <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>[ir::OpCode::If] = builtin_id;</div>
-<div class="line"><span class="lineno">  115</span>  <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>[ir::OpCode::While] = builtin_id;</div>
-<div class="line"><span class="lineno">  116</span>  <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>[ir::OpCode::Permute] = builtin_id;</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span>  <span class="comment">// FIXME This is a workaround for bcq operations, should remove it</span></div>
-<div class="line"><span class="lineno">  119</span>  <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>[ir::OpCode::BCQFullyConnected] = <span class="stringliteral">&quot;bcq&quot;</span>;</div>
-<div class="line"><span class="lineno">  120</span>  <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>[ir::OpCode::BCQGather] = <span class="stringliteral">&quot;bcq&quot;</span>;</div>
-<div class="line"><span class="lineno">  121</span> </div>
-<div class="line"><span class="lineno">  122</span>  <span class="comment">// FIXME This is a workaround for bulk operations, should remove it</span></div>
-<div class="line"><span class="lineno">  123</span>  <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>[ir::OpCode::Bulk] = <span class="stringliteral">&quot;trix&quot;</span>;</div>
-<div class="line"><span class="lineno">  124</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_compiler_options_8cc_source.html#l00111">111</a> of file <a class="el" href="_compiler_options_8cc_source.html">CompilerOptions.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  112</span>{</div>
+<div class="line"><span class="lineno">  113</span>  <span class="comment">// Set control flow backend for control flow operators</span></div>
+<div class="line"><span class="lineno">  114</span>  <span class="keyword">auto</span> &amp;builtin_id = <a class="code hl_variable" href="classonert_1_1backend_1_1builtin_1_1_config.html#a7f04a99077a76b37523d18508275647f">backend::builtin::Config::ID</a>;</div>
+<div class="line"><span class="lineno">  115</span>  <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>[ir::OpCode::If] = builtin_id;</div>
+<div class="line"><span class="lineno">  116</span>  <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>[ir::OpCode::While] = builtin_id;</div>
+<div class="line"><span class="lineno">  117</span>  <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>[ir::OpCode::Permute] = builtin_id;</div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>  <span class="comment">// FIXME This is a workaround for bcq operations, should remove it</span></div>
+<div class="line"><span class="lineno">  120</span>  <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>[ir::OpCode::BCQFullyConnected] = <span class="stringliteral">&quot;bcq&quot;</span>;</div>
+<div class="line"><span class="lineno">  121</span>  <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>[ir::OpCode::BCQGather] = <span class="stringliteral">&quot;bcq&quot;</span>;</div>
+<div class="line"><span class="lineno">  122</span> </div>
+<div class="line"><span class="lineno">  123</span>  <span class="comment">// FIXME This is a workaround for bulk operations, should remove it</span></div>
+<div class="line"><span class="lineno">  124</span>  <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>[ir::OpCode::Bulk] = <span class="stringliteral">&quot;trix&quot;</span>;</div>
+<div class="line"><span class="lineno">  125</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_config_html_a7f04a99077a76b37523d18508275647f"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_config.html#a7f04a99077a76b37523d18508275647f">onert::backend::builtin::Config::ID</a></div><div class="ttdeci">static std::string ID</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2backend_2builtin_2_config_8h_source.html#l00034">Config.h:34</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_a5e47be4c12200fbd54157a0912e2a661"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">onert::compiler::CompilerOptions::manual_scheduler_options</a></div><div class="ttdeci">ManualSchedulerOptions manual_scheduler_options</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00082">CompilerOptions.h:82</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_a5e47be4c12200fbd54157a0912e2a661"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">onert::compiler::CompilerOptions::manual_scheduler_options</a></div><div class="ttdeci">ManualSchedulerOptions manual_scheduler_options</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00083">CompilerOptions.h:83</a></div></div>
 <div class="ttc" id="astructonert_1_1compiler_1_1_manual_scheduler_options_html_a6a864efc566810551542f5b3c36827eb"><div class="ttname"><a href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">onert::compiler::ManualSchedulerOptions::opcode_to_backend</a></div><div class="ttdeci">std::unordered_map&lt; ir::OpCode, std::string &gt; opcode_to_backend</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00040">CompilerOptions.h:40</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2src_2backend_2builtin_2_config_8h_source.html#l00034">onert::backend::builtin::Config::ID</a>, <a class="el" href="_compiler_options_8h_source.html#l00082">manual_scheduler_options</a>, and <a class="el" href="_compiler_options_8h_source.html#l00040">onert::compiler::ManualSchedulerOptions::opcode_to_backend</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2src_2backend_2builtin_2_config_8h_source.html#l00034">onert::backend::builtin::Config::ID</a>, <a class="el" href="_compiler_options_8h_source.html#l00083">manual_scheduler_options</a>, and <a class="el" href="_compiler_options_8h_source.html#l00040">onert::compiler::ManualSchedulerOptions::opcode_to_backend</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>.</p>
 
@@ -256,37 +258,38 @@ Data Fields</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   75</span>{</div>
 <div class="line"><span class="lineno">   76</span>  <span class="keyword">auto</span> o = std::make_unique&lt;CompilerOptions&gt;();</div>
 <div class="line"><span class="lineno">   77</span>  o-&gt;backend_list = <a class="code hl_function" href="namespacennfw_1_1misc.html#af87ba1392e59046fb1899eff53629c24">nnfw::misc::split</a>(<a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::BACKENDS), <span class="charliteral">&#39;;&#39;</span>);</div>
-<div class="line"><span class="lineno">   78</span>  o-&gt;trace_filepath = <a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::TRACE_FILEPATH);</div>
-<div class="line"><span class="lineno">   79</span>  o-&gt;graph_dump_level = <a class="code hl_function" href="namespaceonert_1_1util.html#abf338eb19fe688b7a0619ad5560716d0">util::getConfigInt</a>(util::config::GRAPH_DOT_DUMP);</div>
-<div class="line"><span class="lineno">   80</span>  o-&gt;executor = <a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::EXECUTOR);</div>
-<div class="line"><span class="lineno">   81</span>  o-&gt;he_scheduler = <a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::USE_SCHEDULER);</div>
-<div class="line"><span class="lineno">   82</span>  o-&gt;he_profiling_mode = <a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::PROFILING_MODE);</div>
-<div class="line"><span class="lineno">   83</span>  o-&gt;fp16_enable = <a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::FP16_ENABLE);</div>
-<div class="line"><span class="lineno">   84</span>  {</div>
-<div class="line"><span class="lineno">   85</span>    <span class="comment">// Backend for all</span></div>
-<div class="line"><span class="lineno">   86</span>    <span class="keyword">auto</span> &amp;ms_options = o-&gt;manual_scheduler_options;</div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>    <span class="comment">// Default value for op_backend_all is first element in the backend list</span></div>
-<div class="line"><span class="lineno">   89</span>    ms_options.backend_for_all = <a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::OP_BACKEND_ALLOPS);</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span><span class="comment">// Opcode to Backend</span></div>
-<div class="line"><span class="lineno">   92</span><span class="preprocessor">#define OP(OpName)                                                                      \</span></div>
-<div class="line"><span class="lineno">   93</span><span class="preprocessor">  {                                                                                     \</span></div>
-<div class="line"><span class="lineno">   94</span><span class="preprocessor">    const auto &amp;backend_str = util::getConfigString(util::config::OP_BACKEND_##OpName); \</span></div>
-<div class="line"><span class="lineno">   95</span><span class="preprocessor">    if (!backend_str.empty())                                                           \</span></div>
-<div class="line"><span class="lineno">   96</span><span class="preprocessor">    {                                                                                   \</span></div>
-<div class="line"><span class="lineno">   97</span><span class="preprocessor">      ms_options.opcode_to_backend[ir::OpCode::OpName] = backend_str;                   \</span></div>
-<div class="line"><span class="lineno">   98</span><span class="preprocessor">    }                                                                                   \</span></div>
-<div class="line"><span class="lineno">   99</span><span class="preprocessor">  }</span></div>
-<div class="line"><span class="lineno">  100</span><span class="preprocessor">#include &quot;ir/Operations.lst&quot;</span></div>
-<div class="line"><span class="lineno">  101</span><span class="preprocessor">#undef OP</span></div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>    <span class="comment">// Index to Backend</span></div>
-<div class="line"><span class="lineno">  104</span>    <span class="keyword">auto</span> map_str = <a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::OP_BACKEND_MAP);</div>
-<div class="line"><span class="lineno">  105</span>    ms_options.setBackendMap(map_str);</div>
-<div class="line"><span class="lineno">  106</span>  }</div>
-<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">return</span> o;</div>
-<div class="line"><span class="lineno">  108</span>}</div>
+<div class="line"><span class="lineno">   78</span>  o-&gt;minmax_filepath = <a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::MINMAX_FILEPATH);</div>
+<div class="line"><span class="lineno">   79</span>  o-&gt;trace_filepath = <a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::TRACE_FILEPATH);</div>
+<div class="line"><span class="lineno">   80</span>  o-&gt;graph_dump_level = <a class="code hl_function" href="namespaceonert_1_1util.html#abf338eb19fe688b7a0619ad5560716d0">util::getConfigInt</a>(util::config::GRAPH_DOT_DUMP);</div>
+<div class="line"><span class="lineno">   81</span>  o-&gt;executor = <a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::EXECUTOR);</div>
+<div class="line"><span class="lineno">   82</span>  o-&gt;he_scheduler = <a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::USE_SCHEDULER);</div>
+<div class="line"><span class="lineno">   83</span>  o-&gt;he_profiling_mode = <a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::PROFILING_MODE);</div>
+<div class="line"><span class="lineno">   84</span>  o-&gt;fp16_enable = <a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::FP16_ENABLE);</div>
+<div class="line"><span class="lineno">   85</span>  {</div>
+<div class="line"><span class="lineno">   86</span>    <span class="comment">// Backend for all</span></div>
+<div class="line"><span class="lineno">   87</span>    <span class="keyword">auto</span> &amp;ms_options = o-&gt;manual_scheduler_options;</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>    <span class="comment">// Default value for op_backend_all is first element in the backend list</span></div>
+<div class="line"><span class="lineno">   90</span>    ms_options.backend_for_all = <a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::OP_BACKEND_ALLOPS);</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span><span class="comment">// Opcode to Backend</span></div>
+<div class="line"><span class="lineno">   93</span><span class="preprocessor">#define OP(OpName)                                                                      \</span></div>
+<div class="line"><span class="lineno">   94</span><span class="preprocessor">  {                                                                                     \</span></div>
+<div class="line"><span class="lineno">   95</span><span class="preprocessor">    const auto &amp;backend_str = util::getConfigString(util::config::OP_BACKEND_##OpName); \</span></div>
+<div class="line"><span class="lineno">   96</span><span class="preprocessor">    if (!backend_str.empty())                                                           \</span></div>
+<div class="line"><span class="lineno">   97</span><span class="preprocessor">    {                                                                                   \</span></div>
+<div class="line"><span class="lineno">   98</span><span class="preprocessor">      ms_options.opcode_to_backend[ir::OpCode::OpName] = backend_str;                   \</span></div>
+<div class="line"><span class="lineno">   99</span><span class="preprocessor">    }                                                                                   \</span></div>
+<div class="line"><span class="lineno">  100</span><span class="preprocessor">  }</span></div>
+<div class="line"><span class="lineno">  101</span><span class="preprocessor">#include &quot;ir/Operations.lst&quot;</span></div>
+<div class="line"><span class="lineno">  102</span><span class="preprocessor">#undef OP</span></div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>    <span class="comment">// Index to Backend</span></div>
+<div class="line"><span class="lineno">  105</span>    <span class="keyword">auto</span> map_str = <a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::OP_BACKEND_MAP);</div>
+<div class="line"><span class="lineno">  106</span>    ms_options.setBackendMap(map_str);</div>
+<div class="line"><span class="lineno">  107</span>  }</div>
+<div class="line"><span class="lineno">  108</span>  <span class="keywordflow">return</span> o;</div>
+<div class="line"><span class="lineno">  109</span>}</div>
 <div class="ttc" id="anamespacennfw_1_1misc_html_af87ba1392e59046fb1899eff53629c24"><div class="ttname"><a href="namespacennfw_1_1misc.html#af87ba1392e59046fb1899eff53629c24">nnfw::misc::split</a></div><div class="ttdeci">std::vector&lt; std::string &gt; split(const std::string &amp;s, char delim)</div><div class="ttdef"><b>Definition:</b> <a href="string__helpers_8h_source.html#l00046">string_helpers.h:46</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1util_html_a31f86c6ba380a60f458c85e621e0f953"><div class="ttname"><a href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">onert::util::getConfigBool</a></div><div class="ttdeci">bool getConfigBool(const std::string &amp;key)</div><div class="ttdef"><b>Definition:</b> <a href="onert_2core_2src_2util_2_config_source_8cc_source.html#l00118">ConfigSource.cc:118</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1util_html_a7e5e582c0b8f79d797f44f6df9765727"><div class="ttname"><a href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">onert::util::getConfigString</a></div><div class="ttdeci">std::string getConfigString(const std::string &amp;key)</div><div class="ttdef"><b>Definition:</b> <a href="onert_2core_2src_2util_2_config_source_8cc_source.html#l00130">ConfigSource.cc:130</a></div></div>
@@ -315,34 +318,34 @@ Data Fields</h2></td></tr>
 
 <p>Print option value. </p>
 
-<p class="definition">Definition at line <a class="el" href="_compiler_options_8cc_source.html#l00126">126</a> of file <a class="el" href="_compiler_options_8cc_source.html">CompilerOptions.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  127</span>{</div>
-<div class="line"><span class="lineno">  128</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; std::boolalpha &lt;&lt; <span class="stringliteral">&quot;==== Compiler Options ====&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  129</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;backend_list             : &quot;</span></div>
-<div class="line"><span class="lineno">  130</span>                    &lt;&lt; <a class="code hl_function" href="namespacennfw_1_1misc.html#a61c7e738bcc4d89ec864577736cc0e8f">nnfw::misc::join</a>(<a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#ae43d2031de19b822a7ff3bd3087a2b0c">backend_list</a>.begin(), <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#ae43d2031de19b822a7ff3bd3087a2b0c">backend_list</a>.end(), <span class="stringliteral">&quot;/&quot;</span>) &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  131</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;trace_filepath           : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a8b905a4bda3686d971e6569fb0565cee">trace_filepath</a> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  132</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;graph_dump_level         : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#aaaa6d3e4777fa9fb9da5e8290ea7824f">graph_dump_level</a> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  133</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;executor                 : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#aa0e2dc3382c9ccc47568497811249792">executor</a> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  134</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;manual backend_for_all   : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a08a3901dab25478e73f51e693e72a4f0">backend_for_all</a></div>
-<div class="line"><span class="lineno">  135</span>                    &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  136</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;manual_scheduler_options : &quot;</span></div>
-<div class="line"><span class="lineno">  137</span>                    &lt;&lt; getOpBackends(<a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>) &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  138</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;he_scheduler             : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#ab0bb53a4162e142588224b0ed6a5e28d">he_scheduler</a> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  139</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;he_profiling_mode        : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a3198bc45de7dd1d045620ec8304e2990">he_profiling_mode</a> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  140</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;fp16_enable              : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#afde60b00d28466b3b35e0dc077845ec1">fp16_enable</a> &lt;&lt; std::endl</div>
-<div class="line"><span class="lineno">  141</span>                    &lt;&lt; std::noboolalpha;</div>
-<div class="line"><span class="lineno">  142</span>}</div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_a3198bc45de7dd1d045620ec8304e2990"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#a3198bc45de7dd1d045620ec8304e2990">onert::compiler::CompilerOptions::he_profiling_mode</a></div><div class="ttdeci">bool he_profiling_mode</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00084">CompilerOptions.h:84</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_a8b905a4bda3686d971e6569fb0565cee"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#a8b905a4bda3686d971e6569fb0565cee">onert::compiler::CompilerOptions::trace_filepath</a></div><div class="ttdeci">std::string trace_filepath</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00079">CompilerOptions.h:79</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_aa0e2dc3382c9ccc47568497811249792"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#aa0e2dc3382c9ccc47568497811249792">onert::compiler::CompilerOptions::executor</a></div><div class="ttdeci">std::string executor</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00081">CompilerOptions.h:81</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_aaaa6d3e4777fa9fb9da5e8290ea7824f"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#aaaa6d3e4777fa9fb9da5e8290ea7824f">onert::compiler::CompilerOptions::graph_dump_level</a></div><div class="ttdeci">int graph_dump_level</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00080">CompilerOptions.h:80</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_ab0bb53a4162e142588224b0ed6a5e28d"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#ab0bb53a4162e142588224b0ed6a5e28d">onert::compiler::CompilerOptions::he_scheduler</a></div><div class="ttdeci">bool he_scheduler</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00083">CompilerOptions.h:83</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_compiler_options_8cc_source.html#l00127">127</a> of file <a class="el" href="_compiler_options_8cc_source.html">CompilerOptions.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  128</span>{</div>
+<div class="line"><span class="lineno">  129</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; std::boolalpha &lt;&lt; <span class="stringliteral">&quot;==== Compiler Options ====&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  130</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;backend_list             : &quot;</span></div>
+<div class="line"><span class="lineno">  131</span>                    &lt;&lt; <a class="code hl_function" href="namespacennfw_1_1misc.html#a61c7e738bcc4d89ec864577736cc0e8f">nnfw::misc::join</a>(<a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#ae43d2031de19b822a7ff3bd3087a2b0c">backend_list</a>.begin(), <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#ae43d2031de19b822a7ff3bd3087a2b0c">backend_list</a>.end(), <span class="stringliteral">&quot;/&quot;</span>) &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  132</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;trace_filepath           : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a8b905a4bda3686d971e6569fb0565cee">trace_filepath</a> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  133</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;graph_dump_level         : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#aaaa6d3e4777fa9fb9da5e8290ea7824f">graph_dump_level</a> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  134</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;executor                 : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#aa0e2dc3382c9ccc47568497811249792">executor</a> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  135</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;manual backend_for_all   : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a08a3901dab25478e73f51e693e72a4f0">backend_for_all</a></div>
+<div class="line"><span class="lineno">  136</span>                    &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  137</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;manual_scheduler_options : &quot;</span></div>
+<div class="line"><span class="lineno">  138</span>                    &lt;&lt; getOpBackends(<a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>.<a class="code hl_variable" href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a6a864efc566810551542f5b3c36827eb">opcode_to_backend</a>) &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  139</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;he_scheduler             : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#ab0bb53a4162e142588224b0ed6a5e28d">he_scheduler</a> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  140</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;he_profiling_mode        : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#a3198bc45de7dd1d045620ec8304e2990">he_profiling_mode</a> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  141</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Compiler) &lt;&lt; <span class="stringliteral">&quot;fp16_enable              : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#afde60b00d28466b3b35e0dc077845ec1">fp16_enable</a> &lt;&lt; std::endl</div>
+<div class="line"><span class="lineno">  142</span>                    &lt;&lt; std::noboolalpha;</div>
+<div class="line"><span class="lineno">  143</span>}</div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_a3198bc45de7dd1d045620ec8304e2990"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#a3198bc45de7dd1d045620ec8304e2990">onert::compiler::CompilerOptions::he_profiling_mode</a></div><div class="ttdeci">bool he_profiling_mode</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00085">CompilerOptions.h:85</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_a8b905a4bda3686d971e6569fb0565cee"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#a8b905a4bda3686d971e6569fb0565cee">onert::compiler::CompilerOptions::trace_filepath</a></div><div class="ttdeci">std::string trace_filepath</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00080">CompilerOptions.h:80</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_aa0e2dc3382c9ccc47568497811249792"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#aa0e2dc3382c9ccc47568497811249792">onert::compiler::CompilerOptions::executor</a></div><div class="ttdeci">std::string executor</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00082">CompilerOptions.h:82</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_aaaa6d3e4777fa9fb9da5e8290ea7824f"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#aaaa6d3e4777fa9fb9da5e8290ea7824f">onert::compiler::CompilerOptions::graph_dump_level</a></div><div class="ttdeci">int graph_dump_level</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00081">CompilerOptions.h:81</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_ab0bb53a4162e142588224b0ed6a5e28d"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#ab0bb53a4162e142588224b0ed6a5e28d">onert::compiler::CompilerOptions::he_scheduler</a></div><div class="ttdeci">bool he_scheduler</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00084">CompilerOptions.h:84</a></div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_options_html_ae43d2031de19b822a7ff3bd3087a2b0c"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler_options.html#ae43d2031de19b822a7ff3bd3087a2b0c">onert::compiler::CompilerOptions::backend_list</a></div><div class="ttdeci">std::vector&lt; std::string &gt; backend_list</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00076">CompilerOptions.h:76</a></div></div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a212d71bce44cd84d4fe678058cd5eccd"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a></div><div class="ttdeci">#define VERBOSE(name, lv)</div><div class="ttdef"><b>Definition:</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">Log.h:71</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1misc_html_a61c7e738bcc4d89ec864577736cc0e8f"><div class="ttname"><a href="namespacennfw_1_1misc.html#a61c7e738bcc4d89ec864577736cc0e8f">nnfw::misc::join</a></div><div class="ttdeci">std::string join(InputIt first, InputIt last, const std::string &amp;concat)</div><div class="ttdef"><b>Definition:</b> <a href="string__helpers_8h_source.html#l00065">string_helpers.h:65</a></div></div>
 <div class="ttc" id="astructonert_1_1compiler_1_1_manual_scheduler_options_html_a08a3901dab25478e73f51e693e72a4f0"><div class="ttname"><a href="structonert_1_1compiler_1_1_manual_scheduler_options.html#a08a3901dab25478e73f51e693e72a4f0">onert::compiler::ManualSchedulerOptions::backend_for_all</a></div><div class="ttdeci">std::string backend_for_all</div><div class="ttdef"><b>Definition:</b> <a href="_compiler_options_8h_source.html#l00039">CompilerOptions.h:39</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_compiler_options_8h_source.html#l00039">onert::compiler::ManualSchedulerOptions::backend_for_all</a>, <a class="el" href="_compiler_options_8h_source.html#l00076">backend_list</a>, <a class="el" href="_compiler_options_8h_source.html#l00081">executor</a>, <a class="el" href="_compiler_options_8h_source.html#l00085">fp16_enable</a>, <a class="el" href="_compiler_options_8h_source.html#l00080">graph_dump_level</a>, <a class="el" href="_compiler_options_8h_source.html#l00084">he_profiling_mode</a>, <a class="el" href="_compiler_options_8h_source.html#l00083">he_scheduler</a>, <a class="el" href="string__helpers_8h_source.html#l00065">nnfw::misc::join()</a>, <a class="el" href="_compiler_options_8h_source.html#l00082">manual_scheduler_options</a>, <a class="el" href="_compiler_options_8h_source.html#l00040">onert::compiler::ManualSchedulerOptions::opcode_to_backend</a>, <a class="el" href="_compiler_options_8h_source.html#l00079">trace_filepath</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
+<p class="reference">References <a class="el" href="_compiler_options_8h_source.html#l00039">onert::compiler::ManualSchedulerOptions::backend_for_all</a>, <a class="el" href="_compiler_options_8h_source.html#l00076">backend_list</a>, <a class="el" href="_compiler_options_8h_source.html#l00082">executor</a>, <a class="el" href="_compiler_options_8h_source.html#l00086">fp16_enable</a>, <a class="el" href="_compiler_options_8h_source.html#l00081">graph_dump_level</a>, <a class="el" href="_compiler_options_8h_source.html#l00085">he_profiling_mode</a>, <a class="el" href="_compiler_options_8h_source.html#l00084">he_scheduler</a>, <a class="el" href="string__helpers_8h_source.html#l00065">nnfw::misc::join()</a>, <a class="el" href="_compiler_options_8h_source.html#l00083">manual_scheduler_options</a>, <a class="el" href="_compiler_options_8h_source.html#l00040">onert::compiler::ManualSchedulerOptions::opcode_to_backend</a>, <a class="el" href="_compiler_options_8h_source.html#l00080">trace_filepath</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>.</p>
 
@@ -363,7 +366,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00076">76</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_manual_scheduler_8cc_source.html#l00038">onert::compiler::ManualScheduler::schedule()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00126">verboseOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_manual_scheduler_8cc_source.html#l00038">onert::compiler::ManualScheduler::schedule()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00127">verboseOptions()</a>.</p>
 
 </div>
 </div>
@@ -379,9 +382,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00081">81</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00082">82</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00126">verboseOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00127">verboseOptions()</a>.</p>
 
 </div>
 </div>
@@ -397,9 +400,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00085">85</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00086">86</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_compiler_options_8h_source.html#l00059">enableToFp16()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00126">verboseOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compiler_options_8h_source.html#l00059">enableToFp16()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00127">verboseOptions()</a>.</p>
 
 </div>
 </div>
@@ -415,9 +418,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00080">80</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00081">81</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00126">verboseOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00127">verboseOptions()</a>.</p>
 
 </div>
 </div>
@@ -433,9 +436,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00084">84</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00085">85</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00126">verboseOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00127">verboseOptions()</a>.</p>
 
 </div>
 </div>
@@ -451,9 +454,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00083">83</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00084">84</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00126">verboseOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00127">verboseOptions()</a>.</p>
 
 </div>
 </div>
@@ -469,9 +472,27 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00082">82</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00083">83</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_compiler_options_8cc_source.html#l00110">forceInternalOptions()</a>, <a class="el" href="_manual_scheduler_8cc_source.html#l00038">onert::compiler::ManualScheduler::schedule()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00126">verboseOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compiler_options_8cc_source.html#l00111">forceInternalOptions()</a>, <a class="el" href="_manual_scheduler_8cc_source.html#l00038">onert::compiler::ManualScheduler::schedule()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00127">verboseOptions()</a>.</p>
+
+</div>
+</div>
+<a id="a954cebf067d95ba97dcb1f84447ba7f0" name="a954cebf067d95ba97dcb1f84447ba7f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a954cebf067d95ba97dcb1f84447ba7f0">&#9670;&#160;</a></span>minmax_filepath</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string onert::compiler::CompilerOptions::minmax_filepath</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00077">77</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>.</p>
 
 </div>
 </div>
@@ -487,9 +508,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00079">79</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_compiler_options_8h_source.html#l00080">80</a> of file <a class="el" href="_compiler_options_8h_source.html">CompilerOptions.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_compiler_options_8cc_source.html#l00126">verboseOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compiler_options_8cc_source.html#l00127">verboseOptions()</a>.</p>
 
 </div>
 </div>

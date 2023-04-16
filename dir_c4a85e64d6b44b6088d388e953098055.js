@@ -3,7 +3,7 @@ var dir_c4a85e64d6b44b6088d388e953098055 =
     [ "Abs.cpp", "luci-interpreter_2src_2kernels_2_abs_8cpp.html", null ],
     [ "Abs.h", "luci-interpreter_2src_2kernels_2_abs_8h.html", "luci-interpreter_2src_2kernels_2_abs_8h" ],
     [ "Add.cpp", "compiler_2luci-interpreter_2src_2kernels_2_add_8cpp.html", null ],
-    [ "Add.h", "compiler_2luci-interpreter_2src_2kernels_2_add_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_add_8h" ],
+    [ "Add.h", "luci-interpreter_2src_2kernels_2_add_8h.html", "luci-interpreter_2src_2kernels_2_add_8h" ],
     [ "ArgMax.cpp", "compiler_2luci-interpreter_2src_2kernels_2_arg_max_8cpp.html", "compiler_2luci-interpreter_2src_2kernels_2_arg_max_8cpp" ],
     [ "ArgMax.h", "compiler_2luci-interpreter_2src_2kernels_2_arg_max_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_arg_max_8h" ],
     [ "AveragePool2D.cpp", "compiler_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp.html", null ],

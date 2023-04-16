@@ -3,7 +3,7 @@ var dir_28d3de3e0f2b67cb3b959accb5527250 =
     [ "Abs.cpp", "mir-interpreter_2src_2ops_2_abs_8cpp.html", "mir-interpreter_2src_2ops_2_abs_8cpp" ],
     [ "Abs.h", "mir-interpreter_2src_2ops_2_abs_8h.html", "mir-interpreter_2src_2ops_2_abs_8h" ],
     [ "Add.cpp", "compiler_2mir-interpreter_2src_2ops_2_add_8cpp.html", "compiler_2mir-interpreter_2src_2ops_2_add_8cpp" ],
-    [ "Add.h", "compiler_2mir-interpreter_2src_2ops_2_add_8h.html", "compiler_2mir-interpreter_2src_2ops_2_add_8h" ],
+    [ "Add.h", "mir-interpreter_2src_2ops_2_add_8h.html", "mir-interpreter_2src_2ops_2_add_8h" ],
     [ "AvgPool2D.cpp", "mir-interpreter_2src_2ops_2_avg_pool2_d_8cpp.html", "mir-interpreter_2src_2ops_2_avg_pool2_d_8cpp" ],
     [ "AvgPool2D.h", "mir-interpreter_2src_2ops_2_avg_pool2_d_8h.html", "mir-interpreter_2src_2ops_2_avg_pool2_d_8h" ],
     [ "CappedReLU.cpp", "_capped_re_l_u_8cpp.html", "_capped_re_l_u_8cpp" ],

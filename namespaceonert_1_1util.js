@@ -5,6 +5,7 @@ var namespaceonert_1_1util =
     [ "CPUTimer", "classonert_1_1util_1_1_c_p_u_timer.html", "classonert_1_1util_1_1_c_p_u_timer" ],
     [ "Index", "classonert_1_1util_1_1_index.html", "classonert_1_1util_1_1_index" ],
     [ "ITimer", "classonert_1_1util_1_1_i_timer.html", "classonert_1_1util_1_1_i_timer" ],
+    [ "MinMaxMap", "classonert_1_1util_1_1_min_max_map.html", "classonert_1_1util_1_1_min_max_map" ],
     [ "ObjectManager", "classonert_1_1util_1_1_object_manager.html", "classonert_1_1util_1_1_object_manager" ],
     [ "Set", "classonert_1_1util_1_1_set.html", "classonert_1_1util_1_1_set" ],
     [ "TracingCtx", "classonert_1_1util_1_1_tracing_ctx.html", "classonert_1_1util_1_1_tracing_ctx" ],

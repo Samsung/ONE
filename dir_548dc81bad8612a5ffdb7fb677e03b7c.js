@@ -3,7 +3,7 @@ var dir_548dc81bad8612a5ffdb7fb677e03b7c =
     [ "Abs.cpp", "mir_2src_2mir__onnx__importer_2_op_2_abs_8cpp.html", "mir_2src_2mir__onnx__importer_2_op_2_abs_8cpp" ],
     [ "Abs.h", "mir_2src_2mir__onnx__importer_2_op_2_abs_8h.html", "mir_2src_2mir__onnx__importer_2_op_2_abs_8h" ],
     [ "Add.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_add_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_add_8cpp" ],
-    [ "Add.h", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_add_8h.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_add_8h" ],
+    [ "Add.h", "mir_2src_2mir__onnx__importer_2_op_2_add_8h.html", "mir_2src_2mir__onnx__importer_2_op_2_add_8h" ],
     [ "AveragePool.cpp", "_average_pool_8cpp.html", "_average_pool_8cpp" ],
     [ "AveragePool.h", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_average_pool_8h.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_average_pool_8h" ],
     [ "BatchNormalization.cpp", "_batch_normalization_8cpp.html", "_batch_normalization_8cpp" ],

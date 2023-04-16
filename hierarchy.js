@@ -1829,6 +1829,9 @@ var hierarchy =
     [ "mir::DotGraph", "classmir_1_1_dot_graph.html", null ],
     [ "mir::DotNode", "structmir_1_1_dot_node.html", null ],
     [ "nnc::Driver", "classnnc_1_1_driver.html", null ],
+    [ "onert::dumper::h5::Dumper", "classonert_1_1dumper_1_1h5_1_1_dumper.html", [
+      [ "onert::dumper::h5::MinMaxDumper", "classonert_1_1dumper_1_1h5_1_1_min_max_dumper.html", null ]
+    ] ],
     [ "DumpFakeQuantFM.DumpFakeQuantFM", "class_dump_fake_quant_f_m_1_1_dump_fake_quant_f_m.html", null ],
     [ "DumpFP32FM.DumpFP32FM", "class_dump_f_p32_f_m_1_1_dump_f_p32_f_m.html", null ],
     [ "circleinspect::DumpInterface", "classcircleinspect_1_1_dump_interface.html", [
@@ -2346,7 +2349,12 @@ var hierarchy =
     [ "loco::IErrorListener", "structloco_1_1_i_error_listener.html", [
       [ "loco::ErrorListener", "structloco_1_1_error_listener.html", null ]
     ] ],
+    [ "onert::exec::IExecutionEventEmitter", "structonert_1_1exec_1_1_i_execution_event_emitter.html", [
+      [ "onert::exec::ExecutionEventEmitter", "classonert_1_1exec_1_1_execution_event_emitter.html", null ]
+    ] ],
+    [ "onert::exec::IExecutionEventListener", "structonert_1_1exec_1_1_i_execution_event_listener.html", null ],
     [ "onert::exec::IExecutionObserver", "classonert_1_1exec_1_1_i_execution_observer.html", [
+      [ "onert::exec::MinMaxRecorder", "classonert_1_1exec_1_1_min_max_recorder.html", null ],
       [ "onert::exec::ProfileObserver", "classonert_1_1exec_1_1_profile_observer.html", null ],
       [ "onert::exec::TracingObserver", "classonert_1_1exec_1_1_tracing_observer.html", null ]
     ] ],
@@ -2642,7 +2650,6 @@ var hierarchy =
     [ "crew::JsonExport", "classcrew_1_1_json_export.html", null ],
     [ "luci_interpreter::Kernel", "classluci__interpreter_1_1_kernel.html", [
       [ "luci_interpreter::KernelWithParams< AddParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::Add", "classluci__interpreter_1_1kernels_1_1_add.html", null ],
         [ "luci_interpreter::kernels::Add", "classluci__interpreter_1_1kernels_1_1_add.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< ArgMaxParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -2987,7 +2994,9 @@ var hierarchy =
       [ "circle_eval_diff::TopKMatchPrinter", "classcircle__eval__diff_1_1_top_k_match_printer.html", null ]
     ] ],
     [ "nnfw::cker::MinimumOp", "structnnfw_1_1cker_1_1_minimum_op.html", null ],
+    [ "onert::util::MinMaxMap< N, Hash >", "classonert_1_1util_1_1_min_max_map.html", null ],
     [ "record_minmax::MinMaxMap", "classrecord__minmax_1_1_min_max_map.html", null ],
+    [ "onert::util::MinMaxMap< std::pair< ir::SubgraphIndex, ir::OperationIndex >, SMHash >", "classonert_1_1util_1_1_min_max_map.html", null ],
     [ "record_minmax::MinMaxVectors", "structrecord__minmax_1_1_min_max_vectors.html", null ],
     [ "luci_interpreter::MirrorPadParams", "structluci__interpreter_1_1_mirror_pad_params.html", null ],
     [ "luci_interpreter::kernels::MISOKernel", "classluci__interpreter_1_1kernels_1_1_m_i_s_o_kernel.html", null ],
@@ -4349,6 +4358,7 @@ var hierarchy =
     [ "adt::small_vector< T, Capacity >", "classadt_1_1small__vector.html", null ],
     [ "adt::small_vector< int32_t, MAX_DIMENSION_COUNT >", "classadt_1_1small__vector.html", null ],
     [ "adt::small_vector< int_fast32_t, MAX_DIMENSION_COUNT >", "classadt_1_1small__vector.html", null ],
+    [ "onert::exec::SMHash", "structonert_1_1exec_1_1_s_m_hash.html", null ],
     [ "loco::Softmax< D >", "classloco_1_1_softmax.html", null ],
     [ "mir_interpreter::SoftmaxImpl< T >", "structmir__interpreter_1_1_softmax_impl.html", null ],
     [ "mir_interpreter::SoftmaxImpl< uint8_t >", "structmir__interpreter_1_1_softmax_impl_3_01uint8__t_01_4.html", null ],
@@ -4490,6 +4500,21 @@ var hierarchy =
     [ "moco::TensorSliceEnumerator", "classmoco_1_1_tensor_slice_enumerator.html", null ],
     [ "mir::TensorType", "classmir_1_1_tensor_type.html", null ],
     [ "mir::TensorVariant", "classmir_1_1_tensor_variant.html", null ],
+    [ "luci_interpreter::test_kernel::TestDataBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", [
+      [ "luci_interpreter::test_kernel::TestDataAddBase< int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", [
+        [ "luci_interpreter::test_kernel::TestData32IntAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data32_int_add.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataAddBase< int64_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", [
+        [ "luci_interpreter::test_kernel::TestData64IntAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data64_int_add.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataAddBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataAddBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", null ]
+    ] ],
+    [ "luci_interpreter::test_kernel::TestDataBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
+    [ "luci_interpreter::test_kernel::TestDataBase< int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
+    [ "luci_interpreter::test_kernel::TestDataBase< int64_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "exo::test::TestGraph", "classexo_1_1test_1_1_test_graph.html", [
       [ "exo::test::ExampleGraph< ExampleGraphType::ConstGen_ReLU >", "classexo_1_1test_1_1_example_graph_3_01_example_graph_type_1_1_const_gen___re_l_u_01_4.html", null ],
       [ "exo::test::ExampleGraph< ExampleGraphType::FeatureBiasAdd >", "classexo_1_1test_1_1_example_graph_3_01_example_graph_type_1_1_feature_bias_add_01_4.html", null ],

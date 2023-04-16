@@ -58,6 +58,7 @@ var dir_e955afc72e8af59637c9070b8690ff98 =
     [ "luci-value-test", "dir_6d679374ab79554081b1f580e6ee1338.html", "dir_6d679374ab79554081b1f580e6ee1338" ],
     [ "mio-circle", "dir_1c8967294af755d918ff3cc4ffee2a1d.html", "dir_1c8967294af755d918ff3cc4ffee2a1d" ],
     [ "mio-circle04", "dir_41ec235a44a1acc574a02c48ca08721f.html", "dir_41ec235a44a1acc574a02c48ca08721f" ],
+    [ "mio-circle05", "dir_595fbdf8f2f9d122db8d36c7f06a11b7.html", "dir_595fbdf8f2f9d122db8d36c7f06a11b7" ],
     [ "mio-tflite", "dir_11c3785ec543eeaeae2984ab4bd05875.html", "dir_11c3785ec543eeaeae2984ab4bd05875" ],
     [ "mio-tflite260", "dir_0f2ee96bad9566d2da900c4898441320.html", "dir_0f2ee96bad9566d2da900c4898441320" ],
     [ "mio-tflite280", "dir_c2006b7d3101bfad01057f95c264071d.html", "dir_c2006b7d3101bfad01057f95c264071d" ],

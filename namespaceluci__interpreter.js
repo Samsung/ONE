@@ -2,6 +2,7 @@ var namespaceluci__interpreter =
 [
     [ "kernels", "namespaceluci__interpreter_1_1kernels.html", "namespaceluci__interpreter_1_1kernels" ],
     [ "lstm", "namespaceluci__interpreter_1_1lstm.html", "namespaceluci__interpreter_1_1lstm" ],
+    [ "test_kernel", "namespaceluci__interpreter_1_1test__kernel.html", "namespaceluci__interpreter_1_1test__kernel" ],
     [ "AddParams", "structluci__interpreter_1_1_add_params.html", "structluci__interpreter_1_1_add_params" ],
     [ "AffineQuantization", "structluci__interpreter_1_1_affine_quantization.html", "structluci__interpreter_1_1_affine_quantization" ],
     [ "ArgMaxParams", "structluci__interpreter_1_1_arg_max_params.html", "structluci__interpreter_1_1_arg_max_params" ],

@@ -1,7 +1,7 @@
 var dir_667ae99e49d2abf9d4d4559494fe625c =
 [
     [ "Abs.h", "tflchef_2tflite_2src_2_op_2include_2_abs_8h.html", "tflchef_2tflite_2src_2_op_2include_2_abs_8h" ],
-    [ "Add.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_add_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_add_8h" ],
+    [ "Add.h", "tflchef_2tflite_2src_2_op_2include_2_add_8h.html", "tflchef_2tflite_2src_2_op_2include_2_add_8h" ],
     [ "AddN.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_add_n_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_add_n_8h" ],
     [ "ArgMax.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_arg_max_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_arg_max_8h" ],
     [ "ArgMin.h", "tflite_2src_2_op_2include_2_arg_min_8h.html", "tflite_2src_2_op_2include_2_arg_min_8h" ],

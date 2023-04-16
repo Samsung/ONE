@@ -6,6 +6,7 @@ var dir_5bb485447ae99dedfc578e4bcbffaa4e =
     [ "Index.h", "runtime_2onert_2core_2include_2util_2_index_8h.html", "runtime_2onert_2core_2include_2util_2_index_8h" ],
     [ "ITimer.h", "_i_timer_8h.html", "_i_timer_8h" ],
     [ "logging.h", "runtime_2onert_2core_2include_2util_2_logging_8h.html", "runtime_2onert_2core_2include_2util_2_logging_8h" ],
+    [ "MinMaxMap.h", "util_2_min_max_map_8h.html", "util_2_min_max_map_8h" ],
     [ "ObjectManager.h", "runtime_2onert_2core_2include_2util_2_object_manager_8h.html", "runtime_2onert_2core_2include_2util_2_object_manager_8h" ],
     [ "Set.h", "_set_8h.html", "_set_8h" ],
     [ "ShapeInference.h", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html", "runtime_2onert_2core_2include_2util_2_shape_inference_8h" ],
