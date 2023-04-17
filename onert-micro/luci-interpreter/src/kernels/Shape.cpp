@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,57 +14,34 @@
  * limitations under the License.
  */
 
-#include "kernels/Shape.h"
+#include "Builders.h"
+#include "SISOKernel.h"
 #include "kernels/Utils.h"
 
 namespace luci_interpreter
 {
-namespace kernels
+void configure_kernel_CircleShape(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-
-ShapeKernel::ShapeKernel(const Tensor *input, Tensor *output, const ShapeParams &params)
-  : KernelWithParams<ShapeParams>({input}, {output}, params)
-{
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.output()) == DataType::S32);
 }
 
-void ShapeKernel::configure()
+void execute_kernel_CircleShape(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
+                                bool)
 {
-  LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::S32 or
-                         output()->element_type() == DataType::S64);
-  const auto input_shape = input()->shape();
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-  Shape output_shape(1);
-  output_shape.dim(0) = input_shape.num_dims();
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(output_shape);
-}
+  const circle::Tensor *input = kernel.input();
+  const circle::Tensor *output = kernel.output();
 
-void ShapeKernel::execute() const
-{
-  switch (params().out_type)
+  assert(Tensor::element_type(output) == DataType::S32);
+  int32_t *output_data = kernels::getTensorData<int32_t>(runtime_graph->getDataByTensor(output));
+
+  const int rank = Tensor::num_dims(input);
+  for (int i = 0; i < rank; ++i)
   {
-    case DataType::S32:
-      evalInt<int32_t>();
-      break;
-    case DataType::S64:
-      evalInt<int64_t>();
-      break;
-    default:
-      assert(false && "Unsupported type.");
+    output_data[i] = Tensor::dim(input, i);
   }
 }
 
-template <typename T> void ShapeKernel::evalInt() const
-{
-  const auto input_shape = input()->shape();
-
-  auto output_data = getTensorData<T>(output());
-
-  for (int i = 0; i < input_shape.num_dims(); ++i)
-  {
-    output_data[i] = input_shape.dim(i);
-  }
-}
-
-} // namespace kernels
 } // namespace luci_interpreter

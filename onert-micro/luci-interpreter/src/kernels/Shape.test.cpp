@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-#include "kernels/Shape.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/shape/ShapeKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -29,61 +28,48 @@ using namespace testing;
 
 class ShapeTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-template <typename T> void runShapeKernel(loco::DataType dataType, IMemoryManager *memory_manager)
+template <typename T, typename U>
+std::vector<U> checkShapeKernel(test_kernel::TestDataBase<T, U> *test_data_base)
 {
-  Shape input_shape{1, 3, 1, 3, 5};
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  Tensor input_tensor = Tensor(loco::DataType::FLOAT32, input_shape, {}, "");
-  Tensor output_tensor = makeOutputTensor(dataType);
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  ShapeParams params{};
-  params.out_type = dataType;
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
 
-  ShapeKernel kernel(&input_tensor, &output_tensor, params);
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
 
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  runtime_module.execute();
 
-  std::vector<T> ref_output_data{1, 3, 1, 3, 5};
-  EXPECT_THAT(extractTensorData<T>(output_tensor), ref_output_data);
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
 
-  std::vector<int32_t> ref_output_shape{5};
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  U *output_data = reinterpret_cast<U *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<U> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(ShapeTest, OutTypeInt)
+TEST_F(ShapeTest, MainTest_P)
 {
-
-  // Run for int32_t output
-  runShapeKernel<int32_t>(loco::DataType::S32, _memory_manager.get());
-  // Run for int64_t output
-  runShapeKernel<int64_t>(loco::DataType::S64, _memory_manager.get());
-
-  SUCCEED();
+  test_kernel::TestDataShapeKernel<float, int32_t> test_data_shape_kernel;
+  std::vector<int32_t> output_data_vector = checkShapeKernel(&test_data_shape_kernel);
+  EXPECT_THAT(output_data_vector, test_data_shape_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(ShapeTest, Invalid_Output_Type_NEG)
-{
-  Shape input_shape{1, 3};
-
-  Tensor input_tensor = Tensor(loco::DataType::FLOAT32, input_shape, {}, "");
-  Tensor output_tensor = makeOutputTensor(loco::DataType::FLOAT32);
-
-  ShapeParams params{};
-  params.out_type = loco::DataType::FLOAT32;
-
-  ShapeKernel kernel(&input_tensor, &output_tensor, params);
-
-  EXPECT_ANY_THROW(kernel.configure());
-}
+// TODO: add negative tests?
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter

@@ -22,7 +22,7 @@ namespace luci_interpreter
 namespace test_kernel
 {
 
-template <typename T> class TestDataBase
+template <typename T, typename U = T> class TestDataBase
 {
 public:
   virtual ~TestDataBase() = default;
@@ -30,7 +30,7 @@ public:
   virtual const unsigned char *get_model_ptr() = 0;
 
   virtual const std::vector<T> &get_input_data_by_index(int i) = 0;
-  virtual const std::vector<T> &get_output_data_by_index(int i) = 0;
+  virtual const std::vector<U> &get_output_data_by_index(int i) = 0;
 };
 
 } // namespace test_kernel
