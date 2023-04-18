@@ -19,7 +19,7 @@
 
 #include <iostream>
 
-using namespace mpqsolver::bisection;
+using namespace mpqsolver::core;
 using AlgorithmParameters = luci::CircleQuantizer::Options::AlgorithmParameters;
 using Algorithms = luci::CircleQuantizer::Options::Algorithm;
 

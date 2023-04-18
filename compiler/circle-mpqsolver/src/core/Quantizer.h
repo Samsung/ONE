@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __MPQSOLVER_BISECTION_QUANTIZER_H__
-#define __MPQSOLVER_BISECTION_QUANTIZER_H__
+#ifndef __MPQSOLVER_CORE_QUANTIZER_H__
+#define __MPQSOLVER_CORE_QUANTIZER_H__
 
 #include <luci/IR/Module.h>
 #include <luci/CircleQuantizer.h>
@@ -26,7 +26,7 @@
 
 namespace mpqsolver
 {
-namespace bisection
+namespace core
 {
 
 using LayerParam = luci::CircleQuantizer::Options::LayerParam;
@@ -55,7 +55,7 @@ private:
   std::string _output_dtype = "uint8";
 };
 
-} // namespace bisection
+} // namespace core
 } // namespace mpqsolver
 
-#endif //__MPQSOLVER_BISECTION_QUANTIZER_H__
+#endif //__MPQSOLVER_CORE_QUANTIZER_H__

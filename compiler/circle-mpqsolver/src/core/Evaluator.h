@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __MPQSOLVER_BISECTION_EVALUATOR_H__
-#define __MPQSOLVER_BISECTION_EVALUATOR_H__
+#ifndef __MPQSOLVER_CORE_EVALUATOR_H__
+#define __MPQSOLVER_CORE_EVALUATOR_H__
 
 #include "ErrorMetric.h"
 
@@ -27,7 +27,7 @@
 
 namespace mpqsolver
 {
-namespace bisection
+namespace core
 {
 
 class DatasetEvaluator final
@@ -60,7 +60,7 @@ private:
   const ErrorMetric *_metric = nullptr;
 };
 
-} // namespace bisection
+} // namespace core
 } // namespace mpqsolver
 
-#endif //__MPQSOLVER_BISECTION_EVALUATOR_H__
+#endif //__MPQSOLVER_CORE_EVALUATOR_H__

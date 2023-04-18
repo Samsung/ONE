@@ -20,7 +20,7 @@
 
 #include <dio_hdf5/HDF5Importer.h>
 
-using namespace mpqsolver::bisection;
+using namespace mpqsolver::core;
 
 using Shape = std::vector<loco::Dimension>;
 

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef __MPQSOLVER_BISECTION_ERROR_METRIC_H__
-#define __MPQSOLVER_BISECTION_ERROR_METRIC_H__
+#ifndef __MPQSOLVER_CORE_ERROR_METRIC_H__
+#define __MPQSOLVER_CORE_ERROR_METRIC_H__
 
 #include <vector>
 
 namespace mpqsolver
 {
-namespace bisection
+namespace core
 {
 
 using Buffer = std::vector<char>;
@@ -49,7 +49,7 @@ public:
   float compute(const WholeOutput &first, const WholeOutput &second) const;
 };
 
-} // namespace bisection
+} // namespace core
 } // namespace mpqsolver
 
-#endif //__MPQSOLVER_BISECTION_ERROR_METRIC_H__
+#endif //__MPQSOLVER_CORE_ERROR_METRIC_H__

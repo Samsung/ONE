@@ -17,7 +17,7 @@
 #include <gtest/gtest.h>
 
 #include "DepthParameterizer.h"
-#include "TestHelper.h"
+#include <core/TestHelper.h>
 
 #include <luci/IR/CircleNodes.h>
 

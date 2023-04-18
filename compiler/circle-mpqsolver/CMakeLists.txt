@@ -34,12 +34,13 @@ endif(NOT ENABLE_TEST)
 # Instead, we use TEST_SOURCES to specify sources uesd for tests.
 set(TEST_SOURCES
     "src/bisection/DepthParameterizer.cpp"
-    "src/bisection/Quantizer.cpp"
+    "src/core/Quantizer.cpp"
     "src/bisection/VISQErrorApproximator.cpp"
 )
 
 nnas_find_package(GTest REQUIRED)
 GTest_AddTest(circle_mpqsolver_test ${TESTS} ${TEST_SOURCES})
+target_include_directories(circle_mpqsolver_test PRIVATE src)
 target_include_directories(circle_mpqsolver_test PRIVATE ${Jsoncpp_INCLUDE_DIRS})
 target_link_libraries(circle_mpqsolver_test ${Jsoncpp_STATIC_LIB})
 target_link_libraries(circle_mpqsolver_test luci_service)
