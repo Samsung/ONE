@@ -76,13 +76,16 @@ def _get_parser():
 
     opt_name_list = oneutils.get_optimization_list(get_name=True)
     opt_name_list = ['-' + s for s in opt_name_list]
-    if not opt_name_list:
-        opt_help_message = '(No available optimization options)'
-    else:
-        opt_help_message = '(Available optimization options: ' + ', '.join(
-            opt_name_list) + ')'
-    opt_help_message = 'optimization name to use ' + opt_help_message
-    parser.add_argument('-O', type=str, metavar='OPTIMIZATION', help=opt_help_message)
+
+    opt_help_message = {
+        '-O1': 'Basic optimization options',
+    }
+
+    for opt_name in opt_name_list:
+        help_message = ''
+        if opt_name in opt_help_message:
+            help_message = opt_help_message[opt_name]
+        parser.add_argument(opt_name, action='store_true', help=help_message)
 
     parser.add_argument(
         '-W', '--workflow', type=str, metavar='WORKFLOW', help='run with workflow file')
@@ -155,14 +158,6 @@ def _verify_arg(parser, args):
     if not oneutils.is_valid_attr(args, 'config') and not oneutils.is_valid_attr(
             args, 'workflow'):
         parser.error('-C/--config or -W/--workflow argument is required')
-    # check if given optimization option exists
-    opt_name_list = oneutils.get_optimization_list(get_name=True)
-    opt_name_list = [oneutils.remove_prefix(s, 'O') for s in opt_name_list]
-    if oneutils.is_valid_attr(args, 'O'):
-        if ' ' in getattr(args, 'O'):
-            parser.error('Not allowed to have space in the optimization name')
-        if not getattr(args, 'O') in opt_name_list:
-            parser.error('Invalid optimization option')
 
     if oneutils.is_valid_attr(args, 'backend') and oneutils.is_valid_attr(
             args, 'workflow'):
