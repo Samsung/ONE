@@ -18,6 +18,10 @@
 // Version 1: Add subgraphs to schema.
 // Version 2: Rename operators to conform to NN API.
 // Version 3: Move buffer data from Model.Subgraph.Tensors to Model.Buffers.
+// Version 3a: Add new builtin op code field. Has backward compatibility with
+//             version 3.
+// Version 3b: Rename fields in SignatureDef. Has backward compatibility with
+//             version 3 and 3a.
 
 // Change namespace to onert_tflite
 namespace onert_tflite;
@@ -43,6 +47,15 @@ enum TensorType : byte {
   COMPLEX64 = 8,
   INT8 = 9,
   FLOAT64 = 10,
+  COMPLEX128 = 11,
+  UINT64 = 12,
+  // Experimental: Resource and variant types are experimental, that are subject
+  // to change. Do not implement custom kernels using resource & variant types
+  // now.
+  RESOURCE = 13,
+  VARIANT = 14,
+  UINT32 = 15,
+  UINT16 = 16
 }
 
 // Custom quantization parameters for experimenting with new quantization
@@ -209,14 +222,18 @@ table Tensor {
   // Encodes `shape` with unknown dimensions. Unknown dimensions are
   // represented with -1.
   shape_signature:[int]; // Optional.
+
+  // If false, the rank or the number of tensor dimensions is unknown.
+  // If false, "shape" must be [].
+  has_rank: bool = false;
 }
 
 // A list of builtin operators. Builtin operators are slightly faster than custom
 // ones, but not by much. Moreover, while custom operators accept an opaque
 // object containing configuration parameters, builtins have a predetermined
 // set of acceptable options.
-
-enum BuiltinOperator : byte {
+// LINT.IfChange
+enum BuiltinOperator : int32 {
   ADD = 0,
   AVERAGE_POOL_2D = 1,
   CONCATENATION = 2,
@@ -249,7 +266,6 @@ enum BuiltinOperator : byte {
   SPACE_TO_DEPTH = 26,
   SVDF = 27,
   TANH = 28,
-  // TODO(aselle): Consider rename to CONCATENATE_EMBEDDINGS
   CONCAT_EMBEDDINGS = 29,
   SKIP_GRAM = 30,
   CALL = 31,
@@ -350,9 +366,39 @@ enum BuiltinOperator : byte {
   SELECT_V2 = 123,
   DENSIFY = 124,
   SEGMENT_SUM = 125,
-  BATCH_MATMUL = 126
+  BATCH_MATMUL = 126,
+  PLACEHOLDER_FOR_GREATER_OP_CODES = 127,
+  CUMSUM = 128,
+  CALL_ONCE = 129,
+  BROADCAST_TO = 130,
+  RFFT2D = 131,
+  CONV_3D = 132,
+  IMAG=133,
+  REAL=134,
+  COMPLEX_ABS=135,
+  HASHTABLE = 136,
+  HASHTABLE_FIND = 137,
+  HASHTABLE_IMPORT = 138,
+  HASHTABLE_SIZE = 139,
+  REDUCE_ALL = 140,
+  CONV_3D_TRANSPOSE = 141,
+  VAR_HANDLE = 142,
+  READ_VARIABLE = 143,
+  ASSIGN_VARIABLE = 144,
+  BROADCAST_ARGS = 145,
+  RANDOM_STANDARD_NORMAL = 146,
+  BUCKETIZE = 147,
+  RANDOM_UNIFORM = 148,
+  MULTINOMIAL = 149,
+  GELU = 150,
+  DYNAMIC_UPDATE_SLICE = 151,
+  RELU_0_TO_1 = 152,
+  UNSORTED_SEGMENT_PROD = 153,
+  UNSORTED_SEGMENT_MAX = 154,
+  UNSORTED_SEGMENT_SUM = 155,
+  ATAN2 = 156
 }
-
+// LINT.ThenChange(nnapi_linter/linter.proto)
 
 // Options for the builtin operators.
 union BuiltinOptions {
@@ -456,11 +502,34 @@ union BuiltinOptions {
   SelectV2Options,
   DensifyOptions,
   SegmentSumOptions,
-  BatchMatMulOptions
+  BatchMatMulOptions,
+  CumsumOptions,
+  CallOnceOptions,
+  BroadcastToOptions,
+  Rfft2dOptions,
+  Conv3DOptions,
+  HashtableOptions,
+  HashtableFindOptions,
+  HashtableImportOptions,
+  HashtableSizeOptions,
+  VarHandleOptions,
+  ReadVariableOptions,
+  AssignVariableOptions,
+  RandomOptions,
+  BucketizeOptions,
+  GeluOptions,
+  DynamicUpdateSliceOptions,
+  UnsortedSegmentProdOptions,
+  UnsortedSegmentMaxOptions,
+  UnsortedSegmentSumOptions,
+  ATan2Options
 }
 
+// LINT.IfChange
 enum Padding : byte { SAME, VALID }
+// LINT.ThenChange(//tensorflow/compiler/mlir/lite/ir/tfl_op_enums.td)
 
+// LINT.IfChange
 enum ActivationFunctionType : byte {
   NONE = 0,
   RELU = 1,
@@ -469,12 +538,25 @@ enum ActivationFunctionType : byte {
   TANH = 4,
   SIGN_BIT = 5,
 }
+// LINT.ThenChange(//tensorflow/compiler/mlir/lite/ir/tfl_op_enums.td)
 
 table Conv2DOptions {
   padding:Padding;
   stride_w:int;
   stride_h:int;
   fused_activation_function:ActivationFunctionType;
+  dilation_w_factor:int = 1;
+  dilation_h_factor:int = 1;
+}
+
+// Options for both Conv3D and Conv3DTranspose.
+table Conv3DOptions {
+  padding:Padding;
+  stride_d:int;
+  stride_w:int;
+  stride_h:int;
+  fused_activation_function:ActivationFunctionType;
+  dilation_d_factor:int = 1;
   dilation_w_factor:int = 1;
   dilation_h_factor:int = 1;
 }
@@ -548,10 +630,12 @@ table BidirectionalSequenceRNNOptions {
   asymmetric_quantize_inputs:bool;
 }
 
+// LINT.IfChange
 enum FullyConnectedOptionsWeightsFormat: byte {
   DEFAULT = 0,
   SHUFFLED4x16INT8 = 1,
 }
+// LINT.ThenChange(//tensorflow/compiler/mlir/lite/ir/tfl_op_enums.td)
 
 // An implementation of TensorFlow fully_connected (a.k.a Dense) layer.
 table FullyConnectedOptions {
@@ -584,6 +668,8 @@ table ConcatenationOptions {
 
 table AddOptions {
   fused_activation_function:ActivationFunctionType;
+  // Parameters supported by version 3.
+  pot_scale_int16:bool = true;
 }
 
 table MulOptions {
@@ -591,6 +677,7 @@ table MulOptions {
 }
 
 table L2NormOptions {
+  // This field is currently ignored in the L2 Norm Op.
   fused_activation_function:ActivationFunctionType;
 }
 
@@ -601,12 +688,14 @@ table LocalResponseNormalizationOptions {
   beta:float;
 }
 
+// LINT.IfChange
 enum LSTMKernelType : byte {
   // Full LSTM kernel which supports peephole and projection.
   FULL = 0,
   // Basic LSTM kernels. Equivalent to TensorFlow BasicLSTMCell.
   BASIC = 1,
 }
+// LINT.ThenChange(//tensorflow/compiler/mlir/lite/ir/tfl_op_enums.td)
 
 // An implementation of TensorFlow LSTMCell and CoupledInputForgetGateLSTMCell
 table LSTMOptions {
@@ -664,6 +753,7 @@ table ResizeBilinearOptions {
 
 table ResizeNearestNeighborOptions {
   align_corners: bool;
+  half_pixel_centers: bool;
 }
 
 // A call operation options
@@ -704,6 +794,8 @@ table DepthToSpaceOptions {
 
 table SubOptions {
   fused_activation_function:ActivationFunctionType;
+  // Parameters supported by version 5
+  pot_scale_int16:bool = true;
 }
 
 table DivOptions {
@@ -725,6 +817,8 @@ table EmbeddingLookupSparseOptions {
 
 table GatherOptions {
   axis: int;
+  // Parameters for Gather version 5 or above.
+  batch_dims: int = 0;
 }
 
 table TransposeOptions {
@@ -901,12 +995,14 @@ table LeakyReluOptions {
 table SquaredDifferenceOptions {
 }
 
+// LINT.IfChange
 enum MirrorPadMode : byte {
   // Doesn't include borders.
   REFLECT = 0,
   // Includes borders.
   SYMMETRIC = 1,
 }
+// LINT.ThenChange(//tensorflow/compiler/mlir/lite/ir/tfl_op_enums.td)
 
 table MirrorPadOptions {
   mode:MirrorPadMode;
@@ -947,6 +1043,10 @@ table IfOptions {
   else_subgraph_index:int;
 }
 
+table CallOnceOptions {
+  init_subgraph_index:int;
+}
+
 table WhileOptions {
   cond_subgraph_index:int;
   body_subgraph_index:int;
@@ -971,19 +1071,100 @@ table SegmentSumOptions {
 }
 
 table BatchMatMulOptions {
-  adjoint_lhs:bool;
-  adjoint_rhs:bool;
+  adj_x:bool;
+  adj_y:bool;
+  // Parameters for BatchMatMul version 4 or above.
+  // If set to true, then weights-only op will use asymmetric quantization for
+  // inputs.
+  asymmetric_quantize_inputs: bool;
 }
+
+table CumsumOptions {
+  exclusive:bool;
+  reverse:bool;
+}
+
+table BroadcastToOptions {
+}
+
+table Rfft2dOptions {
+}
+
+table HashtableOptions {
+  // The identity of hash tables. This identity will be used across different
+  // subgraphs in the same interpreter instance.
+  table_id:int;
+  key_dtype:TensorType;
+  value_dtype:TensorType;
+}
+
+table HashtableFindOptions {
+}
+
+table HashtableImportOptions {
+}
+
+table HashtableSizeOptions {
+}
+
+table VarHandleOptions {
+  container:string;
+  shared_name:string;
+}
+
+table ReadVariableOptions {
+}
+
+table AssignVariableOptions {
+}
+
+table RandomOptions {
+  seed: long;
+  seed2: long;
+}
+
+table BucketizeOptions {
+  boundaries: [float];  // The bucket boundaries.
+}
+
+table GeluOptions {
+  approximate: bool;
+}
+
+table DynamicUpdateSliceOptions {
+}
+
+table UnsortedSegmentProdOptions {
+}
+
+table UnsortedSegmentMaxOptions {
+}
+
+table UnsortedSegmentSumOptions {
+}
+
+table ATan2Options {
+}
+
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a
 // builtin, or a string if the operator is custom.
 table OperatorCode {
-  builtin_code:BuiltinOperator;
+  // This field is for backward compatibility. This field will be used when
+  // the value of the extended builtin_code field has less than
+  // BulitinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES.
+  deprecated_builtin_code:byte;
   custom_code:string;
 
   // The version of the operator. The version need to be bumped whenever new
   // parameters are introduced into an op.
   version:int = 1;
+
+  // This field is introduced for resolving op builtin code shortage problem
+  // (the original BuiltinOperator enum field was represented as a byte).
+  // This field will be used when the value of the extended builtin_code field
+  // has greater than BulitinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES.
+  builtin_code:BuiltinOperator;
 }
 
 enum CustomOptionsFormat : byte {
@@ -1062,6 +1243,35 @@ table Metadata {
   buffer:uint;
 }
 
+// Map from an alias name of tensor to tensor index in the graph.
+// This is used in Signature def.
+table TensorMap {
+  // Represents the alias to use for this tensor.
+  name:string;
+
+  // The actual tensor index in the primary graph, that 'name' corresponds to.
+  tensor_index:uint;
+}
+
+// This corresponds to SignatureDef in Tensorflow SavedModel.
+// The SignatureDef will be part of the SavedModel provided for conversion.
+table SignatureDef {
+  // Named inputs for this signature.
+  inputs:[TensorMap];
+
+  // Named outputs for this signature.
+  outputs:[TensorMap];
+
+  // Key value which was in the Tensorflow SavedModel SignatureDef map.
+  signature_key:string;
+
+  // Model tag, deprecated.
+  deprecated_tag:string (deprecated);
+
+  // Index of subgraphs that corresponds to the exported method.
+  subgraph_index:uint;
+}
+
 table Model {
   // Version of the schema.
   version:uint;
@@ -1090,6 +1300,9 @@ table Model {
 
   // Metadata about the model.
   metadata:[Metadata];
+
+  // Optional SignatureDefs for the model.
+  signature_defs:[SignatureDef];
 }
 
 root_type Model;
