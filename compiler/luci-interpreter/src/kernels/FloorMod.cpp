@@ -21,6 +21,24 @@
 #include <tensorflow/lite/kernels/internal/reference/binary_function.h>
 #include <cmath>
 
+namespace
+{
+
+template <typename T> T FloorDivFunc(T input1, T input2)
+{
+  struct FloatMod
+  {
+    float operator()(const float lhs, const float rhs) const { return std::fmod(lhs, rhs); }
+  };
+  using ModFunc =
+    typename std::conditional<std::is_integral<T>::value, std::modulus<T>, FloatMod>::type;
+  ModFunc mod_func;
+  T trunc_mod = mod_func(input1, input2);
+  return (trunc_mod != 0) && ((input2 < 0) != (trunc_mod < 0)) ? (trunc_mod + input2) : trunc_mod;
+}
+
+} // namespace
+
 namespace luci_interpreter
 {
 
@@ -44,6 +62,18 @@ void FloorMod::execute() const
     case DataType::FLOAT32:
       evalFloat();
       break;
+    case DataType::S8:
+      evalInteger<int8_t>();
+      break;
+    case DataType::S16:
+      evalInteger<int16_t>();
+      break;
+    case DataType::S32:
+      evalInteger<int32_t>();
+      break;
+    case DataType::S64:
+      evalInteger<int64_t>();
+      break;
     default:
       throw std::runtime_error("Unsupported type.");
   }
@@ -51,14 +81,32 @@ void FloorMod::execute() const
 
 void FloorMod::evalFloat() const
 {
-  auto FloorModFunc = [](float x, float y) {
-    float trunc_mod = std::fmod(x, y);
-
-    return (trunc_mod != 0) && ((y < 0) != (trunc_mod < 0)) ? (trunc_mod + y) : trunc_mod;
-  };
-
   const auto x_data = getTensorData<float>(x());
   const auto y_data = getTensorData<float>(y());
+
+  for (int i = 0; i < getTensorShape(y()).FlatSize(); ++i)
+  {
+    LUCI_INTERPRETER_CHECK(y_data[i] != 0);
+  }
+
+  if (x()->shape() != y()->shape())
+  {
+    tflite::reference_ops::BroadcastBinaryFunction4DSlow<float, float, float>(
+      getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
+      getTensorData<float>(output()), FloorDivFunc<float>);
+  }
+  else
+  {
+    tflite::reference_ops::BinaryFunction<float, float, float>(
+      getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
+      getTensorData<float>(output()), FloorDivFunc<float>);
+  }
+}
+
+template <typename T> void FloorMod::evalInteger() const
+{
+  const auto x_data = getTensorData<T>(x());
+  const auto y_data = getTensorData<T>(y());
 
   // Check the denominator
   const auto y_data_type = y()->element_type();
@@ -73,15 +121,15 @@ void FloorMod::evalFloat() const
 
   if (x()->shape() != y()->shape())
   {
-    tflite::reference_ops::BroadcastBinaryFunction4DSlow<float, float, float>(
+    tflite::reference_ops::BroadcastBinaryFunction4DSlow<T, T, T>(
       getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
-      getTensorData<float>(output()), FloorModFunc);
+      getTensorData<T>(output()), FloorDivFunc<T>);
   }
   else
   {
-    tflite::reference_ops::BinaryFunction<float, float, float>(
-      getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
-      getTensorData<float>(output()), FloorModFunc);
+    tflite::reference_ops::BinaryFunction<T, T, T>(getTensorShape(x()), x_data, getTensorShape(y()),
+                                                   y_data, getTensorShape(output()),
+                                                   getTensorData<T>(output()), FloorDivFunc<T>);
   }
 }
 
