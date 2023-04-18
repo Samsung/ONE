@@ -105,7 +105,8 @@ void configure_kernel_CircleGather(const circle::Operator *cur_op, BaseRuntimeGr
 
   LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input2()) == DataType::S32);
   LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) == DataType::FLOAT32 or
-                         Tensor::element_type(kernel.input1()) == DataType::S8);
+                         Tensor::element_type(kernel.input1()) == DataType::S8 or
+                         Tensor::element_type(kernel.input1()) == DataType::S32);
 
   int32_t axis = options->axis();
   int32_t num_dims = Tensor::num_dims(kernel.input1());
@@ -150,6 +151,8 @@ void execute_kernel_CircleGather(const circle::Operator *cur_op, BaseRuntimeGrap
     case DataType::S8:
       return gather<int8_t, int32_t>(options, &kernel);
 #endif // DIS_QUANT
+    case DataType::S32:
+      return gather<int32_t, int32_t>(options, &kernel);
     default:
       assert(false && "Unsupported type");
   }

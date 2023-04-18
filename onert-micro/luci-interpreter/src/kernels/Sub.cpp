@@ -51,6 +51,11 @@ void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *
 
   const auto *options = cur_op->builtin_options_as_SubOptions();
 
+  tflite::RuntimeShape input_shape1 =
+    kernels::getTensorRuntimeShape(kernel.input1(), runtime_graph);
+  tflite::RuntimeShape input_shape2 =
+    kernels::getTensorRuntimeShape(kernel.input2(), runtime_graph);
+
   switch (Tensor::element_type(kernel.input1()))
   {
 #ifndef DIS_FLOAT
@@ -68,13 +73,14 @@ void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *
 
       if (is_inplace)
       {
-        kernels::evalTISOInplaceKernel<float>(tiso_func, broadcast_tiso_func, &kernel, options);
+        kernels::evalTISOInplaceKernel<float>(tiso_func, broadcast_tiso_func, &kernel, options,
+                                              std::move(input_shape1), std::move(input_shape2));
       }
       else
       {
         kernels::TISOData kernel_data = kernel.readData();
         kernels::evalTISOKernel<float>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
-                                       options);
+                                       options, std::move(input_shape1), std::move(input_shape2));
       }
     }
     break;
@@ -94,13 +100,14 @@ void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *
 
       if (is_inplace)
       {
-        kernels::evalTISOInplaceKernel<int64_t>(tiso_func, broadcast_tiso_func, &kernel, options);
+        kernels::evalTISOInplaceKernel<int64_t>(tiso_func, broadcast_tiso_func, &kernel, options,
+                                                std::move(input_shape1), std::move(input_shape2));
       }
       else
       {
         kernels::TISOData kernel_data = kernel.readData();
         kernels::evalTISOKernel<int64_t>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
-                                         options);
+                                         options, std::move(input_shape1), std::move(input_shape2));
       }
     }
     break;
@@ -119,13 +126,14 @@ void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *
 
       if (is_inplace)
       {
-        kernels::evalTISOInplaceKernel<int32_t>(tiso_func, broadcast_tiso_func, &kernel, options);
+        kernels::evalTISOInplaceKernel<int32_t>(tiso_func, broadcast_tiso_func, &kernel, options,
+                                                std::move(input_shape1), std::move(input_shape2));
       }
       else
       {
         kernels::TISOData kernel_data = kernel.readData();
         kernels::evalTISOKernel<int32_t>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
-                                         options);
+                                         options, std::move(input_shape1), std::move(input_shape2));
       }
     }
     break;

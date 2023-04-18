@@ -26,6 +26,26 @@ namespace luci_interpreter
 namespace kernels
 {
 
+tflite::RuntimeShape getTensorRuntimeShape(const circle::Tensor *circle_tensor,
+                                           BaseRuntimeGraph *runtime_graph)
+{
+  tflite::RuntimeShape input_shape = getTensorShape(circle_tensor);
+
+#ifndef DIS_DYN_SHAPES
+  auto *dynamic_shape_vector = runtime_graph->getDynamicShapeTensor(circle_tensor);
+  if (dynamic_shape_vector != nullptr)
+  {
+    input_shape.Resize(dynamic_shape_vector->size());
+
+    for (int n = 0; n < dynamic_shape_vector->size(); ++n)
+    {
+      input_shape.SetDim(n, dynamic_shape_vector->at(n));
+    }
+  }
+#endif // DIS_DYN_SHAPES
+  return input_shape;
+}
+
 template <typename T>
 void calculateActivationRange(Activation activation, T *activation_min, T *activation_max)
 {

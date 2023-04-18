@@ -45,8 +45,10 @@ void reduceProdGeneric(kernels::TISOData *tiso_data, const circle::Tensor *input
   auto const output_dims = wrap(output->shape());
 
   tflite::reference_ops::ReduceGeneric<T>(
-    kernels::getTensorData<T>(tiso_data->input1_data), input_dims.data(), input_rank,
-    kernels::getTensorData<T>(tiso_data->output_data), output_dims.data(), output_rank,
+    kernels::getTensorData<T>(tiso_data->input1_data),
+    reinterpret_cast<const int *>(input_dims.data()), input_rank,
+    kernels::getTensorData<T>(tiso_data->output_data),
+    reinterpret_cast<const int *>(output_dims.data()), output_rank,
     kernels::getTensorData<int>(tiso_data->input2_data), num_axis, keep_dims, temp_index,
     resolved_axis, /*init_value=*/T(1),
     [](const T current, const T in) -> T { return in * current; });

@@ -32,47 +32,48 @@ template <typename T, typename TISOFunc = nullptr_t, typename TISOBroadcastFunc 
           typename Options = nullptr_t>
 void evalTISOKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func,
                     kernels::TISOKernel *kernel, kernels::TISOData *kernel_data,
-                    const Options *options)
+                    const Options *options, tflite::RuntimeShape &&input_shape_1,
+                    tflite::RuntimeShape &&input_shape_2)
 {
-  const auto *input1 = kernel->input1();
-  const auto *input2 = kernel->input2();
   const auto *output = kernel->output();
 
   tflite::ArithmeticParams params{};
   kernels::fillArithmeticActivationRange<T>(params,
                                             luci_actfunc(options->fused_activation_function()));
 
-  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
-    kernels::getTensorShape(input1), kernels::getTensorShape(input2), &params);
+  const bool need_broadcast =
+    tflite::reference_ops::ProcessBroadcastShapes(input_shape_1, input_shape_2, &params);
 
   if (need_broadcast)
   {
-    tiso_broadcast_func(
-      params, kernels::getTensorShape(input1), kernels::getTensorData<T>(kernel_data->input1_data),
-      kernels::getTensorShape(input2), kernels::getTensorData<T>(kernel_data->input2_data),
-      kernels::getTensorShape(output), kernels::getTensorData<T>(kernel_data->output_data));
+    tiso_broadcast_func(params, input_shape_1, kernels::getTensorData<T>(kernel_data->input1_data),
+                        input_shape_2, kernels::getTensorData<T>(kernel_data->input2_data),
+                        kernels::getTensorShape(output),
+                        kernels::getTensorData<T>(kernel_data->output_data));
   }
   else
   {
-    tiso_func(params, kernels::getTensorShape(input1),
-              kernels::getTensorData<T>(kernel_data->input1_data), kernels::getTensorShape(input2),
-              kernels::getTensorData<T>(kernel_data->input2_data), kernels::getTensorShape(output),
-              kernels::getTensorData<T>(kernel_data->output_data));
+    tiso_func(params, input_shape_1, kernels::getTensorData<T>(kernel_data->input1_data),
+              input_shape_2, kernels::getTensorData<T>(kernel_data->input2_data),
+              kernels::getTensorShape(output), kernels::getTensorData<T>(kernel_data->output_data));
   }
 }
 
 template <typename T, typename TISOFunc = nullptr_t, typename TISOBroadcastFunc = nullptr_t,
           typename Options = nullptr_t>
 void evalTISOInplaceKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func,
-                           kernels::TISOKernel *kernel, const Options *options)
+                           kernels::TISOKernel *kernel, const Options *options,
+                           tflite::RuntimeShape &&input_shape_1,
+                           tflite::RuntimeShape &&input_shape_2)
 {
   uint8_t *inplace_data_ptr = nullptr;
   circle::Tensor *input_inplace_tensor = nullptr;
 
   kernels::TISOData kernel_data = kernel->readInplaceData(inplace_data_ptr, input_inplace_tensor);
 
-  evalTISOKernel<T, TISOFunc, TISOBroadcastFunc, Options>(tiso_func, tiso_broadcast_func, kernel,
-                                                          &kernel_data, options);
+  evalTISOKernel<T, TISOFunc, TISOBroadcastFunc, Options>(
+    tiso_func, tiso_broadcast_func, kernel, &kernel_data, options, std::move(input_shape_1),
+    std::move(input_shape_2));
 
   BaseRuntimeGraph *runtime_graph = kernel->runtime_graph();
 
