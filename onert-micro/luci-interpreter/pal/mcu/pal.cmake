@@ -29,13 +29,12 @@ macro(initialize_pal)
 endmacro()
 
 macro(add_pal_to_target TGT)
-    target_include_directories(${TGT} PRIVATE "${PAL}")
     target_include_directories(${TGT} PRIVATE
             "${TensorFlowRuySource_DIR}"
             "${TensorFlowGEMMLowpSource_DIR}"
             "${TensorFlowEigenSource_DIR}"
             "${TensorFlowSource_DIR}")
-    target_include_directories(${TGT} PRIVATE ${LUCI_INTERPRETER_PAL_DIR})
+    target_include_directories(${TGT} PUBLIC ${LUCI_INTERPRETER_PAL_DIR})
 
     # TODO put it back, I changed my mind.
     # instead add sources with visitors in this library
