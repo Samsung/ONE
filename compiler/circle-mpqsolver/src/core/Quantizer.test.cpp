@@ -85,8 +85,8 @@ TEST(CircleMPQSolverQuantizerTest, verifyResultsTest)
   g.transfer_to(m.get());
 
   std::string def_quant = "uint8";
-  mpqsolver::bisection::Quantizer quantizer(def_quant, def_quant);
-  mpqsolver::bisection::LayerParams params;
+  mpqsolver::core::Quantizer quantizer(def_quant, def_quant);
+  mpqsolver::core::LayerParams params;
   auto res = quantizer.quantize(m.get(), def_quant, params);
   EXPECT_TRUE(res);
   auto quant_param = add->quantparam();
@@ -100,8 +100,8 @@ TEST(CircleMPQSolverQuantizerTest, verifyResultsTest)
 TEST(CircleMPQSolverQuantizerTest, verifyResultsTest_NEG)
 {
   std::string def_quant = "uint8";
-  mpqsolver::bisection::Quantizer quantizer(def_quant, def_quant);
-  mpqsolver::bisection::LayerParams params;
+  mpqsolver::core::Quantizer quantizer(def_quant, def_quant);
+  mpqsolver::core::LayerParams params;
   auto res = quantizer.quantize(nullptr, def_quant, params);
   EXPECT_TRUE(!res);
 }

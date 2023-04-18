@@ -16,8 +16,9 @@
 
 #include "BisectionSolver.h"
 #include "DepthParameterizer.h"
-#include "ErrorMetric.h"
 #include "VISQErrorApproximator.h"
+
+#include <core/ErrorMetric.h>
 
 #include <luci/ImporterEx.h>
 #include <luci/Log.h>
@@ -93,11 +94,12 @@ BisectionSolver::BisectionSolver(const std::string &input_data_path, float qerro
                                  const std::string &output_quantization)
   : MPQSolver(input_data_path, qerror_ratio, input_quantization, output_quantization)
 {
-  _quantizer = std::make_unique<Quantizer>(_input_quantization, _output_quantization);
+  _quantizer = std::make_unique<core::Quantizer>(_input_quantization, _output_quantization);
 }
 
-float BisectionSolver::evaluate(const DatasetEvaluator &evaluator, const std::string &flt_path,
-                                const std::string &def_quant, LayerParams &layers)
+float BisectionSolver::evaluate(const core::DatasetEvaluator &evaluator,
+                                const std::string &flt_path, const std::string &def_quant,
+                                core::LayerParams &layers)
 {
   auto model = read_module(flt_path);
   // get fake quantized model for evaluation
@@ -131,10 +133,10 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
   VERBOSE(l, 0) << std::endl << ">> Computing baseline qerrors" << std::endl;
 
-  std::unique_ptr<MAEMetric> metric = std::make_unique<MAEMetric>();
-  DatasetEvaluator evaluator(module.get(), _input_data_path, *metric.get());
+  std::unique_ptr<core::MAEMetric> metric = std::make_unique<core::MAEMetric>();
+  core::DatasetEvaluator evaluator(module.get(), _input_data_path, *metric.get());
 
-  LayerParams layer_params;
+  core::LayerParams layer_params;
   float int16_qerror =
     evaluate(evaluator, module_path, "int16" /* default quant_dtype */, layer_params);
   VERBOSE(l, 0) << "Full int16 model qerror: " << int16_qerror << std::endl;
@@ -163,7 +165,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
   int last_depth = -1;
   float best_depth = -1;
-  LayerParams best_params;
+  core::LayerParams best_params;
   if (module->size() != 1)
   {
     throw std::runtime_error("Unsupported module");
@@ -215,7 +217,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
     last_depth = cut_depth;
 
-    LayerParams layer_params;
+    core::LayerParams layer_params;
     for (auto &node : active_nodes)
     {
       auto cur_node = loco::must_cast<luci::CircleNode *>(node);
@@ -229,7 +231,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
       if ((depth <= cut_depth && int16_front) || (depth >= cut_depth && !int16_front))
       {
-        auto layer_param = std::make_shared<LayerParam>();
+        auto layer_param = std::make_shared<core::LayerParam>();
         {
           layer_param->name = cur_node->name();
           layer_param->dtype = "int16";

@@ -22,7 +22,7 @@
 #include <cmath>
 #include <cassert>
 
-using namespace mpqsolver::bisection;
+using namespace mpqsolver::core;
 
 /**
  * @brief compare first and second operands in MAE (Mean Average Error metric)

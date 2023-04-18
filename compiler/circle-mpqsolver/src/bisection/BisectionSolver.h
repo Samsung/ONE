@@ -17,8 +17,8 @@
 #ifndef __MPQSOLVER_BISECTION_SOLVER_H__
 #define __MPQSOLVER_BISECTION_SOLVER_H__
 
-#include "Quantizer.h"
-#include "Evaluator.h"
+#include <core/Quantizer.h>
+#include <core/Evaluator.h>
 #include <MPQSolver.h>
 
 #include <luci/IR/Module.h>
@@ -72,13 +72,13 @@ public:
   void setVisqPath(const std::string &visq_path);
 
 private:
-  float evaluate(const DatasetEvaluator &evaluator, const std::string &module_path,
-                 const std::string &def_quant, LayerParams &layers);
+  float evaluate(const core::DatasetEvaluator &evaluator, const std::string &module_path,
+                 const std::string &def_quant, core::LayerParams &layers);
 
 private:
   float _qerror = 0.f; // quantization error
   Algorithm _algorithm = Algorithm::ForceQ16Front;
-  std::unique_ptr<Quantizer> _quantizer;
+  std::unique_ptr<core::Quantizer> _quantizer;
   std::string _visq_data_path;
 };
 
