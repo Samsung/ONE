@@ -7,7 +7,7 @@ target_include_directories(circlechef_core PUBLIC include)
 target_include_directories(circlechef_core PRIVATE src)
 target_link_libraries(circlechef_core PUBLIC circlechef_proto)
 target_link_libraries(circlechef_core PUBLIC circlechef_log)
-target_link_libraries(circlechef_core PUBLIC mio_circle04)
+target_link_libraries(circlechef_core PUBLIC mio_circle05)
 target_link_libraries(circlechef_core PUBLIC souschef)
 target_link_libraries(circlechef_core PRIVATE nncc_coverage)
 
