@@ -108,10 +108,14 @@ std::string get_register_kernel_str(const circle::BuiltinOperator builtin_operat
       return "REGISTER_KERNEL(PAD, Pad)";
     case circle::BuiltinOperator_PADV2:
       return "REGISTER_KERNEL(PADV2, PadV2)";
+    case circle::BuiltinOperator_PACK:
+      return "REGISTER_KERNEL(PACK, Pack)";
     case circle::BuiltinOperator_PRELU:
       return "REGISTER_KERNEL(PRELU, PRelu)";
     case circle::BuiltinOperator_QUANTIZE:
       return "REGISTER_KERNEL(QUANTIZE, Quantize)";
+    case circle::BuiltinOperator_REDUCE_PROD:
+      return "REGISTER_KERNEL(REDUCE_PROD, ReduceCommon)";
     case circle::BuiltinOperator_RESHAPE:
       return "REGISTER_KERNEL(RESHAPE, Reshape)";
     case circle::BuiltinOperator_RESIZE_BILINEAR:
