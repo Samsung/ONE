@@ -118,7 +118,7 @@ test:
       - /compiler/luci-eval-driver
       - /compiler/luci-pass-value-test
       - /compiler/luci-value-test
-      - /compiler/mio-circle04
+      - /compiler/mio-circle05
       - /compiler/mio-tflite
       - /compiler/mio-tflite260
       - /compiler/oops
