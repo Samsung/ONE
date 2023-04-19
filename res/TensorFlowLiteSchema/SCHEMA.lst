@@ -7,3 +7,4 @@ VERSION,URL
 2.3.0-rc0,https://raw.githubusercontent.com/tensorflow/tensorflow/v2.3.0-rc0/tensorflow/lite/schema/schema.fbs
 2.3.0,https://raw.githubusercontent.com/tensorflow/tensorflow/v2.3.0/tensorflow/lite/schema/schema.fbs
 2.6.0,https://raw.githubusercontent.com/tensorflow/tensorflow/v2.6.0/tensorflow/lite/schema/schema.fbs
+2.10.1,https://raw.githubusercontent.com/tensorflow/tensorflow/v2.10.1/tensorflow/lite/schema/schema.fbs
