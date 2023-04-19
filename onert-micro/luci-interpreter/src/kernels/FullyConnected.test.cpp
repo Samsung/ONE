@@ -13,250 +13,73 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// TODO enable it
-#if 0
-#include "kernels/FullyConnected.h"
+
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/fully_connected/FloatFullyConnectedKernel.h"
+#include "luci_interpreter/test_models/fully_connected/U8FullyConnectedKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-template <typename T>
-void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> weights_shape,
-           std::initializer_list<int32_t> bias_shape, std::initializer_list<int32_t> output_shape,
-           std::initializer_list<float> input_data, std::initializer_list<float> weights_data,
-           std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
+class FullyConnectedTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor weights_tensor =
-    makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data, memory_manager.get());
-  Tensor bias_tensor =
-    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  FullyConnectedParams params{};
-  params.activation = Activation::RELU;
-
-  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-  EXPECT_THAT(extractTensorData<T>(output_tensor), FloatArrayNear(output_data));
-}
-
-template <>
-void Check<int8_t>(std::initializer_list<int32_t> input_shape,
-                   std::initializer_list<int32_t> weights_shape,
-                   std::initializer_list<int32_t> bias_shape,
-                   std::initializer_list<int32_t> output_shape,
-                   std::initializer_list<float> input_data,
-                   std::initializer_list<float> weights_data,
-                   std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
-{
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  const float quantized_tolerance = getTolerance(-127, 128, 255);
-  std::pair<float, int32_t> input_quant_param = quantizationParams<int8_t>(-63.5, 64);
-  std::pair<float, int32_t> output_quant_param = quantizationParams<int8_t>(-127, 128);
-  Tensor input_tensor =
-    makeInputTensor<DataType::S8>(input_shape, input_quant_param.first, input_quant_param.second,
-                                  input_data, memory_manager.get());
-  Tensor weights_tensor =
-    makeInputTensor<DataType::S8>(weights_shape, input_quant_param.first, input_quant_param.second,
-                                  weights_data, memory_manager.get());
-  Tensor bias_tensor =
-    makeInputTensor<DataType::S32>(bias_shape, input_quant_param.first * input_quant_param.first, 0,
-                                   bias_data, memory_manager.get());
-  Tensor output_tensor =
-    makeOutputTensor(DataType::S8, output_quant_param.first, output_quant_param.second);
-
-  FullyConnectedParams params{};
-  params.activation = Activation::RELU;
-
-  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-  EXPECT_THAT(dequantizeTensorData(output_tensor),
-              FloatArrayNear(output_data, quantized_tolerance));
-}
-
-template <>
-void Check<uint8_t>(
-  std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> weights_shape,
-  std::initializer_list<int32_t> bias_shape, std::initializer_list<int32_t> output_shape,
-  std::initializer_list<float> input_data, std::initializer_list<float> weights_data,
-  std::initializer_list<float> bias_data, std::initializer_list<float> output_data)
-{
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  const float quantized_tolerance = getTolerance(-127, 128, 255);
-  std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(-63.5, 64);
-  std::pair<float, int32_t> output_quant_param = quantizationParams<uint8_t>(-127, 128);
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>(input_shape, input_quant_param.first, input_quant_param.second,
-                                  input_data, memory_manager.get());
-  Tensor weights_tensor =
-    makeInputTensor<DataType::U8>(weights_shape, input_quant_param.first, input_quant_param.second,
-                                  weights_data, memory_manager.get());
-  Tensor bias_tensor =
-    makeInputTensor<DataType::S32>(bias_shape, input_quant_param.first * input_quant_param.first, 0,
-                                   bias_data, memory_manager.get());
-  Tensor output_tensor =
-    makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
-
-  FullyConnectedParams params{};
-  params.activation = Activation::RELU;
-
-  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-  EXPECT_THAT(dequantizeTensorData(output_tensor),
-              FloatArrayNear(output_data, quantized_tolerance));
-}
-
-template <typename T> class FullyConnectedTest : public ::testing::Test
-{
+  // Do nothing
 };
 
-using DataTypes = ::testing::Types<float, uint8_t, int8_t>;
-TYPED_TEST_SUITE(FullyConnectedTest, DataTypes);
-
-TYPED_TEST(FullyConnectedTest, Simple)
+template <typename T>
+std::vector<T> checkFullyConnectedKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Check<TypeParam>({3, 2, 2, 1}, {3, 6}, {3}, {2, 3},
-                   {
-                     -3, -5, 5, 4, 9, -2,  // batch = 0
-                     -3, -2, -4, 9, -8, 1, // batch = 1
-                   },
-                   {
-                     -3, -7, 4, -4, -6, 4, // unit = 0
-                     3, 5, 2, 3, -3, -8,   // unit = 1
-                     -3, 7, 4, 9, 0, -5,   // unit = 2
-                   },
-                   {-1, -5, -8},
-                   {
-                     0, 0, 32,   // batch = 0
-                     22, 11, 47, // batch = 1
-                   });
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
+
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST(FullyConnectedTest, InvalidBiasType_NEG)
+TEST_F(FullyConnectedTest, Float_P)
 {
-  Shape input_shape{3, 2, 2, 1};
-  std::vector<float> input_data{
-    -3, -5, 5,  4, 9,  -2, // batch = 0
-    -3, -2, -4, 9, -8, 1,  // batch = 1
-  };
-  Shape weights_shape{3, 6};
-  std::vector<float> weights_data{
-    -3, -7, 4, -4, -6, 4,  // unit = 0
-    3,  5,  2, 3,  -3, -8, // unit = 1
-    -3, 7,  4, 9,  0,  -5, // unit = 2
-  };
-  Shape bias_shape{3};
-  std::vector<int32_t> bias_data{-1, -5, -8};
-
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor weights_tensor =
-    makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data, memory_manager.get());
-  Tensor bias_tensor = makeInputTensor<DataType::S32>(bias_shape, bias_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  FullyConnectedParams params{};
-  params.activation = Activation::RELU;
-
-  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::TestDataFloatFullyConnected test_data_kernel;
+  std::vector<float> output_data_vector = checkFullyConnectedKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
-TEST(FullyConnectedTest, InvalidWeightShapeDim_NEG)
+TEST_F(FullyConnectedTest, U8_P)
 {
-  Shape input_shape{3, 2, 2, 1};
-  std::vector<float> input_data{
-    -3, -5, 5,  4, 9,  -2, // batch = 0
-    -3, -2, -4, 9, -8, 1,  // batch = 1
-  };
-  Shape weights_shape{1, 3, 6};
-  std::vector<float> weights_data{
-    -3, -7, 4, -4, -6, 4,  // unit = 0
-    3,  5,  2, 3,  -3, -8, // unit = 1
-    -3, 7,  4, 9,  0,  -5, // unit = 2
-  };
-  Shape bias_shape{3};
-  std::vector<float> bias_data{-1, -5, -8};
-
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor weights_tensor =
-    makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data, memory_manager.get());
-  Tensor bias_tensor =
-    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  FullyConnectedParams params{};
-  params.activation = Activation::RELU;
-
-  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::TestDataU8FullyConnected test_data_kernel;
+  std::vector<uint8_t> output_data_vector = checkFullyConnectedKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST(FullyConnectedTest, BiasElementNumWeightDimMismatch_NEG)
-{
-  Shape input_shape{3, 2, 2, 1};
-  std::vector<float> input_data{
-    -3, -5, 5,  4, 9,  -2, // batch = 0
-    -3, -2, -4, 9, -8, 1,  // batch = 1
-  };
-  Shape weights_shape{6, 3};
-  std::vector<float> weights_data{
-    -3, -7, 4,  // unit = 0
-    -4, -6, 4,  // unit = 1
-    3,  5,  2,  // unit = 2
-    3,  -3, -8, // unit = 3
-    -3, 7,  4,  // unit = 4
-    9,  0,  -5, // unit = 5
-  };
-  Shape bias_shape{3};
-  std::vector<float> bias_data{-1, -5, -8};
-
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor weights_tensor =
-    makeInputTensor<DataType::FLOAT32>(weights_shape, weights_data, memory_manager.get());
-  Tensor bias_tensor =
-    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  FullyConnectedParams params{};
-  params.activation = Activation::RELU;
-
-  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
-}
+// TODO: add tests for S8
+// TODO: add negative tests?
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
-#endif
