@@ -333,6 +333,40 @@ TEST_F(FloorModTest, DivByZero_NEG)
   EXPECT_ANY_THROW(kernel.execute());
 }
 
+TEST_F(FloorModTest, Int64DivByZero_NEG)
+{
+  Shape shape{3};
+  std::vector<int64_t> input1_data{1, 0, -1};
+  std::vector<int64_t> input2_data{0, 0, 0};
+
+  Tensor input1_tensor = makeInputTensor<DataType::S64>(shape, input1_data, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S64>(shape, input2_data, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S64);
+
+  FloorMod kernel(&input1_tensor, &input2_tensor, &output_tensor);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+
+  EXPECT_ANY_THROW(kernel.execute());
+}
+
+TEST_F(FloorModTest, Int16DivByZero_NEG)
+{
+  Shape shape{3};
+  std::vector<int16_t> input1_data{1, 0, -1};
+  std::vector<int16_t> input2_data{0, 0, 0};
+
+  Tensor input1_tensor = makeInputTensor<DataType::S16>(shape, input1_data, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S16>(shape, input2_data, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S16);
+
+  FloorMod kernel(&input1_tensor, &input2_tensor, &output_tensor);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+
+  EXPECT_ANY_THROW(kernel.execute());
+}
+
 TEST_F(FloorModTest, Input_Output_Type_Mismatch_NEG)
 {
   Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
@@ -351,6 +385,60 @@ TEST_F(FloorModTest, Input_Type_Mismatch_NEG)
 
   FloorMod kernel(&input1_tensor, &input2_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(FloorModTest, Float_Broadcast_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::FLOAT32>({2}, {1.f, 2.f}, _memory_manager.get());
+  Tensor input2_tensor =
+    makeInputTensor<DataType::FLOAT32>({3}, {1.f, 2.f, 3.f}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  FloorMod kernel(&input1_tensor, &input2_tensor, &output_tensor);
+  ASSERT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(FloorModTest, Int64_Broadcast_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::S64>({2}, {1, 2}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S64>({3}, {1, 2, 3}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S64);
+
+  FloorMod kernel(&input1_tensor, &input2_tensor, &output_tensor);
+  ASSERT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(FloorModTest, Int32_Broadcast_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::S32>({2}, {1, 2}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S32>({3}, {1, 2, 3}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S32);
+
+  FloorMod kernel(&input1_tensor, &input2_tensor, &output_tensor);
+  ASSERT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(FloorModTest, Int16_Broadcast_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::S16>({2}, {1, 2}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::S16>({3}, {1, 2, 3}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S16);
+
+  FloorMod kernel(&input1_tensor, &input2_tensor, &output_tensor);
+  ASSERT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(FloorModTest, UnsupportedType_NEG)
+{
+  Tensor input1_tensor = makeInputTensor<DataType::U8>({1}, {1}, _memory_manager.get());
+  Tensor input2_tensor = makeInputTensor<DataType::U8>({1}, {1}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::U8);
+
+  FloorMod kernel(&input1_tensor, &input2_tensor, &output_tensor);
+  kernel.configure();
+
+  _memory_manager->allocate_memory(output_tensor);
+  ASSERT_ANY_THROW(kernel.execute());
 }
 
 } // namespace
