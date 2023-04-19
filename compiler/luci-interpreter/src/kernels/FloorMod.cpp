@@ -84,11 +84,6 @@ void FloorMod::evalFloat() const
   const auto x_data = getTensorData<float>(x());
   const auto y_data = getTensorData<float>(y());
 
-  for (int i = 0; i < getTensorShape(y()).FlatSize(); ++i)
-  {
-    LUCI_INTERPRETER_CHECK(y_data[i] != 0);
-  }
-
   if (x()->shape() != y()->shape())
   {
     tflite::reference_ops::BroadcastBinaryFunction4DSlow<float, float, float>(
