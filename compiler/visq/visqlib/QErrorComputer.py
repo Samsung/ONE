@@ -211,10 +211,15 @@ class TAEComputer(QErrorComputer):  #total absolute error
 class SRMSEComputer(QErrorComputer):
     def __init__(self, fp32_dir, fq_dir):
         super().__init__(fp32_dir, fq_dir)
-        self.scale_file = Path(fq_dir) / 'scales.txt'
+        if fq_dir != None:
+            self.scale_file = Path(fq_dir) / 'scales.txt'
 
     # Incrementally compute Qerror while traversing all data in fp32_dir and fq_dir
     def advance_on(self, fp32_dir, fq_dir):
+        if fq_dir != None:
+            self.scale_file = Path(fq_dir) / 'scales.txt'
+            self._fq_dir = fq_dir
+
         data_paths = self.collect_data_path(fp32_dir, fq_dir)
 
         for tensor_name, data_path in data_paths.items():

@@ -34,7 +34,7 @@ from shutil import copyfile
 from pathlib import Path
 
 from visqlib.Palette import YLORRD9Palette
-from visqlib.QErrorComputer import MPEIRComputer, MSEComputer, TAEComputer
+from visqlib.QErrorComputer import MPEIRComputer, MSEComputer, TAEComputer, SRMSEComputer
 from visqlib.Util import valid_attr, pretty_float
 from visqlib.DotBuilder import DotBuilder
 
@@ -96,7 +96,7 @@ def _get_parser():
 def _verify_args(args):
     """Verify the given arguments"""
 
-    valid_outputs = ['mpeir_output', 'mse_output', 'tae_output']
+    valid_outputs = ['mpeir_output', 'mse_output', 'tae_output', 'srmse_output']
 
     # Check if at least one output option is given
     num_outputs = 0
