@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// base app for qemu
-static volatile unsigned int *const UART_DR = (unsigned int *)0x40011004;
 
-void uart_print(const char *s)
+#include "mbed.h"
+#undef ARG_MAX
+#define LUCI_LOG 0
+#include <luci_interpreter/Interpreter.h>
+#include <iostream>
+#include <cstring>
+#include "speech_recognition.circle.h"
+int main()
 {
-  while (*s != '\0')
+  luci_interpreter::Interpreter interpreter(circle_model_raw, true);
+  int num_inference = 1;
+  const int32_t num_inputs = 1;
+
+  for (int j = 0; j < num_inference; ++j)
   {
-    *UART_DR = *s;
-    s++;
+    for (int32_t i = 0; i < num_inputs; i++)
+    {
+      auto input_data = reinterpret_cast<char *>(interpreter.allocateInputTensor(i));
+      std::memset(input_data, 0, interpreter.getInputDataSizeByIndex(i));
+    }
+
+    // Do inference.
+    interpreter.interpret();
+  }
+  // Get output.
+  int num_outputs = 1;
+  for (int i = 0; i < num_outputs; i++)
+  {
+    auto data = interpreter.readOutputTensor(i);
+
+  }
+  while (true)
+  {
+    ThisThread::sleep_for(10ms);
+    std::cout << "Hello world\n";
   }
 }
-
-int main() { uart_print("Hello, World!\n"); }

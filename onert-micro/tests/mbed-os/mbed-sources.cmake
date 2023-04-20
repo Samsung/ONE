@@ -1191,6 +1191,7 @@ macro(set_sources_mbed)
             ${ARGV0}/targets/TARGET_STM/TARGET_STM32H7/TARGET_STM32H743xI/TARGET_NUCLEO_H743ZI2/PeripheralPins.c
             ${ARGV0}/targets/TARGET_STM/TARGET_STM32H7/TARGET_STM32H743xI/TARGET_NUCLEO_H743ZI2/PinNames.h
             ${ARGV0}/targets/TARGET_STM/TARGET_STM32H7/TARGET_STM32H743xI/TARGET_NUCLEO_H743ZI2/system_clock.c
+            ${ARGV0}/targets/TARGET_STM/TARGET_STM32H7/TARGET_STM32H743xI/TOOLCHAIN_GCC_ARM/startup_stm32h743xx.S
             ${ARGV0}/targets/TARGET_STM/TARGET_STM32H7/TARGET_STM32H743xI/cmsis_nvic.h
             ${ARGV0}/targets/TARGET_STM/TARGET_STM32H7/analogin_device.c
             ${ARGV0}/targets/TARGET_STM/TARGET_STM32H7/analogout_device.c
