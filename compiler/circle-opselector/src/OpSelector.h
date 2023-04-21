@@ -38,16 +38,18 @@ public:
 
 private:
   template <SelectType SELECT_TYPE>
-  std::vector<const luci::CircleNode *> select_by(const std::vector<std::string> &tokens);
+  std::vector<const luci::CircleNode *> select_nodes_by(const std::vector<std::string> &tokens,
+                                                        const uint32_t graph_idx);
 
 public:
-  template <SelectType SELECT_TYPE> std::unique_ptr<luci::Module> select_by(const std::string &str);
+  template <SelectType SELECT_TYPE>
+  std::unique_ptr<luci::Module> select_by(const std::vector<std::string> &inputs);
 };
 
 extern template std::unique_ptr<luci::Module>
-OpSelector::select_by<SelectType::ID>(const std::string &str);
+OpSelector::select_by<SelectType::ID>(const std::vector<std::string> &inputs);
 extern template std::unique_ptr<luci::Module>
-OpSelector::select_by<SelectType::NAME>(const std::string &str);
+OpSelector::select_by<SelectType::NAME>(const std::vector<std::string> &inputs);
 
 } // namespace opselector
 

@@ -247,15 +247,16 @@ namespace opselector
 
 OpSelector::OpSelector(const luci::Module *module) : _module{module}
 {
-  if (_module->size() != 1)
-  {
-    throw std::runtime_error{"ERROR: Not support two or more subgraphs"};
-  }
+  // if (_module->size() != 1)
+  // {
+  //   throw std::runtime_error{"ERROR: Not support two or more subgraphs"};
+  // }
 }
 
 template <>
 std::vector<const luci::CircleNode *>
-OpSelector::select_by<SelectType::ID>(const std::vector<std::string> &comma_tokens)
+OpSelector::select_nodes_by<SelectType::ID>(const std::vector<std::string> &comma_tokens,
+                                            const uint32_t graph_idx)
 {
   std::vector<uint32_t> by_id;
 
@@ -311,7 +312,7 @@ OpSelector::select_by<SelectType::ID>(const std::vector<std::string> &comma_toke
     }
   }
 
-  loco::Graph *graph = _module->graph(0);
+  loco::Graph *graph = _module->graph(graph_idx);
   std::vector<const luci::CircleNode *> selected_nodes;
 
   for (auto node : loco::all_nodes(graph))
@@ -340,9 +341,10 @@ OpSelector::select_by<SelectType::ID>(const std::vector<std::string> &comma_toke
 
 template <>
 std::vector<const luci::CircleNode *>
-OpSelector::select_by<SelectType::NAME>(const std::vector<std::string> &tokens)
+OpSelector::select_nodes_by<SelectType::NAME>(const std::vector<std::string> &tokens,
+                                              const uint32_t graph_idx)
 {
-  loco::Graph *graph = _module->graph(0);
+  loco::Graph *graph = _module->graph(graph_idx);
   std::vector<const luci::CircleNode *> selected_nodes;
 
   for (auto node : loco::all_nodes(graph))
@@ -359,44 +361,59 @@ OpSelector::select_by<SelectType::NAME>(const std::vector<std::string> &tokens)
 }
 
 template <SelectType SELECT_TYPE>
-std::unique_ptr<luci::Module> OpSelector::select_by(const std::string &str)
+std::unique_ptr<luci::Module> OpSelector::select_by(const std::vector<std::string> &inputs)
 {
-  auto colon_tokens = ::split_into_vector(str, ',');
-  if (colon_tokens.empty())
+  auto new_module = std::make_unique<luci::Module>();
+  std::vector<loco::Graph *> new_graphs;
+
+  for (uint32_t graph_idx = 0; graph_idx < inputs.size(); graph_idx++)
   {
-    throw std::runtime_error{"ERROR: Nothing was entered."};
-  }
-
-  assert(_module->size() == 1);
-
-  auto selected_nodes = select_by<SELECT_TYPE>(colon_tokens);
-
-  // multiout node should be considered
-  IsMultiOutputNode multiout_visitor;
-  std::vector<const luci::CircleNode *> output_nodes;
-  for (const auto &node : selected_nodes)
-  {
-    if (node->accept(&multiout_visitor))
+    const auto &str = inputs.at(graph_idx);
+    auto colon_tokens = ::split_into_vector(str, ',');
+    if (colon_tokens.empty())
     {
-      auto outputs = loco::succs(node);
-      for (auto &o : outputs)
+      throw std::runtime_error{"ERROR: Nothing was entered."};
+    }
+
+    auto selected_nodes = select_nodes_by<SELECT_TYPE>(colon_tokens, graph_idx);
+
+    // multiout node should be considered
+    IsMultiOutputNode multiout_visitor;
+    std::vector<const luci::CircleNode *> output_nodes;
+    for (const auto &node : selected_nodes)
+    {
+      if (node->accept(&multiout_visitor))
       {
-        output_nodes.push_back(dynamic_cast<luci::CircleNode *>(o));
+        auto outputs = loco::succs(node);
+        for (auto &o : outputs)
+        {
+          output_nodes.push_back(dynamic_cast<luci::CircleNode *>(o));
+        }
       }
     }
-  }
-  selected_nodes.insert(selected_nodes.end(), output_nodes.begin(), output_nodes.end());
+    selected_nodes.insert(selected_nodes.end(), output_nodes.begin(), output_nodes.end());
 
-  auto new_module = std::make_unique<luci::Module>();
-  new_module->add(::make_graph(selected_nodes));
+    new_module->add(::make_graph(selected_nodes));
+    new_graphs.push_back(new_module->graph(new_module->size() - 1));
+  }
+
+  auto g = new_module->graph(0);
+  for (auto n : loco::all_nodes(g))
+  {
+    if (auto w = dynamic_cast<luci::CircleWhile *>(n))
+    {
+      w->cond_graph(new_module->graph(w->cond_branch()));
+      w->body_graph(new_module->graph(w->body_branch()));
+    }
+  }
 
   return new_module;
 }
 
 template std::unique_ptr<luci::Module>
-OpSelector::select_by<SelectType::ID>(const std::string &str);
+OpSelector::select_by<SelectType::ID>(const std::vector<std::string> &inputs);
 
 template std::unique_ptr<luci::Module>
-OpSelector::select_by<SelectType::NAME>(const std::string &str);
+OpSelector::select_by<SelectType::NAME>(const std::vector<std::string> &inputs);
 
 } // namespace opselector

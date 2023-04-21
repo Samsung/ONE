@@ -24,7 +24,11 @@ luci::CircleNode *CloneNodeLet<CN::WXYZ>::visit(const luci::CircleWhile *node)
   auto ic = node->input_count();
   auto oc = node->output_count();
 
-  return _graph->nodes()->create<luci::CircleWhile>(ic, oc);
+  auto cloned = _graph->nodes()->create<luci::CircleWhile>(ic, oc);
+  cloned->cond_branch(node->cond_branch());
+  cloned->body_branch(node->body_branch());
+
+  return cloned;
 }
 
 } // namespace luci

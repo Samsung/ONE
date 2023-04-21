@@ -114,7 +114,8 @@ TEST(OpSelectorTest, select_by_name)
   opselector::OpSelector op_selector{m.get()};
 
   // Select conv only
-  auto conv_module = op_selector.select_by<opselector::SelectType::NAME>("conv");
+  auto conv_module =
+    op_selector.select_by<opselector::SelectType::NAME>(std::vector<std::string>{"conv"});
   ASSERT_EQ(1, conv_module->size());
 
   auto conv_graph = conv_module->graph(0);
@@ -129,7 +130,8 @@ TEST(OpSelectorTest, select_by_name)
   EXPECT_STREQ("conv_bias", conv_bias->name().c_str());
 
   // Select dconv only
-  auto dconv_module = op_selector.select_by<opselector::SelectType::NAME>("dconv");
+  auto dconv_module =
+    op_selector.select_by<opselector::SelectType::NAME>(std::vector<std::string>{"dconv"});
   ASSERT_EQ(1, dconv_module->size());
 
   auto dconv_graph = dconv_module->graph(0);
@@ -153,5 +155,6 @@ TEST(OpSelectorTest, select_by_name_NEG)
 
   opselector::OpSelector op_selector{m.get()};
 
-  EXPECT_ANY_THROW(op_selector.select_by<opselector::SelectType::NAME>(","));
+  EXPECT_ANY_THROW(
+    op_selector.select_by<opselector::SelectType::NAME>(std::vector<std::string>{","}));
 }

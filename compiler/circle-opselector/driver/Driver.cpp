@@ -52,8 +52,12 @@ int entry(int argc, char **argv)
   arser.add_argument("output").help("Output circle model");
 
   // select option
-  arser.add_argument("--by_id").help("Input operation id to select nodes.");
-  arser.add_argument("--by_name").help("Input operation name to select nodes.");
+  arser.add_argument("--by_id").nargs(1).accumulated(true).help(
+    "Input operation id to select nodes.");
+  arser.add_argument("--by_name")
+    .nargs(1)
+    .accumulated(true)
+    .help("Input operation name to select nodes.");
 
   try
   {
@@ -80,26 +84,42 @@ int entry(int argc, char **argv)
   auto module = opselector::getModule(input_path);
 
   // TODO support two or more subgraphs
-  if (module.get()->size() != 1)
+  // if (module.get()->size() != 1)
+  // {
+  //   std::cerr << "ERROR: Not support two or more subgraphs" << std::endl;
+  //   return EXIT_FAILURE;
+  // }
+
+  std::string select_type;
+  if (arser["--by_id"])
   {
-    std::cerr << "ERROR: Not support two or more subgraphs" << std::endl;
+    select_type = "--by_id";
+  }
+  if (arser["--by_name"])
+  {
+    select_type = "--by_name";
+  }
+
+  const auto inputs = arser.get<std::vector<std::string>>(select_type);
+  if (inputs.size() != module.get()->size())
+  {
+    std::cerr << "ERROR: The number of selected graphs should be same with the number of subgraphs "
+                 "in the model"
+              << std::endl;
     return EXIT_FAILURE;
   }
 
   opselector::OpSelector op_selector{module.get()};
 
   std::unique_ptr<luci::Module> new_module;
-  std::string operator_input;
 
   if (arser["--by_id"])
   {
-    operator_input = arser.get<std::string>("--by_id");
-    new_module = op_selector.select_by<opselector::SelectType::ID>(operator_input);
+    new_module = op_selector.select_by<opselector::SelectType::ID>(inputs);
   }
   if (arser["--by_name"])
   {
-    operator_input = arser.get<std::string>("--by_name");
-    new_module = op_selector.select_by<opselector::SelectType::NAME>(operator_input);
+    new_module = op_selector.select_by<opselector::SelectType::NAME>(inputs);
   }
 
   if (not opselector::exportModule(new_module.get(), output_path))
