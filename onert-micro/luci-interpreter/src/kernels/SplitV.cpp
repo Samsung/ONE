@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,99 +14,79 @@
  * limitations under the License.
  */
 
-#include "SplitV.h"
-
+#include "Builders.h"
 #include "Utils.h"
-
-#include <tensorflow/lite/kernels/internal/optimized/optimized_ops.h>
+#include "Split.h"
 
 namespace luci_interpreter
 {
-namespace kernels
-{
 
-SplitV::SplitV(const Tensor *input, const Tensor *size_splits, const Tensor *axis,
-               std::vector<Tensor *> outputs)
-  : Kernel({input, size_splits, axis}, std::move(outputs))
+void configure_kernel_CircleSplitV(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
+  const auto axis_index = cur_op->inputs()->operator[](2);
+  LUCI_INTERPRETER_CHECK(axis_index != -1);
+
+  const auto axis = runtime_graph->getCircleTensorByIndex(axis_index);
+  LUCI_INTERPRETER_CHECK(axis != nullptr);
+
+  // Dynamic output tensors are needed if axis tensor is not constant
+  // Now doesn't support dynamic shapes for SplitV
+  LUCI_INTERPRETER_CHECK(runtime_graph->getConstDataByTensor(axis) != nullptr);
 }
 
-void SplitV::configure()
+void execute_kernel_CircleSplitV(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
+                                 bool)
 {
-  assert(axis()->shape().num_elements() == 1);
-  _axis_value = getTensorData<int32_t>(axis())[0];
-  if (_axis_value < 0)
-    _axis_value += input()->shape().num_dims();
-  assert(_axis_value >= 0 && _axis_value < input()->shape().num_dims());
+  const auto input_index = cur_op->inputs()->operator[](0);
+  const auto axis_index = cur_op->inputs()->operator[](2);
 
-  auto num_split = static_cast<int32_t>(_outputs.size());
-  auto sizes_data = getTensorData<int32_t>(size_splits());
+  assert(input_index != -1);
+  assert(axis_index != -1);
 
-  assert(size_splits()->shape().num_dims() == 1);
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  const auto axis = runtime_graph->getCircleTensorByIndex(axis_index);
 
-  int32_t sum = 0;
-  const auto num_dims_size_spits = size_splits()->shape().dim(0);
-  int32_t count_neg_dim = 0;
+  assert(input != nullptr);
+  assert(axis != nullptr);
 
-  for (int32_t i = 0; i < num_dims_size_spits - 1; ++i)
+  const auto *axis_data = runtime_graph->getDataByTensor(axis);
+  if (axis_data == nullptr)
+    axis_data = runtime_graph->getConstDataByTensor(axis);
+
+  assert(axis_data);
+
+  int32_t axis_value = (kernels::getTensorData<int32_t>(axis_data))[0];
+  if (axis_value < 0)
+    axis_value += Tensor::num_dims(input);
+
+  assert(axis_value >= 0);
+  assert(axis_value < Tensor::num_dims(input));
+
+  switch (Tensor::element_type(input))
   {
-    if (sizes_data[i] != -1)
-    {
-      sum += sizes_data[i];
-    }
-    else
-    {
-      count_neg_dim++;
-    }
-  }
-  assert(count_neg_dim < 2);
-  assert(size_splits()->shape().num_elements() == num_split);
-
-  // TODO: enable it only if kernel with dynamic shapes
-  auto output_shape = input()->shape();
-  for (int32_t i = 0; i < num_split; ++i)
-  {
-    if (sizes_data[i] == -1)
-    {
-      output_shape.dim(_axis_value) = input()->shape().dim(_axis_value) - sum;
-    }
-    else
-    {
-      output_shape.dim(_axis_value) = sizes_data[i];
-    }
-    _outputs[i]->resize(output_shape);
-  }
-}
-
-void SplitV::execute() const
-{
-  tflite::SplitParams params{};
-  params.num_split = _outputs.size();
-  params.axis = _axis_value;
-
-#define TF_LITE_SPLIT(scalar)                                                                     \
-  {                                                                                               \
-    VectorOfTensors<scalar, false> all_outputs(_outputs);                                         \
-    tflite::optimized_ops::Split(params, getTensorShape(input()), getTensorData<scalar>(input()), \
-                                 all_outputs.shapes(), all_outputs.data());                       \
-  }
-
-  switch (input()->element_type())
-  {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      TF_LITE_SPLIT(float);
-      break;
-    case DataType::U8:
-      TF_LITE_SPLIT(uint8_t);
-      break;
+    {
+      return splitImpl<float>(cur_op, input, axis_value, runtime_graph);
+    }
+#endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case DataType::S8:
+    {
+      return splitImpl<int8_t>(cur_op, input, axis_value, runtime_graph);
+    }
     case DataType::S16:
-      TF_LITE_SPLIT(int16_t);
-      break;
+    {
+      return splitImpl<int16_t>(cur_op, input, axis_value, runtime_graph);
+    }
+#endif // DIS_QUANT
+    case DataType::S32:
+    {
+      return splitImpl<int32_t>(cur_op, input, axis_value, runtime_graph);
+    }
     default:
-      assert(false && "Unsupported type.");
+      assert(false && "Unsupported type");
   }
-#undef TF_LITE_SPLIT
 }
 
-} // namespace kernels
 } // namespace luci_interpreter

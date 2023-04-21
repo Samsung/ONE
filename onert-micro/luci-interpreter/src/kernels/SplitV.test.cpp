@@ -15,98 +15,73 @@
  * limitations under the License.
  */
 
-#include "kernels/SplitV.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/split_v/SplitVKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-template <typename T>
-void Check(int axis, std::initializer_list<int32_t> splits_size,
-           std::initializer_list<int32_t> input_shape, std::initializer_list<T> input_data,
-           std::vector<std::vector<T>> output_data)
+class SplitVTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  constexpr DataType element_type = getElementType<T>();
-
-  auto num_splits = static_cast<int32_t>(splits_size.size());
-  Tensor input_tensor =
-    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
-  Tensor sizes_tensor =
-    makeInputTensor<DataType::S32>({num_splits}, splits_size, memory_manager.get());
-  Tensor axis_tensor = makeInputTensor<DataType::S32>({}, {axis}, memory_manager.get());
-
-  std::vector<Tensor> output_tensors;
-  output_tensors.reserve(num_splits);
-  for (int i = 0; i < num_splits; ++i)
-  {
-    output_tensors.emplace_back(makeOutputTensor(element_type));
-  }
-
-  std::vector<Tensor *> output_tensor_ptrs(num_splits);
-  for (int i = 0; i < num_splits; ++i)
-  {
-    output_tensor_ptrs[i] = &output_tensors[i];
-  }
-
-  SplitV kernel(&input_tensor, &sizes_tensor, &axis_tensor, std::move(output_tensor_ptrs));
-  kernel.configure();
-  for (int i = 0; i < num_splits; ++i)
-  {
-    memory_manager->allocate_memory(output_tensors[i]);
-  }
-  kernel.execute();
-
-  for (int i = 0; i < num_splits; ++i)
-  {
-    auto tmp = extractTensorData<T>(output_tensors[i]);
-    EXPECT_THAT(extractTensorData<T>(output_tensors[i]),
-                ::testing::ElementsAreArray(output_data[i]));
-  }
-}
-
-template <typename T> class SplitVTest : public ::testing::Test
-{
+  // Do nothing
 };
 
-using DataTypes = ::testing::Types<float, uint8_t, int16_t>;
-TYPED_TEST_SUITE(SplitVTest, DataTypes);
-
-TYPED_TEST(SplitVTest, ThreeDimensional)
+template <typename T>
+std::vector<std::vector<T>> checkSplitKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Check<TypeParam>(
-    /*axis=*/0, /*splits_size=*/{1, 2}, {3, 3, 3},
-    {1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14,
-     15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27},
-    {
-      {1, 2, 3, 4, 5, 6, 7, 8, 9},                                             //
-      {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27} //
-    });
-  Check<TypeParam>(
-    /*axis=*/1, /*splits_size=*/{1, 2}, {3, 3, 3},
-    {1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14,
-     15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27},
-    {
-      {1, 2, 3, 10, 11, 12, 19, 20, 21},                                 //
-      {4, 5, 6, 7, 8, 9, 13, 14, 15, 16, 17, 18, 22, 23, 24, 25, 26, 27} //
-    });
-  Check<TypeParam>(
-    /*axis=*/2, /*splits_size=*/{1, 2}, {3, 3, 3},
-    {1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14,
-     15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27},
-    {
-      {1, 4, 7, 10, 13, 16, 19, 22, 25},                                 //
-      {2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24, 26, 27} //
-    });
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
+
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 3);
+
+  std::vector<std::vector<T>> result;
+
+  for (int i = 0; i < 3; ++i)
+  {
+    T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(i));
+    const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(i) / sizeof(T));
+    std::vector<T> output_data_vector(output_data, output_data + num_elements);
+    result.push_back(output_data_vector);
+  }
+
+  return result;
 }
 
+TEST_F(SplitVTest, MainTest_P)
+{
+  test_kernel::TestDataSplitVKernel<float> test_data_kernel;
+  const auto output_data_vector = checkSplitKernel(&test_data_kernel);
+
+  for (int i = 0; i < 3; ++i)
+  {
+    EXPECT_THAT(output_data_vector[i], test_data_kernel.get_output_data_by_index(i));
+  }
+}
+
+// TODO: add negative tests?
+
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
