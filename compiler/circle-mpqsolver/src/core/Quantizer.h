@@ -32,10 +32,24 @@ namespace core
 using LayerParam = luci::CircleQuantizer::Options::LayerParam;
 using LayerParams = std::vector<std::shared_ptr<LayerParam>>;
 
+struct QuantizerHook
+{
+  /**
+   * @brief called on successfull quantization
+   * @param module quantized module
+   */
+  virtual void on_quantized(luci::Module *module) const = 0;
+};
+
 class Quantizer
 {
 public:
   Quantizer(const std::string &input_dtype, const std::string &output_type);
+
+  /**
+   * @brief set hook on the end of quantization event
+   */
+  void set_hook(const QuantizerHook *callback);
 
   /**
    * @brief quantize recorded module (min/max initialized) with specified parameters
@@ -53,6 +67,7 @@ public:
 private:
   std::string _input_dtype = "uint8";
   std::string _output_dtype = "uint8";
+  const QuantizerHook *_hook = nullptr;
 };
 
 } // namespace core

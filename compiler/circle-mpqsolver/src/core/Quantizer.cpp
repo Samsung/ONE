@@ -54,6 +54,8 @@ Quantizer::Quantizer(const std::string &input_dtype, const std::string &output_d
 {
 }
 
+void Quantizer::set_hook(const QuantizerHook *hook) { _hook = hook; }
+
 /**
  * @brief quantize recorded module (min/max initialized) with specified parameters
  * returns true on success
@@ -102,6 +104,11 @@ bool Quantizer::quantize(luci::Module *module, const std::string &quant_dtype,
       std::cerr << "ERROR: Quantized graph is invalid" << std::endl;
       return false;
     }
+  }
+
+  if (_hook)
+  {
+    _hook->on_quantized(module);
   }
 
   return true;
