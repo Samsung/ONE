@@ -49,6 +49,7 @@ int entry(int argc, char **argv)
   LOGGER(l);
 
   const std::string bisection_str = "--bisection";
+  const std::string save_intermediate_str = "--save_intermediate";
 
   arser::Arser arser("circle-mpqsolver provides light-weight methods for finding a high-quality "
                      "mixed-precision model within a reasonable time.");
@@ -91,6 +92,11 @@ int entry(int argc, char **argv)
     .default_value("")
     .required(false)
     .help("*.visq.json file with quantization errors");
+
+  arser.add_argument(save_intermediate_str)
+    .type(arser::DataType::STR)
+    .required(false)
+    .help("path to save intermediate results");
 
   try
   {

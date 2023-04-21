@@ -40,6 +40,7 @@ Run _circle-mpqsolver_ with the following arguments.
 
 --bisection _mode_: input nodes should be at Q16 precision ['auto', 'true', 'false']
 --visq_file: .visq.json file to be used in 'auto' mode
+--save_intermediate: path to the directory where all intermediate results will be saved
 
 ```
 $ ./circle-mpqsolver
@@ -49,6 +50,7 @@ $ ./circle-mpqsolver
   --qerror_ratio <optional value for reproducing target _qerror_ default is 0.5>
   --bisection <whether input nodes should be quantized into Q16 default is 'auto'>
   --visq_file <*.visq.json file with quantization errors>
+  --save_intermediate <intermediate_results_path>
 ```
 
 For example:
