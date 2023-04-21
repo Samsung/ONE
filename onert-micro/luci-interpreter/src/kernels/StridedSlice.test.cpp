@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,99 +14,62 @@
  * limitations under the License.
  */
 
-#include "kernels/StridedSlice.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/strided_slice/StridedSliceKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-TEST(StridedSliceTest, Float)
+class StridedSliceTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  // Do nothing
+};
 
-  Shape input_shape{2, 3, 2};
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-  Shape begin_shape{3};
-  std::vector<int32_t> begin_data{0, 0, 0};
-  Shape end_shape{3};
-  std::vector<int32_t> end_data{1, 3, 2};
-  Shape strides_shape{3};
-  std::vector<int32_t> strides_data{1, 1, 1};
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor begin_tensor =
-    makeInputTensor<DataType::S32>(begin_shape, begin_data, memory_manager.get());
-  Tensor end_tensor = makeInputTensor<DataType::S32>(end_shape, end_data, memory_manager.get());
-  Tensor strides_tensor =
-    makeInputTensor<DataType::S32>(strides_shape, strides_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+template <typename T>
+std::vector<T> checkStridedSliceKernel(test_kernel::TestDataBase<T> *test_data_base)
+{
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  StridedSliceParams params{};
-  params.begin_mask = 0;
-  params.end_mask = 0;
-  params.ellipsis_mask = 0;
-  params.new_axis_mask = 0;
-  params.shrink_axis_mask = 1;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  StridedSlice kernel(&input_tensor, &begin_tensor, &end_tensor, &strides_tensor, &output_tensor,
-                      params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
 
-  std::vector<int32_t> output_shape{3, 2};
-  std::vector<float> output_data{1, 2, 3, 4, 5, 6};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST(StridedSliceTest, Uint8)
+TEST_F(StridedSliceTest, MainTest_P)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-
-  Shape input_shape{2, 3, 2};
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-  Shape begin_shape{3};
-  std::vector<int32_t> begin_data{0, 0, 0};
-  Shape end_shape{3};
-  std::vector<int32_t> end_data{1, 3, 2};
-  Shape strides_shape{3};
-  std::vector<int32_t> strides_data{1, 1, 1};
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>(input_shape, 1.0f, 0, input_data, memory_manager.get());
-  Tensor begin_tensor =
-    makeInputTensor<DataType::S32>(begin_shape, begin_data, memory_manager.get());
-  Tensor end_tensor = makeInputTensor<DataType::S32>(end_shape, end_data, memory_manager.get());
-  Tensor strides_tensor =
-    makeInputTensor<DataType::S32>(strides_shape, strides_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8, 1.0f, 0);
-
-  StridedSliceParams params{};
-  params.begin_mask = 0;
-  params.end_mask = 0;
-  params.ellipsis_mask = 0;
-  params.new_axis_mask = 0;
-  params.shrink_axis_mask = 1;
-
-  StridedSlice kernel(&input_tensor, &begin_tensor, &end_tensor, &strides_tensor, &output_tensor,
-                      params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<int32_t> output_shape{3, 2};
-  std::vector<float> output_data{1, 2, 3, 4, 5, 6};
-  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  test_kernel::TestDataStridedSliceKernel<float> test_data_kernel;
+  std::vector<float> output_data_vector = checkStridedSliceKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
+
+// TODO: add negative tests?
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter

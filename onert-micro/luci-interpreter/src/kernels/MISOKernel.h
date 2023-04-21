@@ -33,6 +33,7 @@ public:
     const auto input1_index = cur_op->inputs()->operator[](0);
     const auto input2_index = cur_op->inputs()->operator[](1);
     const auto input3_index = cur_op->inputs()->operator[](2);
+    const auto input4_index = cur_op->inputs()->operator[](3); // optional
 
     const auto output_index = cur_op->outputs()->operator[](0);
 
@@ -47,6 +48,12 @@ public:
     _input3_tensor = runtime_graph->getCircleTensorByIndex(input3_index);
     _output_tensor = runtime_graph->getCircleTensorByIndex(output_index);
 
+    // optional
+    if (input4_index != -1)
+      _input4_tensor = runtime_graph->getCircleTensorByIndex(input4_index);
+    else
+      _input4_tensor = nullptr;
+
     assert(_input1_tensor != nullptr);
     assert(_input2_tensor != nullptr);
     assert(_input3_tensor != nullptr);
@@ -57,12 +64,19 @@ public:
   const circle::Tensor *input2() const { return _input2_tensor; }
   const circle::Tensor *input3() const { return _input3_tensor; }
 
+  const circle::Tensor *input4() const
+  {
+    assert(_input4_tensor != nullptr);
+    return _input4_tensor;
+  }
+
   const circle::Tensor *output() const { return _output_tensor; }
 
 private:
   const circle::Tensor *_input1_tensor;
   const circle::Tensor *_input2_tensor;
   const circle::Tensor *_input3_tensor;
+  const circle::Tensor *_input4_tensor; // optional
   const circle::Tensor *_output_tensor;
 };
 
