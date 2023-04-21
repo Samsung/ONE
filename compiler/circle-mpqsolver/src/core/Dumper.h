@@ -45,10 +45,10 @@ public:
    * @brief dumps mpq configuration
    * @param layers specific quantization parameters
    * @param def_dtype default quantization data type
-   * @param param id of mpq configuration
+   * @param step id of mpq configuration
    */
   void dump_MPQ_configuration(const LayerParams &layers, const std::string &def_dtype,
-                              int param) const;
+                              int step) const;
 
   /**
    * @brief dumps final mpq configuration
@@ -60,9 +60,9 @@ public:
   /**
    * @brief dumps quantized module
    * @param layers specific quantization parameters
-   * @param param id of quantized module
+   * @param step id of quantized module
    */
-  void dump_quantized(luci::Module *module, uint32_t param) const;
+  void dump_quantized(luci::Module *module, uint32_t step) const;
 
   /**
    * @brief create file for error dumping
@@ -82,9 +82,9 @@ public:
   /**
    * @brief append error of mpq quantization
    * @param error error of quantization
-   * @param id id of error
+   * @param step id of error
    */
-  void dump_MPQ_error(float error, uint32_t param) const;
+  void dump_MPQ_error(float error, uint32_t step) const;
 
 private:
   void write_data_to_file(const std::string &path, const std::string &data) const;

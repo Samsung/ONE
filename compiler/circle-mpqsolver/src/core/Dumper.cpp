@@ -27,6 +27,7 @@ using namespace mpqsolver::core;
 
 namespace
 {
+
 const std::string default_dtype_key = "default_quantization_dtype";
 const std::string default_granularity_key = "default_granularity";
 const std::string layers_key = "layers";
@@ -34,6 +35,7 @@ const std::string model_key = "model_path";
 const std::string layer_name_key = "name";
 const std::string layer_dtype_key = "dtype";
 const std::string layer_granularity_key = "granularity";
+
 } // namespace
 
 Dumper::Dumper(const std::string &dir_path) : _dir_path(dir_path) {}
@@ -78,10 +80,10 @@ void Dumper::prepare_directory(const std::string &dir_path) const
 }
 
 void Dumper::dump_MPQ_configuration(const LayerParams &layers, const std::string &def_dtype,
-                                    int param) const
+                                    int step) const
 {
   prepare_directory(_dir_path);
-  std::string path = _dir_path + "/Configuration_" + std::to_string(param) + ".mpq.json";
+  std::string path = _dir_path + "/Configuration_" + std::to_string(step) + ".mpq.json";
   dump_MPQ_configuration(layers, def_dtype, path);
 }
 
@@ -110,9 +112,9 @@ void Dumper::save_circle(luci::Module *module, std::string &path) const
   }
 }
 
-void Dumper::dump_quantized(luci::Module *module, uint32_t param) const
+void Dumper::dump_quantized(luci::Module *module, uint32_t step) const
 {
-  std::string path = _dir_path + "/quantized_" + std::to_string(param) + ".mpq.circle";
+  std::string path = _dir_path + "/quantized_" + std::to_string(step) + ".mpq.circle";
   save_circle(module, path);
 }
 
@@ -145,8 +147,8 @@ void Dumper::dump_Q16_error(float error) const
   dump_error(error, "Q16", path);
 }
 
-void Dumper::dump_MPQ_error(float error, uint32_t param) const
+void Dumper::dump_MPQ_error(float error, uint32_t step) const
 {
   std::string path = get_error_path();
-  dump_error(error, std::to_string(param), path);
+  dump_error(error, std::to_string(step), path);
 }
