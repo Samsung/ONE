@@ -32,9 +32,50 @@ var namespaceluci__interpreter_1_1test__kernel =
       [ "test_add_kernel_int32_with_broadcasting_model_circle", "namespaceluci__interpreter_1_1test__kernel_1_1add__int__with__broadcasting.html#ad7aced1877d4dfa00853771ea3485653", null ],
       [ "test_add_kernel_int64_with_broadcasting_model_circle", "namespaceluci__interpreter_1_1test__kernel_1_1add__int__with__broadcasting.html#a104c287bf13a1d6fc727079271bebda6", null ]
     ] ],
+    [ "pack_float", "namespaceluci__interpreter_1_1test__kernel_1_1pack__float.html", [
+      [ "input_data_1", "namespaceluci__interpreter_1_1test__kernel_1_1pack__float.html#a9eb742c36009857bd582cd91445a4e2c", null ],
+      [ "input_data_2", "namespaceluci__interpreter_1_1test__kernel_1_1pack__float.html#a70d2820b8cc37e74b5f0ed48bd83068c", null ],
+      [ "reference_output_data", "namespaceluci__interpreter_1_1test__kernel_1_1pack__float.html#ac5e2fc47aa4de2903830dc394e62c712", null ],
+      [ "test_kernel_model_circle", "namespaceluci__interpreter_1_1test__kernel_1_1pack__float.html#a1d5a0232e3f85ec8c8b26bab2496af3d", null ]
+    ] ],
+    [ "pack_int", "namespaceluci__interpreter_1_1test__kernel_1_1pack__int.html", [
+      [ "input_data_1", "namespaceluci__interpreter_1_1test__kernel_1_1pack__int.html#a44ce4c84060e400e821f183e09edf904", null ],
+      [ "input_data_2", "namespaceluci__interpreter_1_1test__kernel_1_1pack__int.html#a6225d5ae6c7944ea6b113d68c064b365", null ],
+      [ "reference_output_data", "namespaceluci__interpreter_1_1test__kernel_1_1pack__int.html#aa427b4b29b6d86bfe577176533f7487d", null ],
+      [ "test_kernel_model_circle", "namespaceluci__interpreter_1_1test__kernel_1_1pack__int.html#aed54a794c8b538d4a986d6a7d93a4ef3", null ]
+    ] ],
+    [ "pack_quant_u8", "namespaceluci__interpreter_1_1test__kernel_1_1pack__quant__u8.html", [
+      [ "input_data_1", "namespaceluci__interpreter_1_1test__kernel_1_1pack__quant__u8.html#a1a625719ee9a116f639c0c0946d6bb8d", null ],
+      [ "input_data_2", "namespaceluci__interpreter_1_1test__kernel_1_1pack__quant__u8.html#a188abd93ecd255102e3a47443fe133cb", null ],
+      [ "reference_output_data", "namespaceluci__interpreter_1_1test__kernel_1_1pack__quant__u8.html#a4673fff3116df6afa61cd836704a86b6", null ],
+      [ "test_kernel_model_circle", "namespaceluci__interpreter_1_1test__kernel_1_1pack__quant__u8.html#ad8ae1123b628274dca577749610b6f93", null ]
+    ] ],
+    [ "reduce_prod_float", "namespaceluci__interpreter_1_1test__kernel_1_1reduce__prod__float.html", [
+      [ "input_data", "namespaceluci__interpreter_1_1test__kernel_1_1reduce__prod__float.html#a19b9acb4671ba852f567c27fa260f1e8", null ],
+      [ "reference_output_data", "namespaceluci__interpreter_1_1test__kernel_1_1reduce__prod__float.html#a8e3f2872e59ad22f959d461cffdc6a54", null ],
+      [ "test_kernel_model_circle", "namespaceluci__interpreter_1_1test__kernel_1_1reduce__prod__float.html#a1359b17e95bca6e569a6cc8b5a8e93d7", null ]
+    ] ],
+    [ "reduce_prod_int", "namespaceluci__interpreter_1_1test__kernel_1_1reduce__prod__int.html", [
+      [ "input_data", "namespaceluci__interpreter_1_1test__kernel_1_1reduce__prod__int.html#a976f7ee8f9ce20ffe81b8e9649620fc4", null ],
+      [ "reference_output_data", "namespaceluci__interpreter_1_1test__kernel_1_1reduce__prod__int.html#a6bc335a5fca5636343af8497459f9f6e", null ],
+      [ "test_kernel_model_circle", "namespaceluci__interpreter_1_1test__kernel_1_1reduce__prod__int.html#ab4fa2439566d295b10adde2f2ae69730", null ]
+    ] ],
+    [ "shape_kernel", "namespaceluci__interpreter_1_1test__kernel_1_1shape__kernel.html", [
+      [ "input_data", "namespaceluci__interpreter_1_1test__kernel_1_1shape__kernel.html#a236147b07533796d22b709592a5df55a", null ],
+      [ "reference_output_data", "namespaceluci__interpreter_1_1test__kernel_1_1shape__kernel.html#a37b2ba53422f54c9c10875a31bea17e2", null ],
+      [ "test_kernel_model_circle", "namespaceluci__interpreter_1_1test__kernel_1_1shape__kernel.html#ac9fa0303d9af40095fa19cf375de956e", null ]
+    ] ],
     [ "TestData32IntAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data32_int_add.html", "classluci__interpreter_1_1test__kernel_1_1_test_data32_int_add" ],
     [ "TestData64IntAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data64_int_add.html", "classluci__interpreter_1_1test__kernel_1_1_test_data64_int_add" ],
     [ "TestDataAddBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base" ],
     [ "TestDataBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_base" ],
-    [ "TestDataFloatAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add" ]
+    [ "TestDataFloatAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add" ],
+    [ "TestDataFloatPack", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_pack.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_pack" ],
+    [ "TestDataFloatReduceProd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_reduce_prod.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_reduce_prod" ],
+    [ "TestDataIntPack", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_pack.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_pack" ],
+    [ "TestDataIntReduceProd", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_reduce_prod.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_reduce_prod" ],
+    [ "TestDataPackBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base" ],
+    [ "TestDataQuantU8Pack", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_u8_pack.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_u8_pack" ],
+    [ "TestDataReduceCommonBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base" ],
+    [ "TestDataShapeKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel" ]
 ];

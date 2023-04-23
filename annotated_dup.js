@@ -1367,6 +1367,7 @@ var annotated_dup =
         [ "Fill", "classluci__interpreter_1_1kernels_1_1_fill.html", "classluci__interpreter_1_1kernels_1_1_fill" ],
         [ "Floor", "classluci__interpreter_1_1kernels_1_1_floor.html", "classluci__interpreter_1_1kernels_1_1_floor" ],
         [ "FloorDiv", "classluci__interpreter_1_1kernels_1_1_floor_div.html", "classluci__interpreter_1_1kernels_1_1_floor_div" ],
+        [ "FloorMod", "classluci__interpreter_1_1kernels_1_1_floor_mod.html", "classluci__interpreter_1_1kernels_1_1_floor_mod" ],
         [ "FullyConnected", "classluci__interpreter_1_1kernels_1_1_fully_connected.html", "classluci__interpreter_1_1kernels_1_1_fully_connected" ],
         [ "Gather", "classluci__interpreter_1_1kernels_1_1_gather.html", "classluci__interpreter_1_1kernels_1_1_gather" ],
         [ "Greater", "classluci__interpreter_1_1kernels_1_1_greater.html", "classluci__interpreter_1_1kernels_1_1_greater" ],
@@ -1409,6 +1410,7 @@ var annotated_dup =
         [ "ResizeNearestNeighbor", "classluci__interpreter_1_1kernels_1_1_resize_nearest_neighbor.html", "classluci__interpreter_1_1kernels_1_1_resize_nearest_neighbor" ],
         [ "ReverseV2", "classluci__interpreter_1_1kernels_1_1_reverse_v2.html", "classluci__interpreter_1_1kernels_1_1_reverse_v2" ],
         [ "Rsqrt", "classluci__interpreter_1_1kernels_1_1_rsqrt.html", "classluci__interpreter_1_1kernels_1_1_rsqrt" ],
+        [ "Select", "classluci__interpreter_1_1kernels_1_1_select.html", "classluci__interpreter_1_1kernels_1_1_select" ],
         [ "ShapeKernel", "classluci__interpreter_1_1kernels_1_1_shape_kernel.html", "classluci__interpreter_1_1kernels_1_1_shape_kernel" ],
         [ "SISOKernel", "classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html", "classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel" ],
         [ "Slice", "classluci__interpreter_1_1kernels_1_1_slice.html", "classluci__interpreter_1_1kernels_1_1_slice" ],
@@ -1450,7 +1452,15 @@ var annotated_dup =
         [ "TestData64IntAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data64_int_add.html", "classluci__interpreter_1_1test__kernel_1_1_test_data64_int_add" ],
         [ "TestDataAddBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base" ],
         [ "TestDataBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_base" ],
-        [ "TestDataFloatAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add" ]
+        [ "TestDataFloatAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add" ],
+        [ "TestDataFloatPack", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_pack.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_pack" ],
+        [ "TestDataFloatReduceProd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_reduce_prod.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_reduce_prod" ],
+        [ "TestDataIntPack", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_pack.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_pack" ],
+        [ "TestDataIntReduceProd", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_reduce_prod.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_reduce_prod" ],
+        [ "TestDataPackBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base" ],
+        [ "TestDataQuantU8Pack", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_u8_pack.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_u8_pack" ],
+        [ "TestDataReduceCommonBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base" ],
+        [ "TestDataShapeKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel" ]
       ] ],
       [ "AddParams", "structluci__interpreter_1_1_add_params.html", "structluci__interpreter_1_1_add_params" ],
       [ "AffineQuantization", "structluci__interpreter_1_1_affine_quantization.html", "structluci__interpreter_1_1_affine_quantization" ],
@@ -1856,11 +1866,15 @@ var annotated_dup =
     [ "mpqsolver", "namespacempqsolver.html", [
       [ "bisection", "namespacempqsolver_1_1bisection.html", [
         [ "BisectionSolver", "classmpqsolver_1_1bisection_1_1_bisection_solver.html", "classmpqsolver_1_1bisection_1_1_bisection_solver" ],
-        [ "DatasetEvaluator", "classmpqsolver_1_1bisection_1_1_dataset_evaluator.html", "classmpqsolver_1_1bisection_1_1_dataset_evaluator" ],
-        [ "ErrorMetric", "classmpqsolver_1_1bisection_1_1_error_metric.html", "classmpqsolver_1_1bisection_1_1_error_metric" ],
-        [ "MAEMetric", "classmpqsolver_1_1bisection_1_1_m_a_e_metric.html", "classmpqsolver_1_1bisection_1_1_m_a_e_metric" ],
-        [ "Quantizer", "classmpqsolver_1_1bisection_1_1_quantizer.html", "classmpqsolver_1_1bisection_1_1_quantizer" ],
         [ "VISQErrorApproximator", "classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator.html", "classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator" ]
+      ] ],
+      [ "core", "namespacempqsolver_1_1core.html", [
+        [ "DatasetEvaluator", "classmpqsolver_1_1core_1_1_dataset_evaluator.html", "classmpqsolver_1_1core_1_1_dataset_evaluator" ],
+        [ "Dumper", "classmpqsolver_1_1core_1_1_dumper.html", "classmpqsolver_1_1core_1_1_dumper" ],
+        [ "ErrorMetric", "classmpqsolver_1_1core_1_1_error_metric.html", "classmpqsolver_1_1core_1_1_error_metric" ],
+        [ "MAEMetric", "classmpqsolver_1_1core_1_1_m_a_e_metric.html", "classmpqsolver_1_1core_1_1_m_a_e_metric" ],
+        [ "Quantizer", "classmpqsolver_1_1core_1_1_quantizer.html", "classmpqsolver_1_1core_1_1_quantizer" ],
+        [ "QuantizerHook", "structmpqsolver_1_1core_1_1_quantizer_hook.html", "structmpqsolver_1_1core_1_1_quantizer_hook" ]
       ] ],
       [ "MPQSolver", "classmpqsolver_1_1_m_p_q_solver.html", "classmpqsolver_1_1_m_p_q_solver" ]
     ] ],
@@ -2593,14 +2607,11 @@ var annotated_dup =
         [ "DynamicShapeInferer", "classonert_1_1exec_1_1_dynamic_shape_inferer.html", "classonert_1_1exec_1_1_dynamic_shape_inferer" ],
         [ "ExecTime", "classonert_1_1exec_1_1_exec_time.html", "classonert_1_1exec_1_1_exec_time" ],
         [ "Execution", "classonert_1_1exec_1_1_execution.html", "classonert_1_1exec_1_1_execution" ],
-        [ "ExecutionEventEmitter", "classonert_1_1exec_1_1_execution_event_emitter.html", "classonert_1_1exec_1_1_execution_event_emitter" ],
         [ "ExecutionObservee", "classonert_1_1exec_1_1_execution_observee.html", "classonert_1_1exec_1_1_execution_observee" ],
         [ "ExecutorBase", "classonert_1_1exec_1_1_executor_base.html", "classonert_1_1exec_1_1_executor_base" ],
         [ "Executors", "classonert_1_1exec_1_1_executors.html", "classonert_1_1exec_1_1_executors" ],
         [ "FunctionSequence", "classonert_1_1exec_1_1_function_sequence.html", "classonert_1_1exec_1_1_function_sequence" ],
         [ "HookFunction", "classonert_1_1exec_1_1_hook_function.html", "classonert_1_1exec_1_1_hook_function" ],
-        [ "IExecutionEventEmitter", "structonert_1_1exec_1_1_i_execution_event_emitter.html", "structonert_1_1exec_1_1_i_execution_event_emitter" ],
-        [ "IExecutionEventListener", "structonert_1_1exec_1_1_i_execution_event_listener.html", "structonert_1_1exec_1_1_i_execution_event_listener" ],
         [ "IExecutionObserver", "classonert_1_1exec_1_1_i_execution_observer.html", "classonert_1_1exec_1_1_i_execution_observer" ],
         [ "IExecutor", "structonert_1_1exec_1_1_i_executor.html", "structonert_1_1exec_1_1_i_executor" ],
         [ "IExecutors", "classonert_1_1exec_1_1_i_executors.html", "classonert_1_1exec_1_1_i_executors" ],

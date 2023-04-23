@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['maemetric_0',['MAEMetric',['../classmpqsolver_1_1bisection_1_1_m_a_e_metric.html',1,'mpqsolver::bisection']]],
+  ['maemetric_0',['MAEMetric',['../classmpqsolver_1_1core_1_1_m_a_e_metric.html',1,'mpqsolver::core']]],
   ['maeprinter_1',['MAEPrinter',['../classcircle__eval__diff_1_1_m_a_e_printer.html',1,'circle_eval_diff']]],
   ['makebatchnormgammapositivepass_2',['MakeBatchNormGammaPositivePass',['../structluci_1_1_make_batch_norm_gamma_positive_pass.html',1,'luci']]],
   ['manualscheduler_3',['ManualScheduler',['../classonert_1_1compiler_1_1_manual_scheduler.html',1,'onert::compiler']]],

@@ -13,7 +13,7 @@ var searchData=
   ['section_10',['Section',['../structcrew_1_1_section.html',1,'crew']]],
   ['segmentsumchef_11',['SegmentSumChef',['../class_segment_sum_chef.html',1,'']]],
   ['segmentsumcheffactory_12',['SegmentSumChefFactory',['../struct_segment_sum_chef_factory.html',1,'']]],
-  ['select_13',['Select',['../classonert_1_1ir_1_1operation_1_1_select.html',1,'onert::ir::operation']]],
+  ['select_13',['Select',['../classluci__interpreter_1_1kernels_1_1_select.html',1,'luci_interpreter::kernels::Select'],['../classonert_1_1ir_1_1operation_1_1_select.html',1,'onert::ir::operation::Select']]],
   ['selectchef_14',['SelectChef',['../class_select_chef.html',1,'']]],
   ['selectcheffactory_15',['SelectChefFactory',['../struct_select_chef_factory.html',1,'']]],
   ['selectlayer_16',['SelectLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_select_layer.html',1,'onert::backend::cpu::ops']]],

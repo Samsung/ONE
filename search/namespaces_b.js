@@ -17,9 +17,15 @@ var searchData=
   ['luci_5feval_5fverifier_5fref_14',['luci_eval_verifier_ref',['../namespaceluci__eval__verifier__ref.html',1,'']]],
   ['luci_5finterpreter_15',['luci_interpreter',['../namespaceluci__interpreter.html',1,'']]],
   ['luci_5finterpreter_5fpal_16',['luci_interpreter_pal',['../namespaceluci__interpreter__pal.html',1,'']]],
-  ['sinf_17',['sinf',['../namespaceluci_1_1sinf.html',1,'luci']]],
-  ['test_18',['test',['../namespacelogo_1_1test.html',1,'logo::test'],['../namespaceluci_1_1test.html',1,'luci::test']]],
-  ['test_5fkernel_19',['test_kernel',['../namespaceluci__interpreter_1_1test__kernel.html',1,'luci_interpreter']]],
-  ['testing_20',['testing',['../namespaceluci__interpreter_1_1kernels_1_1testing.html',1,'luci_interpreter::kernels']]],
-  ['tinf_21',['tinf',['../namespaceluci_1_1tinf.html',1,'luci']]]
+  ['pack_5ffloat_17',['pack_float',['../namespaceluci__interpreter_1_1test__kernel_1_1pack__float.html',1,'luci_interpreter::test_kernel']]],
+  ['pack_5fint_18',['pack_int',['../namespaceluci__interpreter_1_1test__kernel_1_1pack__int.html',1,'luci_interpreter::test_kernel']]],
+  ['pack_5fquant_5fu8_19',['pack_quant_u8',['../namespaceluci__interpreter_1_1test__kernel_1_1pack__quant__u8.html',1,'luci_interpreter::test_kernel']]],
+  ['reduce_5fprod_5ffloat_20',['reduce_prod_float',['../namespaceluci__interpreter_1_1test__kernel_1_1reduce__prod__float.html',1,'luci_interpreter::test_kernel']]],
+  ['reduce_5fprod_5fint_21',['reduce_prod_int',['../namespaceluci__interpreter_1_1test__kernel_1_1reduce__prod__int.html',1,'luci_interpreter::test_kernel']]],
+  ['shape_5fkernel_22',['shape_kernel',['../namespaceluci__interpreter_1_1test__kernel_1_1shape__kernel.html',1,'luci_interpreter::test_kernel']]],
+  ['sinf_23',['sinf',['../namespaceluci_1_1sinf.html',1,'luci']]],
+  ['test_24',['test',['../namespacelogo_1_1test.html',1,'logo::test'],['../namespaceluci_1_1test.html',1,'luci::test']]],
+  ['test_5fkernel_25',['test_kernel',['../namespaceluci__interpreter_1_1test__kernel.html',1,'luci_interpreter']]],
+  ['testing_26',['testing',['../namespaceluci__interpreter_1_1kernels_1_1testing.html',1,'luci_interpreter::kernels']]],
+  ['tinf_27',['tinf',['../namespaceluci_1_1tinf.html',1,'luci']]]
 ];

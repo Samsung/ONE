@@ -16,7 +16,7 @@ var searchData=
   ['option_5fchecker_5ft_13',['option_checker_t',['../classnnc_1_1cli_1_1_option.html#ade8a9f08a3418c0c350b3458c5b74c18',1,'nnc::cli::Option']]],
   ['optionhook_14',['OptionHook',['../circle-quantizer_2src_2_circle_quantizer_8cpp.html#a189374cb6e50c4292e260b161a6c7822',1,'CircleQuantizer.cpp']]],
   ['origintable_15',['OriginTable',['../namespaceluci.html#a88979da5eeb3b971f6f042d6bbf0a402',1,'luci']]],
-  ['output_16',['Output',['../namespacempqsolver_1_1bisection.html#a025200426f5dc3dd6ba002d3ef4741b5',1,'mpqsolver::bisection::Output()'],['../namespacerecord__minmax.html#a3d03f63a604eb9c053ce1c9578a7d30f',1,'record_minmax::Output()']]],
+  ['output_16',['Output',['../namespacempqsolver_1_1core.html#a09395b02e3c6f5c80a00fa379407810d',1,'mpqsolver::core::Output()'],['../namespacerecord__minmax.html#a3d03f63a604eb9c053ce1c9578a7d30f',1,'record_minmax::Output()']]],
   ['outputbuffers_17',['OutputBuffers',['../namespacenpud_1_1core.html#af35d486d3bc0329e28dc714b68c27a3c',1,'npud::core']]],
   ['outputlist_18',['OutputList',['../namespacecoco.html#a1a6c8ff5513ef45a9f110ab01329d073',1,'coco::OutputList()'],['../namespaceann.html#a0295dbdda8c4d20354132e8ce2d864b0',1,'ann::OutputList()']]]
 ];
