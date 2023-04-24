@@ -734,8 +734,8 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
   for (auto const &opcode : builtin_code_map)
   {
     tflite::OperatorCodeBuilder code_builder{*flatbuffer_builder};
-    // TODO support for opcode.first >= 127
-    assert(opcode.first < 127);
+    // TODO support for opcode.first >= 157
+    assert(opcode.first < 157);
     code_builder.add_deprecated_builtin_code(opcode.first);
     code_builder.add_version(opcode.second);
     code_builder.add_builtin_code(opcode.first);

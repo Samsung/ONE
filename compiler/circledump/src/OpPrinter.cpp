@@ -364,6 +364,22 @@ public:
   }
 };
 
+class GeluPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_GeluOptions())
+    {
+      os << "    ";
+      os << std::boolalpha;
+      os << "approximate(" << params->approximate() << ") ";
+      os << std::noboolalpha;
+      os << std::endl;
+    }
+  }
+};
+
 class IfPrinter : public OpPrinter
 {
 public:
@@ -813,6 +829,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for FLOOR_MOD
   _op_map[circle::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[circle::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
+  _op_map[circle::BuiltinOperator_GELU] = make_unique<GeluPrinter>();
   _op_map[circle::BuiltinOperator_IF] = make_unique<IfPrinter>();
   _op_map[circle::BuiltinOperator_L2_NORMALIZATION] = make_unique<L2NormPrinter>();
   _op_map[circle::BuiltinOperator_L2_POOL_2D] = make_unique<Pool2DPrinter>();

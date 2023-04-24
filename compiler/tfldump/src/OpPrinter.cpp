@@ -359,6 +359,19 @@ public:
   }
 };
 
+class GeluPrinter : public OpPrinter
+{
+public:
+  void options(const tflite::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_GeluOptions())
+    {
+      os << "    ";
+      os << "approximate(" << params->approximate() << ") ";
+    }
+  }
+};
+
 class IfPrinter : public OpPrinter
 {
 public:
@@ -746,6 +759,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for FLOOR_MOD
   _op_map[tflite::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[tflite::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
+  _op_map[tflite::BuiltinOperator_GELU] = make_unique<GeluPrinter>();
   _op_map[tflite::BuiltinOperator_IF] = make_unique<IfPrinter>();
   _op_map[tflite::BuiltinOperator_L2_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_L2_NORMALIZATION] = make_unique<L2NormPrinter>();

@@ -51,6 +51,8 @@ std::vector<py::dict> outputsPyArray(const luci::CircleNode *node,
 
 py::object none();
 
+bool isMultiOutNode(const luci::CircleNode *node);
+
 } // namespace dalgona
 
 #endif // __DALGONA_UTILS_H__

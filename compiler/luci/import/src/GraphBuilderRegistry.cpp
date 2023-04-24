@@ -61,6 +61,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(FULLY_CONNECTED, CircleFullyConnectedGraphBuilder);                          // 9
   CIRCLE_NODE(GATHER, CircleGatherGraphBuilder);                                           // 36
   CIRCLE_NODE(GATHER_ND, CircleGatherNdGraphBuilder);                                      // 107
+  CIRCLE_NODE(GELU, CircleGeluGraphBuilder);                                               // 150
   CIRCLE_NODE(GREATER, CircleGreaterGraphBuilder);                                         // 61
   CIRCLE_NODE(GREATER_EQUAL, CircleGreaterEqualGraphBuilder);                              // 62
   CIRCLE_NODE(IF, CircleIfGraphBuilder);                                                   // 118
@@ -161,6 +162,35 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_DELEGATE = 51,
   // BuiltinOperator_ARG_MAX = 56,
   // BuiltinOperator_HARD_SWISH = 117,
+  // BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES = 127,
+  // BuiltinOperator_CUMSUM = 128,
+  // BuiltinOperator_CALL_ONCE = 129,
+  // BuiltinOperator_BROADCAST_TO = 130,
+  // BuiltinOperator_RFFT2D = 131,
+  // BuiltinOperator_CONV_3D = 132,
+  // BuiltinOperator_IMAG = 133,
+  // BuiltinOperator_REAL = 134,
+  // BuiltinOperator_COMPLEX_ABS = 135,
+  // BuiltinOperator_HASHTABLE = 136,
+  // BuiltinOperator_HASHTABLE_FIND = 137,
+  // BuiltinOperator_HASHTABLE_IMPORT = 138,
+  // BuiltinOperator_HASHTABLE_SIZE = 139,
+  // BuiltinOperator_REDUCE_ALL = 140,
+  // BuiltinOperator_CONV_3D_TRANSPOSE = 141,
+  // BuiltinOperator_VAR_HANDLE = 142,
+  // BuiltinOperator_READ_VARIABLE = 143,
+  // BuiltinOperator_ASSIGN_VARIABLE = 144,
+  // BuiltinOperator_BROADCAST_ARGS = 145,
+  // BuiltinOperator_RANDOM_STANDARD_NORMAL = 146,
+  // BuiltinOperator_BUCKETIZE = 147,
+  // BuiltinOperator_RANDOM_UNIFORM = 148,
+  // BuiltinOperator_MULTINOMIAL = 149,
+  // BuiltinOperator_DYNAMIC_UPDATE_SLICE = 151,
+  // BuiltinOperator_RELU_0_TO_1 = 152,
+  // BuiltinOperator_UNSORTED_SEGMENT_PROD = 153,
+  // BuiltinOperator_UNSORTED_SEGMENT_MAX = 154,
+  // BuiltinOperator_UNSORTED_SEGMENT_SUM = 155,
+  // BuiltinOperator_ATAN2 = 156,
 
   // Register builders for nodes which not handles in builders registered above.
 #define CIRCLE_NODE(CLASS) add(std::make_unique<CLASS>())

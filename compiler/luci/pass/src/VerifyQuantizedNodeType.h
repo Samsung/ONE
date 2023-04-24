@@ -88,6 +88,7 @@ private:
   bool visit(const luci::CircleFloor *node);
   bool visit(const luci::CircleFloorDiv *node);
   bool visit(const luci::CircleFullyConnected *node);
+  bool visit(const luci::CircleGelu *node);
   bool visit(const luci::CircleGreater *node);
   bool visit(const luci::CircleGreaterEqual *node);
   bool visit(const luci::CircleInstanceNorm *node);

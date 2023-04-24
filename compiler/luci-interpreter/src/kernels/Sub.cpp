@@ -148,7 +148,7 @@ void Sub::evalQuantized() const
 
   if (need_broadcast)
   {
-    tflite::reference_ops::BroadcastSubSlow(
+    tflite::reference_ops::BroadcastQuantSubSlow(
       params, getTensorShape(input1()), getTensorData<uint8_t>(input1()), getTensorShape(input2()),
       getTensorData<uint8_t>(input2()), getTensorShape(output()), getTensorData<uint8_t>(output()));
   }

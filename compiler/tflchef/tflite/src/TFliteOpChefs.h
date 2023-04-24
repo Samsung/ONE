@@ -48,6 +48,7 @@
 #include "Op/include/FullyConnected.h"
 #include "Op/include/Gather.h"
 #include "Op/include/GatherNd.h"
+#include "Op/include/Gelu.h"
 #include "Op/include/Greater.h"
 #include "Op/include/GreaterEqual.h"
 #include "Op/include/L2Normalize.h"

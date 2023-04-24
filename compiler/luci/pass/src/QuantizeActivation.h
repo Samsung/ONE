@@ -111,6 +111,7 @@ private:
   void visit(luci::CircleExp *node);
   void visit(luci::CircleFloor *node);
   void visit(luci::CircleGather *node);
+  void visit(luci::CircleGelu *node);
   void visit(luci::CircleLocalResponseNormalization *node);
   void visit(luci::CircleLogistic *node);
   void visit(luci::CircleMean *node);

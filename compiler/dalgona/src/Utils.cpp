@@ -170,6 +170,26 @@ py::dict outputPyArray(const luci::CircleNode *node, luci_interpreter::Interpret
   return py_output;
 }
 
+bool isMultiOutNode(const luci::CircleNode *node)
+{
+  assert(node != nullptr); // FIX_CALLER_UNLESS
+
+  switch (node->opcode())
+  {
+    case luci::CircleOpcode::SPLIT:
+    case luci::CircleOpcode::CIRCLESPLITOUT:
+    case luci::CircleOpcode::SPLIT_V:
+    case luci::CircleOpcode::CIRCLESPLITVOUT:
+    case luci::CircleOpcode::UNPACK:
+    case luci::CircleOpcode::CIRCLEUNPACKOUT:
+    case luci::CircleOpcode::TOPK_V2:
+    case luci::CircleOpcode::CIRCLETOPKV2OUT:
+      return true;
+    default:
+      return false;
+  }
+}
+
 } // namespace dalgona
 
 #undef THROW_UNLESS

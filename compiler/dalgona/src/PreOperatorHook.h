@@ -66,6 +66,9 @@ public:
     if (not py::hasattr(_analysis, "DefaultOpPre"))
       return;
 
+    if (isMultiOutNode(node))
+      return;
+
     py::object hook = _analysis.attr("DefaultOpPre");
     auto inputs = inputsPyArray(node, _interpreter);
 

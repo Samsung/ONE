@@ -79,6 +79,9 @@ public:
     if (not py::hasattr(_analysis, "DefaultOpPost"))
       return;
 
+    if (isMultiOutNode(node))
+      return;
+
     py::object hook = _analysis.attr("DefaultOpPost");
     auto inputs = inputsPyArray(node, _interpreter);
     auto output = outputPyArray(node, _interpreter);
