@@ -114,24 +114,16 @@ TARGET_LINK_LIBRARIES(mbed_os -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys)
 
 add_executable(build_test main.cpp)
 
-target_link_libraries(build_test mbed_os)
+target_link_libraries(build_test PUBLIC mbed_os)
 target_include_directories_mbed(build_test ${MbedOSSource_DIR})
 
-target_link_libraries(mbed_os "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/core/reader/libluci_micro_circle_reader.a")
-target_link_libraries(mbed_os "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/core/libluci_interpreter_core_micro.a")
-target_link_libraries(mbed_os "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/kernels/libluci_interpreter_kernels_micro.a")
-target_link_libraries(mbed_os "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/kernels/libluci_interpreter_mcu_pal.a")
-target_link_libraries(mbed_os "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/loader/libluci_interpreter_loader_micro.a")
-target_link_libraries(mbed_os "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/libluci_interpreter_micro.a")
-target_link_libraries(mbed_os "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/memory_managers/libluci_interpreter_micro_memory_manager.a")
-
-target_link_libraries(build_test "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/core/reader/libluci_micro_circle_reader.a")
-target_link_libraries(build_test "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/core/libluci_interpreter_core_micro.a")
-target_link_libraries(build_test "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/kernels/libluci_interpreter_kernels_micro.a")
-target_link_libraries(build_test "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/kernels/libluci_interpreter_mcu_pal.a")
-target_link_libraries(build_test "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/loader/libluci_interpreter_loader_micro.a")
-target_link_libraries(build_test "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/libluci_interpreter_micro.a")
-target_link_libraries(build_test "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/memory_managers/libluci_interpreter_micro_memory_manager.a")
+target_link_libraries(build_test PUBLIC "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/libluci_interpreter_micro.a")
+target_link_libraries(build_test PUBLIC "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/loader/libluci_interpreter_loader_micro.a")
+target_link_libraries(build_test PUBLIC "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/core/libluci_interpreter_core_micro.a")
+target_link_libraries(build_test PUBLIC "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/core/reader/libluci_micro_circle_reader.a")
+target_link_libraries(build_test PUBLIC "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/memory_managers/libluci_interpreter_micro_memory_manager.a")
+target_link_libraries(build_test PUBLIC "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/kernels/libluci_interpreter_kernels_micro.a")
+target_link_libraries(build_test PUBLIC "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/kernels/libluci_interpreter_mcu_pal.a")
 
 target_include_directories(build_test PUBLIC
         ${ONERTMICRO_SRC_DIR}/luci-interpreter/include

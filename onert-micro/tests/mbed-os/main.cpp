@@ -36,7 +36,11 @@ int main()
     }
 
     // Do inference.
+    Timer t;
+    t.start();
     interpreter.interpret();
+    t.stop();
+    std::cout << "Executed in " << t.read_us() << "us\n";
   }
   // Get output.
   int num_outputs = 1;
@@ -48,6 +52,6 @@ int main()
   while (true)
   {
     ThisThread::sleep_for(10ms);
-    std::cout << "Hello world\n";
+//    std::cout << "Hello world\n";
   }
 }
