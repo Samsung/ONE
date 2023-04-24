@@ -180,6 +180,7 @@ void execute_kernel_CircleMul(const circle::Operator *cur_op, BaseRuntimeGraph *
     }
     break;
 #ifndef DIS_QUANT
+      // TODO: check quantize Mul
     case DataType::U8:
     {
       auto tiso_func = [](const tflite::ArithmeticParams &params,
