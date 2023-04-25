@@ -1,5 +1,6 @@
 set(SOURCES
         BinaryOpCommon.h
+ * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
         Utils.h
         Utils.cpp
         Builders.h
