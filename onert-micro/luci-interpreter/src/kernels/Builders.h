@@ -17,12 +17,20 @@
 #ifndef LUCI_INTERPRETER_KERNELS_NODES_BUILDERS_H
 #define LUCI_INTERPRETER_KERNELS_NODES_BUILDERS_H
 
-#include "KernelBuilder.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
-#include "core/RuntimeGraph.h"
+#include "core/RuntimeModule.h"
 
 namespace luci_interpreter
 {
+
+namespace
+{
+#ifdef USE_STATIC_ALLOC
+using BaseRuntimeGraph = StaticRuntimeGraph;
+#else
+using BaseRuntimeGraph = RuntimeGraph;
+#endif // USE_STATIC_ALLOC
+} // namespace
 
 #define REGISTER_KERNEL(builtin_operator, name)                        \
   void configure_kernel_Circle##name(const circle::Operator *cur_op,   \

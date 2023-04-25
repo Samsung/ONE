@@ -19,44 +19,86 @@
 
 #include "core/RuntimeModule.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
+#include "Builders.h"
 
 #include <memory>
 #include <unordered_map>
 
 namespace luci_interpreter
 {
-namespace
+#define REGISTER_KERNEL(builtin_operator, name) BuiltinOperator_##builtin_operator,
+
+enum class BuilderID
 {
-#ifdef USE_STATIC_ALLOC
-using BaseRuntimeGraph = StaticRuntimeGraph;
+#if USE_GENERATED_LIST
+#include "GeneratedKernelsToBuild.lst"
 #else
-using BaseRuntimeGraph = RuntimeGraph;
+#include "KernelsToBuild.lst"
 #endif
-} // namespace
+  Size // casts to count of values in BuilderId enum
+};
+
+#undef REGISTER_KERNEL
+
+constexpr BuilderID get_builder_id(circle::BuiltinOperator opcode)
+{
+  switch (opcode)
+  {
+#define REGISTER_KERNEL(builtin_operator, name)    \
+  case circle::BuiltinOperator_##builtin_operator: \
+    return BuilderID::BuiltinOperator_##builtin_operator;
+
+#if USE_GENERATED_LIST
+#include "GeneratedKernelsToBuild.lst"
+#else
+#include "KernelsToBuild.lst"
+#endif
+
+#undef REGISTER_KERNEL
+    default:
+      assert(false && "Unsupported operation");
+  }
+}
 
 class KernelConfigureRegistry
 {
 public:
   using KernelConfigureFunc = void(const circle::Operator *, BaseRuntimeGraph *);
 
-  KernelConfigureRegistry();
+  constexpr KernelConfigureRegistry() : _operator_configure()
+  {
+#define REGISTER_KERNEL(builtin_operator, name)                            \
+  register_kernel_configure(BuilderID::BuiltinOperator_##builtin_operator, \
+                            configure_kernel_Circle##name);
+
+#if USE_GENERATED_LIST
+#include "GeneratedKernelsToBuild.lst"
+#else
+#include "KernelsToBuild.lst"
+#endif
+
+#undef REGISTER_KERNEL
+  }
 
   void configure_kernel(const circle::Operator *cur_op, circle::BuiltinOperator opcode,
-                        BaseRuntimeGraph *runtime_graph);
+                        BaseRuntimeGraph *runtime_graph) const;
 
 private:
-  std::unordered_map<int32_t, KernelConfigureFunc *> _operator_configure;
-
-private:
-  KernelConfigureFunc *get_kernel_configure_func(circle::BuiltinOperator opcode) const
+  constexpr KernelConfigureFunc *get_kernel_configure_func(circle::BuiltinOperator opcode) const
   {
-    return _operator_configure.at(size_t(opcode));
+    const auto builder_id_opcode = size_t(get_builder_id(opcode));
+    assert(builder_id_opcode < size_t(BuilderID::Size));
+    return _operator_configure[builder_id_opcode];
   }
 
-  void register_kernel_configure(circle::BuiltinOperator id, KernelConfigureFunc *func)
+  constexpr void register_kernel_configure(BuilderID id, KernelConfigureFunc *func)
   {
+    assert(size_t(id) < size_t(BuilderID::Size));
     _operator_configure[size_t(id)] = func;
   }
+
+private:
+  KernelConfigureFunc *_operator_configure[size_t(BuilderID::Size)];
 };
 
 class KernelExecuteRegistry
@@ -64,25 +106,45 @@ class KernelExecuteRegistry
 public:
   using KernelExecuteFunc = void(const circle::Operator *, BaseRuntimeGraph *, bool);
 
-  KernelExecuteRegistry();
+  constexpr KernelExecuteRegistry() : _operator_execute()
+  {
+#define REGISTER_KERNEL(builtin_operator, name)                          \
+  register_kernel_execute(BuilderID::BuiltinOperator_##builtin_operator, \
+                          execute_kernel_Circle##name);
+
+#if USE_GENERATED_LIST
+#include "GeneratedKernelsToBuild.lst"
+#else
+#include "KernelsToBuild.lst"
+#endif
+
+#undef REGISTER_KERNEL
+  }
 
   void execute_kernel(const circle::Operator *cur_op, circle::BuiltinOperator opcode,
-                      BaseRuntimeGraph *runtime_graph, bool is_inplace);
+                      BaseRuntimeGraph *runtime_graph, bool is_inplace) const;
 
 private:
-  std::unordered_map<int32_t, KernelExecuteFunc *> _operator_execute;
-
-private:
-  KernelExecuteFunc *get_kernel_execute_func(circle::BuiltinOperator opcode) const
+  constexpr KernelExecuteFunc *get_kernel_execute_func(circle::BuiltinOperator opcode) const
   {
-    return _operator_execute.at(size_t(opcode));
+    const auto tmp = size_t(get_builder_id(opcode));
+    assert(tmp < size_t(BuilderID::Size));
+    return _operator_execute[tmp];
   }
 
-  void register_kernel_execute(circle::BuiltinOperator id, KernelExecuteFunc *func)
+  constexpr void register_kernel_execute(BuilderID id, KernelExecuteFunc *func)
   {
+    assert(size_t(id) < size_t(BuilderID::Size));
     _operator_execute[size_t(id)] = func;
   }
+
+private:
+  KernelExecuteFunc *_operator_execute[size_t(BuilderID::Size)];
 };
+
+// Global constexpr kernel configure and kernel executor
+constexpr KernelConfigureRegistry kernel_configure;
+constexpr KernelExecuteRegistry kernel_executor;
 
 } // namespace luci_interpreter
 

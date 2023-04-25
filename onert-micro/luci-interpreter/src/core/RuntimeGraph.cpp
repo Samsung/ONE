@@ -393,8 +393,6 @@ void RuntimeGraph::configure(bool dealloc_input)
 {
   selectOwnSubgraph();
 
-  KernelConfigureRegistry kernel_configure;
-
   for (uint32_t i = 0; i < _reader->operators().size(); ++i)
   {
     const auto op = _reader->operators().at(i);
@@ -422,8 +420,6 @@ void RuntimeGraph::execute()
 
   if (not _is_valid)
     configure(true);
-
-  KernelExecuteRegistry kernel_executor;
 
   for (uint32_t i = 0; i < _reader->operators().size(); ++i)
   {

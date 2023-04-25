@@ -15,29 +15,13 @@
  */
 
 #include "KernelBuilder.h"
-#include "Builders.h"
 
 namespace luci_interpreter
 {
 
-KernelConfigureRegistry::KernelConfigureRegistry()
-{
-#define REGISTER_KERNEL(builtin_operator, name)                                          \
-  register_kernel_configure(circle::BuiltinOperator::BuiltinOperator_##builtin_operator, \
-                            configure_kernel_Circle##name);
-
-#if USE_GENERATED_LIST
-#include "GeneratedKernelsToBuild.lst"
-#else
-#include "KernelsToBuild.lst"
-#endif
-
-#undef REGISTER_KERNEL
-}
-
 void KernelConfigureRegistry::configure_kernel(const circle::Operator *cur_op,
                                                circle::BuiltinOperator opcode,
-                                               BaseRuntimeGraph *runtime_graph)
+                                               BaseRuntimeGraph *runtime_graph) const
 {
   auto specific_configure_func = get_kernel_configure_func(opcode);
   if (specific_configure_func == nullptr)
@@ -46,24 +30,9 @@ void KernelConfigureRegistry::configure_kernel(const circle::Operator *cur_op,
   specific_configure_func(cur_op, runtime_graph);
 }
 
-KernelExecuteRegistry::KernelExecuteRegistry()
-{
-#define REGISTER_KERNEL(builtin_operator, name)                                        \
-  register_kernel_execute(circle::BuiltinOperator::BuiltinOperator_##builtin_operator, \
-                          execute_kernel_Circle##name);
-
-#if USE_GENERATED_LIST
-#include "GeneratedKernelsToBuild.lst"
-#else
-#include "KernelsToBuild.lst"
-#endif
-
-#undef REGISTER_KERNEL
-}
-
 void KernelExecuteRegistry::execute_kernel(const circle::Operator *cur_op,
                                            circle::BuiltinOperator opcode,
-                                           BaseRuntimeGraph *runtime_graph, bool is_inplace)
+                                           BaseRuntimeGraph *runtime_graph, bool is_inplace) const
 {
   auto specific_execute_func = get_kernel_execute_func(opcode);
   if (specific_execute_func == nullptr)
