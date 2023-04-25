@@ -27,6 +27,7 @@ import ntpath
 import os
 import sys
 
+import onelib.backends as backends
 import onelib.utils as oneutils
 
 # TODO Find better way to suppress trackback on error
@@ -128,7 +129,7 @@ def _parse_arg(parser):
 def _get_executable(args):
     driver = oneutils.is_valid_attr(args, 'driver')
 
-    executable = _search_backend_driver(driver)
+    executable = backends.search_driver(driver)  # _search_backend_driver(driver)
     if executable:
         return executable
     else:

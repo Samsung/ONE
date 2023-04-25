@@ -29,6 +29,7 @@ import sys
 import shutil
 from types import SimpleNamespace
 
+import onelib.backends as backends
 import onelib.utils as oneutils
 
 # TODO Find better way to suppress trackback on error
@@ -159,7 +160,7 @@ def _parse_arg(parser):
 
 def main():
     # get backend list
-    backends_list = _get_backends_list()
+    backends_list = backends.get_list('compile')
 
     # parse arguments
     parser = _get_parser(backends_list)
