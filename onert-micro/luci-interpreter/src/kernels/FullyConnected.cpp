@@ -48,8 +48,10 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
   assert(weights_data != nullptr);
   assert(output_data != nullptr);
 
+  tflite::RuntimeShape input_shape = kernels::getTensorRuntimeShape(input, runtime_graph);
+
   tflite::reference_ops::FullyConnected(
-    params, kernels::getTensorShape(input), kernels::getTensorData<float>(input_data),
+    params, input_shape, kernels::getTensorData<float>(input_data),
     kernels::getTensorShape(weights), kernels::getTensorData<float>(weights_data),
     kernels::getTensorShape(bias), kernels::getTensorData<float>(bias_data),
     kernels::getTensorShape(output), kernels::getTensorData<float>(output_data));
@@ -97,8 +99,10 @@ void evalQuantized(const circle::Tensor *input, const circle::Tensor *weights,
   assert(weights_data != nullptr);
   assert(output_data != nullptr);
 
+  tflite::RuntimeShape input_shape = kernels::getTensorRuntimeShape(input, runtime_graph);
+
   tflite::reference_ops::FullyConnected(
-    op_params, kernels::getTensorShape(input), kernels::getTensorData<uint8_t>(input_data),
+    op_params, input_shape, kernels::getTensorData<uint8_t>(input_data),
     kernels::getTensorShape(weights), kernels::getTensorData<uint8_t>(weights_data),
     kernels::getTensorShape(bias), kernels::getTensorData<int32_t>(bias_data),
     kernels::getTensorShape(output), kernels::getTensorData<uint8_t>(output_data));
@@ -145,8 +149,10 @@ void evalQuantizedS8(const circle::Tensor *input, const circle::Tensor *weights,
   assert(weights_data != nullptr);
   assert(output_data != nullptr);
 
+  tflite::RuntimeShape input_shape = kernels::getTensorRuntimeShape(input, runtime_graph);
+
   luci_interpreter_pal::FullyConnected<int8_t>(
-    op_params, kernels::getTensorShape(input), kernels::getTensorData<int8_t>(input_data),
+    op_params, input_shape, kernels::getTensorData<int8_t>(input_data),
     kernels::getTensorShape(weights), kernels::getTensorData<int8_t>(weights_data),
     kernels::getTensorShape(bias), kernels::getTensorData<int32_t>(bias_data),
     kernels::getTensorShape(output), kernels::getTensorData<int8_t>(output_data));
@@ -206,7 +212,11 @@ void configure_kernel_CircleFullyConnected(const circle::Operator *cur_op,
 
   LUCI_INTERPRETER_CHECK(Tensor::num_dims(weights) == 2);
   LUCI_INTERPRETER_CHECK(bias == nullptr || Tensor::num_elements(bias) == Tensor::dim(weights, 0));
-  LUCI_INTERPRETER_CHECK(Tensor::num_elements(input) % Tensor::dim(weights, 1) == 0);
+
+#ifdef DIS_DYN_SHAPES
+  int32_t input_num_elements = Tensor::num_elements(input);
+  LUCI_INTERPRETER_CHECK(input_num_elements % Tensor::dim(weights, 1) == 0);
+#endif // DIS_DYN_SHAPES
 
   if (bias)
     LUCI_INTERPRETER_CHECK(Tensor::num_elements(bias) == Tensor::dim(weights, 0));

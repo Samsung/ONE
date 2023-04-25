@@ -19,6 +19,7 @@
 #define LUCI_INTERPRETER_KERNELS_UTILS_H
 
 #include "luci_interpreter/core/Tensor.h"
+#include "Builders.h"
 
 #include <tensorflow/lite/kernels/internal/types.h>
 #include <cassert>
@@ -123,6 +124,9 @@ template <typename T> T *getTensorData(uint8_t *tensor_data)
 {
   return tensor_data != nullptr ? reinterpret_cast<T *>(tensor_data) : nullptr;
 }
+
+tflite::RuntimeShape getTensorRuntimeShape(const circle::Tensor *circle_tensor,
+                                           BaseRuntimeGraph *runtime_graph);
 
 // A list of tensors in a format that can be used by kernels like split and
 // concatenation.

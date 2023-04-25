@@ -167,7 +167,7 @@ void execute_kernel_CircleSlice(const circle::Operator *cur_op, BaseRuntimeGraph
                         : Tensor::dim(input, i) - op_params.begin[i + offset];
       data_size *= cur_size;
 
-      dynamic_shapes[i] = cur_size; // op_params.begin[i + offset] + op_params.size[i + offset];
+      dynamic_shapes[i] = cur_size;
     }
     data_size *= size(Tensor::element_type(output));
 
