@@ -22,9 +22,8 @@
 #define __MBED_CONFIG_DATA__
 
 // Configuration parameters
-#define CLOCK_SOURCE                                                          USE_PLL_HSE_EXTC|USE_PLL_HSI                                                                     // set by target:MCU_STM32H7
-#define HSE_VALUE                                                             8000000                                                                                          // set by target:NUCLEO_H743ZI2
-#define LPTICKER_DELAY_TICKS                                                  0                                                                                                // set by target:MCU_STM32H7
+#define CLOCK_SOURCE                                                          USE_PLL_HSE_XTAL|USE_PLL_HSI                                                                     // set by target:DISCO_F746NG
+#define LPTICKER_DELAY_TICKS                                                  0                                                                                                // set by target:MCU_STM32F7
 #define MBED_CONF_ALT1250_PPP_BAUDRATE                                        115200                                                                                           // set by library:ALT1250_PPP
 #define MBED_CONF_ALT1250_PPP_PROVIDE_DEFAULT                                 0                                                                                                // set by library:ALT1250_PPP
 #define MBED_CONF_ATMEL_RF_ASSUME_SPACED_SPI                                  1                                                                                                // set by library:atmel-rf[STM]
@@ -290,6 +289,18 @@
 #define MBED_CONF_PPP_IPV6_ENABLED                                            0                                                                                                // set by library:ppp
 #define MBED_CONF_PPP_MBED_EVENT_QUEUE                                        0                                                                                                // set by library:ppp
 #define MBED_CONF_PPP_THREAD_STACKSIZE                                        816                                                                                              // set by library:ppp
+#define MBED_CONF_QSPIF_DIRECT_RESET                                          0                                                                                                // set by library:qspif
+#define MBED_CONF_QSPIF_ENABLE_AND_RESET                                      1                                                                                                // set by library:qspif[N25Q128A]
+#define MBED_CONF_QSPIF_QSPI_CSN                                              MBED_CONF_DRIVERS_QSPI_CSN                                                                       // set by library:qspif
+#define MBED_CONF_QSPIF_QSPI_FREQ                                             80000000                                                                                         // set by library:qspif[N25Q128A]
+#define MBED_CONF_QSPIF_QSPI_IO0                                              MBED_CONF_DRIVERS_QSPI_IO0                                                                       // set by library:qspif
+#define MBED_CONF_QSPIF_QSPI_IO1                                              MBED_CONF_DRIVERS_QSPI_IO1                                                                       // set by library:qspif
+#define MBED_CONF_QSPIF_QSPI_IO2                                              MBED_CONF_DRIVERS_QSPI_IO2                                                                       // set by library:qspif
+#define MBED_CONF_QSPIF_QSPI_IO3                                              MBED_CONF_DRIVERS_QSPI_IO3                                                                       // set by library:qspif
+#define MBED_CONF_QSPIF_QSPI_MIN_PROG_SIZE                                    1                                                                                                // set by library:qspif
+#define MBED_CONF_QSPIF_QSPI_MIN_READ_SIZE                                    1                                                                                                // set by library:qspif
+#define MBED_CONF_QSPIF_QSPI_POLARITY_MODE                                    0                                                                                                // set by library:qspif
+#define MBED_CONF_QSPIF_QSPI_SCK                                              MBED_CONF_DRIVERS_QSPI_SCK                                                                       // set by library:qspif
 #define MBED_CONF_QUECTEL_BC95_BAUDRATE                                       9600                                                                                             // set by library:QUECTEL_BC95
 #define MBED_CONF_QUECTEL_BC95_PROVIDE_DEFAULT                                0                                                                                                // set by library:QUECTEL_BC95
 #define MBED_CONF_QUECTEL_BG96_BAUDRATE                                       115200                                                                                           // set by library:QUECTEL_BG96
@@ -333,7 +344,7 @@
 #define MBED_CONF_STM32_EMAC_ETH_PHY_SPEED_STATUS                             0x0004                                                                                           // set by library:stm32-emac
 #define MBED_CONF_STM32_EMAC_ETH_PHY_STATUS_REGISTER                          31                                                                                               // set by library:stm32-emac
 #define MBED_CONF_STM32_EMAC_ETH_RXBUFNB                                      4                                                                                                // set by library:stm32-emac
-#define MBED_CONF_STM32_EMAC_ETH_TXBUFNB                                      10                                                                                               // set by library:stm32-emac[STM32H7]
+#define MBED_CONF_STM32_EMAC_ETH_TXBUFNB                                      4                                                                                                // set by library:stm32-emac
 #define MBED_CONF_STM32_EMAC_THREAD_STACKSIZE                                 1024                                                                                             // set by library:stm32-emac
 #define MBED_CONF_STORAGE_DEFAULT_KV                                          kv                                                                                               // set by library:storage
 #define MBED_CONF_STORAGE_FILESYSTEM_BLOCKDEVICE                              default                                                                                          // set by library:storage_filesystem
@@ -350,7 +361,7 @@
 #define MBED_CONF_STORAGE_FILESYSTEM_NO_RBP_FOLDER_PATH                       kvstore                                                                                          // set by library:storage_filesystem_no_rbp
 #define MBED_CONF_STORAGE_FILESYSTEM_NO_RBP_MOUNT_POINT                       kv                                                                                               // set by library:storage_filesystem_no_rbp
 #define MBED_CONF_STORAGE_FILESYSTEM_RBP_INTERNAL_SIZE                        0                                                                                                // set by library:storage_filesystem
-#define MBED_CONF_STORAGE_STORAGE_TYPE                                        TDB_INTERNAL                                                                                     // set by library:storage[NUCLEO_H743ZI2]
+#define MBED_CONF_STORAGE_STORAGE_TYPE                                        default                                                                                          // set by library:storage
 #define MBED_CONF_STORAGE_TDB_EXTERNAL_BLOCKDEVICE                            default                                                                                          // set by library:storage_tdb_external
 #define MBED_CONF_STORAGE_TDB_EXTERNAL_EXTERNAL_BASE_ADDRESS                  0                                                                                                // set by library:storage_tdb_external
 #define MBED_CONF_STORAGE_TDB_EXTERNAL_EXTERNAL_SIZE                          0                                                                                                // set by library:storage_tdb_external
@@ -367,19 +378,19 @@
 #define MBED_CONF_TARGET_DEEP_SLEEP_LATENCY                                   4                                                                                                // set by target:MCU_STM32
 #define MBED_CONF_TARGET_DEFAULT_ADC_VREF                                     NAN                                                                                              // set by target:Target
 #define MBED_CONF_TARGET_GPIO_RESET_AT_INIT                                   0                                                                                                // set by target:MCU_STM32
-#define MBED_CONF_TARGET_I2C_TIMING_VALUE_ALGO                                0                                                                                                // set by target:MCU_STM32H7
+#define MBED_CONF_TARGET_I2C_TIMING_VALUE_ALGO                                0                                                                                                // set by target:MCU_STM32F7
 #define MBED_CONF_TARGET_INIT_US_TICKER_AT_BOOT                               1                                                                                                // set by target:MCU_STM32
-#define MBED_CONF_TARGET_INTERNAL_FLASH_UNIFORM_SECTORS                       1                                                                                                // set by target:Target
-#define MBED_CONF_TARGET_LPTICKER_LPTIM                                       1                                                                                                // set by target:MCU_STM32H7
+#define MBED_CONF_TARGET_INTERNAL_FLASH_UNIFORM_SECTORS                       0                                                                                                // set by target:MCU_STM32F7
+#define MBED_CONF_TARGET_LPTICKER_LPTIM                                       1                                                                                                // set by target:MCU_STM32F7
 #define MBED_CONF_TARGET_LPTICKER_LPTIM_CLOCK                                 1                                                                                                // set by target:MCU_STM32
 #define MBED_CONF_TARGET_LPUART_CLOCK_SOURCE                                  USE_LPUART_CLK_LSE|USE_LPUART_CLK_PCLK1|USE_LPUART_CLK_PCLK3                                     // set by target:MCU_STM32
 #define MBED_CONF_TARGET_LSE_AVAILABLE                                        1                                                                                                // set by target:MCU_STM32
-#define MBED_CONF_TARGET_LSE_DRIVE_LOAD_LEVEL                                 RCC_LSEDRIVE_LOW                                                                                 // set by target:MCU_STM32H7
+#define MBED_CONF_TARGET_LSE_DRIVE_LOAD_LEVEL                                 RCC_LSEDRIVE_LOW                                                                                 // set by target:MCU_STM32F7
 #define MBED_CONF_TARGET_MPU_ROM_END                                          0x0fffffff                                                                                       // set by target:Target
-#define MBED_CONF_TARGET_NETWORK_DEFAULT_INTERFACE_TYPE                       ETHERNET                                                                                         // set by target:NUCLEO_H743ZI2
+#define MBED_CONF_TARGET_NETWORK_DEFAULT_INTERFACE_TYPE                       ETHERNET                                                                                         // set by target:DISCO_F746NG
 #define MBED_CONF_TARGET_RTC_CLOCK_SOURCE                                     USE_RTC_CLK_LSE_OR_LSI                                                                           // set by target:MCU_STM32
-#define MBED_CONF_TARGET_SYSTEM_POWER_SUPPLY                                  PWR_LDO_SUPPLY                                                                                   // set by target:MCU_STM32H743xI
 #define MBED_CONF_TARGET_TICKLESS_FROM_US_TICKER                              0                                                                                                // set by target:Target
+#define MBED_CONF_TARGET_USB_SPEED                                            USE_USB_OTG_FS                                                                                   // set by target:DISCO_F746NG
 #define MBED_CONF_TARGET_XIP_ENABLE                                           0                                                                                                // set by target:Target
 #define MBED_CONF_TELIT_HE910_BAUDRATE                                        115200                                                                                           // set by library:TELIT_HE910
 #define MBED_CONF_TELIT_HE910_PROVIDE_DEFAULT                                 0                                                                                                // set by library:TELIT_HE910
@@ -411,7 +422,6 @@
 #define MEM_ALLOC                                                             malloc                                                                                           // set by library:mbed-trace
 #define MEM_FREE                                                              free                                                                                             // set by library:mbed-trace
 #define PPP_DEBUG                                                             0                                                                                                // set by library:ppp
-#define STM32_D11_SPI_ETHERNET_PIN                                            PB_5                                                                                             // set by target:NUCLEO_H743ZI2
 // Macros
 #define MBEDTLS_CIPHER_MODE_CTR                                                                                                                                                // defined by library:SecureStore
 #define NSAPI_PPP_AVAILABLE                                                   (MBED_CONF_PPP_ENABLED || MBED_CONF_LWIP_PPP_ENABLED)                                            // defined by library:ppp
