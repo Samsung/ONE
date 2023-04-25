@@ -31,12 +31,12 @@ Source3018: XNNPACK.tar.gz
 Source3019: FLATBUFFERS-2.0.tar.gz
 
 %{!?build_type:     %define build_type      Release}
-%{!?npud_build:     %define npud_build      1}
+%{!?npud_build:     %define npud_build      0}
 %{!?trix_support:   %define trix_support    1}
 %{!?coverage_build: %define coverage_build  0}
 %{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
-%{!?config_support: %define config_support  1}
+%{!?config_support: %define config_support  0}
 
 %if %{coverage_build} == 1
 # Coverage test requires debug build runtime
@@ -148,12 +148,16 @@ NPU daemon for optimal management of NPU hardware
 
 # Set option for configuration
 %define option_config %{nil}
-%if %{config_support} == 1
 %if %{npud_build} == 1
+%if %{config_support} == 1
 # ENVVAR_NPUD_CONFIG: Use environment variable for npud configuration and debug
-%define option_config -DENVVAR_NPUD_CONFIG=ON
-%endif # npud_build
+%define option_config -DBUILD_NPUD=ON -DENVVAR_NPUD_CONFIG=ON
+%else
+%define option_config -DBUILD_NPUD=ON -DENVVAR_NPUD_CONFIG=OFF
 %endif # config_support
+%else
+%define option_config -DBUILD_NPUD=OFF
+%endif # npud_build
 
 %if %{coverage_build} == 1
 %define option_coverage -DENABLE_COVERAGE=ON
