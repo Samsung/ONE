@@ -70,7 +70,7 @@ macro(add_pal_to_target TGT)
     endif(BUILD_ARM32_NEON)
 
     add_library(luci_interpreter_linux_pal_micro STATIC ${PAL_SOURCES})
-    set_target_properties(luci_interpreter_linux_pal_micro PROPERTIES POSITION_INDEPENDENT_CODE ON)
+#    set_target_properties(luci_interpreter_linux_pal_micro PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_include_directories(luci_interpreter_linux_pal_micro SYSTEM PRIVATE
             "${TensorFlowRuySource_DIR}"
             "${TensorFlowGEMMLowpSource_DIR}"

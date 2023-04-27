@@ -62,7 +62,7 @@ macro(add_pal_to_target TGT)
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/tensor_utils.cc
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/reference/portable_tensor_utils.cc)
     add_library(luci_interpreter_cmsisnn_pal STATIC ${PAL_SOURCES})
-    set_property(TARGET luci_interpreter_cmsisnn_pal PROPERTY POSITION_INDEPENDENT_CODE ON)
+#    set_property(TARGET luci_interpreter_cmsisnn_pal PROPERTY POSITION_INDEPENDENT_CODE ON)
     target_include_directories(luci_interpreter_cmsisnn_pal PRIVATE
             "${TensorFlowRuySource_DIR}"
             "${TensorFlowGEMMLowpSource_DIR}"
