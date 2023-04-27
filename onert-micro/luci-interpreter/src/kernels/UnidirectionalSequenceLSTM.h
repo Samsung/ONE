@@ -186,15 +186,15 @@ private:
 
 struct FullyConnectedParams
 {
-  int32_t input_offset;
-  int32_t weights_offset;
-  int32_t output_offset;
-  int32_t output_multiplier;
-  int32_t output_shift;
-  int32_t quantized_activation_min;
-  int32_t quantized_activation_max;
-  int32_t float_activation_min;
-  int32_t float_activation_max;
+  int32_t input_offset = 0;
+  int32_t weights_offset = 0;
+  int32_t output_offset = 0;
+  int32_t output_multiplier = 0;
+  int32_t output_shift = 0;
+  int32_t quantized_activation_min = 0;
+  int32_t quantized_activation_max = 0;
+  int32_t float_activation_min = 0;
+  int32_t float_activation_max = 0;
 };
 
 struct GateParameters
@@ -205,15 +205,15 @@ struct GateParameters
 
 struct ArithmeticParams
 {
-  int32_t input1_offset;
-  int32_t input2_offset;
-  int32_t quantized_activation_min;
-  int32_t quantized_activation_max;
-  int32_t output_offset;
-  int32_t output_multiplier;
-  int32_t output_shift;
-  int32_t float_activation_min;
-  int32_t float_activation_max;
+  int32_t input1_offset = 0;
+  int32_t input2_offset = 0;
+  int32_t quantized_activation_min = 0;
+  int32_t quantized_activation_max = 0;
+  int32_t output_offset = 0;
+  int32_t output_multiplier = 0;
+  int32_t output_shift = 0;
+  int32_t float_activation_min = 0;
+  int32_t float_activation_max = 0;
 };
 
 struct InterGateParameters

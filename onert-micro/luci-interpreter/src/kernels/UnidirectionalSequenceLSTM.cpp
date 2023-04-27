@@ -251,6 +251,8 @@ lstm::FullyConnectedParams createFcParamsFloat()
   lstm::FullyConnectedParams op_params;
   kernels::calculateActivationRange(FusedActFunc::NONE, &op_params.float_activation_min,
                                     &op_params.float_activation_max);
+  op_params.quantized_activation_max = op_params.float_activation_max;
+  op_params.quantized_activation_min = op_params.float_activation_min;
   return op_params;
 }
 
@@ -285,6 +287,8 @@ void prepareGateParamsFloat(lstm::LSTMParameters *float_lstm_params)
   lstm::ArithmeticParams op_params;
   kernels::calculateActivationRange(FusedActFunc::NONE, &op_params.float_activation_min,
                                     &op_params.float_activation_max);
+  op_params.quantized_activation_max = op_params.float_activation_max;
+  op_params.quantized_activation_min = op_params.float_activation_min;
   float_lstm_params->inter_gate_parameters.forget_cell_mul_params = op_params;
   float_lstm_params->inter_gate_parameters.input_mul_params = op_params;
   float_lstm_params->inter_gate_parameters.output_mul_params = op_params;
