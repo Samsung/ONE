@@ -344,6 +344,15 @@ template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_fla
     circle::OperatorCodeBuilder operator_code_builder{*_fb};
     auto de_code = it->deprecated_builtin_code();
     auto bt_code = it->builtin_code();
+
+    // There are two builtin codes (deprecated_builtin, (extended) builtin)
+    // deprecated builtin code uses 0~126
+    // extended builtin code uses 127~
+    // NOTE 127 = BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES
+    if (de_code >= 0 and de_code < 127)
+    {
+      // Use deprecated builtin opcode.
+      // clang-format off
     auto cir_de_code = get_circle_builtin_code(de_code);
     auto cir_bt_code = get_circle_builtin_code(bt_code);
     // correct bt_code where bt_code == 0 for old tflite format
@@ -351,6 +360,17 @@ template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_fla
       cir_bt_code = static_cast<circle::BuiltinOperator>(cir_de_code);
     operator_code_builder.add_deprecated_builtin_code(cir_de_code);
     operator_code_builder.add_builtin_code(cir_bt_code);
+      // clang-format on
+    }
+    else
+    {
+      // Use extended builtin opcode
+      // Set 127 (PLACEHOLDER_FOR_GREATER_OP_CODES) for deprecated builtin code
+      auto cir_bt_code = get_circle_builtin_code(bt_code);
+      operator_code_builder.add_deprecated_builtin_code(
+        tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);
+      operator_code_builder.add_builtin_code(cir_bt_code);
+    }
     operator_code_builder.add_custom_code(custom_code);
     operator_code_builder.add_version(it->version());
     auto code = operator_code_builder.Finish();
