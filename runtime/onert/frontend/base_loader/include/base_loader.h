@@ -513,11 +513,12 @@ void BaseLoader<LoaderDomain>::loadSparsity(const Tensor *tensor, ir::TypeInfo &
       if (src_metadata->array_segments() == nullptr || src_metadata->array_indices() == nullptr)
         return false;
       bool status = true;
+      /* `onert` inernally uses uint16 type regardless of the value of
+         the array_segments_type and array_indices_type */
       switch (src_metadata->array_segments_type())
       {
         case SparseIndexVector::SparseIndexVector_Int32Vector:
-          status = Copy(src_metadata->array_segments_as_Int32Vector(), w1_segments);
-          break;
+          throw std::runtime_error("sparse tensor with int32 segment type is not supported");
         case SparseIndexVector::SparseIndexVector_Uint16Vector:
           status = Copy(src_metadata->array_segments_as_Uint16Vector(), w1_segments);
           break;
@@ -532,7 +533,7 @@ void BaseLoader<LoaderDomain>::loadSparsity(const Tensor *tensor, ir::TypeInfo &
       switch (src_metadata->array_indices_type())
       {
         case SparseIndexVector::SparseIndexVector_Int32Vector:
-          return Copy(src_metadata->array_indices_as_Int32Vector(), w1_indices);
+          throw std::runtime_error("sparse tensor with int32 indices type is not supported");
         case SparseIndexVector::SparseIndexVector_Uint16Vector:
           return Copy(src_metadata->array_indices_as_Uint16Vector(), w1_indices);
         case SparseIndexVector::SparseIndexVector_Uint8Vector:
