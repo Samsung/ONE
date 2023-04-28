@@ -71,6 +71,11 @@ DevContext::~DevContext()
 
 ModelID DevContext::registerModel(const std::string &model_file_path)
 {
+  if (_dev_handles.size() == 0)
+  {
+    throw std::runtime_error("No npu device is available");
+  }
+
   auto meta = getNPUmodel_metadata(model_file_path.c_str(), false);
 
   if (meta == nullptr)
@@ -91,6 +96,8 @@ ModelID DevContext::registerModel(const std::string &model_file_path)
     uint32_t model_id_at_device;
     if (registerNPUmodel(_dev_handles.at(dev_num), &file_info, &model_id_at_device) < 0)
     {
+      if (meta != nullptr)
+        free(meta);
       throw std::runtime_error("Failed to register npu model");
     }
 
@@ -102,6 +109,7 @@ ModelID DevContext::registerModel(const std::string &model_file_path)
     else
     {
       _meta_map[model_id_at_device] = _meta_map[model_id];
+      meta = nullptr;
     }
 
     _model_ids[model_id].resize(dev_num + 1);
