@@ -25,14 +25,7 @@ MPQSolver::MPQSolver(const std::string &input_data_path, float qerror_ratio,
 {
 }
 
-void MPQSolver::set_save_intermediate(bool save, const std::string &save_path)
+void MPQSolver::set_save_intermediate(const std::string &save_path)
 {
-  if (save)
-  {
-    _hooks = std::make_unique<core::DumpingHooks>(save_path);
-  }
-  else
-  {
-    _hooks.reset(nullptr);
-  }
+  _hooks = std::make_unique<core::DumpingHooks>(save_path);
 }

@@ -43,9 +43,9 @@ public:
   virtual std::unique_ptr<luci::Module> run(const std::string &module_path) = 0;
 
   /**
-   * @brief whether all intermediate artifacts should be saved
+   * @brief set all intermediate artifacts to be saved
    */
-  void set_save_intermediate(bool save, const std::string &save_path);
+  void set_save_intermediate(const std::string &save_path);
 
 protected:
   std::string _input_data_path;
