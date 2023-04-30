@@ -99,6 +99,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;luci_interpreter/core/Tensor.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_builders_8h_source.html">Builders.h</a>&quot;</code><br />
 <code>#include &lt;tensorflow/lite/kernels/internal/types.h&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
@@ -157,6 +158,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a3526506fb019cee89c33b5e361201ef4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a3526506fb019cee89c33b5e361201ef4"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a3526506fb019cee89c33b5e361201ef4">luci_interpreter::kernels::getTensorData</a> (uint8_t *tensor_data)</td></tr>
 <tr class="separator:a3526506fb019cee89c33b5e361201ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afce1c2c42f8f6ca9f581f3a1a3f199b8"><td class="memItemLeft" align="right" valign="top">tflite::RuntimeShape&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#afce1c2c42f8f6ca9f581f3a1a3f199b8">luci_interpreter::kernels::getTensorRuntimeShape</a> (const circle::Tensor *circle_tensor, BaseRuntimeGraph *runtime_graph)</td></tr>
+<tr class="separator:afce1c2c42f8f6ca9f581f3a1a3f199b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaeab94e4b66016c7ac88378ac1c045e0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aaeab94e4b66016c7ac88378ac1c045e0"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#aaeab94e4b66016c7ac88378ac1c045e0">luci_interpreter::kernels::one_of_types</a> ()</td></tr>
 <tr class="separator:aaeab94e4b66016c7ac88378ac1c045e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -208,7 +211,7 @@ Functions</h2></td></tr>
 <div class="line">    assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;LUCI_INTERPRETER_CHECK fails&quot;</span>); \</div>
 <div class="line">  }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">36</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00037">37</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
 
 </div>
 </div>

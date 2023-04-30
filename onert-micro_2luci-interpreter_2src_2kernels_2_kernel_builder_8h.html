@@ -91,14 +91,20 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">KernelBuilder.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;core/RuntimeModule.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="_circle_micro_reader_8h_source.html">luci_interpreter/core/reader/CircleMicroReader.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_builders_8h_source.html">Builders.h</a>&quot;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;unordered_map&gt;</code><br />
+<code>#include &quot;KernelsToBuild.lst&quot;</code><br />
 </div>
 <p><a href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -113,7 +119,163 @@ Data Structures</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceluci__interpreter"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html">luci_interpreter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a488c41d40df21b637578b037b0431fd0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#a488c41d40df21b637578b037b0431fd0">REGISTER_KERNEL</a>(builtin_operator,  name)&#160;&#160;&#160;BuiltinOperator_##builtin_operator,</td></tr>
+<tr class="separator:a488c41d40df21b637578b037b0431fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a488c41d40df21b637578b037b0431fd0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#a488c41d40df21b637578b037b0431fd0">REGISTER_KERNEL</a>(builtin_operator,  name)</td></tr>
+<tr class="separator:a488c41d40df21b637578b037b0431fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a488c41d40df21b637578b037b0431fd0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#a488c41d40df21b637578b037b0431fd0">REGISTER_KERNEL</a>(builtin_operator,  name)</td></tr>
+<tr class="separator:a488c41d40df21b637578b037b0431fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a488c41d40df21b637578b037b0431fd0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#a488c41d40df21b637578b037b0431fd0">REGISTER_KERNEL</a>(builtin_operator,  name)</td></tr>
+<tr class="separator:a488c41d40df21b637578b037b0431fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a1efdf32fd3fbe30235ca3e2312d7d30c"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#a1efdf32fd3fbe30235ca3e2312d7d30c">luci_interpreter::BuilderID</a> { <a class="el" href="namespaceluci__interpreter.html#a1efdf32fd3fbe30235ca3e2312d7d30ca6f6cb72d544962fa333e2e34ce64f719">luci_interpreter::Size</a>
+ }</td></tr>
+<tr class="separator:a1efdf32fd3fbe30235ca3e2312d7d30c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a6bcc0e0add6c86bcf559c0123631be52"><td class="memItemLeft" align="right" valign="top">constexpr BuilderID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#a6bcc0e0add6c86bcf559c0123631be52">luci_interpreter::get_builder_id</a> (circle::BuiltinOperator opcode)</td></tr>
+<tr class="separator:a6bcc0e0add6c86bcf559c0123631be52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:aaca25dba79731428ed6105fd609ca24b"><td class="memItemLeft" align="right" valign="top">constexpr KernelConfigureRegistry&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#aaca25dba79731428ed6105fd609ca24b">luci_interpreter::kernel_configure</a></td></tr>
+<tr class="separator:aaca25dba79731428ed6105fd609ca24b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac54aa4be2cc4f48e3a9f3b3266963e83"><td class="memItemLeft" align="right" valign="top">constexpr KernelExecuteRegistry&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#ac54aa4be2cc4f48e3a9f3b3266963e83">luci_interpreter::kernel_executor</a></td></tr>
+<tr class="separator:ac54aa4be2cc4f48e3a9f3b3266963e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a488c41d40df21b637578b037b0431fd0" name="a488c41d40df21b637578b037b0431fd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a488c41d40df21b637578b037b0431fd0">&#9670;&#160;</a></span>REGISTER_KERNEL <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define REGISTER_KERNEL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">builtin_operator, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;BuiltinOperator_##builtin_operator,</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html#l00029">29</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html">KernelBuilder.h</a>.</p>
+
+</div>
+</div>
+<a id="a488c41d40df21b637578b037b0431fd0" name="a488c41d40df21b637578b037b0431fd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a488c41d40df21b637578b037b0431fd0">&#9670;&#160;</a></span>REGISTER_KERNEL <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define REGISTER_KERNEL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">builtin_operator, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">case</span> circle::BuiltinOperator_##builtin_operator: \</div>
+<div class="line">    <span class="keywordflow">return</span> BuilderID::BuiltinOperator_##builtin_operator;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html#l00029">29</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html">KernelBuilder.h</a>.</p>
+
+</div>
+</div>
+<a id="a488c41d40df21b637578b037b0431fd0" name="a488c41d40df21b637578b037b0431fd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a488c41d40df21b637578b037b0431fd0">&#9670;&#160;</a></span>REGISTER_KERNEL <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define REGISTER_KERNEL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">builtin_operator, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  register_kernel_configure(BuilderID::BuiltinOperator_##builtin_operator, \</div>
+<div class="line">                            configure_kernel_Circle##name);</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html#l00029">29</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html">KernelBuilder.h</a>.</p>
+
+</div>
+</div>
+<a id="a488c41d40df21b637578b037b0431fd0" name="a488c41d40df21b637578b037b0431fd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a488c41d40df21b637578b037b0431fd0">&#9670;&#160;</a></span>REGISTER_KERNEL <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define REGISTER_KERNEL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">builtin_operator, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  register_kernel_execute(BuilderID::BuiltinOperator_##builtin_operator, \</div>
+<div class="line">                          execute_kernel_Circle##name);</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html#l00029">29</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html">KernelBuilder.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

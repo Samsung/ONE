@@ -1380,6 +1380,7 @@ var annotated_dup =
         [ "Less", "classluci__interpreter_1_1kernels_1_1_less.html", "classluci__interpreter_1_1kernels_1_1_less" ],
         [ "LessEqual", "classluci__interpreter_1_1kernels_1_1_less_equal.html", "classluci__interpreter_1_1kernels_1_1_less_equal" ],
         [ "LocalResponseNormalization", "classluci__interpreter_1_1kernels_1_1_local_response_normalization.html", "classluci__interpreter_1_1kernels_1_1_local_response_normalization" ],
+        [ "Log", "classluci__interpreter_1_1kernels_1_1_log.html", "classluci__interpreter_1_1kernels_1_1_log" ],
         [ "LogicalAnd", "classluci__interpreter_1_1kernels_1_1_logical_and.html", "classluci__interpreter_1_1kernels_1_1_logical_and" ],
         [ "LogicalNot", "classluci__interpreter_1_1kernels_1_1_logical_not.html", "classluci__interpreter_1_1kernels_1_1_logical_not" ],
         [ "LogicalOr", "classluci__interpreter_1_1kernels_1_1_logical_or.html", "classluci__interpreter_1_1kernels_1_1_logical_or" ],
@@ -1460,7 +1461,8 @@ var annotated_dup =
         [ "TestDataPackBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base" ],
         [ "TestDataQuantU8Pack", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_u8_pack.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_u8_pack" ],
         [ "TestDataReduceCommonBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base" ],
-        [ "TestDataShapeKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel" ]
+        [ "TestDataShapeKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel" ],
+        [ "TestDataStridedSliceKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel" ]
       ] ],
       [ "AddParams", "structluci__interpreter_1_1_add_params.html", "structluci__interpreter_1_1_add_params" ],
       [ "AffineQuantization", "structluci__interpreter_1_1_affine_quantization.html", "structluci__interpreter_1_1_affine_quantization" ],
@@ -1871,10 +1873,12 @@ var annotated_dup =
       [ "core", "namespacempqsolver_1_1core.html", [
         [ "DatasetEvaluator", "classmpqsolver_1_1core_1_1_dataset_evaluator.html", "classmpqsolver_1_1core_1_1_dataset_evaluator" ],
         [ "Dumper", "classmpqsolver_1_1core_1_1_dumper.html", "classmpqsolver_1_1core_1_1_dumper" ],
+        [ "DumpingHooks", "classmpqsolver_1_1core_1_1_dumping_hooks.html", "classmpqsolver_1_1core_1_1_dumping_hooks" ],
         [ "ErrorMetric", "classmpqsolver_1_1core_1_1_error_metric.html", "classmpqsolver_1_1core_1_1_error_metric" ],
         [ "MAEMetric", "classmpqsolver_1_1core_1_1_m_a_e_metric.html", "classmpqsolver_1_1core_1_1_m_a_e_metric" ],
         [ "Quantizer", "classmpqsolver_1_1core_1_1_quantizer.html", "classmpqsolver_1_1core_1_1_quantizer" ],
-        [ "QuantizerHook", "structmpqsolver_1_1core_1_1_quantizer_hook.html", "structmpqsolver_1_1core_1_1_quantizer_hook" ]
+        [ "QuantizerHook", "structmpqsolver_1_1core_1_1_quantizer_hook.html", "structmpqsolver_1_1core_1_1_quantizer_hook" ],
+        [ "SolverHooks", "classmpqsolver_1_1core_1_1_solver_hooks.html", "classmpqsolver_1_1core_1_1_solver_hooks" ]
       ] ],
       [ "MPQSolver", "classmpqsolver_1_1_m_p_q_solver.html", "classmpqsolver_1_1_m_p_q_solver" ]
     ] ],

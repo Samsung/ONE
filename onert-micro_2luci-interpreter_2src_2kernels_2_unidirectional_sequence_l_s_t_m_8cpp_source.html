@@ -345,194 +345,198 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  lstm::FullyConnectedParams op_params;</div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a8a9a24193bc38fd68fa6267c807bd354">kernels::calculateActivationRange</a>(<a class="code hl_enumvalue" href="namespaceluci__interpreter.html#a43d157784df8ea24209eb53c2e02e1f3ab50339a10e1de285ac99d4c3990b8693">FusedActFunc::NONE</a>, &amp;op_params.float_activation_min,</div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>                                    &amp;op_params.float_activation_max);</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <span class="keywordflow">return</span> op_params;</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>}</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>lstm::GateParameters createGateParamsFloat()</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>{</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  lstm::GateParameters gate_params;</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  gate_params.input_fc_params = createFcParamsFloat();</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  gate_params.recurrent_fc_params = createFcParamsFloat();</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="keywordflow">return</span> gate_params;</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>}</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>lstm::CellStateInfo createLstmCellStateInfoFloat(<span class="keyword">const</span> <span class="keywordtype">float</span> cell_clip)</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>{</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  lstm::CellStateInfo cell_state_info;</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  cell_state_info.cell_clip = cell_clip;</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  cell_state_info.cell_state_scale_power = 0; <span class="comment">// no quantization</span></div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  cell_state_info.quantized_cell_clip = 0;    <span class="comment">// no quantization</span></div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  <span class="keywordflow">return</span> cell_state_info;</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>}</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="keywordtype">void</span> prepareGateParamsFloat(lstm::LSTMParameters *float_lstm_params)</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>{</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <span class="comment">// Gate Parameters</span></div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  float_lstm_params-&gt;forget_gate_parameters = createGateParamsFloat();</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  float_lstm_params-&gt;input_gate_parameters = createGateParamsFloat();</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  float_lstm_params-&gt;cell_gate_parameters = createGateParamsFloat();</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  float_lstm_params-&gt;output_gate_parameters = createGateParamsFloat();</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  <span class="comment">// Inter gate multiplication parameters</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  lstm::ArithmeticParams op_params;</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a8a9a24193bc38fd68fa6267c807bd354">kernels::calculateActivationRange</a>(<a class="code hl_enumvalue" href="namespaceluci__interpreter.html#a43d157784df8ea24209eb53c2e02e1f3ab50339a10e1de285ac99d4c3990b8693">FusedActFunc::NONE</a>, &amp;op_params.float_activation_min,</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                                    &amp;op_params.float_activation_max);</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  float_lstm_params-&gt;inter_gate_parameters.forget_cell_mul_params = op_params;</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  float_lstm_params-&gt;inter_gate_parameters.input_mul_params = op_params;</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  float_lstm_params-&gt;inter_gate_parameters.output_mul_params = op_params;</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>}</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="keywordtype">void</span> evalFloat(<span class="keyword">const</span> circle::Operator *cur_op, <a class="code hl_typedef" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *runtime_graph, <span class="keywordtype">bool</span>)</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>{</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  lstm::LSTMStruct lstm_struct(cur_op, runtime_graph);</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  op_params.quantized_activation_max = op_params.float_activation_max;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  op_params.quantized_activation_min = op_params.float_activation_min;</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <span class="keywordflow">return</span> op_params;</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>}</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>lstm::GateParameters createGateParamsFloat()</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>{</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  lstm::GateParameters gate_params;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  gate_params.input_fc_params = createFcParamsFloat();</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  gate_params.recurrent_fc_params = createFcParamsFloat();</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  <span class="keywordflow">return</span> gate_params;</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>}</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>lstm::CellStateInfo createLstmCellStateInfoFloat(<span class="keyword">const</span> <span class="keywordtype">float</span> cell_clip)</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>{</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  lstm::CellStateInfo cell_state_info;</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  cell_state_info.cell_clip = cell_clip;</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  cell_state_info.cell_state_scale_power = 0; <span class="comment">// no quantization</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  cell_state_info.quantized_cell_clip = 0;    <span class="comment">// no quantization</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  <span class="keywordflow">return</span> cell_state_info;</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>}</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="keywordtype">void</span> prepareGateParamsFloat(lstm::LSTMParameters *float_lstm_params)</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>{</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  <span class="comment">// Gate Parameters</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  float_lstm_params-&gt;forget_gate_parameters = createGateParamsFloat();</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  float_lstm_params-&gt;input_gate_parameters = createGateParamsFloat();</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  float_lstm_params-&gt;cell_gate_parameters = createGateParamsFloat();</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  float_lstm_params-&gt;output_gate_parameters = createGateParamsFloat();</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  <span class="comment">// Inter gate multiplication parameters</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  lstm::ArithmeticParams op_params;</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a8a9a24193bc38fd68fa6267c807bd354">kernels::calculateActivationRange</a>(<a class="code hl_enumvalue" href="namespaceluci__interpreter.html#a43d157784df8ea24209eb53c2e02e1f3ab50339a10e1de285ac99d4c3990b8693">FusedActFunc::NONE</a>, &amp;op_params.float_activation_min,</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>                                    &amp;op_params.float_activation_max);</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  op_params.quantized_activation_max = op_params.float_activation_max;</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  op_params.quantized_activation_min = op_params.float_activation_min;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  float_lstm_params-&gt;inter_gate_parameters.forget_cell_mul_params = op_params;</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  float_lstm_params-&gt;inter_gate_parameters.input_mul_params = op_params;</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  float_lstm_params-&gt;inter_gate_parameters.output_mul_params = op_params;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>}</div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  lstm::CellStateInfo cell_state_info =</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    createLstmCellStateInfoFloat(lstm_struct.options-&gt;cell_clip());</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  lstm::LSTMParameters lstm_params;</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>  prepareGateParamsFloat(&amp;lstm_params);</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> time_major = lstm_struct.options-&gt;time_major();</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <span class="keyword">const</span> <span class="keyword">auto</span> batch_size =</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    time_major ? <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct.input(), 1) : <a class="code hl_class" href="class_tensor.html">Tensor</a>::dim(lstm_struct.<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>(), 0);</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  <span class="keyword">const</span> <span class="keyword">auto</span> state_dimension = <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct.output_state(), 1);</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  <span class="keyword">const</span> <span class="keyword">auto</span> cell_state_type_size = <a class="code hl_function" href="namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32">getDataTypeSize</a>(Tensor::element_type(lstm_struct.cell_state()));</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  <span class="keyword">auto</span> scratch_0_data =</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    std::make_unique&lt;uint8_t[]&gt;(batch_size * state_dimension * cell_state_type_size);</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="keyword">auto</span> scratch_1_data =</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    std::make_unique&lt;uint8_t[]&gt;(batch_size * state_dimension * cell_state_type_size);</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  <span class="keyword">auto</span> scratch_2_data =</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="keywordtype">void</span> evalFloat(<span class="keyword">const</span> circle::Operator *cur_op, <a class="code hl_typedef" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *runtime_graph, <span class="keywordtype">bool</span>)</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>{</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>  lstm::LSTMStruct lstm_struct(cur_op, runtime_graph);</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>  lstm::CellStateInfo cell_state_info =</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    createLstmCellStateInfoFloat(lstm_struct.options-&gt;cell_clip());</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  lstm::LSTMParameters lstm_params;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  prepareGateParamsFloat(&amp;lstm_params);</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> time_major = lstm_struct.options-&gt;time_major();</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  <span class="keyword">const</span> <span class="keyword">auto</span> batch_size =</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    time_major ? <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct.input(), 1) : <a class="code hl_class" href="class_tensor.html">Tensor</a>::dim(lstm_struct.<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>(), 0);</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  <span class="keyword">const</span> <span class="keyword">auto</span> state_dimension = <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct.output_state(), 1);</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="keyword">const</span> <span class="keyword">auto</span> cell_state_type_size = <a class="code hl_function" href="namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32">getDataTypeSize</a>(Tensor::element_type(lstm_struct.cell_state()));</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  <span class="keyword">auto</span> scratch_0_data =</div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    std::make_unique&lt;uint8_t[]&gt;(batch_size * state_dimension * cell_state_type_size);</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  <span class="keyword">auto</span> scratch_3_data =</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  <span class="keyword">auto</span> scratch_1_data =</div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    std::make_unique&lt;uint8_t[]&gt;(batch_size * state_dimension * cell_state_type_size);</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  <span class="comment">// Create and fill with 0 output state tensor</span></div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  <span class="keyword">auto</span> output_state_data =</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    std::make_unique&lt;float[]&gt;(Tensor::num_elements(lstm_struct.output_state()));</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  std::fill_n(output_state_data.get(), Tensor::num_elements(lstm_struct.output_state()), 0);</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  <span class="comment">// Create and fill with 0 cell state tensor</span></div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  <span class="keyword">auto</span> cell_state_data = std::make_unique&lt;float[]&gt;(Tensor::num_elements(lstm_struct.cell_state()));</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  std::fill_n(cell_state_data.get(), Tensor::num_elements(lstm_struct.cell_state()), 0);</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  <span class="keyword">auto</span> scratch_2_data =</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>    std::make_unique&lt;uint8_t[]&gt;(batch_size * state_dimension * cell_state_type_size);</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  <span class="keyword">auto</span> scratch_3_data =</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    std::make_unique&lt;uint8_t[]&gt;(batch_size * state_dimension * cell_state_type_size);</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  <span class="comment">// Create and fill with 0 output state tensor</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  <span class="keyword">auto</span> output_state_data =</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    std::make_unique&lt;float[]&gt;(Tensor::num_elements(lstm_struct.output_state()));</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  std::fill_n(output_state_data.get(), Tensor::num_elements(lstm_struct.output_state()), 0);</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  luci_interpreter_pal::evalLSTM&lt;float, float, float, float&gt;(</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    &amp;lstm_struct, &amp;lstm_params, &amp;cell_state_info, output_state_data.get(), cell_state_data.get(),</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    kernels::getTensorData&lt;float&gt;(scratch_0_data.get()),</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    kernels::getTensorData&lt;float&gt;(scratch_1_data.get()),</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    kernels::getTensorData&lt;float&gt;(scratch_2_data.get()),</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    kernels::getTensorData&lt;float&gt;(scratch_3_data.get()), runtime_graph);</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>}</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="keywordtype">void</span> validateWeightTensorSize(<span class="keyword">const</span> circle::Tensor *weight_tensor, <span class="keywordtype">int</span> dim1_size, <span class="keywordtype">int</span> dim2_size)</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>{</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::num_dims(weight_tensor) == 2);</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(weight_tensor, 0) == dim1_size);</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(weight_tensor, 1) == dim2_size);</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>}</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span><span class="keywordtype">void</span> validateTensorsSize(lstm::LSTMStruct *lstm_struct, <span class="keyword">const</span> <span class="keywordtype">bool</span> time_major)</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>{</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  <span class="keyword">const</span> <span class="keyword">auto</span> batch_size =</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    time_major ? <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;input(), 1) : <a class="code hl_class" href="class_tensor.html">Tensor</a>::dim(lstm_struct-&gt;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>(), 0);</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span> </div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_dimension = <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;input(), 2);</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>  <span class="keyword">const</span> <span class="keyword">auto</span> state_dimension = <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;output_state(), 1);</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>  <span class="comment">// Input FC weights</span></div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  <span class="keywordflow">for</span> (int32_t i = 1; i &lt; 5; i++)</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>  {</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    validateWeightTensorSize(lstm_struct-&gt;get_internal_tensor(i), state_dimension, input_dimension);</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>  }</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> </div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  <span class="comment">// Recurrent FC weights</span></div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>  <span class="keywordflow">for</span> (int32_t i = 5; i &lt; 9; i++)</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>  {</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    validateWeightTensorSize(lstm_struct-&gt;get_internal_tensor(i), state_dimension, state_dimension);</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  }</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>  <span class="comment">// Biases</span></div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>  <span class="keywordflow">for</span> (int32_t i = 12; i &lt; 16; i++)</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  {</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::num_dims(lstm_struct-&gt;get_internal_tensor(i)) == 1);</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;get_internal_tensor(i), 0) == state_dimension);</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>  }</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>  <span class="comment">// Check the shape of input state tensors.</span></div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>  <span class="comment">// These tensor may be 1D or 2D. It&#39;s fine as long as the total size is</span></div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>  <span class="comment">// correct.</span></div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::num_elements(lstm_struct-&gt;output_state()) ==</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>                         batch_size * state_dimension);</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::num_elements(lstm_struct-&gt;cell_state()) ==</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>                         batch_size * state_dimension);</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>  <span class="comment">// Check the shape of output tensor against that of input tensor</span></div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::num_dims(lstm_struct-&gt;output()) == 3);</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;input(), 0) ==</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>                         <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;output(), 0));</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;input(), 1) ==</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>                         <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;output(), 1));</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;output(), 2) == state_dimension);</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>}</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>} <span class="comment">// namespace</span></div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span> </div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno"><a class="line" href="namespaceluci__interpreter.html#a9cd9d58495a0cc85155c98fa7904a9d6">  389</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceluci__interpreter.html#a9cd9d58495a0cc85155c98fa7904a9d6">configure_kernel_CircleUnidirectionalSequenceLSTM</a>(<span class="keyword">const</span> circle::Operator *cur_op,</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>                                                       <a class="code hl_class" href="classluci__interpreter_1_1_runtime_graph.html">BaseRuntimeGraph</a> *runtime_graph)</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>{</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>  <a class="code hl_struct" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html">lstm::LSTMStruct</a> lstm_struct(cur_op, runtime_graph);</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span> </div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::element_type(lstm_struct.<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>()) == DataType::FLOAT32 or</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>                         Tensor::element_type(lstm_struct.<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>()) == DataType::S8);</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span> </div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  lstm_struct.<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#ac4ad736b9202433b31e771861e204d46">validateTensorTypes</a>();</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> time_major = lstm_struct.<a class="code hl_variable" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a508cb785c9678c744c5265f0578b5f5f">options</a>-&gt;time_major();</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  <span class="comment">// Create and fill with 0 cell state tensor</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  <span class="keyword">auto</span> cell_state_data = std::make_unique&lt;float[]&gt;(Tensor::num_elements(lstm_struct.cell_state()));</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  std::fill_n(cell_state_data.get(), Tensor::num_elements(lstm_struct.cell_state()), 0);</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>  luci_interpreter_pal::evalLSTM&lt;float, float, float, float&gt;(</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    &amp;lstm_struct, &amp;lstm_params, &amp;cell_state_info, output_state_data.get(), cell_state_data.get(),</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>    kernels::getTensorData&lt;float&gt;(scratch_0_data.get()),</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>    kernels::getTensorData&lt;float&gt;(scratch_1_data.get()),</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    kernels::getTensorData&lt;float&gt;(scratch_2_data.get()),</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    kernels::getTensorData&lt;float&gt;(scratch_3_data.get()), runtime_graph);</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>}</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span><span class="keywordtype">void</span> validateWeightTensorSize(<span class="keyword">const</span> circle::Tensor *weight_tensor, <span class="keywordtype">int</span> dim1_size, <span class="keywordtype">int</span> dim2_size)</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>{</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::num_dims(weight_tensor) == 2);</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(weight_tensor, 0) == dim1_size);</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(weight_tensor, 1) == dim2_size);</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>}</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span><span class="keywordtype">void</span> validateTensorsSize(lstm::LSTMStruct *lstm_struct, <span class="keyword">const</span> <span class="keywordtype">bool</span> time_major)</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>{</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>  <span class="keyword">const</span> <span class="keyword">auto</span> batch_size =</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    time_major ? <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;input(), 1) : <a class="code hl_class" href="class_tensor.html">Tensor</a>::dim(lstm_struct-&gt;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>(), 0);</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_dimension = <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;input(), 2);</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>  <span class="keyword">const</span> <span class="keyword">auto</span> state_dimension = <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;output_state(), 1);</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>  <span class="comment">// Input FC weights</span></div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>  <span class="keywordflow">for</span> (int32_t i = 1; i &lt; 5; i++)</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  {</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    validateWeightTensorSize(lstm_struct-&gt;get_internal_tensor(i), state_dimension, input_dimension);</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>  }</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>  <span class="comment">// Recurrent FC weights</span></div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>  <span class="keywordflow">for</span> (int32_t i = 5; i &lt; 9; i++)</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>  {</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>    validateWeightTensorSize(lstm_struct-&gt;get_internal_tensor(i), state_dimension, state_dimension);</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  }</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span> </div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>  <span class="comment">// Biases</span></div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>  <span class="keywordflow">for</span> (int32_t i = 12; i &lt; 16; i++)</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>  {</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::num_dims(lstm_struct-&gt;get_internal_tensor(i)) == 1);</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;get_internal_tensor(i), 0) == state_dimension);</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>  }</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>  <span class="comment">// Check the shape of input state tensors.</span></div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  <span class="comment">// These tensor may be 1D or 2D. It&#39;s fine as long as the total size is</span></div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>  <span class="comment">// correct.</span></div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::num_elements(lstm_struct-&gt;output_state()) ==</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>                         batch_size * state_dimension);</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::num_elements(lstm_struct-&gt;cell_state()) ==</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>                         batch_size * state_dimension);</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span> </div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  <span class="comment">// Check the shape of output tensor against that of input tensor</span></div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::num_dims(lstm_struct-&gt;output()) == 3);</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;input(), 0) ==</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>                         <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;output(), 0));</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;input(), 1) ==</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>                         <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;output(), 1));</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(lstm_struct-&gt;output(), 2) == state_dimension);</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>}</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span> </div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno"><a class="line" href="namespaceluci__interpreter.html#a9cd9d58495a0cc85155c98fa7904a9d6">  393</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceluci__interpreter.html#a9cd9d58495a0cc85155c98fa7904a9d6">configure_kernel_CircleUnidirectionalSequenceLSTM</a>(<span class="keyword">const</span> circle::Operator *cur_op,</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>                                                       <a class="code hl_class" href="classluci__interpreter_1_1_runtime_graph.html">BaseRuntimeGraph</a> *runtime_graph)</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>{</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  <a class="code hl_struct" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html">lstm::LSTMStruct</a> lstm_struct(cur_op, runtime_graph);</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span> </div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::element_type(lstm_struct.<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>()) == DataType::FLOAT32 or</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>                         Tensor::element_type(lstm_struct.<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>()) == DataType::S8);</div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  validateTensorsSize(&amp;lstm_struct, time_major);</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  lstm_struct.<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#ac4ad736b9202433b31e771861e204d46">validateTensorTypes</a>();</div>
 <div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span> </div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>  <span class="comment">// No peephole</span></div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>  <span class="keywordflow">for</span> (int32_t i = 9; i &lt; 12; ++i)</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(lstm_struct.<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a6994ef9ca2c409d0341ba93c2e823374">get_internal_tensor</a>(i) == <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> time_major = lstm_struct.<a class="code hl_variable" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a508cb785c9678c744c5265f0578b5f5f">options</a>-&gt;time_major();</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span> </div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>  validateTensorsSize(&amp;lstm_struct, time_major);</div>
 <div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span> </div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>  <span class="comment">// No projection</span></div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>  <span class="keywordflow">for</span> (int32_t i = 16; i &lt; 18; ++i)</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>  <span class="comment">// No peephole</span></div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>  <span class="keywordflow">for</span> (int32_t i = 9; i &lt; 12; ++i)</div>
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(lstm_struct.<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a6994ef9ca2c409d0341ba93c2e823374">get_internal_tensor</a>(i) == <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span> </div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>  <span class="comment">// No internal layer norm</span></div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  <span class="keywordflow">for</span> (int32_t i = 20; i &lt; 24; ++i)</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>  <span class="comment">// No projection</span></div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  <span class="keywordflow">for</span> (int32_t i = 16; i &lt; 18; ++i)</div>
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(lstm_struct.<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a6994ef9ca2c409d0341ba93c2e823374">get_internal_tensor</a>(i) == <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>}</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span> </div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno"><a class="line" href="namespaceluci__interpreter.html#ab11931ef52048dfc48bc6970afca431a">  416</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceluci__interpreter.html#ab11931ef52048dfc48bc6970afca431a">execute_kernel_CircleUnidirectionalSequenceLSTM</a>(<span class="keyword">const</span> circle::Operator *cur_op,</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>                                                     <a class="code hl_class" href="classluci__interpreter_1_1_runtime_graph.html">BaseRuntimeGraph</a> *runtime_graph, <span class="keywordtype">bool</span> in_place)</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>{</div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_index = cur_op-&gt;inputs()-&gt;operator[](0);</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>  assert(input_index != -1);</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span> </div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a6226607d34657d1f7efbabb13c80ad39">getCircleTensorByIndex</a>(input_index);</div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span> </div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>  <span class="keywordflow">switch</span> (Tensor::element_type(input))</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>  {</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>      evalFloat(cur_op, runtime_graph, in_place);</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>    <span class="keywordflow">case</span> DataType::S8:</div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>      evalInt8(cur_op, runtime_graph, in_place);</div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>  }</div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>}</div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span> </div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>} <span class="comment">// namespace luci_interpreter</span></div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span> </div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>  <span class="comment">// No internal layer norm</span></div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>  <span class="keywordflow">for</span> (int32_t i = 20; i &lt; 24; ++i)</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(lstm_struct.<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a6994ef9ca2c409d0341ba93c2e823374">get_internal_tensor</a>(i) == <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>}</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span> </div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno"><a class="line" href="namespaceluci__interpreter.html#ab11931ef52048dfc48bc6970afca431a">  420</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceluci__interpreter.html#ab11931ef52048dfc48bc6970afca431a">execute_kernel_CircleUnidirectionalSequenceLSTM</a>(<span class="keyword">const</span> circle::Operator *cur_op,</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>                                                     <a class="code hl_class" href="classluci__interpreter_1_1_runtime_graph.html">BaseRuntimeGraph</a> *runtime_graph, <span class="keywordtype">bool</span> in_place)</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>{</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_index = cur_op-&gt;inputs()-&gt;operator[](0);</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>  assert(input_index != -1);</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span> </div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a6226607d34657d1f7efbabb13c80ad39">getCircleTensorByIndex</a>(input_index);</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span> </div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>  <span class="keywordflow">switch</span> (Tensor::element_type(input))</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>  {</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>      evalFloat(cur_op, runtime_graph, in_place);</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>    <span class="keywordflow">case</span> DataType::S8:</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>      evalInt8(cur_op, runtime_graph, in_place);</div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>  }</div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>}</div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span> </div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>} <span class="comment">// namespace luci_interpreter</span></div>
 <div class="ttc" id="a_p_a_l_apply_activation_to_vector_8h_html"><div class="ttname"><a href="_p_a_l_apply_activation_to_vector_8h.html">PALApplyActivationToVector.h</a></div></div>
 <div class="ttc" id="aclass_tensor_html"><div class="ttname"><a href="class_tensor.html">Tensor</a></div><div class="ttdef"><b>Definition:</b> <a href="tensor__gen_8cpp_source.html#l00031">tensor_gen.cpp:32</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html">luci_interpreter::RuntimeGraph</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00032">RuntimeGraph.h:33</a></div></div>
@@ -540,7 +544,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="ttc" id="acompiler_2luci-interpreter_2src_2kernels_2_utils_8h_html_a231f5fa1ff2a3f19222b42cc9bbd1f2d"><div class="ttname"><a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a></div><div class="ttdeci">#define LUCI_INTERPRETER_CHECK(cond)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">Utils.h:36</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ad30d86ce5bd365deae8ef4398fb16d3c"><div class="ttname"><a href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdoc">&quot;scalar&quot; value type</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_data_type_8h_source.html#l00026">DataType.h:27</a></div></div>
-<div class="ttc" id="anamespaceluci__interpreter_1_1kernels_html_a0b3c525e4b279bc3b47d694c83a3f73e"><div class="ttname"><a href="namespaceluci__interpreter_1_1kernels.html#a0b3c525e4b279bc3b47d694c83a3f73e">luci_interpreter::kernels::checkedLog2</a></div><div class="ttdeci">bool checkedLog2(const float x, int *log2_result)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00077">Utils.cpp:77</a></div></div>
+<div class="ttc" id="anamespaceluci__interpreter_1_1kernels_html_a0b3c525e4b279bc3b47d694c83a3f73e"><div class="ttname"><a href="namespaceluci__interpreter_1_1kernels.html#a0b3c525e4b279bc3b47d694c83a3f73e">luci_interpreter::kernels::checkedLog2</a></div><div class="ttdeci">bool checkedLog2(const float x, int *log2_result)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00097">Utils.cpp:97</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_1_1kernels_html_a8a9a24193bc38fd68fa6267c807bd354"><div class="ttname"><a href="namespaceluci__interpreter_1_1kernels.html#a8a9a24193bc38fd68fa6267c807bd354">luci_interpreter::kernels::calculateActivationRange</a></div><div class="ttdeci">void calculateActivationRange(Activation activation, T *activation_min, T *activation_max)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00052">Utils.cpp:52</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_1_1kernels_html_a972dc14ee97042f40b0555b04b1d8815"><div class="ttname"><a href="namespaceluci__interpreter_1_1kernels.html#a972dc14ee97042f40b0555b04b1d8815">luci_interpreter::kernels::calculateActivationRangeQuantized</a></div><div class="ttdeci">void calculateActivationRangeQuantized(Activation activation, const Tensor *output, int32_t *activation_min, int32_t *activation_max)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00119">Utils.cpp:119</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_1_1kernels_html_ab09e74b805778ace392d93e577c75d73"><div class="ttname"><a href="namespaceluci__interpreter_1_1kernels.html#ab09e74b805778ace392d93e577c75d73">luci_interpreter::kernels::getQuantizedConvolutionMultipler</a></div><div class="ttdeci">double getQuantizedConvolutionMultipler(float input_scale, float filter_scale, float output_scale)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00137">Utils.h:137</a></div></div>
@@ -548,9 +552,9 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="ttc" id="anamespaceluci__interpreter_html"><div class="ttname"><a href="namespaceluci__interpreter.html">luci_interpreter</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h_source.html#l00021">BuddyMemoryManager.h:22</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html_a43d157784df8ea24209eb53c2e02e1f3ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="namespaceluci__interpreter.html#a43d157784df8ea24209eb53c2e02e1f3ab50339a10e1de285ac99d4c3990b8693">luci_interpreter::FusedActFunc::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html_a536f70436969ec0208abfe68640bfc71"><div class="ttname"><a href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">luci_interpreter::BaseRuntimeGraph</a></div><div class="ttdeci">RuntimeGraph BaseRuntimeGraph</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00033">RuntimeModule.h:33</a></div></div>
-<div class="ttc" id="anamespaceluci__interpreter_html_a9cd9d58495a0cc85155c98fa7904a9d6"><div class="ttname"><a href="namespaceluci__interpreter.html#a9cd9d58495a0cc85155c98fa7904a9d6">luci_interpreter::configure_kernel_CircleUnidirectionalSequenceLSTM</a></div><div class="ttdeci">void configure_kernel_CircleUnidirectionalSequenceLSTM(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00389">UnidirectionalSequenceLSTM.cpp:389</a></div></div>
+<div class="ttc" id="anamespaceluci__interpreter_html_a9cd9d58495a0cc85155c98fa7904a9d6"><div class="ttname"><a href="namespaceluci__interpreter.html#a9cd9d58495a0cc85155c98fa7904a9d6">luci_interpreter::configure_kernel_CircleUnidirectionalSequenceLSTM</a></div><div class="ttdeci">void configure_kernel_CircleUnidirectionalSequenceLSTM(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00393">UnidirectionalSequenceLSTM.cpp:393</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html_aa129d157edeab20d5916101a10cd9f32"><div class="ttname"><a href="namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32">luci_interpreter::getDataTypeSize</a></div><div class="ttdeci">size_t getDataTypeSize(DataType data_type)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00032">DataType.h:32</a></div></div>
-<div class="ttc" id="anamespaceluci__interpreter_html_ab11931ef52048dfc48bc6970afca431a"><div class="ttname"><a href="namespaceluci__interpreter.html#ab11931ef52048dfc48bc6970afca431a">luci_interpreter::execute_kernel_CircleUnidirectionalSequenceLSTM</a></div><div class="ttdeci">void execute_kernel_CircleUnidirectionalSequenceLSTM(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph, bool in_place)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00416">UnidirectionalSequenceLSTM.cpp:416</a></div></div>
+<div class="ttc" id="anamespaceluci__interpreter_html_ab11931ef52048dfc48bc6970afca431a"><div class="ttname"><a href="namespaceluci__interpreter.html#ab11931ef52048dfc48bc6970afca431a">luci_interpreter::execute_kernel_CircleUnidirectionalSequenceLSTM</a></div><div class="ttdeci">void execute_kernel_CircleUnidirectionalSequenceLSTM(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph, bool in_place)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00420">UnidirectionalSequenceLSTM.cpp:420</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_builders_8h_html"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_builders_8h.html">Builders.h</a></div></div>
 <div class="ttc" id="astructcircle__eval__diff_1_1_tensor_shape_html_a510764c1277c26b857ec5517a7962e6f"><div class="ttname"><a href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">circle_eval_diff::TensorShape::dim</a></div><div class="ttdeci">const loco::Dimension &amp; dim(uint32_t axis) const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00044">Tensor.h:44</a></div></div>
 <div class="ttc" id="astructluci__interpreter_1_1lstm_1_1_l_s_t_m_struct_html"><div class="ttname"><a href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html">luci_interpreter::lstm::LSTMStruct</a></div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00027">UnidirectionalSequenceLSTM.h:28</a></div></div>

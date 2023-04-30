@@ -1,5 +1,9 @@
 var NAVTREEINDEX20 =
 {
+"_quantization_utils_8h.html#a5ce2a9503efd2c35e87ba8895016a364":[35,0,0,51,7,1,47,5],
+"_quantization_utils_8h.html#a778ba1acea30cadd3985b4023df5b2f2":[35,0,0,51,7,1,47,14],
+"_quantization_utils_8h.html#a92c776392acf3d65c602775dcf6078e8":[35,0,0,51,7,1,47,8],
+"_quantization_utils_8h.html#abbde06f4d0bf6ed2a3c9438df8eed7ed":[35,0,0,51,7,1,47,3],
 "_quantization_utils_8h.html#abc664d29f6593ae697b90928e3a5a2c3":[35,0,0,51,7,1,47,10],
 "_quantization_utils_8h.html#ae94e3afe22962fdd9d6195ee60b930ce":[35,0,0,51,7,1,47,9],
 "_quantization_utils_8h.html#af48f27baf3488be19af9e1e84a2f0938":[35,0,0,51,7,1,47,15],
@@ -49,12 +53,12 @@ var NAVTREEINDEX20 =
 "_quantized_model_verifier_8cpp_source.html":[35,0,0,51,7,1,53],
 "_quantized_model_verifier_8h.html":[35,0,0,51,7,1,54],
 "_quantized_model_verifier_8h_source.html":[35,0,0,51,7,1,54],
-"_quantizer_8cpp.html":[35,0,0,13,0,1,6],
-"_quantizer_8cpp.html#a6228f896a64b52198522eca1543146a7":[35,0,0,13,0,1,6,1],
-"_quantizer_8cpp.html#ad70a2daf5649d9dbde0335251b9aa520":[35,0,0,13,0,1,6,0],
-"_quantizer_8cpp_source.html":[35,0,0,13,0,1,6],
-"_quantizer_8h.html":[35,0,0,13,0,1,7],
-"_quantizer_8h_source.html":[35,0,0,13,0,1,7],
+"_quantizer_8cpp.html":[35,0,0,13,0,1,8],
+"_quantizer_8cpp.html#a6228f896a64b52198522eca1543146a7":[35,0,0,13,0,1,8,1],
+"_quantizer_8cpp.html#ad70a2daf5649d9dbde0335251b9aa520":[35,0,0,13,0,1,8,0],
+"_quantizer_8cpp_source.html":[35,0,0,13,0,1,8],
+"_quantizer_8h.html":[35,0,0,13,0,1,9],
+"_quantizer_8h_source.html":[35,0,0,13,0,1,9],
 "_r_n_n_8cc.html":[35,0,4,2,2,1,4,0,50],
 "_r_n_n_8cc_source.html":[35,0,4,2,2,1,4,0,50],
 "_r_n_n_8h.html":[35,0,4,2,2,0,3,0,50],
@@ -245,9 +249,5 @@ var NAVTREEINDEX20 =
 "_relu6_canonicalizer_8h.html":[35,0,0,67,1,0,33],
 "_relu6_canonicalizer_8h_source.html":[35,0,0,67,1,0,33],
 "_relu6_converter_8cpp.html":[35,0,0,37,1,1,29],
-"_relu6_converter_8cpp_source.html":[35,0,0,37,1,1,29],
-"_relu6_converter_8h.html":[35,0,0,37,1,1,30],
-"_relu6_converter_8h_source.html":[35,0,0,37,1,1,30],
-"_relu_canonicalizer_8cpp.html":[35,0,0,67,1,0,34],
-"_relu_canonicalizer_8cpp_source.html":[35,0,0,67,1,0,34]
+"_relu6_converter_8cpp_source.html":[35,0,0,37,1,1,29]
 };

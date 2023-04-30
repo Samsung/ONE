@@ -84,6 +84,9 @@ var namespaceluci__interpreter =
     [ "BuilderId", "namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8", [
       [ "Size", "namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8a6f6cb72d544962fa333e2e34ce64f719", null ]
     ] ],
+    [ "BuilderID", "namespaceluci__interpreter.html#a1efdf32fd3fbe30235ca3e2312d7d30c", [
+      [ "Size", "namespaceluci__interpreter.html#a1efdf32fd3fbe30235ca3e2312d7d30ca6f6cb72d544962fa333e2e34ce64f719", null ]
+    ] ],
     [ "DataType", "namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffb", [
       [ "Unknown", "namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffba88183b946cc5f0e8c96b2e66e1c74a7e", null ],
       [ "U8", "namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffba6669348b484e3008dca2bfa8e85e40b5", null ],
@@ -182,6 +185,7 @@ var namespaceluci__interpreter =
     [ "build_kernel_CircleLessEqual", "namespaceluci__interpreter.html#a803b912adea0669d66824d76daabf36d", null ],
     [ "build_kernel_CircleLocalResponseNormalization", "namespaceluci__interpreter.html#add4f68cd4c71e6eb4c9fcd10acfd4e59", null ],
     [ "build_kernel_CircleLocalResponseNormalization", "namespaceluci__interpreter.html#aa5be657efad71ae5f1b3a80312036d5a", null ],
+    [ "build_kernel_CircleLog", "namespaceluci__interpreter.html#a637358c010497f8f6a1394c56e3e76dd", null ],
     [ "build_kernel_CircleLogicalAnd", "namespaceluci__interpreter.html#a7edf36213fe4dd32b3e77619cafb53ac", null ],
     [ "build_kernel_CircleLogicalAnd", "namespaceluci__interpreter.html#a121bd8576762cc5c0180a61e01d35197", null ],
     [ "build_kernel_CircleLogicalNot", "namespaceluci__interpreter.html#aa0cbda9a9e966b5168e4c0a67ae2e5ea", null ],
@@ -298,6 +302,7 @@ var namespaceluci__interpreter =
     [ "configure_kernel_CircleSlice", "namespaceluci__interpreter.html#a10563bd6d471228689aa9052acd64e92", null ],
     [ "configure_kernel_CircleSoftmax", "namespaceluci__interpreter.html#a0d55a8306682746ce15f0b65b584d15e", null ],
     [ "configure_kernel_CircleSplit", "namespaceluci__interpreter.html#a42881d6fd831c92768f08c739b6654b3", null ],
+    [ "configure_kernel_CircleStridedSlice", "namespaceluci__interpreter.html#a555195f063031e1ba32f0fcef49c43c3", null ],
     [ "configure_kernel_CircleSub", "namespaceluci__interpreter.html#aa6411b3813ed52f8f99108a2227bd9b8", null ],
     [ "configure_kernel_CircleTanh", "namespaceluci__interpreter.html#abfc3f733a698ca34ef6a579a608e5e1f", null ],
     [ "configure_kernel_CircleUnidirectionalSequenceLSTM", "namespaceluci__interpreter.html#a9cd9d58495a0cc85155c98fa7904a9d6", null ],
@@ -320,10 +325,12 @@ var namespaceluci__interpreter =
     [ "execute_kernel_CircleSlice", "namespaceluci__interpreter.html#af415ecb88631811d658ed29aa04001ee", null ],
     [ "execute_kernel_CircleSoftmax", "namespaceluci__interpreter.html#a9e823af3772108faf7279a61f1c8b6bc", null ],
     [ "execute_kernel_CircleSplit", "namespaceluci__interpreter.html#ad61db66694c4a261686c00e797178236", null ],
+    [ "execute_kernel_CircleStridedSlice", "namespaceluci__interpreter.html#ab90d4414463463c19a1802255e9bff02", null ],
     [ "execute_kernel_CircleSub", "namespaceluci__interpreter.html#ab224f15731ff11305cd23c45d54dbfca", null ],
     [ "execute_kernel_CircleTanh", "namespaceluci__interpreter.html#a20864a195e9524843984478c8d104dc7", null ],
     [ "execute_kernel_CircleUnidirectionalSequenceLSTM", "namespaceluci__interpreter.html#ab11931ef52048dfc48bc6970afca431a", null ],
     [ "execute_kernel_CircleWhile", "namespaceluci__interpreter.html#a48281bcf0b596d93491b350eca21135b", null ],
+    [ "get_builder_id", "namespaceluci__interpreter.html#a6bcc0e0add6c86bcf559c0123631be52", null ],
     [ "getDataTypeSize", "namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32", null ],
     [ "luci_actfunc", "namespaceluci__interpreter.html#a3ef1b0de498871057a9677490bd21196", null ],
     [ "luci_datatype", "namespaceluci__interpreter.html#a54299b78de68f12b81ae08383bfada3d", null ],
@@ -339,5 +346,7 @@ var namespaceluci__interpreter =
     [ "REGISTER_WRAPPER", "namespaceluci__interpreter.html#ae8a8a37d254acec129a81094483acf62", null ],
     [ "size", "namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a", null ],
     [ "source_without_constant_copying", "namespaceluci__interpreter.html#a3d393d8d996c4d6dca80805ea0a20654", null ],
-    [ "wrap", "namespaceluci__interpreter.html#a1a4e7153aee647857a88e14a34ff17d6", null ]
+    [ "wrap", "namespaceluci__interpreter.html#a1a4e7153aee647857a88e14a34ff17d6", null ],
+    [ "kernel_configure", "namespaceluci__interpreter.html#aaca25dba79731428ed6105fd609ca24b", null ],
+    [ "kernel_executor", "namespaceluci__interpreter.html#ac54aa4be2cc4f48e3a9f3b3266963e83", null ]
 ];

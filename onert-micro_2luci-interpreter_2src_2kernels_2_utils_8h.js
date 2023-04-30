@@ -21,6 +21,7 @@ var onert_micro_2luci_interpreter_2src_2kernels_2_utils_8h =
     [ "getQuantizedConvolutionMultiplers", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#ae6f5ad209c4d64063344b02ec5be4967", null ],
     [ "getTensorData", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#ab4b854d27a207793b08b8e5acf096b26", null ],
     [ "getTensorData", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a3526506fb019cee89c33b5e361201ef4", null ],
+    [ "getTensorRuntimeShape", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#afce1c2c42f8f6ca9f581f3a1a3f199b8", null ],
     [ "getTensorShape", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a46ddb4fcfc40db388a80ec1680a00676", null ],
     [ "matrixScalarMultiplyAccumulate", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#afd0d7e8134f1365f84ef40571dec5ea8", null ],
     [ "one_of_types", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#aaeab94e4b66016c7ac88378ac1c045e0", null ],

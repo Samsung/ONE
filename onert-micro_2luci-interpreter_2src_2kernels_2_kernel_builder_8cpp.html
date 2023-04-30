@@ -90,14 +90,11 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">KernelBuilder.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html">KernelBuilder.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_builders_8h_source.html">Builders.h</a>&quot;</code><br />
-<code>#include &quot;KernelsToBuild.lst&quot;</code><br />
 </div>
 <p><a href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -105,75 +102,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceluci__interpreter"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html">luci_interpreter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a488c41d40df21b637578b037b0431fd0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8cpp.html#a488c41d40df21b637578b037b0431fd0">REGISTER_KERNEL</a>(builtin_operator,  name)</td></tr>
-<tr class="separator:a488c41d40df21b637578b037b0431fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a488c41d40df21b637578b037b0431fd0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8cpp.html#a488c41d40df21b637578b037b0431fd0">REGISTER_KERNEL</a>(builtin_operator,  name)</td></tr>
-<tr class="separator:a488c41d40df21b637578b037b0431fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a488c41d40df21b637578b037b0431fd0" name="a488c41d40df21b637578b037b0431fd0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a488c41d40df21b637578b037b0431fd0">&#9670;&#160;</a></span>REGISTER_KERNEL <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define REGISTER_KERNEL</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">builtin_operator, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">name&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  register_kernel_configure(circle::BuiltinOperator::BuiltinOperator_##builtin_operator, \</div>
-<div class="line">                            configure_kernel_Circle##name);</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a488c41d40df21b637578b037b0431fd0" name="a488c41d40df21b637578b037b0431fd0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a488c41d40df21b637578b037b0431fd0">&#9670;&#160;</a></span>REGISTER_KERNEL <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define REGISTER_KERNEL</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">builtin_operator, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">name&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  register_kernel_execute(circle::BuiltinOperator::BuiltinOperator_##builtin_operator, \</div>
-<div class="line">                          execute_kernel_Circle##name);</div>
-</div><!-- fragment -->
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

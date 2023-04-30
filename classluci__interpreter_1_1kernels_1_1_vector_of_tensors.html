@@ -161,7 +161,7 @@ template&lt;typename T , bool is_const&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00132">132</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00136">136</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
 
 </div>
 </div>
@@ -197,7 +197,7 @@ template&lt;typename T , bool is_const&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00133">133</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00137">137</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
 
 </div>
 </div>
@@ -283,28 +283,28 @@ template&lt;typename T , bool is_const&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00136">136</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  137</span>  {</div>
-<div class="line"><span class="lineno">  138</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> num_tensors = tensor_list.size();</div>
-<div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>    all_data_.reserve(num_tensors);</div>
-<div class="line"><span class="lineno">  141</span>    all_shape_.reserve(num_tensors);</div>
-<div class="line"><span class="lineno">  142</span>    all_shape_ptr_.reserve(num_tensors);</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00140">140</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  141</span>  {</div>
+<div class="line"><span class="lineno">  142</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> num_tensors = tensor_list.size();</div>
 <div class="line"><span class="lineno">  143</span> </div>
-<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html#aae9ea5ba631901365bb71277c0a1da95">TensorT</a> *tensor : tensor_list)</div>
-<div class="line"><span class="lineno">  145</span>    {</div>
-<div class="line"><span class="lineno">  146</span>      all_data_.push_back(getTensorData&lt;T&gt;(tensor));</div>
-<div class="line"><span class="lineno">  147</span>      all_shape_.push_back(<a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a74f2161267eeabcf602a15e16c2350f5">getTensorShape</a>(tensor));</div>
-<div class="line"><span class="lineno">  148</span>    }</div>
-<div class="line"><span class="lineno">  149</span> </div>
-<div class="line"><span class="lineno">  150</span>    <span class="comment">// Taking the pointer from inside a std::vector is only OK if the vector is</span></div>
-<div class="line"><span class="lineno">  151</span>    <span class="comment">// never modified, so we populate all_shape in the previous loop and then we</span></div>
-<div class="line"><span class="lineno">  152</span>    <span class="comment">// are free to grab iterators here.</span></div>
-<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">for</span> (tflite::RuntimeShape &amp;shape : all_shape_)</div>
-<div class="line"><span class="lineno">  154</span>    {</div>
-<div class="line"><span class="lineno">  155</span>      all_shape_ptr_.push_back(&amp;shape);</div>
-<div class="line"><span class="lineno">  156</span>    }</div>
-<div class="line"><span class="lineno">  157</span>  }</div>
+<div class="line"><span class="lineno">  144</span>    all_data_.reserve(num_tensors);</div>
+<div class="line"><span class="lineno">  145</span>    all_shape_.reserve(num_tensors);</div>
+<div class="line"><span class="lineno">  146</span>    all_shape_ptr_.reserve(num_tensors);</div>
+<div class="line"><span class="lineno">  147</span> </div>
+<div class="line"><span class="lineno">  148</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html#aae9ea5ba631901365bb71277c0a1da95">TensorT</a> *tensor : tensor_list)</div>
+<div class="line"><span class="lineno">  149</span>    {</div>
+<div class="line"><span class="lineno">  150</span>      all_data_.push_back(getTensorData&lt;T&gt;(tensor));</div>
+<div class="line"><span class="lineno">  151</span>      all_shape_.push_back(<a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a74f2161267eeabcf602a15e16c2350f5">getTensorShape</a>(tensor));</div>
+<div class="line"><span class="lineno">  152</span>    }</div>
+<div class="line"><span class="lineno">  153</span> </div>
+<div class="line"><span class="lineno">  154</span>    <span class="comment">// Taking the pointer from inside a std::vector is only OK if the vector is</span></div>
+<div class="line"><span class="lineno">  155</span>    <span class="comment">// never modified, so we populate all_shape in the previous loop and then we</span></div>
+<div class="line"><span class="lineno">  156</span>    <span class="comment">// are free to grab iterators here.</span></div>
+<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">for</span> (tflite::RuntimeShape &amp;shape : all_shape_)</div>
+<div class="line"><span class="lineno">  158</span>    {</div>
+<div class="line"><span class="lineno">  159</span>      all_shape_ptr_.push_back(&amp;shape);</div>
+<div class="line"><span class="lineno">  160</span>    }</div>
+<div class="line"><span class="lineno">  161</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00194">luci_interpreter::kernels::getTensorShape()</a>.</p>
 
@@ -366,8 +366,8 @@ template&lt;typename T , bool is_const&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00162">162</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  162</span>{ <span class="keywordflow">return</span> all_data_.data(); }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00166">166</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  166</span>{ <span class="keywordflow">return</span> all_data_.data(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -426,8 +426,8 @@ template&lt;typename T , bool is_const&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00168">168</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  168</span>{ <span class="keywordflow">return</span> all_shape_ptr_.data(); }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00172">172</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  172</span>{ <span class="keywordflow">return</span> all_shape_ptr_.data(); }</div>
 </div><!-- fragment -->
 </div>
 </div>

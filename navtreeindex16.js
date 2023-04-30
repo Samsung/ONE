@@ -1,5 +1,9 @@
 var NAVTREEINDEX16 =
 {
+"_neural_networks_types_8h.html#a3c0153e3607cc2a9fa72ecce03b04b33":[35,0,4,0,3,0,3,27],
+"_neural_networks_types_8h.html#a3d0fd84a945d238d9d5cb5c37073413e":[35,0,4,0,3,0,3,14],
+"_neural_networks_types_8h.html#a3e085d5d265de7b26e151807932e0a84":[35,0,4,0,3,0,3,42],
+"_neural_networks_types_8h.html#a4bd48184ae2574a387cb0b0596003fb6":[35,0,4,0,3,0,3,21],
 "_neural_networks_types_8h.html#a5374973156ef37c613d69a17ed38b79a":[35,0,4,0,3,0,3,20],
 "_neural_networks_types_8h.html#a54e81efd1739cf7b79ac9e4b802b09c2":[35,0,4,0,3,0,3,6],
 "_neural_networks_types_8h.html#a578c4dc97e3d017535cc5174632a76a1":[35,0,4,0,3,0,3,15],
@@ -229,14 +233,14 @@ var NAVTREEINDEX16 =
 "_op_8forward_8h_source.html":[35,0,0,26,0,0,0,1,41],
 "_op_8h.html":[35,0,0,26,0,0,0,1,42],
 "_op_8h.html#a4ee17d3cfd5da67014063855016d56c2":[35,0,0,26,0,0,0,1,42,15],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,14],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,7],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,8],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,9],
 "_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,10],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,11],
 "_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,12],
 "_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,13],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,14],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,11],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,9],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,8],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,7],
 "_op_8h_source.html":[35,0,0,26,0,0,0,1,42],
 "_op_code_8cc.html":[35,0,4,2,2,1,4,8],
 "_op_code_8cc.html#a7d9fa9cc526f6b52c4f951a0a9a19ef3":[35,0,4,2,2,1,4,8,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX16 =
 "_op_code_8cc.html#afe04a99d2d44ce1351ed3af3ca56063a":[35,0,4,2,2,1,4,8,2],
 "_op_code_8cc_source.html":[35,0,4,2,2,1,4,8],
 "_op_code_8h.html":[35,0,4,2,2,0,3,10],
-"_op_code_8h.html#a587a2982319cf192bc7a6e6e44cde3b7":[35,0,4,2,2,0,3,10,2],
-"_op_code_8h.html#a587a2982319cf192bc7a6e6e44cde3b7a11686a18ad6773e75e7b2100b3785932":[35,0,4,2,2,0,3,10,2,1],
-"_op_code_8h.html#a587a2982319cf192bc7a6e6e44cde3b7a4905ac9d6a22bdfc1ae096094ce6248d":[35,0,4,2,2,0,3,10,2,2],
-"_op_code_8h.html#a587a2982319cf192bc7a6e6e44cde3b7a4bbb8f967da6d1a610596d7257179c2b":[35,0,4,2,2,0,3,10,2,0],
-"_op_code_8h.html#a7d9fa9cc526f6b52c4f951a0a9a19ef3":[35,0,4,2,2,0,3,10,4]
+"_op_code_8h.html#a587a2982319cf192bc7a6e6e44cde3b7":[35,0,4,2,2,0,3,10,2]
 };

@@ -9,6 +9,7 @@ var onert_micro_2luci_interpreter_2src_2kernels_2_utils_8cpp =
     [ "calculateInputRadius", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a3581d623ce3926432d4ef5ad35020bab", null ],
     [ "calculateShapeForBroadcast", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a282484a34a3997dda2a7a6abdc4df151", null ],
     [ "checkedLog2", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a0b3c525e4b279bc3b47d694c83a3f73e", null ],
+    [ "getTensorRuntimeShape", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#afce1c2c42f8f6ca9f581f3a1a3f199b8", null ],
     [ "matrixScalarMultiplyAccumulate", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#afd0d7e8134f1365f84ef40571dec5ea8", null ],
     [ "quantizeMultiplier", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#adcf639b916825841b3f99d5f4fccff22", null ],
     [ "quantizeMultiplierSmallerThanOneExp", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a91a8777c4f1154f256a768b6bbf54477", null ]

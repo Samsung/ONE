@@ -24,8 +24,9 @@ var searchData=
   ['reduce_5fprod_5fint_21',['reduce_prod_int',['../namespaceluci__interpreter_1_1test__kernel_1_1reduce__prod__int.html',1,'luci_interpreter::test_kernel']]],
   ['shape_5fkernel_22',['shape_kernel',['../namespaceluci__interpreter_1_1test__kernel_1_1shape__kernel.html',1,'luci_interpreter::test_kernel']]],
   ['sinf_23',['sinf',['../namespaceluci_1_1sinf.html',1,'luci']]],
-  ['test_24',['test',['../namespacelogo_1_1test.html',1,'logo::test'],['../namespaceluci_1_1test.html',1,'luci::test']]],
-  ['test_5fkernel_25',['test_kernel',['../namespaceluci__interpreter_1_1test__kernel.html',1,'luci_interpreter']]],
-  ['testing_26',['testing',['../namespaceluci__interpreter_1_1kernels_1_1testing.html',1,'luci_interpreter::kernels']]],
-  ['tinf_27',['tinf',['../namespaceluci_1_1tinf.html',1,'luci']]]
+  ['strided_5fslice_5fkernel_24',['strided_slice_kernel',['../namespaceluci__interpreter_1_1test__kernel_1_1strided__slice__kernel.html',1,'luci_interpreter::test_kernel']]],
+  ['test_25',['test',['../namespacelogo_1_1test.html',1,'logo::test'],['../namespaceluci_1_1test.html',1,'luci::test']]],
+  ['test_5fkernel_26',['test_kernel',['../namespaceluci__interpreter_1_1test__kernel.html',1,'luci_interpreter']]],
+  ['testing_27',['testing',['../namespaceluci__interpreter_1_1kernels_1_1testing.html',1,'luci_interpreter::kernels']]],
+  ['tinf_28',['tinf',['../namespaceluci_1_1tinf.html',1,'luci']]]
 ];

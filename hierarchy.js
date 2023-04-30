@@ -2754,7 +2754,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::Squeeze", "classluci__interpreter_1_1kernels_1_1_squeeze.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< StridedSliceParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::StridedSlice", "classluci__interpreter_1_1kernels_1_1_strided_slice.html", null ],
         [ "luci_interpreter::kernels::StridedSlice", "classluci__interpreter_1_1kernels_1_1_strided_slice.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< SubParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -2803,6 +2802,7 @@ var hierarchy =
       [ "luci_interpreter::kernels::Less", "classluci__interpreter_1_1kernels_1_1_less.html", null ],
       [ "luci_interpreter::kernels::LessEqual", "classluci__interpreter_1_1kernels_1_1_less_equal.html", null ],
       [ "luci_interpreter::kernels::LessEqual", "classluci__interpreter_1_1kernels_1_1_less_equal.html", null ],
+      [ "luci_interpreter::kernels::Log", "classluci__interpreter_1_1kernels_1_1_log.html", null ],
       [ "luci_interpreter::kernels::LogSoftmax", "classluci__interpreter_1_1kernels_1_1_log_softmax.html", null ],
       [ "luci_interpreter::kernels::LogSoftmax", "classluci__interpreter_1_1kernels_1_1_log_softmax.html", null ],
       [ "luci_interpreter::kernels::LogicalAnd", "classluci__interpreter_1_1kernels_1_1_logical_and.html", null ],
@@ -4192,7 +4192,9 @@ var hierarchy =
     [ "nnfw::cker::optimized_integer_ops::depthwise_conv::QuantizedDepthwiseConvKernel< kAllowStrided, kFixedInputDepth, kFixedDepthMultiplier >", "structnnfw_1_1cker_1_1optimized__integer__ops_1_1depthwise__conv_1_1_quantized_depthwise_conv_kernel.html", null ],
     [ "luci::QuantizedModelVerifier", "structluci_1_1_quantized_model_verifier.html", null ],
     [ "mpqsolver::core::Quantizer", "classmpqsolver_1_1core_1_1_quantizer.html", null ],
-    [ "mpqsolver::core::QuantizerHook", "structmpqsolver_1_1core_1_1_quantizer_hook.html", null ],
+    [ "mpqsolver::core::QuantizerHook", "structmpqsolver_1_1core_1_1_quantizer_hook.html", [
+      [ "mpqsolver::core::DumpingHooks", "classmpqsolver_1_1core_1_1_dumping_hooks.html", null ]
+    ] ],
     [ "RandomDataGenerator.RandomDataGenerator", "class_random_data_generator_1_1_random_data_generator.html", null ],
     [ "nnfw::misc::RandomGenerator", "classnnfw_1_1misc_1_1_random_generator.html", null ],
     [ "nnfw::tflite::RandomInputInitializer", "classnnfw_1_1tflite_1_1_random_input_initializer.html", null ],
@@ -4362,6 +4364,9 @@ var hierarchy =
     [ "mir_interpreter::SoftmaxImpl< uint8_t >", "structmir__interpreter_1_1_softmax_impl_3_01uint8__t_01_4.html", null ],
     [ "luci_interpreter::SoftmaxParams", "structluci__interpreter_1_1_softmax_params.html", null ],
     [ "nnfw::cker::SoftmaxParams", "structnnfw_1_1cker_1_1_softmax_params.html", null ],
+    [ "mpqsolver::core::SolverHooks", "classmpqsolver_1_1core_1_1_solver_hooks.html", [
+      [ "mpqsolver::core::DumpingHooks", "classmpqsolver_1_1core_1_1_dumping_hooks.html", null ]
+    ] ],
     [ "hermes::Source", "classhermes_1_1_source.html", [
       [ "circlechef::Logger", "classcirclechef_1_1_logger.html", null ],
       [ "exo::Logger", "classexo_1_1_logger.html", null ],
@@ -4525,7 +4530,8 @@ var hierarchy =
       ] ],
       [ "luci_interpreter::test_kernel::TestDataAddBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataPackBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", null ],
-      [ "luci_interpreter::test_kernel::TestDataReduceCommonBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", null ]
+      [ "luci_interpreter::test_kernel::TestDataReduceCommonBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataStridedSliceKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel.html", null ]
     ] ],
     [ "luci_interpreter::test_kernel::TestDataBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],

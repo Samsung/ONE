@@ -107,6 +107,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a481ef8ea5dcee3ca01c986949e69ad06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a944df7839038e26f858841ae888d5d38"><td class="memItemLeft" align="right" valign="top">const circle::Tensor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_m_i_s_o_kernel.html#a944df7839038e26f858841ae888d5d38">input3</a> () const</td></tr>
 <tr class="separator:a944df7839038e26f858841ae888d5d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affb98eeabfb68a9429c6e84980e63bf7"><td class="memItemLeft" align="right" valign="top">const circle::Tensor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_m_i_s_o_kernel.html#affb98eeabfb68a9429c6e84980e63bf7">input4</a> () const</td></tr>
+<tr class="separator:affb98eeabfb68a9429c6e84980e63bf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa6be7effae83aa59e9873ec40192b38"><td class="memItemLeft" align="right" valign="top">const circle::Tensor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1kernels_1_1_m_i_s_o_kernel.html#afa6be7effae83aa59e9873ec40192b38">output</a> () const</td></tr>
 <tr class="separator:afa6be7effae83aa59e9873ec40192b38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -153,25 +155,32 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   33</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input1_index = cur_op-&gt;inputs()-&gt;operator[](0);</div>
 <div class="line"><span class="lineno">   34</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input2_index = cur_op-&gt;inputs()-&gt;operator[](1);</div>
 <div class="line"><span class="lineno">   35</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input3_index = cur_op-&gt;inputs()-&gt;operator[](2);</div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>    <span class="keyword">const</span> <span class="keyword">auto</span> output_index = cur_op-&gt;outputs()-&gt;operator[](0);</div>
-<div class="line"><span class="lineno">   38</span> </div>
-<div class="line"><span class="lineno">   39</span>    assert(input1_index != -1);</div>
-<div class="line"><span class="lineno">   40</span>    assert(input2_index != -1);</div>
-<div class="line"><span class="lineno">   41</span>    assert(input3_index != -1);</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>    assert(output_index != -1);</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>    _input1_tensor = runtime_graph-&gt;getCircleTensorByIndex(input1_index);</div>
-<div class="line"><span class="lineno">   46</span>    _input2_tensor = runtime_graph-&gt;getCircleTensorByIndex(input2_index);</div>
-<div class="line"><span class="lineno">   47</span>    _input3_tensor = runtime_graph-&gt;getCircleTensorByIndex(input3_index);</div>
-<div class="line"><span class="lineno">   48</span>    _output_tensor = runtime_graph-&gt;getCircleTensorByIndex(output_index);</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>    assert(_input1_tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   51</span>    assert(_input2_tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   52</span>    assert(_input3_tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   53</span>    assert(_output_tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   54</span>  }</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input4_index = cur_op-&gt;inputs()-&gt;operator[](3); <span class="comment">// optional</span></div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>    <span class="keyword">const</span> <span class="keyword">auto</span> output_index = cur_op-&gt;outputs()-&gt;operator[](0);</div>
+<div class="line"><span class="lineno">   39</span> </div>
+<div class="line"><span class="lineno">   40</span>    assert(input1_index != -1);</div>
+<div class="line"><span class="lineno">   41</span>    assert(input2_index != -1);</div>
+<div class="line"><span class="lineno">   42</span>    assert(input3_index != -1);</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>    assert(output_index != -1);</div>
+<div class="line"><span class="lineno">   45</span> </div>
+<div class="line"><span class="lineno">   46</span>    _input1_tensor = runtime_graph-&gt;getCircleTensorByIndex(input1_index);</div>
+<div class="line"><span class="lineno">   47</span>    _input2_tensor = runtime_graph-&gt;getCircleTensorByIndex(input2_index);</div>
+<div class="line"><span class="lineno">   48</span>    _input3_tensor = runtime_graph-&gt;getCircleTensorByIndex(input3_index);</div>
+<div class="line"><span class="lineno">   49</span>    _output_tensor = runtime_graph-&gt;getCircleTensorByIndex(output_index);</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>    <span class="comment">// optional</span></div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (input4_index != -1)</div>
+<div class="line"><span class="lineno">   53</span>      _input4_tensor = runtime_graph-&gt;getCircleTensorByIndex(input4_index);</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   55</span>      _input4_tensor = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>    assert(_input1_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   58</span>    assert(_input2_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   59</span>    assert(_input3_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   60</span>    assert(_output_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   61</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00381">luci_interpreter::RuntimeGraph::getCircleTensorByIndex()</a>.</p>
 
@@ -201,10 +210,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_m_i_s_o_kernel_8h_source.html#l00056">56</a> of file <a class="el" href="_m_i_s_o_kernel_8h_source.html">MISOKernel.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{ <span class="keywordflow">return</span> _input1_tensor; }</div>
+<p class="definition">Definition at line <a class="el" href="_m_i_s_o_kernel_8h_source.html#l00063">63</a> of file <a class="el" href="_m_i_s_o_kernel_8h_source.html">MISOKernel.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{ <span class="keywordflow">return</span> _input1_tensor; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00081">luci_interpreter::configure_kernel_CircleSlice()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00081">luci_interpreter::configure_kernel_CircleSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00055">luci_interpreter::configure_kernel_CircleStridedSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00075">luci_interpreter::execute_kernel_CircleStridedSlice()</a>.</p>
 
 </div>
 </div>
@@ -231,10 +240,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_m_i_s_o_kernel_8h_source.html#l00057">57</a> of file <a class="el" href="_m_i_s_o_kernel_8h_source.html">MISOKernel.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   57</span>{ <span class="keywordflow">return</span> _input2_tensor; }</div>
+<p class="definition">Definition at line <a class="el" href="_m_i_s_o_kernel_8h_source.html#l00064">64</a> of file <a class="el" href="_m_i_s_o_kernel_8h_source.html">MISOKernel.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{ <span class="keywordflow">return</span> _input2_tensor; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00081">luci_interpreter::configure_kernel_CircleSlice()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00081">luci_interpreter::configure_kernel_CircleSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00055">luci_interpreter::configure_kernel_CircleStridedSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00075">luci_interpreter::execute_kernel_CircleStridedSlice()</a>.</p>
 
 </div>
 </div>
@@ -261,10 +270,43 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_m_i_s_o_kernel_8h_source.html#l00058">58</a> of file <a class="el" href="_m_i_s_o_kernel_8h_source.html">MISOKernel.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>{ <span class="keywordflow">return</span> _input3_tensor; }</div>
+<p class="definition">Definition at line <a class="el" href="_m_i_s_o_kernel_8h_source.html#l00065">65</a> of file <a class="el" href="_m_i_s_o_kernel_8h_source.html">MISOKernel.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>{ <span class="keywordflow">return</span> _input3_tensor; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00081">luci_interpreter::configure_kernel_CircleSlice()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00081">luci_interpreter::configure_kernel_CircleSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00055">luci_interpreter::configure_kernel_CircleStridedSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00075">luci_interpreter::execute_kernel_CircleStridedSlice()</a>.</p>
+
+</div>
+</div>
+<a id="affb98eeabfb68a9429c6e84980e63bf7" name="affb98eeabfb68a9429c6e84980e63bf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affb98eeabfb68a9429c6e84980e63bf7">&#9670;&#160;</a></span>input4()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const circle::Tensor * luci_interpreter::kernels::MISOKernel::input4 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_m_i_s_o_kernel_8h_source.html#l00067">67</a> of file <a class="el" href="_m_i_s_o_kernel_8h_source.html">MISOKernel.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>  {</div>
+<div class="line"><span class="lineno">   69</span>    assert(_input4_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">return</span> _input4_tensor;</div>
+<div class="line"><span class="lineno">   71</span>  }</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00055">luci_interpreter::configure_kernel_CircleStridedSlice()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00075">luci_interpreter::execute_kernel_CircleStridedSlice()</a>.</p>
 
 </div>
 </div>
@@ -291,10 +333,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_m_i_s_o_kernel_8h_source.html#l00060">60</a> of file <a class="el" href="_m_i_s_o_kernel_8h_source.html">MISOKernel.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{ <span class="keywordflow">return</span> _output_tensor; }</div>
+<p class="definition">Definition at line <a class="el" href="_m_i_s_o_kernel_8h_source.html#l00073">73</a> of file <a class="el" href="_m_i_s_o_kernel_8h_source.html">MISOKernel.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>{ <span class="keywordflow">return</span> _output_tensor; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00081">luci_interpreter::configure_kernel_CircleSlice()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00081">luci_interpreter::configure_kernel_CircleSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00055">luci_interpreter::configure_kernel_CircleStridedSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00075">luci_interpreter::execute_kernel_CircleStridedSlice()</a>.</p>
 
 </div>
 </div>

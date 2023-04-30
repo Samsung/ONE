@@ -65,6 +65,11 @@ var namespaceluci__interpreter_1_1test__kernel =
       [ "reference_output_data", "namespaceluci__interpreter_1_1test__kernel_1_1shape__kernel.html#a37b2ba53422f54c9c10875a31bea17e2", null ],
       [ "test_kernel_model_circle", "namespaceluci__interpreter_1_1test__kernel_1_1shape__kernel.html#ac9fa0303d9af40095fa19cf375de956e", null ]
     ] ],
+    [ "strided_slice_kernel", "namespaceluci__interpreter_1_1test__kernel_1_1strided__slice__kernel.html", [
+      [ "input_data", "namespaceluci__interpreter_1_1test__kernel_1_1strided__slice__kernel.html#a3952c9f20baf356f7d39405ba8613553", null ],
+      [ "reference_output_data", "namespaceluci__interpreter_1_1test__kernel_1_1strided__slice__kernel.html#a5279800010a8a397170f922a922d2e26", null ],
+      [ "test_kernel_model_circle", "namespaceluci__interpreter_1_1test__kernel_1_1strided__slice__kernel.html#adfde3b47151ba2dc074d2f27c1391f2d", null ]
+    ] ],
     [ "TestData32IntAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data32_int_add.html", "classluci__interpreter_1_1test__kernel_1_1_test_data32_int_add" ],
     [ "TestData64IntAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data64_int_add.html", "classluci__interpreter_1_1test__kernel_1_1_test_data64_int_add" ],
     [ "TestDataAddBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base" ],
@@ -77,5 +82,6 @@ var namespaceluci__interpreter_1_1test__kernel =
     [ "TestDataPackBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base" ],
     [ "TestDataQuantU8Pack", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_u8_pack.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_u8_pack" ],
     [ "TestDataReduceCommonBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base" ],
-    [ "TestDataShapeKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel" ]
+    [ "TestDataShapeKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel" ],
+    [ "TestDataStridedSliceKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel" ]
 ];
