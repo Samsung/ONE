@@ -61,6 +61,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(FULLY_CONNECTED, CircleFullyConnectedGraphBuilder);                          // 9
   CIRCLE_NODE(GATHER, CircleGatherGraphBuilder);                                           // 36
   CIRCLE_NODE(GATHER_ND, CircleGatherNdGraphBuilder);                                      // 107
+  CIRCLE_NODE(GELU, CircleGeluGraphBuilder);                                               // 150
   CIRCLE_NODE(GREATER, CircleGreaterGraphBuilder);                                         // 61
   CIRCLE_NODE(GREATER_EQUAL, CircleGreaterEqualGraphBuilder);                              // 62
   CIRCLE_NODE(IF, CircleIfGraphBuilder);                                                   // 118
