@@ -187,6 +187,10 @@ public:
   {
     return circle::CreateGatherNdOptions(_builder).Union();
   }
+  flatbuffers::Offset<void> visit(luci::CircleGelu *node)
+  {
+    return circle::CreateGeluOptions(_builder, node->approximate()).Union();
+  }
   flatbuffers::Offset<void> visit(luci::CircleGreater *)
   {
     return circle::CreateGreaterOptions(_builder).Union();
