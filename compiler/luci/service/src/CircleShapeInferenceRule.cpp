@@ -2087,6 +2087,13 @@ public:
 
   loco::NodeShape visit(const luci::CircleGatherNd *node) final { return infer_gather_nd(node); }
 
+  loco::NodeShape visit(const luci::CircleGelu *node) final
+  {
+    auto input_shape = luci::shape_get(node->features()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleGreater *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleGreaterEqual *node) final { return broadcast_xy(node); }
