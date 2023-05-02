@@ -539,6 +539,12 @@ std::vector<std::string> CircleGatherNdSummaryBuilder::get_input_names(const luc
   return {"params", "indices"};
 }
 
+void CircleGeluSummaryBuilder::build_attributes(const luci::CircleNode *node, locop::NodeSummary &s)
+{
+  auto gelu = loco::must_cast<const luci::CircleGelu *>(node);
+  s.args().append("approximate", to_str(gelu->approximate()));
+}
+
 std::vector<std::string> CircleIfSummaryBuilder::get_input_names(const luci::CircleNode *node)
 {
   auto circle_if = loco::must_cast<const luci::CircleIf *>(node);
