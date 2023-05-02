@@ -46,6 +46,7 @@
 #include "BuildBuiltinOptions/FullyConnectedOptions.h"
 #include "BuildBuiltinOptions/GatherOptions.h"
 #include "BuildBuiltinOptions/GatherNdOptions.h"
+#include "BuildBuiltinOptions/GeluOptions.h"
 #include "BuildBuiltinOptions/GreaterOptions.h"
 #include "BuildBuiltinOptions/GreaterEqualOptions.h"
 #include "BuildBuiltinOptions/IfOptions.h"
