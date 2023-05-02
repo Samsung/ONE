@@ -280,6 +280,12 @@ private:
   std::vector<std::string> get_input_names(const luci::CircleNode *);
 };
 
+class CircleGeluSummaryBuilder final : public CircleNodeWithFEATURESSummaryBuilder
+{
+private:
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
+};
+
 class CircleGreaterSummaryBuilder final : public CircleNodeWithXYSummaryBuilder
 {
 };
