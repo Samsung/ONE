@@ -1,8 +1,8 @@
 macro(initialize_pal)
-    nnas_find_package(TensorFlowSource EXACT 2.6.0 QUIET)
-    nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.6.0 QUIET)
-    nnas_find_package(TensorFlowEigenSource EXACT 2.6.0 QUIET)
-    nnas_find_package(TensorFlowRuySource EXACT 2.6.0 QUIET)
+    nnas_find_package(TensorFlowSource EXACT 2.8.0 QUIET)
+    nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.8.0 QUIET)
+    nnas_find_package(TensorFlowEigenSource EXACT 2.8.0 QUIET)
+    nnas_find_package(TensorFlowRuySource EXACT 2.8.0 QUIET)
 
     if (NOT TensorFlowSource_FOUND)
         message(STATUS "Skipping luci-interpreter: TensorFlow not found")
