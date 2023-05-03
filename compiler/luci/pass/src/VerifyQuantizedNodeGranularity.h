@@ -340,6 +340,13 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleGelu *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node));
+    RETURN_FALSE_UNLESS(is_lwq(node->features()));
+    return true;
+  }
+
   bool visit(const luci::CircleGreater *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node->x()));

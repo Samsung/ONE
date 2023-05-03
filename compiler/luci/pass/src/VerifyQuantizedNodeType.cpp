@@ -181,6 +181,12 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleFullyCon
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
+bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleGelu *node)
+{
+  return group_has_type(node, Qtype);
+}
+
+template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleGreater *node)
 {
   RETURN_FALSE_UNLESS(has_type(node, loco::DataType::BOOL))
