@@ -2,7 +2,7 @@ add_library(arser INTERFACE)
 
 # It specifies INTERFACE so that future targets linked with arser library will inherit its include directory.
 # It means that a developer who want to link arser just need to add one line.
-# target_link_library(another-users-target arser) 
+# target_link_library(another-users-target arser)
 target_include_directories(arser INTERFACE include/)
 target_link_libraries(arser INTERFACE nncc_coverage)
 
