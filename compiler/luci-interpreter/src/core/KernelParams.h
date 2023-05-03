@@ -98,6 +98,11 @@ struct GatherParams
   int32_t batch_dims;
 };
 
+struct GeluParams
+{
+  bool approximate;
+};
+
 struct InstanceNormParams
 {
   float epsilon;
