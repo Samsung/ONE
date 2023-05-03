@@ -94,6 +94,7 @@ public:
   void visit(const luci::CircleFullyConnected *) final;
   void visit(const luci::CircleGather *) final;
   void visit(const luci::CircleGatherNd *) final;
+  void visit(const luci::CircleGelu *) final;
   void visit(const luci::CircleGreater *) final;
   void visit(const luci::CircleGreaterEqual *) final;
   void visit(const luci::CircleIf *) final;
