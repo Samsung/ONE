@@ -85,6 +85,7 @@ private:
     REG_TFL_OP(FULLY_CONNECTED, TFliteOpFullyConnected);
     REG_TFL_OP(GATHER, TFliteOpGather);
     REG_TFL_OP(GATHER_ND, TFliteOpGatherNd);
+    REG_TFL_OP(GELU, TFliteOpGelu);
     REG_TFL_OP(GREATER, TFliteOpGreater);
     REG_TFL_OP(GREATER_EQUAL, TFliteOpGreaterEqual);
     REG_TFL_OP(L2_NORMALIZATION, TFliteOpL2Normalize);

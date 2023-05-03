@@ -734,9 +734,19 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
   for (auto const &opcode : builtin_code_map)
   {
     tflite::OperatorCodeBuilder code_builder{*flatbuffer_builder};
-    // TODO support for opcode.first >= 127
-    assert(opcode.first < 127);
-    code_builder.add_deprecated_builtin_code(opcode.first);
+    // 127 is BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES
+    // This is the way to handle deprecated builtin code
+    // See
+    // https://github.com/tensorflow/tensorflow/blob/a0afe8f9218be5eb9ed5dffc2dff652996da8c28/tensorflow/lite/schema/schema.fbs#L1061-L1077
+    if (opcode.first < 127)
+    {
+      code_builder.add_deprecated_builtin_code(opcode.first);
+    }
+    else
+    {
+      code_builder.add_deprecated_builtin_code(
+        ::tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);
+    }
     code_builder.add_version(opcode.second);
     code_builder.add_builtin_code(opcode.first);
     auto code = code_builder.Finish();

@@ -436,6 +436,10 @@ message GatherNdOptions {
   // None
 }
 
+message GeluOptions {
+  optional bool approximate = 1 [default = false];
+}
+
 message NonMaxSuppressionV4Options {
   // None
 }
@@ -662,6 +666,7 @@ message Operation {
   optional MatMulOptions matmul_options = 208;
   optional MaxPoolWithArgmaxOptions max_pool_with_argmax_options = 209;
   optional DensifyOptions densify_options = 210;
+  optional GeluOptions gelu_options = 211;
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list
 }
