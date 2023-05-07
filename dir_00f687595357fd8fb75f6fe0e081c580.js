@@ -62,6 +62,8 @@ var dir_00f687595357fd8fb75f6fe0e081c580 =
     [ "Gather.h", "compiler_2tflchef_2core_2src_2_op_2_gather_8h.html", "compiler_2tflchef_2core_2src_2_op_2_gather_8h" ],
     [ "GatherNd.cpp", "core_2src_2_op_2_gather_nd_8cpp.html", null ],
     [ "GatherNd.h", "core_2src_2_op_2_gather_nd_8h.html", "core_2src_2_op_2_gather_nd_8h" ],
+    [ "Gelu.cpp", "tflchef_2core_2src_2_op_2_gelu_8cpp.html", null ],
+    [ "Gelu.h", "tflchef_2core_2src_2_op_2_gelu_8h.html", "tflchef_2core_2src_2_op_2_gelu_8h" ],
     [ "Greater.cpp", "compiler_2tflchef_2core_2src_2_op_2_greater_8cpp.html", null ],
     [ "Greater.h", "compiler_2tflchef_2core_2src_2_op_2_greater_8h.html", "compiler_2tflchef_2core_2src_2_op_2_greater_8h" ],
     [ "GreaterEqual.cpp", "compiler_2tflchef_2core_2src_2_op_2_greater_equal_8cpp.html", null ],

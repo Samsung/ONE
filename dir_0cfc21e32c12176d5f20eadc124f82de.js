@@ -24,6 +24,7 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "FuseBatchNormWithDwConvPass.h", "_fuse_batch_norm_with_dw_conv_pass_8h.html", "_fuse_batch_norm_with_dw_conv_pass_8h" ],
     [ "FuseBatchNormWithTConvPass.h", "_fuse_batch_norm_with_t_conv_pass_8h.html", "_fuse_batch_norm_with_t_conv_pass_8h" ],
     [ "FuseBCQPass.h", "_fuse_b_c_q_pass_8h.html", "_fuse_b_c_q_pass_8h" ],
+    [ "FuseGeluPass.h", "_fuse_gelu_pass_8h.html", "_fuse_gelu_pass_8h" ],
     [ "FuseInstanceNormPass.h", "luci_2pass_2include_2luci_2_pass_2_fuse_instance_norm_pass_8h.html", "luci_2pass_2include_2luci_2_pass_2_fuse_instance_norm_pass_8h" ],
     [ "FuseMeanWithMeanPass.h", "_fuse_mean_with_mean_pass_8h.html", "_fuse_mean_with_mean_pass_8h" ],
     [ "FusePreActivationBatchNormPass.h", "_fuse_pre_activation_batch_norm_pass_8h.html", "_fuse_pre_activation_batch_norm_pass_8h" ],

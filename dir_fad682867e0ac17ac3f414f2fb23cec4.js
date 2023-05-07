@@ -31,6 +31,7 @@ var dir_fad682867e0ac17ac3f414f2fb23cec4 =
     [ "FullyConnected.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_fully_connected_8cpp.html", null ],
     [ "Gather.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_gather_8cpp.html", null ],
     [ "GatherNd.cpp", "tflite_2src_2_op_2_gather_nd_8cpp.html", null ],
+    [ "Gelu.cpp", "tflchef_2tflite_2src_2_op_2_gelu_8cpp.html", null ],
     [ "Greater.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_greater_8cpp.html", null ],
     [ "GreaterEqual.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_greater_equal_8cpp.html", null ],
     [ "L2Normalize.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_l2_normalize_8cpp.html", null ],

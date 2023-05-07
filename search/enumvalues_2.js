@@ -40,8 +40,8 @@ var searchData=
   ['copy_37',['COPY',['../classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4ae8606d021da140a92c7eba8d9b8af84f',1,'onert::exec::IPermuteFunction::COPY()'],['../classonert_1_1ir_1_1operation_1_1_permute.html#aac2e02b1347e4ad20217fe4d81fe090eae8606d021da140a92c7eba8d9b8af84f',1,'onert::ir::operation::Permute::COPY()']]],
   ['copyquantparam_38',['CopyQuantParam',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba655358c33459d60cce558ebe67ff82b3',1,'luci::CircleQuantizer::Options']]],
   ['cos_39',['COS',['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51aef23ef1d426ae1a73a7eed399cef707d',1,'onert::ir::operation::ElementwiseUnary']]],
-  ['count_40',['Count',['../namespaceloco.html#ac9f207997cef8d437eb2e86f2a78a1ebae93f994f01c537c4e2f7d8528c3eb5e9',1,'loco::Count()'],['../namespaceloco.html#aa7dc6df6698f9a45c41ae8ea155fb623ae93f994f01c537c4e2f7d8528c3eb5e9',1,'loco::Count()']]],
-  ['count_41',['COUNT',['../namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7a4905ac9d6a22bdfc1ae096094ce6248d',1,'onert::ir']]],
+  ['count_40',['COUNT',['../namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7a4905ac9d6a22bdfc1ae096094ce6248d',1,'onert::ir']]],
+  ['count_41',['Count',['../namespaceloco.html#ac9f207997cef8d437eb2e86f2a78a1ebae93f994f01c537c4e2f7d8528c3eb5e9',1,'loco::Count()'],['../namespaceloco.html#aa7dc6df6698f9a45c41ae8ea155fb623ae93f994f01c537c4e2f7d8528c3eb5e9',1,'loco::Count()']]],
   ['createtmp_42',['createTmp',['../structnnc_1_1sir_1_1_action.html#af34846d6e6cc38c888083ba3c1a29c95abc384ce2e5746b9b8a7e34564a86e0c8',1,'nnc::sir::Action']]],
   ['crop_43',['crop',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa634e7960e04b1633c103382004fe526',1,'mir_caffe']]],
   ['crops_5fdata_44',['CROPS_DATA',['../classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html#a2fa7aa5522d4c5244d9f512053ef7471a8ff2dbe9b752d571d36bb49fd9f9735c',1,'onert::ir::operation::BatchToSpaceND']]]

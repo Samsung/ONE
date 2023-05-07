@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00657">657</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00673">673</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5ea50a122fc4ccb51f602b3c68285a6f" name="a5ea50a122fc4ccb51f602b3c68285a6f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ea50a122fc4ccb51f602b3c68285a6f">&#9670;&#160;</a></span>options()</h2>
@@ -151,20 +151,20 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classcircledump_1_1_op_printer.html#a9ce311a3773e4d5de389a8218406b1e4">circledump::OpPrinter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00660">660</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  661</span>  {</div>
-<div class="line"><span class="lineno">  662</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_UnidirectionalSequenceLSTMOptions())</div>
-<div class="line"><span class="lineno">  663</span>    {</div>
-<div class="line"><span class="lineno">  664</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  665</span>      os &lt;&lt; <span class="stringliteral">&quot;Activation(&quot;</span> &lt;&lt; EnumNameActivationFunctionType(params-&gt;fused_activation_function())</div>
-<div class="line"><span class="lineno">  666</span>         &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  667</span>      os &lt;&lt; <span class="stringliteral">&quot;cell_clip(&quot;</span> &lt;&lt; params-&gt;cell_clip() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  668</span>      os &lt;&lt; <span class="stringliteral">&quot;proj_clip(&quot;</span> &lt;&lt; params-&gt;proj_clip() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  669</span>      os &lt;&lt; <span class="stringliteral">&quot;time_major(&quot;</span> &lt;&lt; params-&gt;time_major() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  670</span>      os &lt;&lt; <span class="stringliteral">&quot;asymmetric_quantize_inputs(&quot;</span> &lt;&lt; params-&gt;asymmetric_quantize_inputs() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  671</span>      os &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  672</span>    }</div>
-<div class="line"><span class="lineno">  673</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00676">676</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  677</span>  {</div>
+<div class="line"><span class="lineno">  678</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_UnidirectionalSequenceLSTMOptions())</div>
+<div class="line"><span class="lineno">  679</span>    {</div>
+<div class="line"><span class="lineno">  680</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  681</span>      os &lt;&lt; <span class="stringliteral">&quot;Activation(&quot;</span> &lt;&lt; EnumNameActivationFunctionType(params-&gt;fused_activation_function())</div>
+<div class="line"><span class="lineno">  682</span>         &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  683</span>      os &lt;&lt; <span class="stringliteral">&quot;cell_clip(&quot;</span> &lt;&lt; params-&gt;cell_clip() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  684</span>      os &lt;&lt; <span class="stringliteral">&quot;proj_clip(&quot;</span> &lt;&lt; params-&gt;proj_clip() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  685</span>      os &lt;&lt; <span class="stringliteral">&quot;time_major(&quot;</span> &lt;&lt; params-&gt;time_major() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  686</span>      os &lt;&lt; <span class="stringliteral">&quot;asymmetric_quantize_inputs(&quot;</span> &lt;&lt; params-&gt;asymmetric_quantize_inputs() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  687</span>      os &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  688</span>    }</div>
+<div class="line"><span class="lineno">  689</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

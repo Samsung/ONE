@@ -175,6 +175,8 @@ Functions</h2></td></tr>
 <tr class="separator:a53d80865a3bbb1b7e7f4db07922840a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac45bf9e447c161ddaa640ac1e153a443"><td class="memItemLeft" align="right" valign="top">flatbuffers::Offset&lt; circle::GatherOptions &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetflite2circle.html#ac45bf9e447c161ddaa640ac1e153a443">build_circle_GatherOptions</a> (flatbuffers::FlatBufferBuilder &amp;fb, const tflite::Operator *op)</td></tr>
 <tr class="separator:ac45bf9e447c161ddaa640ac1e153a443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada59a684336983f7eb0030780777f687"><td class="memItemLeft" align="right" valign="top">flatbuffers::Offset&lt; circle::GeluOptions &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetflite2circle.html#ada59a684336983f7eb0030780777f687">build_circle_GeluOptions</a> (flatbuffers::FlatBufferBuilder &amp;fb, const tflite::Operator *op)</td></tr>
+<tr class="separator:ada59a684336983f7eb0030780777f687"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a0e246a38367c78f74ff8da6781989a"><td class="memItemLeft" align="right" valign="top">flatbuffers::Offset&lt; circle::GreaterEqualOptions &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetflite2circle.html#a0a0e246a38367c78f74ff8da6781989a">build_circle_GreaterEqualOptions</a> (flatbuffers::FlatBufferBuilder &amp;fb, const tflite::Operator *op)</td></tr>
 <tr class="separator:a0a0e246a38367c78f74ff8da6781989a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0d9b6f93511ea916abcda7d3d6213fc"><td class="memItemLeft" align="right" valign="top">flatbuffers::Offset&lt; circle::GreaterOptions &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetflite2circle.html#ae0d9b6f93511ea916abcda7d3d6213fc">build_circle_GreaterOptions</a> (flatbuffers::FlatBufferBuilder &amp;fb, const tflite::Operator *op)</td></tr>
@@ -1374,6 +1376,43 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   31</span>  builtin_options_builder.add_axis(tflite_builtin_options-&gt;axis());</div>
 <div class="line"><span class="lineno">   32</span>  <span class="keywordflow">return</span> builtin_options_builder.Finish();</div>
 <div class="line"><span class="lineno">   33</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ada59a684336983f7eb0030780777f687" name="ada59a684336983f7eb0030780777f687"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada59a684336983f7eb0030780777f687">&#9670;&#160;</a></span>build_circle_GeluOptions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">flatbuffers::Offset&lt; circle::GeluOptions &gt; tflite2circle::build_circle_GeluOptions </td>
+          <td>(</td>
+          <td class="paramtype">flatbuffers::FlatBufferBuilder &amp;&#160;</td>
+          <td class="paramname"><em>fb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const tflite::Operator *&#160;</td>
+          <td class="paramname"><em>op</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_gelu_options_8cpp_source.html#l00023">23</a> of file <a class="el" href="_gelu_options_8cpp_source.html">GeluOptions.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>{</div>
+<div class="line"><span class="lineno">   25</span>  <span class="keyword">auto</span> *tflite_builtin_options = op-&gt;builtin_options_as_GeluOptions();</div>
+<div class="line"><span class="lineno">   26</span>  assert(tflite_builtin_options);</div>
+<div class="line"><span class="lineno">   27</span>  circle::GeluOptionsBuilder builtin_options_builder{fb};</div>
+<div class="line"><span class="lineno">   28</span>  builtin_options_builder.add_approximate(tflite_builtin_options-&gt;approximate());</div>
+<div class="line"><span class="lineno">   29</span>  <span class="keywordflow">return</span> builtin_options_builder.Finish();</div>
+<div class="line"><span class="lineno">   30</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

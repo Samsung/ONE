@@ -35,6 +35,7 @@ var dir_2142ac97a1becfe5600844ed2f4e42b6 =
     [ "CircleFullyConnected.cpp", "service_2src_2_nodes_2_circle_fully_connected_8cpp.html", null ],
     [ "CircleGather.cpp", "service_2src_2_nodes_2_circle_gather_8cpp.html", null ],
     [ "CircleGatherNd.cpp", "service_2src_2_nodes_2_circle_gather_nd_8cpp.html", null ],
+    [ "CircleGelu.cpp", "service_2src_2_nodes_2_circle_gelu_8cpp.html", null ],
     [ "CircleGreater.cpp", "service_2src_2_nodes_2_circle_greater_8cpp.html", null ],
     [ "CircleGreaterEqual.cpp", "service_2src_2_nodes_2_circle_greater_equal_8cpp.html", null ],
     [ "CircleIf.cpp", "service_2src_2_nodes_2_circle_if_8cpp.html", null ],

@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00605">605</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00618">618</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="abefd5b432b60c2631381f90b30bc9a04" name="abefd5b432b60c2631381f90b30bc9a04"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abefd5b432b60c2631381f90b30bc9a04">&#9670;&#160;</a></span>options()</h2>
@@ -151,18 +151,18 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classtfldump_1_1_op_printer.html#a63d2bd24d5c01caa2f6f7f9ca5cbd83e">tfldump::OpPrinter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00608">608</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  609</span>  {</div>
-<div class="line"><span class="lineno">  610</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_SVDFOptions())</div>
-<div class="line"><span class="lineno">  611</span>    {</div>
-<div class="line"><span class="lineno">  612</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  613</span>      os &lt;&lt; <span class="stringliteral">&quot;rank(&quot;</span> &lt;&lt; params-&gt;rank() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  614</span>      os &lt;&lt; <span class="stringliteral">&quot;activation(&quot;</span> &lt;&lt; EnumNameActivationFunctionType(params-&gt;fused_activation_function())</div>
-<div class="line"><span class="lineno">  615</span>         &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  616</span>      os &lt;&lt; <span class="stringliteral">&quot;asymmetric_quantize_inputs(&quot;</span> &lt;&lt; params-&gt;asymmetric_quantize_inputs() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  617</span>      os &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  618</span>    }</div>
-<div class="line"><span class="lineno">  619</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00621">621</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  622</span>  {</div>
+<div class="line"><span class="lineno">  623</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_SVDFOptions())</div>
+<div class="line"><span class="lineno">  624</span>    {</div>
+<div class="line"><span class="lineno">  625</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  626</span>      os &lt;&lt; <span class="stringliteral">&quot;rank(&quot;</span> &lt;&lt; params-&gt;rank() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  627</span>      os &lt;&lt; <span class="stringliteral">&quot;activation(&quot;</span> &lt;&lt; EnumNameActivationFunctionType(params-&gt;fused_activation_function())</div>
+<div class="line"><span class="lineno">  628</span>         &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  629</span>      os &lt;&lt; <span class="stringliteral">&quot;asymmetric_quantize_inputs(&quot;</span> &lt;&lt; params-&gt;asymmetric_quantize_inputs() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  630</span>      os &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  631</span>    }</div>
+<div class="line"><span class="lineno">  632</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

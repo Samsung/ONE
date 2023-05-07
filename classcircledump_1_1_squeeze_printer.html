@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00570">570</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00586">586</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a168490fbfe22d6840cf90f625c7a301a" name="a168490fbfe22d6840cf90f625c7a301a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a168490fbfe22d6840cf90f625c7a301a">&#9670;&#160;</a></span>options()</h2>
@@ -151,22 +151,22 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classcircledump_1_1_op_printer.html#a9ce311a3773e4d5de389a8218406b1e4">circledump::OpPrinter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00573">573</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  574</span>  {</div>
-<div class="line"><span class="lineno">  575</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_SqueezeOptions())</div>
-<div class="line"><span class="lineno">  576</span>    {</div>
-<div class="line"><span class="lineno">  577</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  578</span>      os &lt;&lt; <span class="stringliteral">&quot;SqueezeDims(&quot;</span>;</div>
-<div class="line"><span class="lineno">  579</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; params-&gt;squeeze_dims()-&gt;<a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>(); ++i)</div>
-<div class="line"><span class="lineno">  580</span>      {</div>
-<div class="line"><span class="lineno">  581</span>        <span class="keywordflow">if</span> (i != 0)</div>
-<div class="line"><span class="lineno">  582</span>          os &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
-<div class="line"><span class="lineno">  583</span>        os &lt;&lt; params-&gt;squeeze_dims()-&gt;Get(i);</div>
-<div class="line"><span class="lineno">  584</span>      }</div>
-<div class="line"><span class="lineno">  585</span>      os &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div>
-<div class="line"><span class="lineno">  586</span>      os &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  587</span>    }</div>
-<div class="line"><span class="lineno">  588</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00589">589</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  590</span>  {</div>
+<div class="line"><span class="lineno">  591</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_SqueezeOptions())</div>
+<div class="line"><span class="lineno">  592</span>    {</div>
+<div class="line"><span class="lineno">  593</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  594</span>      os &lt;&lt; <span class="stringliteral">&quot;SqueezeDims(&quot;</span>;</div>
+<div class="line"><span class="lineno">  595</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; params-&gt;squeeze_dims()-&gt;<a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>(); ++i)</div>
+<div class="line"><span class="lineno">  596</span>      {</div>
+<div class="line"><span class="lineno">  597</span>        <span class="keywordflow">if</span> (i != 0)</div>
+<div class="line"><span class="lineno">  598</span>          os &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
+<div class="line"><span class="lineno">  599</span>        os &lt;&lt; params-&gt;squeeze_dims()-&gt;Get(i);</div>
+<div class="line"><span class="lineno">  600</span>      }</div>
+<div class="line"><span class="lineno">  601</span>      os &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div>
+<div class="line"><span class="lineno">  602</span>      os &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  603</span>    }</div>
+<div class="line"><span class="lineno">  604</span>  }</div>
 <div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
 </div><!-- fragment -->
 </div>

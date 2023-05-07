@@ -20,6 +20,7 @@ var tfldump_2src_2_op_printer_8cpp =
     [ "tfldump::FakeQuantPrinter", "classtfldump_1_1_fake_quant_printer.html", "classtfldump_1_1_fake_quant_printer" ],
     [ "tfldump::FullyConnectedPrinter", "classtfldump_1_1_fully_connected_printer.html", "classtfldump_1_1_fully_connected_printer" ],
     [ "tfldump::GatherPrinter", "classtfldump_1_1_gather_printer.html", "classtfldump_1_1_gather_printer" ],
+    [ "tfldump::GeluPrinter", "classtfldump_1_1_gelu_printer.html", "classtfldump_1_1_gelu_printer" ],
     [ "tfldump::IfPrinter", "classtfldump_1_1_if_printer.html", "classtfldump_1_1_if_printer" ],
     [ "tfldump::L2NormPrinter", "classtfldump_1_1_l2_norm_printer.html", "classtfldump_1_1_l2_norm_printer" ],
     [ "tfldump::LeakyReluPrinter", "classtfldump_1_1_leaky_relu_printer.html", "classtfldump_1_1_leaky_relu_printer" ],

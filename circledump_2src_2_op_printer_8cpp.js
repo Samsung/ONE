@@ -20,6 +20,7 @@ var circledump_2src_2_op_printer_8cpp =
     [ "circledump::FakeQuantPrinter", "classcircledump_1_1_fake_quant_printer.html", "classcircledump_1_1_fake_quant_printer" ],
     [ "circledump::FullyConnectedPrinter", "classcircledump_1_1_fully_connected_printer.html", "classcircledump_1_1_fully_connected_printer" ],
     [ "circledump::GatherPrinter", "classcircledump_1_1_gather_printer.html", "classcircledump_1_1_gather_printer" ],
+    [ "circledump::GeluPrinter", "classcircledump_1_1_gelu_printer.html", "classcircledump_1_1_gelu_printer" ],
     [ "circledump::IfPrinter", "classcircledump_1_1_if_printer.html", "classcircledump_1_1_if_printer" ],
     [ "circledump::L2NormPrinter", "classcircledump_1_1_l2_norm_printer.html", "classcircledump_1_1_l2_norm_printer" ],
     [ "circledump::LeakyReluPrinter", "classcircledump_1_1_leaky_relu_printer.html", "classcircledump_1_1_leaky_relu_printer" ],

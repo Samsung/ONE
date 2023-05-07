@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00591">591</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00607">607</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae19b9cbf794ea26673b7d7aabe89a335" name="ae19b9cbf794ea26673b7d7aabe89a335"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae19b9cbf794ea26673b7d7aabe89a335">&#9670;&#160;</a></span>options()</h2>
@@ -151,19 +151,19 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classcircledump_1_1_op_printer.html#a9ce311a3773e4d5de389a8218406b1e4">circledump::OpPrinter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00594">594</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  595</span>  {</div>
-<div class="line"><span class="lineno">  596</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *strided_slice_params = op-&gt;builtin_options_as_StridedSliceOptions())</div>
-<div class="line"><span class="lineno">  597</span>    {</div>
-<div class="line"><span class="lineno">  598</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  599</span>      os &lt;&lt; <span class="stringliteral">&quot;begin_mask(&quot;</span> &lt;&lt; strided_slice_params-&gt;begin_mask() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  600</span>      os &lt;&lt; <span class="stringliteral">&quot;end_mask(&quot;</span> &lt;&lt; strided_slice_params-&gt;end_mask() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  601</span>      os &lt;&lt; <span class="stringliteral">&quot;ellipsis_mask(&quot;</span> &lt;&lt; strided_slice_params-&gt;ellipsis_mask() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  602</span>      os &lt;&lt; <span class="stringliteral">&quot;new_axis_mask(&quot;</span> &lt;&lt; strided_slice_params-&gt;new_axis_mask() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  603</span>      os &lt;&lt; <span class="stringliteral">&quot;shrink_axis_mask(&quot;</span> &lt;&lt; strided_slice_params-&gt;shrink_axis_mask() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  604</span>      os &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  605</span>    }</div>
-<div class="line"><span class="lineno">  606</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00610">610</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  611</span>  {</div>
+<div class="line"><span class="lineno">  612</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *strided_slice_params = op-&gt;builtin_options_as_StridedSliceOptions())</div>
+<div class="line"><span class="lineno">  613</span>    {</div>
+<div class="line"><span class="lineno">  614</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  615</span>      os &lt;&lt; <span class="stringliteral">&quot;begin_mask(&quot;</span> &lt;&lt; strided_slice_params-&gt;begin_mask() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  616</span>      os &lt;&lt; <span class="stringliteral">&quot;end_mask(&quot;</span> &lt;&lt; strided_slice_params-&gt;end_mask() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  617</span>      os &lt;&lt; <span class="stringliteral">&quot;ellipsis_mask(&quot;</span> &lt;&lt; strided_slice_params-&gt;ellipsis_mask() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  618</span>      os &lt;&lt; <span class="stringliteral">&quot;new_axis_mask(&quot;</span> &lt;&lt; strided_slice_params-&gt;new_axis_mask() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  619</span>      os &lt;&lt; <span class="stringliteral">&quot;shrink_axis_mask(&quot;</span> &lt;&lt; strided_slice_params-&gt;shrink_axis_mask() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  620</span>      os &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  621</span>    }</div>
+<div class="line"><span class="lineno">  622</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

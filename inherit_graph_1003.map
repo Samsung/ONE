@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structonert_1_1exec_1_1_function_sequence_1_1_dynamic_tensor_ctx.html" title=" " alt="" coords="5,5,204,45"/>
+<area shape="rect" id="node1" href="$structonert_1_1exec_1_1feature_1_1_reader.html" title="Class reads values of feature The interface class." alt="" coords="5,37,136,77"/>
+<area shape="rect" id="node2" href="$classonert_1_1exec_1_1feature_1_1nchw_1_1_reader.html" title=" " alt="" coords="184,5,320,45"/>
+<area shape="rect" id="node4" href="$classonert_1_1exec_1_1feature_1_1nhwc_1_1_reader.html" title=" " alt="" coords="184,69,320,109"/>
+<area shape="rect" id="node3" href="$classonert_1_1exec_1_1feature_1_1nchw_1_1_view.html" title=" " alt="" coords="368,5,499,45"/>
+<area shape="rect" id="node5" href="$classonert_1_1exec_1_1feature_1_1nhwc_1_1_view.html" title=" " alt="" coords="368,69,499,109"/>
 </map>

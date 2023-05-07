@@ -54,6 +54,8 @@ var dir_954973e14aa08af95ec3e76ca1bd9d01 =
     [ "GatherNdOptions.h", "_gather_nd_options_8h.html", "_gather_nd_options_8h" ],
     [ "GatherOptions.cpp", "_gather_options_8cpp.html", "_gather_options_8cpp" ],
     [ "GatherOptions.h", "_gather_options_8h.html", "_gather_options_8h" ],
+    [ "GeluOptions.cpp", "_gelu_options_8cpp.html", "_gelu_options_8cpp" ],
+    [ "GeluOptions.h", "_gelu_options_8h.html", "_gelu_options_8h" ],
     [ "GreaterEqualOptions.cpp", "_greater_equal_options_8cpp.html", "_greater_equal_options_8cpp" ],
     [ "GreaterEqualOptions.h", "_greater_equal_options_8h.html", "_greater_equal_options_8h" ],
     [ "GreaterOptions.cpp", "_greater_options_8cpp.html", "_greater_options_8cpp" ],

@@ -35,6 +35,7 @@ var namespacetflite2circle =
     [ "build_circle_FullyConnectedOptions", "namespacetflite2circle.html#aa87979c600ccc561ac08cad6a9d3d7e2", null ],
     [ "build_circle_GatherNdOptions", "namespacetflite2circle.html#a53d80865a3bbb1b7e7f4db07922840a2", null ],
     [ "build_circle_GatherOptions", "namespacetflite2circle.html#ac45bf9e447c161ddaa640ac1e153a443", null ],
+    [ "build_circle_GeluOptions", "namespacetflite2circle.html#ada59a684336983f7eb0030780777f687", null ],
     [ "build_circle_GreaterEqualOptions", "namespacetflite2circle.html#a0a0e246a38367c78f74ff8da6781989a", null ],
     [ "build_circle_GreaterOptions", "namespacetflite2circle.html#ae0d9b6f93511ea916abcda7d3d6213fc", null ],
     [ "build_circle_IfOptions", "namespacetflite2circle.html#aadbe297c9e8a6c3ec532f042334e147b", null ],

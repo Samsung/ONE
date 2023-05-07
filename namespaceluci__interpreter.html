@@ -172,6 +172,8 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci__interpreter_1_1_gather_params.html">GatherParams</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci__interpreter_1_1_gelu_params.html">GeluParams</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_graph_loader.html">GraphLoader</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci__interpreter_1_1_i_memory_manager.html">IMemoryManager</a></td></tr>
@@ -385,6 +387,8 @@ Functions</h2></td></tr>
 <tr class="separator:a86b0ef433247afa2ccdb291657cd2c2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1547f8c9a41363afd84bf2cad8b5758"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#af1547f8c9a41363afd84bf2cad8b5758">build_kernel_CircleGather</a> (const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *circle_node, <a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html">KernelBuilderHelper</a> &amp;helper)</td></tr>
 <tr class="separator:af1547f8c9a41363afd84bf2cad8b5758"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22d811e2b7a71f4a89ef43d5f5ebc229"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#a22d811e2b7a71f4a89ef43d5f5ebc229">build_kernel_CircleGelu</a> (const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *circle_node, <a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html">KernelBuilderHelper</a> &amp;helper)</td></tr>
+<tr class="separator:a22d811e2b7a71f4a89ef43d5f5ebc229"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d99965f7617aa19d1d1da05079d7f49"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#a9d99965f7617aa19d1d1da05079d7f49">build_kernel_CircleGreater</a> (const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *circle_node, <a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html">KernelBuilderHelper</a> &amp;helper)</td></tr>
 <tr class="separator:a9d99965f7617aa19d1d1da05079d7f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b160acf61b7f5cb5b9d54ac813c045b"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#a3b160acf61b7f5cb5b9d54ac813c045b">build_kernel_CircleGreaterEqual</a> (const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *circle_node, <a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html">KernelBuilderHelper</a> &amp;helper)</td></tr>
@@ -1492,10 +1496,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="ttc" id="anamespaceluci_html_aeb4b12a37aea94357365d57a5f274e71"><div class="ttname"><a href="namespaceluci.html#aeb4b12a37aea94357365d57a5f274e71">luci::has_execution_plan</a></div><div class="ttdeci">bool has_execution_plan(const luci::CircleNode *circle_node)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_node_execution_plan_8cpp_source.html#l00057">CircleNodeExecutionPlan.cpp:57</a></div></div>
 <div class="ttc" id="anamespaceluci_html_afd5ce70d0a50c7aa0e718d36f6358c04"><div class="ttname"><a href="namespaceluci.html#afd5ce70d0a50c7aa0e718d36f6358c04">luci::get_execution_plan</a></div><div class="ttdeci">luci::CircleNodeExecutionPlan get_execution_plan(const luci::CircleNode *circle_node)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_node_execution_plan_8cpp_source.html#l00069">CircleNodeExecutionPlan.cpp:69</a></div></div>
 <div class="ttc" id="astruct_shape_html"><div class="ttname"><a href="struct_shape.html">Shape</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2ann-ref_2src_2_shape_8h_source.html#l00027">Shape.h:28</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_pool2_d_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_pool2_d_params.html">luci_interpreter::Pool2DParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00146">KernelParams.h:147</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_pool2_d_params_html_a3ba9202c8d2a2131efbd8146552698db"><div class="ttname"><a href="structluci__interpreter_1_1_pool2_d_params.html#a3ba9202c8d2a2131efbd8146552698db">luci_interpreter::Pool2DParams::padding</a></div><div class="ttdeci">Padding padding</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00148">KernelParams.h:148</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_pool2_d_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_pool2_d_params.html">luci_interpreter::Pool2DParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00151">KernelParams.h:152</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_pool2_d_params_html_a3ba9202c8d2a2131efbd8146552698db"><div class="ttname"><a href="structluci__interpreter_1_1_pool2_d_params.html#a3ba9202c8d2a2131efbd8146552698db">luci_interpreter::Pool2DParams::padding</a></div><div class="ttdeci">Padding padding</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00153">KernelParams.h:153</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="_circle_node_execution_plan_8cpp_source.html#l00069">luci::get_execution_plan()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, <a class="el" href="_circle_node_execution_plan_8cpp_source.html#l00057">luci::has_execution_plan()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00148">luci_interpreter::Pool2DParams::padding</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="_circle_node_execution_plan_8cpp_source.html#l00069">luci::get_execution_plan()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, <a class="el" href="_circle_node_execution_plan_8cpp_source.html#l00057">luci::has_execution_plan()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00153">luci_interpreter::Pool2DParams::padding</a>.</p>
 
 </div>
 </div>
@@ -1567,7 +1571,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   54</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::AveragePool2D&gt;(input, output, tmp, params);</div>
 <div class="line"><span class="lineno">   55</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00099">luci::luci_padding()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00148">luci_interpreter::Pool2DParams::padding</a>.</p>
+<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00099">luci::luci_padding()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00153">luci_interpreter::Pool2DParams::padding</a>.</p>
 
 </div>
 </div>
@@ -3514,6 +3518,51 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 
 </div>
 </div>
+<a id="a22d811e2b7a71f4a89ef43d5f5ebc229" name="a22d811e2b7a71f4a89ef43d5f5ebc229"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22d811e2b7a71f4a89ef43d5f5ebc229">&#9670;&#160;</a></span>build_kernel_CircleGelu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt; luci_interpreter::build_kernel_CircleGelu </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *&#160;</td>
+          <td class="paramname"><em>circle_node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html">KernelBuilderHelper</a> &amp;&#160;</td>
+          <td class="paramname"><em>helper</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2loader_2nodes_2_gelu_8cpp_source.html#l00024">24</a> of file <a class="el" href="luci-interpreter_2src_2loader_2nodes_2_gelu_8cpp_source.html">Gelu.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
+<div class="line"><span class="lineno">   27</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *node = loco::must_cast&lt;const luci::CircleGelu *&gt;(circle_node);</div>
+<div class="line"><span class="lineno">   28</span>  assert(node-&gt;arity() == 1);</div>
+<div class="line"><span class="lineno">   29</span>  <span class="keyword">const</span> <a class="code hl_class" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *input = helper.<a class="code hl_function" href="classluci__interpreter_1_1_kernel_builder_helper.html#af56fb1d91e86cb79711563991f0ccbb3">getInputTensor</a>(node-&gt;features());</div>
+<div class="line"><span class="lineno">   30</span>  <a class="code hl_class" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *output = helper.<a class="code hl_function" href="classluci__interpreter_1_1_kernel_builder_helper.html#a2ea9a2ac873262a66e1afe27583941fb">getOutputTensor</a>(node);</div>
+<div class="line"><span class="lineno">   31</span> </div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_struct" href="structluci__interpreter_1_1_gelu_params.html">GeluParams</a> params{};</div>
+<div class="line"><span class="lineno">   33</span>  params.<a class="code hl_variable" href="structluci__interpreter_1_1_gelu_params.html#aa513c7c96e0becb99b2462e01da6f3ca">approximate</a> = node-&gt;approximate();</div>
+<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Gelu&gt;(input, output, params);</div>
+<div class="line"><span class="lineno">   36</span>}</div>
+<div class="ttc" id="astructluci__interpreter_1_1_gelu_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_gelu_params.html">luci_interpreter::GeluParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00101">KernelParams.h:102</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_gelu_params_html_aa513c7c96e0becb99b2462e01da6f3ca"><div class="ttname"><a href="structluci__interpreter_1_1_gelu_params.html#aa513c7c96e0becb99b2462e01da6f3ca">luci_interpreter::GeluParams::approximate</a></div><div class="ttdeci">bool approximate</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00103">KernelParams.h:103</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00103">luci_interpreter::GeluParams::approximate</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
+
+</div>
+</div>
 <a id="a9d99965f7617aa19d1d1da05079d7f49" name="a9d99965f7617aa19d1d1da05079d7f49"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9d99965f7617aa19d1d1da05079d7f49">&#9670;&#160;</a></span>build_kernel_CircleGreater() <span class="overload">[1/2]</span></h2>
 
@@ -3840,10 +3889,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   39</span> </div>
 <div class="line"><span class="lineno">   40</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::InstanceNorm&gt;(input, gamma, beta, output, params);</div>
 <div class="line"><span class="lineno">   41</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_instance_norm_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_instance_norm_params.html">luci_interpreter::InstanceNormParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00101">KernelParams.h:102</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_instance_norm_params_html_abfc580c9c9ebc60525e94e229d3957b3"><div class="ttname"><a href="structluci__interpreter_1_1_instance_norm_params.html#abfc580c9c9ebc60525e94e229d3957b3">luci_interpreter::InstanceNormParams::epsilon</a></div><div class="ttdeci">float epsilon</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00103">KernelParams.h:103</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_instance_norm_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_instance_norm_params.html">luci_interpreter::InstanceNormParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00106">KernelParams.h:107</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_instance_norm_params_html_abfc580c9c9ebc60525e94e229d3957b3"><div class="ttname"><a href="structluci__interpreter_1_1_instance_norm_params.html#abfc580c9c9ebc60525e94e229d3957b3">luci_interpreter::InstanceNormParams::epsilon</a></div><div class="ttdeci">float epsilon</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00108">KernelParams.h:108</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00103">luci_interpreter::InstanceNormParams::epsilon</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00108">luci_interpreter::InstanceNormParams::epsilon</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
 
 </div>
 </div>
@@ -3906,7 +3955,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::InstanceNorm&gt;(input, gamma, beta, output, params);</div>
 <div class="line"><span class="lineno">   46</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00103">luci_interpreter::InstanceNormParams::epsilon</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00108">luci_interpreter::InstanceNormParams::epsilon</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>.</p>
 
 </div>
 </div>
@@ -3949,10 +3998,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   35</span> </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::L2Normalize&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   37</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_l2_norm_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_l2_norm_params.html">luci_interpreter::L2NormParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00107">KernelParams.h:108</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_l2_norm_params_html_a774254b30286603b8e7997cac70daacd"><div class="ttname"><a href="structluci__interpreter_1_1_l2_norm_params.html#a774254b30286603b8e7997cac70daacd">luci_interpreter::L2NormParams::activation</a></div><div class="ttdeci">Activation activation</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00109">KernelParams.h:109</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_l2_norm_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_l2_norm_params.html">luci_interpreter::L2NormParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00112">KernelParams.h:113</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_l2_norm_params_html_a774254b30286603b8e7997cac70daacd"><div class="ttname"><a href="structluci__interpreter_1_1_l2_norm_params.html#a774254b30286603b8e7997cac70daacd">luci_interpreter::L2NormParams::activation</a></div><div class="ttdeci">Activation activation</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00114">KernelParams.h:114</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00109">luci_interpreter::L2NormParams::activation</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00114">luci_interpreter::L2NormParams::activation</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
 
 </div>
 </div>
@@ -4011,7 +4060,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::L2Normalize&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   42</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00109">luci_interpreter::L2NormParams::activation</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00114">luci_interpreter::L2NormParams::activation</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>.</p>
 
 </div>
 </div>
@@ -4060,7 +4109,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::L2Pool2D&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   42</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00148">luci_interpreter::Pool2DParams::padding</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00153">luci_interpreter::Pool2DParams::padding</a>.</p>
 
 </div>
 </div>
@@ -4124,7 +4173,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::L2Pool2D&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   46</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00099">luci::luci_padding()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00148">luci_interpreter::Pool2DParams::padding</a>.</p>
+<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00099">luci::luci_padding()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00153">luci_interpreter::Pool2DParams::padding</a>.</p>
 
 </div>
 </div>
@@ -4166,10 +4215,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   34</span> </div>
 <div class="line"><span class="lineno">   35</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::LeakyRelu&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   36</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_leaky_relu_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_leaky_relu_params.html">luci_interpreter::LeakyReluParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00112">KernelParams.h:113</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_leaky_relu_params_html_a35ba3b939f68017b54fca9096a031b8a"><div class="ttname"><a href="structluci__interpreter_1_1_leaky_relu_params.html#a35ba3b939f68017b54fca9096a031b8a">luci_interpreter::LeakyReluParams::alpha</a></div><div class="ttdeci">float alpha</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00114">KernelParams.h:114</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_leaky_relu_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_leaky_relu_params.html">luci_interpreter::LeakyReluParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00117">KernelParams.h:118</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_leaky_relu_params_html_a35ba3b939f68017b54fca9096a031b8a"><div class="ttname"><a href="structluci__interpreter_1_1_leaky_relu_params.html#a35ba3b939f68017b54fca9096a031b8a">luci_interpreter::LeakyReluParams::alpha</a></div><div class="ttdeci">float alpha</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00119">KernelParams.h:119</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00114">luci_interpreter::LeakyReluParams::alpha</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00119">luci_interpreter::LeakyReluParams::alpha</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
 
 </div>
 </div>
@@ -4228,7 +4277,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::LeakyRelu&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   42</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00114">luci_interpreter::LeakyReluParams::alpha</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00119">luci_interpreter::LeakyReluParams::alpha</a>.</p>
 
 </div>
 </div>
@@ -4459,10 +4508,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   38</span> </div>
 <div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::LocalResponseNormalization&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   40</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_local_response_normalization_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_local_response_normalization_params.html">luci_interpreter::LocalResponseNormalizationParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00117">KernelParams.h:118</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_local_response_normalization_params_html_a30da6ecab7e460468f2c89e5a503ed08"><div class="ttname"><a href="structluci__interpreter_1_1_local_response_normalization_params.html#a30da6ecab7e460468f2c89e5a503ed08">luci_interpreter::LocalResponseNormalizationParams::radius</a></div><div class="ttdeci">int32_t radius</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00119">KernelParams.h:119</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_local_response_normalization_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_local_response_normalization_params.html">luci_interpreter::LocalResponseNormalizationParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00122">KernelParams.h:123</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_local_response_normalization_params_html_a30da6ecab7e460468f2c89e5a503ed08"><div class="ttname"><a href="structluci__interpreter_1_1_local_response_normalization_params.html#a30da6ecab7e460468f2c89e5a503ed08">luci_interpreter::LocalResponseNormalizationParams::radius</a></div><div class="ttdeci">int32_t radius</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00124">KernelParams.h:124</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00119">luci_interpreter::LocalResponseNormalizationParams::radius</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00124">luci_interpreter::LocalResponseNormalizationParams::radius</a>.</p>
 
 </div>
 </div>
@@ -4523,7 +4572,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::LocalResponseNormalization&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   44</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00119">luci_interpreter::LocalResponseNormalizationParams::radius</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00124">luci_interpreter::LocalResponseNormalizationParams::radius</a>.</p>
 
 </div>
 </div>
@@ -5163,7 +5212,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::MaxPool2D&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   42</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00148">luci_interpreter::Pool2DParams::padding</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00153">luci_interpreter::Pool2DParams::padding</a>.</p>
 
 </div>
 </div>
@@ -5227,7 +5276,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   46</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::MaxPool2D&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   47</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00099">luci::luci_padding()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00148">luci_interpreter::Pool2DParams::padding</a>.</p>
+<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00099">luci::luci_padding()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00153">luci_interpreter::Pool2DParams::padding</a>.</p>
 
 </div>
 </div>
@@ -5294,7 +5343,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   59</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, <a class="el" href="_kernel_params_8h_source.html#l00158">luci_interpreter::ReducerParams::keep_dims</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, <a class="el" href="_kernel_params_8h_source.html#l00163">luci_interpreter::ReducerParams::keep_dims</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
 
 </div>
 </div>
@@ -5367,7 +5416,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   54</span>                                         params);</div>
 <div class="line"><span class="lineno">   55</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00158">luci_interpreter::ReducerParams::keep_dims</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00163">luci_interpreter::ReducerParams::keep_dims</a>.</p>
 
 </div>
 </div>
@@ -5504,10 +5553,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   36</span> </div>
 <div class="line"><span class="lineno">   37</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::MirrorPad&gt;(input, paddings, output, params);</div>
 <div class="line"><span class="lineno">   38</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_mirror_pad_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_mirror_pad_params.html">luci_interpreter::MirrorPadParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00125">KernelParams.h:126</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_mirror_pad_params_html_aa15eb88988eef2a9226e0cc45901572b"><div class="ttname"><a href="structluci__interpreter_1_1_mirror_pad_params.html#aa15eb88988eef2a9226e0cc45901572b">luci_interpreter::MirrorPadParams::mode</a></div><div class="ttdeci">MirrorPadMode mode</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00127">KernelParams.h:127</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_mirror_pad_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_mirror_pad_params.html">luci_interpreter::MirrorPadParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00130">KernelParams.h:131</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_mirror_pad_params_html_aa15eb88988eef2a9226e0cc45901572b"><div class="ttname"><a href="structluci__interpreter_1_1_mirror_pad_params.html#aa15eb88988eef2a9226e0cc45901572b">luci_interpreter::MirrorPadParams::mode</a></div><div class="ttdeci">MirrorPadMode mode</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00132">KernelParams.h:132</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00127">luci_interpreter::MirrorPadParams::mode</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00132">luci_interpreter::MirrorPadParams::mode</a>.</p>
 
 </div>
 </div>
@@ -5567,7 +5616,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   42</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::MirrorPad&gt;(input, paddings, output, params);</div>
 <div class="line"><span class="lineno">   43</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00112">luci::luci_mirrorpad_mode()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00127">luci_interpreter::MirrorPadParams::mode</a>.</p>
+<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00112">luci::luci_mirrorpad_mode()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00132">luci_interpreter::MirrorPadParams::mode</a>.</p>
 
 </div>
 </div>
@@ -5611,10 +5660,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   36</span> </div>
 <div class="line"><span class="lineno">   37</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Mul&gt;(input1, input2, output, params);</div>
 <div class="line"><span class="lineno">   38</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_mul_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_mul_params.html">luci_interpreter::MulParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00130">KernelParams.h:131</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_mul_params_html_a616f7f83dd0b546888a282ca8ee45e2f"><div class="ttname"><a href="structluci__interpreter_1_1_mul_params.html#a616f7f83dd0b546888a282ca8ee45e2f">luci_interpreter::MulParams::activation</a></div><div class="ttdeci">Activation activation</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00132">KernelParams.h:132</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_mul_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_mul_params.html">luci_interpreter::MulParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00135">KernelParams.h:136</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_mul_params_html_a616f7f83dd0b546888a282ca8ee45e2f"><div class="ttname"><a href="structluci__interpreter_1_1_mul_params.html#a616f7f83dd0b546888a282ca8ee45e2f">luci_interpreter::MulParams::activation</a></div><div class="ttdeci">Activation activation</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00137">KernelParams.h:137</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00132">luci_interpreter::MulParams::activation</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00137">luci_interpreter::MulParams::activation</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
 
 </div>
 </div>
@@ -5674,7 +5723,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Mul&gt;(input1, input2, output, params);</div>
 <div class="line"><span class="lineno">   42</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00132">luci_interpreter::MulParams::activation</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00137">luci_interpreter::MulParams::activation</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>.</p>
 
 </div>
 </div>
@@ -5903,10 +5952,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   38</span> </div>
 <div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::OneHot&gt;(indices, depth, on_value, off_value, output, params);</div>
 <div class="line"><span class="lineno">   40</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_one_hot_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_one_hot_params.html">luci_interpreter::OneHotParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00135">KernelParams.h:136</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_one_hot_params_html_a1bb1750fb7401251db577db6abadefb1"><div class="ttname"><a href="structluci__interpreter_1_1_one_hot_params.html#a1bb1750fb7401251db577db6abadefb1">luci_interpreter::OneHotParams::axis</a></div><div class="ttdeci">int32_t axis</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00137">KernelParams.h:137</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_one_hot_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_one_hot_params.html">luci_interpreter::OneHotParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00140">KernelParams.h:141</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_one_hot_params_html_a1bb1750fb7401251db577db6abadefb1"><div class="ttname"><a href="structluci__interpreter_1_1_one_hot_params.html#a1bb1750fb7401251db577db6abadefb1">luci_interpreter::OneHotParams::axis</a></div><div class="ttdeci">int32_t axis</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00142">KernelParams.h:142</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00137">luci_interpreter::OneHotParams::axis</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00142">luci_interpreter::OneHotParams::axis</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
 
 </div>
 </div>
@@ -5968,7 +6017,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::OneHot&gt;(indices, depth, on_value, off_value, output, params);</div>
 <div class="line"><span class="lineno">   44</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00137">luci_interpreter::OneHotParams::axis</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00142">luci_interpreter::OneHotParams::axis</a>.</p>
 
 </div>
 </div>
@@ -6017,7 +6066,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Pack&gt;(std::move(inputs), output, params);</div>
 <div class="line"><span class="lineno">   42</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00143">luci_interpreter::PackParams::axis</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00148">luci_interpreter::PackParams::axis</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
 
 </div>
 </div>
@@ -6079,7 +6128,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Pack&gt;(std::move(input_tensors), output, params);</div>
 <div class="line"><span class="lineno">   44</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00143">luci_interpreter::PackParams::axis</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00148">luci_interpreter::PackParams::axis</a>.</p>
 
 </div>
 </div>
@@ -6604,7 +6653,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   52</span>                                              params);</div>
 <div class="line"><span class="lineno">   53</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, <a class="el" href="_kernel_params_8h_source.html#l00158">luci_interpreter::ReducerParams::keep_dims</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, <a class="el" href="_kernel_params_8h_source.html#l00163">luci_interpreter::ReducerParams::keep_dims</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
 
 </div>
 </div>
@@ -6664,7 +6713,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   52</span>                                               params);</div>
 <div class="line"><span class="lineno">   53</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, <a class="el" href="_kernel_params_8h_source.html#l00158">luci_interpreter::ReducerParams::keep_dims</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, <a class="el" href="_kernel_params_8h_source.html#l00163">luci_interpreter::ReducerParams::keep_dims</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
 
 </div>
 </div>
@@ -6984,10 +7033,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   37</span> </div>
 <div class="line"><span class="lineno">   38</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::ResizeBilinear&gt;(input, size, output, params);</div>
 <div class="line"><span class="lineno">   39</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_resize_bilinear_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_resize_bilinear_params.html">luci_interpreter::ResizeBilinearParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00161">KernelParams.h:162</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_resize_bilinear_params_html_ad16d9e6b4307ee9cf57cf7513223c818"><div class="ttname"><a href="structluci__interpreter_1_1_resize_bilinear_params.html#ad16d9e6b4307ee9cf57cf7513223c818">luci_interpreter::ResizeBilinearParams::align_corners</a></div><div class="ttdeci">bool align_corners</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00163">KernelParams.h:163</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_resize_bilinear_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_resize_bilinear_params.html">luci_interpreter::ResizeBilinearParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00166">KernelParams.h:167</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_resize_bilinear_params_html_ad16d9e6b4307ee9cf57cf7513223c818"><div class="ttname"><a href="structluci__interpreter_1_1_resize_bilinear_params.html#ad16d9e6b4307ee9cf57cf7513223c818">luci_interpreter::ResizeBilinearParams::align_corners</a></div><div class="ttdeci">bool align_corners</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00168">KernelParams.h:168</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00163">luci_interpreter::ResizeBilinearParams::align_corners</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">size()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00168">luci_interpreter::ResizeBilinearParams::align_corners</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">size()</a>.</p>
 
 </div>
 </div>
@@ -7048,7 +7097,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::ResizeBilinear&gt;(input, size, output, params);</div>
 <div class="line"><span class="lineno">   44</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00163">luci_interpreter::ResizeBilinearParams::align_corners</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">size()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00168">luci_interpreter::ResizeBilinearParams::align_corners</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">size()</a>.</p>
 
 </div>
 </div>
@@ -7097,10 +7146,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   42</span> </div>
 <div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::ResizeNearestNeighbor&gt;(input, size, output, params);</div>
 <div class="line"><span class="lineno">   44</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_resize_nearest_neighbor_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_resize_nearest_neighbor_params.html">luci_interpreter::ResizeNearestNeighborParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00167">KernelParams.h:168</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_resize_nearest_neighbor_params_html_a76e91cef8f7c5866612897f7b2353969"><div class="ttname"><a href="structluci__interpreter_1_1_resize_nearest_neighbor_params.html#a76e91cef8f7c5866612897f7b2353969">luci_interpreter::ResizeNearestNeighborParams::align_corners</a></div><div class="ttdeci">bool align_corners</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00169">KernelParams.h:169</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_resize_nearest_neighbor_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_resize_nearest_neighbor_params.html">luci_interpreter::ResizeNearestNeighborParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00172">KernelParams.h:173</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_resize_nearest_neighbor_params_html_a76e91cef8f7c5866612897f7b2353969"><div class="ttname"><a href="structluci__interpreter_1_1_resize_nearest_neighbor_params.html#a76e91cef8f7c5866612897f7b2353969">luci_interpreter::ResizeNearestNeighborParams::align_corners</a></div><div class="ttdeci">bool align_corners</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00174">KernelParams.h:174</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00169">luci_interpreter::ResizeNearestNeighborParams::align_corners</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">size()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00174">luci_interpreter::ResizeNearestNeighborParams::align_corners</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">size()</a>.</p>
 
 </div>
 </div>
@@ -7165,7 +7214,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::ResizeNearestNeighbor&gt;(input, size, output, params);</div>
 <div class="line"><span class="lineno">   48</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00169">luci_interpreter::ResizeNearestNeighborParams::align_corners</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">size()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00174">luci_interpreter::ResizeNearestNeighborParams::align_corners</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">size()</a>.</p>
 
 </div>
 </div>
@@ -7434,10 +7483,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   35</span> </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::ShapeKernel&gt;(input, output, shape_params);</div>
 <div class="line"><span class="lineno">   37</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_shape_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_shape_params.html">luci_interpreter::ShapeParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00173">KernelParams.h:174</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_shape_params_html_a7a8e96b658c3ca185f315981977163a8"><div class="ttname"><a href="structluci__interpreter_1_1_shape_params.html#a7a8e96b658c3ca185f315981977163a8">luci_interpreter::ShapeParams::out_type</a></div><div class="ttdeci">loco::DataType out_type</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00175">KernelParams.h:175</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_shape_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_shape_params.html">luci_interpreter::ShapeParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00178">KernelParams.h:179</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_shape_params_html_a7a8e96b658c3ca185f315981977163a8"><div class="ttname"><a href="structluci__interpreter_1_1_shape_params.html#a7a8e96b658c3ca185f315981977163a8">luci_interpreter::ShapeParams::out_type</a></div><div class="ttdeci">loco::DataType out_type</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00180">KernelParams.h:180</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00175">luci_interpreter::ShapeParams::out_type</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00180">luci_interpreter::ShapeParams::out_type</a>.</p>
 
 </div>
 </div>
@@ -7495,7 +7544,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::ShapeKernel&gt;(input, output, shape_params);</div>
 <div class="line"><span class="lineno">   40</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00045">luci::luci_datatype()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00175">luci_interpreter::ShapeParams::out_type</a>.</p>
+<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00045">luci::luci_datatype()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00180">luci_interpreter::ShapeParams::out_type</a>.</p>
 
 </div>
 </div>
@@ -7636,10 +7685,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   35</span> </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Softmax&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   37</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_softmax_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_softmax_params.html">luci_interpreter::SoftmaxParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00195">KernelParams.h:196</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_softmax_params_html_aafa0297dbef196c7c8ccad21610ef82e"><div class="ttname"><a href="structluci__interpreter_1_1_softmax_params.html#aafa0297dbef196c7c8ccad21610ef82e">luci_interpreter::SoftmaxParams::beta</a></div><div class="ttdeci">float beta</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00197">KernelParams.h:197</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_softmax_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_softmax_params.html">luci_interpreter::SoftmaxParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00200">KernelParams.h:201</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_softmax_params_html_aafa0297dbef196c7c8ccad21610ef82e"><div class="ttname"><a href="structluci__interpreter_1_1_softmax_params.html#aafa0297dbef196c7c8ccad21610ef82e">luci_interpreter::SoftmaxParams::beta</a></div><div class="ttdeci">float beta</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00202">KernelParams.h:202</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00197">luci_interpreter::SoftmaxParams::beta</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00202">luci_interpreter::SoftmaxParams::beta</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
 
 </div>
 </div>
@@ -7697,7 +7746,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Softmax&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   40</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00197">luci_interpreter::SoftmaxParams::beta</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00202">luci_interpreter::SoftmaxParams::beta</a>.</p>
 
 </div>
 </div>
@@ -7836,10 +7885,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   35</span> </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::SpaceToDepth&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   37</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_space_to_depth_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_space_to_depth_params.html">luci_interpreter::SpaceToDepthParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00190">KernelParams.h:191</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_space_to_depth_params_html_a8ca56cd05724ab5fbcd901fe83ad511a"><div class="ttname"><a href="structluci__interpreter_1_1_space_to_depth_params.html#a8ca56cd05724ab5fbcd901fe83ad511a">luci_interpreter::SpaceToDepthParams::block_size</a></div><div class="ttdeci">int block_size</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00192">KernelParams.h:192</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_space_to_depth_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_space_to_depth_params.html">luci_interpreter::SpaceToDepthParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00195">KernelParams.h:196</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_space_to_depth_params_html_a8ca56cd05724ab5fbcd901fe83ad511a"><div class="ttname"><a href="structluci__interpreter_1_1_space_to_depth_params.html#a8ca56cd05724ab5fbcd901fe83ad511a">luci_interpreter::SpaceToDepthParams::block_size</a></div><div class="ttdeci">int block_size</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00197">KernelParams.h:197</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00192">luci_interpreter::SpaceToDepthParams::block_size</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00197">luci_interpreter::SpaceToDepthParams::block_size</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
 
 </div>
 </div>
@@ -7897,7 +7946,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   40</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::SpaceToDepth&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   41</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00192">luci_interpreter::SpaceToDepthParams::block_size</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00197">luci_interpreter::SpaceToDepthParams::block_size</a>.</p>
 
 </div>
 </div>
@@ -8419,10 +8468,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   35</span> </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Squeeze&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   37</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_squeeze_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_squeeze_params.html">luci_interpreter::SqueezeParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00209">KernelParams.h:210</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_squeeze_params_html_a41af3a6c0a8c9ab7247f739e7761e48a"><div class="ttname"><a href="structluci__interpreter_1_1_squeeze_params.html#a41af3a6c0a8c9ab7247f739e7761e48a">luci_interpreter::SqueezeParams::squeeze_dims</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; squeeze_dims</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00211">KernelParams.h:211</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_squeeze_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_squeeze_params.html">luci_interpreter::SqueezeParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00214">KernelParams.h:215</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_squeeze_params_html_a41af3a6c0a8c9ab7247f739e7761e48a"><div class="ttname"><a href="structluci__interpreter_1_1_squeeze_params.html#a41af3a6c0a8c9ab7247f739e7761e48a">luci_interpreter::SqueezeParams::squeeze_dims</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; squeeze_dims</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00216">KernelParams.h:216</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00211">luci_interpreter::SqueezeParams::squeeze_dims</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00216">luci_interpreter::SqueezeParams::squeeze_dims</a>.</p>
 
 </div>
 </div>
@@ -8480,7 +8529,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Squeeze&gt;(input, output, params);</div>
 <div class="line"><span class="lineno">   40</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00211">luci_interpreter::SqueezeParams::squeeze_dims</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00216">luci_interpreter::SqueezeParams::squeeze_dims</a>.</p>
 
 </div>
 </div>
@@ -8531,10 +8580,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   43</span> </div>
 <div class="line"><span class="lineno">   44</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::StridedSlice&gt;(input, begin, end, strides, output, params);</div>
 <div class="line"><span class="lineno">   45</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_strided_slice_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_strided_slice_params.html">luci_interpreter::StridedSliceParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00200">KernelParams.h:201</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_strided_slice_params_html_a36d22dfea1b808eceae7c169403a0e7c"><div class="ttname"><a href="structluci__interpreter_1_1_strided_slice_params.html#a36d22dfea1b808eceae7c169403a0e7c">luci_interpreter::StridedSliceParams::begin_mask</a></div><div class="ttdeci">int32_t begin_mask</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00202">KernelParams.h:202</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_strided_slice_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_strided_slice_params.html">luci_interpreter::StridedSliceParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00205">KernelParams.h:206</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_strided_slice_params_html_a36d22dfea1b808eceae7c169403a0e7c"><div class="ttname"><a href="structluci__interpreter_1_1_strided_slice_params.html#a36d22dfea1b808eceae7c169403a0e7c">luci_interpreter::StridedSliceParams::begin_mask</a></div><div class="ttdeci">int32_t begin_mask</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00207">KernelParams.h:207</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00202">luci_interpreter::StridedSliceParams::begin_mask</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00207">luci_interpreter::StridedSliceParams::begin_mask</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
 
 </div>
 </div>
@@ -8600,7 +8649,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::StridedSlice&gt;(input, begin, end, strides, output, params);</div>
 <div class="line"><span class="lineno">   49</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00202">luci_interpreter::StridedSliceParams::begin_mask</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00207">luci_interpreter::StridedSliceParams::begin_mask</a>.</p>
 
 </div>
 </div>
@@ -8644,10 +8693,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   36</span> </div>
 <div class="line"><span class="lineno">   37</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Sub&gt;(input1, input2, output, params);</div>
 <div class="line"><span class="lineno">   38</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_sub_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_sub_params.html">luci_interpreter::SubParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00178">KernelParams.h:179</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_sub_params_html_aa7e7fd955b773e1d199d8d7c83391950"><div class="ttname"><a href="structluci__interpreter_1_1_sub_params.html#aa7e7fd955b773e1d199d8d7c83391950">luci_interpreter::SubParams::activation</a></div><div class="ttdeci">Activation activation</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00180">KernelParams.h:180</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_sub_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_sub_params.html">luci_interpreter::SubParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00183">KernelParams.h:184</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_sub_params_html_aa7e7fd955b773e1d199d8d7c83391950"><div class="ttname"><a href="structluci__interpreter_1_1_sub_params.html#aa7e7fd955b773e1d199d8d7c83391950">luci_interpreter::SubParams::activation</a></div><div class="ttdeci">Activation activation</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00185">KernelParams.h:185</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00180">luci_interpreter::SubParams::activation</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00185">luci_interpreter::SubParams::activation</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
 
 </div>
 </div>
@@ -8707,7 +8756,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Sub&gt;(input1, input2, output, params);</div>
 <div class="line"><span class="lineno">   42</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00180">luci_interpreter::SubParams::activation</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00185">luci_interpreter::SubParams::activation</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>.</p>
 
 </div>
 </div>
@@ -8766,7 +8815,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   51</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Sum&gt;(input, axes, output, temp_index, resolved_axes, params);</div>
 <div class="line"><span class="lineno">   52</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, <a class="el" href="_kernel_params_8h_source.html#l00158">luci_interpreter::ReducerParams::keep_dims</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, <a class="el" href="_kernel_params_8h_source.html#l00163">luci_interpreter::ReducerParams::keep_dims</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
 
 </div>
 </div>
@@ -8863,7 +8912,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   89</span>                                         tmp, tmp_1, tmp_2, tmp_3, tmp_4, tmp_5, tmp_6, params);</div>
 <div class="line"><span class="lineno">   90</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00187">luci_interpreter::SVDFParams::activation</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00031">luci_interpreter::KernelBuilderHelper::getOptionalInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00192">luci_interpreter::SVDFParams::activation</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00031">luci_interpreter::KernelBuilderHelper::getOptionalInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
 
 </div>
 </div>
@@ -8968,7 +9017,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   86</span>                                         tmp, tmp_1, tmp_2, tmp_3, tmp_4, tmp_5, tmp_6, params);</div>
 <div class="line"><span class="lineno">   87</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00187">luci_interpreter::SVDFParams::activation</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00192">luci_interpreter::SVDFParams::activation</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>.</p>
 
 </div>
 </div>
@@ -9212,7 +9261,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   53</span>}</div>
 <div class="ttc" id="anamespaceluci__interpreter_html_aad9df55f11269ecadf7448b6b9a10ffb"><div class="ttname"><a href="namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffb">luci_interpreter::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdoc">&quot;scalar&quot; value type</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00031">DataType.h:32</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00031">luci_interpreter::KernelBuilderHelper::getOptionalInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00216">luci_interpreter::TransposeConvParams::padding</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00031">luci_interpreter::KernelBuilderHelper::getOptionalInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00221">luci_interpreter::TransposeConvParams::padding</a>.</p>
 
 </div>
 </div>
@@ -9284,7 +9333,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   54</span>                                                  tmp, params);</div>
 <div class="line"><span class="lineno">   55</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00099">luci::luci_padding()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00216">luci_interpreter::TransposeConvParams::padding</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00099">luci::luci_padding()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00221">luci_interpreter::TransposeConvParams::padding</a>.</p>
 
 </div>
 </div>
@@ -9393,7 +9442,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">  103</span>    output_layer_norm_coefficients, output, tmp_1, tmp_2, tmp_3, params);</div>
 <div class="line"><span class="lineno">  104</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00223">luci_interpreter::UnidirectionalSequenceLSTMParams::activation</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00031">luci_interpreter::KernelBuilderHelper::getOptionalInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00228">luci_interpreter::UnidirectionalSequenceLSTMParams::activation</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00031">luci_interpreter::KernelBuilderHelper::getOptionalInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
 
 </div>
 </div>
@@ -9551,10 +9600,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">  141</span>    input_layer_norm_coefficients, forget_layer_norm_coefficients, cell_layer_norm_coefficients,</div>
 <div class="line"><span class="lineno">  142</span>    output_layer_norm_coefficients, std::move(outputs), params);</div>
 <div class="line"><span class="lineno">  143</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html">luci_interpreter::UnidirectionalSequenceLSTMParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00221">KernelParams.h:222</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params_html_abc9dac8ee534f4d999e027c1e3447e58"><div class="ttname"><a href="structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html#abc9dac8ee534f4d999e027c1e3447e58">luci_interpreter::UnidirectionalSequenceLSTMParams::activation</a></div><div class="ttdeci">Activation activation</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00223">KernelParams.h:223</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html">luci_interpreter::UnidirectionalSequenceLSTMParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00226">KernelParams.h:227</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params_html_abc9dac8ee534f4d999e027c1e3447e58"><div class="ttname"><a href="structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html#abc9dac8ee534f4d999e027c1e3447e58">luci_interpreter::UnidirectionalSequenceLSTMParams::activation</a></div><div class="ttdeci">Activation activation</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00228">KernelParams.h:228</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00223">luci_interpreter::UnidirectionalSequenceLSTMParams::activation</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00228">luci_interpreter::UnidirectionalSequenceLSTMParams::activation</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>.</p>
 
 </div>
 </div>
@@ -9600,10 +9649,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   38</span>  <span class="comment">// NOTE &#39;num&#39; attribute is ignored.</span></div>
 <div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Unpack&gt;(input, std::move(outputs), params);</div>
 <div class="line"><span class="lineno">   40</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_unpack_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_unpack_params.html">luci_interpreter::UnpackParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00230">KernelParams.h:231</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_unpack_params_html_ac87b2d39c4e1c7cfa33befaaee7a3a8e"><div class="ttname"><a href="structluci__interpreter_1_1_unpack_params.html#ac87b2d39c4e1c7cfa33befaaee7a3a8e">luci_interpreter::UnpackParams::axis</a></div><div class="ttdeci">int axis</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00232">KernelParams.h:232</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_unpack_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_unpack_params.html">luci_interpreter::UnpackParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00235">KernelParams.h:236</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_unpack_params_html_ac87b2d39c4e1c7cfa33befaaee7a3a8e"><div class="ttname"><a href="structluci__interpreter_1_1_unpack_params.html#ac87b2d39c4e1c7cfa33befaaee7a3a8e">luci_interpreter::UnpackParams::axis</a></div><div class="ttdeci">int axis</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00237">KernelParams.h:237</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00232">luci_interpreter::UnpackParams::axis</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00048">luci_interpreter::KernelBuilderHelper::getOutputTensors()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00237">luci_interpreter::UnpackParams::axis</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00048">luci_interpreter::KernelBuilderHelper::getOutputTensors()</a>.</p>
 
 </div>
 </div>
@@ -9668,7 +9717,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   46</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Unpack&gt;(input, std::move(output_tensors), params);</div>
 <div class="line"><span class="lineno">   47</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00232">luci_interpreter::UnpackParams::axis</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00237">luci_interpreter::UnpackParams::axis</a>.</p>
 
 </div>
 </div>

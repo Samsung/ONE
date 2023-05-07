@@ -40,6 +40,7 @@ var _circle_node_summary_builders_8h =
     [ "luci::CircleFullyConnectedSummaryBuilder", "classluci_1_1_circle_fully_connected_summary_builder.html", null ],
     [ "luci::CircleGatherSummaryBuilder", "classluci_1_1_circle_gather_summary_builder.html", null ],
     [ "luci::CircleGatherNdSummaryBuilder", "classluci_1_1_circle_gather_nd_summary_builder.html", null ],
+    [ "luci::CircleGeluSummaryBuilder", "classluci_1_1_circle_gelu_summary_builder.html", null ],
     [ "luci::CircleGreaterSummaryBuilder", "classluci_1_1_circle_greater_summary_builder.html", null ],
     [ "luci::CircleGreaterEqualSummaryBuilder", "classluci_1_1_circle_greater_equal_summary_builder.html", null ],
     [ "luci::CircleIfSummaryBuilder", "classluci_1_1_circle_if_summary_builder.html", null ],

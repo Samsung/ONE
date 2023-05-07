@@ -11,6 +11,7 @@ var dir_87d3c94e6949fc8b1232f1fb92051577 =
     [ "PALElu.h", "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_elu_8h.html", null ],
     [ "PALFullyConnected.h", "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_fully_connected_8h.html", "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_fully_connected_8h" ],
     [ "PALGather.h", "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_gather_8h.html", null ],
+    [ "PALGelu.h", "_p_a_l_gelu_8h.html", null ],
     [ "PALL2Normalize.h", "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_l2_normalize_8h.html", null ],
     [ "PALL2Pool2D.h", "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_l2_pool2_d_8h.html", null ],
     [ "PALLeakyRelu.h", "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_leaky_relu_8h.html", null ],

@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00622">622</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00635">635</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a33cfd847f89e0a4fb5a9b4a78452b2a5" name="a33cfd847f89e0a4fb5a9b4a78452b2a5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a33cfd847f89e0a4fb5a9b4a78452b2a5">&#9670;&#160;</a></span>options()</h2>
@@ -151,17 +151,17 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classtfldump_1_1_op_printer.html#a63d2bd24d5c01caa2f6f7f9ca5cbd83e">tfldump::OpPrinter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00625">625</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  626</span>  {</div>
-<div class="line"><span class="lineno">  627</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_TransposeConvOptions())</div>
-<div class="line"><span class="lineno">  628</span>    {</div>
-<div class="line"><span class="lineno">  629</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  630</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; params-&gt;padding() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  631</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.W(&quot;</span> &lt;&lt; params-&gt;stride_w() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  632</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.H(&quot;</span> &lt;&lt; params-&gt;stride_h() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  633</span>      os &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  634</span>    }</div>
-<div class="line"><span class="lineno">  635</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00638">638</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  639</span>  {</div>
+<div class="line"><span class="lineno">  640</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_TransposeConvOptions())</div>
+<div class="line"><span class="lineno">  641</span>    {</div>
+<div class="line"><span class="lineno">  642</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  643</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; params-&gt;padding() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  644</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.W(&quot;</span> &lt;&lt; params-&gt;stride_w() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  645</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.H(&quot;</span> &lt;&lt; params-&gt;stride_h() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  646</span>      os &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  647</span>    }</div>
+<div class="line"><span class="lineno">  648</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

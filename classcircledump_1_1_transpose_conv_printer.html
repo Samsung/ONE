@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00641">641</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00657">657</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a6d4f0803b82dfaf48f6ffe734b2c3bfa" name="a6d4f0803b82dfaf48f6ffe734b2c3bfa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d4f0803b82dfaf48f6ffe734b2c3bfa">&#9670;&#160;</a></span>options()</h2>
@@ -151,17 +151,17 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classcircledump_1_1_op_printer.html#a9ce311a3773e4d5de389a8218406b1e4">circledump::OpPrinter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00644">644</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  645</span>  {</div>
-<div class="line"><span class="lineno">  646</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> conv_params = op-&gt;builtin_options_as_TransposeConvOptions())</div>
-<div class="line"><span class="lineno">  647</span>    {</div>
-<div class="line"><span class="lineno">  648</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  649</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; conv_params-&gt;padding() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  650</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.W(&quot;</span> &lt;&lt; conv_params-&gt;stride_w() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  651</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.H(&quot;</span> &lt;&lt; conv_params-&gt;stride_h() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  652</span>      os &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  653</span>    }</div>
-<div class="line"><span class="lineno">  654</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00660">660</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  661</span>  {</div>
+<div class="line"><span class="lineno">  662</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> conv_params = op-&gt;builtin_options_as_TransposeConvOptions())</div>
+<div class="line"><span class="lineno">  663</span>    {</div>
+<div class="line"><span class="lineno">  664</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  665</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; conv_params-&gt;padding() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  666</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.W(&quot;</span> &lt;&lt; conv_params-&gt;stride_w() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  667</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.H(&quot;</span> &lt;&lt; conv_params-&gt;stride_h() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  668</span>      os &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  669</span>    }</div>
+<div class="line"><span class="lineno">  670</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

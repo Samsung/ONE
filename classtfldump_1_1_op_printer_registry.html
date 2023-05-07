@@ -129,86 +129,87 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00726">726</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  727</span>{</div>
-<div class="line"><span class="lineno">  728</span>  _op_map[tflite::BuiltinOperator_ADD] = make_unique&lt;AddPrinter&gt;();</div>
-<div class="line"><span class="lineno">  729</span>  <span class="comment">// There is no Option for ADD_N</span></div>
-<div class="line"><span class="lineno">  730</span>  _op_map[tflite::BuiltinOperator_ARG_MAX] = make_unique&lt;ArgMaxPrinter&gt;();</div>
-<div class="line"><span class="lineno">  731</span>  _op_map[tflite::BuiltinOperator_ARG_MIN] = make_unique&lt;ArgMinPrinter&gt;();</div>
-<div class="line"><span class="lineno">  732</span>  _op_map[tflite::BuiltinOperator_AVERAGE_POOL_2D] = make_unique&lt;Pool2DPrinter&gt;();</div>
-<div class="line"><span class="lineno">  733</span>  _op_map[tflite::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM] =</div>
-<div class="line"><span class="lineno">  734</span>    make_unique&lt;BidirectionalSequenceLSTMPrinter&gt;();</div>
-<div class="line"><span class="lineno">  735</span>  _op_map[tflite::BuiltinOperator_CAST] = make_unique&lt;CastPrinter&gt;();</div>
-<div class="line"><span class="lineno">  736</span>  <span class="comment">// There is no Option for CEIL</span></div>
-<div class="line"><span class="lineno">  737</span>  _op_map[tflite::BuiltinOperator_CONCATENATION] = make_unique&lt;ConcatenationPrinter&gt;();</div>
-<div class="line"><span class="lineno">  738</span>  _op_map[tflite::BuiltinOperator_CONV_2D] = make_unique&lt;Conv2DPrinter&gt;();</div>
-<div class="line"><span class="lineno">  739</span>  <span class="comment">// There is no Option for DENSIFY</span></div>
-<div class="line"><span class="lineno">  740</span>  _op_map[tflite::BuiltinOperator_DEPTH_TO_SPACE] = make_unique&lt;DepthToSpacePrinter&gt;();</div>
-<div class="line"><span class="lineno">  741</span>  _op_map[tflite::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique&lt;DepthwiseConv2DPrinter&gt;();</div>
-<div class="line"><span class="lineno">  742</span>  <span class="comment">// There is no Option for DEQUANTIZE</span></div>
-<div class="line"><span class="lineno">  743</span>  _op_map[tflite::BuiltinOperator_DIV] = make_unique&lt;DivPrinter&gt;();</div>
-<div class="line"><span class="lineno">  744</span>  _op_map[tflite::BuiltinOperator_FAKE_QUANT] = make_unique&lt;FakeQuantPrinter&gt;();</div>
-<div class="line"><span class="lineno">  745</span>  <span class="comment">// There is no Option for FLOOR</span></div>
-<div class="line"><span class="lineno">  746</span>  <span class="comment">// There is no Option for FLOOR_MOD</span></div>
-<div class="line"><span class="lineno">  747</span>  _op_map[tflite::BuiltinOperator_FULLY_CONNECTED] = make_unique&lt;FullyConnectedPrinter&gt;();</div>
-<div class="line"><span class="lineno">  748</span>  _op_map[tflite::BuiltinOperator_GATHER] = make_unique&lt;GatherPrinter&gt;();</div>
-<div class="line"><span class="lineno">  749</span>  _op_map[tflite::BuiltinOperator_IF] = make_unique&lt;IfPrinter&gt;();</div>
-<div class="line"><span class="lineno">  750</span>  _op_map[tflite::BuiltinOperator_L2_POOL_2D] = make_unique&lt;Pool2DPrinter&gt;();</div>
-<div class="line"><span class="lineno">  751</span>  _op_map[tflite::BuiltinOperator_L2_NORMALIZATION] = make_unique&lt;L2NormPrinter&gt;();</div>
-<div class="line"><span class="lineno">  752</span>  _op_map[tflite::BuiltinOperator_LEAKY_RELU] = make_unique&lt;LeakyReluPrinter&gt;();</div>
-<div class="line"><span class="lineno">  753</span>  _op_map[tflite::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION] =</div>
-<div class="line"><span class="lineno">  754</span>    make_unique&lt;LocalResponseNormalizationPrinter&gt;();</div>
-<div class="line"><span class="lineno">  755</span>  <span class="comment">// There is no Option for LOG</span></div>
-<div class="line"><span class="lineno">  756</span>  <span class="comment">// There is no Option for LOGISTIC</span></div>
-<div class="line"><span class="lineno">  757</span>  <span class="comment">// There is no Option for LOG_SOFTMAX</span></div>
-<div class="line"><span class="lineno">  758</span>  _op_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique&lt;Pool2DPrinter&gt;();</div>
-<div class="line"><span class="lineno">  759</span>  _op_map[tflite::BuiltinOperator_MEAN] = make_unique&lt;ReducerPrinter&gt;();</div>
-<div class="line"><span class="lineno">  760</span>  _op_map[tflite::BuiltinOperator_MIRROR_PAD] = make_unique&lt;MirrorPadPrinter&gt;();</div>
-<div class="line"><span class="lineno">  761</span>  _op_map[tflite::BuiltinOperator_MUL] = make_unique&lt;MulPrinter&gt;();</div>
-<div class="line"><span class="lineno">  762</span>  <span class="comment">// There is no Option for NON_MAX_SUPPRESSION_V4</span></div>
-<div class="line"><span class="lineno">  763</span>  <span class="comment">// There is no Option for NON_MAX_SUPPRESSION_V5</span></div>
-<div class="line"><span class="lineno">  764</span>  _op_map[tflite::BuiltinOperator_ONE_HOT] = make_unique&lt;OneHotPrinter&gt;();</div>
-<div class="line"><span class="lineno">  765</span>  _op_map[tflite::BuiltinOperator_PACK] = make_unique&lt;PackPrinter&gt;();</div>
-<div class="line"><span class="lineno">  766</span>  <span class="comment">// There is no Option for PAD</span></div>
-<div class="line"><span class="lineno">  767</span>  <span class="comment">// There is no Option for PADV2</span></div>
-<div class="line"><span class="lineno">  768</span>  <span class="comment">// There is no Option for PRELU</span></div>
-<div class="line"><span class="lineno">  769</span>  <span class="comment">// There is no Option for RELU</span></div>
-<div class="line"><span class="lineno">  770</span>  <span class="comment">// There is no Option for RELU6</span></div>
-<div class="line"><span class="lineno">  771</span>  <span class="comment">// There is no Option for RELU_N1_TO_1</span></div>
-<div class="line"><span class="lineno">  772</span>  _op_map[tflite::BuiltinOperator_REDUCE_ANY] = make_unique&lt;ReducerPrinter&gt;();</div>
-<div class="line"><span class="lineno">  773</span>  _op_map[tflite::BuiltinOperator_REDUCE_MAX] = make_unique&lt;ReducerPrinter&gt;();</div>
-<div class="line"><span class="lineno">  774</span>  _op_map[tflite::BuiltinOperator_REDUCE_MIN] = make_unique&lt;ReducerPrinter&gt;();</div>
-<div class="line"><span class="lineno">  775</span>  _op_map[tflite::BuiltinOperator_REDUCE_PROD] = make_unique&lt;ReducerPrinter&gt;();</div>
-<div class="line"><span class="lineno">  776</span>  _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique&lt;ReshapePrinter&gt;();</div>
-<div class="line"><span class="lineno">  777</span>  _op_map[tflite::BuiltinOperator_RESIZE_BILINEAR] = make_unique&lt;ResizeBilinearPrinter&gt;();</div>
-<div class="line"><span class="lineno">  778</span>  _op_map[tflite::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR] =</div>
-<div class="line"><span class="lineno">  779</span>    make_unique&lt;ResizeNearestNeighborPrinter&gt;();</div>
-<div class="line"><span class="lineno">  780</span>  _op_map[tflite::BuiltinOperator_REVERSE_SEQUENCE] = make_unique&lt;ReverseSequencePrinter&gt;();</div>
-<div class="line"><span class="lineno">  781</span>  <span class="comment">// There is no Option for ROUND</span></div>
-<div class="line"><span class="lineno">  782</span>  <span class="comment">// There is no Option for SELECT</span></div>
-<div class="line"><span class="lineno">  783</span>  <span class="comment">// There is no Option for SELECT_V2</span></div>
-<div class="line"><span class="lineno">  784</span>  _op_map[tflite::BuiltinOperator_SHAPE] = make_unique&lt;ShapePrinter&gt;();</div>
-<div class="line"><span class="lineno">  785</span>  <span class="comment">// There is no Option for SIN</span></div>
-<div class="line"><span class="lineno">  786</span>  <span class="comment">// There is no Option for SLICE</span></div>
-<div class="line"><span class="lineno">  787</span>  _op_map[tflite::BuiltinOperator_SOFTMAX] = make_unique&lt;SoftmaxPrinter&gt;();</div>
-<div class="line"><span class="lineno">  788</span>  _op_map[tflite::BuiltinOperator_SPACE_TO_DEPTH] = make_unique&lt;SpaceToDepthPrinter&gt;();</div>
-<div class="line"><span class="lineno">  789</span>  <span class="comment">// There is no Option for SPACE_TO_BATCH_ND</span></div>
-<div class="line"><span class="lineno">  790</span>  _op_map[tflite::BuiltinOperator_SPARSE_TO_DENSE] = make_unique&lt;SparseToDensePrinter&gt;();</div>
-<div class="line"><span class="lineno">  791</span>  _op_map[tflite::BuiltinOperator_SPLIT] = make_unique&lt;SplitPrinter&gt;();</div>
-<div class="line"><span class="lineno">  792</span>  _op_map[tflite::BuiltinOperator_SPLIT_V] = make_unique&lt;SplitVPrinter&gt;();</div>
-<div class="line"><span class="lineno">  793</span>  _op_map[tflite::BuiltinOperator_SQUEEZE] = make_unique&lt;SqueezePrinter&gt;();</div>
-<div class="line"><span class="lineno">  794</span>  _op_map[tflite::BuiltinOperator_STRIDED_SLICE] = make_unique&lt;StridedSlicePrinter&gt;();</div>
-<div class="line"><span class="lineno">  795</span>  _op_map[tflite::BuiltinOperator_SUB] = make_unique&lt;SubPrinter&gt;();</div>
-<div class="line"><span class="lineno">  796</span>  _op_map[tflite::BuiltinOperator_SUM] = make_unique&lt;ReducerPrinter&gt;();</div>
-<div class="line"><span class="lineno">  797</span>  _op_map[tflite::BuiltinOperator_SVDF] = make_unique&lt;SVDFPrinter&gt;();</div>
-<div class="line"><span class="lineno">  798</span>  _op_map[tflite::BuiltinOperator_TRANSPOSE_CONV] = make_unique&lt;TransposeConvPrinter&gt;();</div>
-<div class="line"><span class="lineno">  799</span>  <span class="comment">// There is no Option for TOPK_V2</span></div>
-<div class="line"><span class="lineno">  800</span>  _op_map[tflite::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM] =</div>
-<div class="line"><span class="lineno">  801</span>    make_unique&lt;UnidirectionalSequenceLSTMPrinter&gt;();</div>
-<div class="line"><span class="lineno">  802</span>  _op_map[tflite::BuiltinOperator_UNIQUE] = make_unique&lt;UniquePrinter&gt;();</div>
-<div class="line"><span class="lineno">  803</span>  _op_map[tflite::BuiltinOperator_WHILE] = make_unique&lt;WhilePrinter&gt;();</div>
-<div class="line"><span class="lineno">  804</span>  _op_map[tflite::BuiltinOperator_CUSTOM] = make_unique&lt;CustomOpPrinter&gt;();</div>
-<div class="line"><span class="lineno">  805</span>}</div>
+<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00739">739</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  740</span>{</div>
+<div class="line"><span class="lineno">  741</span>  _op_map[tflite::BuiltinOperator_ADD] = make_unique&lt;AddPrinter&gt;();</div>
+<div class="line"><span class="lineno">  742</span>  <span class="comment">// There is no Option for ADD_N</span></div>
+<div class="line"><span class="lineno">  743</span>  _op_map[tflite::BuiltinOperator_ARG_MAX] = make_unique&lt;ArgMaxPrinter&gt;();</div>
+<div class="line"><span class="lineno">  744</span>  _op_map[tflite::BuiltinOperator_ARG_MIN] = make_unique&lt;ArgMinPrinter&gt;();</div>
+<div class="line"><span class="lineno">  745</span>  _op_map[tflite::BuiltinOperator_AVERAGE_POOL_2D] = make_unique&lt;Pool2DPrinter&gt;();</div>
+<div class="line"><span class="lineno">  746</span>  _op_map[tflite::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM] =</div>
+<div class="line"><span class="lineno">  747</span>    make_unique&lt;BidirectionalSequenceLSTMPrinter&gt;();</div>
+<div class="line"><span class="lineno">  748</span>  _op_map[tflite::BuiltinOperator_CAST] = make_unique&lt;CastPrinter&gt;();</div>
+<div class="line"><span class="lineno">  749</span>  <span class="comment">// There is no Option for CEIL</span></div>
+<div class="line"><span class="lineno">  750</span>  _op_map[tflite::BuiltinOperator_CONCATENATION] = make_unique&lt;ConcatenationPrinter&gt;();</div>
+<div class="line"><span class="lineno">  751</span>  _op_map[tflite::BuiltinOperator_CONV_2D] = make_unique&lt;Conv2DPrinter&gt;();</div>
+<div class="line"><span class="lineno">  752</span>  <span class="comment">// There is no Option for DENSIFY</span></div>
+<div class="line"><span class="lineno">  753</span>  _op_map[tflite::BuiltinOperator_DEPTH_TO_SPACE] = make_unique&lt;DepthToSpacePrinter&gt;();</div>
+<div class="line"><span class="lineno">  754</span>  _op_map[tflite::BuiltinOperator_DEPTHWISE_CONV_2D] = make_unique&lt;DepthwiseConv2DPrinter&gt;();</div>
+<div class="line"><span class="lineno">  755</span>  <span class="comment">// There is no Option for DEQUANTIZE</span></div>
+<div class="line"><span class="lineno">  756</span>  _op_map[tflite::BuiltinOperator_DIV] = make_unique&lt;DivPrinter&gt;();</div>
+<div class="line"><span class="lineno">  757</span>  _op_map[tflite::BuiltinOperator_FAKE_QUANT] = make_unique&lt;FakeQuantPrinter&gt;();</div>
+<div class="line"><span class="lineno">  758</span>  <span class="comment">// There is no Option for FLOOR</span></div>
+<div class="line"><span class="lineno">  759</span>  <span class="comment">// There is no Option for FLOOR_MOD</span></div>
+<div class="line"><span class="lineno">  760</span>  _op_map[tflite::BuiltinOperator_FULLY_CONNECTED] = make_unique&lt;FullyConnectedPrinter&gt;();</div>
+<div class="line"><span class="lineno">  761</span>  _op_map[tflite::BuiltinOperator_GATHER] = make_unique&lt;GatherPrinter&gt;();</div>
+<div class="line"><span class="lineno">  762</span>  _op_map[tflite::BuiltinOperator_GELU] = make_unique&lt;GeluPrinter&gt;();</div>
+<div class="line"><span class="lineno">  763</span>  _op_map[tflite::BuiltinOperator_IF] = make_unique&lt;IfPrinter&gt;();</div>
+<div class="line"><span class="lineno">  764</span>  _op_map[tflite::BuiltinOperator_L2_POOL_2D] = make_unique&lt;Pool2DPrinter&gt;();</div>
+<div class="line"><span class="lineno">  765</span>  _op_map[tflite::BuiltinOperator_L2_NORMALIZATION] = make_unique&lt;L2NormPrinter&gt;();</div>
+<div class="line"><span class="lineno">  766</span>  _op_map[tflite::BuiltinOperator_LEAKY_RELU] = make_unique&lt;LeakyReluPrinter&gt;();</div>
+<div class="line"><span class="lineno">  767</span>  _op_map[tflite::BuiltinOperator_LOCAL_RESPONSE_NORMALIZATION] =</div>
+<div class="line"><span class="lineno">  768</span>    make_unique&lt;LocalResponseNormalizationPrinter&gt;();</div>
+<div class="line"><span class="lineno">  769</span>  <span class="comment">// There is no Option for LOG</span></div>
+<div class="line"><span class="lineno">  770</span>  <span class="comment">// There is no Option for LOGISTIC</span></div>
+<div class="line"><span class="lineno">  771</span>  <span class="comment">// There is no Option for LOG_SOFTMAX</span></div>
+<div class="line"><span class="lineno">  772</span>  _op_map[tflite::BuiltinOperator_MAX_POOL_2D] = make_unique&lt;Pool2DPrinter&gt;();</div>
+<div class="line"><span class="lineno">  773</span>  _op_map[tflite::BuiltinOperator_MEAN] = make_unique&lt;ReducerPrinter&gt;();</div>
+<div class="line"><span class="lineno">  774</span>  _op_map[tflite::BuiltinOperator_MIRROR_PAD] = make_unique&lt;MirrorPadPrinter&gt;();</div>
+<div class="line"><span class="lineno">  775</span>  _op_map[tflite::BuiltinOperator_MUL] = make_unique&lt;MulPrinter&gt;();</div>
+<div class="line"><span class="lineno">  776</span>  <span class="comment">// There is no Option for NON_MAX_SUPPRESSION_V4</span></div>
+<div class="line"><span class="lineno">  777</span>  <span class="comment">// There is no Option for NON_MAX_SUPPRESSION_V5</span></div>
+<div class="line"><span class="lineno">  778</span>  _op_map[tflite::BuiltinOperator_ONE_HOT] = make_unique&lt;OneHotPrinter&gt;();</div>
+<div class="line"><span class="lineno">  779</span>  _op_map[tflite::BuiltinOperator_PACK] = make_unique&lt;PackPrinter&gt;();</div>
+<div class="line"><span class="lineno">  780</span>  <span class="comment">// There is no Option for PAD</span></div>
+<div class="line"><span class="lineno">  781</span>  <span class="comment">// There is no Option for PADV2</span></div>
+<div class="line"><span class="lineno">  782</span>  <span class="comment">// There is no Option for PRELU</span></div>
+<div class="line"><span class="lineno">  783</span>  <span class="comment">// There is no Option for RELU</span></div>
+<div class="line"><span class="lineno">  784</span>  <span class="comment">// There is no Option for RELU6</span></div>
+<div class="line"><span class="lineno">  785</span>  <span class="comment">// There is no Option for RELU_N1_TO_1</span></div>
+<div class="line"><span class="lineno">  786</span>  _op_map[tflite::BuiltinOperator_REDUCE_ANY] = make_unique&lt;ReducerPrinter&gt;();</div>
+<div class="line"><span class="lineno">  787</span>  _op_map[tflite::BuiltinOperator_REDUCE_MAX] = make_unique&lt;ReducerPrinter&gt;();</div>
+<div class="line"><span class="lineno">  788</span>  _op_map[tflite::BuiltinOperator_REDUCE_MIN] = make_unique&lt;ReducerPrinter&gt;();</div>
+<div class="line"><span class="lineno">  789</span>  _op_map[tflite::BuiltinOperator_REDUCE_PROD] = make_unique&lt;ReducerPrinter&gt;();</div>
+<div class="line"><span class="lineno">  790</span>  _op_map[tflite::BuiltinOperator_RESHAPE] = make_unique&lt;ReshapePrinter&gt;();</div>
+<div class="line"><span class="lineno">  791</span>  _op_map[tflite::BuiltinOperator_RESIZE_BILINEAR] = make_unique&lt;ResizeBilinearPrinter&gt;();</div>
+<div class="line"><span class="lineno">  792</span>  _op_map[tflite::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR] =</div>
+<div class="line"><span class="lineno">  793</span>    make_unique&lt;ResizeNearestNeighborPrinter&gt;();</div>
+<div class="line"><span class="lineno">  794</span>  _op_map[tflite::BuiltinOperator_REVERSE_SEQUENCE] = make_unique&lt;ReverseSequencePrinter&gt;();</div>
+<div class="line"><span class="lineno">  795</span>  <span class="comment">// There is no Option for ROUND</span></div>
+<div class="line"><span class="lineno">  796</span>  <span class="comment">// There is no Option for SELECT</span></div>
+<div class="line"><span class="lineno">  797</span>  <span class="comment">// There is no Option for SELECT_V2</span></div>
+<div class="line"><span class="lineno">  798</span>  _op_map[tflite::BuiltinOperator_SHAPE] = make_unique&lt;ShapePrinter&gt;();</div>
+<div class="line"><span class="lineno">  799</span>  <span class="comment">// There is no Option for SIN</span></div>
+<div class="line"><span class="lineno">  800</span>  <span class="comment">// There is no Option for SLICE</span></div>
+<div class="line"><span class="lineno">  801</span>  _op_map[tflite::BuiltinOperator_SOFTMAX] = make_unique&lt;SoftmaxPrinter&gt;();</div>
+<div class="line"><span class="lineno">  802</span>  _op_map[tflite::BuiltinOperator_SPACE_TO_DEPTH] = make_unique&lt;SpaceToDepthPrinter&gt;();</div>
+<div class="line"><span class="lineno">  803</span>  <span class="comment">// There is no Option for SPACE_TO_BATCH_ND</span></div>
+<div class="line"><span class="lineno">  804</span>  _op_map[tflite::BuiltinOperator_SPARSE_TO_DENSE] = make_unique&lt;SparseToDensePrinter&gt;();</div>
+<div class="line"><span class="lineno">  805</span>  _op_map[tflite::BuiltinOperator_SPLIT] = make_unique&lt;SplitPrinter&gt;();</div>
+<div class="line"><span class="lineno">  806</span>  _op_map[tflite::BuiltinOperator_SPLIT_V] = make_unique&lt;SplitVPrinter&gt;();</div>
+<div class="line"><span class="lineno">  807</span>  _op_map[tflite::BuiltinOperator_SQUEEZE] = make_unique&lt;SqueezePrinter&gt;();</div>
+<div class="line"><span class="lineno">  808</span>  _op_map[tflite::BuiltinOperator_STRIDED_SLICE] = make_unique&lt;StridedSlicePrinter&gt;();</div>
+<div class="line"><span class="lineno">  809</span>  _op_map[tflite::BuiltinOperator_SUB] = make_unique&lt;SubPrinter&gt;();</div>
+<div class="line"><span class="lineno">  810</span>  _op_map[tflite::BuiltinOperator_SUM] = make_unique&lt;ReducerPrinter&gt;();</div>
+<div class="line"><span class="lineno">  811</span>  _op_map[tflite::BuiltinOperator_SVDF] = make_unique&lt;SVDFPrinter&gt;();</div>
+<div class="line"><span class="lineno">  812</span>  _op_map[tflite::BuiltinOperator_TRANSPOSE_CONV] = make_unique&lt;TransposeConvPrinter&gt;();</div>
+<div class="line"><span class="lineno">  813</span>  <span class="comment">// There is no Option for TOPK_V2</span></div>
+<div class="line"><span class="lineno">  814</span>  _op_map[tflite::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM] =</div>
+<div class="line"><span class="lineno">  815</span>    make_unique&lt;UnidirectionalSequenceLSTMPrinter&gt;();</div>
+<div class="line"><span class="lineno">  816</span>  _op_map[tflite::BuiltinOperator_UNIQUE] = make_unique&lt;UniquePrinter&gt;();</div>
+<div class="line"><span class="lineno">  817</span>  _op_map[tflite::BuiltinOperator_WHILE] = make_unique&lt;WhilePrinter&gt;();</div>
+<div class="line"><span class="lineno">  818</span>  _op_map[tflite::BuiltinOperator_CUSTOM] = make_unique&lt;CustomOpPrinter&gt;();</div>
+<div class="line"><span class="lineno">  819</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -241,7 +242,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   51</span>    <span class="keyword">static</span> <a class="code hl_function" href="classtfldump_1_1_op_printer_registry.html#a6225b6e2a9023980122387a726f2461e">OpPrinterRegistry</a> me;</div>
 <div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> me;</div>
 <div class="line"><span class="lineno">   53</span>  }</div>
-<div class="ttc" id="aclasstfldump_1_1_op_printer_registry_html_a6225b6e2a9023980122387a726f2461e"><div class="ttname"><a href="classtfldump_1_1_op_printer_registry.html#a6225b6e2a9023980122387a726f2461e">tfldump::OpPrinterRegistry::OpPrinterRegistry</a></div><div class="ttdeci">OpPrinterRegistry()</div><div class="ttdef"><b>Definition:</b> <a href="tfldump_2src_2_op_printer_8cpp_source.html#l00726">OpPrinter.cpp:726</a></div></div>
+<div class="ttc" id="aclasstfldump_1_1_op_printer_registry_html_a6225b6e2a9023980122387a726f2461e"><div class="ttname"><a href="classtfldump_1_1_op_printer_registry.html#a6225b6e2a9023980122387a726f2461e">tfldump::OpPrinterRegistry::OpPrinterRegistry</a></div><div class="ttdeci">OpPrinterRegistry()</div><div class="ttdef"><b>Definition:</b> <a href="tfldump_2src_2_op_printer_8cpp_source.html#l00739">OpPrinter.cpp:739</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="tfldump_2src_2_dump_8cpp_source.html#l00124">tfldump::dump_sub_graph()</a>.</p>
 

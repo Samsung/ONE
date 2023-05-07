@@ -37,6 +37,7 @@ var dir_b0096229f2e1f9f9902cd83132a75c1c =
     [ "CircleFullyConnected.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_fully_connected_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_fully_connected_8h" ],
     [ "CircleGather.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_gather_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_gather_8h" ],
     [ "CircleGatherNd.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_gather_nd_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_gather_nd_8h" ],
+    [ "CircleGelu.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_gelu_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_gelu_8h" ],
     [ "CircleGreater.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_greater_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_greater_8h" ],
     [ "CircleGreaterEqual.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_greater_equal_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_greater_equal_8h" ],
     [ "CircleIf.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_if_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_if_8h" ],

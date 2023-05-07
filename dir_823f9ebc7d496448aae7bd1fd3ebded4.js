@@ -35,6 +35,7 @@ var dir_823f9ebc7d496448aae7bd1fd3ebded4 =
     [ "CircleFullyConnected.cpp", "import_2src_2_nodes_2_circle_fully_connected_8cpp.html", null ],
     [ "CircleGather.cpp", "import_2src_2_nodes_2_circle_gather_8cpp.html", null ],
     [ "CircleGatherNd.cpp", "import_2src_2_nodes_2_circle_gather_nd_8cpp.html", null ],
+    [ "CircleGelu.cpp", "import_2src_2_nodes_2_circle_gelu_8cpp.html", null ],
     [ "CircleGreater.cpp", "import_2src_2_nodes_2_circle_greater_8cpp.html", null ],
     [ "CircleGreaterEqual.cpp", "import_2src_2_nodes_2_circle_greater_equal_8cpp.html", null ],
     [ "CircleIf.cpp", "import_2src_2_nodes_2_circle_if_8cpp.html", null ],

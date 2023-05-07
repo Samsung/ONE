@@ -17,6 +17,7 @@ var namespacecircledump =
     [ "FakeQuantPrinter", "classcircledump_1_1_fake_quant_printer.html", "classcircledump_1_1_fake_quant_printer" ],
     [ "FullyConnectedPrinter", "classcircledump_1_1_fully_connected_printer.html", "classcircledump_1_1_fully_connected_printer" ],
     [ "GatherPrinter", "classcircledump_1_1_gather_printer.html", "classcircledump_1_1_gather_printer" ],
+    [ "GeluPrinter", "classcircledump_1_1_gelu_printer.html", "classcircledump_1_1_gelu_printer" ],
     [ "IfPrinter", "classcircledump_1_1_if_printer.html", "classcircledump_1_1_if_printer" ],
     [ "InstanceNormPrinter", "classcircledump_1_1_instance_norm_printer.html", "classcircledump_1_1_instance_norm_printer" ],
     [ "L2NormPrinter", "classcircledump_1_1_l2_norm_printer.html", "classcircledump_1_1_l2_norm_printer" ],

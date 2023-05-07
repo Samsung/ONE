@@ -31,6 +31,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "FuseBatchNormWithDwConvPass.cpp", "_fuse_batch_norm_with_dw_conv_pass_8cpp.html", null ],
     [ "FuseBatchNormWithTConvPass.cpp", "_fuse_batch_norm_with_t_conv_pass_8cpp.html", null ],
     [ "FuseBCQPass.cpp", "_fuse_b_c_q_pass_8cpp.html", null ],
+    [ "FuseGeluPass.cpp", "_fuse_gelu_pass_8cpp.html", "_fuse_gelu_pass_8cpp" ],
     [ "FuseInstanceNormPass.cpp", "luci_2pass_2src_2_fuse_instance_norm_pass_8cpp.html", "luci_2pass_2src_2_fuse_instance_norm_pass_8cpp" ],
     [ "FuseInstanceNormPassInternal.h", "_fuse_instance_norm_pass_internal_8h.html", "_fuse_instance_norm_pass_internal_8h" ],
     [ "FuseMeanWithMeanPass.cpp", "_fuse_mean_with_mean_pass_8cpp.html", null ],

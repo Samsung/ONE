@@ -35,6 +35,7 @@ var dir_130a5ab0c1ea8d564ec8825a7293e954 =
     [ "CircleFullyConnected.h", "import_2include_2luci_2_import_2_nodes_2_circle_fully_connected_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_fully_connected_8h" ],
     [ "CircleGather.h", "import_2include_2luci_2_import_2_nodes_2_circle_gather_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_gather_8h" ],
     [ "CircleGatherNd.h", "import_2include_2luci_2_import_2_nodes_2_circle_gather_nd_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_gather_nd_8h" ],
+    [ "CircleGelu.h", "import_2include_2luci_2_import_2_nodes_2_circle_gelu_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_gelu_8h" ],
     [ "CircleGreater.h", "import_2include_2luci_2_import_2_nodes_2_circle_greater_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_greater_8h" ],
     [ "CircleGreaterEqual.h", "import_2include_2luci_2_import_2_nodes_2_circle_greater_equal_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_greater_equal_8h" ],
     [ "CircleIf.h", "import_2include_2luci_2_import_2_nodes_2_circle_if_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_if_8h" ],

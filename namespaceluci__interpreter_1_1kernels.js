@@ -44,6 +44,7 @@ var namespaceluci__interpreter_1_1kernels =
     [ "FloorMod", "classluci__interpreter_1_1kernels_1_1_floor_mod.html", "classluci__interpreter_1_1kernels_1_1_floor_mod" ],
     [ "FullyConnected", "classluci__interpreter_1_1kernels_1_1_fully_connected.html", "classluci__interpreter_1_1kernels_1_1_fully_connected" ],
     [ "Gather", "classluci__interpreter_1_1kernels_1_1_gather.html", "classluci__interpreter_1_1kernels_1_1_gather" ],
+    [ "Gelu", "classluci__interpreter_1_1kernels_1_1_gelu.html", "classluci__interpreter_1_1kernels_1_1_gelu" ],
     [ "Greater", "classluci__interpreter_1_1kernels_1_1_greater.html", "classluci__interpreter_1_1kernels_1_1_greater" ],
     [ "GreaterEqual", "classluci__interpreter_1_1kernels_1_1_greater_equal.html", "classluci__interpreter_1_1kernels_1_1_greater_equal" ],
     [ "If", "classluci__interpreter_1_1kernels_1_1_if.html", "classluci__interpreter_1_1kernels_1_1_if" ],

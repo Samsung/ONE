@@ -10,6 +10,7 @@ var _kernel_params_8h =
     [ "luci_interpreter::DivParams", "structluci__interpreter_1_1_div_params.html", "structluci__interpreter_1_1_div_params" ],
     [ "luci_interpreter::FullyConnectedParams", "structluci__interpreter_1_1_fully_connected_params.html", "structluci__interpreter_1_1_fully_connected_params" ],
     [ "luci_interpreter::GatherParams", "structluci__interpreter_1_1_gather_params.html", "structluci__interpreter_1_1_gather_params" ],
+    [ "luci_interpreter::GeluParams", "structluci__interpreter_1_1_gelu_params.html", "structluci__interpreter_1_1_gelu_params" ],
     [ "luci_interpreter::InstanceNormParams", "structluci__interpreter_1_1_instance_norm_params.html", "structluci__interpreter_1_1_instance_norm_params" ],
     [ "luci_interpreter::L2NormParams", "structluci__interpreter_1_1_l2_norm_params.html", "structluci__interpreter_1_1_l2_norm_params" ],
     [ "luci_interpreter::LeakyReluParams", "structluci__interpreter_1_1_leaky_relu_params.html", "structluci__interpreter_1_1_leaky_relu_params" ],

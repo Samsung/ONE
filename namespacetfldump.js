@@ -14,6 +14,7 @@ var namespacetfldump =
     [ "FakeQuantPrinter", "classtfldump_1_1_fake_quant_printer.html", "classtfldump_1_1_fake_quant_printer" ],
     [ "FullyConnectedPrinter", "classtfldump_1_1_fully_connected_printer.html", "classtfldump_1_1_fully_connected_printer" ],
     [ "GatherPrinter", "classtfldump_1_1_gather_printer.html", "classtfldump_1_1_gather_printer" ],
+    [ "GeluPrinter", "classtfldump_1_1_gelu_printer.html", "classtfldump_1_1_gelu_printer" ],
     [ "IfPrinter", "classtfldump_1_1_if_printer.html", "classtfldump_1_1_if_printer" ],
     [ "L2NormPrinter", "classtfldump_1_1_l2_norm_printer.html", "classtfldump_1_1_l2_norm_printer" ],
     [ "LeakyReluPrinter", "classtfldump_1_1_leaky_relu_printer.html", "classtfldump_1_1_leaky_relu_printer" ],

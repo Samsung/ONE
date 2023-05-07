@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00686">686</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00699">699</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a95962fa781f1cf2730ac2da365d4b673" name="a95962fa781f1cf2730ac2da365d4b673"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a95962fa781f1cf2730ac2da365d4b673">&#9670;&#160;</a></span>options()</h2>
@@ -151,41 +151,41 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classtfldump_1_1_op_printer.html#a63d2bd24d5c01caa2f6f7f9ca5cbd83e">tfldump::OpPrinter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00689">689</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  690</span>  {</div>
-<div class="line"><span class="lineno">  691</span>    <span class="keywordflow">if</span> (op-&gt;custom_options_format() != tflite::CustomOptionsFormat::CustomOptionsFormat_FLEXBUFFERS)</div>
-<div class="line"><span class="lineno">  692</span>    {</div>
-<div class="line"><span class="lineno">  693</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  694</span>      os &lt;&lt; <span class="stringliteral">&quot;Unknown custom option format&quot;</span>;</div>
-<div class="line"><span class="lineno">  695</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  696</span>    }</div>
-<div class="line"><span class="lineno">  697</span> </div>
-<div class="line"><span class="lineno">  698</span>    <span class="keyword">const</span> flatbuffers::Vector&lt;uint8_t&gt; *option_buf = op-&gt;custom_options();</div>
-<div class="line"><span class="lineno">  699</span> </div>
-<div class="line"><span class="lineno">  700</span>    <span class="keywordflow">if</span> (option_buf == <span class="keyword">nullptr</span> || option_buf-&gt;size() == 0)</div>
-<div class="line"><span class="lineno">  701</span>    {</div>
-<div class="line"><span class="lineno">  702</span>      os &lt;&lt; <span class="stringliteral">&quot;No attrs found.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  703</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  704</span>    }</div>
-<div class="line"><span class="lineno">  705</span> </div>
-<div class="line"><span class="lineno">  706</span>    <span class="comment">// printing attrs</span></div>
-<div class="line"><span class="lineno">  707</span>    <span class="comment">// attrs of custom ops are encoded in flexbuffer format</span></div>
-<div class="line"><span class="lineno">  708</span>    <span class="keyword">auto</span> attr_map = flexbuffers::GetRoot(option_buf-&gt;data(), option_buf-&gt;size()).AsMap();</div>
-<div class="line"><span class="lineno">  709</span> </div>
-<div class="line"><span class="lineno">  710</span>    os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  711</span>    <span class="keyword">auto</span> keys = attr_map.Keys();</div>
-<div class="line"><span class="lineno">  712</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; keys.size(); i++)</div>
-<div class="line"><span class="lineno">  713</span>    {</div>
-<div class="line"><span class="lineno">  714</span>      <span class="keyword">auto</span> key = keys[i].ToString();</div>
-<div class="line"><span class="lineno">  715</span>      os &lt;&lt; key &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; attr_map[key].ToString() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  716</span>    }</div>
-<div class="line"><span class="lineno">  717</span> </div>
-<div class="line"><span class="lineno">  718</span>    <span class="comment">// Note: attr in &quot;Shape&quot; type does not seem to be converted by tflite_convert.</span></div>
-<div class="line"><span class="lineno">  719</span>    <span class="comment">// When the converted tflite file (with custom op) is opened with hexa editory,</span></div>
-<div class="line"><span class="lineno">  720</span>    <span class="comment">// attrs names can be found but attr name in &quot;Shape&quot; type is not found.</span></div>
-<div class="line"><span class="lineno">  721</span> </div>
-<div class="line"><span class="lineno">  722</span>    os &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  723</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00702">702</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  703</span>  {</div>
+<div class="line"><span class="lineno">  704</span>    <span class="keywordflow">if</span> (op-&gt;custom_options_format() != tflite::CustomOptionsFormat::CustomOptionsFormat_FLEXBUFFERS)</div>
+<div class="line"><span class="lineno">  705</span>    {</div>
+<div class="line"><span class="lineno">  706</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  707</span>      os &lt;&lt; <span class="stringliteral">&quot;Unknown custom option format&quot;</span>;</div>
+<div class="line"><span class="lineno">  708</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  709</span>    }</div>
+<div class="line"><span class="lineno">  710</span> </div>
+<div class="line"><span class="lineno">  711</span>    <span class="keyword">const</span> flatbuffers::Vector&lt;uint8_t&gt; *option_buf = op-&gt;custom_options();</div>
+<div class="line"><span class="lineno">  712</span> </div>
+<div class="line"><span class="lineno">  713</span>    <span class="keywordflow">if</span> (option_buf == <span class="keyword">nullptr</span> || option_buf-&gt;size() == 0)</div>
+<div class="line"><span class="lineno">  714</span>    {</div>
+<div class="line"><span class="lineno">  715</span>      os &lt;&lt; <span class="stringliteral">&quot;No attrs found.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  716</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  717</span>    }</div>
+<div class="line"><span class="lineno">  718</span> </div>
+<div class="line"><span class="lineno">  719</span>    <span class="comment">// printing attrs</span></div>
+<div class="line"><span class="lineno">  720</span>    <span class="comment">// attrs of custom ops are encoded in flexbuffer format</span></div>
+<div class="line"><span class="lineno">  721</span>    <span class="keyword">auto</span> attr_map = flexbuffers::GetRoot(option_buf-&gt;data(), option_buf-&gt;size()).AsMap();</div>
+<div class="line"><span class="lineno">  722</span> </div>
+<div class="line"><span class="lineno">  723</span>    os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  724</span>    <span class="keyword">auto</span> keys = attr_map.Keys();</div>
+<div class="line"><span class="lineno">  725</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; keys.size(); i++)</div>
+<div class="line"><span class="lineno">  726</span>    {</div>
+<div class="line"><span class="lineno">  727</span>      <span class="keyword">auto</span> key = keys[i].ToString();</div>
+<div class="line"><span class="lineno">  728</span>      os &lt;&lt; key &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; attr_map[key].ToString() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  729</span>    }</div>
+<div class="line"><span class="lineno">  730</span> </div>
+<div class="line"><span class="lineno">  731</span>    <span class="comment">// Note: attr in &quot;Shape&quot; type does not seem to be converted by tflite_convert.</span></div>
+<div class="line"><span class="lineno">  732</span>    <span class="comment">// When the converted tflite file (with custom op) is opened with hexa editory,</span></div>
+<div class="line"><span class="lineno">  733</span>    <span class="comment">// attrs names can be found but attr name in &quot;Shape&quot; type is not found.</span></div>
+<div class="line"><span class="lineno">  734</span> </div>
+<div class="line"><span class="lineno">  735</span>    os &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  736</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -501,6 +501,11 @@ var hierarchy =
               [ "luci::CircleGatherNd", "classluci_1_1_circle_gather_nd.html", null ]
             ] ]
           ] ],
+          [ "luci::CircleNodeImpl< CircleOpcode::GELU >", "structluci_1_1_circle_node_impl.html", [
+            [ "luci::FixedArityNode< 1, CircleNodeImpl< CircleOpcode::GELU > >", "classluci_1_1_fixed_arity_node.html", [
+              [ "luci::CircleGelu", "classluci_1_1_circle_gelu.html", null ]
+            ] ]
+          ] ],
           [ "luci::CircleNodeImpl< CircleOpcode::GREATER >", "structluci_1_1_circle_node_impl.html", [
             [ "luci::FixedArityNode< 2, CircleNodeImpl< CircleOpcode::GREATER > >", "classluci_1_1_fixed_arity_node.html", [
               [ "luci::CircleGreater", "classluci_1_1_circle_greater.html", null ]
@@ -1433,6 +1438,7 @@ var hierarchy =
       [ "luci::CircleMirrorPadSummaryBuilder", "classluci_1_1_circle_mirror_pad_summary_builder.html", null ],
       [ "luci::CircleNodeWithFEATURESSummaryBuilder", "classluci_1_1_circle_node_with_f_e_a_t_u_r_e_s_summary_builder.html", [
         [ "luci::CircleEluSummaryBuilder", "classluci_1_1_circle_elu_summary_builder.html", null ],
+        [ "luci::CircleGeluSummaryBuilder", "classluci_1_1_circle_gelu_summary_builder.html", null ],
         [ "luci::CircleLeakyReluSummaryBuilder", "classluci_1_1_circle_leaky_relu_summary_builder.html", null ],
         [ "luci::CircleRelu6SummaryBuilder", "classluci_1_1_circle_relu6_summary_builder.html", null ],
         [ "luci::CircleReluN1To1SummaryBuilder", "classluci_1_1_circle_relu_n1_to1_summary_builder.html", null ],
@@ -2013,8 +2019,8 @@ var hierarchy =
     [ "FixedReshapeLayer", "struct_fixed_reshape_layer.html", null ],
     [ "nnfw::cker::optimized::FloatDepthwiseConvKernel< kAllowStrided, kFixedInputDepth, kFixedDepthMultiplier >", "structnnfw_1_1cker_1_1optimized_1_1_float_depthwise_conv_kernel.html", null ],
     [ "optimized_ops::FloatDepthwiseConvKernel< kAllowStrided, kFixedInputDepth, kFixedDepthMultiplier >", "structoptimized__ops_1_1_float_depthwise_conv_kernel.html", null ],
-    [ "ForEachDimension< from, to, Enable >", "struct_for_each_dimension.html", null ],
-    [ "ForEachDimension< from, to, typename std::enable_if< from==to >::type >", "struct_for_each_dimension_3_01from_00_01to_00_01typename_01std_1_1enable__if_3_01from_0a_0ato_01_4_1_1type_01_4.html", null ],
+    [ "ForEachDimension< rest >", "struct_for_each_dimension.html", null ],
+    [ "ForEachDimension< 0 >", "struct_for_each_dimension_3_010_01_4.html", null ],
     [ "sparsity::FormatConverter< T >", "classsparsity_1_1_format_converter.html", null ],
     [ "locop::FormattedGraph", "structlocop_1_1_formatted_graph.html", [
       [ "locop::FormattedGraphImpl< Formatter::LinearV1 >", "classlocop_1_1_formatted_graph_impl_3_01_formatter_1_1_linear_v1_01_4.html", null ]
@@ -2043,6 +2049,7 @@ var hierarchy =
     [ "tflite::reference_ops::GatherNdHelperResult", "structtflite_1_1reference__ops_1_1_gather_nd_helper_result.html", null ],
     [ "luci_interpreter::GatherParams", "structluci__interpreter_1_1_gather_params.html", null ],
     [ "nnfw::cker::GatherParams", "structnnfw_1_1cker_1_1_gather_params.html", null ],
+    [ "luci_interpreter::GeluParams", "structluci__interpreter_1_1_gelu_params.html", null ],
     [ "Eigen::internal::gemm_pack_rhs< Scalar, Index, TensorContractionSubMapper< Scalar, Index, Rhs, TensorEvaluator< const TensorReshapingOp< NewDimension, const TensorImagePatchOp< Rows, Cols, ArgType > >, Device >, nocontract_t, contract_t, 1, inner_dim_contiguous, inner_dim_reordered, Alignment >, nr, ColMajor, false, false >", "struct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_sub0131574b4fb4009470407f81bed9cd3b.html", null ],
     [ "Eigen::internal::gemm_pack_rhs< Scalar, Index, TensorContractionSubMapper< Scalar, Index, Rhs, TensorEvaluator< const TensorReshapingOp< NewDimension, const TensorImagePatchOp< Rows, Cols, ArgType > >, Device >, nocontract_t, contract_t, 2, inner_dim_contiguous, inner_dim_reordered, Alignment >, nr, ColMajor, false, false >", "struct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_sub5ea63ee4c723e6af21544d00587ce3c0.html", null ],
     [ "Eigen::internal::gemm_pack_rhs< Scalar, Index, TensorContractionSubMapper< Scalar, Index, Rhs, TensorEvaluator< const TensorReshapingOp< NewDimension, const TensorImagePatchOp< Rows, Cols, ArgType > >, Device >, nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment >, nr, ColMajor, false, false >", "struct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_subd1dba4e0a9a1b5408e755809176fec52.html", null ],
@@ -2154,6 +2161,7 @@ var hierarchy =
         [ "luci::CircleFullyConnectedGraphBuilder", "classluci_1_1_circle_fully_connected_graph_builder.html", null ],
         [ "luci::CircleGatherGraphBuilder", "classluci_1_1_circle_gather_graph_builder.html", null ],
         [ "luci::CircleGatherNdGraphBuilder", "classluci_1_1_circle_gather_nd_graph_builder.html", null ],
+        [ "luci::CircleGeluGraphBuilder", "classluci_1_1_circle_gelu_graph_builder.html", null ],
         [ "luci::CircleGreaterEqualGraphBuilder", "classluci_1_1_circle_greater_equal_graph_builder.html", null ],
         [ "luci::CircleGreaterGraphBuilder", "classluci_1_1_circle_greater_graph_builder.html", null ],
         [ "luci::CircleInstanceNormGraphBuilder", "classluci_1_1_circle_instance_norm_graph_builder.html", null ],
@@ -2688,6 +2696,9 @@ var hierarchy =
       [ "luci_interpreter::KernelWithParams< GatherParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
         [ "luci_interpreter::kernels::Gather", "classluci__interpreter_1_1kernels_1_1_gather.html", null ],
         [ "luci_interpreter::kernels::Gather", "classluci__interpreter_1_1kernels_1_1_gather.html", null ]
+      ] ],
+      [ "luci_interpreter::KernelWithParams< GeluParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
+        [ "luci_interpreter::kernels::Gelu", "classluci__interpreter_1_1kernels_1_1_gelu.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< InstanceNormParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
         [ "luci_interpreter::kernels::InstanceNorm", "classluci__interpreter_1_1kernels_1_1_instance_norm.html", null ],
@@ -3244,6 +3255,7 @@ var hierarchy =
       [ "FullyConnectedChef", "class_fully_connected_chef.html", null ],
       [ "GatherChef", "class_gather_chef.html", null ],
       [ "GatherNdChef", "class_gather_nd_chef.html", null ],
+      [ "GeluChef", "class_gelu_chef.html", null ],
       [ "GreaterChef", "class_greater_chef.html", null ],
       [ "GreaterEqualChef", "class_greater_equal_chef.html", null ],
       [ "IfChef", "class_if_chef.html", null ],
@@ -3370,6 +3382,7 @@ var hierarchy =
       [ "FullyConnectedChefFactory", "struct_fully_connected_chef_factory.html", null ],
       [ "GatherChefFactory", "struct_gather_chef_factory.html", null ],
       [ "GatherNdChefFactory", "struct_gather_nd_chef_factory.html", null ],
+      [ "GeluChefFactory", "struct_gelu_chef_factory.html", null ],
       [ "GreaterChefFactory", "struct_greater_chef_factory.html", null ],
       [ "GreaterEqualChefFactory", "struct_greater_equal_chef_factory.html", null ],
       [ "IfChefFactory", "struct_if_chef_factory.html", null ],
@@ -3642,6 +3655,7 @@ var hierarchy =
       [ "circledump::FakeQuantPrinter", "classcircledump_1_1_fake_quant_printer.html", null ],
       [ "circledump::FullyConnectedPrinter", "classcircledump_1_1_fully_connected_printer.html", null ],
       [ "circledump::GatherPrinter", "classcircledump_1_1_gather_printer.html", null ],
+      [ "circledump::GeluPrinter", "classcircledump_1_1_gelu_printer.html", null ],
       [ "circledump::IfPrinter", "classcircledump_1_1_if_printer.html", null ],
       [ "circledump::InstanceNormPrinter", "classcircledump_1_1_instance_norm_printer.html", null ],
       [ "circledump::L2NormPrinter", "classcircledump_1_1_l2_norm_printer.html", null ],
@@ -3687,6 +3701,7 @@ var hierarchy =
       [ "tfldump::FakeQuantPrinter", "classtfldump_1_1_fake_quant_printer.html", null ],
       [ "tfldump::FullyConnectedPrinter", "classtfldump_1_1_fully_connected_printer.html", null ],
       [ "tfldump::GatherPrinter", "classtfldump_1_1_gather_printer.html", null ],
+      [ "tfldump::GeluPrinter", "classtfldump_1_1_gelu_printer.html", null ],
       [ "tfldump::IfPrinter", "classtfldump_1_1_if_printer.html", null ],
       [ "tfldump::L2NormPrinter", "classtfldump_1_1_l2_norm_printer.html", null ],
       [ "tfldump::LeakyReluPrinter", "classtfldump_1_1_leaky_relu_printer.html", null ],
@@ -4012,6 +4027,7 @@ var hierarchy =
       [ "luci::FuseBatchNormWithConvPass", "structluci_1_1_fuse_batch_norm_with_conv_pass.html", null ],
       [ "luci::FuseBatchNormWithDwConvPass", "structluci_1_1_fuse_batch_norm_with_dw_conv_pass.html", null ],
       [ "luci::FuseBatchNormWithTConvPass", "structluci_1_1_fuse_batch_norm_with_t_conv_pass.html", null ],
+      [ "luci::FuseGeluPass", "structluci_1_1_fuse_gelu_pass.html", null ],
       [ "luci::FuseInstanceNormPass", "structluci_1_1_fuse_instance_norm_pass.html", null ],
       [ "luci::FuseMeanWithMeanPass", "structluci_1_1_fuse_mean_with_mean_pass.html", null ],
       [ "luci::FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", null ],
@@ -4588,6 +4604,7 @@ var hierarchy =
       [ "tflchef::TFliteOpFullyConnected", "classtflchef_1_1_t_flite_op_fully_connected.html", null ],
       [ "tflchef::TFliteOpGather", "classtflchef_1_1_t_flite_op_gather.html", null ],
       [ "tflchef::TFliteOpGatherNd", "classtflchef_1_1_t_flite_op_gather_nd.html", null ],
+      [ "tflchef::TFliteOpGelu", "classtflchef_1_1_t_flite_op_gelu.html", null ],
       [ "tflchef::TFliteOpGreater", "classtflchef_1_1_t_flite_op_greater.html", null ],
       [ "tflchef::TFliteOpGreaterEqual", "classtflchef_1_1_t_flite_op_greater_equal.html", null ],
       [ "tflchef::TFliteOpL2Normalize", "classtflchef_1_1_t_flite_op_l2_normalize.html", null ],
