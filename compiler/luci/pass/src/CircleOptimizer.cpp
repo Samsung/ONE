@@ -138,7 +138,8 @@ bool OptimizeOptionsImpl::query(Algorithm algo)
 }
 
 // TODO Make a struct for args
-void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_output, bool fuse_fc)
+void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_output, bool fuse_fc,
+                          bool fuse_gelu)
 {
   logo::Phase phase;
 
@@ -160,6 +161,12 @@ void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_out
   // This disables fusion of Add and FullyConnected after ConvertNCHWToNHWC.
   if (fuse_fc)
     phase.emplace_back(std::make_unique<luci::FuseAddWithFullyConnectedPass>());
+
+  // Fuse decomposed ops to Gelu Op
+  // Why here? ConverNCHWToNHWCPass inserts additional Ops, so it is better to fuse
+  // Gelu in advance.
+  if (fuse_gelu)
+    phase.emplace_back(std::make_unique<luci::FuseGeluPass>());
 
   phase.emplace_back(
     std::make_unique<luci::ConvertNCHWToNHWCPass>(preserve_input, preserve_output));
@@ -217,8 +224,9 @@ void CircleOptimizer::optimize(loco::Graph *g) const
       _options->param(Options::AlgorithmParameters::NCHW_to_NHWC_output_shape) != "true";
 
     bool fuse_fc = _options->query(Options::Algorithm::FuseAddWithFullyConnected);
+    bool fuse_gelu = _options->query(Options::Algorithm::FuseGelu);
 
-    convert_nchw_to_nhwc(g, preserve_input, preserve_output, fuse_fc);
+    convert_nchw_to_nhwc(g, preserve_input, preserve_output, fuse_fc, fuse_gelu);
   }
 
   /* TRANSFORM DECLARATION BEGIN */
