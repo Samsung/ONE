@@ -194,12 +194,21 @@ def _remap_io_names(onnx_model):
             onnx_model.graph.output[i].name = remap_outputs[idx]
 
 
+def _check_ext():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    ext_path = os.path.join(dir_path, 'one-import-onnx-ext')
+    if (os.path.isfile(ext_path)):
+        return ext_path
+    return None
+
+
 def _convert(args):
     _apply_verbosity(args.verbose)
 
     # get file path to log
     dir_path = os.path.dirname(os.path.realpath(__file__))
     logfile_path = os.path.realpath(args.output_path) + '.log'
+    ext_path = _check_ext()
 
     with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
         # save intermediate
@@ -219,6 +228,24 @@ def _convert(args):
                 fixed_path = os.path.join(tmpdir,
                                           os.path.splitext(basename)[0] + '~.onnx')
                 onnx.save(onnx_model, fixed_path)
+
+        if ext_path:
+            ext_cmd = [ext_path]
+            if oneutils.is_valid_attr(args, 'unroll_rnn'):
+                ext_cmd.append('--unroll_rnn')
+            if oneutils.is_valid_attr(args, 'unroll_lstm'):
+                ext_cmd.append('--unroll_lstm')
+            if oneutils.is_valid_attr(args, 'experimental_disable_batchmatmul_unfold'):
+                ext_cmd.append('--experimental_disable_batchmatmul_unfold')
+            if oneutils.is_valid_attr(args, 'save_intermediate'):
+                ext_cmd.append('--save_intermediate')
+            if oneutils.is_valid_attr(args, 'keep_io_order'):
+                ext_cmd.append('--keep_io_order')
+            ext_cmd.append(getattr(args, 'input_path'))
+            ext_cmd.append(getattr(args, 'output_path'))
+            oneutils.run(ext_cmd, logfile=f)
+            return
+
         tf_savedmodel = onnx_tf.backend.prepare(onnx_model)
 
         savedmodel_name = os.path.splitext(os.path.basename(
