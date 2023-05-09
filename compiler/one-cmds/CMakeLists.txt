@@ -113,7 +113,8 @@ install(FILES ${MODEL2NNPKG}
               RENAME "model2nnpkg")
 
 # make python directory
-set(ONE_PYTHON_FILES constant.py
+set(ONE_PYTHON_FILES backends.py
+                     constant.py
                      export_constant.py
                      make_cmd.py
                      CfgRunner.py
