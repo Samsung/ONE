@@ -169,6 +169,15 @@ int entry(int argc, char **argv)
       }
     }
 
+    if (arser[save_intermediate_str])
+    {
+      auto data_path = arser.get<std::string>(save_intermediate_str);
+      if (!data_path.empty())
+      {
+        solver.set_save_intermediate(data_path);
+      }
+    }
+
     VERBOSE(l, 0) << "qerror metric: MSE" << std::endl
                   << "target qerror ratio: " << qerror_ratio << std::endl;
 
