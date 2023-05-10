@@ -33,7 +33,8 @@ public:
     const auto input1_index = cur_op->inputs()->operator[](0);
     const auto input2_index = cur_op->inputs()->operator[](1);
     const auto input3_index = cur_op->inputs()->operator[](2);
-    const auto input4_index = cur_op->inputs()->operator[](3); // optional
+    const auto input4_index =
+      cur_op->inputs()->size() == 4 ? cur_op->inputs()->operator[](3) : -1; // optional
 
     const auto output_index = cur_op->outputs()->operator[](0);
 
