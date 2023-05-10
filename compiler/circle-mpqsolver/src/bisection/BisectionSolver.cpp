@@ -144,6 +144,11 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   float uint8_qerror =
     evaluate(evaluator, module_path, "uint8" /* default quant_dtype */, layer_params);
   VERBOSE(l, 0) << "Full uint8 model qerror: " << uint8_qerror << std::endl;
+  _quantizer->set_hook(_hooks.get());
+  if (_hooks)
+  {
+    _hooks->on_begin_solver(module_path, uint8_qerror, int16_qerror);
+  }
 
   if (int16_qerror > uint8_qerror)
   {
@@ -205,6 +210,11 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
   while (true)
   {
+    if (_hooks)
+    {
+      _hooks->on_begin_iteration();
+    }
+
     int cut_depth = static_cast<int>(std::floor(0.5f * (min_depth + max_depth)));
 
     if (last_depth == cut_depth)
@@ -244,6 +254,11 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
     float cur_accuracy = evaluate(evaluator, module_path, "uint8", layer_params);
 
+    if (_hooks)
+    {
+      _hooks->on_end_iteration(layer_params, "uint8", cur_accuracy);
+    }
+
     if (cur_accuracy < _qerror)
     {
       VERBOSE(l, 0) << "Qerror at depth " << cut_depth << " is " << cur_accuracy
@@ -259,6 +274,11 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
                     << ")" << std::endl;
       int16_front ? (min_depth = cut_depth) : (max_depth = cut_depth);
     }
+  }
+
+  if (_hooks)
+  {
+    _hooks->on_end_solver(best_params, "uint8");
   }
 
   VERBOSE(l, 0) << "Found the best configuration at depth " << best_depth << std::endl;
