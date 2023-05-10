@@ -17,7 +17,7 @@
 #ifndef __MPQSOLVER_MPQSOLEVR_SOLVER_H__
 #define __MPQSOLVER_MPQSOLEVR_SOLVER_H__
 
-#include <luci/IR/Module.h>
+#include <core/DumpingHooks.h>
 
 #include <memory>
 #include <string>
@@ -42,11 +42,17 @@ public:
    */
   virtual std::unique_ptr<luci::Module> run(const std::string &module_path) = 0;
 
+  /**
+   * @brief set all intermediate artifacts to be saved
+   */
+  void set_save_intermediate(const std::string &save_path);
+
 protected:
   std::string _input_data_path;
   std::string _input_quantization;
   std::string _output_quantization;
   float _qerror_ratio = 0.f; // quantization error ratio
+  std::unique_ptr<core::DumpingHooks> _hooks;
 };
 
 } // namespace mpqsolver
