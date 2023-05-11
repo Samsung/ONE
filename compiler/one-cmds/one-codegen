@@ -36,46 +36,6 @@ import onelib.utils as oneutils
 sys.tracebacklimit = 0
 
 
-def _get_backends_list():
-    """
-    [one hierarchy]
-    one
-    ├── backends
-    ├── bin
-    ├── doc
-    ├── include
-    ├── lib
-    └── test
-
-    The list where `one-codegen` finds its backends
-    - `bin` folder where `one-codegen` exists
-    - `backends` folder
-    - System path
-
-    NOTE If there are backends of the same name in different places,
-     the closer to the top in the list, the higher the priority.
-    """
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    backend_set = set()
-
-    # bin folder
-    files = [f for f in glob.glob(dir_path + '/*-compile')]
-    # backends folder
-    files += [
-        f for f in glob.glob(dir_path + '/../backends/**/*-compile', recursive=True)
-    ]
-    # TODO find backends in `$PATH`
-
-    backends_list = []
-    for cand in files:
-        base = ntpath.basename(cand)
-        if not base in backend_set and os.path.isfile(cand) and os.access(cand, os.X_OK):
-            backend_set.add(base)
-            backends_list.append(cand)
-
-    return backends_list
-
-
 def _get_parser(backends_list):
     codegen_usage = 'one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND] [--] [COMMANDS FOR BACKEND]'
     parser = argparse.ArgumentParser(

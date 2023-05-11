@@ -34,42 +34,6 @@ import onelib.utils as oneutils
 sys.tracebacklimit = 0
 
 
-def _search_backend_driver(driver):
-    """
-    [one hierarchy]
-    one
-    ├── backends
-    ├── bin
-    ├── doc
-    ├── include
-    ├── lib
-    ├── optimization
-    └── test
-
-    The list where `one-infer` finds its backend driver
-    - `bin` folder where `one-infer` exists
-    - `backends/**/bin/` folder
-
-    NOTE If there are drivers of the same name in different places,
-     the closer to the top in the list, the higher the priority.
-    """
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-
-    # CASE 1: one/bin/{driver} is found
-    driver_path = dir_path + '/' + driver
-    if os.path.isfile(driver_path) and os.access(driver_path, os.X_OK):
-        return driver_path
-
-    # CASE 2: one/backends/**/bin/{driver} is found
-    for driver_path in glob.glob(
-            dir_path + '/../backends/**/bin/' + driver, recursive=True):
-        if os.path.isfile(driver_path) and os.access(driver_path, os.X_OK):
-            return driver_path
-
-    # CASE 3: {driver} is found in nowhere
-    return None
-
-
 def _get_parser():
     infer_usage = 'one-infer [-h] [-v] [-C CONFIG] [-d DRIVER] [--post-process POST_PROCESS] [--] [COMMANDS FOR BACKEND DRIVER]'
     infer_detail = """
