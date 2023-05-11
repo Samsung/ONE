@@ -28,6 +28,7 @@ import os
 import sys
 
 import configparser
+import onelib.backends as backends
 import onelib.utils as oneutils
 
 # TODO Find better way to suppress trackback on error
@@ -348,7 +349,7 @@ def _get_model_type(parser, args):
 
 def main():
     # get backend list
-    backends_list = _get_backends_list()
+    backends_list = backends.get_list('init')
 
     # parse arguments
     parser = _get_parser(backends_list)
