@@ -109,7 +109,7 @@ void execute_kernel_CirclePack(const circle::Operator *cur_op, BaseRuntimeGraph 
 #endif // DIS_FLOAT
 #ifndef DIS_QUANT
     case DataType::S8:
-      packImpl<int8>(input, output, cur_op, runtime_graph, output_data);
+      packImpl<int8_t>(input, output, cur_op, runtime_graph, output_data);
       break;
     case DataType::U8:
       packImpl<uint8_t>(input, output, cur_op, runtime_graph, output_data);
