@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_BACKEND_H__
-#define __ONERT_BACKEND_CPU_BACKEND_H__
+#ifndef __ONERT_BACKEND_TRAINING_BACKEND_H__
+#define __ONERT_BACKEND_TRAINING_BACKEND_H__
 
 #include "BackendContext.h"
 #include "Config.h"
@@ -29,7 +29,7 @@ namespace onert
 {
 namespace backend
 {
-namespace cpu
+namespace training
 {
 
 class Backend : public ::onert::backend::Backend
@@ -45,8 +45,7 @@ public:
     auto &graph = *data.graph;
     auto context = std::make_unique<BackendContext>(this, std::move(data));
     auto tr = std::make_shared<basic::TensorRegistry>();
-    const auto planner_id = util::getConfigString(util::config::CPU_MEMORY_PLANNER);
-    auto tb = std::make_shared<TensorBuilder>(tr, planner_id);
+    auto tb = std::make_shared<TensorBuilder>(tr, "Bump");
     context->tensor_registry = tr;
     context->tensor_builder = tb;
     context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb, tr, custom_kernel_builder,
@@ -58,8 +57,8 @@ private:
   std::shared_ptr<IConfig> _config;
 };
 
-} // namespace cpu
+} // namespace training
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_BACKEND_H__
+#endif // __ONERT_BACKEND_TRAINING_BACKEND_H__
