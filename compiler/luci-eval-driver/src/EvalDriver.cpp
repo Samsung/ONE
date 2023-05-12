@@ -93,7 +93,12 @@ int entry(int argc, char **argv)
   // Data for n'th input is read from ${input_prefix}n
   // (ex: Add.circle.input0, Add.circle.input1 ..)
   const auto input_nodes = loco::input_nodes(module->graph());
-  assert(num_inputs == input_nodes.size());
+  if (num_inputs != input_nodes.size())
+  {
+    // NOTE using num_inputs is actually unnecessary but is kept to preserve interface.
+    std::cerr << "ERROR: invalid num_inputs value; should be " << input_nodes.size() << std::endl;
+    return EXIT_FAILURE;
+  }
   for (int32_t i = 0; i < num_inputs; i++)
   {
     const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[i]);
