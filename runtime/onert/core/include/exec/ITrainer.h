@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +14,24 @@
  * limitations under the License.
  */
 
-#include "RankLayer.h"
-
-#include "OperationUtils.h"
+#ifndef __ONERT_EXEC_I_TRAINER_H__
+#define __ONERT_EXEC_I_TRAINER_H__
 
 namespace onert
 {
-namespace backend
-{
-namespace training
-{
-namespace ops
+namespace exec
 {
 
-RankLayer::RankLayer() : _input(nullptr), _output(nullptr)
+class ITrainer
 {
-  // DO NOTHING
-}
+public:
+  virtual ~ITrainer() = default;
+  virtual void forward() = 0;
+  virtual void backward() = 0;
+  virtual void prepare() {}
+};
 
-void RankLayer::configure(const IPortableTensor *input, IPortableTensor *output)
-{
-  _input = input;
-  _output = output;
-}
-
-void RankLayer::run()
-{
-  int32_t *output_data = getBuffer<int32_t>(_output);
-  output_data[0] = _input->getShape().rank();
-}
-
-} // namespace ops
-} // namespace training
-} // namespace backend
+} // namespace exec
 } // namespace onert
+
+#endif // __ONERT_EXEC_I_TRAINER_H__

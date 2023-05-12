@@ -44,58 +44,11 @@ public:
 
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex op_ind) override;
 
-  void visit(const ir::operation::AddN &) override;
-  void visit(const ir::operation::ArgMinMax &) override;
-  void visit(const ir::operation::BatchMatMul &) override;
-  void visit(const ir::operation::BatchToSpaceND &) override;
-  void visit(const ir::operation::BinaryArithmetic &) override;
-  void visit(const ir::operation::BroadcastTo &) override;
-  void visit(const ir::operation::Comparison &) override;
-  void visit(const ir::operation::Concat &) override;
   void visit(const ir::operation::Conv2D &) override;
-  void visit(const ir::operation::Custom &node) override;
-  void visit(const ir::operation::DepthToSpace &) override;
-  void visit(const ir::operation::DepthwiseConv2D &) override;
-  void visit(const ir::operation::Einsum &) override;
-  void visit(const ir::operation::ElementwiseActivation &) override;
-  void visit(const ir::operation::ElementwiseBinary &) override;
-  void visit(const ir::operation::ElementwiseUnary &) override;
-  void visit(const ir::operation::ExpandDims &) override;
-  void visit(const ir::operation::Fill &) override;
   void visit(const ir::operation::FullyConnected &) override;
-  void visit(const ir::operation::FusedBatchNorm &) override;
-  void visit(const ir::operation::Gather &) override;
-  void visit(const ir::operation::L2Normalization &) override;
-  void visit(const ir::operation::LogSoftmax &) override;
-  void visit(const ir::operation::LSTM &) override;
-  void visit(const ir::operation::MatrixBandPart &) override;
-  void visit(const ir::operation::DetectionPostProcess &) override;
-  void visit(const ir::operation::OneHot &) override;
-  void visit(const ir::operation::Pack &) override;
-  void visit(const ir::operation::Pad &) override;
   void visit(const ir::operation::Pool2D &) override;
-  void visit(const ir::operation::Pow &) override;
-  void visit(const ir::operation::Range &) override;
-  void visit(const ir::operation::Rank &) override;
-  void visit(const ir::operation::Reduce &) override;
   void visit(const ir::operation::Reshape &) override;
-  void visit(const ir::operation::ResizeBilinear &node) override;
-  void visit(const ir::operation::Reverse &) override;
-  void visit(const ir::operation::Select &) override;
-  void visit(const ir::operation::Shape &) override;
-  void visit(const ir::operation::Slice &) override;
   void visit(const ir::operation::Softmax &) override;
-  void visit(const ir::operation::SpaceToBatchND &) override;
-  void visit(const ir::operation::SpaceToDepth &) override;
-  void visit(const ir::operation::Split &) override;
-  void visit(const ir::operation::SplitV &) override;
-  void visit(const ir::operation::SquaredDifference &) override;
-  void visit(const ir::operation::Squeeze &) override;
-  void visit(const ir::operation::StatelessRandomUniform &) override;
-  void visit(const ir::operation::StridedSlice &) override;
-  void visit(const ir::operation::Tile &) override;
-  void visit(const ir::operation::Transpose &) override;
-  void visit(const ir::operation::Unpack &) override;
 
 private:
   const ir::Operands &_ctx;
