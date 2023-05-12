@@ -284,7 +284,7 @@ template <class CIRCLENODE> loco::NodeShape infer_arg_maxmin(const CIRCLENODE *n
   assert(select_axis < input_shape.rank());
 
   if (select_axis < 0)
-    select_axis += input_shape.rank();
+    select_axis += static_cast<int64_t>(input_shape.rank());
 
   // NOTE select_axis is removed
   loco::TensorShape shape_output;
@@ -1287,7 +1287,7 @@ loco::NodeShape infer_slice(const luci::CircleSlice *node)
     auto size = vect_size.at(idx);
     if (size == -1)
     {
-      size = input_shape.dim(idx).value() - vect_begin.at(idx);
+      size = static_cast<int64_t>(input_shape.dim(idx).value()) - vect_begin.at(idx);
     }
     output_shape.dim(idx) = size;
   }
@@ -1874,7 +1874,7 @@ loco::NodeShape infer_split_v_out(const luci::CircleSplitVOut *node)
   assert(0 <= index_this && index_this < split->num_split());
   auto split_depth = size_splits->at<S32>(index_this);
   if (split_depth == -1)
-    split_depth = input_size - size_splits_sum;
+    split_depth = static_cast<int32_t>(input_size) - static_cast<int32_t>(size_splits_sum);
 
   loco::TensorShape output_shape = split_shape;
 
