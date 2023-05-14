@@ -4529,6 +4529,15 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataAddBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add.html", null ]
       ] ],
+      [ "luci_interpreter::test_kernel::TestDataFullyConnectedBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fully_connected_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatFullyConnected", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_fully_connected.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataFullyConnectedBase< uint8_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fully_connected_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataU8FullyConnected", "classluci__interpreter_1_1test__kernel_1_1_test_data_u8_fully_connected.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataLogisticBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_logistic_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatLogistic", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_logistic.html", null ]
+      ] ],
       [ "luci_interpreter::test_kernel::TestDataPackBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatPack", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_pack.html", null ]
       ] ],
@@ -4545,6 +4554,8 @@ var hierarchy =
         [ "luci_interpreter::test_kernel::TestDataIntReduceProd", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_reduce_prod.html", null ]
       ] ],
       [ "luci_interpreter::test_kernel::TestDataAddBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataFullyConnectedBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fully_connected_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataLogisticBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_logistic_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataPackBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataReduceCommonBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataStridedSliceKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel.html", null ]

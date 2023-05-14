@@ -203,7 +203,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">case</span> DataType::S8:</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      packImpl&lt;int8&gt;(input, output, cur_op, runtime_graph, output_data);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      packImpl&lt;int8_t&gt;(input, output, cur_op, runtime_graph, output_data);</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">case</span> DataType::U8:</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>      packImpl&lt;uint8_t&gt;(input, output, cur_op, runtime_graph, output_data);</div>

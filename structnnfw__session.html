@@ -1304,16 +1304,16 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  846</span> </div>
 <div class="line"><span class="lineno">  847</span>  <span class="keywordflow">try</span></div>
 <div class="line"><span class="lineno">  848</span>  {</div>
-<div class="line"><span class="lineno">  849</span>    <span class="keywordflow">if</span> (!backends)</div>
+<div class="line"><span class="lineno">  849</span>    <span class="keywordflow">if</span> (!<a class="code hl_namespace" href="namespacebackends.html">backends</a>)</div>
 <div class="line"><span class="lineno">  850</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3">NNFW_STATUS_UNEXPECTED_NULL</a>;</div>
-<div class="line"><span class="lineno">  851</span>    <span class="keywordflow">if</span> (null_terminating(backends, <a class="code hl_define" href="nnfw__api__internal_8cc.html#a5627bb1dbf20851aca058c71906cff99">MAX_BACKEND_NAME_LENGTH</a>) == <span class="keyword">false</span>)</div>
+<div class="line"><span class="lineno">  851</span>    <span class="keywordflow">if</span> (null_terminating(<a class="code hl_namespace" href="namespacebackends.html">backends</a>, <a class="code hl_define" href="nnfw__api__internal_8cc.html#a5627bb1dbf20851aca058c71906cff99">MAX_BACKEND_NAME_LENGTH</a>) == <span class="keyword">false</span>)</div>
 <div class="line"><span class="lineno">  852</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
 <div class="line"><span class="lineno">  853</span> </div>
 <div class="line"><span class="lineno">  854</span>    <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a> = *_coptions[0];</div>
 <div class="line"><span class="lineno">  855</span> </div>
 <div class="line"><span class="lineno">  856</span>    <span class="keyword">using namespace </span><a class="code hl_namespace" href="namespaceonert_1_1util.html">onert::util</a>;</div>
 <div class="line"><span class="lineno">  857</span> </div>
-<div class="line"><span class="lineno">  858</span>    <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.backend_list = <a class="code hl_function" href="namespacennfw_1_1misc.html#af87ba1392e59046fb1899eff53629c24">nnfw::misc::split</a>(std::string{backends}, <span class="charliteral">&#39;;&#39;</span>);</div>
+<div class="line"><span class="lineno">  858</span>    <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.backend_list = <a class="code hl_function" href="namespacennfw_1_1misc.html#af87ba1392e59046fb1899eff53629c24">nnfw::misc::split</a>(std::string{<a class="code hl_namespace" href="namespacebackends.html">backends</a>}, <span class="charliteral">&#39;;&#39;</span>);</div>
 <div class="line"><span class="lineno">  859</span>  }</div>
 <div class="line"><span class="lineno">  860</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
 <div class="line"><span class="lineno">  861</span>  {</div>
@@ -1322,6 +1322,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  864</span>  }</div>
 <div class="line"><span class="lineno">  865</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
 <div class="line"><span class="lineno">  866</span>}</div>
+<div class="ttc" id="anamespacebackends_html"><div class="ttname"><a href="namespacebackends.html">backends</a></div><div class="ttdef"><b>Definition:</b> <a href="backends_8py_source.html#l00001">backends.py:1</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1util_html"><div class="ttname"><a href="namespaceonert_1_1util.html">onert::util</a></div><div class="ttdef"><b>Definition:</b> <a href="_calculate_activation_range_8h_source.html#l00026">CalculateActivationRange.h:27</a></div></div>
 <div class="ttc" id="annfw__api__internal_8cc_html_a5627bb1dbf20851aca058c71906cff99"><div class="ttname"><a href="nnfw__api__internal_8cc.html#a5627bb1dbf20851aca058c71906cff99">MAX_BACKEND_NAME_LENGTH</a></div><div class="ttdeci">#define MAX_BACKEND_NAME_LENGTH</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__api__internal_8cc_source.html#l00042">nnfw_api_internal.cc:42</a></div></div>
 </div><!-- fragment -->

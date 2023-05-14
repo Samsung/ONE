@@ -1,5 +1,15 @@
 var NAVTREEINDEX23 =
 {
+"_sink_test_8cpp_source.html":[35,0,0,71,6,1,3],
+"_sink_transpose_8cpp.html":[35,0,0,71,4,1,6],
+"_sink_transpose_8cpp_source.html":[35,0,0,71,4,1,6],
+"_sink_transpose_8h.html":[35,0,0,71,2,2,1,6],
+"_sink_transpose_8h_source.html":[35,0,0,71,2,2,1,6],
+"_slice_8cc.html":[35,0,4,2,2,1,4,0,53],
+"_slice_8cc_source.html":[35,0,4,2,2,1,4,0,53],
+"_slice_layer_8cc.html":[35,0,4,2,1,4,0,82],
+"_slice_layer_8cc_source.html":[35,0,4,2,1,4,0,82],
+"_slice_layer_8h.html":[35,0,4,2,1,4,0,83],
 "_slice_layer_8h_source.html":[35,0,4,2,1,4,0,83],
 "_slice_op_8cpp.html":[35,0,0,62,1,4,12],
 "_slice_op_8cpp_source.html":[35,0,0,62,1,4,12],
@@ -123,8 +133,8 @@ var NAVTREEINDEX23 =
 "_sparsity_format_converter_8h.html#abeee9354ed3d4cfb90809094c0205ef5":[35,0,0,51,7,1,0,7,9],
 "_sparsity_format_converter_8h.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[35,0,0,51,7,1,0,7,8,3],
 "_sparsity_format_converter_8h.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[35,0,0,51,7,1,0,7,8,1],
-"_sparsity_format_converter_8h.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[35,0,0,51,7,1,0,7,8,2],
 "_sparsity_format_converter_8h.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[35,0,0,51,7,1,0,7,8,0],
+"_sparsity_format_converter_8h.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[35,0,0,51,7,1,0,7,8,2],
 "_sparsity_format_converter_8h.html#aebaa280a7d40b78a0e10bdff92358480":[35,0,0,51,7,1,0,7,5],
 "_sparsity_format_converter_8h.html#aebaa280a7d40b78a0e10bdff92358480":[35,0,0,51,7,1,0,7,8],
 "_sparsity_format_converter_8h_source.html":[35,0,0,51,7,1,0,7],
@@ -239,15 +249,5 @@ var NAVTREEINDEX23 =
 "_stmt_8h_source.html":[35,0,0,69,0,1,0,15],
 "_stop_gradient_8cpp.html":[35,0,0,65,0,1,0,28],
 "_stop_gradient_8cpp_source.html":[35,0,0,65,0,1,0,28],
-"_stop_gradient_8h.html":[35,0,0,65,0,0,0,0,0,28],
-"_stop_gradient_8h_source.html":[35,0,0,65,0,0,0,0,0,28],
-"_stop_gradient_canonicalizer_8cpp.html":[35,0,0,67,1,0,46],
-"_stop_gradient_canonicalizer_8cpp_source.html":[35,0,0,67,1,0,46],
-"_stop_gradient_canonicalizer_8h.html":[35,0,0,67,1,0,47],
-"_stop_gradient_canonicalizer_8h_source.html":[35,0,0,67,1,0,47],
-"_stride2_d_8cpp.html":[35,0,0,26,0,1,1,38],
-"_stride2_d_8cpp_source.html":[35,0,0,26,0,1,1,38],
-"_stride2_d_8h.html":[35,0,0,26,0,0,0,1,57],
-"_stride2_d_8h_source.html":[35,0,0,26,0,0,0,1,57],
-"_stride_8h.html":[35,0,0,44,0,0,1,46]
+"_stop_gradient_8h.html":[35,0,0,65,0,0,0,0,0,28]
 };

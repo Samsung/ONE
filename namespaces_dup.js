@@ -9,6 +9,10 @@ var namespaces_dup =
     [ "ann", "namespaceann.html", "namespaceann" ],
     [ "arm_compute", "namespacearm__compute.html", "namespacearm__compute" ],
     [ "arser", "namespacearser.html", "namespacearser" ],
+    [ "backends", "namespacebackends.html", [
+      [ "get_list", "namespacebackends.html#a7560637717af3d1ce5928f0dfff9c4d9", null ],
+      [ "search_driver", "namespacebackends.html#a4f3ad8c118eacdf5d4e0050018ecbe80", null ]
+    ] ],
     [ "benchmark", "namespacebenchmark.html", "namespacebenchmark" ],
     [ "bino", "namespacebino.html", "namespacebino" ],
     [ "caffeimport", "namespacecaffeimport.html", "namespacecaffeimport" ],

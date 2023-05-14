@@ -1,5 +1,15 @@
 var NAVTREEINDEX11 =
 {
+"_fused_batch_norm_layer_8cc_source.html":[35,0,4,2,1,4,0,38],
+"_fused_batch_norm_layer_8h.html":[35,0,4,2,1,4,0,39],
+"_fused_batch_norm_layer_8h_source.html":[35,0,4,2,1,4,0,39],
+"_g_e_m_m_support_8h.html":[35,0,1,1,0,0,1,0],
+"_g_e_m_m_support_8h.html#a98681d37fc1bc7c05d4e2cd7f5735180":[35,0,1,1,0,0,1,0,1],
+"_g_e_m_m_support_8h_source.html":[35,0,1,1,0,0,1,0],
+"_gather_8cc.html":[35,0,4,2,2,1,4,0,27],
+"_gather_8cc_source.html":[35,0,4,2,2,1,4,0,27],
+"_gather_layer_8cc.html":[35,0,4,2,1,4,0,40],
+"_gather_layer_8cc_source.html":[35,0,4,2,1,4,0,40],
 "_gather_layer_8h.html":[35,0,4,2,1,4,0,41],
 "_gather_layer_8h_source.html":[35,0,4,2,1,4,0,41],
 "_gather_nd_options_8cpp.html":[35,0,0,113,2,0,50],
@@ -239,15 +249,5 @@ var NAVTREEINDEX11 =
 "_helper_path_8h_source.html":[35,0,0,18,0,2],
 "_host_8cpp.html":[35,0,0,34,1,1,2,0],
 "_host_8cpp_source.html":[35,0,0,34,1,1,2,0],
-"_host_8h.html":[35,0,0,34,1,1,2,1],
-"_host_8h_source.html":[35,0,0,34,1,1,2,1],
-"_i_a_c_l_tensor_8cc.html":[35,0,4,2,1,1,15],
-"_i_a_c_l_tensor_8cc_source.html":[35,0,4,2,1,1,15],
-"_i_a_c_l_tensor_8h.html":[35,0,4,2,1,1,16],
-"_i_a_c_l_tensor_8h_source.html":[35,0,4,2,1,1,16],
-"_i_artifact_generator_8h.html":[35,0,0,71,0,0,10],
-"_i_artifact_generator_8h_source.html":[35,0,0,71,0,0,10],
-"_i_compiler_8h.html":[35,0,4,2,2,0,1,8],
-"_i_compiler_8h_source.html":[35,0,4,2,2,0,1,8],
-"_i_config_8h.html":[35,0,4,2,2,0,0,4]
+"_host_8h.html":[35,0,0,34,1,1,2,1]
 };
