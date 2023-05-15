@@ -17,10 +17,9 @@
 #ifndef __ONERT_BACKEND_TRAINING_OPS_POOLLAYER_H__
 #define __ONERT_BACKEND_TRAINING_OPS_POOLLAYER_H__
 
-#include <backend/IPortableTensor.h>
-#include "OperationUtils.h"
+#include <ops/PoolLayer.h>
 
-#include <exec/IFunction.h>
+#include <exec/ITrainerFunction.h>
 
 namespace onert
 {
@@ -33,12 +32,10 @@ namespace ops
 
 enum class PoolType
 {
-  kAvg,
-  kL2,
   kMax,
 };
 
-class PoolLayer : public ::onert::exec::IFunction
+class PoolLayer : public ::onert::exec::ITrainerFunction, public cpu::ops::PoolLayer
 {
 public:
   PoolLayer();
@@ -50,14 +47,8 @@ public:
                  const uint32_t strideHeight, const uint32_t kernelWidth,
                  const uint32_t kernelHeight, const ir::Activation activation,
                  IPortableTensor *output, const PoolType op_type);
-
-  void run() override;
-
-private:
-  const IPortableTensor *_input;
-  IPortableTensor *_output;
-
-  std::function<void(const IPortableTensor *, IPortableTensor *)> _kernel;
+  void forward(bool training) override;
+  void backward() override;
 };
 
 } // namespace ops

@@ -44,8 +44,6 @@ ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
 {
   switch (type_ir)
   {
-    case ir::operation::Pool2D::PoolType::AVG:
-      return ops::PoolType::kAvg;
     case ir::operation::Pool2D::PoolType::MAX:
       return ops::PoolType::kMax;
     default:
@@ -58,7 +56,7 @@ KernelGenerator::KernelGenerator(
   const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
   const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
   const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
-  const std::shared_ptr<ExternalContext> &external_context)
+  const std::shared_ptr<cpu::ExternalContext> &external_context)
   : basic::KernelGeneratorBase{graph},
     _ctx(graph.operands()), _operations_ctx{graph.operations()}, _current_layout{graph.layout()},
     _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),

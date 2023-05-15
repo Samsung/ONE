@@ -18,6 +18,9 @@
 #define __ONERT_BACKEND_TRAINING_BACKEND_CONTEXT_H__
 
 #include <backend/BackendContext.h>
+
+#include <ExternalContext.h>
+
 #include "TensorBuilder.h"
 #include "KernelGenerator.h"
 
@@ -36,14 +39,15 @@ public:
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
     : onert::backend::BackendContext(backend, std::move(data), tensor_registry),
-      tensor_builder{tensor_builder}, kernel_gen{kernel_gen}, _external_context(new ExternalContext)
+      tensor_builder{tensor_builder}, kernel_gen{kernel_gen},
+      _external_context(new cpu::ExternalContext)
   {
   }
 
   ITensorRegistry *genTensors() override;
   FunctionMap genKernels() override;
 
-  std::shared_ptr<ExternalContext> external_context() { return _external_context; }
+  std::shared_ptr<cpu::ExternalContext> external_context() { return _external_context; }
 
 public:
   // TODO Make it private
@@ -54,7 +58,7 @@ private:
   // NOTE ruy context has a thread pool, and when multiple ruy contexts are created,
   //      the thread pool is also created in duplicate
   // TODO Create one ruy context for session
-  std::shared_ptr<ExternalContext> _external_context;
+  std::shared_ptr<cpu::ExternalContext> _external_context;
 };
 
 } // namespace training

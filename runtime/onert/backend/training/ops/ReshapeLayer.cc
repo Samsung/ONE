@@ -25,27 +25,33 @@ namespace training
 namespace ops
 {
 
-ReshapeLayer::ReshapeLayer() : _input(nullptr), _shape(nullptr), _output(nullptr)
+ReshapeLayer::ReshapeLayer() : cpu::ops::ReshapeLayer()
 {
   // DO NOTHING
-}
-
-void ReshapeLayer::reshapeGeneric()
-{
-  size_t count = _input->total_size();
-  memcpy(_output->buffer(), _input->buffer(), count);
 }
 
 void ReshapeLayer::configure(const IPortableTensor *input, const IPortableTensor *shape,
                              IPortableTensor *output)
 {
-  _input = input;
-  /* note : shape is optional. If not provided from model, _shape is nullptr. */
-  _shape = shape;
-  _output = output;
+  cpu::ops::ReshapeLayer::configure(input, shape, output);
 }
 
-void ReshapeLayer::run() { reshapeGeneric(); }
+void ReshapeLayer::forward(bool training)
+{
+  if (training)
+  {
+    // TODO Implement details
+  }
+  else
+  {
+    cpu::ops::ReshapeLayer::run();
+  }
+}
+
+void ReshapeLayer::backward()
+{
+  // TODO Implement details
+}
 
 } // namespace ops
 } // namespace training

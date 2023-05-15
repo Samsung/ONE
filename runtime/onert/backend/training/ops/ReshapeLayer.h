@@ -17,9 +17,9 @@
 #ifndef __ONERT_BACKEND_TRAINING_OPS_RESHAPELAYER_H__
 #define __ONERT_BACKEND_TRAINING_OPS_RESHAPELAYER_H__
 
-#include <backend/IPortableTensor.h>
+#include <ops/ReshapeLayer.h>
 
-#include <exec/IFunction.h>
+#include <exec/ITrainerFunction.h>
 
 namespace onert
 {
@@ -30,23 +30,15 @@ namespace training
 namespace ops
 {
 
-class ReshapeLayer : public ::onert::exec::IFunction
+class ReshapeLayer : public ::onert::exec::ITrainerFunction, public cpu::ops::ReshapeLayer
 {
 public:
   ReshapeLayer();
 
-public:
-  void reshapeGeneric();
-
   void configure(const IPortableTensor *input, const IPortableTensor *shape,
                  IPortableTensor *output);
-
-  void run() override;
-
-private:
-  const IPortableTensor *_input;
-  const IPortableTensor *_shape;
-  IPortableTensor *_output;
+  void forward(bool training) override;
+  void backward() override;
 };
 
 } // namespace ops

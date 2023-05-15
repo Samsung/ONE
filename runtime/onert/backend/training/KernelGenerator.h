@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_TRAINING_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_TRAINING_KERNEL_GENERATOR_H__
 
-#include "ExternalContext.h"
 #include "TensorBuilder.h"
 #include "backend/basic/TensorRegistry.h"
 #include "Tensor.h"
 
+#include <ExternalContext.h>
 #include <backend/CustomKernelBuilder.h>
 #include <backend/basic/KernelGeneratorBase.h>
 #include <ir/Operands.h>
@@ -40,7 +40,7 @@ public:
   KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
                   const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
                   const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
-                  const std::shared_ptr<ExternalContext> &external_context);
+                  const std::shared_ptr<cpu::ExternalContext> &external_context);
 
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex op_ind) override;
 
@@ -57,7 +57,7 @@ private:
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<basic::TensorRegistry> _tensor_reg;
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
-  const std::shared_ptr<ExternalContext> _external_context;
+  const std::shared_ptr<cpu::ExternalContext> _external_context;
 };
 
 } // namespace training

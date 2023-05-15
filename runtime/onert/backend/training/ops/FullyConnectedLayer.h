@@ -17,19 +17,10 @@
 #ifndef __ONERT_BACKEND_TRAINING_OPS_FULLYCONNECTEDLAYER_H__
 #define __ONERT_BACKEND_TRAINING_OPS_FULLYCONNECTEDLAYER_H__
 
-#include <backend/IPortableTensor.h>
-#include "../ExternalContext.h"
-#include "OperationUtils.h"
+#include <ExternalContext.h>
+#include <ops/FullyConnectedLayer.h>
 
-#include <exec/IFunction.h>
-
-namespace nnfw
-{
-namespace cker
-{
-class FCTempArena;
-}
-} // namespace nnfw
+#include <exec/ITrainerFunction.h>
 
 namespace onert
 {
@@ -40,50 +31,22 @@ namespace training
 namespace ops
 {
 
-class FullyConnectedLayer : public ::onert::exec::IFunction
+class FullyConnectedLayer : public ::onert::exec::ITrainerFunction,
+                            public cpu::ops::FullyConnectedLayer
 {
 public:
   FullyConnectedLayer();
   ~FullyConnectedLayer();
 
-public:
-  void fullyConnectedFloat32();
-
-  void fullyConnectedQuant8();
-
-  void fullyConnectedHybrid();
-
-  void fullyConnectedSparseWeight();
-
-  void fullyConnected16x1Float32();
-
   void configure(const IPortableTensor *input, const IPortableTensor *weights,
                  const IPortableTensor *bias, ir::Activation activation,
                  ir::FullyConnectedWeightsFormat weights_format, IPortableTensor *output,
-                 const std::shared_ptr<ExternalContext> &external_context);
-
-  void run() override;
-
-  void prepare() override;
+                 const std::shared_ptr<cpu::ExternalContext> &external_context);
+  void forward(bool training) override;
+  void backward() override;
 
 private:
-  const IPortableTensor *_input;
-  const IPortableTensor *_weights;
-  const IPortableTensor *_bias;
-  IPortableTensor *_output;
-
-  ir::Activation _activation;
-  std::unique_ptr<nnfw::cker::FCTempArena> _temp_arena;
-
-  std::shared_ptr<ExternalContext> _external_context;
-
-  bool _is_hybrid : 1;
-  bool _is_shuffled16x1float32 : 1;
-
-#ifdef USE_RUY_GEMV
-  uint8_t *_cached_weights = nullptr; // weights to be cached and a key
-  bool _is_weights_freed = false;     // is weights freed?
-#endif
+  std::shared_ptr<cpu::ExternalContext> _external_context;
 };
 
 } // namespace ops

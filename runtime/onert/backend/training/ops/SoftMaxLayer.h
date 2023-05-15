@@ -17,9 +17,9 @@
 #ifndef __ONERT_BACKEND_TRAINING_OPS_SOFTMAXLAYER_H__
 #define __ONERT_BACKEND_TRAINING_OPS_SOFTMAXLAYER_H__
 
-#include <backend/IPortableTensor.h>
+#include <ops/SoftMaxLayer.h>
 
-#include <exec/IFunction.h>
+#include <exec/ITrainerFunction.h>
 
 namespace onert
 {
@@ -30,29 +30,14 @@ namespace training
 namespace ops
 {
 
-class SoftMaxLayer : public ::onert::exec::IFunction
+class SoftMaxLayer : public ::onert::exec::ITrainerFunction, public cpu::ops::SoftMaxLayer
 {
 public:
   SoftMaxLayer();
 
-public:
-  void softmaxFloat32();
-
-  template <typename T> void softmaxQuant8();
-
   void configure(const IPortableTensor *input, const float beta, IPortableTensor *output);
-
-  void run() override;
-
-private:
-  const IPortableTensor *_input;
-  IPortableTensor *_output;
-
-  float _beta;
-
-  float _table[256];
-  uint8_t _uint8_table1[256];
-  uint8_t _uint8_table2[256];
+  void forward(bool training) override;
+  void backward() override;
 };
 
 } // namespace ops

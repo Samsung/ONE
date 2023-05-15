@@ -17,20 +17,9 @@
 #ifndef __ONERT_BACKEND_TRAINING_OPS_CONVOLUTIONLAYER_H__
 #define __ONERT_BACKEND_TRAINING_OPS_CONVOLUTIONLAYER_H__
 
-#include <backend/IPortableTensor.h>
-#include "OperationUtils.h"
+#include <ops/ConvolutionLayer.h>
 
-#include <exec/IFunction.h>
-#include <functional>
-#include <memory>
-
-namespace nnfw
-{
-namespace cker
-{
-class Conv;
-}
-} // namespace nnfw
+#include <exec/ITrainerFunction.h>
 
 namespace onert
 {
@@ -41,19 +30,11 @@ namespace training
 namespace ops
 {
 
-class ConvolutionLayer : public ::onert::exec::IFunction
+class ConvolutionLayer : public ::onert::exec::ITrainerFunction, public cpu::ops::ConvolutionLayer
 {
 public:
   ConvolutionLayer();
   ~ConvolutionLayer();
-
-public:
-  void convFloat32();
-
-  void convQ8uPerTensor();
-  void convQ8uPerChannel();
-
-  void convQ8i();
 
   void configure(const IPortableTensor *input, const IPortableTensor *kernel,
                  const IPortableTensor *bias, ir::PaddingType _paddingType,
@@ -62,33 +43,8 @@ public:
                  const uint32_t strideHeight, const uint32_t dilationWidthFactor,
                  const uint32_t dilationHeightFactor, const ir::Activation activation,
                  IPortableTensor *output);
-
-  void run() override;
-
-  void prepare() override;
-
-private:
-  const IPortableTensor *_input;
-  const IPortableTensor *_kernel;
-  const IPortableTensor *_bias;
-  IPortableTensor *_output;
-
-  ir::PaddingType _paddingType;
-  uint32_t _paddingLeft;
-  uint32_t _paddingTop;
-  uint32_t _paddingRight;
-  uint32_t _paddingBottom;
-
-  uint32_t _strideWidth;
-  uint32_t _strideHeight;
-  uint32_t _dilationWidthFactor;
-  uint32_t _dilationHeightFactor;
-
-  ir::Activation _activation;
-
-  std::unique_ptr<nnfw::cker::Conv> _conv_kernel;
-
-  bool _prepare;
+  void forward(bool training) override;
+  void backward() override;
 };
 
 } // namespace ops

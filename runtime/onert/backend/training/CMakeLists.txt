@@ -13,6 +13,8 @@ target_link_libraries(${LIB_ONERT_BACKEND_TRAINING} PRIVATE nnfw_coverage)
 target_link_libraries(${LIB_ONERT_BACKEND_TRAINING} PRIVATE ruy)
 target_link_libraries(${LIB_ONERT_BACKEND_TRAINING} INTERFACE ruy_instrumentation)
 target_link_libraries(${LIB_ONERT_BACKEND_TRAINING} PRIVATE ndarray)
+# Share cpu backend code when training mode is false.
+target_link_libraries(${LIB_ONERT_BACKEND_TRAINING} PRIVATE onert_backend_cpu)
 
 set_target_properties(${LIB_ONERT_BACKEND_TRAINING} PROPERTIES OUTPUT_NAME backend_training)
 

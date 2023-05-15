@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_I_TRAINER_H__
-#define __ONERT_EXEC_I_TRAINER_H__
+#ifndef __ONERT_EXEC_I_TRAINER_FUNCTION_H__
+#define __ONERT_EXEC_I_TRAINER_FUNCTION_H__
 
 namespace onert
 {
 namespace exec
 {
 
-class ITrainer
+class ITrainerFunction
 {
 public:
-  virtual ~ITrainer() = default;
-  virtual void forward() = 0;
+  virtual ~ITrainerFunction() = default;
+  // TODO training option should be true by default.
+  // Because this interface aims to train model.
+  // For test, training is false value.
+  virtual void forward(bool training = true) = 0;
   virtual void backward() = 0;
-  virtual void prepare() {}
 };
 
 } // namespace exec
 } // namespace onert
 
-#endif // __ONERT_EXEC_I_TRAINER_H__
+#endif // __ONERT_EXEC_I_TRAINER_FUNCTION_H__
