@@ -86,7 +86,7 @@ public:
 
   uint8_t *getOutputDataByIndex(int32_t output_index);
 
-  void addInplaceOpIndex(uint32_t index) { _inplace_op_indexes.insert(index); }
+  void addInplaceOpIndex(const circle::Operator *op) { _inplace_op_indexes.insert(op); }
 
   void execute();
   void configure(bool dealloc_input);
@@ -104,6 +104,11 @@ public:
   void resetTensorData(uint8_t *new_data, const circle::Tensor *tensor);
 
   RuntimeModule *getRuntimeModule() { return _runtime_module; };
+
+  bool is_inplace_op(const circle::Operator *op)
+  {
+    return _inplace_op_indexes.find(op) != _inplace_op_indexes.end();
+  }
 
 #ifndef DIS_DYN_SHAPES
   void addDynamicShapeTensor(const circle::Tensor *tensor, std::vector<int32_t> &&shapes);
@@ -124,7 +129,7 @@ private:
   RuntimeModule *_runtime_module;
 
   std::unordered_map<const circle::Tensor *, uint8_t *> _tensor_to_data;
-  std::unordered_set<uint32_t> _inplace_op_indexes;
+  std::unordered_set<const circle::Operator *> _inplace_op_indexes;
 
   bool _is_valid = false;
 

@@ -30,8 +30,7 @@ void configure_kernel_CircleReshape(const circle::Operator *, BaseRuntimeGraph *
 }
 
 // TODO: reduce code duplication with ExpandDims
-void execute_kernel_CircleReshape(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                                  bool is_inplace)
+void execute_kernel_CircleReshape(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   const auto input_index = cur_op->inputs()->operator[](0);
   const auto shape_index = cur_op->inputs()->operator[](1);
@@ -44,7 +43,7 @@ void execute_kernel_CircleReshape(const circle::Operator *cur_op, BaseRuntimeGra
   const auto input = runtime_graph->getCircleTensorByIndex(input_index);
   const auto shape = runtime_graph->getCircleTensorByIndex(shape_index);
   const auto output = runtime_graph->getCircleTensorByIndex(output_index);
-
+  bool is_inplace = runtime_graph->is_inplace_op(cur_op);
   if (is_inplace)
   {
     runtime_graph->makeInplaceOperation(input, output);

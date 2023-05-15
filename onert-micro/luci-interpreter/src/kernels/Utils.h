@@ -107,10 +107,12 @@ inline tflite::RuntimeShape getTensorShape(const circle::Tensor *tensor)
   if (tensor == nullptr)
     return tflite::RuntimeShape();
 
-  tflite::RuntimeShape runtime_shape(Tensor::num_dims(tensor));
-  for (int i = 0; i < Tensor::num_dims(tensor); ++i)
+  auto const tensor_shape = Tensor::tensor_shape(tensor);
+
+  tflite::RuntimeShape runtime_shape(tensor_shape.size());
+  for (int i = 0; i < tensor_shape.size(); ++i)
   {
-    runtime_shape.SetDim(i, Tensor::dim(tensor, i));
+    runtime_shape.SetDim(i, tensor_shape[i]);
   }
   return runtime_shape;
 }
@@ -120,7 +122,7 @@ template <typename T> const T *getTensorData(const uint8_t *tensor_data)
   return tensor_data != nullptr ? reinterpret_cast<const T *>(tensor_data) : nullptr;
 }
 
-template <typename T> T *getTensorData(uint8_t *tensor_data)
+template <typename T> inline T *getTensorData(uint8_t *tensor_data)
 {
   return tensor_data != nullptr ? reinterpret_cast<T *>(tensor_data) : nullptr;
 }

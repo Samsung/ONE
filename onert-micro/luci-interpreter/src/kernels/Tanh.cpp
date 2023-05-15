@@ -148,8 +148,7 @@ void configure_kernel_CircleTanh(const circle::Operator *cur_op, BaseRuntimeGrap
                          Tensor::element_type(kernel.output()));
 }
 
-void execute_kernel_CircleTanh(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                               bool is_inplace)
+void execute_kernel_CircleTanh(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   kernels::SISOKernel kernel(cur_op, runtime_graph);
 
@@ -157,6 +156,8 @@ void execute_kernel_CircleTanh(const circle::Operator *cur_op, BaseRuntimeGraph 
   assert(input_data);
 
   auto *output_data = runtime_graph->getDataByTensor(kernel.output());
+
+  bool is_inplace = runtime_graph->is_inplace_op(cur_op);
 
   switch (Tensor::element_type(kernel.input()))
   {

@@ -58,8 +58,7 @@ void configure_kernel_CircleWhile(const circle::Operator *cur_op, BaseRuntimeGra
   main_runtime_graph->selectOwnSubgraph();
 }
 
-void execute_kernel_CircleWhile(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                                bool is_inplace)
+void execute_kernel_CircleWhile(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   auto *main_runtime_graph = runtime_graph;
   auto *runtime_module = runtime_graph->getRuntimeModule();
@@ -70,6 +69,8 @@ void execute_kernel_CircleWhile(const circle::Operator *cur_op, BaseRuntimeGraph
   std::vector<uint8_t *> operation_outputs_data;
 
   std::vector<int32_t> input_sizes(input_size);
+
+  bool is_inplace = runtime_graph->is_inplace_op(cur_op);
 
   for (int32_t i = 0; i < input_size; ++i)
   {

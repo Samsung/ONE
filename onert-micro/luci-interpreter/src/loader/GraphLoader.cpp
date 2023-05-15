@@ -153,7 +153,7 @@ void GraphLoader::checkInplaceOps(CircleReader *reader, RuntimeGraph *runtime_gr
       }
 
       if (is_inplace)
-        runtime_graph->addInplaceOpIndex(i);
+        runtime_graph->addInplaceOpIndex(op);
     }
   }
 }

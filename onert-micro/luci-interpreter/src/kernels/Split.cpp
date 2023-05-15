@@ -36,8 +36,7 @@ void configure_kernel_CircleSplit(const circle::Operator *cur_op, BaseRuntimeGra
   LUCI_INTERPRETER_CHECK(axis != nullptr);
 }
 
-void execute_kernel_CircleSplit(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                                bool)
+void execute_kernel_CircleSplit(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   const auto input_index = cur_op->inputs()->operator[](1);
   const auto axis_index = cur_op->inputs()->operator[](0);

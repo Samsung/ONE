@@ -32,13 +32,13 @@ void KernelConfigureRegistry::configure_kernel(const circle::Operator *cur_op,
 
 void KernelExecuteRegistry::execute_kernel(const circle::Operator *cur_op,
                                            circle::BuiltinOperator opcode,
-                                           BaseRuntimeGraph *runtime_graph, bool is_inplace) const
+                                           BaseRuntimeGraph *runtime_graph) const
 {
   auto specific_execute_func = get_kernel_execute_func(opcode);
   if (specific_execute_func == nullptr)
     assert(false && "Unsupported operator");
 
-  specific_execute_func(cur_op, runtime_graph, is_inplace);
+  specific_execute_func(cur_op, runtime_graph);
 }
 
 } // namespace luci_interpreter

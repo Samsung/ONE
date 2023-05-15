@@ -26,8 +26,7 @@ void configure_kernel_CircleShape(const circle::Operator *cur_op, BaseRuntimeGra
   LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.output()) == DataType::S32);
 }
 
-void execute_kernel_CircleShape(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                                bool)
+void execute_kernel_CircleShape(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   kernels::SISOKernel kernel(cur_op, runtime_graph);
 

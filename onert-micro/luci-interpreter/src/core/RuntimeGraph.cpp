@@ -29,7 +29,8 @@ RuntimeGraph::RuntimeGraph(SimpleMemoryManager *memory_manager, CircleReader *ci
   : _memory_manager(memory_manager),
     _tensor_to_data(std::unordered_map<const circle::Tensor *, uint8_t *>{}),
     _runtime_module(runtime_module), _reader(circle_reader),
-    _inplace_op_indexes(std::unordered_set<uint32_t>{}), _subgraph_index(subgraph_index)
+    _inplace_op_indexes(std::unordered_set<const circle::Operator *>{}),
+    _subgraph_index(subgraph_index)
 {
 }
 
@@ -83,7 +84,7 @@ void RuntimeGraph::buildAllocDeallocPlan(bool dealloc_input)
 
       if (lifetimes.count(raw_tensor) > 0)
       {
-        if (_inplace_op_indexes.find(index) != _inplace_op_indexes.end())
+        if (_inplace_op_indexes.find(kernel) != _inplace_op_indexes.end())
           lifetimes.at(raw_tensor).second = -1;
         else
           lifetimes.at(raw_tensor).second = index;
@@ -96,7 +97,7 @@ void RuntimeGraph::buildAllocDeallocPlan(bool dealloc_input)
       const auto raw_tensor = _reader->tensors()[output_index];
 
       assert(lifetimes.count(raw_tensor) == 0);
-      if (_inplace_op_indexes.find(index) != _inplace_op_indexes.end())
+      if (_inplace_op_indexes.find(kernel) != _inplace_op_indexes.end())
         lifetimes[raw_tensor] = Lifetime(-1, index);
       else
         lifetimes[raw_tensor] = Lifetime(index, index);
@@ -421,21 +422,19 @@ void RuntimeGraph::execute()
   if (not _is_valid)
     configure(true);
 
-  for (uint32_t i = 0; i < _reader->operators().size(); ++i)
+  const auto operators_size = _reader->operators().size();
+  const auto operators = _reader->operators();
+
+  for (uint32_t i = 0; i < operators_size; ++i)
   {
-    const auto op = _reader->operators().at(i);
+    const auto op = operators.at(i);
     assert(op != nullptr);
 
     const auto opcode = _reader->builtin_code(op);
 
     allocate(i);
 
-    bool is_inplace = false;
-
-    if (_inplace_op_indexes.find(i) != _inplace_op_indexes.end())
-      is_inplace = true;
-
-    kernel_executor.execute_kernel(op, opcode, this, is_inplace);
+    kernel_executor.execute_kernel(op, opcode, this);
 
     deallocate(i);
   }

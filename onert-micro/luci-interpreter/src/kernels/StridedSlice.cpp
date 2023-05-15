@@ -73,7 +73,7 @@ void configure_kernel_CircleStridedSlice(const circle::Operator *cur_op,
 }
 
 void execute_kernel_CircleStridedSlice(const circle::Operator *cur_op,
-                                       BaseRuntimeGraph *runtime_graph, bool)
+                                       BaseRuntimeGraph *runtime_graph)
 {
   kernels::MISOKernel miso_kernel(cur_op, runtime_graph);
 

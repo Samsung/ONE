@@ -134,8 +134,7 @@ void configure_kernel_CircleGather(const circle::Operator *cur_op, BaseRuntimeGr
   }
 }
 
-void execute_kernel_CircleGather(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                                 bool)
+void execute_kernel_CircleGather(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   kernels::TISOKernel kernel(cur_op, runtime_graph);
 

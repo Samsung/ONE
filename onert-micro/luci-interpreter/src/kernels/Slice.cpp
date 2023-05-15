@@ -93,8 +93,7 @@ void configure_kernel_CircleSlice(const circle::Operator *cur_op, BaseRuntimeGra
   LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input1()) <= max_dim);
 }
 
-void execute_kernel_CircleSlice(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                                bool)
+void execute_kernel_CircleSlice(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   kernels::MISOKernel kernel(cur_op, runtime_graph);
 
