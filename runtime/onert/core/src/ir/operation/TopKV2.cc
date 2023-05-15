@@ -25,6 +25,7 @@ namespace operation
 {
 
 void TopKV2::accept(OperationVisitor &v) const { v.visit(*this); }
+void TopKV2::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 TopKV2::TopKV2(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)

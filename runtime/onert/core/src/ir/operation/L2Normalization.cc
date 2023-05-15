@@ -25,6 +25,7 @@ namespace operation
 {
 
 void L2Normalization::accept(OperationVisitor &v) const { v.visit(*this); }
+void L2Normalization::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 L2Normalization::L2Normalization(const OperandIndexSequence &inputs,
                                  const OperandIndexSequence &outputs)

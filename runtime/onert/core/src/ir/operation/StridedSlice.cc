@@ -25,6 +25,7 @@ namespace operation
 {
 
 void StridedSlice::accept(OperationVisitor &v) const { v.visit(*this); }
+void StridedSlice::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 StridedSlice::StridedSlice(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                            const Param &param)

@@ -25,6 +25,7 @@ namespace operation
 {
 
 void OneHot::accept(OperationVisitor &v) const { v.visit(*this); }
+void OneHot::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 OneHot::OneHot(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)

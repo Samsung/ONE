@@ -27,6 +27,7 @@ namespace operation
 {
 
 void ElementwiseBinary::accept(OperationVisitor &v) const { v.visit(*this); }
+void ElementwiseBinary::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 ElementwiseBinary::ElementwiseBinary(const OperandIndexSequence &inputs,
                                      const OperandIndexSequence &outputs, const Param &param)

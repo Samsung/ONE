@@ -25,6 +25,7 @@ namespace operation
 {
 
 void BatchToSpaceND::accept(OperationVisitor &v) const { v.visit(*this); }
+void BatchToSpaceND::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 BatchToSpaceND::BatchToSpaceND(const OperandIndexSequence &inputs,
                                const OperandIndexSequence &outputs)

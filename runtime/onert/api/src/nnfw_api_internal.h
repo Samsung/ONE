@@ -42,6 +42,7 @@ namespace ir
 class Graph;
 class Model;
 class NNPkg;
+class TrainingInfo;
 } // namespace ir
 namespace compiler
 {
@@ -176,6 +177,7 @@ private:
   State _state{State::INITIALIZED};
   std::shared_ptr<onert::ir::NNPkg> _nnpkg;
   std::vector<std::unique_ptr<onert::compiler::CompilerOptions>> _coptions;
+  std::unique_ptr<onert::ir::TrainingInfo> _training_info;
   std::shared_ptr<onert::compiler::CompilerArtifact> _compiler_artifact;
   std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;

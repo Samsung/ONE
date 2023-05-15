@@ -453,6 +453,23 @@ void StaticShapeInferer::visit(const ir::operation::Conv2D &op)
 void StaticShapeInferer::visit(const ir::operation::ElementwiseActivation &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT));
+
+  if (_lowered_subg->graph().isTrainable())
+  {
+    if (op.param().op_type == ir::operation::ElementwiseActivation::Type::RELU)
+    {
+      auto &operands = _lowered_subg->graph().operands();
+
+      const auto &output_ind = op.getOutputs().at(0);
+      const auto &output_obj = operands.at(output_ind);
+      const auto &new_shape = output_obj.shape();
+
+      const auto &flex_ind =
+        op.training_indices().at(ir::operation::ElementwiseActivation::TrainingOperand::FLEX_GRAD);
+      ir::Operand &flex_obj = operands.at(flex_ind);
+      flex_obj.info().shape(new_shape);
+    }
+  }
 }
 
 void StaticShapeInferer::visit(const ir::operation::ElementwiseBinary &op)

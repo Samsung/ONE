@@ -25,6 +25,7 @@ namespace operation
 {
 
 void ExpandDims::accept(OperationVisitor &v) const { v.visit(*this); }
+void ExpandDims::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 ExpandDims::ExpandDims(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
   : Operation{OperandConstraint::createExact(2u), inputs, outputs}

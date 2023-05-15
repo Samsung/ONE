@@ -25,6 +25,7 @@ namespace operation
 {
 
 void SquaredDifference::accept(OperationVisitor &v) const { v.visit(*this); }
+void SquaredDifference::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 SquaredDifference::SquaredDifference(const OperandIndexSequence &inputs,
                                      const OperandIndexSequence &outputs)

@@ -25,6 +25,7 @@ namespace operation
 {
 
 void BCQFullyConnected::accept(OperationVisitor &v) const { v.visit(*this); }
+void BCQFullyConnected::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 BCQFullyConnected::BCQFullyConnected(const OperandIndexSequence &inputs,
                                      const OperandIndexSequence &outputs, const Param &param)

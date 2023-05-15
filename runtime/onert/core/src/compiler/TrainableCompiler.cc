@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "compiler/Compiler.h"
+#include "TrainableCompiler.h"
 
 #include "ExecutorFactory.h"
 #include "ShapeValidator.h"
@@ -37,21 +37,19 @@ namespace onert
 namespace compiler
 {
 
-Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt)
-  : _model{model}, _options{&copt}
+TrainableCompiler::TrainableCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
+                                     std::vector<std::unique_ptr<CompilerOptions>> &copts,
+                                     const ir::TrainingInfo *training_info)
+  : _model{nnpkg->primary_model()}, _options{copts[0].get()}, _training_info{training_info}
 {
-  // DO NOTHING
+  if (nnpkg->model_count() > 1)
+    throw std::runtime_error("TrainableCompiler does not support multiple models yet");
+
+  if (_model->subgraphs_count() > 1)
+    throw std::runtime_error("TrainableCompiler does not support multiple subgraphs yet");
 }
 
-Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
-                   std::vector<std::unique_ptr<CompilerOptions>> &copts)
-  : _model{nnpkg->primary_model()}, _options{copts[0].get()}
-{
-  // Use for single model only
-  assert(nnpkg->model_count() == 1);
-}
-
-std::shared_ptr<CompilerArtifact> Compiler::compile(void)
+std::shared_ptr<CompilerArtifact> TrainableCompiler::compile(void)
 {
   /***************************************************
    * Prepare compilation phase
@@ -88,6 +86,10 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
     // Optimizations
     pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
+
+    // Training
+    pass::PassRunner{}.append(std::make_unique<pass::TrainingOperandInsertionPass>(subg)).run();
+    subg.setTrainable();
   });
 
   /***************************************************

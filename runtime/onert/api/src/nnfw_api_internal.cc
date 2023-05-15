@@ -198,8 +198,8 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _nnpkg{nullptr}, _coptions{}, _compiler_artifact{nullptr}, _execution{nullptr},
-    _kernel_registry{nullptr}
+  : _nnpkg{nullptr}, _coptions{}, _training_info{nullptr}, _compiler_artifact{nullptr},
+    _execution{nullptr}, _kernel_registry{nullptr}
 {
   // DO NOTHING
 }
@@ -247,6 +247,7 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     auto model = onert::circle_loader::loadModel(buffer, size);
     _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
     _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
+    _training_info = std::make_unique<onert::ir::TrainingInfo>();
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -284,6 +285,8 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
       return NNFW_STATUS_ERROR;
     _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
     _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
+    // TODO Load training information if model has training information
+    _training_info = std::make_unique<onert::ir::TrainingInfo>();
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -393,6 +396,10 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     }
 
     _nnpkg->verify();
+
+    // TODO Load training information if nnpkg has training information
+    _training_info = std::make_unique<onert::ir::TrainingInfo>();
+
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -423,7 +430,8 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    auto compiler = onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions);
+    auto compiler =
+      onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, _training_info.get());
     _nnpkg.reset();
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);

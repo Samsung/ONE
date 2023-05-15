@@ -20,6 +20,7 @@
 #include "ICompiler.h"
 #include "CompilerOptions.h"
 #include "ir/NNPkg.h"
+#include "ir/TrainingInfo.h"
 
 namespace onert
 {
@@ -35,6 +36,10 @@ public:
 public:
   std::unique_ptr<ICompiler> create(const std::shared_ptr<ir::NNPkg> &nnpkg,
                                     std::vector<std::unique_ptr<CompilerOptions>> &copts);
+
+  std::unique_ptr<ICompiler> create(const std::shared_ptr<ir::NNPkg> &nnpkg,
+                                    std::vector<std::unique_ptr<CompilerOptions>> &copts,
+                                    const ir::TrainingInfo *training_info);
 
 private:
   // It is not allowed to use CompilerFactory without get()

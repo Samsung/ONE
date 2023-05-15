@@ -25,6 +25,7 @@ namespace operation
 {
 
 void FullyConnected::accept(OperationVisitor &v) const { v.visit(*this); }
+void FullyConnected::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 FullyConnected::FullyConnected(const OperandIndexSequence &inputs,
                                const OperandIndexSequence &outputs, const Param &param)

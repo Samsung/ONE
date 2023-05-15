@@ -25,6 +25,7 @@ namespace operation
 {
 
 void LocalResponseNormalization::accept(OperationVisitor &v) const { v.visit(*this); }
+void LocalResponseNormalization::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 LocalResponseNormalization::LocalResponseNormalization(const OperandIndexSequence &inputs,
                                                        const OperandIndexSequence &outputs,

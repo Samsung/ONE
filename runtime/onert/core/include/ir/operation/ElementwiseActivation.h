@@ -34,6 +34,11 @@ public:
     INPUT = 0
   };
 
+  enum TrainingOperand
+  {
+    FLEX_GRAD = 0
+  };
+
   enum class Type
   {
     ELU,
@@ -57,6 +62,7 @@ public:
 
 public:
   void accept(OperationVisitor &v) const override;
+  void accept(MutableOperationVisitor &v) override;
   std::string name() const override;
   OpCode opcode() const final { return OpCode::ElementwiseActivation; }
 
@@ -64,10 +70,16 @@ public:
   const Param &param() const { return _param; }
 
 public:
+  // For training
+  const std::vector<OperandIndex> &training_indices() const { return _training_indices; }
+  std::vector<OperandIndex> &training_indices() { return _training_indices; }
+
+public:
   static float infinity;
 
 private:
   Param _param;
+  std::vector<OperandIndex> _training_indices;
 };
 
 } // namespace operation

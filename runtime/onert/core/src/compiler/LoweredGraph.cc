@@ -69,6 +69,7 @@ void LoweredGraph::lowerGraph(const CompilerOptions &options)
   // TODO Move "schedule" phase out of here
   // Schedule
   std::unique_ptr<BackendResolver> backend_resolver;
+
   auto all_backends = backend_manager.getAll();
   if (options.he_scheduler)
   {

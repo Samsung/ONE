@@ -25,6 +25,7 @@ namespace operation
 {
 
 void Conv2D::accept(OperationVisitor &v) const { v.visit(*this); }
+void Conv2D::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Conv2D::Conv2D(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)

@@ -23,6 +23,7 @@
 #include "util/ConfigSource.h"
 #include "util/logging.h"
 #include "misc/string_helpers.h"
+#include "../backend/builtin/Config.h"
 
 namespace onert
 {
@@ -103,6 +104,19 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
       VERBOSE(ManualScheduler) << "backend for " << index << ": " << backend.config()->id()
                                << std::endl;
     }));
+
+  // TODO Remove this exception handling if onert supports multiple backends with training
+  backend_resolver->iterate(
+    [backend_all](const onert::ir::OperationIndex &, const onert::backend::Backend &backend) {
+      const bool is_training_backend = backend.config()->id() == "training";
+      const bool is_training_default = backend_all->config()->id() == "training";
+      const bool is_builtin_backend = backend.config()->id() == backend::builtin::Config::ID;
+      const bool is_builtin_default = backend_all->config()->id() == backend::builtin::Config::ID;
+      if ((is_training_default && !is_training_backend && !is_builtin_backend) ||
+          (is_training_backend && !is_training_default && !is_builtin_default))
+        throw std::runtime_error(
+          "Using 'training' backend with another backend is not supported yet");
+    });
 
   return backend_resolver;
 }

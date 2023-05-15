@@ -14,24 +14,33 @@
  * limitations under the License.
  */
 
-#include "ir/operation/Bulk.h"
-#include "ir/OperationVisitor.h"
+#ifndef __ONERT_IR_TRAINING_INFO_H__
+#define __ONERT_IR_TRAINING_INFO_H__
 
 namespace onert
 {
 namespace ir
 {
-namespace operation
-{
-void Bulk::accept(OperationVisitor &v) const { v.visit(*this); }
-void Bulk::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
-Bulk::Bulk(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-           const Bulk::Param &param)
-  : Operation{OperandConstraint::createAny(), inputs, outputs}, _param{param}
+class TrainingInfo
 {
-}
+public:
+  TrainingInfo() : _should_train{false} {}
+  TrainingInfo(const TrainingInfo &obj) = default;
+  TrainingInfo(TrainingInfo &&) = default;
+  TrainingInfo &operator=(const TrainingInfo &) = default;
+  TrainingInfo &operator=(TrainingInfo &&) = default;
+  ~TrainingInfo() = default;
 
-} // namespace operation
+  bool shouldTrain() const { return _should_train; }
+  void setShouldTrain() { _should_train = true; }
+
+  // TODO Add training information
+private:
+  bool _should_train;
+};
+
 } // namespace ir
 } // namespace onert
+
+#endif // __ONERT_IR_TRAINING_INFO_H__

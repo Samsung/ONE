@@ -25,6 +25,7 @@ namespace operation
 {
 
 void BCQGather::accept(OperationVisitor &v) const { v.visit(*this); }
+void BCQGather::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 BCQGather::BCQGather(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                      const Param &param)

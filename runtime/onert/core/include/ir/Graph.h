@@ -89,6 +89,7 @@ public:
   void verify(void);
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
   void setLayout(Layout layout) { _layout = layout; }
+  void setTrainable() { _trainable = true; }
 
 private:
   bool checkOperandsForOperation(const Operation &operation);
@@ -127,6 +128,7 @@ public:
   const Operations &operations() const { return _operations; }
   Operations &operations() { return _operations; }
   Layout layout() const { return _layout; }
+  bool isTrainable() { return _trainable; }
 
   // Topological sort
 public:
@@ -134,6 +136,7 @@ public:
 
 private:
   Operations _operations;
+  // TODO Split training operands from forwarding tensors if necessary
   Operands _operands;
   OperandIndexSequence _inputs;
   OperandIndexSequence _outputs;
@@ -141,6 +144,7 @@ private:
   std::unordered_map<std::string, IOIndex> _name_to_output;
   // TFLite and circle's default layout is NHWC;
   Layout _layout{Layout::NHWC};
+  bool _trainable{false};
 };
 
 } // namespace ir

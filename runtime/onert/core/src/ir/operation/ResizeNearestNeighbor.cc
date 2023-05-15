@@ -25,6 +25,7 @@ namespace operation
 {
 
 void ResizeNearestNeighbor::accept(OperationVisitor &v) const { v.visit(*this); }
+void ResizeNearestNeighbor::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 ResizeNearestNeighbor::ResizeNearestNeighbor(const OperandIndexSequence &inputs,
                                              const OperandIndexSequence &outputs,

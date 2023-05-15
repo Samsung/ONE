@@ -25,6 +25,7 @@ namespace operation
 {
 
 void Comparison::accept(OperationVisitor &v) const { v.visit(*this); }
+void Comparison::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Comparison::Comparison(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                        const Param &param)

@@ -17,6 +17,7 @@
 #include "compiler/CompilerFactory.h"
 
 #include "MultiModelCompiler.h"
+#include "TrainableCompiler.h"
 
 #include "compiler/Compiler.h"
 
@@ -39,6 +40,20 @@ CompilerFactory::create(const std::shared_ptr<ir::NNPkg> &nnpkg,
     return std::make_unique<Compiler>(nnpkg, copts);
 
   return std::make_unique<MultiModelCompiler>(nnpkg, copts);
+}
+
+std::unique_ptr<ICompiler>
+CompilerFactory::create(const std::shared_ptr<ir::NNPkg> &nnpkg,
+                        std::vector<std::unique_ptr<CompilerOptions>> &copts,
+                        const ir::TrainingInfo *training_info)
+{
+  assert(training_info);
+  if (training_info->shouldTrain())
+  {
+    return std::make_unique<TrainableCompiler>(nnpkg, copts, training_info);
+  }
+
+  return create(nnpkg, copts);
 }
 
 } // namespace compiler

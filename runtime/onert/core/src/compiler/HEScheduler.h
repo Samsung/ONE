@@ -75,6 +75,14 @@ public:
     if (cpu_backend_it == _all_backends.end())
       throw std::runtime_error("HEScheduler could be used only if 'cpu' backend is available");
     _cpu_backend = *cpu_backend_it;
+
+    // TODO Remove this exception handling if onert supports multiple backends with training
+    auto training_backend_it =
+      std::find_if(_all_backends.begin(), _all_backends.end(), [](const backend::Backend *backend) {
+        return backend->config()->id() == "training";
+      });
+    if (training_backend_it != _all_backends.end())
+      throw std::runtime_error("HEScheduler could be used with 'training' backend");
   }
 
 public:

@@ -60,6 +60,7 @@ public:
 
 public:
   void accept(OperationVisitor &v) const override;
+  void accept(MutableOperationVisitor &v) override;
   std::string name() const override;
   OpCode opcode() const final { return OpCode::Reduce; }
 

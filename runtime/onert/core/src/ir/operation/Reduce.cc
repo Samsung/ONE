@@ -27,6 +27,7 @@ namespace operation
 {
 
 void Reduce::accept(OperationVisitor &v) const { v.visit(*this); }
+void Reduce::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Reduce::Reduce(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)

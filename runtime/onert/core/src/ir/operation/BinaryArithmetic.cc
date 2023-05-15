@@ -27,6 +27,7 @@ namespace operation
 {
 
 void BinaryArithmetic::accept(OperationVisitor &v) const { v.visit(*this); }
+void BinaryArithmetic::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 BinaryArithmetic::BinaryArithmetic(const OperandIndexSequence &inputs,
                                    const OperandIndexSequence &outputs, const Param &param)

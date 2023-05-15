@@ -25,6 +25,7 @@ namespace operation
 {
 
 void Rank::accept(OperationVisitor &v) const { v.visit(*this); }
+void Rank::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Rank::Rank(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
   : Operation{OperandConstraint::createExact(1u), inputs, outputs}

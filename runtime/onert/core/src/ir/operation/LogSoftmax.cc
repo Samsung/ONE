@@ -25,6 +25,7 @@ namespace operation
 {
 
 void LogSoftmax::accept(OperationVisitor &v) const { v.visit(*this); }
+void LogSoftmax::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 LogSoftmax::LogSoftmax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                        const Param &param)

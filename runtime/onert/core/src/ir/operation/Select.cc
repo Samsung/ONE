@@ -26,6 +26,7 @@ namespace operation
 {
 
 void Select::accept(OperationVisitor &v) const { v.visit(*this); }
+void Select::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Select::Select(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
   : Operation{OperandConstraint::createExact(3u), inputs, outputs}
