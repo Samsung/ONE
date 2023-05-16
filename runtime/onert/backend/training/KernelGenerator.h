@@ -23,7 +23,7 @@
 
 #include <ExternalContext.h>
 #include <backend/CustomKernelBuilder.h>
-#include <backend/basic/KernelGeneratorBase.h>
+#include <backend/basic/KernelGeneratorTrainer.h>
 #include <ir/Operands.h>
 #include <ir/Operations.h>
 
@@ -34,7 +34,7 @@ namespace backend
 namespace training
 {
 
-class KernelGenerator : public basic::KernelGeneratorBase
+class KernelGenerator : public basic::KernelGeneratorTrainer
 {
 public:
   KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
@@ -42,7 +42,7 @@ public:
                   const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
                   const std::shared_ptr<cpu::ExternalContext> &external_context);
 
-  std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex op_ind) override;
+  std::unique_ptr<exec::TrainerSequence> generate(ir::OperationIndex op_ind) override;
 
   void visit(const ir::operation::Conv2D &) override;
   void visit(const ir::operation::FullyConnected &) override;

@@ -57,7 +57,7 @@ KernelGenerator::KernelGenerator(
   const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
   const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
   const std::shared_ptr<cpu::ExternalContext> &external_context)
-  : basic::KernelGeneratorBase{graph},
+  : basic::KernelGeneratorTrainer{graph},
     _ctx(graph.operands()), _operations_ctx{graph.operations()}, _current_layout{graph.layout()},
     _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
     _external_context(external_context)
@@ -65,20 +65,22 @@ KernelGenerator::KernelGenerator(
   // DO NOTHING
 }
 
-std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
+std::unique_ptr<exec::TrainerSequence> KernelGenerator::generate(ir::OperationIndex ind)
 {
-  auto ret = std::make_unique<exec::FunctionSequence>();
+  auto ret = std::make_unique<exec::TrainerSequence>();
 
   assert(_tensor_builder->dynamicTensorManager());
   assert(_tensor_reg);
 
-  // Prepare to handle dynamic tensors later
-  auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
-  {
-    dyn_ctx->op = &_operations_ctx.at(ind);
-    dyn_ctx->dynamic_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_ctx, _tensor_reg);
-  }
-  ret->dynamic_tensor_ctx(dyn_ctx);
+  // TODO Support DynamicTensor
+  // // Prepare to handle dynamic tensors later
+  // auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
+  // {
+  //   dyn_ctx->op = &_operations_ctx.at(ind);
+  //   dyn_ctx->dynamic_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_ctx,
+  //   _tensor_reg);
+  // }
+  // ret->dynamic_tensor_ctx(dyn_ctx);
 
   auto &op = _graph.operations().at(ind);
   op.accept(*this);

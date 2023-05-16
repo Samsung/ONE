@@ -60,6 +60,7 @@ void ConvolutionLayer::forward(bool training)
 void ConvolutionLayer::backward()
 {
   // TODO Implement details
+  throw std::runtime_error("backward error");
 }
 
 } // namespace ops
