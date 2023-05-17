@@ -44,36 +44,9 @@ void TrainerSequence::run()
   }
   else
   {
-    if (_enable_dynamic_shape_inferer && _dynamic_tensor_ctx)
+    for (const auto &function : _functions)
     {
-      // acl_cl and acl_neon backend don't support dynamic shape.
-      // _dynamic_tensor_ctx is always nullptr for acl_cl and acl_neon
-      // Thus, those two bakends cannot reach here.
-
-      // Do dynamic shape inference
-      _dynamic_tensor_ctx->op->accept(*_dynamic_tensor_ctx->dynamic_shape_inferer);
-
-      for (const auto &function : _functions)
-      {
-        // NOTE the function could be also TrainerSequence so we do this
-        // TODO Remove this or do this recursively
-        auto *sub_func_seq = dynamic_cast<TrainerSequence *>(function.get());
-        if (sub_func_seq != nullptr)
-        {
-          sub_func_seq->enableDynamicShapeInferer(true);
-          sub_func_seq->dynamic_tensor_ctx(dynamic_tensor_ctx());
-        }
-
-        // run kernel
-        function->forward(training);
-      }
-    }
-    else
-    {
-      for (const auto &function : _functions)
-      {
-        function->forward(training);
-      }
+      function->forward(training);
     }
   }
 }

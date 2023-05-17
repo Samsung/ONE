@@ -73,55 +73,8 @@ public:
     }
   }
 
-public: // methods related to dynamic tensor
-  struct DynamicTensorCtx
-  {
-    const ir::Operation *op = nullptr;
-    std::shared_ptr<exec::DynamicShapeInferer> dynamic_shape_inferer = nullptr;
-  };
-
-  /**
-   * @brief Prepare to run TrainerSequence which "might" handle dynamic tensor
-   * @note  Calling this does not mean that run() will handle dynamic tensor.
-   *        enableDynamicShapeInferer(true) will make run() will handle dynamic tensor.
-   */
-  void dynamic_tensor_ctx(std::shared_ptr<DynamicTensorCtx> &dynamic_tensor_ctx)
-  {
-    _dynamic_tensor_ctx = dynamic_tensor_ctx;
-  }
-
-  std::shared_ptr<DynamicTensorCtx> &dynamic_tensor_ctx() { return _dynamic_tensor_ctx; }
-
-  /**
-   * @brief Call this function by passing @c true if this TrainerSequence handles dynamic tensors
-   *        and should run DynamicShapeInferer. This function can be called multiple times and
-   *        if @c false is passed during multiple calls, DynamicShapeInfere will not be run.
-   * @note This must be called before run(). If not called, run() assumes that all tensors are
-   *       dynamic and DynamicShapeInferer will be run.
-   */
-  void enableDynamicShapeInferer(bool enable)
-  {
-    _enable_dynamic_shape_inferer = _enable_dynamic_shape_inferer || enable;
-  }
-
-  /**
-   * @brief Call this function to initialize vars before running
-   * @note When we run a model with static tensor input and then run with dynamic tensor input,
-   *       _enable_dynamic_shape_inferer is set to @c false at first run.
-   *       Once _enable_dynamic_shape_inferer is set to @c true it cannot be changed to @c false
-   *       only with calling enableDynamicShapeInferer(). So initializing it to @c false is
-   *       necessary.
-   * @todo This is a quick fix. Adding this will increase time for run(). Find way to optimize.
-   */
-  void initRunning() { _enable_dynamic_shape_inferer = false; }
-
 protected:
   std::vector<std::unique_ptr<ITrainerFunction>> _functions;
-
-protected:
-  bool _enable_dynamic_shape_inferer = false;
-
-  std::shared_ptr<DynamicTensorCtx> _dynamic_tensor_ctx = nullptr;
 };
 
 } // namespace exec

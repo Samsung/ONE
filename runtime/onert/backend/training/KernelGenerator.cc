@@ -72,16 +72,6 @@ std::unique_ptr<exec::TrainerSequence> KernelGenerator::generate(ir::OperationIn
   assert(_tensor_builder->dynamicTensorManager());
   assert(_tensor_reg);
 
-  // TODO Support DynamicTensor
-  // // Prepare to handle dynamic tensors later
-  // auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
-  // {
-  //   dyn_ctx->op = &_operations_ctx.at(ind);
-  //   dyn_ctx->dynamic_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_ctx,
-  //   _tensor_reg);
-  // }
-  // ret->dynamic_tensor_ctx(dyn_ctx);
-
   auto &op = _graph.operations().at(ind);
   op.accept(*this);
   assert(_return_fn); // _return_fn must have been generated
