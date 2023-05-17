@@ -60,12 +60,12 @@ void TrainerSequence::prepare()
   // }
 }
 
-void TrainerSequence::append(std::unique_ptr<ITrainerFunction> &&function)
+void TrainerSequence::append(std::unique_ptr<ITrainableFunction> &&function)
 {
   _functions.push_back(std::move(function));
 }
 
-void TrainerSequence::iterate(const std::function<void(ITrainerFunction &)> &fn)
+void TrainerSequence::iterate(const std::function<void(ITrainableFunction &)> &fn)
 {
   for (const auto &func : _functions)
   {

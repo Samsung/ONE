@@ -23,7 +23,7 @@
 #include <functional>
 
 #include "exec/FunctionSequence.h"
-#include "exec/ITrainerFunction.h"
+#include "exec/ITrainableFunction.h"
 #include "exec/DynamicShapeInferer.h"
 #include "ir/Operations.h"
 #include "backend/ITensorRegistry.h"
@@ -57,13 +57,13 @@ public:
   void prepare() override;
 
   /**
-   * @brief Appends an ITrainerFunction object to the function sequence
+   * @brief Appends an ITrainableFunction object to the function sequence
    *
-   * @param function ITrainerFunction object to be appended
+   * @param function ITrainableFunction object to be appended
    */
-  void append(std::unique_ptr<ITrainerFunction> &&function);
+  void append(std::unique_ptr<ITrainableFunction> &&function);
 
-  void iterate(const std::function<void(ITrainerFunction &)> &fn);
+  void iterate(const std::function<void(ITrainableFunction &)> &fn);
 
   template <typename T, typename... Args> void wrap(Args &&... args)
   {
@@ -74,7 +74,7 @@ public:
   }
 
 protected:
-  std::vector<std::unique_ptr<ITrainerFunction>> _functions;
+  std::vector<std::unique_ptr<ITrainableFunction>> _functions;
 };
 
 } // namespace exec

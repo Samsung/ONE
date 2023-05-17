@@ -19,7 +19,7 @@
 
 #include <ops/SoftMaxLayer.h>
 
-#include <exec/ITrainerFunction.h>
+#include <exec/ITrainableFunction.h>
 
 namespace onert
 {
@@ -30,7 +30,7 @@ namespace training
 namespace ops
 {
 
-class SoftMaxLayer : public ::onert::exec::ITrainerFunction, public cpu::ops::SoftMaxLayer
+class SoftMaxLayer : public ::onert::exec::ITrainableFunction, public cpu::ops::SoftMaxLayer
 {
 public:
   SoftMaxLayer();

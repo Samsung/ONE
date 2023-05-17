@@ -53,7 +53,7 @@ protected:
 #undef OP
 
 protected:
-  std::unique_ptr<exec::ITrainerFunction> releaseFunction()
+  std::unique_ptr<exec::ITrainableFunction> releaseFunction()
   {
     assert(_return_fn);
     return std::move(_return_fn);
@@ -61,7 +61,7 @@ protected:
 
 protected:
   const ir::Graph &_graph;
-  std::unique_ptr<exec::ITrainerFunction> _return_fn;
+  std::unique_ptr<exec::ITrainableFunction> _return_fn;
 };
 
 } // namespace basic

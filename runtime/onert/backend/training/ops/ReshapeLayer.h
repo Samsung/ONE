@@ -19,7 +19,7 @@
 
 #include <ops/ReshapeLayer.h>
 
-#include <exec/ITrainerFunction.h>
+#include <exec/ITrainableFunction.h>
 
 namespace onert
 {
@@ -30,7 +30,7 @@ namespace training
 namespace ops
 {
 
-class ReshapeLayer : public ::onert::exec::ITrainerFunction, public cpu::ops::ReshapeLayer
+class ReshapeLayer : public ::onert::exec::ITrainableFunction, public cpu::ops::ReshapeLayer
 {
 public:
   ReshapeLayer();

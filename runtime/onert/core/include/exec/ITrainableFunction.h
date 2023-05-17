@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_I_TRAINER_FUNCTION_H__
-#define __ONERT_EXEC_I_TRAINER_FUNCTION_H__
+#ifndef __ONERT_EXEC_I_TRAINABLE_FUNCTION_H__
+#define __ONERT_EXEC_I_TRAINABLE_FUNCTION_H__
 
 namespace onert
 {
 namespace exec
 {
 
-class ITrainerFunction
+class ITrainableFunction
 {
 public:
-  virtual ~ITrainerFunction() = default;
+  virtual ~ITrainableFunction() = default;
   // TODO training option should be true by default.
   // Because this interface aims to train model.
   // For test, training is false value.
@@ -36,4 +36,4 @@ public:
 } // namespace exec
 } // namespace onert
 
-#endif // __ONERT_EXEC_I_TRAINER_FUNCTION_H__
+#endif // __ONERT_EXEC_I_TRAINABLE_FUNCTION_H__

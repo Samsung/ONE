@@ -20,7 +20,7 @@
 #include <ExternalContext.h>
 #include <ops/FullyConnectedLayer.h>
 
-#include <exec/ITrainerFunction.h>
+#include <exec/ITrainableFunction.h>
 
 namespace onert
 {
@@ -31,7 +31,7 @@ namespace training
 namespace ops
 {
 
-class FullyConnectedLayer : public ::onert::exec::ITrainerFunction,
+class FullyConnectedLayer : public ::onert::exec::ITrainableFunction,
                             public cpu::ops::FullyConnectedLayer
 {
 public:

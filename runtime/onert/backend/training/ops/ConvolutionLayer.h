@@ -19,7 +19,7 @@
 
 #include <ops/ConvolutionLayer.h>
 
-#include <exec/ITrainerFunction.h>
+#include <exec/ITrainableFunction.h>
 
 namespace onert
 {
@@ -30,7 +30,7 @@ namespace training
 namespace ops
 {
 
-class ConvolutionLayer : public ::onert::exec::ITrainerFunction, public cpu::ops::ConvolutionLayer
+class ConvolutionLayer : public ::onert::exec::ITrainableFunction, public cpu::ops::ConvolutionLayer
 {
 public:
   ConvolutionLayer();
