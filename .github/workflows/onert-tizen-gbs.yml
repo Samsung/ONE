@@ -1,0 +1,53 @@
+name: Build onert tizen gbs
+
+on:
+  pull_request:
+    branches:
+      - master
+      - release/*
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - '.github/workflows/onert-tizen-gbs.yml'
+      - 'nnfw'
+      - 'compute/**'
+      - 'infra/cmake/**'
+      - 'infra/nnfw/**'
+      - 'infra/scripts/**'
+      - 'packaging/**'
+      - 'runtime/**'
+      - 'tests/**'
+
+jobs:
+  check-commit-message:
+    name: Check commit message
+    runs-on: ubuntu-20.04
+    # Skip on draft, check on draft -> ready
+    if: github.event.pull_request.draft == false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: GBS Build
+        uses: retzero/gbs-build-action@v1
+        with:
+          gbs_conf: infra/nnfw/config/gbs.conf
+          architecture: armv7l
+          profile: profile.tizen
+          output_dir: build-artifacts
+      - name: Check build-artifacts
+        run: |
+          if [ -d build-artifacts ]; then
+            echo "build-artifacts exists"
+          else
+            echo "build-artifacts does not exist"
+            exit 1
+          fi
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: build-artifacts
