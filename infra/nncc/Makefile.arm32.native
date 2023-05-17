@@ -25,7 +25,7 @@ ARM32_BUILD_ITEMS+=;oops;pepper-assert
 ARM32_BUILD_ITEMS+=;hermes;hermes-std
 ARM32_BUILD_ITEMS+=;loco;locop;logo-core;logo
 ARM32_BUILD_ITEMS+=;safemain;mio-circle05;
-ARM32_BUILD_ITEMS+=;foder;arser
+ARM32_BUILD_ITEMS+=;foder;arser;vconone
 ARM32_BUILD_ITEMS+=;luci;luci-compute
 ARM32_BUILD_ITEMS+=;circle-quantizer
 # TODO add common-artifacts (this requires python venv with TensorFlow)
