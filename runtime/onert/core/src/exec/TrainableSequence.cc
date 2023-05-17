@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "exec/TrainerSequence.h"
+#include "exec/TrainableSequence.h"
 
 #include "ir/Operation.h"
 #include "backend/ITensorRegistry.h"
@@ -26,7 +26,7 @@ namespace onert
 namespace exec
 {
 
-void TrainerSequence::run()
+void TrainableSequence::run()
 {
   auto training = util::getConfigBool(util::config::TRAINING_MODE);
   if (training)
@@ -51,7 +51,7 @@ void TrainerSequence::run()
   }
 }
 
-void TrainerSequence::prepare()
+void TrainableSequence::prepare()
 {
   // NOTE Do we need `prepare()`?
   // for (const auto &function : _functions)
@@ -60,12 +60,12 @@ void TrainerSequence::prepare()
   // }
 }
 
-void TrainerSequence::append(std::unique_ptr<ITrainableFunction> &&function)
+void TrainableSequence::append(std::unique_ptr<ITrainableFunction> &&function)
 {
   _functions.push_back(std::move(function));
 }
 
-void TrainerSequence::iterate(const std::function<void(ITrainableFunction &)> &fn)
+void TrainableSequence::iterate(const std::function<void(ITrainableFunction &)> &fn)
 {
   for (const auto &func : _functions)
   {

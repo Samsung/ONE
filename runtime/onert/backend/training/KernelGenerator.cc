@@ -65,9 +65,9 @@ KernelGenerator::KernelGenerator(
   // DO NOTHING
 }
 
-std::unique_ptr<exec::TrainerSequence> KernelGenerator::generate(ir::OperationIndex ind)
+std::unique_ptr<exec::TrainableSequence> KernelGenerator::generate(ir::OperationIndex ind)
 {
-  auto ret = std::make_unique<exec::TrainerSequence>();
+  auto ret = std::make_unique<exec::TrainableSequence>();
 
   assert(_tensor_builder->dynamicTensorManager());
   assert(_tensor_reg);

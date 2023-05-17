@@ -42,7 +42,7 @@ public:
                   const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
                   const std::shared_ptr<cpu::ExternalContext> &external_context);
 
-  std::unique_ptr<exec::TrainerSequence> generate(ir::OperationIndex op_ind) override;
+  std::unique_ptr<exec::TrainableSequence> generate(ir::OperationIndex op_ind) override;
 
   void visit(const ir::operation::Conv2D &) override;
   void visit(const ir::operation::FullyConnected &) override;

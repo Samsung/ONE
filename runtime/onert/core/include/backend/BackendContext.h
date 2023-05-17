@@ -23,7 +23,6 @@
 #include "ir/OperandIndexMap.h"
 #include "compiler/GraphLowerInfo.h"
 #include "exec/FunctionSequence.h"
-#include "exec/TrainerSequence.h"
 
 namespace onert
 {

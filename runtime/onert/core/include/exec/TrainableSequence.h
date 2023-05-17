@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_TRAINER_SEQUENCE_H__
-#define __ONERT_EXEC_TRAINER_SEQUENCE_H__
+#ifndef __ONERT_EXEC_TRAINABLE_SEQUENCE_H__
+#define __ONERT_EXEC_TRAINABLE_SEQUENCE_H__
 
 #include <memory>
 #include <cassert>
@@ -33,10 +33,10 @@ namespace onert
 namespace exec
 {
 
-class TrainerSequence : public FunctionSequence
+class TrainableSequence : public FunctionSequence
 {
 public:
-  template <typename... Args> TrainerSequence(Args &&... args) { initialize(std::move(args)...); }
+  template <typename... Args> TrainableSequence(Args &&... args) { initialize(std::move(args)...); }
 
 private:
   void initialize()
@@ -51,7 +51,7 @@ private:
   }
 
 public:
-  virtual ~TrainerSequence() = default;
+  virtual ~TrainableSequence() = default;
 
   void run() override;
   void prepare() override;
@@ -80,4 +80,4 @@ protected:
 } // namespace exec
 } // namespace onert
 
-#endif // __ONERT_EXEC_TRAINER_SEQUENCE_H__
+#endif // __ONERT_EXEC_TRAINABLE_SEQUENCE_H__

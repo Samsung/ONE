@@ -23,7 +23,7 @@
 
 #include "ir/Graph.h"
 #include "ir/OperationVisitor.h"
-#include "exec/TrainerSequence.h"
+#include "exec/TrainableSequence.h"
 #include "backend/ITensorRegistry.h"
 
 namespace onert
@@ -39,7 +39,7 @@ public:
   virtual ~KernelGeneratorTrainer() = default;
   KernelGeneratorTrainer(const ir::Graph &graph) : _graph{graph} {}
 
-  virtual std::unique_ptr<exec::TrainerSequence> generate(ir::OperationIndex ind) = 0;
+  virtual std::unique_ptr<exec::TrainableSequence> generate(ir::OperationIndex ind) = 0;
 
 protected:
   using OperationVisitor::visit;
