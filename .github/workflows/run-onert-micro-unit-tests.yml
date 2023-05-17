@@ -10,6 +10,9 @@ on:
       - synchronize
       - reopened
       - ready_for_review
+    paths:
+      - 'onert-micro/**'
+      - '.github/workflows/run-onert-micro-unit-tests.yml'
 
 defaults:
   run:
@@ -23,20 +26,11 @@ jobs:
     if: github.event.pull_request.draft == false
 
     steps:
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          filters: |
-            onert-micro:
-              - 'onert-micro/**'
-              - '.github/workflows/run-onert-micro-unit-tests.yml'
       - name: Install Arm GNU Toolchain (arm-none-eabi-gcc)
-        if: steps.changes.outputs.onert-micro == 'true'
         uses: carlosperate/arm-none-eabi-gcc-action@v1
         with:
           release: '12.2.Rel1' # <-- The compiler release to use
       - name: Checkout
-        if: steps.changes.outputs.onert-micro == 'true'
         uses: actions/checkout@v3
         with:
           # Checkout PR head commit
@@ -45,7 +39,6 @@ jobs:
           # Fetch all history and branch (default: 1)
           fetch-depth: 0
       - name: Build and Run Tests
-        if: steps.changes.outputs.onert-micro == 'true'
         run: |
           mkdir build
           cd build
