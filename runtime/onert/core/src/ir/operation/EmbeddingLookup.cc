@@ -25,6 +25,7 @@ namespace operation
 {
 
 void EmbeddingLookup::accept(OperationVisitor &v) const { v.visit(*this); }
+void EmbeddingLookup::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 EmbeddingLookup::EmbeddingLookup(const OperandIndexSequence &inputs,
                                  const OperandIndexSequence &outputs)

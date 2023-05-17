@@ -25,6 +25,7 @@ namespace operation
 {
 
 void Einsum::accept(OperationVisitor &v) const { v.visit(*this); }
+void Einsum::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Einsum::Einsum(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)

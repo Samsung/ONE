@@ -25,6 +25,7 @@ namespace operation
 {
 
 void BatchMatMul::accept(OperationVisitor &v) const { v.visit(*this); }
+void BatchMatMul::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 BatchMatMul::BatchMatMul(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                          const Param &param)

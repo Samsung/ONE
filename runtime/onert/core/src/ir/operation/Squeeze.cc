@@ -25,6 +25,7 @@ namespace operation
 {
 
 void Squeeze::accept(OperationVisitor &v) const { v.visit(*this); }
+void Squeeze::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Squeeze::Squeeze(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                  const Param &param)

@@ -72,6 +72,7 @@ public:
 
 public:
   void accept(OperationVisitor &v) const override;
+  void accept(MutableOperationVisitor &v) override;
 
   std::string getName() const { return "DetectionPostProcess"; }
 

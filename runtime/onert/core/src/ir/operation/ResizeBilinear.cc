@@ -25,6 +25,7 @@ namespace operation
 {
 
 void ResizeBilinear::accept(OperationVisitor &v) const { v.visit(*this); }
+void ResizeBilinear::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 ResizeBilinear::ResizeBilinear(const OperandIndexSequence &inputs,
                                const OperandIndexSequence &outputs, const Param &param)

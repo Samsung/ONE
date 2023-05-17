@@ -46,6 +46,7 @@ public:
   OneHot(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
          const Param &param);
   void accept(OperationVisitor &v) const override;
+  void accept(MutableOperationVisitor &v) override;
   OpCode opcode() const final { return OpCode::OneHot; }
   const Param &param() const { return _param; }
 

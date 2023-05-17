@@ -23,12 +23,16 @@ namespace ir
 {
 namespace operation
 {
+
 void Split::accept(OperationVisitor &v) const { v.visit(*this); }
+void Split::accept(MutableOperationVisitor &v) { v.visit(*this); }
+
 Split::Split(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
              const Param &param)
   : Operation{OperandConstraint::createExact(2u), inputs, outputs}, _param{param}
 {
 }
+
 } // namespace operation
 } // namespace ir
 } // namespace onert

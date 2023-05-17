@@ -25,6 +25,7 @@ namespace operation
 {
 
 void Reshape::accept(OperationVisitor &v) const { v.visit(*this); }
+void Reshape::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Reshape::Reshape(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                  const Param &param)

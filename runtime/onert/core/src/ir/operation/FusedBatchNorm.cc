@@ -25,6 +25,7 @@ namespace operation
 {
 
 void FusedBatchNorm::accept(OperationVisitor &v) const { v.visit(*this); }
+void FusedBatchNorm::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 FusedBatchNorm::FusedBatchNorm(const OperandIndexSequence &inputs,
                                const OperandIndexSequence &outputs, const Param &param)

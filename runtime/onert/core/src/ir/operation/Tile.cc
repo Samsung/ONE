@@ -25,6 +25,7 @@ namespace operation
 {
 
 void Tile::accept(OperationVisitor &v) const { v.visit(*this); }
+void Tile::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Tile::Tile(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
   : Operation{OperandConstraint::createExact(2u), inputs, outputs}

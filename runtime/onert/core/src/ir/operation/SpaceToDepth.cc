@@ -25,6 +25,7 @@ namespace operation
 {
 
 void SpaceToDepth::accept(OperationVisitor &v) const { v.visit(*this); }
+void SpaceToDepth::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 SpaceToDepth::SpaceToDepth(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                            const Param &param)

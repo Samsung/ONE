@@ -25,6 +25,7 @@ namespace operation
 {
 
 void DepthwiseConv2D::accept(OperationVisitor &v) const { v.visit(*this); }
+void DepthwiseConv2D::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 DepthwiseConv2D::DepthwiseConv2D(const OperandIndexSequence &inputs,
                                  const OperandIndexSequence &outputs, const Param &param)

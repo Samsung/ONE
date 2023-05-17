@@ -23,6 +23,8 @@ namespace ir
 namespace operation
 {
 void Pack::accept(OperationVisitor &v) const { v.visit(*this); }
+void Pack::accept(MutableOperationVisitor &v) { v.visit(*this); }
+
 Pack::Pack(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
            const Param &param)
   : Operation{OperandConstraint::createAtLeast(1u), inputs, outputs}, _param{param}

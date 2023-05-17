@@ -30,6 +30,7 @@ namespace ir
 {
 
 struct OperationVisitor;
+struct MutableOperationVisitor;
 
 class Operation
 {
@@ -50,6 +51,7 @@ public:
 
 public:
   virtual void accept(OperationVisitor &v) const = 0;
+  virtual void accept(MutableOperationVisitor &) = 0;
   virtual std::string name() const { return std::string{toString(opcode())}; }
   virtual OpCode opcode() const = 0;
 

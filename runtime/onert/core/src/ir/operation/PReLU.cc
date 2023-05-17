@@ -25,6 +25,7 @@ namespace operation
 {
 
 void PReLU::accept(OperationVisitor &v) const { v.visit(*this); }
+void PReLU::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 PReLU::PReLU(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
   : Operation{OperandConstraint::createExact(2u), inputs, outputs}

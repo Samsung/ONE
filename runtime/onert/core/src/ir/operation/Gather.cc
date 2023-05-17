@@ -25,6 +25,7 @@ namespace operation
 {
 
 void Gather::accept(OperationVisitor &v) const { v.visit(*this); }
+void Gather::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Gather::Gather(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)

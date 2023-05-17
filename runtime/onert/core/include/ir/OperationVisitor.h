@@ -34,6 +34,16 @@ struct OperationVisitor
 #undef OP
 };
 
+struct MutableOperationVisitor
+{
+  virtual ~MutableOperationVisitor() = default;
+
+#define OP(InternalName) \
+  virtual void visit(operation::InternalName &) {}
+#include "ir/Operations.lst"
+#undef OP
+};
+
 } // namespace ir
 } // namespace onert
 

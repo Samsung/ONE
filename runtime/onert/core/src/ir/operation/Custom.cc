@@ -26,6 +26,7 @@ namespace operation
 {
 
 void Custom::accept(OperationVisitor &v) const { v.visit(*this); }
+void Custom::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Custom::Custom(OperandConstraint input_constr, const OperandIndexSequence &inputs,
                const OperandIndexSequence &outputs, std::string id, const Userdata &userdata)

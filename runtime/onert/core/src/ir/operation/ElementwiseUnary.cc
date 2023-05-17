@@ -27,6 +27,7 @@ namespace operation
 {
 
 void ElementwiseUnary::accept(OperationVisitor &v) const { v.visit(*this); }
+void ElementwiseUnary::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 ElementwiseUnary::ElementwiseUnary(const OperandIndexSequence &inputs,
                                    const OperandIndexSequence &outputs, const Param &param)

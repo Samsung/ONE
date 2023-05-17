@@ -25,6 +25,7 @@ namespace operation
 {
 
 void MatrixBandPart::accept(OperationVisitor &v) const { v.visit(*this); }
+void MatrixBandPart::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 MatrixBandPart::MatrixBandPart(const OperandIndexSequence &inputs,
                                const OperandIndexSequence &outputs)

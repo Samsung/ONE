@@ -25,6 +25,7 @@ namespace operation
 {
 
 void InstanceNorm::accept(OperationVisitor &v) const { v.visit(*this); }
+void InstanceNorm::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 InstanceNorm::InstanceNorm(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                            const Param &param)

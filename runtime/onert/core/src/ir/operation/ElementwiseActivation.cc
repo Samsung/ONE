@@ -27,6 +27,7 @@ namespace operation
 {
 
 void ElementwiseActivation::accept(OperationVisitor &v) const { v.visit(*this); }
+void ElementwiseActivation::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 ElementwiseActivation::ElementwiseActivation(const OperandIndexSequence &inputs,
                                              const OperandIndexSequence &outputs,

@@ -25,6 +25,7 @@ namespace operation
 {
 
 void LSTM::accept(OperationVisitor &v) const { v.visit(*this); }
+void LSTM::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 LSTM::LSTM(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
            const Param &param)

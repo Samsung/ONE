@@ -31,6 +31,7 @@ DetectionPostProcess::DetectionPostProcess(const OperandIndexSequence &inputs,
 }
 
 void DetectionPostProcess::accept(OperationVisitor &v) const { v.visit(*this); }
+void DetectionPostProcess::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 } // namespace operation
 } // namespace ir

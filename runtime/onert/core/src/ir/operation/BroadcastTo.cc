@@ -24,6 +24,7 @@ namespace ir
 namespace operation
 {
 void BroadcastTo::accept(OperationVisitor &v) const { v.visit(*this); }
+void BroadcastTo::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 BroadcastTo::BroadcastTo(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
   : Operation{OperandConstraint::createExact(2u), inputs, outputs}

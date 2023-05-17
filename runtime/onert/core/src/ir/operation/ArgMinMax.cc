@@ -25,6 +25,7 @@ namespace operation
 {
 
 void ArgMinMax::accept(OperationVisitor &v) const { v.visit(*this); }
+void ArgMinMax::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 ArgMinMax::ArgMinMax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                      const Param &param)

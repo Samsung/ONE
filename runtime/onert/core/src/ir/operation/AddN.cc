@@ -25,6 +25,7 @@ namespace operation
 {
 
 void AddN::accept(OperationVisitor &v) const { v.visit(*this); }
+void AddN::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 AddN::AddN(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
   : Operation{OperandConstraint::createExact(inputs.size()), inputs, outputs}

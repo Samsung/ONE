@@ -25,6 +25,7 @@ namespace operation
 {
 
 void Concat::accept(OperationVisitor &v) const { v.visit(*this); }
+void Concat::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Concat::Concat(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)

@@ -23,6 +23,7 @@ namespace ir
 namespace operation
 {
 void If::accept(OperationVisitor &v) const { v.visit(*this); }
+void If::accept(MutableOperationVisitor &v) { v.visit(*this); }
 If::If(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs, const Param &param)
   : Operation{OperandConstraint::createAny(), inputs, outputs}, _param{param}
 {

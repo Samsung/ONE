@@ -27,6 +27,7 @@ namespace operation
 {
 
 void Pool2D::accept(OperationVisitor &v) const { v.visit(*this); }
+void Pool2D::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Pool2D::Pool2D(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                const Param &param)

@@ -51,6 +51,7 @@ public:
             const Param &param);
 
   void accept(OperationVisitor &v) const override;
+  void accept(MutableOperationVisitor &v) override;
   OpCode opcode() const final { return OpCode::BCQGather; }
 
   const Param &param() const { return _param; }

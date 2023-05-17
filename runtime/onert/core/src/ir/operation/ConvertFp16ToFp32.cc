@@ -25,6 +25,7 @@ namespace operation
 {
 
 void ConvertFp16ToFp32::accept(OperationVisitor &v) const { v.visit(*this); }
+void ConvertFp16ToFp32::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 ConvertFp16ToFp32::ConvertFp16ToFp32(const OperandIndexSequence &inputs,
                                      const OperandIndexSequence &outputs)

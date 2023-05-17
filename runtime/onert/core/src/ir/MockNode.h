@@ -38,6 +38,7 @@ public:
 
 public:
   void accept(onert::ir::OperationVisitor &) const override {}
+  void accept(onert::ir::MutableOperationVisitor &) override{};
   onert::ir::OpCode opcode() const final { return onert::ir::OpCode::Invalid; }
 };
 

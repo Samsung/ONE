@@ -25,6 +25,7 @@ namespace operation
 {
 
 void Softmax::accept(OperationVisitor &v) const { v.visit(*this); }
+void Softmax::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Softmax::Softmax(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
                  const Param &param)

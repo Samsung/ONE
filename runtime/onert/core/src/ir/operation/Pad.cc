@@ -26,6 +26,7 @@ namespace operation
 {
 
 void Pad::accept(OperationVisitor &v) const { v.visit(*this); }
+void Pad::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 // PAD: 2 inputs
 // PADV2: 3 inputs

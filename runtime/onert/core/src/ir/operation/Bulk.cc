@@ -24,6 +24,7 @@ namespace ir
 namespace operation
 {
 void Bulk::accept(OperationVisitor &v) const { v.visit(*this); }
+void Bulk::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 Bulk::Bulk(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
            const Bulk::Param &param)

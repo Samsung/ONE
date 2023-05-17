@@ -24,6 +24,7 @@ namespace ir
 namespace operation
 {
 void StatelessRandomUniform::accept(OperationVisitor &v) const { v.visit(*this); }
+void StatelessRandomUniform::accept(MutableOperationVisitor &v) { v.visit(*this); }
 
 StatelessRandomUniform::StatelessRandomUniform(const OperandIndexSequence &inputs,
                                                const OperandIndexSequence &outputs)

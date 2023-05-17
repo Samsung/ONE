@@ -49,6 +49,7 @@ public:
          const OperandIndexSequence &outputs, std::string id, const Userdata &userdata);
 
   void accept(OperationVisitor &v) const override;
+  void accept(MutableOperationVisitor &v) override;
 
 public:
   /**
