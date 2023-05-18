@@ -1,0 +1,46 @@
+name: Build onert-micro with arm-none-eabi-gcc
+
+on:
+  pull_request:
+    branches:
+      - master
+      - release/*
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - 'onert-micro/**'
+      - '.github/workflows/build-onert-micro-arm.yml'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build-onert-micro-arm:
+    name: Build onert-micro with arm-none-eabi-gcc
+    runs-on: ubuntu-20.04
+    # Skip on draft, check on draft -> ready
+    if: github.event.pull_request.draft == false
+
+    steps:
+      - name: Install Arm GNU Toolchain (arm-none-eabi-gcc)
+        uses: carlosperate/arm-none-eabi-gcc-action@v1
+        with:
+          release: '12.2.Rel1' # <-- The compiler release to use
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Checkout PR head commit
+          # Checkout Action use merge commit as default
+          ref: ${{ github.event.pull_request.head.sha }}
+          # Fetch all history and branch (default: 1)
+          fetch-depth: 0
+      - name: Build static library with arm-none-eabi-gcc
+        run: |
+          mkdir build
+          cd build
+          cmake ../infra/onert-micro/
+          make -j$(nproc) luci_interpreter_micro_arm
