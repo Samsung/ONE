@@ -1137,3 +1137,33 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
 
   return NNFW_STATUS_NO_ERROR;
 }
+
+NNFW_STATUS nnfw_session::set_loss(NNFW_LOSS_TYPE loss_type, const void *y_true_buf)
+{
+  if (y_true_buf == NULL)
+    return NNFW_STATUS_ERROR;
+
+  if (isStatePrepared())
+    return NNFW_STATUS_INVALID_STATE;
+
+  onert::ir::LossInfo loss_info;
+  // TODO Map the correct loss type
+  switch (loss_type)
+  {
+    case NNFW_LOSS_TYPE_CATEGORICAL_CROSSENTROPY:
+      loss_info.loss_type = onert::ir::operation::Loss::Type::CATEGORICAL_CROSSENTROPY;
+      break;
+    default:
+      throw std::runtime_error("Error: Model has loss type that runtime API does not support.");
+  }
+
+  loss_info.y_true_buf = y_true_buf;
+  // TODO Find how to get y_pred(model's output)
+  //      1. From nnpkg
+  //      2. From user
+  // loss_info.y_pred_index = ...;
+  _training_info->setLossInfo(loss_info);
+  _training_info->setShouldTrain();
+
+  return NNFW_STATUS_NO_ERROR;
+}

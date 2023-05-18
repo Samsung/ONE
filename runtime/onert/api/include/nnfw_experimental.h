@@ -19,6 +19,18 @@
 
 #include "nnfw.h"
 
+// Used for training
+
+/*
+ * Loss type for training
+ */
+typedef enum
+{
+  /** Categorical CrossEntropy loss */
+  NNFW_LOSS_TYPE_CATEGORICAL_CROSSENTROPY = 0,
+
+} NNFW_LOSS_TYPE;
+
 // Used for custom kernel development
 
 /*

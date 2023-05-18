@@ -17,10 +17,23 @@
 #ifndef __ONERT_IR_TRAINING_INFO_H__
 #define __ONERT_IR_TRAINING_INFO_H__
 
+#include "ir/Index.h"
+#include "ir/operation/Loss.h"
+
 namespace onert
 {
 namespace ir
 {
+
+struct LossInfo
+{
+  // NOTE How to store the type of loss here has not been decided yet. You can change it if you want
+  // it better.
+  ir::operation::Loss::Type loss_type;
+  //
+  const void *y_true_buf{nullptr};
+  ir::OperandIndex y_pred_index{};
+};
 
 class TrainingInfo
 {
@@ -35,9 +48,12 @@ public:
   bool shouldTrain() const { return _should_train; }
   void setShouldTrain() { _should_train = true; }
 
-  // TODO Add training information
+  const LossInfo &lossInfo() const { return _loss_info; }
+  void setLossInfo(const LossInfo &loss_info) { _loss_info = loss_info; }
+
 private:
   bool _should_train;
+  LossInfo _loss_info;
 };
 
 } // namespace ir

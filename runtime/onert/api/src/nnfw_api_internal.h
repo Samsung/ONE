@@ -160,6 +160,7 @@ public:
    *          (cpu, acl_cl)
    */
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
+  NNFW_STATUS set_loss(NNFW_LOSS_TYPE loss_type, const void *y_true_buf);
 
 private:
   const onert::ir::Graph *primary_subgraph();

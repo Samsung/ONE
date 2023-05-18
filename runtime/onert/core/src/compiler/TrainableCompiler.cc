@@ -22,6 +22,7 @@
 #include "pass/OddOutputPass.h"
 #include "pass/PassRunner.h"
 #include "pass/TrainingOperandInsertionPass.h"
+#include "pass/TrainingOperationInsertionPass.h"
 #include "pass/UnusedOperandEliminationPass.h"
 #include "../dumper/dot/DotDumper.h"
 #include "../exec/SingleModelExecutors.h"
@@ -88,7 +89,10 @@ std::shared_ptr<CompilerArtifact> TrainableCompiler::compile(void)
     pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
 
     // Training
-    pass::PassRunner{}.append(std::make_unique<pass::TrainingOperandInsertionPass>(subg)).run();
+    pass::PassRunner{}
+      .append(std::make_unique<pass::TrainingOperandInsertionPass>(subg))
+      .append(std::make_unique<pass::TrainingOperationInsertionPass>(subg, _training_info))
+      .run();
     subg.setTrainable();
   });
 
