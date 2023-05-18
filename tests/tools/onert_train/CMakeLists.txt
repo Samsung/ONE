@@ -13,7 +13,6 @@ list(APPEND ONERT_TRAIN_SRCS "src/randomgen.cc")
 list(APPEND ONERT_TRAIN_SRCS "src/rawformatter.cc")
 
 nnfw_find_package(Boost REQUIRED program_options)
-nnfw_find_package(Ruy QUIET)
 nnfw_find_package(HDF5 QUIET)
 
 if (HDF5_FOUND)
@@ -37,9 +36,5 @@ target_link_libraries(onert_train nnfw_lib_tflite jsoncpp)
 target_link_libraries(onert_train nnfw-dev)
 target_link_libraries(onert_train ${Boost_PROGRAM_OPTIONS_LIBRARY})
 target_link_libraries(onert_train nnfw_lib_benchmark)
-if(Ruy_FOUND AND PROFILE_RUY)
-  target_link_libraries(onert_train ruy_instrumentation)
-  target_link_libraries(onert_train ruy_profiler)
-endif(Ruy_FOUND AND PROFILE_RUY)
 
 install(TARGETS onert_train DESTINATION bin)

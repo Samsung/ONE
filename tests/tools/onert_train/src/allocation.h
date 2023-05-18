@@ -28,7 +28,15 @@ public:
   Allocation() : data_(nullptr) {}
   ~Allocation() { free(data_); }
   void *data() const { return data_; }
-  void *alloc(uint64_t sz) { return data_ = malloc(sz); }
+  void *alloc(uint64_t sz)
+  {
+    if (data_)
+    {
+      free(data_);
+    }
+
+    return data_ = malloc(sz);
+  }
 
 private:
   void *data_;

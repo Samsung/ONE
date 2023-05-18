@@ -56,44 +56,6 @@ std::unordered_map<uint32_t, Json::Value> argArrayToMap(const Json::Value &jsonv
   return ret;
 }
 
-// param shape_str is a form of, e.g., "[1, [2, 3], 3, []]" or "h5"
-void handleShapeJsonParam(onert_train::TensorShapeMap &shape_map, const std::string &shape_str)
-{
-  Json::Value root;
-  Json::Reader reader;
-  if (!reader.parse(shape_str, root, false))
-  {
-    std::cerr << "Invalid JSON format for output_sizes \"" << shape_str << "\"\n";
-    exit(1);
-  }
-
-  auto arg_map = argArrayToMap(root);
-  for (auto &pair : arg_map)
-  {
-    uint32_t key = pair.first;
-    Json::Value &shape_json = pair.second;
-    if (!shape_json.isArray())
-    {
-      std::cerr << "All the values must be list: " << shape_str << "\n";
-      exit(1);
-    }
-
-    std::vector<int> shape;
-    for (auto &dim_json : shape_json)
-    {
-      if (!dim_json.isUInt())
-      {
-        std::cerr << "All the dims should be dim >= 0: " << shape_str << "\n";
-        exit(1);
-      }
-
-      shape.emplace_back(dim_json.asUInt64());
-    }
-
-    shape_map[key] = shape;
-  }
-}
-
 void checkModelfile(const std::string &model_filename)
 {
   if (model_filename.empty())
@@ -212,30 +174,6 @@ void Args::Initialize(void)
     }
   };
 
-  auto process_shape_prepare = [&](const std::string &shape_str) {
-    try
-    {
-      handleShapeJsonParam(_shape_prepare, shape_str);
-    }
-    catch (const std::exception &e)
-    {
-      std::cerr << "error with '--shape_prepare' option: " << shape_str << std::endl;
-      exit(1);
-    }
-  };
-
-  auto process_shape_run = [&](const std::string &shape_str) {
-    try
-    {
-      handleShapeJsonParam(_shape_run, shape_str);
-    }
-    catch (const std::exception &e)
-    {
-      std::cerr << "error with '--shape_run' option: " << shape_str << std::endl;
-      exit(1);
-    }
-  };
-
   // General options
   po::options_description general("General options", 100);
 
@@ -251,23 +189,11 @@ void Args::Initialize(void)
     ("learning_rate", po::value<float>()->default_value(1.0e-4)->notifier([&](const auto &v) { _learning_rate = v; }), "Learning rate (default: 1.0e-4)")
     ("loss", po::value<std::string>()->default_value("mse")->notifier([&] (const auto &v) { _loss_function = v; }), "Loss function name (default: mse)")
     ("optimizer", po::value<std::string>()->default_value("sgd")->notifier([&] (const auto &v) { _optimizer = v; }), "Optimizer name (default: sgd)")
-    ("shape_prepare", po::value<std::string>()->default_value("[]")->notifier(process_shape_prepare),
-         "Please refer to the description of 'shape_run'")
-    ("shape_run", po::value<std::string>()->default_value("[]")->notifier(process_shape_run),
-         "'--shape_prepare: set shape of tensors before compilation (before calling nnfw_prepare()).\n"
-         "'--shape_run: set shape of tensors before running (before calling nnfw_run()).\n"
-         "Allowed value:.\n"
-         "'[0, [1, 2], 2, []]': set 0th tensor to [1, 2] and 2nd tensor to [] (scalar).\n"
-         "For detailed description, please consutl the description of nnfw_set_input_tensorinfo()\n"
-         )
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
          "Verbose level\n"
          "0: prints the only result. Messages btw run don't print\n"
          "1: prints result and message btw run\n"
          "2: prints all of messages to print\n")
-    ("run_delay,t", po::value<int>()->default_value(-1)->notifier([&](const auto &v) { _run_delay = v; }), "Delay time(us) between runs (as default no delay")
-    ("gpumem_poll,g", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _gpumem_poll = v; }), "Check gpu memory polling separately")
-    ("mem_poll,m", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _mem_poll = v; }), "Check memory polling")
     ("output_sizes", po::value<std::string>()->notifier(process_output_sizes),
         "The output buffer size in JSON 1D array\n"
         "If not given, the model's output sizes are used\n"
@@ -288,7 +214,7 @@ void Args::Parse(const int argc, char **argv)
   if (vm.count("help"))
   {
     std::cout << "onert_train\n\n";
-    std::cout << "Usage: " << argv[0] << " path to nnpackage root directory [<options>]\n\n";
+    std::cout << "Usage: " << argv[0] << "[model path] [<options>]\n\n";
     std::cout << _options;
     std::cout << "\n";
 
@@ -310,11 +236,6 @@ void Args::Parse(const int argc, char **argv)
       }
     };
 
-    // calling, e.g., "onert_train .. -- shape_prepare .. --shape_run .." should theoretically
-    // work but allowing both options together on command line makes the usage and implemenation
-    // of onert_train too complicated. Therefore let's not allow those option together.
-    conflicting_options("shape_prepare", "shape_run");
-
     // Cannot use both single model file and nnpackage at once
     conflicting_options("modelfile", "nnpackage");
 
@@ -333,16 +254,6 @@ void Args::Parse(const int argc, char **argv)
     std::cerr << "Bad cast error - " << e.what() << '\n';
     exit(1);
   }
-}
-
-bool Args::shapeParamProvided()
-{
-  bool provided = false;
-  // specific shape was provided
-  // e.g., "--shape_run '[0, [10, 1]]'" or "--shape_prepare '[0, [10, 1]]'"
-  provided |= (!getShapeMapForPrepare().empty()) || (!getShapeMapForRun().empty());
-
-  return provided;
 }
 
 } // end of namespace onert_train

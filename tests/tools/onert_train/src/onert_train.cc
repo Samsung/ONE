@@ -22,9 +22,6 @@
 #include "nnfw_internal.h"
 #include "randomgen.h"
 #include "rawformatter.h"
-#ifdef RUY_PROFILER
-#include "ruy/profiler/profiler.h"
-#endif
 
 #include <boost/program_options.hpp>
 #include <cassert>
@@ -37,13 +34,6 @@
 #include <vector>
 
 static const char *default_backend_cand = "training";
-
-void overwriteShapeMap(onert_train::TensorShapeMap &shape_map,
-                       std::vector<onert_train::TensorShape> shapes)
-{
-  for (uint32_t i = 0; i < shapes.size(); i++)
-    shape_map[i] = shapes[i];
-}
 
 int main(const int argc, char **argv)
 {
@@ -61,14 +51,9 @@ int main(const int argc, char **argv)
       exit(0);
     }
 
-#ifdef RUY_PROFILER
-    ruy::profiler::ScopeProfile ruy_profile;
-#endif
-
     // TODO Apply verbose level to phases
     const int verbose = args.getVerboseLevel();
-    benchmark::Phases phases(
-      benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll(), args.getRunDelay()});
+    benchmark::Phases phases(benchmark::PhaseOption{});
 
     nnfw_session *session = nullptr;
     NNPR_ENSURE_STATUS(nnfw_create_session(&session));
@@ -123,46 +108,8 @@ int main(const int argc, char **argv)
       }
     };
 
-    auto setTensorInfo = [session](const TensorShapeMap &tensor_shape_map) {
-      for (auto tensor_shape : tensor_shape_map)
-      {
-        auto ind = tensor_shape.first;
-        auto &shape = tensor_shape.second;
-        nnfw_tensorinfo ti;
-        // to fill dtype
-        NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, ind, &ti));
-
-        bool set_input = false;
-        if (ti.rank != shape.size())
-        {
-          set_input = true;
-        }
-        else
-        {
-          for (int i = 0; i < ti.rank; i++)
-          {
-            if (ti.dims[i] != shape.at(i))
-            {
-              set_input = true;
-              break;
-            }
-          }
-        }
-        if (!set_input)
-          continue;
-
-        ti.rank = shape.size();
-        for (int i = 0; i < ti.rank; i++)
-          ti.dims[i] = shape.at(i);
-        NNPR_ENSURE_STATUS(nnfw_set_input_tensorinfo(session, ind, &ti));
-      }
-    };
-
     verifyInputTypes();
     verifyOutputTypes();
-
-    // set input shape before compilation
-    setTensorInfo(args.getShapeMapForPrepare());
 
     // prepare execution
 
@@ -170,9 +117,6 @@ int main(const int argc, char **argv)
     phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
       NNPR_ENSURE_STATUS(nnfw_prepare(session));
     });
-
-    // set input shape after compilation and before execution
-    setTensorInfo(args.getShapeMapForRun());
 
     // prepare input
     std::vector<Allocation> inputs(num_inputs);
