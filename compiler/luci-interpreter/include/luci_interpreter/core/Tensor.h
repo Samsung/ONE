@@ -166,9 +166,9 @@ private:
   DataType _element_type;
   Shape _shape;
   AffineQuantization _quantization;
-  uint8_t *_data;
+  uint8_t *_data = nullptr;
   std::string _name;
-  bool _data_allocated;
+  bool _data_allocated = false;
   // Write of tensor is reported to registered Observers only if this tensor is observable
   // This is needed for tensors used in kernel implementation, but not present in original model.
   bool _is_observable = true;
