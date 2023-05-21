@@ -27,5 +27,6 @@ var searchData=
   ['quantizeweights_2ecpp_24',['QuantizeWeights.cpp',['../_quantize_weights_8cpp.html',1,'']]],
   ['quantizeweights_2eh_25',['QuantizeWeights.h',['../_quantize_weights_8h.html',1,'']]],
   ['quantizewithminmaxpass_2ecpp_26',['QuantizeWithMinMaxPass.cpp',['../_quantize_with_min_max_pass_8cpp.html',1,'']]],
-  ['quantizewithminmaxpass_2eh_27',['QuantizeWithMinMaxPass.h',['../_quantize_with_min_max_pass_8h.html',1,'']]]
+  ['quantizewithminmaxpass_2eh_27',['QuantizeWithMinMaxPass.h',['../_quantize_with_min_max_pass_8h.html',1,'']]],
+  ['quantlesskernel_2eh_28',['QuantLessKernel.h',['../_quant_less_kernel_8h.html',1,'']]]
 ];

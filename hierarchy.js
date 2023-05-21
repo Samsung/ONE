@@ -2728,7 +2728,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::MirrorPad", "classluci__interpreter_1_1kernels_1_1_mirror_pad.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< MulParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::Mul", "classluci__interpreter_1_1kernels_1_1_mul.html", null ],
         [ "luci_interpreter::kernels::Mul", "classluci__interpreter_1_1kernels_1_1_mul.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< OneHotParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -2768,7 +2767,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::StridedSlice", "classluci__interpreter_1_1kernels_1_1_strided_slice.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< SubParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::Sub", "classluci__interpreter_1_1kernels_1_1_sub.html", null ],
         [ "luci_interpreter::kernels::Sub", "classluci__interpreter_1_1kernels_1_1_sub.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< TransposeConvParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -4535,8 +4533,23 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataFullyConnectedBase< uint8_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fully_connected_base.html", [
         [ "luci_interpreter::test_kernel::TestDataU8FullyConnected", "classluci__interpreter_1_1test__kernel_1_1_test_data_u8_fully_connected.html", null ]
       ] ],
+      [ "luci_interpreter::test_kernel::TestDataLessBase< float, bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_less_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatLess", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_less.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataLessBase< int32_t, bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_less_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataIntLess", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_less.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataLessBase< uint8_t, bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_less_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataQuantLess", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_less.html", null ]
+      ] ],
       [ "luci_interpreter::test_kernel::TestDataLogisticBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_logistic_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatLogistic", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_logistic.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataMulBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_mul_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatMul", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_mul.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataMulBase< int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_mul_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataIntMul", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_mul.html", null ]
       ] ],
       [ "luci_interpreter::test_kernel::TestDataPackBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatPack", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_pack.html", null ]
@@ -4553,20 +4566,32 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataReduceCommonBase< int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", [
         [ "luci_interpreter::test_kernel::TestDataIntReduceProd", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_reduce_prod.html", null ]
       ] ],
+      [ "luci_interpreter::test_kernel::TestDataSubBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_sub_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatSub", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_sub.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataSubBase< int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_sub_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataIntSub", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_sub.html", null ]
+      ] ],
       [ "luci_interpreter::test_kernel::TestDataAddBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataFullyConnectedBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fully_connected_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataLogisticBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_logistic_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataMulBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_mul_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataPackBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataReduceCommonBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", null ],
-      [ "luci_interpreter::test_kernel::TestDataStridedSliceKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel.html", null ]
+      [ "luci_interpreter::test_kernel::TestDataStridedSliceKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataSubBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_sub_base.html", null ]
     ] ],
     [ "luci_interpreter::test_kernel::TestDataBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
+    [ "luci_interpreter::test_kernel::TestDataBase< float, bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
+    [ "luci_interpreter::test_kernel::TestDataBase< int32_t, bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< int64_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< T, U >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", [
+      [ "luci_interpreter::test_kernel::TestDataLessBase< T, U >", "classluci__interpreter_1_1test__kernel_1_1_test_data_less_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataShapeKernel< T, U >", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel.html", null ]
     ] ],
     [ "luci_interpreter::test_kernel::TestDataBase< uint8_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
+    [ "luci_interpreter::test_kernel::TestDataBase< uint8_t, bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "exo::test::TestGraph", "classexo_1_1test_1_1_test_graph.html", [
       [ "exo::test::ExampleGraph< ExampleGraphType::ConstGen_ReLU >", "classexo_1_1test_1_1_example_graph_3_01_example_graph_type_1_1_const_gen___re_l_u_01_4.html", null ],
       [ "exo::test::ExampleGraph< ExampleGraphType::FeatureBiasAdd >", "classexo_1_1test_1_1_example_graph_3_01_example_graph_type_1_1_feature_bias_add_01_4.html", null ],

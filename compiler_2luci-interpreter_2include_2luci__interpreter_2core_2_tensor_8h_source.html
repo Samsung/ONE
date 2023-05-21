@@ -260,9 +260,9 @@ $(document).ready(function(){initNavTree('compiler_2luci-interpreter_2include_2l
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <a class="code hl_enumeration" href="namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffb">DataType</a> _element_type;</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <a class="code hl_class" href="classluci__interpreter_1_1_shape.html">Shape</a> _shape;</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <a class="code hl_struct" href="structluci__interpreter_1_1_affine_quantization.html">AffineQuantization</a> _quantization;</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  uint8_t *_data;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  uint8_t *_data = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  std::string _name;</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="keywordtype">bool</span> _data_allocated;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="keywordtype">bool</span> _data_allocated = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  <span class="comment">// Write of tensor is reported to registered Observers only if this tensor is observable</span></div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <span class="comment">// This is needed for tensors used in kernel implementation, but not present in original model.</span></div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  <span class="keywordtype">bool</span> _is_observable = <span class="keyword">true</span>;</div>

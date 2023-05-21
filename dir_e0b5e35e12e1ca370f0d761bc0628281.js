@@ -14,7 +14,7 @@ var dir_e0b5e35e12e1ca370f0d761bc0628281 =
     [ "Maximum.h", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_maximum_8h.html", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_maximum_8h" ],
     [ "MaxPool.h", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_max_pool_8h.html", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_max_pool_8h" ],
     [ "Mean.h", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_mean_8h.html", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_mean_8h" ],
-    [ "Mul.h", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_mul_8h.html", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_mul_8h" ],
+    [ "Mul.h", "moco_2import_2include_2moco_2_import_2_nodes_2_mul_8h.html", "moco_2import_2include_2moco_2_import_2_nodes_2_mul_8h" ],
     [ "Pack.h", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_pack_8h.html", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_pack_8h" ],
     [ "Pad.h", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_pad_8h.html", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_pad_8h" ],
     [ "Placeholder.h", "_placeholder_8h.html", "_placeholder_8h" ],
@@ -30,6 +30,6 @@ var dir_e0b5e35e12e1ca370f0d761bc0628281 =
     [ "Squeeze.h", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_squeeze_8h.html", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_squeeze_8h" ],
     [ "StopGradient.h", "_stop_gradient_8h.html", "_stop_gradient_8h" ],
     [ "StridedSlice.h", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_strided_slice_8h.html", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_strided_slice_8h" ],
-    [ "Sub.h", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_sub_8h.html", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_sub_8h" ],
+    [ "Sub.h", "moco_2import_2include_2moco_2_import_2_nodes_2_sub_8h.html", "moco_2import_2include_2moco_2_import_2_nodes_2_sub_8h" ],
     [ "Tanh.h", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_tanh_8h.html", "compiler_2moco_2import_2include_2moco_2_import_2_nodes_2_tanh_8h" ]
 ];
