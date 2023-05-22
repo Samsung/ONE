@@ -19,7 +19,7 @@ ARG VERSION
 RUN apt-get update && apt-get install -qqy --no-install-recommends \ 
     wget \
     ca-certificates \ 
-    && wget https://github.com/Samsung/ONE/releases/download/${VERSION}/one-compiler-bionic_${VERSION}_amd64.deb \ 
+    && wget --no-check-certificate https://github.com/Samsung/ONE/releases/download/${VERSION}/one-compiler-bionic_${VERSION}_amd64.deb \ 
     && apt-get install -y ./one-compiler-bionic_${VERSION}_amd64.deb \ 
     && rm -rf /var/lib/apt/lists/* 
  
