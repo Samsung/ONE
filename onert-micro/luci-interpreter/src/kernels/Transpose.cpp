@@ -19,7 +19,7 @@
 #include "TISOKernel.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/transpose.h>
+#include "PALTranspose.h"
 
 namespace luci_interpreter
 {
@@ -54,7 +54,7 @@ void execute_kernel_CircleTranspose(const circle::Operator *cur_op, BaseRuntimeG
   const int32_t *perm_data = kernels::getTensorData<int32_t>(tiso_data.input2_data);
 
   const int32_t size = Tensor::dim(perm, 0);
-  tflite::TransposeParams params;
+  luci_interpreter_pal::TransposeParams params;
   params.perm_count = size;
   for (int i = 0; i < size; ++i)
     params.perm[i] = perm_data[i];
@@ -63,18 +63,18 @@ void execute_kernel_CircleTranspose(const circle::Operator *cur_op, BaseRuntimeG
   {
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      tflite::reference_ops::Transpose(params, kernels::getTensorShape(input),
-                                       kernels::getTensorData<float>(tiso_data.input1_data),
-                                       kernels::getTensorShape(output),
-                                       kernels::getTensorData<float>(tiso_data.output_data));
+      luci_interpreter_pal::Transpose(params, kernels::getTensorShape(input),
+                                      kernels::getTensorData<float>(tiso_data.input1_data),
+                                      kernels::getTensorShape(output),
+                                      kernels::getTensorData<float>(tiso_data.output_data));
       break;
 #endif // DIS_FLOAT
 #ifndef DIS_QUANT
     case DataType::U8:
-      tflite::reference_ops::Transpose(params, kernels::getTensorShape(input),
-                                       kernels::getTensorData<uint8_t>(tiso_data.input1_data),
-                                       kernels::getTensorShape(output),
-                                       kernels::getTensorData<uint8_t>(tiso_data.output_data));
+      luci_interpreter_pal::Transpose(params, kernels::getTensorShape(input),
+                                      kernels::getTensorData<uint8_t>(tiso_data.input1_data),
+                                      kernels::getTensorShape(output),
+                                      kernels::getTensorData<uint8_t>(tiso_data.output_data));
       break;
 #endif // DIS_QUANT
     default:

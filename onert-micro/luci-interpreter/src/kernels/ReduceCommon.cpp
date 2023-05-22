@@ -18,7 +18,7 @@
 #include "kernels/Utils.h"
 #include "TISOKernel.h"
 
-#include <tensorflow/lite/kernels/internal/reference/reduce.h>
+#include "PALReduceCommon.h"
 
 #include <cassert>
 
@@ -38,19 +38,17 @@ void reduceProdGeneric(kernels::TISOData *tiso_data, const circle::Tensor *input
   int resolved_axis[maxNumberOfReducedDims];
 
   const int input_rank = Tensor::num_dims(input);
-  const int output_rank = Tensor::num_dims(output);
   const int num_axis = Tensor::num_elements(axis);
 
   auto const input_dims = wrap(input->shape());
-  auto const output_dims = wrap(output->shape());
+  const auto output_shape = kernels::getTensorShape(output);
 
-  tflite::reference_ops::ReduceGeneric<T>(
+  luci_interpreter_pal::ReduceGeneric<T>(
     kernels::getTensorData<T>(tiso_data->input1_data),
     reinterpret_cast<const int *>(input_dims.data()), input_rank,
     kernels::getTensorData<T>(tiso_data->output_data),
-    reinterpret_cast<const int *>(output_dims.data()), output_rank,
-    kernels::getTensorData<int>(tiso_data->input2_data), num_axis, keep_dims, temp_index,
-    resolved_axis, /*init_value=*/T(1),
+    kernels::getTensorData<int>(tiso_data->input2_data), num_axis, temp_index, resolved_axis,
+    /*init_value=*/T(1), output_shape.flatSize(),
     [](const T current, const T in) -> T { return in * current; });
 }
 

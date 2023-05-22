@@ -26,20 +26,20 @@ namespace luci_interpreter
 namespace kernels
 {
 
-tflite::RuntimeShape getTensorRuntimeShape(const circle::Tensor *circle_tensor,
-                                           BaseRuntimeGraph *runtime_graph)
+luci_interpreter::RuntimeShape getTensorRuntimeShape(const circle::Tensor *circle_tensor,
+                                                     BaseRuntimeGraph *runtime_graph)
 {
-  tflite::RuntimeShape input_shape = getTensorShape(circle_tensor);
+  luci_interpreter::RuntimeShape input_shape = getTensorShape(circle_tensor);
 
 #ifndef DIS_DYN_SHAPES
   auto *dynamic_shape_vector = runtime_graph->getDynamicShapeTensor(circle_tensor);
   if (dynamic_shape_vector != nullptr)
   {
-    input_shape.Resize(dynamic_shape_vector->size());
+    input_shape.resize(dynamic_shape_vector->dimensionsCount());
 
-    for (int n = 0; n < dynamic_shape_vector->size(); ++n)
+    for (int n = 0; n < dynamic_shape_vector->dimensionsCount(); ++n)
     {
-      input_shape.SetDim(n, dynamic_shape_vector->at(n));
+      input_shape.setDim(n, dynamic_shape_vector->dims(n));
     }
   }
 #endif // DIS_DYN_SHAPES
@@ -246,13 +246,13 @@ void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quan
 }
 #endif
 
-tflite::RuntimeShape calculateShapeForBroadcast(const circle::Tensor *input1,
-                                                const circle::Tensor *input2)
+luci_interpreter::RuntimeShape calculateShapeForBroadcast(const circle::Tensor *input1,
+                                                          const circle::Tensor *input2)
 {
   const int num_input1_dims = Tensor::num_dims(input1);
   const int num_input2_dims = Tensor::num_dims(input2);
   const int num_out_dims = std::max(num_input1_dims, num_input2_dims);
-  tflite::RuntimeShape output_shape(num_out_dims);
+  luci_interpreter::RuntimeShape output_shape(num_out_dims);
 
   for (int i = 0; i < num_out_dims; ++i)
   {
@@ -265,7 +265,7 @@ tflite::RuntimeShape calculateShapeForBroadcast(const circle::Tensor *input1,
     bool can_broadcast = input1_dim == 1 || input2_dim == 1;
     LUCI_INTERPRETER_CHECK(!need_broadcast || can_broadcast);
 
-    output_shape.SetDim(num_out_dims - i - 1, std::max(input1_dim, input2_dim));
+    output_shape.setDim(num_out_dims - i - 1, std::max(input1_dim, input2_dim));
   }
 
   return output_shape;

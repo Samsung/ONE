@@ -111,9 +111,9 @@ public:
   }
 
 #ifndef DIS_DYN_SHAPES
-  void addDynamicShapeTensor(const circle::Tensor *tensor, std::vector<int32_t> &&shapes);
+  void addDynamicShapeTensor(const circle::Tensor *tensor, luci_interpreter::RuntimeShape &&shapes);
 
-  std::vector<int32_t> *getDynamicShapeTensor(const circle::Tensor *tensor);
+  luci_interpreter::RuntimeShape *getDynamicShapeTensor(const circle::Tensor *tensor);
 
   void removeDynamicShapeTensor(const circle::Tensor *tensor);
 #endif // DIS_DYN_SHAPES
@@ -140,7 +140,7 @@ private:
   uint32_t _subgraph_index;
 
 #ifndef DIS_DYN_SHAPES
-  std::unordered_map<const circle::Tensor *, std::vector<int32_t>> _dynamic_tensor_shapes;
+  std::unordered_map<const circle::Tensor *, luci_interpreter::RuntimeShape> _dynamic_tensor_shapes;
 #endif // DIS_DYN_SHAPES
 };
 

@@ -27,11 +27,21 @@ namespace
 {
 const int max_dim = 5;
 
-template <typename T>
-inline void slice(const tflite::SliceParams &op_params, const tflite::RuntimeShape &input_shape,
-                  const T *input_data, const tflite::RuntimeShape &output_shape, T *output_data)
+struct SliceParams
 {
-  const tflite::RuntimeShape ext_shape = tflite::RuntimeShape::ExtendedShape(5, input_shape);
+  int8_t begin_count;
+  int32_t begin[5];
+  int8_t size_count;
+  int32_t size[5];
+};
+
+template <typename T>
+inline void slice(const luci_interpreter::SliceParams &op_params,
+                  const luci_interpreter::RuntimeShape &input_shape, const T *input_data,
+                  const luci_interpreter::RuntimeShape &output_shape, T *output_data)
+{
+  const luci_interpreter::RuntimeShape ext_shape =
+    luci_interpreter::RuntimeShape::extendedShape(5, input_shape);
   const int begin_count = op_params.begin_count;
   const int size_count = op_params.size_count;
   // We front-pad the begin and size vectors.
@@ -42,7 +52,7 @@ inline void slice(const tflite::SliceParams &op_params, const tflite::RuntimeSha
     int padded_i = 5 - i;
     start[i] = begin_count < padded_i ? 0 : op_params.begin[begin_count - padded_i];
     stop[i] = (size_count < padded_i || op_params.size[size_count - padded_i] == -1)
-                ? ext_shape.Dims(i)
+                ? ext_shape.dims(i)
                 : start[i] + op_params.size[size_count - padded_i];
   }
 
@@ -56,7 +66,10 @@ inline void slice(const tflite::SliceParams &op_params, const tflite::RuntimeSha
         {
           for (int i4 = start[4]; i4 < stop[4]; ++i4)
           {
-            auto position = tflite::Offset(ext_shape, i0, i1, i2, i3, i4);
+            auto position =
+              (((i0 * ext_shape.dims(1) + i1) * ext_shape.dims(2) + i2) * ext_shape.dims(3) + i3) *
+                ext_shape.dims(4) +
+              i4;
             *output_data++ = input_data[position];
           }
         }
@@ -128,7 +141,7 @@ void execute_kernel_CircleSlice(const circle::Operator *cur_op, BaseRuntimeGraph
   auto *output_data = runtime_graph->getDataByTensor(output);
   assert(output_data);
 
-  tflite::SliceParams op_params{};
+  SliceParams op_params{};
   op_params.begin_count = max_dim;
   op_params.size_count = max_dim;
   for (int i = 0; i < max_dim; i++)
@@ -157,7 +170,7 @@ void execute_kernel_CircleSlice(const circle::Operator *cur_op, BaseRuntimeGraph
   if (is_dynamic_shapes)
   {
     int32_t data_size = 1;
-    std::vector<int32_t> dynamic_shapes(max_dim - num_dim + 1);
+    luci_interpreter::RuntimeShape dynamic_shapes(max_dim - num_dim + 1);
     int offset = max_dim - Tensor::num_dims(input);
     for (int i = 0; i <= max_dim - num_dim; ++i)
     {
@@ -166,7 +179,7 @@ void execute_kernel_CircleSlice(const circle::Operator *cur_op, BaseRuntimeGraph
                         : Tensor::dim(input, i) - op_params.begin[i + offset];
       data_size *= cur_size;
 
-      dynamic_shapes[i] = cur_size;
+      dynamic_shapes.setDim(i, cur_size);
     }
     data_size *= size(Tensor::element_type(output));
 

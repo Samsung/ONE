@@ -18,7 +18,7 @@
 #include "Builders.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/concatenation.h>
+#include "PALConcatenation.h"
 
 namespace luci_interpreter
 {
@@ -44,8 +44,8 @@ void evalGeneric(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph
   const auto input_sizes = cur_op->inputs()->size();
 
   std::vector<const T *> all_input_data;
-  std::vector<tflite::RuntimeShape> all_shape;
-  std::vector<tflite::RuntimeShape *> all_shape_ptr;
+  std::vector<luci_interpreter::RuntimeShape> all_shape;
+  std::vector<luci_interpreter::RuntimeShape *> all_shape_ptr;
 
   for (int32_t i = 0; i < input_sizes; ++i)
   {
@@ -58,46 +58,24 @@ void evalGeneric(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph
 
     auto *data = reinterpret_cast<const T *>(tensor_data);
 
-#ifndef DIS_DYN_SHAPES
-    auto *dynamic_shape_vector = runtime_graph->getDynamicShapeTensor(tensor);
-    if (dynamic_shape_vector == nullptr)
-    {
-      all_input_data.push_back(data);
-      all_shape.push_back(kernels::getTensorShape(tensor));
-    }
-    else
-    {
-      if (data != nullptr)
-      {
-        tflite::RuntimeShape runtime_shape(dynamic_shape_vector->size());
-        for (int n = 0; n < dynamic_shape_vector->size(); ++n)
-        {
-          runtime_shape.SetDim(n, dynamic_shape_vector->at(n));
-        }
-        all_shape.push_back(runtime_shape);
-        all_input_data.push_back(data);
-      }
-    }
-#else // DIS_DYN_SHAPES
-    assert(tensor_data);
+    auto runtime_shape = kernels::getTensorRuntimeShape(tensor, runtime_graph);
+
     all_input_data.push_back(data);
-    all_shape.push_back(kernels::getTensorShape(tensor));
-#endif
+    all_shape.push_back(runtime_shape);
   }
 
-  for (tflite::RuntimeShape &shape : all_shape)
+  for (luci_interpreter::RuntimeShape &shape : all_shape)
   {
     all_shape_ptr.push_back(&shape);
   }
 
   auto *output_data = reinterpret_cast<T *>(runtime_graph->getDataByTensor(output));
 
-  // kernels::VectorOfTensors<T, true> inputs(_inputs);
-  tflite::ConcatenationParams params{};
+  luci_interpreter_pal::ConcatenationParams params{};
   params.axis = axis;
   params.inputs_count = all_shape.size();
-  tflite::reference_ops::Concatenation(params, all_shape_ptr.data(), all_input_data.data(),
-                                       kernels::getTensorShape(output), output_data);
+  luci_interpreter_pal::Concatenation(params, all_shape_ptr.data(), all_input_data.data(),
+                                      kernels::getTensorShape(output), output_data);
 }
 
 } // namespace

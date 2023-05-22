@@ -20,8 +20,7 @@
 
 #include "luci_interpreter/core/Tensor.h"
 #include "Builders.h"
-
-#include <tensorflow/lite/kernels/internal/types.h>
+#include "Params.h"
 #include <cassert>
 #include <cstdint>
 
@@ -86,8 +85,8 @@ inline int32_t calcOffset(const circle::Tensor *tensor, int32_t d0, int32_t d1, 
 template <typename T>
 void calculateActivationRange(Activation activation, T *activation_min, T *activation_max);
 
-tflite::RuntimeShape calculateShapeForBroadcast(const circle::Tensor *input1,
-                                                const circle::Tensor *input2);
+luci_interpreter::RuntimeShape calculateShapeForBroadcast(const circle::Tensor *input1,
+                                                          const circle::Tensor *input2);
 
 // Helper wrapper to hide broadcast logic
 template <typename T> class BroadcastableWrapper
@@ -102,19 +101,56 @@ private:
   int _stride;
 };
 
-inline tflite::RuntimeShape getTensorShape(const circle::Tensor *tensor)
+inline luci_interpreter::RuntimeShape getTensorShape(const circle::Tensor *tensor)
 {
   if (tensor == nullptr)
-    return tflite::RuntimeShape();
+    return luci_interpreter::RuntimeShape();
 
   auto const tensor_shape = Tensor::tensor_shape(tensor);
 
-  tflite::RuntimeShape runtime_shape(tensor_shape.size());
+  luci_interpreter::RuntimeShape runtime_shape(tensor_shape.size());
   for (int i = 0; i < tensor_shape.size(); ++i)
   {
-    runtime_shape.SetDim(i, tensor_shape[i]);
+    runtime_shape.setDim(i, tensor_shape[i]);
   }
   return runtime_shape;
+}
+
+inline void getTensorDims(const circle::Tensor *tensor, BaseRuntimeGraph *runtime_graph,
+                          int32_t *dims)
+{
+  if (tensor == nullptr)
+  {
+    dims = nullptr;
+    return;
+  }
+
+#ifndef DIS_DYN_SHAPES
+  auto *dynamic_shape_vector = runtime_graph->getDynamicShapeTensor(tensor);
+  if (dynamic_shape_vector != nullptr)
+  {
+    for (int n = 0; n < dynamic_shape_vector->dimensionsCount(); ++n)
+    {
+      dims[n] = dynamic_shape_vector->dims(n);
+    }
+  }
+  else
+  {
+    auto const tensor_shape = Tensor::tensor_shape(tensor);
+    assert(tensor_shape.size() <= kMaxSmallSize);
+    for (int i = 0; i < tensor_shape.size(); ++i)
+    {
+      dims[i] = tensor_shape[i];
+    }
+  }
+#else
+  auto const tensor_shape = Tensor::tensor_shape(tensor);
+  assert(tensor_shape.size() <= kMaxSmallSize);
+  for (int i = 0; i < tensor_shape.size(); ++i)
+  {
+    dims[i] = tensor_shape[i];
+  }
+#endif // DIS_DYN_SHAPES
 }
 
 template <typename T> const T *getTensorData(const uint8_t *tensor_data)
@@ -127,8 +163,8 @@ template <typename T> inline T *getTensorData(uint8_t *tensor_data)
   return tensor_data != nullptr ? reinterpret_cast<T *>(tensor_data) : nullptr;
 }
 
-tflite::RuntimeShape getTensorRuntimeShape(const circle::Tensor *circle_tensor,
-                                           BaseRuntimeGraph *runtime_graph);
+luci_interpreter::RuntimeShape getTensorRuntimeShape(const circle::Tensor *circle_tensor,
+                                                     BaseRuntimeGraph *runtime_graph);
 
 // A list of tensors in a format that can be used by kernels like split and
 // concatenation.
@@ -156,7 +192,7 @@ public:
     // Taking the pointer from inside a std::vector is only OK if the vector is
     // never modified, so we populate all_shape in the previous loop and then we
     // are free to grab iterators here.
-    for (tflite::RuntimeShape &shape : all_shape_)
+    for (luci_interpreter::RuntimeShape &shape : all_shape_)
     {
       all_shape_ptr_.push_back(&shape);
     }
@@ -171,12 +207,12 @@ public:
   // example:
   //   const RuntimeShape* const* d = v.dims();
   //   dims[1] are the dimensions of the second tensor in the list.
-  const tflite::RuntimeShape *const *shapes() const { return all_shape_ptr_.data(); }
+  const luci_interpreter::RuntimeShape *const *shapes() const { return all_shape_ptr_.data(); }
 
 private:
   std::vector<ElementT *> all_data_;
-  std::vector<tflite::RuntimeShape> all_shape_;
-  std::vector<tflite::RuntimeShape *> all_shape_ptr_;
+  std::vector<luci_interpreter::RuntimeShape> all_shape_;
+  std::vector<luci_interpreter::RuntimeShape *> all_shape_ptr_;
 };
 
 template <typename T> constexpr bool one_of_types() { return false; }
@@ -189,28 +225,6 @@ template <typename T, typename U, typename... Other> constexpr bool one_of_types
 
 void matrixScalarMultiplyAccumulate(const int8_t *matrix, int32_t scalar, int32_t n_row,
                                     int32_t n_col, int32_t *output);
-
-/**
- * Fills activation min and max parameters depending on given data type and activation
- *
- * T is a template parameter, so after optimization this code left with only required if case
- *
- * @tparam T data type of arithmetic operation output tensor
- * @param params tflite params to fill
- * @param activation luci_interpreter::Activation of arithmetic operation
- */
-template <typename T>
-void fillArithmeticActivationRange(tflite::ArithmeticParams &p, Activation act)
-{
-  static_assert(one_of_types<T, float, int32_t, int64_t>(), "Unsupported dtype");
-
-  if (std::is_same<T, float>::value)
-    calculateActivationRange(act, &p.float_activation_min, &p.float_activation_max);
-  if (std::is_same<T, int32_t>::value)
-    calculateActivationRange(act, &p.quantized_activation_min, &p.quantized_activation_max);
-  else
-    calculateActivationRange(act, &p.int64_activation_min, &p.int64_activation_max);
-}
 
 #ifndef DIS_QUANT
 bool checkedLog2(const float x, int *log2_result);

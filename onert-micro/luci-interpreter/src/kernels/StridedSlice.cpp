@@ -19,18 +19,18 @@
 #include "kernels/Utils.h"
 #include "MISOKernel.h"
 
-#include <tensorflow/lite/kernels/internal/reference/strided_slice.h>
+#include "PALStridedSlice.h"
 
 namespace luci_interpreter
 {
 namespace
 {
 
-tflite::StridedSliceParams buildStridedSliceParams(int32_t dims, const int32_t *begin,
-                                                   const int32_t *end, const int32_t *strides,
-                                                   const circle::StridedSliceOptions *options)
+luci_interpreter_pal::StridedSliceParams
+buildStridedSliceParams(int32_t dims, const int32_t *begin, const int32_t *end,
+                        const int32_t *strides, const circle::StridedSliceOptions *options)
 {
-  tflite::StridedSliceParams op_params;
+  luci_interpreter_pal::StridedSliceParams op_params;
   op_params.start_indices_count = dims;
   op_params.stop_indices_count = dims;
   op_params.strides_count = dims;
@@ -102,31 +102,31 @@ void execute_kernel_CircleStridedSlice(const circle::Operator *cur_op,
 
   const auto *options = cur_op->builtin_options_as_StridedSliceOptions();
 
-  const auto op_params = buildStridedSliceParams(dims, begin_data, end_data, strides_data, options);
+  auto op_params = buildStridedSliceParams(dims, begin_data, end_data, strides_data, options);
 
   switch (Tensor::element_type(input))
   {
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      tflite::reference_ops::StridedSlice(
-        op_params, kernels::getTensorShape(input), kernels::getTensorData<float>(input_data),
-        kernels::getTensorShape(output), kernels::getTensorData<float>(output_data));
+      luci_interpreter_pal::StridedSlice(op_params, kernels::getTensorShape(input),
+                                         kernels::getTensorData<float>(input_data),
+                                         kernels::getTensorData<float>(output_data));
       break;
 #endif // DIS_FLOAT
 #ifndef DIS_QUANT
     case DataType::U8:
-      tflite::reference_ops::StridedSlice(op_params, kernels::getTensorShape(input), input_data,
-                                          kernels::getTensorShape(output), output_data);
+      luci_interpreter_pal::StridedSlice(op_params, kernels::getTensorShape(input), input_data,
+                                         output_data);
       break;
     case DataType::S8:
-      tflite::reference_ops::StridedSlice(op_params, kernels::getTensorShape(input), input_data,
-                                          kernels::getTensorShape(output), output_data);
+      luci_interpreter_pal::StridedSlice(op_params, kernels::getTensorShape(input), input_data,
+                                         output_data);
       break;
 #endif
     case DataType::S32:
-      tflite::reference_ops::StridedSlice(
-        op_params, kernels::getTensorShape(input), kernels::getTensorData<int32_t>(input_data),
-        kernels::getTensorShape(output), kernels::getTensorData<int32_t>(output_data));
+      luci_interpreter_pal::StridedSlice(op_params, kernels::getTensorShape(input),
+                                         kernels::getTensorData<int32_t>(input_data),
+                                         kernels::getTensorData<int32_t>(output_data));
       break;
     default:
       assert(false && "Unsupported type");

@@ -18,7 +18,7 @@
 #include "kernels/Utils.h"
 #include "TISOKernel.h"
 
-#include <tensorflow/lite/kernels/internal/reference/comparisons.h>
+#include "PALComparisons.h"
 
 namespace luci_interpreter
 {
@@ -52,7 +52,7 @@ void evalQuantized(const circle::Tensor *x, const circle::Tensor *y, const circl
   kernels::quantizeMultiplierSmallerThanOneExp(Tensor::scale(x), &x_multiplier, &x_shift);
   kernels::quantizeMultiplierSmallerThanOneExp(Tensor::scale(y), &y_multiplier, &y_shift);
 
-  tflite::ComparisonParams op_params;
+  luci_interpreter_pal::ComparisonParams op_params;
   op_params.left_shift = 8;
   op_params.input1_offset = -Tensor::zero_point(x); // Note the '-'
   op_params.input1_shift = x_shift;
@@ -64,15 +64,16 @@ void evalQuantized(const circle::Tensor *x, const circle::Tensor *y, const circl
 
   if (op_params.is_broadcast)
   {
-    tflite::reference_ops::Broadcast4DSlowLessWithScaling(
+    luci_interpreter_pal::BroadcastComparison4DSlowWithScaling<uint8_t,
+                                                               luci_interpreter_pal::LessFn>(
       op_params, kernels::getTensorShape(x), x_data, kernels::getTensorShape(y), y_data,
       kernels::getTensorShape(output), output_data);
   }
   else
   {
-    tflite::reference_ops::LessWithScaling(op_params, kernels::getTensorShape(x), x_data,
-                                           kernels::getTensorShape(y), y_data,
-                                           kernels::getTensorShape(output), output_data);
+    const int64_t flat_size = kernels::getTensorShape(x).flatSize();
+    luci_interpreter_pal::ComparisonWithScaling<uint8_t, luci_interpreter_pal::LessFn>(
+      op_params, flat_size, x_data, y_data, output_data);
   }
 }
 #endif // DIS_QUANT
@@ -95,20 +96,20 @@ void evalGeneric(const circle::Tensor *x, const circle::Tensor *y, const circle:
 
   auto output_data = kernels::getTensorData<bool>(runtime_graph->getDataByTensor(output));
 
-  tflite::ComparisonParams op_params;
+  luci_interpreter_pal::ComparisonParams op_params;
   op_params.is_broadcast = Tensor::num_elements(x) != Tensor::num_elements(y);
 
   if (op_params.is_broadcast)
   {
-    tflite::reference_ops::Broadcast4DSlowLessNoScaling(
+    luci_interpreter_pal::BroadcastComparison4DSlowNoScaling<T, luci_interpreter_pal::LessFn>(
       op_params, kernels::getTensorShape(x), x_data, kernels::getTensorShape(y), y_data,
       kernels::getTensorShape(output), output_data);
   }
   else
   {
-    tflite::reference_ops::LessNoScaling(op_params, kernels::getTensorShape(x), x_data,
-                                         kernels::getTensorShape(y), y_data,
-                                         kernels::getTensorShape(output), output_data);
+    const int64_t flat_size = kernels::getTensorShape(x).flatSize();
+    luci_interpreter_pal::ComparisonNoScaling<T, luci_interpreter_pal::LessFn>(flat_size, x_data,
+                                                                               y_data, output_data);
   }
 }
 

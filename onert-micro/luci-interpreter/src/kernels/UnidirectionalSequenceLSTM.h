@@ -17,7 +17,7 @@
 #ifndef LUCI_INTERPRETER_KERNELS_UNIDIRECTIONAL_SEQUENCE_LSTM_H
 #define LUCI_INTERPRETER_KERNELS_UNIDIRECTIONAL_SEQUENCE_LSTM_H
 
-#include "Utils.h"
+#include "PALUtils.h"
 
 namespace luci_interpreter
 {
@@ -184,43 +184,17 @@ private:
   const circle::Tensor *internal_tensors[24];
 };
 
-struct FullyConnectedParams
-{
-  int32_t input_offset = 0;
-  int32_t weights_offset = 0;
-  int32_t output_offset = 0;
-  int32_t output_multiplier = 0;
-  int32_t output_shift = 0;
-  int32_t quantized_activation_min = 0;
-  int32_t quantized_activation_max = 0;
-  int32_t float_activation_min = 0;
-  int32_t float_activation_max = 0;
-};
-
 struct GateParameters
 {
-  FullyConnectedParams input_fc_params;
-  FullyConnectedParams recurrent_fc_params;
-};
-
-struct ArithmeticParams
-{
-  int32_t input1_offset = 0;
-  int32_t input2_offset = 0;
-  int32_t quantized_activation_min = 0;
-  int32_t quantized_activation_max = 0;
-  int32_t output_offset = 0;
-  int32_t output_multiplier = 0;
-  int32_t output_shift = 0;
-  int32_t float_activation_min = 0;
-  int32_t float_activation_max = 0;
+  luci_interpreter_pal::FullyConnectedParams input_fc_params;
+  luci_interpreter_pal::FullyConnectedParams recurrent_fc_params;
 };
 
 struct InterGateParameters
 {
-  ArithmeticParams forget_cell_mul_params;
-  ArithmeticParams input_mul_params;
-  ArithmeticParams output_mul_params;
+  luci_interpreter_pal::ArithmeticParams forget_cell_mul_params;
+  luci_interpreter_pal::ArithmeticParams input_mul_params;
+  luci_interpreter_pal::ArithmeticParams output_mul_params;
 };
 
 struct CellStateInfo

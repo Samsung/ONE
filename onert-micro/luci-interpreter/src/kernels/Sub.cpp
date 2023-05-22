@@ -19,7 +19,7 @@
 
 #include "kernels/BinaryOpCommon.h"
 
-#include <tensorflow/lite/kernels/internal/reference/sub.h>
+#include "PALSub.h"
 
 namespace luci_interpreter
 {
@@ -50,9 +50,9 @@ void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *
 
   const auto *options = cur_op->builtin_options_as_SubOptions();
 
-  tflite::RuntimeShape input_shape1 =
+  luci_interpreter::RuntimeShape input_shape1 =
     kernels::getTensorRuntimeShape(kernel.input1(), runtime_graph);
-  tflite::RuntimeShape input_shape2 =
+  luci_interpreter::RuntimeShape input_shape2 =
     kernels::getTensorRuntimeShape(kernel.input2(), runtime_graph);
 
   bool is_inplace = runtime_graph->is_inplace_op(cur_op);
@@ -62,16 +62,9 @@ void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
     {
-      auto tiso_func = tflite::reference_ops::Sub<float>;
+      auto tiso_func = luci_interpreter_pal::Sub<float>;
 
-      auto broadcast_tiso_func =
-        [](const tflite::ArithmeticParams &params, const tflite::RuntimeShape &input1_shape,
-           const float *input1_data, const tflite::RuntimeShape &input2_shape,
-           const float *input2_data, const tflite::RuntimeShape &output_shape, float *output_data) {
-          tflite::reference_ops::BroadcastSubSlow(params, input1_shape, input1_data, input2_shape,
-                                                  input2_data, output_shape, output_data);
-        };
-
+      auto broadcast_tiso_func = luci_interpreter_pal::BroadcastSub4DSlow<float>;
       if (is_inplace)
       {
         kernels::evalTISOInplaceKernel<float>(tiso_func, broadcast_tiso_func, &kernel, options,
@@ -88,16 +81,9 @@ void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *
 #endif // DIS_FLOAT
     case DataType::S64:
     {
-      auto tiso_func = tflite::reference_ops::Sub<int64_t>;
+      auto tiso_func = luci_interpreter_pal::Sub<int64_t>;
 
-      auto broadcast_tiso_func =
-        [](const tflite::ArithmeticParams &params, const tflite::RuntimeShape &input1_shape,
-           const int64_t *input1_data, const tflite::RuntimeShape &input2_shape,
-           const int64_t *input2_data, const tflite::RuntimeShape &output_shape,
-           int64_t *output_data) {
-          tflite::reference_ops::BroadcastSubSlow(params, input1_shape, input1_data, input2_shape,
-                                                  input2_data, output_shape, output_data);
-        };
+      auto broadcast_tiso_func = luci_interpreter_pal::BroadcastSub4DSlow<int64_t>;
 
       if (is_inplace)
       {
@@ -114,16 +100,9 @@ void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *
     break;
     case DataType::S32:
     {
-      auto tiso_func = tflite::reference_ops::Sub<int32_t>;
+      auto tiso_func = luci_interpreter_pal::Sub<int32_t>;
 
-      auto broadcast_tiso_func =
-        [](const tflite::ArithmeticParams &params, const tflite::RuntimeShape &input1_shape,
-           const int32_t *input1_data, const tflite::RuntimeShape &input2_shape,
-           const int32_t *input2_data, const tflite::RuntimeShape &output_shape,
-           int32_t *output_data) {
-          tflite::reference_ops::BroadcastSubSlow(params, input1_shape, input1_data, input2_shape,
-                                                  input2_data, output_shape, output_data);
-        };
+      auto broadcast_tiso_func = luci_interpreter_pal::BroadcastSub4DSlow<int32_t>;
 
       if (is_inplace)
       {
@@ -138,6 +117,8 @@ void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *
       }
     }
     break;
+// TODO: fix it
+#if 0
 #ifndef DIS_QUANT
     case DataType::U8:
     {
@@ -170,6 +151,7 @@ void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *
     }
     break;
 #endif // DIS_QUANT
+#endif // 0
     default:
       assert(false && "Unsupported type.");
   }
