@@ -57,7 +57,7 @@ std::vector<U> checkShapeKernel(test_kernel::TestDataBase<T, U> *test_data_base)
   assert(main_runtime_graph->getNumOfOutputTensors() == 1);
 
   U *output_data = reinterpret_cast<U *>(main_runtime_graph->getOutputDataByIndex(0));
-  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(U));
   std::vector<U> output_data_vector(output_data, output_data + num_elements);
   return output_data_vector;
 }
