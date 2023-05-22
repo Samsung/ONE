@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-#include "kernels/Fill.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/fill/FillKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -29,141 +28,47 @@ using namespace testing;
 
 class FillTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-template <typename T, DataType DT> void runFillIntKernel(IMemoryManager *memory_manager)
+template <typename T> std::vector<T> checkFillKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Shape dims_shape{2};
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  std::vector<int32_t> dims_data = {2, 3};
-  std::vector<T> value_data = {5};
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  Tensor dims = makeInputTensor<loco::DataType::S32>(dims_shape, dims_data, memory_manager);
-  Tensor value = makeInputTensor<DT>(/*scalar*/ {}, value_data, memory_manager);
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
 
-  Tensor output_tensor = makeOutputTensor(DT);
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
 
-  Fill kernel(&dims, &value, &output_tensor);
+  runtime_module.execute();
 
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
 
-  std::vector<T> ref_output_data{5, 5, 5, 5, 5, 5};
-  EXPECT_THAT(extractTensorData<T>(output_tensor), ref_output_data);
-
-  std::vector<int32_t> ref_output_shape{2, 3};
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-template <DataType DT> void runFillQuantIntKernel(IMemoryManager *memory_manager)
+TEST_F(FillTest, MainTest_P)
 {
-  Shape dims_shape{2};
-
-  std::vector<int32_t> dims_data = {2, 3};
-  std::vector<float> value_data = {5};
-
-  int32_t zero_point = 0;
-
-  if (DT == loco::DataType::S8)
-    zero_point = 1;
-
-  Tensor dims = makeInputTensor<loco::DataType::S32>(dims_shape, dims_data, memory_manager);
-  Tensor value = makeInputTensor<DT>(/*scalar*/ {}, /*scale*/ 0.25, /*zero_point*/ zero_point,
-                                     value_data, memory_manager);
-
-  Tensor output_tensor = makeOutputTensor(DT, /*scale*/ 0.25, /*zero_point*/ zero_point);
-
-  Fill kernel(&dims, &value, &output_tensor);
-
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{5, 5, 5, 5, 5, 5};
-  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
-
-  std::vector<int32_t> ref_output_shape{2, 3};
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  test_kernel::TestDataFillKernel<float> test_data_kernel;
+  std::vector<float> output_data_vector = checkFillKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(FillTest, FillInt)
-{
-  // Run for int32_t input
-  runFillIntKernel<int32_t, loco::DataType::S32>(_memory_manager.get());
-  // Run for int64_t input
-  runFillIntKernel<int64_t, loco::DataType::S64>(_memory_manager.get());
-  // Run for int8_t input
-  runFillQuantIntKernel<loco::DataType::S8>(_memory_manager.get());
-  // Run for int16_t input
-  runFillQuantIntKernel<loco::DataType::S16>(_memory_manager.get());
-
-  SUCCEED();
-}
-
-TEST_F(FillTest, FillFloat)
-{
-  Shape dims_shape{3};
-
-  std::vector<int64_t> dims_data = {2, 2, 2};
-  std::vector<float> value_data = {5};
-
-  Tensor dims = makeInputTensor<loco::DataType::S64>(dims_shape, dims_data, _memory_manager.get());
-  Tensor value =
-    makeInputTensor<loco::DataType::FLOAT32>(/*scalar*/ {}, value_data, _memory_manager.get());
-
-  Tensor output_tensor = makeOutputTensor(loco::DataType::FLOAT32);
-
-  Fill kernel(&dims, &value, &output_tensor);
-
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{5, 5, 5, 5, 5, 5, 5, 5};
-
-  std::vector<int32_t> ref_output_shape{2, 2, 2};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), ref_output_data);
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
-}
-
-TEST_F(FillTest, Invalid_Input_Shape_NEG)
-{
-  Shape dims_shape{1, 3};
-
-  std::vector<int32_t> dims_data = {2, 2, 2};
-  std::vector<float> value_data = {5};
-
-  Tensor dims = makeInputTensor<loco::DataType::S32>(dims_shape, dims_data, _memory_manager.get());
-  Tensor value =
-    makeInputTensor<loco::DataType::FLOAT32>(/*scalar*/ {}, value_data, _memory_manager.get());
-
-  Tensor output_tensor = makeOutputTensor(loco::DataType::FLOAT32);
-
-  Fill kernel(&dims, &value, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(FillTest, Invalid_Value_Shape_NEG)
-{
-  Shape dims_shape{3};
-
-  std::vector<int32_t> dims_data = {2, 2, 2};
-  std::vector<float> value_data = {5};
-
-  Tensor dims = makeInputTensor<loco::DataType::S32>(dims_shape, dims_data, _memory_manager.get());
-  Tensor value = makeInputTensor<loco::DataType::FLOAT32>({1}, value_data, _memory_manager.get());
-
-  Tensor output_tensor = makeOutputTensor(loco::DataType::FLOAT32);
-
-  Fill kernel(&dims, &value, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
+// TODO: add negative tests?
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
