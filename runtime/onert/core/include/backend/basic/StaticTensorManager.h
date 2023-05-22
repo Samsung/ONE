@@ -38,6 +38,8 @@ class StaticTensorManager
 public:
   StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
                       DynamicTensorManager *dynamic_tensor_manager);
+  StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg, const std::string planner_id,
+                      DynamicTensorManager *dynamic_tensor_manager);
   virtual ~StaticTensorManager() = default;
 
   void allocateNonconsts(void);
