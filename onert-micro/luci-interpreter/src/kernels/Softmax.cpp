@@ -18,7 +18,7 @@
 #include "kernels/Utils.h"
 #include "SISOKernel.h"
 
-#include <tensorflow/lite/kernels/internal/reference/softmax.h>
+#include "PALSoftmax.h"
 
 namespace luci_interpreter
 {
@@ -33,12 +33,9 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *output,
   const auto *input_data = runtime_graph->getDataByTensor(input);
   auto *output_data = runtime_graph->getDataByTensor(output);
 
-  tflite::SoftmaxParams op_params{};
-  op_params.beta = options->beta();
-
-  tflite::reference_ops::Softmax(
-    op_params, kernels::getTensorShape(input), kernels::getTensorData<float>(input_data),
-    kernels::getTensorShape(output), kernels::getTensorData<float>(output_data));
+  luci_interpreter_pal::Softmax(options->beta(), kernels::getTensorShape(input),
+                                kernels::getTensorData<float>(input_data),
+                                kernels::getTensorData<float>(output_data));
 }
 #endif // DIS_FLOAT
 

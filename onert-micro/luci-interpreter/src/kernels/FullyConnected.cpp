@@ -33,10 +33,9 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
   kernels::calculateActivationRange(luci_actfunc(options->fused_activation_function()),
                                     &activation_min, &activation_max);
 
-  tflite::FullyConnectedParams params{};
+  luci_interpreter_pal::FullyConnectedParams params{};
   params.float_activation_min = activation_min;
   params.float_activation_max = activation_max;
-  params.weights_format = tflite::FullyConnectedWeightsFormat::kDefault;
 
   auto *input_data = runtime_graph->getDataByTensor(input);
   auto *output_data = runtime_graph->getDataByTensor(output);
@@ -48,13 +47,19 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
   assert(weights_data != nullptr);
   assert(output_data != nullptr);
 
-  tflite::RuntimeShape input_shape = kernels::getTensorRuntimeShape(input, runtime_graph);
+  int32_t input_shape[kMaxSmallSize];
+  kernels::getTensorDims(input, runtime_graph, input_shape);
 
-  tflite::reference_ops::FullyConnected(
-    params, input_shape, kernels::getTensorData<float>(input_data),
-    kernels::getTensorShape(weights), kernels::getTensorData<float>(weights_data),
-    kernels::getTensorShape(bias), kernels::getTensorData<float>(bias_data),
-    kernels::getTensorShape(output), kernels::getTensorData<float>(output_data));
+  int32_t weight_shape[kMaxSmallSize];
+  kernels::getTensorDims(weights, runtime_graph, weight_shape);
+
+  int32_t output_shape[kMaxSmallSize];
+  kernels::getTensorDims(output, runtime_graph, output_shape);
+
+  luci_interpreter_pal::FullyConnected(
+    params, input_shape, kernels::getTensorData<float>(input_data), weight_shape,
+    kernels::getTensorData<float>(weights_data), kernels::getTensorData<float>(bias_data),
+    output_shape, kernels::getTensorData<float>(output_data));
 }
 
 #ifndef DIS_QUANT
@@ -78,7 +83,7 @@ void evalQuantized(const circle::Tensor *input, const circle::Tensor *weights,
   int32_t filter_offset = -Tensor::zero_point(weights);
   int32_t output_offset = Tensor::zero_point(output);
 
-  tflite::FullyConnectedParams op_params{};
+  luci_interpreter_pal::FullyConnectedParams op_params{};
   op_params.input_offset = input_offset;
   op_params.weights_offset = filter_offset;
   op_params.output_offset = output_offset;
@@ -99,69 +104,24 @@ void evalQuantized(const circle::Tensor *input, const circle::Tensor *weights,
   assert(weights_data != nullptr);
   assert(output_data != nullptr);
 
-  tflite::RuntimeShape input_shape = kernels::getTensorRuntimeShape(input, runtime_graph);
+  int32_t input_shape[kMaxSmallSize];
+  kernels::getTensorDims(input, runtime_graph, input_shape);
 
-  tflite::reference_ops::FullyConnected(
-    op_params, input_shape, kernels::getTensorData<uint8_t>(input_data),
-    kernels::getTensorShape(weights), kernels::getTensorData<uint8_t>(weights_data),
-    kernels::getTensorShape(bias), kernels::getTensorData<int32_t>(bias_data),
-    kernels::getTensorShape(output), kernels::getTensorData<uint8_t>(output_data));
-}
+  int32_t weights_shape[kMaxSmallSize];
+  kernels::getTensorDims(weights, runtime_graph, weights_shape);
 
-void evalQuantizedS8(const circle::Tensor *input, const circle::Tensor *weights,
-                     const circle::Tensor *bias, const circle::Tensor *output,
-                     const circle::FullyConnectedOptions *options, BaseRuntimeGraph *runtime_graph)
-{
-  double real_multiplier = 0.0;
-  int output_shift;
-  int32_t output_activation_min;
-  int32_t output_activation_max;
-  int32_t output_multiplier;
-  real_multiplier = kernels::getQuantizedConvolutionMultipler(
-    Tensor::scale(input), Tensor::scale(weights), Tensor::scale(output));
-  kernels::quantizeMultiplier(real_multiplier, &output_multiplier, &output_shift);
-  kernels::calculateActivationRangeQuantized(luci_actfunc(options->fused_activation_function()),
-                                             output, &output_activation_min,
-                                             &output_activation_max);
+  int32_t output_shape[kMaxSmallSize];
+  kernels::getTensorDims(output, runtime_graph, output_shape);
 
-  int32_t input_offset = -Tensor::zero_point(input);
-  int32_t filter_offset = -Tensor::zero_point(weights);
-  int32_t output_offset = Tensor::zero_point(output);
-
-  tflite::FullyConnectedParams op_params{};
-  op_params.input_offset = input_offset;
-  op_params.weights_offset = filter_offset;
-  op_params.output_offset = output_offset;
-  op_params.output_multiplier = output_multiplier;
-  op_params.output_shift = output_shift;
-  op_params.quantized_activation_min = output_activation_min;
-  op_params.quantized_activation_max = output_activation_max;
-  op_params.lhs_cacheable = false;
-  op_params.rhs_cacheable = false;
-
-  auto *input_data = runtime_graph->getDataByTensor(input);
-  auto *output_data = runtime_graph->getDataByTensor(output);
-
-  auto *weights_data = runtime_graph->getConstDataByTensor(weights);
-  auto *bias_data = runtime_graph->getConstDataByTensor(bias);
-
-  assert(input_data != nullptr);
-  assert(weights_data != nullptr);
-  assert(output_data != nullptr);
-
-  tflite::RuntimeShape input_shape = kernels::getTensorRuntimeShape(input, runtime_graph);
-
-  luci_interpreter_pal::FullyConnected<int8_t>(
-    op_params, input_shape, kernels::getTensorData<int8_t>(input_data),
-    kernels::getTensorShape(weights), kernels::getTensorData<int8_t>(weights_data),
-    kernels::getTensorShape(bias), kernels::getTensorData<int32_t>(bias_data),
-    kernels::getTensorShape(output), kernels::getTensorData<int8_t>(output_data));
+  luci_interpreter_pal::FullyConnected(
+    op_params, input_shape, kernels::getTensorData<uint8_t>(input_data), weights_shape,
+    kernels::getTensorData<uint8_t>(weights_data), kernels::getTensorData<int32_t>(bias_data),
+    output_shape, kernels::getTensorData<uint8_t>(output_data));
 }
 #endif
 
 } // namespace
 
-// TODO think how remove unused param
 void configure_kernel_CircleFullyConnected(const circle::Operator *cur_op,
                                            BaseRuntimeGraph *runtime_graph)
 {
@@ -256,9 +216,6 @@ void execute_kernel_CircleFullyConnected(const circle::Operator *cur_op,
 #ifndef DIS_QUANT
     case DataType::U8:
       evalQuantized(input, weights, bias, output, options, runtime_graph);
-      break;
-    case DataType::S8:
-      evalQuantizedS8(input, weights, bias, output, options, runtime_graph);
       break;
 #endif // DIS_QUANT
 #ifndef DIS_FLOAT

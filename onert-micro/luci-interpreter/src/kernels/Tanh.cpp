@@ -18,8 +18,7 @@
 #include "kernels/Utils.h"
 #include "SISOKernel.h"
 
-#include <tensorflow/lite/kernels/internal/reference/tanh.h>
-#include <tensorflow/lite/kernels/internal/reference/integer_ops/tanh.h>
+#include "PALTanh.h"
 
 namespace luci_interpreter
 {
@@ -35,6 +34,8 @@ void calculateArithmeticData(const circle::Tensor *input, const circle::Tensor *
   const auto input_dtype = Tensor::element_type(input);
   switch (input_dtype)
   {
+    // TODO: enable it
+#if 0
     case DataType::S8:
     {
       static constexpr int input_integer_bits = 4;
@@ -46,6 +47,7 @@ void calculateArithmeticData(const circle::Tensor *input, const circle::Tensor *
       input_range_radius = kernels::calculateInputRadius(input_integer_bits, input_left_shift, 31);
     }
     break;
+#endif
     case DataType::S16:
     {
       static constexpr int input_integer_bits = 3;
@@ -119,20 +121,23 @@ void evalInteger(const circle::Tensor *input, const circle::Tensor *output,
   auto *output_data = runtime_graph->getDataByTensor(output);
   assert(output_data);
 
+  const int flat_size = kernels::getTensorRuntimeShape(input, runtime_graph).flatSize();
+
   const auto input_dtype = Tensor::element_type(input);
   switch (input_dtype)
   {
+    // TODO: enable it
+#if 0
     case DataType::S8:
-      tflite::reference_integer_ops::Tanh(
+      luci_interpreter_pal::Tanh(
         input_zero_point, input_range_radius, input_multiplier, input_left_shift,
-        kernels::getTensorShape(input), kernels::getTensorData<int8_t>(input_data),
-        kernels::getTensorShape(output), kernels::getTensorData<int8_t>(output_data));
+        flat_size, kernels::getTensorData<int8_t>(input_data), kernels::getTensorData<int8_t>(output_data));
       break;
+#endif // 0
     case DataType::S16:
-      tflite::reference_integer_ops::Tanh(
-        input_multiplier, input_left_shift, kernels::getTensorShape(input),
-        kernels::getTensorData<int16_t>(input_data), kernels::getTensorShape(output),
-        kernels::getTensorData<int16_t>(output_data));
+      luci_interpreter_pal::Tanh(input_multiplier, input_left_shift, flat_size,
+                                 kernels::getTensorData<int16_t>(input_data),
+                                 kernels::getTensorData<int16_t>(output_data));
       break;
     default:
       assert(false && "Not support yet");
@@ -173,14 +178,19 @@ void execute_kernel_CircleTanh(const circle::Operator *cur_op, BaseRuntimeGraph 
 
       assert(output_data_float);
 
-      tflite::reference_ops::Tanh(kernels::getTensorShape(kernel.input()), input_data_float,
-                                  kernels::getTensorShape(kernel.output()), output_data_float);
+      const int flat_size =
+        kernels::getTensorRuntimeShape(kernel.input(), runtime_graph).flatSize();
+
+      luci_interpreter_pal::Tanh(flat_size, input_data_float, output_data_float);
       break;
     }
 #endif // DIS_FLOAT
 #ifndef DIS_QUANT
     case DataType::S16:
+      // TODO: enable it
+#if 0
     case DataType::S8:
+#endif
       evalInteger(kernel.input(), kernel.output(), runtime_graph);
       break;
 #endif // DIS_QUANT

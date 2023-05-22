@@ -68,11 +68,11 @@ void execute_kernel_CircleReshape(const circle::Operator *cur_op, BaseRuntimeGra
     const int32_t *shape_data_int = kernels::getTensorData<int32_t>(shape_data);
     const auto num_elements = Tensor::num_elements(shape);
 
-    std::vector<int32_t> dynamic_shape(num_elements);
+    luci_interpreter::RuntimeShape dynamic_shape(num_elements);
     int32_t data_size = 1;
     for (int i = 0; i < num_elements; ++i)
     {
-      dynamic_shape[i] = shape_data_int[i];
+      dynamic_shape.setDim(i, shape_data_int[i]);
       data_size *= shape_data_int[i];
     }
     data_size *= size(Tensor::element_type(output));

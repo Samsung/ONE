@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +15,32 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_PAL_SUB_H
-#define LUCI_INTERPRETER_PAL_SUB_H
+#ifndef LUCI_INTERPRETER_PAL_ADD_H
+#define LUCI_INTERPRETER_PAL_ADD_H
 
+#include "Params.h"
 #include "PALUtils.h"
+#include "ProcessBroadcastShapes.h"
 
 namespace luci_interpreter_pal
 {
+
+// TODO: check if there real activation value
 template <typename T>
-static inline void Sub(const ArithmeticParams &params, const int flat_size, const T *input1_data,
-                       const T *input2_data, T *output_data)
+inline void Add(const ArithmeticParams &params, const int flat_size, const T *input1_data,
+                const T *input2_data, T *output_data)
 {
   T activation_min, activation_max;
   getActivationParams(params, &activation_min, &activation_max);
 
   for (int i = 0; i < flat_size; ++i)
     output_data[i] =
-      std::min(std::max(input1_data[i] - input2_data[i], activation_min), activation_max);
+      std::min(std::max(input1_data[i] + input2_data[i], activation_min), activation_max);
 }
 
 template <typename T>
 inline void
-BroadcastSub4DSlow(const ArithmeticParams &params,
+BroadcastAdd4DSlow(const ArithmeticParams &params,
                    const luci_interpreter::RuntimeShape &input1_shape, const T *input1_data,
                    const luci_interpreter::RuntimeShape &input2_shape, const T *input2_data,
                    const luci_interpreter::RuntimeShape &output_shape, T *output_data)
@@ -74,7 +79,7 @@ BroadcastSub4DSlow(const ArithmeticParams &params,
             c;
 
           output_data[output_data_offset] =
-            std::min(std::max(input1_data[subscriptToIndex(desc1, b, y, x, c)] -
+            std::min(std::max(input1_data[subscriptToIndex(desc1, b, y, x, c)] +
                                 input2_data[subscriptToIndex(desc2, b, y, x, c)],
                               activation_min),
                      activation_max);
@@ -86,4 +91,4 @@ BroadcastSub4DSlow(const ArithmeticParams &params,
 
 } // namespace luci_interpreter_pal
 
-#endif // LUCI_INTERPRETER_PAL_SUB_H
+#endif // LUCI_INTERPRETER_PAL_ADD_H
