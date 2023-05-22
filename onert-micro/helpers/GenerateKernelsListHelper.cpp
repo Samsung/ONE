@@ -150,6 +150,8 @@ std::string get_register_kernel_str(const circle::BuiltinOperator builtin_operat
       return "REGISTER_KERNEL(SVDF, SVDF)";
     case circle::BuiltinOperator_SPLIT:
       return "REGISTER_KERNEL(SPLIT, Split)";
+    case circle::BuiltinOperator_SPLIT_V:
+      return "REGISTER_KERNEL(SPLIT_V, SplitV)";
     case circle::BuiltinOperator_TANH:
       return "REGISTER_KERNEL(TANH, Tanh)";
     case circle::BuiltinOperator_TRANSPOSE:
