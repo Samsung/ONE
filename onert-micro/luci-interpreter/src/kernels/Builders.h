@@ -36,8 +36,7 @@ using BaseRuntimeGraph = RuntimeGraph;
   void configure_kernel_Circle##name(const circle::Operator *cur_op,   \
                                      BaseRuntimeGraph *runtime_graph); \
                                                                        \
-  void execute_kernel_Circle##name(const circle::Operator *cur_op,     \
-                                   BaseRuntimeGraph *runtime_graph, bool is_inplace);
+  void execute_kernel_Circle##name(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph);
 
 #if USE_GENERATED_LIST
 #include "GeneratedKernelsToBuild.lst"

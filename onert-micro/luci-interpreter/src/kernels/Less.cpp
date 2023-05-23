@@ -123,8 +123,7 @@ void configure_kernel_CircleLess(const circle::Operator *cur_op, BaseRuntimeGrap
   LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.output()) == DataType::BOOL);
 }
 
-void execute_kernel_CircleLess(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                               bool)
+void execute_kernel_CircleLess(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   kernels::TISOKernel kernel(cur_op, runtime_graph);
 

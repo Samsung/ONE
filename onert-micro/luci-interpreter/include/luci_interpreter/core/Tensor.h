@@ -110,6 +110,11 @@ public:
     return luci_datatype(circle_tensor->type());
   }
 
+  static VectorWrapper<int32_t> tensor_shape(const circle::Tensor *circle_tensor)
+  {
+    return wrap(circle_tensor->shape());
+  }
+
   static int num_dims(const circle::Tensor *circle_tensor)
   {
     // TODO check removing of wrap

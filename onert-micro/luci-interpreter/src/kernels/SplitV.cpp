@@ -35,8 +35,7 @@ void configure_kernel_CircleSplitV(const circle::Operator *cur_op, BaseRuntimeGr
   LUCI_INTERPRETER_CHECK(runtime_graph->getConstDataByTensor(axis) != nullptr);
 }
 
-void execute_kernel_CircleSplitV(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                                 bool)
+void execute_kernel_CircleSplitV(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   const auto input_index = cur_op->inputs()->operator[](0);
   const auto axis_index = cur_op->inputs()->operator[](2);

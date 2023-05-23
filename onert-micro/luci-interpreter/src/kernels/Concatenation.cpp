@@ -27,7 +27,7 @@ namespace
 {
 
 template <typename T>
-void evalGeneric(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph, bool)
+void evalGeneric(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   const auto output_index = cur_op->outputs()->operator[](0);
 
@@ -156,7 +156,7 @@ void configure_kernel_CircleConcatenation(const circle::Operator *cur_op,
 }
 
 void execute_kernel_CircleConcatenation(const circle::Operator *cur_op,
-                                        BaseRuntimeGraph *runtime_graph, bool is_inplace)
+                                        BaseRuntimeGraph *runtime_graph)
 {
   int num_inputs = cur_op->inputs()->size();
   LUCI_INTERPRETER_CHECK(num_inputs > 0);
@@ -169,19 +169,19 @@ void execute_kernel_CircleConcatenation(const circle::Operator *cur_op,
   {
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalGeneric<float>(cur_op, runtime_graph, is_inplace);
+      evalGeneric<float>(cur_op, runtime_graph);
       break;
 #endif // DIS_FLOAT
 #ifndef DIS_QUANT
     case DataType::S8:
-      evalGeneric<int8_t>(cur_op, runtime_graph, is_inplace);
+      evalGeneric<int8_t>(cur_op, runtime_graph);
       break;
 #endif // DIS_QUANT
     case DataType::S32:
-      evalGeneric<int32_t>(cur_op, runtime_graph, is_inplace);
+      evalGeneric<int32_t>(cur_op, runtime_graph);
       break;
     case DataType::S64:
-      evalGeneric<int64_t>(cur_op, runtime_graph, is_inplace);
+      evalGeneric<int64_t>(cur_op, runtime_graph);
       break;
     default:
       assert(false && "Unsupported type.");

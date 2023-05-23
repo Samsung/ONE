@@ -65,8 +65,7 @@ void configure_kernel_CircleSoftmax(const circle::Operator *cur_op, BaseRuntimeG
 #endif
 }
 
-void execute_kernel_CircleSoftmax(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                                  bool)
+void execute_kernel_CircleSoftmax(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   kernels::SISOKernel kernel(cur_op, runtime_graph);
 

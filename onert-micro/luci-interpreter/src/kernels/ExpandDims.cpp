@@ -64,7 +64,7 @@ void configure_kernel_CircleExpandDims(const circle::Operator *cur_op,
 }
 
 void execute_kernel_CircleExpandDims(const circle::Operator *cur_op,
-                                     BaseRuntimeGraph *runtime_graph, bool is_inplace)
+                                     BaseRuntimeGraph *runtime_graph)
 {
   const auto input_index = cur_op->inputs()->operator[](0);
   const auto output_index = cur_op->outputs()->operator[](0);
@@ -74,6 +74,8 @@ void execute_kernel_CircleExpandDims(const circle::Operator *cur_op,
 
   const auto input = runtime_graph->getCircleTensorByIndex(input_index);
   const auto output = runtime_graph->getCircleTensorByIndex(output_index);
+
+  bool is_inplace = runtime_graph->is_inplace_op(cur_op);
 
   if (is_inplace)
   {

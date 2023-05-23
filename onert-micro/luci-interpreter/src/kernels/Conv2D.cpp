@@ -462,8 +462,7 @@ void configure_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGr
   }
 }
 
-void execute_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                                 bool)
+void execute_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   const auto input_index = cur_op->inputs()->operator[](0);
   const auto weight_index = cur_op->inputs()->operator[](1);

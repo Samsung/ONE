@@ -44,8 +44,7 @@ void configure_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph
 #endif // DIS_QUANT
 }
 
-void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                              bool is_inplace)
+void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   kernels::TISOKernel kernel(cur_op, runtime_graph);
 
@@ -55,6 +54,8 @@ void execute_kernel_CircleSub(const circle::Operator *cur_op, BaseRuntimeGraph *
     kernels::getTensorRuntimeShape(kernel.input1(), runtime_graph);
   tflite::RuntimeShape input_shape2 =
     kernels::getTensorRuntimeShape(kernel.input2(), runtime_graph);
+
+  bool is_inplace = runtime_graph->is_inplace_op(cur_op);
 
   switch (Tensor::element_type(kernel.input1()))
   {

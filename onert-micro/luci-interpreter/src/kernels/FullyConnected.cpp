@@ -229,7 +229,7 @@ void configure_kernel_CircleFullyConnected(const circle::Operator *cur_op,
 
 // TODO think how remove unused param
 void execute_kernel_CircleFullyConnected(const circle::Operator *cur_op,
-                                         BaseRuntimeGraph *runtime_graph, bool)
+                                         BaseRuntimeGraph *runtime_graph)
 {
   const auto input_index = cur_op->inputs()->operator[](0);
   const auto weight_index = cur_op->inputs()->operator[](1);

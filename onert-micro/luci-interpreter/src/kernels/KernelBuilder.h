@@ -104,7 +104,7 @@ private:
 class KernelExecuteRegistry
 {
 public:
-  using KernelExecuteFunc = void(const circle::Operator *, BaseRuntimeGraph *, bool);
+  using KernelExecuteFunc = void(const circle::Operator *, BaseRuntimeGraph *);
 
   constexpr KernelExecuteRegistry() : _operator_execute()
   {
@@ -122,7 +122,7 @@ public:
   }
 
   void execute_kernel(const circle::Operator *cur_op, circle::BuiltinOperator opcode,
-                      BaseRuntimeGraph *runtime_graph, bool is_inplace) const;
+                      BaseRuntimeGraph *runtime_graph) const;
 
 private:
   constexpr KernelExecuteFunc *get_kernel_execute_func(circle::BuiltinOperator opcode) const

@@ -418,10 +418,12 @@ void configure_kernel_CircleUnidirectionalSequenceLSTM(const circle::Operator *c
 }
 
 void execute_kernel_CircleUnidirectionalSequenceLSTM(const circle::Operator *cur_op,
-                                                     BaseRuntimeGraph *runtime_graph, bool in_place)
+                                                     BaseRuntimeGraph *runtime_graph)
 {
   const auto input_index = cur_op->inputs()->operator[](0);
   assert(input_index != -1);
+
+  bool is_inplace = runtime_graph->is_inplace_op(cur_op);
 
   const auto input = runtime_graph->getCircleTensorByIndex(input_index);
 
@@ -429,12 +431,12 @@ void execute_kernel_CircleUnidirectionalSequenceLSTM(const circle::Operator *cur
   {
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalFloat(cur_op, runtime_graph, in_place);
+      evalFloat(cur_op, runtime_graph, is_inplace);
       break;
 #endif // DIS_FLOAT
 #ifndef DIS_QUANT
     case DataType::S8:
-      evalInt8(cur_op, runtime_graph, in_place);
+      evalInt8(cur_op, runtime_graph, is_inplace);
       break;
 #endif // DIS_QUANT
     default:

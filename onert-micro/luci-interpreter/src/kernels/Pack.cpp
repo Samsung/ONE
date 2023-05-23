@@ -87,8 +87,7 @@ void configure_kernel_CirclePack(const circle::Operator *, BaseRuntimeGraph *)
   // Do nothing
 }
 
-void execute_kernel_CirclePack(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                               bool)
+void execute_kernel_CirclePack(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   const auto input_index = cur_op->inputs()->operator[](0);
   const auto output_index = cur_op->outputs()->operator[](0);

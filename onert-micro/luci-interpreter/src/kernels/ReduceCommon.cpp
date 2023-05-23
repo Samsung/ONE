@@ -68,7 +68,7 @@ void configure_kernel_CircleReduceCommon(const circle::Operator *cur_op,
 }
 
 void execute_kernel_CircleReduceCommon(const circle::Operator *cur_op,
-                                       BaseRuntimeGraph *runtime_graph, bool)
+                                       BaseRuntimeGraph *runtime_graph)
 {
   kernels::TISOKernel kernel(cur_op, runtime_graph);
   kernels::TISOData tiso_data = kernel.readData();

@@ -45,8 +45,7 @@ void configure_kernel_CircleFill(const circle::Operator *cur_op, BaseRuntimeGrap
                          Tensor::element_type(kernel.output()));
 }
 
-void execute_kernel_CircleFill(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph,
-                               bool)
+void execute_kernel_CircleFill(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   kernels::TISOKernel kernel(cur_op, runtime_graph);
 
