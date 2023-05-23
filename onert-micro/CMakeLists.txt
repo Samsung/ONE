@@ -10,30 +10,47 @@ if (NOT ARM_C_COMPILER_PATH)
     return()
 endif ()
 
-nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
+if (NOT_BUILD_EXTERNALS)
+    message(STATUS "USE LOCAL EXTERNAL")
 
-if (NOT FlatBuffers_FOUND)
-    message(STATUS "Build luci-micro: FALSE(FlatBuffers 2.0 NOT FOUND)")
-    return()
-endif (NOT FlatBuffers_FOUND)
+    set(ONERT_MICRO_EXTERNAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/externals")
+    set(Flatbuffers_DIR "${ONERT_MICRO_EXTERNAL_DIR}")
+    set(FlatBuffersSource_DIR "${Flatbuffers_DIR}")
+    set (EXT_OVERLAY_DIR "${ONERT_MICRO_EXTERNAL_DIR}")
+    set(GENERATED_INCLUDE_DIR "${ONERT_MICRO_EXTERNAL_DIR}/gen")
 
-message(STATUS "Build luci-micro: TRUE")
+    add_subdirectory(externals)
+else()
+    message(STATUS "DOWNLOAD AND BUILD EXTERNALS")
 
-set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/res/CircleSchema/0.4/circle_schema.fbs")
+    nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
 
-# NOTE Copy circle_schema.fbs as schema.fbs to generate "schema_generated.fbs" instead of "circle_schema_generated.fbs"
-add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
-        COMMAND ${CMAKE_COMMAND} -E copy "${SCHEMA_FILE}" schema.fbs
-        WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-        DEPENDS "${SCHEMA_FILE}"
-        )
+    if (NOT FlatBuffers_FOUND)
+        message(STATUS "Build luci-micro: FALSE(FlatBuffers 2.0 NOT FOUND)")
+        return()
+    endif (NOT FlatBuffers_FOUND)
 
-FlatBuffers_Target(luci_micro_circle_schema
-        OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen/circle-generated/circle"
-        INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
-        SCHEMA_DIR "${CMAKE_CURRENT_BINARY_DIR}"
-        SCHEMA_FILES "schema.fbs"
-        )
+    message(STATUS "Build luci-micro: TRUE")
+
+    set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/res/CircleSchema/0.4/circle_schema.fbs")
+
+    # NOTE Copy circle_schema.fbs as schema.fbs to generate "schema_generated.fbs" instead of "circle_schema_generated.fbs"
+    add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
+            COMMAND ${CMAKE_COMMAND} -E copy "${SCHEMA_FILE}" schema.fbs
+            WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+            DEPENDS "${SCHEMA_FILE}"
+            )
+
+    FlatBuffers_Target(luci_micro_circle_schema
+            OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen/circle-generated/circle"
+            INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
+            SCHEMA_DIR "${CMAKE_CURRENT_BINARY_DIR}"
+            SCHEMA_FILES "schema.fbs"
+            )
+    set(Flatbuffers_DIR "${CMAKE_CURRENT_BINARY_DIR}/../../overlay/lib/cmake/flatbuffers")
+    set (EXT_OVERLAY_DIR "${CMAKE_CURRENT_BINARY_DIR}/../../overlay")
+    set(GENERATED_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen")
+endif()
 
 set(LUCI_INTERPRETER_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luci-interpreter/include")
 add_subdirectory(luci-interpreter/src/core/reader)
@@ -70,8 +87,9 @@ set(CMAKE_ARM_OPTIONS
         -DBUILD_CMSIS_NN_FUNCTIONS=ON
         -DTARGET_CPU=${TARGET_CPU}
         -DTARGET_ARCH=${TARGET_ARCH}
-        "-DEXT_OVERLAY_DIR=${CMAKE_CURRENT_BINARY_DIR}/../../overlay"
-        "-DFlatbuffers_DIR=${CMAKE_CURRENT_BINARY_DIR}/../../overlay/lib/cmake/flatbuffers"
+        "-DEXT_OVERLAY_DIR=${EXT_OVERLAY_DIR}"
+        "-DFlatbuffers_DIR=${Flatbuffers_DIR}"
+        "-DFlatBuffersSource_DIR=${FlatBuffersSource_DIR}"
         "-DCMAKE_TOOLCHAIN_FILE=${NNAS_PROJECT_SOURCE_DIR}/infra/onert-micro/cmake/buildtool/config/arm-none-eabi-gcc.cmake"
         "-DLUCI_INTERPRETER_PAL_DIR=${LUCI_INTERPRETER_PAL_DIR}"
         "-DNNAS_PROJECT_SOURCE_DIR=${NNAS_PROJECT_SOURCE_DIR}"
@@ -85,12 +103,18 @@ set(CMAKE_ARM_OPTIONS
         -DBUILD_GTEST=OFF
         "-DNNAS_ROOT=${NNAS_PROJECT_SOURCE_DIR}"
         -DENABLE_STRICT_BUILD=OFF
-        "-DGENERATED_INCLUDE_DIR=${CMAKE_CURRENT_BINARY_DIR}/gen"
+        "-DGENERATED_INCLUDE_DIR=${GENERATED_INCLUDE_DIR}"
         )
 
 if (GENERATE_KERNELS_LIST_FROM)
     set(GENERATED_KERNELS_LIST_PATH "${LUCI_INTERPRETER_PAL_DIR}/GeneratedKernelsToBuild.lst")
     list(APPEND CMAKE_ARM_OPTIONS "-DLUCI_INTERPRETER_KERNELS_BUILD_LIST=${GENERATED_KERNELS_LIST_PATH}")
+endif ()
+
+if (NOT_BUILD_EXTERNALS)
+    list(APPEND CMAKE_ARM_OPTIONS "-DNOT_BUILD_EXTERNALS=ON")
+else()
+    list(APPEND CMAKE_ARM_OPTIONS "-DNOT_BUILD_EXTERNALS=OFF")
 endif ()
 
 if (ENABLE_ONERT_MICRO_TEST)
@@ -156,6 +180,7 @@ unset(USE_STATIC_KERNEL CACHE)
 unset(DIS_QUANT CACHE)
 unset(DIS_FLOAT CACHE)
 unset(ENABLE_ONERT_MICRO_TEST CACHE)
+unset(NOT_BUILD_EXTERNALS CACHE)
 
 set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/libluci_interpreter_micro.a")
 
