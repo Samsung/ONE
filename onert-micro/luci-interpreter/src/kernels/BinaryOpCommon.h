@@ -19,30 +19,56 @@
 #define LUCI_INTERPRETER_KERNELS_BINARYOPUTILS_H
 
 #include "TISOKernel.h"
+#include "ProcessBroadcastShapes.h"
 
-#include "tensorflow/lite/kernels/internal/common.h"
-#include "tensorflow/lite/kernels/internal/types.h"
+#include "Utils.h"
 
 namespace luci_interpreter
 {
 namespace kernels
 {
 
+namespace
+{
+
+/**
+ * Fills activation min and max parameters depending on given data type and activation
+ *
+ * T is a template parameter, so after optimization this code left with only required if case
+ *
+ * @tparam T data type of arithmetic operation output tensor
+ * @param params tflite params to fill
+ * @param activation luci_interpreter::Activation of arithmetic operation
+ */
+template <typename T>
+void fillArithmeticActivationRange(luci_interpreter_pal::ArithmeticParams &p, Activation act)
+{
+  static_assert(one_of_types<T, float, int32_t, int64_t>(), "Unsupported dtype");
+
+  if (std::is_same<T, float>::value)
+    calculateActivationRange(act, &p.float_activation_min, &p.float_activation_max);
+  if (std::is_same<T, int32_t>::value)
+    calculateActivationRange(act, &p.quantized_activation_min, &p.quantized_activation_max);
+  else
+    calculateActivationRange(act, &p.int64_activation_min, &p.int64_activation_max);
+}
+
+} // namespace
+
 template <typename T, typename TISOFunc = nullptr_t, typename TISOBroadcastFunc = nullptr_t,
           typename Options = nullptr_t>
 void evalTISOKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func,
                     kernels::TISOKernel *kernel, kernels::TISOData *kernel_data,
-                    const Options *options, tflite::RuntimeShape &&input_shape_1,
-                    tflite::RuntimeShape &&input_shape_2)
+                    const Options *options, RuntimeShape &&input_shape_1,
+                    RuntimeShape &&input_shape_2)
 {
   const auto *output = kernel->output();
 
-  tflite::ArithmeticParams params{};
-  kernels::fillArithmeticActivationRange<T>(params,
-                                            luci_actfunc(options->fused_activation_function()));
+  luci_interpreter_pal::ArithmeticParams params{};
+  fillArithmeticActivationRange<T>(params, luci_actfunc(options->fused_activation_function()));
 
   const bool need_broadcast =
-    tflite::reference_ops::ProcessBroadcastShapes(input_shape_1, input_shape_2, &params);
+    luci_interpreter_pal::ProcessBroadcastShapes(input_shape_1, input_shape_2, &params);
 
   if (need_broadcast)
   {
@@ -53,9 +79,10 @@ void evalTISOKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func,
   }
   else
   {
-    tiso_func(params, input_shape_1, kernels::getTensorData<T>(kernel_data->input1_data),
-              input_shape_2, kernels::getTensorData<T>(kernel_data->input2_data),
-              kernels::getTensorShape(output), kernels::getTensorData<T>(kernel_data->output_data));
+    const int flat_size = input_shape_1.flatSize();
+    tiso_func(params, flat_size, kernels::getTensorData<T>(kernel_data->input1_data),
+              kernels::getTensorData<T>(kernel_data->input2_data),
+              kernels::getTensorData<T>(kernel_data->output_data));
   }
 }
 
@@ -63,8 +90,7 @@ template <typename T, typename TISOFunc = nullptr_t, typename TISOBroadcastFunc 
           typename Options = nullptr_t>
 void evalTISOInplaceKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func,
                            kernels::TISOKernel *kernel, const Options *options,
-                           tflite::RuntimeShape &&input_shape_1,
-                           tflite::RuntimeShape &&input_shape_2)
+                           RuntimeShape &&input_shape_1, RuntimeShape &&input_shape_2)
 {
   uint8_t *inplace_data_ptr = nullptr;
   circle::Tensor *input_inplace_tensor = nullptr;
@@ -123,7 +149,7 @@ void evalTISOQuantizedKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcas
   kernels::calculateActivationRangeQuantized(luci_actfunc(options->fused_activation_function()),
                                              output, &activation_min, &activation_max);
 
-  tflite::ArithmeticParams params{};
+  luci_interpreter_pal::ArithmeticParams params{};
   params.left_shift = left_shift;
   // The kernel expects inputs' zero points to be negated.
   params.input1_offset = -Tensor::zero_point(input1); // Note the '-'.
@@ -138,7 +164,7 @@ void evalTISOQuantizedKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcas
   params.quantized_activation_min = activation_min;
   params.quantized_activation_max = activation_max;
 
-  const bool need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(
+  const bool need_broadcast = luci_interpreter_pal::ProcessBroadcastShapes(
     kernels::getTensorShape(input1), kernels::getTensorShape(input2), &params);
 
   if (need_broadcast)
@@ -182,47 +208,6 @@ void evalTISOInplaceQuantizedKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_b
 }
 
 #endif // DIS_QUANT
-
-// Derived from tensorflow/lite/kernels/internal/reference/maximum_minimum.h (v2.3.0).
-template <typename T, typename Op, int N = 5>
-void BinaryOpBroadcastSlow(const tflite::RuntimeShape &unextended_input1_shape,
-                           const T *input1_data,
-                           const tflite::RuntimeShape &unextended_input2_shape,
-                           const T *input2_data,
-                           const tflite::RuntimeShape &unextended_output_shape, T *output_data,
-                           Op op)
-{
-  if (unextended_input1_shape == unextended_input2_shape)
-  {
-    const int flat_size = tflite::MatchingElementsSize(
-      unextended_input1_shape, unextended_input2_shape, unextended_output_shape);
-    for (int i = 0; i < flat_size; ++i)
-    {
-      output_data[i] = op(input1_data[i], input2_data[i]);
-    }
-  }
-  else
-  {
-    assert(unextended_input1_shape.DimensionsCount() <= N);
-    assert(unextended_input2_shape.DimensionsCount() <= N);
-    assert(unextended_output_shape.DimensionsCount() <= N);
-
-    tflite::NdArrayDesc<N> desc1{};
-    tflite::NdArrayDesc<N> desc2{};
-    tflite::NdArrayDesc<N> output_desc{};
-    tflite::NdArrayDescsForElementwiseBroadcast(unextended_input1_shape, unextended_input2_shape,
-                                                &desc1, &desc2);
-    tflite::CopyDimsToDesc(tflite::RuntimeShape::ExtendedShape(N, unextended_output_shape),
-                           &output_desc);
-
-    auto fn = [&](int indexes[N]) {
-      output_data[SubscriptToIndex(output_desc, indexes)] =
-        op(input1_data[SubscriptToIndex(desc1, indexes)],
-           input2_data[SubscriptToIndex(desc2, indexes)]);
-    };
-    tflite::NDOpsHelper<N>(output_desc, fn);
-  }
-}
 
 } // namespace kernels
 } // namespace luci_interpreter

@@ -142,13 +142,13 @@ void RuntimeGraph::allocate(size_t kernel_index)
 
 #ifndef DIS_DYN_SHAPES
 void RuntimeGraph::addDynamicShapeTensor(const circle::Tensor *tensor,
-                                         std::vector<int32_t> &&shapes)
+                                         luci_interpreter::RuntimeShape &&shapes)
 {
   assert(_reader->get_current_subgraph_index() == _subgraph_index);
   _dynamic_tensor_shapes[tensor] = std::move(shapes);
 }
 
-std::vector<int32_t> *RuntimeGraph::getDynamicShapeTensor(const circle::Tensor *tensor)
+luci_interpreter::RuntimeShape *RuntimeGraph::getDynamicShapeTensor(const circle::Tensor *tensor)
 {
   assert(_reader->get_current_subgraph_index() == _subgraph_index);
   auto it = _dynamic_tensor_shapes.find(tensor);

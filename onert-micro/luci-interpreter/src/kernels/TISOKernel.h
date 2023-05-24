@@ -18,7 +18,6 @@
 #define LUCI_INTERPRETER_KERNELS_TISO_KERNEL_H
 
 #include "Builders.h"
-#include <tensorflow/lite/kernels/internal/reference/process_broadcast_shapes.h>
 
 namespace luci_interpreter
 {

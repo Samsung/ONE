@@ -19,7 +19,6 @@
 #include "kernels/Utils.h"
 
 #include "PALUnidirectionalSequenceLSTM.h"
-#include "PALApplyActivationToVector.h"
 
 namespace luci_interpreter
 {
@@ -47,11 +46,11 @@ bool checkedLog2(const float x, int *log2_result)
 // are required for input. However, during the hidden state update phase, the
 // output is the updated hidden state, which is asymmetrically quantized. Thus
 // output may require zero point
-lstm::ArithmeticParams createInterGateParams(const float input1_scale, const float input2_scale,
-                                             const float output_scale, const DataType output_type,
-                                             const int output_zp)
+luci_interpreter_pal::ArithmeticParams
+createInterGateParams(const float input1_scale, const float input2_scale, const float output_scale,
+                      const DataType output_type, const int output_zp)
 {
-  lstm::ArithmeticParams op_params;
+  luci_interpreter_pal::ArithmeticParams op_params;
   if (output_type == DataType::S16)
   {
     op_params.quantized_activation_min = std::numeric_limits<int16_t>::min();
@@ -84,7 +83,7 @@ void createGateParams(const circle::Tensor *input, const circle::Tensor *input_w
 {
   // Input CalculateOpDataFullyConnected
   {
-    lstm::FullyConnectedParams input_gate_params;
+    luci_interpreter_pal::FullyConnectedParams input_gate_params;
     double real_multiplier = 0.0;
     int output_shift;
     int32_t output_activation_min;
@@ -110,7 +109,7 @@ void createGateParams(const circle::Tensor *input, const circle::Tensor *input_w
 
   // Recurrent CalculateOpDataFullyConnected
   {
-    lstm::FullyConnectedParams recurrent_gate_params;
+    luci_interpreter_pal::FullyConnectedParams recurrent_gate_params;
     double real_multiplier = 0.0;
     int output_shift;
     int32_t output_activation_min;
@@ -246,9 +245,9 @@ void evalInt8(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph, b
 #endif // DIS_QUANT
 
 #ifndef DIS_FLOAT
-lstm::FullyConnectedParams createFcParamsFloat()
+luci_interpreter_pal::FullyConnectedParams createFcParamsFloat()
 {
-  lstm::FullyConnectedParams op_params;
+  luci_interpreter_pal::FullyConnectedParams op_params;
   kernels::calculateActivationRange(FusedActFunc::NONE, &op_params.float_activation_min,
                                     &op_params.float_activation_max);
   op_params.quantized_activation_max = op_params.float_activation_max;
@@ -284,7 +283,7 @@ void prepareGateParamsFloat(lstm::LSTMParameters *float_lstm_params)
   float_lstm_params->output_gate_parameters = createGateParamsFloat();
 
   // Inter gate multiplication parameters
-  lstm::ArithmeticParams op_params;
+  luci_interpreter_pal::ArithmeticParams op_params;
   kernels::calculateActivationRange(FusedActFunc::NONE, &op_params.float_activation_min,
                                     &op_params.float_activation_max);
   op_params.quantized_activation_max = op_params.float_activation_max;
