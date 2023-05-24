@@ -56,6 +56,17 @@ Execution time(us)* | N/A | 5 090 |
 RAM consumption(bytes) | N/A | 3 360 |
 Binary file size overhead (bytes) | N/A | 30 488 |
 
+#### Model with GRU operations
+
+- model link : https://github.com/Samsung/ONE/files/8368702/gru.zip
+
+Params | Tflite micro** | Onert-micro |
+--- | --- | --- 
+Execution time(us)* | N/A | 335 000 | 
+RAM consumption(bytes) | N/A | 14 816 |
+Binary file size overhead (bytes) | N/A | 43 444 |
+
+
 (*) Average for 100 inferences
 (**) Tflite-micro has not launched this model
 
