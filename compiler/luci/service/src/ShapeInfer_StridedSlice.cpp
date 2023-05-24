@@ -45,15 +45,16 @@ const loco::DataType S32 = loco::DataType::S32;
 
 using int8 = int8_t;
 using int16 = int16_t;
+using int32 = int32_t;
 
 struct StridedSliceParams
 {
   int8 start_indices_count = 0;
-  int16 start_indices[kMaxDim];
+  int32 start_indices[kMaxDim];
   int8 stop_indices_count = 0;
-  int16 stop_indices[kMaxDim];
+  int32 stop_indices[kMaxDim];
   int8 strides_count = 0;
-  int16 strides[kMaxDim];
+  int32 strides[kMaxDim];
 
   int16 begin_mask = 0;
   int16 ellipsis_mask = 0;
@@ -66,6 +67,13 @@ struct StridedSliceContext
 {
   StridedSliceContext(const luci::CircleStridedSlice *node)
   {
+    // check overflow issues
+    assert(static_cast<int16>(node->begin_mask()) == node->begin_mask());
+    assert(static_cast<int16>(node->ellipsis_mask()) == node->ellipsis_mask());
+    assert(static_cast<int16>(node->end_mask()) == node->end_mask());
+    assert(static_cast<int16>(node->new_axis_mask()) == node->new_axis_mask());
+    assert(static_cast<int16>(node->shrink_axis_mask()) == node->shrink_axis_mask());
+
     params.begin_mask = node->begin_mask();
     params.ellipsis_mask = node->ellipsis_mask();
     params.end_mask = node->end_mask();
@@ -298,6 +306,7 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
     {
       // If ellipsis_mask, set the begin_mask and end_mask at that index.
       added_ellipsis = std::max(0u, i - ellipsis_start_idx);
+      assert(i < 16);
       op_params.begin_mask |= (1 << i);
       op_params.end_mask |= (1 << i);
       op_params.strides[i] = 1;
@@ -318,6 +327,7 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
       op_params.start_indices[i] = 0;
       op_params.stop_indices[i] = 0;
       op_params.strides[i] = 1;
+      assert(i < 16);
       op_params.begin_mask |= (1 << i);
       op_params.end_mask |= (1 << i);
       op_context->effective_input_shape.dim(i) = input_shape.dim(i - added_axises);
@@ -330,19 +340,26 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
       op_params.strides[i] = op_context->strides->at<S32>(orig_idx);
       if (op_context->params.begin_mask & (1 << orig_idx))
       {
+        assert(i < 16);
         op_params.begin_mask |= (1 << i);
       }
       if (op_context->params.end_mask & (1 << orig_idx))
       {
+        assert(i < 16);
         op_params.end_mask |= (1 << i);
       }
       if (op_context->params.shrink_axis_mask & (1 << orig_idx))
       {
+        assert(i < 16);
         op_params.shrink_axis_mask |= (1 << i);
       }
       op_context->effective_input_shape.dim(i) = input_shape.dim(i - added_axises);
     }
   }
+
+  // make sure no overflow
+  assert(static_cast<int8>(effective_dims) == static_cast<int32_t>(effective_dims));
+
   op_params.start_indices_count = effective_dims;
   op_params.stop_indices_count = effective_dims;
   op_params.strides_count = effective_dims;
