@@ -1,10 +1,10 @@
-# luci-micro
+# onert-micro
 
-`luci-micro` is MCU specialized build of luci-interpreter with several benchmark applications.
+`onert-micro`(a.k.a `luci-micro`) is MCU specialized build of luci-interpreter with several benchmark applications.
 
 ## Contents
 
-Luci-micro contains cmake infrastructure to build:
+onert-micro contains cmake infrastructure to build:
 - stand-alone interpreter library
 - benchmark applications using luci interpreter on arm MCUs
 
@@ -29,16 +29,8 @@ $ sudo apt-get install gcc-arm-none-eabi
 $ cd <path to ONE>
 $ mkdir build
 # cd build
-$ cmake ../infra/nncc
+$ cmake ../infra/onert-micro
 $ make -j$(nproc) luci_interpreter_micro_arm
-```
-
-**nncc script build**
-
-``` bash
-$ cd <path to ONE>
-$ ./nncc configure
-$ ./nncc build -j$(nproc) luci_interpreter_micro_arm
 ```
 
 ### Known issues
