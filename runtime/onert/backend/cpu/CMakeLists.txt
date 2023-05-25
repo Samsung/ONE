@@ -1,5 +1,3 @@
-set(LIB_ONERT_BACKEND_CPU onert_backend_cpu)
-
 nnfw_find_package(Ruy REQUIRED)
 
 file(GLOB_RECURSE SOURCES "*.cc")
