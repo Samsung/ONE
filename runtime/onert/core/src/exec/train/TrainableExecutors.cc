@@ -30,9 +30,9 @@ namespace train
 void TrainableExecutors::emplace(const ir::ModelIndex &, const ir::SubgraphIndex &subg_index,
                                  std::unique_ptr<IExecutor> exec)
 {
-  std::unique_ptr<TrainableExecutor> t_exec{
+  std::unique_ptr<TrainableExecutor> texec{
     nnfw::misc::polymorphic_downcast<TrainableExecutor *>(exec.release())};
-  _executors.emplace(subg_index, std::move(t_exec));
+  _executors.emplace(subg_index, std::move(texec));
 }
 
 TrainableExecutor *TrainableExecutors::at(const ir::ModelIndex &,
