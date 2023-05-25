@@ -30,9 +30,9 @@ namespace train
 
 TrainableExecutor::TrainableExecutor(
   std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
-  backend::BackendContexts &&backend_contexts, const compiler::TensorRegistries &tensor_regs,
-  compiler::CodeMap &&code_map, const std::vector<ir::OperationIndex> &order,
-  const util::TracingCtx *tracing_ctx)
+  backend::train::TrainableBackendContexts &&backend_contexts,
+  const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
+  const std::vector<ir::OperationIndex> &order, const util::TracingCtx *tracing_ctx)
   : _lowered_graph{std::move(lowered_graph)}, _backend_contexts{std::move(backend_contexts)},
     _trainable_graph{_lowered_graph->trainable_graph()}, _mutex(), _tracing_ctx(tracing_ctx)
 {
@@ -51,7 +51,9 @@ TrainableExecutor::TrainableExecutor(
 
   for (auto index : order)
   {
-    _code.emplace_back(std::move(code_map.at(index)));
+    auto &trainable_code =
+      nnfw::misc::polymorphic_downcast<compiler::train::CodeAndInfo &>(code_map.at(index));
+    _code.emplace_back(std::move(trainable_code));
   }
 }
 
@@ -115,87 +117,12 @@ void TrainableExecutor::executeImpl()
 #endif
       _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
-      auto &fn_seq = code.fn_seq;
+      auto &trainable_fn = code.trainable_fn;
 
-      fn_seq->forward(false);
+      // TODO Get whether training
+      trainable_fn->forward(true);
 
-      _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
-    }
-    _subject.notifySubgraphEnd(profiling_subg_index);
-  }
-  else
-  {
-    for (auto &&code : _code)
-    {
-// TODO : Move ruy profiler into ExecutionObserver
-#ifdef RUY_PROFILER
-      ruy::profiler::ScopeLabel label(code.op->name());
-#endif
-      auto &fn_seq = code.fn_seq;
-
-      fn_seq->forward(false);
-    }
-  }
-}
-
-void TrainableExecutor::train(const IODescription &desc)
-{
-  // For thread-safe, use mutex
-  // TODO: if all used backends on this executor are thread-safe,
-  //       do not need to use mutex (otherwise, use mutex)
-  std::lock_guard<std::mutex> lock(_mutex);
-
-  // TODO Update IO tensors if desc has dynamic input
-  // Set input(s)
-  assert(_input_tensors.size() == desc.inputs.size());
-  for (uint32_t i = 0; i < _input_tensors.size(); ++i)
-  {
-    auto tensor = _input_tensors[i];
-
-    // TODO Check if (desc.inputs[i] == nullptr)
-    // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
-    tensor->setUserTensor(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
-                          desc.inputs[i]->size);
-  }
-
-  // Set output(s)
-  assert(_output_tensors.size() == desc.outputs.size());
-  for (uint32_t i = 0; i < _output_tensors.size(); ++i)
-  {
-    auto tensor = _output_tensors[i];
-
-    if (desc.outputs[i] == nullptr)
-      throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
-    tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
-  }
-
-  trainImpl();
-
-  // TODO Update output(s) desc if desc has dynamic input
-
-  // TODO Support backwarding
-}
-
-void TrainableExecutor::trainImpl()
-{
-  if (_tracing_ctx)
-  {
-    auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_trainable_graph.graph());
-
-    _subject.notifySubgraphBegin(profiling_subg_index);
-    for (auto &&code : _code)
-    {
-      const auto backend = code.lower_info->backend();
-// TODO : Move ruy profiler into ExecutionObserver
-#ifdef RUY_PROFILER
-      ruy::profiler::ScopeLabel label(code.op->name());
-#endif
-      _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
-
-      auto &fn_seq = code.fn_seq;
-
-      fn_seq->forward(true);
-      fn_seq->backward();
+      // TODO Support backwarding
 
       _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
     }
@@ -209,10 +136,11 @@ void TrainableExecutor::trainImpl()
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());
 #endif
-      auto &fn_seq = code.fn_seq;
 
-      fn_seq->forward(true);
-      fn_seq->backward();
+      auto &trainable_fn = code.trainable_fn;
+
+      // TODO Get whether training
+      trainable_fn->forward(true);
     }
   }
 }

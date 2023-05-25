@@ -37,9 +37,8 @@ namespace train
 class KernelGenerator : public basic::KernelGeneratorBase
 {
 public:
-  KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
-                  const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
-                  const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
+  KernelGenerator(const ir::Graph &graph, const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
+                  const std::shared_ptr<basic::TensorRegistry> &grad_tensor_reg,
                   const std::shared_ptr<ExternalContext> &external_context);
 
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex op_ind) override;
@@ -60,9 +59,8 @@ private:
   const ir::Operands &_ctx;
   const ir::Operations &_operations_ctx;
   ir::Layout _current_layout;
-  std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<basic::TensorRegistry> _tensor_reg;
-  std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
+  std::shared_ptr<basic::TensorRegistry> _grad_tensor_reg;
   const std::shared_ptr<ExternalContext> _external_context;
   std::unique_ptr<exec::ITrainableFunction> _trainable_fn;
 };

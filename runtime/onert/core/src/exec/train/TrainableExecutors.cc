@@ -30,11 +30,13 @@ namespace train
 void TrainableExecutors::emplace(const ir::ModelIndex &, const ir::SubgraphIndex &subg_index,
                                  std::unique_ptr<IExecutor> exec)
 {
-  std::unique_ptr<TrainableExecutor> t_exec{nnfw::misc::polymorphic_downcast<TrainableExecutor *>(exec.release())};
+  std::unique_ptr<TrainableExecutor> t_exec{
+    nnfw::misc::polymorphic_downcast<TrainableExecutor *>(exec.release())};
   _executors.emplace(subg_index, std::move(t_exec));
 }
 
-TrainableExecutor *TrainableExecutors::at(const ir::ModelIndex &, const ir::SubgraphIndex &subg_index) const
+TrainableExecutor *TrainableExecutors::at(const ir::ModelIndex &,
+                                          const ir::SubgraphIndex &subg_index) const
 {
   return _executors.at(subg_index).get();
 }
@@ -61,15 +63,6 @@ void TrainableExecutors::execute(const IODescription &desc)
   if (_executors.size() > 1)
     throw std::runtime_error("TrainableExecutors does not support multiple executors yet");
   entryExecutor()->execute(desc);
-
-  // TODO Support multple executors
-}
-
-void TrainableExecutors::train(const IODescription &desc)
-{
-  if (_executors.size() > 1)
-    throw std::runtime_error("TrainableExecutors does not support multiple executors yet");
-  entryExecutor()->train(desc);
 
   // TODO Support multple executors
 }

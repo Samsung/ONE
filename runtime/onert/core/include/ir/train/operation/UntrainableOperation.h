@@ -22,6 +22,7 @@
 #include "ir/OperationVisitor.h"
 #include "ir/train/TrainableOperationVisitor.h"
 
+#include <misc/polymorphic_downcast.h>
 #include <type_traits>
 
 namespace onert
@@ -42,16 +43,24 @@ public:
   virtual ~UntrainableOperation() = default;
 
 public:
+  std::unique_ptr<ITrainableOperation> clone(Operation &op) const override
+  {
+    return std::make_unique<UntrainableOperation<OperationType>>(
+      nnfw::misc::polymorphic_downcast<OperationType &>(op));
+  }
   void accept(OperationVisitor &v) const override { v.visit(_operation); }
   void accept(TrainableOperationVisitor &) const override
   {
     // Pass the functionality of TrainableOperationVisitor since UntrainableOperation must not be
     // trained
   }
-  virtual OpCode opcode() const { return _operation.opcode(); }
+  virtual OpCode opcode() const override { return _operation.opcode(); }
 
-protected:
-  Operation &operation() const final { return _operation; }
+public:
+  const Operation &operation() const final { return _operation; }
+
+private:
+  Operation &operation() final { return _operation; }
 
 private:
   OperationType &_operation;

@@ -26,6 +26,9 @@
 #include <memory>
 #include <unordered_set>
 
+#include "backend/train/TrainableBackendContext.h"
+#include <misc/polymorphic_downcast.h>
+
 namespace onert
 {
 namespace compiler
@@ -51,6 +54,33 @@ public:
       else
       {
         _tensor_regs.insert(tensor_reg);
+      }
+    }
+  }
+
+  TensorRegistries(const onert::backend::train::TrainableBackendContexts &tbackend_contexts,
+                   bool include_builtin)
+  {
+    for (const auto &e : tbackend_contexts)
+    {
+      auto tensor_reg = e.second->tensor_registry;
+      auto grad_tensor_reg = e.second->grad_tensor_registry;
+      if (e.first->config()->id() == backend::builtin::Config::ID)
+      {
+        _builtin_tensor_reg =
+          std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(tensor_reg);
+        _builtin_grad_tensor_reg =
+          std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(grad_tensor_reg);
+        if (include_builtin)
+        {
+          _tensor_regs.insert(tensor_reg);
+          _grad_tensor_regs.insert(grad_tensor_reg);
+        }
+      }
+      else
+      {
+        _tensor_regs.insert(tensor_reg);
+        _grad_tensor_regs.insert(grad_tensor_reg);
       }
     }
   }
@@ -82,7 +112,9 @@ public:
 
 private:
   std::unordered_set<std::shared_ptr<backend::ITensorRegistry>> _tensor_regs;
+  std::unordered_set<std::shared_ptr<backend::ITensorRegistry>> _grad_tensor_regs;
   std::shared_ptr<backend::builtin::TensorRegistry> _builtin_tensor_reg;
+  std::shared_ptr<backend::builtin::TensorRegistry> _builtin_grad_tensor_reg;
 };
 
 } // namespace compiler

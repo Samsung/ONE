@@ -27,6 +27,7 @@ namespace compiler
 
 struct ILoweredGraph
 {
+  virtual ~ILoweredGraph() = default;
   virtual ir::Graph &graph() = 0;
   virtual const ir::Graph &graph() const = 0;
   virtual const compiler::GraphLowerInfo &lower_info() const = 0;

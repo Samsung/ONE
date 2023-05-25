@@ -51,7 +51,7 @@ public:
                std::unique_ptr<IExecutor> exec) override;
 
   TrainableExecutor *at(const ir::ModelIndex &model_index,
-                const ir::SubgraphIndex &subg_index) const override;
+                        const ir::SubgraphIndex &subg_index) const override;
 
   TrainableExecutor *entryExecutor() const { return at(ir::ModelIndex{0}, ir::SubgraphIndex{0}); }
 
@@ -64,8 +64,6 @@ public:
   const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const override;
 
   void execute(const IODescription &desc) override;
-
-  void train(const IODescription &desc);
 
 private:
   // TODO Append model index to ModelIndex

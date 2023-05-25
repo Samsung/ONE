@@ -19,6 +19,8 @@
 #include "ir/OperationVisitor.h"
 #include "ir/train/TrainableOperationVisitor.h"
 
+#include <misc/polymorphic_downcast.h>
+
 namespace onert
 {
 namespace ir
@@ -27,6 +29,12 @@ namespace train
 {
 namespace operation
 {
+
+std::unique_ptr<ITrainableOperation> ElementwiseActivation::clone(Operation &op) const
+{
+  return std::make_unique<ElementwiseActivation>(
+    nnfw::misc::polymorphic_downcast<OperationType &>(op), _training_inputs);
+}
 
 void ElementwiseActivation::accept(OperationVisitor &v) const { v.visit(_operation); }
 

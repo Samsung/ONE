@@ -19,6 +19,7 @@
 #include "ir/Operations.Include.h"
 #include "ir/train/operation/ElementwiseActivation.h"
 #include "ir/train/operation/Loss.h"
+#include "util/Utils.h"
 
 #include <memory>
 
@@ -68,6 +69,9 @@ void TrainableOperationConverter::visit(const ir::operation::ElementwiseActivati
 
 void TrainableOperationConverter::visit(const ir::operation::Loss &)
 {
+  // TODO Remove this because this is used to prevent the error "private field is not used"
+  UNUSED_RELEASE(_training_info);
+
   throw std::runtime_error(
     "TrainableOperationConverter: Loss operation in the model is not supported yet.");
 }

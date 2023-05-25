@@ -27,6 +27,15 @@ namespace train
 
 TrainableGraph::TrainableGraph(const Graph &graph) : _graph{graph}, _operations{} {}
 
+TrainableGraph::TrainableGraph(Graph &graph, const TrainableOperations &toperations)
+  : _graph{graph}, _operations{}
+{
+  graph.operations().iterate([&](const onert::ir::OperationIndex &idx, onert::ir::Operation &op) {
+    const auto &trainable_op = toperations.at(idx);
+    appendTrainableOperation(idx, trainable_op.clone(op));
+  });
+}
+
 TrainableGraph::~TrainableGraph(void) = default;
 
 OperandIndex TrainableGraph::addOperand(const Shape &shape, const TypeInfo &type)
@@ -52,6 +61,15 @@ TrainableGraph::addTrainableOperation(OperationIndex index,
     if (!operands().exist(output))
       return OperationIndex{};
 
+  auto ind_gen = appendTrainableOperation(index, std::move(operation));
+
+  return ind_gen;
+}
+
+OperationIndex
+TrainableGraph::appendTrainableOperation(OperationIndex index,
+                                         std::unique_ptr<ITrainableOperation> &&operation)
+{
   auto ind_gen = _operations.push(std::move(operation), index);
   if (ind_gen.valid())
   {

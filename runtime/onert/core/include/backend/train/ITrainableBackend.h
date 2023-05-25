@@ -14,25 +14,28 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_OPERATIONS_OPERATION_DECLARE_H__
-#define __ONERT_IR_TRAIN_OPERATIONS_OPERATION_DECLARE_H__
+#ifndef __ONERT_BACKEND_TRAIN_ITRAINABLE_BACKEND_H__
+#define __ONERT_BACKEND_TRAIN_ITRAINABLE_BACKEND_H__
+
+#include <memory>
+
+#include "backend/train/TrainableBackendContext.h"
 
 namespace onert
 {
-namespace ir
+namespace backend
 {
 namespace train
 {
-namespace operation
+
+struct ITrainableBackend
 {
+  virtual ~ITrainableBackend() = default;
+  virtual std::unique_ptr<TrainableBackendContext> newContext(TrainableContextData &&) const = 0;
+};
 
-#define OP(InternalName) class InternalName;
-#include "ir/Operations.lst"
-#undef OP
-
-} // namespace operation
 } // namespace train
-} // namespace ir
+} // namespace backend
 } // namespace onert
 
-#endif // __ONERT_IR_TRAIN_OPERATIONS_OPERATION_DECLARE_H__
+#endif // __ONERT_BACKEND_TRAIN_ITRAINABLE_BACKEND_H__

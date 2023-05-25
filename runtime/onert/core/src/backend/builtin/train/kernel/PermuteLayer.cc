@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,30 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_OPERATIONS_OPERATION_DECLARE_H__
-#define __ONERT_IR_TRAIN_OPERATIONS_OPERATION_DECLARE_H__
+#include "PermuteLayer.h"
 
 namespace onert
 {
-namespace ir
+namespace backend
+{
+namespace builtin
 {
 namespace train
 {
-namespace operation
+namespace kernel
 {
 
-#define OP(InternalName) class InternalName;
-#include "ir/Operations.lst"
-#undef OP
+PermuteLayer::PermuteLayer(const std::vector<ITensor *> &src_tensors,
+                           const std::vector<ITensor *> &dst_tensors,
+                           const std::shared_ptr<ExternalContext> &external_context)
+  : builtin::kernel::PermuteLayer{src_tensors, dst_tensors, external_context}
+{
+}
 
-} // namespace operation
+void PermuteLayer::forward(bool) { builtin::kernel::PermuteLayer::run(); }
+
+} // namespace kernel
 } // namespace train
-} // namespace ir
+} // namespace builtin
+} // namespace backend
 } // namespace onert
-
-#endif // __ONERT_IR_TRAIN_OPERATIONS_OPERATION_DECLARE_H__

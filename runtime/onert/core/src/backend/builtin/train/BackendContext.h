@@ -14,46 +14,37 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_BACKEND_CONTEXT_H__
-#define __ONERT_BACKEND_TRAIN_BACKEND_CONTEXT_H__
+#ifndef __ONERT_BACKEND_BUILTIN_TRAIN_BACKEND_CONTEXT_H__
+#define __ONERT_BACKEND_BUILTIN_TRAIN_BACKEND_CONTEXT_H__
 
 #include <backend/train/TrainableBackendContext.h>
-
-#include "ExternalContext.h"
 #include "KernelGenerator.h"
-#include "TensorBuilder.h"
+#include "../ExternalContext.h"
+#include "../TensorBuilder.h"
 
 namespace onert
 {
 namespace backend
 {
+namespace builtin
+{
 namespace train
 {
 
-class BackendContext : public onert::backend::train::TrainableBackendContext
+class BackendContext : public backend::train::TrainableBackendContext
 {
 public:
-  BackendContext(const Backend *backend, std::unique_ptr<TrainableContextData> &&data,
+  BackendContext(const Backend *backend,
+                 std::unique_ptr<backend::train::TrainableContextData> &&data,
                  std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<ITensorRegistry> grad_tensor_registry = nullptr,
                  std::shared_ptr<TensorBuilder> grad_tensor_builder = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
-    : onert::backend::train::TrainableBackendContext(backend, std::move(data), tensor_registry,
-                                                     grad_tensor_registry),
+    : backend::train::TrainableBackendContext(backend, std::move(data), tensor_registry,
+                                              grad_tensor_registry),
       tensor_builder{tensor_builder}, kernel_gen{kernel_gen},
       _external_context(new ExternalContext), _grad_tensor_builder{grad_tensor_builder}
-  {
-  }
-
-  // TODO Remove this constructor
-  BackendContext(const Backend *backend, ContextData &&data,
-                 std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
-                 std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
-                 std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
-    : onert::backend::train::TrainableBackendContext{backend, std::move(data), tensor_registry},
-      tensor_builder{tensor_builder}, kernel_gen{kernel_gen},
-      _external_context(new ExternalContext), _grad_tensor_builder{nullptr}
   {
   }
 
@@ -84,7 +75,8 @@ private:
 };
 
 } // namespace train
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_TRAIN_BACKEND_CONTEXT_H__
+#endif // __ONERT_BACKEND_BUILTIN_TRAIN_BACKEND_CONTEXT_H__

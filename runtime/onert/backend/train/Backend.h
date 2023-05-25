@@ -22,6 +22,7 @@
 #include "KernelGenerator.h"
 
 #include <backend/Backend.h>
+#include <backend/train/ITrainableBackend.h>
 
 #include <memory>
 
@@ -32,24 +33,38 @@ namespace backend
 namespace train
 {
 
-class Backend : public ::onert::backend::Backend
+class Backend : public ::onert::backend::Backend, public ITrainableBackend
 {
 public:
   Backend() : _config{std::make_shared<Config>()} {}
 
   std::shared_ptr<IConfig> config() const override { return _config; }
 
-  std::unique_ptr<onert::backend::BackendContext> newContext(ContextData &&data) const override
+  std::unique_ptr<onert::backend::train::TrainableBackendContext>
+  newContext(TrainableContextData &&tdata) const override
   {
-    auto custom_kernel_builder = data.custom_kernel_builder;
-    auto &graph = *data.graph;
-    auto context = std::make_unique<BackendContext>(this, std::move(data));
+    const auto &graph = *tdata.graph;
     auto tr = std::make_shared<basic::TensorRegistry>();
     auto tb = std::make_shared<TensorBuilder>(tr, "Bump");
-    context->tensor_registry = tr;
-    context->tensor_builder = tb;
-    context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb, tr, custom_kernel_builder,
-                                                            context->external_context());
+    auto grad_tr = std::make_shared<basic::TensorRegistry>();
+    auto grad_tb = std::make_shared<TensorBuilder>(grad_tr, "Bump");
+    auto tdata_ptr = std::make_unique<TrainableContextData>(std::move(tdata));
+    auto context =
+      std::make_unique<BackendContext>(this, std::move(tdata_ptr), tr, tb, grad_tr, grad_tb);
+
+    // TODO Share grad_tr and grad_tb with KernelGenerator
+    context->kernel_gen =
+      std::make_shared<KernelGenerator>(graph, tr, grad_tr, context->external_context());
+    return context;
+  }
+
+  // TODO Remove this constructor
+  std::unique_ptr<onert::backend::BackendContext> newContext(ContextData &&data) const override
+  {
+    auto tr = std::make_shared<basic::TensorRegistry>();
+    auto tb = std::make_shared<TensorBuilder>(tr, "Bump");
+    auto context = std::make_unique<BackendContext>(this, std::move(data), tr, tb);
+
     return context;
   }
 

@@ -37,6 +37,8 @@ public:
   virtual ~ITrainableOperation() = default;
 
 public:
+  virtual std::unique_ptr<ITrainableOperation> clone(Operation &) const = 0;
+  virtual void accept(OperationVisitor &v) const override = 0;
   virtual void accept(TrainableOperationVisitor &v) const = 0;
   // TODO Add virtual methods related to training
 
@@ -53,7 +55,10 @@ public:
   const OperandIndexSequence &getOutputs() const override { return operation().getOutputs(); }
 
 public:
-  virtual Operation &operation() const = 0;
+  virtual const Operation &operation() const = 0;
+
+protected:
+  virtual Operation &operation() = 0;
 };
 
 } // namespace train

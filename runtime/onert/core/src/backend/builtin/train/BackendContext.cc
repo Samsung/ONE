@@ -16,14 +16,14 @@
 
 #include "BackendContext.h"
 
-#include "TensorBuilder.h"
-#include "KernelGenerator.h"
-
-#include <backend/basic/BackendContextHelpers.h>
+#include "backend/basic/BackendContextHelpers.h"
+#include "exec/FunctionSequence.h"
 
 namespace onert
 {
 namespace backend
+{
+namespace builtin
 {
 namespace train
 {
@@ -71,18 +71,14 @@ FunctionMap BackendContext::genKernels()
 {
   FunctionMap ret;
 
-  for (auto op_ind : _data.op_order)
-  {
-    auto fn_seq = kernel_gen->generate(op_ind);
-    ret.emplace_back(op_ind, std::move(fn_seq));
-  }
+  // TODO Enable
+  // for (auto op_ind : _data.op_order)
+  // {
+  //   auto tn_seq = kernel_gen->generate(op_ind);
+  //   ret.emplace_back(op_ind, std::move(tn_seq));
+  // }
 
   basic::initConsts(*this);
-
-  // NOTE For memory optimization, we want to free some operand data
-  const_cast<ir::Graph &>(*_data.graph)
-    .operands()
-    .iterate([&](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
 
   for (auto &&it : ret)
   {
@@ -94,5 +90,6 @@ FunctionMap BackendContext::genKernels()
 }
 
 } // namespace train
+} // namespace builtin
 } // namespace backend
 } // namespace onert

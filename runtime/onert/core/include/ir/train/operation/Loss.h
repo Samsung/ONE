@@ -38,15 +38,19 @@ public:
   Loss(OperationType &operation);
 
 public:
+  std::unique_ptr<ITrainableOperation> clone(Operation &op) const override;
   void accept(OperationVisitor &v) const override;
   void accept(TrainableOperationVisitor &v) const override;
-  virtual OpCode opcode() const { return _operation.opcode(); }
+  virtual OpCode opcode() const final { return _operation.opcode(); }
 
 public:
   const OperationType::Param &param() const { return _operation.param(); }
 
-protected:
-  Operation &operation() const final { return _operation; }
+public:
+  const Operation &operation() const final { return _operation; }
+
+private:
+  Operation &operation() final { return _operation; }
 
 private:
   OperationType &_operation;
