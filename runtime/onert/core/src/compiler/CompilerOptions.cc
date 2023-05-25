@@ -82,6 +82,7 @@ std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
   o->he_scheduler = util::getConfigBool(util::config::USE_SCHEDULER);
   o->he_profiling_mode = util::getConfigBool(util::config::PROFILING_MODE);
   o->fp16_enable = util::getConfigBool(util::config::FP16_ENABLE);
+  o->training_mode = util::getConfigBool(util::config::TRAINING_MODE);
   {
     // Backend for all
     auto &ms_options = o->manual_scheduler_options;

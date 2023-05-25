@@ -84,6 +84,7 @@ public:
   bool he_scheduler;      //< HEScheduler if true, ManualScheduler otherwise
   bool he_profiling_mode; //< Whether HEScheduler profiling mode ON/OFF
   bool fp16_enable;       //< Whether fp16 mode ON/OFF
+  bool training_mode;     //< Whether training mode ON/OFF
 };
 
 } // namespace compiler
