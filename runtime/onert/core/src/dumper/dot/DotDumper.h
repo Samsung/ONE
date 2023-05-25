@@ -16,6 +16,7 @@
 
 #include "ir/Graph.h"
 #include "compiler/LoweredGraph.h"
+#include "compiler/train/LoweredTrainableGraph.h"
 
 #ifndef __ONERT_DUMPER_DOT_DOT_DUMPER_H__
 #define __ONERT_DUMPER_DOT_DOT_DUMPER_H__
@@ -58,6 +59,16 @@ public:
    * @return N/A
    */
   void dump(const compiler::LoweredGraph &lowered_graph, const std::string &tag);
+
+  /**
+   * @brief Dump lowered and trainable graph information to dot file as tag name if "GRAPH_DOT_DUMP"
+   * is set
+   *
+   * @param[in] graph  The graph that would be used to get operations and operands
+   * @param[in] tag    The name of dot file that would be created
+   * @return N/A
+   */
+  void dump(const compiler::train::LoweredTrainableGraph &lowered_graph, const std::string &tag);
 
 private:
   Level _level;

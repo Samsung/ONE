@@ -38,12 +38,12 @@ class PassRunner
 {
 public:
   PassRunner() = default;
-  PassRunner &append(std::unique_ptr<Pass> pass);
+  PassRunner &append(std::unique_ptr<IPass> pass);
 
   void run();
 
 private:
-  std::vector<std::unique_ptr<Pass>> _passes;
+  std::vector<std::unique_ptr<IPass>> _passes;
 };
 
 } // namespace pass

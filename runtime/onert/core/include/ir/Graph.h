@@ -86,7 +86,7 @@ public:
   void setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data);
   void addInput(const OperandIndex &ind, const std::string &name = "");
   void addOutput(const OperandIndex &ind, const std::string &name = "");
-  void verify(void);
+  void verify(void) const;
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
   void setLayout(Layout layout) { _layout = layout; }
 

@@ -123,7 +123,7 @@ IOIndex Graph::getOutputIndex(const std::string &name) const
   return (itr == _name_to_output.end()) ? IOIndex{} : itr->second;
 }
 
-void Graph::verify(void)
+void Graph::verify(void) const
 {
   // Call graph verifications for the MODEL phase
   {

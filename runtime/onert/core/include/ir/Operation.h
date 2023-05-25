@@ -31,7 +31,21 @@ namespace ir
 
 struct OperationVisitor;
 
-class Operation
+struct IOperation
+{
+  virtual ~IOperation() = default;
+
+  virtual void accept(OperationVisitor &v) const = 0;
+  virtual std::string name() const { return std::string{toString(opcode())}; }
+  virtual OpCode opcode() const = 0;
+
+  virtual void replaceInputs(const OperandIndex &from, const OperandIndex &to) = 0;
+  virtual void replaceOutputs(const OperandIndex &from, const OperandIndex &to) = 0;
+  virtual const OperandIndexSequence &getInputs() const = 0;
+  virtual const OperandIndexSequence &getOutputs() const = 0;
+};
+
+class Operation : public IOperation
 {
 public:
   // TODO Remove default parameter
@@ -49,16 +63,11 @@ public:
   virtual ~Operation();
 
 public:
-  virtual void accept(OperationVisitor &v) const = 0;
-  virtual std::string name() const { return std::string{toString(opcode())}; }
-  virtual OpCode opcode() const = 0;
-
-public:
-  void replaceInputs(const OperandIndex &from, const OperandIndex &to);
-  void replaceOutputs(const OperandIndex &from, const OperandIndex &to);
+  void replaceInputs(const OperandIndex &from, const OperandIndex &to) override;
+  void replaceOutputs(const OperandIndex &from, const OperandIndex &to) override;
   OperandIndexSequence &getInputs() { return _inputs; }
-  const OperandIndexSequence &getInputs() const { return _inputs; }
-  const OperandIndexSequence &getOutputs() const { return _outputs; }
+  const OperandIndexSequence &getInputs() const override { return _inputs; }
+  const OperandIndexSequence &getOutputs() const override { return _outputs; }
   // It's for only input/output tensors but const data.
   void setInputs(const OperandIndexSequence &indexes);
   void setOutputs(const OperandIndexSequence &indexes);

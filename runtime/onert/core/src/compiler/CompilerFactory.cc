@@ -17,6 +17,7 @@
 #include "compiler/CompilerFactory.h"
 
 #include "MultiModelCompiler.h"
+#include "train/TrainingCompiler.h"
 
 #include "compiler/Compiler.h"
 
@@ -33,8 +34,14 @@ CompilerFactory &CompilerFactory::get()
 
 std::unique_ptr<ICompiler>
 CompilerFactory::create(const std::shared_ptr<ir::NNPkg> &nnpkg,
-                        std::vector<std::unique_ptr<CompilerOptions>> &copts)
+                        std::vector<std::unique_ptr<CompilerOptions>> &copts,
+                        const ir::train::TrainingInfo *training_info)
 {
+  // Returing compiler for training
+  if (training_info && training_info->shouldTrain())
+    return std::make_unique<train::TrainingCompiler>(nnpkg, copts, training_info);
+
+  // Returing compiler for inference
   if (nnpkg->model_count() == 1)
     return std::make_unique<Compiler>(nnpkg, copts);
 
