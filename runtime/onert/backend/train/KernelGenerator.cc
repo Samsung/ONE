@@ -17,6 +17,10 @@
 #include "KernelGenerator.h"
 
 #include "ops/ConvolutionLayer.h"
+#include "ops/FullyConnectedLayer.h"
+#include "ops/PoolLayer.h"
+#include "ops/ReshapeLayer.h"
+#include "ops/SoftMaxLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -33,6 +37,20 @@ namespace backend
 {
 namespace train
 {
+
+namespace
+{
+ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::Pool2D::PoolType::MAX:
+      return ops::PoolType::kMax;
+    default:
+      throw std::runtime_error("train KernelGenerator : Not supported operation yet");
+  }
+}
+} // namespace
 
 KernelGenerator::KernelGenerator(const ir::Graph &graph,
                                  const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
@@ -116,6 +134,96 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, padding.left,
                 padding.right, padding.top, padding.bottom, stride.horizontal, stride.vertical,
                 dilation.width_factor, dilation.height_factor, activation, ofm_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::FullyConnected &node)
+{
+  using ir::operation::FullyConnected;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(FullyConnected::Input::INPUT)};
+  const auto weight_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
+  const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
+  const auto activation = node.param().activation;
+  const auto weights_format = node.param().weights_format;
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto weight_tensor = _tensor_reg->getPortableTensor(weight_index);
+  auto bias_tensor = bias_index.undefined() ? nullptr : _tensor_reg->getPortableTensor(bias_index);
+
+  auto fn = std::make_unique<ops::FullyConnectedLayer>();
+
+  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, weights_format, output_tensor,
+                _external_context);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Reshape &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Reshape::Input::INPUT)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  // optional 2nd input
+  IPortableTensor *shape_tensor = nullptr;
+
+  if (node.getInputs().size() == 2)
+  {
+    const auto shape_index{node.getInputs().at(ir::operation::Reshape::Input::SHAPE)};
+    shape_tensor = _tensor_reg->getPortableTensor(shape_index);
+  }
+
+  auto fn = std::make_unique<ops::ReshapeLayer>();
+
+  fn->configure(input_tensor, shape_tensor, output_tensor);
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Softmax &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Softmax::Input::INPUT)};
+
+  const auto beta = node.param().beta;
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  auto fn = std::make_unique<ops::SoftMaxLayer>();
+
+  fn->configure(input_tensor, beta, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Pool2D &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Pool2D::Input::INPUT)};
+
+  const auto kh = node.param().kh;
+  const auto kw = node.param().kw;
+  const auto stride = node.param().stride;
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
+  const auto padding =
+    ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
+  const auto activation = node.param().activation;
+
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index);
+
+  auto fn = std::make_unique<ops::PoolLayer>();
+
+  fn->configure(ifm_tensor, padding.left, padding.right, padding.top, padding.bottom,
+                stride.horizontal, stride.vertical, kw, kh, activation, ofm_tensor,
+                convertPoolType(node.param().op_type));
 
   _return_fn = std::move(fn);
 }
