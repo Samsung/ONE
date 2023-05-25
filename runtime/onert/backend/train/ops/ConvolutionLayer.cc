@@ -45,7 +45,17 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
     strideWidth, strideHeight, dilationWidthFactor, dilationHeightFactor, activation, output);
 }
 
-void ConvolutionLayer::forward(bool) { cpu::ops::ConvolutionLayer::run(); }
+void ConvolutionLayer::forward(bool training)
+{
+  if (training)
+  {
+    // TODO Implement details
+  }
+  else
+  {
+    cpu::ops::ConvolutionLayer::run();
+  }
+}
 
 } // namespace ops
 } // namespace train
