@@ -17,6 +17,7 @@
 #include "KernelGenerator.h"
 
 #include "ops/ConvolutionLayer.h"
+#include "ops/PoolLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -33,6 +34,21 @@ namespace backend
 {
 namespace train
 {
+
+namespace
+{
+ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
+{
+  switch (type_ir)
+  {
+    // TODO Implement AVG PoolType
+    case ir::operation::Pool2D::PoolType::MAX:
+      return ops::PoolType::kMax;
+    default:
+      throw std::runtime_error("train KernelGenerator : Not supported operation yet");
+  }
+}
+} // namespace
 
 KernelGenerator::KernelGenerator(
   const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
@@ -118,6 +134,32 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, padding.left,
                 padding.right, padding.top, padding.bottom, stride.horizontal, stride.vertical,
                 dilation.width_factor, dilation.height_factor, activation, ofm_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Pool2D &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Pool2D::Input::INPUT)};
+
+  const auto kh = node.param().kh;
+  const auto kw = node.param().kw;
+  const auto stride = node.param().stride;
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
+  const auto padding =
+    ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
+  const auto activation = node.param().activation;
+
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index);
+
+  auto fn = std::make_unique<ops::PoolLayer>();
+
+  fn->configure(ifm_tensor, padding.left, padding.right, padding.top, padding.bottom,
+                stride.horizontal, stride.vertical, kw, kh, activation, ofm_tensor,
+                convertPoolType(node.param().op_type));
 
   _return_fn = std::move(fn);
 }
