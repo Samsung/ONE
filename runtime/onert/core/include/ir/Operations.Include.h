@@ -49,6 +49,7 @@
 #include "ir/operation/L2Normalization.h"
 #include "ir/operation/LocalResponseNormalization.h"
 #include "ir/operation/LogSoftmax.h"
+#include "ir/operation/Loss.h"
 #include "ir/operation/LSTM.h"
 #include "ir/operation/MatrixBandPart.h"
 #include "ir/operation/DetectionPostProcess.h"

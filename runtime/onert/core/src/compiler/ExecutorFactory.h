@@ -21,6 +21,7 @@
 
 #include "backend/ITensor.h"
 #include "compiler/LoweredGraph.h"
+#include "compiler/train/LoweredTrainableGraph.h"
 #include "exec/IExecutors.h"
 
 #include <deque>
@@ -43,11 +44,18 @@ public:
                           const std::shared_ptr<exec::IExecutors> &executors,
                           const ir::ModelIndex &index);
 
+  // TODO Unify create()
+  exec::IExecutor *create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
+                          const util::TracingCtx *tracing_ctx,
+                          const compiler::CompilerOptions &options,
+                          const std::shared_ptr<exec::IExecutors> &executors,
+                          const ir::ModelIndex &index);
+
 private:
   ExecutorFactory();
 
 private:
-  static void prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
+  static void prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
                                     const backend::BackendContexts &backend_contexts);
   static void prepareBuiltinBackend(const TensorRegistries &tensor_regs,
                                     const std::shared_ptr<exec::IExecutors> &executors,
@@ -64,10 +72,10 @@ private:
     std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
     const compiler::CompilerOptions &options, const std::shared_ptr<exec::IExecutors> &executors,
     const ir::ModelIndex &index, bool parallel);
-  static exec::IExecutor *createTrainExecutor(
-    std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
-    const compiler::CompilerOptions &options, const std::shared_ptr<exec::IExecutors> &executors,
-    const ir::ModelIndex &index);
+  static exec::IExecutor *createTrainableExecutor(
+    std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
+    const util::TracingCtx *tracing_ctx, const compiler::CompilerOptions &options,
+    const std::shared_ptr<exec::IExecutors> &executors, const ir::ModelIndex &index);
 
 private:
   std::unordered_map<

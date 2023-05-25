@@ -18,7 +18,7 @@
 #define __ONERT_IR_PASS_LOWERED_OPERATION_PASS_H__
 
 #include "OperationPass.h"
-#include "compiler/LoweredGraph.h"
+#include "compiler/ILoweredGraph.h"
 
 namespace onert
 {
@@ -30,7 +30,7 @@ namespace pass
 class LoweredOperationPass : public OperationPass
 {
 public:
-  LoweredOperationPass(LoweredGraph &lowered_graph)
+  LoweredOperationPass(ILoweredGraph &lowered_graph)
     : OperationPass{lowered_graph.graph()}, _lowered_graph{lowered_graph}
   {
     // DO NOTHING
@@ -42,7 +42,7 @@ public:
   void callback(const ir::OperationIndex &i, ir::Operation &o) override = 0;
 
 protected:
-  LoweredGraph &_lowered_graph;
+  ILoweredGraph &_lowered_graph;
 };
 
 } // namespace pass

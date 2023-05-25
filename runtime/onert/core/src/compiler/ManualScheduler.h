@@ -19,6 +19,7 @@
 
 #include "IScheduler.h"
 #include "compiler/Compiler.h"
+#include "ir/train/TrainableGraph.h"
 
 namespace onert
 {

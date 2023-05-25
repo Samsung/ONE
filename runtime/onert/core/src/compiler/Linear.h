@@ -21,7 +21,7 @@
 #include <memory>
 
 #include "ir/Index.h"
-#include "compiler/LoweredGraph.h"
+#include "compiler/ILoweredGraph.h"
 
 namespace onert
 {
@@ -31,8 +31,8 @@ namespace compiler
 class Linear
 {
 public:
-  static std::vector<ir::OperationIndex> linearize(const compiler::LoweredGraph &lowered_graph);
-  static void dump(const compiler::LoweredGraph &lowered_graph,
+  static std::vector<ir::OperationIndex> linearize(const compiler::ILoweredGraph &lowered_graph);
+  static void dump(const compiler::ILoweredGraph &lowered_graph,
                    const std::vector<ir::OperationIndex> &order);
 };
 

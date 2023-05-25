@@ -42,6 +42,10 @@ namespace ir
 class Graph;
 class Model;
 class NNPkg;
+namespace train
+{
+class TrainingInfo;
+} // namespace train
 } // namespace ir
 namespace compiler
 {
@@ -159,6 +163,7 @@ public:
    *          (cpu, acl_cl)
    */
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
+  NNFW_STATUS set_loss(NNFW_LOSS_TYPE loss_type, const void *y_true_buf);
 
 private:
   const onert::ir::Graph *primary_subgraph();
@@ -176,6 +181,7 @@ private:
   State _state{State::INITIALIZED};
   std::shared_ptr<onert::ir::NNPkg> _nnpkg;
   std::vector<std::unique_ptr<onert::compiler::CompilerOptions>> _coptions;
+  std::unique_ptr<onert::ir::train::TrainingInfo> _training_info;
   std::shared_ptr<onert::compiler::CompilerArtifact> _compiler_artifact;
   std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;

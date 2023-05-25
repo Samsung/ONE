@@ -18,6 +18,7 @@
 
 #include "ir/Graph.h"
 #include "compiler/LoweredGraph.h"
+#include "compiler/train/LoweredTrainableGraph.h"
 #include "util/logging.h"
 #include "misc/string_helpers.h"
 
@@ -69,6 +70,18 @@ std::string formatOperation(const ir::Graph &graph, ir::OperationIndex ind)
   return ss.str();
 }
 
+std::string formatOperation(const ir::IOperation &op, ir::OperationIndex ind)
+{
+  std::stringstream ss;
+
+  ss << formatOperandIndexSequence(op.getOutputs());
+  ss << " = ";
+  ss << ind << "_" << op.name() << "(";
+  ss << formatOperandIndexSequence(op.getInputs());
+  ss << ")";
+  return ss.str();
+}
+
 void dumpGraph(const ir::Graph &graph)
 {
   VERBOSE(GraphDumper) << "{\n";
@@ -85,6 +98,20 @@ void dumpLoweredGraph(const compiler::LoweredGraph &lgraph)
 {
   // TODO Graph dump with backend info
   dumpGraph(lgraph.graph());
+}
+
+void dumpLoweredGraph(const compiler::train::LoweredTrainableGraph &lgraph)
+{
+  // TODO Graph dump with backend info
+  VERBOSE(GraphDumper) << "{\n";
+  auto ops_topol = lgraph.trainable_graph().graph().topolSortOperations();
+  for (auto op_ind : ops_topol)
+  {
+    const auto &op = lgraph.trainable_graph().graph().operations().at(op_ind);
+    VERBOSE(GraphDumper) << "  " << formatOperation(op, op_ind) << "\n";
+  }
+  VERBOSE(GraphDumper) << "}\n";
+  VERBOSE(GraphDumper) << std::endl;
 }
 
 } // namespace text

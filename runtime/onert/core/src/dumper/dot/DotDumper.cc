@@ -126,7 +126,9 @@ generate_dot_operations(const ir::Graph &graph,
   return dot_operations;
 }
 
-void update_lower_info(const compiler::LoweredGraph &lowered_graph,
+// TODO Remove template
+template <typename LoweredGraph>
+void update_lower_info(const LoweredGraph &lowered_graph,
                        ir::OperandIndexMap<std::unique_ptr<Operand>> *dot_operands)
 {
   const auto &operands = lowered_graph.graph().operands();
@@ -153,7 +155,9 @@ void update_lower_info(const compiler::LoweredGraph &lowered_graph,
   });
 }
 
-void update_lower_info(const compiler::LoweredGraph &lowered_graph,
+// TODO Remove template
+template <typename LoweredGraph>
+void update_lower_info(const LoweredGraph &lowered_graph,
                        ir::OperationIndexMap<std::unique_ptr<Operation>> *dot_operations)
 {
   const auto &operations = lowered_graph.graph().operations();
@@ -222,6 +226,23 @@ void DotDumper::dump(const compiler::LoweredGraph &lowered_graph, const std::str
 
   auto dot_operands = generate_dot_operands(lowered_graph.graph(), _level);
   auto dot_operations = generate_dot_operations(lowered_graph.graph(), dot_operands);
+  update_lower_info(lowered_graph, &dot_operands);
+  update_lower_info(lowered_graph, &dot_operations);
+  dump_to_file(dot_operands, dot_operations, tag);
+}
+
+// TODO Unify dump functions with LoweredGraph
+void DotDumper::dump(const compiler::train::LoweredTrainableGraph &lowered_graph,
+                     const std::string &tag)
+{
+  if (_level == Level::OFF)
+  {
+    return;
+  }
+
+  auto dot_operands = generate_dot_operands(lowered_graph.trainable_graph().graph(), _level);
+  auto dot_operations =
+    generate_dot_operations(lowered_graph.trainable_graph().graph(), dot_operands);
   update_lower_info(lowered_graph, &dot_operands);
   update_lower_info(lowered_graph, &dot_operations);
   dump_to_file(dot_operands, dot_operations, tag);

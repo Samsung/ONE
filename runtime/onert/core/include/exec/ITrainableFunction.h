@@ -22,6 +22,7 @@ namespace onert
 namespace exec
 {
 
+// TODO Move in train folder
 class ITrainableFunction
 {
 public:

@@ -52,6 +52,12 @@ public:
   Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
            std::vector<std::unique_ptr<CompilerOptions>> &copts);
 
+  Compiler(void) = default;
+  Compiler(const Compiler &) = default;
+  Compiler(Compiler &&) = default;
+  Compiler &operator=(const Compiler &) = default;
+  Compiler &operator=(Compiler &&) = default;
+
   /**
    * @brief Destroy the Compiler object
    */

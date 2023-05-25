@@ -23,7 +23,7 @@ namespace compiler
 namespace pass
 {
 
-PassRunner &PassRunner::append(std::unique_ptr<Pass> pass)
+PassRunner &PassRunner::append(std::unique_ptr<IPass> pass)
 {
   _passes.emplace_back(std::move(pass));
   return *this;

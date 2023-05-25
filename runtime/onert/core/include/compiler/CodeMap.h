@@ -41,6 +41,11 @@ struct CodeAndInfo
     : op_ind{op_ind}, op{op}, lower_info{lower_info}, fn_seq{std::move(fn_seq)}
   {
   }
+  CodeAndInfo(const CodeAndInfo &) = delete;
+  CodeAndInfo(CodeAndInfo &&) = default;
+  CodeAndInfo &operator=(const CodeAndInfo &) = delete;
+  CodeAndInfo &operator=(CodeAndInfo &&) = default;
+  virtual ~CodeAndInfo() = default;
 };
 
 using CodeMap = std::unordered_map<ir::OperationIndex, CodeAndInfo>;
