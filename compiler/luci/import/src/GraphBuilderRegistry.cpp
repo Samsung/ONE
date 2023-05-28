@@ -140,6 +140,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(TRANSPOSE, CircleTransposeGraphBuilder);                                     // 39
   CIRCLE_NODE(TRANSPOSE_CONV, CircleTransposeConvGraphBuilder);                            // 67
   CIRCLE_NODE(UNIDIRECTIONAL_SEQUENCE_LSTM, CircleUnidirectionalSequenceLSTMGraphBuilder); // 44
+  CIRCLE_NODE(UNIDIRECTIONAL_SEQUENCE_RNN, CircleUnidirectionalSequenceRNNGraphBuilder);   // 35
   CIRCLE_NODE(UNIQUE, CircleUniqueGraphBuilder);                                           // 103
   CIRCLE_NODE(UNPACK, CircleUnpackGraphBuilder);                                           // 88
   CIRCLE_NODE(WHERE, CircleWhereGraphBuilder);                                             // 109

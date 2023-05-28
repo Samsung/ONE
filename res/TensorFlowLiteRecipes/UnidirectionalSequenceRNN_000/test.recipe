@@ -1,0 +1,50 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 4 dim: 1 dim: 4 }
+}
+operand {
+  name: "weights"
+  type: FLOAT32
+  shape { dim: 4 dim: 2 }
+}
+operand {
+  name: "recurrent_weights"
+  type: FLOAT32
+  shape { dim: 2 dim: 2 }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "hidden_state"
+  type: FLOAT32
+  shape { dim: 4 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 }
+}
+operation {
+  type: "UnidirectionalSequenceRNN"
+  unidirectional_sequence_rnn_options {
+    activation: NONE
+    time_major: false
+    asymmetric_quantize_inputs: false
+  }
+  input: "ifm"
+  input: "weights"
+  input: "recurrent_weights"
+  input: "bias"
+  input: "hidden_state"
+  output: "ofm"
+}
+input: "ifm"
+input: "weights"
+input: "recurrent_weights"
+input: "bias"
+input: "hidden_state"
+output: "ofm"
