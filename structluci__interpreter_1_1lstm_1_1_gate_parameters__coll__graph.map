@@ -1,5 +1,5 @@
 <map id="luci_interpreter::lstm::GateParameters" name="luci_interpreter::lstm::GateParameters">
-<area shape="rect" id="node1" title=" " alt="" coords="17,357,156,397"/>
-<area shape="rect" id="node2" href="$structluci__interpreter_1_1lstm_1_1_fully_connected_params.html" title=" " alt="" coords="5,240,168,280"/>
+<area shape="rect" id="node1" title=" " alt="" coords="17,313,156,353"/>
+<area shape="rect" id="node2" href="$structluci__interpreter__pal_1_1_fully_connected_params.html" title=" " alt="" coords="5,196,168,236"/>
 <area shape="rect" id="node3" title=" " alt="" coords="56,5,117,31"/>
 </map>

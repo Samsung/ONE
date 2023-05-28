@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('_neural_networks_types_8h.html',''); i
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a81832cd7c41d76f2822ea197f8abcb40"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_neural_networks_types_8h.html#a81832cd7c41d76f2822ea197f8abcb40">ANeuralNetworksMemory_createFromFd_fn</a>) (size_t size, int protect, int fd, size_t <a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>, <a class="el" href="struct_a_neural_networks_memory.html">ANeuralNetworksMemory</a> **memory)</td></tr>
+<tr class="memitem:a81832cd7c41d76f2822ea197f8abcb40"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_neural_networks_types_8h.html#a81832cd7c41d76f2822ea197f8abcb40">ANeuralNetworksMemory_createFromFd_fn</a>) (size_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, int protect, int fd, size_t <a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>, <a class="el" href="struct_a_neural_networks_memory.html">ANeuralNetworksMemory</a> **memory)</td></tr>
 <tr class="separator:a81832cd7c41d76f2822ea197f8abcb40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac88181176b9f4e71c780e9e789dfc50b"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_neural_networks_types_8h.html#ac88181176b9f4e71c780e9e789dfc50b">ANeuralNetworksMemory_free_fn</a>) (<a class="el" href="struct_a_neural_networks_memory.html">ANeuralNetworksMemory</a> *memory)</td></tr>
 <tr class="separator:ac88181176b9f4e71c780e9e789dfc50b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,7 +150,7 @@ Typedefs</h2></td></tr>
 <tr class="separator:a290b90c966091c9470afa9baa1ab3e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a578c4dc97e3d017535cc5174632a76a1"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_neural_networks_types_8h.html#a578c4dc97e3d017535cc5174632a76a1">ANeuralNetworksEvent_free_fn</a>) (<a class="el" href="struct_a_neural_networks_event.html">ANeuralNetworksEvent</a> *event)</td></tr>
 <tr class="separator:a578c4dc97e3d017535cc5174632a76a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc1a4fdc9a1248067bab41adbf37559b"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_neural_networks_types_8h.html#afc1a4fdc9a1248067bab41adbf37559b">ASharedMemory_create_fn</a>) (const char *name, size_t size)</td></tr>
+<tr class="memitem:afc1a4fdc9a1248067bab41adbf37559b"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_neural_networks_types_8h.html#afc1a4fdc9a1248067bab41adbf37559b">ASharedMemory_create_fn</a>) (const char *name, size_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)</td></tr>
 <tr class="separator:afc1a4fdc9a1248067bab41adbf37559b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5c7332d5cedfc32e3dfc98adb30911e"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_neural_networks_types_8h.html#ae5c7332d5cedfc32e3dfc98adb30911e">ANeuralNetworks_getDeviceCount_fn</a>) (uint32_t *numDevices)</td></tr>
 <tr class="separator:ae5c7332d5cedfc32e3dfc98adb30911e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -701,7 +701,7 @@ Typedefs</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int(* ANeuralNetworksMemory_createFromFd_fn) (size_t size, int protect, int fd, size_t <a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>, <a class="el" href="struct_a_neural_networks_memory.html">ANeuralNetworksMemory</a> **memory)</td>
+          <td class="memname">typedef int(* ANeuralNetworksMemory_createFromFd_fn) (size_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, int protect, int fd, size_t <a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>, <a class="el" href="struct_a_neural_networks_memory.html">ANeuralNetworksMemory</a> **memory)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -957,7 +957,7 @@ Typedefs</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef int(* ASharedMemory_create_fn) (const char *name, size_t size)</td>
+          <td class="memname">typedef int(* ASharedMemory_create_fn) (const char *name, size_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">

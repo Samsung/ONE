@@ -243,7 +243,7 @@ template&lt;int N&gt; </div>
 <div class="line"><span class="lineno">  143</span>    {</div>
 <div class="line"><span class="lineno">  144</span>      all_equal = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  145</span>    }</div>
-<div class="line"><span class="lineno">  146</span>    <span class="keywordflow">if</span> (x[i].<a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>() &gt; largest_rank)</div>
+<div class="line"><span class="lineno">  146</span>    <span class="keywordflow">if</span> (x[i].<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>() &gt; largest_rank)</div>
 <div class="line"><span class="lineno">  147</span>    {</div>
 <div class="line"><span class="lineno">  148</span>      largest_rank = x[i].size();</div>
 <div class="line"><span class="lineno">  149</span>    }</div>
@@ -287,7 +287,7 @@ template&lt;int N&gt; </div>
 <div class="line"><span class="lineno">  187</span>  <span class="comment">// 1-extend and align all vectors.</span></div>
 <div class="line"><span class="lineno">  188</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; N; ++i)</div>
 <div class="line"><span class="lineno">  189</span>  {</div>
-<div class="line"><span class="lineno">  190</span>    <span class="keywordflow">if</span> (copy[i].<a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>() &lt; largest_rank)</div>
+<div class="line"><span class="lineno">  190</span>    <span class="keywordflow">if</span> (copy[i].<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>() &lt; largest_rank)</div>
 <div class="line"><span class="lineno">  191</span>    {</div>
 <div class="line"><span class="lineno">  192</span>      copy[i].resize(largest_rank, 1);</div>
 <div class="line"><span class="lineno">  193</span>    }</div>
@@ -450,10 +450,10 @@ template&lt;int N&gt; </div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_b_cast_list_html_adc8ed845a3b11b070b7190836f1e71f6"><div class="ttname"><a href="classnnfw_1_1cker_1_1_b_cast_list.html#adc8ed845a3b11b070b7190836f1e71f6">nnfw::cker::BCastList::bcast_</a></div><div class="ttdeci">Vec bcast_[N]</div><div class="ttdef"><b>Definition:</b> <a href="_b_cast_8h_source.html#l00121">BCast.h:121</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_b_cast_list_html_adda34a37f4f9e7cb9395e47245b86e12"><div class="ttname"><a href="classnnfw_1_1cker_1_1_b_cast_list.html#adda34a37f4f9e7cb9395e47245b86e12">nnfw::cker::BCastList::batch_indices_</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; batch_indices_[N]</div><div class="ttdef"><b>Definition:</b> <a href="_b_cast_8h_source.html#l00127">BCast.h:127</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
-<div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a9abc9e7ecb17903ec3f2bfef832af49a"><div class="ttname"><a href="namespacennfw_1_1cker.html#a9abc9e7ecb17903ec3f2bfef832af49a">nnfw::cker::ComputeBatchIndices</a></div><div class="ttdeci">void ComputeBatchIndices(const int32_t output_batch_size, const std::vector&lt; int32_t &gt; &amp;reshape, const std::vector&lt; int32_t &gt; &amp;bcast, std::vector&lt; int32_t &gt; *out_indices)</div><div class="ttdef"><b>Definition:</b> <a href="_b_cast_8h_source.html#l00040">BCast.h:40</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_b_cast_8h_source.html#l00040">nnfw::cker::ComputeBatchIndices()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_reverse_8h_source.html#l00031">nnfw::cker::Reverse()</a>.</p>
+<p class="reference">References <a class="el" href="_b_cast_8h_source.html#l00040">nnfw::cker::ComputeBatchIndices()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_reverse_8h_source.html#l00031">nnfw::cker::Reverse()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 </div>
 </div>

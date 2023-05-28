@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['verbose_0',['verbose',['../classhermes_1_1_severity.html#ae851f1a705153c7352af868c1235513e',1,'hermes::Severity']]]
+  ['update_0',['Update',['../classcoco_1_1_bag.html#a2cedee6ab0da841755431efd84ad466b',1,'coco::Bag']]],
+  ['use_1',['Use',['../classcoco_1_1_object.html#a7b479862be57f4448b155a225b5972ac',1,'coco::Object::Use()'],['../classloco_1_1_node.html#a7b479862be57f4448b155a225b5972ac',1,'loco::Node::Use()']]]
 ];

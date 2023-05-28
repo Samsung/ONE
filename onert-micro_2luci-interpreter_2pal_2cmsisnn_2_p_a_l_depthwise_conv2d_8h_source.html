@@ -124,7 +124,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2cm
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                        <span class="keyword">const</span> int32_t *output_shift, <span class="keyword">const</span> tflite::RuntimeShape &amp;input_shape,</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                        <span class="keyword">const</span> T *input_data, <span class="keyword">const</span> tflite::RuntimeShape &amp;filter_shape,</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                        <span class="keyword">const</span> T *filter_data, <span class="keyword">const</span> tflite::RuntimeShape &amp;bias_shape,</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                        <span class="keyword">const</span> int32_t *bias_data, <span class="keyword">const</span> tflite::RuntimeShape &amp;output_shape,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                        <span class="keyword">const</span> int32_t *bias_data, <span class="keyword">const</span> tflite::RuntimeShape &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                        T *output_data, <span class="keyword">const</span> tflite::RuntimeShape &amp;scratchpad_shape,</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                        T *scratchpad_data)</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2cm
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    (void)filter_data;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    (void)bias_shape;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    (void)bias_data;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    (void)output_shape;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    (void)<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    (void)output_data;</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    (void)scratchpad_shape;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    (void)scratchpad_data;</div>
@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2cm
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keyword">const</span> int32_t *output_shift, <span class="keyword">const</span> tflite::RuntimeShape &amp;input_shape, <span class="keyword">const</span> int8_t *input_data,</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keyword">const</span> tflite::RuntimeShape &amp;filter_shape, <span class="keyword">const</span> int8_t *filter_data,</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keyword">const</span> tflite::RuntimeShape &amp;bias_shape, <span class="keyword">const</span> int32_t *bias_data,</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">const</span> tflite::RuntimeShape &amp;output_shape, int8_t *output_data,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">const</span> tflite::RuntimeShape &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, int8_t *output_data,</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">const</span> tflite::RuntimeShape &amp;scratchpad_shape, int8_t *scratchpad_data)</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>{</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordflow">if</span> (scratchpad_data)</div>
@@ -184,8 +184,8 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2cm
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    quant_params.shift = &amp;output_shift;</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    assert(dw_conv_params.activation.min &lt;= dw_conv_params.activation.max);</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> batch_size = tflite::MatchingDim(input_shape, 0, output_shape, 0);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> output_depth = tflite::MatchingDim(filter_shape, 3, output_shape, 3);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> batch_size = tflite::MatchingDim(input_shape, 0, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 0);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> output_depth = tflite::MatchingDim(filter_shape, 3, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 3);</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">if</span> (bias_data)</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    {</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      assert(bias_shape.FlatSize() == output_depth);</div>
@@ -211,8 +211,8 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2cm
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    cmsis_nn_dims output_dims;</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    output_dims.n = batch_size;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    output_dims.h = output_shape.Dims(1);</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    output_dims.w = output_shape.Dims(2);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    output_dims.h = <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(1);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    output_dims.w = <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(2);</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    output_dims.c = output_depth;</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    cmsis_nn_context ctx;</div>
@@ -228,7 +228,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2cm
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  {</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    tflite::reference_integer_ops::DepthwiseConvPerChannel(</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      params, output_multiplier, output_shift, input_shape, input_data, filter_shape, filter_data,</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      bias_shape, bias_data, output_shape, output_data);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      bias_shape, bias_data, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  }</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>}</div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
@@ -237,7 +237,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2cm
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>                                         <span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffb">luci_interpreter::DataType</a> &amp;input_data_type,</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                                         <span class="keyword">const</span> tflite::RuntimeShape &amp;input_shape,</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>                                         <span class="keyword">const</span> tflite::RuntimeShape &amp;filter_shape,</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                                         <span class="keyword">const</span> tflite::RuntimeShape &amp;output_shape)</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                                         <span class="keyword">const</span> tflite::RuntimeShape &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>)</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>{</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  cmsis_nn_dw_conv_params dw_conv_params;</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  dw_conv_params.dilation.h = params.dilation_height_factor;</div>
@@ -246,8 +246,8 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2cm
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keywordflow">if</span> (input_data_type == luci_interpreter::DataType::S8 &amp;&amp; dw_conv_params.dilation.h == 1 &amp;&amp;</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>      dw_conv_params.dilation.w == 1)</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  {</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> batch_size = tflite::MatchingDim(input_shape, 0, output_shape, 0);</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> output_depth = tflite::MatchingDim(filter_shape, 3, output_shape, 3);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> batch_size = tflite::MatchingDim(input_shape, 0, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 0);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> output_depth = tflite::MatchingDim(filter_shape, 3, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 3);</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    cmsis_nn_dims input_dims;</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    input_dims.n = batch_size;</div>
@@ -263,8 +263,8 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2cm
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    cmsis_nn_dims output_dims;</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    output_dims.n = batch_size;</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    output_dims.h = output_shape.Dims(1);</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    output_dims.w = output_shape.Dims(2);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    output_dims.h = <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(1);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    output_dims.w = <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(2);</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    output_dims.c = output_depth;</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keyword">const</span> int32_t buf_size = arm_depthwise_conv_wrapper_s8_get_buffer_size(</div>
@@ -284,6 +284,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2cm
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>} <span class="comment">// namespace luci_interpreter_pal</span></div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="preprocessor">#endif </span><span class="comment">// LUCI_INTERPRETER_PAL_DEPTHWISECONV2D_H</span></div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_shape_html"><div class="ttname"><a href="classluci__interpreter_1_1_shape.html">luci_interpreter::Shape</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00032">Tensor.h:33</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_tensor_html"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00089">Tensor.h:90</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_tensor_html_a595a41485bf60569207f721466a283a6"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html#a595a41485bf60569207f721466a283a6">luci_interpreter::Tensor::set_allocatable</a></div><div class="ttdeci">void set_allocatable(bool value)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00157">Tensor.h:157</a></div></div>

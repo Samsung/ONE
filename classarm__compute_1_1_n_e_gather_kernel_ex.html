@@ -342,9 +342,9 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  217</span>    }</div>
 <div class="line"><span class="lineno">  218</span>  }</div>
 <div class="line"><span class="lineno">  219</span>  <span class="comment">// Output auto initialization if not yet initialized</span></div>
-<div class="line"><span class="lineno">  220</span>  <a class="code hl_typedef" href="namespaceangkor.html#a064734f560e3fa5d4be0828c9d7a3859">TensorShape</a> <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a> = <a class="code hl_function" href="namespacearm__compute_1_1misc_1_1shape__calculator.html#ae64ffb880c8978e720b1724418683504">arm_compute::misc::shape_calculator::compute_gather_shape_ex</a>(</div>
+<div class="line"><span class="lineno">  220</span>  <a class="code hl_typedef" href="namespaceangkor.html#a064734f560e3fa5d4be0828c9d7a3859">TensorShape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespacearm__compute_1_1misc_1_1shape__calculator.html#ae64ffb880c8978e720b1724418683504">arm_compute::misc::shape_calculator::compute_gather_shape_ex</a>(</div>
 <div class="line"><span class="lineno">  221</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;tensor_shape(), indices-&gt;info()-&gt;tensor_shape(), _axis);</div>
-<div class="line"><span class="lineno">  222</span>  auto_init_if_empty(*<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info(), output_shape, 1, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;data_type());</div>
+<div class="line"><span class="lineno">  222</span>  auto_init_if_empty(*<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info(), <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 1, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;data_type());</div>
 <div class="line"><span class="lineno">  223</span> </div>
 <div class="line"><span class="lineno">  224</span>  <span class="comment">// Create window</span></div>
 <div class="line"><span class="lineno">  225</span>  Window win = calculate_max_window(*<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info(), Steps());</div>
@@ -352,13 +352,13 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  227</span> </div>
 <div class="line"><span class="lineno">  228</span>  INEKernel::configure(win);</div>
 <div class="line"><span class="lineno">  229</span>}</div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="anamespaceangkor_html_a064734f560e3fa5d4be0828c9d7a3859"><div class="ttname"><a href="namespaceangkor.html#a064734f560e3fa5d4be0828c9d7a3859">angkor::TensorShape</a></div><div class="ttdeci">::nncc::core::ADT::tensor::Shape TensorShape</div><div class="ttdef"><b>Definition:</b> <a href="angkor_2include_2angkor_2_tensor_shape_8h_source.html#l00025">TensorShape.h:25</a></div></div>
 <div class="ttc" id="anamespacearm__compute_1_1misc_1_1shape__calculator_html_ae64ffb880c8978e720b1724418683504"><div class="ttname"><a href="namespacearm__compute_1_1misc_1_1shape__calculator.html#ae64ffb880c8978e720b1724418683504">arm_compute::misc::shape_calculator::compute_gather_shape_ex</a></div><div class="ttdeci">TensorShape compute_gather_shape_ex(const TensorShape &amp;input_shape, const TensorShape &amp;indices_shape, uint32_t actual_axis)</div><div class="ttdef"><b>Definition:</b> <a href="_shape_calculator_ex_8h_source.html#l00205">ShapeCalculatorEx.h:205</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_aa000372729756a2ed1c28a613ed7cb88"><div class="ttname"><a href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">part_eval_one.output_shape</a></div><div class="ttdeci">list output_shape</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00115">part_eval_one.py:115</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_shape_calculator_ex_8h_source.html#l00205">arm_compute::misc::shape_calculator::compute_gather_shape_ex()</a>.</p>
+<p class="reference">References <a class="el" href="_shape_calculator_ex_8h_source.html#l00205">arm_compute::misc::shape_calculator::compute_gather_shape_ex()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -573,9 +573,9 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  251</span>  {</div>
 <div class="line"><span class="lineno">  252</span>    ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, output);</div>
 <div class="line"><span class="lineno">  253</span>    ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_QUANTIZATION_INFO(input, output);</div>
-<div class="line"><span class="lineno">  254</span>    <a class="code hl_typedef" href="namespaceangkor.html#a064734f560e3fa5d4be0828c9d7a3859">TensorShape</a> <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a> = <a class="code hl_function" href="namespacearm__compute_1_1misc_1_1shape__calculator.html#ae64ffb880c8978e720b1724418683504">arm_compute::misc::shape_calculator::compute_gather_shape_ex</a>(</div>
+<div class="line"><span class="lineno">  254</span>    <a class="code hl_typedef" href="namespaceangkor.html#a064734f560e3fa5d4be0828c9d7a3859">TensorShape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespacearm__compute_1_1misc_1_1shape__calculator.html#ae64ffb880c8978e720b1724418683504">arm_compute::misc::shape_calculator::compute_gather_shape_ex</a>(</div>
 <div class="line"><span class="lineno">  255</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;tensor_shape(), indices-&gt;tensor_shape(), axis);</div>
-<div class="line"><span class="lineno">  256</span>    ARM_COMPUTE_RETURN_ERROR_ON(<a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>.total_size() != <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;tensor_shape().total_size());</div>
+<div class="line"><span class="lineno">  256</span>    ARM_COMPUTE_RETURN_ERROR_ON(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.total_size() != <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;tensor_shape().total_size());</div>
 <div class="line"><span class="lineno">  257</span>  }</div>
 <div class="line"><span class="lineno">  258</span> </div>
 <div class="line"><span class="lineno">  259</span>  ARM_COMPUTE_RETURN_ERROR_ON_DATA_TYPE_CHANNEL_NOT_IN(indices, 1, DataType::U32, DataType::S32);</div>
@@ -583,7 +583,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  261</span>  <span class="keywordflow">return</span> Status{};</div>
 <div class="line"><span class="lineno">  262</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_shape_calculator_ex_8h_source.html#l00205">arm_compute::misc::shape_calculator::compute_gather_shape_ex()</a>.</p>
+<p class="reference">References <a class="el" href="_shape_calculator_ex_8h_source.html#l00205">arm_compute::misc::shape_calculator::compute_gather_shape_ex()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_n_e_gather_ex_8cpp_source.html#l00056">arm_compute::NEGatherEx::validate()</a>.</p>
 

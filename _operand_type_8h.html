@@ -233,18 +233,18 @@ Variables</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
 <div class="line"><span class="lineno">   46</span>  <span class="keywordtype">int</span> n = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacepart__eval__one.html#ad0c97b5af82ed124c20ffc3312c37274">type</a>);</div>
 <div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>  uint32_t <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a> = <a class="code hl_variable" href="_operand_type_8cpp.html#a9a5f1b7a1a57e5e08c6a94560a9fe8a1">kSizeOfDataType</a>[n];</div>
+<div class="line"><span class="lineno">   48</span>  uint32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = <a class="code hl_variable" href="_operand_type_8cpp.html#a9a5f1b7a1a57e5e08c6a94560a9fe8a1">kSizeOfDataType</a>[n];</div>
 <div class="line"><span class="lineno">   49</span> </div>
 <div class="line"><span class="lineno">   50</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> d : dimensions)</div>
 <div class="line"><span class="lineno">   51</span>  {</div>
-<div class="line"><span class="lineno">   52</span>    <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a> *= d;</div>
+<div class="line"><span class="lineno">   52</span>    <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> *= d;</div>
 <div class="line"><span class="lineno">   53</span>  }</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>;</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><span class="lineno">   55</span>}</div>
 <div class="ttc" id="a_operand_type_8cpp_html_a9a5f1b7a1a57e5e08c6a94560a9fe8a1"><div class="ttname"><a href="_operand_type_8cpp.html#a9a5f1b7a1a57e5e08c6a94560a9fe8a1">kSizeOfDataType</a></div><div class="ttdeci">const uint32_t kSizeOfDataType[]</div><div class="ttdef"><b>Definition:</b> <a href="_operand_type_8cpp_source.html#l00027">OperandType.cpp:27</a></div></div>
-<div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_operand_type_8cpp_source.html#l00027">kSizeOfDataType</a>.</p>
+<p class="reference">References <a class="el" href="_operand_type_8cpp_source.html#l00027">kSizeOfDataType</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 </div>
 </div>

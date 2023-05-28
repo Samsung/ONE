@@ -1,4 +1,5 @@
 var onert_micro_2luci_interpreter_2src_2kernels_2_split_v_8cpp =
 [
-    [ "TF_LITE_SPLIT", "onert-micro_2luci-interpreter_2src_2kernels_2_split_v_8cpp.html#ac0127d20c423fde50e27aa3b6d826c5b", null ]
+    [ "configure_kernel_CircleSplitV", "onert-micro_2luci-interpreter_2src_2kernels_2_split_v_8cpp.html#a425135011f245a004327f8b18dc43577", null ],
+    [ "execute_kernel_CircleSplitV", "onert-micro_2luci-interpreter_2src_2kernels_2_split_v_8cpp.html#a98a545df6e75aeb11903df70342889e3", null ]
 ];

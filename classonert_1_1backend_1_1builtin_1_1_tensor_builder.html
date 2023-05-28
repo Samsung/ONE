@@ -282,14 +282,14 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   61</span> </div>
 <div class="line"><span class="lineno">   62</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#ae50f3838fd20568bffa0d27236386284">nativeOwnTensorAt</a>(ind)-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno">   63</span>  {</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a> = tensor_info.total_size();</div>
-<div class="line"><span class="lineno">   65</span>    _static_tensor_mgr-&gt;claimPlan(ind, size);</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = tensor_info.total_size();</div>
+<div class="line"><span class="lineno">   65</span>    _static_tensor_mgr-&gt;claimPlan(ind, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><span class="lineno">   66</span>  }</div>
 <div class="line"><span class="lineno">   67</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_tensor_builder_html_ae50f3838fd20568bffa0d27236386284"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#ae50f3838fd20568bffa0d27236386284">onert::backend::builtin::TensorBuilder::nativeOwnTensorAt</a></div><div class="ttdeci">basic::Tensor * nativeOwnTensorAt(const ir::OperandIndex &amp;ind)</div><div class="ttdoc">Get tensor with a specific OperandIndex.</div><div class="ttdef"><b>Definition:</b> <a href="core_2src_2backend_2builtin_2_tensor_builder_8cc_source.html#l00098">TensorBuilder.cc:98</a></div></div>
-<div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2_tensor_builder_8cc_source.html#l00098">nativeOwnTensorAt()</a>.</p>
+<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2_tensor_builder_8cc_source.html#l00098">nativeOwnTensorAt()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 </div>
 </div>

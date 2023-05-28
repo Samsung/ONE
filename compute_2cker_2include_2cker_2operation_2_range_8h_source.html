@@ -128,10 +128,10 @@ $(document).ready(function(){initNavTree('compute_2cker_2include_2cker_2operatio
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Range: invalid input values&quot;</span>);</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  }</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">int</span> size = (std::is_integral&lt;T&gt;::value</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = (std::is_integral&lt;T&gt;::value</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                ? ((std::abs(limit - start) + std::abs(delta) - 1) / std::abs(delta))</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                : std::ceil(std::abs((limit - start) / delta)));</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">return</span> size;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
@@ -159,6 +159,7 @@ $(document).ready(function(){initNavTree('compute_2cker_2include_2cker_2operatio
 <div class="ttc" id="anamespacennfw_1_1cker_html_a3936b12b0f6234b96375317f17841660"><div class="ttname"><a href="namespacennfw_1_1cker.html#a3936b12b0f6234b96375317f17841660">nnfw::cker::Range</a></div><div class="ttdeci">void Range(const T *start_data, const T *limit_data, const T *delta_data, T *output_data)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2operation_2_range_8h_source.html#l00044">Range.h:44</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_aa70784168c1d95c479e6f0e228f0982f"><div class="ttname"><a href="namespacennfw_1_1cker.html#aa70784168c1d95c479e6f0e228f0982f">nnfw::cker::GetSize</a></div><div class="ttdeci">int GetSize(T start, T limit, T delta)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2operation_2_range_8h_source.html#l00030">Range.h:30</a></div></div>
 <div class="ttc" id="anamespacennfw_html"><div class="ttname"><a href="namespacennfw.html">nnfw</a></div><div class="ttdef"><b>Definition:</b> <a href="topk__v2_8h_source.html#l00029">topk_v2.h:30</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

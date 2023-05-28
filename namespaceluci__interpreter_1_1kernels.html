@@ -313,10 +313,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a311b8d64a068a0552d5c3fb08b5e50f6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a311b8d64a068a0552d5c3fb08b5e50f6">MirrorPadImpl</a> (const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> &amp;input, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> &amp;paddings, <a class="el" href="namespaceluci.html#a29e69e1d36ff270ef86f341d85d0a22e">MirrorPadMode</a> mode, <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> &amp;output)</td></tr>
 <tr class="separator:a311b8d64a068a0552d5c3fb08b5e50f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32a2b3aab5dc56ec1e7254336fd5ebf4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a32a2b3aab5dc56ec1e7254336fd5ebf4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_shape.html">Shape</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a32a2b3aab5dc56ec1e7254336fd5ebf4">calculateOutputShape</a> (const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *input, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *begin, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>)</td></tr>
+<tr class="memitem:a32a2b3aab5dc56ec1e7254336fd5ebf4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_shape.html">Shape</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a32a2b3aab5dc56ec1e7254336fd5ebf4">calculateOutputShape</a> (const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *input, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>)</td></tr>
 <tr class="separator:a32a2b3aab5dc56ec1e7254336fd5ebf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a97dbb9fba5db3e3ac30aa9042fd3b6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a7a97dbb9fba5db3e3ac30aa9042fd3b6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a7a97dbb9fba5db3e3ac30aa9042fd3b6">getBeginAndSizeVectors</a> (int dimensions, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *begin, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>, std::vector&lt; int &gt; *begins, std::vector&lt; int &gt; *sizes)</td></tr>
+<tr class="memitem:a7a97dbb9fba5db3e3ac30aa9042fd3b6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a7a97dbb9fba5db3e3ac30aa9042fd3b6">getBeginAndSizeVectors</a> (int dimensions, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, const <a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *<a class="el" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>, std::vector&lt; int &gt; *begins, std::vector&lt; int &gt; *sizes)</td></tr>
 <tr class="separator:a7a97dbb9fba5db3e3ac30aa9042fd3b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ed6b9c9202ad76ab66811c677bc73b8"><td class="memItemLeft" align="right" valign="top">TfLiteFusedActivation&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a4ed6b9c9202ad76ab66811c677bc73b8">getTfLiteActivation</a> (<a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945">Activation</a> activation)</td></tr>
 <tr class="separator:a4ed6b9c9202ad76ab66811c677bc73b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -368,20 +368,20 @@ Functions</h2></td></tr>
 <tr class="memitem:ad3beb4b0cae9899ba1058ae0e890eab1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ad3beb4b0cae9899ba1058ae0e890eab1"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ad3beb4b0cae9899ba1058ae0e890eab1">getTensorData</a> (<a class="el" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *tensor)</td></tr>
 <tr class="separator:ad3beb4b0cae9899ba1058ae0e890eab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9af9361f165099aa2bd87ed15a156b2a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastFunc  = nullptr_t, typename Options  = nullptr_t&gt; </td></tr>
-<tr class="memitem:a9af9361f165099aa2bd87ed15a156b2a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a9af9361f165099aa2bd87ed15a156b2a">evalTISOKernel</a> (TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func, <a class="el" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html">kernels::TISOKernel</a> *kernel, <a class="el" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> *kernel_data, const Options *options, tflite::RuntimeShape &amp;&amp;input_shape_1, tflite::RuntimeShape &amp;&amp;input_shape_2)</td></tr>
-<tr class="separator:a9af9361f165099aa2bd87ed15a156b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9ab41819e28a721fe141588f86ad448"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastFunc  = nullptr_t, typename Options  = nullptr_t&gt; </td></tr>
-<tr class="memitem:ad9ab41819e28a721fe141588f86ad448"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ad9ab41819e28a721fe141588f86ad448">evalTISOInplaceKernel</a> (TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func, <a class="el" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html">kernels::TISOKernel</a> *kernel, const Options *options, tflite::RuntimeShape &amp;&amp;input_shape_1, tflite::RuntimeShape &amp;&amp;input_shape_2)</td></tr>
-<tr class="separator:ad9ab41819e28a721fe141588f86ad448"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7192db6817195484b48af635a0b3d84"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastFunc  = nullptr_t, typename Options  = nullptr_t&gt; </td></tr>
+<tr class="memitem:ad7192db6817195484b48af635a0b3d84"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ad7192db6817195484b48af635a0b3d84">evalTISOKernel</a> (TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func, <a class="el" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html">kernels::TISOKernel</a> *kernel, <a class="el" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> *kernel_data, const Options *options, <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">RuntimeShape</a> &amp;&amp;input_shape_1, <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">RuntimeShape</a> &amp;&amp;input_shape_2)</td></tr>
+<tr class="separator:ad7192db6817195484b48af635a0b3d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d17f69e9aaf7c2d1c3016d2b35290f4"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastFunc  = nullptr_t, typename Options  = nullptr_t&gt; </td></tr>
+<tr class="memitem:a9d17f69e9aaf7c2d1c3016d2b35290f4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a9d17f69e9aaf7c2d1c3016d2b35290f4">evalTISOInplaceKernel</a> (TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func, <a class="el" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html">kernels::TISOKernel</a> *kernel, const Options *options, <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">RuntimeShape</a> &amp;&amp;input_shape_1, <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">RuntimeShape</a> &amp;&amp;input_shape_2)</td></tr>
+<tr class="separator:a9d17f69e9aaf7c2d1c3016d2b35290f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cda4206c499f9489dfa698bbbf857f2"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastFunc  = nullptr_t, typename Options  = nullptr_t&gt; </td></tr>
 <tr class="memitem:a3cda4206c499f9489dfa698bbbf857f2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a3cda4206c499f9489dfa698bbbf857f2">evalTISOQuantizedKernel</a> (TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func, <a class="el" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html">kernels::TISOKernel</a> *kernel, <a class="el" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> *kernel_data, const Options *options)</td></tr>
 <tr class="separator:a3cda4206c499f9489dfa698bbbf857f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6f9d92254be203f5b09a2c15fc0d2db"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastFunc  = nullptr_t, typename Options  = nullptr_t&gt; </td></tr>
 <tr class="memitem:ad6f9d92254be203f5b09a2c15fc0d2db"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ad6f9d92254be203f5b09a2c15fc0d2db">evalTISOInplaceQuantizedKernel</a> (TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func, <a class="el" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html">kernels::TISOKernel</a> *kernel, const Options *options)</td></tr>
 <tr class="separator:ad6f9d92254be203f5b09a2c15fc0d2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afce1c2c42f8f6ca9f581f3a1a3f199b8"><td class="memItemLeft" align="right" valign="top">tflite::RuntimeShape&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#afce1c2c42f8f6ca9f581f3a1a3f199b8">getTensorRuntimeShape</a> (const circle::Tensor *circle_tensor, <a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *runtime_graph)</td></tr>
-<tr class="separator:afce1c2c42f8f6ca9f581f3a1a3f199b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdd2b45a2055529250dfa7583b2c922c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#afdd2b45a2055529250dfa7583b2c922c">getTensorRuntimeShape</a> (const circle::Tensor *circle_tensor, <a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *runtime_graph)</td></tr>
+<tr class="separator:afdd2b45a2055529250dfa7583b2c922c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd0d7e8134f1365f84ef40571dec5ea8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#afd0d7e8134f1365f84ef40571dec5ea8">matrixScalarMultiplyAccumulate</a> (const int8_t *matrix, int32_t scalar, int32_t n_row, int32_t n_col, int32_t *output)</td></tr>
 <tr class="separator:afd0d7e8134f1365f84ef40571dec5ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b3c525e4b279bc3b47d694c83a3f73e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a0b3c525e4b279bc3b47d694c83a3f73e">checkedLog2</a> (const float x, int *log2_result)</td></tr>
@@ -392,12 +392,14 @@ Functions</h2></td></tr>
 <tr class="separator:aa927fdc0b589de75449d8d5cf991e398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a477eb643e22685b5fbaae14f1c981ddc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a477eb643e22685b5fbaae14f1c981ddc">calculateActivationRangeQuantized</a> (<a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945">Activation</a> activation, const circle::Tensor *output, int32_t *activation_min, int32_t *activation_max)</td></tr>
 <tr class="separator:a477eb643e22685b5fbaae14f1c981ddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a282484a34a3997dda2a7a6abdc4df151"><td class="memItemLeft" align="right" valign="top">tflite::RuntimeShape&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a282484a34a3997dda2a7a6abdc4df151">calculateShapeForBroadcast</a> (const circle::Tensor *input1, const circle::Tensor *input2)</td></tr>
-<tr class="separator:a282484a34a3997dda2a7a6abdc4df151"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe6e23f6f2bdd0ce20f06a5a400e1c90"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#abe6e23f6f2bdd0ce20f06a5a400e1c90">calculateShapeForBroadcast</a> (const circle::Tensor *input1, const circle::Tensor *input2)</td></tr>
+<tr class="separator:abe6e23f6f2bdd0ce20f06a5a400e1c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98a3bc29bb49235d704aea9373bdb866"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a98a3bc29bb49235d704aea9373bdb866">calcOffset</a> (const circle::Tensor *tensor, int32_t d0, int32_t d1, int32_t d2, int32_t d3)</td></tr>
 <tr class="separator:a98a3bc29bb49235d704aea9373bdb866"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46ddb4fcfc40db388a80ec1680a00676"><td class="memItemLeft" align="right" valign="top">tflite::RuntimeShape&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a46ddb4fcfc40db388a80ec1680a00676">getTensorShape</a> (const circle::Tensor *tensor)</td></tr>
-<tr class="separator:a46ddb4fcfc40db388a80ec1680a00676"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8716c9bd4dca4aea5d2ae3bc7f26a509"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a8716c9bd4dca4aea5d2ae3bc7f26a509">getTensorShape</a> (const circle::Tensor *tensor)</td></tr>
+<tr class="separator:a8716c9bd4dca4aea5d2ae3bc7f26a509"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb15fbffca423ac64cb7c57cb7f5ec2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#aeb15fbffca423ac64cb7c57cb7f5ec2c">getTensorDims</a> (const circle::Tensor *tensor, <a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *runtime_graph, int32_t *dims)</td></tr>
+<tr class="separator:aeb15fbffca423ac64cb7c57cb7f5ec2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4b854d27a207793b08b8e5acf096b26"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ab4b854d27a207793b08b8e5acf096b26"><td class="memTemplItemLeft" align="right" valign="top">const T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ab4b854d27a207793b08b8e5acf096b26">getTensorData</a> (const uint8_t *tensor_data)</td></tr>
 <tr class="separator:ab4b854d27a207793b08b8e5acf096b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -423,7 +425,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00035">35</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00034">34</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
 
 </div>
 </div>
@@ -503,26 +505,28 @@ template&lt;typename T , typename Op , int N = 5&gt; </div>
 <div class="line"><span class="lineno">   50</span>    assert(unextended_input2_shape.DimensionsCount() &lt;= N);</div>
 <div class="line"><span class="lineno">   51</span>    assert(unextended_output_shape.DimensionsCount() &lt;= N);</div>
 <div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span>    tflite::NdArrayDesc&lt;N&gt; desc1{};</div>
-<div class="line"><span class="lineno">   54</span>    tflite::NdArrayDesc&lt;N&gt; desc2{};</div>
+<div class="line"><span class="lineno">   53</span>    tflite::NdArrayDesc&lt;N&gt; <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a>{};</div>
+<div class="line"><span class="lineno">   54</span>    tflite::NdArrayDesc&lt;N&gt; <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a>{};</div>
 <div class="line"><span class="lineno">   55</span>    tflite::NdArrayDesc&lt;N&gt; output_desc{};</div>
 <div class="line"><span class="lineno">   56</span>    tflite::NdArrayDescsForElementwiseBroadcast(unextended_input1_shape, unextended_input2_shape,</div>
-<div class="line"><span class="lineno">   57</span>                                                &amp;desc1, &amp;desc2);</div>
+<div class="line"><span class="lineno">   57</span>                                                &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a>, &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a>);</div>
 <div class="line"><span class="lineno">   58</span>    tflite::CopyDimsToDesc(tflite::RuntimeShape::ExtendedShape(N, unextended_output_shape),</div>
 <div class="line"><span class="lineno">   59</span>                           &amp;output_desc);</div>
 <div class="line"><span class="lineno">   60</span> </div>
 <div class="line"><span class="lineno">   61</span>    <span class="keyword">auto</span> fn = [&amp;](<span class="keywordtype">int</span> indexes[N]) {</div>
 <div class="line"><span class="lineno">   62</span>      <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[<a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(output_desc, indexes)] =</div>
-<div class="line"><span class="lineno">   63</span>        op(input1_data[<a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(desc1, indexes)],</div>
-<div class="line"><span class="lineno">   64</span>           input2_data[<a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(desc2, indexes)]);</div>
+<div class="line"><span class="lineno">   63</span>        op(input1_data[<a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a>, indexes)],</div>
+<div class="line"><span class="lineno">   64</span>           input2_data[<a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a>, indexes)]);</div>
 <div class="line"><span class="lineno">   65</span>    };</div>
 <div class="line"><span class="lineno">   66</span>    tflite::NDOpsHelper&lt;N&gt;(output_desc, fn);</div>
 <div class="line"><span class="lineno">   67</span>  }</div>
 <div class="line"><span class="lineno">   68</span>}</div>
 <div class="ttc" id="a_n_d_array_8h_html_a635d76912989ba020d1eeada22742b0d"><div class="ttname"><a href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a></div><div class="ttdeci">int SubscriptToIndex(const NdArrayDesc&lt; 4 &gt; &amp;desc, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition:</b> <a href="_n_d_array_8h_source.html#l00054">NDArray.h:54</a></div></div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a2ed85231fb21100351c9f68895eaba4b"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a></div><div class="ttdeci">NdArrayDesc&lt; 4 &gt; desc1</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00033">PALComparisons.h:33</a></div></div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_ab5b08ef1201803398018fac4598b8b27"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a></div><div class="ttdeci">NdArrayDesc&lt; 4 &gt; desc2</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00034">PALComparisons.h:34</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_aa659ec13c0dc14d487081c1a59b9ae70"><div class="ttname"><a href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">part_eval_one.output_data</a></div><div class="ttdeci">output_data</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00113">part_eval_one.py:113</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_n_d_array_8h_source.html#l00054">SubscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, and <a class="el" href="_n_d_array_8h_source.html#l00054">SubscriptToIndex()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_logical_or_8cpp_source.html#l00040">luci_interpreter::kernels::LogicalOr::execute()</a>.</p>
 
@@ -580,13 +584,13 @@ template&lt;typename T , typename Op , int N = 5&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00077">77</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   79</span>{</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">return</span> ((d0 * <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(tensor, 1) + d1) * <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(tensor, 2) + d2) *</div>
-<div class="line"><span class="lineno">   82</span>           <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(tensor, 3) +</div>
-<div class="line"><span class="lineno">   83</span>         d3;</div>
-<div class="line"><span class="lineno">   84</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00076">76</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   78</span>{</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>  <span class="keywordflow">return</span> ((d0 * <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(tensor, 1) + d1) * <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(tensor, 2) + d2) *</div>
+<div class="line"><span class="lineno">   81</span>           <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(tensor, 3) +</div>
+<div class="line"><span class="lineno">   82</span>         d3;</div>
+<div class="line"><span class="lineno">   83</span>}</div>
 <div class="ttc" id="astructcircle__eval__diff_1_1_tensor_shape_html_a510764c1277c26b857ec5517a7962e6f"><div class="ttname"><a href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">circle_eval_diff::TensorShape::dim</a></div><div class="ttdeci">const loco::Dimension &amp; dim(uint32_t axis) const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00044">Tensor.h:44</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00044">circle_eval_diff::TensorShape::dim()</a>.</p>
@@ -816,7 +820,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   74</span>  }</div>
 <div class="line"><span class="lineno">   75</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_l2_pool2_d_8cpp_source.html#l00062">luci_interpreter::kernels::L2Pool2D::execute()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00106">fillArithmeticActivationRange()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_l2_pool2_d_8cpp_source.html#l00062">luci_interpreter::kernels::L2Pool2D::execute()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00053">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00106">fillArithmeticActivationRange()</a>.</p>
 
 </div>
 </div>
@@ -860,15 +864,16 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00191">191</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  193</span>{</div>
-<div class="line"><span class="lineno">  194</span>  assert(Tensor::zero_points(output).size() == 1);</div>
+<div class="line"><span class="lineno">  194</span>  assert(Tensor::zero_points(output).<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>() == 1);</div>
 <div class="line"><span class="lineno">  195</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> scale = Tensor::scale(output);</div>
 <div class="line"><span class="lineno">  196</span>  <span class="keyword">const</span> int32_t zero_point = Tensor::zero_point(output);</div>
 <div class="line"><span class="lineno">  197</span>  <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a972dc14ee97042f40b0555b04b1d8815">calculateActivationRangeQuantized</a>(activation, zero_point, scale, Tensor::element_type(output),</div>
 <div class="line"><span class="lineno">  198</span>                                    activation_min, activation_max);</div>
 <div class="line"><span class="lineno">  199</span>}</div>
 <div class="ttc" id="anamespaceluci__interpreter_1_1kernels_html_a972dc14ee97042f40b0555b04b1d8815"><div class="ttname"><a href="namespaceluci__interpreter_1_1kernels.html#a972dc14ee97042f40b0555b04b1d8815">luci_interpreter::kernels::calculateActivationRangeQuantized</a></div><div class="ttdeci">void calculateActivationRangeQuantized(Activation activation, const Tensor *output, int32_t *activation_min, int32_t *activation_max)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00119">Utils.cpp:119</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00119">calculateActivationRangeQuantized()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">luci_interpreter::size()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00119">calculateActivationRangeQuantized()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 </div>
 </div>
@@ -939,7 +944,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  146</span>                                        activation_max);</div>
 <div class="line"><span class="lineno">  147</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00191">calculateActivationRangeQuantized()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00094">evalTISOQuantizedKernel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00191">calculateActivationRangeQuantized()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00120">evalTISOQuantizedKernel()</a>.</p>
 
 </div>
 </div>
@@ -1104,44 +1109,45 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00037">37</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html">Slice.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
-<div class="line"><span class="lineno">   39</span>  <a class="code hl_class" href="classluci__interpreter_1_1_shape.html">Shape</a> output_shape = <a class="code hl_class" href="classluci__interpreter_1_1_shape.html">Shape</a>(input-&gt;shape().num_dims());</div>
+<div class="line"><span class="lineno">   39</span>  <a class="code hl_class" href="classluci__interpreter_1_1_shape.html">Shape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_class" href="classluci__interpreter_1_1_shape.html">Shape</a>(input-&gt;shape().num_dims());</div>
 <div class="line"><span class="lineno">   40</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; input-&gt;shape().num_dims(); idx++)</div>
 <div class="line"><span class="lineno">   41</span>  {</div>
-<div class="line"><span class="lineno">   42</span>    T size_value = getTensorData&lt;T&gt;(size)[idx];</div>
+<div class="line"><span class="lineno">   42</span>    T size_value = getTensorData&lt;T&gt;(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)[idx];</div>
 <div class="line"><span class="lineno">   43</span>    <span class="keywordflow">if</span> (size_value &lt; 0)</div>
 <div class="line"><span class="lineno">   44</span>    {</div>
 <div class="line"><span class="lineno">   45</span>      <span class="keywordflow">if</span> (size_value != -1)</div>
 <div class="line"><span class="lineno">   46</span>      {</div>
 <div class="line"><span class="lineno">   47</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid size.&quot;</span>);</div>
 <div class="line"><span class="lineno">   48</span>      }</div>
-<div class="line"><span class="lineno">   49</span>      size_value = input-&gt;shape().dim(idx) - getTensorData&lt;T&gt;(begin)[idx];</div>
+<div class="line"><span class="lineno">   49</span>      size_value = input-&gt;shape().dim(idx) - getTensorData&lt;T&gt;(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>)[idx];</div>
 <div class="line"><span class="lineno">   50</span>    }</div>
 <div class="line"><span class="lineno">   51</span>    <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">   52</span>    {</div>
-<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">if</span> (input-&gt;shape().dim(idx) &lt; getTensorData&lt;T&gt;(begin)[idx] + size_value)</div>
+<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">if</span> (input-&gt;shape().dim(idx) &lt; getTensorData&lt;T&gt;(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>)[idx] + size_value)</div>
 <div class="line"><span class="lineno">   54</span>      {</div>
 <div class="line"><span class="lineno">   55</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid begin and size.&quot;</span>);</div>
 <div class="line"><span class="lineno">   56</span>      }</div>
 <div class="line"><span class="lineno">   57</span>    }</div>
-<div class="line"><span class="lineno">   58</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>.dim(idx) = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(size_value);</div>
+<div class="line"><span class="lineno">   58</span>    <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.dim(idx) = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(size_value);</div>
 <div class="line"><span class="lineno">   59</span>  }</div>
-<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>;</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><span class="lineno">   61</span>}</div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_shape_html"><div class="ttname"><a href="classluci__interpreter_1_1_shape.html">luci_interpreter::Shape</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00032">Tensor.h:33</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_aa000372729756a2ed1c28a613ed7cb88"><div class="ttname"><a href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">part_eval_one.output_shape</a></div><div class="ttdeci">list output_shape</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00115">part_eval_one.py:115</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_adaf1f5da3e0e0e62ea2ea6e1e4e5f49e"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a></div><div class="ttdeci">int32_t begin[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">Slice.cpp:33</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">luci_interpreter::size()</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">begin</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 </div>
 </div>
-<a id="a282484a34a3997dda2a7a6abdc4df151" name="a282484a34a3997dda2a7a6abdc4df151"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a282484a34a3997dda2a7a6abdc4df151">&#9670;&#160;</a></span>calculateShapeForBroadcast() <span class="overload">[1/2]</span></h2>
+<a id="abe6e23f6f2bdd0ce20f06a5a400e1c90" name="abe6e23f6f2bdd0ce20f06a5a400e1c90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe6e23f6f2bdd0ce20f06a5a400e1c90">&#9670;&#160;</a></span>calculateShapeForBroadcast() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">tflite::RuntimeShape luci_interpreter::kernels::calculateShapeForBroadcast </td>
+          <td class="memname"><a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> luci_interpreter::kernels::calculateShapeForBroadcast </td>
           <td>(</td>
           <td class="paramtype">const circle::Tensor *&#160;</td>
           <td class="paramname"><em>input1</em>, </td>
@@ -1165,7 +1171,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  252</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_input1_dims = Tensor::num_dims(input1);</div>
 <div class="line"><span class="lineno">  253</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_input2_dims = Tensor::num_dims(input2);</div>
 <div class="line"><span class="lineno">  254</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_out_dims = std::max(num_input1_dims, num_input2_dims);</div>
-<div class="line"><span class="lineno">  255</span>  tflite::RuntimeShape output_shape(num_out_dims);</div>
+<div class="line"><span class="lineno">  255</span>  <a class="code hl_class" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>(num_out_dims);</div>
 <div class="line"><span class="lineno">  256</span> </div>
 <div class="line"><span class="lineno">  257</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_out_dims; ++i)</div>
 <div class="line"><span class="lineno">  258</span>  {</div>
@@ -1178,14 +1184,16 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  265</span>    <span class="keywordtype">bool</span> can_broadcast = input1_dim == 1 || input2_dim == 1;</div>
 <div class="line"><span class="lineno">  266</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(!need_broadcast || can_broadcast);</div>
 <div class="line"><span class="lineno">  267</span> </div>
-<div class="line"><span class="lineno">  268</span>    output_shape.SetDim(num_out_dims - i - 1, std::max(input1_dim, input2_dim));</div>
+<div class="line"><span class="lineno">  268</span>    <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a33655ac522f3f70d4ce55cac20c8c4be">setDim</a>(num_out_dims - i - 1, std::max(input1_dim, input2_dim));</div>
 <div class="line"><span class="lineno">  269</span>  }</div>
 <div class="line"><span class="lineno">  270</span> </div>
-<div class="line"><span class="lineno">  271</span>  <span class="keywordflow">return</span> output_shape;</div>
+<div class="line"><span class="lineno">  271</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><span class="lineno">  272</span>}</div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a></div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00035">Tensor.h:36</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_a33655ac522f3f70d4ce55cac20c8c4be"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#a33655ac522f3f70d4ce55cac20c8c4be">luci_interpreter::RuntimeShape::setDim</a></div><div class="ttdeci">void setDim(int i, int32_t val)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00114">Tensor.h:114</a></div></div>
 <div class="ttc" id="acompiler_2luci-interpreter_2src_2kernels_2_utils_8h_html_a231f5fa1ff2a3f19222b42cc9bbd1f2d"><div class="ttname"><a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a></div><div class="ttdeci">#define LUCI_INTERPRETER_CHECK(cond)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">Utils.h:36</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00044">circle_eval_diff::TensorShape::dim()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">LUCI_INTERPRETER_CHECK</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00044">circle_eval_diff::TensorShape::dim()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">LUCI_INTERPRETER_CHECK</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00114">luci_interpreter::RuntimeShape::setDim()</a>.</p>
 
 </div>
 </div>
@@ -1220,7 +1228,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  198</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_input1_dims = input1_shape.<a class="code hl_function" href="classluci__interpreter_1_1_shape.html#afba1582e2849035560edf4e6f7fa6a93">num_dims</a>();</div>
 <div class="line"><span class="lineno">  199</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_input2_dims = input2_shape.<a class="code hl_function" href="classluci__interpreter_1_1_shape.html#afba1582e2849035560edf4e6f7fa6a93">num_dims</a>();</div>
 <div class="line"><span class="lineno">  200</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_out_dims = std::max(num_input1_dims, num_input2_dims);</div>
-<div class="line"><span class="lineno">  201</span>  <a class="code hl_class" href="classluci__interpreter_1_1_shape.html">Shape</a> output_shape(num_out_dims);</div>
+<div class="line"><span class="lineno">  201</span>  <a class="code hl_class" href="classluci__interpreter_1_1_shape.html">Shape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>(num_out_dims);</div>
 <div class="line"><span class="lineno">  202</span> </div>
 <div class="line"><span class="lineno">  203</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_out_dims; ++i)</div>
 <div class="line"><span class="lineno">  204</span>  {</div>
@@ -1231,14 +1239,14 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  209</span>    <span class="keywordtype">bool</span> can_broadcast = input1_dim == 1 || input2_dim == 1;</div>
 <div class="line"><span class="lineno">  210</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(!need_broadcast || can_broadcast);</div>
 <div class="line"><span class="lineno">  211</span> </div>
-<div class="line"><span class="lineno">  212</span>    output_shape.dim(num_out_dims - i - 1) = std::max(input1_dim, input2_dim);</div>
+<div class="line"><span class="lineno">  212</span>    <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.dim(num_out_dims - i - 1) = std::max(input1_dim, input2_dim);</div>
 <div class="line"><span class="lineno">  213</span>  }</div>
 <div class="line"><span class="lineno">  214</span> </div>
-<div class="line"><span class="lineno">  215</span>  <span class="keywordflow">return</span> output_shape;</div>
+<div class="line"><span class="lineno">  215</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><span class="lineno">  216</span>}</div>
 <div class="ttc" id="aclassluci__interpreter_1_1_shape_html_afba1582e2849035560edf4e6f7fa6a93"><div class="ttname"><a href="classluci__interpreter_1_1_shape.html#afba1582e2849035560edf4e6f7fa6a93">luci_interpreter::Shape::num_dims</a></div><div class="ttdeci">int num_dims() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00039">Tensor.h:39</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00041">luci_interpreter::Shape::dim()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">LUCI_INTERPRETER_CHECK</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00039">luci_interpreter::Shape::num_dims()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00041">luci_interpreter::Shape::dim()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">LUCI_INTERPRETER_CHECK</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00039">luci_interpreter::Shape::num_dims()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_add_8cpp_source.html#l00038">luci_interpreter::kernels::Add::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_div_8cpp_source.html#l00034">luci_interpreter::kernels::Div::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_equal_8cpp_source.html#l00032">luci_interpreter::kernels::Equal::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_floor_div_8cpp_source.html#l00035">luci_interpreter::kernels::FloorDiv::configure()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_floor_mod_8cpp_source.html#l00050">luci_interpreter::kernels::FloorMod::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_greater_8cpp_source.html#l00032">luci_interpreter::kernels::Greater::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_greater_equal_8cpp_source.html#l00035">luci_interpreter::kernels::GreaterEqual::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_less_8cpp_source.html#l00032">luci_interpreter::kernels::Less::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_less_equal_8cpp_source.html#l00032">luci_interpreter::kernels::LessEqual::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_logical_and_8cpp_source.html#l00034">luci_interpreter::kernels::LogicalAnd::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_logical_or_8cpp_source.html#l00033">luci_interpreter::kernels::LogicalOr::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_maximum_8cpp_source.html#l00034">luci_interpreter::kernels::Maximum::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_minimum_8cpp_source.html#l00034">luci_interpreter::kernels::Minimum::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_mul_8cpp_source.html#l00039">luci_interpreter::kernels::Mul::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_not_equal_8cpp_source.html#l00032">luci_interpreter::kernels::NotEqual::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_pow_8cpp_source.html#l00034">luci_interpreter::kernels::Pow::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_p_relu_8cpp_source.html#l00043">luci_interpreter::kernels::PRelu::configure()</a>, <a class="el" href="luci-interpreter_2src_2kernels_2_select_8cpp_source.html#l00041">luci_interpreter::kernels::Select::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_squared_difference_8cpp_source.html#l00034">luci_interpreter::kernels::SquaredDifference::configure()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_sub_8cpp_source.html#l00037">luci_interpreter::kernels::Sub::configure()</a>.</p>
 
@@ -1349,7 +1357,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   72</span>  }</div>
 <div class="line"><span class="lineno">   73</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::AveragePool2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00038">luci_interpreter::kernels::Conv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_depthwise_conv2_d_8cpp_source.html#l00037">luci_interpreter::kernels::DepthwiseConv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_l2_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::L2Pool2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::MaxPool2D::configure()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_transpose_conv_8cpp_source.html#l00046">luci_interpreter::kernels::TransposeConv::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::AveragePool2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00038">luci_interpreter::kernels::Conv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_depthwise_conv2_d_8cpp_source.html#l00037">luci_interpreter::kernels::DepthwiseConv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_l2_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::L2Pool2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::MaxPool2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_transpose_conv_8cpp_source.html#l00046">luci_interpreter::kernels::TransposeConv::configure()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00053">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>.</p>
 
 </div>
 </div>
@@ -1412,7 +1420,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   46</span>  <span class="keywordflow">return</span> padding &gt; 0 ? padding : 0;</div>
 <div class="line"><span class="lineno">   47</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::AveragePool2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00038">luci_interpreter::kernels::Conv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_depthwise_conv2_d_8cpp_source.html#l00037">luci_interpreter::kernels::DepthwiseConv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_l2_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::L2Pool2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::MaxPool2D::configure()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_transpose_conv_8cpp_source.html#l00046">luci_interpreter::kernels::TransposeConv::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::AveragePool2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00038">luci_interpreter::kernels::Conv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_depthwise_conv2_d_8cpp_source.html#l00037">luci_interpreter::kernels::DepthwiseConv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_l2_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::L2Pool2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::MaxPool2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_transpose_conv_8cpp_source.html#l00046">luci_interpreter::kernels::TransposeConv::configure()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00053">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>.</p>
 
 </div>
 </div>
@@ -1488,8 +1496,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ad9ab41819e28a721fe141588f86ad448" name="ad9ab41819e28a721fe141588f86ad448"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9ab41819e28a721fe141588f86ad448">&#9670;&#160;</a></span>evalTISOInplaceKernel()</h2>
+<a id="a9d17f69e9aaf7c2d1c3016d2b35290f4" name="a9d17f69e9aaf7c2d1c3016d2b35290f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d17f69e9aaf7c2d1c3016d2b35290f4">&#9670;&#160;</a></span>evalTISOInplaceKernel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1523,13 +1531,13 @@ template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastF
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">tflite::RuntimeShape &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_runtime_shape.html">RuntimeShape</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>input_shape_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">tflite::RuntimeShape &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_runtime_shape.html">RuntimeShape</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>input_shape_2</em>&#160;</td>
         </tr>
         <tr>
@@ -1540,39 +1548,39 @@ template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastF
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00064">64</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html">BinaryOpCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   68</span>{</div>
-<div class="line"><span class="lineno">   69</span>  uint8_t *inplace_data_ptr = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   70</span>  circle::Tensor *input_inplace_tensor = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>  <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> kernel_data = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a180f956fa2c167760bd3c788bc23cd76">readInplaceData</a>(inplace_data_ptr, input_inplace_tensor);</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>  evalTISOKernel&lt;T, TISOFunc, TISOBroadcastFunc, Options&gt;(</div>
-<div class="line"><span class="lineno">   75</span>    tiso_func, tiso_broadcast_func, kernel, &amp;kernel_data, options, std::move(input_shape_1),</div>
-<div class="line"><span class="lineno">   76</span>    std::move(input_shape_2));</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>  <a class="code hl_class" href="classluci__interpreter_1_1_runtime_graph.html">BaseRuntimeGraph</a> *runtime_graph = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a02a0d16ea7e831b5fb544992df4fb063">runtime_graph</a>();</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>  runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(input_inplace_tensor, kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">output</a>());</div>
-<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">if</span> (input_inplace_tensor == kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>())</div>
-<div class="line"><span class="lineno">   82</span>  {</div>
-<div class="line"><span class="lineno">   83</span>    runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#aece0c6ec294cd15d455085687fd3e0c3">input2</a>(), <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   84</span>  }</div>
-<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   86</span>  {</div>
-<div class="line"><span class="lineno">   87</span>    runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>(), <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   88</span>  }</div>
-<div class="line"><span class="lineno">   89</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00091">91</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html">BinaryOpCommon.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>{</div>
+<div class="line"><span class="lineno">   95</span>  uint8_t *inplace_data_ptr = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   96</span>  circle::Tensor *input_inplace_tensor = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   97</span> </div>
+<div class="line"><span class="lineno">   98</span>  <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> kernel_data = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a180f956fa2c167760bd3c788bc23cd76">readInplaceData</a>(inplace_data_ptr, input_inplace_tensor);</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>  evalTISOKernel&lt;T, TISOFunc, TISOBroadcastFunc, Options&gt;(</div>
+<div class="line"><span class="lineno">  101</span>    tiso_func, tiso_broadcast_func, kernel, &amp;kernel_data, options, std::move(input_shape_1),</div>
+<div class="line"><span class="lineno">  102</span>    std::move(input_shape_2));</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>  <a class="code hl_class" href="classluci__interpreter_1_1_runtime_graph.html">BaseRuntimeGraph</a> *runtime_graph = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a02a0d16ea7e831b5fb544992df4fb063">runtime_graph</a>();</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>  runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(input_inplace_tensor, kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">output</a>());</div>
+<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">if</span> (input_inplace_tensor == kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>())</div>
+<div class="line"><span class="lineno">  108</span>  {</div>
+<div class="line"><span class="lineno">  109</span>    runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#aece0c6ec294cd15d455085687fd3e0c3">input2</a>(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  110</span>  }</div>
+<div class="line"><span class="lineno">  111</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  112</span>  {</div>
+<div class="line"><span class="lineno">  113</span>    runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  114</span>  }</div>
+<div class="line"><span class="lineno">  115</span>}</div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html">luci_interpreter::RuntimeGraph</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00032">RuntimeGraph.h:33</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a15699bb31bf8124b8d61039449491af9"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">luci_interpreter::RuntimeGraph::makeInplaceOperation</a></div><div class="ttdeci">void makeInplaceOperation(const circle::Tensor *src_tensor, const circle::Tensor *dst_tensor)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00344">RuntimeGraph.cpp:344</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel_html_a02a0d16ea7e831b5fb544992df4fb063"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a02a0d16ea7e831b5fb544992df4fb063">luci_interpreter::kernels::TISOKernel::runtime_graph</a></div><div class="ttdeci">BaseRuntimeGraph * runtime_graph() const</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00065">TISOKernel.h:65</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel_html_a180f956fa2c167760bd3c788bc23cd76"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a180f956fa2c167760bd3c788bc23cd76">luci_interpreter::kernels::TISOKernel::readInplaceData</a></div><div class="ttdeci">TISOData readInplaceData(uint8_t *&amp;inplace_data_ptr, circle::Tensor *&amp;input_inplace_tensor)</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00085">TISOKernel.h:85</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel_html_ac089b06286f5bf8b29f013358d82f5cb"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">luci_interpreter::kernels::TISOKernel::output</a></div><div class="ttdeci">const circle::Tensor * output() const</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00063">TISOKernel.h:63</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel_html_aece0c6ec294cd15d455085687fd3e0c3"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#aece0c6ec294cd15d455085687fd3e0c3">luci_interpreter::kernels::TISOKernel::input2</a></div><div class="ttdeci">const circle::Tensor * input2() const</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00062">TISOKernel.h:62</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel_html_af0449a0fffd6ad67ce1fdef2403fc8eb"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">luci_interpreter::kernels::TISOKernel::input1</a></div><div class="ttdeci">const circle::Tensor * input1() const</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00061">TISOKernel.h:61</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1kernels_1_1_t_i_s_o_data_html"><div class="ttname"><a href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">luci_interpreter::kernels::TISOData</a></div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00028">TISOKernel.h:29</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a15699bb31bf8124b8d61039449491af9"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">luci_interpreter::RuntimeGraph::makeInplaceOperation</a></div><div class="ttdeci">void makeInplaceOperation(const circle::Tensor *src_tensor, const circle::Tensor *dst_tensor)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00345">RuntimeGraph.cpp:345</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel_html_a02a0d16ea7e831b5fb544992df4fb063"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a02a0d16ea7e831b5fb544992df4fb063">luci_interpreter::kernels::TISOKernel::runtime_graph</a></div><div class="ttdeci">BaseRuntimeGraph * runtime_graph() const</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00064">TISOKernel.h:64</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel_html_a180f956fa2c167760bd3c788bc23cd76"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a180f956fa2c167760bd3c788bc23cd76">luci_interpreter::kernels::TISOKernel::readInplaceData</a></div><div class="ttdeci">TISOData readInplaceData(uint8_t *&amp;inplace_data_ptr, circle::Tensor *&amp;input_inplace_tensor)</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00084">TISOKernel.h:84</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel_html_ac089b06286f5bf8b29f013358d82f5cb"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">luci_interpreter::kernels::TISOKernel::output</a></div><div class="ttdeci">const circle::Tensor * output() const</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00062">TISOKernel.h:62</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel_html_aece0c6ec294cd15d455085687fd3e0c3"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#aece0c6ec294cd15d455085687fd3e0c3">luci_interpreter::kernels::TISOKernel::input2</a></div><div class="ttdeci">const circle::Tensor * input2() const</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00061">TISOKernel.h:61</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel_html_af0449a0fffd6ad67ce1fdef2403fc8eb"><div class="ttname"><a href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">luci_interpreter::kernels::TISOKernel::input1</a></div><div class="ttdeci">const circle::Tensor * input1() const</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00060">TISOKernel.h:60</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1kernels_1_1_t_i_s_o_data_html"><div class="ttname"><a href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">luci_interpreter::kernels::TISOData</a></div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00027">TISOKernel.h:28</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00061">luci_interpreter::kernels::TISOKernel::input1()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00062">luci_interpreter::kernels::TISOKernel::input2()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00344">luci_interpreter::RuntimeGraph::makeInplaceOperation()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00063">luci_interpreter::kernels::TISOKernel::output()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00085">luci_interpreter::kernels::TISOKernel::readInplaceData()</a>, and <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00065">luci_interpreter::kernels::TISOKernel::runtime_graph()</a>.</p>
+<p class="reference">References <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00060">luci_interpreter::kernels::TISOKernel::input1()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00061">luci_interpreter::kernels::TISOKernel::input2()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00345">luci_interpreter::RuntimeGraph::makeInplaceOperation()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00062">luci_interpreter::kernels::TISOKernel::output()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00084">luci_interpreter::kernels::TISOKernel::readInplaceData()</a>, and <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00064">luci_interpreter::kernels::TISOKernel::runtime_graph()</a>.</p>
 
 </div>
 </div>
@@ -1616,33 +1624,33 @@ template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastF
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00162">162</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html">BinaryOpCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  164</span>{</div>
-<div class="line"><span class="lineno">  165</span>  uint8_t *inplace_data_ptr = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  166</span>  circle::Tensor *input_inplace_tensor = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  167</span> </div>
-<div class="line"><span class="lineno">  168</span>  <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> kernel_data = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a180f956fa2c167760bd3c788bc23cd76">readInplaceData</a>(inplace_data_ptr, input_inplace_tensor);</div>
-<div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>  evalTISOQuantizedKernel&lt;T, TISOFunc, TISOBroadcastFunc, Options&gt;(tiso_func, tiso_broadcast_func,</div>
-<div class="line"><span class="lineno">  171</span>                                                                   kernel, &amp;kernel_data, options);</div>
-<div class="line"><span class="lineno">  172</span> </div>
-<div class="line"><span class="lineno">  173</span>  kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a02a0d16ea7e831b5fb544992df4fb063">runtime_graph</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(input_inplace_tensor, kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">output</a>());</div>
-<div class="line"><span class="lineno">  174</span>  <span class="keywordflow">if</span> (input_inplace_tensor == kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>())</div>
-<div class="line"><span class="lineno">  175</span>  {</div>
-<div class="line"><span class="lineno">  176</span>    kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a02a0d16ea7e831b5fb544992df4fb063">runtime_graph</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#aece0c6ec294cd15d455085687fd3e0c3">input2</a>(), <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  177</span>  }</div>
-<div class="line"><span class="lineno">  178</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  179</span>  {</div>
-<div class="line"><span class="lineno">  180</span>    kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a02a0d16ea7e831b5fb544992df4fb063">runtime_graph</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>(), <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  181</span>  }</div>
-<div class="line"><span class="lineno">  182</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00188">188</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html">BinaryOpCommon.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  190</span>{</div>
+<div class="line"><span class="lineno">  191</span>  uint8_t *inplace_data_ptr = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  192</span>  circle::Tensor *input_inplace_tensor = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  193</span> </div>
+<div class="line"><span class="lineno">  194</span>  <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> kernel_data = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a180f956fa2c167760bd3c788bc23cd76">readInplaceData</a>(inplace_data_ptr, input_inplace_tensor);</div>
+<div class="line"><span class="lineno">  195</span> </div>
+<div class="line"><span class="lineno">  196</span>  evalTISOQuantizedKernel&lt;T, TISOFunc, TISOBroadcastFunc, Options&gt;(tiso_func, tiso_broadcast_func,</div>
+<div class="line"><span class="lineno">  197</span>                                                                   kernel, &amp;kernel_data, options);</div>
+<div class="line"><span class="lineno">  198</span> </div>
+<div class="line"><span class="lineno">  199</span>  kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a02a0d16ea7e831b5fb544992df4fb063">runtime_graph</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(input_inplace_tensor, kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">output</a>());</div>
+<div class="line"><span class="lineno">  200</span>  <span class="keywordflow">if</span> (input_inplace_tensor == kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>())</div>
+<div class="line"><span class="lineno">  201</span>  {</div>
+<div class="line"><span class="lineno">  202</span>    kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a02a0d16ea7e831b5fb544992df4fb063">runtime_graph</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#aece0c6ec294cd15d455085687fd3e0c3">input2</a>(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  203</span>  }</div>
+<div class="line"><span class="lineno">  204</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  205</span>  {</div>
+<div class="line"><span class="lineno">  206</span>    kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a02a0d16ea7e831b5fb544992df4fb063">runtime_graph</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>(), <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  207</span>  }</div>
+<div class="line"><span class="lineno">  208</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00061">luci_interpreter::kernels::TISOKernel::input1()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00062">luci_interpreter::kernels::TISOKernel::input2()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00344">luci_interpreter::RuntimeGraph::makeInplaceOperation()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00063">luci_interpreter::kernels::TISOKernel::output()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00085">luci_interpreter::kernels::TISOKernel::readInplaceData()</a>, and <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00065">luci_interpreter::kernels::TISOKernel::runtime_graph()</a>.</p>
+<p class="reference">References <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00060">luci_interpreter::kernels::TISOKernel::input1()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00061">luci_interpreter::kernels::TISOKernel::input2()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00345">luci_interpreter::RuntimeGraph::makeInplaceOperation()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00062">luci_interpreter::kernels::TISOKernel::output()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00084">luci_interpreter::kernels::TISOKernel::readInplaceData()</a>, and <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00064">luci_interpreter::kernels::TISOKernel::runtime_graph()</a>.</p>
 
 </div>
 </div>
-<a id="a9af9361f165099aa2bd87ed15a156b2a" name="a9af9361f165099aa2bd87ed15a156b2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9af9361f165099aa2bd87ed15a156b2a">&#9670;&#160;</a></span>evalTISOKernel()</h2>
+<a id="ad7192db6817195484b48af635a0b3d84" name="ad7192db6817195484b48af635a0b3d84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7192db6817195484b48af635a0b3d84">&#9670;&#160;</a></span>evalTISOKernel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1682,13 +1690,13 @@ template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastF
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">tflite::RuntimeShape &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_runtime_shape.html">RuntimeShape</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>input_shape_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">tflite::RuntimeShape &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_runtime_shape.html">RuntimeShape</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>input_shape_2</em>&#160;</td>
         </tr>
         <tr>
@@ -1699,37 +1707,40 @@ template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastF
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00033">33</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html">BinaryOpCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *output = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">output</a>();</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  tflite::ArithmeticParams params{};</div>
-<div class="line"><span class="lineno">   41</span>  kernels::fillArithmeticActivationRange&lt;T&gt;(params,</div>
-<div class="line"><span class="lineno">   42</span>                                            <a class="code hl_function" href="namespaceluci.html#ac4c75545009edf35d9f53e105648cced">luci_actfunc</a>(options-&gt;fused_activation_function()));</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> need_broadcast =</div>
-<div class="line"><span class="lineno">   45</span>    tflite::reference_ops::ProcessBroadcastShapes(input_shape_1, input_shape_2, &amp;params);</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">if</span> (need_broadcast)</div>
-<div class="line"><span class="lineno">   48</span>  {</div>
-<div class="line"><span class="lineno">   49</span>    tiso_broadcast_func(params, input_shape_1, kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a4c8fbf44d750af57fc8f6236b02958db">input1_data</a>),</div>
-<div class="line"><span class="lineno">   50</span>                        input_shape_2, kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a380e12262c1d184e0607f0ab8f515c61">input2_data</a>),</div>
-<div class="line"><span class="lineno">   51</span>                        kernels::getTensorShape(output),</div>
-<div class="line"><span class="lineno">   52</span>                        kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">output_data</a>));</div>
-<div class="line"><span class="lineno">   53</span>  }</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   55</span>  {</div>
-<div class="line"><span class="lineno">   56</span>    tiso_func(params, input_shape_1, kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a4c8fbf44d750af57fc8f6236b02958db">input1_data</a>),</div>
-<div class="line"><span class="lineno">   57</span>              input_shape_2, kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a380e12262c1d184e0607f0ab8f515c61">input2_data</a>),</div>
-<div class="line"><span class="lineno">   58</span>              kernels::getTensorShape(output), kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">output_data</a>));</div>
-<div class="line"><span class="lineno">   59</span>  }</div>
-<div class="line"><span class="lineno">   60</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00060">60</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html">BinaryOpCommon.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{</div>
+<div class="line"><span class="lineno">   65</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *output = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">output</a>();</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>  <a class="code hl_struct" href="structluci__interpreter__pal_1_1_arithmetic_params.html">luci_interpreter_pal::ArithmeticParams</a> params{};</div>
+<div class="line"><span class="lineno">   68</span>  fillArithmeticActivationRange&lt;T&gt;(params, <a class="code hl_function" href="namespaceluci.html#ac4c75545009edf35d9f53e105648cced">luci_actfunc</a>(options-&gt;fused_activation_function()));</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> need_broadcast =</div>
+<div class="line"><span class="lineno">   71</span>    <a class="code hl_function" href="namespaceluci__interpreter__pal.html#a350c07fcf03d4939d9a127e195bb2204">luci_interpreter_pal::ProcessBroadcastShapes</a>(input_shape_1, input_shape_2, &amp;params);</div>
+<div class="line"><span class="lineno">   72</span> </div>
+<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">if</span> (need_broadcast)</div>
+<div class="line"><span class="lineno">   74</span>  {</div>
+<div class="line"><span class="lineno">   75</span>    tiso_broadcast_func(params, input_shape_1, kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a4c8fbf44d750af57fc8f6236b02958db">input1_data</a>),</div>
+<div class="line"><span class="lineno">   76</span>                        input_shape_2, kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a380e12262c1d184e0607f0ab8f515c61">input2_data</a>),</div>
+<div class="line"><span class="lineno">   77</span>                        kernels::getTensorShape(output),</div>
+<div class="line"><span class="lineno">   78</span>                        kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">output_data</a>));</div>
+<div class="line"><span class="lineno">   79</span>  }</div>
+<div class="line"><span class="lineno">   80</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   81</span>  {</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = input_shape_1.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#acbf4dabf4f38e9b25551036973965529">flatSize</a>();</div>
+<div class="line"><span class="lineno">   83</span>    tiso_func(params, flat_size, kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a4c8fbf44d750af57fc8f6236b02958db">input1_data</a>),</div>
+<div class="line"><span class="lineno">   84</span>              kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a380e12262c1d184e0607f0ab8f515c61">input2_data</a>),</div>
+<div class="line"><span class="lineno">   85</span>              kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">output_data</a>));</div>
+<div class="line"><span class="lineno">   86</span>  }</div>
+<div class="line"><span class="lineno">   87</span>}</div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_acbf4dabf4f38e9b25551036973965529"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#acbf4dabf4f38e9b25551036973965529">luci_interpreter::RuntimeShape::flatSize</a></div><div class="ttdeci">int flatSize() const</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">Tensor.h:45</a></div></div>
+<div class="ttc" id="anamespaceluci__interpreter__pal_html_a350c07fcf03d4939d9a127e195bb2204"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a350c07fcf03d4939d9a127e195bb2204">luci_interpreter_pal::ProcessBroadcastShapes</a></div><div class="ttdeci">bool ProcessBroadcastShapes(const luci_interpreter::RuntimeShape &amp;shape0, const luci_interpreter::RuntimeShape &amp;shape1, luci_interpreter_pal::ArithmeticParams *params)</div><div class="ttdef"><b>Definition:</b> <a href="_process_broadcast_shapes_8h_source.html#l00150">ProcessBroadcastShapes.h:150</a></div></div>
 <div class="ttc" id="anamespaceluci_html_ac4c75545009edf35d9f53e105648cced"><div class="ttname"><a href="namespaceluci.html#ac4c75545009edf35d9f53e105648cced">luci::luci_actfunc</a></div><div class="ttdeci">FusedActFunc luci_actfunc(const circle::ActivationFunctionType type)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8cpp_source.html#l00076">CircleReader.cpp:76</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1kernels_1_1_t_i_s_o_data_html_a380e12262c1d184e0607f0ab8f515c61"><div class="ttname"><a href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a380e12262c1d184e0607f0ab8f515c61">luci_interpreter::kernels::TISOData::input2_data</a></div><div class="ttdeci">uint8_t * input2_data</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00031">TISOKernel.h:31</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1kernels_1_1_t_i_s_o_data_html_a4c8fbf44d750af57fc8f6236b02958db"><div class="ttname"><a href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a4c8fbf44d750af57fc8f6236b02958db">luci_interpreter::kernels::TISOData::input1_data</a></div><div class="ttdeci">uint8_t * input1_data</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00030">TISOKernel.h:30</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1kernels_1_1_t_i_s_o_data_html_ae5e44a7bd8a6b6887cef37464e8d0f08"><div class="ttname"><a href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">luci_interpreter::kernels::TISOData::output_data</a></div><div class="ttdeci">uint8_t * output_data</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00032">TISOKernel.h:32</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1kernels_1_1_t_i_s_o_data_html_a380e12262c1d184e0607f0ab8f515c61"><div class="ttname"><a href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a380e12262c1d184e0607f0ab8f515c61">luci_interpreter::kernels::TISOData::input2_data</a></div><div class="ttdeci">uint8_t * input2_data</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00030">TISOKernel.h:30</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1kernels_1_1_t_i_s_o_data_html_a4c8fbf44d750af57fc8f6236b02958db"><div class="ttname"><a href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a4c8fbf44d750af57fc8f6236b02958db">luci_interpreter::kernels::TISOData::input1_data</a></div><div class="ttdeci">uint8_t * input1_data</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00029">TISOKernel.h:29</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1kernels_1_1_t_i_s_o_data_html_ae5e44a7bd8a6b6887cef37464e8d0f08"><div class="ttname"><a href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">luci_interpreter::kernels::TISOData::output_data</a></div><div class="ttdeci">uint8_t * output_data</div><div class="ttdef"><b>Definition:</b> <a href="_t_i_s_o_kernel_8h_source.html#l00031">TISOKernel.h:31</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html">luci_interpreter_pal::ArithmeticParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00141">Params.h:142</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00194">getTensorShape()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00030">luci_interpreter::kernels::TISOData::input1_data</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00031">luci_interpreter::kernels::TISOData::input2_data</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00063">luci_interpreter::kernels::TISOKernel::output()</a>, and <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00032">luci_interpreter::kernels::TISOData::output_data</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00194">getTensorShape()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00029">luci_interpreter::kernels::TISOData::input1_data</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00030">luci_interpreter::kernels::TISOData::input2_data</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00062">luci_interpreter::kernels::TISOKernel::output()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00031">luci_interpreter::kernels::TISOData::output_data</a>, and <a class="el" href="_process_broadcast_shapes_8h_source.html#l00150">luci_interpreter_pal::ProcessBroadcastShapes()</a>.</p>
 
 </div>
 </div>
@@ -1779,72 +1790,73 @@ template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastF
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00094">94</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html">BinaryOpCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>{</div>
-<div class="line"><span class="lineno">   98</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *input1 = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>();</div>
-<div class="line"><span class="lineno">   99</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *input2 = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#aece0c6ec294cd15d455085687fd3e0c3">input2</a>();</div>
-<div class="line"><span class="lineno">  100</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *output = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">output</a>();</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input1_scale = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(Tensor::scale(input1));</div>
-<div class="line"><span class="lineno">  103</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input2_scale = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(Tensor::scale(input2));</div>
-<div class="line"><span class="lineno">  104</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_scale = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(Tensor::scale(output));</div>
-<div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> left_shift = 20;</div>
-<div class="line"><span class="lineno">  107</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> twice_max_input_scale = 2 * std::max(input1_scale, input2_scale);</div>
-<div class="line"><span class="lineno">  108</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> real_input1_multiplier = input1_scale / twice_max_input_scale;</div>
-<div class="line"><span class="lineno">  109</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> real_input2_multiplier = input2_scale / twice_max_input_scale;</div>
-<div class="line"><span class="lineno">  110</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> real_output_multiplier = twice_max_input_scale / ((1 &lt;&lt; left_shift) * output_scale);</div>
-<div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span>  int32_t input1_multiplier{}, input2_multiplier{}, output_multiplier{};</div>
-<div class="line"><span class="lineno">  113</span>  <span class="keywordtype">int</span> input1_shift{}, input2_shift{}, output_shift{};</div>
-<div class="line"><span class="lineno">  114</span>  kernels::quantizeMultiplierSmallerThanOneExp(real_input1_multiplier, &amp;input1_multiplier,</div>
-<div class="line"><span class="lineno">  115</span>                                               &amp;input1_shift);</div>
-<div class="line"><span class="lineno">  116</span>  kernels::quantizeMultiplierSmallerThanOneExp(real_input2_multiplier, &amp;input2_multiplier,</div>
-<div class="line"><span class="lineno">  117</span>                                               &amp;input2_shift);</div>
-<div class="line"><span class="lineno">  118</span>  kernels::quantizeMultiplierSmallerThanOneExp(real_output_multiplier, &amp;output_multiplier,</div>
-<div class="line"><span class="lineno">  119</span>                                               &amp;output_shift);</div>
-<div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>  int32_t activation_min{};</div>
-<div class="line"><span class="lineno">  122</span>  int32_t activation_max{};</div>
-<div class="line"><span class="lineno">  123</span>  kernels::calculateActivationRangeQuantized(<a class="code hl_function" href="namespaceluci.html#ac4c75545009edf35d9f53e105648cced">luci_actfunc</a>(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;fused_activation_function()),</div>
-<div class="line"><span class="lineno">  124</span>                                             output, &amp;activation_min, &amp;activation_max);</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>  tflite::ArithmeticParams params{};</div>
-<div class="line"><span class="lineno">  127</span>  params.left_shift = left_shift;</div>
-<div class="line"><span class="lineno">  128</span>  <span class="comment">// The kernel expects inputs&#39; zero points to be negated.</span></div>
-<div class="line"><span class="lineno">  129</span>  params.input1_offset = -Tensor::zero_point(input1); <span class="comment">// Note the &#39;-&#39;.</span></div>
-<div class="line"><span class="lineno">  130</span>  params.input1_multiplier = input1_multiplier;</div>
-<div class="line"><span class="lineno">  131</span>  params.input1_shift = input1_shift;</div>
-<div class="line"><span class="lineno">  132</span>  params.input2_offset = -Tensor::zero_point(input2); <span class="comment">// Note the &#39;-&#39;.</span></div>
-<div class="line"><span class="lineno">  133</span>  params.input2_multiplier = input2_multiplier;</div>
-<div class="line"><span class="lineno">  134</span>  params.input2_shift = input2_shift;</div>
-<div class="line"><span class="lineno">  135</span>  params.output_offset = Tensor::zero_point(output);</div>
-<div class="line"><span class="lineno">  136</span>  params.output_multiplier = output_multiplier;</div>
-<div class="line"><span class="lineno">  137</span>  params.output_shift = output_shift;</div>
-<div class="line"><span class="lineno">  138</span>  params.quantized_activation_min = activation_min;</div>
-<div class="line"><span class="lineno">  139</span>  params.quantized_activation_max = activation_max;</div>
-<div class="line"><span class="lineno">  140</span> </div>
-<div class="line"><span class="lineno">  141</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> need_broadcast = tflite::reference_ops::ProcessBroadcastShapes(</div>
-<div class="line"><span class="lineno">  142</span>    kernels::getTensorShape(input1), kernels::getTensorShape(input2), &amp;params);</div>
-<div class="line"><span class="lineno">  143</span> </div>
-<div class="line"><span class="lineno">  144</span>  <span class="keywordflow">if</span> (need_broadcast)</div>
-<div class="line"><span class="lineno">  145</span>  {</div>
-<div class="line"><span class="lineno">  146</span>    tiso_broadcast_func(</div>
-<div class="line"><span class="lineno">  147</span>      params, kernels::getTensorShape(input1), kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a4c8fbf44d750af57fc8f6236b02958db">input1_data</a>),</div>
-<div class="line"><span class="lineno">  148</span>      kernels::getTensorShape(input2), kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a380e12262c1d184e0607f0ab8f515c61">input2_data</a>),</div>
-<div class="line"><span class="lineno">  149</span>      kernels::getTensorShape(output), kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">output_data</a>));</div>
-<div class="line"><span class="lineno">  150</span>  }</div>
-<div class="line"><span class="lineno">  151</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  152</span>  {</div>
-<div class="line"><span class="lineno">  153</span>    tiso_func(params, kernels::getTensorShape(input1),</div>
-<div class="line"><span class="lineno">  154</span>              kernels::getTensorData&lt;uint8_t&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a4c8fbf44d750af57fc8f6236b02958db">input1_data</a>),</div>
-<div class="line"><span class="lineno">  155</span>              kernels::getTensorShape(input2), kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a380e12262c1d184e0607f0ab8f515c61">input2_data</a>),</div>
-<div class="line"><span class="lineno">  156</span>              kernels::getTensorShape(output), kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">output_data</a>));</div>
-<div class="line"><span class="lineno">  157</span>  }</div>
-<div class="line"><span class="lineno">  158</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00120">120</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html">BinaryOpCommon.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  123</span>{</div>
+<div class="line"><span class="lineno">  124</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *input1 = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>();</div>
+<div class="line"><span class="lineno">  125</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *input2 = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#aece0c6ec294cd15d455085687fd3e0c3">input2</a>();</div>
+<div class="line"><span class="lineno">  126</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *output = kernel-&gt;<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">output</a>();</div>
+<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  128</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input1_scale = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(Tensor::scale(input1));</div>
+<div class="line"><span class="lineno">  129</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input2_scale = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(Tensor::scale(input2));</div>
+<div class="line"><span class="lineno">  130</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_scale = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(Tensor::scale(output));</div>
+<div class="line"><span class="lineno">  131</span> </div>
+<div class="line"><span class="lineno">  132</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> left_shift = 20;</div>
+<div class="line"><span class="lineno">  133</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> twice_max_input_scale = 2 * std::max(input1_scale, input2_scale);</div>
+<div class="line"><span class="lineno">  134</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> real_input1_multiplier = input1_scale / twice_max_input_scale;</div>
+<div class="line"><span class="lineno">  135</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> real_input2_multiplier = input2_scale / twice_max_input_scale;</div>
+<div class="line"><span class="lineno">  136</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> real_output_multiplier = twice_max_input_scale / ((1 &lt;&lt; left_shift) * output_scale);</div>
+<div class="line"><span class="lineno">  137</span> </div>
+<div class="line"><span class="lineno">  138</span>  int32_t input1_multiplier{}, input2_multiplier{}, output_multiplier{};</div>
+<div class="line"><span class="lineno">  139</span>  <span class="keywordtype">int</span> input1_shift{}, input2_shift{}, output_shift{};</div>
+<div class="line"><span class="lineno">  140</span>  kernels::quantizeMultiplierSmallerThanOneExp(real_input1_multiplier, &amp;input1_multiplier,</div>
+<div class="line"><span class="lineno">  141</span>                                               &amp;input1_shift);</div>
+<div class="line"><span class="lineno">  142</span>  kernels::quantizeMultiplierSmallerThanOneExp(real_input2_multiplier, &amp;input2_multiplier,</div>
+<div class="line"><span class="lineno">  143</span>                                               &amp;input2_shift);</div>
+<div class="line"><span class="lineno">  144</span>  kernels::quantizeMultiplierSmallerThanOneExp(real_output_multiplier, &amp;output_multiplier,</div>
+<div class="line"><span class="lineno">  145</span>                                               &amp;output_shift);</div>
+<div class="line"><span class="lineno">  146</span> </div>
+<div class="line"><span class="lineno">  147</span>  int32_t activation_min{};</div>
+<div class="line"><span class="lineno">  148</span>  int32_t activation_max{};</div>
+<div class="line"><span class="lineno">  149</span>  kernels::calculateActivationRangeQuantized(<a class="code hl_function" href="namespaceluci.html#ac4c75545009edf35d9f53e105648cced">luci_actfunc</a>(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;fused_activation_function()),</div>
+<div class="line"><span class="lineno">  150</span>                                             output, &amp;activation_min, &amp;activation_max);</div>
+<div class="line"><span class="lineno">  151</span> </div>
+<div class="line"><span class="lineno">  152</span>  <a class="code hl_struct" href="structluci__interpreter__pal_1_1_arithmetic_params.html">luci_interpreter_pal::ArithmeticParams</a> params{};</div>
+<div class="line"><span class="lineno">  153</span>  params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_arithmetic_params.html#a58a798012068d78c2e0a7c8970d21df4">left_shift</a> = left_shift;</div>
+<div class="line"><span class="lineno">  154</span>  <span class="comment">// The kernel expects inputs&#39; zero points to be negated.</span></div>
+<div class="line"><span class="lineno">  155</span>  params.input1_offset = -Tensor::zero_point(input1); <span class="comment">// Note the &#39;-&#39;.</span></div>
+<div class="line"><span class="lineno">  156</span>  params.input1_multiplier = input1_multiplier;</div>
+<div class="line"><span class="lineno">  157</span>  params.input1_shift = input1_shift;</div>
+<div class="line"><span class="lineno">  158</span>  params.input2_offset = -Tensor::zero_point(input2); <span class="comment">// Note the &#39;-&#39;.</span></div>
+<div class="line"><span class="lineno">  159</span>  params.input2_multiplier = input2_multiplier;</div>
+<div class="line"><span class="lineno">  160</span>  params.input2_shift = input2_shift;</div>
+<div class="line"><span class="lineno">  161</span>  params.output_offset = Tensor::zero_point(output);</div>
+<div class="line"><span class="lineno">  162</span>  params.output_multiplier = output_multiplier;</div>
+<div class="line"><span class="lineno">  163</span>  params.output_shift = output_shift;</div>
+<div class="line"><span class="lineno">  164</span>  params.quantized_activation_min = activation_min;</div>
+<div class="line"><span class="lineno">  165</span>  params.quantized_activation_max = activation_max;</div>
+<div class="line"><span class="lineno">  166</span> </div>
+<div class="line"><span class="lineno">  167</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> need_broadcast = <a class="code hl_function" href="namespaceluci__interpreter__pal.html#a350c07fcf03d4939d9a127e195bb2204">luci_interpreter_pal::ProcessBroadcastShapes</a>(</div>
+<div class="line"><span class="lineno">  168</span>    kernels::getTensorShape(input1), kernels::getTensorShape(input2), &amp;params);</div>
+<div class="line"><span class="lineno">  169</span> </div>
+<div class="line"><span class="lineno">  170</span>  <span class="keywordflow">if</span> (need_broadcast)</div>
+<div class="line"><span class="lineno">  171</span>  {</div>
+<div class="line"><span class="lineno">  172</span>    tiso_broadcast_func(</div>
+<div class="line"><span class="lineno">  173</span>      params, kernels::getTensorShape(input1), kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a4c8fbf44d750af57fc8f6236b02958db">input1_data</a>),</div>
+<div class="line"><span class="lineno">  174</span>      kernels::getTensorShape(input2), kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a380e12262c1d184e0607f0ab8f515c61">input2_data</a>),</div>
+<div class="line"><span class="lineno">  175</span>      kernels::getTensorShape(output), kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">output_data</a>));</div>
+<div class="line"><span class="lineno">  176</span>  }</div>
+<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  178</span>  {</div>
+<div class="line"><span class="lineno">  179</span>    tiso_func(params, kernels::getTensorShape(input1),</div>
+<div class="line"><span class="lineno">  180</span>              kernels::getTensorData&lt;uint8_t&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a4c8fbf44d750af57fc8f6236b02958db">input1_data</a>),</div>
+<div class="line"><span class="lineno">  181</span>              kernels::getTensorShape(input2), kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a380e12262c1d184e0607f0ab8f515c61">input2_data</a>),</div>
+<div class="line"><span class="lineno">  182</span>              kernels::getTensorShape(output), kernels::getTensorData&lt;T&gt;(kernel_data-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">output_data</a>));</div>
+<div class="line"><span class="lineno">  183</span>  }</div>
+<div class="line"><span class="lineno">  184</span>}</div>
 <div class="ttc" id="anamespaceonnx__legalizer_html_a5f63ff6f9c0c3e7103c2b9b88021555e"><div class="ttname"><a href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">onnx_legalizer.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition:</b> <a href="onnx__legalizer_8py_source.html#l01057">onnx_legalizer.py:1057</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a58a798012068d78c2e0a7c8970d21df4"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a58a798012068d78c2e0a7c8970d21df4">luci_interpreter_pal::ArithmeticParams::left_shift</a></div><div class="ttdeci">int left_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00152">Params.h:152</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00119">calculateActivationRangeQuantized()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00194">getTensorShape()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00061">luci_interpreter::kernels::TISOKernel::input1()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00030">luci_interpreter::kernels::TISOData::input1_data</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00062">luci_interpreter::kernels::TISOKernel::input2()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00031">luci_interpreter::kernels::TISOData::input2_data</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00063">luci_interpreter::kernels::TISOKernel::output()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00032">luci_interpreter::kernels::TISOData::output_data</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00185">quantizeMultiplierSmallerThanOneExp()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00119">calculateActivationRangeQuantized()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00194">getTensorShape()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00060">luci_interpreter::kernels::TISOKernel::input1()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00029">luci_interpreter::kernels::TISOData::input1_data</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00061">luci_interpreter::kernels::TISOKernel::input2()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00030">luci_interpreter::kernels::TISOData::input2_data</a>, <a class="el" href="_params_8h_source.html#l00152">luci_interpreter_pal::ArithmeticParams::left_shift</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00076">luci::luci_actfunc()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00062">luci_interpreter::kernels::TISOKernel::output()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00031">luci_interpreter::kernels::TISOData::output_data</a>, <a class="el" href="_process_broadcast_shapes_8h_source.html#l00150">luci_interpreter_pal::ProcessBroadcastShapes()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00185">quantizeMultiplierSmallerThanOneExp()</a>.</p>
 
 </div>
 </div>
@@ -1958,12 +1970,12 @@ template&lt;typename T &gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">   66</span>{</div>
 <div class="line"><span class="lineno">   67</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = dimensions - 1; idx &gt;= 0; --idx)</div>
 <div class="line"><span class="lineno">   68</span>  {</div>
-<div class="line"><span class="lineno">   69</span>    begins-&gt;push_back(getTensorData&lt;T&gt;(begin)[idx]);</div>
-<div class="line"><span class="lineno">   70</span>    sizes-&gt;push_back(getTensorData&lt;T&gt;(size)[idx]);</div>
+<div class="line"><span class="lineno">   69</span>    begins-&gt;push_back(getTensorData&lt;T&gt;(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>)[idx]);</div>
+<div class="line"><span class="lineno">   70</span>    sizes-&gt;push_back(getTensorData&lt;T&gt;(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)[idx]);</div>
 <div class="line"><span class="lineno">   71</span>  }</div>
 <div class="line"><span class="lineno">   72</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">luci_interpreter::size()</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">begin</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 </div>
 </div>
@@ -2123,10 +2135,10 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00118">118</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  119</span>{</div>
-<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">return</span> tensor_data != <span class="keyword">nullptr</span> ? <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(tensor_data) : <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  121</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00156">156</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  157</span>{</div>
+<div class="line"><span class="lineno">  158</span>  <span class="keywordflow">return</span> tensor_data != <span class="keyword">nullptr</span> ? <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(tensor_data) : <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  159</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2162,6 +2174,9 @@ template&lt;typename T &gt; </div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">T * luci_interpreter::kernels::getTensorData </td>
@@ -2171,23 +2186,113 @@ template&lt;typename T &gt; </div>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00123">123</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  124</span>{</div>
-<div class="line"><span class="lineno">  125</span>  <span class="keywordflow">return</span> tensor_data != <span class="keyword">nullptr</span> ? <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(tensor_data) : <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  126</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00161">161</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  162</span>{</div>
+<div class="line"><span class="lineno">  163</span>  <span class="keywordflow">return</span> tensor_data != <span class="keyword">nullptr</span> ? <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(tensor_data) : <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  164</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="afce1c2c42f8f6ca9f581f3a1a3f199b8" name="afce1c2c42f8f6ca9f581f3a1a3f199b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afce1c2c42f8f6ca9f581f3a1a3f199b8">&#9670;&#160;</a></span>getTensorRuntimeShape()</h2>
+<a id="aeb15fbffca423ac64cb7c57cb7f5ec2c" name="aeb15fbffca423ac64cb7c57cb7f5ec2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb15fbffca423ac64cb7c57cb7f5ec2c">&#9670;&#160;</a></span>getTensorDims()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter::kernels::getTensorDims </td>
+          <td>(</td>
+          <td class="paramtype">const circle::Tensor *&#160;</td>
+          <td class="paramname"><em>tensor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *&#160;</td>
+          <td class="paramname"><em>runtime_graph</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>dims</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00119">119</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  121</span>{</div>
+<div class="line"><span class="lineno">  122</span>  <span class="keywordflow">if</span> (tensor == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  123</span>  {</div>
+<div class="line"><span class="lineno">  124</span>    dims = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  126</span>  }</div>
+<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  128</span><span class="preprocessor">#ifndef DIS_DYN_SHAPES</span></div>
+<div class="line"><span class="lineno">  129</span>  <span class="keyword">auto</span> *dynamic_shape_vector = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a21a3ec38693f60775dae58919b8ca7a8">getDynamicShapeTensor</a>(tensor);</div>
+<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">if</span> (dynamic_shape_vector != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  131</span>  {</div>
+<div class="line"><span class="lineno">  132</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> n = 0; n &lt; dynamic_shape_vector-&gt;dimensionsCount(); ++n)</div>
+<div class="line"><span class="lineno">  133</span>    {</div>
+<div class="line"><span class="lineno">  134</span>      dims[n] = dynamic_shape_vector-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(n);</div>
+<div class="line"><span class="lineno">  135</span>    }</div>
+<div class="line"><span class="lineno">  136</span>  }</div>
+<div class="line"><span class="lineno">  137</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  138</span>  {</div>
+<div class="line"><span class="lineno">  139</span>    <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_function" href="namespacemoco.html#aa50dec789679b651443c982b9d62f55a">tensor_shape</a> = Tensor::tensor_shape(tensor);</div>
+<div class="line"><span class="lineno">  140</span>    assert(<a class="code hl_function" href="namespacemoco.html#aa50dec789679b651443c982b9d62f55a">tensor_shape</a>.size() &lt;= kMaxSmallSize);</div>
+<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_function" href="namespacemoco.html#aa50dec789679b651443c982b9d62f55a">tensor_shape</a>.size(); ++i)</div>
+<div class="line"><span class="lineno">  142</span>    {</div>
+<div class="line"><span class="lineno">  143</span>      dims[i] = <a class="code hl_function" href="namespacemoco.html#aa50dec789679b651443c982b9d62f55a">tensor_shape</a>[i];</div>
+<div class="line"><span class="lineno">  144</span>    }</div>
+<div class="line"><span class="lineno">  145</span>  }</div>
+<div class="line"><span class="lineno">  146</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">  147</span>  <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_function" href="namespacemoco.html#aa50dec789679b651443c982b9d62f55a">tensor_shape</a> = Tensor::tensor_shape(tensor);</div>
+<div class="line"><span class="lineno">  148</span>  assert(<a class="code hl_function" href="namespacemoco.html#aa50dec789679b651443c982b9d62f55a">tensor_shape</a>.size() &lt;= kMaxSmallSize);</div>
+<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_function" href="namespacemoco.html#aa50dec789679b651443c982b9d62f55a">tensor_shape</a>.size(); ++i)</div>
+<div class="line"><span class="lineno">  150</span>  {</div>
+<div class="line"><span class="lineno">  151</span>    dims[i] = <a class="code hl_function" href="namespacemoco.html#aa50dec789679b651443c982b9d62f55a">tensor_shape</a>[i];</div>
+<div class="line"><span class="lineno">  152</span>  }</div>
+<div class="line"><span class="lineno">  153</span><span class="preprocessor">#endif </span><span class="comment">// DIS_DYN_SHAPES</span></div>
+<div class="line"><span class="lineno">  154</span>}</div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a21a3ec38693f60775dae58919b8ca7a8"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a21a3ec38693f60775dae58919b8ca7a8">luci_interpreter::RuntimeGraph::getDynamicShapeTensor</a></div><div class="ttdeci">luci_interpreter::RuntimeShape * getDynamicShapeTensor(const circle::Tensor *tensor)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00151">RuntimeGraph.cpp:151</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_a21afbf00a49a9fb5b67c40f78e408b23"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">luci_interpreter::RuntimeShape::dims</a></div><div class="ttdeci">int32_t dims(int i) const</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">Tensor.h:108</a></div></div>
+<div class="ttc" id="anamespacemoco_html_aa50dec789679b651443c982b9d62f55a"><div class="ttname"><a href="namespacemoco.html#aa50dec789679b651443c982b9d62f55a">moco::tensor_shape</a></div><div class="ttdeci">loco::TensorShape tensor_shape(const TFConst *node)</div><div class="ttdef"><b>Definition:</b> <a href="_t_f_const_8cpp_source.html#l00064">TFConst.cpp:64</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00151">luci_interpreter::RuntimeGraph::getDynamicShapeTensor()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00278">luci_interpreter_pal::lstm_internal::calculateLstmGate()</a>.</p>
+
+</div>
+</div>
+<a id="afdd2b45a2055529250dfa7583b2c922c" name="afdd2b45a2055529250dfa7583b2c922c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdd2b45a2055529250dfa7583b2c922c">&#9670;&#160;</a></span>getTensorRuntimeShape()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">tflite::RuntimeShape luci_interpreter::kernels::getTensorRuntimeShape </td>
+          <td class="memname"><a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> luci_interpreter::kernels::getTensorRuntimeShape </td>
           <td>(</td>
           <td class="paramtype">const circle::Tensor *&#160;</td>
           <td class="paramname"><em>circle_tensor</em>, </td>
@@ -2208,33 +2313,33 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00029">29</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  tflite::RuntimeShape input_shape = <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a74f2161267eeabcf602a15e16c2350f5">getTensorShape</a>(circle_tensor);</div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_class" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> input_shape = <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a74f2161267eeabcf602a15e16c2350f5">getTensorShape</a>(circle_tensor);</div>
 <div class="line"><span class="lineno">   33</span> </div>
 <div class="line"><span class="lineno">   34</span><span class="preprocessor">#ifndef DIS_DYN_SHAPES</span></div>
-<div class="line"><span class="lineno">   35</span>  <span class="keyword">auto</span> *dynamic_shape_vector = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a91666f1edc0a1e44b14ff098c81988ba">getDynamicShapeTensor</a>(circle_tensor);</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keyword">auto</span> *dynamic_shape_vector = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a21a3ec38693f60775dae58919b8ca7a8">getDynamicShapeTensor</a>(circle_tensor);</div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (dynamic_shape_vector != <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   37</span>  {</div>
-<div class="line"><span class="lineno">   38</span>    input_shape.Resize(dynamic_shape_vector-&gt;size());</div>
+<div class="line"><span class="lineno">   38</span>    input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a338cd546f77a176fc3b907b7025cb066">resize</a>(dynamic_shape_vector-&gt;dimensionsCount());</div>
 <div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> n = 0; n &lt; dynamic_shape_vector-&gt;size(); ++n)</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> n = 0; n &lt; dynamic_shape_vector-&gt;dimensionsCount(); ++n)</div>
 <div class="line"><span class="lineno">   41</span>    {</div>
-<div class="line"><span class="lineno">   42</span>      input_shape.SetDim(n, dynamic_shape_vector-&gt;at(n));</div>
+<div class="line"><span class="lineno">   42</span>      input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a33655ac522f3f70d4ce55cac20c8c4be">setDim</a>(n, dynamic_shape_vector-&gt;dims(n));</div>
 <div class="line"><span class="lineno">   43</span>    }</div>
 <div class="line"><span class="lineno">   44</span>  }</div>
 <div class="line"><span class="lineno">   45</span><span class="preprocessor">#endif </span><span class="comment">// DIS_DYN_SHAPES</span></div>
 <div class="line"><span class="lineno">   46</span>  <span class="keywordflow">return</span> input_shape;</div>
 <div class="line"><span class="lineno">   47</span>}</div>
-<div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a91666f1edc0a1e44b14ff098c81988ba"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a91666f1edc0a1e44b14ff098c81988ba">luci_interpreter::RuntimeGraph::getDynamicShapeTensor</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; * getDynamicShapeTensor(const circle::Tensor *tensor)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00150">RuntimeGraph.cpp:150</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_a338cd546f77a176fc3b907b7025cb066"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#a338cd546f77a176fc3b907b7025cb066">luci_interpreter::RuntimeShape::resize</a></div><div class="ttdeci">void resize(int dimensions_count)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00121">Tensor.h:121</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_1_1kernels_html_a74f2161267eeabcf602a15e16c2350f5"><div class="ttname"><a href="namespaceluci__interpreter_1_1kernels.html#a74f2161267eeabcf602a15e16c2350f5">luci_interpreter::kernels::getTensorShape</a></div><div class="ttdeci">tflite::RuntimeShape getTensorShape(const Tensor *tensor)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00194">Utils.h:194</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00150">luci_interpreter::RuntimeGraph::getDynamicShapeTensor()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00194">getTensorShape()</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00151">luci_interpreter::RuntimeGraph::getDynamicShapeTensor()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00194">getTensorShape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00121">luci_interpreter::RuntimeShape::resize()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00114">luci_interpreter::RuntimeShape::setDim()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_add_8cpp_source.html#l00132">luci_interpreter::execute_kernel_CircleAdd()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_mul_8cpp_source.html#l00123">luci_interpreter::execute_kernel_CircleMul()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_sub_8cpp_source.html#l00047">luci_interpreter::execute_kernel_CircleSub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_tanh_8cpp_source.html#l00107">luci_interpreter::evalInteger()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_add_8cpp_source.html#l00049">luci_interpreter::execute_kernel_CircleAdd()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_logistic_8cpp_source.html#l00049">luci_interpreter::execute_kernel_CircleLogistic()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_mul_8cpp_source.html#l00048">luci_interpreter::execute_kernel_CircleMul()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_sub_8cpp_source.html#l00047">luci_interpreter::execute_kernel_CircleSub()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_tanh_8cpp_source.html#l00156">luci_interpreter::execute_kernel_CircleTanh()</a>.</p>
 
 </div>
 </div>
-<a id="a46ddb4fcfc40db388a80ec1680a00676" name="a46ddb4fcfc40db388a80ec1680a00676"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46ddb4fcfc40db388a80ec1680a00676">&#9670;&#160;</a></span>getTensorShape() <span class="overload">[1/2]</span></h2>
+<a id="a8716c9bd4dca4aea5d2ae3bc7f26a509" name="a8716c9bd4dca4aea5d2ae3bc7f26a509"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8716c9bd4dca4aea5d2ae3bc7f26a509">&#9670;&#160;</a></span>getTensorShape() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2243,7 +2348,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">tflite::RuntimeShape luci_interpreter::kernels::getTensorShape </td>
+          <td class="memname"><a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> luci_interpreter::kernels::getTensorShape </td>
           <td>(</td>
           <td class="paramtype">const circle::Tensor *&#160;</td>
           <td class="paramname"><em>tensor</em></td><td>)</td>
@@ -2257,20 +2362,22 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00105">105</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  106</span>{</div>
-<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">if</span> (tensor == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">return</span> tflite::RuntimeShape();</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>  tflite::RuntimeShape runtime_shape(Tensor::num_dims(tensor));</div>
-<div class="line"><span class="lineno">  111</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; Tensor::num_dims(tensor); ++i)</div>
-<div class="line"><span class="lineno">  112</span>  {</div>
-<div class="line"><span class="lineno">  113</span>    runtime_shape.SetDim(i, <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">Tensor::dim</a>(tensor, i));</div>
-<div class="line"><span class="lineno">  114</span>  }</div>
-<div class="line"><span class="lineno">  115</span>  <span class="keywordflow">return</span> runtime_shape;</div>
-<div class="line"><span class="lineno">  116</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00104">104</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span>{</div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">if</span> (tensor == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">return</span> <a class="code hl_class" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a>();</div>
+<div class="line"><span class="lineno">  108</span> </div>
+<div class="line"><span class="lineno">  109</span>  <span class="keyword">auto</span> <span class="keyword">const</span> tensor_shape = Tensor::tensor_shape(tensor);</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>  <a class="code hl_class" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> runtime_shape(tensor_shape.size());</div>
+<div class="line"><span class="lineno">  112</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; tensor_shape.size(); ++i)</div>
+<div class="line"><span class="lineno">  113</span>  {</div>
+<div class="line"><span class="lineno">  114</span>    runtime_shape.setDim(i, tensor_shape[i]);</div>
+<div class="line"><span class="lineno">  115</span>  }</div>
+<div class="line"><span class="lineno">  116</span>  <span class="keywordflow">return</span> runtime_shape;</div>
+<div class="line"><span class="lineno">  117</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00044">circle_eval_diff::TensorShape::dim()</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00114">luci_interpreter::RuntimeShape::setDim()</a>.</p>
 
 </div>
 </div>
@@ -2314,7 +2421,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00041">luci_interpreter::Shape::dim()</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00039">luci_interpreter::Shape::num_dims()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00392">luci_interpreter_pal::lstm_internal::calculateLstmGate()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::AveragePool2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_batch_mat_mul_8cpp_source.html#l00052">luci_interpreter::kernels::BatchMatMul::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00038">luci_interpreter::kernels::Conv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_depthwise_conv2_d_8cpp_source.html#l00037">luci_interpreter::kernels::DepthwiseConv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00038">luci_interpreter::kernels::StridedSlice::configure()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_tanh_8cpp_source.html#l00105">luci_interpreter::evalInteger()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00033">evalTISOKernel()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00094">evalTISOQuantizedKernel()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_batch_mat_mul_8cpp_source.html#l00151">luci_interpreter::kernels::BatchMatMul::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_batch_to_space_n_d_8cpp_source.html#l00081">luci_interpreter::kernels::BatchToSpaceND::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_depth_to_space_8cpp_source.html#l00058">luci_interpreter::kernels::DepthToSpace::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_dequantize_8cpp_source.html#l00044">luci_interpreter::kernels::Dequantize::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_e_l_u_8cpp_source.html#l00038">luci_interpreter::kernels::Elu::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_fill_8cpp_source.html#l00087">luci_interpreter::kernels::Fill::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_l2_pool2_d_8cpp_source.html#l00062">luci_interpreter::kernels::L2Pool2D::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_local_response_normalization_8cpp_source.html#l00045">luci_interpreter::kernels::LocalResponseNormalization::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_logical_or_8cpp_source.html#l00040">luci_interpreter::kernels::LogicalOr::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_pad_8cpp_source.html#l00063">luci_interpreter::kernels::Pad::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_pad_v2_8cpp_source.html#l00067">luci_interpreter::kernels::PadV2::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_quantize_8cpp_source.html#l00101">luci_interpreter::kernels::Quantize::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_resize_bilinear_8cpp_source.html#l00051">luci_interpreter::kernels::ResizeBilinear::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_resize_nearest_neighbor_8cpp_source.html#l00051">luci_interpreter::kernels::ResizeNearestNeighbor::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_reverse_v2_8cpp_source.html#l00060">luci_interpreter::kernels::ReverseV2::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00097">luci_interpreter::kernels::Slice::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_space_to_batch_n_d_8cpp_source.html#l00076">luci_interpreter::kernels::SpaceToBatchND::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_space_to_depth_8cpp_source.html#l00057">luci_interpreter::kernels::SpaceToDepth::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00108">luci_interpreter::kernels::StridedSlice::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_transpose_8cpp_source.html#l00058">luci_interpreter::kernels::Transpose::execute()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00096">luci_interpreter::execute_kernel_CircleSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00075">luci_interpreter::execute_kernel_CircleStridedSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_tanh_8cpp_source.html#l00151">luci_interpreter::execute_kernel_CircleTanh()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00029">getTensorRuntimeShape()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_batch_mat_mul_8cpp_source.html#l00124">TransposeRowsColumns()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00227">luci_interpreter::kernels::VectorOfTensors&lt; T, is_const &gt;::VectorOfTensors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp_source.html#l00037">luci_interpreter::kernels::AveragePool2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_batch_mat_mul_8cpp_source.html#l00052">luci_interpreter::kernels::BatchMatMul::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp_source.html#l00038">luci_interpreter::kernels::Conv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_depthwise_conv2_d_8cpp_source.html#l00037">luci_interpreter::kernels::DepthwiseConv2D::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00038">luci_interpreter::kernels::StridedSlice::configure()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00060">evalTISOKernel()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00120">evalTISOQuantizedKernel()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_batch_mat_mul_8cpp_source.html#l00151">luci_interpreter::kernels::BatchMatMul::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_batch_to_space_n_d_8cpp_source.html#l00081">luci_interpreter::kernels::BatchToSpaceND::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_depth_to_space_8cpp_source.html#l00058">luci_interpreter::kernels::DepthToSpace::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_dequantize_8cpp_source.html#l00044">luci_interpreter::kernels::Dequantize::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_e_l_u_8cpp_source.html#l00038">luci_interpreter::kernels::Elu::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_fill_8cpp_source.html#l00087">luci_interpreter::kernels::Fill::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_l2_pool2_d_8cpp_source.html#l00062">luci_interpreter::kernels::L2Pool2D::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_local_response_normalization_8cpp_source.html#l00045">luci_interpreter::kernels::LocalResponseNormalization::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_logical_or_8cpp_source.html#l00040">luci_interpreter::kernels::LogicalOr::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_pad_8cpp_source.html#l00063">luci_interpreter::kernels::Pad::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_pad_v2_8cpp_source.html#l00067">luci_interpreter::kernels::PadV2::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_quantize_8cpp_source.html#l00101">luci_interpreter::kernels::Quantize::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_resize_bilinear_8cpp_source.html#l00051">luci_interpreter::kernels::ResizeBilinear::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_resize_nearest_neighbor_8cpp_source.html#l00051">luci_interpreter::kernels::ResizeNearestNeighbor::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_reverse_v2_8cpp_source.html#l00060">luci_interpreter::kernels::ReverseV2::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00097">luci_interpreter::kernels::Slice::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_space_to_batch_n_d_8cpp_source.html#l00076">luci_interpreter::kernels::SpaceToBatchND::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_space_to_depth_8cpp_source.html#l00057">luci_interpreter::kernels::SpaceToDepth::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00108">luci_interpreter::kernels::StridedSlice::execute()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_transpose_8cpp_source.html#l00058">luci_interpreter::kernels::Transpose::execute()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00053">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00109">luci_interpreter::execute_kernel_CircleSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00075">luci_interpreter::execute_kernel_CircleStridedSlice()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_transpose_8cpp_source.html#l00045">luci_interpreter::execute_kernel_CircleTranspose()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00029">getTensorRuntimeShape()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_batch_mat_mul_8cpp_source.html#l00124">TransposeRowsColumns()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00227">luci_interpreter::kernels::VectorOfTensors&lt; T, is_const &gt;::VectorOfTensors()</a>.</p>
 
 </div>
 </div>
@@ -2786,7 +2893,7 @@ template&lt;typename T , typename U , typename... Other&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html#l00149">quantizeMultiplier()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_equal_8cpp_source.html#l00032">luci_interpreter::kernels::Equal::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_greater_8cpp_source.html#l00032">luci_interpreter::kernels::Greater::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_greater_equal_8cpp_source.html#l00035">luci_interpreter::kernels::GreaterEqual::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_less_8cpp_source.html#l00032">luci_interpreter::kernels::Less::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_less_equal_8cpp_source.html#l00032">luci_interpreter::kernels::LessEqual::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_not_equal_8cpp_source.html#l00032">luci_interpreter::kernels::NotEqual::configure()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00094">evalTISOQuantizedKernel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_equal_8cpp_source.html#l00032">luci_interpreter::kernels::Equal::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_greater_8cpp_source.html#l00032">luci_interpreter::kernels::Greater::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_greater_equal_8cpp_source.html#l00035">luci_interpreter::kernels::GreaterEqual::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_less_8cpp_source.html#l00032">luci_interpreter::kernels::Less::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_less_equal_8cpp_source.html#l00032">luci_interpreter::kernels::LessEqual::configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_not_equal_8cpp_source.html#l00032">luci_interpreter::kernels::NotEqual::configure()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00120">evalTISOQuantizedKernel()</a>.</p>
 
 </div>
 </div>

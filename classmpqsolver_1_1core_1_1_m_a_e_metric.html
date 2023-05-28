@@ -169,7 +169,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   36</span> </div>
 <div class="line"><span class="lineno">   37</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> sample_index = 0; sample_index &lt; first.size(); ++sample_index)</div>
 <div class="line"><span class="lineno">   38</span>  {</div>
-<div class="line"><span class="lineno">   39</span>    assert(first[sample_index].<a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>() == second[sample_index].<a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>());</div>
+<div class="line"><span class="lineno">   39</span>    assert(first[sample_index].<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>() == second[sample_index].<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>());</div>
 <div class="line"><span class="lineno">   40</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> out_index = 0; out_index &lt; first[sample_index].size(); ++out_index)</div>
 <div class="line"><span class="lineno">   41</span>    {</div>
 <div class="line"><span class="lineno">   42</span>      <span class="keyword">const</span> <a class="code hl_typedef" href="namespacempqsolver_1_1core.html#ad8d2a28d403e2d2ee492235eed91fc7c">Buffer</a> &amp;first_elementary = first[sample_index][out_index];</div>
@@ -195,8 +195,9 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition:</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 <div class="ttc" id="anamespacempqsolver_1_1core_html_ad8d2a28d403e2d2ee492235eed91fc7c"><div class="ttname"><a href="namespacempqsolver_1_1core.html#ad8d2a28d403e2d2ee492235eed91fc7c">mpqsolver::core::Buffer</a></div><div class="ttdeci">std::vector&lt; char &gt; Buffer</div><div class="ttdef"><b>Definition:</b> <a href="_error_metric_8h_source.html#l00027">ErrorMetric.h:27</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_data_type_traits_8h_source.html#l00122">loco::size()</a>.</p>
+<p class="reference">References <a class="el" href="_data_type_traits_8h_source.html#l00122">loco::size()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 </div>
 </div>

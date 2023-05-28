@@ -185,12 +185,12 @@ $(document).ready(function(){initNavTree('enco_2frontend_2caffe_2src_2_frontend_
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    assert(layer.has_name());</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    assert(layer.has_type());</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; layer.top().size(); ++n)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; layer.top().<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>(); ++n)</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    {</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      def(layer.top(n));</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    }</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; layer.bottom().size(); ++n)</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; layer.bottom().<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>(); ++n)</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    {</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      use(layer.bottom(n));</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    }</div>
@@ -249,6 +249,7 @@ $(document).ready(function(){initNavTree('enco_2frontend_2caffe_2src_2_frontend_
 <div class="ttc" id="anamespacenncc_1_1core_1_1_a_d_t_html"><div class="ttname"><a href="namespacenncc_1_1core_1_1_a_d_t.html">nncc::core::ADT</a></div><div class="ttdef"><b>Definition:</b> <a href="feature_2_accessor_8h_source.html#l00026">Accessor.h:27</a></div></div>
 <div class="ttc" id="aoneco_2include_2moco_2onnx_2_frontend_8h_html"><div class="ttname"><a href="oneco_2include_2moco_2onnx_2_frontend_8h.html">Frontend.h</a></div></div>
 <div class="ttc" id="aoneco_2src_2_graph_builder_registry_8h_html"><div class="ttname"><a href="oneco_2src_2_graph_builder_registry_8h.html">GraphBuilderRegistry.h</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 <div class="ttc" id="astructcoco_1_1_data_html_a5ac5a49f624c1ca87745740c8b7e89d4"><div class="ttname"><a href="structcoco_1_1_data.html#a5ac5a49f624c1ca87745740c8b7e89d4">coco::Data::create</a></div><div class="ttdeci">static std::unique_ptr&lt; Data &gt; create(void)</div><div class="ttdef"><b>Definition:</b> <a href="_data_8cpp_source.html#l00202">Data.cpp:202</a></div></div>
 <div class="ttc" id="astructcoco_1_1_entity_manager_html_a68ea4540ef15eda0fcea612a164841ad"><div class="ttname"><a href="structcoco_1_1_entity_manager.html#a68ea4540ef15eda0fcea612a164841ad">coco::EntityManager::block</a></div><div class="ttdeci">virtual BlockManager * block(void)=0</div></div>
 <div class="ttc" id="astructcoco_1_1_entity_manager_html_a7ed23acec62417b496122aa536c380dd"><div class="ttname"><a href="structcoco_1_1_entity_manager.html#a7ed23acec62417b496122aa536c380dd">coco::EntityManager::output</a></div><div class="ttdeci">virtual OutputManager * output(void)=0</div></div>

@@ -54,7 +54,6 @@ var hierarchy =
     [ "ActivationFunctionImpl< FusedActivationFunctionType::kRelu >", "struct_activation_function_impl_3_01_fused_activation_function_type_1_1k_relu_01_4.html", null ],
     [ "ActivationFunctionImpl< FusedActivationFunctionType::kRelu1 >", "struct_activation_function_impl_3_01_fused_activation_function_type_1_1k_relu1_01_4.html", null ],
     [ "ActivationFunctionImpl< FusedActivationFunctionType::kRelu6 >", "struct_activation_function_impl_3_01_fused_activation_function_type_1_1k_relu6_01_4.html", null ],
-    [ "luci_interpreter_pal::ActivationFunctor", "classluci__interpreter__pal_1_1_activation_functor.html", null ],
     [ "nnfw::cker::ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", null ],
     [ "mir_interpreter::AddImpl< T >", "structmir__interpreter_1_1_add_impl.html", null ],
     [ "mir_interpreter::AddImpl< uint8_t >", "structmir__interpreter_1_1_add_impl_3_01uint8__t_01_4.html", null ],
@@ -63,6 +62,10 @@ var hierarchy =
     [ "mir::AffineQuantization", "classmir_1_1_affine_quantization.html", null ],
     [ "circle_planner::AllocationNodeInformation", "structcircle__planner_1_1_allocation_node_information.html", null ],
     [ "onert::backend::cpu::ops::DetectionPostProcessLayer::Allocations", "structonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer_1_1_allocations.html", null ],
+    [ "flatbuffers::Allocator", "classflatbuffers_1_1_allocator.html", [
+      [ "flatbuffers::DefaultAllocator", "classflatbuffers_1_1_default_allocator.html", null ],
+      [ "flatbuffers::grpc::SliceAllocator", "classflatbuffers_1_1grpc_1_1_slice_allocator.html", null ]
+    ] ],
     [ "onert::backend::basic::Allocator", "classonert_1_1backend_1_1basic_1_1_allocator.html", null ],
     [ "rua::Anchor", "structrua_1_1_anchor.html", null ],
     [ "ANeuralNetworksCompilation", "struct_a_neural_networks_compilation.html", null ],
@@ -1172,10 +1175,12 @@ var hierarchy =
       [ "souschef::RangedArguments< InputIt >", "classsouschef_1_1_ranged_arguments.html", null ]
     ] ],
     [ "Argv< N >", "class_argv.html", null ],
-    [ "luci_interpreter::lstm::ArithmeticParams", "structluci__interpreter_1_1lstm_1_1_arithmetic_params.html", null ],
+    [ "luci_interpreter_pal::ArithmeticParams", "structluci__interpreter__pal_1_1_arithmetic_params.html", null ],
     [ "onert::backend::acl_common::ARMComputeAxis", "classonert_1_1backend_1_1acl__common_1_1_a_r_m_compute_axis.html", null ],
+    [ "flatbuffers::Array< T, length >", "classflatbuffers_1_1_array.html", null ],
     [ "ndarray::Array< T >", "classndarray_1_1_array.html", null ],
     [ "nnfw::cker::random::Array< T, ElementCount >", "classnnfw_1_1cker_1_1random_1_1_array.html", null ],
+    [ "flatbuffers::Array< Offset< T >, length >", "classflatbuffers_1_1_array_3_01_offset_3_01_t_01_4_00_01length_01_4.html", null ],
     [ "nnfw::cker::random::Array< uint32_t, 2 >", "classnnfw_1_1cker_1_1random_1_1_array.html", null ],
     [ "nnfw::cker::random::Array< uint32_t, 4 >", "classnnfw_1_1cker_1_1random_1_1_array.html", null ],
     [ "arser::Arser", "classarser_1_1_arser.html", null ],
@@ -1242,6 +1247,7 @@ var hierarchy =
       [ "onert::backend::cpu::Backend", "classonert_1_1backend_1_1cpu_1_1_backend.html", null ],
       [ "onert::backend::gpu_cl::Backend", "classonert_1_1backend_1_1gpu__cl_1_1_backend.html", null ],
       [ "onert::backend::ruy::Backend", "classonert_1_1backend_1_1ruy_1_1_backend.html", null ],
+      [ "onert::backend::train::Backend", "classonert_1_1backend_1_1train_1_1_backend.html", null ],
       [ "onert::backend::trix::Backend", "classonert_1_1backend_1_1trix_1_1_backend.html", null ],
       [ "onert::backend::xnnpack::Backend", "classonert_1_1backend_1_1xnnpack_1_1_backend.html", null ]
     ] ],
@@ -1255,6 +1261,7 @@ var hierarchy =
       ] ],
       [ "onert::backend::cpu::BackendContext", "classonert_1_1backend_1_1cpu_1_1_backend_context.html", null ],
       [ "onert::backend::ruy::BackendContext", "classonert_1_1backend_1_1ruy_1_1_backend_context.html", null ],
+      [ "onert::backend::train::BackendContext", "classonert_1_1backend_1_1train_1_1_backend_context.html", null ],
       [ "onert::backend::trix::BackendContext", "classonert_1_1backend_1_1trix_1_1_backend_context.html", null ],
       [ "onert::backend::xnnpack::BackendContext", "classonert_1_1backend_1_1xnnpack_1_1_backend_context.html", null ]
     ] ],
@@ -1273,6 +1280,7 @@ var hierarchy =
       [ "moco::FixedArityNode< N, Base >", "classmoco_1_1_fixed_arity_node.html", null ],
       [ "moco::VariadicArityNode< Base >", "classmoco_1_1_variadic_arity_node.html", null ]
     ] ],
+    [ "flatbuffers::BaseGenerator", "classflatbuffers_1_1_base_generator.html", null ],
     [ "onert::base_loader::BaseLoader< LoaderDomain >", "classonert_1_1base__loader_1_1_base_loader.html", null ],
     [ "nnfw::cker::BatchMatMul", "classnnfw_1_1cker_1_1_batch_mat_mul.html", null ],
     [ "luci_interpreter::BatchMatMulParams", "structluci__interpreter_1_1_batch_mat_mul_params.html", null ],
@@ -1324,6 +1332,7 @@ var hierarchy =
     [ "onert::backend::cpu::ops::DetectionPostProcessLayer::CenterSizeBox", "structonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer_1_1_center_size_box.html", null ],
     [ "CfgRunner.CfgRunner", "class_cfg_runner_1_1_cfg_runner.html", null ],
     [ "luci_interpreter::kernels::ChannelQuantMultipliers", "structluci__interpreter_1_1kernels_1_1_channel_quant_multipliers.html", null ],
+    [ "flatbuffers::CheckedError", "classflatbuffers_1_1_checked_error.html", null ],
     [ "circle_eval_diff::CircleEvalDiff", "classcircle__eval__diff_1_1_circle_eval_diff.html", null ],
     [ "exo::CircleExporter", "classexo_1_1_circle_exporter.html", null ],
     [ "luci::CircleExporter", "classluci_1_1_circle_exporter.html", null ],
@@ -1623,6 +1632,7 @@ var hierarchy =
     [ "enco::Code", "structenco_1_1_code.html", null ],
     [ "onert::compiler::CodeAndInfo", "structonert_1_1compiler_1_1_code_and_info.html", null ],
     [ "CodeIndex", "class_code_index.html", null ],
+    [ "flatbuffers::CodeWriter", "classflatbuffers_1_1_code_writer.html", null ],
     [ "cli::Command", "structcli_1_1_command.html", [
       [ "DecodeCommand", "struct_decode_command.html", null ],
       [ "DecodeCommand", "struct_decode_command.html", null ],
@@ -1639,8 +1649,10 @@ var hierarchy =
     ] ],
     [ "Command.Command", "class_command_1_1_command.html", null ],
     [ "nnc::cli::CommandLine", "classnnc_1_1cli_1_1_command_line.html", null ],
+    [ "flatbuffers::CommentConfig", "structflatbuffers_1_1_comment_config.html", null ],
     [ "locop::NodeDesc::Comments", "classlocop_1_1_node_desc_1_1_comments.html", null ],
     [ "nnfw::misc::tensor::Comparator", "classnnfw_1_1misc_1_1tensor_1_1_comparator.html", null ],
+    [ "luci_interpreter_pal::ComparisonParams", "structluci__interpreter__pal_1_1_comparison_params.html", null ],
     [ "nnfw::cker::ComparisonParams", "structnnfw_1_1cker_1_1_comparison_params.html", null ],
     [ "CompilationBuilder", "class_compilation_builder.html", null ],
     [ "rua::CompilationService", "structrua_1_1_compilation_service.html", null ],
@@ -1648,10 +1660,14 @@ var hierarchy =
     [ "onert::compiler::CompilerFactory", "classonert_1_1compiler_1_1_compiler_factory.html", null ],
     [ "onert::compiler::CompilerOptions", "classonert_1_1compiler_1_1_compiler_options.html", null ],
     [ "luci_interpreter::ConcatenationParams", "structluci__interpreter_1_1_concatenation_params.html", null ],
+    [ "luci_interpreter_pal::ConcatenationParams", "structluci__interpreter__pal_1_1_concatenation_params.html", null ],
     [ "nnfw::cker::ConcatenationParams", "structnnfw_1_1cker_1_1_concatenation_params.html", null ],
     [ "mir_interpreter::ConcatImpl< T >", "structmir__interpreter_1_1_concat_impl.html", null ],
     [ "mir_interpreter::ConcatImpl< uint8_t >", "structmir__interpreter_1_1_concat_impl_3_01uint8__t_01_4.html", null ],
     [ "ConcatSpec", "class_concat_spec.html", null ],
+    [ "std::conditional", null, [
+      [ "flatbuffers::conditional< B, T, F >", "structflatbuffers_1_1conditional.html", null ]
+    ] ],
     [ "hermes::Config", "structhermes_1_1_config.html", [
       [ "circlechef::LoggerConfig", "classcirclechef_1_1_logger_config.html", null ],
       [ "exo::LoggerConfig", "classexo_1_1_logger_config.html", null ],
@@ -1695,6 +1711,7 @@ var hierarchy =
     [ "luci_interpreter::Conv2DParams", "structluci__interpreter_1_1_conv2_d_params.html", null ],
     [ "mir_onnx::ConverterContext", "classmir__onnx_1_1_converter_context.html", null ],
     [ "ConvolutionSpec", "class_convolution_spec.html", null ],
+    [ "luci_interpreter_pal::ConvParams", "structluci__interpreter__pal_1_1_conv_params.html", null ],
     [ "nnfw::cker::ConvParams", "structnnfw_1_1cker_1_1_conv_params.html", null ],
     [ "nnfw::ruy::ConvParams", "structnnfw_1_1ruy_1_1_conv_params.html", null ],
     [ "onert::ir::Coordinates", "classonert_1_1ir_1_1_coordinates.html", null ],
@@ -1777,6 +1794,13 @@ var hierarchy =
     [ "mir_interpreter::DeConv2DImpl< T >", "structmir__interpreter_1_1_de_conv2_d_impl.html", null ],
     [ "mir::Deconv2DOpAttributes", "structmir_1_1_deconv2_d_op_attributes.html", null ],
     [ "coco::Def", "classcoco_1_1_def.html", null ],
+    [ "flatbuffers::Definition", "structflatbuffers_1_1_definition.html", [
+      [ "flatbuffers::EnumDef", "structflatbuffers_1_1_enum_def.html", null ],
+      [ "flatbuffers::FieldDef", "structflatbuffers_1_1_field_def.html", null ],
+      [ "flatbuffers::RPCCall", "structflatbuffers_1_1_r_p_c_call.html", null ],
+      [ "flatbuffers::ServiceDef", "structflatbuffers_1_1_service_def.html", null ],
+      [ "flatbuffers::StructDef", "structflatbuffers_1_1_struct_def.html", null ]
+    ] ],
     [ "coco::Dep", "classcoco_1_1_dep.html", null ],
     [ "luci_interpreter::DepthToSpaceParams", "structluci__interpreter_1_1_depth_to_space_params.html", null ],
     [ "mir_interpreter::DepthwiseConv2DImpl< T >", "structmir__interpreter_1_1_depthwise_conv2_d_impl.html", null ],
@@ -1793,6 +1817,7 @@ var hierarchy =
     ] ],
     [ "loco::DepthwiseFilterIndex", "classloco_1_1_depthwise_filter_index.html", null ],
     [ "loco::DepthwiseFilterShape", "classloco_1_1_depthwise_filter_shape.html", null ],
+    [ "flatbuffers::DetachedBuffer", "classflatbuffers_1_1_detached_buffer.html", null ],
     [ "onert::backend::cpu::ops::DetectionPostProcessLayer::DetectionPostProcessParameters", "structonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer_1_1_detection_post_process_parameters.html", null ],
     [ "onert::backend::trix::DevContext", "classonert_1_1backend_1_1trix_1_1_dev_context.html", null ],
     [ "npud::core::Device", "structnpud_1_1core_1_1_device.html", null ],
@@ -1914,6 +1939,7 @@ var hierarchy =
       [ "coco::OutputManager", "classcoco_1_1_output_manager.html", null ]
     ] ],
     [ "coco::EntityManager", "structcoco_1_1_entity_manager.html", null ],
+    [ "flatbuffers::EnumVal", "structflatbuffers_1_1_enum_val.html", null ],
     [ "hermes::EnvConfig< Format >", "classhermes_1_1_env_config.html", null ],
     [ "nnfw::misc::EnvVar", "classnnfw_1_1misc_1_1_env_var.html", null ],
     [ "mir_interpreter::EqualImpl< T >", "structmir__interpreter_1_1_equal_impl.html", null ],
@@ -1993,6 +2019,7 @@ var hierarchy =
     [ "loco::FeatureShape", "classloco_1_1_feature_shape.html", null ],
     [ "onert::ir::FeatureShape", "structonert_1_1ir_1_1_feature_shape.html", null ],
     [ "moco::FeatureShapeUpdater", "classmoco_1_1_feature_shape_updater.html", null ],
+    [ "flatbuffers::FlatBufferBuilder::FieldLoc", "structflatbuffers_1_1_flat_buffer_builder_1_1_field_loc.html", null ],
     [ "cwrap::Fildes", "classcwrap_1_1_fildes.html", null ],
     [ "foder::FileLoader", "classfoder_1_1_file_loader.html", null ],
     [ "nnfw::cker::functor::FillFunctor< Device, T >", "structnnfw_1_1cker_1_1functor_1_1_fill_functor.html", null ],
@@ -2017,8 +2044,21 @@ var hierarchy =
     [ "loco::FilterShape", "classloco_1_1_filter_shape.html", null ],
     [ "loco::FixedArity< N >", "structloco_1_1_fixed_arity.html", null ],
     [ "FixedReshapeLayer", "struct_fixed_reshape_layer.html", null ],
+    [ "flatbuffers::FlatBufferBuilder", "classflatbuffers_1_1_flat_buffer_builder.html", [
+      [ "flatbuffers::grpc::MessageBuilder", "classflatbuffers_1_1grpc_1_1_message_builder.html", null ]
+    ] ],
+    [ "flatbuffers::FLATBUFFERS_FINAL_CLASS< T >", "classflatbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html", null ],
+    [ "flexbuffers::FLATBUFFERS_FINAL_CLASS", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html", null ],
+    [ "flatbuffers::FlatCompiler", "classflatbuffers_1_1_flat_compiler.html", null ],
+    [ "flatbuffers::FloatConstantGenerator", "classflatbuffers_1_1_float_constant_generator.html", [
+      [ "flatbuffers::SimpleFloatConstantGenerator", "classflatbuffers_1_1_simple_float_constant_generator.html", null ],
+      [ "flatbuffers::TypedFloatConstantGenerator", "classflatbuffers_1_1_typed_float_constant_generator.html", null ]
+    ] ],
     [ "nnfw::cker::optimized::FloatDepthwiseConvKernel< kAllowStrided, kFixedInputDepth, kFixedDepthMultiplier >", "structnnfw_1_1cker_1_1optimized_1_1_float_depthwise_conv_kernel.html", null ],
     [ "optimized_ops::FloatDepthwiseConvKernel< kAllowStrided, kFixedInputDepth, kFixedDepthMultiplier >", "structoptimized__ops_1_1_float_depthwise_conv_kernel.html", null ],
+    [ "flatbuffers::FnvTraits< T >", "structflatbuffers_1_1_fnv_traits.html", null ],
+    [ "flatbuffers::FnvTraits< uint32_t >", "structflatbuffers_1_1_fnv_traits_3_01uint32__t_01_4.html", null ],
+    [ "flatbuffers::FnvTraits< uint64_t >", "structflatbuffers_1_1_fnv_traits_3_01uint64__t_01_4.html", null ],
     [ "ForEachDimension< rest >", "struct_for_each_dimension.html", null ],
     [ "ForEachDimension< 0 >", "struct_for_each_dimension_3_010_01_4.html", null ],
     [ "sparsity::FormatConverter< T >", "classsparsity_1_1_format_converter.html", null ],
@@ -2037,7 +2077,7 @@ var hierarchy =
     [ "mir_interpreter::FullyConnectedImpl< T >", "structmir__interpreter_1_1_fully_connected_impl.html", null ],
     [ "mir_interpreter::FullyConnectedImpl< uint8_t >", "structmir__interpreter_1_1_fully_connected_impl_3_01uint8__t_01_4.html", null ],
     [ "luci_interpreter::FullyConnectedParams", "structluci__interpreter_1_1_fully_connected_params.html", null ],
-    [ "luci_interpreter::lstm::FullyConnectedParams", "structluci__interpreter_1_1lstm_1_1_fully_connected_params.html", null ],
+    [ "luci_interpreter_pal::FullyConnectedParams", "structluci__interpreter__pal_1_1_fully_connected_params.html", null ],
     [ "nnfw::cker::FullyConnectedParams", "structnnfw_1_1cker_1_1_fully_connected_params.html", null ],
     [ "nnfw::ruy::FullyConnectedParams", "structnnfw_1_1ruy_1_1_fully_connected_params.html", null ],
     [ "nnfw::cker::FusedBatchNorm", "classnnfw_1_1cker_1_1_fused_batch_norm.html", null ],
@@ -2059,6 +2099,7 @@ var hierarchy =
     [ "nnfw::ruy::GemmParams< AccumScalar, DstScalar, quantization_flavor >", "structnnfw_1_1ruy_1_1_gemm_params.html", null ],
     [ "circlechef::GeneratedModel", "classcirclechef_1_1_generated_model.html", null ],
     [ "tflchef::GeneratedModel", "classtflchef_1_1_generated_model.html", null ],
+    [ "flatbuffers::FlatCompiler::Generator", "structflatbuffers_1_1_flat_compiler_1_1_generator.html", null ],
     [ "npud::core::GenericBuffer", "structnpud_1_1core_1_1_generic_buffer.html", null ],
     [ "npud::core::GenericBuffers", "structnpud_1_1core_1_1_generic_buffers.html", null ],
     [ "enco::GlobalData", "structenco_1_1_global_data.html", null ],
@@ -2344,6 +2385,7 @@ var hierarchy =
       [ "onert::backend::cpu::Config", "classonert_1_1backend_1_1cpu_1_1_config.html", null ],
       [ "onert::backend::gpu_cl::Config", "classonert_1_1backend_1_1gpu__cl_1_1_config.html", null ],
       [ "onert::backend::ruy::Config", "classonert_1_1backend_1_1ruy_1_1_config.html", null ],
+      [ "onert::backend::train::Config", "classonert_1_1backend_1_1train_1_1_config.html", null ],
       [ "onert::backend::trix::Config", "classonert_1_1backend_1_1trix_1_1_config.html", null ],
       [ "onert::backend::xnnpack::Config", "classonert_1_1backend_1_1xnnpack_1_1_config.html", null ]
     ] ],
@@ -2355,6 +2397,7 @@ var hierarchy =
     [ "coco::FeatureLayout::ID", "structcoco_1_1_feature_layout_1_1_i_d.html", null ],
     [ "coco::KernelLayout::ID", "structcoco_1_1_kernel_layout_1_1_i_d.html", null ],
     [ "moco::onnx::Identity_V1", "classmoco_1_1onnx_1_1_identity___v1.html", null ],
+    [ "flatbuffers::IDLOptions", "structflatbuffers_1_1_i_d_l_options.html", null ],
     [ "loco::IErrorListener", "structloco_1_1_i_error_listener.html", [
       [ "loco::ErrorListener", "structloco_1_1_error_listener.html", null ]
     ] ],
@@ -2519,6 +2562,9 @@ var hierarchy =
     [ "onert::exec::feature::IndexIterator", "classonert_1_1exec_1_1feature_1_1_index_iterator.html", null ],
     [ "luci::IndexNodeFinder", "classluci_1_1_index_node_finder.html", null ],
     [ "luci::IndexTensorOutputs", "classluci_1_1_index_tensor_outputs.html", null ],
+    [ "flatbuffers::IndirectHelper< T >", "structflatbuffers_1_1_indirect_helper.html", null ],
+    [ "flatbuffers::IndirectHelper< const T * >", "structflatbuffers_1_1_indirect_helper_3_01const_01_t_01_5_01_4.html", null ],
+    [ "flatbuffers::IndirectHelper< Offset< T > >", "structflatbuffers_1_1_indirect_helper_3_01_offset_3_01_t_01_4_01_4.html", null ],
     [ "INEKernel", null, [
       [ "arm_compute::NECastBoolKernel", "classarm__compute_1_1_n_e_cast_bool_kernel.html", null ],
       [ "arm_compute::NEEmbeddingLookupKernel", "classarm__compute_1_1_n_e_embedding_lookup_kernel.html", null ],
@@ -2543,6 +2589,7 @@ var hierarchy =
       [ "arm_compute::NEOneHot", "classarm__compute_1_1_n_e_one_hot.html", null ]
     ] ],
     [ "nnfw::cker::functor::InflateFunctor< Device, T, N >", "structnnfw_1_1cker_1_1functor_1_1_inflate_functor.html", null ],
+    [ "flatbuffers::FlatCompiler::InitParams", "structflatbuffers_1_1_flat_compiler_1_1_init_params.html", null ],
     [ "moco::tf::eltwise::binary::InputConnector< NodeTy >", "classmoco_1_1tf_1_1eltwise_1_1binary_1_1_input_connector.html", null ],
     [ "circle_eval_diff::InputDataLoader", "classcircle__eval__diff_1_1_input_data_loader.html", [
       [ "circle_eval_diff::DirectoryLoader", "classcircle__eval__diff_1_1_directory_loader.html", null ],
@@ -2557,6 +2604,12 @@ var hierarchy =
     [ "nnfw::cker::InstanceNormParams", "structnnfw_1_1cker_1_1_instance_norm_params.html", null ],
     [ "InstrBuilder", "class_instr_builder.html", null ],
     [ "coco::InstrIndex", "classcoco_1_1_instr_index.html", null ],
+    [ "std::integral_constant", null, [
+      [ "flatbuffers::integral_constant< bool, B >", "structflatbuffers_1_1integral__constant.html", [
+        [ "flatbuffers::bool_constant< B >", "structflatbuffers_1_1bool__constant.html", null ]
+      ] ],
+      [ "flatbuffers::integral_constant< T, v >", "structflatbuffers_1_1integral__constant.html", null ]
+    ] ],
     [ "luci_interpreter::lstm::InterGateParameters", "structluci__interpreter_1_1lstm_1_1_inter_gate_parameters.html", null ],
     [ "luci_interpreter::Interpreter", "classluci__interpreter_1_1_interpreter.html", null ],
     [ "nnc::InterpreterBackend", "classnnc_1_1_interpreter_backend.html", null ],
@@ -2567,7 +2620,22 @@ var hierarchy =
     [ "nnc::cli::IOption", "classnnc_1_1cli_1_1_i_option.html", [
       [ "nnc::cli::Option< T >", "classnnc_1_1cli_1_1_option.html", null ]
     ] ],
+    [ "std::is_enum", null, [
+      [ "flatbuffers::is_enum< T >", "structflatbuffers_1_1is__enum.html", null ]
+    ] ],
+    [ "std::is_floating_point", null, [
+      [ "flatbuffers::is_floating_point< T >", "structflatbuffers_1_1is__floating__point.html", null ]
+    ] ],
     [ "nnfw::cker::is_quant8< T >", "structnnfw_1_1cker_1_1is__quant8.html", null ],
+    [ "std::is_same", null, [
+      [ "flatbuffers::is_same< T, U >", "structflatbuffers_1_1is__same.html", null ]
+    ] ],
+    [ "std::is_scalar", null, [
+      [ "flatbuffers::is_scalar< T >", "structflatbuffers_1_1is__scalar.html", null ]
+    ] ],
+    [ "std::is_unsigned", null, [
+      [ "flatbuffers::is_unsigned< T >", "structflatbuffers_1_1is__unsigned.html", null ]
+    ] ],
     [ "onert::compiler::IScheduler", "structonert_1_1compiler_1_1_i_scheduler.html", [
       [ "onert::compiler::HEScheduler", "classonert_1_1compiler_1_1_h_e_scheduler.html", null ],
       [ "onert::compiler::ManualScheduler", "classonert_1_1compiler_1_1_manual_scheduler.html", null ]
@@ -2608,6 +2676,9 @@ var hierarchy =
       [ "onert::backend::builtin::TensorRegistry", "classonert_1_1backend_1_1builtin_1_1_tensor_registry.html", null ],
       [ "onert::backend::gpu_cl::TensorRegistry", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_registry.html", null ]
     ] ],
+    [ "flatbuffers::IterationVisitor", "structflatbuffers_1_1_iteration_visitor.html", [
+      [ "flatbuffers::ToStringVisitor", "structflatbuffers_1_1_to_string_visitor.html", null ]
+    ] ],
     [ "std::iterator", null, [
       [ "mir::ShapeIter", "classmir_1_1_shape_iter.html", null ]
     ] ],
@@ -2615,6 +2686,7 @@ var hierarchy =
       [ "onert::backend::acl_cl::CLTimer", "classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html", null ],
       [ "onert::util::CPUTimer", "classonert_1_1util_1_1_c_p_u_timer.html", null ]
     ] ],
+    [ "onert::exec::ITrainableFunction", "classonert_1_1exec_1_1_i_trainable_function.html", null ],
     [ "ITransformWeights", null, [
       [ "arm_compute::weights_transformations::CLFullyConnectedLayerReshapeWeightsExManaged", "classarm__compute_1_1weights__transformations_1_1_c_l_fully_connected_layer_reshape_weights_ex_managed.html", null ]
     ] ],
@@ -2796,7 +2868,6 @@ var hierarchy =
       [ "luci_interpreter::kernels::Exp", "classluci__interpreter_1_1kernels_1_1_exp.html", null ],
       [ "luci_interpreter::kernels::ExpandDims", "classluci__interpreter_1_1kernels_1_1_expand_dims.html", null ],
       [ "luci_interpreter::kernels::Fill", "classluci__interpreter_1_1kernels_1_1_fill.html", null ],
-      [ "luci_interpreter::kernels::Fill", "classluci__interpreter_1_1kernels_1_1_fill.html", null ],
       [ "luci_interpreter::kernels::Floor", "classluci__interpreter_1_1kernels_1_1_floor.html", null ],
       [ "luci_interpreter::kernels::Floor", "classluci__interpreter_1_1kernels_1_1_floor.html", null ],
       [ "luci_interpreter::kernels::FloorDiv", "classluci__interpreter_1_1kernels_1_1_floor_div.html", null ],
@@ -2854,8 +2925,6 @@ var hierarchy =
       [ "luci_interpreter::kernels::SpaceToBatchND", "classluci__interpreter_1_1kernels_1_1_space_to_batch_n_d.html", null ],
       [ "luci_interpreter::kernels::SpaceToBatchND", "classluci__interpreter_1_1kernels_1_1_space_to_batch_n_d.html", null ],
       [ "luci_interpreter::kernels::Split", "classluci__interpreter_1_1kernels_1_1_split.html", null ],
-      [ "luci_interpreter::kernels::Split", "classluci__interpreter_1_1kernels_1_1_split.html", null ],
-      [ "luci_interpreter::kernels::SplitV", "classluci__interpreter_1_1kernels_1_1_split_v.html", null ],
       [ "luci_interpreter::kernels::SplitV", "classluci__interpreter_1_1kernels_1_1_split_v.html", null ],
       [ "luci_interpreter::kernels::Sqrt", "classluci__interpreter_1_1kernels_1_1_sqrt.html", null ],
       [ "luci_interpreter::kernels::Sqrt", "classluci__interpreter_1_1kernels_1_1_sqrt.html", null ],
@@ -2865,7 +2934,6 @@ var hierarchy =
       [ "luci_interpreter::kernels::SquaredDifference", "classluci__interpreter_1_1kernels_1_1_squared_difference.html", null ],
       [ "luci_interpreter::kernels::Tanh", "classluci__interpreter_1_1kernels_1_1_tanh.html", null ],
       [ "luci_interpreter::kernels::Tanh", "classluci__interpreter_1_1kernels_1_1_tanh.html", null ],
-      [ "luci_interpreter::kernels::Transpose", "classluci__interpreter_1_1kernels_1_1_transpose.html", null ],
       [ "luci_interpreter::kernels::Transpose", "classluci__interpreter_1_1kernels_1_1_transpose.html", null ],
       [ "luci_interpreter::kernels::While", "classluci__interpreter_1_1kernels_1_1_while.html", null ],
       [ "luci_interpreter::kernels::While", "classluci__interpreter_1_1kernels_1_1_while.html", null ]
@@ -2947,6 +3015,9 @@ var hierarchy =
     [ "luci_interpreter_pal::lstm_internal::LstmSizeInfo", "structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html", null ],
     [ "luci_interpreter_pal::lstm_internal::LstmStepManager", "classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager.html", null ],
     [ "luci_interpreter::lstm::LSTMStruct", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html", null ],
+    [ "std::make_unsigned", null, [
+      [ "flatbuffers::make_unsigned< T >", "structflatbuffers_1_1make__unsigned.html", null ]
+    ] ],
     [ "onert::compiler::ManualSchedulerOptions", "structonert_1_1compiler_1_1_manual_scheduler_options.html", null ],
     [ "loco::TensorBroadcast::Mapping", "classloco_1_1_tensor_broadcast_1_1_mapping.html", null ],
     [ "nnfw::cker::MatMulBCast", "classnnfw_1_1cker_1_1_mat_mul_b_cast.html", null ],
@@ -2980,6 +3051,7 @@ var hierarchy =
     [ "benchmark::MemoryPoller", "classbenchmark_1_1_memory_poller.html", null ],
     [ "rua::MemoryService", "structrua_1_1_memory_service.html", null ],
     [ "MemoryTracker", "class_memory_tracker.html", null ],
+    [ "flatbuffers::grpc::Message< T >", "classflatbuffers_1_1grpc_1_1_message.html", null ],
     [ "hermes::Message", "classhermes_1_1_message.html", null ],
     [ "hermes::MessageBuffer", "classhermes_1_1_message_buffer.html", null ],
     [ "hermes::MessageBus", "structhermes_1_1_message_bus.html", [
@@ -3097,6 +3169,9 @@ var hierarchy =
       [ "loco::GraphInput", "classloco_1_1_graph_input.html", null ],
       [ "loco::GraphOutput", "classloco_1_1_graph_output.html", null ]
     ] ],
+    [ "flatbuffers::NamedHashFunction< T >", "structflatbuffers_1_1_named_hash_function.html", null ],
+    [ "flatbuffers::Namespace", "structflatbuffers_1_1_namespace.html", null ],
+    [ "luci_interpreter_pal::NdArrayDesc< N >", "structluci__interpreter__pal_1_1_nd_array_desc.html", null ],
     [ "NdArrayDesc< N >", "struct_nd_array_desc.html", null ],
     [ "nnfw::cker::NdArrayDesc< N >", "structnnfw_1_1cker_1_1_nd_array_desc.html", null ],
     [ "NNAPIConvert", "class_n_n_a_p_i_convert.html", null ],
@@ -3182,6 +3257,22 @@ var hierarchy =
     [ "nnfw::cker::random::NormalDistribution< Generator, Eigen::half >", "classnnfw_1_1cker_1_1random_1_1_normal_distribution_3_01_generator_00_01_eigen_1_1half_01_4.html", null ],
     [ "nnfw::cker::random::NormalDistribution< Generator, float >", "classnnfw_1_1cker_1_1random_1_1_normal_distribution_3_01_generator_00_01float_01_4.html", null ],
     [ "npud::core::NpuContext", "structnpud_1_1core_1_1_npu_context.html", null ],
+    [ "flatbuffers::internal::nullopt_holder< class >", "structflatbuffers_1_1internal_1_1nullopt__holder.html", null ],
+    [ "flatbuffers::nullopt_t", "structflatbuffers_1_1nullopt__t.html", null ],
+    [ "std::numeric_limits", null, [
+      [ "flatbuffers::numeric_limits< T >", "classflatbuffers_1_1numeric__limits.html", null ]
+    ] ],
+    [ "flexbuffers::Object", "classflexbuffers_1_1_object.html", [
+      [ "flexbuffers::FixedTypedVector", "classflexbuffers_1_1_fixed_typed_vector.html", null ],
+      [ "flexbuffers::Sized", "classflexbuffers_1_1_sized.html", [
+        [ "flexbuffers::Blob", "classflexbuffers_1_1_blob.html", null ],
+        [ "flexbuffers::String", "classflexbuffers_1_1_string.html", null ],
+        [ "flexbuffers::TypedVector", "classflexbuffers_1_1_typed_vector.html", null ],
+        [ "flexbuffers::Vector", "classflexbuffers_1_1_vector.html", [
+          [ "flexbuffers::Map", "classflexbuffers_1_1_map.html", null ]
+        ] ]
+      ] ]
+    ] ],
     [ "object", null, [
       [ "AnalysisTemplate.AnalysisTemplate", "class_analysis_template_1_1_analysis_template.html", null ],
       [ "SingleOperatorTest.SingleOperatorTest", "class_single_operator_test_1_1_single_operator_test.html", null ]
@@ -3210,7 +3301,11 @@ var hierarchy =
     [ "nnfw::misc::tensor::Comparator::Observer", "structnnfw_1_1misc_1_1tensor_1_1_comparator_1_1_observer.html", [
       [ "DiffSummary", "class_diff_summary.html", null ]
     ] ],
+    [ "flatbuffers::Offset< T >", "structflatbuffers_1_1_offset.html", null ],
     [ "tflite2circle::Offset< T >", "classtflite2circle_1_1_offset.html", null ],
+    [ "flatbuffers::Offset< flatbuffers::String >", "structflatbuffers_1_1_offset.html", null ],
+    [ "flatbuffers::Offset< flatbuffers::Vector< typename T::CIR > >", "structflatbuffers_1_1_offset.html", null ],
+    [ "flatbuffers::Offset< void >", "structflatbuffers_1_1_offset.html", null ],
     [ "luci_interpreter::OneHotParams", "structluci__interpreter_1_1_one_hot_params.html", null ],
     [ "validate_onnx2circle.OnnxRunner", "classvalidate__onnx2circle_1_1_onnx_runner.html", null ],
     [ "OpBuilder", "class_op_builder.html", null ],
@@ -3620,6 +3715,7 @@ var hierarchy =
         [ "onert::backend::cpu::KernelGenerator", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html", null ],
         [ "onert::backend::gpu_cl::KernelGenerator", "classonert_1_1backend_1_1gpu__cl_1_1_kernel_generator.html", null ],
         [ "onert::backend::ruy::KernelGenerator", "classonert_1_1backend_1_1ruy_1_1_kernel_generator.html", null ],
+        [ "onert::backend::train::KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", null ],
         [ "onert::backend::trix::KernelGenerator", "classonert_1_1backend_1_1trix_1_1_kernel_generator.html", null ],
         [ "onert::backend::xnnpack::KernelGenerator", "classonert_1_1backend_1_1xnnpack_1_1_kernel_generator.html", null ]
       ] ],
@@ -3763,6 +3859,7 @@ var hierarchy =
       [ "SpatialPadding", "struct_spatial_padding.html", null ]
     ] ],
     [ "loco::PaddingND", "classloco_1_1_padding_n_d.html", null ],
+    [ "luci_interpreter_pal::PaddingValues", "structluci__interpreter__pal_1_1_padding_values.html", null ],
     [ "nnfw::cker::PaddingValues", "structnnfw_1_1cker_1_1_padding_values.html", null ],
     [ "nnfw::ruy::PaddingValues", "structnnfw_1_1ruy_1_1_padding_values.html", null ],
     [ "mir_interpreter::PadImpl< T >", "structmir__interpreter_1_1_pad_impl.html", null ],
@@ -3820,6 +3917,9 @@ var hierarchy =
     [ "moco::PlaneInference::Parameters", "structmoco_1_1_plane_inference_1_1_parameters.html", null ],
     [ "onert::backend::cl_common::ParentInfo", "structonert_1_1backend_1_1cl__common_1_1_parent_info.html", null ],
     [ "nnkit::support::tftestinfo::ParsedTensor", "classnnkit_1_1support_1_1tftestinfo_1_1_parsed_tensor.html", null ],
+    [ "flatbuffers::ParserState", "structflatbuffers_1_1_parser_state.html", [
+      [ "flatbuffers::Parser", "classflatbuffers_1_1_parser.html", null ]
+    ] ],
     [ "coco::Part", "classcoco_1_1_part.html", null ],
     [ "crew::Part", "structcrew_1_1_part.html", null ],
     [ "luci::PartedModule", "structluci_1_1_parted_module.html", null ],
@@ -4167,8 +4267,10 @@ var hierarchy =
     [ "moco::PlaneShape", "structmoco_1_1_plane_shape.html", null ],
     [ "prunner::PModelsRunner", "classprunner_1_1_p_models_runner.html", null ],
     [ "luci::PNode", "structluci_1_1_p_node.html", null ],
+    [ "flatbuffers::pointer_inside_vector< T, U >", "classflatbuffers_1_1pointer__inside__vector.html", null ],
     [ "luci_interpreter::Pool2DParams", "structluci__interpreter_1_1_pool2_d_params.html", null ],
     [ "PoolingSpec", "class_pooling_spec.html", null ],
+    [ "luci_interpreter_pal::PoolParams", "structluci__interpreter__pal_1_1_pool_params.html", null ],
     [ "nnfw::cker::PoolParams", "structnnfw_1_1cker_1_1_pool_params.html", null ],
     [ "tflite::profiling::ProfileEvent", "structtflite_1_1profiling_1_1_profile_event.html", null ],
     [ "tflite::profiling::Profiler", "classtflite_1_1profiling_1_1_profiler.html", null ],
@@ -4256,9 +4358,11 @@ var hierarchy =
     [ "nnfw::cker::functor::ReduceFunctor< Device, Reducer >", "structnnfw_1_1cker_1_1functor_1_1_reduce_functor.html", null ],
     [ "mir_interpreter::ReduceMeanImpl< T >", "structmir__interpreter_1_1_reduce_mean_impl.html", null ],
     [ "luci_interpreter::ReducerParams", "structluci__interpreter_1_1_reducer_params.html", null ],
+    [ "flexbuffers::Reference", "classflexbuffers_1_1_reference.html", null ],
     [ "mir::Region< T >", "structmir_1_1_region.html", [
       [ "mir::ExternalRegion< T >", "classmir_1_1_external_region.html", null ]
     ] ],
+    [ "flatbuffers::Registry", "classflatbuffers_1_1_registry.html", null ],
     [ "hermes::Sink::Registry", "structhermes_1_1_sink_1_1_registry.html", [
       [ "hermes::Context", "classhermes_1_1_context.html", null ]
     ] ],
@@ -4291,6 +4395,9 @@ var hierarchy =
     [ "ReLULayer::Return", "class_re_l_u_layer_1_1_return.html", null ],
     [ "TensorBroadcastLayer::Return", "class_tensor_broadcast_layer_1_1_return.html", null ],
     [ "TransposedConv2DLayer::Return", "class_transposed_conv2_d_layer_1_1_return.html", null ],
+    [ "std::reverse_iterator", null, [
+      [ "flatbuffers::VectorReverseIterator< Iterator >", "structflatbuffers_1_1_vector_reverse_iterator.html", null ]
+    ] ],
     [ "luci::sinf::Rule", "structluci_1_1sinf_1_1_rule.html", null ],
     [ "luci::tinf::Rule", "structluci_1_1tinf_1_1_rule.html", null ],
     [ "nnkit::support::onnx::Runner", "classnnkit_1_1support_1_1onnx_1_1_runner.html", null ],
@@ -4303,12 +4410,14 @@ var hierarchy =
     [ "RunTimeOperandInfo", "struct_run_time_operand_info.html", null ],
     [ "RunTimePoolInfo", "struct_run_time_pool_info.html", null ],
     [ "rua::RuntimeService", "structrua_1_1_runtime_service.html", null ],
+    [ "luci_interpreter::RuntimeShape", "classluci__interpreter_1_1_runtime_shape.html", null ],
     [ "luci_interpreter::RuntimeToIR", "structluci__interpreter_1_1_runtime_to_i_r.html", null ],
     [ "nnfw::cker::scalar_logistic_op< T >", "structnnfw_1_1cker_1_1scalar__logistic__op.html", null ],
     [ "onert::ir::operation::DetectionPostProcess::Scale", "structonert_1_1ir_1_1operation_1_1_detection_post_process_1_1_scale.html", null ],
     [ "nest::Schedule", "classnest_1_1_schedule.html", null ],
     [ "crew::Section", "structcrew_1_1_section.html", null ],
     [ "nnfw::cker::SequentialTensorWriter< T >", "classnnfw_1_1cker_1_1_sequential_tensor_writer.html", null ],
+    [ "grpc::SerializationTraits< flatbuffers::grpc::Message< T > >", "classgrpc_1_1_serialization_traits_3_01flatbuffers_1_1grpc_1_1_message_3_01_t_01_4_01_4.html", null ],
     [ "luci::SerializedModelData", "structluci_1_1_serialized_model_data.html", null ],
     [ "npud::core::Server", "classnpud_1_1core_1_1_server.html", null ],
     [ "locomotiv::Session", "classlocomotiv_1_1_session.html", null ],
@@ -4367,6 +4476,9 @@ var hierarchy =
     ] ],
     [ "loco::ShapeInferenceRule::Sink", "structloco_1_1_shape_inference_rule_1_1_sink.html", null ],
     [ "luci_interpreter::kernels::SISOKernel", "classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html", null ],
+    [ "flatbuffers::grpc::detail::SliceAllocatorMember", "structflatbuffers_1_1grpc_1_1detail_1_1_slice_allocator_member.html", [
+      [ "flatbuffers::grpc::MessageBuilder", "classflatbuffers_1_1grpc_1_1_message_builder.html", null ]
+    ] ],
     [ "mir_interpreter::SliceImpl< T >", "structmir__interpreter_1_1_slice_impl.html", null ],
     [ "nnfw::cker::SliceParams", "structnnfw_1_1cker_1_1_slice_params.html", null ],
     [ "adt::small_vector< T, Capacity >", "classadt_1_1small__vector.html", null ],
@@ -4420,11 +4532,13 @@ var hierarchy =
     [ "coco::Stride2D", "classcoco_1_1_stride2_d.html", null ],
     [ "loco::Stride< 2 >", "classloco_1_1_stride_3_012_01_4.html", null ],
     [ "luci_interpreter::StridedSliceParams", "structluci__interpreter_1_1_strided_slice_params.html", null ],
+    [ "luci_interpreter_pal::StridedSliceParams", "structluci__interpreter__pal_1_1_strided_slice_params.html", null ],
     [ "nnfw::cker::StridedSliceParams", "structnnfw_1_1cker_1_1_strided_slice_params.html", null ],
     [ "onert::shape_inference::StridedSliceParams", "structonert_1_1shape__inference_1_1_strided_slice_params.html", null ],
     [ "nnfw::cker::functor::StrideFunctor< Device, T, N >", "structnnfw_1_1cker_1_1functor_1_1_stride_functor.html", null ],
     [ "nnop::StrideInfo", "classnnop_1_1_stride_info.html", null ],
     [ "ndarray::Strides", "structndarray_1_1_strides.html", null ],
+    [ "flatbuffers::FlatBufferBuilder::StringOffsetCompare", "structflatbuffers_1_1_flat_buffer_builder_1_1_string_offset_compare.html", null ],
     [ "exo::circle_detail::SubGraphContext", "structexo_1_1circle__detail_1_1_sub_graph_context.html", [
       [ "exo::circle_detail::SerializedModelData", "structexo_1_1circle__detail_1_1_serialized_model_data.html", null ]
     ] ],
@@ -4446,9 +4560,18 @@ var hierarchy =
     [ "loco::Subst< Q >", "classloco_1_1_subst.html", null ],
     [ "loco::Subst< SubstQualifier::Default >", "classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html", null ],
     [ "luci_interpreter::SVDFParams", "structluci__interpreter_1_1_s_v_d_f_params.html", null ],
+    [ "flatbuffers::SymbolTable< T >", "classflatbuffers_1_1_symbol_table.html", null ],
     [ "locop::SymbolTable", "structlocop_1_1_symbol_table.html", null ],
     [ "moco::onnx::SymbolTable", "classmoco_1_1onnx_1_1_symbol_table.html", null ],
     [ "moco::SymbolTable", "classmoco_1_1_symbol_table.html", null ],
+    [ "flatbuffers::SymbolTable< flatbuffers::EnumDef >", "classflatbuffers_1_1_symbol_table.html", null ],
+    [ "flatbuffers::SymbolTable< flatbuffers::EnumVal >", "classflatbuffers_1_1_symbol_table.html", null ],
+    [ "flatbuffers::SymbolTable< flatbuffers::FieldDef >", "classflatbuffers_1_1_symbol_table.html", null ],
+    [ "flatbuffers::SymbolTable< flatbuffers::RPCCall >", "classflatbuffers_1_1_symbol_table.html", null ],
+    [ "flatbuffers::SymbolTable< flatbuffers::ServiceDef >", "classflatbuffers_1_1_symbol_table.html", null ],
+    [ "flatbuffers::SymbolTable< flatbuffers::StructDef >", "classflatbuffers_1_1_symbol_table.html", null ],
+    [ "flatbuffers::SymbolTable< flatbuffers::Type >", "classflatbuffers_1_1_symbol_table.html", null ],
+    [ "flatbuffers::SymbolTable< flatbuffers::Value >", "classflatbuffers_1_1_symbol_table.html", null ],
     [ "T", null, [
       [ "nnc::cli::OptionType< T, true >", "classnnc_1_1cli_1_1_option_type_3_01_t_00_01true_01_4.html", null ]
     ] ],
@@ -4527,6 +4650,12 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataAddBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add.html", null ]
       ] ],
+      [ "luci_interpreter::test_kernel::TestDataConv2DBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_conv2_d_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatConv2D", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_conv2_d.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataConv2DBase< uint8_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_conv2_d_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataU8Conv2D", "classluci__interpreter_1_1test__kernel_1_1_test_data_u8_conv2_d.html", null ]
+      ] ],
       [ "luci_interpreter::test_kernel::TestDataFullyConnectedBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fully_connected_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatFullyConnected", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_fully_connected.html", null ]
       ] ],
@@ -4573,13 +4702,19 @@ var hierarchy =
         [ "luci_interpreter::test_kernel::TestDataIntSub", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_sub.html", null ]
       ] ],
       [ "luci_interpreter::test_kernel::TestDataAddBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataConv2DBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_conv2_d_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataExpandDimsKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_expand_dims_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataFillKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fill_kernel.html", null ],
       [ "luci_interpreter::test_kernel::TestDataFullyConnectedBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fully_connected_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataLogisticBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_logistic_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataMulBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_mul_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataPackBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataReduceCommonBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataReshapeKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_reshape_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataSplitVKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_split_v_kernel.html", null ],
       [ "luci_interpreter::test_kernel::TestDataStridedSliceKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel.html", null ],
-      [ "luci_interpreter::test_kernel::TestDataSubBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_sub_base.html", null ]
+      [ "luci_interpreter::test_kernel::TestDataSubBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_sub_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataTransposeKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_transpose_kernel.html", null ]
     ] ],
     [ "luci_interpreter::test_kernel::TestDataBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< float, bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
@@ -4773,6 +4908,7 @@ var hierarchy =
     [ "nnfw::cker::TransposeConvParams", "structnnfw_1_1cker_1_1_transpose_conv_params.html", null ],
     [ "TransposedConv2DLayer", "struct_transposed_conv2_d_layer.html", null ],
     [ "mir_interpreter::TransposeImpl< T >", "structmir__interpreter_1_1_transpose_impl.html", null ],
+    [ "luci_interpreter_pal::TransposeParams", "structluci__interpreter__pal_1_1_transpose_params.html", null ],
     [ "nnfw::cker::TransposeParams", "structnnfw_1_1cker_1_1_transpose_params.html", null ],
     [ "npud::backend::trix::TrixDevice", "structnpud_1_1backend_1_1trix_1_1_trix_device.html", null ],
     [ "onert::trix_loader::TrixLoader", "classonert_1_1trix__loader_1_1_trix_loader.html", null ],
@@ -4784,6 +4920,7 @@ var hierarchy =
     [ "nnfw::cker::random::TruncatedNormalDistribution< SingleSampleGenerator, Eigen::half >", "classnnfw_1_1cker_1_1random_1_1_truncated_normal_distribution_3_01_single_sample_generator_00_01_eigen_1_1half_01_4.html", null ],
     [ "nnfw::cker::random::TruncatedNormalDistribution< SingleSampleGenerator, float >", "classnnfw_1_1cker_1_1random_1_1_truncated_normal_distribution_3_01_single_sample_generator_00_01float_01_4.html", null ],
     [ "nnfw::cker::TTypes< T, NDIMS, IndexType >", "structnnfw_1_1cker_1_1_t_types.html", null ],
+    [ "flatbuffers::Type", "structflatbuffers_1_1_type.html", null ],
     [ "exo::circle_detail::TypeInference", "structexo_1_1circle__detail_1_1_type_inference.html", null ],
     [ "exo::TypeInference", "structexo_1_1_type_inference.html", null ],
     [ "loco::TypeInference", "structloco_1_1_type_inference.html", null ],
@@ -4845,6 +4982,10 @@ var hierarchy =
       [ "nnfw::cker::random::UniformFullIntDistribution< Generator, uint64_t >", "classnnfw_1_1cker_1_1random_1_1_uniform_full_int_distribution_3_01_generator_00_01uint64__t_01_4.html", null ]
     ] ],
     [ "bino::UniformTransform< Callable >", "classbino_1_1_uniform_transform.html", null ],
+    [ "std::unique_ptr", null, [
+      [ "flatbuffers::unique_ptr< std::string >", "classflatbuffers_1_1unique__ptr.html", null ],
+      [ "flatbuffers::unique_ptr< T >", "classflatbuffers_1_1unique__ptr.html", null ]
+    ] ],
     [ "luci_interpreter::UnpackParams", "structluci__interpreter_1_1_unpack_params.html", null ],
     [ "nnfw::cker::UnpackParams", "structnnfw_1_1cker_1_1_unpack_params.html", null ],
     [ "nnfw::cker::UNUSED_ALL", "structnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l.html", null ],
@@ -4859,10 +5000,19 @@ var hierarchy =
       [ "luci::UserSettingsImpl", "classluci_1_1_user_settings_impl.html", null ]
     ] ],
     [ "luci::GraphBuilderBase::ValidateArgs", "structluci_1_1_graph_builder_base_1_1_validate_args.html", null ],
+    [ "flatbuffers::Value", "structflatbuffers_1_1_value.html", null ],
+    [ "flexbuffers::FLATBUFFERS_FINAL_CLASS::Value", "structflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s_1_1_value.html", null ],
     [ "nest::Var", "classnest_1_1_var.html", null ],
     [ "nest::VarContext", "classnest_1_1_var_context.html", null ],
     [ "nest::VarID", "classnest_1_1_var_i_d.html", null ],
+    [ "flatbuffers::Vector< T >", "classflatbuffers_1_1_vector.html", null ],
     [ "Vector", "struct_vector.html", null ],
+    [ "flatbuffers::Vector< char >", "classflatbuffers_1_1_vector.html", [
+      [ "flatbuffers::String", "structflatbuffers_1_1_string.html", null ]
+    ] ],
+    [ "flatbuffers::vector_downward", "classflatbuffers_1_1vector__downward.html", null ],
+    [ "flatbuffers::VectorIterator< T, IT >", "structflatbuffers_1_1_vector_iterator.html", null ],
+    [ "flatbuffers::VectorOfAny", "classflatbuffers_1_1_vector_of_any.html", null ],
     [ "luci_interpreter::kernels::VectorOfTensors< T, is_const >", "classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html", null ],
     [ "luci_interpreter::kernels::VectorOfTensors< uint8_t, is_const >", "classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html", [
       [ "luci_interpreter::kernels::VectorOfQuantizedTensors< is_const >", "classluci__interpreter_1_1kernels_1_1_vector_of_quantized_tensors.html", null ],

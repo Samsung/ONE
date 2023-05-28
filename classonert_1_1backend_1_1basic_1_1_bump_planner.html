@@ -230,16 +230,16 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_memory_planner_8cc_source.html#l00028">28</a> of file <a class="el" href="_memory_planner_8cc_source.html">MemoryPlanner.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
-<div class="line"><span class="lineno">   30</span>  Block blk{_capacity, <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>};</div>
+<div class="line"><span class="lineno">   30</span>  Block blk{_capacity, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>};</div>
 <div class="line"><span class="lineno">   31</span>  _mem_plans[ind] = blk;</div>
-<div class="line"><span class="lineno">   32</span>  _capacity += <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>;</div>
+<div class="line"><span class="lineno">   32</span>  _capacity += <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><span class="lineno">   33</span> </div>
 <div class="line"><span class="lineno">   34</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(BP_PLANNER) &lt;&lt; <span class="stringliteral">&quot;CLAIM(&quot;</span> &lt;&lt; ind &lt;&lt; <span class="stringliteral">&quot;): &quot;</span> &lt;&lt; blk.offset &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; blk.size &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">   35</span>}</div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a212d71bce44cd84d4fe678058cd5eccd"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a></div><div class="ttdeci">#define VERBOSE(name, lv)</div><div class="ttdef"><b>Definition:</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">Log.h:71</a></div></div>
-<div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 
 </div>
 </div>

@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('classenco_1_1_subnet_struct_builder.ht
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab1bc687d823a2c4da9d1cbdb6192b412"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structenco_1_1_subnet_struct.html">SubnetStruct</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classenco_1_1_subnet_struct_builder.html#ab1bc687d823a2c4da9d1cbdb6192b412">build</a> (const <a class="el" href="class_a_n_n_binder.html">ANNBinder</a> *binder) const</td></tr>
 <tr class="separator:ab1bc687d823a2c4da9d1cbdb6192b412"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ba21dbe48d6cec01a3eb2a8c6e3b1da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classenco_1_1_subnet_struct_builder.html#a6ba21dbe48d6cec01a3eb2a8c6e3b1da">expr</a> (const <a class="el" href="classann_1_1_operand.html">ann::Operand</a> *oper, const std::string &amp;base, const std::string &amp;size)</td></tr>
+<tr class="memitem:a6ba21dbe48d6cec01a3eb2a8c6e3b1da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classenco_1_1_subnet_struct_builder.html#a6ba21dbe48d6cec01a3eb2a8c6e3b1da">expr</a> (const <a class="el" href="classann_1_1_operand.html">ann::Operand</a> *oper, const std::string &amp;base, const std::string &amp;<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)</td></tr>
 <tr class="separator:a6ba21dbe48d6cec01a3eb2a8c6e3b1da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -244,10 +244,12 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   54</span>  {</div>
 <div class="line"><span class="lineno">   55</span>    _weighted.insert(oper);</div>
 <div class="line"><span class="lineno">   56</span>    _base_exprs[oper] = base;</div>
-<div class="line"><span class="lineno">   57</span>    _size_exprs[oper] = <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>;</div>
+<div class="line"><span class="lineno">   57</span>    _size_exprs[oper] = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><span class="lineno">   58</span>  }</div>
-<div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="_cpp_code_8cpp_source.html#l00145">enco::CppCode::dump()</a>.</p>
 
 </div>

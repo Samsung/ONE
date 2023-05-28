@@ -231,7 +231,7 @@ $(document).ready(function(){initNavTree('_b_cast_8h_source.html',''); initResiz
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    {</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>      all_equal = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    }</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordflow">if</span> (x[i].size() &gt; largest_rank)</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordflow">if</span> (x[i].<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>() &gt; largest_rank)</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    {</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      largest_rank = x[i].size();</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    }</div>
@@ -275,7 +275,7 @@ $(document).ready(function(){initNavTree('_b_cast_8h_source.html',''); initResiz
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <span class="comment">// 1-extend and align all vectors.</span></div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; N; ++i)</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  {</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="keywordflow">if</span> (copy[i].size() &lt; largest_rank)</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="keywordflow">if</span> (copy[i].<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>() &lt; largest_rank)</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    {</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>      copy[i].resize(largest_rank, 1);</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    }</div>
@@ -607,6 +607,7 @@ $(document).ready(function(){initNavTree('_b_cast_8h_source.html',''); initResiz
 <div class="ttc" id="anamespacennfw_1_1cker_html_a7bf38050ca52ca18a71dc4916e4f8873"><div class="ttname"><a href="namespacennfw_1_1cker.html#a7bf38050ca52ca18a71dc4916e4f8873">nnfw::cker::Reverse</a></div><div class="ttdeci">void Reverse(int axis, const Shape &amp;input_shape, const Scalar *input_data, const Shape &amp;, Scalar *output_data)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2operation_2_reverse_8h_source.html#l00031">Reverse.h:31</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a9abc9e7ecb17903ec3f2bfef832af49a"><div class="ttname"><a href="namespacennfw_1_1cker.html#a9abc9e7ecb17903ec3f2bfef832af49a">nnfw::cker::ComputeBatchIndices</a></div><div class="ttdeci">void ComputeBatchIndices(const int32_t output_batch_size, const std::vector&lt; int32_t &gt; &amp;reshape, const std::vector&lt; int32_t &gt; &amp;bcast, std::vector&lt; int32_t &gt; *out_indices)</div><div class="ttdef"><b>Definition:</b> <a href="_b_cast_8h_source.html#l00040">BCast.h:40</a></div></div>
 <div class="ttc" id="anamespacennfw_html"><div class="ttname"><a href="namespacennfw.html">nnfw</a></div><div class="ttdef"><b>Definition:</b> <a href="topk__v2_8h_source.html#l00029">topk_v2.h:30</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

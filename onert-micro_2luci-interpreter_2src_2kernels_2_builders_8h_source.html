@@ -130,20 +130,19 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">  void configure_kernel_Circle##name(const circle::Operator *cur_op,   \</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">                                     BaseRuntimeGraph *runtime_graph); \</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">                                                                       \</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">  void execute_kernel_Circle##name(const circle::Operator *cur_op,     \</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">                                   BaseRuntimeGraph *runtime_graph, bool is_inplace);</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#if USE_GENERATED_LIST</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#include &quot;GeneratedKernelsToBuild.lst&quot;</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;KernelsToBuild.lst&quot;</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#undef REGISTER_KERNEL</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} <span class="comment">// namespace luci_interpreter</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif </span><span class="comment">// LUCI_INTERPRETER_KERNELS_NODES_BUILDERS_H</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">  void execute_kernel_Circle##name(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph);</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#if USE_GENERATED_LIST</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &quot;GeneratedKernelsToBuild.lst&quot;</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;KernelsToBuild.lst&quot;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#undef REGISTER_KERNEL</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>} <span class="comment">// namespace luci_interpreter</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif </span><span class="comment">// LUCI_INTERPRETER_KERNELS_NODES_BUILDERS_H</span></div>
 <div class="ttc" id="a_circle_micro_reader_8h_html"><div class="ttname"><a href="_circle_micro_reader_8h.html">CircleMicroReader.h</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html"><div class="ttname"><a href="namespaceluci__interpreter.html">luci_interpreter</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h_source.html#l00021">BuddyMemoryManager.h:22</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html_a536f70436969ec0208abfe68640bfc71"><div class="ttname"><a href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">luci_interpreter::BaseRuntimeGraph</a></div><div class="ttdeci">RuntimeGraph BaseRuntimeGraph</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00033">RuntimeModule.h:33</a></div></div>

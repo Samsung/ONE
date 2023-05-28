@@ -145,13 +145,13 @@ $(document).ready(function(){initNavTree('tfl-inspect_2src_2_reader_8cpp_source.
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  {</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *array = buffer-&gt;data())</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      <span class="keywordflow">if</span> (<span class="keywordtype">size_t</span> size = array-&gt;size())</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      <span class="keywordflow">if</span> (<span class="keywordtype">size_t</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = array-&gt;size())</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      {</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">if</span> (buff_data != <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        {</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>          *buff_data = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(array-&gt;data());</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        }</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordflow">return</span> size;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      }</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    }</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  }</div>
@@ -222,6 +222,7 @@ $(document).ready(function(){initNavTree('tfl-inspect_2src_2_reader_8cpp_source.
 <div class="ttc" id="anamespacemio_1_1tflite_html_a53589eba4342e12893b210c04cecf49b"><div class="ttname"><a href="namespacemio_1_1tflite.html#a53589eba4342e12893b210c04cecf49b">mio::tflite::builtin_code_neutral</a></div><div class="ttdeci">::tflite::BuiltinOperator builtin_code_neutral(const ::tflite::OperatorCode *opcode)</div><div class="ttdef"><b>Definition:</b> <a href="mio-tflite260_2src_2_helper_8cpp_source.html#l00033">Helper.cpp:33</a></div></div>
 <div class="ttc" id="anamespacetflinspect_html"><div class="ttname"><a href="namespacetflinspect.html">tflinspect</a></div><div class="ttdef"><b>Definition:</b> <a href="tfl-inspect_2src_2_dump_8cpp_source.html#l00024">Dump.cpp:25</a></div></div>
 <div class="ttc" id="anamespacetflinspect_html_a015f9fc04d964935486147e4567af1a5"><div class="ttname"><a href="namespacetflinspect.html#a015f9fc04d964935486147e4567af1a5">tflinspect::as_index_vector</a></div><div class="ttdeci">std::vector&lt; T &gt; as_index_vector(const flatbuffers::Vector&lt; T &gt; *flat_array)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2tfl-inspect_2src_2_reader_8h_source.html#l00029">Reader.h:29</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2src_2exec_2feature_2_reader_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2src_2exec_2feature_2_reader_8h.html">Reader.h</a></div><div class="ttdoc">This file contains Reader class.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

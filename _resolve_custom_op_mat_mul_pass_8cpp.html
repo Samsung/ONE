@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('_resolve_custom_op_mat_mul_pass_8cpp.h
 <code>#include &lt;<a class="el" href="_circle_node_origin_8h_source.html">luci/Profile/CircleNodeOrigin.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="loco_8h_source.html">loco.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="_internal_exn_8h_source.html">oops/InternalExn.h</a>&gt;</code><br />
-<code>#include &lt;flatbuffers/flexbuffers.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="flexbuffers_8h_source.html">flatbuffers/flexbuffers.h</a>&gt;</code><br />
 </div>
 <p><a href="_resolve_custom_op_mat_mul_pass_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -186,10 +186,11 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">  {                                              \</div>
-<div class="line">    node-&gt;size&lt;DT&gt;(size);                        \</div>
+<div class="line">    node-&gt;size&lt;DT&gt;(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);                        \</div>
 <div class="line">    for (uint32_t i = 0; i &lt; values.size(); ++i) \</div>
 <div class="line">      node-&gt;at&lt;DT&gt;(i) = values[i];               \</div>
 <div class="line">  }</div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -190,13 +190,13 @@ $(document).ready(function(){initNavTree('_n_e_transpose_conv_layer_8cpp_source.
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  {</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, output);</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keyword">const</span> TensorShape output_shape = <a class="code hl_function" href="namespacearm__compute_1_1misc_1_1shape__calculator.html#a639ed6b2f361df361565bf1cb2a22bb2">compute_transposeconv_output_shape</a>(out_dims, *input, *weights);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keyword">const</span> TensorShape <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespacearm__compute_1_1misc_1_1shape__calculator.html#a639ed6b2f361df361565bf1cb2a22bb2">compute_transposeconv_output_shape</a>(out_dims, *input, *weights);</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    ARM_COMPUTE_RETURN_ERROR_ON_MSG(output-&gt;dimension(Window::DimX) != output_shape.x(),</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    ARM_COMPUTE_RETURN_ERROR_ON_MSG(output-&gt;dimension(Window::DimX) != <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.x(),</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                                    <span class="stringliteral">&quot;Output&#39;s width is invalid.&quot;</span>);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    ARM_COMPUTE_RETURN_ERROR_ON_MSG(output-&gt;dimension(Window::DimY) != output_shape.y(),</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    ARM_COMPUTE_RETURN_ERROR_ON_MSG(output-&gt;dimension(Window::DimY) != <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.y(),</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                                    <span class="stringliteral">&quot;Output&#39;s height is invalid.&quot;</span>);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    ARM_COMPUTE_RETURN_ERROR_ON_MSG(output-&gt;dimension(Window::DimZ) != output_shape.z(),</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    ARM_COMPUTE_RETURN_ERROR_ON_MSG(output-&gt;dimension(Window::DimZ) != <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.z(),</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                                    <span class="stringliteral">&quot;Output&#39;s depth is invalid.&quot;</span>);</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  }</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
@@ -246,7 +246,7 @@ $(document).ready(function(){initNavTree('_n_e_transpose_conv_layer_8cpp_source.
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    weights-&gt;info()-&gt;dimension(width_idx), weights-&gt;info()-&gt;dimension(height_idx), <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>,</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    invalid_right, invalid_bottom);</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="keyword">const</span> TensorShape output_shape =</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="keyword">const</span> TensorShape <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> =</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <a class="code hl_function" href="namespacearm__compute_1_1misc_1_1shape__calculator.html#a639ed6b2f361df361565bf1cb2a22bb2">compute_transposeconv_output_shape</a>(out_dims, *input-&gt;info(), *weights-&gt;info());</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  _input = input;</div>
@@ -262,7 +262,7 @@ $(document).ready(function(){initNavTree('_n_e_transpose_conv_layer_8cpp_source.
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> stride_y = <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.stride().second;</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <span class="comment">// Output auto initialization if not yet initialized</span></div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  auto_init_if_empty(*output-&gt;info(), output_shape, 1, input-&gt;info()-&gt;data_type(),</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  auto_init_if_empty(*output-&gt;info(), <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 1, input-&gt;info()-&gt;data_type(),</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                     input-&gt;info()-&gt;quantization_info());</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  _flip_axis.allocator()-&gt;init(TensorInfo(TensorShape(2U), 1, DataType::U32));</div>
@@ -328,6 +328,7 @@ $(document).ready(function(){initNavTree('_n_e_transpose_conv_layer_8cpp_source.
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>}</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>} <span class="comment">// namespace arm_compute</span></div>
 <div class="ttc" id="a_n_e_transpose_conv_layer_8h_html"><div class="ttname"><a href="_n_e_transpose_conv_layer_8h.html">NETransposeConvLayer.h</a></div></div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="a_shape_calculator_ex_8h_html"><div class="ttname"><a href="_shape_calculator_ex_8h.html">ShapeCalculatorEx.h</a></div></div>
 <div class="ttc" id="a_utils_ex_8h_html"><div class="ttname"><a href="_utils_ex_8h.html">UtilsEx.h</a></div></div>
 <div class="ttc" id="aclassarm__compute_1_1_n_e_transpose_conv_layer_html_a3114408d5f776e9dc0e3b46990063f59"><div class="ttname"><a href="classarm__compute_1_1_n_e_transpose_conv_layer.html#a3114408d5f776e9dc0e3b46990063f59">arm_compute::NETransposeConvLayer::prepare</a></div><div class="ttdeci">void prepare() override</div><div class="ttdef"><b>Definition:</b> <a href="_n_e_transpose_conv_layer_8cpp_source.html#l00218">NETransposeConvLayer.cpp:218</a></div></div>

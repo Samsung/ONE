@@ -212,24 +212,24 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_portable_tensor_
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  }</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>}</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#a77e3daa30f5e34a8ce6911b5c44c7254">  121</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a77e3daa30f5e34a8ce6911b5c44c7254">PortableSymmetricQuantizeFloats</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> *values, <span class="keyword">const</span> <span class="keywordtype">int</span> size,</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#a77e3daa30f5e34a8ce6911b5c44c7254">  121</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a77e3daa30f5e34a8ce6911b5c44c7254">PortableSymmetricQuantizeFloats</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> *values, <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>,</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                                            int8_t *quantized_values, <span class="keywordtype">float</span> *min_value,</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                                            <span class="keywordtype">float</span> *max_value, <span class="keywordtype">float</span> *scaling_factor)</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>{</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keyword">auto</span> minmax = std::minmax_element(values, values + size);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keyword">auto</span> minmax = std::minmax_element(values, values + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  *min_value = *minmax.first;</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  *max_value = *minmax.second;</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> kScale = 127;</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> range = std::max(std::abs(*min_value), std::abs(*max_value));</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keywordflow">if</span> (range == 0)</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  {</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    memset(quantized_values, 0, size * <span class="keyword">sizeof</span>(int8_t));</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    memset(quantized_values, 0, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> * <span class="keyword">sizeof</span>(int8_t));</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    *scaling_factor = 1;</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  }</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  *scaling_factor = range / kScale;</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> scaling_factor_inv = kScale / range;</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; size; ++i)</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; ++i)</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  {</div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keyword">const</span> int32_t quantized_value =</div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>      <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(std::round(values[i] * scaling_factor_inv));</div>
@@ -358,6 +358,7 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_portable_tensor_
 <div class="ttc" id="anamespacennfw_1_1cker_html_af09a114337895158c72fde6226b568a2a4c7f8cb4a4aefd7ac6a89fa1b747233d"><div class="ttname"><a href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2a4c7f8cb4a4aefd7ac6a89fa1b747233d">nnfw::cker::FusedActivationFunctionType::kRelu6</a></div><div class="ttdeci">@ kRelu6</div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_af09a114337895158c72fde6226b568a2ac00732693e14261bf9c2a4612a7f9bf9"><div class="ttname"><a href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2ac00732693e14261bf9c2a4612a7f9bf9">nnfw::cker::FusedActivationFunctionType::kSigmoid</a></div><div class="ttdeci">@ kSigmoid</div></div>
 <div class="ttc" id="anamespacennfw_html"><div class="ttname"><a href="namespacennfw.html">nnfw</a></div><div class="ttdef"><b>Definition:</b> <a href="topk__v2_8h_source.html#l00029">topk_v2.h:30</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

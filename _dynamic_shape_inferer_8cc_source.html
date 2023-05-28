@@ -159,7 +159,7 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>{</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment">// check if input is not dynamic</span></div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">/*</span></div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">    Here, the state after compilation (satic shape inference) could be one of the following:</span></div>
@@ -182,7 +182,7 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>}</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
@@ -315,11 +315,11 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  assert(shape); <span class="comment">// It shouldn&#39;t be 0.</span></div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <span class="keyword">auto</span> output_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#abdc0e09bb83c15c5bdffda420fd637f1">shape_inference::inferBroadcastToShape</a>(</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#abdc0e09bb83c15c5bdffda420fd637f1">shape_inference::inferBroadcastToShape</a>(</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    shape-&gt;getShape(), <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(shape-&gt;buffer()));</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <span class="comment">// set output shape and output buffer</span></div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  output-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  assert(output-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>}</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
@@ -404,9 +404,9 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span> </div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="keyword">auto</span> output_ind = op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#aad624998d935a5d7702c1a88496ad62c">getOutputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a32ff6ad5b12e14c8e710fd0896d4eacf">at</a>(0);</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  <span class="keyword">auto</span> output = _tensor_registry-&gt;getITensor(output_ind);</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  <span class="keyword">auto</span> output_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a82ec85e7c31358cd319a0b1981202549">shape_inference::inferConcatShape</a>(in_shapes, op.<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_concat.html#a42e383790fc10fb307c8ad89118ebc76">param</a>());</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a82ec85e7c31358cd319a0b1981202549">shape_inference::inferConcatShape</a>(in_shapes, op.<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_concat.html#a42e383790fc10fb307c8ad89118ebc76">param</a>());</div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  output-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>}</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_dynamic_shape_inferer.html#a6b515fea9e1b9023e34ce919dcca7a73">  318</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_dynamic_shape_inferer.html#adb782309d13dc0187fdfd7a5d54f70ce">DynamicShapeInferer::visit</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_conv2_d.html">ir::operation::Conv2D</a> &amp;op)</div>
@@ -427,9 +427,9 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  <span class="keyword">auto</span> output_ind = op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#aad624998d935a5d7702c1a88496ad62c">getOutputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a32ff6ad5b12e14c8e710fd0896d4eacf">at</a>(0);</div>
 <div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  <span class="keyword">auto</span> output = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> output_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#adeb7518da50c24d5d3a751081261d54d">shape_inference::inferConv2DShape</a>(input_shape, ker_shape, op.<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_conv2_d.html#a83e6911ec9d71a383b78b89f0740504a">param</a>());</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#adeb7518da50c24d5d3a751081261d54d">shape_inference::inferConv2DShape</a>(input_shape, ker_shape, op.<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_conv2_d.html#a83e6911ec9d71a383b78b89f0740504a">param</a>());</div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  output-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  assert(output-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>}</div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span> </div>
@@ -493,9 +493,9 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>      ? <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(axis-&gt;buffer())[0]</div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>      : <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int64_t *<span class="keyword">&gt;</span>(axis-&gt;buffer())[0]);</div>
 <div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span> </div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  <span class="keyword">auto</span> output_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a0da8b986f531953219b9b4d8da542870">shape_inference::inferExpandDimsShape</a>(input_shape, axis_value);</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a0da8b986f531953219b9b4d8da542870">shape_inference::inferExpandDimsShape</a>(input_shape, axis_value);</div>
 <div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span> </div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>  output-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>  output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>  assert(output-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>}</div>
 <div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span> </div>
@@ -517,13 +517,13 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>  assert(dims_buf);</div>
 <div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span> </div>
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;dims_shape = shape-&gt;getShape();</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>  <span class="keyword">auto</span> output_shape = ((dims_type == ir::DataType::INT32)</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = ((dims_type == ir::DataType::INT32)</div>
 <div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>                         ? shape_inference::inferFillShape&lt;int32_t&gt;(</div>
 <div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>                             dims_shape, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(dims_buf))</div>
 <div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>                         : shape_inference::inferFillShape&lt;int64_t&gt;(</div>
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>                             dims_shape, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int64_t *<span class="keyword">&gt;</span>(dims_buf)));</div>
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span> </div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>  output-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>  output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>  assert(output-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>}</div>
 <div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span> </div>
@@ -784,11 +784,11 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span>  int32_t *pad_buf = <span class="keyword">reinterpret_cast&lt;</span>int32_t *<span class="keyword">&gt;</span>(pad-&gt;buffer());</div>
 <div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>  assert(pad_buf);</div>
 <div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span> </div>
-<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>  <span class="keyword">auto</span> output_shape =</div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> =</div>
 <div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>    <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a9fc6c1a205abac1ab75b727d5118ca76">shape_inference::inferPadShape</a>(input-&gt;getShape(), pad_buf, pad-&gt;getShape().num_elements());</div>
 <div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span> </div>
 <div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>  <span class="comment">// change output shape and reallocate output tensor memory</span></div>
-<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>  output-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>  output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>  assert(output-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>}</div>
 <div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span> </div>
@@ -931,14 +931,14 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>    int32_t *new_shape_buf = <span class="keyword">reinterpret_cast&lt;</span>int32_t *<span class="keyword">&gt;</span>(new_shape-&gt;buffer());</div>
 <div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>    assert(new_shape_buf);</div>
 <div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span> </div>
-<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>    <span class="keyword">auto</span> output_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a0ad2ed111272459a82784bf8a382db38">shape_inference::inferReshapeShape</a>(</div>
+<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a0ad2ed111272459a82784bf8a382db38">shape_inference::inferReshapeShape</a>(</div>
 <div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>      new_shape_buf, new_shape-&gt;getShape().num_elements(), input-&gt;getShape().num_elements());</div>
 <div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span> </div>
 <div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>    <span class="comment">// if shape is changed, change output shape and reallocate output tensor memory</span></div>
-<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>    <span class="keywordflow">if</span> (output_shape != output-&gt;getShape() || output-&gt;buffer() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != output-&gt;getShape() || output-&gt;buffer() == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>    {</div>
 <div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>      <span class="comment">// change on output shape</span></div>
-<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>      output-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>      output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>    }</div>
 <div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>    assert(output-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>  }</div>
@@ -947,14 +947,14 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>  {</div>
 <div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>    <span class="comment">// Let&#39;s check the new_shape option</span></div>
 <div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>    <span class="keyword">auto</span> shape = op.<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_reshape.html#a6b9ecd4f5e59d8a98d0477e654520754">param</a>().<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_reshape_1_1_param.html#a031577e8df4c4c2fff4e738bdab51ee5">new_shape</a>;</div>
-<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>    <span class="keyword">auto</span> output_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a0ad2ed111272459a82784bf8a382db38">shape_inference::inferReshapeShape</a>(shape.data(), shape.size(),</div>
+<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a0ad2ed111272459a82784bf8a382db38">shape_inference::inferReshapeShape</a>(shape.data(), shape.size(),</div>
 <div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>                                                           input-&gt;getShape().num_elements());</div>
 <div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span> </div>
 <div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>    <span class="comment">// if shape is changed, change output shape and reallocate output tensor memory</span></div>
-<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>    <span class="keywordflow">if</span> (output_shape != output-&gt;getShape() || output-&gt;buffer() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != output-&gt;getShape() || output-&gt;buffer() == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>    {</div>
 <div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>      <span class="comment">// change on output shape</span></div>
-<div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>      output-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>      output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>    }</div>
 <div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>    assert(output-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>  }</div>
@@ -982,10 +982,10 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>  <span class="keywordflow">if</span> (op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a9f59a46100157938710e64d40e2f2a88">getInputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">size</a>() == 2)</div>
 <div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>  {</div>
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>    <span class="keyword">auto</span> size_ind = op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a9f59a46100157938710e64d40e2f2a88">getInputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a32ff6ad5b12e14c8e710fd0896d4eacf">at</a>(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_resize_bilinear.html#abd830b1277edab42d9882659926b47fca583ee063bf35648f8478ce801a7e1851">ir::operation::ResizeBilinear::Input::SIZE</a>);</div>
-<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    <span class="keyword">auto</span> size = _tensor_registry-&gt;getITensor(size_ind);</div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    <span class="keywordflow">if</span> (size-&gt;data_type() == ir::DataType::INT32)</div>
+<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = _tensor_registry-&gt;getITensor(size_ind);</div>
+<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>-&gt;data_type() == ir::DataType::INT32)</div>
 <div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>    {</div>
-<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>      <span class="keyword">auto</span> size_buf = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(size-&gt;buffer());</div>
+<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>      <span class="keyword">auto</span> size_buf = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>-&gt;buffer());</div>
 <div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>      height_out = size_buf[0];</div>
 <div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>      width_out = size_buf[1];</div>
 <div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>    }</div>
@@ -999,14 +999,14 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>    height_out = op.<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_resize_bilinear.html#af663396a8a0eb20231d82c55cea8c47e">param</a>().<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_resize_bilinear_1_1_param.html#ab589b0e043333312718e02da487ec88d">height_out</a>;</div>
 <div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span>    width_out = op.<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_resize_bilinear.html#af663396a8a0eb20231d82c55cea8c47e">param</a>().<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_resize_bilinear_1_1_param.html#aac82dff128a60e3daa5ef58738926d39">width_out</a>;</div>
 <div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span>  }</div>
-<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>  <span class="keyword">auto</span> output_shape =</div>
+<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> =</div>
 <div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span>    <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a95e6b5239a720ee8b7c7695757204053">shape_inference::inferResizeBilinearShape</a>(input-&gt;getShape(), height_out, width_out);</div>
 <div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span> </div>
 <div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>  <span class="comment">// if shape is changed, change output shape and reallocate output tensor memory</span></div>
-<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>  <span class="keywordflow">if</span> (output_shape != output-&gt;getShape() || output-&gt;buffer() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != output-&gt;getShape() || output-&gt;buffer() == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>  {</div>
 <div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span>    <span class="comment">// change on output shape</span></div>
-<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>    output-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>    output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>  }</div>
 <div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span>  assert(output-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00918" name="l00918"></a><span class="lineno">  918</span>}</div>
@@ -1059,10 +1059,10 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>  <span class="keyword">auto</span> output_ind = op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#aad624998d935a5d7702c1a88496ad62c">getOutputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a32ff6ad5b12e14c8e710fd0896d4eacf">at</a>(0);</div>
 <div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>  <span class="keyword">auto</span> output = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span> </div>
-<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> output_shape;</div>
-<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>  output_shape.append(input_shape.rank());</div>
+<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
+<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>  <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.append(input_shape.rank());</div>
 <div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span> </div>
-<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>  output-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>  output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span>  assert(output-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span>}</div>
 <div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span> </div>
@@ -1230,10 +1230,10 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>  <span class="keyword">auto</span> output_index = op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#aad624998d935a5d7702c1a88496ad62c">getOutputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a32ff6ad5b12e14c8e710fd0896d4eacf">at</a>(0);</div>
 <div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>  <span class="keyword">auto</span> output = _tensor_registry-&gt;getITensor(output_index);</div>
 <div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span> </div>
-<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> output_shape =</div>
+<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> =</div>
 <div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span>    <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#af4359b3ad21cce8f406608664891f48f">onert::shape_inference::inferStridedSliceShape</a>(input_shape, op_params, rank);</div>
 <div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span> </div>
-<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span>  output-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span>  output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span>  assert(output-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span>}</div>
 <div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span> </div>
@@ -1256,11 +1256,11 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l01162" name="l01162"></a><span class="lineno"> 1162</span>  assert(multiplier_buffer);</div>
 <div class="line"><a id="l01163" name="l01163"></a><span class="lineno"> 1163</span> </div>
 <div class="line"><a id="l01164" name="l01164"></a><span class="lineno"> 1164</span>  <span class="keyword">auto</span> mult_shape = multiplier-&gt;getShape();</div>
-<div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span>  <span class="keyword">auto</span> output_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#ab57c15cda0b2773d238587ae777d4723">shape_inference::inferTileShape</a>(</div>
+<div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#ab57c15cda0b2773d238587ae777d4723">shape_inference::inferTileShape</a>(</div>
 <div class="line"><a id="l01166" name="l01166"></a><span class="lineno"> 1166</span>    input_shape, multiplier_buffer, mult_shape.rank() == 0 ? 1 : mult_shape.dim(0));</div>
 <div class="line"><a id="l01167" name="l01167"></a><span class="lineno"> 1167</span> </div>
 <div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span>  <span class="comment">// set output shape and output buffer</span></div>
-<div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span>  output-&gt;applyShape(output_shape);</div>
+<div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span>  output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span>  assert(output-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l01171" name="l01171"></a><span class="lineno"> 1171</span>}</div>
 <div class="line"><a id="l01172" name="l01172"></a><span class="lineno"> 1172</span> </div>
@@ -1351,6 +1351,7 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l01257" name="l01257"></a><span class="lineno"> 1257</span>} <span class="comment">// namespace exec</span></div>
 <div class="line"><a id="l01258" name="l01258"></a><span class="lineno"> 1258</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="a_dynamic_shape_inferer_8h_html"><div class="ttname"><a href="_dynamic_shape_inferer_8h.html">DynamicShapeInferer.h</a></div></div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html">onert::backend::ITensor</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_tensor_8h_source.html#l00036">ITensor.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_aca51cb2522739092a25ca8813bf5e2f5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#aca51cb2522739092a25ca8813bf5e2f5">onert::backend::ITensor::getShape</a></div><div class="ttdeci">virtual ir::Shape getShape() const =0</div><div class="ttdoc">Get ir::Shape of tensor.</div></div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_dynamic_shape_inferer_html_adb782309d13dc0187fdfd7a5d54f70ce"><div class="ttname"><a href="classonert_1_1exec_1_1_dynamic_shape_inferer.html#adb782309d13dc0187fdfd7a5d54f70ce">onert::exec::DynamicShapeInferer::visit</a></div><div class="ttdeci">void visit(const ir::operation::ArgMinMax &amp;op) override</div><div class="ttdef"><b>Definition:</b> <a href="_dynamic_shape_inferer_8cc_source.html#l00095">DynamicShapeInferer.cc:95</a></div></div>
@@ -1526,7 +1527,7 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="ttc" id="anamespaceonert_1_1shape__inference_html_af4359b3ad21cce8f406608664891f48f"><div class="ttname"><a href="namespaceonert_1_1shape__inference.html#af4359b3ad21cce8f406608664891f48f">onert::shape_inference::inferStridedSliceShape</a></div><div class="ttdeci">ir::Shape inferStridedSliceShape(const ir::Shape &amp;input_shape, const StridedSliceParams &amp;op_params, uint32_t rank)</div><div class="ttdef"><b>Definition:</b> <a href="_shape_inference_8cc_source.html#l01022">ShapeInference.cc:1022</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1shape__inference_html_aff0e4db6db66437c1e13ea667e4d708e"><div class="ttname"><a href="namespaceonert_1_1shape__inference.html#aff0e4db6db66437c1e13ea667e4d708e">onert::shape_inference::inferSqueezeShape</a></div><div class="ttdeci">ir::Shape inferSqueezeShape(const ir::Shape &amp;in_shape, const ir::operation::Squeeze::Param &amp;param)</div><div class="ttdef"><b>Definition:</b> <a href="_shape_inference_8cc_source.html#l00815">ShapeInference.cc:815</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition:</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_aa000372729756a2ed1c28a613ed7cb88"><div class="ttname"><a href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">part_eval_one.output_shape</a></div><div class="ttdeci">list output_shape</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00115">part_eval_one.py:115</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2include_2util_2_shape_inference_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2include_2util_2_shape_inference_8h.html">ShapeInference.h</a></div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1operation_1_1_concat_1_1_param_html_a07ab0fd85cb3c22a4e1bb082a31fedc3"><div class="ttname"><a href="structonert_1_1ir_1_1operation_1_1_concat_1_1_param.html#a07ab0fd85cb3c22a4e1bb082a31fedc3">onert::ir::operation::Concat::Param::axis</a></div><div class="ttdeci">int32_t axis</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_concat_8h_source.html#l00036">Concat.h:36</a></div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1operation_1_1_gather_1_1_param_html_acbc37c66cf3f3b8ae7e12315a6790cdd"><div class="ttname"><a href="structonert_1_1ir_1_1operation_1_1_gather_1_1_param.html#acbc37c66cf3f3b8ae7e12315a6790cdd">onert::ir::operation::Gather::Param::axis</a></div><div class="ttdeci">int32_t axis</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_gather_8h_source.html#l00042">Gather.h:42</a></div></div>

@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('_circle_export_metadata_8cpp_source.ht
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  to.emplace_back(0xFF &amp; (value &gt;&gt; 3 * 8));</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>flatbuffers::Offset&lt;circle::Metadata&gt; metadata_offset(flatbuffers::FlatBufferBuilder &amp;builder,</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;circle::Metadata&gt;</a> metadata_offset(<a class="code hl_class" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a> &amp;builder,</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                                                      <a class="code hl_struct" href="structluci_1_1_serialized_model_data.html">luci::SerializedModelData</a> &amp;md,</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                                                      <span class="keyword">const</span> std::vector&lt;uint8_t&gt; &amp;data,</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                                                      <span class="keyword">const</span> std::string &amp;metadata_name)</div>
@@ -141,77 +141,77 @@ $(document).ready(function(){initNavTree('_circle_export_metadata_8cpp_source.ht
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">// &#39;execution_plan_table&#39; is encoded to binary format.</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classluci_1_1_circle_export_metadata.html#a9a934302b84c86a75e729ff7c35ba00c">   48</a></span><span class="keyword">const</span> std::vector&lt;uint8_t&gt; <a class="code hl_function" href="classluci_1_1_circle_export_metadata.html#a9a934302b84c86a75e729ff7c35ba00c">CircleExportMetadata::encoded_execution_plan_table</a>()</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>{</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  std::vector&lt;uint8_t&gt; data;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  std::vector&lt;uint8_t&gt; <a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  write_u32(data, _execution_plan_table.size());</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, _execution_plan_table.size());</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;kv : _execution_plan_table)</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  {</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <span class="keywordtype">id</span> = kv.first;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    write_u32(data, <span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, <span class="keywordtype">id</span>);</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">const</span> <span class="keyword">auto</span> plan_vector = kv.second;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">const</span> <span class="keyword">auto</span> size = plan_vector.size();</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    write_u32(data, size);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = plan_vector.size();</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> elem : plan_vector)</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      write_u32(data, elem);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, elem);</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    }</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  }</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordflow">return</span> data;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">// &#39;source_table&#39; is encoded to binary format.</span></div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classluci_1_1_circle_export_metadata.html#a10327254298c78cc26db6b55bb3055c8">   73</a></span><span class="keyword">const</span> std::vector&lt;uint8_t&gt; <a class="code hl_function" href="classluci_1_1_circle_export_metadata.html#a10327254298c78cc26db6b55bb3055c8">CircleExportMetadata::encoded_source_table</a>(<span class="keywordtype">void</span>)</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>{</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  std::vector&lt;uint8_t&gt; data;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  std::vector&lt;uint8_t&gt; <a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>;</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  write_u32(data, _source_table.size());</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, _source_table.size());</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;kv : _source_table)</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  {</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <span class="keywordtype">id</span> = kv.first;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    write_u32(data, <span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, <span class="keywordtype">id</span>);</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keyword">const</span> <span class="keyword">auto</span> origin_name = kv.second;</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keyword">const</span> <span class="keyword">auto</span> length = origin_name.length();</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    write_u32(data, length + 1); <span class="comment">// name + &#39;\0</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, length + 1); <span class="comment">// name + &#39;\0</span></div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; length; ++i)</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      data.emplace_back(origin_name.at(i));</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      <a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>.emplace_back(origin_name.at(i));</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    }</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    data.emplace_back(<span class="charliteral">&#39;\0&#39;</span>);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>.emplace_back(<span class="charliteral">&#39;\0&#39;</span>);</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  }</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordflow">return</span> data;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>;</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">// &#39;op_table&#39; is encoded to binary format.</span></div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="classluci_1_1_circle_export_metadata.html#a984b411c8391c466c3a3c6d3222a4edb">   99</a></span><span class="keyword">const</span> std::vector&lt;uint8_t&gt; <a class="code hl_function" href="classluci_1_1_circle_export_metadata.html#a984b411c8391c466c3a3c6d3222a4edb">CircleExportMetadata::encoded_op_table</a>(<span class="keywordtype">void</span>)</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>{</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  std::vector&lt;uint8_t&gt; data;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  std::vector&lt;uint8_t&gt; <a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>;</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  write_u32(data, _op_table.size());</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, _op_table.size());</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;kv : _op_table)</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  {</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <span class="keywordtype">id</span> = kv.first;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    write_u32(data, <span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, <span class="keywordtype">id</span>);</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keyword">const</span> <span class="keyword">auto</span> origins = kv.second;</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keyword">const</span> <span class="keyword">auto</span> node_num = origins.size();</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    write_u32(data, node_num);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, node_num);</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> origin : origins)</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    {</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      write_u32(data, origin);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, origin);</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    }</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  }</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">return</span> data;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>;</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>}</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>} <span class="comment">// namespace luci</span></div>
@@ -220,7 +220,7 @@ $(document).ready(function(){initNavTree('_circle_export_metadata_8cpp_source.ht
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>{</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>std::vector&lt;flatbuffers::Offset&lt;circle::Metadata&gt;&gt;</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="namespaceluci.html#aeaa97af424eda67da0d426d474c84520">  129</a></span><a class="code hl_function" href="namespaceluci.html#aeaa97af424eda67da0d426d474c84520">createCircleMetadataVector</a>(flatbuffers::FlatBufferBuilder &amp;builder, <a class="code hl_struct" href="structluci_1_1_serialized_model_data.html">luci::SerializedModelData</a> &amp;md)</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="namespaceluci.html#aeaa97af424eda67da0d426d474c84520">  129</a></span><a class="code hl_function" href="namespaceluci.html#aeaa97af424eda67da0d426d474c84520">createCircleMetadataVector</a>(<a class="code hl_class" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a> &amp;builder, <a class="code hl_struct" href="structluci_1_1_serialized_model_data.html">luci::SerializedModelData</a> &amp;md)</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>{</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  std::vector&lt;flatbuffers::Offset&lt;circle::Metadata&gt;&gt; metadata_vec;</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
@@ -244,11 +244,15 @@ $(document).ready(function(){initNavTree('_circle_export_metadata_8cpp_source.ht
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>} <span class="comment">// namespace luci</span></div>
 <div class="ttc" id="a_circle_export_metadata_8h_html"><div class="ttname"><a href="_circle_export_metadata_8h.html">CircleExportMetadata.h</a></div></div>
 <div class="ttc" id="a_user_settings_8h_html"><div class="ttname"><a href="_user_settings_8h.html">UserSettings.h</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_html"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a></div><div class="ttdoc">Helper class to hold data needed in creation of a FlatBuffer. To serialize data, you typically call o...</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l01171">flatbuffers.h:1172</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_export_metadata_html_a10327254298c78cc26db6b55bb3055c8"><div class="ttname"><a href="classluci_1_1_circle_export_metadata.html#a10327254298c78cc26db6b55bb3055c8">luci::CircleExportMetadata::encoded_source_table</a></div><div class="ttdeci">const std::vector&lt; uint8_t &gt; encoded_source_table(void)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_export_metadata_8cpp_source.html#l00073">CircleExportMetadata.cpp:73</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_export_metadata_html_a984b411c8391c466c3a3c6d3222a4edb"><div class="ttname"><a href="classluci_1_1_circle_export_metadata.html#a984b411c8391c466c3a3c6d3222a4edb">luci::CircleExportMetadata::encoded_op_table</a></div><div class="ttdeci">const std::vector&lt; uint8_t &gt; encoded_op_table(void)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_export_metadata_8cpp_source.html#l00099">CircleExportMetadata.cpp:99</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_export_metadata_html_a9a934302b84c86a75e729ff7c35ba00c"><div class="ttname"><a href="classluci_1_1_circle_export_metadata.html#a9a934302b84c86a75e729ff7c35ba00c">luci::CircleExportMetadata::encoded_execution_plan_table</a></div><div class="ttdeci">const std::vector&lt; uint8_t &gt; encoded_execution_plan_table(void)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_export_metadata_8cpp_source.html#l00048">CircleExportMetadata.cpp:48</a></div></div>
+<div class="ttc" id="anamespaceflatbuffers_html_ae8b86e00c88ce4892cc7f5bfe7545e06"><div class="ttname"><a href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">flatbuffers::data</a></div><div class="ttdeci">const T * data(const std::vector&lt; T, Alloc &gt; &amp;v)</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l01145">flatbuffers.h:1145</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition:</b> <a href="_user_settings_8h_source.html#l00022">UserSettings.h:23</a></div></div>
 <div class="ttc" id="anamespaceluci_html_aeaa97af424eda67da0d426d474c84520"><div class="ttname"><a href="namespaceluci.html#aeaa97af424eda67da0d426d474c84520">luci::createCircleMetadataVector</a></div><div class="ttdeci">std::vector&lt; flatbuffers::Offset&lt; circle::Metadata &gt; &gt; createCircleMetadataVector(flatbuffers::FlatBufferBuilder &amp;builder, luci::SerializedModelData &amp;md)</div><div class="ttdoc">Create Metadata corresponding to model metadata.</div><div class="ttdef"><b>Definition:</b> <a href="_circle_export_metadata_8cpp_source.html#l00129">CircleExportMetadata.cpp:129</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
+<div class="ttc" id="astructflatbuffers_1_1_offset_html"><div class="ttname"><a href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a></div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l00069">flatbuffers.h:70</a></div></div>
 <div class="ttc" id="astructluci_1_1_serialized_model_data_html"><div class="ttname"><a href="structluci_1_1_serialized_model_data.html">luci::SerializedModelData</a></div><div class="ttdef"><b>Definition:</b> <a href="_serialized_data_8h_source.html#l00117">SerializedData.h:118</a></div></div>
 <div class="ttc" id="astructluci_1_1_serialized_model_data_html_aba32cff9bef7f670531f2516f57ddf83"><div class="ttname"><a href="structluci_1_1_serialized_model_data.html#aba32cff9bef7f670531f2516f57ddf83">luci::SerializedModelData::_buffers</a></div><div class="ttdeci">std::vector&lt; flatbuffers::Offset&lt; circle::Buffer &gt; &gt; _buffers</div><div class="ttdef"><b>Definition:</b> <a href="_serialized_data_8h_source.html#l00123">SerializedData.h:123</a></div></div>
 <div class="ttc" id="astructluci_1_1_serialized_model_data_html_ac76cc54955caa48a2890f5397910ea77"><div class="ttname"><a href="structluci_1_1_serialized_model_data.html#ac76cc54955caa48a2890f5397910ea77">luci::SerializedModelData::_metadata</a></div><div class="ttdeci">CircleExportMetadata _metadata</div><div class="ttdef"><b>Definition:</b> <a href="_serialized_data_8h_source.html#l00124">SerializedData.h:124</a></div></div>

@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['shaperange_0',['ShapeRange',['../classmir_1_1_shape_iter.html#a32107196e09635d7168054b8919559b9',1,'mir::ShapeIter']]],
-  ['step_1',['Step',['../structcoco_1_1_op.html#aed9d20cb4d54ec0ad5e845ec7c2246cf',1,'coco::Op']]],
-  ['subst_3c_20substqualifier_3a_3adefault_20_3e_2',['Subst&lt; SubstQualifier::Default &gt;',['../classloco_1_1_node.html#a06f11239d0248880adf10411b232c564',1,'loco::Node']]],
-  ['succs_3',['succs',['../classloco_1_1_node.html#adfa2ca3ca3d634515f2b87da8047f456',1,'loco::Node']]]
+  ['read_0',['Read',['../classcoco_1_1_bag.html#ab78606ab3a6547d5c4c4dd9b80bfd454',1,'coco::Bag']]],
+  ['relative_5fepsilon_5fequal_1',['relative_epsilon_equal',['../classnike_1_1_relative_epsilon_equal_functor.html#a8c379491a55b93d5e243b31413b47b41',1,'nike::RelativeEpsilonEqualFunctor']]],
+  ['replace_2',['replace',['../classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html#a199b740ff58515ea2df7b0a6f39a6aee',1,'loco::Subst&lt; SubstQualifier::Default &gt;']]]
 ];

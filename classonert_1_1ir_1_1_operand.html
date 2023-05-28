@@ -298,11 +298,13 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  100</span>    assert(_data-&gt;size() % <span class="keyword">sizeof</span>(T) == 0);</div>
 <div class="line"><span class="lineno">  101</span> </div>
 <div class="line"><span class="lineno">  102</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *base = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(_data-&gt;base());</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keyword">const</span> std::size_t <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a> = _data-&gt;size() / <span class="keyword">sizeof</span>(T);</div>
-<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">return</span> std::vector&lt;T&gt;(base, base + size);</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keyword">const</span> std::size_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = _data-&gt;size() / <span class="keyword">sizeof</span>(T);</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">return</span> std::vector&lt;T&gt;(base, base + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><span class="lineno">  105</span>  }</div>
-<div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+
 </div>
 </div>
 <a id="a5a08a156f530c27b6d035d2cadd580e7" name="a5a08a156f530c27b6d035d2cadd580e7"></a>

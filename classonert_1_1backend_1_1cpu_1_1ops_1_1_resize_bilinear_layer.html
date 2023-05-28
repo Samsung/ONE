@@ -110,7 +110,7 @@ Collaboration diagram for onert::backend::cpu::ops::ResizeBilinearLayer:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:af9cf9701db2c92b4612742bd95ff4681"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_resize_bilinear_layer.html#af9cf9701db2c92b4612742bd95ff4681">ResizeBilinearLayer</a> ()</td></tr>
 <tr class="separator:af9cf9701db2c92b4612742bd95ff4681"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c5b8927d288bf6cfe0e74d9db0a4a9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_resize_bilinear_layer.html#a0c5b8927d288bf6cfe0e74d9db0a4a9c">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input1, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *size, bool align_corners, bool half_pixel_centers)</td></tr>
+<tr class="memitem:a0c5b8927d288bf6cfe0e74d9db0a4a9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_resize_bilinear_layer.html#a0c5b8927d288bf6cfe0e74d9db0a4a9c">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input1, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, bool align_corners, bool half_pixel_centers)</td></tr>
 <tr class="separator:a0c5b8927d288bf6cfe0e74d9db0a4a9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a828bcdb665a4bfe9e60d2a7967b6fda7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_resize_bilinear_layer.html#a828bcdb665a4bfe9e60d2a7967b6fda7">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, int32_t output_height, int32_t output_width, bool align_corners, bool half_pixel_centers)</td></tr>
 <tr class="separator:a828bcdb665a4bfe9e60d2a7967b6fda7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -274,15 +274,17 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00037">37</a> of file <a class="el" href="_resize_bilinear_layer_8cc_source.html">ResizeBilinearLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   40</span>{</div>
-<div class="line"><span class="lineno">   41</span>  assert(!<a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>-&gt;is_constant());</div>
+<div class="line"><span class="lineno">   41</span>  assert(!<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>-&gt;is_constant());</div>
 <div class="line"><span class="lineno">   42</span>  _input = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>;</div>
 <div class="line"><span class="lineno">   43</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>;</div>
-<div class="line"><span class="lineno">   44</span>  _size = <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>;</div>
+<div class="line"><span class="lineno">   44</span>  _size = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><span class="lineno">   45</span>  _align_corners = align_corners;</div>
 <div class="line"><span class="lineno">   46</span>  _half_pixel_centers = half_pixel_centers;</div>
 <div class="line"><span class="lineno">   47</span>}</div>
-<div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+
 </div>
 </div>
 <a id="adabfa45a8c6913ed398307f4fd420616" name="adabfa45a8c6913ed398307f4fd420616"></a>

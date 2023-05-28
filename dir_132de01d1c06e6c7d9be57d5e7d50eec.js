@@ -1,6 +1,6 @@
 var dir_132de01d1c06e6c7d9be57d5e7d50eec =
 [
-    [ "PALApplyActivationToVector.h", "_p_a_l_apply_activation_to_vector_8h.html", "_p_a_l_apply_activation_to_vector_8h" ],
+    [ "PALAdd.h", "_p_a_l_add_8h.html", "_p_a_l_add_8h" ],
     [ "PALArgMax.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_arg_max_8h.html", null ],
     [ "PALAveragePool2d.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_average_pool2d_8h.html", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_average_pool2d_8h" ],
     [ "PALBatchToSpaceND.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_batch_to_space_n_d_8h.html", null ],
@@ -14,16 +14,17 @@ var dir_132de01d1c06e6c7d9be57d5e7d50eec =
     [ "PALL2Normalize.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_l2_normalize_8h.html", null ],
     [ "PALL2Pool2D.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_l2_pool2_d_8h.html", null ],
     [ "PALLeakyRelu.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_leaky_relu_8h.html", null ],
-    [ "PALMul.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_mul_8h.html", null ],
+    [ "PALMaxPool2D.h", "_p_a_l_max_pool2_d_8h.html", "_p_a_l_max_pool2_d_8h" ],
+    [ "PALMul.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_mul_8h.html", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_mul_8h" ],
     [ "PALNeg.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_neg_8h.html", null ],
     [ "PALQuantize.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_quantize_8h.html", null ],
     [ "PALreference_ops.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_lreference__ops_8h.html", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_lreference__ops_8h" ],
     [ "PALResizeBilinear.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_bilinear_8h.html", null ],
     [ "PALResizeNearestNeighbor.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_nearest_neighbor_8h.html", null ],
-    [ "PALSoftmax.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_softmax_8h.html", null ],
+    [ "PALSoftmax.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_softmax_8h.html", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_softmax_8h" ],
     [ "PALSpaceToBatchND.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_space_to_batch_n_d_8h.html", null ],
     [ "PALSpaceToDepth.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_space_to_depth_8h.html", null ],
-    [ "PALSub.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_sub_8h.html", null ],
+    [ "PALSub.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_sub_8h.html", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_sub_8h" ],
     [ "PALSVDF.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_s_v_d_f_8h.html", null ],
     [ "PALUnidirectionalSequenceLSTM.h", "mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h.html", "mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h" ]
 ];

@@ -96,8 +96,8 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_t_i_s_o_kernel_8h_source.html">TISOKernel.h</a>&quot;</code><br />
-<code>#include &quot;tensorflow/lite/kernels/internal/common.h&quot;</code><br />
-<code>#include &quot;tensorflow/lite/kernels/internal/types.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="_process_broadcast_shapes_8h_source.html">ProcessBroadcastShapes.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html">Utils.h</a>&quot;</code><br />
 </div>
 <p><a href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -110,21 +110,18 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9af9361f165099aa2bd87ed15a156b2a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastFunc  = nullptr_t, typename Options  = nullptr_t&gt; </td></tr>
-<tr class="memitem:a9af9361f165099aa2bd87ed15a156b2a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a9af9361f165099aa2bd87ed15a156b2a">luci_interpreter::kernels::evalTISOKernel</a> (TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func, kernels::TISOKernel *kernel, kernels::TISOData *kernel_data, const Options *options, tflite::RuntimeShape &amp;&amp;input_shape_1, tflite::RuntimeShape &amp;&amp;input_shape_2)</td></tr>
-<tr class="separator:a9af9361f165099aa2bd87ed15a156b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9ab41819e28a721fe141588f86ad448"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastFunc  = nullptr_t, typename Options  = nullptr_t&gt; </td></tr>
-<tr class="memitem:ad9ab41819e28a721fe141588f86ad448"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ad9ab41819e28a721fe141588f86ad448">luci_interpreter::kernels::evalTISOInplaceKernel</a> (TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func, kernels::TISOKernel *kernel, const Options *options, tflite::RuntimeShape &amp;&amp;input_shape_1, tflite::RuntimeShape &amp;&amp;input_shape_2)</td></tr>
-<tr class="separator:ad9ab41819e28a721fe141588f86ad448"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7192db6817195484b48af635a0b3d84"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastFunc  = nullptr_t, typename Options  = nullptr_t&gt; </td></tr>
+<tr class="memitem:ad7192db6817195484b48af635a0b3d84"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ad7192db6817195484b48af635a0b3d84">luci_interpreter::kernels::evalTISOKernel</a> (TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func, kernels::TISOKernel *kernel, kernels::TISOData *kernel_data, const Options *options, RuntimeShape &amp;&amp;input_shape_1, RuntimeShape &amp;&amp;input_shape_2)</td></tr>
+<tr class="separator:ad7192db6817195484b48af635a0b3d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d17f69e9aaf7c2d1c3016d2b35290f4"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastFunc  = nullptr_t, typename Options  = nullptr_t&gt; </td></tr>
+<tr class="memitem:a9d17f69e9aaf7c2d1c3016d2b35290f4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a9d17f69e9aaf7c2d1c3016d2b35290f4">luci_interpreter::kernels::evalTISOInplaceKernel</a> (TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func, kernels::TISOKernel *kernel, const Options *options, RuntimeShape &amp;&amp;input_shape_1, RuntimeShape &amp;&amp;input_shape_2)</td></tr>
+<tr class="separator:a9d17f69e9aaf7c2d1c3016d2b35290f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cda4206c499f9489dfa698bbbf857f2"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastFunc  = nullptr_t, typename Options  = nullptr_t&gt; </td></tr>
 <tr class="memitem:a3cda4206c499f9489dfa698bbbf857f2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#a3cda4206c499f9489dfa698bbbf857f2">luci_interpreter::kernels::evalTISOQuantizedKernel</a> (TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func, kernels::TISOKernel *kernel, kernels::TISOData *kernel_data, const Options *options)</td></tr>
 <tr class="separator:a3cda4206c499f9489dfa698bbbf857f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6f9d92254be203f5b09a2c15fc0d2db"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TISOFunc  = nullptr_t, typename TISOBroadcastFunc  = nullptr_t, typename Options  = nullptr_t&gt; </td></tr>
 <tr class="memitem:ad6f9d92254be203f5b09a2c15fc0d2db"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ad6f9d92254be203f5b09a2c15fc0d2db">luci_interpreter::kernels::evalTISOInplaceQuantizedKernel</a> (TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func, kernels::TISOKernel *kernel, const Options *options)</td></tr>
 <tr class="separator:ad6f9d92254be203f5b09a2c15fc0d2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae259d24ecb5f94b508475ae0abcc3510"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Op , int N = 5&gt; </td></tr>
-<tr class="memitem:ae259d24ecb5f94b508475ae0abcc3510"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html#ae259d24ecb5f94b508475ae0abcc3510">luci_interpreter::kernels::BinaryOpBroadcastSlow</a> (const tflite::RuntimeShape &amp;unextended_input1_shape, const T *input1_data, const tflite::RuntimeShape &amp;unextended_input2_shape, const T *input2_data, const tflite::RuntimeShape &amp;unextended_output_shape, T *output_data, Op op)</td></tr>
-<tr class="separator:ae259d24ecb5f94b508475ae0abcc3510"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

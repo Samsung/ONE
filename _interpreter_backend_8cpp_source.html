@@ -201,8 +201,8 @@ $(document).ready(function(){initNavTree('_interpreter_backend_8cpp_source.html'
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  stream.seekg(0, std::ios::end);</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  std::streampos end = stream.tellg();</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  stream.seekg(0, std::ios::beg);</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  std::streampos begin = stream.tellg();</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  int64_t file_size = end - begin;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  std::streampos <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> = stream.tellg();</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  int64_t file_size = end - <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>;</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordflow">if</span> (<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(file_size) != input_data_size)</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;File \&quot;&quot;</span> + filename +</div>
@@ -278,6 +278,7 @@ $(document).ready(function(){initNavTree('_interpreter_backend_8cpp_source.html'
 <div class="ttc" id="anamespacennc_html"><div class="ttname"><a href="namespacennc.html">nnc</a></div><div class="ttdef"><b>Definition:</b> <a href="_acl_cpp_generator_8cpp_source.html#l00026">AclCppGenerator.cpp:27</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_ad0c97b5af82ed124c20ffc3312c37274"><div class="ttname"><a href="namespacepart__eval__one.html#ad0c97b5af82ed124c20ffc3312c37274">part_eval_one.type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00019">part_eval_one.py:19</a></div></div>
 <div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition:</b> <a href="exo_2src_2_circle_2_circle_exporter_utils_8h_source.html#l00052">CircleExporterUtils.h:53</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_adaf1f5da3e0e0e62ea2ea6e1e4e5f49e"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a></div><div class="ttdeci">int32_t begin[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">Slice.cpp:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

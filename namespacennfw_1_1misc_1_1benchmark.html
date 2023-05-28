@@ -184,14 +184,15 @@ template&lt;typename T , typename Callable &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="misc_2include_2misc_2benchmark_8h_source.html#l00001">1</a> of file <a class="el" href="misc_2include_2misc_2benchmark_8h_source.html">benchmark.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   71</span>{</div>
-<div class="line"><span class="lineno">   72</span>  <span class="keyword">auto</span> begin = std::chrono::high_resolution_clock::now();</div>
+<div class="line"><span class="lineno">   72</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> = std::chrono::high_resolution_clock::now();</div>
 <div class="line"><span class="lineno">   73</span>  cb();</div>
 <div class="line"><span class="lineno">   74</span>  <span class="keyword">auto</span> end = std::chrono::high_resolution_clock::now();</div>
 <div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>  acc() += std::chrono::duration_cast&lt;T&gt;(end - begin);</div>
+<div class="line"><span class="lineno">   76</span>  acc() += std::chrono::duration_cast&lt;T&gt;(end - <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>);</div>
 <div class="line"><span class="lineno">   77</span> </div>
 <div class="line"><span class="lineno">   78</span>  <span class="keywordflow">return</span> acc;</div>
 <div class="line"><span class="lineno">   79</span>}</div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_adaf1f5da3e0e0e62ea2ea6e1e4e5f49e"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a></div><div class="ttdeci">int32_t begin[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">Slice.cpp:33</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

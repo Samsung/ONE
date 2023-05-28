@@ -254,7 +254,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="backend_2gpu__cl_2_kernel_generator_8cc_source.html#l00070">70</a> of file <a class="el" href="backend_2gpu__cl_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   71</span>{</div>
-<div class="line"><span class="lineno">   72</span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a> = _nodes.size();</div>
+<div class="line"><span class="lineno">   72</span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = _nodes.size();</div>
 <div class="line"><span class="lineno">   73</span>  <span class="keywordtype">size_t</span> i = 0;</div>
 <div class="line"><span class="lineno">   74</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it : Functions)</div>
 <div class="line"><span class="lineno">   75</span>  {</div>
@@ -279,22 +279,24 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   94</span>      fn_seq-&gt;iterate([&amp;](exec::IFunction &amp;ifunc) {</div>
 <div class="line"><span class="lineno">   95</span>        <span class="keyword">static_cast&lt;</span>ClFunction &amp;<span class="keyword">&gt;</span>(ifunc).add_operation(&amp;node.cl_operation);</div>
 <div class="line"><span class="lineno">   96</span>      });</div>
-<div class="line"><span class="lineno">   97</span>      <span class="keywordflow">if</span> (i == size)</div>
+<div class="line"><span class="lineno">   97</span>      <span class="keywordflow">if</span> (i == <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)</div>
 <div class="line"><span class="lineno">   98</span>      {</div>
 <div class="line"><span class="lineno">   99</span>        <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  100</span>      }</div>
 <div class="line"><span class="lineno">  101</span>      node_index = _operation_indexes[i];</div>
 <div class="line"><span class="lineno">  102</span>    }</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> (i == size)</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> (i == <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)</div>
 <div class="line"><span class="lineno">  104</span>    {</div>
 <div class="line"><span class="lineno">  105</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  106</span>    }</div>
 <div class="line"><span class="lineno">  107</span>  }</div>
 <div class="line"><span class="lineno">  108</span>}</div>
-<div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition:</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae9d6514c748e05f0254717f688bc458f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">onert::ir::OperandIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperandIndexTag &gt; OperandIndex</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00033">Index.h:33</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

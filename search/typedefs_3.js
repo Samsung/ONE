@@ -5,9 +5,10 @@ var searchData=
   ['datatype_2',['DataType',['../_h_d_f5_importer_8cpp.html#a8a8ce3b06f5919e4c1ce87cd95bcdbe8',1,'DataType():&#160;HDF5Importer.cpp'],['../_record_min_max_8cpp.html#a8a8ce3b06f5919e4c1ce87cd95bcdbe8',1,'DataType():&#160;RecordMinMax.cpp'],['../_min_max_observer_8cpp.html#a10cf8673026514239e92b79d072d7e7b',1,'DataType():&#160;MinMaxObserver.cpp'],['../namespaceluci__interpreter.html#af95d87442906a8c93aaabc70b9c4fed5',1,'luci_interpreter::DataType()'],['../_dalgona_8cpp.html#a8a8ce3b06f5919e4c1ce87cd95bcdbe8',1,'DataType():&#160;Dalgona.cpp'],['../_input_data_loader_8cpp.html#a8a8ce3b06f5919e4c1ce87cd95bcdbe8',1,'DataType():&#160;InputDataLoader.cpp']]],
   ['datatypeimpl_3',['DataTypeImpl',['../namespaceluci__interpreter.html#aabbfe775c93e9ada62f74d376e55556b',1,'luci_interpreter']]],
   ['depset_4',['DepSet',['../namespacecoco.html#ab0605b49890de394682d0771fd481a8b',1,'coco']]],
-  ['dimensiontype_5',['DimensionType',['../classonert_1_1base__loader_1_1_base_loader.html#a006c3eef430488a66cd9958e012740a4',1,'onert::base_loader::BaseLoader']]],
-  ['dims_6',['Dims',['../namespacemorph.html#a7e45f169b086c0fffd2fddb857256ee3',1,'morph::Dims()'],['../namespacesouschef.html#af6901c7c7d76de2d622df38926a477da',1,'souschef::Dims()']]],
-  ['dlhandle_7',['DLHandle',['../namespacenpud_1_1core.html#a8a5f2166fb0605199fb60a605ecf5012',1,'npud::core']]],
-  ['dlhandle_5fdestroy_5ft_8',['dlhandle_destroy_t',['../classonert_1_1compiler_1_1_backend_manager.html#aa0e17a9ffd4eb27df6afd7d421835c5f',1,'onert::compiler::BackendManager']]],
-  ['dynamictensormanager_9',['DynamicTensorManager',['../namespaceonert_1_1backend_1_1builtin.html#af1fe1e637c2978de29ade945417c7e20',1,'onert::backend::builtin']]]
+  ['difference_5ftype_5',['difference_type',['../structflatbuffers_1_1_vector_iterator.html#a02c756cdd5ec038a978066c5761dd429',1,'flatbuffers::VectorIterator']]],
+  ['dimensiontype_6',['DimensionType',['../classonert_1_1base__loader_1_1_base_loader.html#a006c3eef430488a66cd9958e012740a4',1,'onert::base_loader::BaseLoader']]],
+  ['dims_7',['Dims',['../namespacemorph.html#a7e45f169b086c0fffd2fddb857256ee3',1,'morph::Dims()'],['../namespacesouschef.html#af6901c7c7d76de2d622df38926a477da',1,'souschef::Dims()']]],
+  ['dlhandle_8',['DLHandle',['../namespacenpud_1_1core.html#a8a5f2166fb0605199fb60a605ecf5012',1,'npud::core']]],
+  ['dlhandle_5fdestroy_5ft_9',['dlhandle_destroy_t',['../classonert_1_1compiler_1_1_backend_manager.html#aa0e17a9ffd4eb27df6afd7d421835c5f',1,'onert::compiler::BackendManager']]],
+  ['dynamictensormanager_10',['DynamicTensorManager',['../namespaceonert_1_1backend_1_1builtin.html#af1fe1e637c2978de29ade945417c7e20',1,'onert::backend::builtin']]]
 ];

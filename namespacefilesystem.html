@@ -137,15 +137,16 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> path;</div>
 <div class="line"><span class="lineno">   36</span> </div>
 <div class="line"><span class="lineno">   37</span>  <span class="comment">// Trailing separator</span></div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (last_index + <a class="code hl_function" href="namespacefilesystem.html#aae72198c2e356a361745b0cb06913571">separator</a>().size() == path.size())</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (last_index + <a class="code hl_function" href="namespacefilesystem.html#aae72198c2e356a361745b0cb06913571">separator</a>().<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>() == path.size())</div>
 <div class="line"><span class="lineno">   39</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacefilesystem.html#af959d1d54ec1589026cb935cae1471e7">basename</a>(path.substr(0, last_index));</div>
 <div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> path.substr(last_index + <a class="code hl_function" href="namespacefilesystem.html#aae72198c2e356a361745b0cb06913571">separator</a>().size());</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> path.substr(last_index + <a class="code hl_function" href="namespacefilesystem.html#aae72198c2e356a361745b0cb06913571">separator</a>().<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>());</div>
 <div class="line"><span class="lineno">   42</span>}</div>
 <div class="ttc" id="anamespacefilesystem_html_aae72198c2e356a361745b0cb06913571"><div class="ttname"><a href="namespacefilesystem.html#aae72198c2e356a361745b0cb06913571">filesystem::separator</a></div><div class="ttdeci">const std::string separator()</div><div class="ttdef"><b>Definition:</b> <a href="filesystem__linux_8cpp_source.html#l00025">filesystem_linux.cpp:25</a></div></div>
 <div class="ttc" id="anamespacefilesystem_html_af959d1d54ec1589026cb935cae1471e7"><div class="ttname"><a href="namespacefilesystem.html#af959d1d54ec1589026cb935cae1471e7">filesystem::basename</a></div><div class="ttdeci">std::string basename(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> <a href="filesystem__common_8cpp_source.html#l00029">filesystem_common.cpp:29</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="filesystem__common_8cpp_source.html#l00029">basename()</a>, and <a class="el" href="filesystem__linux_8cpp_source.html#l00025">separator()</a>.</p>
+<p class="reference">References <a class="el" href="filesystem__common_8cpp_source.html#l00029">basename()</a>, <a class="el" href="filesystem__linux_8cpp_source.html#l00025">separator()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="filesystem__common_8cpp_source.html#l00029">basename()</a>.</p>
 

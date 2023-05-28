@@ -164,14 +164,17 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  162</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> idx_channel =</div>
 <div class="line"><span class="lineno">  163</span>    get_data_layout_dimension_index(data_layout, DataLayoutDimension::CHANNEL);</div>
 <div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>  TensorShape output_shape{input-&gt;tensor_shape()};</div>
-<div class="line"><span class="lineno">  166</span>  output_shape.set(idx_width, input-&gt;dimension(idx_width) * block);</div>
-<div class="line"><span class="lineno">  167</span>  output_shape.set(idx_height, input-&gt;dimension(idx_height) * block);</div>
-<div class="line"><span class="lineno">  168</span>  output_shape.set(idx_channel, input-&gt;dimension(idx_channel) / (block * block));</div>
+<div class="line"><span class="lineno">  165</span>  TensorShape <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>{input-&gt;tensor_shape()};</div>
+<div class="line"><span class="lineno">  166</span>  <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.set(idx_width, input-&gt;dimension(idx_width) * block);</div>
+<div class="line"><span class="lineno">  167</span>  <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.set(idx_height, input-&gt;dimension(idx_height) * block);</div>
+<div class="line"><span class="lineno">  168</span>  <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.set(idx_channel, input-&gt;dimension(idx_channel) / (block * block));</div>
 <div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>  <span class="keywordflow">return</span> output_shape;</div>
+<div class="line"><span class="lineno">  170</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><span class="lineno">  171</span>}</div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+
 </div>
 </div>
 <a id="ae64ffb880c8978e720b1724418683504" name="ae64ffb880c8978e720b1724418683504"></a>
@@ -231,35 +234,36 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  210</span>  ARM_COMPUTE_ERROR_ON(input_shape.num_dimensions() + indices_shape.num_dimensions() - 1 &gt; 4);</div>
 <div class="line"><span class="lineno">  211</span>  ARM_COMPUTE_ERROR_ON(actual_axis &gt;= input_shape.num_dimensions());</div>
 <div class="line"><span class="lineno">  212</span> </div>
-<div class="line"><span class="lineno">  213</span>  TensorShape output_shape = input_shape;</div>
+<div class="line"><span class="lineno">  213</span>  TensorShape <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = input_shape;</div>
 <div class="line"><span class="lineno">  214</span>  <span class="keywordflow">if</span> (indices_shape.num_dimensions() == 1)</div>
 <div class="line"><span class="lineno">  215</span>  {</div>
-<div class="line"><span class="lineno">  216</span>    output_shape[actual_axis] = indices_shape[0];</div>
+<div class="line"><span class="lineno">  216</span>    <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>[actual_axis] = indices_shape[0];</div>
 <div class="line"><span class="lineno">  217</span>  }</div>
 <div class="line"><span class="lineno">  218</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (indices_shape.num_dimensions() &gt; 1)</div>
 <div class="line"><span class="lineno">  219</span>  {</div>
-<div class="line"><span class="lineno">  220</span>    output_shape.shift_right(indices_shape.num_dimensions() - 1);</div>
+<div class="line"><span class="lineno">  220</span>    <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.shift_right(indices_shape.num_dimensions() - 1);</div>
 <div class="line"><span class="lineno">  221</span> </div>
-<div class="line"><span class="lineno">  222</span>    <span class="keywordflow">for</span> (uint32_t i = 0, o = 0; o &lt; output_shape.num_dimensions(); ++o, ++i)</div>
+<div class="line"><span class="lineno">  222</span>    <span class="keywordflow">for</span> (uint32_t i = 0, o = 0; o &lt; <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.num_dimensions(); ++o, ++i)</div>
 <div class="line"><span class="lineno">  223</span>    {</div>
 <div class="line"><span class="lineno">  224</span>      <span class="keywordflow">if</span> (o == actual_axis)</div>
 <div class="line"><span class="lineno">  225</span>      {</div>
 <div class="line"><span class="lineno">  226</span>        ++i;</div>
 <div class="line"><span class="lineno">  227</span>        <span class="keywordflow">for</span> (uint32_t in = 0; in &lt; indices_shape.num_dimensions(); ++in, ++o)</div>
 <div class="line"><span class="lineno">  228</span>        {</div>
-<div class="line"><span class="lineno">  229</span>          output_shape[o] = indices_shape[in];</div>
+<div class="line"><span class="lineno">  229</span>          <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>[o] = indices_shape[in];</div>
 <div class="line"><span class="lineno">  230</span>        }</div>
 <div class="line"><span class="lineno">  231</span>      }</div>
 <div class="line"><span class="lineno">  232</span>      <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  233</span>      {</div>
-<div class="line"><span class="lineno">  234</span>        output_shape[o] = input_shape[i];</div>
+<div class="line"><span class="lineno">  234</span>        <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>[o] = input_shape[i];</div>
 <div class="line"><span class="lineno">  235</span>      }</div>
 <div class="line"><span class="lineno">  236</span>    }</div>
 <div class="line"><span class="lineno">  237</span>  }</div>
-<div class="line"><span class="lineno">  238</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>;</div>
+<div class="line"><span class="lineno">  238</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><span class="lineno">  239</span>}</div>
-<div class="ttc" id="anamespacepart__eval__one_html_aa000372729756a2ed1c28a613ed7cb88"><div class="ttname"><a href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">part_eval_one.output_shape</a></div><div class="ttdeci">list output_shape</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00115">part_eval_one.py:115</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="_n_e_gather_kernel_ex_8cpp_source.html#l00167">arm_compute::NEGatherKernelEx::configure()</a>, and <a class="el" href="_n_e_gather_kernel_ex_8cpp_source.html#l00231">arm_compute::NEGatherKernelEx::validate()</a>.</p>
 
 </div>
@@ -319,8 +323,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  252</span>  ARM_COMPUTE_ERROR_ON(indices_shape.num_dimensions() &gt; 3);</div>
 <div class="line"><span class="lineno">  253</span>  ARM_COMPUTE_ERROR_ON(actual_axis &gt; indices_shape.num_dimensions());</div>
 <div class="line"><span class="lineno">  254</span> </div>
-<div class="line"><span class="lineno">  255</span>  TensorShape output_shape;</div>
-<div class="line"><span class="lineno">  256</span>  output_shape.set(actual_axis, depth);</div>
+<div class="line"><span class="lineno">  255</span>  TensorShape <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
+<div class="line"><span class="lineno">  256</span>  <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.set(actual_axis, depth);</div>
 <div class="line"><span class="lineno">  257</span> </div>
 <div class="line"><span class="lineno">  258</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i_shift = 0;</div>
 <div class="line"><span class="lineno">  259</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; indices_shape.num_dimensions(); ++i)</div>
@@ -329,12 +333,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  262</span>    {</div>
 <div class="line"><span class="lineno">  263</span>      i_shift++;</div>
 <div class="line"><span class="lineno">  264</span>    }</div>
-<div class="line"><span class="lineno">  265</span>    output_shape.set(i + i_shift, indices_shape[i]);</div>
+<div class="line"><span class="lineno">  265</span>    <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.set(i + i_shift, indices_shape[i]);</div>
 <div class="line"><span class="lineno">  266</span>  }</div>
 <div class="line"><span class="lineno">  267</span> </div>
-<div class="line"><span class="lineno">  268</span>  <span class="keywordflow">return</span> output_shape;</div>
+<div class="line"><span class="lineno">  268</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><span class="lineno">  269</span>}</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+
 </div>
 </div>
 <a id="a7986ee821cb6645d21c377cc4b4ba6eb" name="a7986ee821cb6645d21c377cc4b4ba6eb"></a>
@@ -383,20 +389,22 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_shape_calculator_ex_8h_source.html#l00180">180</a> of file <a class="el" href="_shape_calculator_ex_8h_source.html">ShapeCalculatorEx.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  181</span>{</div>
 <div class="line"><span class="lineno">  182</span>  ARM_COMPUTE_ERROR_ON(block_shape &lt; 2);</div>
-<div class="line"><span class="lineno">  183</span>  TensorShape output_shape{input-&gt;tensor_shape()};</div>
+<div class="line"><span class="lineno">  183</span>  TensorShape <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>{input-&gt;tensor_shape()};</div>
 <div class="line"><span class="lineno">  184</span> </div>
 <div class="line"><span class="lineno">  185</span>  <span class="keyword">const</span> DataLayout data_layout = input-&gt;data_layout();</div>
 <div class="line"><span class="lineno">  186</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> idx_width = get_data_layout_dimension_index(data_layout, DataLayoutDimension::WIDTH);</div>
 <div class="line"><span class="lineno">  187</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> idx_height = get_data_layout_dimension_index(data_layout, DataLayoutDimension::HEIGHT);</div>
 <div class="line"><span class="lineno">  188</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> idx_depth = get_data_layout_dimension_index(data_layout, DataLayoutDimension::CHANNEL);</div>
 <div class="line"><span class="lineno">  189</span> </div>
-<div class="line"><span class="lineno">  190</span>  output_shape.set(idx_width, input-&gt;tensor_shape()[idx_width] * block_shape);</div>
-<div class="line"><span class="lineno">  191</span>  output_shape.set(idx_height, input-&gt;tensor_shape()[idx_height] * block_shape);</div>
-<div class="line"><span class="lineno">  192</span>  output_shape.set(idx_depth, input-&gt;tensor_shape()[idx_depth] / (block_shape * block_shape));</div>
+<div class="line"><span class="lineno">  190</span>  <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.set(idx_width, input-&gt;tensor_shape()[idx_width] * block_shape);</div>
+<div class="line"><span class="lineno">  191</span>  <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.set(idx_height, input-&gt;tensor_shape()[idx_height] * block_shape);</div>
+<div class="line"><span class="lineno">  192</span>  <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.set(idx_depth, input-&gt;tensor_shape()[idx_depth] / (block_shape * block_shape));</div>
 <div class="line"><span class="lineno">  193</span> </div>
-<div class="line"><span class="lineno">  194</span>  <span class="keywordflow">return</span> output_shape;</div>
+<div class="line"><span class="lineno">  194</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><span class="lineno">  195</span>}</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+
 </div>
 </div>
 <a id="a639ed6b2f361df361565bf1cb2a22bb2" name="a639ed6b2f361df361565bf1cb2a22bb2"></a>

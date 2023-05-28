@@ -15,6 +15,7 @@ var namespacemembers_type =
     [ "n", "namespacemembers_type_n.html", null ],
     [ "o", "namespacemembers_type_o.html", null ],
     [ "p", "namespacemembers_type_p.html", null ],
+    [ "q", "namespacemembers_type_q.html", null ],
     [ "r", "namespacemembers_type_r.html", null ],
     [ "s", "namespacemembers_type_s.html", null ],
     [ "t", "namespacemembers_type_t.html", null ],

@@ -10,6 +10,7 @@ var namespaceonert_1_1backend =
     [ "custom", "namespaceonert_1_1backend_1_1custom.html", "namespaceonert_1_1backend_1_1custom" ],
     [ "gpu_cl", "namespaceonert_1_1backend_1_1gpu__cl.html", "namespaceonert_1_1backend_1_1gpu__cl" ],
     [ "ruy", "namespaceonert_1_1backend_1_1ruy.html", "namespaceonert_1_1backend_1_1ruy" ],
+    [ "train", "namespaceonert_1_1backend_1_1train.html", "namespaceonert_1_1backend_1_1train" ],
     [ "trix", "namespaceonert_1_1backend_1_1trix.html", "namespaceonert_1_1backend_1_1trix" ],
     [ "xnnpack", "namespaceonert_1_1backend_1_1xnnpack.html", "namespaceonert_1_1backend_1_1xnnpack" ],
     [ "Backend", "classonert_1_1backend_1_1_backend.html", "classonert_1_1backend_1_1_backend" ],

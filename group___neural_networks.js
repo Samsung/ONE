@@ -35,9 +35,9 @@ var group___neural_networks =
     [ "ANeuralNetworksOperationType", "group___neural_networks.html#ga1aa0c2cbc257093f98d6f0a2eb1932a5", null ],
     [ "ANeuralNetworksOperationType", "group___neural_networks.html#ga1aa0c2cbc257093f98d6f0a2eb1932a5", null ],
     [ "ANeuralNetworksSymmPerChannelQuantParams", "group___neural_networks.html#gade1868947bbd472b9e3113657dee4116", [
+      [ "ANEURALNETWORKS_BYTE_SIZE_OF_CACHE_TOKEN", "group___neural_networks.html#gga385c44f6fb256e5716a2302a5b940388a4d7f5dd59e298470e16b1675bfe0c371", null ],
       [ "ANEURALNETWORKS_MAX_SIZE_OF_IMMEDIATELY_COPIED_VALUES", "group___neural_networks.html#ggadc29c2ff13d900c2f185ee95427fb06caae0a47d1fa3a3f0b0861efc77f6865cf", null ],
-      [ "ANEURALNETWORKS_MAX_SIZE_OF_IMMEDIATELY_COPIED_VALUES", "group___neural_networks.html#gga0411cd49bb5b71852cecd93bcbf0ca2daae0a47d1fa3a3f0b0861efc77f6865cf", null ],
-      [ "ANEURALNETWORKS_BYTE_SIZE_OF_CACHE_TOKEN", "group___neural_networks.html#ggabed82baf7f470b522273a3e37c24c600a4d7f5dd59e298470e16b1675bfe0c371", null ]
+      [ "ANEURALNETWORKS_MAX_SIZE_OF_IMMEDIATELY_COPIED_VALUES", "group___neural_networks.html#ggab04a0655cd1e3bcac5e8f48c18df1a57aae0a47d1fa3a3f0b0861efc77f6865cf", null ]
     ] ],
     [ "DeviceTypeCode", "group___neural_networks.html#ga61f16b495d2e04593c819c12e42ac9f2", [
       [ "ANEURALNETWORKS_DEVICE_UNKNOWN", "group___neural_networks.html#gga61f16b495d2e04593c819c12e42ac9f2a844131738ae41e1b767a42117a270eba", null ],

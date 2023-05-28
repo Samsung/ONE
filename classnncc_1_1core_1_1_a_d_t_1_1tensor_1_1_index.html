@@ -105,7 +105,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2bc1cc135b466cb9f3768aefa96846c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae97d16723f65c8f0c2f31ea609eb68bf"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_index.html#ae97d16723f65c8f0c2f31ea609eb68bf">rank</a> (void) const</td></tr>
 <tr class="separator:ae97d16723f65c8f0c2f31ea609eb68bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43c17dee53b7cfd5b4ac04a8c3aa2665"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_index.html">Index</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_index.html#a43c17dee53b7cfd5b4ac04a8c3aa2665">resize</a> (uint32_t size)</td></tr>
+<tr class="memitem:a43c17dee53b7cfd5b4ac04a8c3aa2665"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_index.html">Index</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_index.html#a43c17dee53b7cfd5b4ac04a8c3aa2665">resize</a> (uint32_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)</td></tr>
 <tr class="separator:a43c17dee53b7cfd5b4ac04a8c3aa2665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb00643bed055b9b061f0754da46378e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_index.html">Index</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_index.html#adb00643bed055b9b061f0754da46378e">fill</a> (uint32_t index)</td></tr>
 <tr class="separator:adb00643bed055b9b061f0754da46378e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -278,10 +278,13 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="angkor_2src_2_a_d_t_2tensor_2_index_8cpp_source.html#l00037">37</a> of file <a class="el" href="angkor_2src_2_a_d_t_2tensor_2_index_8cpp_source.html">Index.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
-<div class="line"><span class="lineno">   39</span>  _indices.resize(size);</div>
+<div class="line"><span class="lineno">   39</span>  _indices.resize(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><span class="lineno">   40</span>  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><span class="lineno">   41</span>}</div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="tensor_2_index_enumerator_8cpp_source.html#l00039">nncc::core::ADT::tensor::IndexEnumerator::IndexEnumerator()</a>, <a class="el" href="angkor_2src_2_a_d_t_2tensor_2_index_8cpp_source.html#l00052">nncc::core::ADT::tensor::operator+()</a>, <a class="el" href="_permuting_codec_8cpp_source.html#l00440">loco::PermutingEncoder&lt; Domain::DepthwiseFilter &gt;::value()</a>, <a class="el" href="_permuting_codec_8cpp_source.html#l00123">loco::PermutingEncoder&lt; Domain::Feature &gt;::value()</a>, <a class="el" href="_permuting_codec_8cpp_source.html#l00287">loco::PermutingEncoder&lt; Domain::Filter &gt;::value()</a>, and <a class="el" href="_permuting_codec_8cpp_source.html#l00582">loco::PermutingEncoder&lt; Domain::Matrix &gt;::value()</a>.</p>
 
 </div>

@@ -532,10 +532,10 @@ $(document).ready(function(){initNavTree('_m_i_r_to_d_o_m_8cpp_source.html','');
 <div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>  <span class="keyword">const</span> int32_t c = 3;</div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span> </div>
 <div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> input_shape{1, h, w, c};</div>
-<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> output_shape{1, h * w * c};</div>
+<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>{1, h * w * c};</div>
 <div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span> </div>
-<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>  OpConstructor op_generator = [output_shape](<a class="code hl_class" href="classmir_1_1_graph.html">Graph</a> &amp;g, <span class="keyword">const</span> vector&lt;Operation::Output *&gt; &amp;inputs) {</div>
-<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span>    <span class="keywordflow">return</span> g.create&lt;<a class="code hl_class" href="classmir_1_1ops_1_1_reshape_op.html">mir::ops::ReshapeOp</a>&gt;(inputs[0], output_shape);</div>
+<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>  OpConstructor op_generator = [<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>](<a class="code hl_class" href="classmir_1_1_graph.html">Graph</a> &amp;g, <span class="keyword">const</span> vector&lt;Operation::Output *&gt; &amp;inputs) {</div>
+<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span>    <span class="keywordflow">return</span> g.create&lt;<a class="code hl_class" href="classmir_1_1ops_1_1_reshape_op.html">mir::ops::ReshapeOp</a>&gt;(inputs[0], <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>  };</div>
 <div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span> </div>
 <div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>  fillGraph(g, op_generator, {input_shape});</div>
@@ -593,6 +593,7 @@ $(document).ready(function(){initNavTree('_m_i_r_to_d_o_m_8cpp_source.html','');
 <div class="ttc" id="a_max_pool2_d_op_8h_html"><div class="ttname"><a href="_max_pool2_d_op_8h.html">MaxPool2DOp.h</a></div></div>
 <div class="ttc" id="a_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_html_aa73e018b04368e7afaded77ef0ac69db"><div class="ttname"><a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a></div><div class="ttdeci">std::mutex m</div><div class="ttdef"><b>Definition:</b> <a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">NEGEMMMatrixAccumulateBiasesKernel.cpp:135</a></div></div>
 <div class="ttc" id="a_output_op_8h_html"><div class="ttname"><a href="_output_op_8h.html">OutputOp.h</a></div></div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="a_pad_op_8h_html"><div class="ttname"><a href="_pad_op_8h.html">PadOp.h</a></div></div>
 <div class="ttc" id="a_reduce_mean_op_8h_html"><div class="ttname"><a href="_reduce_mean_op_8h.html">ReduceMeanOp.h</a></div></div>
 <div class="ttc" id="a_relu_op_8h_html"><div class="ttname"><a href="_relu_op_8h.html">ReluOp.h</a></div></div>

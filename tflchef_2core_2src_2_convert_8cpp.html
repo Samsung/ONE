@@ -119,7 +119,7 @@ Functions</h2></td></tr>
 <tr class="separator:a48645edb016bdb0b5b126e0a8d257d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a948dcadb98f8d5a3d3662abb4475195d"><td class="memItemLeft" align="right" valign="top">tflite::SparseIndexVector&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tflchef_2core_2src_2_convert_8cpp.html#a948dcadb98f8d5a3d3662abb4475195d">as_tflite_sparse_idx_vec_type</a> (const tflchef::SparseIndexVecType &amp;value)</td></tr>
 <tr class="separator:a948dcadb98f8d5a3d3662abb4475195d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bbf609c10f310982b80161746d7b544"><td class="memItemLeft" align="right" valign="top"><a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">flatbuffers::Offset</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tflchef_2core_2src_2_convert_8cpp.html#a9bbf609c10f310982b80161746d7b544">as_tflite_sparse_index_vec</a> (flatbuffers::FlatBufferBuilder &amp;fb, const ::tflchef::TensorSparsity_IndexVec &amp;value)</td></tr>
+<tr class="memitem:a9bbf609c10f310982b80161746d7b544"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tflchef_2core_2src_2_convert_8cpp.html#a9bbf609c10f310982b80161746d7b544">as_tflite_sparse_index_vec</a> (<a class="el" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a> &amp;fb, const ::tflchef::TensorSparsity_IndexVec &amp;value)</td></tr>
 <tr class="separator:a9bbf609c10f310982b80161746d7b544"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -313,9 +313,9 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">flatbuffers::Offset</a>&lt; void &gt; as_tflite_sparse_index_vec </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a>&lt; void &gt; as_tflite_sparse_index_vec </td>
           <td>(</td>
-          <td class="paramtype">flatbuffers::FlatBufferBuilder &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a> &amp;&#160;</td>
           <td class="paramname"><em>fb</em>, </td>
         </tr>
         <tr>
@@ -339,23 +339,23 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  142</span>  <span class="keywordflow">switch</span> (sparse_idx_type)</div>
 <div class="line"><span class="lineno">  143</span>  {</div>
 <div class="line"><span class="lineno">  144</span>    <span class="keywordflow">case</span> tflchef::SparseIndexVecType::SparseIdxVecType_NONE:</div>
-<div class="line"><span class="lineno">  145</span>      <span class="keywordflow">return</span> flatbuffers::Offset&lt;void&gt;();</div>
+<div class="line"><span class="lineno">  145</span>      <span class="keywordflow">return</span> <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;void&gt;</a>();</div>
 <div class="line"><span class="lineno">  146</span>    <span class="keywordflow">case</span> tflchef::SparseIndexVecType::INT32VEC:</div>
 <div class="line"><span class="lineno">  147</span>    {</div>
 <div class="line"><span class="lineno">  148</span>      <span class="keyword">auto</span> values_vec_int32 = std::vector&lt;int32_t&gt;{value.dim().begin(), value.dim().end()};</div>
-<div class="line"><span class="lineno">  149</span>      <span class="keyword">auto</span> values_int32 = fb.CreateVector(values_vec_int32);</div>
+<div class="line"><span class="lineno">  149</span>      <span class="keyword">auto</span> values_int32 = fb.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#ac146a557b570ba97527f5ad0b82620e2">CreateVector</a>(values_vec_int32);</div>
 <div class="line"><span class="lineno">  150</span>      <span class="keywordflow">return</span> tflite::CreateInt32Vector(fb, values_int32).Union();</div>
 <div class="line"><span class="lineno">  151</span>    }</div>
 <div class="line"><span class="lineno">  152</span>    <span class="keywordflow">case</span> tflchef::SparseIndexVecType::UINT16VEC:</div>
 <div class="line"><span class="lineno">  153</span>    {</div>
 <div class="line"><span class="lineno">  154</span>      <span class="keyword">auto</span> values_vec_uint16 = std::vector&lt;uint16_t&gt;{value.dim().begin(), value.dim().end()};</div>
-<div class="line"><span class="lineno">  155</span>      <span class="keyword">auto</span> values_uint16 = fb.CreateVector(values_vec_uint16);</div>
+<div class="line"><span class="lineno">  155</span>      <span class="keyword">auto</span> values_uint16 = fb.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#ac146a557b570ba97527f5ad0b82620e2">CreateVector</a>(values_vec_uint16);</div>
 <div class="line"><span class="lineno">  156</span>      <span class="keywordflow">return</span> tflite::CreateUint16Vector(fb, values_uint16).Union();</div>
 <div class="line"><span class="lineno">  157</span>    }</div>
 <div class="line"><span class="lineno">  158</span>    <span class="keywordflow">case</span> tflchef::SparseIndexVecType::UINT8VEC:</div>
 <div class="line"><span class="lineno">  159</span>    {</div>
 <div class="line"><span class="lineno">  160</span>      <span class="keyword">auto</span> values_vec_uint8 = std::vector&lt;uint8_t&gt;{value.dim().begin(), value.dim().end()};</div>
-<div class="line"><span class="lineno">  161</span>      <span class="keyword">auto</span> values_uint8 = fb.CreateVector(values_vec_uint8);</div>
+<div class="line"><span class="lineno">  161</span>      <span class="keyword">auto</span> values_uint8 = fb.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#ac146a557b570ba97527f5ad0b82620e2">CreateVector</a>(values_vec_uint8);</div>
 <div class="line"><span class="lineno">  162</span>      <span class="keywordflow">return</span> tflite::CreateUint8Vector(fb, values_uint8).Union();</div>
 <div class="line"><span class="lineno">  163</span>    }</div>
 <div class="line"><span class="lineno">  164</span>    <span class="keywordflow">default</span>:</div>
@@ -364,7 +364,11 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  167</span> </div>
 <div class="line"><span class="lineno">  168</span>  <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unknown SparseIndexVector type&quot;</span>);</div>
 <div class="line"><span class="lineno">  169</span>}</div>
+<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_html_ac146a557b570ba97527f5ad0b82620e2"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder.html#ac146a557b570ba97527f5ad0b82620e2">flatbuffers::FlatBufferBuilder::CreateVector</a></div><div class="ttdeci">Offset&lt; Vector&lt; T &gt; &gt; CreateVector(const T *v, size_t len)</div><div class="ttdoc">Serialize an array into a FlatBuffer vector.</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l01762">flatbuffers.h:1762</a></div></div>
+<div class="ttc" id="astructflatbuffers_1_1_offset_html"><div class="ttname"><a href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a></div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l00069">flatbuffers.h:70</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l01762">flatbuffers::FlatBufferBuilder::CreateVector()</a>.</p>
+
 </div>
 </div>
 <a id="ab2ccdf797e68fb3fa44be940af184f9b" name="ab2ccdf797e68fb3fa44be940af184f9b"></a>

@@ -1,12 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classonert_1_1backend_1_1_backend_context.html" title=" " alt="" coords="5,263,212,289"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1cl__common_1_1_backend_context.html" title=" " alt="" coords="275,5,502,75"/>
-<area shape="rect" id="node4" href="$classonert_1_1backend_1_1builtin_1_1_backend_context.html" title=" " alt="" coords="315,99,462,139"/>
-<area shape="rect" id="node5" href="$classonert_1_1backend_1_1cl__common_1_1_backend_context.html" title=" " alt="" coords="260,163,517,232"/>
-<area shape="rect" id="node7" href="$classonert_1_1backend_1_1cpu_1_1_backend_context.html" title=" " alt="" coords="322,256,455,296"/>
-<area shape="rect" id="node8" href="$classonert_1_1backend_1_1ruy_1_1_backend_context.html" title=" " alt="" coords="324,320,453,360"/>
-<area shape="rect" id="node9" href="$classonert_1_1backend_1_1trix_1_1_backend_context.html" title=" " alt="" coords="324,384,453,424"/>
-<area shape="rect" id="node10" href="$classonert_1_1backend_1_1xnnpack_1_1_backend_context.html" title=" " alt="" coords="309,448,469,488"/>
-<area shape="rect" id="node3" href="$classonert_1_1backend_1_1gpu__cl_1_1_backend_context.html" title=" " alt="" coords="624,20,764,60"/>
-<area shape="rect" id="node6" href="$classonert_1_1backend_1_1acl__common_1_1_acl_backend_context.html" title=" " alt="" coords="565,163,823,232"/>
+<area shape="rect" id="node1" href="$structnnfw_1_1misc_1_1tensor_1_1_reader.html" title="Struct to read element of tensor." alt="" coords="5,35,132,75"/>
+<area shape="rect" id="node2" href="$classnnfw_1_1misc_1_1tensor_1_1_object.html" title="Class to build a tensor using specific generator." alt="" coords="209,5,336,45"/>
+<area shape="rect" id="node3" href="$classnnfw_1_1tflite_1_1_tensor_view.html" title="Class to define TensorView which is inherited from nnfw::misc::tensor::Reader&lt;T&gt; class." alt="" coords="180,70,365,95"/>
 </map>

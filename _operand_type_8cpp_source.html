@@ -139,13 +139,13 @@ $(document).ready(function(){initNavTree('_operand_type_8cpp_source.html',''); i
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>{</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">int</span> n = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(type);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  uint32_t size = <a class="code hl_variable" href="_operand_type_8cpp.html#a9a5f1b7a1a57e5e08c6a94560a9fe8a1">kSizeOfDataType</a>[n];</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  uint32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = <a class="code hl_variable" href="_operand_type_8cpp.html#a9a5f1b7a1a57e5e08c6a94560a9fe8a1">kSizeOfDataType</a>[n];</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> d : dimensions)</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  {</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    size *= d;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> *= d;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">return</span> size;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
 <div class="ttc" id="a_operand_type_8cpp_html_a068602b46fe6f90870eb54841ba4d84d"><div class="ttname"><a href="_operand_type_8cpp.html#a068602b46fe6f90870eb54841ba4d84d">getOperandTypeName</a></div><div class="ttdeci">const char * getOperandTypeName(OperandType type)</div><div class="ttdef"><b>Definition:</b> <a href="_operand_type_8cpp_source.html#l00038">OperandType.cpp:38</a></div></div>
 <div class="ttc" id="a_operand_type_8cpp_html_a244d5014a79aaddd08cb3725bb57e51c"><div class="ttname"><a href="_operand_type_8cpp.html#a244d5014a79aaddd08cb3725bb57e51c">kTypeNames</a></div><div class="ttdeci">const char * kTypeNames[]</div><div class="ttdef"><b>Definition:</b> <a href="_operand_type_8cpp_source.html#l00021">OperandType.cpp:21</a></div></div>
@@ -156,6 +156,7 @@ $(document).ready(function(){initNavTree('_operand_type_8cpp_source.html',''); i
 <div class="ttc" id="a_operand_type_8h_html_aeb6507c1024b22251bb08c413044d1fd"><div class="ttname"><a href="_operand_type_8h.html#aeb6507c1024b22251bb08c413044d1fd">OperandType</a></div><div class="ttdeci">OperandType</div><div class="ttdef"><b>Definition:</b> <a href="_operand_type_8h_source.html#l00024">OperandType.h:24</a></div></div>
 <div class="ttc" id="aann-ref_2src_2_macro_8h_html_a66e1637ac2d943cb9c4a3d1041d8bbe5"><div class="ttname"><a href="ann-ref_2src_2_macro_8h.html#a66e1637ac2d943cb9c4a3d1041d8bbe5">COUNT</a></div><div class="ttdeci">#define COUNT(X)</div><div class="ttdef"><b>Definition:</b> <a href="ann-ref_2src_2_macro_8h_source.html#l00020">Macro.h:20</a></div></div>
 <div class="ttc" id="anest_2core_2include_2nest_2stmt_2_macro_8h_html"><div class="ttname"><a href="nest_2core_2include_2nest_2stmt_2_macro_8h.html">Macro.h</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

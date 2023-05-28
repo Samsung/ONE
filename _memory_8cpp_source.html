@@ -124,7 +124,7 @@ $(document).ready(function(){initNavTree('_memory_8cpp_source.html',''); initRes
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  }</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_mapped_memory.html#a8b387ee89528d2997bc65b1b3b7c6c3b">   33</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="class_mapped_memory.html#a8b387ee89528d2997bc65b1b3b7c6c3b">MappedMemory::set</a>(<span class="keywordtype">size_t</span> size, <span class="keywordtype">int</span> prot, <span class="keywordtype">int</span> fd, <span class="keywordtype">size_t</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_mapped_memory.html#a8b387ee89528d2997bc65b1b3b7c6c3b">   33</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="class_mapped_memory.html#a8b387ee89528d2997bc65b1b3b7c6c3b">MappedMemory::set</a>(<span class="keywordtype">size_t</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, <span class="keywordtype">int</span> prot, <span class="keywordtype">int</span> fd, <span class="keywordtype">size_t</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>)</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#if 0</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">if</span> (fd &lt; 0)</div>
@@ -132,7 +132,7 @@ $(document).ready(function(){initNavTree('_memory_8cpp_source.html',''); initRes
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_define" href="compiler_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;ANeuralNetworksMemory_createFromFd invalid fd &quot;</span> &lt;&lt; fd;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a16c507550e6c79ed74a18277f243b6e8">ANEURALNETWORKS_UNEXPECTED_NULL</a>;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  }</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">if</span> (size == 0 || fd &lt; 0)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> == 0 || fd &lt; 0)</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_define" href="compiler_2ann-ref_2src_2_logging_8h.html#a3577749fb48d57a158b8ac1a0b3ab57e">LOG</a>(ERROR) &lt;&lt; <span class="stringliteral">&quot;Invalid size or fd&quot;</span>;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a">ANEURALNETWORKS_BAD_DATA</a>;</div>
@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('_memory_8cpp_source.html',''); initRes
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a16c507550e6c79ed74a18277f243b6e8">ANEURALNETWORKS_UNEXPECTED_NULL</a>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  }</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">void</span> * <span class="keyword">const</span> base = mmap(<span class="keyword">nullptr</span>, size, prot, MAP_PRIVATE, fd, <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">void</span> * <span class="keyword">const</span> base = mmap(<span class="keyword">nullptr</span>, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, prot, MAP_PRIVATE, fd, <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">if</span> (base == MAP_FAILED)</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  {</div>
@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('_memory_8cpp_source.html',''); initRes
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  }</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  _base = <span class="keyword">static_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(base);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  _size = size;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  _size = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365">ANEURALNETWORKS_NO_ERROR</a>;</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}</div>
@@ -176,13 +176,13 @@ $(document).ready(function(){initNavTree('_memory_8cpp_source.html',''); initRes
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  }</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>}</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="class_private_memory.html#a0727f0e49e17872cbefe43bfd4850f0f">   85</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="class_private_memory.html#a0727f0e49e17872cbefe43bfd4850f0f">PrivateMemory::create</a>(uint32_t size)</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="class_private_memory.html#a0727f0e49e17872cbefe43bfd4850f0f">   85</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="class_private_memory.html#a0727f0e49e17872cbefe43bfd4850f0f">PrivateMemory::create</a>(uint32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>{</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keyword">auto</span> base = <span class="keyword">new</span> uint8_t[size];</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keyword">auto</span> base = <span class="keyword">new</span> uint8_t[<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>];</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="comment">// TODO Check allocation failure</span></div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  _base = base;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  _size = size;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  _size = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365">ANEURALNETWORKS_NO_ERROR</a>;</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>}</div>
@@ -211,6 +211,7 @@ $(document).ready(function(){initNavTree('_memory_8cpp_source.html',''); initRes
 <div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a">ANEURALNETWORKS_BAD_DATA</a></div><div class="ttdeci">@ ANEURALNETWORKS_BAD_DATA</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01389">NeuralNetworks.h:1389</a></div></div>
 <div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365">ANEURALNETWORKS_NO_ERROR</a></div><div class="ttdeci">@ ANEURALNETWORKS_NO_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01385">NeuralNetworks.h:1385</a></div></div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition:</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -17,6 +17,7 @@ var namespaceonert_1_1exec =
     [ "InputDesc", "structonert_1_1exec_1_1_input_desc.html", "structonert_1_1exec_1_1_input_desc" ],
     [ "IODescription", "structonert_1_1exec_1_1_i_o_description.html", "structonert_1_1exec_1_1_i_o_description" ],
     [ "IPermuteFunction", "classonert_1_1exec_1_1_i_permute_function.html", "classonert_1_1exec_1_1_i_permute_function" ],
+    [ "ITrainableFunction", "classonert_1_1exec_1_1_i_trainable_function.html", "classonert_1_1exec_1_1_i_trainable_function" ],
     [ "Job", "classonert_1_1exec_1_1_job.html", "classonert_1_1exec_1_1_job" ],
     [ "JSON", "classonert_1_1exec_1_1_j_s_o_n.html", "classonert_1_1exec_1_1_j_s_o_n" ],
     [ "LinearExecutor", "classonert_1_1exec_1_1_linear_executor.html", "classonert_1_1exec_1_1_linear_executor" ],

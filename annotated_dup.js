@@ -468,8 +468,95 @@ var annotated_dup =
       [ "TypeInference", "structexo_1_1_type_inference.html", null ],
       [ "TypeInferencePass", "classexo_1_1_type_inference_pass.html", "classexo_1_1_type_inference_pass" ]
     ] ],
+    [ "flatbuffers", "namespaceflatbuffers.html", [
+      [ "grpc", "namespaceflatbuffers_1_1grpc.html", [
+        [ "detail", "namespaceflatbuffers_1_1grpc_1_1detail.html", [
+          [ "SliceAllocatorMember", "structflatbuffers_1_1grpc_1_1detail_1_1_slice_allocator_member.html", "structflatbuffers_1_1grpc_1_1detail_1_1_slice_allocator_member" ]
+        ] ],
+        [ "Message", "classflatbuffers_1_1grpc_1_1_message.html", "classflatbuffers_1_1grpc_1_1_message" ],
+        [ "MessageBuilder", "classflatbuffers_1_1grpc_1_1_message_builder.html", "classflatbuffers_1_1grpc_1_1_message_builder" ],
+        [ "SliceAllocator", "classflatbuffers_1_1grpc_1_1_slice_allocator.html", "classflatbuffers_1_1grpc_1_1_slice_allocator" ]
+      ] ],
+      [ "internal", "namespaceflatbuffers_1_1internal.html", [
+        [ "nullopt_holder", "structflatbuffers_1_1internal_1_1nullopt__holder.html", null ]
+      ] ],
+      [ "Allocator", "classflatbuffers_1_1_allocator.html", "classflatbuffers_1_1_allocator" ],
+      [ "Array", "classflatbuffers_1_1_array.html", "classflatbuffers_1_1_array" ],
+      [ "Array< Offset< T >, length >", "classflatbuffers_1_1_array_3_01_offset_3_01_t_01_4_00_01length_01_4.html", "classflatbuffers_1_1_array_3_01_offset_3_01_t_01_4_00_01length_01_4" ],
+      [ "BaseGenerator", "classflatbuffers_1_1_base_generator.html", "classflatbuffers_1_1_base_generator" ],
+      [ "bool_constant", "structflatbuffers_1_1bool__constant.html", null ],
+      [ "CheckedError", "classflatbuffers_1_1_checked_error.html", "classflatbuffers_1_1_checked_error" ],
+      [ "CodeWriter", "classflatbuffers_1_1_code_writer.html", "classflatbuffers_1_1_code_writer" ],
+      [ "CommentConfig", "structflatbuffers_1_1_comment_config.html", "structflatbuffers_1_1_comment_config" ],
+      [ "conditional", "structflatbuffers_1_1conditional.html", null ],
+      [ "DefaultAllocator", "classflatbuffers_1_1_default_allocator.html", "classflatbuffers_1_1_default_allocator" ],
+      [ "Definition", "structflatbuffers_1_1_definition.html", "structflatbuffers_1_1_definition" ],
+      [ "DetachedBuffer", "classflatbuffers_1_1_detached_buffer.html", "classflatbuffers_1_1_detached_buffer" ],
+      [ "EnumDef", "structflatbuffers_1_1_enum_def.html", "structflatbuffers_1_1_enum_def" ],
+      [ "EnumVal", "structflatbuffers_1_1_enum_val.html", "structflatbuffers_1_1_enum_val" ],
+      [ "FieldDef", "structflatbuffers_1_1_field_def.html", "structflatbuffers_1_1_field_def" ],
+      [ "FlatBufferBuilder", "classflatbuffers_1_1_flat_buffer_builder.html", "classflatbuffers_1_1_flat_buffer_builder" ],
+      [ "FLATBUFFERS_FINAL_CLASS", "classflatbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html", "classflatbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s" ],
+      [ "FlatCompiler", "classflatbuffers_1_1_flat_compiler.html", "classflatbuffers_1_1_flat_compiler" ],
+      [ "FloatConstantGenerator", "classflatbuffers_1_1_float_constant_generator.html", "classflatbuffers_1_1_float_constant_generator" ],
+      [ "FnvTraits", "structflatbuffers_1_1_fnv_traits.html", null ],
+      [ "FnvTraits< uint32_t >", "structflatbuffers_1_1_fnv_traits_3_01uint32__t_01_4.html", null ],
+      [ "FnvTraits< uint64_t >", "structflatbuffers_1_1_fnv_traits_3_01uint64__t_01_4.html", null ],
+      [ "IDLOptions", "structflatbuffers_1_1_i_d_l_options.html", "structflatbuffers_1_1_i_d_l_options" ],
+      [ "IndirectHelper", "structflatbuffers_1_1_indirect_helper.html", "structflatbuffers_1_1_indirect_helper" ],
+      [ "IndirectHelper< const T * >", "structflatbuffers_1_1_indirect_helper_3_01const_01_t_01_5_01_4.html", "structflatbuffers_1_1_indirect_helper_3_01const_01_t_01_5_01_4" ],
+      [ "IndirectHelper< Offset< T > >", "structflatbuffers_1_1_indirect_helper_3_01_offset_3_01_t_01_4_01_4.html", "structflatbuffers_1_1_indirect_helper_3_01_offset_3_01_t_01_4_01_4" ],
+      [ "integral_constant", "structflatbuffers_1_1integral__constant.html", null ],
+      [ "is_enum", "structflatbuffers_1_1is__enum.html", null ],
+      [ "is_floating_point", "structflatbuffers_1_1is__floating__point.html", null ],
+      [ "is_same", "structflatbuffers_1_1is__same.html", null ],
+      [ "is_scalar", "structflatbuffers_1_1is__scalar.html", null ],
+      [ "is_unsigned", "structflatbuffers_1_1is__unsigned.html", null ],
+      [ "IterationVisitor", "structflatbuffers_1_1_iteration_visitor.html", "structflatbuffers_1_1_iteration_visitor" ],
+      [ "make_unsigned", "structflatbuffers_1_1make__unsigned.html", null ],
+      [ "NamedHashFunction", "structflatbuffers_1_1_named_hash_function.html", "structflatbuffers_1_1_named_hash_function" ],
+      [ "Namespace", "structflatbuffers_1_1_namespace.html", "structflatbuffers_1_1_namespace" ],
+      [ "nullopt_t", "structflatbuffers_1_1nullopt__t.html", "structflatbuffers_1_1nullopt__t" ],
+      [ "numeric_limits", "classflatbuffers_1_1numeric__limits.html", null ],
+      [ "Offset", "structflatbuffers_1_1_offset.html", "structflatbuffers_1_1_offset" ],
+      [ "Parser", "classflatbuffers_1_1_parser.html", "classflatbuffers_1_1_parser" ],
+      [ "ParserState", "structflatbuffers_1_1_parser_state.html", "structflatbuffers_1_1_parser_state" ],
+      [ "pointer_inside_vector", "classflatbuffers_1_1pointer__inside__vector.html", "classflatbuffers_1_1pointer__inside__vector" ],
+      [ "Registry", "classflatbuffers_1_1_registry.html", "classflatbuffers_1_1_registry" ],
+      [ "RPCCall", "structflatbuffers_1_1_r_p_c_call.html", "structflatbuffers_1_1_r_p_c_call" ],
+      [ "ServiceDef", "structflatbuffers_1_1_service_def.html", "structflatbuffers_1_1_service_def" ],
+      [ "SimpleFloatConstantGenerator", "classflatbuffers_1_1_simple_float_constant_generator.html", "classflatbuffers_1_1_simple_float_constant_generator" ],
+      [ "String", "structflatbuffers_1_1_string.html", "structflatbuffers_1_1_string" ],
+      [ "StructDef", "structflatbuffers_1_1_struct_def.html", "structflatbuffers_1_1_struct_def" ],
+      [ "SymbolTable", "classflatbuffers_1_1_symbol_table.html", "classflatbuffers_1_1_symbol_table" ],
+      [ "ToStringVisitor", "structflatbuffers_1_1_to_string_visitor.html", "structflatbuffers_1_1_to_string_visitor" ],
+      [ "Type", "structflatbuffers_1_1_type.html", "structflatbuffers_1_1_type" ],
+      [ "TypedFloatConstantGenerator", "classflatbuffers_1_1_typed_float_constant_generator.html", "classflatbuffers_1_1_typed_float_constant_generator" ],
+      [ "unique_ptr", "classflatbuffers_1_1unique__ptr.html", "classflatbuffers_1_1unique__ptr" ],
+      [ "Value", "structflatbuffers_1_1_value.html", "structflatbuffers_1_1_value" ],
+      [ "Vector", "classflatbuffers_1_1_vector.html", "classflatbuffers_1_1_vector" ],
+      [ "vector_downward", "classflatbuffers_1_1vector__downward.html", "classflatbuffers_1_1vector__downward" ],
+      [ "VectorIterator", "structflatbuffers_1_1_vector_iterator.html", "structflatbuffers_1_1_vector_iterator" ],
+      [ "VectorOfAny", "classflatbuffers_1_1_vector_of_any.html", "classflatbuffers_1_1_vector_of_any" ],
+      [ "VectorReverseIterator", "structflatbuffers_1_1_vector_reverse_iterator.html", "structflatbuffers_1_1_vector_reverse_iterator" ]
+    ] ],
+    [ "flexbuffers", "namespaceflexbuffers.html", [
+      [ "Blob", "classflexbuffers_1_1_blob.html", "classflexbuffers_1_1_blob" ],
+      [ "FixedTypedVector", "classflexbuffers_1_1_fixed_typed_vector.html", "classflexbuffers_1_1_fixed_typed_vector" ],
+      [ "FLATBUFFERS_FINAL_CLASS", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s" ],
+      [ "Map", "classflexbuffers_1_1_map.html", "classflexbuffers_1_1_map" ],
+      [ "Object", "classflexbuffers_1_1_object.html", "classflexbuffers_1_1_object" ],
+      [ "Reference", "classflexbuffers_1_1_reference.html", "classflexbuffers_1_1_reference" ],
+      [ "Sized", "classflexbuffers_1_1_sized.html", "classflexbuffers_1_1_sized" ],
+      [ "String", "classflexbuffers_1_1_string.html", "classflexbuffers_1_1_string" ],
+      [ "TypedVector", "classflexbuffers_1_1_typed_vector.html", "classflexbuffers_1_1_typed_vector" ],
+      [ "Vector", "classflexbuffers_1_1_vector.html", "classflexbuffers_1_1_vector" ]
+    ] ],
     [ "foder", "namespacefoder.html", [
       [ "FileLoader", "classfoder_1_1_file_loader.html", "classfoder_1_1_file_loader" ]
+    ] ],
+    [ "grpc", "namespacegrpc.html", [
+      [ "SerializationTraits< flatbuffers::grpc::Message< T > >", "classgrpc_1_1_serialization_traits_3_01flatbuffers_1_1grpc_1_1_message_3_01_t_01_4_01_4.html", null ]
     ] ],
     [ "hermes", "namespacehermes.html", [
       [ "Config", "structhermes_1_1_config.html", "structhermes_1_1_config" ],
@@ -1446,9 +1533,7 @@ var annotated_dup =
         [ "While", "classluci__interpreter_1_1kernels_1_1_while.html", "classluci__interpreter_1_1kernels_1_1_while" ]
       ] ],
       [ "lstm", "namespaceluci__interpreter_1_1lstm.html", [
-        [ "ArithmeticParams", "structluci__interpreter_1_1lstm_1_1_arithmetic_params.html", "structluci__interpreter_1_1lstm_1_1_arithmetic_params" ],
         [ "CellStateInfo", "structluci__interpreter_1_1lstm_1_1_cell_state_info.html", "structluci__interpreter_1_1lstm_1_1_cell_state_info" ],
-        [ "FullyConnectedParams", "structluci__interpreter_1_1lstm_1_1_fully_connected_params.html", "structluci__interpreter_1_1lstm_1_1_fully_connected_params" ],
         [ "GateParameters", "structluci__interpreter_1_1lstm_1_1_gate_parameters.html", "structluci__interpreter_1_1lstm_1_1_gate_parameters" ],
         [ "InterGateParameters", "structluci__interpreter_1_1lstm_1_1_inter_gate_parameters.html", "structluci__interpreter_1_1lstm_1_1_inter_gate_parameters" ],
         [ "LSTMParameters", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters.html", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters" ],
@@ -1459,7 +1544,11 @@ var annotated_dup =
         [ "TestData64IntAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data64_int_add.html", "classluci__interpreter_1_1test__kernel_1_1_test_data64_int_add" ],
         [ "TestDataAddBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base" ],
         [ "TestDataBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_base" ],
+        [ "TestDataConv2DBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_conv2_d_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_conv2_d_base" ],
+        [ "TestDataExpandDimsKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_expand_dims_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_expand_dims_kernel" ],
+        [ "TestDataFillKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_fill_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_fill_kernel" ],
         [ "TestDataFloatAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add" ],
+        [ "TestDataFloatConv2D", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_conv2_d.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_conv2_d" ],
         [ "TestDataFloatFullyConnected", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_fully_connected.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_fully_connected" ],
         [ "TestDataFloatLess", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_less.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_less" ],
         [ "TestDataFloatLogistic", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_logistic.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_logistic" ],
@@ -1480,9 +1569,13 @@ var annotated_dup =
         [ "TestDataQuantLess", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_less.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_less" ],
         [ "TestDataQuantU8Pack", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_u8_pack.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_u8_pack" ],
         [ "TestDataReduceCommonBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base" ],
+        [ "TestDataReshapeKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_reshape_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_reshape_kernel" ],
         [ "TestDataShapeKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel" ],
+        [ "TestDataSplitVKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_split_v_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_split_v_kernel" ],
         [ "TestDataStridedSliceKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel" ],
         [ "TestDataSubBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_sub_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_sub_base" ],
+        [ "TestDataTransposeKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_transpose_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_transpose_kernel" ],
+        [ "TestDataU8Conv2D", "classluci__interpreter_1_1test__kernel_1_1_test_data_u8_conv2_d.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_u8_conv2_d" ],
         [ "TestDataU8FullyConnected", "classluci__interpreter_1_1test__kernel_1_1_test_data_u8_fully_connected.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_u8_fully_connected" ]
       ] ],
       [ "AddParams", "structluci__interpreter_1_1_add_params.html", "structluci__interpreter_1_1_add_params" ],
@@ -1540,6 +1633,7 @@ var annotated_dup =
       [ "ResizeNearestNeighborParams", "structluci__interpreter_1_1_resize_nearest_neighbor_params.html", "structluci__interpreter_1_1_resize_nearest_neighbor_params" ],
       [ "RuntimeGraph", "classluci__interpreter_1_1_runtime_graph.html", "classluci__interpreter_1_1_runtime_graph" ],
       [ "RuntimeModule", "classluci__interpreter_1_1_runtime_module.html", "classluci__interpreter_1_1_runtime_module" ],
+      [ "RuntimeShape", "classluci__interpreter_1_1_runtime_shape.html", "classluci__interpreter_1_1_runtime_shape" ],
       [ "RuntimeToIR", "structluci__interpreter_1_1_runtime_to_i_r.html", "structluci__interpreter_1_1_runtime_to_i_r" ],
       [ "Shape", "classluci__interpreter_1_1_shape.html", "classluci__interpreter_1_1_shape" ],
       [ "ShapeParams", "structluci__interpreter_1_1_shape_params.html", "structluci__interpreter_1_1_shape_params" ],
@@ -1563,7 +1657,16 @@ var annotated_dup =
         [ "LstmSizeInfo", "structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html", "structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info" ],
         [ "LstmStepManager", "classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager.html", "classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager" ]
       ] ],
-      [ "ActivationFunctor", "classluci__interpreter__pal_1_1_activation_functor.html", "classluci__interpreter__pal_1_1_activation_functor" ]
+      [ "ArithmeticParams", "structluci__interpreter__pal_1_1_arithmetic_params.html", "structluci__interpreter__pal_1_1_arithmetic_params" ],
+      [ "ComparisonParams", "structluci__interpreter__pal_1_1_comparison_params.html", "structluci__interpreter__pal_1_1_comparison_params" ],
+      [ "ConcatenationParams", "structluci__interpreter__pal_1_1_concatenation_params.html", "structluci__interpreter__pal_1_1_concatenation_params" ],
+      [ "ConvParams", "structluci__interpreter__pal_1_1_conv_params.html", "structluci__interpreter__pal_1_1_conv_params" ],
+      [ "FullyConnectedParams", "structluci__interpreter__pal_1_1_fully_connected_params.html", "structluci__interpreter__pal_1_1_fully_connected_params" ],
+      [ "NdArrayDesc", "structluci__interpreter__pal_1_1_nd_array_desc.html", "structluci__interpreter__pal_1_1_nd_array_desc" ],
+      [ "PaddingValues", "structluci__interpreter__pal_1_1_padding_values.html", "structluci__interpreter__pal_1_1_padding_values" ],
+      [ "PoolParams", "structluci__interpreter__pal_1_1_pool_params.html", "structluci__interpreter__pal_1_1_pool_params" ],
+      [ "StridedSliceParams", "structluci__interpreter__pal_1_1_strided_slice_params.html", "structluci__interpreter__pal_1_1_strided_slice_params" ],
+      [ "TransposeParams", "structluci__interpreter__pal_1_1_transpose_params.html", "structluci__interpreter__pal_1_1_transpose_params" ]
     ] ],
     [ "mio", "namespacemio.html", [
       [ "circle", "namespacemio_1_1circle.html", [
@@ -2524,6 +2627,12 @@ var annotated_dup =
           [ "ExternalContext", "classonert_1_1backend_1_1ruy_1_1_external_context.html", "classonert_1_1backend_1_1ruy_1_1_external_context" ],
           [ "KernelGenerator", "classonert_1_1backend_1_1ruy_1_1_kernel_generator.html", "classonert_1_1backend_1_1ruy_1_1_kernel_generator" ]
         ] ],
+        [ "train", "namespaceonert_1_1backend_1_1train.html", [
+          [ "Backend", "classonert_1_1backend_1_1train_1_1_backend.html", "classonert_1_1backend_1_1train_1_1_backend" ],
+          [ "BackendContext", "classonert_1_1backend_1_1train_1_1_backend_context.html", "classonert_1_1backend_1_1train_1_1_backend_context" ],
+          [ "Config", "classonert_1_1backend_1_1train_1_1_config.html", "classonert_1_1backend_1_1train_1_1_config" ],
+          [ "KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", "classonert_1_1backend_1_1train_1_1_kernel_generator" ]
+        ] ],
         [ "trix", "namespaceonert_1_1backend_1_1trix.html", [
           [ "ops", "namespaceonert_1_1backend_1_1trix_1_1ops.html", [
             [ "BulkLayer", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_layer.html", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_layer" ]
@@ -2645,6 +2754,7 @@ var annotated_dup =
         [ "InputDesc", "structonert_1_1exec_1_1_input_desc.html", "structonert_1_1exec_1_1_input_desc" ],
         [ "IODescription", "structonert_1_1exec_1_1_i_o_description.html", "structonert_1_1exec_1_1_i_o_description" ],
         [ "IPermuteFunction", "classonert_1_1exec_1_1_i_permute_function.html", "classonert_1_1exec_1_1_i_permute_function" ],
+        [ "ITrainableFunction", "classonert_1_1exec_1_1_i_trainable_function.html", "classonert_1_1exec_1_1_i_trainable_function" ],
         [ "Job", "classonert_1_1exec_1_1_job.html", "classonert_1_1exec_1_1_job" ],
         [ "JSON", "classonert_1_1exec_1_1_j_s_o_n.html", "classonert_1_1exec_1_1_j_s_o_n" ],
         [ "LinearExecutor", "classonert_1_1exec_1_1_linear_executor.html", "classonert_1_1exec_1_1_linear_executor" ],

@@ -110,6 +110,8 @@ var namespaces_dup =
     [ "fipe", "namespacefipe.html", [
       [ "wrap", "namespacefipe.html#a2d411b255edac8aaffb3dc8794f36338", null ]
     ] ],
+    [ "flatbuffers", "namespaceflatbuffers.html", "namespaceflatbuffers" ],
+    [ "flexbuffers", "namespaceflexbuffers.html", "namespaceflexbuffers" ],
     [ "foder", "namespacefoder.html", "namespacefoder" ],
     [ "gen_h5_explicit_inputs", "namespacegen__h5__explicit__inputs.html", [
       [ "toNumpyType", "namespacegen__h5__explicit__inputs.html#a02fe70e5efef890393b201e7811729fc", null ],
@@ -196,6 +198,7 @@ var namespaces_dup =
       [ "tensor", "namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc", null ],
       [ "type", "namespace_gen_h5_random_inputs.html#afea8a50fa091e375360ea27f12396c74", null ]
     ] ],
+    [ "grpc", "namespacegrpc.html", "namespacegrpc" ],
     [ "hermes", "namespacehermes.html", "namespacehermes" ],
     [ "infer_testcases", "namespaceinfer__testcases.html", [
       [ "eprint", "namespaceinfer__testcases.html#aacfb66358077cb73a282ed6cb1add539", null ],

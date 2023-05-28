@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2me
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  {</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    Block *next_free;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordtype">bool</span> is_free;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    uint32_t <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    uint32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">// debug field</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    Block *self;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  };</div>
@@ -185,19 +185,19 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2me
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keywordtype">void</span> divideBlock(Block *block, int32_t l)</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  {</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    int32_t <a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a> = ((block-&gt;size + <span class="keyword">sizeof</span>(Block)) / 2) - <span class="keyword">sizeof</span>(Block);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    int32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = ((block-&gt;size + <span class="keyword">sizeof</span>(Block)) / 2) - <span class="keyword">sizeof</span>(Block);</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    removeFromBlocks(block, l);</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="comment">// there is no need to add to the free_blocks list here</span></div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    block-&gt;is_free = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    block-&gt;size = <a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    block-&gt;size = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    block-&gt;self = block;</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    Block *buddy;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    buddy = (Block *)((uint8_t *)block + <span class="keyword">sizeof</span>(Block) + <a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    buddy = (Block *)((uint8_t *)block + <span class="keyword">sizeof</span>(Block) + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    buddy-&gt;is_free = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    buddy-&gt;size = <a class="code hl_function" href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">size</a>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    buddy-&gt;size = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    buddy-&gt;self = buddy;</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    addToBlocks(buddy, l - 1);</div>
@@ -245,9 +245,8 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2me
 <div class="ttc" id="aclassluci__interpreter_1_1_buddy_memory_manager_html_af9422367e1665f0e6dceef767b323bd9"><div class="ttname"><a href="classluci__interpreter_1_1_buddy_memory_manager.html#af9422367e1665f0e6dceef767b323bd9">luci_interpreter::BuddyMemoryManager::BuddyMemoryManager</a></div><div class="ttdeci">BuddyMemoryManager(uint8_t *memory_start, int32_t memSize)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2_buddy_memory_manager_8cpp_source.html#l00022">BuddyMemoryManager.cpp:22</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_tensor_html"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00089">Tensor.h:90</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_aa7d22a1cfdc39ff0b719ed30286e16b2"><div class="ttname"><a href="namespacejpeg2hdf5.html#aa7d22a1cfdc39ff0b719ed30286e16b2">jpeg2hdf5.l</a></div><div class="ttdeci">l</div><div class="ttdef"><b>Definition:</b> <a href="jpeg2hdf5_8py_source.html#l00148">jpeg2hdf5.py:148</a></div></div>
-<div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html"><div class="ttname"><a href="namespaceluci__interpreter.html">luci_interpreter</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h_source.html#l00021">BuddyMemoryManager.h:22</a></div></div>
-<div class="ttc" id="anamespaceluci__interpreter_html_ae1ed28847eae6c24ff4c31d64255a23a"><div class="ttname"><a href="namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a">luci_interpreter::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00141">DataType.h:141</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

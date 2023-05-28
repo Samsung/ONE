@@ -1289,7 +1289,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  569</span>  <a class="code hl_class" href="classmir_1_1_tensor.html">mir::Tensor&lt;int32_t&gt;</a> end_tensor(extractTensor(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.at(2)));</div>
 <div class="line"><span class="lineno">  570</span>  <a class="code hl_class" href="classmir_1_1_tensor.html">mir::Tensor&lt;int32_t&gt;</a> strides_tensor(extractTensor(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.at(3)));</div>
 <div class="line"><span class="lineno">  571</span> </div>
-<div class="line"><span class="lineno">  572</span>  std::vector&lt;int32_t&gt; begin = convertIntTensorToVector&lt;int32_t&gt;(begin_tensor);</div>
+<div class="line"><span class="lineno">  572</span>  std::vector&lt;int32_t&gt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> = convertIntTensorToVector&lt;int32_t&gt;(begin_tensor);</div>
 <div class="line"><span class="lineno">  573</span>  std::vector&lt;int32_t&gt; end = convertIntTensorToVector&lt;int32_t&gt;(end_tensor);</div>
 <div class="line"><span class="lineno">  574</span>  std::vector&lt;int32_t&gt; strides = convertIntTensorToVector&lt;int32_t&gt;(strides_tensor);</div>
 <div class="line"><span class="lineno">  575</span> </div>
@@ -1307,31 +1307,32 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  587</span>  }</div>
 <div class="line"><span class="lineno">  588</span> </div>
 <div class="line"><span class="lineno">  589</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> start(num_dims);</div>
-<div class="line"><span class="lineno">  590</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>(num_dims);</div>
+<div class="line"><span class="lineno">  590</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>(num_dims);</div>
 <div class="line"><span class="lineno">  591</span>  std::vector&lt;int32_t&gt; squeeze_dims;</div>
 <div class="line"><span class="lineno">  592</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> axis = 0; axis &lt; num_dims; axis++)</div>
 <div class="line"><span class="lineno">  593</span>  {</div>
 <div class="line"><span class="lineno">  594</span>    <span class="keywordflow">if</span> (<span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(begin_mask) &amp; (1u &lt;&lt; <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(axis)))</div>
 <div class="line"><span class="lineno">  595</span>      start.dim(axis) = 0;</div>
 <div class="line"><span class="lineno">  596</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  597</span>      start.dim(axis) = begin.at(<span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(axis));</div>
+<div class="line"><span class="lineno">  597</span>      start.dim(axis) = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>.at(<span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(axis));</div>
 <div class="line"><span class="lineno">  598</span> </div>
 <div class="line"><span class="lineno">  599</span>    <span class="keywordflow">if</span> (<span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(end_mask) &amp; (1u &lt;&lt; <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(axis)))</div>
-<div class="line"><span class="lineno">  600</span>      <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>.dim(axis) = input_shape.dim(axis) - start.dim(axis);</div>
+<div class="line"><span class="lineno">  600</span>      <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>.dim(axis) = input_shape.dim(axis) - start.dim(axis);</div>
 <div class="line"><span class="lineno">  601</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  602</span>      <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>.dim(axis) = end.at(<span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(axis)) - start.dim(axis);</div>
+<div class="line"><span class="lineno">  602</span>      <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>.dim(axis) = end.at(<span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(axis)) - start.dim(axis);</div>
 <div class="line"><span class="lineno">  603</span> </div>
 <div class="line"><span class="lineno">  604</span>    <span class="keywordflow">if</span> (<span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(shrink_axis_mask) &amp; (1u &lt;&lt; <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(axis)))</div>
 <div class="line"><span class="lineno">  605</span>      squeeze_dims.push_back(axis);</div>
 <div class="line"><span class="lineno">  606</span>  }</div>
 <div class="line"><span class="lineno">  607</span> </div>
-<div class="line"><span class="lineno">  608</span>  <span class="keyword">auto</span> result = createOp&lt;ops::SliceOp&gt;(input, start, size);</div>
+<div class="line"><span class="lineno">  608</span>  <span class="keyword">auto</span> result = createOp&lt;ops::SliceOp&gt;(input, start, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><span class="lineno">  609</span>  result = createOp&lt;ops::SqueezeOp&gt;(result-&gt;getOutput(0), squeeze_dims);</div>
 <div class="line"><span class="lineno">  610</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  611</span>}</div>
-<div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_adaf1f5da3e0e0e62ea2ea6e1e4e5f49e"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a></div><div class="ttdeci">int32_t begin[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">Slice.cpp:33</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2mir_2include_2mir_2_shape_8h_source.html#l00047">mir::Shape::dim()</a>, and <a class="el" href="compiler_2mir_2include_2mir_2_shape_8h_source.html#l00043">mir::Shape::rank()</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">begin</a>, <a class="el" href="compiler_2mir_2include_2mir_2_shape_8h_source.html#l00047">mir::Shape::dim()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_shape_8h_source.html#l00043">mir::Shape::rank()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 </div>
 </div>
@@ -1468,22 +1469,22 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  307</span> </div>
 <div class="line"><span class="lineno">  308</span>  <a class="code hl_struct" href="structmir_1_1_deconv2_d_op_attributes.html">mir::Deconv2DOpAttributes</a> attributes;</div>
 <div class="line"><span class="lineno">  309</span>  attributes.<a class="code hl_variable" href="structmir_1_1_deconv2_d_op_attributes.html#a92ad473136382dc2a2a5321634719557">strides</a> = {opts-&gt;stride_h, opts-&gt;stride_w};</div>
-<div class="line"><span class="lineno">  310</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>(convertIntTensorToVector&lt;int32_t&gt;(output_shape_tensor));</div>
+<div class="line"><span class="lineno">  310</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>(convertIntTensorToVector&lt;int32_t&gt;(output_shape_tensor));</div>
 <div class="line"><span class="lineno">  311</span> </div>
 <div class="line"><span class="lineno">  312</span>  <span class="comment">// OHWI -&gt; HWOI</span></div>
 <div class="line"><span class="lineno">  313</span>  <span class="keyword">const</span> std::vector&lt;std::size_t&gt; axis_order{1, 2, 0, 3};</div>
 <div class="line"><span class="lineno">  314</span>  kernel = createOp&lt;ops::TransposeOp&gt;(kernel, axis_order)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  315</span> </div>
 <div class="line"><span class="lineno">  316</span>  attributes.<a class="code hl_variable" href="structmir_1_1_deconv2_d_op_attributes.html#a4094980ab2602db6d1993e1c18968d58">padding_type</a> = convertPadding(opts-&gt;padding);</div>
-<div class="line"><span class="lineno">  317</span>  <span class="keyword">auto</span> result = createOp&lt;ops::DeConv2DOp&gt;(input, kernel, attributes, output_shape)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  317</span>  <span class="keyword">auto</span> result = createOp&lt;ops::DeConv2DOp&gt;(input, kernel, attributes, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  318</span>  <span class="keywordflow">return</span> {result};</div>
 <div class="line"><span class="lineno">  319</span>}</div>
-<div class="ttc" id="anamespacepart__eval__one_html_aa000372729756a2ed1c28a613ed7cb88"><div class="ttname"><a href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">part_eval_one.output_shape</a></div><div class="ttdeci">list output_shape</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00115">part_eval_one.py:115</a></div></div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="astructmir_1_1_deconv2_d_op_attributes_html"><div class="ttname"><a href="structmir_1_1_deconv2_d_op_attributes.html">mir::Deconv2DOpAttributes</a></div><div class="ttdef"><b>Definition:</b> <a href="_attributes_8h_source.html#l00061">Attributes.h:62</a></div></div>
 <div class="ttc" id="astructmir_1_1_deconv2_d_op_attributes_html_a4094980ab2602db6d1993e1c18968d58"><div class="ttname"><a href="structmir_1_1_deconv2_d_op_attributes.html#a4094980ab2602db6d1993e1c18968d58">mir::Deconv2DOpAttributes::padding_type</a></div><div class="ttdeci">ops::PaddingType padding_type</div><div class="ttdef"><b>Definition:</b> <a href="_attributes_8h_source.html#l00069">Attributes.h:69</a></div></div>
 <div class="ttc" id="astructmir_1_1_deconv2_d_op_attributes_html_a92ad473136382dc2a2a5321634719557"><div class="ttname"><a href="structmir_1_1_deconv2_d_op_attributes.html#a92ad473136382dc2a2a5321634719557">mir::Deconv2DOpAttributes::strides</a></div><div class="ttdeci">std::vector&lt; std::int32_t &gt; strides</div><div class="ttdef"><b>Definition:</b> <a href="_attributes_8h_source.html#l00065">Attributes.h:65</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_attributes_8h_source.html#l00069">mir::Deconv2DOpAttributes::padding_type</a>, and <a class="el" href="_attributes_8h_source.html#l00065">mir::Deconv2DOpAttributes::strides</a>.</p>
+<p class="reference">References <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_attributes_8h_source.html#l00069">mir::Deconv2DOpAttributes::padding_type</a>, and <a class="el" href="_attributes_8h_source.html#l00065">mir::Deconv2DOpAttributes::strides</a>.</p>
 
 </div>
 </div>

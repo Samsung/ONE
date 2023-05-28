@@ -7,9 +7,9 @@ var onert_micro_2luci_interpreter_2src_2kernels_2_utils_8cpp =
     [ "calculateActivationRangeQuantized", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a477eb643e22685b5fbaae14f1c981ddc", null ],
     [ "calculateActivationRangeQuantized", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#aa927fdc0b589de75449d8d5cf991e398", null ],
     [ "calculateInputRadius", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a3581d623ce3926432d4ef5ad35020bab", null ],
-    [ "calculateShapeForBroadcast", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a282484a34a3997dda2a7a6abdc4df151", null ],
+    [ "calculateShapeForBroadcast", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#abe6e23f6f2bdd0ce20f06a5a400e1c90", null ],
     [ "checkedLog2", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a0b3c525e4b279bc3b47d694c83a3f73e", null ],
-    [ "getTensorRuntimeShape", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#afce1c2c42f8f6ca9f581f3a1a3f199b8", null ],
+    [ "getTensorRuntimeShape", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#afdd2b45a2055529250dfa7583b2c922c", null ],
     [ "matrixScalarMultiplyAccumulate", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#afd0d7e8134f1365f84ef40571dec5ea8", null ],
     [ "quantizeMultiplier", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#adcf639b916825841b3f99d5f4fccff22", null ],
     [ "quantizeMultiplierSmallerThanOneExp", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a91a8777c4f1154f256a768b6bbf54477", null ]

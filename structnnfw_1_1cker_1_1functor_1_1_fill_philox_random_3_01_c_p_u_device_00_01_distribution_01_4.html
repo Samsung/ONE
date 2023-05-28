@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('structnnfw_1_1cker_1_1functor_1_1_fill
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac41ae5f0faece2a9b3ce2fe0dae6521b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1functor_1_1_fill_philox_random_3_01_c_p_u_device_00_01_distribution_01_4.html#ac41ae5f0faece2a9b3ce2fe0dae6521b">operator()</a> (<a class="el" href="classnnfw_1_1cker_1_1random_1_1_philox_random.html">random::PhiloxRandom</a> gen, typename Distribution::ResultElementType *data, int64_t size, Distribution dist)</td></tr>
+<tr class="memitem:ac41ae5f0faece2a9b3ce2fe0dae6521b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1functor_1_1_fill_philox_random_3_01_c_p_u_device_00_01_distribution_01_4.html#ac41ae5f0faece2a9b3ce2fe0dae6521b">operator()</a> (<a class="el" href="classnnfw_1_1cker_1_1random_1_1_philox_random.html">random::PhiloxRandom</a> gen, typename Distribution::ResultElementType *data, int64_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, Distribution dist)</td></tr>
 <tr class="separator:ac41ae5f0faece2a9b3ce2fe0dae6521b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -149,10 +149,13 @@ template&lt;class Distribution &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_random_op_cpu_8h_source.html#l00150">150</a> of file <a class="el" href="_random_op_cpu_8h_source.html">RandomOpCpu.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  153</span>{</div>
-<div class="line"><span class="lineno">  154</span>  FillPhiloxRandomTask&lt;Distribution, Distribution::kVariableSamplesPerOutput&gt;::Run(gen, data, size,</div>
+<div class="line"><span class="lineno">  154</span>  FillPhiloxRandomTask&lt;Distribution, Distribution::kVariableSamplesPerOutput&gt;::Run(gen, data, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>,</div>
 <div class="line"><span class="lineno">  155</span>                                                                                   dist);</div>
 <div class="line"><span class="lineno">  156</span>}</div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>

@@ -106,7 +106,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ad5c08ad4d11f3583b7b576f4e5de48d4"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecircle.html#ad5c08ad4d11f3583b7b576f4e5de48d4">tensor_type</a> (const ::circle::Tensor *tensor)</td></tr>
 <tr class="separator:ad5c08ad4d11f3583b7b576f4e5de48d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79d3a411e3c70fb1696da5619152dba9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a79d3a411e3c70fb1696da5619152dba9"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecircle.html#a79d3a411e3c70fb1696da5619152dba9">as_index_vector</a> (const flatbuffers::Vector&lt; T &gt; *flat_array)</td></tr>
+<tr class="memitem:a79d3a411e3c70fb1696da5619152dba9"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecircle.html#a79d3a411e3c70fb1696da5619152dba9">as_index_vector</a> (const <a class="el" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a>&lt; T &gt; *flat_array)</td></tr>
 <tr class="separator:a79d3a411e3c70fb1696da5619152dba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -121,7 +121,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">std::vector&lt; T &gt; circle::as_index_vector </td>
           <td>(</td>
-          <td class="paramtype">const flatbuffers::Vector&lt; T &gt; *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a>&lt; T &gt; *&#160;</td>
           <td class="paramname"><em>flat_array</em></td><td>)</td>
           <td></td>
         </tr>
@@ -138,11 +138,14 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   39</span>  std::vector&lt;T&gt; ret(flat_array-&gt;Length());</div>
 <div class="line"><span class="lineno">   40</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; flat_array-&gt;Length(); i++)</div>
 <div class="line"><span class="lineno">   41</span>  {</div>
-<div class="line"><span class="lineno">   42</span>    ret[i] = flat_array-&gt;Get(i);</div>
+<div class="line"><span class="lineno">   42</span>    ret[i] = flat_array-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a0c322798bd0cebd2d20b0b0f92de2f9b">Get</a>(i);</div>
 <div class="line"><span class="lineno">   43</span>  }</div>
 <div class="line"><span class="lineno">   44</span>  <span class="keywordflow">return</span> ret;</div>
 <div class="line"><span class="lineno">   45</span>}</div>
+<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a0c322798bd0cebd2d20b0b0f92de2f9b"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a0c322798bd0cebd2d20b0b0f92de2f9b">flatbuffers::Vector::Get</a></div><div class="ttdeci">return_type Get(uoffset_t i) const</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l00286">flatbuffers.h:286</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l00286">flatbuffers::Vector&lt; T &gt;::Get()</a>.</p>
+
 </div>
 </div>
 <a id="aadae7218f7f9bca3b2ef910b11ac1486" name="aadae7218f7f9bca3b2ef910b11ac1486"></a>

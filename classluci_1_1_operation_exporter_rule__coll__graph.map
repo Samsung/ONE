@@ -1,12 +1,14 @@
 <map id="luci::OperationExporterRule" name="luci::OperationExporterRule">
-<area shape="rect" id="node1" title=" " alt="" coords="907,99,1084,125"/>
+<area shape="rect" id="node1" title=" " alt="" coords="907,119,1084,145"/>
 <area shape="rect" id="node2" href="$structluci_1_1_circle_node_mutable_visitor.html" title=" " alt="" coords="636,63,831,103"/>
 <area shape="rect" id="node3" href="$structluci_1_1_circle_node_mutable_visitor_base.html" title=" " alt="" coords="329,5,523,45"/>
 <area shape="rect" id="node4" href="$structluci_1_1_circle_node_mutable_visitor.html" title=" " alt="" coords="313,70,539,95"/>
-<area shape="rect" id="node5" href="$structluci_1_1_circle_node_mutable_visitor_base.html" title=" " alt="" coords="5,63,200,103"/>
-<area shape="rect" id="node6" href="$structluci_1_1_export_context.html" title=" " alt="" coords="669,127,797,153"/>
-<area shape="rect" id="node7" href="$structluci_1_1_serialized_model_data.html" title=" " alt="" coords="343,127,509,153"/>
-<area shape="rect" id="node8" href="$classluci_1_1_circle_export_metadata.html" title=" " alt="" coords="17,127,188,153"/>
-<area shape="rect" id="node9" href="$structluci_1_1_serialized_graph_data.html" title=" " alt="" coords="343,177,509,202"/>
-<area shape="rect" id="node10" href="$structluci_1_1_sub_graph_context.html" title="Record the information of T/F Lite SubGraph and its mapping to loco." alt="" coords="27,177,178,202"/>
+<area shape="rect" id="node5" href="$structluci_1_1_circle_node_mutable_visitor_base.html" title=" " alt="" coords="5,55,200,95"/>
+<area shape="rect" id="node6" href="$structluci_1_1_export_context.html" title=" " alt="" coords="669,151,797,177"/>
+<area shape="rect" id="node7" href="$classflatbuffers_1_1_flat_buffer_builder.html" title="Helper class to hold data needed in creation of a FlatBuffer. To serialize data, you typically call o..." alt="" coords="336,127,516,153"/>
+<area shape="rect" id="node8" href="$classflatbuffers_1_1vector__downward.html" title=" " alt="" coords="43,119,163,159"/>
+<area shape="rect" id="node9" href="$structluci_1_1_serialized_model_data.html" title=" " alt="" coords="343,182,509,207"/>
+<area shape="rect" id="node10" href="$classluci_1_1_circle_export_metadata.html" title=" " alt="" coords="17,183,188,209"/>
+<area shape="rect" id="node11" href="$structluci_1_1_serialized_graph_data.html" title=" " alt="" coords="343,231,509,257"/>
+<area shape="rect" id="node12" href="$structluci_1_1_sub_graph_context.html" title="Record the information of T/F Lite SubGraph and its mapping to loco." alt="" coords="27,233,178,258"/>
 </map>

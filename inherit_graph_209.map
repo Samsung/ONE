@@ -1,3 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_graph_testcase_3_01_graph_code_1_1_avg_pool2_d_01_4.html" title=" " alt="" coords="5,5,192,45"/>
+<area shape="rect" id="node1" href="$structflatbuffers_1_1_definition.html" title=" " alt="" coords="5,104,143,129"/>
+<area shape="rect" id="node2" href="$structflatbuffers_1_1_enum_def.html" title=" " alt="" coords="196,5,333,31"/>
+<area shape="rect" id="node3" href="$structflatbuffers_1_1_field_def.html" title=" " alt="" coords="199,55,331,80"/>
+<area shape="rect" id="node4" href="$structflatbuffers_1_1_r_p_c_call.html" title=" " alt="" coords="198,104,331,129"/>
+<area shape="rect" id="node5" href="$structflatbuffers_1_1_service_def.html" title=" " alt="" coords="191,153,339,179"/>
+<area shape="rect" id="node6" href="$structflatbuffers_1_1_struct_def.html" title=" " alt="" coords="195,203,334,228"/>
 </map>

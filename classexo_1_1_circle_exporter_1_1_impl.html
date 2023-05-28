@@ -213,8 +213,9 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="exo_2src_2_circle_2_circle_exporter_impl_8cpp_source.html#l00174">174</a> of file <a class="el" href="exo_2src_2_circle_2_circle_exporter_impl_8cpp_source.html">CircleExporterImpl.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  175</span>{</div>
-<div class="line"><span class="lineno">  176</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_builder.GetBufferPointer());</div>
+<div class="line"><span class="lineno">  176</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#a79ced315a0621131b8d301f36fe76800">GetBufferPointer</a>());</div>
 <div class="line"><span class="lineno">  177</span>}</div>
+<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_html_a79ced315a0621131b8d301f36fe76800"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder.html#a79ced315a0621131b8d301f36fe76800">flatbuffers::FlatBufferBuilder::GetBufferPointer</a></div><div class="ttdeci">uint8_t * GetBufferPointer() const</div><div class="ttdoc">Get the serialized buffer (after you call Finish()).</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l01270">flatbuffers.h:1270</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -235,7 +236,8 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>size of buffer with serialized graph </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="exo_2src_2_circle_2_circle_exporter_impl_8cpp_source.html#l00179">179</a> of file <a class="el" href="exo_2src_2_circle_2_circle_exporter_impl_8cpp_source.html">CircleExporterImpl.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  179</span>{ <span class="keywordflow">return</span> _builder.GetSize(); }</div>
+<div class="fragment"><div class="line"><span class="lineno">  179</span>{ <span class="keywordflow">return</span> _builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#a66c8fd33ab9b3b237954c9ea38648f7f">GetSize</a>(); }</div>
+<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_html_a66c8fd33ab9b3b237954c9ea38648f7f"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder.html#a66c8fd33ab9b3b237954c9ea38648f7f">flatbuffers::FlatBufferBuilder::GetSize</a></div><div class="ttdeci">uoffset_t GetSize() const</div><div class="ttdoc">The current size of the serialized buffer, counting from the end.</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l01265">flatbuffers.h:1265</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

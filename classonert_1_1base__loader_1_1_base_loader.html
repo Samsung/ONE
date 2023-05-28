@@ -118,7 +118,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae787ba6127041c6ecb594c46652b717b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1base__loader_1_1_base_loader.html#ae787ba6127041c6ecb594c46652b717b">loadFromFile</a> (const std::string &amp;file_path)</td></tr>
 <tr class="memdesc:ae787ba6127041c6ecb594c46652b717b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a model from file.  <a href="classonert_1_1base__loader_1_1_base_loader.html#ae787ba6127041c6ecb594c46652b717b">More...</a><br /></td></tr>
 <tr class="separator:ae787ba6127041c6ecb594c46652b717b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae98fd20642c867d0152d9b1f5413ea0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1base__loader_1_1_base_loader.html#ae98fd20642c867d0152d9b1f5413ea0b">loadFromBuffer</a> (uint8_t *buffer, size_t size)</td></tr>
+<tr class="memitem:ae98fd20642c867d0152d9b1f5413ea0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1base__loader_1_1_base_loader.html#ae98fd20642c867d0152d9b1f5413ea0b">loadFromBuffer</a> (uint8_t *buffer, size_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)</td></tr>
 <tr class="memdesc:ae98fd20642c867d0152d9b1f5413ea0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a model from a buffer.  <a href="classonert_1_1base__loader_1_1_base_loader.html#ae98fd20642c867d0152d9b1f5413ea0b">More...</a><br /></td></tr>
 <tr class="separator:ae98fd20642c867d0152d9b1f5413ea0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -169,7 +169,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a589cfc19026e0bdd8473228a232a589a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51553efabc96bbd220988741309f5d22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1base__loader_1_1_base_loader.html#a51553efabc96bbd220988741309f5d22">tensorIdxToOperandIdx</a> (int32_t tensorIdx)</td></tr>
 <tr class="separator:a51553efabc96bbd220988741309f5d22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e05d23e56b28c6e3a07e082a7635f5e"><td class="memItemLeft" align="right" valign="top">flexbuffers::Map&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1base__loader_1_1_base_loader.html#a6e05d23e56b28c6e3a07e082a7635f5e">getCustomOpAttrMap</a> (const <a class="el" href="classonert_1_1base__loader_1_1_base_loader.html#ac8ac7b74cd37dbf54c21b3157dd1944e">Operator</a> *op)</td></tr>
+<tr class="memitem:a6e05d23e56b28c6e3a07e082a7635f5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classflexbuffers_1_1_map.html">flexbuffers::Map</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1base__loader_1_1_base_loader.html#a6e05d23e56b28c6e3a07e082a7635f5e">getCustomOpAttrMap</a> (const <a class="el" href="classonert_1_1base__loader_1_1_base_loader.html#ac8ac7b74cd37dbf54c21b3157dd1944e">Operator</a> *op)</td></tr>
 <tr class="separator:a6e05d23e56b28c6e3a07e082a7635f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27b1443147add2ad24ce8e8fc5406758"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1base__loader_1_1_base_loader.html#a27b1443147add2ad24ce8e8fc5406758">loadOperand</a> (const <a class="el" href="classonert_1_1base__loader_1_1_base_loader.html#a146c334ea0bfd4c66cd1c518477e20fc">Tensor</a> *tensor, <a class="el" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;subg)</td></tr>
 <tr class="separator:a27b1443147add2ad24ce8e8fc5406758"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -771,7 +771,7 @@ template&lt;typename LoaderDomain &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">flexbuffers::Map <a class="el" href="classonert_1_1base__loader_1_1_base_loader.html">onert::base_loader::BaseLoader</a>&lt; LoaderDomain &gt;::getCustomOpAttrMap </td>
+          <td class="memname"><a class="el" href="classflexbuffers_1_1_map.html">flexbuffers::Map</a> <a class="el" href="classonert_1_1base__loader_1_1_base_loader.html">onert::base_loader::BaseLoader</a>&lt; LoaderDomain &gt;::getCustomOpAttrMap </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classonert_1_1base__loader_1_1_base_loader.html#ac8ac7b74cd37dbf54c21b3157dd1944e">Operator</a> *&#160;</td>
           <td class="paramname"><em>op</em></td><td>)</td>

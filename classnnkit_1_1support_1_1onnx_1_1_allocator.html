@@ -112,7 +112,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a281f277ed1c3540b01d01746c1fcb4f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82e105db5d8ee8e7c06640a225262ea7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#a82e105db5d8ee8e7c06640a225262ea7">~Allocator</a> (void)</td></tr>
 <tr class="separator:a82e105db5d8ee8e7c06640a225262ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e77355475fe7cf82249a539491558e0"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#a5e77355475fe7cf82249a539491558e0">Alloc</a> (size_t size)</td></tr>
+<tr class="memitem:a5e77355475fe7cf82249a539491558e0"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#a5e77355475fe7cf82249a539491558e0">Alloc</a> (size_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)</td></tr>
 <tr class="separator:a5e77355475fe7cf82249a539491558e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29dc9dad4635e80232047dc92c13c24f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#a29dc9dad4635e80232047dc92c13c24f">Free</a> (void *p)</td></tr>
 <tr class="separator:a29dc9dad4635e80232047dc92c13c24f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,8 +148,8 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_allocator_8cpp_source.html#l00029">29</a> of file <a class="el" href="_allocator_8cpp_source.html">Allocator.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
 <div class="line"><span class="lineno">   31</span>  OrtAllocator::version = ORT_API_VERSION;</div>
-<div class="line"><span class="lineno">   32</span>  OrtAllocator::Alloc = [](OrtAllocator *this_, <span class="keywordtype">size_t</span> <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>) {</div>
-<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_function" href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#a281f277ed1c3540b01d01746c1fcb4f7">Allocator</a> *<span class="keyword">&gt;</span>(this_)-&gt;<a class="code hl_function" href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#a5e77355475fe7cf82249a539491558e0">Alloc</a>(size);</div>
+<div class="line"><span class="lineno">   32</span>  OrtAllocator::Alloc = [](OrtAllocator *this_, <span class="keywordtype">size_t</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>) {</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_function" href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#a281f277ed1c3540b01d01746c1fcb4f7">Allocator</a> *<span class="keyword">&gt;</span>(this_)-&gt;<a class="code hl_function" href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#a5e77355475fe7cf82249a539491558e0">Alloc</a>(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><span class="lineno">   34</span>  };</div>
 <div class="line"><span class="lineno">   35</span>  OrtAllocator::Free = [](OrtAllocator *this_, <span class="keywordtype">void</span> *p) {</div>
 <div class="line"><span class="lineno">   36</span>    <span class="keyword">static_cast&lt;</span><a class="code hl_function" href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#a281f277ed1c3540b01d01746c1fcb4f7">Allocator</a> *<span class="keyword">&gt;</span>(this_)-&gt;<a class="code hl_function" href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#a29dc9dad4635e80232047dc92c13c24f">Free</a>(p);</div>
@@ -166,9 +166,9 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassnnkit_1_1support_1_1onnx_1_1_allocator_html_a29dc9dad4635e80232047dc92c13c24f"><div class="ttname"><a href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#a29dc9dad4635e80232047dc92c13c24f">nnkit::support::onnx::Allocator::Free</a></div><div class="ttdeci">void Free(void *p)</div><div class="ttdef"><b>Definition:</b> <a href="_allocator_8cpp_source.html#l00065">Allocator.cpp:65</a></div></div>
 <div class="ttc" id="aclassnnkit_1_1support_1_1onnx_1_1_allocator_html_a5e77355475fe7cf82249a539491558e0"><div class="ttname"><a href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#a5e77355475fe7cf82249a539491558e0">nnkit::support::onnx::Allocator::Alloc</a></div><div class="ttdeci">void * Alloc(size_t size)</div><div class="ttdef"><b>Definition:</b> <a href="_allocator_8cpp_source.html#l00049">Allocator.cpp:49</a></div></div>
 <div class="ttc" id="aclassnnkit_1_1support_1_1onnx_1_1_allocator_html_afca1bb5b11ce32f46e0e45cdf1391c0e"><div class="ttname"><a href="classnnkit_1_1support_1_1onnx_1_1_allocator.html#afca1bb5b11ce32f46e0e45cdf1391c0e">nnkit::support::onnx::Allocator::Info</a></div><div class="ttdeci">const OrtAllocatorInfo * Info(void) const</div><div class="ttdef"><b>Definition:</b> <a href="_allocator_8cpp_source.html#l00076">Allocator.cpp:76</a></div></div>
-<div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_allocator_8cpp_source.html#l00049">Alloc()</a>, <a class="el" href="_allocator_8cpp_source.html#l00065">Free()</a>, <a class="el" href="_allocator_8cpp_source.html#l00076">Info()</a>, and <a class="el" href="_status_8h_source.html#l00065">nnkit::support::onnx::Status::throwOnError()</a>.</p>
+<p class="reference">References <a class="el" href="_allocator_8cpp_source.html#l00049">Alloc()</a>, <a class="el" href="_allocator_8cpp_source.html#l00065">Free()</a>, <a class="el" href="_allocator_8cpp_source.html#l00076">Info()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>, and <a class="el" href="_status_8h_source.html#l00065">nnkit::support::onnx::Status::throwOnError()</a>.</p>
 
 </div>
 </div>
@@ -246,12 +246,14 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   56</span>  <span class="comment">//      The size value that saved in extra_len is used to Free function</span></div>
 <div class="line"><span class="lineno">   57</span>  <span class="comment">//      to check resource leak. The size value uses in _memory_inuse.</span></div>
 <div class="line"><span class="lineno">   58</span>  <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> extra_len = <span class="keyword">sizeof</span>(size_t);</div>
-<div class="line"><span class="lineno">   59</span>  _memory_inuse.fetch_add(size += extra_len);</div>
-<div class="line"><span class="lineno">   60</span>  <span class="keywordtype">void</span> *p = ::malloc(size);</div>
-<div class="line"><span class="lineno">   61</span>  *(<span class="keywordtype">size_t</span> *)p = size;</div>
+<div class="line"><span class="lineno">   59</span>  _memory_inuse.fetch_add(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> += extra_len);</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keywordtype">void</span> *p = ::malloc(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">   61</span>  *(<span class="keywordtype">size_t</span> *)p = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
 <div class="line"><span class="lineno">   62</span>  <span class="keywordflow">return</span> (<span class="keywordtype">char</span> *)p + extra_len;</div>
 <div class="line"><span class="lineno">   63</span>}</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="_allocator_8cpp_source.html#l00029">Allocator()</a>.</p>
 
 </div>

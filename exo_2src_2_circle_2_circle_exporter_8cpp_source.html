@@ -130,13 +130,13 @@ $(document).ready(function(){initNavTree('exo_2src_2_circle_2_circle_exporter_8c
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classexo_1_1_circle_exporter.html#ab3ab9942ef5f62ae29417d2905e6c381">   36</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classexo_1_1_circle_exporter.html#ab3ab9942ef5f62ae29417d2905e6c381">CircleExporter::dumpToFile</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *path)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *ptr = _impl-&gt;getBufferPointer();</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> size = _impl-&gt;getBufferSize();</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = _impl-&gt;getBufferSize();</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">if</span> (!ptr)</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_define" href="_internal_exn_8h.html#a28db93bdbd78e4f41821e1660182c9d5">INTERNAL_EXN</a>(<span class="stringliteral">&quot;Graph was not serialized by FlatBuffer for some reason&quot;</span>);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  std::ofstream file(path, std::ofstream::binary);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  file.write(ptr, size);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  file.write(ptr, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>}</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>} <span class="comment">// namespace exo</span></div>
@@ -151,6 +151,7 @@ $(document).ready(function(){initNavTree('exo_2src_2_circle_2_circle_exporter_8c
 <div class="ttc" id="aluci_2export_2src_2_circle_exporter_impl_8h_html"><div class="ttname"><a href="luci_2export_2src_2_circle_exporter_impl_8h.html">CircleExporterImpl.h</a></div></div>
 <div class="ttc" id="anamespaceexo_html"><div class="ttname"><a href="namespaceexo.html">exo</a></div><div class="ttdef"><b>Definition:</b> <a href="exo_2include_2exo_2_circle_exporter_8h_source.html#l00024">CircleExporter.h:25</a></div></div>
 <div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition:</b> <a href="exo_2src_2_circle_2_circle_exporter_utils_8h_source.html#l00052">CircleExporterUtils.h:53</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

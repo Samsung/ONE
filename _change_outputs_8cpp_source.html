@@ -161,7 +161,7 @@ $(document).ready(function(){initNavTree('_change_outputs_8cpp_source.html','');
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="comment">// just to be sure</span></div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  assert(graph-&gt;outputs()-&gt;size() == named_nodes.size());</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordflow">for</span> (uint32_t out = 0; out &lt; graph-&gt;outputs()-&gt;size(); ++out)</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordflow">for</span> (uint32_t out = 0; out &lt; graph-&gt;outputs()-&gt;<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>(); ++out)</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  {</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keyword">auto</span> output = <a class="code hl_function" href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">luci::output_node</a>(graph, out); <span class="comment">// output is CircleOutput</span></div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    assert(output != <span class="keyword">nullptr</span>);</div>
@@ -174,23 +174,24 @@ $(document).ready(function(){initNavTree('_change_outputs_8cpp_source.html','');
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="comment">// update GraphOutput shape, dtype to node</span></div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keyword">auto</span> graph_out = graph-&gt;outputs()-&gt;at(out);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keyword">auto</span> output_shape = std::make_unique&lt;loco::TensorShape&gt;();</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = std::make_unique&lt;loco::TensorShape&gt;();</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    output_shape-&gt;rank(node-&gt;rank());</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>-&gt;rank(node-&gt;rank());</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">for</span> (uint32_t r = 0; r &lt; node-&gt;rank(); ++r)</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    {</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      <span class="keywordflow">if</span> (node-&gt;dim(r).known())</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        output_shape-&gt;dim(r).set(node-&gt;dim(r).value());</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>-&gt;dim(r).set(node-&gt;dim(r).value());</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        output_shape-&gt;dim(r).unset();</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>-&gt;dim(r).unset();</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    graph_out-&gt;shape(std::move(output_shape));</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    graph_out-&gt;shape(std::move(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>));</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    graph_out-&gt;dtype(node-&gt;dtype());</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>} <span class="comment">// namespace luci</span></div>
 <div class="ttc" id="a_change_outputs_8h_html"><div class="ttname"><a href="_change_outputs_8h.html">ChangeOutputs.h</a></div></div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="a_user_exn_8h_html"><div class="ttname"><a href="_user_exn_8h.html">UserExn.h</a></div></div>
 <div class="ttc" id="aclassloco_1_1_graph_html"><div class="ttname"><a href="classloco_1_1_graph.html">loco::Graph</a></div><div class="ttdoc">A neural network graph.</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_graph_8h_source.html#l00160">Graph.h:161</a></div></div>
 <div class="ttc" id="aclassoops_1_1_user_exn_html"><div class="ttname"><a href="classoops_1_1_user_exn.html">oops::UserExn</a></div><div class="ttdoc">Exception to user.</div><div class="ttdef"><b>Definition:</b> <a href="_user_exn_8h_source.html#l00041">UserExn.h:42</a></div></div>
@@ -200,6 +201,7 @@ $(document).ready(function(){initNavTree('_change_outputs_8cpp_source.html','');
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition:</b> <a href="_user_settings_8h_source.html#l00022">UserSettings.h:23</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a5154c1adca0a831c7e35812029019624"><div class="ttname"><a href="namespaceluci.html#a5154c1adca0a831c7e35812029019624">luci::change_outputs</a></div><div class="ttdeci">void change_outputs(loco::Graph *, const std::vector&lt; std::string &gt; &amp;)</div><div class="ttdoc">Change output to nodes with string name.</div><div class="ttdef"><b>Definition:</b> <a href="_change_outputs_8cpp_source.html#l00048">ChangeOutputs.cpp:48</a></div></div>
 <div class="ttc" id="anamespaceluci_html_ac7dd3da6e892c67c7db0f62c1001c61d"><div class="ttname"><a href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">luci::output_node</a></div><div class="ttdeci">CircleOutput * output_node(loco::Graph *g, const loco::GraphOutputIndex &amp;index)</div><div class="ttdoc">Find a CircleOutput node with a given output index.</div><div class="ttdef"><b>Definition:</b> <a href="luci_2lang_2src_2_circle_nodes_8cpp_source.html#l00028">CircleNodes.cpp:28</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition:</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

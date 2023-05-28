@@ -160,15 +160,15 @@ $(document).ready(function(){initNavTree('_broadcast_helper_8cpp_source.html',''
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    assert(input_rank &lt;= output_rank &amp;&amp; <span class="stringliteral">&quot;Cannot shrink rank&quot;</span>);</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    uint32_t <span class="keyword">const</span> axis_shift = output_rank - input_rank;</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <a class="code hl_class" href="classloco_1_1_tensor_shape.html">loco::TensorShape</a> <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <a class="code hl_class" href="classloco_1_1_tensor_shape.html">loco::TensorShape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>.rank(output_rank);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.rank(output_rank);</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">for</span> (uint32_t axis = 0; axis &lt; output_rank; ++axis)</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    {</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>.dim(axis) = (axis &lt; axis_shift) ? 1 : input_shape.dim(axis - axis_shift);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.dim(axis) = (axis &lt; axis_shift) ? 1 : input_shape.dim(axis - axis_shift);</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    }</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  }</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="keyword">private</span>:</div>
@@ -204,17 +204,17 @@ $(document).ready(function(){initNavTree('_broadcast_helper_8cpp_source.html',''
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> = <a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">graph</a>();</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    assert(g != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a> = expand(input_shape).to(expected_rank);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = expand(input_shape).to(expected_rank);</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">output_node</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classloco_1_1_reshape_3_01_reshape_type_1_1_fixed_01_4.html">loco::FixedReshape</a>&gt;();</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <a class="code hl_function" href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">output_node</a>-&gt;input(input_node);</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <a class="code hl_function" href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">output_node</a>-&gt;rank(expected_rank);</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordflow">for</span> (uint32_t axis = 0; axis &lt; expected_rank; ++axis)</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    {</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>      <a class="code hl_function" href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">output_node</a>-&gt;dim(axis) = <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>.dim(axis);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>      <a class="code hl_function" href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">output_node</a>-&gt;dim(axis) = <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.dim(axis);</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    }</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">return</span> glue(output_node, output_shape);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">return</span> glue(output_node, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  }</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="keyword">private</span>:</div>
@@ -236,17 +236,17 @@ $(document).ready(function(){initNavTree('_broadcast_helper_8cpp_source.html',''
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a> = in.node();</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keyword">auto</span> <span class="keyword">const</span> input_shape = in.shape();</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a> = _shape;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = _shape;</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    assert(input_shape.rank() == <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>.rank());</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    assert(input_shape.rank() == <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.rank());</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    <span class="keywordflow">if</span> (input_shape == output_shape)</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    <span class="keywordflow">if</span> (input_shape == <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>)</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    {</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>      <span class="comment">// Nothing to expand</span></div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>      <span class="keywordflow">return</span> in;</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    }</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    uint32_t <span class="keyword">const</span> rank = <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>.rank();</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    uint32_t <span class="keyword">const</span> rank = <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.rank();</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> = <a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">graph</a>();</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    assert(g != <span class="keyword">nullptr</span>);</div>
@@ -256,7 +256,7 @@ $(document).ready(function(){initNavTree('_broadcast_helper_8cpp_source.html',''
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keywordflow">for</span> (uint32_t axis = 0; axis &lt; rank; ++axis)</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    {</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>      <span class="keyword">auto</span> input_dim = input_shape.dim(axis);</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>      <span class="keyword">auto</span> output_dim = <a class="code hl_variable" href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">output_shape</a>.dim(axis);</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>      <span class="keyword">auto</span> output_dim = <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.dim(axis);</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>      assert(input_dim.known() and output_dim.known());</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
@@ -269,7 +269,7 @@ $(document).ready(function(){initNavTree('_broadcast_helper_8cpp_source.html',''
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <a class="code hl_function" href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">output_node</a>-&gt;input(input_node);</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordflow">return</span> glue(output_node, output_shape);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordflow">return</span> glue(output_node, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  }</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="keyword">private</span>:</div>
@@ -306,6 +306,7 @@ $(document).ready(function(){initNavTree('_broadcast_helper_8cpp_source.html',''
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>} <span class="comment">// namespace tf</span></div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>} <span class="comment">// namespace moco</span></div>
 <div class="ttc" id="a_broadcast_helper_8h_html"><div class="ttname"><a href="_broadcast_helper_8h.html">BroadcastHelper.h</a></div></div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="aclassloco_1_1_node_html"><div class="ttname"><a href="classloco_1_1_node.html">loco::Node</a></div><div class="ttdoc">Logical unit of computation.</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_node_8h_source.html#l00053">Node.h:54</a></div></div>
 <div class="ttc" id="aclassloco_1_1_node_html_a117bfe99976cf71eb9d85f4b018f26ad"><div class="ttname"><a href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">loco::Node::graph</a></div><div class="ttdeci">Graph * graph(void)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_node_8h_source.html#l00070">Node.h:70</a></div></div>
 <div class="ttc" id="aclassloco_1_1_reshape_3_01_reshape_type_1_1_fixed_01_4_html"><div class="ttname"><a href="classloco_1_1_reshape_3_01_reshape_type_1_1_fixed_01_4.html">loco::Reshape&lt; ReshapeType::Fixed &gt;</a></div><div class="ttdoc">Reshape a tensor to another tensor whose shape is known at compile time.</div><div class="ttdef"><b>Definition:</b> <a href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00514">Nodes.h:517</a></div></div>
@@ -320,7 +321,6 @@ $(document).ready(function(){initNavTree('_broadcast_helper_8cpp_source.html',''
 <div class="ttc" id="anamespaceluci_html_ac7dd3da6e892c67c7db0f62c1001c61d"><div class="ttname"><a href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">luci::output_node</a></div><div class="ttdeci">CircleOutput * output_node(loco::Graph *g, const loco::GraphOutputIndex &amp;index)</div><div class="ttdoc">Find a CircleOutput node with a given output index.</div><div class="ttdef"><b>Definition:</b> <a href="luci_2lang_2src_2_circle_nodes_8cpp_source.html#l00028">CircleNodes.cpp:28</a></div></div>
 <div class="ttc" id="anamespaceluci_html_acdc0d1304581e414efebea14d789750e"><div class="ttname"><a href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">luci::input_node</a></div><div class="ttdeci">CircleInput * input_node(loco::Graph *g, const loco::GraphInputIndex &amp;index)</div><div class="ttdoc">Find a Pull node with a given input index.</div><div class="ttdef"><b>Definition:</b> <a href="luci_2lang_2src_2_circle_nodes_8cpp_source.html#l00045">CircleNodes.cpp:45</a></div></div>
 <div class="ttc" id="anamespacemoco_html"><div class="ttname"><a href="namespacemoco.html">moco</a></div><div class="ttdef"><b>Definition:</b> <a href="moco-log_2include_2moco_2_log_8h_source.html#l00022">Log.h:23</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_aa000372729756a2ed1c28a613ed7cb88"><div class="ttname"><a href="namespacepart__eval__one.html#aa000372729756a2ed1c28a613ed7cb88">part_eval_one.output_shape</a></div><div class="ttdeci">list output_shape</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00115">part_eval_one.py:115</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -285,11 +285,14 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   89</span>    <span class="keyword">const</span> uint32_t output_width = <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;dim(2).value();</div>
 <div class="line"><span class="lineno">   90</span> </div>
 <div class="line"><span class="lineno">   91</span>    <span class="keywordflow">return</span> batches * output_height * output_width * input_depth * filter_height * filter_width *</div>
-<div class="line"><span class="lineno">   92</span>           <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">size</a>(conv_input-&gt;dtype());</div>
+<div class="line"><span class="lineno">   92</span>           <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>(conv_input-&gt;dtype());</div>
 <div class="line"><span class="lineno">   93</span>  }</div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a">mir_caffe::CaffeOpType::filter</a></div><div class="ttdeci">@ filter</div></div>
 <div class="ttc" id="anamespacennop_html_acf3d089479785117472a0b30cebc048d"><div class="ttname"><a href="namespacennop.html#acf3d089479785117472a0b30cebc048d">nnop::conv</a></div><div class="ttdeci">void conv(const nncc::core::ADT::feature::Shape &amp;out_shape, nncc::core::ADT::feature::Accessor&lt; OutputDType &gt; &amp;out_data, const nncc::core::ADT::feature::Shape &amp;in_shape, const nncc::core::ADT::feature::Reader&lt; InputDType &gt; &amp;in_data, const nncc::core::ADT::kernel::Shape &amp;ker_shape, const nncc::core::ADT::kernel::Reader&lt; KernelDType &gt; &amp;ker_data, const PadInfo &amp;pad_info, const StrideInfo &amp;stride_info)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2nnop_2include_2nnop_2_conv2_d_8h_source.html#l00034">Conv2D.h:34</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+
 </div>
 </div>
 <a id="ab03a81a473204020b4fa22f4e7ef1e5b" name="ab03a81a473204020b4fa22f4e7ef1e5b"></a>

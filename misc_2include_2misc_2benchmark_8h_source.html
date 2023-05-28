@@ -139,11 +139,11 @@ $(document).ready(function(){initNavTree('misc_2include_2misc_2benchmark_8h_sour
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Callable&gt;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>Accumulator&lt;T&gt; &amp;<a class="code hl_function" href="namespacennfw_1_1misc_1_1benchmark.html#aa7841c04cfb3ade0c156c9728ff7e13a">operator&lt;&lt;</a>(Accumulator&lt;T&gt; &amp;&amp;acc, Callable cb)</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>{</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">auto</span> begin = std::chrono::high_resolution_clock::now();</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> = std::chrono::high_resolution_clock::now();</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  cb();</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">auto</span> end = std::chrono::high_resolution_clock::now();</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  acc() += std::chrono::duration_cast&lt;T&gt;(end - begin);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  acc() += std::chrono::duration_cast&lt;T&gt;(end - <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>);</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordflow">return</span> acc;</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>}</div>
@@ -162,6 +162,7 @@ $(document).ready(function(){initNavTree('misc_2include_2misc_2benchmark_8h_sour
 <div class="ttc" id="anamespacennfw_1_1misc_1_1benchmark_html_aa7841c04cfb3ade0c156c9728ff7e13a"><div class="ttname"><a href="namespacennfw_1_1misc_1_1benchmark.html#aa7841c04cfb3ade0c156c9728ff7e13a">nnfw::misc::benchmark::operator&lt;&lt;</a></div><div class="ttdeci">Accumulator&lt; T &gt; &amp; operator&lt;&lt;(Accumulator&lt; T &gt; &amp;&amp;acc, Callable cb)</div><div class="ttdoc">Run passed function and returns accumulated time.</div><div class="ttdef"><b>Definition:</b> <a href="misc_2include_2misc_2benchmark_8h_source.html#l00001">benchmark.h:70</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1misc_1_1benchmark_html_ad8980b0454c171c0db8de228d2634d4c"><div class="ttname"><a href="namespacennfw_1_1misc_1_1benchmark.html#ad8980b0454c171c0db8de228d2634d4c">nnfw::misc::benchmark::measure</a></div><div class="ttdeci">Accumulator&lt; T &gt; measure(T &amp;out)</div><div class="ttdef"><b>Definition:</b> <a href="misc_2include_2misc_2benchmark_8h_source.html#l00081">benchmark.h:81</a></div></div>
 <div class="ttc" id="anamespacennfw_html"><div class="ttname"><a href="namespacennfw.html">nnfw</a></div><div class="ttdef"><b>Definition:</b> <a href="topk__v2_8h_source.html#l00029">topk_v2.h:30</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_adaf1f5da3e0e0e62ea2ea6e1e4e5f49e"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a></div><div class="ttdeci">int32_t begin[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">Slice.cpp:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

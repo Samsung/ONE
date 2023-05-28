@@ -350,15 +350,15 @@ $(document).ready(function(){initNavTree('nnkit-tf_2support_2src_2_runner_8cpp_s
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> r = 0; r &lt; tensor-&gt;shape().rank(); r++)</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>      shape.emplace_back(tensor-&gt;shape().dim(r));</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    <span class="keywordtype">int</span> size = 0;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = 0;</div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    <span class="keywordflow">if</span> (tensor-&gt;isFloatTensor())</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>      size = <span class="keyword">sizeof</span>(float);</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>      <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = <span class="keyword">sizeof</span>(float);</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Not supported tensor type&quot;</span>);</div>
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    TF_Tensor *input_tensor =</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>      create_tensor(<a class="code hl_define" href="_compat_8h.html#a1002f80a13f2473c55e05682186a31ef">TF_FLOAT</a>, shape.data(), shape.size(), data_map.<a class="code hl_function" href="classnnkit_1_1support_1_1tf_1_1_tensor_data_map.html#a0b75a36ce72b3f834445694bec408329">data</a>(tensor.get()),</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>                    num_elements(tensor-&gt;shape()) * size);</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>                    num_elements(tensor-&gt;shape()) * <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    _input_ops.emplace_back(input_op);</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    _input_tensors.emplace_back(input_tensor);</div>
@@ -439,6 +439,7 @@ $(document).ready(function(){initNavTree('nnkit-tf_2support_2src_2_runner_8cpp_s
 <div class="ttc" id="anamespacennkit_1_1support_1_1tftestinfo_html_a54f0e10a637f6da6ee89c5b0e390e9a8"><div class="ttname"><a href="namespacennkit_1_1support_1_1tftestinfo.html#a54f0e10a637f6da6ee89c5b0e390e9a8">nnkit::support::tftestinfo::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdoc">Supported Data Types.</div><div class="ttdef"><b>Definition:</b> <a href="_parsed_tensor_8h_source.html#l00038">ParsedTensor.h:39</a></div></div>
 <div class="ttc" id="anamespacennkit_html"><div class="ttname"><a href="namespacennkit.html">nnkit</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2nnkit-caffe_2support_2include_2nnkit_2support_2caffe_2_backend_8h_source.html#l00031">Backend.h:32</a></div></div>
 <div class="ttc" id="annkit-tf_2support_2include_2nnkit_2support_2tf_2_runner_8h_html"><div class="ttname"><a href="nnkit-tf_2support_2include_2nnkit_2support_2tf_2_runner_8h.html">Runner.h</a></div></div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
