@@ -15,14 +15,12 @@
  * limitations under the License.
  */
 
-#if 0
-#include "kernels/Tanh.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/tanh/FloatTanhKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -31,136 +29,49 @@ using namespace testing;
 
 class TanhTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-TEST_F(TanhTest, Float)
+template <typename T> std::vector<T> checkTanhKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Shape input_shape{1, 2, 4, 1};
-  std::vector<float> input_data{
-    0, -6, 2,  4, //
-    3, -2, 10, 1, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  Tanh kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  std::vector<float> ref_output_data{
-    0,          -0.9999877, 0.9640275, 0.999329,  //
-    0.99505475, -0.9640275, 1,         0.7615941, //
-  };
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(TanhTest, Uint8)
+TEST_F(TanhTest, Float_P)
 {
-  float kMin = -1;
-  float kMax = 127.f / 128.f;
-  float kTanhTolerance = 2 * (1. / 256);
-  std::pair<float, int32_t> input_quant_param = quantizationParams<uint8_t>(8 * kMin, 8 * kMax);
-  std::pair<float, int32_t> output_quant_param = quantizationParams<uint8_t>(kMin, kMax);
-  std::vector<float> input_data{
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>({2, 6, 4, 1}, input_quant_param.first, input_quant_param.second,
-                                  input_data, _memory_manager.get());
-  Tensor output_tensor =
-    makeOutputTensor(DataType::U8, output_quant_param.first, output_quant_param.second);
-
-  Tanh kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{
-    0.0,       -0.999987, 0.964027, 0.999329, //
-    -0.999329, -0.96402,  0.99999,  0.76159,  //
-    0.0,       -0.999987, 0.964027, 0.999329, //
-    -0.999329, -0.96402,  0.99999,  0.76159,  //
-    0.0,       -0.999987, 0.964027, 0.999329, //
-    -0.999329, -0.96402,  0.99999,  0.76159,  //
-    0.0,       -0.999987, 0.964027, 0.999329, //
-    -0.999329, -0.96402,  0.99999,  0.76159,  //
-    0.0,       -0.999987, 0.964027, 0.999329, //
-    -0.999329, -0.96402,  0.99999,  0.76159,  //
-    0.0,       -0.999987, 0.964027, 0.999329, //
-    -0.999329, -0.96402,  0.99999,  0.76159,  //
-  };
-  std::vector<int32_t> ref_output_shape{2, 6, 4, 1};
-  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data, kTanhTolerance));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  test_kernel::TestDataFloatTanh test_data_kernel;
+  std::vector<float> output_data_vector = checkTanhKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
-TEST_F(TanhTest, InputTypeInvalid_NEG)
-{
-  std::vector<int64_t> input_data{
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::S64>({2, 6, 4, 1}, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Tanh kernel(&input_tensor, &output_tensor);
-  _memory_manager->allocate_memory(output_tensor);
-  EXPECT_ANY_THROW(kernel.execute());
-}
-
-TEST_F(TanhTest, InputOutputMismatch_NEG)
-{
-  std::vector<float> input_data{
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-    0,  -6, 2, 4, //
-    -4, -2, 8, 1, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 6, 4, 1}, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8);
-
-  Tanh kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
+// TODO: add S16 test
+// TODO: add negative tests?
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
-#endif
