@@ -7,7 +7,6 @@ find_program(ARM_C_COMPILER_PATH ${ARM_C_COMPILER})
 
 if (NOT ARM_C_COMPILER_PATH)
     message(STATUS "Build luci-micro: FALSE(ARM compiler is NOT FOUND)")
-    return()
 endif ()
 
 if (NOT_BUILD_EXTERNALS)
