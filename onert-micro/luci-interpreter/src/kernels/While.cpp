@@ -106,6 +106,7 @@ void execute_kernel_CircleWhile(const circle::Operator *cur_op, BaseRuntimeGraph
         input_data = main_runtime_graph->getConstDataByTensor(input);
       assert(input_data != nullptr);
       tensor_data = main_runtime_graph->getDataByTensor(output);
+      assert(tensor_data != nullptr);
       std::memcpy(tensor_data, input_data, input_sizes[i]);
     }
     assert(tensor_data != nullptr);

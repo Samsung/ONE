@@ -53,6 +53,7 @@ void splitImpl(const circle::Operator *cur_op, const circle::Tensor *input, int 
   }
 
   const T *input_ptr = kernels::getTensorData<T>(runtime_graph->getDataByTensor(input));
+  assert(input_ptr != nullptr);
   for (int k = 0; k < outer_size; ++k)
   {
     for (int i = 0; i < output_count; ++i)
@@ -64,8 +65,10 @@ void splitImpl(const circle::Operator *cur_op, const circle::Tensor *input, int 
       assert(output != nullptr);
 
       T *output_data = kernels::getTensorData<T>(runtime_graph->getDataByTensor(output));
+      assert(output_data != nullptr);
       const int copy_size = Tensor::dim(output, axis_value) * base_inner_size;
       T *output_ptr = output_data + k * copy_size;
+      assert(output_ptr != nullptr);
       for (int j = 0; j < copy_size; ++j)
         output_ptr[j] = input_ptr[j];
       input_ptr += copy_size;

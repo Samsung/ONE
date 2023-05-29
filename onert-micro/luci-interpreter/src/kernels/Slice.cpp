@@ -174,6 +174,8 @@ void execute_kernel_CircleSlice(const circle::Operator *cur_op, BaseRuntimeGraph
     int offset = max_dim - Tensor::num_dims(input);
     for (int i = 0; i <= max_dim - num_dim; ++i)
     {
+      if (i + offset > 4)
+        return;
       auto cur_size = op_params.size[i + offset] != -1
                         ? op_params.size[i + offset]
                         : Tensor::dim(input, i) - op_params.begin[i + offset];
@@ -223,6 +225,7 @@ void execute_kernel_CircleSlice(const circle::Operator *cur_op, BaseRuntimeGraph
       slice<int16_t>(op_params, kernels::getTensorShape(input),
                      kernels::getTensorData<int16_t>(input_data), kernels::getTensorShape(output),
                      kernels::getTensorData<int16_t>(output_data));
+      break;
 #endif // DIS_QUANT
     default:
       assert(false && "Unsupported input type.");
