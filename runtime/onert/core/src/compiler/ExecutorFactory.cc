@@ -25,6 +25,7 @@
 #include "../exec/ExecTime.h"
 #include "../exec/ExecutionObservers.h"
 #include "../exec/LinearExecutor.h"
+#include "../exec/TrainExecutor.h"
 #ifdef MINMAX_H5DUMPER
 #include "../exec/MinMaxRecorder.h"
 #endif
