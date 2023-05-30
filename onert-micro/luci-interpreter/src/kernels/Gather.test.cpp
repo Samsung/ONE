@@ -17,6 +17,7 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/gather/FloatGatherKernel.h"
 #include "luci_interpreter/test_models/gather/IntGatherKernel.h"
+#include "luci_interpreter/test_models/gather/S16GatherKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -77,6 +78,11 @@ TEST_F(GatherTest, Gather_Int_P)
   EXPECT_THAT(output_data_vector, test_data_int_gather.get_output_data_by_index(0));
 }
 
+TEST_F(GatherTest, Gather_S16_NEG)
+{
+  test_kernel::TestDataS16Gather test_data_s16_gather;
+  EXPECT_DEATH(checkGatherKernel(&test_data_s16_gather), "");
+}
 // TODO: add negative tests?
 // TODO: add S8 test
 

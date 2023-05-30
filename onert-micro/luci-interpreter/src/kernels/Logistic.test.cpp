@@ -16,6 +16,7 @@
 
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/logistic/FloatLogisticKernel.h"
+#include "luci_interpreter/test_models/logistic/S32LogisticKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -69,6 +70,11 @@ TEST_F(LogisticTest, Float_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
+TEST_F(LogisticTest, S32_NEG)
+{
+  test_kernel::TestDataS32Logistic test_data_kernel;
+  EXPECT_DEATH(checkLogisticKernel(&test_data_kernel), "Unsupported type.");
+}
 // TODO: add S8 test
 // TODO: add negative tests?
 
