@@ -64,12 +64,16 @@ std::vector<T> checkExpandDimsKernel(test_kernel::TestDataBase<T> *test_data_bas
 
 TEST_F(ExpandDimsTest, MainTest_P)
 {
-  test_kernel::TestDataExpandDimsKernel<float> test_data_kernel;
+  test_kernel::TestDataExpandDimsKernel<float> test_data_kernel(false);
   std::vector<float> output_data_vector = checkExpandDimsKernel(&test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-// TODO: add negative tests?
+TEST_F(ExpandDimsTest, WrongAxisType_NEG)
+{
+  test_kernel::TestDataExpandDimsKernel<float> test_data_kernel(true);
+  EXPECT_DEATH(checkExpandDimsKernel(&test_data_kernel), "Unsupported type.");
+}
 
 } // namespace
 } // namespace luci_interpreter

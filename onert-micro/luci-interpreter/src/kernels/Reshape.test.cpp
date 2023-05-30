@@ -64,12 +64,16 @@ std::vector<T> checkReshapeKernel(test_kernel::TestDataBase<T> *test_data_base)
 
 TEST_F(ReshapeTest, MainTest_P)
 {
-  test_kernel::TestDataReshapeKernel<float> test_data_kernel;
+  test_kernel::TestDataReshapeKernel<float> test_data_kernel(false);
   std::vector<float> output_data_vector = checkReshapeKernel(&test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-// TODO: add negative tests?
+TEST_F(ReshapeTest, MainTest_NEG)
+{
+  test_kernel::TestDataReshapeKernel<float> test_data_kernel(true);
+  EXPECT_DEATH(checkReshapeKernel(&test_data_kernel), "");
+}
 
 } // namespace
 } // namespace luci_interpreter
