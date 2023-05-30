@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// TODO enable it
-#if 0
-#include "kernels/Concatenation.h"
+
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/concatenation/FloatConcatenationKernel.h"
+#include "luci_interpreter/test_models/concatenation/IntConcatenationKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -30,241 +29,71 @@ using namespace testing;
 
 class ConcatenationTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-TEST_F(ConcatenationTest, Float)
+template <typename T>
+std::vector<T> checkConcatenationKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
-  std::vector<float> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data, _memory_manager.get());
-  Tensor input2_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 3}, input2_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-  ConcatenationParams params{};
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  // Try different 'axis' and expect different results.
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
+
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 2);
+
+  // set left input data
   {
-    params.axis = 0;
-    params.activation = luci::FusedActFunc::NONE;
-
-    Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-    kernel.configure();
-    for (auto t : kernel.getOutputTensors())
-    {
-      _memory_manager->allocate_memory(*t);
-    }
-    kernel.execute();
-
-    EXPECT_THAT(extractTensorData<float>(output_tensor),
-                FloatArrayNear({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}));
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
   }
+
+  // set right input data
   {
-    params.axis = -2; // Same as '0'.
-    params.activation = luci::FusedActFunc::NONE;
-
-    Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-    kernel.configure();
-    _memory_manager->allocate_memory(output_tensor);
-    kernel.execute();
-
-    EXPECT_THAT(extractTensorData<float>(output_tensor),
-                FloatArrayNear({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}));
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(1));
+    std::copy(test_data_base->get_input_data_by_index(1).begin(),
+              test_data_base->get_input_data_by_index(1).end(), input_tensor_data);
   }
-  {
-    params.axis = 1;
-    params.activation = luci::FusedActFunc::NONE;
 
-    Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-    kernel.configure();
-    _memory_manager->allocate_memory(output_tensor);
-    kernel.execute();
+  runtime_module.execute();
 
-    EXPECT_THAT(extractTensorData<float>(output_tensor),
-                FloatArrayNear({1, 2, 3, 7, 8, 9, 4, 5, 6, 10, 11, 12}));
-  }
-  {
-    params.axis = -1; // Same as '1'.
-    params.activation = luci::FusedActFunc::NONE;
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
 
-    Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-    kernel.configure();
-    _memory_manager->allocate_memory(output_tensor);
-    kernel.execute();
-
-    EXPECT_THAT(extractTensorData<float>(output_tensor),
-                FloatArrayNear({1, 2, 3, 7, 8, 9, 4, 5, 6, 10, 11, 12}));
-  }
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(ConcatenationTest, Input_Number_Check_NEG)
+TEST_F(ConcatenationTest, Float_P)
 {
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-  ConcatenationParams params{};
-
-  params.axis = -1;
-  params.activation = luci::FusedActFunc::NONE;
-
-  Concatenation kernel({}, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::TestDataFloatConcatenation test_data_kernel;
+  std::vector<float> output_data_vector = checkConcatenationKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
-TEST_F(ConcatenationTest, Invalid_Axis_NEG)
+TEST_F(ConcatenationTest, Int32_P)
 {
-  std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
-  std::vector<float> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data, _memory_manager.get());
-  Tensor input2_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 3}, input2_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-  ConcatenationParams params{};
-
-  params.axis = -3;
-  params.activation = luci::FusedActFunc::NONE;
-
-  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::TestDataS32Concatenation test_data_kernel;
+  std::vector<int32_t> output_data_vector = checkConcatenationKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(ConcatenationTest, Mismatching_Input_Type_NEG)
+TEST_F(ConcatenationTest, Int64_P)
 {
-  std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
-  std::vector<uint8_t> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data, _memory_manager.get());
-  Tensor input2_tensor = makeInputTensor<DataType::U8>({2, 3}, input2_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-  ConcatenationParams params{};
-
-  params.axis = -1;
-  params.activation = luci::FusedActFunc::NONE;
-
-  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::TestDataS64Concatenation test_data_kernel;
+  std::vector<int64_t> output_data_vector = checkConcatenationKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(ConcatenationTest, Mismatching_Input_Dimension_Num_NEG)
-{
-  std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
-  std::vector<float> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data, _memory_manager.get());
-  Tensor input2_tensor =
-    makeInputTensor<DataType::FLOAT32>({1, 2, 3}, input2_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-  ConcatenationParams params{};
-
-  params.axis = -1;
-  params.activation = luci::FusedActFunc::NONE;
-
-  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(ConcatenationTest, Mismatching_Input_Dimension_NEG)
-{
-  std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
-  std::vector<float> input2_data{7, 8, 9, 10, 11, 12, 13, 14, 15};
-  Tensor input1_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data, _memory_manager.get());
-  Tensor input2_tensor =
-    makeInputTensor<DataType::FLOAT32>({3, 3}, input2_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-  ConcatenationParams params{};
-
-  params.axis = -1;
-  params.activation = luci::FusedActFunc::NONE;
-
-  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(ConcatenationTest, Int8_Mismatching_Input_Type_NEG)
-{
-  std::vector<uint8_t> input1_data{1, 2, 3, 4};
-  std::vector<int8_t> input2_data{5, 6, 7, 8};
-  Tensor input1_tensor = makeInputTensor<DataType::U8>({2, 2}, input1_data, _memory_manager.get());
-  Tensor input2_tensor = makeInputTensor<DataType::S8>({2, 2}, input2_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S8);
-  ConcatenationParams params{};
-
-  params.axis = -1;
-  params.activation = luci::FusedActFunc::NONE;
-
-  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(ConcatenationTest, Int8_Mismatching_Input_Output_Quant_Params_NEG)
-{
-  std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
-  std::vector<float> input2_data{7, 8, 9, 10, 11, 12};
-  int quantized_dimension = 3;
-  std::vector<float> scales{0.1, 0.2, 0.3};
-  std::vector<int32_t> zero_points{1, -1, 1};
-
-  Tensor input1_tensor = makeInputTensor<DataType::S8>(
-    {1, 1, 2, 3}, scales, zero_points, quantized_dimension, input1_data, _memory_manager.get());
-  Tensor input2_tensor = makeInputTensor<DataType::S8>(
-    {1, 1, 2, 3}, scales, zero_points, quantized_dimension, input2_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S8, scales.at(0), zero_points.at(0));
-  ConcatenationParams params{};
-
-  params.axis = -1;
-  params.activation = luci::FusedActFunc::NONE;
-
-  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(ConcatenationTest, Int8_Mismatching_Zero_Point_NEG)
-{
-  std::vector<float> input1_data{1, 2, 3, 4};
-  std::vector<float> input2_data{5, 6, 7, 8};
-  float scale = 0.1;
-  int32_t zero_point_1 = 1;
-  int32_t zero_point_2 = -1;
-
-  Tensor input1_tensor =
-    makeInputTensor<DataType::S8>({2, 2}, scale, zero_point_1, input1_data, _memory_manager.get());
-  Tensor input2_tensor =
-    makeInputTensor<DataType::S8>({2, 2}, scale, zero_point_2, input2_data, _memory_manager.get());
-
-  Tensor output_tensor = makeOutputTensor(DataType::S8, scale, zero_point_1);
-  ConcatenationParams params{};
-
-  params.axis = -1;
-  params.activation = luci::FusedActFunc::NONE;
-
-  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-// TODO: Remove this test when concat w/ fused_activation is supported
-TEST_F(ConcatenationTest, With_Fused_Activation_NEG)
-{
-  std::vector<float> input1_data{1, 2, 3, 4, 5, 6};
-  std::vector<float> input2_data{7, 8, 9, 10, 11, 12};
-  Tensor input1_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 3}, input1_data, _memory_manager.get());
-  Tensor input2_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 3}, input2_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-  ConcatenationParams params{};
-
-  params.axis = 1;
-  params.activation = luci::FusedActFunc::RELU;
-
-  Concatenation kernel({&input1_tensor, &input2_tensor}, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
-}
+// TODO: add tests for S8
+// TODO: add negative tests?
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
-#endif
