@@ -17,6 +17,7 @@
 
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/maxpool2d/FloatMaxPool2DKernel.h"
+#include "luci_interpreter/test_models/maxpool2d/NegMaxPool2DKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -71,8 +72,19 @@ TEST_F(MaxPool2DTest, Float_P)
                                     test_data_kernel.get_output_data_by_index(0), 0.01f));
 }
 
+TEST_F(MaxPool2DTest, InputOutputTypeMismatch_P)
+{
+  test_kernel::TestDataInputOutputTypeMismatchMaxPool2D test_data_kernel;
+  EXPECT_DEATH(checkMaxPool2DKernel(&test_data_kernel), "");
+}
+
+TEST_F(MaxPool2DTest, UnsupportedType_P)
+{
+  test_kernel::TestDataUnsupportedTypeMaxPool2D test_data_kernel;
+  EXPECT_DEATH(checkMaxPool2DKernel(&test_data_kernel), "");
+}
+
 // TODO: add S16 test
-// TODO: add negative tests?
 
 } // namespace
 } // namespace luci_interpreter

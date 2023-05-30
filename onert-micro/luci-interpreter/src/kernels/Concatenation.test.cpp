@@ -17,6 +17,7 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/concatenation/FloatConcatenationKernel.h"
 #include "luci_interpreter/test_models/concatenation/IntConcatenationKernel.h"
+#include "luci_interpreter/test_models/concatenation/NegConcatenationKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -92,8 +93,31 @@ TEST_F(ConcatenationTest, Int64_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
+TEST_F(ConcatenationTest, InputTypeMismatch_NEG)
+{
+  test_kernel::TestDataInputTypeMismatchConcatenation test_data_kernel;
+  EXPECT_DEATH(checkConcatenationKernel(&test_data_kernel), "");
+}
+
+TEST_F(ConcatenationTest, InputOutputTypeMismatch_NEG)
+{
+  test_kernel::TestDataReluConcatenation test_data_kernel;
+  EXPECT_DEATH(checkConcatenationKernel(&test_data_kernel), "");
+}
+
+TEST_F(ConcatenationTest, WrongAxis_NEG)
+{
+  test_kernel::TestDataWrongAxisConcatenation test_data_kernel;
+  EXPECT_DEATH(checkConcatenationKernel(&test_data_kernel), "");
+}
+
+TEST_F(ConcatenationTest, Int16_without_quant_params_NEG)
+{
+  test_kernel::TestDataInt16WithoutQuantParams test_data_kernel;
+  EXPECT_DEATH(checkConcatenationKernel(&test_data_kernel), "");
+}
+
 // TODO: add tests for S8
-// TODO: add negative tests?
 
 } // namespace
 } // namespace luci_interpreter
