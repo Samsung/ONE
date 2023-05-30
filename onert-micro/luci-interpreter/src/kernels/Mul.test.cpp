@@ -18,6 +18,7 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/mul/FloatMulKernel.h"
 #include "luci_interpreter/test_models/mul/IntMulKernel.h"
+#include "luci_interpreter/test_models/mul/NegMulKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -108,9 +109,26 @@ TEST_F(MulTest, INT_P)
   }
 }
 
+TEST_F(MulTest, Wrong_Input1_Type_NEG)
+{
+  test_kernel::TestDataInput1WrongTypeMul test_data_kernel(true);
+  EXPECT_DEATH(checkMulKernel(&test_data_kernel), "");
+}
+
+TEST_F(MulTest, Wrong_Input2_Type_NEG)
+{
+  test_kernel::TestDataInput2WrongTypeMul test_data_kernel(true);
+  EXPECT_DEATH(checkMulKernel(&test_data_kernel), "");
+}
+
+TEST_F(MulTest, Wrong_Ouput_Type_NEG)
+{
+  test_kernel::TestDataInt16TypeMul test_data_kernel(true);
+  EXPECT_DEATH(checkMulKernel(&test_data_kernel), "");
+}
+
 // TODO: add tests for U8 and S16
 // TODO: add tests for inplace optimizations for all types
-// TODO: add negative tests?
 
 } // namespace
 } // namespace luci_interpreter
