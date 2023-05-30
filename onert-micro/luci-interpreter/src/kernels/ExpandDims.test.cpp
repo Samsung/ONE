@@ -75,7 +75,5 @@ TEST_F(ExpandDimsTest, WrongAxisType_NEG)
   EXPECT_DEATH(checkExpandDimsKernel(&test_data_kernel), "Unsupported type.");
 }
 
-// TODO: add negative tests?
-
 } // namespace
 } // namespace luci_interpreter
