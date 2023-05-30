@@ -18,6 +18,7 @@
 #include "args.h"
 #include "benchmark.h"
 #include "nnfw.h"
+#include "nnfw_experimental.h"
 #include "nnfw_util.h"
 #include "nnfw_internal.h"
 #include "randomgen.h"
@@ -111,12 +112,26 @@ int main(const int argc, char **argv)
     verifyInputTypes();
     verifyOutputTypes();
 
-    // prepare execution
+    if (args.getTrainingMode())
+    {
+      // prepare execution
+      nnfw_traininfo tri;
+      tri.epoch = args.getEpoch();
+      tri.batchsize = args.getBatchSize();
+      tri.loss_type = NNFW_LOSS_TYPE_MEAN_SQUARED_ERROR;
 
-    // TODO When nnfw_{prepare|run} are failed, can't catch the time
-    phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
-      NNPR_ENSURE_STATUS(nnfw_prepare(session));
-    });
+      // TODO When nnfw_{prepare|run} are failed, can't catch the time
+      phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
+        NNPR_ENSURE_STATUS(nnfw_prepare_train(session, &tri));
+      });
+    }
+    else
+    {
+      // TODO When nnfw_{prepare|run} are failed, can't catch the time
+      phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
+        NNPR_ENSURE_STATUS(nnfw_prepare(session));
+      });
+    }
 
     // prepare input
     std::vector<Allocation> inputs(num_inputs);
