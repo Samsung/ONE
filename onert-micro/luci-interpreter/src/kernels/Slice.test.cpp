@@ -13,59 +13,79 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#if 0
-#include "kernels/Slice.h"
+
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/slice/FloatSliceKernel.h"
+#include "luci_interpreter/test_models/slice/QuantU8SliceKernel.h"
+#include "luci_interpreter/test_models/slice/QuantS16SliceKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-template <typename T> class SliceTest : public ::testing::Test
+class SliceTest : public ::testing::Test
 {
+  // Do nothing
 };
 
-using DataTypes = ::testing::Types<float, uint8_t, int8_t>;
-TYPED_TEST_SUITE(SliceTest, DataTypes);
-
-TYPED_TEST(SliceTest, SimpleTest)
+template <typename T> std::vector<T> checkSliceKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  std::vector<TypeParam> input_data{1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6};
-  Shape input_shape{3, 2, 3, 1};
-  std::vector<int32_t> begin_data{1, 0, 0, 0};
-  Shape begin_shape{4};
-  std::vector<int32_t> size_data{2, 1, -1, 1};
-  Shape size_shape{4};
-  std::vector<TypeParam> output_data{3, 3, 3, 5, 5, 5};
-  std::vector<int32_t> output_shape{2, 1, 3, 1};
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  Tensor input_tensor =
-    makeInputTensor<getElementType<TypeParam>()>(input_shape, input_data, memory_manager.get());
-  Tensor begin_tensor =
-    makeInputTensor<DataType::S32>(begin_shape, begin_data, memory_manager.get());
-  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data, memory_manager.get());
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
 
-  Tensor output_tensor = makeOutputTensor(getElementType<TypeParam>());
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
 
-  Slice kernel(&input_tensor, &begin_tensor, &size_tensor, &output_tensor);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  runtime_module.execute();
 
-  EXPECT_THAT(extractTensorData<TypeParam>(output_tensor),
-              ::testing::ElementsAreArray(output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
+TEST_F(SliceTest, Float_P)
+{
+  test_kernel::TestDataFloatSlice test_data_kernel;
+  std::vector<float> output_data_vector = checkSliceKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+TEST_F(SliceTest, U8_P)
+{
+  test_kernel::TestDataU8Slice test_data_kernel;
+  std::vector<uint8_t> output_data_vector = checkSliceKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+TEST_F(SliceTest, INT16_P)
+{
+  test_kernel::TestDataS16Slice test_data_kernel;
+  std::vector<int16_t> output_data_vector = checkSliceKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+// TODO: add S8 test
+// TODO: add negative tests?
+
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
-#endif
