@@ -385,3 +385,9 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs)
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->pop_pipeline_output((std::vector<void *> *)outputs);
 }
+
+NNFW_STATUS nnfw_prepare_train(nnfw_session *session, const nnfw_traininfo *train_info)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->prepare_train(train_info);
+}

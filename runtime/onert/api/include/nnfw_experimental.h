@@ -51,8 +51,17 @@ typedef enum
 {
   /** Categorical CrossEntropy loss */
   NNFW_LOSS_TYPE_CATEGORICAL_CROSSENTROPY = 0,
-
+  NNFW_LOSS_TYPE_MEAN_SQUARED_ERROR = 1,
 } NNFW_LOSS_TYPE;
+
+typedef struct nnfw_traininfo
+{
+  int32_t epoch;
+  int32_t batchsize;
+  NNFW_LOSS_TYPE loss_type;
+} nnfw_traininfo;
+
+NNFW_STATUS nnfw_prepare_train(nnfw_session *session, const nnfw_traininfo *train_info);
 
 /*
  * Custom kernel evaluation function

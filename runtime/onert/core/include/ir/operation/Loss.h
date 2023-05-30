@@ -38,7 +38,8 @@ public:
 
   enum class Type
   {
-    CATEGORICAL_CROSSENTROPY
+    CATEGORICAL_CROSSENTROPY,
+    MEAN_SQUARED_ERROR,
   };
 
   // NOTE It is not yet determined how to get the information of the previous activation.

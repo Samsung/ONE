@@ -54,10 +54,16 @@ public:
     _loss_info = loss_info;
     _has_info = true;
   }
+  int32_t epoch() const { return _epoch; }
+  void setEpoch(int32_t epoch) { _epoch = epoch; }
+  int32_t batchsize() const { return _batchsize; }
+  void setBatchSize(int32_t batchsize) { _batchsize = batchsize; }
 
 private:
   bool _has_info;
   LossInfo _loss_info;
+  int32_t _epoch;
+  int32_t _batchsize;
 };
 
 } // namespace train
