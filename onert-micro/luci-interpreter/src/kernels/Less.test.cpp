@@ -19,6 +19,7 @@
 #include "luci_interpreter/test_models/less/FloatLessKernel.h"
 #include "luci_interpreter/test_models/less/IntLessKernel.h"
 #include "luci_interpreter/test_models/less/QuantLessKernel.h"
+#include "luci_interpreter/test_models/less/NegTestDataLessKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -75,7 +76,7 @@ std::vector<U> checkLessKernel(test_kernel::TestDataBase<T, U> *test_data_base)
 TEST_F(LessTest, FloatNoBroadcast_P)
 {
   const bool is_with_broadcast = false;
-  test_kernel::TestDataFloatLess test_data_kernel(is_with_broadcast);
+  test_kernel::TestDataFloatLess test_data_kernel(is_with_broadcast, false);
   std::vector<bool> output_data_vector = checkLessKernel<float, bool>(&test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
@@ -83,15 +84,29 @@ TEST_F(LessTest, FloatNoBroadcast_P)
 TEST_F(LessTest, FloatWithBroadcast_P)
 {
   const bool is_with_broadcast = true;
-  test_kernel::TestDataFloatLess test_data_kernel(is_with_broadcast);
+  test_kernel::TestDataFloatLess test_data_kernel(is_with_broadcast, false);
   std::vector<bool> output_data_vector = checkLessKernel<float, bool>(&test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+TEST_F(LessTest, FloatNoBroadcast_NEG)
+{
+  const bool is_with_broadcast = false;
+  test_kernel::TestDataFloatLess test_data_kernel(is_with_broadcast, true);
+  EXPECT_DEATH(checkLessKernel(&test_data_kernel), "");
+}
+
+TEST_F(LessTest, FloatWithBroadcast_NEG)
+{
+  const bool is_with_broadcast = true;
+  test_kernel::TestDataFloatLess test_data_kernel(is_with_broadcast, true);
+  EXPECT_DEATH(checkLessKernel(&test_data_kernel), "");
 }
 
 TEST_F(LessTest, IntWithBroadcast_P)
 {
   const bool is_with_broadcast = true;
-  test_kernel::TestDataIntLess test_data_kernel(is_with_broadcast);
+  test_kernel::TestDataIntLess test_data_kernel(is_with_broadcast, false);
   std::vector<bool> output_data_vector = checkLessKernel<int32_t, bool>(&test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
@@ -99,20 +114,45 @@ TEST_F(LessTest, IntWithBroadcast_P)
 TEST_F(LessTest, IntNoBroadcast_P)
 {
   const bool is_with_broadcast = false;
-  test_kernel::TestDataIntLess test_data_kernel(is_with_broadcast);
+  test_kernel::TestDataIntLess test_data_kernel(is_with_broadcast, false);
   std::vector<bool> output_data_vector = checkLessKernel<int32_t, bool>(&test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+TEST_F(LessTest, IntWithBroadcast_NEG)
+{
+  const bool is_with_broadcast = true;
+  test_kernel::TestDataIntLess test_data_kernel(is_with_broadcast, true);
+  EXPECT_DEATH(checkLessKernel(&test_data_kernel), "");
+}
+
+TEST_F(LessTest, IntNoBroadcast_NEG)
+{
+  const bool is_with_broadcast = false;
+  test_kernel::TestDataIntLess test_data_kernel(is_with_broadcast, true);
+  EXPECT_DEATH(checkLessKernel(&test_data_kernel), "");
 }
 
 TEST_F(LessTest, Quant_P)
 {
   const bool is_with_broadcast = false;
-  test_kernel::TestDataQuantLess test_data_kernel(is_with_broadcast);
+  test_kernel::TestDataQuantLess test_data_kernel(is_with_broadcast, false);
   std::vector<bool> output_data_vector = checkLessKernel<uint8_t, bool>(&test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-// TODO: add negative tests?
+TEST_F(LessTest, Quant_NEG)
+{
+  const bool is_with_broadcast = false;
+  test_kernel::TestDataQuantLess test_data_kernel(is_with_broadcast, true);
+  EXPECT_DEATH(checkLessKernel(&test_data_kernel), "");
+}
+
+TEST_F(LessTest, Wrong_Output_Type_NEG)
+{
+  test_kernel::NegTestDataLess test_data_kernel(true);
+  EXPECT_DEATH(checkLessKernel(&test_data_kernel), "");
+}
 
 } // namespace
 } // namespace luci_interpreter

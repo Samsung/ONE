@@ -95,10 +95,33 @@ const std::vector<bool> reference_output_data = {
 
 } // namespace less_uint8_with_no_broadcasting
 
+namespace neg_less_uint8_with_no_broadcasting
+{
+
+/*
+ * Less Kernel with input type mismatch:
+ *
+ * Input_1(1, 4, 4, 3)   Input_2(1, 4, 4, 3)
+ *       \             /
+ *     Less(no broadcast)
+ *              |
+ *          Output(1, 4, 4, 3)
+ */
+
+const unsigned char test_kernel_model_circle[] = {};
+
+const std::vector<uint8_t> input1_data = {};
+
+const std::vector<uint8_t> input2_data = {};
+
+const std::vector<bool> reference_output_data = {};
+
+} // namespace neg_less_uint8_with_no_broadcasting
+
 class TestDataQuantLess : public TestDataLessBase<uint8_t, bool>
 {
 public:
-  explicit TestDataQuantLess(bool is_with_broadcast)
+  explicit TestDataQuantLess(bool is_with_broadcast, bool is_neg)
     : TestDataLessBase<uint8_t, bool>(is_with_broadcast)
   {
     if (is_with_broadcast)
@@ -107,10 +130,20 @@ public:
     }
     else
     {
-      _input1_data = less_uint8_with_no_broadcasting::input1_data;
-      _input2_data = less_uint8_with_no_broadcasting::input2_data;
-      _reference_output_data = less_uint8_with_no_broadcasting::reference_output_data;
-      _test_kernel_model_circle = less_uint8_with_no_broadcasting::test_kernel_model_circle;
+      if (is_neg)
+      {
+        _input1_data = neg_less_uint8_with_no_broadcasting::input1_data;
+        _input2_data = neg_less_uint8_with_no_broadcasting::input2_data;
+        _reference_output_data = neg_less_uint8_with_no_broadcasting::reference_output_data;
+        _test_kernel_model_circle = neg_less_uint8_with_no_broadcasting::test_kernel_model_circle;
+      }
+      else
+      {
+        _input1_data = less_uint8_with_no_broadcasting::input1_data;
+        _input2_data = less_uint8_with_no_broadcasting::input2_data;
+        _reference_output_data = less_uint8_with_no_broadcasting::reference_output_data;
+        _test_kernel_model_circle = less_uint8_with_no_broadcasting::test_kernel_model_circle;
+      }
     }
   }
 
