@@ -78,6 +78,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   if (_options->training_mode)
   {
     _options->executor = "Train";
+    _options->backend_list.clear();
     _options->backend_list.push_back("train");
   }
 

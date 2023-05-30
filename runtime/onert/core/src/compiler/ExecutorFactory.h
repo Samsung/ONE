@@ -64,6 +64,10 @@ private:
     std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
     const compiler::CompilerOptions &options, const std::shared_ptr<exec::IExecutors> &executors,
     const ir::ModelIndex &index, bool parallel);
+  static exec::IExecutor *createTrainExecutor(
+    std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
+    const compiler::CompilerOptions &options, const std::shared_ptr<exec::IExecutors> &executors,
+    const ir::ModelIndex &index);
 
 private:
   std::unordered_map<
