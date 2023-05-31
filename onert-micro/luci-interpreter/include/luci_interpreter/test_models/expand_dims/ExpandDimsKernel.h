@@ -67,13 +67,6 @@ const unsigned char test_kernel_model_circle[] = {
   0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x0c, 0x00, 0x00, 0x00, 0x46, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x46, 0x11, 0x00, 0x00, 0x00, 0x4f, 0x4e, 0x45, 0x2d, 0x74, 0x66, 0x6c, 0x69,
   0x74, 0x65, 0x32, 0x63, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x00, 0x00, 0x00};
-
-const std::vector<float> input_data = {10.438837, -1.168417,  -6.455261, -1.3638954, 31.58745,
-                                       29.395872, -10.366383, 7.6131954, 9.837751};
-
-const std::vector<float> reference_output_data = {10.438837,  -1.168417, -6.455261,
-                                                  -1.3638954, 31.58745,  29.395872,
-                                                  -10.366383, 7.6131954, 9.837751};
 } // namespace neg_test_expand_dims
 
 namespace expand_dims_kernel
@@ -130,20 +123,11 @@ const std::vector<float> reference_output_data = {10.438837,  -1.168417, -6.4552
 template <typename T> class TestDataExpandDimsKernel : public TestDataBase<T>
 {
 public:
-  TestDataExpandDimsKernel(bool is_neg_test)
+  TestDataExpandDimsKernel()
   {
-    if (not is_neg_test)
-    {
-      _input_data = expand_dims_kernel::input_data;
-      _reference_output_data = expand_dims_kernel::reference_output_data;
-      _test_kernel_model_circle = expand_dims_kernel::test_kernel_model_circle;
-    }
-    else
-    {
-      _input_data = neg_test_expand_dims::input_data;
-      _reference_output_data = neg_test_expand_dims::reference_output_data;
-      _test_kernel_model_circle = neg_test_expand_dims::test_kernel_model_circle;
-    }
+    _input_data = expand_dims_kernel::input_data;
+    _reference_output_data = expand_dims_kernel::reference_output_data;
+    _test_kernel_model_circle = expand_dims_kernel::test_kernel_model_circle;
   }
 
   ~TestDataExpandDimsKernel() override = default;
@@ -170,6 +154,22 @@ public:
 protected:
   std::vector<T> _input_data;
   std::vector<T> _reference_output_data;
+  const unsigned char *_test_kernel_model_circle;
+};
+
+class NegTestDataInvalidInputTypeExpandDimsKernel : public NegTestDataBase
+{
+public:
+  NegTestDataInvalidInputTypeExpandDimsKernel()
+  {
+    _test_kernel_model_circle = neg_test_expand_dims::test_kernel_model_circle;
+  }
+
+  ~NegTestDataInvalidInputTypeExpandDimsKernel() override = default;
+
+  const unsigned char *get_model_ptr() override final { return _test_kernel_model_circle; }
+
+protected:
   const unsigned char *_test_kernel_model_circle;
 };
 
