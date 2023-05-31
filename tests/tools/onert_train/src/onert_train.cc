@@ -114,11 +114,16 @@ int main(const int argc, char **argv)
 
     if (args.getTrainingMode())
     {
+      const float true_buf[10] = {
+        0.11f,
+      };
       // prepare execution
       nnfw_traininfo tri;
       tri.epoch = args.getEpoch();
       tri.batchsize = args.getBatchSize();
       tri.loss_type = NNFW_LOSS_TYPE_MEAN_SQUARED_ERROR;
+      tri.y_true_buffer = true_buf;
+      tri.y_pred_index = 23;
 
       // TODO When nnfw_{prepare|run} are failed, can't catch the time
       phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
