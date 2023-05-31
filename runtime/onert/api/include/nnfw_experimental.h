@@ -56,9 +56,16 @@ typedef enum
 
 typedef struct nnfw_traininfo
 {
-  int32_t epoch;
-  int32_t batchsize;
+  uint32_t epoch;
+  uint32_t batchsize;
   NNFW_LOSS_TYPE loss_type;
+  // TODO Consider multiple expected output
+  // NOTE It assumes that true buf data has the same tensor info with pred index.
+  NNFW_TYPE y_true_type;
+  const void *y_true_buffer;
+  size_t y_true_length;
+  // NOTE This index is based on nnfw_output_size().
+  uint32_t y_pred_index;
 } nnfw_traininfo;
 
 NNFW_STATUS nnfw_prepare_train(nnfw_session *session, const nnfw_traininfo *train_info);

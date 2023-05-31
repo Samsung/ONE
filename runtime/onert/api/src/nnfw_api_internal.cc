@@ -1169,6 +1169,9 @@ NNFW_STATUS nnfw_session::prepare_train(const nnfw_traininfo *tri)
     default:
       throw std::runtime_error("Error: Model has loss type that runtime API does not support.");
   }
+  loss_info.y_true_buf = tri->y_true_buffer;
+  loss_info.y_pred_index = tri->y_pred_index;
+
   _training_info->setLossInfo(loss_info);
   _training_info->setEpoch(tri->epoch);
   _training_info->setBatchSize(tri->batchsize);
