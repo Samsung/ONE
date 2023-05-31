@@ -64,8 +64,10 @@ inline int32_t computeOutputSize(Padding padding, int32_t image_size, int32_t fi
   switch (padding)
   {
     case Padding::SAME:
+      assert(stride != 0);
       return (image_size + stride - 1) / stride;
     case Padding::VALID:
+      assert(stride != 0);
       return (image_size + stride - effective_filter_size) / stride;
     default:
       assert(false);
