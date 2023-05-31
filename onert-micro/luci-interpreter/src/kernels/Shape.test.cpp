@@ -16,6 +16,7 @@
 
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/shape/ShapeKernel.h"
+#include "luci_interpreter/test_models/shape/NegShapeKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -69,7 +70,17 @@ TEST_F(ShapeTest, MainTest_P)
   EXPECT_THAT(output_data_vector, test_data_shape_kernel.get_output_data_by_index(0));
 }
 
-// TODO: add negative tests?
+TEST_F(ShapeTest, Wrong_output_type_NEG)
+{
+  test_kernel::NegTestDataWrongOutputTypeShapeKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
 
 } // namespace
 } // namespace luci_interpreter
