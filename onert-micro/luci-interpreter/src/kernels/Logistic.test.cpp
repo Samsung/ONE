@@ -16,7 +16,7 @@
 
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/logistic/FloatLogisticKernel.h"
-#include "luci_interpreter/test_models/logistic/S32LogisticKernel.h"
+#include "luci_interpreter/test_models/logistic/NegLogisticKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -70,13 +70,32 @@ TEST_F(LogisticTest, Float_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(LogisticTest, S32_NEG)
+TEST_F(LogisticTest, Input_output_type_mismatch_NEG)
 {
-  test_kernel::TestDataS32Logistic test_data_kernel;
-  EXPECT_DEATH(checkLogisticKernel(&test_data_kernel), "Unsupported type.");
+  test_kernel::NegTestDataInputOutputTypeMismatchLogisticKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(LogisticTest, No_quant_params_NEG)
+{
+  test_kernel::NegTestDataNoQuantParamsLogisticKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 // TODO: add S8 test
-// TODO: add negative tests?
 
 } // namespace
 } // namespace luci_interpreter
