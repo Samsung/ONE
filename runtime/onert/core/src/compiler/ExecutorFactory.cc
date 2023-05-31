@@ -33,10 +33,13 @@
 #include "../ir/OperationCloner.h"
 
 #include <backend/IPortableTensor.h>
+#include <backend/train/TrainableBackendContext.h>
+#include <backend/train/TrainableBackend.h>
 #include <compiler/BackendManager.h>
 #include <compiler/ExecutionBuilder.h>
 #include <util/TracingCtx.h>
 
+#include <misc/polymorphic_downcast.h>
 #include <functional>
 #include <memory>
 
@@ -121,6 +124,7 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   }
 }
 
+// TODO Split this long function
 backend::BackendContexts createBackendContexts(compiler::ILoweredGraph &lgraph,
                                                bool linear_executor)
 {
@@ -561,8 +565,23 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
 {
   auto &graph = lowered_graph->graph();
 
-  backend::BackendContexts backend_contexts =
-    createBackendContexts(*lowered_graph, options.executor == "Linear");
+  backend::BackendContexts backend_contexts = createBackendContexts(*lowered_graph, true);
+
+  // Replace BackendContext with TrainbleBackendContext
+  // TODO Create context only once instead of replacing
+  for (auto &&pair : backend_contexts)
+  {
+    const auto backend = pair.first;
+    if (!backend->config()->supportTraining())
+      continue;
+
+    const auto tbackend =
+      nnfw::misc::polymorphic_downcast<const backend::train::TrainableBackend *>(backend);
+    auto ctx = pair.second.get();
+    auto data = std::move(ctx->data());
+    backend::train::TrainableContextData tdata{std::move(data), lowered_graph->trainable_graph()};
+    pair.second = tbackend->newContext(std::move(tdata));
+  }
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -580,6 +599,17 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     pair.second->genTensors();
   }
 
+  for (auto &&pair : backend_contexts)
+  {
+    const auto backend = pair.first;
+    if (backend->config()->supportTraining())
+    {
+      auto tctx = nnfw::misc::polymorphic_downcast<backend::train::TrainableBackendContext *>(
+        pair.second.get());
+      tctx->genTrainingTensors();
+    }
+  }
+
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
   // Give some runtime objects to builtin KernelGenerator
@@ -590,6 +620,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   // Adjust the order of backends for the upcoming iteration
   auto ordered_contexts = orderBackendContext(backend_contexts);
 
+  // TODO Remove this simulation
   // Simulate the execution for deallocation of tensors
   std::unordered_map<ir::OperationIndex, DeallocList> dealloc_list_map;
   {

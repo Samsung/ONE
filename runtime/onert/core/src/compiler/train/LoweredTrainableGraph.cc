@@ -71,12 +71,25 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
     throw std::runtime_error{"No available backends loaded."};
 
   // TODO Move "schedule" phase out of here
-  // TODO Schedule
+  // TODO Scheduling
   std::unique_ptr<BackendResolver> backend_resolver;
   auto all_backends = backend_manager.getAll();
 
   auto scheduler = ManualScheduler(all_backends, options);
   backend_resolver = scheduler.schedule(_trainable_graph.graph());
+
+  // Check if backends are trainable
+  _trainable_graph.operations().iterate(
+    [&](const ir::OperationIndex &op_ind, const ir::Operation &) {
+      const auto backend = backend_resolver->getBackend(op_ind);
+
+      // TODO Remove hardcoded
+      if (!(backend->config()->supportTraining()) &&
+          backend->config()->id() != backend::builtin::Config::ID)
+      {
+        throw std::runtime_error(backend->config()->id() + "backend does not support training");
+      }
+    });
 
   makeLowerInfo(*backend_resolver);
   VERBOSE(LoweredTrainableGraph) << "dump before mandatory passes" << std::endl;
@@ -127,13 +140,6 @@ void LoweredTrainableGraph::makeLowerInfo(const compiler::BackendResolver &backe
       if (!backend)
       {
         throw std::runtime_error{"Fail to find backend for " + op.name() + " operation"};
-      }
-
-      // TODO Remove hardcoded
-      if (backend->config()->id() != "train" &&
-          backend->config()->id() != backend::builtin::Config::ID)
-      {
-        throw std::runtime_error(backend->config()->id() + "backend does not support training");
       }
 
       auto frontend_layout = _trainable_graph.layout();

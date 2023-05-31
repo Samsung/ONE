@@ -30,6 +30,43 @@ namespace train
 
 ITensorRegistry *BackendContext::genTensors() { return basic::genTensors(*this); }
 
+ITensorRegistry *BackendContext::genTrainingTensors()
+{
+  genGradTensors();
+
+  // TODO Generate training-related tensors except for gradient
+
+  return grad_tensor_registry.get();
+}
+
+void BackendContext::genGradTensors()
+{
+  const ir::train::TrainableGraph &tgraph = *trainable_graph();
+  auto tensor_builder = _grad_tensor_builder;
+  auto tensor_reg = grad_tensor_registry;
+
+  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
+    if (external_operands().contains(ind))
+      return;
+    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
+    assert(tgraph.layout() != ir::Layout::NCHW);
+
+    // TODO Register TensorInfo that has gradient's shape
+    // ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
+    //                              obj.isConstant()};
+    // tensor_builder->registerTensorInfo(ind, backend_info, ir::Layout::NHWC);
+  });
+
+  // TODO Plan tensor builds to reduce peak memory usage
+  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
+    if (tensor_builder->isRegistered(ind))
+      tensor_builder->notifyFirstUse(ind);
+  });
+
+  // TODO Allocate tensors
+  // tensor_builder->allocate();
+}
+
 FunctionMap BackendContext::genKernels()
 {
   FunctionMap ret;

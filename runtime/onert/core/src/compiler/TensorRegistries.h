@@ -26,6 +26,9 @@
 #include <memory>
 #include <unordered_set>
 
+#include "backend/train/TrainableBackendContext.h"
+#include <misc/polymorphic_downcast.h>
+
 namespace onert
 {
 namespace compiler
@@ -51,6 +54,15 @@ public:
       else
       {
         _tensor_regs.insert(tensor_reg);
+      }
+
+      if (e.first->config()->supportTraining())
+      {
+        auto backend_ctx = e.second.get();
+        auto grad_tensor_reg =
+          nnfw::misc::polymorphic_downcast<backend::train::TrainableBackendContext *>(backend_ctx)
+            ->grad_tensor_registry;
+        _grad_tensor_regs.insert(grad_tensor_reg);
       }
     }
   }
@@ -82,6 +94,7 @@ public:
 
 private:
   std::unordered_set<std::shared_ptr<backend::ITensorRegistry>> _tensor_regs;
+  std::unordered_set<std::shared_ptr<backend::ITensorRegistry>> _grad_tensor_regs;
   std::shared_ptr<backend::builtin::TensorRegistry> _builtin_tensor_reg;
 };
 

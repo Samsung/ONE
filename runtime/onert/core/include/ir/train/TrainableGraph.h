@@ -59,6 +59,7 @@ public:
    * @param graph
    */
   explicit TrainableGraph(const Graph &graph);
+  explicit TrainableGraph(Graph &graph, const TrainableOperations &toperations);
 
   ~TrainableGraph(void);
 
@@ -94,6 +95,11 @@ public:
   OperationIndex addTrainableOperation(OperationIndex index,
                                        std::unique_ptr<ITrainableOperation> &&operation);
 
+private:
+  OperationIndex appendTrainableOperation(OperationIndex index,
+                                          std::unique_ptr<ITrainableOperation> &&operation);
+
+public:
   void setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data);
   void verify(void);
   void removeOperand(const OperandIndex &ind) { _graph.removeOperand(ind); }
@@ -121,6 +127,7 @@ public:
 private:
   Graph _graph;
   TrainableOperations _operations;
+  // TODO Move trainable operands from _graph
 };
 
 } // namespace train

@@ -69,6 +69,8 @@ struct IConfig
   virtual bool supportPermutation() = 0;
   virtual bool supportDynamicTensor() = 0;
   virtual bool supportFP16() = 0;
+  // TODO Find a way to check whether the backend supports training at compile time
+  virtual bool supportTraining() { return false; }
 };
 
 } // namespace backend

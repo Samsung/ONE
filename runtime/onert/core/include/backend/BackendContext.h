@@ -60,6 +60,20 @@ public:
   {
   }
 
+protected:
+  // TODO Remove this constructor after changing ContextData to shared_ptr
+  BackendContext(const Backend *backend, std::shared_ptr<ITensorRegistry> tensor_registry = nullptr)
+    : _backend{backend}, _data{}, tensor_registry{tensor_registry}
+  {
+  }
+
+public:
+  BackendContext(void) = delete;
+  BackendContext(const BackendContext &) = delete;
+  BackendContext(BackendContext &&) = default;
+  BackendContext &operator=(const BackendContext &) = delete;
+  BackendContext &operator=(BackendContext &&) = default;
+
   virtual ~BackendContext() = default;
 
   const Backend *backend() const { return _backend; }
@@ -67,6 +81,8 @@ public:
   const util::Set<ir::OperandIndex> &external_operands() const { return _data.external_operands; }
   const ir::OperandIndexMap<ir::Layout> &operand_layouts() const { return _data.operand_layouts; }
   const ContextData &data() const { return _data; }
+  // TODO Remove this method after change ContextData to shared_ptr
+  ContextData &data() { return _data; }
 
   virtual ITensorRegistry *genTensors() = 0;
   virtual FunctionMap genKernels() = 0;

@@ -38,6 +38,7 @@ public:
   ElementwiseActivation(OperationType &operation, const OperandIndexSequence &training_inputs);
 
 public:
+  std::unique_ptr<ITrainableOperation> clone(Operation &) const override;
   void accept(OperationVisitor &v) const override;
   void accept(TrainableOperationVisitor &v) const override;
   virtual OpCode opcode() const final { return _operation.opcode(); }

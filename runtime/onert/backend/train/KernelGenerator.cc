@@ -34,14 +34,12 @@ namespace backend
 namespace train
 {
 
-KernelGenerator::KernelGenerator(
-  const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
-  const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
-  const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
-  const std::shared_ptr<ExternalContext> &external_context)
-  : basic::KernelGeneratorBase{graph},
-    _ctx(graph.operands()), _operations_ctx{graph.operations()}, _current_layout{graph.layout()},
-    _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
+KernelGenerator::KernelGenerator(const ir::Graph &graph,
+                                 const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
+                                 const std::shared_ptr<basic::TensorRegistry> &grad_tensor_reg,
+                                 const std::shared_ptr<ExternalContext> &external_context)
+  : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()), _operations_ctx{graph.operations()},
+    _current_layout{graph.layout()}, _tensor_reg{tensor_reg}, _grad_tensor_reg{grad_tensor_reg},
     _external_context(external_context)
 {
   // DO NOTHING

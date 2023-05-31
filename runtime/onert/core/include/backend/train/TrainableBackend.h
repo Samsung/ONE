@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_CONFIG_H__
-#define __ONERT_BACKEND_TRAIN_CONFIG_H__
+#ifndef __ONERT_BACKEND_TRAIN_TRAINABLE_BACKEND_H__
+#define __ONERT_BACKEND_TRAIN_TRAINABLE_BACKEND_H__
 
-#include <backend/IConfig.h>
-#include <util/ITimer.h>
+#include <memory>
+
+#include "backend/Backend.h"
+#include "backend/train/TrainableBackendContext.h"
 
 namespace onert
 {
@@ -27,22 +29,18 @@ namespace backend
 namespace train
 {
 
-class Config : public IConfig
+class TrainableBackend : public backend::Backend
 {
 public:
-  std::string id() override { return "train"; }
-  bool initialize() override;
-  ir::Layout supportLayout(const ir::Operation &node, ir::Layout frontend_layout) override;
-  bool supportPermutation() override { return true; }
-  bool supportDynamicTensor() override { return false; }
-  bool supportFP16() override { return false; }
-  bool supportTraining() override { return true; }
+  virtual ~TrainableBackend() = default;
 
-  std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }
+  // TODO Unify with Backend::newContext
+  using backend::Backend::newContext;
+  virtual std::unique_ptr<TrainableBackendContext> newContext(TrainableContextData &&) const = 0;
 };
 
 } // namespace train
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_TRAIN_CONFIG_H__
+#endif // __ONERT_BACKEND_TRAIN_TRAINABLE_BACKEND_H__

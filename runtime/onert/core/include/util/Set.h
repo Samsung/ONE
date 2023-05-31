@@ -50,6 +50,14 @@ public:
    * @brief Construct move Set object by move semantics.
    */
   Set(Set<Element> &&) = default;
+  /**
+   * @brief copy assignment operator
+   */
+  Set<Element> &operator=(const Set<Element> &) = default;
+  /**
+   * @brief move assignment operator
+   */
+  Set<Element> &operator=(Set<Element> &&) = default;
 
 public:
   /**
