@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# test for one-import-onnx to invoke extension
+
+filename_ext="$(basename -- $0)"
+filename="${filename_ext%.*}"
+
+trap_err_onexit()
+{
+  echo "${filename_ext} FAILED"
+  rm -f ../bin/one-import-onnx-ext
+  exit 255
+}
+
+trap trap_err_onexit ERR
+
+inputfile="./onnx_conv2d_conv2d.onnx"
+outputfile="./onnx_conv2d_conv2d.onnx_ext_001.circle"
+logfile=${filename}.log
+
+rm -f ${outputfile}
+rm -f ${logfile}
+
+# copy dummy-compile to bin folder
+cp dummy-onnx-ext ../bin/one-import-onnx-ext
+
+# run test 
+one-import-onnx \
+--input_path ${inputfile} \
+--output_path ${outputfile} > ${logfile} 2>&1
+
+if ! grep -q "one-import-onnx-ext dummy output!!!" "${logfile}"; then
+  trap_err_onexit
+fi
+
+rm -f ../bin/one-import-onnx-ext
+
+echo "${filename_ext} SUCCESS"
+exit 0
