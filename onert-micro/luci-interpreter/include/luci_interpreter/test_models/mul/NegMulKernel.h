@@ -65,10 +65,6 @@ const unsigned char test_kernel_model_circle[] = {
   0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x12, 0x11, 0x00, 0x00, 0x00, 0x4f, 0x4e, 0x45, 0x2d,
   0x74, 0x66, 0x6c, 0x69, 0x74, 0x65, 0x32, 0x63, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x00, 0x00, 0x00};
 
-const std::vector<float> input1_data = {};
-const std::vector<float> input2_data = {};
-const std::vector<float> reference_output_data = {};
-
 } // namespace input_1_wrong_type
 
 namespace input_2_wrong_type
@@ -112,10 +108,6 @@ const unsigned char test_kernel_model_circle[] = {
   0x0c, 0x00, 0x0c, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x0c, 0x00, 0x00, 0x00,
   0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x12, 0x11, 0x00, 0x00, 0x00, 0x4f, 0x4e, 0x45, 0x2d,
   0x74, 0x66, 0x6c, 0x69, 0x74, 0x65, 0x32, 0x63, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x00, 0x00, 0x00};
-
-const std::vector<float> input1_data = {};
-const std::vector<float> input2_data = {};
-const std::vector<float> reference_output_data = {};
 
 } // namespace input_2_wrong_type
 
@@ -161,54 +153,54 @@ const unsigned char test_kernel_model_circle[] = {
   0x00, 0x00, 0x00, 0x12, 0x11, 0x00, 0x00, 0x00, 0x4f, 0x4e, 0x45, 0x2d, 0x74, 0x66, 0x6c, 0x69,
   0x74, 0x65, 0x32, 0x63, 0x69, 0x72, 0x63, 0x6c, 0x65, 0x00, 0x00, 0x00};
 
-const std::vector<float> input1_data = {};
-const std::vector<float> input2_data = {};
-const std::vector<float> reference_output_data = {};
-
 } // namespace unsupported_type
 
-class TestDataInput1WrongTypeMul : public TestDataMulBase<float>
+class NegTestDataInput1WrongTypeMul : public NegTestDataBase
 {
 public:
-  explicit TestDataInput1WrongTypeMul(bool is_with_broadcast)
-    : TestDataMulBase<float>(is_with_broadcast)
+  NegTestDataInput1WrongTypeMul()
   {
-    _input1_data = input_1_wrong_type::input1_data;
-    _input2_data = input_1_wrong_type::input2_data;
-    _reference_output_data = input_1_wrong_type::reference_output_data;
     _test_kernel_model_circle = input_1_wrong_type::test_kernel_model_circle;
   }
 
-  ~TestDataInput1WrongTypeMul() override = default;
+  ~NegTestDataInput1WrongTypeMul() override = default;
+
+  const unsigned char *get_model_ptr() override final { return _test_kernel_model_circle; }
+
+protected:
+  const unsigned char *_test_kernel_model_circle;
 };
 
-class TestDataInput2WrongTypeMul : public TestDataMulBase<float>
+class NegTestDataInput2WrongTypeMul : public NegTestDataBase
 {
 public:
-  explicit TestDataInput2WrongTypeMul(bool is_with_broadcast)
-    : TestDataMulBase<float>(is_with_broadcast)
+  NegTestDataInput2WrongTypeMul()
   {
-    _input1_data = input_2_wrong_type::input1_data;
-    _input2_data = input_2_wrong_type::input2_data;
-    _reference_output_data = input_2_wrong_type::reference_output_data;
     _test_kernel_model_circle = input_2_wrong_type::test_kernel_model_circle;
   }
 
-  ~TestDataInput2WrongTypeMul() override = default;
+  ~NegTestDataInput2WrongTypeMul() override = default;
+
+  const unsigned char *get_model_ptr() override final { return _test_kernel_model_circle; }
+
+protected:
+  const unsigned char *_test_kernel_model_circle;
 };
 
-class TestDataInt16TypeMul : public TestDataMulBase<float>
+class NegTestDataInt16TypeMul : public NegTestDataBase
 {
 public:
-  explicit TestDataInt16TypeMul(bool is_with_broadcast) : TestDataMulBase<float>(is_with_broadcast)
+  NegTestDataInt16TypeMul()
   {
-    _input1_data = unsupported_type::input1_data;
-    _input2_data = unsupported_type::input2_data;
-    _reference_output_data = unsupported_type::reference_output_data;
     _test_kernel_model_circle = unsupported_type::test_kernel_model_circle;
   }
 
-  ~TestDataInt16TypeMul() override = default;
+  ~NegTestDataInt16TypeMul() override = default;
+
+  const unsigned char *get_model_ptr() override final { return _test_kernel_model_circle; }
+
+protected:
+  const unsigned char *_test_kernel_model_circle;
 };
 
 } // namespace test_kernel

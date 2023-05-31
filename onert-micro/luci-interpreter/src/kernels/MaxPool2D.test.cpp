@@ -72,16 +72,43 @@ TEST_F(MaxPool2DTest, Float_P)
                                     test_data_kernel.get_output_data_by_index(0), 0.01f));
 }
 
-TEST_F(MaxPool2DTest, InputOutputTypeMismatch_P)
+TEST_F(MaxPool2DTest, InputOutputTypeMismatch_NEG)
 {
-  test_kernel::TestDataInputOutputTypeMismatchMaxPool2D test_data_kernel;
-  EXPECT_DEATH(checkMaxPool2DKernel(&test_data_kernel), "");
+  test_kernel::NegTestDataInputOutputTypeMismatchMaxPool2DKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
-TEST_F(MaxPool2DTest, UnsupportedType_P)
+TEST_F(MaxPool2DTest, Invalid_input_shape_NEG)
 {
-  test_kernel::TestDataUnsupportedTypeMaxPool2D test_data_kernel;
-  EXPECT_DEATH(checkMaxPool2DKernel(&test_data_kernel), "");
+  test_kernel::NegTestDataInvalidInputShapeMaxPool2DKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(MaxPool2DTest, No_quant_params_NEG)
+{
+  test_kernel::NegTestDataNoQuantParamsMaxPool2DKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 // TODO: add S16 test

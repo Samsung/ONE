@@ -64,15 +64,22 @@ std::vector<T> checkExpandDimsKernel(test_kernel::TestDataBase<T> *test_data_bas
 
 TEST_F(ExpandDimsTest, MainTest_P)
 {
-  test_kernel::TestDataExpandDimsKernel<float> test_data_kernel(false);
+  test_kernel::TestDataExpandDimsKernel<float> test_data_kernel;
   std::vector<float> output_data_vector = checkExpandDimsKernel(&test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
 TEST_F(ExpandDimsTest, WrongAxisType_NEG)
 {
-  test_kernel::TestDataExpandDimsKernel<float> test_data_kernel(true);
-  EXPECT_DEATH(checkExpandDimsKernel(&test_data_kernel), "Unsupported type.");
+  test_kernel::NegTestDataInvalidInputTypeExpandDimsKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace

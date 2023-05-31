@@ -17,7 +17,7 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/gather/FloatGatherKernel.h"
 #include "luci_interpreter/test_models/gather/IntGatherKernel.h"
-#include "luci_interpreter/test_models/gather/S16GatherKernel.h"
+#include "luci_interpreter/test_models/gather/NegGatherKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -78,12 +78,44 @@ TEST_F(GatherTest, Gather_Int_P)
   EXPECT_THAT(output_data_vector, test_data_int_gather.get_output_data_by_index(0));
 }
 
-TEST_F(GatherTest, Gather_S16_NEG)
+TEST_F(GatherTest, Input_output_type_mismatch_NEG)
 {
-  test_kernel::TestDataS16Gather test_data_s16_gather;
-  EXPECT_DEATH(checkGatherKernel(&test_data_s16_gather), "");
+  test_kernel::NegTestDataInputOutputTypeMismatchGatherKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
-// TODO: add negative tests?
+
+TEST_F(GatherTest, Wrong_position_type_NEG)
+{
+  test_kernel::NegTestDataWrongPositionTypeGatherKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(GatherTest, Wrong_axis_NEG)
+{
+  test_kernel::NegTestDataWrongAxisGatherKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
 // TODO: add S8 test
 
 } // namespace

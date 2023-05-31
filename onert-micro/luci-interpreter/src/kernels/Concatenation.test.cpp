@@ -96,25 +96,37 @@ TEST_F(ConcatenationTest, Int64_P)
 TEST_F(ConcatenationTest, InputTypeMismatch_NEG)
 {
   test_kernel::TestDataInputTypeMismatchConcatenation test_data_kernel;
-  EXPECT_DEATH(checkConcatenationKernel(&test_data_kernel), "");
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 TEST_F(ConcatenationTest, InputOutputTypeMismatch_NEG)
 {
   test_kernel::TestDataReluConcatenation test_data_kernel;
-  EXPECT_DEATH(checkConcatenationKernel(&test_data_kernel), "");
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 TEST_F(ConcatenationTest, WrongAxis_NEG)
 {
   test_kernel::TestDataWrongAxisConcatenation test_data_kernel;
-  EXPECT_DEATH(checkConcatenationKernel(&test_data_kernel), "");
-}
-
-TEST_F(ConcatenationTest, Int16_without_quant_params_NEG)
-{
-  test_kernel::TestDataInt16WithoutQuantParams test_data_kernel;
-  EXPECT_DEATH(checkConcatenationKernel(&test_data_kernel), "");
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 // TODO: add tests for S8

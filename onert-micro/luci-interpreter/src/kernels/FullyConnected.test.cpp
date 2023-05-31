@@ -17,7 +17,7 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/fully_connected/FloatFullyConnectedKernel.h"
 #include "luci_interpreter/test_models/fully_connected/U8FullyConnectedKernel.h"
-#include "luci_interpreter/test_models/fully_connected/S32FullyConnectedKernel.h"
+#include "luci_interpreter/test_models/fully_connected/NegFullyConnectedKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -79,13 +79,46 @@ TEST_F(FullyConnectedTest, U8_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(FullyConnectedTest, S32_NEG)
+TEST_F(FullyConnectedTest, Wrong_weight_type_NEG)
 {
-  test_kernel::TestDataS32FullyConnected test_data_kernel;
-  EXPECT_DEATH(checkFullyConnectedKernel<int32_t>(&test_data_kernel), "Unsupported type.");
+  test_kernel::NegTestDataWrongWeightTypeFullyConnectedKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
+
+TEST_F(FullyConnectedTest, Wrong_weight_shape_NEG)
+{
+  test_kernel::NegTestDataWrongWeightShapeFullyConnectedKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(FullyConnectedTest, Wrong_bias_shape_NEG)
+{
+  test_kernel::NegTestDataWrongBiasShapeFullyConnectedKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
 // TODO: add tests for S8
-// TODO: add negative tests?
 
 } // namespace
 } // namespace luci_interpreter
