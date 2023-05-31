@@ -18,6 +18,7 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/sub/FloatSubKernel.h"
 #include "luci_interpreter/test_models/sub/IntSubKernel.h"
+#include "luci_interpreter/test_models/sub/NegSubKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -108,9 +109,44 @@ TEST_F(SubTest, INT_P)
   }
 }
 
+TEST_F(SubTest, Inputs_type_mismatch_NEG)
+{
+  test_kernel::NegTestDataInputsTypeMismatchSubKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(SubTest, Input_output_type_mismatch_NEG)
+{
+  test_kernel::NegTestDataInputOutputTypeMismatchSubKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(SubTest, No_quant_params_NEG)
+{
+  test_kernel::NegTestDataNoQuantParamsSubKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
 // TODO: add tests for U8 and S16
 // TODO: add tests for inplace optimizations for all types
-// TODO: add negative tests?
 
 } // namespace
 } // namespace luci_interpreter
