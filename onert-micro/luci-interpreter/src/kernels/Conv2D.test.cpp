@@ -17,7 +17,7 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/conv2d/FloatConv2DKernel.h"
 #include "luci_interpreter/test_models/conv2d/U8Conv2DKernel.h"
-#include "luci_interpreter/test_models/conv2d/S32Conv2DKernel.h"
+#include "luci_interpreter/test_models/conv2d/NegConv2DKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -78,15 +78,44 @@ TEST_F(Conv2DTest, U8_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(Conv2DTest, S32_NEG)
+TEST_F(Conv2DTest, Input_type_mismatch_NEG)
 {
-  // No broadcast
-  {
-    test_kernel::TestDataS32Conv2D test_data_kernel;
-    EXPECT_DEATH(checkConv2DKernel<int32_t>(&test_data_kernel), "Unsupported type.");
-  }
+  test_kernel::NegTestDataInputMismatchConv2DKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
-// TODO: add negative tests?
+
+TEST_F(Conv2DTest, Wrong_bias_type_NEG)
+{
+  test_kernel::NegTestDataWrongBiasTypeConv2DKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(Conv2DTest, Invalid_input_type_NEG)
+{
+  test_kernel::NegTestDataInvalidInputTypeConv2DKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
 
 } // namespace
 } // namespace luci_interpreter
