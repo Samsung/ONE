@@ -33,6 +33,13 @@ public:
   virtual const std::vector<U> &get_output_data_by_index(int i) = 0;
 };
 
+class NegTestDataBase
+{
+public:
+  virtual ~NegTestDataBase() = default;
+  virtual const unsigned char *get_model_ptr() = 0;
+};
+
 } // namespace test_kernel
 } // namespace luci_interpreter
 
