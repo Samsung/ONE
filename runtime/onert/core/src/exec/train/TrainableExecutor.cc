@@ -52,7 +52,7 @@ TrainableExecutor::TrainableExecutor(
   for (auto index : order)
   {
     auto &trainable_code =
-      nnfw::misc::polymorphic_downcast<compiler::train::CodeAndInfo &>(code_map.at(index));
+      nnfw::misc::polymorphic_downcast<compiler::CodeAndInfo &>(code_map.at(index));
     _code.emplace_back(std::move(trainable_code));
   }
 }
@@ -117,12 +117,10 @@ void TrainableExecutor::executeImpl()
 #endif
       _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
-      auto &trainable_fn = code.trainable_fn;
+      auto &fn_seq = code.fn_seq;
 
-      // TODO Get whether training
-      trainable_fn->forward(true);
-
-      // TODO Support backwarding
+      fn_seq->initRunning();
+      fn_seq->run();
 
       _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
     }
@@ -136,11 +134,10 @@ void TrainableExecutor::executeImpl()
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());
 #endif
+      auto &fn_seq = code.fn_seq;
 
-      auto &trainable_fn = code.trainable_fn;
-
-      // TODO Get whether training
-      trainable_fn->forward(true);
+      fn_seq->initRunning();
+      fn_seq->run();
     }
   }
 }

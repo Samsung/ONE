@@ -116,16 +116,16 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     trainable_subgraphs[subg_index] = std::move(trainable_subg);
   });
 
-  // Apply pass for trainable subgraphs
-  for (auto &&pair : trainable_subgraphs)
-  {
-    auto trainable_subg = pair.second;
+  // // Apply pass for trainable subgraphs
+  // for (auto &&pair : trainable_subgraphs)
+  // {
+  //   auto trainable_subg = pair.second;
 
-    compiler::pass::PassRunner{}
-      .append(std::make_unique<pass::LossInsertionPass>(*trainable_subg, _training_info))
-      .run();
-    // TODO Update use/def for training
-  }
+  //   compiler::pass::PassRunner{}
+  //     .append(std::make_unique<pass::LossInsertionPass>(*trainable_subg, _training_info))
+  //     .run();
+  //   // TODO Update use/def for training
+  // }
 
   /***************************************************
    * Backend independent analysis & optimization phase

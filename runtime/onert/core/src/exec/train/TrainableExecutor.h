@@ -88,7 +88,7 @@ private:
   void executeImpl(void);
 
 private:
-  std::vector<compiler::train::CodeAndInfo> _code;
+  std::vector<compiler::CodeAndInfo> _code;
   ExecutionObservee _subject;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<compiler::train::LoweredTrainableGraph> _lowered_graph;
