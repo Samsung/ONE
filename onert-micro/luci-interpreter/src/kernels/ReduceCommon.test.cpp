@@ -16,6 +16,7 @@
 
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/reduce_common/ReduceProdKernel.h"
+#include "luci_interpreter/test_models/reduce_common/NegReduceProdKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -78,7 +79,29 @@ TEST_F(ReduceCommonTest, Reduce_Prod_Int_P)
   EXPECT_THAT(output_data_vector, test_data_int_reduce_prod.get_output_data_by_index(0));
 }
 
-// TODO: add negative tests?
+TEST_F(ReduceCommonTest, Wrong_input_type_NEG)
+{
+  test_kernel::NegTestDataWrongInputTypeReduceProdKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(ReduceCommonTest, Wrong_axis_type_NEG)
+{
+  test_kernel::NegTestDataWrongAxisTypeReduceProdKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
 
 } // namespace
 } // namespace luci_interpreter
