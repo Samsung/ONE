@@ -18,7 +18,7 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/add/FloatAddKernel.h"
 #include "luci_interpreter/test_models/add/IntAddKernel.h"
-#include "luci_interpreter/test_models/add/U8AddKernel.h"
+#include "luci_interpreter/test_models/add/NegAddKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -133,18 +133,34 @@ TEST_F(AddTest, INT32_P)
   }
 }
 
-TEST_F(AddTest, U8_NEG)
+TEST_F(AddTest, Input_type_mismatch_NEG)
 {
-  // No broadcast
-  {
-    const bool is_with_broadcast = false;
-    test_kernel::TestDataU8Add test_data_u8_add_no_broadcasting(is_with_broadcast);
-    EXPECT_DEATH(checkAddKernel<uint8_t>(&test_data_u8_add_no_broadcasting), "Unsupported type.");
-  }
+  test_kernel::NegTestDataInputMismatchAddKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
+
+TEST_F(AddTest, No_quant_params_NEG)
+{
+  test_kernel::NegTestDataNoQuantParamsS16AddKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
 // TODO: add tests for U8 and S16
 // TODO: add tests for inplace optimizations for all types
-// TODO: add negative tests?
 
 } // namespace
 } // namespace luci_interpreter
