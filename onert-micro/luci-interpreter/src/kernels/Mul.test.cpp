@@ -111,20 +111,41 @@ TEST_F(MulTest, INT_P)
 
 TEST_F(MulTest, Wrong_Input1_Type_NEG)
 {
-  test_kernel::TestDataInput1WrongTypeMul test_data_kernel(true);
-  EXPECT_DEATH(checkMulKernel(&test_data_kernel), "");
+  test_kernel::NegTestDataInput1WrongTypeMul test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 TEST_F(MulTest, Wrong_Input2_Type_NEG)
 {
-  test_kernel::TestDataInput2WrongTypeMul test_data_kernel(true);
-  EXPECT_DEATH(checkMulKernel(&test_data_kernel), "");
+  test_kernel::NegTestDataInput2WrongTypeMul test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 TEST_F(MulTest, Wrong_Ouput_Type_NEG)
 {
-  test_kernel::TestDataInt16TypeMul test_data_kernel(true);
-  EXPECT_DEATH(checkMulKernel(&test_data_kernel), "");
+  test_kernel::NegTestDataInt16TypeMul test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 // TODO: add tests for U8 and S16
