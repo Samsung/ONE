@@ -1,0 +1,103 @@
+#
+# NOTE this is provided as experimental Makefile to ARM32 native building
+#      some modules of compiler.
+#
+
+BUILD_TYPE?=Release
+BUILD_JOBS?=6
+
+CURRENT_DIR=$(shell pwd)
+BUILDFOLDER=build
+ARM32_FOLDER=arm32
+NNCC_CFG_OPTION_EXTRA?=
+
+TYPE_FOLDER=$(shell echo $(BUILD_TYPE) | tr A-Z a-z)
+
+BUILD_ARM32_FOLDER=$(BUILDFOLDER)/$(ARM32_FOLDER).$(TYPE_FOLDER)
+BUILD_ARM32_HOST=$(BUILDFOLDER)/$(ARM32_FOLDER).$(TYPE_FOLDER).host
+
+ARM32_INSTALL_FOLDER=$(CURRENT_DIR)/$(BUILDFOLDER)/$(ARM32_FOLDER).$(TYPE_FOLDER).install
+
+# ARM32 build
+ARM32_BUILD_ITEMS:=angkor;cwrap;pepper-str;pepper-strcast;pp
+ARM32_BUILD_ITEMS+=;pepper-csv2vec;crew
+ARM32_BUILD_ITEMS+=;oops;pepper-assert
+ARM32_BUILD_ITEMS+=;hermes;hermes-std
+ARM32_BUILD_ITEMS+=;loco;locop;logo-core;logo
+ARM32_BUILD_ITEMS+=;mio-circle05;
+ARM32_BUILD_ITEMS+=;foder;arser;vconone
+ARM32_BUILD_ITEMS+=;luci;luci-compute
+ARM32_BUILD_ITEMS+=;circle-quantizer-lib
+# TODO add common-artifacts (this requires python venv with TensorFlow)
+
+
+
+_EMPTY_:=
+_SPACE_:=$(_EMPTY_) $(_EMPTY_)
+ARM32_BUILD_WHITELIST=$(subst $(_SPACE_),,$(ARM32_BUILD_ITEMS))
+
+NNCC_CFG_OPTION+= -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -DENABLE_COVERAGE=OFF -DEXTERNALS_BUILD_THREADS=$(BUILD_JOBS) -DDOWNLOAD_GTEST=OFF -DDOWNLOAD_FLATBUFFERS=ON -DDOWNLOAD_PROTOBUF=OFF
+
+NNCC_CFG_STRICT= -DENABLE_STRICT_BUILD=OFF
+
+INT_TARGETS:=int_configure_arm32 \
+  int_build_arm32 int_test
+
+NNCC_ARM32_DEBUG= -DBUILD_WHITELIST="$(ARM32_BUILD_WHITELIST)"
+
+DEF_TARGETS:=all
+
+VAL_TARGETS:=cfg debug test_prep test
+
+.PHONY: $(INT_TARGETS) $(DEF_TARGETS) $(VAL_TARGETS)
+
+.DEFAULT_GOAL: help
+
+help:
+	@echo "cfg      : debug configure"
+	@echo "debug    : debug build"
+	@echo "test_prep: debug test preparation"
+	@echo "test     : debug test in target"
+
+###############################################################################
+# do not call int_xxxx directly as the depend on environment variables
+
+#
+# configures
+#
+
+int_configure_arm32:
+	TARGET_ARCH=armv7l \
+    TARGET_OS=tizen \
+	NNCC_WORKSPACE=$(BUILD_ARM32_FOLDER) ./nncc configure \
+		$(NNCC_CFG_OPTION) $(NNCC_CFG_OPTION_EXTRA) \
+		$(NNCC_ARM32_DEBUG) $(NNCC_CFG_STRICT) \
+		-DCMAKE_INSTALL_PREFIX="$(ARM32_INSTALL_FOLDER)" \
+        -DBUILD_ARM32_NEON=OFF \
+        -DTARGET_ARCH=armv7l -DTARGET_OS=tizen
+
+# TODO remove BUILD_ARM32_NEON=ON as default is ON, after a while.
+#      explictly added to prevent using cached 'BUILD_ARM32_NEON=OFF'
+
+#
+# builds
+#
+int_build_arm32:
+	TARGET_ARCH=armv7l \
+    TARGET_OS=tizen \
+	NNCC_WORKSPACE=$(BUILD_ARM32_FOLDER) ./nncc build -j$(BUILD_JOBS)
+
+
+################################################################################
+
+all: int_configure_arm32 int_build_arm32
+
+cfg: int_configure_arm32
+
+debug: int_build_arm32
+
+# NOTE before run test in ARM32, run test in host is required to prepare test data
+test_prep: int_test_arm32_host
+
+# NOTE run test in ARM32 Ubuntu 18.04 device
+test: int_test
