@@ -150,8 +150,15 @@ TEST_F(LessTest, Quant_NEG)
 
 TEST_F(LessTest, Wrong_Output_Type_NEG)
 {
-  test_kernel::NegTestDataLess test_data_kernel(true);
-  EXPECT_DEATH(checkLessKernel(&test_data_kernel), "");
+  test_kernel::NegTestDataLessKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace

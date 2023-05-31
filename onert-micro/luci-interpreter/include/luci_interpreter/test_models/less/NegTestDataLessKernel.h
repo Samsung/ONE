@@ -67,28 +67,22 @@ const unsigned char test_kernel_model_circle[] = {
   0x00, 0x00, 0x04, 0x00, 0x0c, 0x00, 0x00, 0x00, 0x3a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3a,
   0x11, 0x00, 0x00, 0x00, 0x4f, 0x4e, 0x45, 0x2d, 0x74, 0x66, 0x6c, 0x69, 0x74, 0x65, 0x32, 0x63,
   0x69, 0x72, 0x63, 0x6c, 0x65, 0x00, 0x00, 0x00};
-
-const std::vector<float> input1_data = {};
-
-const std::vector<float> input2_data = {};
-
-const std::vector<bool> reference_output_data = {};
-
 } // namespace neg_less_kernel_wrong_output
 
-class NegTestDataLess : public TestDataLessBase<float, bool>
+class NegTestDataLessKernel : public NegTestDataBase
 {
 public:
-  explicit NegTestDataLess(bool is_with_broadcast)
-    : TestDataLessBase<float, bool>(is_with_broadcast)
+  NegTestDataLessKernel()
   {
-    _input1_data = neg_less_kernel_wrong_output::input1_data;
-    _input2_data = neg_less_kernel_wrong_output::input2_data;
-    _reference_output_data = neg_less_kernel_wrong_output::reference_output_data;
     _test_kernel_model_circle = neg_less_kernel_wrong_output::test_kernel_model_circle;
   }
 
-  ~NegTestDataLess() override = default;
+  ~NegTestDataLessKernel() override = default;
+
+  const unsigned char *get_model_ptr() override final { return _test_kernel_model_circle; }
+
+protected:
+  const unsigned char *_test_kernel_model_circle;
 };
 
 } // namespace test_kernel
