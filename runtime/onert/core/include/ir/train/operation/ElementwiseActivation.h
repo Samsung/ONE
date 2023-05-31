@@ -46,7 +46,7 @@ public:
   const OperationType::Param &param() const { return _operation.param(); }
 
 protected:
-  Operation &operation() final { return _operation; }
+  Operation &operation() const final { return _operation; }
 
 private:
   OperationType &_operation;

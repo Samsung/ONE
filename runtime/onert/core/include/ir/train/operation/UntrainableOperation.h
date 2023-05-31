@@ -51,7 +51,7 @@ public:
   virtual OpCode opcode() const { return _operation.opcode(); }
 
 protected:
-  Operation &operation() final { return _operation; }
+  Operation &operation() const final { return _operation; }
 
 private:
   OperationType &_operation;

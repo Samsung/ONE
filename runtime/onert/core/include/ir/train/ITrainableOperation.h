@@ -53,8 +53,7 @@ public:
   const OperandIndexSequence &getOutputs() const override { return operation().getOutputs(); }
 
 public:
-  virtual Operation &operation() = 0;
-  const Operation &operation() const { return operation(); };
+  virtual Operation &operation() const = 0;
 };
 
 } // namespace train
