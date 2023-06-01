@@ -546,3 +546,89 @@ test:
     positiveTestCase:
       - condition:
         - inverse: negativeTestCase
+  - name: onert-micro
+    testCaseLanguage: CPP
+    testFW: GTEST
+    testCaseFolder:
+      - /onert-micro
+
+    testFile:
+      - extension: test.cpp
+        any: true
+      - extension: test.cc
+        any: true
+      - excludes :
+        - Greater.test.cpp
+        - LeakyRelu.test.cpp
+        - Dequantize.test.cpp
+        - L2Normalize.test.cpp
+        - OneHot.test.cpp
+        - BatchToSpaceND.test.cpp
+        - BatchMatMul.test.cpp
+        - SpaceToBatchND.test.cpp
+        - LocalResponseNormalization.test.cpp
+        - LessEqual.test.cpp
+        - Minimum.test.cpp
+        - Relu6.test.cpp
+        - ResizeBilinear.test.cpp
+        - SquaredDifference.test.cpp
+        - SpaceToDepth.test.cpp
+        - SVDF.test.cpp
+        - Neg.test.cpp
+        - InstanceNorm.test.cpp
+        - MirrorPad.test.cpp
+        - Quantize.test.cpp
+        - ResizeNearestNeighbor.test.cpp
+        - LogicalNot.test.cpp
+        - Elu.test.cpp
+        - If.test.cpp
+        - ReverseV2.test.cpp
+        - Equal.test.cpp
+        - FloorDiv.test.cpp
+        - Rsqrt.test.cpp
+        - L2Pool2D.test.cpp
+        - PRelu.test.cpp
+        - TransposeConv.test.cpp
+        - ArgMax.test.cpp
+        - LogicalOr.test.cpp
+        - Div.test.cpp
+        - LogicalAnd.test.cpp
+        - Square.test.cpp
+        - AveragePool2D.test.cpp
+        - Pow.test.cpp
+        - Softmax.test.cpp
+        - NotEqual.test.cpp
+        - Cast.test.cpp
+        - Floor.test.cpp
+        - Exp.test.cpp
+        - GreaterEqual.test.cpp
+        - Maximum.test.cpp
+        - Mean.test.cpp
+        - PadV2.test.cpp
+        - Squeeze.test.cpp
+        - Pad.test.cpp
+        - DepthwiseConv2D.test.cpp
+        - Sqrt.test.cpp
+        - Relu.test.cpp
+        - LogSoftmax.test.cpp
+        - DepthToSpace.test.cpp
+        - Unpack.test.cpp
+    testCase:
+      - condition:
+        - functionName:
+            starts:
+              - TEST
+              - TYPED_TEST
+        - excludes :
+          - Verifier.dag_checker
+    negativeTestCase:
+      - condition:
+        - testName:
+            ends:
+              - _NEG
+
+    positiveTestCase:
+      - condition:
+        - testName:
+            ends:
+              - _P
