@@ -18,6 +18,7 @@
 #include "luci_interpreter/test_models/slice/FloatSliceKernel.h"
 #include "luci_interpreter/test_models/slice/QuantU8SliceKernel.h"
 #include "luci_interpreter/test_models/slice/QuantS16SliceKernel.h"
+#include "luci_interpreter/test_models/slice/NegSliceKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -84,8 +85,55 @@ TEST_F(SliceTest, INT16_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
+TEST_F(SliceTest, TypeMismatch_NEG)
+{
+  test_kernel::TestDataTypeMismatchSlice test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(SliceTest, WrongBeginType_NEG)
+{
+  test_kernel::TestDataWrongBeginTypeSlice test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(SliceTest, WrongSizeType_NEG)
+{
+  test_kernel::TestDataWrongSizeTypeSlice test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(SliceTest, WrongInputShape_NEG)
+{
+  test_kernel::TestDataWrongInputShapeSlice test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
 // TODO: add S8 test
-// TODO: add negative tests?
 
 } // namespace
 } // namespace luci_interpreter

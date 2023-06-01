@@ -17,6 +17,7 @@
 
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/tanh/FloatTanhKernel.h"
+#include "luci_interpreter/test_models/tanh/NegTanhKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -70,8 +71,19 @@ TEST_F(TanhTest, Float_P)
                                     test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
+TEST_F(TanhTest, Input_output_type_mismatch_NEG)
+{
+  test_kernel::NegTestDataInputOutputTypeMismatchTanhKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
 // TODO: add S16 test
-// TODO: add negative tests?
 
 } // namespace
 } // namespace luci_interpreter
