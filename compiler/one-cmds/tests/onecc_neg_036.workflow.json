@@ -1,0 +1,29 @@
+{
+    "workflows": [
+        "profile_wf"
+    ],
+    "profile_wf": {
+        "steps": [
+            "import_tf",
+            "profile"
+        ],
+        "import_tf": {
+            "one-cmd": "one-import-tf",
+            "commands": {
+                "input_path": "inception_v3.pb",
+                "output_path": "inception_v3.onecc_neg_036.circle",
+                "input_arrays": "input",
+                "input_shapes": "1,299,299,3",
+                "output_arrays": "InceptionV3/Predictions/Reshape_1",
+                "converter_version": "v2"
+            }
+        },
+        "profile": {
+            "one-cmd": "one-profile",
+            "commands": {
+                "backend": "dummy",
+                "command": "dummy.bin"
+            }
+        }
+    }
+}
