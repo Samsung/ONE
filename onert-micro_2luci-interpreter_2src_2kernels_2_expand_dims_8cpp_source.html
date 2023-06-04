@@ -134,62 +134,63 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  assert(output != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">auto</span> axis_data = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a3cdd30622ecbc87c714790f93336e199">getConstDataByTensor</a>(axis);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  int32_t axis_value;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">switch</span> (Tensor::element_type(axis))</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  {</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">case</span> DataType::S32:</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      axis_value = *<span class="keyword">reinterpret_cast&lt;</span>int32_t *<span class="keyword">&gt;</span>(axis_data);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">case</span> DataType::S64:</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      axis_value = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(*<span class="keyword">reinterpret_cast&lt;</span>int64_t *<span class="keyword">&gt;</span>(axis_data));</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  }</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordflow">if</span> (axis_value &lt; 0)</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  {</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    axis_value += Tensor::num_dims(input) + 1;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  }</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(axis_value &lt;= Tensor::num_dims(input) and axis_value &gt;= 0);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="namespaceluci__interpreter.html#a4025c8f08dbd43f9f84b19c579426274">   66</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceluci__interpreter.html#a4025c8f08dbd43f9f84b19c579426274">execute_kernel_CircleExpandDims</a>(<span class="keyword">const</span> circle::Operator *cur_op,</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                                     <a class="code hl_class" href="classluci__interpreter_1_1_runtime_graph.html">BaseRuntimeGraph</a> *runtime_graph)</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>{</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_index = cur_op-&gt;inputs()-&gt;operator[](0);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index = cur_op-&gt;outputs()-&gt;operator[](0);</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  assert(input_index != -1);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  assert(output_index != -1);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a6226607d34657d1f7efbabb13c80ad39">getCircleTensorByIndex</a>(input_index);</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a6226607d34657d1f7efbabb13c80ad39">getCircleTensorByIndex</a>(output_index);</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordtype">bool</span> is_inplace = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a8a67e07e0050063eb6d26d45bc117c9f">is_inplace_op</a>(cur_op);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordflow">if</span> (is_inplace)</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(input, output);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  }</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="comment">// Just copy input to output</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_data = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#accb86df90f75104c60f190a5201ec11f">getDataByTensor</a>(input);</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">auto</span> output_data = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#accb86df90f75104c60f190a5201ec11f">getDataByTensor</a>(output);</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  assert(input_data != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  assert(output_data != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> element_size = <a class="code hl_function" href="namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32">getDataTypeSize</a>(Tensor::element_type(input));</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keyword">const</span> int32_t num_elements = Tensor::num_elements(input);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  std::memcpy(output_data, input_data, num_elements * element_size);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>} <span class="comment">// namespace luci_interpreter</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  assert(axis_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  int32_t axis_value;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">switch</span> (Tensor::element_type(axis))</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">case</span> DataType::S32:</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      axis_value = *<span class="keyword">reinterpret_cast&lt;</span>int32_t *<span class="keyword">&gt;</span>(axis_data);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">case</span> DataType::S64:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      axis_value = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(*<span class="keyword">reinterpret_cast&lt;</span>int64_t *<span class="keyword">&gt;</span>(axis_data));</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">if</span> (axis_value &lt; 0)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    axis_value += Tensor::num_dims(input) + 1;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  }</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(axis_value &lt;= Tensor::num_dims(input) and axis_value &gt;= 0);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="namespaceluci__interpreter.html#a4025c8f08dbd43f9f84b19c579426274">   67</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceluci__interpreter.html#a4025c8f08dbd43f9f84b19c579426274">execute_kernel_CircleExpandDims</a>(<span class="keyword">const</span> circle::Operator *cur_op,</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                                     <a class="code hl_class" href="classluci__interpreter_1_1_runtime_graph.html">BaseRuntimeGraph</a> *runtime_graph)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>{</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_index = cur_op-&gt;inputs()-&gt;operator[](0);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index = cur_op-&gt;outputs()-&gt;operator[](0);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  assert(input_index != -1);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  assert(output_index != -1);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a6226607d34657d1f7efbabb13c80ad39">getCircleTensorByIndex</a>(input_index);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a6226607d34657d1f7efbabb13c80ad39">getCircleTensorByIndex</a>(output_index);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordtype">bool</span> is_inplace = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a8a67e07e0050063eb6d26d45bc117c9f">is_inplace_op</a>(cur_op);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordflow">if</span> (is_inplace)</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">makeInplaceOperation</a>(input, output);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  }</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="comment">// Just copy input to output</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_data = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#accb86df90f75104c60f190a5201ec11f">getDataByTensor</a>(input);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">auto</span> output_data = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#accb86df90f75104c60f190a5201ec11f">getDataByTensor</a>(output);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  assert(input_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  assert(output_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> element_size = <a class="code hl_function" href="namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32">getDataTypeSize</a>(Tensor::element_type(input));</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keyword">const</span> int32_t num_elements = Tensor::num_elements(input);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  std::memcpy(output_data, input_data, num_elements * element_size);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>} <span class="comment">// namespace luci_interpreter</span></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html">luci_interpreter::RuntimeGraph</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00032">RuntimeGraph.h:33</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a15699bb31bf8124b8d61039449491af9"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a15699bb31bf8124b8d61039449491af9">luci_interpreter::RuntimeGraph::makeInplaceOperation</a></div><div class="ttdeci">void makeInplaceOperation(const circle::Tensor *src_tensor, const circle::Tensor *dst_tensor)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00345">RuntimeGraph.cpp:345</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a3cdd30622ecbc87c714790f93336e199"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a3cdd30622ecbc87c714790f93336e199">luci_interpreter::RuntimeGraph::getConstDataByTensor</a></div><div class="ttdeci">uint8_t * getConstDataByTensor(const circle::Tensor *raw_tensor)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00371">RuntimeGraph.cpp:371</a></div></div>
@@ -198,7 +199,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_accb86df90f75104c60f190a5201ec11f"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#accb86df90f75104c60f190a5201ec11f">luci_interpreter::RuntimeGraph::getDataByTensor</a></div><div class="ttdeci">uint8_t * getDataByTensor(const circle::Tensor *raw_tensor)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00328">RuntimeGraph.cpp:328</a></div></div>
 <div class="ttc" id="acompiler_2luci-interpreter_2src_2kernels_2_utils_8h_html_a231f5fa1ff2a3f19222b42cc9bbd1f2d"><div class="ttname"><a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a></div><div class="ttdeci">#define LUCI_INTERPRETER_CHECK(cond)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">Utils.h:36</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html"><div class="ttname"><a href="namespaceluci__interpreter.html">luci_interpreter</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h_source.html#l00021">BuddyMemoryManager.h:22</a></div></div>
-<div class="ttc" id="anamespaceluci__interpreter_html_a4025c8f08dbd43f9f84b19c579426274"><div class="ttname"><a href="namespaceluci__interpreter.html#a4025c8f08dbd43f9f84b19c579426274">luci_interpreter::execute_kernel_CircleExpandDims</a></div><div class="ttdeci">void execute_kernel_CircleExpandDims(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00066">ExpandDims.cpp:66</a></div></div>
+<div class="ttc" id="anamespaceluci__interpreter_html_a4025c8f08dbd43f9f84b19c579426274"><div class="ttname"><a href="namespaceluci__interpreter.html#a4025c8f08dbd43f9f84b19c579426274">luci_interpreter::execute_kernel_CircleExpandDims</a></div><div class="ttdeci">void execute_kernel_CircleExpandDims(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00067">ExpandDims.cpp:67</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html_aa129d157edeab20d5916101a10cd9f32"><div class="ttname"><a href="namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32">luci_interpreter::getDataTypeSize</a></div><div class="ttdeci">size_t getDataTypeSize(DataType data_type)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00032">DataType.h:32</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html_aa95c982cc6bad94d0dd7c2603f59719d"><div class="ttname"><a href="namespaceluci__interpreter.html#aa95c982cc6bad94d0dd7c2603f59719d">luci_interpreter::configure_kernel_CircleExpandDims</a></div><div class="ttdeci">void configure_kernel_CircleExpandDims(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_expand_dims_8cpp_source.html#l00023">ExpandDims.cpp:23</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_builders_8h_html"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_builders_8h.html">Builders.h</a></div></div>

@@ -7,8 +7,8 @@ var searchData=
   ['quantizationparameters_2eh_4',['QuantizationParameters.h',['../_quantization_parameters_8h.html',1,'']]],
   ['quantizationutils_2ecpp_5',['QuantizationUtils.cpp',['../_quantization_utils_8cpp.html',1,'']]],
   ['quantizationutils_2eh_6',['QuantizationUtils.h',['../_quantization_utils_8h.html',1,'']]],
-  ['quantize_2ecpp_7',['Quantize.cpp',['../onert-micro_2luci-interpreter_2src_2kernels_2_quantize_8cpp.html',1,'(Global Namespace)'],['../compiler_2tflchef_2core_2src_2_op_2_quantize_8cpp.html',1,'(Global Namespace)'],['../compiler_2luci-interpreter_2src_2loader_2nodes_2_quantize_8cpp.html',1,'(Global Namespace)'],['../compiler_2luci-interpreter_2src_2kernels_2_quantize_8cpp.html',1,'(Global Namespace)'],['../onert-micro_2luci-interpreter_2src_2loader_2nodes_2_quantize_8cpp.html',1,'(Global Namespace)'],['../compiler_2tflchef_2tflite_2src_2_op_2_quantize_8cpp.html',1,'(Global Namespace)']]],
-  ['quantize_2eh_8',['Quantize.h',['../compiler_2tflchef_2tflite_2src_2_op_2include_2_quantize_8h.html',1,'(Global Namespace)'],['../compiler_2tflchef_2core_2src_2_op_2_quantize_8h.html',1,'(Global Namespace)'],['../compiler_2luci-interpreter_2src_2kernels_2_quantize_8h.html',1,'(Global Namespace)'],['../compute_2cker_2include_2cker_2operation_2_quantize_8h.html',1,'(Global Namespace)'],['../onert-micro_2luci-interpreter_2src_2kernels_2_quantize_8h.html',1,'(Global Namespace)']]],
+  ['quantize_2ecpp_7',['Quantize.cpp',['../compiler_2tflchef_2tflite_2src_2_op_2_quantize_8cpp.html',1,'(Global Namespace)'],['../compiler_2luci-interpreter_2src_2kernels_2_quantize_8cpp.html',1,'(Global Namespace)'],['../compiler_2luci-interpreter_2src_2loader_2nodes_2_quantize_8cpp.html',1,'(Global Namespace)'],['../onert-micro_2luci-interpreter_2src_2loader_2nodes_2_quantize_8cpp.html',1,'(Global Namespace)'],['../onert-micro_2luci-interpreter_2src_2kernels_2_quantize_8cpp.html',1,'(Global Namespace)'],['../compiler_2tflchef_2core_2src_2_op_2_quantize_8cpp.html',1,'(Global Namespace)']]],
+  ['quantize_2eh_8',['Quantize.h',['../onert-micro_2luci-interpreter_2src_2kernels_2_quantize_8h.html',1,'(Global Namespace)'],['../compiler_2luci-interpreter_2src_2kernels_2_quantize_8h.html',1,'(Global Namespace)'],['../compiler_2tflchef_2core_2src_2_op_2_quantize_8h.html',1,'(Global Namespace)'],['../compiler_2tflchef_2tflite_2src_2_op_2include_2_quantize_8h.html',1,'(Global Namespace)'],['../compute_2cker_2include_2cker_2operation_2_quantize_8h.html',1,'(Global Namespace)']]],
   ['quantizeactivation_2ecpp_9',['QuantizeActivation.cpp',['../_quantize_activation_8cpp.html',1,'']]],
   ['quantizeactivation_2eh_10',['QuantizeActivation.h',['../_quantize_activation_8h.html',1,'']]],
   ['quantizebias_2ecpp_11',['QuantizeBias.cpp',['../_quantize_bias_8cpp.html',1,'']]],
@@ -28,5 +28,8 @@ var searchData=
   ['quantizeweights_2eh_25',['QuantizeWeights.h',['../_quantize_weights_8h.html',1,'']]],
   ['quantizewithminmaxpass_2ecpp_26',['QuantizeWithMinMaxPass.cpp',['../_quantize_with_min_max_pass_8cpp.html',1,'']]],
   ['quantizewithminmaxpass_2eh_27',['QuantizeWithMinMaxPass.h',['../_quantize_with_min_max_pass_8h.html',1,'']]],
-  ['quantlesskernel_2eh_28',['QuantLessKernel.h',['../_quant_less_kernel_8h.html',1,'']]]
+  ['quantlesskernel_2eh_28',['QuantLessKernel.h',['../_quant_less_kernel_8h.html',1,'']]],
+  ['quants16slicekernel_2eh_29',['QuantS16SliceKernel.h',['../_quant_s16_slice_kernel_8h.html',1,'']]],
+  ['quants8unidirectionallstm_2eh_30',['QuantS8UnidirectionalLSTM.h',['../_quant_s8_unidirectional_l_s_t_m_8h.html',1,'']]],
+  ['quantu8slicekernel_2eh_31',['QuantU8SliceKernel.h',['../_quant_u8_slice_kernel_8h.html',1,'']]]
 ];

@@ -1,5 +1,6 @@
 var namespaceonert_1_1backend_1_1train =
 [
+    [ "ops", "namespaceonert_1_1backend_1_1train_1_1ops.html", "namespaceonert_1_1backend_1_1train_1_1ops" ],
     [ "Backend", "classonert_1_1backend_1_1train_1_1_backend.html", "classonert_1_1backend_1_1train_1_1_backend" ],
     [ "BackendContext", "classonert_1_1backend_1_1train_1_1_backend_context.html", "classonert_1_1backend_1_1train_1_1_backend_context" ],
     [ "Config", "classonert_1_1backend_1_1train_1_1_config.html", "classonert_1_1backend_1_1train_1_1_config" ],

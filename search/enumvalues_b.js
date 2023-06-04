@@ -28,14 +28,13 @@ var searchData=
   ['mse_25',['MSE',['../namespacecircle__eval__diff.html#a5c3f0374bf404b03613f7ad266e587ccaa9fc1a03386ae38b64e06c8172994963',1,'circle_eval_diff']]],
   ['mtop1_26',['MTOP1',['../namespacecircle__eval__diff.html#a5c3f0374bf404b03613f7ad266e587cca70634721b3df588b2bda7e8697e1dd57',1,'circle_eval_diff']]],
   ['mtop5_27',['MTOP5',['../namespacecircle__eval__diff.html#a5c3f0374bf404b03613f7ad266e587cca5e394e26b207237793aa5b4dcd9e18dc',1,'circle_eval_diff']]],
-  ['mul_28',['MUL',['../namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a2cdf52a55876063ec93b7d18bc741f6c',1,'nnfw::cker::MUL()'],['../_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152a2cdf52a55876063ec93b7d18bc741f6c',1,'MUL():&#160;OperationType.h']]],
-  ['mul_29',['mul',['../namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a353942263d1bedfbe06b7bfa78226253',1,'mir_caffe2']]],
-  ['mul_30',['MUL',['../classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa2cdf52a55876063ec93b7d18bc741f6c',1,'onert::ir::operation::BinaryArithmetic']]],
-  ['mult_31',['mult',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9a0f9f2d92c2583ef952556e1f382d0974',1,'nnc']]],
-  ['multassign_32',['multAssign',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9ab8b267a0e0965bf7cc653505f6210bb3',1,'nnc']]],
-  ['multinomiallogisticloss_33',['multinomialLogisticLoss',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa64ef9af3a4b5268e226a73687e5a136',1,'mir_caffe']]],
-  ['multiples_34',['MULTIPLES',['../classonert_1_1ir_1_1operation_1_1_tile.html#a4db840f0ab5757f609c329fd8361489aa23b34ec2951617d519758a51a3956ec4',1,'onert::ir::operation::Tile']]],
-  ['multiplier_35',['Multiplier',['../namespaceloco.html#a1e51c7b6399c983e010e448c36d7ee8daee34a21131a5636ee8dcf521e2369bee',1,'loco']]],
-  ['mutewarnings_36',['MuteWarnings',['../structluci_1_1_user_settings.html#acbbd046f4dbc1be62f2a04ef16cb8c8ba168c980d7a29984a17fafba8d9918efc',1,'luci::UserSettings']]],
-  ['mvn_37',['MVN',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ada0dec80009e78c8f2ba5be8b3ddd8b8',1,'mir_caffe']]]
+  ['mul_28',['mul',['../namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a353942263d1bedfbe06b7bfa78226253',1,'mir_caffe2']]],
+  ['mul_29',['MUL',['../namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a2cdf52a55876063ec93b7d18bc741f6c',1,'nnfw::cker::MUL()'],['../_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152a2cdf52a55876063ec93b7d18bc741f6c',1,'MUL():&#160;OperationType.h'],['../classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa2cdf52a55876063ec93b7d18bc741f6c',1,'onert::ir::operation::BinaryArithmetic::MUL()']]],
+  ['mult_30',['mult',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9a0f9f2d92c2583ef952556e1f382d0974',1,'nnc']]],
+  ['multassign_31',['multAssign',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9ab8b267a0e0965bf7cc653505f6210bb3',1,'nnc']]],
+  ['multinomiallogisticloss_32',['multinomialLogisticLoss',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa64ef9af3a4b5268e226a73687e5a136',1,'mir_caffe']]],
+  ['multiples_33',['MULTIPLES',['../classonert_1_1ir_1_1operation_1_1_tile.html#a4db840f0ab5757f609c329fd8361489aa23b34ec2951617d519758a51a3956ec4',1,'onert::ir::operation::Tile']]],
+  ['multiplier_34',['Multiplier',['../namespaceloco.html#a1e51c7b6399c983e010e448c36d7ee8daee34a21131a5636ee8dcf521e2369bee',1,'loco']]],
+  ['mutewarnings_35',['MuteWarnings',['../structluci_1_1_user_settings.html#acbbd046f4dbc1be62f2a04ef16cb8c8ba168c980d7a29984a17fafba8d9918efc',1,'luci::UserSettings']]],
+  ['mvn_36',['MVN',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ada0dec80009e78c8f2ba5be8b3ddd8b8',1,'mir_caffe']]]
 ];

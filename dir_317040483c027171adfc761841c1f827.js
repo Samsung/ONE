@@ -23,7 +23,7 @@ var dir_317040483c027171adfc761841c1f827 =
     [ "Dequantize.h", "onert-micro_2luci-interpreter_2src_2kernels_2_dequantize_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_dequantize_8h" ],
     [ "Div.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_div_8cpp.html", null ],
     [ "Div.h", "onert-micro_2luci-interpreter_2src_2kernels_2_div_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_div_8h" ],
-    [ "Elu.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_e_l_u_8cpp.html", null ],
+    [ "Elu.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_elu_8cpp.html", null ],
     [ "Elu.h", "onert-micro_2luci-interpreter_2src_2kernels_2_e_l_u_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_e_l_u_8h" ],
     [ "Equal.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_equal_8cpp.html", null ],
     [ "Equal.h", "onert-micro_2luci-interpreter_2src_2kernels_2_equal_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_equal_8h" ],
@@ -37,7 +37,6 @@ var dir_317040483c027171adfc761841c1f827 =
     [ "FloorDiv.h", "onert-micro_2luci-interpreter_2src_2kernels_2_floor_div_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_floor_div_8h" ],
     [ "FullyConnected.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_fully_connected_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_fully_connected_8cpp" ],
     [ "Gather.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_gather_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_gather_8cpp" ],
-    [ "Gather.h", "onert-micro_2luci-interpreter_2src_2kernels_2_gather_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_gather_8h" ],
     [ "Greater.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_greater_8cpp.html", null ],
     [ "Greater.h", "onert-micro_2luci-interpreter_2src_2kernels_2_greater_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_greater_8h" ],
     [ "GreaterEqual.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_greater_equal_8cpp.html", null ],
@@ -113,7 +112,6 @@ var dir_317040483c027171adfc761841c1f827 =
     [ "Shape.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_shape_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_shape_8cpp" ],
     [ "SISOKernel.h", "_s_i_s_o_kernel_8h.html", "_s_i_s_o_kernel_8h" ],
     [ "Slice.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp" ],
-    [ "Slice.h", "onert-micro_2luci-interpreter_2src_2kernels_2_slice_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_slice_8h" ],
     [ "Softmax.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_softmax_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_softmax_8cpp" ],
     [ "SpaceToBatchND.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_space_to_batch_n_d_8cpp.html", null ],
     [ "SpaceToBatchND.h", "onert-micro_2luci-interpreter_2src_2kernels_2_space_to_batch_n_d_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_space_to_batch_n_d_8h" ],
@@ -135,7 +133,6 @@ var dir_317040483c027171adfc761841c1f827 =
     [ "SVDF.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_s_v_d_f_8cpp.html", null ],
     [ "SVDF.h", "onert-micro_2luci-interpreter_2src_2kernels_2_s_v_d_f_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_s_v_d_f_8h" ],
     [ "Tanh.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_tanh_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_tanh_8cpp" ],
-    [ "Tanh.h", "onert-micro_2luci-interpreter_2src_2kernels_2_tanh_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_tanh_8h" ],
     [ "TestUtils.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_test_utils_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_test_utils_8cpp" ],
     [ "TestUtils.h", "onert-micro_2luci-interpreter_2src_2kernels_2_test_utils_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_test_utils_8h" ],
     [ "TISOKernel.h", "_t_i_s_o_kernel_8h.html", "_t_i_s_o_kernel_8h" ],
@@ -148,6 +145,5 @@ var dir_317040483c027171adfc761841c1f827 =
     [ "Unpack.h", "onert-micro_2luci-interpreter_2src_2kernels_2_unpack_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_unpack_8h" ],
     [ "Utils.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp" ],
     [ "Utils.h", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h" ],
-    [ "While.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_while_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_while_8cpp" ],
-    [ "While.h", "onert-micro_2luci-interpreter_2src_2kernels_2_while_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_while_8h" ]
+    [ "While.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_while_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_while_8cpp" ]
 ];

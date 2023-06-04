@@ -34,7 +34,7 @@ var searchData=
   ['oops_31',['oops',['../namespaceoops.html',1,'']]],
   ['operand_32',['operand',['../namespaceonert_1_1backend_1_1acl__cl_1_1operand.html',1,'onert::backend::acl_cl::operand'],['../namespaceonert_1_1backend_1_1acl__neon_1_1operand.html',1,'onert::backend::acl_neon::operand'],['../namespaceonert_1_1backend_1_1gpu__cl_1_1operand.html',1,'onert::backend::gpu_cl::operand']]],
   ['operation_33',['operation',['../namespaceonert_1_1ir_1_1operation.html',1,'onert::ir']]],
-  ['ops_34',['ops',['../namespaceonert_1_1backend_1_1cpu_1_1ops.html',1,'onert::backend::cpu::ops'],['../namespaceonert_1_1backend_1_1ruy_1_1ops.html',1,'onert::backend::ruy::ops'],['../namespaceonert_1_1backend_1_1trix_1_1ops.html',1,'onert::backend::trix::ops'],['../namespaceonert_1_1backend_1_1xnnpack_1_1ops.html',1,'onert::backend::xnnpack::ops']]],
+  ['ops_34',['ops',['../namespaceonert_1_1backend_1_1cpu_1_1ops.html',1,'onert::backend::cpu::ops'],['../namespaceonert_1_1backend_1_1ruy_1_1ops.html',1,'onert::backend::ruy::ops'],['../namespaceonert_1_1backend_1_1train_1_1ops.html',1,'onert::backend::train::ops'],['../namespaceonert_1_1backend_1_1trix_1_1ops.html',1,'onert::backend::trix::ops'],['../namespaceonert_1_1backend_1_1xnnpack_1_1ops.html',1,'onert::backend::xnnpack::ops']]],
   ['opselector_35',['opselector',['../namespaceopselector.html',1,'']]],
   ['optimized_5fops_36',['optimized_ops',['../namespaceoptimized__ops.html',1,'']]],
   ['optionbuilder_37',['OptionBuilder',['../namespace_option_builder.html',1,'']]],

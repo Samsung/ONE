@@ -1,5 +1,6 @@
 var dir_860f072ac8a2e43fe3b8432afdc5d5b6 =
 [
+    [ "ops", "dir_504e02a0f7d8c51a809a1972aae7e644.html", "dir_504e02a0f7d8c51a809a1972aae7e644" ],
     [ "Backend.h", "runtime_2onert_2backend_2train_2_backend_8h.html", "runtime_2onert_2backend_2train_2_backend_8h" ],
     [ "BackendContext.cc", "backend_2train_2_backend_context_8cc.html", null ],
     [ "BackendContext.h", "backend_2train_2_backend_context_8h.html", "backend_2train_2_backend_context_8h" ],
