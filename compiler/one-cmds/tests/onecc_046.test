@@ -23,6 +23,7 @@ trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
   rm -rf ../bin/dummy-compile
+  rm -rf ../bin/dummyV2-compile
   exit 255
 }
 
