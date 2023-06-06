@@ -115,38 +115,46 @@ def _parse_arg(parser):
     return args
 
 
-def _verify_codegen(parser, args):
+def _verify_backend_args(parser, args):
     """
-    verify one-codegen arguments
+    verify one-profile, one-codegen arguments
 
-    This verification logic comes from 'one-codegen' codes.
+    This verification logic comes from each drivers' codes.
     """
-    cfg_args = SimpleNamespace()
-    oneutils.parse_cfg(args.config, 'one-codegen', cfg_args)
-    cmd_backend_exist = oneutils.is_valid_attr(args, 'backend')
-    cfg_backend_exist = oneutils.is_valid_attr(cfg_args, 'backend')
-    cfg_backends_exist = oneutils.is_valid_attr(cfg_args, 'backends')
+    cfgparser = configparser.ConfigParser()
+    cfgparser.optionxform = str
+    cfgparser.read(args.config)
 
-    if cfg_backend_exist and cfg_backends_exist:
-        parser.error(
-            "'backend' option and 'backends' option cannot be used simultaneously.")
+    for driver in ['one-profile', 'one-codegen']:
+        if not driver in cfgparser:
+            continue
 
-    # Check if given backend from command line exists in the configuration file
-    if cmd_backend_exist and cfg_backend_exist:
-        if args.backend != cfg_args.backend:
-            parser.error('Not found the command of given backend')
+        cfg_args = SimpleNamespace()
+        oneutils.parse_cfg(args.config, driver, cfg_args)
+        cmd_backend_exist = oneutils.is_valid_attr(args, 'backend')
+        cfg_backend_exist = oneutils.is_valid_attr(cfg_args, 'backend')
+        cfg_backends_exist = oneutils.is_valid_attr(cfg_args, 'backends')
 
-    if cfg_backends_exist:
-        cfg_backends = getattr(cfg_args, 'backends').split(',')
-        # check if commands of given backends exist
-        for b in cfg_backends:
-            if not oneutils.is_valid_attr(cfg_args, b):
-                parser.error('Not found the command for ' + b)
+        if cfg_backend_exist and cfg_backends_exist:
+            parser.error(
+                "'backend' option and 'backends' option cannot be used simultaneously.")
 
         # Check if given backend from command line exists in the configuration file
-        if cmd_backend_exist:
-            if args.backend not in cfg_backends:
+        if cmd_backend_exist and cfg_backend_exist:
+            if args.backend != cfg_args.backend:
                 parser.error('Not found the command of given backend')
+
+        if cfg_backends_exist:
+            cfg_backends = getattr(cfg_args, 'backends').split(',')
+            # check if commands of given backends exist
+            for b in cfg_backends:
+                if not oneutils.is_valid_attr(cfg_args, b):
+                    parser.error('Not found the command for ' + b)
+
+            # Check if given backend from command line exists in the configuration file
+            if cmd_backend_exist:
+                if args.backend not in cfg_backends:
+                    parser.error('Not found the command of given backend')
 
 
 def _verify_arg(parser, args):
@@ -169,7 +177,7 @@ def _verify_arg(parser, args):
         parser.error('\'backend\' option can be used only with \'config\' option')
 
     if oneutils.is_valid_attr(args, 'backend'):
-        _verify_codegen(parser, args)
+        _verify_backend_args(parser, args)
 
 
 def main():
