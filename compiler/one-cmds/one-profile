@@ -26,6 +26,7 @@ import itertools
 import ntpath
 import os
 import sys
+from types import SimpleNamespace
 
 import onelib.utils as oneutils
 
@@ -92,14 +93,36 @@ def _get_parser(backends_list):
     return parser
 
 
-def _verify_arg(parser, args):
+def _verify_arg(parser, args, cfg_args):
     """verify given arguments"""
+    cmd_backend_exist = oneutils.is_valid_attr(args, 'backend')
+    cfg_backend_exist = oneutils.is_valid_attr(cfg_args, 'backend')
+    cfg_backends_exist = oneutils.is_valid_attr(cfg_args, 'backends')
+    if cfg_backend_exist and cfg_backends_exist:
+        parser.error(
+            '\'backend\' option and \'backends\' option cannot be used simultaneously.')
+    # Check if given backend from command line exists in the configuration file
+    if cmd_backend_exist and cfg_backend_exist:
+        if args.backend != cfg_args.backend:
+            parser.error('Not found the command of given backend')
+
     # check if required arguments is given
     missing = []
-    if not oneutils.is_valid_attr(args, 'backend'):
+    if not cmd_backend_exist and not cfg_backend_exist and not cfg_backends_exist:
         missing.append('-b/--backend')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
+
+    if cfg_backends_exist:
+        cfg_backends = getattr(cfg_args, 'backends').split(',')
+        # check if commands of given backends exist
+        for b in cfg_backends:
+            if not oneutils.is_valid_attr(cfg_args, b):
+                parser.error('Not found the command for ' + b)
+        # Check if given backend from command line exists in the configuration file
+        if cmd_backend_exist:
+            if args.backend not in cfg_backends:
+                parser.error('Not found the command of given backend')
 
 
 def _parse_arg(parser):
@@ -139,25 +162,61 @@ def main():
     args, backend_args, unknown_args = _parse_arg(parser)
 
     # parse configuration file
-    oneutils.parse_cfg(args.config, 'one-profile', args)
+    cfg_args = SimpleNamespace()
+    oneutils.parse_cfg(args.config, 'one-profile', cfg_args)
 
     # verify arguments
-    _verify_arg(parser, args)
+    _verify_arg(parser, args, cfg_args)
+    '''
+    one-profile defines its behavior for below cases.
 
-    # make a command to run given backend driver
-    profile_path = None
-    backend_base = getattr(args, 'backend') + '-profile'
-    for cand in backends_list:
-        if ntpath.basename(cand) == backend_base:
-            profile_path = cand
-    if not profile_path:
-        raise FileNotFoundError(backend_base + ' not found')
-    profile_cmd = [profile_path] + backend_args + unknown_args
-    if oneutils.is_valid_attr(args, 'command'):
-        profile_cmd += getattr(args, 'command').split()
+    [1] one-profile -h
+    [2] one-profile -v
+    [3] one-profile -C ${cfg} (backend, command key in cfg)
+    [4] one-profile -C ${cfg} (backends key in cfg)
+    [5] one-profile -b ${backend} ${command}
+    [6] one-profile -b ${backend} -- ${command}
+    [7] one-profile -b ${backend} -C {cfg} (backend, command key in cfg)
+    [8] one-profile -b ${backend} -C {cfg} (backends key in cfg) (Only 'backend' is invoked, 
+         even though cfg file has multiple backends)
 
-    # run backend driver
-    oneutils.run(profile_cmd, err_prefix=backend_base)
+    All other cases are not allowed or an undefined behavior.
+    '''
+    if oneutils.is_valid_attr(args, 'config'):
+        assert (not backend_args or not unknown_args)
+        # [7], [8]
+        if oneutils.is_valid_attr(args, 'backend'):
+            given_backends = [args.backend]
+            if oneutils.is_valid_attr(cfg_args, 'backend'):
+                assert (oneutils.is_valid_attr(cfg_args, 'command'))
+                setattr(cfg_args, args.backend, cfg_args.command)
+        else:
+            # [3]
+            if oneutils.is_valid_attr(cfg_args, 'backend'):
+                assert (oneutils.is_valid_attr(cfg_args, 'command'))
+                given_backends = [cfg_args.backend]
+                setattr(cfg_args, cfg_args.backend, cfg_args.command)
+            # [4]
+            if oneutils.is_valid_attr(cfg_args, 'backends'):
+                given_backends = cfg_args.backends.split(',')
+    # [5], [6]
+    else:
+        assert (backend_args or unknown_args)
+        given_backends = [args.backend]
+    for given_backend in given_backends:
+        # make a command to run given backend driver
+        profile_path = None
+        backend_base = given_backend + '-profile'
+        for cand in backends_list:
+            if ntpath.basename(cand) == backend_base:
+                profile_path = cand
+        if not profile_path:
+            raise FileNotFoundError(backend_base + ' not found')
+        profile_cmd = [profile_path] + backend_args + unknown_args
+        if oneutils.is_valid_attr(cfg_args, given_backend):
+            profile_cmd += getattr(cfg_args, given_backend).split()
+        # run backend driver
+        oneutils.run(profile_cmd, err_prefix=backend_base)
 
 
 if __name__ == '__main__':
