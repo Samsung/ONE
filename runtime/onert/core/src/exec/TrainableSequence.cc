@@ -49,6 +49,14 @@ void TrainableSequence::forward(bool training)
   }
 }
 
+void TrainableSequence::backward()
+{
+  for (const auto &function : _trainable_fns)
+  {
+    function->backward();
+  }
+}
+
 void TrainableSequence::append(std::unique_ptr<ITrainableFunction> &&function)
 {
   _trainable_fns.push_back(std::move(function));

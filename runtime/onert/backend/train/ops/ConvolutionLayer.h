@@ -44,6 +44,7 @@ public:
                  const uint32_t dilationHeightFactor, const ir::Activation activation,
                  IPortableTensor *output);
   void forward(bool training) override;
+  void backward() override;
 };
 
 } // namespace ops

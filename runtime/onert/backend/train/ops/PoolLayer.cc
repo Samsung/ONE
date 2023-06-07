@@ -61,6 +61,11 @@ void PoolLayer::forward(bool training)
   }
 }
 
+void PoolLayer::backward()
+{
+  // TODO Implement this
+}
+
 } // namespace ops
 } // namespace train
 } // namespace backend

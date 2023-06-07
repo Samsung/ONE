@@ -43,6 +43,7 @@ public:
                  ir::FullyConnectedWeightsFormat weights_format, IPortableTensor *output,
                  const std::shared_ptr<cpu::ExternalContext> &external_context);
   void forward(bool training) override;
+  void backward() override;
 
 private:
   std::shared_ptr<cpu::ExternalContext> _external_context;

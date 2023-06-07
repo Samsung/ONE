@@ -120,6 +120,7 @@ void TrainableExecutor::executeImpl()
       auto train_seq = nnfw::misc::polymorphic_downcast<exec::TrainableSequence *>(code.fn_seq.get());
       // const auto train_seq = dynamic_cast<exec::TrainableSequence *>(code.fn_seq.get());
       train_seq->forward(true);
+      train_seq->backward();
       // auto &fn_seq = code.fn_seq;
 
       // fn_seq->initRunning();
