@@ -1169,7 +1169,7 @@ NNFW_STATUS nnfw_session::prepare_train(const nnfw_traininfo *tri)
     default:
       throw std::runtime_error("Error: Model has loss type that runtime API does not support.");
   }
-  loss_info.y_true_buf = tri->y_true_buffer;
+  // loss_info.y_true_buf = tri->y_true_buffer;
   loss_info.y_pred_index = tri->y_pred_index;
 
   _training_info->setLossInfo(loss_info);
@@ -1191,6 +1191,48 @@ NNFW_STATUS nnfw_session::prepare_train(const nnfw_traininfo *tri)
   }
 
   _state = State::PREPARED;
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_data(NNFW_DATA_TYPE, const nnfw_data *)
+{
+  // TODO Implement this
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::train()
+{
+  if (!isStatePreparedOrFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::train : "
+              << "train should be run after prepare_train" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (!_training_info->shouldTrain())
+  {
+    std::cerr << "Error during nnfw_session::train : "
+              << "train should be run after prepare_train" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  try
+  {
+    _execution->execute();
+  }
+  catch (const onert::InsufficientBufferSizeException &e)
+  {
+    // Currently insufficient buffer always means output buffer.
+    std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;
+    return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  _state = State::FINISHED_RUN;
   return NNFW_STATUS_NO_ERROR;
 }
 
