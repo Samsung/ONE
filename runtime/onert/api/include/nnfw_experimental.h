@@ -59,16 +59,28 @@ typedef struct nnfw_traininfo
   uint32_t epoch;
   uint32_t batchsize;
   NNFW_LOSS_TYPE loss_type;
-  // TODO Consider multiple expected output
   // NOTE It assumes that true buf data has the same tensor info with pred index.
-  NNFW_TYPE y_true_type;
-  const void *y_true_buffer;
-  size_t y_true_length;
   // NOTE This index is based on nnfw_output_size().
   uint32_t y_pred_index;
 } nnfw_traininfo;
 
+typedef enum
+{
+  NNFW_DATA_TYPE_TRAIN = 0,
+  NNFW_DATA_TYPE_VALID = 1,
+} NNFW_DATA_TYPE;
+
+typedef struct nnfw_data
+{
+  int num;
+  nnfw_tensorinfo *infos;
+  const void *bufs;
+} nnfw_data;
+
 NNFW_STATUS nnfw_prepare_train(nnfw_session *session, const nnfw_traininfo *train_info);
+// TODO Consider multiple expected output
+NNFW_STATUS nnfw_set_data(nnfw_session *session, NNFW_DATA_TYPE dtype, const nnfw_data *dataset);
+NNFW_STATUS nnfw_train(nnfw_session *session);
 
 /*
  * Custom kernel evaluation function

@@ -20,6 +20,8 @@
 #include "ir/Index.h"
 #include "ir/operation/Loss.h"
 
+#include <bitset>
+
 namespace onert
 {
 namespace ir
@@ -39,31 +41,55 @@ struct LossInfo
 
 class TrainingInfo
 {
+private:
+  enum info {
+    EPOCH = 0,
+    BATCH_SIZE = 1,
+    LOSS = 2,
+    END,
+  };
+
 public:
-  TrainingInfo() : _has_info{false} {}
+  TrainingInfo() {}
   TrainingInfo(const TrainingInfo &obj) = default;
   TrainingInfo(TrainingInfo &&) = default;
   TrainingInfo &operator=(const TrainingInfo &) = default;
   TrainingInfo &operator=(TrainingInfo &&) = default;
   ~TrainingInfo() = default;
 
-  bool shouldTrain() const { return _has_info; }
+  bool shouldTrain() const { return _has_info.all(); }
   const LossInfo &lossInfo() const { return _loss_info; }
   void setLossInfo(const LossInfo &loss_info)
   {
+    _has_info.set(LOSS);
     _loss_info = loss_info;
-    _has_info = true;
   }
   int32_t epoch() const { return _epoch; }
-  void setEpoch(int32_t epoch) { _epoch = epoch; }
+  void setEpoch(int32_t epoch)
+  {
+    if (epoch == 0) {
+      _has_info.reset(EPOCH);
+    } else {
+      _has_info.set(EPOCH);
+    }
+    _epoch = epoch;
+  }
   int32_t batchsize() const { return _batchsize; }
-  void setBatchSize(int32_t batchsize) { _batchsize = batchsize; }
+  void setBatchSize(int32_t batchsize)
+  {
+    if (batchsize == 0) {
+      _has_info.reset(BATCH_SIZE);
+    } else {
+      _has_info.set(BATCH_SIZE);
+    }
+    _batchsize = batchsize;
+  }
 
 private:
-  bool _has_info;
-  LossInfo _loss_info;
+  std::bitset<END> _has_info;
   int32_t _epoch;
   int32_t _batchsize;
+  LossInfo _loss_info;
 };
 
 } // namespace train

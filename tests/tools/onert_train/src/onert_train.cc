@@ -112,32 +112,22 @@ int main(const int argc, char **argv)
     verifyInputTypes();
     verifyOutputTypes();
 
-    if (args.getTrainingMode())
-    {
-      const float true_buf[10] = {
-        0.11f,
-      };
-      // prepare execution
-      nnfw_traininfo tri;
-      tri.epoch = args.getEpoch();
-      tri.batchsize = args.getBatchSize();
-      tri.loss_type = NNFW_LOSS_TYPE_MEAN_SQUARED_ERROR;
-      tri.y_true_buffer = true_buf;
-      tri.y_pred_index = 23;
+    // prepare training info
+    nnfw_traininfo tri;
+    tri.epoch = args.getEpoch();
+    tri.batchsize = args.getBatchSize();
+    tri.loss_type = NNFW_LOSS_TYPE_MEAN_SQUARED_ERROR;
+    tri.y_pred_index = 23;
 
-      // TODO When nnfw_{prepare|run} are failed, can't catch the time
-      phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
-        NNPR_ENSURE_STATUS(nnfw_prepare_train(session, &tri));
-      });
-    }
-    else
-    {
-      // TODO When nnfw_{prepare|run} are failed, can't catch the time
-      phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
-        NNPR_ENSURE_STATUS(nnfw_prepare(session));
-      });
-    }
+    // prepare dataset
+    // TODO Implement
+    NNPR_ENSURE_STATUS(nnfw_set_data(session, NNFW_DATA_TYPE_TRAIN, nullptr));
 
+    // TODO When nnfw_{prepare|run} are failed, can't catch the time
+    phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
+      NNPR_ENSURE_STATUS(nnfw_prepare_train(session, &tri));
+    });
+    
     // prepare input
     std::vector<Allocation> inputs(num_inputs);
     RandomGenerator(session).generate(inputs);
@@ -169,38 +159,48 @@ int main(const int argc, char **argv)
       NNPR_ENSURE_STATUS(nnfw_set_output_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
     }
 
-    // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on the
-    // only warmup.
-    if (verbose == 0)
+    if (args.getTrainingMode())
     {
       phases.run(
-        "WARMUP",
-        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); }, 1);
-      phases.run(
         "EXECUTE",
-        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); }, 1,
+        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_train(session)); }, 1,
         true);
     }
     else
     {
-      phases.run(
-        "WARMUP",
-        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
-        [&](const benchmark::Phase &phase, uint32_t nth) {
-          std::cout << "... "
-                    << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                    << std::endl;
-        },
-        1);
-      phases.run(
-        "EXECUTE",
-        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
-        [&](const benchmark::Phase &phase, uint32_t nth) {
-          std::cout << "... "
-                    << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                    << std::endl;
-        },
-        1, true);
+      // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on the
+      // only warmup.
+      if (verbose == 0)
+      {
+        phases.run(
+          "WARMUP",
+          [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); }, 1);
+        phases.run(
+          "EXECUTE",
+          [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); }, 1,
+          true);
+      }
+      else
+      {
+        phases.run(
+          "WARMUP",
+          [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+          [&](const benchmark::Phase &phase, uint32_t nth) {
+            std::cout << "... "
+                      << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                      << std::endl;
+          },
+          1);
+        phases.run(
+          "EXECUTE",
+          [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+          [&](const benchmark::Phase &phase, uint32_t nth) {
+            std::cout << "... "
+                      << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
+                      << std::endl;
+          },
+          1, true);
+      }
     }
 
     NNPR_ENSURE_STATUS(nnfw_close_session(session));
