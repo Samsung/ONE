@@ -81,5 +81,34 @@ void FunctionSequence::iterate(const std::function<void(IFunction &)> &fn)
   }
 }
 
+void FunctionSequence::forward(bool training)
+{
+  for (const auto &function : _trainable_fns)
+  {
+    function->forward(training);
+  }
+}
+
+void FunctionSequence::backward()
+{
+  for (const auto &function : _trainable_fns)
+  {
+    function->backward();
+  }
+}
+
+void FunctionSequence::append(std::unique_ptr<ITrainableFunction> &&function)
+{
+  _trainable_fns.push_back(std::move(function));
+}
+
+void FunctionSequence::iterate(const std::function<void(ITrainableFunction &)> &fn)
+{
+  for (const auto &func : _trainable_fns)
+  {
+    fn(*func);
+  }
+}
+
 } // namespace exec
 } // namespace onert
