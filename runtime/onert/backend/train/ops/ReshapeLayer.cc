@@ -48,6 +48,11 @@ void ReshapeLayer::forward(bool training)
   }
 }
 
+void ReshapeLayer::backward()
+{
+  // TODO Implement this
+}
+
 } // namespace ops
 } // namespace train
 } // namespace backend

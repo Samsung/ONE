@@ -37,6 +37,7 @@ public:
 
   void configure(const IPortableTensor *input, const float beta, IPortableTensor *output);
   void forward(bool training) override;
+  void backward() override;
 };
 
 } // namespace ops

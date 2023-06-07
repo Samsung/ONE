@@ -57,6 +57,11 @@ void ConvolutionLayer::forward(bool training)
   }
 }
 
+void ConvolutionLayer::backward()
+{
+  // TODO Implement this
+}
+
 } // namespace ops
 } // namespace train
 } // namespace backend

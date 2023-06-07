@@ -54,6 +54,11 @@ void FullyConnectedLayer::forward(bool training)
   }
 }
 
+void FullyConnectedLayer::backward()
+{
+  // TODO Implement this
+}
+
 } // namespace ops
 } // namespace train
 } // namespace backend

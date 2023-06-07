@@ -40,7 +40,7 @@ public:
   void prepare() override;
 
   void forward(bool training);
-  // void backward();
+  void backward();
 
   void append(std::unique_ptr<ITrainableFunction> &&function);
   void iterate(const std::function<void(ITrainableFunction &)> &fn);

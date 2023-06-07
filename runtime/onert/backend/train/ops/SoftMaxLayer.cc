@@ -48,6 +48,11 @@ void SoftMaxLayer::forward(bool training)
   }
 }
 
+void SoftMaxLayer::backward()
+{
+  // TODO Implement this
+}
+
 } // namespace ops
 } // namespace train
 } // namespace backend

@@ -28,6 +28,7 @@ class ITrainableFunction
 public:
   virtual ~ITrainableFunction() = default;
   virtual void forward(bool training) = 0;
+  virtual void backward() = 0;
 };
 
 } // namespace exec
