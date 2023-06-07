@@ -25,6 +25,7 @@
 #include <backend/basic/KernelGeneratorBase.h>
 #include <ir/Operands.h>
 #include <ir/Operations.h>
+#include <exec/ITrainableFunction.h>
 
 namespace onert
 {
@@ -49,6 +50,12 @@ public:
   void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::Softmax &) override;
 
+  std::unique_ptr<exec::ITrainableFunction> releaseFunction()
+  {
+    assert(_trainable_fn);
+    return std::move(_trainable_fn);
+  }
+
 private:
   const ir::Operands &_ctx;
   const ir::Operations &_operations_ctx;
@@ -57,6 +64,7 @@ private:
   std::shared_ptr<basic::TensorRegistry> _tensor_reg;
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
   const std::shared_ptr<ExternalContext> _external_context;
+  std::unique_ptr<exec::ITrainableFunction> _trainable_fn;
 };
 
 } // namespace train

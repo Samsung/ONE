@@ -19,6 +19,8 @@
 #include "ruy/profiler/instrumentation.h"
 #endif
 
+#include "exec/TrainableSequence.h"
+
 #include <misc/polymorphic_downcast.h>
 
 namespace onert
@@ -51,9 +53,7 @@ TrainableExecutor::TrainableExecutor(
 
   for (auto index : order)
   {
-    auto &trainable_code =
-      nnfw::misc::polymorphic_downcast<compiler::CodeAndInfo &>(code_map.at(index));
-    _code.emplace_back(std::move(trainable_code));
+    _code.emplace_back(std::move(code_map.at(index)));
   }
 }
 
@@ -117,10 +117,13 @@ void TrainableExecutor::executeImpl()
 #endif
       _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
-      auto &fn_seq = code.fn_seq;
+      auto train_seq = nnfw::misc::polymorphic_downcast<exec::TrainableSequence *>(code.fn_seq.get());
+      // const auto train_seq = dynamic_cast<exec::TrainableSequence *>(code.fn_seq.get());
+      train_seq->forward(true);
+      // auto &fn_seq = code.fn_seq;
 
-      fn_seq->initRunning();
-      fn_seq->run();
+      // fn_seq->initRunning();
+      // fn_seq->run();
 
       _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
     }
