@@ -23,6 +23,7 @@
 #include <functional>
 
 #include "exec/IFunction.h"
+#include "exec/ITrainableFunction.h"
 #include "exec/DynamicShapeInferer.h"
 #include "ir/Operations.h"
 #include "backend/ITensorRegistry.h"
@@ -32,7 +33,7 @@ namespace onert
 namespace exec
 {
 
-class FunctionSequence : public IFunction
+class FunctionSequence : public IFunction, public ITrainableFunction
 {
 public:
   template <typename... Args> FunctionSequence(Args &&... args) { initialize(std::move(args)...); }
@@ -71,6 +72,12 @@ public:
       function = std::make_unique<T>(std::move(function), args...);
     }
   }
+
+  void forward(bool training) override;
+  void backward() override;
+
+  void append(std::unique_ptr<ITrainableFunction> &&function);
+  void iterate(const std::function<void(ITrainableFunction &)> &fn);
 
 public: // methods related to dynamic tensor
   struct DynamicTensorCtx
@@ -116,6 +123,8 @@ public: // methods related to dynamic tensor
 
 protected:
   std::vector<std::unique_ptr<IFunction>> _functions;
+private:
+  std::vector<std::unique_ptr<ITrainableFunction>> _trainable_fns;
 
 protected:
   bool _enable_dynamic_shape_inferer = false;

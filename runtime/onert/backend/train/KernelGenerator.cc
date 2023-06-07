@@ -28,7 +28,6 @@
 #include <util/Utils.h>
 #include <util/logging.h>
 #include <exec/DynamicShapeInferer.h>
-#include <exec/TrainableSequence.h>
 
 #include <stdexcept>
 
@@ -69,7 +68,7 @@ KernelGenerator::KernelGenerator(
 std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
 {
   // TODO Generate FunctionSequence for backwarding as well
-  auto ret = std::make_unique<exec::TrainableSequence>();
+  auto ret = std::make_unique<exec::FunctionSequence>();
   ret->enableDynamicShapeInferer(false);
 
   const auto &op = _graph.operations().at(ind);
