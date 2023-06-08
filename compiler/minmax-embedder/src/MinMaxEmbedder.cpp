@@ -16,14 +16,21 @@
 
 #include <H5Cpp.h>
 
-#include <luci/ImporterEx.h>
-#include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
+#include <luci/ImporterEx.h>
+#include <luci/IR/CircleNode.h>
+#include <luci/IR/CircleQuantParam.h>
+#include <luci/Profile/CircleNodeID.h>
+#include <luci/Service/Validate.h>
 
 #include <arser/arser.h>
 #include <vconone/vconone.h>
 
+#include "h5/Reader.h"
+
+#include <cassert>
+#include <cmath> // for std::floor
 #include <iostream>
 #include <string>
 
@@ -34,6 +41,41 @@ void print_version(void)
 {
   std::cout << "minmax-embedder version " << vconone::get_string() << std::endl;
   std::cout << vconone::get_copyright() << std::endl;
+}
+
+/* NOTE: getNthPercentile is copied from compiler/record-minmax/include/RecordFunction.h */
+/**
+ * @brief  getNthPercentile calculates the n-th percentile of input vector (0.0 <= n <= 100.0)
+ *         linear interpolation is used when the desired percentile lies between two data points
+ */
+float getNthPercentile(std::vector<float> &vector, float percentile)
+{
+  if (percentile < 0 || percentile > 100)
+    throw std::runtime_error("Percentile must be ranged from 0 to 100");
+
+  if (vector.empty())
+    throw std::runtime_error("Percentile must take a non-empty vector as an argument");
+
+  if (vector.size() == 1)
+    return vector[0];
+
+  std::vector<float> copy;
+  copy.assign(vector.begin(), vector.end());
+  std::sort(copy.begin(), copy.end());
+
+  if (percentile == 0.0)
+    return copy.front();
+
+  if (percentile == 100.0)
+    return copy.back();
+
+  int index = static_cast<int>(std::floor((copy.size() - 1) * percentile / 100.0));
+
+  float percent_i = static_cast<float>(index) / static_cast<float>(copy.size() - 1);
+  float fraction =
+    (percentile / 100.0 - percent_i) / ((index + 1.0) / (copy.size() - 1.0) - percent_i);
+  float res = copy[index] + fraction * (copy[index + 1] - copy[index]);
+  return res;
 }
 
 } // namespace
@@ -70,9 +112,8 @@ int entry(int argc, char **argv)
   std::string mm_path = arser.get<std::string>("minmax");
   std::string ic_path = arser.get<std::string>("circle");
   std::string oc_path = arser.get<std::string>("-o");
-
-  H5::H5File _file;
-  H5::Group _group;
+  float min_percentile = arser.get<float>("--min_percentile");
+  float max_percentile = arser.get<float>("--max_percentile");
 
   // Load model from the file
   luci::ImporterEx importerex;
@@ -80,12 +121,28 @@ int entry(int argc, char **argv)
   if (module.get() == nullptr)
     return EXIT_FAILURE;
 
+  minmax::h5::Reader mmr{mm_path};
+
   for (size_t idx = 0; idx < module->size(); ++idx)
   {
     auto graph = module->graph(idx);
 
-    // embed minmax
-    // embed(graph);
+    uint32_t node_num = graph->nodes()->size();
+    for (uint32_t i = 0; i < node_num; ++i)
+    {
+      auto node = loco::must_cast<luci::CircleNode *>(graph->nodes()->at(i));
+      if (not has_node_id(node)) // Skip non-op nodes (e.g. input/const/output)
+        continue;
+      auto op_idx = luci::get_node_id(node);
+      auto minmax = mmr.read(0, idx, op_idx);
+      auto min = getNthPercentile(minmax.min_vector, min_percentile);
+      auto max = getNthPercentile(minmax.max_vector, max_percentile);
+      auto quantparam = std::make_unique<luci::CircleQuantParam>();
+      quantparam->min.push_back(min);
+      quantparam->max.push_back(max);
+      auto mutable_node = const_cast<luci::CircleNode *>(node);
+      mutable_node->quantparam(std::move(quantparam));
+    }
 
     if (!luci::validate(graph))
     {
