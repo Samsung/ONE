@@ -56,7 +56,6 @@ typedef enum
 
 typedef struct nnfw_traininfo
 {
-  uint32_t epoch;
   uint32_t batchsize;
   NNFW_LOSS_TYPE loss_type;
   // NOTE It assumes that true buf data has the same tensor info with pred index.
@@ -79,8 +78,7 @@ typedef struct nnfw_data
 
 NNFW_STATUS nnfw_prepare_train(nnfw_session *session, const nnfw_traininfo *train_info);
 // TODO Consider multiple expected output
-NNFW_STATUS nnfw_set_data(nnfw_session *session, NNFW_DATA_TYPE dtype, const nnfw_data *dataset);
-NNFW_STATUS nnfw_train(nnfw_session *session);
+NNFW_STATUS nnfw_train(nnfw_session *session, int epoch, NNFW_DATA_TYPE dtype, const nnfw_data *dataset);
 
 /*
  * Custom kernel evaluation function

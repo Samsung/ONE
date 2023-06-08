@@ -114,14 +114,9 @@ int main(const int argc, char **argv)
 
     // prepare training info
     nnfw_traininfo tri;
-    tri.epoch = args.getEpoch();
     tri.batchsize = args.getBatchSize();
     tri.loss_type = NNFW_LOSS_TYPE_MEAN_SQUARED_ERROR;
     tri.y_pred_index = 23;
-
-    // prepare dataset
-    // TODO Implement
-    NNPR_ENSURE_STATUS(nnfw_set_data(session, NNFW_DATA_TYPE_TRAIN, nullptr));
 
     // TODO When nnfw_{prepare|run} are failed, can't catch the time
     phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
@@ -163,7 +158,7 @@ int main(const int argc, char **argv)
     {
       phases.run(
         "EXECUTE",
-        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_train(session)); }, 1,
+        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_train(session, args.getEpoch(), NNFW_DATA_TYPE_TRAIN, nullptr)); }, 1,
         true);
     }
     else
