@@ -46,7 +46,7 @@ public:
     auto tr = std::make_shared<basic::TensorRegistry>();
     auto tb = std::make_shared<TensorBuilder>(tr, "Bump");
     auto grad_tr = std::make_shared<basic::TensorRegistry>();
-    auto grad_tb = std::make_shared<TensorBuilder>(tr, "Bump");
+    auto grad_tb = std::make_shared<TensorBuilder>(grad_tr, "Bump");
     auto tdata_ptr = std::make_unique<TrainableContextData>(std::move(tdata));
     auto context =
       std::make_unique<BackendContext>(this, std::move(tdata_ptr), tr, tb, grad_tr, grad_tb);
