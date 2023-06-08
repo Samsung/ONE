@@ -21,7 +21,8 @@
 #include "Config.h"
 #include "KernelGenerator.h"
 
-#include <backend/train/TrainableBackend.h>
+#include <backend/Backend.h>
+#include <backend/train/ITrainableBackend.h>
 
 #include <memory>
 
@@ -32,7 +33,7 @@ namespace backend
 namespace train
 {
 
-class Backend : public ::onert::backend::train::TrainableBackend
+class Backend : public ::onert::backend::Backend, public ITrainableBackend
 {
 public:
   Backend() : _config{std::make_shared<Config>()} {}

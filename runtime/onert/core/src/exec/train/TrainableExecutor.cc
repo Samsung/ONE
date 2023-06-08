@@ -30,9 +30,9 @@ namespace train
 
 TrainableExecutor::TrainableExecutor(
   std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
-  backend::BackendContexts &&backend_contexts, const compiler::TensorRegistries &tensor_regs,
-  compiler::CodeMap &&code_map, const std::vector<ir::OperationIndex> &order,
-  const util::TracingCtx *tracing_ctx)
+  backend::train::TrainableBackendContexts &&backend_contexts,
+  const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
+  const std::vector<ir::OperationIndex> &order, const util::TracingCtx *tracing_ctx)
   : _lowered_graph{std::move(lowered_graph)}, _backend_contexts{std::move(backend_contexts)},
     _trainable_graph{_lowered_graph->trainable_graph()}, _mutex(), _tracing_ctx(tracing_ctx)
 {

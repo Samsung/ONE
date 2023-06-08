@@ -51,7 +51,7 @@ public:
    * @param code_map @c ir::Operation and its code map
    */
   TrainableExecutor(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
-                    backend::BackendContexts &&backend_contexts,
+                    backend::train::TrainableBackendContexts &&backend_contexts,
                     const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
                     const std::vector<ir::OperationIndex> &order,
                     const util::TracingCtx *tracing_ctx);
@@ -82,7 +82,7 @@ public:
     return _output_tensors;
   }
 
-  backend::BackendContexts &getBackendContexts() { return _backend_contexts; }
+  backend::train::TrainableBackendContexts &getBackendContexts() { return _backend_contexts; }
 
 private:
   void executeImpl(void);
@@ -92,7 +92,7 @@ private:
   ExecutionObservee _subject;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<compiler::train::LoweredTrainableGraph> _lowered_graph;
-  backend::BackendContexts _backend_contexts;
+  backend::train::TrainableBackendContexts _backend_contexts;
   const ir::train::TrainableGraph &_trainable_graph;
   std::vector<backend::builtin::IOTensor *> _input_tensors;
   std::vector<backend::builtin::IOTensor *> _output_tensors;

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_TRAINABLE_BACKEND_H__
-#define __ONERT_BACKEND_TRAIN_TRAINABLE_BACKEND_H__
+#ifndef __ONERT_BACKEND_TRAIN_ITRAINABLE_BACKEND_H__
+#define __ONERT_BACKEND_TRAIN_ITRAINABLE_BACKEND_H__
 
 #include <memory>
 
-#include "backend/Backend.h"
 #include "backend/train/TrainableBackendContext.h"
 
 namespace onert
@@ -29,13 +28,9 @@ namespace backend
 namespace train
 {
 
-class TrainableBackend : public backend::Backend
+struct ITrainableBackend
 {
-public:
-  virtual ~TrainableBackend() = default;
-
-  // TODO Unify with Backend::newContext
-  using backend::Backend::newContext;
+  virtual ~ITrainableBackend() = default;
   virtual std::unique_ptr<TrainableBackendContext> newContext(TrainableContextData &&) const = 0;
 };
 
@@ -43,4 +38,4 @@ public:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_TRAIN_TRAINABLE_BACKEND_H__
+#endif // __ONERT_BACKEND_TRAIN_ITRAINABLE_BACKEND_H__

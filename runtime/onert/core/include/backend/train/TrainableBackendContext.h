@@ -90,6 +90,9 @@ public:
   std::shared_ptr<backend::ITensorRegistry> grad_tensor_registry;
 };
 
+using TrainableBackendContexts =
+  std::unordered_map<const Backend *, std::unique_ptr<TrainableBackendContext>>;
+
 } // namespace train
 } // namespace backend
 } // namespace onert
