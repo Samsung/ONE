@@ -288,15 +288,16 @@ exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph>
                                    index);
 }
 
-exec::IExecutor *ExecutorFactory::create(
-  std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
-  const util::TracingCtx *tracing_ctx, const compiler::CompilerOptions &options,
-  const std::shared_ptr<exec::IExecutors> &executors, const ir::ModelIndex &index)
+exec::IExecutor *
+ExecutorFactory::create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
+                        const util::TracingCtx *tracing_ctx,
+                        const compiler::CompilerOptions &options,
+                        const std::shared_ptr<exec::IExecutors> &, const ir::ModelIndex &)
 {
   if (options.executor != "Linear")
     throw std::runtime_error("ExecutorFactory: TrainableExecutor supports only 'Linear' now");
 
-  return createTrainableExecutor(std::move(lowered_graph), tracing_ctx, options, executors, index);
+  return createTrainableExecutor(std::move(lowered_graph), tracing_ctx, options);
 }
 
 void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
@@ -581,8 +582,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
 exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
-  const util::TracingCtx *tracing_ctx, const compiler::CompilerOptions &options,
-  const std::shared_ptr<exec::IExecutors> &executors, const ir::ModelIndex &index)
+  const util::TracingCtx *tracing_ctx, const compiler::CompilerOptions &options)
 {
   auto &graph = lowered_graph->graph();
 
@@ -632,9 +632,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
 
   // TODO Change to TrainableBackendContexts
   prepareMigrantTensors(*lowered_graph, base_backend_contexts);
-
-  // Give some runtime objects to builtin KernelGenerator
-  prepareBuiltinBackend(tensor_regs, executors, base_backend_contexts, index);
   base_backend_contexts.clear();
 
   ExecutionBuilder builder;
@@ -703,10 +700,10 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     for (auto &&pair : codes)
     {
       auto &op_ind = pair.first;
-      auto &fn_seq = pair.second;
+      auto &tn_seq = pair.second;
       auto &op = lowered_graph->graph().operations().at(op_ind);
       auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
-      builder.append(op_ind, {op_ind, &op, lower_info, std::move(fn_seq)});
+      builder.append(op_ind, {op_ind, &op, lower_info, std::move(tn_seq)});
     }
   }
 

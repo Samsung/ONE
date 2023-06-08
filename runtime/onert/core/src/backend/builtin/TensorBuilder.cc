@@ -35,6 +35,15 @@ TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg)
   /* empty */
 }
 
+TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
+                             const std::string planner_id)
+  : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg->base_reg())},
+    _static_tensor_mgr{new basic::StaticTensorManager(_tensor_reg->base_reg(), planner_id,
+                                                      _dynamic_tensor_mgr.get())}
+{
+  /* empty */
+}
+
 void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
                                        ir::Layout backend_layout)
 {
