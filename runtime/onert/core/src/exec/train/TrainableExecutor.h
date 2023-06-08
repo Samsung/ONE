@@ -64,6 +64,8 @@ public:
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
                const std::vector<backend::IPortableTensor *> &outputs) override;
 
+  void train(const IODescription &desc);
+
   // Used only in Dataflow and Parallel Executors
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final
   {
@@ -86,6 +88,7 @@ public:
 
 private:
   void executeImpl(void);
+  void trainImpl(void);
 
 private:
   std::vector<compiler::CodeAndInfo> _code;

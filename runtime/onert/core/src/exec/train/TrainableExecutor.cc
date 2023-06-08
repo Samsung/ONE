@@ -117,6 +117,83 @@ void TrainableExecutor::executeImpl()
 
       auto &fn_seq = code.fn_seq;
 
+      fn_seq->forward(false);
+
+      _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
+    }
+    _subject.notifySubgraphEnd(profiling_subg_index);
+  }
+  else
+  {
+    for (auto &&code : _code)
+    {
+// TODO : Move ruy profiler into ExecutionObserver
+#ifdef RUY_PROFILER
+      ruy::profiler::ScopeLabel label(code.op->name());
+#endif
+      auto &fn_seq = code.fn_seq;
+
+      fn_seq->forward(false);
+    }
+  }
+}
+
+void TrainableExecutor::train(const IODescription &desc)
+{
+  // For thread-safe, use mutex
+  // TODO: if all used backends on this executor are thread-safe,
+  //       do not need to use mutex (otherwise, use mutex)
+  std::lock_guard<std::mutex> lock(_mutex);
+
+  // TODO Update IO tensors if desc has dynamic input
+  // Set input(s)
+  assert(_input_tensors.size() == desc.inputs.size());
+  for (uint32_t i = 0; i < _input_tensors.size(); ++i)
+  {
+    auto tensor = _input_tensors[i];
+
+    // TODO Check if (desc.inputs[i] == nullptr)
+    // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
+    tensor->setUserTensor(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
+                          desc.inputs[i]->size);
+  }
+
+  // Set output(s)
+  assert(_output_tensors.size() == desc.outputs.size());
+  for (uint32_t i = 0; i < _output_tensors.size(); ++i)
+  {
+    auto tensor = _output_tensors[i];
+
+    if (desc.outputs[i] == nullptr)
+      throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
+    tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
+  }
+
+  trainImpl();
+
+  // TODO Update output(s) desc if desc has dynamic input
+
+  // TODO Support backwarding
+}
+
+void TrainableExecutor::trainImpl()
+{
+  if (_tracing_ctx)
+  {
+    auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_trainable_graph.graph());
+
+    _subject.notifySubgraphBegin(profiling_subg_index);
+    for (auto &&code : _code)
+    {
+      const auto backend = code.lower_info->backend();
+// TODO : Move ruy profiler into ExecutionObserver
+#ifdef RUY_PROFILER
+      ruy::profiler::ScopeLabel label(code.op->name());
+#endif
+      _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
+
+      auto &fn_seq = code.fn_seq;
+
       fn_seq->forward(true);
       fn_seq->backward();
 
@@ -134,8 +211,8 @@ void TrainableExecutor::executeImpl()
 #endif
       auto &fn_seq = code.fn_seq;
 
-      fn_seq->initRunning();
-      fn_seq->run();
+      fn_seq->forward(true);
+      fn_seq->backward();
     }
   }
 }
