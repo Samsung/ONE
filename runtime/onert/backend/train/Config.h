@@ -36,7 +36,6 @@ public:
   bool supportPermutation() override { return true; }
   bool supportDynamicTensor() override { return false; }
   bool supportFP16() override { return false; }
-  bool supportTraining() override { return true; }
 
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }
 };

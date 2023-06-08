@@ -28,6 +28,7 @@
 #include "../../ir/verifier/Verifier.h"
 
 #include "backend/Backend.h"
+#include "backend/train/ITrainableBackend.h"
 #include "compiler/BackendResolver.h"
 #include "util/logging.h"
 
@@ -83,9 +84,8 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
     [&](const ir::OperationIndex &op_ind, const ir::Operation &) {
       const auto backend = backend_resolver->getBackend(op_ind);
 
-      // TODO Remove hardcoded
-      if (!(backend->config()->supportTraining()) &&
-          backend->config()->id() != backend::builtin::Config::ID)
+      // TODO Remove dynamic_cast
+      if (dynamic_cast<const backend::train::ITrainableBackend *>(backend) == nullptr)
       {
         throw std::runtime_error(backend->config()->id() + "backend does not support training");
       }
