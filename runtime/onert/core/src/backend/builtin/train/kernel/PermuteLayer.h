@@ -40,6 +40,8 @@ public:
 
   void forward(bool training) override;
 
+  void backward() override;
+
   // TODO Add methods for training
 };
 

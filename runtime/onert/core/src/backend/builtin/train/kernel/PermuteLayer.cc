@@ -36,6 +36,11 @@ PermuteLayer::PermuteLayer(const std::vector<ITensor *> &src_tensors,
 
 void PermuteLayer::forward(bool) { builtin::kernel::PermuteLayer::run(); }
 
+void PermuteLayer::backward()
+{
+  // TODO implement
+}
+
 } // namespace kernel
 } // namespace train
 } // namespace builtin
