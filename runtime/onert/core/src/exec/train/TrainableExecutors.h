@@ -17,6 +17,7 @@
 #ifndef __ONERT_EXEC_TRAIN_TRAINABLE_EXECUTORS_H__
 #define __ONERT_EXEC_TRAIN_TRAINABLE_EXECUTORS_H__
 
+#include "TrainableExecutor.h"
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
 
@@ -49,8 +50,10 @@ public:
   void emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
                std::unique_ptr<IExecutor> exec) override;
 
-  IExecutor *at(const ir::ModelIndex &model_index,
-                const ir::SubgraphIndex &subg_index) const override;
+  TrainableExecutor *at(const ir::ModelIndex &model_index,
+                        const ir::SubgraphIndex &subg_index) const override;
+
+  TrainableExecutor *entryExecutor() const { return at(ir::ModelIndex{0}, ir::SubgraphIndex{0}); }
 
   uint32_t inputSize() const override;
 
@@ -64,7 +67,7 @@ public:
 
 private:
   // TODO Append model index to ModelIndex
-  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _executors;
+  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<TrainableExecutor>> _executors;
 };
 
 } // namespace train

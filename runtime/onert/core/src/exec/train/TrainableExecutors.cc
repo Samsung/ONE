@@ -30,11 +30,13 @@ namespace train
 void TrainableExecutors::emplace(const ir::ModelIndex &, const ir::SubgraphIndex &subg_index,
                                  std::unique_ptr<IExecutor> exec)
 {
-  // TODO TODO polymorphic_downcast
-  _executors.emplace(subg_index, std::move(exec));
+  std::unique_ptr<TrainableExecutor> t_exec{
+    nnfw::misc::polymorphic_downcast<TrainableExecutor *>(exec.release())};
+  _executors.emplace(subg_index, std::move(t_exec));
 }
 
-IExecutor *TrainableExecutors::at(const ir::ModelIndex &, const ir::SubgraphIndex &subg_index) const
+TrainableExecutor *TrainableExecutors::at(const ir::ModelIndex &,
+                                          const ir::SubgraphIndex &subg_index) const
 {
   return _executors.at(subg_index).get();
 }
