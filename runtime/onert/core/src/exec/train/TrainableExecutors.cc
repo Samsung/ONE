@@ -71,7 +71,7 @@ void TrainableExecutors::train(const IODescription &desc)
 {
   if (_executors.size() > 1)
     throw std::runtime_error("TrainableExecutors does not support multiple executors yet");
-  entryExecutor()->execute(desc);
+  entryExecutor()->train(desc);
 
   // TODO Support multple executors
 }
