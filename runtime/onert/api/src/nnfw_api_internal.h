@@ -164,8 +164,7 @@ public:
    */
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
   NNFW_STATUS prepare_train(const nnfw_traininfo *tri);
-  NNFW_STATUS set_data(NNFW_DATA_TYPE dtype, const nnfw_data *dataset);
-  NNFW_STATUS train();
+  NNFW_STATUS train(int epoch, NNFW_DATA_TYPE dtype, const nnfw_data *dataset);
   // NNFW_STATUS set_loss(NNFW_LOSS_TYPE loss_type, const void *y_true_buf);
 
 private:

@@ -1173,7 +1173,6 @@ NNFW_STATUS nnfw_session::prepare_train(const nnfw_traininfo *tri)
   loss_info.y_pred_index = tri->y_pred_index;
 
   _training_info->setLossInfo(loss_info);
-  _training_info->setEpoch(tri->epoch);
   _training_info->setBatchSize(tri->batchsize);
 
   try
@@ -1194,13 +1193,7 @@ NNFW_STATUS nnfw_session::prepare_train(const nnfw_traininfo *tri)
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::set_data(NNFW_DATA_TYPE, const nnfw_data *)
-{
-  // TODO Implement this
-  return NNFW_STATUS_NO_ERROR;
-}
-
-NNFW_STATUS nnfw_session::train()
+NNFW_STATUS nnfw_session::train(int, NNFW_DATA_TYPE, const nnfw_data *)
 {
   if (!isStatePreparedOrFinishedRun())
   {
@@ -1218,7 +1211,8 @@ NNFW_STATUS nnfw_session::train()
 
   try
   {
-    _execution->train();
+    // TODO Implement TrainingData
+    _execution->train(/* epoch, training_data */);
   }
   catch (const onert::InsufficientBufferSizeException &e)
   {

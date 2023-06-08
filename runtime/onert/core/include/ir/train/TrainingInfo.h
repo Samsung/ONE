@@ -43,9 +43,8 @@ class TrainingInfo
 {
 private:
   enum info {
-    EPOCH = 0,
-    BATCH_SIZE = 1,
-    LOSS = 2,
+    BATCH_SIZE,
+    LOSS,
     END,
   };
 
@@ -64,16 +63,6 @@ public:
     _has_info.set(LOSS);
     _loss_info = loss_info;
   }
-  int32_t epoch() const { return _epoch; }
-  void setEpoch(int32_t epoch)
-  {
-    if (epoch == 0) {
-      _has_info.reset(EPOCH);
-    } else {
-      _has_info.set(EPOCH);
-    }
-    _epoch = epoch;
-  }
   int32_t batchsize() const { return _batchsize; }
   void setBatchSize(int32_t batchsize)
   {
@@ -87,7 +76,6 @@ public:
 
 private:
   std::bitset<END> _has_info;
-  int32_t _epoch;
   int32_t _batchsize;
   LossInfo _loss_info;
 };
