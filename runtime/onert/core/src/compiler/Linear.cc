@@ -28,13 +28,13 @@ namespace compiler
 {
 
 // TODO(easy) Change the LoweredGraph param to Graph
-std::vector<ir::OperationIndex> Linear::linearize(const compiler::LoweredGraph &lowered_graph)
+std::vector<ir::OperationIndex> Linear::linearize(const compiler::ILoweredGraph &lowered_graph)
 {
   return lowered_graph.graph().topolSortOperations();
 }
 
 // TODO(easy) Change the LoweredGraph param to Graph
-void Linear::dump(const compiler::LoweredGraph &lowered_graph,
+void Linear::dump(const compiler::ILoweredGraph &lowered_graph,
                   const std::vector<ir::OperationIndex> &order)
 {
   for (const auto ind : order)

@@ -16,6 +16,7 @@
 
 #include "PermutationEliminationPass.h"
 
+#include "backend/Backend.h"
 #include "util/logging.h"
 
 namespace onert

@@ -89,7 +89,7 @@ private:
   DeallocList _dealloc_list;
 };
 
-void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
+void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
                                  const backend::BackendContexts &backend_contexts,
                                  const ir::OperandIndexSequence &indices)
 {
@@ -120,7 +120,8 @@ void initializeSubgraphIOTensors(compiler::LoweredGraph &lowered_graph,
   }
 }
 
-backend::BackendContexts createBackendContexts(compiler::LoweredGraph &lgraph, bool linear_executor)
+backend::BackendContexts createBackendContexts(compiler::ILoweredGraph &lgraph,
+                                               bool linear_executor)
 {
   backend::BackendContexts contexts;
   auto &backend_manager = compiler::BackendManager::get();
@@ -261,7 +262,7 @@ exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph>
                                    index);
 }
 
-void ExecutorFactory::prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
+void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
                                             const backend::BackendContexts &backend_contexts)
 {
   TensorRegistries tensor_regs{backend_contexts, true};
