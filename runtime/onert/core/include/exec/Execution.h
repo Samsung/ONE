@@ -142,6 +142,8 @@ public:
    */
   bool isFinished(void) const;
 
+  void train();
+
   ir::Shape getInputShape(ir::IOIndex ind) const;
   ir::Shape getOutputShape(ir::IOIndex ind) const;
 

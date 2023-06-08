@@ -16,7 +16,10 @@
 
 #include "exec/Execution.h"
 
+#include "train/TrainableExecutors.h"
 #include "util/logging.h"
+
+#include <misc/polymorphic_downcast.h>
 
 namespace onert
 {
@@ -150,6 +153,22 @@ void Execution::waitFinish()
 }
 
 bool Execution::isFinished(void) const { return finished; }
+
+void Execution::train()
+{
+  const auto execs = dynamic_cast<exec::train::TrainableExecutors *>(_executors.get());
+  if (!execs)
+  {
+    throw std::runtime_error{"Supported only TrainableExecutor"};
+  }
+
+  VERBOSE(Execution) << "Start training" << std::endl;
+
+  execs->execute(_io_desc);
+  finished = true;
+
+  VERBOSE(Execution) << "training finished" << std::endl;
+}
 
 ir::Shape Execution::getInputShape(ir::IOIndex ind) const
 {

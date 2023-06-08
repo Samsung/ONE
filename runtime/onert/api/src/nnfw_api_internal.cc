@@ -1218,7 +1218,7 @@ NNFW_STATUS nnfw_session::train()
 
   try
   {
-    _execution->execute();
+    _execution->train();
   }
   catch (const onert::InsufficientBufferSizeException &e)
   {
