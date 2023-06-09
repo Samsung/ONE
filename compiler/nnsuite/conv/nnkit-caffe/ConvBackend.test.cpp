@@ -35,8 +35,8 @@ public:
   TestModel(const std::string &ifm_name, const feature::Shape &ifm_shape,
             const std::string &ofm_name, const feature::Shape &ofm_shape,
             const kernel::Shape &ker_shape, const kernel::Layout &ker_layout, float *ker_data)
-    : _ifm_name(ifm_name), _ifm_shape(ifm_shape), _ofm_name(ofm_name),
-      _ofm_shape(ofm_shape), _ker{ker_shape, ker_layout, ker_data}
+    : _ifm_name(ifm_name), _ifm_shape(ifm_shape), _ofm_name(ofm_name), _ofm_shape(ofm_shape),
+      _ker{ker_shape, ker_layout, ker_data}
   {
     // DO NOTHING
   }

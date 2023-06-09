@@ -47,9 +47,8 @@ using ActivationBuilder = ::onert::backend::acl_common::AclActivationBuilder<
 KernelGenerator::KernelGenerator(
   const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
   const std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> &tensor_reg)
-  : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()),
-    _operations_ctx(graph.operations()), _current_layout{graph.layout()},
-    _tensor_builder(tensor_builder), _tensor_reg(tensor_reg)
+  : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()), _operations_ctx(graph.operations()),
+    _current_layout{graph.layout()}, _tensor_builder(tensor_builder), _tensor_reg(tensor_reg)
 {
   // DO NOTHING
 }

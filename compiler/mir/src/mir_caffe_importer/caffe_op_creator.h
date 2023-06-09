@@ -132,11 +132,11 @@ private:
 
   mir::TensorVariant convertBlob(const caffe::BlobProto &blob);
 
-  template <typename OpType, typename... Types> mir::Operation *createOp(Types &&... args);
+  template <typename OpType, typename... Types> mir::Operation *createOp(Types &&...args);
 };
 
 template <typename OpType, typename... Types>
-mir::Operation *CaffeOpCreator::createOp(Types &&... args)
+mir::Operation *CaffeOpCreator::createOp(Types &&...args)
 {
   return _graph->create<OpType>(std::forward<Types>(args)...);
 }

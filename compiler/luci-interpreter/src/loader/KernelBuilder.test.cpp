@@ -99,7 +99,7 @@ protected:
 
   std::unique_ptr<IMemoryManager> _memory_manager;
 
-  template <typename NodeT, typename... Args> NodeT *createNode(Args &&... args)
+  template <typename NodeT, typename... Args> NodeT *createNode(Args &&...args)
   {
     auto *node = _graph.nodes()->create<NodeT>(std::forward<Args>(args)...);
     // The actual type does not matter for the purpose of the tests.

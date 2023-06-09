@@ -43,7 +43,7 @@ class UserExn : public std::exception
 public:
   UserExn() = delete;
 
-  template <typename... Info> UserExn(const std::string &msg, Info &&... args)
+  template <typename... Info> UserExn(const std::string &msg, Info &&...args)
   {
     std::stringstream out;
 
@@ -58,7 +58,7 @@ public:
 
 private:
   template <typename Attr, typename Val, typename... AttsVals>
-  void build_info(std::stringstream &out, Attr &attr, Val &val, AttsVals &... args)
+  void build_info(std::stringstream &out, Attr &attr, Val &val, AttsVals &...args)
   {
     out << pepper::str(attr, " = ", val);
     out << ", ";

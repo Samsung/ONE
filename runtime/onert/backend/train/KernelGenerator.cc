@@ -121,8 +121,8 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<ExternalContext> &external_context,
                                  std::shared_ptr<exec::train::optimizer::Optimizer> optimizer)
   : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
-    _tensor_reg{tensor_reg},
-    _external_context(external_context), _optimizer{optimizer}, _update_funcs{}
+    _tensor_reg{tensor_reg}, _external_context(external_context), _optimizer{optimizer},
+    _update_funcs{}
 {
   // DO NOTHING
 }

@@ -46,7 +46,7 @@ public:
   Node *arg(uint32_t N) const final { return _arg.node(); }
   void drop(void) final { _arg.node(nullptr); }
 
-  Node *in(void)const { return _arg.node(); }
+  Node *in(void) const { return _arg.node(); }
   void in(Node *node) { _arg.node(node); }
 
 private:
