@@ -87,7 +87,7 @@ public:
 public:
   // "Layer" is in theory a subgraph builder.
   template <typename Layer, typename... Args>
-  auto push(Args &&... args)
+  auto push(Args &&...args)
     -> decltype(static_cast<Layer *>(nullptr)->operator()(static_cast<Context *>(nullptr)))
   {
     Layer layer{std::forward<Args>(args)...};

@@ -37,7 +37,7 @@ public:
   Domain(const Domain &) = default;
 
 public:
-  template <typename... Args> Closure operator()(Args &&... indices)
+  template <typename... Args> Closure operator()(Args &&...indices)
   {
     return Closure{_id, std::forward<Args>(indices)...};
   }

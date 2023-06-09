@@ -30,8 +30,8 @@ UntrainableOperationConverter::UntrainableOperationConverter(ir::train::Trainabl
 {
 }
 
-std::unique_ptr<ir::train::ITrainableOperation> UntrainableOperationConverter::
-operator()(const ir::IOperation &op)
+std::unique_ptr<ir::train::ITrainableOperation>
+UntrainableOperationConverter::operator()(const ir::IOperation &op)
 {
   op.accept(*this);
 

@@ -25,13 +25,13 @@ namespace pp
 
 template <typename Arg> static inline void _fmt(std::ostream &os, const Arg &arg) { os << arg; }
 template <typename Arg, typename... Args>
-static inline void _fmt(std::ostream &os, const Arg &arg, const Args &... args)
+static inline void _fmt(std::ostream &os, const Arg &arg, const Args &...args)
 {
   _fmt(os, arg);
   _fmt(os, args...);
 }
 
-template <typename... Args> static inline std::string fmt(const Args &... args)
+template <typename... Args> static inline std::string fmt(const Args &...args)
 {
   std::stringstream ss;
   _fmt(ss, args...);

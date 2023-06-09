@@ -27,7 +27,7 @@ namespace mir_interpreter
 {
 
 template <template <typename> class F, typename... Args>
-void dispatch(mir::DataType dt, Args &&... args)
+void dispatch(mir::DataType dt, Args &&...args)
 {
   switch (dt)
   {
