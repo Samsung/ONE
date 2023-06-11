@@ -1,5 +1,8 @@
 var NAVTREEINDEX169 =
 {
+"import_2include_2luci_2_import_2_nodes_2_circle_leaky_relu_8h_source.html":[35,0,0,51,2,0,0,0,0,42],
+"import_2include_2luci_2_import_2_nodes_2_circle_less_8h.html":[35,0,0,51,2,0,0,0,0,43],
+"import_2include_2luci_2_import_2_nodes_2_circle_less_8h_source.html":[35,0,0,51,2,0,0,0,0,43],
 "import_2include_2luci_2_import_2_nodes_2_circle_less_equal_8h.html":[35,0,0,51,2,0,0,0,0,44],
 "import_2include_2luci_2_import_2_nodes_2_circle_less_equal_8h_source.html":[35,0,0,51,2,0,0,0,0,44],
 "import_2include_2luci_2_import_2_nodes_2_circle_local_response_normalization_8h.html":[35,0,0,51,2,0,0,0,0,45],
@@ -246,8 +249,5 @@ var NAVTREEINDEX169 =
 "import_2src_2_nodes_2_circle_log_8cpp.html":[35,0,0,51,2,1,0,46],
 "import_2src_2_nodes_2_circle_log_8cpp_source.html":[35,0,0,51,2,1,0,46],
 "import_2src_2_nodes_2_circle_log_softmax_8cpp.html":[35,0,0,51,2,1,0,51],
-"import_2src_2_nodes_2_circle_log_softmax_8cpp_source.html":[35,0,0,51,2,1,0,51],
-"import_2src_2_nodes_2_circle_logical_and_8cpp.html":[35,0,0,51,2,1,0,47],
-"import_2src_2_nodes_2_circle_logical_and_8cpp_source.html":[35,0,0,51,2,1,0,47],
-"import_2src_2_nodes_2_circle_logical_not_8cpp.html":[35,0,0,51,2,1,0,48]
+"import_2src_2_nodes_2_circle_log_softmax_8cpp_source.html":[35,0,0,51,2,1,0,51]
 };

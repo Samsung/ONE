@@ -1,5 +1,8 @@
 var NAVTREEINDEX170 =
 {
+"import_2src_2_nodes_2_circle_logical_and_8cpp.html":[35,0,0,51,2,1,0,47],
+"import_2src_2_nodes_2_circle_logical_and_8cpp_source.html":[35,0,0,51,2,1,0,47],
+"import_2src_2_nodes_2_circle_logical_not_8cpp.html":[35,0,0,51,2,1,0,48],
 "import_2src_2_nodes_2_circle_logical_not_8cpp_source.html":[35,0,0,51,2,1,0,48],
 "import_2src_2_nodes_2_circle_logical_or_8cpp.html":[35,0,0,51,2,1,0,49],
 "import_2src_2_nodes_2_circle_logical_or_8cpp_source.html":[35,0,0,51,2,1,0,49],
@@ -246,8 +249,5 @@ var NAVTREEINDEX170 =
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_abs_8h.html":[35,0,0,51,3,0,0,0,0,0],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_abs_8h_source.html":[35,0,0,51,3,0,0,0,0,0],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_add_8h.html":[35,0,0,51,3,0,0,0,0,1],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_add_8h_source.html":[35,0,0,51,3,0,0,0,0,1],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_add_n_8h.html":[35,0,0,51,3,0,0,0,0,2],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_add_n_8h_source.html":[35,0,0,51,3,0,0,0,0,2],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_arg_max_8h.html":[35,0,0,51,3,0,0,0,0,3]
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_add_8h_source.html":[35,0,0,51,3,0,0,0,0,1]
 };

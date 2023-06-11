@@ -1,5 +1,11 @@
 var NAVTREEINDEX205 =
 {
+"struct_log_softmax_chef_factory.html":[34,0,280],
+"struct_log_softmax_chef_factory.html#a9e4af538a543dc5cd3f1f265db173395":[34,0,280,0],
+"struct_logical_and_chef_factory.html":[34,0,272],
+"struct_logical_and_chef_factory.html#a017029664d7fdb4cebb2a681a1a7a979":[34,0,272,0],
+"struct_logical_not_chef_factory.html":[34,0,274],
+"struct_logical_not_chef_factory.html#a51e24f6f31d4d2b2a76f27cf875d11d4":[34,0,274,0],
 "struct_logical_or_chef_factory.html":[34,0,276],
 "struct_logical_or_chef_factory.html#a20a34ab0241a78f0c22e31a24c930875":[34,0,276,0],
 "struct_logistic_chef_factory.html":[34,0,278],
@@ -243,11 +249,5 @@ var NAVTREEINDEX205 =
 "struct_tanh_chef_factory.html#a7385bd4d83779b5990cd13ecd78b5c78":[34,0,444,0],
 "struct_tensor3_d.html":[34,0,446],
 "struct_tensor3_d.html#a0ee67f04428e2350fec3aa363e450917":[34,0,446,3],
-"struct_tensor3_d.html#a1d91864fa8ac61af59d11d32085d58bc":[34,0,446,1],
-"struct_tensor3_d.html#a3df1b747e617298a2259f65d16f8490c":[34,0,446,0],
-"struct_tensor3_d.html#a6c0aebcfb94635b4c90c44333373abfe":[34,0,446,4],
-"struct_tensor3_d.html#afc2a0b73b46c58ce61e96299e4e905b5":[34,0,446,2],
-"struct_tensor4_d.html":[34,0,447],
-"struct_tensor4_d.html#a35e1aa61c328b19714560da50535f11e":[34,0,447,0],
-"struct_tensor4_d.html#a6a8564124d3dea43de42d28797f6f0ec":[34,0,447,5]
+"struct_tensor3_d.html#a1d91864fa8ac61af59d11d32085d58bc":[34,0,446,1]
 };

@@ -1,5 +1,11 @@
 var NAVTREEINDEX202 =
 {
+"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#acddad12a30710fc6fb86a11d59b73ed2":[35,0,4,2,2,0,4,9,3],
+"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#ad422f5f8c97d02f4768eafa9d13c379e":[35,0,4,2,2,0,4,9,32],
+"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#adc2d975b105929881bafff90fef477bf":[35,0,4,2,2,0,4,9,4],
+"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#addd08a55e11dbcc499dddd1413bb31e1":[35,0,4,2,2,0,4,9,16],
+"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#adeb7518da50c24d5d3a751081261d54d":[35,0,4,2,2,0,4,9,9],
+"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#ae543188bf83bab60cbec3ecd803f71b6":[35,0,4,2,2,0,4,9,2],
 "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#aef3d1762a92b8fa3d998fa47224a1592":[35,0,4,2,2,0,4,9,5],
 "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#af4359b3ad21cce8f406608664891f48f":[35,0,4,2,2,0,4,9,30],
 "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#aff0e4db6db66437c1e13ea667e4d708e":[35,0,4,2,2,0,4,9,29],
@@ -243,11 +249,5 @@ var NAVTREEINDEX202 =
 "service_2src_2_nodes_2_circle_log_8cpp.html":[35,0,0,51,10,1,0,47],
 "service_2src_2_nodes_2_circle_log_8cpp_source.html":[35,0,0,51,10,1,0,47],
 "service_2src_2_nodes_2_circle_log_softmax_8cpp.html":[35,0,0,51,10,1,0,52],
-"service_2src_2_nodes_2_circle_log_softmax_8cpp_source.html":[35,0,0,51,10,1,0,52],
-"service_2src_2_nodes_2_circle_logical_and_8cpp.html":[35,0,0,51,10,1,0,48],
-"service_2src_2_nodes_2_circle_logical_and_8cpp_source.html":[35,0,0,51,10,1,0,48],
-"service_2src_2_nodes_2_circle_logical_not_8cpp.html":[35,0,0,51,10,1,0,49],
-"service_2src_2_nodes_2_circle_logical_not_8cpp_source.html":[35,0,0,51,10,1,0,49],
-"service_2src_2_nodes_2_circle_logical_or_8cpp.html":[35,0,0,51,10,1,0,50],
-"service_2src_2_nodes_2_circle_logical_or_8cpp_source.html":[35,0,0,51,10,1,0,50]
+"service_2src_2_nodes_2_circle_log_softmax_8cpp_source.html":[35,0,0,51,10,1,0,52]
 };

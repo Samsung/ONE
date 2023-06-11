@@ -1,5 +1,8 @@
 var NAVTREEINDEX190 =
 {
+"namespaceonert_1_1backend_1_1cpu_1_1ops.html#ada7a2f8ca271c7940fe46e54b0163588aa9130c0c8cfb5cbb3b70c98f89d3d96c":[33,0,91,1,6,0,54,0],
+"namespaceonert_1_1backend_1_1cpu_1_1ops.html#ada7a2f8ca271c7940fe46e54b0163588af66ca3c8e49231635fce6e56fadbc791":[33,0,91,1,6,0,54,1],
+"namespaceonert_1_1backend_1_1cpu_1_1ops.html#ae4d438d3d3062bfd95a6e0caed125457":[33,0,91,1,6,0,71],
 "namespaceonert_1_1backend_1_1cpu_1_1ops.html#af8c9bd4e9cf277a0b838202e05713ec4":[33,0,91,1,6,0,57],
 "namespaceonert_1_1backend_1_1cpu_1_1ops.html#af8c9bd4e9cf277a0b838202e05713ec4a0257bd7c53d8e1249304a2a020836e08":[33,0,91,1,6,0,57,8],
 "namespaceonert_1_1backend_1_1cpu_1_1ops.html#af8c9bd4e9cf277a0b838202e05713ec4a19cbfb4904c3202ff69a412c142cda6c":[33,0,91,1,6,0,57,11],
@@ -246,8 +249,5 @@ var NAVTREEINDEX190 =
 "namespaceonert_1_1tflite__loader.html":[33,0,91,9],
 "namespaceonert_1_1tflite__loader.html#aaeb6354a5eb1670b7fa1142d6b89ff13":[33,0,91,9,0],
 "namespaceonert_1_1trix__loader.html":[33,0,91,10],
-"namespaceonert_1_1trix__loader.html#a5ee573709b72edfadaced92d654e16ae":[33,0,91,10,2],
-"namespaceonert_1_1util.html":[33,0,91,11],
-"namespaceonert_1_1util.html#a16a30753c508a1c04fe3d98d3081a378":[33,0,91,11,9],
-"namespaceonert_1_1util.html#a1f772352fb1129126666b3d06ce74f80":[33,0,91,11,18]
+"namespaceonert_1_1trix__loader.html#a5ee573709b72edfadaced92d654e16ae":[33,0,91,10,2]
 };

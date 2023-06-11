@@ -1,5 +1,11 @@
 var NAVTREEINDEX195 =
 {
+"onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_dequantize_8h_source.html":[35,0,3,3,1,3,7],
+"onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_elu_8h.html":[35,0,3,3,1,3,8],
+"onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_elu_8h_source.html":[35,0,3,3,1,3,8],
+"onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_fully_connected_8h.html":[35,0,3,3,1,3,10],
+"onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_fully_connected_8h.html#a2035e5e2e1c746faf3b9cc78fed274d0":[35,0,3,3,1,3,10,0],
+"onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_fully_connected_8h.html#a3b564158b3484e61edf2cada7f5e7d35":[35,0,3,3,1,3,10,1],
 "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_fully_connected_8h_source.html":[35,0,3,3,1,3,10],
 "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_l2_normalize_8h.html":[35,0,3,3,1,3,11],
 "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_l2_normalize_8h_source.html":[35,0,3,3,1,3,11],
@@ -243,11 +249,5 @@ var NAVTREEINDEX195 =
 "onert-micro_2luci-interpreter_2src_2kernels_2_logical_and_8cpp_source.html":[35,0,3,3,2,1,58],
 "onert-micro_2luci-interpreter_2src_2kernels_2_logical_and_8h.html":[35,0,3,3,2,1,59],
 "onert-micro_2luci-interpreter_2src_2kernels_2_logical_and_8h_source.html":[35,0,3,3,2,1,59],
-"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp.html":[35,0,3,3,2,1,60],
-"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp_source.html":[35,0,3,3,2,1,60],
-"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8h.html":[35,0,3,3,2,1,61],
-"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8h_source.html":[35,0,3,3,2,1,61],
-"onert-micro_2luci-interpreter_2src_2kernels_2_logical_or_8cpp.html":[35,0,3,3,2,1,62],
-"onert-micro_2luci-interpreter_2src_2kernels_2_logical_or_8cpp_source.html":[35,0,3,3,2,1,62],
-"onert-micro_2luci-interpreter_2src_2kernels_2_logical_or_8h.html":[35,0,3,3,2,1,63]
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp.html":[35,0,3,3,2,1,60]
 };

@@ -1,5 +1,11 @@
 var NAVTREEINDEX201 =
 {
+"runtime_2onert_2backend_2ruy_2_config_8h.html":[35,0,4,2,1,6,5],
+"runtime_2onert_2backend_2ruy_2_config_8h_source.html":[35,0,4,2,1,6,5],
+"runtime_2onert_2backend_2ruy_2_tensor_8h.html":[35,0,4,2,1,6,11],
+"runtime_2onert_2backend_2ruy_2_tensor_8h.html#a43249f4ae1d9e70164694bbe4c47aab2":[35,0,4,2,1,6,11,1],
+"runtime_2onert_2backend_2ruy_2_tensor_8h.html#a90c3d6ad7570204c1e0b655b27ea6c6a":[35,0,4,2,1,6,11,0],
+"runtime_2onert_2backend_2ruy_2_tensor_8h_source.html":[35,0,4,2,1,6,11],
 "runtime_2onert_2backend_2train_2_backend_8h.html":[35,0,4,2,1,7,1],
 "runtime_2onert_2backend_2train_2_backend_8h_source.html":[35,0,4,2,1,7,1],
 "runtime_2onert_2backend_2train_2_config_8h.html":[35,0,4,2,1,7,5],
@@ -243,11 +249,5 @@ var NAVTREEINDEX201 =
 "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#ab635efb8266d99e748430774b0120d1a":[35,0,4,2,2,0,4,9,10],
 "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#ab8bf0729fb117695e367224fbc94d45b":[35,0,4,2,2,0,4,9,19],
 "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#abdc0e09bb83c15c5bdffda420fd637f1":[35,0,4,2,2,0,4,9,7],
-"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#ac164390405abbf5d5f49f010577ad3a6":[35,0,4,2,2,0,4,9,14],
-"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#acddad12a30710fc6fb86a11d59b73ed2":[35,0,4,2,2,0,4,9,3],
-"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#ad422f5f8c97d02f4768eafa9d13c379e":[35,0,4,2,2,0,4,9,32],
-"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#adc2d975b105929881bafff90fef477bf":[35,0,4,2,2,0,4,9,4],
-"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#addd08a55e11dbcc499dddd1413bb31e1":[35,0,4,2,2,0,4,9,16],
-"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#adeb7518da50c24d5d3a751081261d54d":[35,0,4,2,2,0,4,9,9],
-"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#ae543188bf83bab60cbec3ecd803f71b6":[35,0,4,2,2,0,4,9,2]
+"runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#ac164390405abbf5d5f49f010577ad3a6":[35,0,4,2,2,0,4,9,14]
 };

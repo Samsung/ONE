@@ -1,5 +1,11 @@
 var NAVTREEINDEX203 =
 {
+"service_2src_2_nodes_2_circle_logical_and_8cpp.html":[35,0,0,51,10,1,0,48],
+"service_2src_2_nodes_2_circle_logical_and_8cpp_source.html":[35,0,0,51,10,1,0,48],
+"service_2src_2_nodes_2_circle_logical_not_8cpp.html":[35,0,0,51,10,1,0,49],
+"service_2src_2_nodes_2_circle_logical_not_8cpp_source.html":[35,0,0,51,10,1,0,49],
+"service_2src_2_nodes_2_circle_logical_or_8cpp.html":[35,0,0,51,10,1,0,50],
+"service_2src_2_nodes_2_circle_logical_or_8cpp_source.html":[35,0,0,51,10,1,0,50],
 "service_2src_2_nodes_2_circle_logistic_8cpp.html":[35,0,0,51,10,1,0,51],
 "service_2src_2_nodes_2_circle_logistic_8cpp_source.html":[35,0,0,51,10,1,0,51],
 "service_2src_2_nodes_2_circle_matrix_diag_8cpp.html":[35,0,0,51,10,1,0,53],
@@ -243,11 +249,5 @@ var NAVTREEINDEX203 =
 "struct_a_neural_networks_execution.html#aa865efa995290e25cd96095cba5e08d0":[34,0,116,3],
 "struct_a_neural_networks_execution.html#ab8fd37677974195d9923c9d9c01b5e08":[34,0,116,1],
 "struct_a_neural_networks_execution.html#ac66c2090c99019ec8221ecc0460749fe":[34,0,116,8],
-"struct_a_neural_networks_execution.html#ad200c4b6e59028ae4ee1d80dfa1d3175":[34,0,116,14],
-"struct_a_neural_networks_execution.html#ad486b8c33236919e976ca1692ae83e56":[34,0,116,5],
-"struct_a_neural_networks_execution.html#af73400a6e777db8f001f5d6566d0e130":[34,0,116,12],
-"struct_a_neural_networks_execution.html#affe4ed54e7a77f16811acc5d6a2a26b5":[34,0,116,10],
-"struct_a_neural_networks_memory.html":[34,0,117],
-"struct_a_neural_networks_memory.html#a143a2155f5fecb1cd0b32e8946e8f0a0":[34,0,117,5],
-"struct_a_neural_networks_memory.html#a171f430ac50810e6216cb3f0daa65038":[34,0,117,3]
+"struct_a_neural_networks_execution.html#ad200c4b6e59028ae4ee1d80dfa1d3175":[34,0,116,14]
 };

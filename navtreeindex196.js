@@ -1,5 +1,11 @@
 var NAVTREEINDEX196 =
 {
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp_source.html":[35,0,3,3,2,1,60],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8h.html":[35,0,3,3,2,1,61],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8h_source.html":[35,0,3,3,2,1,61],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_or_8cpp.html":[35,0,3,3,2,1,62],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_or_8cpp_source.html":[35,0,3,3,2,1,62],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_or_8h.html":[35,0,3,3,2,1,63],
 "onert-micro_2luci-interpreter_2src_2kernels_2_logical_or_8h_source.html":[35,0,3,3,2,1,63],
 "onert-micro_2luci-interpreter_2src_2kernels_2_logistic_8cpp.html":[35,0,3,3,2,1,64],
 "onert-micro_2luci-interpreter_2src_2kernels_2_logistic_8cpp.html#a276815115fed896e23c40cf075e1e41c":[35,0,3,3,2,1,64,1],
@@ -243,11 +249,5 @@ var NAVTREEINDEX196 =
 "onert-micro_2luci-interpreter_2src_2loader_2nodes_2_add_8cpp.html":[35,0,3,3,2,2,0,0],
 "onert-micro_2luci-interpreter_2src_2loader_2nodes_2_add_8cpp.html#ad68b076a6379deaa9ac9ee3cef11d5c9":[35,0,3,3,2,2,0,0,0],
 "onert-micro_2luci-interpreter_2src_2loader_2nodes_2_add_8cpp_source.html":[35,0,3,3,2,2,0,0],
-"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_arg_max_8cpp.html":[35,0,3,3,2,2,0,1],
-"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_arg_max_8cpp.html#af8af797f9e257170d46da4314fdfdd10":[35,0,3,3,2,2,0,1,0],
-"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_arg_max_8cpp_source.html":[35,0,3,3,2,2,0,1],
-"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_average_pool2_d_8cpp.html":[35,0,3,3,2,2,0,2],
-"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_average_pool2_d_8cpp.html#a9a8ee79200360df34e14b6386d00ec6b":[35,0,3,3,2,2,0,2,0],
-"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_average_pool2_d_8cpp_source.html":[35,0,3,3,2,2,0,2],
-"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_batch_mat_mul_8cpp.html":[35,0,3,3,2,2,0,3]
+"onert-micro_2luci-interpreter_2src_2loader_2nodes_2_arg_max_8cpp.html":[35,0,3,3,2,2,0,1]
 };

@@ -327,7 +327,7 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  114</span>                options += [<span class="stringliteral">&#39;-O&#39;</span>, self.opt]</div>
 <div class="line"><span class="lineno">  115</span>            <span class="keywordflow">if</span> verbose:</div>
 <div class="line"><span class="lineno">  116</span>                options.append(<span class="stringliteral">&#39;--verbose&#39;</span>)</div>
-<div class="line"><span class="lineno">  117</span>            <span class="keywordflow">if</span> section == <span class="stringliteral">&#39;one-codegen&#39;</span> <span class="keywordflow">and</span> self.backend:</div>
+<div class="line"><span class="lineno">  117</span>            <span class="keywordflow">if</span> (section == <span class="stringliteral">&#39;one-codegen&#39;</span> <span class="keywordflow">or</span> section == <span class="stringliteral">&#39;one-profile&#39;</span>) <span class="keywordflow">and</span> self.backend:</div>
 <div class="line"><span class="lineno">  118</span>                options += [<span class="stringliteral">&#39;-b&#39;</span>, self.backend]</div>
 <div class="line"><span class="lineno">  119</span>            driver_path = os.path.join(working_dir, section)</div>
 <div class="line"><span class="lineno">  120</span>            cmd = [driver_path] + options</div>
