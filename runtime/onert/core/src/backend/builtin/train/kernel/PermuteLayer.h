@@ -39,6 +39,7 @@ public:
                const std::shared_ptr<ExternalContext> &external_context);
 
   void forward(bool training) override;
+  void backward() override;
 
   // TODO Add methods for training
 };

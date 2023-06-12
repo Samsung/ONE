@@ -164,7 +164,8 @@ void Execution::train()
 
   VERBOSE(Execution) << "Start training" << std::endl;
 
-  execs->train(_io_desc);
+  // TODO Modify
+  execs->execute(_io_desc);
   finished = true;
 
   VERBOSE(Execution) << "training finished" << std::endl;
