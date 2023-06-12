@@ -55,6 +55,20 @@ void OperandIndexSequence::replace(const OperandIndex &from, const OperandIndex 
   std::replace(_vec.begin(), _vec.end(), from, to);
 }
 
+bool OperandIndexSequence::operator==(const OperandIndexSequence &other) const
+{
+  if (size() != other.size())
+    return false;
+
+  for (uint32_t i = 0; i < size(); ++i)
+  {
+    if (at(i) != other.at(i))
+      return false;
+  }
+
+  return true;
+}
+
 OperandIndexSequence OperandIndexSequence::operator+(const OperandIndexSequence &other) const
 {
   OperandIndexSequence ret = *this;
