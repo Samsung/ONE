@@ -22,8 +22,8 @@
 #ifndef __ONERT_EXEC_TRAIN_TRAINABLE_EXECUTOR_H_
 #define __ONERT_EXEC_TRAIN_TRAINABLE_EXECUTOR_H_
 
-#include "compiler/train/CodeMap.h"
 #include "compiler/train/LoweredTrainableGraph.h"
+#include "compiler/CodeMap.h"
 #include "exec/IExecutor.h"
 #include "ir/Index.h"
 #include "util/TracingCtx.h"

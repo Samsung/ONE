@@ -75,13 +75,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       throw std::runtime_error("Recording minmax works only with Linear executor");
   }
 
-  if (_options->training_mode)
-  {
-    _options->executor = "Train";
-    _options->backend_list.clear();
-    _options->backend_list.push_back("train");
-  }
-
   _options->forceInternalOptions();
   _options->verboseOptions();
 
