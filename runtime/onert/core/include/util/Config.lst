@@ -36,7 +36,6 @@ CONFIG(FP16_ENABLE             , bool         , "0")
 CONFIG(RUY_THREADS             , int          , "-1")
 CONFIG(XNNPACK_THREADS         , int          , "-1")
 CONFIG(USE_MMAPED_DATA         , bool         , "0")
-CONFIG(TRAINING_MODE           , bool         , "0")
 
 // Auto-generate all operations
 
