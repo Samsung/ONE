@@ -55,8 +55,6 @@ public:
 
   TrainableExecutor *entryExecutor() const { return at(ir::ModelIndex{0}, ir::SubgraphIndex{0}); }
 
-  TrainableExecutor *entryExecutor() const { return at(ir::ModelIndex{0}, ir::SubgraphIndex{0}); }
-
   uint32_t inputSize() const override;
 
   uint32_t outputSize() const override;
