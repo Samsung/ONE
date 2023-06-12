@@ -17,10 +17,11 @@
 #ifndef __ONERT_COMPILER_LOWERED_GRAPH_H__
 #define __ONERT_COMPILER_LOWERED_GRAPH_H__
 
-#include "ir/Graph.h"
-#include "compiler/GraphLowerInfo.h"
 #include "compiler/BackendResolver.h"
 #include "compiler/Compiler.h"
+#include "compiler/GraphLowerInfo.h"
+#include "compiler/ILoweredGraph.h"
+#include "ir/Graph.h"
 
 namespace onert
 {
@@ -32,15 +33,15 @@ namespace compiler
  *        In addition, after lowering, operands in graph will be set to "dynamic"
  *        if the shape of output of an operation cannot be decided at compilation time.
  */
-class LoweredGraph
+class LoweredGraph : public ILoweredGraph
 {
 public:
   LoweredGraph(const ir::Graph &graph, const compiler::CompilerOptions &options);
 
-  ir::Graph &graph() { return _graph; }
-  const ir::Graph &graph() const { return _graph; }
-  const compiler::GraphLowerInfo &lower_info() const { return _lower_info_map; }
-  compiler::GraphLowerInfo &lower_info() { return _lower_info_map; }
+  ir::Graph &graph() override { return _graph; }
+  const ir::Graph &graph() const override { return _graph; }
+  const compiler::GraphLowerInfo &lower_info() const override { return _lower_info_map; }
+  compiler::GraphLowerInfo &lower_info() override { return _lower_info_map; }
   std::shared_ptr<ir::OperationIndexMap<int64_t>> indexed_ranks() { return _indexed_ranks; }
 
   void setHasDynamicTensor(ir::OperationIndex ind, bool val)

@@ -47,7 +47,7 @@ private:
   ExecutorFactory();
 
 private:
-  static void prepareMigrantTensors(compiler::LoweredGraph &lowered_graph,
+  static void prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
                                     const backend::BackendContexts &backend_contexts);
   static void prepareBuiltinBackend(const TensorRegistries &tensor_regs,
                                     const std::shared_ptr<exec::IExecutors> &executors,

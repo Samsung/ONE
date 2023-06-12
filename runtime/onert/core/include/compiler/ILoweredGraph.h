@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,27 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_LINEAR_H__
-#define __ONERT_COMPILER_LINEAR_H__
+#ifndef __ONERT_COMPILER_ILOWERED_GRAPH_H__
+#define __ONERT_COMPILER_ILOWERED_GRAPH_H__
 
-#include <vector>
-#include <memory>
-
-#include "ir/Index.h"
-#include "compiler/ILoweredGraph.h"
+#include "ir/Graph.h"
+#include "compiler/GraphLowerInfo.h"
 
 namespace onert
 {
 namespace compiler
 {
 
-class Linear
+struct ILoweredGraph
 {
-public:
-  static std::vector<ir::OperationIndex> linearize(const compiler::ILoweredGraph &lowered_graph);
-  static void dump(const compiler::ILoweredGraph &lowered_graph,
-                   const std::vector<ir::OperationIndex> &order);
+  virtual ~ILoweredGraph() = default;
+  virtual ir::Graph &graph() = 0;
+  virtual const ir::Graph &graph() const = 0;
+  virtual const compiler::GraphLowerInfo &lower_info() const = 0;
+  virtual compiler::GraphLowerInfo &lower_info() = 0;
 };
 
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_COMPILER_LINEAR_H__
+#endif // __ONERT_COMPILER_ILOWERED_GRAPH_H__
