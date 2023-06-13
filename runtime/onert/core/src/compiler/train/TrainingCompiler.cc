@@ -101,20 +101,32 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   std::unordered_map<ir::SubgraphIndex, std::shared_ptr<ir::train::TrainableGraph>>
     trainable_subgraphs;
 
-  // Create trainable subgraphs
+  // Create trainable subgraphs by converting inference model
   _model->iterate([&](const ir::SubgraphIndex &subg_index, const ir::Graph &subg) {
-    auto trainable_subg = std::make_shared<ir::train::TrainableGraph>(subg);
+    auto trainable_subg = std::make_shared<ir::train::TrainableGraph>();
 
-    // TODO Convert operations with inserting operands for training
+    // Add operands
+    subg.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &operand) {
+      trainable_subg->addOperand(index, std::make_unique<ir::Operand>(operand));
+    });
+
+    // Add trainable operations
     auto converter = train::TrainableOperationConverter{*trainable_subg, _training_info};
-    trainable_subg->operations().iterate(
-      [&](const onert::ir::OperationIndex &op_index, onert::ir::Operation &) {
+    subg.operations().iterate(
+      [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &) {
         auto trainable_op = converter(op_index);
-        trainable_subg->addTrainableOperation(op_index, std::move(trainable_op));
+        // OperationIndex may be changed
+        trainable_subg->addOperation(std::move(trainable_op));
       });
+
+    // Add inputs/outputs
+    trainable_subg->setGraphIO(subg.io_info());
 
     trainable_subgraphs[subg_index] = std::move(trainable_subg);
   });
+
+  // operation
+  _model.reset();
 
   // Apply pass for trainable subgraphs
   for (auto &&pair : trainable_subgraphs)
@@ -155,8 +167,6 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     }
   }
 
-  _model.reset();
-
   for (const auto &pair : lowered_subgs)
   {
     const auto &subg_index = pair.first;
@@ -187,7 +197,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     ir::OperationDumper dumper("Executor generation of Subgraph " +
                                std::to_string(subg_index.value()));
     lowered_subg->graph().operations().iterate(
-      [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
+      [&](const ir::OperationIndex &, const ir::IOperation &op) { op.accept(dumper); });
 
     auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
       std::move(lowered_subg), tracing_ctx.get(), *_options, executors, model_index)};

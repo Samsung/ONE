@@ -29,7 +29,7 @@ namespace onert
 {
 namespace ir
 {
-class Operation;
+struct IOperation;
 } // namespace ir
 } // namespace onert
 
@@ -62,7 +62,7 @@ public:
    * @param index is the index of a node in graph
    * @param node is the node in graph
    */
-  virtual void callback(const ir::OperationIndex &index, ir::Operation &node) = 0;
+  virtual void callback(const ir::OperationIndex &index, ir::IOperation &node) = 0;
 
   /**
    * @brief Run the pass

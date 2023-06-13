@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_TRAINABLE_OPERATIONS_H__
-#define __ONERT_IR_TRAIN_TRAINABLE_OPERATIONS_H__
+#ifndef __ONERT_EXEC_TRAIN_TRAINABLE_SEQUENCE_H__
+#define __ONERT_EXEC_TRAIN_TRAINABLE_SEQUENCE_H__
 
-#include "ir/Index.h"
-#include "ir/train/ITrainableOperation.h"
-#include "util/ObjectManager.h"
+#include "exec/ITrainableFunction.h"
+
+#include <memory>
+#include <vector>
 
 namespace onert
 {
-namespace ir
+namespace exec
 {
 namespace train
 {
-
-class TrainableOperations : public util::ObjectManager<OperationIndex, ITrainableOperation>
+// TODO Implement
+class TrainableSequence
 {
 public:
-  TrainableOperations() = default;
-  TrainableOperations(const TrainableOperations &obj);
-  TrainableOperations(TrainableOperations &&) = default;
-  TrainableOperations &operator=(const TrainableOperations &) = delete;
-  TrainableOperations &operator=(TrainableOperations &&) = default;
-  ~TrainableOperations() = default;
+  std::vector<std::unique_ptr<ITrainableFunction>> _functions;
 };
-
 } // namespace train
-} // namespace ir
+} // namespace exec
 } // namespace onert
 
-#endif // __ONERT_IR_TRAIN_TRAINABLE_OPERATIONS_H__
+#endif // __ONERT_EXEC_TRAIN_TRAINABLE_SEQUENCE_H__

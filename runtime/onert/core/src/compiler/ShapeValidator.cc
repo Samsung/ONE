@@ -52,7 +52,7 @@ void ShapeValidator::checkUnaryOp(const ir::Operation &node)
 void ShapeValidator::operator()()
 {
   _graph.operations().iterate(
-    [&](const ir::OperationIndex &, const ir::Operation &node) { node.accept(*this); });
+    [&](const ir::OperationIndex &, const ir::IOperation &node) { node.accept(*this); });
 }
 
 void ShapeValidator::visit(const ir::operation::BatchMatMul &node)

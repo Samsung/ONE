@@ -29,8 +29,17 @@ namespace train
 
 UntrainableOperationConverter::UntrainableOperationConverter(
   ir::train::TrainableGraph &trainable_graph)
-  : _trainable_graph{trainable_graph}
+  : _trainable_graph{trainable_graph}, _return_op{nullptr}
 {
+}
+
+std::unique_ptr<ir::train::ITrainableOperation> UntrainableOperationConverter::
+operator()(const ir::OperationIndex &index)
+{
+  const auto &op = _trainable_graph.operations().at(index);
+  op.accept(*this);
+
+  return std::move(_return_op);
 }
 
 #define OP(InternalName)                                                                         \
@@ -38,7 +47,7 @@ UntrainableOperationConverter::UntrainableOperationConverter(
   {                                                                                              \
     _return_op =                                                                                 \
       std::make_unique<ir::train::operation::UntrainableOperation<ir::operation::InternalName>>( \
-        const_cast<ir::operation::InternalName &>(node));                                        \
+        node);                                                                                   \
   }
 #include "ir/Operations.lst"
 #undef OP

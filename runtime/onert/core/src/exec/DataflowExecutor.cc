@@ -90,7 +90,7 @@ DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lower
   uint32_t next_job_index = 0;
   std::unordered_map<ir::OperationIndex, uint32_t> op_to_job;
   const auto &operations = _lowered_graph->graph().operations();
-  operations.iterate([&](const ir::OperationIndex &op_ind, const ir::Operation &) {
+  operations.iterate([&](const ir::OperationIndex &op_ind, const ir::IOperation &) {
     VERBOSE(DataflowExecutor) << "Create a job " << next_job_index << " with Operation " << op_ind
                               << std::endl;
     _finished_jobs.emplace_back(
@@ -102,12 +102,12 @@ DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lower
   _output_info.resize(next_job_index);
   _initial_input_info.resize(next_job_index, 0);
 
-  operations.iterate([&](const ir::OperationIndex &op_ind, const ir::Operation &op) {
+  operations.iterate([&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
     auto job_index = op_to_job[op_ind];
     for (auto output : op.getOutputs())
     {
       // Update output and input info
-      operations.iterate([&](const ir::OperationIndex &op_cur_ind, const ir::Operation &op_cur) {
+      operations.iterate([&](const ir::OperationIndex &op_cur_ind, const ir::IOperation &op_cur) {
         if (op_cur.getInputs().contains(output))
         {
           auto dep_index = op_to_job[op_cur_ind];

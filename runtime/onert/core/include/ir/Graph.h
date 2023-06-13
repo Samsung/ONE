@@ -40,6 +40,14 @@ namespace onert
 namespace ir
 {
 
+struct GraphIO
+{
+  OperandIndexSequence inputs;
+  OperandIndexSequence outputs;
+  std::unordered_map<std::string, IOIndex> name_to_input;
+  std::unordered_map<std::string, IOIndex> name_to_output;
+};
+
 class Graph
 {
 private:
@@ -70,7 +78,7 @@ public:
    * @return OperandIndex @c index if successful, Undefined otherwise
    */
   OperandIndex addOperand(OperandIndex index, std::unique_ptr<Operand> &&operand);
-  OperationIndex addOperation(std::unique_ptr<Operation> &&node);
+  OperationIndex addOperation(std::unique_ptr<IOperation> &&node);
   /**
    * @brief Add an operation to the graph with the given index and object
    *
@@ -82,7 +90,7 @@ public:
    * @param operation Operation to be added
    * @return OperandIndex @c index if successful, Undefined otherwise
    */
-  OperationIndex addOperation(OperationIndex index, std::unique_ptr<Operation> &&operation);
+  OperationIndex addOperation(OperationIndex index, std::unique_ptr<IOperation> &&operation);
   void setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data);
   void addInput(const OperandIndex &ind, const std::string &name = "");
   void addOutput(const OperandIndex &ind, const std::string &name = "");
@@ -91,8 +99,8 @@ public:
   void setLayout(Layout layout) { _layout = layout; }
 
 private:
-  bool checkOperandsForOperation(const Operation &operation);
-  void linkOperandToOperation(OperationIndex index, const Operation &operation);
+  bool checkOperandsForOperation(const IOperation &operation);
+  void linkOperandToOperation(OperationIndex index, const IOperation &operation);
   void initializeUseDef();
   // TODO Rename to `sweepUnusedOperands`
   // TODO Make this public
@@ -116,10 +124,10 @@ private:
 
   // Accessors
 public:
-  const OperandIndexSequence &getInputs() const { return _inputs; }
-  OperandIndexSequence &getInputs() { return _inputs; }
-  const OperandIndexSequence &getOutputs() const { return _outputs; }
-  OperandIndexSequence &getOutputs() { return _outputs; }
+  const OperandIndexSequence &getInputs() const { return _io_info.inputs; }
+  OperandIndexSequence &getInputs() { return _io_info.inputs; }
+  const OperandIndexSequence &getOutputs() const { return _io_info.outputs; }
+  OperandIndexSequence &getOutputs() { return _io_info.outputs; }
   IOIndex getInputIndex(const std::string &name) const;
   IOIndex getOutputIndex(const std::string &name) const;
   const Operands &operands() const { return _operands; }
@@ -127,6 +135,7 @@ public:
   const Operations &operations() const { return _operations; }
   Operations &operations() { return _operations; }
   Layout layout() const { return _layout; }
+  const GraphIO &io_info() const { return _io_info; }
 
   // Topological sort
 public:
@@ -135,10 +144,7 @@ public:
 private:
   Operations _operations;
   Operands _operands;
-  OperandIndexSequence _inputs;
-  OperandIndexSequence _outputs;
-  std::unordered_map<std::string, IOIndex> _name_to_input;
-  std::unordered_map<std::string, IOIndex> _name_to_output;
+  GraphIO _io_info;
   // TFLite and circle's default layout is NHWC;
   Layout _layout{Layout::NHWC};
 };

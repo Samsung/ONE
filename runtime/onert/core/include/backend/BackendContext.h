@@ -60,20 +60,6 @@ public:
   {
   }
 
-protected:
-  // TODO Remove this constructor after changing ContextData to shared_ptr
-  BackendContext(const Backend *backend, std::shared_ptr<ITensorRegistry> tensor_registry = nullptr)
-    : _backend{backend}, _data{}, tensor_registry{tensor_registry}
-  {
-  }
-
-public:
-  BackendContext(void) = delete;
-  BackendContext(const BackendContext &) = delete;
-  BackendContext(BackendContext &&) = default;
-  BackendContext &operator=(const BackendContext &) = delete;
-  BackendContext &operator=(BackendContext &&) = default;
-
   virtual ~BackendContext() = default;
 
   const Backend *backend() const { return _backend; }

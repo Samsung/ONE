@@ -28,7 +28,7 @@ namespace builtin
 namespace train
 {
 
-ITensorRegistry *BackendContext::genTensors() { return basic::genTensors(*this); }
+ITensorRegistry *BackendContext::genTensors() { return basic::genTensors(*this, _tensor_builder); }
 
 ITensorRegistry *BackendContext::genTrainingTensors()
 {
@@ -36,14 +36,14 @@ ITensorRegistry *BackendContext::genTrainingTensors()
 
   // TODO Generate training-related tensors except for gradient
 
-  return grad_tensor_registry.get();
+  return grad_tensor_registry().get();
 }
 
 void BackendContext::genGradTensors()
 {
   const ir::train::TrainableGraph &tgraph = *trainable_graph();
   auto tensor_builder = _grad_tensor_builder;
-  auto tensor_reg = grad_tensor_registry;
+  auto tensor_reg = grad_tensor_registry();
 
   tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
     if (external_operands().contains(ind))
@@ -67,24 +67,24 @@ void BackendContext::genGradTensors()
   // tensor_builder->allocate();
 }
 
-FunctionMap BackendContext::genKernels()
+backend::train::FunctionMap BackendContext::genKernels()
 {
-  FunctionMap ret;
+  backend::train::FunctionMap ret;
 
-  // TODO Enable
-  // for (auto op_ind : _data.op_order)
-  // {
-  //   auto tn_seq = kernel_gen->generate(op_ind);
-  //   ret.emplace_back(op_ind, std::move(tn_seq));
-  // }
+  for (auto op_ind : _tdata->op_order)
+  {
+    auto tn_seq = kernel_gen->generate(op_ind);
+    ret.emplace_back(op_ind, std::move(tn_seq));
+  }
 
   basic::initConsts(*this);
 
-  for (auto &&it : ret)
-  {
-    auto &fn_seq = it.second;
-    fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
-  }
+  // TODO Enable prepare()
+  // for (auto &&it : ret)
+  // {
+  //   auto &fn_seq = it.second;
+  //   fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
+  // }
 
   return ret;
 }

@@ -26,7 +26,7 @@ namespace onert
 namespace ir
 {
 
-class Operations : public util::ObjectManager<OperationIndex, Operation>
+class Operations : public util::ObjectManager<OperationIndex, IOperation>
 {
 public:
   Operations() = default;

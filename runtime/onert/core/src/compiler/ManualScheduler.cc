@@ -58,7 +58,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   VERBOSE(ManualScheduler) << "Default backend for all ops: " << backend_all->config()->id()
                            << std::endl;
 
-  graph.operations().iterate([&](const ir::OperationIndex &index, const ir::Operation &) {
+  graph.operations().iterate([&](const ir::OperationIndex &index, const ir::IOperation &) {
     backend_resolver->setBackend(index, backend_all);
   });
 
@@ -71,7 +71,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   // By default, Custom uses cpu backend
   op_type_map[ir::OpCode::Custom] = BackendManager::get().get("cpu");
 
-  graph.operations().iterate([&](const ir::OperationIndex &index, const ir::Operation &operation) {
+  graph.operations().iterate([&](const ir::OperationIndex &index, const ir::IOperation &operation) {
     auto itr = op_type_map.find(operation.opcode());
     if (itr != op_type_map.end())
     {

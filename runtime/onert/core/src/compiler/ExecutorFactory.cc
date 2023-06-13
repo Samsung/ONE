@@ -166,7 +166,7 @@ backend::BackendContexts createBackendContexts(compiler::ILoweredGraph &lgraph,
   });
   // Separate operations into partial graphs
   whole_graph.operations().iterate(
-    [&](const ir::OperationIndex &op_ind, const ir::Operation &operation) {
+    [&](const ir::OperationIndex &op_ind, const ir::IOperation &operation) {
       auto &op_li = lgraph.lower_info().operation;
       auto backend = op_li.at(op_ind).backend();
       auto &partial_graph = *context_data_map[backend].graph;
@@ -306,7 +306,7 @@ void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_gra
   TensorRegistries tensor_regs{backend_contexts, true};
 
   lowered_graph.graph().operations().iterate(
-    [&](const ir::OperationIndex &op_ind, const ir::Operation &op) {
+    [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
       auto lower_info = lowered_graph.lower_info().operation.getRawPtr(op_ind);
       auto &backend_ctx = backend_contexts.at(lower_info->backend());
       for (auto ind :
@@ -586,11 +586,11 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
 {
   auto &graph = lowered_graph->graph();
 
+  // TODO Create context only once instead of replacing
   backend::train::TrainableBackendContexts tbackend_contexts;
   backend::BackendContexts base_backend_contexts = createBackendContexts(*lowered_graph, true);
 
   // Replace BackendContext with TrainbleBackendContext
-  // TODO Create context only once instead of replacing
   for (auto &&pair : base_backend_contexts)
   {
     const auto backend = pair.first;
@@ -601,10 +601,31 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
         "Invalid backend - TrainableExecutor does not support non-trainble backends");
     }
 
+    // TODO Remove dynamic_cast
     const auto tbackend = dynamic_cast<const backend::train::ITrainableBackend *>(backend);
     auto ctx = pair.second.get();
     auto data = std::move(ctx->data());
-    backend::train::TrainableContextData tdata{std::move(data), lowered_graph->trainable_graph()};
+
+    // TODO Remove checking whether operations in graph is ITrainableOperation
+    data.graph->operations().iterate(
+      [](const onert::ir::OperationIndex &, const onert::ir::IOperation &op) {
+        // TODO Remove dynamic_cast
+        if (std::addressof(dynamic_cast<const ir::train::ITrainableOperation &>(op)) !=
+            std::addressof(op))
+        {
+          throw std::runtime_error(
+            "Invalid operation - TrainableExecutor does not support non-trainble operations");
+        }
+      });
+
+    backend::train::TrainableContextData tdata;
+    tdata.tgraph = std::make_unique<ir::train::TrainableGraph>(*data.graph);
+    tdata.op_order = data.op_order;
+    tdata.external_operands = data.external_operands;
+    tdata.operand_layouts = data.operand_layouts;
+    tdata.custom_kernel_builder = data.custom_kernel_builder;
+    tdata.is_linear_executor = data.is_linear_executor;
+
     tbackend_contexts.emplace(backend, tbackend->newContext(std::move(tdata)));
   }
 
@@ -634,10 +655,9 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   prepareMigrantTensors(*lowered_graph, base_backend_contexts);
   base_backend_contexts.clear();
 
-  ExecutionBuilder builder;
-
   // Adjust the order of backends for the upcoming iteration
-  auto ordered_contexts = onert::orderBackendContext(tbackend_contexts);
+  auto ordered_contexts =
+    onert::orderBackendContext<backend::train::TrainableBackendContext>(tbackend_contexts);
 
   // TODO Remove this simulation
   // Simulate the execution for deallocation of tensors
@@ -693,6 +713,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                   [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
   }
 
+  // TODO Change to ExecutionBuilder
+  train::CodeMap code_map;
   // Generate kernels
   for (auto &&pair : ordered_contexts)
   {
@@ -701,13 +723,13 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     {
       auto &op_ind = pair.first;
       auto &tn_seq = pair.second;
-      auto &op = lowered_graph->graph().operations().at(op_ind);
+      auto &op = lowered_graph->trainable_graph().operation(op_ind);
       auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
-      builder.append(op_ind, {op_ind, &op, lower_info, std::move(tn_seq)});
+
+      assert(code_map.find(op_ind) == code_map.end());
+      code_map.insert({op_ind, train::CodeAndInfo{op_ind, &op, lower_info, std::move(tn_seq)}});
     }
   }
-
-  auto code_map = builder.releaseCodeMap();
 
   auto exec = new exec::train::TrainableExecutor{std::move(lowered_graph),
                                                  std::move(tbackend_contexts),

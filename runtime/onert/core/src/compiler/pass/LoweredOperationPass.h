@@ -39,7 +39,7 @@ public:
   virtual ~LoweredOperationPass() = default;
 
   std::string id() override = 0;
-  void callback(const ir::OperationIndex &i, ir::Operation &o) override = 0;
+  void callback(const ir::OperationIndex &i, ir::IOperation &o) override = 0;
 
 protected:
   ILoweredGraph &_lowered_graph;

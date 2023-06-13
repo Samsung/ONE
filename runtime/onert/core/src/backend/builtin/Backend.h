@@ -76,7 +76,7 @@ public:
   std::unique_ptr<backend::train::TrainableBackendContext>
   newContext(backend::train::TrainableContextData &&tdata) const override
   {
-    const auto &tgraph = *tdata.trainable_graph();
+    const auto &tgraph = *tdata.tgraph;
     auto tr = std::make_shared<TensorRegistry>();
     auto tb = std::make_shared<TensorBuilder>(tr, "Bump");
     auto grad_tr = std::make_shared<TensorRegistry>();

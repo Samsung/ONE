@@ -31,7 +31,7 @@ namespace dot
 const std::string Operation::OPERATION_SHAPE = "rect";
 const std::string Operation::BG_COLOR_SCHEME = "pastel18";
 
-Operation::Operation(const ir::OperationIndex &index, const ir::Operation &node)
+Operation::Operation(const ir::OperationIndex &index, const ir::IOperation &node)
   : Node{"operation" + std::to_string(index.value())}
 {
   setAttribute("label", std::to_string(index.value()) + " : " + node.name());

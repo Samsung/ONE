@@ -37,7 +37,7 @@ bool Config::initialize()
   return true;
 }
 
-ir::Layout Config::supportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::NHWC; }
+ir::Layout Config::supportLayout(const ir::IOperation &, ir::Layout) { return ir::Layout::NHWC; }
 
 } // namespace xnnpack
 } // namespace backend

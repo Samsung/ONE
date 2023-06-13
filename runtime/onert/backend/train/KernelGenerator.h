@@ -22,7 +22,7 @@
 #include "TensorBuilder.h"
 #include "Tensor.h"
 
-#include <backend/basic/KernelGeneratorBase.h>
+#include <backend/train/KernelGeneratorBase.h>
 #include <ir/Operands.h>
 #include <ir/Operations.h>
 #include <exec/ITrainableFunction.h>
@@ -34,14 +34,15 @@ namespace backend
 namespace train
 {
 
-class KernelGenerator : public basic::KernelGeneratorBase
+class KernelGenerator : public backend::train::KernelGeneratorBase
 {
 public:
-  KernelGenerator(const ir::Graph &graph, const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
+  KernelGenerator(const ir::train::TrainableGraph &tgraph,
+                  const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
                   const std::shared_ptr<basic::TensorRegistry> &grad_tensor_reg,
                   const std::shared_ptr<ExternalContext> &external_context);
 
-  std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex op_ind) override;
+  std::unique_ptr<exec::train::TrainableSequence> generate(ir::OperationIndex op_ind) override;
 
   void visit(const ir::operation::Conv2D &) override;
   void visit(const ir::operation::FullyConnected &) override;
@@ -56,8 +57,6 @@ public:
   }
 
 private:
-  const ir::Operands &_ctx;
-  const ir::Operations &_operations_ctx;
   ir::Layout _current_layout;
   std::shared_ptr<basic::TensorRegistry> _tensor_reg;
   std::shared_ptr<basic::TensorRegistry> _grad_tensor_reg;

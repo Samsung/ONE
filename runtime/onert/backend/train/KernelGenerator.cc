@@ -52,26 +52,24 @@ ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
 }
 } // namespace
 
-KernelGenerator::KernelGenerator(const ir::Graph &graph,
+KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<basic::TensorRegistry> &grad_tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
-  : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()), _operations_ctx{graph.operations()},
-    _current_layout{graph.layout()}, _tensor_reg{tensor_reg}, _grad_tensor_reg{grad_tensor_reg},
-    _external_context(external_context)
+  : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
+    _tensor_reg{tensor_reg}, _grad_tensor_reg{grad_tensor_reg}, _external_context(external_context)
 {
   // DO NOTHING
 }
 
-std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
+std::unique_ptr<exec::train::TrainableSequence> KernelGenerator::generate(ir::OperationIndex ind)
 {
-  // TODO Generate FunctionSequence for backwarding as well
-  auto ret = std::make_unique<exec::FunctionSequence>();
-  ret->enableDynamicShapeInferer(false);
+  // TODO Generate TrainableSequence that can go backward as well
+  auto ret = std::make_unique<exec::train::TrainableSequence>();
 
-  const auto &op = _graph.operations().at(ind);
-  op.accept(*this);
-  ret->append(releaseFunction());
+  const auto &op = _tgraph.operations().at(ind);
+  // op.accept(*this);
+  // ret->append(releaseFunction());
 
   for (auto ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
@@ -90,7 +88,7 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   return ret;
 }
 
-void KernelGenerator::visit(const ir::operation::Conv2D &node)
+void KernelGenerator::visit(const ir::operation::Conv2D &)
 {
   using ir::operation::Conv2D;
 

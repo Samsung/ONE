@@ -34,7 +34,7 @@ public:
   TrainableOperationConverter(ir::train::TrainableGraph &trainable_graph,
                               const ir::train::TrainingInfo *training_info);
 
-  std::unique_ptr<ir::train::ITrainableOperation> operator()(const ir::OperationIndex &index);
+  using UntrainableOperationConverter::operator();
 
 private:
   void visit(const ir::operation::ElementwiseActivation &) override;

@@ -19,14 +19,15 @@
 
 #include <memory>
 
-#include "backend/train/TrainableBackendContext.h"
-
 namespace onert
 {
 namespace backend
 {
 namespace train
 {
+
+class TrainableBackendContext;
+struct TrainableContextData;
 
 struct ITrainableBackend
 {

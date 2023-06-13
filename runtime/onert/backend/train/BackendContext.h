@@ -30,30 +30,56 @@ namespace backend
 namespace train
 {
 
+// TODO Remove this class if ExecutorFactory creates trainable context only once instead of
+// replacing BackendContext
+class UntrainableBackendContext : public backend::BackendContext
+{
+public:
+  UntrainableBackendContext(const Backend *backend, ContextData &&data,
+                            std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
+                            std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
+                            std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
+    : backend::BackendContext(backend, std::move(data), tensor_registry),
+      tensor_builder{tensor_builder}, kernel_gen{kernel_gen},
+      _external_context(std::make_shared<ExternalContext>())
+  {
+  }
+
+  ITensorRegistry *genTensors() override { return nullptr; }
+
+  backend::FunctionMap genKernels() override { return backend::FunctionMap{}; }
+
+  std::shared_ptr<ExternalContext> external_context() { return _external_context; }
+
+private:
+  void planTensors(const std::vector<ir::OperationIndex> &order,
+                   const compiler::GraphLowerInfo &lower_info);
+
+public:
+  // TODO Make it private
+  std::shared_ptr<TensorBuilder> tensor_builder;
+  std::shared_ptr<KernelGenerator> kernel_gen;
+
+private:
+  // NOTE ruy context has a thread pool, and when multiple ruy contexts are created,
+  //      the thread pool is also created in duplicate
+  // TODO Create one ruy context for session
+  std::shared_ptr<ExternalContext> _external_context;
+};
+
 class BackendContext : public onert::backend::train::TrainableBackendContext
 {
 public:
-  BackendContext(const Backend *backend, std::unique_ptr<TrainableContextData> &&data,
+  BackendContext(const ITrainableBackend *backend, std::unique_ptr<TrainableContextData> &&tdata,
                  std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<ITensorRegistry> grad_tensor_registry = nullptr,
                  std::shared_ptr<TensorBuilder> grad_tensor_builder = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
-    : onert::backend::train::TrainableBackendContext(backend, std::move(data), tensor_registry,
+    : onert::backend::train::TrainableBackendContext(backend, std::move(tdata), tensor_registry,
                                                      grad_tensor_registry),
-      tensor_builder{tensor_builder}, kernel_gen{kernel_gen},
-      _external_context(new ExternalContext), _grad_tensor_builder{grad_tensor_builder}
-  {
-  }
-
-  // TODO Remove this constructor
-  BackendContext(const Backend *backend, ContextData &&data,
-                 std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
-                 std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
-                 std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
-    : onert::backend::train::TrainableBackendContext{backend, std::move(data), tensor_registry},
-      tensor_builder{tensor_builder}, kernel_gen{kernel_gen},
-      _external_context(new ExternalContext), _grad_tensor_builder{nullptr}
+      kernel_gen{kernel_gen}, _external_context(new ExternalContext),
+      _tensor_builder{tensor_builder}, _grad_tensor_builder{grad_tensor_builder}
   {
   }
 
@@ -70,7 +96,6 @@ public:
 
 public:
   // TODO Make it private
-  std::shared_ptr<TensorBuilder> tensor_builder;
   std::shared_ptr<KernelGenerator> kernel_gen;
 
 private:
@@ -80,6 +105,7 @@ private:
   std::shared_ptr<ExternalContext> _external_context;
 
 private:
+  std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<TensorBuilder> _grad_tensor_builder;
 };
 

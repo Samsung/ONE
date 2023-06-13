@@ -30,7 +30,7 @@ namespace pass
 void OperationPass::run()
 {
   _graph.operations().iterate(
-    [&](const ir::OperationIndex &index, ir::Operation &node) { callback(index, node); });
+    [&](const ir::OperationIndex &index, ir::IOperation &node) { callback(index, node); });
 }
 
 } // namespace pass

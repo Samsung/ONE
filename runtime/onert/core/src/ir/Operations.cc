@@ -26,7 +26,7 @@ namespace ir
 Operations::Operations(const Operations &obj)
 {
   obj.iterate(
-    [&](const OperationIndex &index, const Operation &op) { _objects.emplace(index, clone(op)); });
+    [&](const OperationIndex &index, const IOperation &op) { _objects.emplace(index, clone(op)); });
   _next_index = obj._next_index;
 }
 

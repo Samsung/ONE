@@ -29,7 +29,7 @@ namespace compiler
 namespace pass
 {
 
-void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::Operation &node)
+void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::IOperation &node)
 {
   const auto op_lower_info = _lowered_graph.lower_info().operation.getRawPtr(node_index);
   const auto backend = op_lower_info->backend();

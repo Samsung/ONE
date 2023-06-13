@@ -30,16 +30,12 @@ namespace train
 namespace operation
 {
 
-std::unique_ptr<ITrainableOperation> Loss::clone(Operation &op) const
-{
-  return std::make_unique<Loss>(nnfw::misc::polymorphic_downcast<OperationType &>(op));
-}
-
-void Loss::accept(OperationVisitor &v) const { v.visit(_operation); }
+void Loss::accept(OperationVisitor &v) const { v.visit(*this); }
 
 void Loss::accept(TrainableOperationVisitor &v) const { v.visit(*this); }
 
-Loss::Loss(OperationType &operation) : _operation{operation}
+Loss::Loss(const OperationType &operation)
+  : OperationType{operation.getInputs(), operation.getOutputs(), operation.param()}
 {
   // DO NOTHING
 }

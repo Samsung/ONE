@@ -52,7 +52,8 @@ public:
    */
   TrainableExecutor(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                     backend::train::TrainableBackendContexts &&backend_contexts,
-                    const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
+                    const compiler::TensorRegistries &tensor_regs,
+                    compiler::train::CodeMap &&code_map,
                     const std::vector<ir::OperationIndex> &order,
                     const util::TracingCtx *tracing_ctx);
 

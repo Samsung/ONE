@@ -29,31 +29,17 @@ namespace train
 namespace operation
 {
 
-class Loss : public ITrainableOperation
+class Loss : public ir::operation::Loss, public ITrainableOperation
 {
 private:
   using OperationType = ir::operation::Loss;
 
 public:
-  Loss(OperationType &operation);
+  Loss(const OperationType &operation);
 
 public:
-  std::unique_ptr<ITrainableOperation> clone(Operation &op) const override;
   void accept(OperationVisitor &v) const override;
   void accept(TrainableOperationVisitor &v) const override;
-  virtual OpCode opcode() const final { return _operation.opcode(); }
-
-public:
-  const OperationType::Param &param() const { return _operation.param(); }
-
-public:
-  const Operation &operation() const final { return _operation; }
-
-private:
-  Operation &operation() final { return _operation; }
-
-private:
-  OperationType &_operation;
 };
 
 } // namespace operation

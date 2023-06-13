@@ -36,7 +36,7 @@ public:
   std::string id() final { return "ConstantLoweringPass"; }
 
 public:
-  void callback(const ir::OperationIndex &index, ir::Operation &node) final;
+  void callback(const ir::OperationIndex &index, ir::IOperation &node) final;
 };
 
 } // namespace pass

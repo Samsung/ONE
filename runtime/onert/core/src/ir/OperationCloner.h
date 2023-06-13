@@ -26,7 +26,7 @@ namespace onert
 namespace ir
 {
 
-std::unique_ptr<Operation> clone(const Operation &operation);
+std::unique_ptr<Operation> clone(const IOperation &operation);
 
 } // namespace ir
 } // namespace onert

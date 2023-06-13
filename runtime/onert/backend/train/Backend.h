@@ -40,10 +40,9 @@ public:
 
   std::shared_ptr<IConfig> config() const override { return _config; }
 
-  std::unique_ptr<onert::backend::train::TrainableBackendContext>
-  newContext(TrainableContextData &&tdata) const override
+  std::unique_ptr<TrainableBackendContext> newContext(TrainableContextData &&tdata) const override
   {
-    const auto &graph = *tdata.graph;
+    const auto &tgraph = *tdata.tgraph;
     auto tr = std::make_shared<basic::TensorRegistry>();
     auto tb = std::make_shared<TensorBuilder>(tr, "Bump");
     auto grad_tr = std::make_shared<basic::TensorRegistry>();
@@ -52,9 +51,10 @@ public:
     auto context =
       std::make_unique<BackendContext>(this, std::move(tdata_ptr), tr, tb, grad_tr, grad_tb);
 
-    // TODO Share grad_tr and grad_tb with KernelGenerator
+    // TODO Share tgraph, grad_tr, and grad_tb with KernelGenerator
     context->kernel_gen =
-      std::make_shared<KernelGenerator>(graph, tr, grad_tr, context->external_context());
+      std::make_shared<KernelGenerator>(tgraph, tr, grad_tr, context->external_context());
+
     return context;
   }
 
@@ -63,7 +63,7 @@ public:
   {
     auto tr = std::make_shared<basic::TensorRegistry>();
     auto tb = std::make_shared<TensorBuilder>(tr, "Bump");
-    auto context = std::make_unique<BackendContext>(this, std::move(data), tr, tb);
+    auto context = std::make_unique<UntrainableBackendContext>(this, std::move(data), tr, tb);
 
     return context;
   }

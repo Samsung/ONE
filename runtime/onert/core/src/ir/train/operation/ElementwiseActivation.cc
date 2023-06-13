@@ -30,19 +30,14 @@ namespace train
 namespace operation
 {
 
-std::unique_ptr<ITrainableOperation> ElementwiseActivation::clone(Operation &op) const
-{
-  return std::make_unique<ElementwiseActivation>(
-    nnfw::misc::polymorphic_downcast<OperationType &>(op), _training_inputs);
-}
-
-void ElementwiseActivation::accept(OperationVisitor &v) const { v.visit(_operation); }
+void ElementwiseActivation::accept(OperationVisitor &v) const { v.visit(*this); }
 
 void ElementwiseActivation::accept(TrainableOperationVisitor &v) const { v.visit(*this); }
 
-ElementwiseActivation::ElementwiseActivation(OperationType &operation,
+ElementwiseActivation::ElementwiseActivation(const OperationType &operation,
                                              const OperandIndexSequence &training_inputs)
-  : _operation{operation}, _training_inputs{training_inputs}
+  : OperationType{operation.getInputs(), operation.getOutputs(), operation.param()},
+    _training_inputs{training_inputs}
 {
   // DO NOTHING
 }

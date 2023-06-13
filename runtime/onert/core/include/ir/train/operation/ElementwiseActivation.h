@@ -29,31 +29,21 @@ namespace train
 namespace operation
 {
 
-class ElementwiseActivation : public ITrainableOperation
+class ElementwiseActivation : public ir::operation::ElementwiseActivation,
+                              public ITrainableOperation
 {
 private:
   using OperationType = ir::operation::ElementwiseActivation;
 
 public:
-  ElementwiseActivation(OperationType &operation, const OperandIndexSequence &training_inputs);
+  ElementwiseActivation(const OperationType &operation,
+                        const OperandIndexSequence &training_inputs);
 
 public:
-  std::unique_ptr<ITrainableOperation> clone(Operation &) const override;
   void accept(OperationVisitor &v) const override;
   void accept(TrainableOperationVisitor &v) const override;
-  virtual OpCode opcode() const final { return _operation.opcode(); }
-
-public:
-  const OperationType::Param &param() const { return _operation.param(); }
-
-public:
-  const Operation &operation() const final { return _operation; }
 
 private:
-  Operation &operation() final { return _operation; }
-
-private:
-  OperationType &_operation;
   OperandIndexSequence _training_inputs;
 };
 
