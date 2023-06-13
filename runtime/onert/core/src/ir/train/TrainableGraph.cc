@@ -16,7 +16,8 @@
 
 #include "ir/train/TrainableGraph.h"
 
-#include "util/Set.h"
+#include <algorithm>
+#include <misc/polymorphic_downcast.h>
 
 namespace onert
 {
@@ -25,18 +26,11 @@ namespace ir
 namespace train
 {
 
-TrainableGraph::TrainableGraph(const Graph &graph) : _graph{graph}, _operations{} {}
+TrainableGraph::TrainableGraph() : _graph{} {}
 
-TrainableGraph::TrainableGraph(Graph &graph, const TrainableOperations &toperations)
-  : _graph{graph}, _operations{}
-{
-  graph.operations().iterate([&](const onert::ir::OperationIndex &idx, onert::ir::Operation &op) {
-    const auto &trainable_op = toperations.at(idx);
-    appendTrainableOperation(idx, trainable_op.clone(op));
-  });
-}
+TrainableGraph::TrainableGraph(const TrainableGraph &tgraph) : _graph{tgraph.graph()} {}
 
-TrainableGraph::~TrainableGraph(void) = default;
+TrainableGraph::TrainableGraph(const Graph &graph) : _graph{graph} {}
 
 OperandIndex TrainableGraph::addOperand(const Shape &shape, const TypeInfo &type)
 {
@@ -48,53 +42,9 @@ OperandIndex TrainableGraph::addOperand(OperandIndex index, std::unique_ptr<Oper
   return _graph.addOperand(index, std::move(operand));
 }
 
-OperationIndex
-TrainableGraph::addTrainableOperation(OperationIndex index,
-                                      std::unique_ptr<ITrainableOperation> &&operation)
-{
-  const auto &inputs = operation->getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
-  const auto &outputs = operation->getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
-  for (auto input : inputs)
-    if (!operands().exist(input))
-      return OperationIndex{};
-  for (auto output : outputs)
-    if (!operands().exist(output))
-      return OperationIndex{};
-
-  auto ind_gen = appendTrainableOperation(index, std::move(operation));
-
-  return ind_gen;
-}
-
-OperationIndex
-TrainableGraph::appendTrainableOperation(OperationIndex index,
-                                         std::unique_ptr<ITrainableOperation> &&operation)
-{
-  auto ind_gen = _operations.push(std::move(operation), index);
-  if (ind_gen.valid())
-  {
-    assert(ind_gen == index);
-  }
-
-  // TODO Link operands to trainable operation forwarding and backwarding
-
-  return index;
-}
-
-OperationIndex TrainableGraph::addOperation(std::unique_ptr<Operation> &&operation)
+OperationIndex TrainableGraph::addOperation(std::unique_ptr<ITrainableOperation> &&operation)
 {
   return _graph.addOperation(std::move(operation));
-}
-
-OperationIndex TrainableGraph::addOperation(OperationIndex index,
-                                            std::unique_ptr<Operation> &&operation)
-{
-  return _graph.addOperation(index, std::move(operation));
-}
-
-void TrainableGraph::setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data)
-{
-  _graph.setOperandValue(ind, data);
 }
 
 IOIndex TrainableGraph::getInputIndex(const std::string &name) const
@@ -107,10 +57,51 @@ IOIndex TrainableGraph::getOutputIndex(const std::string &name) const
   return _graph.getOutputIndex(name);
 }
 
-void TrainableGraph::verify(void)
+void TrainableGraph::addInput(const OperandIndex &ind, const std::string &name)
 {
-  _graph.verify();
-  // TODO Verify TrainableGraph
+  _graph.addInput(ind, name);
+}
+
+void TrainableGraph::addOutput(const OperandIndex &ind, const std::string &name)
+{
+  _graph.addOutput(ind, name);
+}
+
+void TrainableGraph::verify(void) { _graph.verify(); }
+
+void TrainableGraph::removeOperand(const OperandIndex &ind) { _graph.removeOperand(ind); }
+
+void TrainableGraph::setLayout(Layout layout) { _graph.setLayout(layout); }
+
+void TrainableGraph::setGraphIO(const GraphIO &io_info)
+{
+  assert(_graph.io_info().inputs.size() == 0);
+  assert(_graph.io_info().outputs.size() == 0);
+  assert(_graph.io_info().name_to_input.size() == 0);
+  assert(_graph.io_info().name_to_output.size() == 0);
+
+  auto appendIOInfo = [&](const OperandIndexSequence &sequance,
+                          const std::unordered_map<std::string, IOIndex> &name_map) {
+    assert(sequance.size() == name_map.size());
+    for (uint32_t i = 0; i < sequance.size(); ++i)
+    {
+      const auto index = sequance.at(i);
+      auto it = std::find_if(name_map.begin(), name_map.end(),
+                             [&](const std::pair<std::string, IOIndex> &pair) {
+                               const auto &io_index = pair.second;
+                               return i == io_index.value();
+                             });
+      const auto &name = it->first;
+      _graph.addInput(index, name);
+    }
+  };
+  appendIOInfo(io_info.inputs, io_info.name_to_input);
+  appendIOInfo(io_info.outputs, io_info.name_to_output);
+}
+
+const ITrainableOperation &TrainableGraph::operation(OperationIndex index) const
+{
+  return dynamic_cast<const ITrainableOperation &>(_graph.operations().at(index));
 }
 
 } // namespace train

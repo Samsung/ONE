@@ -37,15 +37,6 @@ TrainableOperationConverter::TrainableOperationConverter(
   assert(_training_info);
 }
 
-std::unique_ptr<ir::train::ITrainableOperation> TrainableOperationConverter::
-operator()(const ir::OperationIndex &index)
-{
-  const auto &op = _trainable_graph.operations().at(index);
-  op.accept(*this);
-
-  return std::move(_return_op);
-}
-
 void TrainableOperationConverter::visit(const ir::operation::ElementwiseActivation &node)
 {
   if (node.param().op_type == ir::operation::ElementwiseActivation::Type::RELU)
@@ -57,9 +48,8 @@ void TrainableOperationConverter::visit(const ir::operation::ElementwiseActivati
 
     auto flex_ind = _trainable_graph.addOperand(flex_shape, flex_type);
     ir::OperandIndexSequence training_inputs{flex_ind};
-    // TODO Remove const_cast
-    _return_op = std::make_unique<ir::train::operation::ElementwiseActivation>(
-      const_cast<ir::operation::ElementwiseActivation &>(node), training_inputs);
+    _return_op =
+      std::make_unique<ir::train::operation::ElementwiseActivation>(node, training_inputs);
   }
   else
   {

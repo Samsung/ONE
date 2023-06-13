@@ -19,7 +19,7 @@
 
 #include <unordered_map>
 #include "compiler/CodeMap.h"
-#include "exec/ITrainableFunction.h"
+#include "exec/train/TrainableSequence.h"
 #include "ir/train/ITrainableOperation.h"
 
 namespace onert
@@ -29,21 +29,23 @@ namespace compiler
 namespace train
 {
 
-// TODO Find a better way instead of inheriting compiler::CodeAndInfo
-struct CodeAndInfo : public compiler::CodeAndInfo
+struct CodeAndInfo
 {
-  std::unique_ptr<exec::ITrainableFunction> trainable_fn;
+  ir::OperationIndex op_ind;
   const ir::train::ITrainableOperation *op;
+  const OperationLowerInfo *lower_info;
+  // TODO Change to TrainableSequence
+  std::unique_ptr<exec::train::TrainableSequence> tn_seq;
 
   CodeAndInfo(const ir::OperationIndex op_ind, const ir::train::ITrainableOperation *op,
               const OperationLowerInfo *lower_info,
-              std::unique_ptr<exec::ITrainableFunction> &&trainable_fn)
-    : compiler::CodeAndInfo{op_ind, &(op->operation()), lower_info,
-                            std::make_unique<exec::FunctionSequence>()},
-      trainable_fn{std::move(trainable_fn)}, op{op}
+              std::unique_ptr<exec::train::TrainableSequence> &&tn_seq)
+    : op_ind{op_ind}, op{op}, lower_info{lower_info}, tn_seq{std::move(tn_seq)}
   {
   }
 };
+
+using CodeMap = std::unordered_map<ir::OperationIndex, CodeAndInfo>;
 
 } // namespace train
 } // namespace compiler

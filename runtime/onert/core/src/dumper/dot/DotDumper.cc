@@ -98,7 +98,7 @@ generate_dot_operations(const ir::Graph &graph,
 {
   ir::OperationIndexMap<std::unique_ptr<Operation>> dot_operations;
   const auto &operations = graph.operations();
-  operations.iterate([&](const ir::OperationIndex &index, const ir::Operation &op) {
+  operations.iterate([&](const ir::OperationIndex &index, const ir::IOperation &op) {
     auto node = std::make_unique<Operation>(index, op);
 
     for (auto input : op.getInputs())
@@ -161,7 +161,7 @@ void update_lower_info(const LoweredGraph &lowered_graph,
                        ir::OperationIndexMap<std::unique_ptr<Operation>> *dot_operations)
 {
   const auto &operations = lowered_graph.graph().operations();
-  operations.iterate([&](const ir::OperationIndex &index, const ir::Operation &) {
+  operations.iterate([&](const ir::OperationIndex &index, const ir::IOperation &) {
     const auto lower_info = lowered_graph.lower_info().operation.getRawPtr(index);
     if (lower_info)
     {

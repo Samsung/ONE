@@ -21,6 +21,7 @@
 #include "../TensorRegistry.h"
 #include "../../../compiler/TensorRegistries.h"
 
+#include "backend/train/KernelGeneratorBase.h"
 #include "exec/ITrainableFunction.h"
 #include "ir/train/TrainableGraph.h"
 
@@ -33,32 +34,7 @@ namespace builtin
 namespace train
 {
 
-class KernelGeneratorBase : public ir::OperationVisitor
-{
-public:
-  virtual ~KernelGeneratorBase() = default;
-  KernelGeneratorBase(const ir::train::TrainableGraph &tgraph) : _tgraph{tgraph} {}
-
-  // TODO Change ITrainableFunction into TrainableSequence
-  virtual std::unique_ptr<exec::ITrainableFunction> generate(ir::OperationIndex ind) = 0;
-
-protected:
-  using OperationVisitor::visit;
-
-#define OP(InternalName)                                                                \
-  void visit(const ir::operation::InternalName &) override                              \
-  {                                                                                     \
-    throw std::runtime_error("KernelGenerator: NYI for operation '" #InternalName "'"); \
-  }
-#include "ir/Operations.lst"
-#undef OP
-
-protected:
-  const ir::train::TrainableGraph &_tgraph;
-  std::unique_ptr<exec::ITrainableFunction> _return_fn;
-};
-
-class KernelGenerator : public KernelGeneratorBase
+class KernelGenerator : public backend::train::KernelGeneratorBase
 {
 public:
   KernelGenerator(const ir::train::TrainableGraph &tgraph,
@@ -66,7 +42,7 @@ public:
                   const std::shared_ptr<TensorRegistry> &grad_tensor_reg,
                   const std::shared_ptr<ExternalContext> &external_context);
 
-  std::unique_ptr<exec::ITrainableFunction> generate(ir::OperationIndex ind) override;
+  std::unique_ptr<exec::train::TrainableSequence> generate(ir::OperationIndex ind) override;
 
   void setTensorRegistries(const compiler::TensorRegistries &tensor_registries)
   {

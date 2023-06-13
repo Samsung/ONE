@@ -197,7 +197,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       ir::OperationDumper dumper("Executor generation of Subgraph " +
                                  std::to_string(subg_index.value()));
       lowered_subg->graph().operations().iterate(
-        [&](const ir::OperationIndex &, const ir::Operation &op) { op.accept(dumper); });
+        [&](const ir::OperationIndex &, const ir::IOperation &op) { op.accept(dumper); });
 
       auto &options = *_voptions[model_index.value()];
       auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(

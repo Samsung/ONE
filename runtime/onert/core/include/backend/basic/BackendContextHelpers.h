@@ -24,6 +24,7 @@
 #include "util/logging.h"
 #include "backend/ITensorRegistry.h"
 #include "backend/BackendContext.h"
+#include "backend/train/TrainableBackendContext.h"
 #include "Tensor.h"
 
 namespace onert
@@ -226,13 +227,47 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
   return ctx.tensor_registry.get();
 }
 
-inline void initConsts(BackendContext &ctx)
+// TODO Remove template
+// TODO Reduce duplicated code
+template <typename TensorBuilder>
+ITensorRegistry *genTensors(train::TrainableBackendContext &ctx,
+                            const std::shared_ptr<TensorBuilder> &tensor_builder)
 {
-  ctx.graph()->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-    if (ctx.external_operands().contains(ind) || !operand.isConstant())
+  const ir::Graph &graph = *ctx.graph();
+
+  auto model_io =
+    (graph.getInputs() + graph.getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+  graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
+    if (ctx.external_operands().contains(ind))
+      return;
+    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
+    assert(graph.layout() != ir::Layout::NCHW);
+    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
+                                 obj.isConstant()};
+    tensor_builder->registerTensorInfo(ind, backend_info, ir::Layout::NHWC);
+  });
+
+  // For the executors that does not have fixed linear execution order:
+  // To make tensors never be deallocated, this is a workaround to use static memory planner
+  graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
+    if (tensor_builder->isRegistered(ind))
+      tensor_builder->notifyFirstUse(ind);
+  });
+
+  tensor_builder->allocate();
+
+  return ctx.tensor_registry().get();
+}
+
+inline void initConsts(const ir::Operands &operands,
+                       const util::Set<ir::OperandIndex> &external_operands,
+                       ITensorRegistry *tensor_registry)
+{
+  operands.iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+    if (external_operands.contains(ind) || !operand.isConstant())
       return;
 
-    auto tensor = ctx.tensor_registry->getNativeITensor(ind);
+    auto tensor = tensor_registry->getNativeITensor(ind);
     assert(tensor != nullptr);
 
     VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
@@ -246,6 +281,17 @@ inline void initConsts(BackendContext &ctx)
 
     ext_tensor->setData(data);
   });
+}
+
+inline void initConsts(BackendContext &ctx)
+{
+  initConsts(ctx.graph()->operands(), ctx.external_operands(), ctx.tensor_registry.get());
+}
+
+inline void initConsts(train::TrainableBackendContext &ctx)
+{
+  initConsts(ctx.trainable_graph()->operands(), ctx.external_operands(),
+             ctx.tensor_registry().get());
 }
 
 } // namespace basic

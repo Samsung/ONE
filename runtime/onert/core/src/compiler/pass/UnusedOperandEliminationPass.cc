@@ -37,7 +37,7 @@ void UnusedOperandEliminationPass::run()
 {
   util::Set<ir::OperandIndex> used;
 
-  _graph.operations().iterate([&](const ir::OperationIndex &, const ir::Operation &node) {
+  _graph.operations().iterate([&](const ir::OperationIndex &, const ir::IOperation &node) {
     for (auto ind : (node.getInputs() + node.getOutputs()) | ir::Remove::UNDEFINED)
     {
       used.add(ind);

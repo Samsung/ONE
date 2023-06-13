@@ -111,9 +111,9 @@ public:
     const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<LoweredGraph>> &lowered_subgs);
 
 private:
-  bool checkDynamicInput(const ir::Operation &op);
-  bool checkDynamicOutput(const ir::Operation &op);
-  void setDynamicOutput(const ir::Operation &op);
+  bool checkDynamicInput(const ir::IOperation &op);
+  bool checkDynamicOutput(const ir::IOperation &op);
+  void setDynamicOutput(const ir::IOperation &op);
 
 private:
   // TODO Define visitors for operations. List them in alphabetic order.

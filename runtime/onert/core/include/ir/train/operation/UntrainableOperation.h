@@ -36,34 +36,19 @@ namespace operation
 
 template <typename OperationType,
           typename = std::enable_if_t<std::is_base_of<Operation, OperationType>::value>>
-class UntrainableOperation : public ITrainableOperation
+class UntrainableOperation : public OperationType, public ITrainableOperation
 {
 public:
-  UntrainableOperation(OperationType &operation) : _operation{operation} {}
+  UntrainableOperation(const OperationType &operation) : OperationType{operation} {}
   virtual ~UntrainableOperation() = default;
 
 public:
-  std::unique_ptr<ITrainableOperation> clone(Operation &op) const override
-  {
-    return std::make_unique<UntrainableOperation<OperationType>>(
-      nnfw::misc::polymorphic_downcast<OperationType &>(op));
-  }
-  void accept(OperationVisitor &v) const override { v.visit(_operation); }
+  void accept(OperationVisitor &v) const override { v.visit(*this); }
   void accept(TrainableOperationVisitor &) const override
   {
     // Pass the functionality of TrainableOperationVisitor since UntrainableOperation must not be
     // trained
   }
-  virtual OpCode opcode() const override { return _operation.opcode(); }
-
-public:
-  const Operation &operation() const final { return _operation; }
-
-private:
-  Operation &operation() final { return _operation; }
-
-private:
-  OperationType &_operation;
 };
 
 } // namespace operation

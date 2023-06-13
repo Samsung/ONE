@@ -33,7 +33,7 @@ class Config : public IConfig
 public:
   std::string id() override { return "acl_neon"; }
   bool initialize() override;
-  ir::Layout supportLayout(const ir::Operation &node, ir::Layout frontend_layout) override;
+  ir::Layout supportLayout(const ir::IOperation &node, ir::Layout frontend_layout) override;
   bool supportPermutation() override { return true; }
   bool supportDynamicTensor() override { return false; }
   bool supportFP16() override { return false; }

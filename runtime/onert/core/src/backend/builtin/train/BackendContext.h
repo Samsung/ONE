@@ -34,7 +34,7 @@ namespace train
 class BackendContext : public backend::train::TrainableBackendContext
 {
 public:
-  BackendContext(const Backend *backend,
+  BackendContext(const backend::train::ITrainableBackend *backend,
                  std::unique_ptr<backend::train::TrainableContextData> &&data,
                  std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
@@ -43,8 +43,8 @@ public:
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
     : backend::train::TrainableBackendContext(backend, std::move(data), tensor_registry,
                                               grad_tensor_registry),
-      tensor_builder{tensor_builder}, kernel_gen{kernel_gen},
-      _external_context(new ExternalContext), _grad_tensor_builder{grad_tensor_builder}
+      kernel_gen{kernel_gen}, _external_context(new ExternalContext),
+      _tensor_builder{tensor_builder}, _grad_tensor_builder{grad_tensor_builder}
   {
   }
 
@@ -55,13 +55,12 @@ private:
   void genGradTensors();
 
 public:
-  FunctionMap genKernels() override;
+  backend::train::FunctionMap genKernels() override;
 
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 
 public:
   // TODO Make it private
-  std::shared_ptr<TensorBuilder> tensor_builder;
   std::shared_ptr<KernelGenerator> kernel_gen;
 
 private:
@@ -71,6 +70,7 @@ private:
   std::shared_ptr<ExternalContext> _external_context;
 
 private:
+  std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<TensorBuilder> _grad_tensor_builder;
 };
 

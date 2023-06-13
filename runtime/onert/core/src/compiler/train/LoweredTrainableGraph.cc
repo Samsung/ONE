@@ -81,7 +81,7 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
 
   // Check if backends are trainable
   _trainable_graph.operations().iterate(
-    [&](const ir::OperationIndex &op_ind, const ir::Operation &) {
+    [&](const ir::OperationIndex &op_ind, const ir::IOperation &) {
       const auto backend = backend_resolver->getBackend(op_ind);
 
       // TODO Remove dynamic_cast
@@ -135,7 +135,7 @@ void LoweredTrainableGraph::makeLowerInfo(const compiler::BackendResolver &backe
 
   // Set operand lower info using assigned backends to operations
   _trainable_graph.operations().iterate(
-    [&](const ir::OperationIndex &op_ind, const ir::Operation &op) {
+    [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
       auto backend = backend_resolver.getBackend(op_ind);
       if (!backend)
       {

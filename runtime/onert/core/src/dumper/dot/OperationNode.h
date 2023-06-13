@@ -52,7 +52,7 @@ public:
    * @param[in] index operation index
    * @param[in] node operation object
    */
-  Operation(const ir::OperationIndex &index, const ir::Operation &node);
+  Operation(const ir::OperationIndex &index, const ir::IOperation &node);
 };
 
 } // namespace dot

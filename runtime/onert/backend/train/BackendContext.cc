@@ -28,7 +28,7 @@ namespace backend
 namespace train
 {
 
-ITensorRegistry *BackendContext::genTensors() { return basic::genTensors(*this); }
+ITensorRegistry *BackendContext::genTensors() { return basic::genTensors(*this, _tensor_builder); }
 
 ITensorRegistry *BackendContext::genTrainingTensors()
 {
@@ -36,14 +36,14 @@ ITensorRegistry *BackendContext::genTrainingTensors()
 
   // TODO Generate training-related tensors except for gradient
 
-  return grad_tensor_registry.get();
+  return _grad_tensor_registry.get();
 }
 
 void BackendContext::genGradTensors()
 {
   const ir::train::TrainableGraph &tgraph = *trainable_graph();
   auto tensor_builder = _grad_tensor_builder;
-  auto tensor_reg = grad_tensor_registry;
+  auto tensor_reg = _grad_tensor_registry;
 
   tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
     if (external_operands().contains(ind))
@@ -69,26 +69,28 @@ void BackendContext::genGradTensors()
 
 FunctionMap BackendContext::genKernels()
 {
-  FunctionMap ret;
+  train::FunctionMap ret;
 
-  for (auto op_ind : _data.op_order)
-  {
-    auto fn_seq = kernel_gen->generate(op_ind);
-    ret.emplace_back(op_ind, std::move(fn_seq));
-  }
+  // TODO Generate TrainableSeqeunce
+  // for (auto op_ind : _tdata->op_order)
+  // {
+  //   auto fn_seq = kernel_gen->generate(op_ind);
+  //   ret.emplace_back(op_ind, std::move(fn_seq));
+  // }
 
   basic::initConsts(*this);
 
   // NOTE For memory optimization, we want to free some operand data
-  const_cast<ir::Graph &>(*_data.graph)
+  const_cast<ir::train::TrainableGraph &>(*_tdata->tgraph)
     .operands()
     .iterate([&](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
 
-  for (auto &&it : ret)
-  {
-    auto &fn_seq = it.second;
-    fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
-  }
+  // TODO Enable
+  // for (auto &&it : ret)
+  // {
+  //   auto &fn_seq = it.second;
+  //   fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
+  // }
 
   return ret;
 }

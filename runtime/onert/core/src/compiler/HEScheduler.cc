@@ -28,7 +28,7 @@ namespace
 
 using namespace onert;
 
-uint32_t getOperationsFlattenedIOSize(const ir::Graph &graph, const ir::Operation &node)
+uint32_t getOperationsFlattenedIOSize(const ir::Graph &graph, const ir::IOperation &node)
 {
   uint32_t size = 0;
   for (const auto &ind :
@@ -39,7 +39,7 @@ uint32_t getOperationsFlattenedIOSize(const ir::Graph &graph, const ir::Operatio
   return size;
 }
 
-bool isQuant(const ir::Graph &graph, const ir::Operation &node)
+bool isQuant(const ir::Graph &graph, const ir::IOperation &node)
 {
   for (const auto &input : node.getInputs() | ir::Remove::UNDEFINED)
   {
@@ -52,14 +52,14 @@ bool isQuant(const ir::Graph &graph, const ir::Operation &node)
   return false;
 }
 
-bool isWorkaroundSkip(const ir::Graph &, const backend::Backend *, const ir::Operation &, bool)
+bool isWorkaroundSkip(const ir::Graph &, const backend::Backend *, const ir::IOperation &, bool)
 {
   // Now, there is no workaround
   return false;
 }
 
 // if a node can be merged into op_seq
-bool isMergeable(const ir::Graph &graph, const ir::Operation &node)
+bool isMergeable(const ir::Graph &graph, const ir::IOperation &node)
 {
   size_t prev_op_cnt = 0;
   for (const auto &input : node.getInputs() | ir::Remove::UNDEFINED)
@@ -137,7 +137,7 @@ void HEScheduler::scheduleShufflingBackends()
   }
 }
 
-bool HEScheduler::isNodeProfiled(const ir::Operation &node)
+bool HEScheduler::isNodeProfiled(const ir::IOperation &node)
 {
   const bool quant = isQuant(*_graph, node);
   const auto size = getOperationsFlattenedIOSize(*_graph, node);
@@ -207,7 +207,7 @@ std::unique_ptr<compiler::BackendResolver> HEScheduler::schedule(const ir::Graph
   {
     // Check if profiling info about all backend/node pairs already exists
     bool all_nodes_are_profiled = true;
-    _graph->operations().iterate([&](const ir::OperationIndex &, const ir::Operation &op) {
+    _graph->operations().iterate([&](const ir::OperationIndex &, const ir::IOperation &op) {
       if (all_nodes_are_profiled)
         all_nodes_are_profiled = isNodeProfiled(op);
     });
@@ -224,7 +224,7 @@ std::unique_ptr<compiler::BackendResolver> HEScheduler::schedule(const ir::Graph
 
   ir::OperationIndexMap<bool> visited;
   graph.operations().iterate(
-    [&](const ir::OperationIndex &index, const ir::Operation &) { visited[index] = false; });
+    [&](const ir::OperationIndex &index, const ir::IOperation &) { visited[index] = false; });
   // for each task select the backend with the smallest earliest finishing time(eft)
   for (const auto &rank : _rank_to_op)
   {
@@ -258,7 +258,7 @@ int64_t HEScheduler::getPermuteTime(const backend::Backend *src_backend,
   return size / 400;
 }
 
-int64_t HEScheduler::tryBackend(const ir::Operation &node, const backend::Backend *backend)
+int64_t HEScheduler::tryBackend(const ir::IOperation &node, const backend::Backend *backend)
 {
   // if there is no profiling info don't use this backend during scheduling
   if (!_is_profiling_mode)
@@ -297,10 +297,10 @@ void HEScheduler::makeRank()
   VERBOSE(HEScheduler::makeRank) << "task prioritizing" << std::endl;
 
   _graph->operations().iterate(
-    [&](const ir::OperationIndex &index, const ir::Operation &) { DFSMaxRank(index); });
+    [&](const ir::OperationIndex &index, const ir::IOperation &) { DFSMaxRank(index); });
 
   // Check that ranks are calculated for all operations(nodes)
-  _graph->operations().iterate([&](const ir::OperationIndex &index, const ir::Operation &) {
+  _graph->operations().iterate([&](const ir::OperationIndex &index, const ir::IOperation &) {
     UNUSED_RELEASE(index);
     assert(_op_to_rank->find(index) != _op_to_rank->end());
   });
@@ -564,7 +564,7 @@ HEScheduler::ESTAndExecTime(const backend::Backend *backend, const ir::Operation
   return {prev_op_ft, exec_time};
 }
 
-int64_t HEScheduler::predMaxEFT(const backend::Backend *backend, const ir::Operation &node,
+int64_t HEScheduler::predMaxEFT(const backend::Backend *backend, const ir::IOperation &node,
                                 std::multimap<int64_t, int64_t> &transfer_st_exec_time)
 {
   int64_t max_pred_eft = 0;

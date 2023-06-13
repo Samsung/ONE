@@ -39,11 +39,11 @@ bool DAGChecker::verify(const Graph &graph) const noexcept
 
   OperationIndexMap<bool> visited;
   operations.iterate(
-    [&](const OperationIndex &index, const Operation &) { visited[index] = false; });
+    [&](const OperationIndex &index, const IOperation &) { visited[index] = false; });
   OperationIndexMap<bool> on_stack = visited; // Copy from visited
 
-  std::function<void(const OperationIndex &index, const Operation &)> dfs_recursive =
-    [&](const OperationIndex &index, const Operation &node) -> void {
+  std::function<void(const OperationIndex &index, const IOperation &)> dfs_recursive =
+    [&](const OperationIndex &index, const IOperation &node) -> void {
     if (on_stack[index])
       cyclic = true;
     if (visited[index])
@@ -76,7 +76,7 @@ bool EdgeChecker::verify(const Graph &graph) const noexcept
 {
   auto &operations = graph.operations();
   uint32_t errors = 0;
-  operations.iterate([&](const OperationIndex &index, const Operation &node) {
+  operations.iterate([&](const OperationIndex &index, const IOperation &node) {
     for (auto operand_index : node.getInputs() | ir::Remove::UNDEFINED)
     {
       try

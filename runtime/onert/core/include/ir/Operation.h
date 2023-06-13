@@ -45,7 +45,7 @@ struct IOperation
   virtual const OperandIndexSequence &getOutputs() const = 0;
 };
 
-class Operation : public IOperation
+class Operation : virtual public IOperation
 {
 public:
   // TODO Remove default parameter

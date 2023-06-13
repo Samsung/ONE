@@ -31,21 +31,16 @@ namespace compiler
 struct CodeAndInfo
 {
   ir::OperationIndex op_ind;
-  const ir::Operation *op;
+  const ir::IOperation *op;
   const OperationLowerInfo *lower_info;
   std::unique_ptr<exec::FunctionSequence> fn_seq;
 
-  CodeAndInfo(const ir::OperationIndex op_ind, const ir::Operation *op,
+  CodeAndInfo(const ir::OperationIndex op_ind, const ir::IOperation *op,
               const OperationLowerInfo *lower_info,
               std::unique_ptr<exec::FunctionSequence> &&fn_seq)
     : op_ind{op_ind}, op{op}, lower_info{lower_info}, fn_seq{std::move(fn_seq)}
   {
   }
-  CodeAndInfo(const CodeAndInfo &) = delete;
-  CodeAndInfo(CodeAndInfo &&) = default;
-  CodeAndInfo &operator=(const CodeAndInfo &) = delete;
-  CodeAndInfo &operator=(CodeAndInfo &&) = default;
-  virtual ~CodeAndInfo() = default;
 };
 
 using CodeMap = std::unordered_map<ir::OperationIndex, CodeAndInfo>;

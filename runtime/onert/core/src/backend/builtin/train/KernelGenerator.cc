@@ -36,13 +36,20 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
 {
 }
 
-std::unique_ptr<exec::ITrainableFunction> KernelGenerator::generate(ir::OperationIndex ind)
+std::unique_ptr<exec::train::TrainableSequence> KernelGenerator::generate(ir::OperationIndex ind)
 {
-  auto &op = _tgraph.operations().at(ind);
+  auto ret = std::make_unique<exec::train::TrainableSequence>();
+  const auto &op = _tgraph.operations().at(ind);
   op.accept(*this);
-  assert(_return_fn); // _return_fn must have been generated
+  // _return_fn must have been generated
+  if (_return_fn == nullptr)
+  {
+    throw std::runtime_error(op.name() + " op does not supported trainable kernel yet");
+  }
 
-  return std::move(_return_fn);
+  ret->_functions.emplace_back(std::move(_return_fn));
+
+  return ret;
 }
 
 void KernelGenerator::visit(const ir::operation::Permute &node)
@@ -56,6 +63,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
 
   auto fn =
     std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, _external_context);
+
   _return_fn = std::move(fn);
 }
 

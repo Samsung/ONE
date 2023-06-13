@@ -31,7 +31,7 @@ namespace train
 TrainableExecutor::TrainableExecutor(
   std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
   backend::train::TrainableBackendContexts &&backend_contexts,
-  const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
+  const compiler::TensorRegistries &tensor_regs, compiler::train::CodeMap &&code_map,
   const std::vector<ir::OperationIndex> &order, const util::TracingCtx *tracing_ctx)
   : _lowered_graph{std::move(lowered_graph)}, _backend_contexts{std::move(backend_contexts)},
     _trainable_graph{_lowered_graph->trainable_graph()}, _mutex(), _tracing_ctx(tracing_ctx)
@@ -51,8 +51,7 @@ TrainableExecutor::TrainableExecutor(
 
   for (auto index : order)
   {
-    auto &trainable_code =
-      nnfw::misc::polymorphic_downcast<compiler::train::CodeAndInfo &>(code_map.at(index));
+    auto &trainable_code = code_map.at(index);
     _code.emplace_back(std::move(trainable_code));
   }
 }
@@ -117,10 +116,7 @@ void TrainableExecutor::executeImpl()
 #endif
       _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
-      auto &trainable_fn = code.trainable_fn;
-
-      // TODO Get whether training
-      trainable_fn->forward(true);
+      // TODO Support forwarding
 
       // TODO Support backwarding
 
@@ -136,11 +132,10 @@ void TrainableExecutor::executeImpl()
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());
 #endif
+      UNUSED_RELEASE(code);
+      // TODO Support forwarding
 
-      auto &trainable_fn = code.trainable_fn;
-
-      // TODO Get whether training
-      trainable_fn->forward(true);
+      // TODO Support backwarding
     }
   }
 }

@@ -63,8 +63,8 @@ public:
   {
     for (const auto &e : tbackend_contexts)
     {
-      auto tensor_reg = e.second->tensor_registry;
-      auto grad_tensor_reg = e.second->grad_tensor_registry;
+      auto tensor_reg = e.second->tensor_registry();
+      auto grad_tensor_reg = e.second->grad_tensor_registry();
       if (e.first->config()->id() == backend::builtin::Config::ID)
       {
         _builtin_tensor_reg =

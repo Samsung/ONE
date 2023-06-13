@@ -34,7 +34,7 @@ public:
   static std::string ID;
   std::string id() override { return ID; }
   bool initialize() override;
-  ir::Layout supportLayout(const ir::Operation &node, ir::Layout frontend_layout) override;
+  ir::Layout supportLayout(const ir::IOperation &node, ir::Layout frontend_layout) override;
   bool supportPermutation() override { return false; }
   bool supportDynamicTensor() override
   {

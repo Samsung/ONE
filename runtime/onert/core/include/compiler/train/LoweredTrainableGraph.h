@@ -42,7 +42,8 @@ class LoweredTrainableGraph : public ILoweredGraph
 public:
   LoweredTrainableGraph(ir::train::TrainableGraph &graph, const compiler::CompilerOptions &options);
 
-  ir::Graph &graph() override { return _trainable_graph.graph(); }
+  // TODO Remove const_cast
+  ir::Graph &graph() override { return const_cast<ir::Graph &>(_trainable_graph.graph()); }
   const ir::Graph &graph() const override { return _trainable_graph.graph(); }
   ir::train::TrainableGraph &trainable_graph() { return _trainable_graph; }
   const ir::train::TrainableGraph &trainable_graph() const { return _trainable_graph; }
