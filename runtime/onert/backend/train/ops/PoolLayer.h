@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,8 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_POOLLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_POOLLAYER_H__
 
-#include <ops/PoolLayer.h>
+#include <backend/IPortableTensor.h>
+#include <ops/OperationUtils.h>
 
 #include <exec/ITrainableFunction.h>
 
@@ -35,7 +36,7 @@ enum class PoolType
   kMax,
 };
 
-class PoolLayer : public ::onert::exec::ITrainableFunction, public cpu::ops::PoolLayer
+class PoolLayer : public ::onert::exec::ITrainableFunction
 {
 public:
   PoolLayer();
@@ -49,6 +50,13 @@ public:
                  IPortableTensor *output, const PoolType op_type);
   void forward(bool training) override;
   void backward() override;
+
+private:
+  const IPortableTensor *_input;
+  IPortableTensor *_output;
+
+  std::function<void(const IPortableTensor *, IPortableTensor *)> _kernel;
+  std::function<void(const IPortableTensor *, IPortableTensor *)> _tkernel;
 };
 
 } // namespace ops
