@@ -91,9 +91,9 @@ std::unique_ptr<exec::train::TrainableSequence> KernelGenerator::generate(ir::Op
   return ret;
 }
 
-void KernelGenerator::visit(const ir::operation::Conv2D &node)
+void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
 {
-  using ir::operation::Conv2D;
+  using ir::train::operation::Conv2D;
 
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(Conv2D::Input::INPUT)};
@@ -139,9 +139,9 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::FullyConnected &node)
+void KernelGenerator::visit(const ir::train::operation::FullyConnected &node)
 {
-  using ir::operation::FullyConnected;
+  using ir::train::operation::FullyConnected;
 
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(FullyConnected::Input::INPUT)};
@@ -163,50 +163,12 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Reshape &node)
+void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
 {
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Reshape::Input::INPUT)};
+  using ir::train::operation::Pool2D;
 
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
-
-  // optional 2nd input
-  IPortableTensor *shape_tensor = nullptr;
-
-  if (node.getInputs().size() == 2)
-  {
-    const auto shape_index{node.getInputs().at(ir::operation::Reshape::Input::SHAPE)};
-    shape_tensor = _tensor_reg->getPortableTensor(shape_index);
-  }
-
-  auto fn = std::make_unique<ops::ReshapeLayer>();
-
-  fn->configure(input_tensor, shape_tensor, output_tensor);
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Softmax &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Softmax::Input::INPUT)};
-
-  const auto beta = node.param().beta;
-
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
-
-  auto fn = std::make_unique<ops::SoftMaxLayer>();
-
-  fn->configure(input_tensor, beta, output_tensor);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Pool2D &node)
-{
   const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Pool2D::Input::INPUT)};
+  const auto ifm_index{node.getInputs().at(Pool2D::Input::INPUT)};
 
   const auto kh = node.param().kh;
   const auto kw = node.param().kw;
@@ -225,6 +187,50 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
   fn->configure(ifm_tensor, padding.left, padding.right, padding.top, padding.bottom,
                 stride.horizontal, stride.vertical, kw, kh, activation, ofm_tensor,
                 convertPoolType(node.param().op_type));
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::train::operation::Reshape &node)
+{
+  using ir::train::operation::Reshape;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(Reshape::Input::INPUT)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  // optional 2nd input
+  IPortableTensor *shape_tensor = nullptr;
+
+  if (node.getInputs().size() == 2)
+  {
+    const auto shape_index{node.getInputs().at(Reshape::Input::SHAPE)};
+    shape_tensor = _tensor_reg->getPortableTensor(shape_index);
+  }
+
+  auto fn = std::make_unique<ops::ReshapeLayer>();
+
+  fn->configure(input_tensor, shape_tensor, output_tensor);
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::train::operation::Softmax &node)
+{
+  using ir::train::operation::Softmax;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(Softmax::Input::INPUT)};
+
+  const auto beta = node.param().beta;
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  auto fn = std::make_unique<ops::SoftMaxLayer>();
+
+  fn->configure(input_tensor, beta, output_tensor);
 
   _return_fn = std::move(fn);
 }

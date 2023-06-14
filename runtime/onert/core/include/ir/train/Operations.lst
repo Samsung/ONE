@@ -19,8 +19,13 @@
 #endif
 
 // Internal Name
+OP(Conv2D)
 OP(ElementwiseActivation)
+OP(FullyConnected)
 OP(Permute)
+OP(Pool2D)
+OP(Reshape)
+OP(Softmax)
 
 // Training Only
 OP(Loss)

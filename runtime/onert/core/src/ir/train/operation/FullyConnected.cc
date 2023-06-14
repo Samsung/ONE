@@ -14,17 +14,31 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
-#define __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
-
-#include "ir/train/operation/Conv2D.h"
-#include "ir/train/operation/ElementwiseActivation.h"
 #include "ir/train/operation/FullyConnected.h"
-#include "ir/train/operation/Loss.h"
-#include "ir/train/operation/Permute.h"
-#include "ir/train/operation/Pool2D.h"
-#include "ir/train/operation/Reshape.h"
-#include "ir/train/operation/Softmax.h"
-#include "ir/train/operation/UntrainableOperation.h"
 
-#endif // __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
+#include "ir/OperationVisitor.h"
+#include "ir/train/TrainableOperationVisitor.h"
+
+namespace onert
+{
+namespace ir
+{
+namespace train
+{
+namespace operation
+{
+
+void FullyConnected::accept(OperationVisitor &v) const { v.visit(*this); }
+
+void FullyConnected::accept(TrainableOperationVisitor &v) const { v.visit(*this); }
+
+FullyConnected::FullyConnected(const OperationType &operation)
+  : OperationType{operation.getInputs(), operation.getOutputs(), operation.param()}
+{
+  // DO NOTHING
+}
+
+} // namespace operation
+} // namespace train
+} // namespace ir
+} // namespace onert
