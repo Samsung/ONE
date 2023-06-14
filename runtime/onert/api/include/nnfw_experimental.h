@@ -162,10 +162,9 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
  * Training APIs are designed to be used in the following order for training
  * 1. nnfw_set_traininfo
  * 2. nnfw_prepare_train
- * 3. nnfw_set_traininput
- * 4. nnfw_set_trainoutput (optional if we use nnfw_get_loss)
- * 5. nnfw_train
- * 6. nnfw_get_loss (optional)
+ * 3. nnfw_set_train_input, nnfw_set_train_expected for inputs & expected outputs
+ * 4. nnfw_train
+ * 5. nnfw_get_loss
  *
  * If you want to inference after training with the same session, you can use the following order
  * 1. nnfw_set_input
@@ -178,91 +177,92 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
 //////////////////////////////////////////////
 
 /**
- * @brief Loss type
- */
-typedef enum
-{
-  /** Categorical CrossEntropy loss */
-  NNFW_LOSS_TYPE_CATEGORICAL_CROSSENTROPY = 0,
-
-} NNFW_LOSS_TYPE;
-
-/**
  * @brief Training information to prepare training
  */
 typedef struct nnfw_train_info
 {
-  /** Loss type */
-  NNFW_LOSS_TYPE loss_type;
   /** Learning rate */
-  float learning_rate;
+  float learning_rate = 0.001f;
   /** Batch size */
-  uint32_t batch_size;
+  uint32_t batch_size = 1;
 } nnfw_train_info;
 
 /**
- * @brief Set training information before prepare training
- * @note  This function must be called before {@link nnfw_prepare_train} to set training information
- *        This function may deprecated if we can get training information from model (not planned)
- *        This function may be used after {@link nnfw_prepare_pipeline}
- *        to support dynamic training information (not planned)
- *
- * @param[in] session The session to be prepared for training
- * @param[in] info    Training information
- * @return  @c NNFW_STATUS_NO_ERROR if successful
- */
-NNFW_STATUS nnfw_set_traininfo(nnfw_session *session, nnfw_train_info info);
-
-/**
  * @brief Prepare session to be ready for training
+ * @note  The session will be entered into training mode
  *
  * @param[in] session The session to be prepared for training
+ * @param[in] info    Training information.
+ *                    If info is nullptr, it will not change training information.
+ *                    If it is nullptr and model has not training information,
+ *                    it will use default training information.
+ *                    Default training information is {learning_rate =0.001f, batch_size = 1}
+ *
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_prepare_train(nnfw_session *session);
+NNFW_STATUS nnfw_prepare_train(nnfw_session *session, nnfw_train_info *info);
 
 /**
- * @brief Set training inputs and expected model outputs
+ * @brief Set training input
+ * @note  This function should be called after {@link nnfw_prepare_train}
  *
- * @param[in] session         The session to be set training inputs and expected model outputs
- * @param[in] inputs          The input buffers for training
- * @param[in] input_infos     The shape and type of input buffers
- * @param[in] expecteds       The expected model outputs for training
- * @param[in] expected_infos  The shape and type of expected model outputs
+ * @param[in] session     The session to be set training inputs and expected model outputs
+ * @param[in] index       The index of training input
+ * @param[in] input       The input buffers for training
+ * @param[in] input_info  The shape and type of input buffer
+ *                        If it is nullptr, it will not change shape and batch size
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_set_traininput(nnfw_session *session, void **inputs, nnfw_tensorinfo *input_infos,
-                                void **expecteds, nnfw_tensorinfo *expected_infos);
+NNFW_STATUS nnfw_set_train_input(nnfw_session *session, uint32_t index, void *input,
+                                 nnfw_tensorinfo *input_info);
 
 /**
- * @brief Set training outputs
- *        Training outputs may be used to get loss value after training
- *        It may be deprecated if we allow only @{link nnfw_get_loss} to get loss value
+ * @brief Set training expected output
+ * @note  This function should be called after {@link nnfw_prepare_train}
  *
- * @param[in] session       The session to be set training outputs
- * @param[in] outputs       The output buffers for training
- * @param[in] output_infos  The shape and type of output buffers
+ * @param session       The session to be set training inputs and expected model outputs
+ * @param index         The index of training expected output
+ * @param expected      The expected buffers for training
+ * @param expected_info The shape and type of expected buffer
+ *                      If it is nullptr, it will not change shape and batch size
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_set_trainoutput(nnfw_session *session, void **outputs,
-                                 nnfw_tensorinfo *output_infos);
+NNFW_STATUS nnfw_set_train_expected(nnfw_session *session, uint32_t index, void *expected,
+                                    nnfw_tensorinfo *expected_info);
 
 /**
  * @brief Train the model
+ * @note  This function should be called after {@link nnfw_set_train_input} and
+ *        {@link nnfw_set_train_expected} for each input and expected output
  *
  * @param[in] session The session to be trained
+ * @param[in] update_weights If true, update weights of the model
+ *                           If false, do not update weights of the model (for validation)
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_train(nnfw_session *session);
+NNFW_STATUS nnfw_train(nnfw_session *session, bool update_weights);
 
 /**
- * @brief Get loss value after training
+ * @brief Get loss value for expected output
+ * @note  This function should be called after {@link nnfw_train}
  *
  * @param[in]   session The session to get loss value
+ * @param[in]   index   The index of loss value [0, number of expected outputs)
  * @param[out]  loss    The loss value
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_get_loss(nnfw_session *session, float *loss);
+NNFW_STATUS nnfw_get_loss(nnfw_session *session, uint32_t index, float *loss);
+
+/**
+ * @brief Export inference model
+ * @note  This function should be called on training mode
+ *        This function should be called after {@link nnfw_train}
+ *
+ * @param[in] session The session to export inference model
+ * @param[in] path    The path to export inference model
+ * @return @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_export_inference_model(nnfw_session *session, const char *path);
 
 //////////////////////////////////////////////
 // Optional APIs for training
@@ -270,13 +270,13 @@ NNFW_STATUS nnfw_get_loss(nnfw_session *session, float *loss);
 
 /**
  * @brief Get the number of training model inputs
- *        This function should be called after {@link nnfw_prepare_train}
+ * @note  This function should be called after {@link nnfw_prepare_train}
  *
  * @param[in]   session The session to get the number of training model inputs
  * @param[out]  count   The number of training model inputs
  * @return @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_get_traininput_count(nnfw_session *session, uint32_t *count);
+NNFW_STATUS nnfw_get_train_input_count(nnfw_session *session, uint32_t *count);
 
 /**
  * @brief Get the training model input information
@@ -286,17 +286,17 @@ NNFW_STATUS nnfw_get_traininput_count(nnfw_session *session, uint32_t *count);
  * @param[out]  info    The shape and type of training model input
  * @return @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_get_traininput_tensorinfo(nnfw_session *session, uint32_t index,
-                                           nnfw_tensorinfo *info);
+NNFW_STATUS nnfw_get_train_input_tensorinfo(nnfw_session *session, uint32_t index,
+                                            nnfw_tensorinfo *info);
 
 /**
  * @brief Get the number of training model expected outputs
- *        This function should be called after {@link nnfw_prepare_train}
+ * @note  This function should be called after {@link nnfw_prepare_train}
  *
  * @param[in]   session The session to get the number of training model expected outputs
  * @param[out]  count   The number of training model expected outputs
  */
-NNFW_STATUS nnfw_get_trainexpected_count(nnfw_session *session, uint32_t *count);
+NNFW_STATUS nnfw_get_expected_count(nnfw_session *session, uint32_t *count);
 
 /**
  * @brief Get the training model expected output information
@@ -306,18 +306,40 @@ NNFW_STATUS nnfw_get_trainexpected_count(nnfw_session *session, uint32_t *count)
  * @param[out]  info    The shape and type of training model expected output
  * @return @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_get_trainexpected_tensorinfo(nnfw_session *session, uint32_t index,
-                                              nnfw_tensorinfo *info);
+NNFW_STATUS nnfw_get_expected_tensorinfo(nnfw_session *session, uint32_t index,
+                                         nnfw_tensorinfo *info);
+
+//////////////////////////////////////////////
+// Not planned to be implemented
+//////////////////////////////////////////////
 
 /**
- * @brief Export inference model
- *        This function should be called after {@link nnfw_train}
+ * @brief Convert training model to inference model
+ * @note  This function should be called after {@link nnfw_train}
  *
- * @param[in] session The session to export inference model
- * @param[in] path    The path to export inference model
- * @return @c NNFW_STATUS_NO_ERROR if successful
+ * @param session The session to convert training mode to inference mode
+ * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_export_inference_model(nnfw_session *session, const char *path);
+NNFW_STATUS nnfw_convert_to_inference(nnfw_session *session);
+
+/**
+ * @brief Convert inference model to training model
+ * @note  This function should be called after {@link nnfw_prepare}
+ *
+ * @param session The session to convert inference mode to training mode
+ * @return  @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_convert_to_train(nnfw_session *session);
+
+/**
+ * @brief Set training information after prepare training
+ * @note  This function may be used after {@link nnfw_prepare_train}
+ *
+ * @param[in] session The session prepared for training
+ * @param[in] info    Training information
+ * @return  @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_traininfo(nnfw_session *session, nnfw_train_info info);
 
 #ifdef __cplusplus
 }
