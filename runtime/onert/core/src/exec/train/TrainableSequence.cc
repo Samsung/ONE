@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_TRAIN_TRAINABLE_SEQUENCE_H__
-#define __ONERT_EXEC_TRAIN_TRAINABLE_SEQUENCE_H__
+#include "exec/train/TrainableSequence.h"
 
-#include "exec/ITrainableFunction.h"
-
-#include <memory>
-#include <vector>
-#include <functional>
+#include "ir/Operation.h"
+#include "backend/ITensorRegistry.h"
+#include "util/logging.h"
 
 namespace onert
 {
@@ -29,21 +26,36 @@ namespace exec
 {
 namespace train
 {
-// TODO Implement
-class TrainableSequence : public ITrainableFunction
+
+void TrainableSequence::forward(bool training)
 {
-public:
-  void forward(bool training) override;
-  void backward() override;
+  for (const auto &function : _functions)
+  {
+    function->forward(training);
+  }
+}
 
-  void append(std::unique_ptr<ITrainableFunction> &&function);
-  void iterate(const std::function<void(ITrainableFunction &)> &fn);
+void TrainableSequence::backward()
+{
+  for (const auto &function : _functions)
+  {
+    function->backward();
+  }
+}
 
-public:
-  std::vector<std::unique_ptr<ITrainableFunction>> _functions;
-};
+void TrainableSequence::append(std::unique_ptr<ITrainableFunction> &&function)
+{
+  _functions.push_back(std::move(function));
+}
+
+void TrainableSequence::iterate(const std::function<void(ITrainableFunction &)> &fn)
+{
+  for (const auto &func : _functions)
+  {
+    fn(*func);
+  }
+}
+
 } // namespace train
 } // namespace exec
 } // namespace onert
-
-#endif // __ONERT_EXEC_TRAIN_TRAINABLE_SEQUENCE_H__

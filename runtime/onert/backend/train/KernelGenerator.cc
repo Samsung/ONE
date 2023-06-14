@@ -56,7 +56,10 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<basic::TensorRegistry> &grad_tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
-  : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
+  : backend::train::KernelGeneratorBase{tgraph},
+    // TODO Fix me! Use trainable operands and operations
+    _ctx(tgraph.operands()), _operations_ctx(tgraph.operations()),
+    _current_layout{tgraph.layout()},    
     _tensor_reg{tensor_reg}, _grad_tensor_reg{grad_tensor_reg}, _external_context(external_context)
 {
   // DO NOTHING
@@ -88,7 +91,7 @@ std::unique_ptr<exec::train::TrainableSequence> KernelGenerator::generate(ir::Op
   return ret;
 }
 
-void KernelGenerator::visit(const ir::operation::Conv2D &)
+void KernelGenerator::visit(const ir::operation::Conv2D &node)
 {
   using ir::operation::Conv2D;
 
@@ -115,7 +118,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &)
                   stride.horizontal, stride.vertical, dilation.width_factor, dilation.height_factor,
                   activation, ofm_tensor);
 
-    _trainable_fn = std::move(fn);
+    _return_fn = std::move(fn);
     return;
   }
   const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
@@ -133,7 +136,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &)
                 padding.right, padding.top, padding.bottom, stride.horizontal, stride.vertical,
                 dilation.width_factor, dilation.height_factor, activation, ofm_tensor);
 
-  _trainable_fn = std::move(fn);
+  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::operation::FullyConnected &node)
@@ -157,7 +160,7 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
   fn->configure(input_tensor, weight_tensor, bias_tensor, activation, weights_format, output_tensor,
                 _external_context);
 
-  _trainable_fn = std::move(fn);
+  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::operation::Reshape &node)
@@ -180,7 +183,7 @@ void KernelGenerator::visit(const ir::operation::Reshape &node)
   auto fn = std::make_unique<ops::ReshapeLayer>();
 
   fn->configure(input_tensor, shape_tensor, output_tensor);
-  _trainable_fn = std::move(fn);
+  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::operation::Softmax &node)
@@ -197,7 +200,7 @@ void KernelGenerator::visit(const ir::operation::Softmax &node)
 
   fn->configure(input_tensor, beta, output_tensor);
 
-  _trainable_fn = std::move(fn);
+  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::operation::Pool2D &node)
@@ -223,7 +226,7 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
                 stride.horizontal, stride.vertical, kw, kh, activation, ofm_tensor,
                 convertPoolType(node.param().op_type));
 
-  _trainable_fn = std::move(fn);
+  _return_fn = std::move(fn);
 }
 
 } // namespace train

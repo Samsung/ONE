@@ -50,18 +50,14 @@ public:
   void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::Softmax &) override;
 
-  std::unique_ptr<exec::ITrainableFunction> releaseFunction()
-  {
-    assert(_trainable_fn);
-    return std::move(_trainable_fn);
-  }
-
 private:
+  // TODO Fix me! Use trainable operands and operations
+  const ir::Operands &_ctx;
+  const ir::Operations &_operations_ctx;
   ir::Layout _current_layout;
   std::shared_ptr<basic::TensorRegistry> _tensor_reg;
   std::shared_ptr<basic::TensorRegistry> _grad_tensor_reg;
   const std::shared_ptr<ExternalContext> _external_context;
-  std::unique_ptr<exec::ITrainableFunction> _trainable_fn;
 };
 
 } // namespace train
