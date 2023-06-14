@@ -73,17 +73,26 @@ public:
   /**
    * @brief Add a new trainable operation to the graph
    *
-   * If the given @c operation is available, it succeeds. And @c operation is moved which
-   * invalidates the caller's pointer. If the given @c operation has at least one invalid operand
-   * index, it fails. And @c operation will not be moved so the caller's pointer will be still
-   * valid.
+   * If the given @c operation has at least one invalid operand index, it fails. And @c operation
+   * will not be moved so the caller's pointer will be still valid.
    *
    * @param operation Operation to be added
-   * @return OperandIndex @c index if successful, UNDEFINED otherwise
+   * @return OperationIndex @c index if successful, UNDEFINED otherwise
    */
   OperationIndex addOperation(std::unique_ptr<ITrainableOperation> &&operation);
-
-  void replaceOperation(OperationIndex index, std::unique_ptr<ITrainableOperation> &&operation);
+  /**
+   * @brief Replace a trainable operation which the graph already has
+   *
+   * If the given @c index is available, it succeeds. And @c operation is moved which invalidates
+   * the caller's pointer. If the given @c operation has at least one invalid operand index, it
+   * fails. And @c operation will not be moved so the caller's pointer will be still valid. No
+   * information in the graph is changed except for replacing an operation.
+   *
+   * @param operation Operation to be added
+   * @return OperationIndex @c index if successful, UNDEFINED otherwise
+   */
+  OperationIndex replaceOperation(OperationIndex index,
+                                  std::unique_ptr<ITrainableOperation> &&operation);
 
 public:
   void addInput(const OperandIndex &ind, const std::string &name = "");
@@ -95,7 +104,6 @@ public:
                  std::unordered_map<std::string, IOIndex> name_to_input);
   void setOutputs(OperandIndexSequence outputs,
                   std::unordered_map<std::string, IOIndex> name_to_output);
-  void setGraphIO(const GraphIO &io_info);
 
   // Accessors
 public:
@@ -111,6 +119,9 @@ public:
 
 public:
   const ITrainableOperation &operation(OperationIndex index) const;
+
+public:
+  std::vector<ir::OperationIndex> topolSortOperations() const;
   // TODO Support topological sort for backwarding
 
 private:

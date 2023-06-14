@@ -26,6 +26,7 @@
 #include "../../backend/builtin/Config.h"
 #include "../../dumper/text/GraphDumper.h"
 #include "../../ir/verifier/Verifier.h"
+#include "TrainableOperationConverter.h"
 
 #include "backend/Backend.h"
 #include "backend/train/ITrainableBackend.h"
@@ -102,6 +103,17 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
     .append(std::make_unique<compiler::pass::PermutationOperationPass>(*this))
     .append(std::make_unique<compiler::pass::PermutationInsertionPass>(*this))
     .run();
+
+  // TODO Move converting Permute op into PermutationInsertionPass
+  auto op_converter = TrainableOperationConverter{_trainable_graph, nullptr};
+  _trainable_graph.operations().iterate(
+    [&](const onert::ir::OperationIndex &index, const onert::ir::IOperation &op) {
+      if (op.opcode() == ir::OpCode::Permute)
+      {
+        auto top = op_converter(index);
+        _trainable_graph.replaceOperation(index, std::move(top));
+      }
+    });
 
   dumpLowerInfo();
 

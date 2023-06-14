@@ -39,6 +39,7 @@ public:
 private:
   void visit(const ir::operation::ElementwiseActivation &) override;
   void visit(const ir::operation::Loss &) override;
+  void visit(const ir::operation::Permute &node) override;
 
 private:
   const ir::train::TrainingInfo *_training_info;

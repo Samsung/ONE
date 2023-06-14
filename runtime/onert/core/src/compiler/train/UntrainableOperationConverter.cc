@@ -27,16 +27,15 @@ namespace compiler
 namespace train
 {
 
-UntrainableOperationConverter::UntrainableOperationConverter(
-  ir::train::TrainableGraph &trainable_graph)
-  : _trainable_graph{trainable_graph}, _return_op{nullptr}
+UntrainableOperationConverter::UntrainableOperationConverter(ir::train::TrainableGraph &tgraph)
+  : _tgraph{tgraph}, _return_op{nullptr}
 {
 }
 
 std::unique_ptr<ir::train::ITrainableOperation> UntrainableOperationConverter::
 operator()(const ir::OperationIndex &index)
 {
-  const auto &op = _trainable_graph.operations().at(index);
+  const auto &op = _tgraph.operations().at(index);
   op.accept(*this);
 
   return std::move(_return_op);

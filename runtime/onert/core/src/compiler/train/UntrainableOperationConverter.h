@@ -31,8 +31,7 @@ namespace train
 class UntrainableOperationConverter : public ir::OperationVisitor
 {
 public:
-  UntrainableOperationConverter(ir::train::TrainableGraph &trainable_graph);
-
+  UntrainableOperationConverter(ir::train::TrainableGraph &tgraph);
   std::unique_ptr<ir::train::ITrainableOperation> operator()(const ir::OperationIndex &index);
 
 #define OP(InternalName) void visit(const ir::operation::InternalName &node);
@@ -40,7 +39,7 @@ public:
 #undef OP
 
 protected:
-  ir::train::TrainableGraph &_trainable_graph;
+  ir::train::TrainableGraph &_tgraph;
   std::unique_ptr<ir::train::ITrainableOperation> _return_op;
 };
 
