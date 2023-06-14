@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_OPERATION_UNTRAINABLE_OPERATION_H__
-#define __ONERT_IR_TRAIN_OPERATION_UNTRAINABLE_OPERATION_H__
-
-#include "ir/train/ITrainableOperation.h"
+#include "ir/train/operation/Permute.h"
 
 #include "ir/OperationVisitor.h"
 #include "ir/train/TrainableOperationVisitor.h"
 
 #include <misc/polymorphic_downcast.h>
-#include <type_traits>
 
 namespace onert
 {
@@ -34,26 +30,18 @@ namespace train
 namespace operation
 {
 
-template <typename OperationType,
-          typename = std::enable_if_t<std::is_base_of<Operation, OperationType>::value>>
-class UntrainableOperation : public OperationType, public ITrainableOperation
-{
-public:
-  UntrainableOperation(const OperationType &operation) : OperationType{operation} {}
-  virtual ~UntrainableOperation() = default;
+void Permute::accept(OperationVisitor &v) const { v.visit(*this); }
 
-public:
-  void accept(OperationVisitor &v) const override { v.visit(*this); }
-  void accept(TrainableOperationVisitor &) const override
-  {
-    // Pass the functionality of TrainableOperationVisitor since UntrainableOperation must not be
-    // trained
-  }
-};
+void Permute::accept(TrainableOperationVisitor &v) const { v.visit(*this); }
+
+Permute::Permute(const OperationType &operation)
+  : OperationType{operation.getInputs().at(0), operation.getOutputs().at(0),
+                  operation.getPermuteType()}
+{
+  // DO NOTHING
+}
 
 } // namespace operation
 } // namespace train
 } // namespace ir
 } // namespace onert
-
-#endif // __ONERT_IR_TRAIN_OPERATION_UNTRAINABLE_OPERATION_H__

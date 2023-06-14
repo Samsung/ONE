@@ -14,30 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_TRAINABLE_OPERATION_VISITOR_H__
-#define __ONERT_IR_TRAIN_TRAINABLE_OPERATION_VISITOR_H__
+#ifndef __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
+#define __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
 
-#include "ir/train/Operations.Include.h"
+#include "ir/train/operation/ElementwiseActivation.h"
+#include "ir/train/operation/Loss.h"
+#include "ir/train/operation/Permute.h"
+#include "ir/train/operation/UntrainableOperation.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
-{
-
-struct TrainableOperationVisitor
-{
-  virtual ~TrainableOperationVisitor() = default;
-
-#define OP(InternalName) \
-  virtual void visit(const operation::InternalName &) {}
-#include "ir/train/Operations.lst"
-#undef OP
-};
-
-} // namespace train
-} // namespace ir
-} // namespace onert
-
-#endif // __ONERT_IR_TRAIN_TRAINABLE_OPERATION_VISITOR_H__
+#endif // __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__

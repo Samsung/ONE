@@ -43,7 +43,7 @@ public:
 
   std::unique_ptr<exec::train::TrainableSequence> generate(ir::OperationIndex op_ind) override;
 
-  void visit(const ir::operation::Conv2D &) override;
+  void visit(const ir::train::operation::Loss &) override;
 
 private:
   ir::Layout _current_layout;

@@ -70,7 +70,7 @@ std::unique_ptr<exec::train::TrainableSequence> KernelGenerator::generate(ir::Op
   return ret;
 }
 
-void KernelGenerator::visit(const ir::operation::Conv2D &)
+void KernelGenerator::visit(const ir::train::operation::Loss &)
 {
   // TODO Generate kernel
 }
