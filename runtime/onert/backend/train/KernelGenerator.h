@@ -49,6 +49,7 @@ public:
   void visit(const ir::operation::Pool2D &) override;
   void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::Softmax &) override;
+  void visit(const ir::train::operation::Loss &) override;
 
 private:
   // TODO Fix me! Use trainable operands and operations

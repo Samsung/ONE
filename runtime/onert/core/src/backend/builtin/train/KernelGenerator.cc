@@ -39,7 +39,7 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
 std::unique_ptr<exec::train::TrainableSequence> KernelGenerator::generate(ir::OperationIndex ind)
 {
   auto ret = std::make_unique<exec::train::TrainableSequence>();
-  const auto &op = _tgraph.operations().at(ind);
+  const auto &op = _tgraph.operation(ind);
   op.accept(*this);
   // _return_fn must have been generated
   if (_return_fn == nullptr)
@@ -52,7 +52,7 @@ std::unique_ptr<exec::train::TrainableSequence> KernelGenerator::generate(ir::Op
   return ret;
 }
 
-void KernelGenerator::visit(const ir::operation::Permute &node)
+void KernelGenerator::visit(const ir::train::operation::Permute &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};

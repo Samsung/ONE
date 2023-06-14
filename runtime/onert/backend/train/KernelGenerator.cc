@@ -229,6 +229,11 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::train::operation::Loss &)
+{
+  // TODO Generate kernel
+}
+
 } // namespace train
 } // namespace backend
 } // namespace onert

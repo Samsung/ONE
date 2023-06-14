@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_OPERATIONS_OPERATION_DECLARE_H__
-#define __ONERT_IR_TRAIN_OPERATIONS_OPERATION_DECLARE_H__
+#ifndef __ONERT_IR_TRAIN_OPERATION_PERMUTE_H__
+#define __ONERT_IR_TRAIN_OPERATION_PERMUTE_H__
+
+#include "ir/operation/Permute.h"
+#include "ir/train/ITrainableOperation.h"
 
 namespace onert
 {
@@ -26,13 +29,26 @@ namespace train
 namespace operation
 {
 
-#define OP(InternalName) class InternalName;
-#include "ir/Operations.lst"
-#undef OP
+class Permute : public ir::operation::Permute, public ITrainableOperation
+{
+private:
+  using OperationType = ir::operation::Permute;
+
+public:
+  Permute(const OperationType &operation);
+
+public:
+  using ir::operation::Permute::getInputs;
+  using ir::operation::Permute::getOutputs;
+
+public:
+  void accept(OperationVisitor &v) const override;
+  void accept(TrainableOperationVisitor &v) const override;
+};
 
 } // namespace operation
 } // namespace train
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_TRAIN_OPERATIONS_OPERATION_DECLARE_H__
+#endif // __ONERT_IR_TRAIN_OPERATION_PERMUTE_H__
