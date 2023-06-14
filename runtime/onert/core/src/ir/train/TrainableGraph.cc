@@ -47,6 +47,12 @@ OperationIndex TrainableGraph::addOperation(std::unique_ptr<ITrainableOperation>
   return _graph.addOperation(std::move(operation));
 }
 
+OperationIndex TrainableGraph::replaceOperation(OperationIndex index,
+                                                std::unique_ptr<ITrainableOperation> &&operation)
+{
+  return _graph.replaceOperation(index, std::move(operation));
+}
+
 IOIndex TrainableGraph::getInputIndex(const std::string &name) const
 {
   return _graph.getInputIndex(name);
@@ -73,35 +79,14 @@ void TrainableGraph::removeOperand(const OperandIndex &ind) { _graph.removeOpera
 
 void TrainableGraph::setLayout(Layout layout) { _graph.setLayout(layout); }
 
-void TrainableGraph::setGraphIO(const GraphIO &io_info)
-{
-  assert(_graph.io_info().inputs.size() == 0);
-  assert(_graph.io_info().outputs.size() == 0);
-  assert(_graph.io_info().name_to_input.size() == 0);
-  assert(_graph.io_info().name_to_output.size() == 0);
-
-  auto appendIOInfo = [&](const OperandIndexSequence &sequance,
-                          const std::unordered_map<std::string, IOIndex> &name_map) {
-    assert(sequance.size() == name_map.size());
-    for (uint32_t i = 0; i < sequance.size(); ++i)
-    {
-      const auto index = sequance.at(i);
-      auto it = std::find_if(name_map.begin(), name_map.end(),
-                             [&](const std::pair<std::string, IOIndex> &pair) {
-                               const auto &io_index = pair.second;
-                               return i == io_index.value();
-                             });
-      const auto &name = it->first;
-      _graph.addInput(index, name);
-    }
-  };
-  appendIOInfo(io_info.inputs, io_info.name_to_input);
-  appendIOInfo(io_info.outputs, io_info.name_to_output);
-}
-
 const ITrainableOperation &TrainableGraph::operation(OperationIndex index) const
 {
   return dynamic_cast<const ITrainableOperation &>(_graph.operations().at(index));
+}
+
+std::vector<ir::OperationIndex> TrainableGraph::topolSortOperations() const
+{
+  return _graph.topolSortOperations();
 }
 
 } // namespace train

@@ -19,6 +19,7 @@
 #include "ir/Operations.Include.h"
 #include "ir/train/operation/ElementwiseActivation.h"
 #include "ir/train/operation/Loss.h"
+#include "ir/train/operation/Permute.h"
 #include "util/Utils.h"
 
 #include <memory>
@@ -31,10 +32,9 @@ namespace train
 {
 
 TrainableOperationConverter::TrainableOperationConverter(
-  ir::train::TrainableGraph &trainable_graph, const ir::train::TrainingInfo *training_info)
-  : UntrainableOperationConverter{trainable_graph}, _training_info{training_info}
+  ir::train::TrainableGraph &tgraph, const ir::train::TrainingInfo *training_info)
+  : UntrainableOperationConverter{tgraph}, _training_info{training_info}
 {
-  assert(_training_info);
 }
 
 void TrainableOperationConverter::visit(const ir::operation::ElementwiseActivation &node)
@@ -42,11 +42,11 @@ void TrainableOperationConverter::visit(const ir::operation::ElementwiseActivati
   if (node.param().op_type == ir::operation::ElementwiseActivation::Type::RELU)
   {
     const auto &output_ind = node.getOutputs().at(0);
-    const auto &output_obj = _trainable_graph.operands().at(output_ind);
+    const auto &output_obj = _tgraph.operands().at(output_ind);
     const auto &flex_shape = output_obj.shape();
     const auto &flex_type = output_obj.typeInfo();
 
-    auto flex_ind = _trainable_graph.addOperand(flex_shape, flex_type);
+    auto flex_ind = _tgraph.addOperand(flex_shape, flex_type);
     ir::OperandIndexSequence training_inputs{flex_ind};
     _return_op =
       std::make_unique<ir::train::operation::ElementwiseActivation>(node, training_inputs);
@@ -64,6 +64,11 @@ void TrainableOperationConverter::visit(const ir::operation::Loss &)
 
   throw std::runtime_error(
     "TrainableOperationConverter: Loss operation in the model is not supported yet.");
+}
+
+void TrainableOperationConverter::visit(const ir::operation::Permute &node)
+{
+  _return_op = std::make_unique<ir::train::operation::Permute>(node);
 }
 
 } // namespace train

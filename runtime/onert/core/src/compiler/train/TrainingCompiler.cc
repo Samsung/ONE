@@ -101,26 +101,18 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   std::unordered_map<ir::SubgraphIndex, std::shared_ptr<ir::train::TrainableGraph>>
     trainable_subgraphs;
 
-  // Create trainable subgraphs by converting inference model
+  // Create trainable subgraphs by copy and converting inference model
   _model->iterate([&](const ir::SubgraphIndex &subg_index, const ir::Graph &subg) {
-    auto trainable_subg = std::make_shared<ir::train::TrainableGraph>();
+    // Create TrainableGraph by copying Graph
+    auto trainable_subg = std::make_shared<ir::train::TrainableGraph>(subg);
 
-    // Add operands
-    subg.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &operand) {
-      trainable_subg->addOperand(index, std::make_unique<ir::Operand>(operand));
-    });
-
-    // Add trainable operations
-    auto converter = train::TrainableOperationConverter{*trainable_subg, _training_info};
+    // Convert operations to trainable operations
+    auto converter = TrainableOperationConverter{*trainable_subg, _training_info};
     subg.operations().iterate(
       [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &) {
         auto trainable_op = converter(op_index);
-        // OperationIndex may be changed
-        trainable_subg->addOperation(std::move(trainable_op));
+        trainable_subg->replaceOperation(op_index, std::move(trainable_op));
       });
-
-    // Add inputs/outputs
-    trainable_subg->setGraphIO(subg.io_info());
 
     trainable_subgraphs[subg_index] = std::move(trainable_subg);
   });
@@ -136,7 +128,6 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     compiler::pass::PassRunner{}
       .append(std::make_unique<pass::LossInsertionPass>(*trainable_subg, _training_info))
       .run();
-    // TODO Update use/def for training
   }
 
   /***************************************************

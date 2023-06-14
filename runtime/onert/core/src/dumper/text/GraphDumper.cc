@@ -104,10 +104,10 @@ void dumpLoweredGraph(const compiler::train::LoweredTrainableGraph &lgraph)
 {
   // TODO Graph dump with backend info
   VERBOSE(GraphDumper) << "{\n";
-  auto ops_topol = lgraph.trainable_graph().graph().topolSortOperations();
+  auto ops_topol = lgraph.trainable_graph().topolSortOperations();
   for (auto op_ind : ops_topol)
   {
-    const auto &op = lgraph.trainable_graph().graph().operations().at(op_ind);
+    const auto &op = lgraph.trainable_graph().operations().at(op_ind);
     VERBOSE(GraphDumper) << "  " << formatOperation(op, op_ind) << "\n";
   }
   VERBOSE(GraphDumper) << "}\n";

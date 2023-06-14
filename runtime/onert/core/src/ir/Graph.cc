@@ -91,6 +91,16 @@ OperationIndex Graph::addOperation(OperationIndex index, std::unique_ptr<IOperat
   return index;
 }
 
+OperationIndex Graph::replaceOperation(OperationIndex index,
+                                       std::unique_ptr<IOperation> &&operation)
+{
+  const IOperation &op_ref = *operation;
+  if (!checkOperandsForOperation(op_ref) || !_operations.exist(index))
+    return OperationIndex{};
+
+  return _operations.push(std::move(operation), index);
+}
+
 void Graph::setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data)
 {
   assert(_operands.exist(ind));
