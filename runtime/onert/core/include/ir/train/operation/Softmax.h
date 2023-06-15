@@ -35,6 +35,7 @@ private:
   using OperationType = ir::operation::Softmax;
 
 public:
+  std::unique_ptr<ITrainableOperation> clone() const override;
   Softmax(const OperationType &operation);
 
 public:

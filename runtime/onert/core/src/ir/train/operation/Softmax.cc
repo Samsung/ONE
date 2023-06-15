@@ -28,6 +28,11 @@ namespace train
 namespace operation
 {
 
+std::unique_ptr<ITrainableOperation> Softmax::clone() const
+{
+  return std::make_unique<Softmax>(*this);
+}
+
 void Softmax::accept(OperationVisitor &v) const { v.visit(*this); }
 
 void Softmax::accept(TrainableOperationVisitor &v) const { v.visit(*this); }

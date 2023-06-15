@@ -34,10 +34,10 @@ TrainableOperationConverter::TrainableOperationConverter(
 {
 }
 
-// void TrainableOperationConverter::visit(const ir::operation::Conv2D &node)
-// {
-//   _return_op = std::make_unique<ir::train::operation::Conv2D>(node);
-// }
+void TrainableOperationConverter::visit(const ir::operation::Conv2D &node)
+{
+  _return_op = std::make_unique<ir::train::operation::Conv2D>(node);
+}
 
 void TrainableOperationConverter::visit(const ir::operation::ElementwiseActivation &node)
 {
@@ -59,10 +59,10 @@ void TrainableOperationConverter::visit(const ir::operation::ElementwiseActivati
   }
 }
 
-// void TrainableOperationConverter::visit(const ir::operation::FullyConnected &node)
-// {
-//   _return_op = std::make_unique<ir::train::operation::FullyConnected>(node);
-// }
+void TrainableOperationConverter::visit(const ir::operation::FullyConnected &node)
+{
+  _return_op = std::make_unique<ir::train::operation::FullyConnected>(node);
+}
 
 void TrainableOperationConverter::visit(const ir::operation::Loss &node)
 {
@@ -74,20 +74,20 @@ void TrainableOperationConverter::visit(const ir::operation::Permute &node)
   _return_op = std::make_unique<ir::train::operation::Permute>(node);
 }
 
-// void TrainableOperationConverter::visit(const ir::operation::Pool2D &node)
-// {
-//   _return_op = std::make_unique<ir::train::operation::Pool2D>(node);
-// }
+void TrainableOperationConverter::visit(const ir::operation::Pool2D &node)
+{
+  _return_op = std::make_unique<ir::train::operation::Pool2D>(node);
+}
 
-// void TrainableOperationConverter::visit(const ir::operation::Reshape &node)
-// {
-//   _return_op = std::make_unique<ir::train::operation::Reshape>(node);
-// }
+void TrainableOperationConverter::visit(const ir::operation::Reshape &node)
+{
+  _return_op = std::make_unique<ir::train::operation::Reshape>(node);
+}
 
-// void TrainableOperationConverter::visit(const ir::operation::Softmax &node)
-// {
-//   _return_op = std::make_unique<ir::train::operation::Softmax>(node);
-// }
+void TrainableOperationConverter::visit(const ir::operation::Softmax &node)
+{
+  _return_op = std::make_unique<ir::train::operation::Softmax>(node);
+}
 
 } // namespace train
 } // namespace compiler

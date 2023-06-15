@@ -38,6 +38,7 @@ public:
   Reshape(const OperationType &operation);
 
 public:
+  std::unique_ptr<ITrainableOperation> clone() const override;
   void accept(OperationVisitor &v) const override;
   void accept(TrainableOperationVisitor &v) const override;
 };

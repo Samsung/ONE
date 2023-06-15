@@ -28,6 +28,11 @@ namespace train
 namespace operation
 {
 
+std::unique_ptr<ITrainableOperation> Reshape::clone() const
+{
+  return std::make_unique<Reshape>(*this);
+}
+
 void Reshape::accept(OperationVisitor &v) const { v.visit(*this); }
 
 void Reshape::accept(TrainableOperationVisitor &v) const { v.visit(*this); }

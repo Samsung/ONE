@@ -52,6 +52,13 @@ protected:
 #undef OP
 
 protected:
+  std::unique_ptr<exec::ITrainableFunction> releaseFunction()
+  {
+    assert(_return_fn);
+    return std::move(_return_fn);
+  }
+
+protected:
   const ir::train::TrainableGraph &_tgraph;
   std::unique_ptr<exec::ITrainableFunction> _return_fn;
 };

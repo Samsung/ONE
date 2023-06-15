@@ -28,6 +28,11 @@ namespace train
 namespace operation
 {
 
+std::unique_ptr<ITrainableOperation> FullyConnected::clone() const
+{
+  return std::make_unique<FullyConnected>(*this);
+}
+
 void FullyConnected::accept(OperationVisitor &v) const { v.visit(*this); }
 
 void FullyConnected::accept(TrainableOperationVisitor &v) const { v.visit(*this); }

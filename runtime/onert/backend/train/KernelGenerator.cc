@@ -70,9 +70,9 @@ std::unique_ptr<exec::train::TrainableSequence> KernelGenerator::generate(ir::Op
   // TODO Generate TrainableSequence that can go backward as well
   auto ret = std::make_unique<exec::train::TrainableSequence>();
 
-  const auto &op = _tgraph.operations().at(ind);
-  // op.accept(*this);
-  // ret->append(releaseFunction());
+  const auto &op = _tgraph.operation(ind);
+  op.accept(*this);
+  ret->append(releaseFunction());
 
   for (auto ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {

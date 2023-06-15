@@ -35,6 +35,7 @@ private:
   using OperationType = ir::operation::Pool2D;
 
 public:
+  std::unique_ptr<ITrainableOperation> clone() const override;
   Pool2D(const OperationType &operation);
 
 public:

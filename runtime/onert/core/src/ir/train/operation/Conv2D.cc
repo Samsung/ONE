@@ -28,6 +28,11 @@ namespace train
 namespace operation
 {
 
+std::unique_ptr<ITrainableOperation> Conv2D::clone() const
+{
+  return std::make_unique<Conv2D>(*this);
+}
+
 void Conv2D::accept(OperationVisitor &v) const { v.visit(*this); }
 
 void Conv2D::accept(TrainableOperationVisitor &v) const { v.visit(*this); }

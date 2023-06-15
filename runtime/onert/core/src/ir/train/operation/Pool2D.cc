@@ -28,6 +28,11 @@ namespace train
 namespace operation
 {
 
+std::unique_ptr<ITrainableOperation> Pool2D::clone() const
+{
+  return std::make_unique<Pool2D>(*this);
+}
+
 void Pool2D::accept(OperationVisitor &v) const { v.visit(*this); }
 
 void Pool2D::accept(TrainableOperationVisitor &v) const { v.visit(*this); }

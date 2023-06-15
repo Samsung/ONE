@@ -72,11 +72,11 @@ FunctionMap BackendContext::genKernels()
   train::FunctionMap ret;
 
   // TODO Generate TrainableSeqeunce
-  // for (auto op_ind : _tdata->op_order)
-  // {
-  //   auto fn_seq = kernel_gen->generate(op_ind);
-  //   ret.emplace_back(op_ind, std::move(fn_seq));
-  // }
+  for (auto op_ind : _tdata->op_order)
+  {
+    auto fn_seq = kernel_gen->generate(op_ind);
+    ret.emplace_back(op_ind, std::move(fn_seq));
+  }
 
   basic::initConsts(*this);
 
