@@ -90,11 +90,13 @@ private:
    */
   enum class State
   {
-    INITIALIZED,  //< Session is initialized and nothing has done to it
-    MODEL_LOADED, //< Model is loaded
-    PREPARED,     //< Prepared(compiled) for execution
-    RUNNING,      //< Execution is in progress (only for asynchronous execution)
-    FINISHED_RUN  //< Executed at least once
+    INITIALIZED,       //< Session is initialized and nothing has done to it
+    MODEL_LOADED,      //< Model is loaded
+    PREPARED,          //< Prepared(compiled) for execution
+    RUNNING,           //< Execution is in progress (only for asynchronous execution)
+    FINISHED_RUN,      //< Executed at least once
+    PREPARED_TRAINING, //< Prepared for training
+    FINISHED_TRAINING  //< Trained at least once
   };
 
 public:
@@ -160,6 +162,14 @@ public:
    */
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
+  NNFW_STATUS prepare_train(nnfw_train_info *info);
+  NNFW_STATUS set_train_input(uint32_t index, void *input, nnfw_tensorinfo *input_tensorinfo);
+  NNFW_STATUS set_train_expected(uint32_t index, void *expected,
+                                 nnfw_tensorinfo *expected_tensorinfo);
+  NNFW_STATUS run_train(bool update_weights);
+  float get_loss(uint32_t index);
+  NNFW_STATUS export_inference_model(const char *path);
+
 private:
   const onert::ir::Graph *primary_subgraph();
   uint32_t getInputSize();
@@ -171,6 +181,9 @@ private:
   bool isStateRunning();
   bool isStateFinishedRun();
   bool isStatePreparedOrFinishedRun();
+  bool isStatePreparedTraining();
+  bool isStateFinishedTraining();
+  bool isStatePreparedOrFinishedTraining();
 
 private:
   State _state{State::INITIALIZED};

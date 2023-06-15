@@ -385,3 +385,53 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs)
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->pop_pipeline_output((std::vector<void *> *)outputs);
 }
+
+// Training
+
+NNFW_STATUS nnfw_prepare_train(nnfw_session *session, nnfw_train_info *info)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->prepare_train(info);
+}
+
+NNFW_STATUS nnfw_set_train_input(nnfw_session *session, uint32_t index, void *input,
+                                 nnfw_tensorinfo *input_info)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_train_input(index, input, input_info);
+}
+
+NNFW_STATUS nnfw_set_train_expected(nnfw_session *session, uint32_t index, void *expected,
+                                    nnfw_tensorinfo *expected_info)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_train_expected(index, expected, expected_info);
+}
+
+NNFW_STATUS nnfw_train(nnfw_session *session, bool update_weights)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->run_train(update_weights);
+}
+
+NNFW_STATUS nnfw_get_loss(nnfw_session *session, uint32_t index, float *loss)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+
+  try
+  {
+    *loss = session->get_loss(index);
+  }
+  catch (std::exception &e)
+  {
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_export_inference_model(nnfw_session *session, const char *path)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->export_inference_model(path);
+}
