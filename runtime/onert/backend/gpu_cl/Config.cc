@@ -41,7 +41,7 @@ bool Config::initialize()
   }
 }
 
-ir::Layout Config::supportLayout(const ir::Operation &, ir::Layout) { return ir::Layout::NHWC; }
+ir::Layout Config::supportLayout(const ir::IOperation &, ir::Layout) { return ir::Layout::NHWC; }
 
 } // namespace gpu_cl
 } // namespace backend

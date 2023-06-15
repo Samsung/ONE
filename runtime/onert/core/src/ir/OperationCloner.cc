@@ -57,7 +57,7 @@ std::unique_ptr<Operation> OperationCloner::releaseClone()
 
 } // namespace
 
-std::unique_ptr<Operation> clone(const Operation &operation)
+std::unique_ptr<Operation> clone(const IOperation &operation)
 {
   OperationCloner cloner;
   operation.accept(cloner);

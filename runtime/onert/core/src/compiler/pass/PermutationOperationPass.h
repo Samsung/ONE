@@ -36,7 +36,7 @@ public:
   std::string id() final { return "PermutationOperationPass"; }
 
 public:
-  void callback(const ir::OperationIndex &i, ir::Operation &n) final;
+  void callback(const ir::OperationIndex &i, ir::IOperation &n) final;
 
 public:
   void visit(const ir::operation::BinaryArithmetic &) final;

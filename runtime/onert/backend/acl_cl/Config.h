@@ -35,7 +35,7 @@ public:
   std::string id() override { return "acl_cl"; }
   bool initialize() override;
   bool supportPermutation() override { return true; }
-  ir::Layout supportLayout(const ir::Operation &node, ir::Layout frontend_layout) override;
+  ir::Layout supportLayout(const ir::IOperation &node, ir::Layout frontend_layout) override;
   bool supportDynamicTensor() override { return false; }
   bool supportFP16() override { return true; }
   void sync() const override { arm_compute::CLScheduler::get().sync(); }

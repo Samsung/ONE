@@ -99,7 +99,7 @@ void StaticShapeInferer::infer()
   }
 }
 
-bool StaticShapeInferer::checkDynamicInput(const ir::Operation &op)
+bool StaticShapeInferer::checkDynamicInput(const ir::IOperation &op)
 {
   const auto &operands = _lowered_subg->graph().operands();
   for (auto input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
@@ -113,7 +113,7 @@ bool StaticShapeInferer::checkDynamicInput(const ir::Operation &op)
   return false;
 }
 
-bool StaticShapeInferer::checkDynamicOutput(const ir::Operation &op)
+bool StaticShapeInferer::checkDynamicOutput(const ir::IOperation &op)
 {
   auto &operands = _lowered_subg->graph().operands();
   for (auto output_idx : op.getOutputs() | ir::Remove::UNDEFINED)
@@ -126,7 +126,7 @@ bool StaticShapeInferer::checkDynamicOutput(const ir::Operation &op)
   return false;
 }
 
-void StaticShapeInferer::setDynamicOutput(const ir::Operation &op)
+void StaticShapeInferer::setDynamicOutput(const ir::IOperation &op)
 {
   auto &operands = _lowered_subg->graph().operands();
   for (auto output_idx : op.getOutputs() | ir::Remove::UNDEFINED)
@@ -211,7 +211,7 @@ StaticShapeInferer::createStaticShapeInferers(
 
     // TODO: Change this iteration for all to controlflow iteration
     lowered_subg->graph().operations().iterate(
-      [&](const ir::OperationIndex &, const ir::Operation &op) {
+      [&](const ir::OperationIndex &, const ir::IOperation &op) {
         // A Function to append child inferers. These make it possible for a StaticShapeInferer to
         // call StaticShapeInferes of child subgraphs recursively
         auto appendChildInferer = [&](const ir::SubgraphIndex &child_subg_idx) {

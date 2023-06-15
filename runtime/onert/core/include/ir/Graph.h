@@ -70,7 +70,7 @@ public:
    * @return OperandIndex @c index if successful, Undefined otherwise
    */
   OperandIndex addOperand(OperandIndex index, std::unique_ptr<Operand> &&operand);
-  OperationIndex addOperation(std::unique_ptr<Operation> &&node);
+  OperationIndex addOperation(std::unique_ptr<IOperation> &&node);
   /**
    * @brief Add an operation to the graph with the given index and object
    *
@@ -79,20 +79,20 @@ public:
    * moved so the caller's pointer will be still valid.
    *
    * @param index Index to be added
-   * @param operation Operation to be added
+   * @param operation IOperation to be added
    * @return OperandIndex @c index if successful, Undefined otherwise
    */
-  OperationIndex addOperation(OperationIndex index, std::unique_ptr<Operation> &&operation);
+  OperationIndex addOperation(OperationIndex index, std::unique_ptr<IOperation> &&operation);
   void setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data);
   void addInput(const OperandIndex &ind, const std::string &name = "");
   void addOutput(const OperandIndex &ind, const std::string &name = "");
-  void verify(void);
+  void verify(void) const;
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
   void setLayout(Layout layout) { _layout = layout; }
 
 private:
-  bool checkOperandsForOperation(const Operation &operation);
-  void linkOperandToOperation(OperationIndex index, const Operation &operation);
+  bool checkOperandsForOperation(const IOperation &operation);
+  void linkOperandToOperation(OperationIndex index, const IOperation &operation);
   void initializeUseDef();
   // TODO Rename to `sweepUnusedOperands`
   // TODO Make this public

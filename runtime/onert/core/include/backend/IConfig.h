@@ -48,11 +48,11 @@ struct IConfig
   /**
    * @brief Returns supported layout for the given \p node and \p frontend_layout
    *
-   * @param node Operation
+   * @param node IOperation
    * @param frontend_layout The layout defined in the model
    * @return ir::Layout The layout that the backend kernel actually uses
    */
-  virtual ir::Layout supportLayout(const ir::Operation &node, ir::Layout frontend_layout) = 0;
+  virtual ir::Layout supportLayout(const ir::IOperation &node, ir::Layout frontend_layout) = 0;
   /**
    * @brief The function that is called after each Operation run on profiling mode.
    *        This may be useful for profiling GPU-based or special computing units.

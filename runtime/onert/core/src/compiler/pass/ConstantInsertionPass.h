@@ -39,7 +39,7 @@ public:
   std::string id() final { return "ConstantInsertionPass"; }
 
 public:
-  void callback(const ir::OperationIndex &index, ir::Operation &node) final;
+  void callback(const ir::OperationIndex &index, ir::IOperation &node) final;
 
 private:
   struct ReplaceKey

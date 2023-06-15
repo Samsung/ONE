@@ -28,7 +28,7 @@
 namespace
 {
 
-void setUserData(const onert::ir::Graph &g, const onert::ir::Operation *op,
+void setUserData(const onert::ir::Graph &g, const onert::ir::IOperation *op,
                  decltype(EventCollector::Event::userData) &data)
 {
   // From a tensor of shape [a, b, c], this will return a string "shape(a b c)".

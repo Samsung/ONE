@@ -80,7 +80,7 @@ public:
 protected:
   void initConsts()
   {
-    _data.graph->operations().iterate([&](const ir::OperationIndex &, const ir::Operation &op) {
+    _data.graph->operations().iterate([&](const ir::OperationIndex &, const ir::IOperation &op) {
       constant_initializer->setLayout(graph()->layout());
       op.accept(*constant_initializer);
     });
