@@ -178,6 +178,8 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
 
 /**
  * @brief Training information to prepare training
+ * @todo  Add more training information
+ *        (e.g. optimizer, loss function, ...)
  */
 typedef struct nnfw_train_info
 {
