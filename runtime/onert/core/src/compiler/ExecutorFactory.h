@@ -55,8 +55,12 @@ private:
   ExecutorFactory();
 
 private:
+  // TODO Unify prepareMigrantTensors
   static void prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
                                     const backend::BackendContexts &backend_contexts);
+  static void
+  prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
+                        const backend::train::TrainableBackendContexts &backend_contexts);
   static void prepareBuiltinBackend(const TensorRegistries &tensor_regs,
                                     const std::shared_ptr<exec::IExecutors> &executors,
                                     const backend::BackendContexts &backend_contexts,

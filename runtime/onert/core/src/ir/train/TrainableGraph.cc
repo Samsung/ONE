@@ -73,7 +73,21 @@ void TrainableGraph::addOutput(const OperandIndex &ind, const std::string &name)
   _graph.addOutput(ind, name);
 }
 
-void TrainableGraph::verify(void) { _graph.verify(); }
+void TrainableGraph::verify(void)
+{
+  _graph.verify();
+
+  operations().iterate([](const onert::ir::OperationIndex &, const onert::ir::IOperation &op) {
+    try
+    {
+      dynamic_cast<const onert::ir::train::ITrainableOperation &>(op);
+    }
+    catch (const std::bad_cast &)
+    {
+      std::runtime_error("TrainableGraph: " + op.name() + " is not a trainable operation");
+    }
+  });
+}
 
 void TrainableGraph::removeOperand(const OperandIndex &ind) { _graph.removeOperand(ind); }
 

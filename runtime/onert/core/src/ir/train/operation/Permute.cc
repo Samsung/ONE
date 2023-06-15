@@ -30,6 +30,11 @@ namespace train
 namespace operation
 {
 
+std::unique_ptr<ITrainableOperation> Permute::clone() const
+{
+  return std::make_unique<Permute>(*this);
+}
+
 void Permute::accept(OperationVisitor &v) const { v.visit(*this); }
 
 void Permute::accept(TrainableOperationVisitor &v) const { v.visit(*this); }

@@ -111,7 +111,8 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     subg.operations().iterate(
       [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &) {
         auto trainable_op = converter(op_index);
-        trainable_subg->replaceOperation(op_index, std::move(trainable_op));
+        auto index = trainable_subg->replaceOperation(op_index, std::move(trainable_op));
+        assert(index == op_index);
       });
 
     trainable_subgraphs[subg_index] = std::move(trainable_subg);
@@ -125,9 +126,10 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   {
     auto trainable_subg = pair.second;
 
-    compiler::pass::PassRunner{}
-      .append(std::make_unique<pass::LossInsertionPass>(*trainable_subg, _training_info))
-      .run();
+    // TODO Enable
+    // compiler::pass::PassRunner{}
+    //   .append(std::make_unique<pass::LossInsertionPass>(*trainable_subg, _training_info))
+    //   .run();
   }
 
   /***************************************************

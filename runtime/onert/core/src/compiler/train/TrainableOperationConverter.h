@@ -37,9 +37,14 @@ public:
   using UntrainableOperationConverter::operator();
 
 private:
+  // void visit(const ir::operation::Conv2D &node) override;
   void visit(const ir::operation::ElementwiseActivation &) override;
-  void visit(const ir::operation::Loss &) override;
+  // void visit(const ir::operation::FullyConnected &node) override;
+  void visit(const ir::operation::Loss &node) override;
   void visit(const ir::operation::Permute &node) override;
+  // void visit(const ir::operation::Pool2D &node) override;
+  // void visit(const ir::operation::Reshape &node) override;
+  // void visit(const ir::operation::Softmax &node) override;
 
 private:
   const ir::train::TrainingInfo *_training_info;

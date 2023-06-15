@@ -21,6 +21,8 @@
 
 #include "util/Set.h"
 
+#include "ir/train/ITrainableOperation.h"
+
 namespace onert
 {
 namespace ir
@@ -98,7 +100,7 @@ OperationIndex Graph::replaceOperation(OperationIndex index,
   if (!checkOperandsForOperation(op_ref) || !_operations.exist(index))
     return OperationIndex{};
 
-  return _operations.push(std::move(operation), index);
+  return _operations.set(index, std::move(operation));
 }
 
 void Graph::setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data)
