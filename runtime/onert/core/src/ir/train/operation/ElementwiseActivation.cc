@@ -30,6 +30,11 @@ namespace train
 namespace operation
 {
 
+std::unique_ptr<ITrainableOperation> ElementwiseActivation::clone() const
+{
+  return std::make_unique<ElementwiseActivation>(*this);
+}
+
 void ElementwiseActivation::accept(OperationVisitor &v) const { v.visit(*this); }
 
 void ElementwiseActivation::accept(TrainableOperationVisitor &v) const { v.visit(*this); }

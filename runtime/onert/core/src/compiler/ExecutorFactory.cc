@@ -18,6 +18,7 @@
 
 #include "Linear.h"
 #include "../backend/builtin/BackendContext.h"
+#include "../backend/builtin/train/BackendContext.h"
 #include "../backend/builtin/Config.h"
 #include "../backend/builtin/UserTensor.h"
 #include "../dumper/text/GraphDumper.h"
@@ -93,6 +94,7 @@ private:
   DeallocList _dealloc_list;
 };
 
+// TODO Unify initializeSubgraphIOTensors
 void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
                                  const backend::BackendContexts &backend_contexts,
                                  const ir::OperandIndexSequence &indices)
@@ -107,6 +109,37 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
     {
       builtin_tensor_reg =
         std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(context->tensor_registry);
+    }
+  }
+  assert(builtin_tensor_reg);
+
+  for (auto ind : indices)
+  {
+    const auto &operand = lowered_graph.graph().operands().at(ind);
+    auto tensor = std::make_unique<backend::builtin::IOTensor>(
+      operand.info(),
+      ir::Layout::NHWC /* FIXME find operation for this operand and use frontend_layout */
+    );
+
+    // Add tensor to builtin TensorRegistry.
+    builtin_tensor_reg->setNativeIOTensor(ind, std::move(tensor));
+  }
+}
+
+void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
+                                 const backend::train::TrainableBackendContexts &backend_contexts,
+                                 const ir::OperandIndexSequence &indices)
+{
+  // TODO Store builtin backend in BackendContext
+  std::shared_ptr<backend::builtin::TensorRegistry> builtin_tensor_reg;
+  for (const auto &e : backend_contexts)
+  {
+    auto backend = e.first;
+    auto &context = e.second;
+    if (backend->config()->id() == backend::builtin::Config::ID)
+    {
+      builtin_tensor_reg =
+        std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(context->tensor_registry());
     }
   }
   assert(builtin_tensor_reg);
@@ -322,6 +355,34 @@ void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_gra
           auto ptensor = dynamic_cast<backend::IPortableTensor *>(tensor);
           if (ptensor)
             backend_ctx->tensor_registry->setMigrantTensor(ind, ptensor);
+        }
+      }
+    });
+}
+
+void ExecutorFactory::prepareMigrantTensors(
+  compiler::ILoweredGraph &lowered_graph,
+  const backend::train::TrainableBackendContexts &backend_contexts)
+{
+  TensorRegistries tensor_regs{backend_contexts, true};
+
+  lowered_graph.graph().operations().iterate(
+    [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
+      auto lower_info = lowered_graph.lower_info().operation.getRawPtr(op_ind);
+      auto &backend_ctx = backend_contexts.at(lower_info->backend());
+      for (auto ind :
+           (op.getInputs() + op.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+      {
+        // If an Operation's input/output tensor does not have an own tensor object,
+        // it must be using migrant tensors, so find the tensor from other tensor registries and
+        // register it to the current tensor registry if it is portable
+        if (!backend_ctx->tensor_registry()->getITensor(ind))
+        {
+          auto tensor = tensor_regs.getITensor(ind);
+          assert(tensor); // The tensor must have been registered
+          auto ptensor = dynamic_cast<backend::IPortableTensor *>(tensor);
+          if (ptensor)
+            backend_ctx->tensor_registry()->setMigrantTensor(ind, ptensor);
         }
       }
     });
@@ -586,6 +647,18 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
 {
   auto &graph = lowered_graph->graph();
 
+  lowered_graph->trainable_graph().operations().iterate([](const onert::ir::OperationIndex &,
+                                                           const onert::ir::IOperation &op) {
+    try
+    {
+      UNUSED_RELEASE(dynamic_cast<const ir::train::ITrainableOperation &>(op));
+    }
+    catch (std::bad_cast &)
+    {
+      throw std::runtime_error("ExecutorFactory: " + op.name() + " is not trainable operation yet");
+    }
+  });
+
   // TODO Create context only once instead of replacing
   backend::train::TrainableBackendContexts tbackend_contexts;
   backend::BackendContexts base_backend_contexts = createBackendContexts(*lowered_graph, true);
@@ -593,46 +666,48 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   // Replace BackendContext with TrainbleBackendContext
   for (auto &&pair : base_backend_contexts)
   {
-    const auto backend = pair.first;
-    // TODO Remove dynamic_cast
-    if (dynamic_cast<const backend::train::ITrainableBackend *>(backend) == nullptr)
-    {
-      throw std::runtime_error(
-        "Invalid backend - TrainableExecutor does not support non-trainble backends");
-    }
-
-    // TODO Remove dynamic_cast
-    const auto tbackend = dynamic_cast<const backend::train::ITrainableBackend *>(backend);
     auto ctx = pair.second.get();
     auto data = std::move(ctx->data());
 
-    // TODO Remove checking whether operations in graph is ITrainableOperation
+    // Create partial and trainable graphs
+    auto tgraph = std::make_unique<ir::train::TrainableGraph>(*data.graph);
     data.graph->operations().iterate(
-      [](const onert::ir::OperationIndex &, const onert::ir::IOperation &op) {
-        // TODO Remove dynamic_cast
-        if (std::addressof(dynamic_cast<const ir::train::ITrainableOperation &>(op)) !=
-            std::addressof(op))
-        {
-          throw std::runtime_error(
-            "Invalid operation - TrainableExecutor does not support non-trainble operations");
-        }
+      [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &) {
+        const auto &orig_tgraph = lowered_graph->trainable_graph();
+        const auto &trainable_op = orig_tgraph.operation(op_index);
+        auto index = tgraph->replaceOperation(op_index, trainable_op.clone());
+        UNUSED_RELEASE(index);
+        assert(index == op_index);
       });
 
+    // Set trainable context data
     backend::train::TrainableContextData tdata;
-    tdata.tgraph = std::make_unique<ir::train::TrainableGraph>(*data.graph);
+    tdata.tgraph = std::move(tgraph);
     tdata.op_order = data.op_order;
     tdata.external_operands = data.external_operands;
     tdata.operand_layouts = data.operand_layouts;
     tdata.custom_kernel_builder = data.custom_kernel_builder;
     tdata.is_linear_executor = data.is_linear_executor;
 
-    tbackend_contexts.emplace(backend, tbackend->newContext(std::move(tdata)));
+    // TODO Remove dynamic_cast
+    try
+    {
+      const auto backend = pair.first;
+      const auto tbackend = dynamic_cast<const backend::train::ITrainableBackend *>(backend);
+      tbackend_contexts.emplace(backend, tbackend->newContext(std::move(tdata)));
+    }
+    catch (const std::bad_cast &)
+    {
+      throw std::runtime_error("ExecutorFactory: Invalid backend - TrainableExecutor does not "
+                               "support non-trainble backends");
+    }
   }
+  base_backend_contexts.clear();
 
   TensorRegistries tensor_regs{tbackend_contexts, true};
 
   initializeSubgraphIOTensors(
-    *lowered_graph, base_backend_contexts,
+    *lowered_graph, tbackend_contexts,
     (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
       ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
@@ -652,8 +727,19 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   }
 
   // TODO Change to TrainableBackendContexts
-  prepareMigrantTensors(*lowered_graph, base_backend_contexts);
-  base_backend_contexts.clear();
+  prepareMigrantTensors(*lowered_graph, tbackend_contexts);
+
+  // Give some runtime objects to builtin KernelGenerator
+  for (auto &&pair : tbackend_contexts)
+  {
+    auto builtin_context =
+      dynamic_cast<backend::builtin::train::BackendContext *>(pair.second.get());
+    if (builtin_context != nullptr)
+    {
+      auto builtin_kernel_gen = builtin_context->kernel_gen;
+      builtin_kernel_gen->setTensorRegistries(tensor_regs);
+    }
+  }
 
   // Adjust the order of backends for the upcoming iteration
   auto ordered_contexts =
@@ -729,6 +815,11 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       assert(code_map.find(op_ind) == code_map.end());
       code_map.insert({op_ind, train::CodeAndInfo{op_ind, &op, lower_info, std::move(tn_seq)}});
     }
+  }
+
+  if (order.size() != code_map.size())
+  {
+    throw std::runtime_error("ExecutorFactory: Some kernels are not generated");
   }
 
   auto exec = new exec::train::TrainableExecutor{std::move(lowered_graph),

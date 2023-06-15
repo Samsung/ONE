@@ -43,6 +43,10 @@ public:
   virtual ~UntrainableOperation() = default;
 
 public:
+  std::unique_ptr<ITrainableOperation> clone() const override
+  {
+    return std::make_unique<UntrainableOperation<OperationType>>(*this);
+  }
   void accept(OperationVisitor &v) const override { v.visit(*this); }
   void accept(TrainableOperationVisitor &) const override
   {
