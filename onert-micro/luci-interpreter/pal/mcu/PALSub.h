@@ -23,8 +23,10 @@ namespace luci_interpreter_pal
 {
 template <typename T>
 static inline void Sub(const ArithmeticParams &params, const int flat_size, const T *input1_data,
-                       const T *input2_data, T *output_data)
+                       const T *input2_data, T *output_data,
+                       luci_interpreter::OperationGraphStatus status)
 {
+  assert(status == luci_interpreter::OperationGraphStatus::USUAL);
   T activation_min, activation_max;
   getActivationParams(params, &activation_min, &activation_max);
 
@@ -38,8 +40,10 @@ inline void
 BroadcastSub4DSlow(const ArithmeticParams &params,
                    const luci_interpreter::RuntimeShape &input1_shape, const T *input1_data,
                    const luci_interpreter::RuntimeShape &input2_shape, const T *input2_data,
-                   const luci_interpreter::RuntimeShape &output_shape, T *output_data)
+                   const luci_interpreter::RuntimeShape &output_shape, T *output_data,
+                   luci_interpreter::OperationGraphStatus status)
 {
+  assert(status == luci_interpreter::OperationGraphStatus::USUAL);
   NdArrayDesc<4> desc1;
   NdArrayDesc<4> desc2;
   NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);

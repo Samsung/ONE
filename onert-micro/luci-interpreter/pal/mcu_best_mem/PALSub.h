@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,64 +14,33 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_PAL_MUL_H
-#define LUCI_INTERPRETER_PAL_MUL_H
+#ifndef LUCI_INTERPRETER_PAL_SUB_H
+#define LUCI_INTERPRETER_PAL_SUB_H
 
-#include "Params.h"
 #include "PALUtils.h"
-#include "ProcessBroadcastShapes.h"
 
 namespace luci_interpreter_pal
 {
 template <typename T>
-inline void Mul(const ArithmeticParams &params, const int flat_size, const T *input1_data,
-                const T *input2_data, T *output_data, luci_interpreter::OperationGraphStatus status)
+static inline void Sub(const ArithmeticParams &params, const int flat_size, const T *input1_data,
+                       const T *input2_data, T *output_data, luci_interpreter::OperationGraphStatus)
 {
-  assert(status == luci_interpreter::OperationGraphStatus::USUAL);
   T activation_min, activation_max;
   getActivationParams(params, &activation_min, &activation_max);
 
   for (int i = 0; i < flat_size; ++i)
     output_data[i] =
-      std::min(std::max(input1_data[i] * input2_data[i], activation_min), activation_max);
-}
-
-template <typename T>
-inline void MulScalar(const ArithmeticParams &params, const int flat_size, const T *input_data,
-                      const T scalar_value, T *output_data,
-                      luci_interpreter::OperationGraphStatus status)
-{
-  assert(status == luci_interpreter::OperationGraphStatus::USUAL);
-  T activation_min, activation_max;
-  getActivationParams(params, &activation_min, &activation_max);
-
-  for (int i = 0; i < flat_size; ++i)
-    output_data[i] =
-      std::min(std::max(input_data[i] * scalar_value, activation_min), activation_max);
+      std::min(std::max(input1_data[i] - input2_data[i], activation_min), activation_max);
 }
 
 template <typename T>
 inline void
-BroadcastMul4DSlow(const ArithmeticParams &params,
+BroadcastSub4DSlow(const ArithmeticParams &params,
                    const luci_interpreter::RuntimeShape &input1_shape, const T *input1_data,
                    const luci_interpreter::RuntimeShape &input2_shape, const T *input2_data,
                    const luci_interpreter::RuntimeShape &output_shape, T *output_data,
-                   luci_interpreter::OperationGraphStatus status)
+                   luci_interpreter::OperationGraphStatus)
 {
-  assert(status == luci_interpreter::OperationGraphStatus::USUAL);
-  const int flat_size = input1_shape.flatSize();
-
-  if (params.broadcast_category == BroadcastableOpCategory::kScalarFirstBroadcast)
-  {
-    return MulScalar(params, flat_size, input2_data, input1_data[0], output_data,
-                     luci_interpreter::OperationGraphStatus::USUAL);
-  }
-  else if (params.broadcast_category == BroadcastableOpCategory::kScalarSecondBroadcast)
-  {
-    return MulScalar(params, flat_size, input1_data, input2_data[0], output_data,
-                     luci_interpreter::OperationGraphStatus::USUAL);
-  }
-
   NdArrayDesc<4> desc1;
   NdArrayDesc<4> desc2;
   NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
@@ -107,7 +75,7 @@ BroadcastMul4DSlow(const ArithmeticParams &params,
             c;
 
           output_data[output_data_offset] =
-            std::min(std::max(input1_data[subscriptToIndex(desc1, b, y, x, c)] *
+            std::min(std::max(input1_data[subscriptToIndex(desc1, b, y, x, c)] -
                                 input2_data[subscriptToIndex(desc2, b, y, x, c)],
                               activation_min),
                      activation_max);
@@ -119,4 +87,4 @@ BroadcastMul4DSlow(const ArithmeticParams &params,
 
 } // namespace luci_interpreter_pal
 
-#endif // LUCI_INTERPRETER_PAL_MUL_H
+#endif // LUCI_INTERPRETER_PAL_SUB_H

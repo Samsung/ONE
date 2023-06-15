@@ -57,6 +57,12 @@ void execute_kernel_CircleReshape(const circle::Operator *cur_op, BaseRuntimeGra
   assert(input_data != nullptr);
   assert(output_data != nullptr);
 
+  OperationGraphStatus status = runtime_graph->getOperatorStatus(cur_op);
+  const auto output_type =
+    (status == OperationGraphStatus::USUAL or status == OperationGraphStatus::END)
+      ? Tensor::element_type(output)
+      : DataType::S16;
+
 #ifndef DIS_DYN_SHAPES
   if (shape_data == nullptr)
   {
@@ -75,7 +81,7 @@ void execute_kernel_CircleReshape(const circle::Operator *cur_op, BaseRuntimeGra
       dynamic_shape.setDim(i, shape_data_int[i]);
       data_size *= shape_data_int[i];
     }
-    data_size *= size(Tensor::element_type(output));
+    data_size *= size(output_type);
 
     runtime_graph->addDynamicShapeTensor(output, std::move(dynamic_shape));
 
@@ -93,7 +99,10 @@ void execute_kernel_CircleReshape(const circle::Operator *cur_op, BaseRuntimeGra
   assert(shape_data != nullptr);
 #endif // DIS_DYN_SHAPES
 
-  const size_t element_size = getDataTypeSize(Tensor::element_type(input));
+  // TODO: support it
+  assert(status != OperationGraphStatus::START);
+  assert(status != OperationGraphStatus::END);
+  const size_t element_size = getDataTypeSize(output_type);
   const int32_t num_elements = Tensor::num_elements(input);
   std::memcpy(output_data, input_data, num_elements * element_size);
 }

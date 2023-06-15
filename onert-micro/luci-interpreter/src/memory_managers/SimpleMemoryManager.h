@@ -29,7 +29,7 @@ namespace luci_interpreter
 class SimpleMemoryManager
 {
 public:
-  uint8_t *allocate_memory(const circle::Tensor *tensor);
+  uint8_t *allocate_memory(const circle::Tensor *tensor, OperationGraphStatus status);
   void release_memory(uint8_t *data);
 };
 

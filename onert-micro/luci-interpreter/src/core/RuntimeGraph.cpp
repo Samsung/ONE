@@ -124,7 +124,7 @@ void RuntimeGraph::buildAllocDeallocPlan(bool dealloc_input)
   _is_valid = true;
 }
 
-void RuntimeGraph::allocate(size_t kernel_index)
+void RuntimeGraph::allocate(size_t kernel_index, OperationGraphStatus status)
 {
   assert(_reader->get_current_subgraph_index() == _subgraph_index);
   assert(_is_valid && kernel_index < _alloc_plan.size());
@@ -135,7 +135,7 @@ void RuntimeGraph::allocate(size_t kernel_index)
       auto *data = _tensor_to_data.at(tensor);
       _memory_manager->release_memory(data);
     }
-    auto *data = _memory_manager->allocate_memory(tensor);
+    auto *data = _memory_manager->allocate_memory(tensor, status);
     _tensor_to_data[tensor] = data;
   }
 }
@@ -231,7 +231,7 @@ uint8_t *RuntimeGraph::configureGraphInput(int32_t input_index)
   const auto tensor = _reader->tensors()[tensor_index];
   assert(tensor != nullptr);
 
-  auto *data = _memory_manager->allocate_memory(tensor);
+  auto *data = _memory_manager->allocate_memory(tensor, OperationGraphStatus::USUAL);
   configureGraphInput(input_index, data);
 
   return data;
@@ -390,6 +390,25 @@ const circle::Tensor *RuntimeGraph::getCircleTensorByIndex(int32_t index)
   return raw_tensor;
 }
 
+void RuntimeGraph::addOperatorStatus(const circle::Operator *op, OperationGraphStatus status)
+{
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+  assert(op != nullptr);
+  assert(operator_to_status.find(op) == operator_to_status.end());
+  operator_to_status[op] = status;
+}
+
+OperationGraphStatus RuntimeGraph::getOperatorStatus(const circle::Operator *op)
+{
+  assert(_reader->get_current_subgraph_index() == _subgraph_index);
+  assert(op != nullptr);
+
+  if (operator_to_status.find(op) == operator_to_status.end())
+    return OperationGraphStatus::USUAL;
+
+  return operator_to_status[op];
+}
+
 void RuntimeGraph::configure(bool dealloc_input)
 {
   selectOwnSubgraph();
@@ -432,7 +451,8 @@ void RuntimeGraph::execute()
 
     const auto opcode = _reader->builtin_code(op);
 
-    allocate(i);
+    const auto status = getOperatorStatus(op);
+    allocate(i, status);
 
     kernel_executor.execute_kernel(op, opcode, this);
 

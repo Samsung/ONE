@@ -58,6 +58,8 @@ void execute_kernel_CircleMul(const circle::Operator *cur_op, BaseRuntimeGraph *
 
   bool is_inplace = runtime_graph->is_inplace_op(cur_op);
 
+  OperationGraphStatus status = runtime_graph->getOperatorStatus(cur_op);
+
   switch (Tensor::element_type(kernel.input1()))
   {
 #ifndef DIS_FLOAT
@@ -68,13 +70,15 @@ void execute_kernel_CircleMul(const circle::Operator *cur_op, BaseRuntimeGraph *
       if (is_inplace)
       {
         kernels::evalTISOInplaceKernel<float>(tiso_func, broadcast_tiso_func, &kernel, options,
-                                              std::move(input_shape1), std::move(input_shape2));
+                                              std::move(input_shape1), std::move(input_shape2),
+                                              status);
       }
       else
       {
         kernels::TISOData kernel_data = kernel.readData();
         kernels::evalTISOKernel<float>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
-                                       options, std::move(input_shape1), std::move(input_shape2));
+                                       options, std::move(input_shape1), std::move(input_shape2),
+                                       status);
       }
     }
     break;
@@ -86,13 +90,15 @@ void execute_kernel_CircleMul(const circle::Operator *cur_op, BaseRuntimeGraph *
       if (is_inplace)
       {
         kernels::evalTISOInplaceKernel<int64_t>(tiso_func, broadcast_tiso_func, &kernel, options,
-                                                std::move(input_shape1), std::move(input_shape2));
+                                                std::move(input_shape1), std::move(input_shape2),
+                                                status);
       }
       else
       {
         kernels::TISOData kernel_data = kernel.readData();
         kernels::evalTISOKernel<int64_t>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
-                                         options, std::move(input_shape1), std::move(input_shape2));
+                                         options, std::move(input_shape1), std::move(input_shape2),
+                                         status);
       }
     }
     break;
@@ -103,13 +109,15 @@ void execute_kernel_CircleMul(const circle::Operator *cur_op, BaseRuntimeGraph *
       if (is_inplace)
       {
         kernels::evalTISOInplaceKernel<int32_t>(tiso_func, broadcast_tiso_func, &kernel, options,
-                                                std::move(input_shape1), std::move(input_shape2));
+                                                std::move(input_shape1), std::move(input_shape2),
+                                                status);
       }
       else
       {
         kernels::TISOData kernel_data = kernel.readData();
         kernels::evalTISOKernel<int32_t>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
-                                         options, std::move(input_shape1), std::move(input_shape2));
+                                         options, std::move(input_shape1), std::move(input_shape2),
+                                         status);
       }
     }
     break;

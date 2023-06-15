@@ -28,9 +28,8 @@ inline void FullyConnected(const FullyConnectedParams &params, const int32_t *in
                            const InputType *input_data, const int32_t *filter_shape,
                            const WeightType *filter_data, const BiasType *bias_data,
                            const int32_t *output_shape, OutputType *output_data,
-                           luci_interpreter::OperationGraphStatus status)
+                           luci_interpreter::OperationGraphStatus)
 {
-  assert(status == luci_interpreter::OperationGraphStatus::USUAL);
   const int32_t input_offset = params.input_offset;
   const int32_t filter_offset = params.weights_offset;
   const int32_t output_offset = params.output_offset;
@@ -73,13 +72,23 @@ inline void FullyConnected(const FullyConnectedParams &params, const int32_t *in
                            const int32_t *output_shape, float *output_data,
                            luci_interpreter::OperationGraphStatus status)
 {
-  assert(status == luci_interpreter::OperationGraphStatus::USUAL);
   const float output_activation_min = params.float_activation_min;
   const float output_activation_max = params.float_activation_max;
 
   const int batches = input_shape[0];
   const int output_depth = output_shape[1];
   const int accum_depth = filter_shape[1];
+
+  // Calculate scales
+  constexpr float max_int16_value = 32767.0f;
+  // Input scale
+  const float input_scale = params.input_min_max_range / max_int16_value;
+  // Output scale
+  const float output_scale = params.output_min_max_range / max_int16_value;
+
+  // Create int16 input and output pointers for not USUAL status
+  const int16_t *int16_input_data = reinterpret_cast<const int16_t *>(input_data);
+  int16_t *int16_output_data = reinterpret_cast<int16_t *>(output_data);
 
   for (int b = 0; b < batches; ++b)
   {
@@ -88,15 +97,35 @@ inline void FullyConnected(const FullyConnectedParams &params, const int32_t *in
       float total = 0.f;
       for (int d = 0; d < accum_depth; ++d)
       {
-        total += input_data[b * accum_depth + d] * filter_data[out_c * accum_depth + d];
+        float input_value = 0.f;
+        if (status == luci_interpreter::OperationGraphStatus::USUAL or
+            status == luci_interpreter::OperationGraphStatus::START)
+          input_value = input_data[b * accum_depth + d];
+        else
+          input_value = static_cast<float>(int16_input_data[b * accum_depth + d]) * input_scale;
+
+        total += input_value * filter_data[out_c * accum_depth + d];
       }
+
       float bias_value = 0.0f;
       if (bias_data)
       {
         bias_value = bias_data[out_c];
       }
-      output_data[out_c + output_depth * b] =
-        std::min(std::max(total + bias_value, output_activation_min), output_activation_max);
+      if (status == luci_interpreter::OperationGraphStatus::USUAL or
+          status == luci_interpreter::OperationGraphStatus::END)
+      {
+        output_data[out_c + output_depth * b] =
+          std::min(std::max(total + bias_value, output_activation_min), output_activation_max);
+      }
+      else
+      {
+        total =
+          std::min(std::max(total + bias_value, output_activation_min), output_activation_max);
+
+        const int16_t result = static_cast<int16_t>(std::round(total / output_scale));
+        int16_output_data[out_c + output_depth * b] = result;
+      }
     }
   }
 }

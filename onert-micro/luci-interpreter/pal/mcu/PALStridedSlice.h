@@ -204,8 +204,10 @@ inline void stridedSlicePadIndices(StridedSliceParams *p, int dim_count)
 template <typename T>
 inline void StridedSlice(StridedSliceParams &op_params,
                          const luci_interpreter::RuntimeShape &unextended_input_shape,
-                         const T *input_data, T *output_data)
+                         const T *input_data, T *output_data,
+                         luci_interpreter::OperationGraphStatus status)
 {
+  assert(status == luci_interpreter::OperationGraphStatus::USUAL);
   const luci_interpreter::RuntimeShape input_shape =
     luci_interpreter::RuntimeShape::extendedShape(5, unextended_input_shape);
 

@@ -38,6 +38,12 @@ public:
   // Construct default interpreter with dynamic allocations and with input allocations
   explicit Interpreter(const char *model_data_raw, bool dealloc_input);
 
+  // Try to quantize intermediate tensors
+  explicit Interpreter(const char *model_data_raw, bool dealloc_input, bool quantize_intermediate);
+
+  // With input deallocation and without intermediate quantization
+  explicit Interpreter(const char *model_data_raw);
+
 #ifdef USE_STATIC_ALLOC
   // Construct interpreter with configurations
   explicit Interpreter(const char *model_data_raw, const InterpreterConfigure &configuration);

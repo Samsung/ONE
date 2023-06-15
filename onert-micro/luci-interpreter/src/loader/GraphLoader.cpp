@@ -74,8 +74,198 @@ bool isSingleUsageOfTensor(CircleReader *reader, const int32_t tensor_index)
   return true;
 }
 
+void buildMemoryUsageVector(CircleReader *reader, std::vector<int> &operations_mem_usage)
+{
+  const auto operators = reader->operators();
+  const auto graph_outputs = reader->outputs();
+  // Vector of memory
+  // memory - needed memory for intermediate tensors to run operation at position = index
+  for (uint32_t i = 0; i < operators.size(); ++i)
+  {
+    const auto *op = operators.at(i);
+    assert(op != nullptr);
+
+    const auto *op_inputs = op->inputs();
+    const auto *op_outputs = op->outputs();
+
+    // Pass operations with multiple outputs
+    if (op_outputs->size() > 1)
+      continue;
+
+    const auto output_index = op_outputs->operator[](0);
+
+    // Let's check that output is not a graph output tensor
+    if (std::find(graph_outputs.begin(), graph_outputs.end(), output_index) != graph_outputs.end())
+      continue;
+
+    int cur_input_mem_overhead = 0;
+
+    for (const auto input_idx : *op_inputs)
+    {
+      if (input_idx == -1)
+        continue;
+      const auto cur_input_tensor = reader->tensors()[input_idx];
+      const auto input_type = Tensor::element_type(cur_input_tensor);
+      if (Tensor::is_constant_tensor(reader, cur_input_tensor) or input_type != DataType::FLOAT32)
+        continue;
+
+      cur_input_mem_overhead += Tensor::num_elements(cur_input_tensor) * sizeof(input_type);
+    }
+
+    // Pass this operation
+    if (cur_input_mem_overhead == 0)
+      continue;
+
+    int cur_output_mem_overhead = 0;
+    for (const auto output_idx : *op_outputs)
+    {
+      if (output_idx == -1)
+        continue;
+      const auto cur_output_tensor = reader->tensors()[output_idx];
+      const auto output_type = Tensor::element_type(cur_output_tensor);
+      if (Tensor::is_constant_tensor(reader, cur_output_tensor) or output_type != DataType::FLOAT32)
+        continue;
+
+      cur_output_mem_overhead += Tensor::num_elements(cur_output_tensor) * sizeof(output_type);
+    }
+
+    // Pass this operation
+    if (cur_output_mem_overhead == 0)
+      continue;
+
+    operations_mem_usage.push_back(cur_input_mem_overhead + cur_output_mem_overhead);
+  }
+}
+
+void addOperationsStatusForRange(int start, int end, CircleReader *reader,
+                                 RuntimeGraph *runtime_graph)
+{
+  const auto operators = reader->operators();
+  {
+    auto *start_op = operators.at(start);
+    assert(start_op != nullptr);
+
+    // Downgrade start index while this op is inplace
+    while (runtime_graph->is_inplace_op(start_op) and start != end)
+    {
+      start++;
+      start_op = operators.at(start);
+      assert(start_op != nullptr);
+    }
+  }
+
+  {
+    auto *end_op = operators.at(end);
+    assert(end_op != nullptr);
+
+    // Downgrade start index while this op is inplace
+    while (runtime_graph->is_inplace_op(end_op) and start != end)
+    {
+      end--;
+      end_op = operators.at(end);
+      assert(end_op != nullptr);
+    }
+  }
+
+  // Nothing to do
+  if (start >= end)
+    return;
+
+  // Add START status to operator
+  {
+    auto *start_op = operators.at(start);
+    assert(start_op != nullptr);
+
+    runtime_graph->addOperatorStatus(start_op, OperationGraphStatus::START);
+  }
+
+  // Add END status to operator
+  {
+    auto *end_op = operators.at(end);
+    assert(end_op != nullptr);
+
+    runtime_graph->addOperatorStatus(end_op, OperationGraphStatus::END);
+  }
+
+  // Add MIDDLE status to operator
+  for (int i = start + 1; i < end; ++i)
+  {
+    auto *cur_op = operators.at(i);
+    assert(cur_op != nullptr);
+
+    runtime_graph->addOperatorStatus(cur_op, OperationGraphStatus::MIDDLE);
+  }
+}
+
+// TODO: support more operations
+bool supportedOperationsForIntermediateQuantization(int operation_index, CircleReader *reader)
+{
+  const auto operators = reader->operators();
+  const auto cur_operation = operators.at(operation_index);
+
+  const auto code = reader->builtin_code(cur_operation);
+
+  if (isInplaceOperation(code))
+    return true;
+
+  switch (code)
+  {
+    case circle::BuiltinOperator_FULLY_CONNECTED:
+    case circle::BuiltinOperator_CONV_2D:
+    case circle::BuiltinOperator_STRIDED_SLICE:
+    case circle::BuiltinOperator_MAX_POOL_2D:
+    case circle::BuiltinOperator_MUL:
+    case circle::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM:
+      return true;
+    default:
+      break;
+  }
+  return false;
+}
+
 } // namespace
 
+void GraphLoader::checkIntermediateQuantization(CircleReader *reader, RuntimeGraph *runtime_graph)
+{
+  // Vector of pairs: memory usage, index
+  // memory usage - needed memory for intermediate tensors to run operation at position = index
+  // index - position of the operation in graph
+  std::vector<int> operations_mem_usage;
+  buildMemoryUsageVector(reader, operations_mem_usage);
+  auto max_element = std::max_element(operations_mem_usage.begin(), operations_mem_usage.end());
+
+  if (max_element == operations_mem_usage.end())
+    return;
+
+  int target = *std::max_element(operations_mem_usage.begin(), operations_mem_usage.end()) / 2;
+  int start = 0;
+  int end = 0;
+  std::vector<std::pair<int, int>> ranges;
+  for (int i = 0; i < operations_mem_usage.size(); ++i)
+  {
+    if (operations_mem_usage[i] >= target and
+        supportedOperationsForIntermediateQuantization(i, reader))
+    {
+      end++;
+    }
+    else
+    {
+      if (start != end)
+        ranges.push_back({start, end});
+
+      start = end = i;
+    }
+  }
+  if (start != end)
+    ranges.push_back({start, end});
+
+  for (const auto &range : ranges)
+  {
+    addOperationsStatusForRange(range.first, range.second, reader, runtime_graph);
+  }
+
+  return;
+}
 void GraphLoader::checkInplaceOps(CircleReader *reader, RuntimeGraph *runtime_graph)
 {
   const auto operators = reader->operators();

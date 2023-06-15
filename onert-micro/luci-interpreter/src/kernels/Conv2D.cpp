@@ -59,7 +59,8 @@ int32_t compute_padding_w(const circle::Tensor *input, const circle::Tensor *fil
 
 void evalFloat(const circle::Tensor *input, const circle::Tensor *filter,
                const circle::Tensor *bias, const circle::Tensor *output,
-               const circle::Conv2DOptions *options, BaseRuntimeGraph *runtime_graph)
+               const circle::Conv2DOptions *options, BaseRuntimeGraph *runtime_graph,
+               const OperationGraphStatus status)
 {
   float activation_min{};
   float activation_max{};
@@ -75,9 +76,17 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *filter,
   params.dilation_width_factor = options->dilation_w_factor();
   params.float_activation_min = activation_min;
   params.float_activation_max = activation_max;
+  params.input_min_max_range = 0;
+  params.output_min_max_range = 0;
 
   auto *input_data = runtime_graph->getDataByTensor(input);
-  auto *output_data = runtime_graph->getDataByTensor(output);
+  uint8_t *output_data = runtime_graph->getDataByTensor(output);
+
+  if (status != OperationGraphStatus::USUAL)
+  {
+    params.input_min_max_range = Tensor::max_value(input) - Tensor::min_value(input);
+    params.output_min_max_range = Tensor::max_value(output) - Tensor::min_value(output);
+  }
 
   auto *filter_data = runtime_graph->getConstDataByTensor(filter);
   auto *bias_data = runtime_graph->getConstDataByTensor(bias);
@@ -94,7 +103,7 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *filter,
   luci_interpreter_pal::Conv(params, input_shape, kernels::getTensorData<float>(input_data),
                              filter_shape, kernels::getTensorData<float>(filter_data),
                              kernels::getTensorData<float>(bias_data), output_shape,
-                             kernels::getTensorData<float>(output_data));
+                             kernels::getTensorData<float>(output_data), status);
 }
 
 #endif // DIS_FLOAT
@@ -154,100 +163,6 @@ void evalQuantized(const circle::Tensor *input, const circle::Tensor *filter,
                              filter_shape, kernels::getTensorData<uint8_t>(filter_data),
                              kernels::getTensorData<int32_t>(bias_data), output_shape,
                              kernels::getTensorData<uint8_t>(output_data));
-}
-
-void evalQuantizedPerChannel(const circle::Tensor *input, const circle::Tensor *filter,
-                             const circle::Tensor *bias, const circle::Tensor *output,
-                             const circle::Conv2DOptions *options, BaseRuntimeGraph *runtime_graph)
-{
-  auto *raw_input_data = runtime_graph->getDataByTensor(input);
-  auto *raw_output_data = runtime_graph->getDataByTensor(output);
-
-  auto *raw_filter_data = runtime_graph->getConstDataByTensor(filter);
-  auto *raw_bias_data = runtime_graph->getConstDataByTensor(bias);
-
-  const auto *input_data = kernels::getTensorData<uint8_t>(raw_input_data);
-  const auto *filter_data = kernels::getTensorData<uint8_t>(raw_filter_data);
-  const auto *bias_data = kernels::getTensorData<int32_t>(raw_bias_data);
-  auto *output_data = kernels::getTensorData<uint8_t>(raw_output_data);
-
-  const int32_t batches = Tensor::dim(input, 0);
-  const int32_t input_height = Tensor::dim(input, 1);
-  const int32_t input_width = Tensor::dim(input, 2);
-  const int32_t input_depth = Tensor::dim(input, 3);
-  const int32_t output_depth = Tensor::dim(filter, 0);
-  const int32_t filter_height = Tensor::dim(filter, 1);
-  const int32_t filter_width = Tensor::dim(filter, 2);
-  const int32_t output_height = Tensor::dim(output, 1);
-  const int32_t output_width = Tensor::dim(output, 2);
-
-  const int32_t stride_height = options->stride_h();
-  const int32_t stride_width = options->stride_w();
-  const int32_t dilation_height_factor = options->dilation_h_factor();
-  const int32_t dilation_width_factor = options->dilation_w_factor();
-
-  int32_t activation_min{};
-  int32_t activation_max{};
-  kernels::calculateActivationRangeQuantized(luci_actfunc(options->fused_activation_function()),
-                                             output, &activation_min, &activation_max);
-
-  const std::vector<double> effective_output_scale = kernels::getQuantizedConvolutionMultiplers(
-    Tensor::scale(input), Tensor::scales(filter), Tensor::scale(output));
-
-  const std::vector<kernels::ChannelQuantMultipliers> multipliers_raw =
-    kernels::quantizeMultipliers(effective_output_scale);
-  kernels::BroadcastableWrapper<kernels::ChannelQuantMultipliers> quant_multipliers(
-    multipliers_raw);
-
-  for (int32_t batch = 0; batch < batches; ++batch)
-  {
-    for (int32_t out_y = 0; out_y < output_height; ++out_y)
-    {
-      for (int32_t out_x = 0; out_x < output_width; ++out_x)
-      {
-        for (int32_t out_c = 0; out_c < output_depth; ++out_c)
-        {
-          const int32_t in_y_origin =
-            out_y * stride_height - compute_padding_h(input, filter, options);
-          const int32_t in_x_origin =
-            out_x * stride_width - compute_padding_w(input, filter, options);
-          int32_t acc = 0;
-          for (int32_t filter_y = 0; filter_y < filter_height; ++filter_y)
-          {
-            for (int32_t filter_x = 0; filter_x < filter_width; ++filter_x)
-            {
-              const int32_t in_y = in_y_origin + dilation_height_factor * filter_y;
-              const int32_t in_x = in_x_origin + dilation_width_factor * filter_x;
-              if ((in_y >= 0 && in_y < input_height) && (in_x >= 0 && in_x < input_width))
-              {
-                for (int32_t in_c = 0; in_c < input_depth; ++in_c)
-                {
-                  const uint8_t input_val =
-                    input_data[kernels::calcOffset(input, batch, in_y, in_x, in_c)];
-                  const uint8_t filter_val =
-                    filter_data[kernels::calcOffset(filter, out_c, filter_y, filter_x, in_c)];
-                  acc += static_cast<int32_t>(input_val - Tensor::zero_point(input)) *
-                         static_cast<int32_t>(filter_val - Tensor::zero_points(filter)[out_c]);
-                }
-              }
-            }
-          }
-          if (bias_data)
-          {
-            acc += bias_data[out_c];
-          }
-
-          int32_t scaled_acc = luci_interpreter_pal::multiplyByQuantizedMultiplier(
-            acc, quant_multipliers[out_c].multiplier, quant_multipliers[out_c].shift);
-
-          scaled_acc += Tensor::zero_point(output);
-          scaled_acc = std::max(scaled_acc, activation_min);
-          scaled_acc = std::min(scaled_acc, activation_max);
-          output_data[kernels::calcOffset(output, batch, out_y, out_x, out_c)] = scaled_acc;
-        }
-      }
-    }
-  }
 }
 #endif // DIS_QUANT
 
@@ -360,7 +275,9 @@ void execute_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGrap
     case DataType::FLOAT32:
       if (Tensor::element_type(weights) == DataType::FLOAT32)
       {
-        evalFloat(input, weights, bias, output, options, runtime_graph);
+        OperationGraphStatus status = runtime_graph->getOperatorStatus(cur_op);
+
+        evalFloat(input, weights, bias, output, options, runtime_graph, status);
         break;
       }
 #endif // DIS_FLOAT
@@ -370,12 +287,9 @@ void execute_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGrap
       {
         evalQuantized(input, weights, bias, output, options, runtime_graph);
       }
-      else if (Tensor::scales(weights).size() > 1)
+      else
       {
-        LUCI_INTERPRETER_CHECK(Tensor::num_dims(weights) == 4);
-        LUCI_INTERPRETER_CHECK(Tensor::scales(weights).size() ==
-                               static_cast<size_t>(Tensor::dim(weights, 0)));
-        evalQuantizedPerChannel(input, weights, bias, output, options, runtime_graph);
+        assert(false && "Not supported quantize type");
       }
       break;
 #endif // DIS_QUANT
