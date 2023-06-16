@@ -77,7 +77,14 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
 
   for (uint16_t i = 0; i < model_count; i++)
   {
-    _nnpkg->model(ir::ModelIndex{i})->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+    if (!_nnpkg->model(ir::ModelIndex{i})->hasOnly<ir::Graph>())
+      throw std::runtime_error("MultiModelCompiler can only compile models for inference.");
+  }
+
+  for (uint16_t i = 0; i < model_count; i++)
+  {
+    _nnpkg->model(ir::ModelIndex{i})->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
+      auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
       // Mandatory passes
       pass::PassRunner{}
         .append(std::make_unique<pass::ConstantOutputPass>(subg))
@@ -108,12 +115,16 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
                      std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>>
     lowered_subgs;
 
+  std::unordered_map<ir::ModelIndex, std::shared_ptr<backend::custom::IKernelBuilder>>
+    custom_kernel_builders;
+
   for (uint16_t i = 0; i < model_count; i++)
   {
     auto const model_index = ir::ModelIndex{i};
     auto model = _nnpkg->model(model_index);
 
-    model->iterate([&](const ir::SubgraphIndex &subg_index, ir::Graph &subg) {
+    model->iterate([&](const ir::SubgraphIndex &subg_index, ir::IGraph &graph) {
+      auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
       dot_dumper.dump(subg,
                       nnfw::misc::str("before_lower_model-", i, "-subg-", subg_index.value()));
       // Lower: Assign backend
@@ -124,6 +135,8 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
         tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),
                                       subg_index.value());
     });
+
+    custom_kernel_builders[model_index] = _nnpkg->model(model_index)->getKernelBuilder();
   }
 
   _nnpkg.reset();
@@ -199,9 +212,13 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       lowered_subg->graph().operations().iterate(
         [&](const ir::OperationIndex &, const ir::IOperation &op) { op.accept(dumper); });
 
-      auto &options = *_voptions[model_index.value()];
-      auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
-        std::move(lowered_subg), tracing_ctx.get(), options, executors, model_index)};
+      ExecutorFactoryArgs args;
+      args.tracing_ctx = tracing_ctx.get();
+      args.options = _voptions[model_index.value()];
+      args.model_index = model_index;
+      args.custom_kernel_builder = custom_kernel_builders[model_index];
+      auto executor = std::unique_ptr<exec::IExecutor>{
+        ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
       executor->setIndexedRanks(indexed_ranks);
       executors->emplace(model_index, subg_index, std::move(executor));
     }

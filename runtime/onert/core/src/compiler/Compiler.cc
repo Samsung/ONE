@@ -75,10 +75,18 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       throw std::runtime_error("Recording minmax works only with Linear executor");
   }
 
+  if (!_model->hasOnly<ir::Graph>())
+  {
+    throw std::runtime_error("Compiler can only compile models for inference.");
+  }
+
   _options->forceInternalOptions();
   _options->verboseOptions();
 
-  _model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+  auto custom_kernel_builder = _model->getKernelBuilder();
+
+  _model->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
+    auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
     // Mandatory passes
     pass::PassRunner{}
       .append(std::make_unique<pass::ConstantOutputPass>(subg))
@@ -102,7 +110,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
   {
-    _model->iterate([&](const ir::SubgraphIndex &subg_index, ir::Graph &subg) {
+    _model->iterate([&](const ir::SubgraphIndex &subg_index, ir::IGraph &graph) {
+      auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
       // Lower: Assign backend
       lowered_subgs[subg_index] = std::make_unique<compiler::LoweredGraph>(subg, *_options);
       // Set tracing_ctx for copied graph
@@ -166,8 +175,13 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     lowered_subg->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::IOperation &op) { op.accept(dumper); });
 
-    auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
-      std::move(lowered_subg), tracing_ctx.get(), *_options, executors, model_index)};
+    ExecutorFactoryArgs args;
+    args.tracing_ctx = tracing_ctx.get();
+    args.options = _options;
+    args.model_index = model_index;
+    args.custom_kernel_builder = custom_kernel_builder;
+    auto executor = std::unique_ptr<exec::IExecutor>{
+      ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
     executor->setIndexedRanks(indexed_ranks);
     executors->emplace(model_index, subg_index, std::move(executor));
   }

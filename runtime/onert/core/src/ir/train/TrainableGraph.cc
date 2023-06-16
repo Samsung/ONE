@@ -55,6 +55,11 @@ OperationIndex TrainableGraph::replaceOperation(OperationIndex index,
   return _graph.replaceOperation(index, std::move(operation));
 }
 
+void TrainableGraph::changeShape(const OperandIndex &index, const ir::Shape &new_shape)
+{
+  _graph.changeShape(index, new_shape);
+}
+
 IOIndex TrainableGraph::getInputIndex(const std::string &name) const
 {
   return _graph.getInputIndex(name);

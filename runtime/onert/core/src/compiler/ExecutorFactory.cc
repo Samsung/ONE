@@ -158,8 +158,9 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
 }
 
 // TODO Split this long function
-backend::BackendContexts createBackendContexts(compiler::ILoweredGraph &lgraph,
-                                               bool linear_executor)
+backend::BackendContexts
+createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
+                      std::shared_ptr<backend::custom::IKernelBuilder> custom_kernel_builder)
 {
   backend::BackendContexts contexts;
   auto &backend_manager = compiler::BackendManager::get();
@@ -259,7 +260,7 @@ backend::BackendContexts createBackendContexts(compiler::ILoweredGraph &lgraph,
     std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(data.op_order),
                  [&](const auto &ind) { return data.graph->operations().exist(ind); });
     data.is_linear_executor = linear_executor;
-    data.custom_kernel_builder = lgraph.graph().getKernelBuilder();
+    data.custom_kernel_builder = custom_kernel_builder;
     contexts.emplace(backend, backend->newContext(std::move(data)));
   }
   return contexts;
@@ -303,34 +304,30 @@ ExecutorFactory &ExecutorFactory::get()
 ExecutorFactory::ExecutorFactory()
 {
   _map["Linear"] = createLinearExecutor;
-  _map["Dataflow"] =
-    std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
-              std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, false);
-  _map["Parallel"] =
-    std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
-              std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, true);
+  _map["Dataflow"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
+                               std::placeholders::_3, false);
+  _map["Parallel"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
+                               std::placeholders::_3, true);
 }
 
 exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                                         const util::TracingCtx *tracing_ctx,
-                                         const compiler::CompilerOptions &options,
                                          const std::shared_ptr<exec::IExecutors> &executors,
-                                         const ir::ModelIndex &index)
+                                         const ExecutorFactoryArgs &args)
 {
-  return _map.at(options.executor)(std::move(lowered_graph), tracing_ctx, options, executors,
-                                   index);
+  assert(args.options != nullptr);
+  return _map.at(args.options->executor)(std::move(lowered_graph), executors, args);
 }
 
 exec::IExecutor *
 ExecutorFactory::create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
-                        const util::TracingCtx *tracing_ctx,
-                        const compiler::CompilerOptions &options,
-                        const std::shared_ptr<exec::IExecutors> &, const ir::ModelIndex &)
+                        const std::shared_ptr<exec::IExecutors> &, const ExecutorFactoryArgs &args)
 {
-  if (options.executor != "Linear")
+  assert(args.options != nullptr);
+
+  if (args.options->executor != "Linear")
     throw std::runtime_error("ExecutorFactory: TrainableExecutor supports only 'Linear' now");
 
-  return createTrainableExecutor(std::move(lowered_graph), tracing_ctx, options);
+  return createTrainableExecutor(std::move(lowered_graph), args);
 }
 
 void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
@@ -426,15 +423,19 @@ ExecutorFactory::orderBackendContext(const backend::BackendContexts &backend_con
   return ordered_contexts;
 }
 
-exec::IExecutor *ExecutorFactory::createLinearExecutor(
-  std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
-  const compiler::CompilerOptions &options, const std::shared_ptr<exec::IExecutors> &executors,
-  const ir::ModelIndex &index)
+exec::IExecutor *
+ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                                      const std::shared_ptr<exec::IExecutors> &executors,
+                                      const ExecutorFactoryArgs &args)
 {
+  const auto options = args.options;
+  const auto &model_index = args.model_index;
+  const auto tracing_ctx = args.tracing_ctx;
+  auto custom_kernel_builder = args.custom_kernel_builder;
   auto &graph = lowered_graph->graph();
 
   backend::BackendContexts backend_contexts =
-    createBackendContexts(*lowered_graph, options.executor == "Linear");
+    createBackendContexts(*lowered_graph, options->executor == "Linear", custom_kernel_builder);
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -455,7 +456,7 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
   // Give some runtime objects to builtin KernelGenerator
-  prepareBuiltinBackend(tensor_regs, executors, backend_contexts, index);
+  prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
 
   ExecutionBuilder builder;
 
@@ -525,7 +526,7 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
       auto &fn_seq = pair.second;
       auto &op = lowered_graph->graph().operations().at(op_ind);
       auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
-      if (options.he_profiling_mode)
+      if (options->he_profiling_mode)
         fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
       if (!dealloc_list_map[op_ind].empty())
         fn_seq->append(std::make_unique<DeallocFunction>(dealloc_list_map[op_ind]));
@@ -542,28 +543,33 @@ exec::IExecutor *ExecutorFactory::createLinearExecutor(
                                        order,
                                        tracing_ctx};
 
-  if (!options.trace_filepath.empty())
+  if (!options->trace_filepath.empty())
   {
     std::unique_ptr<exec::IExecutionObserver> ctp =
-      std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph(), tracing_ctx);
+      std::make_unique<exec::TracingObserver>(options->trace_filepath, exec->graph(), tracing_ctx);
     exec->addObserver(std::move(ctp));
   }
 #ifdef MINMAX_H5DUMPER
-  if (!options.minmax_filepath.empty())
-    exec->addObserver(std::make_unique<exec::MinMaxRecorder>(options.minmax_filepath, exec->graph(),
-                                                             exec->getBackendContexts()));
+  if (!options->minmax_filepath.empty())
+    exec->addObserver(std::make_unique<exec::MinMaxRecorder>(
+      options->minmax_filepath, exec->graph(), exec->getBackendContexts()));
 #endif
 
   return exec;
 }
 
-exec::IExecutor *ExecutorFactory::createDataflowExecutor(
-  std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
-  const compiler::CompilerOptions &options, const std::shared_ptr<exec::IExecutors> &executors,
-  const ir::ModelIndex &index, bool parallel)
+exec::IExecutor *
+ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                                        const std::shared_ptr<exec::IExecutors> &executors,
+                                        const ExecutorFactoryArgs &args, bool parallel)
 {
+  const auto options = args.options;
+  const auto &model_index = args.model_index;
+  const auto tracing_ctx = args.tracing_ctx;
+  auto custom_kernel_builder = args.custom_kernel_builder;
+
   backend::BackendContexts backend_contexts =
-    createBackendContexts(*lowered_graph, options.executor == "Linear");
+    createBackendContexts(*lowered_graph, options->executor == "Linear", custom_kernel_builder);
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -580,7 +586,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
   // Give some runtime objects to builtin KernelGenerator
-  prepareBuiltinBackend(tensor_regs, executors, backend_contexts, index);
+  prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
 
   ExecutionBuilder builder;
 
@@ -597,7 +603,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
       auto &fn_seq = pair.second;
       auto &op = lowered_graph->graph().operations().at(op_ind);
       auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
-      if (options.he_profiling_mode)
+      if (options->he_profiling_mode)
         fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
       builder.append(op_ind, {op_ind, &op, lower_info, std::move(fn_seq)});
     }
@@ -616,7 +622,7 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     auto dataflow_exec =
       new exec::DataflowExecutor{std::move(lowered_graph), std::move(backend_contexts), tensor_regs,
                                  std::move(code_map), tracing_ctx};
-    if (options.he_profiling_mode)
+    if (options->he_profiling_mode)
     {
       std::vector<const backend::Backend *> backends;
       for (const auto &pair : backend_contexts)
@@ -631,10 +637,10 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
     exec = dataflow_exec;
   }
 
-  if (!options.trace_filepath.empty())
+  if (!options->trace_filepath.empty())
   {
     std::unique_ptr<exec::IExecutionObserver> ctp =
-      std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph(), tracing_ctx);
+      std::make_unique<exec::TracingObserver>(options->trace_filepath, exec->graph(), tracing_ctx);
     exec->addObserver(std::move(ctp));
   }
 
@@ -643,8 +649,12 @@ exec::IExecutor *ExecutorFactory::createDataflowExecutor(
 
 exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
-  const util::TracingCtx *tracing_ctx, const compiler::CompilerOptions &options)
+  const ExecutorFactoryArgs &args)
 {
+  const auto options = args.options;
+  const auto tracing_ctx = args.tracing_ctx;
+  auto custom_kernel_builder = args.custom_kernel_builder;
+
   auto &graph = lowered_graph->graph();
 
   lowered_graph->trainable_graph().operations().iterate([](const onert::ir::OperationIndex &,
@@ -661,7 +671,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
 
   // TODO Create context only once instead of replacing
   backend::train::TrainableBackendContexts tbackend_contexts;
-  backend::BackendContexts base_backend_contexts = createBackendContexts(*lowered_graph, true);
+  backend::BackendContexts base_backend_contexts =
+    createBackendContexts(*lowered_graph, true, custom_kernel_builder);
 
   // Replace BackendContext with TrainbleBackendContext
   for (auto &&pair : base_backend_contexts)
@@ -829,10 +840,10 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                                                  order,
                                                  tracing_ctx};
 
-  if (!options.trace_filepath.empty())
+  if (!options->trace_filepath.empty())
   {
     std::unique_ptr<exec::IExecutionObserver> ctp =
-      std::make_unique<exec::TracingObserver>(options.trace_filepath, exec->graph(), tracing_ctx);
+      std::make_unique<exec::TracingObserver>(options->trace_filepath, exec->graph(), tracing_ctx);
     exec->addObserver(std::move(ctp));
   }
   // TODO Support MINMAX_H5DUMPER

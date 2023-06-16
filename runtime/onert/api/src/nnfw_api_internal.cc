@@ -34,6 +34,7 @@
 #include <string>
 #include <vector>
 #include <dirent.h>
+#include <misc/polymorphic_downcast.h>
 #include <misc/string_helpers.h>
 
 /*
@@ -73,7 +74,7 @@ onert::ir::Layout convertLayout(NNFW_LAYOUT layout)
   return onert::ir::Layout::UNKNOWN;
 }
 
-NNFW_STATUS getTensorIndexImpl(const onert::ir::Graph &graph, const char *tensorname,
+NNFW_STATUS getTensorIndexImpl(const onert::ir::IGraph &graph, const char *tensorname,
                                uint32_t *index, bool is_input)
 {
   if (!tensorname || !index)
@@ -362,7 +363,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       auto model = loadModel(model_file_path, model_type);
       if (model == nullptr)
         return NNFW_STATUS_ERROR;
-      model->primary_subgraph()->bindKernelBuilder(_kernel_registry->getBuilder());
+      model->bindKernelBuilder(_kernel_registry->getBuilder());
       _nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
       _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     }
@@ -703,10 +704,8 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
 
   if (!isStatePreparedOrFinishedRun())
   {
-
     // In this case, if we apply input shape, it will propagate after compilation and excution
-    auto &info = _nnpkg->inputInfo(index);
-    info.shape(new_shape);
+    _nnpkg->changeInputShape(index, new_shape);
   }
   else // when called after nnfw_session::prepare()
     _execution->changeInputShape(onert::ir::IOIndex(index), new_shape);
@@ -949,7 +948,7 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   return NNFW_STATUS_NO_ERROR;
 }
 
-const onert::ir::Graph *nnfw_session::primary_subgraph()
+const onert::ir::IGraph *nnfw_session::primary_subgraph()
 {
   if (_nnpkg != nullptr)
   {

@@ -116,6 +116,11 @@ void Graph::setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data)
   _operands.at(ind).data(std::move(data));
 }
 
+void Graph::changeShape(const OperandIndex &ind, const ir::Shape &new_shape)
+{
+  _operands.at(ind).info().shape(new_shape);
+}
+
 void Graph::addInput(const OperandIndex &ind, const std::string &name)
 {
   if (!name.empty())

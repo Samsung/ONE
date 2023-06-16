@@ -166,7 +166,7 @@ public:
   NNFW_STATUS set_loss(NNFW_LOSS_TYPE loss_type, const void *y_true_buf);
 
 private:
-  const onert::ir::Graph *primary_subgraph();
+  const onert::ir::IGraph *primary_subgraph();
   uint32_t getInputSize();
   uint32_t getOutputSize();
 

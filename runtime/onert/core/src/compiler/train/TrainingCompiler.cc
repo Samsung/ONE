@@ -85,7 +85,10 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   _options->forceInternalOptions();
   _options->verboseOptions();
 
-  _model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+  auto custom_kernel_builder = _model->getKernelBuilder();
+
+  _model->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
+    auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
     // Mandatory passes
     compiler::pass::PassRunner{}
       .append(std::make_unique<compiler::pass::ConstantOutputPass>(subg))
@@ -101,8 +104,10 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   std::unordered_map<ir::SubgraphIndex, std::shared_ptr<ir::train::TrainableGraph>>
     trainable_subgraphs;
 
+  // TODO Support models that have TrainableGraphs
   // Create trainable subgraphs by copy and converting inference model
-  _model->iterate([&](const ir::SubgraphIndex &subg_index, const ir::Graph &subg) {
+  _model->iterate([&](const ir::SubgraphIndex &subg_index, const ir::IGraph &graph) {
+    const auto &subg = nnfw::misc::polymorphic_downcast<const ir::Graph &>(graph);
     // Create TrainableGraph by copying Graph
     auto trainable_subg = std::make_shared<ir::train::TrainableGraph>(subg);
 
@@ -193,8 +198,13 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     lowered_subg->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::IOperation &op) { op.accept(dumper); });
 
-    auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
-      std::move(lowered_subg), tracing_ctx.get(), *_options, executors, model_index)};
+    ExecutorFactoryArgs args;
+    args.tracing_ctx = tracing_ctx.get();
+    args.options = _options;
+    args.model_index = model_index;
+    args.custom_kernel_builder = custom_kernel_builder;
+    auto executor = std::unique_ptr<exec::IExecutor>{
+      ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
     executor->setIndexedRanks(indexed_ranks);
     executors->emplace(model_index, subg_index, std::move(executor));
   }
