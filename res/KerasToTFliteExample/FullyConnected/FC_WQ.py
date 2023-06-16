@@ -3,7 +3,7 @@ from tensorflow import keras
 
 model = tf.keras.models.Sequential([
     tf.keras.Input(shape=(16, 32)),
-    tf.keras.layers.Dense(32),
+    tf.keras.layers.Dense(32, activation="relu", use_bias=True, bias_initializer="random_uniform"),
 ])
 
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001))
