@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_PASS_PASS_RUNNER_H__
-#define __ONERT_COMPILER_PASS_PASS_RUNNER_H__
+#ifndef __ONERT_COMPILER_PASS_IPASS_H__
+#define __ONERT_COMPILER_PASS_IPASS_H__
 
-#include <initializer_list>
-#include <memory>
-#include <vector>
-
-#include "IPass.h"
-#include "util/logging.h"
+#include <string>
 
 namespace onert
 {
@@ -31,23 +26,16 @@ namespace compiler
 namespace pass
 {
 
-/**
- * @brief Composite passes with logging
- */
-class PassRunner
+struct IPass
 {
-public:
-  PassRunner() = default;
-  PassRunner &append(std::unique_ptr<IPass> pass);
+  virtual ~IPass() = default;
 
-  void run();
-
-private:
-  std::vector<std::unique_ptr<IPass>> _passes;
+  virtual std::string id() = 0;
+  virtual void run() = 0;
 };
 
 } // namespace pass
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_COMPILER_PASS_PASS_RUNNER_H__
+#endif // __ONERT_COMPILER_PASS_IPASS_H__
