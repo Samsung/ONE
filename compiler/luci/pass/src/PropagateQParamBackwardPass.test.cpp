@@ -129,6 +129,119 @@ public:
   CircleOutput *output = nullptr;
 };
 
+/**
+ *  BEFORE
+ *
+ *        [Input]
+ *           |
+ *        [Conv] (qparam 1)
+ *           |
+ *       [Reshape] (qparam 2)
+ *           |
+ *       [Output]
+ *
+ *  AFTER
+ *
+ *        [Input]
+ *           |
+ *        [Conv] (qparam 2)
+ *           |
+ *       [Reshape] (qparam 2)
+ *           |
+ *       [Output]
+ */
+class ConvReshapeGraph
+{
+public:
+  ConvReshapeGraph()
+  {
+    input = g.nodes()->create<luci::CircleInput>();
+    conv = g.nodes()->create<luci::CircleConv2D>();
+    reshape = g.nodes()->create<luci::CircleReshape>();
+    output = g.nodes()->create<luci::CircleOutput>();
+
+    auto graph_input = g.inputs()->create();
+    input->index(graph_input->index());
+    auto graph_output = g.outputs()->create();
+    output->index(graph_output->index());
+
+    set_qparam(conv, 2.0, 2);
+    set_qparam(reshape, 1.0, 1);
+
+    conv->input(input);
+    reshape->tensor(conv);
+    output->from(reshape);
+  }
+
+public:
+  loco::Graph g;
+  luci::CircleInput *input = nullptr;
+  luci::CircleConv2D *conv = nullptr;
+  luci::CircleReshape *reshape = nullptr;
+  luci::CircleOutput *output = nullptr;
+};
+
+/**
+ *  BEFORE
+ *
+ *        [Input]
+ *           |
+ *        [Conv] (qparam 1)
+ *           |
+ *           +---------------------+
+ *           |                     |
+ *       [Reshape] (qparam 2)   [Output]
+ *           |
+ *       [Output]
+ *
+ *  AFTER (qparam is not propagated as Conv has multiple users)
+ *
+ *        [Input]
+ *           |
+ *        [Conv] (qparam 1)
+ *           |
+ *           +---------------------+
+ *           |                     |
+ *       [Reshape] (qparam 2)   [Output]
+ *           |
+ *       [Output]
+ */
+class ConvReshapeMultiOutGraph
+{
+public:
+  ConvReshapeMultiOutGraph()
+  {
+    input = g.nodes()->create<luci::CircleInput>();
+    conv = g.nodes()->create<luci::CircleConv2D>();
+    reshape = g.nodes()->create<luci::CircleReshape>();
+    output1 = g.nodes()->create<luci::CircleOutput>();
+    output2 = g.nodes()->create<luci::CircleOutput>();
+
+    auto graph_input = g.inputs()->create();
+    input->index(graph_input->index());
+    auto graph_output1 = g.outputs()->create();
+    output1->index(graph_output1->index());
+    auto graph_output2 = g.outputs()->create();
+    output2->index(graph_output2->index());
+
+    set_qparam(conv, 2.0, 2);
+    set_qparam(reshape, 1.0, 1);
+
+    conv->input(input);
+    reshape->tensor(conv);
+    output1->from(reshape);
+    output2->from(conv);
+  }
+
+public:
+  loco::Graph g;
+  luci::CircleInput *input = nullptr;
+  luci::CircleConv2D *conv = nullptr;
+  luci::CircleReshape *reshape = nullptr;
+  luci::CircleOutput *output1 = nullptr;
+  luci::CircleOutput *output2 = nullptr;
+};
+
 } // namespace
 
 TEST(PropagateQParamBackwardPassTest, name)
@@ -164,4 +277,34 @@ TEST(PropagateQParamBackwardPassTest, subsequent_propagation)
 
   EXPECT_EQ(3.0, graph.input->quantparam()->scale[0]);
   EXPECT_EQ(3, graph.input->quantparam()->zerop[0]);
+}
+
+TEST(PropagateQParamBackwardPassTest, reshape)
+{
+  ConvReshapeGraph graph;
+
+  EXPECT_NE(graph.conv->quantparam()->scale, graph.reshape->quantparam()->scale);
+  EXPECT_NE(graph.conv->quantparam()->zerop, graph.reshape->quantparam()->zerop);
+
+  luci::PropagateQParamBackwardPass pass(loco::DataType::U8);
+
+  pass.run(&graph.g);
+
+  EXPECT_EQ(graph.conv->quantparam()->scale, graph.reshape->quantparam()->scale);
+  EXPECT_EQ(graph.conv->quantparam()->zerop, graph.reshape->quantparam()->zerop);
+}
+
+TEST(PropagateQParamBackwardPassTest, reshape_multi_use_NEG)
+{
+  ConvReshapeMultiOutGraph graph;
+
+  EXPECT_NE(graph.conv->quantparam()->scale, graph.reshape->quantparam()->scale);
+  EXPECT_NE(graph.conv->quantparam()->zerop, graph.reshape->quantparam()->zerop);
+
+  luci::PropagateQParamBackwardPass pass(loco::DataType::U8);
+
+  pass.run(&graph.g);
+
+  EXPECT_NE(graph.conv->quantparam()->scale, graph.reshape->quantparam()->scale);
+  EXPECT_NE(graph.conv->quantparam()->zerop, graph.reshape->quantparam()->zerop);
 }
