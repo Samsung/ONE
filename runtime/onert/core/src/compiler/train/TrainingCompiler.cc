@@ -111,9 +111,9 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     subg.operations().iterate(
       [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &) {
         auto trainable_op = converter(op_index);
-        auto index = trainable_subg->replaceOperation(op_index, std::move(trainable_op));
-        UNUSED_RELEASE(index);
-        assert(index == op_index);
+        auto gen_index = trainable_subg->replaceOperation(op_index, std::move(trainable_op));
+        UNUSED_RELEASE(gen_index);
+        assert(gen_index == op_index);
       });
 
     trainable_subgraphs[subg_index] = std::move(trainable_subg);

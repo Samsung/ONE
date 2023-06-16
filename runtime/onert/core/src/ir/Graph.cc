@@ -100,6 +100,13 @@ OperationIndex Graph::replaceOperation(OperationIndex index,
   if (!checkOperandsForOperation(op_ref) || !_operations.exist(index))
     return OperationIndex{};
 
+  // Check the new operation has the same inputs/outputs as the existing operation
+  const auto &old_op = _operations.at(index);
+  if (!(old_op.getInputs() == op_ref.getInputs() && old_op.getOutputs() == op_ref.getOutputs()))
+  {
+    return OperationIndex{};
+  }
+
   return _operations.set(index, std::move(operation));
 }
 

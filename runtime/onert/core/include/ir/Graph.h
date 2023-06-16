@@ -96,8 +96,9 @@ public:
    *
    * If the given @c index is available, it succeeds. And @c operation is moved which invalidates
    * the caller's pointer. If the given @c operation has at least one invalid operand index, it
-   * fails. And @c operation will not be moved so the caller's pointer will be still valid. No
-   * information in the graph is changed except for replacing an operation.
+   * fails. And @c operation will not be moved so the caller's pointer will be still valid.
+   *
+   * No information in the graph is changed except for replacing an operation.
    *
    * @param operation Operation to be added
    * @return OperationIndex @c index if successful, UNDEFINED otherwise

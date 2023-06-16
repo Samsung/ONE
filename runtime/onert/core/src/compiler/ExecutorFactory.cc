@@ -675,9 +675,9 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &) {
         const auto &orig_tgraph = lowered_graph->trainable_graph();
         const auto &trainable_op = orig_tgraph.operation(op_index);
-        auto index = tgraph->replaceOperation(op_index, trainable_op.clone());
-        UNUSED_RELEASE(index);
-        assert(index == op_index);
+        auto gen_index = tgraph->replaceOperation(op_index, trainable_op.clone());
+        UNUSED_RELEASE(gen_index);
+        assert(gen_index == op_index);
       });
 
     // Set trainable context data

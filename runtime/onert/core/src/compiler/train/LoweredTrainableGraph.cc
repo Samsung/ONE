@@ -111,7 +111,9 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
       if (op.opcode() == ir::OpCode::Permute)
       {
         auto top = op_converter(index);
-        _trainable_graph.replaceOperation(index, std::move(top));
+        auto gen_index = _trainable_graph.replaceOperation(index, std::move(top));
+        UNUSED_RELEASE(gen_index);
+        assert(gen_index == index);
       }
     });
 

@@ -76,6 +76,7 @@ public:
   }
 
 public:
+  bool operator==(const OperandIndexSequence &other) const;
   OperandIndexSequence operator+(const OperandIndexSequence &other) const;
   friend std::ostream &operator<<(std::ostream &o, const OperandIndexSequence &operand_seq);
 
