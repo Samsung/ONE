@@ -25,9 +25,11 @@ model.save(MODEL_DIR, save_format="tf", signatures=concrete_func)
 
 converter = tf.lite.TFLiteConverter.from_saved_model(MODEL_DIR)
 converter.experimental_new_converter = True
-converter.optimizations = [tf.lite.Optimize.DEFAULT] # For Weight Quantization(a.k.a Hybrid Quantization)
-converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS,
-                                       tf.lite.OpsSet.SELECT_TF_OPS]
+converter.optimizations = [tf.lite.Optimize.DEFAULT
+                           ]  # For Weight Quantization(a.k.a Hybrid Quantization)
+converter.target_spec.supported_ops = [
+    tf.lite.OpsSet.TFLITE_BUILTINS, tf.lite.OpsSet.SELECT_TF_OPS
+]
 converted_model = converter.convert()
 save_to = "conv1d_wq.tflite"
 if save_to is not None:
