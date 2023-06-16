@@ -290,7 +290,7 @@ void calculateLstmGate(const LstmStepManager *step_info,
                        CellType *fc_output_buffer, const FusedActivation activation,
                        luci_interpreter::BaseRuntimeGraph *runtime_graph,
                        luci_interpreter::OperationGraphStatus status,
-                       const float input_min_max_range)
+                       const float input_min_max_range, bool is_float_input_quant_weight)
 {
   ActivationType *input_data_updated = nullptr; // input_data + step_info->inputOffset();
   if (status != luci_interpreter::OperationGraphStatus::USUAL and
@@ -325,13 +325,29 @@ void calculateLstmGate(const LstmStepManager *step_info,
     int32_t input_weight_shape[luci_interpreter::kMaxSmallSize];
     luci_interpreter::kernels::getTensorDims(input_weight, runtime_graph, input_weight_shape);
 
-    FullyConnected(op_params, step_info->inputShape().dimsData(), input_data_updated,
-                   input_weight_shape,
-                   luci_interpreter::kernels::getTensorData<WeightType>(
-                     runtime_graph->getConstDataByTensor(input_weight)),
-                   luci_interpreter::kernels::getTensorData<BiasType>(
-                     runtime_graph->getConstDataByTensor(input_bias)),
-                   gate_output_shape.dimsData(), gate_output, status);
+    // TODO: check this again
+    if (is_float_input_quant_weight == false)
+    {
+      FullyConnected(op_params, step_info->inputShape().dimsData(), input_data_updated,
+                     input_weight_shape,
+                     luci_interpreter::kernels::getTensorData<WeightType>(
+                       runtime_graph->getConstDataByTensor(input_weight)),
+                     luci_interpreter::kernels::getTensorData<BiasType>(
+                       runtime_graph->getConstDataByTensor(input_bias)),
+                     gate_output_shape.dimsData(), gate_output, status);
+    }
+    else
+    {
+      op_params.weight_scale = luci_interpreter::Tensor::scale(input_weight);
+      op_params.is_weight_quant = is_float_input_quant_weight;
+      FullyConnected(op_params, step_info->inputShape().dimsData(), input_data_updated,
+                     input_weight_shape,
+                     luci_interpreter::kernels::getTensorData<float>(
+                       runtime_graph->getConstDataByTensor(input_weight)),
+                     luci_interpreter::kernels::getTensorData<BiasType>(
+                       runtime_graph->getConstDataByTensor(input_bias)),
+                     gate_output_shape.dimsData(), gate_output, status);
+    }
   }
 
   // Recurrent FC
@@ -353,14 +369,30 @@ void calculateLstmGate(const LstmStepManager *step_info,
     luci_interpreter::kernels::getTensorDims(recurrent_weight, runtime_graph,
                                              recurrent_weight_shape);
 
-    FullyConnected(op_params, step_info->stateShape().dimsData(),
-                   recurrent_data + step_info->hiddenStateOffset(), recurrent_weight_shape,
-                   luci_interpreter::kernels::getTensorData<WeightType>(
-                     runtime_graph->getConstDataByTensor(recurrent_weight)),
-                   luci_interpreter::kernels::getTensorData<BiasType>(
-                     runtime_graph->getConstDataByTensor(recurrent_bias)),
-                   gate_output_shape.dimsData(), fc_output_buffer,
-                   luci_interpreter::OperationGraphStatus::USUAL);
+    if (is_float_input_quant_weight == false)
+    {
+      FullyConnected(op_params, step_info->stateShape().dimsData(),
+                     recurrent_data + step_info->hiddenStateOffset(), recurrent_weight_shape,
+                     luci_interpreter::kernels::getTensorData<WeightType>(
+                       runtime_graph->getConstDataByTensor(recurrent_weight)),
+                     luci_interpreter::kernels::getTensorData<BiasType>(
+                       runtime_graph->getConstDataByTensor(recurrent_bias)),
+                     gate_output_shape.dimsData(), fc_output_buffer,
+                     luci_interpreter::OperationGraphStatus::USUAL);
+    }
+    else
+    {
+      op_params.weight_scale = luci_interpreter::Tensor::scale(recurrent_weight);
+      op_params.is_weight_quant = is_float_input_quant_weight;
+      FullyConnected(op_params, step_info->stateShape().dimsData(),
+                     recurrent_data + step_info->hiddenStateOffset(), recurrent_weight_shape,
+                     luci_interpreter::kernels::getTensorData<float>(
+                       runtime_graph->getConstDataByTensor(recurrent_weight)),
+                     luci_interpreter::kernels::getTensorData<BiasType>(
+                       runtime_graph->getConstDataByTensor(recurrent_bias)),
+                     gate_output_shape.dimsData(), fc_output_buffer,
+                     luci_interpreter::OperationGraphStatus::USUAL);
+    }
 
     addElementWise(gate_output, fc_output_buffer, /*n_batch=*/gate_output_shape.dimsData()[0],
                    /*n_state=*/gate_output_shape.dimsData()[1], gate_output);
@@ -458,6 +490,14 @@ void lstmStep(luci_interpreter::lstm::LSTMStruct *lstm_struct,
     input_min_max_range = luci_interpreter::Tensor::max_value(lstm_struct->input()) -
                           luci_interpreter::Tensor::min_value(lstm_struct->input());
 
+  bool is_float_input_quant_weight = false;
+
+  if (luci_interpreter::Tensor::element_type(lstm_struct->input()) ==
+        luci_interpreter::DataType::FLOAT32 and
+      luci_interpreter::Tensor::element_type(lstm_struct->input_to_forget_weights()) ==
+        luci_interpreter::DataType::S8)
+    is_float_input_quant_weight = true;
+
   calculateLstmGate<ActivationType, WeightType, CellType, BiasType>(
     step_info, &lstm_params->forget_gate_parameters,
     // Input FC
@@ -466,7 +506,7 @@ void lstmStep(luci_interpreter::lstm::LSTMStruct *lstm_struct,
     output_state_data, lstm_struct->recurrent_to_forget_weights(), nullptr,
     // Output
     forget_gate_output, gate_internal_buffer, FusedActivation::kTfLiteActSigmoid, runtime_graph,
-    status, input_min_max_range);
+    status, input_min_max_range, is_float_input_quant_weight);
 
   // Input Gate calculation;
   CellType *input_gate_output = scratch1;
@@ -481,7 +521,7 @@ void lstmStep(luci_interpreter::lstm::LSTMStruct *lstm_struct,
     input_gate_output,
     // Scratch arrays
     gate_internal_buffer, FusedActivation::kTfLiteActSigmoid, runtime_graph, status,
-    input_min_max_range);
+    input_min_max_range, is_float_input_quant_weight);
 
   // Cell Gate calculation
   CellType *cell_gate_output = scratch2;
@@ -496,7 +536,7 @@ void lstmStep(luci_interpreter::lstm::LSTMStruct *lstm_struct,
     cell_gate_output,
     // Scratch arrays
     gate_internal_buffer, FusedActivation::kTfLiteActTanh, runtime_graph, status,
-    input_min_max_range);
+    input_min_max_range, is_float_input_quant_weight);
 
   /*Step2: update the cell state */
   {
@@ -522,7 +562,7 @@ void lstmStep(luci_interpreter::lstm::LSTMStruct *lstm_struct,
       output_gate_output,
       // Scratch arrays
       gate_internal_buffer, FusedActivation::kTfLiteActSigmoid, runtime_graph, status,
-      input_min_max_range);
+      input_min_max_range, is_float_input_quant_weight);
 
     CellType *tanh_activated_cell_buffer = scratch0; // reuse buffer
     updateLstmHidden<CellType, ActivationType>(
@@ -530,17 +570,8 @@ void lstmStep(luci_interpreter::lstm::LSTMStruct *lstm_struct,
       &lstm_params->inter_gate_parameters.output_mul_params,
       cell_state_info->cell_state_scale_power, tanh_activated_cell_buffer);
 
-    if (status == luci_interpreter::OperationGraphStatus::USUAL or
-        status == luci_interpreter::OperationGraphStatus::END)
-    {
-      ActivationType *output_ptr = luci_interpreter::kernels::getTensorData<ActivationType>(
-        runtime_graph->getDataByTensor(lstm_struct->output()));
-
-      std::memcpy(output_ptr + step_info->outputOffset(),
-                  output_state_data + step_info->hiddenStateOffset(),
-                  step_info->stateShape().flatSize() * sizeof(ActivationType));
-    }
-    else
+    if (status == luci_interpreter::OperationGraphStatus::MIDDLE or
+        status == luci_interpreter::OperationGraphStatus::START)
     {
       int16_t *output_ptr = luci_interpreter::kernels::getTensorData<int16_t>(
         runtime_graph->getDataByTensor(lstm_struct->output()));
@@ -557,6 +588,15 @@ void lstmStep(luci_interpreter::lstm::LSTMStruct *lstm_struct,
         output_ptr[i + step_info->outputOffset()] =
           static_cast<int16_t>(std::round(output_value / output_scale));
       }
+    }
+    else
+    {
+      ActivationType *output_ptr = luci_interpreter::kernels::getTensorData<ActivationType>(
+        runtime_graph->getDataByTensor(lstm_struct->output()));
+
+      std::memcpy(output_ptr + step_info->outputOffset(),
+                  output_state_data + step_info->hiddenStateOffset(),
+                  step_info->stateShape().flatSize() * sizeof(ActivationType));
     }
   }
 }

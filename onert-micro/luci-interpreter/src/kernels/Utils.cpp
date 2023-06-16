@@ -191,7 +191,7 @@ void calculateActivationRangeQuantized(Activation activation, int32_t output_zer
 void calculateActivationRangeQuantized(Activation activation, const circle::Tensor *output,
                                        int32_t *activation_min, int32_t *activation_max)
 {
-  assert(Tensor::zero_points(output).size() == 1);
+  assert(Tensor::zero_points(output)->size() == 1);
   const float scale = Tensor::scale(output);
   const int32_t zero_point = Tensor::zero_point(output);
   calculateActivationRangeQuantized(activation, zero_point, scale, Tensor::element_type(output),

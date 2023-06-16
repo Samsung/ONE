@@ -194,7 +194,7 @@ BroadcastMul4DSlow(const ArithmeticParams &params,
     return MulScalar(params, flat_size, input1_data, input2_data[0], output_data, status);
   }
 
-  assert(status == luci_interpreter::OperationGraphStatus::USUAL);
+  // assert(status == luci_interpreter::OperationGraphStatus::USUAL);
 
   NdArrayDesc<4> desc1;
   NdArrayDesc<4> desc2;
@@ -204,6 +204,20 @@ BroadcastMul4DSlow(const ArithmeticParams &params,
 
   T activation_min, activation_max;
   getActivationParams(params, &activation_min, &activation_max);
+
+  const int16_t *input1_data_int16 = reinterpret_cast<const int16_t *>(input1_data);
+  const int16_t *input2_data_int16 = reinterpret_cast<const int16_t *>(input2_data);
+
+  int16_t *output_data_int16 = reinterpret_cast<int16_t *>(output_data);
+
+  // Calculate scales
+  const float max_int16_value = 32767.0f;
+  // Input scale
+  const float input1_min_max_range = params.input1_min_max_range;
+  const float input1_scale = input1_min_max_range / max_int16_value;
+  // Output scale
+  const float output_min_max_range = params.output_min_max_range;
+  const float output_scale = output_min_max_range / max_int16_value;
 
   // In Tensorflow, the dimensions are canonically named (batch_number, row,
   // col, channel), with extents (batches, height, width, depth), with the
@@ -229,11 +243,36 @@ BroadcastMul4DSlow(const ArithmeticParams &params,
               extended_output_shape.dims(3) +
             c;
 
-          output_data[output_data_offset] =
-            std::min(std::max(input1_data[subscriptToIndex(desc1, b, y, x, c)] *
-                                input2_data[subscriptToIndex(desc2, b, y, x, c)],
-                              activation_min),
-                     activation_max);
+          T input1_value;
+          T output_value;
+          if (status == luci_interpreter::OperationGraphStatus::MIDDLE or
+              status == luci_interpreter::OperationGraphStatus::END)
+          {
+            input1_value =
+              static_cast<T>(input1_data_int16[subscriptToIndex(desc1, b, y, x, c)]) * input1_scale;
+          }
+          else
+          {
+            input1_value = input1_data[subscriptToIndex(desc1, b, y, x, c)];
+          }
+
+          if (status == luci_interpreter::OperationGraphStatus::START or
+              status == luci_interpreter::OperationGraphStatus::MIDDLE)
+          {
+            const auto total =
+              std::min(std::max(input1_value * input2_data[subscriptToIndex(desc2, b, y, x, c)],
+                                activation_min),
+                       activation_max);
+            const int16_t result = static_cast<int16_t>(std::round(total / output_scale));
+            output_data_int16[output_data_offset] = result;
+          }
+          else
+          {
+            output_data[output_data_offset] =
+              std::min(std::max(input1_value * input2_data[subscriptToIndex(desc2, b, y, x, c)],
+                                activation_min),
+                       activation_max);
+          }
         }
       }
     }

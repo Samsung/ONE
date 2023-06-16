@@ -100,6 +100,12 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *filter,
   int32_t output_shape[kMaxSmallSize];
   kernels::getTensorDims(output, runtime_graph, output_shape);
 
+  if (Tensor::element_type(filter) == DataType::S8)
+  {
+    params.is_weight_quant = true;
+    params.scales = Tensor::scales(filter);
+  }
+
   luci_interpreter_pal::Conv(params, input_shape, kernels::getTensorData<float>(input_data),
                              filter_shape, kernels::getTensorData<float>(filter_data),
                              kernels::getTensorData<float>(bias_data), output_shape,
@@ -209,12 +215,15 @@ void configure_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGr
   {
     LUCI_INTERPRETER_CHECK(bias == nullptr || Tensor::element_type(bias) == DataType::S32);
     LUCI_INTERPRETER_CHECK(Tensor::num_dims(filter) == 4);
-    LUCI_INTERPRETER_CHECK(Tensor::scales(filter).size() ==
+    LUCI_INTERPRETER_CHECK(Tensor::scales(filter)->size() ==
                            static_cast<size_t>(Tensor::dim(filter, 0)));
+// TODO: return to this
+#if 0
     for (auto zerop : Tensor::zero_points(filter))
     {
       LUCI_INTERPRETER_CHECK(zerop == 0);
     }
+#endif
   }
   else if (Tensor::element_type(input) == DataType::S16 &&
            Tensor::element_type(filter) == DataType::S16)
@@ -222,6 +231,11 @@ void configure_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGr
     LUCI_INTERPRETER_CHECK(bias == nullptr || Tensor::element_type(bias) == DataType::S64);
   }
 #endif // DIS_QUANT
+  else if (Tensor::element_type(input) == DataType::FLOAT32 and
+           Tensor::element_type(filter) == DataType::S8)
+  {
+    // TODO: add constraints
+  }
   else
   {
     assert(false && "Unsupported type.");
@@ -273,17 +287,17 @@ void execute_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGrap
   {
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      if (Tensor::element_type(weights) == DataType::FLOAT32)
-      {
-        OperationGraphStatus status = runtime_graph->getOperatorStatus(cur_op);
+    {
 
-        evalFloat(input, weights, bias, output, options, runtime_graph, status);
-        break;
-      }
+      OperationGraphStatus status = runtime_graph->getOperatorStatus(cur_op);
+
+      evalFloat(input, weights, bias, output, options, runtime_graph, status);
+      break;
+    }
 #endif // DIS_FLOAT
 #ifndef DIS_QUANT
     case DataType::U8:
-      if (Tensor::scales(weights).size() == 1)
+      if (Tensor::scales(weights)->size() == 1)
       {
         evalQuantized(input, weights, bias, output, options, runtime_graph);
       }

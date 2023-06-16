@@ -39,6 +39,8 @@ struct FullyConnectedParams
   bool rhs_cacheable;
   float input_min_max_range;
   float output_min_max_range;
+  bool is_weight_quant = false;
+  float weight_scale;
 };
 
 enum class PaddingType : uint8_t
@@ -82,6 +84,8 @@ struct ConvParams
   float float_activation_max;
   float input_min_max_range;
   float output_min_max_range;
+  const flatbuffers::Vector<float> *scales = nullptr;
+  bool is_weight_quant = false;
 };
 
 enum class BroadcastableOpCategory : uint8_t

@@ -94,7 +94,7 @@ int entry(int argc, char **argv)
   }
 
   // Create interpreter.
-  luci_interpreter::Interpreter interpreter(model_data.data(), true);
+  luci_interpreter::Interpreter interpreter(model_data.data(), true, false);
 
   // Set input.
   // Data for n'th input is read from ${input_prefix}n

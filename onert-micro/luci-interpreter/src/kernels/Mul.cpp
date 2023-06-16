@@ -36,8 +36,8 @@ void configure_kernel_CircleMul(const circle::Operator *cur_op, BaseRuntimeGraph
 #ifndef DIS_QUANT
   if (Tensor::element_type(kernel.input1()) == DataType::S16)
   {
-    LUCI_INTERPRETER_CHECK(Tensor::zero_points(kernel.input1()).size() == 1 &&
-                           Tensor::zero_points(kernel.input2()).size() == 1);
+    LUCI_INTERPRETER_CHECK(Tensor::zero_points(kernel.input1())->size() == 1 &&
+                           Tensor::zero_points(kernel.input2())->size() == 1);
     LUCI_INTERPRETER_CHECK(Tensor::zero_point(kernel.input1()) == 0 &&
                            Tensor::zero_point(kernel.input2()) == 0 &&
                            Tensor::zero_point(kernel.output()) == 0);

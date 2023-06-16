@@ -77,8 +77,8 @@ void evalTISOKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func,
     if (params.broadcast_category ==
         luci_interpreter_pal::BroadcastableOpCategory::kScalarSecondBroadcast)
     {
-      const auto input1_min_max_range =
-        Tensor::max_value(kernel->input1()) - Tensor::min_value(kernel->input1());
+      const auto input1_min_max_range = kernel->input1()->quantization() == nullptr ? 0.f :
+                                        Tensor::max_value(kernel->input1()) - Tensor::min_value(kernel->input1());
 
       params.input1_min_max_range = input1_min_max_range;
       params.input2_min_max_range = input1_min_max_range;
@@ -87,8 +87,8 @@ void evalTISOKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func,
     else if (params.broadcast_category ==
              luci_interpreter_pal::BroadcastableOpCategory::kScalarFirstBroadcast)
     {
-      const auto input2_min_max_range =
-        Tensor::max_value(kernel->input2()) - Tensor::min_value(kernel->input2());
+      const auto input2_min_max_range = kernel->input2()->quantization() == nullptr ? 0.f :
+                                        Tensor::max_value(kernel->input2()) - Tensor::min_value(kernel->input2());
 
       params.input1_min_max_range = input2_min_max_range;
       params.input2_min_max_range = input2_min_max_range;
@@ -96,9 +96,9 @@ void evalTISOKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func,
     }
     else
     {
-      const auto input1_min_max_range =
+      const auto input1_min_max_range = kernel->input1()->quantization() == nullptr ? 0.f :
         Tensor::max_value(kernel->input1()) - Tensor::min_value(kernel->input1());
-      const auto input2_min_max_range =
+      const auto input2_min_max_range = kernel->input2()->quantization() == nullptr ? 0.f :
         Tensor::max_value(kernel->input2()) - Tensor::min_value(kernel->input2());
 
       params.input1_min_max_range = input1_min_max_range;

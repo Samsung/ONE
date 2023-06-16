@@ -62,6 +62,12 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
   int32_t output_shape[kMaxSmallSize];
   kernels::getTensorDims(output, runtime_graph, output_shape);
 
+  if (Tensor::element_type(weights) == DataType::S8)
+  {
+    params.weight_scale = Tensor::scale(weights);
+    params.is_weight_quant = true;
+  }
+
   luci_interpreter_pal::FullyConnected(
     params, input_shape, kernels::getTensorData<float>(input_data), weight_shape,
     kernels::getTensorData<float>(weights_data), kernels::getTensorData<float>(bias_data),
@@ -150,7 +156,7 @@ void configure_kernel_CircleFullyConnected(const circle::Operator *cur_op,
   assert(output != nullptr);
 
 #ifndef DIS_FLOAT
-  if (Tensor::element_type(weights) == DataType::FLOAT32)
+  if (Tensor::element_type(weights) == DataType::FLOAT32 or (Tensor::element_type(weights) == DataType::S8 and Tensor::element_type(input) == DataType::FLOAT32))
   {
     LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == DataType::FLOAT32);
     LUCI_INTERPRETER_CHECK(Tensor::element_type(output) == DataType::FLOAT32);
@@ -166,9 +172,9 @@ void configure_kernel_CircleFullyConnected(const circle::Operator *cur_op,
   }
   else if (Tensor::element_type(weights) == DataType::S8)
   {
-    LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == DataType::S8);
-    LUCI_INTERPRETER_CHECK(Tensor::element_type(output) == DataType::S8);
-    LUCI_INTERPRETER_CHECK(!bias || Tensor::element_type(bias) == DataType::S32)
+//    LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == DataType::S8);
+//    LUCI_INTERPRETER_CHECK(Tensor::element_type(output) == DataType::S8);
+//    LUCI_INTERPRETER_CHECK(!bias || Tensor::element_type(bias) == DataType::S32)
   }
 #endif // DIS_QUANT
   else

@@ -154,7 +154,22 @@ public:
     }
     return *quant_params->min()->cbegin();
   }
-#ifndef DIS_QUANT
+  static const flatbuffers::Vector<float> *scales(const circle::Tensor *circle_tensor)
+  {
+    const auto *quant_params = circle_tensor->quantization();
+    if (quant_params == nullptr)
+    {
+      assert(false && "There is no quantization params");
+      // return;
+      return nullptr;
+    }
+    assert(quant_params->scale() != nullptr);
+    auto scales = quant_params->scale();
+    // std::vector<float> scales(quant_params->scale()->cbegin(), quant_params->scale()->cend());
+
+    return scales;
+  }
+
   static float scale(const circle::Tensor *circle_tensor)
   {
     const auto *quant_params = circle_tensor->quantization();
@@ -166,6 +181,8 @@ public:
 
     return *quant_params->scale()->cbegin();
   }
+
+#ifndef DIS_QUANT
 
   static int32_t zero_point(const circle::Tensor *circle_tensor)
   {
@@ -179,21 +196,7 @@ public:
     return *quant_params->zero_point()->cbegin();
   }
 
-  static const std::vector<float> scales(const circle::Tensor *circle_tensor)
-  {
-    const auto *quant_params = circle_tensor->quantization();
-    if (quant_params == nullptr)
-    {
-      assert(false && "There is no quantization params");
-      return {};
-    }
-    assert(quant_params->scale() != nullptr);
-    std::vector<float> scales(quant_params->scale()->cbegin(), quant_params->scale()->cend());
-
-    return scales;
-  }
-
-  static const std::vector<int32_t> zero_points(const circle::Tensor *circle_tensor)
+  static const flatbuffers::Vector<int64_t> *zero_points(const circle::Tensor *circle_tensor)
   {
     const auto *quant_params = circle_tensor->quantization();
     if (quant_params == nullptr)
@@ -202,10 +205,8 @@ public:
       return {};
     }
     assert(quant_params->zero_point() != nullptr);
-    std::vector<int32_t> zero_points(quant_params->zero_point()->cbegin(),
-                                     quant_params->zero_point()->cend());
 
-    return zero_points;
+    return quant_params->zero_point();
   }
 
   static int32_t quantized_dimension(const circle::Tensor *circle_tensor)
