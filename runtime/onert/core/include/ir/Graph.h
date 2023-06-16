@@ -20,6 +20,7 @@
 #include <functional>
 #include <unordered_map>
 
+#include "ir/IGraph.h"
 #include "ir/Model.h"
 #include "ir/Operands.h"
 #include "ir/Operations.h"
@@ -40,7 +41,7 @@ namespace onert
 namespace ir
 {
 
-class Graph
+class Graph : public IGraph
 {
 private:
   enum class Phase
@@ -84,6 +85,7 @@ public:
    */
   OperationIndex addOperation(OperationIndex index, std::unique_ptr<Operation> &&operation);
   void setOperandValue(const OperandIndex &ind, std::shared_ptr<Data> data);
+  void changeShape(const OperandIndex &ind, const ir::Shape &new_shape) override;
   void addInput(const OperandIndex &ind, const std::string &name = "");
   void addOutput(const OperandIndex &ind, const std::string &name = "");
   void verify(void);
@@ -116,15 +118,15 @@ private:
 
   // Accessors
 public:
-  const OperandIndexSequence &getInputs() const { return _inputs; }
+  const OperandIndexSequence &getInputs() const override { return _inputs; }
   OperandIndexSequence &getInputs() { return _inputs; }
-  const OperandIndexSequence &getOutputs() const { return _outputs; }
+  const OperandIndexSequence &getOutputs() const override { return _outputs; }
   OperandIndexSequence &getOutputs() { return _outputs; }
-  IOIndex getInputIndex(const std::string &name) const;
-  IOIndex getOutputIndex(const std::string &name) const;
-  const Operands &operands() const { return _operands; }
+  IOIndex getInputIndex(const std::string &name) const override;
+  IOIndex getOutputIndex(const std::string &name) const override;
+  const Operands &operands() const override { return _operands; }
   Operands &operands() { return _operands; } // TODO Remove this non-const accessor
-  const Operations &operations() const { return _operations; }
+  const Operations &operations() const override { return _operations; }
   Operations &operations() { return _operations; }
   Layout layout() const { return _layout; }
 
