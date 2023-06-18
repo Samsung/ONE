@@ -1,0 +1,5 @@
+<map id="onert::ir::train::TrainableOperations" name="onert::ir::train::TrainableOperations">
+<area shape="rect" id="node1" title=" " alt="" coords="53,212,208,252"/>
+<area shape="rect" id="node2" href="$classonert_1_1util_1_1_object_manager.html" title=" " alt="" coords="5,123,256,163"/>
+<area shape="rect" id="node3" href="$classonert_1_1util_1_1_object_manager.html" title="Class that owns objects and maps them with indices as a handle for them." alt="" coords="47,5,215,45"/>
+</map>

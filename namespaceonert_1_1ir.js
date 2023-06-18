@@ -1,6 +1,7 @@
 var namespaceonert_1_1ir =
 [
     [ "operation", "namespaceonert_1_1ir_1_1operation.html", "namespaceonert_1_1ir_1_1operation" ],
+    [ "train", "namespaceonert_1_1ir_1_1train.html", "namespaceonert_1_1ir_1_1train" ],
     [ "verifier", "namespaceonert_1_1ir_1_1verifier.html", "namespaceonert_1_1ir_1_1verifier" ],
     [ "CachedData", "classonert_1_1ir_1_1_cached_data.html", "classonert_1_1ir_1_1_cached_data" ],
     [ "Coordinates", "classonert_1_1ir_1_1_coordinates.html", "classonert_1_1ir_1_1_coordinates" ],
@@ -10,6 +11,7 @@ var namespaceonert_1_1ir =
     [ "ExternalData", "classonert_1_1ir_1_1_external_data.html", "classonert_1_1ir_1_1_external_data" ],
     [ "FeatureShape", "structonert_1_1ir_1_1_feature_shape.html", "structonert_1_1ir_1_1_feature_shape" ],
     [ "Graph", "classonert_1_1ir_1_1_graph.html", "classonert_1_1ir_1_1_graph" ],
+    [ "IOperation", "structonert_1_1ir_1_1_i_operation.html", "structonert_1_1ir_1_1_i_operation" ],
     [ "LayoutSet", "classonert_1_1ir_1_1_layout_set.html", "classonert_1_1ir_1_1_layout_set" ],
     [ "MMapedData", "classonert_1_1ir_1_1_m_maped_data.html", "classonert_1_1ir_1_1_m_maped_data" ],
     [ "Model", "classonert_1_1ir_1_1_model.html", "classonert_1_1ir_1_1_model" ],

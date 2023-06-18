@@ -1,8 +1,5 @@
 var NAVTREEINDEX27 =
 {
-"_t_flite_import_8h.html#aad0184a8d6290c8f67c9165fffa73db8":[35,0,0,111,2,1,7,1],
-"_t_flite_import_8h.html#ae1f274565cdee932ac10f3865fa087ac":[35,0,0,111,2,1,7,4],
-"_t_flite_import_8h.html#af3a023b34bab7f1cc0efaa325df4347d":[35,0,0,111,2,1,7,3],
 "_t_flite_import_8h_source.html":[35,0,0,111,2,1,7],
 "_t_flite_op_chef_8h.html":[35,0,0,111,2,1,8],
 "_t_flite_op_chef_8h_source.html":[35,0,0,111,2,1,8],
@@ -215,6 +212,13 @@ var NAVTREEINDEX27 =
 "_tracing_ctx_8cc_source.html":[35,0,4,2,2,1,5,12],
 "_tracing_ctx_8h.html":[35,0,4,2,2,0,4,10],
 "_tracing_ctx_8h_source.html":[35,0,4,2,2,0,4,10],
+"_trainable_operation_visitor_8h.html":[35,0,4,2,2,0,3,1,2],
+"_trainable_operation_visitor_8h.html#a483f3fdd345d5f6e4a4062a15104a44a":[35,0,4,2,2,0,3,1,2,1],
+"_trainable_operation_visitor_8h_source.html":[35,0,4,2,2,0,3,1,2],
+"_trainable_operations_8h.html":[35,0,4,2,2,0,3,1,1],
+"_trainable_operations_8h_source.html":[35,0,4,2,2,0,3,1,1],
+"_training_info_8h.html":[35,0,4,2,2,0,1,0,0],
+"_training_info_8h_source.html":[35,0,4,2,2,0,1,0,0],
 "_transform_8cpp.html":[35,0,0,67,1,29],
 "_transform_8cpp.html#a7c22a2c41fa731f528d37349047f8c77":[35,0,0,67,1,29,0],
 "_transform_8cpp_source.html":[35,0,0,67,1,29],
@@ -245,9 +249,5 @@ var NAVTREEINDEX27 =
 "_transpose_conv_options_8h_source.html":[35,0,0,113,2,0,167],
 "_transpose_kernel_8h.html":[35,0,3,3,0,0,1,21,0],
 "_transpose_kernel_8h.html#a302f9eba8f3be035c8795d48d648af7f":[35,0,3,3,0,0,1,21,0,2],
-"_transpose_kernel_8h.html#a5f02ffe26e3a061f7387a585c379975f":[35,0,3,3,0,0,1,21,0,3],
-"_transpose_kernel_8h.html#ac5deb49b40e69dc47f7b73487fb6ef23":[35,0,3,3,0,0,1,21,0,1],
-"_transpose_kernel_8h_source.html":[35,0,3,3,0,0,1,21,0],
-"_transpose_layer_8cc.html":[35,0,4,2,1,4,0,102],
-"_transpose_layer_8cc_source.html":[35,0,4,2,1,4,0,102]
+"_transpose_kernel_8h.html#a5f02ffe26e3a061f7387a585c379975f":[35,0,3,3,0,0,1,21,0,3]
 };

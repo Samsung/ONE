@@ -104,7 +104,7 @@ var searchData=
   ['pool2dprinter_101',['Pool2DPrinter',['../classcircledump_1_1_pool2_d_printer.html',1,'circledump::Pool2DPrinter'],['../classtfldump_1_1_pool2_d_printer.html',1,'tfldump::Pool2DPrinter']]],
   ['poolingbuilder_102',['PoolingBuilder',['../classcaffeimport_1_1_pooling_builder.html',1,'caffeimport']]],
   ['poolingspec_103',['PoolingSpec',['../class_pooling_spec.html',1,'']]],
-  ['poollayer_104',['PoolLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html',1,'onert::backend::cpu::ops']]],
+  ['poollayer_104',['PoolLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html',1,'onert::backend::cpu::ops::PoolLayer'],['../classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html',1,'onert::backend::train::ops::PoolLayer']]],
   ['poolparams_105',['PoolParams',['../structluci__interpreter__pal_1_1_pool_params.html',1,'luci_interpreter_pal::PoolParams'],['../structnnfw_1_1cker_1_1_pool_params.html',1,'nnfw::cker::PoolParams']]],
   ['portabletensorregistrytemplate_106',['PortableTensorRegistryTemplate',['../classonert_1_1backend_1_1_portable_tensor_registry_template.html',1,'onert::backend']]],
   ['postoperatorhook_107',['PostOperatorHook',['../classdalgona_1_1_post_operator_hook.html',1,'dalgona']]],

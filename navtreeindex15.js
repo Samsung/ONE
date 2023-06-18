@@ -1,5 +1,9 @@
 var NAVTREEINDEX15 =
 {
+"_mean_canonicalizer_8h.html":[35,0,0,67,1,0,23],
+"_mean_canonicalizer_8h_source.html":[35,0,0,67,1,0,23],
+"_mean_layer_8cc.html":[35,0,4,2,1,4,0,50],
+"_mean_layer_8cc_source.html":[35,0,4,2,1,4,0,50],
 "_mean_layer_8h.html":[35,0,4,2,1,4,0,51],
 "_mean_layer_8h_source.html":[35,0,4,2,1,4,0,51],
 "_memory_8cpp.html":[35,0,0,3,0,11],
@@ -245,9 +249,5 @@ var NAVTREEINDEX15 =
 "_n_e_fully_connected_layer_ex_8cpp.html":[35,0,1,0,1,1,1,0,4],
 "_n_e_fully_connected_layer_ex_8cpp_source.html":[35,0,1,0,1,1,1,0,4],
 "_n_e_fully_connected_layer_ex_8h.html":[35,0,1,0,0,1,1,0,4],
-"_n_e_fully_connected_layer_ex_8h_source.html":[35,0,1,0,0,1,1,0,4],
-"_n_e_fully_connected_reshaping_layer_8cpp.html":[35,0,1,0,1,1,1,0,5],
-"_n_e_fully_connected_reshaping_layer_8cpp_source.html":[35,0,1,0,1,1,1,0,5],
-"_n_e_fully_connected_reshaping_layer_8h.html":[35,0,1,0,0,1,1,0,5],
-"_n_e_fully_connected_reshaping_layer_8h_source.html":[35,0,1,0,0,1,1,0,5]
+"_n_e_fully_connected_layer_ex_8h_source.html":[35,0,1,0,0,1,1,0,4]
 };

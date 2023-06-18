@@ -2690,7 +2690,8 @@ var annotated_dup =
         ] ],
         [ "train", "namespaceonert_1_1backend_1_1train.html", [
           [ "ops", "namespaceonert_1_1backend_1_1train_1_1ops.html", [
-            [ "ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer" ]
+            [ "ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer" ],
+            [ "PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer" ]
           ] ],
           [ "Backend", "classonert_1_1backend_1_1train_1_1_backend.html", "classonert_1_1backend_1_1train_1_1_backend" ],
           [ "BackendContext", "classonert_1_1backend_1_1train_1_1_backend_context.html", "classonert_1_1backend_1_1train_1_1_backend_context" ],
@@ -2750,6 +2751,10 @@ var annotated_dup =
           [ "PermutationOperationPass", "classonert_1_1compiler_1_1pass_1_1_permutation_operation_pass.html", "classonert_1_1compiler_1_1pass_1_1_permutation_operation_pass" ],
           [ "UnusedOperandEliminationPass", "classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass.html", "classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass" ]
         ] ],
+        [ "train", "namespaceonert_1_1compiler_1_1train.html", [
+          [ "LossInfo", "structonert_1_1compiler_1_1train_1_1_loss_info.html", null ],
+          [ "TrainingInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html", "classonert_1_1compiler_1_1train_1_1_training_info" ]
+        ] ],
         [ "BackendManager", "classonert_1_1compiler_1_1_backend_manager.html", "classonert_1_1compiler_1_1_backend_manager" ],
         [ "BackendResolver", "classonert_1_1compiler_1_1_backend_resolver.html", "classonert_1_1compiler_1_1_backend_resolver" ],
         [ "CodeAndInfo", "structonert_1_1compiler_1_1_code_and_info.html", "structonert_1_1compiler_1_1_code_and_info" ],
@@ -2762,6 +2767,7 @@ var annotated_dup =
         [ "GraphLowerInfo", "structonert_1_1compiler_1_1_graph_lower_info.html", "structonert_1_1compiler_1_1_graph_lower_info" ],
         [ "HEScheduler", "classonert_1_1compiler_1_1_h_e_scheduler.html", "classonert_1_1compiler_1_1_h_e_scheduler" ],
         [ "ICompiler", "classonert_1_1compiler_1_1_i_compiler.html", "classonert_1_1compiler_1_1_i_compiler" ],
+        [ "ILoweredGraph", "structonert_1_1compiler_1_1_i_lowered_graph.html", "structonert_1_1compiler_1_1_i_lowered_graph" ],
         [ "IScheduler", "structonert_1_1compiler_1_1_i_scheduler.html", "structonert_1_1compiler_1_1_i_scheduler" ],
         [ "Linear", "classonert_1_1compiler_1_1_linear.html", null ],
         [ "LoweredGraph", "classonert_1_1compiler_1_1_lowered_graph.html", "classonert_1_1compiler_1_1_lowered_graph" ],
@@ -2906,6 +2912,11 @@ var annotated_dup =
           [ "Unpack", "classonert_1_1ir_1_1operation_1_1_unpack.html", "classonert_1_1ir_1_1operation_1_1_unpack" ],
           [ "While", "classonert_1_1ir_1_1operation_1_1_while.html", "classonert_1_1ir_1_1operation_1_1_while" ]
         ] ],
+        [ "train", "namespaceonert_1_1ir_1_1train.html", [
+          [ "ITrainableOperation", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html", "classonert_1_1ir_1_1train_1_1_i_trainable_operation" ],
+          [ "TrainableOperations", "classonert_1_1ir_1_1train_1_1_trainable_operations.html", "classonert_1_1ir_1_1train_1_1_trainable_operations" ],
+          [ "TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor" ]
+        ] ],
         [ "verifier", "namespaceonert_1_1ir_1_1verifier.html", [
           [ "DAGChecker", "classonert_1_1ir_1_1verifier_1_1_d_a_g_checker.html", "classonert_1_1ir_1_1verifier_1_1_d_a_g_checker" ],
           [ "EdgeChecker", "classonert_1_1ir_1_1verifier_1_1_edge_checker.html", "classonert_1_1ir_1_1verifier_1_1_edge_checker" ],
@@ -2920,6 +2931,7 @@ var annotated_dup =
         [ "ExternalData", "classonert_1_1ir_1_1_external_data.html", "classonert_1_1ir_1_1_external_data" ],
         [ "FeatureShape", "structonert_1_1ir_1_1_feature_shape.html", "structonert_1_1ir_1_1_feature_shape" ],
         [ "Graph", "classonert_1_1ir_1_1_graph.html", "classonert_1_1ir_1_1_graph" ],
+        [ "IOperation", "structonert_1_1ir_1_1_i_operation.html", "structonert_1_1ir_1_1_i_operation" ],
         [ "LayoutSet", "classonert_1_1ir_1_1_layout_set.html", "classonert_1_1ir_1_1_layout_set" ],
         [ "MMapedData", "classonert_1_1ir_1_1_m_maped_data.html", "classonert_1_1ir_1_1_m_maped_data" ],
         [ "Model", "classonert_1_1ir_1_1_model.html", "classonert_1_1ir_1_1_model" ],

@@ -1,4 +1,5 @@
 <map id="onert::ir::operation::Pad" name="onert::ir::operation::Pad">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,157,104"/>
-<area shape="rect" id="node2" href="$classonert_1_1ir_1_1_operation.html" title=" " alt="" coords="18,5,145,31"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,152,157,177"/>
+<area shape="rect" id="node2" href="$classonert_1_1ir_1_1_operation.html" title=" " alt="" coords="18,79,145,104"/>
+<area shape="rect" id="node3" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="16,5,147,31"/>
 </map>

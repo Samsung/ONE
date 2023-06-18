@@ -1,8 +1,5 @@
 var NAVTREEINDEX25 =
 {
-"_split_v_kernel_8h.html#a9384eec9effab6466fae580e35b1dcac":[35,0,3,3,0,0,1,17,0,5],
-"_split_v_kernel_8h.html#ab3dd3bc738a4744d1f164877e80333b7":[35,0,3,3,0,0,1,17,0,2],
-"_split_v_kernel_8h_source.html":[35,0,3,3,0,0,1,17,0],
 "_split_v_layer_8cc.html":[35,0,4,2,1,4,0,92],
 "_split_v_layer_8cc_source.html":[35,0,4,2,1,4,0,92],
 "_split_v_layer_8h.html":[35,0,4,2,1,4,0,93],
@@ -70,8 +67,8 @@ var NAVTREEINDEX25 =
 "_stateless_random_uniform_layer_8h_source.html":[35,0,4,2,1,4,0,97],
 "_static_shape_inferer_8cc.html":[35,0,4,2,2,1,1,24],
 "_static_shape_inferer_8cc_source.html":[35,0,4,2,2,1,1,24],
-"_static_shape_inferer_8h.html":[35,0,4,2,2,0,1,13],
-"_static_shape_inferer_8h_source.html":[35,0,4,2,2,0,1,13],
+"_static_shape_inferer_8h.html":[35,0,4,2,2,0,1,15],
+"_static_shape_inferer_8h_source.html":[35,0,4,2,2,0,1,15],
 "_static_tensor_manager_8cc.html":[35,0,4,2,2,1,0,0,8],
 "_static_tensor_manager_8cc_source.html":[35,0,4,2,2,1,0,0,8],
 "_status_8h.html":[35,0,0,77,1,0,0,0,0,3],
@@ -249,5 +246,8 @@ var NAVTREEINDEX25 =
 "_t_f_depthwise_conv2d_native_8h.html":[35,0,0,65,1,0,0,0,0,7],
 "_t_f_depthwise_conv2d_native_8h_source.html":[35,0,0,65,1,0,0,0,0,7],
 "_t_f_dialect_8cpp.html":[35,0,0,65,1,1,0,1],
-"_t_f_dialect_8cpp_source.html":[35,0,0,65,1,1,0,1]
+"_t_f_dialect_8cpp_source.html":[35,0,0,65,1,1,0,1],
+"_t_f_dialect_8h.html":[35,0,0,65,1,0,0,0,2],
+"_t_f_dialect_8h_source.html":[35,0,0,65,1,0,0,0,2],
+"_t_f_eltwise_binary_canonicalze_helper_8h.html":[35,0,0,67,1,23]
 };

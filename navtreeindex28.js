@@ -1,5 +1,9 @@
 var NAVTREEINDEX28 =
 {
+"_transpose_kernel_8h.html#ac5deb49b40e69dc47f7b73487fb6ef23":[35,0,3,3,0,0,1,21,0,1],
+"_transpose_kernel_8h_source.html":[35,0,3,3,0,0,1,21,0],
+"_transpose_layer_8cc.html":[35,0,4,2,1,4,0,102],
+"_transpose_layer_8cc_source.html":[35,0,4,2,1,4,0,102],
 "_transpose_layer_8h.html":[35,0,4,2,1,4,0,103],
 "_transpose_layer_8h_source.html":[35,0,4,2,1,4,0,103],
 "_transpose_op_8cpp.html":[35,0,0,62,1,4,14],
@@ -35,10 +39,10 @@ var NAVTREEINDEX28 =
 "_type_info_8cc.html#a556d7c5424d2bdf6bca6271e9bd94c6c":[35,0,4,2,2,1,4,23,1],
 "_type_info_8cc.html#aa5485df735327845e5c2ce2a71b447a1":[35,0,4,2,2,1,4,23,0],
 "_type_info_8cc_source.html":[35,0,4,2,2,1,4,23],
-"_type_info_8h.html":[35,0,4,2,2,0,3,26],
-"_type_info_8h.html#a556d7c5424d2bdf6bca6271e9bd94c6c":[35,0,4,2,2,0,3,26,3],
-"_type_info_8h.html#aa5485df735327845e5c2ce2a71b447a1":[35,0,4,2,2,0,3,26,2],
-"_type_info_8h_source.html":[35,0,4,2,2,0,3,26],
+"_type_info_8h.html":[35,0,4,2,2,0,3,27],
+"_type_info_8h.html#a556d7c5424d2bdf6bca6271e9bd94c6c":[35,0,4,2,2,0,3,27,3],
+"_type_info_8h.html#aa5485df735327845e5c2ce2a71b447a1":[35,0,4,2,2,0,3,27,2],
+"_type_info_8h_source.html":[35,0,4,2,2,0,3,27],
 "_type_mapper_8cpp.html":[35,0,0,51,7,1,0,10],
 "_type_mapper_8cpp_source.html":[35,0,0,51,7,1,0,10],
 "_type_mapper_8h.html":[35,0,0,51,7,1,0,11],
@@ -245,9 +249,5 @@ var NAVTREEINDEX28 =
 "_verify_quantized_node_granularity_8cpp_source.html":[35,0,0,51,7,1,96],
 "_verify_quantized_node_granularity_8h.html":[35,0,0,51,7,1,97],
 "_verify_quantized_node_granularity_8h.html#a21d1b8802dcf1c397c10cfe8aa2d433d":[35,0,0,51,7,1,97,4],
-"_verify_quantized_node_granularity_8h.html#aa04d5e646f4e595a5ba6f44fec9ed430":[35,0,0,51,7,1,97,3],
-"_verify_quantized_node_granularity_8h_source.html":[35,0,0,51,7,1,97],
-"_verify_quantized_node_type_8cpp.html":[35,0,0,51,7,1,98],
-"_verify_quantized_node_type_8cpp.html#aa04d5e646f4e595a5ba6f44fec9ed430":[35,0,0,51,7,1,98,0],
-"_verify_quantized_node_type_8cpp_source.html":[35,0,0,51,7,1,98]
+"_verify_quantized_node_granularity_8h.html#aa04d5e646f4e595a5ba6f44fec9ed430":[35,0,0,51,7,1,97,3]
 };

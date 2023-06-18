@@ -1,5 +1,9 @@
 var NAVTREEINDEX29 =
 {
+"_verify_quantized_node_granularity_8h_source.html":[35,0,0,51,7,1,97],
+"_verify_quantized_node_type_8cpp.html":[35,0,0,51,7,1,98],
+"_verify_quantized_node_type_8cpp.html#aa04d5e646f4e595a5ba6f44fec9ed430":[35,0,0,51,7,1,98,0],
+"_verify_quantized_node_type_8cpp_source.html":[35,0,0,51,7,1,98],
 "_verify_quantized_node_type_8h.html":[35,0,0,51,7,1,99],
 "_verify_quantized_node_type_8h_source.html":[35,0,0,51,7,1,99],
 "_view_impl_8h.html":[35,0,0,1,0,1,0,0,1,10],
@@ -245,9 +249,5 @@ var NAVTREEINDEX29 =
 "backend_2acl__cl_2_tensor_builder_8h.html#a7beede1503142a1d26461b5c921c4f93":[35,0,4,2,1,0,13,0],
 "backend_2acl__cl_2_tensor_builder_8h_source.html":[35,0,4,2,1,0,13],
 "backend_2acl__neon_2_backend_context_8h.html":[35,0,4,2,1,2,3],
-"backend_2acl__neon_2_backend_context_8h.html#a309a2ebd9f348b47fc2dbf7de6ed4a5a":[35,0,4,2,1,2,3,0],
-"backend_2acl__neon_2_backend_context_8h_source.html":[35,0,4,2,1,2,3],
-"backend_2acl__neon_2_config_8cc.html":[35,0,4,2,1,2,4],
-"backend_2acl__neon_2_config_8cc_source.html":[35,0,4,2,1,2,4],
-"backend_2acl__neon_2_constant_initializer_8h.html":[35,0,4,2,1,2,7]
+"backend_2acl__neon_2_backend_context_8h.html#a309a2ebd9f348b47fc2dbf7de6ed4a5a":[35,0,4,2,1,2,3,0]
 };

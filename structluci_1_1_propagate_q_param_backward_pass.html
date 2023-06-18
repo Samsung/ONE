@@ -222,30 +222,30 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classlogo_1_1_pass.html#a3076e513d3bf84dafeb158a028725374">logo::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_propagate_q_param_backward_pass_8cpp_source.html#l00458">458</a> of file <a class="el" href="_propagate_q_param_backward_pass_8cpp_source.html">PropagateQParamBackwardPass.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  459</span>{</div>
-<div class="line"><span class="lineno">  460</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><span class="lineno">  461</span> </div>
-<div class="line"><span class="lineno">  462</span>  <span class="comment">// We use reverse post-order traversal as qparam is propagated backward</span></div>
-<div class="line"><span class="lineno">  463</span>  <span class="keyword">auto</span> nodes = <a class="code hl_function" href="namespaceloco.html#a117fa82db86ebda898ee54200c42928d">loco::postorder_traversal</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g));</div>
-<div class="line"><span class="lineno">  464</span>  std::reverse(nodes.begin(), nodes.end());</div>
-<div class="line"><span class="lineno">  465</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : nodes)</div>
-<div class="line"><span class="lineno">  466</span>  {</div>
-<div class="line"><span class="lineno">  467</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  468</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;PropagateQParamBackwardPass visit node: &quot;</span> &lt;&lt; circle_node-&gt;name() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  469</span> </div>
-<div class="line"><span class="lineno">  470</span>    <span class="comment">// We can&#39;t propagate non-existent qparam</span></div>
-<div class="line"><span class="lineno">  471</span>    <span class="keywordflow">if</span> (circle_node-&gt;quantparam() == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  472</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  473</span> </div>
-<div class="line"><span class="lineno">  474</span>    PropagateQParamBackward pqb;</div>
-<div class="line"><span class="lineno">  475</span>    circle_node-&gt;accept(&amp;pqb);</div>
-<div class="line"><span class="lineno">  476</span>  }</div>
-<div class="line"><span class="lineno">  477</span> </div>
-<div class="line"><span class="lineno">  478</span>  <span class="comment">// This pass is only run once, so return false</span></div>
-<div class="line"><span class="lineno">  479</span>  <span class="comment">// TODO Refactoring not to return meaningless value</span></div>
-<div class="line"><span class="lineno">  480</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  481</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_propagate_q_param_backward_pass_8cpp_source.html#l00521">521</a> of file <a class="el" href="_propagate_q_param_backward_pass_8cpp_source.html">PropagateQParamBackwardPass.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  522</span>{</div>
+<div class="line"><span class="lineno">  523</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  524</span> </div>
+<div class="line"><span class="lineno">  525</span>  <span class="comment">// We use reverse post-order traversal as qparam is propagated backward</span></div>
+<div class="line"><span class="lineno">  526</span>  <span class="keyword">auto</span> nodes = <a class="code hl_function" href="namespaceloco.html#a117fa82db86ebda898ee54200c42928d">loco::postorder_traversal</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g));</div>
+<div class="line"><span class="lineno">  527</span>  std::reverse(nodes.begin(), nodes.end());</div>
+<div class="line"><span class="lineno">  528</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : nodes)</div>
+<div class="line"><span class="lineno">  529</span>  {</div>
+<div class="line"><span class="lineno">  530</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  531</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;PropagateQParamBackwardPass visit node: &quot;</span> &lt;&lt; circle_node-&gt;name() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  532</span> </div>
+<div class="line"><span class="lineno">  533</span>    <span class="comment">// We can&#39;t propagate non-existent qparam</span></div>
+<div class="line"><span class="lineno">  534</span>    <span class="keywordflow">if</span> (circle_node-&gt;quantparam() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  535</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  536</span> </div>
+<div class="line"><span class="lineno">  537</span>    PropagateQParamBackward pqb;</div>
+<div class="line"><span class="lineno">  538</span>    circle_node-&gt;accept(&amp;pqb);</div>
+<div class="line"><span class="lineno">  539</span>  }</div>
+<div class="line"><span class="lineno">  540</span> </div>
+<div class="line"><span class="lineno">  541</span>  <span class="comment">// This pass is only run once, so return false</span></div>
+<div class="line"><span class="lineno">  542</span>  <span class="comment">// TODO Refactoring not to return meaningless value</span></div>
+<div class="line"><span class="lineno">  543</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  544</span>}</div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition:</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition:</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00068">Log.h:68</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a117fa82db86ebda898ee54200c42928d"><div class="ttname"><a href="namespaceloco.html#a117fa82db86ebda898ee54200c42928d">loco::postorder_traversal</a></div><div class="ttdeci">std::vector&lt; loco::Node * &gt; postorder_traversal(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Generate postorder traversal sequence starting from &quot;roots&quot;.</div><div class="ttdef"><b>Definition:</b> <a href="_algorithm_8cpp_source.html#l00053">Algorithm.cpp:53</a></div></div>

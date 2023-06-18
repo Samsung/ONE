@@ -436,7 +436,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   37</span>  <a class="code hl_function" href="classnpud_1_1core_1_1_dev_manager.html#a60b5151619a0cb94877ea39d72bf2613">releaseModules</a>();</div>
 <div class="line"><span class="lineno">   38</span> </div>
 <div class="line"><span class="lineno">   39</span>  <a class="code hl_enumvalue" href="namespacecircle__eval__diff.html#ac17f7feb24f5042958832418d4508273ac1561b120842fabe1310417083827590">DIR</a> *dir;</div>
-<div class="line"><span class="lineno">   40</span>  <span class="keyword">struct </span>dirent *<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>;</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keyword">struct </span>dirent *<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>;</div>
 <div class="line"><span class="lineno">   41</span> </div>
 <div class="line"><span class="lineno">   42</span>  <span class="comment">// NOTE</span></div>
 <div class="line"><span class="lineno">   43</span>  <span class="comment">// Return NULL(0) value when opendir or readdir error occurs.</span></div>
@@ -448,9 +448,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">   50</span>  }</div>
 <div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">while</span> ((<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = readdir(dir)) != NULL)</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">while</span> ((<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = readdir(dir)) != NULL)</div>
 <div class="line"><span class="lineno">   53</span>  {</div>
-<div class="line"><span class="lineno">   54</span>    std::string modulePath(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_name);</div>
+<div class="line"><span class="lineno">   54</span>    std::string modulePath(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_name);</div>
 <div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (modulePath.find(<span class="stringliteral">&quot;npud_backend&quot;</span>) == std::string::npos)</div>
 <div class="line"><span class="lineno">   56</span>    {</div>
 <div class="line"><span class="lineno">   57</span>      <span class="keywordflow">continue</span>;</div>
@@ -478,10 +478,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   79</span>  closedir(dir);</div>
 <div class="line"><span class="lineno">   80</span>}</div>
 <div class="ttc" id="aclassnpud_1_1core_1_1_dev_manager_html_a60b5151619a0cb94877ea39d72bf2613"><div class="ttname"><a href="classnpud_1_1core_1_1_dev_manager.html#a60b5151619a0cb94877ea39d72bf2613">npud::core::DevManager::releaseModules</a></div><div class="ttdeci">void releaseModules()</div><div class="ttdef"><b>Definition:</b> <a href="_dev_manager_8cc_source.html#l00082">DevManager.cc:82</a></div></div>
-<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2_driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
+<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
 <div class="ttc" id="anamespacecircle__eval__diff_html_ac17f7feb24f5042958832418d4508273ac1561b120842fabe1310417083827590"><div class="ttname"><a href="namespacecircle__eval__diff.html#ac17f7feb24f5042958832418d4508273ac1561b120842fabe1310417083827590">circle_eval_diff::InputFormat::DIR</a></div><div class="ttdeci">@ DIR</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">entry()</a>, <a class="el" href="_dev_manager_8cc_source.html#l00082">releaseModules()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">entry()</a>, <a class="el" href="_dev_manager_8cc_source.html#l00082">releaseModules()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 
 </div>
 </div>

@@ -1,4 +1,5 @@
 <map id="onert::ir::operation::LocalResponseNormalization" name="onert::ir::operation::LocalResponseNormalization">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,203,119"/>
-<area shape="rect" id="node2" href="$classonert_1_1ir_1_1_operation.html" title=" " alt="" coords="41,5,167,31"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,152,203,192"/>
+<area shape="rect" id="node2" href="$classonert_1_1ir_1_1_operation.html" title=" " alt="" coords="41,79,167,104"/>
+<area shape="rect" id="node3" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="39,5,169,31"/>
 </map>

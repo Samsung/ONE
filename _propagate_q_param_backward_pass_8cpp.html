@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('_propagate_q_param_backward_pass_8cpp.
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">PropagateQParamBackwardPass.cpp File Reference</div></div>
 </div><!--header-->
@@ -103,6 +104,7 @@ $(document).ready(function(){initNavTree('_propagate_q_param_backward_pass_8cpp.
 <code>#include &lt;<a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html">luci/Log.h</a>&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;limits&gt;</code><br />
+<code>#include &lt;luci/IR/CircleNodes.lst&gt;</code><br />
 </div>
 <p><a href="_propagate_q_param_backward_pass_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -111,6 +113,13 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceluci"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html">luci</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:acd6355225daabf033d129b51d6c88f8e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_propagate_q_param_backward_pass_8cpp.html#acd6355225daabf033d129b51d6c88f8e">CIRCLE_NODE</a>(OPCODE,  CIRCLE_CLASS)</td></tr>
+<tr class="separator:acd6355225daabf033d129b51d6c88f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0869ffef04bd651c00a81cb7b10b4f4f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_propagate_q_param_backward_pass_8cpp.html#a0869ffef04bd651c00a81cb7b10b4f4f">CIRCLE_VNODE</a>(OPCODE,  CIRCLE_CLASS)</td></tr>
+<tr class="separator:a0869ffef04bd651c00a81cb7b10b4f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a08927f7d3d5ed8512d8958335add0378"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a08927f7d3d5ed8512d8958335add0378">luci::propagate_concat_quantparam</a> (<a class="el" href="classluci_1_1_circle_concatenation.html">luci::CircleConcatenation</a> *concat)</td></tr>
@@ -118,6 +127,67 @@ Functions</h2></td></tr>
 <tr class="memitem:a0157f75d4d983ccb4e0a520d16d277e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a0157f75d4d983ccb4e0a520d16d277e7">luci::propagate_pad_v2_quantparam</a> (<a class="el" href="classluci_1_1_circle_pad_v2.html">luci::CirclePadV2</a> *pad_v2)</td></tr>
 <tr class="separator:a0157f75d4d983ccb4e0a520d16d277e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="acd6355225daabf033d129b51d6c88f8e" name="acd6355225daabf033d129b51d6c88f8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd6355225daabf033d129b51d6c88f8e">&#9670;&#160;</a></span>CIRCLE_NODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CIRCLE_NODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OPCODE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">CIRCLE_CLASS&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">case</span> luci::CircleOpcode::OPCODE:        \</div>
+<div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a0869ffef04bd651c00a81cb7b10b4f4f" name="a0869ffef04bd651c00a81cb7b10b4f4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0869ffef04bd651c00a81cb7b10b4f4f">&#9670;&#160;</a></span>CIRCLE_VNODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CIRCLE_VNODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OPCODE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">CIRCLE_CLASS&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">case</span> luci::CircleOpcode::OPCODE:         \</div>
+<div class="line">    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

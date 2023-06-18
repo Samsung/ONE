@@ -10,7 +10,7 @@ var searchData=
   ['phaseevent_7',['PhaseEvent',['../namespacelogo.html#a3325e3be7ab7f3a0b13fe91c35d30494',1,'logo']]],
   ['phasestrategy_8',['PhaseStrategy',['../namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6',1,'logo']]],
   ['poolingmethod_9',['PoolingMethod',['../_pooling_spec_8h.html#a9bf44421562b71b645dfee67ce65a82c',1,'PoolingSpec.h']]],
-  ['pooltype_10',['PoolType',['../namespaceonert_1_1backend_1_1cpu_1_1ops.html#afe9bfb6dc8fe9f72471c830669580303',1,'onert::backend::cpu::ops::PoolType()'],['../classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330',1,'onert::ir::operation::Pool2D::PoolType()']]],
+  ['pooltype_10',['PoolType',['../namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aab',1,'onert::backend::train::ops::PoolType()'],['../classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330',1,'onert::ir::operation::Pool2D::PoolType()'],['../namespaceonert_1_1backend_1_1cpu_1_1ops.html#afe9bfb6dc8fe9f72471c830669580303',1,'onert::backend::cpu::ops::PoolType()']]],
   ['preferencecode_11',['PreferenceCode',['../group___neural_networks.html#ga034380829226e2d980b2a7e63c992f18',1,'PreferenceCode():&#160;NeuralNetworks.h'],['../group___neural_networks.html#ga034380829226e2d980b2a7e63c992f18',1,'PreferenceCode():&#160;NeuralNetworks.h']]],
   ['presence_12',['Presence',['../structflatbuffers_1_1_field_def.html#a3b6ec6e6c6d2df25081e1d4855bea4c8',1,'flatbuffers::FieldDef']]],
   ['prioritycode_13',['PriorityCode',['../group___neural_networks.html#ga5d965ed03664597bb50d3d3ba70d7169',1,'NeuralNetworks.h']]]
