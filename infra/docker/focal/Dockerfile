@@ -48,6 +48,9 @@ RUN wget http://download.tizen.org/sdk/tizenstudio/official/binary/sdb_4.2.19_ub
 RUN unzip -d tmp sdb.zip && rm sdb.zip
 RUN cp tmp/data/tools/sdb /usr/bin/. && rm -rf tmp/*
 
+# ARM none eabi build tool
+RUN apt-get update && apt-get -qqy install gcc-arm-none-eabi
+
 # Setup user to match host user, and give superuser permissions
 ARG USER_ID=1000
 ARG GROUP_ID=${USER_ID}
