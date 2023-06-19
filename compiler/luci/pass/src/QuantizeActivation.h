@@ -133,6 +133,7 @@ private:
   void visit(luci::CircleSplit *node);
   void visit(luci::CircleSplitV *node);
   void visit(luci::CircleSqrt *node);
+  void visit(luci::CircleSqueeze *node);
   void visit(luci::CircleStridedSlice *node);
   void visit(luci::CircleSum *node);
   void visit(luci::CircleTanh *node);
@@ -147,6 +148,7 @@ private:
   void visit(luci::CircleDiv *node);
   void visit(luci::CircleEqual *node);
   void visit(luci::CircleFloorDiv *node);
+  void visit(luci::CircleFloorMod *node);
   void visit(luci::CircleGreater *node);
   void visit(luci::CircleGreaterEqual *node);
   void visit(luci::CircleLess *node);
