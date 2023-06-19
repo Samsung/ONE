@@ -171,7 +171,10 @@ void QuantizeConstInputActivation::visit(luci::CircleNode *node)
     auto input_node = node->arg(i);
     auto const_node = dynamic_cast<luci::CircleConst *>(input_node);
     if (const_node != nullptr)
-      throw std::runtime_error("Unsupported Op for const inputs");
+    {
+      std::string msg = "Unsupported Op for const inputs: " + node->name();
+      throw std::runtime_error(msg);
+    }
   }
 }
 
