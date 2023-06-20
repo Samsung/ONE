@@ -1130,7 +1130,7 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::prepare_train(nnfw_train_info *info)
+NNFW_STATUS nnfw_session::train_prepare(nnfw_train_info *info)
 {
   // We may need different state to represent training model is loaded
   if (!isStateModelLoaded())
@@ -1152,7 +1152,7 @@ NNFW_STATUS nnfw_session::prepare_train(nnfw_train_info *info)
   return NNFW_STATUS_ERROR;
 }
 
-NNFW_STATUS nnfw_session::set_train_input(uint32_t index, void *input,
+NNFW_STATUS nnfw_session::train_set_input(uint32_t index, void *input,
                                           nnfw_tensorinfo *input_tensorinfo)
 {
   if (input == nullptr)
@@ -1178,7 +1178,7 @@ NNFW_STATUS nnfw_session::set_train_input(uint32_t index, void *input,
   return NNFW_STATUS_ERROR;
 }
 
-NNFW_STATUS nnfw_session::set_train_expected(uint32_t index, void *expected,
+NNFW_STATUS nnfw_session::train_set_expected(uint32_t index, void *expected,
                                              nnfw_tensorinfo *expected_tensorinfo)
 {
   if (expected == nullptr)
@@ -1205,7 +1205,7 @@ NNFW_STATUS nnfw_session::set_train_expected(uint32_t index, void *expected,
   return NNFW_STATUS_ERROR;
 }
 
-NNFW_STATUS nnfw_session::run_train(bool update_weights)
+NNFW_STATUS nnfw_session::train_run(bool update_weights)
 {
   if (!isStatePreparedOrFinishedTraining())
   {
@@ -1220,7 +1220,7 @@ NNFW_STATUS nnfw_session::run_train(bool update_weights)
   return NNFW_STATUS_ERROR;
 }
 
-float nnfw_session::get_loss(uint32_t index)
+float nnfw_session::train_get_loss(uint32_t index)
 {
   if (!isStateFinishedTraining())
   {
@@ -1236,7 +1236,7 @@ float nnfw_session::get_loss(uint32_t index)
   throw std::runtime_error{"Return loss: Not implemented yet"};
 }
 
-NNFW_STATUS nnfw_session::export_inference_model(const char *path)
+NNFW_STATUS nnfw_session::train_export_inference_model(const char *path)
 {
   if (path == nullptr)
   {

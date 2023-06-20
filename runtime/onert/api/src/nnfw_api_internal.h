@@ -162,13 +162,13 @@ public:
    */
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
-  NNFW_STATUS prepare_train(nnfw_train_info *info);
-  NNFW_STATUS set_train_input(uint32_t index, void *input, nnfw_tensorinfo *input_tensorinfo);
-  NNFW_STATUS set_train_expected(uint32_t index, void *expected,
+  NNFW_STATUS train_prepare(nnfw_train_info *info);
+  NNFW_STATUS train_set_input(uint32_t index, void *input, nnfw_tensorinfo *input_tensorinfo);
+  NNFW_STATUS train_set_expected(uint32_t index, void *expected,
                                  nnfw_tensorinfo *expected_tensorinfo);
-  NNFW_STATUS run_train(bool update_weights);
-  float get_loss(uint32_t index);
-  NNFW_STATUS export_inference_model(const char *path);
+  NNFW_STATUS train_run(bool update_weights);
+  float train_get_loss(uint32_t index);
+  NNFW_STATUS train_export_inference_model(const char *path);
 
 private:
   const onert::ir::Graph *primary_subgraph();
