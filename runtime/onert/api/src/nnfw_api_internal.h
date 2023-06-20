@@ -39,7 +39,7 @@ class Execution;
 } // namespace exec
 namespace ir
 {
-class Graph;
+struct IGraph;
 class Model;
 class NNPkg;
 } // namespace ir
@@ -174,7 +174,7 @@ public:
   NNFW_STATUS train_export_circle(const char *path);
 
 private:
-  const onert::ir::Graph *primary_subgraph();
+  const onert::ir::IGraph *primary_subgraph();
   uint32_t getInputSize();
   uint32_t getOutputSize();
 

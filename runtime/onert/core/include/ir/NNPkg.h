@@ -21,7 +21,6 @@
 #include <unordered_set>
 #include <vector>
 
-#include "ir/Graph.h"
 #include "ir/Index.h"
 #include "ir/Model.h"
 
