@@ -233,7 +233,7 @@ public:
   /**
    * @brief   Get model input info
    */
-  OperandInfo &inputInfo(uint32_t index) const
+  const OperandInfo &inputInfo(uint32_t index) const
   {
     if (_models.size() == 1)
     {
@@ -251,7 +251,7 @@ public:
   /**
    * @brief   Get model output info
    */
-  OperandInfo &outputInfo(uint32_t index) const
+  const OperandInfo &outputInfo(uint32_t index) const
   {
     if (_models.size() == 1)
     {
@@ -264,6 +264,22 @@ public:
     auto const graph = model(std::get<ModelIndex>(desc))->primary_subgraph();
     auto const operand_index = graph->getOutputs().at(std::get<IOIndex>(desc).value());
     return graph->operands().at(operand_index).info();
+  }
+
+  void changeInputShape(uint32_t index, const ir::Shape &new_shape)
+  {
+    if (_models.size() == 1)
+    {
+      auto graph = primary_model()->primary_subgraph();
+      auto const operand_index = graph->getInputs().at(index);
+      graph->changeShape(operand_index, new_shape);
+      return;
+    }
+
+    auto const &desc = input(index);
+    auto graph = model(std::get<ModelIndex>(desc))->primary_subgraph();
+    auto const operand_index = graph->getInputs().at(std::get<IOIndex>(desc).value());
+    graph->changeShape(operand_index, new_shape);
   }
 
   // TODO: Add iterate() or getter for edges
