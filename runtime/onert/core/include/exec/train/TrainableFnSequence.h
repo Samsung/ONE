@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_TRAIN_TRAINABLE_SEQUENCE_H__
-#define __ONERT_EXEC_TRAIN_TRAINABLE_SEQUENCE_H__
+#ifndef __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__
+#define __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__
 
 #include "exec/ITrainableFunction.h"
 
@@ -28,7 +28,7 @@ namespace exec
 {
 namespace train
 {
-class TrainableSequence
+class TrainableFnSequence
 {
 public:
   // TODO Change members
@@ -38,4 +38,4 @@ public:
 } // namespace exec
 } // namespace onert
 
-#endif // __ONERT_EXEC_TRAIN_TRAINABLE_SEQUENCE_H__
+#endif // __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__
