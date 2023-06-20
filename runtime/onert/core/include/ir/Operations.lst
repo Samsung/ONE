@@ -88,3 +88,6 @@ OP(Transpose)
 OP(TransposeConv)
 OP(Unpack)
 OP(While)
+
+// Training Only
+OP(Loss)

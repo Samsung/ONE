@@ -18,4 +18,5 @@
 #error Define OP before including this file
 #endif
 
+OP(Loss)
 OP(Permute)
