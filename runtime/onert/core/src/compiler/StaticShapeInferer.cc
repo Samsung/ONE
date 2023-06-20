@@ -251,7 +251,9 @@ StaticShapeInferer::createStaticShapeInferers(
         // Append Observers in a StaticShapeInferer
         if (op.opcode() == ir::OpCode::If)
         {
-          const auto &if_op = nnfw::misc::polymorphic_downcast<const ir::operation::If &>(op);
+          // TODO Remove dynamic_cast
+          // An virtual base class cannot be downcasted by static_cast
+          const auto &if_op = dynamic_cast<const ir::operation::If &>(op);
 
           appendChildInferer(if_op.param().then_subg_index);
           appendChildInferer(if_op.param().else_subg_index);
@@ -263,7 +265,8 @@ StaticShapeInferer::createStaticShapeInferers(
         }
         else if (op.opcode() == ir::OpCode::While)
         {
-          const auto &while_op = nnfw::misc::polymorphic_downcast<const ir::operation::While &>(op);
+          // TODO Remove dynamic_cast
+          const auto &while_op = dynamic_cast<const ir::operation::While &>(op);
 
           appendChildInferer(while_op.param().cond_subg_index);
           appendChildInferer(while_op.param().body_subg_index);
