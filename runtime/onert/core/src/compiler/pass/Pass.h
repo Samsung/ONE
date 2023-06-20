@@ -17,6 +17,8 @@
 #ifndef __ONERT_COMPILER_PASS_PASS_H__
 #define __ONERT_COMPILER_PASS_PASS_H__
 
+#include "IPass.h"
+
 #include <string>
 
 namespace onert
@@ -34,7 +36,7 @@ namespace compiler
 namespace pass
 {
 
-class Pass
+class Pass : public IPass
 {
 public:
   Pass(ir::Graph &graph) : _graph{graph} {}
