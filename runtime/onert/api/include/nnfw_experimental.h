@@ -197,7 +197,7 @@ typedef struct nnfw_train_info
  *                    If info is nullptr, it will not change training information.
  *                    If it is nullptr and model has not training information,
  *                    it will use default training information.
- *                    Default training information is {learning_rate =0.001f, batch_size = 1}
+ *                    Default training information is {learning_rate = 0.001f, batch_size = 1}
  *
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
@@ -255,7 +255,7 @@ NNFW_STATUS nnfw_train(nnfw_session *session, bool update_weights);
 NNFW_STATUS nnfw_train_get_loss(nnfw_session *session, uint32_t index, float *loss);
 
 /**
- * @brief Export inference model
+ * @brief Export circle model
  * @note  This function should be called on training mode
  *        This function should be called after {@link nnfw_train}
  *
@@ -263,21 +263,11 @@ NNFW_STATUS nnfw_train_get_loss(nnfw_session *session, uint32_t index, float *lo
  * @param[in] path    The path to export inference model
  * @return @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_train_export_inference_model(nnfw_session *session, const char *path);
+NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path);
 
 //////////////////////////////////////////////
 // Optional APIs for training
 //////////////////////////////////////////////
-
-/**
- * @brief Get the number of training model inputs
- * @note  This function should be called after {@link nnfw_train_prepare}
- *
- * @param[in]   session The session to get the number of training model inputs
- * @param[out]  count   The number of training model inputs
- * @return @c NNFW_STATUS_NO_ERROR if successful
- */
-NNFW_STATUS nnfw_train_input_count(nnfw_session *session, uint32_t *count);
 
 /**
  * @brief Get the training model input information
@@ -287,17 +277,8 @@ NNFW_STATUS nnfw_train_input_count(nnfw_session *session, uint32_t *count);
  * @param[out]  info    The shape and type of training model input
  * @return @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_train_input_tensorinfo(nnfw_session *session, uint32_t index,
-                                        nnfw_tensorinfo *info);
-
-/**
- * @brief Get the number of training model expected outputs
- * @note  This function should be called after {@link nnfw_train_prepare}
- *
- * @param[in]   session The session to get the number of training model expected outputs
- * @param[out]  count   The number of training model expected outputs
- */
-NNFW_STATUS nnfw_train_expected_count(nnfw_session *session, uint32_t *count);
+// NNFW_STATUS nnfw_train_input_tensorinfo(nnfw_session *session, uint32_t index,
+//                                        nnfw_tensorinfo *info);
 
 /**
  * @brief Get the training model expected output information
@@ -307,30 +288,23 @@ NNFW_STATUS nnfw_train_expected_count(nnfw_session *session, uint32_t *count);
  * @param[out]  info    The shape and type of training model expected output
  * @return @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t index,
-                                           nnfw_tensorinfo *info);
+// NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t index,
+//                                           nnfw_tensorinfo *info);
 
 //////////////////////////////////////////////
 // Not planned to be implemented
 //////////////////////////////////////////////
 
 /**
- * @brief Convert training model to inference model
- * @note  This function should be called after {@link nnfw_train}
+ * @brief Convert between training mode and inference mode
+ * @note  This function should be called after {@link nnfw_train} or {@link nnfw_prepare}
  *
- * @param session The session to convert training mode to inference mode
+ * @param[in] session The session to convert training mode to inference mode
+ * @param[in] train   If false, convert training model to inference model
+ *                    If true, convert inference model to training model
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_train_convert_to_inference(nnfw_session *session);
-
-/**
- * @brief Convert inference model to training model
- * @note  This function should be called after {@link nnfw_prepare}
- *
- * @param session The session to convert inference mode to training mode
- * @return  @c NNFW_STATUS_NO_ERROR if successful
- */
-NNFW_STATUS nnfw_convert_to_train(nnfw_session *session);
+// NNFW_STATUS nnfw_set_training_mode(nnfw_session *session, bool train);
 
 /**
  * @brief Set training information after prepare training
@@ -340,7 +314,7 @@ NNFW_STATUS nnfw_convert_to_train(nnfw_session *session);
  * @param[in] info    Training information
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, nnfw_train_info info);
+// NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, nnfw_train_info info);
 
 #ifdef __cplusplus
 }

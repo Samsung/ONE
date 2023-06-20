@@ -168,7 +168,7 @@ public:
                                  nnfw_tensorinfo *expected_tensorinfo);
   NNFW_STATUS train_run(bool update_weights);
   float train_get_loss(uint32_t index);
-  NNFW_STATUS train_export_inference_model(const char *path);
+  NNFW_STATUS train_export_circle(const char *path);
 
 private:
   const onert::ir::Graph *primary_subgraph();

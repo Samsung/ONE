@@ -1157,13 +1157,13 @@ NNFW_STATUS nnfw_session::train_set_input(uint32_t index, void *input,
 {
   if (input == nullptr)
   {
-    std::cerr << "Error during nnfw_session::set_train_input : input buffer is null" << std::endl;
+    std::cerr << "Error during nnfw_session::train_set_input : input buffer is null" << std::endl;
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   if (!isStatePreparedOrFinishedTraining())
   {
-    std::cerr << "Error during nnfw_session::set_train_input : invalid state" << std::endl;
+    std::cerr << "Error during nnfw_session::train_set_input : invalid state" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1183,14 +1183,14 @@ NNFW_STATUS nnfw_session::train_set_expected(uint32_t index, void *expected,
 {
   if (expected == nullptr)
   {
-    std::cerr << "Error during nnfw_session::set_train_expected : expected buffer is null"
+    std::cerr << "Error during nnfw_session::train_set_expected : expected buffer is null"
               << std::endl;
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   if (!isStatePreparedOrFinishedTraining())
   {
-    std::cerr << "Error during nnfw_session::set_train_expected : invalid state" << std::endl;
+    std::cerr << "Error during nnfw_session::train_set_expected : invalid state" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1209,7 +1209,7 @@ NNFW_STATUS nnfw_session::train_run(bool update_weights)
 {
   if (!isStatePreparedOrFinishedTraining())
   {
-    std::cerr << "Error during nnfw_session::run_train : invalid state" << std::endl;
+    std::cerr << "Error during nnfw_session::train_run : invalid state" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1224,7 +1224,7 @@ float nnfw_session::train_get_loss(uint32_t index)
 {
   if (!isStateFinishedTraining())
   {
-    std::cerr << "Error during nnfw_session::get_loss : invalid state" << std::endl;
+    std::cerr << "Error during nnfw_session::train_get_loss : invalid state" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1236,18 +1236,18 @@ float nnfw_session::train_get_loss(uint32_t index)
   throw std::runtime_error{"Return loss: Not implemented yet"};
 }
 
-NNFW_STATUS nnfw_session::train_export_inference_model(const char *path)
+NNFW_STATUS nnfw_session::train_export_circle(const char *path)
 {
   if (path == nullptr)
   {
-    std::cerr << "Error during nnfw_session::export_inference_model : path is null" << std::endl;
+    std::cerr << "Error during nnfw_session::train_export_circle : path is null" << std::endl;
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
   // Check training mode is enabled
   if (!isStateFinishedTraining())
   {
-    std::cerr << "Error during nnfw_session::export_inference_model : invalid state" << std::endl;
+    std::cerr << "Error during nnfw_session::train_export_circle : invalid state" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 

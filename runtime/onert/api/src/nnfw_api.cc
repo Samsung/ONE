@@ -430,8 +430,8 @@ NNFW_STATUS nnfw_train_get_loss(nnfw_session *session, uint32_t index, float *lo
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_train_export_inference_model(nnfw_session *session, const char *path)
+NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_export_inference_model(path);
+  return session->train_export_circle(path);
 }
