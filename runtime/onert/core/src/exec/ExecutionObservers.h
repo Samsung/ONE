@@ -24,7 +24,7 @@
 
 #include "exec/IExecutor.h"
 #include "ir/Index.h"
-#include "ir/Operation.h"
+#include "ir/IOperation.h"
 #include "util/ITimer.h"
 #include "util/TracingCtx.h"
 

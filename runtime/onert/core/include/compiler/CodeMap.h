@@ -19,7 +19,7 @@
 
 #include <unordered_map>
 #include "ir/Index.h"
-#include "ir/Operation.h"
+#include "ir/IOperation.h"
 #include "exec/FunctionSequence.h"
 #include "OperationLowerInfo.h"
 

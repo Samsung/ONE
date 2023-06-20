@@ -17,15 +17,12 @@
 #ifndef __ONERT_IR_TRAIN_ITRAINABLE_OPERATION_H__
 #define __ONERT_IR_TRAIN_ITRAINABLE_OPERATION_H__
 
-#include "ir/Operation.h"
+#include "ir/IOperation.h"
 
 namespace onert
 {
 namespace ir
 {
-
-struct OperationVisitor;
-
 namespace train
 {
 

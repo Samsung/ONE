@@ -16,7 +16,6 @@
 
 #include "exec/FunctionSequence.h"
 
-#include "ir/Operation.h"
 #include "backend/ITensorRegistry.h"
 #include "util/logging.h"
 

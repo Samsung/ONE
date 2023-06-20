@@ -21,8 +21,10 @@
 #include "TensorRegistry.h"
 
 #include <ir/OperandInfo.h>
-#include <ir/Operation.h>
+#include <ir/IOperation.h>
 #include <ir/Index.h>
+
+#include <unordered_set>
 
 namespace onert
 {
