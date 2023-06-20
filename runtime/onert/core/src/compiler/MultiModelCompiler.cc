@@ -199,9 +199,12 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       lowered_subg->graph().operations().iterate(
         [&](const ir::OperationIndex &, const ir::IOperation &op) { op.accept(dumper); });
 
-      auto &options = *_voptions[model_index.value()];
-      auto executor = std::unique_ptr<exec::IExecutor>{ExecutorFactory::get().create(
-        std::move(lowered_subg), tracing_ctx.get(), options, executors, model_index)};
+      ExecutorFactoryArgs args;
+      args.tracing_ctx = tracing_ctx.get();
+      args.options = _voptions[model_index.value()];
+      args.model_index = model_index;
+      auto executor = std::unique_ptr<exec::IExecutor>{
+        ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
       executor->setIndexedRanks(indexed_ranks);
       executors->emplace(model_index, subg_index, std::move(executor));
     }
