@@ -49,6 +49,9 @@ public:
   const std::string &getPackageFilename(void) const { return _package_filename; }
   const std::string &getModelFilename(void) const { return _model_filename; }
   const bool useSingleModel(void) const { return _use_single_model; }
+  const int getDataLength(void) const { return _data_length; }
+  const std::string &getInputData(void) const { return _input_filename; }
+  const std::string &getExpectedData(void) const { return _expected_filename; }
   const int getEpoch(void) const { return _epoch; }
   const int getBatchSize(void) const { return _batch_size; }
   const float getLearningRate(void) const { return _learning_rate; }
@@ -69,6 +72,9 @@ private:
   std::string _package_filename;
   std::string _model_filename;
   bool _use_single_model = false;
+  int _data_length;
+  std::string _input_filename;
+  std::string _expected_filename;
   int _epoch;
   int _batch_size;
   float _learning_rate;

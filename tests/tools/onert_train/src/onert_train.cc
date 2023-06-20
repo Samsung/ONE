@@ -20,8 +20,9 @@
 #include "nnfw.h"
 #include "nnfw_util.h"
 #include "nnfw_internal.h"
+#include "nnfw_experimental.h"
 #include "randomgen.h"
-#include "rawformatter.h"
+#include "rawdataloader.h"
 
 #include <boost/program_options.hpp>
 #include <cassert>
@@ -32,8 +33,6 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <vector>
-
-static const char *default_backend_cand = "train";
 
 int main(const int argc, char **argv)
 {
@@ -67,18 +66,15 @@ int main(const int argc, char **argv)
         NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getPackageFilename().c_str()));
     });
 
-    // Set training backend
-    NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, default_backend_cand));
-
     uint32_t num_inputs;
     NNPR_ENSURE_STATUS(nnfw_input_size(session, &num_inputs));
 
-    // verify input and output
+    uint32_t num_expected;
+    NNPR_ENSURE_STATUS(nnfw_output_size(session, &num_expected));
 
-    auto verifyInputTypes = [session]() {
-      uint32_t sz;
-      NNPR_ENSURE_STATUS(nnfw_input_size(session, &sz));
-      for (uint32_t i = 0; i < sz; ++i)
+    // verify input and output
+    auto verifyInputTypes = [session](uint32_t size) {
+      for (uint32_t i = 0; i < size; ++i)
       {
         nnfw_tensorinfo ti;
         NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, i, &ti));
@@ -91,11 +87,8 @@ int main(const int argc, char **argv)
       }
     };
 
-    auto verifyOutputTypes = [session]() {
-      uint32_t sz;
-      NNPR_ENSURE_STATUS(nnfw_output_size(session, &sz));
-
-      for (uint32_t i = 0; i < sz; ++i)
+    auto verifyOutputTypes = [session](uint32_t size) {
+      for (uint32_t i = 0; i < size; ++i)
       {
         nnfw_tensorinfo ti;
         NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
@@ -108,79 +101,101 @@ int main(const int argc, char **argv)
       }
     };
 
-    verifyInputTypes();
-    verifyOutputTypes();
+    verifyInputTypes(num_inputs);
+    verifyOutputTypes(num_expected);
+
+    // prepare training info
+    nnfw_train_info tri;
+    tri.batch_size = args.getBatchSize();
+    tri.learning_rate = args.getLearningRate();
 
     // prepare execution
-
     // TODO When nnfw_{prepare|run} are failed, can't catch the time
     phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
-      NNPR_ENSURE_STATUS(nnfw_prepare(session));
+      NNPR_ENSURE_STATUS(nnfw_train_prepare(session, &tri));
     });
 
-    // prepare input
-    std::vector<Allocation> inputs(num_inputs);
-    RandomGenerator(session).generate(inputs);
+    // prepare data buffers & info lists
+    std::vector<Allocation> input_data(num_inputs * tri.batch_size);
+    std::vector<Allocation> expected_data(num_expected * tri.batch_size);
 
-    // prepare output
-    uint32_t num_outputs = 0;
-    NNPR_ENSURE_STATUS(nnfw_output_size(session, &num_outputs));
-    std::vector<Allocation> outputs(num_outputs);
-    auto output_sizes = args.getOutputSizes();
-    for (uint32_t i = 0; i < num_outputs; i++)
+    std::vector<nnfw_tensorinfo> input_infos;
+    for (uint32_t i = 0; i < num_inputs; ++i)
     {
       nnfw_tensorinfo ti;
-      uint64_t output_size_in_bytes = 0;
+      NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, i, &ti));
+
+      auto bufsz = bufsize_for(&ti);
+      for (uint32_t n = 0; n < tri.batch_size; ++n)
       {
-        auto found = output_sizes.find(i);
-        if (found == output_sizes.end())
-        {
-          NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
-          output_size_in_bytes = bufsize_for(&ti);
-        }
-        else
-        {
-          output_size_in_bytes = found->second;
-        }
+        input_data[i * tri.batch_size + n].alloc(bufsz);
       }
-      outputs[i].alloc(output_size_in_bytes);
-      NNPR_ENSURE_STATUS(
-        nnfw_set_output(session, i, ti.dtype, outputs[i].data(), output_size_in_bytes));
-      NNPR_ENSURE_STATUS(nnfw_set_output_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
+      input_infos.emplace_back(std::move(ti));
     }
 
-    // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on the
-    // only warmup.
-    if (verbose == 0)
+    std::vector<nnfw_tensorinfo> expected_infos;
+    for (uint32_t i = 0; i < num_expected; ++i)
     {
-      phases.run(
-        "WARMUP",
-        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); }, 1);
-      phases.run(
-        "EXECUTE",
-        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); }, 1,
-        true);
+      nnfw_tensorinfo ti;
+      NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
+
+      auto bufsz = bufsize_for(&ti);
+      for (uint32_t n = 0; n < tri.batch_size; ++n)
+      {
+        expected_data[i * tri.batch_size + n].alloc(bufsz);
+      }
+      expected_infos.emplace_back(std::move(ti));
     }
-    else
+
+    Generator generator;
+    RawDataLoader rawDataLoader(session);
+    if (!args.getInputData().empty() && !args.getExpectedData().empty())
     {
-      phases.run(
-        "WARMUP",
-        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
-        [&](const benchmark::Phase &phase, uint32_t nth) {
-          std::cout << "... "
-                    << "warmup " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                    << std::endl;
-        },
-        1);
-      phases.run(
-        "EXECUTE",
-        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
-        [&](const benchmark::Phase &phase, uint32_t nth) {
-          std::cout << "... "
-                    << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
-                    << std::endl;
-        },
-        1, true);
+      generator = rawDataLoader.loadDatas(args.getInputData(), args.getExpectedData(), input_infos,
+                                          expected_infos, tri.batch_size);
+    }
+    // TODO Support RamdonGenerator
+
+    const int num_sample = args.getDataLength() / tri.batch_size;
+    const int num_epoch = args.getEpoch();
+    for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
+    {
+      for (uint32_t n = 0; n < num_sample; ++n)
+      {
+        // get batchsize data
+        if (!generator(n, input_data, expected_data))
+          break;
+
+        // prepare input
+        for (uint32_t i = 0; i < num_inputs; ++i)
+        {
+          nnfw_tensorinfo ti(input_infos[i]);
+          ti.dims[0] = tri.batch_size;
+          NNPR_ENSURE_STATUS(nnfw_train_set_input(session, i, input_data[i].data(), &ti));
+          NNPR_ENSURE_STATUS(nnfw_set_input_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
+        }
+
+        // prepare output
+        for (uint32_t i = 0; i < num_expected; ++i)
+        {
+          NNPR_ENSURE_STATUS(
+            nnfw_train_set_expected(session, i, expected_data[i].data(), &expected_infos[i]));
+        }
+
+        // train
+        phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) {
+          NNPR_ENSURE_STATUS(nnfw_train(session, true));
+        });
+      }
+
+      // print loss
+      for (uint32_t i = 0; i < num_expected; ++i)
+      {
+        float loss;
+        NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &loss));
+        std::cout << "[Epoch " << epoch << "] Output [" << i
+                  << "] Loss: " << loss /* << ", Accuracy: " << accuracy*/ << std::endl;
+      }
     }
 
     NNPR_ENSURE_STATUS(nnfw_close_session(session));
@@ -200,7 +215,7 @@ int main(const int argc, char **argv)
   }
   catch (std::runtime_error &e)
   {
-    std::cerr << "E: Fail to run by runtime error:" << e.what() << std::endl;
+    std::cerr << "E: Fail to train by runtime error:" << e.what() << std::endl;
     exit(-1);
   }
 }

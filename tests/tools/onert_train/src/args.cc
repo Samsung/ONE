@@ -125,6 +125,20 @@ void Args::Initialize(void)
     _use_single_model = true;
   };
 
+  auto process_inputdata = [&](const std::string &input_filename) {
+    _input_filename = input_filename;
+
+    std::cerr << "Model Input Filename " << _input_filename << std::endl;
+    checkModelfile(_input_filename);
+  };
+
+  auto process_expecteddata = [&](const std::string &expected_filename) {
+    _expected_filename = expected_filename;
+
+    std::cerr << "Model Expected Filename " << _expected_filename << std::endl;
+    checkModelfile(_expected_filename);
+  };
+
   auto process_path = [&](const std::string &path) {
     struct stat sb;
     if (stat(path.c_str(), &sb) == 0)
@@ -184,6 +198,9 @@ void Args::Initialize(void)
     ("nnpackage", po::value<std::string>()->notifier(process_nnpackage), "NN Package file(directory) name")
     ("modelfile", po::value<std::string>()->notifier(process_modelfile), "NN Model filename")
     ("path", po::value<std::string>()->notifier(process_path), "NN Package or NN Modelfile path")
+    ("data_length", po::value<int>()->default_value(32)->notifier([&](const auto &v) { _data_length = v; }), "Data length number (default: 32)")
+    ("input_data", po::value<std::string>()->notifier(process_inputdata), "NN Model Input data")
+    ("expected_data", po::value<std::string>()->notifier(process_expecteddata), "NN Model Expected data")
     ("epoch", po::value<int>()->default_value(5)->notifier([&](const auto &v) { _epoch = v; }), "Epoch number (default: 5)")
     ("batch_size", po::value<int>()->default_value(32)->notifier([&](const auto &v) { _batch_size = v; }), "Batch size (default: 32)")
     ("learning_rate", po::value<float>()->default_value(1.0e-4)->notifier([&](const auto &v) { _learning_rate = v; }), "Learning rate (default: 1.0e-4)")
@@ -214,7 +231,7 @@ void Args::Parse(const int argc, char **argv)
   if (vm.count("help"))
   {
     std::cout << "onert_train\n\n";
-    std::cout << "Usage: " << argv[0] << "[model path] [<options>]\n\n";
+    std::cout << "Usage: " << argv[0] << " [model path] [<options>]\n\n";
     std::cout << _options;
     std::cout << "\n";
 

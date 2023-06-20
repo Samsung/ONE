@@ -47,6 +47,10 @@ namespace compiler
 {
 struct CompilerArtifact;
 class CompilerOptions;
+namespace train
+{
+class TrainingInfo;
+} // namespace train
 } // namespace compiler
 } // namespace onert
 

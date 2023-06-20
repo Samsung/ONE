@@ -34,25 +34,19 @@ struct LossInfo
 class TrainingInfo
 {
 public:
-  TrainingInfo() : _has_info{false} {}
+  TrainingInfo() : _batch_size(32) {}
   TrainingInfo(const TrainingInfo &obj) = default;
   TrainingInfo(TrainingInfo &&) = default;
   TrainingInfo &operator=(const TrainingInfo &) = default;
   TrainingInfo &operator=(TrainingInfo &&) = default;
   ~TrainingInfo() = default;
 
-  bool shouldTrain() const { return _has_info; }
   uint32_t batchSize() const { return _batch_size; }
   void setBatchSize(const uint32_t batch_size) { _batch_size = batch_size; }
   const LossInfo &lossInfo() const { return _loss_info; }
-  void setLossInfo(const LossInfo &loss_info)
-  {
-    _loss_info = loss_info;
-    _has_info = true;
-  }
+  void setLossInfo(const LossInfo &loss_info) { _loss_info = loss_info; }
 
 private:
-  bool _has_info;
   LossInfo _loss_info;
   uint32_t _batch_size;
 };

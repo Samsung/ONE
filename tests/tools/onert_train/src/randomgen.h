@@ -20,21 +20,22 @@
 #include <string>
 #include <vector>
 
+#include "nnfw.h"
 #include "allocation.h"
 
 struct nnfw_session;
 
 namespace onert_train
 {
-class RandomGenerator
-{
-public:
-  RandomGenerator(nnfw_session *sess) : session_(sess) {}
-  void generate(std::vector<Allocation> &inputs);
+// class RandomGenerator
+// {
+// public:
+//   RandomGenerator(nnfw_session *sess) : session_(sess) {}
+//   void generate(std::vector<Allocation> &inputs, int num_inputs, int data_length);
 
-private:
-  nnfw_session *session_;
-};
+// private:
+//   nnfw_session *session_;
+// };
 } // namespace onert_train
 
 #endif // __ONERT_TRAIN_RANDOMGEN_H__

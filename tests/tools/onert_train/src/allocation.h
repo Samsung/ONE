@@ -19,6 +19,8 @@
 
 #include <cstdlib>
 #include <cstdint>
+#include <functional>
+#include <vector>
 
 namespace onert_train
 {
@@ -41,6 +43,11 @@ public:
 private:
   void *data_;
 };
+
+using Generator = std::function<bool(uint32_t,                  /** index **/
+                                     std::vector<Allocation> &, /** input **/
+                                     std::vector<Allocation> & /** expected **/)>;
+
 } // namespace onert_train
 
 #endif // __ONERT_TRAIN_ALLOCATION_H__

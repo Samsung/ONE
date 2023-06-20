@@ -195,6 +195,28 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
   return std::unique_ptr<onert::ir::Model>(nullptr);
 }
 
+uint64_t getBufSize(const nnfw_tensorinfo *info)
+{
+  static int elmsize[] = {
+    sizeof(float),   /* NNFW_TYPE_TENSOR_FLOAT32 */
+    sizeof(int),     /* NNFW_TYPE_TENSOR_INT32 */
+    sizeof(uint8_t), /* NNFW_TYPE_TENSOR_QUANT8_ASYMM */
+    sizeof(bool),    /* NNFW_TYPE_TENSOR_BOOL = 3 */
+    sizeof(uint8_t), /* NNFW_TYPE_TENSOR_UINT8 = 4 */
+    sizeof(int64_t), /* NNFW_TYPE_TENSOR_INT64 = 5 */
+    sizeof(int8_t),  /* NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED = 6 */
+    sizeof(int16_t), /* NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED = 7 */
+  };
+
+  uint64_t n = 1;
+  for (int32_t i = 0; i < info->rank; ++i)
+  {
+    assert(info->dims[i] >= 0);
+    n *= info->dims[i];
+  }
+  return elmsize[info->dtype] * n;
+}
+
 } // namespace
 
 nnfw_session::nnfw_session()
@@ -1144,11 +1166,32 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
     return NNFW_STATUS_INVALID_STATE;
   }
 
+  if (info == nullptr)
+  {
+    std::cerr << "Error during model prepare training: info is null" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
   // Use default info if info is null, otherwise use given info
   (void)info;
 
-  // NYI
+  // onert::ir::train::TrainingInfo training_info;
+  // training_info.setBatchSize(info->batch_size);
+
+  // try
+  // {
+  //   auto compiler = onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions,
+  //   training_info); _nnpkg.reset(); _compiler_artifact = compiler->compile(); _execution =
+  //   std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
+  // }
+  // catch (const std::exception &e)
+  // {
+  //   std::cerr << "Error during model prepare : " << e.what() << std::endl;
+  //   return NNFW_STATUS_ERROR;
+  // }
+
   // _state = State::PREPARED_TRAINING;
+  // return NNFW_STATUS_NO_ERROR;
   return NNFW_STATUS_ERROR;
 }
 
@@ -1194,21 +1237,36 @@ NNFW_STATUS nnfw_session::train_set_input(uint32_t index, const void *input,
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
+  if (input_tensorinfo == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::set_train_input : input_tensorinfo buffer is null"
+              << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
   if (!isStatePreparedOrFinishedTraining())
   {
     std::cerr << "Error during nnfw_session::train_set_input : invalid state" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  // Check index is valid: [0, getInputSize())
+  if (index >= getInputSize())
+  {
+    std::cerr << "Error during nnfw_session::set_train_input : index is out of range" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
-  // Maybe it cannot use general execute->setInput()
-  // because it needs to set batch input
-  (void)index;
-  (void)input_tensorinfo;
+  try
+  {
+    _execution->setInput(onert::ir::IOIndex(index), input, getBufSize(input_tensorinfo));
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::set_train_input : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
-  // NYI
-  return NNFW_STATUS_ERROR;
+  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::train_set_expected(uint32_t index, const void *expected,
