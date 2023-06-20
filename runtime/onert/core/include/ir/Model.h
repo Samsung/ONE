@@ -25,6 +25,17 @@
 
 namespace onert
 {
+namespace backend
+{
+namespace custom
+{
+class IKernelBuilder;
+} // namespace custom
+} // namespace backend
+} // namespace onert
+
+namespace onert
+{
 namespace ir
 {
 
@@ -131,6 +142,22 @@ public:
 
 private:
   std::unordered_map<SubgraphIndex, std::shared_ptr<Graph>> _subgraphs;
+
+  // Custom operations support
+public:
+  void
+  bindKernelBuilder(const std::shared_ptr<onert::backend::custom::IKernelBuilder> &kernel_builder)
+  {
+    _kernel_builder = kernel_builder;
+  }
+
+  const std::shared_ptr<backend::custom::IKernelBuilder> &getKernelBuilder() const
+  {
+    return _kernel_builder;
+  }
+
+private:
+  std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
 };
 
 } // namespace ir

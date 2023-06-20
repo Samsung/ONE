@@ -78,6 +78,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   _options->forceInternalOptions();
   _options->verboseOptions();
 
+  auto custom_kernel_builder = _model->getKernelBuilder();
+
   _model->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
     // Mandatory passes
     pass::PassRunner{}
@@ -170,6 +172,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     args.tracing_ctx = tracing_ctx.get();
     args.options = _options;
     args.model_index = model_index;
+    args.custom_kernel_builder = custom_kernel_builder;
     auto executor = std::unique_ptr<exec::IExecutor>{
       ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
     executor->setIndexedRanks(indexed_ranks);

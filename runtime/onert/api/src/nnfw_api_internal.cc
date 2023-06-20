@@ -359,7 +359,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       auto model = loadModel(model_file_path, model_type);
       if (model == nullptr)
         return NNFW_STATUS_ERROR;
-      model->primary_subgraph()->bindKernelBuilder(_kernel_registry->getBuilder());
+      model->bindKernelBuilder(_kernel_registry->getBuilder());
       _nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
       _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     }

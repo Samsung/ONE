@@ -103,6 +103,15 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
   // Model edge context: copy model edge context
   auto model_edges = std::make_unique<ir::ModelEdges>(_nnpkg->model_edges());
 
+  // Custom kernels
+  std::unordered_map<ir::ModelIndex, std::shared_ptr<backend::custom::IKernelBuilder>>
+    custom_kernel_builders;
+  for (uint16_t i = 0; i < model_count; i++)
+  {
+    auto const model_index = ir::ModelIndex{i};
+    custom_kernel_builders[model_index] = _nnpkg->model(model_index)->getKernelBuilder();
+  }
+
   // Lower: Assign backend
   std::unordered_map<ir::ModelIndex,
                      std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>>
@@ -203,6 +212,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       args.tracing_ctx = tracing_ctx.get();
       args.options = _voptions[model_index.value()];
       args.model_index = model_index;
+      args.custom_kernel_builder = custom_kernel_builders[model_index];
       auto executor = std::unique_ptr<exec::IExecutor>{
         ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
       executor->setIndexedRanks(indexed_ranks);

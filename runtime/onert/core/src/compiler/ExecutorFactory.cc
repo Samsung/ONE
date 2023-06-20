@@ -120,8 +120,9 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   }
 }
 
-backend::BackendContexts createBackendContexts(compiler::ILoweredGraph &lgraph,
-                                               bool linear_executor)
+backend::BackendContexts
+createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
+                      std::shared_ptr<backend::custom::IKernelBuilder> custom_kernel_builder)
 {
   backend::BackendContexts contexts;
   auto &backend_manager = compiler::BackendManager::get();
@@ -221,7 +222,7 @@ backend::BackendContexts createBackendContexts(compiler::ILoweredGraph &lgraph,
     std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(data.op_order),
                  [&](const auto &ind) { return data.graph->operations().exist(ind); });
     data.is_linear_executor = linear_executor;
-    data.custom_kernel_builder = lgraph.graph().getKernelBuilder();
+    data.custom_kernel_builder = custom_kernel_builder;
     contexts.emplace(backend, backend->newContext(std::move(data)));
   }
   return contexts;
@@ -331,10 +332,11 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   const auto options = args.options;
   const auto &model_index = args.model_index;
   const auto tracing_ctx = args.tracing_ctx;
+  auto custom_kernel_builder = args.custom_kernel_builder;
   auto &graph = lowered_graph->graph();
 
   backend::BackendContexts backend_contexts =
-    createBackendContexts(*lowered_graph, options->executor == "Linear");
+    createBackendContexts(*lowered_graph, options->executor == "Linear", custom_kernel_builder);
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -465,9 +467,10 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
   const auto options = args.options;
   const auto &model_index = args.model_index;
   const auto tracing_ctx = args.tracing_ctx;
+  auto custom_kernel_builder = args.custom_kernel_builder;
 
   backend::BackendContexts backend_contexts =
-    createBackendContexts(*lowered_graph, options->executor == "Linear");
+    createBackendContexts(*lowered_graph, options->executor == "Linear", custom_kernel_builder);
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
