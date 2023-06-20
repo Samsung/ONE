@@ -42,7 +42,7 @@ OperandIndex Graph::addOperand(OperandIndex index, std::unique_ptr<Operand> &&op
   return _operands.push(std::move(operand), index);
 }
 
-bool Graph::checkOperandsForOperation(const Operation &operation)
+bool Graph::checkOperandsForOperation(const IOperation &operation)
 {
   auto inputs = operation.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
   auto outputs = operation.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
@@ -55,7 +55,7 @@ bool Graph::checkOperandsForOperation(const Operation &operation)
   return true;
 }
 
-void Graph::linkOperandToOperation(OperationIndex index, const Operation &operation)
+void Graph::linkOperandToOperation(OperationIndex index, const IOperation &operation)
 {
   auto inputs = operation.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
   auto outputs = operation.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
@@ -66,9 +66,9 @@ void Graph::linkOperandToOperation(OperationIndex index, const Operation &operat
     operands().at(output).setDef(index);
 }
 
-OperationIndex Graph::addOperation(std::unique_ptr<Operation> &&operation)
+OperationIndex Graph::addOperation(std::unique_ptr<IOperation> &&operation)
 {
-  const Operation &op_ref = *operation;
+  const IOperation &op_ref = *operation;
   if (!checkOperandsForOperation(op_ref))
     return OperationIndex{};
   auto ind = _operations.push(std::move(operation));
@@ -77,9 +77,9 @@ OperationIndex Graph::addOperation(std::unique_ptr<Operation> &&operation)
   return ind;
 }
 
-OperationIndex Graph::addOperation(OperationIndex index, std::unique_ptr<Operation> &&operation)
+OperationIndex Graph::addOperation(OperationIndex index, std::unique_ptr<IOperation> &&operation)
 {
-  const Operation &op_ref = *operation;
+  const IOperation &op_ref = *operation;
   if (!checkOperandsForOperation(op_ref))
     return OperationIndex{};
   auto ind_gen = _operations.push(std::move(operation), index);
@@ -123,7 +123,7 @@ IOIndex Graph::getOutputIndex(const std::string &name) const
   return (itr == _name_to_output.end()) ? IOIndex{} : itr->second;
 }
 
-void Graph::verify(void)
+void Graph::verify(void) const
 {
   // Call graph verifications for the MODEL phase
   {
@@ -144,7 +144,7 @@ void Graph::verify(void)
 
 void Graph::initializeUseDef()
 {
-  operations().iterate([&](const OperationIndex &index, const Operation &node) -> void {
+  operations().iterate([&](const OperationIndex &index, const IOperation &node) -> void {
     auto outputs = node.getOutputs();
     for (auto output : outputs | ir::Remove::UNDEFINED)
     {
@@ -163,10 +163,10 @@ std::vector<ir::OperationIndex> Graph::topolSortOperations() const
   std::vector<ir::OperationIndex> ret;
   util::Set<ir::OperationIndex> unvisited;
   operations().iterate(
-    [&](const ir::OperationIndex &index, const ir::Operation &) { unvisited.add(index); });
+    [&](const ir::OperationIndex &index, const ir::IOperation &) { unvisited.add(index); });
 
-  std::function<void(const ir::OperationIndex &, const ir::Operation &)> dfs =
-    [&](const ir::OperationIndex &index, const ir::Operation &op) -> void {
+  std::function<void(const ir::OperationIndex &, const ir::IOperation &)> dfs =
+    [&](const ir::OperationIndex &index, const ir::IOperation &op) -> void {
     if (!unvisited.contains(index))
       return;
     unvisited.remove(index);

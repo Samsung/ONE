@@ -30,7 +30,7 @@ namespace pass
 
 using namespace ir;
 
-void PermutationOperationPass::callback(const OperationIndex &, Operation &node)
+void PermutationOperationPass::callback(const OperationIndex &, IOperation &node)
 {
   node.accept(*this);
 }

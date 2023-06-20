@@ -49,7 +49,7 @@ public:
   std::string id() final { return "PermutationEliminationPass"; }
 
 public:
-  void callback(const ir::OperationIndex &i, ir::Operation &n) final;
+  void callback(const ir::OperationIndex &i, ir::IOperation &n) final;
 
 private:
   void visit(const ir::operation::Permute &) final;

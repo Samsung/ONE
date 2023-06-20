@@ -26,7 +26,7 @@ namespace compiler
 namespace pass
 {
 
-void PermutationEliminationPass::callback(const ir::OperationIndex &ind, ir::Operation &node)
+void PermutationEliminationPass::callback(const ir::OperationIndex &ind, ir::IOperation &node)
 {
   _op_ind = ind;
   node.accept(*this);
@@ -74,7 +74,7 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
     auto &out_operand_obj = _graph.operands().at(out_operand);
     assert(out_operand_obj.getDef() == _op_ind);
     out_operand_obj.unsetDef();
-    _graph.operations().iterate([&](const ir::OperationIndex &op_ind, ir::Operation &op) {
+    _graph.operations().iterate([&](const ir::OperationIndex &op_ind, ir::IOperation &op) {
       if (!op.getOutputs().contains(in_operand))
         return;
       // Update Operation and Operand edges
@@ -88,7 +88,7 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
       _graph.operations().remove(_op_ind);
     }
 
-    _graph.operations().iterate([&](const ir::OperationIndex &op_ind, ir::Operation &op) {
+    _graph.operations().iterate([&](const ir::OperationIndex &op_ind, ir::IOperation &op) {
       if (!op.getInputs().contains(in_operand))
         return;
       op.replaceInputs(in_operand, out_operand);
@@ -107,7 +107,7 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
     in_operand_obj.removeUse(_op_ind);
 
     // Make operations(that use the output) use the input
-    _graph.operations().iterate([&](const ir::OperationIndex &op_ind, ir::Operation &op) {
+    _graph.operations().iterate([&](const ir::OperationIndex &op_ind, ir::IOperation &op) {
       if (!op.getInputs().contains(out_operand))
         return;
       op.replaceInputs(out_operand, in_operand);

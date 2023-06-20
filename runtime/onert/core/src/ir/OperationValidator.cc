@@ -38,7 +38,7 @@ OperationValidator::OperationValidator(const Graph &graph)
 
 void OperationValidator::operator()()
 {
-  _operations.iterate([&](const OperationIndex &, const Operation &node) { node.accept(*this); });
+  _operations.iterate([&](const OperationIndex &, const IOperation &node) { node.accept(*this); });
 }
 
 DataType OperationValidator::operandType(const OperandIndex &idx)

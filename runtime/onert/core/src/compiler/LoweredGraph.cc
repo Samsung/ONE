@@ -121,8 +121,8 @@ void LoweredGraph::makeLowerInfo(const compiler::BackendResolver &backend_resolv
   });
 
   // Set operand lower info using assigned backends to operations
-  _graph.operations().iterate([&](const ir::OperationIndex &op_ind, const ir::Operation &) {
-    const ir::Operation &op = _graph.operations().at(op_ind);
+  _graph.operations().iterate([&](const ir::OperationIndex &op_ind, const ir::IOperation &) {
+    const ir::IOperation &op = _graph.operations().at(op_ind);
     auto backend = backend_resolver.getBackend(op_ind);
     if (!backend)
     {

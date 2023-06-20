@@ -88,7 +88,7 @@ public:
   std::shared_ptr<ir::OperationIndexMap<int64_t>> getIndexedRanks() { return _op_to_rank; }
 
 private:
-  bool isNodeProfiled(const ir::Operation &);
+  bool isNodeProfiled(const ir::IOperation &);
 
   bool schedule(const ir::OperationIndex &, const backend::Backend *parent_backend);
   /**
@@ -115,7 +115,7 @@ private:
    *
    * @return earliest finishing time of parent nodes
    */
-  int64_t predMaxEFT(const backend::Backend *backend, const ir::Operation &node,
+  int64_t predMaxEFT(const backend::Backend *backend, const ir::IOperation &node,
                      std::multimap<int64_t, int64_t> &transfer_st_exec_time);
 
   void makeRank();
@@ -146,7 +146,7 @@ private:
 
   void scheduleShufflingBackends();
 
-  int64_t tryBackend(const ir::Operation &node, const backend::Backend *backend);
+  int64_t tryBackend(const ir::IOperation &node, const backend::Backend *backend);
 
   /**
    * @brief   Schedule a node and its successor until:

@@ -161,7 +161,7 @@ backend::BackendContexts createBackendContexts(compiler::ILoweredGraph &lgraph,
   });
   // Separate operations into partial graphs
   whole_graph.operations().iterate(
-    [&](const ir::OperationIndex &op_ind, const ir::Operation &operation) {
+    [&](const ir::OperationIndex &op_ind, const ir::IOperation &operation) {
       auto &op_li = lgraph.lower_info().operation;
       auto backend = op_li.at(op_ind).backend();
       auto &partial_graph = *context_data_map[backend].graph;
@@ -268,7 +268,7 @@ void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_gra
   TensorRegistries tensor_regs{backend_contexts, true};
 
   lowered_graph.graph().operations().iterate(
-    [&](const ir::OperationIndex &op_ind, const ir::Operation &op) {
+    [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
       auto lower_info = lowered_graph.lower_info().operation.getRawPtr(op_ind);
       auto &backend_ctx = backend_contexts.at(lower_info->backend());
       for (auto ind :
