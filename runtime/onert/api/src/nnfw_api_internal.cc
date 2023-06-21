@@ -1128,3 +1128,192 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
 
   return NNFW_STATUS_NO_ERROR;
 }
+
+NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
+{
+  // We may need different state to represent training model is loaded
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during model prepare training: ";
+    if (_state == State::PREPARED_TRAINING)
+      std::cerr << "prepare should be run once";
+    else
+      std::cerr << "invalid state";
+    std::cerr << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  // Use default info if info is null, otherwise use given info
+  (void)info;
+
+  // NYI
+  // _state = State::PREPARED_TRAINING;
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_session::train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
+{
+  if (!isStatePreparedOrFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_input_tensorinfo : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  // Check index is valid: [0, getInputSize())
+
+  // NYI
+  (void)index;
+  (void)ti;
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_session::train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
+{
+  if (!isStatePreparedOrFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_expected_tensorinfo : invalid state"
+              << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  // Check index is valid: [0, getExpectedSize())
+
+  // NYI
+  (void)index;
+  (void)ti;
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_session::train_set_input(uint32_t index, const void *input,
+                                          const nnfw_tensorinfo *input_tensorinfo)
+{
+  if (input == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::train_set_input : input buffer is null" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (!isStatePreparedOrFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_set_input : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  // Check index is valid: [0, getInputSize())
+
+  // Maybe it cannot use general execute->setInput()
+  // because it needs to set batch input
+  (void)index;
+  (void)input_tensorinfo;
+
+  // NYI
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_session::train_set_expected(uint32_t index, const void *expected,
+                                             const nnfw_tensorinfo *expected_tensorinfo)
+{
+  if (expected == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::train_set_expected : expected buffer is null"
+              << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (!isStatePreparedOrFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_set_expected : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  // Check index is valid: [0, getExpectedSize())
+
+  // Maybe it cannot use general execute->setOutput()
+  // because it needs to set training output (maybe loss)
+  (void)index;
+  (void)expected_tensorinfo;
+
+  // NYI
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_session::train_run(bool update_weights)
+{
+  if (!isStatePreparedOrFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_run : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  (void)update_weights;
+
+  // NYI
+  // _state = State::FINISHED_TRAINING;
+  return NNFW_STATUS_ERROR;
+}
+
+float nnfw_session::train_get_loss(uint32_t index)
+{
+  if (!isStateFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_get_loss : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  // Check index is valid: [0, getExpectedSize())
+
+  (void)index;
+
+  // NYI
+  throw std::runtime_error{"Return loss: Not implemented yet"};
+}
+
+NNFW_STATUS nnfw_session::train_export_circle(const char *path)
+{
+  if (path == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::train_export_circle : path is null" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  // Check training mode is enabled
+  if (!isStateFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_export_circle : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  // NYI
+  return NNFW_STATUS_ERROR;
+}
+
+bool nnfw_session::isStatePreparedTraining()
+{
+  if (_state == State::PREPARED_TRAINING)
+  {
+    assert(_nnpkg == nullptr);
+    assert(!_coptions.empty());
+    assert(_execution != nullptr);
+    return true;
+  }
+  else
+    return false;
+}
+
+bool nnfw_session::isStateFinishedTraining()
+{
+  if (_state == State::FINISHED_TRAINING)
+  {
+    assert(_nnpkg == nullptr);
+    assert(!_coptions.empty());
+    assert(_execution != nullptr);
+    return true;
+  }
+  else
+    return false;
+}
+
+bool nnfw_session::isStatePreparedOrFinishedTraining()
+{
+  return isStatePreparedTraining() || isStateFinishedTraining();
+}
