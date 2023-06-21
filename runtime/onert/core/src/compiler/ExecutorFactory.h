@@ -31,6 +31,14 @@ namespace onert
 namespace compiler
 {
 
+// TODO Change to a better name
+struct ExecutorFactoryArgs
+{
+  const util::TracingCtx *tracing_ctx;
+  const compiler::CompilerOptions *options;
+  ir::ModelIndex model_index;
+};
+
 class ExecutorFactory
 {
 public:
@@ -38,10 +46,8 @@ public:
 
 public:
   exec::IExecutor *create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                          const util::TracingCtx *tracing_ctx,
-                          const compiler::CompilerOptions &options,
                           const std::shared_ptr<exec::IExecutors> &executors,
-                          const ir::ModelIndex &index);
+                          const ExecutorFactoryArgs &args);
 
 private:
   ExecutorFactory();
@@ -56,22 +62,20 @@ private:
   static std::deque<std::pair<const backend::Backend *, backend::BackendContext *>>
   orderBackendContext(const backend::BackendContexts &backend_contexts);
 
-  static exec::IExecutor *createLinearExecutor(
-    std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
-    const compiler::CompilerOptions &options, const std::shared_ptr<exec::IExecutors> &executors,
-    const ir::ModelIndex &index);
-  static exec::IExecutor *createDataflowExecutor(
-    std::unique_ptr<compiler::LoweredGraph> lowered_graph, const util::TracingCtx *tracing_ctx,
-    const compiler::CompilerOptions &options, const std::shared_ptr<exec::IExecutors> &executors,
-    const ir::ModelIndex &index, bool parallel);
+  static exec::IExecutor *
+  createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                       const std::shared_ptr<exec::IExecutors> &executors,
+                       const ExecutorFactoryArgs &args);
+  static exec::IExecutor *
+  createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                         const std::shared_ptr<exec::IExecutors> &executors,
+                         const ExecutorFactoryArgs &args, bool parallel);
 
 private:
   std::unordered_map<
-    std::string,
-    std::function<exec::IExecutor *(
-      std::unique_ptr<compiler::LoweredGraph>, const util::TracingCtx *tracing_ctx,
-      const compiler::CompilerOptions &options, const std::shared_ptr<exec::IExecutors> &executors,
-      const ir::ModelIndex &index)>>
+    std::string, std::function<exec::IExecutor *(std::unique_ptr<compiler::LoweredGraph>,
+                                                 const std::shared_ptr<exec::IExecutors> &executors,
+                                                 const ExecutorFactoryArgs &args)>>
     _map;
 };
 
