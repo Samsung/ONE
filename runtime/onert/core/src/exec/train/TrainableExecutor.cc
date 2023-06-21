@@ -64,6 +64,11 @@ void TrainableExecutor::execute(const std::vector<backend::IPortableTensor *> &,
 
 void TrainableExecutor::execute(const IODescription &desc)
 {
+  forward(desc, false);
+}
+
+void TrainableExecutor::forward(const IODescription &desc, bool training)
+{
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
@@ -93,14 +98,12 @@ void TrainableExecutor::execute(const IODescription &desc)
     tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
   }
 
-  executeImpl();
+  forwardImpl(training);
 
   // TODO Update output(s) desc if desc has dynamic input
-
-  // TODO Support backwarding
 }
 
-void TrainableExecutor::executeImpl()
+void TrainableExecutor::forwardImpl(bool training)
 {
   if (_tracing_ctx)
   {
@@ -118,7 +121,7 @@ void TrainableExecutor::executeImpl()
 
       auto &tn_seq = code.tn_seq;
 
-      tn_seq->forward(false);
+      tn_seq->forward(training);
 
       _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
     }
@@ -135,12 +138,12 @@ void TrainableExecutor::executeImpl()
 
       auto &tn_seq = code.tn_seq;
 
-      tn_seq->forward(false);
+      tn_seq->forward(training);
     }
   }
 }
 
-void TrainableExecutor::train(const IODescription &desc)
+void TrainableExecutor::backward(const IODescription &desc)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
@@ -171,23 +174,24 @@ void TrainableExecutor::train(const IODescription &desc)
     tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
   }
 
-  trainImpl();
+  backwardImpl();
 
   // TODO Update output(s) desc if desc has dynamic input
 
   // TODO Support backwarding
 }
 
-void TrainableExecutor::trainImpl()
+void TrainableExecutor::backwardImpl()
 {
   if (_tracing_ctx)
   {
     auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_trainable_graph.graph());
 
     _subject.notifySubgraphBegin(profiling_subg_index);
-    for (auto &&code : _code)
+    for (auto it = _code.rbegin(); it != _code.rend(); ++it)
     {
-      const auto backend = code.lower_info->backend();
+      const auto &code = *it;
+      const auto backend = it->lower_info->backend();
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());
@@ -196,7 +200,6 @@ void TrainableExecutor::trainImpl()
 
       auto &tn_seq = code.tn_seq;
 
-      tn_seq->forward(true);
       tn_seq->backward();
 
       _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
@@ -205,8 +208,9 @@ void TrainableExecutor::trainImpl()
   }
   else
   {
-    for (auto &&code : _code)
+    for (auto it = _code.rbegin(); it != _code.rend(); ++it)
     {
+      const auto &code = *it;
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());
@@ -216,7 +220,6 @@ void TrainableExecutor::trainImpl()
 
       auto &tn_seq = code.tn_seq;
 
-      tn_seq->forward(true);
       tn_seq->backward();
     }
   }
