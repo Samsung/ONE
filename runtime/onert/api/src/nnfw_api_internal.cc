@@ -697,8 +697,7 @@ NNFW_STATUS nnfw_session::apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti)
   {
 
     // In this case, if we apply input shape, it will propagate after compilation and excution
-    auto &info = _nnpkg->inputInfo(index);
-    info.shape(new_shape);
+    _nnpkg->changeInputShape(index, new_shape);
   }
   else // when called after nnfw_session::prepare()
     _execution->changeInputShape(onert::ir::IOIndex(index), new_shape);
