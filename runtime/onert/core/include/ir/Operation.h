@@ -28,7 +28,9 @@ namespace onert
 namespace ir
 {
 
-class Operation : public IOperation
+// NOTE Virtual inheritance is introduced because trainable operations inherit
+//      `ITrainableOperation` and `Operation` which inherit `IOperation`.
+class Operation : virtual public IOperation
 {
 public:
   // TODO Remove default parameter
