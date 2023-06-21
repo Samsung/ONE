@@ -34,6 +34,7 @@ public:
   RawFormatter(nnfw_session *sess) : Formatter(sess) {}
   void loadInputs(const std::string &filename, std::vector<Allocation> &inputs) override;
   void dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs) override;
+  void dumpInputs(const std::string &filename, std::vector<Allocation> &inputs);
 };
 } // namespace onert_run
 

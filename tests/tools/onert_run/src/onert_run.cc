@@ -277,6 +277,8 @@ int main(const int argc, char **argv)
     if (!args.getDumpFilename().empty())
       H5Formatter(session).dumpOutputs(args.getDumpFilename(), outputs);
 #endif
+    if (!args.getDumpRawInputFilename().empty())
+      RawFormatter(session).dumpInputs(args.getDumpRawInputFilename(), inputs);
     if (!args.getDumpRawFilename().empty())
       RawFormatter(session).dumpOutputs(args.getDumpRawFilename(), outputs);
 
