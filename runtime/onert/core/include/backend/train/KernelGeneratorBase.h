@@ -40,8 +40,6 @@ public:
   virtual std::unique_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex ind) = 0;
 
 protected:
-  using TrainableOperationVisitor::visit;
-
 #define OP(InternalName)                                                                \
   void visit(const ir::train::operation::InternalName &) override                       \
   {                                                                                     \
