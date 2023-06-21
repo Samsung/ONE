@@ -271,25 +271,27 @@ NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path);
 
 /**
  * @brief Get the training model input information
+ * @note  This function should be called after {@link nnfw_train_prepare}
  *
  * @param[in]   session The session to get the training model input information
  * @param[in]   index   The index of training model input
  * @param[out]  info    The shape and type of training model input
  * @return @c NNFW_STATUS_NO_ERROR if successful
  */
-// NNFW_STATUS nnfw_train_input_tensorinfo(nnfw_session *session, uint32_t index,
-//                                        const nnfw_tensorinfo *info);
+NNFW_STATUS nnfw_train_input_tensorinfo(nnfw_session *session, uint32_t index,
+                                        nnfw_tensorinfo *info);
 
 /**
  * @brief Get the training model expected output information
+ * @note  This function should be called after {@link nnfw_train_prepare}
  *
  * @param[in]   session The session to get the training model expected output information
  * @param[in]   index   The index of training model expected output
  * @param[out]  info    The shape and type of training model expected output
  * @return @c NNFW_STATUS_NO_ERROR if successful
  */
-// NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t index,
-//                                           const nnfw_tensorinfo *info);
+NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t index,
+                                           nnfw_tensorinfo *info);
 
 //////////////////////////////////////////////
 // Not planned to be implemented

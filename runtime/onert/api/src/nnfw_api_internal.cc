@@ -1152,6 +1152,39 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
   return NNFW_STATUS_ERROR;
 }
 
+NNFW_STATUS nnfw_session::train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
+{
+  if (!isStatePreparedOrFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_input_tensorinfo : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  // Check index is valid: [0, getInputSize())
+
+  // NYI
+  (void)index;
+  (void)ti;
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_session::train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
+{
+  if (!isStatePreparedOrFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_expected_tensorinfo : invalid state"
+              << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  // Check index is valid: [0, getExpectedSize())
+
+  // NYI
+  (void)index;
+  (void)ti;
+  return NNFW_STATUS_ERROR;
+}
+
 NNFW_STATUS nnfw_session::train_set_input(uint32_t index, const void *input,
                                           const nnfw_tensorinfo *input_tensorinfo)
 {

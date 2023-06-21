@@ -163,6 +163,8 @@ public:
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
   NNFW_STATUS train_prepare(const nnfw_train_info *info);
+  NNFW_STATUS train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
+  NNFW_STATUS train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
   NNFW_STATUS train_set_input(uint32_t index, const void *input,
                               const nnfw_tensorinfo *input_tensorinfo);
   NNFW_STATUS train_set_expected(uint32_t index, const void *expected,
