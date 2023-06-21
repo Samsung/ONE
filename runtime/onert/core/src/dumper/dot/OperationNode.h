@@ -25,7 +25,7 @@
 #define __ONERT_DUMPER_DOT_DOT_NODE_INFO_H__
 
 #include "Node.h"
-#include "ir/Operation.h"
+#include "ir/IOperation.h"
 #include "ir/Index.h"
 
 namespace onert

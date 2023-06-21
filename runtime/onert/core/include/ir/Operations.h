@@ -18,7 +18,7 @@
 #define __ONERT_IR_OPERATIONS_H__
 
 #include "ir/Index.h"
-#include "ir/Operation.h"
+#include "ir/IOperation.h"
 #include "util/ObjectManager.h"
 
 namespace onert

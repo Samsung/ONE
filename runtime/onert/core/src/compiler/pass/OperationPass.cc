@@ -17,7 +17,7 @@
 #include "OperationPass.h"
 
 #include "ir/Index.h"
-#include "ir/Operation.h"
+#include "ir/IOperation.h"
 #include "ir/Graph.h"
 
 namespace onert

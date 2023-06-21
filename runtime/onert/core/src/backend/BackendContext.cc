@@ -16,8 +16,6 @@
 
 #include "backend/BackendContext.h"
 
-#include "ir/Operation.h"
-
 namespace onert
 {
 namespace backend

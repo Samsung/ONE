@@ -19,31 +19,14 @@
 
 #include <memory>
 
-#include "ir/OpCode.h"
+#include "ir/IOperation.h"
 #include "ir/Operand.h"
-#include "ir/OperandIndexSequence.h"
 #include "ir/OperandConstraint.h"
 
 namespace onert
 {
 namespace ir
 {
-
-struct OperationVisitor;
-
-struct IOperation
-{
-  virtual ~IOperation() = default;
-
-  virtual void accept(OperationVisitor &v) const = 0;
-  virtual std::string name() const { return std::string{toString(opcode())}; }
-  virtual OpCode opcode() const = 0;
-
-  virtual void replaceInputs(const OperandIndex &from, const OperandIndex &to) = 0;
-  virtual void replaceOutputs(const OperandIndex &from, const OperandIndex &to) = 0;
-  virtual const OperandIndexSequence &getInputs() const = 0;
-  virtual const OperandIndexSequence &getOutputs() const = 0;
-};
 
 class Operation : public IOperation
 {
