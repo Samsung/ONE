@@ -388,21 +388,21 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs)
 
 // Training
 
-NNFW_STATUS nnfw_train_prepare(nnfw_session *session, nnfw_train_info *info)
+NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->train_prepare(info);
 }
 
-NNFW_STATUS nnfw_train_set_input(nnfw_session *session, uint32_t index, void *input,
-                                 nnfw_tensorinfo *input_info)
+NNFW_STATUS nnfw_train_set_input(nnfw_session *session, uint32_t index, const void *input,
+                                 const nnfw_tensorinfo *input_info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->train_set_input(index, input, input_info);
 }
 
-NNFW_STATUS nnfw_train_set_expected(nnfw_session *session, uint32_t index, void *expected,
-                                    nnfw_tensorinfo *expected_info)
+NNFW_STATUS nnfw_train_set_expected(nnfw_session *session, uint32_t index, const void *expected,
+                                    const nnfw_tensorinfo *expected_info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->train_set_expected(index, expected, expected_info);

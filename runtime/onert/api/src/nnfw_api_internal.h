@@ -162,10 +162,11 @@ public:
    */
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
-  NNFW_STATUS train_prepare(nnfw_train_info *info);
-  NNFW_STATUS train_set_input(uint32_t index, void *input, nnfw_tensorinfo *input_tensorinfo);
-  NNFW_STATUS train_set_expected(uint32_t index, void *expected,
-                                 nnfw_tensorinfo *expected_tensorinfo);
+  NNFW_STATUS train_prepare(const nnfw_train_info *info);
+  NNFW_STATUS train_set_input(uint32_t index, const void *input,
+                              const nnfw_tensorinfo *input_tensorinfo);
+  NNFW_STATUS train_set_expected(uint32_t index, const void *expected,
+                                 const nnfw_tensorinfo *expected_tensorinfo);
   NNFW_STATUS train_run(bool update_weights);
   float train_get_loss(uint32_t index);
   NNFW_STATUS train_export_circle(const char *path);

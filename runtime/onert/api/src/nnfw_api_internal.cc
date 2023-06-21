@@ -1130,7 +1130,7 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::train_prepare(nnfw_train_info *info)
+NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
 {
   // We may need different state to represent training model is loaded
   if (!isStateModelLoaded())
@@ -1152,8 +1152,8 @@ NNFW_STATUS nnfw_session::train_prepare(nnfw_train_info *info)
   return NNFW_STATUS_ERROR;
 }
 
-NNFW_STATUS nnfw_session::train_set_input(uint32_t index, void *input,
-                                          nnfw_tensorinfo *input_tensorinfo)
+NNFW_STATUS nnfw_session::train_set_input(uint32_t index, const void *input,
+                                          const nnfw_tensorinfo *input_tensorinfo)
 {
   if (input == nullptr)
   {
@@ -1178,8 +1178,8 @@ NNFW_STATUS nnfw_session::train_set_input(uint32_t index, void *input,
   return NNFW_STATUS_ERROR;
 }
 
-NNFW_STATUS nnfw_session::train_set_expected(uint32_t index, void *expected,
-                                             nnfw_tensorinfo *expected_tensorinfo)
+NNFW_STATUS nnfw_session::train_set_expected(uint32_t index, const void *expected,
+                                             const nnfw_tensorinfo *expected_tensorinfo)
 {
   if (expected == nullptr)
   {

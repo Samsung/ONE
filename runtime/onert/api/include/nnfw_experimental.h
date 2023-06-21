@@ -201,7 +201,7 @@ typedef struct nnfw_train_info
  *
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_train_prepare(nnfw_session *session, nnfw_train_info *info);
+NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *info);
 
 /**
  * @brief Set training input
@@ -214,8 +214,8 @@ NNFW_STATUS nnfw_train_prepare(nnfw_session *session, nnfw_train_info *info);
  *                        If it is nullptr, it will not change shape and batch size
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_train_set_input(nnfw_session *session, uint32_t index, void *input,
-                                 nnfw_tensorinfo *input_info);
+NNFW_STATUS nnfw_train_set_input(nnfw_session *session, uint32_t index, const void *input,
+                                 const nnfw_tensorinfo *input_info);
 
 /**
  * @brief Set training expected output
@@ -228,8 +228,8 @@ NNFW_STATUS nnfw_train_set_input(nnfw_session *session, uint32_t index, void *in
  *                      If it is nullptr, it will not change shape and batch size
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_train_set_expected(nnfw_session *session, uint32_t index, void *expected,
-                                    nnfw_tensorinfo *expected_info);
+NNFW_STATUS nnfw_train_set_expected(nnfw_session *session, uint32_t index, const void *expected,
+                                    const nnfw_tensorinfo *expected_info);
 
 /**
  * @brief Train the model
@@ -278,7 +278,7 @@ NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path);
  * @return @c NNFW_STATUS_NO_ERROR if successful
  */
 // NNFW_STATUS nnfw_train_input_tensorinfo(nnfw_session *session, uint32_t index,
-//                                        nnfw_tensorinfo *info);
+//                                        const nnfw_tensorinfo *info);
 
 /**
  * @brief Get the training model expected output information
@@ -289,7 +289,7 @@ NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path);
  * @return @c NNFW_STATUS_NO_ERROR if successful
  */
 // NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t index,
-//                                           nnfw_tensorinfo *info);
+//                                           const nnfw_tensorinfo *info);
 
 //////////////////////////////////////////////
 // Not planned to be implemented
@@ -314,7 +314,7 @@ NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path);
  * @param[in] info    Training information
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-// NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, nnfw_train_info info);
+// NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, const nnfw_train_info info);
 
 #ifdef __cplusplus
 }
