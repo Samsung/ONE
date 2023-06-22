@@ -16,7 +16,7 @@
 
 #include "KernelGenerator.h"
 
-#include "ir/train/Operations.Include.h"
+#include "kernel/PermuteLayer.h"
 
 namespace onert
 {
@@ -52,7 +52,20 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
   return ret;
 }
 
-// TODO Append visit functions
+void KernelGenerator::visit(const ir::train::operation::Permute &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+
+  // Add PermuteLayer
+  std::vector<ITensor *> output_tensors{getTensor(output_index)};
+  std::vector<ITensor *> input_tensors{getTensor(input_index)};
+
+  auto fn =
+    std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, _external_context);
+
+  _return_fn = std::move(fn);
+}
 
 backend::ITensor *KernelGenerator::getTensor(const ir::OperandIndex &index)
 {
