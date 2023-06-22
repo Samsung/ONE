@@ -27,7 +27,7 @@ namespace ir
 namespace operation
 {
 
-class BinaryArithmetic final : public Operation
+class BinaryArithmetic : public Operation
 {
 public:
   enum Input
