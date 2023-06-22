@@ -73,7 +73,7 @@ onert::ir::Layout convertLayout(NNFW_LAYOUT layout)
   return onert::ir::Layout::UNKNOWN;
 }
 
-NNFW_STATUS getTensorIndexImpl(const onert::ir::Graph &graph, const char *tensorname,
+NNFW_STATUS getTensorIndexImpl(const onert::ir::IGraph &graph, const char *tensorname,
                                uint32_t *index, bool is_input)
 {
   if (!tensorname || !index)
@@ -940,7 +940,7 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   return NNFW_STATUS_NO_ERROR;
 }
 
-const onert::ir::Graph *nnfw_session::primary_subgraph()
+const onert::ir::IGraph *nnfw_session::primary_subgraph()
 {
   if (_nnpkg != nullptr)
   {

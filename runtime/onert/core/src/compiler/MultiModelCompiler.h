@@ -59,12 +59,6 @@ public:
   std::shared_ptr<CompilerArtifact> compile(void);
 
 private:
-  std::shared_ptr<ir::Graph> &primary_subgraph()
-  {
-    return _nnpkg->primary_model()->at(ir::SubgraphIndex{0});
-  }
-
-private:
   std::shared_ptr<ir::NNPkg> _nnpkg;
   std::vector<CompilerOptions *> _voptions;
 };

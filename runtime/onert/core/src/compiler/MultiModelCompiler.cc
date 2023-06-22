@@ -30,6 +30,7 @@
 #include "compiler/StaticShapeInferer.h"
 
 #include <misc/string_helpers.h>
+#include <misc/polymorphic_downcast.h>
 
 namespace onert
 {
@@ -77,7 +78,15 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
 
   for (uint16_t i = 0; i < model_count; i++)
   {
-    _nnpkg->model(ir::ModelIndex{i})->iterate([&](const ir::SubgraphIndex &, ir::Graph &subg) {
+    if (!_nnpkg->model(ir::ModelIndex{i})->hasOnly<ir::Graph>())
+      throw std::runtime_error("MultiModelCompiler can only compile models for inference.");
+  }
+
+  for (uint16_t i = 0; i < model_count; i++)
+  {
+    _nnpkg->model(ir::ModelIndex{i})->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
+      auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
+
       // Mandatory passes
       pass::PassRunner{}
         .append(std::make_unique<pass::ConstantOutputPass>(subg))
@@ -122,7 +131,9 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
     auto const model_index = ir::ModelIndex{i};
     auto model = _nnpkg->model(model_index);
 
-    model->iterate([&](const ir::SubgraphIndex &subg_index, ir::Graph &subg) {
+    model->iterate([&](const ir::SubgraphIndex &subg_index, ir::IGraph &graph) {
+      auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
+
       dot_dumper.dump(subg,
                       nnfw::misc::str("before_lower_model-", i, "-subg-", subg_index.value()));
       // Lower: Assign backend
