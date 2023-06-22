@@ -30,9 +30,9 @@ namespace train
 
 ITensorRegistry *BackendContext::genTensors() { return basic::genTensors(*this); }
 
-FunctionMap BackendContext::genKernels()
+backend::FunctionMap BackendContext::genKernels()
 {
-  FunctionMap ret;
+  backend::FunctionMap ret;
 
   for (auto op_ind : _data.op_order)
   {
