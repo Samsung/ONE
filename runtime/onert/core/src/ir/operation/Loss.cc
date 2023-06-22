@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *

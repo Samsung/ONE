@@ -36,25 +36,19 @@ public:
     // TODO Add more inputs if necessary
   };
 
+  // NOTE It is not yet determined how to get the information of the previous activation when
+  //      generating kernels of Loss operation for each backend. If it is determined to get it
+  //      from the object of this class, we have to consider whether to change this enum class.
   enum class Type
   {
     CATEGORICAL_CROSSENTROPY
   };
 
-  // NOTE It is not yet determined how to get the information of the previous activation.
-  //      If it is determined to get from the user, we have to consider whether to merge
-  //      this enum class and the `Type` enum class.
-  enum class PreActivationType
-  {
-    SOFTMAX
-  };
-
   struct Param
   {
     Type op_type;
-    PreActivationType pre_type;
     // TODO Add more params if necessary
-    Param() : op_type(Type::CATEGORICAL_CROSSENTROPY), pre_type(PreActivationType::SOFTMAX) {}
+    Param() : op_type(Type::CATEGORICAL_CROSSENTROPY) {}
   };
 
 public:
