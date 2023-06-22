@@ -31,7 +31,7 @@ namespace train
 
 // TODO Unify with the above `getTensors()` function in `BackendContextHelpers.h`
 template <typename TensorBuilder>
-ITensorRegistry *genTensors(train::TrainableBackendContext &ctx,
+ITensorRegistry *genTensors(backend::train::TrainableBackendContext &ctx,
                             const std::shared_ptr<TensorBuilder> &tensor_builder)
 {
   const auto &tgraph = *ctx.trainable_graph();
@@ -60,10 +60,10 @@ ITensorRegistry *genTensors(train::TrainableBackendContext &ctx,
   return ctx.tensor_registry().get();
 }
 
-inline void initConsts(train::TrainableBackendContext &ctx)
+inline void initConsts(backend::train::TrainableBackendContext &ctx)
 {
-  initConsts(ctx.trainable_graph()->operands(), ctx.external_operands(),
-             ctx.tensor_registry().get());
+  basic::initConsts(ctx.trainable_graph()->operands(), ctx.external_operands(),
+                    ctx.tensor_registry().get());
 }
 
 } // namespace train
