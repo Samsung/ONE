@@ -53,6 +53,16 @@ public:
 
 public:
   /**
+   * @brief copy assignment operator
+   */
+  Set<Element> &operator=(const Set<Element> &) = default;
+  /**
+   * @brief move assignment operator
+   */
+  Set<Element> &operator=(Set<Element> &&) = default;
+
+public:
+  /**
    * @brief Add a given element to the set
    *
    * @param e Element added
