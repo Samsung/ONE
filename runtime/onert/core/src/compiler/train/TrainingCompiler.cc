@@ -17,6 +17,7 @@
 #include "TrainingCompiler.h"
 
 #include "TrainableOperationConverter.h"
+#include "compiler/StaticShapeInferer.h"
 #include "compiler/train/LoweredTrainableGraph.h"
 #include "ir/train/TrainableGraph.h"
 #include "pass/LossInsertionPass.h"
@@ -173,7 +174,22 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_subg-", subg_index.value()));
   }
 
-  // TODO Shape inference.
+  // Shape inference.
+  {
+    // Run the StaticShapeInfer of primary subg. All child StaticShapeInferers are called
+    // recursively
+    std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers =
+      StaticShapeInferer::createStaticShapeInferers(lowered_subgs);
+
+    const auto primary_subg_idx = ir::SubgraphIndex{0};
+    inferers.at(primary_subg_idx)->infer();
+
+    for (const auto &pair_inferer : inferers)
+    {
+      const auto inferer = pair_inferer.second.get();
+      inferer->dump();
+    }
+  }
 
   // Shape validation
   for (const auto &pair : lowered_subgs)

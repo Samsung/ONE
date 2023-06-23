@@ -45,11 +45,11 @@ public:
 
   std::shared_ptr<ir::OperationIndexMap<int64_t>> indexed_ranks() { return _indexed_ranks; }
 
-  void setHasDynamicTensor(ir::OperationIndex ind, bool val)
+  void setDynamicTensor(ir::OperationIndex ind, bool val) override
   {
     _has_dynamic_tensor_map.emplace(ind, val);
   }
-  bool getHasDynamicTensor(ir::OperationIndex ind) const
+  bool isDynamicTensor(ir::OperationIndex ind) const override
   {
     auto itr = _has_dynamic_tensor_map.find(ind);
     return (itr == _has_dynamic_tensor_map.end()) ? false : itr->second;

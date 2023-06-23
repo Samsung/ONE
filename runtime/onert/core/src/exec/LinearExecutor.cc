@@ -45,7 +45,7 @@ void LinearExecutor::executeImpl()
       fn_seq->initRunning();
 
       bool handle_dynamic_tensor =
-        _lowered_graph->getHasDynamicTensor(code.op_ind) || hasDynamicInput();
+        _lowered_graph->isDynamicTensor(code.op_ind) || hasDynamicInput();
       fn_seq->enableDynamicShapeInferer(handle_dynamic_tensor);
       fn_seq->run();
 
@@ -67,7 +67,7 @@ void LinearExecutor::executeImpl()
       fn_seq->initRunning();
 
       bool handle_dynamic_tensor =
-        _lowered_graph->getHasDynamicTensor(code.op_ind) || hasDynamicInput();
+        _lowered_graph->isDynamicTensor(code.op_ind) || hasDynamicInput();
       fn_seq->enableDynamicShapeInferer(handle_dynamic_tensor);
       fn_seq->run();
     }

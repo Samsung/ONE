@@ -139,8 +139,7 @@ void ParallelExecutor::executeImpl()
     job->fn_seq()->initRunning();
 
     // dynamic tensor setting
-    bool handle_dynamic_tensor =
-      _lowered_graph->getHasDynamicTensor(op_ind) || dynamic_input_exists;
+    bool handle_dynamic_tensor = _lowered_graph->isDynamicTensor(op_ind) || dynamic_input_exists;
     job->fn_seq()->enableDynamicShapeInferer(handle_dynamic_tensor);
 
     _scheduler->assign(std::make_unique<HookFunction>(job->fn_seq(), setup, teardown), backend);

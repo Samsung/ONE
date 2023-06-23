@@ -81,7 +81,7 @@ void StaticShapeInferer::infer()
       }
     }
     has_dynamic_tensor = has_dynamic_tensor || checkDynamicOutput(op);
-    _lowered_subg->setHasDynamicTensor(op_idx, has_dynamic_tensor);
+    _lowered_subg->setDynamicTensor(op_idx, has_dynamic_tensor);
   }
 
   if (_controlflow_output_observer != nullptr)
@@ -192,7 +192,7 @@ void StaticShapeInferer::dump()
 
 std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>>
 StaticShapeInferer::createStaticShapeInferers(
-  const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<LoweredGraph>> &lowered_subgs)
+  const std::unordered_map<ir::SubgraphIndex, ILoweredGraph *> &lowered_subgs)
 {
   // Allocate StaticShapeInferer per each subgraph
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers;
@@ -200,7 +200,7 @@ StaticShapeInferer::createStaticShapeInferers(
   {
     const auto &subg_index = pair.first;
     auto &lowered_subg = pair.second;
-    inferers[subg_index] = std::make_unique<StaticShapeInferer>(lowered_subg.get());
+    inferers[subg_index] = std::make_unique<StaticShapeInferer>(lowered_subg);
   }
 
   // Append observers in all StaticShapeInferers
