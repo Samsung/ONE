@@ -50,7 +50,7 @@ public:
   }
 
 private:
-  // TODO Append visit functions
+  void visit(const ir::train::operation::Permute &) override;
 
 private:
   backend::ITensor *getTensor(const ir::OperandIndex &index);
