@@ -100,8 +100,8 @@ $(document).ready(function(){initNavTree('classonert_1_1compiler_1_1_executor_fa
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a63645196bb30de20e22988aff50e327a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structonert_1_1exec_1_1_i_executor.html">exec::IExecutor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_executor_factory.html#a63645196bb30de20e22988aff50e327a">create</a> (std::unique_ptr&lt; <a class="el" href="classonert_1_1compiler_1_1_lowered_graph.html">compiler::LoweredGraph</a> &gt; lowered_graph, const <a class="el" href="classonert_1_1util_1_1_tracing_ctx.html">util::TracingCtx</a> *tracing_ctx, const <a class="el" href="classonert_1_1compiler_1_1_compiler_options.html">compiler::CompilerOptions</a> &amp;options, const std::shared_ptr&lt; <a class="el" href="classonert_1_1exec_1_1_i_executors.html">exec::IExecutors</a> &gt; &amp;executors, const <a class="el" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a> &amp;index)</td></tr>
-<tr class="separator:a63645196bb30de20e22988aff50e327a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3330cf1fb069dc076abb3f6232833522"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structonert_1_1exec_1_1_i_executor.html">exec::IExecutor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_executor_factory.html#a3330cf1fb069dc076abb3f6232833522">create</a> (std::unique_ptr&lt; <a class="el" href="classonert_1_1compiler_1_1_lowered_graph.html">compiler::LoweredGraph</a> &gt; lowered_graph, const std::shared_ptr&lt; <a class="el" href="classonert_1_1exec_1_1_i_executors.html">exec::IExecutors</a> &gt; &amp;executors, const <a class="el" href="structonert_1_1compiler_1_1_executor_factory_args.html">ExecutorFactoryArgs</a> &amp;args)</td></tr>
+<tr class="separator:a3330cf1fb069dc076abb3f6232833522"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -110,10 +110,10 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_executor_factory_8h_source.html#l00034">34</a> of file <a class="el" href="_executor_factory_8h_source.html">ExecutorFactory.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executor_factory_8h_source.html#l00043">43</a> of file <a class="el" href="_executor_factory_8h_source.html">ExecutorFactory.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a63645196bb30de20e22988aff50e327a" name="a63645196bb30de20e22988aff50e327a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63645196bb30de20e22988aff50e327a">&#9670;&#160;</a></span>create()</h2>
+<a id="a3330cf1fb069dc076abb3f6232833522" name="a3330cf1fb069dc076abb3f6232833522"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3330cf1fb069dc076abb3f6232833522">&#9670;&#160;</a></span>create()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -127,26 +127,14 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classonert_1_1util_1_1_tracing_ctx.html">util::TracingCtx</a> *&#160;</td>
-          <td class="paramname"><em>tracing_ctx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classonert_1_1compiler_1_1_compiler_options.html">compiler::CompilerOptions</a> &amp;&#160;</td>
-          <td class="paramname"><em>options</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classonert_1_1exec_1_1_i_executors.html">exec::IExecutors</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>executors</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a> &amp;&#160;</td>
-          <td class="paramname"><em>index</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structonert_1_1compiler_1_1_executor_factory_args.html">ExecutorFactoryArgs</a> &amp;&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -156,15 +144,14 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00255">255</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  260</span>{</div>
-<div class="line"><span class="lineno">  261</span>  <span class="keywordflow">return</span> _map.at(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>.executor)(std::move(lowered_graph), tracing_ctx, <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>, executors,</div>
-<div class="line"><span class="lineno">  262</span>                                   <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>);</div>
-<div class="line"><span class="lineno">  263</span>}</div>
-<div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition:</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
-<div class="ttc" id="anamespaceonnx__legalizer_html_a5f63ff6f9c0c3e7103c2b9b88021555e"><div class="ttname"><a href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">onnx_legalizer.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition:</b> <a href="onnx__legalizer_8py_source.html#l01057">onnx_legalizer.py:1057</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00254">254</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  257</span>{</div>
+<div class="line"><span class="lineno">  258</span>  assert(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  259</span>  <span class="keywordflow">return</span> _map.at(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options-&gt;executor)(std::move(lowered_graph), executors, <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>);</div>
+<div class="line"><span class="lineno">  260</span>}</div>
+<div class="ttc" id="anamespacepart__eval__one_html_aeda17029cb7df116efcf0eaca140d394"><div class="ttname"><a href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">part_eval_one.args</a></div><div class="ttdeci">args</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00021">part_eval_one.py:21</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>, and <a class="el" href="_multi_model_compiler_8cc_source.html#l00051">onert::compiler::MultiModelCompiler::compile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00054">onert::compiler::Compiler::compile()</a>, and <a class="el" href="_multi_model_compiler_8cc_source.html#l00052">onert::compiler::MultiModelCompiler::compile()</a>.</p>
 
 </div>
 </div>
@@ -191,13 +178,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00238">238</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  239</span>{</div>
-<div class="line"><span class="lineno">  240</span>  <span class="keyword">static</span> ExecutorFactory singleton;</div>
-<div class="line"><span class="lineno">  241</span>  <span class="keywordflow">return</span> singleton;</div>
-<div class="line"><span class="lineno">  242</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00239">239</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  240</span>{</div>
+<div class="line"><span class="lineno">  241</span>  <span class="keyword">static</span> ExecutorFactory singleton;</div>
+<div class="line"><span class="lineno">  242</span>  <span class="keywordflow">return</span> singleton;</div>
+<div class="line"><span class="lineno">  243</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00053">onert::compiler::Compiler::compile()</a>, and <a class="el" href="_multi_model_compiler_8cc_source.html#l00051">onert::compiler::MultiModelCompiler::compile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00054">onert::compiler::Compiler::compile()</a>, and <a class="el" href="_multi_model_compiler_8cc_source.html#l00052">onert::compiler::MultiModelCompiler::compile()</a>.</p>
 
 </div>
 </div>

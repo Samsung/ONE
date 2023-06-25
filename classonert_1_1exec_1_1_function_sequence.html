@@ -245,10 +245,10 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_function_sequence_8cc_source.html#l00071">71</a> of file <a class="el" href="_function_sequence_8cc_source.html">FunctionSequence.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   72</span>{</div>
-<div class="line"><span class="lineno">   73</span>  <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>.push_back(std::move(function));</div>
-<div class="line"><span class="lineno">   74</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_function_sequence_8cc_source.html#l00070">70</a> of file <a class="el" href="_function_sequence_8cc_source.html">FunctionSequence.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>{</div>
+<div class="line"><span class="lineno">   72</span>  <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>.push_back(std::move(function));</div>
+<div class="line"><span class="lineno">   73</span>}</div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_function_sequence_html_a833ed662463a02a5868a396ffb92b8de"><div class="ttname"><a href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">onert::exec::FunctionSequence::_functions</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; IFunction &gt; &gt; _functions</div><div class="ttdef"><b>Definition:</b> <a href="_function_sequence_8h_source.html#l00118">FunctionSequence.h:118</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00118">_functions</a>.</p>
@@ -284,7 +284,7 @@ template&lt;typename... Args&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00123">_dynamic_tensor_ctx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_function_sequence_8h_source.html#l00087">dynamic_tensor_ctx()</a>, and <a class="el" href="_function_sequence_8cc_source.html#l00028">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_function_sequence_8h_source.html#l00087">dynamic_tensor_ctx()</a>, and <a class="el" href="_function_sequence_8cc_source.html#l00027">run()</a>.</p>
 
 </div>
 </div>
@@ -360,7 +360,7 @@ template&lt;typename... Args&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00121">_enable_dynamic_shape_inferer</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_function_sequence_8cc_source.html#l00028">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_function_sequence_8cc_source.html#l00027">run()</a>.</p>
 
 </div>
 </div>
@@ -413,13 +413,13 @@ template&lt;typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_function_sequence_8cc_source.html#l00076">76</a> of file <a class="el" href="_function_sequence_8cc_source.html">FunctionSequence.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span>{</div>
-<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;func : <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>)</div>
-<div class="line"><span class="lineno">   79</span>  {</div>
-<div class="line"><span class="lineno">   80</span>    fn(*func);</div>
-<div class="line"><span class="lineno">   81</span>  }</div>
-<div class="line"><span class="lineno">   82</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_function_sequence_8cc_source.html#l00075">75</a> of file <a class="el" href="_function_sequence_8cc_source.html">FunctionSequence.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>{</div>
+<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;func : <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>)</div>
+<div class="line"><span class="lineno">   78</span>  {</div>
+<div class="line"><span class="lineno">   79</span>    fn(*func);</div>
+<div class="line"><span class="lineno">   80</span>  }</div>
+<div class="line"><span class="lineno">   81</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00118">_functions</a>.</p>
 
@@ -450,13 +450,13 @@ template&lt;typename... Args&gt; </div>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1exec_1_1_i_function.html#a901ae0973ef08a6ca59f6a00bd3bac4c">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_function_sequence_8cc_source.html#l00063">63</a> of file <a class="el" href="_function_sequence_8cc_source.html">FunctionSequence.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   64</span>{</div>
-<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;function : <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>)</div>
-<div class="line"><span class="lineno">   66</span>  {</div>
-<div class="line"><span class="lineno">   67</span>    function-&gt;prepare();</div>
-<div class="line"><span class="lineno">   68</span>  }</div>
-<div class="line"><span class="lineno">   69</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_function_sequence_8cc_source.html#l00062">62</a> of file <a class="el" href="_function_sequence_8cc_source.html">FunctionSequence.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
+<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;function : <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>)</div>
+<div class="line"><span class="lineno">   65</span>  {</div>
+<div class="line"><span class="lineno">   66</span>    function-&gt;prepare();</div>
+<div class="line"><span class="lineno">   67</span>  }</div>
+<div class="line"><span class="lineno">   68</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00118">_functions</a>.</p>
 
@@ -487,40 +487,40 @@ template&lt;typename... Args&gt; </div>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_function_sequence_8cc_source.html#l00028">28</a> of file <a class="el" href="_function_sequence_8cc_source.html">FunctionSequence.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
-<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#acb072df0987fa1256f76adcf5b930cb5">_enable_dynamic_shape_inferer</a> &amp;&amp; <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a60a997fecc351f52845f81caca22c2a2">_dynamic_tensor_ctx</a>)</div>
-<div class="line"><span class="lineno">   31</span>  {</div>
-<div class="line"><span class="lineno">   32</span>    <span class="comment">// acl_cl and acl_neon backend don&#39;t support dynamic shape.</span></div>
-<div class="line"><span class="lineno">   33</span>    <span class="comment">// _dynamic_tensor_ctx is always nullptr for acl_cl and acl_neon</span></div>
-<div class="line"><span class="lineno">   34</span>    <span class="comment">// Thus, those two bakends cannot reach here.</span></div>
-<div class="line"><span class="lineno">   35</span> </div>
-<div class="line"><span class="lineno">   36</span>    <span class="comment">// Do dynamic shape inference</span></div>
-<div class="line"><span class="lineno">   37</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a60a997fecc351f52845f81caca22c2a2">_dynamic_tensor_ctx</a>-&gt;op-&gt;accept(*<a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a60a997fecc351f52845f81caca22c2a2">_dynamic_tensor_ctx</a>-&gt;dynamic_shape_inferer);</div>
-<div class="line"><span class="lineno">   38</span> </div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;function : <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>)</div>
-<div class="line"><span class="lineno">   40</span>    {</div>
-<div class="line"><span class="lineno">   41</span>      <span class="comment">// NOTE the function could be also FunctionSequence so we do this</span></div>
-<div class="line"><span class="lineno">   42</span>      <span class="comment">// TODO Remove this or do this recursively</span></div>
-<div class="line"><span class="lineno">   43</span>      <span class="keyword">auto</span> *sub_func_seq = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_function" href="classonert_1_1exec_1_1_function_sequence.html#ab5d3570b0891a6cca5c84a284cea7926">FunctionSequence</a> *<span class="keyword">&gt;</span>(function.get());</div>
-<div class="line"><span class="lineno">   44</span>      <span class="keywordflow">if</span> (sub_func_seq != <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   45</span>      {</div>
-<div class="line"><span class="lineno">   46</span>        sub_func_seq-&gt;enableDynamicShapeInferer(<span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">   47</span>        sub_func_seq-&gt;dynamic_tensor_ctx(<a class="code hl_function" href="classonert_1_1exec_1_1_function_sequence.html#aca95d15331d2ca117a9404f21411ec2a">dynamic_tensor_ctx</a>());</div>
-<div class="line"><span class="lineno">   48</span>      }</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>      <span class="comment">// run kernel</span></div>
-<div class="line"><span class="lineno">   51</span>      function-&gt;run();</div>
-<div class="line"><span class="lineno">   52</span>    }</div>
-<div class="line"><span class="lineno">   53</span>  }</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   55</span>  {</div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;function : <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>)</div>
-<div class="line"><span class="lineno">   57</span>    {</div>
-<div class="line"><span class="lineno">   58</span>      function-&gt;run();</div>
-<div class="line"><span class="lineno">   59</span>    }</div>
-<div class="line"><span class="lineno">   60</span>  }</div>
-<div class="line"><span class="lineno">   61</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_function_sequence_8cc_source.html#l00027">27</a> of file <a class="el" href="_function_sequence_8cc_source.html">FunctionSequence.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   28</span>{</div>
+<div class="line"><span class="lineno">   29</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#acb072df0987fa1256f76adcf5b930cb5">_enable_dynamic_shape_inferer</a> &amp;&amp; <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a60a997fecc351f52845f81caca22c2a2">_dynamic_tensor_ctx</a>)</div>
+<div class="line"><span class="lineno">   30</span>  {</div>
+<div class="line"><span class="lineno">   31</span>    <span class="comment">// acl_cl and acl_neon backend don&#39;t support dynamic shape.</span></div>
+<div class="line"><span class="lineno">   32</span>    <span class="comment">// _dynamic_tensor_ctx is always nullptr for acl_cl and acl_neon</span></div>
+<div class="line"><span class="lineno">   33</span>    <span class="comment">// Thus, those two bakends cannot reach here.</span></div>
+<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   35</span>    <span class="comment">// Do dynamic shape inference</span></div>
+<div class="line"><span class="lineno">   36</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a60a997fecc351f52845f81caca22c2a2">_dynamic_tensor_ctx</a>-&gt;op-&gt;accept(*<a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a60a997fecc351f52845f81caca22c2a2">_dynamic_tensor_ctx</a>-&gt;dynamic_shape_inferer);</div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;function : <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>)</div>
+<div class="line"><span class="lineno">   39</span>    {</div>
+<div class="line"><span class="lineno">   40</span>      <span class="comment">// NOTE the function could be also FunctionSequence so we do this</span></div>
+<div class="line"><span class="lineno">   41</span>      <span class="comment">// TODO Remove this or do this recursively</span></div>
+<div class="line"><span class="lineno">   42</span>      <span class="keyword">auto</span> *sub_func_seq = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_function" href="classonert_1_1exec_1_1_function_sequence.html#ab5d3570b0891a6cca5c84a284cea7926">FunctionSequence</a> *<span class="keyword">&gt;</span>(function.get());</div>
+<div class="line"><span class="lineno">   43</span>      <span class="keywordflow">if</span> (sub_func_seq != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   44</span>      {</div>
+<div class="line"><span class="lineno">   45</span>        sub_func_seq-&gt;enableDynamicShapeInferer(<span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">   46</span>        sub_func_seq-&gt;dynamic_tensor_ctx(<a class="code hl_function" href="classonert_1_1exec_1_1_function_sequence.html#aca95d15331d2ca117a9404f21411ec2a">dynamic_tensor_ctx</a>());</div>
+<div class="line"><span class="lineno">   47</span>      }</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>      <span class="comment">// run kernel</span></div>
+<div class="line"><span class="lineno">   50</span>      function-&gt;run();</div>
+<div class="line"><span class="lineno">   51</span>    }</div>
+<div class="line"><span class="lineno">   52</span>  }</div>
+<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   54</span>  {</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;function : <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>)</div>
+<div class="line"><span class="lineno">   56</span>    {</div>
+<div class="line"><span class="lineno">   57</span>      function-&gt;run();</div>
+<div class="line"><span class="lineno">   58</span>    }</div>
+<div class="line"><span class="lineno">   59</span>  }</div>
+<div class="line"><span class="lineno">   60</span>}</div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_function_sequence_html_ab5d3570b0891a6cca5c84a284cea7926"><div class="ttname"><a href="classonert_1_1exec_1_1_function_sequence.html#ab5d3570b0891a6cca5c84a284cea7926">onert::exec::FunctionSequence::FunctionSequence</a></div><div class="ttdeci">FunctionSequence(Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition:</b> <a href="_function_sequence_8h_source.html#l00038">FunctionSequence.h:38</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00123">_dynamic_tensor_ctx</a>, <a class="el" href="_function_sequence_8h_source.html#l00121">_enable_dynamic_shape_inferer</a>, <a class="el" href="_function_sequence_8h_source.html#l00118">_functions</a>, <a class="el" href="_function_sequence_8h_source.html#l00092">dynamic_tensor_ctx()</a>, and <a class="el" href="_function_sequence_8h_source.html#l00101">enableDynamicShapeInferer()</a>.</p>
@@ -591,7 +591,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00123">123</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_function_sequence_8h_source.html#l00087">dynamic_tensor_ctx()</a>, and <a class="el" href="_function_sequence_8cc_source.html#l00028">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_function_sequence_8h_source.html#l00087">dynamic_tensor_ctx()</a>, and <a class="el" href="_function_sequence_8cc_source.html#l00027">run()</a>.</p>
 
 </div>
 </div>
@@ -617,7 +617,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00121">121</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_function_sequence_8h_source.html#l00101">enableDynamicShapeInferer()</a>, <a class="el" href="_function_sequence_8h_source.html#l00115">initRunning()</a>, and <a class="el" href="_function_sequence_8cc_source.html#l00028">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_function_sequence_8h_source.html#l00101">enableDynamicShapeInferer()</a>, <a class="el" href="_function_sequence_8h_source.html#l00115">initRunning()</a>, and <a class="el" href="_function_sequence_8cc_source.html#l00027">run()</a>.</p>
 
 </div>
 </div>
@@ -643,7 +643,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00118">118</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_function_sequence_8cc_source.html#l00071">append()</a>, <a class="el" href="_function_sequence_8cc_source.html#l00076">iterate()</a>, <a class="el" href="_function_sequence_8cc_source.html#l00063">prepare()</a>, <a class="el" href="_function_sequence_8cc_source.html#l00028">run()</a>, and <a class="el" href="_function_sequence_8h_source.html#l00067">wrap()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_function_sequence_8cc_source.html#l00070">append()</a>, <a class="el" href="_function_sequence_8cc_source.html#l00075">iterate()</a>, <a class="el" href="_function_sequence_8cc_source.html#l00062">prepare()</a>, <a class="el" href="_function_sequence_8cc_source.html#l00027">run()</a>, and <a class="el" href="_function_sequence_8h_source.html#l00067">wrap()</a>.</p>
 
 </div>
 </div>

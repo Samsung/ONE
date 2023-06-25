@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1builtin_1_1ke
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_permute_layer_8h_source.html">PermuteLayer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="kernel_2_permute_layer_8h_source.html">PermuteLayer.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::backend::builtin::kernel::PermuteLayer:</div>
 <div class="dyncontent">
@@ -158,7 +158,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_permute_layer_8h_source.html#l00034">34</a> of file <a class="el" href="_permute_layer_8h_source.html">PermuteLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2_permute_layer_8h_source.html#l00034">34</a> of file <a class="el" href="kernel_2_permute_layer_8h_source.html">PermuteLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af0b5851ec3b2708cc6f8bfc019c58a33" name="af0b5851ec3b2708cc6f8bfc019c58a33"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af0b5851ec3b2708cc6f8bfc019c58a33">&#9670;&#160;</a></span>PermuteLayer()</h2>
@@ -192,7 +192,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_permute_layer_8cc_source.html#l00032">32</a> of file <a class="el" href="_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00032">32</a> of file <a class="el" href="kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   35</span>  : _external_context{external_context}, _tasks_map{}</div>
 <div class="line"><span class="lineno">   36</span>{</div>
 <div class="line"><span class="lineno">   37</span>  assert(src_tensors.size() == dst_tensors.size());</div>
@@ -236,7 +236,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#ae233b6e1578adce4c4ac8252694883d8">onert::exec::IPermuteFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_permute_layer_8cc_source.html#l00044">44</a> of file <a class="el" href="_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00044">44</a> of file <a class="el" href="kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
 <div class="line"><span class="lineno">   46</span>  <span class="comment">// Remove copying of tensor as nullptr</span></div>
 <div class="line"><span class="lineno">   47</span>  <span class="keyword">auto</span> src_it = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.begin();</div>
@@ -376,7 +376,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a168261ad1eea9b0a0842419e69a05f47">onert::exec::IPermuteFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_permute_layer_8cc_source.html#l00196">196</a> of file <a class="el" href="_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">196</a> of file <a class="el" href="kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  197</span>{</div>
 <div class="line"><span class="lineno">  198</span>  assert(<a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.size() == <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a>.size());</div>
 <div class="line"><span class="lineno">  199</span>  <span class="comment">// PermuteLayer infers dynamic shape inside itself whenever run is called for the following</span></div>
@@ -498,11 +498,13 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_permute_function_8h_source.html#l00263">onert::exec::IPermuteFunction::_buffers_map</a>, <a class="el" href="_i_permute_function_8h_source.html#l00260">onert::exec::IPermuteFunction::_dst_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00262">onert::exec::IPermuteFunction::_dst_tensors_offsets</a>, <a class="el" href="_i_permute_function_8h_source.html#l00259">onert::exec::IPermuteFunction::_src_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00261">onert::exec::IPermuteFunction::_src_tensors_offsets</a>, <a class="el" href="_i_tensor_8h_source.html#l00067">onert::backend::ITensor::applyShape()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer()</a>, <a class="el" href="_shape_converter_8cc_source.html#l00024">onert::exec::convertShape()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#aca51cb2522739092a25ca8813bf5e2f5">onert::backend::ITensor::getShape()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a4202633be970298f135e2c00d217c0b0">onert::backend::ITensor::is_dynamic()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a9c6b4e796289ace0d82d7e60a5320305">onert::backend::ITensor::layout()</a>, <a class="el" href="_i_permute_function_8cc_source.html#l00244">onert::exec::IPermuteFunction::permute()</a>, and <a class="el" href="_i_permute_function_8cc_source.html#l00293">onert::exec::IPermuteFunction::underlying_type()</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00039">onert::backend::builtin::train::kernel::PermuteLayer::forward()</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/core/src/backend/builtin/kernel/<a class="el" href="_permute_layer_8h_source.html">PermuteLayer.h</a></li>
-<li>runtime/onert/core/src/backend/builtin/kernel/<a class="el" href="_permute_layer_8cc_source.html">PermuteLayer.cc</a></li>
+<li>runtime/onert/core/src/backend/builtin/kernel/<a class="el" href="kernel_2_permute_layer_8h_source.html">PermuteLayer.h</a></li>
+<li>runtime/onert/core/src/backend/builtin/kernel/<a class="el" href="kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

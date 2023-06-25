@@ -1,6 +1,8 @@
 var dir_7979116e1feb736c852dbb14a23da98b =
 [
+    [ "operation", "dir_493dafa432bd3866dc5079e395238c17.html", "dir_493dafa432bd3866dc5079e395238c17" ],
     [ "ITrainableOperation.h", "_i_trainable_operation_8h.html", "_i_trainable_operation_8h" ],
-    [ "TrainableOperations.h", "_trainable_operations_8h.html", "_trainable_operations_8h" ],
+    [ "Operations.Include.h", "train_2_operations_8_include_8h.html", null ],
+    [ "TrainableGraph.h", "_trainable_graph_8h.html", "_trainable_graph_8h" ],
     [ "TrainableOperationVisitor.h", "_trainable_operation_visitor_8h.html", "_trainable_operation_visitor_8h" ]
 ];

@@ -751,7 +751,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_record_min_max_8cpp_source.html#l00238">238</a> of file <a class="el" href="_record_min_max_8cpp_source.html">RecordMinMax.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  241</span>{</div>
-<div class="line"><span class="lineno">  242</span>  <span class="keyword">struct </span>dirent *<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  242</span>  <span class="keyword">struct </span>dirent *<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">  243</span>  <a class="code hl_enumvalue" href="namespacecircle__eval__diff.html#ac17f7feb24f5042958832418d4508273ac1561b120842fabe1310417083827590">DIR</a> *dp = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">  244</span> </div>
 <div class="line"><span class="lineno">  245</span>  dp = opendir(input_data_path.c_str());</div>
@@ -771,13 +771,13 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  259</span>    total_input_size += getTensorSize(input_node);</div>
 <div class="line"><span class="lineno">  260</span>  }</div>
 <div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>  <span class="keywordflow">while</span> ((<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = readdir(dp)))</div>
+<div class="line"><span class="lineno">  262</span>  <span class="keywordflow">while</span> ((<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = readdir(dp)))</div>
 <div class="line"><span class="lineno">  263</span>  {</div>
 <div class="line"><span class="lineno">  264</span>    <span class="comment">// Skip if the entry is not a regular file</span></div>
-<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_type != DT_REG)</div>
+<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_type != DT_REG)</div>
 <div class="line"><span class="lineno">  266</span>      <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">  267</span> </div>
-<div class="line"><span class="lineno">  268</span>    <span class="keyword">const</span> std::string filename = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_name;</div>
+<div class="line"><span class="lineno">  268</span>    <span class="keyword">const</span> std::string filename = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_name;</div>
 <div class="line"><span class="lineno">  269</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Recording &quot;</span> &lt;&lt; num_records &lt;&lt; <span class="stringliteral">&quot;&#39;th data&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  270</span> </div>
 <div class="line"><span class="lineno">  271</span>    <span class="comment">// Read data from file to buffer</span></div>
@@ -811,10 +811,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  299</span> </div>
 <div class="line"><span class="lineno">  300</span>  update_quantparam(getObserver(), mode, min_percentile, max_percentile);</div>
 <div class="line"><span class="lineno">  301</span>}</div>
-<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
+<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2_driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
 <div class="ttc" id="anamespacecircle__eval__diff_html_ac17f7feb24f5042958832418d4508273ac1561b120842fabe1310417083827590"><div class="ttname"><a href="namespacecircle__eval__diff.html#ac17f7feb24f5042958832418d4508273ac1561b120842fabe1310417083827590">circle_eval_diff::InputFormat::DIR</a></div><div class="ttdeci">@ DIR</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">entry()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00128">luci_interpreter::Interpreter::interpret()</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00102">luci_interpreter::Interpreter::writeInputTensor()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">entry()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00128">luci_interpreter::Interpreter::interpret()</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00102">luci_interpreter::Interpreter::writeInputTensor()</a>.</p>
 
 </div>
 </div>

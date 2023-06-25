@@ -5,7 +5,7 @@ var classonert_1_1backend_1_1xnnpack_1_1_config =
     [ "initialize", "classonert_1_1backend_1_1xnnpack_1_1_config.html#a0e536f8946d2c4e129a8dfeabe25a012", null ],
     [ "supportDynamicTensor", "classonert_1_1backend_1_1xnnpack_1_1_config.html#ab371e85eed1c251d915722df6049fdfa", null ],
     [ "supportFP16", "classonert_1_1backend_1_1xnnpack_1_1_config.html#a81fb0aaa45321206558e0ea7a6438ba8", null ],
-    [ "supportLayout", "classonert_1_1backend_1_1xnnpack_1_1_config.html#ac075df4eee1aa1fe796ce05612ad08b4", null ],
+    [ "supportLayout", "classonert_1_1backend_1_1xnnpack_1_1_config.html#a05daec7bc19102af25a0ef6a95392dee", null ],
     [ "supportPermutation", "classonert_1_1backend_1_1xnnpack_1_1_config.html#ae75953ed3cd26cba02de607bf16599ca", null ],
     [ "timer", "classonert_1_1backend_1_1xnnpack_1_1_config.html#add22c87707d4f8d363fd4fb3022ad981", null ]
 ];

@@ -39,7 +39,7 @@ var dir_c67b2d6a1794e95e9d1aa933ef4fa6b2 =
     [ "OneHot.h", "runtime_2onert_2core_2include_2ir_2operation_2_one_hot_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_one_hot_8h" ],
     [ "Pack.h", "runtime_2onert_2core_2include_2ir_2operation_2_pack_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_pack_8h" ],
     [ "Pad.h", "runtime_2onert_2core_2include_2ir_2operation_2_pad_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_pad_8h" ],
-    [ "Permute.h", "_permute_8h.html", "_permute_8h" ],
+    [ "Permute.h", "operation_2_permute_8h.html", "operation_2_permute_8h" ],
     [ "Pool2D.h", "_pool2_d_8h.html", "_pool2_d_8h" ],
     [ "Pow.h", "runtime_2onert_2core_2include_2ir_2operation_2_pow_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_pow_8h" ],
     [ "PReLU.h", "runtime_2onert_2core_2include_2ir_2operation_2_p_relu_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_p_relu_8h" ],

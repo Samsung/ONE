@@ -3,6 +3,7 @@ var namespaceonert_1_1compiler_1_1pass =
     [ "ConstantInsertionPass", "classonert_1_1compiler_1_1pass_1_1_constant_insertion_pass.html", "classonert_1_1compiler_1_1pass_1_1_constant_insertion_pass" ],
     [ "ConstantLoweringPass", "classonert_1_1compiler_1_1pass_1_1_constant_lowering_pass.html", "classonert_1_1compiler_1_1pass_1_1_constant_lowering_pass" ],
     [ "ConstantOutputPass", "classonert_1_1compiler_1_1pass_1_1_constant_output_pass.html", "classonert_1_1compiler_1_1pass_1_1_constant_output_pass" ],
+    [ "IPass", "structonert_1_1compiler_1_1pass_1_1_i_pass.html", "structonert_1_1compiler_1_1pass_1_1_i_pass" ],
     [ "LoweredOperandPass", "classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html", "classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass" ],
     [ "LoweredOperationPass", "classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html", "classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass" ],
     [ "OddOutputPass", "classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html", "classonert_1_1compiler_1_1pass_1_1_odd_output_pass" ],

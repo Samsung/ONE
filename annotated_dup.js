@@ -2577,6 +2577,12 @@ var annotated_dup =
             [ "PermuteLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer" ],
             [ "WhileLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_while_layer.html", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_while_layer" ]
           ] ],
+          [ "train", "namespaceonert_1_1backend_1_1builtin_1_1train.html", [
+            [ "kernel", "namespaceonert_1_1backend_1_1builtin_1_1train_1_1kernel.html", [
+              [ "PermuteLayer", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer" ]
+            ] ],
+            [ "KernelGenerator", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator" ]
+          ] ],
           [ "Backend", "classonert_1_1backend_1_1builtin_1_1_backend.html", "classonert_1_1backend_1_1builtin_1_1_backend" ],
           [ "BackendContext", "classonert_1_1backend_1_1builtin_1_1_backend_context.html", "classonert_1_1backend_1_1builtin_1_1_backend_context" ],
           [ "Config", "classonert_1_1backend_1_1builtin_1_1_config.html", "classonert_1_1backend_1_1builtin_1_1_config" ],
@@ -2696,7 +2702,11 @@ var annotated_dup =
           [ "Backend", "classonert_1_1backend_1_1train_1_1_backend.html", "classonert_1_1backend_1_1train_1_1_backend" ],
           [ "BackendContext", "classonert_1_1backend_1_1train_1_1_backend_context.html", "classonert_1_1backend_1_1train_1_1_backend_context" ],
           [ "Config", "classonert_1_1backend_1_1train_1_1_config.html", "classonert_1_1backend_1_1train_1_1_config" ],
-          [ "KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", "classonert_1_1backend_1_1train_1_1_kernel_generator" ]
+          [ "ITrainableBackend", "structonert_1_1backend_1_1train_1_1_i_trainable_backend.html", "structonert_1_1backend_1_1train_1_1_i_trainable_backend" ],
+          [ "KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", "classonert_1_1backend_1_1train_1_1_kernel_generator" ],
+          [ "KernelGeneratorBase", "classonert_1_1backend_1_1train_1_1_kernel_generator_base.html", "classonert_1_1backend_1_1train_1_1_kernel_generator_base" ],
+          [ "TrainableBackendContext", "classonert_1_1backend_1_1train_1_1_trainable_backend_context.html", "classonert_1_1backend_1_1train_1_1_trainable_backend_context" ],
+          [ "TrainableContextData", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html", "structonert_1_1backend_1_1train_1_1_trainable_context_data" ]
         ] ],
         [ "trix", "namespaceonert_1_1backend_1_1trix.html", [
           [ "ops", "namespaceonert_1_1backend_1_1trix_1_1ops.html", [
@@ -2739,6 +2749,7 @@ var annotated_dup =
           [ "ConstantInsertionPass", "classonert_1_1compiler_1_1pass_1_1_constant_insertion_pass.html", "classonert_1_1compiler_1_1pass_1_1_constant_insertion_pass" ],
           [ "ConstantLoweringPass", "classonert_1_1compiler_1_1pass_1_1_constant_lowering_pass.html", "classonert_1_1compiler_1_1pass_1_1_constant_lowering_pass" ],
           [ "ConstantOutputPass", "classonert_1_1compiler_1_1pass_1_1_constant_output_pass.html", "classonert_1_1compiler_1_1pass_1_1_constant_output_pass" ],
+          [ "IPass", "structonert_1_1compiler_1_1pass_1_1_i_pass.html", "structonert_1_1compiler_1_1pass_1_1_i_pass" ],
           [ "LoweredOperandPass", "classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html", "classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass" ],
           [ "LoweredOperationPass", "classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html", "classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass" ],
           [ "OddOutputPass", "classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html", "classonert_1_1compiler_1_1pass_1_1_odd_output_pass" ],
@@ -2752,7 +2763,13 @@ var annotated_dup =
           [ "UnusedOperandEliminationPass", "classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass.html", "classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass" ]
         ] ],
         [ "train", "namespaceonert_1_1compiler_1_1train.html", [
+          [ "pass", "namespaceonert_1_1compiler_1_1train_1_1pass.html", [
+            [ "LossInsertionPass", "classonert_1_1compiler_1_1train_1_1pass_1_1_loss_insertion_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_loss_insertion_pass" ],
+            [ "Pass", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass" ]
+          ] ],
           [ "LossInfo", "structonert_1_1compiler_1_1train_1_1_loss_info.html", null ],
+          [ "TrainableCodeAndInfo", "structonert_1_1compiler_1_1train_1_1_trainable_code_and_info.html", "structonert_1_1compiler_1_1train_1_1_trainable_code_and_info" ],
+          [ "TrainingCompiler", "classonert_1_1compiler_1_1train_1_1_training_compiler.html", "classonert_1_1compiler_1_1train_1_1_training_compiler" ],
           [ "TrainingInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html", "classonert_1_1compiler_1_1train_1_1_training_info" ]
         ] ],
         [ "BackendManager", "classonert_1_1compiler_1_1_backend_manager.html", "classonert_1_1compiler_1_1_backend_manager" ],
@@ -2764,6 +2781,7 @@ var annotated_dup =
         [ "CompilerOptions", "classonert_1_1compiler_1_1_compiler_options.html", "classonert_1_1compiler_1_1_compiler_options" ],
         [ "ExecutionBuilder", "classonert_1_1compiler_1_1_execution_builder.html", "classonert_1_1compiler_1_1_execution_builder" ],
         [ "ExecutorFactory", "classonert_1_1compiler_1_1_executor_factory.html", "classonert_1_1compiler_1_1_executor_factory" ],
+        [ "ExecutorFactoryArgs", "structonert_1_1compiler_1_1_executor_factory_args.html", "structonert_1_1compiler_1_1_executor_factory_args" ],
         [ "GraphLowerInfo", "structonert_1_1compiler_1_1_graph_lower_info.html", "structonert_1_1compiler_1_1_graph_lower_info" ],
         [ "HEScheduler", "classonert_1_1compiler_1_1_h_e_scheduler.html", "classonert_1_1compiler_1_1_h_e_scheduler" ],
         [ "ICompiler", "classonert_1_1compiler_1_1_i_compiler.html", "classonert_1_1compiler_1_1_i_compiler" ],
@@ -2807,6 +2825,9 @@ var annotated_dup =
           ] ],
           [ "IndexIterator", "classonert_1_1exec_1_1feature_1_1_index_iterator.html", "classonert_1_1exec_1_1feature_1_1_index_iterator" ],
           [ "Reader", "structonert_1_1exec_1_1feature_1_1_reader.html", "structonert_1_1exec_1_1feature_1_1_reader" ]
+        ] ],
+        [ "train", "namespaceonert_1_1exec_1_1train.html", [
+          [ "TrainableFnSequence", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence" ]
         ] ],
         [ "DataflowExecutor", "classonert_1_1exec_1_1_dataflow_executor.html", "classonert_1_1exec_1_1_dataflow_executor" ],
         [ "DynamicShapeInferer", "classonert_1_1exec_1_1_dynamic_shape_inferer.html", "classonert_1_1exec_1_1_dynamic_shape_inferer" ],
@@ -2913,8 +2934,11 @@ var annotated_dup =
           [ "While", "classonert_1_1ir_1_1operation_1_1_while.html", "classonert_1_1ir_1_1operation_1_1_while" ]
         ] ],
         [ "train", "namespaceonert_1_1ir_1_1train.html", [
+          [ "operation", "namespaceonert_1_1ir_1_1train_1_1operation.html", [
+            [ "Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", "classonert_1_1ir_1_1train_1_1operation_1_1_permute" ]
+          ] ],
           [ "ITrainableOperation", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html", "classonert_1_1ir_1_1train_1_1_i_trainable_operation" ],
-          [ "TrainableOperations", "classonert_1_1ir_1_1train_1_1_trainable_operations.html", "classonert_1_1ir_1_1train_1_1_trainable_operations" ],
+          [ "TrainableGraph", "classonert_1_1ir_1_1train_1_1_trainable_graph.html", "classonert_1_1ir_1_1train_1_1_trainable_graph" ],
           [ "TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor" ]
         ] ],
         [ "verifier", "namespaceonert_1_1ir_1_1verifier.html", [
@@ -2931,6 +2955,7 @@ var annotated_dup =
         [ "ExternalData", "classonert_1_1ir_1_1_external_data.html", "classonert_1_1ir_1_1_external_data" ],
         [ "FeatureShape", "structonert_1_1ir_1_1_feature_shape.html", "structonert_1_1ir_1_1_feature_shape" ],
         [ "Graph", "classonert_1_1ir_1_1_graph.html", "classonert_1_1ir_1_1_graph" ],
+        [ "IGraph", "structonert_1_1ir_1_1_i_graph.html", "structonert_1_1ir_1_1_i_graph" ],
         [ "IOperation", "structonert_1_1ir_1_1_i_operation.html", "structonert_1_1ir_1_1_i_operation" ],
         [ "LayoutSet", "classonert_1_1ir_1_1_layout_set.html", "classonert_1_1ir_1_1_layout_set" ],
         [ "MMapedData", "classonert_1_1ir_1_1_m_maped_data.html", "classonert_1_1ir_1_1_m_maped_data" ],
@@ -3564,6 +3589,7 @@ var annotated_dup =
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
     [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", "structnnfw__tensorinfo" ],
+    [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "NonMaxSuppressionV4Chef", "class_non_max_suppression_v4_chef.html", "class_non_max_suppression_v4_chef" ],
     [ "NonMaxSuppressionV4ChefFactory", "struct_non_max_suppression_v4_chef_factory.html", "struct_non_max_suppression_v4_chef_factory" ],
     [ "NonMaxSuppressionV5Chef", "class_non_max_suppression_v5_chef.html", "class_non_max_suppression_v5_chef" ],

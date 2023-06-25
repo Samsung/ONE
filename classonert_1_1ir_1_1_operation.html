@@ -156,7 +156,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00048">48</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html">Operation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00033">33</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html">Operation.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae9bff17640c07d39b4b8707d334fee9b" name="ae9bff17640c07d39b4b8707d334fee9b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9bff17640c07d39b4b8707d334fee9b">&#9670;&#160;</a></span>Operation() <span class="overload">[1/4]</span></h2>
@@ -351,10 +351,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00068">68</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html">Operation.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   68</span>{ <span class="keywordflow">return</span> _inputs; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00053">53</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html">Operation.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{ <span class="keywordflow">return</span> _inputs; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_constant_insertion_pass_8cc_source.html#l00031">onert::compiler::pass::ConstantInsertionPass::callback()</a>, <a class="el" href="_constant_lowering_pass_8cc_source.html#l00032">onert::compiler::pass::ConstantLoweringPass::callback()</a>, <a class="el" href="_acl_constant_initializer_8cc_source.html#l00033">onert::backend::acl_common::AclConstantInitializer::copyInputInitialize()</a>, <a class="el" href="_cl_constant_initializer_8cc_source.html#l00033">onert::backend::gpu_cl::ClConstantInitializer::copyInputInitialize()</a>, <a class="el" href="_dataflow_executor_8cc_source.html#l00079">onert::exec::DataflowExecutor::DataflowExecutor()</a>, <a class="el" href="_i_trainable_operation_8h_source.html#l00054">onert::ir::train::ITrainableOperation::getInputs()</a>, <a class="el" href="_acl_kernel_gen_8h_source.html#l00228">onert::backend::acl_common::kernelGenFullyConnected()</a>, <a class="el" href="_acl_kernel_gen_8h_source.html#l00070">onert::backend::acl_common::kernelGenLSTM()</a>, <a class="el" href="_acl_constant_initializer_8cc_source.html#l00045">onert::backend::acl_common::AclConstantInitializer::permuteInputInitialize()</a>, <a class="el" href="_cl_constant_initializer_8cc_source.html#l00045">onert::backend::gpu_cl::ClConstantInitializer::permuteInputInitialize()</a>, <a class="el" href="_unused_operand_elimination_pass_8cc_source.html#l00036">onert::compiler::pass::UnusedOperandEliminationPass::run()</a>, <a class="el" href="_verifier_8cc_source.html#l00075">onert::ir::verifier::EdgeChecker::verify()</a>, <a class="el" href="backend_2cpu_2_kernel_generator_8cc_source.html#l00277">onert::backend::cpu::KernelGenerator::visit()</a>, <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00095">onert::exec::DynamicShapeInferer::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00058">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_acl_constant_initializer_8cc_source.html#l00054">onert::backend::acl_common::AclConstantInitializer::visit()</a>, <a class="el" href="_acl_sub_tensor_analyzer_8h_source.html#l00052">onert::backend::acl_common::AclSubTensorAnalyzer::visit()</a>, <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00093">onert::backend::train::KernelGenerator::visit()</a>, <a class="el" href="_permutation_operation_pass_8cc_source.html#l00185">onert::compiler::pass::PermutationOperationPass::visit()</a>, <a class="el" href="acl__cl_2_constant_initializer_8cc_source.html#l00054">onert::backend::acl_cl::ConstantInitializer::visit()</a>, <a class="el" href="acl__neon_2_constant_initializer_8cc_source.html#l00033">onert::backend::acl_neon::ConstantInitializer::visit()</a>, <a class="el" href="_operation_validator_8cc_source.html#l00089">onert::ir::OperationValidator::visit()</a>, and <a class="el" href="_operation_dumper_8cc_source.html#l00065">onert::ir::OperationDumper::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_acl_constant_initializer_8cc_source.html#l00033">onert::backend::acl_common::AclConstantInitializer::copyInputInitialize()</a>, <a class="el" href="_cl_constant_initializer_8cc_source.html#l00033">onert::backend::gpu_cl::ClConstantInitializer::copyInputInitialize()</a>, <a class="el" href="_acl_kernel_gen_8h_source.html#l00228">onert::backend::acl_common::kernelGenFullyConnected()</a>, <a class="el" href="_acl_kernel_gen_8h_source.html#l00070">onert::backend::acl_common::kernelGenLSTM()</a>, <a class="el" href="_acl_constant_initializer_8cc_source.html#l00045">onert::backend::acl_common::AclConstantInitializer::permuteInputInitialize()</a>, <a class="el" href="_cl_constant_initializer_8cc_source.html#l00045">onert::backend::gpu_cl::ClConstantInitializer::permuteInputInitialize()</a>, <a class="el" href="backend_2cpu_2_kernel_generator_8cc_source.html#l00277">onert::backend::cpu::KernelGenerator::visit()</a>, <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00095">onert::exec::DynamicShapeInferer::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00058">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_acl_constant_initializer_8cc_source.html#l00054">onert::backend::acl_common::AclConstantInitializer::visit()</a>, <a class="el" href="_acl_sub_tensor_analyzer_8h_source.html#l00052">onert::backend::acl_common::AclSubTensorAnalyzer::visit()</a>, <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00093">onert::backend::train::KernelGenerator::visit()</a>, <a class="el" href="_permutation_operation_pass_8cc_source.html#l00185">onert::compiler::pass::PermutationOperationPass::visit()</a>, <a class="el" href="acl__cl_2_constant_initializer_8cc_source.html#l00054">onert::backend::acl_cl::ConstantInitializer::visit()</a>, <a class="el" href="acl__neon_2_constant_initializer_8cc_source.html#l00033">onert::backend::acl_neon::ConstantInitializer::visit()</a>, <a class="el" href="_operation_validator_8cc_source.html#l00089">onert::ir::OperationValidator::visit()</a>, and <a class="el" href="_operation_dumper_8cc_source.html#l00065">onert::ir::OperationDumper::visit()</a>.</p>
 
 </div>
 </div>
@@ -383,8 +383,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a1914a6d903aa2908f6eafe804fd681a5">onert::ir::IOperation</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00069">69</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html">Operation.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   69</span>{ <span class="keywordflow">return</span> _inputs; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00054">54</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html">Operation.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{ <span class="keywordflow">return</span> _inputs; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -413,10 +413,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a982c1c71e3dac0179ca8abf812d6986f">onert::ir::IOperation</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00070">70</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html">Operation.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>{ <span class="keywordflow">return</span> _outputs; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00055">55</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html">Operation.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span> _outputs; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_constant_insertion_pass_8cc_source.html#l00031">onert::compiler::pass::ConstantInsertionPass::callback()</a>, <a class="el" href="_static_shape_inferer_8cc_source.html#l00194">onert::compiler::StaticShapeInferer::createStaticShapeInferers()</a>, <a class="el" href="_dataflow_executor_8cc_source.html#l00079">onert::exec::DataflowExecutor::DataflowExecutor()</a>, <a class="el" href="_i_trainable_operation_8h_source.html#l00055">onert::ir::train::ITrainableOperation::getOutputs()</a>, <a class="el" href="_acl_kernel_gen_8h_source.html#l00228">onert::backend::acl_common::kernelGenFullyConnected()</a>, <a class="el" href="_acl_kernel_gen_8h_source.html#l00070">onert::backend::acl_common::kernelGenLSTM()</a>, <a class="el" href="_l_s_t_m_8cc_source.html#l00035">onert::ir::operation::LSTM::name()</a>, <a class="el" href="_unused_operand_elimination_pass_8cc_source.html#l00036">onert::compiler::pass::UnusedOperandEliminationPass::run()</a>, <a class="el" href="_verifier_8cc_source.html#l00075">onert::ir::verifier::EdgeChecker::verify()</a>, <a class="el" href="backend_2cpu_2_kernel_generator_8cc_source.html#l00277">onert::backend::cpu::KernelGenerator::visit()</a>, <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00095">onert::exec::DynamicShapeInferer::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00058">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_acl_sub_tensor_analyzer_8h_source.html#l00052">onert::backend::acl_common::AclSubTensorAnalyzer::visit()</a>, <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00093">onert::backend::train::KernelGenerator::visit()</a>, <a class="el" href="_permutation_operation_pass_8cc_source.html#l00197">onert::compiler::pass::PermutationOperationPass::visit()</a>, <a class="el" href="acl__cl_2_constant_initializer_8cc_source.html#l00090">onert::backend::acl_cl::ConstantInitializer::visit()</a>, <a class="el" href="_operation_validator_8cc_source.html#l00089">onert::ir::OperationValidator::visit()</a>, and <a class="el" href="_operation_dumper_8cc_source.html#l00065">onert::ir::OperationDumper::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_acl_kernel_gen_8h_source.html#l00228">onert::backend::acl_common::kernelGenFullyConnected()</a>, <a class="el" href="_acl_kernel_gen_8h_source.html#l00070">onert::backend::acl_common::kernelGenLSTM()</a>, <a class="el" href="_l_s_t_m_8cc_source.html#l00035">onert::ir::operation::LSTM::name()</a>, <a class="el" href="backend_2cpu_2_kernel_generator_8cc_source.html#l00277">onert::backend::cpu::KernelGenerator::visit()</a>, <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00095">onert::exec::DynamicShapeInferer::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00058">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_acl_sub_tensor_analyzer_8h_source.html#l00052">onert::backend::acl_common::AclSubTensorAnalyzer::visit()</a>, <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00093">onert::backend::train::KernelGenerator::visit()</a>, <a class="el" href="_permutation_operation_pass_8cc_source.html#l00197">onert::compiler::pass::PermutationOperationPass::visit()</a>, <a class="el" href="acl__cl_2_constant_initializer_8cc_source.html#l00090">onert::backend::acl_cl::ConstantInitializer::visit()</a>, <a class="el" href="_operation_validator_8cc_source.html#l00089">onert::ir::OperationValidator::visit()</a>, and <a class="el" href="_operation_dumper_8cc_source.html#l00065">onert::ir::OperationDumper::visit()</a>.</p>
 
 </div>
 </div>
@@ -516,8 +516,6 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8cc_source.html#l00053">onert::ir::OperandIndexSequence::replace()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_constant_insertion_pass_8cc_source.html#l00031">onert::compiler::pass::ConstantInsertionPass::callback()</a>, and <a class="el" href="_i_trainable_operation_8h_source.html#l00046">onert::ir::train::ITrainableOperation::replaceInputs()</a>.</p>
-
 </div>
 </div>
 <a id="a5d1fca8e483fdac794018c4da977776c" name="a5d1fca8e483fdac794018c4da977776c"></a>
@@ -563,8 +561,6 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8cc_source.html#l00053">onert::ir::OperandIndexSequence::replace()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_i_trainable_operation_8h_source.html#l00050">onert::ir::train::ITrainableOperation::replaceOutputs()</a>.</p>
-
 </div>
 </div>
 <a id="acfbd48e991e67183552071d846b4cd1e" name="acfbd48e991e67183552071d846b4cd1e"></a>
@@ -593,7 +589,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_constraint_8h_source.html#l00048">onert::ir::OperandConstraint::check()</a>, and <a class="el" href="_operand_index_sequence_8h_source.html#l00049">onert::ir::OperandIndexSequence::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_operation_8cc_source.html#l00026">Operation()</a>, <a class="el" href="_permute_8cc_source.html#l00029">onert::ir::operation::Permute::Permute()</a>, and <a class="el" href="_mock_node_8h_source.html#l00031">onert_test::ir::SimpleMock::SimpleMock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_operation_8cc_source.html#l00026">Operation()</a>, <a class="el" href="operation_2_permute_8cc_source.html#l00029">onert::ir::operation::Permute::Permute()</a>, and <a class="el" href="_mock_node_8h_source.html#l00031">onert_test::ir::SimpleMock::SimpleMock()</a>.</p>
 
 </div>
 </div>
@@ -622,7 +618,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_constraint_8h_source.html#l00048">onert::ir::OperandConstraint::check()</a>, and <a class="el" href="_operand_index_sequence_8h_source.html#l00049">onert::ir::OperandIndexSequence::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_operation_8cc_source.html#l00026">Operation()</a>, <a class="el" href="_permute_8cc_source.html#l00029">onert::ir::operation::Permute::Permute()</a>, and <a class="el" href="_mock_node_8h_source.html#l00031">onert_test::ir::SimpleMock::SimpleMock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_operation_8cc_source.html#l00026">Operation()</a>, <a class="el" href="operation_2_permute_8cc_source.html#l00029">onert::ir::operation::Permute::Permute()</a>, and <a class="el" href="_mock_node_8h_source.html#l00031">onert_test::ir::SimpleMock::SimpleMock()</a>.</p>
 
 </div>
 </div>

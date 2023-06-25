@@ -108,11 +108,17 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcustom__kernel__registration__info.html">custom_kernel_registration_info</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__train__info.html">nnfw_train_info</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Training information to prepare training.  <a href="structnnfw__train__info.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a300b163aa909a1decc6f41d9d46a20e1"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a300b163aa909a1decc6f41d9d46a20e1">nnfw_custom_eval</a>) (<a class="el" href="structnnfw__custom__kernel__params.html">nnfw_custom_kernel_params</a> *params, char *userdata, size_t userdata_size)</td></tr>
 <tr class="separator:a300b163aa909a1decc6f41d9d46a20e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a559e509a0e2416d37475a67466c48975"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structnnfw__train__info.html">nnfw_train_info</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975">nnfw_train_info</a></td></tr>
+<tr class="memdesc:a559e509a0e2416d37475a67466c48975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Training information to prepare training.  <a href="nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975">More...</a><br /></td></tr>
+<tr class="separator:a559e509a0e2416d37475a67466c48975"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -135,6 +141,30 @@ Functions</h2></td></tr>
 <tr class="memitem:ad1538903c2e179efa3f63be6431eb050"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#ad1538903c2e179efa3f63be6431eb050">nnfw_pop_pipeline_output</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, void *outputs)</td></tr>
 <tr class="memdesc:ad1538903c2e179efa3f63be6431eb050"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get last outputs of partitioned model in session.  <a href="nnfw__experimental_8h.html#ad1538903c2e179efa3f63be6431eb050">More...</a><br /></td></tr>
 <tr class="separator:ad1538903c2e179efa3f63be6431eb050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88b27ec96515990151ae0e31763b4175"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a88b27ec96515990151ae0e31763b4175">nnfw_train_prepare</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const <a class="el" href="structnnfw__train__info.html">nnfw_train_info</a> *<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>)</td></tr>
+<tr class="memdesc:a88b27ec96515990151ae0e31763b4175"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare session to be ready for training.  <a href="nnfw__experimental_8h.html#a88b27ec96515990151ae0e31763b4175">More...</a><br /></td></tr>
+<tr class="separator:a88b27ec96515990151ae0e31763b4175"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1e5288018de3651ed27aa7333e3217e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#ab1e5288018de3651ed27aa7333e3217e">nnfw_train_set_input</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, uint32_t index, const void *input, const <a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *input_info)</td></tr>
+<tr class="memdesc:ab1e5288018de3651ed27aa7333e3217e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set training input.  <a href="nnfw__experimental_8h.html#ab1e5288018de3651ed27aa7333e3217e">More...</a><br /></td></tr>
+<tr class="separator:ab1e5288018de3651ed27aa7333e3217e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dcf5951cfb152a9f05dc8413cd9501e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a2dcf5951cfb152a9f05dc8413cd9501e">nnfw_train_set_expected</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, uint32_t index, const void *expected, const <a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *expected_info)</td></tr>
+<tr class="memdesc:a2dcf5951cfb152a9f05dc8413cd9501e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set training expected output.  <a href="nnfw__experimental_8h.html#a2dcf5951cfb152a9f05dc8413cd9501e">More...</a><br /></td></tr>
+<tr class="separator:a2dcf5951cfb152a9f05dc8413cd9501e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73e25145d65236e1dc891d19da0c4ae4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a73e25145d65236e1dc891d19da0c4ae4">nnfw_train</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, bool update_weights)</td></tr>
+<tr class="memdesc:a73e25145d65236e1dc891d19da0c4ae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Train the model.  <a href="nnfw__experimental_8h.html#a73e25145d65236e1dc891d19da0c4ae4">More...</a><br /></td></tr>
+<tr class="separator:a73e25145d65236e1dc891d19da0c4ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cb00110d13d3a316db8e01bc7974243"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a1cb00110d13d3a316db8e01bc7974243">nnfw_train_get_loss</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, uint32_t index, float *loss)</td></tr>
+<tr class="memdesc:a1cb00110d13d3a316db8e01bc7974243"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get loss value for expected output.  <a href="nnfw__experimental_8h.html#a1cb00110d13d3a316db8e01bc7974243">More...</a><br /></td></tr>
+<tr class="separator:a1cb00110d13d3a316db8e01bc7974243"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af34150291cf5ff5d0d441ef73e623400"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#af34150291cf5ff5d0d441ef73e623400">nnfw_train_export_circle</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const char *path)</td></tr>
+<tr class="memdesc:af34150291cf5ff5d0d441ef73e623400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export circle model.  <a href="nnfw__experimental_8h.html#af34150291cf5ff5d0d441ef73e623400">More...</a><br /></td></tr>
+<tr class="separator:af34150291cf5ff5d0d441ef73e623400"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2df9aba6b77d42a961ab26947663f12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#ae2df9aba6b77d42a961ab26947663f12">nnfw_train_input_tensorinfo</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, uint32_t index, <a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>)</td></tr>
+<tr class="memdesc:ae2df9aba6b77d42a961ab26947663f12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the training model input information.  <a href="nnfw__experimental_8h.html#ae2df9aba6b77d42a961ab26947663f12">More...</a><br /></td></tr>
+<tr class="separator:ae2df9aba6b77d42a961ab26947663f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aede2b315e1e4cef364e5372f88827486"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#aede2b315e1e4cef364e5372f88827486">nnfw_train_expected_tensorinfo</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, uint32_t index, <a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>)</td></tr>
+<tr class="memdesc:aede2b315e1e4cef364e5372f88827486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the training model expected output information.  <a href="nnfw__experimental_8h.html#aede2b315e1e4cef364e5372f88827486">More...</a><br /></td></tr>
+<tr class="separator:aede2b315e1e4cef364e5372f88827486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a300b163aa909a1decc6f41d9d46a20e1" name="a300b163aa909a1decc6f41d9d46a20e1"></a>
@@ -149,7 +179,35 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00051">51</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00055">55</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+
+</div>
+</div>
+<a id="a559e509a0e2416d37475a67466c48975" name="a559e509a0e2416d37475a67466c48975"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a559e509a0e2416d37475a67466c48975">&#9670;&#160;</a></span>nnfw_train_info</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="structnnfw__train__info.html">nnfw_train_info</a> <a class="el" href="structnnfw__train__info.html">nnfw_train_info</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Training information to prepare training. </p>
+<p >Training C APIs</p>
+<p >Training APIs are designed to be used in the following order for training</p><ol type="1">
+<li>nnfw_train_prepare</li>
+<li>nnfw_train_set_input, nnfw_train_set_expected for inputs &amp; expected outputs</li>
+<li>nnfw_train</li>
+<li>nnfw_train_get_loss</li>
+</ol>
+<p >If you want to inference after training with the same session, you can use the following order</p><ol type="1">
+<li>nnfw_set_input</li>
+<li>nnfw_set_output</li>
+<li>nnfw_run  </li>
+</ol>
 
 </div>
 </div>
@@ -490,6 +548,443 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  366</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
 <div class="line"><span class="lineno">  367</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_backends_per_operation(backend_settings);</div>
 <div class="line"><span class="lineno">  368</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="a73e25145d65236e1dc891d19da0c4ae4" name="a73e25145d65236e1dc891d19da0c4ae4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73e25145d65236e1dc891d19da0c4ae4">&#9670;&#160;</a></span>nnfw_train()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_train </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>update_weights</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Train the model. </p>
+<dl class="section note"><dt>Note</dt><dd>This function should be called after <code><a class="el" href="nnfw__experimental_8h.html#ab1e5288018de3651ed27aa7333e3217e">nnfw_train_set_input</a></code> and <code><a class="el" href="nnfw__experimental_8h.html#a2dcf5951cfb152a9f05dc8413cd9501e">nnfw_train_set_expected</a></code> for each input and expected output</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The session to be trained </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">update_weights</td><td>If true, update weights of the model If false, do not update weights of the model (for validation) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00425">425</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  426</span>{</div>
+<div class="line"><span class="lineno">  427</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  428</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_run(update_weights);</div>
+<div class="line"><span class="lineno">  429</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="aede2b315e1e4cef364e5372f88827486" name="aede2b315e1e4cef364e5372f88827486"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aede2b315e1e4cef364e5372f88827486">&#9670;&#160;</a></span>nnfw_train_expected_tensorinfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_train_expected_tensorinfo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *&#160;</td>
+          <td class="paramname"><em>info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the training model expected output information. </p>
+<dl class="section note"><dt>Note</dt><dd>This function should be called after <code><a class="el" href="nnfw__experimental_8h.html#a88b27ec96515990151ae0e31763b4175">nnfw_train_prepare</a></code></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The session to get the training model expected output information </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>The index of training model expected output </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">info</td><td>The shape and type of training model expected output </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00404">404</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  406</span>{</div>
+<div class="line"><span class="lineno">  407</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  408</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_expected_tensorinfo(index, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  409</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="af34150291cf5ff5d0d441ef73e623400" name="af34150291cf5ff5d0d441ef73e623400"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af34150291cf5ff5d0d441ef73e623400">&#9670;&#160;</a></span>nnfw_train_export_circle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_train_export_circle </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Export circle model. </p>
+<dl class="section note"><dt>Note</dt><dd>This function should be called on training mode This function should be called after <code><a class="el" href="nnfw__experimental_8h.html#a73e25145d65236e1dc891d19da0c4ae4">nnfw_train</a></code></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The session to export inference model </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>The path to export inference model </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00447">447</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  448</span>{</div>
+<div class="line"><span class="lineno">  449</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  450</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_export_circle(path);</div>
+<div class="line"><span class="lineno">  451</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="a1cb00110d13d3a316db8e01bc7974243" name="a1cb00110d13d3a316db8e01bc7974243"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cb00110d13d3a316db8e01bc7974243">&#9670;&#160;</a></span>nnfw_train_get_loss()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_train_get_loss </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>loss</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get loss value for expected output. </p>
+<dl class="section note"><dt>Note</dt><dd>This function should be called after <code><a class="el" href="nnfw__experimental_8h.html#a73e25145d65236e1dc891d19da0c4ae4">nnfw_train</a></code></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The session to get loss value </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>The index of loss value [0, number of expected outputs) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">loss</td><td>The loss value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00431">431</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  432</span>{</div>
+<div class="line"><span class="lineno">  433</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  434</span> </div>
+<div class="line"><span class="lineno">  435</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">  436</span>  {</div>
+<div class="line"><span class="lineno">  437</span>    *loss = <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_get_loss(index);</div>
+<div class="line"><span class="lineno">  438</span>  }</div>
+<div class="line"><span class="lineno">  439</span>  <span class="keywordflow">catch</span> (std::exception &amp;e)</div>
+<div class="line"><span class="lineno">  440</span>  {</div>
+<div class="line"><span class="lineno">  441</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno">  442</span>  }</div>
+<div class="line"><span class="lineno">  443</span> </div>
+<div class="line"><span class="lineno">  444</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno">  445</span>}</div>
+<div class="ttc" id="annfw_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363"><div class="ttname"><a href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a></div><div class="ttdeci">@ NNFW_STATUS_NO_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00112">nnfw.h:112</a></div></div>
+<div class="ttc" id="annfw_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea"><div class="ttname"><a href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a></div><div class="ttdeci">@ NNFW_STATUS_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00117">nnfw.h:117</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>, <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, and <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>.</p>
+
+</div>
+</div>
+<a id="ae2df9aba6b77d42a961ab26947663f12" name="ae2df9aba6b77d42a961ab26947663f12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2df9aba6b77d42a961ab26947663f12">&#9670;&#160;</a></span>nnfw_train_input_tensorinfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_train_input_tensorinfo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *&#160;</td>
+          <td class="paramname"><em>info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the training model input information. </p>
+<dl class="section note"><dt>Note</dt><dd>This function should be called after <code><a class="el" href="nnfw__experimental_8h.html#a88b27ec96515990151ae0e31763b4175">nnfw_train_prepare</a></code></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The session to get the training model input information </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>The index of training model input </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">info</td><td>The shape and type of training model input </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00397">397</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  399</span>{</div>
+<div class="line"><span class="lineno">  400</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  401</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_input_tensorinfo(index, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  402</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="a88b27ec96515990151ae0e31763b4175" name="a88b27ec96515990151ae0e31763b4175"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88b27ec96515990151ae0e31763b4175">&#9670;&#160;</a></span>nnfw_train_prepare()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_train_prepare </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structnnfw__train__info.html">nnfw_train_info</a> *&#160;</td>
+          <td class="paramname"><em>info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prepare session to be ready for training. </p>
+<dl class="section note"><dt>Note</dt><dd>The session will be entered into training mode</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The session to be prepared for training </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">info</td><td>Training information. If info is nullptr, it will not change training information. If it is nullptr and model has not training information, it will use default training information. Default training information is {learning_rate = 0.001f, batch_size = 1}</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00391">391</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  392</span>{</div>
+<div class="line"><span class="lineno">  393</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  394</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_prepare(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  395</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="a2dcf5951cfb152a9f05dc8413cd9501e" name="a2dcf5951cfb152a9f05dc8413cd9501e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dcf5951cfb152a9f05dc8413cd9501e">&#9670;&#160;</a></span>nnfw_train_set_expected()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_train_set_expected </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>expected</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *&#160;</td>
+          <td class="paramname"><em>expected_info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set training expected output. </p>
+<dl class="section note"><dt>Note</dt><dd>This function should be called after <code><a class="el" href="nnfw__experimental_8h.html#a88b27ec96515990151ae0e31763b4175">nnfw_train_prepare</a></code></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">session</td><td>The session to be set training inputs and expected model outputs </td></tr>
+    <tr><td class="paramname">index</td><td>The index of training expected output </td></tr>
+    <tr><td class="paramname">expected</td><td>The expected buffers for training </td></tr>
+    <tr><td class="paramname">expected_info</td><td>The shape and type of expected buffer If it is nullptr, it will not change shape and batch size </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00418">418</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  420</span>{</div>
+<div class="line"><span class="lineno">  421</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  422</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_expected(index, expected, expected_info);</div>
+<div class="line"><span class="lineno">  423</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="ab1e5288018de3651ed27aa7333e3217e" name="ab1e5288018de3651ed27aa7333e3217e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1e5288018de3651ed27aa7333e3217e">&#9670;&#160;</a></span>nnfw_train_set_input()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_train_set_input </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *&#160;</td>
+          <td class="paramname"><em>input_info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set training input. </p>
+<dl class="section note"><dt>Note</dt><dd>This function should be called after <code><a class="el" href="nnfw__experimental_8h.html#a88b27ec96515990151ae0e31763b4175">nnfw_train_prepare</a></code></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The session to be set training inputs and expected model outputs </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>The index of training input </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>The input buffers for training </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">input_info</td><td>The shape and type of input buffer If it is nullptr, it will not change shape and batch size </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00411">411</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  413</span>{</div>
+<div class="line"><span class="lineno">  414</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  415</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_input(index, input, input_info);</div>
+<div class="line"><span class="lineno">  416</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 

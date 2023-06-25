@@ -1,6 +1,7 @@
 var namespaceonert_1_1backend_1_1builtin =
 [
     [ "kernel", "namespaceonert_1_1backend_1_1builtin_1_1kernel.html", "namespaceonert_1_1backend_1_1builtin_1_1kernel" ],
+    [ "train", "namespaceonert_1_1backend_1_1builtin_1_1train.html", "namespaceonert_1_1backend_1_1builtin_1_1train" ],
     [ "Backend", "classonert_1_1backend_1_1builtin_1_1_backend.html", "classonert_1_1backend_1_1builtin_1_1_backend" ],
     [ "BackendContext", "classonert_1_1backend_1_1builtin_1_1_backend_context.html", "classonert_1_1backend_1_1builtin_1_1_backend_context" ],
     [ "Config", "classonert_1_1backend_1_1builtin_1_1_config.html", "classonert_1_1backend_1_1builtin_1_1_config" ],

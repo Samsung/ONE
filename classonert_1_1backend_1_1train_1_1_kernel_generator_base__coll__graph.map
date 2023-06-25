@@ -1,0 +1,6 @@
+<map id="onert::backend::train::KernelGeneratorBase" name="onert::backend::train::KernelGeneratorBase">
+<area shape="rect" id="node1" title=" " alt="" coords="61,183,213,223"/>
+<area shape="rect" id="node2" href="$structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html" title=" " alt="" coords="5,80,160,120"/>
+<area shape="rect" id="node3" href="$classonert_1_1ir_1_1train_1_1_trainable_graph.html" title=" " alt="" coords="184,80,339,120"/>
+<area shape="rect" id="node4" href="$structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="207,5,316,31"/>
+</map>

@@ -1,4 +1,6 @@
 <map id="onert::compiler::pass::Pass" name="onert::compiler::pass::Pass">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,145,133"/>
-<area shape="rect" id="node2" href="$classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="23,5,128,31"/>
+<area shape="rect" id="node1" title=" " alt="" coords="52,183,192,223"/>
+<area shape="rect" id="node2" href="$structonert_1_1compiler_1_1pass_1_1_i_pass.html" title=" " alt="" coords="5,80,145,120"/>
+<area shape="rect" id="node3" href="$classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="169,87,275,113"/>
+<area shape="rect" id="node4" href="$structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="167,5,277,31"/>
 </map>

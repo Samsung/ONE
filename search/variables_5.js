@@ -30,5 +30,5 @@ var searchData=
   ['expected_5fcount_5fline_27',['expected_count_line',['../namespacepart__eval__one.html#a85c76bd03f1fdc0645d45f727d21b96d',1,'part_eval_one']]],
   ['extent_28',['extent',['../classflatbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a167a0e601298ae29b3f1ae1e65a1a68b',1,'flatbuffers::FLATBUFFERS_FINAL_CLASS']]],
   ['extents_29',['extents',['../structluci__interpreter__pal_1_1_nd_array_desc.html#a61326d13f04bc5056d575ae2a58e76f8',1,'luci_interpreter_pal::NdArrayDesc::extents()'],['../struct_nd_array_desc.html#aca9e26cbf3c4a80079a52135661da051',1,'NdArrayDesc::extents()'],['../structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a',1,'nnfw::cker::NdArrayDesc::extents()']]],
-  ['external_5foperands_30',['external_operands',['../structonert_1_1backend_1_1_context_data.html#ad06628db6c302cdb96e2ccddce878493',1,'onert::backend::ContextData']]]
+  ['external_5foperands_30',['external_operands',['../structonert_1_1backend_1_1_context_data.html#ad06628db6c302cdb96e2ccddce878493',1,'onert::backend::ContextData::external_operands()'],['../structonert_1_1backend_1_1train_1_1_trainable_context_data.html#a6cfb741cc9568d1aea65ea6d73d9ba72',1,'onert::backend::train::TrainableContextData::external_operands()']]]
 ];

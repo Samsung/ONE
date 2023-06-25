@@ -1,0 +1,7 @@
+<map id="onert::compiler::train::pass::LossInsertionPass" name="onert::compiler::train::pass::LossInsertionPass">
+<area shape="rect" id="node1" title=" " alt="" coords="11,272,182,312"/>
+<area shape="rect" id="node2" href="$classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html" title=" " alt="" coords="28,183,165,223"/>
+<area shape="rect" id="node3" href="$structonert_1_1compiler_1_1pass_1_1_i_pass.html" title=" " alt="" coords="5,80,145,120"/>
+<area shape="rect" id="node4" href="$classonert_1_1ir_1_1train_1_1_trainable_graph.html" title=" " alt="" coords="170,80,325,120"/>
+<area shape="rect" id="node5" href="$structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="193,5,302,31"/>
+</map>

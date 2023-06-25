@@ -104,13 +104,15 @@ Collaboration diagram for onert::compiler::pass::PermutationEliminationPass:</di
 <div class="dyncontent">
 <div class="center"><img src="classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass__coll__graph.png" border="0" usemap="#aonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass_coll__map" alt="Collaboration graph"/></div>
 <map name="aonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass_coll__map" id="aonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass_coll__map">
-<area shape="rect" title="An optimization pass that removes Permute operations if possible." alt="" coords="161,375,352,415"/>
-<area shape="rect" href="classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html" title=" " alt="" coords="81,285,245,325"/>
-<area shape="rect" href="classonert_1_1compiler_1_1pass_1_1_operation_pass.html" title="Class to iterate over operations and calls callback() method." alt="" coords="5,183,145,223"/>
-<area shape="rect" href="classonert_1_1compiler_1_1pass_1_1_pass.html" title=" " alt="" coords="5,93,145,133"/>
-<area shape="rect" href="classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="23,5,128,31"/>
-<area shape="rect" href="structonert_1_1compiler_1_1_i_lowered_graph.html" title=" " alt="" coords="169,183,336,223"/>
-<area shape="rect" href="structonert_1_1ir_1_1_operation_visitor.html" title=" " alt="" coords="270,293,433,318"/>
+<area shape="rect" title="An optimization pass that removes Permute operations if possible." alt="" coords="183,464,373,504"/>
+<area shape="rect" href="classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html" title=" " alt="" coords="103,375,267,415"/>
+<area shape="rect" href="classonert_1_1compiler_1_1pass_1_1_operation_pass.html" title="Class to iterate over operations and calls callback() method." alt="" coords="27,272,167,312"/>
+<area shape="rect" href="classonert_1_1compiler_1_1pass_1_1_pass.html" title=" " alt="" coords="27,183,167,223"/>
+<area shape="rect" href="structonert_1_1compiler_1_1pass_1_1_i_pass.html" title=" " alt="" coords="5,80,145,120"/>
+<area shape="rect" href="classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="169,87,275,113"/>
+<area shape="rect" href="structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="167,5,277,31"/>
+<area shape="rect" href="structonert_1_1compiler_1_1_i_lowered_graph.html" title=" " alt="" coords="191,272,357,312"/>
+<area shape="rect" href="structonert_1_1ir_1_1_operation_visitor.html" title=" " alt="" coords="291,382,454,407"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -119,9 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a61487483d6e48fa0d0173b09cf786ea7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html#a61487483d6e48fa0d0173b09cf786ea7">id</a> () final</td></tr>
 <tr class="memdesc:a61487483d6e48fa0d0173b09cf786ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns string id for this pass. Same with class name.  <a href="classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html#a61487483d6e48fa0d0173b09cf786ea7">More...</a><br /></td></tr>
 <tr class="separator:a61487483d6e48fa0d0173b09cf786ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3698004b817b1eab2e9c93d0687996fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html#a3698004b817b1eab2e9c93d0687996fe">callback</a> (const <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;i, <a class="el" href="classonert_1_1ir_1_1_operation.html">ir::Operation</a> &amp;n) final</td></tr>
-<tr class="memdesc:a3698004b817b1eab2e9c93d0687996fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Be called for all nodes of graph.  <a href="classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html#a3698004b817b1eab2e9c93d0687996fe">More...</a><br /></td></tr>
-<tr class="separator:a3698004b817b1eab2e9c93d0687996fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af50cc9a79897c9f8aaee45f55de77867"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html#af50cc9a79897c9f8aaee45f55de77867">callback</a> (const <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;i, <a class="el" href="structonert_1_1ir_1_1_i_operation.html">ir::IOperation</a> &amp;n) final</td></tr>
+<tr class="memdesc:af50cc9a79897c9f8aaee45f55de77867"><td class="mdescLeft">&#160;</td><td class="mdescRight">Be called for all nodes of graph.  <a href="classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html#af50cc9a79897c9f8aaee45f55de77867">More...</a><br /></td></tr>
+<tr class="separator:af50cc9a79897c9f8aaee45f55de77867"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4ea285b3bfa6efc77e08d86256e97e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html#af4ea285b3bfa6efc77e08d86256e97e6">LoweredOperationPass</a> (<a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html">ILoweredGraph</a> &amp;lowered_graph)</td></tr>
 <tr class="separator:af4ea285b3bfa6efc77e08d86256e97e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html">onert::compiler::pass::LoweredOperationPass</a></td></tr>
@@ -132,18 +134,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2f4fc5aa87add75c209e2abcf03f48df inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html#a2f4fc5aa87add75c209e2abcf03f48df">id</a> () override=0</td></tr>
 <tr class="memdesc:a2f4fc5aa87add75c209e2abcf03f48df inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns string id for this pass. Same with class name.  <a href="classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html#a2f4fc5aa87add75c209e2abcf03f48df">More...</a><br /></td></tr>
 <tr class="separator:a2f4fc5aa87add75c209e2abcf03f48df inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad342b0f6c539e34d1eb2505f476bc398 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html#ad342b0f6c539e34d1eb2505f476bc398">callback</a> (const <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;i, <a class="el" href="classonert_1_1ir_1_1_operation.html">ir::Operation</a> &amp;o) override=0</td></tr>
-<tr class="memdesc:ad342b0f6c539e34d1eb2505f476bc398 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Be called for all nodes of graph.  <a href="classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html#ad342b0f6c539e34d1eb2505f476bc398">More...</a><br /></td></tr>
-<tr class="separator:ad342b0f6c539e34d1eb2505f476bc398 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c0ebb7c64f66b2a5b730d6457209354 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html#a5c0ebb7c64f66b2a5b730d6457209354">callback</a> (const <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;i, <a class="el" href="structonert_1_1ir_1_1_i_operation.html">ir::IOperation</a> &amp;o) override=0</td></tr>
+<tr class="memdesc:a5c0ebb7c64f66b2a5b730d6457209354 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Be called for all nodes of graph.  <a href="classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html#a5c0ebb7c64f66b2a5b730d6457209354">More...</a><br /></td></tr>
+<tr class="separator:a5c0ebb7c64f66b2a5b730d6457209354 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1compiler_1_1pass_1_1_operation_pass.html">onert::compiler::pass::OperationPass</a></td></tr>
 <tr class="memitem:aab7a65e66d66deae25de10c52095f17d inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_operation_pass.html#aab7a65e66d66deae25de10c52095f17d">~OperationPass</a> ()=default</td></tr>
 <tr class="separator:aab7a65e66d66deae25de10c52095f17d inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1e83ad5e213de782a99941639624eca inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_operation_pass.html#ac1e83ad5e213de782a99941639624eca">id</a> () override=0</td></tr>
 <tr class="memdesc:ac1e83ad5e213de782a99941639624eca inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns string id for this pass. Same with class name.  <a href="classonert_1_1compiler_1_1pass_1_1_operation_pass.html#ac1e83ad5e213de782a99941639624eca">More...</a><br /></td></tr>
 <tr class="separator:ac1e83ad5e213de782a99941639624eca inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14323ec265c60db821fccf59290a55cc inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_operation_pass.html#a14323ec265c60db821fccf59290a55cc">callback</a> (const <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;index, <a class="el" href="classonert_1_1ir_1_1_operation.html">ir::Operation</a> &amp;node)=0</td></tr>
-<tr class="memdesc:a14323ec265c60db821fccf59290a55cc inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Be called for all nodes of graph.  <a href="classonert_1_1compiler_1_1pass_1_1_operation_pass.html#a14323ec265c60db821fccf59290a55cc">More...</a><br /></td></tr>
-<tr class="separator:a14323ec265c60db821fccf59290a55cc inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd78403f20566158b11ba1072c2c4054 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_operation_pass.html#abd78403f20566158b11ba1072c2c4054">callback</a> (const <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;index, <a class="el" href="structonert_1_1ir_1_1_i_operation.html">ir::IOperation</a> &amp;node)=0</td></tr>
+<tr class="memdesc:abd78403f20566158b11ba1072c2c4054 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Be called for all nodes of graph.  <a href="classonert_1_1compiler_1_1pass_1_1_operation_pass.html#abd78403f20566158b11ba1072c2c4054">More...</a><br /></td></tr>
+<tr class="separator:abd78403f20566158b11ba1072c2c4054 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb893f2e7e7a7a5aee879a7c8afb1982 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_operation_pass.html#aeb893f2e7e7a7a5aee879a7c8afb1982">run</a> () final</td></tr>
 <tr class="memdesc:aeb893f2e7e7a7a5aee879a7c8afb1982 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the pass.  <a href="classonert_1_1compiler_1_1pass_1_1_operation_pass.html#aeb893f2e7e7a7a5aee879a7c8afb1982">More...</a><br /></td></tr>
 <tr class="separator:aeb893f2e7e7a7a5aee879a7c8afb1982 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_operation_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,6 +160,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0521cd989eb9f5a2c34816245ca3dee4 inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46873096e36c3a3a4d833c0ddce14f7f inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_pass"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1pass_1_1_pass.html#a46873096e36c3a3a4d833c0ddce14f7f">run</a> ()=0</td></tr>
 <tr class="separator:a46873096e36c3a3a4d833c0ddce14f7f inherit pub_methods_classonert_1_1compiler_1_1pass_1_1_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structonert_1_1compiler_1_1pass_1_1_i_pass"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structonert_1_1compiler_1_1pass_1_1_i_pass')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structonert_1_1compiler_1_1pass_1_1_i_pass.html">onert::compiler::pass::IPass</a></td></tr>
+<tr class="memitem:a8b25b01b7c488ce8c358c55e643d4154 inherit pub_methods_structonert_1_1compiler_1_1pass_1_1_i_pass"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1compiler_1_1pass_1_1_i_pass.html#a8b25b01b7c488ce8c358c55e643d4154">~IPass</a> ()=default</td></tr>
+<tr class="separator:a8b25b01b7c488ce8c358c55e643d4154 inherit pub_methods_structonert_1_1compiler_1_1pass_1_1_i_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a213607918ccfd54e8a471c14d97e135d inherit pub_methods_structonert_1_1compiler_1_1pass_1_1_i_pass"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1compiler_1_1pass_1_1_i_pass.html#a213607918ccfd54e8a471c14d97e135d">id</a> ()=0</td></tr>
+<tr class="separator:a213607918ccfd54e8a471c14d97e135d inherit pub_methods_structonert_1_1compiler_1_1pass_1_1_i_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c442f2654121bdc4ded1f1da00a36d2 inherit pub_methods_structonert_1_1compiler_1_1pass_1_1_i_pass"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1compiler_1_1pass_1_1_i_pass.html#a1c442f2654121bdc4ded1f1da00a36d2">run</a> ()=0</td></tr>
+<tr class="separator:a1c442f2654121bdc4ded1f1da00a36d2 inherit pub_methods_structonert_1_1compiler_1_1pass_1_1_i_pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structonert_1_1ir_1_1_operation_visitor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structonert_1_1ir_1_1_operation_visitor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structonert_1_1ir_1_1_operation_visitor.html">onert::ir::OperationVisitor</a></td></tr>
 <tr class="memitem:afebd17f6e2e3a0cfecdea2ebc6b1bc1b inherit pub_methods_structonert_1_1ir_1_1_operation_visitor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_operation_visitor.html#afebd17f6e2e3a0cfecdea2ebc6b1bc1b">~OperationVisitor</a> ()=default</td></tr>
 <tr class="separator:afebd17f6e2e3a0cfecdea2ebc6b1bc1b inherit pub_methods_structonert_1_1ir_1_1_operation_visitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,8 +188,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_permutation_elimination_pass_8h_source.html#l00043">43</a> of file <a class="el" href="_permutation_elimination_pass_8h_source.html">PermutationEliminationPass.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3698004b817b1eab2e9c93d0687996fe" name="a3698004b817b1eab2e9c93d0687996fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3698004b817b1eab2e9c93d0687996fe">&#9670;&#160;</a></span>callback()</h2>
+<a id="af50cc9a79897c9f8aaee45f55de77867" name="af50cc9a79897c9f8aaee45f55de77867"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af50cc9a79897c9f8aaee45f55de77867">&#9670;&#160;</a></span>callback()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,7 +206,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classonert_1_1ir_1_1_operation.html">ir::Operation</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structonert_1_1ir_1_1_i_operation.html">ir::IOperation</a> &amp;&#160;</td>
           <td class="paramname"><em>node</em>&#160;</td>
         </tr>
         <tr>
@@ -222,7 +231,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html#ad342b0f6c539e34d1eb2505f476bc398">onert::compiler::pass::LoweredOperationPass</a>.</p>
+<p>Implements <a class="el" href="classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html#a5c0ebb7c64f66b2a5b730d6457209354">onert::compiler::pass::LoweredOperationPass</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_permutation_elimination_pass_8cc_source.html#l00029">29</a> of file <a class="el" href="_permutation_elimination_pass_8cc_source.html">PermutationEliminationPass.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>

@@ -11,6 +11,7 @@ var namespaceonert_1_1compiler =
     [ "CompilerOptions", "classonert_1_1compiler_1_1_compiler_options.html", "classonert_1_1compiler_1_1_compiler_options" ],
     [ "ExecutionBuilder", "classonert_1_1compiler_1_1_execution_builder.html", "classonert_1_1compiler_1_1_execution_builder" ],
     [ "ExecutorFactory", "classonert_1_1compiler_1_1_executor_factory.html", "classonert_1_1compiler_1_1_executor_factory" ],
+    [ "ExecutorFactoryArgs", "structonert_1_1compiler_1_1_executor_factory_args.html", "structonert_1_1compiler_1_1_executor_factory_args" ],
     [ "GraphLowerInfo", "structonert_1_1compiler_1_1_graph_lower_info.html", "structonert_1_1compiler_1_1_graph_lower_info" ],
     [ "HEScheduler", "classonert_1_1compiler_1_1_h_e_scheduler.html", "classonert_1_1compiler_1_1_h_e_scheduler" ],
     [ "ICompiler", "classonert_1_1compiler_1_1_i_compiler.html", "classonert_1_1compiler_1_1_i_compiler" ],

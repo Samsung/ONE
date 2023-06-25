@@ -1,8 +1,7 @@
 <map id="onert::compiler::CodeAndInfo" name="onert::compiler::CodeAndInfo">
-<area shape="rect" id="node1" title=" " alt="" coords="623,86,809,111"/>
-<area shape="rect" id="node2" href="$classonert_1_1util_1_1_index.html" title=" " alt="" coords="339,7,512,62"/>
-<area shape="rect" id="node3" href="$classonert_1_1util_1_1_index.html" title="A wrapper class for unsigned integral Index NOTE : Max value of the underlying type is used as the in..." alt="" coords="8,15,133,55"/>
-<area shape="rect" id="node4" href="$classonert_1_1ir_1_1_operation.html" title=" " alt="" coords="362,86,489,111"/>
-<area shape="rect" id="node5" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="5,86,136,111"/>
-<area shape="rect" id="node6" href="$classonert_1_1compiler_1_1_operation_lower_info.html" title=" " alt="" coords="341,136,509,176"/>
+<area shape="rect" id="node1" title=" " alt="" coords="617,86,804,111"/>
+<area shape="rect" id="node2" href="$classonert_1_1util_1_1_index.html" title=" " alt="" coords="333,7,507,62"/>
+<area shape="rect" id="node3" href="$classonert_1_1util_1_1_index.html" title="A wrapper class for unsigned integral Index NOTE : Max value of the underlying type is used as the in..." alt="" coords="5,15,131,55"/>
+<area shape="rect" id="node4" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="355,86,485,111"/>
+<area shape="rect" id="node5" href="$classonert_1_1compiler_1_1_operation_lower_info.html" title=" " alt="" coords="336,136,504,176"/>
 </map>

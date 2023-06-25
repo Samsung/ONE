@@ -3,12 +3,22 @@ var nnfw__experimental_8h =
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
     [ "custom_kernel_registration_info", "structcustom__kernel__registration__info.html", "structcustom__kernel__registration__info" ],
+    [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "nnfw_custom_eval", "nnfw__experimental_8h.html#a300b163aa909a1decc6f41d9d46a20e1", null ],
+    [ "nnfw_train_info", "nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975", null ],
     [ "nnfw_input_tensorindex", "nnfw__experimental_8h.html#a84b063e69ff8e50612f08a902215c894", null ],
     [ "nnfw_output_tensorindex", "nnfw__experimental_8h.html#a5f67df99da7ea81a11625ca7cbc981de", null ],
     [ "nnfw_pop_pipeline_output", "nnfw__experimental_8h.html#ad1538903c2e179efa3f63be6431eb050", null ],
     [ "nnfw_prepare_pipeline", "nnfw__experimental_8h.html#a0358e9d67030e0af594395bf0983003c", null ],
     [ "nnfw_push_pipeline_input", "nnfw__experimental_8h.html#ac631a7695a0fd98716e984f3af3154bd", null ],
     [ "nnfw_register_custom_op_info", "nnfw__experimental_8h.html#a1cc20d75d44428477e0020e4c8c581a6", null ],
-    [ "nnfw_set_backends_per_operation", "nnfw__experimental_8h.html#ac7b4df41162c0e5b6977110c2976072f", null ]
+    [ "nnfw_set_backends_per_operation", "nnfw__experimental_8h.html#ac7b4df41162c0e5b6977110c2976072f", null ],
+    [ "nnfw_train", "nnfw__experimental_8h.html#a73e25145d65236e1dc891d19da0c4ae4", null ],
+    [ "nnfw_train_expected_tensorinfo", "nnfw__experimental_8h.html#aede2b315e1e4cef364e5372f88827486", null ],
+    [ "nnfw_train_export_circle", "nnfw__experimental_8h.html#af34150291cf5ff5d0d441ef73e623400", null ],
+    [ "nnfw_train_get_loss", "nnfw__experimental_8h.html#a1cb00110d13d3a316db8e01bc7974243", null ],
+    [ "nnfw_train_input_tensorinfo", "nnfw__experimental_8h.html#ae2df9aba6b77d42a961ab26947663f12", null ],
+    [ "nnfw_train_prepare", "nnfw__experimental_8h.html#a88b27ec96515990151ae0e31763b4175", null ],
+    [ "nnfw_train_set_expected", "nnfw__experimental_8h.html#a2dcf5951cfb152a9f05dc8413cd9501e", null ],
+    [ "nnfw_train_set_input", "nnfw__experimental_8h.html#ab1e5288018de3651ed27aa7333e3217e", null ]
 ];

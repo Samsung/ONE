@@ -110,7 +110,15 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_config.html">Config</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1train_1_1_i_trainable_backend.html">ITrainableBackend</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_kernel_generator.html">KernelGenerator</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html">KernelGeneratorBase</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html">TrainableBackendContext</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1train_1_1_trainable_context_data.html">TrainableContextData</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -123,6 +131,10 @@ Typedefs</h2></td></tr>
 <tr class="separator:ad603c5f3d53b02a49592e11a79e06d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7deae2f930c7abeda1e4a0d7c86a9417"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a7deae2f930c7abeda1e4a0d7c86a9417">TensorBuilder</a> = <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor_builder.html">basic::TensorBuilder</a></td></tr>
 <tr class="separator:a7deae2f930c7abeda1e4a0d7c86a9417"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77098c4c53ca5551dbc93aca80ed2ae4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a77098c4c53ca5551dbc93aca80ed2ae4">FunctionMap</a> = std::vector&lt; std::pair&lt; <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a>, std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html">exec::train::TrainableFnSequence</a> &gt; &gt; &gt;</td></tr>
+<tr class="separator:a77098c4c53ca5551dbc93aca80ed2ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21fcc843f3525a88a84dc135310daf3e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a21fcc843f3525a88a84dc135310daf3e">TrainableBackendContexts</a> = std::unordered_map&lt; const <a class="el" href="classonert_1_1backend_1_1train_1_1_backend.html">Backend</a> *, std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html">TrainableBackendContext</a> &gt; &gt;</td></tr>
+<tr class="separator:a21fcc843f3525a88a84dc135310daf3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a3c1e11c7f580abe1841baa9258e4ac66" name="a3c1e11c7f580abe1841baa9258e4ac66"></a>
@@ -157,6 +169,22 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
+<a id="a77098c4c53ca5551dbc93aca80ed2ae4" name="a77098c4c53ca5551dbc93aca80ed2ae4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77098c4c53ca5551dbc93aca80ed2ae4">&#9670;&#160;</a></span>FunctionMap</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1backend_1_1train.html#a77098c4c53ca5551dbc93aca80ed2ae4">onert::backend::train::FunctionMap</a> = typedef std::vector&lt;std::pair&lt;<a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a>, std::unique_ptr&lt;<a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html">exec::train::TrainableFnSequence</a>&gt; &gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00035">35</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+
+</div>
+</div>
 <a id="a50617016410e278430c007616b4aaff8" name="a50617016410e278430c007616b4aaff8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a50617016410e278430c007616b4aaff8">&#9670;&#160;</a></span>Tensor</h2>
 
@@ -186,6 +214,22 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8h_source.html#l00029">29</a> of file <a class="el" href="backend_2train_2_tensor_builder_8h_source.html">TensorBuilder.h</a>.</p>
+
+</div>
+</div>
+<a id="a21fcc843f3525a88a84dc135310daf3e" name="a21fcc843f3525a88a84dc135310daf3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21fcc843f3525a88a84dc135310daf3e">&#9670;&#160;</a></span>TrainableBackendContexts</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1backend_1_1train.html#a21fcc843f3525a88a84dc135310daf3e">onert::backend::train::TrainableBackendContexts</a> = typedef std::unordered_map&lt;const <a class="el" href="classonert_1_1backend_1_1train_1_1_backend.html">Backend</a> *, std::unique_ptr&lt;<a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html">TrainableBackendContext</a>&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00094">94</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
 
 </div>
 </div>

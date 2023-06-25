@@ -124,221 +124,248 @@ $(document).ready(function(){initNavTree('_multi_model_compiler_8cc_source.html'
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#include &quot;<a class="code" href="_static_shape_inferer_8h.html">compiler/StaticShapeInferer.h</a>&quot;</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &lt;<a class="code" href="string__helpers_8h.html">misc/string_helpers.h</a>&gt;</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">namespace </span>compiler</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1_multi_model_compiler.html#a6eeb0714a517d53cba04365cb63bb1bb">   39</a></span><a class="code hl_function" href="classonert_1_1compiler_1_1_multi_model_compiler.html#a6eeb0714a517d53cba04365cb63bb1bb">MultiModelCompiler::MultiModelCompiler</a>(<span class="keyword">const</span> std::shared_ptr&lt;ir::NNPkg&gt; &amp;nnpkg,</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                                       std::vector&lt;std::unique_ptr&lt;CompilerOptions&gt;&gt; &amp;copts)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  : _nnpkg{nnpkg}, _voptions{}</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  assert(nnpkg-&gt;model_count() != 1);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; copts.size(); i++)</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    _voptions.push_back(copts[i].get());</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  }</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1_multi_model_compiler.html#aa9d76e8e915bc297a6dcf8a6cdf17deb">   51</a></span>std::shared_ptr&lt;CompilerArtifact&gt; <a class="code hl_function" href="classonert_1_1compiler_1_1_multi_model_compiler.html#aa9d76e8e915bc297a6dcf8a6cdf17deb">MultiModelCompiler::compile</a>(<span class="keywordtype">void</span>)</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>{</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">  /***************************************************</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">   * Prepare compilation phase</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">   ***************************************************/</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> options : _voptions)</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  {</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">if</span> (!options)</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Empty compile option&quot;</span>};</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">// Mode check</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">// TODO handle option for each model</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">if</span> (options-&gt;he_profiling_mode)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;NYI: Profiling mode for multiple model is not supported yet&quot;</span>);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">if</span> (!options-&gt;minmax_filepath.empty())</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Recording minmax is not supported for multiple models&quot;</span>);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    options-&gt;forceInternalOptions();</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    options-&gt;verboseOptions();</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  }</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">// NYI: allow one model compilation</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">auto</span> <span class="keyword">const</span> model_count = _nnpkg-&gt;model_count();</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">if</span> (model_count != _voptions.size())</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Model count and option vector size mismatch&quot;</span>};</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordflow">for</span> (uint16_t i = 0; i &lt; model_count; i++)</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  {</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    _nnpkg-&gt;model(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::ModelIndex</a>{i})-&gt;iterate([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> &amp;, <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;subg) {</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      <span class="comment">// Mandatory passes</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>      <a class="code hl_class" href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html">pass::PassRunner</a>{}</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        .<a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html#a5f04c8904fd9c418b7ac52d7dfb1f3b1">append</a>(std::make_unique&lt;pass::ConstantOutputPass&gt;(subg))</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        .append(std::make_unique&lt;pass::OddOutputPass&gt;(subg))</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        .<a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>();</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      <span class="comment">// Optimizations</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      <a class="code hl_class" href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html">pass::PassRunner</a>{}.<a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html#a5f04c8904fd9c418b7ac52d7dfb1f3b1">append</a>(std::make_unique&lt;pass::UnusedOperandEliminationPass&gt;(subg)).<a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>();</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    });</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  }</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">  /***************************************************</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">   * Backend independent analysis &amp; optimization phase</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">   ***************************************************/</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="comment">// TODO Handle dump level for each model</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keyword">auto</span> dump_level = <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291f">dumper::dot::DotDumper::Level</a><span class="keyword">&gt;</span>(_voptions[0]-&gt;graph_dump_level);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <a class="code hl_class" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html">onert::dumper::dot::DotDumper</a> dot_dumper(dump_level);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="comment">// Tracing context</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="comment">// TODO Support tracing_ctx for multiple model</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  std::unique_ptr&lt;util::TracingCtx&gt; tracing_ctx = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="comment">// Model edge context: copy model edge context</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keyword">auto</span> model_edges = std::make_unique&lt;ir::ModelEdges&gt;(_nnpkg-&gt;model_edges());</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="comment">// Lower: Assign backend</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  std::unordered_map&lt;<a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a>,</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                     std::unordered_map&lt;ir::SubgraphIndex, std::unique_ptr&lt;compiler::LoweredGraph&gt;&gt;&gt;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    lowered_subgs;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordflow">for</span> (uint16_t i = 0; i &lt; model_count; i++)</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  {</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keyword">auto</span> <span class="keyword">const</span> model_index = <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::ModelIndex</a>{i};</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keyword">auto</span> model = _nnpkg-&gt;model(model_index);</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    model-&gt;iterate([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> &amp;subg_index, <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;subg) {</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>      dot_dumper.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#ad4d636398424bb657b53ec5f9304b7c8">dump</a>(subg,</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                      <a class="code hl_function" href="namespacennfw_1_1misc.html#a36f85b0534626eeaea6d15897e571171">nnfw::misc::str</a>(<span class="stringliteral">&quot;before_lower_model-&quot;</span>, i, <span class="stringliteral">&quot;-subg-&quot;</span>, subg_index.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>()));</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <span class="comment">// Lower: Assign backend</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      lowered_subgs[model_index][subg_index] =</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        std::make_unique&lt;compiler::LoweredGraph&gt;(subg, *_voptions[i]);</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      <span class="comment">// Set tracing_ctx for copied graph</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      if (tracing_ctx != <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        tracing_ctx-&gt;setSubgraphIndex(&amp;(lowered_subgs[model_index][subg_index]-&gt;graph()),</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                                      subg_index.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>());</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    });</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  }</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#include &lt;<a class="code" href="polymorphic__downcast_8h.html">misc/polymorphic_downcast.h</a>&gt;</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">namespace </span>compiler</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1_multi_model_compiler.html#a6eeb0714a517d53cba04365cb63bb1bb">   40</a></span><a class="code hl_function" href="classonert_1_1compiler_1_1_multi_model_compiler.html#a6eeb0714a517d53cba04365cb63bb1bb">MultiModelCompiler::MultiModelCompiler</a>(<span class="keyword">const</span> std::shared_ptr&lt;ir::NNPkg&gt; &amp;nnpkg,</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                                       std::vector&lt;std::unique_ptr&lt;CompilerOptions&gt;&gt; &amp;copts)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  : _nnpkg{nnpkg}, _voptions{}</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>{</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  assert(nnpkg-&gt;model_count() != 1);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; copts.size(); i++)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    _voptions.push_back(copts[i].get());</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1_multi_model_compiler.html#aa9d76e8e915bc297a6dcf8a6cdf17deb">   52</a></span>std::shared_ptr&lt;CompilerArtifact&gt; <a class="code hl_function" href="classonert_1_1compiler_1_1_multi_model_compiler.html#aa9d76e8e915bc297a6dcf8a6cdf17deb">MultiModelCompiler::compile</a>(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>{</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">  /***************************************************</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">   * Prepare compilation phase</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">   ***************************************************/</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> options : _voptions)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">if</span> (!options)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Empty compile option&quot;</span>};</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">// Mode check</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">// TODO handle option for each model</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">if</span> (options-&gt;he_profiling_mode)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;NYI: Profiling mode for multiple model is not supported yet&quot;</span>);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">if</span> (!options-&gt;minmax_filepath.empty())</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Recording minmax is not supported for multiple models&quot;</span>);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    options-&gt;forceInternalOptions();</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    options-&gt;verboseOptions();</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  }</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">// NYI: allow one model compilation</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">auto</span> <span class="keyword">const</span> model_count = _nnpkg-&gt;model_count();</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordflow">if</span> (model_count != _voptions.size())</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Model count and option vector size mismatch&quot;</span>};</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordflow">for</span> (uint16_t i = 0; i &lt; model_count; i++)</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">if</span> (!_nnpkg-&gt;model(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::ModelIndex</a>{i})-&gt;hasOnly&lt;<a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a>&gt;())</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;MultiModelCompiler can only compile models for inference.&quot;</span>);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordflow">for</span> (uint16_t i = 0; i &lt; model_count; i++)</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    _nnpkg-&gt;model(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::ModelIndex</a>{i})-&gt;iterate([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> &amp;, <a class="code hl_struct" href="structonert_1_1ir_1_1_i_graph.html">ir::IGraph</a> &amp;graph) {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      <span class="keyword">auto</span> &amp;subg = nnfw::misc::polymorphic_downcast&lt;ir::Graph &amp;&gt;(graph);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      <span class="comment">// Mandatory passes</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      <a class="code hl_class" href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html">pass::PassRunner</a>{}</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        .<a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html#af976a33db5e3e1248f7e53a46df9e9dd">append</a>(std::make_unique&lt;pass::ConstantOutputPass&gt;(subg))</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        .<a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html#af976a33db5e3e1248f7e53a46df9e9dd">append</a>(std::make_unique&lt;pass::OddOutputPass&gt;(subg))</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        .<a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html#a4ffe1380761425420977336fe5d790d1">run</a>();</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      <span class="comment">// Optimizations</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      <a class="code hl_class" href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html">pass::PassRunner</a>{}.<a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html#af976a33db5e3e1248f7e53a46df9e9dd">append</a>(std::make_unique&lt;pass::UnusedOperandEliminationPass&gt;(subg)).<a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html#a4ffe1380761425420977336fe5d790d1">run</a>();</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    });</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">  /***************************************************</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">   * Backend independent analysis &amp; optimization phase</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">   ***************************************************/</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="comment">// TODO Handle dump level for each model</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keyword">auto</span> dump_level = <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291f">dumper::dot::DotDumper::Level</a><span class="keyword">&gt;</span>(_voptions[0]-&gt;graph_dump_level);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <a class="code hl_class" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html">onert::dumper::dot::DotDumper</a> dot_dumper(dump_level);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="comment">// Tracing context</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="comment">// TODO Support tracing_ctx for multiple model</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  std::unique_ptr&lt;util::TracingCtx&gt; tracing_ctx = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="comment">// Model edge context: copy model edge context</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keyword">auto</span> model_edges = std::make_unique&lt;ir::ModelEdges&gt;(_nnpkg-&gt;model_edges());</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="comment">// Custom kernels</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  std::unordered_map&lt;ir::ModelIndex, std::shared_ptr&lt;backend::custom::IKernelBuilder&gt;&gt;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    custom_kernel_builders;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="keywordflow">for</span> (uint16_t i = 0; i &lt; model_count; i++)</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keyword">auto</span> <span class="keyword">const</span> model_index = <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::ModelIndex</a>{i};</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    custom_kernel_builders[model_index] = _nnpkg-&gt;model(model_index)-&gt;getKernelBuilder();</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  }</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="comment">// Lower: Assign backend</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  std::unordered_map&lt;<a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a>,</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                     std::unordered_map&lt;ir::SubgraphIndex, std::unique_ptr&lt;compiler::LoweredGraph&gt;&gt;&gt;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    lowered_subgs;</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  _nnpkg.reset();</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  {</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;model_index = pair.first;</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;model_lsubg = pair.second;</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair_inner : model_lsubg)</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    {</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;subg_index = pair_inner.first;</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;lowered_subg = pair_inner.second;</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>      dot_dumper.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#ad4d636398424bb657b53ec5f9304b7c8">dump</a>(*lowered_subg, <a class="code hl_function" href="namespacennfw_1_1misc.html#a36f85b0534626eeaea6d15897e571171">nnfw::misc::str</a>(<span class="stringliteral">&quot;after_lower_model-&quot;</span>, model_index.value(),</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                                                     <span class="stringliteral">&quot;-subg-&quot;</span>, subg_index.value()));</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    }</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  }</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="comment">// Shape inference.</span></div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  {</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keyword">auto</span> &amp;model_lsubgs = pair.second;</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="comment">// Run the StaticShapeInfer of primary subg. All child StaticShapeInferers are called</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="comment">// recursively</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    std::unordered_map&lt;ir::SubgraphIndex, std::unique_ptr&lt;StaticShapeInferer&gt;&gt; inferers =</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>      <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a6823b6f3f47aff08fd5233a372e5e75e">StaticShapeInferer::createStaticShapeInferers</a>(model_lsubgs);</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keyword">const</span> <span class="keyword">auto</span> primary_subg_idx = <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a>{0};</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    inferers.at(primary_subg_idx)-&gt;infer();</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair_inferer : inferers)</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    {</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      <span class="keyword">const</span> <span class="keyword">auto</span> inferer = pair_inferer.second.get();</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>      inferer-&gt;dump();</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    }</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  }</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="comment">// Shape validation</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="comment">// TODO Move shape independent feature check from ShapeValidator to OperationValidator</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="comment">// TODO Move ShapeValidator into shape inference</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="comment">//      - Check input tensor shape validation</span></div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="comment">//      - Check parameter value validation which valid value is depend on input tensor shape</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="comment">//      - Output tensor shape validation check is needless because</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <span class="comment">//        static/dynamic shape inferer will make valid output shape</span></div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  {</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;model_lsubgs = pair.second;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair_inner : model_lsubgs)</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    {</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;lowered_subg = pair_inner.second;</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>      <a class="code hl_class" href="classonert_1_1compiler_1_1_shape_validator.html">compiler::ShapeValidator</a>{lowered_subg-&gt;graph()}();</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    }</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  }</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="comment">  /*************************************************************</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="comment">   *  Backend independent analysis &amp; optimization phase finished</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="comment">   *************************************************************/</span></div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="keyword">auto</span> executors = std::make_shared&lt;exec::Executors&gt;(std::move(model_edges));</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  {</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;model_index = pair.first;</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keyword">auto</span> &amp;model_lsubgs = pair.second;</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair_inner : model_lsubgs)</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    {</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>      <span class="keyword">auto</span> <span class="keyword">const</span> subg_index = pair_inner.first;</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>      <span class="keyword">auto</span> &amp;lowered_subg = pair_inner.second;</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>      <span class="keyword">auto</span> <span class="keyword">const</span> indexed_ranks = lowered_subg-&gt;indexed_ranks();</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>      <a class="code hl_class" href="classonert_1_1ir_1_1_operation_dumper.html">ir::OperationDumper</a> dumper(<span class="stringliteral">&quot;Executor generation of Subgraph &quot;</span> +</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                                 std::to_string(subg_index.value()));</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>      lowered_subg-&gt;graph().operations().iterate(</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        [&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperationIndex</a> &amp;, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operation.html">ir::Operation</a> &amp;op) { op.<a class="code hl_function" href="structonert_1_1ir_1_1_i_operation.html#a3857064a895e09d7b486a594c9a8496f">accept</a>(dumper); });</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keywordflow">for</span> (uint16_t i = 0; i &lt; model_count; i++)</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  {</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keyword">auto</span> <span class="keyword">const</span> model_index = <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::ModelIndex</a>{i};</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keyword">auto</span> model = _nnpkg-&gt;model(model_index);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    model-&gt;iterate([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> &amp;subg_index, <a class="code hl_struct" href="structonert_1_1ir_1_1_i_graph.html">ir::IGraph</a> &amp;graph) {</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      <span class="keyword">auto</span> &amp;subg = nnfw::misc::polymorphic_downcast&lt;ir::Graph &amp;&gt;(graph);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      dot_dumper.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#ad4d636398424bb657b53ec5f9304b7c8">dump</a>(subg,</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                      <a class="code hl_function" href="namespacennfw_1_1misc.html#a36f85b0534626eeaea6d15897e571171">nnfw::misc::str</a>(<span class="stringliteral">&quot;before_lower_model-&quot;</span>, i, <span class="stringliteral">&quot;-subg-&quot;</span>, subg_index.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>()));</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>      <span class="comment">// Lower: Assign backend</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>      lowered_subgs[model_index][subg_index] =</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        std::make_unique&lt;compiler::LoweredGraph&gt;(subg, *_voptions[i]);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>      <span class="comment">// Set tracing_ctx for copied graph</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>      <span class="keywordflow">if</span> (tracing_ctx != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        tracing_ctx-&gt;setSubgraphIndex(&amp;(lowered_subgs[model_index][subg_index]-&gt;graph()),</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>                                      subg_index.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>());</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    });</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  }</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  _nnpkg.reset();</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  {</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;model_index = pair.first;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;model_lsubg = pair.second;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair_inner : model_lsubg)</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    {</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;subg_index = pair_inner.first;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;lowered_subg = pair_inner.second;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>      dot_dumper.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#ad4d636398424bb657b53ec5f9304b7c8">dump</a>(*lowered_subg, <a class="code hl_function" href="namespacennfw_1_1misc.html#a36f85b0534626eeaea6d15897e571171">nnfw::misc::str</a>(<span class="stringliteral">&quot;after_lower_model-&quot;</span>, model_index.value(),</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                                                     <span class="stringliteral">&quot;-subg-&quot;</span>, subg_index.value()));</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    }</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  }</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="comment">// Shape inference.</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  {</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keyword">auto</span> &amp;model_lsubgs = pair.second;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="comment">// Run the StaticShapeInfer of primary subg. All child StaticShapeInferers are called</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="comment">// recursively</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    std::unordered_map&lt;ir::SubgraphIndex, std::unique_ptr&lt;StaticShapeInferer&gt;&gt; inferers =</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>      <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a6823b6f3f47aff08fd5233a372e5e75e">StaticShapeInferer::createStaticShapeInferers</a>(model_lsubgs);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keyword">const</span> <span class="keyword">auto</span> primary_subg_idx = <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a>{0};</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    inferers.at(primary_subg_idx)-&gt;infer();</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair_inferer : inferers)</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    {</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>      <span class="keyword">const</span> <span class="keyword">auto</span> inferer = pair_inferer.second.get();</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>      inferer-&gt;dump();</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    }</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  }</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  <span class="comment">// Shape validation</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="comment">// TODO Move shape independent feature check from ShapeValidator to OperationValidator</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <span class="comment">// TODO Move ShapeValidator into shape inference</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <span class="comment">//      - Check input tensor shape validation</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  <span class="comment">//      - Check parameter value validation which valid value is depend on input tensor shape</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="comment">//      - Output tensor shape validation check is needless because</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <span class="comment">//        static/dynamic shape inferer will make valid output shape</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  {</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;model_lsubgs = pair.second;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair_inner : model_lsubgs)</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    {</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;lowered_subg = pair_inner.second;</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>      <a class="code hl_class" href="classonert_1_1compiler_1_1_shape_validator.html">compiler::ShapeValidator</a>{lowered_subg-&gt;graph()}();</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    }</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  }</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>      <span class="keyword">auto</span> &amp;options = *_voptions[model_index.value()];</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>      <span class="keyword">auto</span> executor = std::unique_ptr&lt;exec::IExecutor&gt;{<a class="code hl_function" href="classonert_1_1compiler_1_1_executor_factory.html#af12fec093001b1c415ca1e86b4e55663">ExecutorFactory::get</a>().<a class="code hl_function" href="classonert_1_1compiler_1_1_executor_factory.html#a63645196bb30de20e22988aff50e327a">create</a>(</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        std::move(lowered_subg), tracing_ctx.get(), options, executors, model_index)};</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>      executor-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a1f5655e4ad7317c32e3ce6fad3ec9d72">setIndexedRanks</a>(indexed_ranks);</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>      executors-&gt;emplace(model_index, subg_index, std::move(executor));</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    }</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  }</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="comment">  /********************************</span></div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="comment">   * Code generation phase finished</span></div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="comment">   ********************************/</span></div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  <span class="keywordflow">return</span> std::make_shared&lt;CompilerArtifact&gt;(executors, std::move(tracing_ctx));</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>}</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>} <span class="comment">// namespace compiler</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">  /*************************************************************</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">   *  Backend independent analysis &amp; optimization phase finished</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">   *************************************************************/</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="keyword">auto</span> executors = std::make_shared&lt;exec::Executors&gt;(std::move(model_edges));</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  {</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;model_index = pair.first;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <span class="keyword">auto</span> &amp;model_lsubgs = pair.second;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair_inner : model_lsubgs)</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    {</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>      <span class="keyword">auto</span> <span class="keyword">const</span> subg_index = pair_inner.first;</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>      <span class="keyword">auto</span> &amp;lowered_subg = pair_inner.second;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>      <span class="keyword">auto</span> <span class="keyword">const</span> indexed_ranks = lowered_subg-&gt;indexed_ranks();</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>      <a class="code hl_class" href="classonert_1_1ir_1_1_operation_dumper.html">ir::OperationDumper</a> dumper(<span class="stringliteral">&quot;Executor generation of Subgraph &quot;</span> +</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>                                 std::to_string(subg_index.value()));</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>      lowered_subg-&gt;graph().operations().iterate(</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        [&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperationIndex</a> &amp;, <span class="keyword">const</span> <a class="code hl_struct" href="structonert_1_1ir_1_1_i_operation.html">ir::IOperation</a> &amp;op) { op.<a class="code hl_function" href="structonert_1_1ir_1_1_i_operation.html#a3857064a895e09d7b486a594c9a8496f">accept</a>(dumper); });</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>      <a class="code hl_struct" href="structonert_1_1compiler_1_1_executor_factory_args.html">ExecutorFactoryArgs</a> args;</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>      args.tracing_ctx = tracing_ctx.get();</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>      args.options = _voptions[model_index.value()];</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>      args.model_index = model_index;</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>      args.custom_kernel_builder = custom_kernel_builders[model_index];</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>      <span class="keyword">auto</span> executor = std::unique_ptr&lt;exec::IExecutor&gt;{</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        <a class="code hl_function" href="classonert_1_1compiler_1_1_executor_factory.html#af12fec093001b1c415ca1e86b4e55663">ExecutorFactory::get</a>().<a class="code hl_function" href="classonert_1_1compiler_1_1_executor_factory.html#a3330cf1fb069dc076abb3f6232833522">create</a>(std::move(lowered_subg), executors, args)};</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>      executor-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a1f5655e4ad7317c32e3ce6fad3ec9d72">setIndexedRanks</a>(indexed_ranks);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>      executors-&gt;emplace(model_index, subg_index, std::move(executor));</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    }</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  }</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="comment">  /********************************</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="comment">   * Code generation phase finished</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="comment">   ********************************/</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <span class="keywordflow">return</span> std::make_shared&lt;CompilerArtifact&gt;(executors, std::move(tracing_ctx));</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>}</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>} <span class="comment">// namespace compiler</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="a_constant_output_pass_8h_html"><div class="ttname"><a href="_constant_output_pass_8h.html">ConstantOutputPass.h</a></div></div>
 <div class="ttc" id="a_executor_factory_8h_html"><div class="ttname"><a href="_executor_factory_8h.html">ExecutorFactory.h</a></div></div>
-<div class="ttc" id="a_generate_kernels_list_helper_8cpp_html_a3b45f71347f9da730e585edad717d140"><div class="ttname"><a href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a></div><div class="ttdeci">void run(std::ofstream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition:</b> <a href="_generate_kernels_list_helper_8cpp_source.html#l00198">GenerateKernelsListHelper.cpp:198</a></div></div>
 <div class="ttc" id="a_multi_model_compiler_8h_html"><div class="ttname"><a href="_multi_model_compiler_8h.html">MultiModelCompiler.h</a></div><div class="ttdoc">This file contains MultiModelCompiler class to define and run compilation phase.</div></div>
 <div class="ttc" id="a_odd_output_pass_8h_html"><div class="ttname"><a href="_odd_output_pass_8h.html">OddOutputPass.h</a></div></div>
 <div class="ttc" id="a_pass_runner_8h_html"><div class="ttname"><a href="_pass_runner_8h.html">PassRunner.h</a></div></div>
 <div class="ttc" id="a_shape_validator_8h_html"><div class="ttname"><a href="_shape_validator_8h.html">ShapeValidator.h</a></div></div>
 <div class="ttc" id="a_static_shape_inferer_8h_html"><div class="ttname"><a href="_static_shape_inferer_8h.html">StaticShapeInferer.h</a></div></div>
 <div class="ttc" id="a_unused_operand_elimination_pass_8h_html"><div class="ttname"><a href="_unused_operand_elimination_pass_8h.html">UnusedOperandEliminationPass.h</a></div><div class="ttdoc">This file contains UnusedOperandEliminationPass class.</div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_executor_factory_html_a63645196bb30de20e22988aff50e327a"><div class="ttname"><a href="classonert_1_1compiler_1_1_executor_factory.html#a63645196bb30de20e22988aff50e327a">onert::compiler::ExecutorFactory::create</a></div><div class="ttdeci">exec::IExecutor * create(std::unique_ptr&lt; compiler::LoweredGraph &gt; lowered_graph, const util::TracingCtx *tracing_ctx, const compiler::CompilerOptions &amp;options, const std::shared_ptr&lt; exec::IExecutors &gt; &amp;executors, const ir::ModelIndex &amp;index)</div><div class="ttdef"><b>Definition:</b> <a href="_executor_factory_8cc_source.html#l00255">ExecutorFactory.cc:255</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_executor_factory_html_af12fec093001b1c415ca1e86b4e55663"><div class="ttname"><a href="classonert_1_1compiler_1_1_executor_factory.html#af12fec093001b1c415ca1e86b4e55663">onert::compiler::ExecutorFactory::get</a></div><div class="ttdeci">static ExecutorFactory &amp; get()</div><div class="ttdef"><b>Definition:</b> <a href="_executor_factory_8cc_source.html#l00238">ExecutorFactory.cc:238</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_multi_model_compiler_html_a6eeb0714a517d53cba04365cb63bb1bb"><div class="ttname"><a href="classonert_1_1compiler_1_1_multi_model_compiler.html#a6eeb0714a517d53cba04365cb63bb1bb">onert::compiler::MultiModelCompiler::MultiModelCompiler</a></div><div class="ttdeci">MultiModelCompiler(const std::shared_ptr&lt; ir::NNPkg &gt; &amp;nnpkg, std::vector&lt; std::unique_ptr&lt; CompilerOptions &gt; &gt; &amp;copts)</div><div class="ttdoc">Construct a new Compiler object for NN package.</div><div class="ttdef"><b>Definition:</b> <a href="_multi_model_compiler_8cc_source.html#l00039">MultiModelCompiler.cc:39</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_multi_model_compiler_html_aa9d76e8e915bc297a6dcf8a6cdf17deb"><div class="ttname"><a href="classonert_1_1compiler_1_1_multi_model_compiler.html#aa9d76e8e915bc297a6dcf8a6cdf17deb">onert::compiler::MultiModelCompiler::compile</a></div><div class="ttdeci">std::shared_ptr&lt; CompilerArtifact &gt; compile(void)</div><div class="ttdoc">Do compilation with the options.</div><div class="ttdef"><b>Definition:</b> <a href="_multi_model_compiler_8cc_source.html#l00051">MultiModelCompiler.cc:51</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_executor_factory_html_a3330cf1fb069dc076abb3f6232833522"><div class="ttname"><a href="classonert_1_1compiler_1_1_executor_factory.html#a3330cf1fb069dc076abb3f6232833522">onert::compiler::ExecutorFactory::create</a></div><div class="ttdeci">exec::IExecutor * create(std::unique_ptr&lt; compiler::LoweredGraph &gt; lowered_graph, const std::shared_ptr&lt; exec::IExecutors &gt; &amp;executors, const ExecutorFactoryArgs &amp;args)</div><div class="ttdef"><b>Definition:</b> <a href="_executor_factory_8cc_source.html#l00254">ExecutorFactory.cc:254</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_executor_factory_html_af12fec093001b1c415ca1e86b4e55663"><div class="ttname"><a href="classonert_1_1compiler_1_1_executor_factory.html#af12fec093001b1c415ca1e86b4e55663">onert::compiler::ExecutorFactory::get</a></div><div class="ttdeci">static ExecutorFactory &amp; get()</div><div class="ttdef"><b>Definition:</b> <a href="_executor_factory_8cc_source.html#l00239">ExecutorFactory.cc:239</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_multi_model_compiler_html_a6eeb0714a517d53cba04365cb63bb1bb"><div class="ttname"><a href="classonert_1_1compiler_1_1_multi_model_compiler.html#a6eeb0714a517d53cba04365cb63bb1bb">onert::compiler::MultiModelCompiler::MultiModelCompiler</a></div><div class="ttdeci">MultiModelCompiler(const std::shared_ptr&lt; ir::NNPkg &gt; &amp;nnpkg, std::vector&lt; std::unique_ptr&lt; CompilerOptions &gt; &gt; &amp;copts)</div><div class="ttdoc">Construct a new Compiler object for NN package.</div><div class="ttdef"><b>Definition:</b> <a href="_multi_model_compiler_8cc_source.html#l00040">MultiModelCompiler.cc:40</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_multi_model_compiler_html_aa9d76e8e915bc297a6dcf8a6cdf17deb"><div class="ttname"><a href="classonert_1_1compiler_1_1_multi_model_compiler.html#aa9d76e8e915bc297a6dcf8a6cdf17deb">onert::compiler::MultiModelCompiler::compile</a></div><div class="ttdeci">std::shared_ptr&lt; CompilerArtifact &gt; compile(void)</div><div class="ttdoc">Do compilation with the options.</div><div class="ttdef"><b>Definition:</b> <a href="_multi_model_compiler_8cc_source.html#l00052">MultiModelCompiler.cc:52</a></div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1_shape_validator_html"><div class="ttname"><a href="classonert_1_1compiler_1_1_shape_validator.html">onert::compiler::ShapeValidator</a></div><div class="ttdef"><b>Definition:</b> <a href="_shape_validator_8h_source.html#l00037">ShapeValidator.h:38</a></div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1_static_shape_inferer_html_a6823b6f3f47aff08fd5233a372e5e75e"><div class="ttname"><a href="classonert_1_1compiler_1_1_static_shape_inferer.html#a6823b6f3f47aff08fd5233a372e5e75e">onert::compiler::StaticShapeInferer::createStaticShapeInferers</a></div><div class="ttdeci">static std::unordered_map&lt; ir::SubgraphIndex, std::unique_ptr&lt; StaticShapeInferer &gt; &gt; createStaticShapeInferers(const std::unordered_map&lt; ir::SubgraphIndex, std::unique_ptr&lt; LoweredGraph &gt; &gt; &amp;lowered_subgs)</div><div class="ttdoc">Create a lowered model shape inferer map.</div><div class="ttdef"><b>Definition:</b> <a href="_static_shape_inferer_8cc_source.html#l00194">StaticShapeInferer.cc:194</a></div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_pass_runner_html"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html">onert::compiler::pass::PassRunner</a></div><div class="ttdoc">Composite passes with logging.</div><div class="ttdef"><b>Definition:</b> <a href="_pass_runner_8h_source.html#l00037">PassRunner.h:38</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_pass_runner_html_a5f04c8904fd9c418b7ac52d7dfb1f3b1"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html#a5f04c8904fd9c418b7ac52d7dfb1f3b1">onert::compiler::pass::PassRunner::append</a></div><div class="ttdeci">PassRunner &amp; append(std::unique_ptr&lt; Pass &gt; pass)</div><div class="ttdef"><b>Definition:</b> <a href="_pass_runner_8cc_source.html#l00026">PassRunner.cc:26</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_pass_runner_html_a4ffe1380761425420977336fe5d790d1"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html#a4ffe1380761425420977336fe5d790d1">onert::compiler::pass::PassRunner::run</a></div><div class="ttdeci">void run()</div><div class="ttdef"><b>Definition:</b> <a href="_pass_runner_8cc_source.html#l00032">PassRunner.cc:32</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_pass_runner_html_af976a33db5e3e1248f7e53a46df9e9dd"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_pass_runner.html#af976a33db5e3e1248f7e53a46df9e9dd">onert::compiler::pass::PassRunner::append</a></div><div class="ttdeci">PassRunner &amp; append(std::unique_ptr&lt; IPass &gt; pass)</div><div class="ttdef"><b>Definition:</b> <a href="_pass_runner_8cc_source.html#l00026">PassRunner.cc:26</a></div></div>
 <div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_dumper_html"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html">onert::dumper::dot::DotDumper</a></div><div class="ttdef"><b>Definition:</b> <a href="_dot_dumper_8h_source.html#l00030">DotDumper.h:31</a></div></div>
 <div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_dumper_html_aab4b91404d692bd9a81d28accdaa291f"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291f">onert::dumper::dot::DotDumper::Level</a></div><div class="ttdeci">Level</div><div class="ttdef"><b>Definition:</b> <a href="_dot_dumper_8h_source.html#l00033">DotDumper.h:34</a></div></div>
 <div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_dumper_html_ad4d636398424bb657b53ec5f9304b7c8"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#ad4d636398424bb657b53ec5f9304b7c8">onert::dumper::dot::DotDumper::dump</a></div><div class="ttdeci">void dump(const ir::Graph &amp;graph, const std::string &amp;tag)</div><div class="ttdoc">Dump graph information to dot file as tag name if &quot;GRAPH_DOT_DUMP&quot; is set.</div><div class="ttdef"><b>Definition:</b> <a href="_dot_dumper_8cc_source.html#l00204">DotDumper.cc:204</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html">onert::ir::Graph</a></div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00043">Graph.h:44</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html">onert::ir::Graph</a></div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00033">Graph.h:34</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operation_dumper_html"><div class="ttname"><a href="classonert_1_1ir_1_1_operation_dumper.html">onert::ir::OperationDumper</a></div><div class="ttdef"><b>Definition:</b> <a href="_operation_dumper_8h_source.html#l00028">OperationDumper.h:29</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operation_html"><div class="ttname"><a href="classonert_1_1ir_1_1_operation.html">onert::ir::Operation</a></div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00048">Operation.h:49</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html"><div class="ttname"><a href="classonert_1_1util_1_1_index.html">onert::util::Index&lt; uint16_t, ModelIndexTag &gt;</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html_a94c365fc1cb51e44ff8be2a384d4177d"><div class="ttname"><a href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">onert::util::Index::value</a></div><div class="ttdeci">T value() const</div><div class="ttdoc">Return underlying value.</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">Index.h:139</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1misc_html_a36f85b0534626eeaea6d15897e571171"><div class="ttname"><a href="namespacennfw_1_1misc.html#a36f85b0534626eeaea6d15897e571171">nnfw::misc::str</a></div><div class="ttdeci">std::string str(Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition:</b> <a href="string__helpers_8h_source.html#l00058">string_helpers.h:58</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ade411191d6afc15a55a4384b8cea2ac9"><div class="ttname"><a href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">onert::ir::ModelIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint16_t, ModelIndexTag &gt; ModelIndex</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00042">Index.h:42</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition:</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
+<div class="ttc" id="apolymorphic__downcast_8h_html"><div class="ttname"><a href="polymorphic__downcast_8h.html">polymorphic_downcast.h</a></div></div>
 <div class="ttc" id="astring__helpers_8h_html"><div class="ttname"><a href="string__helpers_8h.html">string_helpers.h</a></div><div class="ttdoc">This file contains helper functions for std::string.</div></div>
+<div class="ttc" id="astructonert_1_1compiler_1_1_executor_factory_args_html"><div class="ttname"><a href="structonert_1_1compiler_1_1_executor_factory_args.html">onert::compiler::ExecutorFactoryArgs</a></div><div class="ttdef"><b>Definition:</b> <a href="_executor_factory_8h_source.html#l00035">ExecutorFactory.h:36</a></div></div>
 <div class="ttc" id="astructonert_1_1exec_1_1_i_executor_html_a1f5655e4ad7317c32e3ce6fad3ec9d72"><div class="ttname"><a href="structonert_1_1exec_1_1_i_executor.html#a1f5655e4ad7317c32e3ce6fad3ec9d72">onert::exec::IExecutor::setIndexedRanks</a></div><div class="ttdeci">virtual void setIndexedRanks(std::shared_ptr&lt; ir::OperationIndexMap&lt; int64_t &gt; &gt;)=0</div><div class="ttdoc">Set an ordering on operations.</div></div>
+<div class="ttc" id="astructonert_1_1ir_1_1_i_graph_html"><div class="ttname"><a href="structonert_1_1ir_1_1_i_graph.html">onert::ir::IGraph</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_graph_8h_source.html#l00028">IGraph.h:29</a></div></div>
+<div class="ttc" id="astructonert_1_1ir_1_1_i_operation_html"><div class="ttname"><a href="structonert_1_1ir_1_1_i_operation.html">onert::ir::IOperation</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_operation_8h_source.html#l00033">IOperation.h:34</a></div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1_i_operation_html_a3857064a895e09d7b486a594c9a8496f"><div class="ttname"><a href="structonert_1_1ir_1_1_i_operation.html#a3857064a895e09d7b486a594c9a8496f">onert::ir::IOperation::accept</a></div><div class="ttdeci">virtual void accept(OperationVisitor &amp;v) const =0</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

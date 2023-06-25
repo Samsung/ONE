@@ -39,7 +39,7 @@ var dir_617364de53cb63ef037bbfe87a3d680c =
     [ "OneHot.cc", "_one_hot_8cc.html", null ],
     [ "Pack.cc", "_pack_8cc.html", null ],
     [ "Pad.cc", "_pad_8cc.html", null ],
-    [ "Permute.cc", "_permute_8cc.html", null ],
+    [ "Permute.cc", "operation_2_permute_8cc.html", null ],
     [ "Pool2D.cc", "_pool2_d_8cc.html", null ],
     [ "Pow.cc", "_pow_8cc.html", null ],
     [ "PReLU.cc", "_p_re_l_u_8cc.html", null ],

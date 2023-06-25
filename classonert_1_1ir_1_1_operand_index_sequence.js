@@ -14,6 +14,7 @@ var classonert_1_1ir_1_1_operand_index_sequence =
     [ "end", "classonert_1_1ir_1_1_operand_index_sequence.html#ab58923077acc96b79ece663dde51e2ac", null ],
     [ "end", "classonert_1_1ir_1_1_operand_index_sequence.html#a2540c16bacac51a2e81c968de837e8a3", null ],
     [ "operator+", "classonert_1_1ir_1_1_operand_index_sequence.html#acc31b19800cdaa674be61e56c33a9733", null ],
+    [ "operator==", "classonert_1_1ir_1_1_operand_index_sequence.html#ae32bbf996532737a92e84f2aadb3c00a", null ],
     [ "operator|", "classonert_1_1ir_1_1_operand_index_sequence.html#ae6a240a5a05b8e70793c2d512fbacbfa", null ],
     [ "replace", "classonert_1_1ir_1_1_operand_index_sequence.html#aa5f2b4841d151cb089e309c6169dca9a", null ],
     [ "size", "classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1", null ],

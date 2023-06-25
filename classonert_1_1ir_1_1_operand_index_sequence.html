@@ -124,6 +124,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa5f2b4841d151cb089e309c6169dca9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6a240a5a05b8e70793c2d512fbacbfa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">OperandIndexSequence</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html#ae6a240a5a05b8e70793c2d512fbacbfa">operator|</a> (<a class="el" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54">ir::Remove</a> filter) const</td></tr>
 <tr class="separator:ae6a240a5a05b8e70793c2d512fbacbfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae32bbf996532737a92e84f2aadb3c00a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html#ae32bbf996532737a92e84f2aadb3c00a">operator==</a> (const <a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">OperandIndexSequence</a> &amp;other) const</td></tr>
+<tr class="separator:ae32bbf996532737a92e84f2aadb3c00a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc31b19800cdaa674be61e56c33a9733"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">OperandIndexSequence</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html#acc31b19800cdaa674be61e56c33a9733">operator+</a> (const <a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">OperandIndexSequence</a> &amp;other) const</td></tr>
 <tr class="separator:acc31b19800cdaa674be61e56c33a9733"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3efd064147310d81b8ace3520ca1b15d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">OperandIndex</a> &gt;::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html#a3efd064147310d81b8ace3520ca1b15d">begin</a> (void) const</td></tr>
@@ -274,7 +276,7 @@ Friends</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8h_source.html#l00045">45</a> of file <a class="el" href="_operand_index_sequence_8h_source.html">OperandIndexSequence.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   45</span>{ _vec.emplace_back(index); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_graph_8cc_source.html#l00100">onert::ir::Graph::addInput()</a>, <a class="el" href="_graph_8cc_source.html#l00107">onert::ir::Graph::addOutput()</a>, <a class="el" href="base__loader_8h_source.html#l00563">onert::base_loader::BaseLoader&lt; LoaderDomain &gt;::loadOperationIO()</a>, <a class="el" href="_operand_index_sequence_8cc_source.html#l00058">operator+()</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00054">operator|()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00104">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>, and <a class="el" href="_backend_context_helpers_8h_source.html#l00037">onert::backend::basic::planTensors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_graph_8cc_source.html#l00123">onert::ir::Graph::addInput()</a>, <a class="el" href="_graph_8cc_source.html#l00130">onert::ir::Graph::addOutput()</a>, <a class="el" href="base__loader_8h_source.html#l00563">onert::base_loader::BaseLoader&lt; LoaderDomain &gt;::loadOperationIO()</a>, <a class="el" href="_operand_index_sequence_8cc_source.html#l00063">operator+()</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00054">operator|()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00104">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>, and <a class="el" href="_backend_context_helpers_8h_source.html#l00037">onert::backend::basic::planTensors()</a>.</p>
 
 </div>
 </div>
@@ -394,8 +396,8 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8h_source.html#l00085">85</a> of file <a class="el" href="_operand_index_sequence_8h_source.html">OperandIndexSequence.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>{ <span class="keywordflow">return</span> _vec.begin(); }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8h_source.html#l00086">86</a> of file <a class="el" href="_operand_index_sequence_8h_source.html">OperandIndexSequence.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>{ <span class="keywordflow">return</span> _vec.begin(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -423,8 +425,8 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8h_source.html#l00083">83</a> of file <a class="el" href="_operand_index_sequence_8h_source.html">OperandIndexSequence.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span>{ <span class="keywordflow">return</span> _vec.begin(); }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8h_source.html#l00084">84</a> of file <a class="el" href="_operand_index_sequence_8h_source.html">OperandIndexSequence.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>{ <span class="keywordflow">return</span> _vec.begin(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -477,8 +479,8 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8h_source.html#l00086">86</a> of file <a class="el" href="_operand_index_sequence_8h_source.html">OperandIndexSequence.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>{ <span class="keywordflow">return</span> _vec.end(); }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8h_source.html#l00087">87</a> of file <a class="el" href="_operand_index_sequence_8h_source.html">OperandIndexSequence.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>{ <span class="keywordflow">return</span> _vec.end(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -506,8 +508,8 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8h_source.html#l00084">84</a> of file <a class="el" href="_operand_index_sequence_8h_source.html">OperandIndexSequence.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   84</span>{ <span class="keywordflow">return</span> _vec.end(); }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8h_source.html#l00085">85</a> of file <a class="el" href="_operand_index_sequence_8h_source.html">OperandIndexSequence.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>{ <span class="keywordflow">return</span> _vec.end(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -527,16 +529,39 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8cc_source.html#l00058">58</a> of file <a class="el" href="_operand_index_sequence_8cc_source.html">OperandIndexSequence.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{</div>
-<div class="line"><span class="lineno">   60</span>  <a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#ac2295f3ea050e967f297a5da699e8174">OperandIndexSequence</a> ret = *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">   61</span>  ret.append(other);</div>
-<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">return</span> ret;</div>
-<div class="line"><span class="lineno">   63</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8cc_source.html#l00063">63</a> of file <a class="el" href="_operand_index_sequence_8cc_source.html">OperandIndexSequence.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{</div>
+<div class="line"><span class="lineno">   65</span>  <a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#ac2295f3ea050e967f297a5da699e8174">OperandIndexSequence</a> ret = *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">   66</span>  ret.append(other);</div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><span class="lineno">   68</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html_ac2295f3ea050e967f297a5da699e8174"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html#ac2295f3ea050e967f297a5da699e8174">onert::ir::OperandIndexSequence::OperandIndexSequence</a></div><div class="ttdeci">OperandIndexSequence(void)=default</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00045">append()</a>.</p>
 
+</div>
+</div>
+<a id="ae32bbf996532737a92e84f2aadb3c00a" name="ae32bbf996532737a92e84f2aadb3c00a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae32bbf996532737a92e84f2aadb3c00a">&#9670;&#160;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool onert::ir::OperandIndexSequence::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">OperandIndexSequence</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8cc_source.html#l00058">58</a> of file <a class="el" href="_operand_index_sequence_8cc_source.html">OperandIndexSequence.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>{</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">return</span> _vec == other._vec;</div>
+<div class="line"><span class="lineno">   61</span>}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="ae6a240a5a05b8e70793c2d512fbacbfa" name="ae6a240a5a05b8e70793c2d512fbacbfa"></a>
@@ -654,7 +679,7 @@ Friends</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8h_source.html#l00049">49</a> of file <a class="el" href="_operand_index_sequence_8h_source.html">OperandIndexSequence.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(_vec.size()); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_graph_8cc_source.html#l00100">onert::ir::Graph::addInput()</a>, <a class="el" href="_graph_8cc_source.html#l00107">onert::ir::Graph::addOutput()</a>, <a class="el" href="_acl_constant_initializer_8cc_source.html#l00033">onert::backend::acl_common::AclConstantInitializer::copyInputInitialize()</a>, <a class="el" href="_cl_constant_initializer_8cc_source.html#l00033">onert::backend::gpu_cl::ClConstantInitializer::copyInputInitialize()</a>, <a class="el" href="_executor_base_8cc_source.html#l00050">onert::exec::ExecutorBase::execute()</a>, <a class="el" href="_acl_constant_initializer_8cc_source.html#l00045">onert::backend::acl_common::AclConstantInitializer::permuteInputInitialize()</a>, <a class="el" href="_cl_constant_initializer_8cc_source.html#l00045">onert::backend::gpu_cl::ClConstantInitializer::permuteInputInitialize()</a>, <a class="el" href="_operation_8cc_source.html#l00041">onert::ir::Operation::setInputs()</a>, <a class="el" href="_operation_8cc_source.html#l00048">onert::ir::Operation::setOutputs()</a>, <a class="el" href="backend_2cpu_2_kernel_generator_8cc_source.html#l00399">onert::backend::cpu::KernelGenerator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00074">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00638">onert::exec::DynamicShapeInferer::visit()</a>, <a class="el" href="_operation_validator_8cc_source.html#l00089">onert::ir::OperationValidator::visit()</a>, and <a class="el" href="_operation_dumper_8cc_source.html#l00205">onert::ir::OperationDumper::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_graph_8cc_source.html#l00123">onert::ir::Graph::addInput()</a>, <a class="el" href="_graph_8cc_source.html#l00130">onert::ir::Graph::addOutput()</a>, <a class="el" href="_acl_constant_initializer_8cc_source.html#l00033">onert::backend::acl_common::AclConstantInitializer::copyInputInitialize()</a>, <a class="el" href="_cl_constant_initializer_8cc_source.html#l00033">onert::backend::gpu_cl::ClConstantInitializer::copyInputInitialize()</a>, <a class="el" href="_executor_base_8cc_source.html#l00050">onert::exec::ExecutorBase::execute()</a>, <a class="el" href="_acl_constant_initializer_8cc_source.html#l00045">onert::backend::acl_common::AclConstantInitializer::permuteInputInitialize()</a>, <a class="el" href="_cl_constant_initializer_8cc_source.html#l00045">onert::backend::gpu_cl::ClConstantInitializer::permuteInputInitialize()</a>, <a class="el" href="_operation_8cc_source.html#l00041">onert::ir::Operation::setInputs()</a>, <a class="el" href="_operation_8cc_source.html#l00048">onert::ir::Operation::setOutputs()</a>, <a class="el" href="backend_2cpu_2_kernel_generator_8cc_source.html#l00399">onert::backend::cpu::KernelGenerator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00074">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00638">onert::exec::DynamicShapeInferer::visit()</a>, <a class="el" href="_operation_validator_8cc_source.html#l00089">onert::ir::OperationValidator::visit()</a>, and <a class="el" href="_operation_dumper_8cc_source.html#l00205">onert::ir::OperationDumper::visit()</a>.</p>
 
 </div>
 </div>
@@ -693,16 +718,16 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8cc_source.html#l00065">65</a> of file <a class="el" href="_operand_index_sequence_8cc_source.html">OperandIndexSequence.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>{</div>
-<div class="line"><span class="lineno">   67</span>  std::string delimeter;</div>
-<div class="line"><span class="lineno">   68</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : operand_seq._vec)</div>
-<div class="line"><span class="lineno">   69</span>  {</div>
-<div class="line"><span class="lineno">   70</span>    o &lt;&lt; delimeter &lt;&lt; ind;</div>
-<div class="line"><span class="lineno">   71</span>    delimeter = <span class="charliteral">&#39;,&#39;</span>;</div>
-<div class="line"><span class="lineno">   72</span>  }</div>
-<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">return</span> o;</div>
-<div class="line"><span class="lineno">   74</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operand_index_sequence_8cc_source.html#l00070">70</a> of file <a class="el" href="_operand_index_sequence_8cc_source.html">OperandIndexSequence.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>{</div>
+<div class="line"><span class="lineno">   72</span>  std::string delimeter;</div>
+<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : operand_seq._vec)</div>
+<div class="line"><span class="lineno">   74</span>  {</div>
+<div class="line"><span class="lineno">   75</span>    o &lt;&lt; delimeter &lt;&lt; ind;</div>
+<div class="line"><span class="lineno">   76</span>    delimeter = <span class="charliteral">&#39;,&#39;</span>;</div>
+<div class="line"><span class="lineno">   77</span>  }</div>
+<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">return</span> o;</div>
+<div class="line"><span class="lineno">   79</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

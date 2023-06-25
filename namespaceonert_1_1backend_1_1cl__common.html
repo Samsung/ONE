@@ -249,10 +249,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   55</span>  LifetimeMap lifetime_map;</div>
 <div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; lifetime_seq.size(); i++)</div>
 <div class="line"><span class="lineno">   57</span>  {</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = lifetime_seq[i];</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.first != UsesType::FIRST)</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = lifetime_seq[i];</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.first != UsesType::FIRST)</div>
 <div class="line"><span class="lineno">   60</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keyword">auto</span> root_ind = find_root(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.second);</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keyword">auto</span> root_ind = find_root(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.second);</div>
 <div class="line"><span class="lineno">   62</span>    <span class="keywordflow">if</span> (first_use_check[root_ind])</div>
 <div class="line"><span class="lineno">   63</span>      <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">   64</span>    first_use_check[root_ind] = <span class="keyword">true</span>;</div>
@@ -261,10 +261,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   67</span> </div>
 <div class="line"><span class="lineno">   68</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = lifetime_seq.size() - 1; i &gt;= 0; i--)</div>
 <div class="line"><span class="lineno">   69</span>  {</div>
-<div class="line"><span class="lineno">   70</span>    <span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = lifetime_seq[i];</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.first != UsesType::LAST)</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = lifetime_seq[i];</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.first != UsesType::LAST)</div>
 <div class="line"><span class="lineno">   72</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keyword">auto</span> root_ind = find_root(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.second);</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keyword">auto</span> root_ind = find_root(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.second);</div>
 <div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> (last_use_check[root_ind])</div>
 <div class="line"><span class="lineno">   75</span>      <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">   76</span>    last_use_check[root_ind] = <span class="keyword">true</span>;</div>
@@ -275,9 +275,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   81</span>}</div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html"><div class="ttname"><a href="classonert_1_1util_1_1_index.html">onert::util::Index&lt; uint32_t, OperandIndexTag &gt;</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html_a3337c49628abf54b36b4d81594b15565"><div class="ttname"><a href="classonert_1_1util_1_1_index.html#a3337c49628abf54b36b4d81594b15565">onert::util::Index::valid</a></div><div class="ttdeci">bool valid() const</div><div class="ttdoc">Check whether the value is valid or not.</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00127">Index.h:127</a></div></div>
-<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
+<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2_driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">entry()</a>, <a class="el" href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51ea2c2624a5059934a947d6e25fe8332ade">FIRST</a>, <a class="el" href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51eaf447f5c03508de4d88e340390ba7c78f">LAST</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00127">onert::util::Index&lt; T, DummyTag &gt;::valid()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">entry()</a>, <a class="el" href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51ea2c2624a5059934a947d6e25fe8332ade">FIRST</a>, <a class="el" href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51eaf447f5c03508de4d88e340390ba7c78f">LAST</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00127">onert::util::Index&lt; T, DummyTag &gt;::valid()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_acl_tensor_builder_8h_source.html#l00217">onert::backend::acl_common::AclTensorBuilder&lt; T_ITensor, T_Tensor, T_SubTensor &gt;::allocate()</a>, and <a class="el" href="backend_2gpu__cl_2_tensor_builder_8cc_source.html#l00084">onert::backend::gpu_cl::TensorBuilder::allocate()</a>.</p>
 

@@ -1,8 +1,10 @@
 <map id="onert::compiler::pass::ConstantInsertionPass" name="onert::compiler::pass::ConstantInsertionPass">
-<area shape="rect" id="node1" title=" " alt="" coords="127,375,287,415"/>
-<area shape="rect" id="node2" href="$classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html" title=" " alt="" coords="125,285,289,325"/>
-<area shape="rect" id="node3" href="$classonert_1_1compiler_1_1pass_1_1_operation_pass.html" title="Class to iterate over operations and calls callback() method." alt="" coords="5,183,145,223"/>
-<area shape="rect" id="node4" href="$classonert_1_1compiler_1_1pass_1_1_pass.html" title=" " alt="" coords="5,93,145,133"/>
-<area shape="rect" id="node5" href="$classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="23,5,128,31"/>
-<area shape="rect" id="node6" href="$structonert_1_1compiler_1_1_i_lowered_graph.html" title=" " alt="" coords="169,183,336,223"/>
+<area shape="rect" id="node1" title=" " alt="" coords="149,464,309,504"/>
+<area shape="rect" id="node2" href="$classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html" title=" " alt="" coords="147,375,311,415"/>
+<area shape="rect" id="node3" href="$classonert_1_1compiler_1_1pass_1_1_operation_pass.html" title="Class to iterate over operations and calls callback() method." alt="" coords="27,272,167,312"/>
+<area shape="rect" id="node4" href="$classonert_1_1compiler_1_1pass_1_1_pass.html" title=" " alt="" coords="27,183,167,223"/>
+<area shape="rect" id="node5" href="$structonert_1_1compiler_1_1pass_1_1_i_pass.html" title=" " alt="" coords="5,80,145,120"/>
+<area shape="rect" id="node6" href="$classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="169,87,275,113"/>
+<area shape="rect" id="node7" href="$structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="167,5,277,31"/>
+<area shape="rect" id="node8" href="$structonert_1_1compiler_1_1_i_lowered_graph.html" title=" " alt="" coords="191,272,357,312"/>
 </map>

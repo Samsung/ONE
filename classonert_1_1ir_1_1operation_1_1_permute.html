@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('classonert_1_1ir_1_1operation_1_1_perm
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_permute_8h_source.html">Permute.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="operation_2_permute_8h_source.html">Permute.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::ir::operation::Permute:</div>
 <div class="dyncontent">
@@ -175,7 +175,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_permute_8h_source.html#l00037">37</a> of file <a class="el" href="_permute_8h_source.html">Permute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="operation_2_permute_8h_source.html#l00037">37</a> of file <a class="el" href="operation_2_permute_8h_source.html">Permute.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="aac2e02b1347e4ad20217fe4d81fe090e" name="aac2e02b1347e4ad20217fe4d81fe090e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aac2e02b1347e4ad20217fe4d81fe090e">&#9670;&#160;</a></span>Type</h2>
@@ -202,7 +202,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="aac2e02b1347e4ad20217fe4d81fe090eae8606d021da140a92c7eba8d9b8af84f" name="aac2e02b1347e4ad20217fe4d81fe090eae8606d021da140a92c7eba8d9b8af84f"></a>COPY&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_permute_8h_source.html#l00040">40</a> of file <a class="el" href="_permute_8h_source.html">Permute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="operation_2_permute_8h_source.html#l00040">40</a> of file <a class="el" href="operation_2_permute_8h_source.html">Permute.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   41</span>  {</div>
 <div class="line"><span class="lineno">   42</span>    <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_permute.html#aac2e02b1347e4ad20217fe4d81fe090ea91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>,</div>
 <div class="line"><span class="lineno">   43</span>    <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_permute.html#aac2e02b1347e4ad20217fe4d81fe090eaac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>,</div>
@@ -247,7 +247,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_permute_8cc_source.html#l00029">29</a> of file <a class="el" href="_permute_8cc_source.html">Permute.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="operation_2_permute_8cc_source.html#l00029">29</a> of file <a class="el" href="operation_2_permute_8cc_source.html">Permute.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   30</span>  : <a class="code hl_struct" href="struct_operation.html">Operation</a>{<a class="code hl_function" href="classonert_1_1ir_1_1_operand_constraint.html#acf6c681f095a9bd697150d97b4db94e9">OperandConstraint::createExact</a>(1u)}, _type{<a class="code hl_variable" href="namespacepart__eval__one.html#ad0c97b5af82ed124c20ffc3312c37274">type</a>}</div>
 <div class="line"><span class="lineno">   31</span>{</div>
 <div class="line"><span class="lineno">   32</span>  <a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#acfbd48e991e67183552071d846b4cd1e">setInputs</a>({<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>});</div>
@@ -292,7 +292,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a3857064a895e09d7b486a594c9a8496f">onert::ir::IOperation</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_permute_8cc_source.html#l00027">27</a> of file <a class="el" href="_permute_8cc_source.html">Permute.cc</a>.</p>
+<p>Reimplemented in <a class="el" href="classonert_1_1ir_1_1train_1_1operation_1_1_permute.html#a804aa243cf1d880247bbce7d861e3a48">onert::ir::train::operation::Permute</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="operation_2_permute_8cc_source.html#l00027">27</a> of file <a class="el" href="operation_2_permute_8cc_source.html">Permute.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   27</span>{ v.visit(*<span class="keyword">this</span>); }</div>
 </div><!-- fragment -->
 </div>
@@ -320,7 +322,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_permute_8h_source.html#l00055">55</a> of file <a class="el" href="_permute_8h_source.html">Permute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="operation_2_permute_8h_source.html#l00055">55</a> of file <a class="el" href="operation_2_permute_8h_source.html">Permute.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span> _type; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_operation_dumper_8cc_source.html#l00259">onert::ir::OperationDumper::visit()</a>.</p>
@@ -352,14 +354,14 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a62422c08e7b5ae69f18a73584d7174a3">onert::ir::IOperation</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_permute_8h_source.html#l00049">49</a> of file <a class="el" href="_permute_8h_source.html">Permute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="operation_2_permute_8h_source.html#l00049">49</a> of file <a class="el" href="operation_2_permute_8h_source.html">Permute.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> OpCode::Permute; }</div>
 </div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/core/include/ir/operation/<a class="el" href="_permute_8h_source.html">Permute.h</a></li>
-<li>runtime/onert/core/src/ir/operation/<a class="el" href="_permute_8cc_source.html">Permute.cc</a></li>
+<li>runtime/onert/core/include/ir/operation/<a class="el" href="operation_2_permute_8h_source.html">Permute.h</a></li>
+<li>runtime/onert/core/src/ir/operation/<a class="el" href="operation_2_permute_8cc_source.html">Permute.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

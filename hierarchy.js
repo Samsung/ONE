@@ -1994,6 +1994,7 @@ var hierarchy =
     [ "rua::ExecutionService", "structrua_1_1_execution_service.html", null ],
     [ "Executor", "class_executor.html", null ],
     [ "onert::compiler::ExecutorFactory", "classonert_1_1compiler_1_1_executor_factory.html", null ],
+    [ "onert::compiler::ExecutorFactoryArgs", "structonert_1_1compiler_1_1_executor_factory_args.html", null ],
     [ "onert::ir::ExplicitPadding", "structonert_1_1ir_1_1_explicit_padding.html", null ],
     [ "luci::ExportContext", "structluci_1_1_export_context.html", null ],
     [ "onert::backend::builtin::ExternalContext", "classonert_1_1backend_1_1builtin_1_1_external_context.html", null ],
@@ -2104,7 +2105,6 @@ var hierarchy =
     [ "npud::core::GenericBuffers", "structnpud_1_1core_1_1_generic_buffers.html", null ],
     [ "enco::GlobalData", "structenco_1_1_global_data.html", null ],
     [ "mir::Graph", "classmir_1_1_graph.html", null ],
-    [ "onert::ir::Graph", "classonert_1_1ir_1_1_graph.html", null ],
     [ "caffeimport::GraphBuilder", "classcaffeimport_1_1_graph_builder.html", [
       [ "caffeimport::BatchNormBuilder", "classcaffeimport_1_1_batch_norm_builder.html", null ],
       [ "caffeimport::ConcatBuilder", "classcaffeimport_1_1_concat_builder.html", null ],
@@ -2376,7 +2376,8 @@ var hierarchy =
     ] ],
     [ "onert::compiler::ICompiler", "classonert_1_1compiler_1_1_i_compiler.html", [
       [ "onert::compiler::Compiler", "classonert_1_1compiler_1_1_compiler.html", null ],
-      [ "onert::compiler::MultiModelCompiler", "classonert_1_1compiler_1_1_multi_model_compiler.html", null ]
+      [ "onert::compiler::MultiModelCompiler", "classonert_1_1compiler_1_1_multi_model_compiler.html", null ],
+      [ "onert::compiler::train::TrainingCompiler", "classonert_1_1compiler_1_1train_1_1_training_compiler.html", null ]
     ] ],
     [ "onert::backend::IConfig", "structonert_1_1backend_1_1_i_config.html", [
       [ "onert::backend::acl_cl::Config", "classonert_1_1backend_1_1acl__cl_1_1_config.html", null ],
@@ -2513,9 +2514,15 @@ var hierarchy =
       [ "onert::exec::FunctionSequence", "classonert_1_1exec_1_1_function_sequence.html", null ],
       [ "onert::exec::HookFunction", "classonert_1_1exec_1_1_hook_function.html", null ],
       [ "onert::exec::IPermuteFunction", "classonert_1_1exec_1_1_i_permute_function.html", [
-        [ "onert::backend::builtin::kernel::PermuteLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html", null ]
+        [ "onert::backend::builtin::kernel::PermuteLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html", [
+          [ "onert::backend::builtin::train::kernel::PermuteLayer", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html", null ]
+        ] ]
       ] ],
       [ "onert::exec::NopFunction", "classonert_1_1exec_1_1_nop_function.html", null ]
+    ] ],
+    [ "onert::ir::IGraph", "structonert_1_1ir_1_1_i_graph.html", [
+      [ "onert::ir::Graph", "classonert_1_1ir_1_1_graph.html", null ],
+      [ "onert::ir::train::TrainableGraph", "classonert_1_1ir_1_1train_1_1_trainable_graph.html", null ]
     ] ],
     [ "onert::backend::acl_common::IInternalBufferManager", "structonert_1_1backend_1_1acl__common_1_1_i_internal_buffer_manager.html", [
       [ "onert::backend::acl_common::AclInternalBufferManager< T_MemoryManager, T_PoolManager, T_LifetimeManager, T_Allocator >", "classonert_1_1backend_1_1acl__common_1_1_acl_internal_buffer_manager.html", null ]
@@ -2666,7 +2673,9 @@ var hierarchy =
         [ "onert::ir::operation::PReLU", "classonert_1_1ir_1_1operation_1_1_p_re_l_u.html", null ],
         [ "onert::ir::operation::Pack", "classonert_1_1ir_1_1operation_1_1_pack.html", null ],
         [ "onert::ir::operation::Pad", "classonert_1_1ir_1_1operation_1_1_pad.html", null ],
-        [ "onert::ir::operation::Permute", "classonert_1_1ir_1_1operation_1_1_permute.html", null ],
+        [ "onert::ir::operation::Permute", "classonert_1_1ir_1_1operation_1_1_permute.html", [
+          [ "onert::ir::train::operation::Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", null ]
+        ] ],
         [ "onert::ir::operation::Pool2D", "classonert_1_1ir_1_1operation_1_1_pool2_d.html", null ],
         [ "onert::ir::operation::Pow", "classonert_1_1ir_1_1operation_1_1_pow.html", null ],
         [ "onert::ir::operation::RNN", "classonert_1_1ir_1_1operation_1_1_r_n_n.html", null ],
@@ -2697,10 +2706,35 @@ var hierarchy =
         [ "onert::ir::operation::While", "classonert_1_1ir_1_1operation_1_1_while.html", null ],
         [ "onert_test::ir::SimpleMock", "classonert__test_1_1ir_1_1_simple_mock.html", null ]
       ] ],
-      [ "onert::ir::train::ITrainableOperation", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html", null ]
+      [ "onert::ir::train::ITrainableOperation", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html", [
+        [ "onert::ir::train::operation::Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", null ]
+      ] ]
     ] ],
     [ "nnc::cli::IOption", "classnnc_1_1cli_1_1_i_option.html", [
       [ "nnc::cli::Option< T >", "classnnc_1_1cli_1_1_option.html", null ]
+    ] ],
+    [ "onert::compiler::pass::IPass", "structonert_1_1compiler_1_1pass_1_1_i_pass.html", [
+      [ "onert::compiler::pass::Pass", "classonert_1_1compiler_1_1pass_1_1_pass.html", [
+        [ "onert::compiler::pass::OddOutputPass", "classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html", null ],
+        [ "onert::compiler::pass::OperandPass", "classonert_1_1compiler_1_1pass_1_1_operand_pass.html", [
+          [ "onert::compiler::pass::ConstantOutputPass", "classonert_1_1compiler_1_1pass_1_1_constant_output_pass.html", null ],
+          [ "onert::compiler::pass::LoweredOperandPass", "classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html", [
+            [ "onert::compiler::pass::PermutationInsertionPass", "classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass.html", null ]
+          ] ]
+        ] ],
+        [ "onert::compiler::pass::OperationPass", "classonert_1_1compiler_1_1pass_1_1_operation_pass.html", [
+          [ "onert::compiler::pass::LoweredOperationPass", "classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html", [
+            [ "onert::compiler::pass::ConstantInsertionPass", "classonert_1_1compiler_1_1pass_1_1_constant_insertion_pass.html", null ],
+            [ "onert::compiler::pass::ConstantLoweringPass", "classonert_1_1compiler_1_1pass_1_1_constant_lowering_pass.html", null ],
+            [ "onert::compiler::pass::PermutationEliminationPass", "classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html", null ],
+            [ "onert::compiler::pass::PermutationOperationPass", "classonert_1_1compiler_1_1pass_1_1_permutation_operation_pass.html", null ]
+          ] ]
+        ] ],
+        [ "onert::compiler::pass::UnusedOperandEliminationPass", "classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass.html", null ]
+      ] ],
+      [ "onert::compiler::train::pass::Pass", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html", [
+        [ "onert::compiler::train::pass::LossInsertionPass", "classonert_1_1compiler_1_1train_1_1pass_1_1_loss_insertion_pass.html", null ]
+      ] ]
     ] ],
     [ "std::is_enum", null, [
       [ "flatbuffers::is_enum< T >", "structflatbuffers_1_1is__enum.html", null ]
@@ -2768,7 +2802,9 @@ var hierarchy =
       [ "onert::backend::acl_cl::CLTimer", "classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html", null ],
       [ "onert::util::CPUTimer", "classonert_1_1util_1_1_c_p_u_timer.html", null ]
     ] ],
+    [ "onert::backend::train::ITrainableBackend", "structonert_1_1backend_1_1train_1_1_i_trainable_backend.html", null ],
     [ "onert::exec::ITrainableFunction", "classonert_1_1exec_1_1_i_trainable_function.html", [
+      [ "onert::backend::builtin::train::kernel::PermuteLayer", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html", null ],
       [ "onert::backend::train::ops::ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", null ],
       [ "onert::backend::train::ops::PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", null ]
     ] ],
@@ -3300,6 +3336,7 @@ var hierarchy =
     [ "nnfw_operand", "structnnfw__operand.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
+    [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
     [ "coco::DLinkedList< Child, Parent >::Node", "classcoco_1_1_d_linked_list_1_1_node.html", [
       [ "coco::Block", "classcoco_1_1_block.html", null ],
@@ -3404,10 +3441,7 @@ var hierarchy =
     [ "onert::util::ObjectManager< OperandIndex, Operand >", "classonert_1_1util_1_1_object_manager.html", [
       [ "onert::ir::Operands", "classonert_1_1ir_1_1_operands.html", null ]
     ] ],
-    [ "onert::util::ObjectManager< OperationIndex, ITrainableOperation >", "classonert_1_1util_1_1_object_manager.html", [
-      [ "onert::ir::train::TrainableOperations", "classonert_1_1ir_1_1train_1_1_trainable_operations.html", null ]
-    ] ],
-    [ "onert::util::ObjectManager< OperationIndex, Operation >", "classonert_1_1util_1_1_object_manager.html", [
+    [ "onert::util::ObjectManager< OperationIndex, IOperation >", "classonert_1_1util_1_1_object_manager.html", [
       [ "onert::ir::Operations", "classonert_1_1ir_1_1_operations.html", null ]
     ] ],
     [ "loco::ObjectPool< T >", "classloco_1_1_object_pool.html", [
@@ -4254,24 +4288,6 @@ var hierarchy =
       [ "nnc::SinkRelu", "classnnc_1_1_sink_relu.html", null ],
       [ "nnc::SinkTranspose", "classnnc_1_1_sink_transpose.html", null ]
     ] ],
-    [ "onert::compiler::pass::Pass", "classonert_1_1compiler_1_1pass_1_1_pass.html", [
-      [ "onert::compiler::pass::OddOutputPass", "classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html", null ],
-      [ "onert::compiler::pass::OperandPass", "classonert_1_1compiler_1_1pass_1_1_operand_pass.html", [
-        [ "onert::compiler::pass::ConstantOutputPass", "classonert_1_1compiler_1_1pass_1_1_constant_output_pass.html", null ],
-        [ "onert::compiler::pass::LoweredOperandPass", "classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html", [
-          [ "onert::compiler::pass::PermutationInsertionPass", "classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass.html", null ]
-        ] ]
-      ] ],
-      [ "onert::compiler::pass::OperationPass", "classonert_1_1compiler_1_1pass_1_1_operation_pass.html", [
-        [ "onert::compiler::pass::LoweredOperationPass", "classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html", [
-          [ "onert::compiler::pass::ConstantInsertionPass", "classonert_1_1compiler_1_1pass_1_1_constant_insertion_pass.html", null ],
-          [ "onert::compiler::pass::ConstantLoweringPass", "classonert_1_1compiler_1_1pass_1_1_constant_lowering_pass.html", null ],
-          [ "onert::compiler::pass::PermutationEliminationPass", "classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html", null ],
-          [ "onert::compiler::pass::PermutationOperationPass", "classonert_1_1compiler_1_1pass_1_1_permutation_operation_pass.html", null ]
-        ] ]
-      ] ],
-      [ "onert::compiler::pass::UnusedOperandEliminationPass", "classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass.html", null ]
-    ] ],
     [ "nnc::PassData", "classnnc_1_1_pass_data.html", null ],
     [ "nnc::PassManager", "classnnc_1_1_pass_manager.html", null ],
     [ "onert::compiler::pass::PassRunner", "classonert_1_1compiler_1_1pass_1_1_pass_runner.html", null ],
@@ -5009,7 +5025,15 @@ var hierarchy =
     [ "nnfw::rt::optimized_ops::TopContainer< T >", "classnnfw_1_1rt_1_1optimized__ops_1_1_top_container.html", null ],
     [ "TopologicalSortHelper.TopologicalSortHelper", "class_topological_sort_helper_1_1_topological_sort_helper.html", null ],
     [ "onert::util::TracingCtx", "classonert_1_1util_1_1_tracing_ctx.html", null ],
-    [ "onert::ir::train::TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", null ],
+    [ "onert::backend::train::TrainableBackendContext", "classonert_1_1backend_1_1train_1_1_trainable_backend_context.html", null ],
+    [ "onert::compiler::train::TrainableCodeAndInfo", "structonert_1_1compiler_1_1train_1_1_trainable_code_and_info.html", null ],
+    [ "onert::backend::train::TrainableContextData", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html", null ],
+    [ "onert::exec::train::TrainableFnSequence", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html", null ],
+    [ "onert::ir::train::TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", [
+      [ "onert::backend::train::KernelGeneratorBase", "classonert_1_1backend_1_1train_1_1_kernel_generator_base.html", [
+        [ "onert::backend::builtin::train::KernelGenerator", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html", null ]
+      ] ]
+    ] ],
     [ "onert::compiler::train::TrainingInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html", null ],
     [ "luci_interpreter::TransposeConvParams", "structluci__interpreter_1_1_transpose_conv_params.html", null ],
     [ "nnfw::cker::TransposeConvParams", "structnnfw_1_1cker_1_1_transpose_conv_params.html", null ],
