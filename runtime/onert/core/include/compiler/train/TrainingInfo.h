@@ -42,6 +42,8 @@ public:
   ~TrainingInfo() = default;
 
   bool shouldTrain() const { return _has_info; }
+  uint32_t batchSize() const { return _batch_size; }
+  void setBatchSize(const uint32_t batch_size) { _batch_size = batch_size; }
   const LossInfo &lossInfo() const { return _loss_info; }
   void setLossInfo(const LossInfo &loss_info)
   {
@@ -52,6 +54,7 @@ public:
 private:
   bool _has_info;
   LossInfo _loss_info;
+  uint32_t _batch_size;
 };
 
 } // namespace train
