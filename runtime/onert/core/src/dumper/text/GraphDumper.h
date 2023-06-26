@@ -24,7 +24,8 @@ namespace onert
 namespace ir
 {
 class Graph;
-}
+struct IOperation;
+} // namespace ir
 } // namespace onert
 
 namespace onert
@@ -32,7 +33,12 @@ namespace onert
 namespace compiler
 {
 class LoweredGraph;
-}
+
+namespace train
+{
+class LoweredTrainableGraph;
+} // namespace train
+} // namespace compiler
 } // namespace onert
 
 namespace onert
@@ -47,6 +53,7 @@ std::string formatOperand(const ir::Graph &, ir::OperandIndex ind);
 std::string formatOperation(const ir::Graph &graph, ir::OperationIndex ind);
 void dumpGraph(const ir::Graph &graph);
 void dumpLoweredGraph(const compiler::LoweredGraph &lgraph);
+void dumpLoweredGraph(const compiler::train::LoweredTrainableGraph &lgraph);
 
 } // namespace text
 } // namespace dumper
