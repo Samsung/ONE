@@ -17,6 +17,7 @@
 #ifndef __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
 #define __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
 
+#include "ir/train/operation/ElementwiseActivation.h"
 #include "ir/train/operation/Loss.h"
 #include "ir/train/operation/Permute.h"
 

@@ -18,5 +18,6 @@
 #error Define OP before including this file
 #endif
 
+OP(ElementwiseActivation)
 OP(Loss)
 OP(Permute)
