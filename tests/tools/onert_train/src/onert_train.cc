@@ -147,16 +147,17 @@ int main(const int argc, char **argv)
       expected_infos.emplace_back(std::move(ti));
     }
 
+    auto data_length = args.getDataLength();
     Generator generator;
-    RawDataLoader rawDataLoader(session);
+    RawDataLoader rawDataLoader;
     if (!args.getInputData().empty() && !args.getExpectedData().empty())
     {
-      generator = rawDataLoader.loadDatas(args.getInputData(), args.getExpectedData(), input_infos,
-                                          expected_infos, tri.batch_size);
+      generator = rawDataLoader.loadData(args.getInputData(), args.getExpectedData(), input_infos,
+                                         expected_infos, data_length, tri.batch_size);
     }
     // TODO Support RamdonGenerator
 
-    const int num_sample = args.getDataLength() / tri.batch_size;
+    const int num_sample = data_length / tri.batch_size;
     const int num_epoch = args.getEpoch();
     for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
     {
