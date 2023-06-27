@@ -49,16 +49,23 @@ public:
     _tensor_registries = tensor_registries;
   }
 
+  void setGradTensorRegistries(const compiler::TensorRegistries &tensor_registries)
+  {
+    _grad_tensor_registries = tensor_registries;
+  }
+
 private:
   void visit(const ir::train::operation::Permute &) override;
 
 private:
   backend::ITensor *getTensor(const ir::OperandIndex &index);
+  backend::ITensor *getGradTensor(const ir::OperandIndex &index);
 
 private:
   std::shared_ptr<TensorRegistry> _tensor_reg;
   std::shared_ptr<TensorRegistry> _grad_tensor_reg;
   compiler::TensorRegistries _tensor_registries;
+  compiler::TensorRegistries _grad_tensor_registries;
   const std::shared_ptr<ExternalContext> _external_context;
 };
 

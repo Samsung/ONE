@@ -32,7 +32,7 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<TensorRegistry> &grad_tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
   : KernelGeneratorBase{tgraph}, _tensor_reg{tensor_reg}, _grad_tensor_reg{grad_tensor_reg},
-    _external_context(external_context)
+    _tensor_registries{}, _grad_tensor_registries{}, _external_context{external_context}
 {
 }
 
@@ -71,6 +71,14 @@ backend::ITensor *KernelGenerator::getTensor(const ir::OperandIndex &index)
 {
   // get Tensor from all tensor registries (for Permute op)
   auto ret = _tensor_registries.getITensor(index);
+  assert(ret != nullptr);
+  return ret;
+}
+
+backend::ITensor *KernelGenerator::getGradTensor(const ir::OperandIndex &index)
+{
+  // get gradient Tensor from all tensor registries (for Permute op)
+  auto ret = _grad_tensor_registries.getITensor(index);
   assert(ret != nullptr);
   return ret;
 }
