@@ -32,7 +32,7 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<TensorRegistry> &grad_tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
   : KernelGeneratorBase{tgraph}, _tensor_reg{tensor_reg}, _grad_tensor_reg{grad_tensor_reg},
-    _tensor_registries{}, _grad_tensor_registries{}, _external_context{external_context}
+    _external_context(external_context)
 {
 }
 
