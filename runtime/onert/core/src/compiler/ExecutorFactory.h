@@ -20,6 +20,7 @@
 #include "TensorRegistries.h"
 
 #include "backend/ITensor.h"
+#include "backend/train/TrainableBackendContext.h"
 #include "compiler/LoweredGraph.h"
 #include "exec/IExecutors.h"
 
@@ -56,6 +57,9 @@ private:
 private:
   static void prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
                                     const backend::BackendContexts &backend_contexts);
+  static void
+  prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
+                        const backend::train::TrainableBackendContexts &backend_contexts);
   static void prepareBuiltinBackend(const TensorRegistries &tensor_regs,
                                     const std::shared_ptr<exec::IExecutors> &executors,
                                     const backend::BackendContexts &backend_contexts,
@@ -71,6 +75,9 @@ private:
   createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                          const std::shared_ptr<exec::IExecutors> &executors,
                          const ExecutorFactoryArgs &args, bool parallel);
+  static exec::IExecutor *
+  createTrainableExecutor(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
+                          const ExecutorFactoryArgs &args);
 
 private:
   std::unordered_map<
