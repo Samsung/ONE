@@ -43,7 +43,7 @@ public:
   }
 
   ITensorRegistry *genTensors() override;
-  FunctionMap genKernels() override;
+  backend::FunctionMap genKernels() override;
 
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 

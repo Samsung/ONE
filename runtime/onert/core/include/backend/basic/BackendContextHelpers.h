@@ -226,13 +226,15 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
   return ctx.tensor_registry.get();
 }
 
-inline void initConsts(BackendContext &ctx)
+inline void initConsts(const ir::Operands &operands,
+                       const util::Set<ir::OperandIndex> &external_operands,
+                       ITensorRegistry *tensor_registry)
 {
-  ctx.graph()->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-    if (ctx.external_operands().contains(ind) || !operand.isConstant())
+  operands.iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+    if (external_operands.contains(ind) || !operand.isConstant())
       return;
 
-    auto tensor = ctx.tensor_registry->getNativeITensor(ind);
+    auto tensor = tensor_registry->getNativeITensor(ind);
     assert(tensor != nullptr);
 
     VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
@@ -246,6 +248,11 @@ inline void initConsts(BackendContext &ctx)
 
     ext_tensor->setData(data);
   });
+}
+
+inline void initConsts(BackendContext &ctx)
+{
+  initConsts(ctx.graph()->operands(), ctx.external_operands(), ctx.tensor_registry.get());
 }
 
 } // namespace basic
