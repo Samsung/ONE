@@ -22,8 +22,6 @@
 #include "TensorBuilder.h"
 #include "Tensor.h"
 
-// Remove including this header
-#include <backend/basic/KernelGeneratorBase.h>
 #include <backend/train/KernelGeneratorBase.h>
 #include <ir/Operands.h>
 #include <ir/Operations.h>
@@ -34,31 +32,6 @@ namespace backend
 {
 namespace train
 {
-
-// TODO Remove this class
-class InferenceKernelGenerator : public basic::KernelGeneratorBase
-{
-public:
-  InferenceKernelGenerator(const ir::Graph &graph,
-                           const std::shared_ptr<TensorBuilder> &tensor_builder,
-                           const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
-                           const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
-                           const std::shared_ptr<ExternalContext> &external_context);
-
-  std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex op_ind) override;
-
-  void visit(const ir::operation::Conv2D &) override;
-  void visit(const ir::operation::Pool2D &) override;
-
-private:
-  const ir::Operands &_ctx;
-  const ir::Operations &_operations_ctx;
-  ir::Layout _current_layout;
-  std::shared_ptr<TensorBuilder> _tensor_builder;
-  std::shared_ptr<basic::TensorRegistry> _tensor_reg;
-  std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
-  const std::shared_ptr<ExternalContext> _external_context;
-};
 
 class KernelGenerator : public backend::train::KernelGeneratorBase
 {
