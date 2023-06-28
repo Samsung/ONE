@@ -126,7 +126,7 @@ generate_dot_operations(const ir::Graph &graph,
   return dot_operations;
 }
 
-void update_lower_info(const compiler::LoweredGraph &lowered_graph,
+void update_lower_info(const compiler::ILoweredGraph &lowered_graph,
                        ir::OperandIndexMap<std::unique_ptr<Operand>> *dot_operands)
 {
   const auto &operands = lowered_graph.graph().operands();
@@ -153,7 +153,7 @@ void update_lower_info(const compiler::LoweredGraph &lowered_graph,
   });
 }
 
-void update_lower_info(const compiler::LoweredGraph &lowered_graph,
+void update_lower_info(const compiler::ILoweredGraph &lowered_graph,
                        ir::OperationIndexMap<std::unique_ptr<Operation>> *dot_operations)
 {
   const auto &operations = lowered_graph.graph().operations();
@@ -213,7 +213,8 @@ void DotDumper::dump(const ir::Graph &graph, const std::string &tag)
   dump_to_file(dot_operands, dot_operations, tag);
 }
 
-void DotDumper::dump(const compiler::LoweredGraph &lowered_graph, const std::string &tag)
+// TODO Support gradient tensors
+void DotDumper::dump(const compiler::ILoweredGraph &lowered_graph, const std::string &tag)
 {
   if (_level == Level::OFF)
   {
