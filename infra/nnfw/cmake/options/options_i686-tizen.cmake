@@ -13,3 +13,4 @@ option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" OF
 option(BUILD_XNNPACK "Build XNNPACK" OFF)
 
 option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)
+option(ENABLE_ONERT_TRAIN "Enable onert training feature" OFF)
