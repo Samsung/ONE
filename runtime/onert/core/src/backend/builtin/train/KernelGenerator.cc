@@ -75,6 +75,14 @@ backend::ITensor *KernelGenerator::getTensor(const ir::OperandIndex &index)
   return ret;
 }
 
+backend::ITensor *KernelGenerator::getGradTensor(const ir::OperandIndex &index)
+{
+  // get gradient Tensor from all tensor registries (for Permute op)
+  auto ret = _grad_tensor_registries.getITensor(index);
+  assert(ret != nullptr);
+  return ret;
+}
+
 } // namespace train
 } // namespace builtin
 } // namespace backend
