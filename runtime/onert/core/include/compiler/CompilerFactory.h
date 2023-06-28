@@ -21,6 +21,7 @@
 #include "CompilerOptions.h"
 #include "compiler/train/TrainingInfo.h"
 #include "ir/NNPkg.h"
+#include "train/TrainingInfo.h"
 
 namespace onert
 {
