@@ -72,7 +72,6 @@ public:
 
 private:
   std::shared_ptr<ir::Model> _model;
-  std::unique_ptr<ICompiler> _inference_compiler;
   CompilerOptions *_options;
   const TrainingInfo *_training_info;
 };

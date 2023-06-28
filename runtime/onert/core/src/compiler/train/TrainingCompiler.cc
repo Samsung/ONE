@@ -43,7 +43,6 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
 
   // Avoid unused-private-field error
   UNUSED_RELEASE(_model);
-  UNUSED_RELEASE(_inference_compiler);
   UNUSED_RELEASE(_options);
   UNUSED_RELEASE(_training_info);
 
