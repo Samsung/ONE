@@ -38,6 +38,7 @@ class TensorBuilder
 {
 public:
   TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg);
+  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg, const std::string planner_id);
 
   /**
    * @brief     Register tensor information to allocate on CPU backend
