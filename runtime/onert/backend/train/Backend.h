@@ -48,8 +48,8 @@ public:
     auto tb = std::make_shared<TensorBuilder>(tr, "Bump");
     context->tensor_registry = tr;
     context->tensor_builder = tb;
-    context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb, tr, custom_kernel_builder,
-                                                            context->external_context());
+    context->kernel_gen = std::make_shared<InferenceKernelGenerator>(
+      graph, tb, tr, custom_kernel_builder, context->external_context());
     return context;
   }
 

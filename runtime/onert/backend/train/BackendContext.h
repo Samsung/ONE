@@ -36,7 +36,7 @@ public:
   BackendContext(const Backend *backend, ContextData &&data,
                  std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
-                 std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
+                 std::shared_ptr<InferenceKernelGenerator> kernel_gen = nullptr)
     : onert::backend::BackendContext(backend, std::move(data), tensor_registry),
       tensor_builder{tensor_builder}, kernel_gen{kernel_gen}, _external_context(new ExternalContext)
   {
@@ -50,7 +50,7 @@ public:
 public:
   // TODO Make it private
   std::shared_ptr<TensorBuilder> tensor_builder;
-  std::shared_ptr<KernelGenerator> kernel_gen;
+  std::shared_ptr<InferenceKernelGenerator> kernel_gen;
 
 private:
   // NOTE ruy context has a thread pool, and when multiple ruy contexts are created,
