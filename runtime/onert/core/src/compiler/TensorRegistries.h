@@ -22,6 +22,7 @@
 
 #include "backend/Backend.h"
 #include "backend/BackendContext.h"
+#include "backend/train/TrainableBackendContext.h"
 
 #include <memory>
 #include <unordered_set>
@@ -52,6 +53,20 @@ public:
       {
         _tensor_regs.insert(tensor_reg);
       }
+    }
+  }
+
+  TensorRegistries(const backend::train::TrainableBackendContexts &backend_contexts, bool is_grad)
+  {
+    for (const auto &e : backend_contexts)
+    {
+      auto tensor_reg = is_grad ? e.second->grad_tensor_registry() : e.second->tensor_registry();
+      if (e.first->config()->id() == backend::builtin::Config::ID)
+      {
+        _builtin_tensor_reg =
+          std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(tensor_reg);
+      }
+      _tensor_regs.insert(tensor_reg);
     }
   }
 
