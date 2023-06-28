@@ -1144,12 +1144,32 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  // Use default info if info is null, otherwise use given info
-  (void)info;
+  nnfw_train_info tinfo;
+  if (info != nullptr)
+  {
+    tinfo = *info;
+  }
 
-  // NYI
-  // _state = State::PREPARED_TRAINING;
-  return NNFW_STATUS_ERROR;
+  onert::compiler::train::TrainingInfo training_info;
+  training_info.setBatchSize(tinfo.batch_size);
+  // TODO Set Loss function
+
+  try
+  {
+    auto compiler =
+      onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, &training_info);
+    _nnpkg.reset();
+    _compiler_artifact = compiler->compile();
+    _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_prepare : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  _state = State::PREPARED_TRAINING;
+  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
