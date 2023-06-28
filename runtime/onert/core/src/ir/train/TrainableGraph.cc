@@ -64,6 +64,11 @@ IOIndex TrainableGraph::getOutputIndex(const std::string &name) const
   return _graph.getOutputIndex(name);
 }
 
+void TrainableGraph::changeShape(const OperandIndex &index, const ir::Shape &new_shape)
+{
+  _graph.changeShape(index, new_shape);
+}
+
 void TrainableGraph::addInput(const OperandIndex &ind, const std::string &name)
 {
   _graph.addInput(ind, name);
