@@ -16,7 +16,25 @@
 
 #include "TrainingCompiler.h"
 
-#include "util/Utils.h"
+#include "TrainableOperationConverter.h"
+#include "pass/LossInsertionPass.h"
+#include "../ExecutorFactory.h"
+#include "../pass/ConstantOutputPass.h"
+#include "../pass/OddOutputPass.h"
+#include "../pass/PassRunner.h"
+#include "../pass/UnusedOperandEliminationPass.h"
+#include "../ShapeValidator.h"
+#include "../../dumper/dot/DotDumper.h"
+#include "../../exec/train/TrainableExecutors.h"
+#include "../../ir/OperationDumper.h"
+#include "../../ir/verifier/Verifier.h"
+
+#include <compiler/StaticShapeInferer.h>
+#include <compiler/train/LoweredTrainableGraph.h>
+#include <ir/train/TrainableGraph.h>
+
+#include <misc/polymorphic_downcast.h>
+#include <misc/string_helpers.h>
 
 namespace onert
 {
@@ -39,14 +57,164 @@ TrainingCompiler::TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
 
 std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
 {
-  // TODO Implement
+  /***************************************************
+   * Prepare compilation phase
+   ***************************************************/
+  if (!_options)
+    throw std::runtime_error{"Empty compile option"};
 
-  // Avoid unused-private-field error
-  UNUSED_RELEASE(_model);
-  UNUSED_RELEASE(_options);
-  UNUSED_RELEASE(_training_info);
+  // Mode check
+  // TODO handle option for each model
+  if (_options->he_profiling_mode)
+  {
+    if (!_options->he_scheduler)
+      throw std::runtime_error("Heterogeneous scheduler must be enabled during profiling.");
 
-  return std::make_shared<CompilerArtifact>(nullptr, nullptr);
+    if (_options->executor != "Dataflow")
+      throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
+  }
+
+  if (!_options->minmax_filepath.empty())
+  {
+    if (_options->executor != "Linear")
+      throw std::runtime_error("Recording minmax works only with Linear executor");
+  }
+
+  _options->forceInternalOptions();
+  _options->verboseOptions();
+
+  auto custom_kernel_builder = _model->getKernelBuilder();
+
+  _model->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
+    auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
+    // Mandatory passes
+    compiler::pass::PassRunner{}
+      .append(std::make_unique<compiler::pass::ConstantOutputPass>(subg))
+      .append(std::make_unique<compiler::pass::OddOutputPass>(subg))
+      .run();
+
+    // Optimizations
+    compiler::pass::PassRunner{}
+      .append(std::make_unique<compiler::pass::UnusedOperandEliminationPass>(subg))
+      .run();
+  });
+
+  std::unordered_map<ir::SubgraphIndex, std::shared_ptr<ir::train::TrainableGraph>>
+    trainable_subgraphs;
+
+  if (_model->hasOnly<ir::Graph>())
+  {
+    // Create trainable subgraphs by copy and converting inference model
+    _model->iterate([&](const ir::SubgraphIndex &subg_index, const ir::IGraph &graph) {
+      const auto &subg = nnfw::misc::polymorphic_downcast<const ir::Graph &>(graph);
+      // Create TrainableGraph by copying Graph
+      auto trainable_subg = std::make_shared<ir::train::TrainableGraph>(subg);
+
+      // Convert operations to trainable operations
+      auto converter = TrainableOperationConverter{*trainable_subg, _training_info};
+      subg.operations().iterate(
+        [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &) {
+          auto trainable_op = converter(op_index);
+          auto gen_index = trainable_subg->replaceOperation(op_index, std::move(trainable_op));
+          UNUSED_RELEASE(gen_index);
+          assert(gen_index == op_index);
+        });
+
+      trainable_subgraphs[subg_index] = std::move(trainable_subg);
+    });
+  }
+  else
+  {
+    // TODO Support models that have TrainableGraphs
+    throw std::runtime_error("TrainingCompiler: Invalid model");
+  }
+
+  // operation
+  _model.reset();
+
+  // Apply pass for trainable subgraphs
+  for (auto &&pair : trainable_subgraphs)
+  {
+    auto trainable_subg = pair.second;
+
+    // TODO Apply LossInsertionPass
+  }
+
+  /***************************************************
+   * Backend independent analysis & optimization phase
+   ***************************************************/
+  // TODO Handle dump level for each model
+  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options->graph_dump_level);
+  onert::dumper::dot::DotDumper dot_dumper(dump_level);
+
+  // Tracing context
+  auto tracing_ctx = std::make_unique<util::TracingCtx>();
+
+  // Lower: Assign backend
+  std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::train::LoweredTrainableGraph>>
+    lowered_subgs;
+  {
+    for (auto &&pair : trainable_subgraphs)
+    {
+      auto &subg_index = pair.first;
+      auto trainable_subg = pair.second;
+
+      // Lower: Assign backend
+      lowered_subgs[subg_index] =
+        std::make_unique<compiler::train::LoweredTrainableGraph>(*trainable_subg, *_options);
+      // Set tracing_ctx for copied graph
+      if (tracing_ctx != nullptr)
+        tracing_ctx->setSubgraphIndex(&(lowered_subgs[subg_index]->graph()), subg_index.value());
+    }
+  }
+
+  for (const auto &pair : lowered_subgs)
+  {
+    const auto &subg_index = pair.first;
+    const auto &lowered_subg = pair.second;
+    dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_subg-", subg_index.value()));
+  }
+
+  // TODO Shape inference for applying batch size.
+
+  // Shape validation
+  for (const auto &pair : lowered_subgs)
+  {
+    auto &lowered_subg = pair.second;
+    compiler::ShapeValidator{lowered_subg->graph()}();
+  }
+
+  /*************************************************************
+   *  Backend independent analysis & optimization phase finished
+   *************************************************************/
+  auto executors = std::make_shared<exec::train::TrainableExecutors>();
+  for (auto &&pair : lowered_subgs)
+  {
+    auto const model_index = ir::ModelIndex{0};
+    auto const subg_index = pair.first;
+    auto &lowered_subg = pair.second;
+    auto const indexed_ranks = lowered_subg->indexed_ranks();
+
+    ir::OperationDumper dumper("Executor generation of Subgraph " +
+                               std::to_string(subg_index.value()));
+    lowered_subg->graph().operations().iterate(
+      [&](const ir::OperationIndex &, const ir::IOperation &op) { op.accept(dumper); });
+
+    ExecutorFactoryArgs args;
+    args.tracing_ctx = tracing_ctx.get();
+    args.options = _options;
+    args.model_index = model_index;
+    args.custom_kernel_builder = custom_kernel_builder;
+    auto executor = std::unique_ptr<exec::IExecutor>{
+      ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
+    executor->setIndexedRanks(indexed_ranks);
+    executors->emplace(model_index, subg_index, std::move(executor));
+  }
+
+  /********************************
+   * Code generation phase finished
+   ********************************/
+  return std::make_shared<CompilerArtifact>(executors, std::move(tracing_ctx));
 }
 
 } // namespace train

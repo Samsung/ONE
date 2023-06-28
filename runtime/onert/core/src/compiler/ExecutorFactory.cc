@@ -609,6 +609,19 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
 }
 
 #ifdef ONERT_TRAIN
+exec::IExecutor *
+ExecutorFactory::create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
+                        const std::shared_ptr<exec::IExecutors> &executors,
+                        const ExecutorFactoryArgs &args)
+{
+  assert(args.options != nullptr);
+
+  if (args.options->executor != "Linear")
+    throw std::runtime_error("ExecutorFactory: TrainableExecutor supports only 'Linear' now");
+
+  return createTrainableExecutor(std::move(lowered_graph), executors, args);
+}
+
 void ExecutorFactory::prepareMigrantTensors(
   compiler::ILoweredGraph &lowered_graph,
   const backend::train::TrainableBackendContexts &backend_contexts)
