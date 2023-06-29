@@ -19,7 +19,6 @@ import numpy as np
 import json
 
 from pathlib import Path
-from Util import to_filename
 
 # Fake-quantized Op has the postfix of fq_postfix
 # TODO Remove coupling with fake quantization codes
@@ -40,19 +39,19 @@ def _name_before_fq(name):
 #
 # Before
 # self._dir/
-#  tensors.txt
+#  tensors.json
 #
 # After
 # self._dir/
-#  tensors.txt
-#  <TENSOR_NAME>.npy
-# NOTE TENSOR_NAME is transformed by to_filename
+#  tensors.json
+#  <TENSOR_ID>.npy
+# NOTE tensors.json has a dictionary {TENSOR_NAME -> TENSOR_ID}
 class DumpFakeQuantFM:
     def StartAnalysis(self, args):
         self._dir = Path(args)
         self._num_data = 0
-        with open(self._dir / 'tensors.txt') as f:
-            self._target_tensors = set([line.rstrip() for line in f])
+        with open(self._dir / 'tensors.json') as f:
+            self._tname_to_tid = json.load(f)
         self._scale_map = {}
 
     def EndNetworkExecution(self, outputs: list):
@@ -62,10 +61,11 @@ class DumpFakeQuantFM:
     def DefaultOpPost(self, name, opcode, inputs, output):
         if opcode == 'Dequantize':
             orig_name = _name_before_fq(name)
-            if orig_name in self._target_tensors:
+            if orig_name in self._tname_to_tid:
+                tid = self._tname_to_tid[orig_name]
                 data_path = self._dir / str(self._num_data)
                 data_path.mkdir(parents=False, exist_ok=True)
-                np.save(str(data_path / to_filename(orig_name)), output['data'])
+                np.save(str(data_path / str(tid)), output['data'])
                 # Save scales (scale is fixed, so saving once)
                 if orig_name not in self._scale_map:
                     assert len(inputs) == 1

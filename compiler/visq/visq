@@ -156,7 +156,7 @@ def advance_on_data(fp32_model, fq_model, data, computers):
          tempfile.TemporaryDirectory() as fq_dir:
 
         _run_dalgona(fp32_model, data, dump_fp32_py, fp32_dir)
-        copyfile(fp32_dir + '/tensors.txt', fq_dir + '/tensors.txt')
+        copyfile(fp32_dir + '/tensors.json', fq_dir + '/tensors.json')
         _run_dalgona(fq_model, data, dump_fq_py, fq_dir)
 
         for metric_key in computers:
@@ -304,7 +304,7 @@ def run_on_data(fp32_model, q_model, data, dump_dot_graph, computers):
         _run_dalgona(fp32_model, data, dump_fp32_py, fp32_dir)
 
         # Copy list of dumped tensors
-        copyfile(fp32_dir + '/tensors.txt', fq_dir + '/tensors.txt')
+        copyfile(fp32_dir + '/tensors.json', fq_dir + '/tensors.json')
 
         # Step 3. Run dalgona to dump intermediate FMs in fq model
         _run_dalgona(fq_model, data, dump_fq_py, fq_dir)
