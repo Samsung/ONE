@@ -11,6 +11,7 @@ list(APPEND ONERT_TRAIN_SRCS "src/args.cc")
 list(APPEND ONERT_TRAIN_SRCS "src/nnfw_util.cc")
 list(APPEND ONERT_TRAIN_SRCS "src/randomgen.cc")
 list(APPEND ONERT_TRAIN_SRCS "src/rawformatter.cc")
+list(APPEND ONERT_TRAIN_SRCS "src/rawdataloader.cc")
 
 nnfw_find_package(Boost REQUIRED program_options)
 nnfw_find_package(HDF5 QUIET)
@@ -38,3 +39,22 @@ target_link_libraries(onert_train ${Boost_PROGRAM_OPTIONS_LIBRARY})
 target_link_libraries(onert_train nnfw_lib_benchmark)
 
 install(TARGETS onert_train DESTINATION bin)
+
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+# Unit Tests
+set(TEST_ONERT_TRAIN test_onert_train)
+
+file(GLOB_RECURSE ONERT_TRAIN_TEST_SRCS "test/*.cc")
+list(APPEND ONERT_TRAIN_TEST_SRCS "src/rawdataloader.cc")
+list(APPEND ONERT_TRAIN_TEST_SRCS "src/nnfw_util.cc")
+
+add_executable(${TEST_ONERT_TRAIN} ${ONERT_TRAIN_TEST_SRCS})
+
+target_link_libraries(${TEST_ONERT_TRAIN} nnfw-dev)
+target_link_libraries(${TEST_ONERT_TRAIN} gtest gtest_main dl ${LIB_PTHREAD})
+
+add_test(${TEST_ONERT_TRAIN} ${TEST_ONERT_TRAIN})
+install(TARGETS ${TEST_ONERT_TRAIN} DESTINATION unittest)
