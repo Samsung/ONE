@@ -25,6 +25,7 @@ bool isInplaceOperation(const circle::BuiltinOperator &op)
 {
   switch (op)
   {
+    case circle::BuiltinOperator_ABS:
     case circle::BuiltinOperator_LOGISTIC:
     case circle::BuiltinOperator_RESHAPE:
     case circle::BuiltinOperator_EXPAND_DIMS:
@@ -140,6 +141,7 @@ void GraphLoader::checkInplaceOps(CircleReader *reader, RuntimeGraph *runtime_gr
         }
 
         // Let's check that output is not a graph output tensor
+        // TODO: check this statement
         {
           if (std::find(graph_outputs.begin(), graph_outputs.end(), output_index) !=
               graph_outputs.end())
