@@ -119,11 +119,11 @@ def _run_dalgona(model, data, analysis, save_dir):
     cmd += ['--analysis_args', str(save_dir)]
 
     try:
-        subprocess.run(cmd, capture_output=True, check=True)
+        subprocess.run(cmd, capture_output=True, check=True, universal_newlines=True)
     except subprocess.CalledProcessError as e:
         print('Error raised while running the below command')
         print(' '.join(cmd))
-        print(e.output)
+        print(e.stderr)
         raise
 
 
@@ -195,11 +195,11 @@ def _fake_quantize(input_model, output_model):
     cmd += [str(output_model)]
 
     try:
-        subprocess.run(cmd, check=True)
+        subprocess.run(cmd, check=True, universal_newlines=True)
     except subprocess.CalledProcessError as e:
         print('Error raised while running the below command')
         print(' '.join(cmd))
-        print(e.output)
+        print(e.stderr)
         raise
 
 
