@@ -15,7 +15,7 @@
  */
 
 #include "ir/Graph.h"
-#include "compiler/LoweredGraph.h"
+#include "compiler/ILoweredGraph.h"
 
 #ifndef __ONERT_DUMPER_DOT_DOT_DUMPER_H__
 #define __ONERT_DUMPER_DOT_DOT_DUMPER_H__
@@ -57,7 +57,7 @@ public:
    * @param[in] tag    The name of dot file that would be created
    * @return N/A
    */
-  void dump(const compiler::LoweredGraph &lowered_graph, const std::string &tag);
+  void dump(const compiler::ILoweredGraph &lowered_graph, const std::string &tag);
 
 private:
   Level _level;
