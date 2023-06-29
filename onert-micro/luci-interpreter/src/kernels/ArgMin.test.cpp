@@ -15,8 +15,8 @@
  */
 
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/test_models/argmax/FloatArgMaxKernel.h"
-#include "luci_interpreter/test_models/argmax/NegArgMaxKernel.h"
+#include "luci_interpreter/test_models/argmin/FloatArgMinKernel.h"
+#include "luci_interpreter/test_models/argmin/NegArgMinKernel.h"
 
 #include "loader/ModuleLoader.h"
 
@@ -27,7 +27,7 @@ namespace
 
 using namespace testing;
 
-class ArgMaxTest : public ::testing::Test
+class ArgMinTest : public ::testing::Test
 {
   // Do nothing
 };
@@ -63,16 +63,16 @@ std::vector<O> checkKernel(test_kernel::TestDataBase<T, O> *test_data_base)
   return output_data_vector;
 }
 
-TEST_F(ArgMaxTest, MainTest_P)
+TEST_F(ArgMinTest, MainTest_P)
 {
-  test_kernel::TestDataFloatArgMax test_data_kernel;
+  test_kernel::TestDataFloatArgMin test_data_kernel;
   std::vector<int32_t> output_data_vector = checkKernel(&test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(ArgMaxTest, Input_output_type_mismatch_NEG)
+TEST_F(ArgMinTest, Input_output_type_mismatch_NEG)
 {
-  test_kernel::TestDataOutputWrongOutputArgMax test_data_kernel;
+  test_kernel::TestDataOutputWrongOutputArgMin test_data_kernel;
   MemoryManager memory_manager{};
   RuntimeModule runtime_module{};
   bool dealloc_input = true;
