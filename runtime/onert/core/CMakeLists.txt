@@ -9,6 +9,13 @@ if(NOT BUILD_MINMAX_H5DUMPER)
   list(REMOVE_ITEM SOURCES ${SRC_TO_REMOVE})
 endif(NOT BUILD_MINMAX_H5DUMPER)
 
+if(NOT ENABLE_ONERT_TRAIN)
+  file(GLOB_RECURSE SRC_TRAIN "src/*/train/*.cc")
+  list(REMOVE_ITEM SOURCES ${SRC_TRAIN})
+  file(GLOB_RECURSE SRC_TRAIN "src/*/*/train/*.cc")
+  list(REMOVE_ITEM SOURCES ${SRC_TRAIN})
+endif(NOT ENABLE_ONERT_TRAIN)
+
 add_library(onert_core SHARED ${SOURCES})
 set_target_properties(onert_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
@@ -36,6 +43,12 @@ if(BUILD_MINMAX_H5DUMPER)
   target_include_directories(onert_core PRIVATE ${HDF5_INCLUDE_DIRS})
   target_link_libraries(onert_core PRIVATE ${HDF5_CXX_LIBRARIES})
 endif(BUILD_MINMAX_H5DUMPER)
+
+# Training feature
+# Use public to use this flag on all modules and tests
+if(ENABLE_ONERT_TRAIN)
+  target_compile_definitions(onert_core PUBLIC ONERT_TRAIN)
+endif(ENABLE_ONERT_TRAIN)
 
 if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
   add_custom_command(TARGET onert_core POST_BUILD

@@ -162,6 +162,7 @@ public:
    */
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
+#ifdef ONERT_TRAIN
   NNFW_STATUS train_prepare(const nnfw_train_info *info);
   NNFW_STATUS train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
   NNFW_STATUS train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
@@ -172,6 +173,7 @@ public:
   NNFW_STATUS train_run(bool update_weights);
   float train_get_loss(uint32_t index);
   NNFW_STATUS train_export_circle(const char *path);
+#endif // ONERT_TRAIN
 
 private:
   const onert::ir::IGraph *primary_subgraph();
@@ -184,9 +186,11 @@ private:
   bool isStateRunning();
   bool isStateFinishedRun();
   bool isStatePreparedOrFinishedRun();
+#ifdef ONERT_TRAIN
   bool isStatePreparedTraining();
   bool isStateFinishedTraining();
   bool isStatePreparedOrFinishedTraining();
+#endif // ONERT_TRAIN
 
 private:
   State _state{State::INITIALIZED};

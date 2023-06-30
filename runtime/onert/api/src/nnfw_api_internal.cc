@@ -1129,6 +1129,7 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
   return NNFW_STATUS_NO_ERROR;
 }
 
+#ifdef ONERT_TRAIN
 NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
 {
   // We may need different state to represent training model is loaded
@@ -1317,3 +1318,5 @@ bool nnfw_session::isStatePreparedOrFinishedTraining()
 {
   return isStatePreparedTraining() || isStateFinishedTraining();
 }
+
+#endif // ONERT_TRAIN

@@ -22,7 +22,9 @@
 
 #include "backend/Backend.h"
 #include "backend/BackendContext.h"
+#ifdef ONERT_TRAIN
 #include "backend/train/TrainableBackendContext.h"
+#endif // ONERT_TRAIN
 
 #include <memory>
 #include <unordered_set>
@@ -56,6 +58,7 @@ public:
     }
   }
 
+#ifdef ONERT_TRAIN
   TensorRegistries(const backend::train::TrainableBackendContexts &backend_contexts, bool is_grad)
   {
     for (const auto &e : backend_contexts)
@@ -69,6 +72,7 @@ public:
       _tensor_regs.insert(tensor_reg);
     }
   }
+#endif // ONERT_TRAIN
 
   std::unordered_set<std::shared_ptr<onert::backend::ITensorRegistry>>::const_iterator begin() const
   {

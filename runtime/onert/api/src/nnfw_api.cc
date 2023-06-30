@@ -388,6 +388,8 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs)
 
 // Training
 
+#ifdef ONERT_TRAIN
+
 NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
@@ -449,3 +451,57 @@ NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path)
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->train_export_circle(path);
 }
+
+#else // ONERT_TRAIN
+
+NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_train_input_tensorinfo(nnfw_session *session, uint32_t, nnfw_tensorinfo *)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t, nnfw_tensorinfo *)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_train_set_input(nnfw_session *session, uint32_t, const void *,
+                                 const nnfw_tensorinfo *)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_train_set_expected(nnfw_session *session, uint32_t, const void *,
+                                    const nnfw_tensorinfo *)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_train(nnfw_session *session, bool)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_train_get_loss(nnfw_session *session, uint32_t, float *)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return NNFW_STATUS_ERROR;
+}
+
+#endif // ONERT_TRAIN
