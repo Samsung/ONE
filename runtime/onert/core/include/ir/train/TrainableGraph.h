@@ -84,6 +84,7 @@ public:
                                   std::unique_ptr<ITrainableOperation> &&operation);
 
 public:
+  void changeShape(const OperandIndex &ind, const ir::Shape &new_shape) override;
   void addInput(const OperandIndex &ind, const std::string &name = "");
   void addOutput(const OperandIndex &ind, const std::string &name = "");
   void verify() const;
@@ -96,13 +97,13 @@ public:
 
   // Accessors
 public:
-  const OperandIndexSequence &getInputs() const { return _graph.getInputs(); }
-  const OperandIndexSequence &getOutputs() const { return _graph.getOutputs(); }
-  IOIndex getInputIndex(const std::string &name) const;
-  IOIndex getOutputIndex(const std::string &name) const;
-  const Operands &operands() const { return _graph.operands(); }
+  const OperandIndexSequence &getInputs() const override { return _graph.getInputs(); }
+  const OperandIndexSequence &getOutputs() const override { return _graph.getOutputs(); }
+  IOIndex getInputIndex(const std::string &name) const override;
+  IOIndex getOutputIndex(const std::string &name) const override;
+  const Operands &operands() const override { return _graph.operands(); }
   Operands &operands() { return _graph.operands(); } // TODO Remove this non-const accessor
-  const Operations &operations() const { return _graph.operations(); }
+  const Operations &operations() const override { return _graph.operations(); }
   Layout layout() const { return _graph.layout(); }
   const Graph &graph() const { return _graph; }
 
