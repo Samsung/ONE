@@ -20,6 +20,7 @@
 #include "ir/Layout.h"
 #include "ir/DataType.h"
 
+#include <cstdint>
 #include <string>
 #include <vector>
 

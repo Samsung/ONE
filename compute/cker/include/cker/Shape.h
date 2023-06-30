@@ -208,6 +208,7 @@ private:
     {
       SetDim(i, pad_value);
     }
+    // Error on gcc 13: refer infra/nnfw/cmake/buildtool/config/config_linux.cmake
     std::memcpy(DimsData() + size_increase, shape.DimsData(),
                 sizeof(int32_t) * shape.DimensionsCount());
   }
