@@ -58,19 +58,25 @@ class DumpFakeQuantFM:
         self._num_data += 1
 
     # TODO Use DequantizePost when dalgona supports it
-    def DefaultOpPost(self, name, opcode, inputs, output):
+    def DefaultOpPost(self, name, opcode, inputs, outputs):
         if opcode == 'Dequantize':
-            orig_name = _name_before_fq(name)
-            if orig_name in self._tname_to_tid:
-                tid = self._tname_to_tid[orig_name]
-                data_path = self._dir / str(self._num_data)
-                data_path.mkdir(parents=False, exist_ok=True)
-                np.save(str(data_path / str(tid)), output['data'])
-                # Save scales (scale is fixed, so saving once)
-                if orig_name not in self._scale_map:
-                    assert len(inputs) == 1
-                    scale = inputs[0]['quantparam']['scale'][0]
-                    self._scale_map[orig_name] = scale
+            for output in outputs:
+                name = output['name']
+                data = output['data']
+                orig_name = _name_before_fq(name)
+                if orig_name in self._tname_to_tid:
+                    tid = self._tname_to_tid[orig_name]
+                    data_path = self._dir / str(self._num_data)
+                    data_path.mkdir(parents=False, exist_ok=True)
+                    np.save(str(data_path / str(tid)), data)
+                    # Save scales (scale is fixed, so saving once)
+                    if orig_name not in self._scale_map:
+                        assert len(inputs) == 1
+                        assert 'quantparam' in inputs[0]
+                        assert 'scale' in inputs[0]['quantparam']
+                        assert len(inputs[0]['quantparam']['scale']) == 1
+                        scale = inputs[0]['quantparam']['scale'][0]
+                        self._scale_map[orig_name] = scale
 
     def EndAnalysis(self):
         # Dump saved scales into scales.txt

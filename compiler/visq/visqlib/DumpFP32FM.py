@@ -42,18 +42,21 @@ class DumpFP32FM:
     def EndNetworkExecution(self, outputs):
         self._num_data += 1
 
-    def DefaultOpPost(self, name, opcode, inputs, output):
+    def DefaultOpPost(self, name, opcode, inputs, outputs):
         # Save intermediate FM into <tid>.npy
         data_path = self._dir / str(self._num_data)
         data_path.mkdir(parents=False, exist_ok=True)
-        if name in self._tname_to_tid:
-            tid = self._tname_to_tid[name]
-        else:
-            tid = self._tensor_count
-            self._tname_to_tid[name] = tid
-            self._tensor_count += 1
+        for output in outputs:
+            name = output['name']
+            data = output['data']
+            if name in self._tname_to_tid:
+                tid = self._tname_to_tid[name]
+            else:
+                tid = self._tensor_count
+                self._tname_to_tid[name] = tid
+                self._tensor_count += 1
 
-        np.save(str(data_path / str(tid)), output['data'])
+            np.save(str(data_path / str(tid)), data)
 
     def EndAnalysis(self):
         # Save tensor name : tensor id pairs
