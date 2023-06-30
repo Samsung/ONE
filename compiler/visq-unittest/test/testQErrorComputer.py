@@ -37,10 +37,12 @@ class VisqQErrorComputerTest(unittest.TestCase):
         self.fq_dir.cleanup()
 
     def _setUpSingleTensorData(self):
-        with open(self.fp32_dir.name + '/tensors.txt', 'w') as f:
-            f.write('test')
-        with open(self.fq_dir.name + '/tensors.txt', 'w') as f:
-            f.write('test')
+        tensor_id = {}
+        tensor_id['test'] = 0
+        with open(self.fp32_dir.name + '/tensors.json', 'w') as f:
+            json.dump(tensor_id, f)
+        with open(self.fq_dir.name + '/tensors.json', 'w') as f:
+            json.dump(tensor_id, f)
         scales = {}
         scales['test'] = 2.0
         with open(self.fq_dir.name + '/scales.txt', 'w') as f:
@@ -48,14 +50,16 @@ class VisqQErrorComputerTest(unittest.TestCase):
         os.mkdir(self.fp32_dir.name + '/0')
         os.mkdir(self.fq_dir.name + '/0')
         test_data = np.zeros(16)
-        np.save(self.fp32_dir.name + '/0/test.npy', test_data)
-        np.save(self.fq_dir.name + '/0/test.npy', test_data)
+        np.save(self.fp32_dir.name + '/0/0.npy', test_data)
+        np.save(self.fq_dir.name + '/0/0.npy', test_data)
 
     def _setUpTwoTensorData(self):
-        with open(self.fp32_dir.name + '/tensors.txt', 'w') as f:
-            f.write('test')
-        with open(self.fq_dir.name + '/tensors.txt', 'w') as f:
-            f.write('test')
+        tensor_id = {}
+        tensor_id['test'] = 0
+        with open(self.fp32_dir.name + '/tensors.json', 'w') as f:
+            json.dump(tensor_id, f)
+        with open(self.fq_dir.name + '/tensors.json', 'w') as f:
+            json.dump(tensor_id, f)
         scales = {}
         scales['test'] = 2.0
         with open(self.fq_dir.name + '/scales.txt', 'w') as f:
@@ -66,10 +70,10 @@ class VisqQErrorComputerTest(unittest.TestCase):
         os.mkdir(self.fq_dir.name + '/1')
         test_data_one = np.ones(16)
         test_data_zero = np.zeros(16)
-        np.save(self.fp32_dir.name + '/0/test.npy', test_data_one)
-        np.save(self.fp32_dir.name + '/1/test.npy', test_data_zero)
-        np.save(self.fq_dir.name + '/0/test.npy', test_data_zero)
-        np.save(self.fq_dir.name + '/1/test.npy', test_data_zero)
+        np.save(self.fp32_dir.name + '/0/0.npy', test_data_one)
+        np.save(self.fp32_dir.name + '/1/0.npy', test_data_zero)
+        np.save(self.fq_dir.name + '/0/0.npy', test_data_zero)
+        np.save(self.fq_dir.name + '/1/0.npy', test_data_zero)
         # Golden: (1 + 0) / 2 = 0.5 for MSE
 
     def _setUpDifferentTensorData(self):
@@ -78,11 +82,14 @@ class VisqQErrorComputerTest(unittest.TestCase):
         # NOTE When does this happen?
         # This case can happen because visq ignores nodes that do not affect qerrors.
         # For example, RESHAPE Op does not affect qerrors, so its fq data is not dumped,
-        # although it is listed in 'tensors.txt'.
-        with open(self.fp32_dir.name + '/tensors.txt', 'w') as f:
-            f.writelines(['test\n', 'test2'])
-        with open(self.fq_dir.name + '/tensors.txt', 'w') as f:
-            f.writelines(['test\n', 'test2'])
+        # although it is listed in 'tensors.json'.
+        tensor_id = {}
+        tensor_id['test'] = 0
+        tensor_id['test2'] = 1
+        with open(self.fp32_dir.name + '/tensors.json', 'w') as f:
+            json.dump(tensor_id, f)
+        with open(self.fq_dir.name + '/tensors.json', 'w') as f:
+            json.dump(tensor_id, f)
         scales = {}
         scales['test'] = 2.0
         scales['test2'] = 1.0
@@ -91,9 +98,9 @@ class VisqQErrorComputerTest(unittest.TestCase):
         os.mkdir(self.fp32_dir.name + '/0')
         os.mkdir(self.fq_dir.name + '/0')
         test_data = np.zeros(16)
-        np.save(self.fp32_dir.name + '/0/test.npy', test_data)
-        np.save(self.fp32_dir.name + '/0/test2.npy', test_data)
-        np.save(self.fq_dir.name + '/0/test.npy', test_data)
+        np.save(self.fp32_dir.name + '/0/0.npy', test_data)
+        np.save(self.fp32_dir.name + '/0/1.npy', test_data)
+        np.save(self.fq_dir.name + '/0/0.npy', test_data)
 
     def test_MPEIR(self):
         self._setUpSingleTensorData()

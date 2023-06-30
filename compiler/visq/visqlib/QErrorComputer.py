@@ -18,7 +18,6 @@ import numpy as np
 import json
 
 from pathlib import Path
-from visqlib.Util import to_filename
 from collections import defaultdict
 
 
@@ -33,28 +32,28 @@ class QErrorComputer:
         # Assumption: FM data are saved as follows
         #
         # fp32_dir/
-        #   tensors.txt
+        #   tensors.json
         #   <DATA_INDEX>/
-        #     <TENSOR_NAME>.npy
+        #     <TENSOR_ID>.npy
         #
         # fq_dir/
-        #   tensors.txt
+        #   tensors.json
         #   <DATA_INDEX>/
-        #     <TENSOR_NAME>.npy
+        #     <TENSOR_ID>.npy
+        #
+        # NOTE tensors.json has a dictionary {TENSOR_NAME -> TENSOR_ID}
         self._num_data = len(list(filter(os.path.isdir, glob.glob(fp32_dir + '/*'))))
         if self._num_data != len(list(filter(os.path.isdir, glob.glob(fq_dir + '/*')))):
             raise RuntimeError("Number of data mistmatches")
 
         self._num_processed_data += self._num_data
 
-        self._filename_to_tensor = dict()
-        with open(Path(fp32_dir) / 'tensors.txt') as f:
-            tensors = set([line.rstrip() for line in f])
-            for tensor in tensors:
-                # Check if filename is unique
-                # Fix name finding logic unless
-                assert to_filename(tensor) not in self._filename_to_tensor
-                self._filename_to_tensor[to_filename(tensor)] = tensor
+        self._tid_to_tname = dict()  # {tensor id -> tensor name}
+        with open(Path(fp32_dir) / 'tensors.json') as f:
+            tname_to_tid = json.load(f)
+
+        for tname, tid in tname_to_tid.items():
+            self._tid_to_tname[tid] = tname
 
         # Save paths to fp32 data and fq data for each tensor
         # dict
@@ -71,8 +70,8 @@ class QErrorComputer:
                 fq_data_path = fq_dir + '/' + str(data_idx) + '/' + fp32_path.with_suffix(
                     '.npy').name
                 fq_path = Path(fq_data_path)
-                filename = fp32_path.stem
-                tensor_name = self._filename_to_tensor[filename]
+                tid = int(fp32_path.stem)
+                tensor_name = self._tid_to_tname[tid]
 
                 # Only save the tensors which have both fp32 data and fq data
                 if fq_path.is_file() and fp32_path.is_file():

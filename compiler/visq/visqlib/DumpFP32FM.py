@@ -16,9 +16,9 @@
 # NOTE This script runs on dalgona
 
 import numpy as np
+import json
 
 from pathlib import Path
-from Util import to_filename
 
 
 # Dump FP32 model's intermediate FM data and their names
@@ -28,27 +28,34 @@ from Util import to_filename
 #
 # After
 # self._dir/
-#  tensors.txt
-#  <TENSOR_NAME>.npy
-# NOTE TENSOR_NAME is transformed by to_filename
+#  tensors.json
+#  <TENSOR_ID>.npy
+# NOTE tensors.json has a dictionary {TENSOR_NAME -> TENSOR_ID}
 class DumpFP32FM:
     def StartAnalysis(self, args):
         self._dir = Path(args)
         self._num_data = 0
-        self._tensor_names = set()
+        # Dict {tensor_name -> tid}
+        self._tname_to_tid = dict()
+        self._tensor_count = 0
 
     def EndNetworkExecution(self, outputs):
         self._num_data += 1
 
     def DefaultOpPost(self, name, opcode, inputs, output):
-        # Save intermediate FM into tensor_name.npy
+        # Save intermediate FM into <tid>.npy
         data_path = self._dir / str(self._num_data)
         data_path.mkdir(parents=False, exist_ok=True)
-        np.save(str(data_path / to_filename(name)), output['data'])
-        self._tensor_names.add(name)
+        if name in self._tname_to_tid:
+            tid = self._tname_to_tid[name]
+        else:
+            tid = self._tensor_count
+            self._tname_to_tid[name] = tid
+            self._tensor_count += 1
+
+        np.save(str(data_path / str(tid)), output['data'])
 
     def EndAnalysis(self):
-        # Save tensor names line by line
-        with open(self._dir / 'tensors.txt', 'w') as f:
-            for name in self._tensor_names:
-                f.write("%s\n" % name)
+        # Save tensor name : tensor id pairs
+        with open(self._dir / 'tensors.json', 'w') as f:
+            json.dump(self._tname_to_tid, f, indent=2)
