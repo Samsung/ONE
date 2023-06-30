@@ -45,12 +45,12 @@ ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
     case ir::operation::Pool2D::PoolType::MAX:
       return ops::PoolType::kMax;
     default:
-      throw std::runtime_error("train KernelGenerator : Not supported operation yet");
+      throw std::runtime_error("train InferenceKernelGenerator : Not supported operation yet");
   }
 }
 } // namespace
 
-KernelGenerator::KernelGenerator(
+InferenceKernelGenerator::InferenceKernelGenerator(
   const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
   const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
   const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
@@ -63,7 +63,7 @@ KernelGenerator::KernelGenerator(
   // DO NOTHING
 }
 
-std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
+std::unique_ptr<exec::FunctionSequence> InferenceKernelGenerator::generate(ir::OperationIndex ind)
 {
   // TODO Generate FunctionSequence for backwarding as well
   auto ret = std::make_unique<exec::FunctionSequence>();
@@ -90,7 +90,7 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   return ret;
 }
 
-void KernelGenerator::visit(const ir::operation::Conv2D &node)
+void InferenceKernelGenerator::visit(const ir::operation::Conv2D &node)
 {
   using ir::operation::Conv2D;
 
@@ -138,7 +138,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Pool2D &node)
+void InferenceKernelGenerator::visit(const ir::operation::Pool2D &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(ir::operation::Pool2D::Input::INPUT)};
@@ -162,6 +162,46 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
                 convertPoolType(node.param().op_type));
 
   _return_fn = std::move(fn);
+}
+
+KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
+                                 const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
+                                 const std::shared_ptr<basic::TensorRegistry> &grad_tensor_reg,
+                                 const std::shared_ptr<ExternalContext> &external_context)
+  : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
+    _tensor_reg{tensor_reg}, _grad_tensor_reg{grad_tensor_reg}, _external_context(external_context)
+{
+  // DO NOTHING
+}
+
+std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex ind)
+{
+  // TODO Generate TrainableFnSequence that can go backward as well
+  auto ret = std::make_unique<exec::train::TrainableFnSequence>();
+
+  const auto &op = _tgraph.operations().at(ind);
+  // op.accept(*this);
+  // ret->append(releaseFunction());
+
+  for (auto ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
+  {
+    auto portable_tensor = _tensor_reg->getPortableTensor(ind);
+    if (portable_tensor)
+    {
+      assert(portable_tensor->layout() == ir::Layout::NHWC);
+    }
+    auto tensor = _tensor_reg->getNativeTensor(ind);
+    if (tensor)
+    {
+      tensor->increase_ref();
+    }
+  }
+  return ret;
+}
+
+void KernelGenerator::visit(const ir::train::operation::Loss &)
+{
+  // TODO Generate kernel
 }
 
 } // namespace train
