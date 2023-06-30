@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2020 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +18,20 @@
 #ifndef LUCI_INTERPRETER_PAL_ELU_H
 #define LUCI_INTERPRETER_PAL_ELU_H
 
-#include <tensorflow/lite/kernels/internal/reference/elu.h>
+#include "PALUtils.h"
+#include <cmath>
 
 namespace luci_interpreter_pal
 {
 
-static inline void Elu(const tflite::RuntimeShape &input_shape, const float *input_data,
-                       const tflite::RuntimeShape &output_shape, float *output_data)
+inline void Elu(const int flat_size, const float *input_data, float *output_data)
 {
-  tflite::reference_ops::Elu(input_shape, input_data, output_shape, output_data);
+  for (int i = 0; i < flat_size; i++)
+  {
+    float val = input_data[i];
+    float result = val < 0.0f ? std::expm1(val) : val;
+    output_data[i] = result;
+  }
 }
 
 } // namespace luci_interpreter_pal
