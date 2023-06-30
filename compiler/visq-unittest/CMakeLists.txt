@@ -1,6 +1,3 @@
-# TODO Remove this line
-return()
-
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
