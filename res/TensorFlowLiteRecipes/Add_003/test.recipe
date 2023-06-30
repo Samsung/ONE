@@ -1,0 +1,27 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operation {
+  type: "Add"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  add_options {
+    activation: TANH
+  }
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm"

@@ -54,6 +54,7 @@ void calculateActivationRange(Activation activation, T *activation_min, T *activ
   switch (activation)
   {
     case Activation::NONE:
+    case Activation::TANH:
       *activation_min = std::numeric_limits<T>::lowest();
       *activation_max = std::numeric_limits<T>::max();
       break;

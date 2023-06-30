@@ -1,6 +1,8 @@
 #addeval(Abs_000)
 addeval(Add_000)
 #addeval(Add_001)
+addeval(Add_002)
+addeval(Add_003)
 addeval(Add_U8_000)
 #addeval(AddN_000)
 addeval(ArgMax_000)
