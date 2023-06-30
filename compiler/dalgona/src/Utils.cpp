@@ -170,6 +170,28 @@ py::dict outputPyArray(const luci::CircleNode *node, luci_interpreter::Interpret
   return py_output;
 }
 
+bool multi_out_node(const luci::CircleNode *node)
+{
+  switch (node->opcode())
+  {
+    // TODO Update this list when new Op is added
+    // Tip: grep "public GraphBuilderMultiOutput" in luci/import
+    case luci::CircleOpcode::BIDIRECTIONAL_SEQUENCE_LSTM:
+    case luci::CircleOpcode::CUSTOM:
+    case luci::CircleOpcode::IF:
+    case luci::CircleOpcode::NON_MAX_SUPPRESSION_V4:
+    case luci::CircleOpcode::NON_MAX_SUPPRESSION_V5:
+    case luci::CircleOpcode::SPLIT:
+    case luci::CircleOpcode::SPLIT_V:
+    case luci::CircleOpcode::TOPK_V2:
+    case luci::CircleOpcode::UNIQUE:
+    case luci::CircleOpcode::UNPACK:
+      return true;
+    default:
+      return false;
+  }
+}
+
 } // namespace dalgona
 
 #undef THROW_UNLESS
