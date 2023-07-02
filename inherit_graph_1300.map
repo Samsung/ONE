@@ -1,13 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classtflimport_1_1_graph_builder.html" title="Parent class of tflite operation graph builders (e.g., Conv2DGraphBuilder)" alt="" coords="5,278,155,303"/>
-<area shape="rect" id="node2" href="$classtflimport_1_1_avg_pool2_d_graph_builder.html" title="GraphBuilder for AvgPool2D operator." alt="" coords="215,5,390,45"/>
-<area shape="rect" id="node3" href="$classtflimport_1_1_concatenation_graph_builder.html" title="GraphBuilder for Concatenation operator." alt="" coords="224,69,381,109"/>
-<area shape="rect" id="node4" href="$classtflimport_1_1_conv2_d_graph_builder.html" title="GraphBuilder for Conv2D operator." alt="" coords="205,134,400,159"/>
-<area shape="rect" id="node5" href="$classtflimport_1_1_depthwise_conv2_d_graph_builder.html" title="GraphBuilder for DepthwiseConv2D operator." alt="" coords="217,184,389,224"/>
-<area shape="rect" id="node6" href="$classtflimport_1_1_div_graph_builder.html" title="GraphBuilder for Div operator." alt="" coords="219,249,387,274"/>
-<area shape="rect" id="node7" href="$classtflimport_1_1_max_pool2_d_graph_builder.html" title="GraphBuilder for AvgPool2D operator." alt="" coords="215,299,390,339"/>
-<area shape="rect" id="node8" href="$classtflimport_1_1_re_l_u6_graph_builder.html" title="GraphBuilder for ReLU6 operator." alt="" coords="207,363,398,389"/>
-<area shape="rect" id="node9" href="$classtflimport_1_1_re_l_u_graph_builder.html" title="GraphBuilder for ReLU operator." alt="" coords="211,413,394,438"/>
-<area shape="rect" id="node10" href="$classtflimport_1_1_reshape_graph_builder.html" title="GraphBuilder for Reshape operator." alt="" coords="203,462,403,487"/>
-<area shape="rect" id="node11" href="$classtflimport_1_1_sub_graph_builder.html" title="GraphBuilder for Sub operator." alt="" coords="217,511,389,537"/>
+<area shape="rect" id="node1" href="$classtfldump_1_1_op_printer_registry.html" title=" " alt="" coords="5,5,177,31"/>
 </map>

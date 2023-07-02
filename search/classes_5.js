@@ -6,7 +6,7 @@ var searchData=
   ['eigenthreadpoolwrapper_3',['EigenThreadPoolWrapper',['../classnnfw_1_1cker_1_1eigen__support_1_1_eigen_thread_pool_wrapper.html',1,'nnfw::cker::eigen_support']]],
   ['einsum_4',['Einsum',['../classnnfw_1_1cker_1_1_einsum.html',1,'nnfw::cker::Einsum'],['../classonert_1_1ir_1_1operation_1_1_einsum.html',1,'onert::ir::operation::Einsum']]],
   ['einsumlayer_5',['EinsumLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_einsum_layer.html',1,'onert::backend::cpu::ops']]],
-  ['elementwiseactivation_6',['ElementwiseActivation',['../classonert_1_1ir_1_1operation_1_1_elementwise_activation.html',1,'onert::ir::operation']]],
+  ['elementwiseactivation_6',['ElementwiseActivation',['../classonert_1_1ir_1_1operation_1_1_elementwise_activation.html',1,'onert::ir::operation::ElementwiseActivation'],['../classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation.html',1,'onert::ir::train::operation::ElementwiseActivation']]],
   ['elementwiseactivationlayer_7',['ElementwiseActivationLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html',1,'onert::backend::cpu::ops']]],
   ['elementwisebinary_8',['ElementwiseBinary',['../classonert_1_1ir_1_1operation_1_1_elementwise_binary.html',1,'onert::ir::operation']]],
   ['elementwisebinarylayer_9',['ElementwiseBinaryLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_binary_layer.html',1,'onert::backend::cpu::ops']]],

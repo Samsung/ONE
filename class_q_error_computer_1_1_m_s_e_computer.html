@@ -135,7 +135,7 @@ Data Fields</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00136">136</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00135">135</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a32a58d2b9de0dd991d1b1503ed5f4c72" name="a32a58d2b9de0dd991d1b1503ed5f4c72"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a32a58d2b9de0dd991d1b1503ed5f4c72">&#9670;&#160;</a></span>__init__()</h2>
@@ -171,16 +171,16 @@ Data Fields</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_q_error_computer_1_1_q_error_computer.html#a40f21db53e4b59172eaf52654d859121">QErrorComputer.QErrorComputer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00137">137</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  137</span>    <span class="keyword">def </span>__init__(self, fp32_dir, fq_dir):</div>
-<div class="line"><span class="lineno">  138</span>        super().__init__(fp32_dir, fq_dir)</div>
-<div class="line"><span class="lineno">  139</span>        self.qerror_min = float(<span class="stringliteral">&#39;inf&#39;</span>)</div>
-<div class="line"><span class="lineno">  140</span>        self.qerror_max = -self.qerror_min</div>
-<div class="line"><span class="lineno">  141</span> </div>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00136">136</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  136</span>    <span class="keyword">def </span>__init__(self, fp32_dir, fq_dir):</div>
+<div class="line"><span class="lineno">  137</span>        super().__init__(fp32_dir, fq_dir)</div>
+<div class="line"><span class="lineno">  138</span>        self.qerror_min = float(<span class="stringliteral">&#39;inf&#39;</span>)</div>
+<div class="line"><span class="lineno">  139</span>        self.qerror_max = -self.qerror_min</div>
+<div class="line"><span class="lineno">  140</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00137">QErrorComputer.MSEComputer.__init__()</a>.</p>
+<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00136">QErrorComputer.MSEComputer.__init__()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00137">QErrorComputer.MSEComputer.__init__()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00136">QErrorComputer.MSEComputer.__init__()</a>.</p>
 
 </div>
 </div>
@@ -217,25 +217,25 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00143">143</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  143</span>    <span class="keyword">def </span>advance_on(self, fp32_dir, fq_dir):</div>
-<div class="line"><span class="lineno">  144</span>        data_paths = self.collect_data_path(fp32_dir, fq_dir)</div>
-<div class="line"><span class="lineno">  145</span>        <span class="keywordflow">for</span> tensor_name, data_path <span class="keywordflow">in</span> data_paths.items():</div>
-<div class="line"><span class="lineno">  146</span>            <span class="keywordflow">for</span> (fp32_data_path, fq_data_path) <span class="keywordflow">in</span> data_path:</div>
-<div class="line"><span class="lineno">  147</span>                fp32_data = np.load(fp32_data_path)</div>
-<div class="line"><span class="lineno">  148</span>                fq_data = np.load(fq_data_path)</div>
-<div class="line"><span class="lineno">  149</span> </div>
-<div class="line"><span class="lineno">  150</span>                MSE = np.square(fp32_data - fq_data).mean()</div>
-<div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>                self.qerror_map[tensor_name] += MSE</div>
-<div class="line"><span class="lineno">  153</span> </div>
-<div class="line"><span class="lineno">  154</span>                self.qerror_min = min(MSE, self.qerror_min)</div>
-<div class="line"><span class="lineno">  155</span>                self.qerror_max = max(MSE, self.qerror_max)</div>
-<div class="line"><span class="lineno">  156</span> </div>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00142">142</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>    <span class="keyword">def </span>advance_on(self, fp32_dir, fq_dir):</div>
+<div class="line"><span class="lineno">  143</span>        data_paths = self.collect_data_path(fp32_dir, fq_dir)</div>
+<div class="line"><span class="lineno">  144</span>        <span class="keywordflow">for</span> tensor_name, data_path <span class="keywordflow">in</span> data_paths.items():</div>
+<div class="line"><span class="lineno">  145</span>            <span class="keywordflow">for</span> (fp32_data_path, fq_data_path) <span class="keywordflow">in</span> data_path:</div>
+<div class="line"><span class="lineno">  146</span>                fp32_data = np.load(fp32_data_path)</div>
+<div class="line"><span class="lineno">  147</span>                fq_data = np.load(fq_data_path)</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>                MSE = np.square(fp32_data - fq_data).mean()</div>
+<div class="line"><span class="lineno">  150</span> </div>
+<div class="line"><span class="lineno">  151</span>                self.qerror_map[tensor_name] += MSE</div>
+<div class="line"><span class="lineno">  152</span> </div>
+<div class="line"><span class="lineno">  153</span>                self.qerror_min = min(MSE, self.qerror_min)</div>
+<div class="line"><span class="lineno">  154</span>                self.qerror_max = max(MSE, self.qerror_max)</div>
+<div class="line"><span class="lineno">  155</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00032">QErrorComputer.QErrorComputer.collect_data_path()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00029">QErrorComputer.QErrorComputer.qerror_map</a>, <a class="el" href="_q_error_computer_8py_source.html#l00140">QErrorComputer.MSEComputer.qerror_max</a>, <a class="el" href="_q_error_computer_8py_source.html#l00178">QErrorComputer.TAEComputer.qerror_max</a>, <a class="el" href="_q_error_computer_8py_source.html#l00139">QErrorComputer.MSEComputer.qerror_min</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00177">QErrorComputer.TAEComputer.qerror_min</a>.</p>
+<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00031">QErrorComputer.QErrorComputer.collect_data_path()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00028">QErrorComputer.QErrorComputer.qerror_map</a>, <a class="el" href="_q_error_computer_8py_source.html#l00139">QErrorComputer.MSEComputer.qerror_max</a>, <a class="el" href="_q_error_computer_8py_source.html#l00177">QErrorComputer.TAEComputer.qerror_max</a>, <a class="el" href="_q_error_computer_8py_source.html#l00138">QErrorComputer.MSEComputer.qerror_min</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00176">QErrorComputer.TAEComputer.qerror_min</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00131">QErrorComputer.MPEIRComputer.run()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00168">QErrorComputer.MSEComputer.run()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00204">QErrorComputer.TAEComputer.run()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00253">QErrorComputer.SRMSEComputer.run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00130">QErrorComputer.MPEIRComputer.run()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00167">QErrorComputer.MSEComputer.run()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00203">QErrorComputer.TAEComputer.run()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00252">QErrorComputer.SRMSEComputer.run()</a>.</p>
 
 </div>
 </div>
@@ -255,18 +255,18 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00161">161</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  161</span>    <span class="keyword">def </span>get_final_result(self):</div>
-<div class="line"><span class="lineno">  162</span>        qerror_map = dict()</div>
-<div class="line"><span class="lineno">  163</span>        <span class="keywordflow">for</span> tensor_name, acc <span class="keywordflow">in</span> self.qerror_map.items():</div>
-<div class="line"><span class="lineno">  164</span>            qerror_map[tensor_name] = acc / self._num_processed_data</div>
-<div class="line"><span class="lineno">  165</span> </div>
-<div class="line"><span class="lineno">  166</span>        <span class="keywordflow">return</span> qerror_map, self.qerror_min, self.qerror_max</div>
-<div class="line"><span class="lineno">  167</span> </div>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00160">160</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  160</span>    <span class="keyword">def </span>get_final_result(self):</div>
+<div class="line"><span class="lineno">  161</span>        qerror_map = dict()</div>
+<div class="line"><span class="lineno">  162</span>        <span class="keywordflow">for</span> tensor_name, acc <span class="keywordflow">in</span> self.qerror_map.items():</div>
+<div class="line"><span class="lineno">  163</span>            qerror_map[tensor_name] = acc / self._num_processed_data</div>
+<div class="line"><span class="lineno">  164</span> </div>
+<div class="line"><span class="lineno">  165</span>        <span class="keywordflow">return</span> qerror_map, self.qerror_min, self.qerror_max</div>
+<div class="line"><span class="lineno">  166</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00030">QErrorComputer.QErrorComputer._num_processed_data</a>, <a class="el" href="_q_error_computer_8py_source.html#l00029">QErrorComputer.QErrorComputer.qerror_map</a>, <a class="el" href="_q_error_computer_8py_source.html#l00140">QErrorComputer.MSEComputer.qerror_max</a>, <a class="el" href="_q_error_computer_8py_source.html#l00178">QErrorComputer.TAEComputer.qerror_max</a>, <a class="el" href="_q_error_computer_8py_source.html#l00139">QErrorComputer.MSEComputer.qerror_min</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00177">QErrorComputer.TAEComputer.qerror_min</a>.</p>
+<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00029">QErrorComputer.QErrorComputer._num_processed_data</a>, <a class="el" href="_q_error_computer_8py_source.html#l00028">QErrorComputer.QErrorComputer.qerror_map</a>, <a class="el" href="_q_error_computer_8py_source.html#l00139">QErrorComputer.MSEComputer.qerror_max</a>, <a class="el" href="_q_error_computer_8py_source.html#l00177">QErrorComputer.TAEComputer.qerror_max</a>, <a class="el" href="_q_error_computer_8py_source.html#l00138">QErrorComputer.MSEComputer.qerror_min</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00176">QErrorComputer.TAEComputer.qerror_min</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00131">QErrorComputer.MPEIRComputer.run()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00168">QErrorComputer.MSEComputer.run()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00204">QErrorComputer.TAEComputer.run()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00253">QErrorComputer.SRMSEComputer.run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00130">QErrorComputer.MPEIRComputer.run()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00167">QErrorComputer.MSEComputer.run()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00203">QErrorComputer.TAEComputer.run()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00252">QErrorComputer.SRMSEComputer.run()</a>.</p>
 
 </div>
 </div>
@@ -288,15 +288,15 @@ Data Fields</h2></td></tr>
 <pre class="fragment">Return qerror map (dict: tensor_name(string) -&gt; qerror(float)).</pre> 
 <p>Reimplemented from <a class="el" href="class_q_error_computer_1_1_q_error_computer.html#a4052a08ea0ba88f63bf33bb62128ad97">QErrorComputer.QErrorComputer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00168">168</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  168</span>    <span class="keyword">def </span><a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>(self):</div>
-<div class="line"><span class="lineno">  169</span>        self.advance_on(self._fp32_dir, self._fq_dir)</div>
-<div class="line"><span class="lineno">  170</span>        <span class="keywordflow">return</span> self.get_final_result()</div>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00167">167</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  167</span>    <span class="keyword">def </span><a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>(self):</div>
+<div class="line"><span class="lineno">  168</span>        self.advance_on(self._fp32_dir, self._fq_dir)</div>
+<div class="line"><span class="lineno">  169</span>        <span class="keywordflow">return</span> self.get_final_result()</div>
+<div class="line"><span class="lineno">  170</span> </div>
 <div class="line"><span class="lineno">  171</span> </div>
-<div class="line"><span class="lineno">  172</span> </div>
 <div class="ttc" id="a_generate_kernels_list_helper_8cpp_html_a3b45f71347f9da730e585edad717d140"><div class="ttname"><a href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a></div><div class="ttdeci">void run(std::ofstream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition:</b> <a href="_generate_kernels_list_helper_8cpp_source.html#l00198">GenerateKernelsListHelper.cpp:198</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00027">QErrorComputer.QErrorComputer._fp32_dir</a>, <a class="el" href="_q_error_computer_8py_source.html#l00028">QErrorComputer.QErrorComputer._fq_dir</a>, <a class="el" href="_q_error_computer_8py_source.html#l00221">QErrorComputer.SRMSEComputer._fq_dir</a>, <a class="el" href="_q_error_computer_8py_source.html#l00096">QErrorComputer.MPEIRComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00143">QErrorComputer.MSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00180">QErrorComputer.TAEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00218">QErrorComputer.SRMSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00123">QErrorComputer.MPEIRComputer.get_final_result()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00161">QErrorComputer.MSEComputer.get_final_result()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00198">QErrorComputer.TAEComputer.get_final_result()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00238">QErrorComputer.SRMSEComputer.get_final_result()</a>.</p>
+<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00026">QErrorComputer.QErrorComputer._fp32_dir</a>, <a class="el" href="_q_error_computer_8py_source.html#l00027">QErrorComputer.QErrorComputer._fq_dir</a>, <a class="el" href="_q_error_computer_8py_source.html#l00220">QErrorComputer.SRMSEComputer._fq_dir</a>, <a class="el" href="_q_error_computer_8py_source.html#l00095">QErrorComputer.MPEIRComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00142">QErrorComputer.MSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00179">QErrorComputer.TAEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00217">QErrorComputer.SRMSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00122">QErrorComputer.MPEIRComputer.get_final_result()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00160">QErrorComputer.MSEComputer.get_final_result()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00197">QErrorComputer.TAEComputer.get_final_result()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00237">QErrorComputer.SRMSEComputer.get_final_result()</a>.</p>
 
 </div>
 </div>
@@ -313,9 +313,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00140">140</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00139">139</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00143">QErrorComputer.MSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00180">QErrorComputer.TAEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00161">QErrorComputer.MSEComputer.get_final_result()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00198">QErrorComputer.TAEComputer.get_final_result()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00142">QErrorComputer.MSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00179">QErrorComputer.TAEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00160">QErrorComputer.MSEComputer.get_final_result()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00197">QErrorComputer.TAEComputer.get_final_result()</a>.</p>
 
 </div>
 </div>
@@ -331,9 +331,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00139">139</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00138">138</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00143">QErrorComputer.MSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00180">QErrorComputer.TAEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00161">QErrorComputer.MSEComputer.get_final_result()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00198">QErrorComputer.TAEComputer.get_final_result()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00142">QErrorComputer.MSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00179">QErrorComputer.TAEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00160">QErrorComputer.MSEComputer.get_final_result()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00197">QErrorComputer.TAEComputer.get_final_result()</a>.</p>
 
 </div>
 </div>

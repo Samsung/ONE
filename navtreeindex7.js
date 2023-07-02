@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"_densify_options_8h_source.html":[35,0,0,113,2,0,25],
 "_dep_8cpp.html":[35,0,0,26,0,1,1,9],
 "_dep_8cpp_source.html":[35,0,0,26,0,1,1,9],
 "_dep_8forward_8h.html":[35,0,0,26,0,0,0,1,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX7 =
 "_dumper_8cc.html":[35,0,4,2,2,1,2,1,0],
 "_dumper_8cc_source.html":[35,0,4,2,2,1,2,1,0],
 "_dumper_8cpp.html":[35,0,0,13,0,1,0],
-"_dumper_8cpp_source.html":[35,0,0,13,0,1,0],
-"_dumper_pass_8cpp.html":[35,0,0,71,4,0,0]
+"_dumper_8cpp_source.html":[35,0,0,13,0,1,0]
 };

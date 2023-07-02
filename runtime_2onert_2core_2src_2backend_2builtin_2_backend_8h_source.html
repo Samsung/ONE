@@ -111,76 +111,107 @@ $(document).ready(function(){initNavTree('runtime_2onert_2core_2src_2backend_2bu
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#ifndef __ONERT_BACKEND_BUILTIN_BACKEND_H__</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define __ONERT_BACKEND_BUILTIN_BACKEND_H__</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="core_2src_2backend_2builtin_2_backend_context_8h.html">BackendContext.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="core_2src_2backend_2builtin_2train_2_backend_context_8h.html">BackendContext.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="runtime_2onert_2core_2src_2backend_2builtin_2_config_8h.html">Config.h</a>&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h.html">KernelGenerator.h</a>&quot;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="core_2src_2backend_2builtin_2_tensor_builder_8h.html">TensorBuilder.h</a>&quot;</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="runtime_2onert_2core_2src_2backend_2builtin_2_tensor_8h.html">Tensor.h</a>&quot;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &lt;<a class="code" href="runtime_2onert_2core_2include_2backend_2_backend_8h.html">backend/Backend.h</a>&gt;</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#ifdef ONERT_TRAIN</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;train/BackendContext.h&quot;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;train/KernelGenerator.h&quot;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_TRAIN</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">namespace </span>backend</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">namespace </span>builtin</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#include &lt;<a class="code" href="runtime_2onert_2core_2include_2backend_2_backend_8h.html">backend/Backend.h</a>&gt;</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#ifdef ONERT_TRAIN</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &lt;<a class="code" href="_i_trainable_backend_8h.html">backend/train/ITrainableBackend.h</a>&gt;</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_TRAIN</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1builtin_1_1_backend.html">   37</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1backend_1_1builtin_1_1_backend.html">Backend</a> : <span class="keyword">public</span> <a class="code hl_class" href="classonert_1_1backend_1_1_backend.html">::onert::backend::Backend</a></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1builtin_1_1_backend.html#a9ea466cc8d534bfa87bdc0bf3d8c90ef">   40</a></span>  <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_backend.html#a9ea466cc8d534bfa87bdc0bf3d8c90ef">Backend</a>() : _config{<a class="code hl_namespace" href="namespacestd.html">std</a>::make_shared&lt;<a class="code hl_class" href="classonert_1_1backend_1_1builtin_1_1_config.html">Config</a>&gt;()} {}</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1builtin_1_1_backend.html#a0fb32b0bab607868b36d4e6e31cd07ec">   42</a></span>  std::shared_ptr&lt;IConfig&gt; <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_backend.html#a0fb32b0bab607868b36d4e6e31cd07ec">config</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> _config; }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">namespace </span>backend</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>{</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">namespace </span>builtin</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1builtin_1_1_backend.html#afecaf971fcba041b89675f8033532d9f">   44</a></span>  std::unique_ptr&lt;onert::backend::BackendContext&gt; <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_backend.html#afecaf971fcba041b89675f8033532d9f">newContext</a>(<a class="code hl_struct" href="structonert_1_1backend_1_1_context_data.html">ContextData</a> &amp;&amp;data)<span class="keyword"> const override</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">auto</span> context = std::make_unique&lt;BackendContext&gt;(<span class="keyword">this</span>, std::move(data));</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">// ControlFlow backend may not build tensors for itself because the backend&#39;s operation uses</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="comment">// tensors of other baceknd instead</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="comment">// But the backend builds tensors in case of that the controlflow operation may have constant</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="comment">// input or that consecutive controflow operations exist. We have to make them not to be built</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="comment">// later</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">// 1. Constant input</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="comment">//   These tensors cannot be dynamic tensor, so let&#39;s do it as follows:</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="comment">//   - always skip copying</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="comment">//   - if it is operation&#39;s input in child subgraph: register &quot;use&quot; as constant input of the</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="comment">//   operations in child subgraph</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="comment">//   - if it is child subgraph&#39;s output: register &quot;use&quot; as constant input of the operations</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="comment">//   using it</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="comment">// 2. Consecutive controflow operation&#39;s intermediate tensor</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="comment">//   These tensors can be dynamic tensor and this is complicated to support without copying. But</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">//   there is no such case until now, let&#39;s support it later</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">// TODO Remove TensorBuilder and ConstantInitializer</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">// TODO Support Consecutive controflow operation&#39;s intermediate tensor</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;TensorRegistry&gt;();</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    context-&gt;tensor_registry = tr;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    context-&gt;tensor_builder = tb;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    context-&gt;kernel_gen = std::make_shared&lt;KernelGenerator&gt;(</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      *context-&gt;graph(), tb-&gt;dynamicTensorManager(), tr, context-&gt;external_context());</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">return</span> context;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  }</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  std::shared_ptr&lt;IConfig&gt; _config;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>};</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>} <span class="comment">// namespace builtin</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_BACKEND_BUILTIN_BACKEND_H__</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1builtin_1_1_backend.html">   44</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1backend_1_1builtin_1_1_backend.html">Backend</a> : <span class="keyword">public</span> <a class="code hl_class" href="classonert_1_1backend_1_1_backend.html">::onert::backend::Backend</a></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#ifdef ONERT_TRAIN</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  ,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                <span class="keyword">public</span> <a class="code hl_struct" href="structonert_1_1backend_1_1train_1_1_i_trainable_backend.html">backend::train::ITrainableBackend</a></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_TRAIN</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>{</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1builtin_1_1_backend.html#a9ea466cc8d534bfa87bdc0bf3d8c90ef">   51</a></span>  <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_backend.html#a9ea466cc8d534bfa87bdc0bf3d8c90ef">Backend</a>() : _config{<a class="code hl_namespace" href="namespacestd.html">std</a>::make_shared&lt;<a class="code hl_class" href="classonert_1_1backend_1_1builtin_1_1_config.html">Config</a>&gt;()} {}</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1builtin_1_1_backend.html#a0fb32b0bab607868b36d4e6e31cd07ec">   53</a></span>  std::shared_ptr&lt;IConfig&gt; <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_backend.html#a0fb32b0bab607868b36d4e6e31cd07ec">config</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> _config; }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1builtin_1_1_backend.html#afecaf971fcba041b89675f8033532d9f">   55</a></span>  std::unique_ptr&lt;onert::backend::BackendContext&gt; <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_backend.html#afecaf971fcba041b89675f8033532d9f">newContext</a>(<a class="code hl_struct" href="structonert_1_1backend_1_1_context_data.html">ContextData</a> &amp;&amp;data)<span class="keyword"> const override</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">auto</span> context = std::make_unique&lt;BackendContext&gt;(<span class="keyword">this</span>, std::move(data));</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="comment">// ControlFlow backend may not build tensors for itself because the backend&#39;s operation uses</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="comment">// tensors of other baceknd instead</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="comment">// But the backend builds tensors in case of that the controlflow operation may have constant</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">// input or that consecutive controflow operations exist. We have to make them not to be built</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">// later</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">// 1. Constant input</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment">//   These tensors cannot be dynamic tensor, so let&#39;s do it as follows:</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="comment">//   - always skip copying</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="comment">//   - if it is operation&#39;s input in child subgraph: register &quot;use&quot; as constant input of the</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="comment">//   operations in child subgraph</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="comment">//   - if it is child subgraph&#39;s output: register &quot;use&quot; as constant input of the operations</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="comment">//   using it</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="comment">// 2. Consecutive controflow operation&#39;s intermediate tensor</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="comment">//   These tensors can be dynamic tensor and this is complicated to support without copying. But</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="comment">//   there is no such case until now, let&#39;s support it later</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="comment">// TODO Remove TensorBuilder and ConstantInitializer</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="comment">// TODO Support Consecutive controflow operation&#39;s intermediate tensor</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;TensorRegistry&gt;();</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    context-&gt;tensor_registry = tr;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    context-&gt;tensor_builder = tb;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    context-&gt;kernel_gen = std::make_shared&lt;KernelGenerator&gt;(</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>      *context-&gt;graph(), tb-&gt;dynamicTensorManager(), tr, context-&gt;external_context());</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">return</span> context;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  }</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">#ifdef ONERT_TRAIN</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  std::unique_ptr&lt;backend::train::TrainableBackendContext&gt;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_backend.html#afecaf971fcba041b89675f8033532d9f">newContext</a>(<a class="code hl_struct" href="structonert_1_1backend_1_1train_1_1_trainable_context_data.html">backend::train::TrainableContextData</a> &amp;&amp;tdata)<span class="keyword"> const override</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tgraph = *tdata.tgraph;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;TensorRegistry&gt;();</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keyword">auto</span> grad_tr = std::make_shared&lt;TensorRegistry&gt;();</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keyword">auto</span> grad_tb = std::make_shared&lt;TensorBuilder&gt;(grad_tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keyword">auto</span> tdata_ptr = std::make_unique&lt;backend::train::TrainableContextData&gt;(std::move(tdata));</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keyword">auto</span> context =</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb, grad_tr, grad_tb);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    context-&gt;kernel_gen =</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      std::make_shared&lt;train::KernelGenerator&gt;(tgraph, tr, grad_tr, context-&gt;external_context());</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">return</span> context;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  }</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_TRAIN</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  std::shared_ptr&lt;IConfig&gt; _config;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>};</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>} <span class="comment">// namespace builtin</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>} <span class="comment">// namespace backend</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_BACKEND_BUILTIN_BACKEND_H__</span></div>
+<div class="ttc" id="a_i_trainable_backend_8h_html"><div class="ttname"><a href="_i_trainable_backend_8h.html">ITrainableBackend.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_backend_html"><div class="ttname"><a href="classonert_1_1backend_1_1_backend.html">onert::backend::Backend</a></div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2backend_2_backend_8h_source.html#l00036">Backend.h:37</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_backend_html"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_backend.html">onert::backend::builtin::Backend</a></div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2backend_2builtin_2_backend_8h_source.html#l00037">Backend.h:38</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_backend_html_a0fb32b0bab607868b36d4e6e31cd07ec"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_backend.html#a0fb32b0bab607868b36d4e6e31cd07ec">onert::backend::builtin::Backend::config</a></div><div class="ttdeci">std::shared_ptr&lt; IConfig &gt; config() const override</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2backend_2builtin_2_backend_8h_source.html#l00042">Backend.h:42</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_backend_html_a9ea466cc8d534bfa87bdc0bf3d8c90ef"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_backend.html#a9ea466cc8d534bfa87bdc0bf3d8c90ef">onert::backend::builtin::Backend::Backend</a></div><div class="ttdeci">Backend()</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2backend_2builtin_2_backend_8h_source.html#l00040">Backend.h:40</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_backend_html_afecaf971fcba041b89675f8033532d9f"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_backend.html#afecaf971fcba041b89675f8033532d9f">onert::backend::builtin::Backend::newContext</a></div><div class="ttdeci">std::unique_ptr&lt; onert::backend::BackendContext &gt; newContext(ContextData &amp;&amp;data) const override</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2backend_2builtin_2_backend_8h_source.html#l00044">Backend.h:44</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_backend_html"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_backend.html">onert::backend::builtin::Backend</a></div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2backend_2builtin_2_backend_8h_source.html#l00044">Backend.h:49</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_backend_html_a0fb32b0bab607868b36d4e6e31cd07ec"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_backend.html#a0fb32b0bab607868b36d4e6e31cd07ec">onert::backend::builtin::Backend::config</a></div><div class="ttdeci">std::shared_ptr&lt; IConfig &gt; config() const override</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2backend_2builtin_2_backend_8h_source.html#l00053">Backend.h:53</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_backend_html_a9ea466cc8d534bfa87bdc0bf3d8c90ef"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_backend.html#a9ea466cc8d534bfa87bdc0bf3d8c90ef">onert::backend::builtin::Backend::Backend</a></div><div class="ttdeci">Backend()</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2backend_2builtin_2_backend_8h_source.html#l00051">Backend.h:51</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_backend_html_afecaf971fcba041b89675f8033532d9f"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_backend.html#afecaf971fcba041b89675f8033532d9f">onert::backend::builtin::Backend::newContext</a></div><div class="ttdeci">std::unique_ptr&lt; onert::backend::BackendContext &gt; newContext(ContextData &amp;&amp;data) const override</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2backend_2builtin_2_backend_8h_source.html#l00055">Backend.h:55</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_config_html"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_config.html">onert::backend::builtin::Config</a></div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2backend_2builtin_2_config_8h_source.html#l00031">Config.h:32</a></div></div>
-<div class="ttc" id="acore_2src_2backend_2builtin_2_backend_context_8h_html"><div class="ttname"><a href="core_2src_2backend_2builtin_2_backend_context_8h.html">BackendContext.h</a></div></div>
 <div class="ttc" id="acore_2src_2backend_2builtin_2_tensor_builder_8h_html"><div class="ttname"><a href="core_2src_2backend_2builtin_2_tensor_builder_8h.html">TensorBuilder.h</a></div></div>
+<div class="ttc" id="acore_2src_2backend_2builtin_2train_2_backend_context_8h_html"><div class="ttname"><a href="core_2src_2backend_2builtin_2train_2_backend_context_8h.html">BackendContext.h</a></div></div>
 <div class="ttc" id="acore_2src_2backend_2builtin_2train_2_kernel_generator_8h_html"><div class="ttname"><a href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h.html">KernelGenerator.h</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition:</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
 <div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition:</b> <a href="exo_2src_2_circle_2_circle_exporter_utils_8h_source.html#l00052">CircleExporterUtils.h:53</a></div></div>
@@ -188,6 +219,8 @@ $(document).ready(function(){initNavTree('runtime_2onert_2core_2src_2backend_2bu
 <div class="ttc" id="aruntime_2onert_2core_2src_2backend_2builtin_2_config_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2src_2backend_2builtin_2_config_8h.html">Config.h</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2src_2backend_2builtin_2_tensor_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2src_2backend_2builtin_2_tensor_8h.html">Tensor.h</a></div></div>
 <div class="ttc" id="astructonert_1_1backend_1_1_context_data_html"><div class="ttname"><a href="structonert_1_1backend_1_1_context_data.html">onert::backend::ContextData</a></div><div class="ttdef"><b>Definition:</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00038">BackendContext.h:39</a></div></div>
+<div class="ttc" id="astructonert_1_1backend_1_1train_1_1_i_trainable_backend_html"><div class="ttname"><a href="structonert_1_1backend_1_1train_1_1_i_trainable_backend.html">onert::backend::train::ITrainableBackend</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_trainable_backend_8h_source.html#l00032">ITrainableBackend.h:33</a></div></div>
+<div class="ttc" id="astructonert_1_1backend_1_1train_1_1_trainable_context_data_html"><div class="ttname"><a href="structonert_1_1backend_1_1train_1_1_trainable_context_data.html">onert::backend::train::TrainableContextData</a></div><div class="ttdef"><b>Definition:</b> <a href="_trainable_backend_context_8h_source.html#l00038">TrainableBackendContext.h:39</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

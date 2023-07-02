@@ -7,6 +7,7 @@ var namespacedalgona =
     [ "genRandomFloatData", "namespacedalgona.html#aca615db899bdb9f7b927eb3ff656e812", null ],
     [ "genRandomIntData", "namespacedalgona.html#a6147ba99906a797762e8506cc18ffecb", null ],
     [ "inputsPyArray", "namespacedalgona.html#a3f0b632084e62cc77d8f4d0c7155addf", null ],
+    [ "multi_out_node", "namespacedalgona.html#ac0dd507d0c60bea57c1a855e1fbe2fcd", null ],
     [ "none", "namespacedalgona.html#a9e3bf89eb4da1af4ee0c50197ab167ca", null ],
     [ "outputPyArray", "namespacedalgona.html#a896a233cee7c6d245aab77af32c79c3b", null ],
     [ "outputsPyArray", "namespacedalgona.html#a6da5f182ca23f83574865333be440018", null ],

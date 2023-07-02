@@ -2581,6 +2581,7 @@ var annotated_dup =
             [ "kernel", "namespaceonert_1_1backend_1_1builtin_1_1train_1_1kernel.html", [
               [ "PermuteLayer", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer" ]
             ] ],
+            [ "BackendContext", "classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html", "classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context" ],
             [ "KernelGenerator", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator" ]
           ] ],
           [ "Backend", "classonert_1_1backend_1_1builtin_1_1_backend.html", "classonert_1_1backend_1_1builtin_1_1_backend" ],
@@ -2702,6 +2703,7 @@ var annotated_dup =
           [ "Backend", "classonert_1_1backend_1_1train_1_1_backend.html", "classonert_1_1backend_1_1train_1_1_backend" ],
           [ "BackendContext", "classonert_1_1backend_1_1train_1_1_backend_context.html", "classonert_1_1backend_1_1train_1_1_backend_context" ],
           [ "Config", "classonert_1_1backend_1_1train_1_1_config.html", "classonert_1_1backend_1_1train_1_1_config" ],
+          [ "InferenceKernelGenerator", "classonert_1_1backend_1_1train_1_1_inference_kernel_generator.html", "classonert_1_1backend_1_1train_1_1_inference_kernel_generator" ],
           [ "ITrainableBackend", "structonert_1_1backend_1_1train_1_1_i_trainable_backend.html", "structonert_1_1backend_1_1train_1_1_i_trainable_backend" ],
           [ "KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", "classonert_1_1backend_1_1train_1_1_kernel_generator" ],
           [ "KernelGeneratorBase", "classonert_1_1backend_1_1train_1_1_kernel_generator_base.html", "classonert_1_1backend_1_1train_1_1_kernel_generator_base" ],
@@ -2768,9 +2770,12 @@ var annotated_dup =
             [ "Pass", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass" ]
           ] ],
           [ "LossInfo", "structonert_1_1compiler_1_1train_1_1_loss_info.html", null ],
+          [ "LoweredTrainableGraph", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph" ],
           [ "TrainableCodeAndInfo", "structonert_1_1compiler_1_1train_1_1_trainable_code_and_info.html", "structonert_1_1compiler_1_1train_1_1_trainable_code_and_info" ],
+          [ "TrainableOperationConverter", "classonert_1_1compiler_1_1train_1_1_trainable_operation_converter.html", "classonert_1_1compiler_1_1train_1_1_trainable_operation_converter" ],
           [ "TrainingCompiler", "classonert_1_1compiler_1_1train_1_1_training_compiler.html", "classonert_1_1compiler_1_1train_1_1_training_compiler" ],
-          [ "TrainingInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html", "classonert_1_1compiler_1_1train_1_1_training_info" ]
+          [ "TrainingInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html", "classonert_1_1compiler_1_1train_1_1_training_info" ],
+          [ "UntrainableOperationConverter", "classonert_1_1compiler_1_1train_1_1_untrainable_operation_converter.html", "classonert_1_1compiler_1_1train_1_1_untrainable_operation_converter" ]
         ] ],
         [ "BackendManager", "classonert_1_1compiler_1_1_backend_manager.html", "classonert_1_1compiler_1_1_backend_manager" ],
         [ "BackendResolver", "classonert_1_1compiler_1_1_backend_resolver.html", "classonert_1_1compiler_1_1_backend_resolver" ],
@@ -2827,6 +2832,8 @@ var annotated_dup =
           [ "Reader", "structonert_1_1exec_1_1feature_1_1_reader.html", "structonert_1_1exec_1_1feature_1_1_reader" ]
         ] ],
         [ "train", "namespaceonert_1_1exec_1_1train.html", [
+          [ "TrainableExecutor", "classonert_1_1exec_1_1train_1_1_trainable_executor.html", "classonert_1_1exec_1_1train_1_1_trainable_executor" ],
+          [ "TrainableExecutors", "classonert_1_1exec_1_1train_1_1_trainable_executors.html", "classonert_1_1exec_1_1train_1_1_trainable_executors" ],
           [ "TrainableFnSequence", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence" ]
         ] ],
         [ "DataflowExecutor", "classonert_1_1exec_1_1_dataflow_executor.html", "classonert_1_1exec_1_1_dataflow_executor" ],
@@ -2897,6 +2904,7 @@ var annotated_dup =
           [ "L2Normalization", "classonert_1_1ir_1_1operation_1_1_l2_normalization.html", "classonert_1_1ir_1_1operation_1_1_l2_normalization" ],
           [ "LocalResponseNormalization", "classonert_1_1ir_1_1operation_1_1_local_response_normalization.html", "classonert_1_1ir_1_1operation_1_1_local_response_normalization" ],
           [ "LogSoftmax", "classonert_1_1ir_1_1operation_1_1_log_softmax.html", "classonert_1_1ir_1_1operation_1_1_log_softmax" ],
+          [ "Loss", "classonert_1_1ir_1_1operation_1_1_loss.html", "classonert_1_1ir_1_1operation_1_1_loss" ],
           [ "LSTM", "classonert_1_1ir_1_1operation_1_1_l_s_t_m.html", "classonert_1_1ir_1_1operation_1_1_l_s_t_m" ],
           [ "MatrixBandPart", "classonert_1_1ir_1_1operation_1_1_matrix_band_part.html", "classonert_1_1ir_1_1operation_1_1_matrix_band_part" ],
           [ "OneHot", "classonert_1_1ir_1_1operation_1_1_one_hot.html", "classonert_1_1ir_1_1operation_1_1_one_hot" ],
@@ -2935,7 +2943,10 @@ var annotated_dup =
         ] ],
         [ "train", "namespaceonert_1_1ir_1_1train.html", [
           [ "operation", "namespaceonert_1_1ir_1_1train_1_1operation.html", [
-            [ "Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", "classonert_1_1ir_1_1train_1_1operation_1_1_permute" ]
+            [ "ElementwiseActivation", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation.html", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation" ],
+            [ "Loss", "classonert_1_1ir_1_1train_1_1operation_1_1_loss.html", "classonert_1_1ir_1_1train_1_1operation_1_1_loss" ],
+            [ "Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", "classonert_1_1ir_1_1train_1_1operation_1_1_permute" ],
+            [ "UntrainableOperation", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation" ]
           ] ],
           [ "ITrainableOperation", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html", "classonert_1_1ir_1_1train_1_1_i_trainable_operation" ],
           [ "TrainableGraph", "classonert_1_1ir_1_1train_1_1_trainable_graph.html", "classonert_1_1ir_1_1train_1_1_trainable_graph" ],

@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"_neural_networks_types_8h.html#a176c6c8761f50a3506db48da940a0251":[35,0,4,0,3,0,3,18],
+"_neural_networks_types_8h.html#a1fbb8fc0cfb9e223d9790e02162c00ab":[35,0,4,0,3,0,3,10],
 "_neural_networks_types_8h.html#a22f3475e0c381f3c6035536274546236":[35,0,4,0,3,0,3,43],
 "_neural_networks_types_8h.html#a2786ff702f7ddf183c33cd357465c5d6":[35,0,4,0,3,0,3,28],
 "_neural_networks_types_8h.html#a290b90c966091c9470afa9baa1ab3e81":[35,0,4,0,3,0,3,16],
@@ -212,8 +214,8 @@ var NAVTREEINDEX17 =
 "_odd_output_pass_8cc_source.html":[35,0,4,2,2,1,1,0,9],
 "_odd_output_pass_8h.html":[35,0,4,2,2,1,1,0,10],
 "_odd_output_pass_8h_source.html":[35,0,4,2,2,1,1,0,10],
-"_one_hot_8cc.html":[35,0,4,2,2,1,4,0,36],
-"_one_hot_8cc_source.html":[35,0,4,2,2,1,4,0,36],
+"_one_hot_8cc.html":[35,0,4,2,2,1,4,0,37],
+"_one_hot_8cc_source.html":[35,0,4,2,2,1,4,0,37],
 "_one_hot_layer_8cc.html":[35,0,4,2,1,4,0,52],
 "_one_hot_layer_8cc_source.html":[35,0,4,2,1,4,0,52],
 "_one_hot_layer_8h.html":[35,0,4,2,1,4,0,53],
@@ -239,15 +241,13 @@ var NAVTREEINDEX17 =
 "_op_8forward_8h_source.html":[35,0,0,26,0,0,0,1,41],
 "_op_8h.html":[35,0,0,26,0,0,0,1,42],
 "_op_8h.html#a4ee17d3cfd5da67014063855016d56c2":[35,0,0,26,0,0,0,1,42,15],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,13],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,8],
 "_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,14],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,13],
 "_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,12],
 "_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,11],
 "_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,10],
 "_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,9],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,8],
 "_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[35,0,0,26,0,0,0,1,42,7],
-"_op_8h_source.html":[35,0,0,26,0,0,0,1,42],
-"_op_code_8cc.html":[35,0,4,2,2,1,4,9],
-"_op_code_8cc.html#a7d9fa9cc526f6b52c4f951a0a9a19ef3":[35,0,4,2,2,1,4,9,3]
+"_op_8h_source.html":[35,0,0,26,0,0,0,1,42]
 };

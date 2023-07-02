@@ -1,0 +1,7 @@
+<map id="onert::backend::train::InferenceKernelGenerator" name="onert::backend::train::InferenceKernelGenerator">
+<area shape="rect" id="node1" title=" " alt="" coords="20,257,196,297"/>
+<area shape="rect" id="node2" href="$classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html" title=" " alt="" coords="32,168,184,208"/>
+<area shape="rect" id="node3" href="$structonert_1_1ir_1_1_operation_visitor.html" title=" " alt="" coords="5,80,168,105"/>
+<area shape="rect" id="node4" href="$classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="193,80,298,105"/>
+<area shape="rect" id="node5" href="$structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="191,5,300,31"/>
+</map>

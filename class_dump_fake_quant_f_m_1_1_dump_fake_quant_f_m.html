@@ -101,17 +101,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acaaa6f2e52c107ef2df0d00590fec31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af10cbe3b182c60f9238d9da5bb36e795"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dump_fake_quant_f_m_1_1_dump_fake_quant_f_m.html#af10cbe3b182c60f9238d9da5bb36e795">EndNetworkExecution</a> (self, list outputs)</td></tr>
 <tr class="separator:af10cbe3b182c60f9238d9da5bb36e795"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bde9391facf537363efcf1e897c7f33"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dump_fake_quant_f_m_1_1_dump_fake_quant_f_m.html#a9bde9391facf537363efcf1e897c7f33">DefaultOpPost</a> (self, name, opcode, inputs, output)</td></tr>
-<tr class="separator:a9bde9391facf537363efcf1e897c7f33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d5be5ec0da038f16adadc33dab2c9e9"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dump_fake_quant_f_m_1_1_dump_fake_quant_f_m.html#a7d5be5ec0da038f16adadc33dab2c9e9">DefaultOpPost</a> (self, name, opcode, inputs, outputs)</td></tr>
+<tr class="separator:a7d5be5ec0da038f16adadc33dab2c9e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fb4143343e0804c78fc83ed40a3336f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dump_fake_quant_f_m_1_1_dump_fake_quant_f_m.html#a2fb4143343e0804c78fc83ed40a3336f">EndAnalysis</a> (self)</td></tr>
 <tr class="separator:a2fb4143343e0804c78fc83ed40a3336f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00050">50</a> of file <a class="el" href="_dump_fake_quant_f_m_8py_source.html">DumpFakeQuantFM.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00049">49</a> of file <a class="el" href="_dump_fake_quant_f_m_8py_source.html">DumpFakeQuantFM.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9bde9391facf537363efcf1e897c7f33" name="a9bde9391facf537363efcf1e897c7f33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bde9391facf537363efcf1e897c7f33">&#9670;&#160;</a></span>DefaultOpPost()</h2>
+<a id="a7d5be5ec0da038f16adadc33dab2c9e9" name="a7d5be5ec0da038f16adadc33dab2c9e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d5be5ec0da038f16adadc33dab2c9e9">&#9670;&#160;</a></span>DefaultOpPost()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +144,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>output</em>&#160;</td>
+          <td class="paramname"><em>outputs</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -154,22 +154,29 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00062">62</a> of file <a class="el" href="_dump_fake_quant_f_m_8py_source.html">DumpFakeQuantFM.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span>    <span class="keyword">def </span>DefaultOpPost(self, name, opcode, inputs, output):</div>
-<div class="line"><span class="lineno">   63</span>        <span class="keywordflow">if</span> opcode == <span class="stringliteral">&#39;Dequantize&#39;</span>:</div>
-<div class="line"><span class="lineno">   64</span>            orig_name = _name_before_fq(name)</div>
-<div class="line"><span class="lineno">   65</span>            <span class="keywordflow">if</span> orig_name <span class="keywordflow">in</span> self._target_tensors:</div>
-<div class="line"><span class="lineno">   66</span>                data_path = self._dir / str(self._num_data)</div>
-<div class="line"><span class="lineno">   67</span>                data_path.mkdir(parents=<span class="keyword">False</span>, exist_ok=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">   68</span>                np.save(str(data_path / to_filename(orig_name)), output[<span class="stringliteral">&#39;data&#39;</span>])</div>
-<div class="line"><span class="lineno">   69</span>                <span class="comment"># Save scales (scale is fixed, so saving once)</span></div>
-<div class="line"><span class="lineno">   70</span>                <span class="keywordflow">if</span> orig_name <span class="keywordflow">not</span> <span class="keywordflow">in</span> self._scale_map:</div>
-<div class="line"><span class="lineno">   71</span>                    <span class="keyword">assert</span> len(inputs) == 1</div>
-<div class="line"><span class="lineno">   72</span>                    scale = inputs[0][<span class="stringliteral">&#39;quantparam&#39;</span>][<span class="stringliteral">&#39;scale&#39;</span>][0]</div>
-<div class="line"><span class="lineno">   73</span>                    self._scale_map[orig_name] = scale</div>
-<div class="line"><span class="lineno">   74</span> </div>
+<p class="definition">Definition at line <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00061">61</a> of file <a class="el" href="_dump_fake_quant_f_m_8py_source.html">DumpFakeQuantFM.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>    <span class="keyword">def </span>DefaultOpPost(self, name, opcode, inputs, outputs):</div>
+<div class="line"><span class="lineno">   62</span>        <span class="keywordflow">if</span> opcode == <span class="stringliteral">&#39;Dequantize&#39;</span>:</div>
+<div class="line"><span class="lineno">   63</span>            <span class="keywordflow">for</span> output <span class="keywordflow">in</span> outputs:</div>
+<div class="line"><span class="lineno">   64</span>                name = output[<span class="stringliteral">&#39;name&#39;</span>]</div>
+<div class="line"><span class="lineno">   65</span>                data = output[<span class="stringliteral">&#39;data&#39;</span>]</div>
+<div class="line"><span class="lineno">   66</span>                orig_name = _name_before_fq(name)</div>
+<div class="line"><span class="lineno">   67</span>                <span class="keywordflow">if</span> orig_name <span class="keywordflow">in</span> self._tname_to_tid:</div>
+<div class="line"><span class="lineno">   68</span>                    tid = self._tname_to_tid[orig_name]</div>
+<div class="line"><span class="lineno">   69</span>                    data_path = self._dir / str(self._num_data)</div>
+<div class="line"><span class="lineno">   70</span>                    data_path.mkdir(parents=<span class="keyword">False</span>, exist_ok=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">   71</span>                    np.save(str(data_path / str(tid)), data)</div>
+<div class="line"><span class="lineno">   72</span>                    <span class="comment"># Save scales (scale is fixed, so saving once)</span></div>
+<div class="line"><span class="lineno">   73</span>                    <span class="keywordflow">if</span> orig_name <span class="keywordflow">not</span> <span class="keywordflow">in</span> self._scale_map:</div>
+<div class="line"><span class="lineno">   74</span>                        <span class="keyword">assert</span> len(inputs) == 1</div>
+<div class="line"><span class="lineno">   75</span>                        <span class="keyword">assert</span> <span class="stringliteral">&#39;quantparam&#39;</span> <span class="keywordflow">in</span> inputs[0]</div>
+<div class="line"><span class="lineno">   76</span>                        <span class="keyword">assert</span> <span class="stringliteral">&#39;scale&#39;</span> <span class="keywordflow">in</span> inputs[0][<span class="stringliteral">&#39;quantparam&#39;</span>]</div>
+<div class="line"><span class="lineno">   77</span>                        <span class="keyword">assert</span> len(inputs[0][<span class="stringliteral">&#39;quantparam&#39;</span>][<span class="stringliteral">&#39;scale&#39;</span>]) == 1</div>
+<div class="line"><span class="lineno">   78</span>                        scale = inputs[0][<span class="stringliteral">&#39;quantparam&#39;</span>][<span class="stringliteral">&#39;scale&#39;</span>][0]</div>
+<div class="line"><span class="lineno">   79</span>                        self._scale_map[orig_name] = scale</div>
+<div class="line"><span class="lineno">   80</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00052">DumpFakeQuantFM.DumpFakeQuantFM._dir</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00036">DumpFP32FM.DumpFP32FM._dir</a>, <a class="el" href="_metric_printer_8h_source.html#l00085">circle_eval_diff::MAEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00107">circle_eval_diff::MSEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00129">circle_eval_diff::MAPEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00157">circle_eval_diff::MPEIRPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00210">circle_eval_diff::TopKMatchPrinter._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00053">DumpFakeQuantFM.DumpFakeQuantFM._num_data</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00037">DumpFP32FM.DumpFP32FM._num_data</a>, <a class="el" href="_q_error_computer_8py_source.html#l00044">QErrorComputer.QErrorComputer._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00056">DumpFakeQuantFM.DumpFakeQuantFM._scale_map</a>, and <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00055">DumpFakeQuantFM.DumpFakeQuantFM._target_tensors</a>.</p>
+<p class="reference">References <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00051">DumpFakeQuantFM.DumpFakeQuantFM._dir</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00036">DumpFP32FM.DumpFP32FM._dir</a>, <a class="el" href="_metric_printer_8h_source.html#l00085">circle_eval_diff::MAEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00107">circle_eval_diff::MSEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00129">circle_eval_diff::MAPEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00157">circle_eval_diff::MPEIRPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00210">circle_eval_diff::TopKMatchPrinter._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00052">DumpFakeQuantFM.DumpFakeQuantFM._num_data</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00037">DumpFP32FM.DumpFP32FM._num_data</a>, <a class="el" href="_q_error_computer_8py_source.html#l00045">QErrorComputer.QErrorComputer._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00055">DumpFakeQuantFM.DumpFakeQuantFM._scale_map</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00054">DumpFakeQuantFM.DumpFakeQuantFM._tname_to_tid</a>, and <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00039">DumpFP32FM.DumpFP32FM._tname_to_tid</a>.</p>
 
 </div>
 </div>
@@ -189,13 +196,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00075">75</a> of file <a class="el" href="_dump_fake_quant_f_m_8py_source.html">DumpFakeQuantFM.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span>    <span class="keyword">def </span>EndAnalysis(self):</div>
-<div class="line"><span class="lineno">   76</span>        <span class="comment"># Dump saved scales into scales.txt</span></div>
-<div class="line"><span class="lineno">   77</span>        <span class="keyword">with</span> open(self._dir / <span class="stringliteral">&#39;scales.txt&#39;</span>, <span class="stringliteral">&#39;w&#39;</span>) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">   78</span>            json.dump(self._scale_map, f)</div>
+<p class="definition">Definition at line <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00081">81</a> of file <a class="el" href="_dump_fake_quant_f_m_8py_source.html">DumpFakeQuantFM.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   81</span>    <span class="keyword">def </span>EndAnalysis(self):</div>
+<div class="line"><span class="lineno">   82</span>        <span class="comment"># Dump saved scales into scales.txt</span></div>
+<div class="line"><span class="lineno">   83</span>        <span class="keyword">with</span> open(self._dir / <span class="stringliteral">&#39;scales.txt&#39;</span>, <span class="stringliteral">&#39;w&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">   84</span>            json.dump(self._scale_map, f)</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00052">DumpFakeQuantFM.DumpFakeQuantFM._dir</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00036">DumpFP32FM.DumpFP32FM._dir</a>, and <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00056">DumpFakeQuantFM.DumpFakeQuantFM._scale_map</a>.</p>
+<p class="reference">References <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00051">DumpFakeQuantFM.DumpFakeQuantFM._dir</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00036">DumpFP32FM.DumpFP32FM._dir</a>, and <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00055">DumpFakeQuantFM.DumpFakeQuantFM._scale_map</a>.</p>
 
 </div>
 </div>
@@ -225,12 +232,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00058">58</a> of file <a class="el" href="_dump_fake_quant_f_m_8py_source.html">DumpFakeQuantFM.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>    <span class="keyword">def </span>EndNetworkExecution(self, outputs: list):</div>
-<div class="line"><span class="lineno">   59</span>        self._num_data += 1</div>
-<div class="line"><span class="lineno">   60</span> </div>
+<p class="definition">Definition at line <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00057">57</a> of file <a class="el" href="_dump_fake_quant_f_m_8py_source.html">DumpFakeQuantFM.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>    <span class="keyword">def </span>EndNetworkExecution(self, outputs: list):</div>
+<div class="line"><span class="lineno">   58</span>        self._num_data += 1</div>
+<div class="line"><span class="lineno">   59</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_metric_printer_8h_source.html#l00085">circle_eval_diff::MAEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00107">circle_eval_diff::MSEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00129">circle_eval_diff::MAPEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00157">circle_eval_diff::MPEIRPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00210">circle_eval_diff::TopKMatchPrinter._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00053">DumpFakeQuantFM.DumpFakeQuantFM._num_data</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00037">DumpFP32FM.DumpFP32FM._num_data</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00044">QErrorComputer.QErrorComputer._num_data</a>.</p>
+<p class="reference">References <a class="el" href="_metric_printer_8h_source.html#l00085">circle_eval_diff::MAEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00107">circle_eval_diff::MSEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00129">circle_eval_diff::MAPEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00157">circle_eval_diff::MPEIRPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00210">circle_eval_diff::TopKMatchPrinter._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00052">DumpFakeQuantFM.DumpFakeQuantFM._num_data</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00037">DumpFP32FM.DumpFP32FM._num_data</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00045">QErrorComputer.QErrorComputer._num_data</a>.</p>
 
 </div>
 </div>
@@ -260,16 +267,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00051">51</a> of file <a class="el" href="_dump_fake_quant_f_m_8py_source.html">DumpFakeQuantFM.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>    <span class="keyword">def </span>StartAnalysis(self, args):</div>
-<div class="line"><span class="lineno">   52</span>        self._dir = Path(args)</div>
-<div class="line"><span class="lineno">   53</span>        self._num_data = 0</div>
-<div class="line"><span class="lineno">   54</span>        <span class="keyword">with</span> open(self._dir / <span class="stringliteral">&#39;tensors.txt&#39;</span>) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">   55</span>            self._target_tensors = set([line.rstrip() <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f])</div>
-<div class="line"><span class="lineno">   56</span>        self._scale_map = {}</div>
-<div class="line"><span class="lineno">   57</span> </div>
+<p class="definition">Definition at line <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00050">50</a> of file <a class="el" href="_dump_fake_quant_f_m_8py_source.html">DumpFakeQuantFM.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>    <span class="keyword">def </span>StartAnalysis(self, args):</div>
+<div class="line"><span class="lineno">   51</span>        self._dir = Path(args)</div>
+<div class="line"><span class="lineno">   52</span>        self._num_data = 0</div>
+<div class="line"><span class="lineno">   53</span>        <span class="keyword">with</span> open(self._dir / <span class="stringliteral">&#39;tensors.json&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">   54</span>            self._tname_to_tid = json.load(f)</div>
+<div class="line"><span class="lineno">   55</span>        self._scale_map = {}</div>
+<div class="line"><span class="lineno">   56</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00052">DumpFakeQuantFM.DumpFakeQuantFM._dir</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00036">DumpFP32FM.DumpFP32FM._dir</a>, <a class="el" href="_metric_printer_8h_source.html#l00085">circle_eval_diff::MAEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00107">circle_eval_diff::MSEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00129">circle_eval_diff::MAPEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00157">circle_eval_diff::MPEIRPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00210">circle_eval_diff::TopKMatchPrinter._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00053">DumpFakeQuantFM.DumpFakeQuantFM._num_data</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00037">DumpFP32FM.DumpFP32FM._num_data</a>, <a class="el" href="_q_error_computer_8py_source.html#l00044">QErrorComputer.QErrorComputer._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00056">DumpFakeQuantFM.DumpFakeQuantFM._scale_map</a>, and <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00055">DumpFakeQuantFM.DumpFakeQuantFM._target_tensors</a>.</p>
+<p class="reference">References <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00051">DumpFakeQuantFM.DumpFakeQuantFM._dir</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00036">DumpFP32FM.DumpFP32FM._dir</a>, <a class="el" href="_metric_printer_8h_source.html#l00085">circle_eval_diff::MAEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00107">circle_eval_diff::MSEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00129">circle_eval_diff::MAPEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00157">circle_eval_diff::MPEIRPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00210">circle_eval_diff::TopKMatchPrinter._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00052">DumpFakeQuantFM.DumpFakeQuantFM._num_data</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00037">DumpFP32FM.DumpFP32FM._num_data</a>, <a class="el" href="_q_error_computer_8py_source.html#l00045">QErrorComputer.QErrorComputer._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00055">DumpFakeQuantFM.DumpFakeQuantFM._scale_map</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00054">DumpFakeQuantFM.DumpFakeQuantFM._tname_to_tid</a>, and <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00039">DumpFP32FM.DumpFP32FM._tname_to_tid</a>.</p>
 
 </div>
 </div>

@@ -117,6 +117,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a956f5ac33484eb6411a39662910231ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebc2590bd17471aae849cc4157ba4738"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html#aebc2590bd17471aae849cc4157ba4738">setTensorRegistries</a> (const <a class="el" href="classonert_1_1compiler_1_1_tensor_registries.html">compiler::TensorRegistries</a> &amp;tensor_registries)</td></tr>
 <tr class="separator:aebc2590bd17471aae849cc4157ba4738"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54e32f1c1a5b7ab6b703ea2a7931b5e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html#a54e32f1c1a5b7ab6b703ea2a7931b5e7">setGradTensorRegistries</a> (const <a class="el" href="classonert_1_1compiler_1_1_tensor_registries.html">compiler::TensorRegistries</a> &amp;tensor_registries)</td></tr>
+<tr class="separator:a54e32f1c1a5b7ab6b703ea2a7931b5e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classonert_1_1backend_1_1train_1_1_kernel_generator_base"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1backend_1_1train_1_1_kernel_generator_base')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html">onert::backend::train::KernelGeneratorBase</a></td></tr>
 <tr class="memitem:a934d415aaec54926ce8d7ca6428cec68 inherit pub_methods_classonert_1_1backend_1_1train_1_1_kernel_generator_base"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#a934d415aaec54926ce8d7ca6428cec68">~KernelGeneratorBase</a> ()=default</td></tr>
 <tr class="separator:a934d415aaec54926ce8d7ca6428cec68 inherit pub_methods_classonert_1_1backend_1_1train_1_1_kernel_generator_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -232,10 +234,41 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_kernel_generator_base_html_a611b2f1bd500036a88b1bde134a01cbb"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#a611b2f1bd500036a88b1bde134a01cbb">onert::backend::train::KernelGeneratorBase::_return_fn</a></div><div class="ttdeci">std::unique_ptr&lt; exec::ITrainableFunction &gt; _return_fn</div><div class="ttdef"><b>Definition:</b> <a href="train_2_kernel_generator_base_8h_source.html#l00053">KernelGeneratorBase.h:53</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_kernel_generator_base_html_af4cfc3d23cd44e15c60a83331675e1b2"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#af4cfc3d23cd44e15c60a83331675e1b2">onert::backend::train::KernelGeneratorBase::_tgraph</a></div><div class="ttdeci">const ir::train::TrainableGraph &amp; _tgraph</div><div class="ttdef"><b>Definition:</b> <a href="train_2_kernel_generator_base_8h_source.html#l00052">KernelGeneratorBase.h:52</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_i_trainable_operation_html_a8a8338d2a43a2fbb7a0aeff63a0e17ea"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a8a8338d2a43a2fbb7a0aeff63a0e17ea">onert::ir::train::ITrainableOperation::accept</a></div><div class="ttdeci">virtual void accept(OperationVisitor &amp;v) const override=0</div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a0efe89ac2a129ae975957af5ba0ae525"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a0efe89ac2a129ae975957af5ba0ae525">onert::ir::train::TrainableGraph::operation</a></div><div class="ttdeci">const ITrainableOperation &amp; operation(OperationIndex index) const</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_graph_8cc_source.html#l00097">TrainableGraph.cc:97</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a0efe89ac2a129ae975957af5ba0ae525"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a0efe89ac2a129ae975957af5ba0ae525">onert::ir::train::TrainableGraph::operation</a></div><div class="ttdeci">const ITrainableOperation &amp; operation(OperationIndex index) const</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_graph_8cc_source.html#l00102">TrainableGraph.cc:102</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00053">onert::backend::train::KernelGeneratorBase::_return_fn</a>, <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00052">onert::backend::train::KernelGeneratorBase::_tgraph</a>, <a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a8a8338d2a43a2fbb7a0aeff63a0e17ea">onert::ir::train::ITrainableOperation::accept()</a>, and <a class="el" href="_trainable_graph_8cc_source.html#l00097">onert::ir::train::TrainableGraph::operation()</a>.</p>
+<p class="reference">References <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00053">onert::backend::train::KernelGeneratorBase::_return_fn</a>, <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00052">onert::backend::train::KernelGeneratorBase::_tgraph</a>, <a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a8a8338d2a43a2fbb7a0aeff63a0e17ea">onert::ir::train::ITrainableOperation::accept()</a>, and <a class="el" href="_trainable_graph_8cc_source.html#l00102">onert::ir::train::TrainableGraph::operation()</a>.</p>
 
+</div>
+</div>
+<a id="a54e32f1c1a5b7ab6b703ea2a7931b5e7" name="a54e32f1c1a5b7ab6b703ea2a7931b5e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54e32f1c1a5b7ab6b703ea2a7931b5e7">&#9670;&#160;</a></span>setGradTensorRegistries()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::backend::builtin::train::KernelGenerator::setGradTensorRegistries </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1compiler_1_1_tensor_registries.html">compiler::TensorRegistries</a> &amp;&#160;</td>
+          <td class="paramname"><em>tensor_registries</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html#l00052">52</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html">KernelGenerator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>  {</div>
+<div class="line"><span class="lineno">   54</span>    _grad_tensor_registries = tensor_registries;</div>
+<div class="line"><span class="lineno">   55</span>  }</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="aebc2590bd17471aae849cc4157ba4738" name="aebc2590bd17471aae849cc4157ba4738"></a>

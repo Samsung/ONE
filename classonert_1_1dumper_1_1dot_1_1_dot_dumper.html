@@ -113,9 +113,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad4d636398424bb657b53ec5f9304b7c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#ad4d636398424bb657b53ec5f9304b7c8">dump</a> (const <a class="el" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;graph, const std::string &amp;tag)</td></tr>
 <tr class="memdesc:ad4d636398424bb657b53ec5f9304b7c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump graph information to dot file as tag name if "GRAPH_DOT_DUMP" is set.  <a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#ad4d636398424bb657b53ec5f9304b7c8">More...</a><br /></td></tr>
 <tr class="separator:ad4d636398424bb657b53ec5f9304b7c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa979e236af74874bd07781d7bac7a604"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aa979e236af74874bd07781d7bac7a604">dump</a> (const <a class="el" href="classonert_1_1compiler_1_1_lowered_graph.html">compiler::LoweredGraph</a> &amp;lowered_graph, const std::string &amp;tag)</td></tr>
-<tr class="memdesc:aa979e236af74874bd07781d7bac7a604"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump lowered graph information to dot file as tag name if "GRAPH_DOT_DUMP" is set.  <a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aa979e236af74874bd07781d7bac7a604">More...</a><br /></td></tr>
-<tr class="separator:aa979e236af74874bd07781d7bac7a604"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5f65109b28c9c9e968d6002f1ebe35f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#af5f65109b28c9c9e968d6002f1ebe35f">dump</a> (const <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html">compiler::ILoweredGraph</a> &amp;lowered_graph, const std::string &amp;tag)</td></tr>
+<tr class="memdesc:af5f65109b28c9c9e968d6002f1ebe35f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump lowered graph information to dot file as tag name if "GRAPH_DOT_DUMP" is set.  <a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#af5f65109b28c9c9e968d6002f1ebe35f">More...</a><br /></td></tr>
+<tr class="separator:af5f65109b28c9c9e968d6002f1ebe35f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -181,8 +181,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa979e236af74874bd07781d7bac7a604" name="aa979e236af74874bd07781d7bac7a604"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa979e236af74874bd07781d7bac7a604">&#9670;&#160;</a></span>dump() <span class="overload">[1/2]</span></h2>
+<a id="af5f65109b28c9c9e968d6002f1ebe35f" name="af5f65109b28c9c9e968d6002f1ebe35f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5f65109b28c9c9e968d6002f1ebe35f">&#9670;&#160;</a></span>dump() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,7 +190,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void onert::dumper::dot::DotDumper::dump </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classonert_1_1compiler_1_1_lowered_graph.html">compiler::LoweredGraph</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html">compiler::ILoweredGraph</a> &amp;&#160;</td>
           <td class="paramname"><em>lowered_graph</em>, </td>
         </tr>
         <tr>
@@ -217,21 +217,21 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>N/A </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_dot_dumper_8cc_source.html#l00216">216</a> of file <a class="el" href="_dot_dumper_8cc_source.html">DotDumper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  217</span>{</div>
-<div class="line"><span class="lineno">  218</span>  <span class="keywordflow">if</span> (_level == <a class="code hl_enumvalue" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fae917deceabb6c7a66a65a9c0ce0c429d">Level::OFF</a>)</div>
-<div class="line"><span class="lineno">  219</span>  {</div>
-<div class="line"><span class="lineno">  220</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  221</span>  }</div>
-<div class="line"><span class="lineno">  222</span> </div>
-<div class="line"><span class="lineno">  223</span>  <span class="keyword">auto</span> dot_operands = generate_dot_operands(lowered_graph.graph(), _level);</div>
-<div class="line"><span class="lineno">  224</span>  <span class="keyword">auto</span> dot_operations = generate_dot_operations(lowered_graph.graph(), dot_operands);</div>
-<div class="line"><span class="lineno">  225</span>  update_lower_info(lowered_graph, &amp;dot_operands);</div>
-<div class="line"><span class="lineno">  226</span>  update_lower_info(lowered_graph, &amp;dot_operations);</div>
-<div class="line"><span class="lineno">  227</span>  dump_to_file(dot_operands, dot_operations, tag);</div>
-<div class="line"><span class="lineno">  228</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_dot_dumper_8cc_source.html#l00217">217</a> of file <a class="el" href="_dot_dumper_8cc_source.html">DotDumper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  218</span>{</div>
+<div class="line"><span class="lineno">  219</span>  <span class="keywordflow">if</span> (_level == <a class="code hl_enumvalue" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fae917deceabb6c7a66a65a9c0ce0c429d">Level::OFF</a>)</div>
+<div class="line"><span class="lineno">  220</span>  {</div>
+<div class="line"><span class="lineno">  221</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  222</span>  }</div>
+<div class="line"><span class="lineno">  223</span> </div>
+<div class="line"><span class="lineno">  224</span>  <span class="keyword">auto</span> dot_operands = generate_dot_operands(lowered_graph.graph(), _level);</div>
+<div class="line"><span class="lineno">  225</span>  <span class="keyword">auto</span> dot_operations = generate_dot_operations(lowered_graph.graph(), dot_operands);</div>
+<div class="line"><span class="lineno">  226</span>  update_lower_info(lowered_graph, &amp;dot_operands);</div>
+<div class="line"><span class="lineno">  227</span>  update_lower_info(lowered_graph, &amp;dot_operations);</div>
+<div class="line"><span class="lineno">  228</span>  dump_to_file(dot_operands, dot_operations, tag);</div>
+<div class="line"><span class="lineno">  229</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_lowered_graph_8h_source.html#l00041">onert::compiler::LoweredGraph::graph()</a>.</p>
+<p class="reference">References <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#a077d568714f72d299c11a423f16aa8a1">onert::compiler::ILoweredGraph::graph()</a>.</p>
 
 </div>
 </div>

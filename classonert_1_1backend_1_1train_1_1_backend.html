@@ -220,8 +220,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   48</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
 <div class="line"><span class="lineno">   49</span>    context-&gt;tensor_registry = tr;</div>
 <div class="line"><span class="lineno">   50</span>    context-&gt;tensor_builder = tb;</div>
-<div class="line"><span class="lineno">   51</span>    context-&gt;kernel_gen = std::make_shared&lt;KernelGenerator&gt;(graph, tb, tr, custom_kernel_builder,</div>
-<div class="line"><span class="lineno">   52</span>                                                            context-&gt;external_context());</div>
+<div class="line"><span class="lineno">   51</span>    context-&gt;kernel_gen = std::make_shared&lt;InferenceKernelGenerator&gt;(</div>
+<div class="line"><span class="lineno">   52</span>      graph, tb, tr, custom_kernel_builder, context-&gt;external_context());</div>
 <div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> context;</div>
 <div class="line"><span class="lineno">   54</span>  }</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a57e930c09fd3ed0664cc4dc6c4ab2c88"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">GenH5RandomInputs.data</a></div><div class="ttdeci">data</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00064">GenH5RandomInputs.py:64</a></div></div>

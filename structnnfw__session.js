@@ -28,13 +28,5 @@ var structnnfw__session =
     [ "set_input_tensorinfo", "structnnfw__session.html#a2a44f94befcedd20668f1a7e2e6bc395", null ],
     [ "set_op_backend", "structnnfw__session.html#ac349fe7c09f57caa02427cdb68f886c7", null ],
     [ "set_output", "structnnfw__session.html#a34eedf881be31f5c87ecb49af6cbeb04", null ],
-    [ "set_output_layout", "structnnfw__session.html#a994e85d77cc20605dbb9e836c6735bcb", null ],
-    [ "train_expected_tensorinfo", "structnnfw__session.html#a3d390ec838d62cf0cb0d99844ca526c7", null ],
-    [ "train_export_circle", "structnnfw__session.html#aad26c5b39608a362239f365a8e7aee75", null ],
-    [ "train_get_loss", "structnnfw__session.html#a73a0f1d09c488a2a7ca06eb4188d1aea", null ],
-    [ "train_input_tensorinfo", "structnnfw__session.html#a9f7c812ddbfba299ab90321fcdc27672", null ],
-    [ "train_prepare", "structnnfw__session.html#afa3ae33264c9a80b64ff836110bf5d8e", null ],
-    [ "train_run", "structnnfw__session.html#a1d58ed640ea89077a490c0fc5982ad19", null ],
-    [ "train_set_expected", "structnnfw__session.html#ac6e432fdccb71ba04cb91e280c618852", null ],
-    [ "train_set_input", "structnnfw__session.html#ac609d65b18c74ecd3c2db0df12248e54", null ]
+    [ "set_output_layout", "structnnfw__session.html#a994e85d77cc20605dbb9e836c6735bcb", null ]
 ];

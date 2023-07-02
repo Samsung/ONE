@@ -2413,11 +2413,13 @@ var hierarchy =
           [ "onert::exec::ParallelExecutor", "classonert_1_1exec_1_1_parallel_executor.html", null ]
         ] ],
         [ "onert::exec::LinearExecutor", "classonert_1_1exec_1_1_linear_executor.html", null ]
-      ] ]
+      ] ],
+      [ "onert::exec::train::TrainableExecutor", "classonert_1_1exec_1_1train_1_1_trainable_executor.html", null ]
     ] ],
     [ "onert::exec::IExecutors", "classonert_1_1exec_1_1_i_executors.html", [
       [ "onert::exec::Executors", "classonert_1_1exec_1_1_executors.html", null ],
-      [ "onert::exec::SingleModelExecutors", "classonert_1_1exec_1_1_single_model_executors.html", null ]
+      [ "onert::exec::SingleModelExecutors", "classonert_1_1exec_1_1_single_model_executors.html", null ],
+      [ "onert::exec::train::TrainableExecutors", "classonert_1_1exec_1_1train_1_1_trainable_executors.html", null ]
     ] ],
     [ "arm_compute::IFunction", null, [
       [ "arm_compute::CLFullyConnectedReshapingLayer", "classarm__compute_1_1_c_l_fully_connected_reshaping_layer.html", null ],
@@ -2531,7 +2533,8 @@ var hierarchy =
       [ "onert::api::KernelBuilder", "classonert_1_1api_1_1_kernel_builder.html", null ]
     ] ],
     [ "onert::compiler::ILoweredGraph", "structonert_1_1compiler_1_1_i_lowered_graph.html", [
-      [ "onert::compiler::LoweredGraph", "classonert_1_1compiler_1_1_lowered_graph.html", null ]
+      [ "onert::compiler::LoweredGraph", "classonert_1_1compiler_1_1_lowered_graph.html", null ],
+      [ "onert::compiler::train::LoweredTrainableGraph", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html", null ]
     ] ],
     [ "Image", "struct_image.html", null ],
     [ "luci_interpreter::IMemoryManager", "classluci__interpreter_1_1_i_memory_manager.html", [
@@ -2652,7 +2655,9 @@ var hierarchy =
         [ "onert::ir::operation::DepthwiseConv2D", "classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html", null ],
         [ "onert::ir::operation::DetectionPostProcess", "classonert_1_1ir_1_1operation_1_1_detection_post_process.html", null ],
         [ "onert::ir::operation::Einsum", "classonert_1_1ir_1_1operation_1_1_einsum.html", null ],
-        [ "onert::ir::operation::ElementwiseActivation", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html", null ],
+        [ "onert::ir::operation::ElementwiseActivation", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html", [
+          [ "onert::ir::train::operation::ElementwiseActivation", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation.html", null ]
+        ] ],
         [ "onert::ir::operation::ElementwiseBinary", "classonert_1_1ir_1_1operation_1_1_elementwise_binary.html", null ],
         [ "onert::ir::operation::ElementwiseUnary", "classonert_1_1ir_1_1operation_1_1_elementwise_unary.html", null ],
         [ "onert::ir::operation::EmbeddingLookup", "classonert_1_1ir_1_1operation_1_1_embedding_lookup.html", null ],
@@ -2668,6 +2673,9 @@ var hierarchy =
         [ "onert::ir::operation::LSTM", "classonert_1_1ir_1_1operation_1_1_l_s_t_m.html", null ],
         [ "onert::ir::operation::LocalResponseNormalization", "classonert_1_1ir_1_1operation_1_1_local_response_normalization.html", null ],
         [ "onert::ir::operation::LogSoftmax", "classonert_1_1ir_1_1operation_1_1_log_softmax.html", null ],
+        [ "onert::ir::operation::Loss", "classonert_1_1ir_1_1operation_1_1_loss.html", [
+          [ "onert::ir::train::operation::Loss", "classonert_1_1ir_1_1train_1_1operation_1_1_loss.html", null ]
+        ] ],
         [ "onert::ir::operation::MatrixBandPart", "classonert_1_1ir_1_1operation_1_1_matrix_band_part.html", null ],
         [ "onert::ir::operation::OneHot", "classonert_1_1ir_1_1operation_1_1_one_hot.html", null ],
         [ "onert::ir::operation::PReLU", "classonert_1_1ir_1_1operation_1_1_p_re_l_u.html", null ],
@@ -2707,7 +2715,10 @@ var hierarchy =
         [ "onert_test::ir::SimpleMock", "classonert__test_1_1ir_1_1_simple_mock.html", null ]
       ] ],
       [ "onert::ir::train::ITrainableOperation", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html", [
-        [ "onert::ir::train::operation::Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", null ]
+        [ "onert::ir::train::operation::ElementwiseActivation", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation.html", null ],
+        [ "onert::ir::train::operation::Loss", "classonert_1_1ir_1_1train_1_1operation_1_1_loss.html", null ],
+        [ "onert::ir::train::operation::Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", null ],
+        [ "onert::ir::train::operation::UntrainableOperation< OperationType, typename >", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", null ]
       ] ]
     ] ],
     [ "nnc::cli::IOption", "classnnc_1_1cli_1_1_i_option.html", [
@@ -3788,6 +3799,9 @@ var hierarchy =
     [ "onert::ir::OperationIndexSet", "classonert_1_1ir_1_1_operation_index_set.html", null ],
     [ "ann::OperationInventory", "classann_1_1_operation_inventory.html", null ],
     [ "onert::compiler::OperationLowerInfo", "classonert_1_1compiler_1_1_operation_lower_info.html", null ],
+    [ "OperationType", null, [
+      [ "onert::ir::train::operation::UntrainableOperation< OperationType, typename >", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", null ]
+    ] ],
     [ "onert::ir::OperationVisitor", "structonert_1_1ir_1_1_operation_visitor.html", [
       [ "onert::backend::acl_common::AclConstantInitializer", "classonert_1_1backend_1_1acl__common_1_1_acl_constant_initializer.html", [
         [ "onert::backend::acl_cl::ConstantInitializer", "classonert_1_1backend_1_1acl__cl_1_1_constant_initializer.html", null ],
@@ -3801,7 +3815,7 @@ var hierarchy =
         [ "onert::backend::cpu::KernelGenerator", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html", null ],
         [ "onert::backend::gpu_cl::KernelGenerator", "classonert_1_1backend_1_1gpu__cl_1_1_kernel_generator.html", null ],
         [ "onert::backend::ruy::KernelGenerator", "classonert_1_1backend_1_1ruy_1_1_kernel_generator.html", null ],
-        [ "onert::backend::train::KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", null ],
+        [ "onert::backend::train::InferenceKernelGenerator", "classonert_1_1backend_1_1train_1_1_inference_kernel_generator.html", null ],
         [ "onert::backend::trix::KernelGenerator", "classonert_1_1backend_1_1trix_1_1_kernel_generator.html", null ],
         [ "onert::backend::xnnpack::KernelGenerator", "classonert_1_1backend_1_1xnnpack_1_1_kernel_generator.html", null ]
       ] ],
@@ -3812,6 +3826,9 @@ var hierarchy =
       [ "onert::compiler::StaticShapeInferer", "classonert_1_1compiler_1_1_static_shape_inferer.html", null ],
       [ "onert::compiler::pass::PermutationEliminationPass", "classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html", null ],
       [ "onert::compiler::pass::PermutationOperationPass", "classonert_1_1compiler_1_1pass_1_1_permutation_operation_pass.html", null ],
+      [ "onert::compiler::train::UntrainableOperationConverter", "classonert_1_1compiler_1_1train_1_1_untrainable_operation_converter.html", [
+        [ "onert::compiler::train::TrainableOperationConverter", "classonert_1_1compiler_1_1train_1_1_trainable_operation_converter.html", null ]
+      ] ],
       [ "onert::exec::DynamicShapeInferer", "classonert_1_1exec_1_1_dynamic_shape_inferer.html", null ],
       [ "onert::ir::OperationDumper", "classonert_1_1ir_1_1_operation_dumper.html", null ],
       [ "onert::ir::OperationValidator", "classonert_1_1ir_1_1_operation_validator.html", null ]
@@ -3980,6 +3997,7 @@ var hierarchy =
     [ "onert::ir::operation::InstanceNorm::Param", "structonert_1_1ir_1_1operation_1_1_instance_norm_1_1_param.html", null ],
     [ "onert::ir::operation::LocalResponseNormalization::Param", "structonert_1_1ir_1_1operation_1_1_local_response_normalization_1_1_param.html", null ],
     [ "onert::ir::operation::LogSoftmax::Param", "structonert_1_1ir_1_1operation_1_1_log_softmax_1_1_param.html", null ],
+    [ "onert::ir::operation::Loss::Param", "structonert_1_1ir_1_1operation_1_1_loss_1_1_param.html", null ],
     [ "onert::ir::operation::LSTM::Param", "structonert_1_1ir_1_1operation_1_1_l_s_t_m_1_1_param.html", null ],
     [ "onert::ir::operation::OneHot::Param", "structonert_1_1ir_1_1operation_1_1_one_hot_1_1_param.html", null ],
     [ "onert::ir::operation::Pack::Param", "structonert_1_1ir_1_1operation_1_1_pack_1_1_param.html", null ],
@@ -5025,13 +5043,16 @@ var hierarchy =
     [ "nnfw::rt::optimized_ops::TopContainer< T >", "classnnfw_1_1rt_1_1optimized__ops_1_1_top_container.html", null ],
     [ "TopologicalSortHelper.TopologicalSortHelper", "class_topological_sort_helper_1_1_topological_sort_helper.html", null ],
     [ "onert::util::TracingCtx", "classonert_1_1util_1_1_tracing_ctx.html", null ],
-    [ "onert::backend::train::TrainableBackendContext", "classonert_1_1backend_1_1train_1_1_trainable_backend_context.html", null ],
+    [ "onert::backend::train::TrainableBackendContext", "classonert_1_1backend_1_1train_1_1_trainable_backend_context.html", [
+      [ "onert::backend::builtin::train::BackendContext", "classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html", null ]
+    ] ],
     [ "onert::compiler::train::TrainableCodeAndInfo", "structonert_1_1compiler_1_1train_1_1_trainable_code_and_info.html", null ],
     [ "onert::backend::train::TrainableContextData", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html", null ],
     [ "onert::exec::train::TrainableFnSequence", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html", null ],
     [ "onert::ir::train::TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", [
       [ "onert::backend::train::KernelGeneratorBase", "classonert_1_1backend_1_1train_1_1_kernel_generator_base.html", [
-        [ "onert::backend::builtin::train::KernelGenerator", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html", null ]
+        [ "onert::backend::builtin::train::KernelGenerator", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html", null ],
+        [ "onert::backend::train::KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", null ]
       ] ]
     ] ],
     [ "onert::compiler::train::TrainingInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html", null ],

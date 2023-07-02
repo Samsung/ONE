@@ -139,7 +139,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (!py::hasattr(_analysis, #OP_NAME <span class="stringliteral">&quot;Post&quot;</span>))             \</div>
+<b>Value:</b><div class="fragment"><div class="line">  assert(not multi_out_node(node));                         \</div>
+<div class="line">  if (!py::hasattr(_analysis, #OP_NAME <span class="stringliteral">&quot;Post&quot;</span>))             \</div>
 <div class="line">  {                                                         \</div>
 <div class="line">    visit(loco::must_cast&lt;const luci::CircleNode *&gt;(node)); \</div>
 <div class="line">    <span class="keywordflow">return</span>;                                                 \</div>
@@ -167,7 +168,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (!py::hasattr(_analysis, #OP_NAME <span class="stringliteral">&quot;Post&quot;</span>))             \</div>
+<b>Value:</b><div class="fragment"><div class="line">  assert(multi_out_node(node));                             \</div>
+<div class="line">  if (!py::hasattr(_analysis, #OP_NAME <span class="stringliteral">&quot;Post&quot;</span>))             \</div>
 <div class="line">  {                                                         \</div>
 <div class="line">    visit(loco::must_cast&lt;const luci::CircleNode *&gt;(node)); \</div>
 <div class="line">    <span class="keywordflow">return</span>;                                                 \</div>
@@ -176,7 +178,7 @@ Macros</h2></td></tr>
 <div class="line">  <span class="keyword">auto</span> inputs = inputsPyArray(node, _interpreter);          \</div>
 <div class="line">  <span class="keyword">auto</span> outputs = outputsPyArray(node, _interpreter);</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_post_operator_hook_8h_source.html#l00055">55</a> of file <a class="el" href="_post_operator_hook_8h_source.html">PostOperatorHook.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_post_operator_hook_8h_source.html#l00056">56</a> of file <a class="el" href="_post_operator_hook_8h_source.html">PostOperatorHook.h</a>.</p>
 
 </div>
 </div>

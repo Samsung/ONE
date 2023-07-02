@@ -112,7 +112,7 @@ Data Fields</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00025">25</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00024">24</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a40f21db53e4b59172eaf52654d859121" name="a40f21db53e4b59172eaf52654d859121"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a40f21db53e4b59172eaf52654d859121">&#9670;&#160;</a></span>__init__()</h2>
@@ -148,15 +148,15 @@ Data Fields</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_q_error_computer_1_1_m_p_e_i_r_computer.html#a9c6ade10a96e1d1b6dd2c18219b5e834">QErrorComputer.MPEIRComputer</a>, <a class="el" href="class_q_error_computer_1_1_m_s_e_computer.html#a32a58d2b9de0dd991d1b1503ed5f4c72">QErrorComputer.MSEComputer</a>, <a class="el" href="class_q_error_computer_1_1_t_a_e_computer.html#ac0be96d2c303f5404a0bc0ba328fe50e">QErrorComputer.TAEComputer</a>, and <a class="el" href="class_q_error_computer_1_1_s_r_m_s_e_computer.html#a8dd94c254bec100eeb88d4bebe1e7a94">QErrorComputer.SRMSEComputer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00026">26</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>    <span class="keyword">def </span>__init__(self, fp32_dir, fq_dir):</div>
-<div class="line"><span class="lineno">   27</span>        self._fp32_dir = fp32_dir</div>
-<div class="line"><span class="lineno">   28</span>        self._fq_dir = fq_dir</div>
-<div class="line"><span class="lineno">   29</span>        self.qerror_map = defaultdict(float)</div>
-<div class="line"><span class="lineno">   30</span>        self._num_processed_data = 0</div>
-<div class="line"><span class="lineno">   31</span> </div>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00025">25</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>    <span class="keyword">def </span>__init__(self, fp32_dir, fq_dir):</div>
+<div class="line"><span class="lineno">   26</span>        self._fp32_dir = fp32_dir</div>
+<div class="line"><span class="lineno">   27</span>        self._fq_dir = fq_dir</div>
+<div class="line"><span class="lineno">   28</span>        self.qerror_map = defaultdict(float)</div>
+<div class="line"><span class="lineno">   29</span>        self._num_processed_data = 0</div>
+<div class="line"><span class="lineno">   30</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00027">QErrorComputer.QErrorComputer._fp32_dir</a>, <a class="el" href="_q_error_computer_8py_source.html#l00028">QErrorComputer.QErrorComputer._fq_dir</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00221">QErrorComputer.SRMSEComputer._fq_dir</a>.</p>
+<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00026">QErrorComputer.QErrorComputer._fp32_dir</a>, <a class="el" href="_q_error_computer_8py_source.html#l00027">QErrorComputer.QErrorComputer._fq_dir</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00220">QErrorComputer.SRMSEComputer._fq_dir</a>.</p>
 
 </div>
 </div>
@@ -193,65 +193,65 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00032">32</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>    <span class="keyword">def </span>collect_data_path(self, fp32_dir, fq_dir):</div>
-<div class="line"><span class="lineno">   33</span>        <span class="comment"># Assumption: FM data are saved as follows</span></div>
-<div class="line"><span class="lineno">   34</span>        <span class="comment">#</span></div>
-<div class="line"><span class="lineno">   35</span>        <span class="comment"># fp32_dir/</span></div>
-<div class="line"><span class="lineno">   36</span>        <span class="comment">#   tensors.txt</span></div>
-<div class="line"><span class="lineno">   37</span>        <span class="comment">#   &lt;DATA_INDEX&gt;/</span></div>
-<div class="line"><span class="lineno">   38</span>        <span class="comment">#     &lt;TENSOR_NAME&gt;.npy</span></div>
-<div class="line"><span class="lineno">   39</span>        <span class="comment">#</span></div>
-<div class="line"><span class="lineno">   40</span>        <span class="comment"># fq_dir/</span></div>
-<div class="line"><span class="lineno">   41</span>        <span class="comment">#   tensors.txt</span></div>
-<div class="line"><span class="lineno">   42</span>        <span class="comment">#   &lt;DATA_INDEX&gt;/</span></div>
-<div class="line"><span class="lineno">   43</span>        <span class="comment">#     &lt;TENSOR_NAME&gt;.npy</span></div>
-<div class="line"><span class="lineno">   44</span>        self._num_data = len(list(filter(os.path.isdir, glob.glob(fp32_dir + <span class="stringliteral">&#39;/*&#39;</span>))))</div>
-<div class="line"><span class="lineno">   45</span>        <span class="keywordflow">if</span> self._num_data != len(list(filter(os.path.isdir, glob.glob(fq_dir + <span class="stringliteral">&#39;/*&#39;</span>)))):</div>
-<div class="line"><span class="lineno">   46</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&quot;Number of data mistmatches&quot;</span>)</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>        self._num_processed_data += self._num_data</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>        self._filename_to_tensor = dict()</div>
-<div class="line"><span class="lineno">   51</span>        <span class="keyword">with</span> open(Path(fp32_dir) / <span class="stringliteral">&#39;tensors.txt&#39;</span>) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">   52</span>            tensors = set([line.rstrip() <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f])</div>
-<div class="line"><span class="lineno">   53</span>            <span class="keywordflow">for</span> tensor <span class="keywordflow">in</span> tensors:</div>
-<div class="line"><span class="lineno">   54</span>                <span class="comment"># Check if filename is unique</span></div>
-<div class="line"><span class="lineno">   55</span>                <span class="comment"># Fix name finding logic unless</span></div>
-<div class="line"><span class="lineno">   56</span>                <span class="keyword">assert</span> to_filename(tensor) <span class="keywordflow">not</span> <span class="keywordflow">in</span> self._filename_to_tensor</div>
-<div class="line"><span class="lineno">   57</span>                self._filename_to_tensor[to_filename(tensor)] = tensor</div>
-<div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span>        <span class="comment"># Save paths to fp32 data and fq data for each tensor</span></div>
-<div class="line"><span class="lineno">   60</span>        <span class="comment"># dict</span></div>
-<div class="line"><span class="lineno">   61</span>        <span class="comment"># {</span></div>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00031">31</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>    <span class="keyword">def </span>collect_data_path(self, fp32_dir, fq_dir):</div>
+<div class="line"><span class="lineno">   32</span>        <span class="comment"># Assumption: FM data are saved as follows</span></div>
+<div class="line"><span class="lineno">   33</span>        <span class="comment">#</span></div>
+<div class="line"><span class="lineno">   34</span>        <span class="comment"># fp32_dir/</span></div>
+<div class="line"><span class="lineno">   35</span>        <span class="comment">#   tensors.json</span></div>
+<div class="line"><span class="lineno">   36</span>        <span class="comment">#   &lt;DATA_INDEX&gt;/</span></div>
+<div class="line"><span class="lineno">   37</span>        <span class="comment">#     &lt;TENSOR_ID&gt;.npy</span></div>
+<div class="line"><span class="lineno">   38</span>        <span class="comment">#</span></div>
+<div class="line"><span class="lineno">   39</span>        <span class="comment"># fq_dir/</span></div>
+<div class="line"><span class="lineno">   40</span>        <span class="comment">#   tensors.json</span></div>
+<div class="line"><span class="lineno">   41</span>        <span class="comment">#   &lt;DATA_INDEX&gt;/</span></div>
+<div class="line"><span class="lineno">   42</span>        <span class="comment">#     &lt;TENSOR_ID&gt;.npy</span></div>
+<div class="line"><span class="lineno">   43</span>        <span class="comment">#</span></div>
+<div class="line"><span class="lineno">   44</span>        <span class="comment"># NOTE tensors.json has a dictionary {TENSOR_NAME -&gt; TENSOR_ID}</span></div>
+<div class="line"><span class="lineno">   45</span>        self._num_data = len(list(filter(os.path.isdir, glob.glob(fp32_dir + <span class="stringliteral">&#39;/*&#39;</span>))))</div>
+<div class="line"><span class="lineno">   46</span>        <span class="keywordflow">if</span> self._num_data != len(list(filter(os.path.isdir, glob.glob(fq_dir + <span class="stringliteral">&#39;/*&#39;</span>)))):</div>
+<div class="line"><span class="lineno">   47</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&quot;Number of data mistmatches&quot;</span>)</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>        self._num_processed_data += self._num_data</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>        self._tid_to_tname = dict()  <span class="comment"># {tensor id -&gt; tensor name}</span></div>
+<div class="line"><span class="lineno">   52</span>        <span class="keyword">with</span> open(Path(fp32_dir) / <span class="stringliteral">&#39;tensors.json&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">   53</span>            tname_to_tid = json.load(f)</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>        <span class="keywordflow">for</span> tname, tid <span class="keywordflow">in</span> tname_to_tid.items():</div>
+<div class="line"><span class="lineno">   56</span>            self._tid_to_tname[tid] = tname</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>        <span class="comment"># Save paths to fp32 data and fq data for each tensor</span></div>
+<div class="line"><span class="lineno">   59</span>        <span class="comment"># dict</span></div>
+<div class="line"><span class="lineno">   60</span>        <span class="comment"># {</span></div>
+<div class="line"><span class="lineno">   61</span>        <span class="comment">#   &lt;tensor_name&gt;: (fp32_path, fq_path),</span></div>
 <div class="line"><span class="lineno">   62</span>        <span class="comment">#   &lt;tensor_name&gt;: (fp32_path, fq_path),</span></div>
-<div class="line"><span class="lineno">   63</span>        <span class="comment">#   &lt;tensor_name&gt;: (fp32_path, fq_path),</span></div>
-<div class="line"><span class="lineno">   64</span>        <span class="comment">#   ...</span></div>
-<div class="line"><span class="lineno">   65</span>        <span class="comment"># }</span></div>
-<div class="line"><span class="lineno">   66</span>        data_paths = dict()</div>
-<div class="line"><span class="lineno">   67</span>        <span class="keywordflow">for</span> data_idx <span class="keywordflow">in</span> range(self._num_data):</div>
-<div class="line"><span class="lineno">   68</span>            fp32_results = glob.glob(fp32_dir + <span class="stringliteral">&#39;/&#39;</span> + str(data_idx) + <span class="stringliteral">&#39;/*.npy&#39;</span>)</div>
-<div class="line"><span class="lineno">   69</span>            <span class="keywordflow">for</span> fp32_data_path <span class="keywordflow">in</span> fp32_results:</div>
-<div class="line"><span class="lineno">   70</span>                fp32_path = Path(fp32_data_path)</div>
-<div class="line"><span class="lineno">   71</span>                fq_data_path = fq_dir + <span class="stringliteral">&#39;/&#39;</span> + str(data_idx) + <span class="stringliteral">&#39;/&#39;</span> + fp32_path.with_suffix(</div>
-<div class="line"><span class="lineno">   72</span>                    <span class="stringliteral">&#39;.npy&#39;</span>).name</div>
-<div class="line"><span class="lineno">   73</span>                fq_path = Path(fq_data_path)</div>
-<div class="line"><span class="lineno">   74</span>                filename = fp32_path.stem</div>
-<div class="line"><span class="lineno">   75</span>                tensor_name = self._filename_to_tensor[filename]</div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>                <span class="comment"># Only save the tensors which have both fp32 data and fq data</span></div>
-<div class="line"><span class="lineno">   78</span>                <span class="keywordflow">if</span> fq_path.is_file() <span class="keywordflow">and</span> fp32_path.is_file():</div>
-<div class="line"><span class="lineno">   79</span>                    <span class="keywordflow">if</span> tensor_name <span class="keywordflow">in</span> data_paths:</div>
-<div class="line"><span class="lineno">   80</span>                        data_paths[tensor_name].append((fp32_data_path, fq_data_path))</div>
-<div class="line"><span class="lineno">   81</span>                    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   82</span>                        data_paths[tensor_name] = [(fp32_data_path, fq_data_path)]</div>
-<div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>        <span class="keywordflow">return</span> data_paths</div>
-<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   63</span>        <span class="comment">#   ...</span></div>
+<div class="line"><span class="lineno">   64</span>        <span class="comment"># }</span></div>
+<div class="line"><span class="lineno">   65</span>        data_paths = dict()</div>
+<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">for</span> data_idx <span class="keywordflow">in</span> range(self._num_data):</div>
+<div class="line"><span class="lineno">   67</span>            fp32_results = glob.glob(fp32_dir + <span class="stringliteral">&#39;/&#39;</span> + str(data_idx) + <span class="stringliteral">&#39;/*.npy&#39;</span>)</div>
+<div class="line"><span class="lineno">   68</span>            <span class="keywordflow">for</span> fp32_data_path <span class="keywordflow">in</span> fp32_results:</div>
+<div class="line"><span class="lineno">   69</span>                fp32_path = Path(fp32_data_path)</div>
+<div class="line"><span class="lineno">   70</span>                fq_data_path = fq_dir + <span class="stringliteral">&#39;/&#39;</span> + str(data_idx) + <span class="stringliteral">&#39;/&#39;</span> + fp32_path.with_suffix(</div>
+<div class="line"><span class="lineno">   71</span>                    <span class="stringliteral">&#39;.npy&#39;</span>).name</div>
+<div class="line"><span class="lineno">   72</span>                fq_path = Path(fq_data_path)</div>
+<div class="line"><span class="lineno">   73</span>                tid = int(fp32_path.stem)</div>
+<div class="line"><span class="lineno">   74</span>                tensor_name = self._tid_to_tname[tid]</div>
+<div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span>                <span class="comment"># Only save the tensors which have both fp32 data and fq data</span></div>
+<div class="line"><span class="lineno">   77</span>                <span class="keywordflow">if</span> fq_path.is_file() <span class="keywordflow">and</span> fp32_path.is_file():</div>
+<div class="line"><span class="lineno">   78</span>                    <span class="keywordflow">if</span> tensor_name <span class="keywordflow">in</span> data_paths:</div>
+<div class="line"><span class="lineno">   79</span>                        data_paths[tensor_name].append((fp32_data_path, fq_data_path))</div>
+<div class="line"><span class="lineno">   80</span>                    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   81</span>                        data_paths[tensor_name] = [(fp32_data_path, fq_data_path)]</div>
+<div class="line"><span class="lineno">   82</span> </div>
+<div class="line"><span class="lineno">   83</span>        <span class="keywordflow">return</span> data_paths</div>
+<div class="line"><span class="lineno">   84</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_q_error_computer_8py_source.html#l00050">QErrorComputer.QErrorComputer._filename_to_tensor</a>, <a class="el" href="_metric_printer_8h_source.html#l00085">circle_eval_diff::MAEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00107">circle_eval_diff::MSEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00129">circle_eval_diff::MAPEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00157">circle_eval_diff::MPEIRPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00210">circle_eval_diff::TopKMatchPrinter._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00053">DumpFakeQuantFM.DumpFakeQuantFM._num_data</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00037">DumpFP32FM.DumpFP32FM._num_data</a>, <a class="el" href="_q_error_computer_8py_source.html#l00044">QErrorComputer.QErrorComputer._num_data</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00030">QErrorComputer.QErrorComputer._num_processed_data</a>.</p>
+<p class="reference">References <a class="el" href="_metric_printer_8h_source.html#l00085">circle_eval_diff::MAEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00107">circle_eval_diff::MSEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00129">circle_eval_diff::MAPEPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00157">circle_eval_diff::MPEIRPrinter._num_data</a>, <a class="el" href="_metric_printer_8h_source.html#l00210">circle_eval_diff::TopKMatchPrinter._num_data</a>, <a class="el" href="_dump_fake_quant_f_m_8py_source.html#l00052">DumpFakeQuantFM.DumpFakeQuantFM._num_data</a>, <a class="el" href="_dump_f_p32_f_m_8py_source.html#l00037">DumpFP32FM.DumpFP32FM._num_data</a>, <a class="el" href="_q_error_computer_8py_source.html#l00045">QErrorComputer.QErrorComputer._num_data</a>, <a class="el" href="_q_error_computer_8py_source.html#l00029">QErrorComputer.QErrorComputer._num_processed_data</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00051">QErrorComputer.QErrorComputer._tid_to_tname</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00096">QErrorComputer.MPEIRComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00143">QErrorComputer.MSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00180">QErrorComputer.TAEComputer.advance_on()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00218">QErrorComputer.SRMSEComputer.advance_on()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00095">QErrorComputer.MPEIRComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00142">QErrorComputer.MSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00179">QErrorComputer.TAEComputer.advance_on()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00217">QErrorComputer.SRMSEComputer.advance_on()</a>.</p>
 
 </div>
 </div>
@@ -273,12 +273,12 @@ Data Fields</h2></td></tr>
 <pre class="fragment">Return qerror map (dict: tensor_name(string) -&gt; qerror(float)).</pre> 
 <p>Reimplemented in <a class="el" href="class_q_error_computer_1_1_m_p_e_i_r_computer.html#a2863fa7880ce7075605c7ab7d6c1ae8b">QErrorComputer.MPEIRComputer</a>, <a class="el" href="class_q_error_computer_1_1_m_s_e_computer.html#a176a4c9c0397fdf61958d751f841402d">QErrorComputer.MSEComputer</a>, <a class="el" href="class_q_error_computer_1_1_t_a_e_computer.html#ad3a3c8e742ff0adaf09edcb70a173036">QErrorComputer.TAEComputer</a>, and <a class="el" href="class_q_error_computer_1_1_s_r_m_s_e_computer.html#a87fac4965d15b7a99b95866bae97078a">QErrorComputer.SRMSEComputer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00086">86</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>    <span class="keyword">def </span><a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>(self):</div>
-<div class="line"><span class="lineno">   87</span>        <span class="stringliteral">&#39;&#39;&#39;Return qerror map (dict: tensor_name(string) -&gt; qerror(float)).&#39;&#39;&#39;</span></div>
-<div class="line"><span class="lineno">   88</span>        <span class="keywordflow">raise</span> NotImplementedError  <span class="comment"># Child must implement this</span></div>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00085">85</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>    <span class="keyword">def </span><a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>(self):</div>
+<div class="line"><span class="lineno">   86</span>        <span class="stringliteral">&#39;&#39;&#39;Return qerror map (dict: tensor_name(string) -&gt; qerror(float)).&#39;&#39;&#39;</span></div>
+<div class="line"><span class="lineno">   87</span>        <span class="keywordflow">raise</span> NotImplementedError  <span class="comment"># Child must implement this</span></div>
+<div class="line"><span class="lineno">   88</span> </div>
 <div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span> </div>
 <div class="ttc" id="a_generate_kernels_list_helper_8cpp_html_a3b45f71347f9da730e585edad717d140"><div class="ttname"><a href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a></div><div class="ttdeci">void run(std::ofstream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition:</b> <a href="_generate_kernels_list_helper_8cpp_source.html#l00198">GenerateKernelsListHelper.cpp:198</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -296,9 +296,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00029">29</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_q_error_computer_8py_source.html#l00028">28</a> of file <a class="el" href="_q_error_computer_8py_source.html">QErrorComputer.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00096">QErrorComputer.MPEIRComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00143">QErrorComputer.MSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00180">QErrorComputer.TAEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00218">QErrorComputer.SRMSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00123">QErrorComputer.MPEIRComputer.get_final_result()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00161">QErrorComputer.MSEComputer.get_final_result()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00198">QErrorComputer.TAEComputer.get_final_result()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00238">QErrorComputer.SRMSEComputer.get_final_result()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_q_error_computer_8py_source.html#l00095">QErrorComputer.MPEIRComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00142">QErrorComputer.MSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00179">QErrorComputer.TAEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00217">QErrorComputer.SRMSEComputer.advance_on()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00122">QErrorComputer.MPEIRComputer.get_final_result()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00160">QErrorComputer.MSEComputer.get_final_result()</a>, <a class="el" href="_q_error_computer_8py_source.html#l00197">QErrorComputer.TAEComputer.get_final_result()</a>, and <a class="el" href="_q_error_computer_8py_source.html#l00237">QErrorComputer.SRMSEComputer.get_final_result()</a>.</p>
 
 </div>
 </div>

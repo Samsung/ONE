@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('_util_8py_source.html',''); initResiza
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"># Change tensor name into the one compatible with Linux file system</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"># &#39;/&#39; is replaced with &#39;_&#39;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"># Too long name is sliced to 255 characters</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="namespace_util.html#a1a472f4a0acf0c9d534548c6ee4c2fbc">   19</a></span><span class="keyword">def </span>to_filename(tensor_name):</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="namespace_util.html#a1a472f4a0acf0c9d534548c6ee4c2fbc">   19</a></span><span class="keyword">def </span><a class="code hl_function" href="namespace_util.html#a1a472f4a0acf0c9d534548c6ee4c2fbc">to_filename</a>(tensor_name):</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">assert</span> isinstance(tensor_name, str)</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordflow">return</span> tensor_name.replace(<span class="stringliteral">&#39;/&#39;</span>, <span class="stringliteral">&#39;_&#39;</span>)[-255:]</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
@@ -129,6 +129,7 @@ $(document).ready(function(){initNavTree('_util_8py_source.html',''); initResiza
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">if</span> isinstance(item, float):</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="keywordflow">return</span> round(item, ndigits)</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">return</span> item</div>
+<div class="ttc" id="anamespace_util_html_a1a472f4a0acf0c9d534548c6ee4c2fbc"><div class="ttname"><a href="namespace_util.html#a1a472f4a0acf0c9d534548c6ee4c2fbc">Util.to_filename</a></div><div class="ttdeci">def to_filename(tensor_name)</div><div class="ttdef"><b>Definition:</b> <a href="_util_8py_source.html#l00019">Util.py:19</a></div></div>
 <div class="ttc" id="anamespace_util_html_a2f2147d62d9ba157d40f25724b3cb28c"><div class="ttname"><a href="namespace_util.html#a2f2147d62d9ba157d40f25724b3cb28c">Util.pretty_float</a></div><div class="ttdeci">def pretty_float(item, ndigits=4)</div><div class="ttdef"><b>Definition:</b> <a href="_util_8py_source.html#l00030">Util.py:30</a></div></div>
 <div class="ttc" id="anamespace_util_html_acbde398d3098ac22eb5c75b3998023a8"><div class="ttname"><a href="namespace_util.html#acbde398d3098ac22eb5c75b3998023a8">Util.valid_attr</a></div><div class="ttdeci">def valid_attr(args, attr)</div><div class="ttdef"><b>Definition:</b> <a href="_util_8py_source.html#l00025">Util.py:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

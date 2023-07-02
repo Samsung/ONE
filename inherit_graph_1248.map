@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classsouschef_1_1_dataset.html" title=" " alt="" coords="5,5,161,31"/>
+<area shape="rect" id="node1" href="$structsouschef_1_1_data_chef_factory.html" title="Data Generator Factory." alt="" coords="5,237,184,262"/>
+<area shape="rect" id="node2" href="$structsouschef_1_1_constant_data_chef_factory.html" title=" " alt="" coords="236,5,423,45"/>
+<area shape="rect" id="node3" href="$structsouschef_1_1_explicit_data_chef_factory.html" title=" " alt="" coords="241,69,417,109"/>
+<area shape="rect" id="node4" href="$structsouschef_1_1_explicit_float16_data_chef_factory.html" title=" " alt="" coords="247,133,412,173"/>
+<area shape="rect" id="node5" href="$structsouschef_1_1_gaussian_float16_data_chef_factory.html" title=" " alt="" coords="240,197,419,237"/>
+<area shape="rect" id="node6" href="$structsouschef_1_1_gaussian_float32_data_chef_factory.html" title=" " alt="" coords="240,261,419,301"/>
+<area shape="rect" id="node7" href="$structsouschef_1_1_gaussian_int16_data_chef_factory.html" title=" " alt="" coords="233,325,425,365"/>
+<area shape="rect" id="node8" href="$structsouschef_1_1_gaussian_int32_data_chef_factory.html" title=" " alt="" coords="233,389,425,429"/>
+<area shape="rect" id="node9" href="$structsouschef_1_1_gaussian_uint8_data_chef_factory.html" title=" " alt="" coords="232,453,427,493"/>
 </map>

@@ -1,5 +1,9 @@
 var namespaceonert_1_1backend_1_1basic =
 [
+    [ "train", "namespaceonert_1_1backend_1_1basic_1_1train.html", [
+      [ "genTensors", "namespaceonert_1_1backend_1_1basic_1_1train.html#a8d0639010af3a41d65e2e63dff7ef87b", null ],
+      [ "initConsts", "namespaceonert_1_1backend_1_1basic_1_1train.html#ae412022ce980e8c7851454afb5e8c362", null ]
+    ] ],
     [ "Allocator", "classonert_1_1backend_1_1basic_1_1_allocator.html", "classonert_1_1backend_1_1basic_1_1_allocator" ],
     [ "Block", "structonert_1_1backend_1_1basic_1_1_block.html", "structonert_1_1backend_1_1basic_1_1_block" ],
     [ "BumpPlanner", "classonert_1_1backend_1_1basic_1_1_bump_planner.html", "classonert_1_1backend_1_1basic_1_1_bump_planner" ],
@@ -18,5 +22,6 @@ var namespaceonert_1_1backend_1_1basic =
     [ "TensorRegistry", "namespaceonert_1_1backend_1_1basic.html#a50c36d28c81cb8c597b3b3b694ed28b4", null ],
     [ "genTensors", "namespaceonert_1_1backend_1_1basic.html#a523700f739c342f8cd74c44b0bb0e1ec", null ],
     [ "initConsts", "namespaceonert_1_1backend_1_1basic.html#ac166a61e29e65ea974fdff255b1097ef", null ],
+    [ "initConsts", "namespaceonert_1_1backend_1_1basic.html#a2da096d255567ddded647c0d7bae2b23", null ],
     [ "planTensors", "namespaceonert_1_1backend_1_1basic.html#a54eb5e4a346b96f0671cf5a22a503047", null ]
 ];

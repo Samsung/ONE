@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('runtime_2onert_2backend_2train_2_backe
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#ifndef __ONERT_BACKEND_TRAIN_BACKEND_H__</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define __ONERT_BACKEND_TRAIN_BACKEND_H__</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="core_2src_2backend_2builtin_2_backend_context_8h.html">BackendContext.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="core_2src_2backend_2builtin_2train_2_backend_context_8h.html">BackendContext.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="runtime_2onert_2core_2src_2backend_2builtin_2_config_8h.html">Config.h</a>&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h.html">KernelGenerator.h</a>&quot;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
@@ -142,8 +142,8 @@ $(document).ready(function(){initNavTree('runtime_2onert_2backend_2train_2_backe
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    context-&gt;tensor_registry = tr;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    context-&gt;tensor_builder = tb;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    context-&gt;kernel_gen = std::make_shared&lt;KernelGenerator&gt;(graph, tb, tr, custom_kernel_builder,</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                                                            context-&gt;external_context());</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    context-&gt;kernel_gen = std::make_shared&lt;InferenceKernelGenerator&gt;(</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      graph, tb, tr, custom_kernel_builder, context-&gt;external_context());</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> context;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('runtime_2onert_2backend_2train_2_backe
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_backend_html_a502c31ad7adb63214824e2b07a64e11c"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_backend.html#a502c31ad7adb63214824e2b07a64e11c">onert::backend::train::Backend::newContext</a></div><div class="ttdeci">std::unique_ptr&lt; onert::backend::BackendContext &gt; newContext(ContextData &amp;&amp;data) const override</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00042">Backend.h:42</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_backend_html_a63089bb34bd552d054650323d99d7ce8"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_backend.html#a63089bb34bd552d054650323d99d7ce8">onert::backend::train::Backend::Backend</a></div><div class="ttdeci">Backend()</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00038">Backend.h:38</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_config_html"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_config.html">onert::backend::train::Config</a></div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2backend_2train_2_config_8h_source.html#l00030">Config.h:31</a></div></div>
-<div class="ttc" id="acore_2src_2backend_2builtin_2_backend_context_8h_html"><div class="ttname"><a href="core_2src_2backend_2builtin_2_backend_context_8h.html">BackendContext.h</a></div></div>
+<div class="ttc" id="acore_2src_2backend_2builtin_2train_2_backend_context_8h_html"><div class="ttname"><a href="core_2src_2backend_2builtin_2train_2_backend_context_8h.html">BackendContext.h</a></div></div>
 <div class="ttc" id="acore_2src_2backend_2builtin_2train_2_kernel_generator_8h_html"><div class="ttname"><a href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h.html">KernelGenerator.h</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition:</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
 <div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition:</b> <a href="exo_2src_2_circle_2_circle_exporter_utils_8h_source.html#l00052">CircleExporterUtils.h:53</a></div></div>

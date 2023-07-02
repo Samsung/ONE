@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"_maximum_canonicalizer_8cpp_source.html":[35,0,0,67,1,0,18],
+"_maximum_canonicalizer_8h.html":[35,0,0,67,1,0,19],
 "_maximum_canonicalizer_8h_source.html":[35,0,0,67,1,0,19],
 "_maximum_minimum_options_8cpp.html":[35,0,0,113,2,0,84],
 "_maximum_minimum_options_8cpp.html#a1da0cfe6cf4927e5e0753ee8f3ff0dcf":[35,0,0,113,2,0,84,0],
@@ -105,10 +107,10 @@ var NAVTREEINDEX15 =
 "_min_max_observer_8cpp_source.html":[35,0,0,97,2,0],
 "_min_max_observer_8h.html":[35,0,0,97,1,0],
 "_min_max_observer_8h_source.html":[35,0,0,97,1,0],
-"_min_max_recorder_8cc.html":[35,0,4,2,2,1,3,25],
-"_min_max_recorder_8cc_source.html":[35,0,4,2,2,1,3,25],
-"_min_max_recorder_8h.html":[35,0,4,2,2,1,3,26],
-"_min_max_recorder_8h_source.html":[35,0,4,2,2,1,3,26],
+"_min_max_recorder_8cc.html":[35,0,4,2,2,1,3,26],
+"_min_max_recorder_8cc_source.html":[35,0,4,2,2,1,3,26],
+"_min_max_recorder_8h.html":[35,0,4,2,2,1,3,27],
+"_min_max_recorder_8h_source.html":[35,0,4,2,2,1,3,27],
 "_mir_interpreter_8cpp.html":[35,0,0,63,1,1],
 "_mir_interpreter_8cpp_source.html":[35,0,0,63,1,1],
 "_mir_interpreter_8h.html":[35,0,0,63,0,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "_n_e_embedding_lookup_8cpp_source.html":[35,0,1,0,1,1,1,0,2],
 "_n_e_embedding_lookup_8h.html":[35,0,1,0,0,1,1,0,2],
 "_n_e_embedding_lookup_8h_source.html":[35,0,1,0,0,1,1,0,2],
-"_n_e_embedding_lookup_kernel_8cpp.html":[35,0,1,0,1,0,1,0,2],
-"_n_e_embedding_lookup_kernel_8cpp_source.html":[35,0,1,0,1,0,1,0,2],
-"_n_e_embedding_lookup_kernel_8h.html":[35,0,1,0,0,0,1,0,2]
+"_n_e_embedding_lookup_kernel_8cpp.html":[35,0,1,0,1,0,1,0,2]
 };

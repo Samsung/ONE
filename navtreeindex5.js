@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"_compare_layer_8h.html":[35,0,4,2,1,4,0,13],
 "_compare_layer_8h_source.html":[35,0,4,2,1,4,0,13],
 "_comparison_8cc.html":[35,0,4,2,2,1,4,0,9],
 "_comparison_8cc_source.html":[35,0,4,2,2,1,4,0,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "_convolution_8cpp.html":[35,0,0,34,2,0,0,0,4],
 "_convolution_8cpp_source.html":[35,0,0,34,2,0,0,0,4],
 "_convolution_8h.html":[35,0,0,34,2,0,0,0,5],
-"_convolution_8h_source.html":[35,0,0,34,2,0,0,0,5],
-"_convolution_spec_8cpp.html":[35,0,0,34,2,0,0,7]
+"_convolution_8h_source.html":[35,0,0,34,2,0,0,0,5]
 };
