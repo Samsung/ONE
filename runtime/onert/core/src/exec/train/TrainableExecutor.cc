@@ -62,7 +62,7 @@ void TrainableExecutor::execute(const std::vector<backend::IPortableTensor *> &,
   throw std::runtime_error("TrainableExecutor does not support multiple subgraphs yet");
 }
 
-void TrainableExecutor::execute(const IODescription &desc)
+void TrainableExecutor::forward(const IODescription &desc, bool training)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
@@ -93,14 +93,12 @@ void TrainableExecutor::execute(const IODescription &desc)
     tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
   }
 
-  executeImpl();
+  forwardImpl(training);
 
   // TODO Update output(s) desc if desc has dynamic input
-
-  // TODO Support backwarding
 }
 
-void TrainableExecutor::executeImpl()
+void TrainableExecutor::forwardImpl(bool training)
 {
   if (_tracing_ctx)
   {
@@ -116,9 +114,8 @@ void TrainableExecutor::executeImpl()
 #endif
       _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
-      // TODO Support forwarding
-
-      // TODO Support backwarding
+      auto &tn_seq = code.tn_seq;
+      tn_seq->forward(training);
 
       _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
     }
@@ -132,10 +129,83 @@ void TrainableExecutor::executeImpl()
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());
 #endif
-      UNUSED_RELEASE(code);
-      // TODO Support forwarding
+      auto &tn_seq = code.tn_seq;
+      tn_seq->forward(training);
+    }
+  }
+}
 
-      // TODO Support backwarding
+void TrainableExecutor::backward(const IODescription &desc)
+{
+  // For thread-safe, use mutex
+  // TODO: if all used backends on this executor are thread-safe,
+  //       do not need to use mutex (otherwise, use mutex)
+  std::lock_guard<std::mutex> lock(_mutex);
+
+  // TODO Update IO tensors if desc has dynamic input
+  // Set input(s)
+  assert(_input_tensors.size() == desc.inputs.size());
+  for (uint32_t i = 0; i < _input_tensors.size(); ++i)
+  {
+    auto tensor = _input_tensors[i];
+
+    // TODO Check if (desc.inputs[i] == nullptr)
+    // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
+    tensor->setUserTensor(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
+                          desc.inputs[i]->size);
+  }
+
+  // Set output(s)
+  assert(_output_tensors.size() == desc.outputs.size());
+  for (uint32_t i = 0; i < _output_tensors.size(); ++i)
+  {
+    auto tensor = _output_tensors[i];
+
+    if (desc.outputs[i] == nullptr)
+      throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
+    tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
+  }
+
+  backwardImpl();
+
+  // TODO Update output(s) desc if desc has dynamic input
+}
+
+void TrainableExecutor::backwardImpl()
+{
+  if (_tracing_ctx)
+  {
+    auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_trainable_graph.graph());
+
+    _subject.notifySubgraphBegin(profiling_subg_index);
+    for (auto it = _code.rbegin(); it != _code.rend(); ++it)
+    {
+      const auto &code = *it;
+      const auto backend = code.lower_info->backend();
+// TODO : Move ruy profiler into ExecutionObserver
+#ifdef RUY_PROFILER
+      ruy::profiler::ScopeLabel label(code.op->name());
+#endif
+      _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
+
+      auto &tn_seq = code.tn_seq;
+      tn_seq->backward();
+
+      _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
+    }
+    _subject.notifySubgraphEnd(profiling_subg_index);
+  }
+  else
+  {
+    for (auto it = _code.rbegin(); it != _code.rend(); ++it)
+    {
+      const auto &code = *it;
+// TODO : Move ruy profiler into ExecutionObserver
+#ifdef RUY_PROFILER
+      ruy::profiler::ScopeLabel label(code.op->name());
+#endif
+      auto &tn_seq = code.tn_seq;
+      tn_seq->backward();
     }
   }
 }
