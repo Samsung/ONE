@@ -14,12 +14,36 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
-#define __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
-
 #include "ir/train/operation/Conv2D.h"
-#include "ir/train/operation/ElementwiseActivation.h"
-#include "ir/train/operation/Loss.h"
-#include "ir/train/operation/Permute.h"
 
-#endif // __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
+#include "ir/OperationVisitor.h"
+#include "ir/train/TrainableOperationVisitor.h"
+
+namespace onert
+{
+namespace ir
+{
+namespace train
+{
+namespace operation
+{
+
+std::unique_ptr<ITrainableOperation> Conv2D::clone() const
+{
+  return std::make_unique<Conv2D>(*this);
+}
+
+void Conv2D::accept(OperationVisitor &v) const { v.visit(*this); }
+
+void Conv2D::accept(TrainableOperationVisitor &v) const { v.visit(*this); }
+
+Conv2D::Conv2D(const OperationType &operation)
+  : OperationType{operation.getInputs(), operation.getOutputs(), operation.param()}
+{
+  // DO NOTHING
+}
+
+} // namespace operation
+} // namespace train
+} // namespace ir
+} // namespace onert

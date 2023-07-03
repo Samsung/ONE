@@ -18,6 +18,7 @@
 #error Define OP before including this file
 #endif
 
+OP(Conv2D)
 OP(ElementwiseActivation)
 OP(Loss)
 OP(Permute)
