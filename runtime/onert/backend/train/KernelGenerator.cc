@@ -50,13 +50,14 @@ ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
 }
 } // namespace
 
-std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex ind)
+std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex idx)
 {
   // TODO Generate TrainableFnSequence that can go backward as well
   auto ret = std::make_unique<exec::train::TrainableFnSequence>();
 
-  const auto &op = _tgraph.operations().at(ind);
-  // op.accept(*this);
+  const auto &op = _tgraph.operation(idx);
+  op.accept(*this);
+  // TODO Enable the below code
   // ret->append(releaseFunction());
 
   for (auto ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())

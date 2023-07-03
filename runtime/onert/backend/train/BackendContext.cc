@@ -97,6 +97,7 @@ FunctionMap BackendContext::genKernels()
 
   return ret;
 }
+
 } // namespace train
 } // namespace backend
 } // namespace onert
