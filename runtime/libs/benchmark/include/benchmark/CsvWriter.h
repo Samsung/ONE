@@ -17,6 +17,7 @@
 #ifndef __NNFW_BENCHMARK_CSV_WRITER_H__
 #define __NNFW_BENCHMARK_CSV_WRITER_H__
 
+#include <cstdint>
 #include <vector>
 #include <string>
 #include <fstream>
