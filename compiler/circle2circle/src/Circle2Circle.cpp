@@ -16,6 +16,7 @@
 
 #include <luci/ImporterEx.h>
 #include <luci/CircleOptimizer.h>
+#include <luci/DynamicBatchToSingleBatch.h>
 #include <luci/Service/ChangeOutputs.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
@@ -172,6 +173,8 @@ int entry(int argc, char **argv)
   add_switch(arser, "--disable_validation",
              "This will turn off operator validations. May help input model investigation.");
   add_switch(arser, "--generate_profile_data", "This will turn on profiling data generation.");
+  add_switch(arser, "--dynamic_batch_to_single_batch",
+             "Convert dynamic batch size (first dimension) of inputs to 1.");
 
   arser.add_argument("--change_outputs")
     .help("Experimental: Change first subgraph output nodes to CSV names");
@@ -371,11 +374,38 @@ int entry(int argc, char **argv)
     csv_tokenize(csv_nodes, new_outputs);
   }
 
+  bool dynamic_batch_to_single_batch = false;
+  if (arser.get<bool>("--dynamic_batch_to_single_batch"))
+  {
+    dynamic_batch_to_single_batch = true;
+  }
+
   // Import from input Circle file
   luci::ImporterEx importerex;
   auto module = importerex.importVerifyModule(input_path);
   if (module.get() == nullptr)
     return EXIT_FAILURE;
+
+  // Convert dynamic batch to single batch
+  // Why here? It has to be done before 'optimize', because most optimization
+  // passes are written based on static shapes
+  if (dynamic_batch_to_single_batch)
+  {
+    luci::dynamic_batch_to_single_batch(module.get());
+
+    if (!luci::validate_shape(module.get()))
+    {
+      if (settings->get(luci::UserSettings::Key::DisableValidation))
+        std::cerr << "WARNING: Invalid module after converting dynamic batch to single batch"
+                  << std::endl;
+      else
+      {
+        std::cerr << "ERROR: Invalid module after converting dynamic batch to single batch"
+                  << std::endl;
+        return 255;
+      }
+    }
+  }
 
   if (change_outputs)
   {
