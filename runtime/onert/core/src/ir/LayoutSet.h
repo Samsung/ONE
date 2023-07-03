@@ -17,6 +17,7 @@
 #ifndef __ONERT_IR_LAYOUT_SET_H__
 #define __ONERT_IR_LAYOUT_SET_H__
 
+#include <cstdint>
 #include <initializer_list>
 #include <unordered_set>
 
