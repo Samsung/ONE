@@ -46,6 +46,10 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
 }
 
 void ConvolutionLayer::forward(bool) { cpu::ops::ConvolutionLayer::run(); }
+void ConvolutionLayer::backward()
+{
+  // TODO Implement detail
+}
 
 } // namespace ops
 } // namespace train
