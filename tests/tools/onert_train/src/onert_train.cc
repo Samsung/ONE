@@ -20,6 +20,7 @@
 #include "nnfw.h"
 #include "nnfw_util.h"
 #include "nnfw_internal.h"
+#include "nnfw_experimental.h"
 #include "randomgen.h"
 #include "rawformatter.h"
 
@@ -111,11 +112,16 @@ int main(const int argc, char **argv)
     verifyInputTypes();
     verifyOutputTypes();
 
+    // prepare training info
+    nnfw_train_info tri;
+    tri.batch_size = args.getBatchSize();
+    tri.learning_rate = args.getLearningRate();
+
     // prepare execution
 
     // TODO When nnfw_{prepare|run} are failed, can't catch the time
     phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
-      NNPR_ENSURE_STATUS(nnfw_prepare(session));
+      NNPR_ENSURE_STATUS(nnfw_train_prepare(session, &tri));
     });
 
     // prepare input
