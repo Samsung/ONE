@@ -39,8 +39,7 @@ public:
                const std::shared_ptr<ExternalContext> &external_context);
 
   void forward(bool training) override;
-
-  // TODO Add methods for training
+  void backward() override;
 };
 
 } // namespace kernel
