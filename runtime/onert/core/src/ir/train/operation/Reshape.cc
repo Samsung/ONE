@@ -14,13 +14,36 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
-#define __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
-
-#include "ir/train/operation/Conv2D.h"
-#include "ir/train/operation/ElementwiseActivation.h"
-#include "ir/train/operation/Loss.h"
-#include "ir/train/operation/Permute.h"
 #include "ir/train/operation/Reshape.h"
 
-#endif // __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
+#include "ir/OperationVisitor.h"
+#include "ir/train/TrainableOperationVisitor.h"
+
+namespace onert
+{
+namespace ir
+{
+namespace train
+{
+namespace operation
+{
+
+std::unique_ptr<ITrainableOperation> Reshape::clone() const
+{
+  return std::make_unique<Reshape>(*this);
+}
+
+void Reshape::accept(OperationVisitor &v) const { v.visit(*this); }
+
+void Reshape::accept(TrainableOperationVisitor &v) const { v.visit(*this); }
+
+Reshape::Reshape(const OperationType &operation)
+  : OperationType{operation.getInputs(), operation.getOutputs(), operation.param()}
+{
+  // DO NOTHING
+}
+
+} // namespace operation
+} // namespace train
+} // namespace ir
+} // namespace onert
