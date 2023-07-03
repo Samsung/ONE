@@ -36,10 +36,16 @@ class PermuteLayer : public builtin::kernel::PermuteLayer, public exec::train::I
 {
 public:
   PermuteLayer(const std::vector<ITensor *> &src_tensors, const std::vector<ITensor *> &dst_tensors,
+               const std::vector<ITensor *> &input_deriv_tensors,
+               const std::vector<ITensor *> &output_deriv_tensors,
                const std::shared_ptr<ExternalContext> &external_context);
 
   void forward(bool training) override;
   void backward() override;
+
+private:
+  std::vector<ITensor *> _input_deriv_tensor;
+  std::vector<ITensor *> _output_deriv_tensor;
 };
 
 } // namespace kernel

@@ -30,14 +30,20 @@ namespace train
  * @brief A tensor class that can be trained
  *
  */
-class ITrainableTensor
+// NOTE It is more appropriate to inherit ITensor, but it seems that there is no easy way
+//      except for virtual inheritance.
+class ITrainableTensor : public IPortableTensor
 {
 public:
+  using IPortableTensor::IPortableTensor;
   virtual ~ITrainableTensor() = default;
 
-  // TODO Encapsulation
-  virtual IPortableTensor &weightTensor() = 0;
-  virtual IPortableTensor &gradTensor() = 0;
+  /**
+   * @brief Get optimizer variables of this trainable tensor
+   *
+   * @return Optimizer variables
+   */
+  virtual std::vector<ITensor *> optVars() = 0;
 };
 
 } // namespace train

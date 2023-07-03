@@ -31,10 +31,12 @@ namespace train
 TrainableExecutor::TrainableExecutor(
   std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
   backend::train::TrainableBackendContexts &&backend_contexts,
-  const compiler::TensorRegistries &tensor_regs, compiler::train::TrainableCodeMap &&code_map,
-  const std::vector<ir::OperationIndex> &order, const util::TracingCtx *tracing_ctx)
+  const compiler::train::TensorRegistries &tensor_regs,
+  compiler::train::TrainableCodeMap &&code_map, const std::vector<ir::OperationIndex> &order,
+  const util::TracingCtx *tracing_ctx, std::shared_ptr<optimizer::Optimizer> optimizer)
   : _lowered_graph{std::move(lowered_graph)}, _backend_contexts{std::move(backend_contexts)},
-    _trainable_graph{_lowered_graph->trainable_graph()}, _mutex(), _tracing_ctx(tracing_ctx)
+    _trainable_graph{_lowered_graph->trainable_graph()}, _mutex(),
+    _tracing_ctx(tracing_ctx), _optimizer{optimizer}
 {
   auto build_tensor_list = [&](const auto &ind_seq, auto &tensors) {
     assert(tensors.empty());

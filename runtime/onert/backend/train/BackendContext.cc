@@ -20,6 +20,7 @@
 #include "KernelGenerator.h"
 
 #include <backend/basic/train/TrainableBackendContextHelpers.h>
+#include <misc/polymorphic_downcast.h>
 
 namespace onert
 {
@@ -28,46 +29,77 @@ namespace backend
 namespace train
 {
 
-ITensorRegistry *BackendContext::genTensors()
-{
-  return basic::train::genTensors(*this, _tensor_builder);
-}
-
-ITensorRegistry *BackendContext::genTrainingTensors()
-{
-  genDerivativeTensors();
-
-  // TODO Generate gradient tensors
-
-  return _deriv_tensor_registry.get();
-}
-
-void BackendContext::genDerivativeTensors()
+backend::ITensorRegistry *BackendContext::genTensors()
 {
   const ir::train::TrainableGraph &tgraph = *trainable_graph();
-  auto tensor_builder = _deriv_tensor_builder;
-  auto tensor_reg = _deriv_tensor_registry;
+  auto tensor_builder = _tensor_builder;
+  auto tensor_reg = _tensor_registry;
 
-  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
+  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (external_operands().contains(ind))
       return;
     // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
     assert(tgraph.layout() != ir::Layout::NCHW);
 
-    // TODO Register TensorInfo that has the shape of differentiation and differentiation
-    // ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
-    //                              obj.isConstant()};
-    // tensor_builder->registerTensorInfo(ind, backend_info, ir::Layout::NHWC);
+    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
+                                 obj.isConstant()};
+    tensor_builder->registerForwardTensorInfo(ind, backend_info, ir::Layout::NHWC);
   });
 
   // TODO Plan tensor builds to reduce peak memory usage
   tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
     if (tensor_builder->isRegistered(ind))
-      tensor_builder->notifyFirstUse(ind);
+      tensor_builder->notifyForwardFirstUse(ind);
   });
 
-  // TODO Allocate tensors
-  // tensor_builder->allocate();
+  tensor_builder->allocateForwardTensors();
+
+  return _tensor_registry.get();
+}
+
+backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
+{
+  genBackwardTensors();
+
+  return _tensor_registry.get();
+}
+
+void BackendContext::genBackwardTensors()
+{
+  const ir::train::TrainableGraph &tgraph = *trainable_graph();
+  auto tensor_builder = _tensor_builder;
+  auto tensor_reg = _tensor_registry;
+
+  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
+    if (external_operands().contains(ind))
+      return;
+    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
+    assert(tgraph.layout() != ir::Layout::NCHW);
+
+    if (obj.isConstant())
+    {
+      ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(), true};
+      tensor_builder->registerBackwardTensorInfo(ind, backend_info, ir::Layout::NHWC);
+    }
+    else
+    {
+      // For derivative tensor
+      assert(tgraph.derivatives().exist(ind));
+      const auto &deriv = tgraph.derivatives().at(ind);
+      ir::OperandInfo backend_info{deriv.shape(), deriv.typeInfo(), deriv.info().memAllocType(),
+                                   false};
+
+      tensor_builder->registerBackwardTensorInfo(ind, backend_info, ir::Layout::NHWC);
+    }
+  });
+
+  // TODO Plan tensor builds to reduce peak memory usage
+  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
+    if (tensor_builder->isRegistered(ind))
+      tensor_builder->notifyBackwardFirstUse(ind);
+  });
+
+  tensor_builder->allocateBackwardTensors();
 }
 
 FunctionMap BackendContext::genKernels()
@@ -80,7 +112,25 @@ FunctionMap BackendContext::genKernels()
     ret.emplace_back(op_ind, std::move(fn_seq));
   }
 
-  basic::train::initConsts(*this);
+  // Initialize TrainableTensors
+  trainable_graph()->operands().iterate(
+    [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+      // NOTE For now, whether or not to build operands to trainable tensors depends on whether
+      //      the corresponding operand is constant.
+      if (external_operands().contains(ind) || !operand.isConstant())
+        return;
+
+      auto tensor = tensor_registry()->getNativeITensor(ind);
+      assert(tensor != nullptr);
+
+      VERBOSE(FillOperandData) << "Fill data for " << ind << "into a trainable tensor" << std::endl;
+
+      auto data = operand.shareData();
+      assert(data && data->base());
+      auto trainable_tensor = nnfw::misc::polymorphic_downcast<TrainableTensor *>(tensor);
+
+      trainable_tensor->fillBuffer(data);
+    });
 
   // NOTE For memory optimization, we want to free some operand data
   const_cast<ir::train::TrainableGraph &>(*_tdata->tgraph)

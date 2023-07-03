@@ -176,6 +176,20 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
 //////////////////////////////////////////////
 
 /**
+ * @brief Optimizer types
+ *
+ * The type of optimizer represented in {@link nnfw_train_info}
+ */
+typedef enum
+{
+  /** SGD optimizer */
+  NNFW_OPTIMIZER_SGD = 0,
+  /** Adam optimizer */
+  NNFW_OPTIMIZER_ADAM = 1,
+
+} NNFW_OPTIMIZER_TYPE;
+
+/**
  * @brief Training information to prepare training
  * @todo  Add more training information
  *        (e.g. optimizer, loss function, ...)
@@ -183,7 +197,9 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
 typedef struct nnfw_train_info
 {
   /** Learning rate */
-  float learning_rate = 0.001f;
+  float learning_rate = -0.001f;
+  /** Optimizer type */
+  NNFW_OPTIMIZER_TYPE optimizer_type = NNFW_OPTIMIZER_SGD;
   /** Batch size */
   uint32_t batch_size = 1;
 } nnfw_train_info;

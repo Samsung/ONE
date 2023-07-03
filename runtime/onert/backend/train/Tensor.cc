@@ -23,12 +23,12 @@ namespace backend
 namespace train
 {
 
-void TrainableTensor::fillBuffer(const std::shared_ptr<ir::Data> &data)
-{
-  assert(_buffer);
-  assert(total_size() == data->size());
-  std::memcpy(_buffer, data->base(), data->size());
-}
+// void TrainableTensor::fillBuffer(const std::shared_ptr<ir::Data> &data)
+// {
+//   assert(_buffer);
+//   assert(total_size() == data->size());
+//   std::memcpy(_buffer, data->base(), data->size());
+// }
 
 } // namespace train
 } // namespace backend

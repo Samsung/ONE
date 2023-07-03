@@ -20,6 +20,7 @@
 #include "TrainableExecutor.h"
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
+#include <exec/train/optimizer/Optimizer.h>
 
 namespace onert
 {

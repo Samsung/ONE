@@ -14,25 +14,27 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
-#define __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
+#ifndef __ONERT_BACKEND_BUILTIN_TRAIN_TRAINABLE_TENSOR_H__
+#define __ONERT_BACKEND_BUILTIN_TRAIN_TRAINABLE_TENSOR_H__
 
-#include <backend/train/ITensorRegistry.h>
-
-#include "Tensor.h"
+#include <backend/basic/train/TrainableTensor.h>
 
 namespace onert
 {
 namespace backend
 {
+namespace builtin
+{
 namespace train
 {
 
-using TensorRegistry =
-  PortableTensorRegistryTemplate<Tensor, TrainableTensor, DerivativeTensor, GradientTensor>;
+using TrainableTensor = basic::train::TrainableTensor;
+using DerivativeTensor = basic::Tensor;
+using GradientTensor = basic::Tensor;
 
 } // namespace train
+} // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
+#endif // __ONERT_BACKEND_BUILTIN_TRAIN_TRAINABLE_TENSOR_H__

@@ -20,7 +20,7 @@
 #include "exec/IExecutor.h"
 
 #include "../ExecutionObservee.h"
-#include "../../compiler/TensorRegistries.h"
+#include "../../compiler/train/TensorRegistries.h"
 
 #include "backend/train/TrainableBackendContext.h"
 #include "compiler/train/TrainableCodeMap.h"
@@ -46,10 +46,11 @@ public:
    */
   TrainableExecutor(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                     backend::train::TrainableBackendContexts &&backend_contexts,
-                    const compiler::TensorRegistries &tensor_regs,
+                    const compiler::train::TensorRegistries &tensor_regs,
                     compiler::train::TrainableCodeMap &&code_map,
                     const std::vector<ir::OperationIndex> &order,
-                    const util::TracingCtx *tracing_ctx);
+                    const util::TracingCtx *tracing_ctx,
+                    std::shared_ptr<optimizer::Optimizer> optimizer);
 
 public:
   const ir::Graph &graph() const final { return _trainable_graph.graph(); }
@@ -97,6 +98,7 @@ private:
   std::vector<backend::builtin::IOTensor *> _output_tensors;
   std::mutex _mutex;
   const util::TracingCtx *_tracing_ctx;
+  std::shared_ptr<optimizer::Optimizer> _optimizer;
 };
 
 } // namespace train

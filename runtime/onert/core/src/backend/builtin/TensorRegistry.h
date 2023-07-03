@@ -44,7 +44,7 @@ namespace builtin
  * @note @c _base_reg is used in implementation to reuse @c basic::StaticTensorManager
  *
  */
-class TensorRegistry : public ITensorRegistry
+class TensorRegistry : public backend::ITensorRegistry
 {
 public:
   TensorRegistry() : _base_reg{new basic::TensorRegistry} {}

@@ -17,6 +17,7 @@
 #include "KernelGenerator.h"
 
 #include "ops/ConvolutionLayer.h"
+#include "ops/GradientApplier.h"
 #include "ops/PoolLayer.h"
 
 #include <backend/Backend.h>
@@ -60,6 +61,9 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
   assert(_return_fn);
   ret->append(std::move(_return_fn));
 
+  if (_grad_fn)
+    ret->append(std::move(_grad_fn));
+
   for (auto &&ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
     auto portable_tensor = _tensor_reg->getPortableTensor(ind);
@@ -67,7 +71,7 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
     {
       assert(portable_tensor->layout() == ir::Layout::NHWC);
     }
-    auto tensor = _tensor_reg->getNativeTensor(ind);
+    auto tensor = _tensor_reg->getNonConstTensor(ind);
     if (tensor)
     {
       tensor->increase_ref();
@@ -77,12 +81,12 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 }
 
 KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
-                                 const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
-                                 const std::shared_ptr<basic::TensorRegistry> &deriv_tensor_reg,
-                                 const std::shared_ptr<ExternalContext> &external_context)
+                                 const std::shared_ptr<TensorRegistry> &tensor_reg,
+                                 const std::shared_ptr<ExternalContext> &external_context,
+                                 std::shared_ptr<exec::train::optimizer::Optimizer> optimizer)
   : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
-    _tensor_reg{tensor_reg}, _deriv_tensor_reg{deriv_tensor_reg},
-    _external_context(external_context)
+    _tensor_reg{tensor_reg},
+    _external_context(external_context), _optimizer{optimizer}, _grad_fn{nullptr}
 {
   // DO NOTHING
 }
@@ -91,6 +95,23 @@ void KernelGenerator::visit(const ir::train::operation::Loss &)
 {
   // TODO Generate kernel
   UNUSED_RELEASE(convertPoolType);
+}
+
+void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
+{
+  // TODO Generate kernel
+
+  // Generate TrainableFunction for applying gradient
+  const auto ker_index{node.getInputs().at(ir::train::operation::Conv2D::Input::KERNEL)};
+
+  auto grad_tensor = _tensor_reg->getGradientTensor(ker_index);
+  auto ker_tensor = _tensor_reg->getTrainableTensor(ker_index);
+
+  auto grad_fn = std::make_unique<ops::GradientApplier>();
+
+  grad_fn->configure(_optimizer, grad_tensor, ker_tensor);
+
+  _grad_fn = std::move(grad_fn);
 }
 
 } // namespace train

@@ -18,11 +18,12 @@
 #define __ONERT_BACKEND_TRAIN_KERNEL_GENERATOR_H__
 
 #include "ExternalContext.h"
-#include "backend/basic/TensorRegistry.h"
 #include "TensorBuilder.h"
+#include "TensorRegistry.h"
 #include "Tensor.h"
 
 #include <backend/train/KernelGeneratorBase.h>
+#include <exec/train/optimizer/Optimizer.h>
 #include <ir/Operands.h>
 #include <ir/Operations.h>
 
@@ -37,19 +38,21 @@ class KernelGenerator : public backend::train::KernelGeneratorBase
 {
 public:
   KernelGenerator(const ir::train::TrainableGraph &tgraph,
-                  const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
-                  const std::shared_ptr<basic::TensorRegistry> &deriv_tensor_reg,
-                  const std::shared_ptr<ExternalContext> &external_context);
+                  const std::shared_ptr<TensorRegistry> &tensor_reg,
+                  const std::shared_ptr<ExternalContext> &external_context,
+                  std::shared_ptr<exec::train::optimizer::Optimizer> optimizer);
 
   std::unique_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex op_ind) override;
 
   void visit(const ir::train::operation::Loss &) override;
+  void visit(const ir::train::operation::Conv2D &) override;
 
 private:
   ir::Layout _current_layout;
-  std::shared_ptr<basic::TensorRegistry> _tensor_reg;
-  std::shared_ptr<basic::TensorRegistry> _deriv_tensor_reg;
+  std::shared_ptr<TensorRegistry> _tensor_reg;
   const std::shared_ptr<ExternalContext> _external_context;
+  std::shared_ptr<exec::train::optimizer::Optimizer> _optimizer;
+  std::unique_ptr<exec::train::ITrainableFunction> _grad_fn;
 };
 
 } // namespace train

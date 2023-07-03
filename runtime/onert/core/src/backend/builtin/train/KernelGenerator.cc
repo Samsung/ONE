@@ -29,10 +29,8 @@ namespace train
 
 KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
-                                 const std::shared_ptr<TensorRegistry> &deriv_tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
-  : KernelGeneratorBase{tgraph}, _tensor_reg{tensor_reg}, _deriv_tensor_reg{deriv_tensor_reg},
-    _external_context(external_context)
+  : KernelGeneratorBase{tgraph}, _tensor_reg{tensor_reg}, _external_context(external_context)
 {
 }
 
@@ -61,8 +59,11 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
   std::vector<ITensor *> output_tensors{getTensor(output_index)};
   std::vector<ITensor *> input_tensors{getTensor(input_index)};
 
-  auto fn =
-    std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, _external_context);
+  std::vector<ITensor *> output_deriv_tensors{getDerivativeTensor(output_index)};
+  std::vector<ITensor *> input_deriv_tensors{getDerivativeTensor(input_index)};
+
+  auto fn = std::make_unique<kernel::PermuteLayer>(
+    input_tensors, output_tensors, input_deriv_tensors, output_deriv_tensors, _external_context);
 
   _return_fn = std::move(fn);
 }
@@ -78,7 +79,7 @@ backend::ITensor *KernelGenerator::getTensor(const ir::OperandIndex &index)
 backend::ITensor *KernelGenerator::getDerivativeTensor(const ir::OperandIndex &index)
 {
   // Get derivative Tensor from all tensor registries (for Permute op)
-  auto ret = _deriv_tensor_registries.getITensor(index);
+  auto ret = _tensor_registries.getDerivativeITensor(index);
   assert(ret != nullptr);
   return ret;
 }

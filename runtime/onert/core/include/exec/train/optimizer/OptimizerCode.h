@@ -14,25 +14,40 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
-#define __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
+#ifndef __ONERT_EXEC_TRAIN_OPTIMIZER_OPTIMIZER_CODE_H__
+#define __ONERT_EXEC_TRAIN_OPTIMIZER_OPTIMIZER_CODE_H__
 
-#include <backend/train/ITensorRegistry.h>
-
-#include "Tensor.h"
+#include <functional>
+#include <stdint.h>
+#include <string>
 
 namespace onert
 {
-namespace backend
+namespace exec
 {
 namespace train
 {
+namespace optimizer
+{
 
-using TensorRegistry =
-  PortableTensorRegistryTemplate<Tensor, TrainableTensor, DerivativeTensor, GradientTensor>;
+enum class OptimizerCode
+{
+  Invalid, //< Invalid
+  SGD,     //< SGD optimizer
+  Adam     //< Adam optimizer
+};
 
+/**
+ * @brief Convert the optimizer code to the name
+ *
+ * @param opcode The optimizer code
+ * @return The name of the optimizer
+ */
+std::string toString(OptimizerCode opcode);
+
+} // namespace optimizer
 } // namespace train
-} // namespace backend
+} // namespace exec
 } // namespace onert
 
-#endif // __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
+#endif // __ONERT_EXEC_TRAIN_OPTIMIZER_OPTIMIZER_CODE_H__

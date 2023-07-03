@@ -612,22 +612,22 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
 exec::IExecutor *
 ExecutorFactory::create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                         const std::shared_ptr<exec::IExecutors> &executors,
-                        const ExecutorFactoryArgs &args)
+                        const ExecutorFactoryArgs &args,
+                        const std::shared_ptr<exec::train::optimizer::Optimizer> &optimizer)
 {
   assert(args.options != nullptr);
 
   if (args.options->executor != "Linear")
     throw std::runtime_error("ExecutorFactory: TrainableExecutor supports only 'Linear' now");
 
-  return createTrainableExecutor(std::move(lowered_graph), executors, args);
+  return createTrainableExecutor(std::move(lowered_graph), executors, args, optimizer);
 }
 
 void ExecutorFactory::prepareMigrantTensors(
   compiler::ILoweredGraph &lowered_graph,
   const backend::train::TrainableBackendContexts &backend_contexts)
 {
-  const auto is_derivative = false;
-  TensorRegistries tensor_regs{backend_contexts, is_derivative};
+  train::TensorRegistries tensor_regs{backend_contexts, true};
 
   lowered_graph.graph().operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
@@ -653,7 +653,8 @@ void ExecutorFactory::prepareMigrantTensors(
 
 exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
-  const std::shared_ptr<exec::IExecutors> &, const ExecutorFactoryArgs &args)
+  const std::shared_ptr<exec::IExecutors> &, const ExecutorFactoryArgs &args,
+  const std::shared_ptr<exec::train::optimizer::Optimizer> &optimizer)
 {
   const auto options = args.options;
   const auto tracing_ctx = args.tracing_ctx;
@@ -703,6 +704,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     tdata.operand_layouts = std::move(data.operand_layouts);
     tdata.custom_kernel_builder = std::move(data.custom_kernel_builder);
     tdata.is_linear_executor = data.is_linear_executor;
+    tdata.optimizer = optimizer;
 
     // TODO Remove dynamic_cast
     try
@@ -719,8 +721,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   }
   base_backend_contexts.clear();
 
-  TensorRegistries derivative_tensor_regs{tbackend_contexts, true};
-  TensorRegistries tensor_regs{tbackend_contexts, false};
+  train::TensorRegistries tensor_regs{tbackend_contexts, false};
 
   initializeSubgraphIOTensors(
     *lowered_graph, tbackend_contexts,
@@ -752,7 +753,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     if (builtin_context != nullptr)
     {
       auto builtin_kernel_gen = builtin_context->kernel_gen;
-      builtin_kernel_gen->setTensorRegistries(derivative_tensor_regs);
       builtin_kernel_gen->setTensorRegistries(tensor_regs);
     }
   }
@@ -843,7 +843,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                                                  tensor_regs,
                                                  std::move(code_map),
                                                  order,
-                                                 tracing_ctx};
+                                                 tracing_ctx,
+                                                 optimizer};
 
   if (!options->trace_filepath.empty())
   {

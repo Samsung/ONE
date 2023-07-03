@@ -14,25 +14,40 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
-#define __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
+#include <backend/basic/train/TrainableTensor.h>
 
-#include <backend/train/ITensorRegistry.h>
+#include <util/Utils.h>
 
-#include "Tensor.h"
+#include <functional>
 
 namespace onert
 {
 namespace backend
 {
+namespace basic
+{
 namespace train
 {
 
-using TensorRegistry =
-  PortableTensorRegistryTemplate<Tensor, TrainableTensor, DerivativeTensor, GradientTensor>;
+std::vector<ITensor *> TrainableTensor::optVars()
+{
+  std::vector<ITensor *> ret;
+  for (auto &&e : _opt_vars)
+  {
+    ret.emplace_back(e.get());
+  }
+  return ret;
+}
+
+void TrainableTensor::fillBuffer(const std::shared_ptr<ir::Data> &data)
+{
+  auto *buffer = _tensor.buffer();
+  assert(buffer);
+  assert(total_size() == data->size());
+  std::memcpy(buffer, data->base(), data->size());
+}
 
 } // namespace train
+} // namespace basic
 } // namespace backend
 } // namespace onert
-
-#endif // __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__

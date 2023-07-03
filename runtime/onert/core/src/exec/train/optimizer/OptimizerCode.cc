@@ -14,25 +14,29 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
-#define __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
+#include "exec/train/optimizer/OptimizerCode.h"
 
-#include <backend/train/ITensorRegistry.h>
-
-#include "Tensor.h"
+#include <unordered_map>
 
 namespace onert
 {
-namespace backend
+namespace exec
 {
 namespace train
 {
+namespace optimizer
+{
 
-using TensorRegistry =
-  PortableTensorRegistryTemplate<Tensor, TrainableTensor, DerivativeTensor, GradientTensor>;
+std::string toString(OptimizerCode code)
+{
+  static const std::unordered_map<OptimizerCode, const char *> map{
+    {OptimizerCode::Invalid, "Invalid"},
+    {OptimizerCode::SGD, "SGD"},
+    {OptimizerCode::Adam, "Adam"}};
+  return map.at(code);
+}
 
+} // namespace optimizer
 } // namespace train
-} // namespace backend
+} // namespace exec
 } // namespace onert
-
-#endif // __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__

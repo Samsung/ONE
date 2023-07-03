@@ -14,25 +14,28 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
-#define __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
+#ifndef __ONERT_IR_DATA_ACCESSOR_H__
+#define __ONERT_IR_DATA_ACCESSOR_H__
 
-#include <backend/train/ITensorRegistry.h>
-
-#include "Tensor.h"
+#include "ir/Data.h"
+#include "ir/Index.h"
 
 namespace onert
 {
-namespace backend
-{
-namespace train
+namespace ir
 {
 
-using TensorRegistry =
-  PortableTensorRegistryTemplate<Tensor, TrainableTensor, DerivativeTensor, GradientTensor>;
+// TODO Find a better name
+struct DataAccessor
+{
+  virtual ~DataAccessor() = default;
 
-} // namespace train
-} // namespace backend
+  // Accessors
+  virtual std::shared_ptr<Data> data(OperandIndex index) const = 0;
+  virtual void data(OperandIndex index, const std::shared_ptr<Data> &data) = 0;
+};
+
+} // namespace ir
 } // namespace onert
 
-#endif // __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
+#endif // __ONERT_IR_DATA_ACCESSOR_H__

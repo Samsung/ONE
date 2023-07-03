@@ -14,25 +14,33 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
-#define __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
+#ifndef __ONERT_EXEC_TRAIN_OPTIMIZER_OPTIMIZER_HELPERS_H__
+#define __ONERT_EXEC_TRAIN_OPTIMIZER_OPTIMIZER_HELPERS_H__
 
-#include <backend/train/ITensorRegistry.h>
-
-#include "Tensor.h"
+#include "backend/IPortableTensor.h"
 
 namespace onert
 {
-namespace backend
+namespace exec
 {
 namespace train
 {
+namespace optimizer
+{
 
-using TensorRegistry =
-  PortableTensorRegistryTemplate<Tensor, TrainableTensor, DerivativeTensor, GradientTensor>;
+template <typename T, typename L>
+void elementwise(const ir::Shape &shape, const backend::ITensor &src, backend::ITensor &dst, L &&f)
+{
+  ShapeLoop(shape, [&](const ir::Coordinates &coords) {
+    const T src_val = *reinterpret_cast<const T *>(src.buffer() + src.calcOffset(coords));
+    T *dst_data = reinterpret_cast<T *>(dst.buffer() + dst.calcOffset(coords));
+    *dst_data = f(src_val, *dst_data);
+  });
+}
 
+} // namespace optimizer
 } // namespace train
-} // namespace backend
+} // namespace exec
 } // namespace onert
 
-#endif // __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY_H__
+#endif // __ONERT_EXEC_TRAIN_OPTIMIZER_OPTIMIZER_HELPERS_H__

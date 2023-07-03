@@ -195,11 +195,31 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
   return std::unique_ptr<onert::ir::Model>(nullptr);
 }
 
+#ifdef ONERT_TRAIN
+onert::exec::train::optimizer::OptimizerCode convertOptimizerType(NNFW_OPTIMIZER_TYPE type)
+{
+  if (type == NNFW_OPTIMIZER_SGD)
+  {
+    return onert::exec::train::optimizer::OptimizerCode::SGD;
+  }
+  else if (type == NNFW_OPTIMIZER_ADAM)
+  {
+    return onert::exec::train::optimizer::OptimizerCode::Adam;
+  }
+  return onert::exec::train::optimizer::OptimizerCode::Invalid;
+}
+#endif // ONERT_TRAIN
+
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _nnpkg{nullptr}, _coptions{}, _compiler_artifact{nullptr}, _execution{nullptr},
-    _kernel_registry{nullptr}
+  : _nnpkg{nullptr}, _coptions{}, _compiler_artifact{nullptr}, _execution{nullptr}, _kernel_registry
+{
+  nullptr
+}
+#ifdef ONERT_TRAIN
+, _training_step { 0 }
+#endif // ONERT_TRAIN
 {
   // DO NOTHING
 }
@@ -1154,6 +1174,11 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
   training_info.setBatchSize(tinfo.batch_size);
   // TODO Set Loss function
 
+  onert::compiler::train::OptimizerInfo optimizer_info;
+  optimizer_info.learning_rate = info->learning_rate;
+  optimizer_info.optim_code = convertOptimizerType(info->optimizer_type);
+  training_info.setOptimizerInfo(optimizer_info);
+
   try
   {
     auto compiler =
@@ -1267,6 +1292,11 @@ NNFW_STATUS nnfw_session::train_run(bool update_weights)
   }
 
   (void)update_weights;
+
+#ifdef ONERT_TRAIN
+  // TODO Pass _training_step to execution.
+  _training_step++;
+#endif // ONERT_TRAIN
 
   // NYI
   // _state = State::FINISHED_TRAINING;

@@ -34,6 +34,8 @@
 #include <compiler/StaticShapeInferer.h>
 #include <compiler/train/LoweredTrainableGraph.h>
 #include <ir/train/TrainableGraph.h>
+#include <exec/train/optimizer/Adam.h>
+#include <exec/train/optimizer/SGD.h>
 
 #include <misc/polymorphic_downcast.h>
 #include <misc/string_helpers.h>
@@ -213,6 +215,18 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
 
   // TODO Validate shapes of derivative tensors
 
+  // Create optimizer
+  // TODO Set properties of optimizer
+  std::shared_ptr<exec::train::optimizer::Optimizer> optim;
+  const auto &optim_info = _training_info->optimizerInfo();
+  if (optim_info.optim_code == exec::train::optimizer::OptimizerCode::SGD)
+    optim = std::make_shared<exec::train::optimizer::SGD>(optim_info.learning_rate);
+  else if (optim_info.optim_code == exec::train::optimizer::OptimizerCode::Adam)
+    optim = std::make_shared<exec::train::optimizer::Adam>(optim_info.learning_rate);
+  else
+    throw std::runtime_error("Invalid optimizer type, " +
+                             exec::train::optimizer::toString(optim_info.optim_code));
+
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
@@ -235,7 +249,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     args.model_index = model_index;
     args.custom_kernel_builder = custom_kernel_builder;
     auto executor = std::unique_ptr<exec::IExecutor>{
-      ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
+      ExecutorFactory::get().create(std::move(lowered_subg), executors, args, optim)};
     executor->setIndexedRanks(indexed_ranks);
     executors->emplace(model_index, subg_index, std::move(executor));
   }

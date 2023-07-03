@@ -36,12 +36,12 @@ class DummyBackendContext : public backend::BackendContext
 {
 public:
   DummyBackendContext(const Backend *backend, ContextData &&data,
-                      std::shared_ptr<ITensorRegistry> tensor_registry = nullptr)
+                      std::shared_ptr<backend::ITensorRegistry> tensor_registry = nullptr)
     : backend::BackendContext(backend, std::move(data), tensor_registry)
   {
   }
 
-  ITensorRegistry *genTensors() override { return nullptr; }
+  backend::ITensorRegistry *genTensors() override { return nullptr; }
 
   backend::FunctionMap genKernels() override { return backend::FunctionMap{}; }
 };
@@ -50,23 +50,20 @@ class BackendContext : public onert::backend::train::TrainableBackendContext
 {
 public:
   BackendContext(const ITrainableBackend *backend, std::unique_ptr<TrainableContextData> &&tdata,
-                 std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
+                 std::shared_ptr<backend::train::ITensorRegistry> tensor_registry = nullptr,
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
-                 std::shared_ptr<ITensorRegistry> deriv_tensor_registry = nullptr,
-                 std::shared_ptr<TensorBuilder> deriv_tensor_builder = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
-    : onert::backend::train::TrainableBackendContext(backend, std::move(tdata), tensor_registry,
-                                                     deriv_tensor_registry),
-      kernel_gen{kernel_gen}, _external_context(new ExternalContext),
-      _tensor_builder{tensor_builder}, _deriv_tensor_builder{deriv_tensor_builder}
+    : onert::backend::train::TrainableBackendContext{backend, std::move(tdata), tensor_registry},
+      kernel_gen{kernel_gen},
+      _external_context(new ExternalContext), _tensor_builder{tensor_builder}
   {
   }
 
-  ITensorRegistry *genTensors() override;
-  ITensorRegistry *genTrainingTensors() override;
+  backend::ITensorRegistry *genTensors() override;
+  backend::train::ITensorRegistry *genTrainingTensors() override;
 
 private:
-  void genDerivativeTensors();
+  void genBackwardTensors();
 
 public:
   FunctionMap genKernels() override;
@@ -85,7 +82,6 @@ private:
 
 private:
   std::shared_ptr<TensorBuilder> _tensor_builder;
-  std::shared_ptr<TensorBuilder> _deriv_tensor_builder;
 };
 
 } // namespace train

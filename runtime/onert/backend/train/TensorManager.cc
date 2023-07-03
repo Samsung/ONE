@@ -18,6 +18,33 @@
 
 #include <util/logging.h>
 
+namespace
+{
+
+using namespace onert;
+using namespace onert::backend::train;
+
+template <typename Tensor>
+void allocateMemory(MemoryManager *mgr, const ir::OperandIndexMap<std::unique_ptr<Tensor>> &tensors,
+                    std::string tensor_type)
+{
+  mgr->allocate();
+
+  for (auto &&pair : tensors)
+  {
+    const auto &index = pair.first;
+    auto tensor = pair.second.get();
+    assert(!tensor->is_dynamic());
+
+    auto *buffer = mgr->getBuffer(index);
+    tensor->setBuffer(buffer);
+    VERBOSE(TensorManager) << tensor_type << index << " : " << static_cast<void *>(buffer)
+                           << std::endl;
+  }
+}
+
+} // namespace
+
 namespace onert
 {
 namespace backend
@@ -27,95 +54,118 @@ namespace train
 
 TensorManager::TensorManager(const std::shared_ptr<TensorRegistry> &reg,
                              const std::string planner_id)
-  : _nonconst_mgr{new MemoryManager(planner_id)},
-    _trainable_mgr{new MemoryManager(planner_id)}, _tensors{reg}
+  : _nonconst_mgr{new MemoryManager(planner_id)}, _trainable_mgr{new MemoryManager(planner_id)},
+    _derivative_mgr{new MemoryManager(planner_id)},
+    _gradient_mgr{new MemoryManager(planner_id)}, _tensors{reg}
 {
   // DO NOTHING
 }
 
-void TensorManager::allocateNonconsts()
+void TensorManager::allocateForwardTensors()
 {
-  _nonconst_mgr->allocate();
-
-  for (auto &&pair : _tensors->nonconst_tensors())
-  {
-    const auto &ind = pair.first;
-    auto tensor = pair.second.get();
-    assert(!tensor->is_dynamic());
-    if (!_as_constants[ind])
-    {
-      auto *buffer = _nonconst_mgr->getBuffer(ind);
-      tensor->setBuffer(buffer);
-
-      VERBOSE(TensorManager) << "          TENSOR " << ind << " : " << static_cast<void *>(buffer)
-                             << std::endl;
-    }
-  }
+  allocateMemory(_nonconst_mgr.get(), _tensors->nonconst_tensors(),
+                 std::string{"          TENSOR "});
+  allocateMemory(_trainable_mgr.get(), _tensors->trainable_tensors(),
+                 std::string{"TRAINABLE TENSOR "});
 }
 
-void TensorManager::allocateTrainableTensors()
+void TensorManager::allocateBackwardTensors()
 {
-  _trainable_mgr->allocate();
-
-  for (auto &&pair : _tensors->trainable_tensors())
-  {
-    const auto &ind = pair.first;
-    auto tensor = pair.second.get();
-    assert(!tensor->is_dynamic());
-    if (_as_constants[ind])
-    {
-      auto *buffer = _trainable_mgr->getBuffer(ind);
-      tensor->setBuffer(buffer);
-
-      VERBOSE(TensorManager) << "TRAINABLE TENSOR " << ind << " : " << static_cast<void *>(buffer)
-                             << std::endl;
-    }
-  }
+  allocateMemory(_derivative_mgr.get(), _tensors->derivative_tensors(),
+                 std::string{"DERIVATIVE TENSOR "});
+  allocateMemory(_gradient_mgr.get(), _tensors->gradient_tensors(),
+                 std::string{"GRADIENT TENSOR "});
 }
 
-void TensorManager::deallocateNonconsts()
+void TensorManager::buildForwardTensor(const ir::OperandIndex &index,
+                                       const ir::OperandInfo &tensor_info,
+                                       ir::Layout backend_layout, bool as_const)
 {
-  _nonconst_mgr->deallocate();
-  _trainable_mgr->deallocate();
-}
-
-void TensorManager::buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
-                                ir::Layout backend_layout, bool as_const)
-{
-  assert(!_tensors->getNonConstTensor(ind) && !_tensors->getTrainableTensor(ind));
+  assert(!_tensors->getNonConstTensor(index) && !_tensors->getTrainableTensor(index));
 
   if (!as_const)
   {
     auto tensor = std::make_unique<Tensor>(tensor_info, backend_layout);
-    _tensors->setNonConstTensor(ind, std::move(tensor));
+    _tensors->setNonConstTensor(index, std::move(tensor));
   }
   else
   {
-    auto trainable_tensor = std::make_unique<TrainableTensor>(tensor_info, backend_layout);
-    _tensors->setTrainableTensor(ind, std::move(trainable_tensor));
+    auto tensor = std::make_unique<TrainableTensor>(tensor_info, backend_layout);
+    _tensors->setTrainableTensor(index, std::move(tensor));
   }
-
-  _as_constants[ind] = as_const;
+  _as_constants[index] = as_const;
 }
 
-void TensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
+void TensorManager::buildBackwardTensor(const ir::OperandIndex &index,
+                                        const ir::OperandInfo &tensor_info,
+                                        ir::Layout backend_layout, bool as_const)
 {
-  assert(_tensors->getNativeITensor(ind) && !_tensors->getNativeITensor(ind)->is_dynamic());
+  assert(!_tensors->getDerivativeTensor(index) && !_tensors->getGradientTensor(index));
+  assert(_as_constants[index] == as_const);
 
-  if (!_as_constants[ind])
-    _nonconst_mgr->claimPlan(ind, size);
+  if (!as_const)
+  {
+    auto tensor = std::make_unique<DerivativeTensor>(tensor_info, backend_layout);
+    _tensors->setDerivativeTensor(index, std::move(tensor));
+  }
   else
-    _trainable_mgr->claimPlan(ind, size);
+  {
+    auto tensor = std::make_unique<GradientTensor>(tensor_info, backend_layout);
+    _tensors->setGradientTensor(index, std::move(tensor));
+  }
 }
 
-void TensorManager::releasePlan(const ir::OperandIndex &ind)
+void TensorManager::claimForwardPlan(const ir::OperandIndex &index)
 {
-  assert(_tensors->getNativeITensor(ind) && !_tensors->getNativeITensor(ind)->is_dynamic());
+  auto tensor = _tensors->getNativeITensor(index);
+  assert(tensor && tensor->is_dynamic());
 
-  if (!_as_constants[ind])
-    _nonconst_mgr->releasePlan(ind);
+  auto size = tensor->total_size();
+  if (!_as_constants[index])
+    _nonconst_mgr->claimPlan(index, size);
   else
-    _trainable_mgr->releasePlan(ind);
+    _trainable_mgr->claimPlan(index, size);
+
+  // TODO Consider derivative and gradient tensors
+}
+
+void TensorManager::releaseForwardPlan(const ir::OperandIndex &index)
+{
+  assert(_tensors->getNativeITensor(index) && !_tensors->getNativeITensor(index)->is_dynamic());
+
+  if (!_as_constants[index])
+    _nonconst_mgr->releasePlan(index);
+
+  // TODO Support the release plan for trainable tensors
+}
+
+void TensorManager::claimBackwardPlan(const ir::OperandIndex &index)
+{
+  ITensor *tensor = _tensors->getDerivativeTensor(index);
+  if (tensor == nullptr)
+    tensor = _tensors->getGradientTensor(index);
+  assert(tensor && !tensor->is_dynamic());
+
+  auto size = tensor->total_size();
+  if (!_as_constants[index])
+    _derivative_mgr->claimPlan(index, size);
+  else
+    _gradient_mgr->claimPlan(index, size);
+}
+
+void TensorManager::releaseBackwardPlan(const ir::OperandIndex &index)
+{
+  ITensor *tensor = _tensors->getDerivativeTensor(index);
+  if (tensor == nullptr)
+    tensor = _tensors->getGradientTensor(index);
+  assert(tensor && !tensor->is_dynamic());
+
+  if (!_as_constants[index])
+    _derivative_mgr->releasePlan(index);
+  else
+    _gradient_mgr->releasePlan(index);
+
+  // TODO Consider non-const and trainable tensors
 }
 
 } // namespace train

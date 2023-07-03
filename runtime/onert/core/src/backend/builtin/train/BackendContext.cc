@@ -28,46 +28,16 @@ namespace builtin
 namespace train
 {
 
-ITensorRegistry *BackendContext::genTensors()
+backend::ITensorRegistry *BackendContext::genTensors()
 {
-  return basic::train::genTensors(*this, _tensor_builder);
+  // For now, there is no need to generate tensors for forwarding.
+  return tensor_registry().get();
 }
 
-ITensorRegistry *BackendContext::genTrainingTensors()
+backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
 {
-  genDerivativeTensors();
-
-  // TODO Generate training-related tensors except for derivative
-
-  return deriv_tensor_registry().get();
-}
-
-void BackendContext::genDerivativeTensors()
-{
-  const ir::train::TrainableGraph &tgraph = *trainable_graph();
-  auto tensor_builder = _deriv_tensor_builder;
-  auto tensor_reg = deriv_tensor_registry();
-
-  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
-    if (external_operands().contains(ind))
-      return;
-    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
-    assert(tgraph.layout() != ir::Layout::NCHW);
-
-    // TODO Register TensorInfo that has derivative's shape
-    // ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
-    //                              obj.isConstant()};
-    // tensor_builder->registerTensorInfo(ind, backend_info, ir::Layout::NHWC);
-  });
-
-  // TODO Plan tensor builds to reduce peak memory usage
-  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
-    if (tensor_builder->isRegistered(ind))
-      tensor_builder->notifyFirstUse(ind);
-  });
-
-  // TODO Allocate tensors
-  // tensor_builder->allocate();
+  // For now, there is no need to generate tensors for backwarding.
+  return tensor_registry().get();
 }
 
 backend::train::FunctionMap BackendContext::genKernels()
@@ -80,13 +50,20 @@ backend::train::FunctionMap BackendContext::genKernels()
     ret.emplace_back(op_ind, std::move(tn_seq));
   }
 
-  basic::train::initConsts(*this);
+  trainable_graph()->operands().iterate(
+    [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+      if (!(external_operands().contains(ind) || !operand.isConstant()))
+      {
+        throw std::runtime_error(
+          "BackendContext: builtin backend does not support updatable Weights yet");
+      }
+    });
 
   // TODO Enable prepare()
   // for (auto &&it : ret)
   // {
   //   auto &fn_seq = it.second;
-  //   fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
+  //   fn_seq->iterate([&](exec::train::ITrainableFunction &ifunc) { ifunc.prepare(); });
   // }
 
   return ret;
