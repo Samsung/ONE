@@ -22,6 +22,7 @@
 #include "KernelGenerator.h"
 
 #include <backend/Backend.h>
+#include <backend/train/ITrainableBackend.h>
 
 #include <memory>
 
@@ -32,7 +33,7 @@ namespace backend
 namespace train
 {
 
-class Backend : public ::onert::backend::Backend
+class Backend : public ::onert::backend::Backend, public backend::train::ITrainableBackend
 {
 public:
   Backend() : _config{std::make_shared<Config>()} {}
@@ -41,15 +42,23 @@ public:
 
   std::unique_ptr<onert::backend::BackendContext> newContext(ContextData &&data) const override
   {
-    auto custom_kernel_builder = data.custom_kernel_builder;
-    auto &graph = *data.graph;
-    auto context = std::make_unique<BackendContext>(this, std::move(data));
+    return std::make_unique<DummyBackendContext>(this, std::move(data));
+  }
+
+  std::unique_ptr<backend::train::TrainableBackendContext>
+  newContext(backend::train::TrainableContextData &&tdata) const override
+  {
+    const auto &tgraph = *tdata.tgraph;
     auto tr = std::make_shared<basic::TensorRegistry>();
     auto tb = std::make_shared<TensorBuilder>(tr, "Bump");
-    context->tensor_registry = tr;
-    context->tensor_builder = tb;
-    context->kernel_gen = std::make_shared<InferenceKernelGenerator>(
-      graph, tb, tr, custom_kernel_builder, context->external_context());
+    auto grad_tr = std::make_shared<basic::TensorRegistry>();
+    auto grad_tb = std::make_shared<TensorBuilder>(grad_tr, "Bump");
+    auto tdata_ptr = std::make_unique<backend::train::TrainableContextData>(std::move(tdata));
+    auto context =
+      std::make_unique<train::BackendContext>(this, std::move(tdata_ptr), tr, tb, grad_tr, grad_tb);
+
+    context->kernel_gen =
+      std::make_shared<train::KernelGenerator>(tgraph, tr, grad_tr, context->external_context());
     return context;
   }
 
