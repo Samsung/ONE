@@ -48,13 +48,16 @@ BroadcastComparison4DSlowPreprocess(const luci_interpreter::RuntimeShape &unexte
 
 } // namespace
 
-template <typename T> using ComparisonFn = bool (*)(T, T);
-
 template <typename T> inline bool LessFn(T lhs, T rhs) { return lhs < rhs; }
+template <typename T> inline bool LessEqualFn(T lhs, T rhs) { return lhs <= rhs; }
+template <typename T> inline bool EqualFn(T lhs, T rhs) { return lhs == rhs; }
+template <typename T> inline bool GreaterFn(T lhs, T rhs) { return lhs > rhs; }
+template <typename T> inline bool GreaterEqualFn(T lhs, T rhs) { return lhs >= rhs; }
+template <typename T> inline bool NotEqualFn(T lhs, T rhs) { return lhs != rhs; }
 
-template <typename T, ComparisonFn<T> F>
+template <typename T>
 inline void ComparisonNoScaling(const int64_t flat_size, const T *input1_data, const T *input2_data,
-                                bool *output_data)
+                                bool *output_data, bool F(T, T))
 {
   for (int64_t i = 0; i < flat_size; ++i)
   {
@@ -62,12 +65,12 @@ inline void ComparisonNoScaling(const int64_t flat_size, const T *input1_data, c
   }
 }
 
-template <typename T, ComparisonFn<int32_t> F>
+template <typename T>
 inline void BroadcastComparison4DSlowWithScaling(
   const ComparisonParams &op_params, const luci_interpreter::RuntimeShape &unextended_input1_shape,
   const T *input1_data, const luci_interpreter::RuntimeShape &unextended_input2_shape,
   const T *input2_data, const luci_interpreter::RuntimeShape &unextended_output_shape,
-  bool *output_data)
+  bool *output_data, bool F(T, T))
 {
   const BroadcastComparison4DSlowCommon dims = BroadcastComparison4DSlowPreprocess(
     unextended_input1_shape, unextended_input2_shape, unextended_output_shape);
@@ -110,9 +113,10 @@ inline void BroadcastComparison4DSlowWithScaling(
   }
 }
 
-template <typename T, ComparisonFn<int32_t> F>
+template <typename T>
 inline void ComparisonWithScaling(const ComparisonParams &op_params, const int64_t flat_size,
-                                  const T *input1_data, const T *input2_data, bool *output_data)
+                                  const T *input1_data, const T *input2_data, bool *output_data,
+                                  bool F(T, T))
 {
   int left_shift = op_params.left_shift;
   int32_t input1_offset = op_params.input1_offset;
@@ -136,12 +140,12 @@ inline void ComparisonWithScaling(const ComparisonParams &op_params, const int64
   }
 }
 
-template <typename T, ComparisonFn<T> F>
+template <typename T>
 inline void BroadcastComparison4DSlowNoScaling(
   const ComparisonParams &op_params, const luci_interpreter::RuntimeShape &unextended_input1_shape,
   const T *input1_data, const luci_interpreter::RuntimeShape &unextended_input2_shape,
   const T *input2_data, const luci_interpreter::RuntimeShape &unextended_output_shape,
-  bool *output_data)
+  bool *output_data, bool F(T, T))
 {
   const BroadcastComparison4DSlowCommon dims = BroadcastComparison4DSlowPreprocess(
     unextended_input1_shape, unextended_input2_shape, unextended_output_shape);

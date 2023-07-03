@@ -64,16 +64,15 @@ void evalQuantized(const circle::Tensor *x, const circle::Tensor *y, const circl
 
   if (op_params.is_broadcast)
   {
-    luci_interpreter_pal::BroadcastComparison4DSlowWithScaling<uint8_t,
-                                                               luci_interpreter_pal::LessFn>(
+    luci_interpreter_pal::BroadcastComparison4DSlowWithScaling<uint8_t>(
       op_params, kernels::getTensorShape(x), x_data, kernels::getTensorShape(y), y_data,
-      kernels::getTensorShape(output), output_data);
+      kernels::getTensorShape(output), output_data, luci_interpreter_pal::LessFn);
   }
   else
   {
     const int64_t flat_size = kernels::getTensorShape(x).flatSize();
-    luci_interpreter_pal::ComparisonWithScaling<uint8_t, luci_interpreter_pal::LessFn>(
-      op_params, flat_size, x_data, y_data, output_data);
+    luci_interpreter_pal::ComparisonWithScaling<uint8_t>(op_params, flat_size, x_data, y_data,
+                                                         output_data, luci_interpreter_pal::LessFn);
   }
 }
 #endif // DIS_QUANT
@@ -101,15 +100,15 @@ void evalGeneric(const circle::Tensor *x, const circle::Tensor *y, const circle:
 
   if (op_params.is_broadcast)
   {
-    luci_interpreter_pal::BroadcastComparison4DSlowNoScaling<T, luci_interpreter_pal::LessFn>(
+    luci_interpreter_pal::BroadcastComparison4DSlowNoScaling<T>(
       op_params, kernels::getTensorShape(x), x_data, kernels::getTensorShape(y), y_data,
-      kernels::getTensorShape(output), output_data);
+      kernels::getTensorShape(output), output_data, luci_interpreter_pal::LessFn);
   }
   else
   {
     const int64_t flat_size = kernels::getTensorShape(x).flatSize();
-    luci_interpreter_pal::ComparisonNoScaling<T, luci_interpreter_pal::LessFn>(flat_size, x_data,
-                                                                               y_data, output_data);
+    luci_interpreter_pal::ComparisonNoScaling<T>(flat_size, x_data, y_data, output_data,
+                                                 luci_interpreter_pal::LessFn);
   }
 }
 
