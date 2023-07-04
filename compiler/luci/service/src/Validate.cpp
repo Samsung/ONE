@@ -82,6 +82,65 @@ luci::CircleOutput *find_node(std::vector<loco::Node *> nodes, loco::GraphOutput
   return nullptr;
 }
 
+// TODO Reduce duplicate with validate_shape_dtype
+bool validate_shape(loco::Graph *g)
+{
+  LOGGER(l);
+
+  auto output_nodes = loco::output_nodes(g);
+
+  auto count = g->outputs()->size();
+  for (uint32_t out = 0; out < count; ++out)
+  {
+    auto graph_out = g->outputs()->at(out);
+    auto out_index = graph_out->index();
+
+    auto circle_output = find_node(output_nodes, out_index);
+    assert(circle_output != nullptr);
+    assert(circle_output->from() != nullptr);
+    auto circle_node = loco::must_cast<luci::CircleNode *>(circle_output->from());
+
+    // Shape validation for CircleOutputExclude is not needed
+    if (dynamic_cast<luci::CircleOutputExclude *>(circle_node))
+      continue;
+
+    assert(circle_node->shape_status() != luci::ShapeStatus::UNDEFINED);
+
+    // check if output node shape is same as graph output shape
+    auto go_tensor_shape = graph_out->shape();
+    assert(go_tensor_shape);
+
+    // NOTE Even if shape of graph output is [] (which means "shape inference was impossible")
+    //      but shape of CircleNode is not, it can be valid case because shape inference
+    //      algorithm of CircleNode may be upgraded than before. The opposite is possible either.
+    //      If such cases are appeared, following validation code should be fixed.
+    bool is_shape_valid = (circle_node->rank() == go_tensor_shape->rank());
+    for (uint32_t i = 0; is_shape_valid && i < circle_node->rank(); ++i)
+    {
+      if (!circle_node->dim(i).known() || !go_tensor_shape->dim(i).known())
+      {
+        // If at least one of two dimensions is unknown,
+        // the unknown dimension can accept any value.
+        INFO(l) << "Unknown dimension is matched with known dimension" << std::endl;
+      }
+      else if (circle_node->dim(i).value() != go_tensor_shape->dim(i).value())
+      {
+        is_shape_valid = false;
+      }
+    }
+
+    if (is_shape_valid == false)
+    {
+      INFO(l) << "[luci] Shape for output #" << out_index << " not same " << std::endl;
+      INFO(l) << "[luci]    " << circle_node->name() << " " << circle_node << " vs "
+              << *go_tensor_shape << std::endl;
+      return false;
+    }
+  }
+
+  return true;
+}
+
 bool validate_shape_dtype(loco::Graph *g)
 {
   LOGGER(l);
@@ -249,6 +308,17 @@ public:
 namespace luci
 {
 
+bool validate_shape(loco::Graph *g)
+{
+  if (!loco::valid(g))
+    return false;
+
+  if (!::validate_shape(g))
+    return false;
+
+  return true;
+}
+
 bool validate(loco::Graph *g)
 {
   if (!loco::valid(g))
@@ -353,6 +423,28 @@ bool validate(luci::Module *module)
   {
     std::cerr << "ERROR: circle model has duplicate names" << std::endl;
     return false;
+  }
+
+  return true;
+}
+
+bool validate_shape(luci::Module *module)
+{
+  LOGGER(l);
+
+  INFO(l) << "--- validate shape of Module -----------------------------------";
+
+  for (size_t g = 0; g < module->size(); ++g)
+  {
+    auto graph = module->graph(g);
+
+    INFO(l) << luci::fmt(graph) << std::endl;
+
+    if (!validate_shape(graph))
+    {
+      std::cerr << "ERROR: Invalid circle model" << std::endl;
+      return false;
+    }
   }
 
   return true;
