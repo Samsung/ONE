@@ -23,6 +23,7 @@
 #include "nnfw_experimental.h"
 #include "randomgen.h"
 #include "rawformatter.h"
+#include "rawdataloader.h"
 
 #include <boost/program_options.hpp>
 #include <cassert>
@@ -74,6 +75,9 @@ int main(const int argc, char **argv)
     uint32_t num_inputs;
     NNPR_ENSURE_STATUS(nnfw_input_size(session, &num_inputs));
 
+    uint32_t num_expecteds;
+    NNPR_ENSURE_STATUS(nnfw_output_size(session, &num_expecteds));
+
     // verify input and output
 
     auto verifyInputTypes = [session]() {
@@ -124,35 +128,56 @@ int main(const int argc, char **argv)
       NNPR_ENSURE_STATUS(nnfw_train_prepare(session, &tri));
     });
 
-    // prepare input
-    std::vector<Allocation> inputs(num_inputs);
-    RandomGenerator(session).generate(inputs);
+    // prepare input and expected tensor info lists
+    std::vector<nnfw_tensorinfo> input_infos;
+    std::vector<nnfw_tensorinfo> expected_infos;
 
-    // prepare output
-    uint32_t num_outputs = 0;
-    NNPR_ENSURE_STATUS(nnfw_output_size(session, &num_outputs));
-    std::vector<Allocation> outputs(num_outputs);
-    auto output_sizes = args.getOutputSizes();
-    for (uint32_t i = 0; i < num_outputs; i++)
+    // prepare data buffers
+    std::vector<Allocation> input_data(num_inputs * tri.batch_size);
+    std::vector<Allocation> expected_data(num_expecteds * tri.batch_size);
+
+    for (uint32_t i = 0; i < num_inputs; ++i)
     {
       nnfw_tensorinfo ti;
-      uint64_t output_size_in_bytes = 0;
+      NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, i, &ti));
+
+      auto bufsz = bufsize_for(&ti);
+      for (uint32_t n = 0; n < tri.batch_size; ++n)
       {
-        auto found = output_sizes.find(i);
-        if (found == output_sizes.end())
-        {
-          NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
-          output_size_in_bytes = bufsize_for(&ti);
-        }
-        else
-        {
-          output_size_in_bytes = found->second;
-        }
+        input_data[i * tri.batch_size + n].alloc(bufsz);
       }
-      outputs[i].alloc(output_size_in_bytes);
-      NNPR_ENSURE_STATUS(
-        nnfw_set_output(session, i, ti.dtype, outputs[i].data(), output_size_in_bytes));
-      NNPR_ENSURE_STATUS(nnfw_set_output_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
+      input_infos.emplace_back(std::move(ti));
+    }
+
+    for (uint32_t i = 0; i < num_expecteds; ++i)
+    {
+      nnfw_tensorinfo ti;
+      NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
+
+      auto bufsz = bufsize_for(&ti);
+      for (uint32_t n = 0; n < tri.batch_size; ++n)
+      {
+        expected_data[i * tri.batch_size + n].alloc(bufsz);
+      }
+      expected_infos.emplace_back(std::move(ti));
+    }
+
+    auto data_length = args.getDataLength();
+
+    Generator generator;
+    RawDataLoader rawDataLoader;
+
+    if (!args.getLoadRawInputFilename().empty() && !args.getLoadRawExpectedFilename().empty())
+    {
+      generator =
+        rawDataLoader.loadData(args.getLoadRawInputFilename(), args.getLoadRawExpectedFilename(),
+                               input_infos, expected_infos, data_length, tri.batch_size);
+    }
+    else
+    {
+      // TODO Use random generator
+      std::cerr << "E: not supported random input and expected generator" << std::endl;
+      exit(-1);
     }
 
     // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on the
