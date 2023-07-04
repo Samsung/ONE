@@ -7,13 +7,13 @@ function(_AbseilSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  # NOTE TensorFlow 2.9 downloads abseil 20211102.0
+  # NOTE GCC 13 requires abseil 20230125.3
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  envoption(ABSEIL_URL ${EXTERNAL_DOWNLOAD_SERVER}/abseil/abseil-cpp/archive/20211102.0.tar.gz)
+  envoption(ABSEIL_URL ${EXTERNAL_DOWNLOAD_SERVER}/abseil/abseil-cpp/archive/20230125.3.tar.gz)
   ExternalSource_Download(ABSEIL
     DIRNAME ABSEIL
     URL ${ABSEIL_URL}
-    CHECKSUM MD5=bdca561519192543378b7cade101ec43)
+    CHECKSUM MD5=9b6dae642c4bd92f007ab2c148bc0498)
 
   set(AbseilSource_DIR ${ABSEIL_SOURCE_DIR} PARENT_SCOPE)
   set(AbseilSource_FOUND TRUE PARENT_SCOPE)
