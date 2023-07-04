@@ -51,6 +51,7 @@
 #include "Op/Gelu.h"
 #include "Op/Greater.h"
 #include "Op/GreaterEqual.h"
+#include "Op/HardSwish.h"
 #include "Op/If.h"
 #include "Op/L2Normalize.h"
 #include "Op/L2Pool2D.h"
