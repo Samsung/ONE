@@ -95,3 +95,32 @@ TEST(DynamicBatchToSingleBatchPassTest, simple_NEG)
 
   EXPECT_FALSE(pass.run(g.get()));
 }
+
+// Remove this test if we support rank 1 in this pass
+TEST(DynamicBatchToSingleBatchPassTest, rank1_NEG)
+{
+  luci::DynamicBatchToSingleBatchPass pass;
+
+  auto g = loco::make_graph();
+
+  auto graph_input = g->inputs()->create();
+  {
+    auto tensor_shape = make_tshape({1});
+    tensor_shape->dim(0).unset();
+    graph_input->shape(std::move(tensor_shape));
+  }
+
+  // Create nodes to make relu traversed first
+  auto input = g->nodes()->create<luci::CircleInput>();
+  {
+    input->index(0);
+    input->shape({1});
+    input->dim(0).unset();
+  }
+
+  EXPECT_FALSE(graph_input->shape()->dim(0).known());
+  EXPECT_FALSE(input->dim(0).known());
+
+  // Rank 1 is unsupported for now
+  EXPECT_ANY_THROW(pass.run(g.get()));
+}
