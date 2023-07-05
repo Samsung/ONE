@@ -168,9 +168,13 @@ void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &n
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
 
+  auto grad_input_tensor = _grad_tensor_reg->getPortableTensor(input_index);
+  auto grad_output_tensor = _grad_tensor_reg->getPortableTensor(output_index);
+
   auto fn = std::make_unique<ops::ElementwiseActivationLayer>();
 
-  fn->configure(input_tensor, output_tensor, node.param().alpha, node.param().beta,
+  fn->configure(input_tensor, output_tensor, grad_input_tensor, grad_output_tensor,
+                node.param().alpha, node.param().beta,
                 convertElementwiseActivationType(node.param().op_type));
 
   _return_fn = std::move(fn);

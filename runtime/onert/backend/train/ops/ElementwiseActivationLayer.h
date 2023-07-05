@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_ELEMENTWISEACTIVATIONLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_ELEMENTWISEACTIVATIONLAYER_H__
 
+#include <backend/IPortableTensor.h>
 #include <ops/ElementwiseActivationLayer.h>
 
 #include <exec/ITrainableFunction.h>
@@ -41,10 +42,17 @@ class ElementwiseActivationLayer : public ::onert::exec::ITrainableFunction,
 public:
   ElementwiseActivationLayer();
 
-  void configure(const IPortableTensor *input, IPortableTensor *output, float alpha, float beta,
-                 ElementwiseActivationType op_type);
+  void configure(const IPortableTensor *input, IPortableTensor *output,
+                 const IPortableTensor *grad_input, IPortableTensor *grad_output, float alpha,
+                 float beta, ElementwiseActivationType op_type);
   void forward(bool training) override;
   void backward() override;
+
+private:
+  const IPortableTensor *_grad_input;
+  IPortableTensor *_grad_output;
+
+  ElementwiseActivationType _op_type;
 };
 
 } // namespace ops

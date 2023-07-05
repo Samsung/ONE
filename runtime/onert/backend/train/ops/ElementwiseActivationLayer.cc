@@ -16,6 +16,9 @@
 
 #include "ElementwiseActivationLayer.h"
 
+#include <ops/OperationUtils.h>
+#include <cker/train/ReLU.h>
+
 namespace onert
 {
 namespace backend
@@ -31,9 +34,18 @@ ElementwiseActivationLayer::ElementwiseActivationLayer() : cpu::ops::Elementwise
 }
 
 void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortableTensor *output,
-                                           float alpha, float beta,
+                                           const IPortableTensor *grad_input,
+                                           IPortableTensor *grad_output, float alpha, float beta,
                                            ElementwiseActivationType op_type)
 {
+  assert(grad_input != nullptr);
+  assert(grad_output != nullptr);
+
+  _grad_input = grad_input;
+  _grad_output = grad_output;
+
+  _op_type = op_type;
+
   switch (op_type)
   {
     case ElementwiseActivationType::kReLU:
@@ -48,6 +60,23 @@ void ElementwiseActivationLayer::forward(bool) { cpu::ops::ElementwiseActivation
 void ElementwiseActivationLayer::backward()
 {
   // TODO Implement this
+  switch (_op_type)
+  {
+    case ElementwiseActivationType::kReLU:
+      if (_input->data_type() == OperandType::FLOAT32)
+      {
+        nnfw::cker::train::ReLUDeriv(
+          cpu::ops::getShape(_grad_input), cpu::ops::getBuffer<float>(_grad_input),
+          cpu::ops::getShape(_grad_output), cpu::ops::getBuffer<float>(_grad_output));
+      }
+      else
+      {
+        throw std::runtime_error{"ElementwiseActivationLayer(ReLU): unsupported data type"};
+      }
+      break;
+    default:
+      throw std::runtime_error("ElementwiseActivationLayer: unsupported op type");
+  }
 }
 
 } // namespace ops
