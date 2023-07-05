@@ -50,7 +50,7 @@ protected:
 
 protected:
   const ir::train::TrainableGraph &_tgraph;
-  std::unique_ptr<exec::ITrainableFunction> _return_fn;
+  std::unique_ptr<exec::train::ITrainableFunction> _return_fn;
 };
 
 } // namespace train
