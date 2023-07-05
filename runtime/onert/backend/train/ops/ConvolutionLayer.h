@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_CONVOLUTIONLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_CONVOLUTIONLAYER_H__
 
+#include <backend/IPortableTensor.h>
 #include <ops/ConvolutionLayer.h>
 
 #include <exec/ITrainableFunction.h>
@@ -42,9 +43,15 @@ public:
                  const uint32_t paddingBottom, const uint32_t strideWidth,
                  const uint32_t strideHeight, const uint32_t dilationWidthFactor,
                  const uint32_t dilationHeightFactor, const ir::Activation activation,
-                 IPortableTensor *output);
+                 IPortableTensor *output, const IPortableTensor *grad_input, IPortableTensor *grad_kernel, IPortableTensor *grad_bias, IPortableTensor *grad_output);
   void forward(bool training) override;
   void backward() override;
+
+private:
+  const IPortableTensor *_grad_input;
+  IPortableTensor *_grad_kernel;
+  IPortableTensor *_grad_bias;
+  IPortableTensor *_grad_output;
 };
 
 } // namespace ops

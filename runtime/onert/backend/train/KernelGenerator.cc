@@ -17,6 +17,7 @@
 #include "KernelGenerator.h"
 
 #include "ops/ConvolutionLayer.h"
+#include "ops/ElementwiseActivationLayer.h"
 #include "ops/FullyConnectedLayer.h"
 #include "ops/PoolLayer.h"
 #include "ops/ReshapeLayer.h"
@@ -40,6 +41,18 @@ namespace train
 
 namespace
 {
+ops::ElementwiseActivationType
+convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::ElementwiseActivation::Type::RELU:
+      return ops::ElementwiseActivationType::kReLU;
+    default:
+      throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
+  }
+}
+
 ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
 {
   switch (type_ir)
@@ -105,6 +118,11 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
   auto ker_tensor = _tensor_reg->getPortableTensor(ker_index);
   auto bias_tensor = _tensor_reg->getPortableTensor(bias_index);
 
+  auto grad_ofm_tensor = _grad_tensor_reg->getPortableTensor(ofm_index);
+  auto grad_ifm_tensor = _grad_tensor_reg->getPortableTensor(ifm_index);
+  auto grad_ker_tensor = _grad_tensor_reg->getPortableTensor(ker_index);
+  auto grad_bias_tensor = _grad_tensor_reg->getPortableTensor(bias_index);
+
   const auto stride = node.param().stride;
   const auto activation = node.param().activation;
   const auto param_padding = node.param().padding;
@@ -116,7 +134,7 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
     fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, param_padding.param.left,
                   param_padding.param.right, param_padding.param.top, param_padding.param.bottom,
                   stride.horizontal, stride.vertical, dilation.width_factor, dilation.height_factor,
-                  activation, ofm_tensor);
+                  activation, ofm_tensor, grad_ifm_tensor, grad_ker_tensor, grad_bias_tensor, grad_ofm_tensor);
 
     _return_fn = std::move(fn);
     return;
@@ -134,7 +152,26 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
 
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, padding.left,
                 padding.right, padding.top, padding.bottom, stride.horizontal, stride.vertical,
-                dilation.width_factor, dilation.height_factor, activation, ofm_tensor);
+                dilation.width_factor, dilation.height_factor, activation, ofm_tensor,
+                grad_ifm_tensor, grad_ker_tensor, grad_bias_tensor, grad_ofm_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &node)
+{
+  using ir::train::operation::ElementwiseActivation;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ElementwiseActivation::Input::INPUT)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  auto fn = std::make_unique<ops::ElementwiseActivationLayer>();
+
+  fn->configure(input_tensor, output_tensor, node.param().alpha, node.param().beta,
+                convertElementwiseActivationType(node.param().op_type));
 
   _return_fn = std::move(fn);
 }
