@@ -51,6 +51,11 @@ void TrainableOperationConverter::visit(const ir::operation::ElementwiseActivati
   }
 }
 
+void TrainableOperationConverter::visit(const ir::operation::FullyConnected &node)
+{
+  _return_op = std::make_unique<ir::train::operation::FullyConnected>(node);
+}
+
 void TrainableOperationConverter::visit(const ir::operation::Loss &node)
 {
   _return_op = std::make_unique<ir::train::operation::Loss>(node);

@@ -19,6 +19,7 @@
 
 #include "ir/train/operation/Conv2D.h"
 #include "ir/train/operation/ElementwiseActivation.h"
+#include "ir/train/operation/FullyConnected.h"
 #include "ir/train/operation/Loss.h"
 #include "ir/train/operation/Permute.h"
 #include "ir/train/operation/Pool2D.h"
