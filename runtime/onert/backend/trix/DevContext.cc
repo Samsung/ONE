@@ -89,7 +89,7 @@ ModelID DevContext::registerModel(const std::string &model_file_path)
   file_info.filepath = model_file_path.c_str();
   file_info.size = meta->size;
 
-  ModelID model_id;
+  ModelID model_id = 0;
 
   for (uint32_t dev_num = 0; dev_num < _dev_handles.size(); ++dev_num)
   {
