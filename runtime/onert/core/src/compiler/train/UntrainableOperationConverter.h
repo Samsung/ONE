@@ -34,7 +34,7 @@ class UntrainableOperationConverter : public ir::OperationVisitor
 {
 public:
   UntrainableOperationConverter(ir::train::TrainableGraph &tgraph);
-  std::unique_ptr<ir::train::ITrainableOperation> operator()(const ir::OperationIndex &index);
+  std::unique_ptr<ir::train::ITrainableOperation> operator()(const ir::IOperation &op);
 
 #define OP(InternalName) void visit(const ir::operation::InternalName &node);
 #include "ir/Operations.lst"

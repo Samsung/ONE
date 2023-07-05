@@ -113,8 +113,8 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       // Convert operations to trainable operations
       auto converter = TrainableOperationConverter{*trainable_subg, _training_info};
       subg.operations().iterate(
-        [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &) {
-          auto trainable_op = converter(op_index);
+        [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &op) {
+          auto trainable_op = converter(op);
           auto gen_index = trainable_subg->replaceOperation(op_index, std::move(trainable_op));
           UNUSED_RELEASE(gen_index);
           assert(gen_index == op_index);
