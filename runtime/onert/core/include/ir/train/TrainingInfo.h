@@ -42,7 +42,8 @@ struct LossInfo
 class TrainingInfo
 {
 private:
-  enum info {
+  enum info
+  {
     BATCH_SIZE,
     LOSS,
     END,
@@ -66,9 +67,12 @@ public:
   int32_t batchsize() const { return _batchsize; }
   void setBatchSize(int32_t batchsize)
   {
-    if (batchsize == 0) {
+    if (batchsize == 0)
+    {
       _has_info.reset(BATCH_SIZE);
-    } else {
+    }
+    else
+    {
       _has_info.set(BATCH_SIZE);
     }
     _batchsize = batchsize;

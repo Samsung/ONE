@@ -43,7 +43,9 @@ public:
                  const uint32_t paddingBottom, const uint32_t strideWidth,
                  const uint32_t strideHeight, const uint32_t dilationWidthFactor,
                  const uint32_t dilationHeightFactor, const ir::Activation activation,
-                 IPortableTensor *output, const IPortableTensor *grad_input, IPortableTensor *grad_kernel, IPortableTensor *grad_bias, IPortableTensor *grad_output);
+                 IPortableTensor *output, const IPortableTensor *grad_input,
+                 IPortableTensor *grad_kernel, IPortableTensor *grad_bias,
+                 IPortableTensor *grad_output);
   void forward(bool training) override;
   void backward() override;
 

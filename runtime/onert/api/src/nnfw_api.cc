@@ -392,7 +392,8 @@ NNFW_STATUS nnfw_prepare_train(nnfw_session *session, const nnfw_traininfo *trai
   return session->prepare_train(train_info);
 }
 
-NNFW_STATUS nnfw_train(nnfw_session *session, int epoch, NNFW_DATA_TYPE dtype, const nnfw_data *dataset)
+NNFW_STATUS nnfw_train(nnfw_session *session, int epoch, NNFW_DATA_TYPE dtype,
+                       const nnfw_data *dataset)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->train(epoch, dtype, dataset);

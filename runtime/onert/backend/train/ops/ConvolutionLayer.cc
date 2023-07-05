@@ -39,7 +39,8 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
                                  const uint32_t dilationWidthFactor,
                                  const uint32_t dilationHeightFactor,
                                  const ir::Activation activation, IPortableTensor *output,
-                                 const IPortableTensor *grad_input, IPortableTensor *grad_kernel, IPortableTensor *grad_bias, IPortableTensor *grad_output)
+                                 const IPortableTensor *grad_input, IPortableTensor *grad_kernel,
+                                 IPortableTensor *grad_bias, IPortableTensor *grad_output)
 {
   assert(grad_input != nullptr);
   assert(grad_kernel != nullptr);
@@ -56,17 +57,11 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
     strideWidth, strideHeight, dilationWidthFactor, dilationHeightFactor, activation, output);
 }
 
-void ConvolutionLayer::forward(bool)
-{
-  cpu::ops::ConvolutionLayer::run();
-}
+void ConvolutionLayer::forward(bool) { cpu::ops::ConvolutionLayer::run(); }
 
 void ConvolutionLayer::backward()
 {
   // TODO Implement Conv Backpropagation
-
-  
-
 }
 
 } // namespace ops

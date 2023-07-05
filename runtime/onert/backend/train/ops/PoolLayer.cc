@@ -43,10 +43,10 @@ void maxPool2D(const nnfw::cker::PoolParams &params, const IPortableTensor *inpu
 
 template <typename T>
 void tmaxPool2D(const nnfw::cker::PoolParams &params, const IPortableTensor *input,
-               IPortableTensor *output)
+                IPortableTensor *output)
 {
   nnfw::cker::train::MaxPool<T>(params, getShape(input), getBuffer<T>(input), getShape(output),
-                         getBuffer<T>(output));
+                                getBuffer<T>(output));
 }
 
 template <typename T>
@@ -96,9 +96,8 @@ PoolLayer::PoolLayer() : _input(nullptr), _output(nullptr), _kernel()
   op_params.quantized_activation_min = 0;               \
   op_params.quantized_activation_max = 0;
 
-void PoolLayer::configure(const IPortableTensor *input, const uint32_t paddingLeft,
-                          const uint32_t, const uint32_t paddingTop,
-                          const uint32_t, const uint32_t strideWidth,
+void PoolLayer::configure(const IPortableTensor *input, const uint32_t paddingLeft, const uint32_t,
+                          const uint32_t paddingTop, const uint32_t, const uint32_t strideWidth,
                           const uint32_t strideHeight, const uint32_t kernelWidth,
                           const uint32_t kernelHeight, const ir::Activation activation,
                           IPortableTensor *output, const PoolType op_type)

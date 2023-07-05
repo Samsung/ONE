@@ -62,10 +62,7 @@ void TrainableExecutor::execute(const std::vector<backend::IPortableTensor *> &,
   throw std::runtime_error("TrainableExecutor does not support multiple subgraphs yet");
 }
 
-void TrainableExecutor::execute(const IODescription &desc)
-{
-  forward(desc, false);
-}
+void TrainableExecutor::execute(const IODescription &desc) { forward(desc, false); }
 
 void TrainableExecutor::forward(const IODescription &desc, bool training)
 {

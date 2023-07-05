@@ -71,8 +71,7 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<ExternalContext> &external_context)
   : backend::train::KernelGeneratorBase{tgraph},
     // TODO Fix me! Use trainable operands and operations
-    _ctx(tgraph.operands()), _operations_ctx(tgraph.operations()),
-    _current_layout{tgraph.layout()},    
+    _ctx(tgraph.operands()), _operations_ctx(tgraph.operations()), _current_layout{tgraph.layout()},
     _tensor_reg{tensor_reg}, _grad_tensor_reg{grad_tensor_reg}, _external_context(external_context)
 {
   // DO NOTHING
@@ -134,7 +133,8 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
     fn->configure(ifm_tensor, ker_tensor, bias_tensor, param_padding.type, param_padding.param.left,
                   param_padding.param.right, param_padding.param.top, param_padding.param.bottom,
                   stride.horizontal, stride.vertical, dilation.width_factor, dilation.height_factor,
-                  activation, ofm_tensor, grad_ifm_tensor, grad_ker_tensor, grad_bias_tensor, grad_ofm_tensor);
+                  activation, ofm_tensor, grad_ifm_tensor, grad_ker_tensor, grad_bias_tensor,
+                  grad_ofm_tensor);
 
     _return_fn = std::move(fn);
     return;

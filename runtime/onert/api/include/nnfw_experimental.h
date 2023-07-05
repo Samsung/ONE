@@ -78,7 +78,8 @@ typedef struct nnfw_data
 
 NNFW_STATUS nnfw_prepare_train(nnfw_session *session, const nnfw_traininfo *train_info);
 // TODO Consider multiple expected output
-NNFW_STATUS nnfw_train(nnfw_session *session, int epoch, NNFW_DATA_TYPE dtype, const nnfw_data *dataset);
+NNFW_STATUS nnfw_train(nnfw_session *session, int epoch, NNFW_DATA_TYPE dtype,
+                       const nnfw_data *dataset);
 
 /*
  * Custom kernel evaluation function

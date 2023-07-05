@@ -122,7 +122,7 @@ int main(const int argc, char **argv)
     phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
       NNPR_ENSURE_STATUS(nnfw_prepare_train(session, &tri));
     });
-    
+
     // prepare input
     std::vector<Allocation> inputs(num_inputs);
     RandomGenerator(session).generate(inputs);
@@ -158,13 +158,15 @@ int main(const int argc, char **argv)
     {
       phases.run(
         "EXECUTE",
-        [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_train(session, args.getEpoch(), NNFW_DATA_TYPE_TRAIN, nullptr)); }, 1,
-        true);
+        [&](const benchmark::Phase &, uint32_t) {
+          NNPR_ENSURE_STATUS(nnfw_train(session, args.getEpoch(), NNFW_DATA_TYPE_TRAIN, nullptr));
+        },
+        1, true);
     }
     else
     {
-      // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on the
-      // only warmup.
+      // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on
+      // the only warmup.
       if (verbose == 0)
       {
         phases.run(

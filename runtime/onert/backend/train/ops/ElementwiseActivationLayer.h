@@ -35,14 +35,14 @@ enum class ElementwiseActivationType
   kReLU,
 };
 
-class ElementwiseActivationLayer : public ::onert::exec::ITrainableFunction, public cpu::ops::ElementwiseActivationLayer
+class ElementwiseActivationLayer : public ::onert::exec::ITrainableFunction,
+                                   public cpu::ops::ElementwiseActivationLayer
 {
 public:
   ElementwiseActivationLayer();
 
-  void configure(const IPortableTensor *input, IPortableTensor *output,
-                                           float alpha, float beta,
-                                           ElementwiseActivationType op_type);
+  void configure(const IPortableTensor *input, IPortableTensor *output, float alpha, float beta,
+                 ElementwiseActivationType op_type);
   void forward(bool training) override;
   void backward() override;
 };

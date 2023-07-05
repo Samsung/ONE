@@ -37,16 +37,13 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
   switch (op_type)
   {
     case ElementwiseActivationType::kReLU:
-      cpu::ops::ElementwiseActivationLayer::configure(input, output, alpha, beta, cpu::ops::ElementwiseActivationType::kReLU);
+      cpu::ops::ElementwiseActivationLayer::configure(input, output, alpha, beta,
+                                                      cpu::ops::ElementwiseActivationType::kReLU);
       break;
   }
-  
 }
 
-void ElementwiseActivationLayer::forward(bool)
-{
-  cpu::ops::ElementwiseActivationLayer::run();
-}
+void ElementwiseActivationLayer::forward(bool) { cpu::ops::ElementwiseActivationLayer::run(); }
 
 void ElementwiseActivationLayer::backward()
 {
