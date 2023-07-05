@@ -31,9 +31,8 @@ UntrainableOperationConverter::UntrainableOperationConverter(ir::train::Trainabl
 }
 
 std::unique_ptr<ir::train::ITrainableOperation> UntrainableOperationConverter::
-operator()(const ir::OperationIndex &index)
+operator()(const ir::IOperation &op)
 {
-  const auto &op = _tgraph.operations().at(index);
   op.accept(*this);
 
   return std::move(_return_op);
