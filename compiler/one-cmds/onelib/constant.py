@@ -145,7 +145,9 @@ class CONSTANT:
          'convert certain condition Transpose to Reshape'),
         ('transform_min_max_to_relu6', 'transform Minimum-Maximum pattern to Relu6 op'),
         ('transform_min_relu_to_relu6', 'transform Minimum(6)-Relu pattern to Relu6 op'),
-        ('unroll_unidirseqlstm', 'unroll UnidirectionalSequenceLSTM op'))
+        ('unroll_unidirseqlstm', 'unroll UnidirectionalSequenceLSTM op'),
+        ('dynamic_batch_to_single_batch',
+         'convert dynamic batch size (first dimension) of inputs to 1'))
 
 
 CONSTANT = CONSTANT()
