@@ -626,7 +626,8 @@ void ExecutorFactory::prepareMigrantTensors(
   compiler::ILoweredGraph &lowered_graph,
   const backend::train::TrainableBackendContexts &backend_contexts)
 {
-  TensorRegistries tensor_regs{backend_contexts, true};
+  const auto is_grad = false;
+  TensorRegistries tensor_regs{backend_contexts, is_grad};
 
   lowered_graph.graph().operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
