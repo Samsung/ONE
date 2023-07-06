@@ -26,7 +26,23 @@ namespace backend
 namespace train
 {
 
-using Tensor = basic::Tensor;
+// NOTE This class can be replaced with basic::Tensor if this backend supports dynamic tensors.
+class Tensor : public basic::Tensor
+{
+public:
+  Tensor() = delete;
+
+public:
+  Tensor(const ir::OperandInfo &info, const ir::Layout layout)
+    : basic::Tensor{info, layout, nullptr}
+  {
+    // DO NOTHING
+  }
+
+public:
+  bool applyShape(const ir::Shape &) override { return false; }
+};
+
 using ExternalTensor = basic::ExternalTensor;
 
 } // namespace train
