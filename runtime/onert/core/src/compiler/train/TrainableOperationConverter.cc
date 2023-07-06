@@ -34,6 +34,11 @@ TrainableOperationConverter::TrainableOperationConverter(
   UNUSED_RELEASE(_training_info);
 }
 
+void TrainableOperationConverter::visit(const ir::operation::Conv2D &node)
+{
+  _return_op = std::make_unique<ir::train::operation::Conv2D>(node);
+}
+
 void TrainableOperationConverter::visit(const ir::operation::ElementwiseActivation &node)
 {
   if (node.param().op_type == ir::operation::ElementwiseActivation::Type::RELU)
@@ -54,6 +59,16 @@ void TrainableOperationConverter::visit(const ir::operation::Loss &node)
 void TrainableOperationConverter::visit(const ir::operation::Permute &node)
 {
   _return_op = std::make_unique<ir::train::operation::Permute>(node);
+}
+
+void TrainableOperationConverter::visit(const ir::operation::Reshape &node)
+{
+  _return_op = std::make_unique<ir::train::operation::Reshape>(node);
+}
+
+void TrainableOperationConverter::visit(const ir::operation::Softmax &node)
+{
+  _return_op = std::make_unique<ir::train::operation::Softmax>(node);
 }
 
 } // namespace train
