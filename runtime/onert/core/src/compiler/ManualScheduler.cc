@@ -42,7 +42,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
 
   // This fallback will be used in case that `backend_for_all` is unavailable
   auto fallback = [&]() -> const backend::Backend * {
-    for (auto backend_id : _options.backend_list)
+    for (auto &backend_id : _options.backend_list)
     {
       auto backend = resolveBackend(backend_id);
       if (backend)

@@ -163,7 +163,7 @@ void OperationValidator::visit(const operation::Concat &node)
 {
   const auto output_index{node.getOutputs().at(0)};
 
-  for (auto input_index : node.getInputs())
+  for (auto &input_index : node.getInputs())
   {
     OP_REQUIRES(isSameType(input_index, output_index));
 

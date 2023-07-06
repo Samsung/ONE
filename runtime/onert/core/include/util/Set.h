@@ -145,7 +145,7 @@ public:
   Set<Element> operator-(const Set<Element> &other) const // Minus
   {
     auto ret = *this;
-    for (auto e : other)
+    for (auto &e : other)
     {
       ret.remove(e);
     }

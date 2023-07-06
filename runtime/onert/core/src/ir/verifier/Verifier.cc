@@ -77,7 +77,7 @@ bool EdgeChecker::verify(const Graph &graph) const noexcept
   auto &operations = graph.operations();
   uint32_t errors = 0;
   operations.iterate([&](const OperationIndex &index, const IOperation &node) {
-    for (auto operand_index : node.getInputs() | ir::Remove::UNDEFINED)
+    for (auto &operand_index : node.getInputs() | ir::Remove::UNDEFINED)
     {
       try
       {
@@ -98,7 +98,7 @@ bool EdgeChecker::verify(const Graph &graph) const noexcept
         errors += 1;
       }
     }
-    for (auto operand_index : node.getOutputs() | ir::Remove::UNDEFINED)
+    for (auto &operand_index : node.getOutputs() | ir::Remove::UNDEFINED)
     {
       try
       {
@@ -127,7 +127,7 @@ bool EdgeChecker::verify(const Graph &graph) const noexcept
 
 bool InputOutputChecker::verify(const Graph &graph) const noexcept
 {
-  for (auto operand_ind :
+  for (auto &operand_ind :
        (graph.getInputs() + graph.getOutputs()) | Remove::DUPLICATED | Remove::UNDEFINED)
   {
     if (!graph.operands().exist(operand_ind))

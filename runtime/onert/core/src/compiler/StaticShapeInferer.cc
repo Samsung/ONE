@@ -102,7 +102,7 @@ void StaticShapeInferer::infer()
 bool StaticShapeInferer::checkDynamicInput(const ir::IOperation &op)
 {
   const auto &operands = _lowered_subg->graph().operands();
-  for (auto input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  for (auto &input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
   {
     if (operands.at(input_idx).info().isDynamic())
     {
@@ -116,7 +116,7 @@ bool StaticShapeInferer::checkDynamicInput(const ir::IOperation &op)
 bool StaticShapeInferer::checkDynamicOutput(const ir::IOperation &op)
 {
   auto &operands = _lowered_subg->graph().operands();
-  for (auto output_idx : op.getOutputs() | ir::Remove::UNDEFINED)
+  for (auto &output_idx : op.getOutputs() | ir::Remove::UNDEFINED)
   {
     if (operands.at(output_idx).info().isDynamic())
     {
@@ -129,7 +129,7 @@ bool StaticShapeInferer::checkDynamicOutput(const ir::IOperation &op)
 void StaticShapeInferer::setDynamicOutput(const ir::IOperation &op)
 {
   auto &operands = _lowered_subg->graph().operands();
-  for (auto output_idx : op.getOutputs() | ir::Remove::UNDEFINED)
+  for (auto &output_idx : op.getOutputs() | ir::Remove::UNDEFINED)
   {
     operands.at(output_idx).info().setDynamic();
   }
@@ -1122,7 +1122,7 @@ void StaticShapeInferer::visit(const ir::operation::Split &op)
   auto outputs = op.getOutputs();
   if (!axis.isConstant())
   {
-    for (auto output_idx : outputs)
+    for (auto &output_idx : outputs)
     {
       ir::Operand &output = operands.at(output_idx);
       output.info().setDynamic();

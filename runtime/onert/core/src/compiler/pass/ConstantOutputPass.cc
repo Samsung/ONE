@@ -49,7 +49,7 @@ void ConstantOutputPass::callback(const ir::OperandIndex &ind, ir::Operand &obj)
 
   // Make the operations that uses this operand to use the generated operand
   auto orig_uses = obj.getUses();
-  for (auto use : orig_uses)
+  for (auto &use : orig_uses)
   {
     permute_input_obj.insertUse(use);
     obj.removeUse(use);

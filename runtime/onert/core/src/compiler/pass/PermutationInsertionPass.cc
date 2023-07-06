@@ -54,13 +54,13 @@ void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Opera
   std::unordered_map<PermuteFactor, ir::OperandIndex> factor_to_index;
   {
     assert(operand_li->def_factors().size() == 1);
-    for (auto factor : operand_li->def_factors())
+    for (auto &factor : operand_li->def_factors())
     {
       factor_to_index.emplace(factor, index);
     }
 
     auto insert_set = operand_li->use_factors() - operand_li->def_factors();
-    for (auto factor : insert_set)
+    for (auto &factor : insert_set)
     {
       const auto permute_operation_index = insertPermute(index, factor);
       permute_indexes.push_back(permute_operation_index);
@@ -75,7 +75,7 @@ void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Opera
     std::list<ir::OperationIndex> remove_list;
 
     auto uses = object.getUses();
-    for (auto use : uses)
+    for (auto &use : uses)
     {
       // If permute operation, ignore it
       if (std::find(permute_indexes.begin(), permute_indexes.end(), use) != permute_indexes.end())
