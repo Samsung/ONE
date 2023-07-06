@@ -29,6 +29,7 @@ bool isInplaceOperation(const circle::BuiltinOperator &op)
     case circle::BuiltinOperator_RESHAPE:
     case circle::BuiltinOperator_ELU:
     case circle::BuiltinOperator_EXPAND_DIMS:
+    case circle::BuiltinOperator_EXP:
     case circle::BuiltinOperator_TANH:
     case circle::BuiltinOperator_ADD:
     case circle::BuiltinOperator_MUL:
