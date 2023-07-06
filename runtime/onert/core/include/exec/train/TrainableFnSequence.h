@@ -17,7 +17,7 @@
 #ifndef __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__
 #define __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__
 
-#include "exec/ITrainableFunction.h"
+#include "exec/train/ITrainableFunction.h"
 
 #include <memory>
 #include <vector>

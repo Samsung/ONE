@@ -19,7 +19,7 @@
 
 #include <ops/PoolLayer.h>
 
-#include <exec/ITrainableFunction.h>
+#include <exec/train/ITrainableFunction.h>
 
 namespace onert
 {
@@ -35,7 +35,7 @@ enum class PoolType
   kMax,
 };
 
-class PoolLayer : public ::onert::exec::ITrainableFunction, public cpu::ops::PoolLayer
+class PoolLayer : public ::onert::exec::train::ITrainableFunction, public cpu::ops::PoolLayer
 {
 public:
   PoolLayer();

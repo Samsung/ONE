@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_I_TRAINABLE_FUNCTION_H__
-#define __ONERT_EXEC_I_TRAINABLE_FUNCTION_H__
+#ifndef __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__
+#define __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__
 
 namespace onert
 {
 namespace exec
+{
+namespace train
 {
 
 class ITrainableFunction
@@ -30,7 +32,8 @@ public:
   virtual void backward() = 0;
 };
 
+} // namespace train
 } // namespace exec
 } // namespace onert
 
-#endif // __ONERT_EXEC_I_TRAINABLE_FUNCTION_H__
+#endif // __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__

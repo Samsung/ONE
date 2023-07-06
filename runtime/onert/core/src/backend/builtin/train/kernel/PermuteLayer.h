@@ -19,7 +19,7 @@
 
 #include "../../kernel/PermuteLayer.h"
 
-#include "exec/ITrainableFunction.h"
+#include "exec/train/ITrainableFunction.h"
 
 namespace onert
 {
@@ -32,7 +32,7 @@ namespace train
 namespace kernel
 {
 
-class PermuteLayer : public builtin::kernel::PermuteLayer, public exec::ITrainableFunction
+class PermuteLayer : public builtin::kernel::PermuteLayer, public exec::train::ITrainableFunction
 {
 public:
   PermuteLayer(const std::vector<ITensor *> &src_tensors, const std::vector<ITensor *> &dst_tensors,
