@@ -68,7 +68,7 @@ private:
 class StaticShapeInferer : public ir::OperationVisitor
 {
 public:
-  StaticShapeInferer(compiler::LoweredGraph *lowered_subg)
+  StaticShapeInferer(compiler::ILoweredGraph *lowered_subg)
     : _lowered_subg{lowered_subg}, _subg_input_observers{}, _controlflow_output_observer{nullptr},
       _child_inferers{}
   {
@@ -102,13 +102,13 @@ public:
   void dump();
 
   /**
-   * @brief     Create a lowered model shape inferer map
-   * @param[in] lowered_subgs lowered model subgraph map
+   * @brief     Create a shape inferer map for a lowered model
+   * @param[in] lowered_subgs lowered model map
    * @return    Shape inferer map
    */
   static std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>>
   createStaticShapeInferers(
-    const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<LoweredGraph>> &lowered_subgs);
+    const std::unordered_map<ir::SubgraphIndex, ILoweredGraph *> &lowered_subgs);
 
 private:
   bool checkDynamicInput(const ir::IOperation &op);
@@ -178,7 +178,7 @@ private:
   void handleSimpleUnaryOp(const ir::Operation &op, const ir::OperandIndex input_idx);
 
 private:
-  compiler::LoweredGraph *_lowered_subg;
+  compiler::ILoweredGraph *_lowered_subg;
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<OperandObserver>>
     _subg_input_observers;                                       // child subg input
   std::unique_ptr<OperandObserver> _controlflow_output_observer; // parent controlflow op output
