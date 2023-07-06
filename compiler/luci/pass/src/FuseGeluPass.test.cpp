@@ -99,10 +99,10 @@ protected:
   luci::CircleConst *_const_half = nullptr;
 };
 
-class FuseGeluTestGraph : public TestIOGraph, public GeluGraphlet
+class FuseGeluTestGraph1 : public TestIOGraph, public GeluGraphlet
 {
 public:
-  FuseGeluTestGraph() = default;
+  FuseGeluTestGraph1() = default;
 
   void init(void)
   {
@@ -122,6 +122,32 @@ public:
     _mul_half->y(_const_half);
 
     output()->from(_mul_half);
+  }
+};
+
+class FuseGeluTestGraph2 : public TestIOGraph, public GeluGraphlet
+{
+public:
+  FuseGeluTestGraph2() = default;
+
+  void init(void)
+  {
+    TestIOGraph::init({1}, {1});
+    GeluGraphlet::init(g());
+
+    _ifm->x(input());
+    _mul_sqrt->x(_ifm);
+    _mul_sqrt->y(_const_sqrt);
+    _erf->inputs(0, _mul_sqrt);
+    _erf_out->input(_erf);
+    _add_one->x(_erf_out);
+    _add_one->y(_const_one);
+    _mul_half->x(_ifm);
+    _mul_half->y(_const_half);
+    _mul->x(_mul_half);
+    _mul->y(_add_one);
+
+    output()->from(_mul);
   }
 };
 
@@ -161,9 +187,19 @@ TEST(FuseGeluPassTest, name)
   ASSERT_NE(nullptr, name);
 }
 
-TEST(FuseGeluPassTest, fuse)
+TEST(FuseGeluPassTest, fuse_pattern1)
 {
-  FuseGeluTestGraph g;
+  FuseGeluTestGraph1 g;
+  luci::FuseGeluPass pass;
+
+  g.init();
+
+  EXPECT_TRUE(pass.run(g.g()));
+}
+
+TEST(FuseGeluPassTest, fuse_pattern2)
+{
+  FuseGeluTestGraph2 g;
   luci::FuseGeluPass pass;
 
   g.init();
@@ -174,6 +210,17 @@ TEST(FuseGeluPassTest, fuse)
 TEST(FuseGeluPassTest, fuse_invalid_half_NEG)
 {
   FuseGeluTestNegGraph g;
+  luci::FuseGeluPass pass;
+
+  g.init();
+  g.invalid_half();
+
+  EXPECT_FALSE(pass.run(g.g()));
+}
+
+TEST(FuseGeluPassTest, fuse_pattern2_invalid_half_NEG)
+{
+  FuseGeluTestGraph2 g;
   luci::FuseGeluPass pass;
 
   g.init();
