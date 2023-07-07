@@ -300,7 +300,7 @@ void DynamicShapeInferer::visit(const ir::operation::Concat &op)
 
   // getting output shape
   onert::shape_inference::Shapes in_shapes;
-  for (auto input_ind : op.getInputs())
+  for (auto &input_ind : op.getInputs())
   {
     auto input = _tensor_registry->getITensor(input_ind);
     ir::Shape shape = input->getShape();
@@ -1042,7 +1042,7 @@ void DynamicShapeInferer::visit(const ir::operation::Split &op)
 
   // Return if all tensors are not dynamic
   bool has_dynamic = false;
-  for (const auto output_idx : op.getOutputs())
+  for (const auto &output_idx : op.getOutputs())
   {
     auto output = _tensor_registry->getITensor(output_idx);
     has_dynamic |= output->is_dynamic();

@@ -101,7 +101,7 @@ generate_dot_operations(const ir::Graph &graph,
   operations.iterate([&](const ir::OperationIndex &index, const ir::IOperation &op) {
     auto node = std::make_unique<Operation>(index, op);
 
-    for (auto input : op.getInputs())
+    for (auto &input : op.getInputs())
     {
       using onert::dumper::dot::Operand;
 
@@ -113,7 +113,7 @@ generate_dot_operations(const ir::Graph &graph,
       input_node->addOutEdge(node.get());
     }
 
-    for (auto output : op.getOutputs() | ir::Remove::UNDEFINED)
+    for (auto &output : op.getOutputs() | ir::Remove::UNDEFINED)
     {
       using onert::dumper::dot::Operand;
       auto &output_node = dot_operands.at(output);

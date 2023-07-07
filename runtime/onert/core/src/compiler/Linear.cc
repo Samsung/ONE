@@ -37,7 +37,7 @@ std::vector<ir::OperationIndex> Linear::linearize(const compiler::ILoweredGraph 
 void Linear::dump(const compiler::ILoweredGraph &lowered_graph,
                   const std::vector<ir::OperationIndex> &order)
 {
-  for (const auto ind : order)
+  for (const auto &ind : order)
   {
     // TODO Could logging system can handle this? (Inserting prefix for each line)
     std::istringstream iss{dumper::text::formatOperation(lowered_graph.graph(), ind)};

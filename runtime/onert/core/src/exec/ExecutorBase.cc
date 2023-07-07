@@ -35,7 +35,7 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
 {
   auto build_tensor_list = [&](const auto &ind_seq, auto &tensors) {
     assert(tensors.empty());
-    for (auto ind : ind_seq)
+    for (auto &ind : ind_seq)
     {
       backend::ITensor *tensor = tensor_regs.getITensor(ind);
       assert(tensor != nullptr);

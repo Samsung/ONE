@@ -47,7 +47,7 @@ void DotBuilder::add(const Node &node)
   _dot << node.id();
   std::stringstream ss;
   _dot << "[";
-  for (auto attr : node.attributes())
+  for (auto &attr : node.attributes())
   {
     _dot << attr.first << "=\"" << attr.second << "\" ";
   }

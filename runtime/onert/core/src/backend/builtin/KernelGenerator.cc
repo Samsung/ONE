@@ -71,14 +71,14 @@ void KernelGenerator::visit(const ir::operation::If &node)
   const auto else_subg_index = node.param().else_subg_index;
 
   std::vector<backend::IPortableTensor *> input_tensors;
-  for (const auto input_index : node.getInputs())
+  for (const auto &input_index : node.getInputs())
   {
     auto input_tensor = getPortableTensor(input_index);
     input_tensors.emplace_back(input_tensor);
   }
 
   std::vector<backend::IPortableTensor *> output_tensors;
-  for (const auto output_index : node.getOutputs())
+  for (const auto &output_index : node.getOutputs())
   {
     auto output_tensor = getPortableTensor(output_index);
     output_tensors.emplace_back(output_tensor);
@@ -117,14 +117,14 @@ void KernelGenerator::visit(const ir::operation::While &node)
   // This op does not support input as a constant, because builtin backend does not have
   // TensorBuilder
   std::vector<backend::IPortableTensor *> input_tensors;
-  for (const auto input_index : node.getInputs())
+  for (const auto &input_index : node.getInputs())
   {
     auto input_tensor = getPortableTensor(input_index);
     input_tensors.emplace_back(input_tensor);
   }
 
   std::vector<backend::IPortableTensor *> output_tensors;
-  for (const auto output_index : node.getOutputs())
+  for (const auto &output_index : node.getOutputs())
   {
     auto output_tensor = getPortableTensor(output_index);
     output_tensors.emplace_back(output_tensor);

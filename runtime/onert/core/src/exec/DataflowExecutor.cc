@@ -104,7 +104,7 @@ DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lower
 
   operations.iterate([&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
     auto job_index = op_to_job[op_ind];
-    for (auto output : op.getOutputs())
+    for (auto &output : op.getOutputs())
     {
       // Update output and input info
       operations.iterate([&](const ir::OperationIndex &op_cur_ind, const ir::IOperation &op_cur) {
