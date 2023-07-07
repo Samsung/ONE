@@ -42,6 +42,8 @@ class GeluPatternBase
 public:
   GeluPatternBase(luci::CircleMul *candidate) { _pattern_last_node = candidate; }
 
+  virtual ~GeluPatternBase() = default;
+
 public:
   virtual bool matched() = 0;
 
@@ -143,6 +145,8 @@ public:
     _mul_half = candidate;
   }
 
+  ~GeluPattern1() override = default;
+
 public:
   bool matched() override;
 };
@@ -195,13 +199,11 @@ public:
     _mul = candidate;
   }
 
+  ~GeluPattern2() override = default;
+
 public:
   bool matched() override;
 };
-
-#define CHECK_OR_FALSE(condition) \
-  if (not(condition))             \
-    return false;
 
 bool GeluPattern2::matched()
 {
