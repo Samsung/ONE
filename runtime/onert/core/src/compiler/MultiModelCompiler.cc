@@ -55,7 +55,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
   /***************************************************
    * Prepare compilation phase
    ***************************************************/
-  for (auto options : _voptions)
+  for (auto &&options : _voptions)
   {
     if (!options)
       throw std::runtime_error{"Empty compile option"};

@@ -256,7 +256,7 @@ uint32_t sizeOfData(OperandType type, const std::vector<int32_t> &dimensions)
       break;
   }
 
-  for (auto d : dimensions)
+  for (auto &&d : dimensions)
   {
     assert(d >= 0);
     size *= static_cast<uint32_t>(d);

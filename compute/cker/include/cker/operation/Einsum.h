@@ -274,7 +274,7 @@ public:
     }
     for (int i = 0; i < num_inputs; ++i)
     {
-      for (int label : free_labels[i])
+      for (auto &&label : free_labels[i])
       {
         result_labels.push_back(label);
         result_shape_dims.push_back(label_to_dim_sizes[label]);
@@ -300,7 +300,7 @@ public:
     {
       // We inflated the output. Modify result labels accordingly.
       Labels inflated_labels;
-      for (int label : result_labels)
+      for (auto &&label : result_labels)
       {
         inflated_labels.insert(inflated_labels.end(), output_label_counts[label], label);
       }
@@ -775,7 +775,7 @@ private:
     Shape inflated_shape;
     std::vector<int32_t> strided_shape_dims;
     std::vector<int32_t> inflated_shape_dims;
-    for (int label : labels)
+    for (auto &&label : labels)
     {
       const int32_t count = label_counts[label];
       const int current_axis =

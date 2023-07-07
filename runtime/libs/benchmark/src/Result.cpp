@@ -57,7 +57,7 @@ double minTimeMs(const benchmark::Phase &phase)
 double geomeanTimeMs(const benchmark::Phase &phase)
 {
   double log_sum = 0.0;
-  for (auto t_us : phase.time)
+  for (auto &&t_us : phase.time)
   {
     log_sum += std::log(t_us / 1e3);
   }

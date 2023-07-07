@@ -37,7 +37,7 @@ namespace
 std::string formatOperandIndexSequence(const ir::OperandIndexSequence &seq)
 {
   std::vector<std::string> strs;
-  for (auto &ind : seq)
+  for (auto &&ind : seq)
     strs.push_back(dumper::text::formatOperandBrief(ind));
   return nnfw::misc::join(strs.begin(), strs.end(), ", ");
 }
@@ -82,7 +82,7 @@ void dumpGraph(const ir::Graph &graph)
 {
   VERBOSE(GraphDumper) << "{\n";
   auto ops_topol = graph.topolSortOperations();
-  for (auto &op_ind : ops_topol)
+  for (auto &&op_ind : ops_topol)
   {
     const auto &op = graph.operations().at(op_ind);
     VERBOSE(GraphDumper) << "  " << formatOperation(op, op_ind) << "\n";

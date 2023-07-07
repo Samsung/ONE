@@ -261,13 +261,13 @@ template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorManager<T_ITensor, T_Tensor, T_SubTensor>::iterate(
   const std::function<void(const ir::OperandIndex &)> &fn)
 {
-  for (auto it : _nonconst_mgr->tensors())
+  for (auto &&it : _nonconst_mgr->tensors())
     fn(it.first);
 
-  for (auto it : _nonconst_mgr->subtensors())
+  for (auto &&it : _nonconst_mgr->subtensors())
     fn(it.first);
 
-  for (auto it : _const_mgr->tensors())
+  for (auto &&it : _const_mgr->tensors())
     fn(it.first);
 }
 

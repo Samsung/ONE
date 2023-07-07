@@ -23,7 +23,7 @@ namespace ir
 
 LayoutSet::LayoutSet(std::initializer_list<Layout> layouts)
 {
-  for (auto layout : layouts)
+  for (auto &&layout : layouts)
   {
     _set.insert(layout);
   }
@@ -32,7 +32,7 @@ LayoutSet::LayoutSet(std::initializer_list<Layout> layouts)
 LayoutSet LayoutSet::operator|(const LayoutSet &other) const
 {
   auto ret = *this;
-  for (auto layout : other)
+  for (auto &&layout : other)
   {
     ret.add(layout);
   }
@@ -42,7 +42,7 @@ LayoutSet LayoutSet::operator|(const LayoutSet &other) const
 LayoutSet LayoutSet::operator&(const LayoutSet &other) const
 {
   LayoutSet ret;
-  for (auto layout : other)
+  for (auto &&layout : other)
   {
     if (contains(layout))
     {
@@ -55,7 +55,7 @@ LayoutSet LayoutSet::operator&(const LayoutSet &other) const
 LayoutSet LayoutSet::operator-(const LayoutSet &other) const
 {
   auto ret = *this;
-  for (auto layout : other)
+  for (auto &&layout : other)
   {
     ret.remove(layout);
   }

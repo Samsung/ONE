@@ -58,7 +58,7 @@ public:
       _is_profiling_mode{options.he_profiling_mode}, _is_linear_exec{options.executor == "Linear"},
       _is_parallel_exec{options.executor == "Parallel"}
   {
-    for (auto entry : backends)
+    for (auto &&entry : backends)
     {
       if (entry->config()->id() == backend::builtin::Config::ID)
         continue;

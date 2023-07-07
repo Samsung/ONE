@@ -74,7 +74,7 @@ backend::train::FunctionMap BackendContext::genKernels()
 {
   backend::train::FunctionMap ret;
 
-  for (auto op_ind : _tdata->op_order)
+  for (auto &&op_ind : _tdata->op_order)
   {
     auto tn_seq = kernel_gen->generate(op_ind);
     ret.emplace_back(op_ind, std::move(tn_seq));

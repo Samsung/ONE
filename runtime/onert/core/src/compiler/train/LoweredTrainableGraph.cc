@@ -55,7 +55,7 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
   // Build backend contexts
   auto &backend_manager = BackendManager::get();
   // Create contexts for other backends
-  for (auto backend_str : options.backend_list)
+  for (auto &&backend_str : options.backend_list)
   {
     backend_manager.loadBackend(backend_str);
     auto backend = backend_manager.get(backend_str);
@@ -127,9 +127,9 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
   // TODO Update LowerInfo for training
 
   VERBOSE(LoweredTrainableGraph) << "Dump after all the passes" << std::endl;
-  for (auto operand : _trainable_graph.getInputs())
+  for (auto &&operand : _trainable_graph.getInputs())
     VERBOSE(LoweredTrainableGraph) << "Graph Input : " << operand << std::endl;
-  for (auto operand : _trainable_graph.getOutputs())
+  for (auto &&operand : _trainable_graph.getOutputs())
     VERBOSE(LoweredTrainableGraph) << "Graph Output : " << operand << std::endl;
   dumper::text::dumpLoweredGraph(*this);
 
@@ -162,12 +162,12 @@ void LoweredTrainableGraph::makeLowerInfo(const compiler::BackendResolver &backe
       // TODO Change setting layout of each backend at another place
       auto backend_layout = backend->config()->supportLayout(op, frontend_layout);
 
-      for (auto ind : op.getInputs() | ir::Remove::UNDEFINED)
+      for (auto &&ind : op.getInputs() | ir::Remove::UNDEFINED)
       {
         auto &operand_li = lower_info().operand.at(ind);
         operand_li.addUsePermuteFactor(PermuteFactor{backend, backend_layout});
       }
-      for (auto ind : op.getOutputs() | ir::Remove::UNDEFINED)
+      for (auto &&ind : op.getOutputs() | ir::Remove::UNDEFINED)
       {
         auto &operand_li = lower_info().operand.at(ind);
         operand_li.addDefPermuteFactor(PermuteFactor{backend, backend_layout});
@@ -179,13 +179,13 @@ void LoweredTrainableGraph::makeLowerInfo(const compiler::BackendResolver &backe
   // Handle graph inputs and outputs
   const auto builtin_backend = BackendManager::get().getBuiltin();
   auto factor = PermuteFactor{builtin_backend, _trainable_graph.layout()};
-  for (auto index : _trainable_graph.getInputs() | ir::Remove::UNDEFINED)
+  for (auto &&index : _trainable_graph.getInputs() | ir::Remove::UNDEFINED)
   {
     auto &operand_li = lower_info().operand.at(index);
     assert(operand_li.def_factors().empty());
     operand_li.addDefPermuteFactor(factor);
   }
-  for (auto index : _trainable_graph.getOutputs() | ir::Remove::UNDEFINED)
+  for (auto &&index : _trainable_graph.getOutputs() | ir::Remove::UNDEFINED)
   {
     auto &operand_li = lower_info().operand.at(index);
     operand_li.addUsePermuteFactor(factor);
@@ -231,7 +231,7 @@ void LoweredTrainableGraph::dumpLowerInfo()
 
       auto factors_to_string = [](const PermuteFactorSet &factors) {
         std::string str;
-        for (auto factor : factors)
+        for (auto &&factor : factors)
         {
           str += factor.backend()->config()->id();
           str += "(" + to_string(factor.layout()) + ")";
@@ -243,7 +243,7 @@ void LoweredTrainableGraph::dumpLowerInfo()
       auto operation_index_set_to_string = [](const ir::OperationIndexSet &operations) {
         std::stringstream sstream;
         sstream << "{ ";
-        for (auto op : operations)
+        for (auto &&op : operations)
           sstream << op << " ";
         sstream << "}";
         return sstream.str();

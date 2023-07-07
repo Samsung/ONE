@@ -85,7 +85,7 @@ public:
 
   void run() override
   {
-    for (auto tensor : _dealloc_list)
+    for (auto &&tensor : _dealloc_list)
     {
       if (!tensor->is_dynamic())
         continue;
@@ -116,7 +116,7 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   }
   assert(builtin_tensor_reg);
 
-  for (auto &ind : indices)
+  for (auto &&ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
     auto tensor = std::make_unique<backend::builtin::IOTensor>(
@@ -147,7 +147,7 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   }
   assert(builtin_tensor_reg);
 
-  for (auto ind : indices)
+  for (auto &&ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
     auto tensor = std::make_unique<backend::builtin::IOTensor>(
@@ -171,7 +171,7 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
   std::unordered_map<const backend::Backend *, backend::ContextData> context_data_map;
 
   // Generate partial graphs for each backend
-  for (auto backend : backend_manager.getAll())
+  for (auto &&backend : backend_manager.getAll())
   {
     auto &data = context_data_map[backend];
     auto graph = std::make_unique<ir::Graph>();
@@ -214,7 +214,7 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
         // Add missing operands (externals)
         auto io_list = (operation.getInputs() + operation.getOutputs()) | ir::Remove::DUPLICATED |
                        ir::Remove::UNDEFINED;
-        for (auto &operand_ind : io_list)
+        for (auto &&operand_ind : io_list)
         {
           if (partial_graph.operands().exist(operand_ind))
             continue;
@@ -330,7 +330,7 @@ void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_gra
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
       auto lower_info = lowered_graph.lower_info().operation.getRawPtr(op_ind);
       auto &backend_ctx = backend_contexts.at(lower_info->backend());
-      for (auto &ind :
+      for (auto &&ind :
            (op.getInputs() + op.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
       {
         // If an Operation's input/output tensor does not have an own tensor object,
@@ -633,7 +633,7 @@ void ExecutorFactory::prepareMigrantTensors(
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
       auto lower_info = lowered_graph.lower_info().operation.getRawPtr(op_ind);
       auto &backend_ctx = backend_contexts.at(lower_info->backend());
-      for (auto ind :
+      for (auto &&ind :
            (op.getInputs() + op.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
       {
         // If an Operation's input/output tensor does not have an own tensor object,

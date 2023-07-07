@@ -75,7 +75,7 @@ bool OperationValidator::isValidType(const OperandIndex &idx, const DataType &ty
 bool OperationValidator::isValidType(const OperandIndex &idx,
                                      std::initializer_list<DataType> valid_types)
 {
-  for (auto type_to_check : valid_types)
+  for (auto &&type_to_check : valid_types)
   {
     if (isValidType(idx, type_to_check))
     {
@@ -163,7 +163,7 @@ void OperationValidator::visit(const operation::Concat &node)
 {
   const auto output_index{node.getOutputs().at(0)};
 
-  for (auto &input_index : node.getInputs())
+  for (auto &&input_index : node.getInputs())
   {
     OP_REQUIRES(isSameType(input_index, output_index));
 

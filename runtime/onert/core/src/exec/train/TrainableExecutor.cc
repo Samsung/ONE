@@ -38,7 +38,7 @@ TrainableExecutor::TrainableExecutor(
 {
   auto build_tensor_list = [&](const auto &ind_seq, auto &tensors) {
     assert(tensors.empty());
-    for (auto ind : ind_seq)
+    for (auto &&ind : ind_seq)
     {
       backend::ITensor *tensor = tensor_regs.getITensor(ind);
       assert(tensor != nullptr);
@@ -49,7 +49,7 @@ TrainableExecutor::TrainableExecutor(
   build_tensor_list(_trainable_graph.getInputs(), _input_tensors);
   build_tensor_list(_trainable_graph.getOutputs(), _output_tensors);
 
-  for (auto index : order)
+  for (auto &&index : order)
   {
     auto &trainable_code = code_map.at(index);
     _code.emplace_back(std::move(trainable_code));
