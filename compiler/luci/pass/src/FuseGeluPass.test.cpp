@@ -99,10 +99,10 @@ protected:
   luci::CircleConst *_const_half = nullptr;
 };
 
-class FuseGeluTestGraph : public TestIOGraph, public GeluGraphlet
+class FuseGeluTestGraph1 : public TestIOGraph, public GeluGraphlet
 {
 public:
-  FuseGeluTestGraph() = default;
+  FuseGeluTestGraph1() = default;
 
   void init(void)
   {
@@ -161,9 +161,9 @@ TEST(FuseGeluPassTest, name)
   ASSERT_NE(nullptr, name);
 }
 
-TEST(FuseGeluPassTest, fuse)
+TEST(FuseGeluPassTest, fuse_pattern1)
 {
-  FuseGeluTestGraph g;
+  FuseGeluTestGraph1 g;
   luci::FuseGeluPass pass;
 
   g.init();
