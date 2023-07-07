@@ -52,7 +52,7 @@ public:
                  const std::vector<ir::OperationIndex> &order, const util::TracingCtx *tracing_ctx)
     : ExecutorBase{std::move(lowered_graph), std::move(backend_contexts), tensor_regs, tracing_ctx}
   {
-    for (auto &index : order)
+    for (auto &&index : order)
     {
       _code.emplace_back(std::move(code_map.at(index)));
     }

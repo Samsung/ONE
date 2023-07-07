@@ -253,7 +253,7 @@ void DynamicShapeInferer::visit(const ir::operation::Concat &op)
     So, only when all inputs are static, we can skip dynamic shape inference.
   */
   bool all_static = true;
-  for (auto input_ind : op.getInputs())
+  for (auto &&input_ind : op.getInputs())
   {
     auto input = _tensor_registry->getITensor(input_ind);
     if (input->is_dynamic())
@@ -290,7 +290,7 @@ void DynamicShapeInferer::visit(const ir::operation::Concat &op)
     auto first_input_ind = op.getInputs().at(0);
     auto first_input = _tensor_registry->getITensor(first_input_ind);
 
-    for (auto input_ind : op.getInputs())
+    for (auto &&input_ind : op.getInputs())
     {
       auto input = _tensor_registry->getITensor(input_ind);
       if (input != first_input && !isConcatible(first_input, input, op.param().axis))
@@ -300,7 +300,7 @@ void DynamicShapeInferer::visit(const ir::operation::Concat &op)
 
   // getting output shape
   onert::shape_inference::Shapes in_shapes;
-  for (auto &input_ind : op.getInputs())
+  for (auto &&input_ind : op.getInputs())
   {
     auto input = _tensor_registry->getITensor(input_ind);
     ir::Shape shape = input->getShape();

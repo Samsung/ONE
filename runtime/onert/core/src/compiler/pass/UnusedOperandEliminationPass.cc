@@ -38,14 +38,14 @@ void UnusedOperandEliminationPass::run()
   util::Set<ir::OperandIndex> used;
 
   _graph.operations().iterate([&](const ir::OperationIndex &, const ir::IOperation &node) {
-    for (auto &ind : (node.getInputs() + node.getOutputs()) | ir::Remove::UNDEFINED)
+    for (auto &&ind : (node.getInputs() + node.getOutputs()) | ir::Remove::UNDEFINED)
     {
       used.add(ind);
     }
   });
 
   // Graph's inputs/outputs are always considered as used
-  for (auto &ind : (_graph.getInputs() + _graph.getOutputs()) | ir::Remove::UNDEFINED)
+  for (auto &&ind : (_graph.getInputs() + _graph.getOutputs()) | ir::Remove::UNDEFINED)
   {
     used.add(ind);
   }

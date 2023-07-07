@@ -30,7 +30,7 @@ ParallelScheduler::ParallelScheduler(const BackendSet &backends)
 {
   assert(!backends.empty());
 
-  for (auto backend : backends)
+  for (auto &&backend : backends)
   {
     _thread_pools[backend] = std::make_unique<ThreadPool>();
   }

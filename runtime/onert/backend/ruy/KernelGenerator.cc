@@ -55,7 +55,7 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   assert(_return_fn); // _return_fn must have been generated
   ret->append(std::move(_return_fn));
 
-  for (auto &ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
+  for (auto &&ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
     auto portable_tensor = _tensor_reg->getPortableTensor(ind);
     if (portable_tensor)

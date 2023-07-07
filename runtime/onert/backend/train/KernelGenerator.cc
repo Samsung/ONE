@@ -60,7 +60,7 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
   // TODO Enable the below code
   // ret->append(releaseFunction());
 
-  for (auto ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
+  for (auto &&ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
     auto portable_tensor = _tensor_reg->getPortableTensor(ind);
     if (portable_tensor)

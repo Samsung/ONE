@@ -31,7 +31,7 @@ OperandIndexSequence::OperandIndexSequence(std::initializer_list<OperandIndex> l
 
 OperandIndexSequence::OperandIndexSequence(std::initializer_list<int32_t> list)
 {
-  for (auto val : list)
+  for (auto &&val : list)
   {
     _vec.emplace_back(static_cast<uint32_t>(val));
   }
@@ -39,7 +39,7 @@ OperandIndexSequence::OperandIndexSequence(std::initializer_list<int32_t> list)
 
 OperandIndexSequence::OperandIndexSequence(std::initializer_list<uint32_t> list)
 {
-  for (auto val : list)
+  for (auto &&val : list)
   {
     _vec.emplace_back(val);
   }

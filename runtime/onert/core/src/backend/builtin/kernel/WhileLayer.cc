@@ -96,7 +96,7 @@ void WhileLayer::run()
   // Need some temp tensors to hold the body subgraph output
   std::vector<std::unique_ptr<Tensor>> temp_outputs_o;
   std::vector<IPortableTensor *> temp_outputs;
-  for (auto io_tensor : body_exec->getOutputTensors())
+  for (auto &&io_tensor : body_exec->getOutputTensors())
   {
     auto tensor = std::make_unique<Tensor>(io_tensor->orig_info(), io_tensor->orig_layout(),
                                            _dyn_memory_manager);
@@ -139,7 +139,7 @@ void WhileLayer::run()
 
   // Clean-up the temp tensors
   _dyn_memory_manager->deallocate(cond_output_tensor.get());
-  for (auto tensor : temp_outputs)
+  for (auto &&tensor : temp_outputs)
   {
     _dyn_memory_manager->deallocate(tensor);
   }
