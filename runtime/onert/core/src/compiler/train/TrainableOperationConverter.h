@@ -41,6 +41,7 @@ private:
   void visit(const ir::operation::ElementwiseActivation &) override;
   void visit(const ir::operation::Loss &node) override;
   void visit(const ir::operation::Permute &node) override;
+  void visit(const ir::operation::Pool2D &node) override;
   void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::Softmax &) override;
 
