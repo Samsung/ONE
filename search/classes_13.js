@@ -115,7 +115,7 @@ var searchData=
   ['small_5fvector_3c_20int_5ffast32_5ft_2c_20max_5fdimension_5fcount_20_3e_112',['small_vector&lt; int_fast32_t, MAX_DIMENSION_COUNT &gt;',['../classadt_1_1small__vector.html',1,'adt']]],
   ['smhash_113',['SMHash',['../structonert_1_1exec_1_1_s_m_hash.html',1,'onert::exec']]],
   ['snpewriter_114',['SNPEWriter',['../class_s_n_p_e_writer.html',1,'']]],
-  ['softmax_115',['Softmax',['../classloco_1_1_softmax.html',1,'loco::Softmax&lt; D &gt;'],['../classluci__interpreter_1_1kernels_1_1_softmax.html',1,'luci_interpreter::kernels::Softmax'],['../classonert_1_1ir_1_1operation_1_1_softmax.html',1,'onert::ir::operation::Softmax']]],
+  ['softmax_115',['Softmax',['../classloco_1_1_softmax.html',1,'loco::Softmax&lt; D &gt;'],['../classluci__interpreter_1_1kernels_1_1_softmax.html',1,'luci_interpreter::kernels::Softmax'],['../classonert_1_1ir_1_1operation_1_1_softmax.html',1,'onert::ir::operation::Softmax'],['../classonert_1_1ir_1_1train_1_1operation_1_1_softmax.html',1,'onert::ir::train::operation::Softmax']]],
   ['softmax_3c_20domain_3a_3atensor_20_3e_116',['Softmax&lt; Domain::Tensor &gt;',['../classloco_1_1_softmax_3_01_domain_1_1_tensor_01_4.html',1,'loco']]],
   ['softmaxcanonicalizer_117',['SoftmaxCanonicalizer',['../classmoco_1_1tf_1_1_softmax_canonicalizer.html',1,'moco::tf']]],
   ['softmaxchef_118',['SoftmaxChef',['../class_softmax_chef.html',1,'']]],

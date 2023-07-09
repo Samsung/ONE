@@ -101,10 +101,10 @@ Collaboration diagram for onert::backend::train::ops::ConvolutionLayer:</div>
 <div class="dyncontent">
 <div class="center"><img src="classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer__coll__graph.png" border="0" usemap="#aonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer_coll__map" alt="Collaboration graph"/></div>
 <map name="aonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer_coll__map" id="aonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer_coll__map">
-<area shape="rect" title=" " alt="" coords="127,167,281,207"/>
-<area shape="rect" href="classonert_1_1exec_1_1_i_trainable_function.html" title=" " alt="" coords="5,86,203,111"/>
-<area shape="rect" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html" title=" " alt="" coords="227,79,381,119"/>
-<area shape="rect" href="classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="232,5,376,31"/>
+<area shape="rect" title=" " alt="" coords="79,167,234,207"/>
+<area shape="rect" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="5,79,140,119"/>
+<area shape="rect" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html" title=" " alt="" coords="165,79,319,119"/>
+<area shape="rect" href="classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="170,5,314,31"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -118,11 +118,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aabdf11516709c95c23d5140170d5bea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9690f1e9536de9fc662af1f195d9b646"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html#a9690f1e9536de9fc662af1f195d9b646">forward</a> (bool training) override</td></tr>
 <tr class="separator:a9690f1e9536de9fc662af1f195d9b646"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classonert_1_1exec_1_1_i_trainable_function"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1exec_1_1_i_trainable_function')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1exec_1_1_i_trainable_function.html">onert::exec::ITrainableFunction</a></td></tr>
-<tr class="memitem:a5b0734d8372f396a483e4b11a9a09120 inherit pub_methods_classonert_1_1exec_1_1_i_trainable_function"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_trainable_function.html#a5b0734d8372f396a483e4b11a9a09120">~ITrainableFunction</a> ()=default</td></tr>
-<tr class="separator:a5b0734d8372f396a483e4b11a9a09120 inherit pub_methods_classonert_1_1exec_1_1_i_trainable_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac456aebdf3a9ba24b44f54a3403c7fac inherit pub_methods_classonert_1_1exec_1_1_i_trainable_function"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_trainable_function.html#ac456aebdf3a9ba24b44f54a3403c7fac">forward</a> (bool training)=0</td></tr>
-<tr class="separator:ac456aebdf3a9ba24b44f54a3403c7fac inherit pub_methods_classonert_1_1exec_1_1_i_trainable_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5719db1ca23eb8a77d0b9c2e022ab080"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html#a5719db1ca23eb8a77d0b9c2e022ab080">backward</a> () override</td></tr>
+<tr class="separator:a5719db1ca23eb8a77d0b9c2e022ab080"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html">onert::exec::train::ITrainableFunction</a></td></tr>
+<tr class="memitem:a18d3e6fafe8019272fe7b37d0248bc69 inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a18d3e6fafe8019272fe7b37d0248bc69">~ITrainableFunction</a> ()=default</td></tr>
+<tr class="separator:a18d3e6fafe8019272fe7b37d0248bc69 inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1902f86c136b2f95027a29ba9909d94d inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">forward</a> (bool training)=0</td></tr>
+<tr class="separator:a1902f86c136b2f95027a29ba9909d94d inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2d337b03208fe6ecc83d6278e74ad24 inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">backward</a> ()=0</td></tr>
+<tr class="separator:ac2d337b03208fe6ecc83d6278e74ad24 inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html">onert::backend::cpu::ops::ConvolutionLayer</a></td></tr>
 <tr class="memitem:a6e0f2ff38038b0f40d21e1158ad11256 inherit pub_methods_classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6e0f2ff38038b0f40d21e1158ad11256">ConvolutionLayer</a> ()</td></tr>
 <tr class="separator:a6e0f2ff38038b0f40d21e1158ad11256 inherit pub_methods_classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,6 +207,38 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5719db1ca23eb8a77d0b9c2e022ab080" name="a5719db1ca23eb8a77d0b9c2e022ab080"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5719db1ca23eb8a77d0b9c2e022ab080">&#9670;&#160;</a></span>backward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::backend::train::ops::ConvolutionLayer::backward </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00049">49</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
+<div class="line"><span class="lineno">   51</span>  <span class="comment">// TODO Implement detail</span></div>
+<div class="line"><span class="lineno">   52</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="aabdf11516709c95c23d5140170d5bea5" name="aabdf11516709c95c23d5140170d5bea5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aabdf11516709c95c23d5140170d5bea5">&#9670;&#160;</a></span>configure()</h2>
 
@@ -337,7 +373,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="classonert_1_1exec_1_1_i_trainable_function.html#ac456aebdf3a9ba24b44f54a3403c7fac">onert::exec::ITrainableFunction</a>.</p>
+<p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00048">48</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   48</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a580c96aa5b1f21c67b46291cb20a6d02">cpu::ops::ConvolutionLayer::run</a>(); }</div>

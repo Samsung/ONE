@@ -1,8 +1,12 @@
 var dir_104e229a55baff0fb5ab3e5f4d677b64 =
 [
+    [ "abs", "dir_bfe4c2ee996e3414e0abf8c2da15e122.html", "dir_bfe4c2ee996e3414e0abf8c2da15e122" ],
     [ "add", "dir_e5b12bf4ce29acb62d40cf2078e9e2d0.html", "dir_e5b12bf4ce29acb62d40cf2078e9e2d0" ],
+    [ "average_pool_2d", "dir_210b7b17a0510d919ecd74bae5c0f2d5.html", "dir_210b7b17a0510d919ecd74bae5c0f2d5" ],
     [ "concatenation", "dir_85b3a793cbfe63d498b2c2273d334b86.html", "dir_85b3a793cbfe63d498b2c2273d334b86" ],
     [ "conv2d", "dir_142acff38621ad3b7a79d130ad465945.html", "dir_142acff38621ad3b7a79d130ad465945" ],
+    [ "elu", "dir_10a90285a48fd49ab735431f6f6d32aa.html", "dir_10a90285a48fd49ab735431f6f6d32aa" ],
+    [ "exp", "dir_65894ab2618522e4cab0dad9f080208b.html", "dir_65894ab2618522e4cab0dad9f080208b" ],
     [ "expand_dims", "dir_543957dce938a821741d083149b5a473.html", "dir_543957dce938a821741d083149b5a473" ],
     [ "fill", "dir_6ae17bd6563440bc155686b7ced4f245.html", "dir_6ae17bd6563440bc155686b7ced4f245" ],
     [ "fully_connected", "dir_df964db71445fee191e13ec482e750f1.html", "dir_df964db71445fee191e13ec482e750f1" ],

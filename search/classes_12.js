@@ -94,7 +94,7 @@ var searchData=
   ['requantizepass_91',['RequantizePass',['../classluci_1_1_requantize_pass.html',1,'luci']]],
   ['request_92',['Request',['../struct_request.html',1,'']]],
   ['requestargument_93',['RequestArgument',['../struct_request_argument.html',1,'']]],
-  ['reshape_94',['Reshape',['../classloco_1_1_reshape.html',1,'loco::Reshape&lt; RT &gt;'],['../classluci__interpreter_1_1kernels_1_1_reshape.html',1,'luci_interpreter::kernels::Reshape'],['../classonert_1_1ir_1_1operation_1_1_reshape.html',1,'onert::ir::operation::Reshape']]],
+  ['reshape_94',['Reshape',['../classloco_1_1_reshape.html',1,'loco::Reshape&lt; RT &gt;'],['../classluci__interpreter_1_1kernels_1_1_reshape.html',1,'luci_interpreter::kernels::Reshape'],['../classonert_1_1ir_1_1operation_1_1_reshape.html',1,'onert::ir::operation::Reshape'],['../classonert_1_1ir_1_1train_1_1operation_1_1_reshape.html',1,'onert::ir::train::operation::Reshape']]],
   ['reshape_3c_20reshapetype_3a_3afixed_20_3e_95',['Reshape&lt; ReshapeType::Fixed &gt;',['../classloco_1_1_reshape_3_01_reshape_type_1_1_fixed_01_4.html',1,'loco']]],
   ['reshapecanonicalizer_96',['ReshapeCanonicalizer',['../classmoco_1_1tf_1_1_reshape_canonicalizer.html',1,'moco::tf']]],
   ['reshapechef_97',['ReshapeChef',['../class_reshape_chef.html',1,'']]],

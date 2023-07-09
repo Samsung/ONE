@@ -195,7 +195,7 @@ $(document).ready(function(){initNavTree('_dot_dumper_8cc_source.html',''); init
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  operations.iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;index, <span class="keyword">const</span> ir::IOperation &amp;op) {</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keyword">auto</span> node = std::make_unique&lt;Operation&gt;(index, op);</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> input : op.getInputs())</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input : op.getInputs())</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    {</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      <span class="keyword">using </span><a class="code hl_class" href="classonert_1_1dumper_1_1dot_1_1_operand.html">onert::dumper::dot::Operand</a>;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
@@ -207,7 +207,7 @@ $(document).ready(function(){initNavTree('_dot_dumper_8cc_source.html',''); init
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      <a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;addOutEdge(node.get());</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    }</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> output : op.getOutputs() | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">ir::Remove::UNDEFINED</a>)</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;output : op.getOutputs() | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">ir::Remove::UNDEFINED</a>)</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    {</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>      <span class="keyword">using </span><a class="code hl_class" href="classonert_1_1dumper_1_1dot_1_1_operand.html">onert::dumper::dot::Operand</a>;</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <span class="keyword">auto</span> &amp;<a class="code hl_function" href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">output_node</a> = dot_operands.<a class="code hl_function" href="classluci_1_1_fixed_arity_node.html#a0b5b5435bb9338e58c190babfb597a0c">at</a>(output);</div>

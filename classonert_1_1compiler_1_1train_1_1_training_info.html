@@ -111,8 +111,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0fcbc888131710235b40bd7e8aecdd9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeba69408ec896ae4df3830989a520576"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_training_info.html#aeba69408ec896ae4df3830989a520576">~TrainingInfo</a> ()=default</td></tr>
 <tr class="separator:aeba69408ec896ae4df3830989a520576"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ebfc8b48b459ea1d075d9b7312606ee"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_training_info.html#a7ebfc8b48b459ea1d075d9b7312606ee">shouldTrain</a> () const</td></tr>
-<tr class="separator:a7ebfc8b48b459ea1d075d9b7312606ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae18481defcfd627328d6df0b09793c7a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_training_info.html#ae18481defcfd627328d6df0b09793c7a">batchSize</a> () const</td></tr>
 <tr class="separator:ae18481defcfd627328d6df0b09793c7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e124a753e800ba7a0a26081ab9370d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_training_info.html#a0e124a753e800ba7a0a26081ab9370d9">setBatchSize</a> (const uint32_t batch_size)</td></tr>
@@ -150,7 +148,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00037">37</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>: _has_info{<span class="keyword">false</span>} {}</div>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -255,8 +253,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00045">45</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> _batch_size; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00044">44</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> _batch_size; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -283,8 +281,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00047">47</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> _loss_info; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00046">46</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> _loss_info; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -364,8 +362,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00046">46</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{ _batch_size = batch_size; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00045">45</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{ _batch_size = batch_size; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -393,42 +391,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00048">48</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span>    _loss_info = loss_info;</div>
-<div class="line"><span class="lineno">   51</span>    _has_info = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   52</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00047">47</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{ _loss_info = loss_info; }</div>
 </div><!-- fragment -->
-</div>
-</div>
-<a id="a7ebfc8b48b459ea1d075d9b7312606ee" name="a7ebfc8b48b459ea1d075d9b7312606ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ebfc8b48b459ea1d075d9b7312606ee">&#9670;&#160;</a></span>shouldTrain()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool onert::compiler::train::TrainingInfo::shouldTrain </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00044">44</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> _has_info; }</div>
-</div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_compiler_factory_8cc_source.html#l00038">onert::compiler::CompilerFactory::create()</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

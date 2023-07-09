@@ -5,7 +5,7 @@ var dir_667ae99e49d2abf9d4d4559494fe625c =
     [ "AddN.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_add_n_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_add_n_8h" ],
     [ "ArgMax.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_arg_max_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_arg_max_8h" ],
     [ "ArgMin.h", "tflite_2src_2_op_2include_2_arg_min_8h.html", "tflite_2src_2_op_2include_2_arg_min_8h" ],
-    [ "AveragePool2D.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_average_pool2_d_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_average_pool2_d_8h" ],
+    [ "AveragePool2D.h", "tflchef_2tflite_2src_2_op_2include_2_average_pool2_d_8h.html", "tflchef_2tflite_2src_2_op_2include_2_average_pool2_d_8h" ],
     [ "BatchMatMul.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_batch_mat_mul_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_batch_mat_mul_8h" ],
     [ "BatchToSpaceND.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_batch_to_space_n_d_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_batch_to_space_n_d_8h" ],
     [ "BidirectionalSequenceLSTM.h", "tflite_2src_2_op_2include_2_bidirectional_sequence_l_s_t_m_8h.html", "tflite_2src_2_op_2include_2_bidirectional_sequence_l_s_t_m_8h" ],

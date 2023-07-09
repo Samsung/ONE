@@ -1,0 +1,7 @@
+<map id="onert::ir::train::operation::Reshape" name="onert::ir::train::operation::Reshape">
+<area shape="rect" id="node1" title=" " alt="" coords="72,240,227,280"/>
+<area shape="rect" id="node2" href="$classonert_1_1ir_1_1operation_1_1_reshape.html" title=" " alt="" coords="5,152,128,192"/>
+<area shape="rect" id="node3" href="$classonert_1_1ir_1_1_operation.html" title=" " alt="" coords="35,79,162,104"/>
+<area shape="rect" id="node4" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="84,5,215,31"/>
+<area shape="rect" id="node5" href="$classonert_1_1ir_1_1train_1_1_i_trainable_operation.html" title=" " alt="" coords="153,152,311,192"/>
+</map>

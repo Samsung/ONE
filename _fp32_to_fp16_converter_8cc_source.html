@@ -870,7 +870,7 @@ $(document).ready(function(){initNavTree('_fp32_to_fp16_converter_8cc_source.htm
 <div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span> </div>
 <div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>  InputToOpSeqs input_to_op_seqs;</div>
 <div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>  op_seqs.iterate([&amp;](<span class="keyword">const</span> ir::OpSequenceIndex &amp;op_seq_idx, <span class="keyword">const</span> ir::OpSequence &amp;op_seq) {</div>
-<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> input : op_seq.getInputs() | ir::Remove::UNDEFINED)</div>
+<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input : op_seq.getInputs() | ir::Remove::UNDEFINED)</div>
 <div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>    {</div>
 <div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>      auto it = input_to_op_seqs.find(input);</div>
 <div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>      if (it == input_to_op_seqs.end())</div>
@@ -956,7 +956,7 @@ $(document).ready(function(){initNavTree('_fp32_to_fp16_converter_8cc_source.htm
 <div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>  <span class="comment">//    |</span></div>
 <div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>  <span class="comment">// [OPERATION] // op_seq_ind_next_to_fp16</span></div>
 <div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>  <span class="comment">//</span></div>
-<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it : opseq_map_to_delete)</div>
+<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it : opseq_map_to_delete)</div>
 <div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>  {</div>
 <div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>    <span class="comment">// fp16_to_fp32&#39;s input/output num is always 1</span></div>
 <div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>    <span class="keyword">auto</span> &amp;op_seq_ind_fp16_to_fp32 = it.first;</div>

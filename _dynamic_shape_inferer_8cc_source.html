@@ -347,7 +347,7 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="comment">    So, only when all inputs are static, we can skip dynamic shape inference.</span></div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="comment">  */</span></div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  <span class="keywordtype">bool</span> all_static = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input_ind : op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a9f59a46100157938710e64d40e2f2a88">getInputs</a>())</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input_ind : op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a9f59a46100157938710e64d40e2f2a88">getInputs</a>())</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  {</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <span class="keyword">auto</span> input = _tensor_registry-&gt;getITensor(input_ind);</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    <span class="keywordflow">if</span> (input-&gt;is_dynamic())</div>
@@ -384,7 +384,7 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="keyword">auto</span> first_input_ind = op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a9f59a46100157938710e64d40e2f2a88">getInputs</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a32ff6ad5b12e14c8e710fd0896d4eacf">at</a>(0);</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    <span class="keyword">auto</span> first_input = _tensor_registry-&gt;getITensor(first_input_ind);</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> input_ind : op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a9f59a46100157938710e64d40e2f2a88">getInputs</a>())</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input_ind : op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a9f59a46100157938710e64d40e2f2a88">getInputs</a>())</div>
 <div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    {</div>
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>      <span class="keyword">auto</span> input = _tensor_registry-&gt;getITensor(input_ind);</div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>      <span class="keywordflow">if</span> (input != first_input &amp;&amp; !isConcatible(first_input, input, op.<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_concat.html#a42e383790fc10fb307c8ad89118ebc76">param</a>().<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_concat_1_1_param.html#a07ab0fd85cb3c22a4e1bb082a31fedc3">axis</a>))</div>
@@ -394,7 +394,7 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>  <span class="comment">// getting output shape</span></div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>  <a class="code hl_typedef" href="namespaceonert_1_1shape__inference.html#a70e5c20289b21b1f0c0cb7175bcf6b0b">onert::shape_inference::Shapes</a> in_shapes;</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input_ind : op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a9f59a46100157938710e64d40e2f2a88">getInputs</a>())</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input_ind : op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a9f59a46100157938710e64d40e2f2a88">getInputs</a>())</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  {</div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    <span class="keyword">auto</span> input = _tensor_registry-&gt;getITensor(input_ind);</div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> shape = input-&gt;getShape();</div>
@@ -1136,7 +1136,7 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span> </div>
 <div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span>  <span class="comment">// Return if all tensors are not dynamic</span></div>
 <div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span>  <span class="keywordtype">bool</span> has_dynamic = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> output_idx : op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a672e67744fb958d62e04116d315334c2">getOutputs</a>())</div>
+<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_idx : op.<a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#a672e67744fb958d62e04116d315334c2">getOutputs</a>())</div>
 <div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span>  {</div>
 <div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span>    <span class="keyword">auto</span> output = _tensor_registry-&gt;getITensor(output_idx);</div>
 <div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span>    has_dynamic |= output-&gt;is_dynamic();</div>

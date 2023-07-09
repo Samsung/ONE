@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('_constant_output_pass_8cc_source.html'
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// Make the operations that uses this operand to use the generated operand</span></div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">auto</span> orig_uses = obj.getUses();</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> use : orig_uses)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;use : orig_uses)</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  {</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    permute_input_obj.insertUse(use);</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    obj.removeUse(use);</div>

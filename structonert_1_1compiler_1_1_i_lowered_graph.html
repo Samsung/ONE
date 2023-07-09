@@ -109,6 +109,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a009fa65e7f106b931537171cdf14352c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab62c2148c74b2dc10750e829eb27b40"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structonert_1_1compiler_1_1_graph_lower_info.html">compiler::GraphLowerInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#aab62c2148c74b2dc10750e829eb27b40">lower_info</a> ()=0</td></tr>
 <tr class="separator:aab62c2148c74b2dc10750e829eb27b40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed06f313709241fb12b0733fa1c76367"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#aed06f313709241fb12b0733fa1c76367">setHasDynamicTensor</a> (<a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> ind, bool val)=0</td></tr>
+<tr class="separator:aed06f313709241fb12b0733fa1c76367"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abde68b12383ceb2bcd321be052649b11"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#abde68b12383ceb2bcd321be052649b11">getHasDynamicTensor</a> (<a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> ind) const =0</td></tr>
+<tr class="separator:abde68b12383ceb2bcd321be052649b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -140,6 +144,34 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="abde68b12383ceb2bcd321be052649b11" name="abde68b12383ceb2bcd321be052649b11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abde68b12383ceb2bcd321be052649b11">&#9670;&#160;</a></span>getHasDynamicTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool onert::compiler::ILoweredGraph::getHasDynamicTensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a>&#160;</td>
+          <td class="paramname"><em>ind</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classonert_1_1compiler_1_1_lowered_graph.html#a310ffba6635f8247e79fd96b1a9e2cab">onert::compiler::LoweredGraph</a>, and <a class="el" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a66510151c234d040431e4cb63c305d6e">onert::compiler::train::LoweredTrainableGraph</a>.</p>
+
+</div>
+</div>
 <a id="aef68655ef72f08d170d005fb9a6decfa" name="aef68655ef72f08d170d005fb9a6decfa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aef68655ef72f08d170d005fb9a6decfa">&#9670;&#160;</a></span>graph() <span class="overload">[1/2]</span></h2>
 
@@ -194,7 +226,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classonert_1_1compiler_1_1_lowered_graph.html#a77c9c09c799e0f75b51ba7bf40e5f40d">onert::compiler::LoweredGraph</a>, and <a class="el" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a73cfb7d0caf2754f5b14c9a33d500b60">onert::compiler::train::LoweredTrainableGraph</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_topological_sort_helper_8py_source.html#l00025">TopologicalSortHelper.TopologicalSortHelper::add_edge()</a>, <a class="el" href="_dot_dumper_8cc_source.html#l00217">onert::dumper::dot::DotDumper::dump()</a>, <a class="el" href="_linear_8cc_source.html#l00037">onert::compiler::Linear::dump()</a>, <a class="el" href="_linear_8cc_source.html#l00031">onert::compiler::Linear::linearize()</a>, and <a class="el" href="_topological_sort_helper_8py_source.html#l00028">TopologicalSortHelper.TopologicalSortHelper::sort_util()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_topological_sort_helper_8py_source.html#l00025">TopologicalSortHelper.TopologicalSortHelper::add_edge()</a>, <a class="el" href="_static_shape_inferer_8cc_source.html#l00169">onert::compiler::StaticShapeInferer::dump()</a>, <a class="el" href="_dot_dumper_8cc_source.html#l00217">onert::dumper::dot::DotDumper::dump()</a>, <a class="el" href="_linear_8cc_source.html#l00037">onert::compiler::Linear::dump()</a>, <a class="el" href="_static_shape_inferer_8cc_source.html#l00058">onert::compiler::StaticShapeInferer::infer()</a>, <a class="el" href="_linear_8cc_source.html#l00031">onert::compiler::Linear::linearize()</a>, and <a class="el" href="_topological_sort_helper_8py_source.html#l00028">TopologicalSortHelper.TopologicalSortHelper::sort_util()</a>.</p>
 
 </div>
 </div>
@@ -251,6 +283,46 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="classonert_1_1compiler_1_1_lowered_graph.html#acd26456af8138efaaf467bce71640583">onert::compiler::LoweredGraph</a>, and <a class="el" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#ae4da1a87f82309442af33a0e7bc17926">onert::compiler::train::LoweredTrainableGraph</a>.</p>
+
+</div>
+</div>
+<a id="aed06f313709241fb12b0733fa1c76367" name="aed06f313709241fb12b0733fa1c76367"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed06f313709241fb12b0733fa1c76367">&#9670;&#160;</a></span>setHasDynamicTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void onert::compiler::ILoweredGraph::setHasDynamicTensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a>&#160;</td>
+          <td class="paramname"><em>ind</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classonert_1_1compiler_1_1_lowered_graph.html#a5ef0be4d79862a260958472c51dab5fb">onert::compiler::LoweredGraph</a>, and <a class="el" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#ab41da5c6ff18b5c3a87031d355e9b2c3">onert::compiler::train::LoweredTrainableGraph</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_static_shape_inferer_8cc_source.html#l00058">onert::compiler::StaticShapeInferer::infer()</a>.</p>
 
 </div>
 </div>

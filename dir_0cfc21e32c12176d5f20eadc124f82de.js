@@ -5,6 +5,7 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "ConvertNCHWToNHWCPass.h", "_convert_n_c_h_w_to_n_h_w_c_pass_8h.html", "_convert_n_c_h_w_to_n_h_w_c_pass_8h" ],
     [ "ConvertToFakeQuantizedModelPass.h", "_convert_to_fake_quantized_model_pass_8h.html", "_convert_to_fake_quantized_model_pass_8h" ],
     [ "CopyQuantParamPass.h", "_copy_quant_param_pass_8h.html", "_copy_quant_param_pass_8h" ],
+    [ "DynamicBatchToSingleBatchPass.h", "_dynamic_batch_to_single_batch_pass_8h.html", "_dynamic_batch_to_single_batch_pass_8h" ],
     [ "ExpandBroadcastConstPass.h", "_expand_broadcast_const_pass_8h.html", "_expand_broadcast_const_pass_8h" ],
     [ "FoldAddV2Pass.h", "_fold_add_v2_pass_8h.html", "_fold_add_v2_pass_8h" ],
     [ "FoldCastPass.h", "_fold_cast_pass_8h.html", "_fold_cast_pass_8h" ],

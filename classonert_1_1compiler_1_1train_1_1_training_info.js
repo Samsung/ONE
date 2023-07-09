@@ -9,6 +9,5 @@ var classonert_1_1compiler_1_1train_1_1_training_info =
     [ "operator=", "classonert_1_1compiler_1_1train_1_1_training_info.html#a0d8b649053fd82ade09861693b4ff6b5", null ],
     [ "operator=", "classonert_1_1compiler_1_1train_1_1_training_info.html#a0fcbc888131710235b40bd7e8aecdd9d", null ],
     [ "setBatchSize", "classonert_1_1compiler_1_1train_1_1_training_info.html#a0e124a753e800ba7a0a26081ab9370d9", null ],
-    [ "setLossInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html#ab494748d3134066823487470d5c8d1e7", null ],
-    [ "shouldTrain", "classonert_1_1compiler_1_1train_1_1_training_info.html#a7ebfc8b48b459ea1d075d9b7312606ee", null ]
+    [ "setLossInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html#ab494748d3134066823487470d5c8d1e7", null ]
 ];

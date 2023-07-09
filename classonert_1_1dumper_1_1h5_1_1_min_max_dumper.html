@@ -180,7 +180,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   59</span>  <span class="keyword">auto</span> model_grp = <a class="code hl_function" href="namespaceonert_1_1dumper_1_1h5.html#a41087481025399c748228e7d2105162b">ensureGroup</a>(num_grp, <span class="stringliteral">&quot;0&quot;</span>);</div>
 <div class="line"><span class="lineno">   60</span>  hsize_t dims[] = {2};</div>
 <div class="line"><span class="lineno">   61</span>  H5::DataSpace dspace(1, dims); <span class="comment">// rank=1, dim(0)=2, {min, max}</span></div>
-<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;e : mmmap)</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;e : mmmap)</div>
 <div class="line"><span class="lineno">   63</span>  {</div>
 <div class="line"><span class="lineno">   64</span>    <span class="comment">// key = {subg_idx, op_idx} = e.first</span></div>
 <div class="line"><span class="lineno">   65</span>    <span class="keyword">const</span> <span class="keyword">auto</span> subg_idx = e.first.first.value();</div>

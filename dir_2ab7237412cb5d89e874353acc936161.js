@@ -6,6 +6,7 @@ var dir_2ab7237412cb5d89e874353acc936161 =
     [ "BackendResolver.cc", "_backend_resolver_8cc.html", null ],
     [ "Compiler.cc", "_compiler_8cc.html", null ],
     [ "CompilerFactory.cc", "_compiler_factory_8cc.html", null ],
+    [ "CompilerHelpers.h", "_compiler_helpers_8h.html", null ],
     [ "CompilerOptions.cc", "_compiler_options_8cc.html", "_compiler_options_8cc" ],
     [ "ExecutorFactory.cc", "_executor_factory_8cc.html", null ],
     [ "ExecutorFactory.h", "_executor_factory_8h.html", "_executor_factory_8h" ],

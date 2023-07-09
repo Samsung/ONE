@@ -197,10 +197,10 @@ $(document).ready(function(){initNavTree('_tensor_manager_8cc_source.html',''); 
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1gpu__cl_1_1_tensor_manager.html#a826243fbe30bd5de6fadf68176bdef5a">  104</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1gpu__cl_1_1_tensor_manager.html#a826243fbe30bd5de6fadf68176bdef5a">TensorManager::iterate</a>(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;)&gt; &amp;fn)</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>{</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it : _nonconst_mgr-&gt;tensors())</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it : _nonconst_mgr-&gt;tensors())</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    fn(it.first);</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it : _const_mgr-&gt;tensors())</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it : _const_mgr-&gt;tensors())</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    fn(it.first);</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>

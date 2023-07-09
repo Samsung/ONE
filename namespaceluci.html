@@ -1139,6 +1139,9 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_dim_meta_data.html">DimMetaData</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_dynamic_batch_to_single_batch_pass.html">DynamicBatchToSingleBatchPass</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass to convert dynamic batch to single batch.  <a href="classluci_1_1_dynamic_batch_to_single_batch_pass.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_expand_broadcast_const_pass.html">ExpandBroadcastConstPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to remove broadcasts of Const nodes.  <a href="structluci_1_1_expand_broadcast_const_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1811,6 +1814,8 @@ Functions</h2></td></tr>
 <tr class="separator:acb98ce6e840b9380686664442c64c90a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc2e64495d7ec9896590a7c7a14e27b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#abc2e64495d7ec9896590a7c7a14e27b4">dump</a> (std::ostream &amp;os, const <a class="el" href="structluci_1_1_parted_modules.html">PartedModules</a> *pmodules)</td></tr>
 <tr class="separator:abc2e64495d7ec9896590a7c7a14e27b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09410d1712272effa42e9f0860c26887"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a09410d1712272effa42e9f0860c26887">dynamic_batch_to_single_batch</a> (<a class="el" href="classluci_1_1_module.html">luci::Module</a> *)</td></tr>
+<tr class="separator:a09410d1712272effa42e9f0860c26887"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d1c4a2e2b4c217b292d7612d692f3f3"><td class="memItemLeft" align="right" valign="top">template void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a6d1c4a2e2b4c217b292d7612d692f3f3">SparsifyTensorPass::sparsify_tensor&lt; loco::DataType::S32 &gt;</a> (<a class="el" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *cop)</td></tr>
 <tr class="separator:a6d1c4a2e2b4c217b292d7612d692f3f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac21c791dbdc8f3892a743d67d57a246c"><td class="memItemLeft" align="right" valign="top">template void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#ac21c791dbdc8f3892a743d67d57a246c">SparsifyTensorPass::sparsify_tensor&lt; loco::DataType::S8 &gt;</a> (<a class="el" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *cop)</td></tr>
@@ -1967,6 +1972,10 @@ Functions</h2></td></tr>
 <tr class="separator:a0dfa493926dca491859638f43f5ddb10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9edff0bee0f5d9e0417adffdfdfc19c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a9edff0bee0f5d9e0417adffdfdfc19c4">validate</a> (<a class="el" href="classluci_1_1_module.html">luci::Module</a> *)</td></tr>
 <tr class="separator:a9edff0bee0f5d9e0417adffdfdfc19c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56c20d7f76cbf6abd72988192565fc32"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a56c20d7f76cbf6abd72988192565fc32">validate_shape</a> (<a class="el" href="classloco_1_1_graph.html">loco::Graph</a> *)</td></tr>
+<tr class="separator:a56c20d7f76cbf6abd72988192565fc32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af59e4e743b48eaeeb7d07b5d30721381"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#af59e4e743b48eaeeb7d07b5d30721381">validate_shape</a> (<a class="el" href="classluci_1_1_module.html">luci::Module</a> *)</td></tr>
+<tr class="separator:af59e4e743b48eaeeb7d07b5d30721381"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c5cc60f970e1dd72972fe6c0628faa8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classloco_1_1_node_shape.html">loco::NodeShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a0c5cc60f970e1dd72972fe6c0628faa8">shape_get</a> (const <a class="el" href="classloco_1_1_node.html">loco::Node</a> *node)</td></tr>
 <tr class="separator:a0c5cc60f970e1dd72972fe6c0628faa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5d5aa3107d264126494bed646de2fd9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#af5d5aa3107d264126494bed646de2fd9">shape_known</a> (const <a class="el" href="classloco_1_1_node.html">loco::Node</a> *node)</td></tr>
@@ -3094,7 +3103,7 @@ template&lt;<a class="el" href="namespaceluci.html#a72816c6f4e80aaae25316b4b606f
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2lang_2src_2_circle_nodes_8cpp_source.html#l00028">output_node()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_circle2_circle_8cpp_source.html#l00060">entry()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_circle2_circle_8cpp_source.html#l00061">entry()</a>.</p>
 
 </div>
 </div>
@@ -4389,6 +4398,55 @@ Each visit implementation must copy node specific attributes. </dd></dl>
 
 </div>
 </div>
+<a id="a09410d1712272effa42e9f0860c26887" name="a09410d1712272effa42e9f0860c26887"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09410d1712272effa42e9f0860c26887">&#9670;&#160;</a></span>dynamic_batch_to_single_batch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci::dynamic_batch_to_single_batch </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classluci_1_1_module.html">luci::Module</a> *&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_dynamic_batch_to_single_batch_8cpp_source.html#l00029">29</a> of file <a class="el" href="_dynamic_batch_to_single_batch_8cpp_source.html">DynamicBatchToSingleBatch.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
+<div class="line"><span class="lineno">   31</span>  assert(<a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>); <span class="comment">// FIX CALLER UNLESS</span></div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>-&gt;size(); i++)</div>
+<div class="line"><span class="lineno">   34</span>  {</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keyword">auto</span> g = <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>-&gt;graph(i);</div>
+<div class="line"><span class="lineno">   36</span> </div>
+<div class="line"><span class="lineno">   37</span>    <a class="code hl_typedef" href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a> phase;</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>    phase.emplace_back(std::make_unique&lt;luci::DynamicBatchToSingleBatchPass&gt;());</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>    <span class="comment">// Needed to infer shapes of other nodes</span></div>
+<div class="line"><span class="lineno">   42</span>    phase.emplace_back(std::make_unique&lt;luci::CircleShapeInferencePass&gt;());</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>    <a class="code hl_class" href="classluci_1_1_progress_reporter.html">ProgressReporter</a> prog(g, <a class="code hl_enumvalue" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::PhaseStrategy::Saturate</a>);</div>
+<div class="line"><span class="lineno">   45</span>    <a class="code hl_class" href="classlogo_1_1_phase_runner.html">logo::PhaseRunner&lt;logo::PhaseStrategy::Saturate&gt;</a> phase_runner{g};</div>
+<div class="line"><span class="lineno">   46</span>    phase_runner.attach(&amp;prog);</div>
+<div class="line"><span class="lineno">   47</span>    phase_runner.run(phase);</div>
+<div class="line"><span class="lineno">   48</span>  }</div>
+<div class="line"><span class="lineno">   49</span>}</div>
+<div class="ttc" id="a_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_html_aa73e018b04368e7afaded77ef0ac69db"><div class="ttname"><a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a></div><div class="ttdeci">std::mutex m</div><div class="ttdef"><b>Definition:</b> <a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">NEGEMMMatrixAccumulateBiasesKernel.cpp:135</a></div></div>
+<div class="ttc" id="aclasslogo_1_1_phase_runner_html"><div class="ttname"><a href="classlogo_1_1_phase_runner.html">logo::PhaseRunner</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2logo-core_2include_2logo_2_phase_8h_source.html#l00158">Phase.h:158</a></div></div>
+<div class="ttc" id="aclassluci_1_1_progress_reporter_html"><div class="ttname"><a href="classluci_1_1_progress_reporter.html">luci::ProgressReporter</a></div><div class="ttdef"><b>Definition:</b> <a href="luci_2export_2src_2_progress_reporter_8h_source.html#l00027">ProgressReporter.h:28</a></div></div>
+<div class="ttc" id="anamespacelogo_html_a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d"><div class="ttname"><a href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::PhaseStrategy::Saturate</a></div><div class="ttdeci">@ Saturate</div></div>
+<div class="ttc" id="anamespacelogo_html_ad0979fe288c253875f561bc041393cd4"><div class="ttname"><a href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Pass &gt; &gt; Phase</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2logo-core_2include_2logo_2_phase_8h_source.html#l00031">Phase.h:31</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, and <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::Saturate</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_circle2_circle_8cpp_source.html#l00061">entry()</a>.</p>
+
+</div>
+</div>
 <a id="a9a011c3c0ffaf5cc6c8c160396031b35" name="a9a011c3c0ffaf5cc6c8c160396031b35"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9a011c3c0ffaf5cc6c8c160396031b35">&#9670;&#160;</a></span>exportNodes()</h2>
 
@@ -4665,7 +4723,7 @@ template&lt;class ARG_TYPE_1 , class ARG_TYPE_2 &gt; </div>
 <div class="line"><span class="lineno">   26</span>  <span class="keywordflow">return</span> std::move(locop::fmt&lt;locop::LinearV1&gt;(g).with(std::move(node_summary_builder)));</div>
 <div class="line"><span class="lineno">   27</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_partition_p_modules_dump_8cpp_source.html#l00026">dump()</a>, <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00267">luci::Importer::import()</a>, <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00304">luci::Importer::importModule()</a>, <a class="el" href="luci_2export_2src_2_progress_reporter_8cpp_source.html#l00050">luci::ProgressReporter::notify()</a>, <a class="el" href="luci_2pass_2src_2_progress_reporter_8cpp_source.html#l00084">luci::ModuleProgressReporter::notify()</a>, and <a class="el" href="_validate_8cpp_source.html#l00328">validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_partition_p_modules_dump_8cpp_source.html#l00026">dump()</a>, <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00267">luci::Importer::import()</a>, <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00304">luci::Importer::importModule()</a>, <a class="el" href="luci_2export_2src_2_progress_reporter_8cpp_source.html#l00050">luci::ProgressReporter::notify()</a>, <a class="el" href="luci_2pass_2src_2_progress_reporter_8cpp_source.html#l00084">luci::ModuleProgressReporter::notify()</a>, <a class="el" href="_validate_8cpp_source.html#l00398">validate()</a>, and <a class="el" href="_validate_8cpp_source.html#l00431">validate_shape()</a>.</p>
 
 </div>
 </div>
@@ -5810,7 +5868,7 @@ template&lt;class ARG_TYPE_1 , class ARG_TYPE_2 &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="luci_2service_2src_2_test_graph_8h_source.html#l00184">luci::test::ExampleGraph&lt; ExampleGraphType::CircleTranspose &gt;::ExampleGraph()</a>, <a class="el" href="_shape_infer___strided_slice_8cpp_source.html#l00375">infer_output_shape()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00102">luci_interpreter::Interpreter::writeInputTensor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="luci_2service_2src_2_test_graph_8h_source.html#l00184">luci::test::ExampleGraph&lt; ExampleGraphType::CircleTranspose &gt;::ExampleGraph()</a>, <a class="el" href="_shape_infer___strided_slice_8cpp_source.html#l00375">infer_output_shape()</a>, <a class="el" href="_dynamic_batch_to_single_batch_pass_8cpp_source.html#l00025">luci::DynamicBatchToSingleBatchPass::run()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00102">luci_interpreter::Interpreter::writeInputTensor()</a>.</p>
 
 </div>
 </div>
@@ -6532,7 +6590,7 @@ template&lt;typename Permutation &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">NONE</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ad346bb4679d29be241279f15d7795c1c">RELU</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ac014a3d2b85dcb087a709b9b2a3b8e6b">RELU6</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945a3d1350ef81160c32cf3605ab32159c2b">RELU_N1_TO_1</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945a44e6f47f77ff75eb42fec482870912ad">SIGN_BIT</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945a143c8c6f51b9bb893ce71e38702e3cc1">TANH</a>, and <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945a0db45d2a4141101bdfe48e3314cfbca3">UNDEFINED</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_add_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleAdd()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_average_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleAveragePool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_concatenation_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleConcatenation()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_conv2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_depthwise_conv2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleDepthwiseConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_div_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleDiv()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_fully_connected_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleFullyConnected()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_instance_norm_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleInstanceNorm()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_l2_normalize_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleL2Normalize()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_l2_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleL2Pool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_max_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleMaxPool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_mul_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleMul()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_sub_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleSub()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_s_v_d_f_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleSVDF()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00026">luci_interpreter::build_kernel_CircleUnidirectionalSequenceLSTM()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_concatenation_8cpp_source.html#l00083">luci_interpreter::configure_kernel_CircleConcatenation()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00060">luci_interpreter::kernels::evalTISOKernel()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00120">luci_interpreter::kernels::evalTISOQuantizedKernel()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00053">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_add_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleAdd()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_average_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleAveragePool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_concatenation_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleConcatenation()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_conv2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_depthwise_conv2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleDepthwiseConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_div_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleDiv()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_fully_connected_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleFullyConnected()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_instance_norm_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleInstanceNorm()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_l2_normalize_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleL2Normalize()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_l2_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleL2Pool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_max_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleMaxPool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_mul_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleMul()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_sub_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleSub()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_s_v_d_f_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleSVDF()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_unidirectional_sequence_l_s_t_m_8cpp_source.html#l00026">luci_interpreter::build_kernel_CircleUnidirectionalSequenceLSTM()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_concatenation_8cpp_source.html#l00083">luci_interpreter::configure_kernel_CircleConcatenation()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00060">luci_interpreter::kernels::evalTISOKernel()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00120">luci_interpreter::kernels::evalTISOQuantizedKernel()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp_source.html#l00042">luci_interpreter::execute_kernel_CircleAveragePool2D()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00053">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>.</p>
 
 </div>
 </div>
@@ -6688,7 +6746,7 @@ template&lt;typename Permutation &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceluci.html#a50d4e9fca61e54bee349208fb919cdcbac706ffd80b0ad0a4ef605c581e95252b">SAME</a>, <a class="el" href="namespaceluci.html#a50d4e9fca61e54bee349208fb919cdcba0db45d2a4141101bdfe48e3314cfbca3">UNDEFINED</a>, and <a class="el" href="namespaceluci.html#a50d4e9fca61e54bee349208fb919cdcbac9f1a6384b1c466d4612f513bd8e13ea">VALID</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_average_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleAveragePool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_conv2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_depthwise_conv2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleDepthwiseConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_l2_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleL2Pool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_max_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleMaxPool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_transpose_conv_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleTransposeConv()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00053">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_average_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleAveragePool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_conv2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_depthwise_conv2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleDepthwiseConv2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_l2_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleL2Pool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_max_pool2_d_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleMaxPool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2nodes_2_transpose_conv_8cpp_source.html#l00024">luci_interpreter::build_kernel_CircleTransposeConv()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp_source.html#l00042">luci_interpreter::execute_kernel_CircleAveragePool2D()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00053">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>.</p>
 
 </div>
 </div>
@@ -7298,9 +7356,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   44</span>  phase_runner.attach(&amp;prog);</div>
 <div class="line"><span class="lineno">   45</span>  phase_runner.run(phase);</div>
 <div class="line"><span class="lineno">   46</span>}</div>
-<div class="ttc" id="aclasslogo_1_1_phase_runner_html"><div class="ttname"><a href="classlogo_1_1_phase_runner.html">logo::PhaseRunner</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2logo-core_2include_2logo_2_phase_8h_source.html#l00158">Phase.h:158</a></div></div>
 <div class="ttc" id="anamespacelogo_html_a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2"><div class="ttname"><a href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::PhaseStrategy::Restart</a></div><div class="ttdeci">@ Restart</div></div>
-<div class="ttc" id="anamespacelogo_html_ad0979fe288c253875f561bc041393cd4"><div class="ttname"><a href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Pass &gt; &gt; Phase</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2logo-core_2include_2logo_2_phase_8h_source.html#l00031">Phase.h:31</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::Restart</a>.</p>
 
@@ -9356,21 +9412,21 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00252">252</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  253</span>{</div>
-<div class="line"><span class="lineno">  254</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceloco.html#a87edea6508d4e0df2ee4514fd0e427b8">loco::valid</a>(g))</div>
-<div class="line"><span class="lineno">  255</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  256</span> </div>
-<div class="line"><span class="lineno">  257</span>  <span class="keywordflow">if</span> (!validate_shape_dtype(g))</div>
-<div class="line"><span class="lineno">  258</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span>  <span class="keywordflow">if</span> (!validate_multi_outs(g))</div>
-<div class="line"><span class="lineno">  261</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  262</span> </div>
-<div class="line"><span class="lineno">  263</span>  <span class="comment">// TODO add more validation</span></div>
-<div class="line"><span class="lineno">  264</span> </div>
-<div class="line"><span class="lineno">  265</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  266</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00322">322</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  323</span>{</div>
+<div class="line"><span class="lineno">  324</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceloco.html#a87edea6508d4e0df2ee4514fd0e427b8">loco::valid</a>(g))</div>
+<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  326</span> </div>
+<div class="line"><span class="lineno">  327</span>  <span class="keywordflow">if</span> (!validate_shape_dtype(g))</div>
+<div class="line"><span class="lineno">  328</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  329</span> </div>
+<div class="line"><span class="lineno">  330</span>  <span class="keywordflow">if</span> (!validate_multi_outs(g))</div>
+<div class="line"><span class="lineno">  331</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  332</span> </div>
+<div class="line"><span class="lineno">  333</span>  <span class="comment">// TODO add more validation</span></div>
+<div class="line"><span class="lineno">  334</span> </div>
+<div class="line"><span class="lineno">  335</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  336</span>}</div>
 <div class="ttc" id="anamespaceloco_html_a87edea6508d4e0df2ee4514fd0e427b8"><div class="ttname"><a href="namespaceloco.html#a87edea6508d4e0df2ee4514fd0e427b8">loco::valid</a></div><div class="ttdeci">bool valid(Graph *g, std::unique_ptr&lt; ErrorListener &gt; &amp;&amp;l=nullptr)</div><div class="ttdoc">Validate a loco graph.</div><div class="ttdef"><b>Definition:</b> <a href="_verifier_8cpp_source.html#l00100">Verifier.cpp:100</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_verifier_8cpp_source.html#l00100">loco::valid()</a>.</p>
@@ -9393,41 +9449,41 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00328">328</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  329</span>{</div>
-<div class="line"><span class="lineno">  330</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><span class="lineno">  331</span> </div>
-<div class="line"><span class="lineno">  332</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- validate Module -----------------------------------&quot;</span>;</div>
-<div class="line"><span class="lineno">  333</span> </div>
-<div class="line"><span class="lineno">  334</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> g = 0; g &lt; module-&gt;size(); ++g)</div>
-<div class="line"><span class="lineno">  335</span>  {</div>
-<div class="line"><span class="lineno">  336</span>    <span class="keyword">auto</span> graph = module-&gt;graph(g);</div>
-<div class="line"><span class="lineno">  337</span> </div>
-<div class="line"><span class="lineno">  338</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <a class="code hl_function" href="namespaceluci.html#a42144531b4909fbeadf0467b02cc15c7">luci::fmt</a>(graph) &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  339</span> </div>
-<div class="line"><span class="lineno">  340</span>    <span class="keywordflow">if</span> (!validate(graph))</div>
-<div class="line"><span class="lineno">  341</span>    {</div>
-<div class="line"><span class="lineno">  342</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Invalid circle model&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  343</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  344</span>    }</div>
-<div class="line"><span class="lineno">  345</span>    <span class="keywordflow">if</span> (!validate_name(graph))</div>
-<div class="line"><span class="lineno">  346</span>    {</div>
-<div class="line"><span class="lineno">  347</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: circle model has empty name&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  348</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  349</span>    }</div>
-<div class="line"><span class="lineno">  350</span>  }</div>
-<div class="line"><span class="lineno">  351</span> </div>
-<div class="line"><span class="lineno">  352</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#a0dfa493926dca491859638f43f5ddb10">validate_unique_name</a>(module))</div>
-<div class="line"><span class="lineno">  353</span>  {</div>
-<div class="line"><span class="lineno">  354</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: circle model has duplicate names&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  355</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  356</span>  }</div>
-<div class="line"><span class="lineno">  357</span> </div>
-<div class="line"><span class="lineno">  358</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  359</span>}</div>
-<div class="ttc" id="anamespaceluci_html_a0dfa493926dca491859638f43f5ddb10"><div class="ttname"><a href="namespaceluci.html#a0dfa493926dca491859638f43f5ddb10">luci::validate_unique_name</a></div><div class="ttdeci">bool validate_unique_name(luci::Module *)</div><div class="ttdoc">Return true if all names in the Module are unique.</div><div class="ttdef"><b>Definition:</b> <a href="_validate_8cpp_source.html#l00287">Validate.cpp:287</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00398">398</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  399</span>{</div>
+<div class="line"><span class="lineno">  400</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  401</span> </div>
+<div class="line"><span class="lineno">  402</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- validate Module -----------------------------------&quot;</span>;</div>
+<div class="line"><span class="lineno">  403</span> </div>
+<div class="line"><span class="lineno">  404</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> g = 0; g &lt; module-&gt;size(); ++g)</div>
+<div class="line"><span class="lineno">  405</span>  {</div>
+<div class="line"><span class="lineno">  406</span>    <span class="keyword">auto</span> graph = module-&gt;graph(g);</div>
+<div class="line"><span class="lineno">  407</span> </div>
+<div class="line"><span class="lineno">  408</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <a class="code hl_function" href="namespaceluci.html#a42144531b4909fbeadf0467b02cc15c7">luci::fmt</a>(graph) &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  409</span> </div>
+<div class="line"><span class="lineno">  410</span>    <span class="keywordflow">if</span> (!validate(graph))</div>
+<div class="line"><span class="lineno">  411</span>    {</div>
+<div class="line"><span class="lineno">  412</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Invalid circle model&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  413</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  414</span>    }</div>
+<div class="line"><span class="lineno">  415</span>    <span class="keywordflow">if</span> (!validate_name(graph))</div>
+<div class="line"><span class="lineno">  416</span>    {</div>
+<div class="line"><span class="lineno">  417</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: circle model has empty name&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  418</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  419</span>    }</div>
+<div class="line"><span class="lineno">  420</span>  }</div>
+<div class="line"><span class="lineno">  421</span> </div>
+<div class="line"><span class="lineno">  422</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#a0dfa493926dca491859638f43f5ddb10">validate_unique_name</a>(module))</div>
+<div class="line"><span class="lineno">  423</span>  {</div>
+<div class="line"><span class="lineno">  424</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: circle model has duplicate names&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  425</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  426</span>  }</div>
+<div class="line"><span class="lineno">  427</span> </div>
+<div class="line"><span class="lineno">  428</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  429</span>}</div>
+<div class="ttc" id="anamespaceluci_html_a0dfa493926dca491859638f43f5ddb10"><div class="ttname"><a href="namespaceluci.html#a0dfa493926dca491859638f43f5ddb10">luci::validate_unique_name</a></div><div class="ttdeci">bool validate_unique_name(luci::Module *)</div><div class="ttdoc">Return true if all names in the Module are unique.</div><div class="ttdef"><b>Definition:</b> <a href="_validate_8cpp_source.html#l00357">Validate.cpp:357</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2logex_2src_2_log_helper_8cpp_source.html#l00023">fmt()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="_validate_8cpp_source.html#l00268">validate_name()</a>, and <a class="el" href="_validate_8cpp_source.html#l00287">validate_unique_name()</a>.</p>
+<p class="reference">References <a class="el" href="luci_2logex_2src_2_log_helper_8cpp_source.html#l00023">fmt()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="_validate_8cpp_source.html#l00338">validate_name()</a>, and <a class="el" href="_validate_8cpp_source.html#l00357">validate_unique_name()</a>.</p>
 
 </div>
 </div>
@@ -9632,28 +9688,28 @@ template&lt;typename T &gt; </div>
 
 <p>Return true if all nodes in graph have non empty name. </p>
 
-<p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00268">268</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  269</span>{</div>
-<div class="line"><span class="lineno">  270</span>  <span class="keyword">auto</span> nodes = g-&gt;nodes();</div>
-<div class="line"><span class="lineno">  271</span>  <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; nodes-&gt;size(); ++n)</div>
-<div class="line"><span class="lineno">  272</span>  {</div>
-<div class="line"><span class="lineno">  273</span>    <span class="keyword">auto</span> node = loco::must_cast&lt;luci::CircleNode *&gt;(nodes-&gt;at(n));</div>
-<div class="line"><span class="lineno">  274</span>    <span class="comment">// skip virtual nodes</span></div>
-<div class="line"><span class="lineno">  275</span>    VirtualNodeDetector d;</div>
-<div class="line"><span class="lineno">  276</span>    <span class="keywordflow">if</span> (node-&gt;accept(&amp;d))</div>
-<div class="line"><span class="lineno">  277</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  278</span> </div>
-<div class="line"><span class="lineno">  279</span>    <span class="keyword">auto</span> name = node-&gt;name();</div>
-<div class="line"><span class="lineno">  280</span>    <span class="keywordflow">if</span> (name.empty())</div>
-<div class="line"><span class="lineno">  281</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  282</span>  }</div>
-<div class="line"><span class="lineno">  283</span> </div>
-<div class="line"><span class="lineno">  284</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  285</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00338">338</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  339</span>{</div>
+<div class="line"><span class="lineno">  340</span>  <span class="keyword">auto</span> nodes = g-&gt;nodes();</div>
+<div class="line"><span class="lineno">  341</span>  <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; nodes-&gt;size(); ++n)</div>
+<div class="line"><span class="lineno">  342</span>  {</div>
+<div class="line"><span class="lineno">  343</span>    <span class="keyword">auto</span> node = loco::must_cast&lt;luci::CircleNode *&gt;(nodes-&gt;at(n));</div>
+<div class="line"><span class="lineno">  344</span>    <span class="comment">// skip virtual nodes</span></div>
+<div class="line"><span class="lineno">  345</span>    VirtualNodeDetector d;</div>
+<div class="line"><span class="lineno">  346</span>    <span class="keywordflow">if</span> (node-&gt;accept(&amp;d))</div>
+<div class="line"><span class="lineno">  347</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  348</span> </div>
+<div class="line"><span class="lineno">  349</span>    <span class="keyword">auto</span> name = node-&gt;name();</div>
+<div class="line"><span class="lineno">  350</span>    <span class="keywordflow">if</span> (name.empty())</div>
+<div class="line"><span class="lineno">  351</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  352</span>  }</div>
+<div class="line"><span class="lineno">  353</span> </div>
+<div class="line"><span class="lineno">  354</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  355</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_impl_8h_source.html#l00029">luci::CircleNode::accept()</a>, and <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">luci::CircleNode::name()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_validate_8cpp_source.html#l00328">validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_validate_8cpp_source.html#l00398">validate()</a>.</p>
 
 </div>
 </div>
@@ -9703,6 +9759,82 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a56c20d7f76cbf6abd72988192565fc32" name="a56c20d7f76cbf6abd72988192565fc32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56c20d7f76cbf6abd72988192565fc32">&#9670;&#160;</a></span>validate_shape() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool luci::validate_shape </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classloco_1_1_graph.html">loco::Graph</a> *&#160;</td>
+          <td class="paramname"><em>g</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00311">311</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  312</span>{</div>
+<div class="line"><span class="lineno">  313</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceloco.html#a87edea6508d4e0df2ee4514fd0e427b8">loco::valid</a>(g))</div>
+<div class="line"><span class="lineno">  314</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  315</span> </div>
+<div class="line"><span class="lineno">  316</span>  <span class="keywordflow">if</span> (!::validate_shape(g))</div>
+<div class="line"><span class="lineno">  317</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  318</span> </div>
+<div class="line"><span class="lineno">  319</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  320</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_verifier_8cpp_source.html#l00100">loco::valid()</a>, and <a class="el" href="_validate_8cpp_source.html#l00311">validate_shape()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_circle2_circle_8cpp_source.html#l00061">entry()</a>, and <a class="el" href="_validate_8cpp_source.html#l00311">validate_shape()</a>.</p>
+
+</div>
+</div>
+<a id="af59e4e743b48eaeeb7d07b5d30721381" name="af59e4e743b48eaeeb7d07b5d30721381"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af59e4e743b48eaeeb7d07b5d30721381">&#9670;&#160;</a></span>validate_shape() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool luci::validate_shape </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classluci_1_1_module.html">luci::Module</a> *&#160;</td>
+          <td class="paramname"><em>module</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00431">431</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  432</span>{</div>
+<div class="line"><span class="lineno">  433</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  434</span> </div>
+<div class="line"><span class="lineno">  435</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;--- validate shape of Module -----------------------------------&quot;</span>;</div>
+<div class="line"><span class="lineno">  436</span> </div>
+<div class="line"><span class="lineno">  437</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> g = 0; g &lt; module-&gt;size(); ++g)</div>
+<div class="line"><span class="lineno">  438</span>  {</div>
+<div class="line"><span class="lineno">  439</span>    <span class="keyword">auto</span> graph = module-&gt;graph(g);</div>
+<div class="line"><span class="lineno">  440</span> </div>
+<div class="line"><span class="lineno">  441</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <a class="code hl_function" href="namespaceluci.html#a42144531b4909fbeadf0467b02cc15c7">luci::fmt</a>(graph) &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  442</span> </div>
+<div class="line"><span class="lineno">  443</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#a56c20d7f76cbf6abd72988192565fc32">validate_shape</a>(graph))</div>
+<div class="line"><span class="lineno">  444</span>    {</div>
+<div class="line"><span class="lineno">  445</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Invalid circle model&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  446</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  447</span>    }</div>
+<div class="line"><span class="lineno">  448</span>  }</div>
+<div class="line"><span class="lineno">  449</span> </div>
+<div class="line"><span class="lineno">  450</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  451</span>}</div>
+<div class="ttc" id="anamespaceluci_html_a56c20d7f76cbf6abd72988192565fc32"><div class="ttname"><a href="namespaceluci.html#a56c20d7f76cbf6abd72988192565fc32">luci::validate_shape</a></div><div class="ttdeci">bool validate_shape(loco::Graph *)</div><div class="ttdef"><b>Definition:</b> <a href="_validate_8cpp_source.html#l00311">Validate.cpp:311</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="luci_2logex_2src_2_log_helper_8cpp_source.html#l00023">fmt()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, and <a class="el" href="_validate_8cpp_source.html#l00311">validate_shape()</a>.</p>
+
+</div>
+</div>
 <a id="a0dfa493926dca491859638f43f5ddb10" name="a0dfa493926dca491859638f43f5ddb10"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0dfa493926dca491859638f43f5ddb10">&#9670;&#160;</a></span>validate_unique_name()</h2>
 
@@ -9722,51 +9854,50 @@ template&lt;typename T &gt; </div>
 <p>Return true if all names in the Module are unique. </p>
 <dl class="section note"><dt>Note</dt><dd>CircleOutput may have duplicate name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00287">287</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  288</span>{</div>
-<div class="line"><span class="lineno">  289</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><span class="lineno">  290</span> </div>
-<div class="line"><span class="lineno">  291</span>  std::unordered_map&lt;std::string, bool&gt; names_col;</div>
-<div class="line"><span class="lineno">  292</span> </div>
-<div class="line"><span class="lineno">  293</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> g = 0; g &lt; <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>-&gt;size(); ++g)</div>
-<div class="line"><span class="lineno">  294</span>  {</div>
-<div class="line"><span class="lineno">  295</span>    <span class="keyword">auto</span> graph = <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>-&gt;graph(g);</div>
-<div class="line"><span class="lineno">  296</span>    <span class="keyword">auto</span> nodes = graph-&gt;nodes();</div>
-<div class="line"><span class="lineno">  297</span>    <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; nodes-&gt;size(); ++n)</div>
-<div class="line"><span class="lineno">  298</span>    {</div>
-<div class="line"><span class="lineno">  299</span>      <span class="keyword">auto</span> node = loco::must_cast&lt;luci::CircleNode *&gt;(nodes-&gt;at(n));</div>
-<div class="line"><span class="lineno">  300</span>      <span class="comment">// skip CircleOutput as it may have same name with from() node</span></div>
-<div class="line"><span class="lineno">  301</span>      <span class="keyword">auto</span> output = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_output.html">luci::CircleOutput</a> *<span class="keyword">&gt;</span>(node);</div>
-<div class="line"><span class="lineno">  302</span>      <span class="keywordflow">if</span> (output != <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  303</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  304</span>      <span class="comment">// skip virtual nodes</span></div>
-<div class="line"><span class="lineno">  305</span>      VirtualNodeDetector d;</div>
-<div class="line"><span class="lineno">  306</span>      <span class="keywordflow">if</span> (node-&gt;accept(&amp;d))</div>
-<div class="line"><span class="lineno">  307</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  308</span> </div>
-<div class="line"><span class="lineno">  309</span>      <span class="keyword">auto</span> name = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>();</div>
-<div class="line"><span class="lineno">  310</span>      <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;Node: &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; (uint32_t)(node-&gt;opcode()) &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  311</span>      <span class="keyword">auto</span> it = names_col.find(name);</div>
-<div class="line"><span class="lineno">  312</span>      <span class="keywordflow">if</span> (it != names_col.end())</div>
-<div class="line"><span class="lineno">  313</span>      {</div>
-<div class="line"><span class="lineno">  314</span>        <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;validate_unique_name: found duplicate &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; graph-&gt;name()</div>
-<div class="line"><span class="lineno">  315</span>                &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  316</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  317</span>      }</div>
-<div class="line"><span class="lineno">  318</span> </div>
-<div class="line"><span class="lineno">  319</span>      names_col[name] = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  320</span>    }</div>
-<div class="line"><span class="lineno">  321</span>    <span class="comment">// There can exist same tensor name between different subgraphs.</span></div>
-<div class="line"><span class="lineno">  322</span>    names_col.clear();</div>
-<div class="line"><span class="lineno">  323</span>  }</div>
-<div class="line"><span class="lineno">  324</span> </div>
-<div class="line"><span class="lineno">  325</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  326</span>}</div>
-<div class="ttc" id="a_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_html_aa73e018b04368e7afaded77ef0ac69db"><div class="ttname"><a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a></div><div class="ttdeci">std::mutex m</div><div class="ttdef"><b>Definition:</b> <a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">NEGEMMMatrixAccumulateBiasesKernel.cpp:135</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_validate_8cpp_source.html#l00357">357</a> of file <a class="el" href="_validate_8cpp_source.html">Validate.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  358</span>{</div>
+<div class="line"><span class="lineno">  359</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  360</span> </div>
+<div class="line"><span class="lineno">  361</span>  std::unordered_map&lt;std::string, bool&gt; names_col;</div>
+<div class="line"><span class="lineno">  362</span> </div>
+<div class="line"><span class="lineno">  363</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> g = 0; g &lt; <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>-&gt;size(); ++g)</div>
+<div class="line"><span class="lineno">  364</span>  {</div>
+<div class="line"><span class="lineno">  365</span>    <span class="keyword">auto</span> graph = <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>-&gt;graph(g);</div>
+<div class="line"><span class="lineno">  366</span>    <span class="keyword">auto</span> nodes = graph-&gt;nodes();</div>
+<div class="line"><span class="lineno">  367</span>    <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; nodes-&gt;size(); ++n)</div>
+<div class="line"><span class="lineno">  368</span>    {</div>
+<div class="line"><span class="lineno">  369</span>      <span class="keyword">auto</span> node = loco::must_cast&lt;luci::CircleNode *&gt;(nodes-&gt;at(n));</div>
+<div class="line"><span class="lineno">  370</span>      <span class="comment">// skip CircleOutput as it may have same name with from() node</span></div>
+<div class="line"><span class="lineno">  371</span>      <span class="keyword">auto</span> output = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_output.html">luci::CircleOutput</a> *<span class="keyword">&gt;</span>(node);</div>
+<div class="line"><span class="lineno">  372</span>      <span class="keywordflow">if</span> (output != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  373</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  374</span>      <span class="comment">// skip virtual nodes</span></div>
+<div class="line"><span class="lineno">  375</span>      VirtualNodeDetector d;</div>
+<div class="line"><span class="lineno">  376</span>      <span class="keywordflow">if</span> (node-&gt;accept(&amp;d))</div>
+<div class="line"><span class="lineno">  377</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  378</span> </div>
+<div class="line"><span class="lineno">  379</span>      <span class="keyword">auto</span> name = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>();</div>
+<div class="line"><span class="lineno">  380</span>      <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;Node: &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; (uint32_t)(node-&gt;opcode()) &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  381</span>      <span class="keyword">auto</span> it = names_col.find(name);</div>
+<div class="line"><span class="lineno">  382</span>      <span class="keywordflow">if</span> (it != names_col.end())</div>
+<div class="line"><span class="lineno">  383</span>      {</div>
+<div class="line"><span class="lineno">  384</span>        <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;validate_unique_name: found duplicate &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; graph-&gt;name()</div>
+<div class="line"><span class="lineno">  385</span>                &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  386</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  387</span>      }</div>
+<div class="line"><span class="lineno">  388</span> </div>
+<div class="line"><span class="lineno">  389</span>      names_col[name] = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  390</span>    }</div>
+<div class="line"><span class="lineno">  391</span>    <span class="comment">// There can exist same tensor name between different subgraphs.</span></div>
+<div class="line"><span class="lineno">  392</span>    names_col.clear();</div>
+<div class="line"><span class="lineno">  393</span>  }</div>
+<div class="line"><span class="lineno">  394</span> </div>
+<div class="line"><span class="lineno">  395</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  396</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_impl_8h_source.html#l00029">luci::CircleNode::accept()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">luci::CircleNode::name()</a>, and <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_validate_8cpp_source.html#l00328">validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_validate_8cpp_source.html#l00398">validate()</a>.</p>
 
 </div>
 </div>

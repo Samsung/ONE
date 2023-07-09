@@ -288,7 +288,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
 <div class="line"><span class="lineno">   33</span>  <a class="code hl_typedef" href="namespaceonert_1_1backend.html#a70c193539c226041330719aae7e2b52f">FunctionMap</a> ret;</div>
 <div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> op_ind : <a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a98851d7e919dc808d3ee4a8210572d6a">_data</a>.<a class="code hl_variable" href="structonert_1_1backend_1_1_context_data.html#a14c981913861b3e66e9b8d44a3c45169">op_order</a>)</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;op_ind : <a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a98851d7e919dc808d3ee4a8210572d6a">_data</a>.<a class="code hl_variable" href="structonert_1_1backend_1_1_context_data.html#a14c981913861b3e66e9b8d44a3c45169">op_order</a>)</div>
 <div class="line"><span class="lineno">   36</span>  {</div>
 <div class="line"><span class="lineno">   37</span>    <span class="keyword">auto</span> fn_seq = <a class="code hl_variable" href="classonert_1_1backend_1_1builtin_1_1_backend_context.html#a1f0963ca9736ce9469feb17a1d0459f5">kernel_gen</a>-&gt;generate(op_ind);</div>
 <div class="line"><span class="lineno">   38</span>    ret.emplace_back(op_ind, std::move(fn_seq));</div>

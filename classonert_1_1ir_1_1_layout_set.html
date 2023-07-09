@@ -124,7 +124,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00030">30</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00031">31</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a90dad699b272028bc29d42149389b1d9" name="a90dad699b272028bc29d42149389b1d9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a90dad699b272028bc29d42149389b1d9">&#9670;&#160;</a></span>LayoutSet() <span class="overload">[1/2]</span></h2>
@@ -169,7 +169,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_layout_set_8cc_source.html#l00024">24</a> of file <a class="el" href="_layout_set_8cc_source.html">LayoutSet.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   25</span>{</div>
-<div class="line"><span class="lineno">   26</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> layout : layouts)</div>
+<div class="line"><span class="lineno">   26</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;layout : layouts)</div>
 <div class="line"><span class="lineno">   27</span>  {</div>
 <div class="line"><span class="lineno">   28</span>    _set.insert(layout);</div>
 <div class="line"><span class="lineno">   29</span>  }</div>
@@ -202,8 +202,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00037">37</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{ _set.insert(layout); }</div>
+<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00038">38</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>{ _set.insert(layout); }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_layout_set_8cc_source.html#l00042">operator&amp;()</a>, and <a class="el" href="_layout_set_8cc_source.html#l00032">operator|()</a>.</p>
 
@@ -232,8 +232,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00048">48</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> _set.begin(); }</div>
+<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00049">49</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> _set.begin(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -261,8 +261,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00040">40</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{ <span class="keywordflow">return</span> _set.find(layout) != _set.end(); }</div>
+<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00041">41</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> _set.find(layout) != _set.end(); }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_layout_set_8cc_source.html#l00042">operator&amp;()</a>.</p>
 
@@ -291,8 +291,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00049">49</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> _set.end(); }</div>
+<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00050">50</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>{ <span class="keywordflow">return</span> _set.end(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -315,7 +315,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_layout_set_8cc_source.html#l00042">42</a> of file <a class="el" href="_layout_set_8cc_source.html">LayoutSet.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
 <div class="line"><span class="lineno">   44</span>  <a class="code hl_function" href="classonert_1_1ir_1_1_layout_set.html#a90dad699b272028bc29d42149389b1d9">LayoutSet</a> ret;</div>
-<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> layout : other)</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;layout : other)</div>
 <div class="line"><span class="lineno">   46</span>  {</div>
 <div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1ir_1_1_layout_set.html#aa77e60b0962b17091326f6d0613b8818">contains</a>(layout))</div>
 <div class="line"><span class="lineno">   48</span>    {</div>
@@ -325,9 +325,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   52</span>  <span class="keywordflow">return</span> ret;</div>
 <div class="line"><span class="lineno">   53</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_layout_set_html_a90dad699b272028bc29d42149389b1d9"><div class="ttname"><a href="classonert_1_1ir_1_1_layout_set.html#a90dad699b272028bc29d42149389b1d9">onert::ir::LayoutSet::LayoutSet</a></div><div class="ttdeci">LayoutSet()=default</div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_layout_set_html_aa77e60b0962b17091326f6d0613b8818"><div class="ttname"><a href="classonert_1_1ir_1_1_layout_set.html#aa77e60b0962b17091326f6d0613b8818">onert::ir::LayoutSet::contains</a></div><div class="ttdeci">bool contains(const Layout &amp;layout) const</div><div class="ttdef"><b>Definition:</b> <a href="_layout_set_8h_source.html#l00040">LayoutSet.h:40</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_layout_set_html_aa77e60b0962b17091326f6d0613b8818"><div class="ttname"><a href="classonert_1_1ir_1_1_layout_set.html#aa77e60b0962b17091326f6d0613b8818">onert::ir::LayoutSet::contains</a></div><div class="ttdeci">bool contains(const Layout &amp;layout) const</div><div class="ttdef"><b>Definition:</b> <a href="_layout_set_8h_source.html#l00041">LayoutSet.h:41</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_layout_set_8h_source.html#l00037">add()</a>, and <a class="el" href="_layout_set_8h_source.html#l00040">contains()</a>.</p>
+<p class="reference">References <a class="el" href="_layout_set_8h_source.html#l00038">add()</a>, and <a class="el" href="_layout_set_8h_source.html#l00041">contains()</a>.</p>
 
 </div>
 </div>
@@ -350,14 +350,14 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_layout_set_8cc_source.html#l00055">55</a> of file <a class="el" href="_layout_set_8cc_source.html">LayoutSet.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
 <div class="line"><span class="lineno">   57</span>  <span class="keyword">auto</span> ret = *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> layout : other)</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;layout : other)</div>
 <div class="line"><span class="lineno">   59</span>  {</div>
 <div class="line"><span class="lineno">   60</span>    ret.remove(layout);</div>
 <div class="line"><span class="lineno">   61</span>  }</div>
 <div class="line"><span class="lineno">   62</span>  <span class="keywordflow">return</span> ret;</div>
 <div class="line"><span class="lineno">   63</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_layout_set_8h_source.html#l00038">remove()</a>.</p>
+<p class="reference">References <a class="el" href="_layout_set_8h_source.html#l00039">remove()</a>.</p>
 
 </div>
 </div>
@@ -380,14 +380,14 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_layout_set_8cc_source.html#l00032">32</a> of file <a class="el" href="_layout_set_8cc_source.html">LayoutSet.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
 <div class="line"><span class="lineno">   34</span>  <span class="keyword">auto</span> ret = *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> layout : other)</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;layout : other)</div>
 <div class="line"><span class="lineno">   36</span>  {</div>
 <div class="line"><span class="lineno">   37</span>    ret.add(layout);</div>
 <div class="line"><span class="lineno">   38</span>  }</div>
 <div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> ret;</div>
 <div class="line"><span class="lineno">   40</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_layout_set_8h_source.html#l00037">add()</a>.</p>
+<p class="reference">References <a class="el" href="_layout_set_8h_source.html#l00038">add()</a>.</p>
 
 </div>
 </div>
@@ -415,8 +415,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00038">38</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{ _set.erase(layout); }</div>
+<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00039">39</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{ _set.erase(layout); }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_layout_set_8cc_source.html#l00055">operator-()</a>.</p>
 
@@ -445,8 +445,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00039">39</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(_set.size()); }</div>
+<p class="definition">Definition at line <a class="el" href="_layout_set_8h_source.html#l00040">40</a> of file <a class="el" href="_layout_set_8h_source.html">LayoutSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(_set.size()); }</div>
 </div><!-- fragment -->
 </div>
 </div>

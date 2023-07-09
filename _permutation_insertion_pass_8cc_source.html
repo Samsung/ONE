@@ -148,13 +148,13 @@ $(document).ready(function(){initNavTree('_permutation_insertion_pass_8cc_source
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  std::unordered_map&lt;PermuteFactor, ir::OperandIndex&gt; factor_to_index;</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  {</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    assert(operand_li-&gt;def_factors().size() == 1);</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> factor : operand_li-&gt;def_factors())</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;factor : operand_li-&gt;def_factors())</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    {</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      factor_to_index.emplace(factor, index);</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    }</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keyword">auto</span> insert_set = operand_li-&gt;use_factors() - operand_li-&gt;def_factors();</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> factor : insert_set)</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;factor : insert_set)</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    {</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <span class="keyword">const</span> <span class="keyword">auto</span> permute_operation_index = insertPermute(index, factor);</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      permute_indexes.push_back(permute_operation_index);</div>
@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('_permutation_insertion_pass_8cc_source
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    std::list&lt;ir::OperationIndex&gt; remove_list;</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keyword">auto</span> uses = <span class="keywordtype">object</span>.getUses();</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> use : uses)</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;use : uses)</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    {</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>      <span class="comment">// If permute operation, ignore it</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      <span class="keywordflow">if</span> (std::find(permute_indexes.begin(), permute_indexes.end(), use) != permute_indexes.end())</div>

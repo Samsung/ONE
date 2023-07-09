@@ -241,7 +241,7 @@ $(document).ready(function(){initNavTree('_executors_8cc_source.html',''); initR
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="comment">// Assumption: edges</span></div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="comment">// m1 &lt; m2, s1 == 0 and s2 == 0 if edge &#39;m1:s1:o1 -&gt; m2:s2:o2&#39;</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> edge : _model_edges-&gt;edges)</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;edge : _model_edges-&gt;edges)</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  {</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keyword">auto</span> <span class="keyword">const</span> model_from = std::get&lt;ir::ModelIndex&gt;(edge.from);</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keyword">auto</span> <span class="keyword">const</span> model_to = std::get&lt;ir::ModelIndex&gt;(edge.to);</div>

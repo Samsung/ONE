@@ -811,7 +811,7 @@ var searchData=
   ['contiguousspan_808',['ContiguousSpan',['../classndarray_1_1_contiguous_span.html',1,'ndarray']]],
   ['contract_809',['Contract',['../structluci_1_1_circle_exporter_1_1_contract.html',1,'luci::CircleExporter']]],
   ['conv_810',['Conv',['../classnnfw_1_1cker_1_1_conv.html',1,'nnfw::cker::Conv'],['../classnnfw_1_1ruy_1_1_conv.html',1,'nnfw::ruy::Conv']]],
-  ['conv2d_811',['Conv2D',['../classcoco_1_1_conv2_d.html',1,'coco::Conv2D'],['../classloco_1_1_conv2_d.html',1,'loco::Conv2D'],['../classluci__interpreter_1_1kernels_1_1_conv2_d.html',1,'luci_interpreter::kernels::Conv2D'],['../classonert_1_1ir_1_1operation_1_1_conv2_d.html',1,'onert::ir::operation::Conv2D']]],
+  ['conv2d_811',['Conv2D',['../classcoco_1_1_conv2_d.html',1,'coco::Conv2D'],['../classloco_1_1_conv2_d.html',1,'loco::Conv2D'],['../classluci__interpreter_1_1kernels_1_1_conv2_d.html',1,'luci_interpreter::kernels::Conv2D'],['../classonert_1_1ir_1_1operation_1_1_conv2_d.html',1,'onert::ir::operation::Conv2D'],['../classonert_1_1ir_1_1train_1_1operation_1_1_conv2_d.html',1,'onert::ir::train::operation::Conv2D']]],
   ['conv2dbackpropinputcanonicalizer_812',['Conv2DBackpropInputCanonicalizer',['../classmoco_1_1tf_1_1_conv2_d_backprop_input_canonicalizer.html',1,'moco::tf']]],
   ['conv2dbackpropinputgraphbuilder_813',['Conv2DBackpropInputGraphBuilder',['../classmoco_1_1_conv2_d_backprop_input_graph_builder.html',1,'moco']]],
   ['conv2dcanonicalizer_814',['Conv2DCanonicalizer',['../classmoco_1_1tf_1_1_conv2_d_canonicalizer.html',1,'moco::tf']]],

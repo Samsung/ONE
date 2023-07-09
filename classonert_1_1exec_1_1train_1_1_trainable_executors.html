@@ -478,14 +478,14 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
 <div class="line"><span class="lineno">   63</span>  <span class="keywordflow">if</span> (_executors.size() &gt; 1)</div>
 <div class="line"><span class="lineno">   64</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;TrainableExecutors does not support multiple executors yet&quot;</span>);</div>
-<div class="line"><span class="lineno">   65</span>  <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a3977da4899e37eebe70522948df4ed25">entryExecutor</a>()-&gt;<a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a509a56fd940035d38fbc0a77a23557f1">execute</a>(desc);</div>
+<div class="line"><span class="lineno">   65</span>  <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a3977da4899e37eebe70522948df4ed25">entryExecutor</a>()-&gt;<a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#aaacc895e9a59529504fa58b4a78bd6a4">execute</a>(desc);</div>
 <div class="line"><span class="lineno">   66</span> </div>
 <div class="line"><span class="lineno">   67</span>  <span class="comment">// TODO Support multple executors</span></div>
 <div class="line"><span class="lineno">   68</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_trainable_executor_html_a509a56fd940035d38fbc0a77a23557f1"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a509a56fd940035d38fbc0a77a23557f1">onert::exec::train::TrainableExecutor::execute</a></div><div class="ttdeci">void execute(const IODescription &amp;desc) final</div><div class="ttdoc">Execute with user-given input/output description (for primary subgraph)</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_executor_8cc_source.html#l00065">TrainableExecutor.cc:65</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_trainable_executor_html_aaacc895e9a59529504fa58b4a78bd6a4"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#aaacc895e9a59529504fa58b4a78bd6a4">onert::exec::train::TrainableExecutor::execute</a></div><div class="ttdeci">void execute(const IODescription &amp;desc) override</div><div class="ttdoc">Execute with user-given input/output description (for primary subgraph)</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_executor_8h_source.html#l00057">TrainableExecutor.h:57</a></div></div>
 <div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_trainable_executors_html_a3977da4899e37eebe70522948df4ed25"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a3977da4899e37eebe70522948df4ed25">onert::exec::train::TrainableExecutors::entryExecutor</a></div><div class="ttdeci">TrainableExecutor * entryExecutor() const</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_executors_8h_source.html#l00060">TrainableExecutors.h:60</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_executors_8h_source.html#l00060">entryExecutor()</a>, and <a class="el" href="_trainable_executor_8cc_source.html#l00065">onert::exec::train::TrainableExecutor::execute()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_executors_8h_source.html#l00060">entryExecutor()</a>, and <a class="el" href="_trainable_executor_8h_source.html#l00057">onert::exec::train::TrainableExecutor::execute()</a>.</p>
 
 </div>
 </div>
@@ -528,10 +528,10 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
 <div class="line"><span class="lineno">   53</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a3977da4899e37eebe70522948df4ed25">entryExecutor</a>()-&gt;<a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a56d38132e42ee2bd5e6c026f0991453c">getInputTensors</a>().at(<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.value())-&gt;orig_info();</div>
 <div class="line"><span class="lineno">   54</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_trainable_executor_html_a56d38132e42ee2bd5e6c026f0991453c"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a56d38132e42ee2bd5e6c026f0991453c">onert::exec::train::TrainableExecutor::getInputTensors</a></div><div class="ttdeci">const std::vector&lt; backend::builtin::IOTensor * &gt; &amp; getInputTensors() const override</div><div class="ttdoc">Get input tensor objects.</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_executor_8h_source.html#l00070">TrainableExecutor.h:70</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_trainable_executor_html_a56d38132e42ee2bd5e6c026f0991453c"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a56d38132e42ee2bd5e6c026f0991453c">onert::exec::train::TrainableExecutor::getInputTensors</a></div><div class="ttdeci">const std::vector&lt; backend::builtin::IOTensor * &gt; &amp; getInputTensors() const override</div><div class="ttdoc">Get input tensor objects.</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_executor_8h_source.html#l00073">TrainableExecutor.h:73</a></div></div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition:</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_executors_8h_source.html#l00060">entryExecutor()</a>, and <a class="el" href="_trainable_executor_8h_source.html#l00070">onert::exec::train::TrainableExecutor::getInputTensors()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_executors_8h_source.html#l00060">entryExecutor()</a>, and <a class="el" href="_trainable_executor_8h_source.html#l00073">onert::exec::train::TrainableExecutor::getInputTensors()</a>.</p>
 
 </div>
 </div>
@@ -566,7 +566,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_trainable_executors_8cc_source.html#l00044">44</a> of file <a class="el" href="_trainable_executors_8cc_source.html">TrainableExecutors.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a3977da4899e37eebe70522948df4ed25">entryExecutor</a>()-&gt;<a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a56d38132e42ee2bd5e6c026f0991453c">getInputTensors</a>().size(); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_executors_8h_source.html#l00060">entryExecutor()</a>, and <a class="el" href="_trainable_executor_8h_source.html#l00070">onert::exec::train::TrainableExecutor::getInputTensors()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_executors_8h_source.html#l00060">entryExecutor()</a>, and <a class="el" href="_trainable_executor_8h_source.html#l00073">onert::exec::train::TrainableExecutor::getInputTensors()</a>.</p>
 
 </div>
 </div>
@@ -661,9 +661,9 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   57</span>{</div>
 <div class="line"><span class="lineno">   58</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a3977da4899e37eebe70522948df4ed25">entryExecutor</a>()-&gt;<a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9afbcabb3f3aeee479dc5d963221676e">getOutputTensors</a>().at(<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.value())-&gt;orig_info();</div>
 <div class="line"><span class="lineno">   59</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_trainable_executor_html_a9afbcabb3f3aeee479dc5d963221676e"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9afbcabb3f3aeee479dc5d963221676e">onert::exec::train::TrainableExecutor::getOutputTensors</a></div><div class="ttdeci">const std::vector&lt; backend::builtin::IOTensor * &gt; &amp; getOutputTensors() const override</div><div class="ttdoc">Get output tensor objects.</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_executor_8h_source.html#l00075">TrainableExecutor.h:75</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_trainable_executor_html_a9afbcabb3f3aeee479dc5d963221676e"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9afbcabb3f3aeee479dc5d963221676e">onert::exec::train::TrainableExecutor::getOutputTensors</a></div><div class="ttdeci">const std::vector&lt; backend::builtin::IOTensor * &gt; &amp; getOutputTensors() const override</div><div class="ttdoc">Get output tensor objects.</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_executor_8h_source.html#l00078">TrainableExecutor.h:78</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_executors_8h_source.html#l00060">entryExecutor()</a>, and <a class="el" href="_trainable_executor_8h_source.html#l00075">onert::exec::train::TrainableExecutor::getOutputTensors()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_executors_8h_source.html#l00060">entryExecutor()</a>, and <a class="el" href="_trainable_executor_8h_source.html#l00078">onert::exec::train::TrainableExecutor::getOutputTensors()</a>.</p>
 
 </div>
 </div>
@@ -700,7 +700,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a3977da4899e37eebe70522948df4ed25">entryExecutor</a>()-&gt;<a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9afbcabb3f3aeee479dc5d963221676e">getOutputTensors</a>().size();</div>
 <div class="line"><span class="lineno">   49</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_executors_8h_source.html#l00060">entryExecutor()</a>, and <a class="el" href="_trainable_executor_8h_source.html#l00075">onert::exec::train::TrainableExecutor::getOutputTensors()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_executors_8h_source.html#l00060">entryExecutor()</a>, and <a class="el" href="_trainable_executor_8h_source.html#l00078">onert::exec::train::TrainableExecutor::getOutputTensors()</a>.</p>
 
 </div>
 </div>

@@ -3,7 +3,7 @@ var dir_08900994fb818b137f031f88ff586ea4 =
     [ "Activation.cpp", "_activation_8cpp.html", "_activation_8cpp" ],
     [ "Activation.h", "_activation_8h.html", "_activation_8h" ],
     [ "AveragePool2D.cpp", "compiler_2enco_2frontend_2tflite_2src_2_op_2_average_pool2_d_8cpp.html", null ],
-    [ "AveragePool2D.h", "compiler_2enco_2frontend_2tflite_2src_2_op_2_average_pool2_d_8h.html", "compiler_2enco_2frontend_2tflite_2src_2_op_2_average_pool2_d_8h" ],
+    [ "AveragePool2D.h", "enco_2frontend_2tflite_2src_2_op_2_average_pool2_d_8h.html", "enco_2frontend_2tflite_2src_2_op_2_average_pool2_d_8h" ],
     [ "Concatenation.cpp", "compiler_2enco_2frontend_2tflite_2src_2_op_2_concatenation_8cpp.html", null ],
     [ "Concatenation.h", "compiler_2enco_2frontend_2tflite_2src_2_op_2_concatenation_8h.html", "compiler_2enco_2frontend_2tflite_2src_2_op_2_concatenation_8h" ],
     [ "Conv2D.cpp", "compiler_2enco_2frontend_2tflite_2src_2_op_2_conv2_d_8cpp.html", null ],

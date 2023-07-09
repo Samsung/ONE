@@ -1,6 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classonert_1_1exec_1_1_i_execution_observer.html" title=" " alt="" coords="5,55,208,80"/>
-<area shape="rect" id="node2" href="$classonert_1_1exec_1_1_min_max_recorder.html" title=" " alt="" coords="256,5,443,31"/>
-<area shape="rect" id="node3" href="$classonert_1_1exec_1_1_profile_observer.html" title=" " alt="" coords="260,55,439,80"/>
-<area shape="rect" id="node4" href="$classonert_1_1exec_1_1_tracing_observer.html" title=" " alt="" coords="256,104,443,129"/>
+<area shape="rect" id="node1" href="$structonert_1_1exec_1_1_i_executor.html" title="Struct to define interface of Executor." alt="" coords="5,59,149,84"/>
+<area shape="rect" id="node2" href="$classonert_1_1exec_1_1_executor_base.html" title=" " alt="" coords="197,29,368,55"/>
+<area shape="rect" id="node6" href="$classonert_1_1exec_1_1train_1_1_trainable_executor.html" title=" " alt="" coords="217,79,348,119"/>
+<area shape="rect" id="node3" href="$classonert_1_1exec_1_1_dataflow_executor.html" title=" " alt="" coords="416,5,607,31"/>
+<area shape="rect" id="node5" href="$classonert_1_1exec_1_1_linear_executor.html" title="Class to handle execution phase. Simple run the sequence of operations that is sorted in topological ..." alt="" coords="423,55,599,80"/>
+<area shape="rect" id="node4" href="$classonert_1_1exec_1_1_parallel_executor.html" title="Class to execute Graph in parallel." alt="" coords="655,5,837,31"/>
 </map>

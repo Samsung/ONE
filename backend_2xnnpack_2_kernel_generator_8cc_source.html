@@ -163,7 +163,7 @@ $(document).ready(function(){initNavTree('backend_2xnnpack_2_kernel_generator_8c
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  assert(_return_fn); <span class="comment">// _return_fn must have been generated</span></div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  ret-&gt;append(std::move(_return_fn));</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  {</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keyword">auto</span> portable_tensor = _tensor_reg-&gt;getPortableTensor(ind);</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">if</span> (portable_tensor)</div>

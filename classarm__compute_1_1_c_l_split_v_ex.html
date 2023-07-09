@@ -214,7 +214,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  174</span> </div>
 <div class="line"><span class="lineno">  175</span>  <span class="comment">// Extract output tensor info</span></div>
 <div class="line"><span class="lineno">  176</span>  std::vector&lt;ITensorInfo *&gt; outputs_info;</div>
-<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;output : _outputs)</div>
+<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;output : _outputs)</div>
 <div class="line"><span class="lineno">  178</span>  {</div>
 <div class="line"><span class="lineno">  179</span>    ARM_COMPUTE_ERROR_ON_NULLPTR(output);</div>
 <div class="line"><span class="lineno">  180</span>    outputs_info.emplace_back(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info());</div>

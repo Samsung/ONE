@@ -698,13 +698,13 @@ template&lt;typename T_ITensor , typename T_Tensor , typename T_SubTensor &gt; <
 
 <p class="definition">Definition at line <a class="el" href="_acl_tensor_manager_8h_source.html#l00261">261</a> of file <a class="el" href="_acl_tensor_manager_8h_source.html">AclTensorManager.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  263</span>{</div>
-<div class="line"><span class="lineno">  264</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it : _nonconst_mgr-&gt;tensors())</div>
+<div class="line"><span class="lineno">  264</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it : _nonconst_mgr-&gt;tensors())</div>
 <div class="line"><span class="lineno">  265</span>    fn(it.first);</div>
 <div class="line"><span class="lineno">  266</span> </div>
-<div class="line"><span class="lineno">  267</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it : _nonconst_mgr-&gt;subtensors())</div>
+<div class="line"><span class="lineno">  267</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it : _nonconst_mgr-&gt;subtensors())</div>
 <div class="line"><span class="lineno">  268</span>    fn(it.first);</div>
 <div class="line"><span class="lineno">  269</span> </div>
-<div class="line"><span class="lineno">  270</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it : _const_mgr-&gt;tensors())</div>
+<div class="line"><span class="lineno">  270</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it : _const_mgr-&gt;tensors())</div>
 <div class="line"><span class="lineno">  271</span>    fn(it.first);</div>
 <div class="line"><span class="lineno">  272</span>}</div>
 </div><!-- fragment -->

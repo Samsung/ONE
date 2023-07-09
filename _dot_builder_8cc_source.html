@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('_dot_builder_8cc_source.html',''); ini
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a53702ad2e71d2295b3e603a954541098">   29</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a53702ad2e71d2295b3e603a954541098">DotBuilder::update</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1dumper_1_1dot_1_1_node.html">Node</a> &amp;node_info)</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  add(node_info);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> edge : node_info.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_node.html#a099da3c70c37d6fac0110979e97ee1bf">out_edges</a>())</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;edge : node_info.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_node.html#a099da3c70c37d6fac0110979e97ee1bf">out_edges</a>())</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  {</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    addEdge(node_info, *edge);</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  }</div>
@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('_dot_builder_8cc_source.html',''); ini
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  _dot &lt;&lt; node.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_node.html#a3a9c5547f5d84471d87d8400961d7ff1">id</a>();</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  std::stringstream ss;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  _dot &lt;&lt; <span class="stringliteral">&quot;[&quot;</span>;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> attr : node.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_node.html#a6bd66b2d2a7fdffdf87da0222fc6176e">attributes</a>())</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;attr : node.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_node.html#a6bd66b2d2a7fdffdf87da0222fc6176e">attributes</a>())</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  {</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    _dot &lt;&lt; attr.first &lt;&lt; <span class="stringliteral">&quot;=\&quot;&quot;</span> &lt;&lt; attr.second &lt;&lt; <span class="stringliteral">&quot;\&quot; &quot;</span>;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>

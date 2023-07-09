@@ -267,7 +267,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  274</span>    }</div>
 <div class="line"><span class="lineno">  275</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="namespacepart__eval__one.html#a96c48226d20da59d2df2f69a93c770cb">num_inputs</a>; ++i)</div>
 <div class="line"><span class="lineno">  276</span>    {</div>
-<div class="line"><span class="lineno">  277</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> label : free_labels[i])</div>
+<div class="line"><span class="lineno">  277</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;label : free_labels[i])</div>
 <div class="line"><span class="lineno">  278</span>      {</div>
 <div class="line"><span class="lineno">  279</span>        result_labels.push_back(label);</div>
 <div class="line"><span class="lineno">  280</span>        result_shape_dims.push_back(label_to_dim_sizes[label]);</div>
@@ -293,7 +293,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  300</span>    {</div>
 <div class="line"><span class="lineno">  301</span>      <span class="comment">// We inflated the output. Modify result labels accordingly.</span></div>
 <div class="line"><span class="lineno">  302</span>      <a class="code hl_typedef" href="namespacennfw_1_1cker.html#abb31958b1ebb5f6b6960924b56b18c80">Labels</a> inflated_labels;</div>
-<div class="line"><span class="lineno">  303</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> label : result_labels)</div>
+<div class="line"><span class="lineno">  303</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;label : result_labels)</div>
 <div class="line"><span class="lineno">  304</span>      {</div>
 <div class="line"><span class="lineno">  305</span>        inflated_labels.insert(inflated_labels.end(), output_label_counts[label], label);</div>
 <div class="line"><span class="lineno">  306</span>      }</div>

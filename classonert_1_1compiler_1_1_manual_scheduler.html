@@ -191,7 +191,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   42</span> </div>
 <div class="line"><span class="lineno">   43</span>  <span class="comment">// This fallback will be used in case that `backend_for_all` is unavailable</span></div>
 <div class="line"><span class="lineno">   44</span>  <span class="keyword">auto</span> fallback = [&amp;]() -&gt; <span class="keyword">const</span> backend::Backend * {</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> backend_id : _options.<a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#ae43d2031de19b822a7ff3bd3087a2b0c">backend_list</a>)</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;backend_id : _options.<a class="code hl_variable" href="classonert_1_1compiler_1_1_compiler_options.html#ae43d2031de19b822a7ff3bd3087a2b0c">backend_list</a>)</div>
 <div class="line"><span class="lineno">   46</span>    {</div>
 <div class="line"><span class="lineno">   47</span>      <span class="keyword">auto</span> backend = resolveBackend(backend_id);</div>
 <div class="line"><span class="lineno">   48</span>      <span class="keywordflow">if</span> (backend)</div>

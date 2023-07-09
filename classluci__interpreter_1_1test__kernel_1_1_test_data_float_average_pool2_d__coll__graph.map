@@ -1,0 +1,7 @@
+<map id="luci_interpreter::test_kernel::TestDataFloatAveragePool2D" name="luci_interpreter::test_kernel::TestDataFloatAveragePool2D">
+<area shape="rect" id="node1" title=" " alt="" coords="763,44,963,99"/>
+<area shape="rect" id="node2" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_average_pool2_d_base.html" title=" " alt="" coords="509,44,713,99"/>
+<area shape="rect" id="node3" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="233,5,387,60"/>
+<area shape="rect" id="node4" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_average_pool2_d_base.html" title=" " alt="" coords="208,84,412,139"/>
+<area shape="rect" id="node5" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="5,84,159,139"/>
+</map>

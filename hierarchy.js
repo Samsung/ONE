@@ -1261,7 +1261,7 @@ var hierarchy =
       ] ],
       [ "onert::backend::cpu::BackendContext", "classonert_1_1backend_1_1cpu_1_1_backend_context.html", null ],
       [ "onert::backend::ruy::BackendContext", "classonert_1_1backend_1_1ruy_1_1_backend_context.html", null ],
-      [ "onert::backend::train::BackendContext", "classonert_1_1backend_1_1train_1_1_backend_context.html", null ],
+      [ "onert::backend::train::DummyBackendContext", "classonert_1_1backend_1_1train_1_1_dummy_backend_context.html", null ],
       [ "onert::backend::trix::BackendContext", "classonert_1_1backend_1_1trix_1_1_backend_context.html", null ],
       [ "onert::backend::xnnpack::BackendContext", "classonert_1_1backend_1_1xnnpack_1_1_backend_context.html", null ]
     ] ],
@@ -2647,7 +2647,9 @@ var hierarchy =
         [ "onert::ir::operation::Bulk", "classonert_1_1ir_1_1operation_1_1_bulk.html", null ],
         [ "onert::ir::operation::Comparison", "classonert_1_1ir_1_1operation_1_1_comparison.html", null ],
         [ "onert::ir::operation::Concat", "classonert_1_1ir_1_1operation_1_1_concat.html", null ],
-        [ "onert::ir::operation::Conv2D", "classonert_1_1ir_1_1operation_1_1_conv2_d.html", null ],
+        [ "onert::ir::operation::Conv2D", "classonert_1_1ir_1_1operation_1_1_conv2_d.html", [
+          [ "onert::ir::train::operation::Conv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_conv2_d.html", null ]
+        ] ],
         [ "onert::ir::operation::ConvertFp16ToFp32", "classonert_1_1ir_1_1operation_1_1_convert_fp16_to_fp32.html", null ],
         [ "onert::ir::operation::ConvertFp32ToFp16", "classonert_1_1ir_1_1operation_1_1_convert_fp32_to_fp16.html", null ],
         [ "onert::ir::operation::Custom", "classonert_1_1ir_1_1operation_1_1_custom.html", null ],
@@ -2684,20 +2686,26 @@ var hierarchy =
         [ "onert::ir::operation::Permute", "classonert_1_1ir_1_1operation_1_1_permute.html", [
           [ "onert::ir::train::operation::Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", null ]
         ] ],
-        [ "onert::ir::operation::Pool2D", "classonert_1_1ir_1_1operation_1_1_pool2_d.html", null ],
+        [ "onert::ir::operation::Pool2D", "classonert_1_1ir_1_1operation_1_1_pool2_d.html", [
+          [ "onert::ir::train::operation::Pool2D", "classonert_1_1ir_1_1train_1_1operation_1_1_pool2_d.html", null ]
+        ] ],
         [ "onert::ir::operation::Pow", "classonert_1_1ir_1_1operation_1_1_pow.html", null ],
         [ "onert::ir::operation::RNN", "classonert_1_1ir_1_1operation_1_1_r_n_n.html", null ],
         [ "onert::ir::operation::Range", "classonert_1_1ir_1_1operation_1_1_range.html", null ],
         [ "onert::ir::operation::Rank", "classonert_1_1ir_1_1operation_1_1_rank.html", null ],
         [ "onert::ir::operation::Reduce", "classonert_1_1ir_1_1operation_1_1_reduce.html", null ],
-        [ "onert::ir::operation::Reshape", "classonert_1_1ir_1_1operation_1_1_reshape.html", null ],
+        [ "onert::ir::operation::Reshape", "classonert_1_1ir_1_1operation_1_1_reshape.html", [
+          [ "onert::ir::train::operation::Reshape", "classonert_1_1ir_1_1train_1_1operation_1_1_reshape.html", null ]
+        ] ],
         [ "onert::ir::operation::ResizeBilinear", "classonert_1_1ir_1_1operation_1_1_resize_bilinear.html", null ],
         [ "onert::ir::operation::ResizeNearestNeighbor", "classonert_1_1ir_1_1operation_1_1_resize_nearest_neighbor.html", null ],
         [ "onert::ir::operation::Reverse", "classonert_1_1ir_1_1operation_1_1_reverse.html", null ],
         [ "onert::ir::operation::Select", "classonert_1_1ir_1_1operation_1_1_select.html", null ],
         [ "onert::ir::operation::Shape", "classonert_1_1ir_1_1operation_1_1_shape.html", null ],
         [ "onert::ir::operation::Slice", "classonert_1_1ir_1_1operation_1_1_slice.html", null ],
-        [ "onert::ir::operation::Softmax", "classonert_1_1ir_1_1operation_1_1_softmax.html", null ],
+        [ "onert::ir::operation::Softmax", "classonert_1_1ir_1_1operation_1_1_softmax.html", [
+          [ "onert::ir::train::operation::Softmax", "classonert_1_1ir_1_1train_1_1operation_1_1_softmax.html", null ]
+        ] ],
         [ "onert::ir::operation::SpaceToBatchND", "classonert_1_1ir_1_1operation_1_1_space_to_batch_n_d.html", null ],
         [ "onert::ir::operation::SpaceToDepth", "classonert_1_1ir_1_1operation_1_1_space_to_depth.html", null ],
         [ "onert::ir::operation::Split", "classonert_1_1ir_1_1operation_1_1_split.html", null ],
@@ -2715,9 +2723,13 @@ var hierarchy =
         [ "onert_test::ir::SimpleMock", "classonert__test_1_1ir_1_1_simple_mock.html", null ]
       ] ],
       [ "onert::ir::train::ITrainableOperation", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html", [
+        [ "onert::ir::train::operation::Conv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_conv2_d.html", null ],
         [ "onert::ir::train::operation::ElementwiseActivation", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation.html", null ],
         [ "onert::ir::train::operation::Loss", "classonert_1_1ir_1_1train_1_1operation_1_1_loss.html", null ],
         [ "onert::ir::train::operation::Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", null ],
+        [ "onert::ir::train::operation::Pool2D", "classonert_1_1ir_1_1train_1_1operation_1_1_pool2_d.html", null ],
+        [ "onert::ir::train::operation::Reshape", "classonert_1_1ir_1_1train_1_1operation_1_1_reshape.html", null ],
+        [ "onert::ir::train::operation::Softmax", "classonert_1_1ir_1_1train_1_1operation_1_1_softmax.html", null ],
         [ "onert::ir::train::operation::UntrainableOperation< OperationType, typename >", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", null ]
       ] ]
     ] ],
@@ -2776,7 +2788,8 @@ var hierarchy =
       [ "MockTensor< T >", "class_mock_tensor.html", null ],
       [ "onert::backend::IPortableTensor", "classonert_1_1backend_1_1_i_portable_tensor.html", [
         [ "onert::backend::basic::Tensor", "classonert_1_1backend_1_1basic_1_1_tensor.html", [
-          [ "onert::backend::basic::ExternalTensor", "classonert_1_1backend_1_1basic_1_1_external_tensor.html", null ]
+          [ "onert::backend::basic::ExternalTensor", "classonert_1_1backend_1_1basic_1_1_external_tensor.html", null ],
+          [ "onert::backend::train::Tensor", "classonert_1_1backend_1_1train_1_1_tensor.html", null ]
         ] ],
         [ "onert::backend::builtin::IOTensor", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html", [
           [ "onert::exec::Executors::EdgeTensor", "classonert_1_1exec_1_1_executors_1_1_edge_tensor.html", null ]
@@ -2798,6 +2811,9 @@ var hierarchy =
       ] ]
     ] ],
     [ "onert::backend::ITensorRegistry", "structonert_1_1backend_1_1_i_tensor_registry.html", [
+      [ "onert::backend::PortableTensorRegistryTemplate< Tensor >", "classonert_1_1backend_1_1_portable_tensor_registry_template.html", [
+        [ "onert::backend::train::TensorRegistry", "classonert_1_1backend_1_1train_1_1_tensor_registry.html", null ]
+      ] ],
       [ "onert::backend::PortableTensorRegistryTemplate< T_Tensor >", "classonert_1_1backend_1_1_portable_tensor_registry_template.html", null ],
       [ "onert::backend::acl_common::AclTensorRegistry< T_AclTensorManager >", "classonert_1_1backend_1_1acl__common_1_1_acl_tensor_registry.html", null ],
       [ "onert::backend::builtin::TensorRegistry", "classonert_1_1backend_1_1builtin_1_1_tensor_registry.html", null ],
@@ -2813,11 +2829,14 @@ var hierarchy =
       [ "onert::backend::acl_cl::CLTimer", "classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html", null ],
       [ "onert::util::CPUTimer", "classonert_1_1util_1_1_c_p_u_timer.html", null ]
     ] ],
-    [ "onert::backend::train::ITrainableBackend", "structonert_1_1backend_1_1train_1_1_i_trainable_backend.html", null ],
-    [ "onert::exec::ITrainableFunction", "classonert_1_1exec_1_1_i_trainable_function.html", [
+    [ "onert::backend::train::ITrainableBackend", "structonert_1_1backend_1_1train_1_1_i_trainable_backend.html", [
+      [ "onert::backend::train::Backend", "classonert_1_1backend_1_1train_1_1_backend.html", null ]
+    ] ],
+    [ "onert::exec::train::ITrainableFunction", "classonert_1_1exec_1_1train_1_1_i_trainable_function.html", [
       [ "onert::backend::builtin::train::kernel::PermuteLayer", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html", null ],
       [ "onert::backend::train::ops::ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", null ],
-      [ "onert::backend::train::ops::PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", null ]
+      [ "onert::backend::train::ops::PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", null ],
+      [ "onert::exec::train::TrainableFnSequence", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html", null ]
     ] ],
     [ "ITransformWeights", null, [
       [ "arm_compute::weights_transformations::CLFullyConnectedLayerReshapeWeightsExManaged", "classarm__compute_1_1weights__transformations_1_1_c_l_fully_connected_layer_reshape_weights_ex_managed.html", null ]
@@ -2866,7 +2885,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::ArgMax", "classluci__interpreter_1_1kernels_1_1_arg_max.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< Pool2DParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::AveragePool2D", "classluci__interpreter_1_1kernels_1_1_average_pool2_d.html", null ],
         [ "luci_interpreter::kernels::AveragePool2D", "classluci__interpreter_1_1kernels_1_1_average_pool2_d.html", null ],
         [ "luci_interpreter::kernels::L2Pool2D", "classluci__interpreter_1_1kernels_1_1_l2_pool2_d.html", null ],
         [ "luci_interpreter::kernels::L2Pool2D", "classluci__interpreter_1_1kernels_1_1_l2_pool2_d.html", null ],
@@ -2992,10 +3010,8 @@ var hierarchy =
       [ "luci_interpreter::kernels::Dequantize", "classluci__interpreter_1_1kernels_1_1_dequantize.html", null ],
       [ "luci_interpreter::kernels::Dequantize", "classluci__interpreter_1_1kernels_1_1_dequantize.html", null ],
       [ "luci_interpreter::kernels::Elu", "classluci__interpreter_1_1kernels_1_1_elu.html", null ],
-      [ "luci_interpreter::kernels::Elu", "classluci__interpreter_1_1kernels_1_1_elu.html", null ],
       [ "luci_interpreter::kernels::Equal", "classluci__interpreter_1_1kernels_1_1_equal.html", null ],
       [ "luci_interpreter::kernels::Equal", "classluci__interpreter_1_1kernels_1_1_equal.html", null ],
-      [ "luci_interpreter::kernels::Exp", "classluci__interpreter_1_1kernels_1_1_exp.html", null ],
       [ "luci_interpreter::kernels::Exp", "classluci__interpreter_1_1kernels_1_1_exp.html", null ],
       [ "luci_interpreter::kernels::ExpandDims", "classluci__interpreter_1_1kernels_1_1_expand_dims.html", null ],
       [ "luci_interpreter::kernels::Fill", "classluci__interpreter_1_1kernels_1_1_fill.html", null ],
@@ -3307,6 +3323,11 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::NegTestDataInput2WrongTypeMul", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input2_wrong_type_mul.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputMismatchAddKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_add_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputMismatchConv2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_conv2_d_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInputOutputShapeMismatchAbsKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchAbsKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_abs_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchAveragePool2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchEluKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_elu_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchExpKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_exp_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchGatherKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_gather_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchLogisticKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_logistic_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchMaxPool2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_max_pool2_d_kernel.html", null ],
@@ -3815,7 +3836,6 @@ var hierarchy =
         [ "onert::backend::cpu::KernelGenerator", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html", null ],
         [ "onert::backend::gpu_cl::KernelGenerator", "classonert_1_1backend_1_1gpu__cl_1_1_kernel_generator.html", null ],
         [ "onert::backend::ruy::KernelGenerator", "classonert_1_1backend_1_1ruy_1_1_kernel_generator.html", null ],
-        [ "onert::backend::train::InferenceKernelGenerator", "classonert_1_1backend_1_1train_1_1_inference_kernel_generator.html", null ],
         [ "onert::backend::trix::KernelGenerator", "classonert_1_1backend_1_1trix_1_1_kernel_generator.html", null ],
         [ "onert::backend::xnnpack::KernelGenerator", "classonert_1_1backend_1_1xnnpack_1_1_kernel_generator.html", null ]
       ] ],
@@ -4211,6 +4231,7 @@ var hierarchy =
       [ "luci::ConvertNCHWToNHWCPass", "structluci_1_1_convert_n_c_h_w_to_n_h_w_c_pass.html", null ],
       [ "luci::ConvertToFakeQuantizedModelPass", "structluci_1_1_convert_to_fake_quantized_model_pass.html", null ],
       [ "luci::CopyQuantParamPass", "classluci_1_1_copy_quant_param_pass.html", null ],
+      [ "luci::DynamicBatchToSingleBatchPass", "classluci_1_1_dynamic_batch_to_single_batch_pass.html", null ],
       [ "luci::ExpandBroadcastConstPass", "structluci_1_1_expand_broadcast_const_pass.html", null ],
       [ "luci::FoldAddV2Pass", "structluci_1_1_fold_add_v2_pass.html", null ],
       [ "luci::FoldCastPass", "structluci_1_1_fold_cast_pass.html", null ],
@@ -4727,6 +4748,9 @@ var hierarchy =
     [ "mir::TensorType", "classmir_1_1_tensor_type.html", null ],
     [ "mir::TensorVariant", "classmir_1_1_tensor_variant.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< T, U >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", [
+      [ "luci_interpreter::test_kernel::TestDataAbsBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_abs_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatAbs", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_abs.html", null ]
+      ] ],
       [ "luci_interpreter::test_kernel::TestDataAddBase< int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", [
         [ "luci_interpreter::test_kernel::TestData32IntAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data32_int_add.html", null ]
       ] ],
@@ -4735,6 +4759,9 @@ var hierarchy =
       ] ],
       [ "luci_interpreter::test_kernel::TestDataAddBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataAveragePool2DBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_average_pool2_d_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatAveragePool2D", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_average_pool2_d.html", null ]
       ] ],
       [ "luci_interpreter::test_kernel::TestDataConcatenationBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_concatenation_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatConcatenation", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_concatenation.html", null ]
@@ -4750,6 +4777,12 @@ var hierarchy =
       ] ],
       [ "luci_interpreter::test_kernel::TestDataConv2DBase< uint8_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_conv2_d_base.html", [
         [ "luci_interpreter::test_kernel::TestDataU8Conv2D", "classluci__interpreter_1_1test__kernel_1_1_test_data_u8_conv2_d.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataEluBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_elu_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatElu", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_elu.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataExpBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_exp_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatExp", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_exp.html", null ]
       ] ],
       [ "luci_interpreter::test_kernel::TestDataFullyConnectedBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fully_connected_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatFullyConnected", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_fully_connected.html", null ]
@@ -4829,9 +4862,13 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataUnidirectionalLSTMBase< int8_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_unidirectional_l_s_t_m_base.html", [
         [ "luci_interpreter::test_kernel::TestDataInt8UnidirectionalLSTM", "classluci__interpreter_1_1test__kernel_1_1_test_data_int8_unidirectional_l_s_t_m.html", null ]
       ] ],
+      [ "luci_interpreter::test_kernel::TestDataAbsBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_abs_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataAddBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataAveragePool2DBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_average_pool2_d_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataConcatenationBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_concatenation_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataConv2DBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_conv2_d_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataEluBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_elu_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataExpBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_exp_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataExpandDimsKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_expand_dims_kernel.html", null ],
       [ "luci_interpreter::test_kernel::TestDataFillKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fill_kernel.html", null ],
       [ "luci_interpreter::test_kernel::TestDataFullyConnectedBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fully_connected_base.html", null ],
@@ -5044,11 +5081,11 @@ var hierarchy =
     [ "TopologicalSortHelper.TopologicalSortHelper", "class_topological_sort_helper_1_1_topological_sort_helper.html", null ],
     [ "onert::util::TracingCtx", "classonert_1_1util_1_1_tracing_ctx.html", null ],
     [ "onert::backend::train::TrainableBackendContext", "classonert_1_1backend_1_1train_1_1_trainable_backend_context.html", [
-      [ "onert::backend::builtin::train::BackendContext", "classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html", null ]
+      [ "onert::backend::builtin::train::BackendContext", "classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html", null ],
+      [ "onert::backend::train::BackendContext", "classonert_1_1backend_1_1train_1_1_backend_context.html", null ]
     ] ],
     [ "onert::compiler::train::TrainableCodeAndInfo", "structonert_1_1compiler_1_1train_1_1_trainable_code_and_info.html", null ],
     [ "onert::backend::train::TrainableContextData", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html", null ],
-    [ "onert::exec::train::TrainableFnSequence", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html", null ],
     [ "onert::ir::train::TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", [
       [ "onert::backend::train::KernelGeneratorBase", "classonert_1_1backend_1_1train_1_1_kernel_generator_base.html", [
         [ "onert::backend::builtin::train::KernelGenerator", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html", null ],

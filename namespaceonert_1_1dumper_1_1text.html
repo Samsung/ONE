@@ -131,7 +131,7 @@ Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   82</span>{</div>
 <div class="line"><span class="lineno">   83</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(GraphDumper) &lt;&lt; <span class="stringliteral">&quot;{\n&quot;</span>;</div>
 <div class="line"><span class="lineno">   84</span>  <span class="keyword">auto</span> ops_topol = graph.topolSortOperations();</div>
-<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> op_ind : ops_topol)</div>
+<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;op_ind : ops_topol)</div>
 <div class="line"><span class="lineno">   86</span>  {</div>
 <div class="line"><span class="lineno">   87</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op = graph.operations().at(op_ind);</div>
 <div class="line"><span class="lineno">   88</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(GraphDumper) &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; <a class="code hl_function" href="namespaceonert_1_1dumper_1_1text.html#a5227db9d70a67305564456340f428845">formatOperation</a>(op, op_ind) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>

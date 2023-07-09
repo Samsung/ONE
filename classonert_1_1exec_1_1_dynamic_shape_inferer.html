@@ -659,7 +659,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  253</span><span class="comment">    So, only when all inputs are static, we can skip dynamic shape inference.</span></div>
 <div class="line"><span class="lineno">  254</span><span class="comment">  */</span></div>
 <div class="line"><span class="lineno">  255</span>  <span class="keywordtype">bool</span> all_static = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  256</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input_ind : op.getInputs())</div>
+<div class="line"><span class="lineno">  256</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input_ind : op.getInputs())</div>
 <div class="line"><span class="lineno">  257</span>  {</div>
 <div class="line"><span class="lineno">  258</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
 <div class="line"><span class="lineno">  259</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic())</div>
@@ -696,7 +696,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  290</span>    <span class="keyword">auto</span> first_input_ind = op.getInputs().at(0);</div>
 <div class="line"><span class="lineno">  291</span>    <span class="keyword">auto</span> first_input = _tensor_registry-&gt;getITensor(first_input_ind);</div>
 <div class="line"><span class="lineno">  292</span> </div>
-<div class="line"><span class="lineno">  293</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> input_ind : op.getInputs())</div>
+<div class="line"><span class="lineno">  293</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input_ind : op.getInputs())</div>
 <div class="line"><span class="lineno">  294</span>    {</div>
 <div class="line"><span class="lineno">  295</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
 <div class="line"><span class="lineno">  296</span>      <span class="keywordflow">if</span> (input != first_input &amp;&amp; !isConcatible(first_input, input, op.param().axis))</div>
@@ -706,7 +706,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  300</span> </div>
 <div class="line"><span class="lineno">  301</span>  <span class="comment">// getting output shape</span></div>
 <div class="line"><span class="lineno">  302</span>  <a class="code hl_typedef" href="namespaceonert_1_1shape__inference.html#a70e5c20289b21b1f0c0cb7175bcf6b0b">onert::shape_inference::Shapes</a> in_shapes;</div>
-<div class="line"><span class="lineno">  303</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input_ind : op.getInputs())</div>
+<div class="line"><span class="lineno">  303</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input_ind : op.getInputs())</div>
 <div class="line"><span class="lineno">  304</span>  {</div>
 <div class="line"><span class="lineno">  305</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
 <div class="line"><span class="lineno">  306</span>    ir::Shape shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
@@ -2324,7 +2324,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1042</span> </div>
 <div class="line"><span class="lineno"> 1043</span>  <span class="comment">// Return if all tensors are not dynamic</span></div>
 <div class="line"><span class="lineno"> 1044</span>  <span class="keywordtype">bool</span> has_dynamic = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno"> 1045</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> output_idx : op.getOutputs())</div>
+<div class="line"><span class="lineno"> 1045</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_idx : op.getOutputs())</div>
 <div class="line"><span class="lineno"> 1046</span>  {</div>
 <div class="line"><span class="lineno"> 1047</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_idx);</div>
 <div class="line"><span class="lineno"> 1048</span>    has_dynamic |= <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic();</div>

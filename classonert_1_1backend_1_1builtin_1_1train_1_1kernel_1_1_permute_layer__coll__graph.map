@@ -1,7 +1,7 @@
 <map id="onert::backend::builtin::train::kernel::PermuteLayer" name="onert::backend::builtin::train::kernel::PermuteLayer">
-<area shape="rect" id="node1" title=" " alt="" coords="110,240,291,280"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html" title=" " alt="" coords="27,152,177,192"/>
-<area shape="rect" id="node3" href="$classonert_1_1exec_1_1_i_permute_function.html" title=" " alt="" coords="5,79,199,104"/>
-<area shape="rect" id="node4" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="30,5,174,31"/>
-<area shape="rect" id="node5" href="$classonert_1_1exec_1_1_i_trainable_function.html" title=" " alt="" coords="202,159,399,185"/>
+<area shape="rect" id="node1" title=" " alt="" coords="637,37,819,77"/>
+<area shape="rect" id="node2" href="$classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html" title=" " alt="" coords="439,5,589,45"/>
+<area shape="rect" id="node3" href="$classonert_1_1exec_1_1_i_permute_function.html" title=" " alt="" coords="197,13,391,38"/>
+<area shape="rect" id="node4" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="5,13,149,38"/>
+<area shape="rect" id="node5" href="$classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="447,69,581,109"/>
 </map>

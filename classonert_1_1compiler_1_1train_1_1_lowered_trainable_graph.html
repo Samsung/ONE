@@ -127,6 +127,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae4da1a87f82309442af33a0e7bc17926"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae646c2bcd636fbba88e6f0f2f47d5a70"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="namespaceonert_1_1ir.html#a9edc133ca328c864d5a28e75c21d285f">ir::OperationIndexMap</a>&lt; int64_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#ae646c2bcd636fbba88e6f0f2f47d5a70">indexed_ranks</a> ()</td></tr>
 <tr class="separator:ae646c2bcd636fbba88e6f0f2f47d5a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab41da5c6ff18b5c3a87031d355e9b2c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#ab41da5c6ff18b5c3a87031d355e9b2c3">setHasDynamicTensor</a> (<a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a>, bool has_dynamic) override</td></tr>
+<tr class="separator:ab41da5c6ff18b5c3a87031d355e9b2c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66510151c234d040431e4cb63c305d6e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a66510151c234d040431e4cb63c305d6e">getHasDynamicTensor</a> (<a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a>) const override</td></tr>
+<tr class="separator:a66510151c234d040431e4cb63c305d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structonert_1_1compiler_1_1_i_lowered_graph"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structonert_1_1compiler_1_1_i_lowered_graph')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html">onert::compiler::ILoweredGraph</a></td></tr>
 <tr class="memitem:a255a4365a233363eca0333db7f23232f inherit pub_methods_structonert_1_1compiler_1_1_i_lowered_graph"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#a255a4365a233363eca0333db7f23232f">~ILoweredGraph</a> ()=default</td></tr>
 <tr class="separator:a255a4365a233363eca0333db7f23232f inherit pub_methods_structonert_1_1compiler_1_1_i_lowered_graph"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,6 +142,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a009fa65e7f106b931537171cdf14352c inherit pub_methods_structonert_1_1compiler_1_1_i_lowered_graph"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab62c2148c74b2dc10750e829eb27b40 inherit pub_methods_structonert_1_1compiler_1_1_i_lowered_graph"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structonert_1_1compiler_1_1_graph_lower_info.html">compiler::GraphLowerInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#aab62c2148c74b2dc10750e829eb27b40">lower_info</a> ()=0</td></tr>
 <tr class="separator:aab62c2148c74b2dc10750e829eb27b40 inherit pub_methods_structonert_1_1compiler_1_1_i_lowered_graph"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed06f313709241fb12b0733fa1c76367 inherit pub_methods_structonert_1_1compiler_1_1_i_lowered_graph"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#aed06f313709241fb12b0733fa1c76367">setHasDynamicTensor</a> (<a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> ind, bool val)=0</td></tr>
+<tr class="separator:aed06f313709241fb12b0733fa1c76367 inherit pub_methods_structonert_1_1compiler_1_1_i_lowered_graph"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abde68b12383ceb2bcd321be052649b11 inherit pub_methods_structonert_1_1compiler_1_1_i_lowered_graph"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#abde68b12383ceb2bcd321be052649b11">getHasDynamicTensor</a> (<a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> ind) const =0</td></tr>
+<tr class="separator:abde68b12383ceb2bcd321be052649b11 inherit pub_methods_structonert_1_1compiler_1_1_i_lowered_graph"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Class that contains lowering information on graph. In addition, after lowering, operands in graph will be set to "dynamic" if the shape of output of an operation cannot be decided at compilation time. </p>
@@ -170,16 +178,47 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8cc_source.html#l00047">47</a> of file <a class="el" href="_lowered_trainable_graph_8cc_source.html">LoweredTrainableGraph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>  : _trainable_graph{<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a73cfb7d0caf2754f5b14c9a33d500b60">graph</a>}</div>
-<div class="line"><span class="lineno">   50</span>{</div>
-<div class="line"><span class="lineno">   51</span>  lowerGraph(options);</div>
-<div class="line"><span class="lineno">   52</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8cc_source.html#l00046">46</a> of file <a class="el" href="_lowered_trainable_graph_8cc_source.html">LoweredTrainableGraph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>  : _trainable_graph{<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a73cfb7d0caf2754f5b14c9a33d500b60">graph</a>}</div>
+<div class="line"><span class="lineno">   49</span>{</div>
+<div class="line"><span class="lineno">   50</span>  lowerGraph(options);</div>
+<div class="line"><span class="lineno">   51</span>}</div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1train_1_1_lowered_trainable_graph_html_a73cfb7d0caf2754f5b14c9a33d500b60"><div class="ttname"><a href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a73cfb7d0caf2754f5b14c9a33d500b60">onert::compiler::train::LoweredTrainableGraph::graph</a></div><div class="ttdeci">ir::Graph &amp; graph() override</div><div class="ttdef"><b>Definition:</b> <a href="_lowered_trainable_graph_8h_source.html#l00045">LoweredTrainableGraph.h:45</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a66510151c234d040431e4cb63c305d6e" name="a66510151c234d040431e4cb63c305d6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66510151c234d040431e4cb63c305d6e">&#9670;&#160;</a></span>getHasDynamicTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool onert::compiler::train::LoweredTrainableGraph::getHasDynamicTensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#abde68b12383ceb2bcd321be052649b11">onert::compiler::ILoweredGraph</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00058">58</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a9e8b014d697a561933574785c73d47a2" name="a9e8b014d697a561933574785c73d47a2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9e8b014d697a561933574785c73d47a2">&#9670;&#160;</a></span>graph() <span class="overload">[1/2]</span></h2>
 
@@ -334,6 +373,50 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00050">50</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   50</span>{ <span class="keywordflow">return</span> _lower_info_map; }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ab41da5c6ff18b5c3a87031d355e9b2c3" name="ab41da5c6ff18b5c3a87031d355e9b2c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab41da5c6ff18b5c3a87031d355e9b2c3">&#9670;&#160;</a></span>setHasDynamicTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::compiler::train::LoweredTrainableGraph::setHasDynamicTensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>has_dynamic</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#aed06f313709241fb12b0733fa1c76367">onert::compiler::ILoweredGraph</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00053">53</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>  {</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (has_dynamic)</div>
+<div class="line"><span class="lineno">   56</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;LoweredTrainableGraph does not support dynamic tensors yet&quot;</span>);</div>
+<div class="line"><span class="lineno">   57</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

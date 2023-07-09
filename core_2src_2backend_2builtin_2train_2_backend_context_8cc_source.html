@@ -168,7 +168,7 @@ $(document).ready(function(){initNavTree('core_2src_2backend_2builtin_2train_2_b
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>{</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1train.html#a77098c4c53ca5551dbc93aca80ed2ae4">backend::train::FunctionMap</a> ret;</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> op_ind : <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>-&gt;op_order)</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;op_ind : <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>-&gt;op_order)</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  {</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keyword">auto</span> tn_seq = <a class="code hl_variable" href="classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html#af70ea4b77285f8a58b2e4b5f96a47d25">kernel_gen</a>-&gt;generate(op_ind);</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    ret.emplace_back(op_ind, std::move(tn_seq));</div>

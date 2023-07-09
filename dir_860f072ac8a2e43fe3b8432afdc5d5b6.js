@@ -9,7 +9,9 @@ var dir_860f072ac8a2e43fe3b8432afdc5d5b6 =
     [ "ExternalContext.h", "backend_2train_2_external_context_8h.html", "backend_2train_2_external_context_8h" ],
     [ "KernelGenerator.cc", "backend_2train_2_kernel_generator_8cc.html", null ],
     [ "KernelGenerator.h", "backend_2train_2_kernel_generator_8h.html", "backend_2train_2_kernel_generator_8h" ],
+    [ "MemoryManager.h", "runtime_2onert_2backend_2train_2_memory_manager_8h.html", "runtime_2onert_2backend_2train_2_memory_manager_8h" ],
     [ "Tensor.h", "runtime_2onert_2backend_2train_2_tensor_8h.html", "runtime_2onert_2backend_2train_2_tensor_8h" ],
     [ "TensorBuilder.h", "backend_2train_2_tensor_builder_8h.html", "backend_2train_2_tensor_builder_8h" ],
+    [ "TensorRegistry.h", "backend_2train_2_tensor_registry_8h.html", "backend_2train_2_tensor_registry_8h" ],
     [ "train.cc", "train_8cc.html", "train_8cc" ]
 ];

@@ -1,0 +1,4 @@
+<map id="luci::DynamicBatchToSingleBatchPass" name="luci::DynamicBatchToSingleBatchPass">
+<area shape="rect" id="node1" title="Pass to convert dynamic batch to single batch." alt="" coords="5,79,188,119"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="55,5,138,31"/>
+</map>

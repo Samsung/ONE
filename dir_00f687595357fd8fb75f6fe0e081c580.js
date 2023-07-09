@@ -1,6 +1,6 @@
 var dir_00f687595357fd8fb75f6fe0e081c580 =
 [
-    [ "Abs.cpp", "tflchef_2core_2src_2_op_2_abs_8cpp.html", null ],
+    [ "Abs.cpp", "compiler_2tflchef_2core_2src_2_op_2_abs_8cpp.html", null ],
     [ "Abs.h", "tflchef_2core_2src_2_op_2_abs_8h.html", "tflchef_2core_2src_2_op_2_abs_8h" ],
     [ "Add.cpp", "compiler_2tflchef_2core_2src_2_op_2_add_8cpp.html", null ],
     [ "Add.h", "tflchef_2core_2src_2_op_2_add_8h.html", "tflchef_2core_2src_2_op_2_add_8h" ],
@@ -11,7 +11,7 @@ var dir_00f687595357fd8fb75f6fe0e081c580 =
     [ "ArgMin.cpp", "core_2src_2_op_2_arg_min_8cpp.html", null ],
     [ "ArgMin.h", "core_2src_2_op_2_arg_min_8h.html", "core_2src_2_op_2_arg_min_8h" ],
     [ "AveragePool2D.cpp", "compiler_2tflchef_2core_2src_2_op_2_average_pool2_d_8cpp.html", null ],
-    [ "AveragePool2D.h", "compiler_2tflchef_2core_2src_2_op_2_average_pool2_d_8h.html", "compiler_2tflchef_2core_2src_2_op_2_average_pool2_d_8h" ],
+    [ "AveragePool2D.h", "tflchef_2core_2src_2_op_2_average_pool2_d_8h.html", "tflchef_2core_2src_2_op_2_average_pool2_d_8h" ],
     [ "BatchMatMul.cpp", "compiler_2tflchef_2core_2src_2_op_2_batch_mat_mul_8cpp.html", null ],
     [ "BatchMatMul.h", "compiler_2tflchef_2core_2src_2_op_2_batch_mat_mul_8h.html", "compiler_2tflchef_2core_2src_2_op_2_batch_mat_mul_8h" ],
     [ "BatchToSpaceND.cpp", "compiler_2tflchef_2core_2src_2_op_2_batch_to_space_n_d_8cpp.html", null ],

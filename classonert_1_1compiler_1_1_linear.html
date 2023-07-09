@@ -144,7 +144,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_linear_8cc_source.html#l00037">37</a> of file <a class="el" href="_linear_8cc_source.html">Linear.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
-<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> ind : order)</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : order)</div>
 <div class="line"><span class="lineno">   41</span>  {</div>
 <div class="line"><span class="lineno">   42</span>    <span class="comment">// TODO Could logging system can handle this? (Inserting prefix for each line)</span></div>
 <div class="line"><span class="lineno">   43</span>    std::istringstream iss{<a class="code hl_function" href="namespaceonert_1_1dumper_1_1text.html#a5227db9d70a67305564456340f428845">dumper::text::formatOperation</a>(lowered_graph.graph(), ind)};</div>

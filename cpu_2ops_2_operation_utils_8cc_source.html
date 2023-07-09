@@ -350,7 +350,7 @@ $(document).ready(function(){initNavTree('cpu_2ops_2_operation_utils_8cc_source.
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  }</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> d : dimensions)</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;d : dimensions)</div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  {</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    assert(d &gt;= 0);</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> *= <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(d);</div>

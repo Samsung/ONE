@@ -316,7 +316,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  104</span> </div>
 <div class="line"><span class="lineno">  105</span>  operations.iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;op_ind, <span class="keyword">const</span> ir::IOperation &amp;op) {</div>
 <div class="line"><span class="lineno">  106</span>    <span class="keyword">auto</span> job_index = op_to_job[op_ind];</div>
-<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> output : op.getOutputs())</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;output : op.getOutputs())</div>
 <div class="line"><span class="lineno">  108</span>    {</div>
 <div class="line"><span class="lineno">  109</span>      <span class="comment">// Update output and input info</span></div>
 <div class="line"><span class="lineno">  110</span>      operations.iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;op_cur_ind, <span class="keyword">const</span> ir::IOperation &amp;op_cur) {</div>
@@ -577,7 +577,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_dataflow_executor_8cc_source.html#l00061">61</a> of file <a class="el" href="_dataflow_executor_8cc_source.html">DataflowExecutor.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
-<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keywordtype">id</span> : <a class="code hl_variable" href="classonert_1_1exec_1_1_dataflow_executor.html#abaf1cbb99a371784cae483aee24e04f8">_output_info</a>[finished_job_id])</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;<span class="keywordtype">id</span> : <a class="code hl_variable" href="classonert_1_1exec_1_1_dataflow_executor.html#abaf1cbb99a371784cae483aee24e04f8">_output_info</a>[finished_job_id])</div>
 <div class="line"><span class="lineno">   64</span>  {</div>
 <div class="line"><span class="lineno">   65</span>    assert(<a class="code hl_variable" href="classonert_1_1exec_1_1_dataflow_executor.html#a9dbea41b0e3e1ef6ffadf313e0329f80">_input_info</a>[<span class="keywordtype">id</span>] &gt; 0);</div>
 <div class="line"><span class="lineno">   66</span>    <span class="keyword">auto</span> count = --<a class="code hl_variable" href="classonert_1_1exec_1_1_dataflow_executor.html#a9dbea41b0e3e1ef6ffadf313e0329f80">_input_info</a>[id];</div>

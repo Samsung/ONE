@@ -212,6 +212,8 @@ Functions</h2></td></tr>
 <tr class="separator:ada5e3775f3cd476743f774331e3de433"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a0b2d1d970f94be53e13b87b4bffa13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a6a0b2d1d970f94be53e13b87b4bffa13">eval_integer_8x8_16_lstm</a> (const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input_to_input_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input_to_forget_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input_to_cell_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input_to_output_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *recurrent_to_input_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *recurrent_to_forget_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *recurrent_to_cell_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *recurrent_to_output_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *cell_to_input_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *cell_to_forget_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *cell_to_output_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input_layer_norm_coefficients, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *forget_layer_norm_coefficients, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *cell_layer_norm_coefficients, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *output_layer_norm_coefficients, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *input_gate_bias, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *forget_gate_bias, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *cell_gate_bias, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *output_gate_bias, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *projection_weights, const <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *projection_bias, const <a class="el" href="structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html">luci_interpreter::UnidirectionalSequenceLSTMParams</a> &amp;params, bool forward_sequence, bool time_major, const luci_interpreter::IntegerLSTMParams &amp;integer_lstm_param, int32_t output_state_zp, <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *output_state, <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *cell_state, <a class="el" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> *output, int16_t *scratch0, int16_t *scratch1, int16_t *scratch2, int16_t *scratch3, int8_t *scratch4, int32_t *scratch5)</td></tr>
 <tr class="separator:a6a0b2d1d970f94be53e13b87b4bffa13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e7d54368bc1a15b586719c02c58a3ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a8e7d54368bc1a15b586719c02c58a3ee">Abs</a> (const int flat_size, const float *input_data, float *output_data)</td></tr>
+<tr class="separator:a8e7d54368bc1a15b586719c02c58a3ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ae32bb7aa716dfb73b08664cb65dacf"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a0ae32bb7aa716dfb73b08664cb65dacf"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a0ae32bb7aa716dfb73b08664cb65dacf">LessFn</a> (T lhs, T rhs)</td></tr>
 <tr class="separator:a0ae32bb7aa716dfb73b08664cb65dacf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -230,6 +232,10 @@ Functions</h2></td></tr>
 <tr class="memitem:aefeca0096e930d28c3657e0108a356b3"><td class="memTemplParams" colspan="2">template&lt;typename Scalar &gt; </td></tr>
 <tr class="memitem:aefeca0096e930d28c3657e0108a356b3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#aefeca0096e930d28c3657e0108a356b3">Concatenation</a> (const <a class="el" href="structluci__interpreter__pal_1_1_concatenation_params.html">ConcatenationParams</a> &amp;params, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> *const *input_shapes, const Scalar *const *input_data, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, Scalar *output_data)</td></tr>
 <tr class="separator:aefeca0096e930d28c3657e0108a356b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a082bbfd3550743d851c953a7f4c51473"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a082bbfd3550743d851c953a7f4c51473">Elu</a> (const int flat_size, const float *input_data, float *output_data)</td></tr>
+<tr class="separator:a082bbfd3550743d851c953a7f4c51473"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77f0adc0f847c0bc3c952d8f3f10270d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a77f0adc0f847c0bc3c952d8f3f10270d">Exp</a> (const int flat_size, const float *input_data, float *output_data)</td></tr>
+<tr class="separator:a77f0adc0f847c0bc3c952d8f3f10270d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af73e5ac32dfcf2792c9f2f0051b3226f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#af73e5ac32dfcf2792c9f2f0051b3226f">Logistic</a> (const int flat_size, const float *input_data, float *output_data)</td></tr>
 <tr class="separator:af73e5ac32dfcf2792c9f2f0051b3226f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91f25d9af509b61e4004261b9d4cbd33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a91f25d9af509b61e4004261b9d4cbd33">Logistic</a> (const int flat_size, const int8_t *input_data, float input_scale, int input_zero_point, int8_t *output_data, float output_scale, int output_zero_point)</td></tr>
@@ -312,9 +318,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a87761efec0d6d9fc9ae76a75596fbf1d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a87761efec0d6d9fc9ae76a75596fbf1d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a87761efec0d6d9fc9ae76a75596fbf1d">BroadcastAdd4DSlow</a> (const <a class="el" href="structluci__interpreter__pal_1_1_arithmetic_params.html">ArithmeticParams</a> &amp;params, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;input1_shape, const T *input1_data, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;input2_shape, const T *input2_data, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
 <tr class="separator:a87761efec0d6d9fc9ae76a75596fbf1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b511b1d94072321b3ee9fc3319f5a76"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a2b511b1d94072321b3ee9fc3319f5a76"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a2b511b1d94072321b3ee9fc3319f5a76">AveragePool&lt; int8_t &gt;</a> (const tflite::PoolParams &amp;params, const tflite::RuntimeShape &amp;input_shape, const int8_t *input_data, const tflite::RuntimeShape &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, int8_t *output_data, const tflite::RuntimeShape &amp;scratchpad_shape, int8_t *scratchpad_data)</td></tr>
-<tr class="separator:a2b511b1d94072321b3ee9fc3319f5a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa08ab898fe6ce88f53f2de8b8b398e16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#aa08ab898fe6ce88f53f2de8b8b398e16">AveragePool</a> (const <a class="el" href="structluci__interpreter__pal_1_1_pool_params.html">PoolParams</a> &amp;params, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;input_shape, const float *input_data, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, float *output_data)</td></tr>
+<tr class="separator:aa08ab898fe6ce88f53f2de8b8b398e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f98040ce5b2f996abbfdc80fb1d5cfd"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:a6f98040ce5b2f996abbfdc80fb1d5cfd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a6f98040ce5b2f996abbfdc80fb1d5cfd">DepthwiseConvPerChannel&lt; int8_t &gt;</a> (const tflite::DepthwiseParams &amp;params, const int32_t *output_multiplier, const int32_t *output_shift, const tflite::RuntimeShape &amp;input_shape, const int8_t *input_data, const tflite::RuntimeShape &amp;filter_shape, const int8_t *filter_data, const tflite::RuntimeShape &amp;bias_shape, const int32_t *bias_data, const tflite::RuntimeShape &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, int8_t *output_data, const tflite::RuntimeShape &amp;scratchpad_shape, int8_t *scratchpad_data)</td></tr>
 <tr class="separator:a6f98040ce5b2f996abbfdc80fb1d5cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -488,6 +493,58 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a8e7d54368bc1a15b586719c02c58a3ee" name="a8e7d54368bc1a15b586719c02c58a3ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e7d54368bc1a15b586719c02c58a3ee">&#9670;&#160;</a></span>Abs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter_pal::Abs </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>flat_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>output_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_p_a_l_abs_8h_source.html#l00025">25</a> of file <a class="el" href="_p_a_l_abs_8h_source.html">PALAbs.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
+<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; ++i)</div>
+<div class="line"><span class="lineno">   28</span>  {</div>
+<div class="line"><span class="lineno">   29</span>    output_data[i] = std::abs(input_data[i]);</div>
+<div class="line"><span class="lineno">   30</span>  }</div>
+<div class="line"><span class="lineno">   31</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_abs_8cpp_source.html#l00043">luci_interpreter::execute_kernel_CircleAbs()</a>.</p>
+
+</div>
+</div>
 <a id="a28d81ce5010802af13cf99e0243f3baa" name="a28d81ce5010802af13cf99e0243f3baa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a28d81ce5010802af13cf99e0243f3baa">&#9670;&#160;</a></span>Add()</h2>
 
@@ -557,8 +614,138 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="aa08ab898fe6ce88f53f2de8b8b398e16" name="aa08ab898fe6ce88f53f2de8b8b398e16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa08ab898fe6ce88f53f2de8b8b398e16">&#9670;&#160;</a></span>AveragePool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter_pal::AveragePool </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structluci__interpreter__pal_1_1_pool_params.html">PoolParams</a> &amp;&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;&#160;</td>
+          <td class="paramname"><em>output_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>output_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_average_pool2d_8h_source.html#l00028">28</a> of file <a class="el" href="onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_average_pool2d_8h_source.html">PALAveragePool2D.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
+<div class="line"><span class="lineno">   32</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> batches = input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(0);</div>
+<div class="line"><span class="lineno">   33</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> depth = <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(3);</div>
+<div class="line"><span class="lineno">   34</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_height = input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(1);</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_width = input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(2);</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_height = <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(1);</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_width = <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(2);</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stride_height = params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_pool_params.html#af2e87f276f68164725d1478541bf618b">stride_height</a>;</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stride_width = params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_pool_params.html#a75563e80d8d065c7db0dd6a6249385cc">stride_width</a>;</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> batch = 0; batch &lt; batches; ++batch)</div>
+<div class="line"><span class="lineno">   41</span>  {</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_y = 0; out_y &lt; output_height; ++out_y)</div>
+<div class="line"><span class="lineno">   43</span>    {</div>
+<div class="line"><span class="lineno">   44</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_x = 0; out_x &lt; output_width; ++out_x)</div>
+<div class="line"><span class="lineno">   45</span>      {</div>
+<div class="line"><span class="lineno">   46</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> channel = 0; channel &lt; depth; ++channel)</div>
+<div class="line"><span class="lineno">   47</span>        {</div>
+<div class="line"><span class="lineno">   48</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> in_x_origin = (out_x * stride_width) - params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_pool_params.html#ad5b0ba9d6a6adca412659e13dec2154a">padding_values</a>.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_padding_values.html#aa174dffcd2993e74b47c7a75c7c1bce2">width</a>;</div>
+<div class="line"><span class="lineno">   49</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> in_y_origin = (out_y * stride_height) - params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_pool_params.html#ad5b0ba9d6a6adca412659e13dec2154a">padding_values</a>.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_padding_values.html#a506d4fa73c0e7cf5f6c9cfd878815615">height</a>;</div>
+<div class="line"><span class="lineno">   50</span>          <span class="comment">// Compute the boundaries of the filter region clamped so as to</span></div>
+<div class="line"><span class="lineno">   51</span>          <span class="comment">// ensure that the filter window fits in the input array.</span></div>
+<div class="line"><span class="lineno">   52</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> filter_x_start = std::max(0, -in_x_origin);</div>
+<div class="line"><span class="lineno">   53</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> filter_x_end = std::min(params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_pool_params.html#a7a1f25a36420e89753a6a411514d0435">filter_width</a>, input_width - in_x_origin);</div>
+<div class="line"><span class="lineno">   54</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> filter_y_start = std::max(0, -in_y_origin);</div>
+<div class="line"><span class="lineno">   55</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> filter_y_end = std::min(params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_pool_params.html#aa20b83533d1df4a386807e05da3357c8">filter_height</a>, input_height - in_y_origin);</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>          <span class="keywordtype">float</span> total = 0.f;</div>
+<div class="line"><span class="lineno">   58</span>          <span class="keywordtype">float</span> filter_count = 0;</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> filter_y = filter_y_start; filter_y &lt; filter_y_end; ++filter_y)</div>
+<div class="line"><span class="lineno">   61</span>          {</div>
+<div class="line"><span class="lineno">   62</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> filter_x = filter_x_start; filter_x &lt; filter_x_end; ++filter_x)</div>
+<div class="line"><span class="lineno">   63</span>            {</div>
+<div class="line"><span class="lineno">   64</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> in_x = in_x_origin + filter_x;</div>
+<div class="line"><span class="lineno">   65</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> in_y = in_y_origin + filter_y;</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> input_data_offset =</div>
+<div class="line"><span class="lineno">   68</span>                ((batch * input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(1) + in_y) * input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(2) + in_x) *</div>
+<div class="line"><span class="lineno">   69</span>                  input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(3) +</div>
+<div class="line"><span class="lineno">   70</span>                channel;</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>              total += input_data[input_data_offset];</div>
+<div class="line"><span class="lineno">   73</span>              filter_count++;</div>
+<div class="line"><span class="lineno">   74</span>            }</div>
+<div class="line"><span class="lineno">   75</span>          }</div>
+<div class="line"><span class="lineno">   76</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> output_data_offset =</div>
+<div class="line"><span class="lineno">   77</span>            ((batch * <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(1) + out_y) * <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(2) + out_x) *</div>
+<div class="line"><span class="lineno">   78</span>              <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(3) +</div>
+<div class="line"><span class="lineno">   79</span>            channel;</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>          assert(filter_count != 0);</div>
+<div class="line"><span class="lineno">   82</span>          <span class="keyword">const</span> <span class="keywordtype">float</span> average = total / filter_count;</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>          <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[output_data_offset] =</div>
+<div class="line"><span class="lineno">   85</span>            std::min(std::max(average, params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_pool_params.html#a65fb5f3717157882123c15e6caf9ccdc">float_activation_min</a>), params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_pool_params.html#a7d87f6be5ae528a474151d3d1be595c5">float_activation_max</a>);</div>
+<div class="line"><span class="lineno">   86</span>        }</div>
+<div class="line"><span class="lineno">   87</span>      }</div>
+<div class="line"><span class="lineno">   88</span>    }</div>
+<div class="line"><span class="lineno">   89</span>  }</div>
+<div class="line"><span class="lineno">   90</span>}</div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_a21afbf00a49a9fb5b67c40f78e408b23"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">luci_interpreter::RuntimeShape::dims</a></div><div class="ttdeci">int32_t dims(int i) const</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">Tensor.h:108</a></div></div>
+<div class="ttc" id="anamespacepart__eval__one_html_aa659ec13c0dc14d487081c1a59b9ae70"><div class="ttname"><a href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">part_eval_one.output_data</a></div><div class="ttdeci">output_data</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00113">part_eval_one.py:113</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_padding_values_html_a506d4fa73c0e7cf5f6c9cfd878815615"><div class="ttname"><a href="structluci__interpreter__pal_1_1_padding_values.html#a506d4fa73c0e7cf5f6c9cfd878815615">luci_interpreter_pal::PaddingValues::height</a></div><div class="ttdeci">int16_t height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00052">Params.h:52</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_padding_values_html_aa174dffcd2993e74b47c7a75c7c1bce2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_padding_values.html#aa174dffcd2993e74b47c7a75c7c1bce2">luci_interpreter_pal::PaddingValues::width</a></div><div class="ttdeci">int16_t width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00051">Params.h:51</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a65fb5f3717157882123c15e6caf9ccdc"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a65fb5f3717157882123c15e6caf9ccdc">luci_interpreter_pal::PoolParams::float_activation_min</a></div><div class="ttdeci">float float_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00200">Params.h:200</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a75563e80d8d065c7db0dd6a6249385cc"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a75563e80d8d065c7db0dd6a6249385cc">luci_interpreter_pal::PoolParams::stride_width</a></div><div class="ttdeci">int stride_width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00193">Params.h:193</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a7a1f25a36420e89753a6a411514d0435"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a7a1f25a36420e89753a6a411514d0435">luci_interpreter_pal::PoolParams::filter_width</a></div><div class="ttdeci">int filter_width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00195">Params.h:195</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a7d87f6be5ae528a474151d3d1be595c5"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a7d87f6be5ae528a474151d3d1be595c5">luci_interpreter_pal::PoolParams::float_activation_max</a></div><div class="ttdeci">float float_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00201">Params.h:201</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_aa20b83533d1df4a386807e05da3357c8"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#aa20b83533d1df4a386807e05da3357c8">luci_interpreter_pal::PoolParams::filter_height</a></div><div class="ttdeci">int filter_height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00194">Params.h:194</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_ad5b0ba9d6a6adca412659e13dec2154a"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#ad5b0ba9d6a6adca412659e13dec2154a">luci_interpreter_pal::PoolParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00191">Params.h:191</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_af2e87f276f68164725d1478541bf618b"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#af2e87f276f68164725d1478541bf618b">luci_interpreter_pal::PoolParams::stride_height</a></div><div class="ttdeci">int stride_height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00192">Params.h:192</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_params_8h_source.html#l00194">luci_interpreter_pal::PoolParams::filter_height</a>, <a class="el" href="_params_8h_source.html#l00195">luci_interpreter_pal::PoolParams::filter_width</a>, <a class="el" href="_params_8h_source.html#l00201">luci_interpreter_pal::PoolParams::float_activation_max</a>, <a class="el" href="_params_8h_source.html#l00200">luci_interpreter_pal::PoolParams::float_activation_min</a>, <a class="el" href="_params_8h_source.html#l00052">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00191">luci_interpreter_pal::PoolParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00192">luci_interpreter_pal::PoolParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00193">luci_interpreter_pal::PoolParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00051">luci_interpreter_pal::PaddingValues::width</a>.</p>
+
+</div>
+</div>
 <a id="a2b511b1d94072321b3ee9fc3319f5a76" name="a2b511b1d94072321b3ee9fc3319f5a76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b511b1d94072321b3ee9fc3319f5a76">&#9670;&#160;</a></span>AveragePool&lt; int8_t &gt;() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b511b1d94072321b3ee9fc3319f5a76">&#9670;&#160;</a></span>AveragePool&lt; int8_t &gt;() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -667,14 +854,13 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   92</span>                            output_data);</div>
 <div class="line"><span class="lineno">   93</span>  assert(res == ARM_MATH_SUCCESS);</div>
 <div class="line"><span class="lineno">   94</span>}</div>
-<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
 <a id="a2b511b1d94072321b3ee9fc3319f5a76" name="a2b511b1d94072321b3ee9fc3319f5a76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b511b1d94072321b3ee9fc3319f5a76">&#9670;&#160;</a></span>AveragePool&lt; int8_t &gt;() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b511b1d94072321b3ee9fc3319f5a76">&#9670;&#160;</a></span>AveragePool&lt; int8_t &gt;() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -753,7 +939,7 @@ template&lt;&gt; </div>
 </div>
 </div>
 <a id="a2b511b1d94072321b3ee9fc3319f5a76" name="a2b511b1d94072321b3ee9fc3319f5a76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b511b1d94072321b3ee9fc3319f5a76">&#9670;&#160;</a></span>AveragePool&lt; int8_t &gt;() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b511b1d94072321b3ee9fc3319f5a76">&#9670;&#160;</a></span>AveragePool&lt; int8_t &gt;() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -832,7 +1018,7 @@ template&lt;&gt; </div>
 </div>
 </div>
 <a id="a2b511b1d94072321b3ee9fc3319f5a76" name="a2b511b1d94072321b3ee9fc3319f5a76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b511b1d94072321b3ee9fc3319f5a76">&#9670;&#160;</a></span>AveragePool&lt; int8_t &gt;() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b511b1d94072321b3ee9fc3319f5a76">&#9670;&#160;</a></span>AveragePool&lt; int8_t &gt;() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -947,7 +1133,7 @@ template&lt;&gt; </div>
 </div>
 </div>
 <a id="a2b511b1d94072321b3ee9fc3319f5a76" name="a2b511b1d94072321b3ee9fc3319f5a76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b511b1d94072321b3ee9fc3319f5a76">&#9670;&#160;</a></span>AveragePool&lt; int8_t &gt;() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b511b1d94072321b3ee9fc3319f5a76">&#9670;&#160;</a></span>AveragePool&lt; int8_t &gt;() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1013,85 +1199,6 @@ template&lt;&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2pal_2linux_2_p_a_l_average_pool2d_8h_source.html#l00045">45</a> of file <a class="el" href="onert-micro_2luci-interpreter_2pal_2linux_2_p_a_l_average_pool2d_8h_source.html">PALAveragePool2d.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
-<div class="line"><span class="lineno">   51</span>  (void)scratchpad_shape;</div>
-<div class="line"><span class="lineno">   52</span>  (void)scratchpad_data;</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>  tflite::reference_integer_ops::AveragePool(params, input_shape, input_data, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
-<div class="line"><span class="lineno">   55</span>                                             output_data);</div>
-<div class="line"><span class="lineno">   56</span>}</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
-
-</div>
-</div>
-<a id="a2b511b1d94072321b3ee9fc3319f5a76" name="a2b511b1d94072321b3ee9fc3319f5a76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b511b1d94072321b3ee9fc3319f5a76">&#9670;&#160;</a></span>AveragePool&lt; int8_t &gt;() <span class="overload">[6/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void luci_interpreter_pal::AveragePool&lt; int8_t &gt; </td>
-          <td>(</td>
-          <td class="paramtype">const tflite::PoolParams &amp;&#160;</td>
-          <td class="paramname"><em>params</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const tflite::RuntimeShape &amp;&#160;</td>
-          <td class="paramname"><em>input_shape</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int8_t *&#160;</td>
-          <td class="paramname"><em>input_data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const tflite::RuntimeShape &amp;&#160;</td>
-          <td class="paramname"><em>output_shape</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int8_t *&#160;</td>
-          <td class="paramname"><em>output_data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const tflite::RuntimeShape &amp;&#160;</td>
-          <td class="paramname"><em>scratchpad_shape</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int8_t *&#160;</td>
-          <td class="paramname"><em>scratchpad_data</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_average_pool2d_8h_source.html#l00045">45</a> of file <a class="el" href="onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_average_pool2d_8h_source.html">PALAveragePool2d.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
 <div class="line"><span class="lineno">   51</span>  (void)scratchpad_shape;</div>
 <div class="line"><span class="lineno">   52</span>  (void)scratchpad_data;</div>
@@ -1289,7 +1396,6 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a2ed85231fb21100351c9f68895eaba4b"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a></div><div class="ttdeci">NdArrayDesc&lt; 4 &gt; desc1</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00033">PALComparisons.h:33</a></div></div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_ab5b08ef1201803398018fac4598b8b27"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a></div><div class="ttdeci">NdArrayDesc&lt; 4 &gt; desc2</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00034">PALComparisons.h:34</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a></div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00035">Tensor.h:36</a></div></div>
-<div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_a21afbf00a49a9fb5b67c40f78e408b23"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">luci_interpreter::RuntimeShape::dims</a></div><div class="ttdeci">int32_t dims(int i) const</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">Tensor.h:108</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_abe0909641358a2944262ae5811516eb0"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#abe0909641358a2944262ae5811516eb0">luci_interpreter::RuntimeShape::extendedShape</a></div><div class="ttdeci">static RuntimeShape extendedShape(int new_shape_size, const RuntimeShape &amp;shape)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">Tensor.h:95</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_a2caf99ee4e308fed9c7738a8430858ad"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a2caf99ee4e308fed9c7738a8430858ad">luci_interpreter_pal::subscriptToIndex</a></div><div class="ttdeci">int subscriptToIndex(const NdArrayDesc&lt; 4 &gt; &amp;desc, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition:</b> <a href="_process_broadcast_shapes_8h_source.html#l00125">ProcessBroadcastShapes.h:125</a></div></div>
 <div class="ttc" id="astructluci__interpreter__pal_1_1_nd_array_desc_html"><div class="ttname"><a href="structluci__interpreter__pal_1_1_nd_array_desc.html">luci_interpreter_pal::NdArrayDesc</a></div><div class="ttdef"><b>Definition:</b> <a href="_process_broadcast_shapes_8h_source.html#l00034">ProcessBroadcastShapes.h:35</a></div></div>
@@ -1640,7 +1746,6 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_acbf4dabf4f38e9b25551036973965529"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#acbf4dabf4f38e9b25551036973965529">luci_interpreter::RuntimeShape::flatSize</a></div><div class="ttdeci">int flatSize() const</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">Tensor.h:45</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1"><div class="ttname"><a href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">jpeg2hdf5.b</a></div><div class="ttdeci">b</div><div class="ttdef"><b>Definition:</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_ab8738ffaf077556034784c12228921b7"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#ab8738ffaf077556034784c12228921b7">luci_interpreter_pal::MulScalar</a></div><div class="ttdeci">void MulScalar(const ArithmeticParams &amp;params, const int flat_size, const T *input_data, const T scalar_value, T *output_data)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_mul_8h_source.html#l00040">PALMul.h:40</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_aa659ec13c0dc14d487081c1a59b9ae70"><div class="ttname"><a href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">part_eval_one.output_data</a></div><div class="ttdeci">output_data</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00113">part_eval_one.py:113</a></div></div>
 <div class="ttc" id="astruct_nd_array_desc_html"><div class="ttname"><a href="struct_nd_array_desc.html">NdArrayDesc</a></div><div class="ttdef"><b>Definition:</b> <a href="_n_d_array_8h_source.html#l00037">NDArray.h:38</a></div></div>
 <div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a51cb9b8f28b71845ff734baae03263f2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a51cb9b8f28b71845ff734baae03263f2">luci_interpreter_pal::ArithmeticParams::broadcast_category</a></div><div class="ttdeci">BroadcastableOpCategory broadcast_category</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00144">Params.h:144</a></div></div>
 </div><!-- fragment -->
@@ -2886,6 +2991,62 @@ template&lt;&gt; </div>
 
 </div>
 </div>
+<a id="a082bbfd3550743d851c953a7f4c51473" name="a082bbfd3550743d851c953a7f4c51473"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a082bbfd3550743d851c953a7f4c51473">&#9670;&#160;</a></span>Elu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter_pal::Elu </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>flat_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>output_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_elu_8h_source.html#l00027">27</a> of file <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_elu_8h_source.html">PALElu.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   28</span>{</div>
+<div class="line"><span class="lineno">   29</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; i++)</div>
+<div class="line"><span class="lineno">   30</span>  {</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keywordtype">float</span> val = input_data[i];</div>
+<div class="line"><span class="lineno">   32</span>    <span class="keywordtype">float</span> result = val &lt; 0.0f ? std::expm1(val) : val;</div>
+<div class="line"><span class="lineno">   33</span>    output_data[i] = result;</div>
+<div class="line"><span class="lineno">   34</span>  }</div>
+<div class="line"><span class="lineno">   35</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_elu_8h_source.html#l00027">Elu()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_elu_8h_source.html#l00027">Elu()</a>.</p>
+
+</div>
+</div>
 <a id="a6a0b2d1d970f94be53e13b87b4bffa13" name="a6a0b2d1d970f94be53e13b87b4bffa13"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6a0b2d1d970f94be53e13b87b4bffa13">&#9670;&#160;</a></span>eval_integer_8x8_16_lstm()</h2>
 
@@ -3352,6 +3513,60 @@ template&lt;typename ActivationType , typename WeightType , typename CellType , 
 <div class="ttc" id="astructluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info_html_af906856fe0ea73c3cb242f5e8de1c21d"><div class="ttname"><a href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af906856fe0ea73c3cb242f5e8de1c21d">luci_interpreter_pal::lstm_internal::LstmSizeInfo::time_steps</a></div><div class="ttdeci">int32_t time_steps</div><div class="ttdef"><b>Definition:</b> <a href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00185">PALUnidirectionalSequenceLSTM.h:185</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00184">luci_interpreter_pal::lstm_internal::LstmSizeInfo::batch_size</a>, <a class="el" href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00044">circle_eval_diff::TensorShape::dim()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00145">luci_interpreter::lstm::LSTMStruct::input()</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00186">luci_interpreter_pal::lstm_internal::LstmSizeInfo::input_dimension</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00178">luci_interpreter::lstm::LSTMStruct::options</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00169">luci_interpreter::lstm::LSTMStruct::output_state()</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00228">luci_interpreter_pal::lstm_internal::LstmStepManager::resetTime()</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00187">luci_interpreter_pal::lstm_internal::LstmSizeInfo::state_dimension</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00183">luci_interpreter_pal::lstm_internal::LstmSizeInfo::time_major</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00185">luci_interpreter_pal::lstm_internal::LstmSizeInfo::time_steps</a>, <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00215">luci_interpreter_pal::lstm_internal::LstmStepManager::updateBatch()</a>, and <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00198">luci_interpreter_pal::lstm_internal::LstmStepManager::updateTime()</a>.</p>
+
+</div>
+</div>
+<a id="a77f0adc0f847c0bc3c952d8f3f10270d" name="a77f0adc0f847c0bc3c952d8f3f10270d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77f0adc0f847c0bc3c952d8f3f10270d">&#9670;&#160;</a></span>Exp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter_pal::Exp </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>flat_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>output_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_p_a_l_exp_8h_source.html#l00026">26</a> of file <a class="el" href="_p_a_l_exp_8h_source.html">PALExp.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
+<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; i++)</div>
+<div class="line"><span class="lineno">   29</span>  {</div>
+<div class="line"><span class="lineno">   30</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> val = input_data[i];</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> result = std::exp(val);</div>
+<div class="line"><span class="lineno">   32</span>    output_data[i] = result;</div>
+<div class="line"><span class="lineno">   33</span>  }</div>
+<div class="line"><span class="lineno">   34</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_exp_8cpp_source.html#l00038">luci_interpreter::execute_kernel_CircleExp()</a>.</p>
 
 </div>
 </div>
@@ -4721,15 +4936,6 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   80</span>    }</div>
 <div class="line"><span class="lineno">   81</span>  }</div>
 <div class="line"><span class="lineno">   82</span>}</div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_padding_values_html_a506d4fa73c0e7cf5f6c9cfd878815615"><div class="ttname"><a href="structluci__interpreter__pal_1_1_padding_values.html#a506d4fa73c0e7cf5f6c9cfd878815615">luci_interpreter_pal::PaddingValues::height</a></div><div class="ttdeci">int16_t height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00052">Params.h:52</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_padding_values_html_aa174dffcd2993e74b47c7a75c7c1bce2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_padding_values.html#aa174dffcd2993e74b47c7a75c7c1bce2">luci_interpreter_pal::PaddingValues::width</a></div><div class="ttdeci">int16_t width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00051">Params.h:51</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a65fb5f3717157882123c15e6caf9ccdc"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a65fb5f3717157882123c15e6caf9ccdc">luci_interpreter_pal::PoolParams::float_activation_min</a></div><div class="ttdeci">float float_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00200">Params.h:200</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a75563e80d8d065c7db0dd6a6249385cc"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a75563e80d8d065c7db0dd6a6249385cc">luci_interpreter_pal::PoolParams::stride_width</a></div><div class="ttdeci">int stride_width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00193">Params.h:193</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a7a1f25a36420e89753a6a411514d0435"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a7a1f25a36420e89753a6a411514d0435">luci_interpreter_pal::PoolParams::filter_width</a></div><div class="ttdeci">int filter_width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00195">Params.h:195</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a7d87f6be5ae528a474151d3d1be595c5"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a7d87f6be5ae528a474151d3d1be595c5">luci_interpreter_pal::PoolParams::float_activation_max</a></div><div class="ttdeci">float float_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00201">Params.h:201</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_aa20b83533d1df4a386807e05da3357c8"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#aa20b83533d1df4a386807e05da3357c8">luci_interpreter_pal::PoolParams::filter_height</a></div><div class="ttdeci">int filter_height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00194">Params.h:194</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_ad5b0ba9d6a6adca412659e13dec2154a"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#ad5b0ba9d6a6adca412659e13dec2154a">luci_interpreter_pal::PoolParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00191">Params.h:191</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_af2e87f276f68164725d1478541bf618b"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#af2e87f276f68164725d1478541bf618b">luci_interpreter_pal::PoolParams::stride_height</a></div><div class="ttdeci">int stride_height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00192">Params.h:192</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_params_8h_source.html#l00194">luci_interpreter_pal::PoolParams::filter_height</a>, <a class="el" href="_params_8h_source.html#l00195">luci_interpreter_pal::PoolParams::filter_width</a>, <a class="el" href="_params_8h_source.html#l00201">luci_interpreter_pal::PoolParams::float_activation_max</a>, <a class="el" href="_params_8h_source.html#l00200">luci_interpreter_pal::PoolParams::float_activation_min</a>, <a class="el" href="_params_8h_source.html#l00052">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00191">luci_interpreter_pal::PoolParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00192">luci_interpreter_pal::PoolParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00193">luci_interpreter_pal::PoolParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00051">luci_interpreter_pal::PaddingValues::width</a>.</p>
 

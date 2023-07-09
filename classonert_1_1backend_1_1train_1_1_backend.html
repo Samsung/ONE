@@ -101,8 +101,9 @@ Collaboration diagram for onert::backend::train::Backend:</div>
 <div class="dyncontent">
 <div class="center"><img src="classonert_1_1backend_1_1train_1_1_backend__coll__graph.png" border="0" usemap="#aonert_1_1backend_1_1train_1_1_backend_coll__map" alt="Collaboration graph"/></div>
 <map name="aonert_1_1backend_1_1train_1_1_backend_coll__map" id="aonert_1_1backend_1_1train_1_1_backend_coll__map">
-<area shape="rect" title=" " alt="" coords="18,79,155,119"/>
-<area shape="rect" href="classonert_1_1backend_1_1_backend.html" title=" " alt="" coords="5,5,168,31"/>
+<area shape="rect" title=" " alt="" coords="105,93,242,133"/>
+<area shape="rect" href="classonert_1_1backend_1_1_backend.html" title=" " alt="" coords="5,13,168,38"/>
+<area shape="rect" href="structonert_1_1backend_1_1train_1_1_i_trainable_backend.html" title=" " alt="" coords="193,5,330,45"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -114,6 +115,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3c2dab4d7390318309a3d017ccf0a846"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a502c31ad7adb63214824e2b07a64e11c"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1_backend_context.html">onert::backend::BackendContext</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_backend.html#a502c31ad7adb63214824e2b07a64e11c">newContext</a> (<a class="el" href="structonert_1_1backend_1_1_context_data.html">ContextData</a> &amp;&amp;data) const override</td></tr>
 <tr class="separator:a502c31ad7adb63214824e2b07a64e11c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba7d63ddfc089185a209feaf7b6824ba"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html">backend::train::TrainableBackendContext</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_backend.html#aba7d63ddfc089185a209feaf7b6824ba">newContext</a> (<a class="el" href="structonert_1_1backend_1_1train_1_1_trainable_context_data.html">backend::train::TrainableContextData</a> &amp;&amp;tdata) const override</td></tr>
+<tr class="separator:aba7d63ddfc089185a209feaf7b6824ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classonert_1_1backend_1_1_backend"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1backend_1_1_backend')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1backend_1_1_backend.html">onert::backend::Backend</a></td></tr>
 <tr class="memitem:ab4280759b28770ab6210733caa7a19b5 inherit pub_methods_classonert_1_1backend_1_1_backend"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1_backend.html#ab4280759b28770ab6210733caa7a19b5">~Backend</a> ()=default</td></tr>
 <tr class="separator:ab4280759b28770ab6210733caa7a19b5 inherit pub_methods_classonert_1_1backend_1_1_backend"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,10 +124,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9343acbed3795da963e506c2f47b6086 inherit pub_methods_classonert_1_1backend_1_1_backend"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa956662b060cbf562dfef4ad433b869 inherit pub_methods_classonert_1_1backend_1_1_backend"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1_backend_context.html">BackendContext</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1_backend.html#afa956662b060cbf562dfef4ad433b869">newContext</a> (<a class="el" href="structonert_1_1backend_1_1_context_data.html">ContextData</a> &amp;&amp;) const =0</td></tr>
 <tr class="separator:afa956662b060cbf562dfef4ad433b869 inherit pub_methods_classonert_1_1backend_1_1_backend"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structonert_1_1backend_1_1train_1_1_i_trainable_backend"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structonert_1_1backend_1_1train_1_1_i_trainable_backend')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structonert_1_1backend_1_1train_1_1_i_trainable_backend.html">onert::backend::train::ITrainableBackend</a></td></tr>
+<tr class="memitem:a593c3e9782a3c77ebd189ee6ef7f2c61 inherit pub_methods_structonert_1_1backend_1_1train_1_1_i_trainable_backend"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1train_1_1_i_trainable_backend.html#a593c3e9782a3c77ebd189ee6ef7f2c61">~ITrainableBackend</a> ()=default</td></tr>
+<tr class="separator:a593c3e9782a3c77ebd189ee6ef7f2c61 inherit pub_methods_structonert_1_1backend_1_1train_1_1_i_trainable_backend"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0f3f8ec4bcc5d8fe2526831596c3b52 inherit pub_methods_structonert_1_1backend_1_1train_1_1_i_trainable_backend"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html">TrainableBackendContext</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1train_1_1_i_trainable_backend.html#ad0f3f8ec4bcc5d8fe2526831596c3b52">newContext</a> (<a class="el" href="structonert_1_1backend_1_1train_1_1_trainable_context_data.html">TrainableContextData</a> &amp;&amp;) const =0</td></tr>
+<tr class="separator:ad0f3f8ec4bcc5d8fe2526831596c3b52 inherit pub_methods_structonert_1_1backend_1_1train_1_1_i_trainable_backend"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00035">35</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00036">36</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a63089bb34bd552d054650323d99d7ce8" name="a63089bb34bd552d054650323d99d7ce8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a63089bb34bd552d054650323d99d7ce8">&#9670;&#160;</a></span>Backend()</h2>
@@ -149,8 +157,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00038">38</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>: _config{std::make_shared&lt;Config&gt;()} {}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00039">39</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>: _config{std::make_shared&lt;Config&gt;()} {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -180,13 +188,57 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1_backend.html#a9343acbed3795da963e506c2f47b6086">onert::backend::Backend</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00040">40</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{ <span class="keywordflow">return</span> _config; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00041">41</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> _config; }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aba7d63ddfc089185a209feaf7b6824ba" name="aba7d63ddfc089185a209feaf7b6824ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba7d63ddfc089185a209feaf7b6824ba">&#9670;&#160;</a></span>newContext() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html">backend::train::TrainableBackendContext</a> &gt; onert::backend::train::Backend::newContext </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structonert_1_1backend_1_1train_1_1_trainable_context_data.html">backend::train::TrainableContextData</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>tdata</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structonert_1_1backend_1_1train_1_1_i_trainable_backend.html#ad0f3f8ec4bcc5d8fe2526831596c3b52">onert::backend::train::ITrainableBackend</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00049">49</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>  {</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tgraph = *tdata.tgraph;</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;basic::TensorRegistry&gt;();</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> grad_tr = std::make_shared&lt;basic::TensorRegistry&gt;();</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keyword">auto</span> grad_tb = std::make_shared&lt;TensorBuilder&gt;(grad_tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keyword">auto</span> tdata_ptr = std::make_unique&lt;backend::train::TrainableContextData&gt;(std::move(tdata));</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> context =</div>
+<div class="line"><span class="lineno">   58</span>      std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb, grad_tr, grad_tb);</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>    context-&gt;kernel_gen =</div>
+<div class="line"><span class="lineno">   61</span>      std::make_shared&lt;train::KernelGenerator&gt;(tgraph, tr, grad_tr, context-&gt;external_context());</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">return</span> context;</div>
+<div class="line"><span class="lineno">   63</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
 <a id="a502c31ad7adb63214824e2b07a64e11c" name="a502c31ad7adb63214824e2b07a64e11c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a502c31ad7adb63214824e2b07a64e11c">&#9670;&#160;</a></span>newContext()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a502c31ad7adb63214824e2b07a64e11c">&#9670;&#160;</a></span>newContext() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -211,21 +263,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1_backend.html#afa956662b060cbf562dfef4ad433b869">onert::backend::Backend</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00042">42</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>  {</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keyword">auto</span> custom_kernel_builder = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.custom_kernel_builder;</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.graph;</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keyword">auto</span> context = std::make_unique&lt;BackendContext&gt;(<span class="keyword">this</span>, std::move(data));</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;basic::TensorRegistry&gt;();</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
-<div class="line"><span class="lineno">   49</span>    context-&gt;tensor_registry = tr;</div>
-<div class="line"><span class="lineno">   50</span>    context-&gt;tensor_builder = tb;</div>
-<div class="line"><span class="lineno">   51</span>    context-&gt;kernel_gen = std::make_shared&lt;InferenceKernelGenerator&gt;(</div>
-<div class="line"><span class="lineno">   52</span>      graph, tb, tr, custom_kernel_builder, context-&gt;external_context());</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> context;</div>
-<div class="line"><span class="lineno">   54</span>  }</div>
-<div class="ttc" id="anamespace_gen_h5_random_inputs_html_a57e930c09fd3ed0664cc4dc6c4ab2c88"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">GenH5RandomInputs.data</a></div><div class="ttdeci">data</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00064">GenH5RandomInputs.py:64</a></div></div>
-<div class="ttc" id="anamespace_gen_h5_random_inputs_html_ac7f0f74f10011f31ef450dc70f8918af"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">GenH5RandomInputs.graph</a></div><div class="ttdeci">graph</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00048">GenH5RandomInputs.py:48</a></div></div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00043">43</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>  {</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> std::make_unique&lt;DummyBackendContext&gt;(<span class="keyword">this</span>, std::move(data));</div>
+<div class="line"><span class="lineno">   46</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

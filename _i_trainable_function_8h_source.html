@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: runtime/onert/core/include/exec/ITrainableFunction.h Source File</title>
+<title>ONE - On-device Neural Engine: runtime/onert/core/include/exec/train/ITrainableFunction.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -108,35 +108,40 @@ $(document).ready(function(){initNavTree('_i_trainable_function_8h_source.html',
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * limitations under the License.</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#ifndef __ONERT_EXEC_I_TRAINABLE_FUNCTION_H__</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define __ONERT_EXEC_I_TRAINABLE_FUNCTION_H__</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#ifndef __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>{</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">namespace </span>exec</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_i_trainable_function.html">   25</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1exec_1_1_i_trainable_function.html">ITrainableFunction</a></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_i_trainable_function.html#a5b0734d8372f396a483e4b11a9a09120">   28</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="classonert_1_1exec_1_1_i_trainable_function.html#a5b0734d8372f396a483e4b11a9a09120">~ITrainableFunction</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_i_trainable_function.html#ac456aebdf3a9ba24b44f54a3403c7fac">   29</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_i_trainable_function.html#ac456aebdf3a9ba24b44f54a3403c7fac">forward</a>(<span class="keywordtype">bool</span> training) = 0;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>};</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>} <span class="comment">// namespace exec</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="namespaceonert_1_1exec_1_1train.html">   24</a></span><span class="keyword">namespace </span>train</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html">   27</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html">ITrainableFunction</a></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a18d3e6fafe8019272fe7b37d0248bc69">   30</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a18d3e6fafe8019272fe7b37d0248bc69">~ITrainableFunction</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">   31</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">forward</a>(<span class="keywordtype">bool</span> training) = 0;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">   32</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">backward</a>() = 0;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>};</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_EXEC_I_TRAINABLE_FUNCTION_H__</span></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_trainable_function_html"><div class="ttname"><a href="classonert_1_1exec_1_1_i_trainable_function.html">onert::exec::ITrainableFunction</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_trainable_function_8h_source.html#l00025">ITrainableFunction.h:26</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_trainable_function_html_a5b0734d8372f396a483e4b11a9a09120"><div class="ttname"><a href="classonert_1_1exec_1_1_i_trainable_function.html#a5b0734d8372f396a483e4b11a9a09120">onert::exec::ITrainableFunction::~ITrainableFunction</a></div><div class="ttdeci">virtual ~ITrainableFunction()=default</div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_trainable_function_html_ac456aebdf3a9ba24b44f54a3403c7fac"><div class="ttname"><a href="classonert_1_1exec_1_1_i_trainable_function.html#ac456aebdf3a9ba24b44f54a3403c7fac">onert::exec::ITrainableFunction::forward</a></div><div class="ttdeci">virtual void forward(bool training)=0</div></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>} <span class="comment">// namespace train</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>} <span class="comment">// namespace exec</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__</span></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_i_trainable_function_html"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html">onert::exec::train::ITrainableFunction</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_trainable_function_8h_source.html#l00027">ITrainableFunction.h:28</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_i_trainable_function_html_a18d3e6fafe8019272fe7b37d0248bc69"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a18d3e6fafe8019272fe7b37d0248bc69">onert::exec::train::ITrainableFunction::~ITrainableFunction</a></div><div class="ttdeci">virtual ~ITrainableFunction()=default</div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_i_trainable_function_html_a1902f86c136b2f95027a29ba9909d94d"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction::forward</a></div><div class="ttdeci">virtual void forward(bool training)=0</div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_i_trainable_function_html_ac2d337b03208fe6ecc83d6278e74ad24"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction::backward</a></div><div class="ttdeci">virtual void backward()=0</div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition:</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3ccf6623f9f3bff466090fdb94ba31c.html">core</a></li><li class="navelem"><a class="el" href="dir_640be38f35d8b71fc689df7f2a10eeb2.html">include</a></li><li class="navelem"><a class="el" href="dir_8a6534561731e29186a1c9c5810113f7.html">exec</a></li><li class="navelem"><a class="el" href="_i_trainable_function_8h.html">ITrainableFunction.h</a></li>
+    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3ccf6623f9f3bff466090fdb94ba31c.html">core</a></li><li class="navelem"><a class="el" href="dir_640be38f35d8b71fc689df7f2a10eeb2.html">include</a></li><li class="navelem"><a class="el" href="dir_8a6534561731e29186a1c9c5810113f7.html">exec</a></li><li class="navelem"><a class="el" href="dir_a0bf2f0ba0837fd5c5db82ef684c69e1.html">train</a></li><li class="navelem"><a class="el" href="_i_trainable_function_8h.html">ITrainableFunction.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

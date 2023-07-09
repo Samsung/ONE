@@ -150,7 +150,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dot_builder_8cc_source.html#l00029">29</a> of file <a class="el" href="_dot_builder_8cc_source.html">DotBuilder.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
 <div class="line"><span class="lineno">   31</span>  add(node_info);</div>
-<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> edge : node_info.out_edges())</div>
+<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;edge : node_info.out_edges())</div>
 <div class="line"><span class="lineno">   33</span>  {</div>
 <div class="line"><span class="lineno">   34</span>    addEdge(node_info, *edge);</div>
 <div class="line"><span class="lineno">   35</span>  }</div>
