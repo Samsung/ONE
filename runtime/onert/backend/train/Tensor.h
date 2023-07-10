@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_TRAIN_TENSOR_H__
 
 #include <backend/basic/Tensor.h>
+#include <backend/train/ITrainableTensor.h>
 
 namespace onert
 {
@@ -43,7 +44,23 @@ public:
   bool applyShape(const ir::Shape &) override { return false; }
 };
 
-using ExternalTensor = basic::ExternalTensor;
+class TrainableTensor : public Tensor, public train::ITrainableTensor
+{
+public:
+  TrainableTensor() = delete;
+
+public:
+  TrainableTensor(const ir::OperandInfo &info, const ir::Layout layout) : Tensor{info, layout}
+  {
+    // DO NOTHING
+  }
+
+public:
+  void applyGradient(const IPortableTensor &grad_tensor, double lr) override;
+
+public:
+  void fillBuffer(const std::shared_ptr<ir::Data> &data);
+};
 
 } // namespace train
 } // namespace backend
