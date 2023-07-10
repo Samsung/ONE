@@ -89,10 +89,10 @@ public:
  *          [Out]
  *
  */
-class GeluPattern final
+class GeluPattern final : public GeluPatternBase
 {
 public:
-  GeluPattern(luci::CircleMul *candidate)
+  GeluPattern(luci::CircleMul *candidate) : GeluPatternBase(candidate)
   {
     assert(candidate);
     _mul_half = candidate;
