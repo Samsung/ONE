@@ -2098,6 +2098,13 @@ public:
 
   loco::NodeShape visit(const luci::CircleGreaterEqual *node) final { return broadcast_xy(node); }
 
+  loco::NodeShape visit(const luci::CircleHardSwish *node) final
+  {
+    auto input_shape = luci::shape_get(node->features()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
+
   loco::NodeShape visit(const luci::CircleIf *node) final
   {
     // Shape of CircleIf is not used. Just use input 0
