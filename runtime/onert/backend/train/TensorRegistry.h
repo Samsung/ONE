@@ -64,8 +64,7 @@ public:
     return PortableTensorRegistryTemplate<Tensor>::getNativeTensor(ind);
   }
 
-  // TODO Replace Tensor with TrainableTensor
-  Tensor *getTrainableTensor(const ir::OperandIndex &ind)
+  TrainableTensor *getTrainableTensor(const ir::OperandIndex &ind)
   {
     auto tensor = _trainable.find(ind);
     if (tensor != _trainable.end())
@@ -96,8 +95,7 @@ public:
     PortableTensorRegistryTemplate<Tensor>::setNativeTensor(ind, std::move(tensor));
   }
 
-  // TODO Replace Tensor with TrainableTensor
-  void setTrainableTensor(const ir::OperandIndex &ind, std::unique_ptr<Tensor> tensor)
+  void setTrainableTensor(const ir::OperandIndex &ind, std::unique_ptr<TrainableTensor> tensor)
   {
     assert(tensor != nullptr);
     auto itr = _trainable.find(ind);
@@ -112,8 +110,10 @@ public:
     _trainable[ind] = std::move(tensor);
   }
 
-  // TODO Replace Tensor with TrainableTensor
-  const ir::OperandIndexMap<std::unique_ptr<Tensor>> &trainable_tensors() { return _trainable; }
+  const ir::OperandIndexMap<std::unique_ptr<TrainableTensor>> &trainable_tensors()
+  {
+    return _trainable;
+  }
   const ir::OperandIndexMap<std::unique_ptr<Tensor>> &nonconst_tensors()
   {
     return PortableTensorRegistryTemplate<Tensor>::native_tensors();
