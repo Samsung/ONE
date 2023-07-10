@@ -40,7 +40,13 @@ public:
     return PortableTensorRegistryTemplate<Tensor>::getITensor(ind);
   }
 
-  ITensor *getNativeITensor(const ir::OperandIndex &ind) override { return getNativeTensor(ind); }
+  ITensor *getNativeITensor(const ir::OperandIndex &ind) override
+  {
+    ITensor *tensor = getTrainableTensor(ind);
+    if (tensor == nullptr)
+      tensor = getNonConstTensor(ind);
+    return tensor;
+  }
 
   IPortableTensor *getPortableTensor(const ir::OperandIndex &ind)
   {
@@ -50,19 +56,16 @@ public:
       if (tensor->second)
         return tensor->second.get();
     }
-    return PortableTensorRegistryTemplate<Tensor>::getNativeTensor(ind);
+    return PortableTensorRegistryTemplate<Tensor>::getPortableTensor(ind);
   }
 
-  Tensor *getNativeTensor(const ir::OperandIndex &ind)
+  Tensor *getNonConstTensor(const ir::OperandIndex &ind)
   {
-    auto tensor = _trainable.find(ind);
-    if (tensor != _trainable.end())
-      return tensor->second.get();
-
     return PortableTensorRegistryTemplate<Tensor>::getNativeTensor(ind);
   }
 
-  TrainableTensor *getTrainableTensor(const ir::OperandIndex &ind)
+  // TODO Replace Tensor with TrainableTensor
+  Tensor *getTrainableTensor(const ir::OperandIndex &ind)
   {
     auto tensor = _trainable.find(ind);
     if (tensor != _trainable.end())
@@ -82,18 +85,18 @@ public:
     return PortableTensorRegistryTemplate<Tensor>::setMigrantTensor(ind, tensor);
   }
 
-  void setNativeTensor(const ir::OperandIndex &ind, std::unique_ptr<Tensor> tensor)
+  void setNonConstTensor(const ir::OperandIndex &ind, std::unique_ptr<Tensor> tensor)
   {
     assert(tensor != nullptr);
     auto itr = _trainable.find(ind);
     if (itr != _trainable.end())
       throw std::runtime_error{
-        "Tried to set a native tensor but a trainable tensor already exists."};
+        "Tried to set a non const tensor but a trainable tensor already exists."};
 
     PortableTensorRegistryTemplate<Tensor>::setNativeTensor(ind, std::move(tensor));
   }
 
-  // TODO Change this method to overloading by TrainableTensor
+  // TODO Replace Tensor with TrainableTensor
   void setTrainableTensor(const ir::OperandIndex &ind, std::unique_ptr<Tensor> tensor)
   {
     assert(tensor != nullptr);
@@ -102,16 +105,27 @@ public:
       throw std::runtime_error{
         "Tried to set a trainable tensor but a trainable tensor already exists."};
 
-    if (getITensor(ind) != nullptr)
+    if (PortableTensorRegistryTemplate<Tensor>::getITensor(ind) != nullptr)
       throw std::runtime_error{
         "Tried to set a trainable tensor but another tensor already exists."};
 
     _trainable[ind] = std::move(tensor);
   }
 
+  // TODO Replace Tensor with TrainableTensor
+  const ir::OperandIndexMap<std::unique_ptr<Tensor>> &trainable_tensors() { return _trainable; }
+  const ir::OperandIndexMap<std::unique_ptr<Tensor>> &nonconst_tensors()
+  {
+    return PortableTensorRegistryTemplate<Tensor>::native_tensors();
+  }
+
 private:
-  // TODO Replace this member with TrainableTensor
-  ir::OperandIndexMap<std::unique_ptr<Tensor>> _trainable;
+  using PortableTensorRegistryTemplate<Tensor>::native_tensors;
+  using PortableTensorRegistryTemplate<Tensor>::getNativeTensor;
+  using PortableTensorRegistryTemplate<Tensor>::setNativeTensor;
+
+private:
+  ir::OperandIndexMap<std::unique_ptr<TrainableTensor>> _trainable;
 };
 
 } // namespace train
