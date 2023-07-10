@@ -64,11 +64,12 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(GELU, CircleGeluGraphBuilder);                                               // 150
   CIRCLE_NODE(GREATER, CircleGreaterGraphBuilder);                                         // 61
   CIRCLE_NODE(GREATER_EQUAL, CircleGreaterEqualGraphBuilder);                              // 62
+  CIRCLE_NODE(HARD_SWISH, CircleHardSwishGraphBuilder);                                    // 117
   CIRCLE_NODE(IF, CircleIfGraphBuilder);                                                   // 118
   CIRCLE_NODE(INSTANCE_NORM, CircleInstanceNormGraphBuilder);                              // 254
   CIRCLE_NODE(L2_NORMALIZATION, CircleL2NormalizeGraphBuilder);                            // 11
   CIRCLE_NODE(L2_POOL_2D, CircleL2Pool2DGraphBuilder);                                     // 12
-  CIRCLE_NODE(LEAKY_RELU, CircleLeakyReluGraphBuilder);                                    // 98,
+  CIRCLE_NODE(LEAKY_RELU, CircleLeakyReluGraphBuilder);                                    // 98
   CIRCLE_NODE(LESS, CircleLessGraphBuilder);                                               // 58
   CIRCLE_NODE(LESS_EQUAL, CircleLessEqualGraphBuilder);                                    // 63
   CIRCLE_NODE(LOCAL_RESPONSE_NORMALIZATION, CircleLocalResponseNormalizationGraphBuilder); // 13
@@ -87,16 +88,16 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(MIRROR_PAD, CircleMirrorPadGraphBuilder);                                    // 100
   CIRCLE_NODE(MUL, CircleMulGraphBuilder);                                                 // 18
   CIRCLE_NODE(NEG, CircleNegGraphBuilder);                                                 // 59
-  CIRCLE_NODE(NON_MAX_SUPPRESSION_V4, CircleNonMaxSuppressionV4GraphBuilder);              // 120,
-  CIRCLE_NODE(NON_MAX_SUPPRESSION_V5, CircleNonMaxSuppressionV5GraphBuilder);              // 121,
+  CIRCLE_NODE(NON_MAX_SUPPRESSION_V4, CircleNonMaxSuppressionV4GraphBuilder);              // 120
+  CIRCLE_NODE(NON_MAX_SUPPRESSION_V5, CircleNonMaxSuppressionV5GraphBuilder);              // 121
   CIRCLE_NODE(NOT_EQUAL, CircleNotEqualGraphBuilder);                                      // 72
   CIRCLE_NODE(ONE_HOT, CircleOneHotGraphBuilder);                                          // 85
   CIRCLE_NODE(PACK, CirclePackGraphBuilder);                                               // 83
   CIRCLE_NODE(PAD, CirclePadGraphBuilder);                                                 // 34
   CIRCLE_NODE(PADV2, CirclePadV2GraphBuilder);                                             // 60
   CIRCLE_NODE(POW, CirclePowGraphBuilder);                                                 // 78
-  CIRCLE_NODE(PRELU, CirclePReluGraphBuilder);                                             // 54,
-  CIRCLE_NODE(QUANTIZE, CircleQuantizeGraphBuilder);                                       // 114,
+  CIRCLE_NODE(PRELU, CirclePReluGraphBuilder);                                             // 54
+  CIRCLE_NODE(QUANTIZE, CircleQuantizeGraphBuilder);                                       // 114
   CIRCLE_NODE(RANGE, CircleRangeGraphBuilder);                                             // 96
   CIRCLE_NODE(RANK, CircleRankGraphBuilder);                                               // 110
   CIRCLE_NODE(REDUCE_ANY, CircleReduceAnyGraphBuilder);                                    // 91
@@ -161,7 +162,6 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   // BuiltinOperator_BIDIRECTIONAL_SEQUENCE_RNN = 46,
   // BuiltinOperator_DELEGATE = 51,
   // BuiltinOperator_ARG_MAX = 56,
-  // BuiltinOperator_HARD_SWISH = 117,
 
   // Register builders for nodes which not handles in builders registered above.
 #define CIRCLE_NODE(CLASS) add(std::make_unique<CLASS>())
