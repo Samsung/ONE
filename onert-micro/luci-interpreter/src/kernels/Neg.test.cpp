@@ -33,8 +33,7 @@ class NegTest : public ::testing::Test
   // Do nothing
 };
 
-template <typename T>
-std::vector<T> checkNegKernel(test_kernel::TestDataBase<T> *test_data_base)
+template <typename T> std::vector<T> checkNegKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
   MemoryManager memory_manager{};
   RuntimeModule runtime_module{};
@@ -97,7 +96,5 @@ TEST_F(NegTest, Invalid_input_shape_NEG)
                "");
 }
 
-
 } // namespace
 } // namespace luci_interpreter
-

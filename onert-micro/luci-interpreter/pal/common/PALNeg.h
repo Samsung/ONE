@@ -17,31 +17,29 @@
 #ifndef LUCI_INTERPRETER_PAL_NEG_H
 #define LUCI_INTERPRETER_PAL_NEG_H
 
-
 namespace luci_interpreter_pal
 {
 template <typename T>
 inline void Negate(const luci_interpreter::RuntimeShape &input_shape, const T *input_data,
-                          const luci_interpreter::RuntimeShape &output_shape, T *output_data)
-                          
+                   const luci_interpreter::RuntimeShape &output_shape, T *output_data)
+
 {
   // check that input and output dimensions are equal
-  int  N = input_shape.dimensionsCount();
+  int N = input_shape.dimensionsCount();
   assert(N == output_shape.dimensionsCount());
-   
+
   // check that sizes of all dimensions are equal
   for (int i = 0; i < N; ++i)
-  {     
-       assert( input_shape.dims(i)  == output_shape.dims(i) ); 
+  {
+    assert(input_shape.dims(i) == output_shape.dims(i));
   }
-      
-  const int flat_size = input_shape.flatSize();  
 
-  for (int i = 0; i < flat_size; ++i) {
+  const int flat_size = input_shape.flatSize();
+
+  for (int i = 0; i < flat_size; ++i)
+  {
     output_data[i] = -input_data[i];
   }
-
- 
 }
 } // namespace luci_interpreter_pal
 
