@@ -57,8 +57,8 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 
   const auto &op = _tgraph.operation(idx);
   op.accept(*this);
-  // TODO Enable the below code
-  // ret->append(releaseFunction());
+  assert(_return_fn);
+  ret->append(std::move(_return_fn));
 
   for (auto &&ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
