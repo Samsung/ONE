@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+# Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,28 +14,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# negative usage with no input
+# overwrite one-codegen command with `backend` and `command` key
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  if grep -q "error: the following arguments are required: -b/--backend" "${filename}.log"; then
-    echo "${filename_ext} SUCCESS"
-    exit 0
-  fi
-
   echo "${filename_ext} FAILED"
+  rm -rf ../bin/dummyV2-compile
   exit 255
 }
 
 trap trap_err_onexit ERR
 
+configfile="onecc_055.cfg"
+outputfile0="onecc_055.tvn"
+outputfile1="onecc_055_overwrite.tvn"
+
 rm -f ${filename}.log
+rm -rf ${outputfile0}
+rm -rf ${outputfile1}
+
+# copy dummy tools to bin folder
+cp dummyV2-compile ../bin/dummyV2-compile
 
 # run test
-one-codegen > ${filename}.log 2>&1
+onecc codegen -C ${configfile} -b dummyV2 -- \
+  -O onecc_055_overwrite.tvn onecc.circle > ${filename}.log 2>&1
 
-echo "${filename_ext} FAILED"
-exit 255
+if [[ ! -s "${outputfile1}" ]]; then
+  trap_err_onexit
+fi
+
+# shouldn't be generated
+if [[ -s "${outputfile0}" ]]; then
+  trap_err_onexit
+fi
+
+rm -rf ../bin/dummyV2-compile
+
+echo "${filename_ext} SUCCESS"

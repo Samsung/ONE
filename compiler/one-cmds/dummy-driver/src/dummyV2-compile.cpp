@@ -35,7 +35,10 @@ int main(int argc, char **argv)
   std::string argv_1{argv[1]};
 
   if (opt_o != argv_1)
+  {
+    std::cout << "dummyV2-compile: Invalid option" << std::endl;
     return EXIT_FAILURE;
+  }
 
   std::string output_name{argv[2]};
   std::ofstream outfile(output_name);
