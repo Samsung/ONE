@@ -35,13 +35,9 @@ class ITrainableTensor
 public:
   virtual ~ITrainableTensor() = default;
 
-  /**
-   * @brief Apply gradient to this trainable tensor
-   *
-   * @param grad_tensor A gradient tensor to be used for updating this trainable tensor
-   * @param lr          Learning rate
-   */
-  virtual void applyGradient(const IPortableTensor &grad_tensor, double lr) = 0;
+  // TODO Encapsulation
+  virtual IPortableTensor &weightTensor() = 0;
+  virtual IPortableTensor &gradTensor() = 0;
 };
 
 } // namespace train
