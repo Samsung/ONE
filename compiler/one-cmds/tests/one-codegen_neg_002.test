@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+# Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# negative usage with no input
+# one-codegen ${command} without backend option
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -35,7 +35,7 @@ trap trap_err_onexit ERR
 rm -f ${filename}.log
 
 # run test
-one-codegen > ${filename}.log 2>&1
+one-codegen -o test.tvn test.circle > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

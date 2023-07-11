@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+# Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# negative usage with no input
+# command key is missing
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  if grep -q "error: the following arguments are required: -b/--backend" "${filename}.log"; then
+  if grep -q "error: 'command' key is missing in the configuration file" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
@@ -32,10 +32,12 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
+configfile="one-codegen_neg_004.cfg"
+
 rm -f ${filename}.log
 
 # run test
-one-codegen > ${filename}.log 2>&1
+one-codegen -b dummy -C ${configfile} > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255
