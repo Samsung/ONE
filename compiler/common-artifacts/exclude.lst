@@ -45,7 +45,6 @@ tcgenerate(FloorMod_001)
 tcgenerate(FullyConnected_U8_000)
 tcgenerate(GatherNd_000)
 tcgenerate(GatherNd_001)
-tcgenerate(HardSwish_000) # temporarily exclude 
 tcgenerate(L2Pool2D_U8_000)
 tcgenerate(Log_000)
 tcgenerate(MatMul_000)
