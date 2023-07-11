@@ -626,8 +626,8 @@ void ExecutorFactory::prepareMigrantTensors(
   compiler::ILoweredGraph &lowered_graph,
   const backend::train::TrainableBackendContexts &backend_contexts)
 {
-  const auto is_grad = false;
-  TensorRegistries tensor_regs{backend_contexts, is_grad};
+  const auto is_derivative = false;
+  TensorRegistries tensor_regs{backend_contexts, is_derivative};
 
   lowered_graph.graph().operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
@@ -719,7 +719,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   }
   base_backend_contexts.clear();
 
-  TensorRegistries grad_tensor_regs{tbackend_contexts, true};
+  TensorRegistries derivative_tensor_regs{tbackend_contexts, true};
   TensorRegistries tensor_regs{tbackend_contexts, false};
 
   initializeSubgraphIOTensors(
@@ -752,7 +752,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     if (builtin_context != nullptr)
     {
       auto builtin_kernel_gen = builtin_context->kernel_gen;
-      builtin_kernel_gen->setTensorRegistries(grad_tensor_regs);
+      builtin_kernel_gen->setTensorRegistries(derivative_tensor_regs);
       builtin_kernel_gen->setTensorRegistries(tensor_regs);
     }
   }

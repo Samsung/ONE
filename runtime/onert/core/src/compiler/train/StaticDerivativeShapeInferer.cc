@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "StaticGradientShapeInferer.h"
+#include "StaticDerivativeShapeInferer.h"
 #include "util/ShapeInference.h"
 #include "util/logging.h"
 
@@ -30,7 +30,7 @@ namespace compiler
 namespace train
 {
 
-void StaticGradientShapeInferer::infer()
+void StaticDerivativeShapeInferer::infer()
 {
   // It is not determined to iterate in reverse order.
   auto sorted_ops = _lowered_subg->graph().topolSortOperations();
@@ -41,7 +41,7 @@ void StaticGradientShapeInferer::infer()
     if (checkDynamicInput(op))
     {
       std::stringstream msg;
-      msg << "StaticGradientShapeInferer does not support dynamic shape yet, ";
+      msg << "StaticDerivativeShapeInferer does not support dynamic shape yet, ";
       msg << op.name() << "(op index: " << op_idx << ") has dynamic shape.";
       throw std::runtime_error(msg.str());
     }
@@ -50,12 +50,12 @@ void StaticGradientShapeInferer::infer()
   }
 }
 
-void StaticGradientShapeInferer::dump()
+void StaticDerivativeShapeInferer::dump()
 {
   // TODO dump
 }
 
-bool StaticGradientShapeInferer::checkDynamicInput(const ir::IOperation &op)
+bool StaticDerivativeShapeInferer::checkDynamicInput(const ir::IOperation &op)
 {
   const auto &operands = _lowered_subg->graph().operands();
   for (auto input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
@@ -69,37 +69,37 @@ bool StaticGradientShapeInferer::checkDynamicInput(const ir::IOperation &op)
   return false;
 }
 
-void StaticGradientShapeInferer::visit(const ir::train::operation::Conv2D &)
+void StaticDerivativeShapeInferer::visit(const ir::train::operation::Conv2D &)
 {
   // NYI
 }
 
-void StaticGradientShapeInferer::visit(const ir::train::operation::ElementwiseActivation &)
+void StaticDerivativeShapeInferer::visit(const ir::train::operation::ElementwiseActivation &)
 {
   // NYI
 }
 
-void StaticGradientShapeInferer::visit(const ir::train::operation::Loss &)
+void StaticDerivativeShapeInferer::visit(const ir::train::operation::Loss &)
 {
   // NYI
 }
 
-void StaticGradientShapeInferer::visit(const ir::train::operation::Permute &)
+void StaticDerivativeShapeInferer::visit(const ir::train::operation::Permute &)
 {
   // NYI
 }
 
-void StaticGradientShapeInferer::visit(const ir::train::operation::Pool2D &)
+void StaticDerivativeShapeInferer::visit(const ir::train::operation::Pool2D &)
 {
   // NYI
 }
 
-void StaticGradientShapeInferer::visit(const ir::train::operation::Reshape &)
+void StaticDerivativeShapeInferer::visit(const ir::train::operation::Reshape &)
 {
   // NYI
 }
 
-void StaticGradientShapeInferer::visit(const ir::train::operation::Softmax &)
+void StaticDerivativeShapeInferer::visit(const ir::train::operation::Softmax &)
 {
   // NYI
 }

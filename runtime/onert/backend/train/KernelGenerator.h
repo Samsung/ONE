@@ -38,7 +38,7 @@ class KernelGenerator : public backend::train::KernelGeneratorBase
 public:
   KernelGenerator(const ir::train::TrainableGraph &tgraph,
                   const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
-                  const std::shared_ptr<basic::TensorRegistry> &grad_tensor_reg,
+                  const std::shared_ptr<basic::TensorRegistry> &deriv_tensor_reg,
                   const std::shared_ptr<ExternalContext> &external_context);
 
   std::unique_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex op_ind) override;
@@ -48,7 +48,7 @@ public:
 private:
   ir::Layout _current_layout;
   std::shared_ptr<basic::TensorRegistry> _tensor_reg;
-  std::shared_ptr<basic::TensorRegistry> _grad_tensor_reg;
+  std::shared_ptr<basic::TensorRegistry> _deriv_tensor_reg;
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
