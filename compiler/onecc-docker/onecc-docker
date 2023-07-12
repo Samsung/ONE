@@ -16,10 +16,42 @@
 
 import sys
 import subprocess
-import json
 import requests
 import os
 import argparse
+import re
+
+
+class RequestHandler:
+    def __init__(self, token=None, timeout=None):
+        if token:
+            self.headers = {"Authorization": "Bearer {}".format(token)}
+        else:
+            self.headers = {}
+        self.timeout = timeout or 5
+
+    def make_request(self, url):
+        try:
+            response = requests.get(url, headers=self.headers)
+            response.raise_for_status()
+            print("[onecc-docker] Request succeeded: {}".format(response.status_code))
+            return response
+        except requests.RequestException as e:
+            print("[onecc-docker] Request failed: ", e)
+            return None
+
+
+def _request_recent_version(token=None):
+    response = RequestHandler(token, timeout=100).make_request(
+        url="https://api.github.com/repos/Samsung/ONE/releases")
+    versions = [release_item["tag_name"] for release_item in response.json()]
+
+    for version in versions:
+        # Return the latest version with the given format
+        # to filter out such as 'onert-micro-0.1.0' release
+        # which doesn't contain onecc package.
+        if bool(re.match(r'^\d+\.\d+\.\d+$', version)):
+            return version
 
 
 def _run(cmd, is_shell=False):
@@ -61,20 +93,7 @@ def main():
     args, onecc_arguments = parser.parse_known_args()
     authorization_token = args.token
 
-    LATEST_URL = "https://api.github.com/repos/Samsung/ONE/releases/latest"
-    headers = {}
-    if authorization_token:
-        headers = {"Authorization": "Bearer {}".format(authorization_token)}
-    try:
-        response = requests.get(LATEST_URL, headers=headers)
-        response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        raise SystemExit('onecc-docker: error: {}'.format(e))
-
-    versions_str = response.content
-    versions_json = json.loads(versions_str)
-    recent_version = versions_json["tag_name"]
-
+    recent_version = _request_recent_version(authorization_token)
     image_name = f"onecc:{recent_version}"
     build_arg = f"VERSION={recent_version}"
 
