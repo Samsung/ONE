@@ -33,6 +33,30 @@ namespace
 // Float comparison
 bool same(float a, float b) { return fabs(a - b) < 1e-5; }
 
+class GeluPatternBase
+{
+public:
+  GeluPatternBase(luci::CircleMul *candidate) { _pattern_last_node = candidate; }
+
+  virtual ~GeluPatternBase() = default;
+
+public:
+  virtual bool matched() = 0;
+
+public:
+  luci::CircleNode *_ifm = nullptr;
+  luci::CircleMul *_mul_sqrt = nullptr;
+  luci::CircleCustom *_erf = nullptr;
+  luci::CircleCustomOut *_erf_out = nullptr;
+  luci::CircleAdd *_add_one = nullptr;
+  luci::CircleMul *_mul = nullptr;
+  luci::CircleMul *_mul_half = nullptr;
+  luci::CircleConst *_const_sqrt = nullptr;
+  luci::CircleConst *_const_one = nullptr;
+  luci::CircleConst *_const_half = nullptr;
+  luci::CircleMul *_pattern_last_node = nullptr;
+};
+
 /**
  * Below diagram shows Gelu pattern to fuse.
  * - Gelu(x) = 0.5 * x * (1.0 + erf(x / sqrt(2.0)))
@@ -62,10 +86,10 @@ bool same(float a, float b) { return fabs(a - b) < 1e-5; }
  *          [Out]
  *
  */
-class GeluPattern final
+class GeluPattern final : public GeluPatternBase
 {
 public:
-  GeluPattern(luci::CircleMul *candidate)
+  GeluPattern(luci::CircleMul *candidate) : GeluPatternBase(candidate)
   {
     assert(candidate);
     _mul_half = candidate;
