@@ -29,9 +29,9 @@ namespace train
 
 KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
-                                 const std::shared_ptr<TensorRegistry> &grad_tensor_reg,
+                                 const std::shared_ptr<TensorRegistry> &deriv_tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
-  : KernelGeneratorBase{tgraph}, _tensor_reg{tensor_reg}, _grad_tensor_reg{grad_tensor_reg},
+  : KernelGeneratorBase{tgraph}, _tensor_reg{tensor_reg}, _deriv_tensor_reg{deriv_tensor_reg},
     _external_context(external_context)
 {
 }
@@ -69,16 +69,16 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
 
 backend::ITensor *KernelGenerator::getTensor(const ir::OperandIndex &index)
 {
-  // get Tensor from all tensor registries (for Permute op)
+  // Get Tensor from all tensor registries (for Permute op)
   auto ret = _tensor_registries.getITensor(index);
   assert(ret != nullptr);
   return ret;
 }
 
-backend::ITensor *KernelGenerator::getGradTensor(const ir::OperandIndex &index)
+backend::ITensor *KernelGenerator::getDerivativeTensor(const ir::OperandIndex &index)
 {
-  // get gradient Tensor from all tensor registries (for Permute op)
-  auto ret = _grad_tensor_registries.getITensor(index);
+  // Get derivative Tensor from all tensor registries (for Permute op)
+  auto ret = _deriv_tensor_registries.getITensor(index);
   assert(ret != nullptr);
   return ret;
 }

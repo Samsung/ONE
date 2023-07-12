@@ -16,7 +16,7 @@
 
 #include "TrainingCompiler.h"
 
-#include "StaticGradientShapeInferer.h"
+#include "StaticDerivativeShapeInferer.h"
 #include "TrainableOperationConverter.h"
 #include "pass/LossInsertionPass.h"
 #include "../CompilerHelpers.h"
@@ -193,12 +193,12 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       inferer->dump();
     }
 
-    // NOTE StaticGradientShapeInferer is allocated for each subgraph,
+    // NOTE StaticDerivativeShapeInferer is allocated for each subgraph,
     //      so it does not support models that have controlflow operations yet.
     for (auto &&pair : lowered_subgs)
     {
       auto &lowered_subg = pair.second;
-      auto inferer = std::make_unique<StaticGradientShapeInferer>(lowered_subg.get());
+      auto inferer = std::make_unique<StaticDerivativeShapeInferer>(lowered_subg.get());
       inferer->infer();
       inferer->dump();
     }
@@ -211,7 +211,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     compiler::ShapeValidator{lowered_subg->graph()}();
   }
 
-  // TODO Validate shapes of gradient tensors
+  // TODO Validate shapes of derivative tensors
 
   /*************************************************************
    *  Backend independent analysis & optimization phase finished

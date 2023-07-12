@@ -35,18 +35,18 @@ ITensorRegistry *BackendContext::genTensors()
 
 ITensorRegistry *BackendContext::genTrainingTensors()
 {
-  genGradTensors();
+  genDerivativeTensors();
 
-  // TODO Generate training-related tensors except for gradient
+  // TODO Generate gradient tensors
 
-  return _grad_tensor_registry.get();
+  return _deriv_tensor_registry.get();
 }
 
-void BackendContext::genGradTensors()
+void BackendContext::genDerivativeTensors()
 {
   const ir::train::TrainableGraph &tgraph = *trainable_graph();
-  auto tensor_builder = _grad_tensor_builder;
-  auto tensor_reg = _grad_tensor_registry;
+  auto tensor_builder = _deriv_tensor_builder;
+  auto tensor_reg = _deriv_tensor_registry;
 
   tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
     if (external_operands().contains(ind))
@@ -54,7 +54,7 @@ void BackendContext::genGradTensors()
     // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
     assert(tgraph.layout() != ir::Layout::NCHW);
 
-    // TODO Register TensorInfo that has gradient's shape
+    // TODO Register TensorInfo that has the shape of differentiation and differentiation
     // ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
     //                              obj.isConstant()};
     // tensor_builder->registerTensorInfo(ind, backend_info, ir::Layout::NHWC);

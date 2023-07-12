@@ -59,11 +59,13 @@ public:
   }
 
 #ifdef ONERT_TRAIN
-  TensorRegistries(const backend::train::TrainableBackendContexts &backend_contexts, bool is_grad)
+  TensorRegistries(const backend::train::TrainableBackendContexts &backend_contexts,
+                   bool is_derivative)
   {
     for (const auto &e : backend_contexts)
     {
-      auto tensor_reg = is_grad ? e.second->grad_tensor_registry() : e.second->tensor_registry();
+      auto tensor_reg =
+        is_derivative ? e.second->deriv_tensor_registry() : e.second->tensor_registry();
       if (e.first->config()->id() == backend::builtin::Config::ID)
       {
         _builtin_tensor_reg =

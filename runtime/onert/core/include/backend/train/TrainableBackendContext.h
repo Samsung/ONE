@@ -57,9 +57,9 @@ public:
   TrainableBackendContext(const ITrainableBackend *backend,
                           std::unique_ptr<TrainableContextData> &&tdata,
                           std::shared_ptr<backend::ITensorRegistry> tensor_registry = nullptr,
-                          std::shared_ptr<backend::ITensorRegistry> grad_tensor_registry = nullptr)
+                          std::shared_ptr<backend::ITensorRegistry> deriv_tensor_registry = nullptr)
     : _backend{backend}, _tdata{std::move(tdata)}, _tensor_registry{tensor_registry},
-      _grad_tensor_registry{grad_tensor_registry}
+      _deriv_tensor_registry{deriv_tensor_registry}
   {
     assert(_tdata);
   }
@@ -74,7 +74,10 @@ public:
   const ir::OperandIndexMap<ir::Layout> &operand_layouts() const { return _tdata->operand_layouts; }
 
   std::shared_ptr<backend::ITensorRegistry> tensor_registry() { return _tensor_registry; }
-  std::shared_ptr<backend::ITensorRegistry> grad_tensor_registry() { return _grad_tensor_registry; }
+  std::shared_ptr<backend::ITensorRegistry> deriv_tensor_registry()
+  {
+    return _deriv_tensor_registry;
+  }
 
   virtual ITensorRegistry *genTrainingTensors() = 0;
   virtual ITensorRegistry *genTensors() = 0;
@@ -88,7 +91,7 @@ protected:
 
 protected:
   std::shared_ptr<backend::ITensorRegistry> _tensor_registry;
-  std::shared_ptr<backend::ITensorRegistry> _grad_tensor_registry;
+  std::shared_ptr<backend::ITensorRegistry> _deriv_tensor_registry;
 };
 
 using TrainableBackendContexts =
