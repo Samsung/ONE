@@ -50,16 +50,21 @@ public:
   TrainableTensor() = delete;
 
 public:
-  TrainableTensor(const ir::OperandInfo &info, const ir::Layout layout) : Tensor{info, layout}
+  TrainableTensor(const ir::OperandInfo &info, const ir::Layout layout)
+    : Tensor{info, layout}, _gradient{info, layout}
   {
     // DO NOTHING
   }
 
 public:
-  void applyGradient(const IPortableTensor &grad_tensor, double lr) override;
+  IPortableTensor &weightTensor() override { return *this; }
+  IPortableTensor &gradTensor() override { return _gradient; }
 
 public:
   void fillBuffer(const std::shared_ptr<ir::Data> &data);
+
+private:
+  Tensor _gradient;
 };
 
 } // namespace train
