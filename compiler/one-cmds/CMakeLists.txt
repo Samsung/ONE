@@ -45,9 +45,9 @@ else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
     # NOTE copy one-prepare-venv.u2204 as build/../one-prepare-venv
     #      and install build/../one-prepare-venv file
     list(APPEND ONE_COMMAND_FILES one-prepare-venv.u2204)
-  else(ONE_UBUNUT_CODENAME_JAMMY)
+  else(ONE_UBUNTU_CODENAME_JAMMY)
     list(APPEND ONE_COMMAND_FILES one-prepare-venv)
-  endif(ONE_UBUNUT_CODENAME_JAMMY)
+  endif(ONE_UBUNTU_CODENAME_JAMMY)
 endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
 
 # pytorch importer is an experimental feature, it is not used in default configuration
