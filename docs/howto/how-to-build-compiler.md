@@ -45,9 +45,6 @@ pylint \
 python3 \
 python3-pip \
 python3-venv \
-python3.8 \
-python3.8-dev \
-python3.8-venv \
 scons \
 software-properties-common \
 unzip \
@@ -61,6 +58,16 @@ $ sudo mv *.a /usr/lib
 
 $ pip install yapf==0.22.0 numpy
 ```
+
+Additional install python3.8 if you are using Ubuntu 18.04.
+```
+$ sudo apt-get install \
+python3.8 \
+python3.8-dev \
+python3.8-venv
+```
+
+If you get `Unable to locate package clang-format-8` then just use `clang-format`.
 
 ## Build for Ubuntu
 
