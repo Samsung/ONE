@@ -56,10 +56,8 @@ def _request_recent_version(token=None):
 
 
 def _run(cmd, is_shell=False):
-    result = subprocess.Popen(cmd,
-                              shell=is_shell,
-                              stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE)
+    result = subprocess.Popen(
+        cmd, shell=is_shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     stdout, stderr = result.communicate()
     stdout = stdout.decode('utf-8')
@@ -84,8 +82,8 @@ def main():
 
     onecc_docker_usage = 'onecc-docker [-h] [-t TOKEN] [COMMAND <args>]'
     onecc_docker_desc = 'Run onecc via docker'
-    parser = argparse.ArgumentParser(usage=onecc_docker_usage,
-                                     description=onecc_docker_desc)
+    parser = argparse.ArgumentParser(
+        usage=onecc_docker_usage, description=onecc_docker_desc)
     parser.add_argument(
         "-t",
         "--token",
